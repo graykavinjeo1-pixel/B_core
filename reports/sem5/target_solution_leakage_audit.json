@@ -1,0 +1,17 @@
+{
+  "reference_implementations_in_solver": 0,
+  "target_algorithm_names_in_solver": 0,
+  "expected_source_programs_in_solver": 0,
+  "fixture_specific_branches": 0,
+  "task_id_dispatch_branches": 0,
+  "stable_opaque_api_meanings": 0,
+  "hidden_answer_lookups": 0,
+  "target_program_solver_leaks": 0,
+  "audited_files": [
+    "crates/semantic-reasoning/src/sem5/ir.rs",
+    "crates/semantic-reasoning/src/sem5/learner.rs",
+    "crates/semantic-reasoning/src/sem5/tasks.rs",
+    "crates/semantic-reasoning/src/sem5/emitter.rs"
+  ],
+  "passed": true
+}

@@ -1,0 +1,11 @@
+{
+  "all_conditions_at_ceiling": false,
+  "primary_comparison": "FIRST_PRINCIPLES_D versus SEMANTIC_NO_PROMOTION_C",
+  "solve_rate_delta_d_minus_c": 0.23076923076923073,
+  "search_cost_reduction_d_vs_c": 36.76923076923077,
+  "frontier_evidence": [
+    "equal frozen task set",
+    "equal expansion budget=110",
+    "no post-blind tuning"
+  ]
+}

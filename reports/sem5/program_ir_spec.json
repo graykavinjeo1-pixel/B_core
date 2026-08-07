@@ -1,0 +1,42 @@
+{
+  "version": "PROGRAM-IR-1.0.0",
+  "authoritative_representation": "typed semantic graph",
+  "node_types": [
+    "LITERAL",
+    "VARIABLE",
+    "LOAD",
+    "STORE",
+    "UNARY_OP",
+    "BINARY_OP",
+    "SEQUENCE_CREATE",
+    "SEQUENCE_READ",
+    "SEQUENCE_WRITE",
+    "SEQUENCE_APPEND",
+    "IF",
+    "LOOP",
+    "CALL",
+    "RETURN",
+    "BLOCK",
+    "BREAK",
+    "CONTINUE"
+  ],
+  "explicit_types": [
+    "INT",
+    "BOOL",
+    "SEQUENCE_INT",
+    "NESTED_SEQUENCE_INT",
+    "BYTES",
+    "IMAGE",
+    "UNIT"
+  ],
+  "explicit_effects": [
+    "PURE",
+    "LOCAL_MUTATION",
+    "BUFFER_MUTATION",
+    "SANDBOX_FILE_READ",
+    "SANDBOX_FILE_WRITE"
+  ],
+  "carries_dependencies": true,
+  "carries_provenance": true,
+  "rust_is_adapter_only": true
+}

@@ -4,11 +4,12 @@ use serde::Serialize;
 use sha2::{Digest, Sha256};
 use synapse_recursive_core::quarantine::RecursiveImprovementQuarantine;
 
-pub const PREDECESSOR_COMMIT: &str = "87633105e088392ee6fa4d72039f3c5de27eb250";
+pub const PREDECESSOR_COMMIT: &str = "79367ade96e457848819461e55cc983329ffab52";
 pub const SEM0_TREE_HASH: &str = "6ccf0423ca5c7106d70492f107c23980b9e9f31a807f778f16d66462e2558cbe";
 pub const SEM1_TREE_HASH: &str = "b5083b272995fbeabb735608db43b08d289359e5f03601cc91b4eb99756f87f8";
 pub const SEM2_TREE_HASH: &str = "9e0f2ee39cd7ea11f60a66842f650c0f269054a6cdcaa061e4de02f2bbb37e0c";
 pub const SEM3_TREE_HASH: &str = "90ad74b1a86ee455a3d20ac52d906a6ee82435b163665580c9d8b8ac5720abdd";
+pub const SEM4_TREE_HASH: &str = "1abcd9cbe97ffa8bdeb28444137d7b5a7348868e632cb47defac0f73c2d0c11e";
 
 #[derive(Debug, Clone, Serialize)]
 pub struct PredecessorTreeHash {
@@ -20,7 +21,7 @@ pub struct PredecessorTreeHash {
 }
 
 #[derive(Debug, Clone, Serialize)]
-pub struct Sem4PredecessorIntegrity {
+pub struct Sem5PredecessorIntegrity {
     pub passed: bool,
     pub predecessor_commit: String,
     pub canonical_manifest_sha256: String,
@@ -28,10 +29,10 @@ pub struct Sem4PredecessorIntegrity {
     pub predecessor_trees: Vec<PredecessorTreeHash>,
     pub sem1_failed_run_preserved: bool,
     pub sem2_failed_run_preserved: bool,
-    pub sem3_passing_run_sealed: bool,
-    pub sem3_run_id: String,
-    pub sem3_final_report_sha256: String,
-    pub sem3_blind_manifest_sha256: String,
+    pub sem4_passing_run_sealed: bool,
+    pub sem4_run_id: String,
+    pub sem4_final_report_sha256: String,
+    pub sem4_blind_manifest_sha256: String,
     pub promoted_concepts_verified_immutable: Vec<String>,
     pub recursive_improvement_quarantine: RecursiveImprovementQuarantine,
     pub network_enabled: bool,
@@ -47,14 +48,14 @@ pub struct Sem4PredecessorIntegrity {
     pub auto_push: bool,
 }
 
-pub fn verify_predecessors(root: &Path) -> Result<Sem4PredecessorIntegrity, String> {
-    let (canonical_files_verified, canonical_manifest_sha256) = verify_canonical_manifest(root)?;
-    let inherited = crate::sem3::integrity::verify_predecessors(root)?;
+pub fn verify_predecessors(root: &Path) -> Result<Sem5PredecessorIntegrity, String> {
+    let inherited = crate::sem4::integrity::verify_predecessors(root)?;
     let expected_trees = [
         ("reports/sem0", SEM0_TREE_HASH),
         ("reports/sem1", SEM1_TREE_HASH),
         ("reports/sem2", SEM2_TREE_HASH),
         ("reports/sem3", SEM3_TREE_HASH),
+        ("reports/sem4", SEM4_TREE_HASH),
     ];
     let mut predecessor_trees = Vec::new();
     for (relative, expected) in expected_trees {
@@ -70,25 +71,25 @@ pub fn verify_predecessors(root: &Path) -> Result<Sem4PredecessorIntegrity, Stri
     if predecessor_trees.iter().any(|tree| !tree.passed) {
         return Err("PREDECESSOR_INTEGRITY_FAILURE:ARTIFACT_TREE_DRIFT".to_string());
     }
-    let sem3_final_bytes =
-        fs::read(root.join("reports/sem3/sem3_final_report.json")).map_err(|e| e.to_string())?;
-    let sem3_final: serde_json::Value =
-        serde_json::from_slice(&sem3_final_bytes).map_err(|e| e.to_string())?;
+    let final_bytes =
+        fs::read(root.join("reports/sem4/sem4_final_report.json")).map_err(|e| e.to_string())?;
+    let final_report: serde_json::Value =
+        serde_json::from_slice(&final_bytes).map_err(|e| e.to_string())?;
     let freeze_bytes =
-        fs::read(root.join("reports/sem3/freeze_record.json")).map_err(|e| e.to_string())?;
+        fs::read(root.join("reports/sem4/freeze_record.json")).map_err(|e| e.to_string())?;
     let freeze: serde_json::Value =
         serde_json::from_slice(&freeze_bytes).map_err(|e| e.to_string())?;
-    let sem3_passing_run_sealed = sem3_final["sem3_status"] == "PASS"
-        && sem3_final["sem4_started"] == false
-        && sem3_final["gates"].as_array().is_some_and(|gates| {
+    let sem4_passing_run_sealed = final_report["sem4_status"] == "PASS"
+        && final_report["sem5_started"] == false
+        && final_report["gates"].as_array().is_some_and(|gates| {
             gates.len() == 9 && gates.iter().all(|gate| gate["passed"] == true)
         })
-        && freeze["run_id"] == "SEM3-RUN-0001"
-        && freeze["frozen_before_curriculum"] == true
-        && freeze["selector_blind_access"] == false
+        && freeze["run_id"] == "SEM4-RUN-0001"
+        && freeze["frozen_before_final_tuning"] == true
+        && freeze["reasoner_blind_access_before_freeze"] == false
         && freeze["post_blind_tuning"] == false;
-    if !sem3_passing_run_sealed {
-        return Err("PREDECESSOR_INTEGRITY_FAILURE:SEM3_RUN_RECORD".to_string());
+    if !sem4_passing_run_sealed {
+        return Err("PREDECESSOR_INTEGRITY_FAILURE:SEM4_RUN_RECORD".to_string());
     }
     let quarantine = inherited.recursive_improvement_quarantine;
     if quarantine.network_enabled
@@ -101,22 +102,24 @@ pub fn verify_predecessors(root: &Path) -> Result<Sem4PredecessorIntegrity, Stri
     {
         return Err("PREDECESSOR_INTEGRITY_FAILURE:QUARANTINE".to_string());
     }
-    Ok(Sem4PredecessorIntegrity {
+    let mut promoted = inherited.promoted_concepts_verified_immutable;
+    promoted.extend(["C000006".to_string(), "C000007".to_string()]);
+    Ok(Sem5PredecessorIntegrity {
         passed: true,
         predecessor_commit: PREDECESSOR_COMMIT.to_string(),
-        canonical_manifest_sha256,
-        canonical_files_verified,
+        canonical_manifest_sha256: inherited.canonical_manifest_sha256,
+        canonical_files_verified: inherited.canonical_files_verified,
         predecessor_trees,
         sem1_failed_run_preserved: inherited.sem1_failed_run_preserved,
         sem2_failed_run_preserved: inherited.sem2_failed_run_preserved,
-        sem3_passing_run_sealed,
-        sem3_run_id: freeze["run_id"].as_str().unwrap_or_default().to_string(),
-        sem3_final_report_sha256: hash_bytes(&sem3_final_bytes),
-        sem3_blind_manifest_sha256: hash_bytes(
-            &fs::read(root.join("reports/sem3/frozen_blind_manifest.json"))
-                .map_err(|e| e.to_string())?,
+        sem4_passing_run_sealed,
+        sem4_run_id: freeze["run_id"].as_str().unwrap_or_default().to_string(),
+        sem4_final_report_sha256: hash_bytes(&final_bytes),
+        sem4_blind_manifest_sha256: hash_bytes(
+            &fs::read(root.join("reports/sem4/blind_manifest.json"))
+                .map_err(|error| error.to_string())?,
         ),
-        promoted_concepts_verified_immutable: inherited.promoted_concepts_verified_immutable,
+        promoted_concepts_verified_immutable: promoted,
         network_enabled: quarantine.network_enabled,
         external_llm_enabled: quarantine.external_llm_enabled,
         local_teacher_enabled: false,
@@ -130,35 +133,6 @@ pub fn verify_predecessors(root: &Path) -> Result<Sem4PredecessorIntegrity, Stri
         auto_commit: false,
         auto_push: false,
     })
-}
-
-fn verify_canonical_manifest(root: &Path) -> Result<(usize, String), String> {
-    let raw = fs::read_to_string(root.join("docs/CANONICAL_MANIFEST.json"))
-        .map_err(|error| error.to_string())?;
-    let manifest: serde_json::Value =
-        serde_json::from_str(&raw).map_err(|error| error.to_string())?;
-    let self_hash = manifest["manifest_self_hash_sha256"]
-        .as_str()
-        .ok_or_else(|| "CANONICAL_SELF_HASH_MISSING".to_string())?;
-    let normalized = raw.replacen(self_hash, &"0".repeat(64), 1);
-    if hash_bytes(normalized.as_bytes()) != self_hash {
-        return Err("PREDECESSOR_INTEGRITY_FAILURE:CANONICAL_MANIFEST".to_string());
-    }
-    let files = manifest["canonical_files"]
-        .as_array()
-        .ok_or_else(|| "CANONICAL_FILES_MISSING".to_string())?;
-    for file in files {
-        let relative = file["relative_path"]
-            .as_str()
-            .ok_or_else(|| "CANONICAL_PATH_MISSING".to_string())?;
-        let bytes = fs::read(root.join(relative)).map_err(|error| error.to_string())?;
-        if bytes.len() != file["byte_length"].as_u64().unwrap_or_default() as usize
-            || hash_bytes(&bytes) != file["sha256"].as_str().unwrap_or_default()
-        {
-            return Err(format!("PREDECESSOR_INTEGRITY_FAILURE:{relative}"));
-        }
-    }
-    Ok((files.len(), self_hash.to_string()))
 }
 
 fn hash_tree(root: &Path, relative: &str) -> Result<(String, usize), String> {
@@ -199,7 +173,7 @@ mod tests {
     use std::path::PathBuf;
 
     #[test]
-    fn sem0_through_sem3_and_quarantine_are_immutable() {
+    fn sem0_through_sem4_and_quarantine_are_immutable() {
         let root = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
             .parent()
             .and_then(|path| path.parent())
@@ -207,9 +181,9 @@ mod tests {
             .to_path_buf();
         let report = super::verify_predecessors(&root).expect("integrity");
         assert!(report.passed);
-        assert!(report.sem3_passing_run_sealed);
-        assert_eq!(report.predecessor_trees.len(), 4);
-        assert_eq!(report.promoted_concepts_verified_immutable.len(), 4);
+        assert!(report.sem4_passing_run_sealed);
+        assert_eq!(report.predecessor_trees.len(), 5);
+        assert_eq!(report.promoted_concepts_verified_immutable.len(), 6);
         assert!(!report.source_mutation);
     }
 }

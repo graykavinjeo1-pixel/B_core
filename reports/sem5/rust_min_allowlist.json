@@ -1,0 +1,23 @@
+{
+  "version": "RUST-MIN-1.0.0",
+  "allowed": [
+    "signed integer and boolean values",
+    "Vec<i64> and Vec<u8>",
+    "bounded for loops",
+    "if/else",
+    "local bindings and assignment",
+    "std::fs limited to sandbox input.bin and output.bin",
+    "println for bounded result serialization"
+  ],
+  "forbidden": [
+    "unsafe",
+    "network",
+    "threads",
+    "process spawning",
+    "foreign interfaces",
+    "external crates",
+    "arbitrary filesystem paths"
+  ],
+  "offline_compilation": true,
+  "external_crates": 0
+}

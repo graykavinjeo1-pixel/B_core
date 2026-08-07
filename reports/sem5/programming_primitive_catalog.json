@@ -1,0 +1,261 @@
+[
+  {
+    "primitive_id": "P-LITERAL",
+    "node_kind": "LITERAL",
+    "input_types": [],
+    "output_type": "INT",
+    "effects": [
+      "PURE"
+    ],
+    "executable_semantics": "construct a typed scalar value",
+    "provenance": [
+      "SEM5_CANONICAL_LOW_LEVEL_BASIS"
+    ],
+    "high_level_algorithm_seeded": false
+  },
+  {
+    "primitive_id": "P-VARIABLE",
+    "node_kind": "VARIABLE",
+    "input_types": [],
+    "output_type": "INT",
+    "effects": [
+      "PURE"
+    ],
+    "executable_semantics": "refer to a typed binding",
+    "provenance": [
+      "SEM5_CANONICAL_LOW_LEVEL_BASIS"
+    ],
+    "high_level_algorithm_seeded": false
+  },
+  {
+    "primitive_id": "P-LOAD",
+    "node_kind": "LOAD",
+    "input_types": [],
+    "output_type": "INT",
+    "effects": [
+      "PURE"
+    ],
+    "executable_semantics": "read a typed binding",
+    "provenance": [
+      "SEM5_CANONICAL_LOW_LEVEL_BASIS"
+    ],
+    "high_level_algorithm_seeded": false
+  },
+  {
+    "primitive_id": "P-STORE",
+    "node_kind": "STORE",
+    "input_types": [
+      "INT"
+    ],
+    "output_type": "UNIT",
+    "effects": [
+      "LOCAL_MUTATION"
+    ],
+    "executable_semantics": "replace a local binding value",
+    "provenance": [
+      "SEM5_CANONICAL_LOW_LEVEL_BASIS"
+    ],
+    "high_level_algorithm_seeded": false
+  },
+  {
+    "primitive_id": "P-UNARY",
+    "node_kind": "UNARY_OP",
+    "input_types": [
+      "INT"
+    ],
+    "output_type": "INT",
+    "effects": [
+      "PURE"
+    ],
+    "executable_semantics": "apply one declared primitive operator",
+    "provenance": [
+      "SEM5_CANONICAL_LOW_LEVEL_BASIS"
+    ],
+    "high_level_algorithm_seeded": false
+  },
+  {
+    "primitive_id": "P-BINARY",
+    "node_kind": "BINARY_OP",
+    "input_types": [
+      "INT",
+      "INT"
+    ],
+    "output_type": "INT",
+    "effects": [
+      "PURE"
+    ],
+    "executable_semantics": "apply one declared binary operator",
+    "provenance": [
+      "SEM5_CANONICAL_LOW_LEVEL_BASIS"
+    ],
+    "high_level_algorithm_seeded": false
+  },
+  {
+    "primitive_id": "P-SEQ-CREATE",
+    "node_kind": "SEQUENCE_CREATE",
+    "input_types": [],
+    "output_type": "SEQUENCE_INT",
+    "effects": [
+      "PURE"
+    ],
+    "executable_semantics": "create an empty or explicit sequence",
+    "provenance": [
+      "SEM5_CANONICAL_LOW_LEVEL_BASIS"
+    ],
+    "high_level_algorithm_seeded": false
+  },
+  {
+    "primitive_id": "P-SEQ-READ",
+    "node_kind": "SEQUENCE_READ",
+    "input_types": [
+      "SEQUENCE_INT",
+      "INT"
+    ],
+    "output_type": "INT",
+    "effects": [
+      "PURE"
+    ],
+    "executable_semantics": "read one bounded position",
+    "provenance": [
+      "SEM5_CANONICAL_LOW_LEVEL_BASIS"
+    ],
+    "high_level_algorithm_seeded": false
+  },
+  {
+    "primitive_id": "P-SEQ-WRITE",
+    "node_kind": "SEQUENCE_WRITE",
+    "input_types": [
+      "SEQUENCE_INT",
+      "INT",
+      "INT"
+    ],
+    "output_type": "UNIT",
+    "effects": [
+      "BUFFER_MUTATION"
+    ],
+    "executable_semantics": "write one bounded position",
+    "provenance": [
+      "SEM5_CANONICAL_LOW_LEVEL_BASIS"
+    ],
+    "high_level_algorithm_seeded": false
+  },
+  {
+    "primitive_id": "P-SEQ-APPEND",
+    "node_kind": "SEQUENCE_APPEND",
+    "input_types": [
+      "SEQUENCE_INT",
+      "INT"
+    ],
+    "output_type": "UNIT",
+    "effects": [
+      "BUFFER_MUTATION"
+    ],
+    "executable_semantics": "append one value",
+    "provenance": [
+      "SEM5_CANONICAL_LOW_LEVEL_BASIS"
+    ],
+    "high_level_algorithm_seeded": false
+  },
+  {
+    "primitive_id": "P-IF",
+    "node_kind": "IF",
+    "input_types": [
+      "BOOL"
+    ],
+    "output_type": "UNIT",
+    "effects": [
+      "PURE"
+    ],
+    "executable_semantics": "choose a branch from a boolean",
+    "provenance": [
+      "SEM5_CANONICAL_LOW_LEVEL_BASIS"
+    ],
+    "high_level_algorithm_seeded": false
+  },
+  {
+    "primitive_id": "P-LOOP",
+    "node_kind": "LOOP",
+    "input_types": [
+      "SEQUENCE_INT"
+    ],
+    "output_type": "UNIT",
+    "effects": [
+      "LOCAL_MUTATION"
+    ],
+    "executable_semantics": "visit bounded source positions",
+    "provenance": [
+      "SEM5_CANONICAL_LOW_LEVEL_BASIS"
+    ],
+    "high_level_algorithm_seeded": false
+  },
+  {
+    "primitive_id": "P-CALL",
+    "node_kind": "CALL",
+    "input_types": [],
+    "output_type": "INT",
+    "effects": [
+      "PURE"
+    ],
+    "executable_semantics": "invoke a supplied formal definition",
+    "provenance": [
+      "SEM5_CANONICAL_LOW_LEVEL_BASIS"
+    ],
+    "high_level_algorithm_seeded": false
+  },
+  {
+    "primitive_id": "P-RETURN",
+    "node_kind": "RETURN",
+    "input_types": [],
+    "output_type": "UNIT",
+    "effects": [
+      "PURE"
+    ],
+    "executable_semantics": "produce the program result",
+    "provenance": [
+      "SEM5_CANONICAL_LOW_LEVEL_BASIS"
+    ],
+    "high_level_algorithm_seeded": false
+  },
+  {
+    "primitive_id": "P-BLOCK",
+    "node_kind": "BLOCK",
+    "input_types": [],
+    "output_type": "UNIT",
+    "effects": [
+      "PURE"
+    ],
+    "executable_semantics": "execute child nodes in order",
+    "provenance": [
+      "SEM5_CANONICAL_LOW_LEVEL_BASIS"
+    ],
+    "high_level_algorithm_seeded": false
+  },
+  {
+    "primitive_id": "P-BREAK",
+    "node_kind": "BREAK",
+    "input_types": [],
+    "output_type": "UNIT",
+    "effects": [
+      "PURE"
+    ],
+    "executable_semantics": "leave the current bounded loop",
+    "provenance": [
+      "SEM5_CANONICAL_LOW_LEVEL_BASIS"
+    ],
+    "high_level_algorithm_seeded": false
+  },
+  {
+    "primitive_id": "P-CONTINUE",
+    "node_kind": "CONTINUE",
+    "input_types": [],
+    "output_type": "UNIT",
+    "effects": [
+      "PURE"
+    ],
+    "executable_semantics": "advance the current bounded loop",
+    "provenance": [
+      "SEM5_CANONICAL_LOW_LEVEL_BASIS"
+    ],
+    "high_level_algorithm_seeded": false
+  }
+]

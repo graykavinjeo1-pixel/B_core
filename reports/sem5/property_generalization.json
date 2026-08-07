@@ -1,0 +1,8 @@
+{
+  "expected_outputs_solver_visible": false,
+  "hidden_cases_generated_after_synthesis": true,
+  "invalid_effect_accepted": 0,
+  "pass_rate": 1.0,
+  "property_cases_passed": 1040,
+  "property_cases_total": 1040
+}

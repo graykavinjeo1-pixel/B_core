@@ -1,0 +1,8 @@
+{
+  "promoted_concepts": 3,
+  "rust_token_dependent_promoted_concepts": 0,
+  "second_textual_representation_checks": 20,
+  "second_representation_failures": 0,
+  "rust_specific_api_concepts": 0,
+  "passed": true
+}

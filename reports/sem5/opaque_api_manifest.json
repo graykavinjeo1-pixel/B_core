@@ -1,0 +1,1972 @@
+{
+  "run_id": "SEM5-RUN-0002",
+  "generator_version": "SEM5-BLIND-GENERATOR-1.0.1",
+  "seed_commitment_sha256": "edc06cd60c4fb9219c21fe4350713c24bee017418c994e932c416195f16d58ae",
+  "split": "OPAQUE_API_BLIND",
+  "tasks": [
+    {
+      "task_id": "T-000-41caf8fb",
+      "split": "OPAQUE_API_BLIND",
+      "inputs": [
+        {
+          "name": "v0",
+          "value_type": "INT",
+          "mutable": false
+        },
+        {
+          "name": "v1",
+          "value_type": "INT",
+          "mutable": false
+        }
+      ],
+      "output_type": "INT",
+      "relation": {
+        "relation_kind": "OPAQUE_USE",
+        "api_token": "q_06d3b31a",
+        "arguments": [
+          {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          {
+            "expression_kind": "ARGUMENT",
+            "index": 1
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "api_token": "q_06d3b31a",
+          "inputs": [
+            "INT",
+            "INT"
+          ],
+          "output": "INT",
+          "effect": "PURE",
+          "preconditions": [
+            "arguments are signed 64-bit integers"
+          ],
+          "postconditions": [
+            "result equals formal_body"
+          ],
+          "formal_body": {
+            "expression_kind": "BINARY",
+            "operator": "ADD",
+            "left": {
+              "expression_kind": "BINARY",
+              "operator": "MULTIPLY",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 3
+              }
+            },
+            "right": {
+              "expression_kind": "BINARY",
+              "operator": "SUBTRACT",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 1
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 5
+              }
+            }
+          },
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "DEFINITION_ONLY_RANDOMIZED_API"
+          ]
+        }
+      ],
+      "allowed_effects": [
+        "PURE"
+      ],
+      "preconditions": [
+        "inputs satisfy declared types and bounded sizes"
+      ],
+      "postconditions": [
+        "result satisfies the declared relation"
+      ],
+      "invariants": [
+        "all indexed accesses remain within the current buffer"
+      ],
+      "demonstrations": [],
+      "provenance": [
+        "SEM5-BLIND-GENERATOR-1.0.1",
+        "DETERMINISTIC_SEED"
+      ]
+    },
+    {
+      "task_id": "T-001-882b6c5f",
+      "split": "OPAQUE_API_BLIND",
+      "inputs": [
+        {
+          "name": "v0",
+          "value_type": "INT",
+          "mutable": false
+        },
+        {
+          "name": "v1",
+          "value_type": "INT",
+          "mutable": false
+        }
+      ],
+      "output_type": "INT",
+      "relation": {
+        "relation_kind": "OPAQUE_USE",
+        "api_token": "q_a7b0ca6e",
+        "arguments": [
+          {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          {
+            "expression_kind": "ARGUMENT",
+            "index": 1
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "api_token": "q_a7b0ca6e",
+          "inputs": [
+            "INT",
+            "INT"
+          ],
+          "output": "INT",
+          "effect": "PURE",
+          "preconditions": [
+            "arguments are signed 64-bit integers"
+          ],
+          "postconditions": [
+            "result equals formal_body"
+          ],
+          "formal_body": {
+            "expression_kind": "BINARY",
+            "operator": "ADD",
+            "left": {
+              "expression_kind": "BINARY",
+              "operator": "MULTIPLY",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 3
+              }
+            },
+            "right": {
+              "expression_kind": "BINARY",
+              "operator": "SUBTRACT",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 1
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 0
+              }
+            }
+          },
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "DEFINITION_ONLY_RANDOMIZED_API"
+          ]
+        }
+      ],
+      "allowed_effects": [
+        "PURE"
+      ],
+      "preconditions": [
+        "inputs satisfy declared types and bounded sizes"
+      ],
+      "postconditions": [
+        "result satisfies the declared relation"
+      ],
+      "invariants": [
+        "all indexed accesses remain within the current buffer"
+      ],
+      "demonstrations": [],
+      "provenance": [
+        "SEM5-BLIND-GENERATOR-1.0.1",
+        "DETERMINISTIC_SEED"
+      ]
+    },
+    {
+      "task_id": "T-002-34bf4e03",
+      "split": "OPAQUE_API_BLIND",
+      "inputs": [
+        {
+          "name": "v0",
+          "value_type": "INT",
+          "mutable": false
+        },
+        {
+          "name": "v1",
+          "value_type": "INT",
+          "mutable": false
+        }
+      ],
+      "output_type": "INT",
+      "relation": {
+        "relation_kind": "OPAQUE_USE",
+        "api_token": "q_b917af02",
+        "arguments": [
+          {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          {
+            "expression_kind": "ARGUMENT",
+            "index": 1
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "api_token": "q_b917af02",
+          "inputs": [
+            "INT",
+            "INT"
+          ],
+          "output": "INT",
+          "effect": "PURE",
+          "preconditions": [
+            "arguments are signed 64-bit integers"
+          ],
+          "postconditions": [
+            "result equals formal_body"
+          ],
+          "formal_body": {
+            "expression_kind": "BINARY",
+            "operator": "ADD",
+            "left": {
+              "expression_kind": "BINARY",
+              "operator": "MULTIPLY",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 3
+              }
+            },
+            "right": {
+              "expression_kind": "BINARY",
+              "operator": "SUBTRACT",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 1
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 1
+              }
+            }
+          },
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "DEFINITION_ONLY_RANDOMIZED_API"
+          ]
+        }
+      ],
+      "allowed_effects": [
+        "PURE"
+      ],
+      "preconditions": [
+        "inputs satisfy declared types and bounded sizes"
+      ],
+      "postconditions": [
+        "result satisfies the declared relation"
+      ],
+      "invariants": [
+        "all indexed accesses remain within the current buffer"
+      ],
+      "demonstrations": [],
+      "provenance": [
+        "SEM5-BLIND-GENERATOR-1.0.1",
+        "DETERMINISTIC_SEED"
+      ]
+    },
+    {
+      "task_id": "T-003-6f1101e7",
+      "split": "OPAQUE_API_BLIND",
+      "inputs": [
+        {
+          "name": "v0",
+          "value_type": "INT",
+          "mutable": false
+        },
+        {
+          "name": "v1",
+          "value_type": "INT",
+          "mutable": false
+        }
+      ],
+      "output_type": "INT",
+      "relation": {
+        "relation_kind": "OPAQUE_USE",
+        "api_token": "q_707ab4d6",
+        "arguments": [
+          {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          {
+            "expression_kind": "ARGUMENT",
+            "index": 1
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "api_token": "q_707ab4d6",
+          "inputs": [
+            "INT",
+            "INT"
+          ],
+          "output": "INT",
+          "effect": "PURE",
+          "preconditions": [
+            "arguments are signed 64-bit integers"
+          ],
+          "postconditions": [
+            "result equals formal_body"
+          ],
+          "formal_body": {
+            "expression_kind": "BINARY",
+            "operator": "ADD",
+            "left": {
+              "expression_kind": "BINARY",
+              "operator": "MULTIPLY",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 3
+              }
+            },
+            "right": {
+              "expression_kind": "BINARY",
+              "operator": "SUBTRACT",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 1
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": -2
+              }
+            }
+          },
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "DEFINITION_ONLY_RANDOMIZED_API"
+          ]
+        }
+      ],
+      "allowed_effects": [
+        "PURE"
+      ],
+      "preconditions": [
+        "inputs satisfy declared types and bounded sizes"
+      ],
+      "postconditions": [
+        "result satisfies the declared relation"
+      ],
+      "invariants": [
+        "all indexed accesses remain within the current buffer"
+      ],
+      "demonstrations": [],
+      "provenance": [
+        "SEM5-BLIND-GENERATOR-1.0.1",
+        "DETERMINISTIC_SEED"
+      ]
+    },
+    {
+      "task_id": "T-004-15892c0b",
+      "split": "OPAQUE_API_BLIND",
+      "inputs": [
+        {
+          "name": "v0",
+          "value_type": "INT",
+          "mutable": false
+        },
+        {
+          "name": "v1",
+          "value_type": "INT",
+          "mutable": false
+        }
+      ],
+      "output_type": "INT",
+      "relation": {
+        "relation_kind": "OPAQUE_USE",
+        "api_token": "q_9cc96fea",
+        "arguments": [
+          {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          {
+            "expression_kind": "ARGUMENT",
+            "index": 1
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "api_token": "q_9cc96fea",
+          "inputs": [
+            "INT",
+            "INT"
+          ],
+          "output": "INT",
+          "effect": "PURE",
+          "preconditions": [
+            "arguments are signed 64-bit integers"
+          ],
+          "postconditions": [
+            "result equals formal_body"
+          ],
+          "formal_body": {
+            "expression_kind": "BINARY",
+            "operator": "ADD",
+            "left": {
+              "expression_kind": "BINARY",
+              "operator": "MULTIPLY",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 3
+              }
+            },
+            "right": {
+              "expression_kind": "BINARY",
+              "operator": "SUBTRACT",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 1
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": -3
+              }
+            }
+          },
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "DEFINITION_ONLY_RANDOMIZED_API"
+          ]
+        }
+      ],
+      "allowed_effects": [
+        "PURE"
+      ],
+      "preconditions": [
+        "inputs satisfy declared types and bounded sizes"
+      ],
+      "postconditions": [
+        "result satisfies the declared relation"
+      ],
+      "invariants": [
+        "all indexed accesses remain within the current buffer"
+      ],
+      "demonstrations": [],
+      "provenance": [
+        "SEM5-BLIND-GENERATOR-1.0.1",
+        "DETERMINISTIC_SEED"
+      ]
+    },
+    {
+      "task_id": "T-005-9ed2b06f",
+      "split": "OPAQUE_API_BLIND",
+      "inputs": [
+        {
+          "name": "v0",
+          "value_type": "INT",
+          "mutable": false
+        },
+        {
+          "name": "v1",
+          "value_type": "INT",
+          "mutable": false
+        }
+      ],
+      "output_type": "INT",
+      "relation": {
+        "relation_kind": "OPAQUE_USE",
+        "api_token": "q_b3c4b43e",
+        "arguments": [
+          {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          {
+            "expression_kind": "ARGUMENT",
+            "index": 1
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "api_token": "q_b3c4b43e",
+          "inputs": [
+            "INT",
+            "INT"
+          ],
+          "output": "INT",
+          "effect": "PURE",
+          "preconditions": [
+            "arguments are signed 64-bit integers"
+          ],
+          "postconditions": [
+            "result equals formal_body"
+          ],
+          "formal_body": {
+            "expression_kind": "BINARY",
+            "operator": "ADD",
+            "left": {
+              "expression_kind": "BINARY",
+              "operator": "MULTIPLY",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 3
+              }
+            },
+            "right": {
+              "expression_kind": "BINARY",
+              "operator": "SUBTRACT",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 1
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 5
+              }
+            }
+          },
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "DEFINITION_ONLY_RANDOMIZED_API"
+          ]
+        }
+      ],
+      "allowed_effects": [
+        "PURE"
+      ],
+      "preconditions": [
+        "inputs satisfy declared types and bounded sizes"
+      ],
+      "postconditions": [
+        "result satisfies the declared relation"
+      ],
+      "invariants": [
+        "all indexed accesses remain within the current buffer"
+      ],
+      "demonstrations": [],
+      "provenance": [
+        "SEM5-BLIND-GENERATOR-1.0.1",
+        "DETERMINISTIC_SEED"
+      ]
+    },
+    {
+      "task_id": "T-006-497eb313",
+      "split": "OPAQUE_API_BLIND",
+      "inputs": [
+        {
+          "name": "v0",
+          "value_type": "INT",
+          "mutable": false
+        },
+        {
+          "name": "v1",
+          "value_type": "INT",
+          "mutable": false
+        }
+      ],
+      "output_type": "INT",
+      "relation": {
+        "relation_kind": "OPAQUE_USE",
+        "api_token": "q_0c9295d2",
+        "arguments": [
+          {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          {
+            "expression_kind": "ARGUMENT",
+            "index": 1
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "api_token": "q_0c9295d2",
+          "inputs": [
+            "INT",
+            "INT"
+          ],
+          "output": "INT",
+          "effect": "PURE",
+          "preconditions": [
+            "arguments are signed 64-bit integers"
+          ],
+          "postconditions": [
+            "result equals formal_body"
+          ],
+          "formal_body": {
+            "expression_kind": "BINARY",
+            "operator": "ADD",
+            "left": {
+              "expression_kind": "BINARY",
+              "operator": "MULTIPLY",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 3
+              }
+            },
+            "right": {
+              "expression_kind": "BINARY",
+              "operator": "SUBTRACT",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 1
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": -1
+              }
+            }
+          },
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "DEFINITION_ONLY_RANDOMIZED_API"
+          ]
+        }
+      ],
+      "allowed_effects": [
+        "PURE"
+      ],
+      "preconditions": [
+        "inputs satisfy declared types and bounded sizes"
+      ],
+      "postconditions": [
+        "result satisfies the declared relation"
+      ],
+      "invariants": [
+        "all indexed accesses remain within the current buffer"
+      ],
+      "demonstrations": [],
+      "provenance": [
+        "SEM5-BLIND-GENERATOR-1.0.1",
+        "DETERMINISTIC_SEED"
+      ]
+    },
+    {
+      "task_id": "T-007-fde897f7",
+      "split": "OPAQUE_API_BLIND",
+      "inputs": [
+        {
+          "name": "v0",
+          "value_type": "INT",
+          "mutable": false
+        },
+        {
+          "name": "v1",
+          "value_type": "INT",
+          "mutable": false
+        }
+      ],
+      "output_type": "INT",
+      "relation": {
+        "relation_kind": "OPAQUE_USE",
+        "api_token": "q_9b9268a6",
+        "arguments": [
+          {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          {
+            "expression_kind": "ARGUMENT",
+            "index": 1
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "api_token": "q_9b9268a6",
+          "inputs": [
+            "INT",
+            "INT"
+          ],
+          "output": "INT",
+          "effect": "PURE",
+          "preconditions": [
+            "arguments are signed 64-bit integers"
+          ],
+          "postconditions": [
+            "result equals formal_body"
+          ],
+          "formal_body": {
+            "expression_kind": "BINARY",
+            "operator": "ADD",
+            "left": {
+              "expression_kind": "BINARY",
+              "operator": "MULTIPLY",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 3
+              }
+            },
+            "right": {
+              "expression_kind": "BINARY",
+              "operator": "SUBTRACT",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 1
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 1
+              }
+            }
+          },
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "DEFINITION_ONLY_RANDOMIZED_API"
+          ]
+        }
+      ],
+      "allowed_effects": [
+        "PURE"
+      ],
+      "preconditions": [
+        "inputs satisfy declared types and bounded sizes"
+      ],
+      "postconditions": [
+        "result satisfies the declared relation"
+      ],
+      "invariants": [
+        "all indexed accesses remain within the current buffer"
+      ],
+      "demonstrations": [],
+      "provenance": [
+        "SEM5-BLIND-GENERATOR-1.0.1",
+        "DETERMINISTIC_SEED"
+      ]
+    },
+    {
+      "task_id": "T-008-865a031b",
+      "split": "OPAQUE_API_BLIND",
+      "inputs": [
+        {
+          "name": "v0",
+          "value_type": "INT",
+          "mutable": false
+        },
+        {
+          "name": "v1",
+          "value_type": "INT",
+          "mutable": false
+        }
+      ],
+      "output_type": "INT",
+      "relation": {
+        "relation_kind": "OPAQUE_USE",
+        "api_token": "q_c370c0ba",
+        "arguments": [
+          {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          {
+            "expression_kind": "ARGUMENT",
+            "index": 1
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "api_token": "q_c370c0ba",
+          "inputs": [
+            "INT",
+            "INT"
+          ],
+          "output": "INT",
+          "effect": "PURE",
+          "preconditions": [
+            "arguments are signed 64-bit integers"
+          ],
+          "postconditions": [
+            "result equals formal_body"
+          ],
+          "formal_body": {
+            "expression_kind": "BINARY",
+            "operator": "ADD",
+            "left": {
+              "expression_kind": "BINARY",
+              "operator": "MULTIPLY",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 3
+              }
+            },
+            "right": {
+              "expression_kind": "BINARY",
+              "operator": "SUBTRACT",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 1
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 0
+              }
+            }
+          },
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "DEFINITION_ONLY_RANDOMIZED_API"
+          ]
+        }
+      ],
+      "allowed_effects": [
+        "PURE"
+      ],
+      "preconditions": [
+        "inputs satisfy declared types and bounded sizes"
+      ],
+      "postconditions": [
+        "result satisfies the declared relation"
+      ],
+      "invariants": [
+        "all indexed accesses remain within the current buffer"
+      ],
+      "demonstrations": [],
+      "provenance": [
+        "SEM5-BLIND-GENERATOR-1.0.1",
+        "DETERMINISTIC_SEED"
+      ]
+    },
+    {
+      "task_id": "T-009-016ed87f",
+      "split": "OPAQUE_API_BLIND",
+      "inputs": [
+        {
+          "name": "v0",
+          "value_type": "INT",
+          "mutable": false
+        },
+        {
+          "name": "v1",
+          "value_type": "INT",
+          "mutable": false
+        }
+      ],
+      "output_type": "INT",
+      "relation": {
+        "relation_kind": "OPAQUE_USE",
+        "api_token": "q_0f7b720e",
+        "arguments": [
+          {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          {
+            "expression_kind": "ARGUMENT",
+            "index": 1
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "api_token": "q_0f7b720e",
+          "inputs": [
+            "INT",
+            "INT"
+          ],
+          "output": "INT",
+          "effect": "PURE",
+          "preconditions": [
+            "arguments are signed 64-bit integers"
+          ],
+          "postconditions": [
+            "result equals formal_body"
+          ],
+          "formal_body": {
+            "expression_kind": "BINARY",
+            "operator": "ADD",
+            "left": {
+              "expression_kind": "BINARY",
+              "operator": "MULTIPLY",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 3
+              }
+            },
+            "right": {
+              "expression_kind": "BINARY",
+              "operator": "SUBTRACT",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 1
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 4
+              }
+            }
+          },
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "DEFINITION_ONLY_RANDOMIZED_API"
+          ]
+        }
+      ],
+      "allowed_effects": [
+        "PURE"
+      ],
+      "preconditions": [
+        "inputs satisfy declared types and bounded sizes"
+      ],
+      "postconditions": [
+        "result satisfies the declared relation"
+      ],
+      "invariants": [
+        "all indexed accesses remain within the current buffer"
+      ],
+      "demonstrations": [],
+      "provenance": [
+        "SEM5-BLIND-GENERATOR-1.0.1",
+        "DETERMINISTIC_SEED"
+      ]
+    },
+    {
+      "task_id": "T-010-b2b93c23",
+      "split": "OPAQUE_API_BLIND",
+      "inputs": [
+        {
+          "name": "v0",
+          "value_type": "INT",
+          "mutable": false
+        },
+        {
+          "name": "v1",
+          "value_type": "INT",
+          "mutable": false
+        }
+      ],
+      "output_type": "INT",
+      "relation": {
+        "relation_kind": "OPAQUE_USE",
+        "api_token": "q_eb3590a2",
+        "arguments": [
+          {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          {
+            "expression_kind": "ARGUMENT",
+            "index": 1
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "api_token": "q_eb3590a2",
+          "inputs": [
+            "INT",
+            "INT"
+          ],
+          "output": "INT",
+          "effect": "PURE",
+          "preconditions": [
+            "arguments are signed 64-bit integers"
+          ],
+          "postconditions": [
+            "result equals formal_body"
+          ],
+          "formal_body": {
+            "expression_kind": "BINARY",
+            "operator": "ADD",
+            "left": {
+              "expression_kind": "BINARY",
+              "operator": "MULTIPLY",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 3
+              }
+            },
+            "right": {
+              "expression_kind": "BINARY",
+              "operator": "SUBTRACT",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 1
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": -3
+              }
+            }
+          },
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "DEFINITION_ONLY_RANDOMIZED_API"
+          ]
+        }
+      ],
+      "allowed_effects": [
+        "PURE"
+      ],
+      "preconditions": [
+        "inputs satisfy declared types and bounded sizes"
+      ],
+      "postconditions": [
+        "result satisfies the declared relation"
+      ],
+      "invariants": [
+        "all indexed accesses remain within the current buffer"
+      ],
+      "demonstrations": [],
+      "provenance": [
+        "SEM5-BLIND-GENERATOR-1.0.1",
+        "DETERMINISTIC_SEED"
+      ]
+    },
+    {
+      "task_id": "T-011-95a59207",
+      "split": "OPAQUE_API_BLIND",
+      "inputs": [
+        {
+          "name": "v0",
+          "value_type": "INT",
+          "mutable": false
+        },
+        {
+          "name": "v1",
+          "value_type": "INT",
+          "mutable": false
+        }
+      ],
+      "output_type": "INT",
+      "relation": {
+        "relation_kind": "OPAQUE_USE",
+        "api_token": "q_ab2b7076",
+        "arguments": [
+          {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          {
+            "expression_kind": "ARGUMENT",
+            "index": 1
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "api_token": "q_ab2b7076",
+          "inputs": [
+            "INT",
+            "INT"
+          ],
+          "output": "INT",
+          "effect": "PURE",
+          "preconditions": [
+            "arguments are signed 64-bit integers"
+          ],
+          "postconditions": [
+            "result equals formal_body"
+          ],
+          "formal_body": {
+            "expression_kind": "BINARY",
+            "operator": "ADD",
+            "left": {
+              "expression_kind": "BINARY",
+              "operator": "MULTIPLY",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 3
+              }
+            },
+            "right": {
+              "expression_kind": "BINARY",
+              "operator": "SUBTRACT",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 1
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 3
+              }
+            }
+          },
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "DEFINITION_ONLY_RANDOMIZED_API"
+          ]
+        }
+      ],
+      "allowed_effects": [
+        "PURE"
+      ],
+      "preconditions": [
+        "inputs satisfy declared types and bounded sizes"
+      ],
+      "postconditions": [
+        "result satisfies the declared relation"
+      ],
+      "invariants": [
+        "all indexed accesses remain within the current buffer"
+      ],
+      "demonstrations": [],
+      "provenance": [
+        "SEM5-BLIND-GENERATOR-1.0.1",
+        "DETERMINISTIC_SEED"
+      ]
+    },
+    {
+      "task_id": "T-012-569e7e2b",
+      "split": "OPAQUE_API_BLIND",
+      "inputs": [
+        {
+          "name": "v0",
+          "value_type": "INT",
+          "mutable": false
+        },
+        {
+          "name": "v1",
+          "value_type": "INT",
+          "mutable": false
+        }
+      ],
+      "output_type": "INT",
+      "relation": {
+        "relation_kind": "OPAQUE_USE",
+        "api_token": "q_7b06a58a",
+        "arguments": [
+          {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          {
+            "expression_kind": "ARGUMENT",
+            "index": 1
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "api_token": "q_7b06a58a",
+          "inputs": [
+            "INT",
+            "INT"
+          ],
+          "output": "INT",
+          "effect": "PURE",
+          "preconditions": [
+            "arguments are signed 64-bit integers"
+          ],
+          "postconditions": [
+            "result equals formal_body"
+          ],
+          "formal_body": {
+            "expression_kind": "BINARY",
+            "operator": "ADD",
+            "left": {
+              "expression_kind": "BINARY",
+              "operator": "MULTIPLY",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 3
+              }
+            },
+            "right": {
+              "expression_kind": "BINARY",
+              "operator": "SUBTRACT",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 1
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 1
+              }
+            }
+          },
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "DEFINITION_ONLY_RANDOMIZED_API"
+          ]
+        }
+      ],
+      "allowed_effects": [
+        "PURE"
+      ],
+      "preconditions": [
+        "inputs satisfy declared types and bounded sizes"
+      ],
+      "postconditions": [
+        "result satisfies the declared relation"
+      ],
+      "invariants": [
+        "all indexed accesses remain within the current buffer"
+      ],
+      "demonstrations": [],
+      "provenance": [
+        "SEM5-BLIND-GENERATOR-1.0.1",
+        "DETERMINISTIC_SEED"
+      ]
+    },
+    {
+      "task_id": "T-013-9670e48f",
+      "split": "OPAQUE_API_BLIND",
+      "inputs": [
+        {
+          "name": "v0",
+          "value_type": "INT",
+          "mutable": false
+        },
+        {
+          "name": "v1",
+          "value_type": "INT",
+          "mutable": false
+        }
+      ],
+      "output_type": "INT",
+      "relation": {
+        "relation_kind": "OPAQUE_USE",
+        "api_token": "q_04e203de",
+        "arguments": [
+          {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          {
+            "expression_kind": "ARGUMENT",
+            "index": 1
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "api_token": "q_04e203de",
+          "inputs": [
+            "INT",
+            "INT"
+          ],
+          "output": "INT",
+          "effect": "PURE",
+          "preconditions": [
+            "arguments are signed 64-bit integers"
+          ],
+          "postconditions": [
+            "result equals formal_body"
+          ],
+          "formal_body": {
+            "expression_kind": "BINARY",
+            "operator": "ADD",
+            "left": {
+              "expression_kind": "BINARY",
+              "operator": "MULTIPLY",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 3
+              }
+            },
+            "right": {
+              "expression_kind": "BINARY",
+              "operator": "SUBTRACT",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 1
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 4
+              }
+            }
+          },
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "DEFINITION_ONLY_RANDOMIZED_API"
+          ]
+        }
+      ],
+      "allowed_effects": [
+        "PURE"
+      ],
+      "preconditions": [
+        "inputs satisfy declared types and bounded sizes"
+      ],
+      "postconditions": [
+        "result satisfies the declared relation"
+      ],
+      "invariants": [
+        "all indexed accesses remain within the current buffer"
+      ],
+      "demonstrations": [],
+      "provenance": [
+        "SEM5-BLIND-GENERATOR-1.0.1",
+        "DETERMINISTIC_SEED"
+      ]
+    },
+    {
+      "task_id": "T-014-9befe933",
+      "split": "OPAQUE_API_BLIND",
+      "inputs": [
+        {
+          "name": "v0",
+          "value_type": "INT",
+          "mutable": false
+        },
+        {
+          "name": "v1",
+          "value_type": "INT",
+          "mutable": false
+        }
+      ],
+      "output_type": "INT",
+      "relation": {
+        "relation_kind": "OPAQUE_USE",
+        "api_token": "q_e5dd9f72",
+        "arguments": [
+          {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          {
+            "expression_kind": "ARGUMENT",
+            "index": 1
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "api_token": "q_e5dd9f72",
+          "inputs": [
+            "INT",
+            "INT"
+          ],
+          "output": "INT",
+          "effect": "PURE",
+          "preconditions": [
+            "arguments are signed 64-bit integers"
+          ],
+          "postconditions": [
+            "result equals formal_body"
+          ],
+          "formal_body": {
+            "expression_kind": "BINARY",
+            "operator": "ADD",
+            "left": {
+              "expression_kind": "BINARY",
+              "operator": "MULTIPLY",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 3
+              }
+            },
+            "right": {
+              "expression_kind": "BINARY",
+              "operator": "SUBTRACT",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 1
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": -3
+              }
+            }
+          },
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "DEFINITION_ONLY_RANDOMIZED_API"
+          ]
+        }
+      ],
+      "allowed_effects": [
+        "PURE"
+      ],
+      "preconditions": [
+        "inputs satisfy declared types and bounded sizes"
+      ],
+      "postconditions": [
+        "result satisfies the declared relation"
+      ],
+      "invariants": [
+        "all indexed accesses remain within the current buffer"
+      ],
+      "demonstrations": [],
+      "provenance": [
+        "SEM5-BLIND-GENERATOR-1.0.1",
+        "DETERMINISTIC_SEED"
+      ]
+    },
+    {
+      "task_id": "T-015-d7d8f017",
+      "split": "OPAQUE_API_BLIND",
+      "inputs": [
+        {
+          "name": "v0",
+          "value_type": "INT",
+          "mutable": false
+        },
+        {
+          "name": "v1",
+          "value_type": "INT",
+          "mutable": false
+        }
+      ],
+      "output_type": "INT",
+      "relation": {
+        "relation_kind": "OPAQUE_USE",
+        "api_token": "q_43f2cc46",
+        "arguments": [
+          {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          {
+            "expression_kind": "ARGUMENT",
+            "index": 1
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "api_token": "q_43f2cc46",
+          "inputs": [
+            "INT",
+            "INT"
+          ],
+          "output": "INT",
+          "effect": "PURE",
+          "preconditions": [
+            "arguments are signed 64-bit integers"
+          ],
+          "postconditions": [
+            "result equals formal_body"
+          ],
+          "formal_body": {
+            "expression_kind": "BINARY",
+            "operator": "ADD",
+            "left": {
+              "expression_kind": "BINARY",
+              "operator": "MULTIPLY",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 3
+              }
+            },
+            "right": {
+              "expression_kind": "BINARY",
+              "operator": "SUBTRACT",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 1
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 1
+              }
+            }
+          },
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "DEFINITION_ONLY_RANDOMIZED_API"
+          ]
+        }
+      ],
+      "allowed_effects": [
+        "PURE"
+      ],
+      "preconditions": [
+        "inputs satisfy declared types and bounded sizes"
+      ],
+      "postconditions": [
+        "result satisfies the declared relation"
+      ],
+      "invariants": [
+        "all indexed accesses remain within the current buffer"
+      ],
+      "demonstrations": [],
+      "provenance": [
+        "SEM5-BLIND-GENERATOR-1.0.1",
+        "DETERMINISTIC_SEED"
+      ]
+    },
+    {
+      "task_id": "T-016-def79d3b",
+      "split": "OPAQUE_API_BLIND",
+      "inputs": [
+        {
+          "name": "v0",
+          "value_type": "INT",
+          "mutable": false
+        },
+        {
+          "name": "v1",
+          "value_type": "INT",
+          "mutable": false
+        }
+      ],
+      "output_type": "INT",
+      "relation": {
+        "relation_kind": "OPAQUE_USE",
+        "api_token": "q_19081e5a",
+        "arguments": [
+          {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          {
+            "expression_kind": "ARGUMENT",
+            "index": 1
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "api_token": "q_19081e5a",
+          "inputs": [
+            "INT",
+            "INT"
+          ],
+          "output": "INT",
+          "effect": "PURE",
+          "preconditions": [
+            "arguments are signed 64-bit integers"
+          ],
+          "postconditions": [
+            "result equals formal_body"
+          ],
+          "formal_body": {
+            "expression_kind": "BINARY",
+            "operator": "ADD",
+            "left": {
+              "expression_kind": "BINARY",
+              "operator": "MULTIPLY",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 3
+              }
+            },
+            "right": {
+              "expression_kind": "BINARY",
+              "operator": "SUBTRACT",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 1
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": -1
+              }
+            }
+          },
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "DEFINITION_ONLY_RANDOMIZED_API"
+          ]
+        }
+      ],
+      "allowed_effects": [
+        "PURE"
+      ],
+      "preconditions": [
+        "inputs satisfy declared types and bounded sizes"
+      ],
+      "postconditions": [
+        "result satisfies the declared relation"
+      ],
+      "invariants": [
+        "all indexed accesses remain within the current buffer"
+      ],
+      "demonstrations": [],
+      "provenance": [
+        "SEM5-BLIND-GENERATOR-1.0.1",
+        "DETERMINISTIC_SEED"
+      ]
+    },
+    {
+      "task_id": "T-017-be89d49f",
+      "split": "OPAQUE_API_BLIND",
+      "inputs": [
+        {
+          "name": "v0",
+          "value_type": "INT",
+          "mutable": false
+        },
+        {
+          "name": "v1",
+          "value_type": "INT",
+          "mutable": false
+        }
+      ],
+      "output_type": "INT",
+      "relation": {
+        "relation_kind": "OPAQUE_USE",
+        "api_token": "q_074569ae",
+        "arguments": [
+          {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          {
+            "expression_kind": "ARGUMENT",
+            "index": 1
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "api_token": "q_074569ae",
+          "inputs": [
+            "INT",
+            "INT"
+          ],
+          "output": "INT",
+          "effect": "PURE",
+          "preconditions": [
+            "arguments are signed 64-bit integers"
+          ],
+          "postconditions": [
+            "result equals formal_body"
+          ],
+          "formal_body": {
+            "expression_kind": "BINARY",
+            "operator": "ADD",
+            "left": {
+              "expression_kind": "BINARY",
+              "operator": "MULTIPLY",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 3
+              }
+            },
+            "right": {
+              "expression_kind": "BINARY",
+              "operator": "SUBTRACT",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 1
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 3
+              }
+            }
+          },
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "DEFINITION_ONLY_RANDOMIZED_API"
+          ]
+        }
+      ],
+      "allowed_effects": [
+        "PURE"
+      ],
+      "preconditions": [
+        "inputs satisfy declared types and bounded sizes"
+      ],
+      "postconditions": [
+        "result satisfies the declared relation"
+      ],
+      "invariants": [
+        "all indexed accesses remain within the current buffer"
+      ],
+      "demonstrations": [],
+      "provenance": [
+        "SEM5-BLIND-GENERATOR-1.0.1",
+        "DETERMINISTIC_SEED"
+      ]
+    },
+    {
+      "task_id": "T-018-cee3ba43",
+      "split": "OPAQUE_API_BLIND",
+      "inputs": [
+        {
+          "name": "v0",
+          "value_type": "INT",
+          "mutable": false
+        },
+        {
+          "name": "v1",
+          "value_type": "INT",
+          "mutable": false
+        }
+      ],
+      "output_type": "INT",
+      "relation": {
+        "relation_kind": "OPAQUE_USE",
+        "api_token": "q_caa7c242",
+        "arguments": [
+          {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          {
+            "expression_kind": "ARGUMENT",
+            "index": 1
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "api_token": "q_caa7c242",
+          "inputs": [
+            "INT",
+            "INT"
+          ],
+          "output": "INT",
+          "effect": "PURE",
+          "preconditions": [
+            "arguments are signed 64-bit integers"
+          ],
+          "postconditions": [
+            "result equals formal_body"
+          ],
+          "formal_body": {
+            "expression_kind": "BINARY",
+            "operator": "ADD",
+            "left": {
+              "expression_kind": "BINARY",
+              "operator": "MULTIPLY",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 3
+              }
+            },
+            "right": {
+              "expression_kind": "BINARY",
+              "operator": "SUBTRACT",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 1
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 0
+              }
+            }
+          },
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "DEFINITION_ONLY_RANDOMIZED_API"
+          ]
+        }
+      ],
+      "allowed_effects": [
+        "PURE"
+      ],
+      "preconditions": [
+        "inputs satisfy declared types and bounded sizes"
+      ],
+      "postconditions": [
+        "result satisfies the declared relation"
+      ],
+      "invariants": [
+        "all indexed accesses remain within the current buffer"
+      ],
+      "demonstrations": [],
+      "provenance": [
+        "SEM5-BLIND-GENERATOR-1.0.1",
+        "DETERMINISTIC_SEED"
+      ]
+    },
+    {
+      "task_id": "T-019-6853b227",
+      "split": "OPAQUE_API_BLIND",
+      "inputs": [
+        {
+          "name": "v0",
+          "value_type": "INT",
+          "mutable": false
+        },
+        {
+          "name": "v1",
+          "value_type": "INT",
+          "mutable": false
+        }
+      ],
+      "output_type": "INT",
+      "relation": {
+        "relation_kind": "OPAQUE_USE",
+        "api_token": "q_9bd57c16",
+        "arguments": [
+          {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          {
+            "expression_kind": "ARGUMENT",
+            "index": 1
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "api_token": "q_9bd57c16",
+          "inputs": [
+            "INT",
+            "INT"
+          ],
+          "output": "INT",
+          "effect": "PURE",
+          "preconditions": [
+            "arguments are signed 64-bit integers"
+          ],
+          "postconditions": [
+            "result equals formal_body"
+          ],
+          "formal_body": {
+            "expression_kind": "BINARY",
+            "operator": "ADD",
+            "left": {
+              "expression_kind": "BINARY",
+              "operator": "MULTIPLY",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 3
+              }
+            },
+            "right": {
+              "expression_kind": "BINARY",
+              "operator": "SUBTRACT",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 1
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": -4
+              }
+            }
+          },
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "DEFINITION_ONLY_RANDOMIZED_API"
+          ]
+        }
+      ],
+      "allowed_effects": [
+        "PURE"
+      ],
+      "preconditions": [
+        "inputs satisfy declared types and bounded sizes"
+      ],
+      "postconditions": [
+        "result satisfies the declared relation"
+      ],
+      "invariants": [
+        "all indexed accesses remain within the current buffer"
+      ],
+      "demonstrations": [],
+      "provenance": [
+        "SEM5-BLIND-GENERATOR-1.0.1",
+        "DETERMINISTIC_SEED"
+      ]
+    }
+  ],
+  "expected_outputs_included": false,
+  "family_metadata_included": false,
+  "reference_source_included": false,
+  "manifest_sha256": "e4a6ad35f43ae63e54fd1c031f713eeb35ab141663d2d3c4046c7ea0e98699c1"
+}

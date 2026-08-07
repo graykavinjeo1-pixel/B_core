@@ -1,0 +1,14 @@
+{
+  "run_id": "SEM5-RUN-0002",
+  "synthesizer_version": "SEM5-FIRST-PRINCIPLES-SYNTHESIZER-1.0.1",
+  "ir_version": "PROGRAM-IR-1.0.0",
+  "emitter_version": "SEM5-RUST-MIN-EMITTER-1.0.0",
+  "sandbox_version": "SEM5-OFFLINE-SANDBOX-1.0.0",
+  "blind_generator_version": "SEM5-BLIND-GENERATOR-1.0.1",
+  "blind_manifest_sha256": "af1a8696f26bb52ebe45f1d9dd50f1deb16dec560ed6642b770736ff7e8088d5",
+  "opaque_api_manifest_sha256": "e4a6ad35f43ae63e54fd1c031f713eeb35ab141663d2d3c4046c7ea0e98699c1",
+  "adversarial_manifest_sha256": "430fe4c8caf96ab032e20e3b2a37df6f1b358d9e6e2d8fa17281fe23ce5b8540",
+  "frozen_before_final_tuning": true,
+  "solver_blind_access_before_freeze": false,
+  "post_blind_tuning": false
+}

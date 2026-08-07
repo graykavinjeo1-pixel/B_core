@@ -1,0 +1,23 @@
+[
+  {
+    "concept_id": "C000008",
+    "perturbation": "replace one declared type/effect compatibility edge",
+    "predicted_change": "applicability rejects the altered fragment",
+    "observed_change": "type/effect checker rejects before execution",
+    "passed": true
+  },
+  {
+    "concept_id": "C000009",
+    "perturbation": "replace one declared type/effect compatibility edge",
+    "predicted_change": "applicability rejects the altered fragment",
+    "observed_change": "type/effect checker rejects before execution",
+    "passed": true
+  },
+  {
+    "concept_id": "C000010",
+    "perturbation": "replace one declared type/effect compatibility edge",
+    "predicted_change": "applicability rejects the altered fragment",
+    "observed_change": "type/effect checker rejects before execution",
+    "passed": true
+  }
+]

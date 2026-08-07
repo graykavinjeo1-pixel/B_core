@@ -1,0 +1,40 @@
+{
+  "new_lineage": [
+    {
+      "concept_id": "C000008",
+      "generation": 3,
+      "identity_wrapper": false,
+      "parent_ids": [
+        "C000002"
+      ],
+      "promoted": true
+    },
+    {
+      "concept_id": "C000009",
+      "generation": 3,
+      "identity_wrapper": false,
+      "parent_ids": [
+        "C000004"
+      ],
+      "promoted": true
+    },
+    {
+      "concept_id": "C000010",
+      "generation": 4,
+      "identity_wrapper": false,
+      "parent_ids": [
+        "C000008",
+        "C000009"
+      ],
+      "promoted": true
+    }
+  ],
+  "predecessor_concepts_immutable": [
+    "C000001",
+    "C000002",
+    "C000004",
+    "C000005",
+    "C000006",
+    "C000007"
+  ]
+}

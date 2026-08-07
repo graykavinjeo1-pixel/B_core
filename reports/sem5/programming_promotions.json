@@ -1,0 +1,177 @@
+[
+  {
+    "concept": {
+      "concept_id": "C000008",
+      "generation": 3,
+      "parent_ids": [
+        "C000002"
+      ],
+      "semantic_signature": "typed finite source -> conditional per-position action",
+      "input_types": [
+        "SEQUENCE_INT"
+      ],
+      "output_type": "SEQUENCE_INT",
+      "effects": [
+        "LOCAL_MUTATION",
+        "BUFFER_MUTATION"
+      ],
+      "reusable_ir_fragment": "bounded source visit with an optional predicate and result action",
+      "provenance": [
+        "ANTI_UNIFICATION_OVER_RECURRING_IR_SUBGRAPHS",
+        "OBSERVATION_COUNT=24"
+      ],
+      "discovery_evidence_ids": [
+        "T-000-c6bb42cd",
+        "T-005-ceca21a5",
+        "T-010-3aa1197d",
+        "T-015-46854f2b",
+        "T-020-42cbeb43",
+        "T-025-45765705",
+        "T-030-820c3199",
+        "T-035-3e6d00f1",
+        "T-002-2f429c00",
+        "T-007-1c0551d6",
+        "T-012-b7a176f0",
+        "T-017-85752946",
+        "T-022-a1aee07e",
+        "T-027-bdaaf4b6",
+        "T-032-a61ef15c",
+        "T-037-cf21f2d4",
+        "T-003-afc66932",
+        "T-008-2a6986f8",
+        "T-013-241fdda2",
+        "T-018-7d5b4be8",
+        "T-023-befbe5e0",
+        "T-028-145c24d8",
+        "T-033-ce6345ee",
+        "T-038-7425b426"
+      ],
+      "human_name_revealed_post_seal": "guarded bounded traversal abstraction",
+      "rust_tokens_in_definition": 0,
+      "identity_wrapper": false,
+      "primitive_expanded_nodes": 18,
+      "operational_nodes": 3,
+      "compression_ratio": 6.0
+    },
+    "proposed_autonomously": true,
+    "semantic_consistency_pass": true,
+    "compression_pass": true,
+    "discovery_reuse_pass": true,
+    "calibration_pass": true,
+    "fresh_blind_reuse_pass": true,
+    "causal_ablation_pass": true,
+    "cross_instance_pass": true,
+    "language_separation_pass": true,
+    "generation_parent_pass": true,
+    "promoted": true
+  },
+  {
+    "concept": {
+      "concept_id": "C000009",
+      "generation": 3,
+      "parent_ids": [
+        "C000004"
+      ],
+      "semantic_signature": "typed state and element -> guarded next state",
+      "input_types": [
+        "INT",
+        "INT"
+      ],
+      "output_type": "INT",
+      "effects": [
+        "LOCAL_MUTATION"
+      ],
+      "reusable_ir_fragment": "initialize state, visit bounded input, guard and replace state",
+      "provenance": [
+        "ANTI_UNIFICATION_OVER_STATE_DEPENDENCY_EDGES",
+        "OBSERVATION_COUNT=16"
+      ],
+      "discovery_evidence_ids": [
+        "T-001-13ba774a",
+        "T-006-81ff7c02",
+        "T-011-4fac6dba",
+        "T-016-50812c72",
+        "T-021-4f0c2038",
+        "T-026-740590e2",
+        "T-031-58fae086",
+        "T-036-ea652720",
+        "T-004-4bbfd0d7",
+        "T-009-ca88116f",
+        "T-014-2e825307",
+        "T-019-123bdfe5",
+        "T-024-407e5937",
+        "T-029-9d5b7895",
+        "T-034-4bdb9783",
+        "T-039-15567545"
+      ],
+      "human_name_revealed_post_seal": "guarded state-transition abstraction",
+      "rust_tokens_in_definition": 0,
+      "identity_wrapper": false,
+      "primitive_expanded_nodes": 21,
+      "operational_nodes": 4,
+      "compression_ratio": 5.25
+    },
+    "proposed_autonomously": true,
+    "semantic_consistency_pass": true,
+    "compression_pass": true,
+    "discovery_reuse_pass": true,
+    "calibration_pass": true,
+    "fresh_blind_reuse_pass": true,
+    "causal_ablation_pass": true,
+    "cross_instance_pass": true,
+    "language_separation_pass": true,
+    "generation_parent_pass": true,
+    "promoted": true
+  },
+  {
+    "concept": {
+      "concept_id": "C000010",
+      "generation": 4,
+      "parent_ids": [
+        "C000008",
+        "C000009"
+      ],
+      "semantic_signature": "result-compatible semantic stages -> dependency-preserving composed program",
+      "input_types": [
+        "SEQUENCE_INT"
+      ],
+      "output_type": "INT",
+      "effects": [
+        "LOCAL_MUTATION",
+        "BUFFER_MUTATION"
+      ],
+      "reusable_ir_fragment": "connect compatible stage result and input bindings while retaining effects",
+      "provenance": [
+        "RECOMBINATION_OF_TWO_PROMOTABLE_IR_FRAGMENTS",
+        "OBSERVATION_COUNT=8"
+      ],
+      "discovery_evidence_ids": [
+        "T-004-4bbfd0d7",
+        "T-009-ca88116f",
+        "T-014-2e825307",
+        "T-019-123bdfe5",
+        "T-024-407e5937",
+        "T-029-9d5b7895",
+        "T-034-4bdb9783",
+        "T-039-15567545"
+      ],
+      "human_name_revealed_post_seal": "type-compatible staged composition abstraction",
+      "rust_tokens_in_definition": 0,
+      "identity_wrapper": false,
+      "primitive_expanded_nodes": 43,
+      "operational_nodes": 6,
+      "compression_ratio": 7.166666666666667
+    },
+    "proposed_autonomously": true,
+    "semantic_consistency_pass": true,
+    "compression_pass": true,
+    "discovery_reuse_pass": true,
+    "calibration_pass": true,
+    "fresh_blind_reuse_pass": true,
+    "causal_ablation_pass": true,
+    "cross_instance_pass": true,
+    "language_separation_pass": true,
+    "generation_parent_pass": true,
+    "promoted": true
+  }
+]

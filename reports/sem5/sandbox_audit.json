@@ -1,0 +1,15 @@
+{
+  "isolated_temporary_workspace": true,
+  "network_disabled_by_construction": true,
+  "host_mutation_prohibited": true,
+  "execution_timeout_ms": 2000,
+  "output_limit_bytes": 65536,
+  "memory_limit_practical": false,
+  "arbitrary_paths_rejected": true,
+  "unsafe_rejected": true,
+  "external_dependencies": 0,
+  "programs_compiled": 130,
+  "programs_executed": 130,
+  "containment_violations": 0,
+  "passed": true
+}

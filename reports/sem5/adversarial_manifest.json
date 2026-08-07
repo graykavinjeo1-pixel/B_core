@@ -1,0 +1,2105 @@
+{
+  "run_id": "SEM5-RUN-0002",
+  "generator_version": "SEM5-BLIND-GENERATOR-1.0.1",
+  "seed_commitment_sha256": "035f7ae36b8da41105a2b44b875399d788245bb84eb786638349fc13a237b402",
+  "split": "ADVERSARIAL_BLIND",
+  "tasks": [
+    {
+      "task_id": "T-000-74f0f912",
+      "split": "ADVERSARIAL_BLIND",
+      "inputs": [
+        {
+          "name": "v0",
+          "value_type": "SEQUENCE_INT",
+          "mutable": false
+        }
+      ],
+      "output_type": "INT",
+      "relation": {
+        "relation_kind": "COMPOSITION",
+        "stages": [
+          {
+            "relation_kind": "COLLECTION",
+            "expression": {
+              "expression_kind": "BINARY",
+              "operator": "ADD",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MULTIPLY",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 0
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 1
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 1
+              }
+            },
+            "include_when": {
+              "expression_kind": "BINARY",
+              "operator": "EQUAL",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MODULO",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 0
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 5
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 1
+              }
+            }
+          },
+          {
+            "relation_kind": "STATEFUL",
+            "initial": -3,
+            "update": {
+              "expression_kind": "BINARY",
+              "operator": "ADD",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "right": {
+                "expression_kind": "ARGUMENT",
+                "index": 1
+              }
+            },
+            "reset_when": {
+              "expression_kind": "BINARY",
+              "operator": "EQUAL",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MODULO",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 1
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 2
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 1
+              }
+            },
+            "emit_each": false
+          }
+        ]
+      },
+      "definitions": [],
+      "allowed_effects": [
+        "PURE",
+        "LOCAL_MUTATION",
+        "BUFFER_MUTATION"
+      ],
+      "preconditions": [
+        "inputs satisfy declared types and bounded sizes"
+      ],
+      "postconditions": [
+        "result satisfies the declared relation"
+      ],
+      "invariants": [
+        "all indexed accesses remain within the current buffer"
+      ],
+      "demonstrations": [],
+      "provenance": [
+        "SEM5-BLIND-GENERATOR-1.0.1",
+        "DETERMINISTIC_SEED"
+      ]
+    },
+    {
+      "task_id": "T-001-fd26d837",
+      "split": "ADVERSARIAL_BLIND",
+      "inputs": [
+        {
+          "name": "v0",
+          "value_type": "SEQUENCE_INT",
+          "mutable": false
+        }
+      ],
+      "output_type": "INT",
+      "relation": {
+        "relation_kind": "COMPOSITION",
+        "stages": [
+          {
+            "relation_kind": "COLLECTION",
+            "expression": {
+              "expression_kind": "BINARY",
+              "operator": "ADD",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MULTIPLY",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 1
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 4
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": -6
+              }
+            },
+            "include_when": {
+              "expression_kind": "BINARY",
+              "operator": "EQUAL",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MODULO",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 0
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 4
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 1
+              }
+            }
+          },
+          {
+            "relation_kind": "STATEFUL",
+            "initial": 3,
+            "update": {
+              "expression_kind": "BINARY",
+              "operator": "ADD",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "right": {
+                "expression_kind": "ARGUMENT",
+                "index": 1
+              }
+            },
+            "reset_when": null,
+            "emit_each": false
+          }
+        ]
+      },
+      "definitions": [],
+      "allowed_effects": [
+        "PURE",
+        "LOCAL_MUTATION",
+        "BUFFER_MUTATION"
+      ],
+      "preconditions": [
+        "inputs satisfy declared types and bounded sizes"
+      ],
+      "postconditions": [
+        "result satisfies the declared relation"
+      ],
+      "invariants": [
+        "all indexed accesses remain within the current buffer"
+      ],
+      "demonstrations": [],
+      "provenance": [
+        "SEM5-BLIND-GENERATOR-1.0.1",
+        "DETERMINISTIC_SEED"
+      ]
+    },
+    {
+      "task_id": "T-002-dd258330",
+      "split": "ADVERSARIAL_BLIND",
+      "inputs": [
+        {
+          "name": "v0",
+          "value_type": "SEQUENCE_INT",
+          "mutable": false
+        }
+      ],
+      "output_type": "INT",
+      "relation": {
+        "relation_kind": "COMPOSITION",
+        "stages": [
+          {
+            "relation_kind": "COLLECTION",
+            "expression": {
+              "expression_kind": "BINARY",
+              "operator": "ADD",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MULTIPLY",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 0
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 1
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 2
+              }
+            },
+            "include_when": {
+              "expression_kind": "BINARY",
+              "operator": "EQUAL",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MODULO",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 0
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 5
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 0
+              }
+            }
+          },
+          {
+            "relation_kind": "STATEFUL",
+            "initial": 0,
+            "update": {
+              "expression_kind": "BINARY",
+              "operator": "ADD",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "right": {
+                "expression_kind": "ARGUMENT",
+                "index": 1
+              }
+            },
+            "reset_when": null,
+            "emit_each": false
+          }
+        ]
+      },
+      "definitions": [],
+      "allowed_effects": [
+        "PURE",
+        "LOCAL_MUTATION",
+        "BUFFER_MUTATION"
+      ],
+      "preconditions": [
+        "inputs satisfy declared types and bounded sizes"
+      ],
+      "postconditions": [
+        "result satisfies the declared relation"
+      ],
+      "invariants": [
+        "all indexed accesses remain within the current buffer"
+      ],
+      "demonstrations": [],
+      "provenance": [
+        "SEM5-BLIND-GENERATOR-1.0.1",
+        "DETERMINISTIC_SEED"
+      ]
+    },
+    {
+      "task_id": "T-003-6ea36247",
+      "split": "ADVERSARIAL_BLIND",
+      "inputs": [
+        {
+          "name": "v0",
+          "value_type": "SEQUENCE_INT",
+          "mutable": false
+        }
+      ],
+      "output_type": "INT",
+      "relation": {
+        "relation_kind": "COMPOSITION",
+        "stages": [
+          {
+            "relation_kind": "COLLECTION",
+            "expression": {
+              "expression_kind": "BINARY",
+              "operator": "ADD",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MULTIPLY",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 1
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 2
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 0
+              }
+            },
+            "include_when": {
+              "expression_kind": "BINARY",
+              "operator": "EQUAL",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MODULO",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 0
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 2
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 1
+              }
+            }
+          },
+          {
+            "relation_kind": "STATEFUL",
+            "initial": 3,
+            "update": {
+              "expression_kind": "BINARY",
+              "operator": "ADD",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "right": {
+                "expression_kind": "ARGUMENT",
+                "index": 1
+              }
+            },
+            "reset_when": {
+              "expression_kind": "BINARY",
+              "operator": "EQUAL",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MODULO",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 1
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 3
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 2
+              }
+            },
+            "emit_each": false
+          }
+        ]
+      },
+      "definitions": [],
+      "allowed_effects": [
+        "PURE",
+        "LOCAL_MUTATION",
+        "BUFFER_MUTATION"
+      ],
+      "preconditions": [
+        "inputs satisfy declared types and bounded sizes"
+      ],
+      "postconditions": [
+        "result satisfies the declared relation"
+      ],
+      "invariants": [
+        "all indexed accesses remain within the current buffer"
+      ],
+      "demonstrations": [],
+      "provenance": [
+        "SEM5-BLIND-GENERATOR-1.0.1",
+        "DETERMINISTIC_SEED"
+      ]
+    },
+    {
+      "task_id": "T-004-adbb9980",
+      "split": "ADVERSARIAL_BLIND",
+      "inputs": [
+        {
+          "name": "v0",
+          "value_type": "SEQUENCE_INT",
+          "mutable": false
+        }
+      ],
+      "output_type": "INT",
+      "relation": {
+        "relation_kind": "COMPOSITION",
+        "stages": [
+          {
+            "relation_kind": "COLLECTION",
+            "expression": {
+              "expression_kind": "BINARY",
+              "operator": "ADD",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MULTIPLY",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 0
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 1
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 0
+              }
+            },
+            "include_when": {
+              "expression_kind": "BINARY",
+              "operator": "EQUAL",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MODULO",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 0
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 5
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 0
+              }
+            }
+          },
+          {
+            "relation_kind": "STATEFUL",
+            "initial": 2,
+            "update": {
+              "expression_kind": "BINARY",
+              "operator": "ADD",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "right": {
+                "expression_kind": "ARGUMENT",
+                "index": 1
+              }
+            },
+            "reset_when": null,
+            "emit_each": false
+          }
+        ]
+      },
+      "definitions": [],
+      "allowed_effects": [
+        "PURE",
+        "LOCAL_MUTATION",
+        "BUFFER_MUTATION"
+      ],
+      "preconditions": [
+        "inputs satisfy declared types and bounded sizes"
+      ],
+      "postconditions": [
+        "result satisfies the declared relation"
+      ],
+      "invariants": [
+        "all indexed accesses remain within the current buffer"
+      ],
+      "demonstrations": [],
+      "provenance": [
+        "SEM5-BLIND-GENERATOR-1.0.1",
+        "DETERMINISTIC_SEED"
+      ]
+    },
+    {
+      "task_id": "T-005-cce319dd",
+      "split": "ADVERSARIAL_BLIND",
+      "inputs": [
+        {
+          "name": "v0",
+          "value_type": "SEQUENCE_INT",
+          "mutable": false
+        }
+      ],
+      "output_type": "INT",
+      "relation": {
+        "relation_kind": "COMPOSITION",
+        "stages": [
+          {
+            "relation_kind": "COLLECTION",
+            "expression": {
+              "expression_kind": "BINARY",
+              "operator": "ADD",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MULTIPLY",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 1
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 2
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 1
+              }
+            },
+            "include_when": {
+              "expression_kind": "BINARY",
+              "operator": "EQUAL",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MODULO",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 0
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 2
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 1
+              }
+            }
+          },
+          {
+            "relation_kind": "STATEFUL",
+            "initial": 1,
+            "update": {
+              "expression_kind": "BINARY",
+              "operator": "ADD",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "right": {
+                "expression_kind": "ARGUMENT",
+                "index": 1
+              }
+            },
+            "reset_when": null,
+            "emit_each": false
+          }
+        ]
+      },
+      "definitions": [],
+      "allowed_effects": [
+        "PURE",
+        "LOCAL_MUTATION",
+        "BUFFER_MUTATION"
+      ],
+      "preconditions": [
+        "inputs satisfy declared types and bounded sizes"
+      ],
+      "postconditions": [
+        "result satisfies the declared relation"
+      ],
+      "invariants": [
+        "all indexed accesses remain within the current buffer"
+      ],
+      "demonstrations": [],
+      "provenance": [
+        "SEM5-BLIND-GENERATOR-1.0.1",
+        "DETERMINISTIC_SEED"
+      ]
+    },
+    {
+      "task_id": "T-006-b086a3d0",
+      "split": "ADVERSARIAL_BLIND",
+      "inputs": [
+        {
+          "name": "v0",
+          "value_type": "SEQUENCE_INT",
+          "mutable": false
+        }
+      ],
+      "output_type": "INT",
+      "relation": {
+        "relation_kind": "COMPOSITION",
+        "stages": [
+          {
+            "relation_kind": "COLLECTION",
+            "expression": {
+              "expression_kind": "BINARY",
+              "operator": "ADD",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MULTIPLY",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 0
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 3
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 0
+              }
+            },
+            "include_when": {
+              "expression_kind": "BINARY",
+              "operator": "EQUAL",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MODULO",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 0
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 3
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 2
+              }
+            }
+          },
+          {
+            "relation_kind": "STATEFUL",
+            "initial": 3,
+            "update": {
+              "expression_kind": "BINARY",
+              "operator": "ADD",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "right": {
+                "expression_kind": "ARGUMENT",
+                "index": 1
+              }
+            },
+            "reset_when": {
+              "expression_kind": "BINARY",
+              "operator": "EQUAL",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MODULO",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 1
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 4
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 1
+              }
+            },
+            "emit_each": false
+          }
+        ]
+      },
+      "definitions": [],
+      "allowed_effects": [
+        "PURE",
+        "LOCAL_MUTATION",
+        "BUFFER_MUTATION"
+      ],
+      "preconditions": [
+        "inputs satisfy declared types and bounded sizes"
+      ],
+      "postconditions": [
+        "result satisfies the declared relation"
+      ],
+      "invariants": [
+        "all indexed accesses remain within the current buffer"
+      ],
+      "demonstrations": [],
+      "provenance": [
+        "SEM5-BLIND-GENERATOR-1.0.1",
+        "DETERMINISTIC_SEED"
+      ]
+    },
+    {
+      "task_id": "T-007-d085416d",
+      "split": "ADVERSARIAL_BLIND",
+      "inputs": [
+        {
+          "name": "v0",
+          "value_type": "SEQUENCE_INT",
+          "mutable": false
+        }
+      ],
+      "output_type": "INT",
+      "relation": {
+        "relation_kind": "COMPOSITION",
+        "stages": [
+          {
+            "relation_kind": "COLLECTION",
+            "expression": {
+              "expression_kind": "BINARY",
+              "operator": "ADD",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MULTIPLY",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 1
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 2
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": -5
+              }
+            },
+            "include_when": {
+              "expression_kind": "BINARY",
+              "operator": "EQUAL",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MODULO",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 0
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 2
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 1
+              }
+            }
+          },
+          {
+            "relation_kind": "STATEFUL",
+            "initial": 0,
+            "update": {
+              "expression_kind": "BINARY",
+              "operator": "ADD",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "right": {
+                "expression_kind": "ARGUMENT",
+                "index": 1
+              }
+            },
+            "reset_when": null,
+            "emit_each": false
+          }
+        ]
+      },
+      "definitions": [],
+      "allowed_effects": [
+        "PURE",
+        "LOCAL_MUTATION",
+        "BUFFER_MUTATION"
+      ],
+      "preconditions": [
+        "inputs satisfy declared types and bounded sizes"
+      ],
+      "postconditions": [
+        "result satisfies the declared relation"
+      ],
+      "invariants": [
+        "all indexed accesses remain within the current buffer"
+      ],
+      "demonstrations": [],
+      "provenance": [
+        "SEM5-BLIND-GENERATOR-1.0.1",
+        "DETERMINISTIC_SEED"
+      ]
+    },
+    {
+      "task_id": "T-008-410dd2be",
+      "split": "ADVERSARIAL_BLIND",
+      "inputs": [
+        {
+          "name": "v0",
+          "value_type": "SEQUENCE_INT",
+          "mutable": false
+        }
+      ],
+      "output_type": "INT",
+      "relation": {
+        "relation_kind": "COMPOSITION",
+        "stages": [
+          {
+            "relation_kind": "COLLECTION",
+            "expression": {
+              "expression_kind": "BINARY",
+              "operator": "ADD",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MULTIPLY",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 0
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 3
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 0
+              }
+            },
+            "include_when": {
+              "expression_kind": "BINARY",
+              "operator": "EQUAL",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MODULO",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 0
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 3
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 0
+              }
+            }
+          },
+          {
+            "relation_kind": "STATEFUL",
+            "initial": -3,
+            "update": {
+              "expression_kind": "BINARY",
+              "operator": "ADD",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "right": {
+                "expression_kind": "ARGUMENT",
+                "index": 1
+              }
+            },
+            "reset_when": null,
+            "emit_each": false
+          }
+        ]
+      },
+      "definitions": [],
+      "allowed_effects": [
+        "PURE",
+        "LOCAL_MUTATION",
+        "BUFFER_MUTATION"
+      ],
+      "preconditions": [
+        "inputs satisfy declared types and bounded sizes"
+      ],
+      "postconditions": [
+        "result satisfies the declared relation"
+      ],
+      "invariants": [
+        "all indexed accesses remain within the current buffer"
+      ],
+      "demonstrations": [],
+      "provenance": [
+        "SEM5-BLIND-GENERATOR-1.0.1",
+        "DETERMINISTIC_SEED"
+      ]
+    },
+    {
+      "task_id": "T-009-0eae2cfd",
+      "split": "ADVERSARIAL_BLIND",
+      "inputs": [
+        {
+          "name": "v0",
+          "value_type": "SEQUENCE_INT",
+          "mutable": false
+        }
+      ],
+      "output_type": "INT",
+      "relation": {
+        "relation_kind": "COMPOSITION",
+        "stages": [
+          {
+            "relation_kind": "COLLECTION",
+            "expression": {
+              "expression_kind": "BINARY",
+              "operator": "ADD",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MULTIPLY",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 1
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 4
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": -6
+              }
+            },
+            "include_when": {
+              "expression_kind": "BINARY",
+              "operator": "EQUAL",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MODULO",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 0
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 4
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 1
+              }
+            }
+          },
+          {
+            "relation_kind": "STATEFUL",
+            "initial": -3,
+            "update": {
+              "expression_kind": "BINARY",
+              "operator": "ADD",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "right": {
+                "expression_kind": "ARGUMENT",
+                "index": 1
+              }
+            },
+            "reset_when": {
+              "expression_kind": "BINARY",
+              "operator": "EQUAL",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MODULO",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 1
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 5
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 0
+              }
+            },
+            "emit_each": false
+          }
+        ]
+      },
+      "definitions": [],
+      "allowed_effects": [
+        "PURE",
+        "LOCAL_MUTATION",
+        "BUFFER_MUTATION"
+      ],
+      "preconditions": [
+        "inputs satisfy declared types and bounded sizes"
+      ],
+      "postconditions": [
+        "result satisfies the declared relation"
+      ],
+      "invariants": [
+        "all indexed accesses remain within the current buffer"
+      ],
+      "demonstrations": [],
+      "provenance": [
+        "SEM5-BLIND-GENERATOR-1.0.1",
+        "DETERMINISTIC_SEED"
+      ]
+    },
+    {
+      "task_id": "T-010-6caf308e",
+      "split": "ADVERSARIAL_BLIND",
+      "inputs": [
+        {
+          "name": "v0",
+          "value_type": "SEQUENCE_INT",
+          "mutable": false
+        }
+      ],
+      "output_type": "INT",
+      "relation": {
+        "relation_kind": "COMPOSITION",
+        "stages": [
+          {
+            "relation_kind": "COLLECTION",
+            "expression": {
+              "expression_kind": "BINARY",
+              "operator": "ADD",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MULTIPLY",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 0
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 3
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 7
+              }
+            },
+            "include_when": {
+              "expression_kind": "BINARY",
+              "operator": "EQUAL",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MODULO",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 0
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 3
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 2
+              }
+            }
+          },
+          {
+            "relation_kind": "STATEFUL",
+            "initial": 1,
+            "update": {
+              "expression_kind": "BINARY",
+              "operator": "ADD",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "right": {
+                "expression_kind": "ARGUMENT",
+                "index": 1
+              }
+            },
+            "reset_when": null,
+            "emit_each": false
+          }
+        ]
+      },
+      "definitions": [],
+      "allowed_effects": [
+        "PURE",
+        "LOCAL_MUTATION",
+        "BUFFER_MUTATION"
+      ],
+      "preconditions": [
+        "inputs satisfy declared types and bounded sizes"
+      ],
+      "postconditions": [
+        "result satisfies the declared relation"
+      ],
+      "invariants": [
+        "all indexed accesses remain within the current buffer"
+      ],
+      "demonstrations": [],
+      "provenance": [
+        "SEM5-BLIND-GENERATOR-1.0.1",
+        "DETERMINISTIC_SEED"
+      ]
+    },
+    {
+      "task_id": "T-011-d2d694a3",
+      "split": "ADVERSARIAL_BLIND",
+      "inputs": [
+        {
+          "name": "v0",
+          "value_type": "SEQUENCE_INT",
+          "mutable": false
+        }
+      ],
+      "output_type": "INT",
+      "relation": {
+        "relation_kind": "COMPOSITION",
+        "stages": [
+          {
+            "relation_kind": "COLLECTION",
+            "expression": {
+              "expression_kind": "BINARY",
+              "operator": "ADD",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MULTIPLY",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 1
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 4
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": -7
+              }
+            },
+            "include_when": {
+              "expression_kind": "BINARY",
+              "operator": "EQUAL",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MODULO",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 0
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 4
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 1
+              }
+            }
+          },
+          {
+            "relation_kind": "STATEFUL",
+            "initial": 2,
+            "update": {
+              "expression_kind": "BINARY",
+              "operator": "ADD",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "right": {
+                "expression_kind": "ARGUMENT",
+                "index": 1
+              }
+            },
+            "reset_when": null,
+            "emit_each": false
+          }
+        ]
+      },
+      "definitions": [],
+      "allowed_effects": [
+        "PURE",
+        "LOCAL_MUTATION",
+        "BUFFER_MUTATION"
+      ],
+      "preconditions": [
+        "inputs satisfy declared types and bounded sizes"
+      ],
+      "postconditions": [
+        "result satisfies the declared relation"
+      ],
+      "invariants": [
+        "all indexed accesses remain within the current buffer"
+      ],
+      "demonstrations": [],
+      "provenance": [
+        "SEM5-BLIND-GENERATOR-1.0.1",
+        "DETERMINISTIC_SEED"
+      ]
+    },
+    {
+      "task_id": "T-012-8f68625e",
+      "split": "ADVERSARIAL_BLIND",
+      "inputs": [
+        {
+          "name": "v0",
+          "value_type": "SEQUENCE_INT",
+          "mutable": false
+        }
+      ],
+      "output_type": "INT",
+      "relation": {
+        "relation_kind": "COMPOSITION",
+        "stages": [
+          {
+            "relation_kind": "COLLECTION",
+            "expression": {
+              "expression_kind": "BINARY",
+              "operator": "ADD",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MULTIPLY",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 0
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 1
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 1
+              }
+            },
+            "include_when": {
+              "expression_kind": "BINARY",
+              "operator": "EQUAL",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MODULO",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 0
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 5
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 3
+              }
+            }
+          },
+          {
+            "relation_kind": "STATEFUL",
+            "initial": -2,
+            "update": {
+              "expression_kind": "BINARY",
+              "operator": "ADD",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "right": {
+                "expression_kind": "ARGUMENT",
+                "index": 1
+              }
+            },
+            "reset_when": {
+              "expression_kind": "BINARY",
+              "operator": "EQUAL",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MODULO",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 1
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 2
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 1
+              }
+            },
+            "emit_each": false
+          }
+        ]
+      },
+      "definitions": [],
+      "allowed_effects": [
+        "PURE",
+        "LOCAL_MUTATION",
+        "BUFFER_MUTATION"
+      ],
+      "preconditions": [
+        "inputs satisfy declared types and bounded sizes"
+      ],
+      "postconditions": [
+        "result satisfies the declared relation"
+      ],
+      "invariants": [
+        "all indexed accesses remain within the current buffer"
+      ],
+      "demonstrations": [],
+      "provenance": [
+        "SEM5-BLIND-GENERATOR-1.0.1",
+        "DETERMINISTIC_SEED"
+      ]
+    },
+    {
+      "task_id": "T-013-281261b3",
+      "split": "ADVERSARIAL_BLIND",
+      "inputs": [
+        {
+          "name": "v0",
+          "value_type": "SEQUENCE_INT",
+          "mutable": false
+        }
+      ],
+      "output_type": "INT",
+      "relation": {
+        "relation_kind": "COMPOSITION",
+        "stages": [
+          {
+            "relation_kind": "COLLECTION",
+            "expression": {
+              "expression_kind": "BINARY",
+              "operator": "ADD",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MULTIPLY",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 1
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 4
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": -6
+              }
+            },
+            "include_when": {
+              "expression_kind": "BINARY",
+              "operator": "EQUAL",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MODULO",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 0
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 4
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 1
+              }
+            }
+          },
+          {
+            "relation_kind": "STATEFUL",
+            "initial": 2,
+            "update": {
+              "expression_kind": "BINARY",
+              "operator": "ADD",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "right": {
+                "expression_kind": "ARGUMENT",
+                "index": 1
+              }
+            },
+            "reset_when": null,
+            "emit_each": false
+          }
+        ]
+      },
+      "definitions": [],
+      "allowed_effects": [
+        "PURE",
+        "LOCAL_MUTATION",
+        "BUFFER_MUTATION"
+      ],
+      "preconditions": [
+        "inputs satisfy declared types and bounded sizes"
+      ],
+      "postconditions": [
+        "result satisfies the declared relation"
+      ],
+      "invariants": [
+        "all indexed accesses remain within the current buffer"
+      ],
+      "demonstrations": [],
+      "provenance": [
+        "SEM5-BLIND-GENERATOR-1.0.1",
+        "DETERMINISTIC_SEED"
+      ]
+    },
+    {
+      "task_id": "T-014-bf88599c",
+      "split": "ADVERSARIAL_BLIND",
+      "inputs": [
+        {
+          "name": "v0",
+          "value_type": "SEQUENCE_INT",
+          "mutable": false
+        }
+      ],
+      "output_type": "INT",
+      "relation": {
+        "relation_kind": "COMPOSITION",
+        "stages": [
+          {
+            "relation_kind": "COLLECTION",
+            "expression": {
+              "expression_kind": "BINARY",
+              "operator": "ADD",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MULTIPLY",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 0
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 1
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": -2
+              }
+            },
+            "include_when": {
+              "expression_kind": "BINARY",
+              "operator": "EQUAL",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MODULO",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 0
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 5
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 1
+              }
+            }
+          },
+          {
+            "relation_kind": "STATEFUL",
+            "initial": 3,
+            "update": {
+              "expression_kind": "BINARY",
+              "operator": "ADD",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "right": {
+                "expression_kind": "ARGUMENT",
+                "index": 1
+              }
+            },
+            "reset_when": null,
+            "emit_each": false
+          }
+        ]
+      },
+      "definitions": [],
+      "allowed_effects": [
+        "PURE",
+        "LOCAL_MUTATION",
+        "BUFFER_MUTATION"
+      ],
+      "preconditions": [
+        "inputs satisfy declared types and bounded sizes"
+      ],
+      "postconditions": [
+        "result satisfies the declared relation"
+      ],
+      "invariants": [
+        "all indexed accesses remain within the current buffer"
+      ],
+      "demonstrations": [],
+      "provenance": [
+        "SEM5-BLIND-GENERATOR-1.0.1",
+        "DETERMINISTIC_SEED"
+      ]
+    },
+    {
+      "task_id": "T-015-d61352c3",
+      "split": "ADVERSARIAL_BLIND",
+      "inputs": [
+        {
+          "name": "v0",
+          "value_type": "SEQUENCE_INT",
+          "mutable": false
+        }
+      ],
+      "output_type": "INT",
+      "relation": {
+        "relation_kind": "COMPOSITION",
+        "stages": [
+          {
+            "relation_kind": "COLLECTION",
+            "expression": {
+              "expression_kind": "BINARY",
+              "operator": "ADD",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MULTIPLY",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 1
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 2
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": -1
+              }
+            },
+            "include_when": {
+              "expression_kind": "BINARY",
+              "operator": "EQUAL",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MODULO",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 0
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 2
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 1
+              }
+            }
+          },
+          {
+            "relation_kind": "STATEFUL",
+            "initial": 2,
+            "update": {
+              "expression_kind": "BINARY",
+              "operator": "ADD",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "right": {
+                "expression_kind": "ARGUMENT",
+                "index": 1
+              }
+            },
+            "reset_when": {
+              "expression_kind": "BINARY",
+              "operator": "EQUAL",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MODULO",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 1
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 3
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 1
+              }
+            },
+            "emit_each": false
+          }
+        ]
+      },
+      "definitions": [],
+      "allowed_effects": [
+        "PURE",
+        "LOCAL_MUTATION",
+        "BUFFER_MUTATION"
+      ],
+      "preconditions": [
+        "inputs satisfy declared types and bounded sizes"
+      ],
+      "postconditions": [
+        "result satisfies the declared relation"
+      ],
+      "invariants": [
+        "all indexed accesses remain within the current buffer"
+      ],
+      "demonstrations": [],
+      "provenance": [
+        "SEM5-BLIND-GENERATOR-1.0.1",
+        "DETERMINISTIC_SEED"
+      ]
+    },
+    {
+      "task_id": "T-016-b1f032ec",
+      "split": "ADVERSARIAL_BLIND",
+      "inputs": [
+        {
+          "name": "v0",
+          "value_type": "SEQUENCE_INT",
+          "mutable": false
+        }
+      ],
+      "output_type": "INT",
+      "relation": {
+        "relation_kind": "COMPOSITION",
+        "stages": [
+          {
+            "relation_kind": "COLLECTION",
+            "expression": {
+              "expression_kind": "BINARY",
+              "operator": "ADD",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MULTIPLY",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 0
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 1
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 7
+              }
+            },
+            "include_when": {
+              "expression_kind": "BINARY",
+              "operator": "EQUAL",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MODULO",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 0
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 5
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 2
+              }
+            }
+          },
+          {
+            "relation_kind": "STATEFUL",
+            "initial": 1,
+            "update": {
+              "expression_kind": "BINARY",
+              "operator": "ADD",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "right": {
+                "expression_kind": "ARGUMENT",
+                "index": 1
+              }
+            },
+            "reset_when": null,
+            "emit_each": false
+          }
+        ]
+      },
+      "definitions": [],
+      "allowed_effects": [
+        "PURE",
+        "LOCAL_MUTATION",
+        "BUFFER_MUTATION"
+      ],
+      "preconditions": [
+        "inputs satisfy declared types and bounded sizes"
+      ],
+      "postconditions": [
+        "result satisfies the declared relation"
+      ],
+      "invariants": [
+        "all indexed accesses remain within the current buffer"
+      ],
+      "demonstrations": [],
+      "provenance": [
+        "SEM5-BLIND-GENERATOR-1.0.1",
+        "DETERMINISTIC_SEED"
+      ]
+    },
+    {
+      "task_id": "T-017-375e5bf9",
+      "split": "ADVERSARIAL_BLIND",
+      "inputs": [
+        {
+          "name": "v0",
+          "value_type": "SEQUENCE_INT",
+          "mutable": false
+        }
+      ],
+      "output_type": "INT",
+      "relation": {
+        "relation_kind": "COMPOSITION",
+        "stages": [
+          {
+            "relation_kind": "COLLECTION",
+            "expression": {
+              "expression_kind": "BINARY",
+              "operator": "ADD",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MULTIPLY",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 1
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 2
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 6
+              }
+            },
+            "include_when": {
+              "expression_kind": "BINARY",
+              "operator": "EQUAL",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MODULO",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 0
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 2
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 1
+              }
+            }
+          },
+          {
+            "relation_kind": "STATEFUL",
+            "initial": 1,
+            "update": {
+              "expression_kind": "BINARY",
+              "operator": "ADD",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "right": {
+                "expression_kind": "ARGUMENT",
+                "index": 1
+              }
+            },
+            "reset_when": null,
+            "emit_each": false
+          }
+        ]
+      },
+      "definitions": [],
+      "allowed_effects": [
+        "PURE",
+        "LOCAL_MUTATION",
+        "BUFFER_MUTATION"
+      ],
+      "preconditions": [
+        "inputs satisfy declared types and bounded sizes"
+      ],
+      "postconditions": [
+        "result satisfies the declared relation"
+      ],
+      "invariants": [
+        "all indexed accesses remain within the current buffer"
+      ],
+      "demonstrations": [],
+      "provenance": [
+        "SEM5-BLIND-GENERATOR-1.0.1",
+        "DETERMINISTIC_SEED"
+      ]
+    },
+    {
+      "task_id": "T-018-87b7c03c",
+      "split": "ADVERSARIAL_BLIND",
+      "inputs": [
+        {
+          "name": "v0",
+          "value_type": "SEQUENCE_INT",
+          "mutable": false
+        }
+      ],
+      "output_type": "INT",
+      "relation": {
+        "relation_kind": "COMPOSITION",
+        "stages": [
+          {
+            "relation_kind": "COLLECTION",
+            "expression": {
+              "expression_kind": "BINARY",
+              "operator": "ADD",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MULTIPLY",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 0
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 3
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 1
+              }
+            },
+            "include_when": {
+              "expression_kind": "BINARY",
+              "operator": "EQUAL",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MODULO",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 0
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 3
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 2
+              }
+            }
+          },
+          {
+            "relation_kind": "STATEFUL",
+            "initial": -1,
+            "update": {
+              "expression_kind": "BINARY",
+              "operator": "ADD",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "right": {
+                "expression_kind": "ARGUMENT",
+                "index": 1
+              }
+            },
+            "reset_when": {
+              "expression_kind": "BINARY",
+              "operator": "EQUAL",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MODULO",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 1
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 4
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 1
+              }
+            },
+            "emit_each": false
+          }
+        ]
+      },
+      "definitions": [],
+      "allowed_effects": [
+        "PURE",
+        "LOCAL_MUTATION",
+        "BUFFER_MUTATION"
+      ],
+      "preconditions": [
+        "inputs satisfy declared types and bounded sizes"
+      ],
+      "postconditions": [
+        "result satisfies the declared relation"
+      ],
+      "invariants": [
+        "all indexed accesses remain within the current buffer"
+      ],
+      "demonstrations": [],
+      "provenance": [
+        "SEM5-BLIND-GENERATOR-1.0.1",
+        "DETERMINISTIC_SEED"
+      ]
+    },
+    {
+      "task_id": "T-019-8eb9d289",
+      "split": "ADVERSARIAL_BLIND",
+      "inputs": [
+        {
+          "name": "v0",
+          "value_type": "SEQUENCE_INT",
+          "mutable": false
+        }
+      ],
+      "output_type": "INT",
+      "relation": {
+        "relation_kind": "COMPOSITION",
+        "stages": [
+          {
+            "relation_kind": "COLLECTION",
+            "expression": {
+              "expression_kind": "BINARY",
+              "operator": "ADD",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MULTIPLY",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 1
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 2
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 0
+              }
+            },
+            "include_when": {
+              "expression_kind": "BINARY",
+              "operator": "EQUAL",
+              "left": {
+                "expression_kind": "BINARY",
+                "operator": "MODULO",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 0
+                },
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 2
+                }
+              },
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 1
+              }
+            }
+          },
+          {
+            "relation_kind": "STATEFUL",
+            "initial": 3,
+            "update": {
+              "expression_kind": "BINARY",
+              "operator": "ADD",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "right": {
+                "expression_kind": "ARGUMENT",
+                "index": 1
+              }
+            },
+            "reset_when": null,
+            "emit_each": false
+          }
+        ]
+      },
+      "definitions": [],
+      "allowed_effects": [
+        "PURE",
+        "LOCAL_MUTATION",
+        "BUFFER_MUTATION"
+      ],
+      "preconditions": [
+        "inputs satisfy declared types and bounded sizes"
+      ],
+      "postconditions": [
+        "result satisfies the declared relation"
+      ],
+      "invariants": [
+        "all indexed accesses remain within the current buffer"
+      ],
+      "demonstrations": [],
+      "provenance": [
+        "SEM5-BLIND-GENERATOR-1.0.1",
+        "DETERMINISTIC_SEED"
+      ]
+    }
+  ],
+  "expected_outputs_included": false,
+  "family_metadata_included": false,
+  "reference_source_included": false,
+  "manifest_sha256": "430fe4c8caf96ab032e20e3b2a37df6f1b358d9e6e2d8fa17281fe23ce5b8540"
+}

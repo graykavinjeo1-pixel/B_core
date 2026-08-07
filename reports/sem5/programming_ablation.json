@@ -1,0 +1,46 @@
+[
+  {
+    "concept_id": "C000008",
+    "ancestor_ablation": false,
+    "full_solve_rate": 1.0,
+    "ablated_solve_rate": 1.0,
+    "full_mean_search_nodes": 36.0,
+    "ablated_mean_search_nodes": 60.0,
+    "lost_solutions": 0,
+    "search_cost_increase": 24.0,
+    "passed": true
+  },
+  {
+    "concept_id": "C000009",
+    "ancestor_ablation": false,
+    "full_solve_rate": 1.0,
+    "ablated_solve_rate": 1.0,
+    "full_mean_search_nodes": 29.571428571428573,
+    "ablated_mean_search_nodes": 54.57142857142857,
+    "lost_solutions": 0,
+    "search_cost_increase": 24.999999999999996,
+    "passed": true
+  },
+  {
+    "concept_id": "C000010",
+    "ancestor_ablation": false,
+    "full_solve_rate": 1.0,
+    "ablated_solve_rate": 1.0,
+    "full_mean_search_nodes": 36.0,
+    "ablated_mean_search_nodes": 61.0,
+    "lost_solutions": 0,
+    "search_cost_increase": 25.0,
+    "passed": true
+  },
+  {
+    "concept_id": "C000002",
+    "ancestor_ablation": true,
+    "full_solve_rate": 1.0,
+    "ablated_solve_rate": 1.0,
+    "full_mean_search_nodes": 36.0,
+    "ablated_mean_search_nodes": 60.0,
+    "lost_solutions": 0,
+    "search_cost_increase": 24.0,
+    "passed": true
+  }
+]

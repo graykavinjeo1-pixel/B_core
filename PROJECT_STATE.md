@@ -1,27 +1,29 @@
 # Project State
 
-**Canonical version:** 1.5.0
-**State frozen for:** SEM-4 completed baseline
+**Canonical version:** 1.6.0
+**State frozen for:** SEM-5 completed baseline
 
 This is an operational snapshot. It does not replace or override
 `CONSTITUTION.md`.
 
 | Field | Value |
 |---|---|
-| Current stage | `SEM-4 COMPLETE` |
+| Current stage | `SEM-5 COMPLETE` |
 | Stage S0 status | `PASS` |
 | SEM-0 implementation | `COMPLETE` |
 | SEM-0 result | `PASS - MINIMAL_AUTONOMOUS_CONCEPT_EMERGENCE` |
 | SEM-1 implementation | `COMPLETE` |
 | SEM-1 result | `PASS - RECURSIVE_LADDER_AND_SEMANTIC_SEPARATION_VERIFIED` |
-| Promoted concepts | `6` (`C000001`, `C000002`, `C000004`, `C000005`, `C000006`, `C000007`) |
+| Promoted concepts | `9` (`C000001`, `C000002`, `C000004`, `C000005`, `C000006`, `C000007`, `C000008`, `C000009`, `C000010`) |
 | SEM-2 implementation | `COMPLETE` |
 | SEM-2 result | `PASS - ADAPTIVE_REASONING_COMPLEXITY_CONTROL_VERIFIED` |
 | SEM-3 implementation | `COMPLETE` |
 | SEM-3 result | `PASS - AUTONOMOUS_ACTIVE_EXPERIMENT_SELECTION_VERIFIED` |
 | SEM-4 implementation | `COMPLETE` |
 | SEM-4 result | `PASS - MATHEMATICAL_FIRST_PRINCIPLES_DERIVATION_VERIFIED` |
-| SEM-5 | `NOT STARTED` |
+| SEM-5 implementation | `COMPLETE` |
+| SEM-5 result | `PASS - PROGRAMMING_FIRST_PRINCIPLES_EXPANSION_VERIFIED` |
+| SEM-6 | `NOT STARTED` |
 | Recursive self-mutation | `DISABLED` |
 | Recursive-improvement mode | `OBSERVE_MEASURE_ONLY` |
 | Proposal generation | `DISABLED` |
@@ -34,12 +36,12 @@ This is an operational snapshot. It does not replace or override
 | Current branch | `main` |
 | Current commit | `SELF` - resolve with `git rev-parse HEAD` |
 | Worktree at committed freeze | `CLEAN` |
-| Next allowed stage | `SEM-5_PROGRAMMING_FIRST_PRINCIPLES_EXPANSION` |
+| Next allowed stage | `SEM-6_DEFINITION_ONLY_KNOWLEDGE_FORAGING` |
 
 ## Canonical document status
 
 The normative documents remain complete and frozen at version 1.0.0. This
-operational state record advanced to version 1.5.0 after the sealed SEM-4 run:
+operational state record advanced to version 1.6.0 after the sealed SEM-5 run:
 
 - `CONSTITUTION.md`
 - `RESEARCH_HYPOTHESIS.md`
@@ -193,7 +195,41 @@ The detailed classification and contamination decisions are in
   mutations, full catalog scans, and routing false negatives were zero. Reports
   are sealed under `reports/sem4/`.
 
+## SEM-5 evidence snapshot
+
+- Frozen `SEM5-RUN-0002` used 130 fresh blind programming tasks: 20 scalar,
+  30 sequence/stateful, 20 nested-sequence, 20 file/image, 20 randomized
+  definition-only opaque-API, and 20 multi-stage adversarial tasks. Expected
+  outputs, evaluator family metadata, and reference source were absent from
+  solver-visible manifests; property cases were generated after synthesis.
+- ProgramIR was the typed, effect-checked semantic authority. Rust-Min was only
+  a deterministic adapter. All 130 canonical programs passed ProgramIR
+  validation, compiled offline with local `rustc` and no external crates, and
+  executed under timeout, output, path, process, dependency, and temporary
+  workspace containment. Containment violations and invalid effects accepted
+  were both zero.
+- Equal-budget solve rates were primitive A `0.4230769230769231`, structural B
+  `0.6923076923076923`, semantic no-promotion C `0.7692307692307693`, and full
+  first-principles D `1.0`. D reduced mean bounded search cost versus C by
+  `36.76923076923077`; hidden property and definition-only zero-shot rates
+  were both `1.0`.
+- Three programming concepts were proposed from recurring ProgramIR dependency
+  structures. Generation-3 `C000008` and `C000009` depend nontrivially on
+  immutable Generation-2 ancestors; Generation-4 `C000010` recombines both.
+  All three passed consistency, calibration, fresh reuse, cross-domain
+  transfer, language-separation, compression, lineage, and real equal-budget
+  ablation gates.
+- Best primitive-expanded program cost was `43` nodes versus `6` compressed
+  operational nodes, a compression ratio of `7.166666666666667`. The run
+  recorded three cross-domain transfers, 90 predecessor-concept reuses, a
+  maximum of five composed concepts, four simultaneous subproblems, and one
+  verified recombination.
+- Target-program solver leaks, Rust-token-dependent promoted concepts, network
+  calls, external LLM calls, local teacher calls, recursive source mutations,
+  full catalog scans, and routing false negatives were zero. Reports are
+  sealed under `reports/sem5/`.
+
 ## Advancement constraint
 
-Starting SEM-5 requires an explicit subsequent task. SEM-4 completion does not
+Starting SEM-6 requires an explicit subsequent task. SEM-5 completion does not
 authorize recursive self-application, which remains reserved for SEM-9.
