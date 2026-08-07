@@ -1,0 +1,19 @@
+{
+    "command":  "cargo build -p dockable-semantic-core --release --bin core-x0-canary",
+    "passed":  true,
+    "release_binary":  "target/release/core-x0-canary.exe",
+    "release_binary_bytes":  404992,
+    "release_binary_sha256":  "57a81bbe59dd9e524d7aea5f17ba7ecf471cec8e90da922d2f65de73f53b4ae2",
+    "dependency_packages":  [
+                                "dockable-semantic-core",
+                                "serde",
+                                "serde_json",
+                                "sha2 and their ordinary transitive libraries"
+                            ],
+    "semantic_reasoning_dependency":  false,
+    "language_adapter_dependency":  false,
+    "report_dependency":  false,
+    "blind_data_dependency":  false,
+    "network_dependency":  false,
+    "product_adapter_dependency":  false
+}

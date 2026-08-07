@@ -1,0 +1,25 @@
+{
+  "direct_goal_ir_received": true,
+  "language_adapter_loaded": false,
+  "network_used": false,
+  "passed": true,
+  "product_adapter_loaded": false,
+  "result_ir": {
+    "derivation_sha256": "0925b87058d09391d7af3af1ba7501d8e01b55f29743a3ce7f04e69db51152a9",
+    "failure": null,
+    "full_catalog_scans": 0,
+    "output": [
+      5,
+      2,
+      12
+    ],
+    "peak_active_concepts": 3,
+    "request_id": "CORE-X0-DIRECT-CANARY",
+    "routing_false_negatives": 0,
+    "search_expansions": 4,
+    "target_concept_id": "C000001",
+    "verified": true
+  },
+  "semantic_state_loaded": true,
+  "sparse_index_initialized": true
+}

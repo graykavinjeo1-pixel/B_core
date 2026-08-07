@@ -1,5 +1,7 @@
 [workspace]
 members = [
+    "crates/dockable-semantic-core",
+    "crates/semantic-core-adapters",
     "crates/synapse-core",
     "crates/synapse-recursive-core",
     "crates/semantic-reasoning",

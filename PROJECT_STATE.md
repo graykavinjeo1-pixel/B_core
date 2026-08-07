@@ -1,14 +1,14 @@
 # Project State
 
-**Canonical version:** 1.10.0
-**State frozen for:** SEM-9 format-canonicalized self-application regate passed
+**Canonical version:** 1.11.0
+**State frozen for:** CORE-X0 dockable core extraction passed
 
 This is an operational snapshot. It does not replace or override
 `CONSTITUTION.md`.
 
 | Field | Value |
 |---|---|
-| Current stage | `SEM-9 COMPLETE` |
+| Current stage | `SEM-9 COMPLETE; CORE-X0 COMPLETE` |
 | Stage S0 status | `PASS` |
 | SEM-0 implementation | `COMPLETE` |
 | SEM-0 result | `PASS - MINIMAL_AUTONOMOUS_CONCEPT_EMERGENCE` |
@@ -31,6 +31,7 @@ This is an operational snapshot. It does not replace or override
 | SEM-8 result | `PASS - CROSS_DOMAIN_SEMANTIC_MECHANISM_TRANSFER_VERIFIED` |
 | SEM-9 implementation | `COMPLETE` |
 | SEM-9 result | `PASS - FORMAT_CANONICALIZED_SELF_APPLICATION_REGATE_VERIFIED` |
+| CORE-X0 engineering checkpoint | `COMPLETE - DOCKABLE_CORE_EXTRACTION_AND_WORKSPACE_SEPARATION_VERIFIED` |
 | SEM-10 | `NOT STARTED` |
 | Recursive self-mutation | `DISABLED` |
 | Recursive-improvement mode | `OBSERVE_MEASURE_ONLY` |
@@ -49,8 +50,9 @@ This is an operational snapshot. It does not replace or override
 ## Canonical document status
 
 The normative documents remain complete and frozen at version 1.0.0. This
-operational state record advanced to version 1.10.0 after preserving the failed
-SEM-9 run and passing its format-only fresh regate:
+operational state record advanced to version 1.11.0 after preserving the failed
+SEM-9 run, passing its format-only fresh regate, and extracting the dockable
+runtime without semantic change:
 
 - `CONSTITUTION.md`
 - `RESEARCH_HYPOTHESIS.md`
@@ -373,10 +375,34 @@ The detailed classification and contamination decisions are in
   unintegrated. Reports and candidate evidence are sealed under
   `reports/sem9-r1/`.
 
+## CORE-X0 engineering snapshot
+
+- The semantic DSL, substrate, adaptive reasoner, language-independent request
+  types, runtime state loader, sparse index, and stable capability ABI are
+  physically isolated in `crates/dockable-semantic-core`.
+- Language and generic product capabilities are isolated in
+  `crates/semantic-core-adapters`; research runners, blind data, evaluation,
+  and historical evidence remain in `crates/semantic-reasoning` and
+  `reports/`.
+- The core-only release build and direct GoalIR canary passed without language,
+  reports, blind data, network, sandbox, or product dependencies. Language and
+  generic capability docking canaries also passed through ABI version `1`.
+- Integrated and extracted paths achieved exact canonical semantic parity
+  `1.0` across 21 tasks. All twelve promoted concept hash receipts remained
+  unchanged, with zero full-catalog scans and routing false negatives.
+- The release canary is `404992` bytes. The logical deployable bundle including
+  semantic state, sparse index, compact runtime provenance, config, and ABI is
+  `409189` bytes. Research artifacts and build caches are measured separately
+  and excluded.
+- No new reasoning feature, concept promotion, semantic/search/promotion/self-
+  improvement policy change, SEM9-R1 candidate integration, or SEM-10 execution
+  occurred. Reports are sealed under `reports/core-x0/`.
+
 ## Advancement constraint
 
 SEM-9 is complete through the passing R1 fresh regate. `SEM9-RUN-0001` remains
 a permanent canonical failure record, and the verified sandbox candidate must
-not be integrated automatically. SEM-10 has not started; beginning
+not be integrated automatically. CORE-X0 is a completed engineering packaging
+checkpoint, not a semantic capability stage. SEM-10 has not started; beginning
 `SEM-10_BOUNDED_RECURSIVE_IMPROVEMENT_LOOP` requires an explicit subsequent
 task.

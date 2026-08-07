@@ -47,6 +47,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "dockable-semantic-core"
+version = "0.1.0"
+dependencies = [
+ "serde",
+ "serde_json",
+ "sha2",
+]
+
+[[package]]
 name = "generic-array"
 version = "0.14.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -93,9 +102,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "semantic-core-adapters"
+version = "0.1.0"
+dependencies = [
+ "dockable-semantic-core",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "semantic-reasoning"
 version = "0.1.0"
 dependencies = [
+ "dockable-semantic-core",
+ "semantic-core-adapters",
  "serde",
  "serde_json",
  "sha2",

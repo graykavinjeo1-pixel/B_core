@@ -1,0 +1,43 @@
+{
+  "generic_capability": {
+    "adapter": "GENERIC_DETERMINISTIC_CAPABILITY",
+    "capability_contract_version": 1,
+    "core_abi_version": 1,
+    "passed": true,
+    "result": {
+      "capability_id": "CAPABILITY.DETERMINISTIC_OFFSET.V1",
+      "contract_validated": true,
+      "failure": null,
+      "output": {
+        "type": "INTEGER",
+        "value": 12
+      }
+    },
+    "source_code_fork": false
+  },
+  "language": {
+    "adapter": "LANGUAGE_CORTEX",
+    "core_abi_version": 1,
+    "goal_ir_created": true,
+    "passed": true,
+    "result_ir": {
+      "derivation_sha256": "1b607dfcac01a01c5caf7a9e7787a4fad5995ecb17e2c5c4b427aba9daad3c7a",
+      "failure": null,
+      "full_catalog_scans": 0,
+      "output": [
+        5,
+        2,
+        12
+      ],
+      "peak_active_concepts": 3,
+      "request_id": "CORE-X0-LANGUAGE-DOCK",
+      "routing_false_negatives": 0,
+      "search_expansions": 4,
+      "target_concept_id": "C000001",
+      "verified": true
+    },
+    "text_entered_core": false
+  },
+  "passed": true,
+  "stable_contract_only": true
+}

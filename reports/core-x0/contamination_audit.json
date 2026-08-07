@@ -1,0 +1,16 @@
+{
+  "blind_data_loaded_by_core": 0,
+  "full_catalog_scans": 0,
+  "language_tokens_in_core_state": 0,
+  "new_promoted_concepts": 0,
+  "new_reasoning_features": 0,
+  "passed": true,
+  "production_sem9_r1_candidate_integrations": 0,
+  "promotion_policy_changes": 0,
+  "research_artifacts_loaded_by_core": 0,
+  "routing_false_negatives": 0,
+  "search_policy_changes": 0,
+  "self_improvement_policy_changes": 0,
+  "sem10_started": false,
+  "semantic_logic_changes": 0
+}

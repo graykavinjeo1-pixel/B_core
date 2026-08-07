@@ -1,7 +1,6 @@
-pub mod dsl;
+pub mod core_x0;
 pub mod experiment;
 pub mod mining;
-pub mod reasoning;
 pub mod reporting;
 pub mod sem1;
 pub mod sem2;
@@ -13,8 +12,9 @@ pub mod sem7;
 pub mod sem8;
 pub mod sem9;
 pub mod sem9r1;
-pub mod substrate;
 pub mod tasks;
+
+pub use dockable_semantic_core::{dsl, reasoning, substrate};
 
 pub use experiment::{run_sem0, Sem0Outcome};
 pub use sem1::experiment::{run_sem1, Sem1Outcome};

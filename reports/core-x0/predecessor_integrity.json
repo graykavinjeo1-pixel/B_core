@@ -1,0 +1,73 @@
+{
+  "canonical_files_verified": 8,
+  "canonical_manifest_sha256": "6d83039916c486671c33acf52faae58ac0c37ab0985c7c70d2ff1c401e981de8",
+  "passed": true,
+  "predecessor_commit": "4cc21b3c2d3358160a06d57232b3ee371a5f9b73",
+  "promoted_concepts_verified": 12,
+  "recursive_candidate_integrated": false,
+  "sem10_started": false,
+  "sem9_failure_record_preserved": true,
+  "sem9_r1_pass_preserved": true,
+  "stage_artifacts": [
+    {
+      "bytes": 1362,
+      "path": "reports/sem0/sem0_final_report.json",
+      "sha256": "bc90cd83389c3df9be53d558b0bb040947a8724255ff27a704a1c20b21960aa1"
+    },
+    {
+      "bytes": 1739,
+      "path": "reports/sem1/sem1_final_report.json",
+      "sha256": "dd3e87255d09ed40a8437b3216ce709c3e96caecadd287217c79a89f0b834173"
+    },
+    {
+      "bytes": 2988,
+      "path": "reports/sem2/sem2_final_report.json",
+      "sha256": "7f1a0f211e2ea9577b447785025c01e184b745dc960cca1315306acaedb2c3a1"
+    },
+    {
+      "bytes": 3369,
+      "path": "reports/sem3/sem3_final_report.json",
+      "sha256": "9432cd7c1b808e8d25357423ff7e1e7c4a05b00a9516081fcbca857e010685d7"
+    },
+    {
+      "bytes": 2915,
+      "path": "reports/sem4/sem4_final_report.json",
+      "sha256": "b6e92e4119542c2abfd4f89493839fbac0404d2ff19dc97198a7488debb0dc64"
+    },
+    {
+      "bytes": 2436,
+      "path": "reports/sem5/sem5_final_report.json",
+      "sha256": "d7fdafde600c858dd540309d771e2dc4917c7c687e0ce881fde756bedf51dca0"
+    },
+    {
+      "bytes": 2595,
+      "path": "reports/sem6/sem6_final_report.json",
+      "sha256": "c4c3c01e87493bd9264a469a7aed9893de4cdf51052c884f0b8a062c9d5858ca"
+    },
+    {
+      "bytes": 1778,
+      "path": "reports/sem7/sem7_final_report.json",
+      "sha256": "d240a855c02726ed8e7b72c0601f39f46b5bdb43956d9e66148c91641bcad278"
+    },
+    {
+      "bytes": 2680,
+      "path": "reports/sem8/sem8_final_report.json",
+      "sha256": "23b13dc774946f1fc98387e7bb63ec40494b80ff3c4ce0f333424fa69da6f5a1"
+    },
+    {
+      "bytes": 2921,
+      "path": "reports/sem9/sem9_final_report.json",
+      "sha256": "63c859c0cdaf26e43d58ba2855f5a3f5885b8f3c566891b8e4ce4c65396b7222"
+    },
+    {
+      "bytes": 3005,
+      "path": "reports/sem9/run-0001_failure_receipt.json",
+      "sha256": "5bafafb8e331914e153a6f9671b71d186173d2cd2289dcb531554362e9a53295"
+    },
+    {
+      "bytes": 4833,
+      "path": "reports/sem9-r1/sem9_r1_final_report.json",
+      "sha256": "f2493ee3136493fc0690c174e8fe19bf73d4d63480c9f89e3dd5ddefb2a278d5"
+    }
+  ]
+}

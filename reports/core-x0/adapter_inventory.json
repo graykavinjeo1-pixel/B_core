@@ -1,0 +1,43 @@
+{
+  "adapters": [
+    {
+      "adapter": "LANGUAGE_CORTEX",
+      "contains_semantic_state_copy": false,
+      "core_abi_version": 1,
+      "location": "crates/semantic-core-adapters/src/language.rs"
+    },
+    {
+      "adapter": "GENERIC_DETERMINISTIC_CAPABILITY",
+      "contains_semantic_state_copy": false,
+      "core_abi_version": 1,
+      "location": "crates/semantic-core-adapters/src/generic.rs"
+    },
+    {
+      "adapter": "FILESYSTEM",
+      "location": "research-only SEM-5 sandbox; not docked",
+      "status": "OUTSIDE_CORE"
+    },
+    {
+      "adapter": "RUST_COMPILER_EXECUTION",
+      "location": "research-only SEM-5 sandbox; not docked",
+      "status": "OUTSIDE_CORE"
+    },
+    {
+      "adapter": "NETWORK_FORAGING",
+      "location": "research-only SEM-6 firewall; not docked",
+      "status": "OUTSIDE_CORE"
+    },
+    {
+      "adapter": "IMAGE_BUFFER",
+      "location": "future adapter",
+      "status": "NOT_IMPLEMENTED"
+    },
+    {
+      "adapter": "CAMERA_AUDIO_ROBOTICS_UI",
+      "location": "future adapters",
+      "status": "NOT_IMPLEMENTED"
+    }
+  ],
+  "passed": true,
+  "product_specific_core_forks": 0
+}

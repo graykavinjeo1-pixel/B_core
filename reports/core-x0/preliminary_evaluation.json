@@ -1,0 +1,9 @@
+{
+  "core_behavior_parity": 1.0,
+  "core_runtime_canary_pass": true,
+  "language_adapter_dock_pass": true,
+  "generic_capability_dock_pass": true,
+  "promoted_concept_hash_changes": 0,
+  "full_catalog_scans": 0,
+  "routing_false_negatives": 0
+}

@@ -1,32 +1,10 @@
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 
+pub use dockable_semantic_core::task::{Demonstration, Split, VisibleTask};
+
 use crate::dsl::{ExecutionError, ScalarOperator};
 use crate::substrate::CounterfactualCode;
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
-pub enum Split {
-    TrainDiscovery,
-    Calibration,
-    FreshBlind,
-    AdversarialCounterfactual,
-}
-
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-pub struct Demonstration {
-    pub input: Vec<i64>,
-    pub observed_output: Vec<i64>,
-}
-
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-pub struct VisibleTask {
-    pub task_id: String,
-    pub split: Split,
-    pub scalar_parameter: i64,
-    pub demonstrations: Vec<Demonstration>,
-    pub query_input: Vec<i64>,
-}
 
 #[derive(Debug, Clone)]
 pub struct EvaluationTask {

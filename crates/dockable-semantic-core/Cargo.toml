@@ -1,0 +1,23 @@
+[package]
+name = "dockable-semantic-core"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+description = "Product-agnostic semantic runtime extracted from the research workspace."
+publish = false
+
+[lib]
+name = "dockable_semantic_core"
+path = "src/lib.rs"
+
+[[bin]]
+name = "core-x0-canary"
+path = "src/core_x0_canary.rs"
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+sha2 = "0.10"
+
+[lints]
+workspace = true

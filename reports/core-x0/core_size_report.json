@@ -1,0 +1,22 @@
+{
+    "measurement_notes":  {
+                                "core_source_bytes":  "all Rust source under crates/dockable-semantic-core/src",
+                                "adapter_bytes":  "adapter module plus its independent canary source; adapters are excluded from core deployable total",
+                                "research_artifact_bytes":  "reports tree snapshot",
+                                "build_cache_bytes":  "target tree snapshot; entirely regenerable and excluded from core deployable total"
+                            },
+    "core_source_bytes":  58583,
+    "core_release_binary_bytes":  404992,
+    "core_semantic_state_bytes":  2662,
+    "core_index_bytes":  281,
+    "core_runtime_provenance_bytes":  782,
+    "core_config_bytes":  254,
+    "core_abi_manifest_bytes":  218,
+    "core_total_deployable_bytes":  409189,
+    "language_adapter_bytes":  3933,
+    "other_adapter_bytes":  2913,
+    "research_artifact_bytes":  252896644,
+    "build_cache_bytes":  4804530936,
+    "git_bytes":  10056299,
+    "size_optimization_performed":  false
+}

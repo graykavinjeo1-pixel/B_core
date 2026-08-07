@@ -1,0 +1,26 @@
+{
+  "adapter_package": "crates/semantic-core-adapters",
+  "authoritative_semantic_state": "crates/dockable-semantic-core/state/semantic_state.json",
+  "authoritative_sparse_index": "crates/dockable-semantic-core/state/sparse_index.json",
+  "core_depends_on_language_layer": false,
+  "core_depends_on_research_artifacts": false,
+  "core_interface_module": "interface",
+  "core_package": "crates/dockable-semantic-core",
+  "core_runtime_modules": [
+    "dsl",
+    "substrate",
+    "reasoning",
+    "runtime",
+    "state",
+    "task"
+  ],
+  "forbidden_product_forks": [
+    "core_robot",
+    "core_coding",
+    "core_character",
+    "core_video"
+  ],
+  "one_core_multiple_adapters": true,
+  "passed": true,
+  "research_package": "crates/semantic-reasoning"
+}

@@ -74,7 +74,13 @@ path = "src/sem9_r1_main.rs"
 name = "sem9-r1-freeze"
 path = "src/sem9_r1_freeze_main.rs"
 
+[[bin]]
+name = "core-x0-evaluate"
+path = "src/core_x0_main.rs"
+
 [dependencies]
+dockable-semantic-core = { path = "../dockable-semantic-core", version = "0.1.0" }
+semantic-core-adapters = { path = "../semantic-core-adapters", version = "0.1.0" }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 sha2 = "0.10"

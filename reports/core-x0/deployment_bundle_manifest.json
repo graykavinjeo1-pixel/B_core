@@ -1,0 +1,60 @@
+{
+    "bundle_id":  "DOCKABLE-SEMANTIC-CORE-X0-ABI1",
+    "reproducible_build_command":  "cargo build -p dockable-semantic-core --release --bin core-x0-canary",
+    "core_abi_version":  1,
+    "semantic_state_version":  "SEMANTIC-STATE-SEM8-1",
+    "capability_contract_version":  1,
+    "components":  [
+                       {
+                           "logical_path":  "bin/core-x0-canary.exe",
+                           "source_path":  "target/release/core-x0-canary.exe",
+                           "bytes":  404992,
+                           "sha256":  "57a81bbe59dd9e524d7aea5f17ba7ecf471cec8e90da922d2f65de73f53b4ae2"
+                       },
+                       {
+                           "logical_path":  "state/semantic_state.json",
+                           "source_path":  "crates/dockable-semantic-core/state/semantic_state.json",
+                           "bytes":  2662,
+                           "sha256":  "d1abd8de410f5284773f1e582937922dc514513ed738eb9f04e8bf2735185d3c"
+                       },
+                       {
+                           "logical_path":  "state/sparse_index.json",
+                           "source_path":  "crates/dockable-semantic-core/state/sparse_index.json",
+                           "bytes":  281,
+                           "sha256":  "77b17332b5ff7204c28e9445e689276049afd6e89308e7e242904570a283e6fc"
+                       },
+                       {
+                           "logical_path":  "state/runtime_provenance.json",
+                           "source_path":  "crates/dockable-semantic-core/state/runtime_provenance.json",
+                           "bytes":  782,
+                           "sha256":  "4074ebe22ab02fb45708ada5e59519fd531e90dd0045d74af6739be6a2e05131"
+                       },
+                       {
+                           "logical_path":  "config/core-config.json",
+                           "source_path":  "crates/dockable-semantic-core/config/core-config.json",
+                           "bytes":  254,
+                           "sha256":  "0f4d4820216d1fcb1aa05a7719fdb6e586b0c969850cff2d4732f070ff2a6451"
+                       },
+                       {
+                           "logical_path":  "abi/core-abi.json",
+                           "source_path":  "crates/dockable-semantic-core/abi/core-abi.json",
+                           "bytes":  218,
+                           "sha256":  "87affaee5f9c2c9fa4a467fabebb6d9de655df9e782a04022beab6f04f921564"
+                       }
+                   ],
+    "total_deployable_bytes":  409189,
+    "excluded":  [
+                     "reports/",
+                     "tests/",
+                     "target/debug/",
+                     "historical runs",
+                     "blind data",
+                     ".git/",
+                     "sandboxes/",
+                     "adapters/",
+                     "debug binaries"
+                 ],
+    "debug_binaries_included":  false,
+    "research_artifacts_included":  false,
+    "language_adapter_included":  false
+}

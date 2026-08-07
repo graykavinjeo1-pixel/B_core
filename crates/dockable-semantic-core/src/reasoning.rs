@@ -9,7 +9,7 @@ use crate::dsl::{
     ScalarOperator,
 };
 use crate::substrate::{CacheEntry, ConceptIR, StructuralMacro};
-use crate::tasks::VisibleTask;
+use crate::task::VisibleTask;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
@@ -313,6 +313,19 @@ impl AdaptiveReasoner {
             );
         };
         self.pattern_reuse(task, budget, pattern, &concept.concept_id, true)
+    }
+
+    /// Executes an already promoted semantic pattern from the authoritative
+    /// runtime state package. This is the extracted interface to the same
+    /// `pattern_reuse` path used by `semantic_candidate`.
+    pub fn semantic_pattern(
+        &self,
+        task: &VisibleTask,
+        budget: ResourceBudget,
+        pattern: &[InstructionPattern],
+        concept_id: &str,
+    ) -> SolveResult {
+        self.pattern_reuse(task, budget, pattern, concept_id, true)
     }
 
     fn pattern_reuse(
@@ -882,14 +895,32 @@ pub fn primitive_id(instruction: &Instruction) -> &'static str {
 #[cfg(test)]
 mod tests {
     use super::{AdaptiveReasoner, ResourceBudget};
-    use crate::tasks::generate_tasks;
+    use crate::task::{Demonstration, Split, VisibleTask};
+
+    fn task() -> VisibleTask {
+        VisibleTask {
+            task_id: "CORE-UNIT-001".to_string(),
+            split: Split::Calibration,
+            scalar_parameter: 5,
+            demonstrations: vec![
+                Demonstration {
+                    input: vec![1, -2, 4],
+                    observed_output: vec![6, 3, 9],
+                },
+                Demonstration {
+                    input: vec![0, 3],
+                    observed_output: vec![5, 8],
+                },
+            ],
+            query_input: vec![7, -3, 2, 0, 11],
+        }
+    }
 
     #[test]
     fn adaptive_search_solves_discovery_without_fixed_depth_ceiling() {
-        let (train, _, _) = generate_tasks();
         let reasoner = AdaptiveReasoner::default();
-        let mut result = reasoner.primitive_only(train[0].visible(), ResourceBudget::discovery());
-        let verified = train[0].score_committed(&result.committed());
+        let mut result = reasoner.primitive_only(&task(), ResourceBudget::discovery());
+        let verified = result.committed() == Ok(vec![12, 2, 7, 5, 16]);
         result.seal_score(verified);
         assert!(result.verified_after_commit);
         assert!(result.metrics.reasoning_depth > 5);
@@ -898,9 +929,8 @@ mod tests {
 
     #[test]
     fn tight_expansion_budget_fails_closed() {
-        let (_, _, blind) = generate_tasks();
         let reasoner = AdaptiveReasoner::default();
-        let result = reasoner.primitive_only(blind[0].visible(), ResourceBudget::blind());
+        let result = reasoner.primitive_only(&task(), ResourceBudget::blind());
         assert!(result.committed_output.is_none());
         assert_eq!(result.termination, "EXPANSION_BUDGET_EXHAUSTED");
     }

@@ -1,0 +1,467 @@
+{
+    "measured_at":  "2026-08-08T00:00:00+09:00",
+    "total_project_bytes":  5069729940,
+    "git_bytes":  10056299,
+    "target_bytes":  4804530936,
+    "report_bytes":  252896644,
+    "blind_data_bytes":  47125253,
+    "sandbox_bytes":  97982,
+    "test_bytes":  1846174,
+    "source_bytes":  2110816,
+    "semantic_state_bytes":  2943,
+    "file_count":  6784,
+    "top_50_files":  [
+                         {
+                             "path":  "target/debug/deps/libsemantic_reasoning-df53f73c8f9b2c35.rlib",
+                             "bytes":  251847888
+                         },
+                         {
+                             "path":  "target/debug/deps/libsemantic_reasoning-807efd1b366f27e2.rlib",
+                             "bytes":  248692696
+                         },
+                         {
+                             "path":  "target/debug/incremental/semantic_reasoning-1za6kcq5ntq95/s-hl4p85ika2-0rmskyu-84ywkp80nb2s15qxdw3197uua/dep-graph.bin",
+                             "bytes":  115318944
+                         },
+                         {
+                             "path":  "target/debug/incremental/semantic_reasoning-21nd8l3kw7apf/s-hl4pt64dq8-1yjwb1q-559n5dt7ddpsg6t36ehhukexg/dep-graph.bin",
+                             "bytes":  109471435
+                         },
+                         {
+                             "path":  "target/debug/incremental/semantic_reasoning-0diutnihvsji2/s-hl4p73pg8f-0p6lwyf-5d9ysr4pkxd794ghw36jcushe/dep-graph.bin",
+                             "bytes":  103679699
+                         },
+                         {
+                             "path":  "target/debug/incremental/semantic_reasoning-21nd8l3kw7apf/s-hl4pt64dq8-1yjwb1q-559n5dt7ddpsg6t36ehhukexg/query-cache.bin",
+                             "bytes":  98439404
+                         },
+                         {
+                             "path":  "target/debug/incremental/semantic_reasoning-2mjkieojkkd0v/s-hl4pzq6ujh-0kfuqev-bk8a5ptmqdenkv6i3vwpj8mwm/dep-graph.bin",
+                             "bytes":  98236768
+                         },
+                         {
+                             "path":  "target/debug/incremental/semantic_reasoning-1za6kcq5ntq95/s-hl4p85ika2-0rmskyu-84ywkp80nb2s15qxdw3197uua/query-cache.bin",
+                             "bytes":  97912509
+                         },
+                         {
+                             "path":  "reports/sem2/equal_resource_results.json",
+                             "bytes":  91732162
+                         },
+                         {
+                             "path":  "target/debug/deps/semantic_reasoning-14010afc5fc68126.pdb",
+                             "bytes":  89362432
+                         },
+                         {
+                             "path":  "target/debug/deps/semantic_reasoning-e8ae9108ad37b3b4.pdb",
+                             "bytes":  81514496
+                         },
+                         {
+                             "path":  "target/debug/incremental/semantic_reasoning-2sl5aeiivcshq/s-hl4p7qpt97-1kj517d-5nb45wzfoxl3y6doll5rmuo0t/dep-graph.bin",
+                             "bytes":  74404383
+                         },
+                         {
+                             "path":  "target/debug/incremental/semantic_reasoning-250b77fgqmn5o/s-hl4p7qphij-13ujz2l-bbb290gsc0t79mjh82tbhexlz/dep-graph.bin",
+                             "bytes":  70142103
+                         },
+                         {
+                             "path":  "target/debug/incremental/semantic_reasoning-2fjseatm9ngsd/s-hl4pso5m9e-0msv7kd-9jq5xii3nrqp6e8oucas707jn/dep-graph.bin",
+                             "bytes":  69488754
+                         },
+                         {
+                             "path":  "target/debug/incremental/semantic_reasoning-04mmdj047u2uh/s-hl4pso4z2r-16p7y50-5gufw6c1gk2c7ec2glqivdkrv/dep-graph.bin",
+                             "bytes":  65596132
+                         },
+                         {
+                             "path":  "target/debug/incremental/semantic_reasoning-3h5zuwn1skwmf/s-hl4ppctjev-1ksal85-3l30at0dyy9gbt6lmbd6ntu6y/dep-graph.bin",
+                             "bytes":  62646905
+                         },
+                         {
+                             "path":  "target/debug/incremental/semantic_reasoning-16ucljqu5i27y/s-hl4n620bv4-0efrem3-8r90lhjzjyj4vx1giclywgu9q/dep-graph.bin",
+                             "bytes":  60251933
+                         },
+                         {
+                             "path":  "target/debug/incremental/semantic_reasoning-2mjkieojkkd0v/s-hl4pzq6ujh-0kfuqev-bk8a5ptmqdenkv6i3vwpj8mwm/query-cache.bin",
+                             "bytes":  56921235
+                         },
+                         {
+                             "path":  "target/debug/incremental/semantic_reasoning-0diutnihvsji2/s-hl4p73pg8f-0p6lwyf-5d9ysr4pkxd794ghw36jcushe/query-cache.bin",
+                             "bytes":  55331635
+                         },
+                         {
+                             "path":  "target/debug/sem9_run.pdb",
+                             "bytes":  52383744
+                         },
+                         {
+                             "path":  "target/debug/deps/sem9_run.pdb",
+                             "bytes":  52383744
+                         },
+                         {
+                             "path":  "target/debug/sem9_r1_run.pdb",
+                             "bytes":  52080640
+                         },
+                         {
+                             "path":  "target/debug/deps/sem9_r1_run.pdb",
+                             "bytes":  52080640
+                         },
+                         {
+                             "path":  "target/debug/deps/sem8_run.pdb",
+                             "bytes":  50630656
+                         },
+                         {
+                             "path":  "target/debug/sem8_run.pdb",
+                             "bytes":  50630656
+                         },
+                         {
+                             "path":  "target/debug/sem9_r1_freeze.pdb",
+                             "bytes":  49909760
+                         },
+                         {
+                             "path":  "target/debug/deps/sem9_r1_freeze.pdb",
+                             "bytes":  49909760
+                         },
+                         {
+                             "path":  "target/debug/deps/core_x0_evaluate.pdb",
+                             "bytes":  48132096
+                         },
+                         {
+                             "path":  "target/debug/core_x0_evaluate.pdb",
+                             "bytes":  48132096
+                         },
+                         {
+                             "path":  "target/debug/sem9_freeze.pdb",
+                             "bytes":  48082944
+                         },
+                         {
+                             "path":  "target/debug/deps/sem9_freeze.pdb",
+                             "bytes":  48082944
+                         },
+                         {
+                             "path":  "target/debug/sem8_freeze.pdb",
+                             "bytes":  45936640
+                         },
+                         {
+                             "path":  "target/debug/deps/sem8_freeze.pdb",
+                             "bytes":  45936640
+                         },
+                         {
+                             "path":  "target/debug/sem7_run.pdb",
+                             "bytes":  44224512
+                         },
+                         {
+                             "path":  "target/debug/deps/sem7_run.pdb",
+                             "bytes":  44224512
+                         },
+                         {
+                             "path":  "target/debug/sem6_run.pdb",
+                             "bytes":  42110976
+                         },
+                         {
+                             "path":  "target/debug/deps/sem6_run.pdb",
+                             "bytes":  42110976
+                         },
+                         {
+                             "path":  "target/debug/deps/sem5_run.pdb",
+                             "bytes":  41168896
+                         },
+                         {
+                             "path":  "target/debug/sem5_run.pdb",
+                             "bytes":  41168896
+                         },
+                         {
+                             "path":  "target/debug/deps/sem7_freeze.pdb",
+                             "bytes":  40734720
+                         },
+                         {
+                             "path":  "target/debug/sem7_freeze.pdb",
+                             "bytes":  40734720
+                         },
+                         {
+                             "path":  "reports/sem2/blind_manifest.json",
+                             "bytes":  38662640
+                         },
+                         {
+                             "path":  "reports/sem2/equal_accuracy_results.json",
+                             "bytes":  37508366
+                         },
+                         {
+                             "path":  "target/debug/deps/sem6_freeze.pdb",
+                             "bytes":  35753984
+                         },
+                         {
+                             "path":  "target/debug/sem6_freeze.pdb",
+                             "bytes":  35753984
+                         },
+                         {
+                             "path":  "target/debug/deps/libsemantic_reasoning-df53f73c8f9b2c35.rmeta",
+                             "bytes":  29833429
+                         },
+                         {
+                             "path":  "target/debug/incremental/semantic_reasoning-2sl5aeiivcshq/s-hl4p7qpt97-1kj517d-5nb45wzfoxl3y6doll5rmuo0t/query-cache.bin",
+                             "bytes":  29362481
+                         },
+                         {
+                             "path":  "target/debug/incremental/semantic_reasoning-1za6kcq5ntq95/s-hl4p85ika2-0rmskyu-84ywkp80nb2s15qxdw3197uua/00z8h3wc3lsujf5v3eb01dp6y.o",
+                             "bytes":  28410947
+                         },
+                         {
+                             "path":  "target/debug/incremental/semantic_reasoning-21nd8l3kw7apf/s-hl4pt64dq8-1yjwb1q-559n5dt7ddpsg6t36ehhukexg/8w2reb6jacyjlwhyt0nqyn8k6.o",
+                             "bytes":  28357486
+                         },
+                         {
+                             "path":  "target/debug/incremental/semantic_reasoning-2fjseatm9ngsd/s-hl4pso5m9e-0msv7kd-9jq5xii3nrqp6e8oucas707jn/query-cache.bin",
+                             "bytes":  28228632
+                         }
+                     ],
+    "top_50_directories":  [
+                               {
+                                   "path":  "target/sem9-r1/RUN-0002/FROZEN-PREDECESSOR-A/target-build/debug",
+                                   "bytes":  13153175,
+                                   "file_count":  111
+                               },
+                               {
+                                   "path":  "target/sem9-r1/RUN-0002/FROZEN-PREDECESSOR-A/target-build/debug/deps",
+                                   "bytes":  4177591,
+                                   "file_count":  6
+                               },
+                               {
+                                   "path":  "target/sem9-r1/RUN-0002/FROZEN-PREDECESSOR-A/src",
+                                   "bytes":  2916,
+                                   "file_count":  2
+                               },
+                               {
+                                   "path":  "target/sem9-r1/RUN-0002/FROZEN-PREDECESSOR-A/target-build",
+                                   "bytes":  13154472,
+                                   "file_count":  113
+                               },
+                               {
+                                   "path":  "target/sem9-r1/RUN-0002/FROZEN-PREDECESSOR-A/target-build/debug/examples",
+                                   "bytes":  0,
+                                   "file_count":  0
+                               },
+                               {
+                                   "path":  "target/sem9-r1/RUN-0002/FROZEN-PREDECESSOR-A/target-build/debug/build",
+                                   "bytes":  0,
+                                   "file_count":  0
+                               },
+                               {
+                                   "path":  "target/sem9-r1/RUN-0002/FROZEN-PREDECESSOR-A/target-build/debug/incremental",
+                                   "bytes":  4807489,
+                                   "file_count":  91
+                               },
+                               {
+                                   "path":  "target/sem9-r1/RUN-0002/FROZEN-PREDECESSOR-A/target-build/debug/.fingerprint",
+                                   "bytes":  1000,
+                                   "file_count":  8
+                               },
+                               {
+                                   "path":  "target/sem9-r1/RUN-0002/RAW-CANDIDATE-AUDIT/target-build/debug/.fingerprint/sem9-sandbox-probe-9591508601a708d6",
+                                   "bytes":  532,
+                                   "file_count":  4
+                               },
+                               {
+                                   "path":  "target/sem9-r1/RUN-0002/RAW-CANDIDATE-AUDIT/target-build/debug/build",
+                                   "bytes":  0,
+                                   "file_count":  0
+                               },
+                               {
+                                   "path":  "target/sem9-r1/RUN-0002/RAW-CANDIDATE-AUDIT/target-build/debug/incremental/sem9_sandbox_probe-355klok5nq3n6",
+                                   "bytes":  2596619,
+                                   "file_count":  32
+                               },
+                               {
+                                   "path":  "target/sem9-r1/RUN-0002/RAW-CANDIDATE-AUDIT/target-build/debug/.fingerprint",
+                                   "bytes":  1000,
+                                   "file_count":  8
+                               },
+                               {
+                                   "path":  "target/sem9-r1/RUN-0002/RAW-CANDIDATE-AUDIT/target-build/debug/examples",
+                                   "bytes":  0,
+                                   "file_count":  0
+                               },
+                               {
+                                   "path":  "target/sem9-r1/RUN-0002/RAW-CANDIDATE-AUDIT/target-build/debug/incremental/reasoner_probe-3m7uwle0u61me/s-hl4p8w5wvk-14ihpn0-d7zwfipy11q1tl6jn2wfnwe4s",
+                                   "bytes":  2210570,
+                                   "file_count":  58
+                               },
+                               {
+                                   "path":  "target/sem9-r1/RUN-0002/RAW-CANDIDATE-AUDIT/target-build/debug/.fingerprint/sem9-sandbox-probe-dcb10f528f90170d",
+                                   "bytes":  468,
+                                   "file_count":  4
+                               },
+                               {
+                                   "path":  "target/sem9-r1/RUN-0002/RAW-CANDIDATE-AUDIT/target-build/debug/incremental/reasoner_probe-3m7uwle0u61me",
+                                   "bytes":  2210570,
+                                   "file_count":  59
+                               },
+                               {
+                                   "path":  "target/sem9-r1/RUN-0002/RAW-CANDIDATE-AUDIT/target-build/debug/incremental/sem9_sandbox_probe-355klok5nq3n6/s-hl4p8vyxvj-197exfy-5xbh7dbzlmajgl6r7mk6s0ahu",
+                                   "bytes":  2596619,
+                                   "file_count":  31
+                               },
+                               {
+                                   "path":  "target/sem9-r1/RUN-0002/FROZEN-PREDECESSOR-A/target-build/debug/incremental/sem9_sandbox_probe-355klok5nq3n6",
+                                   "bytes":  2596476,
+                                   "file_count":  32
+                               },
+                               {
+                                   "path":  "target/sem9-r1/RUN-0002/FORMAT-CANONICALIZED-CANDIDATE-D/target-build/debug/examples",
+                                   "bytes":  0,
+                                   "file_count":  0
+                               },
+                               {
+                                   "path":  "target/sem9-r1/RUN-0002/FORMAT-CANONICALIZED-CANDIDATE-D/target-build/debug/build",
+                                   "bytes":  0,
+                                   "file_count":  0
+                               },
+                               {
+                                   "path":  "target/sem9-r1/RUN-0002/FORMAT-CANONICALIZED-CANDIDATE-D/target-build/debug/incremental",
+                                   "bytes":  9948614,
+                                   "file_count":  165
+                               },
+                               {
+                                   "path":  "target/sem9-r1/RUN-0002/FORMAT-CANONICALIZED-CANDIDATE-D/target-build/debug/.fingerprint",
+                                   "bytes":  4428,
+                                   "file_count":  32
+                               },
+                               {
+                                   "path":  "target/sem9-r1/RUN-0002/FORMAT-CANONICALIZED-CANDIDATE-D/target-build/debug/incremental/reasoner_probe-1vo1xks7p54fm",
+                                   "bytes":  196182,
+                                   "file_count":  4
+                               },
+                               {
+                                   "path":  "target/sem9-r1/RUN-0002/FORMAT-CANONICALIZED-CANDIDATE-D/target-build/debug/incremental/reasoner_probe-2ixoiltr31j4h",
+                                   "bytes":  179012,
+                                   "file_count":  4
+                               },
+                               {
+                                   "path":  "target/sem9-r1/RUN-0002/FORMAT-CANONICALIZED-CANDIDATE-D/target-build/debug/incremental/sem9_sandbox_probe-03v3tra481pby",
+                                   "bytes":  712063,
+                                   "file_count":  4
+                               },
+                               {
+                                   "path":  "target/sem9-r1/RUN-0002/FORMAT-CANONICALIZED-CANDIDATE-D/target-build/debug/incremental/sem9_sandbox_probe-1viyixeqp2tkg",
+                                   "bytes":  581866,
+                                   "file_count":  4
+                               },
+                               {
+                                   "path":  "target/sem9-r1/RUN-0002/FORMAT-CANONICALIZED-CANDIDATE-D/target-build/debug/deps",
+                                   "bytes":  12575605,
+                                   "file_count":  20
+                               },
+                               {
+                                   "path":  "target/sem9-r1/RUN-0002/FROZEN-PREDECESSOR-A/target-build/debug/incremental/reasoner_probe-3m7uwle0u61me/s-hl4p8z9ht1-1drkpc9-1t39r6tuhn8oj10yo281lantm",
+                                   "bytes":  2211013,
+                                   "file_count":  58
+                               },
+                               {
+                                   "path":  "target/sem9-r1/RUN-0002/FROZEN-PREDECESSOR-A/target-build/debug/.fingerprint/sem9-sandbox-probe-dcb10f528f90170d",
+                                   "bytes":  468,
+                                   "file_count":  4
+                               },
+                               {
+                                   "path":  "target/sem9-r1/RUN-0002/FROZEN-PREDECESSOR-A/target-build/debug/incremental/reasoner_probe-3m7uwle0u61me",
+                                   "bytes":  2211013,
+                                   "file_count":  59
+                               },
+                               {
+                                   "path":  "target/sem9-r1/RUN-0002/FROZEN-PREDECESSOR-A/target-build/debug/incremental/sem9_sandbox_probe-355klok5nq3n6/s-hl4p8z1kll-0q2zsd8-bv1nnbw5uo7ckobbf15tyh1l8",
+                                   "bytes":  2596476,
+                                   "file_count":  31
+                               },
+                               {
+                                   "path":  "target/sem9-r1/RUN-0002/FORMAT-CANONICALIZED-CANDIDATE-D/target-build",
+                                   "bytes":  26698907,
+                                   "file_count":  225
+                               },
+                               {
+                                   "path":  "target/sem9-r1/RUN-0002/FORMAT-CANONICALIZED-CANDIDATE-D/target-build/debug",
+                                   "bytes":  26697610,
+                                   "file_count":  223
+                               },
+                               {
+                                   "path":  "target/sem9-r1/RUN-0002/FROZEN-PREDECESSOR-A/target-build/debug/.fingerprint/sem9-sandbox-probe-9591508601a708d6",
+                                   "bytes":  532,
+                                   "file_count":  4
+                               },
+                               {
+                                   "path":  "target/sem9-r1/RUN-0002/FORMAT-CANONICALIZED-CANDIDATE-D/src",
+                                   "bytes":  2915,
+                                   "file_count":  2
+                               },
+                               {
+                                   "path":  "target/sem9-sandbox/SEM9-RUN-0001/SELF-CANDIDATE-0001/target-build/debug/incremental/reasoner_probe-2ixoiltr31j4h/s-hl4oarkzqv-0nc0v4q-1kqxim3r7r7tplpki2in8e71t",
+                                   "bytes":  67560,
+                                   "file_count":  3
+                               },
+                               {
+                                   "path":  "target/sem9-sandbox/SEM9-RUN-0001/SELF-CANDIDATE-0001/target-build/debug/incremental/reasoner_probe-1vo1xks7p54fm/s-hl4oarlea8-130rpwq-4fhe6l506ytuw3ghqbvwb3fcv",
+                                   "bytes":  82312,
+                                   "file_count":  3
+                               },
+                               {
+                                   "path":  "target/sem9-sandbox/SEM9-RUN-0001/SELF-CANDIDATE-0001/target-build/debug/incremental/sem9_sandbox_probe-1viyixeqp2tkg/s-hl4oarhr7t-09ducz9-119vos6428p3af1sp4hmcembo",
+                                   "bytes":  581867,
+                                   "file_count":  3
+                               },
+                               {
+                                   "path":  "target/sem9-sandbox/SEM9-RUN-0001/SELF-CANDIDATE-0001/target-build/debug/incremental/sem9_sandbox_probe-03v3tra481pby/s-hl4oari4fs-163c08y-7n2128cy360umq01l3okvfr2k",
+                                   "bytes":  712063,
+                                   "file_count":  3
+                               },
+                               {
+                                   "path":  "target/sem9-sandbox/SEM9-RUN-0001/SELF-CANDIDATE-0001/target-build/debug/incremental/reasoner_probe-0ml67zho6hav5/s-hl4oascuto-0ajqagf-6anc821n7r6mg8klry3bel2p9",
+                                   "bytes":  129948,
+                                   "file_count":  8
+                               },
+                               {
+                                   "path":  "target/sem9-sandbox/SEM9-RUN-0001/SELF-CANDIDATE-0001/target-build/debug/incremental/sem9_sandbox_probe-08wlopgjkk6wz/s-hl4oasd6fy-0amy5wx-57kle6q94114llbqghsklfdz1",
+                                   "bytes":  3222603,
+                                   "file_count":  48
+                               },
+                               {
+                                   "path":  "target/sem9-sandbox/SEM9-RUN-0001/SELF-CANDIDATE-0001/target-build/debug/incremental/sem9_sandbox_probe-355klok5nq3n6/s-hl4oarud77-0kq9pot-8ahd57dxagg68om51k40poni7",
+                                   "bytes":  2598251,
+                                   "file_count":  31
+                               },
+                               {
+                                   "path":  "target/sem9-sandbox/SEM9-RUN-0001/SELF-CANDIDATE-0001/target-build/debug/incremental/reasoner_probe-3m7uwle0u61me/s-hl4oas24rr-1e4zlso-e7akdh2oo5icygngf7y59kd1x",
+                                   "bytes":  737360,
+                                   "file_count":  21
+                               },
+                               {
+                                   "path":  "target/sem9-sandbox/SEM9-RUN-0001/SELF-CANDIDATE-0001/target-build/debug/incremental/sem9_sandbox_probe-08wlopgjkk6wz",
+                                   "bytes":  3222603,
+                                   "file_count":  49
+                               },
+                               {
+                                   "path":  "target/sem9-sandbox/SEM9-RUN-0001/SELF-CANDIDATE-0001/target-build/debug/incremental/sem9_sandbox_probe-03v3tra481pby",
+                                   "bytes":  712063,
+                                   "file_count":  4
+                               },
+                               {
+                                   "path":  "target/sem9-sandbox/SEM9-RUN-0001/SELF-CANDIDATE-0001/target-build/debug/incremental/reasoner_probe-2ixoiltr31j4h",
+                                   "bytes":  67560,
+                                   "file_count":  4
+                               },
+                               {
+                                   "path":  "target/sem9-sandbox/SEM9-RUN-0001/SELF-CANDIDATE-0001/target-build/debug/build",
+                                   "bytes":  0,
+                                   "file_count":  0
+                               },
+                               {
+                                   "path":  "target/sem9-sandbox/SEM9-RUN-0001/SELF-CANDIDATE-0001/target-build/debug/incremental/sem9_sandbox_probe-1viyixeqp2tkg",
+                                   "bytes":  581867,
+                                   "file_count":  4
+                               },
+                               {
+                                   "path":  "target/sem9-sandbox/SEM9-RUN-0001/SELF-CANDIDATE-0001/target-build/debug/incremental/reasoner_probe-3m7uwle0u61me",
+                                   "bytes":  737360,
+                                   "file_count":  22
+                               },
+                               {
+                                   "path":  "target/sem9-sandbox/SEM9-RUN-0001/SELF-CANDIDATE-0001/target-build/debug/incremental/reasoner_probe-0ml67zho6hav5",
+                                   "bytes":  129948,
+                                   "file_count":  9
+                               }
+                           ]
+}
