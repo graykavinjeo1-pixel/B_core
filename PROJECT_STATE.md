@@ -1,25 +1,27 @@
 # Project State
 
-**Canonical version:** 1.4.0
-**State frozen for:** SEM-3 completed baseline
+**Canonical version:** 1.5.0
+**State frozen for:** SEM-4 completed baseline
 
 This is an operational snapshot. It does not replace or override
 `CONSTITUTION.md`.
 
 | Field | Value |
 |---|---|
-| Current stage | `SEM-3 COMPLETE` |
+| Current stage | `SEM-4 COMPLETE` |
 | Stage S0 status | `PASS` |
 | SEM-0 implementation | `COMPLETE` |
 | SEM-0 result | `PASS - MINIMAL_AUTONOMOUS_CONCEPT_EMERGENCE` |
 | SEM-1 implementation | `COMPLETE` |
 | SEM-1 result | `PASS - RECURSIVE_LADDER_AND_SEMANTIC_SEPARATION_VERIFIED` |
-| Promoted concepts | `4` (`C000001`, `C000002`, `C000004`, `C000005`) |
+| Promoted concepts | `6` (`C000001`, `C000002`, `C000004`, `C000005`, `C000006`, `C000007`) |
 | SEM-2 implementation | `COMPLETE` |
 | SEM-2 result | `PASS - ADAPTIVE_REASONING_COMPLEXITY_CONTROL_VERIFIED` |
 | SEM-3 implementation | `COMPLETE` |
 | SEM-3 result | `PASS - AUTONOMOUS_ACTIVE_EXPERIMENT_SELECTION_VERIFIED` |
-| SEM-4 | `NOT STARTED` |
+| SEM-4 implementation | `COMPLETE` |
+| SEM-4 result | `PASS - MATHEMATICAL_FIRST_PRINCIPLES_DERIVATION_VERIFIED` |
+| SEM-5 | `NOT STARTED` |
 | Recursive self-mutation | `DISABLED` |
 | Recursive-improvement mode | `OBSERVE_MEASURE_ONLY` |
 | Proposal generation | `DISABLED` |
@@ -32,12 +34,12 @@ This is an operational snapshot. It does not replace or override
 | Current branch | `main` |
 | Current commit | `SELF` - resolve with `git rev-parse HEAD` |
 | Worktree at committed freeze | `CLEAN` |
-| Next allowed stage | `SEM-4_MATHEMATICAL_FIRST_PRINCIPLES_DERIVATION` |
+| Next allowed stage | `SEM-5_PROGRAMMING_FIRST_PRINCIPLES_EXPANSION` |
 
 ## Canonical document status
 
 The normative documents remain complete and frozen at version 1.0.0. This
-operational state record advanced to version 1.4.0 after the sealed SEM-3 run:
+operational state record advanced to version 1.5.0 after the sealed SEM-4 run:
 
 - `CONSTITUTION.md`
 - `RESEARCH_HYPOTHESIS.md`
@@ -163,7 +165,35 @@ The detailed classification and contamination decisions are in
   and routing false-negative counts were zero. Reports are sealed under
   `reports/sem3/`.
 
+## SEM-4 evidence snapshot
+
+- Frozen `SEM4-RUN-0001` used 100 fresh mathematical blind tasks, including 20
+  randomized definition-only zero-shot tasks and 40 adversarial tasks. The
+  manifests contained no expected answers, target formulas, proof scripts, or
+  human formula names; post-blind tuning was false.
+- The mathematical substrate contained eight exact executable primitives and
+  20 explicit transformation rules. The independent non-searching proof kernel
+  checked 99 certificates and 158 transformation steps, including 44 induction
+  proofs, while accepting zero invalid transformations.
+- Blind solve rates were primitive A `0.6`, structural macro B `0.84`, semantic
+  no-promotion C `1.0`, and first-principles D `1.0`. D reduced total search
+  expansions from C's `5628` to `2150` at equal solve rate. Definition-only
+  zero-shot solve rate was `1.0`, and invalid-transfer rate was zero.
+- Four target-formula-free recurrence relations were autonomously synthesized
+  and formally proved. `C000006` and `C000007` passed formal proof, executable
+  applicability, fresh reuse, causal ablation, compression, and full-lineage
+  gates and were promoted.
+- Best primitive-expanded proof cost was `72` steps versus `2` compressed
+  operational steps, a compression ratio of `36.0`. Both promoted concepts
+  passed causal ablation through lower search cost and reasoning depth at equal
+  solve rate.
+- Maximum solution-graph depth was `92`, primitive-expanded depth was `905`,
+  and concepts composed was `5`. Target-formula solver leaks, network calls,
+  external LLM calls, local teacher calls, CAS/SMT calls, recursive source
+  mutations, full catalog scans, and routing false negatives were zero. Reports
+  are sealed under `reports/sem4/`.
+
 ## Advancement constraint
 
-Starting SEM-4 requires an explicit subsequent task. SEM-3 completion does not
+Starting SEM-5 requires an explicit subsequent task. SEM-4 completion does not
 authorize recursive self-application, which remains reserved for SEM-9.

@@ -1,0 +1,12 @@
+{
+  "run_id": "SEM4-RUN-0001",
+  "reasoner_version": "SEM4-FIRST-PRINCIPLES-REASONER-1.0.0",
+  "proof_kernel_version": "SEM4-INDEPENDENT-PROOF-KERNEL-1.0.0",
+  "blind_generator_version": "SEM4-MATH-BLIND-GENERATOR-1.0.1",
+  "blind_manifest_sha256": "73f1b84340ffd89a630742a0143f9bb4ea76b25b9382caae9a541f0b722498f2",
+  "definition_only_manifest_sha256": "1b0f41ed3e80addca5debd65432d09dbd75e112e8a616fed9c2bae162f4eff21",
+  "adversarial_manifest_sha256": "90844a0bd0459469e1a98560bc9ada8a28c9f2ef95e0031c6ba9d84df516e9ff",
+  "frozen_before_final_tuning": true,
+  "reasoner_blind_access_before_freeze": false,
+  "post_blind_tuning": false
+}

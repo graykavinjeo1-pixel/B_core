@@ -1,0 +1,460 @@
+{
+  "promotions": [
+    {
+      "concept": {
+        "concept_id": "C000006",
+        "domain": "nonnegative-integer indexed exact-rational recurrence",
+        "input_signature": [
+          "SEQUENCE",
+          "RATIONAL"
+        ],
+        "output_signature": "FUNCTION",
+        "preconditions": [
+          {
+            "condition": "NON_NEGATIVE_INTEGER",
+            "variable": "n"
+          }
+        ],
+        "invariants": [
+          "candidate agrees with the declared base",
+          "successor difference equals the supplied recurrence delta"
+        ],
+        "derived_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "c000006_relation"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "b"
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 1
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "POWER",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "n"
+                  },
+                  2
+                ]
+              }
+            ]
+          }
+        },
+        "transformation_semantics": "evaluate the kernel-verified derived expression after exact substitution",
+        "proof_certificate_id": "SEM4-PROOF-0001",
+        "applicability_signature_sha256": "1f99afc7a2e2bb10bf1854df3dad41b6f8f4dd2009b2637f2e4bb174f23477c6",
+        "derivation_lineage": [
+          "SEM4-DISC-REC-000",
+          "SEM4-SYMBOLIC-DIFFERENCE-SYNTHESIS",
+          "SEM4-MATHEMATICAL-INDUCTION"
+        ],
+        "counterexamples": [
+          "negative index lies outside the proved domain",
+          "changed recurrence delta requires a different proof"
+        ],
+        "operational_cost": 2,
+        "primitive_expanded_cost": 56,
+        "epistemic_depth": 7,
+        "operational_depth": 2,
+        "derived_autonomously": true,
+        "supplied_by_teacher": false,
+        "formula_lookup_used": false,
+        "content_hash_sha256": "1a9a17c76076d42ea6d982faa91131de77d8ff3a4fa54e4cda30ad03fd098039"
+      },
+      "formal_proof_pass": true,
+      "executable_applicability_pass": true,
+      "explicit_preconditions_pass": true,
+      "fresh_blind_reuse_pass": true,
+      "causal_ablation_pass": true,
+      "compression_benefit_pass": true,
+      "full_lineage_pass": true,
+      "promoted": true,
+      "compression_ratio": 28.0,
+      "postseal_human_interpretation": "closed relation for an opaque generated recurrence family",
+      "human_interpretation_attached_after_seal": true
+    },
+    {
+      "concept": {
+        "concept_id": "C000007",
+        "domain": "nonnegative-integer indexed exact-rational recurrence",
+        "input_signature": [
+          "SEQUENCE",
+          "RATIONAL"
+        ],
+        "output_signature": "FUNCTION",
+        "preconditions": [
+          {
+            "condition": "NON_NEGATIVE_INTEGER",
+            "variable": "n"
+          }
+        ],
+        "invariants": [
+          "candidate agrees with the declared base",
+          "successor difference equals the supplied recurrence delta"
+        ],
+        "derived_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "c000007_relation"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "b"
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 3
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 3
+                    }
+                  },
+                  {
+                    "kind": "POWER",
+                    "value": [
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      },
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "transformation_semantics": "evaluate the kernel-verified derived expression after exact substitution",
+        "proof_certificate_id": "SEM4-PROOF-0002",
+        "applicability_signature_sha256": "ea68a1bdcafeaf1de85fe5cc062aed8655d3c1ab68a24f346bf4ca2f0ff368c6",
+        "derivation_lineage": [
+          "SEM4-DISC-REC-001",
+          "SEM4-SYMBOLIC-DIFFERENCE-SYNTHESIS",
+          "SEM4-MATHEMATICAL-INDUCTION"
+        ],
+        "counterexamples": [
+          "negative index lies outside the proved domain",
+          "changed recurrence delta requires a different proof"
+        ],
+        "operational_cost": 2,
+        "primitive_expanded_cost": 72,
+        "epistemic_depth": 8,
+        "operational_depth": 2,
+        "derived_autonomously": true,
+        "supplied_by_teacher": false,
+        "formula_lookup_used": false,
+        "content_hash_sha256": "02208e61413a568c91cddba13bcf84d704e46f24e01ffdee967ec101a564e40e"
+      },
+      "formal_proof_pass": true,
+      "executable_applicability_pass": true,
+      "explicit_preconditions_pass": true,
+      "fresh_blind_reuse_pass": true,
+      "causal_ablation_pass": true,
+      "compression_benefit_pass": true,
+      "full_lineage_pass": true,
+      "promoted": true,
+      "compression_ratio": 36.0,
+      "postseal_human_interpretation": "closed relation for an opaque generated recurrence family",
+      "human_interpretation_attached_after_seal": true
+    },
+    {
+      "concept": {
+        "concept_id": "C000008",
+        "domain": "nonnegative-integer indexed exact-rational recurrence",
+        "input_signature": [
+          "SEQUENCE",
+          "RATIONAL"
+        ],
+        "output_signature": "FUNCTION",
+        "preconditions": [
+          {
+            "condition": "NON_NEGATIVE_INTEGER",
+            "variable": "n"
+          }
+        ],
+        "invariants": [
+          "candidate agrees with the declared base",
+          "successor difference equals the supplied recurrence delta"
+        ],
+        "derived_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "c000008_relation"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "b"
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": -7,
+                          "denominator": 2
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 3,
+                      "denominator": 2
+                    }
+                  },
+                  {
+                    "kind": "POWER",
+                    "value": [
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      },
+                      2
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "transformation_semantics": "evaluate the kernel-verified derived expression after exact substitution",
+        "proof_certificate_id": "SEM4-PROOF-0003",
+        "applicability_signature_sha256": "4a3bb2b29387a86119127cdfd56461f8d71f09110f84d214bb636f61ffef1717",
+        "derivation_lineage": [
+          "SEM4-DISC-REC-002",
+          "SEM4-SYMBOLIC-DIFFERENCE-SYNTHESIS",
+          "SEM4-MATHEMATICAL-INDUCTION"
+        ],
+        "counterexamples": [
+          "negative index lies outside the proved domain",
+          "changed recurrence delta requires a different proof"
+        ],
+        "operational_cost": 2,
+        "primitive_expanded_cost": 60,
+        "epistemic_depth": 7,
+        "operational_depth": 2,
+        "derived_autonomously": true,
+        "supplied_by_teacher": false,
+        "formula_lookup_used": false,
+        "content_hash_sha256": "005241b2f5466ae7878bc8a756e075262357ea960511754d1be41e833183bf74"
+      },
+      "formal_proof_pass": true,
+      "executable_applicability_pass": true,
+      "explicit_preconditions_pass": true,
+      "fresh_blind_reuse_pass": false,
+      "causal_ablation_pass": false,
+      "compression_benefit_pass": true,
+      "full_lineage_pass": true,
+      "promoted": false,
+      "compression_ratio": 30.0,
+      "postseal_human_interpretation": "unpromoted kernel-verified recurrence relation",
+      "human_interpretation_attached_after_seal": true
+    },
+    {
+      "concept": {
+        "concept_id": "C000009",
+        "domain": "nonnegative-integer indexed exact-rational recurrence",
+        "input_signature": [
+          "SEQUENCE",
+          "RATIONAL"
+        ],
+        "output_signature": "FUNCTION",
+        "preconditions": [
+          {
+            "condition": "NON_NEGATIVE_INTEGER",
+            "variable": "n"
+          }
+        ],
+        "invariants": [
+          "candidate agrees with the declared base",
+          "successor difference equals the supplied recurrence delta"
+        ],
+        "derived_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "c000009_relation"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "ADD",
+                    "value": [
+                      {
+                        "kind": "VARIABLE",
+                        "value": "b"
+                      },
+                      {
+                        "kind": "MULTIPLY",
+                        "value": [
+                          {
+                            "kind": "RATIONAL",
+                            "value": {
+                              "numerator": 16,
+                              "denominator": 3
+                            }
+                          },
+                          {
+                            "kind": "VARIABLE",
+                            "value": "n"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": -1,
+                          "denominator": 1
+                        }
+                      },
+                      {
+                        "kind": "POWER",
+                        "value": [
+                          {
+                            "kind": "VARIABLE",
+                            "value": "n"
+                          },
+                          2
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 2,
+                      "denominator": 3
+                    }
+                  },
+                  {
+                    "kind": "POWER",
+                    "value": [
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      },
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "transformation_semantics": "evaluate the kernel-verified derived expression after exact substitution",
+        "proof_certificate_id": "SEM4-PROOF-0004",
+        "applicability_signature_sha256": "cc9511e3a3f20170d589e5f3e611c7a3f88b7d99d1f0e2f338e85b3d7f21218f",
+        "derivation_lineage": [
+          "SEM4-DISC-REC-003",
+          "SEM4-SYMBOLIC-DIFFERENCE-SYNTHESIS",
+          "SEM4-MATHEMATICAL-INDUCTION"
+        ],
+        "counterexamples": [
+          "negative index lies outside the proved domain",
+          "changed recurrence delta requires a different proof"
+        ],
+        "operational_cost": 2,
+        "primitive_expanded_cost": 88,
+        "epistemic_depth": 8,
+        "operational_depth": 2,
+        "derived_autonomously": true,
+        "supplied_by_teacher": false,
+        "formula_lookup_used": false,
+        "content_hash_sha256": "3353f2c69eb77b84ef75b56892c91c205fbe6c1e3baa232f4e28beb249e774eb"
+      },
+      "formal_proof_pass": true,
+      "executable_applicability_pass": true,
+      "explicit_preconditions_pass": true,
+      "fresh_blind_reuse_pass": false,
+      "causal_ablation_pass": false,
+      "compression_benefit_pass": true,
+      "full_lineage_pass": true,
+      "promoted": false,
+      "compression_ratio": 44.0,
+      "postseal_human_interpretation": "unpromoted kernel-verified recurrence relation",
+      "human_interpretation_attached_after_seal": true
+    }
+  ],
+  "promotion_gates_lowered": false
+}

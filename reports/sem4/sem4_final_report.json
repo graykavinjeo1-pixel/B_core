@@ -1,0 +1,97 @@
+{
+  "sem4_status": "PASS",
+  "disposition": "MATHEMATICAL_FIRST_PRINCIPLES_DERIVATION_VERIFIED",
+  "branch": "main",
+  "commit": "SELF",
+  "worktree_clean": true,
+  "push_performed": false,
+  "canonical_integrity": true,
+  "predecessor_integrity": true,
+  "network_calls": 0,
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "recursive_source_mutations": 0,
+  "math_primitive_count": 8,
+  "transformation_rule_count": 20,
+  "fresh_blind_tasks": 100,
+  "definition_only_blind_tasks": 20,
+  "adversarial_math_tasks": 40,
+  "baseline_a_solve_rate": 0.6,
+  "baseline_b_solve_rate": 0.84,
+  "baseline_c_solve_rate": 1.0,
+  "first_principles_d_solve_rate": 1.0,
+  "definition_only_zero_shot_solve_rate": 1.0,
+  "autonomous_math_candidates": 4,
+  "promoted_math_concepts": 2,
+  "formally_proved_new_relations": 4,
+  "best_math_concept_id": "C000007",
+  "best_math_concept_posthoc_interpretation": "closed relation for an opaque generated recurrence family",
+  "best_primitive_expanded_proof_steps": 72,
+  "best_compressed_operational_steps": 2,
+  "best_math_compression_ratio": 36.0,
+  "mathematical_ablation_pass": true,
+  "invalid_transfer_rate": 0.0,
+  "invalid_transformation_accepted": 0,
+  "induction_proofs_verified": 44,
+  "recurrence_closed_forms_discovered": 4,
+  "max_solution_graph_depth": 92,
+  "max_primitive_expanded_depth": 905,
+  "max_concepts_composed": 5,
+  "peak_active_concepts": 5,
+  "target_formula_solver_leaks": 0,
+  "full_catalog_scans": 0,
+  "routing_false_negatives": 0,
+  "first_principles_derivation_pass": true,
+  "formal_proof_pass": true,
+  "definition_only_generalization_pass": true,
+  "formula_leakage_audit_pass": true,
+  "gates": [
+    {
+      "gate": "NO_TARGET_FORMULA_LEAKAGE",
+      "passed": true,
+      "evidence": "solver leaks=0"
+    },
+    {
+      "gate": "SYMBOLIC_DERIVATION",
+      "passed": true,
+      "evidence": "autonomous candidates=4"
+    },
+    {
+      "gate": "FORMAL_PROOF",
+      "passed": true,
+      "evidence": "certificates=99 induction=44"
+    },
+    {
+      "gate": "DEFINITION_ONLY_ZERO_SHOT",
+      "passed": true,
+      "evidence": "solve rate=1.000000"
+    },
+    {
+      "gate": "FRESH_BLIND_TRANSFER",
+      "passed": true,
+      "evidence": "D/C solve=1.000000/1.000000 expansions=2150/5628"
+    },
+    {
+      "gate": "CAUSAL_UTILITY",
+      "passed": true,
+      "evidence": "passed ablations=2/2"
+    },
+    {
+      "gate": "INVALID_CASE_DISCIPLINE",
+      "passed": true,
+      "evidence": "invalid transfers=0 invalid transformations accepted=0"
+    },
+    {
+      "gate": "ADAPTIVE_REASONING_PRESERVED",
+      "passed": true,
+      "evidence": "depth=92 primitive=905 concepts=5"
+    },
+    {
+      "gate": "NO_CONTAMINATION",
+      "passed": true,
+      "evidence": "network/LLM/teacher/CAS/SMT/recursive mutation all zero"
+    }
+  ],
+  "sem5_started": false,
+  "next_allowed_stage": "SEM-5_PROGRAMMING_FIRST_PRINCIPLES_EXPANSION"
+}

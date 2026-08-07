@@ -1,0 +1,76 @@
+{
+  "passed": true,
+  "predecessor_commit": "87633105e088392ee6fa4d72039f3c5de27eb250",
+  "canonical_manifest_sha256": "d34b467e86cf9d6da2531b191df2a17a677cf02040a908e2c3467ce2b9c7f61c",
+  "canonical_files_verified": 8,
+  "predecessor_trees": [
+    {
+      "relative_path": "reports/sem0",
+      "files": 16,
+      "sha256": "6ccf0423ca5c7106d70492f107c23980b9e9f31a807f778f16d66462e2558cbe",
+      "expected_sha256": "6ccf0423ca5c7106d70492f107c23980b9e9f31a807f778f16d66462e2558cbe",
+      "passed": true
+    },
+    {
+      "relative_path": "reports/sem1",
+      "files": 38,
+      "sha256": "b5083b272995fbeabb735608db43b08d289359e5f03601cc91b4eb99756f87f8",
+      "expected_sha256": "b5083b272995fbeabb735608db43b08d289359e5f03601cc91b4eb99756f87f8",
+      "passed": true
+    },
+    {
+      "relative_path": "reports/sem2",
+      "files": 48,
+      "sha256": "9e0f2ee39cd7ea11f60a66842f650c0f269054a6cdcaa061e4de02f2bbb37e0c",
+      "expected_sha256": "9e0f2ee39cd7ea11f60a66842f650c0f269054a6cdcaa061e4de02f2bbb37e0c",
+      "passed": true
+    },
+    {
+      "relative_path": "reports/sem3",
+      "files": 23,
+      "sha256": "90ad74b1a86ee455a3d20ac52d906a6ee82435b163665580c9d8b8ac5720abdd",
+      "expected_sha256": "90ad74b1a86ee455a3d20ac52d906a6ee82435b163665580c9d8b8ac5720abdd",
+      "passed": true
+    }
+  ],
+  "sem1_failed_run_preserved": true,
+  "sem2_failed_run_preserved": true,
+  "sem3_passing_run_sealed": true,
+  "sem3_run_id": "SEM3-RUN-0001",
+  "sem3_final_report_sha256": "9432cd7c1b808e8d25357423ff7e1e7c4a05b00a9516081fcbca857e010685d7",
+  "sem3_blind_manifest_sha256": "826c3c90f7ecf70fd1aead447c6d8c0e9c9fcde3f99968beb316f75058e07b32",
+  "promoted_concepts_verified_immutable": [
+    "C000001",
+    "C000002",
+    "C000004",
+    "C000005"
+  ],
+  "recursive_improvement_quarantine": {
+    "stage": "S0",
+    "mode": "OBSERVE_MEASURE_ONLY",
+    "observe_enabled": true,
+    "measure_enabled": true,
+    "proposal_generation_enabled": false,
+    "source_patching_enabled": false,
+    "sandbox_apply_enabled": false,
+    "auto_apply_enabled": false,
+    "auto_merge_enabled": false,
+    "auto_commit_enabled": false,
+    "auto_push_enabled": false,
+    "external_provider_repair_enabled": false,
+    "recursive_benchmark_mutation_enabled": false,
+    "network_enabled": false,
+    "external_llm_enabled": false
+  },
+  "network_enabled": false,
+  "external_llm_enabled": false,
+  "local_teacher_enabled": false,
+  "self_observe": true,
+  "self_measure": true,
+  "self_propose": false,
+  "self_apply": false,
+  "source_mutation": false,
+  "auto_patch": false,
+  "auto_commit": false,
+  "auto_push": false
+}

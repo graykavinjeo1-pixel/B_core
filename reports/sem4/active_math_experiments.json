@@ -1,0 +1,74 @@
+[
+  {
+    "experiment_id": "SEM4-ACTIVE-C000006-0",
+    "candidate_id": "C000006",
+    "selected_input": 0,
+    "competing_hypotheses": 4,
+    "hypotheses_eliminated": 2,
+    "experimental_only": true,
+    "used_as_formal_proof": false
+  },
+  {
+    "experiment_id": "SEM4-ACTIVE-C000006-2",
+    "candidate_id": "C000006",
+    "selected_input": 2,
+    "competing_hypotheses": 4,
+    "hypotheses_eliminated": 2,
+    "experimental_only": true,
+    "used_as_formal_proof": false
+  },
+  {
+    "experiment_id": "SEM4-ACTIVE-C000007-0",
+    "candidate_id": "C000007",
+    "selected_input": 0,
+    "competing_hypotheses": 5,
+    "hypotheses_eliminated": 3,
+    "experimental_only": true,
+    "used_as_formal_proof": false
+  },
+  {
+    "experiment_id": "SEM4-ACTIVE-C000007-2",
+    "candidate_id": "C000007",
+    "selected_input": 2,
+    "competing_hypotheses": 5,
+    "hypotheses_eliminated": 3,
+    "experimental_only": true,
+    "used_as_formal_proof": false
+  },
+  {
+    "experiment_id": "SEM4-ACTIVE-C000008-0",
+    "candidate_id": "C000008",
+    "selected_input": 0,
+    "competing_hypotheses": 4,
+    "hypotheses_eliminated": 2,
+    "experimental_only": true,
+    "used_as_formal_proof": false
+  },
+  {
+    "experiment_id": "SEM4-ACTIVE-C000008-2",
+    "candidate_id": "C000008",
+    "selected_input": 2,
+    "competing_hypotheses": 4,
+    "hypotheses_eliminated": 2,
+    "experimental_only": true,
+    "used_as_formal_proof": false
+  },
+  {
+    "experiment_id": "SEM4-ACTIVE-C000009-0",
+    "candidate_id": "C000009",
+    "selected_input": 0,
+    "competing_hypotheses": 5,
+    "hypotheses_eliminated": 3,
+    "experimental_only": true,
+    "used_as_formal_proof": false
+  },
+  {
+    "experiment_id": "SEM4-ACTIVE-C000009-2",
+    "candidate_id": "C000009",
+    "selected_input": 2,
+    "competing_hypotheses": 5,
+    "hypotheses_eliminated": 3,
+    "experimental_only": true,
+    "used_as_formal_proof": false
+  }
+]

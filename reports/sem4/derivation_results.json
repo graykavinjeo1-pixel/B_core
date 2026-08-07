@@ -1,0 +1,2034 @@
+[
+  {
+    "family": "SYMBOLIC_EQUATION",
+    "tasks": 20,
+    "solved": 20,
+    "solve_rate": 1.0,
+    "records": [
+      {
+        "task_id": "SEM4-BLIND-EQ-000",
+        "condition": "FIRST_PRINCIPLES_D",
+        "accepted": true,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": null,
+        "computed_value": null,
+        "proof_certificate_id": null,
+        "proof_steps": 2,
+        "primitive_expanded_steps": 8,
+        "search_expansions": 12,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-001",
+        "condition": "FIRST_PRINCIPLES_D",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 11,
+              "denominator": 7
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-001",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 18,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-002",
+        "condition": "FIRST_PRINCIPLES_D",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -7,
+              "denominator": 1
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-002",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 18,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-003",
+        "condition": "FIRST_PRINCIPLES_D",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 4,
+              "denominator": 7
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-003",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 18,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-004",
+        "condition": "FIRST_PRINCIPLES_D",
+        "accepted": true,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": null,
+        "computed_value": null,
+        "proof_certificate_id": null,
+        "proof_steps": 2,
+        "primitive_expanded_steps": 8,
+        "search_expansions": 12,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-005",
+        "condition": "FIRST_PRINCIPLES_D",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 7,
+              "denominator": 4
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-005",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 18,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-006",
+        "condition": "FIRST_PRINCIPLES_D",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -1,
+              "denominator": 1
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-006",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 18,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-007",
+        "condition": "FIRST_PRINCIPLES_D",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 1,
+              "denominator": 5
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-007",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 18,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-008",
+        "condition": "FIRST_PRINCIPLES_D",
+        "accepted": true,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": null,
+        "computed_value": null,
+        "proof_certificate_id": null,
+        "proof_steps": 2,
+        "primitive_expanded_steps": 8,
+        "search_expansions": 12,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-009",
+        "condition": "FIRST_PRINCIPLES_D",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -5,
+              "denominator": 2
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-009",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 18,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-010",
+        "condition": "FIRST_PRINCIPLES_D",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -10,
+              "denominator": 3
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-010",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 18,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-011",
+        "condition": "FIRST_PRINCIPLES_D",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 2,
+              "denominator": 7
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-011",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 18,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-012",
+        "condition": "FIRST_PRINCIPLES_D",
+        "accepted": true,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": null,
+        "computed_value": null,
+        "proof_certificate_id": null,
+        "proof_steps": 2,
+        "primitive_expanded_steps": 8,
+        "search_expansions": 12,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-013",
+        "condition": "FIRST_PRINCIPLES_D",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -4,
+              "denominator": 3
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-013",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 18,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-014",
+        "condition": "FIRST_PRINCIPLES_D",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -1,
+              "denominator": 1
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-014",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 18,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-015",
+        "condition": "FIRST_PRINCIPLES_D",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -9,
+              "denominator": 2
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-015",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 18,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-016",
+        "condition": "FIRST_PRINCIPLES_D",
+        "accepted": true,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": null,
+        "computed_value": null,
+        "proof_certificate_id": null,
+        "proof_steps": 2,
+        "primitive_expanded_steps": 8,
+        "search_expansions": 12,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-017",
+        "condition": "FIRST_PRINCIPLES_D",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 1,
+              "denominator": 2
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-017",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 18,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-018",
+        "condition": "FIRST_PRINCIPLES_D",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 7,
+              "denominator": 2
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-018",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 18,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-019",
+        "condition": "FIRST_PRINCIPLES_D",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 12,
+              "denominator": 5
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-019",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 18,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      }
+    ]
+  },
+  {
+    "family": "SYMBOLIC_EQUATION",
+    "tasks": 20,
+    "solved": 20,
+    "solve_rate": 1.0,
+    "records": [
+      {
+        "task_id": "SEM4-BLIND-EQ-000",
+        "condition": "PRIMITIVE_A",
+        "accepted": true,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": null,
+        "computed_value": null,
+        "proof_certificate_id": null,
+        "proof_steps": 2,
+        "primitive_expanded_steps": 8,
+        "search_expansions": 12,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-001",
+        "condition": "PRIMITIVE_A",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 11,
+              "denominator": 7
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-001",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 58,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-002",
+        "condition": "PRIMITIVE_A",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -7,
+              "denominator": 1
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-002",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 58,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-003",
+        "condition": "PRIMITIVE_A",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 4,
+              "denominator": 7
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-003",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 58,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-004",
+        "condition": "PRIMITIVE_A",
+        "accepted": true,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": null,
+        "computed_value": null,
+        "proof_certificate_id": null,
+        "proof_steps": 2,
+        "primitive_expanded_steps": 8,
+        "search_expansions": 12,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-005",
+        "condition": "PRIMITIVE_A",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 7,
+              "denominator": 4
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-005",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 58,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-006",
+        "condition": "PRIMITIVE_A",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -1,
+              "denominator": 1
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-006",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 58,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-007",
+        "condition": "PRIMITIVE_A",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 1,
+              "denominator": 5
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-007",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 58,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-008",
+        "condition": "PRIMITIVE_A",
+        "accepted": true,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": null,
+        "computed_value": null,
+        "proof_certificate_id": null,
+        "proof_steps": 2,
+        "primitive_expanded_steps": 8,
+        "search_expansions": 12,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-009",
+        "condition": "PRIMITIVE_A",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -5,
+              "denominator": 2
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-009",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 58,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-010",
+        "condition": "PRIMITIVE_A",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -10,
+              "denominator": 3
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-010",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 58,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-011",
+        "condition": "PRIMITIVE_A",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 2,
+              "denominator": 7
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-011",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 58,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-012",
+        "condition": "PRIMITIVE_A",
+        "accepted": true,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": null,
+        "computed_value": null,
+        "proof_certificate_id": null,
+        "proof_steps": 2,
+        "primitive_expanded_steps": 8,
+        "search_expansions": 12,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-013",
+        "condition": "PRIMITIVE_A",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -4,
+              "denominator": 3
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-013",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 58,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-014",
+        "condition": "PRIMITIVE_A",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -1,
+              "denominator": 1
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-014",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 58,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-015",
+        "condition": "PRIMITIVE_A",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -9,
+              "denominator": 2
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-015",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 58,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-016",
+        "condition": "PRIMITIVE_A",
+        "accepted": true,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": null,
+        "computed_value": null,
+        "proof_certificate_id": null,
+        "proof_steps": 2,
+        "primitive_expanded_steps": 8,
+        "search_expansions": 12,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-017",
+        "condition": "PRIMITIVE_A",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 1,
+              "denominator": 2
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-017",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 58,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-018",
+        "condition": "PRIMITIVE_A",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 7,
+              "denominator": 2
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-018",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 58,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-019",
+        "condition": "PRIMITIVE_A",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 12,
+              "denominator": 5
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-019",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 58,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      }
+    ]
+  },
+  {
+    "family": "SYMBOLIC_EQUATION",
+    "tasks": 20,
+    "solved": 20,
+    "solve_rate": 1.0,
+    "records": [
+      {
+        "task_id": "SEM4-BLIND-EQ-000",
+        "condition": "SEMANTIC_NO_PROMOTION_C",
+        "accepted": true,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": null,
+        "computed_value": null,
+        "proof_certificate_id": null,
+        "proof_steps": 2,
+        "primitive_expanded_steps": 8,
+        "search_expansions": 12,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-001",
+        "condition": "SEMANTIC_NO_PROMOTION_C",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 11,
+              "denominator": 7
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-001",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 20,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-002",
+        "condition": "SEMANTIC_NO_PROMOTION_C",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -7,
+              "denominator": 1
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-002",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 20,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-003",
+        "condition": "SEMANTIC_NO_PROMOTION_C",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 4,
+              "denominator": 7
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-003",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 20,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-004",
+        "condition": "SEMANTIC_NO_PROMOTION_C",
+        "accepted": true,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": null,
+        "computed_value": null,
+        "proof_certificate_id": null,
+        "proof_steps": 2,
+        "primitive_expanded_steps": 8,
+        "search_expansions": 12,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-005",
+        "condition": "SEMANTIC_NO_PROMOTION_C",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 7,
+              "denominator": 4
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-005",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 20,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-006",
+        "condition": "SEMANTIC_NO_PROMOTION_C",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -1,
+              "denominator": 1
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-006",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 20,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-007",
+        "condition": "SEMANTIC_NO_PROMOTION_C",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 1,
+              "denominator": 5
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-007",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 20,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-008",
+        "condition": "SEMANTIC_NO_PROMOTION_C",
+        "accepted": true,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": null,
+        "computed_value": null,
+        "proof_certificate_id": null,
+        "proof_steps": 2,
+        "primitive_expanded_steps": 8,
+        "search_expansions": 12,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-009",
+        "condition": "SEMANTIC_NO_PROMOTION_C",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -5,
+              "denominator": 2
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-009",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 20,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-010",
+        "condition": "SEMANTIC_NO_PROMOTION_C",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -10,
+              "denominator": 3
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-010",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 20,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-011",
+        "condition": "SEMANTIC_NO_PROMOTION_C",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 2,
+              "denominator": 7
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-011",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 20,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-012",
+        "condition": "SEMANTIC_NO_PROMOTION_C",
+        "accepted": true,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": null,
+        "computed_value": null,
+        "proof_certificate_id": null,
+        "proof_steps": 2,
+        "primitive_expanded_steps": 8,
+        "search_expansions": 12,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-013",
+        "condition": "SEMANTIC_NO_PROMOTION_C",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -4,
+              "denominator": 3
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-013",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 20,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-014",
+        "condition": "SEMANTIC_NO_PROMOTION_C",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -1,
+              "denominator": 1
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-014",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 20,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-015",
+        "condition": "SEMANTIC_NO_PROMOTION_C",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -9,
+              "denominator": 2
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-015",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 20,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-016",
+        "condition": "SEMANTIC_NO_PROMOTION_C",
+        "accepted": true,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": null,
+        "computed_value": null,
+        "proof_certificate_id": null,
+        "proof_steps": 2,
+        "primitive_expanded_steps": 8,
+        "search_expansions": 12,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-017",
+        "condition": "SEMANTIC_NO_PROMOTION_C",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 1,
+              "denominator": 2
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-017",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 20,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-018",
+        "condition": "SEMANTIC_NO_PROMOTION_C",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 7,
+              "denominator": 2
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-018",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 20,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-019",
+        "condition": "SEMANTIC_NO_PROMOTION_C",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 12,
+              "denominator": 5
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-019",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 20,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      }
+    ]
+  },
+  {
+    "family": "SYMBOLIC_EQUATION",
+    "tasks": 20,
+    "solved": 20,
+    "solve_rate": 1.0,
+    "records": [
+      {
+        "task_id": "SEM4-BLIND-EQ-000",
+        "condition": "STRUCTURAL_MACRO_B",
+        "accepted": true,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": null,
+        "computed_value": null,
+        "proof_certificate_id": null,
+        "proof_steps": 2,
+        "primitive_expanded_steps": 8,
+        "search_expansions": 12,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-001",
+        "condition": "STRUCTURAL_MACRO_B",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 11,
+              "denominator": 7
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-001",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 24,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-002",
+        "condition": "STRUCTURAL_MACRO_B",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -7,
+              "denominator": 1
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-002",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 24,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-003",
+        "condition": "STRUCTURAL_MACRO_B",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 4,
+              "denominator": 7
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-003",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 24,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-004",
+        "condition": "STRUCTURAL_MACRO_B",
+        "accepted": true,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": null,
+        "computed_value": null,
+        "proof_certificate_id": null,
+        "proof_steps": 2,
+        "primitive_expanded_steps": 8,
+        "search_expansions": 12,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-005",
+        "condition": "STRUCTURAL_MACRO_B",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 7,
+              "denominator": 4
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-005",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 24,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-006",
+        "condition": "STRUCTURAL_MACRO_B",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -1,
+              "denominator": 1
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-006",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 24,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-007",
+        "condition": "STRUCTURAL_MACRO_B",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 1,
+              "denominator": 5
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-007",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 24,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-008",
+        "condition": "STRUCTURAL_MACRO_B",
+        "accepted": true,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": null,
+        "computed_value": null,
+        "proof_certificate_id": null,
+        "proof_steps": 2,
+        "primitive_expanded_steps": 8,
+        "search_expansions": 12,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-009",
+        "condition": "STRUCTURAL_MACRO_B",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -5,
+              "denominator": 2
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-009",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 24,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-010",
+        "condition": "STRUCTURAL_MACRO_B",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -10,
+              "denominator": 3
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-010",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 24,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-011",
+        "condition": "STRUCTURAL_MACRO_B",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 2,
+              "denominator": 7
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-011",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 24,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-012",
+        "condition": "STRUCTURAL_MACRO_B",
+        "accepted": true,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": null,
+        "computed_value": null,
+        "proof_certificate_id": null,
+        "proof_steps": 2,
+        "primitive_expanded_steps": 8,
+        "search_expansions": 12,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-013",
+        "condition": "STRUCTURAL_MACRO_B",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -4,
+              "denominator": 3
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-013",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 24,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-014",
+        "condition": "STRUCTURAL_MACRO_B",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -1,
+              "denominator": 1
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-014",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 24,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-015",
+        "condition": "STRUCTURAL_MACRO_B",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -9,
+              "denominator": 2
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-015",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 24,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-016",
+        "condition": "STRUCTURAL_MACRO_B",
+        "accepted": true,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": null,
+        "computed_value": null,
+        "proof_certificate_id": null,
+        "proof_steps": 2,
+        "primitive_expanded_steps": 8,
+        "search_expansions": 12,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-017",
+        "condition": "STRUCTURAL_MACRO_B",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 1,
+              "denominator": 2
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-017",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 24,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-018",
+        "condition": "STRUCTURAL_MACRO_B",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 7,
+              "denominator": 2
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-018",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 24,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-EQ-019",
+        "condition": "STRUCTURAL_MACRO_B",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "x"
+          },
+          "right": {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 12,
+              "denominator": 5
+            }
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-EQ-PROOF-SEM4-BLIND-EQ-019",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 18,
+        "search_expansions": 24,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      }
+    ]
+  }
+]

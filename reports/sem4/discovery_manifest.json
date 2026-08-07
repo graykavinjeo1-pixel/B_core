@@ -1,0 +1,1475 @@
+{
+  "generator_version": "SEM4-DISCOVERY-GENERATOR-1.0.0",
+  "tasks": [
+    {
+      "task_id": "SEM4-DISC-REC-000",
+      "split": "DISCOVERY",
+      "statement": {
+        "statement_kind": "DERIVE_RECURRENCE_RELATION",
+        "index_variable": "n",
+        "base_index": 0,
+        "base_value": {
+          "kind": "VARIABLE",
+          "value": "b"
+        },
+        "delta": {
+          "kind": "ADD",
+          "value": [
+            {
+              "kind": "MULTIPLY",
+              "value": [
+                {
+                  "kind": "RATIONAL",
+                  "value": {
+                    "numerator": 2,
+                    "denominator": 1
+                  }
+                },
+                {
+                  "kind": "VARIABLE",
+                  "value": "n"
+                }
+              ]
+            },
+            {
+              "kind": "RATIONAL",
+              "value": {
+                "numerator": 3,
+                "denominator": 1
+              }
+            }
+          ]
+        }
+      },
+      "definitions": [],
+      "assumptions": [
+        {
+          "condition": "NON_NEGATIVE_INTEGER",
+          "variable": "n"
+        }
+      ],
+      "zero_demonstrations": true,
+      "provenance": [
+        "DEFINITION_ONLY_RECURRENCE_GENERATOR"
+      ]
+    },
+    {
+      "task_id": "SEM4-DISC-REC-001",
+      "split": "DISCOVERY",
+      "statement": {
+        "statement_kind": "DERIVE_RECURRENCE_RELATION",
+        "index_variable": "n",
+        "base_index": 0,
+        "base_value": {
+          "kind": "VARIABLE",
+          "value": "b"
+        },
+        "delta": {
+          "kind": "ADD",
+          "value": [
+            {
+              "kind": "ADD",
+              "value": [
+                {
+                  "kind": "POWER",
+                  "value": [
+                    {
+                      "kind": "VARIABLE",
+                      "value": "n"
+                    },
+                    2
+                  ]
+                },
+                {
+                  "kind": "VARIABLE",
+                  "value": "n"
+                }
+              ]
+            },
+            {
+              "kind": "RATIONAL",
+              "value": {
+                "numerator": 1,
+                "denominator": 1
+              }
+            }
+          ]
+        }
+      },
+      "definitions": [],
+      "assumptions": [
+        {
+          "condition": "NON_NEGATIVE_INTEGER",
+          "variable": "n"
+        }
+      ],
+      "zero_demonstrations": true,
+      "provenance": [
+        "DEFINITION_ONLY_RECURRENCE_GENERATOR"
+      ]
+    },
+    {
+      "task_id": "SEM4-DISC-REC-002",
+      "split": "DISCOVERY",
+      "statement": {
+        "statement_kind": "DERIVE_RECURRENCE_RELATION",
+        "index_variable": "n",
+        "base_index": 0,
+        "base_value": {
+          "kind": "VARIABLE",
+          "value": "b"
+        },
+        "delta": {
+          "kind": "ADD",
+          "value": [
+            {
+              "kind": "MULTIPLY",
+              "value": [
+                {
+                  "kind": "RATIONAL",
+                  "value": {
+                    "numerator": 3,
+                    "denominator": 1
+                  }
+                },
+                {
+                  "kind": "VARIABLE",
+                  "value": "n"
+                }
+              ]
+            },
+            {
+              "kind": "RATIONAL",
+              "value": {
+                "numerator": -2,
+                "denominator": 1
+              }
+            }
+          ]
+        }
+      },
+      "definitions": [],
+      "assumptions": [
+        {
+          "condition": "NON_NEGATIVE_INTEGER",
+          "variable": "n"
+        }
+      ],
+      "zero_demonstrations": true,
+      "provenance": [
+        "DEFINITION_ONLY_RECURRENCE_GENERATOR"
+      ]
+    },
+    {
+      "task_id": "SEM4-DISC-REC-003",
+      "split": "DISCOVERY",
+      "statement": {
+        "statement_kind": "DERIVE_RECURRENCE_RELATION",
+        "index_variable": "n",
+        "base_index": 0,
+        "base_value": {
+          "kind": "VARIABLE",
+          "value": "b"
+        },
+        "delta": {
+          "kind": "ADD",
+          "value": [
+            {
+              "kind": "MULTIPLY",
+              "value": [
+                {
+                  "kind": "RATIONAL",
+                  "value": {
+                    "numerator": 2,
+                    "denominator": 1
+                  }
+                },
+                {
+                  "kind": "POWER",
+                  "value": [
+                    {
+                      "kind": "VARIABLE",
+                      "value": "n"
+                    },
+                    2
+                  ]
+                }
+              ]
+            },
+            {
+              "kind": "RATIONAL",
+              "value": {
+                "numerator": 5,
+                "denominator": 1
+              }
+            }
+          ]
+        }
+      },
+      "definitions": [],
+      "assumptions": [
+        {
+          "condition": "NON_NEGATIVE_INTEGER",
+          "variable": "n"
+        }
+      ],
+      "zero_demonstrations": true,
+      "provenance": [
+        "DEFINITION_ONLY_RECURRENCE_GENERATOR"
+      ]
+    },
+    {
+      "task_id": "SEM4-CAL-REC-000",
+      "split": "CALIBRATION",
+      "statement": {
+        "statement_kind": "DERIVE_RECURRENCE_RELATION",
+        "index_variable": "n",
+        "base_index": 0,
+        "base_value": {
+          "kind": "RATIONAL",
+          "value": {
+            "numerator": 9,
+            "denominator": 1
+          }
+        },
+        "delta": {
+          "kind": "ADD",
+          "value": [
+            {
+              "kind": "MULTIPLY",
+              "value": [
+                {
+                  "kind": "RATIONAL",
+                  "value": {
+                    "numerator": 2,
+                    "denominator": 1
+                  }
+                },
+                {
+                  "kind": "VARIABLE",
+                  "value": "n"
+                }
+              ]
+            },
+            {
+              "kind": "RATIONAL",
+              "value": {
+                "numerator": 3,
+                "denominator": 1
+              }
+            }
+          ]
+        }
+      },
+      "definitions": [],
+      "assumptions": [
+        {
+          "condition": "NON_NEGATIVE_INTEGER",
+          "variable": "n"
+        }
+      ],
+      "zero_demonstrations": true,
+      "provenance": [
+        "FRESH-CALIBRATION-RECURRENCE-GENERATOR"
+      ]
+    },
+    {
+      "task_id": "SEM4-CAL-REC-001",
+      "split": "CALIBRATION",
+      "statement": {
+        "statement_kind": "DERIVE_RECURRENCE_RELATION",
+        "index_variable": "n",
+        "base_index": 0,
+        "base_value": {
+          "kind": "RATIONAL",
+          "value": {
+            "numerator": 5,
+            "denominator": 1
+          }
+        },
+        "delta": {
+          "kind": "ADD",
+          "value": [
+            {
+              "kind": "MULTIPLY",
+              "value": [
+                {
+                  "kind": "RATIONAL",
+                  "value": {
+                    "numerator": 2,
+                    "denominator": 1
+                  }
+                },
+                {
+                  "kind": "VARIABLE",
+                  "value": "n"
+                }
+              ]
+            },
+            {
+              "kind": "RATIONAL",
+              "value": {
+                "numerator": 3,
+                "denominator": 1
+              }
+            }
+          ]
+        }
+      },
+      "definitions": [],
+      "assumptions": [
+        {
+          "condition": "NON_NEGATIVE_INTEGER",
+          "variable": "n"
+        }
+      ],
+      "zero_demonstrations": true,
+      "provenance": [
+        "FRESH-CALIBRATION-RECURRENCE-GENERATOR"
+      ]
+    },
+    {
+      "task_id": "SEM4-CAL-REC-002",
+      "split": "CALIBRATION",
+      "statement": {
+        "statement_kind": "DERIVE_RECURRENCE_RELATION",
+        "index_variable": "n",
+        "base_index": 0,
+        "base_value": {
+          "kind": "RATIONAL",
+          "value": {
+            "numerator": -7,
+            "denominator": 1
+          }
+        },
+        "delta": {
+          "kind": "ADD",
+          "value": [
+            {
+              "kind": "MULTIPLY",
+              "value": [
+                {
+                  "kind": "RATIONAL",
+                  "value": {
+                    "numerator": 2,
+                    "denominator": 1
+                  }
+                },
+                {
+                  "kind": "VARIABLE",
+                  "value": "n"
+                }
+              ]
+            },
+            {
+              "kind": "RATIONAL",
+              "value": {
+                "numerator": 3,
+                "denominator": 1
+              }
+            }
+          ]
+        }
+      },
+      "definitions": [],
+      "assumptions": [
+        {
+          "condition": "NON_NEGATIVE_INTEGER",
+          "variable": "n"
+        }
+      ],
+      "zero_demonstrations": true,
+      "provenance": [
+        "FRESH-CALIBRATION-RECURRENCE-GENERATOR"
+      ]
+    },
+    {
+      "task_id": "SEM4-CAL-REC-003",
+      "split": "CALIBRATION",
+      "statement": {
+        "statement_kind": "DERIVE_RECURRENCE_RELATION",
+        "index_variable": "n",
+        "base_index": 0,
+        "base_value": {
+          "kind": "RATIONAL",
+          "value": {
+            "numerator": -6,
+            "denominator": 1
+          }
+        },
+        "delta": {
+          "kind": "ADD",
+          "value": [
+            {
+              "kind": "MULTIPLY",
+              "value": [
+                {
+                  "kind": "RATIONAL",
+                  "value": {
+                    "numerator": 2,
+                    "denominator": 1
+                  }
+                },
+                {
+                  "kind": "VARIABLE",
+                  "value": "n"
+                }
+              ]
+            },
+            {
+              "kind": "RATIONAL",
+              "value": {
+                "numerator": 3,
+                "denominator": 1
+              }
+            }
+          ]
+        }
+      },
+      "definitions": [],
+      "assumptions": [
+        {
+          "condition": "NON_NEGATIVE_INTEGER",
+          "variable": "n"
+        }
+      ],
+      "zero_demonstrations": true,
+      "provenance": [
+        "FRESH-CALIBRATION-RECURRENCE-GENERATOR"
+      ]
+    },
+    {
+      "task_id": "SEM4-CAL-REC-004",
+      "split": "CALIBRATION",
+      "statement": {
+        "statement_kind": "DERIVE_RECURRENCE_RELATION",
+        "index_variable": "n",
+        "base_index": 0,
+        "base_value": {
+          "kind": "RATIONAL",
+          "value": {
+            "numerator": -3,
+            "denominator": 1
+          }
+        },
+        "delta": {
+          "kind": "ADD",
+          "value": [
+            {
+              "kind": "MULTIPLY",
+              "value": [
+                {
+                  "kind": "RATIONAL",
+                  "value": {
+                    "numerator": 2,
+                    "denominator": 1
+                  }
+                },
+                {
+                  "kind": "VARIABLE",
+                  "value": "n"
+                }
+              ]
+            },
+            {
+              "kind": "RATIONAL",
+              "value": {
+                "numerator": 3,
+                "denominator": 1
+              }
+            }
+          ]
+        }
+      },
+      "definitions": [],
+      "assumptions": [
+        {
+          "condition": "NON_NEGATIVE_INTEGER",
+          "variable": "n"
+        }
+      ],
+      "zero_demonstrations": true,
+      "provenance": [
+        "FRESH-CALIBRATION-RECURRENCE-GENERATOR"
+      ]
+    },
+    {
+      "task_id": "SEM4-CAL-REC-005",
+      "split": "CALIBRATION",
+      "statement": {
+        "statement_kind": "DERIVE_RECURRENCE_RELATION",
+        "index_variable": "n",
+        "base_index": 0,
+        "base_value": {
+          "kind": "RATIONAL",
+          "value": {
+            "numerator": -5,
+            "denominator": 1
+          }
+        },
+        "delta": {
+          "kind": "ADD",
+          "value": [
+            {
+              "kind": "MULTIPLY",
+              "value": [
+                {
+                  "kind": "RATIONAL",
+                  "value": {
+                    "numerator": 2,
+                    "denominator": 1
+                  }
+                },
+                {
+                  "kind": "VARIABLE",
+                  "value": "n"
+                }
+              ]
+            },
+            {
+              "kind": "RATIONAL",
+              "value": {
+                "numerator": 3,
+                "denominator": 1
+              }
+            }
+          ]
+        }
+      },
+      "definitions": [],
+      "assumptions": [
+        {
+          "condition": "NON_NEGATIVE_INTEGER",
+          "variable": "n"
+        }
+      ],
+      "zero_demonstrations": true,
+      "provenance": [
+        "FRESH-CALIBRATION-RECURRENCE-GENERATOR"
+      ]
+    },
+    {
+      "task_id": "SEM4-CAL-REC-006",
+      "split": "CALIBRATION",
+      "statement": {
+        "statement_kind": "DERIVE_RECURRENCE_RELATION",
+        "index_variable": "n",
+        "base_index": 0,
+        "base_value": {
+          "kind": "RATIONAL",
+          "value": {
+            "numerator": 2,
+            "denominator": 1
+          }
+        },
+        "delta": {
+          "kind": "ADD",
+          "value": [
+            {
+              "kind": "ADD",
+              "value": [
+                {
+                  "kind": "POWER",
+                  "value": [
+                    {
+                      "kind": "VARIABLE",
+                      "value": "n"
+                    },
+                    2
+                  ]
+                },
+                {
+                  "kind": "VARIABLE",
+                  "value": "n"
+                }
+              ]
+            },
+            {
+              "kind": "RATIONAL",
+              "value": {
+                "numerator": 1,
+                "denominator": 1
+              }
+            }
+          ]
+        }
+      },
+      "definitions": [],
+      "assumptions": [
+        {
+          "condition": "NON_NEGATIVE_INTEGER",
+          "variable": "n"
+        }
+      ],
+      "zero_demonstrations": true,
+      "provenance": [
+        "FRESH-CALIBRATION-RECURRENCE-GENERATOR"
+      ]
+    },
+    {
+      "task_id": "SEM4-CAL-REC-007",
+      "split": "CALIBRATION",
+      "statement": {
+        "statement_kind": "DERIVE_RECURRENCE_RELATION",
+        "index_variable": "n",
+        "base_index": 0,
+        "base_value": {
+          "kind": "RATIONAL",
+          "value": {
+            "numerator": 12,
+            "denominator": 1
+          }
+        },
+        "delta": {
+          "kind": "ADD",
+          "value": [
+            {
+              "kind": "ADD",
+              "value": [
+                {
+                  "kind": "POWER",
+                  "value": [
+                    {
+                      "kind": "VARIABLE",
+                      "value": "n"
+                    },
+                    2
+                  ]
+                },
+                {
+                  "kind": "VARIABLE",
+                  "value": "n"
+                }
+              ]
+            },
+            {
+              "kind": "RATIONAL",
+              "value": {
+                "numerator": 1,
+                "denominator": 1
+              }
+            }
+          ]
+        }
+      },
+      "definitions": [],
+      "assumptions": [
+        {
+          "condition": "NON_NEGATIVE_INTEGER",
+          "variable": "n"
+        }
+      ],
+      "zero_demonstrations": true,
+      "provenance": [
+        "FRESH-CALIBRATION-RECURRENCE-GENERATOR"
+      ]
+    },
+    {
+      "task_id": "SEM4-CAL-REC-008",
+      "split": "CALIBRATION",
+      "statement": {
+        "statement_kind": "DERIVE_RECURRENCE_RELATION",
+        "index_variable": "n",
+        "base_index": 0,
+        "base_value": {
+          "kind": "RATIONAL",
+          "value": {
+            "numerator": -3,
+            "denominator": 1
+          }
+        },
+        "delta": {
+          "kind": "ADD",
+          "value": [
+            {
+              "kind": "ADD",
+              "value": [
+                {
+                  "kind": "POWER",
+                  "value": [
+                    {
+                      "kind": "VARIABLE",
+                      "value": "n"
+                    },
+                    2
+                  ]
+                },
+                {
+                  "kind": "VARIABLE",
+                  "value": "n"
+                }
+              ]
+            },
+            {
+              "kind": "RATIONAL",
+              "value": {
+                "numerator": 1,
+                "denominator": 1
+              }
+            }
+          ]
+        }
+      },
+      "definitions": [],
+      "assumptions": [
+        {
+          "condition": "NON_NEGATIVE_INTEGER",
+          "variable": "n"
+        }
+      ],
+      "zero_demonstrations": true,
+      "provenance": [
+        "FRESH-CALIBRATION-RECURRENCE-GENERATOR"
+      ]
+    },
+    {
+      "task_id": "SEM4-CAL-REC-009",
+      "split": "CALIBRATION",
+      "statement": {
+        "statement_kind": "DERIVE_RECURRENCE_RELATION",
+        "index_variable": "n",
+        "base_index": 0,
+        "base_value": {
+          "kind": "RATIONAL",
+          "value": {
+            "numerator": -14,
+            "denominator": 1
+          }
+        },
+        "delta": {
+          "kind": "ADD",
+          "value": [
+            {
+              "kind": "ADD",
+              "value": [
+                {
+                  "kind": "POWER",
+                  "value": [
+                    {
+                      "kind": "VARIABLE",
+                      "value": "n"
+                    },
+                    2
+                  ]
+                },
+                {
+                  "kind": "VARIABLE",
+                  "value": "n"
+                }
+              ]
+            },
+            {
+              "kind": "RATIONAL",
+              "value": {
+                "numerator": 1,
+                "denominator": 1
+              }
+            }
+          ]
+        }
+      },
+      "definitions": [],
+      "assumptions": [
+        {
+          "condition": "NON_NEGATIVE_INTEGER",
+          "variable": "n"
+        }
+      ],
+      "zero_demonstrations": true,
+      "provenance": [
+        "FRESH-CALIBRATION-RECURRENCE-GENERATOR"
+      ]
+    },
+    {
+      "task_id": "SEM4-CAL-REC-010",
+      "split": "CALIBRATION",
+      "statement": {
+        "statement_kind": "DERIVE_RECURRENCE_RELATION",
+        "index_variable": "n",
+        "base_index": 0,
+        "base_value": {
+          "kind": "RATIONAL",
+          "value": {
+            "numerator": -11,
+            "denominator": 1
+          }
+        },
+        "delta": {
+          "kind": "ADD",
+          "value": [
+            {
+              "kind": "ADD",
+              "value": [
+                {
+                  "kind": "POWER",
+                  "value": [
+                    {
+                      "kind": "VARIABLE",
+                      "value": "n"
+                    },
+                    2
+                  ]
+                },
+                {
+                  "kind": "VARIABLE",
+                  "value": "n"
+                }
+              ]
+            },
+            {
+              "kind": "RATIONAL",
+              "value": {
+                "numerator": 1,
+                "denominator": 1
+              }
+            }
+          ]
+        }
+      },
+      "definitions": [],
+      "assumptions": [
+        {
+          "condition": "NON_NEGATIVE_INTEGER",
+          "variable": "n"
+        }
+      ],
+      "zero_demonstrations": true,
+      "provenance": [
+        "FRESH-CALIBRATION-RECURRENCE-GENERATOR"
+      ]
+    },
+    {
+      "task_id": "SEM4-CAL-REC-011",
+      "split": "CALIBRATION",
+      "statement": {
+        "statement_kind": "DERIVE_RECURRENCE_RELATION",
+        "index_variable": "n",
+        "base_index": 0,
+        "base_value": {
+          "kind": "RATIONAL",
+          "value": {
+            "numerator": -1,
+            "denominator": 1
+          }
+        },
+        "delta": {
+          "kind": "ADD",
+          "value": [
+            {
+              "kind": "ADD",
+              "value": [
+                {
+                  "kind": "POWER",
+                  "value": [
+                    {
+                      "kind": "VARIABLE",
+                      "value": "n"
+                    },
+                    2
+                  ]
+                },
+                {
+                  "kind": "VARIABLE",
+                  "value": "n"
+                }
+              ]
+            },
+            {
+              "kind": "RATIONAL",
+              "value": {
+                "numerator": 1,
+                "denominator": 1
+              }
+            }
+          ]
+        }
+      },
+      "definitions": [],
+      "assumptions": [
+        {
+          "condition": "NON_NEGATIVE_INTEGER",
+          "variable": "n"
+        }
+      ],
+      "zero_demonstrations": true,
+      "provenance": [
+        "FRESH-CALIBRATION-RECURRENCE-GENERATOR"
+      ]
+    },
+    {
+      "task_id": "SEM4-DISC-DEF-000",
+      "split": "DISCOVERY",
+      "statement": {
+        "statement_kind": "APPLY_DEFINITION",
+        "operator_token": "d_9b29b4dd1f7b2a46",
+        "arguments": [
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 2,
+              "denominator": 1
+            }
+          },
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -3,
+              "denominator": 1
+            }
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "operator_token": "d_9b29b4dd1f7b2a46",
+          "parameters": [
+            "u",
+            "v"
+          ],
+          "body": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "VARIABLE",
+                "value": "u"
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 5,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "VARIABLE",
+                    "value": "v"
+                  }
+                ]
+              }
+            ]
+          },
+          "domain_conditions": [],
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "FORMAL_DEFINITION_ONLY_NO_DEMONSTRATIONS"
+          ]
+        }
+      ],
+      "assumptions": [],
+      "zero_demonstrations": true,
+      "provenance": [
+        "FORMAL_DEFINITION_GENERATOR"
+      ]
+    },
+    {
+      "task_id": "SEM4-DISC-DEF-001",
+      "split": "DISCOVERY",
+      "statement": {
+        "statement_kind": "APPLY_DEFINITION",
+        "operator_token": "d_93e05adc4a7f34e8",
+        "arguments": [
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 3,
+              "denominator": 1
+            }
+          },
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -2,
+              "denominator": 1
+            }
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "operator_token": "d_93e05adc4a7f34e8",
+          "parameters": [
+            "u",
+            "v"
+          ],
+          "body": {
+            "kind": "SUBTRACT",
+            "value": [
+              {
+                "kind": "VARIABLE",
+                "value": "v"
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "VARIABLE",
+                    "value": "u"
+                  }
+                ]
+              }
+            ]
+          },
+          "domain_conditions": [],
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "FORMAL_DEFINITION_ONLY_NO_DEMONSTRATIONS"
+          ]
+        }
+      ],
+      "assumptions": [],
+      "zero_demonstrations": true,
+      "provenance": [
+        "FORMAL_DEFINITION_GENERATOR"
+      ]
+    },
+    {
+      "task_id": "SEM4-DISC-DEF-002",
+      "split": "DISCOVERY",
+      "statement": {
+        "statement_kind": "APPLY_DEFINITION",
+        "operator_token": "d_79fbd5fcbeda5c5a",
+        "arguments": [
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 4,
+              "denominator": 1
+            }
+          },
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -1,
+              "denominator": 1
+            }
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "operator_token": "d_79fbd5fcbeda5c5a",
+          "parameters": [
+            "u",
+            "v"
+          ],
+          "body": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "u"
+                  },
+                  {
+                    "kind": "VARIABLE",
+                    "value": "v"
+                  }
+                ]
+              },
+              {
+                "kind": "RATIONAL",
+                "value": {
+                  "numerator": 1,
+                  "denominator": 1
+                }
+              }
+            ]
+          },
+          "domain_conditions": [],
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "FORMAL_DEFINITION_ONLY_NO_DEMONSTRATIONS"
+          ]
+        }
+      ],
+      "assumptions": [],
+      "zero_demonstrations": true,
+      "provenance": [
+        "FORMAL_DEFINITION_GENERATOR"
+      ]
+    },
+    {
+      "task_id": "SEM4-DISC-DEF-003",
+      "split": "DISCOVERY",
+      "statement": {
+        "statement_kind": "APPLY_DEFINITION",
+        "operator_token": "d_1731d55eba274d1c",
+        "arguments": [
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 5,
+              "denominator": 1
+            }
+          },
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "operator_token": "d_1731d55eba274d1c",
+          "parameters": [
+            "u",
+            "v"
+          ],
+          "body": {
+            "kind": "MULTIPLY",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "u"
+                  },
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -3,
+                      "denominator": 1
+                    }
+                  }
+                ]
+              },
+              {
+                "kind": "VARIABLE",
+                "value": "v"
+              }
+            ]
+          },
+          "domain_conditions": [],
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "FORMAL_DEFINITION_ONLY_NO_DEMONSTRATIONS"
+          ]
+        }
+      ],
+      "assumptions": [],
+      "zero_demonstrations": true,
+      "provenance": [
+        "FORMAL_DEFINITION_GENERATOR"
+      ]
+    },
+    {
+      "task_id": "SEM4-DISC-DEF-004",
+      "split": "DISCOVERY",
+      "statement": {
+        "statement_kind": "APPLY_DEFINITION",
+        "operator_token": "d_9244b40eb03f87ae",
+        "arguments": [
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 6,
+              "denominator": 1
+            }
+          },
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 1,
+              "denominator": 1
+            }
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "operator_token": "d_9244b40eb03f87ae",
+          "parameters": [
+            "u",
+            "v"
+          ],
+          "body": {
+            "kind": "DIVIDE",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "u"
+                  },
+                  {
+                    "kind": "VARIABLE",
+                    "value": "v"
+                  }
+                ]
+              },
+              {
+                "kind": "RATIONAL",
+                "value": {
+                  "numerator": -2,
+                  "denominator": 1
+                }
+              }
+            ]
+          },
+          "domain_conditions": [
+            {
+              "condition": "NON_ZERO",
+              "expression": {
+                "kind": "RATIONAL",
+                "value": {
+                  "numerator": -2,
+                  "denominator": 1
+                }
+              }
+            }
+          ],
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "FORMAL_DEFINITION_ONLY_NO_DEMONSTRATIONS"
+          ]
+        }
+      ],
+      "assumptions": [],
+      "zero_demonstrations": true,
+      "provenance": [
+        "FORMAL_DEFINITION_GENERATOR"
+      ]
+    },
+    {
+      "task_id": "SEM4-DISC-DEF-005",
+      "split": "DISCOVERY",
+      "statement": {
+        "statement_kind": "APPLY_DEFINITION",
+        "operator_token": "d_95789bab556f8090",
+        "arguments": [
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 7,
+              "denominator": 1
+            }
+          },
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 2,
+              "denominator": 1
+            }
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "operator_token": "d_95789bab556f8090",
+          "parameters": [
+            "u",
+            "v"
+          ],
+          "body": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "VARIABLE",
+                "value": "u"
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -3,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "VARIABLE",
+                    "value": "v"
+                  }
+                ]
+              }
+            ]
+          },
+          "domain_conditions": [],
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "FORMAL_DEFINITION_ONLY_NO_DEMONSTRATIONS"
+          ]
+        }
+      ],
+      "assumptions": [],
+      "zero_demonstrations": true,
+      "provenance": [
+        "FORMAL_DEFINITION_GENERATOR"
+      ]
+    },
+    {
+      "task_id": "SEM4-DISC-DEF-006",
+      "split": "DISCOVERY",
+      "statement": {
+        "statement_kind": "APPLY_DEFINITION",
+        "operator_token": "d_c06069a80187c042",
+        "arguments": [
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 8,
+              "denominator": 1
+            }
+          },
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 3,
+              "denominator": 1
+            }
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "operator_token": "d_c06069a80187c042",
+          "parameters": [
+            "u",
+            "v"
+          ],
+          "body": {
+            "kind": "SUBTRACT",
+            "value": [
+              {
+                "kind": "VARIABLE",
+                "value": "v"
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -2,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "VARIABLE",
+                    "value": "u"
+                  }
+                ]
+              }
+            ]
+          },
+          "domain_conditions": [],
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "FORMAL_DEFINITION_ONLY_NO_DEMONSTRATIONS"
+          ]
+        }
+      ],
+      "assumptions": [],
+      "zero_demonstrations": true,
+      "provenance": [
+        "FORMAL_DEFINITION_GENERATOR"
+      ]
+    },
+    {
+      "task_id": "SEM4-DISC-DEF-007",
+      "split": "DISCOVERY",
+      "statement": {
+        "statement_kind": "APPLY_DEFINITION",
+        "operator_token": "d_c096dd5c4d130344",
+        "arguments": [
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 9,
+              "denominator": 1
+            }
+          },
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 4,
+              "denominator": 1
+            }
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "operator_token": "d_c096dd5c4d130344",
+          "parameters": [
+            "u",
+            "v"
+          ],
+          "body": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "u"
+                  },
+                  {
+                    "kind": "VARIABLE",
+                    "value": "v"
+                  }
+                ]
+              },
+              {
+                "kind": "RATIONAL",
+                "value": {
+                  "numerator": -5,
+                  "denominator": 1
+                }
+              }
+            ]
+          },
+          "domain_conditions": [],
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "FORMAL_DEFINITION_ONLY_NO_DEMONSTRATIONS"
+          ]
+        }
+      ],
+      "assumptions": [],
+      "zero_demonstrations": true,
+      "provenance": [
+        "FORMAL_DEFINITION_GENERATOR"
+      ]
+    }
+  ],
+  "target_formulas_supplied": false,
+  "worked_examples_supplied": false,
+  "active_experiment_ids": [
+    "SEM4-ACTIVE-C000006-0",
+    "SEM4-ACTIVE-C000006-2",
+    "SEM4-ACTIVE-C000007-0",
+    "SEM4-ACTIVE-C000007-2",
+    "SEM4-ACTIVE-C000008-0",
+    "SEM4-ACTIVE-C000008-2",
+    "SEM4-ACTIVE-C000009-0",
+    "SEM4-ACTIVE-C000009-2"
+  ]
+}

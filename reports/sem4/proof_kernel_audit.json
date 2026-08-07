@@ -1,0 +1,14 @@
+{
+  "independent_from_reasoner_search": true,
+  "solution_search_operations": 0,
+  "certificates_checked": 99,
+  "transformation_steps_checked": 158,
+  "induction_proofs_verified": 44,
+  "invalid_cancellation_rejected": true,
+  "divide_by_zero_rejected": true,
+  "domain_invalid_transformations_rejected": true,
+  "type_violations_rejected": true,
+  "hidden_assumptions_rejected": true,
+  "invalid_transformations_accepted": 0,
+  "passed": true
+}

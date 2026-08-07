@@ -1,0 +1,119 @@
+[
+  {
+    "primitive_id": "MP000001",
+    "operation": "ADD",
+    "input_domain": [
+      "RATIONAL",
+      "RATIONAL"
+    ],
+    "output_domain": "RATIONAL",
+    "preconditions": [],
+    "executable_semantics": "exact checked Add over the declared formal domain",
+    "provenance": [
+      "SEM4-MINIMAL-MATHEMATICAL-SUBSTRATE"
+    ]
+  },
+  {
+    "primitive_id": "MP000002",
+    "operation": "SUBTRACT",
+    "input_domain": [
+      "RATIONAL",
+      "RATIONAL"
+    ],
+    "output_domain": "RATIONAL",
+    "preconditions": [],
+    "executable_semantics": "exact checked Subtract over the declared formal domain",
+    "provenance": [
+      "SEM4-MINIMAL-MATHEMATICAL-SUBSTRATE"
+    ]
+  },
+  {
+    "primitive_id": "MP000003",
+    "operation": "MULTIPLY",
+    "input_domain": [
+      "RATIONAL",
+      "RATIONAL"
+    ],
+    "output_domain": "RATIONAL",
+    "preconditions": [],
+    "executable_semantics": "exact checked Multiply over the declared formal domain",
+    "provenance": [
+      "SEM4-MINIMAL-MATHEMATICAL-SUBSTRATE"
+    ]
+  },
+  {
+    "primitive_id": "MP000004",
+    "operation": "DIVIDE",
+    "input_domain": [
+      "RATIONAL",
+      "RATIONAL"
+    ],
+    "output_domain": "RATIONAL",
+    "preconditions": [
+      "denominator != 0"
+    ],
+    "executable_semantics": "exact checked Divide over the declared formal domain",
+    "provenance": [
+      "SEM4-MINIMAL-MATHEMATICAL-SUBSTRATE"
+    ]
+  },
+  {
+    "primitive_id": "MP000005",
+    "operation": "NEGATE",
+    "input_domain": [
+      "RATIONAL"
+    ],
+    "output_domain": "RATIONAL",
+    "preconditions": [],
+    "executable_semantics": "exact checked Negate over the declared formal domain",
+    "provenance": [
+      "SEM4-MINIMAL-MATHEMATICAL-SUBSTRATE"
+    ]
+  },
+  {
+    "primitive_id": "MP000006",
+    "operation": "COMPARE",
+    "input_domain": [
+      "RATIONAL",
+      "RATIONAL"
+    ],
+    "output_domain": "CONDITION",
+    "preconditions": [],
+    "executable_semantics": "exact checked Compare over the declared formal domain",
+    "provenance": [
+      "SEM4-MINIMAL-MATHEMATICAL-SUBSTRATE"
+    ]
+  },
+  {
+    "primitive_id": "MP000007",
+    "operation": "SUBSTITUTE",
+    "input_domain": [
+      "EXPRESSION",
+      "EXPRESSION"
+    ],
+    "output_domain": "EXPRESSION",
+    "preconditions": [
+      "replacement type matches variable domain"
+    ],
+    "executable_semantics": "exact checked Substitute over the declared formal domain",
+    "provenance": [
+      "SEM4-MINIMAL-MATHEMATICAL-SUBSTRATE"
+    ]
+  },
+  {
+    "primitive_id": "MP000008",
+    "operation": "POWER_NON_NEGATIVE_INTEGER",
+    "input_domain": [
+      "RATIONAL",
+      "INTEGER"
+    ],
+    "output_domain": "RATIONAL",
+    "preconditions": [
+      "exponent is a nonnegative integer"
+    ],
+    "executable_semantics": "exact checked PowerNonNegativeInteger over the declared formal domain",
+    "provenance": [
+      "SEM4-MINIMAL-MATHEMATICAL-SUBSTRATE"
+    ]
+  }
+]

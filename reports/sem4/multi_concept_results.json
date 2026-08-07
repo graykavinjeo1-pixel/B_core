@@ -1,0 +1,5734 @@
+[
+  {
+    "family": "MULTI_CONCEPT_ADVERSARIAL",
+    "tasks": 20,
+    "solved": 20,
+    "solve_rate": 1.0,
+    "records": [
+      {
+        "task_id": "SEM4-BLIND-MULTI-000",
+        "condition": "FIRST_PRINCIPLES_D",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-000"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 18,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 1
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "POWER",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "n"
+                  },
+                  2
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-000",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 56,
+        "search_expansions": 10,
+        "used_concept_ids": [
+          "C000006",
+          "C000002",
+          "C000004",
+          "C000005"
+        ],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-001",
+        "condition": "FIRST_PRINCIPLES_D",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-001"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -14,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 1
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "POWER",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "n"
+                  },
+                  2
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-001",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 56,
+        "search_expansions": 10,
+        "used_concept_ids": [
+          "C000006",
+          "C000002",
+          "C000004",
+          "C000005"
+        ],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-002",
+        "condition": "FIRST_PRINCIPLES_D",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-002"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -15,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 1
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "POWER",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "n"
+                  },
+                  2
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-002",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 56,
+        "search_expansions": 10,
+        "used_concept_ids": [
+          "C000006",
+          "C000002",
+          "C000004",
+          "C000005"
+        ],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-003",
+        "condition": "FIRST_PRINCIPLES_D",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-003"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -8,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 1
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "POWER",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "n"
+                  },
+                  2
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-003",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 56,
+        "search_expansions": 10,
+        "used_concept_ids": [
+          "C000006",
+          "C000002",
+          "C000004",
+          "C000005"
+        ],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-004",
+        "condition": "FIRST_PRINCIPLES_D",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-004"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 1
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "POWER",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "n"
+                  },
+                  2
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-004",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 56,
+        "search_expansions": 10,
+        "used_concept_ids": [
+          "C000006",
+          "C000002",
+          "C000004",
+          "C000005"
+        ],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-005",
+        "condition": "FIRST_PRINCIPLES_D",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-005"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -7,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 1
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "POWER",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "n"
+                  },
+                  2
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-005",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 56,
+        "search_expansions": 10,
+        "used_concept_ids": [
+          "C000006",
+          "C000002",
+          "C000004",
+          "C000005"
+        ],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-006",
+        "condition": "FIRST_PRINCIPLES_D",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-006"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -14,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 1
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "POWER",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "n"
+                  },
+                  2
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-006",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 56,
+        "search_expansions": 10,
+        "used_concept_ids": [
+          "C000006",
+          "C000002",
+          "C000004",
+          "C000005"
+        ],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-007",
+        "condition": "FIRST_PRINCIPLES_D",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-007"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -11,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 1
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "POWER",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "n"
+                  },
+                  2
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-007",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 56,
+        "search_expansions": 10,
+        "used_concept_ids": [
+          "C000006",
+          "C000002",
+          "C000004",
+          "C000005"
+        ],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-008",
+        "condition": "FIRST_PRINCIPLES_D",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-008"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 15,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 1
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "POWER",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "n"
+                  },
+                  2
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-008",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 56,
+        "search_expansions": 10,
+        "used_concept_ids": [
+          "C000006",
+          "C000002",
+          "C000004",
+          "C000005"
+        ],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-009",
+        "condition": "FIRST_PRINCIPLES_D",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-009"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 4,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 1
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "POWER",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "n"
+                  },
+                  2
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-009",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 56,
+        "search_expansions": 10,
+        "used_concept_ids": [
+          "C000006",
+          "C000002",
+          "C000004",
+          "C000005"
+        ],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-010",
+        "condition": "FIRST_PRINCIPLES_D",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-010"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 18,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 3
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 3
+                    }
+                  },
+                  {
+                    "kind": "POWER",
+                    "value": [
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      },
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-010",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 72,
+        "search_expansions": 10,
+        "used_concept_ids": [
+          "C000007",
+          "C000002",
+          "C000004",
+          "C000005"
+        ],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-011",
+        "condition": "FIRST_PRINCIPLES_D",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-011"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -13,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 3
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 3
+                    }
+                  },
+                  {
+                    "kind": "POWER",
+                    "value": [
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      },
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-011",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 72,
+        "search_expansions": 10,
+        "used_concept_ids": [
+          "C000007",
+          "C000002",
+          "C000004",
+          "C000005"
+        ],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-012",
+        "condition": "FIRST_PRINCIPLES_D",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-012"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 13,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 3
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 3
+                    }
+                  },
+                  {
+                    "kind": "POWER",
+                    "value": [
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      },
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-012",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 72,
+        "search_expansions": 10,
+        "used_concept_ids": [
+          "C000007",
+          "C000002",
+          "C000004",
+          "C000005"
+        ],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-013",
+        "condition": "FIRST_PRINCIPLES_D",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-013"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 14,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 3
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 3
+                    }
+                  },
+                  {
+                    "kind": "POWER",
+                    "value": [
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      },
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-013",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 72,
+        "search_expansions": 10,
+        "used_concept_ids": [
+          "C000007",
+          "C000002",
+          "C000004",
+          "C000005"
+        ],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-014",
+        "condition": "FIRST_PRINCIPLES_D",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-014"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 2,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 3
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 3
+                    }
+                  },
+                  {
+                    "kind": "POWER",
+                    "value": [
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      },
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-014",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 72,
+        "search_expansions": 10,
+        "used_concept_ids": [
+          "C000007",
+          "C000002",
+          "C000004",
+          "C000005"
+        ],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-015",
+        "condition": "FIRST_PRINCIPLES_D",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-015"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -19,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 3
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 3
+                    }
+                  },
+                  {
+                    "kind": "POWER",
+                    "value": [
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      },
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-015",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 72,
+        "search_expansions": 10,
+        "used_concept_ids": [
+          "C000007",
+          "C000002",
+          "C000004",
+          "C000005"
+        ],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-016",
+        "condition": "FIRST_PRINCIPLES_D",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-016"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 3
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 3
+                    }
+                  },
+                  {
+                    "kind": "POWER",
+                    "value": [
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      },
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-016",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 72,
+        "search_expansions": 10,
+        "used_concept_ids": [
+          "C000007",
+          "C000002",
+          "C000004",
+          "C000005"
+        ],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-017",
+        "condition": "FIRST_PRINCIPLES_D",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-017"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 6,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 3
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 3
+                    }
+                  },
+                  {
+                    "kind": "POWER",
+                    "value": [
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      },
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-017",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 72,
+        "search_expansions": 10,
+        "used_concept_ids": [
+          "C000007",
+          "C000002",
+          "C000004",
+          "C000005"
+        ],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-018",
+        "condition": "FIRST_PRINCIPLES_D",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-018"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -1,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 3
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 3
+                    }
+                  },
+                  {
+                    "kind": "POWER",
+                    "value": [
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      },
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-018",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 72,
+        "search_expansions": 10,
+        "used_concept_ids": [
+          "C000007",
+          "C000002",
+          "C000004",
+          "C000005"
+        ],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-019",
+        "condition": "FIRST_PRINCIPLES_D",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-019"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 3
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 3
+                    }
+                  },
+                  {
+                    "kind": "POWER",
+                    "value": [
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      },
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-019",
+        "proof_steps": 2,
+        "primitive_expanded_steps": 72,
+        "search_expansions": 10,
+        "used_concept_ids": [
+          "C000007",
+          "C000002",
+          "C000004",
+          "C000005"
+        ],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      }
+    ]
+  },
+  {
+    "family": "MULTI_CONCEPT_ADVERSARIAL",
+    "tasks": 20,
+    "solved": 0,
+    "solve_rate": 0.0,
+    "records": [
+      {
+        "task_id": "SEM4-BLIND-MULTI-000",
+        "condition": "PRIMITIVE_A",
+        "accepted": false,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-000"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 18,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 1
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "POWER",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "n"
+                  },
+                  2
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-000",
+        "proof_steps": 14,
+        "primitive_expanded_steps": 56,
+        "search_expansions": 441,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-001",
+        "condition": "PRIMITIVE_A",
+        "accepted": false,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-001"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -14,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 1
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "POWER",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "n"
+                  },
+                  2
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-001",
+        "proof_steps": 14,
+        "primitive_expanded_steps": 56,
+        "search_expansions": 441,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-002",
+        "condition": "PRIMITIVE_A",
+        "accepted": false,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-002"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -15,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 1
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "POWER",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "n"
+                  },
+                  2
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-002",
+        "proof_steps": 14,
+        "primitive_expanded_steps": 56,
+        "search_expansions": 441,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-003",
+        "condition": "PRIMITIVE_A",
+        "accepted": false,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-003"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -8,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 1
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "POWER",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "n"
+                  },
+                  2
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-003",
+        "proof_steps": 14,
+        "primitive_expanded_steps": 56,
+        "search_expansions": 441,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-004",
+        "condition": "PRIMITIVE_A",
+        "accepted": false,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-004"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 1
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "POWER",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "n"
+                  },
+                  2
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-004",
+        "proof_steps": 14,
+        "primitive_expanded_steps": 56,
+        "search_expansions": 441,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-005",
+        "condition": "PRIMITIVE_A",
+        "accepted": false,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-005"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -7,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 1
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "POWER",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "n"
+                  },
+                  2
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-005",
+        "proof_steps": 14,
+        "primitive_expanded_steps": 56,
+        "search_expansions": 441,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-006",
+        "condition": "PRIMITIVE_A",
+        "accepted": false,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-006"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -14,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 1
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "POWER",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "n"
+                  },
+                  2
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-006",
+        "proof_steps": 14,
+        "primitive_expanded_steps": 56,
+        "search_expansions": 441,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-007",
+        "condition": "PRIMITIVE_A",
+        "accepted": false,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-007"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -11,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 1
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "POWER",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "n"
+                  },
+                  2
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-007",
+        "proof_steps": 14,
+        "primitive_expanded_steps": 56,
+        "search_expansions": 441,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-008",
+        "condition": "PRIMITIVE_A",
+        "accepted": false,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-008"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 15,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 1
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "POWER",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "n"
+                  },
+                  2
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-008",
+        "proof_steps": 14,
+        "primitive_expanded_steps": 56,
+        "search_expansions": 441,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-009",
+        "condition": "PRIMITIVE_A",
+        "accepted": false,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-009"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 4,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 1
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "POWER",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "n"
+                  },
+                  2
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-009",
+        "proof_steps": 14,
+        "primitive_expanded_steps": 56,
+        "search_expansions": 441,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-010",
+        "condition": "PRIMITIVE_A",
+        "accepted": false,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-010"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 18,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 3
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 3
+                    }
+                  },
+                  {
+                    "kind": "POWER",
+                    "value": [
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      },
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-010",
+        "proof_steps": 18,
+        "primitive_expanded_steps": 72,
+        "search_expansions": 468,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-011",
+        "condition": "PRIMITIVE_A",
+        "accepted": false,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-011"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -13,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 3
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 3
+                    }
+                  },
+                  {
+                    "kind": "POWER",
+                    "value": [
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      },
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-011",
+        "proof_steps": 18,
+        "primitive_expanded_steps": 72,
+        "search_expansions": 468,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-012",
+        "condition": "PRIMITIVE_A",
+        "accepted": false,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-012"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 13,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 3
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 3
+                    }
+                  },
+                  {
+                    "kind": "POWER",
+                    "value": [
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      },
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-012",
+        "proof_steps": 18,
+        "primitive_expanded_steps": 72,
+        "search_expansions": 468,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-013",
+        "condition": "PRIMITIVE_A",
+        "accepted": false,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-013"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 14,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 3
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 3
+                    }
+                  },
+                  {
+                    "kind": "POWER",
+                    "value": [
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      },
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-013",
+        "proof_steps": 18,
+        "primitive_expanded_steps": 72,
+        "search_expansions": 468,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-014",
+        "condition": "PRIMITIVE_A",
+        "accepted": false,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-014"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 2,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 3
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 3
+                    }
+                  },
+                  {
+                    "kind": "POWER",
+                    "value": [
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      },
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-014",
+        "proof_steps": 18,
+        "primitive_expanded_steps": 72,
+        "search_expansions": 468,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-015",
+        "condition": "PRIMITIVE_A",
+        "accepted": false,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-015"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -19,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 3
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 3
+                    }
+                  },
+                  {
+                    "kind": "POWER",
+                    "value": [
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      },
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-015",
+        "proof_steps": 18,
+        "primitive_expanded_steps": 72,
+        "search_expansions": 468,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-016",
+        "condition": "PRIMITIVE_A",
+        "accepted": false,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-016"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 3
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 3
+                    }
+                  },
+                  {
+                    "kind": "POWER",
+                    "value": [
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      },
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-016",
+        "proof_steps": 18,
+        "primitive_expanded_steps": 72,
+        "search_expansions": 468,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-017",
+        "condition": "PRIMITIVE_A",
+        "accepted": false,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-017"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 6,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 3
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 3
+                    }
+                  },
+                  {
+                    "kind": "POWER",
+                    "value": [
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      },
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-017",
+        "proof_steps": 18,
+        "primitive_expanded_steps": 72,
+        "search_expansions": 468,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-018",
+        "condition": "PRIMITIVE_A",
+        "accepted": false,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-018"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -1,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 3
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 3
+                    }
+                  },
+                  {
+                    "kind": "POWER",
+                    "value": [
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      },
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-018",
+        "proof_steps": 18,
+        "primitive_expanded_steps": 72,
+        "search_expansions": 468,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-019",
+        "condition": "PRIMITIVE_A",
+        "accepted": false,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-019"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 3
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 3
+                    }
+                  },
+                  {
+                    "kind": "POWER",
+                    "value": [
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      },
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-019",
+        "proof_steps": 18,
+        "primitive_expanded_steps": 72,
+        "search_expansions": 468,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      }
+    ]
+  },
+  {
+    "family": "MULTI_CONCEPT_ADVERSARIAL",
+    "tasks": 20,
+    "solved": 20,
+    "solve_rate": 1.0,
+    "records": [
+      {
+        "task_id": "SEM4-BLIND-MULTI-000",
+        "condition": "SEMANTIC_NO_PROMOTION_C",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-000"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 18,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 1
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "POWER",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "n"
+                  },
+                  2
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-000",
+        "proof_steps": 14,
+        "primitive_expanded_steps": 56,
+        "search_expansions": 100,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-001",
+        "condition": "SEMANTIC_NO_PROMOTION_C",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-001"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -14,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 1
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "POWER",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "n"
+                  },
+                  2
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-001",
+        "proof_steps": 14,
+        "primitive_expanded_steps": 56,
+        "search_expansions": 100,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-002",
+        "condition": "SEMANTIC_NO_PROMOTION_C",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-002"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -15,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 1
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "POWER",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "n"
+                  },
+                  2
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-002",
+        "proof_steps": 14,
+        "primitive_expanded_steps": 56,
+        "search_expansions": 100,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-003",
+        "condition": "SEMANTIC_NO_PROMOTION_C",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-003"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -8,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 1
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "POWER",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "n"
+                  },
+                  2
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-003",
+        "proof_steps": 14,
+        "primitive_expanded_steps": 56,
+        "search_expansions": 100,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-004",
+        "condition": "SEMANTIC_NO_PROMOTION_C",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-004"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 1
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "POWER",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "n"
+                  },
+                  2
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-004",
+        "proof_steps": 14,
+        "primitive_expanded_steps": 56,
+        "search_expansions": 100,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-005",
+        "condition": "SEMANTIC_NO_PROMOTION_C",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-005"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -7,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 1
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "POWER",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "n"
+                  },
+                  2
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-005",
+        "proof_steps": 14,
+        "primitive_expanded_steps": 56,
+        "search_expansions": 100,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-006",
+        "condition": "SEMANTIC_NO_PROMOTION_C",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-006"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -14,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 1
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "POWER",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "n"
+                  },
+                  2
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-006",
+        "proof_steps": 14,
+        "primitive_expanded_steps": 56,
+        "search_expansions": 100,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-007",
+        "condition": "SEMANTIC_NO_PROMOTION_C",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-007"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -11,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 1
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "POWER",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "n"
+                  },
+                  2
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-007",
+        "proof_steps": 14,
+        "primitive_expanded_steps": 56,
+        "search_expansions": 100,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-008",
+        "condition": "SEMANTIC_NO_PROMOTION_C",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-008"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 15,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 1
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "POWER",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "n"
+                  },
+                  2
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-008",
+        "proof_steps": 14,
+        "primitive_expanded_steps": 56,
+        "search_expansions": 100,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-009",
+        "condition": "SEMANTIC_NO_PROMOTION_C",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-009"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 4,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 1
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "POWER",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "n"
+                  },
+                  2
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-009",
+        "proof_steps": 14,
+        "primitive_expanded_steps": 56,
+        "search_expansions": 100,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-010",
+        "condition": "SEMANTIC_NO_PROMOTION_C",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-010"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 18,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 3
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 3
+                    }
+                  },
+                  {
+                    "kind": "POWER",
+                    "value": [
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      },
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-010",
+        "proof_steps": 18,
+        "primitive_expanded_steps": 72,
+        "search_expansions": 106,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-011",
+        "condition": "SEMANTIC_NO_PROMOTION_C",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-011"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -13,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 3
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 3
+                    }
+                  },
+                  {
+                    "kind": "POWER",
+                    "value": [
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      },
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-011",
+        "proof_steps": 18,
+        "primitive_expanded_steps": 72,
+        "search_expansions": 106,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-012",
+        "condition": "SEMANTIC_NO_PROMOTION_C",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-012"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 13,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 3
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 3
+                    }
+                  },
+                  {
+                    "kind": "POWER",
+                    "value": [
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      },
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-012",
+        "proof_steps": 18,
+        "primitive_expanded_steps": 72,
+        "search_expansions": 106,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-013",
+        "condition": "SEMANTIC_NO_PROMOTION_C",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-013"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 14,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 3
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 3
+                    }
+                  },
+                  {
+                    "kind": "POWER",
+                    "value": [
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      },
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-013",
+        "proof_steps": 18,
+        "primitive_expanded_steps": 72,
+        "search_expansions": 106,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-014",
+        "condition": "SEMANTIC_NO_PROMOTION_C",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-014"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 2,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 3
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 3
+                    }
+                  },
+                  {
+                    "kind": "POWER",
+                    "value": [
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      },
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-014",
+        "proof_steps": 18,
+        "primitive_expanded_steps": 72,
+        "search_expansions": 106,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-015",
+        "condition": "SEMANTIC_NO_PROMOTION_C",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-015"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -19,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 3
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 3
+                    }
+                  },
+                  {
+                    "kind": "POWER",
+                    "value": [
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      },
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-015",
+        "proof_steps": 18,
+        "primitive_expanded_steps": 72,
+        "search_expansions": 106,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-016",
+        "condition": "SEMANTIC_NO_PROMOTION_C",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-016"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 3
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 3
+                    }
+                  },
+                  {
+                    "kind": "POWER",
+                    "value": [
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      },
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-016",
+        "proof_steps": 18,
+        "primitive_expanded_steps": 72,
+        "search_expansions": 106,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-017",
+        "condition": "SEMANTIC_NO_PROMOTION_C",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-017"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 6,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 3
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 3
+                    }
+                  },
+                  {
+                    "kind": "POWER",
+                    "value": [
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      },
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-017",
+        "proof_steps": 18,
+        "primitive_expanded_steps": 72,
+        "search_expansions": 106,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-018",
+        "condition": "SEMANTIC_NO_PROMOTION_C",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-018"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -1,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 3
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 3
+                    }
+                  },
+                  {
+                    "kind": "POWER",
+                    "value": [
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      },
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-018",
+        "proof_steps": 18,
+        "primitive_expanded_steps": 72,
+        "search_expansions": 106,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-019",
+        "condition": "SEMANTIC_NO_PROMOTION_C",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-019"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 3
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 3
+                    }
+                  },
+                  {
+                    "kind": "POWER",
+                    "value": [
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      },
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-019",
+        "proof_steps": 18,
+        "primitive_expanded_steps": 72,
+        "search_expansions": 106,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      }
+    ]
+  },
+  {
+    "family": "MULTI_CONCEPT_ADVERSARIAL",
+    "tasks": 20,
+    "solved": 10,
+    "solve_rate": 0.5,
+    "records": [
+      {
+        "task_id": "SEM4-BLIND-MULTI-000",
+        "condition": "STRUCTURAL_MACRO_B",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-000"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 18,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 1
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "POWER",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "n"
+                  },
+                  2
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-000",
+        "proof_steps": 14,
+        "primitive_expanded_steps": 56,
+        "search_expansions": 145,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-001",
+        "condition": "STRUCTURAL_MACRO_B",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-001"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -14,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 1
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "POWER",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "n"
+                  },
+                  2
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-001",
+        "proof_steps": 14,
+        "primitive_expanded_steps": 56,
+        "search_expansions": 145,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-002",
+        "condition": "STRUCTURAL_MACRO_B",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-002"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -15,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 1
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "POWER",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "n"
+                  },
+                  2
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-002",
+        "proof_steps": 14,
+        "primitive_expanded_steps": 56,
+        "search_expansions": 145,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-003",
+        "condition": "STRUCTURAL_MACRO_B",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-003"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -8,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 1
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "POWER",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "n"
+                  },
+                  2
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-003",
+        "proof_steps": 14,
+        "primitive_expanded_steps": 56,
+        "search_expansions": 145,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-004",
+        "condition": "STRUCTURAL_MACRO_B",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-004"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 1
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "POWER",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "n"
+                  },
+                  2
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-004",
+        "proof_steps": 14,
+        "primitive_expanded_steps": 56,
+        "search_expansions": 145,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-005",
+        "condition": "STRUCTURAL_MACRO_B",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-005"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -7,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 1
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "POWER",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "n"
+                  },
+                  2
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-005",
+        "proof_steps": 14,
+        "primitive_expanded_steps": 56,
+        "search_expansions": 145,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-006",
+        "condition": "STRUCTURAL_MACRO_B",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-006"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -14,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 1
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "POWER",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "n"
+                  },
+                  2
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-006",
+        "proof_steps": 14,
+        "primitive_expanded_steps": 56,
+        "search_expansions": 145,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-007",
+        "condition": "STRUCTURAL_MACRO_B",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-007"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -11,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 1
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "POWER",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "n"
+                  },
+                  2
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-007",
+        "proof_steps": 14,
+        "primitive_expanded_steps": 56,
+        "search_expansions": 145,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-008",
+        "condition": "STRUCTURAL_MACRO_B",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-008"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 15,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 1
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "POWER",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "n"
+                  },
+                  2
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-008",
+        "proof_steps": 14,
+        "primitive_expanded_steps": 56,
+        "search_expansions": 145,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-009",
+        "condition": "STRUCTURAL_MACRO_B",
+        "accepted": true,
+        "applicable": true,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-009"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 4,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 1
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "POWER",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "n"
+                  },
+                  2
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-009",
+        "proof_steps": 14,
+        "primitive_expanded_steps": 56,
+        "search_expansions": 145,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-010",
+        "condition": "STRUCTURAL_MACRO_B",
+        "accepted": false,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-010"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 18,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 3
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 3
+                    }
+                  },
+                  {
+                    "kind": "POWER",
+                    "value": [
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      },
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-010",
+        "proof_steps": 18,
+        "primitive_expanded_steps": 72,
+        "search_expansions": 154,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-011",
+        "condition": "STRUCTURAL_MACRO_B",
+        "accepted": false,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-011"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -13,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 3
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 3
+                    }
+                  },
+                  {
+                    "kind": "POWER",
+                    "value": [
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      },
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-011",
+        "proof_steps": 18,
+        "primitive_expanded_steps": 72,
+        "search_expansions": 154,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-012",
+        "condition": "STRUCTURAL_MACRO_B",
+        "accepted": false,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-012"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 13,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 3
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 3
+                    }
+                  },
+                  {
+                    "kind": "POWER",
+                    "value": [
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      },
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-012",
+        "proof_steps": 18,
+        "primitive_expanded_steps": 72,
+        "search_expansions": 154,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-013",
+        "condition": "STRUCTURAL_MACRO_B",
+        "accepted": false,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-013"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 14,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 3
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 3
+                    }
+                  },
+                  {
+                    "kind": "POWER",
+                    "value": [
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      },
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-013",
+        "proof_steps": 18,
+        "primitive_expanded_steps": 72,
+        "search_expansions": 154,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-014",
+        "condition": "STRUCTURAL_MACRO_B",
+        "accepted": false,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-014"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 2,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 3
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 3
+                    }
+                  },
+                  {
+                    "kind": "POWER",
+                    "value": [
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      },
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-014",
+        "proof_steps": 18,
+        "primitive_expanded_steps": 72,
+        "search_expansions": 154,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-015",
+        "condition": "STRUCTURAL_MACRO_B",
+        "accepted": false,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-015"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -19,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 3
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 3
+                    }
+                  },
+                  {
+                    "kind": "POWER",
+                    "value": [
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      },
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-015",
+        "proof_steps": 18,
+        "primitive_expanded_steps": 72,
+        "search_expansions": 154,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-016",
+        "condition": "STRUCTURAL_MACRO_B",
+        "accepted": false,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-016"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 3
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 3
+                    }
+                  },
+                  {
+                    "kind": "POWER",
+                    "value": [
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      },
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-016",
+        "proof_steps": 18,
+        "primitive_expanded_steps": 72,
+        "search_expansions": 154,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-017",
+        "condition": "STRUCTURAL_MACRO_B",
+        "accepted": false,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-017"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 6,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 3
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 3
+                    }
+                  },
+                  {
+                    "kind": "POWER",
+                    "value": [
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      },
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-017",
+        "proof_steps": 18,
+        "primitive_expanded_steps": 72,
+        "search_expansions": 154,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-018",
+        "condition": "STRUCTURAL_MACRO_B",
+        "accepted": false,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-018"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -1,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 3
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 3
+                    }
+                  },
+                  {
+                    "kind": "POWER",
+                    "value": [
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      },
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-018",
+        "proof_steps": 18,
+        "primitive_expanded_steps": 72,
+        "search_expansions": 154,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      },
+      {
+        "task_id": "SEM4-BLIND-MULTI-019",
+        "condition": "STRUCTURAL_MACRO_B",
+        "accepted": false,
+        "applicable": false,
+        "invalid_transfer": false,
+        "candidate_relation": {
+          "left": {
+            "kind": "VARIABLE",
+            "value": "sequence_SEM4-BLIND-MULTI-019"
+          },
+          "right": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "value": [
+                      {
+                        "kind": "RATIONAL",
+                        "value": {
+                          "numerator": 2,
+                          "denominator": 3
+                        }
+                      },
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 3
+                    }
+                  },
+                  {
+                    "kind": "POWER",
+                    "value": [
+                      {
+                        "kind": "VARIABLE",
+                        "value": "n"
+                      },
+                      3
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "computed_value": null,
+        "proof_certificate_id": "SEM4-REC-PROOF-SEM4-BLIND-MULTI-019",
+        "proof_steps": 18,
+        "primitive_expanded_steps": 72,
+        "search_expansions": 154,
+        "used_concept_ids": [],
+        "definition_examples_seen": 0,
+        "evaluator_target_formula_access": false
+      }
+    ]
+  }
+]

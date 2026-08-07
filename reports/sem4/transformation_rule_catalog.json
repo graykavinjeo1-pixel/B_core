@@ -1,0 +1,271 @@
+[
+  {
+    "rule_id": "MR000001",
+    "rule": "EQUALITY_REFLEXIVITY",
+    "formal_preconditions": [],
+    "checkable_semantics": "result sides normalize to the same polynomial",
+    "domain_restrictions": [
+      "exact rational polynomial expressions"
+    ],
+    "provenance": [
+      "SEM4-MINIMAL-ALGEBRA-RULE-BASE"
+    ],
+    "target_formula_encoded": false
+  },
+  {
+    "rule_id": "MR000002",
+    "rule": "EQUALITY_SYMMETRY",
+    "formal_preconditions": [],
+    "checkable_semantics": "swap both sides of an equality",
+    "domain_restrictions": [
+      "exact rational polynomial expressions"
+    ],
+    "provenance": [
+      "SEM4-MINIMAL-ALGEBRA-RULE-BASE"
+    ],
+    "target_formula_encoded": false
+  },
+  {
+    "rule_id": "MR000003",
+    "rule": "EQUALITY_TRANSITIVITY",
+    "formal_preconditions": [],
+    "checkable_semantics": "compose equal states with a shared middle state",
+    "domain_restrictions": [
+      "exact rational polynomial expressions"
+    ],
+    "provenance": [
+      "SEM4-MINIMAL-ALGEBRA-RULE-BASE"
+    ],
+    "target_formula_encoded": false
+  },
+  {
+    "rule_id": "MR000004",
+    "rule": "SUBSTITUTE_EQUALS",
+    "formal_preconditions": [],
+    "checkable_semantics": "replace a subexpression by a verified equal expression",
+    "domain_restrictions": [
+      "exact rational polynomial expressions"
+    ],
+    "provenance": [
+      "SEM4-MINIMAL-ALGEBRA-RULE-BASE"
+    ],
+    "target_formula_encoded": false
+  },
+  {
+    "rule_id": "MR000005",
+    "rule": "ADD_BOTH_SIDES",
+    "formal_preconditions": [],
+    "checkable_semantics": "add the identical witness to both sides",
+    "domain_restrictions": [
+      "exact rational polynomial expressions"
+    ],
+    "provenance": [
+      "SEM4-MINIMAL-ALGEBRA-RULE-BASE"
+    ],
+    "target_formula_encoded": false
+  },
+  {
+    "rule_id": "MR000006",
+    "rule": "SUBTRACT_BOTH_SIDES",
+    "formal_preconditions": [],
+    "checkable_semantics": "subtract the identical witness from both sides",
+    "domain_restrictions": [
+      "exact rational polynomial expressions"
+    ],
+    "provenance": [
+      "SEM4-MINIMAL-ALGEBRA-RULE-BASE"
+    ],
+    "target_formula_encoded": false
+  },
+  {
+    "rule_id": "MR000007",
+    "rule": "MULTIPLY_BOTH_SIDES",
+    "formal_preconditions": [],
+    "checkable_semantics": "multiply both sides by the identical witness",
+    "domain_restrictions": [
+      "exact rational polynomial expressions"
+    ],
+    "provenance": [
+      "SEM4-MINIMAL-ALGEBRA-RULE-BASE"
+    ],
+    "target_formula_encoded": false
+  },
+  {
+    "rule_id": "MR000008",
+    "rule": "DIVIDE_BOTH_SIDES_NON_ZERO",
+    "formal_preconditions": [
+      "divisor is explicitly nonzero"
+    ],
+    "checkable_semantics": "divide both sides by the identical nonzero rational witness",
+    "domain_restrictions": [
+      "exact rational polynomial expressions"
+    ],
+    "provenance": [
+      "SEM4-MINIMAL-ALGEBRA-RULE-BASE"
+    ],
+    "target_formula_encoded": false
+  },
+  {
+    "rule_id": "MR000009",
+    "rule": "ADDITION_ASSOCIATIVITY",
+    "formal_preconditions": [],
+    "checkable_semantics": "reassociate rational-polynomial addition",
+    "domain_restrictions": [
+      "exact rational polynomial expressions"
+    ],
+    "provenance": [
+      "SEM4-MINIMAL-ALGEBRA-RULE-BASE"
+    ],
+    "target_formula_encoded": false
+  },
+  {
+    "rule_id": "MR000010",
+    "rule": "ADDITION_COMMUTATIVITY",
+    "formal_preconditions": [],
+    "checkable_semantics": "reorder rational-polynomial addition",
+    "domain_restrictions": [
+      "exact rational polynomial expressions"
+    ],
+    "provenance": [
+      "SEM4-MINIMAL-ALGEBRA-RULE-BASE"
+    ],
+    "target_formula_encoded": false
+  },
+  {
+    "rule_id": "MR000011",
+    "rule": "MULTIPLICATION_ASSOCIATIVITY",
+    "formal_preconditions": [],
+    "checkable_semantics": "reassociate rational-polynomial multiplication",
+    "domain_restrictions": [
+      "exact rational polynomial expressions"
+    ],
+    "provenance": [
+      "SEM4-MINIMAL-ALGEBRA-RULE-BASE"
+    ],
+    "target_formula_encoded": false
+  },
+  {
+    "rule_id": "MR000012",
+    "rule": "MULTIPLICATION_COMMUTATIVITY",
+    "formal_preconditions": [],
+    "checkable_semantics": "reorder rational-polynomial multiplication",
+    "domain_restrictions": [
+      "exact rational polynomial expressions"
+    ],
+    "provenance": [
+      "SEM4-MINIMAL-ALGEBRA-RULE-BASE"
+    ],
+    "target_formula_encoded": false
+  },
+  {
+    "rule_id": "MR000013",
+    "rule": "DISTRIBUTIVITY",
+    "formal_preconditions": [],
+    "checkable_semantics": "expand multiplication over addition",
+    "domain_restrictions": [
+      "exact rational polynomial expressions"
+    ],
+    "provenance": [
+      "SEM4-MINIMAL-ALGEBRA-RULE-BASE"
+    ],
+    "target_formula_encoded": false
+  },
+  {
+    "rule_id": "MR000014",
+    "rule": "IDENTITY_ELEMENTS",
+    "formal_preconditions": [],
+    "checkable_semantics": "remove additive zero or multiplicative one",
+    "domain_restrictions": [
+      "exact rational polynomial expressions"
+    ],
+    "provenance": [
+      "SEM4-MINIMAL-ALGEBRA-RULE-BASE"
+    ],
+    "target_formula_encoded": false
+  },
+  {
+    "rule_id": "MR000015",
+    "rule": "ADDITIVE_INVERSE",
+    "formal_preconditions": [],
+    "checkable_semantics": "cancel an expression with its additive inverse",
+    "domain_restrictions": [
+      "exact rational polynomial expressions"
+    ],
+    "provenance": [
+      "SEM4-MINIMAL-ALGEBRA-RULE-BASE"
+    ],
+    "target_formula_encoded": false
+  },
+  {
+    "rule_id": "MR000016",
+    "rule": "DEFINITION_EXPANSION",
+    "formal_preconditions": [
+      "operator definition exists",
+      "arity matches"
+    ],
+    "checkable_semantics": "substitute the exact body of a locally supplied formal definition",
+    "domain_restrictions": [
+      "exact rational polynomial expressions"
+    ],
+    "provenance": [
+      "SEM4-MINIMAL-ALGEBRA-RULE-BASE"
+    ],
+    "target_formula_encoded": false
+  },
+  {
+    "rule_id": "MR000017",
+    "rule": "RATIONAL_POLYNOMIAL_NORMALIZATION",
+    "formal_preconditions": [
+      "all divisors are nonzero rational constants"
+    ],
+    "checkable_semantics": "normalize using exact rational coefficient arithmetic",
+    "domain_restrictions": [
+      "exact rational polynomial expressions"
+    ],
+    "provenance": [
+      "SEM4-MINIMAL-ALGEBRA-RULE-BASE"
+    ],
+    "target_formula_encoded": false
+  },
+  {
+    "rule_id": "MR000018",
+    "rule": "CASE_SPLIT",
+    "formal_preconditions": [],
+    "checkable_semantics": "cover explicit mutually exclusive applicability conditions",
+    "domain_restrictions": [
+      "exact rational polynomial expressions"
+    ],
+    "provenance": [
+      "SEM4-MINIMAL-ALGEBRA-RULE-BASE"
+    ],
+    "target_formula_encoded": false
+  },
+  {
+    "rule_id": "MR000019",
+    "rule": "INDUCTION_BASE",
+    "formal_preconditions": [],
+    "checkable_semantics": "verify the candidate at the declared base index",
+    "domain_restrictions": [
+      "exact rational polynomial expressions"
+    ],
+    "provenance": [
+      "SEM4-MINIMAL-ALGEBRA-RULE-BASE"
+    ],
+    "target_formula_encoded": false
+  },
+  {
+    "rule_id": "MR000020",
+    "rule": "INDUCTION_STEP",
+    "formal_preconditions": [
+      "index is a nonnegative integer"
+    ],
+    "checkable_semantics": "verify candidate successor difference equals recurrence delta",
+    "domain_restrictions": [
+      "exact rational polynomial expressions"
+    ],
+    "provenance": [
+      "SEM4-MINIMAL-ALGEBRA-RULE-BASE"
+    ],
+    "target_formula_encoded": false
+  }
+]

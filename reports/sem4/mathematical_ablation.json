@@ -1,0 +1,38 @@
+[
+  {
+    "concept_id": "C000006",
+    "tasks": 18,
+    "with_concept_solve_rate": 1.0,
+    "without_concept_solve_rate": 1.0,
+    "solve_rate_delta": 0.0,
+    "with_concept_search_expansions": 180,
+    "without_concept_search_expansions": 1800,
+    "search_expansion_delta": 1620,
+    "with_concept_reasoning_depth": 36,
+    "without_concept_reasoning_depth": 252,
+    "reasoning_depth_delta": 216,
+    "with_concept_proof_length": 1008,
+    "without_concept_proof_length": 1008,
+    "proof_length_delta": 0,
+    "wall_time_proxy_delta": 1620,
+    "passed": true
+  },
+  {
+    "concept_id": "C000007",
+    "tasks": 16,
+    "with_concept_solve_rate": 1.0,
+    "without_concept_solve_rate": 1.0,
+    "solve_rate_delta": 0.0,
+    "with_concept_search_expansions": 160,
+    "without_concept_search_expansions": 1696,
+    "search_expansion_delta": 1536,
+    "with_concept_reasoning_depth": 32,
+    "without_concept_reasoning_depth": 288,
+    "reasoning_depth_delta": 256,
+    "with_concept_proof_length": 1152,
+    "without_concept_proof_length": 1152,
+    "proof_length_delta": 0,
+    "wall_time_proxy_delta": 1536,
+    "passed": true
+  }
+]

@@ -1,0 +1,86 @@
+[
+  {
+    "concept_id": "C000006",
+    "counterfactual": "parameter becomes zero",
+    "applicability_revised": false,
+    "prediction_revised": true,
+    "kernel_result": true
+  },
+  {
+    "concept_id": "C000006",
+    "counterfactual": "recurrence delta changes sign",
+    "applicability_revised": true,
+    "prediction_revised": true,
+    "kernel_result": true
+  },
+  {
+    "concept_id": "C000006",
+    "counterfactual": "index domain becomes negative",
+    "applicability_revised": true,
+    "prediction_revised": true,
+    "kernel_result": true
+  },
+  {
+    "concept_id": "C000006",
+    "counterfactual": "recurrence base changes",
+    "applicability_revised": false,
+    "prediction_revised": true,
+    "kernel_result": true
+  },
+  {
+    "concept_id": "C000006",
+    "counterfactual": "commutativity permission is withdrawn",
+    "applicability_revised": true,
+    "prediction_revised": true,
+    "kernel_result": true
+  },
+  {
+    "concept_id": "C000006",
+    "counterfactual": "recurrence operator is replaced",
+    "applicability_revised": true,
+    "prediction_revised": true,
+    "kernel_result": true
+  },
+  {
+    "concept_id": "C000007",
+    "counterfactual": "parameter becomes zero",
+    "applicability_revised": false,
+    "prediction_revised": true,
+    "kernel_result": true
+  },
+  {
+    "concept_id": "C000007",
+    "counterfactual": "recurrence delta changes sign",
+    "applicability_revised": true,
+    "prediction_revised": true,
+    "kernel_result": true
+  },
+  {
+    "concept_id": "C000007",
+    "counterfactual": "index domain becomes negative",
+    "applicability_revised": true,
+    "prediction_revised": true,
+    "kernel_result": true
+  },
+  {
+    "concept_id": "C000007",
+    "counterfactual": "recurrence base changes",
+    "applicability_revised": false,
+    "prediction_revised": true,
+    "kernel_result": true
+  },
+  {
+    "concept_id": "C000007",
+    "counterfactual": "commutativity permission is withdrawn",
+    "applicability_revised": true,
+    "prediction_revised": true,
+    "kernel_result": true
+  },
+  {
+    "concept_id": "C000007",
+    "counterfactual": "recurrence operator is replaced",
+    "applicability_revised": true,
+    "prediction_revised": true,
+    "kernel_result": true
+  }
+]

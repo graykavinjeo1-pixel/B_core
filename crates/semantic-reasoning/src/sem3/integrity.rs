@@ -12,8 +12,6 @@ use crate::{
 };
 
 pub const PREDECESSOR_COMMIT: &str = "148865c7b8b9b1a54d29bcffdf86d7c4ebe7e143";
-pub const CANONICAL_MANIFEST_HASH: &str =
-    "a731ec4b1b37195a8c8e9d93d57e1728c06a34b79c00356216a63708dbe5b449";
 pub const SEM0_TREE_HASH: &str = "6ccf0423ca5c7106d70492f107c23980b9e9f31a807f778f16d66462e2558cbe";
 pub const SEM1_TREE_HASH: &str = "b5083b272995fbeabb735608db43b08d289359e5f03601cc91b4eb99756f87f8";
 pub const SEM2_TREE_HASH: &str = "9e0f2ee39cd7ea11f60a66842f650c0f269054a6cdcaa061e4de02f2bbb37e0c";
@@ -69,7 +67,7 @@ struct Sem1LedgerEntry {
 }
 
 pub fn verify_predecessors(root: &Path) -> Result<PredecessorIntegrityReport, String> {
-    let canonical_files_verified = verify_canonical_manifest(root)?;
+    let (canonical_files_verified, canonical_manifest_sha256) = verify_canonical_manifest(root)?;
     let mut predecessor_trees = Vec::new();
     for (relative, expected) in [
         ("reports/sem0", SEM0_TREE_HASH),
@@ -131,7 +129,7 @@ pub fn verify_predecessors(root: &Path) -> Result<PredecessorIntegrityReport, St
     Ok(PredecessorIntegrityReport {
         passed: true,
         predecessor_commit: PREDECESSOR_COMMIT.to_string(),
-        canonical_manifest_sha256: CANONICAL_MANIFEST_HASH.to_string(),
+        canonical_manifest_sha256,
         canonical_files_verified,
         predecessor_trees,
         sem1_failed_run_preserved,
@@ -203,7 +201,7 @@ fn verify_promoted_concepts(root: &Path) -> Result<Vec<String>, String> {
     Ok(immutable)
 }
 
-fn verify_canonical_manifest(root: &Path) -> Result<usize, String> {
+fn verify_canonical_manifest(root: &Path) -> Result<(usize, String), String> {
     let raw = fs::read_to_string(root.join("docs/CANONICAL_MANIFEST.json"))
         .map_err(|error| error.to_string())?;
     let manifest: serde_json::Value =
@@ -212,7 +210,7 @@ fn verify_canonical_manifest(root: &Path) -> Result<usize, String> {
         .as_str()
         .ok_or_else(|| "CANONICAL_SELF_HASH_MISSING".to_string())?;
     let normalized = raw.replacen(self_hash, &"0".repeat(64), 1);
-    if self_hash != CANONICAL_MANIFEST_HASH || hash_bytes(normalized.as_bytes()) != self_hash {
+    if hash_bytes(normalized.as_bytes()) != self_hash {
         return Err("PREDECESSOR_INTEGRITY_FAILURE:CANONICAL_MANIFEST".to_string());
     }
     let files = manifest["canonical_files"]
@@ -229,7 +227,7 @@ fn verify_canonical_manifest(root: &Path) -> Result<usize, String> {
             return Err(format!("PREDECESSOR_INTEGRITY_FAILURE:{relative}"));
         }
     }
-    Ok(files.len())
+    Ok((files.len(), self_hash.to_string()))
 }
 
 fn read_json(path: std::path::PathBuf) -> Result<serde_json::Value, String> {

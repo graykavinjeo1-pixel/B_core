@@ -1,0 +1,1438 @@
+{
+  "run_id": "SEM4-RUN-0001",
+  "generator_version": "SEM4-MATH-BLIND-GENERATOR-1.0.1",
+  "seed": 6477350098678,
+  "split": "DEFINITION_ONLY_BLIND",
+  "tasks": [
+    {
+      "task_id": "SEM4-BLIND-DEF-000",
+      "split": "DEFINITION_ONLY_BLIND",
+      "statement": {
+        "statement_kind": "APPLY_DEFINITION",
+        "operator_token": "q_e23266c4f103354a",
+        "arguments": [
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -8,
+              "denominator": 1
+            }
+          },
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 9,
+              "denominator": 1
+            }
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "operator_token": "q_e23266c4f103354a",
+          "parameters": [
+            "u",
+            "v"
+          ],
+          "body": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "VARIABLE",
+                "value": "u"
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 5,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "VARIABLE",
+                    "value": "v"
+                  }
+                ]
+              }
+            ]
+          },
+          "domain_conditions": [],
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "FORMAL_DEFINITION_ONLY_NO_DEMONSTRATIONS"
+          ]
+        }
+      ],
+      "assumptions": [],
+      "zero_demonstrations": true,
+      "provenance": [
+        "SEM4-MATH-BLIND-GENERATOR-1.0.1:SEM4-BLIND-DEF-000"
+      ]
+    },
+    {
+      "task_id": "SEM4-BLIND-DEF-001",
+      "split": "DEFINITION_ONLY_BLIND",
+      "statement": {
+        "statement_kind": "APPLY_DEFINITION",
+        "operator_token": "q_eea9454dd0d80f9e",
+        "arguments": [
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 2,
+              "denominator": 1
+            }
+          },
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 5,
+              "denominator": 1
+            }
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "operator_token": "q_eea9454dd0d80f9e",
+          "parameters": [
+            "u",
+            "v"
+          ],
+          "body": {
+            "kind": "SUBTRACT",
+            "value": [
+              {
+                "kind": "VARIABLE",
+                "value": "v"
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -5,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "VARIABLE",
+                    "value": "u"
+                  }
+                ]
+              }
+            ]
+          },
+          "domain_conditions": [],
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "FORMAL_DEFINITION_ONLY_NO_DEMONSTRATIONS"
+          ]
+        }
+      ],
+      "assumptions": [],
+      "zero_demonstrations": true,
+      "provenance": [
+        "SEM4-MATH-BLIND-GENERATOR-1.0.1:SEM4-BLIND-DEF-001"
+      ]
+    },
+    {
+      "task_id": "SEM4-BLIND-DEF-002",
+      "split": "DEFINITION_ONLY_BLIND",
+      "statement": {
+        "statement_kind": "APPLY_DEFINITION",
+        "operator_token": "q_decb544dc96ce732",
+        "arguments": [
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 4,
+              "denominator": 1
+            }
+          },
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 7,
+              "denominator": 1
+            }
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "operator_token": "q_decb544dc96ce732",
+          "parameters": [
+            "u",
+            "v"
+          ],
+          "body": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "u"
+                  },
+                  {
+                    "kind": "VARIABLE",
+                    "value": "v"
+                  }
+                ]
+              },
+              {
+                "kind": "RATIONAL",
+                "value": {
+                  "numerator": -3,
+                  "denominator": 1
+                }
+              }
+            ]
+          },
+          "domain_conditions": [],
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "FORMAL_DEFINITION_ONLY_NO_DEMONSTRATIONS"
+          ]
+        }
+      ],
+      "assumptions": [],
+      "zero_demonstrations": true,
+      "provenance": [
+        "SEM4-MATH-BLIND-GENERATOR-1.0.1:SEM4-BLIND-DEF-002"
+      ]
+    },
+    {
+      "task_id": "SEM4-BLIND-DEF-003",
+      "split": "DEFINITION_ONLY_BLIND",
+      "statement": {
+        "statement_kind": "APPLY_DEFINITION",
+        "operator_token": "q_da4893422b371006",
+        "arguments": [
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -8,
+              "denominator": 1
+            }
+          },
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 5,
+              "denominator": 1
+            }
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "operator_token": "q_da4893422b371006",
+          "parameters": [
+            "u",
+            "v"
+          ],
+          "body": {
+            "kind": "MULTIPLY",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "u"
+                  },
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 4,
+                      "denominator": 1
+                    }
+                  }
+                ]
+              },
+              {
+                "kind": "VARIABLE",
+                "value": "v"
+              }
+            ]
+          },
+          "domain_conditions": [],
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "FORMAL_DEFINITION_ONLY_NO_DEMONSTRATIONS"
+          ]
+        }
+      ],
+      "assumptions": [],
+      "zero_demonstrations": true,
+      "provenance": [
+        "SEM4-MATH-BLIND-GENERATOR-1.0.1:SEM4-BLIND-DEF-003"
+      ]
+    },
+    {
+      "task_id": "SEM4-BLIND-DEF-004",
+      "split": "DEFINITION_ONLY_BLIND",
+      "statement": {
+        "statement_kind": "APPLY_DEFINITION",
+        "operator_token": "q_9232355bca591e1a",
+        "arguments": [
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -6,
+              "denominator": 1
+            }
+          },
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -1,
+              "denominator": 1
+            }
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "operator_token": "q_9232355bca591e1a",
+          "parameters": [
+            "u",
+            "v"
+          ],
+          "body": {
+            "kind": "DIVIDE",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "u"
+                  },
+                  {
+                    "kind": "VARIABLE",
+                    "value": "v"
+                  }
+                ]
+              },
+              {
+                "kind": "RATIONAL",
+                "value": {
+                  "numerator": -3,
+                  "denominator": 1
+                }
+              }
+            ]
+          },
+          "domain_conditions": [
+            {
+              "condition": "NON_ZERO",
+              "expression": {
+                "kind": "RATIONAL",
+                "value": {
+                  "numerator": -3,
+                  "denominator": 1
+                }
+              }
+            }
+          ],
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "FORMAL_DEFINITION_ONLY_NO_DEMONSTRATIONS"
+          ]
+        }
+      ],
+      "assumptions": [],
+      "zero_demonstrations": true,
+      "provenance": [
+        "SEM4-MATH-BLIND-GENERATOR-1.0.1:SEM4-BLIND-DEF-004"
+      ]
+    },
+    {
+      "task_id": "SEM4-BLIND-DEF-005",
+      "split": "DEFINITION_ONLY_BLIND",
+      "statement": {
+        "statement_kind": "APPLY_DEFINITION",
+        "operator_token": "q_a5964a184ef6e56e",
+        "arguments": [
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 4,
+              "denominator": 1
+            }
+          },
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 9,
+              "denominator": 1
+            }
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "operator_token": "q_a5964a184ef6e56e",
+          "parameters": [
+            "u",
+            "v"
+          ],
+          "body": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "VARIABLE",
+                "value": "u"
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -2,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "VARIABLE",
+                    "value": "v"
+                  }
+                ]
+              }
+            ]
+          },
+          "domain_conditions": [],
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "FORMAL_DEFINITION_ONLY_NO_DEMONSTRATIONS"
+          ]
+        }
+      ],
+      "assumptions": [],
+      "zero_demonstrations": true,
+      "provenance": [
+        "SEM4-MATH-BLIND-GENERATOR-1.0.1:SEM4-BLIND-DEF-005"
+      ]
+    },
+    {
+      "task_id": "SEM4-BLIND-DEF-006",
+      "split": "DEFINITION_ONLY_BLIND",
+      "statement": {
+        "statement_kind": "APPLY_DEFINITION",
+        "operator_token": "q_9d896676e2c97a02",
+        "arguments": [
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 8,
+              "denominator": 1
+            }
+          },
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 5,
+              "denominator": 1
+            }
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "operator_token": "q_9d896676e2c97a02",
+          "parameters": [
+            "u",
+            "v"
+          ],
+          "body": {
+            "kind": "SUBTRACT",
+            "value": [
+              {
+                "kind": "VARIABLE",
+                "value": "v"
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 4,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "VARIABLE",
+                    "value": "u"
+                  }
+                ]
+              }
+            ]
+          },
+          "domain_conditions": [],
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "FORMAL_DEFINITION_ONLY_NO_DEMONSTRATIONS"
+          ]
+        }
+      ],
+      "assumptions": [],
+      "zero_demonstrations": true,
+      "provenance": [
+        "SEM4-MATH-BLIND-GENERATOR-1.0.1:SEM4-BLIND-DEF-006"
+      ]
+    },
+    {
+      "task_id": "SEM4-BLIND-DEF-007",
+      "split": "DEFINITION_ONLY_BLIND",
+      "statement": {
+        "statement_kind": "APPLY_DEFINITION",
+        "operator_token": "q_ac0fae338ff32fd6",
+        "arguments": [
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 4,
+              "denominator": 1
+            }
+          },
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 5,
+              "denominator": 1
+            }
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "operator_token": "q_ac0fae338ff32fd6",
+          "parameters": [
+            "u",
+            "v"
+          ],
+          "body": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "u"
+                  },
+                  {
+                    "kind": "VARIABLE",
+                    "value": "v"
+                  }
+                ]
+              },
+              {
+                "kind": "RATIONAL",
+                "value": {
+                  "numerator": 2,
+                  "denominator": 1
+                }
+              }
+            ]
+          },
+          "domain_conditions": [],
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "FORMAL_DEFINITION_ONLY_NO_DEMONSTRATIONS"
+          ]
+        }
+      ],
+      "assumptions": [],
+      "zero_demonstrations": true,
+      "provenance": [
+        "SEM4-MATH-BLIND-GENERATOR-1.0.1:SEM4-BLIND-DEF-007"
+      ]
+    },
+    {
+      "task_id": "SEM4-BLIND-DEF-008",
+      "split": "DEFINITION_ONLY_BLIND",
+      "statement": {
+        "statement_kind": "APPLY_DEFINITION",
+        "operator_token": "q_64f1a381e5139aea",
+        "arguments": [
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          },
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 7,
+              "denominator": 1
+            }
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "operator_token": "q_64f1a381e5139aea",
+          "parameters": [
+            "u",
+            "v"
+          ],
+          "body": {
+            "kind": "MULTIPLY",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "u"
+                  },
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 1,
+                      "denominator": 1
+                    }
+                  }
+                ]
+              },
+              {
+                "kind": "VARIABLE",
+                "value": "v"
+              }
+            ]
+          },
+          "domain_conditions": [],
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "FORMAL_DEFINITION_ONLY_NO_DEMONSTRATIONS"
+          ]
+        }
+      ],
+      "assumptions": [],
+      "zero_demonstrations": true,
+      "provenance": [
+        "SEM4-MATH-BLIND-GENERATOR-1.0.1:SEM4-BLIND-DEF-008"
+      ]
+    },
+    {
+      "task_id": "SEM4-BLIND-DEF-009",
+      "split": "DEFINITION_ONLY_BLIND",
+      "statement": {
+        "statement_kind": "APPLY_DEFINITION",
+        "operator_token": "q_ee76f120b29b8f3e",
+        "arguments": [
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 6,
+              "denominator": 1
+            }
+          },
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 9,
+              "denominator": 1
+            }
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "operator_token": "q_ee76f120b29b8f3e",
+          "parameters": [
+            "u",
+            "v"
+          ],
+          "body": {
+            "kind": "DIVIDE",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "u"
+                  },
+                  {
+                    "kind": "VARIABLE",
+                    "value": "v"
+                  }
+                ]
+              },
+              {
+                "kind": "RATIONAL",
+                "value": {
+                  "numerator": -2,
+                  "denominator": 1
+                }
+              }
+            ]
+          },
+          "domain_conditions": [
+            {
+              "condition": "NON_ZERO",
+              "expression": {
+                "kind": "RATIONAL",
+                "value": {
+                  "numerator": -2,
+                  "denominator": 1
+                }
+              }
+            }
+          ],
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "FORMAL_DEFINITION_ONLY_NO_DEMONSTRATIONS"
+          ]
+        }
+      ],
+      "assumptions": [],
+      "zero_demonstrations": true,
+      "provenance": [
+        "SEM4-MATH-BLIND-GENERATOR-1.0.1:SEM4-BLIND-DEF-009"
+      ]
+    },
+    {
+      "task_id": "SEM4-BLIND-DEF-010",
+      "split": "DEFINITION_ONLY_BLIND",
+      "statement": {
+        "statement_kind": "APPLY_DEFINITION",
+        "operator_token": "q_0808b395f56120d2",
+        "arguments": [
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -6,
+              "denominator": 1
+            }
+          },
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -3,
+              "denominator": 1
+            }
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "operator_token": "q_0808b395f56120d2",
+          "parameters": [
+            "u",
+            "v"
+          ],
+          "body": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "VARIABLE",
+                "value": "u"
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 4,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "VARIABLE",
+                    "value": "v"
+                  }
+                ]
+              }
+            ]
+          },
+          "domain_conditions": [],
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "FORMAL_DEFINITION_ONLY_NO_DEMONSTRATIONS"
+          ]
+        }
+      ],
+      "assumptions": [],
+      "zero_demonstrations": true,
+      "provenance": [
+        "SEM4-MATH-BLIND-GENERATOR-1.0.1:SEM4-BLIND-DEF-010"
+      ]
+    },
+    {
+      "task_id": "SEM4-BLIND-DEF-011",
+      "split": "DEFINITION_ONLY_BLIND",
+      "statement": {
+        "statement_kind": "APPLY_DEFINITION",
+        "operator_token": "q_3f05ac2b4273a3a6",
+        "arguments": [
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 2,
+              "denominator": 1
+            }
+          },
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -1,
+              "denominator": 1
+            }
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "operator_token": "q_3f05ac2b4273a3a6",
+          "parameters": [
+            "u",
+            "v"
+          ],
+          "body": {
+            "kind": "SUBTRACT",
+            "value": [
+              {
+                "kind": "VARIABLE",
+                "value": "v"
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -3,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "VARIABLE",
+                    "value": "u"
+                  }
+                ]
+              }
+            ]
+          },
+          "domain_conditions": [],
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "FORMAL_DEFINITION_ONLY_NO_DEMONSTRATIONS"
+          ]
+        }
+      ],
+      "assumptions": [],
+      "zero_demonstrations": true,
+      "provenance": [
+        "SEM4-MATH-BLIND-GENERATOR-1.0.1:SEM4-BLIND-DEF-011"
+      ]
+    },
+    {
+      "task_id": "SEM4-BLIND-DEF-012",
+      "split": "DEFINITION_ONLY_BLIND",
+      "statement": {
+        "statement_kind": "APPLY_DEFINITION",
+        "operator_token": "q_3d93e820482fabba",
+        "arguments": [
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 2,
+              "denominator": 1
+            }
+          },
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 1,
+              "denominator": 1
+            }
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "operator_token": "q_3d93e820482fabba",
+          "parameters": [
+            "u",
+            "v"
+          ],
+          "body": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "u"
+                  },
+                  {
+                    "kind": "VARIABLE",
+                    "value": "v"
+                  }
+                ]
+              },
+              {
+                "kind": "RATIONAL",
+                "value": {
+                  "numerator": -5,
+                  "denominator": 1
+                }
+              }
+            ]
+          },
+          "domain_conditions": [],
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "FORMAL_DEFINITION_ONLY_NO_DEMONSTRATIONS"
+          ]
+        }
+      ],
+      "assumptions": [],
+      "zero_demonstrations": true,
+      "provenance": [
+        "SEM4-MATH-BLIND-GENERATOR-1.0.1:SEM4-BLIND-DEF-012"
+      ]
+    },
+    {
+      "task_id": "SEM4-BLIND-DEF-013",
+      "split": "DEFINITION_ONLY_BLIND",
+      "statement": {
+        "statement_kind": "APPLY_DEFINITION",
+        "operator_token": "q_df7b39ba38930d0e",
+        "arguments": [
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 4,
+              "denominator": 1
+            }
+          },
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -3,
+              "denominator": 1
+            }
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "operator_token": "q_df7b39ba38930d0e",
+          "parameters": [
+            "u",
+            "v"
+          ],
+          "body": {
+            "kind": "MULTIPLY",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "u"
+                  },
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -4,
+                      "denominator": 1
+                    }
+                  }
+                ]
+              },
+              {
+                "kind": "VARIABLE",
+                "value": "v"
+              }
+            ]
+          },
+          "domain_conditions": [],
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "FORMAL_DEFINITION_ONLY_NO_DEMONSTRATIONS"
+          ]
+        }
+      ],
+      "assumptions": [],
+      "zero_demonstrations": true,
+      "provenance": [
+        "SEM4-MATH-BLIND-GENERATOR-1.0.1:SEM4-BLIND-DEF-013"
+      ]
+    },
+    {
+      "task_id": "SEM4-BLIND-DEF-014",
+      "split": "DEFINITION_ONLY_BLIND",
+      "statement": {
+        "statement_kind": "APPLY_DEFINITION",
+        "operator_token": "q_be7df49c30d0dba2",
+        "arguments": [
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -8,
+              "denominator": 1
+            }
+          },
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 9,
+              "denominator": 1
+            }
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "operator_token": "q_be7df49c30d0dba2",
+          "parameters": [
+            "u",
+            "v"
+          ],
+          "body": {
+            "kind": "DIVIDE",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "u"
+                  },
+                  {
+                    "kind": "VARIABLE",
+                    "value": "v"
+                  }
+                ]
+              },
+              {
+                "kind": "RATIONAL",
+                "value": {
+                  "numerator": 1,
+                  "denominator": 1
+                }
+              }
+            ]
+          },
+          "domain_conditions": [
+            {
+              "condition": "NON_ZERO",
+              "expression": {
+                "kind": "RATIONAL",
+                "value": {
+                  "numerator": 1,
+                  "denominator": 1
+                }
+              }
+            }
+          ],
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "FORMAL_DEFINITION_ONLY_NO_DEMONSTRATIONS"
+          ]
+        }
+      ],
+      "assumptions": [],
+      "zero_demonstrations": true,
+      "provenance": [
+        "SEM4-MATH-BLIND-GENERATOR-1.0.1:SEM4-BLIND-DEF-014"
+      ]
+    },
+    {
+      "task_id": "SEM4-BLIND-DEF-015",
+      "split": "DEFINITION_ONLY_BLIND",
+      "statement": {
+        "statement_kind": "APPLY_DEFINITION",
+        "operator_token": "q_0ab3946df2256b76",
+        "arguments": [
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -4,
+              "denominator": 1
+            }
+          },
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 3,
+              "denominator": 1
+            }
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "operator_token": "q_0ab3946df2256b76",
+          "parameters": [
+            "u",
+            "v"
+          ],
+          "body": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "VARIABLE",
+                "value": "u"
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": 2,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "VARIABLE",
+                    "value": "v"
+                  }
+                ]
+              }
+            ]
+          },
+          "domain_conditions": [],
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "FORMAL_DEFINITION_ONLY_NO_DEMONSTRATIONS"
+          ]
+        }
+      ],
+      "assumptions": [],
+      "zero_demonstrations": true,
+      "provenance": [
+        "SEM4-MATH-BLIND-GENERATOR-1.0.1:SEM4-BLIND-DEF-015"
+      ]
+    },
+    {
+      "task_id": "SEM4-BLIND-DEF-016",
+      "split": "DEFINITION_ONLY_BLIND",
+      "statement": {
+        "statement_kind": "APPLY_DEFINITION",
+        "operator_token": "q_67e0c1837fea508a",
+        "arguments": [
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 0,
+              "denominator": 1
+            }
+          },
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -7,
+              "denominator": 1
+            }
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "operator_token": "q_67e0c1837fea508a",
+          "parameters": [
+            "u",
+            "v"
+          ],
+          "body": {
+            "kind": "SUBTRACT",
+            "value": [
+              {
+                "kind": "VARIABLE",
+                "value": "v"
+              },
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -2,
+                      "denominator": 1
+                    }
+                  },
+                  {
+                    "kind": "VARIABLE",
+                    "value": "u"
+                  }
+                ]
+              }
+            ]
+          },
+          "domain_conditions": [],
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "FORMAL_DEFINITION_ONLY_NO_DEMONSTRATIONS"
+          ]
+        }
+      ],
+      "assumptions": [],
+      "zero_demonstrations": true,
+      "provenance": [
+        "SEM4-MATH-BLIND-GENERATOR-1.0.1:SEM4-BLIND-DEF-016"
+      ]
+    },
+    {
+      "task_id": "SEM4-BLIND-DEF-017",
+      "split": "DEFINITION_ONLY_BLIND",
+      "statement": {
+        "statement_kind": "APPLY_DEFINITION",
+        "operator_token": "q_524bd43976ea5ede",
+        "arguments": [
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -4,
+              "denominator": 1
+            }
+          },
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 7,
+              "denominator": 1
+            }
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "operator_token": "q_524bd43976ea5ede",
+          "parameters": [
+            "u",
+            "v"
+          ],
+          "body": {
+            "kind": "ADD",
+            "value": [
+              {
+                "kind": "MULTIPLY",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "u"
+                  },
+                  {
+                    "kind": "VARIABLE",
+                    "value": "v"
+                  }
+                ]
+              },
+              {
+                "kind": "RATIONAL",
+                "value": {
+                  "numerator": 3,
+                  "denominator": 1
+                }
+              }
+            ]
+          },
+          "domain_conditions": [],
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "FORMAL_DEFINITION_ONLY_NO_DEMONSTRATIONS"
+          ]
+        }
+      ],
+      "assumptions": [],
+      "zero_demonstrations": true,
+      "provenance": [
+        "SEM4-MATH-BLIND-GENERATOR-1.0.1:SEM4-BLIND-DEF-017"
+      ]
+    },
+    {
+      "task_id": "SEM4-BLIND-DEF-018",
+      "split": "DEFINITION_ONLY_BLIND",
+      "statement": {
+        "statement_kind": "APPLY_DEFINITION",
+        "operator_token": "q_2ac0e24f31f5aa72",
+        "arguments": [
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -8,
+              "denominator": 1
+            }
+          },
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": -3,
+              "denominator": 1
+            }
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "operator_token": "q_2ac0e24f31f5aa72",
+          "parameters": [
+            "u",
+            "v"
+          ],
+          "body": {
+            "kind": "MULTIPLY",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "u"
+                  },
+                  {
+                    "kind": "RATIONAL",
+                    "value": {
+                      "numerator": -5,
+                      "denominator": 1
+                    }
+                  }
+                ]
+              },
+              {
+                "kind": "VARIABLE",
+                "value": "v"
+              }
+            ]
+          },
+          "domain_conditions": [],
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "FORMAL_DEFINITION_ONLY_NO_DEMONSTRATIONS"
+          ]
+        }
+      ],
+      "assumptions": [],
+      "zero_demonstrations": true,
+      "provenance": [
+        "SEM4-MATH-BLIND-GENERATOR-1.0.1:SEM4-BLIND-DEF-018"
+      ]
+    },
+    {
+      "task_id": "SEM4-BLIND-DEF-019",
+      "split": "DEFINITION_ONLY_BLIND",
+      "statement": {
+        "statement_kind": "APPLY_DEFINITION",
+        "operator_token": "q_56fc3af10fb58746",
+        "arguments": [
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 6,
+              "denominator": 1
+            }
+          },
+          {
+            "kind": "RATIONAL",
+            "value": {
+              "numerator": 1,
+              "denominator": 1
+            }
+          }
+        ]
+      },
+      "definitions": [
+        {
+          "operator_token": "q_56fc3af10fb58746",
+          "parameters": [
+            "u",
+            "v"
+          ],
+          "body": {
+            "kind": "DIVIDE",
+            "value": [
+              {
+                "kind": "ADD",
+                "value": [
+                  {
+                    "kind": "VARIABLE",
+                    "value": "u"
+                  },
+                  {
+                    "kind": "VARIABLE",
+                    "value": "v"
+                  }
+                ]
+              },
+              {
+                "kind": "RATIONAL",
+                "value": {
+                  "numerator": -5,
+                  "denominator": 1
+                }
+              }
+            ]
+          },
+          "domain_conditions": [
+            {
+              "condition": "NON_ZERO",
+              "expression": {
+                "kind": "RATIONAL",
+                "value": {
+                  "numerator": -5,
+                  "denominator": 1
+                }
+              }
+            }
+          ],
+          "examples": [],
+          "randomized_symbol": true,
+          "provenance": [
+            "FORMAL_DEFINITION_ONLY_NO_DEMONSTRATIONS"
+          ]
+        }
+      ],
+      "assumptions": [],
+      "zero_demonstrations": true,
+      "provenance": [
+        "SEM4-MATH-BLIND-GENERATOR-1.0.1:SEM4-BLIND-DEF-019"
+      ]
+    }
+  ],
+  "expected_answers_included": false,
+  "target_formulas_included": false,
+  "proof_scripts_included": false,
+  "human_formula_names_included": false,
+  "reasoner_access_before_freeze": false,
+  "manifest_sha256": "1b0f41ed3e80addca5debd65432d09dbd75e112e8a616fed9c2bae162f4eff21"
+}

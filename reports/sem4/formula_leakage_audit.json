@@ -1,0 +1,18 @@
+{
+  "solver_visible_files_scanned": 5,
+  "solver_visible_literals_scanned": 218,
+  "blind_tasks_scanned": 100,
+  "target_formula_solver_leaks": 0,
+  "target_proof_scripts_exposed": 0,
+  "named_solution_templates_exposed": 0,
+  "benchmark_specific_branches": 0,
+  "hidden_formula_aliases": 0,
+  "evaluator_target_formulas_stored": 0,
+  "manual_audit_completed": true,
+  "evaluator_isolated": true,
+  "passed": true,
+  "notes": [
+    "Blind evaluators use substitution, exact symbolic equivalence, or recurrence base/difference obligations.",
+    "Post-seal human interpretations are excluded from reasoner inputs and promotion evidence."
+  ]
+}
