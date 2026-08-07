@@ -1,0 +1,11 @@
+{
+  "source_concept_id": "C000012",
+  "source_mechanism_id": "M0006",
+  "source_origin": "EXTERNAL_DEFINITION",
+  "target_component": "SELF-CANDIDATE-ROUTER",
+  "run0001_mapping_sha256": "60c629474fefd98f99ab8a9256517ace764594bb81d2e46f03fe79d3d9a80c83",
+  "run0002_mapping_sha256": "60c629474fefd98f99ab8a9256517ace764594bb81d2e46f03fe79d3d9a80c83",
+  "human_reselection_performed": false,
+  "source_concept_lineage_intact": true,
+  "source_concept_causality_pass": true
+}

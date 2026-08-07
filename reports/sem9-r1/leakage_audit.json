@@ -1,0 +1,11 @@
+{
+  "benchmark_specific_self_patch_branches": 0,
+  "run0001_task_specific_patch_branches": 0,
+  "target_output_lookups": 0,
+  "evaluator_dependencies": 0,
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "network_writes": 0,
+  "remote_executions": 0,
+  "passed": true
+}

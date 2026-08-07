@@ -1,0 +1,66 @@
+{
+  "candidate_id": "SEM9-R1-CANDIDATE-0001",
+  "strict_gate_order": [
+    "SEMANTIC_TOKEN_EQUIVALENCE",
+    "CARGO_FMT_CHECK",
+    "CLIPPY_D_WARNINGS",
+    "CARGO_TEST_WORKSPACE",
+    "SANDBOX_CONTAINMENT",
+    "FRESH_BLIND_EVALUATION",
+    "REGRESSION_MATRIX",
+    "SELF_APPLICATION_ABLATION"
+  ],
+  "commands": [
+    {
+      "ordinal": 0,
+      "command": "cargo fmt --all",
+      "success": true,
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "ordinal": 1,
+      "command": "cargo fmt --all -- --check",
+      "success": true,
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "ordinal": 2,
+      "command": "cargo clippy --workspace --all-targets -- -D warnings",
+      "success": true,
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "2a25020500416f1368ee8e9c768516b02d01db65da9ef217730ec3363622bca0"
+    },
+    {
+      "ordinal": 3,
+      "command": "cargo test --workspace",
+      "success": true,
+      "exit_code": 0,
+      "stdout_sha256": "9d9acba312f92447f22a033e9942648df86f1e2f5d21ee7c6941c736c705798e",
+      "stderr_sha256": "be2a805d9dd27aa265fa3c5f16c45e1493e45a2db700956189953c477d75320d"
+    },
+    {
+      "ordinal": 3,
+      "command": "cargo build --workspace",
+      "success": true,
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "238f38165c3f219b8a678e3dc7aef86e11e184c4b406e9fc4b4abce74cb87cba"
+    }
+  ],
+  "semantic_token_equivalence_pass": true,
+  "cargo_fmt_check_pass": true,
+  "clippy_d_warnings_pass": true,
+  "workspace_tests_pass": true,
+  "sandbox_containment_pass": true,
+  "predecessor_binary_sha256": "1f6c0a217d1ade074e3733cb3e859616d89445b29e9ba0e2a6de41d470f823a5",
+  "candidate_binary_sha256": "6333a344036022cf7449023fa37a6b93db138580e3d5236a04e6b641ccc8c457",
+  "production_source_sha256_before": "a126a70210052c794fdfc18dfe690dfe51700907da57738e6968e9fc8b15b527",
+  "production_source_sha256_after": "a126a70210052c794fdfc18dfe690dfe51700907da57738e6968e9fc8b15b527",
+  "production_source_mutations": 0,
+  "canonical_build_gate_pass": true
+}

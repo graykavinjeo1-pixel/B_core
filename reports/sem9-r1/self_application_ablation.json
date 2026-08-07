@@ -1,0 +1,8 @@
+{
+  "candidate_on_median_expansions": 68.0,
+  "mechanism_disabled_median_expansions": 120.0,
+  "candidate_on_solve_rate": 1.0,
+  "mechanism_disabled_solve_rate": 1.0,
+  "gain_removed": true,
+  "passed": true
+}

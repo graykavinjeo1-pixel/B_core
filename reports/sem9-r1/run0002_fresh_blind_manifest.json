@@ -1,0 +1,1614 @@
+{
+  "run_id": "SEM9-R1-RUN-0002",
+  "generator_version": "SEM9-R1-FRESH-GENERATOR-1.0.0",
+  "seed_commitment_sha256": "9d79240c4a6309b597a5afc1e6a1a0742332bee0719647b298867a7e652f1a57",
+  "fresh_tasks": [
+    {
+      "task_id": "SEM9-R1-BLIND-000",
+      "capability_family": "SEMANTIC_CONCEPT",
+      "opaque_state_schema_sha256": "86a02f51d48a0559e1faf35c70eacd967259952bf4a55a3db0431620bc0c29b2",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-001",
+      "capability_family": "SEMANTIC_CONCEPT",
+      "opaque_state_schema_sha256": "d56495c09f58ee6293f069e74e6cdf99f0f47715e7169a930e37c2d441ff4af5",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-002",
+      "capability_family": "SEMANTIC_CONCEPT",
+      "opaque_state_schema_sha256": "fcbb5ef18d4c2de57711513d56aad54b552c1bda32a237965e31dfb0e71c1707",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-003",
+      "capability_family": "SEMANTIC_CONCEPT",
+      "opaque_state_schema_sha256": "c11d73b7471fa3fce3c2e15cd1329696f6557cbed35ac7e587b8b83cf7fe9ca8",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-004",
+      "capability_family": "SEMANTIC_CONCEPT",
+      "opaque_state_schema_sha256": "7c944c95a0c3848135729f198ca4bf2a1a4fa6471e86ad07f4f23baac8330a30",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-005",
+      "capability_family": "SEMANTIC_CONCEPT",
+      "opaque_state_schema_sha256": "4ad55b4f0ea4dccbbcfede22179beb2bee95c3d4e3c9ce321c532cce78ba0ab1",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-006",
+      "capability_family": "SEMANTIC_CONCEPT",
+      "opaque_state_schema_sha256": "663d175a8c7e9a0d3b2f3f7e212d530afdb45d62f01d1f720abfa176e7b612a2",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-007",
+      "capability_family": "SEMANTIC_CONCEPT",
+      "opaque_state_schema_sha256": "1509db9cb107a3c1938952511e5759345b62f760752982b691ebe35714472be9",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-008",
+      "capability_family": "SEMANTIC_CONCEPT",
+      "opaque_state_schema_sha256": "d0dbb09cff4ce9919702ada5218848cd4ef13a8fae0284749cbe768a70d21f9b",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-009",
+      "capability_family": "SEMANTIC_CONCEPT",
+      "opaque_state_schema_sha256": "a1bab40524cbe0234b6565ab8e7345579af9b31706895d3481329d38c5805c07",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-010",
+      "capability_family": "SEMANTIC_CONCEPT",
+      "opaque_state_schema_sha256": "5f6868a7077b2b1777873b280ccefb43c9fd0e95017de89d9fbe6f9a061c31ff",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-011",
+      "capability_family": "SEMANTIC_CONCEPT",
+      "opaque_state_schema_sha256": "eb515c8fa417c7498bde2d0e45dfe6815d35ceeb2acbd84e5ca639e576930018",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-012",
+      "capability_family": "SEMANTIC_CONCEPT",
+      "opaque_state_schema_sha256": "2c4d33809020c811d3948b6d883037bac7488428c59cf96f6faad6fe7af7784a",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-013",
+      "capability_family": "SEMANTIC_CONCEPT",
+      "opaque_state_schema_sha256": "c00244062187624da038779dc9deeb6174c1112cb8ffdcd5af494bd06cb8190e",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-014",
+      "capability_family": "SEMANTIC_CONCEPT",
+      "opaque_state_schema_sha256": "f411a5961d817a2f6646a789a43fca6e1d0b7caeec19b8813906497f4387cf14",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-015",
+      "capability_family": "SEMANTIC_CONCEPT",
+      "opaque_state_schema_sha256": "3b8120e8798c7d6cda1281887617b6bf6a2669915e79b52de684558cc0f35fc0",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-016",
+      "capability_family": "SEMANTIC_CONCEPT",
+      "opaque_state_schema_sha256": "f56ad42df189433c0b9d31c54bf90ad1f0c9cb7bfc9d30ab590964019d69d480",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-017",
+      "capability_family": "SEMANTIC_CONCEPT",
+      "opaque_state_schema_sha256": "9d68c418dad448c4b9b82143011e71b02be7954e4b198ce609d0551ecfc94f15",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-018",
+      "capability_family": "SEMANTIC_CONCEPT",
+      "opaque_state_schema_sha256": "6e0ba01cb9526c498b5e08c34033cc99d3fa4eba939528ddc667340464adec1b",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-019",
+      "capability_family": "SEMANTIC_CONCEPT",
+      "opaque_state_schema_sha256": "00ae68d2d3bb54a688a66be46183a61f56bebc0e9dec23b1c9165a940fb1fe3b",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-020",
+      "capability_family": "ADAPTIVE_REASONING",
+      "opaque_state_schema_sha256": "98141bfe54b6477da274860d30eb9bb7cf85ab7d40772d29708af9217ddf7556",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-021",
+      "capability_family": "ADAPTIVE_REASONING",
+      "opaque_state_schema_sha256": "b5d9ff9e519979fbd0094abef358a18dd5bd96371a71916dee5ca444d265a4e9",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-022",
+      "capability_family": "ADAPTIVE_REASONING",
+      "opaque_state_schema_sha256": "26837d93aad07283fe268ebc985c249229803bb435ae61a97311f5cc4342ccd1",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-023",
+      "capability_family": "ADAPTIVE_REASONING",
+      "opaque_state_schema_sha256": "66db9458e8e4ced6c6a5fca1da679f7abcdbd4b261cd9994ca8dffccef879ec6",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-024",
+      "capability_family": "ADAPTIVE_REASONING",
+      "opaque_state_schema_sha256": "aa365fd64c77336eb81d969935002fce05e3bc3d00d1cab164c5789d51fae20f",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-025",
+      "capability_family": "ADAPTIVE_REASONING",
+      "opaque_state_schema_sha256": "2ada70c29d1af35d122326af5a97f2e5e938499a74abf2a77b26c3493d981376",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-026",
+      "capability_family": "ADAPTIVE_REASONING",
+      "opaque_state_schema_sha256": "365d71536c2bd6c9586dc634a219c24728b8a25a7f86934e610ec3e0267d4bbd",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-027",
+      "capability_family": "ADAPTIVE_REASONING",
+      "opaque_state_schema_sha256": "7d5027b49b197a70997eec5f2a6d7e773df4407310222ca55e57efa87c0175dc",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-028",
+      "capability_family": "ADAPTIVE_REASONING",
+      "opaque_state_schema_sha256": "aa4832d5b71f5d73ec25decccd617930dc916540235f909657c3f87101bb326e",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-029",
+      "capability_family": "ADAPTIVE_REASONING",
+      "opaque_state_schema_sha256": "718b8b02d32ec5868f141343e0d0709514c4cbd9fcf79f051be0a73a72c8e00b",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-030",
+      "capability_family": "ADAPTIVE_REASONING",
+      "opaque_state_schema_sha256": "b6e594a30e3eb47346ffbf20b9420d48f75035ec8c2d1959e326a317b792a26e",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-031",
+      "capability_family": "ADAPTIVE_REASONING",
+      "opaque_state_schema_sha256": "622f8b20b449fadf049ab368a8a26a848c241133bd18dedc2460236ccf7ad3c5",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-032",
+      "capability_family": "ADAPTIVE_REASONING",
+      "opaque_state_schema_sha256": "6a9be0bae10913b38cf59c05fac19bf647706f8fa33509ce831b4e1e70f94d60",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-033",
+      "capability_family": "ADAPTIVE_REASONING",
+      "opaque_state_schema_sha256": "93ae71e6faab8aec282dd3f7d8246416684b39e62f06aee05fb8ac04707fa486",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-034",
+      "capability_family": "ADAPTIVE_REASONING",
+      "opaque_state_schema_sha256": "6814e4e2bbf3b7caa542945572072d6b0ba13cd518343e361ab25ae1d6cbffc8",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-035",
+      "capability_family": "ADAPTIVE_REASONING",
+      "opaque_state_schema_sha256": "1d57a8cae9af446d6a12be405ab77f30214f026328b0827907d3617af5054731",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-036",
+      "capability_family": "ADAPTIVE_REASONING",
+      "opaque_state_schema_sha256": "164b8fc33d9f6873c45608df8821f6fa5b0a7fb450784106209dd78743255792",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-037",
+      "capability_family": "ADAPTIVE_REASONING",
+      "opaque_state_schema_sha256": "4364b46eeebf3c3d9d3b21b701c274755b1912234c2bcc0ce839cf31070a6ce5",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-038",
+      "capability_family": "ADAPTIVE_REASONING",
+      "opaque_state_schema_sha256": "b898ff6a683b6b664986c1cb11c69f055b1dd34abe2640dd7a36a362b30deb1c",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-039",
+      "capability_family": "ADAPTIVE_REASONING",
+      "opaque_state_schema_sha256": "f674783e65f135661c0e881879cd2ed924190be011bc709febad38c92b6e71fd",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-040",
+      "capability_family": "MATHEMATICAL_DERIVATION",
+      "opaque_state_schema_sha256": "bab313db155c70eb53e0cfd7411b759d1757ed7bac178c5a732400dd6307a26e",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-041",
+      "capability_family": "MATHEMATICAL_DERIVATION",
+      "opaque_state_schema_sha256": "70de8870f9096317e48f7aa343c94267aa7d85afabc97626a5fb34f7c8bee810",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-042",
+      "capability_family": "MATHEMATICAL_DERIVATION",
+      "opaque_state_schema_sha256": "9eef0beb320998593296a1409b24e4e26e9b2e65edf597425122e28a45c4438f",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-043",
+      "capability_family": "MATHEMATICAL_DERIVATION",
+      "opaque_state_schema_sha256": "4b9eb7ea1361aedf8ae24636701ae7e3ce96bd60e9a3f7cf5b7b9a0fdd055d66",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-044",
+      "capability_family": "MATHEMATICAL_DERIVATION",
+      "opaque_state_schema_sha256": "b09e691855d95eed6dfec9ed37b996cc73936b869f1606173baa5d59acc23ef9",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-045",
+      "capability_family": "MATHEMATICAL_DERIVATION",
+      "opaque_state_schema_sha256": "3326125e56e608fea0ca029963d4c643344d6e9d851b3657a6e0d6cc8f1969df",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-046",
+      "capability_family": "MATHEMATICAL_DERIVATION",
+      "opaque_state_schema_sha256": "79eff26c03d2f83de468a29434d1dc83885785d7a3ed33298715a1a7feba9605",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-047",
+      "capability_family": "MATHEMATICAL_DERIVATION",
+      "opaque_state_schema_sha256": "65d163889990ae61b5ffd3e15fd213e5041a6430ac7e7bdfcd36aaac20502a6d",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-048",
+      "capability_family": "MATHEMATICAL_DERIVATION",
+      "opaque_state_schema_sha256": "517dd3caff3f094082f274630245c6ffd63949074f7ce983b33929e1ae45b29a",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-049",
+      "capability_family": "MATHEMATICAL_DERIVATION",
+      "opaque_state_schema_sha256": "46b32ce3eeec105d9bce402835a985761da283a3bddc7caf3ac2a0078dfb8c80",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-050",
+      "capability_family": "MATHEMATICAL_DERIVATION",
+      "opaque_state_schema_sha256": "c570a7fdd02a0d66efd5c20e0f761b9db45f1bb937cf27a905e6e06f001cc205",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-051",
+      "capability_family": "MATHEMATICAL_DERIVATION",
+      "opaque_state_schema_sha256": "4d61ef834b3924612edec3460eed46cbe538a79c007a26e4439c51a8bbc0219f",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-052",
+      "capability_family": "MATHEMATICAL_DERIVATION",
+      "opaque_state_schema_sha256": "d333a51cc358979ce6a016e943d84ff2246937d5d4a1588e8121d71b37982d5e",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-053",
+      "capability_family": "MATHEMATICAL_DERIVATION",
+      "opaque_state_schema_sha256": "3b87e24b87c92c8b0c1a458219c13091875ed01ba166a5f7a10e3f8caf802f0b",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-054",
+      "capability_family": "MATHEMATICAL_DERIVATION",
+      "opaque_state_schema_sha256": "436f884f24cfff717bac11b32b7e51db0e4f4a64284611f935ac363433a2d799",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-055",
+      "capability_family": "MATHEMATICAL_DERIVATION",
+      "opaque_state_schema_sha256": "7f576e391dc1847d939ea575905ab4a373dcf063c048ac7d7b0bbc8f4aae55ee",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-056",
+      "capability_family": "MATHEMATICAL_DERIVATION",
+      "opaque_state_schema_sha256": "27d35cd77bcb09b6e5a79e4228f5b349dca063020751765ba7a4ac429ae8b251",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-057",
+      "capability_family": "MATHEMATICAL_DERIVATION",
+      "opaque_state_schema_sha256": "16d8f42b83f31e9c746323141c2c41fa68ae6361d88844c7d3247bbec99dcad8",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-058",
+      "capability_family": "MATHEMATICAL_DERIVATION",
+      "opaque_state_schema_sha256": "3b1662ebf24136a01856584f66b2685c600e6851e76286bcb73089bdeaac932c",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-059",
+      "capability_family": "MATHEMATICAL_DERIVATION",
+      "opaque_state_schema_sha256": "38c986f85992a7a0ddc2859a829a656872d06eba8c19acd319144b7bf5da9244",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-060",
+      "capability_family": "PROGRAMMING",
+      "opaque_state_schema_sha256": "f294d2ac008255b4cf93198f43d45a2b0555133b8b74a16e38f26f05f86e4dff",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-061",
+      "capability_family": "PROGRAMMING",
+      "opaque_state_schema_sha256": "c693e2e45bd0dc70e1162d23446fc40bf3d3fa5c048efaf0fb939d22d9943d0d",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-062",
+      "capability_family": "PROGRAMMING",
+      "opaque_state_schema_sha256": "933aab2b1accc71701fea5f3fbf984d04445ffcdbdf9b771c581c1d4335545ed",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-063",
+      "capability_family": "PROGRAMMING",
+      "opaque_state_schema_sha256": "3f4a5c26040d82bc0477334e7972ff7761c7799a25e3cb1595d82362cb077bd0",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-064",
+      "capability_family": "PROGRAMMING",
+      "opaque_state_schema_sha256": "f5f875276da3038575c82ee511d212ef6bf0b33aa4aa39e436e02a8168c8efb2",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-065",
+      "capability_family": "PROGRAMMING",
+      "opaque_state_schema_sha256": "9a623cd6eb276a57f0269db6f15c05862f3a3b336d1411dc4f9ab66b2d5deb9a",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-066",
+      "capability_family": "PROGRAMMING",
+      "opaque_state_schema_sha256": "216ffcb262c82bfa0f55fbd80536f469c706091bd1ea639dc6c4754afb3df309",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-067",
+      "capability_family": "PROGRAMMING",
+      "opaque_state_schema_sha256": "e4017bee6cf998b8f33bf0998e986d4101cdf015b6da29675db0ee211c69b317",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-068",
+      "capability_family": "PROGRAMMING",
+      "opaque_state_schema_sha256": "9d9dff5bdab9e6ba61e55a75367a96778a913c0bbc39ac01d8e934943bfab7f6",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-069",
+      "capability_family": "PROGRAMMING",
+      "opaque_state_schema_sha256": "546694bfb73dabbeaee4b0cd724b4efa6b328094117b4b9ad715d75461f22f4e",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-070",
+      "capability_family": "PROGRAMMING",
+      "opaque_state_schema_sha256": "ad95a2ccdf7faca1e94eb0949358ee575f88e648f46a016f679d30de87bfe859",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-071",
+      "capability_family": "PROGRAMMING",
+      "opaque_state_schema_sha256": "8486d2214143a0c28710b14b1d7d83c2c256d1aedb9fa382f7e4a1d214200a8c",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-072",
+      "capability_family": "PROGRAMMING",
+      "opaque_state_schema_sha256": "ba08a5e1e81d921946c6f37442326035a34d68f3e4ee145b8a305b9720709bca",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-073",
+      "capability_family": "PROGRAMMING",
+      "opaque_state_schema_sha256": "e4d64212484010ed57f8fcffe12de4139bf51e5dea4f19e996d92ee98ff200d6",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-074",
+      "capability_family": "PROGRAMMING",
+      "opaque_state_schema_sha256": "266df17061b9bc7b66022aa56bc711f67be78ee589d810f98aff612f118f2b33",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-075",
+      "capability_family": "PROGRAMMING",
+      "opaque_state_schema_sha256": "af17c5058e430a9b29f2d0767fe58428da9e416741b6cfcc9644c1a88cee4374",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-076",
+      "capability_family": "PROGRAMMING",
+      "opaque_state_schema_sha256": "31f82c6997d3b497a32aa93dc8874e1fc2004fb2729e3606631e2671676cb483",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-077",
+      "capability_family": "PROGRAMMING",
+      "opaque_state_schema_sha256": "48cc7cffa7ebd50b5f26a670e98537754d9e8ef92200957cd0bbfeac7654a659",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-078",
+      "capability_family": "PROGRAMMING",
+      "opaque_state_schema_sha256": "fd860f6fcaa2f515387189f127856ec40ac0f91ca549a4edb67af74d8f7a1afd",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-079",
+      "capability_family": "PROGRAMMING",
+      "opaque_state_schema_sha256": "1bc64c05666915d7f983a2e1bea0ae45271ff86ca8dd82d97ff6224aad81e460",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-080",
+      "capability_family": "DEFINITION_FORAGING",
+      "opaque_state_schema_sha256": "c0af30bde4ff287da4cf1a14dedebc43b7ffb7abc940a7d9f4d47e40208e2a31",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-081",
+      "capability_family": "DEFINITION_FORAGING",
+      "opaque_state_schema_sha256": "c432c98c79c279ca56ffe43ba1840d89127416bc89a88508a2470f27a4c32858",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-082",
+      "capability_family": "DEFINITION_FORAGING",
+      "opaque_state_schema_sha256": "f99f20c96fc145875923bc7dad3b7815c6735e30fdb86768e0f674d7cc9a621c",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-083",
+      "capability_family": "DEFINITION_FORAGING",
+      "opaque_state_schema_sha256": "d67bb7efa8e5f32ea719f0eda0ca7f180e45ffade49b3ec1f7bdbb8ef866bca3",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-084",
+      "capability_family": "DEFINITION_FORAGING",
+      "opaque_state_schema_sha256": "b76dcf504c3315f64cca55b0fbe3a9327660dcccf1b2248a3af9ce37bb2cf49f",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-085",
+      "capability_family": "DEFINITION_FORAGING",
+      "opaque_state_schema_sha256": "67b0fa6ff57f66a68314aea8ef470d49c4c589bbe0b03eec202d24d9582134d0",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-086",
+      "capability_family": "DEFINITION_FORAGING",
+      "opaque_state_schema_sha256": "ad73daff0fa615ef7a27bc967fc0fbb868c6c54f8aa0aee34844e6ab970fb630",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-087",
+      "capability_family": "DEFINITION_FORAGING",
+      "opaque_state_schema_sha256": "d704d9d127536fe083905131cdf7cd95fe18e7f003c87c649b2f5911ec1bfd39",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-088",
+      "capability_family": "DEFINITION_FORAGING",
+      "opaque_state_schema_sha256": "d06fe88fb2481641b569b1d358c8191682f6405311918b13aacca91d85ea6423",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-089",
+      "capability_family": "DEFINITION_FORAGING",
+      "opaque_state_schema_sha256": "f3e6a714677d1ac548d62920a0b1b85e61cc981968c1fbe85a1529015a979d1c",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-090",
+      "capability_family": "DEFINITION_FORAGING",
+      "opaque_state_schema_sha256": "56b3b8bf14d0a908dec87fb5bdcbb643a6f27af6150444313b1165184f9f8b7e",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-091",
+      "capability_family": "DEFINITION_FORAGING",
+      "opaque_state_schema_sha256": "98ad70f8bd883234270e9e8da39fca57f6f2d1a30d9e08af56832d010bcb364e",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-092",
+      "capability_family": "DEFINITION_FORAGING",
+      "opaque_state_schema_sha256": "ab1f42f67343a16f81a4b5de8ef9f5cb99c904c4000b9e034355fe779ec6218d",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-093",
+      "capability_family": "DEFINITION_FORAGING",
+      "opaque_state_schema_sha256": "9af07c19fb6410b5f5259a9e95534f3ac8a840820e5490143226d6bd85c1975a",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-094",
+      "capability_family": "DEFINITION_FORAGING",
+      "opaque_state_schema_sha256": "498d8e114cb132cdfb7be0e200733b9edd7a87c2d5c894490bb57d8d000709de",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-095",
+      "capability_family": "DEFINITION_FORAGING",
+      "opaque_state_schema_sha256": "20c4ecb509db91c6366ab71baef05ff33f328def00a3463675cd8c0c5c34ab3f",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-096",
+      "capability_family": "DEFINITION_FORAGING",
+      "opaque_state_schema_sha256": "9bc6be5fd5b3b035193ffe3aa09b418b2a2b9e852602ce1d559bdc9b327b99a5",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-097",
+      "capability_family": "DEFINITION_FORAGING",
+      "opaque_state_schema_sha256": "ec4848c5a46bf2b857f5ebf5c0569c0f13b13c0cb3e3217929168f2bc3b47ea8",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-098",
+      "capability_family": "DEFINITION_FORAGING",
+      "opaque_state_schema_sha256": "0b8687f00514026cb461160077d7d0dcea396504c3a7e007341d5d1339f35812",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-099",
+      "capability_family": "DEFINITION_FORAGING",
+      "opaque_state_schema_sha256": "78e019bc9a96434c9958c0db5408f305e610036805a3369d8d72cd643d899f71",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-100",
+      "capability_family": "LANGUAGE_ADAPTER",
+      "opaque_state_schema_sha256": "0469d7291051a65b7672dd72e5a2c64b8acfc2bf4c839e962de1e8d6aa599311",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-101",
+      "capability_family": "LANGUAGE_ADAPTER",
+      "opaque_state_schema_sha256": "8b31933cd605c7e1b5d807bc3e091368a69cbfb3359141651312bbd3c97e7e14",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-102",
+      "capability_family": "LANGUAGE_ADAPTER",
+      "opaque_state_schema_sha256": "083a6102740725c99c426edc54cd5fea439a5c6d6d2d9fa9b9ff1ba65525c514",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-103",
+      "capability_family": "LANGUAGE_ADAPTER",
+      "opaque_state_schema_sha256": "d085864fa8dce9f155d7b7b0072202f8c466d4ba19127fa35fb609ba7b2e54d5",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-104",
+      "capability_family": "LANGUAGE_ADAPTER",
+      "opaque_state_schema_sha256": "d2273fdfa820815274ecaad8f251e2a2552fd8eaa6b7678d5c5090b28b70f6f1",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-105",
+      "capability_family": "LANGUAGE_ADAPTER",
+      "opaque_state_schema_sha256": "98834efd10426ee8b07c56e9590237612c3806451d3dc8fdb11e0fa3159055d7",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-106",
+      "capability_family": "LANGUAGE_ADAPTER",
+      "opaque_state_schema_sha256": "ff0f4dadc65a8ef3def8b15b1b6cd9be9f0344aeef0def396157b57ba1231267",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-107",
+      "capability_family": "LANGUAGE_ADAPTER",
+      "opaque_state_schema_sha256": "47da0c98e7ade07b4fc1e4b8787ec38f5511c41280b89ff530439415b8a65087",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-108",
+      "capability_family": "LANGUAGE_ADAPTER",
+      "opaque_state_schema_sha256": "03f2fdd92659fdd8d72b9784b152afc495c8c3271c66aa5a07908c56f0a55854",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-109",
+      "capability_family": "LANGUAGE_ADAPTER",
+      "opaque_state_schema_sha256": "6130d434acf7b314d7d36cb257dc75d5fa05afd810f6bfcaae7409ef1a0a1bf9",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-110",
+      "capability_family": "LANGUAGE_ADAPTER",
+      "opaque_state_schema_sha256": "e39e87b44de22ec76ffaf2c8656c9ee62da1fa774ac7f5314eebb9f5707b48eb",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-111",
+      "capability_family": "LANGUAGE_ADAPTER",
+      "opaque_state_schema_sha256": "9bc1adf12e03c8ad6aa602cbcab07cba42ed8c915335e21ddb1272de9d420abf",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-112",
+      "capability_family": "LANGUAGE_ADAPTER",
+      "opaque_state_schema_sha256": "e4f60e7559ac9b2223e58964eae0f128059211d26b4516b505591afd8cb6d1f1",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-113",
+      "capability_family": "LANGUAGE_ADAPTER",
+      "opaque_state_schema_sha256": "1ae474af401f67678105b6229575db8154d66217dd7d4db7a228fc771bed2d7a",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-114",
+      "capability_family": "LANGUAGE_ADAPTER",
+      "opaque_state_schema_sha256": "10ca8140ec99c557978bd911635031a96292f915a1a7752309c8977dc8a4515e",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-115",
+      "capability_family": "LANGUAGE_ADAPTER",
+      "opaque_state_schema_sha256": "bfdf41ce96f88d6311d9592e0a14e6db13aae593e90d75307f322833f95871ca",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-116",
+      "capability_family": "LANGUAGE_ADAPTER",
+      "opaque_state_schema_sha256": "0e482eefcfa74beadab8a881685094e4139bcc1c2b7473fbf8112eb2db0d2714",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-117",
+      "capability_family": "LANGUAGE_ADAPTER",
+      "opaque_state_schema_sha256": "42a69116960ab0124bcd0504af5d04444b22a88d0991f803c61bcccf2fdfb73d",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-118",
+      "capability_family": "LANGUAGE_ADAPTER",
+      "opaque_state_schema_sha256": "3dd25503c91f07287fcbd7acf03bfc304ef17773a7ffd2793fd75d2ef434a3d5",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-119",
+      "capability_family": "LANGUAGE_ADAPTER",
+      "opaque_state_schema_sha256": "3ace73e191543f9e8f3a0a63a124620ced7cbcd0e2f96d1b4455d50edbf064dd",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-120",
+      "capability_family": "CROSS_DOMAIN_TRANSFER",
+      "opaque_state_schema_sha256": "6726aec07560ade7ea8efa7952dda8d00b07f6ae211db5bc58bd27ed10a8d0ee",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-121",
+      "capability_family": "CROSS_DOMAIN_TRANSFER",
+      "opaque_state_schema_sha256": "4b637f2c837a5e5c2fe6a0165b86d8faba4b2c5fc657a1fad2752ccc6bae4ca1",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-122",
+      "capability_family": "CROSS_DOMAIN_TRANSFER",
+      "opaque_state_schema_sha256": "4c9a6de8010798bb8a96828a52e42b6edb5a81b7f4d1849c08aecc49ea90fd74",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-123",
+      "capability_family": "CROSS_DOMAIN_TRANSFER",
+      "opaque_state_schema_sha256": "152d0959f39aeffa9d1d65f0e00c292ee32907d8555ce6d115bd32cfe961ae8d",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-124",
+      "capability_family": "CROSS_DOMAIN_TRANSFER",
+      "opaque_state_schema_sha256": "3c57c322e021df4386569d75e97cc1d527ce5c0c3812f744482c55b8fb60d641",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-125",
+      "capability_family": "CROSS_DOMAIN_TRANSFER",
+      "opaque_state_schema_sha256": "d5e44b3794cf0cada30af240ee13e3fdd843fc9f308de093c9019a2cf1ce19be",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-126",
+      "capability_family": "CROSS_DOMAIN_TRANSFER",
+      "opaque_state_schema_sha256": "67f5abb666f273df18c963db30c220e3cbb1b3fcb01461ea9c0c3f362249b22f",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-127",
+      "capability_family": "CROSS_DOMAIN_TRANSFER",
+      "opaque_state_schema_sha256": "dad97a5ce2185a6c6ea992c36a78000e996c50a860976c1915bd3239807634f1",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-128",
+      "capability_family": "CROSS_DOMAIN_TRANSFER",
+      "opaque_state_schema_sha256": "207532503e03a50b4701a85466829a588de57a3abd43c0e3efbe6959d6880222",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-129",
+      "capability_family": "CROSS_DOMAIN_TRANSFER",
+      "opaque_state_schema_sha256": "841e0d3a6ebcf460c3132837e6091fb7a7e631550d846a50d18ba3213aba379a",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-130",
+      "capability_family": "CROSS_DOMAIN_TRANSFER",
+      "opaque_state_schema_sha256": "69f9cd4325d7258dd9f87b0388efb2c46646362f64b96c0be1312020575645e1",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-131",
+      "capability_family": "CROSS_DOMAIN_TRANSFER",
+      "opaque_state_schema_sha256": "a7ffe77a5c80543e3d207fd4d822eb4f7efac690d2e673d0c3a83b8c3bf59f40",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-132",
+      "capability_family": "CROSS_DOMAIN_TRANSFER",
+      "opaque_state_schema_sha256": "48ebb0466e8b365a16707c5b227de227b1da2251695028902fe1b4f3032df2ac",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-133",
+      "capability_family": "CROSS_DOMAIN_TRANSFER",
+      "opaque_state_schema_sha256": "5126bde5ef23020b324c6278e5a737bd4ea9ac6a5e8e7a71fef98ea57f4290a6",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-134",
+      "capability_family": "CROSS_DOMAIN_TRANSFER",
+      "opaque_state_schema_sha256": "1a8718ee3163e29cae2c6731c31973659f57739830905eab8e5580b6be0d3a07",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-135",
+      "capability_family": "CROSS_DOMAIN_TRANSFER",
+      "opaque_state_schema_sha256": "19878226db54d8c54ae9fc63119866921984d375cf49350e96e41c9870e98670",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-136",
+      "capability_family": "CROSS_DOMAIN_TRANSFER",
+      "opaque_state_schema_sha256": "d73fd13fa6b78656cda84418da24e27f70100dc43987d1c08ec51925acea788e",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-137",
+      "capability_family": "CROSS_DOMAIN_TRANSFER",
+      "opaque_state_schema_sha256": "4fb749f6766b96ca4bb33e29c9dd3f36dcabc6f5dc3fce8b97245e64643c3dae",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-138",
+      "capability_family": "CROSS_DOMAIN_TRANSFER",
+      "opaque_state_schema_sha256": "a67922c333ee5ca910d94b658e87f98903be5ab73d173b039f48a2c813279c41",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-BLIND-139",
+      "capability_family": "CROSS_DOMAIN_TRANSFER",
+      "opaque_state_schema_sha256": "09d1e8647b2c6293ac744f86fc31a51ed5631a889b8fa79c42f28737da34c4a3",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    }
+  ],
+  "adversarial_tasks": [
+    {
+      "task_id": "SEM9-R1-ADV-000",
+      "capability_family": "ADAPTIVE_REASONING",
+      "opaque_state_schema_sha256": "1688eb86a842874d7a0cf172f5843eae5566a6ec6a9f961d6f2613229f3aaf10",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-ADV-001",
+      "capability_family": "ADAPTIVE_REASONING",
+      "opaque_state_schema_sha256": "c4d41c1f7b550c7ac84d29a51fd43afb54b2550e84a6f10d6a554ab9593b3b54",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-ADV-002",
+      "capability_family": "ADAPTIVE_REASONING",
+      "opaque_state_schema_sha256": "1e019fd0d7eb2c04ef7905eeab6a5f8c330cf459486621a4caf0b33e7db360dd",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-ADV-003",
+      "capability_family": "ADAPTIVE_REASONING",
+      "opaque_state_schema_sha256": "8ac12bf144d8a8a92efcf26fb3044f0e1105a314637e8ab79d4dfb29abd4abd2",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-ADV-004",
+      "capability_family": "ADAPTIVE_REASONING",
+      "opaque_state_schema_sha256": "d5cad072b982ed789d59d3acb026d41543ea47731a0096a7bb36d9520ede1a2e",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-ADV-005",
+      "capability_family": "ADAPTIVE_REASONING",
+      "opaque_state_schema_sha256": "3bbff2a914b80111729743236f30c83543a3135d153db89f42ad35647870cf37",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-ADV-006",
+      "capability_family": "ADAPTIVE_REASONING",
+      "opaque_state_schema_sha256": "c7d4a4f2d88a7a752a8c1fdb3811d088f353b1d39775f9dcaea1f9a6d24a9e27",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-ADV-007",
+      "capability_family": "ADAPTIVE_REASONING",
+      "opaque_state_schema_sha256": "24d657f45f6e782f6b8dc58d743b7b30e246b8426b19f58d957db3b43863f718",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-ADV-008",
+      "capability_family": "ADAPTIVE_REASONING",
+      "opaque_state_schema_sha256": "92a7f1587804fa9198068fa25b7ad542950b367c40bdfd8a357643a68faf202e",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-ADV-009",
+      "capability_family": "ADAPTIVE_REASONING",
+      "opaque_state_schema_sha256": "a2c8e7daa3be3dcf0cd9cc57a5113b8a4c58d727b17ad6b6ba1cb2bb3fdf950a",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-ADV-010",
+      "capability_family": "ADAPTIVE_REASONING",
+      "opaque_state_schema_sha256": "7de9e7a92e151e760a586dd88be8e02a781a33140b7f3e18df3b99d2a52b8a2d",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-ADV-011",
+      "capability_family": "ADAPTIVE_REASONING",
+      "opaque_state_schema_sha256": "0559545dd5a081f66be9613a0b2b378254cc82ebe63e0ab8a07f287179fc2842",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-ADV-012",
+      "capability_family": "ADAPTIVE_REASONING",
+      "opaque_state_schema_sha256": "9c9c200b650cb84571eec9bfbd2f215acb73694eac9ffc90b389a8c72410383e",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-ADV-013",
+      "capability_family": "ADAPTIVE_REASONING",
+      "opaque_state_schema_sha256": "e35c652bd48f57a47ea69f6e4502f773d47cee8f76768dced7f4172ff1fb1816",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-ADV-014",
+      "capability_family": "ADAPTIVE_REASONING",
+      "opaque_state_schema_sha256": "639649d07fc2591856af887d689fa17a32fab8f101f5798cf05d2199329dc94c",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-ADV-015",
+      "capability_family": "ADAPTIVE_REASONING",
+      "opaque_state_schema_sha256": "59a8223e8cb95044e8163362a77bf3f0ac5316b46cf0ad9e5a4d29cdc644c602",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-ADV-016",
+      "capability_family": "ADAPTIVE_REASONING",
+      "opaque_state_schema_sha256": "c5d2dd1cffd7a16a575ca451b8be11567273aa8a9fabb7cf3d99dfc55304d263",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-ADV-017",
+      "capability_family": "ADAPTIVE_REASONING",
+      "opaque_state_schema_sha256": "3c1d8b340b23c7573889743834439f546e0e3397551abc83397fbb9ca9282aba",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-ADV-018",
+      "capability_family": "ADAPTIVE_REASONING",
+      "opaque_state_schema_sha256": "d224ed927fced631a1f894f5b3436fd4ce622cd593bf09678b3318a1429300a7",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM9-R1-ADV-019",
+      "capability_family": "ADAPTIVE_REASONING",
+      "opaque_state_schema_sha256": "14ea2b7bce3d230a7fa75ce32ba9a3b70d2c95e9d7e30e3e4c3c07993fa26b90",
+      "public_contract_sha256": "15f02763467004fd13e31c09f1754ada2f6973fad074d32319689c7388ee14cc",
+      "expected_output_included": false,
+      "hidden_states_included": false,
+      "benchmark_family_label_exposed_to_patch": false,
+      "frozen": true
+    }
+  ],
+  "self_diagnostic_tasks_included": false,
+  "expected_outputs_included": false,
+  "hidden_states_included": false,
+  "frozen_before_candidate_evaluation": true,
+  "manifest_sha256": "9c3ca7f9a2f7070dce2022ec1c2631edbc9c35cf4e48e424952abcf4b4a514f9"
+}

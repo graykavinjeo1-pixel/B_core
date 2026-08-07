@@ -1,0 +1,14 @@
+{
+  "failed_candidate_source_sha256": "33794f51f9bf2d59c5f599d5e86dd8604d259692778a6b07e47eb31fa3c2fe79",
+  "formatted_candidate_source_sha256": "90af38004f049e12370cfcfdcb848910112feb159fd2e9d30d27ae4e6346a659",
+  "failed_token_stream_sha256": "3f796c75dc60b23655a082d503295bf53916974afb9a82c75835681c066acb0c",
+  "formatted_token_stream_sha256": "3f796c75dc60b23655a082d503295bf53916974afb9a82c75835681c066acb0c",
+  "non_format_token_changes": 0,
+  "comments_ignored": 0,
+  "candidate_mapping_changed": false,
+  "candidate_assumptions_changed": false,
+  "candidate_target_changed": false,
+  "candidate_logic_changed": false,
+  "rustfmt_only": true,
+  "passed": true
+}

@@ -1,0 +1,10 @@
+{
+  "failed_candidate_semantic_id": "SEM9-CANDIDATE-SEMANTIC:33794f51f9bf2d59c5f599d5e86dd8604d259692778a6b07e47eb31fa3c2fe79",
+  "failed_candidate_source_sha256": "33794f51f9bf2d59c5f599d5e86dd8604d259692778a6b07e47eb31fa3c2fe79",
+  "failed_candidate_patch_sha256": "3fb5bd2ade137ec630f5f30a88a763493949d45574e9bec1276f9aed1490adcd",
+  "mapping_sha256": "60c629474fefd98f99ab8a9256517ace764594bb81d2e46f03fe79d3d9a80c83",
+  "assumptions_sha256": "5976c244213b78edfcb140bb82e8812059f4d77a14cc94d0dd89bab18306f678",
+  "target_component": "SELF-CANDIDATE-ROUTER",
+  "source_concept_id": "C000012",
+  "source_mechanism_id": "M0006"
+}

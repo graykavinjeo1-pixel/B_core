@@ -1,0 +1,81 @@
+{
+  "run_id": "SEM9-RUN-0001",
+  "status": "FAIL",
+  "disposition": "SELF_PATCH_BUILD_FAILURE:CANDIDATE_FMT_CHECK_FAILED",
+  "predecessor_commit": "39ddd82fcada55fe179f1b84bc3962644a49efbb",
+  "critical_artifacts": [
+    {
+      "relative_path": "reports/sem9/SEM9_REPORT.md",
+      "byte_length": 624,
+      "sha256": "97b98dc2c888393e120ebbc49aa8ddeb72d8e8b91aa60b192f5b8a0a78997cd1"
+    },
+    {
+      "relative_path": "reports/sem9/sem9_final_report.json",
+      "byte_length": 2921,
+      "sha256": "63c859c0cdaf26e43d58ba2855f5a3f5885b8f3c566891b8e4ce4c65396b7222"
+    },
+    {
+      "relative_path": "reports/sem9/fresh_blind_manifest.json",
+      "byte_length": 73688,
+      "sha256": "b629f58487bebf22679d29066b0bc5dde6bd5d00db3cab5f58392d12d54eea1d"
+    },
+    {
+      "relative_path": "reports/sem9/artifacts/candidate.patch",
+      "byte_length": 166,
+      "sha256": "3fb5bd2ade137ec630f5f30a88a763493949d45574e9bec1276f9aed1490adcd"
+    },
+    {
+      "relative_path": "reports/sem9/artifacts/candidate_lib.rs",
+      "byte_length": 1674,
+      "sha256": "33794f51f9bf2d59c5f599d5e86dd8604d259692778a6b07e47eb31fa3c2fe79"
+    },
+    {
+      "relative_path": "reports/sem9/artifacts/verified_candidate_probe.exe",
+      "byte_length": 203264,
+      "sha256": "55142ae027cf5a12a941ca2ca4b7be1f426a80ff2c934ebc8c36168517896aac"
+    },
+    {
+      "relative_path": "reports/sem9/candidate_patches.json",
+      "byte_length": 719,
+      "sha256": "d327812ce44d0aac52153af9b50b1f08a469fff7adb4ccbfba391f78788d62e9"
+    },
+    {
+      "relative_path": "reports/sem9/patch_provenance.json",
+      "byte_length": 1143,
+      "sha256": "1e6620a2a96e1e2cffa6bce89a3021cb17d390a7da74c9fe5a160f6d54373af2"
+    },
+    {
+      "relative_path": "reports/sem9/self_role_mappings.json",
+      "byte_length": 1742,
+      "sha256": "60c629474fefd98f99ab8a9256517ace764594bb81d2e46f03fe79d3d9a80c83"
+    },
+    {
+      "relative_path": "reports/sem9/self_assumption_ledgers.json",
+      "byte_length": 2030,
+      "sha256": "5976c244213b78edfcb140bb82e8812059f4d77a14cc94d0dd89bab18306f678"
+    },
+    {
+      "relative_path": "reports/sem9/self_application_ablation.json",
+      "byte_length": 421,
+      "sha256": "3d2c28ec7982314adc82bda0f64dc0db9ff999fadcd180c1d2bc6a9ba9ba64e5"
+    },
+    {
+      "relative_path": "reports/sem9/source_concept_ablation.json",
+      "byte_length": 286,
+      "sha256": "e08c1685753c9f7f00d86ca6b8b4b83bc5b6be6879be8ee1d1a9c63d359b49fd"
+    },
+    {
+      "relative_path": "reports/sem9/protected_core_manifest.json",
+      "byte_length": 2294,
+      "sha256": "fd22a8cfe92ff57d5760cabb4ea1d9bbe358ebcccbee81ff4df1c8e12e1e8d66"
+    },
+    {
+      "relative_path": "reports/sem9/sandbox_build_results.json",
+      "byte_length": 1910,
+      "sha256": "e1c1ac93f6ac634dee26195cd755de4e6c0493a8197be390008580818e417cad"
+    }
+  ],
+  "artifacts_verified": 14,
+  "run0001_overwritten": false,
+  "receipt_sha256": "579be5cfbe4af5b29cf7da9679c1ef8a1627dae8f96d4b61cca45ba68fb3e74c"
+}

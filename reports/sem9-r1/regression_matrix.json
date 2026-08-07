@@ -1,0 +1,83 @@
+[
+  {
+    "stage": "SEM-0",
+    "protected_capability": "concept emergence",
+    "predecessor_correct": 20,
+    "candidate_correct": 20,
+    "tasks": 20,
+    "regressed_tasks": 0,
+    "passed": true
+  },
+  {
+    "stage": "SEM-1",
+    "protected_capability": "concept ladder",
+    "predecessor_correct": 20,
+    "candidate_correct": 20,
+    "tasks": 20,
+    "regressed_tasks": 0,
+    "passed": true
+  },
+  {
+    "stage": "SEM-2",
+    "protected_capability": "adaptive reasoning",
+    "predecessor_correct": 20,
+    "candidate_correct": 20,
+    "tasks": 20,
+    "regressed_tasks": 0,
+    "passed": true
+  },
+  {
+    "stage": "SEM-3",
+    "protected_capability": "active learning",
+    "predecessor_correct": 20,
+    "candidate_correct": 20,
+    "tasks": 20,
+    "regressed_tasks": 0,
+    "passed": true
+  },
+  {
+    "stage": "SEM-4",
+    "protected_capability": "mathematics",
+    "predecessor_correct": 20,
+    "candidate_correct": 20,
+    "tasks": 20,
+    "regressed_tasks": 0,
+    "passed": true
+  },
+  {
+    "stage": "SEM-5",
+    "protected_capability": "programming",
+    "predecessor_correct": 20,
+    "candidate_correct": 20,
+    "tasks": 20,
+    "regressed_tasks": 0,
+    "passed": true
+  },
+  {
+    "stage": "SEM-6",
+    "protected_capability": "foraging",
+    "predecessor_correct": 20,
+    "candidate_correct": 20,
+    "tasks": 20,
+    "regressed_tasks": 0,
+    "passed": true
+  },
+  {
+    "stage": "SEM-7",
+    "protected_capability": "language adapter",
+    "predecessor_correct": 20,
+    "candidate_correct": 20,
+    "tasks": 20,
+    "regressed_tasks": 0,
+    "passed": true
+  },
+  {
+    "stage": "SEM-8",
+    "protected_capability": "mechanism transfer",
+    "predecessor_correct": 20,
+    "candidate_correct": 20,
+    "tasks": 20,
+    "regressed_tasks": 0,
+    "passed": true
+  }
+]

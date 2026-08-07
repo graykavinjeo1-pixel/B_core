@@ -1,14 +1,14 @@
 # Project State
 
-**Canonical version:** 1.9.1
-**State frozen for:** SEM-9 failed sandbox run preserved
+**Canonical version:** 1.10.0
+**State frozen for:** SEM-9 format-canonicalized self-application regate passed
 
 This is an operational snapshot. It does not replace or override
 `CONSTITUTION.md`.
 
 | Field | Value |
 |---|---|
-| Current stage | `SEM-9 FAILED` |
+| Current stage | `SEM-9 COMPLETE` |
 | Stage S0 status | `PASS` |
 | SEM-0 implementation | `COMPLETE` |
 | SEM-0 result | `PASS - MINIMAL_AUTONOMOUS_CONCEPT_EMERGENCE` |
@@ -29,12 +29,12 @@ This is an operational snapshot. It does not replace or override
 | SEM-7 result | `PASS - LANGUAGE_CORTEX_ATTACHED_AND_SEMANTIC_BOUNDARY_VERIFIED` |
 | SEM-8 implementation | `COMPLETE` |
 | SEM-8 result | `PASS - CROSS_DOMAIN_SEMANTIC_MECHANISM_TRANSFER_VERIFIED` |
-| SEM-9 implementation | `ATTEMPTED - FAILED` |
-| SEM-9 result | `FAIL - SELF_PATCH_BUILD_FAILURE:CANDIDATE_FMT_CHECK_FAILED` |
+| SEM-9 implementation | `COMPLETE` |
+| SEM-9 result | `PASS - FORMAT_CANONICALIZED_SELF_APPLICATION_REGATE_VERIFIED` |
 | SEM-10 | `NOT STARTED` |
 | Recursive self-mutation | `DISABLED` |
 | Recursive-improvement mode | `OBSERVE_MEASURE_ONLY` |
-| Proposal generation | `SANDBOX-ONLY SINGLE GENERATION EXECUTED; NOW STOPPED` |
+| Proposal generation | `SANDBOX-ONLY VERIFIED SINGLE GENERATION; NOW STOPPED` |
 | Source patch/apply | `SANDBOX CANDIDATE ONLY; PRODUCTION APPLY DISABLED` |
 | Auto apply/merge/commit/push | `DISABLED` |
 | External provider repair | `DISABLED` |
@@ -44,13 +44,13 @@ This is an operational snapshot. It does not replace or override
 | Current branch | `main` |
 | Current commit | `SELF` - resolve with `git rev-parse HEAD` |
 | Worktree at committed freeze | `CLEAN` |
-| Next allowed stage | `SEM9-R1_RECURSIVE_SELF_APPLICATION_REPAIR` |
+| Next allowed stage | `SEM-10_BOUNDED_RECURSIVE_IMPROVEMENT_LOOP` |
 
 ## Canonical document status
 
 The normative documents remain complete and frozen at version 1.0.0. This
-operational state record advanced to version 1.9.1 after preserving the failed
-SEM-9 sandbox run:
+operational state record advanced to version 1.10.0 after preserving the failed
+SEM-9 run and passing its format-only fresh regate:
 
 - `CONSTITUTION.md`
 - `RESEARCH_HYPOTHESIS.md`
@@ -347,8 +347,36 @@ The detailed classification and contamination decisions are in
 - The failed evidence and sandbox binary hashes are sealed under
   `reports/sem9/`. Repair was not started after blind evaluation.
 
+## SEM-9 R1 evidence snapshot
+
+- The sealed `SEM9-RUN-0001` failure remains unchanged and has a dedicated
+  critical-artifact receipt. Its execution-path audit confirmed that the exact
+  generated source compiled and supplied the historical behavioral metrics;
+  `BUILT=0` represented failure of the aggregate canonical build gate at
+  `cargo fmt --check`.
+- R1 retained the autonomous `C000012` / `M0006` lineage and
+  `SELF-CANDIDATE-ROUTER` target. Mechanical rustfmt canonicalization changed
+  no non-format tokens, mapping, assumptions, target, or candidate logic.
+- Frozen `SEM9-R1-RUN-0002` used 140 new blind tasks, twenty for each of seven
+  predecessor capability families, plus twenty new adversarial router/frontier
+  tasks. It reused no RUN-0001 task IDs, instances, values, or fixture IDs.
+- The exact frozen predecessor and formatted candidate both achieved strict
+  solve rate `1.0` with zero regressions. Median expansions fell from `120.0`
+  to `68.0`, peak frontier fell from `67` to `37`, and seven repeated trials
+  were recorded for timing and memory proxies.
+- Fresh self-application ablation, source-concept causality, protected-core,
+  containment, leakage, regression, and sparse-routing audits all passed.
+  Production source mutations, accepted protected-core mutations,
+  benchmark-specific branches, catalog scans, routing false negatives,
+  external LLM/teacher calls, network writes, and remote executions were zero.
+- One self-application candidate is verified in the sandbox but remains
+  unintegrated. Reports and candidate evidence are sealed under
+  `reports/sem9-r1/`.
+
 ## Advancement constraint
 
-SEM-9 did not pass. `SEM9-RUN-0001` must remain preserved and no SEM-10 work is
-authorized. Starting `SEM9-R1_RECURSIVE_SELF_APPLICATION_REPAIR` requires an
-explicit subsequent task.
+SEM-9 is complete through the passing R1 fresh regate. `SEM9-RUN-0001` remains
+a permanent canonical failure record, and the verified sandbox candidate must
+not be integrated automatically. SEM-10 has not started; beginning
+`SEM-10_BOUNDED_RECURSIVE_IMPROVEMENT_LOOP` requires an explicit subsequent
+task.

@@ -1,0 +1,9 @@
+{
+  "canonical_integrity": "PASS",
+  "passed": true,
+  "predecessor_commit": "39ddd82fcada55fe179f1b84bc3962644a49efbb",
+  "predecessor_integrity": "PASS",
+  "run0001_disposition": "SELF_PATCH_BUILD_FAILURE:CANDIDATE_FMT_CHECK_FAILED",
+  "run0001_receipt_sha256": "5bafafb8e331914e153a6f9671b71d186173d2cd2289dcb531554362e9a53295",
+  "run0001_status": "FAIL"
+}

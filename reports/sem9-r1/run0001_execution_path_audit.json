@@ -1,0 +1,20 @@
+{
+  "source_generated": true,
+  "format_checked": true,
+  "format_check_passed": false,
+  "raw_compile_attempted": true,
+  "raw_compile_succeeded": true,
+  "clippy_run": true,
+  "clippy_passed": true,
+  "tests_run": true,
+  "tests_passed": true,
+  "behavioral_eval_run": true,
+  "canonical_build_gate_passed": false,
+  "behavioral_path_operation": "ChangeIR MergeEquivalentStates keyed by canonical semantic state identity",
+  "candidate_source_operation": "schedule(): BTreeSet seen; skip repeated canonical_key when enabled",
+  "diagnostic_equivalence_cases": 16,
+  "diagnostic_equivalence_failures": 0,
+  "candidate_evaluation_path_equivalent": true,
+  "built_zero_explanation": "BUILT=0 denoted aggregate canonical gate failure at cargo fmt --check; the exact raw source independently compiled, passed Clippy/tests, and was executable. RUN-0001 behavioral counters used the same ChangeIR operation, confirmed against the raw source on diagnostic cases.",
+  "passed": true
+}
