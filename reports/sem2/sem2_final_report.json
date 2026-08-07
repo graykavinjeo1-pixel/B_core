@@ -1,0 +1,101 @@
+{
+  "sem2_status": "PASS",
+  "disposition": "ADAPTIVE_REASONING_COMPLEXITY_CONTROL_VERIFIED",
+  "branch": "main",
+  "commit": "SELF",
+  "worktree_clean": true,
+  "push_performed": false,
+  "canonical_integrity": true,
+  "predecessor_integrity": true,
+  "network_calls": 0,
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "recursive_source_mutations": 0,
+  "metric_semantics_audit": true,
+  "fresh_blind_tasks": 60,
+  "depth_tasks": 12,
+  "width_tasks": 12,
+  "recombination_tasks": 12,
+  "composition_tasks": 12,
+  "mixed_tasks": 12,
+  "baseline_b_solve_rate_equal_resource": 1.0,
+  "adaptive_d_solve_rate_equal_resource": 1.0,
+  "baseline_b_median_expansions_hard": 1848.0,
+  "adaptive_d_median_expansions_hard": 10.5,
+  "baseline_b_peak_live_branches": 236,
+  "adaptive_d_peak_live_branches": 79,
+  "expansion_reduction": 0.9943181818181818,
+  "live_branch_reduction": 0.6652542372881356,
+  "deep_reasoning_preserved": true,
+  "deep_task_false_prunes": 0,
+  "max_solution_graph_depth": 55,
+  "max_primitive_expanded_depth": 496,
+  "max_search_trajectory_depth": 55,
+  "max_instantaneous_frontier_width": 79,
+  "max_simultaneously_live_branches": 79,
+  "cumulative_branches_generated": 29273,
+  "max_concepts_composed": 4,
+  "mean_concepts_composed_on_mixed": 3.5,
+  "promoted_concept_reuse_count": 678,
+  "cross_generation_concept_composition_count": 57,
+  "max_simultaneous_subproblems": 4,
+  "max_recombinations": 1,
+  "peak_active_concepts": 5,
+  "information_probes_executed": 0,
+  "hypotheses_eliminated": 0,
+  "semantic_prunes": 14167,
+  "false_prunes": 0,
+  "semantic_state_merges": 4018,
+  "false_merges": 0,
+  "dynamic_resource_allocation_pass": true,
+  "decomposition_pass": true,
+  "recombination_pass": true,
+  "semantic_pruning_pass": true,
+  "frontier_control_pass": true,
+  "full_catalog_scans": 0,
+  "routing_false_negatives": 0,
+  "gates": [
+    {
+      "gate": "ADAPTIVE_CORRECTNESS",
+      "passed": true,
+      "evidence": "D=1 B=1"
+    },
+    {
+      "gate": "FRONTIER_CONTROL",
+      "passed": true,
+      "evidence": "hard expansion reduction=0.994318; peak live 236 -> 79"
+    },
+    {
+      "gate": "HARD_DEPTH_PRESERVATION",
+      "passed": true,
+      "evidence": "deep false prunes=0"
+    },
+    {
+      "gate": "DYNAMIC_BEHAVIOR",
+      "passed": true,
+      "evidence": "task-dependent depth, width, and branch allocations"
+    },
+    {
+      "gate": "DECOMPOSITION_RECOMBINATION",
+      "passed": true,
+      "evidence": "decompositions=175 recombinations=24"
+    },
+    {
+      "gate": "SEMANTIC_PRUNING_VALUE",
+      "passed": true,
+      "evidence": "semantic prunes=14167 false prunes=0"
+    },
+    {
+      "gate": "NO_CONTAMINATION",
+      "passed": true,
+      "evidence": "network/LLM/teacher/mutation all zero"
+    },
+    {
+      "gate": "SPARSE_ACTIVATION",
+      "passed": true,
+      "evidence": "full scans=0 routing false negatives=0"
+    }
+  ],
+  "sem3_started": false,
+  "next_allowed_stage": "SEM-3_ACTIVE_EXPERIMENT_SELECTION"
+}

@@ -1,0 +1,10 @@
+{
+  "run_id": "SEM2-RUN-0002",
+  "controller_version": "SEM2-ADAPTIVE-CONTROLLER-1.1.0",
+  "evaluation_version": "SEM2-EVALUATION-1.1.0",
+  "blind_manifest_sha256": "82cfced403bd338f6ec900c745095ec9a8a0e0c2dd3dc3daa5fc54d39a15fea1",
+  "metric_audit_sha256": "41a7352ced85e6fdb7a537ce71f0d20e38063d940823fa75a7c3c1d827385cd6",
+  "resource_budget_sha256": "383e3e4e000813a391b497bfc5f2807355ea874579700e782c82df1c4e22a661",
+  "frozen_before_blind": true,
+  "post_blind_tuning": false
+}

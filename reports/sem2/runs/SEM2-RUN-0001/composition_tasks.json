@@ -1,0 +1,3945 @@
+{
+  "task_class": "COMPOSITION",
+  "tasks": 12,
+  "strict_solve_rate": 1.0,
+  "maximum_required_depth_evaluator_only": 6,
+  "maximum_required_concepts_evaluator_only": 4,
+  "results": [
+    {
+      "task_id": "S2B000004",
+      "condition": "ADAPTIVE_D",
+      "solved": true,
+      "strictly_correct": true,
+      "termination_reason": "VERIFIED_SUCCESS",
+      "selected_actions": {
+        "G00000": "G00000-A000",
+        "G00001": "G00001-A001",
+        "G00002": "G00002-A002"
+      },
+      "metrics": {
+        "solution_graph_depth": 3,
+        "primitive_expanded_solution_depth": 27,
+        "search_trajectory_max_depth": 3,
+        "instantaneous_frontier_width": 1,
+        "peak_simultaneously_live_branches": 1,
+        "cumulative_branches_generated": 12,
+        "cumulative_search_expansions": 6,
+        "peak_active_concepts": 3,
+        "mean_active_concepts": 1.6666666666666667,
+        "concepts_composed": 2,
+        "decomposition_count": 0,
+        "subproblems_created": 0,
+        "subproblems_solved": 2,
+        "recombination_count": 0,
+        "maximum_decomposition_tree_depth": 0,
+        "maximum_simultaneous_subproblems": 1,
+        "useful_branch_ratio": 0.25,
+        "pruned_branch_count": 9,
+        "false_prune_count": 0,
+        "semantic_prune_count": 5,
+        "dominance_merge_count": 0,
+        "false_merge_count": 0,
+        "information_probes_proposed": 0,
+        "information_probes_executed": 0,
+        "hypotheses_eliminated": 0,
+        "expansions_saved_by_probes": 0,
+        "stagnation_prunes": 0,
+        "backtracks": 0,
+        "rollbacks": 0,
+        "promoted_concept_reuse_count": 3,
+        "cross_generation_concept_composition_count": 1,
+        "wall_time_units": 6,
+        "peak_memory_units": 6,
+        "branch_expansion_gini": 0.22222222222222232
+      },
+      "allocations": [
+        {
+          "branch_id": "G00000",
+          "allocated_expansions": 8,
+          "actual_expansions": 1,
+          "estimated_value": 0.5,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        },
+        {
+          "branch_id": "G00001",
+          "allocated_expansions": 11,
+          "actual_expansions": 2,
+          "estimated_value": 0.65,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        },
+        {
+          "branch_id": "G00002",
+          "allocated_expansions": 11,
+          "actual_expansions": 3,
+          "estimated_value": 0.65,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        }
+      ],
+      "trace": [
+        {
+          "sequence": 1,
+          "task_id": "S2B000004",
+          "goal_id": "G00000",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 0
+        },
+        {
+          "sequence": 2,
+          "task_id": "S2B000004",
+          "goal_id": "G00000",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 0
+        },
+        {
+          "sequence": 3,
+          "task_id": "S2B000004",
+          "goal_id": "G00000",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 0
+        },
+        {
+          "sequence": 4,
+          "task_id": "S2B000004",
+          "goal_id": "G00000",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.1500000000000004,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 1
+        },
+        {
+          "sequence": 5,
+          "task_id": "S2B000004",
+          "goal_id": "G00000",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 1
+        },
+        {
+          "sequence": 6,
+          "task_id": "S2B000004",
+          "goal_id": "G00001",
+          "action": "SWITCH_SUBPROBLEM",
+          "action_value": 0.55,
+          "reason": "highest-valued ready subproblem selected",
+          "cumulative_expansions": 1
+        },
+        {
+          "sequence": 7,
+          "task_id": "S2B000004",
+          "goal_id": "G00001",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 1
+        },
+        {
+          "sequence": 8,
+          "task_id": "S2B000004",
+          "goal_id": "G00001",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 1
+        },
+        {
+          "sequence": 9,
+          "task_id": "S2B000004",
+          "goal_id": "G00001",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 1
+        },
+        {
+          "sequence": 10,
+          "task_id": "S2B000004",
+          "goal_id": "G00001",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.1,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 3
+        },
+        {
+          "sequence": 11,
+          "task_id": "S2B000004",
+          "goal_id": "G00001",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 3
+        },
+        {
+          "sequence": 12,
+          "task_id": "S2B000004",
+          "goal_id": "G00002",
+          "action": "SWITCH_SUBPROBLEM",
+          "action_value": 0.55,
+          "reason": "highest-valued ready subproblem selected",
+          "cumulative_expansions": 3
+        },
+        {
+          "sequence": 13,
+          "task_id": "S2B000004",
+          "goal_id": "G00002",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 3
+        },
+        {
+          "sequence": 14,
+          "task_id": "S2B000004",
+          "goal_id": "G00002",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 3
+        },
+        {
+          "sequence": 15,
+          "task_id": "S2B000004",
+          "goal_id": "G00002",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 3
+        },
+        {
+          "sequence": 16,
+          "task_id": "S2B000004",
+          "goal_id": "G00002",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.0500000000000003,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 6
+        },
+        {
+          "sequence": 17,
+          "task_id": "S2B000004",
+          "goal_id": "G00002",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 6
+        },
+        {
+          "sequence": 18,
+          "task_id": "S2B000004",
+          "goal_id": null,
+          "action": "STOP_SOLVED",
+          "action_value": 1.0,
+          "reason": "all goal contracts independently verified",
+          "cumulative_expansions": 6
+        }
+      ]
+    },
+    {
+      "task_id": "S2B000009",
+      "condition": "ADAPTIVE_D",
+      "solved": true,
+      "strictly_correct": true,
+      "termination_reason": "VERIFIED_SUCCESS",
+      "selected_actions": {
+        "G00000": "G00000-A001",
+        "G00001": "G00001-A002",
+        "G00002": "G00002-A003",
+        "G00003": "G00003-A000"
+      },
+      "metrics": {
+        "solution_graph_depth": 4,
+        "primitive_expanded_solution_depth": 38,
+        "search_trajectory_max_depth": 4,
+        "instantaneous_frontier_width": 1,
+        "peak_simultaneously_live_branches": 1,
+        "cumulative_branches_generated": 16,
+        "cumulative_search_expansions": 7,
+        "peak_active_concepts": 4,
+        "mean_active_concepts": 2.25,
+        "concepts_composed": 3,
+        "decomposition_count": 0,
+        "subproblems_created": 0,
+        "subproblems_solved": 3,
+        "recombination_count": 0,
+        "maximum_decomposition_tree_depth": 0,
+        "maximum_simultaneous_subproblems": 1,
+        "useful_branch_ratio": 0.25,
+        "pruned_branch_count": 12,
+        "false_prune_count": 0,
+        "semantic_prune_count": 6,
+        "dominance_merge_count": 0,
+        "false_merge_count": 0,
+        "information_probes_proposed": 0,
+        "information_probes_executed": 0,
+        "hypotheses_eliminated": 0,
+        "expansions_saved_by_probes": 0,
+        "stagnation_prunes": 0,
+        "backtracks": 0,
+        "rollbacks": 0,
+        "promoted_concept_reuse_count": 4,
+        "cross_generation_concept_composition_count": 1,
+        "wall_time_units": 7,
+        "peak_memory_units": 7,
+        "branch_expansion_gini": 0.25
+      },
+      "allocations": [
+        {
+          "branch_id": "G00000",
+          "allocated_expansions": 8,
+          "actual_expansions": 2,
+          "estimated_value": 0.5,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        },
+        {
+          "branch_id": "G00001",
+          "allocated_expansions": 11,
+          "actual_expansions": 3,
+          "estimated_value": 0.65,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        },
+        {
+          "branch_id": "G00002",
+          "allocated_expansions": 11,
+          "actual_expansions": 1,
+          "estimated_value": 0.65,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        },
+        {
+          "branch_id": "G00003",
+          "allocated_expansions": 11,
+          "actual_expansions": 1,
+          "estimated_value": 0.65,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        }
+      ],
+      "trace": [
+        {
+          "sequence": 1,
+          "task_id": "S2B000009",
+          "goal_id": "G00000",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 0
+        },
+        {
+          "sequence": 2,
+          "task_id": "S2B000009",
+          "goal_id": "G00000",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 0
+        },
+        {
+          "sequence": 3,
+          "task_id": "S2B000009",
+          "goal_id": "G00000",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 0
+        },
+        {
+          "sequence": 4,
+          "task_id": "S2B000009",
+          "goal_id": "G00000",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.1,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 2
+        },
+        {
+          "sequence": 5,
+          "task_id": "S2B000009",
+          "goal_id": "G00000",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 2
+        },
+        {
+          "sequence": 6,
+          "task_id": "S2B000009",
+          "goal_id": "G00001",
+          "action": "SWITCH_SUBPROBLEM",
+          "action_value": 0.55,
+          "reason": "highest-valued ready subproblem selected",
+          "cumulative_expansions": 2
+        },
+        {
+          "sequence": 7,
+          "task_id": "S2B000009",
+          "goal_id": "G00001",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 2
+        },
+        {
+          "sequence": 8,
+          "task_id": "S2B000009",
+          "goal_id": "G00001",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 2
+        },
+        {
+          "sequence": 9,
+          "task_id": "S2B000009",
+          "goal_id": "G00001",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 2
+        },
+        {
+          "sequence": 10,
+          "task_id": "S2B000009",
+          "goal_id": "G00001",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.0500000000000003,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 5
+        },
+        {
+          "sequence": 11,
+          "task_id": "S2B000009",
+          "goal_id": "G00001",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 5
+        },
+        {
+          "sequence": 12,
+          "task_id": "S2B000009",
+          "goal_id": "G00002",
+          "action": "SWITCH_SUBPROBLEM",
+          "action_value": 0.55,
+          "reason": "highest-valued ready subproblem selected",
+          "cumulative_expansions": 5
+        },
+        {
+          "sequence": 13,
+          "task_id": "S2B000009",
+          "goal_id": "G00002",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 5
+        },
+        {
+          "sequence": 14,
+          "task_id": "S2B000009",
+          "goal_id": "G00002",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 5
+        },
+        {
+          "sequence": 15,
+          "task_id": "S2B000009",
+          "goal_id": "G00002",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 5
+        },
+        {
+          "sequence": 16,
+          "task_id": "S2B000009",
+          "goal_id": "G00002",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.1500000000000004,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 6
+        },
+        {
+          "sequence": 17,
+          "task_id": "S2B000009",
+          "goal_id": "G00002",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 6
+        },
+        {
+          "sequence": 18,
+          "task_id": "S2B000009",
+          "goal_id": "G00003",
+          "action": "SWITCH_SUBPROBLEM",
+          "action_value": 0.55,
+          "reason": "highest-valued ready subproblem selected",
+          "cumulative_expansions": 6
+        },
+        {
+          "sequence": 19,
+          "task_id": "S2B000009",
+          "goal_id": "G00003",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 6
+        },
+        {
+          "sequence": 20,
+          "task_id": "S2B000009",
+          "goal_id": "G00003",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 6
+        },
+        {
+          "sequence": 21,
+          "task_id": "S2B000009",
+          "goal_id": "G00003",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 6
+        },
+        {
+          "sequence": 22,
+          "task_id": "S2B000009",
+          "goal_id": "G00003",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.1500000000000004,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 7
+        },
+        {
+          "sequence": 23,
+          "task_id": "S2B000009",
+          "goal_id": "G00003",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 7
+        },
+        {
+          "sequence": 24,
+          "task_id": "S2B000009",
+          "goal_id": null,
+          "action": "STOP_SOLVED",
+          "action_value": 1.0,
+          "reason": "all goal contracts independently verified",
+          "cumulative_expansions": 7
+        }
+      ]
+    },
+    {
+      "task_id": "S2B000014",
+      "condition": "ADAPTIVE_D",
+      "solved": true,
+      "strictly_correct": true,
+      "termination_reason": "VERIFIED_SUCCESS",
+      "selected_actions": {
+        "G00000": "G00000-A003",
+        "G00001": "G00001-A000",
+        "G00002": "G00002-A001",
+        "G00003": "G00003-A002",
+        "G00004": "G00004-A003"
+      },
+      "metrics": {
+        "solution_graph_depth": 5,
+        "primitive_expanded_solution_depth": 49,
+        "search_trajectory_max_depth": 5,
+        "instantaneous_frontier_width": 1,
+        "peak_simultaneously_live_branches": 1,
+        "cumulative_branches_generated": 20,
+        "cumulative_search_expansions": 8,
+        "peak_active_concepts": 5,
+        "mean_active_concepts": 2.8,
+        "concepts_composed": 4,
+        "decomposition_count": 0,
+        "subproblems_created": 0,
+        "subproblems_solved": 4,
+        "recombination_count": 0,
+        "maximum_decomposition_tree_depth": 0,
+        "maximum_simultaneous_subproblems": 1,
+        "useful_branch_ratio": 0.25,
+        "pruned_branch_count": 15,
+        "false_prune_count": 0,
+        "semantic_prune_count": 7,
+        "dominance_merge_count": 0,
+        "false_merge_count": 0,
+        "information_probes_proposed": 0,
+        "information_probes_executed": 0,
+        "hypotheses_eliminated": 0,
+        "expansions_saved_by_probes": 0,
+        "stagnation_prunes": 0,
+        "backtracks": 0,
+        "rollbacks": 0,
+        "promoted_concept_reuse_count": 5,
+        "cross_generation_concept_composition_count": 1,
+        "wall_time_units": 8,
+        "peak_memory_units": 8,
+        "branch_expansion_gini": 0.25
+      },
+      "allocations": [
+        {
+          "branch_id": "G00000",
+          "allocated_expansions": 8,
+          "actual_expansions": 1,
+          "estimated_value": 0.5,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        },
+        {
+          "branch_id": "G00001",
+          "allocated_expansions": 11,
+          "actual_expansions": 1,
+          "estimated_value": 0.65,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        },
+        {
+          "branch_id": "G00002",
+          "allocated_expansions": 11,
+          "actual_expansions": 2,
+          "estimated_value": 0.65,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        },
+        {
+          "branch_id": "G00003",
+          "allocated_expansions": 11,
+          "actual_expansions": 3,
+          "estimated_value": 0.65,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        },
+        {
+          "branch_id": "G00004",
+          "allocated_expansions": 11,
+          "actual_expansions": 1,
+          "estimated_value": 0.65,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        }
+      ],
+      "trace": [
+        {
+          "sequence": 1,
+          "task_id": "S2B000014",
+          "goal_id": "G00000",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 0
+        },
+        {
+          "sequence": 2,
+          "task_id": "S2B000014",
+          "goal_id": "G00000",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 0
+        },
+        {
+          "sequence": 3,
+          "task_id": "S2B000014",
+          "goal_id": "G00000",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 0
+        },
+        {
+          "sequence": 4,
+          "task_id": "S2B000014",
+          "goal_id": "G00000",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.1500000000000004,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 1
+        },
+        {
+          "sequence": 5,
+          "task_id": "S2B000014",
+          "goal_id": "G00000",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 1
+        },
+        {
+          "sequence": 6,
+          "task_id": "S2B000014",
+          "goal_id": "G00001",
+          "action": "SWITCH_SUBPROBLEM",
+          "action_value": 0.55,
+          "reason": "highest-valued ready subproblem selected",
+          "cumulative_expansions": 1
+        },
+        {
+          "sequence": 7,
+          "task_id": "S2B000014",
+          "goal_id": "G00001",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 1
+        },
+        {
+          "sequence": 8,
+          "task_id": "S2B000014",
+          "goal_id": "G00001",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 1
+        },
+        {
+          "sequence": 9,
+          "task_id": "S2B000014",
+          "goal_id": "G00001",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 1
+        },
+        {
+          "sequence": 10,
+          "task_id": "S2B000014",
+          "goal_id": "G00001",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.1500000000000004,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 2
+        },
+        {
+          "sequence": 11,
+          "task_id": "S2B000014",
+          "goal_id": "G00001",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 2
+        },
+        {
+          "sequence": 12,
+          "task_id": "S2B000014",
+          "goal_id": "G00002",
+          "action": "SWITCH_SUBPROBLEM",
+          "action_value": 0.55,
+          "reason": "highest-valued ready subproblem selected",
+          "cumulative_expansions": 2
+        },
+        {
+          "sequence": 13,
+          "task_id": "S2B000014",
+          "goal_id": "G00002",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 2
+        },
+        {
+          "sequence": 14,
+          "task_id": "S2B000014",
+          "goal_id": "G00002",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 2
+        },
+        {
+          "sequence": 15,
+          "task_id": "S2B000014",
+          "goal_id": "G00002",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 2
+        },
+        {
+          "sequence": 16,
+          "task_id": "S2B000014",
+          "goal_id": "G00002",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.1,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 4
+        },
+        {
+          "sequence": 17,
+          "task_id": "S2B000014",
+          "goal_id": "G00002",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 4
+        },
+        {
+          "sequence": 18,
+          "task_id": "S2B000014",
+          "goal_id": "G00003",
+          "action": "SWITCH_SUBPROBLEM",
+          "action_value": 0.55,
+          "reason": "highest-valued ready subproblem selected",
+          "cumulative_expansions": 4
+        },
+        {
+          "sequence": 19,
+          "task_id": "S2B000014",
+          "goal_id": "G00003",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 4
+        },
+        {
+          "sequence": 20,
+          "task_id": "S2B000014",
+          "goal_id": "G00003",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 4
+        },
+        {
+          "sequence": 21,
+          "task_id": "S2B000014",
+          "goal_id": "G00003",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 4
+        },
+        {
+          "sequence": 22,
+          "task_id": "S2B000014",
+          "goal_id": "G00003",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.0500000000000003,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 7
+        },
+        {
+          "sequence": 23,
+          "task_id": "S2B000014",
+          "goal_id": "G00003",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 7
+        },
+        {
+          "sequence": 24,
+          "task_id": "S2B000014",
+          "goal_id": "G00004",
+          "action": "SWITCH_SUBPROBLEM",
+          "action_value": 0.55,
+          "reason": "highest-valued ready subproblem selected",
+          "cumulative_expansions": 7
+        },
+        {
+          "sequence": 25,
+          "task_id": "S2B000014",
+          "goal_id": "G00004",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 7
+        },
+        {
+          "sequence": 26,
+          "task_id": "S2B000014",
+          "goal_id": "G00004",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 7
+        },
+        {
+          "sequence": 27,
+          "task_id": "S2B000014",
+          "goal_id": "G00004",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 7
+        },
+        {
+          "sequence": 28,
+          "task_id": "S2B000014",
+          "goal_id": "G00004",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.1500000000000004,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 8
+        },
+        {
+          "sequence": 29,
+          "task_id": "S2B000014",
+          "goal_id": "G00004",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 8
+        },
+        {
+          "sequence": 30,
+          "task_id": "S2B000014",
+          "goal_id": null,
+          "action": "STOP_SOLVED",
+          "action_value": 1.0,
+          "reason": "all goal contracts independently verified",
+          "cumulative_expansions": 8
+        }
+      ]
+    },
+    {
+      "task_id": "S2B000019",
+      "condition": "ADAPTIVE_D",
+      "solved": true,
+      "strictly_correct": true,
+      "termination_reason": "VERIFIED_SUCCESS",
+      "selected_actions": {
+        "G00000": "G00000-A000",
+        "G00001": "G00001-A001",
+        "G00002": "G00002-A002",
+        "G00003": "G00003-A003",
+        "G00004": "G00004-A000",
+        "G00005": "G00005-A001"
+      },
+      "metrics": {
+        "solution_graph_depth": 6,
+        "primitive_expanded_solution_depth": 55,
+        "search_trajectory_max_depth": 6,
+        "instantaneous_frontier_width": 1,
+        "peak_simultaneously_live_branches": 1,
+        "cumulative_branches_generated": 24,
+        "cumulative_search_expansions": 10,
+        "peak_active_concepts": 3,
+        "mean_active_concepts": 1.8333333333333333,
+        "concepts_composed": 2,
+        "decomposition_count": 0,
+        "subproblems_created": 0,
+        "subproblems_solved": 5,
+        "recombination_count": 0,
+        "maximum_decomposition_tree_depth": 0,
+        "maximum_simultaneous_subproblems": 1,
+        "useful_branch_ratio": 0.25,
+        "pruned_branch_count": 18,
+        "false_prune_count": 0,
+        "semantic_prune_count": 10,
+        "dominance_merge_count": 0,
+        "false_merge_count": 0,
+        "information_probes_proposed": 0,
+        "information_probes_executed": 0,
+        "hypotheses_eliminated": 0,
+        "expansions_saved_by_probes": 0,
+        "stagnation_prunes": 0,
+        "backtracks": 0,
+        "rollbacks": 0,
+        "promoted_concept_reuse_count": 6,
+        "cross_generation_concept_composition_count": 1,
+        "wall_time_units": 10,
+        "peak_memory_units": 6,
+        "branch_expansion_gini": 0.23333333333333317
+      },
+      "allocations": [
+        {
+          "branch_id": "G00000",
+          "allocated_expansions": 8,
+          "actual_expansions": 1,
+          "estimated_value": 0.5,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        },
+        {
+          "branch_id": "G00001",
+          "allocated_expansions": 11,
+          "actual_expansions": 2,
+          "estimated_value": 0.65,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        },
+        {
+          "branch_id": "G00002",
+          "allocated_expansions": 11,
+          "actual_expansions": 3,
+          "estimated_value": 0.65,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        },
+        {
+          "branch_id": "G00003",
+          "allocated_expansions": 11,
+          "actual_expansions": 1,
+          "estimated_value": 0.65,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        },
+        {
+          "branch_id": "G00004",
+          "allocated_expansions": 11,
+          "actual_expansions": 1,
+          "estimated_value": 0.65,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        },
+        {
+          "branch_id": "G00005",
+          "allocated_expansions": 11,
+          "actual_expansions": 2,
+          "estimated_value": 0.65,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        }
+      ],
+      "trace": [
+        {
+          "sequence": 1,
+          "task_id": "S2B000019",
+          "goal_id": "G00000",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 0
+        },
+        {
+          "sequence": 2,
+          "task_id": "S2B000019",
+          "goal_id": "G00000",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 0
+        },
+        {
+          "sequence": 3,
+          "task_id": "S2B000019",
+          "goal_id": "G00000",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 0
+        },
+        {
+          "sequence": 4,
+          "task_id": "S2B000019",
+          "goal_id": "G00000",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.1500000000000004,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 1
+        },
+        {
+          "sequence": 5,
+          "task_id": "S2B000019",
+          "goal_id": "G00000",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 1
+        },
+        {
+          "sequence": 6,
+          "task_id": "S2B000019",
+          "goal_id": "G00001",
+          "action": "SWITCH_SUBPROBLEM",
+          "action_value": 0.55,
+          "reason": "highest-valued ready subproblem selected",
+          "cumulative_expansions": 1
+        },
+        {
+          "sequence": 7,
+          "task_id": "S2B000019",
+          "goal_id": "G00001",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 1
+        },
+        {
+          "sequence": 8,
+          "task_id": "S2B000019",
+          "goal_id": "G00001",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 1
+        },
+        {
+          "sequence": 9,
+          "task_id": "S2B000019",
+          "goal_id": "G00001",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 1
+        },
+        {
+          "sequence": 10,
+          "task_id": "S2B000019",
+          "goal_id": "G00001",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.1,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 3
+        },
+        {
+          "sequence": 11,
+          "task_id": "S2B000019",
+          "goal_id": "G00001",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 3
+        },
+        {
+          "sequence": 12,
+          "task_id": "S2B000019",
+          "goal_id": "G00002",
+          "action": "SWITCH_SUBPROBLEM",
+          "action_value": 0.55,
+          "reason": "highest-valued ready subproblem selected",
+          "cumulative_expansions": 3
+        },
+        {
+          "sequence": 13,
+          "task_id": "S2B000019",
+          "goal_id": "G00002",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 3
+        },
+        {
+          "sequence": 14,
+          "task_id": "S2B000019",
+          "goal_id": "G00002",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 3
+        },
+        {
+          "sequence": 15,
+          "task_id": "S2B000019",
+          "goal_id": "G00002",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 3
+        },
+        {
+          "sequence": 16,
+          "task_id": "S2B000019",
+          "goal_id": "G00002",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.0500000000000003,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 6
+        },
+        {
+          "sequence": 17,
+          "task_id": "S2B000019",
+          "goal_id": "G00002",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 6
+        },
+        {
+          "sequence": 18,
+          "task_id": "S2B000019",
+          "goal_id": "G00003",
+          "action": "SWITCH_SUBPROBLEM",
+          "action_value": 0.55,
+          "reason": "highest-valued ready subproblem selected",
+          "cumulative_expansions": 6
+        },
+        {
+          "sequence": 19,
+          "task_id": "S2B000019",
+          "goal_id": "G00003",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 6
+        },
+        {
+          "sequence": 20,
+          "task_id": "S2B000019",
+          "goal_id": "G00003",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 6
+        },
+        {
+          "sequence": 21,
+          "task_id": "S2B000019",
+          "goal_id": "G00003",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 6
+        },
+        {
+          "sequence": 22,
+          "task_id": "S2B000019",
+          "goal_id": "G00003",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.1500000000000004,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 7
+        },
+        {
+          "sequence": 23,
+          "task_id": "S2B000019",
+          "goal_id": "G00003",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 7
+        },
+        {
+          "sequence": 24,
+          "task_id": "S2B000019",
+          "goal_id": "G00004",
+          "action": "SWITCH_SUBPROBLEM",
+          "action_value": 0.55,
+          "reason": "highest-valued ready subproblem selected",
+          "cumulative_expansions": 7
+        },
+        {
+          "sequence": 25,
+          "task_id": "S2B000019",
+          "goal_id": "G00004",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 7
+        },
+        {
+          "sequence": 26,
+          "task_id": "S2B000019",
+          "goal_id": "G00004",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 7
+        },
+        {
+          "sequence": 27,
+          "task_id": "S2B000019",
+          "goal_id": "G00004",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 7
+        },
+        {
+          "sequence": 28,
+          "task_id": "S2B000019",
+          "goal_id": "G00004",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.1500000000000004,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 8
+        },
+        {
+          "sequence": 29,
+          "task_id": "S2B000019",
+          "goal_id": "G00004",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 8
+        },
+        {
+          "sequence": 30,
+          "task_id": "S2B000019",
+          "goal_id": "G00005",
+          "action": "SWITCH_SUBPROBLEM",
+          "action_value": 0.55,
+          "reason": "highest-valued ready subproblem selected",
+          "cumulative_expansions": 8
+        },
+        {
+          "sequence": 31,
+          "task_id": "S2B000019",
+          "goal_id": "G00005",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 8
+        },
+        {
+          "sequence": 32,
+          "task_id": "S2B000019",
+          "goal_id": "G00005",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 8
+        },
+        {
+          "sequence": 33,
+          "task_id": "S2B000019",
+          "goal_id": "G00005",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 8
+        },
+        {
+          "sequence": 34,
+          "task_id": "S2B000019",
+          "goal_id": "G00005",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.1,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 10
+        },
+        {
+          "sequence": 35,
+          "task_id": "S2B000019",
+          "goal_id": "G00005",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 10
+        },
+        {
+          "sequence": 36,
+          "task_id": "S2B000019",
+          "goal_id": null,
+          "action": "STOP_SOLVED",
+          "action_value": 1.0,
+          "reason": "all goal contracts independently verified",
+          "cumulative_expansions": 10
+        }
+      ]
+    },
+    {
+      "task_id": "S2B000024",
+      "condition": "ADAPTIVE_D",
+      "solved": true,
+      "strictly_correct": true,
+      "termination_reason": "VERIFIED_SUCCESS",
+      "selected_actions": {
+        "G00000": "G00000-A002",
+        "G00001": "G00001-A003",
+        "G00002": "G00002-A000"
+      },
+      "metrics": {
+        "solution_graph_depth": 3,
+        "primitive_expanded_solution_depth": 29,
+        "search_trajectory_max_depth": 3,
+        "instantaneous_frontier_width": 1,
+        "peak_simultaneously_live_branches": 1,
+        "cumulative_branches_generated": 12,
+        "cumulative_search_expansions": 5,
+        "peak_active_concepts": 4,
+        "mean_active_concepts": 2.0,
+        "concepts_composed": 3,
+        "decomposition_count": 0,
+        "subproblems_created": 0,
+        "subproblems_solved": 2,
+        "recombination_count": 0,
+        "maximum_decomposition_tree_depth": 0,
+        "maximum_simultaneous_subproblems": 1,
+        "useful_branch_ratio": 0.25,
+        "pruned_branch_count": 9,
+        "false_prune_count": 0,
+        "semantic_prune_count": 4,
+        "dominance_merge_count": 0,
+        "false_merge_count": 0,
+        "information_probes_proposed": 0,
+        "information_probes_executed": 0,
+        "hypotheses_eliminated": 0,
+        "expansions_saved_by_probes": 0,
+        "stagnation_prunes": 0,
+        "backtracks": 0,
+        "rollbacks": 0,
+        "promoted_concept_reuse_count": 3,
+        "cross_generation_concept_composition_count": 1,
+        "wall_time_units": 5,
+        "peak_memory_units": 7,
+        "branch_expansion_gini": 0.26666666666666683
+      },
+      "allocations": [
+        {
+          "branch_id": "G00000",
+          "allocated_expansions": 8,
+          "actual_expansions": 3,
+          "estimated_value": 0.5,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        },
+        {
+          "branch_id": "G00001",
+          "allocated_expansions": 11,
+          "actual_expansions": 1,
+          "estimated_value": 0.65,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        },
+        {
+          "branch_id": "G00002",
+          "allocated_expansions": 11,
+          "actual_expansions": 1,
+          "estimated_value": 0.65,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        }
+      ],
+      "trace": [
+        {
+          "sequence": 1,
+          "task_id": "S2B000024",
+          "goal_id": "G00000",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 0
+        },
+        {
+          "sequence": 2,
+          "task_id": "S2B000024",
+          "goal_id": "G00000",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 0
+        },
+        {
+          "sequence": 3,
+          "task_id": "S2B000024",
+          "goal_id": "G00000",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 0
+        },
+        {
+          "sequence": 4,
+          "task_id": "S2B000024",
+          "goal_id": "G00000",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.0500000000000003,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 3
+        },
+        {
+          "sequence": 5,
+          "task_id": "S2B000024",
+          "goal_id": "G00000",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 3
+        },
+        {
+          "sequence": 6,
+          "task_id": "S2B000024",
+          "goal_id": "G00001",
+          "action": "SWITCH_SUBPROBLEM",
+          "action_value": 0.55,
+          "reason": "highest-valued ready subproblem selected",
+          "cumulative_expansions": 3
+        },
+        {
+          "sequence": 7,
+          "task_id": "S2B000024",
+          "goal_id": "G00001",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 3
+        },
+        {
+          "sequence": 8,
+          "task_id": "S2B000024",
+          "goal_id": "G00001",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 3
+        },
+        {
+          "sequence": 9,
+          "task_id": "S2B000024",
+          "goal_id": "G00001",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 3
+        },
+        {
+          "sequence": 10,
+          "task_id": "S2B000024",
+          "goal_id": "G00001",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.1500000000000004,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 4
+        },
+        {
+          "sequence": 11,
+          "task_id": "S2B000024",
+          "goal_id": "G00001",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 4
+        },
+        {
+          "sequence": 12,
+          "task_id": "S2B000024",
+          "goal_id": "G00002",
+          "action": "SWITCH_SUBPROBLEM",
+          "action_value": 0.55,
+          "reason": "highest-valued ready subproblem selected",
+          "cumulative_expansions": 4
+        },
+        {
+          "sequence": 13,
+          "task_id": "S2B000024",
+          "goal_id": "G00002",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 4
+        },
+        {
+          "sequence": 14,
+          "task_id": "S2B000024",
+          "goal_id": "G00002",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 4
+        },
+        {
+          "sequence": 15,
+          "task_id": "S2B000024",
+          "goal_id": "G00002",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 4
+        },
+        {
+          "sequence": 16,
+          "task_id": "S2B000024",
+          "goal_id": "G00002",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.1500000000000004,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 5
+        },
+        {
+          "sequence": 17,
+          "task_id": "S2B000024",
+          "goal_id": "G00002",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 5
+        },
+        {
+          "sequence": 18,
+          "task_id": "S2B000024",
+          "goal_id": null,
+          "action": "STOP_SOLVED",
+          "action_value": 1.0,
+          "reason": "all goal contracts independently verified",
+          "cumulative_expansions": 5
+        }
+      ]
+    },
+    {
+      "task_id": "S2B000029",
+      "condition": "ADAPTIVE_D",
+      "solved": true,
+      "strictly_correct": true,
+      "termination_reason": "VERIFIED_SUCCESS",
+      "selected_actions": {
+        "G00000": "G00000-A003",
+        "G00001": "G00001-A000",
+        "G00002": "G00002-A001",
+        "G00003": "G00003-A002"
+      },
+      "metrics": {
+        "solution_graph_depth": 4,
+        "primitive_expanded_solution_depth": 38,
+        "search_trajectory_max_depth": 4,
+        "instantaneous_frontier_width": 1,
+        "peak_simultaneously_live_branches": 1,
+        "cumulative_branches_generated": 16,
+        "cumulative_search_expansions": 7,
+        "peak_active_concepts": 5,
+        "mean_active_concepts": 2.5,
+        "concepts_composed": 4,
+        "decomposition_count": 0,
+        "subproblems_created": 0,
+        "subproblems_solved": 3,
+        "recombination_count": 0,
+        "maximum_decomposition_tree_depth": 0,
+        "maximum_simultaneous_subproblems": 1,
+        "useful_branch_ratio": 0.25,
+        "pruned_branch_count": 12,
+        "false_prune_count": 0,
+        "semantic_prune_count": 6,
+        "dominance_merge_count": 0,
+        "false_merge_count": 0,
+        "information_probes_proposed": 0,
+        "information_probes_executed": 0,
+        "hypotheses_eliminated": 0,
+        "expansions_saved_by_probes": 0,
+        "stagnation_prunes": 0,
+        "backtracks": 0,
+        "rollbacks": 0,
+        "promoted_concept_reuse_count": 4,
+        "cross_generation_concept_composition_count": 1,
+        "wall_time_units": 7,
+        "peak_memory_units": 8,
+        "branch_expansion_gini": 0.25
+      },
+      "allocations": [
+        {
+          "branch_id": "G00000",
+          "allocated_expansions": 8,
+          "actual_expansions": 1,
+          "estimated_value": 0.5,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        },
+        {
+          "branch_id": "G00001",
+          "allocated_expansions": 11,
+          "actual_expansions": 1,
+          "estimated_value": 0.65,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        },
+        {
+          "branch_id": "G00002",
+          "allocated_expansions": 11,
+          "actual_expansions": 2,
+          "estimated_value": 0.65,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        },
+        {
+          "branch_id": "G00003",
+          "allocated_expansions": 11,
+          "actual_expansions": 3,
+          "estimated_value": 0.65,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        }
+      ],
+      "trace": [
+        {
+          "sequence": 1,
+          "task_id": "S2B000029",
+          "goal_id": "G00000",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 0
+        },
+        {
+          "sequence": 2,
+          "task_id": "S2B000029",
+          "goal_id": "G00000",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 0
+        },
+        {
+          "sequence": 3,
+          "task_id": "S2B000029",
+          "goal_id": "G00000",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 0
+        },
+        {
+          "sequence": 4,
+          "task_id": "S2B000029",
+          "goal_id": "G00000",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.1500000000000004,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 1
+        },
+        {
+          "sequence": 5,
+          "task_id": "S2B000029",
+          "goal_id": "G00000",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 1
+        },
+        {
+          "sequence": 6,
+          "task_id": "S2B000029",
+          "goal_id": "G00001",
+          "action": "SWITCH_SUBPROBLEM",
+          "action_value": 0.55,
+          "reason": "highest-valued ready subproblem selected",
+          "cumulative_expansions": 1
+        },
+        {
+          "sequence": 7,
+          "task_id": "S2B000029",
+          "goal_id": "G00001",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 1
+        },
+        {
+          "sequence": 8,
+          "task_id": "S2B000029",
+          "goal_id": "G00001",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 1
+        },
+        {
+          "sequence": 9,
+          "task_id": "S2B000029",
+          "goal_id": "G00001",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 1
+        },
+        {
+          "sequence": 10,
+          "task_id": "S2B000029",
+          "goal_id": "G00001",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.1500000000000004,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 2
+        },
+        {
+          "sequence": 11,
+          "task_id": "S2B000029",
+          "goal_id": "G00001",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 2
+        },
+        {
+          "sequence": 12,
+          "task_id": "S2B000029",
+          "goal_id": "G00002",
+          "action": "SWITCH_SUBPROBLEM",
+          "action_value": 0.55,
+          "reason": "highest-valued ready subproblem selected",
+          "cumulative_expansions": 2
+        },
+        {
+          "sequence": 13,
+          "task_id": "S2B000029",
+          "goal_id": "G00002",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 2
+        },
+        {
+          "sequence": 14,
+          "task_id": "S2B000029",
+          "goal_id": "G00002",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 2
+        },
+        {
+          "sequence": 15,
+          "task_id": "S2B000029",
+          "goal_id": "G00002",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 2
+        },
+        {
+          "sequence": 16,
+          "task_id": "S2B000029",
+          "goal_id": "G00002",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.1,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 4
+        },
+        {
+          "sequence": 17,
+          "task_id": "S2B000029",
+          "goal_id": "G00002",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 4
+        },
+        {
+          "sequence": 18,
+          "task_id": "S2B000029",
+          "goal_id": "G00003",
+          "action": "SWITCH_SUBPROBLEM",
+          "action_value": 0.55,
+          "reason": "highest-valued ready subproblem selected",
+          "cumulative_expansions": 4
+        },
+        {
+          "sequence": 19,
+          "task_id": "S2B000029",
+          "goal_id": "G00003",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 4
+        },
+        {
+          "sequence": 20,
+          "task_id": "S2B000029",
+          "goal_id": "G00003",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 4
+        },
+        {
+          "sequence": 21,
+          "task_id": "S2B000029",
+          "goal_id": "G00003",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 4
+        },
+        {
+          "sequence": 22,
+          "task_id": "S2B000029",
+          "goal_id": "G00003",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.0500000000000003,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 7
+        },
+        {
+          "sequence": 23,
+          "task_id": "S2B000029",
+          "goal_id": "G00003",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 7
+        },
+        {
+          "sequence": 24,
+          "task_id": "S2B000029",
+          "goal_id": null,
+          "action": "STOP_SOLVED",
+          "action_value": 1.0,
+          "reason": "all goal contracts independently verified",
+          "cumulative_expansions": 7
+        }
+      ]
+    },
+    {
+      "task_id": "S2B000034",
+      "condition": "ADAPTIVE_D",
+      "solved": true,
+      "strictly_correct": true,
+      "termination_reason": "VERIFIED_SUCCESS",
+      "selected_actions": {
+        "G00000": "G00000-A001",
+        "G00001": "G00001-A002",
+        "G00002": "G00002-A003",
+        "G00003": "G00003-A000",
+        "G00004": "G00004-A001"
+      },
+      "metrics": {
+        "solution_graph_depth": 5,
+        "primitive_expanded_solution_depth": 47,
+        "search_trajectory_max_depth": 5,
+        "instantaneous_frontier_width": 1,
+        "peak_simultaneously_live_branches": 1,
+        "cumulative_branches_generated": 20,
+        "cumulative_search_expansions": 9,
+        "peak_active_concepts": 3,
+        "mean_active_concepts": 1.8,
+        "concepts_composed": 2,
+        "decomposition_count": 0,
+        "subproblems_created": 0,
+        "subproblems_solved": 4,
+        "recombination_count": 0,
+        "maximum_decomposition_tree_depth": 0,
+        "maximum_simultaneous_subproblems": 1,
+        "useful_branch_ratio": 0.25,
+        "pruned_branch_count": 15,
+        "false_prune_count": 0,
+        "semantic_prune_count": 8,
+        "dominance_merge_count": 0,
+        "false_merge_count": 0,
+        "information_probes_proposed": 0,
+        "information_probes_executed": 0,
+        "hypotheses_eliminated": 0,
+        "expansions_saved_by_probes": 0,
+        "stagnation_prunes": 0,
+        "backtracks": 0,
+        "rollbacks": 0,
+        "promoted_concept_reuse_count": 5,
+        "cross_generation_concept_composition_count": 1,
+        "wall_time_units": 9,
+        "peak_memory_units": 6,
+        "branch_expansion_gini": 0.22222222222222232
+      },
+      "allocations": [
+        {
+          "branch_id": "G00000",
+          "allocated_expansions": 8,
+          "actual_expansions": 2,
+          "estimated_value": 0.5,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        },
+        {
+          "branch_id": "G00001",
+          "allocated_expansions": 11,
+          "actual_expansions": 3,
+          "estimated_value": 0.65,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        },
+        {
+          "branch_id": "G00002",
+          "allocated_expansions": 11,
+          "actual_expansions": 1,
+          "estimated_value": 0.65,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        },
+        {
+          "branch_id": "G00003",
+          "allocated_expansions": 11,
+          "actual_expansions": 1,
+          "estimated_value": 0.65,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        },
+        {
+          "branch_id": "G00004",
+          "allocated_expansions": 11,
+          "actual_expansions": 2,
+          "estimated_value": 0.65,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        }
+      ],
+      "trace": [
+        {
+          "sequence": 1,
+          "task_id": "S2B000034",
+          "goal_id": "G00000",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 0
+        },
+        {
+          "sequence": 2,
+          "task_id": "S2B000034",
+          "goal_id": "G00000",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 0
+        },
+        {
+          "sequence": 3,
+          "task_id": "S2B000034",
+          "goal_id": "G00000",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 0
+        },
+        {
+          "sequence": 4,
+          "task_id": "S2B000034",
+          "goal_id": "G00000",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.1,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 2
+        },
+        {
+          "sequence": 5,
+          "task_id": "S2B000034",
+          "goal_id": "G00000",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 2
+        },
+        {
+          "sequence": 6,
+          "task_id": "S2B000034",
+          "goal_id": "G00001",
+          "action": "SWITCH_SUBPROBLEM",
+          "action_value": 0.55,
+          "reason": "highest-valued ready subproblem selected",
+          "cumulative_expansions": 2
+        },
+        {
+          "sequence": 7,
+          "task_id": "S2B000034",
+          "goal_id": "G00001",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 2
+        },
+        {
+          "sequence": 8,
+          "task_id": "S2B000034",
+          "goal_id": "G00001",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 2
+        },
+        {
+          "sequence": 9,
+          "task_id": "S2B000034",
+          "goal_id": "G00001",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 2
+        },
+        {
+          "sequence": 10,
+          "task_id": "S2B000034",
+          "goal_id": "G00001",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.0500000000000003,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 5
+        },
+        {
+          "sequence": 11,
+          "task_id": "S2B000034",
+          "goal_id": "G00001",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 5
+        },
+        {
+          "sequence": 12,
+          "task_id": "S2B000034",
+          "goal_id": "G00002",
+          "action": "SWITCH_SUBPROBLEM",
+          "action_value": 0.55,
+          "reason": "highest-valued ready subproblem selected",
+          "cumulative_expansions": 5
+        },
+        {
+          "sequence": 13,
+          "task_id": "S2B000034",
+          "goal_id": "G00002",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 5
+        },
+        {
+          "sequence": 14,
+          "task_id": "S2B000034",
+          "goal_id": "G00002",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 5
+        },
+        {
+          "sequence": 15,
+          "task_id": "S2B000034",
+          "goal_id": "G00002",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 5
+        },
+        {
+          "sequence": 16,
+          "task_id": "S2B000034",
+          "goal_id": "G00002",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.1500000000000004,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 6
+        },
+        {
+          "sequence": 17,
+          "task_id": "S2B000034",
+          "goal_id": "G00002",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 6
+        },
+        {
+          "sequence": 18,
+          "task_id": "S2B000034",
+          "goal_id": "G00003",
+          "action": "SWITCH_SUBPROBLEM",
+          "action_value": 0.55,
+          "reason": "highest-valued ready subproblem selected",
+          "cumulative_expansions": 6
+        },
+        {
+          "sequence": 19,
+          "task_id": "S2B000034",
+          "goal_id": "G00003",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 6
+        },
+        {
+          "sequence": 20,
+          "task_id": "S2B000034",
+          "goal_id": "G00003",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 6
+        },
+        {
+          "sequence": 21,
+          "task_id": "S2B000034",
+          "goal_id": "G00003",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 6
+        },
+        {
+          "sequence": 22,
+          "task_id": "S2B000034",
+          "goal_id": "G00003",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.1500000000000004,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 7
+        },
+        {
+          "sequence": 23,
+          "task_id": "S2B000034",
+          "goal_id": "G00003",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 7
+        },
+        {
+          "sequence": 24,
+          "task_id": "S2B000034",
+          "goal_id": "G00004",
+          "action": "SWITCH_SUBPROBLEM",
+          "action_value": 0.55,
+          "reason": "highest-valued ready subproblem selected",
+          "cumulative_expansions": 7
+        },
+        {
+          "sequence": 25,
+          "task_id": "S2B000034",
+          "goal_id": "G00004",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 7
+        },
+        {
+          "sequence": 26,
+          "task_id": "S2B000034",
+          "goal_id": "G00004",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 7
+        },
+        {
+          "sequence": 27,
+          "task_id": "S2B000034",
+          "goal_id": "G00004",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 7
+        },
+        {
+          "sequence": 28,
+          "task_id": "S2B000034",
+          "goal_id": "G00004",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.1,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 9
+        },
+        {
+          "sequence": 29,
+          "task_id": "S2B000034",
+          "goal_id": "G00004",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 9
+        },
+        {
+          "sequence": 30,
+          "task_id": "S2B000034",
+          "goal_id": null,
+          "action": "STOP_SOLVED",
+          "action_value": 1.0,
+          "reason": "all goal contracts independently verified",
+          "cumulative_expansions": 9
+        }
+      ]
+    },
+    {
+      "task_id": "S2B000039",
+      "condition": "ADAPTIVE_D",
+      "solved": true,
+      "strictly_correct": true,
+      "termination_reason": "VERIFIED_SUCCESS",
+      "selected_actions": {
+        "G00000": "G00000-A002",
+        "G00001": "G00001-A003",
+        "G00002": "G00002-A000",
+        "G00003": "G00003-A001",
+        "G00004": "G00004-A002",
+        "G00005": "G00005-A003"
+      },
+      "metrics": {
+        "solution_graph_depth": 6,
+        "primitive_expanded_solution_depth": 59,
+        "search_trajectory_max_depth": 6,
+        "instantaneous_frontier_width": 1,
+        "peak_simultaneously_live_branches": 1,
+        "cumulative_branches_generated": 24,
+        "cumulative_search_expansions": 11,
+        "peak_active_concepts": 4,
+        "mean_active_concepts": 2.5,
+        "concepts_composed": 3,
+        "decomposition_count": 0,
+        "subproblems_created": 0,
+        "subproblems_solved": 5,
+        "recombination_count": 0,
+        "maximum_decomposition_tree_depth": 0,
+        "maximum_simultaneous_subproblems": 1,
+        "useful_branch_ratio": 0.25,
+        "pruned_branch_count": 18,
+        "false_prune_count": 0,
+        "semantic_prune_count": 8,
+        "dominance_merge_count": 0,
+        "false_merge_count": 0,
+        "information_probes_proposed": 0,
+        "information_probes_executed": 0,
+        "hypotheses_eliminated": 0,
+        "expansions_saved_by_probes": 0,
+        "stagnation_prunes": 0,
+        "backtracks": 0,
+        "rollbacks": 0,
+        "promoted_concept_reuse_count": 6,
+        "cross_generation_concept_composition_count": 1,
+        "wall_time_units": 11,
+        "peak_memory_units": 7,
+        "branch_expansion_gini": 0.25757575757575757
+      },
+      "allocations": [
+        {
+          "branch_id": "G00000",
+          "allocated_expansions": 8,
+          "actual_expansions": 3,
+          "estimated_value": 0.5,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        },
+        {
+          "branch_id": "G00001",
+          "allocated_expansions": 11,
+          "actual_expansions": 1,
+          "estimated_value": 0.65,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        },
+        {
+          "branch_id": "G00002",
+          "allocated_expansions": 11,
+          "actual_expansions": 1,
+          "estimated_value": 0.65,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        },
+        {
+          "branch_id": "G00003",
+          "allocated_expansions": 11,
+          "actual_expansions": 2,
+          "estimated_value": 0.65,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        },
+        {
+          "branch_id": "G00004",
+          "allocated_expansions": 11,
+          "actual_expansions": 3,
+          "estimated_value": 0.65,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        },
+        {
+          "branch_id": "G00005",
+          "allocated_expansions": 11,
+          "actual_expansions": 1,
+          "estimated_value": 0.65,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        }
+      ],
+      "trace": [
+        {
+          "sequence": 1,
+          "task_id": "S2B000039",
+          "goal_id": "G00000",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 0
+        },
+        {
+          "sequence": 2,
+          "task_id": "S2B000039",
+          "goal_id": "G00000",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 0
+        },
+        {
+          "sequence": 3,
+          "task_id": "S2B000039",
+          "goal_id": "G00000",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 0
+        },
+        {
+          "sequence": 4,
+          "task_id": "S2B000039",
+          "goal_id": "G00000",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.0500000000000003,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 3
+        },
+        {
+          "sequence": 5,
+          "task_id": "S2B000039",
+          "goal_id": "G00000",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 3
+        },
+        {
+          "sequence": 6,
+          "task_id": "S2B000039",
+          "goal_id": "G00001",
+          "action": "SWITCH_SUBPROBLEM",
+          "action_value": 0.55,
+          "reason": "highest-valued ready subproblem selected",
+          "cumulative_expansions": 3
+        },
+        {
+          "sequence": 7,
+          "task_id": "S2B000039",
+          "goal_id": "G00001",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 3
+        },
+        {
+          "sequence": 8,
+          "task_id": "S2B000039",
+          "goal_id": "G00001",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 3
+        },
+        {
+          "sequence": 9,
+          "task_id": "S2B000039",
+          "goal_id": "G00001",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 3
+        },
+        {
+          "sequence": 10,
+          "task_id": "S2B000039",
+          "goal_id": "G00001",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.1500000000000004,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 4
+        },
+        {
+          "sequence": 11,
+          "task_id": "S2B000039",
+          "goal_id": "G00001",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 4
+        },
+        {
+          "sequence": 12,
+          "task_id": "S2B000039",
+          "goal_id": "G00002",
+          "action": "SWITCH_SUBPROBLEM",
+          "action_value": 0.55,
+          "reason": "highest-valued ready subproblem selected",
+          "cumulative_expansions": 4
+        },
+        {
+          "sequence": 13,
+          "task_id": "S2B000039",
+          "goal_id": "G00002",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 4
+        },
+        {
+          "sequence": 14,
+          "task_id": "S2B000039",
+          "goal_id": "G00002",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 4
+        },
+        {
+          "sequence": 15,
+          "task_id": "S2B000039",
+          "goal_id": "G00002",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 4
+        },
+        {
+          "sequence": 16,
+          "task_id": "S2B000039",
+          "goal_id": "G00002",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.1500000000000004,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 5
+        },
+        {
+          "sequence": 17,
+          "task_id": "S2B000039",
+          "goal_id": "G00002",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 5
+        },
+        {
+          "sequence": 18,
+          "task_id": "S2B000039",
+          "goal_id": "G00003",
+          "action": "SWITCH_SUBPROBLEM",
+          "action_value": 0.55,
+          "reason": "highest-valued ready subproblem selected",
+          "cumulative_expansions": 5
+        },
+        {
+          "sequence": 19,
+          "task_id": "S2B000039",
+          "goal_id": "G00003",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 5
+        },
+        {
+          "sequence": 20,
+          "task_id": "S2B000039",
+          "goal_id": "G00003",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 5
+        },
+        {
+          "sequence": 21,
+          "task_id": "S2B000039",
+          "goal_id": "G00003",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 5
+        },
+        {
+          "sequence": 22,
+          "task_id": "S2B000039",
+          "goal_id": "G00003",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.1,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 7
+        },
+        {
+          "sequence": 23,
+          "task_id": "S2B000039",
+          "goal_id": "G00003",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 7
+        },
+        {
+          "sequence": 24,
+          "task_id": "S2B000039",
+          "goal_id": "G00004",
+          "action": "SWITCH_SUBPROBLEM",
+          "action_value": 0.55,
+          "reason": "highest-valued ready subproblem selected",
+          "cumulative_expansions": 7
+        },
+        {
+          "sequence": 25,
+          "task_id": "S2B000039",
+          "goal_id": "G00004",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 7
+        },
+        {
+          "sequence": 26,
+          "task_id": "S2B000039",
+          "goal_id": "G00004",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 7
+        },
+        {
+          "sequence": 27,
+          "task_id": "S2B000039",
+          "goal_id": "G00004",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 7
+        },
+        {
+          "sequence": 28,
+          "task_id": "S2B000039",
+          "goal_id": "G00004",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.0500000000000003,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 10
+        },
+        {
+          "sequence": 29,
+          "task_id": "S2B000039",
+          "goal_id": "G00004",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 10
+        },
+        {
+          "sequence": 30,
+          "task_id": "S2B000039",
+          "goal_id": "G00005",
+          "action": "SWITCH_SUBPROBLEM",
+          "action_value": 0.55,
+          "reason": "highest-valued ready subproblem selected",
+          "cumulative_expansions": 10
+        },
+        {
+          "sequence": 31,
+          "task_id": "S2B000039",
+          "goal_id": "G00005",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 10
+        },
+        {
+          "sequence": 32,
+          "task_id": "S2B000039",
+          "goal_id": "G00005",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 10
+        },
+        {
+          "sequence": 33,
+          "task_id": "S2B000039",
+          "goal_id": "G00005",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 10
+        },
+        {
+          "sequence": 34,
+          "task_id": "S2B000039",
+          "goal_id": "G00005",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.1500000000000004,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 11
+        },
+        {
+          "sequence": 35,
+          "task_id": "S2B000039",
+          "goal_id": "G00005",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 11
+        },
+        {
+          "sequence": 36,
+          "task_id": "S2B000039",
+          "goal_id": null,
+          "action": "STOP_SOLVED",
+          "action_value": 1.0,
+          "reason": "all goal contracts independently verified",
+          "cumulative_expansions": 11
+        }
+      ]
+    },
+    {
+      "task_id": "S2B000044",
+      "condition": "ADAPTIVE_D",
+      "solved": true,
+      "strictly_correct": true,
+      "termination_reason": "VERIFIED_SUCCESS",
+      "selected_actions": {
+        "G00000": "G00000-A000",
+        "G00001": "G00001-A001",
+        "G00002": "G00002-A002"
+      },
+      "metrics": {
+        "solution_graph_depth": 3,
+        "primitive_expanded_solution_depth": 27,
+        "search_trajectory_max_depth": 3,
+        "instantaneous_frontier_width": 1,
+        "peak_simultaneously_live_branches": 1,
+        "cumulative_branches_generated": 12,
+        "cumulative_search_expansions": 6,
+        "peak_active_concepts": 4,
+        "mean_active_concepts": 2.0,
+        "concepts_composed": 3,
+        "decomposition_count": 0,
+        "subproblems_created": 0,
+        "subproblems_solved": 2,
+        "recombination_count": 0,
+        "maximum_decomposition_tree_depth": 0,
+        "maximum_simultaneous_subproblems": 1,
+        "useful_branch_ratio": 0.25,
+        "pruned_branch_count": 9,
+        "false_prune_count": 0,
+        "semantic_prune_count": 5,
+        "dominance_merge_count": 0,
+        "false_merge_count": 0,
+        "information_probes_proposed": 0,
+        "information_probes_executed": 0,
+        "hypotheses_eliminated": 0,
+        "expansions_saved_by_probes": 0,
+        "stagnation_prunes": 0,
+        "backtracks": 0,
+        "rollbacks": 0,
+        "promoted_concept_reuse_count": 3,
+        "cross_generation_concept_composition_count": 1,
+        "wall_time_units": 6,
+        "peak_memory_units": 7,
+        "branch_expansion_gini": 0.22222222222222232
+      },
+      "allocations": [
+        {
+          "branch_id": "G00000",
+          "allocated_expansions": 8,
+          "actual_expansions": 1,
+          "estimated_value": 0.5,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        },
+        {
+          "branch_id": "G00001",
+          "allocated_expansions": 11,
+          "actual_expansions": 2,
+          "estimated_value": 0.65,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        },
+        {
+          "branch_id": "G00002",
+          "allocated_expansions": 11,
+          "actual_expansions": 3,
+          "estimated_value": 0.65,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        }
+      ],
+      "trace": [
+        {
+          "sequence": 1,
+          "task_id": "S2B000044",
+          "goal_id": "G00000",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 0
+        },
+        {
+          "sequence": 2,
+          "task_id": "S2B000044",
+          "goal_id": "G00000",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 0
+        },
+        {
+          "sequence": 3,
+          "task_id": "S2B000044",
+          "goal_id": "G00000",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 0
+        },
+        {
+          "sequence": 4,
+          "task_id": "S2B000044",
+          "goal_id": "G00000",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.1500000000000004,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 1
+        },
+        {
+          "sequence": 5,
+          "task_id": "S2B000044",
+          "goal_id": "G00000",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 1
+        },
+        {
+          "sequence": 6,
+          "task_id": "S2B000044",
+          "goal_id": "G00001",
+          "action": "SWITCH_SUBPROBLEM",
+          "action_value": 0.55,
+          "reason": "highest-valued ready subproblem selected",
+          "cumulative_expansions": 1
+        },
+        {
+          "sequence": 7,
+          "task_id": "S2B000044",
+          "goal_id": "G00001",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 1
+        },
+        {
+          "sequence": 8,
+          "task_id": "S2B000044",
+          "goal_id": "G00001",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 1
+        },
+        {
+          "sequence": 9,
+          "task_id": "S2B000044",
+          "goal_id": "G00001",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 1
+        },
+        {
+          "sequence": 10,
+          "task_id": "S2B000044",
+          "goal_id": "G00001",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.1,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 3
+        },
+        {
+          "sequence": 11,
+          "task_id": "S2B000044",
+          "goal_id": "G00001",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 3
+        },
+        {
+          "sequence": 12,
+          "task_id": "S2B000044",
+          "goal_id": "G00002",
+          "action": "SWITCH_SUBPROBLEM",
+          "action_value": 0.55,
+          "reason": "highest-valued ready subproblem selected",
+          "cumulative_expansions": 3
+        },
+        {
+          "sequence": 13,
+          "task_id": "S2B000044",
+          "goal_id": "G00002",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 3
+        },
+        {
+          "sequence": 14,
+          "task_id": "S2B000044",
+          "goal_id": "G00002",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 3
+        },
+        {
+          "sequence": 15,
+          "task_id": "S2B000044",
+          "goal_id": "G00002",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 3
+        },
+        {
+          "sequence": 16,
+          "task_id": "S2B000044",
+          "goal_id": "G00002",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.0500000000000003,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 6
+        },
+        {
+          "sequence": 17,
+          "task_id": "S2B000044",
+          "goal_id": "G00002",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 6
+        },
+        {
+          "sequence": 18,
+          "task_id": "S2B000044",
+          "goal_id": null,
+          "action": "STOP_SOLVED",
+          "action_value": 1.0,
+          "reason": "all goal contracts independently verified",
+          "cumulative_expansions": 6
+        }
+      ]
+    },
+    {
+      "task_id": "S2B000049",
+      "condition": "ADAPTIVE_D",
+      "solved": true,
+      "strictly_correct": true,
+      "termination_reason": "VERIFIED_SUCCESS",
+      "selected_actions": {
+        "G00000": "G00000-A001",
+        "G00001": "G00001-A002",
+        "G00002": "G00002-A003",
+        "G00003": "G00003-A000"
+      },
+      "metrics": {
+        "solution_graph_depth": 4,
+        "primitive_expanded_solution_depth": 38,
+        "search_trajectory_max_depth": 4,
+        "instantaneous_frontier_width": 1,
+        "peak_simultaneously_live_branches": 1,
+        "cumulative_branches_generated": 16,
+        "cumulative_search_expansions": 7,
+        "peak_active_concepts": 3,
+        "mean_active_concepts": 1.75,
+        "concepts_composed": 2,
+        "decomposition_count": 0,
+        "subproblems_created": 0,
+        "subproblems_solved": 3,
+        "recombination_count": 0,
+        "maximum_decomposition_tree_depth": 0,
+        "maximum_simultaneous_subproblems": 1,
+        "useful_branch_ratio": 0.25,
+        "pruned_branch_count": 12,
+        "false_prune_count": 0,
+        "semantic_prune_count": 6,
+        "dominance_merge_count": 0,
+        "false_merge_count": 0,
+        "information_probes_proposed": 0,
+        "information_probes_executed": 0,
+        "hypotheses_eliminated": 0,
+        "expansions_saved_by_probes": 0,
+        "stagnation_prunes": 0,
+        "backtracks": 0,
+        "rollbacks": 0,
+        "promoted_concept_reuse_count": 4,
+        "cross_generation_concept_composition_count": 1,
+        "wall_time_units": 7,
+        "peak_memory_units": 6,
+        "branch_expansion_gini": 0.25
+      },
+      "allocations": [
+        {
+          "branch_id": "G00000",
+          "allocated_expansions": 8,
+          "actual_expansions": 2,
+          "estimated_value": 0.5,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        },
+        {
+          "branch_id": "G00001",
+          "allocated_expansions": 11,
+          "actual_expansions": 3,
+          "estimated_value": 0.65,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        },
+        {
+          "branch_id": "G00002",
+          "allocated_expansions": 11,
+          "actual_expansions": 1,
+          "estimated_value": 0.65,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        },
+        {
+          "branch_id": "G00003",
+          "allocated_expansions": 11,
+          "actual_expansions": 1,
+          "estimated_value": 0.65,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        }
+      ],
+      "trace": [
+        {
+          "sequence": 1,
+          "task_id": "S2B000049",
+          "goal_id": "G00000",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 0
+        },
+        {
+          "sequence": 2,
+          "task_id": "S2B000049",
+          "goal_id": "G00000",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 0
+        },
+        {
+          "sequence": 3,
+          "task_id": "S2B000049",
+          "goal_id": "G00000",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 0
+        },
+        {
+          "sequence": 4,
+          "task_id": "S2B000049",
+          "goal_id": "G00000",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.1,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 2
+        },
+        {
+          "sequence": 5,
+          "task_id": "S2B000049",
+          "goal_id": "G00000",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 2
+        },
+        {
+          "sequence": 6,
+          "task_id": "S2B000049",
+          "goal_id": "G00001",
+          "action": "SWITCH_SUBPROBLEM",
+          "action_value": 0.55,
+          "reason": "highest-valued ready subproblem selected",
+          "cumulative_expansions": 2
+        },
+        {
+          "sequence": 7,
+          "task_id": "S2B000049",
+          "goal_id": "G00001",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 2
+        },
+        {
+          "sequence": 8,
+          "task_id": "S2B000049",
+          "goal_id": "G00001",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 2
+        },
+        {
+          "sequence": 9,
+          "task_id": "S2B000049",
+          "goal_id": "G00001",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 2
+        },
+        {
+          "sequence": 10,
+          "task_id": "S2B000049",
+          "goal_id": "G00001",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.0500000000000003,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 5
+        },
+        {
+          "sequence": 11,
+          "task_id": "S2B000049",
+          "goal_id": "G00001",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 5
+        },
+        {
+          "sequence": 12,
+          "task_id": "S2B000049",
+          "goal_id": "G00002",
+          "action": "SWITCH_SUBPROBLEM",
+          "action_value": 0.55,
+          "reason": "highest-valued ready subproblem selected",
+          "cumulative_expansions": 5
+        },
+        {
+          "sequence": 13,
+          "task_id": "S2B000049",
+          "goal_id": "G00002",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 5
+        },
+        {
+          "sequence": 14,
+          "task_id": "S2B000049",
+          "goal_id": "G00002",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 5
+        },
+        {
+          "sequence": 15,
+          "task_id": "S2B000049",
+          "goal_id": "G00002",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 5
+        },
+        {
+          "sequence": 16,
+          "task_id": "S2B000049",
+          "goal_id": "G00002",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.1500000000000004,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 6
+        },
+        {
+          "sequence": 17,
+          "task_id": "S2B000049",
+          "goal_id": "G00002",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 6
+        },
+        {
+          "sequence": 18,
+          "task_id": "S2B000049",
+          "goal_id": "G00003",
+          "action": "SWITCH_SUBPROBLEM",
+          "action_value": 0.55,
+          "reason": "highest-valued ready subproblem selected",
+          "cumulative_expansions": 6
+        },
+        {
+          "sequence": 19,
+          "task_id": "S2B000049",
+          "goal_id": "G00003",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 6
+        },
+        {
+          "sequence": 20,
+          "task_id": "S2B000049",
+          "goal_id": "G00003",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 6
+        },
+        {
+          "sequence": 21,
+          "task_id": "S2B000049",
+          "goal_id": "G00003",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 6
+        },
+        {
+          "sequence": 22,
+          "task_id": "S2B000049",
+          "goal_id": "G00003",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.1500000000000004,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 7
+        },
+        {
+          "sequence": 23,
+          "task_id": "S2B000049",
+          "goal_id": "G00003",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 7
+        },
+        {
+          "sequence": 24,
+          "task_id": "S2B000049",
+          "goal_id": null,
+          "action": "STOP_SOLVED",
+          "action_value": 1.0,
+          "reason": "all goal contracts independently verified",
+          "cumulative_expansions": 7
+        }
+      ]
+    },
+    {
+      "task_id": "S2B000054",
+      "condition": "ADAPTIVE_D",
+      "solved": true,
+      "strictly_correct": true,
+      "termination_reason": "VERIFIED_SUCCESS",
+      "selected_actions": {
+        "G00000": "G00000-A003",
+        "G00001": "G00001-A000",
+        "G00002": "G00002-A001",
+        "G00003": "G00003-A002",
+        "G00004": "G00004-A003"
+      },
+      "metrics": {
+        "solution_graph_depth": 5,
+        "primitive_expanded_solution_depth": 49,
+        "search_trajectory_max_depth": 5,
+        "instantaneous_frontier_width": 1,
+        "peak_simultaneously_live_branches": 1,
+        "cumulative_branches_generated": 20,
+        "cumulative_search_expansions": 8,
+        "peak_active_concepts": 4,
+        "mean_active_concepts": 2.4,
+        "concepts_composed": 3,
+        "decomposition_count": 0,
+        "subproblems_created": 0,
+        "subproblems_solved": 4,
+        "recombination_count": 0,
+        "maximum_decomposition_tree_depth": 0,
+        "maximum_simultaneous_subproblems": 1,
+        "useful_branch_ratio": 0.25,
+        "pruned_branch_count": 15,
+        "false_prune_count": 0,
+        "semantic_prune_count": 7,
+        "dominance_merge_count": 0,
+        "false_merge_count": 0,
+        "information_probes_proposed": 0,
+        "information_probes_executed": 0,
+        "hypotheses_eliminated": 0,
+        "expansions_saved_by_probes": 0,
+        "stagnation_prunes": 0,
+        "backtracks": 0,
+        "rollbacks": 0,
+        "promoted_concept_reuse_count": 5,
+        "cross_generation_concept_composition_count": 1,
+        "wall_time_units": 8,
+        "peak_memory_units": 7,
+        "branch_expansion_gini": 0.25
+      },
+      "allocations": [
+        {
+          "branch_id": "G00000",
+          "allocated_expansions": 8,
+          "actual_expansions": 1,
+          "estimated_value": 0.5,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        },
+        {
+          "branch_id": "G00001",
+          "allocated_expansions": 11,
+          "actual_expansions": 1,
+          "estimated_value": 0.65,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        },
+        {
+          "branch_id": "G00002",
+          "allocated_expansions": 11,
+          "actual_expansions": 2,
+          "estimated_value": 0.65,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        },
+        {
+          "branch_id": "G00003",
+          "allocated_expansions": 11,
+          "actual_expansions": 3,
+          "estimated_value": 0.65,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        },
+        {
+          "branch_id": "G00004",
+          "allocated_expansions": 11,
+          "actual_expansions": 1,
+          "estimated_value": 0.65,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        }
+      ],
+      "trace": [
+        {
+          "sequence": 1,
+          "task_id": "S2B000054",
+          "goal_id": "G00000",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 0
+        },
+        {
+          "sequence": 2,
+          "task_id": "S2B000054",
+          "goal_id": "G00000",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 0
+        },
+        {
+          "sequence": 3,
+          "task_id": "S2B000054",
+          "goal_id": "G00000",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 0
+        },
+        {
+          "sequence": 4,
+          "task_id": "S2B000054",
+          "goal_id": "G00000",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.1500000000000004,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 1
+        },
+        {
+          "sequence": 5,
+          "task_id": "S2B000054",
+          "goal_id": "G00000",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 1
+        },
+        {
+          "sequence": 6,
+          "task_id": "S2B000054",
+          "goal_id": "G00001",
+          "action": "SWITCH_SUBPROBLEM",
+          "action_value": 0.55,
+          "reason": "highest-valued ready subproblem selected",
+          "cumulative_expansions": 1
+        },
+        {
+          "sequence": 7,
+          "task_id": "S2B000054",
+          "goal_id": "G00001",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 1
+        },
+        {
+          "sequence": 8,
+          "task_id": "S2B000054",
+          "goal_id": "G00001",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 1
+        },
+        {
+          "sequence": 9,
+          "task_id": "S2B000054",
+          "goal_id": "G00001",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 1
+        },
+        {
+          "sequence": 10,
+          "task_id": "S2B000054",
+          "goal_id": "G00001",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.1500000000000004,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 2
+        },
+        {
+          "sequence": 11,
+          "task_id": "S2B000054",
+          "goal_id": "G00001",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 2
+        },
+        {
+          "sequence": 12,
+          "task_id": "S2B000054",
+          "goal_id": "G00002",
+          "action": "SWITCH_SUBPROBLEM",
+          "action_value": 0.55,
+          "reason": "highest-valued ready subproblem selected",
+          "cumulative_expansions": 2
+        },
+        {
+          "sequence": 13,
+          "task_id": "S2B000054",
+          "goal_id": "G00002",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 2
+        },
+        {
+          "sequence": 14,
+          "task_id": "S2B000054",
+          "goal_id": "G00002",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 2
+        },
+        {
+          "sequence": 15,
+          "task_id": "S2B000054",
+          "goal_id": "G00002",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 2
+        },
+        {
+          "sequence": 16,
+          "task_id": "S2B000054",
+          "goal_id": "G00002",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.1,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 4
+        },
+        {
+          "sequence": 17,
+          "task_id": "S2B000054",
+          "goal_id": "G00002",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 4
+        },
+        {
+          "sequence": 18,
+          "task_id": "S2B000054",
+          "goal_id": "G00003",
+          "action": "SWITCH_SUBPROBLEM",
+          "action_value": 0.55,
+          "reason": "highest-valued ready subproblem selected",
+          "cumulative_expansions": 4
+        },
+        {
+          "sequence": 19,
+          "task_id": "S2B000054",
+          "goal_id": "G00003",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 4
+        },
+        {
+          "sequence": 20,
+          "task_id": "S2B000054",
+          "goal_id": "G00003",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 4
+        },
+        {
+          "sequence": 21,
+          "task_id": "S2B000054",
+          "goal_id": "G00003",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 4
+        },
+        {
+          "sequence": 22,
+          "task_id": "S2B000054",
+          "goal_id": "G00003",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.0500000000000003,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 7
+        },
+        {
+          "sequence": 23,
+          "task_id": "S2B000054",
+          "goal_id": "G00003",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 7
+        },
+        {
+          "sequence": 24,
+          "task_id": "S2B000054",
+          "goal_id": "G00004",
+          "action": "SWITCH_SUBPROBLEM",
+          "action_value": 0.55,
+          "reason": "highest-valued ready subproblem selected",
+          "cumulative_expansions": 7
+        },
+        {
+          "sequence": 25,
+          "task_id": "S2B000054",
+          "goal_id": "G00004",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 7
+        },
+        {
+          "sequence": 26,
+          "task_id": "S2B000054",
+          "goal_id": "G00004",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 7
+        },
+        {
+          "sequence": 27,
+          "task_id": "S2B000054",
+          "goal_id": "G00004",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 7
+        },
+        {
+          "sequence": 28,
+          "task_id": "S2B000054",
+          "goal_id": "G00004",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.1500000000000004,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 8
+        },
+        {
+          "sequence": 29,
+          "task_id": "S2B000054",
+          "goal_id": "G00004",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 8
+        },
+        {
+          "sequence": 30,
+          "task_id": "S2B000054",
+          "goal_id": null,
+          "action": "STOP_SOLVED",
+          "action_value": 1.0,
+          "reason": "all goal contracts independently verified",
+          "cumulative_expansions": 8
+        }
+      ]
+    },
+    {
+      "task_id": "S2B000059",
+      "condition": "ADAPTIVE_D",
+      "solved": true,
+      "strictly_correct": true,
+      "termination_reason": "VERIFIED_SUCCESS",
+      "selected_actions": {
+        "G00000": "G00000-A000",
+        "G00001": "G00001-A001",
+        "G00002": "G00002-A002",
+        "G00003": "G00003-A003",
+        "G00004": "G00004-A000",
+        "G00005": "G00005-A001"
+      },
+      "metrics": {
+        "solution_graph_depth": 6,
+        "primitive_expanded_solution_depth": 55,
+        "search_trajectory_max_depth": 6,
+        "instantaneous_frontier_width": 1,
+        "peak_simultaneously_live_branches": 1,
+        "cumulative_branches_generated": 24,
+        "cumulative_search_expansions": 10,
+        "peak_active_concepts": 5,
+        "mean_active_concepts": 3.0,
+        "concepts_composed": 4,
+        "decomposition_count": 0,
+        "subproblems_created": 0,
+        "subproblems_solved": 5,
+        "recombination_count": 0,
+        "maximum_decomposition_tree_depth": 0,
+        "maximum_simultaneous_subproblems": 1,
+        "useful_branch_ratio": 0.25,
+        "pruned_branch_count": 18,
+        "false_prune_count": 0,
+        "semantic_prune_count": 10,
+        "dominance_merge_count": 0,
+        "false_merge_count": 0,
+        "information_probes_proposed": 0,
+        "information_probes_executed": 0,
+        "hypotheses_eliminated": 0,
+        "expansions_saved_by_probes": 0,
+        "stagnation_prunes": 0,
+        "backtracks": 0,
+        "rollbacks": 0,
+        "promoted_concept_reuse_count": 6,
+        "cross_generation_concept_composition_count": 1,
+        "wall_time_units": 10,
+        "peak_memory_units": 8,
+        "branch_expansion_gini": 0.23333333333333317
+      },
+      "allocations": [
+        {
+          "branch_id": "G00000",
+          "allocated_expansions": 8,
+          "actual_expansions": 1,
+          "estimated_value": 0.5,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        },
+        {
+          "branch_id": "G00001",
+          "allocated_expansions": 11,
+          "actual_expansions": 2,
+          "estimated_value": 0.65,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        },
+        {
+          "branch_id": "G00002",
+          "allocated_expansions": 11,
+          "actual_expansions": 3,
+          "estimated_value": 0.65,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        },
+        {
+          "branch_id": "G00003",
+          "allocated_expansions": 11,
+          "actual_expansions": 1,
+          "estimated_value": 0.65,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        },
+        {
+          "branch_id": "G00004",
+          "allocated_expansions": 11,
+          "actual_expansions": 1,
+          "estimated_value": 0.65,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        },
+        {
+          "branch_id": "G00005",
+          "allocated_expansions": 11,
+          "actual_expansions": 2,
+          "estimated_value": 0.65,
+          "termination_reason": "VERIFIED_SUBGOAL"
+        }
+      ],
+      "trace": [
+        {
+          "sequence": 1,
+          "task_id": "S2B000059",
+          "goal_id": "G00000",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 0
+        },
+        {
+          "sequence": 2,
+          "task_id": "S2B000059",
+          "goal_id": "G00000",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 0
+        },
+        {
+          "sequence": 3,
+          "task_id": "S2B000059",
+          "goal_id": "G00000",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 0
+        },
+        {
+          "sequence": 4,
+          "task_id": "S2B000059",
+          "goal_id": "G00000",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.1500000000000004,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 1
+        },
+        {
+          "sequence": 5,
+          "task_id": "S2B000059",
+          "goal_id": "G00000",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 1
+        },
+        {
+          "sequence": 6,
+          "task_id": "S2B000059",
+          "goal_id": "G00001",
+          "action": "SWITCH_SUBPROBLEM",
+          "action_value": 0.55,
+          "reason": "highest-valued ready subproblem selected",
+          "cumulative_expansions": 1
+        },
+        {
+          "sequence": 7,
+          "task_id": "S2B000059",
+          "goal_id": "G00001",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 1
+        },
+        {
+          "sequence": 8,
+          "task_id": "S2B000059",
+          "goal_id": "G00001",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 1
+        },
+        {
+          "sequence": 9,
+          "task_id": "S2B000059",
+          "goal_id": "G00001",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 1
+        },
+        {
+          "sequence": 10,
+          "task_id": "S2B000059",
+          "goal_id": "G00001",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.1,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 3
+        },
+        {
+          "sequence": 11,
+          "task_id": "S2B000059",
+          "goal_id": "G00001",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 3
+        },
+        {
+          "sequence": 12,
+          "task_id": "S2B000059",
+          "goal_id": "G00002",
+          "action": "SWITCH_SUBPROBLEM",
+          "action_value": 0.55,
+          "reason": "highest-valued ready subproblem selected",
+          "cumulative_expansions": 3
+        },
+        {
+          "sequence": 13,
+          "task_id": "S2B000059",
+          "goal_id": "G00002",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 3
+        },
+        {
+          "sequence": 14,
+          "task_id": "S2B000059",
+          "goal_id": "G00002",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 3
+        },
+        {
+          "sequence": 15,
+          "task_id": "S2B000059",
+          "goal_id": "G00002",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 3
+        },
+        {
+          "sequence": 16,
+          "task_id": "S2B000059",
+          "goal_id": "G00002",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.0500000000000003,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 6
+        },
+        {
+          "sequence": 17,
+          "task_id": "S2B000059",
+          "goal_id": "G00002",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 6
+        },
+        {
+          "sequence": 18,
+          "task_id": "S2B000059",
+          "goal_id": "G00003",
+          "action": "SWITCH_SUBPROBLEM",
+          "action_value": 0.55,
+          "reason": "highest-valued ready subproblem selected",
+          "cumulative_expansions": 6
+        },
+        {
+          "sequence": 19,
+          "task_id": "S2B000059",
+          "goal_id": "G00003",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 6
+        },
+        {
+          "sequence": 20,
+          "task_id": "S2B000059",
+          "goal_id": "G00003",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 6
+        },
+        {
+          "sequence": 21,
+          "task_id": "S2B000059",
+          "goal_id": "G00003",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 6
+        },
+        {
+          "sequence": 22,
+          "task_id": "S2B000059",
+          "goal_id": "G00003",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.1500000000000004,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 7
+        },
+        {
+          "sequence": 23,
+          "task_id": "S2B000059",
+          "goal_id": "G00003",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 7
+        },
+        {
+          "sequence": 24,
+          "task_id": "S2B000059",
+          "goal_id": "G00004",
+          "action": "SWITCH_SUBPROBLEM",
+          "action_value": 0.55,
+          "reason": "highest-valued ready subproblem selected",
+          "cumulative_expansions": 7
+        },
+        {
+          "sequence": 25,
+          "task_id": "S2B000059",
+          "goal_id": "G00004",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 7
+        },
+        {
+          "sequence": 26,
+          "task_id": "S2B000059",
+          "goal_id": "G00004",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 7
+        },
+        {
+          "sequence": 27,
+          "task_id": "S2B000059",
+          "goal_id": "G00004",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 7
+        },
+        {
+          "sequence": 28,
+          "task_id": "S2B000059",
+          "goal_id": "G00004",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.1500000000000004,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 8
+        },
+        {
+          "sequence": 29,
+          "task_id": "S2B000059",
+          "goal_id": "G00004",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 8
+        },
+        {
+          "sequence": 30,
+          "task_id": "S2B000059",
+          "goal_id": "G00005",
+          "action": "SWITCH_SUBPROBLEM",
+          "action_value": 0.55,
+          "reason": "highest-valued ready subproblem selected",
+          "cumulative_expansions": 8
+        },
+        {
+          "sequence": 31,
+          "task_id": "S2B000059",
+          "goal_id": "G00005",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.7,
+          "reason": "type or executable precondition failed",
+          "cumulative_expansions": 8
+        },
+        {
+          "sequence": 32,
+          "task_id": "S2B000059",
+          "goal_id": "G00005",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 8
+        },
+        {
+          "sequence": 33,
+          "task_id": "S2B000059",
+          "goal_id": "G00005",
+          "action": "PRUNE_BRANCH",
+          "action_value": -0.6,
+          "reason": "semantic invariant contradicted or required relation absent",
+          "cumulative_expansions": 8
+        },
+        {
+          "sequence": 34,
+          "task_id": "S2B000059",
+          "goal_id": "G00005",
+          "action": "EXPAND_CURRENT",
+          "action_value": 2.1,
+          "reason": "candidate transition executed and sent to independent verifier",
+          "cumulative_expansions": 10
+        },
+        {
+          "sequence": 35,
+          "task_id": "S2B000059",
+          "goal_id": "G00005",
+          "action": "REUSE_CONCEPT",
+          "action_value": 0.82,
+          "reason": "routed immutable promoted concept satisfies the verified contract",
+          "cumulative_expansions": 10
+        },
+        {
+          "sequence": 36,
+          "task_id": "S2B000059",
+          "goal_id": null,
+          "action": "STOP_SOLVED",
+          "action_value": 1.0,
+          "reason": "all goal contracts independently verified",
+          "cumulative_expansions": 10
+        }
+      ]
+    }
+  ]
+}

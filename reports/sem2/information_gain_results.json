@@ -1,0 +1,9 @@
+{
+  "proposed": 104,
+  "executed": 0,
+  "hypotheses_eliminated": 0,
+  "expansions_saved": 0,
+  "mean_hypotheses_eliminated_per_probe": 0.0,
+  "d_minus_information_gain_expansion_delta": 17360,
+  "inspectable_probe_ranking": true
+}

@@ -1,0 +1,9 @@
+{
+  "decomposition_count": 172,
+  "subproblems_created": 457,
+  "subproblems_solved": 543,
+  "maximum_decomposition_tree_depth": 2,
+  "maximum_simultaneous_subproblems": 4,
+  "fresh_blind_tasks_using_decomposition": 24,
+  "passed": false
+}

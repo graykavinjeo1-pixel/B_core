@@ -1,0 +1,7 @@
+{
+  "recombinations": 24,
+  "fresh_blind_tasks_using_recombination": 24,
+  "verified_interface_checks": 24,
+  "artificial_serialization_required": false,
+  "passed": true
+}

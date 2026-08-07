@@ -1,0 +1,18 @@
+{
+  "generator_version": "SEM2-CURRICULUM-1.0.0",
+  "development_tasks": 10,
+  "calibration_tasks": 10,
+  "fresh_blind_tasks": 60,
+  "adversarial_blind_tasks": 10,
+  "class_counts": {
+    "DEPTH": 12,
+    "WIDTH": 12,
+    "RECOMBINATION": 12,
+    "COMPOSITION": 12,
+    "MIXED": 12
+  },
+  "mixed_order": true,
+  "difficulty_is_multidimensional": true,
+  "target_metadata_evaluator_only": true,
+  "no_fixed_depth_limit": true
+}

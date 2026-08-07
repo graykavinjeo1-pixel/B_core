@@ -1,0 +1,11 @@
+{
+  "pruned_branches": 4254,
+  "semantic_prunes": 1968,
+  "false_prunes": 0,
+  "dominance_merges": 644,
+  "false_merges": 0,
+  "adversarial_cases": 10,
+  "adversarial_d_expansions": 147,
+  "adversarial_c_expansions": 6063,
+  "structural_only_retains_semantic_traps": true
+}

@@ -1,0 +1,61 @@
+{
+  "passed": true,
+  "frozen_before_evaluation": true,
+  "definitions": [
+    {
+      "historical_metric": "max_successful_reasoning_depth",
+      "historical_value": 56,
+      "operational_semantics": "dynamic execution work units accumulated across element-level checked operations; not graph dependency depth",
+      "canonical_metric": "solution_graph_depth",
+      "compatibility_policy": "retain as historical_execution_work_units only"
+    },
+    {
+      "historical_metric": "max_primitive_expanded_depth",
+      "historical_value": 17,
+      "operational_semantics": "static node count of the longest primitive-expanded promoted-concept derivation",
+      "canonical_metric": "primitive_expanded_solution_depth",
+      "compatibility_policy": "retain old value with its static-graph scope"
+    },
+    {
+      "historical_metric": "max_reasoning_width",
+      "historical_value": 28540,
+      "operational_semantics": "cumulative candidate plans generated during search",
+      "canonical_metric": "instantaneous_frontier_width",
+      "compatibility_policy": "rename historical field to historical_cumulative_candidate_plans"
+    },
+    {
+      "historical_metric": "max_live_branches",
+      "historical_value": 28540,
+      "operational_semantics": "same cumulative plan-generation counter, not simultaneous liveness",
+      "canonical_metric": "peak_simultaneously_live_branches",
+      "compatibility_policy": "do not compare directly to corrected live-branch metric"
+    },
+    {
+      "historical_metric": "search_expansions",
+      "historical_value": 37,
+      "operational_semantics": "candidate plans executed or verified under the SEM-1 comparison",
+      "canonical_metric": "cumulative_search_expansions",
+      "compatibility_policy": "preserve sign and arm scope explicitly"
+    },
+    {
+      "historical_metric": "peak_active_concepts",
+      "historical_value": 5,
+      "operational_semantics": "maximum routed semantic working-set size",
+      "canonical_metric": "peak_active_concepts",
+      "compatibility_policy": "semantic meaning retained; add mean_active_concepts"
+    }
+  ],
+  "depth_discrepancy_explanation": "SEM-1 value 56 can exceed primitive-expanded value 17 because 56 counted dynamic element-level execution work over sequence instances, while 17 counted nodes in a static primitive-expanded derivation graph. Neither was the canonical solution DAG depth now introduced.",
+  "canonical_metrics": [
+    "solution_graph_depth",
+    "primitive_expanded_solution_depth",
+    "search_trajectory_max_depth",
+    "instantaneous_frontier_width",
+    "peak_simultaneously_live_branches",
+    "cumulative_branches_generated",
+    "cumulative_search_expansions",
+    "peak_active_concepts",
+    "mean_active_concepts"
+  ],
+  "no_hidden_redefinition_after_evaluation": true
+}
