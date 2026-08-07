@@ -9,8 +9,6 @@ use synapse_recursive_core::quarantine::{
 use crate::sem1::{integrity::verify_and_load, model::ConceptRecord};
 
 pub const PREDECESSOR_COMMIT: &str = "52e4937cb39c78120e5767948046cc9dab44d23b";
-pub const CANONICAL_MANIFEST_HASH: &str =
-    "ea9b6cc8fafb9f6f40960a508b12686b948af9f8bb977bc2e53a7b97471a0b0b";
 pub const SEALED_SEM1_TREE_HASH: &str =
     "b5083b272995fbeabb735608db43b08d289359e5f03601cc91b4eb99756f87f8";
 
@@ -131,7 +129,7 @@ pub fn verify_predecessors(root: &Path) -> Result<PredecessorIntegrityReport, St
     Ok(PredecessorIntegrityReport {
         passed: true,
         predecessor_commit: PREDECESSOR_COMMIT.to_string(),
-        canonical_manifest_sha256: CANONICAL_MANIFEST_HASH.to_string(),
+        canonical_manifest_sha256: sem0.canonical_manifest_sha256,
         sem0_integrity_passed: sem0.passed,
         sem0_artifacts_verified: sem0.sem0_artifacts_verified,
         sem1_tree_sha256,

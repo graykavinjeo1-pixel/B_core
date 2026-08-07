@@ -1,0 +1,66 @@
+{
+  "passed": true,
+  "predecessor_commit": "148865c7b8b9b1a54d29bcffdf86d7c4ebe7e143",
+  "canonical_manifest_sha256": "a731ec4b1b37195a8c8e9d93d57e1728c06a34b79c00356216a63708dbe5b449",
+  "canonical_files_verified": 8,
+  "predecessor_trees": [
+    {
+      "relative_path": "reports/sem0",
+      "files": 16,
+      "sha256": "6ccf0423ca5c7106d70492f107c23980b9e9f31a807f778f16d66462e2558cbe",
+      "expected_sha256": "6ccf0423ca5c7106d70492f107c23980b9e9f31a807f778f16d66462e2558cbe",
+      "passed": true
+    },
+    {
+      "relative_path": "reports/sem1",
+      "files": 38,
+      "sha256": "b5083b272995fbeabb735608db43b08d289359e5f03601cc91b4eb99756f87f8",
+      "expected_sha256": "b5083b272995fbeabb735608db43b08d289359e5f03601cc91b4eb99756f87f8",
+      "passed": true
+    },
+    {
+      "relative_path": "reports/sem2",
+      "files": 48,
+      "sha256": "9e0f2ee39cd7ea11f60a66842f650c0f269054a6cdcaa061e4de02f2bbb37e0c",
+      "expected_sha256": "9e0f2ee39cd7ea11f60a66842f650c0f269054a6cdcaa061e4de02f2bbb37e0c",
+      "passed": true
+    }
+  ],
+  "sem1_failed_run_preserved": true,
+  "sem2_failed_run_preserved": true,
+  "sem2_passing_run_sealed": true,
+  "sem2_passing_run_id": "SEM2-RUN-0002",
+  "sem2_final_report_sha256": "7f1a0f211e2ea9577b447785025c01e184b745dc960cca1315306acaedb2c3a1",
+  "sem2_blind_manifest_sha256": "6e867c505280c38043ebe8306b82aef323f11b33eb5ad67acd3aa100664dd9f8",
+  "promoted_concepts_verified_immutable": [
+    "C000001",
+    "C000002",
+    "C000004",
+    "C000005"
+  ],
+  "recursive_improvement_quarantine": {
+    "stage": "S0",
+    "mode": "OBSERVE_MEASURE_ONLY",
+    "observe_enabled": true,
+    "measure_enabled": true,
+    "proposal_generation_enabled": false,
+    "source_patching_enabled": false,
+    "sandbox_apply_enabled": false,
+    "auto_apply_enabled": false,
+    "auto_merge_enabled": false,
+    "auto_commit_enabled": false,
+    "auto_push_enabled": false,
+    "external_provider_repair_enabled": false,
+    "recursive_benchmark_mutation_enabled": false,
+    "network_enabled": false,
+    "external_llm_enabled": false
+  },
+  "self_observe": true,
+  "self_measure": true,
+  "self_propose": false,
+  "self_apply": false,
+  "source_mutation": false,
+  "auto_patch": false,
+  "auto_commit": false,
+  "auto_push": false
+}

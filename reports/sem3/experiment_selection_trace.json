@@ -1,0 +1,2434 @@
+[
+  {
+    "sequence": 1,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000001-C-02-0",
+    "parent_uncertainty_id": "U000001",
+    "candidate_count": 3,
+    "predicted_outcomes": {
+      "U000001-H1": false,
+      "U000001-H2": true,
+      "U000001-H3": false
+    },
+    "score": {
+      "expected_information_gain": 1.836591668108979,
+      "expected_uncertainty_reduction": 0.9182958340544894,
+      "discriminative_hypothesis_value": 0.8,
+      "concept_boundary_clarification": 0.4,
+      "expected_transfer_value": 0.35,
+      "expected_reusable_abstraction_value": 0.5,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.32,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 5.584887502163468
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.320000",
+      "expected_hypotheses_eliminated": "1.836592",
+      "predicted_partition": "1 true / 2 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000001-C-02-0",
+      "applicable": true,
+      "output_class": "O001",
+      "execution_cost": 9,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 2,
+    "realized_information_gain": 1.584962500721156,
+    "uncertainty_resolved": true,
+    "influenced_model_revision": true,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000001",
+      "X-U000001-C-02-0"
+    ]
+  },
+  {
+    "sequence": 2,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000002-C-01-0",
+    "parent_uncertainty_id": "U000002",
+    "candidate_count": 3,
+    "predicted_outcomes": {
+      "U000002-H1": true,
+      "U000002-H2": false,
+      "U000002-H3": false
+    },
+    "score": {
+      "expected_information_gain": 1.836591668108979,
+      "expected_uncertainty_reduction": 0.9182958340544894,
+      "discriminative_hypothesis_value": 0.8,
+      "concept_boundary_clarification": 0.4,
+      "expected_transfer_value": 0.35,
+      "expected_reusable_abstraction_value": 0.5,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.32,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 5.584887502163468
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.320000",
+      "expected_hypotheses_eliminated": "1.836592",
+      "predicted_partition": "1 true / 2 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000002-C-01-0",
+      "applicable": false,
+      "output_class": "O002",
+      "execution_cost": 9,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 1,
+    "realized_information_gain": 0.5849625007211561,
+    "uncertainty_resolved": false,
+    "influenced_model_revision": true,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000002",
+      "X-U000002-C-01-0"
+    ]
+  },
+  {
+    "sequence": 3,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000009-C-02-0",
+    "parent_uncertainty_id": "U000009",
+    "candidate_count": 3,
+    "predicted_outcomes": {
+      "U000009-H1": false,
+      "U000009-H2": true,
+      "U000009-H3": false
+    },
+    "score": {
+      "expected_information_gain": 1.836591668108979,
+      "expected_uncertainty_reduction": 0.9182958340544894,
+      "discriminative_hypothesis_value": 0.8,
+      "concept_boundary_clarification": 0.4,
+      "expected_transfer_value": 0.35,
+      "expected_reusable_abstraction_value": 0.5,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.4,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 5.504887502163468
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.400000",
+      "expected_hypotheses_eliminated": "1.836592",
+      "predicted_partition": "1 true / 2 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000009-C-02-0",
+      "applicable": false,
+      "output_class": "O002",
+      "execution_cost": 11,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 1,
+    "realized_information_gain": 0.5849625007211561,
+    "uncertainty_resolved": false,
+    "influenced_model_revision": true,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000009",
+      "X-U000009-C-02-0"
+    ]
+  },
+  {
+    "sequence": 4,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000009-C-01-0",
+    "parent_uncertainty_id": "U000009",
+    "candidate_count": 2,
+    "predicted_outcomes": {
+      "U000009-H1": true,
+      "U000009-H3": false
+    },
+    "score": {
+      "expected_information_gain": 2.0,
+      "expected_uncertainty_reduction": 1.0,
+      "discriminative_hypothesis_value": 0.8,
+      "concept_boundary_clarification": 0.4,
+      "expected_transfer_value": 0.26249999999999996,
+      "expected_reusable_abstraction_value": 0.375,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.32,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 5.6175
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.320000",
+      "expected_hypotheses_eliminated": "2.000000",
+      "predicted_partition": "1 true / 1 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000009-C-01-0",
+      "applicable": true,
+      "output_class": "O001",
+      "execution_cost": 9,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 1,
+    "realized_information_gain": 1.0,
+    "uncertainty_resolved": true,
+    "influenced_model_revision": true,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000009",
+      "X-U000009-C-01-0"
+    ]
+  },
+  {
+    "sequence": 5,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000010-C-01-0",
+    "parent_uncertainty_id": "U000010",
+    "candidate_count": 3,
+    "predicted_outcomes": {
+      "U000010-H1": true,
+      "U000010-H2": false,
+      "U000010-H3": false
+    },
+    "score": {
+      "expected_information_gain": 1.836591668108979,
+      "expected_uncertainty_reduction": 0.9182958340544894,
+      "discriminative_hypothesis_value": 0.8,
+      "concept_boundary_clarification": 0.4,
+      "expected_transfer_value": 0.35,
+      "expected_reusable_abstraction_value": 0.5,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.4,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 5.504887502163468
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.400000",
+      "expected_hypotheses_eliminated": "1.836592",
+      "predicted_partition": "1 true / 2 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000010-C-01-0",
+      "applicable": false,
+      "output_class": "O002",
+      "execution_cost": 11,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 1,
+    "realized_information_gain": 0.5849625007211561,
+    "uncertainty_resolved": false,
+    "influenced_model_revision": true,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000010",
+      "X-U000010-C-01-0"
+    ]
+  },
+  {
+    "sequence": 6,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000000-C-02-0",
+    "parent_uncertainty_id": "U000000",
+    "candidate_count": 3,
+    "predicted_outcomes": {
+      "U000000-H1": false,
+      "U000000-H2": true,
+      "U000000-H3": false
+    },
+    "score": {
+      "expected_information_gain": 1.836591668108979,
+      "expected_uncertainty_reduction": 0.9182958340544894,
+      "discriminative_hypothesis_value": 0.8,
+      "concept_boundary_clarification": 0.4,
+      "expected_transfer_value": 0.26249999999999996,
+      "expected_reusable_abstraction_value": 0.375,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.24,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 5.452387502163468
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.240000",
+      "expected_hypotheses_eliminated": "1.836592",
+      "predicted_partition": "1 true / 2 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000000-C-02-0",
+      "applicable": false,
+      "output_class": "O002",
+      "execution_cost": 7,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 1,
+    "realized_information_gain": 0.5849625007211561,
+    "uncertainty_resolved": false,
+    "influenced_model_revision": true,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000000",
+      "X-U000000-C-02-0"
+    ]
+  },
+  {
+    "sequence": 7,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000008-C-02-0",
+    "parent_uncertainty_id": "U000008",
+    "candidate_count": 3,
+    "predicted_outcomes": {
+      "U000008-H1": false,
+      "U000008-H2": true,
+      "U000008-H3": false
+    },
+    "score": {
+      "expected_information_gain": 1.836591668108979,
+      "expected_uncertainty_reduction": 0.9182958340544894,
+      "discriminative_hypothesis_value": 0.8,
+      "concept_boundary_clarification": 0.4,
+      "expected_transfer_value": 0.26249999999999996,
+      "expected_reusable_abstraction_value": 0.375,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.32,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 5.372387502163468
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.320000",
+      "expected_hypotheses_eliminated": "1.836592",
+      "predicted_partition": "1 true / 2 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000008-C-02-0",
+      "applicable": false,
+      "output_class": "O002",
+      "execution_cost": 9,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 1,
+    "realized_information_gain": 0.5849625007211561,
+    "uncertainty_resolved": false,
+    "influenced_model_revision": true,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000008",
+      "X-U000008-C-02-0"
+    ]
+  },
+  {
+    "sequence": 8,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000008-C-01-0",
+    "parent_uncertainty_id": "U000008",
+    "candidate_count": 2,
+    "predicted_outcomes": {
+      "U000008-H1": true,
+      "U000008-H3": false
+    },
+    "score": {
+      "expected_information_gain": 2.0,
+      "expected_uncertainty_reduction": 1.0,
+      "discriminative_hypothesis_value": 0.8,
+      "concept_boundary_clarification": 0.4,
+      "expected_transfer_value": 0.175,
+      "expected_reusable_abstraction_value": 0.25,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.24,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 5.484999999999999
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.240000",
+      "expected_hypotheses_eliminated": "2.000000",
+      "predicted_partition": "1 true / 1 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000008-C-01-0",
+      "applicable": false,
+      "output_class": "O002",
+      "execution_cost": 7,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 1,
+    "realized_information_gain": 1.0,
+    "uncertainty_resolved": true,
+    "influenced_model_revision": true,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000008",
+      "X-U000008-C-01-0"
+    ]
+  },
+  {
+    "sequence": 9,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000000-C-01-0",
+    "parent_uncertainty_id": "U000000",
+    "candidate_count": 2,
+    "predicted_outcomes": {
+      "U000000-H1": true,
+      "U000000-H3": false
+    },
+    "score": {
+      "expected_information_gain": 2.0,
+      "expected_uncertainty_reduction": 1.0,
+      "discriminative_hypothesis_value": 0.8,
+      "concept_boundary_clarification": 0.4,
+      "expected_transfer_value": 0.175,
+      "expected_reusable_abstraction_value": 0.0,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.16,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 5.3149999999999995
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.160000",
+      "expected_hypotheses_eliminated": "2.000000",
+      "predicted_partition": "1 true / 1 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000000-C-01-0",
+      "applicable": true,
+      "output_class": "O001",
+      "execution_cost": 5,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 1,
+    "realized_information_gain": 1.0,
+    "uncertainty_resolved": true,
+    "influenced_model_revision": true,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000000",
+      "X-U000000-C-01-0"
+    ]
+  },
+  {
+    "sequence": 10,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000010-C-02-0",
+    "parent_uncertainty_id": "U000010",
+    "candidate_count": 2,
+    "predicted_outcomes": {
+      "U000010-H2": true,
+      "U000010-H3": false
+    },
+    "score": {
+      "expected_information_gain": 2.0,
+      "expected_uncertainty_reduction": 1.0,
+      "discriminative_hypothesis_value": 0.8,
+      "concept_boundary_clarification": 0.4,
+      "expected_transfer_value": 0.0875,
+      "expected_reusable_abstraction_value": 0.0,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.08,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 5.307500000000001
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.080000",
+      "expected_hypotheses_eliminated": "2.000000",
+      "predicted_partition": "1 true / 1 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000010-C-02-0",
+      "applicable": true,
+      "output_class": "O001",
+      "execution_cost": 3,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 1,
+    "realized_information_gain": 1.0,
+    "uncertainty_resolved": true,
+    "influenced_model_revision": true,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000010",
+      "X-U000010-C-02-0"
+    ]
+  },
+  {
+    "sequence": 11,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000002-C-02-0",
+    "parent_uncertainty_id": "U000002",
+    "candidate_count": 2,
+    "predicted_outcomes": {
+      "U000002-H2": true,
+      "U000002-H3": false
+    },
+    "score": {
+      "expected_information_gain": 2.0,
+      "expected_uncertainty_reduction": 1.0,
+      "discriminative_hypothesis_value": 0.8,
+      "concept_boundary_clarification": 0.4,
+      "expected_transfer_value": 0.0875,
+      "expected_reusable_abstraction_value": 0.125,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.24,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 5.272500000000001
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.240000",
+      "expected_hypotheses_eliminated": "2.000000",
+      "predicted_partition": "1 true / 1 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000002-C-02-0",
+      "applicable": false,
+      "output_class": "O002",
+      "execution_cost": 7,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 1,
+    "realized_information_gain": 1.0,
+    "uncertainty_resolved": true,
+    "influenced_model_revision": true,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000002",
+      "X-U000002-C-02-0"
+    ]
+  },
+  {
+    "sequence": 12,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000007-C-02-0",
+    "parent_uncertainty_id": "U000007",
+    "candidate_count": 3,
+    "predicted_outcomes": {
+      "U000007-H1": false,
+      "U000007-H2": true,
+      "U000007-H3": false
+    },
+    "score": {
+      "expected_information_gain": 1.836591668108979,
+      "expected_uncertainty_reduction": 0.9182958340544894,
+      "discriminative_hypothesis_value": 0.8,
+      "concept_boundary_clarification": 0.4,
+      "expected_transfer_value": 0.175,
+      "expected_reusable_abstraction_value": 0.25,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.24,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 5.239887502163468
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.240000",
+      "expected_hypotheses_eliminated": "1.836592",
+      "predicted_partition": "1 true / 2 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000007-C-02-0",
+      "applicable": true,
+      "output_class": "O001",
+      "execution_cost": 7,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 2,
+    "realized_information_gain": 1.584962500721156,
+    "uncertainty_resolved": true,
+    "influenced_model_revision": true,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000007",
+      "X-U000007-C-02-0"
+    ]
+  },
+  {
+    "sequence": 13,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000003-C-00-0",
+    "parent_uncertainty_id": "U000003",
+    "candidate_count": 3,
+    "predicted_outcomes": {
+      "U000003-H1": true,
+      "U000003-H2": false,
+      "U000003-H3": false
+    },
+    "score": {
+      "expected_information_gain": 1.836591668108979,
+      "expected_uncertainty_reduction": 0.9182958340544894,
+      "discriminative_hypothesis_value": 0.8,
+      "concept_boundary_clarification": 0.0,
+      "expected_transfer_value": 0.35,
+      "expected_reusable_abstraction_value": 0.5,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.32,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 5.184887502163468
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.320000",
+      "expected_hypotheses_eliminated": "1.836592",
+      "predicted_partition": "1 true / 2 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000003-C-00-0",
+      "applicable": true,
+      "output_class": "O001",
+      "execution_cost": 9,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 2,
+    "realized_information_gain": 1.584962500721156,
+    "uncertainty_resolved": true,
+    "influenced_model_revision": true,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000003",
+      "X-U000003-C-00-0"
+    ]
+  },
+  {
+    "sequence": 14,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000005-C-02-0",
+    "parent_uncertainty_id": "U000005",
+    "candidate_count": 3,
+    "predicted_outcomes": {
+      "U000005-H1": false,
+      "U000005-H2": true,
+      "U000005-H3": false
+    },
+    "score": {
+      "expected_information_gain": 1.836591668108979,
+      "expected_uncertainty_reduction": 0.9182958340544894,
+      "discriminative_hypothesis_value": 0.8,
+      "concept_boundary_clarification": 0.4,
+      "expected_transfer_value": 0.35,
+      "expected_reusable_abstraction_value": 0.0,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.24,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 5.164887502163468
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.240000",
+      "expected_hypotheses_eliminated": "1.836592",
+      "predicted_partition": "1 true / 2 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000005-C-02-0",
+      "applicable": false,
+      "output_class": "O002",
+      "execution_cost": 7,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 1,
+    "realized_information_gain": 0.5849625007211561,
+    "uncertainty_resolved": false,
+    "influenced_model_revision": true,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000005",
+      "X-U000005-C-02-0"
+    ]
+  },
+  {
+    "sequence": 15,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000005-C-01-0",
+    "parent_uncertainty_id": "U000005",
+    "candidate_count": 2,
+    "predicted_outcomes": {
+      "U000005-H1": true,
+      "U000005-H3": false
+    },
+    "score": {
+      "expected_information_gain": 2.0,
+      "expected_uncertainty_reduction": 1.0,
+      "discriminative_hypothesis_value": 0.8,
+      "concept_boundary_clarification": 0.4,
+      "expected_transfer_value": 0.26249999999999996,
+      "expected_reusable_abstraction_value": 0.0,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.16,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 5.4025
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.160000",
+      "expected_hypotheses_eliminated": "2.000000",
+      "predicted_partition": "1 true / 1 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000005-C-01-0",
+      "applicable": false,
+      "output_class": "O002",
+      "execution_cost": 5,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 1,
+    "realized_information_gain": 1.0,
+    "uncertainty_resolved": true,
+    "influenced_model_revision": true,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000005",
+      "X-U000005-C-01-0"
+    ]
+  },
+  {
+    "sequence": 16,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000006-C-01-0",
+    "parent_uncertainty_id": "U000006",
+    "candidate_count": 3,
+    "predicted_outcomes": {
+      "U000006-H1": true,
+      "U000006-H2": false,
+      "U000006-H3": false
+    },
+    "score": {
+      "expected_information_gain": 1.836591668108979,
+      "expected_uncertainty_reduction": 0.9182958340544894,
+      "discriminative_hypothesis_value": 0.8,
+      "concept_boundary_clarification": 0.4,
+      "expected_transfer_value": 0.35,
+      "expected_reusable_abstraction_value": 0.0,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.24,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 5.164887502163468
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.240000",
+      "expected_hypotheses_eliminated": "1.836592",
+      "predicted_partition": "1 true / 2 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000006-C-01-0",
+      "applicable": true,
+      "output_class": "O001",
+      "execution_cost": 7,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 2,
+    "realized_information_gain": 1.584962500721156,
+    "uncertainty_resolved": true,
+    "influenced_model_revision": true,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000006",
+      "X-U000006-C-01-0"
+    ]
+  },
+  {
+    "sequence": 17,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000004-C-01-0",
+    "parent_uncertainty_id": "U000004",
+    "candidate_count": 3,
+    "predicted_outcomes": {
+      "U000004-H1": true,
+      "U000004-H2": false,
+      "U000004-H3": false
+    },
+    "score": {
+      "expected_information_gain": 1.836591668108979,
+      "expected_uncertainty_reduction": 0.9182958340544894,
+      "discriminative_hypothesis_value": 0.8,
+      "concept_boundary_clarification": 0.4,
+      "expected_transfer_value": 0.175,
+      "expected_reusable_abstraction_value": 0.25,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.32,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 5.159887502163468
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.320000",
+      "expected_hypotheses_eliminated": "1.836592",
+      "predicted_partition": "1 true / 2 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000004-C-01-0",
+      "applicable": false,
+      "output_class": "O002",
+      "execution_cost": 9,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 1,
+    "realized_information_gain": 0.5849625007211561,
+    "uncertainty_resolved": false,
+    "influenced_model_revision": true,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000004",
+      "X-U000004-C-01-0"
+    ]
+  },
+  {
+    "sequence": 18,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000004-C-02-0",
+    "parent_uncertainty_id": "U000004",
+    "candidate_count": 2,
+    "predicted_outcomes": {
+      "U000004-H2": true,
+      "U000004-H3": false
+    },
+    "score": {
+      "expected_information_gain": 2.0,
+      "expected_uncertainty_reduction": 1.0,
+      "discriminative_hypothesis_value": 0.8,
+      "concept_boundary_clarification": 0.4,
+      "expected_transfer_value": 0.26249999999999996,
+      "expected_reusable_abstraction_value": 0.0,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.16,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 5.4025
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.160000",
+      "expected_hypotheses_eliminated": "2.000000",
+      "predicted_partition": "1 true / 1 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000004-C-02-0",
+      "applicable": true,
+      "output_class": "O001",
+      "execution_cost": 5,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 1,
+    "realized_information_gain": 1.0,
+    "uncertainty_resolved": true,
+    "influenced_model_revision": true,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000004",
+      "X-U000004-C-02-0"
+    ]
+  },
+  {
+    "sequence": 19,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000011-C-00-0",
+    "parent_uncertainty_id": "U000011",
+    "candidate_count": 3,
+    "predicted_outcomes": {
+      "U000011-H1": true,
+      "U000011-H2": false,
+      "U000011-H3": false
+    },
+    "score": {
+      "expected_information_gain": 1.836591668108979,
+      "expected_uncertainty_reduction": 0.9182958340544894,
+      "discriminative_hypothesis_value": 0.8,
+      "concept_boundary_clarification": 0.0,
+      "expected_transfer_value": 0.35,
+      "expected_reusable_abstraction_value": 0.5,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.4,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 5.104887502163468
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.400000",
+      "expected_hypotheses_eliminated": "1.836592",
+      "predicted_partition": "1 true / 2 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000011-C-00-0",
+      "applicable": false,
+      "output_class": "O002",
+      "execution_cost": 11,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 1,
+    "realized_information_gain": 0.5849625007211561,
+    "uncertainty_resolved": false,
+    "influenced_model_revision": true,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000011",
+      "X-U000011-C-00-0"
+    ]
+  },
+  {
+    "sequence": 20,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000011-C-02-0",
+    "parent_uncertainty_id": "U000011",
+    "candidate_count": 2,
+    "predicted_outcomes": {
+      "U000011-H2": true,
+      "U000011-H3": false
+    },
+    "score": {
+      "expected_information_gain": 2.0,
+      "expected_uncertainty_reduction": 1.0,
+      "discriminative_hypothesis_value": 0.8,
+      "concept_boundary_clarification": 0.4,
+      "expected_transfer_value": 0.175,
+      "expected_reusable_abstraction_value": 0.0,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.16,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 5.3149999999999995
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.160000",
+      "expected_hypotheses_eliminated": "2.000000",
+      "predicted_partition": "1 true / 1 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000011-C-02-0",
+      "applicable": false,
+      "output_class": "O002",
+      "execution_cost": 5,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 1,
+    "realized_information_gain": 1.0,
+    "uncertainty_resolved": true,
+    "influenced_model_revision": true,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000011",
+      "X-U000011-C-02-0"
+    ]
+  },
+  {
+    "sequence": 21,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000001-D-02-0",
+    "parent_uncertainty_id": "U000001",
+    "candidate_count": 1,
+    "predicted_outcomes": {
+      "U000001-H2": false
+    },
+    "score": {
+      "expected_information_gain": 0.0,
+      "expected_uncertainty_reduction": 0.0,
+      "discriminative_hypothesis_value": 0.0,
+      "concept_boundary_clarification": 0.4,
+      "expected_transfer_value": 0.35,
+      "expected_reusable_abstraction_value": 0.5,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.32,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 2.0300000000000002
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.320000",
+      "expected_hypotheses_eliminated": "0.000000",
+      "predicted_partition": "0 true / 1 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000001-D-02-0",
+      "applicable": false,
+      "output_class": "O002",
+      "execution_cost": 9,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 0,
+    "realized_information_gain": 0.0,
+    "uncertainty_resolved": true,
+    "influenced_model_revision": false,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000001",
+      "X-U000001-D-02-0"
+    ]
+  },
+  {
+    "sequence": 22,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000002-D-01-0",
+    "parent_uncertainty_id": "U000002",
+    "candidate_count": 1,
+    "predicted_outcomes": {
+      "U000002-H3": true
+    },
+    "score": {
+      "expected_information_gain": 0.0,
+      "expected_uncertainty_reduction": 0.0,
+      "discriminative_hypothesis_value": 0.0,
+      "concept_boundary_clarification": 0.4,
+      "expected_transfer_value": 0.35,
+      "expected_reusable_abstraction_value": 0.5,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.32,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 2.0300000000000002
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.320000",
+      "expected_hypotheses_eliminated": "0.000000",
+      "predicted_partition": "1 true / 0 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000002-D-01-0",
+      "applicable": true,
+      "output_class": "O001",
+      "execution_cost": 9,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 0,
+    "realized_information_gain": 0.0,
+    "uncertainty_resolved": true,
+    "influenced_model_revision": false,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000002",
+      "X-U000002-D-01-0"
+    ]
+  },
+  {
+    "sequence": 23,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000009-D-02-0",
+    "parent_uncertainty_id": "U000009",
+    "candidate_count": 1,
+    "predicted_outcomes": {
+      "U000009-H1": true
+    },
+    "score": {
+      "expected_information_gain": 0.0,
+      "expected_uncertainty_reduction": 0.0,
+      "discriminative_hypothesis_value": 0.0,
+      "concept_boundary_clarification": 0.4,
+      "expected_transfer_value": 0.35,
+      "expected_reusable_abstraction_value": 0.5,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.4,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 1.9500000000000002
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.400000",
+      "expected_hypotheses_eliminated": "0.000000",
+      "predicted_partition": "1 true / 0 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000009-D-02-0",
+      "applicable": true,
+      "output_class": "O001",
+      "execution_cost": 11,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 0,
+    "realized_information_gain": 0.0,
+    "uncertainty_resolved": true,
+    "influenced_model_revision": false,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000009",
+      "X-U000009-D-02-0"
+    ]
+  },
+  {
+    "sequence": 24,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000010-D-01-0",
+    "parent_uncertainty_id": "U000010",
+    "candidate_count": 1,
+    "predicted_outcomes": {
+      "U000010-H2": true
+    },
+    "score": {
+      "expected_information_gain": 0.0,
+      "expected_uncertainty_reduction": 0.0,
+      "discriminative_hypothesis_value": 0.0,
+      "concept_boundary_clarification": 0.4,
+      "expected_transfer_value": 0.35,
+      "expected_reusable_abstraction_value": 0.5,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.4,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 1.9500000000000002
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.400000",
+      "expected_hypotheses_eliminated": "0.000000",
+      "predicted_partition": "1 true / 0 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000010-D-01-0",
+      "applicable": true,
+      "output_class": "O001",
+      "execution_cost": 11,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 0,
+    "realized_information_gain": 0.0,
+    "uncertainty_resolved": true,
+    "influenced_model_revision": false,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000010",
+      "X-U000010-D-01-0"
+    ]
+  },
+  {
+    "sequence": 25,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000000-D-02-0",
+    "parent_uncertainty_id": "U000000",
+    "candidate_count": 1,
+    "predicted_outcomes": {
+      "U000000-H1": true
+    },
+    "score": {
+      "expected_information_gain": 0.0,
+      "expected_uncertainty_reduction": 0.0,
+      "discriminative_hypothesis_value": 0.0,
+      "concept_boundary_clarification": 0.4,
+      "expected_transfer_value": 0.26249999999999996,
+      "expected_reusable_abstraction_value": 0.375,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.24,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 1.8975000000000002
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.240000",
+      "expected_hypotheses_eliminated": "0.000000",
+      "predicted_partition": "1 true / 0 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000000-D-02-0",
+      "applicable": true,
+      "output_class": "O001",
+      "execution_cost": 7,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 0,
+    "realized_information_gain": 0.0,
+    "uncertainty_resolved": true,
+    "influenced_model_revision": false,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000000",
+      "X-U000000-D-02-0"
+    ]
+  },
+  {
+    "sequence": 26,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000001-C-01-0",
+    "parent_uncertainty_id": "U000001",
+    "candidate_count": 1,
+    "predicted_outcomes": {
+      "U000001-H2": false
+    },
+    "score": {
+      "expected_information_gain": 0.0,
+      "expected_uncertainty_reduction": 0.0,
+      "discriminative_hypothesis_value": 0.0,
+      "concept_boundary_clarification": 0.4,
+      "expected_transfer_value": 0.26249999999999996,
+      "expected_reusable_abstraction_value": 0.375,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.24,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 1.8975000000000002
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.240000",
+      "expected_hypotheses_eliminated": "0.000000",
+      "predicted_partition": "0 true / 1 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000001-C-01-0",
+      "applicable": false,
+      "output_class": "O002",
+      "execution_cost": 7,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 0,
+    "realized_information_gain": 0.0,
+    "uncertainty_resolved": true,
+    "influenced_model_revision": false,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000001",
+      "X-U000001-C-01-0"
+    ]
+  },
+  {
+    "sequence": 27,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000001-D-01-0",
+    "parent_uncertainty_id": "U000001",
+    "candidate_count": 1,
+    "predicted_outcomes": {
+      "U000001-H2": true
+    },
+    "score": {
+      "expected_information_gain": 0.0,
+      "expected_uncertainty_reduction": 0.0,
+      "discriminative_hypothesis_value": 0.0,
+      "concept_boundary_clarification": 0.4,
+      "expected_transfer_value": 0.26249999999999996,
+      "expected_reusable_abstraction_value": 0.375,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.24,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 1.8975000000000002
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.240000",
+      "expected_hypotheses_eliminated": "0.000000",
+      "predicted_partition": "1 true / 0 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000001-D-01-0",
+      "applicable": true,
+      "output_class": "O001",
+      "execution_cost": 7,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 0,
+    "realized_information_gain": 0.0,
+    "uncertainty_resolved": true,
+    "influenced_model_revision": false,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000001",
+      "X-U000001-D-01-0"
+    ]
+  },
+  {
+    "sequence": 28,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000008-D-02-0",
+    "parent_uncertainty_id": "U000008",
+    "candidate_count": 1,
+    "predicted_outcomes": {
+      "U000008-H3": true
+    },
+    "score": {
+      "expected_information_gain": 0.0,
+      "expected_uncertainty_reduction": 0.0,
+      "discriminative_hypothesis_value": 0.0,
+      "concept_boundary_clarification": 0.4,
+      "expected_transfer_value": 0.26249999999999996,
+      "expected_reusable_abstraction_value": 0.375,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.32,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 1.8175000000000001
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.320000",
+      "expected_hypotheses_eliminated": "0.000000",
+      "predicted_partition": "1 true / 0 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000008-D-02-0",
+      "applicable": true,
+      "output_class": "O001",
+      "execution_cost": 9,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 0,
+    "realized_information_gain": 0.0,
+    "uncertainty_resolved": true,
+    "influenced_model_revision": false,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000008",
+      "X-U000008-D-02-0"
+    ]
+  },
+  {
+    "sequence": 29,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000009-D-01-0",
+    "parent_uncertainty_id": "U000009",
+    "candidate_count": 1,
+    "predicted_outcomes": {
+      "U000009-H1": false
+    },
+    "score": {
+      "expected_information_gain": 0.0,
+      "expected_uncertainty_reduction": 0.0,
+      "discriminative_hypothesis_value": 0.0,
+      "concept_boundary_clarification": 0.4,
+      "expected_transfer_value": 0.26249999999999996,
+      "expected_reusable_abstraction_value": 0.375,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.32,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 1.8175000000000001
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.320000",
+      "expected_hypotheses_eliminated": "0.000000",
+      "predicted_partition": "0 true / 1 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000009-D-01-0",
+      "applicable": false,
+      "output_class": "O002",
+      "execution_cost": 9,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 0,
+    "realized_information_gain": 0.0,
+    "uncertainty_resolved": true,
+    "influenced_model_revision": false,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000009",
+      "X-U000009-D-01-0"
+    ]
+  },
+  {
+    "sequence": 30,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000000-C-03-0",
+    "parent_uncertainty_id": "U000000",
+    "candidate_count": 1,
+    "predicted_outcomes": {
+      "U000000-H1": false
+    },
+    "score": {
+      "expected_information_gain": 0.0,
+      "expected_uncertainty_reduction": 0.0,
+      "discriminative_hypothesis_value": 0.0,
+      "concept_boundary_clarification": 0.0,
+      "expected_transfer_value": 0.35,
+      "expected_reusable_abstraction_value": 0.5,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.32,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 1.6300000000000001
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.320000",
+      "expected_hypotheses_eliminated": "0.000000",
+      "predicted_partition": "0 true / 1 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000000-C-03-0",
+      "applicable": false,
+      "output_class": "O002",
+      "execution_cost": 9,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 0,
+    "realized_information_gain": 0.0,
+    "uncertainty_resolved": true,
+    "influenced_model_revision": false,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000000",
+      "X-U000000-C-03-0"
+    ]
+  },
+  {
+    "sequence": 31,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000000-D-03-0",
+    "parent_uncertainty_id": "U000000",
+    "candidate_count": 1,
+    "predicted_outcomes": {
+      "U000000-H1": true
+    },
+    "score": {
+      "expected_information_gain": 0.0,
+      "expected_uncertainty_reduction": 0.0,
+      "discriminative_hypothesis_value": 0.0,
+      "concept_boundary_clarification": 0.0,
+      "expected_transfer_value": 0.35,
+      "expected_reusable_abstraction_value": 0.5,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.32,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 1.6300000000000001
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.320000",
+      "expected_hypotheses_eliminated": "0.000000",
+      "predicted_partition": "1 true / 0 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000000-D-03-0",
+      "applicable": true,
+      "output_class": "O001",
+      "execution_cost": 9,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 0,
+    "realized_information_gain": 0.0,
+    "uncertainty_resolved": true,
+    "influenced_model_revision": false,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000000",
+      "X-U000000-D-03-0"
+    ]
+  },
+  {
+    "sequence": 32,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000003-D-00-0",
+    "parent_uncertainty_id": "U000003",
+    "candidate_count": 1,
+    "predicted_outcomes": {
+      "U000003-H1": false
+    },
+    "score": {
+      "expected_information_gain": 0.0,
+      "expected_uncertainty_reduction": 0.0,
+      "discriminative_hypothesis_value": 0.0,
+      "concept_boundary_clarification": 0.0,
+      "expected_transfer_value": 0.35,
+      "expected_reusable_abstraction_value": 0.5,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.32,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 1.6300000000000001
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.320000",
+      "expected_hypotheses_eliminated": "0.000000",
+      "predicted_partition": "0 true / 1 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000003-D-00-0",
+      "applicable": false,
+      "output_class": "O002",
+      "execution_cost": 9,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 0,
+    "realized_information_gain": 0.0,
+    "uncertainty_resolved": true,
+    "influenced_model_revision": false,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000003",
+      "X-U000003-D-00-0"
+    ]
+  },
+  {
+    "sequence": 33,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000010-C-05-0",
+    "parent_uncertainty_id": "U000010",
+    "candidate_count": 1,
+    "predicted_outcomes": {
+      "U000010-H2": false
+    },
+    "score": {
+      "expected_information_gain": 0.0,
+      "expected_uncertainty_reduction": 0.0,
+      "discriminative_hypothesis_value": 0.0,
+      "concept_boundary_clarification": 0.0,
+      "expected_transfer_value": 0.35,
+      "expected_reusable_abstraction_value": 0.5,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.32,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 1.6300000000000001
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.320000",
+      "expected_hypotheses_eliminated": "0.000000",
+      "predicted_partition": "0 true / 1 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000010-C-05-0",
+      "applicable": false,
+      "output_class": "O002",
+      "execution_cost": 9,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 0,
+    "realized_information_gain": 0.0,
+    "uncertainty_resolved": true,
+    "influenced_model_revision": false,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000010",
+      "X-U000010-C-05-0"
+    ]
+  },
+  {
+    "sequence": 34,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000010-D-05-0",
+    "parent_uncertainty_id": "U000010",
+    "candidate_count": 1,
+    "predicted_outcomes": {
+      "U000010-H2": true
+    },
+    "score": {
+      "expected_information_gain": 0.0,
+      "expected_uncertainty_reduction": 0.0,
+      "discriminative_hypothesis_value": 0.0,
+      "concept_boundary_clarification": 0.0,
+      "expected_transfer_value": 0.35,
+      "expected_reusable_abstraction_value": 0.5,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.32,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 1.6300000000000001
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.320000",
+      "expected_hypotheses_eliminated": "0.000000",
+      "predicted_partition": "1 true / 0 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000010-D-05-0",
+      "applicable": true,
+      "output_class": "O001",
+      "execution_cost": 9,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 0,
+    "realized_information_gain": 0.0,
+    "uncertainty_resolved": true,
+    "influenced_model_revision": false,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000010",
+      "X-U000010-D-05-0"
+    ]
+  },
+  {
+    "sequence": 35,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000011-C-04-0",
+    "parent_uncertainty_id": "U000011",
+    "candidate_count": 1,
+    "predicted_outcomes": {
+      "U000011-H3": false
+    },
+    "score": {
+      "expected_information_gain": 0.0,
+      "expected_uncertainty_reduction": 0.0,
+      "discriminative_hypothesis_value": 0.0,
+      "concept_boundary_clarification": 0.0,
+      "expected_transfer_value": 0.35,
+      "expected_reusable_abstraction_value": 0.5,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.32,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 1.6300000000000001
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.320000",
+      "expected_hypotheses_eliminated": "0.000000",
+      "predicted_partition": "0 true / 1 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000011-C-04-0",
+      "applicable": false,
+      "output_class": "O002",
+      "execution_cost": 9,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 0,
+    "realized_information_gain": 0.0,
+    "uncertainty_resolved": true,
+    "influenced_model_revision": false,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000011",
+      "X-U000011-C-04-0"
+    ]
+  },
+  {
+    "sequence": 36,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000011-D-04-0",
+    "parent_uncertainty_id": "U000011",
+    "candidate_count": 1,
+    "predicted_outcomes": {
+      "U000011-H3": true
+    },
+    "score": {
+      "expected_information_gain": 0.0,
+      "expected_uncertainty_reduction": 0.0,
+      "discriminative_hypothesis_value": 0.0,
+      "concept_boundary_clarification": 0.0,
+      "expected_transfer_value": 0.35,
+      "expected_reusable_abstraction_value": 0.5,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.32,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 1.6300000000000001
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.320000",
+      "expected_hypotheses_eliminated": "0.000000",
+      "predicted_partition": "1 true / 0 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000011-D-04-0",
+      "applicable": true,
+      "output_class": "O001",
+      "execution_cost": 9,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 0,
+    "realized_information_gain": 0.0,
+    "uncertainty_resolved": true,
+    "influenced_model_revision": false,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000011",
+      "X-U000011-D-04-0"
+    ]
+  },
+  {
+    "sequence": 37,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000005-D-02-0",
+    "parent_uncertainty_id": "U000005",
+    "candidate_count": 1,
+    "predicted_outcomes": {
+      "U000005-H3": true
+    },
+    "score": {
+      "expected_information_gain": 0.0,
+      "expected_uncertainty_reduction": 0.0,
+      "discriminative_hypothesis_value": 0.0,
+      "concept_boundary_clarification": 0.4,
+      "expected_transfer_value": 0.35,
+      "expected_reusable_abstraction_value": 0.0,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.24,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 1.61
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.240000",
+      "expected_hypotheses_eliminated": "0.000000",
+      "predicted_partition": "1 true / 0 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000005-D-02-0",
+      "applicable": true,
+      "output_class": "O001",
+      "execution_cost": 7,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 0,
+    "realized_information_gain": 0.0,
+    "uncertainty_resolved": true,
+    "influenced_model_revision": false,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000005",
+      "X-U000005-D-02-0"
+    ]
+  },
+  {
+    "sequence": 38,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000006-D-01-0",
+    "parent_uncertainty_id": "U000006",
+    "candidate_count": 1,
+    "predicted_outcomes": {
+      "U000006-H1": false
+    },
+    "score": {
+      "expected_information_gain": 0.0,
+      "expected_uncertainty_reduction": 0.0,
+      "discriminative_hypothesis_value": 0.0,
+      "concept_boundary_clarification": 0.4,
+      "expected_transfer_value": 0.35,
+      "expected_reusable_abstraction_value": 0.0,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.24,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 1.61
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.240000",
+      "expected_hypotheses_eliminated": "0.000000",
+      "predicted_partition": "0 true / 1 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000006-D-01-0",
+      "applicable": false,
+      "output_class": "O002",
+      "execution_cost": 7,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 0,
+    "realized_information_gain": 0.0,
+    "uncertainty_resolved": true,
+    "influenced_model_revision": false,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000006",
+      "X-U000006-D-01-0"
+    ]
+  },
+  {
+    "sequence": 39,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000004-D-02-0",
+    "parent_uncertainty_id": "U000004",
+    "candidate_count": 1,
+    "predicted_outcomes": {
+      "U000004-H2": false
+    },
+    "score": {
+      "expected_information_gain": 0.0,
+      "expected_uncertainty_reduction": 0.0,
+      "discriminative_hypothesis_value": 0.0,
+      "concept_boundary_clarification": 0.4,
+      "expected_transfer_value": 0.26249999999999996,
+      "expected_reusable_abstraction_value": 0.0,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.16,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 1.6025000000000003
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.160000",
+      "expected_hypotheses_eliminated": "0.000000",
+      "predicted_partition": "0 true / 1 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000004-D-02-0",
+      "applicable": false,
+      "output_class": "O002",
+      "execution_cost": 5,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 0,
+    "realized_information_gain": 0.0,
+    "uncertainty_resolved": true,
+    "influenced_model_revision": false,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000004",
+      "X-U000004-D-02-0"
+    ]
+  },
+  {
+    "sequence": 40,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000005-D-01-0",
+    "parent_uncertainty_id": "U000005",
+    "candidate_count": 1,
+    "predicted_outcomes": {
+      "U000005-H3": true
+    },
+    "score": {
+      "expected_information_gain": 0.0,
+      "expected_uncertainty_reduction": 0.0,
+      "discriminative_hypothesis_value": 0.0,
+      "concept_boundary_clarification": 0.4,
+      "expected_transfer_value": 0.26249999999999996,
+      "expected_reusable_abstraction_value": 0.0,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.16,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 1.6025000000000003
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.160000",
+      "expected_hypotheses_eliminated": "0.000000",
+      "predicted_partition": "1 true / 0 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000005-D-01-0",
+      "applicable": true,
+      "output_class": "O001",
+      "execution_cost": 5,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 0,
+    "realized_information_gain": 0.0,
+    "uncertainty_resolved": true,
+    "influenced_model_revision": false,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000005",
+      "X-U000005-D-01-0"
+    ]
+  },
+  {
+    "sequence": 41,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000006-C-05-0",
+    "parent_uncertainty_id": "U000006",
+    "candidate_count": 1,
+    "predicted_outcomes": {
+      "U000006-H1": false
+    },
+    "score": {
+      "expected_information_gain": 0.0,
+      "expected_uncertainty_reduction": 0.0,
+      "discriminative_hypothesis_value": 0.0,
+      "concept_boundary_clarification": 0.0,
+      "expected_transfer_value": 0.35,
+      "expected_reusable_abstraction_value": 0.5,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.4,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 1.5500000000000003
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.400000",
+      "expected_hypotheses_eliminated": "0.000000",
+      "predicted_partition": "0 true / 1 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000006-C-05-0",
+      "applicable": false,
+      "output_class": "O002",
+      "execution_cost": 11,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 0,
+    "realized_information_gain": 0.0,
+    "uncertainty_resolved": true,
+    "influenced_model_revision": false,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000006",
+      "X-U000006-C-05-0"
+    ]
+  },
+  {
+    "sequence": 42,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000006-D-05-0",
+    "parent_uncertainty_id": "U000006",
+    "candidate_count": 1,
+    "predicted_outcomes": {
+      "U000006-H1": true
+    },
+    "score": {
+      "expected_information_gain": 0.0,
+      "expected_uncertainty_reduction": 0.0,
+      "discriminative_hypothesis_value": 0.0,
+      "concept_boundary_clarification": 0.0,
+      "expected_transfer_value": 0.35,
+      "expected_reusable_abstraction_value": 0.5,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.4,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 1.5500000000000003
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.400000",
+      "expected_hypotheses_eliminated": "0.000000",
+      "predicted_partition": "1 true / 0 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000006-D-05-0",
+      "applicable": true,
+      "output_class": "O001",
+      "execution_cost": 11,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 0,
+    "realized_information_gain": 0.0,
+    "uncertainty_resolved": true,
+    "influenced_model_revision": false,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000006",
+      "X-U000006-D-05-0"
+    ]
+  },
+  {
+    "sequence": 43,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000007-C-04-0",
+    "parent_uncertainty_id": "U000007",
+    "candidate_count": 1,
+    "predicted_outcomes": {
+      "U000007-H2": false
+    },
+    "score": {
+      "expected_information_gain": 0.0,
+      "expected_uncertainty_reduction": 0.0,
+      "discriminative_hypothesis_value": 0.0,
+      "concept_boundary_clarification": 0.0,
+      "expected_transfer_value": 0.35,
+      "expected_reusable_abstraction_value": 0.5,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.4,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 1.5500000000000003
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.400000",
+      "expected_hypotheses_eliminated": "0.000000",
+      "predicted_partition": "0 true / 1 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000007-C-04-0",
+      "applicable": false,
+      "output_class": "O002",
+      "execution_cost": 11,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 0,
+    "realized_information_gain": 0.0,
+    "uncertainty_resolved": true,
+    "influenced_model_revision": false,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000007",
+      "X-U000007-C-04-0"
+    ]
+  },
+  {
+    "sequence": 44,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000007-D-04-0",
+    "parent_uncertainty_id": "U000007",
+    "candidate_count": 1,
+    "predicted_outcomes": {
+      "U000007-H2": true
+    },
+    "score": {
+      "expected_information_gain": 0.0,
+      "expected_uncertainty_reduction": 0.0,
+      "discriminative_hypothesis_value": 0.0,
+      "concept_boundary_clarification": 0.0,
+      "expected_transfer_value": 0.35,
+      "expected_reusable_abstraction_value": 0.5,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.4,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 1.5500000000000003
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.400000",
+      "expected_hypotheses_eliminated": "0.000000",
+      "predicted_partition": "1 true / 0 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000007-D-04-0",
+      "applicable": true,
+      "output_class": "O001",
+      "execution_cost": 11,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 0,
+    "realized_information_gain": 0.0,
+    "uncertainty_resolved": true,
+    "influenced_model_revision": false,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000007",
+      "X-U000007-D-04-0"
+    ]
+  },
+  {
+    "sequence": 45,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000008-C-03-0",
+    "parent_uncertainty_id": "U000008",
+    "candidate_count": 1,
+    "predicted_outcomes": {
+      "U000008-H3": false
+    },
+    "score": {
+      "expected_information_gain": 0.0,
+      "expected_uncertainty_reduction": 0.0,
+      "discriminative_hypothesis_value": 0.0,
+      "concept_boundary_clarification": 0.0,
+      "expected_transfer_value": 0.35,
+      "expected_reusable_abstraction_value": 0.5,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.4,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 1.5500000000000003
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.400000",
+      "expected_hypotheses_eliminated": "0.000000",
+      "predicted_partition": "0 true / 1 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000008-C-03-0",
+      "applicable": false,
+      "output_class": "O002",
+      "execution_cost": 11,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 0,
+    "realized_information_gain": 0.0,
+    "uncertainty_resolved": true,
+    "influenced_model_revision": false,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000008",
+      "X-U000008-C-03-0"
+    ]
+  },
+  {
+    "sequence": 46,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000008-D-03-0",
+    "parent_uncertainty_id": "U000008",
+    "candidate_count": 1,
+    "predicted_outcomes": {
+      "U000008-H3": true
+    },
+    "score": {
+      "expected_information_gain": 0.0,
+      "expected_uncertainty_reduction": 0.0,
+      "discriminative_hypothesis_value": 0.0,
+      "concept_boundary_clarification": 0.0,
+      "expected_transfer_value": 0.35,
+      "expected_reusable_abstraction_value": 0.5,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.4,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 1.5500000000000003
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.400000",
+      "expected_hypotheses_eliminated": "0.000000",
+      "predicted_partition": "1 true / 0 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000008-D-03-0",
+      "applicable": true,
+      "output_class": "O001",
+      "execution_cost": 11,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 0,
+    "realized_information_gain": 0.0,
+    "uncertainty_resolved": true,
+    "influenced_model_revision": false,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000008",
+      "X-U000008-D-03-0"
+    ]
+  },
+  {
+    "sequence": 47,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000011-D-00-0",
+    "parent_uncertainty_id": "U000011",
+    "candidate_count": 1,
+    "predicted_outcomes": {
+      "U000011-H3": true
+    },
+    "score": {
+      "expected_information_gain": 0.0,
+      "expected_uncertainty_reduction": 0.0,
+      "discriminative_hypothesis_value": 0.0,
+      "concept_boundary_clarification": 0.0,
+      "expected_transfer_value": 0.35,
+      "expected_reusable_abstraction_value": 0.5,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.4,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 1.5500000000000003
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.400000",
+      "expected_hypotheses_eliminated": "0.000000",
+      "predicted_partition": "1 true / 0 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000011-D-00-0",
+      "applicable": true,
+      "output_class": "O001",
+      "execution_cost": 11,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 0,
+    "realized_information_gain": 0.0,
+    "uncertainty_resolved": true,
+    "influenced_model_revision": false,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000011",
+      "X-U000011-D-00-0"
+    ]
+  },
+  {
+    "sequence": 48,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000002-C-00-0",
+    "parent_uncertainty_id": "U000002",
+    "candidate_count": 1,
+    "predicted_outcomes": {
+      "U000002-H3": false
+    },
+    "score": {
+      "expected_information_gain": 0.0,
+      "expected_uncertainty_reduction": 0.0,
+      "discriminative_hypothesis_value": 0.0,
+      "concept_boundary_clarification": 0.0,
+      "expected_transfer_value": 0.26249999999999996,
+      "expected_reusable_abstraction_value": 0.375,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.24,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 1.4975
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.240000",
+      "expected_hypotheses_eliminated": "0.000000",
+      "predicted_partition": "0 true / 1 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000002-C-00-0",
+      "applicable": false,
+      "output_class": "O002",
+      "execution_cost": 7,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 0,
+    "realized_information_gain": 0.0,
+    "uncertainty_resolved": true,
+    "influenced_model_revision": false,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000002",
+      "X-U000002-C-00-0"
+    ]
+  },
+  {
+    "sequence": 49,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000002-D-00-0",
+    "parent_uncertainty_id": "U000002",
+    "candidate_count": 1,
+    "predicted_outcomes": {
+      "U000002-H3": true
+    },
+    "score": {
+      "expected_information_gain": 0.0,
+      "expected_uncertainty_reduction": 0.0,
+      "discriminative_hypothesis_value": 0.0,
+      "concept_boundary_clarification": 0.0,
+      "expected_transfer_value": 0.26249999999999996,
+      "expected_reusable_abstraction_value": 0.375,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.24,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 1.4975
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.240000",
+      "expected_hypotheses_eliminated": "0.000000",
+      "predicted_partition": "1 true / 0 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000002-D-00-0",
+      "applicable": true,
+      "output_class": "O001",
+      "execution_cost": 7,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 0,
+    "realized_information_gain": 0.0,
+    "uncertainty_resolved": true,
+    "influenced_model_revision": false,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000002",
+      "X-U000002-D-00-0"
+    ]
+  },
+  {
+    "sequence": 50,
+    "condition": "ACTIVE_SEMANTIC_E",
+    "selected_experiment_id": "X-U000009-C-05-0",
+    "parent_uncertainty_id": "U000009",
+    "candidate_count": 1,
+    "predicted_outcomes": {
+      "U000009-H1": false
+    },
+    "score": {
+      "expected_information_gain": 0.0,
+      "expected_uncertainty_reduction": 0.0,
+      "discriminative_hypothesis_value": 0.0,
+      "concept_boundary_clarification": 0.0,
+      "expected_transfer_value": 0.26249999999999996,
+      "expected_reusable_abstraction_value": 0.375,
+      "competence_frontier_value": 1.1,
+      "execution_cost": 0.24,
+      "redundancy": 0.0,
+      "triviality": 0.0,
+      "invalid_experiment_probability": 0.0,
+      "total": 1.4975
+    },
+    "structured_explanation": {
+      "competence_class": "Frontier",
+      "estimated_execution_cost": "0.240000",
+      "expected_hypotheses_eliminated": "0.000000",
+      "predicted_partition": "0 true / 1 false",
+      "redundancy": "0.000000"
+    },
+    "observation": {
+      "experiment_id": "X-U000009-C-05-0",
+      "applicable": false,
+      "output_class": "O002",
+      "execution_cost": 7,
+      "environment_rule_exposed": false
+    },
+    "hypotheses_eliminated": 0,
+    "realized_information_gain": 0.0,
+    "uncertainty_resolved": true,
+    "influenced_model_revision": false,
+    "influenced_concept_promotion": false,
+    "provenance": [
+      "SEM3-ACTIVE-SELECTOR-1.0.0",
+      "U000009",
+      "X-U000009-C-05-0"
+    ]
+  }
+]

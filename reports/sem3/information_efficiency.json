@@ -1,0 +1,48 @@
+{
+  "entries": [
+    {
+      "condition": "RANDOM_A",
+      "blind_capability_gain": 0.28,
+      "blind_capability_gain_per_experiment": 0.005600000000000001,
+      "uncertainties_resolved_per_experiment": 0.16,
+      "realized_information_gain_per_experiment": 0.30039100017307746,
+      "blind_expansion_reduction_per_experiment": 29.18
+    },
+    {
+      "condition": "NOVELTY_B",
+      "blind_capability_gain": 0.0,
+      "blind_capability_gain_per_experiment": 0.0,
+      "uncertainties_resolved_per_experiment": 0.0,
+      "realized_information_gain_per_experiment": 0.04679700005769249,
+      "blind_expansion_reduction_per_experiment": 5.32
+    },
+    {
+      "condition": "FIXED_CURRICULUM_C",
+      "blind_capability_gain": 0.17999999999999994,
+      "blind_capability_gain_per_experiment": 0.0035999999999999986,
+      "uncertainties_resolved_per_experiment": 0.12,
+      "realized_information_gain_per_experiment": 0.19019550008653874,
+      "blind_expansion_reduction_per_experiment": 18.72
+    },
+    {
+      "condition": "UNCERTAINTY_ONLY_D",
+      "blind_capability_gain": 0.35,
+      "blind_capability_gain_per_experiment": 0.006999999999999999,
+      "uncertainties_resolved_per_experiment": 0.24,
+      "realized_information_gain_per_experiment": 0.3803910001730775,
+      "blind_expansion_reduction_per_experiment": 34.64
+    },
+    {
+      "condition": "ACTIVE_SEMANTIC_E",
+      "blind_capability_gain": 0.35,
+      "blind_capability_gain_per_experiment": 0.006999999999999999,
+      "uncertainties_resolved_per_experiment": 0.24,
+      "realized_information_gain_per_experiment": 0.3803910001730775,
+      "blind_expansion_reduction_per_experiment": 34.64
+    }
+  ],
+  "active_vs_random_information_efficiency_ratio": 1.2663195633487891,
+  "active_vs_novelty_information_efficiency_ratio": 8.128533874054366,
+  "active_vs_random_blind_gain_ratio": 1.2499999999999998,
+  "active_outperforms_random_and_novelty": true
+}

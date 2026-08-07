@@ -1,0 +1,49 @@
+{
+  "full_e": {
+    "condition": "ACTIVE_SEMANTIC_E",
+    "experiments": 50,
+    "blind_solve_rate": 1.0,
+    "uncertainties_resolved": 12,
+    "realized_information_gain_per_experiment": 0.3803910001730775,
+    "delta_blind_solve_rate_vs_full_e": 0.0,
+    "delta_uncertainties_resolved_vs_full_e": 0
+  },
+  "ablations": [
+    {
+      "condition": "E_MINUS_INFORMATION_GAIN",
+      "experiments": 50,
+      "blind_solve_rate": 1.0,
+      "uncertainties_resolved": 12,
+      "realized_information_gain_per_experiment": 0.3803910001730775,
+      "delta_blind_solve_rate_vs_full_e": 0.0,
+      "delta_uncertainties_resolved_vs_full_e": 0
+    },
+    {
+      "condition": "E_MINUS_FRONTIER",
+      "experiments": 50,
+      "blind_solve_rate": 1.0,
+      "uncertainties_resolved": 12,
+      "realized_information_gain_per_experiment": 0.3803910001730775,
+      "delta_blind_solve_rate_vs_full_e": 0.0,
+      "delta_uncertainties_resolved_vs_full_e": 0
+    },
+    {
+      "condition": "E_MINUS_ABSTRACTION_VALUE",
+      "experiments": 50,
+      "blind_solve_rate": 1.0,
+      "uncertainties_resolved": 12,
+      "realized_information_gain_per_experiment": 0.3803910001730775,
+      "delta_blind_solve_rate_vs_full_e": 0.0,
+      "delta_uncertainties_resolved_vs_full_e": 0
+    },
+    {
+      "condition": "E_MINUS_COUNTERFACTUALS",
+      "experiments": 50,
+      "blind_solve_rate": 1.0,
+      "uncertainties_resolved": 12,
+      "realized_information_gain_per_experiment": 0.3803910001730775,
+      "delta_blind_solve_rate_vs_full_e": 0.0,
+      "delta_uncertainties_resolved_vs_full_e": 0
+    }
+  ]
+}

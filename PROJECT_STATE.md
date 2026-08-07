@@ -1,14 +1,14 @@
 # Project State
 
-**Canonical version:** 1.3.0
-**State frozen for:** SEM-2 completed baseline
+**Canonical version:** 1.4.0
+**State frozen for:** SEM-3 completed baseline
 
 This is an operational snapshot. It does not replace or override
 `CONSTITUTION.md`.
 
 | Field | Value |
 |---|---|
-| Current stage | `SEM-2 COMPLETE` |
+| Current stage | `SEM-3 COMPLETE` |
 | Stage S0 status | `PASS` |
 | SEM-0 implementation | `COMPLETE` |
 | SEM-0 result | `PASS - MINIMAL_AUTONOMOUS_CONCEPT_EMERGENCE` |
@@ -17,7 +17,9 @@ This is an operational snapshot. It does not replace or override
 | Promoted concepts | `4` (`C000001`, `C000002`, `C000004`, `C000005`) |
 | SEM-2 implementation | `COMPLETE` |
 | SEM-2 result | `PASS - ADAPTIVE_REASONING_COMPLEXITY_CONTROL_VERIFIED` |
-| SEM-3 | `NOT STARTED` |
+| SEM-3 implementation | `COMPLETE` |
+| SEM-3 result | `PASS - AUTONOMOUS_ACTIVE_EXPERIMENT_SELECTION_VERIFIED` |
+| SEM-4 | `NOT STARTED` |
 | Recursive self-mutation | `DISABLED` |
 | Recursive-improvement mode | `OBSERVE_MEASURE_ONLY` |
 | Proposal generation | `DISABLED` |
@@ -30,12 +32,12 @@ This is an operational snapshot. It does not replace or override
 | Current branch | `main` |
 | Current commit | `SELF` - resolve with `git rev-parse HEAD` |
 | Worktree at committed freeze | `CLEAN` |
-| Next allowed stage | `SEM-3_ACTIVE_EXPERIMENT_SELECTION` |
+| Next allowed stage | `SEM-4_MATHEMATICAL_FIRST_PRINCIPLES_DERIVATION` |
 
 ## Canonical document status
 
 The normative documents remain complete and frozen at version 1.0.0. This
-operational state record advanced to version 1.3.0 after the sealed SEM-2 run:
+operational state record advanced to version 1.4.0 after the sealed SEM-3 run:
 
 - `CONSTITUTION.md`
 - `RESEARCH_HYPOTHESIS.md`
@@ -135,7 +137,33 @@ The detailed classification and contamination decisions are in
   catalog scan, and routing false-negative counts were zero. Reports are
   sealed under `reports/sem2/`.
 
+## SEM-3 evidence snapshot
+
+- Frozen `SEM3-RUN-0001` used 100 evaluator-only fresh-blind tasks and an equal
+  50-experiment budget for random, novelty, fixed-curriculum,
+  uncertainty-only, and active-semantic selection. Selector blind access and
+  post-blind tuning were both false.
+- Active-semantic selection resolved all 12 evidence-backed uncertainties,
+  eliminated 24 hypotheses, handled 8 semantic surprises through 20
+  append-only model revisions, and executed 50 of 14,400 generated candidate
+  experiments. Random selection resolved 8 uncertainties.
+- Realized information per experiment was `0.3803910001730775` for active
+  selection and `0.30039100017307746` for random selection, an efficiency
+  ratio of `1.2663195633487891`.
+- Frozen blind solve rates were random `0.93`, novelty `0.65`, fixed curriculum
+  `0.83`, uncertainty-only `1.0`, and active-semantic `1.0`. Active selection
+  reduced false transfer from random's `0.15217391304347827` to `0.0` and
+  median expansions from `25` to `22`.
+- The capability frontier expanded with maximum solution depth `69`, primitive
+  depth `555`, four composed concepts, five subproblems, and one verified
+  recombination. No new concept passed the existing promotion gates; maximum
+  autonomous concept generation therefore remained `2`.
+- All nine primary gates and all four selector ablations passed. Network,
+  external LLM, local teacher, recursive source mutation, full catalog scan,
+  and routing false-negative counts were zero. Reports are sealed under
+  `reports/sem3/`.
+
 ## Advancement constraint
 
-Starting SEM-3 requires an explicit subsequent task. SEM-2 completion does not
+Starting SEM-4 requires an explicit subsequent task. SEM-3 completion does not
 authorize recursive self-application, which remains reserved for SEM-9.

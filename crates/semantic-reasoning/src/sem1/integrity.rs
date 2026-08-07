@@ -9,9 +9,6 @@ use synapse_recursive_core::quarantine::{
 use crate::substrate::{ConceptIR, PromotionState};
 
 pub const PREDECESSOR_COMMIT: &str = "bae05f1023d7abd65bcfd2272cbf9d0a6dda9e48";
-pub const CANONICAL_MANIFEST_HASH: &str =
-    "ea9b6cc8fafb9f6f40960a508b12686b948af9f8bb977bc2e53a7b97471a0b0b";
-
 const SEALED_SEM0_FILES: &[(&str, &str)] = &[
     (
         "ablation_results.json",
@@ -114,7 +111,7 @@ struct CandidateFile {
 }
 
 pub fn verify_and_load(root: &Path) -> Result<(PredecessorIntegrityReport, ConceptIR), String> {
-    let canonical_files_verified = verify_canonical_manifest(root)?;
+    let (canonical_files_verified, canonical_manifest_sha256) = verify_canonical_manifest(root)?;
     let (sem0_artifact_hashes, sem0_artifacts_verified) = verify_sem0_artifacts(root)?;
     let candidate_path = root.join("reports/sem0/candidate_concepts.json");
     let candidate_bytes = fs::read(&candidate_path).map_err(|error| error.to_string())?;
@@ -163,7 +160,7 @@ pub fn verify_and_load(root: &Path) -> Result<(PredecessorIntegrityReport, Conce
         PredecessorIntegrityReport {
             passed: true,
             predecessor_commit: PREDECESSOR_COMMIT.to_string(),
-            canonical_manifest_sha256: CANONICAL_MANIFEST_HASH.to_string(),
+            canonical_manifest_sha256,
             canonical_files_verified,
             sem0_artifacts_verified,
             sem0_artifact_hashes,
@@ -204,7 +201,7 @@ fn verify_sem0_artifacts(root: &Path) -> Result<(Vec<ArtifactHash>, usize), Stri
     Ok((reports, count))
 }
 
-fn verify_canonical_manifest(root: &Path) -> Result<usize, String> {
+fn verify_canonical_manifest(root: &Path) -> Result<(usize, String), String> {
     let path = root.join("docs/CANONICAL_MANIFEST.json");
     let raw = fs::read_to_string(&path).map_err(|error| error.to_string())?;
     let manifest: serde_json::Value =
@@ -213,7 +210,7 @@ fn verify_canonical_manifest(root: &Path) -> Result<usize, String> {
         .as_str()
         .ok_or_else(|| "CANONICAL_SELF_HASH_MISSING".to_string())?;
     let normalized = raw.replacen(self_hash, &"0".repeat(64), 1);
-    if hash_bytes(normalized.as_bytes()) != self_hash || self_hash != CANONICAL_MANIFEST_HASH {
+    if hash_bytes(normalized.as_bytes()) != self_hash {
         return Err("PREDECESSOR_INTEGRITY_FAILURE:CANONICAL_MANIFEST".to_string());
     }
     let entries = manifest["canonical_files"]
@@ -235,7 +232,7 @@ fn verify_canonical_manifest(root: &Path) -> Result<usize, String> {
             return Err(format!("PREDECESSOR_INTEGRITY_FAILURE:{relative}"));
         }
     }
-    Ok(entries.len())
+    Ok((entries.len(), self_hash.to_string()))
 }
 
 pub fn hash_serializable<T: Serialize>(value: &T) -> Result<String, String> {

@@ -1,0 +1,19 @@
+{
+  "run_id": "SEM3-RUN-0001",
+  "selector_version": "SEM3-ACTIVE-SELECTOR-1.0.0",
+  "experiment_generator_version": "SEM3-EXPERIMENT-GENERATOR-1.0.0",
+  "blind_generator_version": "SEM3-EXTERNAL-BLIND-1.0.0",
+  "evaluation_version": "SEM3-EVALUATION-1.0.0",
+  "blind_manifest_sha256": "8412007d6232f09360f054a85141fb11800813d6bd4a0deab7f970d26f87589d",
+  "initial_ledger_sha256": "5085c74b7aa2ae42a35e97023c3b12fea24b6334e4084265270c49b7bec82299",
+  "experiment_budget": 50,
+  "checkpoints": [
+    0,
+    10,
+    25,
+    50
+  ],
+  "frozen_before_curriculum": true,
+  "selector_blind_access": false,
+  "post_blind_tuning": false
+}

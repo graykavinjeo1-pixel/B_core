@@ -1,0 +1,360 @@
+{
+  "events": [
+    {
+      "surprise_id": "SURPRISE-000001",
+      "experiment_id": "X-U000001-C-02-0",
+      "uncertainty_id": "U000001",
+      "predicted_majority_outcome": false,
+      "actual_outcome": true,
+      "diagnosis": "WRONG_INVARIANT",
+      "prior_valid_concepts_mutated": false,
+      "created_revision_id": "REVISION-000001"
+    },
+    {
+      "surprise_id": "SURPRISE-000008",
+      "experiment_id": "X-U000008-C-01-0",
+      "uncertainty_id": "U000008",
+      "predicted_majority_outcome": true,
+      "actual_outcome": false,
+      "diagnosis": "WRONG_PARAMETER_OR_MISSING_CONCEPT",
+      "prior_valid_concepts_mutated": false,
+      "created_revision_id": "REVISION-000008"
+    },
+    {
+      "surprise_id": "SURPRISE-000011",
+      "experiment_id": "X-U000002-C-02-0",
+      "uncertainty_id": "U000002",
+      "predicted_majority_outcome": true,
+      "actual_outcome": false,
+      "diagnosis": "MISSING_RELATION",
+      "prior_valid_concepts_mutated": false,
+      "created_revision_id": "REVISION-000011"
+    },
+    {
+      "surprise_id": "SURPRISE-000012",
+      "experiment_id": "X-U000007-C-02-0",
+      "uncertainty_id": "U000007",
+      "predicted_majority_outcome": false,
+      "actual_outcome": true,
+      "diagnosis": "MISSING_RELATION",
+      "prior_valid_concepts_mutated": false,
+      "created_revision_id": "REVISION-000012"
+    },
+    {
+      "surprise_id": "SURPRISE-000013",
+      "experiment_id": "X-U000003-C-00-0",
+      "uncertainty_id": "U000003",
+      "predicted_majority_outcome": false,
+      "actual_outcome": true,
+      "diagnosis": "WRONG_PRECONDITION",
+      "prior_valid_concepts_mutated": false,
+      "created_revision_id": "REVISION-000013"
+    },
+    {
+      "surprise_id": "SURPRISE-000015",
+      "experiment_id": "X-U000005-C-01-0",
+      "uncertainty_id": "U000005",
+      "predicted_majority_outcome": true,
+      "actual_outcome": false,
+      "diagnosis": "WRONG_ABSTRACTION_BOUNDARY",
+      "prior_valid_concepts_mutated": false,
+      "created_revision_id": "REVISION-000015"
+    },
+    {
+      "surprise_id": "SURPRISE-000016",
+      "experiment_id": "X-U000006-C-01-0",
+      "uncertainty_id": "U000006",
+      "predicted_majority_outcome": false,
+      "actual_outcome": true,
+      "diagnosis": "WRONG_ABSTRACTION_BOUNDARY",
+      "prior_valid_concepts_mutated": false,
+      "created_revision_id": "REVISION-000016"
+    },
+    {
+      "surprise_id": "SURPRISE-000020",
+      "experiment_id": "X-U000011-C-02-0",
+      "uncertainty_id": "U000011",
+      "predicted_majority_outcome": true,
+      "actual_outcome": false,
+      "diagnosis": "WRONG_INVARIANT",
+      "prior_valid_concepts_mutated": false,
+      "created_revision_id": "REVISION-000020"
+    }
+  ],
+  "revisions": [
+    {
+      "revision_id": "REVISION-000001",
+      "uncertainty_id": "U000001",
+      "eliminated_hypotheses": [
+        "U000001-H1",
+        "U000001-H3"
+      ],
+      "retained_hypotheses": [
+        "U000001-H2"
+      ],
+      "resolved_hypothesis_id": "U000001-H2",
+      "evidence_experiment_id": "X-U000001-C-02-0",
+      "existing_promoted_concepts_mutated": false
+    },
+    {
+      "revision_id": "REVISION-000002",
+      "uncertainty_id": "U000002",
+      "eliminated_hypotheses": [
+        "U000002-H1"
+      ],
+      "retained_hypotheses": [
+        "U000002-H2",
+        "U000002-H3"
+      ],
+      "resolved_hypothesis_id": null,
+      "evidence_experiment_id": "X-U000002-C-01-0",
+      "existing_promoted_concepts_mutated": false
+    },
+    {
+      "revision_id": "REVISION-000003",
+      "uncertainty_id": "U000009",
+      "eliminated_hypotheses": [
+        "U000009-H2"
+      ],
+      "retained_hypotheses": [
+        "U000009-H1",
+        "U000009-H3"
+      ],
+      "resolved_hypothesis_id": null,
+      "evidence_experiment_id": "X-U000009-C-02-0",
+      "existing_promoted_concepts_mutated": false
+    },
+    {
+      "revision_id": "REVISION-000004",
+      "uncertainty_id": "U000009",
+      "eliminated_hypotheses": [
+        "U000009-H3"
+      ],
+      "retained_hypotheses": [
+        "U000009-H1"
+      ],
+      "resolved_hypothesis_id": "U000009-H1",
+      "evidence_experiment_id": "X-U000009-C-01-0",
+      "existing_promoted_concepts_mutated": false
+    },
+    {
+      "revision_id": "REVISION-000005",
+      "uncertainty_id": "U000010",
+      "eliminated_hypotheses": [
+        "U000010-H1"
+      ],
+      "retained_hypotheses": [
+        "U000010-H2",
+        "U000010-H3"
+      ],
+      "resolved_hypothesis_id": null,
+      "evidence_experiment_id": "X-U000010-C-01-0",
+      "existing_promoted_concepts_mutated": false
+    },
+    {
+      "revision_id": "REVISION-000006",
+      "uncertainty_id": "U000000",
+      "eliminated_hypotheses": [
+        "U000000-H2"
+      ],
+      "retained_hypotheses": [
+        "U000000-H1",
+        "U000000-H3"
+      ],
+      "resolved_hypothesis_id": null,
+      "evidence_experiment_id": "X-U000000-C-02-0",
+      "existing_promoted_concepts_mutated": false
+    },
+    {
+      "revision_id": "REVISION-000007",
+      "uncertainty_id": "U000008",
+      "eliminated_hypotheses": [
+        "U000008-H2"
+      ],
+      "retained_hypotheses": [
+        "U000008-H1",
+        "U000008-H3"
+      ],
+      "resolved_hypothesis_id": null,
+      "evidence_experiment_id": "X-U000008-C-02-0",
+      "existing_promoted_concepts_mutated": false
+    },
+    {
+      "revision_id": "REVISION-000008",
+      "uncertainty_id": "U000008",
+      "eliminated_hypotheses": [
+        "U000008-H1"
+      ],
+      "retained_hypotheses": [
+        "U000008-H3"
+      ],
+      "resolved_hypothesis_id": "U000008-H3",
+      "evidence_experiment_id": "X-U000008-C-01-0",
+      "existing_promoted_concepts_mutated": false
+    },
+    {
+      "revision_id": "REVISION-000009",
+      "uncertainty_id": "U000000",
+      "eliminated_hypotheses": [
+        "U000000-H3"
+      ],
+      "retained_hypotheses": [
+        "U000000-H1"
+      ],
+      "resolved_hypothesis_id": "U000000-H1",
+      "evidence_experiment_id": "X-U000000-C-01-0",
+      "existing_promoted_concepts_mutated": false
+    },
+    {
+      "revision_id": "REVISION-000010",
+      "uncertainty_id": "U000010",
+      "eliminated_hypotheses": [
+        "U000010-H3"
+      ],
+      "retained_hypotheses": [
+        "U000010-H2"
+      ],
+      "resolved_hypothesis_id": "U000010-H2",
+      "evidence_experiment_id": "X-U000010-C-02-0",
+      "existing_promoted_concepts_mutated": false
+    },
+    {
+      "revision_id": "REVISION-000011",
+      "uncertainty_id": "U000002",
+      "eliminated_hypotheses": [
+        "U000002-H2"
+      ],
+      "retained_hypotheses": [
+        "U000002-H3"
+      ],
+      "resolved_hypothesis_id": "U000002-H3",
+      "evidence_experiment_id": "X-U000002-C-02-0",
+      "existing_promoted_concepts_mutated": false
+    },
+    {
+      "revision_id": "REVISION-000012",
+      "uncertainty_id": "U000007",
+      "eliminated_hypotheses": [
+        "U000007-H1",
+        "U000007-H3"
+      ],
+      "retained_hypotheses": [
+        "U000007-H2"
+      ],
+      "resolved_hypothesis_id": "U000007-H2",
+      "evidence_experiment_id": "X-U000007-C-02-0",
+      "existing_promoted_concepts_mutated": false
+    },
+    {
+      "revision_id": "REVISION-000013",
+      "uncertainty_id": "U000003",
+      "eliminated_hypotheses": [
+        "U000003-H2",
+        "U000003-H3"
+      ],
+      "retained_hypotheses": [
+        "U000003-H1"
+      ],
+      "resolved_hypothesis_id": "U000003-H1",
+      "evidence_experiment_id": "X-U000003-C-00-0",
+      "existing_promoted_concepts_mutated": false
+    },
+    {
+      "revision_id": "REVISION-000014",
+      "uncertainty_id": "U000005",
+      "eliminated_hypotheses": [
+        "U000005-H2"
+      ],
+      "retained_hypotheses": [
+        "U000005-H1",
+        "U000005-H3"
+      ],
+      "resolved_hypothesis_id": null,
+      "evidence_experiment_id": "X-U000005-C-02-0",
+      "existing_promoted_concepts_mutated": false
+    },
+    {
+      "revision_id": "REVISION-000015",
+      "uncertainty_id": "U000005",
+      "eliminated_hypotheses": [
+        "U000005-H1"
+      ],
+      "retained_hypotheses": [
+        "U000005-H3"
+      ],
+      "resolved_hypothesis_id": "U000005-H3",
+      "evidence_experiment_id": "X-U000005-C-01-0",
+      "existing_promoted_concepts_mutated": false
+    },
+    {
+      "revision_id": "REVISION-000016",
+      "uncertainty_id": "U000006",
+      "eliminated_hypotheses": [
+        "U000006-H2",
+        "U000006-H3"
+      ],
+      "retained_hypotheses": [
+        "U000006-H1"
+      ],
+      "resolved_hypothesis_id": "U000006-H1",
+      "evidence_experiment_id": "X-U000006-C-01-0",
+      "existing_promoted_concepts_mutated": false
+    },
+    {
+      "revision_id": "REVISION-000017",
+      "uncertainty_id": "U000004",
+      "eliminated_hypotheses": [
+        "U000004-H1"
+      ],
+      "retained_hypotheses": [
+        "U000004-H2",
+        "U000004-H3"
+      ],
+      "resolved_hypothesis_id": null,
+      "evidence_experiment_id": "X-U000004-C-01-0",
+      "existing_promoted_concepts_mutated": false
+    },
+    {
+      "revision_id": "REVISION-000018",
+      "uncertainty_id": "U000004",
+      "eliminated_hypotheses": [
+        "U000004-H3"
+      ],
+      "retained_hypotheses": [
+        "U000004-H2"
+      ],
+      "resolved_hypothesis_id": "U000004-H2",
+      "evidence_experiment_id": "X-U000004-C-02-0",
+      "existing_promoted_concepts_mutated": false
+    },
+    {
+      "revision_id": "REVISION-000019",
+      "uncertainty_id": "U000011",
+      "eliminated_hypotheses": [
+        "U000011-H1"
+      ],
+      "retained_hypotheses": [
+        "U000011-H2",
+        "U000011-H3"
+      ],
+      "resolved_hypothesis_id": null,
+      "evidence_experiment_id": "X-U000011-C-00-0",
+      "existing_promoted_concepts_mutated": false
+    },
+    {
+      "revision_id": "REVISION-000020",
+      "uncertainty_id": "U000011",
+      "eliminated_hypotheses": [
+        "U000011-H2"
+      ],
+      "retained_hypotheses": [
+        "U000011-H3"
+      ],
+      "resolved_hypothesis_id": "U000011-H3",
+      "evidence_experiment_id": "X-U000011-C-02-0",
+      "existing_promoted_concepts_mutated": false
+    }
+  ],
+  "surprises_converted_to_revisions": 8,
+  "prior_promoted_concepts_mutated": false
+}

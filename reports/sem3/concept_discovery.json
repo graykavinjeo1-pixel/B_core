@@ -1,0 +1,16 @@
+{
+  "new_candidate_concepts": 0,
+  "new_promoted_concepts": 0,
+  "generation_3_candidates": 0,
+  "generation_3_promoted": 0,
+  "maximum_autonomous_concept_generation": 2,
+  "promotion_gates_lowered": false,
+  "discovery_origins": {
+    "AUTONOMOUS_SELECTED_EXPERIMENT": 0,
+    "HUMAN_INITIAL_CURRICULUM": 0,
+    "RANDOM_EXPLORATION": 0
+  },
+  "notes": [
+    "SEM-3 prioritized relation validation; no candidate met the full immutable promotion protocol."
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "sem3_status": "PASS",
+  "disposition": "AUTONOMOUS_ACTIVE_EXPERIMENT_SELECTION_VERIFIED",
+  "branch": "main",
+  "commit": "SELF",
+  "worktree_clean": true,
+  "push_performed": false,
+  "canonical_integrity": true,
+  "predecessor_integrity": true,
+  "network_calls": 0,
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "recursive_source_mutations": 0,
+  "frozen_external_blind_tasks": 100,
+  "experiment_budget": 50,
+  "random_a_experiments": 50,
+  "novelty_b_experiments": 50,
+  "fixed_c_experiments": 50,
+  "uncertainty_d_experiments": 50,
+  "active_e_experiments": 50,
+  "random_a_blind_solve_rate": 0.93,
+  "novelty_b_blind_solve_rate": 0.65,
+  "fixed_c_blind_solve_rate": 0.83,
+  "uncertainty_d_blind_solve_rate": 1.0,
+  "active_e_blind_solve_rate": 1.0,
+  "random_a_false_transfer_rate": 0.15217391304347827,
+  "active_e_false_transfer_rate": 0.0,
+  "random_a_median_blind_expansions": 25.0,
+  "active_e_median_blind_expansions": 22.0,
+  "random_a_uncertainties_resolved": 8,
+  "active_e_uncertainties_resolved": 12,
+  "random_a_information_gain_per_experiment": 0.30039100017307746,
+  "active_e_information_gain_per_experiment": 0.3803910001730775,
+  "active_vs_random_information_efficiency_ratio": 1.2663195633487891,
+  "autonomous_experiments_generated": 14400,
+  "autonomous_experiments_executed": 50,
+  "hypotheses_eliminated": 24,
+  "semantic_surprise_events": 8,
+  "model_revisions": 20,
+  "new_candidate_concepts": 0,
+  "new_promoted_concepts": 0,
+  "gen3_candidates": 0,
+  "gen3_promoted": 0,
+  "max_autonomous_concept_generation": 2,
+  "capability_frontier_expanded": true,
+  "max_solution_graph_depth": 69,
+  "max_primitive_expanded_depth": 555,
+  "max_concepts_composed": 4,
+  "max_simultaneous_subproblems": 5,
+  "max_recombinations": 1,
+  "full_catalog_scans": 0,
+  "routing_false_negatives": 0,
+  "autonomous_experiment_generation_pass": true,
+  "information_efficiency_pass": true,
+  "external_blind_gain_pass": true,
+  "surprise_handling_pass": true,
+  "self_fulfilling_curriculum_check_pass": true,
+  "gates": [
+    {
+      "gate": "AUTONOMOUS_EXPERIMENT_GENERATION",
+      "passed": true,
+      "evidence": "generated=14400 executed=50"
+    },
+    {
+      "gate": "NONTRIVIAL_SELECTION",
+      "passed": true,
+      "evidence": "active/random selection sets differ; active mean EIG=0.760782"
+    },
+    {
+      "gate": "INFORMATION_GAIN",
+      "passed": true,
+      "evidence": "uncertainties resolved E=12 A=8"
+    },
+    {
+      "gate": "EXTERNAL_BLIND_IMPROVEMENT",
+      "passed": true,
+      "evidence": "initial=0.650000 random=0.930000 active=1.000000"
+    },
+    {
+      "gate": "EFFICIENCY_ADVANTAGE",
+      "passed": true,
+      "evidence": "E/A efficiency ratio=1.266320"
+    },
+    {
+      "gate": "NO_SELF_FULFILLING_PASS",
+      "passed": true,
+      "evidence": "external frozen evaluator improved without selector access"
+    },
+    {
+      "gate": "SURPRISE_HANDLING",
+      "passed": true,
+      "evidence": "surprises=8 revisions=20"
+    },
+    {
+      "gate": "NO_CONTAMINATION",
+      "passed": true,
+      "evidence": "network/web/LLM/teacher/source mutation all zero"
+    },
+    {
+      "gate": "SPARSE_OPERATION",
+      "passed": true,
+      "evidence": "full scans=0 routing false negatives=0"
+    }
+  ],
+  "sem4_started": false,
+  "next_allowed_stage": "SEM-4_MATHEMATICAL_FIRST_PRINCIPLES_DERIVATION"
+}

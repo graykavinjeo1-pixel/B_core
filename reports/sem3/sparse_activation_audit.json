@@ -1,0 +1,7 @@
+{
+  "total_promoted_concepts": 4,
+  "maximum_routed_concepts": 1,
+  "full_catalog_scans": 0,
+  "routing_false_negatives": 0,
+  "passed": true
+}

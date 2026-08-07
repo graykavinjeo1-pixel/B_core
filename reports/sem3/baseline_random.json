@@ -1,0 +1,2029 @@
+{
+  "condition": "RANDOM_A",
+  "experiment_budget": 50,
+  "equal_budget_enforced": true,
+  "initial_ledger": {
+    "ledger_version": "SEM3-UNCERTAINTY-LEDGER-1.0.0",
+    "items": [
+      {
+        "uncertainty_id": "U000000",
+        "kind": "UNCERTAIN_PRECONDITION",
+        "affected_concepts": [
+          "C000001"
+        ],
+        "relation_code": "R3000",
+        "competing_hypotheses": [
+          {
+            "hypothesis_id": "U000000-H1",
+            "rule": "NON_NEGATIVE",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E000"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          },
+          {
+            "hypothesis_id": "U000000-H2",
+            "rule": "NON_ZERO",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E000"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          },
+          {
+            "hypothesis_id": "U000000-H3",
+            "rule": "UNIVERSAL",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E000"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          }
+        ],
+        "supporting_evidence": [
+          "SEM2-AMBIGUOUS-EVIDENCE-000"
+        ],
+        "contradicting_evidence": [],
+        "confidence": 0.3333333333333333,
+        "expected_consequences_if_resolved": [
+          "BOUNDARY_PREDICTION_CALIBRATED",
+          "FALSE_TRANSFER_REDUCED",
+          "SEARCH_BRANCH_REMOVED"
+        ],
+        "provenance": [
+          "SEM2-RUN-0002",
+          "SEM2-UNRESOLVED-TRACE-000"
+        ],
+        "resolved": false,
+        "resolved_hypothesis_id": null
+      },
+      {
+        "uncertainty_id": "U000001",
+        "kind": "UNCERTAIN_INVARIANT",
+        "affected_concepts": [
+          "C000002"
+        ],
+        "relation_code": "R3001",
+        "competing_hypotheses": [
+          {
+            "hypothesis_id": "U000001-H1",
+            "rule": "NON_NEGATIVE",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E001"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          },
+          {
+            "hypothesis_id": "U000001-H2",
+            "rule": "NON_ZERO",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E001"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          },
+          {
+            "hypothesis_id": "U000001-H3",
+            "rule": "UNIVERSAL",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E001"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          }
+        ],
+        "supporting_evidence": [
+          "SEM2-AMBIGUOUS-EVIDENCE-001"
+        ],
+        "contradicting_evidence": [],
+        "confidence": 0.3333333333333333,
+        "expected_consequences_if_resolved": [
+          "BOUNDARY_PREDICTION_CALIBRATED",
+          "FALSE_TRANSFER_REDUCED",
+          "SEARCH_BRANCH_REMOVED"
+        ],
+        "provenance": [
+          "SEM2-RUN-0002",
+          "SEM2-UNRESOLVED-TRACE-001"
+        ],
+        "resolved": false,
+        "resolved_hypothesis_id": null
+      },
+      {
+        "uncertainty_id": "U000002",
+        "kind": "UNCERTAIN_RELATION",
+        "affected_concepts": [
+          "C000004"
+        ],
+        "relation_code": "R3002",
+        "competing_hypotheses": [
+          {
+            "hypothesis_id": "U000002-H1",
+            "rule": "NON_NEGATIVE",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E002"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          },
+          {
+            "hypothesis_id": "U000002-H2",
+            "rule": "NON_ZERO",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E002"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          },
+          {
+            "hypothesis_id": "U000002-H3",
+            "rule": "UNIVERSAL",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E002"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          }
+        ],
+        "supporting_evidence": [
+          "SEM2-AMBIGUOUS-EVIDENCE-002"
+        ],
+        "contradicting_evidence": [],
+        "confidence": 0.3333333333333333,
+        "expected_consequences_if_resolved": [
+          "BOUNDARY_PREDICTION_CALIBRATED",
+          "FALSE_TRANSFER_REDUCED",
+          "SEARCH_BRANCH_REMOVED"
+        ],
+        "provenance": [
+          "SEM2-RUN-0002",
+          "SEM2-UNRESOLVED-TRACE-002"
+        ],
+        "resolved": false,
+        "resolved_hypothesis_id": null
+      },
+      {
+        "uncertainty_id": "U000003",
+        "kind": "UNCERTAIN_OPERATOR_DOMAIN",
+        "affected_concepts": [
+          "C000005"
+        ],
+        "relation_code": "R3000",
+        "competing_hypotheses": [
+          {
+            "hypothesis_id": "U000003-H1",
+            "rule": "NON_NEGATIVE",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E003"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          },
+          {
+            "hypothesis_id": "U000003-H2",
+            "rule": "NON_ZERO",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E003"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          },
+          {
+            "hypothesis_id": "U000003-H3",
+            "rule": "UNIVERSAL",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E003"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          }
+        ],
+        "supporting_evidence": [
+          "SEM2-AMBIGUOUS-EVIDENCE-003"
+        ],
+        "contradicting_evidence": [],
+        "confidence": 0.3333333333333333,
+        "expected_consequences_if_resolved": [
+          "BOUNDARY_PREDICTION_CALIBRATED",
+          "FALSE_TRANSFER_REDUCED",
+          "SEARCH_BRANCH_REMOVED"
+        ],
+        "provenance": [
+          "SEM2-RUN-0002",
+          "SEM2-UNRESOLVED-TRACE-003"
+        ],
+        "resolved": false,
+        "resolved_hypothesis_id": null
+      },
+      {
+        "uncertainty_id": "U000004",
+        "kind": "UNCERTAIN_COUNTERFACTUAL",
+        "affected_concepts": [
+          "C000001"
+        ],
+        "relation_code": "R3001",
+        "competing_hypotheses": [
+          {
+            "hypothesis_id": "U000004-H1",
+            "rule": "NON_NEGATIVE",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E004"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          },
+          {
+            "hypothesis_id": "U000004-H2",
+            "rule": "NON_ZERO",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E004"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          },
+          {
+            "hypothesis_id": "U000004-H3",
+            "rule": "UNIVERSAL",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E004"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          }
+        ],
+        "supporting_evidence": [
+          "SEM2-AMBIGUOUS-EVIDENCE-004"
+        ],
+        "contradicting_evidence": [],
+        "confidence": 0.3333333333333333,
+        "expected_consequences_if_resolved": [
+          "BOUNDARY_PREDICTION_CALIBRATED",
+          "FALSE_TRANSFER_REDUCED",
+          "SEARCH_BRANCH_REMOVED"
+        ],
+        "provenance": [
+          "SEM2-RUN-0002",
+          "SEM2-UNRESOLVED-TRACE-004"
+        ],
+        "resolved": false,
+        "resolved_hypothesis_id": null
+      },
+      {
+        "uncertainty_id": "U000005",
+        "kind": "COMPETING_ABSTRACTIONS",
+        "affected_concepts": [
+          "C000002"
+        ],
+        "relation_code": "R3002",
+        "competing_hypotheses": [
+          {
+            "hypothesis_id": "U000005-H1",
+            "rule": "NON_NEGATIVE",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E005"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          },
+          {
+            "hypothesis_id": "U000005-H2",
+            "rule": "NON_ZERO",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E005"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          },
+          {
+            "hypothesis_id": "U000005-H3",
+            "rule": "UNIVERSAL",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E005"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          }
+        ],
+        "supporting_evidence": [
+          "SEM2-AMBIGUOUS-EVIDENCE-005"
+        ],
+        "contradicting_evidence": [],
+        "confidence": 0.3333333333333333,
+        "expected_consequences_if_resolved": [
+          "BOUNDARY_PREDICTION_CALIBRATED",
+          "FALSE_TRANSFER_REDUCED",
+          "SEARCH_BRANCH_REMOVED"
+        ],
+        "provenance": [
+          "SEM2-RUN-0002",
+          "SEM2-UNRESOLVED-TRACE-005"
+        ],
+        "resolved": false,
+        "resolved_hypothesis_id": null
+      },
+      {
+        "uncertainty_id": "U000006",
+        "kind": "AMBIGUOUS_CONCEPT_BOUNDARY",
+        "affected_concepts": [
+          "C000004"
+        ],
+        "relation_code": "R3000",
+        "competing_hypotheses": [
+          {
+            "hypothesis_id": "U000006-H1",
+            "rule": "NON_NEGATIVE",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E006"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          },
+          {
+            "hypothesis_id": "U000006-H2",
+            "rule": "NON_ZERO",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E006"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          },
+          {
+            "hypothesis_id": "U000006-H3",
+            "rule": "UNIVERSAL",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E006"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          }
+        ],
+        "supporting_evidence": [
+          "SEM2-AMBIGUOUS-EVIDENCE-006"
+        ],
+        "contradicting_evidence": [],
+        "confidence": 0.3333333333333333,
+        "expected_consequences_if_resolved": [
+          "BOUNDARY_PREDICTION_CALIBRATED",
+          "FALSE_TRANSFER_REDUCED",
+          "SEARCH_BRANCH_REMOVED"
+        ],
+        "provenance": [
+          "SEM2-RUN-0002",
+          "SEM2-UNRESOLVED-TRACE-006"
+        ],
+        "resolved": false,
+        "resolved_hypothesis_id": null
+      },
+      {
+        "uncertainty_id": "U000007",
+        "kind": "FAILED_TRANSFER",
+        "affected_concepts": [
+          "C000005"
+        ],
+        "relation_code": "R3001",
+        "competing_hypotheses": [
+          {
+            "hypothesis_id": "U000007-H1",
+            "rule": "NON_NEGATIVE",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E007"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          },
+          {
+            "hypothesis_id": "U000007-H2",
+            "rule": "NON_ZERO",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E007"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          },
+          {
+            "hypothesis_id": "U000007-H3",
+            "rule": "UNIVERSAL",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E007"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          }
+        ],
+        "supporting_evidence": [
+          "SEM2-AMBIGUOUS-EVIDENCE-007"
+        ],
+        "contradicting_evidence": [],
+        "confidence": 0.3333333333333333,
+        "expected_consequences_if_resolved": [
+          "BOUNDARY_PREDICTION_CALIBRATED",
+          "FALSE_TRANSFER_REDUCED",
+          "SEARCH_BRANCH_REMOVED"
+        ],
+        "provenance": [
+          "SEM2-RUN-0002",
+          "SEM2-UNRESOLVED-TRACE-007"
+        ],
+        "resolved": false,
+        "resolved_hypothesis_id": null
+      },
+      {
+        "uncertainty_id": "U000008",
+        "kind": "LOW_CONFIDENCE_PREDICTION",
+        "affected_concepts": [
+          "C000001"
+        ],
+        "relation_code": "R3002",
+        "competing_hypotheses": [
+          {
+            "hypothesis_id": "U000008-H1",
+            "rule": "NON_NEGATIVE",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E008"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          },
+          {
+            "hypothesis_id": "U000008-H2",
+            "rule": "NON_ZERO",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E008"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          },
+          {
+            "hypothesis_id": "U000008-H3",
+            "rule": "UNIVERSAL",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E008"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          }
+        ],
+        "supporting_evidence": [
+          "SEM2-AMBIGUOUS-EVIDENCE-008"
+        ],
+        "contradicting_evidence": [],
+        "confidence": 0.3333333333333333,
+        "expected_consequences_if_resolved": [
+          "BOUNDARY_PREDICTION_CALIBRATED",
+          "FALSE_TRANSFER_REDUCED",
+          "SEARCH_BRANCH_REMOVED"
+        ],
+        "provenance": [
+          "SEM2-RUN-0002",
+          "SEM2-UNRESOLVED-TRACE-008"
+        ],
+        "resolved": false,
+        "resolved_hypothesis_id": null
+      },
+      {
+        "uncertainty_id": "U000009",
+        "kind": "UNEXPLAINED_EPISODE",
+        "affected_concepts": [
+          "C000002"
+        ],
+        "relation_code": "R3000",
+        "competing_hypotheses": [
+          {
+            "hypothesis_id": "U000009-H1",
+            "rule": "NON_NEGATIVE",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E009"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          },
+          {
+            "hypothesis_id": "U000009-H2",
+            "rule": "NON_ZERO",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E009"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          },
+          {
+            "hypothesis_id": "U000009-H3",
+            "rule": "UNIVERSAL",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E009"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          }
+        ],
+        "supporting_evidence": [
+          "SEM2-AMBIGUOUS-EVIDENCE-009"
+        ],
+        "contradicting_evidence": [],
+        "confidence": 0.3333333333333333,
+        "expected_consequences_if_resolved": [
+          "BOUNDARY_PREDICTION_CALIBRATED",
+          "FALSE_TRANSFER_REDUCED",
+          "SEARCH_BRANCH_REMOVED"
+        ],
+        "provenance": [
+          "SEM2-RUN-0002",
+          "SEM2-UNRESOLVED-TRACE-009"
+        ],
+        "resolved": false,
+        "resolved_hypothesis_id": null
+      },
+      {
+        "uncertainty_id": "U000010",
+        "kind": "UNCERTAIN_PRECONDITION",
+        "affected_concepts": [
+          "C000004"
+        ],
+        "relation_code": "R3001",
+        "competing_hypotheses": [
+          {
+            "hypothesis_id": "U000010-H1",
+            "rule": "NON_NEGATIVE",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E010"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          },
+          {
+            "hypothesis_id": "U000010-H2",
+            "rule": "NON_ZERO",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E010"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          },
+          {
+            "hypothesis_id": "U000010-H3",
+            "rule": "UNIVERSAL",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E010"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          }
+        ],
+        "supporting_evidence": [
+          "SEM2-AMBIGUOUS-EVIDENCE-010"
+        ],
+        "contradicting_evidence": [],
+        "confidence": 0.3333333333333333,
+        "expected_consequences_if_resolved": [
+          "BOUNDARY_PREDICTION_CALIBRATED",
+          "FALSE_TRANSFER_REDUCED",
+          "SEARCH_BRANCH_REMOVED"
+        ],
+        "provenance": [
+          "SEM2-RUN-0002",
+          "SEM2-UNRESOLVED-TRACE-010"
+        ],
+        "resolved": false,
+        "resolved_hypothesis_id": null
+      },
+      {
+        "uncertainty_id": "U000011",
+        "kind": "UNCERTAIN_INVARIANT",
+        "affected_concepts": [
+          "C000005"
+        ],
+        "relation_code": "R3002",
+        "competing_hypotheses": [
+          {
+            "hypothesis_id": "U000011-H1",
+            "rule": "NON_NEGATIVE",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E011"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          },
+          {
+            "hypothesis_id": "U000011-H2",
+            "rule": "NON_ZERO",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E011"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          },
+          {
+            "hypothesis_id": "U000011-H3",
+            "rule": "UNIVERSAL",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E011"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          }
+        ],
+        "supporting_evidence": [
+          "SEM2-AMBIGUOUS-EVIDENCE-011"
+        ],
+        "contradicting_evidence": [],
+        "confidence": 0.3333333333333333,
+        "expected_consequences_if_resolved": [
+          "BOUNDARY_PREDICTION_CALIBRATED",
+          "FALSE_TRANSFER_REDUCED",
+          "SEARCH_BRANCH_REMOVED"
+        ],
+        "provenance": [
+          "SEM2-RUN-0002",
+          "SEM2-UNRESOLVED-TRACE-011"
+        ],
+        "resolved": false,
+        "resolved_hypothesis_id": null
+      }
+    ],
+    "append_only_revision_ids": [],
+    "fabricated_uncertainty_count": 0
+  },
+  "final_ledger": {
+    "ledger_version": "SEM3-UNCERTAINTY-LEDGER-1.0.0",
+    "items": [
+      {
+        "uncertainty_id": "U000000",
+        "kind": "UNCERTAIN_PRECONDITION",
+        "affected_concepts": [
+          "C000001"
+        ],
+        "relation_code": "R3000",
+        "competing_hypotheses": [
+          {
+            "hypothesis_id": "U000000-H1",
+            "rule": "NON_NEGATIVE",
+            "confidence": 1.0,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E000",
+              "X-U000000-D-02-0",
+              "X-U000000-D-00-0",
+              "X-U000000-D-00-1",
+              "X-U000000-C-05-1",
+              "X-U000000-C-01-1",
+              "X-U000000-D-03-1"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          },
+          {
+            "hypothesis_id": "U000000-H2",
+            "rule": "NON_ZERO",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E000"
+            ],
+            "contradicting_evidence": [
+              "X-U000000-D-02-0"
+            ],
+            "retained": false
+          },
+          {
+            "hypothesis_id": "U000000-H3",
+            "rule": "UNIVERSAL",
+            "confidence": 0.5,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E000",
+              "X-U000000-D-02-0"
+            ],
+            "contradicting_evidence": [
+              "X-U000000-D-00-0"
+            ],
+            "retained": false
+          }
+        ],
+        "supporting_evidence": [
+          "SEM2-AMBIGUOUS-EVIDENCE-000",
+          "X-U000000-D-02-0",
+          "X-U000000-D-00-0",
+          "X-U000000-D-00-1",
+          "X-U000000-C-05-1",
+          "X-U000000-C-01-1",
+          "X-U000000-D-03-1"
+        ],
+        "contradicting_evidence": [],
+        "confidence": 1.0,
+        "expected_consequences_if_resolved": [
+          "BOUNDARY_PREDICTION_CALIBRATED",
+          "FALSE_TRANSFER_REDUCED",
+          "SEARCH_BRANCH_REMOVED"
+        ],
+        "provenance": [
+          "SEM2-RUN-0002",
+          "SEM2-UNRESOLVED-TRACE-000"
+        ],
+        "resolved": true,
+        "resolved_hypothesis_id": "U000000-H1"
+      },
+      {
+        "uncertainty_id": "U000001",
+        "kind": "UNCERTAIN_INVARIANT",
+        "affected_concepts": [
+          "C000002"
+        ],
+        "relation_code": "R3001",
+        "competing_hypotheses": [
+          {
+            "hypothesis_id": "U000001-H1",
+            "rule": "NON_NEGATIVE",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E001"
+            ],
+            "contradicting_evidence": [
+              "X-U000001-D-00-0"
+            ],
+            "retained": false
+          },
+          {
+            "hypothesis_id": "U000001-H2",
+            "rule": "NON_ZERO",
+            "confidence": 0.5,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E001",
+              "X-U000001-D-00-0",
+              "X-U000001-D-05-1"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          },
+          {
+            "hypothesis_id": "U000001-H3",
+            "rule": "UNIVERSAL",
+            "confidence": 0.5,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E001",
+              "X-U000001-D-00-0",
+              "X-U000001-D-05-1"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          }
+        ],
+        "supporting_evidence": [
+          "SEM2-AMBIGUOUS-EVIDENCE-001",
+          "X-U000001-D-00-0",
+          "X-U000001-D-05-1"
+        ],
+        "contradicting_evidence": [],
+        "confidence": 0.5,
+        "expected_consequences_if_resolved": [
+          "BOUNDARY_PREDICTION_CALIBRATED",
+          "FALSE_TRANSFER_REDUCED",
+          "SEARCH_BRANCH_REMOVED"
+        ],
+        "provenance": [
+          "SEM2-RUN-0002",
+          "SEM2-UNRESOLVED-TRACE-001"
+        ],
+        "resolved": false,
+        "resolved_hypothesis_id": null
+      },
+      {
+        "uncertainty_id": "U000002",
+        "kind": "UNCERTAIN_RELATION",
+        "affected_concepts": [
+          "C000004"
+        ],
+        "relation_code": "R3002",
+        "competing_hypotheses": [
+          {
+            "hypothesis_id": "U000002-H1",
+            "rule": "NON_NEGATIVE",
+            "confidence": 0.5,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E002",
+              "X-U000002-C-02-0"
+            ],
+            "contradicting_evidence": [
+              "X-U000002-D-00-0"
+            ],
+            "retained": false
+          },
+          {
+            "hypothesis_id": "U000002-H2",
+            "rule": "NON_ZERO",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E002"
+            ],
+            "contradicting_evidence": [
+              "X-U000002-C-02-0"
+            ],
+            "retained": false
+          },
+          {
+            "hypothesis_id": "U000002-H3",
+            "rule": "UNIVERSAL",
+            "confidence": 1.0,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E002",
+              "X-U000002-C-02-0",
+              "X-U000002-D-00-0",
+              "X-U000002-D-02-0",
+              "X-U000002-C-05-0"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          }
+        ],
+        "supporting_evidence": [
+          "SEM2-AMBIGUOUS-EVIDENCE-002",
+          "X-U000002-C-02-0",
+          "X-U000002-D-00-0",
+          "X-U000002-D-02-0",
+          "X-U000002-C-05-0"
+        ],
+        "contradicting_evidence": [],
+        "confidence": 1.0,
+        "expected_consequences_if_resolved": [
+          "BOUNDARY_PREDICTION_CALIBRATED",
+          "FALSE_TRANSFER_REDUCED",
+          "SEARCH_BRANCH_REMOVED"
+        ],
+        "provenance": [
+          "SEM2-RUN-0002",
+          "SEM2-UNRESOLVED-TRACE-002"
+        ],
+        "resolved": true,
+        "resolved_hypothesis_id": "U000002-H3"
+      },
+      {
+        "uncertainty_id": "U000003",
+        "kind": "UNCERTAIN_OPERATOR_DOMAIN",
+        "affected_concepts": [
+          "C000005"
+        ],
+        "relation_code": "R3000",
+        "competing_hypotheses": [
+          {
+            "hypothesis_id": "U000003-H1",
+            "rule": "NON_NEGATIVE",
+            "confidence": 1.0,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E003",
+              "X-U000003-D-00-0",
+              "X-U000003-C-04-1",
+              "X-U000003-D-03-1"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          },
+          {
+            "hypothesis_id": "U000003-H2",
+            "rule": "NON_ZERO",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E003"
+            ],
+            "contradicting_evidence": [
+              "X-U000003-D-00-0"
+            ],
+            "retained": false
+          },
+          {
+            "hypothesis_id": "U000003-H3",
+            "rule": "UNIVERSAL",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E003"
+            ],
+            "contradicting_evidence": [
+              "X-U000003-D-00-0"
+            ],
+            "retained": false
+          }
+        ],
+        "supporting_evidence": [
+          "SEM2-AMBIGUOUS-EVIDENCE-003",
+          "X-U000003-D-00-0",
+          "X-U000003-C-04-1",
+          "X-U000003-D-03-1"
+        ],
+        "contradicting_evidence": [],
+        "confidence": 1.0,
+        "expected_consequences_if_resolved": [
+          "BOUNDARY_PREDICTION_CALIBRATED",
+          "FALSE_TRANSFER_REDUCED",
+          "SEARCH_BRANCH_REMOVED"
+        ],
+        "provenance": [
+          "SEM2-RUN-0002",
+          "SEM2-UNRESOLVED-TRACE-003"
+        ],
+        "resolved": true,
+        "resolved_hypothesis_id": "U000003-H1"
+      },
+      {
+        "uncertainty_id": "U000004",
+        "kind": "UNCERTAIN_COUNTERFACTUAL",
+        "affected_concepts": [
+          "C000001"
+        ],
+        "relation_code": "R3001",
+        "competing_hypotheses": [
+          {
+            "hypothesis_id": "U000004-H1",
+            "rule": "NON_NEGATIVE",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E004",
+              "X-U000004-D-04-0"
+            ],
+            "contradicting_evidence": [
+              "X-U000004-C-02-0"
+            ],
+            "retained": false
+          },
+          {
+            "hypothesis_id": "U000004-H2",
+            "rule": "NON_ZERO",
+            "confidence": 1.0,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E004",
+              "X-U000004-D-04-0",
+              "X-U000004-C-02-0",
+              "X-U000004-C-04-0",
+              "X-U000004-D-00-0"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          },
+          {
+            "hypothesis_id": "U000004-H3",
+            "rule": "UNIVERSAL",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E004",
+              "X-U000004-D-04-0"
+            ],
+            "contradicting_evidence": [
+              "X-U000004-C-02-0"
+            ],
+            "retained": false
+          }
+        ],
+        "supporting_evidence": [
+          "SEM2-AMBIGUOUS-EVIDENCE-004",
+          "X-U000004-D-04-0",
+          "X-U000004-C-02-0",
+          "X-U000004-C-04-0",
+          "X-U000004-D-00-0"
+        ],
+        "contradicting_evidence": [],
+        "confidence": 1.0,
+        "expected_consequences_if_resolved": [
+          "BOUNDARY_PREDICTION_CALIBRATED",
+          "FALSE_TRANSFER_REDUCED",
+          "SEARCH_BRANCH_REMOVED"
+        ],
+        "provenance": [
+          "SEM2-RUN-0002",
+          "SEM2-UNRESOLVED-TRACE-004"
+        ],
+        "resolved": true,
+        "resolved_hypothesis_id": "U000004-H2"
+      },
+      {
+        "uncertainty_id": "U000005",
+        "kind": "COMPETING_ABSTRACTIONS",
+        "affected_concepts": [
+          "C000002"
+        ],
+        "relation_code": "R3002",
+        "competing_hypotheses": [
+          {
+            "hypothesis_id": "U000005-H1",
+            "rule": "NON_NEGATIVE",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E005",
+              "X-U000005-C-05-1"
+            ],
+            "contradicting_evidence": [
+              "X-U000005-D-00-1"
+            ],
+            "retained": false
+          },
+          {
+            "hypothesis_id": "U000005-H2",
+            "rule": "NON_ZERO",
+            "confidence": 0.5,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E005",
+              "X-U000005-C-05-1",
+              "X-U000005-D-00-1"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          },
+          {
+            "hypothesis_id": "U000005-H3",
+            "rule": "UNIVERSAL",
+            "confidence": 0.5,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E005",
+              "X-U000005-C-05-1",
+              "X-U000005-D-00-1"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          }
+        ],
+        "supporting_evidence": [
+          "SEM2-AMBIGUOUS-EVIDENCE-005",
+          "X-U000005-C-05-1",
+          "X-U000005-D-00-1"
+        ],
+        "contradicting_evidence": [],
+        "confidence": 0.5,
+        "expected_consequences_if_resolved": [
+          "BOUNDARY_PREDICTION_CALIBRATED",
+          "FALSE_TRANSFER_REDUCED",
+          "SEARCH_BRANCH_REMOVED"
+        ],
+        "provenance": [
+          "SEM2-RUN-0002",
+          "SEM2-UNRESOLVED-TRACE-005"
+        ],
+        "resolved": false,
+        "resolved_hypothesis_id": null
+      },
+      {
+        "uncertainty_id": "U000006",
+        "kind": "AMBIGUOUS_CONCEPT_BOUNDARY",
+        "affected_concepts": [
+          "C000004"
+        ],
+        "relation_code": "R3000",
+        "competing_hypotheses": [
+          {
+            "hypothesis_id": "U000006-H1",
+            "rule": "NON_NEGATIVE",
+            "confidence": 0.5,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E006",
+              "X-U000006-C-02-0",
+              "X-U000006-C-05-1"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          },
+          {
+            "hypothesis_id": "U000006-H2",
+            "rule": "NON_ZERO",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E006"
+            ],
+            "contradicting_evidence": [
+              "X-U000006-C-02-0"
+            ],
+            "retained": false
+          },
+          {
+            "hypothesis_id": "U000006-H3",
+            "rule": "UNIVERSAL",
+            "confidence": 0.5,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E006",
+              "X-U000006-C-02-0",
+              "X-U000006-C-05-1"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          }
+        ],
+        "supporting_evidence": [
+          "SEM2-AMBIGUOUS-EVIDENCE-006",
+          "X-U000006-C-02-0",
+          "X-U000006-C-05-1"
+        ],
+        "contradicting_evidence": [],
+        "confidence": 0.5,
+        "expected_consequences_if_resolved": [
+          "BOUNDARY_PREDICTION_CALIBRATED",
+          "FALSE_TRANSFER_REDUCED",
+          "SEARCH_BRANCH_REMOVED"
+        ],
+        "provenance": [
+          "SEM2-RUN-0002",
+          "SEM2-UNRESOLVED-TRACE-006"
+        ],
+        "resolved": false,
+        "resolved_hypothesis_id": null
+      },
+      {
+        "uncertainty_id": "U000007",
+        "kind": "FAILED_TRANSFER",
+        "affected_concepts": [
+          "C000005"
+        ],
+        "relation_code": "R3001",
+        "competing_hypotheses": [
+          {
+            "hypothesis_id": "U000007-H1",
+            "rule": "NON_NEGATIVE",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E007"
+            ],
+            "contradicting_evidence": [
+              "X-U000007-D-00-1"
+            ],
+            "retained": false
+          },
+          {
+            "hypothesis_id": "U000007-H2",
+            "rule": "NON_ZERO",
+            "confidence": 1.0,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E007",
+              "X-U000007-D-00-1",
+              "X-U000007-D-04-0",
+              "X-U000007-C-00-1",
+              "X-U000007-C-02-0"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          },
+          {
+            "hypothesis_id": "U000007-H3",
+            "rule": "UNIVERSAL",
+            "confidence": 0.5,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E007",
+              "X-U000007-D-00-1",
+              "X-U000007-D-04-0",
+              "X-U000007-C-00-1"
+            ],
+            "contradicting_evidence": [
+              "X-U000007-C-02-0"
+            ],
+            "retained": false
+          }
+        ],
+        "supporting_evidence": [
+          "SEM2-AMBIGUOUS-EVIDENCE-007",
+          "X-U000007-D-00-1",
+          "X-U000007-D-04-0",
+          "X-U000007-C-00-1",
+          "X-U000007-C-02-0"
+        ],
+        "contradicting_evidence": [],
+        "confidence": 1.0,
+        "expected_consequences_if_resolved": [
+          "BOUNDARY_PREDICTION_CALIBRATED",
+          "FALSE_TRANSFER_REDUCED",
+          "SEARCH_BRANCH_REMOVED"
+        ],
+        "provenance": [
+          "SEM2-RUN-0002",
+          "SEM2-UNRESOLVED-TRACE-007"
+        ],
+        "resolved": true,
+        "resolved_hypothesis_id": "U000007-H2"
+      },
+      {
+        "uncertainty_id": "U000008",
+        "kind": "LOW_CONFIDENCE_PREDICTION",
+        "affected_concepts": [
+          "C000001"
+        ],
+        "relation_code": "R3002",
+        "competing_hypotheses": [
+          {
+            "hypothesis_id": "U000008-H1",
+            "rule": "NON_NEGATIVE",
+            "confidence": 0.5,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E008",
+              "X-U000008-D-03-0",
+              "X-U000008-D-04-0",
+              "X-U000008-C-04-1",
+              "X-U000008-C-05-0",
+              "X-U000008-D-02-0"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          },
+          {
+            "hypothesis_id": "U000008-H2",
+            "rule": "NON_ZERO",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E008",
+              "X-U000008-D-03-0",
+              "X-U000008-D-04-0",
+              "X-U000008-C-04-1",
+              "X-U000008-C-05-0"
+            ],
+            "contradicting_evidence": [
+              "X-U000008-D-02-0"
+            ],
+            "retained": false
+          },
+          {
+            "hypothesis_id": "U000008-H3",
+            "rule": "UNIVERSAL",
+            "confidence": 0.5,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E008",
+              "X-U000008-D-03-0",
+              "X-U000008-D-04-0",
+              "X-U000008-C-04-1",
+              "X-U000008-C-05-0",
+              "X-U000008-D-02-0"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          }
+        ],
+        "supporting_evidence": [
+          "SEM2-AMBIGUOUS-EVIDENCE-008",
+          "X-U000008-D-03-0",
+          "X-U000008-D-04-0",
+          "X-U000008-C-04-1",
+          "X-U000008-C-05-0",
+          "X-U000008-D-02-0"
+        ],
+        "contradicting_evidence": [],
+        "confidence": 0.5,
+        "expected_consequences_if_resolved": [
+          "BOUNDARY_PREDICTION_CALIBRATED",
+          "FALSE_TRANSFER_REDUCED",
+          "SEARCH_BRANCH_REMOVED"
+        ],
+        "provenance": [
+          "SEM2-RUN-0002",
+          "SEM2-UNRESOLVED-TRACE-008"
+        ],
+        "resolved": false,
+        "resolved_hypothesis_id": null
+      },
+      {
+        "uncertainty_id": "U000009",
+        "kind": "UNEXPLAINED_EPISODE",
+        "affected_concepts": [
+          "C000002"
+        ],
+        "relation_code": "R3000",
+        "competing_hypotheses": [
+          {
+            "hypothesis_id": "U000009-H1",
+            "rule": "NON_NEGATIVE",
+            "confidence": 1.0,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E009",
+              "X-U000009-C-04-0",
+              "X-U000009-C-04-1",
+              "X-U000009-D-04-1",
+              "X-U000009-D-00-0",
+              "X-U000009-C-03-0",
+              "X-U000009-C-02-1",
+              "X-U000009-D-05-0"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          },
+          {
+            "hypothesis_id": "U000009-H2",
+            "rule": "NON_ZERO",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E009",
+              "X-U000009-C-04-0",
+              "X-U000009-C-04-1",
+              "X-U000009-D-04-1"
+            ],
+            "contradicting_evidence": [
+              "X-U000009-D-00-0"
+            ],
+            "retained": false
+          },
+          {
+            "hypothesis_id": "U000009-H3",
+            "rule": "UNIVERSAL",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E009",
+              "X-U000009-C-04-0",
+              "X-U000009-C-04-1",
+              "X-U000009-D-04-1"
+            ],
+            "contradicting_evidence": [
+              "X-U000009-D-00-0"
+            ],
+            "retained": false
+          }
+        ],
+        "supporting_evidence": [
+          "SEM2-AMBIGUOUS-EVIDENCE-009",
+          "X-U000009-C-04-0",
+          "X-U000009-C-04-1",
+          "X-U000009-D-04-1",
+          "X-U000009-D-00-0",
+          "X-U000009-C-03-0",
+          "X-U000009-C-02-1",
+          "X-U000009-D-05-0"
+        ],
+        "contradicting_evidence": [],
+        "confidence": 1.0,
+        "expected_consequences_if_resolved": [
+          "BOUNDARY_PREDICTION_CALIBRATED",
+          "FALSE_TRANSFER_REDUCED",
+          "SEARCH_BRANCH_REMOVED"
+        ],
+        "provenance": [
+          "SEM2-RUN-0002",
+          "SEM2-UNRESOLVED-TRACE-009"
+        ],
+        "resolved": true,
+        "resolved_hypothesis_id": "U000009-H1"
+      },
+      {
+        "uncertainty_id": "U000010",
+        "kind": "UNCERTAIN_PRECONDITION",
+        "affected_concepts": [
+          "C000004"
+        ],
+        "relation_code": "R3001",
+        "competing_hypotheses": [
+          {
+            "hypothesis_id": "U000010-H1",
+            "rule": "NON_NEGATIVE",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E010"
+            ],
+            "contradicting_evidence": [
+              "X-U000010-C-02-1"
+            ],
+            "retained": false
+          },
+          {
+            "hypothesis_id": "U000010-H2",
+            "rule": "NON_ZERO",
+            "confidence": 1.0,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E010",
+              "X-U000010-C-02-1",
+              "X-U000010-C-05-1",
+              "X-U000010-D-00-1",
+              "X-U000010-C-04-0",
+              "X-U000010-C-05-0"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          },
+          {
+            "hypothesis_id": "U000010-H3",
+            "rule": "UNIVERSAL",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E010"
+            ],
+            "contradicting_evidence": [
+              "X-U000010-C-02-1"
+            ],
+            "retained": false
+          }
+        ],
+        "supporting_evidence": [
+          "SEM2-AMBIGUOUS-EVIDENCE-010",
+          "X-U000010-C-02-1",
+          "X-U000010-C-05-1",
+          "X-U000010-D-00-1",
+          "X-U000010-C-04-0",
+          "X-U000010-C-05-0"
+        ],
+        "contradicting_evidence": [],
+        "confidence": 1.0,
+        "expected_consequences_if_resolved": [
+          "BOUNDARY_PREDICTION_CALIBRATED",
+          "FALSE_TRANSFER_REDUCED",
+          "SEARCH_BRANCH_REMOVED"
+        ],
+        "provenance": [
+          "SEM2-RUN-0002",
+          "SEM2-UNRESOLVED-TRACE-010"
+        ],
+        "resolved": true,
+        "resolved_hypothesis_id": "U000010-H2"
+      },
+      {
+        "uncertainty_id": "U000011",
+        "kind": "UNCERTAIN_INVARIANT",
+        "affected_concepts": [
+          "C000005"
+        ],
+        "relation_code": "R3002",
+        "competing_hypotheses": [
+          {
+            "hypothesis_id": "U000011-H1",
+            "rule": "NON_NEGATIVE",
+            "confidence": 0.3333333333333333,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E011"
+            ],
+            "contradicting_evidence": [
+              "X-U000011-D-01-1"
+            ],
+            "retained": false
+          },
+          {
+            "hypothesis_id": "U000011-H2",
+            "rule": "NON_ZERO",
+            "confidence": 0.5,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E011",
+              "X-U000011-D-01-1"
+            ],
+            "contradicting_evidence": [
+              "X-U000011-D-02-0"
+            ],
+            "retained": false
+          },
+          {
+            "hypothesis_id": "U000011-H3",
+            "rule": "UNIVERSAL",
+            "confidence": 1.0,
+            "supporting_evidence": [
+              "SEM2-TRANSFER-E011",
+              "X-U000011-D-01-1",
+              "X-U000011-D-02-0",
+              "X-U000011-C-01-0",
+              "X-U000011-C-03-1",
+              "X-U000011-C-03-0",
+              "X-U000011-D-04-1"
+            ],
+            "contradicting_evidence": [],
+            "retained": true
+          }
+        ],
+        "supporting_evidence": [
+          "SEM2-AMBIGUOUS-EVIDENCE-011",
+          "X-U000011-D-01-1",
+          "X-U000011-D-02-0",
+          "X-U000011-C-01-0",
+          "X-U000011-C-03-1",
+          "X-U000011-C-03-0",
+          "X-U000011-D-04-1"
+        ],
+        "contradicting_evidence": [],
+        "confidence": 1.0,
+        "expected_consequences_if_resolved": [
+          "BOUNDARY_PREDICTION_CALIBRATED",
+          "FALSE_TRANSFER_REDUCED",
+          "SEARCH_BRANCH_REMOVED"
+        ],
+        "provenance": [
+          "SEM2-RUN-0002",
+          "SEM2-UNRESOLVED-TRACE-011"
+        ],
+        "resolved": true,
+        "resolved_hypothesis_id": "U000011-H3"
+      }
+    ],
+    "append_only_revision_ids": [
+      "REVISION-000001",
+      "REVISION-000002",
+      "REVISION-000003",
+      "REVISION-000004",
+      "REVISION-000005",
+      "REVISION-000006",
+      "REVISION-000007",
+      "REVISION-000008",
+      "REVISION-000009",
+      "REVISION-000010",
+      "REVISION-000011",
+      "REVISION-000012",
+      "REVISION-000013",
+      "REVISION-000014",
+      "REVISION-000015",
+      "REVISION-000016"
+    ],
+    "fabricated_uncertainty_count": 0
+  },
+  "selected_experiment_ids": [
+    "X-U000009-C-04-0",
+    "X-U000007-D-00-1",
+    "X-U000004-D-04-0",
+    "X-U000008-D-03-0",
+    "X-U000003-D-00-0",
+    "X-U000010-C-02-1",
+    "X-U000006-C-02-0",
+    "X-U000009-C-04-1",
+    "X-U000000-D-02-0",
+    "X-U000004-C-02-0",
+    "X-U000007-D-04-0",
+    "X-U000001-D-00-0",
+    "X-U000000-D-00-0",
+    "X-U000007-C-00-1",
+    "X-U000009-D-04-1",
+    "X-U000003-C-04-1",
+    "X-U000009-D-00-0",
+    "X-U000011-D-01-1",
+    "X-U000011-D-02-0",
+    "X-U000006-C-05-1",
+    "X-U000000-D-00-1",
+    "X-U000002-C-02-0",
+    "X-U000005-C-05-1",
+    "X-U000008-D-04-0",
+    "X-U000000-C-05-1",
+    "X-U000004-C-04-0",
+    "X-U000011-C-01-0",
+    "X-U000011-C-03-1",
+    "X-U000000-C-01-1",
+    "X-U000008-C-04-1",
+    "X-U000002-D-00-0",
+    "X-U000011-C-03-0",
+    "X-U000010-C-05-1",
+    "X-U000010-D-00-1",
+    "X-U000000-D-03-1",
+    "X-U000002-D-02-0",
+    "X-U000009-C-03-0",
+    "X-U000004-D-00-0",
+    "X-U000010-C-04-0",
+    "X-U000007-C-02-0",
+    "X-U000010-C-05-0",
+    "X-U000009-C-02-1",
+    "X-U000003-D-03-1",
+    "X-U000009-D-05-0",
+    "X-U000011-D-04-1",
+    "X-U000008-C-05-0",
+    "X-U000008-D-02-0",
+    "X-U000005-D-00-1",
+    "X-U000002-C-05-0",
+    "X-U000001-D-05-1"
+  ],
+  "learning_curve": [
+    {
+      "experiments_executed": 0,
+      "external_blind": {
+        "tasks": 100,
+        "strictly_solved": 65,
+        "solve_rate": 0.65,
+        "counterfactual_accuracy": 0.7619047619047619,
+        "false_transfers": 30,
+        "false_transfer_rate": 0.6521739130434783,
+        "false_rejections": 5,
+        "false_rejection_rate": 0.09259259259259259,
+        "invalid_cases": 46,
+        "invalid_abstentions": 16,
+        "invalid_abstention_rate": 0.34782608695652173,
+        "total_search_expansions": 3984,
+        "median_search_expansions": 39.0,
+        "max_solution_graph_depth": 45,
+        "max_primitive_expanded_depth": 363,
+        "max_concepts_composed": 4,
+        "max_simultaneous_subproblems": 5,
+        "max_recombinations": 1
+      },
+      "promoted_concepts": 4,
+      "validated_relations": 0,
+      "resolved_uncertainties": 0,
+      "remaining_uncertainties": 12,
+      "hypotheses_remaining": 36
+    },
+    {
+      "experiments_executed": 10,
+      "external_blind": {
+        "tasks": 100,
+        "strictly_solved": 82,
+        "solve_rate": 0.82,
+        "counterfactual_accuracy": 1.0,
+        "false_transfers": 18,
+        "false_transfer_rate": 0.391304347826087,
+        "false_rejections": 0,
+        "false_rejection_rate": 0.0,
+        "invalid_cases": 46,
+        "invalid_abstentions": 28,
+        "invalid_abstention_rate": 0.6086956521739131,
+        "total_search_expansions": 3242,
+        "median_search_expansions": 33.0,
+        "max_solution_graph_depth": 69,
+        "max_primitive_expanded_depth": 555,
+        "max_concepts_composed": 4,
+        "max_simultaneous_subproblems": 5,
+        "max_recombinations": 1
+      },
+      "promoted_concepts": 4,
+      "validated_relations": 3,
+      "resolved_uncertainties": 3,
+      "remaining_uncertainties": 9,
+      "hypotheses_remaining": 27
+    },
+    {
+      "experiments_executed": 25,
+      "external_blind": {
+        "tasks": 100,
+        "strictly_solved": 89,
+        "solve_rate": 0.89,
+        "counterfactual_accuracy": 1.0,
+        "false_transfers": 11,
+        "false_transfer_rate": 0.2391304347826087,
+        "false_rejections": 0,
+        "false_rejection_rate": 0.0,
+        "invalid_cases": 46,
+        "invalid_abstentions": 35,
+        "invalid_abstention_rate": 0.7608695652173914,
+        "total_search_expansions": 2768,
+        "median_search_expansions": 28.0,
+        "max_solution_graph_depth": 69,
+        "max_primitive_expanded_depth": 555,
+        "max_concepts_composed": 4,
+        "max_simultaneous_subproblems": 5,
+        "max_recombinations": 1
+      },
+      "promoted_concepts": 4,
+      "validated_relations": 6,
+      "resolved_uncertainties": 6,
+      "remaining_uncertainties": 6,
+      "hypotheses_remaining": 20
+    },
+    {
+      "experiments_executed": 50,
+      "external_blind": {
+        "tasks": 100,
+        "strictly_solved": 93,
+        "solve_rate": 0.93,
+        "counterfactual_accuracy": 1.0,
+        "false_transfers": 7,
+        "false_transfer_rate": 0.15217391304347827,
+        "false_rejections": 0,
+        "false_rejection_rate": 0.0,
+        "invalid_cases": 46,
+        "invalid_abstentions": 39,
+        "invalid_abstention_rate": 0.8478260869565217,
+        "total_search_expansions": 2525,
+        "median_search_expansions": 25.0,
+        "max_solution_graph_depth": 69,
+        "max_primitive_expanded_depth": 555,
+        "max_concepts_composed": 4,
+        "max_simultaneous_subproblems": 5,
+        "max_recombinations": 1
+      },
+      "promoted_concepts": 4,
+      "validated_relations": 8,
+      "resolved_uncertainties": 8,
+      "remaining_uncertainties": 4,
+      "hypotheses_remaining": 16
+    }
+  ],
+  "final_external_blind": {
+    "tasks": 100,
+    "strictly_solved": 93,
+    "solve_rate": 0.93,
+    "counterfactual_accuracy": 1.0,
+    "false_transfers": 7,
+    "false_transfer_rate": 0.15217391304347827,
+    "false_rejections": 0,
+    "false_rejection_rate": 0.0,
+    "invalid_cases": 46,
+    "invalid_abstentions": 39,
+    "invalid_abstention_rate": 0.8478260869565217,
+    "total_search_expansions": 2525,
+    "median_search_expansions": 25.0,
+    "max_solution_graph_depth": 69,
+    "max_primitive_expanded_depth": 555,
+    "max_concepts_composed": 4,
+    "max_simultaneous_subproblems": 5,
+    "max_recombinations": 1
+  },
+  "curriculum_quality": {
+    "candidate_experiments_generated": 14400,
+    "experiments_selected": 50,
+    "experiments_executed": 50,
+    "mean_expected_information_gain": 0.600782000346155,
+    "mean_realized_information_gain": 0.30039100017307746,
+    "hypotheses_eliminated": 20,
+    "uncertainties_resolved": 8,
+    "duplicate_rate": 0.48,
+    "near_duplicate_rate": 0.08,
+    "mastered_replay_rate": 0.22,
+    "frontier_task_fraction": 0.74,
+    "too_easy_fraction": 0.22,
+    "currently_unsolved_fraction": 0.04,
+    "invalid_experiment_fraction": 0.0,
+    "self_generated_solve_rate": 0.9
+  },
+  "surprises": [
+    {
+      "surprise_id": "SURPRISE-000002",
+      "experiment_id": "X-U000003-D-00-0",
+      "uncertainty_id": "U000003",
+      "predicted_majority_outcome": true,
+      "actual_outcome": false,
+      "diagnosis": "WRONG_PRECONDITION",
+      "prior_valid_concepts_mutated": false,
+      "created_revision_id": "REVISION-000002"
+    },
+    {
+      "surprise_id": "SURPRISE-000003",
+      "experiment_id": "X-U000010-C-02-1",
+      "uncertainty_id": "U000010",
+      "predicted_majority_outcome": false,
+      "actual_outcome": true,
+      "diagnosis": "WRONG_PRECONDITION",
+      "prior_valid_concepts_mutated": false,
+      "created_revision_id": "REVISION-000003"
+    },
+    {
+      "surprise_id": "SURPRISE-000006",
+      "experiment_id": "X-U000004-C-02-0",
+      "uncertainty_id": "U000004",
+      "predicted_majority_outcome": false,
+      "actual_outcome": true,
+      "diagnosis": "WRONG_PARAMETER_OR_MISSING_CONCEPT",
+      "prior_valid_concepts_mutated": false,
+      "created_revision_id": "REVISION-000006"
+    },
+    {
+      "surprise_id": "SURPRISE-000008",
+      "experiment_id": "X-U000000-D-00-0",
+      "uncertainty_id": "U000000",
+      "predicted_majority_outcome": true,
+      "actual_outcome": false,
+      "diagnosis": "WRONG_PRECONDITION",
+      "prior_valid_concepts_mutated": false,
+      "created_revision_id": "REVISION-000008"
+    },
+    {
+      "surprise_id": "SURPRISE-000009",
+      "experiment_id": "X-U000009-D-00-0",
+      "uncertainty_id": "U000009",
+      "predicted_majority_outcome": true,
+      "actual_outcome": false,
+      "diagnosis": "WRONG_PARAMETER_OR_MISSING_CONCEPT",
+      "prior_valid_concepts_mutated": false,
+      "created_revision_id": "REVISION-000009"
+    }
+  ],
+  "revisions": [
+    {
+      "revision_id": "REVISION-000001",
+      "uncertainty_id": "U000007",
+      "eliminated_hypotheses": [
+        "U000007-H1"
+      ],
+      "retained_hypotheses": [
+        "U000007-H2",
+        "U000007-H3"
+      ],
+      "resolved_hypothesis_id": null,
+      "evidence_experiment_id": "X-U000007-D-00-1",
+      "existing_promoted_concepts_mutated": false
+    },
+    {
+      "revision_id": "REVISION-000002",
+      "uncertainty_id": "U000003",
+      "eliminated_hypotheses": [
+        "U000003-H2",
+        "U000003-H3"
+      ],
+      "retained_hypotheses": [
+        "U000003-H1"
+      ],
+      "resolved_hypothesis_id": "U000003-H1",
+      "evidence_experiment_id": "X-U000003-D-00-0",
+      "existing_promoted_concepts_mutated": false
+    },
+    {
+      "revision_id": "REVISION-000003",
+      "uncertainty_id": "U000010",
+      "eliminated_hypotheses": [
+        "U000010-H1",
+        "U000010-H3"
+      ],
+      "retained_hypotheses": [
+        "U000010-H2"
+      ],
+      "resolved_hypothesis_id": "U000010-H2",
+      "evidence_experiment_id": "X-U000010-C-02-1",
+      "existing_promoted_concepts_mutated": false
+    },
+    {
+      "revision_id": "REVISION-000004",
+      "uncertainty_id": "U000006",
+      "eliminated_hypotheses": [
+        "U000006-H2"
+      ],
+      "retained_hypotheses": [
+        "U000006-H1",
+        "U000006-H3"
+      ],
+      "resolved_hypothesis_id": null,
+      "evidence_experiment_id": "X-U000006-C-02-0",
+      "existing_promoted_concepts_mutated": false
+    },
+    {
+      "revision_id": "REVISION-000005",
+      "uncertainty_id": "U000000",
+      "eliminated_hypotheses": [
+        "U000000-H2"
+      ],
+      "retained_hypotheses": [
+        "U000000-H1",
+        "U000000-H3"
+      ],
+      "resolved_hypothesis_id": null,
+      "evidence_experiment_id": "X-U000000-D-02-0",
+      "existing_promoted_concepts_mutated": false
+    },
+    {
+      "revision_id": "REVISION-000006",
+      "uncertainty_id": "U000004",
+      "eliminated_hypotheses": [
+        "U000004-H1",
+        "U000004-H3"
+      ],
+      "retained_hypotheses": [
+        "U000004-H2"
+      ],
+      "resolved_hypothesis_id": "U000004-H2",
+      "evidence_experiment_id": "X-U000004-C-02-0",
+      "existing_promoted_concepts_mutated": false
+    },
+    {
+      "revision_id": "REVISION-000007",
+      "uncertainty_id": "U000001",
+      "eliminated_hypotheses": [
+        "U000001-H1"
+      ],
+      "retained_hypotheses": [
+        "U000001-H2",
+        "U000001-H3"
+      ],
+      "resolved_hypothesis_id": null,
+      "evidence_experiment_id": "X-U000001-D-00-0",
+      "existing_promoted_concepts_mutated": false
+    },
+    {
+      "revision_id": "REVISION-000008",
+      "uncertainty_id": "U000000",
+      "eliminated_hypotheses": [
+        "U000000-H3"
+      ],
+      "retained_hypotheses": [
+        "U000000-H1"
+      ],
+      "resolved_hypothesis_id": "U000000-H1",
+      "evidence_experiment_id": "X-U000000-D-00-0",
+      "existing_promoted_concepts_mutated": false
+    },
+    {
+      "revision_id": "REVISION-000009",
+      "uncertainty_id": "U000009",
+      "eliminated_hypotheses": [
+        "U000009-H2",
+        "U000009-H3"
+      ],
+      "retained_hypotheses": [
+        "U000009-H1"
+      ],
+      "resolved_hypothesis_id": "U000009-H1",
+      "evidence_experiment_id": "X-U000009-D-00-0",
+      "existing_promoted_concepts_mutated": false
+    },
+    {
+      "revision_id": "REVISION-000010",
+      "uncertainty_id": "U000011",
+      "eliminated_hypotheses": [
+        "U000011-H1"
+      ],
+      "retained_hypotheses": [
+        "U000011-H2",
+        "U000011-H3"
+      ],
+      "resolved_hypothesis_id": null,
+      "evidence_experiment_id": "X-U000011-D-01-1",
+      "existing_promoted_concepts_mutated": false
+    },
+    {
+      "revision_id": "REVISION-000011",
+      "uncertainty_id": "U000011",
+      "eliminated_hypotheses": [
+        "U000011-H2"
+      ],
+      "retained_hypotheses": [
+        "U000011-H3"
+      ],
+      "resolved_hypothesis_id": "U000011-H3",
+      "evidence_experiment_id": "X-U000011-D-02-0",
+      "existing_promoted_concepts_mutated": false
+    },
+    {
+      "revision_id": "REVISION-000012",
+      "uncertainty_id": "U000002",
+      "eliminated_hypotheses": [
+        "U000002-H2"
+      ],
+      "retained_hypotheses": [
+        "U000002-H1",
+        "U000002-H3"
+      ],
+      "resolved_hypothesis_id": null,
+      "evidence_experiment_id": "X-U000002-C-02-0",
+      "existing_promoted_concepts_mutated": false
+    },
+    {
+      "revision_id": "REVISION-000013",
+      "uncertainty_id": "U000002",
+      "eliminated_hypotheses": [
+        "U000002-H1"
+      ],
+      "retained_hypotheses": [
+        "U000002-H3"
+      ],
+      "resolved_hypothesis_id": "U000002-H3",
+      "evidence_experiment_id": "X-U000002-D-00-0",
+      "existing_promoted_concepts_mutated": false
+    },
+    {
+      "revision_id": "REVISION-000014",
+      "uncertainty_id": "U000007",
+      "eliminated_hypotheses": [
+        "U000007-H3"
+      ],
+      "retained_hypotheses": [
+        "U000007-H2"
+      ],
+      "resolved_hypothesis_id": "U000007-H2",
+      "evidence_experiment_id": "X-U000007-C-02-0",
+      "existing_promoted_concepts_mutated": false
+    },
+    {
+      "revision_id": "REVISION-000015",
+      "uncertainty_id": "U000008",
+      "eliminated_hypotheses": [
+        "U000008-H2"
+      ],
+      "retained_hypotheses": [
+        "U000008-H1",
+        "U000008-H3"
+      ],
+      "resolved_hypothesis_id": null,
+      "evidence_experiment_id": "X-U000008-D-02-0",
+      "existing_promoted_concepts_mutated": false
+    },
+    {
+      "revision_id": "REVISION-000016",
+      "uncertainty_id": "U000005",
+      "eliminated_hypotheses": [
+        "U000005-H1"
+      ],
+      "retained_hypotheses": [
+        "U000005-H2",
+        "U000005-H3"
+      ],
+      "resolved_hypothesis_id": null,
+      "evidence_experiment_id": "X-U000005-D-00-1",
+      "existing_promoted_concepts_mutated": false
+    }
+  ],
+  "local_active_inference_probes": 0,
+  "epistemic_experiments": 50
+}

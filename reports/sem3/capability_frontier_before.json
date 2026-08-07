@@ -1,0 +1,131 @@
+{
+  "phase": "BEFORE",
+  "solved_tasks": 65,
+  "entries": [
+    {
+      "task_id": "S3B000009",
+      "solution_graph_depth": 45,
+      "primitive_expanded_depth": 363,
+      "concepts_composed": 1,
+      "simultaneous_subproblems": 4,
+      "recombinations": 0,
+      "semantic_traps": 0,
+      "search_expansions": 36
+    },
+    {
+      "task_id": "S3B000045",
+      "solution_graph_depth": 45,
+      "primitive_expanded_depth": 363,
+      "concepts_composed": 1,
+      "simultaneous_subproblems": 5,
+      "recombinations": 0,
+      "semantic_traps": 0,
+      "search_expansions": 36
+    },
+    {
+      "task_id": "S3B000018",
+      "solution_graph_depth": 45,
+      "primitive_expanded_depth": 363,
+      "concepts_composed": 2,
+      "simultaneous_subproblems": 3,
+      "recombinations": 0,
+      "semantic_traps": 0,
+      "search_expansions": 38
+    },
+    {
+      "task_id": "S3B000054",
+      "solution_graph_depth": 45,
+      "primitive_expanded_depth": 363,
+      "concepts_composed": 2,
+      "simultaneous_subproblems": 4,
+      "recombinations": 0,
+      "semantic_traps": 0,
+      "search_expansions": 38
+    },
+    {
+      "task_id": "S3B000027",
+      "solution_graph_depth": 45,
+      "primitive_expanded_depth": 363,
+      "concepts_composed": 3,
+      "simultaneous_subproblems": 2,
+      "recombinations": 0,
+      "semantic_traps": 0,
+      "search_expansions": 40
+    },
+    {
+      "task_id": "S3B000063",
+      "solution_graph_depth": 45,
+      "primitive_expanded_depth": 363,
+      "concepts_composed": 3,
+      "simultaneous_subproblems": 3,
+      "recombinations": 0,
+      "semantic_traps": 0,
+      "search_expansions": 40
+    },
+    {
+      "task_id": "S3B000072",
+      "solution_graph_depth": 45,
+      "primitive_expanded_depth": 363,
+      "concepts_composed": 4,
+      "simultaneous_subproblems": 2,
+      "recombinations": 0,
+      "semantic_traps": 0,
+      "search_expansions": 42
+    },
+    {
+      "task_id": "S3B000036",
+      "solution_graph_depth": 45,
+      "primitive_expanded_depth": 363,
+      "concepts_composed": 4,
+      "simultaneous_subproblems": 1,
+      "recombinations": 0,
+      "semantic_traps": 1,
+      "search_expansions": 45
+    },
+    {
+      "task_id": "S3B000017",
+      "solution_graph_depth": 40,
+      "primitive_expanded_depth": 323,
+      "concepts_composed": 1,
+      "simultaneous_subproblems": 2,
+      "recombinations": 0,
+      "semantic_traps": 0,
+      "search_expansions": 36
+    },
+    {
+      "task_id": "S3B000062",
+      "solution_graph_depth": 40,
+      "primitive_expanded_depth": 323,
+      "concepts_composed": 2,
+      "simultaneous_subproblems": 2,
+      "recombinations": 0,
+      "semantic_traps": 0,
+      "search_expansions": 38
+    },
+    {
+      "task_id": "S3B000035",
+      "solution_graph_depth": 40,
+      "primitive_expanded_depth": 323,
+      "concepts_composed": 3,
+      "simultaneous_subproblems": 5,
+      "recombinations": 0,
+      "semantic_traps": 0,
+      "search_expansions": 40
+    },
+    {
+      "task_id": "S3B000026",
+      "solution_graph_depth": 40,
+      "primitive_expanded_depth": 323,
+      "concepts_composed": 2,
+      "simultaneous_subproblems": 1,
+      "recombinations": 0,
+      "semantic_traps": 1,
+      "search_expansions": 41
+    }
+  ],
+  "maximum_solution_graph_depth": 45,
+  "maximum_primitive_expanded_depth": 363,
+  "maximum_concepts_composed": 4,
+  "maximum_simultaneous_subproblems": 5,
+  "maximum_recombinations": 1
+}

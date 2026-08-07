@@ -1,0 +1,20 @@
+{
+  "passed": true,
+  "network_calls": 0,
+  "web_calls": 0,
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "recursive_source_mutations": 0,
+  "environment_hidden_rule_reads": 0,
+  "blind_answer_reads_by_selector": 0,
+  "blind_family_metadata_exposed": false,
+  "self_generated_tasks_used_as_final_blind": false,
+  "self_observe": true,
+  "self_measure": true,
+  "self_propose": false,
+  "self_apply": false,
+  "source_mutation": false,
+  "auto_patch": false,
+  "auto_commit": false,
+  "auto_push": false
+}

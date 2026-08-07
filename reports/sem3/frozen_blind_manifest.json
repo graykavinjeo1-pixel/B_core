@@ -1,0 +1,912 @@
+{
+  "generator_version": "SEM3-EXTERNAL-BLIND-1.0.0",
+  "seed": 20260807331,
+  "tasks": [
+    {
+      "task_id": "S3B000001",
+      "concept_id": "C000001",
+      "relation_code": "R3000",
+      "value": 1,
+      "counterfactual": true,
+      "sequence_shape": 1,
+      "composition_arity": 1
+    },
+    {
+      "task_id": "S3B000002",
+      "concept_id": "C000002",
+      "relation_code": "R3001",
+      "value": -3,
+      "counterfactual": false,
+      "sequence_shape": 2,
+      "composition_arity": 2
+    },
+    {
+      "task_id": "S3B000003",
+      "concept_id": "C000004",
+      "relation_code": "R3002",
+      "value": 0,
+      "counterfactual": false,
+      "sequence_shape": 3,
+      "composition_arity": 3
+    },
+    {
+      "task_id": "S3B000004",
+      "concept_id": "C000005",
+      "relation_code": "R3000",
+      "value": 3,
+      "counterfactual": false,
+      "sequence_shape": 4,
+      "composition_arity": 4
+    },
+    {
+      "task_id": "S3B000005",
+      "concept_id": "C000001",
+      "relation_code": "R3001",
+      "value": -1,
+      "counterfactual": false,
+      "sequence_shape": 5,
+      "composition_arity": 1
+    },
+    {
+      "task_id": "S3B000006",
+      "concept_id": "C000002",
+      "relation_code": "R3002",
+      "value": 1,
+      "counterfactual": true,
+      "sequence_shape": 6,
+      "composition_arity": 2
+    },
+    {
+      "task_id": "S3B000007",
+      "concept_id": "C000004",
+      "relation_code": "R3000",
+      "value": -3,
+      "counterfactual": false,
+      "sequence_shape": 1,
+      "composition_arity": 3
+    },
+    {
+      "task_id": "S3B000008",
+      "concept_id": "C000005",
+      "relation_code": "R3001",
+      "value": 0,
+      "counterfactual": false,
+      "sequence_shape": 2,
+      "composition_arity": 4
+    },
+    {
+      "task_id": "S3B000009",
+      "concept_id": "C000001",
+      "relation_code": "R3002",
+      "value": 3,
+      "counterfactual": false,
+      "sequence_shape": 3,
+      "composition_arity": 1
+    },
+    {
+      "task_id": "S3B000010",
+      "concept_id": "C000002",
+      "relation_code": "R3000",
+      "value": -1,
+      "counterfactual": false,
+      "sequence_shape": 4,
+      "composition_arity": 2
+    },
+    {
+      "task_id": "S3B000011",
+      "concept_id": "C000004",
+      "relation_code": "R3001",
+      "value": 1,
+      "counterfactual": true,
+      "sequence_shape": 5,
+      "composition_arity": 3
+    },
+    {
+      "task_id": "S3B000012",
+      "concept_id": "C000005",
+      "relation_code": "R3002",
+      "value": -3,
+      "counterfactual": false,
+      "sequence_shape": 6,
+      "composition_arity": 4
+    },
+    {
+      "task_id": "S3B000013",
+      "concept_id": "C000001",
+      "relation_code": "R3000",
+      "value": 0,
+      "counterfactual": false,
+      "sequence_shape": 1,
+      "composition_arity": 1
+    },
+    {
+      "task_id": "S3B000014",
+      "concept_id": "C000002",
+      "relation_code": "R3001",
+      "value": 3,
+      "counterfactual": false,
+      "sequence_shape": 2,
+      "composition_arity": 2
+    },
+    {
+      "task_id": "S3B000015",
+      "concept_id": "C000004",
+      "relation_code": "R3002",
+      "value": -1,
+      "counterfactual": false,
+      "sequence_shape": 3,
+      "composition_arity": 3
+    },
+    {
+      "task_id": "S3B000016",
+      "concept_id": "C000005",
+      "relation_code": "R3000",
+      "value": 1,
+      "counterfactual": true,
+      "sequence_shape": 4,
+      "composition_arity": 4
+    },
+    {
+      "task_id": "S3B000017",
+      "concept_id": "C000001",
+      "relation_code": "R3001",
+      "value": -3,
+      "counterfactual": false,
+      "sequence_shape": 5,
+      "composition_arity": 1
+    },
+    {
+      "task_id": "S3B000018",
+      "concept_id": "C000002",
+      "relation_code": "R3002",
+      "value": 0,
+      "counterfactual": false,
+      "sequence_shape": 6,
+      "composition_arity": 2
+    },
+    {
+      "task_id": "S3B000019",
+      "concept_id": "C000004",
+      "relation_code": "R3000",
+      "value": 3,
+      "counterfactual": false,
+      "sequence_shape": 1,
+      "composition_arity": 3
+    },
+    {
+      "task_id": "S3B000020",
+      "concept_id": "C000005",
+      "relation_code": "R3001",
+      "value": -1,
+      "counterfactual": false,
+      "sequence_shape": 2,
+      "composition_arity": 4
+    },
+    {
+      "task_id": "S3B000021",
+      "concept_id": "C000001",
+      "relation_code": "R3002",
+      "value": 1,
+      "counterfactual": true,
+      "sequence_shape": 3,
+      "composition_arity": 1
+    },
+    {
+      "task_id": "S3B000022",
+      "concept_id": "C000002",
+      "relation_code": "R3000",
+      "value": -3,
+      "counterfactual": false,
+      "sequence_shape": 4,
+      "composition_arity": 2
+    },
+    {
+      "task_id": "S3B000023",
+      "concept_id": "C000004",
+      "relation_code": "R3001",
+      "value": 0,
+      "counterfactual": false,
+      "sequence_shape": 5,
+      "composition_arity": 3
+    },
+    {
+      "task_id": "S3B000024",
+      "concept_id": "C000005",
+      "relation_code": "R3002",
+      "value": 3,
+      "counterfactual": false,
+      "sequence_shape": 6,
+      "composition_arity": 4
+    },
+    {
+      "task_id": "S3B000025",
+      "concept_id": "C000001",
+      "relation_code": "R3000",
+      "value": -1,
+      "counterfactual": false,
+      "sequence_shape": 1,
+      "composition_arity": 1
+    },
+    {
+      "task_id": "S3B000026",
+      "concept_id": "C000002",
+      "relation_code": "R3001",
+      "value": 1,
+      "counterfactual": true,
+      "sequence_shape": 2,
+      "composition_arity": 2
+    },
+    {
+      "task_id": "S3B000027",
+      "concept_id": "C000004",
+      "relation_code": "R3002",
+      "value": -3,
+      "counterfactual": false,
+      "sequence_shape": 3,
+      "composition_arity": 3
+    },
+    {
+      "task_id": "S3B000028",
+      "concept_id": "C000005",
+      "relation_code": "R3000",
+      "value": 0,
+      "counterfactual": false,
+      "sequence_shape": 4,
+      "composition_arity": 4
+    },
+    {
+      "task_id": "S3B000029",
+      "concept_id": "C000001",
+      "relation_code": "R3001",
+      "value": 3,
+      "counterfactual": false,
+      "sequence_shape": 5,
+      "composition_arity": 1
+    },
+    {
+      "task_id": "S3B000030",
+      "concept_id": "C000002",
+      "relation_code": "R3002",
+      "value": -1,
+      "counterfactual": false,
+      "sequence_shape": 6,
+      "composition_arity": 2
+    },
+    {
+      "task_id": "S3B000031",
+      "concept_id": "C000004",
+      "relation_code": "R3000",
+      "value": 1,
+      "counterfactual": true,
+      "sequence_shape": 1,
+      "composition_arity": 3
+    },
+    {
+      "task_id": "S3B000032",
+      "concept_id": "C000005",
+      "relation_code": "R3001",
+      "value": -3,
+      "counterfactual": false,
+      "sequence_shape": 2,
+      "composition_arity": 4
+    },
+    {
+      "task_id": "S3B000033",
+      "concept_id": "C000001",
+      "relation_code": "R3002",
+      "value": 0,
+      "counterfactual": false,
+      "sequence_shape": 3,
+      "composition_arity": 1
+    },
+    {
+      "task_id": "S3B000034",
+      "concept_id": "C000002",
+      "relation_code": "R3000",
+      "value": 3,
+      "counterfactual": false,
+      "sequence_shape": 4,
+      "composition_arity": 2
+    },
+    {
+      "task_id": "S3B000035",
+      "concept_id": "C000004",
+      "relation_code": "R3001",
+      "value": -1,
+      "counterfactual": false,
+      "sequence_shape": 5,
+      "composition_arity": 3
+    },
+    {
+      "task_id": "S3B000036",
+      "concept_id": "C000005",
+      "relation_code": "R3002",
+      "value": 1,
+      "counterfactual": true,
+      "sequence_shape": 6,
+      "composition_arity": 4
+    },
+    {
+      "task_id": "S3B000037",
+      "concept_id": "C000001",
+      "relation_code": "R3000",
+      "value": -3,
+      "counterfactual": false,
+      "sequence_shape": 1,
+      "composition_arity": 1
+    },
+    {
+      "task_id": "S3B000038",
+      "concept_id": "C000002",
+      "relation_code": "R3001",
+      "value": 0,
+      "counterfactual": false,
+      "sequence_shape": 2,
+      "composition_arity": 2
+    },
+    {
+      "task_id": "S3B000039",
+      "concept_id": "C000004",
+      "relation_code": "R3002",
+      "value": 3,
+      "counterfactual": false,
+      "sequence_shape": 3,
+      "composition_arity": 3
+    },
+    {
+      "task_id": "S3B000040",
+      "concept_id": "C000005",
+      "relation_code": "R3000",
+      "value": -1,
+      "counterfactual": false,
+      "sequence_shape": 4,
+      "composition_arity": 4
+    },
+    {
+      "task_id": "S3B000041",
+      "concept_id": "C000001",
+      "relation_code": "R3001",
+      "value": 1,
+      "counterfactual": true,
+      "sequence_shape": 5,
+      "composition_arity": 1
+    },
+    {
+      "task_id": "S3B000042",
+      "concept_id": "C000002",
+      "relation_code": "R3002",
+      "value": -3,
+      "counterfactual": false,
+      "sequence_shape": 6,
+      "composition_arity": 2
+    },
+    {
+      "task_id": "S3B000043",
+      "concept_id": "C000004",
+      "relation_code": "R3000",
+      "value": 0,
+      "counterfactual": false,
+      "sequence_shape": 1,
+      "composition_arity": 3
+    },
+    {
+      "task_id": "S3B000044",
+      "concept_id": "C000005",
+      "relation_code": "R3001",
+      "value": 3,
+      "counterfactual": false,
+      "sequence_shape": 2,
+      "composition_arity": 4
+    },
+    {
+      "task_id": "S3B000045",
+      "concept_id": "C000001",
+      "relation_code": "R3002",
+      "value": -1,
+      "counterfactual": false,
+      "sequence_shape": 3,
+      "composition_arity": 1
+    },
+    {
+      "task_id": "S3B000046",
+      "concept_id": "C000002",
+      "relation_code": "R3000",
+      "value": 1,
+      "counterfactual": true,
+      "sequence_shape": 4,
+      "composition_arity": 2
+    },
+    {
+      "task_id": "S3B000047",
+      "concept_id": "C000004",
+      "relation_code": "R3001",
+      "value": -3,
+      "counterfactual": false,
+      "sequence_shape": 5,
+      "composition_arity": 3
+    },
+    {
+      "task_id": "S3B000048",
+      "concept_id": "C000005",
+      "relation_code": "R3002",
+      "value": 0,
+      "counterfactual": false,
+      "sequence_shape": 6,
+      "composition_arity": 4
+    },
+    {
+      "task_id": "S3B000049",
+      "concept_id": "C000001",
+      "relation_code": "R3000",
+      "value": 3,
+      "counterfactual": false,
+      "sequence_shape": 1,
+      "composition_arity": 1
+    },
+    {
+      "task_id": "S3B000050",
+      "concept_id": "C000002",
+      "relation_code": "R3001",
+      "value": -1,
+      "counterfactual": false,
+      "sequence_shape": 2,
+      "composition_arity": 2
+    },
+    {
+      "task_id": "S3B000051",
+      "concept_id": "C000004",
+      "relation_code": "R3002",
+      "value": 1,
+      "counterfactual": true,
+      "sequence_shape": 3,
+      "composition_arity": 3
+    },
+    {
+      "task_id": "S3B000052",
+      "concept_id": "C000005",
+      "relation_code": "R3000",
+      "value": -3,
+      "counterfactual": false,
+      "sequence_shape": 4,
+      "composition_arity": 4
+    },
+    {
+      "task_id": "S3B000053",
+      "concept_id": "C000001",
+      "relation_code": "R3001",
+      "value": 0,
+      "counterfactual": false,
+      "sequence_shape": 5,
+      "composition_arity": 1
+    },
+    {
+      "task_id": "S3B000054",
+      "concept_id": "C000002",
+      "relation_code": "R3002",
+      "value": 3,
+      "counterfactual": false,
+      "sequence_shape": 6,
+      "composition_arity": 2
+    },
+    {
+      "task_id": "S3B000055",
+      "concept_id": "C000004",
+      "relation_code": "R3000",
+      "value": -1,
+      "counterfactual": false,
+      "sequence_shape": 1,
+      "composition_arity": 3
+    },
+    {
+      "task_id": "S3B000056",
+      "concept_id": "C000005",
+      "relation_code": "R3001",
+      "value": 1,
+      "counterfactual": true,
+      "sequence_shape": 2,
+      "composition_arity": 4
+    },
+    {
+      "task_id": "S3B000057",
+      "concept_id": "C000001",
+      "relation_code": "R3002",
+      "value": -3,
+      "counterfactual": false,
+      "sequence_shape": 3,
+      "composition_arity": 1
+    },
+    {
+      "task_id": "S3B000058",
+      "concept_id": "C000002",
+      "relation_code": "R3000",
+      "value": 0,
+      "counterfactual": false,
+      "sequence_shape": 4,
+      "composition_arity": 2
+    },
+    {
+      "task_id": "S3B000059",
+      "concept_id": "C000004",
+      "relation_code": "R3001",
+      "value": 3,
+      "counterfactual": false,
+      "sequence_shape": 5,
+      "composition_arity": 3
+    },
+    {
+      "task_id": "S3B000060",
+      "concept_id": "C000005",
+      "relation_code": "R3002",
+      "value": -1,
+      "counterfactual": false,
+      "sequence_shape": 6,
+      "composition_arity": 4
+    },
+    {
+      "task_id": "S3B000061",
+      "concept_id": "C000001",
+      "relation_code": "R3000",
+      "value": 1,
+      "counterfactual": true,
+      "sequence_shape": 1,
+      "composition_arity": 1
+    },
+    {
+      "task_id": "S3B000062",
+      "concept_id": "C000002",
+      "relation_code": "R3001",
+      "value": -3,
+      "counterfactual": false,
+      "sequence_shape": 2,
+      "composition_arity": 2
+    },
+    {
+      "task_id": "S3B000063",
+      "concept_id": "C000004",
+      "relation_code": "R3002",
+      "value": 0,
+      "counterfactual": false,
+      "sequence_shape": 3,
+      "composition_arity": 3
+    },
+    {
+      "task_id": "S3B000064",
+      "concept_id": "C000005",
+      "relation_code": "R3000",
+      "value": 3,
+      "counterfactual": false,
+      "sequence_shape": 4,
+      "composition_arity": 4
+    },
+    {
+      "task_id": "S3B000065",
+      "concept_id": "C000001",
+      "relation_code": "R3001",
+      "value": -1,
+      "counterfactual": false,
+      "sequence_shape": 5,
+      "composition_arity": 1
+    },
+    {
+      "task_id": "S3B000066",
+      "concept_id": "C000002",
+      "relation_code": "R3002",
+      "value": 1,
+      "counterfactual": true,
+      "sequence_shape": 6,
+      "composition_arity": 2
+    },
+    {
+      "task_id": "S3B000067",
+      "concept_id": "C000004",
+      "relation_code": "R3000",
+      "value": -3,
+      "counterfactual": false,
+      "sequence_shape": 1,
+      "composition_arity": 3
+    },
+    {
+      "task_id": "S3B000068",
+      "concept_id": "C000005",
+      "relation_code": "R3001",
+      "value": 0,
+      "counterfactual": false,
+      "sequence_shape": 2,
+      "composition_arity": 4
+    },
+    {
+      "task_id": "S3B000069",
+      "concept_id": "C000001",
+      "relation_code": "R3002",
+      "value": 3,
+      "counterfactual": false,
+      "sequence_shape": 3,
+      "composition_arity": 1
+    },
+    {
+      "task_id": "S3B000070",
+      "concept_id": "C000002",
+      "relation_code": "R3000",
+      "value": -1,
+      "counterfactual": false,
+      "sequence_shape": 4,
+      "composition_arity": 2
+    },
+    {
+      "task_id": "S3B000071",
+      "concept_id": "C000004",
+      "relation_code": "R3001",
+      "value": 1,
+      "counterfactual": true,
+      "sequence_shape": 5,
+      "composition_arity": 3
+    },
+    {
+      "task_id": "S3B000072",
+      "concept_id": "C000005",
+      "relation_code": "R3002",
+      "value": -3,
+      "counterfactual": false,
+      "sequence_shape": 6,
+      "composition_arity": 4
+    },
+    {
+      "task_id": "S3B000073",
+      "concept_id": "C000001",
+      "relation_code": "R3000",
+      "value": 0,
+      "counterfactual": false,
+      "sequence_shape": 1,
+      "composition_arity": 1
+    },
+    {
+      "task_id": "S3B000074",
+      "concept_id": "C000002",
+      "relation_code": "R3001",
+      "value": 3,
+      "counterfactual": false,
+      "sequence_shape": 2,
+      "composition_arity": 2
+    },
+    {
+      "task_id": "S3B000075",
+      "concept_id": "C000004",
+      "relation_code": "R3002",
+      "value": -1,
+      "counterfactual": false,
+      "sequence_shape": 3,
+      "composition_arity": 3
+    },
+    {
+      "task_id": "S3B000076",
+      "concept_id": "C000005",
+      "relation_code": "R3000",
+      "value": 1,
+      "counterfactual": true,
+      "sequence_shape": 4,
+      "composition_arity": 4
+    },
+    {
+      "task_id": "S3B000077",
+      "concept_id": "C000001",
+      "relation_code": "R3001",
+      "value": -3,
+      "counterfactual": false,
+      "sequence_shape": 5,
+      "composition_arity": 1
+    },
+    {
+      "task_id": "S3B000078",
+      "concept_id": "C000002",
+      "relation_code": "R3002",
+      "value": 0,
+      "counterfactual": false,
+      "sequence_shape": 6,
+      "composition_arity": 2
+    },
+    {
+      "task_id": "S3B000079",
+      "concept_id": "C000004",
+      "relation_code": "R3000",
+      "value": 3,
+      "counterfactual": false,
+      "sequence_shape": 1,
+      "composition_arity": 3
+    },
+    {
+      "task_id": "S3B000080",
+      "concept_id": "C000005",
+      "relation_code": "R3001",
+      "value": -1,
+      "counterfactual": false,
+      "sequence_shape": 2,
+      "composition_arity": 4
+    },
+    {
+      "task_id": "S3B000081",
+      "concept_id": "C000001",
+      "relation_code": "R3000",
+      "value": -1,
+      "counterfactual": true,
+      "sequence_shape": 3,
+      "composition_arity": 1
+    },
+    {
+      "task_id": "S3B000082",
+      "concept_id": "C000002",
+      "relation_code": "R3001",
+      "value": 0,
+      "counterfactual": false,
+      "sequence_shape": 4,
+      "composition_arity": 2
+    },
+    {
+      "task_id": "S3B000083",
+      "concept_id": "C000005",
+      "relation_code": "R3000",
+      "value": -1,
+      "counterfactual": false,
+      "sequence_shape": 5,
+      "composition_arity": 3
+    },
+    {
+      "task_id": "S3B000084",
+      "concept_id": "C000001",
+      "relation_code": "R3001",
+      "value": 0,
+      "counterfactual": false,
+      "sequence_shape": 6,
+      "composition_arity": 4
+    },
+    {
+      "task_id": "S3B000085",
+      "concept_id": "C000004",
+      "relation_code": "R3000",
+      "value": -1,
+      "counterfactual": true,
+      "sequence_shape": 1,
+      "composition_arity": 1
+    },
+    {
+      "task_id": "S3B000086",
+      "concept_id": "C000005",
+      "relation_code": "R3001",
+      "value": 0,
+      "counterfactual": false,
+      "sequence_shape": 2,
+      "composition_arity": 2
+    },
+    {
+      "task_id": "S3B000087",
+      "concept_id": "C000002",
+      "relation_code": "R3000",
+      "value": -1,
+      "counterfactual": false,
+      "sequence_shape": 3,
+      "composition_arity": 3
+    },
+    {
+      "task_id": "S3B000088",
+      "concept_id": "C000004",
+      "relation_code": "R3001",
+      "value": 0,
+      "counterfactual": false,
+      "sequence_shape": 4,
+      "composition_arity": 4
+    },
+    {
+      "task_id": "S3B000089",
+      "concept_id": "C000001",
+      "relation_code": "R3000",
+      "value": -1,
+      "counterfactual": true,
+      "sequence_shape": 5,
+      "composition_arity": 1
+    },
+    {
+      "task_id": "S3B000090",
+      "concept_id": "C000002",
+      "relation_code": "R3001",
+      "value": 0,
+      "counterfactual": false,
+      "sequence_shape": 6,
+      "composition_arity": 2
+    },
+    {
+      "task_id": "S3B000091",
+      "concept_id": "C000005",
+      "relation_code": "R3000",
+      "value": -1,
+      "counterfactual": false,
+      "sequence_shape": 1,
+      "composition_arity": 3
+    },
+    {
+      "task_id": "S3B000092",
+      "concept_id": "C000001",
+      "relation_code": "R3001",
+      "value": 0,
+      "counterfactual": false,
+      "sequence_shape": 2,
+      "composition_arity": 4
+    },
+    {
+      "task_id": "S3B000093",
+      "concept_id": "C000004",
+      "relation_code": "R3000",
+      "value": -1,
+      "counterfactual": true,
+      "sequence_shape": 3,
+      "composition_arity": 1
+    },
+    {
+      "task_id": "S3B000094",
+      "concept_id": "C000005",
+      "relation_code": "R3001",
+      "value": 0,
+      "counterfactual": false,
+      "sequence_shape": 4,
+      "composition_arity": 2
+    },
+    {
+      "task_id": "S3B000095",
+      "concept_id": "C000002",
+      "relation_code": "R3000",
+      "value": -1,
+      "counterfactual": false,
+      "sequence_shape": 5,
+      "composition_arity": 3
+    },
+    {
+      "task_id": "S3B000096",
+      "concept_id": "C000004",
+      "relation_code": "R3001",
+      "value": 0,
+      "counterfactual": false,
+      "sequence_shape": 6,
+      "composition_arity": 4
+    },
+    {
+      "task_id": "S3B000097",
+      "concept_id": "C000001",
+      "relation_code": "R3000",
+      "value": -1,
+      "counterfactual": true,
+      "sequence_shape": 1,
+      "composition_arity": 1
+    },
+    {
+      "task_id": "S3B000098",
+      "concept_id": "C000002",
+      "relation_code": "R3001",
+      "value": 0,
+      "counterfactual": false,
+      "sequence_shape": 2,
+      "composition_arity": 2
+    },
+    {
+      "task_id": "S3B000099",
+      "concept_id": "C000005",
+      "relation_code": "R3000",
+      "value": -1,
+      "counterfactual": false,
+      "sequence_shape": 3,
+      "composition_arity": 3
+    },
+    {
+      "task_id": "S3B000100",
+      "concept_id": "C000001",
+      "relation_code": "R3001",
+      "value": 0,
+      "counterfactual": false,
+      "sequence_shape": 4,
+      "composition_arity": 4
+    }
+  ],
+  "expected_answers_included": false,
+  "hidden_family_labels_included": false,
+  "intended_concepts_included": false,
+  "difficulty_classification_included": false,
+  "selector_access_before_or_during_curriculum": false,
+  "manifest_sha256": "8412007d6232f09360f054a85141fb11800813d6bd4a0deab7f970d26f87589d"
+}
