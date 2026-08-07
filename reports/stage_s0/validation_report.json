@@ -1,0 +1,79 @@
+{
+  "schema_version": "1.0.0",
+  "stage": "S0",
+  "status": "PASS",
+  "repository_initialization": {
+    "git_metadata_present_at_inspection": false,
+    "action": "initialized independent repository on main to create the requested S0 baseline commit",
+    "push_authorized": false,
+    "push_performed": false
+  },
+  "canonical_files": [
+    "CONSTITUTION.md",
+    "RESEARCH_HYPOTHESIS.md",
+    "SEMANTIC_SUBSTRATE_SPEC.md",
+    "REASONING_ARCHITECTURE.md",
+    "EXPERIMENT_PROTOCOL.md",
+    "ROADMAP.md",
+    "PROJECT_STATE.md",
+    "docs/CANONICAL_READING_ORDER.md"
+  ],
+  "canonical_manifest_self_hash_sha256": "3c116e2e0fc228360c4247a9d4069e2b0be07a4be2448726d2f45b9678f1adc7",
+  "checks": {
+    "all_canonical_docs_exist": true,
+    "placeholder_sections_absent": true,
+    "fixed_depth_5_architectural_ceiling_present": false,
+    "language_separated_from_concept_semantics": true,
+    "semantic_concept_separated_from_cache_and_macro": true,
+    "adaptive_depth_width_branching_documented": true,
+    "recursive_improvement_quarantined": true,
+    "proposal_generation_disabled": true,
+    "source_patching_disabled": true,
+    "auto_apply_disabled": true,
+    "auto_merge_disabled": true,
+    "auto_commit_disabled": true,
+    "auto_push_disabled": true,
+    "external_provider_repair_disabled": true,
+    "recursive_benchmark_mutation_disabled": true,
+    "network_disabled_for_sem0": true,
+    "external_llm_disabled_for_sem0": true,
+    "four_control_groups_documented": true,
+    "causal_ablation_documented": true,
+    "fresh_clean_process_evaluation_documented": true,
+    "canonical_hash_verification_passed": true,
+    "inventory_json_parses": true,
+    "manifest_json_parses": true,
+    "rust_format_check_passed": true,
+    "default_workspace_tests_passed": true,
+    "sem0_implementation_started": false
+  },
+  "tests": {
+    "pre_quarantine_inherited_baseline": {
+      "command": "cargo test --workspace",
+      "passed": 200,
+      "failed": 0,
+      "breakdown": {
+        "synapse_core": 14,
+        "synapse_recursive_core": 186
+      }
+    },
+    "post_quarantine_default_build": {
+      "command": "cargo test --workspace",
+      "passed": 15,
+      "failed": 0,
+      "breakdown": {
+        "synapse_core": 14,
+        "recursive_quarantine_status": 1
+      },
+      "note": "Inherited recursive implementation modules are intentionally outside the compiled default crate boundary; their source is retained unchanged for audit."
+    }
+  },
+  "quarantine_enforcement": {
+    "boundary": "crates/synapse-recursive-core/src/lib.rs",
+    "status_surface": "crates/synapse-recursive-core/src/quarantine.rs",
+    "mode": "OBSERVE_MEASURE_ONLY",
+    "recursive_modules_compiled_or_exported": false,
+    "inherited_recursive_source_deleted": false
+  },
+  "next_allowed_stage": "SEM-0_MINIMAL_AUTONOMOUS_CONCEPT_EMERGENCE"
+}

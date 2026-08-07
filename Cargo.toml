@@ -1,0 +1,14 @@
+[workspace]
+members = [
+    "crates/synapse-core",
+    "crates/synapse-recursive-core",
+]
+resolver = "2"
+
+[workspace.package]
+edition = "2021"
+license = "UNLICENSED"
+repository = ""
+
+[workspace.lints.rust]
+unsafe_code = "forbid"

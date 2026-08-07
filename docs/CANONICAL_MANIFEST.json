@@ -1,0 +1,57 @@
+{
+  "manifest_version": "1.0.0",
+  "canonical_version": "1.0.0",
+  "hash_algorithm": "SHA-256",
+  "canonical_files": [
+    {
+      "relative_path": "CONSTITUTION.md",
+      "byte_length": 9274,
+      "sha256": "51fdf4909fa4e064f82d5c0e101939e828fefe4d87dd0776a0a40d4efbcefad4",
+      "canonical_version": "1.0.0"
+    },
+    {
+      "relative_path": "RESEARCH_HYPOTHESIS.md",
+      "byte_length": 8735,
+      "sha256": "78b103547649181659d419d7dfa04eccbd02b5461e00e3700a438892ee6f2228",
+      "canonical_version": "1.0.0"
+    },
+    {
+      "relative_path": "SEMANTIC_SUBSTRATE_SPEC.md",
+      "byte_length": 8302,
+      "sha256": "a29b70fc96f3f85142eb264132f59daa2af79c3a64330304d373af1b6376e0e8",
+      "canonical_version": "1.0.0"
+    },
+    {
+      "relative_path": "REASONING_ARCHITECTURE.md",
+      "byte_length": 8453,
+      "sha256": "b061167a95c327f6919e9168a96f6dc7e486f533ba9e462be02f001c70cdfe85",
+      "canonical_version": "1.0.0"
+    },
+    {
+      "relative_path": "EXPERIMENT_PROTOCOL.md",
+      "byte_length": 9569,
+      "sha256": "dab81f61a848babad4b34480c559aa9521bde515394480facf1b5a116fc2ade1",
+      "canonical_version": "1.0.0"
+    },
+    {
+      "relative_path": "ROADMAP.md",
+      "byte_length": 4384,
+      "sha256": "44b02eab4f330f933450ef1016d6444e1abd54f34b2a2b25fe22e2450c55aa5b",
+      "canonical_version": "1.0.0"
+    },
+    {
+      "relative_path": "PROJECT_STATE.md",
+      "byte_length": 2832,
+      "sha256": "15f34fba803e91c25f5921e90b7930ba3df60480be00688c4da6b3badd5bd2a7",
+      "canonical_version": "1.0.0"
+    },
+    {
+      "relative_path": "docs/CANONICAL_READING_ORDER.md",
+      "byte_length": 1617,
+      "sha256": "b1c31f84ef1001e13a982ae24a7cf77b85255ede9b4b722eff41a9348cab19fa",
+      "canonical_version": "1.0.0"
+    }
+  ],
+  "manifest_self_hash_method": "Read this UTF-8 JSON file as exact text, replace the single 64-hex value of manifest_self_hash_sha256 with 64 lowercase zero characters while preserving every other byte, encode the normalized text as UTF-8 without BOM, and compute SHA-256.",
+  "manifest_self_hash_sha256": "3c116e2e0fc228360c4247a9d4069e2b0be07a4be2448726d2f45b9678f1adc7"
+}

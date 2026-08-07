@@ -1,0 +1,18 @@
+[package]
+name = "synapse-recursive-core"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+description = "Minimal sparse-activation and bounded recursive-improvement core extracted from SYNAPSE."
+publish = false
+
+[lib]
+name = "synapse_recursive_core"
+path = "src/lib.rs"
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+synapse-core = { path = "../synapse-core", version = "0.1.0" }
+
+[lints]
+workspace = true
