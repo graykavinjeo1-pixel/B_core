@@ -1,0 +1,18 @@
+[
+  {
+    "candidate_id": "SELF-CANDIDATE-0001",
+    "commands": [
+      {
+        "command": "cargo test --workspace",
+        "success": true,
+        "exit_code": 0,
+        "stdout_sha256": "da671f23245e9bb838debd820c7e5547a0b6b434b20299470237a57313217b49",
+        "stderr_sha256": "7c8264a0ca97ad919af0238764cbe73e526ee2c3f2081faecaca3124a2f273cc"
+      }
+    ],
+    "tests_passed": 3,
+    "tests_failed": 0,
+    "regression_contracts_present": true,
+    "passed": true
+  }
+]

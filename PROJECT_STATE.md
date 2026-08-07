@@ -1,14 +1,14 @@
 # Project State
 
-**Canonical version:** 1.9.0
-**State frozen for:** SEM-8 completed baseline
+**Canonical version:** 1.9.1
+**State frozen for:** SEM-9 failed sandbox run preserved
 
 This is an operational snapshot. It does not replace or override
 `CONSTITUTION.md`.
 
 | Field | Value |
 |---|---|
-| Current stage | `SEM-8 COMPLETE` |
+| Current stage | `SEM-9 FAILED` |
 | Stage S0 status | `PASS` |
 | SEM-0 implementation | `COMPLETE` |
 | SEM-0 result | `PASS - MINIMAL_AUTONOMOUS_CONCEPT_EMERGENCE` |
@@ -29,11 +29,13 @@ This is an operational snapshot. It does not replace or override
 | SEM-7 result | `PASS - LANGUAGE_CORTEX_ATTACHED_AND_SEMANTIC_BOUNDARY_VERIFIED` |
 | SEM-8 implementation | `COMPLETE` |
 | SEM-8 result | `PASS - CROSS_DOMAIN_SEMANTIC_MECHANISM_TRANSFER_VERIFIED` |
-| SEM-9 | `NOT STARTED` |
+| SEM-9 implementation | `ATTEMPTED - FAILED` |
+| SEM-9 result | `FAIL - SELF_PATCH_BUILD_FAILURE:CANDIDATE_FMT_CHECK_FAILED` |
+| SEM-10 | `NOT STARTED` |
 | Recursive self-mutation | `DISABLED` |
 | Recursive-improvement mode | `OBSERVE_MEASURE_ONLY` |
-| Proposal generation | `DISABLED` |
-| Source patch/apply | `DISABLED` |
+| Proposal generation | `SANDBOX-ONLY SINGLE GENERATION EXECUTED; NOW STOPPED` |
+| Source patch/apply | `SANDBOX CANDIDATE ONLY; PRODUCTION APPLY DISABLED` |
 | Auto apply/merge/commit/push | `DISABLED` |
 | External provider repair | `DISABLED` |
 | Recursive benchmark-driven mutation | `DISABLED` |
@@ -42,12 +44,13 @@ This is an operational snapshot. It does not replace or override
 | Current branch | `main` |
 | Current commit | `SELF` - resolve with `git rev-parse HEAD` |
 | Worktree at committed freeze | `CLEAN` |
-| Next allowed stage | `SEM-9_RECURSIVE_SELF_APPLICATION_SANDBOX` |
+| Next allowed stage | `SEM9-R1_RECURSIVE_SELF_APPLICATION_REPAIR` |
 
 ## Canonical document status
 
 The normative documents remain complete and frozen at version 1.0.0. This
-operational state record advanced to version 1.9.0 after the sealed SEM-8 run:
+operational state record advanced to version 1.9.1 after preserving the failed
+SEM-9 sandbox run:
 
 - `CONSTITUTION.md`
 - `RESEARCH_HYPOTHESIS.md`
@@ -318,7 +321,34 @@ The detailed classification and contamination decisions are in
   full-catalog scans, and routing false negatives were zero. All 12 gates
   passed. Reports are sealed under `reports/sem8/`.
 
+## SEM-9 failed-run evidence snapshot
+
+- Frozen `SEM9-RUN-0001` contained 140 fresh blind tasks, twenty for each of
+  seven predecessor capability families, plus 20 adversarial state-identity
+  tasks. The candidate generator could not read hidden states, expected
+  outputs, or evaluator classifications.
+- Three evidence-backed self weaknesses were identified. Sparse role routing
+  autonomously selected external-definition concept `C000012` through source
+  mechanism `M0006` for `SELF-CANDIDATE-ROUTER`; two other mappings were
+  rejected before patch generation because required assumptions were unknown
+  or violated.
+- The single sandbox candidate compiled, passed Clippy, passed all three
+  sandbox contract tests, preserved strict solve rate `1.0`, reduced median
+  expansions from `120.0` to `68.0`, and reduced peak frontier from `67` to
+  `37`. Self-application and source-concept causal ablations passed with zero
+  regressed tasks.
+- The candidate failed `cargo fmt --check`. Therefore build/test integrity
+  Gates 4 and 5 failed, the candidate class is `PATCH_INVALID`, and no verified
+  self-application candidate exists despite the measured behavioral gain.
+- Production source mutations, accepted protected-core mutation attempts,
+  benchmark-specific patch branches, catalog scans, routing false negatives,
+  external LLM/teacher calls, network writes, remote executions, auto merges,
+  and auto pushes were zero. No candidate was applied to the canonical runtime.
+- The failed evidence and sandbox binary hashes are sealed under
+  `reports/sem9/`. Repair was not started after blind evaluation.
+
 ## Advancement constraint
 
-Starting SEM-9 requires an explicit subsequent task. SEM-8 completion does not
-itself authorize recursive self-application; the sandbox remains unstarted.
+SEM-9 did not pass. `SEM9-RUN-0001` must remain preserved and no SEM-10 work is
+authorized. Starting `SEM9-R1_RECURSIVE_SELF_APPLICATION_REPAIR` requires an
+explicit subsequent task.

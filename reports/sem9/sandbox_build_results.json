@@ -1,0 +1,45 @@
+[
+  {
+    "candidate_id": "SELF-CANDIDATE-0001",
+    "sandbox_only": true,
+    "workspace_path": "target/sem9-sandbox/SEM9-RUN-0001/SELF-CANDIDATE-0001",
+    "production_source_sha256_before": "d7767745d39fce57c44cdf07fc8d5974a7c4fa8994da231c6987d6931dfe6a60",
+    "production_source_sha256_after": "d7767745d39fce57c44cdf07fc8d5974a7c4fa8994da231c6987d6931dfe6a60",
+    "predecessor_binary_sha256": "dced3b89f4d4c175ec89ffc161cb79d4bc0bfac1bc616a76bf3849ff24b1ccd0",
+    "candidate_binary_sha256": "55142ae027cf5a12a941ca2ca4b7be1f426a80ff2c934ebc8c36168517896aac",
+    "commands": [
+      {
+        "command": "cargo build --workspace",
+        "success": true,
+        "exit_code": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "c61f06214cff3ca0978318a5eb245b3523513acc077e439f9e54dbc0db0c33ab"
+      },
+      {
+        "command": "cargo fmt --all -- --check",
+        "success": false,
+        "exit_code": 1,
+        "stdout_sha256": "f792d1fb224028d5ca734c3a79f913b91bbe8801c364d3966d730c84b89a28b0",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "command": "cargo clippy --workspace --all-targets -- -D warnings",
+        "success": true,
+        "exit_code": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "6bf8355794f19568e0143eb56b86fa3e75535cc806f03d5a8d158c3c82e1b649"
+      },
+      {
+        "command": "cargo build --workspace",
+        "success": true,
+        "exit_code": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "37d39e85215cddfee81fbf015143069bdec6d1265b04abca6686df6031df683f"
+      }
+    ],
+    "fmt_pass": false,
+    "clippy_pass": true,
+    "build_pass": true,
+    "passed": false
+  }
+]

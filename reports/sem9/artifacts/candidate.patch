@@ -1,0 +1,5 @@
+--- a/src/lib.rs
++++ b/src/lib.rs
+@@ bounded frontier scheduling
+-pub const ENABLE_EQUIVALENCE_MERGE: bool = false;
++pub const ENABLE_EQUIVALENCE_MERGE: bool = true;

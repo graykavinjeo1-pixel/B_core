@@ -1,0 +1,68 @@
+[
+  [
+    {
+      "proposal_id": "SAP0001",
+      "source_mechanism_id": "M0006",
+      "assumption_id": "M0006-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "status": "SATISFIED",
+      "self_target_evidence": "SELF_DIAGNOSTIC:SW0001:Satisfied",
+      "expected_risk": "bounded by target verifier and sandbox"
+    },
+    {
+      "proposal_id": "SAP0001",
+      "source_mechanism_id": "M0006",
+      "assumption_id": "M0006-A1",
+      "kind": "TERMINATES",
+      "required": true,
+      "status": "SATISFIED",
+      "self_target_evidence": "SELF_DIAGNOSTIC:SW0001:Satisfied",
+      "expected_risk": "bounded by target verifier and sandbox"
+    }
+  ],
+  [
+    {
+      "proposal_id": "SAP0002",
+      "source_mechanism_id": "M0007",
+      "assumption_id": "M0007-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "status": "SATISFIED",
+      "self_target_evidence": "SELF_DIAGNOSTIC:SW0002:Satisfied",
+      "expected_risk": "bounded by target verifier and sandbox"
+    },
+    {
+      "proposal_id": "SAP0002",
+      "source_mechanism_id": "M0007",
+      "assumption_id": "M0007-A1",
+      "kind": "PURE",
+      "required": true,
+      "status": "UNKNOWN",
+      "self_target_evidence": "SELF_DIAGNOSTIC:SW0002:Unknown",
+      "expected_risk": "critical unknown or violation rejects patch generation"
+    }
+  ],
+  [
+    {
+      "proposal_id": "SAP0003",
+      "source_mechanism_id": "M0004",
+      "assumption_id": "M0004-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "status": "SATISFIED",
+      "self_target_evidence": "SELF_DIAGNOSTIC:SW0003:Satisfied",
+      "expected_risk": "bounded by target verifier and sandbox"
+    },
+    {
+      "proposal_id": "SAP0003",
+      "source_mechanism_id": "M0004",
+      "assumption_id": "M0004-A1",
+      "kind": "ASSOCIATIVE",
+      "required": true,
+      "status": "VIOLATED",
+      "self_target_evidence": "SELF_DIAGNOSTIC:SW0003:Violated",
+      "expected_risk": "critical unknown or violation rejects patch generation"
+    }
+  ]
+]

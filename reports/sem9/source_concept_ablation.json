@@ -1,0 +1,9 @@
+{
+  "removed_source_concept_id": "C000012",
+  "original_selected_mechanism": "M0006",
+  "replacement_selected_mechanism": null,
+  "original_patch_operation": "MERGE_EQUIVALENT_STATES",
+  "replacement_patch_operation": null,
+  "same_candidate_design_recovered": false,
+  "passed": true
+}

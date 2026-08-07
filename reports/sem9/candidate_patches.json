@@ -1,0 +1,21 @@
+[
+  {
+    "candidate_id": "SELF-CANDIDATE-0001",
+    "baseline_source_sha256": "8bc2424deae2e55f9467fbefc5746c4954c3afd1f03f5582e50e4328df0e1062",
+    "candidate_source_sha256": "33794f51f9bf2d59c5f599d5e86dd8604d259692778a6b07e47eb31fa3c2fe79",
+    "unified_diff": "--- a/src/lib.rs\n+++ b/src/lib.rs\n@@ bounded frontier scheduling\n-pub const ENABLE_EQUIVALENCE_MERGE: bool = false;\n+pub const ENABLE_EQUIVALENCE_MERGE: bool = true;\n",
+    "changed_paths": [
+      "src/lib.rs"
+    ],
+    "protected_paths_touched": [],
+    "benchmark_specific_branches": 0,
+    "provenance_chain": [
+      "C000012",
+      "M0006",
+      "SW0001",
+      "SAP0001",
+      "CHANGE-SEM9-0001",
+      "SELF-CANDIDATE-0001"
+    ]
+  }
+]

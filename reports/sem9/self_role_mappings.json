@@ -1,0 +1,60 @@
+[
+  {
+    "proposal_id": "SAP0001",
+    "source_mechanism_id": "M0006",
+    "source_concept_ids": [
+      "C000012"
+    ],
+    "self_target_component": "SELF-CANDIDATE-ROUTER",
+    "bindings": {
+      "M0006-R0": "SELF-CANDIDATE-ROUTER-R0",
+      "M0006-R1": "SELF-CANDIDATE-ROUTER-R1",
+      "M0006-R2": "SELF-CANDIDATE-ROUTER-R2",
+      "M0006-R3": "SELF-CANDIDATE-ROUTER-R3"
+    },
+    "required_roles_mapped": 4,
+    "required_roles_total": 4,
+    "essential_relations_preserved": 4,
+    "essential_relations_total": 4,
+    "pass": true
+  },
+  {
+    "proposal_id": "SAP0002",
+    "source_mechanism_id": "M0007",
+    "source_concept_ids": [
+      "C000011"
+    ],
+    "self_target_component": "SELF-INFORMATION-PROBE-SELECTOR",
+    "bindings": {
+      "M0007-R0": "SELF-INFORMATION-PROBE-SELECTOR-R0",
+      "M0007-R1": "SELF-INFORMATION-PROBE-SELECTOR-R1",
+      "M0007-R2": "SELF-INFORMATION-PROBE-SELECTOR-R2",
+      "M0007-R3": "SELF-INFORMATION-PROBE-SELECTOR-R3"
+    },
+    "required_roles_mapped": 4,
+    "required_roles_total": 4,
+    "essential_relations_preserved": 4,
+    "essential_relations_total": 4,
+    "pass": true
+  },
+  {
+    "proposal_id": "SAP0003",
+    "source_mechanism_id": "M0004",
+    "source_concept_ids": [
+      "C000009"
+    ],
+    "self_target_component": "SELF-RESOURCE-ALLOCATOR",
+    "bindings": {
+      "M0004-R0": "SELF-RESOURCE-ALLOCATOR-R0",
+      "M0004-R1": "SELF-RESOURCE-ALLOCATOR-R1",
+      "M0004-R2": "SELF-RESOURCE-ALLOCATOR-R2",
+      "M0004-R3": "SELF-RESOURCE-ALLOCATOR-R3",
+      "M0004-R4": "SELF-RESOURCE-ALLOCATOR-R4"
+    },
+    "required_roles_mapped": 5,
+    "required_roles_total": 5,
+    "essential_relations_preserved": 5,
+    "essential_relations_total": 5,
+    "pass": true
+  }
+]

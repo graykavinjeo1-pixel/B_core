@@ -1,0 +1,58 @@
+{
+  "run_id": "SEM9-RUN-0001",
+  "entries": [
+    {
+      "component_id": "CONSTITUTION",
+      "relative_path": "CONSTITUTION.md",
+      "sha256": "51fdf4909fa4e064f82d5c0e101939e828fefe4d87dd0776a0a40d4efbcefad4",
+      "mutation_allowed": false
+    },
+    {
+      "component_id": "RESEARCH_HYPOTHESIS",
+      "relative_path": "RESEARCH_HYPOTHESIS.md",
+      "sha256": "78b103547649181659d419d7dfa04eccbd02b5461e00e3700a438892ee6f2228",
+      "mutation_allowed": false
+    },
+    {
+      "component_id": "CANONICAL_MANIFEST",
+      "relative_path": "docs/CANONICAL_MANIFEST.json",
+      "sha256": "f93c3543dfba1417edbcf771a64744ee2df63bad4d4404fb50db52e86bc3820f",
+      "mutation_allowed": false
+    },
+    {
+      "component_id": "PROOF_KERNEL_AUTHORITY",
+      "relative_path": "crates/semantic-reasoning/src/sem4/kernel.rs",
+      "sha256": "0dfd49062856e7e0f7bb020d4f1e91ef17b6ecef3d02f1feb6579dfe0b4efead",
+      "mutation_allowed": false
+    },
+    {
+      "component_id": "PROMOTION_GATES",
+      "relative_path": "crates/semantic-reasoning/src/sem8/experiment.rs",
+      "sha256": "13d30cf90e59b9bb754e40cb030cd3dd3cd9609d8ed53e0fa3b89c4c1b5ab12c",
+      "mutation_allowed": false
+    },
+    {
+      "component_id": "BLIND_EVALUATOR",
+      "relative_path": "crates/semantic-reasoning/src/sem9/tasks.rs",
+      "sha256": "868762ded184c43cb29625df736ac7925368d1318fa5295a4792622d06ce860e",
+      "mutation_allowed": false
+    },
+    {
+      "component_id": "LEAKAGE_EVALUATOR",
+      "relative_path": "crates/semantic-reasoning/src/sem9/experiment.rs",
+      "sha256": "26a9076b33eeaee5c076dbf318fbd2f2fb225e208413eada0034bb03ddbeaf28",
+      "mutation_allowed": false
+    },
+    {
+      "component_id": "SECURITY_SANDBOX_BOUNDARY",
+      "relative_path": "crates/synapse-recursive-core/src/quarantine.rs",
+      "sha256": "c782051e2a715481ec23d859a846f66e38a211ebc950ae84ede156a5c688f34e",
+      "mutation_allowed": false
+    }
+  ],
+  "source_tree_sha256": "d7767745d39fce57c44cdf07fc8d5974a7c4fa8994da231c6987d6931dfe6a60",
+  "evaluator_tree_sha256": "82f62b357dfe6ee621ba26de613652d5bc0731aae0dd84ad8abda5e89274cd11",
+  "mutation_authority_enabled": false,
+  "frozen_before_proposals": true,
+  "manifest_sha256": "597ed849cda30468f406866e6f03fd215029689bbe24bce41e56b80a5bce421a"
+}

@@ -1,6 +1,6 @@
 {
-  "manifest_version": "1.9.0",
-  "canonical_version": "1.9.0",
+  "manifest_version": "1.9.1",
+  "canonical_version": "1.9.1",
   "hash_algorithm": "SHA-256",
   "canonical_files": [
     {
@@ -41,9 +41,9 @@
     },
     {
       "relative_path": "PROJECT_STATE.md",
-      "byte_length": 18332,
-      "sha256": "ec080ec069e29da7ef12cad023828f550c7809fe733a94e8a739b59bf5540620",
-      "canonical_version": "1.9.0"
+      "byte_length": 20218,
+      "sha256": "dc187554dbf17c3cc8ccef2c98526cd5d5a1f0a7701033323707680b082147a5",
+      "canonical_version": "1.9.1"
     },
     {
       "relative_path": "docs/CANONICAL_READING_ORDER.md",
@@ -53,5 +53,5 @@
     }
   ],
   "manifest_self_hash_method": "Read this UTF-8 JSON file as exact text, replace the single 64-hex value of manifest_self_hash_sha256 with 64 lowercase zero characters while preserving every other byte, encode the normalized text as UTF-8 without BOM, and compute SHA-256.",
-  "manifest_self_hash_sha256": "c2c5026a5c80c816135e65e2f6997b3a424d1a00f93ee7b5e66c07a4da493be1"
+  "manifest_self_hash_sha256": "daa2471525a06c96b7a567fd8870dd562231c6a87da1d6cc5926201ae873b2ec"
 }

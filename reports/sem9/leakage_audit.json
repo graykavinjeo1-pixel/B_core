@@ -1,0 +1,10 @@
+{
+  "target_solution_leaks": 0,
+  "evaluator_expected_answers_read_by_generator": 0,
+  "benchmark_specific_self_patch_branches": 0,
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "network_writes": 0,
+  "remote_executions": 0,
+  "passed": true
+}

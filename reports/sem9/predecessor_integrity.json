@@ -1,0 +1,36 @@
+{
+  "passed": true,
+  "predecessor_commit": "8028670e9870afd2f5961116f5e7d7d52ff8339d",
+  "canonical_manifest_sha256": "c2c5026a5c80c816135e65e2f6997b3a424d1a00f93ee7b5e66c07a4da493be1",
+  "canonical_files_verified": 8,
+  "sem8_tree": {
+    "relative_path": "reports/sem8",
+    "files": 27,
+    "sha256": "0b61431f13f428d47f0ec482816791008e79bc62c0d224110aba97c8439bbb35",
+    "expected_sha256": "0b61431f13f428d47f0ec482816791008e79bc62c0d224110aba97c8439bbb35",
+    "passed": true
+  },
+  "sem8_run_id": "SEM8-RUN-0001",
+  "sem8_final_report_sha256": "23b13dc774946f1fc98387e7bb63ec40494b80ff3c4ce0f333424fa69da6f5a1",
+  "sem8_blind_manifest_sha256": "33c53e205daf32ed043652092f0a652c12b65ab6fa38b47e8b2db21449f35a97",
+  "sem8_transfer_artifacts_verified": 5,
+  "sem8_gates_verified": 12,
+  "sem7_failed_run_history_preserved": true,
+  "promoted_concepts_verified_immutable": [
+    "C000001",
+    "C000002",
+    "C000004",
+    "C000005",
+    "C000006",
+    "C000007",
+    "C000008",
+    "C000009",
+    "C000010",
+    "C000011",
+    "C000012"
+  ],
+  "cross_domain_concept_c000013_sealed": true,
+  "predecessor_semantic_hash_changes": 0,
+  "sparse_routing_preserved": true,
+  "recursive_improvement_quarantine_preserved": true
+}

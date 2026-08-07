@@ -1,0 +1,40 @@
+[
+  {
+    "proposal_id": "SAP0002",
+    "weakness_id": "SW0002",
+    "target_component_id": "SELF-INFORMATION-PROBE-SELECTOR",
+    "source_mechanism_id": "M0007",
+    "source_concept_ids": [
+      "C000011"
+    ],
+    "source_origin_domain": "EXTERNAL_DEFINITION",
+    "source_transform": "SCOPED_RELATION",
+    "retrieval_score": 2.0,
+    "candidates_considered": 1,
+    "human_source_target_mapping": false,
+    "valid_self_analogy": false,
+    "executable_self_modification": false,
+    "beneficial_self_modification": false,
+    "disposition": "REJECTED_MAPPING",
+    "rejection_reason": "SELF_ASSUMPTION_FAILURE"
+  },
+  {
+    "proposal_id": "SAP0003",
+    "weakness_id": "SW0003",
+    "target_component_id": "SELF-RESOURCE-ALLOCATOR",
+    "source_mechanism_id": "M0004",
+    "source_concept_ids": [
+      "C000009"
+    ],
+    "source_origin_domain": "PROGRAMMING",
+    "source_transform": "STATEFUL_REDUCTION",
+    "retrieval_score": 2.0,
+    "candidates_considered": 1,
+    "human_source_target_mapping": false,
+    "valid_self_analogy": false,
+    "executable_self_modification": false,
+    "beneficial_self_modification": false,
+    "disposition": "REJECTED_MAPPING",
+    "rejection_reason": "SELF_ASSUMPTION_FAILURE"
+  }
+]

@@ -1,0 +1,88 @@
+[
+  {
+    "weakness_id": "SW0001",
+    "component_id": "SELF-CANDIDATE-ROUTER",
+    "observed_mechanism": "repeated semantic-state construction under a bounded controller",
+    "measured_cost": 1920,
+    "baseline_operations": 1920,
+    "redundant_operations": 768,
+    "redundancy_rate": 0.4,
+    "affected_task_classes": [
+      "adaptive reasoning",
+      "cross-domain transfer"
+    ],
+    "supporting_traces": [
+      "SEM8-DIAGNOSTIC-ROUTING-TRACE-0001",
+      "SEM2-DIAGNOSTIC-FRONTIER-TRACE-0007"
+    ],
+    "candidate_causal_explanation": "equivalent candidate states are expanded more than once",
+    "required_role_signature": [
+      "INPUT",
+      "BOUNDARY",
+      "TRANSFORM",
+      "OUTPUT"
+    ],
+    "assumption_evidence": {
+      "DETERMINISTIC": "SATISFIED",
+      "TERMINATES": "SATISFIED"
+    },
+    "confidence": 0.97
+  },
+  {
+    "weakness_id": "SW0002",
+    "component_id": "SELF-INFORMATION-PROBE-SELECTOR",
+    "observed_mechanism": "repeated semantic-state construction under a bounded controller",
+    "measured_cost": 640,
+    "baseline_operations": 640,
+    "redundant_operations": 96,
+    "redundancy_rate": 0.15,
+    "affected_task_classes": [
+      "adaptive reasoning",
+      "cross-domain transfer"
+    ],
+    "supporting_traces": [
+      "SEM3-DIAGNOSTIC-PROBE-TRACE-0003"
+    ],
+    "candidate_causal_explanation": "some probes repeat observations but purity is not established",
+    "required_role_signature": [
+      "INPUT",
+      "CONDITION",
+      "TRANSFORM",
+      "OUTPUT"
+    ],
+    "assumption_evidence": {
+      "DETERMINISTIC": "SATISFIED",
+      "PURE": "UNKNOWN"
+    },
+    "confidence": 0.89
+  },
+  {
+    "weakness_id": "SW0003",
+    "component_id": "SELF-RESOURCE-ALLOCATOR",
+    "observed_mechanism": "repeated semantic-state construction under a bounded controller",
+    "measured_cost": 480,
+    "baseline_operations": 480,
+    "redundant_operations": 58,
+    "redundancy_rate": 0.12083333333333333,
+    "affected_task_classes": [
+      "adaptive reasoning",
+      "cross-domain transfer"
+    ],
+    "supporting_traces": [
+      "SEM2-DIAGNOSTIC-BUDGET-TRACE-0011"
+    ],
+    "candidate_causal_explanation": "resource accumulation repeats but ordering changes admissible allocations",
+    "required_role_signature": [
+      "STATE",
+      "INPUT",
+      "ACCUMULATOR",
+      "INVARIANT",
+      "OUTPUT"
+    ],
+    "assumption_evidence": {
+      "DETERMINISTIC": "SATISFIED",
+      "ASSOCIATIVE": "VIOLATED"
+    },
+    "confidence": 0.8099999999999999
+  }
+]

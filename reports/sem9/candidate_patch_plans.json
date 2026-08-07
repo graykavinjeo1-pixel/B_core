@@ -1,0 +1,33 @@
+[
+  {
+    "candidate_id": "SELF-CANDIDATE-0001",
+    "change_ir": {
+      "change_id": "CHANGE-SEM9-0001",
+      "proposal_id": "SAP0001",
+      "target_component_id": "SELF-CANDIDATE-ROUTER",
+      "source_mechanism_id": "M0006",
+      "source_concept_ids": [
+        "C000012"
+      ],
+      "operation": "MERGE_EQUIVALENT_STATES",
+      "equivalence_key": "canonical semantic state identity",
+      "preserved_invariants": [
+        "reachable semantic state membership",
+        "strict target correctness",
+        "verifier authority"
+      ],
+      "forbidden_components": [
+        "proof kernel",
+        "blind evaluator",
+        "source mutation gate"
+      ],
+      "one_generation_only": true
+    },
+    "files_changed": 1,
+    "lines_changed": 1,
+    "functions_changed": 1,
+    "components_touched": 1,
+    "sandbox_relative_path": "target/sem9-sandbox/SEM9-RUN-0001/SELF-CANDIDATE-0001",
+    "generated_before_blind_open": true
+  }
+]

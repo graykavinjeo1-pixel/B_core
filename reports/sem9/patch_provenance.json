@@ -1,0 +1,39 @@
+{
+  "assumptions_satisfied": true,
+  "autonomous_derived_concept": "C000012",
+  "blind_evaluation_opened_after_patch_build": true,
+  "candidate_id": "SELF-CANDIDATE-0001",
+  "change_ir": {
+    "change_id": "CHANGE-SEM9-0001",
+    "equivalence_key": "canonical semantic state identity",
+    "forbidden_components": [
+      "proof kernel",
+      "blind evaluator",
+      "source mutation gate"
+    ],
+    "one_generation_only": true,
+    "operation": "MERGE_EQUIVALENT_STATES",
+    "preserved_invariants": [
+      "reachable semantic state membership",
+      "strict target correctness",
+      "verifier authority"
+    ],
+    "proposal_id": "SAP0001",
+    "source_concept_ids": [
+      "C000012"
+    ],
+    "source_mechanism_id": "M0006",
+    "target_component_id": "SELF-CANDIDATE-ROUTER"
+  },
+  "original_primitive_concepts": [
+    "C000001",
+    "C000002",
+    "C000003",
+    "C000004"
+  ],
+  "role_mapping_sha256": "92e03e6a3bd6bde54ee5f5a55a71947166da0099199abd0d502f514ffd26bc19",
+  "sandbox_candidate": "SELF-CANDIDATE-0001",
+  "second_order_self_modification": false,
+  "selected_self_weakness": "SW0001",
+  "source_mechanism": "M0006"
+}

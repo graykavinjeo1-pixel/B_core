@@ -1,0 +1,22 @@
+{
+  "fields": [
+    "component_id",
+    "role",
+    "inputs",
+    "outputs",
+    "state",
+    "transformations",
+    "preconditions",
+    "invariants",
+    "dependencies",
+    "resource_cost",
+    "failure_modes",
+    "externally_visible_behavior",
+    "protected_status",
+    "provenance"
+  ],
+  "protected_components_eligible": false,
+  "reason_directly_from_arbitrary_raw_source": false,
+  "semantic_bridge": "SEM8 MechanismIR roles -> SelfMechanismIR roles",
+  "version": "SEM9-SELF-MECHANISM-IR-1.0.0"
+}

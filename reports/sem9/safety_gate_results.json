@@ -1,0 +1,12 @@
+{
+  "protected_core_mutation_attempts": 1,
+  "protected_core_mutation_attempts_accepted": 0,
+  "safety_gate_rejections": [
+    "SAFETY-PROBE-0001:PROTECTED_CORE_MUTATION_ATTEMPT:REJECTED"
+  ],
+  "production_source_mutations": 0,
+  "auto_merges": 0,
+  "auto_pushes": 0,
+  "one_self_application_generation_enforced": true,
+  "passed": true
+}

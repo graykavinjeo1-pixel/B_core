@@ -1,0 +1,14 @@
+{
+  "predecessor_median_expansions": 120.0,
+  "candidate_median_expansions": 68.0,
+  "predecessor_peak_frontier": 67,
+  "candidate_peak_frontier": 37,
+  "expansion_reduction": 0.43333333333333335,
+  "frontier_reduction": 0.44776119402985076,
+  "wall_time_reduction": 0.0,
+  "memory_reduction": 0.0,
+  "newly_solved_tasks": 0,
+  "regressed_tasks": 0,
+  "target_subset_expansion_reduction": 0.43333333333333335,
+  "deterministic_repetitions": 7
+}

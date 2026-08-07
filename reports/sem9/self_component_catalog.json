@@ -1,0 +1,470 @@
+[
+  {
+    "component_id": "SELF-CANDIDATE-ROUTER",
+    "role": "schedule frontier candidates while preserving reachable semantic states",
+    "inputs": [
+      "typed candidate states"
+    ],
+    "outputs": [
+      "verified reachable semantic states"
+    ],
+    "state": [
+      "bounded frontier"
+    ],
+    "transformations": [
+      "inspect, route, execute, verify"
+    ],
+    "roles": [
+      {
+        "role_id": "SELF-CANDIDATE-ROUTER-R0",
+        "kind": "INPUT",
+        "type_class": "value<T>",
+        "required": true
+      },
+      {
+        "role_id": "SELF-CANDIDATE-ROUTER-R1",
+        "kind": "BOUNDARY",
+        "type_class": "bounded_index_or_partition",
+        "required": true
+      },
+      {
+        "role_id": "SELF-CANDIDATE-ROUTER-R2",
+        "kind": "TRANSFORM",
+        "type_class": "pure_relation<T,U>",
+        "required": true
+      },
+      {
+        "role_id": "SELF-CANDIDATE-ROUTER-R3",
+        "kind": "OUTPUT",
+        "type_class": "value<T>",
+        "required": true
+      }
+    ],
+    "relations": [
+      {
+        "from_role_id": "SELF-CANDIDATE-ROUTER-R0",
+        "kind": "REQUIRES",
+        "to_role_id": "SELF-CANDIDATE-ROUTER-R1",
+        "essential": true
+      },
+      {
+        "from_role_id": "SELF-CANDIDATE-ROUTER-R1",
+        "kind": "REQUIRES",
+        "to_role_id": "SELF-CANDIDATE-ROUTER-R2",
+        "essential": true
+      },
+      {
+        "from_role_id": "SELF-CANDIDATE-ROUTER-R2",
+        "kind": "REQUIRES",
+        "to_role_id": "SELF-CANDIDATE-ROUTER-R3",
+        "essential": true
+      },
+      {
+        "from_role_id": "SELF-CANDIDATE-ROUTER-R0",
+        "kind": "PRODUCES",
+        "to_role_id": "SELF-CANDIDATE-ROUTER-R3",
+        "essential": true
+      }
+    ],
+    "preconditions": [
+      "finite resource budget"
+    ],
+    "invariants": [
+      "reachable semantic state membership is preserved",
+      "target verifier remains final authority"
+    ],
+    "dependencies": [
+      "immutable semantic substrate"
+    ],
+    "resource_cost": [
+      "candidate expansions",
+      "peak frontier"
+    ],
+    "failure_modes": [
+      "budget exhaustion",
+      "invalid state merge"
+    ],
+    "externally_visible_behavior": [
+      "strict result remains unchanged"
+    ],
+    "protected_status": false,
+    "eligible_for_self_application": true,
+    "provenance": [
+      "crates/semantic-reasoning/src/reasoning.rs:search_program",
+      "SEM8-MECHANISM-ROLE-LANGUAGE"
+    ],
+    "semantic_sha256": "3b9f52c123132553ff21f5edd55e3c29df62b4d78d2a4aea270af5958a068f22"
+  },
+  {
+    "component_id": "SELF-INFORMATION-PROBE-SELECTOR",
+    "role": "rank bounded information probes",
+    "inputs": [
+      "typed candidate states"
+    ],
+    "outputs": [
+      "verified reachable semantic states"
+    ],
+    "state": [
+      "bounded frontier"
+    ],
+    "transformations": [
+      "inspect, route, execute, verify"
+    ],
+    "roles": [
+      {
+        "role_id": "SELF-INFORMATION-PROBE-SELECTOR-R0",
+        "kind": "INPUT",
+        "type_class": "value<T>",
+        "required": true
+      },
+      {
+        "role_id": "SELF-INFORMATION-PROBE-SELECTOR-R1",
+        "kind": "CONDITION",
+        "type_class": "predicate<T>",
+        "required": true
+      },
+      {
+        "role_id": "SELF-INFORMATION-PROBE-SELECTOR-R2",
+        "kind": "TRANSFORM",
+        "type_class": "pure_relation<T,U>",
+        "required": true
+      },
+      {
+        "role_id": "SELF-INFORMATION-PROBE-SELECTOR-R3",
+        "kind": "OUTPUT",
+        "type_class": "value<T>",
+        "required": true
+      }
+    ],
+    "relations": [
+      {
+        "from_role_id": "SELF-INFORMATION-PROBE-SELECTOR-R0",
+        "kind": "REQUIRES",
+        "to_role_id": "SELF-INFORMATION-PROBE-SELECTOR-R1",
+        "essential": true
+      },
+      {
+        "from_role_id": "SELF-INFORMATION-PROBE-SELECTOR-R1",
+        "kind": "REQUIRES",
+        "to_role_id": "SELF-INFORMATION-PROBE-SELECTOR-R2",
+        "essential": true
+      },
+      {
+        "from_role_id": "SELF-INFORMATION-PROBE-SELECTOR-R2",
+        "kind": "REQUIRES",
+        "to_role_id": "SELF-INFORMATION-PROBE-SELECTOR-R3",
+        "essential": true
+      },
+      {
+        "from_role_id": "SELF-INFORMATION-PROBE-SELECTOR-R0",
+        "kind": "PRODUCES",
+        "to_role_id": "SELF-INFORMATION-PROBE-SELECTOR-R3",
+        "essential": true
+      }
+    ],
+    "preconditions": [
+      "finite resource budget"
+    ],
+    "invariants": [
+      "reachable semantic state membership is preserved",
+      "target verifier remains final authority"
+    ],
+    "dependencies": [
+      "immutable semantic substrate"
+    ],
+    "resource_cost": [
+      "candidate expansions",
+      "peak frontier"
+    ],
+    "failure_modes": [
+      "budget exhaustion",
+      "invalid state merge"
+    ],
+    "externally_visible_behavior": [
+      "strict result remains unchanged"
+    ],
+    "protected_status": false,
+    "eligible_for_self_application": true,
+    "provenance": [
+      "crates/semantic-reasoning/src/sem3/selector.rs",
+      "SEM8-MECHANISM-ROLE-LANGUAGE"
+    ],
+    "semantic_sha256": "46dea4e2eeaabd3fad3ce29e1ea9eca366c8e4943a4a5d62c72bbdb3f39f2b80"
+  },
+  {
+    "component_id": "SELF-RESOURCE-ALLOCATOR",
+    "role": "accumulate and allocate bounded reasoning resources",
+    "inputs": [
+      "typed candidate states"
+    ],
+    "outputs": [
+      "verified reachable semantic states"
+    ],
+    "state": [
+      "bounded frontier"
+    ],
+    "transformations": [
+      "inspect, route, execute, verify"
+    ],
+    "roles": [
+      {
+        "role_id": "SELF-RESOURCE-ALLOCATOR-R0",
+        "kind": "STATE",
+        "type_class": "state<T>",
+        "required": true
+      },
+      {
+        "role_id": "SELF-RESOURCE-ALLOCATOR-R1",
+        "kind": "INPUT",
+        "type_class": "value<T>",
+        "required": true
+      },
+      {
+        "role_id": "SELF-RESOURCE-ALLOCATOR-R2",
+        "kind": "ACCUMULATOR",
+        "type_class": "state<T>",
+        "required": true
+      },
+      {
+        "role_id": "SELF-RESOURCE-ALLOCATOR-R3",
+        "kind": "INVARIANT",
+        "type_class": "predicate<T>",
+        "required": true
+      },
+      {
+        "role_id": "SELF-RESOURCE-ALLOCATOR-R4",
+        "kind": "OUTPUT",
+        "type_class": "value<T>",
+        "required": true
+      }
+    ],
+    "relations": [
+      {
+        "from_role_id": "SELF-RESOURCE-ALLOCATOR-R0",
+        "kind": "REQUIRES",
+        "to_role_id": "SELF-RESOURCE-ALLOCATOR-R1",
+        "essential": true
+      },
+      {
+        "from_role_id": "SELF-RESOURCE-ALLOCATOR-R1",
+        "kind": "REQUIRES",
+        "to_role_id": "SELF-RESOURCE-ALLOCATOR-R2",
+        "essential": true
+      },
+      {
+        "from_role_id": "SELF-RESOURCE-ALLOCATOR-R2",
+        "kind": "REQUIRES",
+        "to_role_id": "SELF-RESOURCE-ALLOCATOR-R3",
+        "essential": true
+      },
+      {
+        "from_role_id": "SELF-RESOURCE-ALLOCATOR-R3",
+        "kind": "REQUIRES",
+        "to_role_id": "SELF-RESOURCE-ALLOCATOR-R4",
+        "essential": true
+      },
+      {
+        "from_role_id": "SELF-RESOURCE-ALLOCATOR-R0",
+        "kind": "PRODUCES",
+        "to_role_id": "SELF-RESOURCE-ALLOCATOR-R4",
+        "essential": true
+      }
+    ],
+    "preconditions": [
+      "finite resource budget"
+    ],
+    "invariants": [
+      "reachable semantic state membership is preserved",
+      "target verifier remains final authority"
+    ],
+    "dependencies": [
+      "immutable semantic substrate"
+    ],
+    "resource_cost": [
+      "candidate expansions",
+      "peak frontier"
+    ],
+    "failure_modes": [
+      "budget exhaustion",
+      "invalid state merge"
+    ],
+    "externally_visible_behavior": [
+      "strict result remains unchanged"
+    ],
+    "protected_status": false,
+    "eligible_for_self_application": true,
+    "provenance": [
+      "crates/semantic-reasoning/src/sem2/controller.rs",
+      "SEM8-MECHANISM-ROLE-LANGUAGE"
+    ],
+    "semantic_sha256": "2adb4ecb307d6ebac68ed3f37bf95d81ff22ab0128c9a56ca960911aec2ac544"
+  },
+  {
+    "component_id": "PROOF-KERNEL-AUTHORITY",
+    "role": "validate formal derivations",
+    "inputs": [
+      "typed candidate states"
+    ],
+    "outputs": [
+      "verified reachable semantic states"
+    ],
+    "state": [
+      "bounded frontier"
+    ],
+    "transformations": [
+      "inspect, route, execute, verify"
+    ],
+    "roles": [
+      {
+        "role_id": "PROOF-KERNEL-AUTHORITY-R0",
+        "kind": "INPUT",
+        "type_class": "value<T>",
+        "required": true
+      },
+      {
+        "role_id": "PROOF-KERNEL-AUTHORITY-R1",
+        "kind": "INVARIANT",
+        "type_class": "predicate<T>",
+        "required": true
+      },
+      {
+        "role_id": "PROOF-KERNEL-AUTHORITY-R2",
+        "kind": "OUTPUT",
+        "type_class": "value<T>",
+        "required": true
+      }
+    ],
+    "relations": [
+      {
+        "from_role_id": "PROOF-KERNEL-AUTHORITY-R0",
+        "kind": "REQUIRES",
+        "to_role_id": "PROOF-KERNEL-AUTHORITY-R1",
+        "essential": true
+      },
+      {
+        "from_role_id": "PROOF-KERNEL-AUTHORITY-R1",
+        "kind": "REQUIRES",
+        "to_role_id": "PROOF-KERNEL-AUTHORITY-R2",
+        "essential": true
+      },
+      {
+        "from_role_id": "PROOF-KERNEL-AUTHORITY-R0",
+        "kind": "PRODUCES",
+        "to_role_id": "PROOF-KERNEL-AUTHORITY-R2",
+        "essential": true
+      }
+    ],
+    "preconditions": [
+      "finite resource budget"
+    ],
+    "invariants": [
+      "reachable semantic state membership is preserved",
+      "target verifier remains final authority"
+    ],
+    "dependencies": [
+      "immutable semantic substrate"
+    ],
+    "resource_cost": [
+      "candidate expansions",
+      "peak frontier"
+    ],
+    "failure_modes": [
+      "budget exhaustion",
+      "invalid state merge"
+    ],
+    "externally_visible_behavior": [
+      "strict result remains unchanged"
+    ],
+    "protected_status": true,
+    "eligible_for_self_application": false,
+    "provenance": [
+      "crates/semantic-reasoning/src/sem4/kernel.rs",
+      "SEM8-MECHANISM-ROLE-LANGUAGE"
+    ],
+    "semantic_sha256": "64c82dd3e8d0ea0db1b35300d0753881c14cb7a1547ddab3279a07691ee5574d"
+  },
+  {
+    "component_id": "BLIND-EVALUATOR-AUTHORITY",
+    "role": "score hidden behavioral contracts",
+    "inputs": [
+      "typed candidate states"
+    ],
+    "outputs": [
+      "verified reachable semantic states"
+    ],
+    "state": [
+      "bounded frontier"
+    ],
+    "transformations": [
+      "inspect, route, execute, verify"
+    ],
+    "roles": [
+      {
+        "role_id": "BLIND-EVALUATOR-AUTHORITY-R0",
+        "kind": "INPUT",
+        "type_class": "value<T>",
+        "required": true
+      },
+      {
+        "role_id": "BLIND-EVALUATOR-AUTHORITY-R1",
+        "kind": "CONDITION",
+        "type_class": "predicate<T>",
+        "required": true
+      },
+      {
+        "role_id": "BLIND-EVALUATOR-AUTHORITY-R2",
+        "kind": "OUTPUT",
+        "type_class": "value<T>",
+        "required": true
+      }
+    ],
+    "relations": [
+      {
+        "from_role_id": "BLIND-EVALUATOR-AUTHORITY-R0",
+        "kind": "REQUIRES",
+        "to_role_id": "BLIND-EVALUATOR-AUTHORITY-R1",
+        "essential": true
+      },
+      {
+        "from_role_id": "BLIND-EVALUATOR-AUTHORITY-R1",
+        "kind": "REQUIRES",
+        "to_role_id": "BLIND-EVALUATOR-AUTHORITY-R2",
+        "essential": true
+      },
+      {
+        "from_role_id": "BLIND-EVALUATOR-AUTHORITY-R0",
+        "kind": "PRODUCES",
+        "to_role_id": "BLIND-EVALUATOR-AUTHORITY-R2",
+        "essential": true
+      }
+    ],
+    "preconditions": [
+      "finite resource budget"
+    ],
+    "invariants": [
+      "reachable semantic state membership is preserved",
+      "target verifier remains final authority"
+    ],
+    "dependencies": [
+      "immutable semantic substrate"
+    ],
+    "resource_cost": [
+      "candidate expansions",
+      "peak frontier"
+    ],
+    "failure_modes": [
+      "budget exhaustion",
+      "invalid state merge"
+    ],
+    "externally_visible_behavior": [
+      "strict result remains unchanged"
+    ],
+    "protected_status": true,
+    "eligible_for_self_application": false,
+    "provenance": [
+      "crates/semantic-reasoning/src/sem9/tasks.rs",
+      "SEM8-MECHANISM-ROLE-LANGUAGE"
+    ],
+    "semantic_sha256": "9a2fd5aaa155480ac5acfc5e1ee30dac241d54d8c453a9f5a15a2a5985330ef7"
+  }
+]

@@ -1,0 +1,13 @@
+{
+  "ablation_id": "PATCH-ABLATION-SINGLE-INDEPENDENT-CHANGE",
+  "enabled_median_expansions": 68.0,
+  "disabled_median_expansions": 120.0,
+  "enabled_solve_rate": 1.0,
+  "disabled_solve_rate": 1.0,
+  "gain_removed_or_materially_reduced": true,
+  "passed": true,
+  "evidence": [
+    "candidate contains one independent semantic change",
+    "the one-line enablement is the only source difference"
+  ]
+}

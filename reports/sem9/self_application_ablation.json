@@ -1,0 +1,13 @@
+{
+  "ablation_id": "SELF-APPLICATION-MECHANISM-DISABLED",
+  "enabled_median_expansions": 68.0,
+  "disabled_median_expansions": 120.0,
+  "enabled_solve_rate": 1.0,
+  "disabled_solve_rate": 1.0,
+  "gain_removed_or_materially_reduced": true,
+  "passed": true,
+  "evidence": [
+    "disabling equivalence merge restores exact predecessor expansion count",
+    "strict outputs remain controlled by the external evaluator"
+  ]
+}
