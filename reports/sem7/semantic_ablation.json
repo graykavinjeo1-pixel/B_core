@@ -1,0 +1,10 @@
+{
+  "name": "LEXICAL_ALIAS_WITHOUT_SEMANTIC_CONCEPT",
+  "lexical_layer_enabled": true,
+  "semantic_substrate_enabled": false,
+  "tasks": 1,
+  "solved": 0,
+  "solve_rate": 0.0,
+  "expected_direction_observed": true,
+  "passed": true
+}

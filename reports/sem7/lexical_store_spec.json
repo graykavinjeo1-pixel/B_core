@@ -1,0 +1,938 @@
+{
+  "alias_is_semantic_generation": false,
+  "aliases": [
+    {
+      "alias_id": "LEX-00000",
+      "concept_id": "C000008",
+      "confidence": 0.99,
+      "language": "ENGLISH",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "programming",
+      "semantic_grounding_complete": true,
+      "sense_id": "IDENTIFY",
+      "surface_form": "guarded traversal",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00001",
+      "concept_id": "C000008",
+      "confidence": 0.99,
+      "language": "ENGLISH",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "programming",
+      "semantic_grounding_complete": true,
+      "sense_id": "IDENTIFY",
+      "surface_form": "bounded traversal",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00002",
+      "concept_id": "C000008",
+      "confidence": 0.99,
+      "language": "KOREAN",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "programming",
+      "semantic_grounding_complete": true,
+      "sense_id": "IDENTIFY",
+      "surface_form": "경계 순회",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00003",
+      "concept_id": "C000008",
+      "confidence": 0.99,
+      "language": "KOREAN",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "programming",
+      "semantic_grounding_complete": true,
+      "sense_id": "IDENTIFY",
+      "surface_form": "조건 순회",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00004",
+      "concept_id": "C000008",
+      "confidence": 0.99,
+      "language": "ENGLISH",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "sequence-transform",
+      "semantic_grounding_complete": true,
+      "sense_id": "ADD_EACH",
+      "surface_form": "add",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00005",
+      "concept_id": "C000008",
+      "confidence": 0.99,
+      "language": "ENGLISH",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "sequence-transform",
+      "semantic_grounding_complete": true,
+      "sense_id": "ADD_EACH",
+      "surface_form": "increase",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00006",
+      "concept_id": "C000008",
+      "confidence": 0.99,
+      "language": "ENGLISH",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "sequence-transform",
+      "semantic_grounding_complete": true,
+      "sense_id": "ADD_EACH",
+      "surface_form": "plus",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00007",
+      "concept_id": "C000008",
+      "confidence": 0.99,
+      "language": "KOREAN",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "sequence-transform",
+      "semantic_grounding_complete": true,
+      "sense_id": "ADD_EACH",
+      "surface_form": "더",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00008",
+      "concept_id": "C000008",
+      "confidence": 0.99,
+      "language": "KOREAN",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "sequence-transform",
+      "semantic_grounding_complete": true,
+      "sense_id": "ADD_EACH",
+      "surface_form": "증가",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00009",
+      "concept_id": "C000008",
+      "confidence": 0.99,
+      "language": "ENGLISH",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "sequence-transform",
+      "semantic_grounding_complete": true,
+      "sense_id": "MULTIPLY_EACH",
+      "surface_form": "multiply",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00010",
+      "concept_id": "C000008",
+      "confidence": 0.99,
+      "language": "ENGLISH",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "sequence-transform",
+      "semantic_grounding_complete": true,
+      "sense_id": "MULTIPLY_EACH",
+      "surface_form": "scale",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00011",
+      "concept_id": "C000008",
+      "confidence": 0.99,
+      "language": "ENGLISH",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "sequence-transform",
+      "semantic_grounding_complete": true,
+      "sense_id": "MULTIPLY_EACH",
+      "surface_form": "times",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00012",
+      "concept_id": "C000008",
+      "confidence": 0.99,
+      "language": "KOREAN",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "sequence-transform",
+      "semantic_grounding_complete": true,
+      "sense_id": "MULTIPLY_EACH",
+      "surface_form": "곱",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00013",
+      "concept_id": "C000008",
+      "confidence": 0.99,
+      "language": "KOREAN",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "sequence-transform",
+      "semantic_grounding_complete": true,
+      "sense_id": "MULTIPLY_EACH",
+      "surface_form": "배로",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00014",
+      "concept_id": "C000008",
+      "confidence": 0.99,
+      "language": "ENGLISH",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "sequence-transform",
+      "semantic_grounding_complete": true,
+      "sense_id": "FILTER",
+      "surface_form": "keep",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00015",
+      "concept_id": "C000008",
+      "confidence": 0.99,
+      "language": "ENGLISH",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "sequence-transform",
+      "semantic_grounding_complete": true,
+      "sense_id": "FILTER",
+      "surface_form": "retain",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00016",
+      "concept_id": "C000008",
+      "confidence": 0.99,
+      "language": "ENGLISH",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "sequence-transform",
+      "semantic_grounding_complete": true,
+      "sense_id": "FILTER",
+      "surface_form": "select",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00017",
+      "concept_id": "C000008",
+      "confidence": 0.99,
+      "language": "ENGLISH",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "sequence-transform",
+      "semantic_grounding_complete": true,
+      "sense_id": "FILTER",
+      "surface_form": "exclude",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00018",
+      "concept_id": "C000008",
+      "confidence": 0.99,
+      "language": "KOREAN",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "sequence-transform",
+      "semantic_grounding_complete": true,
+      "sense_id": "FILTER",
+      "surface_form": "남겨",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00019",
+      "concept_id": "C000008",
+      "confidence": 0.99,
+      "language": "KOREAN",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "sequence-transform",
+      "semantic_grounding_complete": true,
+      "sense_id": "FILTER",
+      "surface_form": "고르",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00020",
+      "concept_id": "C000008",
+      "confidence": 0.99,
+      "language": "KOREAN",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "sequence-transform",
+      "semantic_grounding_complete": true,
+      "sense_id": "FILTER",
+      "surface_form": "선택",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00021",
+      "concept_id": "C000008",
+      "confidence": 0.99,
+      "language": "KOREAN",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "sequence-transform",
+      "semantic_grounding_complete": true,
+      "sense_id": "FILTER",
+      "surface_form": "제외",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00022",
+      "concept_id": "C000009",
+      "confidence": 0.99,
+      "language": "ENGLISH",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "state",
+      "semantic_grounding_complete": true,
+      "sense_id": "IDENTIFY",
+      "surface_form": "guarded state transition",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00023",
+      "concept_id": "C000009",
+      "confidence": 0.99,
+      "language": "ENGLISH",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "state",
+      "semantic_grounding_complete": true,
+      "sense_id": "IDENTIFY",
+      "surface_form": "state accumulator",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00024",
+      "concept_id": "C000009",
+      "confidence": 0.99,
+      "language": "KOREAN",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "state",
+      "semantic_grounding_complete": true,
+      "sense_id": "IDENTIFY",
+      "surface_form": "상태 누적",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00025",
+      "concept_id": "C000009",
+      "confidence": 0.99,
+      "language": "ENGLISH",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "state",
+      "semantic_grounding_complete": true,
+      "sense_id": "SUM",
+      "surface_form": "sum",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00026",
+      "concept_id": "C000009",
+      "confidence": 0.99,
+      "language": "ENGLISH",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "state",
+      "semantic_grounding_complete": true,
+      "sense_id": "SUM",
+      "surface_form": "total",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00027",
+      "concept_id": "C000009",
+      "confidence": 0.99,
+      "language": "KOREAN",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "state",
+      "semantic_grounding_complete": true,
+      "sense_id": "SUM",
+      "surface_form": "합하",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00028",
+      "concept_id": "C000009",
+      "confidence": 0.99,
+      "language": "KOREAN",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "state",
+      "semantic_grounding_complete": true,
+      "sense_id": "SUM",
+      "surface_form": "합해",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00029",
+      "concept_id": "C000009",
+      "confidence": 0.99,
+      "language": "KOREAN",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "state",
+      "semantic_grounding_complete": true,
+      "sense_id": "SUM",
+      "surface_form": "합계",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00030",
+      "concept_id": "C000009",
+      "confidence": 0.99,
+      "language": "ENGLISH",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "state",
+      "semantic_grounding_complete": true,
+      "sense_id": "COUNT_GREATER",
+      "surface_form": "count",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00031",
+      "concept_id": "C000009",
+      "confidence": 0.99,
+      "language": "KOREAN",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "state",
+      "semantic_grounding_complete": true,
+      "sense_id": "COUNT_GREATER",
+      "surface_form": "개수",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00032",
+      "concept_id": "C000010",
+      "confidence": 0.99,
+      "language": "ENGLISH",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "composition",
+      "semantic_grounding_complete": true,
+      "sense_id": "IDENTIFY",
+      "surface_form": "staged composition",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00033",
+      "concept_id": "C000010",
+      "confidence": 0.99,
+      "language": "ENGLISH",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "composition",
+      "semantic_grounding_complete": true,
+      "sense_id": "IDENTIFY",
+      "surface_form": "pipeline",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00034",
+      "concept_id": "C000010",
+      "confidence": 0.99,
+      "language": "KOREAN",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "composition",
+      "semantic_grounding_complete": true,
+      "sense_id": "IDENTIFY",
+      "surface_form": "단계 합성",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00035",
+      "concept_id": "C000006",
+      "confidence": 0.99,
+      "language": "ENGLISH",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "mathematics",
+      "semantic_grounding_complete": true,
+      "sense_id": "RECURRENCE",
+      "surface_form": "recurrence relation",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00036",
+      "concept_id": "C000006",
+      "confidence": 0.99,
+      "language": "ENGLISH",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "mathematics",
+      "semantic_grounding_complete": true,
+      "sense_id": "RECURRENCE",
+      "surface_form": "advance the recurrence",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00037",
+      "concept_id": "C000006",
+      "confidence": 0.99,
+      "language": "KOREAN",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "mathematics",
+      "semantic_grounding_complete": true,
+      "sense_id": "RECURRENCE",
+      "surface_form": "점화 관계",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00038",
+      "concept_id": "C000006",
+      "confidence": 0.99,
+      "language": "KOREAN",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "mathematics",
+      "semantic_grounding_complete": true,
+      "sense_id": "RECURRENCE",
+      "surface_form": "점화식",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00039",
+      "concept_id": "C000011",
+      "confidence": 0.99,
+      "language": "ENGLISH",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "protocol",
+      "semantic_grounding_complete": true,
+      "sense_id": "SCOPED_LOOKUP",
+      "surface_form": "scoped contract",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00040",
+      "concept_id": "C000011",
+      "confidence": 0.99,
+      "language": "ENGLISH",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "protocol",
+      "semantic_grounding_complete": true,
+      "sense_id": "SCOPED_LOOKUP",
+      "surface_form": "versioned relation",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00041",
+      "concept_id": "C000011",
+      "confidence": 0.99,
+      "language": "KOREAN",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "protocol",
+      "semantic_grounding_complete": true,
+      "sense_id": "SCOPED_LOOKUP",
+      "surface_form": "범위 계약",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00042",
+      "concept_id": "C000011",
+      "confidence": 0.99,
+      "language": "KOREAN",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "protocol",
+      "semantic_grounding_complete": true,
+      "sense_id": "SCOPED_LOOKUP",
+      "surface_form": "버전 관계",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00043",
+      "concept_id": "C000012",
+      "confidence": 0.99,
+      "language": "ENGLISH",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "http",
+      "semantic_grounding_complete": true,
+      "sense_id": "STATUS_CLASS",
+      "surface_form": "status class",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00044",
+      "concept_id": "C000012",
+      "confidence": 0.99,
+      "language": "ENGLISH",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "http",
+      "semantic_grounding_complete": true,
+      "sense_id": "STATUS_CLASS",
+      "surface_form": "response class",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00045",
+      "concept_id": "C000012",
+      "confidence": 0.99,
+      "language": "KOREAN",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "http",
+      "semantic_grounding_complete": true,
+      "sense_id": "STATUS_CLASS",
+      "surface_form": "상태 등급",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00046",
+      "concept_id": "C000012",
+      "confidence": 0.99,
+      "language": "KOREAN",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "http",
+      "semantic_grounding_complete": true,
+      "sense_id": "STATUS_CLASS",
+      "surface_form": "응답 상태",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00047",
+      "concept_id": "C000009",
+      "confidence": 0.99,
+      "language": "ENGLISH",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "stateful numeric",
+      "semantic_grounding_complete": true,
+      "sense_id": "SUM",
+      "surface_form": "bank",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00048",
+      "concept_id": "C000011",
+      "confidence": 0.99,
+      "language": "ENGLISH",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "protocol definition",
+      "semantic_grounding_complete": true,
+      "sense_id": "SCOPED_LOOKUP",
+      "surface_form": "bank",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00049",
+      "concept_id": "C000006",
+      "confidence": 0.99,
+      "language": "KOREAN",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "수학 점화식",
+      "semantic_grounding_complete": true,
+      "sense_id": "RECURRENCE",
+      "surface_form": "차",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    },
+    {
+      "alias_id": "LEX-00050",
+      "concept_id": "C000010",
+      "confidence": 0.99,
+      "language": "KOREAN",
+      "morphological_features": {
+        "normalization": "unicode-lowercase"
+      },
+      "provenance": [
+        "SEM7_CONTROLLED_LEXICON"
+      ],
+      "scope": "순서 단계",
+      "semantic_grounding_complete": true,
+      "sense_id": "IDENTIFY",
+      "surface_form": "차",
+      "syntactic_role": "semantic predicate or concept noun",
+      "version": "SEM7-LEXICON-1"
+    }
+  ],
+  "module_boundary": "language::lexical_store",
+  "multilingual_shared_concepts": 6,
+  "schema": {
+    "alias_id": "opaque lexical identifier",
+    "concept_id": "optional immutable semantic reference",
+    "confidence": "lexical mapping confidence",
+    "language": [
+      "KOREAN",
+      "ENGLISH"
+    ],
+    "provenance": "alias provenance",
+    "sense_id": "lexical sense only",
+    "surface_form": "non-authoritative text"
+  },
+  "semantic_payload_fields_mutable_by_store": []
+}

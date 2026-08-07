@@ -1,0 +1,35 @@
+{
+  "direct_text_to_source_shortcuts": 0,
+  "english_tasks": 10,
+  "execution": {
+    "compile_timed_out": false,
+    "compiled": true,
+    "compiler_status": 0,
+    "compiler_stderr": "",
+    "compiler_stdout": "",
+    "containment_violations": 0,
+    "output_file_created": false,
+    "output_file_matches": true,
+    "program_id": "SEM7-GOAL-IR-TO-RUST-MIN-BATCH",
+    "runtime_status": 0,
+    "runtime_stderr": "",
+    "runtime_stdout": "SEM7_PROGRAM_CHECKS=80\n",
+    "runtime_timed_out": false,
+    "runtime_valid": true,
+    "source_audit_passed": true,
+    "source_sha256": "b1388a77493a9101504e112fa165191906ffe0ffbb9b32e6ba5e489c4513247c",
+    "workspace_removed": true
+  },
+  "hidden_checks": 80,
+  "korean_tasks": 10,
+  "passed": true,
+  "pipeline": [
+    "NATURAL_LANGUAGE",
+    "GOAL_IR",
+    "PROGRAM_IR",
+    "RUST_MIN",
+    "COMPILE",
+    "EXECUTE"
+  ],
+  "task_count": 20
+}

@@ -1,0 +1,33 @@
+{
+  "fields": [
+    "target_concept_id",
+    "target_state",
+    "inputs",
+    "output",
+    "constraints",
+    "requested_relations",
+    "operation",
+    "parameter",
+    "modifiers",
+    "quantifier",
+    "ordering",
+    "scope",
+    "reference_bindings",
+    "ambiguity_set"
+  ],
+  "math_path": [
+    "LANGUAGE",
+    "GOAL_IR",
+    "MATH_IR",
+    "PROOF_KERNEL"
+  ],
+  "name": "MeaningRequestIR/GoalIR",
+  "program_path": [
+    "LANGUAGE",
+    "GOAL_IR",
+    "PROGRAM_IR",
+    "RUST_MIN"
+  ],
+  "raw_sentence_authoritative": false,
+  "raw_text_in_reasoning_hot_path": false
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "concept_id": "C000008",
+    "semantic_hash_before_language": "4c373088189966ca53f6e1e5301a376dce22a656d4707149f873a4a705dc8944",
+    "semantic_hash_after_alias_attach": "4c373088189966ca53f6e1e5301a376dce22a656d4707149f873a4a705dc8944",
+    "semantic_hash_after_rename": "4c373088189966ca53f6e1e5301a376dce22a656d4707149f873a4a705dc8944",
+    "semantic_hash_after_second_language": "4c373088189966ca53f6e1e5301a376dce22a656d4707149f873a4a705dc8944",
+    "semantic_hash_after_alias_removal": "4c373088189966ca53f6e1e5301a376dce22a656d4707149f873a4a705dc8944",
+    "lexical_store_hashes_distinct": 5,
+    "passed": true
+  },
+  {
+    "concept_id": "C000011",
+    "semantic_hash_before_language": "84504f86f54b9a109a900082fd3a555936f854db1a95713f4dae67d9fe6e4040",
+    "semantic_hash_after_alias_attach": "84504f86f54b9a109a900082fd3a555936f854db1a95713f4dae67d9fe6e4040",
+    "semantic_hash_after_rename": "84504f86f54b9a109a900082fd3a555936f854db1a95713f4dae67d9fe6e4040",
+    "semantic_hash_after_second_language": "84504f86f54b9a109a900082fd3a555936f854db1a95713f4dae67d9fe6e4040",
+    "semantic_hash_after_alias_removal": "84504f86f54b9a109a900082fd3a555936f854db1a95713f4dae67d9fe6e4040",
+    "lexical_store_hashes_distinct": 5,
+    "passed": true
+  },
+  {
+    "concept_id": "C000012",
+    "semantic_hash_before_language": "f20af5f8b570b6163aed44cd489e43dfc1e116ce02303363760cede4a4e3d960",
+    "semantic_hash_after_alias_attach": "f20af5f8b570b6163aed44cd489e43dfc1e116ce02303363760cede4a4e3d960",
+    "semantic_hash_after_rename": "f20af5f8b570b6163aed44cd489e43dfc1e116ce02303363760cede4a4e3d960",
+    "semantic_hash_after_second_language": "f20af5f8b570b6163aed44cd489e43dfc1e116ce02303363760cede4a4e3d960",
+    "semantic_hash_after_alias_removal": "f20af5f8b570b6163aed44cd489e43dfc1e116ce02303363760cede4a4e3d960",
+    "lexical_store_hashes_distinct": 5,
+    "passed": true
+  }
+]

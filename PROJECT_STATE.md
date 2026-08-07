@@ -1,14 +1,14 @@
 # Project State
 
-**Canonical version:** 1.7.0
-**State frozen for:** SEM-6 completed baseline
+**Canonical version:** 1.8.0
+**State frozen for:** SEM-7 completed baseline
 
 This is an operational snapshot. It does not replace or override
 `CONSTITUTION.md`.
 
 | Field | Value |
 |---|---|
-| Current stage | `SEM-6 COMPLETE` |
+| Current stage | `SEM-7 COMPLETE` |
 | Stage S0 status | `PASS` |
 | SEM-0 implementation | `COMPLETE` |
 | SEM-0 result | `PASS - MINIMAL_AUTONOMOUS_CONCEPT_EMERGENCE` |
@@ -25,7 +25,9 @@ This is an operational snapshot. It does not replace or override
 | SEM-5 result | `PASS - PROGRAMMING_FIRST_PRINCIPLES_EXPANSION_VERIFIED` |
 | SEM-6 implementation | `COMPLETE` |
 | SEM-6 result | `PASS - DEFINITION_ONLY_KNOWLEDGE_FORAGING_AND_CONSOLIDATION_VERIFIED` |
-| SEM-7 | `NOT STARTED` |
+| SEM-7 implementation | `COMPLETE` |
+| SEM-7 result | `PASS - LANGUAGE_CORTEX_ATTACHED_AND_SEMANTIC_BOUNDARY_VERIFIED` |
+| SEM-8 | `NOT STARTED` |
 | Recursive self-mutation | `DISABLED` |
 | Recursive-improvement mode | `OBSERVE_MEASURE_ONLY` |
 | Proposal generation | `DISABLED` |
@@ -34,16 +36,16 @@ This is an operational snapshot. It does not replace or override
 | External provider repair | `DISABLED` |
 | Recursive benchmark-driven mutation | `DISABLED` |
 | LLM reasoning dependency | `DISABLED` |
-| Web/network learning | `BOUNDED READ-ONLY DEFINITION FORAGING VERIFIED IN SEM-6` |
+| Web/network learning | `BOUNDED READ-ONLY DEFINITION FORAGING VERIFIED IN SEM-6; ZERO NETWORK CALLS IN SEM-7` |
 | Current branch | `main` |
 | Current commit | `SELF` - resolve with `git rev-parse HEAD` |
 | Worktree at committed freeze | `CLEAN` |
-| Next allowed stage | `SEM-7_LANGUAGE_CONCEPT_GROUNDING` |
+| Next allowed stage | `SEM-8_CROSS_DOMAIN_STRUCTURAL_MECHANISM_TRANSFER` |
 
 ## Canonical document status
 
 The normative documents remain complete and frozen at version 1.0.0. This
-operational state record advanced to version 1.7.0 after the sealed SEM-6 run:
+operational state record advanced to version 1.8.0 after the sealed SEM-7 run:
 
 - `CONSTITUTION.md`
 - `RESEARCH_HYPOTHESIS.md`
@@ -259,7 +261,33 @@ The detailed classification and contamination decisions are in
   and lineage provenance; the unresolved DLMF candidate was not promoted. One
   cross-domain transfer passed. Reports are sealed under `reports/sem6/`.
 
+## SEM-7 evidence snapshot
+
+- The bounded Language Cortex used deterministic Korean/English lexical
+  grounding and parsing to produce GoalIR; raw language never entered the
+  semantic reasoning hot path.
+- The first frozen `SEM7-RUN-0001` failed on four Korean Language-to-GoalIR
+  conversions and is preserved under
+  `reports/sem7/failed_runs/SEM7-RUN-0001/`. The repair was limited to the
+  irregular sum form `합해` and the negation scope in `N보다 큰 값은 제외해`.
+- Fresh frozen `SEM7-RUN-0002` passed all 100 tasks: 20 Korean grounding, 20
+  English grounding, 10 synonym/paraphrase, 10 ambiguity/reference, 10 opaque
+  relexicalization, 10 definition-only foraging, 20 language-to-program, and
+  20 language-to-math paths, with the overlapping domain counts balanced at
+  ten tasks per language.
+- Language-to-GoalIR accuracy and direct-GoalIR reasoning equivalence were both
+  `1.0`. Korean and English realization faithfulness were both `1.0`, and
+  unsupported explanation facts were zero.
+- Six promoted concepts share Korean and English aliases without semantic
+  duplication. Alias add, rename, second-language attachment, removal, unnamed
+  operation, opaque relexicalization, and semantic ablation all passed while
+  semantic payload hashes remained invariant.
+- External LLM calls, local teacher calls, network calls, recursive source
+  mutations, lexical-token-dependent promoted concepts, full-catalog scans,
+  and routing false negatives were zero. All 13 gates passed. Reports are
+  sealed under `reports/sem7/`.
+
 ## Advancement constraint
 
-Starting SEM-7 requires an explicit subsequent task. SEM-6 completion does not
+Starting SEM-8 requires an explicit subsequent task. SEM-7 completion does not
 authorize recursive self-application, which remains reserved for SEM-9.

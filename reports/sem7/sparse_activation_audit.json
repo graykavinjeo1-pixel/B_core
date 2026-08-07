@@ -1,0 +1,9 @@
+{
+  "total_semantic_concepts": 11,
+  "total_aliases": 51,
+  "peak_candidate_concepts": 2,
+  "peak_active_concepts": 4,
+  "full_catalog_scans": 0,
+  "routing_false_negatives": 0,
+  "passed": true
+}

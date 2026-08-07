@@ -1,0 +1,607 @@
+{
+  "passed": true,
+  "records": [
+    {
+      "abstention_reason": null,
+      "alias_attached": true,
+      "ambiguity_resolved_by_context": true,
+      "candidate_concept_ids": [
+        "C000008"
+      ],
+      "category": "OPAQUE_RELEXICALIZATION",
+      "condition": "FULL_BIDIRECTIONAL_D",
+      "domain": "PRIOR_SEMANTIC",
+      "grounded_correctly": true,
+      "homonym_false_merge": false,
+      "language": "KOREAN",
+      "meaning_request_ir": {
+        "ambiguity_set": [],
+        "constraints": [
+          "input values are bounded signed integers",
+          "operator_parameter=2"
+        ],
+        "inputs": [
+          "values"
+        ],
+        "lexical_mapping_confidence": 0.99,
+        "modifiers": [],
+        "operation": "ADD_EACH",
+        "ordering": [
+          "APPLY"
+        ],
+        "output": "sequence<int>",
+        "parameter": 2,
+        "parse_confidence": 0.99,
+        "quantifier": null,
+        "quantifier_threshold": null,
+        "raw_text_in_reasoning_hot_path": false,
+        "reference_bindings": {},
+        "reference_resolution_confidence": 1.0,
+        "requested_relations": [
+          "C000008"
+        ],
+        "scope": "sequence-transform",
+        "semantic_concept_confidence": 1.0,
+        "target_concept_id": "C000008",
+        "target_state": "mapped sequence"
+      },
+      "near_contrast_preserved": true,
+      "paraphrases_equivalent": true,
+      "program_ir_created": false,
+      "proof_kernel_verified": false,
+      "raw_text_entered_reasoner": false,
+      "rust_compiled": false,
+      "rust_executed": false,
+      "selected_concept_id": "C000008",
+      "semantic_duplicate_avoided": true,
+      "semantic_duplicate_created": false,
+      "semantic_execution_passed": true,
+      "semantic_projection_sha256": "ef81b151e252a606e0c70064dd0625138b7f32cbedb70a168f0c39a1749efc19",
+      "solution_dependency": false,
+      "solved": true,
+      "task_id": "SEM7-L-060-4db4e670"
+    },
+    {
+      "abstention_reason": null,
+      "alias_attached": true,
+      "ambiguity_resolved_by_context": true,
+      "candidate_concept_ids": [
+        "C000008"
+      ],
+      "category": "OPAQUE_RELEXICALIZATION",
+      "condition": "FULL_BIDIRECTIONAL_D",
+      "domain": "PRIOR_SEMANTIC",
+      "grounded_correctly": true,
+      "homonym_false_merge": false,
+      "language": "ENGLISH",
+      "meaning_request_ir": {
+        "ambiguity_set": [],
+        "constraints": [
+          "input values are bounded signed integers",
+          "operator_parameter=3"
+        ],
+        "inputs": [
+          "values"
+        ],
+        "lexical_mapping_confidence": 0.99,
+        "modifiers": [],
+        "operation": "ADD_EACH",
+        "ordering": [
+          "APPLY"
+        ],
+        "output": "sequence<int>",
+        "parameter": 3,
+        "parse_confidence": 0.99,
+        "quantifier": null,
+        "quantifier_threshold": null,
+        "raw_text_in_reasoning_hot_path": false,
+        "reference_bindings": {},
+        "reference_resolution_confidence": 1.0,
+        "requested_relations": [
+          "C000008"
+        ],
+        "scope": "sequence-transform",
+        "semantic_concept_confidence": 1.0,
+        "target_concept_id": "C000008",
+        "target_state": "mapped sequence"
+      },
+      "near_contrast_preserved": true,
+      "paraphrases_equivalent": true,
+      "program_ir_created": false,
+      "proof_kernel_verified": false,
+      "raw_text_entered_reasoner": false,
+      "rust_compiled": false,
+      "rust_executed": false,
+      "selected_concept_id": "C000008",
+      "semantic_duplicate_avoided": true,
+      "semantic_duplicate_created": false,
+      "semantic_execution_passed": true,
+      "semantic_projection_sha256": "86146e5d9eab10b019ee7e0c52a24da00e15784b45e203e5fcbb9205cf9875c9",
+      "solution_dependency": false,
+      "solved": true,
+      "task_id": "SEM7-L-061-a6a9d922"
+    },
+    {
+      "abstention_reason": null,
+      "alias_attached": true,
+      "ambiguity_resolved_by_context": true,
+      "candidate_concept_ids": [
+        "C000008"
+      ],
+      "category": "OPAQUE_RELEXICALIZATION",
+      "condition": "FULL_BIDIRECTIONAL_D",
+      "domain": "PRIOR_SEMANTIC",
+      "grounded_correctly": true,
+      "homonym_false_merge": false,
+      "language": "KOREAN",
+      "meaning_request_ir": {
+        "ambiguity_set": [],
+        "constraints": [
+          "input values are bounded signed integers",
+          "operator_parameter=4"
+        ],
+        "inputs": [
+          "values"
+        ],
+        "lexical_mapping_confidence": 0.99,
+        "modifiers": [],
+        "operation": "ADD_EACH",
+        "ordering": [
+          "APPLY"
+        ],
+        "output": "sequence<int>",
+        "parameter": 4,
+        "parse_confidence": 0.99,
+        "quantifier": null,
+        "quantifier_threshold": null,
+        "raw_text_in_reasoning_hot_path": false,
+        "reference_bindings": {},
+        "reference_resolution_confidence": 1.0,
+        "requested_relations": [
+          "C000008"
+        ],
+        "scope": "sequence-transform",
+        "semantic_concept_confidence": 1.0,
+        "target_concept_id": "C000008",
+        "target_state": "mapped sequence"
+      },
+      "near_contrast_preserved": true,
+      "paraphrases_equivalent": true,
+      "program_ir_created": false,
+      "proof_kernel_verified": false,
+      "raw_text_entered_reasoner": false,
+      "rust_compiled": false,
+      "rust_executed": false,
+      "selected_concept_id": "C000008",
+      "semantic_duplicate_avoided": true,
+      "semantic_duplicate_created": false,
+      "semantic_execution_passed": true,
+      "semantic_projection_sha256": "ebaa69ecb5ed9f07f4d4550bf3ff398b80869c4bb89e9072aa96efc5b529a378",
+      "solution_dependency": false,
+      "solved": true,
+      "task_id": "SEM7-L-062-690b0724"
+    },
+    {
+      "abstention_reason": null,
+      "alias_attached": true,
+      "ambiguity_resolved_by_context": true,
+      "candidate_concept_ids": [
+        "C000008"
+      ],
+      "category": "OPAQUE_RELEXICALIZATION",
+      "condition": "FULL_BIDIRECTIONAL_D",
+      "domain": "PRIOR_SEMANTIC",
+      "grounded_correctly": true,
+      "homonym_false_merge": false,
+      "language": "ENGLISH",
+      "meaning_request_ir": {
+        "ambiguity_set": [],
+        "constraints": [
+          "input values are bounded signed integers",
+          "operator_parameter=5"
+        ],
+        "inputs": [
+          "values"
+        ],
+        "lexical_mapping_confidence": 0.99,
+        "modifiers": [],
+        "operation": "ADD_EACH",
+        "ordering": [
+          "APPLY"
+        ],
+        "output": "sequence<int>",
+        "parameter": 5,
+        "parse_confidence": 0.99,
+        "quantifier": null,
+        "quantifier_threshold": null,
+        "raw_text_in_reasoning_hot_path": false,
+        "reference_bindings": {},
+        "reference_resolution_confidence": 1.0,
+        "requested_relations": [
+          "C000008"
+        ],
+        "scope": "sequence-transform",
+        "semantic_concept_confidence": 1.0,
+        "target_concept_id": "C000008",
+        "target_state": "mapped sequence"
+      },
+      "near_contrast_preserved": true,
+      "paraphrases_equivalent": true,
+      "program_ir_created": false,
+      "proof_kernel_verified": false,
+      "raw_text_entered_reasoner": false,
+      "rust_compiled": false,
+      "rust_executed": false,
+      "selected_concept_id": "C000008",
+      "semantic_duplicate_avoided": true,
+      "semantic_duplicate_created": false,
+      "semantic_execution_passed": true,
+      "semantic_projection_sha256": "2d9a8811cf75dcdc90109006b06f696dc3a3160c17257f53eab9a823a63d868e",
+      "solution_dependency": false,
+      "solved": true,
+      "task_id": "SEM7-L-063-b4b340f6"
+    },
+    {
+      "abstention_reason": null,
+      "alias_attached": true,
+      "ambiguity_resolved_by_context": true,
+      "candidate_concept_ids": [
+        "C000008"
+      ],
+      "category": "OPAQUE_RELEXICALIZATION",
+      "condition": "FULL_BIDIRECTIONAL_D",
+      "domain": "PRIOR_SEMANTIC",
+      "grounded_correctly": true,
+      "homonym_false_merge": false,
+      "language": "KOREAN",
+      "meaning_request_ir": {
+        "ambiguity_set": [],
+        "constraints": [
+          "input values are bounded signed integers",
+          "operator_parameter=6"
+        ],
+        "inputs": [
+          "values"
+        ],
+        "lexical_mapping_confidence": 0.99,
+        "modifiers": [],
+        "operation": "ADD_EACH",
+        "ordering": [
+          "APPLY"
+        ],
+        "output": "sequence<int>",
+        "parameter": 6,
+        "parse_confidence": 0.99,
+        "quantifier": null,
+        "quantifier_threshold": null,
+        "raw_text_in_reasoning_hot_path": false,
+        "reference_bindings": {},
+        "reference_resolution_confidence": 1.0,
+        "requested_relations": [
+          "C000008"
+        ],
+        "scope": "sequence-transform",
+        "semantic_concept_confidence": 1.0,
+        "target_concept_id": "C000008",
+        "target_state": "mapped sequence"
+      },
+      "near_contrast_preserved": true,
+      "paraphrases_equivalent": true,
+      "program_ir_created": false,
+      "proof_kernel_verified": false,
+      "raw_text_entered_reasoner": false,
+      "rust_compiled": false,
+      "rust_executed": false,
+      "selected_concept_id": "C000008",
+      "semantic_duplicate_avoided": true,
+      "semantic_duplicate_created": false,
+      "semantic_execution_passed": true,
+      "semantic_projection_sha256": "8a033800e61f081c9f87041ec3f0988b9e21c942ca4b94d36cc2ca4c8b148274",
+      "solution_dependency": false,
+      "solved": true,
+      "task_id": "SEM7-L-064-5e30cb18"
+    },
+    {
+      "abstention_reason": null,
+      "alias_attached": true,
+      "ambiguity_resolved_by_context": true,
+      "candidate_concept_ids": [
+        "C000008"
+      ],
+      "category": "OPAQUE_RELEXICALIZATION",
+      "condition": "FULL_BIDIRECTIONAL_D",
+      "domain": "PRIOR_SEMANTIC",
+      "grounded_correctly": true,
+      "homonym_false_merge": false,
+      "language": "ENGLISH",
+      "meaning_request_ir": {
+        "ambiguity_set": [],
+        "constraints": [
+          "input values are bounded signed integers",
+          "operator_parameter=2"
+        ],
+        "inputs": [
+          "values"
+        ],
+        "lexical_mapping_confidence": 0.99,
+        "modifiers": [],
+        "operation": "ADD_EACH",
+        "ordering": [
+          "APPLY"
+        ],
+        "output": "sequence<int>",
+        "parameter": 2,
+        "parse_confidence": 0.99,
+        "quantifier": null,
+        "quantifier_threshold": null,
+        "raw_text_in_reasoning_hot_path": false,
+        "reference_bindings": {},
+        "reference_resolution_confidence": 1.0,
+        "requested_relations": [
+          "C000008"
+        ],
+        "scope": "sequence-transform",
+        "semantic_concept_confidence": 1.0,
+        "target_concept_id": "C000008",
+        "target_state": "mapped sequence"
+      },
+      "near_contrast_preserved": true,
+      "paraphrases_equivalent": true,
+      "program_ir_created": false,
+      "proof_kernel_verified": false,
+      "raw_text_entered_reasoner": false,
+      "rust_compiled": false,
+      "rust_executed": false,
+      "selected_concept_id": "C000008",
+      "semantic_duplicate_avoided": true,
+      "semantic_duplicate_created": false,
+      "semantic_execution_passed": true,
+      "semantic_projection_sha256": "ef81b151e252a606e0c70064dd0625138b7f32cbedb70a168f0c39a1749efc19",
+      "solution_dependency": false,
+      "solved": true,
+      "task_id": "SEM7-L-065-c2ca7e0a"
+    },
+    {
+      "abstention_reason": null,
+      "alias_attached": true,
+      "ambiguity_resolved_by_context": true,
+      "candidate_concept_ids": [
+        "C000008"
+      ],
+      "category": "OPAQUE_RELEXICALIZATION",
+      "condition": "FULL_BIDIRECTIONAL_D",
+      "domain": "PRIOR_SEMANTIC",
+      "grounded_correctly": true,
+      "homonym_false_merge": false,
+      "language": "KOREAN",
+      "meaning_request_ir": {
+        "ambiguity_set": [],
+        "constraints": [
+          "input values are bounded signed integers",
+          "operator_parameter=3"
+        ],
+        "inputs": [
+          "values"
+        ],
+        "lexical_mapping_confidence": 0.99,
+        "modifiers": [],
+        "operation": "ADD_EACH",
+        "ordering": [
+          "APPLY"
+        ],
+        "output": "sequence<int>",
+        "parameter": 3,
+        "parse_confidence": 0.99,
+        "quantifier": null,
+        "quantifier_threshold": null,
+        "raw_text_in_reasoning_hot_path": false,
+        "reference_bindings": {},
+        "reference_resolution_confidence": 1.0,
+        "requested_relations": [
+          "C000008"
+        ],
+        "scope": "sequence-transform",
+        "semantic_concept_confidence": 1.0,
+        "target_concept_id": "C000008",
+        "target_state": "mapped sequence"
+      },
+      "near_contrast_preserved": true,
+      "paraphrases_equivalent": true,
+      "program_ir_created": false,
+      "proof_kernel_verified": false,
+      "raw_text_entered_reasoner": false,
+      "rust_compiled": false,
+      "rust_executed": false,
+      "selected_concept_id": "C000008",
+      "semantic_duplicate_avoided": true,
+      "semantic_duplicate_created": false,
+      "semantic_execution_passed": true,
+      "semantic_projection_sha256": "86146e5d9eab10b019ee7e0c52a24da00e15784b45e203e5fcbb9205cf9875c9",
+      "solution_dependency": false,
+      "solved": true,
+      "task_id": "SEM7-L-066-17c9e64c"
+    },
+    {
+      "abstention_reason": null,
+      "alias_attached": true,
+      "ambiguity_resolved_by_context": true,
+      "candidate_concept_ids": [
+        "C000008"
+      ],
+      "category": "OPAQUE_RELEXICALIZATION",
+      "condition": "FULL_BIDIRECTIONAL_D",
+      "domain": "PRIOR_SEMANTIC",
+      "grounded_correctly": true,
+      "homonym_false_merge": false,
+      "language": "ENGLISH",
+      "meaning_request_ir": {
+        "ambiguity_set": [],
+        "constraints": [
+          "input values are bounded signed integers",
+          "operator_parameter=4"
+        ],
+        "inputs": [
+          "values"
+        ],
+        "lexical_mapping_confidence": 0.99,
+        "modifiers": [],
+        "operation": "ADD_EACH",
+        "ordering": [
+          "APPLY"
+        ],
+        "output": "sequence<int>",
+        "parameter": 4,
+        "parse_confidence": 0.99,
+        "quantifier": null,
+        "quantifier_threshold": null,
+        "raw_text_in_reasoning_hot_path": false,
+        "reference_bindings": {},
+        "reference_resolution_confidence": 1.0,
+        "requested_relations": [
+          "C000008"
+        ],
+        "scope": "sequence-transform",
+        "semantic_concept_confidence": 1.0,
+        "target_concept_id": "C000008",
+        "target_state": "mapped sequence"
+      },
+      "near_contrast_preserved": true,
+      "paraphrases_equivalent": true,
+      "program_ir_created": false,
+      "proof_kernel_verified": false,
+      "raw_text_entered_reasoner": false,
+      "rust_compiled": false,
+      "rust_executed": false,
+      "selected_concept_id": "C000008",
+      "semantic_duplicate_avoided": true,
+      "semantic_duplicate_created": false,
+      "semantic_execution_passed": true,
+      "semantic_projection_sha256": "ebaa69ecb5ed9f07f4d4550bf3ff398b80869c4bb89e9072aa96efc5b529a378",
+      "solution_dependency": false,
+      "solved": true,
+      "task_id": "SEM7-L-067-8c92645e"
+    },
+    {
+      "abstention_reason": null,
+      "alias_attached": true,
+      "ambiguity_resolved_by_context": true,
+      "candidate_concept_ids": [
+        "C000008"
+      ],
+      "category": "OPAQUE_RELEXICALIZATION",
+      "condition": "FULL_BIDIRECTIONAL_D",
+      "domain": "PRIOR_SEMANTIC",
+      "grounded_correctly": true,
+      "homonym_false_merge": false,
+      "language": "KOREAN",
+      "meaning_request_ir": {
+        "ambiguity_set": [],
+        "constraints": [
+          "input values are bounded signed integers",
+          "operator_parameter=5"
+        ],
+        "inputs": [
+          "values"
+        ],
+        "lexical_mapping_confidence": 0.99,
+        "modifiers": [],
+        "operation": "ADD_EACH",
+        "ordering": [
+          "APPLY"
+        ],
+        "output": "sequence<int>",
+        "parameter": 5,
+        "parse_confidence": 0.99,
+        "quantifier": null,
+        "quantifier_threshold": null,
+        "raw_text_in_reasoning_hot_path": false,
+        "reference_bindings": {},
+        "reference_resolution_confidence": 1.0,
+        "requested_relations": [
+          "C000008"
+        ],
+        "scope": "sequence-transform",
+        "semantic_concept_confidence": 1.0,
+        "target_concept_id": "C000008",
+        "target_state": "mapped sequence"
+      },
+      "near_contrast_preserved": true,
+      "paraphrases_equivalent": true,
+      "program_ir_created": false,
+      "proof_kernel_verified": false,
+      "raw_text_entered_reasoner": false,
+      "rust_compiled": false,
+      "rust_executed": false,
+      "selected_concept_id": "C000008",
+      "semantic_duplicate_avoided": true,
+      "semantic_duplicate_created": false,
+      "semantic_execution_passed": true,
+      "semantic_projection_sha256": "2d9a8811cf75dcdc90109006b06f696dc3a3160c17257f53eab9a823a63d868e",
+      "solution_dependency": false,
+      "solved": true,
+      "task_id": "SEM7-L-068-d24d4cc0"
+    },
+    {
+      "abstention_reason": null,
+      "alias_attached": true,
+      "ambiguity_resolved_by_context": true,
+      "candidate_concept_ids": [
+        "C000008"
+      ],
+      "category": "OPAQUE_RELEXICALIZATION",
+      "condition": "FULL_BIDIRECTIONAL_D",
+      "domain": "PRIOR_SEMANTIC",
+      "grounded_correctly": true,
+      "homonym_false_merge": false,
+      "language": "ENGLISH",
+      "meaning_request_ir": {
+        "ambiguity_set": [],
+        "constraints": [
+          "input values are bounded signed integers",
+          "operator_parameter=6"
+        ],
+        "inputs": [
+          "values"
+        ],
+        "lexical_mapping_confidence": 0.99,
+        "modifiers": [],
+        "operation": "ADD_EACH",
+        "ordering": [
+          "APPLY"
+        ],
+        "output": "sequence<int>",
+        "parameter": 6,
+        "parse_confidence": 0.99,
+        "quantifier": null,
+        "quantifier_threshold": null,
+        "raw_text_in_reasoning_hot_path": false,
+        "reference_bindings": {},
+        "reference_resolution_confidence": 1.0,
+        "requested_relations": [
+          "C000008"
+        ],
+        "scope": "sequence-transform",
+        "semantic_concept_confidence": 1.0,
+        "target_concept_id": "C000008",
+        "target_state": "mapped sequence"
+      },
+      "near_contrast_preserved": true,
+      "paraphrases_equivalent": true,
+      "program_ir_created": false,
+      "proof_kernel_verified": false,
+      "raw_text_entered_reasoner": false,
+      "rust_compiled": false,
+      "rust_executed": false,
+      "selected_concept_id": "C000008",
+      "semantic_duplicate_avoided": true,
+      "semantic_duplicate_created": false,
+      "semantic_execution_passed": true,
+      "semantic_projection_sha256": "8a033800e61f081c9f87041ec3f0988b9e21c942ca4b94d36cc2ca4c8b148274",
+      "solution_dependency": false,
+      "solved": true,
+      "task_id": "SEM7-L-069-c93307f2"
+    }
+  ],
+  "semantic_payload_mutations": 0,
+  "task_count": 10
+}

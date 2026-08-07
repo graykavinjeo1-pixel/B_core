@@ -1,0 +1,10 @@
+{
+  "name": "LANGUAGE_INPUT_VS_DIRECT_GOAL_IR",
+  "lexical_layer_enabled": true,
+  "semantic_substrate_enabled": true,
+  "tasks": 100,
+  "solved": 100,
+  "solve_rate": 1.0,
+  "expected_direction_observed": true,
+  "passed": true
+}

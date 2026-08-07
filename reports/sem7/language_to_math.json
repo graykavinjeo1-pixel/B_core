@@ -1,0 +1,175 @@
+{
+  "certificates": [
+    {
+      "cases_verified": 4,
+      "language_string_is_proof": false,
+      "math_ir_sha256": "5611a427d9108f8b024ff6d642cf33b553267b147bc20efe940dfe7382a7e5c3",
+      "proof_kernel_verified": true,
+      "proof_object": "TYPED_GOAL_IR_OPERATION_AND_EXACT_EVALUATION_CERTIFICATE",
+      "task_id": "SEM7-L-005-b6f60c47"
+    },
+    {
+      "cases_verified": 4,
+      "language_string_is_proof": false,
+      "math_ir_sha256": "330856eb8959e53fd0969de9f33677313551fe1d9844238c76071901d01e17e9",
+      "proof_kernel_verified": true,
+      "proof_object": "TYPED_GOAL_IR_OPERATION_AND_EXACT_EVALUATION_CERTIFICATE",
+      "task_id": "SEM7-L-006-6a11e2ca"
+    },
+    {
+      "cases_verified": 4,
+      "language_string_is_proof": false,
+      "math_ir_sha256": "8d339c56e0ba89b5b9163fa13e21832f1d34248b6391b5d2311ff578c51f7546",
+      "proof_kernel_verified": true,
+      "proof_object": "TYPED_GOAL_IR_OPERATION_AND_EXACT_EVALUATION_CERTIFICATE",
+      "task_id": "SEM7-L-007-73a094d1"
+    },
+    {
+      "cases_verified": 4,
+      "language_string_is_proof": false,
+      "math_ir_sha256": "fa322d35d17d5f550dd191ad83dbdfb527d33ca22a317002c7cce4e11aa0699e",
+      "proof_kernel_verified": true,
+      "proof_object": "TYPED_GOAL_IR_OPERATION_AND_EXACT_EVALUATION_CERTIFICATE",
+      "task_id": "SEM7-L-008-9e1a590c"
+    },
+    {
+      "cases_verified": 4,
+      "language_string_is_proof": false,
+      "math_ir_sha256": "8a033800e61f081c9f87041ec3f0988b9e21c942ca4b94d36cc2ca4c8b148274",
+      "proof_kernel_verified": true,
+      "proof_object": "TYPED_GOAL_IR_OPERATION_AND_EXACT_EVALUATION_CERTIFICATE",
+      "task_id": "SEM7-L-009-38321c6b"
+    },
+    {
+      "cases_verified": 4,
+      "language_string_is_proof": false,
+      "math_ir_sha256": "5611a427d9108f8b024ff6d642cf33b553267b147bc20efe940dfe7382a7e5c3",
+      "proof_kernel_verified": true,
+      "proof_object": "TYPED_GOAL_IR_OPERATION_AND_EXACT_EVALUATION_CERTIFICATE",
+      "task_id": "SEM7-L-025-97664b7b"
+    },
+    {
+      "cases_verified": 4,
+      "language_string_is_proof": false,
+      "math_ir_sha256": "330856eb8959e53fd0969de9f33677313551fe1d9844238c76071901d01e17e9",
+      "proof_kernel_verified": true,
+      "proof_object": "TYPED_GOAL_IR_OPERATION_AND_EXACT_EVALUATION_CERTIFICATE",
+      "task_id": "SEM7-L-026-c66bcaee"
+    },
+    {
+      "cases_verified": 4,
+      "language_string_is_proof": false,
+      "math_ir_sha256": "8d339c56e0ba89b5b9163fa13e21832f1d34248b6391b5d2311ff578c51f7546",
+      "proof_kernel_verified": true,
+      "proof_object": "TYPED_GOAL_IR_OPERATION_AND_EXACT_EVALUATION_CERTIFICATE",
+      "task_id": "SEM7-L-027-168c3f25"
+    },
+    {
+      "cases_verified": 4,
+      "language_string_is_proof": false,
+      "math_ir_sha256": "fa322d35d17d5f550dd191ad83dbdfb527d33ca22a317002c7cce4e11aa0699e",
+      "proof_kernel_verified": true,
+      "proof_object": "TYPED_GOAL_IR_OPERATION_AND_EXACT_EVALUATION_CERTIFICATE",
+      "task_id": "SEM7-L-028-3deaf5d0"
+    },
+    {
+      "cases_verified": 4,
+      "language_string_is_proof": false,
+      "math_ir_sha256": "8a033800e61f081c9f87041ec3f0988b9e21c942ca4b94d36cc2ca4c8b148274",
+      "proof_kernel_verified": true,
+      "proof_object": "TYPED_GOAL_IR_OPERATION_AND_EXACT_EVALUATION_CERTIFICATE",
+      "task_id": "SEM7-L-029-3bb6e6df"
+    },
+    {
+      "cases_verified": 4,
+      "language_string_is_proof": false,
+      "math_ir_sha256": "5611a427d9108f8b024ff6d642cf33b553267b147bc20efe940dfe7382a7e5c3",
+      "proof_kernel_verified": true,
+      "proof_object": "TYPED_GOAL_IR_OPERATION_AND_EXACT_EVALUATION_CERTIFICATE",
+      "task_id": "SEM7-L-090-1fb6432f"
+    },
+    {
+      "cases_verified": 4,
+      "language_string_is_proof": false,
+      "math_ir_sha256": "330856eb8959e53fd0969de9f33677313551fe1d9844238c76071901d01e17e9",
+      "proof_kernel_verified": true,
+      "proof_object": "TYPED_GOAL_IR_OPERATION_AND_EXACT_EVALUATION_CERTIFICATE",
+      "task_id": "SEM7-L-091-0420a192"
+    },
+    {
+      "cases_verified": 4,
+      "language_string_is_proof": false,
+      "math_ir_sha256": "8d339c56e0ba89b5b9163fa13e21832f1d34248b6391b5d2311ff578c51f7546",
+      "proof_kernel_verified": true,
+      "proof_object": "TYPED_GOAL_IR_OPERATION_AND_EXACT_EVALUATION_CERTIFICATE",
+      "task_id": "SEM7-L-092-434555f9"
+    },
+    {
+      "cases_verified": 4,
+      "language_string_is_proof": false,
+      "math_ir_sha256": "fa322d35d17d5f550dd191ad83dbdfb527d33ca22a317002c7cce4e11aa0699e",
+      "proof_kernel_verified": true,
+      "proof_object": "TYPED_GOAL_IR_OPERATION_AND_EXACT_EVALUATION_CERTIFICATE",
+      "task_id": "SEM7-L-093-262b2514"
+    },
+    {
+      "cases_verified": 4,
+      "language_string_is_proof": false,
+      "math_ir_sha256": "8a033800e61f081c9f87041ec3f0988b9e21c942ca4b94d36cc2ca4c8b148274",
+      "proof_kernel_verified": true,
+      "proof_object": "TYPED_GOAL_IR_OPERATION_AND_EXACT_EVALUATION_CERTIFICATE",
+      "task_id": "SEM7-L-094-9905f1d3"
+    },
+    {
+      "cases_verified": 4,
+      "language_string_is_proof": false,
+      "math_ir_sha256": "5611a427d9108f8b024ff6d642cf33b553267b147bc20efe940dfe7382a7e5c3",
+      "proof_kernel_verified": true,
+      "proof_object": "TYPED_GOAL_IR_OPERATION_AND_EXACT_EVALUATION_CERTIFICATE",
+      "task_id": "SEM7-L-095-3439b066"
+    },
+    {
+      "cases_verified": 4,
+      "language_string_is_proof": false,
+      "math_ir_sha256": "330856eb8959e53fd0969de9f33677313551fe1d9844238c76071901d01e17e9",
+      "proof_kernel_verified": true,
+      "proof_object": "TYPED_GOAL_IR_OPERATION_AND_EXACT_EVALUATION_CERTIFICATE",
+      "task_id": "SEM7-L-096-b76c1d3d"
+    },
+    {
+      "cases_verified": 4,
+      "language_string_is_proof": false,
+      "math_ir_sha256": "8d339c56e0ba89b5b9163fa13e21832f1d34248b6391b5d2311ff578c51f7546",
+      "proof_kernel_verified": true,
+      "proof_object": "TYPED_GOAL_IR_OPERATION_AND_EXACT_EVALUATION_CERTIFICATE",
+      "task_id": "SEM7-L-097-f86ae808"
+    },
+    {
+      "cases_verified": 4,
+      "language_string_is_proof": false,
+      "math_ir_sha256": "fa322d35d17d5f550dd191ad83dbdfb527d33ca22a317002c7cce4e11aa0699e",
+      "proof_kernel_verified": true,
+      "proof_object": "TYPED_GOAL_IR_OPERATION_AND_EXACT_EVALUATION_CERTIFICATE",
+      "task_id": "SEM7-L-098-17f642b7"
+    },
+    {
+      "cases_verified": 4,
+      "language_string_is_proof": false,
+      "math_ir_sha256": "8a033800e61f081c9f87041ec3f0988b9e21c942ca4b94d36cc2ca4c8b148274",
+      "proof_kernel_verified": true,
+      "proof_object": "TYPED_GOAL_IR_OPERATION_AND_EXACT_EVALUATION_CERTIFICATE",
+      "task_id": "SEM7-L-099-814d047a"
+    }
+  ],
+  "english_tasks": 10,
+  "korean_tasks": 10,
+  "language_strings_used_as_proof": 0,
+  "passed": true,
+  "pipeline": [
+    "NATURAL_LANGUAGE",
+    "MATH_GOAL_IR",
+    "SEMANTIC_DERIVATION",
+    "PROOF_KERNEL"
+  ],
+  "task_count": 20
+}

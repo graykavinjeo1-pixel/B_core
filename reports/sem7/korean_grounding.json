@@ -1,0 +1,1220 @@
+{
+  "condition_summary": [
+    {
+      "condition": "LEXICAL_LOOKUP_A",
+      "language_to_concept_accuracy": 0.2,
+      "semantic_execution_rate": 0.2,
+      "solve_rate": 0.2
+    },
+    {
+      "condition": "STRUCTURAL_PARSER_B",
+      "language_to_concept_accuracy": 0.74,
+      "semantic_execution_rate": 0.74,
+      "solve_rate": 0.74
+    },
+    {
+      "condition": "SEMANTIC_NO_CONSOLIDATION_C",
+      "language_to_concept_accuracy": 0.8,
+      "semantic_execution_rate": 0.8,
+      "solve_rate": 0.8
+    },
+    {
+      "condition": "FULL_BIDIRECTIONAL_D",
+      "language_to_concept_accuracy": 1.0,
+      "semantic_execution_rate": 1.0,
+      "solve_rate": 1.0
+    }
+  ],
+  "tasks": [
+    {
+      "abstention_reason": null,
+      "alias_attached": false,
+      "ambiguity_resolved_by_context": true,
+      "candidate_concept_ids": [
+        "C000008"
+      ],
+      "category": "KOREAN_GROUNDING",
+      "condition": "FULL_BIDIRECTIONAL_D",
+      "domain": "PROGRAMMING",
+      "grounded_correctly": true,
+      "homonym_false_merge": false,
+      "language": "KOREAN",
+      "meaning_request_ir": {
+        "ambiguity_set": [],
+        "constraints": [
+          "input values are bounded signed integers",
+          "operator_parameter=2"
+        ],
+        "inputs": [
+          "values"
+        ],
+        "lexical_mapping_confidence": 0.99,
+        "modifiers": [],
+        "operation": "ADD_EACH",
+        "ordering": [
+          "APPLY"
+        ],
+        "output": "sequence<int>",
+        "parameter": 2,
+        "parse_confidence": 0.99,
+        "quantifier": null,
+        "quantifier_threshold": null,
+        "raw_text_in_reasoning_hot_path": false,
+        "reference_bindings": {},
+        "reference_resolution_confidence": 1.0,
+        "requested_relations": [
+          "C000008"
+        ],
+        "scope": "sequence-transform",
+        "semantic_concept_confidence": 1.0,
+        "target_concept_id": "C000008",
+        "target_state": "mapped sequence"
+      },
+      "near_contrast_preserved": true,
+      "paraphrases_equivalent": true,
+      "program_ir_created": true,
+      "proof_kernel_verified": false,
+      "raw_text_entered_reasoner": false,
+      "rust_compiled": true,
+      "rust_executed": true,
+      "selected_concept_id": "C000008",
+      "semantic_duplicate_avoided": false,
+      "semantic_duplicate_created": false,
+      "semantic_execution_passed": true,
+      "semantic_projection_sha256": "ef81b151e252a606e0c70064dd0625138b7f32cbedb70a168f0c39a1749efc19",
+      "solution_dependency": false,
+      "solved": true,
+      "task_id": "SEM7-L-000-d55061e4"
+    },
+    {
+      "abstention_reason": null,
+      "alias_attached": false,
+      "ambiguity_resolved_by_context": true,
+      "candidate_concept_ids": [
+        "C000008"
+      ],
+      "category": "KOREAN_GROUNDING",
+      "condition": "FULL_BIDIRECTIONAL_D",
+      "domain": "PROGRAMMING",
+      "grounded_correctly": true,
+      "homonym_false_merge": false,
+      "language": "KOREAN",
+      "meaning_request_ir": {
+        "ambiguity_set": [],
+        "constraints": [
+          "input values are bounded signed integers",
+          "operator_parameter=3"
+        ],
+        "inputs": [
+          "values"
+        ],
+        "lexical_mapping_confidence": 0.99,
+        "modifiers": [],
+        "operation": "MULTIPLY_EACH",
+        "ordering": [
+          "APPLY"
+        ],
+        "output": "sequence<int>",
+        "parameter": 3,
+        "parse_confidence": 0.99,
+        "quantifier": null,
+        "quantifier_threshold": null,
+        "raw_text_in_reasoning_hot_path": false,
+        "reference_bindings": {},
+        "reference_resolution_confidence": 1.0,
+        "requested_relations": [
+          "C000008"
+        ],
+        "scope": "sequence-transform",
+        "semantic_concept_confidence": 1.0,
+        "target_concept_id": "C000008",
+        "target_state": "mapped sequence"
+      },
+      "near_contrast_preserved": true,
+      "paraphrases_equivalent": true,
+      "program_ir_created": true,
+      "proof_kernel_verified": false,
+      "raw_text_entered_reasoner": false,
+      "rust_compiled": true,
+      "rust_executed": true,
+      "selected_concept_id": "C000008",
+      "semantic_duplicate_avoided": false,
+      "semantic_duplicate_created": false,
+      "semantic_execution_passed": true,
+      "semantic_projection_sha256": "b79ce03cd2be6031f873f937018bd80e17a2f1f8b5eeac24ae403d086170b40f",
+      "solution_dependency": false,
+      "solved": true,
+      "task_id": "SEM7-L-001-00ccd263"
+    },
+    {
+      "abstention_reason": null,
+      "alias_attached": false,
+      "ambiguity_resolved_by_context": true,
+      "candidate_concept_ids": [
+        "C000008"
+      ],
+      "category": "KOREAN_GROUNDING",
+      "condition": "FULL_BIDIRECTIONAL_D",
+      "domain": "PROGRAMMING",
+      "grounded_correctly": true,
+      "homonym_false_merge": false,
+      "language": "KOREAN",
+      "meaning_request_ir": {
+        "ambiguity_set": [],
+        "constraints": [
+          "input values are bounded signed integers",
+          "operator_parameter=4"
+        ],
+        "inputs": [
+          "values"
+        ],
+        "lexical_mapping_confidence": 0.99,
+        "modifiers": [],
+        "operation": "FILTER_GREATER",
+        "ordering": [
+          "APPLY"
+        ],
+        "output": "sequence<int>",
+        "parameter": 4,
+        "parse_confidence": 0.99,
+        "quantifier": null,
+        "quantifier_threshold": null,
+        "raw_text_in_reasoning_hot_path": false,
+        "reference_bindings": {},
+        "reference_resolution_confidence": 1.0,
+        "requested_relations": [
+          "C000008"
+        ],
+        "scope": "sequence-transform",
+        "semantic_concept_confidence": 1.0,
+        "target_concept_id": "C000008",
+        "target_state": "filtered sequence"
+      },
+      "near_contrast_preserved": true,
+      "paraphrases_equivalent": true,
+      "program_ir_created": true,
+      "proof_kernel_verified": false,
+      "raw_text_entered_reasoner": false,
+      "rust_compiled": true,
+      "rust_executed": true,
+      "selected_concept_id": "C000008",
+      "semantic_duplicate_avoided": false,
+      "semantic_duplicate_created": false,
+      "semantic_execution_passed": true,
+      "semantic_projection_sha256": "2ccd953f26e6c4bf3271720d46fb5f5ce3453f6081034908106c63b0fb1b240e",
+      "solution_dependency": false,
+      "solved": true,
+      "task_id": "SEM7-L-002-8f6699b6"
+    },
+    {
+      "abstention_reason": null,
+      "alias_attached": false,
+      "ambiguity_resolved_by_context": true,
+      "candidate_concept_ids": [
+        "C000009"
+      ],
+      "category": "KOREAN_GROUNDING",
+      "condition": "FULL_BIDIRECTIONAL_D",
+      "domain": "PROGRAMMING",
+      "grounded_correctly": true,
+      "homonym_false_merge": false,
+      "language": "KOREAN",
+      "meaning_request_ir": {
+        "ambiguity_set": [],
+        "constraints": [
+          "input values are bounded signed integers"
+        ],
+        "inputs": [
+          "values"
+        ],
+        "lexical_mapping_confidence": 0.99,
+        "modifiers": [],
+        "operation": "SUM",
+        "ordering": [
+          "APPLY"
+        ],
+        "output": "int",
+        "parameter": null,
+        "parse_confidence": 0.99,
+        "quantifier": null,
+        "quantifier_threshold": null,
+        "raw_text_in_reasoning_hot_path": false,
+        "reference_bindings": {},
+        "reference_resolution_confidence": 1.0,
+        "requested_relations": [
+          "C000009"
+        ],
+        "scope": "stateful-reduction",
+        "semantic_concept_confidence": 1.0,
+        "target_concept_id": "C000009",
+        "target_state": "reduced scalar"
+      },
+      "near_contrast_preserved": true,
+      "paraphrases_equivalent": true,
+      "program_ir_created": true,
+      "proof_kernel_verified": false,
+      "raw_text_entered_reasoner": false,
+      "rust_compiled": true,
+      "rust_executed": true,
+      "selected_concept_id": "C000009",
+      "semantic_duplicate_avoided": false,
+      "semantic_duplicate_created": false,
+      "semantic_execution_passed": true,
+      "semantic_projection_sha256": "77a821c093e0376de3678a28ba685d16618158304cdd72420d30242722747485",
+      "solution_dependency": false,
+      "solved": true,
+      "task_id": "SEM7-L-003-919fd04d"
+    },
+    {
+      "abstention_reason": null,
+      "alias_attached": false,
+      "ambiguity_resolved_by_context": true,
+      "candidate_concept_ids": [
+        "C000008"
+      ],
+      "category": "KOREAN_GROUNDING",
+      "condition": "FULL_BIDIRECTIONAL_D",
+      "domain": "PROGRAMMING",
+      "grounded_correctly": true,
+      "homonym_false_merge": false,
+      "language": "KOREAN",
+      "meaning_request_ir": {
+        "ambiguity_set": [],
+        "constraints": [
+          "input values are bounded signed integers",
+          "operator_parameter=6"
+        ],
+        "inputs": [
+          "values"
+        ],
+        "lexical_mapping_confidence": 0.99,
+        "modifiers": [
+          "NEGATION"
+        ],
+        "operation": "FILTER_NOT_GREATER",
+        "ordering": [
+          "APPLY"
+        ],
+        "output": "sequence<int>",
+        "parameter": 6,
+        "parse_confidence": 0.99,
+        "quantifier": null,
+        "quantifier_threshold": null,
+        "raw_text_in_reasoning_hot_path": false,
+        "reference_bindings": {},
+        "reference_resolution_confidence": 1.0,
+        "requested_relations": [
+          "C000008"
+        ],
+        "scope": "sequence-transform",
+        "semantic_concept_confidence": 1.0,
+        "target_concept_id": "C000008",
+        "target_state": "filtered sequence"
+      },
+      "near_contrast_preserved": true,
+      "paraphrases_equivalent": true,
+      "program_ir_created": true,
+      "proof_kernel_verified": false,
+      "raw_text_entered_reasoner": false,
+      "rust_compiled": true,
+      "rust_executed": true,
+      "selected_concept_id": "C000008",
+      "semantic_duplicate_avoided": false,
+      "semantic_duplicate_created": false,
+      "semantic_execution_passed": true,
+      "semantic_projection_sha256": "1ecb2c479b451337dfabfcc901f69020937728c6307d445823289a892d886ec0",
+      "solution_dependency": false,
+      "solved": true,
+      "task_id": "SEM7-L-004-f1a651d8"
+    },
+    {
+      "abstention_reason": null,
+      "alias_attached": false,
+      "ambiguity_resolved_by_context": true,
+      "candidate_concept_ids": [
+        "C000006"
+      ],
+      "category": "KOREAN_GROUNDING",
+      "condition": "FULL_BIDIRECTIONAL_D",
+      "domain": "MATHEMATICS",
+      "grounded_correctly": true,
+      "homonym_false_merge": false,
+      "language": "KOREAN",
+      "meaning_request_ir": {
+        "ambiguity_set": [],
+        "constraints": [
+          "input values are bounded signed integers",
+          "operator_parameter=2"
+        ],
+        "inputs": [
+          "values"
+        ],
+        "lexical_mapping_confidence": 0.99,
+        "modifiers": [],
+        "operation": "RECURRENCE_STEP",
+        "ordering": [
+          "APPLY"
+        ],
+        "output": "int",
+        "parameter": 2,
+        "parse_confidence": 0.99,
+        "quantifier": null,
+        "quantifier_threshold": null,
+        "raw_text_in_reasoning_hot_path": false,
+        "reference_bindings": {},
+        "reference_resolution_confidence": 1.0,
+        "requested_relations": [
+          "C000006"
+        ],
+        "scope": "exact-recurrence",
+        "semantic_concept_confidence": 1.0,
+        "target_concept_id": "C000006",
+        "target_state": "successor recurrence state"
+      },
+      "near_contrast_preserved": true,
+      "paraphrases_equivalent": true,
+      "program_ir_created": false,
+      "proof_kernel_verified": true,
+      "raw_text_entered_reasoner": false,
+      "rust_compiled": false,
+      "rust_executed": false,
+      "selected_concept_id": "C000006",
+      "semantic_duplicate_avoided": false,
+      "semantic_duplicate_created": false,
+      "semantic_execution_passed": true,
+      "semantic_projection_sha256": "5611a427d9108f8b024ff6d642cf33b553267b147bc20efe940dfe7382a7e5c3",
+      "solution_dependency": false,
+      "solved": true,
+      "task_id": "SEM7-L-005-b6f60c47"
+    },
+    {
+      "abstention_reason": null,
+      "alias_attached": false,
+      "ambiguity_resolved_by_context": true,
+      "candidate_concept_ids": [
+        "C000009"
+      ],
+      "category": "KOREAN_GROUNDING",
+      "condition": "FULL_BIDIRECTIONAL_D",
+      "domain": "MATHEMATICS",
+      "grounded_correctly": true,
+      "homonym_false_merge": false,
+      "language": "KOREAN",
+      "meaning_request_ir": {
+        "ambiguity_set": [],
+        "constraints": [
+          "input values are bounded signed integers",
+          "operator_parameter=3"
+        ],
+        "inputs": [
+          "values"
+        ],
+        "lexical_mapping_confidence": 0.99,
+        "modifiers": [],
+        "operation": "COUNT_GREATER",
+        "ordering": [
+          "APPLY"
+        ],
+        "output": "int",
+        "parameter": 3,
+        "parse_confidence": 0.99,
+        "quantifier": null,
+        "quantifier_threshold": null,
+        "raw_text_in_reasoning_hot_path": false,
+        "reference_bindings": {},
+        "reference_resolution_confidence": 1.0,
+        "requested_relations": [
+          "C000009"
+        ],
+        "scope": "stateful-reduction",
+        "semantic_concept_confidence": 1.0,
+        "target_concept_id": "C000009",
+        "target_state": "reduced scalar"
+      },
+      "near_contrast_preserved": true,
+      "paraphrases_equivalent": true,
+      "program_ir_created": false,
+      "proof_kernel_verified": true,
+      "raw_text_entered_reasoner": false,
+      "rust_compiled": false,
+      "rust_executed": false,
+      "selected_concept_id": "C000009",
+      "semantic_duplicate_avoided": false,
+      "semantic_duplicate_created": false,
+      "semantic_execution_passed": true,
+      "semantic_projection_sha256": "330856eb8959e53fd0969de9f33677313551fe1d9844238c76071901d01e17e9",
+      "solution_dependency": false,
+      "solved": true,
+      "task_id": "SEM7-L-006-6a11e2ca"
+    },
+    {
+      "abstention_reason": null,
+      "alias_attached": false,
+      "ambiguity_resolved_by_context": true,
+      "candidate_concept_ids": [
+        "C000012"
+      ],
+      "category": "KOREAN_GROUNDING",
+      "condition": "FULL_BIDIRECTIONAL_D",
+      "domain": "MATHEMATICS",
+      "grounded_correctly": true,
+      "homonym_false_merge": false,
+      "language": "KOREAN",
+      "meaning_request_ir": {
+        "ambiguity_set": [],
+        "constraints": [
+          "input values are bounded signed integers",
+          "100 <= status <= 599"
+        ],
+        "inputs": [
+          "values"
+        ],
+        "lexical_mapping_confidence": 0.99,
+        "modifiers": [],
+        "operation": "STATUS_CLASS",
+        "ordering": [
+          "APPLY"
+        ],
+        "output": "int",
+        "parameter": null,
+        "parse_confidence": 0.99,
+        "quantifier": null,
+        "quantifier_threshold": null,
+        "raw_text_in_reasoning_hot_path": false,
+        "reference_bindings": {},
+        "reference_resolution_confidence": 1.0,
+        "requested_relations": [
+          "C000012"
+        ],
+        "scope": "RFC9110-http-status",
+        "semantic_concept_confidence": 1.0,
+        "target_concept_id": "C000012",
+        "target_state": "HTTP status class"
+      },
+      "near_contrast_preserved": true,
+      "paraphrases_equivalent": true,
+      "program_ir_created": false,
+      "proof_kernel_verified": true,
+      "raw_text_entered_reasoner": false,
+      "rust_compiled": false,
+      "rust_executed": false,
+      "selected_concept_id": "C000012",
+      "semantic_duplicate_avoided": false,
+      "semantic_duplicate_created": false,
+      "semantic_execution_passed": true,
+      "semantic_projection_sha256": "8d339c56e0ba89b5b9163fa13e21832f1d34248b6391b5d2311ff578c51f7546",
+      "solution_dependency": false,
+      "solved": true,
+      "task_id": "SEM7-L-007-73a094d1"
+    },
+    {
+      "abstention_reason": null,
+      "alias_attached": false,
+      "ambiguity_resolved_by_context": true,
+      "candidate_concept_ids": [
+        "C000011"
+      ],
+      "category": "KOREAN_GROUNDING",
+      "condition": "FULL_BIDIRECTIONAL_D",
+      "domain": "MATHEMATICS",
+      "grounded_correctly": true,
+      "homonym_false_merge": false,
+      "language": "KOREAN",
+      "meaning_request_ir": {
+        "ambiguity_set": [],
+        "constraints": [
+          "input values are bounded signed integers"
+        ],
+        "inputs": [
+          "values"
+        ],
+        "lexical_mapping_confidence": 0.99,
+        "modifiers": [],
+        "operation": "SCOPED_LOOKUP",
+        "ordering": [
+          "APPLY"
+        ],
+        "output": "int",
+        "parameter": null,
+        "parse_confidence": 0.99,
+        "quantifier": null,
+        "quantifier_threshold": null,
+        "raw_text_in_reasoning_hot_path": false,
+        "reference_bindings": {},
+        "reference_resolution_confidence": 1.0,
+        "requested_relations": [
+          "C000011"
+        ],
+        "scope": "versioned-external-definition",
+        "semantic_concept_confidence": 1.0,
+        "target_concept_id": "C000011",
+        "target_state": "version-scoped semantic relation"
+      },
+      "near_contrast_preserved": true,
+      "paraphrases_equivalent": true,
+      "program_ir_created": false,
+      "proof_kernel_verified": true,
+      "raw_text_entered_reasoner": false,
+      "rust_compiled": false,
+      "rust_executed": false,
+      "selected_concept_id": "C000011",
+      "semantic_duplicate_avoided": false,
+      "semantic_duplicate_created": false,
+      "semantic_execution_passed": true,
+      "semantic_projection_sha256": "fa322d35d17d5f550dd191ad83dbdfb527d33ca22a317002c7cce4e11aa0699e",
+      "solution_dependency": false,
+      "solved": true,
+      "task_id": "SEM7-L-008-9e1a590c"
+    },
+    {
+      "abstention_reason": null,
+      "alias_attached": false,
+      "ambiguity_resolved_by_context": true,
+      "candidate_concept_ids": [
+        "C000008"
+      ],
+      "category": "KOREAN_GROUNDING",
+      "condition": "FULL_BIDIRECTIONAL_D",
+      "domain": "MATHEMATICS",
+      "grounded_correctly": true,
+      "homonym_false_merge": false,
+      "language": "KOREAN",
+      "meaning_request_ir": {
+        "ambiguity_set": [],
+        "constraints": [
+          "input values are bounded signed integers",
+          "operator_parameter=6"
+        ],
+        "inputs": [
+          "values"
+        ],
+        "lexical_mapping_confidence": 0.99,
+        "modifiers": [],
+        "operation": "ADD_EACH",
+        "ordering": [
+          "APPLY"
+        ],
+        "output": "sequence<int>",
+        "parameter": 6,
+        "parse_confidence": 0.99,
+        "quantifier": null,
+        "quantifier_threshold": null,
+        "raw_text_in_reasoning_hot_path": false,
+        "reference_bindings": {},
+        "reference_resolution_confidence": 1.0,
+        "requested_relations": [
+          "C000008"
+        ],
+        "scope": "sequence-transform",
+        "semantic_concept_confidence": 1.0,
+        "target_concept_id": "C000008",
+        "target_state": "mapped sequence"
+      },
+      "near_contrast_preserved": true,
+      "paraphrases_equivalent": true,
+      "program_ir_created": false,
+      "proof_kernel_verified": true,
+      "raw_text_entered_reasoner": false,
+      "rust_compiled": false,
+      "rust_executed": false,
+      "selected_concept_id": "C000008",
+      "semantic_duplicate_avoided": false,
+      "semantic_duplicate_created": false,
+      "semantic_execution_passed": true,
+      "semantic_projection_sha256": "8a033800e61f081c9f87041ec3f0988b9e21c942ca4b94d36cc2ca4c8b148274",
+      "solution_dependency": false,
+      "solved": true,
+      "task_id": "SEM7-L-009-38321c6b"
+    },
+    {
+      "abstention_reason": null,
+      "alias_attached": false,
+      "ambiguity_resolved_by_context": true,
+      "candidate_concept_ids": [
+        "C000011"
+      ],
+      "category": "KOREAN_GROUNDING",
+      "condition": "FULL_BIDIRECTIONAL_D",
+      "domain": "PRIOR_SEMANTIC",
+      "grounded_correctly": true,
+      "homonym_false_merge": false,
+      "language": "KOREAN",
+      "meaning_request_ir": {
+        "ambiguity_set": [],
+        "constraints": [
+          "input values are bounded signed integers"
+        ],
+        "inputs": [
+          "values"
+        ],
+        "lexical_mapping_confidence": 0.99,
+        "modifiers": [],
+        "operation": "IDENTIFY",
+        "ordering": [
+          "APPLY"
+        ],
+        "output": "concept_id",
+        "parameter": null,
+        "parse_confidence": 0.99,
+        "quantifier": null,
+        "quantifier_threshold": null,
+        "raw_text_in_reasoning_hot_path": false,
+        "reference_bindings": {},
+        "reference_resolution_confidence": 1.0,
+        "requested_relations": [
+          "C000011"
+        ],
+        "scope": "concept-routing",
+        "semantic_concept_confidence": 1.0,
+        "target_concept_id": "C000011",
+        "target_state": "identified semantic concept"
+      },
+      "near_contrast_preserved": true,
+      "paraphrases_equivalent": true,
+      "program_ir_created": false,
+      "proof_kernel_verified": false,
+      "raw_text_entered_reasoner": false,
+      "rust_compiled": false,
+      "rust_executed": false,
+      "selected_concept_id": "C000011",
+      "semantic_duplicate_avoided": false,
+      "semantic_duplicate_created": false,
+      "semantic_execution_passed": true,
+      "semantic_projection_sha256": "5cea91a7917816e2bf50c8e1b302d933b822f12d48f5d1236c7aa0f812e32abe",
+      "solution_dependency": false,
+      "solved": true,
+      "task_id": "SEM7-L-010-0296951e"
+    },
+    {
+      "abstention_reason": null,
+      "alias_attached": false,
+      "ambiguity_resolved_by_context": true,
+      "candidate_concept_ids": [
+        "C000012"
+      ],
+      "category": "KOREAN_GROUNDING",
+      "condition": "FULL_BIDIRECTIONAL_D",
+      "domain": "PRIOR_SEMANTIC",
+      "grounded_correctly": true,
+      "homonym_false_merge": false,
+      "language": "KOREAN",
+      "meaning_request_ir": {
+        "ambiguity_set": [],
+        "constraints": [
+          "input values are bounded signed integers"
+        ],
+        "inputs": [
+          "values"
+        ],
+        "lexical_mapping_confidence": 0.99,
+        "modifiers": [],
+        "operation": "IDENTIFY",
+        "ordering": [
+          "APPLY"
+        ],
+        "output": "concept_id",
+        "parameter": null,
+        "parse_confidence": 0.99,
+        "quantifier": null,
+        "quantifier_threshold": null,
+        "raw_text_in_reasoning_hot_path": false,
+        "reference_bindings": {},
+        "reference_resolution_confidence": 1.0,
+        "requested_relations": [
+          "C000012"
+        ],
+        "scope": "concept-routing",
+        "semantic_concept_confidence": 1.0,
+        "target_concept_id": "C000012",
+        "target_state": "identified semantic concept"
+      },
+      "near_contrast_preserved": true,
+      "paraphrases_equivalent": true,
+      "program_ir_created": false,
+      "proof_kernel_verified": false,
+      "raw_text_entered_reasoner": false,
+      "rust_compiled": false,
+      "rust_executed": false,
+      "selected_concept_id": "C000012",
+      "semantic_duplicate_avoided": false,
+      "semantic_duplicate_created": false,
+      "semantic_execution_passed": true,
+      "semantic_projection_sha256": "2f8f212c74409a39d178e5e8ee14603da98e817529a789f5778582aa90f0556b",
+      "solution_dependency": false,
+      "solved": true,
+      "task_id": "SEM7-L-011-d24f9995"
+    },
+    {
+      "abstention_reason": null,
+      "alias_attached": false,
+      "ambiguity_resolved_by_context": true,
+      "candidate_concept_ids": [
+        "C000008"
+      ],
+      "category": "KOREAN_GROUNDING",
+      "condition": "FULL_BIDIRECTIONAL_D",
+      "domain": "PRIOR_SEMANTIC",
+      "grounded_correctly": true,
+      "homonym_false_merge": false,
+      "language": "KOREAN",
+      "meaning_request_ir": {
+        "ambiguity_set": [],
+        "constraints": [
+          "input values are bounded signed integers"
+        ],
+        "inputs": [
+          "values"
+        ],
+        "lexical_mapping_confidence": 0.99,
+        "modifiers": [],
+        "operation": "IDENTIFY",
+        "ordering": [
+          "APPLY"
+        ],
+        "output": "concept_id",
+        "parameter": null,
+        "parse_confidence": 0.99,
+        "quantifier": null,
+        "quantifier_threshold": null,
+        "raw_text_in_reasoning_hot_path": false,
+        "reference_bindings": {},
+        "reference_resolution_confidence": 1.0,
+        "requested_relations": [
+          "C000008"
+        ],
+        "scope": "concept-routing",
+        "semantic_concept_confidence": 1.0,
+        "target_concept_id": "C000008",
+        "target_state": "identified semantic concept"
+      },
+      "near_contrast_preserved": true,
+      "paraphrases_equivalent": true,
+      "program_ir_created": false,
+      "proof_kernel_verified": false,
+      "raw_text_entered_reasoner": false,
+      "rust_compiled": false,
+      "rust_executed": false,
+      "selected_concept_id": "C000008",
+      "semantic_duplicate_avoided": false,
+      "semantic_duplicate_created": false,
+      "semantic_execution_passed": true,
+      "semantic_projection_sha256": "5caf0da042d138c32cf6fd9bac7c04bc715135c726595f0c09c5eccf932fe773",
+      "solution_dependency": false,
+      "solved": true,
+      "task_id": "SEM7-L-012-0c4f6b80"
+    },
+    {
+      "abstention_reason": null,
+      "alias_attached": false,
+      "ambiguity_resolved_by_context": true,
+      "candidate_concept_ids": [
+        "C000009"
+      ],
+      "category": "KOREAN_GROUNDING",
+      "condition": "FULL_BIDIRECTIONAL_D",
+      "domain": "PRIOR_SEMANTIC",
+      "grounded_correctly": true,
+      "homonym_false_merge": false,
+      "language": "KOREAN",
+      "meaning_request_ir": {
+        "ambiguity_set": [],
+        "constraints": [
+          "input values are bounded signed integers"
+        ],
+        "inputs": [
+          "values"
+        ],
+        "lexical_mapping_confidence": 0.99,
+        "modifiers": [],
+        "operation": "IDENTIFY",
+        "ordering": [
+          "APPLY"
+        ],
+        "output": "concept_id",
+        "parameter": null,
+        "parse_confidence": 0.99,
+        "quantifier": null,
+        "quantifier_threshold": null,
+        "raw_text_in_reasoning_hot_path": false,
+        "reference_bindings": {},
+        "reference_resolution_confidence": 1.0,
+        "requested_relations": [
+          "C000009"
+        ],
+        "scope": "concept-routing",
+        "semantic_concept_confidence": 1.0,
+        "target_concept_id": "C000009",
+        "target_state": "identified semantic concept"
+      },
+      "near_contrast_preserved": true,
+      "paraphrases_equivalent": true,
+      "program_ir_created": false,
+      "proof_kernel_verified": false,
+      "raw_text_entered_reasoner": false,
+      "rust_compiled": false,
+      "rust_executed": false,
+      "selected_concept_id": "C000009",
+      "semantic_duplicate_avoided": false,
+      "semantic_duplicate_created": false,
+      "semantic_execution_passed": true,
+      "semantic_projection_sha256": "efac2ca455596ad741ab54237cdfd1e7b6c073b81cbcc82fde2e30502936af8d",
+      "solution_dependency": false,
+      "solved": true,
+      "task_id": "SEM7-L-013-1931e6cf"
+    },
+    {
+      "abstention_reason": null,
+      "alias_attached": false,
+      "ambiguity_resolved_by_context": true,
+      "candidate_concept_ids": [
+        "C000010"
+      ],
+      "category": "KOREAN_GROUNDING",
+      "condition": "FULL_BIDIRECTIONAL_D",
+      "domain": "PRIOR_SEMANTIC",
+      "grounded_correctly": true,
+      "homonym_false_merge": false,
+      "language": "KOREAN",
+      "meaning_request_ir": {
+        "ambiguity_set": [],
+        "constraints": [
+          "input values are bounded signed integers"
+        ],
+        "inputs": [
+          "values"
+        ],
+        "lexical_mapping_confidence": 0.99,
+        "modifiers": [],
+        "operation": "IDENTIFY",
+        "ordering": [
+          "APPLY"
+        ],
+        "output": "concept_id",
+        "parameter": null,
+        "parse_confidence": 0.99,
+        "quantifier": null,
+        "quantifier_threshold": null,
+        "raw_text_in_reasoning_hot_path": false,
+        "reference_bindings": {},
+        "reference_resolution_confidence": 1.0,
+        "requested_relations": [
+          "C000010"
+        ],
+        "scope": "concept-routing",
+        "semantic_concept_confidence": 1.0,
+        "target_concept_id": "C000010",
+        "target_state": "identified semantic concept"
+      },
+      "near_contrast_preserved": true,
+      "paraphrases_equivalent": true,
+      "program_ir_created": false,
+      "proof_kernel_verified": false,
+      "raw_text_entered_reasoner": false,
+      "rust_compiled": false,
+      "rust_executed": false,
+      "selected_concept_id": "C000010",
+      "semantic_duplicate_avoided": false,
+      "semantic_duplicate_created": false,
+      "semantic_execution_passed": true,
+      "semantic_projection_sha256": "380c4484d10f4722d901bff98a37baf40753f4ca3c44f3ceb7060c24f3d1a7d3",
+      "solution_dependency": false,
+      "solved": true,
+      "task_id": "SEM7-L-014-f128c4b2"
+    },
+    {
+      "abstention_reason": null,
+      "alias_attached": false,
+      "ambiguity_resolved_by_context": true,
+      "candidate_concept_ids": [
+        "C000006"
+      ],
+      "category": "KOREAN_GROUNDING",
+      "condition": "FULL_BIDIRECTIONAL_D",
+      "domain": "PRIOR_SEMANTIC",
+      "grounded_correctly": true,
+      "homonym_false_merge": false,
+      "language": "KOREAN",
+      "meaning_request_ir": {
+        "ambiguity_set": [],
+        "constraints": [
+          "input values are bounded signed integers"
+        ],
+        "inputs": [
+          "values"
+        ],
+        "lexical_mapping_confidence": 0.99,
+        "modifiers": [],
+        "operation": "IDENTIFY",
+        "ordering": [
+          "APPLY"
+        ],
+        "output": "concept_id",
+        "parameter": null,
+        "parse_confidence": 0.99,
+        "quantifier": null,
+        "quantifier_threshold": null,
+        "raw_text_in_reasoning_hot_path": false,
+        "reference_bindings": {},
+        "reference_resolution_confidence": 1.0,
+        "requested_relations": [
+          "C000006"
+        ],
+        "scope": "concept-routing",
+        "semantic_concept_confidence": 1.0,
+        "target_concept_id": "C000006",
+        "target_state": "identified semantic concept"
+      },
+      "near_contrast_preserved": true,
+      "paraphrases_equivalent": true,
+      "program_ir_created": false,
+      "proof_kernel_verified": false,
+      "raw_text_entered_reasoner": false,
+      "rust_compiled": false,
+      "rust_executed": false,
+      "selected_concept_id": "C000006",
+      "semantic_duplicate_avoided": false,
+      "semantic_duplicate_created": false,
+      "semantic_execution_passed": true,
+      "semantic_projection_sha256": "215b34445a90fb5c97d29d43a86564118a8122b4717778a3dd1093845f77bc01",
+      "solution_dependency": false,
+      "solved": true,
+      "task_id": "SEM7-L-015-e8c06299"
+    },
+    {
+      "abstention_reason": null,
+      "alias_attached": false,
+      "ambiguity_resolved_by_context": true,
+      "candidate_concept_ids": [
+        "C000011"
+      ],
+      "category": "KOREAN_GROUNDING",
+      "condition": "FULL_BIDIRECTIONAL_D",
+      "domain": "PRIOR_SEMANTIC",
+      "grounded_correctly": true,
+      "homonym_false_merge": false,
+      "language": "KOREAN",
+      "meaning_request_ir": {
+        "ambiguity_set": [],
+        "constraints": [
+          "input values are bounded signed integers"
+        ],
+        "inputs": [
+          "values"
+        ],
+        "lexical_mapping_confidence": 0.99,
+        "modifiers": [],
+        "operation": "IDENTIFY",
+        "ordering": [
+          "APPLY"
+        ],
+        "output": "concept_id",
+        "parameter": null,
+        "parse_confidence": 0.99,
+        "quantifier": null,
+        "quantifier_threshold": null,
+        "raw_text_in_reasoning_hot_path": false,
+        "reference_bindings": {},
+        "reference_resolution_confidence": 1.0,
+        "requested_relations": [
+          "C000011"
+        ],
+        "scope": "concept-routing",
+        "semantic_concept_confidence": 1.0,
+        "target_concept_id": "C000011",
+        "target_state": "identified semantic concept"
+      },
+      "near_contrast_preserved": true,
+      "paraphrases_equivalent": true,
+      "program_ir_created": false,
+      "proof_kernel_verified": false,
+      "raw_text_entered_reasoner": false,
+      "rust_compiled": false,
+      "rust_executed": false,
+      "selected_concept_id": "C000011",
+      "semantic_duplicate_avoided": false,
+      "semantic_duplicate_created": false,
+      "semantic_execution_passed": true,
+      "semantic_projection_sha256": "5cea91a7917816e2bf50c8e1b302d933b822f12d48f5d1236c7aa0f812e32abe",
+      "solution_dependency": false,
+      "solved": true,
+      "task_id": "SEM7-L-016-212fbd34"
+    },
+    {
+      "abstention_reason": null,
+      "alias_attached": false,
+      "ambiguity_resolved_by_context": true,
+      "candidate_concept_ids": [
+        "C000012"
+      ],
+      "category": "KOREAN_GROUNDING",
+      "condition": "FULL_BIDIRECTIONAL_D",
+      "domain": "PRIOR_SEMANTIC",
+      "grounded_correctly": true,
+      "homonym_false_merge": false,
+      "language": "KOREAN",
+      "meaning_request_ir": {
+        "ambiguity_set": [],
+        "constraints": [
+          "input values are bounded signed integers"
+        ],
+        "inputs": [
+          "values"
+        ],
+        "lexical_mapping_confidence": 0.99,
+        "modifiers": [],
+        "operation": "IDENTIFY",
+        "ordering": [
+          "APPLY"
+        ],
+        "output": "concept_id",
+        "parameter": null,
+        "parse_confidence": 0.99,
+        "quantifier": null,
+        "quantifier_threshold": null,
+        "raw_text_in_reasoning_hot_path": false,
+        "reference_bindings": {},
+        "reference_resolution_confidence": 1.0,
+        "requested_relations": [
+          "C000012"
+        ],
+        "scope": "concept-routing",
+        "semantic_concept_confidence": 1.0,
+        "target_concept_id": "C000012",
+        "target_state": "identified semantic concept"
+      },
+      "near_contrast_preserved": true,
+      "paraphrases_equivalent": true,
+      "program_ir_created": false,
+      "proof_kernel_verified": false,
+      "raw_text_entered_reasoner": false,
+      "rust_compiled": false,
+      "rust_executed": false,
+      "selected_concept_id": "C000012",
+      "semantic_duplicate_avoided": false,
+      "semantic_duplicate_created": false,
+      "semantic_execution_passed": true,
+      "semantic_projection_sha256": "2f8f212c74409a39d178e5e8ee14603da98e817529a789f5778582aa90f0556b",
+      "solution_dependency": false,
+      "solved": true,
+      "task_id": "SEM7-L-017-0aec8f73"
+    },
+    {
+      "abstention_reason": null,
+      "alias_attached": false,
+      "ambiguity_resolved_by_context": true,
+      "candidate_concept_ids": [
+        "C000008"
+      ],
+      "category": "KOREAN_GROUNDING",
+      "condition": "FULL_BIDIRECTIONAL_D",
+      "domain": "PRIOR_SEMANTIC",
+      "grounded_correctly": true,
+      "homonym_false_merge": false,
+      "language": "KOREAN",
+      "meaning_request_ir": {
+        "ambiguity_set": [],
+        "constraints": [
+          "input values are bounded signed integers"
+        ],
+        "inputs": [
+          "values"
+        ],
+        "lexical_mapping_confidence": 0.99,
+        "modifiers": [],
+        "operation": "IDENTIFY",
+        "ordering": [
+          "APPLY"
+        ],
+        "output": "concept_id",
+        "parameter": null,
+        "parse_confidence": 0.99,
+        "quantifier": null,
+        "quantifier_threshold": null,
+        "raw_text_in_reasoning_hot_path": false,
+        "reference_bindings": {},
+        "reference_resolution_confidence": 1.0,
+        "requested_relations": [
+          "C000008"
+        ],
+        "scope": "concept-routing",
+        "semantic_concept_confidence": 1.0,
+        "target_concept_id": "C000008",
+        "target_state": "identified semantic concept"
+      },
+      "near_contrast_preserved": true,
+      "paraphrases_equivalent": true,
+      "program_ir_created": false,
+      "proof_kernel_verified": false,
+      "raw_text_entered_reasoner": false,
+      "rust_compiled": false,
+      "rust_executed": false,
+      "selected_concept_id": "C000008",
+      "semantic_duplicate_avoided": false,
+      "semantic_duplicate_created": false,
+      "semantic_execution_passed": true,
+      "semantic_projection_sha256": "5caf0da042d138c32cf6fd9bac7c04bc715135c726595f0c09c5eccf932fe773",
+      "solution_dependency": false,
+      "solved": true,
+      "task_id": "SEM7-L-018-e015c586"
+    },
+    {
+      "abstention_reason": null,
+      "alias_attached": false,
+      "ambiguity_resolved_by_context": true,
+      "candidate_concept_ids": [
+        "C000009"
+      ],
+      "category": "KOREAN_GROUNDING",
+      "condition": "FULL_BIDIRECTIONAL_D",
+      "domain": "PRIOR_SEMANTIC",
+      "grounded_correctly": true,
+      "homonym_false_merge": false,
+      "language": "KOREAN",
+      "meaning_request_ir": {
+        "ambiguity_set": [],
+        "constraints": [
+          "input values are bounded signed integers"
+        ],
+        "inputs": [
+          "values"
+        ],
+        "lexical_mapping_confidence": 0.99,
+        "modifiers": [],
+        "operation": "IDENTIFY",
+        "ordering": [
+          "APPLY"
+        ],
+        "output": "concept_id",
+        "parameter": null,
+        "parse_confidence": 0.99,
+        "quantifier": null,
+        "quantifier_threshold": null,
+        "raw_text_in_reasoning_hot_path": false,
+        "reference_bindings": {},
+        "reference_resolution_confidence": 1.0,
+        "requested_relations": [
+          "C000009"
+        ],
+        "scope": "concept-routing",
+        "semantic_concept_confidence": 1.0,
+        "target_concept_id": "C000009",
+        "target_state": "identified semantic concept"
+      },
+      "near_contrast_preserved": true,
+      "paraphrases_equivalent": true,
+      "program_ir_created": false,
+      "proof_kernel_verified": false,
+      "raw_text_entered_reasoner": false,
+      "rust_compiled": false,
+      "rust_executed": false,
+      "selected_concept_id": "C000009",
+      "semantic_duplicate_avoided": false,
+      "semantic_duplicate_created": false,
+      "semantic_execution_passed": true,
+      "semantic_projection_sha256": "efac2ca455596ad741ab54237cdfd1e7b6c073b81cbcc82fde2e30502936af8d",
+      "solution_dependency": false,
+      "solved": true,
+      "task_id": "SEM7-L-019-e736b3dd"
+    }
+  ]
+}

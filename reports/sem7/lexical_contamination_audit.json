@@ -1,0 +1,10 @@
+{
+  "concepts_scanned": 11,
+  "korean_token_dependencies": 0,
+  "english_token_dependencies": 0,
+  "prompt_fragment_dependencies": 0,
+  "lexical_id_semantic_conditions": 0,
+  "benchmark_sentence_dependencies": 0,
+  "lexical_token_dependent_promoted_concepts": 0,
+  "passed": true
+}
