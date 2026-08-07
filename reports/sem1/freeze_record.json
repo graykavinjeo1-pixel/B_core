@@ -1,0 +1,12 @@
+{
+  "run_id": "SEM1-RUN-0002",
+  "curriculum_generator_version": "SEM1-CURRICULUM-1.1.0",
+  "reasoner_version": "SEM1-REASONER-1.1.0",
+  "structural_baseline_version": "SEM1-STRONG-MACRO-C-1.1.0",
+  "evaluation_version": "SEM1-EVALUATION-1.1.0",
+  "concepts_sha256": "01dde7908f63e844faa6490474c796b253f80ca5f963de80e90864cb1d6840b5",
+  "macro_library_sha256": "0d46347eab015a2df25ece4acace77e1ebbd4797e0d5a4282b27391d7d80772b",
+  "blind_manifest_sha256": "366d98bf0627823b94f7b57f3337f1888b4d42d777bbf6816e5a93310d2b5435",
+  "frozen_before_blind": true,
+  "post_blind_tuning": false
+}

@@ -1,0 +1,33 @@
+{
+  "concepts": [
+    {
+      "concept_id": "C000002",
+      "generation": 2,
+      "primitive_expanded_graph_nodes": 16,
+      "primitive_expanded_depth": 16,
+      "compressed_operational_nodes": 1,
+      "compressed_operational_depth": 1,
+      "compression_ratio": 16.0
+    },
+    {
+      "concept_id": "C000004",
+      "generation": 2,
+      "primitive_expanded_graph_nodes": 13,
+      "primitive_expanded_depth": 13,
+      "compressed_operational_nodes": 1,
+      "compressed_operational_depth": 1,
+      "compression_ratio": 13.0
+    },
+    {
+      "concept_id": "C000005",
+      "generation": 2,
+      "primitive_expanded_graph_nodes": 17,
+      "primitive_expanded_depth": 17,
+      "compressed_operational_nodes": 1,
+      "compressed_operational_depth": 1,
+      "compression_ratio": 17.0
+    }
+  ],
+  "best_multi_generation_compression_ratio": 17.0,
+  "expanded_derivations_preserved": true
+}

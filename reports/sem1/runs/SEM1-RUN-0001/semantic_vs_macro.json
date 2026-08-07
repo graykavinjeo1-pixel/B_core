@@ -1,0 +1,17 @@
+{
+  "exact_differences": [
+    "C: typed parameters, reusable graph macros, variable operators, structural matching, macro composition, and macro-on-macro reuse.",
+    "D adds explicit preconditions/invariants and predictive invalid-case abstention.",
+    "D matches checked operators by behavioral relation across structurally different implementations.",
+    "D validates counterfactual applicability; C receives no semantic validity oracle.",
+    "A, C, and D share the same primitive capabilities and resource safeguards."
+  ],
+  "baseline_c_solve_rate": 0.65,
+  "semantic_d_solve_rate": 0.85,
+  "d_vs_c_solve_delta": 0.19999999999999996,
+  "d_vs_c_search_expansion_delta": 105454,
+  "d_vs_c_false_transfer_delta": -0.2,
+  "d_vs_c_invalid_abstention_delta": 1.0,
+  "semantic_separation_pass": true,
+  "advantage_source_is_semantic": true
+}

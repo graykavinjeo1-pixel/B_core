@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "blind_manifest_exposes_expected_outputs": false,
+  "blind_manifest_exposes_hidden_family_metadata": false,
+  "human_target_abstraction_supplied": false,
+  "task_ids_used_as_solution_features": false,
+  "network_calls": 0,
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "recursive_source_mutations": 0,
+  "post_blind_tuning": false,
+  "scanned_artifact_sha256": [
+    "11b52a10a18696aee7ca872f489a4a4be977bc0223ed36d380efc22edfe474ce",
+    "c43779a6f6c9b2372668c4a63f0607bb0c991f8626581fe5680c982ed2a6ec37",
+    "b2a26ed7cb7feb1dfd3e2aba8c9b911a63895c41868068b1e4d2a448ca5ede5a"
+  ]
+}

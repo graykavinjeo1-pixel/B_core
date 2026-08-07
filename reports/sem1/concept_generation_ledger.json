@@ -1,0 +1,796 @@
+{
+  "run_id": "SEM1-RUN-0002",
+  "predecessor_concept_id": "C000001",
+  "predecessor_immutable": true,
+  "generation_definition": {
+    "GENERATION_0": "SUPPLIED_PRIMITIVES",
+    "GENERATION_1": "PROMOTED_CONCEPT_WITH_ONLY_GENERATION_0_ANCESTRY",
+    "GENERATION_N": "DEPENDS_ON_AT_LEAST_ONE_PROMOTED_CONCEPT_FROM_GENERATION_N_MINUS_1"
+  },
+  "mining": {
+    "successful_derivations_examined": 16,
+    "composition_groups_examined": 4,
+    "candidates_produced": 4,
+    "candidates_rejected_as_trivial": 0,
+    "minimum_independent_origins": 3,
+    "concept_on_concept_composition_open": true,
+    "fixed_generation_target": false
+  },
+  "candidates": [
+    {
+      "concept": {
+        "concept_id": "C000002",
+        "generation": 2,
+        "promotion_state": "PROMOTED",
+        "signature_input": "V001",
+        "signature_output": "V001",
+        "parameter_kinds": [
+          "K001",
+          "K001"
+        ],
+        "operational_template": [
+          {
+            "node": "CONCEPT",
+            "concept_id": "C000001",
+            "binding_slots": [
+              0
+            ]
+          },
+          {
+            "node": "CONCEPT",
+            "concept_id": "C000001",
+            "binding_slots": [
+              1
+            ]
+          }
+        ],
+        "primitive_expansion": [
+          {
+            "stage": "P100001",
+            "slot": 0
+          },
+          {
+            "stage": "P100001",
+            "slot": 1
+          }
+        ],
+        "direct_parent_concepts": [
+          "C000001",
+          "C000001"
+        ],
+        "ancestor_concept_ids": [
+          "C000001"
+        ],
+        "primitive_ancestor_ids": [
+          "P000003",
+          "P000004",
+          "P000005",
+          "P000006",
+          "P000007",
+          "P000008",
+          "P000009",
+          "P000010",
+          "P000011",
+          "P000012",
+          "P100001"
+        ],
+        "complete_ancestor_set": [
+          "C000001",
+          "P000003",
+          "P000004",
+          "P000005",
+          "P000006",
+          "P000007",
+          "P000008",
+          "P000009",
+          "P000010",
+          "P000011",
+          "P000012",
+          "P100001"
+        ],
+        "epistemic_historical_depth": 16,
+        "operational_depth": 2,
+        "operational_cost": 1,
+        "composition_arity": 2,
+        "promoted_ancestor_count": 1,
+        "source_task_ids": [
+          "T2D000013",
+          "T2D000014",
+          "T2D000015",
+          "T2D000016"
+        ],
+        "source_derivation_ids": [
+          "D-T2D000013-0009",
+          "D-T2D000014-0015",
+          "D-T2D000015-0009",
+          "D-T2D000016-0009"
+        ],
+        "preconditions": [
+          "INPUT_TYPE_MATCHES",
+          "ALL_CHECKED_OPERATIONS_DEFINED",
+          "INTERMEDIATE_TYPES_COMPOSE"
+        ],
+        "invariants": [
+          "INPUT_IMMUTABLE",
+          "DETERMINISTIC_STAGE_ORDER",
+          "OUTPUT_TYPE_PREDICTED"
+        ],
+        "predictions": [
+          "PRIMITIVE_EXPANSION_EQUIVALENT",
+          "INVALID_DOMAIN_ABSTAINS",
+          "EQUIVALENT_OPERATOR_TRANSFER"
+        ],
+        "counterfactual_interface": [
+          "PRECONDITION_REMOVAL",
+          "INVARIANT_VIOLATION",
+          "TYPE_MUTATION",
+          "OPERATION_REPLACEMENT",
+          "STAGE_REORDERING",
+          "PARTIAL_SUBGRAPH_DELETION",
+          "EQUIVALENT_OPERATOR_SUBSTITUTION",
+          "ADVERSARIAL_STRUCTURAL_MIMICRY"
+        ],
+        "content_hash_sha256": "ae3e2b193dfa9abef66b976951f257a66c6c342554f2308d7e13d8a244f54ea4",
+        "derived_autonomously": true,
+        "lexical_information_used": false
+      },
+      "gates": [
+        {
+          "gate_id": "AUTONOMOUS_DERIVATION",
+          "passed": true,
+          "observations": 4,
+          "metric": 1.0
+        },
+        {
+          "gate_id": "PRIOR_PROMOTED_CONCEPT_NONTRIVIAL_USE",
+          "passed": true,
+          "observations": 2,
+          "metric": 1.0
+        },
+        {
+          "gate_id": "EXECUTABLE",
+          "passed": true,
+          "observations": 2,
+          "metric": 1.0
+        },
+        {
+          "gate_id": "PRIMITIVE_EXPANSION_EQUIVALENT",
+          "passed": true,
+          "observations": 2,
+          "metric": 1.0
+        },
+        {
+          "gate_id": "COUNTERFACTUAL_VALIDATION",
+          "passed": true,
+          "observations": 9,
+          "metric": 1.0
+        },
+        {
+          "gate_id": "FRESH_BLIND_TRANSFER",
+          "passed": true,
+          "observations": 5,
+          "metric": 1.0
+        },
+        {
+          "gate_id": "COMPLETE_LINEAGE",
+          "passed": true,
+          "observations": 12,
+          "metric": 1.0
+        },
+        {
+          "gate_id": "CAUSAL_ABLATION",
+          "passed": true,
+          "observations": 1,
+          "metric": 1.0
+        },
+        {
+          "gate_id": "ANTI_TRIVIALITY",
+          "passed": true,
+          "observations": 4,
+          "metric": 1.0
+        },
+        {
+          "gate_id": "NO_TARGET_NAME_SUPPLIED",
+          "passed": true,
+          "observations": 1,
+          "metric": 1.0
+        },
+        {
+          "gate_id": "NO_SOLUTION_LEAKAGE",
+          "passed": true,
+          "observations": 1,
+          "metric": 1.0
+        }
+      ],
+      "promoted": true,
+      "posthoc_interpretation": "Opaque multi-stage executable composition; interpretation attached post hoc."
+    },
+    {
+      "concept": {
+        "concept_id": "C000003",
+        "generation": 2,
+        "promotion_state": "CANDIDATE",
+        "signature_input": "V001",
+        "signature_output": "V002",
+        "parameter_kinds": [
+          "K001",
+          "K003"
+        ],
+        "operational_template": [
+          {
+            "node": "CONCEPT",
+            "concept_id": "C000001",
+            "binding_slots": [
+              0
+            ]
+          },
+          {
+            "node": "PRIMITIVE",
+            "stage": {
+              "stage": "P100003",
+              "slot": 1
+            }
+          }
+        ],
+        "primitive_expansion": [
+          {
+            "stage": "P100001",
+            "slot": 0
+          },
+          {
+            "stage": "P100003",
+            "slot": 1
+          }
+        ],
+        "direct_parent_concepts": [
+          "C000001"
+        ],
+        "ancestor_concept_ids": [
+          "C000001"
+        ],
+        "primitive_ancestor_ids": [
+          "P000003",
+          "P000004",
+          "P000005",
+          "P000006",
+          "P000007",
+          "P000008",
+          "P000009",
+          "P000010",
+          "P000011",
+          "P000012",
+          "P100001",
+          "P100003"
+        ],
+        "complete_ancestor_set": [
+          "C000001",
+          "P000003",
+          "P000004",
+          "P000005",
+          "P000006",
+          "P000007",
+          "P000008",
+          "P000009",
+          "P000010",
+          "P000011",
+          "P000012",
+          "P100001",
+          "P100003"
+        ],
+        "epistemic_historical_depth": 12,
+        "operational_depth": 2,
+        "operational_cost": 1,
+        "composition_arity": 2,
+        "promoted_ancestor_count": 1,
+        "source_task_ids": [
+          "T2D000005",
+          "T2D000006",
+          "T2D000007",
+          "T2D000008",
+          "T2D000011"
+        ],
+        "source_derivation_ids": [
+          "D-T2D000005-0001",
+          "D-T2D000006-0005",
+          "D-T2D000007-0003",
+          "D-T2D000008-0003",
+          "D-T2D000011-0003"
+        ],
+        "preconditions": [
+          "INPUT_TYPE_MATCHES",
+          "ALL_CHECKED_OPERATIONS_DEFINED",
+          "INTERMEDIATE_TYPES_COMPOSE"
+        ],
+        "invariants": [
+          "INPUT_IMMUTABLE",
+          "DETERMINISTIC_STAGE_ORDER",
+          "OUTPUT_TYPE_PREDICTED"
+        ],
+        "predictions": [
+          "PRIMITIVE_EXPANSION_EQUIVALENT",
+          "INVALID_DOMAIN_ABSTAINS",
+          "EQUIVALENT_OPERATOR_TRANSFER"
+        ],
+        "counterfactual_interface": [
+          "PRECONDITION_REMOVAL",
+          "INVARIANT_VIOLATION",
+          "TYPE_MUTATION",
+          "OPERATION_REPLACEMENT",
+          "STAGE_REORDERING",
+          "PARTIAL_SUBGRAPH_DELETION",
+          "EQUIVALENT_OPERATOR_SUBSTITUTION",
+          "ADVERSARIAL_STRUCTURAL_MIMICRY"
+        ],
+        "content_hash_sha256": "748d577a98fec55c5bbc59bcc2cdbd4fff2abd74547e0426a4e6613910196dae",
+        "derived_autonomously": true,
+        "lexical_information_used": false
+      },
+      "gates": [
+        {
+          "gate_id": "AUTONOMOUS_DERIVATION",
+          "passed": true,
+          "observations": 5,
+          "metric": 1.0
+        },
+        {
+          "gate_id": "PRIOR_PROMOTED_CONCEPT_NONTRIVIAL_USE",
+          "passed": true,
+          "observations": 1,
+          "metric": 1.0
+        },
+        {
+          "gate_id": "EXECUTABLE",
+          "passed": true,
+          "observations": 2,
+          "metric": 1.0
+        },
+        {
+          "gate_id": "PRIMITIVE_EXPANSION_EQUIVALENT",
+          "passed": true,
+          "observations": 2,
+          "metric": 1.0
+        },
+        {
+          "gate_id": "COUNTERFACTUAL_VALIDATION",
+          "passed": true,
+          "observations": 9,
+          "metric": 1.0
+        },
+        {
+          "gate_id": "FRESH_BLIND_TRANSFER",
+          "passed": true,
+          "observations": 5,
+          "metric": 1.0
+        },
+        {
+          "gate_id": "COMPLETE_LINEAGE",
+          "passed": true,
+          "observations": 13,
+          "metric": 1.0
+        },
+        {
+          "gate_id": "CAUSAL_ABLATION",
+          "passed": false,
+          "observations": 1,
+          "metric": 0.0
+        },
+        {
+          "gate_id": "ANTI_TRIVIALITY",
+          "passed": true,
+          "observations": 5,
+          "metric": 1.0
+        },
+        {
+          "gate_id": "NO_TARGET_NAME_SUPPLIED",
+          "passed": true,
+          "observations": 1,
+          "metric": 1.0
+        },
+        {
+          "gate_id": "NO_SOLUTION_LEAKAGE",
+          "passed": true,
+          "observations": 1,
+          "metric": 1.0
+        }
+      ],
+      "promoted": false,
+      "posthoc_interpretation": "Functionally resembles a checked parameterized transformation followed by stateful aggregation."
+    },
+    {
+      "concept": {
+        "concept_id": "C000004",
+        "generation": 2,
+        "promotion_state": "PROMOTED",
+        "signature_input": "V001",
+        "signature_output": "V001",
+        "parameter_kinds": [
+          "K001",
+          "K002"
+        ],
+        "operational_template": [
+          {
+            "node": "CONCEPT",
+            "concept_id": "C000001",
+            "binding_slots": [
+              0
+            ]
+          },
+          {
+            "node": "PRIMITIVE",
+            "stage": {
+              "stage": "P100002",
+              "slot": 1
+            }
+          }
+        ],
+        "primitive_expansion": [
+          {
+            "stage": "P100001",
+            "slot": 0
+          },
+          {
+            "stage": "P100002",
+            "slot": 1
+          }
+        ],
+        "direct_parent_concepts": [
+          "C000001"
+        ],
+        "ancestor_concept_ids": [
+          "C000001"
+        ],
+        "primitive_ancestor_ids": [
+          "P000003",
+          "P000004",
+          "P000005",
+          "P000006",
+          "P000007",
+          "P000008",
+          "P000009",
+          "P000010",
+          "P000011",
+          "P000012",
+          "P100001",
+          "P100002"
+        ],
+        "complete_ancestor_set": [
+          "C000001",
+          "P000003",
+          "P000004",
+          "P000005",
+          "P000006",
+          "P000007",
+          "P000008",
+          "P000009",
+          "P000010",
+          "P000011",
+          "P000012",
+          "P100001",
+          "P100002"
+        ],
+        "epistemic_historical_depth": 13,
+        "operational_depth": 2,
+        "operational_cost": 1,
+        "composition_arity": 2,
+        "promoted_ancestor_count": 1,
+        "source_task_ids": [
+          "T2D000001",
+          "T2D000002",
+          "T2D000003",
+          "T2D000004"
+        ],
+        "source_derivation_ids": [
+          "D-T2D000001-0025",
+          "D-T2D000002-0035",
+          "D-T2D000003-0027",
+          "D-T2D000004-0029"
+        ],
+        "preconditions": [
+          "INPUT_TYPE_MATCHES",
+          "ALL_CHECKED_OPERATIONS_DEFINED",
+          "INTERMEDIATE_TYPES_COMPOSE"
+        ],
+        "invariants": [
+          "INPUT_IMMUTABLE",
+          "DETERMINISTIC_STAGE_ORDER",
+          "OUTPUT_TYPE_PREDICTED"
+        ],
+        "predictions": [
+          "PRIMITIVE_EXPANSION_EQUIVALENT",
+          "INVALID_DOMAIN_ABSTAINS",
+          "EQUIVALENT_OPERATOR_TRANSFER"
+        ],
+        "counterfactual_interface": [
+          "PRECONDITION_REMOVAL",
+          "INVARIANT_VIOLATION",
+          "TYPE_MUTATION",
+          "OPERATION_REPLACEMENT",
+          "STAGE_REORDERING",
+          "PARTIAL_SUBGRAPH_DELETION",
+          "EQUIVALENT_OPERATOR_SUBSTITUTION",
+          "ADVERSARIAL_STRUCTURAL_MIMICRY"
+        ],
+        "content_hash_sha256": "37745552682d29f605fa0aef238cd9766c7843bc2c3c0570e23f6131b85edde7",
+        "derived_autonomously": true,
+        "lexical_information_used": false
+      },
+      "gates": [
+        {
+          "gate_id": "AUTONOMOUS_DERIVATION",
+          "passed": true,
+          "observations": 4,
+          "metric": 1.0
+        },
+        {
+          "gate_id": "PRIOR_PROMOTED_CONCEPT_NONTRIVIAL_USE",
+          "passed": true,
+          "observations": 1,
+          "metric": 1.0
+        },
+        {
+          "gate_id": "EXECUTABLE",
+          "passed": true,
+          "observations": 2,
+          "metric": 1.0
+        },
+        {
+          "gate_id": "PRIMITIVE_EXPANSION_EQUIVALENT",
+          "passed": true,
+          "observations": 2,
+          "metric": 1.0
+        },
+        {
+          "gate_id": "COUNTERFACTUAL_VALIDATION",
+          "passed": true,
+          "observations": 9,
+          "metric": 1.0
+        },
+        {
+          "gate_id": "FRESH_BLIND_TRANSFER",
+          "passed": true,
+          "observations": 5,
+          "metric": 1.0
+        },
+        {
+          "gate_id": "COMPLETE_LINEAGE",
+          "passed": true,
+          "observations": 13,
+          "metric": 1.0
+        },
+        {
+          "gate_id": "CAUSAL_ABLATION",
+          "passed": true,
+          "observations": 1,
+          "metric": 1.0
+        },
+        {
+          "gate_id": "ANTI_TRIVIALITY",
+          "passed": true,
+          "observations": 4,
+          "metric": 1.0
+        },
+        {
+          "gate_id": "NO_TARGET_NAME_SUPPLIED",
+          "passed": true,
+          "observations": 1,
+          "metric": 1.0
+        },
+        {
+          "gate_id": "NO_SOLUTION_LEAKAGE",
+          "passed": true,
+          "observations": 1,
+          "metric": 1.0
+        }
+      ],
+      "promoted": true,
+      "posthoc_interpretation": "Functionally resembles a checked parameterized transformation followed by conditional retention."
+    },
+    {
+      "concept": {
+        "concept_id": "C000005",
+        "generation": 2,
+        "promotion_state": "PROMOTED",
+        "signature_input": "V001",
+        "signature_output": "V002",
+        "parameter_kinds": [
+          "K001",
+          "K002",
+          "K003"
+        ],
+        "operational_template": [
+          {
+            "node": "CONCEPT",
+            "concept_id": "C000001",
+            "binding_slots": [
+              0
+            ]
+          },
+          {
+            "node": "PRIMITIVE",
+            "stage": {
+              "stage": "P100002",
+              "slot": 1
+            }
+          },
+          {
+            "node": "PRIMITIVE",
+            "stage": {
+              "stage": "P100003",
+              "slot": 2
+            }
+          }
+        ],
+        "primitive_expansion": [
+          {
+            "stage": "P100001",
+            "slot": 0
+          },
+          {
+            "stage": "P100002",
+            "slot": 1
+          },
+          {
+            "stage": "P100003",
+            "slot": 2
+          }
+        ],
+        "direct_parent_concepts": [
+          "C000001"
+        ],
+        "ancestor_concept_ids": [
+          "C000001"
+        ],
+        "primitive_ancestor_ids": [
+          "P000003",
+          "P000004",
+          "P000005",
+          "P000006",
+          "P000007",
+          "P000008",
+          "P000009",
+          "P000010",
+          "P000011",
+          "P000012",
+          "P100001",
+          "P100002",
+          "P100003"
+        ],
+        "complete_ancestor_set": [
+          "C000001",
+          "P000003",
+          "P000004",
+          "P000005",
+          "P000006",
+          "P000007",
+          "P000008",
+          "P000009",
+          "P000010",
+          "P000011",
+          "P000012",
+          "P100001",
+          "P100002",
+          "P100003"
+        ],
+        "epistemic_historical_depth": 17,
+        "operational_depth": 3,
+        "operational_cost": 1,
+        "composition_arity": 3,
+        "promoted_ancestor_count": 1,
+        "source_task_ids": [
+          "T2D000009",
+          "T2D000010",
+          "T2D000012"
+        ],
+        "source_derivation_ids": [
+          "D-T2D000009-0049",
+          "D-T2D000010-0071",
+          "D-T2D000012-0059"
+        ],
+        "preconditions": [
+          "INPUT_TYPE_MATCHES",
+          "ALL_CHECKED_OPERATIONS_DEFINED",
+          "INTERMEDIATE_TYPES_COMPOSE"
+        ],
+        "invariants": [
+          "INPUT_IMMUTABLE",
+          "DETERMINISTIC_STAGE_ORDER",
+          "OUTPUT_TYPE_PREDICTED"
+        ],
+        "predictions": [
+          "PRIMITIVE_EXPANSION_EQUIVALENT",
+          "INVALID_DOMAIN_ABSTAINS",
+          "EQUIVALENT_OPERATOR_TRANSFER"
+        ],
+        "counterfactual_interface": [
+          "PRECONDITION_REMOVAL",
+          "INVARIANT_VIOLATION",
+          "TYPE_MUTATION",
+          "OPERATION_REPLACEMENT",
+          "STAGE_REORDERING",
+          "PARTIAL_SUBGRAPH_DELETION",
+          "EQUIVALENT_OPERATOR_SUBSTITUTION",
+          "ADVERSARIAL_STRUCTURAL_MIMICRY"
+        ],
+        "content_hash_sha256": "80bac24800502b682b63b1670d33489f07aa94a40c703460196d4749bddc264b",
+        "derived_autonomously": true,
+        "lexical_information_used": false
+      },
+      "gates": [
+        {
+          "gate_id": "AUTONOMOUS_DERIVATION",
+          "passed": true,
+          "observations": 3,
+          "metric": 1.0
+        },
+        {
+          "gate_id": "PRIOR_PROMOTED_CONCEPT_NONTRIVIAL_USE",
+          "passed": true,
+          "observations": 1,
+          "metric": 1.0
+        },
+        {
+          "gate_id": "EXECUTABLE",
+          "passed": true,
+          "observations": 2,
+          "metric": 1.0
+        },
+        {
+          "gate_id": "PRIMITIVE_EXPANSION_EQUIVALENT",
+          "passed": true,
+          "observations": 2,
+          "metric": 1.0
+        },
+        {
+          "gate_id": "COUNTERFACTUAL_VALIDATION",
+          "passed": true,
+          "observations": 9,
+          "metric": 1.0
+        },
+        {
+          "gate_id": "FRESH_BLIND_TRANSFER",
+          "passed": true,
+          "observations": 5,
+          "metric": 1.0
+        },
+        {
+          "gate_id": "COMPLETE_LINEAGE",
+          "passed": true,
+          "observations": 14,
+          "metric": 1.0
+        },
+        {
+          "gate_id": "CAUSAL_ABLATION",
+          "passed": true,
+          "observations": 1,
+          "metric": 1.0
+        },
+        {
+          "gate_id": "ANTI_TRIVIALITY",
+          "passed": true,
+          "observations": 3,
+          "metric": 1.0
+        },
+        {
+          "gate_id": "NO_TARGET_NAME_SUPPLIED",
+          "passed": true,
+          "observations": 1,
+          "metric": 1.0
+        },
+        {
+          "gate_id": "NO_SOLUTION_LEAKAGE",
+          "passed": true,
+          "observations": 1,
+          "metric": 1.0
+        }
+      ],
+      "promoted": true,
+      "posthoc_interpretation": "Functionally resembles checked transformation, conditional retention, then stateful aggregation as one reusable primitive."
+    }
+  ],
+  "gen1_concepts": 1,
+  "gen2_candidates": 4,
+  "gen2_promoted": 3,
+  "gen3_candidates": 0,
+  "gen3_promoted": 0,
+  "max_autonomous_concept_generation": 2
+}

@@ -1,0 +1,202 @@
+{
+  "nodes": [
+    {
+      "node_id": "C000001",
+      "node_type": "CONCEPT",
+      "generation": 1
+    },
+    {
+      "node_id": "P000003",
+      "node_type": "PRIMITIVE",
+      "generation": 0
+    },
+    {
+      "node_id": "P000004",
+      "node_type": "PRIMITIVE",
+      "generation": 0
+    },
+    {
+      "node_id": "P000005",
+      "node_type": "PRIMITIVE",
+      "generation": 0
+    },
+    {
+      "node_id": "P000006",
+      "node_type": "PRIMITIVE",
+      "generation": 0
+    },
+    {
+      "node_id": "P000007",
+      "node_type": "PRIMITIVE",
+      "generation": 0
+    },
+    {
+      "node_id": "P000008",
+      "node_type": "PRIMITIVE",
+      "generation": 0
+    },
+    {
+      "node_id": "P000009",
+      "node_type": "PRIMITIVE",
+      "generation": 0
+    },
+    {
+      "node_id": "P000010",
+      "node_type": "PRIMITIVE",
+      "generation": 0
+    },
+    {
+      "node_id": "P000011",
+      "node_type": "PRIMITIVE",
+      "generation": 0
+    },
+    {
+      "node_id": "P000012",
+      "node_type": "PRIMITIVE",
+      "generation": 0
+    },
+    {
+      "node_id": "C000003",
+      "node_type": "CONCEPT",
+      "generation": 2
+    },
+    {
+      "node_id": "P100001",
+      "node_type": "PRIMITIVE",
+      "generation": 0
+    },
+    {
+      "node_id": "P100003",
+      "node_type": "PRIMITIVE",
+      "generation": 0
+    }
+  ],
+  "edges": [
+    {
+      "source": "P000003",
+      "target": "C000001",
+      "relation": "PRIMITIVE_EXPANSION_ANCESTOR"
+    },
+    {
+      "source": "P000004",
+      "target": "C000001",
+      "relation": "PRIMITIVE_EXPANSION_ANCESTOR"
+    },
+    {
+      "source": "P000005",
+      "target": "C000001",
+      "relation": "PRIMITIVE_EXPANSION_ANCESTOR"
+    },
+    {
+      "source": "P000006",
+      "target": "C000001",
+      "relation": "PRIMITIVE_EXPANSION_ANCESTOR"
+    },
+    {
+      "source": "P000007",
+      "target": "C000001",
+      "relation": "PRIMITIVE_EXPANSION_ANCESTOR"
+    },
+    {
+      "source": "P000008",
+      "target": "C000001",
+      "relation": "PRIMITIVE_EXPANSION_ANCESTOR"
+    },
+    {
+      "source": "P000009",
+      "target": "C000001",
+      "relation": "PRIMITIVE_EXPANSION_ANCESTOR"
+    },
+    {
+      "source": "P000010",
+      "target": "C000001",
+      "relation": "PRIMITIVE_EXPANSION_ANCESTOR"
+    },
+    {
+      "source": "P000011",
+      "target": "C000001",
+      "relation": "PRIMITIVE_EXPANSION_ANCESTOR"
+    },
+    {
+      "source": "P000012",
+      "target": "C000001",
+      "relation": "PRIMITIVE_EXPANSION_ANCESTOR"
+    },
+    {
+      "source": "C000001",
+      "target": "C000003",
+      "relation": "DIRECT_PARENT_CONCEPT"
+    },
+    {
+      "source": "P000003",
+      "target": "C000003",
+      "relation": "PRIMITIVE_EXPANSION_ANCESTOR"
+    },
+    {
+      "source": "P000004",
+      "target": "C000003",
+      "relation": "PRIMITIVE_EXPANSION_ANCESTOR"
+    },
+    {
+      "source": "P000005",
+      "target": "C000003",
+      "relation": "PRIMITIVE_EXPANSION_ANCESTOR"
+    },
+    {
+      "source": "P000006",
+      "target": "C000003",
+      "relation": "PRIMITIVE_EXPANSION_ANCESTOR"
+    },
+    {
+      "source": "P000007",
+      "target": "C000003",
+      "relation": "PRIMITIVE_EXPANSION_ANCESTOR"
+    },
+    {
+      "source": "P000008",
+      "target": "C000003",
+      "relation": "PRIMITIVE_EXPANSION_ANCESTOR"
+    },
+    {
+      "source": "P000009",
+      "target": "C000003",
+      "relation": "PRIMITIVE_EXPANSION_ANCESTOR"
+    },
+    {
+      "source": "P000010",
+      "target": "C000003",
+      "relation": "PRIMITIVE_EXPANSION_ANCESTOR"
+    },
+    {
+      "source": "P000011",
+      "target": "C000003",
+      "relation": "PRIMITIVE_EXPANSION_ANCESTOR"
+    },
+    {
+      "source": "P000012",
+      "target": "C000003",
+      "relation": "PRIMITIVE_EXPANSION_ANCESTOR"
+    },
+    {
+      "source": "P100001",
+      "target": "C000003",
+      "relation": "PRIMITIVE_EXPANSION_ANCESTOR"
+    },
+    {
+      "source": "P100003",
+      "target": "C000003",
+      "relation": "PRIMITIVE_EXPANSION_ANCESTOR"
+    }
+  ],
+  "exact_lineage_dag": true,
+  "primitive_expansion_reconstructable": true,
+  "max_autonomous_concept_generation": 2,
+  "max_epistemic_depth": 16,
+  "max_operational_depth": 2,
+  "max_primitive_expanded_depth": 32,
+  "max_concepts_composed": 2,
+  "max_graph_nodes": 32,
+  "max_graph_edges": 31,
+  "max_reasoning_width": 27272,
+  "peak_active_concepts": 3
+}

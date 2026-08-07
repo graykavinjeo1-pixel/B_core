@@ -1,0 +1,1743 @@
+{
+  "condition": "STRONG_STRUCTURAL_MACRO_C",
+  "tasks_attempted": 20,
+  "tasks_correct": 13,
+  "strict_solve_rate": 0.65,
+  "search_expansions": 310,
+  "mean_search_expansions": 15.5,
+  "false_transfers": 4,
+  "false_transfer_rate": 0.2,
+  "false_rejections": 3,
+  "false_rejection_rate": 0.1875,
+  "invalid_tasks": 4,
+  "invalid_abstentions": 0,
+  "invalid_abstention_rate": 0.0,
+  "max_reasoning_depth": 48,
+  "max_primitive_expanded_depth": 17,
+  "max_reasoning_width": 1256,
+  "max_live_branches": 1256,
+  "max_graph_nodes": 17,
+  "max_graph_edges": 16,
+  "max_concepts_composed": 0,
+  "results": [
+    {
+      "task_id": "T1B000001",
+      "case_code": "B_TF_FRESH",
+      "correct": false,
+      "expected_invalid": false,
+      "false_transfer": false,
+      "false_rejection": true,
+      "invalid_abstention": false,
+      "solve": {
+        "task_id": "T1B000001",
+        "condition": "STRONG_STRUCTURAL_MACRO_C",
+        "status": "SOLVED",
+        "output": {
+          "type": "V001",
+          "value": [
+            -13,
+            0,
+            7,
+            19,
+            97
+          ]
+        },
+        "fault": null,
+        "plan": {
+          "nodes": [
+            {
+              "node": "MACRO",
+              "macro_id": "M000001",
+              "bindings": [
+                {
+                  "kind": "K001",
+                  "value": {
+                    "code": "S011",
+                    "parameter": 7
+                  }
+                }
+              ]
+            }
+          ],
+          "expanded_stages": [
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S011",
+                "parameter": 7
+              }
+            }
+          ],
+          "direct_concept_ids": [],
+          "all_executed_concept_ids": [],
+          "primitive_ancestor_ids": [
+            "P100001"
+          ]
+        },
+        "derivation_id": "D-T1B000001-0010",
+        "metrics": {
+          "reasoning_depth": 24,
+          "primitive_expanded_depth": 8,
+          "reasoning_width": 1248,
+          "live_branches": 1248,
+          "search_expansions": 10,
+          "rollback_count": 9,
+          "wall_time_units": 34,
+          "memory_units": 3744,
+          "graph_node_count": 8,
+          "graph_edge_count": 7,
+          "dependency_depth": 1,
+          "alternative_branch_count": 1247,
+          "recombination_count": 0,
+          "promoted_concept_reuse_count": 0,
+          "concepts_composed": 0,
+          "macro_uses": 1,
+          "concept_uses": 0,
+          "total_concepts_available": 3,
+          "routed_candidates": 0,
+          "active_working_set": 1,
+          "full_catalog_scans": 0,
+          "precondition_checks": 0,
+          "semantic_equivalence_matches": 0
+        }
+      }
+    },
+    {
+      "task_id": "T1B000002",
+      "case_code": "B_TF_SUBSTITUTE",
+      "correct": true,
+      "expected_invalid": false,
+      "false_transfer": false,
+      "false_rejection": false,
+      "invalid_abstention": false,
+      "solve": {
+        "task_id": "T1B000002",
+        "condition": "STRONG_STRUCTURAL_MACRO_C",
+        "status": "SOLVED",
+        "output": {
+          "type": "V001",
+          "value": [
+            16,
+            2,
+            0,
+            -10,
+            -22,
+            -48
+          ]
+        },
+        "fault": null,
+        "plan": {
+          "nodes": [
+            {
+              "node": "MACRO",
+              "macro_id": "M000001",
+              "bindings": [
+                {
+                  "kind": "K001",
+                  "value": {
+                    "code": "S013",
+                    "parameter": -2
+                  }
+                }
+              ]
+            }
+          ],
+          "expanded_stages": [
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S013",
+                "parameter": -2
+              }
+            }
+          ],
+          "direct_concept_ids": [],
+          "all_executed_concept_ids": [],
+          "primitive_ancestor_ids": [
+            "P100001"
+          ]
+        },
+        "derivation_id": "D-T1B000002-0010",
+        "metrics": {
+          "reasoning_depth": 28,
+          "primitive_expanded_depth": 8,
+          "reasoning_width": 337,
+          "live_branches": 337,
+          "search_expansions": 10,
+          "rollback_count": 9,
+          "wall_time_units": 38,
+          "memory_units": 1011,
+          "graph_node_count": 8,
+          "graph_edge_count": 7,
+          "dependency_depth": 1,
+          "alternative_branch_count": 336,
+          "recombination_count": 0,
+          "promoted_concept_reuse_count": 0,
+          "concepts_composed": 0,
+          "macro_uses": 1,
+          "concept_uses": 0,
+          "total_concepts_available": 3,
+          "routed_candidates": 0,
+          "active_working_set": 1,
+          "full_catalog_scans": 0,
+          "precondition_checks": 0,
+          "semantic_equivalence_matches": 0
+        }
+      }
+    },
+    {
+      "task_id": "T1B000003",
+      "case_code": "B_TF_EQUIVALENT",
+      "correct": false,
+      "expected_invalid": false,
+      "false_transfer": false,
+      "false_rejection": true,
+      "invalid_abstention": false,
+      "solve": {
+        "task_id": "T1B000003",
+        "condition": "STRONG_STRUCTURAL_MACRO_C",
+        "status": "SOLVED",
+        "output": {
+          "type": "V001",
+          "value": [
+            0,
+            5,
+            14,
+            36
+          ]
+        },
+        "fault": null,
+        "plan": {
+          "nodes": [
+            {
+              "node": "PRIMITIVE",
+              "stage": "P100001",
+              "binding": {
+                "code": "S091",
+                "parameter": 6
+              }
+            }
+          ],
+          "expanded_stages": [
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S091",
+                "parameter": 6
+              }
+            }
+          ],
+          "direct_concept_ids": [],
+          "all_executed_concept_ids": [],
+          "primitive_ancestor_ids": [
+            "P100001"
+          ]
+        },
+        "derivation_id": "D-T1B000003-0011",
+        "metrics": {
+          "reasoning_depth": 20,
+          "primitive_expanded_depth": 8,
+          "reasoning_width": 331,
+          "live_branches": 331,
+          "search_expansions": 11,
+          "rollback_count": 10,
+          "wall_time_units": 31,
+          "memory_units": 993,
+          "graph_node_count": 8,
+          "graph_edge_count": 7,
+          "dependency_depth": 1,
+          "alternative_branch_count": 330,
+          "recombination_count": 0,
+          "promoted_concept_reuse_count": 0,
+          "concepts_composed": 0,
+          "macro_uses": 0,
+          "concept_uses": 0,
+          "total_concepts_available": 3,
+          "routed_candidates": 0,
+          "active_working_set": 1,
+          "full_catalog_scans": 0,
+          "precondition_checks": 0,
+          "semantic_equivalence_matches": 1
+        }
+      }
+    },
+    {
+      "task_id": "T1B000004",
+      "case_code": "B_TF_INVALID",
+      "correct": false,
+      "expected_invalid": true,
+      "false_transfer": true,
+      "false_rejection": false,
+      "invalid_abstention": false,
+      "solve": {
+        "task_id": "T1B000004",
+        "condition": "STRONG_STRUCTURAL_MACRO_C",
+        "status": "EXECUTION_FAILURE",
+        "output": null,
+        "fault": "ARITHMETIC_OVERFLOW",
+        "plan": {
+          "nodes": [
+            {
+              "node": "PRIMITIVE",
+              "stage": "P100001",
+              "binding": {
+                "code": "S013",
+                "parameter": 2
+              }
+            },
+            {
+              "node": "PRIMITIVE",
+              "stage": "P100002",
+              "binding": "S021"
+            }
+          ],
+          "expanded_stages": [
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S013",
+                "parameter": 2
+              }
+            },
+            {
+              "stage": "P100002",
+              "binding": "S021"
+            }
+          ],
+          "direct_concept_ids": [],
+          "all_executed_concept_ids": [],
+          "primitive_ancestor_ids": [
+            "P100001",
+            "P100002"
+          ]
+        },
+        "derivation_id": "D-T1B000004-0028",
+        "metrics": {
+          "reasoning_depth": 0,
+          "primitive_expanded_depth": 13,
+          "reasoning_width": 1248,
+          "live_branches": 1248,
+          "search_expansions": 28,
+          "rollback_count": 27,
+          "wall_time_units": 30,
+          "memory_units": 3744,
+          "graph_node_count": 13,
+          "graph_edge_count": 12,
+          "dependency_depth": 2,
+          "alternative_branch_count": 1247,
+          "recombination_count": 0,
+          "promoted_concept_reuse_count": 0,
+          "concepts_composed": 0,
+          "macro_uses": 0,
+          "concept_uses": 0,
+          "total_concepts_available": 3,
+          "routed_candidates": 0,
+          "active_working_set": 1,
+          "full_catalog_scans": 0,
+          "precondition_checks": 0,
+          "semantic_equivalence_matches": 0
+        }
+      }
+    },
+    {
+      "task_id": "T1B000005",
+      "case_code": "B_TF_EMPTY",
+      "correct": true,
+      "expected_invalid": false,
+      "false_transfer": false,
+      "false_rejection": false,
+      "invalid_abstention": false,
+      "solve": {
+        "task_id": "T1B000005",
+        "condition": "STRONG_STRUCTURAL_MACRO_C",
+        "status": "SOLVED",
+        "output": {
+          "type": "V001",
+          "value": []
+        },
+        "fault": null,
+        "plan": {
+          "nodes": [
+            {
+              "node": "MACRO",
+              "macro_id": "M000001",
+              "bindings": [
+                {
+                  "kind": "K001",
+                  "value": {
+                    "code": "S012",
+                    "parameter": 11
+                  }
+                }
+              ]
+            }
+          ],
+          "expanded_stages": [
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S012",
+                "parameter": 11
+              }
+            }
+          ],
+          "direct_concept_ids": [],
+          "all_executed_concept_ids": [],
+          "primitive_ancestor_ids": [
+            "P100001"
+          ]
+        },
+        "derivation_id": "D-T1B000005-0010",
+        "metrics": {
+          "reasoning_depth": 4,
+          "primitive_expanded_depth": 8,
+          "reasoning_width": 1248,
+          "live_branches": 1248,
+          "search_expansions": 10,
+          "rollback_count": 9,
+          "wall_time_units": 14,
+          "memory_units": 3744,
+          "graph_node_count": 8,
+          "graph_edge_count": 7,
+          "dependency_depth": 1,
+          "alternative_branch_count": 1247,
+          "recombination_count": 0,
+          "promoted_concept_reuse_count": 0,
+          "concepts_composed": 0,
+          "macro_uses": 1,
+          "concept_uses": 0,
+          "total_concepts_available": 3,
+          "routed_candidates": 0,
+          "active_working_set": 1,
+          "full_catalog_scans": 0,
+          "precondition_checks": 0,
+          "semantic_equivalence_matches": 0
+        }
+      }
+    },
+    {
+      "task_id": "T1B000006",
+      "case_code": "B_TA_FRESH",
+      "correct": true,
+      "expected_invalid": false,
+      "false_transfer": false,
+      "false_rejection": false,
+      "invalid_abstention": false,
+      "solve": {
+        "task_id": "T1B000006",
+        "condition": "STRONG_STRUCTURAL_MACRO_C",
+        "status": "SOLVED",
+        "output": {
+          "type": "V002",
+          "value": 21
+        },
+        "fault": null,
+        "plan": {
+          "nodes": [
+            {
+              "node": "MACRO",
+              "macro_id": "M000003",
+              "bindings": [
+                {
+                  "kind": "K001",
+                  "value": {
+                    "code": "S012",
+                    "parameter": 5
+                  }
+                },
+                {
+                  "kind": "K003",
+                  "value": "S031"
+                }
+              ]
+            }
+          ],
+          "expanded_stages": [
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S012",
+                "parameter": 5
+              }
+            },
+            {
+              "stage": "P100003",
+              "binding": "S031"
+            }
+          ],
+          "direct_concept_ids": [],
+          "all_executed_concept_ids": [],
+          "primitive_ancestor_ids": [
+            "P100001",
+            "P100003"
+          ]
+        },
+        "derivation_id": "D-T1B000006-0001",
+        "metrics": {
+          "reasoning_depth": 26,
+          "primitive_expanded_depth": 12,
+          "reasoning_width": 418,
+          "live_branches": 418,
+          "search_expansions": 1,
+          "rollback_count": 0,
+          "wall_time_units": 27,
+          "memory_units": 1254,
+          "graph_node_count": 12,
+          "graph_edge_count": 11,
+          "dependency_depth": 1,
+          "alternative_branch_count": 417,
+          "recombination_count": 0,
+          "promoted_concept_reuse_count": 0,
+          "concepts_composed": 0,
+          "macro_uses": 1,
+          "concept_uses": 0,
+          "total_concepts_available": 3,
+          "routed_candidates": 0,
+          "active_working_set": 1,
+          "full_catalog_scans": 0,
+          "precondition_checks": 0,
+          "semantic_equivalence_matches": 0
+        }
+      }
+    },
+    {
+      "task_id": "T1B000007",
+      "case_code": "B_TA_SUBSTITUTE",
+      "correct": true,
+      "expected_invalid": false,
+      "false_transfer": false,
+      "false_rejection": false,
+      "invalid_abstention": false,
+      "solve": {
+        "task_id": "T1B000007",
+        "condition": "STRONG_STRUCTURAL_MACRO_C",
+        "status": "SOLVED",
+        "output": {
+          "type": "V002",
+          "value": 30
+        },
+        "fault": null,
+        "plan": {
+          "nodes": [
+            {
+              "node": "MACRO",
+              "macro_id": "M000003",
+              "bindings": [
+                {
+                  "kind": "K001",
+                  "value": {
+                    "code": "S013",
+                    "parameter": -1
+                  }
+                },
+                {
+                  "kind": "K003",
+                  "value": "S032"
+                }
+              ]
+            }
+          ],
+          "expanded_stages": [
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S013",
+                "parameter": -1
+              }
+            },
+            {
+              "stage": "P100003",
+              "binding": "S032"
+            }
+          ],
+          "direct_concept_ids": [],
+          "all_executed_concept_ids": [],
+          "primitive_ancestor_ids": [
+            "P100001",
+            "P100003"
+          ]
+        },
+        "derivation_id": "D-T1B000007-0001",
+        "metrics": {
+          "reasoning_depth": 26,
+          "primitive_expanded_depth": 12,
+          "reasoning_width": 418,
+          "live_branches": 418,
+          "search_expansions": 1,
+          "rollback_count": 0,
+          "wall_time_units": 27,
+          "memory_units": 1254,
+          "graph_node_count": 12,
+          "graph_edge_count": 11,
+          "dependency_depth": 1,
+          "alternative_branch_count": 417,
+          "recombination_count": 0,
+          "promoted_concept_reuse_count": 0,
+          "concepts_composed": 0,
+          "macro_uses": 1,
+          "concept_uses": 0,
+          "total_concepts_available": 3,
+          "routed_candidates": 0,
+          "active_working_set": 1,
+          "full_catalog_scans": 0,
+          "precondition_checks": 0,
+          "semantic_equivalence_matches": 0
+        }
+      }
+    },
+    {
+      "task_id": "T1B000008",
+      "case_code": "B_TA_EQUIVALENT",
+      "correct": true,
+      "expected_invalid": false,
+      "false_transfer": false,
+      "false_rejection": false,
+      "invalid_abstention": false,
+      "solve": {
+        "task_id": "T1B000008",
+        "condition": "STRONG_STRUCTURAL_MACRO_C",
+        "status": "SOLVED",
+        "output": {
+          "type": "V002",
+          "value": 33
+        },
+        "fault": null,
+        "plan": {
+          "nodes": [
+            {
+              "node": "PRIMITIVE",
+              "stage": "P100001",
+              "binding": {
+                "code": "S092",
+                "parameter": 3
+              }
+            },
+            {
+              "node": "PRIMITIVE",
+              "stage": "P100003",
+              "binding": "S031"
+            }
+          ],
+          "expanded_stages": [
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S092",
+                "parameter": 3
+              }
+            },
+            {
+              "stage": "P100003",
+              "binding": "S031"
+            }
+          ],
+          "direct_concept_ids": [],
+          "all_executed_concept_ids": [],
+          "primitive_ancestor_ids": [
+            "P100001",
+            "P100003"
+          ]
+        },
+        "derivation_id": "D-T1B000008-0015",
+        "metrics": {
+          "reasoning_depth": 26,
+          "primitive_expanded_depth": 12,
+          "reasoning_width": 416,
+          "live_branches": 416,
+          "search_expansions": 15,
+          "rollback_count": 14,
+          "wall_time_units": 41,
+          "memory_units": 1248,
+          "graph_node_count": 12,
+          "graph_edge_count": 11,
+          "dependency_depth": 2,
+          "alternative_branch_count": 415,
+          "recombination_count": 1,
+          "promoted_concept_reuse_count": 0,
+          "concepts_composed": 0,
+          "macro_uses": 0,
+          "concept_uses": 0,
+          "total_concepts_available": 3,
+          "routed_candidates": 0,
+          "active_working_set": 1,
+          "full_catalog_scans": 0,
+          "precondition_checks": 0,
+          "semantic_equivalence_matches": 1
+        }
+      }
+    },
+    {
+      "task_id": "T1B000009",
+      "case_code": "B_TA_INVALID",
+      "correct": false,
+      "expected_invalid": true,
+      "false_transfer": true,
+      "false_rejection": false,
+      "invalid_abstention": false,
+      "solve": {
+        "task_id": "T1B000009",
+        "condition": "STRONG_STRUCTURAL_MACRO_C",
+        "status": "EXECUTION_FAILURE",
+        "output": null,
+        "fault": "ARITHMETIC_OVERFLOW",
+        "plan": {
+          "nodes": [
+            {
+              "node": "MACRO",
+              "macro_id": "M000003",
+              "bindings": [
+                {
+                  "kind": "K001",
+                  "value": {
+                    "code": "S011",
+                    "parameter": 1
+                  }
+                },
+                {
+                  "kind": "K003",
+                  "value": "S031"
+                }
+              ]
+            }
+          ],
+          "expanded_stages": [
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S011",
+                "parameter": 1
+              }
+            },
+            {
+              "stage": "P100003",
+              "binding": "S031"
+            }
+          ],
+          "direct_concept_ids": [],
+          "all_executed_concept_ids": [],
+          "primitive_ancestor_ids": [
+            "P100001",
+            "P100003"
+          ]
+        },
+        "derivation_id": "D-T1B000009-0001",
+        "metrics": {
+          "reasoning_depth": 0,
+          "primitive_expanded_depth": 12,
+          "reasoning_width": 418,
+          "live_branches": 418,
+          "search_expansions": 1,
+          "rollback_count": 0,
+          "wall_time_units": 3,
+          "memory_units": 1254,
+          "graph_node_count": 12,
+          "graph_edge_count": 11,
+          "dependency_depth": 1,
+          "alternative_branch_count": 417,
+          "recombination_count": 0,
+          "promoted_concept_reuse_count": 0,
+          "concepts_composed": 0,
+          "macro_uses": 0,
+          "concept_uses": 0,
+          "total_concepts_available": 3,
+          "routed_candidates": 0,
+          "active_working_set": 1,
+          "full_catalog_scans": 0,
+          "precondition_checks": 0,
+          "semantic_equivalence_matches": 0
+        }
+      }
+    },
+    {
+      "task_id": "T1B000010",
+      "case_code": "B_TA_EMPTY",
+      "correct": true,
+      "expected_invalid": false,
+      "false_transfer": false,
+      "false_rejection": false,
+      "invalid_abstention": false,
+      "solve": {
+        "task_id": "T1B000010",
+        "condition": "STRONG_STRUCTURAL_MACRO_C",
+        "status": "SOLVED",
+        "output": {
+          "type": "V002",
+          "value": 1
+        },
+        "fault": null,
+        "plan": {
+          "nodes": [
+            {
+              "node": "MACRO",
+              "macro_id": "M000003",
+              "bindings": [
+                {
+                  "kind": "K001",
+                  "value": {
+                    "code": "S011",
+                    "parameter": 9
+                  }
+                },
+                {
+                  "kind": "K003",
+                  "value": "S032"
+                }
+              ]
+            }
+          ],
+          "expanded_stages": [
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S011",
+                "parameter": 9
+              }
+            },
+            {
+              "stage": "P100003",
+              "binding": "S032"
+            }
+          ],
+          "direct_concept_ids": [],
+          "all_executed_concept_ids": [],
+          "primitive_ancestor_ids": [
+            "P100001",
+            "P100003"
+          ]
+        },
+        "derivation_id": "D-T1B000010-0001",
+        "metrics": {
+          "reasoning_depth": 6,
+          "primitive_expanded_depth": 12,
+          "reasoning_width": 418,
+          "live_branches": 418,
+          "search_expansions": 1,
+          "rollback_count": 0,
+          "wall_time_units": 7,
+          "memory_units": 1254,
+          "graph_node_count": 12,
+          "graph_edge_count": 11,
+          "dependency_depth": 1,
+          "alternative_branch_count": 417,
+          "recombination_count": 0,
+          "promoted_concept_reuse_count": 0,
+          "concepts_composed": 0,
+          "macro_uses": 1,
+          "concept_uses": 0,
+          "total_concepts_available": 3,
+          "routed_candidates": 0,
+          "active_working_set": 1,
+          "full_catalog_scans": 0,
+          "precondition_checks": 0,
+          "semantic_equivalence_matches": 0
+        }
+      }
+    },
+    {
+      "task_id": "T1B000011",
+      "case_code": "B_TFA_FRESH",
+      "correct": false,
+      "expected_invalid": false,
+      "false_transfer": false,
+      "false_rejection": true,
+      "invalid_abstention": false,
+      "solve": {
+        "task_id": "T1B000011",
+        "condition": "STRONG_STRUCTURAL_MACRO_C",
+        "status": "SOLVED",
+        "output": {
+          "type": "V002",
+          "value": 24
+        },
+        "fault": null,
+        "plan": {
+          "nodes": [
+            {
+              "node": "MACRO",
+              "macro_id": "M000003",
+              "bindings": [
+                {
+                  "kind": "K001",
+                  "value": {
+                    "code": "S011",
+                    "parameter": 8
+                  }
+                },
+                {
+                  "kind": "K003",
+                  "value": "S031"
+                }
+              ]
+            }
+          ],
+          "expanded_stages": [
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S011",
+                "parameter": 8
+              }
+            },
+            {
+              "stage": "P100003",
+              "binding": "S031"
+            }
+          ],
+          "direct_concept_ids": [],
+          "all_executed_concept_ids": [],
+          "primitive_ancestor_ids": [
+            "P100001",
+            "P100003"
+          ]
+        },
+        "derivation_id": "D-T1B000011-0001",
+        "metrics": {
+          "reasoning_depth": 26,
+          "primitive_expanded_depth": 12,
+          "reasoning_width": 1040,
+          "live_branches": 1040,
+          "search_expansions": 1,
+          "rollback_count": 0,
+          "wall_time_units": 27,
+          "memory_units": 3120,
+          "graph_node_count": 12,
+          "graph_edge_count": 11,
+          "dependency_depth": 1,
+          "alternative_branch_count": 1039,
+          "recombination_count": 0,
+          "promoted_concept_reuse_count": 0,
+          "concepts_composed": 0,
+          "macro_uses": 1,
+          "concept_uses": 0,
+          "total_concepts_available": 3,
+          "routed_candidates": 0,
+          "active_working_set": 1,
+          "full_catalog_scans": 0,
+          "precondition_checks": 0,
+          "semantic_equivalence_matches": 0
+        }
+      }
+    },
+    {
+      "task_id": "T1B000012",
+      "case_code": "B_TFA_SUBSTITUTE",
+      "correct": true,
+      "expected_invalid": false,
+      "false_transfer": false,
+      "false_rejection": false,
+      "invalid_abstention": false,
+      "solve": {
+        "task_id": "T1B000012",
+        "condition": "STRONG_STRUCTURAL_MACRO_C",
+        "status": "SOLVED",
+        "output": {
+          "type": "V002",
+          "value": 40
+        },
+        "fault": null,
+        "plan": {
+          "nodes": [
+            {
+              "node": "PRIMITIVE",
+              "stage": "P100001",
+              "binding": {
+                "code": "S013",
+                "parameter": -2
+              }
+            },
+            {
+              "node": "PRIMITIVE",
+              "stage": "P100002",
+              "binding": "S024"
+            },
+            {
+              "node": "PRIMITIVE",
+              "stage": "P100003",
+              "binding": "S032"
+            }
+          ],
+          "expanded_stages": [
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S013",
+                "parameter": -2
+              }
+            },
+            {
+              "stage": "P100002",
+              "binding": "S024"
+            },
+            {
+              "stage": "P100003",
+              "binding": "S032"
+            }
+          ],
+          "direct_concept_ids": [],
+          "all_executed_concept_ids": [],
+          "primitive_ancestor_ids": [
+            "P100001",
+            "P100002",
+            "P100003"
+          ]
+        },
+        "derivation_id": "D-T1B000012-0049",
+        "metrics": {
+          "reasoning_depth": 34,
+          "primitive_expanded_depth": 17,
+          "reasoning_width": 1040,
+          "live_branches": 1040,
+          "search_expansions": 49,
+          "rollback_count": 48,
+          "wall_time_units": 83,
+          "memory_units": 3120,
+          "graph_node_count": 17,
+          "graph_edge_count": 16,
+          "dependency_depth": 3,
+          "alternative_branch_count": 1039,
+          "recombination_count": 2,
+          "promoted_concept_reuse_count": 0,
+          "concepts_composed": 0,
+          "macro_uses": 0,
+          "concept_uses": 0,
+          "total_concepts_available": 3,
+          "routed_candidates": 0,
+          "active_working_set": 1,
+          "full_catalog_scans": 0,
+          "precondition_checks": 0,
+          "semantic_equivalence_matches": 0
+        }
+      }
+    },
+    {
+      "task_id": "T1B000013",
+      "case_code": "B_TFA_EQUIVALENT",
+      "correct": true,
+      "expected_invalid": false,
+      "false_transfer": false,
+      "false_rejection": false,
+      "invalid_abstention": false,
+      "solve": {
+        "task_id": "T1B000013",
+        "condition": "STRONG_STRUCTURAL_MACRO_C",
+        "status": "SOLVED",
+        "output": {
+          "type": "V002",
+          "value": 8
+        },
+        "fault": null,
+        "plan": {
+          "nodes": [
+            {
+              "node": "PRIMITIVE",
+              "stage": "P100001",
+              "binding": {
+                "code": "S091",
+                "parameter": 3
+              }
+            },
+            {
+              "node": "PRIMITIVE",
+              "stage": "P100002",
+              "binding": "S023"
+            },
+            {
+              "node": "PRIMITIVE",
+              "stage": "P100003",
+              "binding": "S031"
+            }
+          ],
+          "expanded_stages": [
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S091",
+                "parameter": 3
+              }
+            },
+            {
+              "stage": "P100002",
+              "binding": "S023"
+            },
+            {
+              "stage": "P100003",
+              "binding": "S031"
+            }
+          ],
+          "direct_concept_ids": [],
+          "all_executed_concept_ids": [],
+          "primitive_ancestor_ids": [
+            "P100001",
+            "P100002",
+            "P100003"
+          ]
+        },
+        "derivation_id": "D-T1B000013-0055",
+        "metrics": {
+          "reasoning_depth": 36,
+          "primitive_expanded_depth": 17,
+          "reasoning_width": 416,
+          "live_branches": 416,
+          "search_expansions": 55,
+          "rollback_count": 54,
+          "wall_time_units": 91,
+          "memory_units": 1248,
+          "graph_node_count": 17,
+          "graph_edge_count": 16,
+          "dependency_depth": 3,
+          "alternative_branch_count": 415,
+          "recombination_count": 2,
+          "promoted_concept_reuse_count": 0,
+          "concepts_composed": 0,
+          "macro_uses": 0,
+          "concept_uses": 0,
+          "total_concepts_available": 3,
+          "routed_candidates": 0,
+          "active_working_set": 1,
+          "full_catalog_scans": 0,
+          "precondition_checks": 0,
+          "semantic_equivalence_matches": 1
+        }
+      }
+    },
+    {
+      "task_id": "T1B000014",
+      "case_code": "B_TFA_INVALID",
+      "correct": false,
+      "expected_invalid": true,
+      "false_transfer": true,
+      "false_rejection": false,
+      "invalid_abstention": false,
+      "solve": {
+        "task_id": "T1B000014",
+        "condition": "STRONG_STRUCTURAL_MACRO_C",
+        "status": "EXECUTION_FAILURE",
+        "output": null,
+        "fault": "ARITHMETIC_OVERFLOW",
+        "plan": {
+          "nodes": [
+            {
+              "node": "PRIMITIVE",
+              "stage": "P100001",
+              "binding": {
+                "code": "S013",
+                "parameter": 3
+              }
+            },
+            {
+              "node": "PRIMITIVE",
+              "stage": "P100002",
+              "binding": "S022"
+            },
+            {
+              "node": "PRIMITIVE",
+              "stage": "P100003",
+              "binding": "S032"
+            }
+          ],
+          "expanded_stages": [
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S013",
+                "parameter": 3
+              }
+            },
+            {
+              "stage": "P100002",
+              "binding": "S022"
+            },
+            {
+              "stage": "P100003",
+              "binding": "S032"
+            }
+          ],
+          "direct_concept_ids": [],
+          "all_executed_concept_ids": [],
+          "primitive_ancestor_ids": [
+            "P100001",
+            "P100002",
+            "P100003"
+          ]
+        },
+        "derivation_id": "D-T1B000014-0037",
+        "metrics": {
+          "reasoning_depth": 0,
+          "primitive_expanded_depth": 17,
+          "reasoning_width": 418,
+          "live_branches": 418,
+          "search_expansions": 37,
+          "rollback_count": 36,
+          "wall_time_units": 40,
+          "memory_units": 1254,
+          "graph_node_count": 17,
+          "graph_edge_count": 16,
+          "dependency_depth": 3,
+          "alternative_branch_count": 417,
+          "recombination_count": 0,
+          "promoted_concept_reuse_count": 0,
+          "concepts_composed": 0,
+          "macro_uses": 0,
+          "concept_uses": 0,
+          "total_concepts_available": 3,
+          "routed_candidates": 0,
+          "active_working_set": 1,
+          "full_catalog_scans": 0,
+          "precondition_checks": 0,
+          "semantic_equivalence_matches": 0
+        }
+      }
+    },
+    {
+      "task_id": "T1B000015",
+      "case_code": "B_TFA_EMPTY",
+      "correct": true,
+      "expected_invalid": false,
+      "false_transfer": false,
+      "false_rejection": false,
+      "invalid_abstention": false,
+      "solve": {
+        "task_id": "T1B000015",
+        "condition": "STRONG_STRUCTURAL_MACRO_C",
+        "status": "SOLVED",
+        "output": {
+          "type": "V002",
+          "value": 0
+        },
+        "fault": null,
+        "plan": {
+          "nodes": [
+            {
+              "node": "PRIMITIVE",
+              "stage": "P100001",
+              "binding": {
+                "code": "S012",
+                "parameter": 4
+              }
+            },
+            {
+              "node": "PRIMITIVE",
+              "stage": "P100002",
+              "binding": "S021"
+            },
+            {
+              "node": "PRIMITIVE",
+              "stage": "P100003",
+              "binding": "S031"
+            }
+          ],
+          "expanded_stages": [
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S012",
+                "parameter": 4
+              }
+            },
+            {
+              "stage": "P100002",
+              "binding": "S021"
+            },
+            {
+              "stage": "P100003",
+              "binding": "S031"
+            }
+          ],
+          "direct_concept_ids": [],
+          "all_executed_concept_ids": [],
+          "primitive_ancestor_ids": [
+            "P100001",
+            "P100002",
+            "P100003"
+          ]
+        },
+        "derivation_id": "D-T1B000015-0035",
+        "metrics": {
+          "reasoning_depth": 8,
+          "primitive_expanded_depth": 17,
+          "reasoning_width": 1040,
+          "live_branches": 1040,
+          "search_expansions": 35,
+          "rollback_count": 34,
+          "wall_time_units": 43,
+          "memory_units": 3120,
+          "graph_node_count": 17,
+          "graph_edge_count": 16,
+          "dependency_depth": 3,
+          "alternative_branch_count": 1039,
+          "recombination_count": 2,
+          "promoted_concept_reuse_count": 0,
+          "concepts_composed": 0,
+          "macro_uses": 0,
+          "concept_uses": 0,
+          "total_concepts_available": 3,
+          "routed_candidates": 0,
+          "active_working_set": 1,
+          "full_catalog_scans": 0,
+          "precondition_checks": 0,
+          "semantic_equivalence_matches": 0
+        }
+      }
+    },
+    {
+      "task_id": "T1B000016",
+      "case_code": "B_TT_FRESH",
+      "correct": true,
+      "expected_invalid": false,
+      "false_transfer": false,
+      "false_rejection": false,
+      "invalid_abstention": false,
+      "solve": {
+        "task_id": "T1B000016",
+        "condition": "STRONG_STRUCTURAL_MACRO_C",
+        "status": "SOLVED",
+        "output": {
+          "type": "V001",
+          "value": [
+            -38,
+            0,
+            22,
+            72,
+            162
+          ]
+        },
+        "fault": null,
+        "plan": {
+          "nodes": [
+            {
+              "node": "MACRO",
+              "macro_id": "M000002",
+              "bindings": [
+                {
+                  "kind": "K001",
+                  "value": {
+                    "code": "S011",
+                    "parameter": 11
+                  }
+                },
+                {
+                  "kind": "K001",
+                  "value": {
+                    "code": "S013",
+                    "parameter": 2
+                  }
+                }
+              ]
+            }
+          ],
+          "expanded_stages": [
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S011",
+                "parameter": 11
+              }
+            },
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S013",
+                "parameter": 2
+              }
+            }
+          ],
+          "direct_concept_ids": [],
+          "all_executed_concept_ids": [],
+          "primitive_ancestor_ids": [
+            "P100001"
+          ]
+        },
+        "derivation_id": "D-T1B000016-0002",
+        "metrics": {
+          "reasoning_depth": 48,
+          "primitive_expanded_depth": 16,
+          "reasoning_width": 1256,
+          "live_branches": 1256,
+          "search_expansions": 2,
+          "rollback_count": 1,
+          "wall_time_units": 50,
+          "memory_units": 3768,
+          "graph_node_count": 16,
+          "graph_edge_count": 15,
+          "dependency_depth": 1,
+          "alternative_branch_count": 1255,
+          "recombination_count": 0,
+          "promoted_concept_reuse_count": 0,
+          "concepts_composed": 0,
+          "macro_uses": 1,
+          "concept_uses": 0,
+          "total_concepts_available": 3,
+          "routed_candidates": 0,
+          "active_working_set": 1,
+          "full_catalog_scans": 0,
+          "precondition_checks": 0,
+          "semantic_equivalence_matches": 0
+        }
+      }
+    },
+    {
+      "task_id": "T1B000017",
+      "case_code": "B_TT_SUBSTITUTE",
+      "correct": true,
+      "expected_invalid": false,
+      "false_transfer": false,
+      "false_rejection": false,
+      "invalid_abstention": false,
+      "solve": {
+        "task_id": "T1B000017",
+        "condition": "STRONG_STRUCTURAL_MACRO_C",
+        "status": "SOLVED",
+        "output": {
+          "type": "V001",
+          "value": [
+            13,
+            -1,
+            -3,
+            -21,
+            -47
+          ]
+        },
+        "fault": null,
+        "plan": {
+          "nodes": [
+            {
+              "node": "MACRO",
+              "macro_id": "M000002",
+              "bindings": [
+                {
+                  "kind": "K001",
+                  "value": {
+                    "code": "S013",
+                    "parameter": -2
+                  }
+                },
+                {
+                  "kind": "K001",
+                  "value": {
+                    "code": "S012",
+                    "parameter": 3
+                  }
+                }
+              ]
+            }
+          ],
+          "expanded_stages": [
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S013",
+                "parameter": -2
+              }
+            },
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S012",
+                "parameter": 3
+              }
+            }
+          ],
+          "direct_concept_ids": [],
+          "all_executed_concept_ids": [],
+          "primitive_ancestor_ids": [
+            "P100001"
+          ]
+        },
+        "derivation_id": "D-T1B000017-0002",
+        "metrics": {
+          "reasoning_depth": 48,
+          "primitive_expanded_depth": 16,
+          "reasoning_width": 1256,
+          "live_branches": 1256,
+          "search_expansions": 2,
+          "rollback_count": 1,
+          "wall_time_units": 50,
+          "memory_units": 3768,
+          "graph_node_count": 16,
+          "graph_edge_count": 15,
+          "dependency_depth": 1,
+          "alternative_branch_count": 1255,
+          "recombination_count": 0,
+          "promoted_concept_reuse_count": 0,
+          "concepts_composed": 0,
+          "macro_uses": 1,
+          "concept_uses": 0,
+          "total_concepts_available": 3,
+          "routed_candidates": 0,
+          "active_working_set": 1,
+          "full_catalog_scans": 0,
+          "precondition_checks": 0,
+          "semantic_equivalence_matches": 0
+        }
+      }
+    },
+    {
+      "task_id": "T1B000018",
+      "case_code": "B_TT_EQUIVALENT",
+      "correct": true,
+      "expected_invalid": false,
+      "false_transfer": false,
+      "false_rejection": false,
+      "invalid_abstention": false,
+      "solve": {
+        "task_id": "T1B000018",
+        "condition": "STRONG_STRUCTURAL_MACRO_C",
+        "status": "SOLVED",
+        "output": {
+          "type": "V001",
+          "value": [
+            -12,
+            0,
+            18,
+            51
+          ]
+        },
+        "fault": null,
+        "plan": {
+          "nodes": [
+            {
+              "node": "PRIMITIVE",
+              "stage": "P100001",
+              "binding": {
+                "code": "S091",
+                "parameter": 5
+              }
+            },
+            {
+              "node": "PRIMITIVE",
+              "stage": "P100001",
+              "binding": {
+                "code": "S092",
+                "parameter": 3
+              }
+            }
+          ],
+          "expanded_stages": [
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S091",
+                "parameter": 5
+              }
+            },
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S092",
+                "parameter": 3
+              }
+            }
+          ],
+          "direct_concept_ids": [],
+          "all_executed_concept_ids": [],
+          "primitive_ancestor_ids": [
+            "P100001"
+          ]
+        },
+        "derivation_id": "D-T1B000018-0037",
+        "metrics": {
+          "reasoning_depth": 40,
+          "primitive_expanded_depth": 16,
+          "reasoning_width": 1242,
+          "live_branches": 1242,
+          "search_expansions": 37,
+          "rollback_count": 36,
+          "wall_time_units": 77,
+          "memory_units": 3726,
+          "graph_node_count": 16,
+          "graph_edge_count": 15,
+          "dependency_depth": 2,
+          "alternative_branch_count": 1241,
+          "recombination_count": 1,
+          "promoted_concept_reuse_count": 0,
+          "concepts_composed": 0,
+          "macro_uses": 0,
+          "concept_uses": 0,
+          "total_concepts_available": 3,
+          "routed_candidates": 0,
+          "active_working_set": 1,
+          "full_catalog_scans": 0,
+          "precondition_checks": 0,
+          "semantic_equivalence_matches": 2
+        }
+      }
+    },
+    {
+      "task_id": "T1B000019",
+      "case_code": "B_TT_INVALID",
+      "correct": false,
+      "expected_invalid": true,
+      "false_transfer": true,
+      "false_rejection": false,
+      "invalid_abstention": false,
+      "solve": {
+        "task_id": "T1B000019",
+        "condition": "STRONG_STRUCTURAL_MACRO_C",
+        "status": "EXECUTION_FAILURE",
+        "output": null,
+        "fault": "ARITHMETIC_OVERFLOW",
+        "plan": {
+          "nodes": [
+            {
+              "node": "MACRO",
+              "macro_id": "M000002",
+              "bindings": [
+                {
+                  "kind": "K001",
+                  "value": {
+                    "code": "S011",
+                    "parameter": 1
+                  }
+                },
+                {
+                  "kind": "K001",
+                  "value": {
+                    "code": "S013",
+                    "parameter": 2
+                  }
+                }
+              ]
+            }
+          ],
+          "expanded_stages": [
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S011",
+                "parameter": 1
+              }
+            },
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S013",
+                "parameter": 2
+              }
+            }
+          ],
+          "direct_concept_ids": [],
+          "all_executed_concept_ids": [],
+          "primitive_ancestor_ids": [
+            "P100001"
+          ]
+        },
+        "derivation_id": "D-T1B000019-0002",
+        "metrics": {
+          "reasoning_depth": 0,
+          "primitive_expanded_depth": 16,
+          "reasoning_width": 1256,
+          "live_branches": 1256,
+          "search_expansions": 2,
+          "rollback_count": 1,
+          "wall_time_units": 4,
+          "memory_units": 3768,
+          "graph_node_count": 16,
+          "graph_edge_count": 15,
+          "dependency_depth": 1,
+          "alternative_branch_count": 1255,
+          "recombination_count": 0,
+          "promoted_concept_reuse_count": 0,
+          "concepts_composed": 0,
+          "macro_uses": 0,
+          "concept_uses": 0,
+          "total_concepts_available": 3,
+          "routed_candidates": 0,
+          "active_working_set": 1,
+          "full_catalog_scans": 0,
+          "precondition_checks": 0,
+          "semantic_equivalence_matches": 0
+        }
+      }
+    },
+    {
+      "task_id": "T1B000020",
+      "case_code": "B_TT_EMPTY",
+      "correct": true,
+      "expected_invalid": false,
+      "false_transfer": false,
+      "false_rejection": false,
+      "invalid_abstention": false,
+      "solve": {
+        "task_id": "T1B000020",
+        "condition": "STRONG_STRUCTURAL_MACRO_C",
+        "status": "SOLVED",
+        "output": {
+          "type": "V001",
+          "value": []
+        },
+        "fault": null,
+        "plan": {
+          "nodes": [
+            {
+              "node": "MACRO",
+              "macro_id": "M000002",
+              "bindings": [
+                {
+                  "kind": "K001",
+                  "value": {
+                    "code": "S012",
+                    "parameter": 4
+                  }
+                },
+                {
+                  "kind": "K001",
+                  "value": {
+                    "code": "S011",
+                    "parameter": 12
+                  }
+                }
+              ]
+            }
+          ],
+          "expanded_stages": [
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S012",
+                "parameter": 4
+              }
+            },
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S011",
+                "parameter": 12
+              }
+            }
+          ],
+          "direct_concept_ids": [],
+          "all_executed_concept_ids": [],
+          "primitive_ancestor_ids": [
+            "P100001"
+          ]
+        },
+        "derivation_id": "D-T1B000020-0002",
+        "metrics": {
+          "reasoning_depth": 8,
+          "primitive_expanded_depth": 16,
+          "reasoning_width": 1256,
+          "live_branches": 1256,
+          "search_expansions": 2,
+          "rollback_count": 1,
+          "wall_time_units": 10,
+          "memory_units": 3768,
+          "graph_node_count": 16,
+          "graph_edge_count": 15,
+          "dependency_depth": 1,
+          "alternative_branch_count": 1255,
+          "recombination_count": 0,
+          "promoted_concept_reuse_count": 0,
+          "concepts_composed": 0,
+          "macro_uses": 1,
+          "concept_uses": 0,
+          "total_concepts_available": 3,
+          "routed_candidates": 0,
+          "active_working_set": 1,
+          "full_catalog_scans": 0,
+          "precondition_checks": 0,
+          "semantic_equivalence_matches": 0
+        }
+      }
+    }
+  ]
+}

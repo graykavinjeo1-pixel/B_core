@@ -1,0 +1,10 @@
+{
+  "adversarial_transfer_tests": 8,
+  "semantic_correct": 7,
+  "structural_correct": 3,
+  "semantic_equivalent_behavior_transfers": 3,
+  "structural_equivalent_behavior_fallbacks": 3,
+  "semantic_invalid_rejections": 4,
+  "structural_false_transfers": 4,
+  "semantic_advantage_deterministic": true
+}

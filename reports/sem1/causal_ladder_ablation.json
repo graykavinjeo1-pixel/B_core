@@ -1,0 +1,53 @@
+{
+  "candidate_ablations": [
+    {
+      "candidate_id": "C000002",
+      "enabled_solve_rate": 1.0,
+      "disabled_solve_rate": 1.0,
+      "enabled_search_expansions": 45,
+      "disabled_search_expansions": 5850,
+      "enabled_max_operational_depth": 1,
+      "disabled_max_operational_depth": 4,
+      "measurable_causal_effect": true
+    },
+    {
+      "candidate_id": "C000003",
+      "enabled_solve_rate": 1.0,
+      "disabled_solve_rate": 1.0,
+      "enabled_search_expansions": 37,
+      "disabled_search_expansions": 29,
+      "enabled_max_operational_depth": 1,
+      "disabled_max_operational_depth": 1,
+      "measurable_causal_effect": false
+    },
+    {
+      "candidate_id": "C000004",
+      "enabled_solve_rate": 1.0,
+      "disabled_solve_rate": 1.0,
+      "enabled_search_expansions": 51,
+      "disabled_search_expansions": 68347,
+      "enabled_max_operational_depth": 1,
+      "disabled_max_operational_depth": 2,
+      "measurable_causal_effect": true
+    },
+    {
+      "candidate_id": "C000005",
+      "enabled_solve_rate": 1.0,
+      "disabled_solve_rate": 1.0,
+      "enabled_search_expansions": 48,
+      "disabled_search_expansions": 726,
+      "enabled_max_operational_depth": 1,
+      "disabled_max_operational_depth": 2,
+      "measurable_causal_effect": true
+    }
+  ],
+  "c000001_disabled": true,
+  "dependent_gen2_concepts_legitimately_available": 0,
+  "gen1_disabled_search_expansion_delta": 198,
+  "gen1_disabled_operational_depth_delta": 2,
+  "all_promoted_disabled_solve_rate": 1.0,
+  "all_promoted_disabled_search_expansions": 379,
+  "gen2_ablation_pass": true,
+  "gen1_ancestor_ablation_pass": true,
+  "all_promoted_ablation_pass": true
+}

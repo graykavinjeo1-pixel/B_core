@@ -1,0 +1,17 @@
+{
+  "max_successful_reasoning_depth": 56,
+  "max_primitive_expanded_depth": 17,
+  "max_reasoning_width": 28540,
+  "max_live_branches": 28540,
+  "max_concepts_composed": 2,
+  "max_reasoning_graph_nodes": 17,
+  "max_reasoning_graph_edges": 16,
+  "peak_active_concepts": 5,
+  "total_search_expansions": 1111,
+  "total_rollbacks": 991,
+  "total_recombinations": 24,
+  "total_promoted_concept_reuses": 112,
+  "wall_time_units": 3832,
+  "peak_memory_units": 85620,
+  "fixed_reasoning_depth_ceiling": false
+}

@@ -1,0 +1,9 @@
+{
+  "total_concepts_available": 5,
+  "mean_routed_candidates": 4.0,
+  "peak_routed_candidates": 5,
+  "peak_active_working_set": 5,
+  "full_catalog_scans": 0,
+  "routing_false_negatives": 0,
+  "sparse_index_enabled": true
+}

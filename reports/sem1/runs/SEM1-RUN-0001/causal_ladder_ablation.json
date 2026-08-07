@@ -1,0 +1,33 @@
+{
+  "candidate_ablations": [
+    {
+      "candidate_id": "C000002",
+      "enabled_solve_rate": 1.0,
+      "disabled_solve_rate": 1.0,
+      "enabled_search_expansions": 38,
+      "disabled_search_expansions": 58,
+      "enabled_max_operational_depth": 1,
+      "disabled_max_operational_depth": 2,
+      "measurable_causal_effect": true
+    },
+    {
+      "candidate_id": "C000003",
+      "enabled_solve_rate": 1.0,
+      "disabled_solve_rate": 1.0,
+      "enabled_search_expansions": 17,
+      "disabled_search_expansions": 15053,
+      "enabled_max_operational_depth": 1,
+      "disabled_max_operational_depth": 3,
+      "measurable_causal_effect": true
+    }
+  ],
+  "c000001_disabled": true,
+  "dependent_gen2_concepts_legitimately_available": 0,
+  "gen1_disabled_search_expansion_delta": -105433,
+  "gen1_disabled_operational_depth_delta": 0,
+  "all_promoted_disabled_solve_rate": 0.85,
+  "all_promoted_disabled_search_expansions": 331,
+  "gen2_ablation_pass": true,
+  "gen1_ancestor_ablation_pass": false,
+  "all_promoted_ablation_pass": false
+}

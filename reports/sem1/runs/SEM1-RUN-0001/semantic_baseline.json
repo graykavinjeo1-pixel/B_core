@@ -1,0 +1,1922 @@
+{
+  "condition": "SEMANTIC_RECURSIVE_D",
+  "tasks_attempted": 20,
+  "tasks_correct": 17,
+  "strict_solve_rate": 0.85,
+  "search_expansions": 105764,
+  "mean_search_expansions": 5288.2,
+  "false_transfers": 0,
+  "false_transfer_rate": 0.0,
+  "false_rejections": 3,
+  "false_rejection_rate": 0.1875,
+  "invalid_tasks": 4,
+  "invalid_abstentions": 4,
+  "invalid_abstention_rate": 1.0,
+  "max_reasoning_depth": 132,
+  "max_primitive_expanded_depth": 32,
+  "max_reasoning_width": 27272,
+  "max_live_branches": 27272,
+  "max_graph_nodes": 32,
+  "max_graph_edges": 31,
+  "max_concepts_composed": 2,
+  "results": [
+    {
+      "task_id": "T1B000001",
+      "case_code": "B_TF_FRESH",
+      "correct": false,
+      "expected_invalid": false,
+      "false_transfer": false,
+      "false_rejection": true,
+      "invalid_abstention": false,
+      "solve": {
+        "task_id": "T1B000001",
+        "condition": "SEMANTIC_RECURSIVE_D",
+        "status": "SOLVED",
+        "output": {
+          "type": "V001",
+          "value": [
+            -13,
+            0,
+            7,
+            19,
+            97
+          ]
+        },
+        "fault": null,
+        "plan": {
+          "nodes": [
+            {
+              "node": "CONCEPT",
+              "concept_id": "C000001",
+              "bindings": [
+                {
+                  "kind": "K001",
+                  "value": {
+                    "code": "S011",
+                    "parameter": 7
+                  }
+                }
+              ]
+            }
+          ],
+          "expanded_stages": [
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S011",
+                "parameter": 7
+              }
+            }
+          ],
+          "direct_concept_ids": [
+            "C000001"
+          ],
+          "all_executed_concept_ids": [
+            "C000001"
+          ],
+          "primitive_ancestor_ids": [
+            "P100001"
+          ]
+        },
+        "derivation_id": "D-T1B000001-21457",
+        "metrics": {
+          "reasoning_depth": 28,
+          "primitive_expanded_depth": 8,
+          "reasoning_width": 26583,
+          "live_branches": 26583,
+          "search_expansions": 21457,
+          "rollback_count": 21456,
+          "wall_time_units": 21485,
+          "memory_units": 79749,
+          "graph_node_count": 8,
+          "graph_edge_count": 7,
+          "dependency_depth": 1,
+          "alternative_branch_count": 26582,
+          "recombination_count": 0,
+          "promoted_concept_reuse_count": 1,
+          "concepts_composed": 1,
+          "macro_uses": 0,
+          "concept_uses": 1,
+          "total_concepts_available": 3,
+          "routed_candidates": 2,
+          "active_working_set": 2,
+          "full_catalog_scans": 0,
+          "precondition_checks": 1,
+          "semantic_equivalence_matches": 0
+        }
+      }
+    },
+    {
+      "task_id": "T1B000002",
+      "case_code": "B_TF_SUBSTITUTE",
+      "correct": true,
+      "expected_invalid": false,
+      "false_transfer": false,
+      "false_rejection": false,
+      "invalid_abstention": false,
+      "solve": {
+        "task_id": "T1B000002",
+        "condition": "SEMANTIC_RECURSIVE_D",
+        "status": "SOLVED",
+        "output": {
+          "type": "V001",
+          "value": [
+            16,
+            2,
+            0,
+            -10,
+            -22,
+            -48
+          ]
+        },
+        "fault": null,
+        "plan": {
+          "nodes": [
+            {
+              "node": "CONCEPT",
+              "concept_id": "C000002",
+              "bindings": [
+                {
+                  "kind": "K001",
+                  "value": {
+                    "code": "S011",
+                    "parameter": 13
+                  }
+                },
+                {
+                  "kind": "K001",
+                  "value": {
+                    "code": "S013",
+                    "parameter": -2
+                  }
+                }
+              ]
+            },
+            {
+              "node": "CONCEPT",
+              "concept_id": "C000002",
+              "bindings": [
+                {
+                  "kind": "K001",
+                  "value": {
+                    "code": "S011",
+                    "parameter": 13
+                  }
+                },
+                {
+                  "kind": "K001",
+                  "value": {
+                    "code": "S011",
+                    "parameter": 13
+                  }
+                }
+              ]
+            }
+          ],
+          "expanded_stages": [
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S011",
+                "parameter": 13
+              }
+            },
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S013",
+                "parameter": -2
+              }
+            },
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S011",
+                "parameter": 13
+              }
+            },
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S011",
+                "parameter": 13
+              }
+            }
+          ],
+          "direct_concept_ids": [
+            "C000002",
+            "C000002"
+          ],
+          "all_executed_concept_ids": [
+            "C000001",
+            "C000002"
+          ],
+          "primitive_ancestor_ids": [
+            "P100001"
+          ]
+        },
+        "derivation_id": "D-T1B000002-0029",
+        "metrics": {
+          "reasoning_depth": 132,
+          "primitive_expanded_depth": 32,
+          "reasoning_width": 25357,
+          "live_branches": 25357,
+          "search_expansions": 29,
+          "rollback_count": 28,
+          "wall_time_units": 161,
+          "memory_units": 76071,
+          "graph_node_count": 32,
+          "graph_edge_count": 31,
+          "dependency_depth": 2,
+          "alternative_branch_count": 25356,
+          "recombination_count": 1,
+          "promoted_concept_reuse_count": 2,
+          "concepts_composed": 2,
+          "macro_uses": 0,
+          "concept_uses": 2,
+          "total_concepts_available": 3,
+          "routed_candidates": 2,
+          "active_working_set": 2,
+          "full_catalog_scans": 0,
+          "precondition_checks": 1,
+          "semantic_equivalence_matches": 0
+        }
+      }
+    },
+    {
+      "task_id": "T1B000003",
+      "case_code": "B_TF_EQUIVALENT",
+      "correct": false,
+      "expected_invalid": false,
+      "false_transfer": false,
+      "false_rejection": true,
+      "invalid_abstention": false,
+      "solve": {
+        "task_id": "T1B000003",
+        "condition": "SEMANTIC_RECURSIVE_D",
+        "status": "SOLVED",
+        "output": {
+          "type": "V001",
+          "value": [
+            0,
+            5,
+            14,
+            36
+          ]
+        },
+        "fault": null,
+        "plan": {
+          "nodes": [
+            {
+              "node": "CONCEPT",
+              "concept_id": "C000001",
+              "bindings": [
+                {
+                  "kind": "K001",
+                  "value": {
+                    "code": "S091",
+                    "parameter": 6
+                  }
+                }
+              ]
+            }
+          ],
+          "expanded_stages": [
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S091",
+                "parameter": 6
+              }
+            }
+          ],
+          "direct_concept_ids": [
+            "C000001"
+          ],
+          "all_executed_concept_ids": [
+            "C000001"
+          ],
+          "primitive_ancestor_ids": [
+            "P100001"
+          ]
+        },
+        "derivation_id": "D-T1B000003-21048",
+        "metrics": {
+          "reasoning_depth": 23,
+          "primitive_expanded_depth": 8,
+          "reasoning_width": 25357,
+          "live_branches": 25357,
+          "search_expansions": 21048,
+          "rollback_count": 21047,
+          "wall_time_units": 21071,
+          "memory_units": 76071,
+          "graph_node_count": 8,
+          "graph_edge_count": 7,
+          "dependency_depth": 1,
+          "alternative_branch_count": 25356,
+          "recombination_count": 0,
+          "promoted_concept_reuse_count": 1,
+          "concepts_composed": 1,
+          "macro_uses": 0,
+          "concept_uses": 1,
+          "total_concepts_available": 3,
+          "routed_candidates": 2,
+          "active_working_set": 2,
+          "full_catalog_scans": 0,
+          "precondition_checks": 1,
+          "semantic_equivalence_matches": 1
+        }
+      }
+    },
+    {
+      "task_id": "T1B000004",
+      "case_code": "B_TF_INVALID",
+      "correct": true,
+      "expected_invalid": true,
+      "false_transfer": false,
+      "false_rejection": false,
+      "invalid_abstention": true,
+      "solve": {
+        "task_id": "T1B000004",
+        "condition": "SEMANTIC_RECURSIVE_D",
+        "status": "SEMANTIC_ABSTENTION",
+        "output": null,
+        "fault": "ARITHMETIC_OVERFLOW",
+        "plan": {
+          "nodes": [
+            {
+              "node": "CONCEPT",
+              "concept_id": "C000001",
+              "bindings": [
+                {
+                  "kind": "K001",
+                  "value": {
+                    "code": "S013",
+                    "parameter": 2
+                  }
+                }
+              ]
+            },
+            {
+              "node": "PRIMITIVE",
+              "stage": "P100002",
+              "binding": "S021"
+            }
+          ],
+          "expanded_stages": [
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S013",
+                "parameter": 2
+              }
+            },
+            {
+              "stage": "P100002",
+              "binding": "S021"
+            }
+          ],
+          "direct_concept_ids": [
+            "C000001"
+          ],
+          "all_executed_concept_ids": [
+            "C000001"
+          ],
+          "primitive_ancestor_ids": [
+            "P100001",
+            "P100002"
+          ]
+        },
+        "derivation_id": "D-T1B000004-21490",
+        "metrics": {
+          "reasoning_depth": 2,
+          "primitive_expanded_depth": 13,
+          "reasoning_width": 26583,
+          "live_branches": 26583,
+          "search_expansions": 21490,
+          "rollback_count": 21489,
+          "wall_time_units": 21492,
+          "memory_units": 79749,
+          "graph_node_count": 13,
+          "graph_edge_count": 12,
+          "dependency_depth": 2,
+          "alternative_branch_count": 26582,
+          "recombination_count": 0,
+          "promoted_concept_reuse_count": 1,
+          "concepts_composed": 1,
+          "macro_uses": 0,
+          "concept_uses": 1,
+          "total_concepts_available": 3,
+          "routed_candidates": 2,
+          "active_working_set": 2,
+          "full_catalog_scans": 0,
+          "precondition_checks": 1,
+          "semantic_equivalence_matches": 0
+        }
+      }
+    },
+    {
+      "task_id": "T1B000005",
+      "case_code": "B_TF_EMPTY",
+      "correct": true,
+      "expected_invalid": false,
+      "false_transfer": false,
+      "false_rejection": false,
+      "invalid_abstention": false,
+      "solve": {
+        "task_id": "T1B000005",
+        "condition": "SEMANTIC_RECURSIVE_D",
+        "status": "SOLVED",
+        "output": {
+          "type": "V001",
+          "value": []
+        },
+        "fault": null,
+        "plan": {
+          "nodes": [
+            {
+              "node": "CONCEPT",
+              "concept_id": "C000001",
+              "bindings": [
+                {
+                  "kind": "K001",
+                  "value": {
+                    "code": "S012",
+                    "parameter": 11
+                  }
+                }
+              ]
+            }
+          ],
+          "expanded_stages": [
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S012",
+                "parameter": 11
+              }
+            }
+          ],
+          "direct_concept_ids": [
+            "C000001"
+          ],
+          "all_executed_concept_ids": [
+            "C000001"
+          ],
+          "primitive_ancestor_ids": [
+            "P100001"
+          ]
+        },
+        "derivation_id": "D-T1B000005-21458",
+        "metrics": {
+          "reasoning_depth": 3,
+          "primitive_expanded_depth": 8,
+          "reasoning_width": 26583,
+          "live_branches": 26583,
+          "search_expansions": 21458,
+          "rollback_count": 21457,
+          "wall_time_units": 21461,
+          "memory_units": 79749,
+          "graph_node_count": 8,
+          "graph_edge_count": 7,
+          "dependency_depth": 1,
+          "alternative_branch_count": 26582,
+          "recombination_count": 0,
+          "promoted_concept_reuse_count": 1,
+          "concepts_composed": 1,
+          "macro_uses": 0,
+          "concept_uses": 1,
+          "total_concepts_available": 3,
+          "routed_candidates": 2,
+          "active_working_set": 2,
+          "full_catalog_scans": 0,
+          "precondition_checks": 1,
+          "semantic_equivalence_matches": 0
+        }
+      }
+    },
+    {
+      "task_id": "T1B000006",
+      "case_code": "B_TA_FRESH",
+      "correct": true,
+      "expected_invalid": false,
+      "false_transfer": false,
+      "false_rejection": false,
+      "invalid_abstention": false,
+      "solve": {
+        "task_id": "T1B000006",
+        "condition": "SEMANTIC_RECURSIVE_D",
+        "status": "SOLVED",
+        "output": {
+          "type": "V002",
+          "value": 21
+        },
+        "fault": null,
+        "plan": {
+          "nodes": [
+            {
+              "node": "CONCEPT",
+              "concept_id": "C000003",
+              "bindings": [
+                {
+                  "kind": "K001",
+                  "value": {
+                    "code": "S012",
+                    "parameter": 5
+                  }
+                },
+                {
+                  "kind": "K003",
+                  "value": "S031"
+                }
+              ]
+            }
+          ],
+          "expanded_stages": [
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S012",
+                "parameter": 5
+              }
+            },
+            {
+              "stage": "P100003",
+              "binding": "S031"
+            }
+          ],
+          "direct_concept_ids": [
+            "C000003"
+          ],
+          "all_executed_concept_ids": [
+            "C000001",
+            "C000003"
+          ],
+          "primitive_ancestor_ids": [
+            "P100001",
+            "P100003"
+          ]
+        },
+        "derivation_id": "D-T1B000006-0003",
+        "metrics": {
+          "reasoning_depth": 29,
+          "primitive_expanded_depth": 12,
+          "reasoning_width": 8088,
+          "live_branches": 8088,
+          "search_expansions": 3,
+          "rollback_count": 2,
+          "wall_time_units": 32,
+          "memory_units": 24264,
+          "graph_node_count": 12,
+          "graph_edge_count": 11,
+          "dependency_depth": 1,
+          "alternative_branch_count": 8087,
+          "recombination_count": 0,
+          "promoted_concept_reuse_count": 2,
+          "concepts_composed": 2,
+          "macro_uses": 0,
+          "concept_uses": 2,
+          "total_concepts_available": 3,
+          "routed_candidates": 3,
+          "active_working_set": 3,
+          "full_catalog_scans": 0,
+          "precondition_checks": 1,
+          "semantic_equivalence_matches": 0
+        }
+      }
+    },
+    {
+      "task_id": "T1B000007",
+      "case_code": "B_TA_SUBSTITUTE",
+      "correct": true,
+      "expected_invalid": false,
+      "false_transfer": false,
+      "false_rejection": false,
+      "invalid_abstention": false,
+      "solve": {
+        "task_id": "T1B000007",
+        "condition": "SEMANTIC_RECURSIVE_D",
+        "status": "SOLVED",
+        "output": {
+          "type": "V002",
+          "value": 30
+        },
+        "fault": null,
+        "plan": {
+          "nodes": [
+            {
+              "node": "CONCEPT",
+              "concept_id": "C000003",
+              "bindings": [
+                {
+                  "kind": "K001",
+                  "value": {
+                    "code": "S013",
+                    "parameter": -1
+                  }
+                },
+                {
+                  "kind": "K003",
+                  "value": "S032"
+                }
+              ]
+            }
+          ],
+          "expanded_stages": [
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S013",
+                "parameter": -1
+              }
+            },
+            {
+              "stage": "P100003",
+              "binding": "S032"
+            }
+          ],
+          "direct_concept_ids": [
+            "C000003"
+          ],
+          "all_executed_concept_ids": [
+            "C000001",
+            "C000003"
+          ],
+          "primitive_ancestor_ids": [
+            "P100001",
+            "P100003"
+          ]
+        },
+        "derivation_id": "D-T1B000007-0005",
+        "metrics": {
+          "reasoning_depth": 29,
+          "primitive_expanded_depth": 12,
+          "reasoning_width": 8088,
+          "live_branches": 8088,
+          "search_expansions": 5,
+          "rollback_count": 4,
+          "wall_time_units": 34,
+          "memory_units": 24264,
+          "graph_node_count": 12,
+          "graph_edge_count": 11,
+          "dependency_depth": 1,
+          "alternative_branch_count": 8087,
+          "recombination_count": 0,
+          "promoted_concept_reuse_count": 2,
+          "concepts_composed": 2,
+          "macro_uses": 0,
+          "concept_uses": 2,
+          "total_concepts_available": 3,
+          "routed_candidates": 3,
+          "active_working_set": 3,
+          "full_catalog_scans": 0,
+          "precondition_checks": 1,
+          "semantic_equivalence_matches": 0
+        }
+      }
+    },
+    {
+      "task_id": "T1B000008",
+      "case_code": "B_TA_EQUIVALENT",
+      "correct": true,
+      "expected_invalid": false,
+      "false_transfer": false,
+      "false_rejection": false,
+      "invalid_abstention": false,
+      "solve": {
+        "task_id": "T1B000008",
+        "condition": "SEMANTIC_RECURSIVE_D",
+        "status": "SOLVED",
+        "output": {
+          "type": "V002",
+          "value": 33
+        },
+        "fault": null,
+        "plan": {
+          "nodes": [
+            {
+              "node": "CONCEPT",
+              "concept_id": "C000003",
+              "bindings": [
+                {
+                  "kind": "K001",
+                  "value": {
+                    "code": "S092",
+                    "parameter": 3
+                  }
+                },
+                {
+                  "kind": "K003",
+                  "value": "S031"
+                }
+              ]
+            }
+          ],
+          "expanded_stages": [
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S092",
+                "parameter": 3
+              }
+            },
+            {
+              "stage": "P100003",
+              "binding": "S031"
+            }
+          ],
+          "direct_concept_ids": [
+            "C000003"
+          ],
+          "all_executed_concept_ids": [
+            "C000001",
+            "C000003"
+          ],
+          "primitive_ancestor_ids": [
+            "P100001",
+            "P100003"
+          ]
+        },
+        "derivation_id": "D-T1B000008-0005",
+        "metrics": {
+          "reasoning_depth": 29,
+          "primitive_expanded_depth": 12,
+          "reasoning_width": 8088,
+          "live_branches": 8088,
+          "search_expansions": 5,
+          "rollback_count": 4,
+          "wall_time_units": 34,
+          "memory_units": 24264,
+          "graph_node_count": 12,
+          "graph_edge_count": 11,
+          "dependency_depth": 1,
+          "alternative_branch_count": 8087,
+          "recombination_count": 0,
+          "promoted_concept_reuse_count": 2,
+          "concepts_composed": 2,
+          "macro_uses": 0,
+          "concept_uses": 2,
+          "total_concepts_available": 3,
+          "routed_candidates": 3,
+          "active_working_set": 3,
+          "full_catalog_scans": 0,
+          "precondition_checks": 1,
+          "semantic_equivalence_matches": 1
+        }
+      }
+    },
+    {
+      "task_id": "T1B000009",
+      "case_code": "B_TA_INVALID",
+      "correct": true,
+      "expected_invalid": true,
+      "false_transfer": false,
+      "false_rejection": false,
+      "invalid_abstention": true,
+      "solve": {
+        "task_id": "T1B000009",
+        "condition": "SEMANTIC_RECURSIVE_D",
+        "status": "SEMANTIC_ABSTENTION",
+        "output": null,
+        "fault": "ARITHMETIC_OVERFLOW",
+        "plan": {
+          "nodes": [
+            {
+              "node": "CONCEPT",
+              "concept_id": "C000003",
+              "bindings": [
+                {
+                  "kind": "K001",
+                  "value": {
+                    "code": "S011",
+                    "parameter": 1
+                  }
+                },
+                {
+                  "kind": "K003",
+                  "value": "S031"
+                }
+              ]
+            }
+          ],
+          "expanded_stages": [
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S011",
+                "parameter": 1
+              }
+            },
+            {
+              "stage": "P100003",
+              "binding": "S031"
+            }
+          ],
+          "direct_concept_ids": [
+            "C000003"
+          ],
+          "all_executed_concept_ids": [
+            "C000001",
+            "C000003"
+          ],
+          "primitive_ancestor_ids": [
+            "P100001",
+            "P100003"
+          ]
+        },
+        "derivation_id": "D-T1B000009-0001",
+        "metrics": {
+          "reasoning_depth": 2,
+          "primitive_expanded_depth": 12,
+          "reasoning_width": 8088,
+          "live_branches": 8088,
+          "search_expansions": 1,
+          "rollback_count": 0,
+          "wall_time_units": 3,
+          "memory_units": 24264,
+          "graph_node_count": 12,
+          "graph_edge_count": 11,
+          "dependency_depth": 1,
+          "alternative_branch_count": 8087,
+          "recombination_count": 0,
+          "promoted_concept_reuse_count": 2,
+          "concepts_composed": 2,
+          "macro_uses": 0,
+          "concept_uses": 2,
+          "total_concepts_available": 3,
+          "routed_candidates": 3,
+          "active_working_set": 3,
+          "full_catalog_scans": 0,
+          "precondition_checks": 1,
+          "semantic_equivalence_matches": 0
+        }
+      }
+    },
+    {
+      "task_id": "T1B000010",
+      "case_code": "B_TA_EMPTY",
+      "correct": true,
+      "expected_invalid": false,
+      "false_transfer": false,
+      "false_rejection": false,
+      "invalid_abstention": false,
+      "solve": {
+        "task_id": "T1B000010",
+        "condition": "SEMANTIC_RECURSIVE_D",
+        "status": "SOLVED",
+        "output": {
+          "type": "V002",
+          "value": 1
+        },
+        "fault": null,
+        "plan": {
+          "nodes": [
+            {
+              "node": "CONCEPT",
+              "concept_id": "C000003",
+              "bindings": [
+                {
+                  "kind": "K001",
+                  "value": {
+                    "code": "S011",
+                    "parameter": 9
+                  }
+                },
+                {
+                  "kind": "K003",
+                  "value": "S032"
+                }
+              ]
+            }
+          ],
+          "expanded_stages": [
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S011",
+                "parameter": 9
+              }
+            },
+            {
+              "stage": "P100003",
+              "binding": "S032"
+            }
+          ],
+          "direct_concept_ids": [
+            "C000003"
+          ],
+          "all_executed_concept_ids": [
+            "C000001",
+            "C000003"
+          ],
+          "primitive_ancestor_ids": [
+            "P100001",
+            "P100003"
+          ]
+        },
+        "derivation_id": "D-T1B000010-0003",
+        "metrics": {
+          "reasoning_depth": 5,
+          "primitive_expanded_depth": 12,
+          "reasoning_width": 8088,
+          "live_branches": 8088,
+          "search_expansions": 3,
+          "rollback_count": 2,
+          "wall_time_units": 8,
+          "memory_units": 24264,
+          "graph_node_count": 12,
+          "graph_edge_count": 11,
+          "dependency_depth": 1,
+          "alternative_branch_count": 8087,
+          "recombination_count": 0,
+          "promoted_concept_reuse_count": 2,
+          "concepts_composed": 2,
+          "macro_uses": 0,
+          "concept_uses": 2,
+          "total_concepts_available": 3,
+          "routed_candidates": 3,
+          "active_working_set": 3,
+          "full_catalog_scans": 0,
+          "precondition_checks": 1,
+          "semantic_equivalence_matches": 0
+        }
+      }
+    },
+    {
+      "task_id": "T1B000011",
+      "case_code": "B_TFA_FRESH",
+      "correct": false,
+      "expected_invalid": false,
+      "false_transfer": false,
+      "false_rejection": true,
+      "invalid_abstention": false,
+      "solve": {
+        "task_id": "T1B000011",
+        "condition": "SEMANTIC_RECURSIVE_D",
+        "status": "SOLVED",
+        "output": {
+          "type": "V002",
+          "value": 24
+        },
+        "fault": null,
+        "plan": {
+          "nodes": [
+            {
+              "node": "CONCEPT",
+              "concept_id": "C000003",
+              "bindings": [
+                {
+                  "kind": "K001",
+                  "value": {
+                    "code": "S011",
+                    "parameter": 8
+                  }
+                },
+                {
+                  "kind": "K003",
+                  "value": "S031"
+                }
+              ]
+            }
+          ],
+          "expanded_stages": [
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S011",
+                "parameter": 8
+              }
+            },
+            {
+              "stage": "P100003",
+              "binding": "S031"
+            }
+          ],
+          "direct_concept_ids": [
+            "C000003"
+          ],
+          "all_executed_concept_ids": [
+            "C000001",
+            "C000003"
+          ],
+          "primitive_ancestor_ids": [
+            "P100001",
+            "P100003"
+          ]
+        },
+        "derivation_id": "D-T1B000011-0001",
+        "metrics": {
+          "reasoning_depth": 29,
+          "primitive_expanded_depth": 12,
+          "reasoning_width": 8206,
+          "live_branches": 8206,
+          "search_expansions": 1,
+          "rollback_count": 0,
+          "wall_time_units": 30,
+          "memory_units": 24618,
+          "graph_node_count": 12,
+          "graph_edge_count": 11,
+          "dependency_depth": 1,
+          "alternative_branch_count": 8205,
+          "recombination_count": 0,
+          "promoted_concept_reuse_count": 2,
+          "concepts_composed": 2,
+          "macro_uses": 0,
+          "concept_uses": 2,
+          "total_concepts_available": 3,
+          "routed_candidates": 3,
+          "active_working_set": 3,
+          "full_catalog_scans": 0,
+          "precondition_checks": 1,
+          "semantic_equivalence_matches": 0
+        }
+      }
+    },
+    {
+      "task_id": "T1B000012",
+      "case_code": "B_TFA_SUBSTITUTE",
+      "correct": true,
+      "expected_invalid": false,
+      "false_transfer": false,
+      "false_rejection": false,
+      "invalid_abstention": false,
+      "solve": {
+        "task_id": "T1B000012",
+        "condition": "SEMANTIC_RECURSIVE_D",
+        "status": "SOLVED",
+        "output": {
+          "type": "V002",
+          "value": 40
+        },
+        "fault": null,
+        "plan": {
+          "nodes": [
+            {
+              "node": "CONCEPT",
+              "concept_id": "C000001",
+              "bindings": [
+                {
+                  "kind": "K001",
+                  "value": {
+                    "code": "S013",
+                    "parameter": -2
+                  }
+                }
+              ]
+            },
+            {
+              "node": "PRIMITIVE",
+              "stage": "P100002",
+              "binding": "S024"
+            },
+            {
+              "node": "PRIMITIVE",
+              "stage": "P100003",
+              "binding": "S032"
+            }
+          ],
+          "expanded_stages": [
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S013",
+                "parameter": -2
+              }
+            },
+            {
+              "stage": "P100002",
+              "binding": "S024"
+            },
+            {
+              "stage": "P100003",
+              "binding": "S032"
+            }
+          ],
+          "direct_concept_ids": [
+            "C000001"
+          ],
+          "all_executed_concept_ids": [
+            "C000001"
+          ],
+          "primitive_ancestor_ids": [
+            "P100001",
+            "P100002",
+            "P100003"
+          ]
+        },
+        "derivation_id": "D-T1B000012-6573",
+        "metrics": {
+          "reasoning_depth": 37,
+          "primitive_expanded_depth": 17,
+          "reasoning_width": 8206,
+          "live_branches": 8206,
+          "search_expansions": 6573,
+          "rollback_count": 6572,
+          "wall_time_units": 6610,
+          "memory_units": 24618,
+          "graph_node_count": 17,
+          "graph_edge_count": 16,
+          "dependency_depth": 3,
+          "alternative_branch_count": 8205,
+          "recombination_count": 2,
+          "promoted_concept_reuse_count": 1,
+          "concepts_composed": 1,
+          "macro_uses": 0,
+          "concept_uses": 1,
+          "total_concepts_available": 3,
+          "routed_candidates": 3,
+          "active_working_set": 3,
+          "full_catalog_scans": 0,
+          "precondition_checks": 1,
+          "semantic_equivalence_matches": 0
+        }
+      }
+    },
+    {
+      "task_id": "T1B000013",
+      "case_code": "B_TFA_EQUIVALENT",
+      "correct": true,
+      "expected_invalid": false,
+      "false_transfer": false,
+      "false_rejection": false,
+      "invalid_abstention": false,
+      "solve": {
+        "task_id": "T1B000013",
+        "condition": "SEMANTIC_RECURSIVE_D",
+        "status": "SOLVED",
+        "output": {
+          "type": "V002",
+          "value": 8
+        },
+        "fault": null,
+        "plan": {
+          "nodes": [
+            {
+              "node": "CONCEPT",
+              "concept_id": "C000001",
+              "bindings": [
+                {
+                  "kind": "K001",
+                  "value": {
+                    "code": "S091",
+                    "parameter": 3
+                  }
+                }
+              ]
+            },
+            {
+              "node": "PRIMITIVE",
+              "stage": "P100002",
+              "binding": "S023"
+            },
+            {
+              "node": "PRIMITIVE",
+              "stage": "P100003",
+              "binding": "S031"
+            }
+          ],
+          "expanded_stages": [
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S091",
+                "parameter": 3
+              }
+            },
+            {
+              "stage": "P100002",
+              "binding": "S023"
+            },
+            {
+              "stage": "P100003",
+              "binding": "S031"
+            }
+          ],
+          "direct_concept_ids": [
+            "C000001"
+          ],
+          "all_executed_concept_ids": [
+            "C000001"
+          ],
+          "primitive_ancestor_ids": [
+            "P100001",
+            "P100002",
+            "P100003"
+          ]
+        },
+        "derivation_id": "D-T1B000013-6983",
+        "metrics": {
+          "reasoning_depth": 39,
+          "primitive_expanded_depth": 17,
+          "reasoning_width": 8088,
+          "live_branches": 8088,
+          "search_expansions": 6983,
+          "rollback_count": 6982,
+          "wall_time_units": 7022,
+          "memory_units": 24264,
+          "graph_node_count": 17,
+          "graph_edge_count": 16,
+          "dependency_depth": 3,
+          "alternative_branch_count": 8087,
+          "recombination_count": 2,
+          "promoted_concept_reuse_count": 1,
+          "concepts_composed": 1,
+          "macro_uses": 0,
+          "concept_uses": 1,
+          "total_concepts_available": 3,
+          "routed_candidates": 3,
+          "active_working_set": 3,
+          "full_catalog_scans": 0,
+          "precondition_checks": 1,
+          "semantic_equivalence_matches": 1
+        }
+      }
+    },
+    {
+      "task_id": "T1B000014",
+      "case_code": "B_TFA_INVALID",
+      "correct": true,
+      "expected_invalid": true,
+      "false_transfer": false,
+      "false_rejection": false,
+      "invalid_abstention": true,
+      "solve": {
+        "task_id": "T1B000014",
+        "condition": "SEMANTIC_RECURSIVE_D",
+        "status": "SEMANTIC_ABSTENTION",
+        "output": null,
+        "fault": "ARITHMETIC_OVERFLOW",
+        "plan": {
+          "nodes": [
+            {
+              "node": "PRIMITIVE",
+              "stage": "P100002",
+              "binding": "S022"
+            },
+            {
+              "node": "CONCEPT",
+              "concept_id": "C000003",
+              "bindings": [
+                {
+                  "kind": "K001",
+                  "value": {
+                    "code": "S013",
+                    "parameter": 3
+                  }
+                },
+                {
+                  "kind": "K003",
+                  "value": "S032"
+                }
+              ]
+            }
+          ],
+          "expanded_stages": [
+            {
+              "stage": "P100002",
+              "binding": "S022"
+            },
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S013",
+                "parameter": 3
+              }
+            },
+            {
+              "stage": "P100003",
+              "binding": "S032"
+            }
+          ],
+          "direct_concept_ids": [
+            "C000003"
+          ],
+          "all_executed_concept_ids": [
+            "C000001",
+            "C000003"
+          ],
+          "primitive_ancestor_ids": [
+            "P100001",
+            "P100002",
+            "P100003"
+          ]
+        },
+        "derivation_id": "D-T1B000014-0119",
+        "metrics": {
+          "reasoning_depth": 3,
+          "primitive_expanded_depth": 17,
+          "reasoning_width": 8088,
+          "live_branches": 8088,
+          "search_expansions": 119,
+          "rollback_count": 118,
+          "wall_time_units": 122,
+          "memory_units": 24264,
+          "graph_node_count": 17,
+          "graph_edge_count": 16,
+          "dependency_depth": 2,
+          "alternative_branch_count": 8087,
+          "recombination_count": 0,
+          "promoted_concept_reuse_count": 2,
+          "concepts_composed": 2,
+          "macro_uses": 0,
+          "concept_uses": 2,
+          "total_concepts_available": 3,
+          "routed_candidates": 3,
+          "active_working_set": 3,
+          "full_catalog_scans": 0,
+          "precondition_checks": 1,
+          "semantic_equivalence_matches": 0
+        }
+      }
+    },
+    {
+      "task_id": "T1B000015",
+      "case_code": "B_TFA_EMPTY",
+      "correct": true,
+      "expected_invalid": false,
+      "false_transfer": false,
+      "false_rejection": false,
+      "invalid_abstention": false,
+      "solve": {
+        "task_id": "T1B000015",
+        "condition": "SEMANTIC_RECURSIVE_D",
+        "status": "SOLVED",
+        "output": {
+          "type": "V002",
+          "value": 0
+        },
+        "fault": null,
+        "plan": {
+          "nodes": [
+            {
+              "node": "CONCEPT",
+              "concept_id": "C000001",
+              "bindings": [
+                {
+                  "kind": "K001",
+                  "value": {
+                    "code": "S012",
+                    "parameter": 4
+                  }
+                }
+              ]
+            },
+            {
+              "node": "PRIMITIVE",
+              "stage": "P100002",
+              "binding": "S021"
+            },
+            {
+              "node": "PRIMITIVE",
+              "stage": "P100003",
+              "binding": "S031"
+            }
+          ],
+          "expanded_stages": [
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S012",
+                "parameter": 4
+              }
+            },
+            {
+              "stage": "P100002",
+              "binding": "S021"
+            },
+            {
+              "stage": "P100003",
+              "binding": "S031"
+            }
+          ],
+          "direct_concept_ids": [
+            "C000001"
+          ],
+          "all_executed_concept_ids": [
+            "C000001"
+          ],
+          "primitive_ancestor_ids": [
+            "P100001",
+            "P100002",
+            "P100003"
+          ]
+        },
+        "derivation_id": "D-T1B000015-6551",
+        "metrics": {
+          "reasoning_depth": 7,
+          "primitive_expanded_depth": 17,
+          "reasoning_width": 8206,
+          "live_branches": 8206,
+          "search_expansions": 6551,
+          "rollback_count": 6550,
+          "wall_time_units": 6558,
+          "memory_units": 24618,
+          "graph_node_count": 17,
+          "graph_edge_count": 16,
+          "dependency_depth": 3,
+          "alternative_branch_count": 8205,
+          "recombination_count": 2,
+          "promoted_concept_reuse_count": 1,
+          "concepts_composed": 1,
+          "macro_uses": 0,
+          "concept_uses": 1,
+          "total_concepts_available": 3,
+          "routed_candidates": 3,
+          "active_working_set": 3,
+          "full_catalog_scans": 0,
+          "precondition_checks": 1,
+          "semantic_equivalence_matches": 0
+        }
+      }
+    },
+    {
+      "task_id": "T1B000016",
+      "case_code": "B_TT_FRESH",
+      "correct": true,
+      "expected_invalid": false,
+      "false_transfer": false,
+      "false_rejection": false,
+      "invalid_abstention": false,
+      "solve": {
+        "task_id": "T1B000016",
+        "condition": "SEMANTIC_RECURSIVE_D",
+        "status": "SOLVED",
+        "output": {
+          "type": "V001",
+          "value": [
+            -38,
+            0,
+            22,
+            72,
+            162
+          ]
+        },
+        "fault": null,
+        "plan": {
+          "nodes": [
+            {
+              "node": "CONCEPT",
+              "concept_id": "C000002",
+              "bindings": [
+                {
+                  "kind": "K001",
+                  "value": {
+                    "code": "S011",
+                    "parameter": 11
+                  }
+                },
+                {
+                  "kind": "K001",
+                  "value": {
+                    "code": "S013",
+                    "parameter": 2
+                  }
+                }
+              ]
+            }
+          ],
+          "expanded_stages": [
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S011",
+                "parameter": 11
+              }
+            },
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S013",
+                "parameter": 2
+              }
+            }
+          ],
+          "direct_concept_ids": [
+            "C000002"
+          ],
+          "all_executed_concept_ids": [
+            "C000001",
+            "C000002"
+          ],
+          "primitive_ancestor_ids": [
+            "P100001"
+          ]
+        },
+        "derivation_id": "D-T1B000016-0005",
+        "metrics": {
+          "reasoning_depth": 56,
+          "primitive_expanded_depth": 16,
+          "reasoning_width": 27272,
+          "live_branches": 27272,
+          "search_expansions": 5,
+          "rollback_count": 4,
+          "wall_time_units": 61,
+          "memory_units": 81816,
+          "graph_node_count": 16,
+          "graph_edge_count": 15,
+          "dependency_depth": 1,
+          "alternative_branch_count": 27271,
+          "recombination_count": 0,
+          "promoted_concept_reuse_count": 2,
+          "concepts_composed": 2,
+          "macro_uses": 0,
+          "concept_uses": 2,
+          "total_concepts_available": 3,
+          "routed_candidates": 2,
+          "active_working_set": 2,
+          "full_catalog_scans": 0,
+          "precondition_checks": 1,
+          "semantic_equivalence_matches": 0
+        }
+      }
+    },
+    {
+      "task_id": "T1B000017",
+      "case_code": "B_TT_SUBSTITUTE",
+      "correct": true,
+      "expected_invalid": false,
+      "false_transfer": false,
+      "false_rejection": false,
+      "invalid_abstention": false,
+      "solve": {
+        "task_id": "T1B000017",
+        "condition": "SEMANTIC_RECURSIVE_D",
+        "status": "SOLVED",
+        "output": {
+          "type": "V001",
+          "value": [
+            13,
+            -1,
+            -3,
+            -21,
+            -47
+          ]
+        },
+        "fault": null,
+        "plan": {
+          "nodes": [
+            {
+              "node": "CONCEPT",
+              "concept_id": "C000002",
+              "bindings": [
+                {
+                  "kind": "K001",
+                  "value": {
+                    "code": "S013",
+                    "parameter": -2
+                  }
+                },
+                {
+                  "kind": "K001",
+                  "value": {
+                    "code": "S012",
+                    "parameter": 3
+                  }
+                }
+              ]
+            }
+          ],
+          "expanded_stages": [
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S013",
+                "parameter": -2
+              }
+            },
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S012",
+                "parameter": 3
+              }
+            }
+          ],
+          "direct_concept_ids": [
+            "C000002"
+          ],
+          "all_executed_concept_ids": [
+            "C000001",
+            "C000002"
+          ],
+          "primitive_ancestor_ids": [
+            "P100001"
+          ]
+        },
+        "derivation_id": "D-T1B000017-0011",
+        "metrics": {
+          "reasoning_depth": 56,
+          "primitive_expanded_depth": 16,
+          "reasoning_width": 27272,
+          "live_branches": 27272,
+          "search_expansions": 11,
+          "rollback_count": 10,
+          "wall_time_units": 67,
+          "memory_units": 81816,
+          "graph_node_count": 16,
+          "graph_edge_count": 15,
+          "dependency_depth": 1,
+          "alternative_branch_count": 27271,
+          "recombination_count": 0,
+          "promoted_concept_reuse_count": 2,
+          "concepts_composed": 2,
+          "macro_uses": 0,
+          "concept_uses": 2,
+          "total_concepts_available": 3,
+          "routed_candidates": 2,
+          "active_working_set": 2,
+          "full_catalog_scans": 0,
+          "precondition_checks": 1,
+          "semantic_equivalence_matches": 0
+        }
+      }
+    },
+    {
+      "task_id": "T1B000018",
+      "case_code": "B_TT_EQUIVALENT",
+      "correct": true,
+      "expected_invalid": false,
+      "false_transfer": false,
+      "false_rejection": false,
+      "invalid_abstention": false,
+      "solve": {
+        "task_id": "T1B000018",
+        "condition": "SEMANTIC_RECURSIVE_D",
+        "status": "SOLVED",
+        "output": {
+          "type": "V001",
+          "value": [
+            -12,
+            0,
+            18,
+            51
+          ]
+        },
+        "fault": null,
+        "plan": {
+          "nodes": [
+            {
+              "node": "CONCEPT",
+              "concept_id": "C000002",
+              "bindings": [
+                {
+                  "kind": "K001",
+                  "value": {
+                    "code": "S091",
+                    "parameter": 5
+                  }
+                },
+                {
+                  "kind": "K001",
+                  "value": {
+                    "code": "S092",
+                    "parameter": 3
+                  }
+                }
+              ]
+            }
+          ],
+          "expanded_stages": [
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S091",
+                "parameter": 5
+              }
+            },
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S092",
+                "parameter": 3
+              }
+            }
+          ],
+          "direct_concept_ids": [
+            "C000002"
+          ],
+          "all_executed_concept_ids": [
+            "C000001",
+            "C000002"
+          ],
+          "primitive_ancestor_ids": [
+            "P100001"
+          ]
+        },
+        "derivation_id": "D-T1B000018-0012",
+        "metrics": {
+          "reasoning_depth": 46,
+          "primitive_expanded_depth": 16,
+          "reasoning_width": 27272,
+          "live_branches": 27272,
+          "search_expansions": 12,
+          "rollback_count": 11,
+          "wall_time_units": 58,
+          "memory_units": 81816,
+          "graph_node_count": 16,
+          "graph_edge_count": 15,
+          "dependency_depth": 1,
+          "alternative_branch_count": 27271,
+          "recombination_count": 0,
+          "promoted_concept_reuse_count": 2,
+          "concepts_composed": 2,
+          "macro_uses": 0,
+          "concept_uses": 2,
+          "total_concepts_available": 3,
+          "routed_candidates": 2,
+          "active_working_set": 2,
+          "full_catalog_scans": 0,
+          "precondition_checks": 1,
+          "semantic_equivalence_matches": 2
+        }
+      }
+    },
+    {
+      "task_id": "T1B000019",
+      "case_code": "B_TT_INVALID",
+      "correct": true,
+      "expected_invalid": true,
+      "false_transfer": false,
+      "false_rejection": false,
+      "invalid_abstention": true,
+      "solve": {
+        "task_id": "T1B000019",
+        "condition": "SEMANTIC_RECURSIVE_D",
+        "status": "SEMANTIC_ABSTENTION",
+        "output": null,
+        "fault": "ARITHMETIC_OVERFLOW",
+        "plan": {
+          "nodes": [
+            {
+              "node": "CONCEPT",
+              "concept_id": "C000002",
+              "bindings": [
+                {
+                  "kind": "K001",
+                  "value": {
+                    "code": "S011",
+                    "parameter": 1
+                  }
+                },
+                {
+                  "kind": "K001",
+                  "value": {
+                    "code": "S013",
+                    "parameter": 2
+                  }
+                }
+              ]
+            }
+          ],
+          "expanded_stages": [
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S011",
+                "parameter": 1
+              }
+            },
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S013",
+                "parameter": 2
+              }
+            }
+          ],
+          "direct_concept_ids": [
+            "C000002"
+          ],
+          "all_executed_concept_ids": [
+            "C000001",
+            "C000002"
+          ],
+          "primitive_ancestor_ids": [
+            "P100001"
+          ]
+        },
+        "derivation_id": "D-T1B000019-0005",
+        "metrics": {
+          "reasoning_depth": 2,
+          "primitive_expanded_depth": 16,
+          "reasoning_width": 27272,
+          "live_branches": 27272,
+          "search_expansions": 5,
+          "rollback_count": 4,
+          "wall_time_units": 7,
+          "memory_units": 81816,
+          "graph_node_count": 16,
+          "graph_edge_count": 15,
+          "dependency_depth": 1,
+          "alternative_branch_count": 27271,
+          "recombination_count": 0,
+          "promoted_concept_reuse_count": 2,
+          "concepts_composed": 2,
+          "macro_uses": 0,
+          "concept_uses": 2,
+          "total_concepts_available": 3,
+          "routed_candidates": 2,
+          "active_working_set": 2,
+          "full_catalog_scans": 0,
+          "precondition_checks": 1,
+          "semantic_equivalence_matches": 0
+        }
+      }
+    },
+    {
+      "task_id": "T1B000020",
+      "case_code": "B_TT_EMPTY",
+      "correct": true,
+      "expected_invalid": false,
+      "false_transfer": false,
+      "false_rejection": false,
+      "invalid_abstention": false,
+      "solve": {
+        "task_id": "T1B000020",
+        "condition": "SEMANTIC_RECURSIVE_D",
+        "status": "SOLVED",
+        "output": {
+          "type": "V001",
+          "value": []
+        },
+        "fault": null,
+        "plan": {
+          "nodes": [
+            {
+              "node": "CONCEPT",
+              "concept_id": "C000002",
+              "bindings": [
+                {
+                  "kind": "K001",
+                  "value": {
+                    "code": "S011",
+                    "parameter": 12
+                  }
+                },
+                {
+                  "kind": "K001",
+                  "value": {
+                    "code": "S012",
+                    "parameter": 4
+                  }
+                }
+              ]
+            }
+          ],
+          "expanded_stages": [
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S011",
+                "parameter": 12
+              }
+            },
+            {
+              "stage": "P100001",
+              "binding": {
+                "code": "S012",
+                "parameter": 4
+              }
+            }
+          ],
+          "direct_concept_ids": [
+            "C000002"
+          ],
+          "all_executed_concept_ids": [
+            "C000001",
+            "C000002"
+          ],
+          "primitive_ancestor_ids": [
+            "P100001"
+          ]
+        },
+        "derivation_id": "D-T1B000020-0005",
+        "metrics": {
+          "reasoning_depth": 6,
+          "primitive_expanded_depth": 16,
+          "reasoning_width": 27272,
+          "live_branches": 27272,
+          "search_expansions": 5,
+          "rollback_count": 4,
+          "wall_time_units": 11,
+          "memory_units": 81816,
+          "graph_node_count": 16,
+          "graph_edge_count": 15,
+          "dependency_depth": 1,
+          "alternative_branch_count": 27271,
+          "recombination_count": 0,
+          "promoted_concept_reuse_count": 2,
+          "concepts_composed": 2,
+          "macro_uses": 0,
+          "concept_uses": 2,
+          "total_concepts_available": 3,
+          "routed_candidates": 2,
+          "active_working_set": 2,
+          "full_catalog_scans": 0,
+          "precondition_checks": 1,
+          "semantic_equivalence_matches": 0
+        }
+      }
+    }
+  ]
+}

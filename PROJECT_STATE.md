@@ -1,19 +1,21 @@
 # Project State
 
-**Canonical version:** 1.1.0
-**State frozen for:** SEM-0 completed baseline
+**Canonical version:** 1.2.0
+**State frozen for:** SEM-1 completed baseline
 
 This is an operational snapshot. It does not replace or override
 `CONSTITUTION.md`.
 
 | Field | Value |
 |---|---|
-| Current stage | `SEM-0 COMPLETE` |
+| Current stage | `SEM-1 COMPLETE` |
 | Stage S0 status | `PASS` |
 | SEM-0 implementation | `COMPLETE` |
-| SEM-0 result | `PASS — MINIMAL_AUTONOMOUS_CONCEPT_EMERGENCE` |
-| Promoted concepts | `1` (`C000001`) |
-| SEM-1 | `NOT STARTED` |
+| SEM-0 result | `PASS - MINIMAL_AUTONOMOUS_CONCEPT_EMERGENCE` |
+| SEM-1 implementation | `COMPLETE` |
+| SEM-1 result | `PASS - RECURSIVE_LADDER_AND_SEMANTIC_SEPARATION_VERIFIED` |
+| Promoted concepts | `4` (`C000001`, `C000002`, `C000004`, `C000005`) |
+| SEM-2 | `NOT STARTED` |
 | Recursive self-mutation | `DISABLED` |
 | Recursive-improvement mode | `OBSERVE_MEASURE_ONLY` |
 | Proposal generation | `DISABLED` |
@@ -24,14 +26,14 @@ This is an operational snapshot. It does not replace or override
 | LLM reasoning dependency | `DISABLED` |
 | Web/network learning | `DISABLED` |
 | Current branch | `main` |
-| Current commit | `SELF` — the commit containing this frozen state; resolve with `git rev-parse HEAD` |
+| Current commit | `SELF` - resolve with `git rev-parse HEAD` |
 | Worktree at committed freeze | `CLEAN` |
-| Next allowed stage | `SEM-1_RECURSIVE_CONCEPT_LADDER` |
+| Next allowed stage | `SEM-2_ADAPTIVE_REASONING_COMPLEXITY` |
 
 ## Canonical document status
 
 The normative documents remain complete and frozen at version 1.0.0. This
-operational state record advanced to version 1.1.0 after the sealed SEM-0 run:
+operational state record advanced to version 1.2.0 after the sealed SEM-1 run:
 
 - `CONSTITUTION.md`
 - `RESEARCH_HYPOTHESIS.md`
@@ -83,7 +85,28 @@ The detailed classification and contamination decisions are in
   were zero. Full concept-catalog scans were zero.
 - Reports are sealed under `reports/sem0/`.
 
+## SEM-1 evidence snapshot
+
+- `SEM1-RUN-0002` produced four autonomous Generation-2 candidates and
+  promoted three after all required gates; maximum autonomous generation was
+  `2`.
+- `C000002` contains two direct executable uses of immutable predecessor
+  `C000001`. Exact concept and primitive ancestry are retained in the lineage
+  DAG.
+- Frozen fresh-blind solve rates were A `0.8`, B `0.0`, strong structural C
+  `0.8`, and semantic D `1.0` across 20 tasks.
+- Relative to strong structural C, semantic D improved solve rate by `0.2`,
+  reduced search expansions by `37`, reduced false-transfer rate by `0.2`,
+  and improved invalid-case abstention rate by `1.0`.
+- Generation-2 candidate ablation, Generation-1 ancestor ablation, expanded
+  provenance reconstruction, sparse routing, and leakage audit all passed.
+- Network, external LLM, local teacher, recursive source mutation, full catalog
+  scan, and routing false-negative counts were zero.
+- The failed frozen `SEM1-RUN-0001` is preserved under
+  `reports/sem1/runs/SEM1-RUN-0001/`. Passing reports are sealed under
+  `reports/sem1/`.
+
 ## Advancement constraint
 
-Starting SEM-1 requires an explicit subsequent task. SEM-0 completion does not
+Starting SEM-2 requires an explicit subsequent task. SEM-1 completion does not
 authorize recursive self-application, which remains reserved for SEM-9.

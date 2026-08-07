@@ -1,0 +1,15 @@
+{
+  "concepts": [
+    {
+      "concept_id": "C000003",
+      "generation": 2,
+      "primitive_expanded_graph_nodes": 12,
+      "primitive_expanded_depth": 12,
+      "compressed_operational_nodes": 1,
+      "compressed_operational_depth": 1,
+      "compression_ratio": 12.0
+    }
+  ],
+  "best_multi_generation_compression_ratio": 12.0,
+  "expanded_derivations_preserved": true
+}

@@ -1,0 +1,208 @@
+{
+  "attempted": 18,
+  "passed": 17,
+  "valid_counterfactual_prediction_accuracy": 1.0,
+  "invalid_case_rejection_accuracy": 0.9285714285714286,
+  "false_transfer_rate": 0.07142857142857142,
+  "false_rejection_rate": 0.0,
+  "probes": [
+    {
+      "probe_id": "CF-C000002-OPERATOR_SUBSTITUTION",
+      "candidate_id": "C000002",
+      "probe_type": "OPERATOR_SUBSTITUTION",
+      "expected_applicable": true,
+      "predicted_applicable": true,
+      "actual_valid": true,
+      "structurally_similar": false,
+      "semantically_equivalent": false,
+      "passed": true
+    },
+    {
+      "probe_id": "CF-C000002-EQUIVALENT_OPERATOR_SUBSTITUTION",
+      "candidate_id": "C000002",
+      "probe_type": "EQUIVALENT_OPERATOR_SUBSTITUTION",
+      "expected_applicable": true,
+      "predicted_applicable": true,
+      "actual_valid": true,
+      "structurally_similar": false,
+      "semantically_equivalent": true,
+      "passed": true
+    },
+    {
+      "probe_id": "CF-C000002-PRECONDITION_REMOVAL",
+      "candidate_id": "C000002",
+      "probe_type": "PRECONDITION_REMOVAL",
+      "expected_applicable": false,
+      "predicted_applicable": false,
+      "actual_valid": false,
+      "structurally_similar": true,
+      "semantically_equivalent": false,
+      "passed": true
+    },
+    {
+      "probe_id": "CF-C000002-ADVERSARIAL_STRUCTURAL_MIMICRY",
+      "candidate_id": "C000002",
+      "probe_type": "ADVERSARIAL_STRUCTURAL_MIMICRY",
+      "expected_applicable": false,
+      "predicted_applicable": false,
+      "actual_valid": false,
+      "structurally_similar": true,
+      "semantically_equivalent": false,
+      "passed": true
+    },
+    {
+      "probe_id": "CF-C000002-TYPE_MUTATION",
+      "candidate_id": "C000002",
+      "probe_type": "TYPE_MUTATION",
+      "expected_applicable": false,
+      "predicted_applicable": false,
+      "actual_valid": false,
+      "structurally_similar": true,
+      "semantically_equivalent": false,
+      "passed": true
+    },
+    {
+      "probe_id": "CF-C000002-STAGE_REORDERING",
+      "candidate_id": "C000002",
+      "probe_type": "STAGE_REORDERING",
+      "expected_applicable": false,
+      "predicted_applicable": true,
+      "actual_valid": false,
+      "structurally_similar": true,
+      "semantically_equivalent": false,
+      "passed": false
+    },
+    {
+      "probe_id": "CF-C000002-PARTIAL_SUBGRAPH_DELETION",
+      "candidate_id": "C000002",
+      "probe_type": "PARTIAL_SUBGRAPH_DELETION",
+      "expected_applicable": false,
+      "predicted_applicable": false,
+      "actual_valid": false,
+      "structurally_similar": true,
+      "semantically_equivalent": false,
+      "passed": true
+    },
+    {
+      "probe_id": "CF-C000002-INVARIANT_VIOLATION",
+      "candidate_id": "C000002",
+      "probe_type": "INVARIANT_VIOLATION",
+      "expected_applicable": false,
+      "predicted_applicable": false,
+      "actual_valid": false,
+      "structurally_similar": true,
+      "semantically_equivalent": false,
+      "passed": true
+    },
+    {
+      "probe_id": "CF-C000002-OPERATION_REPLACEMENT",
+      "candidate_id": "C000002",
+      "probe_type": "OPERATION_REPLACEMENT",
+      "expected_applicable": false,
+      "predicted_applicable": false,
+      "actual_valid": false,
+      "structurally_similar": true,
+      "semantically_equivalent": false,
+      "passed": true
+    },
+    {
+      "probe_id": "CF-C000003-OPERATOR_SUBSTITUTION",
+      "candidate_id": "C000003",
+      "probe_type": "OPERATOR_SUBSTITUTION",
+      "expected_applicable": true,
+      "predicted_applicable": true,
+      "actual_valid": true,
+      "structurally_similar": false,
+      "semantically_equivalent": false,
+      "passed": true
+    },
+    {
+      "probe_id": "CF-C000003-EQUIVALENT_OPERATOR_SUBSTITUTION",
+      "candidate_id": "C000003",
+      "probe_type": "EQUIVALENT_OPERATOR_SUBSTITUTION",
+      "expected_applicable": true,
+      "predicted_applicable": true,
+      "actual_valid": true,
+      "structurally_similar": false,
+      "semantically_equivalent": true,
+      "passed": true
+    },
+    {
+      "probe_id": "CF-C000003-PRECONDITION_REMOVAL",
+      "candidate_id": "C000003",
+      "probe_type": "PRECONDITION_REMOVAL",
+      "expected_applicable": false,
+      "predicted_applicable": false,
+      "actual_valid": false,
+      "structurally_similar": true,
+      "semantically_equivalent": false,
+      "passed": true
+    },
+    {
+      "probe_id": "CF-C000003-ADVERSARIAL_STRUCTURAL_MIMICRY",
+      "candidate_id": "C000003",
+      "probe_type": "ADVERSARIAL_STRUCTURAL_MIMICRY",
+      "expected_applicable": false,
+      "predicted_applicable": false,
+      "actual_valid": false,
+      "structurally_similar": true,
+      "semantically_equivalent": false,
+      "passed": true
+    },
+    {
+      "probe_id": "CF-C000003-TYPE_MUTATION",
+      "candidate_id": "C000003",
+      "probe_type": "TYPE_MUTATION",
+      "expected_applicable": false,
+      "predicted_applicable": false,
+      "actual_valid": false,
+      "structurally_similar": true,
+      "semantically_equivalent": false,
+      "passed": true
+    },
+    {
+      "probe_id": "CF-C000003-STAGE_REORDERING",
+      "candidate_id": "C000003",
+      "probe_type": "STAGE_REORDERING",
+      "expected_applicable": false,
+      "predicted_applicable": false,
+      "actual_valid": false,
+      "structurally_similar": true,
+      "semantically_equivalent": false,
+      "passed": true
+    },
+    {
+      "probe_id": "CF-C000003-PARTIAL_SUBGRAPH_DELETION",
+      "candidate_id": "C000003",
+      "probe_type": "PARTIAL_SUBGRAPH_DELETION",
+      "expected_applicable": false,
+      "predicted_applicable": false,
+      "actual_valid": false,
+      "structurally_similar": true,
+      "semantically_equivalent": false,
+      "passed": true
+    },
+    {
+      "probe_id": "CF-C000003-INVARIANT_VIOLATION",
+      "candidate_id": "C000003",
+      "probe_type": "INVARIANT_VIOLATION",
+      "expected_applicable": false,
+      "predicted_applicable": false,
+      "actual_valid": false,
+      "structurally_similar": true,
+      "semantically_equivalent": false,
+      "passed": true
+    },
+    {
+      "probe_id": "CF-C000003-OPERATION_REPLACEMENT",
+      "candidate_id": "C000003",
+      "probe_type": "OPERATION_REPLACEMENT",
+      "expected_applicable": false,
+      "predicted_applicable": false,
+      "actual_valid": false,
+      "structurally_similar": true,
+      "semantically_equivalent": false,
+      "passed": true
+    }
+  ]
+}

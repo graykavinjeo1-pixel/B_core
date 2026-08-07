@@ -1,0 +1,23 @@
+{
+  "generator_version": "SEM1-CURRICULUM-1.1.0",
+  "seed": 20260807201,
+  "discovery_tasks": 16,
+  "calibration_tasks": 8,
+  "blind_tasks": 20,
+  "input_types": [
+    "V001"
+  ],
+  "output_types": [
+    "V001",
+    "V002"
+  ],
+  "exposed_task_family_metadata": false,
+  "exposed_human_abstraction_names": false,
+  "supported_composition_arities": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "curriculum_sha256": "5435d20f7afa42ff5dea13314a59b2860af27e394b36c625124799165cee4a41"
+}

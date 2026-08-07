@@ -1,0 +1,147 @@
+{
+  "passed": true,
+  "predecessor_commit": "bae05f1023d7abd65bcfd2272cbf9d0a6dda9e48",
+  "canonical_manifest_sha256": "f17cc97824b53f06bc485e52ac5ce5f4ccfb93eda187b75693a9db7692e207ed",
+  "canonical_files_verified": 8,
+  "sem0_artifacts_verified": 16,
+  "sem0_artifact_hashes": [
+    {
+      "relative_path": "reports/sem0/ablation_results.json",
+      "byte_length": 356,
+      "sha256": "806c67d227c76323148f720e7d62b5bc9574bf952e44b7fc65dffa2b2bf71d97",
+      "expected_sha256": "806c67d227c76323148f720e7d62b5bc9574bf952e44b7fc65dffa2b2bf71d97",
+      "passed": true
+    },
+    {
+      "relative_path": "reports/sem0/baseline_results.json",
+      "byte_length": 3012,
+      "sha256": "5fd4e814c39c40f48e9e13b0d0c9b89967f3bb7ed13d4b6c4a404ad09175f54f",
+      "expected_sha256": "5fd4e814c39c40f48e9e13b0d0c9b89967f3bb7ed13d4b6c4a404ad09175f54f",
+      "passed": true
+    },
+    {
+      "relative_path": "reports/sem0/candidate_concepts.json",
+      "byte_length": 7330,
+      "sha256": "75d7052e2720b68e0fb0c867e7e271137332091ef4b5d0cc088c7f11f409ac9b",
+      "expected_sha256": "75d7052e2720b68e0fb0c867e7e271137332091ef4b5d0cc088c7f11f409ac9b",
+      "passed": true
+    },
+    {
+      "relative_path": "reports/sem0/counterfactual_results.json",
+      "byte_length": 2804,
+      "sha256": "c849c45663982ee63819a5929c2b779136e84314b6711980179586df5a112312",
+      "expected_sha256": "c849c45663982ee63819a5929c2b779136e84314b6711980179586df5a112312",
+      "passed": true
+    },
+    {
+      "relative_path": "reports/sem0/derivation_metrics.json",
+      "byte_length": 236094,
+      "sha256": "5c03e52bdf65a1f8aab607f669716c97de2f3f15c3647e59e8d8e5f1f58a1bc5",
+      "expected_sha256": "5c03e52bdf65a1f8aab607f669716c97de2f3f15c3647e59e8d8e5f1f58a1bc5",
+      "passed": true
+    },
+    {
+      "relative_path": "reports/sem0/environment.json",
+      "byte_length": 1661,
+      "sha256": "f1829b19a3ec5ff66d619226d786b09bd10f35a269dfc0493655e661c0ff4028",
+      "expected_sha256": "f1829b19a3ec5ff66d619226d786b09bd10f35a269dfc0493655e661c0ff4028",
+      "passed": true
+    },
+    {
+      "relative_path": "reports/sem0/fresh_blind_results.json",
+      "byte_length": 81396,
+      "sha256": "2c5291211354a933f44f69d6641c85379a9ee32455468e9bdeac15732a0ba1bb",
+      "expected_sha256": "2c5291211354a933f44f69d6641c85379a9ee32455468e9bdeac15732a0ba1bb",
+      "passed": true
+    },
+    {
+      "relative_path": "reports/sem0/leakage_audit.json",
+      "byte_length": 509,
+      "sha256": "2a484756b1c0e87fe8a2e2df17c0ef3ec6cbfff8e35cf062dc0f740ca085353b",
+      "expected_sha256": "2a484756b1c0e87fe8a2e2df17c0ef3ec6cbfff8e35cf062dc0f740ca085353b",
+      "passed": true
+    },
+    {
+      "relative_path": "reports/sem0/lineage_graph.json",
+      "byte_length": 2953,
+      "sha256": "0752530f590312c296998b894e2ff115721b62b1df01504546ecd87327145e1b",
+      "expected_sha256": "0752530f590312c296998b894e2ff115721b62b1df01504546ecd87327145e1b",
+      "passed": true
+    },
+    {
+      "relative_path": "reports/sem0/posthoc_interpretation.json",
+      "byte_length": 311,
+      "sha256": "1269382421dcf945afcc133d6a41d05e899194ebe28bd57d5ae1b4fcd9c24559",
+      "expected_sha256": "1269382421dcf945afcc133d6a41d05e899194ebe28bd57d5ae1b4fcd9c24559",
+      "passed": true
+    },
+    {
+      "relative_path": "reports/sem0/primitive_catalog.json",
+      "byte_length": 2290,
+      "sha256": "45a33012276385d23b64dd7e1238c24270b6e7025b05f4e3dc302110530732e3",
+      "expected_sha256": "45a33012276385d23b64dd7e1238c24270b6e7025b05f4e3dc302110530732e3",
+      "passed": true
+    },
+    {
+      "relative_path": "reports/sem0/sem0_final_report.json",
+      "byte_length": 1362,
+      "sha256": "bc90cd83389c3df9be53d558b0bb040947a8724255ff27a704a1c20b21960aa1",
+      "expected_sha256": "bc90cd83389c3df9be53d558b0bb040947a8724255ff27a704a1c20b21960aa1",
+      "passed": true
+    },
+    {
+      "relative_path": "reports/sem0/SEM0_REPORT.md",
+      "byte_length": 2531,
+      "sha256": "7cba0a030385fb6799f554c86dd5c797f4ab1beadb9df2d36d8c6b10f9a68717",
+      "expected_sha256": "7cba0a030385fb6799f554c86dd5c797f4ab1beadb9df2d36d8c6b10f9a68717",
+      "passed": true
+    },
+    {
+      "relative_path": "reports/sem0/semantic_gate_results.json",
+      "byte_length": 1729,
+      "sha256": "b6f35cd833238c34008e659fe677875194e89dd9d2a44356b9ea736e37eb4d2f",
+      "expected_sha256": "b6f35cd833238c34008e659fe677875194e89dd9d2a44356b9ea736e37eb4d2f",
+      "passed": true
+    },
+    {
+      "relative_path": "reports/sem0/task_manifest_blind.json",
+      "byte_length": 3622,
+      "sha256": "e552d30671b149145baf13648f79456e66fc75638cecf19f55ca3581d60de9a9",
+      "expected_sha256": "e552d30671b149145baf13648f79456e66fc75638cecf19f55ca3581d60de9a9",
+      "passed": true
+    },
+    {
+      "relative_path": "reports/sem0/task_manifest_train.json",
+      "byte_length": 3586,
+      "sha256": "563643065f9e952b8792586368dfff9f29c819d975d5a5407e0e62719621bf5f",
+      "expected_sha256": "563643065f9e952b8792586368dfff9f29c819d975d5a5407e0e62719621bf5f",
+      "passed": true
+    }
+  ],
+  "c000001_record_sha256": "75d7052e2720b68e0fb0c867e7e271137332091ef4b5d0cc088c7f11f409ac9b",
+  "c000001_content_hash_sha256": "320762a4b6c274773353fde90e1a3c9145f4e90b9c2c458d0ab229d1e5762a80",
+  "c000001_recomputed_content_hash_sha256": "320762a4b6c274773353fde90e1a3c9145f4e90b9c2c458d0ab229d1e5762a80",
+  "c000001_immutable_promotion_record": true,
+  "recursive_improvement_quarantine": {
+    "stage": "S0",
+    "mode": "OBSERVE_MEASURE_ONLY",
+    "observe_enabled": true,
+    "measure_enabled": true,
+    "proposal_generation_enabled": false,
+    "source_patching_enabled": false,
+    "sandbox_apply_enabled": false,
+    "auto_apply_enabled": false,
+    "auto_merge_enabled": false,
+    "auto_commit_enabled": false,
+    "auto_push_enabled": false,
+    "external_provider_repair_enabled": false,
+    "recursive_benchmark_mutation_enabled": false,
+    "network_enabled": false,
+    "external_llm_enabled": false
+  },
+  "self_observe": true,
+  "self_measure": true,
+  "self_propose": false,
+  "self_apply": false,
+  "source_mutation": false
+}
