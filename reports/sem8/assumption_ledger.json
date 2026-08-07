@@ -1,0 +1,2841 @@
+{
+  "entries": [
+    {
+      "assumption_id": "M0001-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:0:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-000-88bae2b7"
+    },
+    {
+      "assumption_id": "M0001-A1",
+      "kind": "TERMINATES",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:0:Terminates:SATISFIED",
+      "task_id": "SEM8-T-000-88bae2b7"
+    },
+    {
+      "assumption_id": "M0001-A2",
+      "kind": "INVARIANT_GLOBAL",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:0:InvariantGlobal:SATISFIED",
+      "task_id": "SEM8-T-000-88bae2b7"
+    },
+    {
+      "assumption_id": "M0008-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:1:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-001-ff2d123c"
+    },
+    {
+      "assumption_id": "M0008-A1",
+      "kind": "REVERSIBLE",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:1:Reversible:SATISFIED",
+      "task_id": "SEM8-T-001-ff2d123c"
+    },
+    {
+      "assumption_id": "M0008-A2",
+      "kind": "LOSSLESS",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:1:Lossless:SATISFIED",
+      "task_id": "SEM8-T-001-ff2d123c"
+    },
+    {
+      "assumption_id": "M0001-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:2:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-002-ca1a5485"
+    },
+    {
+      "assumption_id": "M0001-A1",
+      "kind": "TERMINATES",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:2:Terminates:SATISFIED",
+      "task_id": "SEM8-T-002-ca1a5485"
+    },
+    {
+      "assumption_id": "M0001-A2",
+      "kind": "INVARIANT_GLOBAL",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:2:InvariantGlobal:SATISFIED",
+      "task_id": "SEM8-T-002-ca1a5485"
+    },
+    {
+      "assumption_id": "M0008-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:3:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-003-a8132c62"
+    },
+    {
+      "assumption_id": "M0008-A1",
+      "kind": "REVERSIBLE",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:3:Reversible:SATISFIED",
+      "task_id": "SEM8-T-003-a8132c62"
+    },
+    {
+      "assumption_id": "M0008-A2",
+      "kind": "LOSSLESS",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:3:Lossless:SATISFIED",
+      "task_id": "SEM8-T-003-a8132c62"
+    },
+    {
+      "assumption_id": "M0001-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:4:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-004-15e54ae3"
+    },
+    {
+      "assumption_id": "M0001-A1",
+      "kind": "TERMINATES",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:4:Terminates:SATISFIED",
+      "task_id": "SEM8-T-004-15e54ae3"
+    },
+    {
+      "assumption_id": "M0001-A2",
+      "kind": "INVARIANT_GLOBAL",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:4:InvariantGlobal:SATISFIED",
+      "task_id": "SEM8-T-004-15e54ae3"
+    },
+    {
+      "assumption_id": "M0008-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:5:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-005-5f65a458"
+    },
+    {
+      "assumption_id": "M0008-A1",
+      "kind": "REVERSIBLE",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:5:Reversible:SATISFIED",
+      "task_id": "SEM8-T-005-5f65a458"
+    },
+    {
+      "assumption_id": "M0008-A2",
+      "kind": "LOSSLESS",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:5:Lossless:SATISFIED",
+      "task_id": "SEM8-T-005-5f65a458"
+    },
+    {
+      "assumption_id": "M0001-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:6:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-006-4d1e8951"
+    },
+    {
+      "assumption_id": "M0001-A1",
+      "kind": "TERMINATES",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:6:Terminates:SATISFIED",
+      "task_id": "SEM8-T-006-4d1e8951"
+    },
+    {
+      "assumption_id": "M0001-A2",
+      "kind": "INVARIANT_GLOBAL",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:6:InvariantGlobal:SATISFIED",
+      "task_id": "SEM8-T-006-4d1e8951"
+    },
+    {
+      "assumption_id": "M0008-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:7:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-007-2cd5939e"
+    },
+    {
+      "assumption_id": "M0008-A1",
+      "kind": "REVERSIBLE",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:7:Reversible:SATISFIED",
+      "task_id": "SEM8-T-007-2cd5939e"
+    },
+    {
+      "assumption_id": "M0008-A2",
+      "kind": "LOSSLESS",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:7:Lossless:SATISFIED",
+      "task_id": "SEM8-T-007-2cd5939e"
+    },
+    {
+      "assumption_id": "M0001-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:8:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-008-27bf774f"
+    },
+    {
+      "assumption_id": "M0001-A1",
+      "kind": "TERMINATES",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:8:Terminates:SATISFIED",
+      "task_id": "SEM8-T-008-27bf774f"
+    },
+    {
+      "assumption_id": "M0001-A2",
+      "kind": "INVARIANT_GLOBAL",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:8:InvariantGlobal:SATISFIED",
+      "task_id": "SEM8-T-008-27bf774f"
+    },
+    {
+      "assumption_id": "M0008-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:9:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-009-0fbf07b4"
+    },
+    {
+      "assumption_id": "M0008-A1",
+      "kind": "REVERSIBLE",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:9:Reversible:SATISFIED",
+      "task_id": "SEM8-T-009-0fbf07b4"
+    },
+    {
+      "assumption_id": "M0008-A2",
+      "kind": "LOSSLESS",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:9:Lossless:SATISFIED",
+      "task_id": "SEM8-T-009-0fbf07b4"
+    },
+    {
+      "assumption_id": "M0001-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:10:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-010-5e7d005d"
+    },
+    {
+      "assumption_id": "M0001-A1",
+      "kind": "TERMINATES",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:10:Terminates:SATISFIED",
+      "task_id": "SEM8-T-010-5e7d005d"
+    },
+    {
+      "assumption_id": "M0001-A2",
+      "kind": "INVARIANT_GLOBAL",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:10:InvariantGlobal:SATISFIED",
+      "task_id": "SEM8-T-010-5e7d005d"
+    },
+    {
+      "assumption_id": "M0008-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:11:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-011-1b93621a"
+    },
+    {
+      "assumption_id": "M0008-A1",
+      "kind": "REVERSIBLE",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:11:Reversible:SATISFIED",
+      "task_id": "SEM8-T-011-1b93621a"
+    },
+    {
+      "assumption_id": "M0008-A2",
+      "kind": "LOSSLESS",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:11:Lossless:SATISFIED",
+      "task_id": "SEM8-T-011-1b93621a"
+    },
+    {
+      "assumption_id": "M0001-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:12:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-012-5b9573fb"
+    },
+    {
+      "assumption_id": "M0001-A1",
+      "kind": "TERMINATES",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:12:Terminates:SATISFIED",
+      "task_id": "SEM8-T-012-5b9573fb"
+    },
+    {
+      "assumption_id": "M0001-A2",
+      "kind": "INVARIANT_GLOBAL",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:12:InvariantGlobal:SATISFIED",
+      "task_id": "SEM8-T-012-5b9573fb"
+    },
+    {
+      "assumption_id": "M0008-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:13:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-013-37e0b850"
+    },
+    {
+      "assumption_id": "M0008-A1",
+      "kind": "REVERSIBLE",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:13:Reversible:SATISFIED",
+      "task_id": "SEM8-T-013-37e0b850"
+    },
+    {
+      "assumption_id": "M0008-A2",
+      "kind": "LOSSLESS",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:13:Lossless:SATISFIED",
+      "task_id": "SEM8-T-013-37e0b850"
+    },
+    {
+      "assumption_id": "M0001-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:14:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-014-08df65a9"
+    },
+    {
+      "assumption_id": "M0001-A1",
+      "kind": "TERMINATES",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:14:Terminates:SATISFIED",
+      "task_id": "SEM8-T-014-08df65a9"
+    },
+    {
+      "assumption_id": "M0001-A2",
+      "kind": "INVARIANT_GLOBAL",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:14:InvariantGlobal:SATISFIED",
+      "task_id": "SEM8-T-014-08df65a9"
+    },
+    {
+      "assumption_id": "M0008-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:15:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-015-078e33d6"
+    },
+    {
+      "assumption_id": "M0008-A1",
+      "kind": "REVERSIBLE",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:15:Reversible:SATISFIED",
+      "task_id": "SEM8-T-015-078e33d6"
+    },
+    {
+      "assumption_id": "M0008-A2",
+      "kind": "LOSSLESS",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:15:Lossless:SATISFIED",
+      "task_id": "SEM8-T-015-078e33d6"
+    },
+    {
+      "assumption_id": "M0001-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:16:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-016-6b918ce7"
+    },
+    {
+      "assumption_id": "M0001-A1",
+      "kind": "TERMINATES",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:16:Terminates:SATISFIED",
+      "task_id": "SEM8-T-016-6b918ce7"
+    },
+    {
+      "assumption_id": "M0001-A2",
+      "kind": "INVARIANT_GLOBAL",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:16:InvariantGlobal:SATISFIED",
+      "task_id": "SEM8-T-016-6b918ce7"
+    },
+    {
+      "assumption_id": "M0008-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:17:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-017-9a25722c"
+    },
+    {
+      "assumption_id": "M0008-A1",
+      "kind": "REVERSIBLE",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:17:Reversible:SATISFIED",
+      "task_id": "SEM8-T-017-9a25722c"
+    },
+    {
+      "assumption_id": "M0008-A2",
+      "kind": "LOSSLESS",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:17:Lossless:SATISFIED",
+      "task_id": "SEM8-T-017-9a25722c"
+    },
+    {
+      "assumption_id": "M0001-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:18:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-018-a67ba535"
+    },
+    {
+      "assumption_id": "M0001-A1",
+      "kind": "TERMINATES",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:18:Terminates:SATISFIED",
+      "task_id": "SEM8-T-018-a67ba535"
+    },
+    {
+      "assumption_id": "M0001-A2",
+      "kind": "INVARIANT_GLOBAL",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:18:InvariantGlobal:SATISFIED",
+      "task_id": "SEM8-T-018-a67ba535"
+    },
+    {
+      "assumption_id": "M0008-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:19:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-019-cf40e4d2"
+    },
+    {
+      "assumption_id": "M0008-A1",
+      "kind": "REVERSIBLE",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:19:Reversible:SATISFIED",
+      "task_id": "SEM8-T-019-cf40e4d2"
+    },
+    {
+      "assumption_id": "M0008-A2",
+      "kind": "LOSSLESS",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:19:Lossless:SATISFIED",
+      "task_id": "SEM8-T-019-cf40e4d2"
+    },
+    {
+      "assumption_id": "M0002-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0002",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:20:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-020-41a84e13"
+    },
+    {
+      "assumption_id": "M0002-A1",
+      "kind": "ORDER_PRESERVING",
+      "required": true,
+      "source_mechanism_id": "M0002",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:20:OrderPreserving:SATISFIED",
+      "task_id": "SEM8-T-020-41a84e13"
+    },
+    {
+      "assumption_id": "M0002-A2",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0002",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:20:Pure:SATISFIED",
+      "task_id": "SEM8-T-020-41a84e13"
+    },
+    {
+      "assumption_id": "M0003-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0003",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:21:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-021-8f773148"
+    },
+    {
+      "assumption_id": "M0003-A1",
+      "kind": "TERMINATES",
+      "required": true,
+      "source_mechanism_id": "M0003",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:21:Terminates:SATISFIED",
+      "task_id": "SEM8-T-021-8f773148"
+    },
+    {
+      "assumption_id": "M0003-A2",
+      "kind": "INVARIANT_GLOBAL",
+      "required": true,
+      "source_mechanism_id": "M0003",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:21:InvariantGlobal:SATISFIED",
+      "task_id": "SEM8-T-021-8f773148"
+    },
+    {
+      "assumption_id": "M0004-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0004",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:22:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-022-4a9feb01"
+    },
+    {
+      "assumption_id": "M0004-A1",
+      "kind": "ASSOCIATIVE",
+      "required": true,
+      "source_mechanism_id": "M0004",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:22:Associative:SATISFIED",
+      "task_id": "SEM8-T-022-4a9feb01"
+    },
+    {
+      "assumption_id": "M0005-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0005",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:23:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-023-7f5b910e"
+    },
+    {
+      "assumption_id": "M0005-A1",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0005",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:23:Pure:SATISFIED",
+      "task_id": "SEM8-T-023-7f5b910e"
+    },
+    {
+      "assumption_id": "M0002-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0002",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:24:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-024-92c4837f"
+    },
+    {
+      "assumption_id": "M0002-A1",
+      "kind": "ORDER_PRESERVING",
+      "required": true,
+      "source_mechanism_id": "M0002",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:24:OrderPreserving:SATISFIED",
+      "task_id": "SEM8-T-024-92c4837f"
+    },
+    {
+      "assumption_id": "M0002-A2",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0002",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:24:Pure:SATISFIED",
+      "task_id": "SEM8-T-024-92c4837f"
+    },
+    {
+      "assumption_id": "M0003-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0003",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:25:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-025-686b31a4"
+    },
+    {
+      "assumption_id": "M0003-A1",
+      "kind": "TERMINATES",
+      "required": true,
+      "source_mechanism_id": "M0003",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:25:Terminates:SATISFIED",
+      "task_id": "SEM8-T-025-686b31a4"
+    },
+    {
+      "assumption_id": "M0003-A2",
+      "kind": "INVARIANT_GLOBAL",
+      "required": true,
+      "source_mechanism_id": "M0003",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:25:InvariantGlobal:SATISFIED",
+      "task_id": "SEM8-T-025-686b31a4"
+    },
+    {
+      "assumption_id": "M0004-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0004",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:26:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-026-117ea30d"
+    },
+    {
+      "assumption_id": "M0004-A1",
+      "kind": "ASSOCIATIVE",
+      "required": true,
+      "source_mechanism_id": "M0004",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:26:Associative:SATISFIED",
+      "task_id": "SEM8-T-026-117ea30d"
+    },
+    {
+      "assumption_id": "M0005-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0005",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:27:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-027-90ff948a"
+    },
+    {
+      "assumption_id": "M0005-A1",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0005",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:27:Pure:SATISFIED",
+      "task_id": "SEM8-T-027-90ff948a"
+    },
+    {
+      "assumption_id": "M0002-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0002",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:28:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-028-ce33392b"
+    },
+    {
+      "assumption_id": "M0002-A1",
+      "kind": "ORDER_PRESERVING",
+      "required": true,
+      "source_mechanism_id": "M0002",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:28:OrderPreserving:SATISFIED",
+      "task_id": "SEM8-T-028-ce33392b"
+    },
+    {
+      "assumption_id": "M0002-A2",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0002",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:28:Pure:SATISFIED",
+      "task_id": "SEM8-T-028-ce33392b"
+    },
+    {
+      "assumption_id": "M0003-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0003",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:29:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-029-6f9def40"
+    },
+    {
+      "assumption_id": "M0003-A1",
+      "kind": "TERMINATES",
+      "required": true,
+      "source_mechanism_id": "M0003",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:29:Terminates:SATISFIED",
+      "task_id": "SEM8-T-029-6f9def40"
+    },
+    {
+      "assumption_id": "M0003-A2",
+      "kind": "INVARIANT_GLOBAL",
+      "required": true,
+      "source_mechanism_id": "M0003",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:29:InvariantGlobal:SATISFIED",
+      "task_id": "SEM8-T-029-6f9def40"
+    },
+    {
+      "assumption_id": "M0004-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0004",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:30:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-030-c23a7959"
+    },
+    {
+      "assumption_id": "M0004-A1",
+      "kind": "ASSOCIATIVE",
+      "required": true,
+      "source_mechanism_id": "M0004",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:30:Associative:SATISFIED",
+      "task_id": "SEM8-T-030-c23a7959"
+    },
+    {
+      "assumption_id": "M0005-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0005",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:31:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-031-df3b8b46"
+    },
+    {
+      "assumption_id": "M0005-A1",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0005",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:31:Pure:SATISFIED",
+      "task_id": "SEM8-T-031-df3b8b46"
+    },
+    {
+      "assumption_id": "M0002-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0002",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:32:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-032-6d4fbb17"
+    },
+    {
+      "assumption_id": "M0002-A1",
+      "kind": "ORDER_PRESERVING",
+      "required": true,
+      "source_mechanism_id": "M0002",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:32:OrderPreserving:SATISFIED",
+      "task_id": "SEM8-T-032-6d4fbb17"
+    },
+    {
+      "assumption_id": "M0002-A2",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0002",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:32:Pure:SATISFIED",
+      "task_id": "SEM8-T-032-6d4fbb17"
+    },
+    {
+      "assumption_id": "M0003-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0003",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:33:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-033-094f261c"
+    },
+    {
+      "assumption_id": "M0003-A1",
+      "kind": "TERMINATES",
+      "required": true,
+      "source_mechanism_id": "M0003",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:33:Terminates:SATISFIED",
+      "task_id": "SEM8-T-033-094f261c"
+    },
+    {
+      "assumption_id": "M0003-A2",
+      "kind": "INVARIANT_GLOBAL",
+      "required": true,
+      "source_mechanism_id": "M0003",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:33:InvariantGlobal:SATISFIED",
+      "task_id": "SEM8-T-033-094f261c"
+    },
+    {
+      "assumption_id": "M0004-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0004",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:34:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-034-6f3259e5"
+    },
+    {
+      "assumption_id": "M0004-A1",
+      "kind": "ASSOCIATIVE",
+      "required": true,
+      "source_mechanism_id": "M0004",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:34:Associative:SATISFIED",
+      "task_id": "SEM8-T-034-6f3259e5"
+    },
+    {
+      "assumption_id": "M0005-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0005",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:35:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-035-efc75142"
+    },
+    {
+      "assumption_id": "M0005-A1",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0005",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:35:Pure:SATISFIED",
+      "task_id": "SEM8-T-035-efc75142"
+    },
+    {
+      "assumption_id": "M0002-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0002",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:36:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-036-ef6f9543"
+    },
+    {
+      "assumption_id": "M0002-A1",
+      "kind": "ORDER_PRESERVING",
+      "required": true,
+      "source_mechanism_id": "M0002",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:36:OrderPreserving:SATISFIED",
+      "task_id": "SEM8-T-036-ef6f9543"
+    },
+    {
+      "assumption_id": "M0002-A2",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0002",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:36:Pure:SATISFIED",
+      "task_id": "SEM8-T-036-ef6f9543"
+    },
+    {
+      "assumption_id": "M0003-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0003",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:37:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-037-ac3dd238"
+    },
+    {
+      "assumption_id": "M0003-A1",
+      "kind": "TERMINATES",
+      "required": true,
+      "source_mechanism_id": "M0003",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:37:Terminates:SATISFIED",
+      "task_id": "SEM8-T-037-ac3dd238"
+    },
+    {
+      "assumption_id": "M0003-A2",
+      "kind": "INVARIANT_GLOBAL",
+      "required": true,
+      "source_mechanism_id": "M0003",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:37:InvariantGlobal:SATISFIED",
+      "task_id": "SEM8-T-037-ac3dd238"
+    },
+    {
+      "assumption_id": "M0004-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0004",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:38:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-038-008d70b1"
+    },
+    {
+      "assumption_id": "M0004-A1",
+      "kind": "ASSOCIATIVE",
+      "required": true,
+      "source_mechanism_id": "M0004",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:38:Associative:SATISFIED",
+      "task_id": "SEM8-T-038-008d70b1"
+    },
+    {
+      "assumption_id": "M0005-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0005",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:39:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-039-6b00027e"
+    },
+    {
+      "assumption_id": "M0005-A1",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0005",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:39:Pure:SATISFIED",
+      "task_id": "SEM8-T-039-6b00027e"
+    },
+    {
+      "assumption_id": "M0006-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0006",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:40:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-040-0e0e93af"
+    },
+    {
+      "assumption_id": "M0006-A1",
+      "kind": "TERMINATES",
+      "required": true,
+      "source_mechanism_id": "M0006",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:40:Terminates:SATISFIED",
+      "task_id": "SEM8-T-040-0e0e93af"
+    },
+    {
+      "assumption_id": "M0007-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0007",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:41:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-041-afc42f94"
+    },
+    {
+      "assumption_id": "M0007-A1",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0007",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:41:Pure:SATISFIED",
+      "task_id": "SEM8-T-041-afc42f94"
+    },
+    {
+      "assumption_id": "M0001-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:42:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-042-d50729bd"
+    },
+    {
+      "assumption_id": "M0001-A1",
+      "kind": "TERMINATES",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:42:Terminates:SATISFIED",
+      "task_id": "SEM8-T-042-d50729bd"
+    },
+    {
+      "assumption_id": "M0001-A2",
+      "kind": "INVARIANT_GLOBAL",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:42:InvariantGlobal:SATISFIED",
+      "task_id": "SEM8-T-042-d50729bd"
+    },
+    {
+      "assumption_id": "M0005-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0005",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:43:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-043-df23fafa"
+    },
+    {
+      "assumption_id": "M0005-A1",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0005",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:43:Pure:SATISFIED",
+      "task_id": "SEM8-T-043-df23fafa"
+    },
+    {
+      "assumption_id": "M0006-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0006",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:44:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-044-f53ac25b"
+    },
+    {
+      "assumption_id": "M0006-A1",
+      "kind": "TERMINATES",
+      "required": true,
+      "source_mechanism_id": "M0006",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:44:Terminates:SATISFIED",
+      "task_id": "SEM8-T-044-f53ac25b"
+    },
+    {
+      "assumption_id": "M0007-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0007",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:45:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-045-2b33ba30"
+    },
+    {
+      "assumption_id": "M0007-A1",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0007",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:45:Pure:SATISFIED",
+      "task_id": "SEM8-T-045-2b33ba30"
+    },
+    {
+      "assumption_id": "M0001-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:46:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-046-e4fb3109"
+    },
+    {
+      "assumption_id": "M0001-A1",
+      "kind": "TERMINATES",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:46:Terminates:SATISFIED",
+      "task_id": "SEM8-T-046-e4fb3109"
+    },
+    {
+      "assumption_id": "M0001-A2",
+      "kind": "INVARIANT_GLOBAL",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:46:InvariantGlobal:SATISFIED",
+      "task_id": "SEM8-T-046-e4fb3109"
+    },
+    {
+      "assumption_id": "M0005-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0005",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:47:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-047-2aced6b6"
+    },
+    {
+      "assumption_id": "M0005-A1",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0005",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:47:Pure:SATISFIED",
+      "task_id": "SEM8-T-047-2aced6b6"
+    },
+    {
+      "assumption_id": "M0006-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0006",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:48:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-048-8c406d47"
+    },
+    {
+      "assumption_id": "M0006-A1",
+      "kind": "TERMINATES",
+      "required": true,
+      "source_mechanism_id": "M0006",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:48:Terminates:SATISFIED",
+      "task_id": "SEM8-T-048-8c406d47"
+    },
+    {
+      "assumption_id": "M0007-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0007",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:49:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-049-62712e0c"
+    },
+    {
+      "assumption_id": "M0007-A1",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0007",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:49:Pure:SATISFIED",
+      "task_id": "SEM8-T-049-62712e0c"
+    },
+    {
+      "assumption_id": "M0001-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:50:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-050-13b17295"
+    },
+    {
+      "assumption_id": "M0001-A1",
+      "kind": "TERMINATES",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:50:Terminates:SATISFIED",
+      "task_id": "SEM8-T-050-13b17295"
+    },
+    {
+      "assumption_id": "M0001-A2",
+      "kind": "INVARIANT_GLOBAL",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:50:InvariantGlobal:SATISFIED",
+      "task_id": "SEM8-T-050-13b17295"
+    },
+    {
+      "assumption_id": "M0005-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0005",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:51:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-051-2ab571b2"
+    },
+    {
+      "assumption_id": "M0005-A1",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0005",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:51:Pure:SATISFIED",
+      "task_id": "SEM8-T-051-2ab571b2"
+    },
+    {
+      "assumption_id": "M0006-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0006",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:52:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-052-1a962073"
+    },
+    {
+      "assumption_id": "M0006-A1",
+      "kind": "TERMINATES",
+      "required": true,
+      "source_mechanism_id": "M0006",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:52:Terminates:SATISFIED",
+      "task_id": "SEM8-T-052-1a962073"
+    },
+    {
+      "assumption_id": "M0007-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0007",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:53:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-053-7bd08728"
+    },
+    {
+      "assumption_id": "M0007-A1",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0007",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:53:Pure:SATISFIED",
+      "task_id": "SEM8-T-053-7bd08728"
+    },
+    {
+      "assumption_id": "M0001-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:54:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-054-9aea1a61"
+    },
+    {
+      "assumption_id": "M0001-A1",
+      "kind": "TERMINATES",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:54:Terminates:SATISFIED",
+      "task_id": "SEM8-T-054-9aea1a61"
+    },
+    {
+      "assumption_id": "M0001-A2",
+      "kind": "INVARIANT_GLOBAL",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:54:InvariantGlobal:SATISFIED",
+      "task_id": "SEM8-T-054-9aea1a61"
+    },
+    {
+      "assumption_id": "M0005-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0005",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:55:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-055-86a1e7ee"
+    },
+    {
+      "assumption_id": "M0005-A1",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0005",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:55:Pure:SATISFIED",
+      "task_id": "SEM8-T-055-86a1e7ee"
+    },
+    {
+      "assumption_id": "M0006-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0006",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:56:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-056-d508a7df"
+    },
+    {
+      "assumption_id": "M0006-A1",
+      "kind": "TERMINATES",
+      "required": true,
+      "source_mechanism_id": "M0006",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:56:Terminates:SATISFIED",
+      "task_id": "SEM8-T-056-d508a7df"
+    },
+    {
+      "assumption_id": "M0007-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0007",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:57:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-057-7b310184"
+    },
+    {
+      "assumption_id": "M0007-A1",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0007",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:57:Pure:SATISFIED",
+      "task_id": "SEM8-T-057-7b310184"
+    },
+    {
+      "assumption_id": "M0001-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:58:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-058-bca9946d"
+    },
+    {
+      "assumption_id": "M0001-A1",
+      "kind": "TERMINATES",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:58:Terminates:SATISFIED",
+      "task_id": "SEM8-T-058-bca9946d"
+    },
+    {
+      "assumption_id": "M0001-A2",
+      "kind": "INVARIANT_GLOBAL",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:58:InvariantGlobal:SATISFIED",
+      "task_id": "SEM8-T-058-bca9946d"
+    },
+    {
+      "assumption_id": "M0005-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0005",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:59:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-059-b9af956a"
+    },
+    {
+      "assumption_id": "M0005-A1",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0005",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:59:Pure:SATISFIED",
+      "task_id": "SEM8-T-059-b9af956a"
+    },
+    {
+      "assumption_id": "M0001-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:60:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-060-1f270f8b"
+    },
+    {
+      "assumption_id": "M0001-A1",
+      "kind": "TERMINATES",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:60:Terminates:SATISFIED",
+      "task_id": "SEM8-T-060-1f270f8b"
+    },
+    {
+      "assumption_id": "M0001-A2",
+      "kind": "INVARIANT_GLOBAL",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:60:InvariantGlobal:SATISFIED",
+      "task_id": "SEM8-T-060-1f270f8b"
+    },
+    {
+      "assumption_id": "M0008-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:61:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-061-be591920"
+    },
+    {
+      "assumption_id": "M0008-A1",
+      "kind": "REVERSIBLE",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:61:Reversible:SATISFIED",
+      "task_id": "SEM8-T-061-be591920"
+    },
+    {
+      "assumption_id": "M0008-A2",
+      "kind": "LOSSLESS",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:61:Lossless:SATISFIED",
+      "task_id": "SEM8-T-061-be591920"
+    },
+    {
+      "assumption_id": "M0006-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0006",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:62:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-062-27448cb9"
+    },
+    {
+      "assumption_id": "M0006-A1",
+      "kind": "TERMINATES",
+      "required": true,
+      "source_mechanism_id": "M0006",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:62:Terminates:SATISFIED",
+      "task_id": "SEM8-T-062-27448cb9"
+    },
+    {
+      "assumption_id": "M0007-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0007",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:63:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-063-b1c71626"
+    },
+    {
+      "assumption_id": "M0007-A1",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0007",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:63:Pure:SATISFIED",
+      "task_id": "SEM8-T-063-b1c71626"
+    },
+    {
+      "assumption_id": "M0002-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0002",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:64:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-064-8ceea377"
+    },
+    {
+      "assumption_id": "M0002-A1",
+      "kind": "ORDER_PRESERVING",
+      "required": true,
+      "source_mechanism_id": "M0002",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:64:OrderPreserving:SATISFIED",
+      "task_id": "SEM8-T-064-8ceea377"
+    },
+    {
+      "assumption_id": "M0002-A2",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0002",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:64:Pure:SATISFIED",
+      "task_id": "SEM8-T-064-8ceea377"
+    },
+    {
+      "assumption_id": "M0004-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0004",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:64:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-064-8ceea377"
+    },
+    {
+      "assumption_id": "M0004-A1",
+      "kind": "ASSOCIATIVE",
+      "required": true,
+      "source_mechanism_id": "M0004",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:64:Associative:SATISFIED",
+      "task_id": "SEM8-T-064-8ceea377"
+    },
+    {
+      "assumption_id": "M0001-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:65:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-065-769289fc"
+    },
+    {
+      "assumption_id": "M0001-A1",
+      "kind": "TERMINATES",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:65:Terminates:SATISFIED",
+      "task_id": "SEM8-T-065-769289fc"
+    },
+    {
+      "assumption_id": "M0001-A2",
+      "kind": "INVARIANT_GLOBAL",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:65:InvariantGlobal:SATISFIED",
+      "task_id": "SEM8-T-065-769289fc"
+    },
+    {
+      "assumption_id": "M0008-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:66:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-066-b7abef45"
+    },
+    {
+      "assumption_id": "M0008-A1",
+      "kind": "REVERSIBLE",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:66:Reversible:SATISFIED",
+      "task_id": "SEM8-T-066-b7abef45"
+    },
+    {
+      "assumption_id": "M0008-A2",
+      "kind": "LOSSLESS",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:66:Lossless:SATISFIED",
+      "task_id": "SEM8-T-066-b7abef45"
+    },
+    {
+      "assumption_id": "M0006-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0006",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:67:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-067-a25a4622"
+    },
+    {
+      "assumption_id": "M0006-A1",
+      "kind": "TERMINATES",
+      "required": true,
+      "source_mechanism_id": "M0006",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:67:Terminates:SATISFIED",
+      "task_id": "SEM8-T-067-a25a4622"
+    },
+    {
+      "assumption_id": "M0007-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0007",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:68:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-068-f0b6efa3"
+    },
+    {
+      "assumption_id": "M0007-A1",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0007",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:68:Pure:SATISFIED",
+      "task_id": "SEM8-T-068-f0b6efa3"
+    },
+    {
+      "assumption_id": "M0002-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0002",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:69:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-069-db865018"
+    },
+    {
+      "assumption_id": "M0002-A1",
+      "kind": "ORDER_PRESERVING",
+      "required": true,
+      "source_mechanism_id": "M0002",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:69:OrderPreserving:SATISFIED",
+      "task_id": "SEM8-T-069-db865018"
+    },
+    {
+      "assumption_id": "M0002-A2",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0002",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:69:Pure:SATISFIED",
+      "task_id": "SEM8-T-069-db865018"
+    },
+    {
+      "assumption_id": "M0004-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0004",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:69:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-069-db865018"
+    },
+    {
+      "assumption_id": "M0004-A1",
+      "kind": "ASSOCIATIVE",
+      "required": true,
+      "source_mechanism_id": "M0004",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:69:Associative:SATISFIED",
+      "task_id": "SEM8-T-069-db865018"
+    },
+    {
+      "assumption_id": "M0001-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:70:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-070-85f8e811"
+    },
+    {
+      "assumption_id": "M0001-A1",
+      "kind": "TERMINATES",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:70:Terminates:SATISFIED",
+      "task_id": "SEM8-T-070-85f8e811"
+    },
+    {
+      "assumption_id": "M0001-A2",
+      "kind": "INVARIANT_GLOBAL",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:70:InvariantGlobal:SATISFIED",
+      "task_id": "SEM8-T-070-85f8e811"
+    },
+    {
+      "assumption_id": "M0008-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:71:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-071-e660415e"
+    },
+    {
+      "assumption_id": "M0008-A1",
+      "kind": "REVERSIBLE",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:71:Reversible:SATISFIED",
+      "task_id": "SEM8-T-071-e660415e"
+    },
+    {
+      "assumption_id": "M0008-A2",
+      "kind": "LOSSLESS",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:71:Lossless:SATISFIED",
+      "task_id": "SEM8-T-071-e660415e"
+    },
+    {
+      "assumption_id": "M0006-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0006",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:72:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-072-015dc00f"
+    },
+    {
+      "assumption_id": "M0006-A1",
+      "kind": "TERMINATES",
+      "required": true,
+      "source_mechanism_id": "M0006",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:72:Terminates:SATISFIED",
+      "task_id": "SEM8-T-072-015dc00f"
+    },
+    {
+      "assumption_id": "M0007-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0007",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:73:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-073-1358a774"
+    },
+    {
+      "assumption_id": "M0007-A1",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0007",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:73:Pure:SATISFIED",
+      "task_id": "SEM8-T-073-1358a774"
+    },
+    {
+      "assumption_id": "M0002-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0002",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:74:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-074-6838e31d"
+    },
+    {
+      "assumption_id": "M0002-A1",
+      "kind": "ORDER_PRESERVING",
+      "required": true,
+      "source_mechanism_id": "M0002",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:74:OrderPreserving:SATISFIED",
+      "task_id": "SEM8-T-074-6838e31d"
+    },
+    {
+      "assumption_id": "M0002-A2",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0002",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:74:Pure:SATISFIED",
+      "task_id": "SEM8-T-074-6838e31d"
+    },
+    {
+      "assumption_id": "M0004-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0004",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:74:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-074-6838e31d"
+    },
+    {
+      "assumption_id": "M0004-A1",
+      "kind": "ASSOCIATIVE",
+      "required": true,
+      "source_mechanism_id": "M0004",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:74:Associative:SATISFIED",
+      "task_id": "SEM8-T-074-6838e31d"
+    },
+    {
+      "assumption_id": "M0001-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:75:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-075-0d9163da"
+    },
+    {
+      "assumption_id": "M0001-A1",
+      "kind": "TERMINATES",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:75:Terminates:SATISFIED",
+      "task_id": "SEM8-T-075-0d9163da"
+    },
+    {
+      "assumption_id": "M0001-A2",
+      "kind": "INVARIANT_GLOBAL",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:75:InvariantGlobal:SATISFIED",
+      "task_id": "SEM8-T-075-0d9163da"
+    },
+    {
+      "assumption_id": "M0008-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:76:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-076-64b320bb"
+    },
+    {
+      "assumption_id": "M0008-A1",
+      "kind": "REVERSIBLE",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:76:Reversible:SATISFIED",
+      "task_id": "SEM8-T-076-64b320bb"
+    },
+    {
+      "assumption_id": "M0008-A2",
+      "kind": "LOSSLESS",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:76:Lossless:SATISFIED",
+      "task_id": "SEM8-T-076-64b320bb"
+    },
+    {
+      "assumption_id": "M0006-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0006",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:77:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-077-0c050c10"
+    },
+    {
+      "assumption_id": "M0006-A1",
+      "kind": "TERMINATES",
+      "required": true,
+      "source_mechanism_id": "M0006",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:77:Terminates:SATISFIED",
+      "task_id": "SEM8-T-077-0c050c10"
+    },
+    {
+      "assumption_id": "M0007-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0007",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:78:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-078-57798c69"
+    },
+    {
+      "assumption_id": "M0007-A1",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0007",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:78:Pure:SATISFIED",
+      "task_id": "SEM8-T-078-57798c69"
+    },
+    {
+      "assumption_id": "M0002-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0002",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:79:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-079-70e34996"
+    },
+    {
+      "assumption_id": "M0002-A1",
+      "kind": "ORDER_PRESERVING",
+      "required": true,
+      "source_mechanism_id": "M0002",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:79:OrderPreserving:SATISFIED",
+      "task_id": "SEM8-T-079-70e34996"
+    },
+    {
+      "assumption_id": "M0002-A2",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0002",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:79:Pure:SATISFIED",
+      "task_id": "SEM8-T-079-70e34996"
+    },
+    {
+      "assumption_id": "M0004-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0004",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:79:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-079-70e34996"
+    },
+    {
+      "assumption_id": "M0004-A1",
+      "kind": "ASSOCIATIVE",
+      "required": true,
+      "source_mechanism_id": "M0004",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:79:Associative:SATISFIED",
+      "task_id": "SEM8-T-079-70e34996"
+    },
+    {
+      "assumption_id": "M0001-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "VIOLATED",
+      "target_evidence": "FORMAL_COUNTEREXAMPLE:80:Deterministic:VIOLATED",
+      "task_id": "SEM8-T-080-2a255da7"
+    },
+    {
+      "assumption_id": "M0001-A1",
+      "kind": "TERMINATES",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:80:Terminates:SATISFIED",
+      "task_id": "SEM8-T-080-2a255da7"
+    },
+    {
+      "assumption_id": "M0001-A2",
+      "kind": "INVARIANT_GLOBAL",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:80:InvariantGlobal:SATISFIED",
+      "task_id": "SEM8-T-080-2a255da7"
+    },
+    {
+      "assumption_id": "M0002-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0002",
+      "status": "VIOLATED",
+      "target_evidence": "FORMAL_COUNTEREXAMPLE:81:Deterministic:VIOLATED",
+      "task_id": "SEM8-T-081-c1fa39ec"
+    },
+    {
+      "assumption_id": "M0002-A1",
+      "kind": "ORDER_PRESERVING",
+      "required": true,
+      "source_mechanism_id": "M0002",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:81:OrderPreserving:SATISFIED",
+      "task_id": "SEM8-T-081-c1fa39ec"
+    },
+    {
+      "assumption_id": "M0002-A2",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0002",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:81:Pure:SATISFIED",
+      "task_id": "SEM8-T-081-c1fa39ec"
+    },
+    {
+      "assumption_id": "M0008-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "VIOLATED",
+      "target_evidence": "FORMAL_COUNTEREXAMPLE:82:Deterministic:VIOLATED",
+      "task_id": "SEM8-T-082-6314cff5"
+    },
+    {
+      "assumption_id": "M0008-A1",
+      "kind": "REVERSIBLE",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:82:Reversible:SATISFIED",
+      "task_id": "SEM8-T-082-6314cff5"
+    },
+    {
+      "assumption_id": "M0008-A2",
+      "kind": "LOSSLESS",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:82:Lossless:SATISFIED",
+      "task_id": "SEM8-T-082-6314cff5"
+    },
+    {
+      "assumption_id": "M0005-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0005",
+      "status": "VIOLATED",
+      "target_evidence": "FORMAL_COUNTEREXAMPLE:83:Deterministic:VIOLATED",
+      "task_id": "SEM8-T-083-ea44ce92"
+    },
+    {
+      "assumption_id": "M0005-A1",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0005",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:83:Pure:SATISFIED",
+      "task_id": "SEM8-T-083-ea44ce92"
+    },
+    {
+      "assumption_id": "M0001-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "VIOLATED",
+      "target_evidence": "FORMAL_COUNTEREXAMPLE:84:Deterministic:VIOLATED",
+      "task_id": "SEM8-T-084-01ad02d3"
+    },
+    {
+      "assumption_id": "M0001-A1",
+      "kind": "TERMINATES",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:84:Terminates:SATISFIED",
+      "task_id": "SEM8-T-084-01ad02d3"
+    },
+    {
+      "assumption_id": "M0001-A2",
+      "kind": "INVARIANT_GLOBAL",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:84:InvariantGlobal:SATISFIED",
+      "task_id": "SEM8-T-084-01ad02d3"
+    },
+    {
+      "assumption_id": "M0002-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0002",
+      "status": "VIOLATED",
+      "target_evidence": "FORMAL_COUNTEREXAMPLE:85:Deterministic:VIOLATED",
+      "task_id": "SEM8-T-085-aff62d08"
+    },
+    {
+      "assumption_id": "M0002-A1",
+      "kind": "ORDER_PRESERVING",
+      "required": true,
+      "source_mechanism_id": "M0002",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:85:OrderPreserving:SATISFIED",
+      "task_id": "SEM8-T-085-aff62d08"
+    },
+    {
+      "assumption_id": "M0002-A2",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0002",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:85:Pure:SATISFIED",
+      "task_id": "SEM8-T-085-aff62d08"
+    },
+    {
+      "assumption_id": "M0008-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "VIOLATED",
+      "target_evidence": "FORMAL_COUNTEREXAMPLE:86:Deterministic:VIOLATED",
+      "task_id": "SEM8-T-086-1e3cd9c1"
+    },
+    {
+      "assumption_id": "M0008-A1",
+      "kind": "REVERSIBLE",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:86:Reversible:SATISFIED",
+      "task_id": "SEM8-T-086-1e3cd9c1"
+    },
+    {
+      "assumption_id": "M0008-A2",
+      "kind": "LOSSLESS",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:86:Lossless:SATISFIED",
+      "task_id": "SEM8-T-086-1e3cd9c1"
+    },
+    {
+      "assumption_id": "M0005-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0005",
+      "status": "VIOLATED",
+      "target_evidence": "FORMAL_COUNTEREXAMPLE:87:Deterministic:VIOLATED",
+      "task_id": "SEM8-T-087-8b9a0ece"
+    },
+    {
+      "assumption_id": "M0005-A1",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0005",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:87:Pure:SATISFIED",
+      "task_id": "SEM8-T-087-8b9a0ece"
+    },
+    {
+      "assumption_id": "M0001-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "VIOLATED",
+      "target_evidence": "FORMAL_COUNTEREXAMPLE:88:Deterministic:VIOLATED",
+      "task_id": "SEM8-T-088-baf8dc3f"
+    },
+    {
+      "assumption_id": "M0001-A1",
+      "kind": "TERMINATES",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:88:Terminates:SATISFIED",
+      "task_id": "SEM8-T-088-baf8dc3f"
+    },
+    {
+      "assumption_id": "M0001-A2",
+      "kind": "INVARIANT_GLOBAL",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:88:InvariantGlobal:SATISFIED",
+      "task_id": "SEM8-T-088-baf8dc3f"
+    },
+    {
+      "assumption_id": "M0002-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0002",
+      "status": "VIOLATED",
+      "target_evidence": "FORMAL_COUNTEREXAMPLE:89:Deterministic:VIOLATED",
+      "task_id": "SEM8-T-089-64222164"
+    },
+    {
+      "assumption_id": "M0002-A1",
+      "kind": "ORDER_PRESERVING",
+      "required": true,
+      "source_mechanism_id": "M0002",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:89:OrderPreserving:SATISFIED",
+      "task_id": "SEM8-T-089-64222164"
+    },
+    {
+      "assumption_id": "M0002-A2",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0002",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:89:Pure:SATISFIED",
+      "task_id": "SEM8-T-089-64222164"
+    },
+    {
+      "assumption_id": "M0008-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "VIOLATED",
+      "target_evidence": "FORMAL_COUNTEREXAMPLE:90:Deterministic:VIOLATED",
+      "task_id": "SEM8-T-090-b3c815cd"
+    },
+    {
+      "assumption_id": "M0008-A1",
+      "kind": "REVERSIBLE",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:90:Reversible:SATISFIED",
+      "task_id": "SEM8-T-090-b3c815cd"
+    },
+    {
+      "assumption_id": "M0008-A2",
+      "kind": "LOSSLESS",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:90:Lossless:SATISFIED",
+      "task_id": "SEM8-T-090-b3c815cd"
+    },
+    {
+      "assumption_id": "M0005-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0005",
+      "status": "VIOLATED",
+      "target_evidence": "FORMAL_COUNTEREXAMPLE:91:Deterministic:VIOLATED",
+      "task_id": "SEM8-T-091-70f8664a"
+    },
+    {
+      "assumption_id": "M0005-A1",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0005",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:91:Pure:SATISFIED",
+      "task_id": "SEM8-T-091-70f8664a"
+    },
+    {
+      "assumption_id": "M0001-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "VIOLATED",
+      "target_evidence": "FORMAL_COUNTEREXAMPLE:92:Deterministic:VIOLATED",
+      "task_id": "SEM8-T-092-d8d9f5eb"
+    },
+    {
+      "assumption_id": "M0001-A1",
+      "kind": "TERMINATES",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:92:Terminates:SATISFIED",
+      "task_id": "SEM8-T-092-d8d9f5eb"
+    },
+    {
+      "assumption_id": "M0001-A2",
+      "kind": "INVARIANT_GLOBAL",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:92:InvariantGlobal:SATISFIED",
+      "task_id": "SEM8-T-092-d8d9f5eb"
+    },
+    {
+      "assumption_id": "M0002-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0002",
+      "status": "VIOLATED",
+      "target_evidence": "FORMAL_COUNTEREXAMPLE:93:Deterministic:VIOLATED",
+      "task_id": "SEM8-T-093-766e9300"
+    },
+    {
+      "assumption_id": "M0002-A1",
+      "kind": "ORDER_PRESERVING",
+      "required": true,
+      "source_mechanism_id": "M0002",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:93:OrderPreserving:SATISFIED",
+      "task_id": "SEM8-T-093-766e9300"
+    },
+    {
+      "assumption_id": "M0002-A2",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0002",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:93:Pure:SATISFIED",
+      "task_id": "SEM8-T-093-766e9300"
+    },
+    {
+      "assumption_id": "M0008-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "VIOLATED",
+      "target_evidence": "FORMAL_COUNTEREXAMPLE:94:Deterministic:VIOLATED",
+      "task_id": "SEM8-T-094-0c3d3019"
+    },
+    {
+      "assumption_id": "M0008-A1",
+      "kind": "REVERSIBLE",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:94:Reversible:SATISFIED",
+      "task_id": "SEM8-T-094-0c3d3019"
+    },
+    {
+      "assumption_id": "M0008-A2",
+      "kind": "LOSSLESS",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:94:Lossless:SATISFIED",
+      "task_id": "SEM8-T-094-0c3d3019"
+    },
+    {
+      "assumption_id": "M0005-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0005",
+      "status": "VIOLATED",
+      "target_evidence": "FORMAL_COUNTEREXAMPLE:95:Deterministic:VIOLATED",
+      "task_id": "SEM8-T-095-0a227106"
+    },
+    {
+      "assumption_id": "M0005-A1",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0005",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:95:Pure:SATISFIED",
+      "task_id": "SEM8-T-095-0a227106"
+    },
+    {
+      "assumption_id": "M0001-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "VIOLATED",
+      "target_evidence": "FORMAL_COUNTEREXAMPLE:96:Deterministic:VIOLATED",
+      "task_id": "SEM8-T-096-44ef9bd7"
+    },
+    {
+      "assumption_id": "M0001-A1",
+      "kind": "TERMINATES",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:96:Terminates:SATISFIED",
+      "task_id": "SEM8-T-096-44ef9bd7"
+    },
+    {
+      "assumption_id": "M0001-A2",
+      "kind": "INVARIANT_GLOBAL",
+      "required": true,
+      "source_mechanism_id": "M0001",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:96:InvariantGlobal:SATISFIED",
+      "task_id": "SEM8-T-096-44ef9bd7"
+    },
+    {
+      "assumption_id": "M0002-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0002",
+      "status": "VIOLATED",
+      "target_evidence": "FORMAL_COUNTEREXAMPLE:97:Deterministic:VIOLATED",
+      "task_id": "SEM8-T-097-5c2f3ddc"
+    },
+    {
+      "assumption_id": "M0002-A1",
+      "kind": "ORDER_PRESERVING",
+      "required": true,
+      "source_mechanism_id": "M0002",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:97:OrderPreserving:SATISFIED",
+      "task_id": "SEM8-T-097-5c2f3ddc"
+    },
+    {
+      "assumption_id": "M0002-A2",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0002",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:97:Pure:SATISFIED",
+      "task_id": "SEM8-T-097-5c2f3ddc"
+    },
+    {
+      "assumption_id": "M0008-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "VIOLATED",
+      "target_evidence": "FORMAL_COUNTEREXAMPLE:98:Deterministic:VIOLATED",
+      "task_id": "SEM8-T-098-b21f14a5"
+    },
+    {
+      "assumption_id": "M0008-A1",
+      "kind": "REVERSIBLE",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:98:Reversible:SATISFIED",
+      "task_id": "SEM8-T-098-b21f14a5"
+    },
+    {
+      "assumption_id": "M0008-A2",
+      "kind": "LOSSLESS",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:98:Lossless:SATISFIED",
+      "task_id": "SEM8-T-098-b21f14a5"
+    },
+    {
+      "assumption_id": "M0005-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0005",
+      "status": "VIOLATED",
+      "target_evidence": "FORMAL_COUNTEREXAMPLE:99:Deterministic:VIOLATED",
+      "task_id": "SEM8-T-099-77440b02"
+    },
+    {
+      "assumption_id": "M0005-A1",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0005",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:99:Pure:SATISFIED",
+      "task_id": "SEM8-T-099-77440b02"
+    },
+    {
+      "assumption_id": "M0005-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0005",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:100:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-100-6f935a03"
+    },
+    {
+      "assumption_id": "M0005-A1",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0005",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:100:Pure:SATISFIED",
+      "task_id": "SEM8-T-100-6f935a03"
+    },
+    {
+      "assumption_id": "M0006-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0006",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:101:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-101-d4f71df8"
+    },
+    {
+      "assumption_id": "M0006-A1",
+      "kind": "TERMINATES",
+      "required": true,
+      "source_mechanism_id": "M0006",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:101:Terminates:SATISFIED",
+      "task_id": "SEM8-T-101-d4f71df8"
+    },
+    {
+      "assumption_id": "M0007-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0007",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:102:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-102-6078ef71"
+    },
+    {
+      "assumption_id": "M0007-A1",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0007",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:102:Pure:SATISFIED",
+      "task_id": "SEM8-T-102-6078ef71"
+    },
+    {
+      "assumption_id": "M0008-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:103:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-103-d4ee503e"
+    },
+    {
+      "assumption_id": "M0008-A1",
+      "kind": "REVERSIBLE",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:103:Reversible:SATISFIED",
+      "task_id": "SEM8-T-103-d4ee503e"
+    },
+    {
+      "assumption_id": "M0008-A2",
+      "kind": "LOSSLESS",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:103:Lossless:SATISFIED",
+      "task_id": "SEM8-T-103-d4ee503e"
+    },
+    {
+      "assumption_id": "M0005-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0005",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:104:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-104-6804fc6f"
+    },
+    {
+      "assumption_id": "M0005-A1",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0005",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:104:Pure:SATISFIED",
+      "task_id": "SEM8-T-104-6804fc6f"
+    },
+    {
+      "assumption_id": "M0006-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0006",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:105:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-105-ecb46f54"
+    },
+    {
+      "assumption_id": "M0006-A1",
+      "kind": "TERMINATES",
+      "required": true,
+      "source_mechanism_id": "M0006",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:105:Terminates:SATISFIED",
+      "task_id": "SEM8-T-105-ecb46f54"
+    },
+    {
+      "assumption_id": "M0007-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0007",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:106:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-106-67aa2c7d"
+    },
+    {
+      "assumption_id": "M0007-A1",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0007",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:106:Pure:SATISFIED",
+      "task_id": "SEM8-T-106-67aa2c7d"
+    },
+    {
+      "assumption_id": "M0008-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:107:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-107-93539cba"
+    },
+    {
+      "assumption_id": "M0008-A1",
+      "kind": "REVERSIBLE",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:107:Reversible:SATISFIED",
+      "task_id": "SEM8-T-107-93539cba"
+    },
+    {
+      "assumption_id": "M0008-A2",
+      "kind": "LOSSLESS",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:107:Lossless:SATISFIED",
+      "task_id": "SEM8-T-107-93539cba"
+    },
+    {
+      "assumption_id": "M0005-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0005",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:108:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-108-b8d68f1b"
+    },
+    {
+      "assumption_id": "M0005-A1",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0005",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:108:Pure:SATISFIED",
+      "task_id": "SEM8-T-108-b8d68f1b"
+    },
+    {
+      "assumption_id": "M0006-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0006",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:109:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-109-cf0cadf0"
+    },
+    {
+      "assumption_id": "M0006-A1",
+      "kind": "TERMINATES",
+      "required": true,
+      "source_mechanism_id": "M0006",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:109:Terminates:SATISFIED",
+      "task_id": "SEM8-T-109-cf0cadf0"
+    },
+    {
+      "assumption_id": "M0007-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0007",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:110:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-110-547277c9"
+    },
+    {
+      "assumption_id": "M0007-A1",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0007",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:110:Pure:SATISFIED",
+      "task_id": "SEM8-T-110-547277c9"
+    },
+    {
+      "assumption_id": "M0008-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:111:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-111-34c38c76"
+    },
+    {
+      "assumption_id": "M0008-A1",
+      "kind": "REVERSIBLE",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:111:Reversible:SATISFIED",
+      "task_id": "SEM8-T-111-34c38c76"
+    },
+    {
+      "assumption_id": "M0008-A2",
+      "kind": "LOSSLESS",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:111:Lossless:SATISFIED",
+      "task_id": "SEM8-T-111-34c38c76"
+    },
+    {
+      "assumption_id": "M0005-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0005",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:112:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-112-14985e07"
+    },
+    {
+      "assumption_id": "M0005-A1",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0005",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:112:Pure:SATISFIED",
+      "task_id": "SEM8-T-112-14985e07"
+    },
+    {
+      "assumption_id": "M0006-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0006",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:113:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-113-e7f895cc"
+    },
+    {
+      "assumption_id": "M0006-A1",
+      "kind": "TERMINATES",
+      "required": true,
+      "source_mechanism_id": "M0006",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:113:Terminates:SATISFIED",
+      "task_id": "SEM8-T-113-e7f895cc"
+    },
+    {
+      "assumption_id": "M0007-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0007",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:114:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-114-853dbd55"
+    },
+    {
+      "assumption_id": "M0007-A1",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0007",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:114:Pure:SATISFIED",
+      "task_id": "SEM8-T-114-853dbd55"
+    },
+    {
+      "assumption_id": "M0008-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:115:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-115-0f66fb72"
+    },
+    {
+      "assumption_id": "M0008-A1",
+      "kind": "REVERSIBLE",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:115:Reversible:SATISFIED",
+      "task_id": "SEM8-T-115-0f66fb72"
+    },
+    {
+      "assumption_id": "M0008-A2",
+      "kind": "LOSSLESS",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:115:Lossless:SATISFIED",
+      "task_id": "SEM8-T-115-0f66fb72"
+    },
+    {
+      "assumption_id": "M0005-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0005",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:116:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-116-1ec4f533"
+    },
+    {
+      "assumption_id": "M0005-A1",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0005",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:116:Pure:SATISFIED",
+      "task_id": "SEM8-T-116-1ec4f533"
+    },
+    {
+      "assumption_id": "M0006-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0006",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:117:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-117-0da022e8"
+    },
+    {
+      "assumption_id": "M0006-A1",
+      "kind": "TERMINATES",
+      "required": true,
+      "source_mechanism_id": "M0006",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:117:Terminates:SATISFIED",
+      "task_id": "SEM8-T-117-0da022e8"
+    },
+    {
+      "assumption_id": "M0007-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0007",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:118:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-118-99b02921"
+    },
+    {
+      "assumption_id": "M0007-A1",
+      "kind": "PURE",
+      "required": true,
+      "source_mechanism_id": "M0007",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:118:Pure:SATISFIED",
+      "task_id": "SEM8-T-118-99b02921"
+    },
+    {
+      "assumption_id": "M0008-A0",
+      "kind": "DETERMINISTIC",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:119:Deterministic:SATISFIED",
+      "task_id": "SEM8-T-119-ee3c05ae"
+    },
+    {
+      "assumption_id": "M0008-A1",
+      "kind": "REVERSIBLE",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:119:Reversible:SATISFIED",
+      "task_id": "SEM8-T-119-ee3c05ae"
+    },
+    {
+      "assumption_id": "M0008-A2",
+      "kind": "LOSSLESS",
+      "required": true,
+      "source_mechanism_id": "M0008",
+      "status": "SATISFIED",
+      "target_evidence": "FORMAL_TARGET_PROBE:119:Lossless:SATISFIED",
+      "task_id": "SEM8-T-119-ee3c05ae"
+    }
+  ],
+  "entry_count": 315,
+  "required_violations_detected": 20
+}

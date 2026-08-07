@@ -1,0 +1,40 @@
+{
+  "run_id": "SEM8-RUN-0001",
+  "split": "DEVELOPMENT",
+  "entries": [
+    {
+      "mechanism_id": "M0001",
+      "semantic_sha256": "cd0b31940b195f901f05b1d16d5dc1a2f7f8aafd9bcf2d937efa09389253b893",
+      "source_domain": "MATHEMATICS",
+      "split": "DEVELOPMENT",
+      "target_pair_metadata_included": false,
+      "human_analogy_label_included": false
+    },
+    {
+      "mechanism_id": "M0002",
+      "semantic_sha256": "028b9aa32d97db310629bd643831da522f731d46fc24697317d6757558e4bd43",
+      "source_domain": "PROGRAMMING",
+      "split": "DEVELOPMENT",
+      "target_pair_metadata_included": false,
+      "human_analogy_label_included": false
+    },
+    {
+      "mechanism_id": "M0003",
+      "semantic_sha256": "638ff28804b17acb5ea48ff20c1231ee82c151edfac93ed02cd3495b4d531e74",
+      "source_domain": "DATA_TRANSFORM",
+      "split": "DEVELOPMENT",
+      "target_pair_metadata_included": false,
+      "human_analogy_label_included": false
+    },
+    {
+      "mechanism_id": "M0004",
+      "semantic_sha256": "e0bd2c23d482da2bd1d1b158e66c6bfddfc2d8bbe08e089fa3075b339b5c72fb",
+      "source_domain": "PROGRAMMING",
+      "split": "DEVELOPMENT",
+      "target_pair_metadata_included": false,
+      "human_analogy_label_included": false
+    }
+  ],
+  "frozen_before_evaluation": true,
+  "manifest_sha256": "238c410d62e71308ad49ec71606dd8582a7ec1853324c3d2f86cec710d495a44"
+}

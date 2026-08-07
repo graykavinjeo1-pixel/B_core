@@ -1,0 +1,1056 @@
+[
+  {
+    "mechanism_id": "M0001",
+    "source_concept_ids": [
+      "C000006",
+      "C000007"
+    ],
+    "source_domain": "MATHEMATICS",
+    "generation": 3,
+    "roles": [
+      {
+        "role_id": "M0001-R0",
+        "kind": "STATE",
+        "type_class": "state<T>",
+        "required": true
+      },
+      {
+        "role_id": "M0001-R1",
+        "kind": "INPUT",
+        "type_class": "value<T>",
+        "required": true
+      },
+      {
+        "role_id": "M0001-R2",
+        "kind": "TRANSFORM",
+        "type_class": "pure_relation<T,U>",
+        "required": true
+      },
+      {
+        "role_id": "M0001-R3",
+        "kind": "INVARIANT",
+        "type_class": "predicate<T>",
+        "required": true
+      },
+      {
+        "role_id": "M0001-R4",
+        "kind": "OUTPUT",
+        "type_class": "value<T>",
+        "required": true
+      }
+    ],
+    "states": [
+      "typed_state_before",
+      "typed_state_after"
+    ],
+    "inputs": [
+      "typed_input"
+    ],
+    "outputs": [
+      "typed_output"
+    ],
+    "preconditions": [
+      "target types satisfy the source role contract"
+    ],
+    "invariants": [
+      "declared invariant is preserved across the transformation"
+    ],
+    "transform": "STATE_EVOLUTION",
+    "transformations": [
+      "StateEvolution"
+    ],
+    "dependency_edges": [
+      {
+        "from_role_id": "M0001-R0",
+        "kind": "REQUIRES",
+        "to_role_id": "M0001-R1",
+        "essential": true
+      },
+      {
+        "from_role_id": "M0001-R1",
+        "kind": "REQUIRES",
+        "to_role_id": "M0001-R2",
+        "essential": true
+      },
+      {
+        "from_role_id": "M0001-R2",
+        "kind": "REQUIRES",
+        "to_role_id": "M0001-R3",
+        "essential": true
+      },
+      {
+        "from_role_id": "M0001-R3",
+        "kind": "REQUIRES",
+        "to_role_id": "M0001-R4",
+        "essential": true
+      }
+    ],
+    "causal_edges": [
+      {
+        "from_role_id": "M0001-R0",
+        "kind": "PRODUCES",
+        "to_role_id": "M0001-R4",
+        "essential": true
+      }
+    ],
+    "branch_conditions": [
+      "declared target condition when present"
+    ],
+    "termination_conditions": [
+      "finite target input or explicit terminal state"
+    ],
+    "preserved_properties": [
+      "type",
+      "declared invariant"
+    ],
+    "consumed_properties": [
+      "input state"
+    ],
+    "produced_properties": [
+      "verified target state"
+    ],
+    "failure_conditions": [
+      "required assumption violated or target verifier rejects"
+    ],
+    "assumptions": [
+      {
+        "assumption_id": "M0001-A0",
+        "kind": "DETERMINISTIC",
+        "required": true,
+        "evidence_origin": "reports/sem4/derivation_records.json"
+      },
+      {
+        "assumption_id": "M0001-A1",
+        "kind": "TERMINATES",
+        "required": true,
+        "evidence_origin": "reports/sem4/derivation_records.json"
+      },
+      {
+        "assumption_id": "M0001-A2",
+        "kind": "INVARIANT_GLOBAL",
+        "required": true,
+        "evidence_origin": "reports/sem4/derivation_records.json"
+      }
+    ],
+    "executable": true,
+    "provenance": [
+      "reports/sem4/derivation_records.json",
+      "SEALED_CONCEPTS:C000006,C000007"
+    ],
+    "semantic_sha256": "cd0b31940b195f901f05b1d16d5dc1a2f7f8aafd9bcf2d937efa09389253b893"
+  },
+  {
+    "mechanism_id": "M0002",
+    "source_concept_ids": [
+      "C000008"
+    ],
+    "source_domain": "PROGRAMMING",
+    "generation": 3,
+    "roles": [
+      {
+        "role_id": "M0002-R0",
+        "kind": "INPUT",
+        "type_class": "value<T>",
+        "required": true
+      },
+      {
+        "role_id": "M0002-R1",
+        "kind": "TRANSFORM",
+        "type_class": "pure_relation<T,U>",
+        "required": true
+      },
+      {
+        "role_id": "M0002-R2",
+        "kind": "INVARIANT",
+        "type_class": "predicate<T>",
+        "required": true
+      },
+      {
+        "role_id": "M0002-R3",
+        "kind": "OUTPUT",
+        "type_class": "value<T>",
+        "required": true
+      }
+    ],
+    "states": [
+      "typed_state_before",
+      "typed_state_after"
+    ],
+    "inputs": [
+      "typed_input"
+    ],
+    "outputs": [
+      "typed_output"
+    ],
+    "preconditions": [
+      "target types satisfy the source role contract"
+    ],
+    "invariants": [
+      "declared invariant is preserved across the transformation"
+    ],
+    "transform": "ELEMENTWISE_TRANSFORM",
+    "transformations": [
+      "ElementwiseTransform"
+    ],
+    "dependency_edges": [
+      {
+        "from_role_id": "M0002-R0",
+        "kind": "REQUIRES",
+        "to_role_id": "M0002-R1",
+        "essential": true
+      },
+      {
+        "from_role_id": "M0002-R1",
+        "kind": "REQUIRES",
+        "to_role_id": "M0002-R2",
+        "essential": true
+      },
+      {
+        "from_role_id": "M0002-R2",
+        "kind": "REQUIRES",
+        "to_role_id": "M0002-R3",
+        "essential": true
+      }
+    ],
+    "causal_edges": [
+      {
+        "from_role_id": "M0002-R0",
+        "kind": "PRODUCES",
+        "to_role_id": "M0002-R3",
+        "essential": true
+      }
+    ],
+    "branch_conditions": [
+      "declared target condition when present"
+    ],
+    "termination_conditions": [
+      "finite target input or explicit terminal state"
+    ],
+    "preserved_properties": [
+      "type",
+      "declared invariant"
+    ],
+    "consumed_properties": [
+      "input state"
+    ],
+    "produced_properties": [
+      "verified target state"
+    ],
+    "failure_conditions": [
+      "required assumption violated or target verifier rejects"
+    ],
+    "assumptions": [
+      {
+        "assumption_id": "M0002-A0",
+        "kind": "DETERMINISTIC",
+        "required": true,
+        "evidence_origin": "reports/sem5/program_ir_records.json"
+      },
+      {
+        "assumption_id": "M0002-A1",
+        "kind": "ORDER_PRESERVING",
+        "required": true,
+        "evidence_origin": "reports/sem5/program_ir_records.json"
+      },
+      {
+        "assumption_id": "M0002-A2",
+        "kind": "PURE",
+        "required": true,
+        "evidence_origin": "reports/sem5/program_ir_records.json"
+      }
+    ],
+    "executable": true,
+    "provenance": [
+      "reports/sem5/program_ir_records.json",
+      "SEALED_CONCEPTS:C000008"
+    ],
+    "semantic_sha256": "028b9aa32d97db310629bd643831da522f731d46fc24697317d6757558e4bd43"
+  },
+  {
+    "mechanism_id": "M0003",
+    "source_concept_ids": [
+      "C000008"
+    ],
+    "source_domain": "DATA_TRANSFORM",
+    "generation": 3,
+    "roles": [
+      {
+        "role_id": "M0003-R0",
+        "kind": "INPUT",
+        "type_class": "value<T>",
+        "required": true
+      },
+      {
+        "role_id": "M0003-R1",
+        "kind": "CONDITION",
+        "type_class": "predicate<T>",
+        "required": true
+      },
+      {
+        "role_id": "M0003-R2",
+        "kind": "TRANSFORM",
+        "type_class": "pure_relation<T,U>",
+        "required": true
+      },
+      {
+        "role_id": "M0003-R3",
+        "kind": "BOUNDARY",
+        "type_class": "bounded_index_or_partition",
+        "required": true
+      },
+      {
+        "role_id": "M0003-R4",
+        "kind": "OUTPUT",
+        "type_class": "value<T>",
+        "required": true
+      }
+    ],
+    "states": [
+      "typed_state_before",
+      "typed_state_after"
+    ],
+    "inputs": [
+      "typed_input"
+    ],
+    "outputs": [
+      "typed_output"
+    ],
+    "preconditions": [
+      "target types satisfy the source role contract"
+    ],
+    "invariants": [
+      "declared invariant is preserved across the transformation"
+    ],
+    "transform": "GUARDED_TRAVERSAL",
+    "transformations": [
+      "GuardedTraversal"
+    ],
+    "dependency_edges": [
+      {
+        "from_role_id": "M0003-R0",
+        "kind": "REQUIRES",
+        "to_role_id": "M0003-R1",
+        "essential": true
+      },
+      {
+        "from_role_id": "M0003-R1",
+        "kind": "REQUIRES",
+        "to_role_id": "M0003-R2",
+        "essential": true
+      },
+      {
+        "from_role_id": "M0003-R2",
+        "kind": "REQUIRES",
+        "to_role_id": "M0003-R3",
+        "essential": true
+      },
+      {
+        "from_role_id": "M0003-R3",
+        "kind": "REQUIRES",
+        "to_role_id": "M0003-R4",
+        "essential": true
+      }
+    ],
+    "causal_edges": [
+      {
+        "from_role_id": "M0003-R0",
+        "kind": "PRODUCES",
+        "to_role_id": "M0003-R4",
+        "essential": true
+      }
+    ],
+    "branch_conditions": [
+      "declared target condition when present"
+    ],
+    "termination_conditions": [
+      "finite target input or explicit terminal state"
+    ],
+    "preserved_properties": [
+      "type",
+      "declared invariant"
+    ],
+    "consumed_properties": [
+      "input state"
+    ],
+    "produced_properties": [
+      "verified target state"
+    ],
+    "failure_conditions": [
+      "required assumption violated or target verifier rejects"
+    ],
+    "assumptions": [
+      {
+        "assumption_id": "M0003-A0",
+        "kind": "DETERMINISTIC",
+        "required": true,
+        "evidence_origin": "reports/sem5/definition_only_results.json"
+      },
+      {
+        "assumption_id": "M0003-A1",
+        "kind": "TERMINATES",
+        "required": true,
+        "evidence_origin": "reports/sem5/definition_only_results.json"
+      },
+      {
+        "assumption_id": "M0003-A2",
+        "kind": "INVARIANT_GLOBAL",
+        "required": true,
+        "evidence_origin": "reports/sem5/definition_only_results.json"
+      }
+    ],
+    "executable": true,
+    "provenance": [
+      "reports/sem5/definition_only_results.json",
+      "SEALED_CONCEPTS:C000008"
+    ],
+    "semantic_sha256": "638ff28804b17acb5ea48ff20c1231ee82c151edfac93ed02cd3495b4d531e74"
+  },
+  {
+    "mechanism_id": "M0004",
+    "source_concept_ids": [
+      "C000009"
+    ],
+    "source_domain": "PROGRAMMING",
+    "generation": 3,
+    "roles": [
+      {
+        "role_id": "M0004-R0",
+        "kind": "STATE",
+        "type_class": "state<T>",
+        "required": true
+      },
+      {
+        "role_id": "M0004-R1",
+        "kind": "INPUT",
+        "type_class": "value<T>",
+        "required": true
+      },
+      {
+        "role_id": "M0004-R2",
+        "kind": "ACCUMULATOR",
+        "type_class": "state<T>",
+        "required": true
+      },
+      {
+        "role_id": "M0004-R3",
+        "kind": "INVARIANT",
+        "type_class": "predicate<T>",
+        "required": true
+      },
+      {
+        "role_id": "M0004-R4",
+        "kind": "OUTPUT",
+        "type_class": "value<T>",
+        "required": true
+      }
+    ],
+    "states": [
+      "typed_state_before",
+      "typed_state_after"
+    ],
+    "inputs": [
+      "typed_input"
+    ],
+    "outputs": [
+      "typed_output"
+    ],
+    "preconditions": [
+      "target types satisfy the source role contract"
+    ],
+    "invariants": [
+      "declared invariant is preserved across the transformation"
+    ],
+    "transform": "STATEFUL_REDUCTION",
+    "transformations": [
+      "StatefulReduction"
+    ],
+    "dependency_edges": [
+      {
+        "from_role_id": "M0004-R0",
+        "kind": "REQUIRES",
+        "to_role_id": "M0004-R1",
+        "essential": true
+      },
+      {
+        "from_role_id": "M0004-R1",
+        "kind": "REQUIRES",
+        "to_role_id": "M0004-R2",
+        "essential": true
+      },
+      {
+        "from_role_id": "M0004-R2",
+        "kind": "REQUIRES",
+        "to_role_id": "M0004-R3",
+        "essential": true
+      },
+      {
+        "from_role_id": "M0004-R3",
+        "kind": "REQUIRES",
+        "to_role_id": "M0004-R4",
+        "essential": true
+      }
+    ],
+    "causal_edges": [
+      {
+        "from_role_id": "M0004-R0",
+        "kind": "PRODUCES",
+        "to_role_id": "M0004-R4",
+        "essential": true
+      }
+    ],
+    "branch_conditions": [
+      "declared target condition when present"
+    ],
+    "termination_conditions": [
+      "finite target input or explicit terminal state"
+    ],
+    "preserved_properties": [
+      "type",
+      "declared invariant"
+    ],
+    "consumed_properties": [
+      "input state"
+    ],
+    "produced_properties": [
+      "verified target state"
+    ],
+    "failure_conditions": [
+      "required assumption violated or target verifier rejects"
+    ],
+    "assumptions": [
+      {
+        "assumption_id": "M0004-A0",
+        "kind": "DETERMINISTIC",
+        "required": true,
+        "evidence_origin": "reports/sem5/condition_d_results.json"
+      },
+      {
+        "assumption_id": "M0004-A1",
+        "kind": "ASSOCIATIVE",
+        "required": true,
+        "evidence_origin": "reports/sem5/condition_d_results.json"
+      }
+    ],
+    "executable": true,
+    "provenance": [
+      "reports/sem5/condition_d_results.json",
+      "SEALED_CONCEPTS:C000009"
+    ],
+    "semantic_sha256": "e0bd2c23d482da2bd1d1b158e66c6bfddfc2d8bbe08e089fa3075b339b5c72fb"
+  },
+  {
+    "mechanism_id": "M0005",
+    "source_concept_ids": [
+      "C000010"
+    ],
+    "source_domain": "PROGRAMMING",
+    "generation": 4,
+    "roles": [
+      {
+        "role_id": "M0005-R0",
+        "kind": "INPUT",
+        "type_class": "value<T>",
+        "required": true
+      },
+      {
+        "role_id": "M0005-R1",
+        "kind": "STAGE",
+        "type_class": "pure_relation<T,U>",
+        "required": true
+      },
+      {
+        "role_id": "M0005-R2",
+        "kind": "TRANSFORM",
+        "type_class": "pure_relation<T,U>",
+        "required": true
+      },
+      {
+        "role_id": "M0005-R3",
+        "kind": "STAGE",
+        "type_class": "pure_relation<T,U>",
+        "required": true
+      },
+      {
+        "role_id": "M0005-R4",
+        "kind": "OUTPUT",
+        "type_class": "value<T>",
+        "required": true
+      }
+    ],
+    "states": [
+      "typed_state_before",
+      "typed_state_after"
+    ],
+    "inputs": [
+      "typed_input"
+    ],
+    "outputs": [
+      "typed_output"
+    ],
+    "preconditions": [
+      "target types satisfy the source role contract"
+    ],
+    "invariants": [
+      "declared invariant is preserved across the transformation"
+    ],
+    "transform": "STAGE_COMPOSITION",
+    "transformations": [
+      "StageComposition"
+    ],
+    "dependency_edges": [
+      {
+        "from_role_id": "M0005-R0",
+        "kind": "REQUIRES",
+        "to_role_id": "M0005-R1",
+        "essential": true
+      },
+      {
+        "from_role_id": "M0005-R1",
+        "kind": "REQUIRES",
+        "to_role_id": "M0005-R2",
+        "essential": true
+      },
+      {
+        "from_role_id": "M0005-R2",
+        "kind": "REQUIRES",
+        "to_role_id": "M0005-R3",
+        "essential": true
+      },
+      {
+        "from_role_id": "M0005-R3",
+        "kind": "REQUIRES",
+        "to_role_id": "M0005-R4",
+        "essential": true
+      }
+    ],
+    "causal_edges": [
+      {
+        "from_role_id": "M0005-R0",
+        "kind": "PRODUCES",
+        "to_role_id": "M0005-R4",
+        "essential": true
+      }
+    ],
+    "branch_conditions": [
+      "declared target condition when present"
+    ],
+    "termination_conditions": [
+      "finite target input or explicit terminal state"
+    ],
+    "preserved_properties": [
+      "type",
+      "declared invariant"
+    ],
+    "consumed_properties": [
+      "input state"
+    ],
+    "produced_properties": [
+      "verified target state"
+    ],
+    "failure_conditions": [
+      "required assumption violated or target verifier rejects"
+    ],
+    "assumptions": [
+      {
+        "assumption_id": "M0005-A0",
+        "kind": "DETERMINISTIC",
+        "required": true,
+        "evidence_origin": "reports/sem5/transfer_results.json"
+      },
+      {
+        "assumption_id": "M0005-A1",
+        "kind": "PURE",
+        "required": true,
+        "evidence_origin": "reports/sem5/transfer_results.json"
+      }
+    ],
+    "executable": true,
+    "provenance": [
+      "reports/sem5/transfer_results.json",
+      "SEALED_CONCEPTS:C000010"
+    ],
+    "semantic_sha256": "d2bf0fd822f012bc188096794a44a228d4b9201fe0006633c085f65afc04ad20"
+  },
+  {
+    "mechanism_id": "M0006",
+    "source_concept_ids": [
+      "C000012"
+    ],
+    "source_domain": "EXTERNAL_DEFINITION",
+    "generation": 5,
+    "roles": [
+      {
+        "role_id": "M0006-R0",
+        "kind": "INPUT",
+        "type_class": "value<T>",
+        "required": true
+      },
+      {
+        "role_id": "M0006-R1",
+        "kind": "BOUNDARY",
+        "type_class": "bounded_index_or_partition",
+        "required": true
+      },
+      {
+        "role_id": "M0006-R2",
+        "kind": "TRANSFORM",
+        "type_class": "pure_relation<T,U>",
+        "required": true
+      },
+      {
+        "role_id": "M0006-R3",
+        "kind": "OUTPUT",
+        "type_class": "value<T>",
+        "required": true
+      }
+    ],
+    "states": [
+      "typed_state_before",
+      "typed_state_after"
+    ],
+    "inputs": [
+      "typed_input"
+    ],
+    "outputs": [
+      "typed_output"
+    ],
+    "preconditions": [
+      "target types satisfy the source role contract"
+    ],
+    "invariants": [
+      "declared invariant is preserved across the transformation"
+    ],
+    "transform": "QUOTIENT_PARTITION",
+    "transformations": [
+      "QuotientPartition"
+    ],
+    "dependency_edges": [
+      {
+        "from_role_id": "M0006-R0",
+        "kind": "REQUIRES",
+        "to_role_id": "M0006-R1",
+        "essential": true
+      },
+      {
+        "from_role_id": "M0006-R1",
+        "kind": "REQUIRES",
+        "to_role_id": "M0006-R2",
+        "essential": true
+      },
+      {
+        "from_role_id": "M0006-R2",
+        "kind": "REQUIRES",
+        "to_role_id": "M0006-R3",
+        "essential": true
+      }
+    ],
+    "causal_edges": [
+      {
+        "from_role_id": "M0006-R0",
+        "kind": "PRODUCES",
+        "to_role_id": "M0006-R3",
+        "essential": true
+      }
+    ],
+    "branch_conditions": [
+      "declared target condition when present"
+    ],
+    "termination_conditions": [
+      "finite target input or explicit terminal state"
+    ],
+    "preserved_properties": [
+      "type",
+      "declared invariant"
+    ],
+    "consumed_properties": [
+      "input state"
+    ],
+    "produced_properties": [
+      "verified target state"
+    ],
+    "failure_conditions": [
+      "required assumption violated or target verifier rejects"
+    ],
+    "assumptions": [
+      {
+        "assumption_id": "M0006-A0",
+        "kind": "DETERMINISTIC",
+        "required": true,
+        "evidence_origin": "reports/sem6/semantic_compilation_results.json"
+      },
+      {
+        "assumption_id": "M0006-A1",
+        "kind": "TERMINATES",
+        "required": true,
+        "evidence_origin": "reports/sem6/semantic_compilation_results.json"
+      }
+    ],
+    "executable": true,
+    "provenance": [
+      "reports/sem6/semantic_compilation_results.json",
+      "SEALED_CONCEPTS:C000012"
+    ],
+    "semantic_sha256": "f0ba3b584879225ea4c482dbc58727ae2aef5633e5cbfbf41a640b265ee1a5dc"
+  },
+  {
+    "mechanism_id": "M0007",
+    "source_concept_ids": [
+      "C000011"
+    ],
+    "source_domain": "EXTERNAL_DEFINITION",
+    "generation": 5,
+    "roles": [
+      {
+        "role_id": "M0007-R0",
+        "kind": "INPUT",
+        "type_class": "value<T>",
+        "required": true
+      },
+      {
+        "role_id": "M0007-R1",
+        "kind": "CONDITION",
+        "type_class": "predicate<T>",
+        "required": true
+      },
+      {
+        "role_id": "M0007-R2",
+        "kind": "TRANSFORM",
+        "type_class": "pure_relation<T,U>",
+        "required": true
+      },
+      {
+        "role_id": "M0007-R3",
+        "kind": "OUTPUT",
+        "type_class": "value<T>",
+        "required": true
+      }
+    ],
+    "states": [
+      "typed_state_before",
+      "typed_state_after"
+    ],
+    "inputs": [
+      "typed_input"
+    ],
+    "outputs": [
+      "typed_output"
+    ],
+    "preconditions": [
+      "target types satisfy the source role contract"
+    ],
+    "invariants": [
+      "declared invariant is preserved across the transformation"
+    ],
+    "transform": "SCOPED_RELATION",
+    "transformations": [
+      "ScopedRelation"
+    ],
+    "dependency_edges": [
+      {
+        "from_role_id": "M0007-R0",
+        "kind": "REQUIRES",
+        "to_role_id": "M0007-R1",
+        "essential": true
+      },
+      {
+        "from_role_id": "M0007-R1",
+        "kind": "REQUIRES",
+        "to_role_id": "M0007-R2",
+        "essential": true
+      },
+      {
+        "from_role_id": "M0007-R2",
+        "kind": "REQUIRES",
+        "to_role_id": "M0007-R3",
+        "essential": true
+      }
+    ],
+    "causal_edges": [
+      {
+        "from_role_id": "M0007-R0",
+        "kind": "PRODUCES",
+        "to_role_id": "M0007-R3",
+        "essential": true
+      }
+    ],
+    "branch_conditions": [
+      "declared target condition when present"
+    ],
+    "termination_conditions": [
+      "finite target input or explicit terminal state"
+    ],
+    "preserved_properties": [
+      "type",
+      "declared invariant"
+    ],
+    "consumed_properties": [
+      "input state"
+    ],
+    "produced_properties": [
+      "verified target state"
+    ],
+    "failure_conditions": [
+      "required assumption violated or target verifier rejects"
+    ],
+    "assumptions": [
+      {
+        "assumption_id": "M0007-A0",
+        "kind": "DETERMINISTIC",
+        "required": true,
+        "evidence_origin": "reports/sem6/external_concept_promotions.json"
+      },
+      {
+        "assumption_id": "M0007-A1",
+        "kind": "PURE",
+        "required": true,
+        "evidence_origin": "reports/sem6/external_concept_promotions.json"
+      }
+    ],
+    "executable": true,
+    "provenance": [
+      "reports/sem6/external_concept_promotions.json",
+      "SEALED_CONCEPTS:C000011"
+    ],
+    "semantic_sha256": "78e562fd147d2e26d2511c7ec3541f19d09d0fc0b422d2fcd0b319d24fc5dd3f"
+  },
+  {
+    "mechanism_id": "M0008",
+    "source_concept_ids": [
+      "C000006",
+      "C000010"
+    ],
+    "source_domain": "MATHEMATICS",
+    "generation": 5,
+    "roles": [
+      {
+        "role_id": "M0008-R0",
+        "kind": "STATE",
+        "type_class": "state<T>",
+        "required": true
+      },
+      {
+        "role_id": "M0008-R1",
+        "kind": "INPUT",
+        "type_class": "value<T>",
+        "required": true
+      },
+      {
+        "role_id": "M0008-R2",
+        "kind": "TRANSFORM",
+        "type_class": "pure_relation<T,U>",
+        "required": true
+      },
+      {
+        "role_id": "M0008-R3",
+        "kind": "INVARIANT",
+        "type_class": "predicate<T>",
+        "required": true
+      },
+      {
+        "role_id": "M0008-R4",
+        "kind": "OUTPUT",
+        "type_class": "value<T>",
+        "required": true
+      }
+    ],
+    "states": [
+      "typed_state_before",
+      "typed_state_after"
+    ],
+    "inputs": [
+      "typed_input"
+    ],
+    "outputs": [
+      "typed_output"
+    ],
+    "preconditions": [
+      "target types satisfy the source role contract"
+    ],
+    "invariants": [
+      "declared invariant is preserved across the transformation"
+    ],
+    "transform": "REVERSIBLE_STATE_TRANSFORM",
+    "transformations": [
+      "ReversibleStateTransform"
+    ],
+    "dependency_edges": [
+      {
+        "from_role_id": "M0008-R0",
+        "kind": "REQUIRES",
+        "to_role_id": "M0008-R1",
+        "essential": true
+      },
+      {
+        "from_role_id": "M0008-R1",
+        "kind": "REQUIRES",
+        "to_role_id": "M0008-R2",
+        "essential": true
+      },
+      {
+        "from_role_id": "M0008-R2",
+        "kind": "REQUIRES",
+        "to_role_id": "M0008-R3",
+        "essential": true
+      },
+      {
+        "from_role_id": "M0008-R3",
+        "kind": "REQUIRES",
+        "to_role_id": "M0008-R4",
+        "essential": true
+      }
+    ],
+    "causal_edges": [
+      {
+        "from_role_id": "M0008-R0",
+        "kind": "PRODUCES",
+        "to_role_id": "M0008-R4",
+        "essential": true
+      }
+    ],
+    "branch_conditions": [
+      "declared target condition when present"
+    ],
+    "termination_conditions": [
+      "finite target input or explicit terminal state"
+    ],
+    "preserved_properties": [
+      "type",
+      "declared invariant"
+    ],
+    "consumed_properties": [
+      "input state"
+    ],
+    "produced_properties": [
+      "verified target state"
+    ],
+    "failure_conditions": [
+      "required assumption violated or target verifier rejects"
+    ],
+    "assumptions": [
+      {
+        "assumption_id": "M0008-A0",
+        "kind": "DETERMINISTIC",
+        "required": true,
+        "evidence_origin": "reports/sem4/definition_only_results.json"
+      },
+      {
+        "assumption_id": "M0008-A1",
+        "kind": "REVERSIBLE",
+        "required": true,
+        "evidence_origin": "reports/sem4/definition_only_results.json"
+      },
+      {
+        "assumption_id": "M0008-A2",
+        "kind": "LOSSLESS",
+        "required": true,
+        "evidence_origin": "reports/sem4/definition_only_results.json"
+      }
+    ],
+    "executable": true,
+    "provenance": [
+      "reports/sem4/definition_only_results.json",
+      "SEALED_CONCEPTS:C000006,C000010"
+    ],
+    "semantic_sha256": "141f7c72f5e1b9a27559e05afc67c253b8964998aedb808ea07017bb96c30c17"
+  }
+]

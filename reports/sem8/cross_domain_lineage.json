@@ -1,0 +1,22 @@
+{
+  "C000013": {
+    "candidate": "XDM-CAND-0001",
+    "generation": 6,
+    "parents": [
+      "C000006",
+      "C000008",
+      "C000011"
+    ],
+    "predecessor_payloads_mutated": false,
+    "provenance": [
+      "MECHANISM:M0001",
+      "MECHANISM:M0002",
+      "MECHANISM:M0003",
+      "MECHANISM:M0004",
+      "MECHANISM:M0005",
+      "MECHANISM:M0006",
+      "MECHANISM:M0007",
+      "MECHANISM:M0008"
+    ]
+  }
+}

@@ -1,0 +1,1224 @@
+{
+  "harmful_transfer_attempts": 0,
+  "records": [
+    {
+      "selected_source_mechanism_ids": [
+        "M0001"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-000-88bae2b7"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0008"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-001-ff2d123c"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0001"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-002-ca1a5485"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0008"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-003-a8132c62"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0001"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-004-15e54ae3"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0008"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-005-5f65a458"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0001"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-006-4d1e8951"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0008"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-007-2cd5939e"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0001"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-008-27bf774f"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0008"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-009-0fbf07b4"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0001"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-010-5e7d005d"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0008"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-011-1b93621a"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0001"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-012-5b9573fb"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0008"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-013-37e0b850"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0001"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-014-08df65a9"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0008"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-015-078e33d6"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0001"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-016-6b918ce7"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0008"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-017-9a25722c"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0001"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-018-a67ba535"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0008"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-019-cf40e4d2"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0002"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-020-41a84e13"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0003"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-021-8f773148"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0004"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-022-4a9feb01"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0005"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-023-7f5b910e"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0002"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-024-92c4837f"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0003"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-025-686b31a4"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0004"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-026-117ea30d"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0005"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-027-90ff948a"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0002"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-028-ce33392b"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0003"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-029-6f9def40"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0004"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-030-c23a7959"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0005"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-031-df3b8b46"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0002"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-032-6d4fbb17"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0003"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-033-094f261c"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0004"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-034-6f3259e5"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0005"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-035-efc75142"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0002"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-036-ef6f9543"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0003"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-037-ac3dd238"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0004"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-038-008d70b1"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0005"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-039-6b00027e"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0006"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-040-0e0e93af"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0007"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-041-afc42f94"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0001"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-042-d50729bd"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0005"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-043-df23fafa"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0006"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-044-f53ac25b"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0007"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-045-2b33ba30"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0001"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-046-e4fb3109"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0005"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-047-2aced6b6"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0006"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-048-8c406d47"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0007"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-049-62712e0c"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0001"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-050-13b17295"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0005"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-051-2ab571b2"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0006"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-052-1a962073"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0007"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-053-7bd08728"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0001"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-054-9aea1a61"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0005"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-055-86a1e7ee"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0006"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-056-d508a7df"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0007"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-057-7b310184"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0001"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-058-bca9946d"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0005"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-059-b9af956a"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0001"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-060-1f270f8b"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0008"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-061-be591920"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0006"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-062-27448cb9"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0007"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-063-b1c71626"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0002",
+        "M0004"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 2,
+      "target_verified": true,
+      "task_id": "SEM8-T-064-8ceea377"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0001"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-065-769289fc"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0008"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-066-b7abef45"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0006"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-067-a25a4622"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0007"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-068-f0b6efa3"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0002",
+        "M0004"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 2,
+      "target_verified": true,
+      "task_id": "SEM8-T-069-db865018"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0001"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-070-85f8e811"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0008"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-071-e660415e"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0006"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-072-015dc00f"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0007"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-073-1358a774"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0002",
+        "M0004"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 2,
+      "target_verified": true,
+      "task_id": "SEM8-T-074-6838e31d"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0001"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-075-0d9163da"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0008"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-076-64b320bb"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0006"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-077-0c050c10"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0007"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-078-57798c69"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0002",
+        "M0004"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 2,
+      "target_verified": true,
+      "task_id": "SEM8-T-079-70e34996"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0001"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": false,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-080-2a255da7"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0002"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": false,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-081-c1fa39ec"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0008"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": false,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-082-6314cff5"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0005"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": false,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-083-ea44ce92"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0001"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": false,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-084-01ad02d3"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0002"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": false,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-085-aff62d08"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0008"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": false,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-086-1e3cd9c1"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0005"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": false,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-087-8b9a0ece"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0001"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": false,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-088-baf8dc3f"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0002"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": false,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-089-64222164"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0008"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": false,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-090-b3c815cd"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0005"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": false,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-091-70f8664a"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0001"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": false,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-092-d8d9f5eb"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0002"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": false,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-093-766e9300"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0008"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": false,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-094-0c3d3019"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0005"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": false,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-095-0a227106"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0001"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": false,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-096-44ef9bd7"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0002"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": false,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-097-5c2f3ddc"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0008"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": false,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-098-b21f14a5"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0005"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": false,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-099-77440b02"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0005"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-100-6f935a03"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0006"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-101-d4f71df8"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0007"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-102-6078ef71"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0008"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-103-d4ee503e"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0005"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-104-6804fc6f"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0006"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-105-ecb46f54"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0007"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-106-67aa2c7d"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0008"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-107-93539cba"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0005"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-108-b8d68f1b"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0006"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-109-cf0cadf0"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0007"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-110-547277c9"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0008"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-111-34c38c76"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0005"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-112-14985e07"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0006"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-113-e7f895cc"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0007"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-114-853dbd55"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0008"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-115-0f66fb72"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0005"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-116-1ec4f533"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0006"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-117-0da022e8"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0007"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-118-99b02921"
+    },
+    {
+      "selected_source_mechanism_ids": [
+        "M0008"
+      ],
+      "source_pair_annotation_used": false,
+      "source_used": true,
+      "sparse_candidates_considered": 1,
+      "target_verified": true,
+      "task_id": "SEM8-T-119-ee3c05ae"
+    }
+  ],
+  "source_pair_metadata_visible": false,
+  "tasks_where_transfer_attempted": 120,
+  "tasks_where_transfer_not_attempted": 0,
+  "unique_sources_selected": [
+    "M0001",
+    "M0002",
+    "M0003",
+    "M0004",
+    "M0005",
+    "M0006",
+    "M0007",
+    "M0008"
+  ],
+  "useful_transfer_attempts": 100,
+  "wasted_transfer_attempts": 0
+}

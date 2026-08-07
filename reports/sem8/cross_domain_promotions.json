@@ -1,0 +1,16 @@
+[
+  {
+    "candidate_id": "XDM-CAND-0001",
+    "promoted_concept_id": "C000013",
+    "promoted": true,
+    "multi_domain_pass": true,
+    "executable_pass": true,
+    "relation_preservation_pass": true,
+    "fresh_domain_pass": true,
+    "broken_assumption_pass": true,
+    "causal_ablation_pass": true,
+    "compression_reuse_pass": true,
+    "provenance_pass": true,
+    "predecessor_concepts_overwritten": 0
+  }
+]

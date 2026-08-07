@@ -1,0 +1,11 @@
+{
+  "evaluator_categories_visible": 0,
+  "hidden_cases_visible": 0,
+  "human_analogy_labels_visible": 0,
+  "passed": true,
+  "source_holdout_overlap": 0,
+  "source_target_pair_metadata_visible": 0,
+  "target_holdout_reuse": 0,
+  "target_solutions_visible": 0,
+  "tasks_scanned": 120
+}

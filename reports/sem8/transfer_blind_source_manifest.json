@@ -1,0 +1,40 @@
+{
+  "run_id": "SEM8-RUN-0001",
+  "split": "BLIND",
+  "entries": [
+    {
+      "mechanism_id": "M0005",
+      "semantic_sha256": "d2bf0fd822f012bc188096794a44a228d4b9201fe0006633c085f65afc04ad20",
+      "source_domain": "PROGRAMMING",
+      "split": "BLIND",
+      "target_pair_metadata_included": false,
+      "human_analogy_label_included": false
+    },
+    {
+      "mechanism_id": "M0006",
+      "semantic_sha256": "f0ba3b584879225ea4c482dbc58727ae2aef5633e5cbfbf41a640b265ee1a5dc",
+      "source_domain": "EXTERNAL_DEFINITION",
+      "split": "BLIND",
+      "target_pair_metadata_included": false,
+      "human_analogy_label_included": false
+    },
+    {
+      "mechanism_id": "M0007",
+      "semantic_sha256": "78e562fd147d2e26d2511c7ec3541f19d09d0fc0b422d2fcd0b319d24fc5dd3f",
+      "source_domain": "EXTERNAL_DEFINITION",
+      "split": "BLIND",
+      "target_pair_metadata_included": false,
+      "human_analogy_label_included": false
+    },
+    {
+      "mechanism_id": "M0008",
+      "semantic_sha256": "141f7c72f5e1b9a27559e05afc67c253b8964998aedb808ea07017bb96c30c17",
+      "source_domain": "MATHEMATICS",
+      "split": "BLIND",
+      "target_pair_metadata_included": false,
+      "human_analogy_label_included": false
+    }
+  ],
+  "frozen_before_evaluation": true,
+  "manifest_sha256": "3a7062f490e5417c7b2c57bf37f0aca9d2ae42fa5efb884081b18c7bf65e8848"
+}

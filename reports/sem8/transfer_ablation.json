@@ -1,0 +1,1306 @@
+[
+  {
+    "task_id": "SEM8-T-000-88bae2b7",
+    "source_mechanisms_enabled": [
+      "M0001"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": true,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 53,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 18,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-001-ff2d123c",
+    "source_mechanisms_enabled": [
+      "M0008"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-002-ca1a5485",
+    "source_mechanisms_enabled": [
+      "M0001"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-003-a8132c62",
+    "source_mechanisms_enabled": [
+      "M0008"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-004-15e54ae3",
+    "source_mechanisms_enabled": [
+      "M0001"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": true,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 53,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 18,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-005-5f65a458",
+    "source_mechanisms_enabled": [
+      "M0008"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-006-4d1e8951",
+    "source_mechanisms_enabled": [
+      "M0001"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-007-2cd5939e",
+    "source_mechanisms_enabled": [
+      "M0008"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-008-27bf774f",
+    "source_mechanisms_enabled": [
+      "M0001"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": true,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 53,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 18,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-009-0fbf07b4",
+    "source_mechanisms_enabled": [
+      "M0008"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-010-5e7d005d",
+    "source_mechanisms_enabled": [
+      "M0001"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-011-1b93621a",
+    "source_mechanisms_enabled": [
+      "M0008"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-012-5b9573fb",
+    "source_mechanisms_enabled": [
+      "M0001"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": true,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 53,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 18,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-013-37e0b850",
+    "source_mechanisms_enabled": [
+      "M0008"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-014-08df65a9",
+    "source_mechanisms_enabled": [
+      "M0001"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-015-078e33d6",
+    "source_mechanisms_enabled": [
+      "M0008"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-016-6b918ce7",
+    "source_mechanisms_enabled": [
+      "M0001"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": true,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 53,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 18,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-017-9a25722c",
+    "source_mechanisms_enabled": [
+      "M0008"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-018-a67ba535",
+    "source_mechanisms_enabled": [
+      "M0001"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-019-cf40e4d2",
+    "source_mechanisms_enabled": [
+      "M0008"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-020-41a84e13",
+    "source_mechanisms_enabled": [
+      "M0002"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": true,
+    "expansions_with_transfer": 35,
+    "expansions_without_transfer": 52,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 18,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-021-8f773148",
+    "source_mechanisms_enabled": [
+      "M0003"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-022-4a9feb01",
+    "source_mechanisms_enabled": [
+      "M0004"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-023-7f5b910e",
+    "source_mechanisms_enabled": [
+      "M0005"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-024-92c4837f",
+    "source_mechanisms_enabled": [
+      "M0002"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": true,
+    "expansions_with_transfer": 35,
+    "expansions_without_transfer": 52,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 18,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-025-686b31a4",
+    "source_mechanisms_enabled": [
+      "M0003"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-026-117ea30d",
+    "source_mechanisms_enabled": [
+      "M0004"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-027-90ff948a",
+    "source_mechanisms_enabled": [
+      "M0005"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-028-ce33392b",
+    "source_mechanisms_enabled": [
+      "M0002"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": true,
+    "expansions_with_transfer": 35,
+    "expansions_without_transfer": 52,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 18,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-029-6f9def40",
+    "source_mechanisms_enabled": [
+      "M0003"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-030-c23a7959",
+    "source_mechanisms_enabled": [
+      "M0004"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-031-df3b8b46",
+    "source_mechanisms_enabled": [
+      "M0005"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-032-6d4fbb17",
+    "source_mechanisms_enabled": [
+      "M0002"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": true,
+    "expansions_with_transfer": 35,
+    "expansions_without_transfer": 52,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 18,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-033-094f261c",
+    "source_mechanisms_enabled": [
+      "M0003"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-034-6f3259e5",
+    "source_mechanisms_enabled": [
+      "M0004"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-035-efc75142",
+    "source_mechanisms_enabled": [
+      "M0005"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-036-ef6f9543",
+    "source_mechanisms_enabled": [
+      "M0002"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": true,
+    "expansions_with_transfer": 35,
+    "expansions_without_transfer": 52,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 18,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-037-ac3dd238",
+    "source_mechanisms_enabled": [
+      "M0003"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-038-008d70b1",
+    "source_mechanisms_enabled": [
+      "M0004"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-039-6b00027e",
+    "source_mechanisms_enabled": [
+      "M0005"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-040-0e0e93af",
+    "source_mechanisms_enabled": [
+      "M0006"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": true,
+    "expansions_with_transfer": 35,
+    "expansions_without_transfer": 52,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 18,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-041-afc42f94",
+    "source_mechanisms_enabled": [
+      "M0007"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 35,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-042-d50729bd",
+    "source_mechanisms_enabled": [
+      "M0001"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-043-df23fafa",
+    "source_mechanisms_enabled": [
+      "M0005"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-044-f53ac25b",
+    "source_mechanisms_enabled": [
+      "M0006"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": true,
+    "expansions_with_transfer": 35,
+    "expansions_without_transfer": 52,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 18,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-045-2b33ba30",
+    "source_mechanisms_enabled": [
+      "M0007"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 35,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-046-e4fb3109",
+    "source_mechanisms_enabled": [
+      "M0001"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-047-2aced6b6",
+    "source_mechanisms_enabled": [
+      "M0005"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-048-8c406d47",
+    "source_mechanisms_enabled": [
+      "M0006"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": true,
+    "expansions_with_transfer": 35,
+    "expansions_without_transfer": 52,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 18,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-049-62712e0c",
+    "source_mechanisms_enabled": [
+      "M0007"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 35,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-050-13b17295",
+    "source_mechanisms_enabled": [
+      "M0001"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-051-2ab571b2",
+    "source_mechanisms_enabled": [
+      "M0005"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-052-1a962073",
+    "source_mechanisms_enabled": [
+      "M0006"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": true,
+    "expansions_with_transfer": 35,
+    "expansions_without_transfer": 52,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 18,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-053-7bd08728",
+    "source_mechanisms_enabled": [
+      "M0007"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 35,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-054-9aea1a61",
+    "source_mechanisms_enabled": [
+      "M0001"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-055-86a1e7ee",
+    "source_mechanisms_enabled": [
+      "M0005"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-056-d508a7df",
+    "source_mechanisms_enabled": [
+      "M0006"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": true,
+    "expansions_with_transfer": 35,
+    "expansions_without_transfer": 52,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 18,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-057-7b310184",
+    "source_mechanisms_enabled": [
+      "M0007"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 35,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-058-bca9946d",
+    "source_mechanisms_enabled": [
+      "M0001"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-059-b9af956a",
+    "source_mechanisms_enabled": [
+      "M0005"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-060-1f270f8b",
+    "source_mechanisms_enabled": [
+      "M0001"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": true,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 53,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 18,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-061-be591920",
+    "source_mechanisms_enabled": [
+      "M0008"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-062-27448cb9",
+    "source_mechanisms_enabled": [
+      "M0006"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 35,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-063-b1c71626",
+    "source_mechanisms_enabled": [
+      "M0007"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 35,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-064-8ceea377",
+    "source_mechanisms_enabled": [
+      "M0002",
+      "M0004"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": true,
+    "expansions_with_transfer": 38,
+    "expansions_without_transfer": 54,
+    "reasoning_depth_with_transfer": 12,
+    "reasoning_depth_without_transfer": 18,
+    "causal_value": false
+  },
+  {
+    "task_id": "SEM8-T-065-769289fc",
+    "source_mechanisms_enabled": [
+      "M0001"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-066-b7abef45",
+    "source_mechanisms_enabled": [
+      "M0008"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-067-a25a4622",
+    "source_mechanisms_enabled": [
+      "M0006"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 35,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-068-f0b6efa3",
+    "source_mechanisms_enabled": [
+      "M0007"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": true,
+    "expansions_with_transfer": 35,
+    "expansions_without_transfer": 52,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 18,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-069-db865018",
+    "source_mechanisms_enabled": [
+      "M0002",
+      "M0004"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 38,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 12,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-070-85f8e811",
+    "source_mechanisms_enabled": [
+      "M0001"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-071-e660415e",
+    "source_mechanisms_enabled": [
+      "M0008"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-072-015dc00f",
+    "source_mechanisms_enabled": [
+      "M0006"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": true,
+    "expansions_with_transfer": 35,
+    "expansions_without_transfer": 52,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 18,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-073-1358a774",
+    "source_mechanisms_enabled": [
+      "M0007"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 35,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-074-6838e31d",
+    "source_mechanisms_enabled": [
+      "M0002",
+      "M0004"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 38,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 12,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-075-0d9163da",
+    "source_mechanisms_enabled": [
+      "M0001"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-076-64b320bb",
+    "source_mechanisms_enabled": [
+      "M0008"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": true,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 53,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 18,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-077-0c050c10",
+    "source_mechanisms_enabled": [
+      "M0006"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 35,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-078-57798c69",
+    "source_mechanisms_enabled": [
+      "M0007"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 35,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-079-70e34996",
+    "source_mechanisms_enabled": [
+      "M0002",
+      "M0004"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 38,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 12,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-100-6f935a03",
+    "source_mechanisms_enabled": [
+      "M0005"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": true,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 55,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 18,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-101-d4f71df8",
+    "source_mechanisms_enabled": [
+      "M0006"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 35,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-102-6078ef71",
+    "source_mechanisms_enabled": [
+      "M0007"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 35,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-103-d4ee503e",
+    "source_mechanisms_enabled": [
+      "M0008"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-104-6804fc6f",
+    "source_mechanisms_enabled": [
+      "M0005"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": true,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 55,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 18,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-105-ecb46f54",
+    "source_mechanisms_enabled": [
+      "M0006"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 35,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-106-67aa2c7d",
+    "source_mechanisms_enabled": [
+      "M0007"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 35,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-107-93539cba",
+    "source_mechanisms_enabled": [
+      "M0008"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-108-b8d68f1b",
+    "source_mechanisms_enabled": [
+      "M0005"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": true,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 55,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 18,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-109-cf0cadf0",
+    "source_mechanisms_enabled": [
+      "M0006"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 35,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-110-547277c9",
+    "source_mechanisms_enabled": [
+      "M0007"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 35,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-111-34c38c76",
+    "source_mechanisms_enabled": [
+      "M0008"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-112-14985e07",
+    "source_mechanisms_enabled": [
+      "M0005"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": true,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 55,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 18,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-113-e7f895cc",
+    "source_mechanisms_enabled": [
+      "M0006"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 35,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-114-853dbd55",
+    "source_mechanisms_enabled": [
+      "M0007"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 35,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-115-0f66fb72",
+    "source_mechanisms_enabled": [
+      "M0008"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-116-1ec4f533",
+    "source_mechanisms_enabled": [
+      "M0005"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": true,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 55,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 18,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-117-0da022e8",
+    "source_mechanisms_enabled": [
+      "M0006"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 35,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-118-99b02921",
+    "source_mechanisms_enabled": [
+      "M0007"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 35,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  },
+  {
+    "task_id": "SEM8-T-119-ee3c05ae",
+    "source_mechanisms_enabled": [
+      "M0008"
+    ],
+    "solved_with_transfer": true,
+    "solved_without_transfer": false,
+    "expansions_with_transfer": 37,
+    "expansions_without_transfer": 120,
+    "reasoning_depth_with_transfer": 10,
+    "reasoning_depth_without_transfer": 30,
+    "causal_value": true
+  }
+]

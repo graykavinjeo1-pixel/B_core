@@ -1,0 +1,1517 @@
+{
+  "baseline_b_false_analogy_acceptances": 20,
+  "cases": 20,
+  "full_d_false_transfer_rate": 0.0,
+  "records": [
+    {
+      "active_branches": 1,
+      "active_concept_budget": 4,
+      "assumption_ledger": [
+        {
+          "assumption_id": "M0001-A0",
+          "kind": "DETERMINISTIC",
+          "required": true,
+          "source_mechanism_id": "M0001",
+          "status": "VIOLATED",
+          "target_evidence": "FORMAL_COUNTEREXAMPLE:80:Deterministic:VIOLATED",
+          "task_id": "SEM8-T-080-2a255da7"
+        },
+        {
+          "assumption_id": "M0001-A1",
+          "kind": "TERMINATES",
+          "required": true,
+          "source_mechanism_id": "M0001",
+          "status": "SATISFIED",
+          "target_evidence": "FORMAL_TARGET_PROBE:80:Terminates:SATISFIED",
+          "task_id": "SEM8-T-080-2a255da7"
+        },
+        {
+          "assumption_id": "M0001-A2",
+          "kind": "INVARIANT_GLOBAL",
+          "required": true,
+          "source_mechanism_id": "M0001",
+          "status": "SATISFIED",
+          "target_evidence": "FORMAL_TARGET_PROBE:80:InvariantGlobal:SATISFIED",
+          "task_id": "SEM8-T-080-2a255da7"
+        }
+      ],
+      "candidate_mechanisms_considered": 1,
+      "category": "STRUCTURAL_MIMIC_ADVERSARIAL",
+      "causal_utility": false,
+      "condition": "FULL_MECHANISM_TRANSFER_D",
+      "disposition": "REJECTED_ASSUMPTION",
+      "invalid_analogy": true,
+      "invalid_transfer_accepted": false,
+      "invalid_transfer_rejected": true,
+      "reasoning_depth": 6,
+      "relation_preservation_passed": true,
+      "required_assumptions_satisfied": false,
+      "role_mappings": [
+        {
+          "essential_relations_preserved": 5,
+          "essential_relations_total": 5,
+          "relation_preservation_pass": true,
+          "required_roles_mapped": 5,
+          "required_roles_total": 5,
+          "role_bindings": {
+            "M0001-R0": "Z080_0",
+            "M0001-R1": "Z080_1",
+            "M0001-R2": "Z080_2",
+            "M0001-R3": "Z080_3",
+            "M0001-R4": "Z080_4"
+          },
+          "semantic_role_pass": true,
+          "source_mechanism_id": "M0001",
+          "target_task_id": "SEM8-T-080-2a255da7"
+        }
+      ],
+      "search_expansions": 22,
+      "selected_source_mechanism_ids": [
+        "M0001"
+      ],
+      "semantic_equivalence_different_structure": false,
+      "solved": true,
+      "source_used": false,
+      "structural_mimic": true,
+      "target_candidate_instantiated": false,
+      "target_domain": "PROGRAMMING",
+      "target_verifier_passed": true,
+      "task_id": "SEM8-T-080-2a255da7",
+      "transfer_attempted": true,
+      "wall_time_class": "BOUNDED_LOCAL",
+      "zero_shot": false
+    },
+    {
+      "active_branches": 1,
+      "active_concept_budget": 4,
+      "assumption_ledger": [
+        {
+          "assumption_id": "M0002-A0",
+          "kind": "DETERMINISTIC",
+          "required": true,
+          "source_mechanism_id": "M0002",
+          "status": "VIOLATED",
+          "target_evidence": "FORMAL_COUNTEREXAMPLE:81:Deterministic:VIOLATED",
+          "task_id": "SEM8-T-081-c1fa39ec"
+        },
+        {
+          "assumption_id": "M0002-A1",
+          "kind": "ORDER_PRESERVING",
+          "required": true,
+          "source_mechanism_id": "M0002",
+          "status": "SATISFIED",
+          "target_evidence": "FORMAL_TARGET_PROBE:81:OrderPreserving:SATISFIED",
+          "task_id": "SEM8-T-081-c1fa39ec"
+        },
+        {
+          "assumption_id": "M0002-A2",
+          "kind": "PURE",
+          "required": true,
+          "source_mechanism_id": "M0002",
+          "status": "SATISFIED",
+          "target_evidence": "FORMAL_TARGET_PROBE:81:Pure:SATISFIED",
+          "task_id": "SEM8-T-081-c1fa39ec"
+        }
+      ],
+      "candidate_mechanisms_considered": 1,
+      "category": "STRUCTURAL_MIMIC_ADVERSARIAL",
+      "causal_utility": false,
+      "condition": "FULL_MECHANISM_TRANSFER_D",
+      "disposition": "REJECTED_ASSUMPTION",
+      "invalid_analogy": true,
+      "invalid_transfer_accepted": false,
+      "invalid_transfer_rejected": true,
+      "reasoning_depth": 6,
+      "relation_preservation_passed": true,
+      "required_assumptions_satisfied": false,
+      "role_mappings": [
+        {
+          "essential_relations_preserved": 4,
+          "essential_relations_total": 4,
+          "relation_preservation_pass": true,
+          "required_roles_mapped": 4,
+          "required_roles_total": 4,
+          "role_bindings": {
+            "M0002-R0": "Z081_0",
+            "M0002-R1": "Z081_1",
+            "M0002-R2": "Z081_2",
+            "M0002-R3": "Z081_3"
+          },
+          "semantic_role_pass": true,
+          "source_mechanism_id": "M0002",
+          "target_task_id": "SEM8-T-081-c1fa39ec"
+        }
+      ],
+      "search_expansions": 22,
+      "selected_source_mechanism_ids": [
+        "M0002"
+      ],
+      "semantic_equivalence_different_structure": false,
+      "solved": true,
+      "source_used": false,
+      "structural_mimic": true,
+      "target_candidate_instantiated": false,
+      "target_domain": "MATHEMATICS",
+      "target_verifier_passed": true,
+      "task_id": "SEM8-T-081-c1fa39ec",
+      "transfer_attempted": true,
+      "wall_time_class": "BOUNDED_LOCAL",
+      "zero_shot": false
+    },
+    {
+      "active_branches": 1,
+      "active_concept_budget": 4,
+      "assumption_ledger": [
+        {
+          "assumption_id": "M0008-A0",
+          "kind": "DETERMINISTIC",
+          "required": true,
+          "source_mechanism_id": "M0008",
+          "status": "VIOLATED",
+          "target_evidence": "FORMAL_COUNTEREXAMPLE:82:Deterministic:VIOLATED",
+          "task_id": "SEM8-T-082-6314cff5"
+        },
+        {
+          "assumption_id": "M0008-A1",
+          "kind": "REVERSIBLE",
+          "required": true,
+          "source_mechanism_id": "M0008",
+          "status": "SATISFIED",
+          "target_evidence": "FORMAL_TARGET_PROBE:82:Reversible:SATISFIED",
+          "task_id": "SEM8-T-082-6314cff5"
+        },
+        {
+          "assumption_id": "M0008-A2",
+          "kind": "LOSSLESS",
+          "required": true,
+          "source_mechanism_id": "M0008",
+          "status": "SATISFIED",
+          "target_evidence": "FORMAL_TARGET_PROBE:82:Lossless:SATISFIED",
+          "task_id": "SEM8-T-082-6314cff5"
+        }
+      ],
+      "candidate_mechanisms_considered": 1,
+      "category": "STRUCTURAL_MIMIC_ADVERSARIAL",
+      "causal_utility": false,
+      "condition": "FULL_MECHANISM_TRANSFER_D",
+      "disposition": "REJECTED_ASSUMPTION",
+      "invalid_analogy": true,
+      "invalid_transfer_accepted": false,
+      "invalid_transfer_rejected": true,
+      "reasoning_depth": 6,
+      "relation_preservation_passed": true,
+      "required_assumptions_satisfied": false,
+      "role_mappings": [
+        {
+          "essential_relations_preserved": 5,
+          "essential_relations_total": 5,
+          "relation_preservation_pass": true,
+          "required_roles_mapped": 5,
+          "required_roles_total": 5,
+          "role_bindings": {
+            "M0008-R0": "Z082_0",
+            "M0008-R1": "Z082_1",
+            "M0008-R2": "Z082_2",
+            "M0008-R3": "Z082_3",
+            "M0008-R4": "Z082_4"
+          },
+          "semantic_role_pass": true,
+          "source_mechanism_id": "M0008",
+          "target_task_id": "SEM8-T-082-6314cff5"
+        }
+      ],
+      "search_expansions": 22,
+      "selected_source_mechanism_ids": [
+        "M0008"
+      ],
+      "semantic_equivalence_different_structure": false,
+      "solved": true,
+      "source_used": false,
+      "structural_mimic": true,
+      "target_candidate_instantiated": false,
+      "target_domain": "STATEFUL_MACHINE",
+      "target_verifier_passed": true,
+      "task_id": "SEM8-T-082-6314cff5",
+      "transfer_attempted": true,
+      "wall_time_class": "BOUNDED_LOCAL",
+      "zero_shot": false
+    },
+    {
+      "active_branches": 1,
+      "active_concept_budget": 4,
+      "assumption_ledger": [
+        {
+          "assumption_id": "M0005-A0",
+          "kind": "DETERMINISTIC",
+          "required": true,
+          "source_mechanism_id": "M0005",
+          "status": "VIOLATED",
+          "target_evidence": "FORMAL_COUNTEREXAMPLE:83:Deterministic:VIOLATED",
+          "task_id": "SEM8-T-083-ea44ce92"
+        },
+        {
+          "assumption_id": "M0005-A1",
+          "kind": "PURE",
+          "required": true,
+          "source_mechanism_id": "M0005",
+          "status": "SATISFIED",
+          "target_evidence": "FORMAL_TARGET_PROBE:83:Pure:SATISFIED",
+          "task_id": "SEM8-T-083-ea44ce92"
+        }
+      ],
+      "candidate_mechanisms_considered": 1,
+      "category": "STRUCTURAL_MIMIC_ADVERSARIAL",
+      "causal_utility": false,
+      "condition": "FULL_MECHANISM_TRANSFER_D",
+      "disposition": "REJECTED_ASSUMPTION",
+      "invalid_analogy": true,
+      "invalid_transfer_accepted": false,
+      "invalid_transfer_rejected": true,
+      "reasoning_depth": 6,
+      "relation_preservation_passed": true,
+      "required_assumptions_satisfied": false,
+      "role_mappings": [
+        {
+          "essential_relations_preserved": 5,
+          "essential_relations_total": 5,
+          "relation_preservation_pass": true,
+          "required_roles_mapped": 5,
+          "required_roles_total": 5,
+          "role_bindings": {
+            "M0005-R0": "Z083_0",
+            "M0005-R1": "Z083_1",
+            "M0005-R2": "Z083_2",
+            "M0005-R3": "Z083_3",
+            "M0005-R4": "Z083_4"
+          },
+          "semantic_role_pass": true,
+          "source_mechanism_id": "M0005",
+          "target_task_id": "SEM8-T-083-ea44ce92"
+        }
+      ],
+      "search_expansions": 22,
+      "selected_source_mechanism_ids": [
+        "M0005"
+      ],
+      "semantic_equivalence_different_structure": false,
+      "solved": true,
+      "source_used": false,
+      "structural_mimic": true,
+      "target_candidate_instantiated": false,
+      "target_domain": "DATA_TRANSFORM",
+      "target_verifier_passed": true,
+      "task_id": "SEM8-T-083-ea44ce92",
+      "transfer_attempted": true,
+      "wall_time_class": "BOUNDED_LOCAL",
+      "zero_shot": false
+    },
+    {
+      "active_branches": 1,
+      "active_concept_budget": 4,
+      "assumption_ledger": [
+        {
+          "assumption_id": "M0001-A0",
+          "kind": "DETERMINISTIC",
+          "required": true,
+          "source_mechanism_id": "M0001",
+          "status": "VIOLATED",
+          "target_evidence": "FORMAL_COUNTEREXAMPLE:84:Deterministic:VIOLATED",
+          "task_id": "SEM8-T-084-01ad02d3"
+        },
+        {
+          "assumption_id": "M0001-A1",
+          "kind": "TERMINATES",
+          "required": true,
+          "source_mechanism_id": "M0001",
+          "status": "SATISFIED",
+          "target_evidence": "FORMAL_TARGET_PROBE:84:Terminates:SATISFIED",
+          "task_id": "SEM8-T-084-01ad02d3"
+        },
+        {
+          "assumption_id": "M0001-A2",
+          "kind": "INVARIANT_GLOBAL",
+          "required": true,
+          "source_mechanism_id": "M0001",
+          "status": "SATISFIED",
+          "target_evidence": "FORMAL_TARGET_PROBE:84:InvariantGlobal:SATISFIED",
+          "task_id": "SEM8-T-084-01ad02d3"
+        }
+      ],
+      "candidate_mechanisms_considered": 1,
+      "category": "STRUCTURAL_MIMIC_ADVERSARIAL",
+      "causal_utility": false,
+      "condition": "FULL_MECHANISM_TRANSFER_D",
+      "disposition": "REJECTED_ASSUMPTION",
+      "invalid_analogy": true,
+      "invalid_transfer_accepted": false,
+      "invalid_transfer_rejected": true,
+      "reasoning_depth": 6,
+      "relation_preservation_passed": true,
+      "required_assumptions_satisfied": false,
+      "role_mappings": [
+        {
+          "essential_relations_preserved": 5,
+          "essential_relations_total": 5,
+          "relation_preservation_pass": true,
+          "required_roles_mapped": 5,
+          "required_roles_total": 5,
+          "role_bindings": {
+            "M0001-R0": "Z084_0",
+            "M0001-R1": "Z084_1",
+            "M0001-R2": "Z084_2",
+            "M0001-R3": "Z084_3",
+            "M0001-R4": "Z084_4"
+          },
+          "semantic_role_pass": true,
+          "source_mechanism_id": "M0001",
+          "target_task_id": "SEM8-T-084-01ad02d3"
+        }
+      ],
+      "search_expansions": 22,
+      "selected_source_mechanism_ids": [
+        "M0001"
+      ],
+      "semantic_equivalence_different_structure": false,
+      "solved": true,
+      "source_used": false,
+      "structural_mimic": true,
+      "target_candidate_instantiated": false,
+      "target_domain": "PROGRAMMING",
+      "target_verifier_passed": true,
+      "task_id": "SEM8-T-084-01ad02d3",
+      "transfer_attempted": true,
+      "wall_time_class": "BOUNDED_LOCAL",
+      "zero_shot": false
+    },
+    {
+      "active_branches": 1,
+      "active_concept_budget": 4,
+      "assumption_ledger": [
+        {
+          "assumption_id": "M0002-A0",
+          "kind": "DETERMINISTIC",
+          "required": true,
+          "source_mechanism_id": "M0002",
+          "status": "VIOLATED",
+          "target_evidence": "FORMAL_COUNTEREXAMPLE:85:Deterministic:VIOLATED",
+          "task_id": "SEM8-T-085-aff62d08"
+        },
+        {
+          "assumption_id": "M0002-A1",
+          "kind": "ORDER_PRESERVING",
+          "required": true,
+          "source_mechanism_id": "M0002",
+          "status": "SATISFIED",
+          "target_evidence": "FORMAL_TARGET_PROBE:85:OrderPreserving:SATISFIED",
+          "task_id": "SEM8-T-085-aff62d08"
+        },
+        {
+          "assumption_id": "M0002-A2",
+          "kind": "PURE",
+          "required": true,
+          "source_mechanism_id": "M0002",
+          "status": "SATISFIED",
+          "target_evidence": "FORMAL_TARGET_PROBE:85:Pure:SATISFIED",
+          "task_id": "SEM8-T-085-aff62d08"
+        }
+      ],
+      "candidate_mechanisms_considered": 1,
+      "category": "STRUCTURAL_MIMIC_ADVERSARIAL",
+      "causal_utility": false,
+      "condition": "FULL_MECHANISM_TRANSFER_D",
+      "disposition": "REJECTED_ASSUMPTION",
+      "invalid_analogy": true,
+      "invalid_transfer_accepted": false,
+      "invalid_transfer_rejected": true,
+      "reasoning_depth": 6,
+      "relation_preservation_passed": true,
+      "required_assumptions_satisfied": false,
+      "role_mappings": [
+        {
+          "essential_relations_preserved": 4,
+          "essential_relations_total": 4,
+          "relation_preservation_pass": true,
+          "required_roles_mapped": 4,
+          "required_roles_total": 4,
+          "role_bindings": {
+            "M0002-R0": "Z085_0",
+            "M0002-R1": "Z085_1",
+            "M0002-R2": "Z085_2",
+            "M0002-R3": "Z085_3"
+          },
+          "semantic_role_pass": true,
+          "source_mechanism_id": "M0002",
+          "target_task_id": "SEM8-T-085-aff62d08"
+        }
+      ],
+      "search_expansions": 22,
+      "selected_source_mechanism_ids": [
+        "M0002"
+      ],
+      "semantic_equivalence_different_structure": false,
+      "solved": true,
+      "source_used": false,
+      "structural_mimic": true,
+      "target_candidate_instantiated": false,
+      "target_domain": "MATHEMATICS",
+      "target_verifier_passed": true,
+      "task_id": "SEM8-T-085-aff62d08",
+      "transfer_attempted": true,
+      "wall_time_class": "BOUNDED_LOCAL",
+      "zero_shot": false
+    },
+    {
+      "active_branches": 1,
+      "active_concept_budget": 4,
+      "assumption_ledger": [
+        {
+          "assumption_id": "M0008-A0",
+          "kind": "DETERMINISTIC",
+          "required": true,
+          "source_mechanism_id": "M0008",
+          "status": "VIOLATED",
+          "target_evidence": "FORMAL_COUNTEREXAMPLE:86:Deterministic:VIOLATED",
+          "task_id": "SEM8-T-086-1e3cd9c1"
+        },
+        {
+          "assumption_id": "M0008-A1",
+          "kind": "REVERSIBLE",
+          "required": true,
+          "source_mechanism_id": "M0008",
+          "status": "SATISFIED",
+          "target_evidence": "FORMAL_TARGET_PROBE:86:Reversible:SATISFIED",
+          "task_id": "SEM8-T-086-1e3cd9c1"
+        },
+        {
+          "assumption_id": "M0008-A2",
+          "kind": "LOSSLESS",
+          "required": true,
+          "source_mechanism_id": "M0008",
+          "status": "SATISFIED",
+          "target_evidence": "FORMAL_TARGET_PROBE:86:Lossless:SATISFIED",
+          "task_id": "SEM8-T-086-1e3cd9c1"
+        }
+      ],
+      "candidate_mechanisms_considered": 1,
+      "category": "STRUCTURAL_MIMIC_ADVERSARIAL",
+      "causal_utility": false,
+      "condition": "FULL_MECHANISM_TRANSFER_D",
+      "disposition": "REJECTED_ASSUMPTION",
+      "invalid_analogy": true,
+      "invalid_transfer_accepted": false,
+      "invalid_transfer_rejected": true,
+      "reasoning_depth": 6,
+      "relation_preservation_passed": true,
+      "required_assumptions_satisfied": false,
+      "role_mappings": [
+        {
+          "essential_relations_preserved": 5,
+          "essential_relations_total": 5,
+          "relation_preservation_pass": true,
+          "required_roles_mapped": 5,
+          "required_roles_total": 5,
+          "role_bindings": {
+            "M0008-R0": "Z086_0",
+            "M0008-R1": "Z086_1",
+            "M0008-R2": "Z086_2",
+            "M0008-R3": "Z086_3",
+            "M0008-R4": "Z086_4"
+          },
+          "semantic_role_pass": true,
+          "source_mechanism_id": "M0008",
+          "target_task_id": "SEM8-T-086-1e3cd9c1"
+        }
+      ],
+      "search_expansions": 22,
+      "selected_source_mechanism_ids": [
+        "M0008"
+      ],
+      "semantic_equivalence_different_structure": false,
+      "solved": true,
+      "source_used": false,
+      "structural_mimic": true,
+      "target_candidate_instantiated": false,
+      "target_domain": "STATEFUL_MACHINE",
+      "target_verifier_passed": true,
+      "task_id": "SEM8-T-086-1e3cd9c1",
+      "transfer_attempted": true,
+      "wall_time_class": "BOUNDED_LOCAL",
+      "zero_shot": false
+    },
+    {
+      "active_branches": 1,
+      "active_concept_budget": 4,
+      "assumption_ledger": [
+        {
+          "assumption_id": "M0005-A0",
+          "kind": "DETERMINISTIC",
+          "required": true,
+          "source_mechanism_id": "M0005",
+          "status": "VIOLATED",
+          "target_evidence": "FORMAL_COUNTEREXAMPLE:87:Deterministic:VIOLATED",
+          "task_id": "SEM8-T-087-8b9a0ece"
+        },
+        {
+          "assumption_id": "M0005-A1",
+          "kind": "PURE",
+          "required": true,
+          "source_mechanism_id": "M0005",
+          "status": "SATISFIED",
+          "target_evidence": "FORMAL_TARGET_PROBE:87:Pure:SATISFIED",
+          "task_id": "SEM8-T-087-8b9a0ece"
+        }
+      ],
+      "candidate_mechanisms_considered": 1,
+      "category": "STRUCTURAL_MIMIC_ADVERSARIAL",
+      "causal_utility": false,
+      "condition": "FULL_MECHANISM_TRANSFER_D",
+      "disposition": "REJECTED_ASSUMPTION",
+      "invalid_analogy": true,
+      "invalid_transfer_accepted": false,
+      "invalid_transfer_rejected": true,
+      "reasoning_depth": 6,
+      "relation_preservation_passed": true,
+      "required_assumptions_satisfied": false,
+      "role_mappings": [
+        {
+          "essential_relations_preserved": 5,
+          "essential_relations_total": 5,
+          "relation_preservation_pass": true,
+          "required_roles_mapped": 5,
+          "required_roles_total": 5,
+          "role_bindings": {
+            "M0005-R0": "Z087_0",
+            "M0005-R1": "Z087_1",
+            "M0005-R2": "Z087_2",
+            "M0005-R3": "Z087_3",
+            "M0005-R4": "Z087_4"
+          },
+          "semantic_role_pass": true,
+          "source_mechanism_id": "M0005",
+          "target_task_id": "SEM8-T-087-8b9a0ece"
+        }
+      ],
+      "search_expansions": 22,
+      "selected_source_mechanism_ids": [
+        "M0005"
+      ],
+      "semantic_equivalence_different_structure": false,
+      "solved": true,
+      "source_used": false,
+      "structural_mimic": true,
+      "target_candidate_instantiated": false,
+      "target_domain": "DATA_TRANSFORM",
+      "target_verifier_passed": true,
+      "task_id": "SEM8-T-087-8b9a0ece",
+      "transfer_attempted": true,
+      "wall_time_class": "BOUNDED_LOCAL",
+      "zero_shot": false
+    },
+    {
+      "active_branches": 1,
+      "active_concept_budget": 4,
+      "assumption_ledger": [
+        {
+          "assumption_id": "M0001-A0",
+          "kind": "DETERMINISTIC",
+          "required": true,
+          "source_mechanism_id": "M0001",
+          "status": "VIOLATED",
+          "target_evidence": "FORMAL_COUNTEREXAMPLE:88:Deterministic:VIOLATED",
+          "task_id": "SEM8-T-088-baf8dc3f"
+        },
+        {
+          "assumption_id": "M0001-A1",
+          "kind": "TERMINATES",
+          "required": true,
+          "source_mechanism_id": "M0001",
+          "status": "SATISFIED",
+          "target_evidence": "FORMAL_TARGET_PROBE:88:Terminates:SATISFIED",
+          "task_id": "SEM8-T-088-baf8dc3f"
+        },
+        {
+          "assumption_id": "M0001-A2",
+          "kind": "INVARIANT_GLOBAL",
+          "required": true,
+          "source_mechanism_id": "M0001",
+          "status": "SATISFIED",
+          "target_evidence": "FORMAL_TARGET_PROBE:88:InvariantGlobal:SATISFIED",
+          "task_id": "SEM8-T-088-baf8dc3f"
+        }
+      ],
+      "candidate_mechanisms_considered": 1,
+      "category": "STRUCTURAL_MIMIC_ADVERSARIAL",
+      "causal_utility": false,
+      "condition": "FULL_MECHANISM_TRANSFER_D",
+      "disposition": "REJECTED_ASSUMPTION",
+      "invalid_analogy": true,
+      "invalid_transfer_accepted": false,
+      "invalid_transfer_rejected": true,
+      "reasoning_depth": 6,
+      "relation_preservation_passed": true,
+      "required_assumptions_satisfied": false,
+      "role_mappings": [
+        {
+          "essential_relations_preserved": 5,
+          "essential_relations_total": 5,
+          "relation_preservation_pass": true,
+          "required_roles_mapped": 5,
+          "required_roles_total": 5,
+          "role_bindings": {
+            "M0001-R0": "Z088_0",
+            "M0001-R1": "Z088_1",
+            "M0001-R2": "Z088_2",
+            "M0001-R3": "Z088_3",
+            "M0001-R4": "Z088_4"
+          },
+          "semantic_role_pass": true,
+          "source_mechanism_id": "M0001",
+          "target_task_id": "SEM8-T-088-baf8dc3f"
+        }
+      ],
+      "search_expansions": 22,
+      "selected_source_mechanism_ids": [
+        "M0001"
+      ],
+      "semantic_equivalence_different_structure": false,
+      "solved": true,
+      "source_used": false,
+      "structural_mimic": true,
+      "target_candidate_instantiated": false,
+      "target_domain": "PROGRAMMING",
+      "target_verifier_passed": true,
+      "task_id": "SEM8-T-088-baf8dc3f",
+      "transfer_attempted": true,
+      "wall_time_class": "BOUNDED_LOCAL",
+      "zero_shot": false
+    },
+    {
+      "active_branches": 1,
+      "active_concept_budget": 4,
+      "assumption_ledger": [
+        {
+          "assumption_id": "M0002-A0",
+          "kind": "DETERMINISTIC",
+          "required": true,
+          "source_mechanism_id": "M0002",
+          "status": "VIOLATED",
+          "target_evidence": "FORMAL_COUNTEREXAMPLE:89:Deterministic:VIOLATED",
+          "task_id": "SEM8-T-089-64222164"
+        },
+        {
+          "assumption_id": "M0002-A1",
+          "kind": "ORDER_PRESERVING",
+          "required": true,
+          "source_mechanism_id": "M0002",
+          "status": "SATISFIED",
+          "target_evidence": "FORMAL_TARGET_PROBE:89:OrderPreserving:SATISFIED",
+          "task_id": "SEM8-T-089-64222164"
+        },
+        {
+          "assumption_id": "M0002-A2",
+          "kind": "PURE",
+          "required": true,
+          "source_mechanism_id": "M0002",
+          "status": "SATISFIED",
+          "target_evidence": "FORMAL_TARGET_PROBE:89:Pure:SATISFIED",
+          "task_id": "SEM8-T-089-64222164"
+        }
+      ],
+      "candidate_mechanisms_considered": 1,
+      "category": "STRUCTURAL_MIMIC_ADVERSARIAL",
+      "causal_utility": false,
+      "condition": "FULL_MECHANISM_TRANSFER_D",
+      "disposition": "REJECTED_ASSUMPTION",
+      "invalid_analogy": true,
+      "invalid_transfer_accepted": false,
+      "invalid_transfer_rejected": true,
+      "reasoning_depth": 6,
+      "relation_preservation_passed": true,
+      "required_assumptions_satisfied": false,
+      "role_mappings": [
+        {
+          "essential_relations_preserved": 4,
+          "essential_relations_total": 4,
+          "relation_preservation_pass": true,
+          "required_roles_mapped": 4,
+          "required_roles_total": 4,
+          "role_bindings": {
+            "M0002-R0": "Z089_0",
+            "M0002-R1": "Z089_1",
+            "M0002-R2": "Z089_2",
+            "M0002-R3": "Z089_3"
+          },
+          "semantic_role_pass": true,
+          "source_mechanism_id": "M0002",
+          "target_task_id": "SEM8-T-089-64222164"
+        }
+      ],
+      "search_expansions": 22,
+      "selected_source_mechanism_ids": [
+        "M0002"
+      ],
+      "semantic_equivalence_different_structure": false,
+      "solved": true,
+      "source_used": false,
+      "structural_mimic": true,
+      "target_candidate_instantiated": false,
+      "target_domain": "MATHEMATICS",
+      "target_verifier_passed": true,
+      "task_id": "SEM8-T-089-64222164",
+      "transfer_attempted": true,
+      "wall_time_class": "BOUNDED_LOCAL",
+      "zero_shot": false
+    },
+    {
+      "active_branches": 1,
+      "active_concept_budget": 4,
+      "assumption_ledger": [
+        {
+          "assumption_id": "M0008-A0",
+          "kind": "DETERMINISTIC",
+          "required": true,
+          "source_mechanism_id": "M0008",
+          "status": "VIOLATED",
+          "target_evidence": "FORMAL_COUNTEREXAMPLE:90:Deterministic:VIOLATED",
+          "task_id": "SEM8-T-090-b3c815cd"
+        },
+        {
+          "assumption_id": "M0008-A1",
+          "kind": "REVERSIBLE",
+          "required": true,
+          "source_mechanism_id": "M0008",
+          "status": "SATISFIED",
+          "target_evidence": "FORMAL_TARGET_PROBE:90:Reversible:SATISFIED",
+          "task_id": "SEM8-T-090-b3c815cd"
+        },
+        {
+          "assumption_id": "M0008-A2",
+          "kind": "LOSSLESS",
+          "required": true,
+          "source_mechanism_id": "M0008",
+          "status": "SATISFIED",
+          "target_evidence": "FORMAL_TARGET_PROBE:90:Lossless:SATISFIED",
+          "task_id": "SEM8-T-090-b3c815cd"
+        }
+      ],
+      "candidate_mechanisms_considered": 1,
+      "category": "STRUCTURAL_MIMIC_ADVERSARIAL",
+      "causal_utility": false,
+      "condition": "FULL_MECHANISM_TRANSFER_D",
+      "disposition": "REJECTED_ASSUMPTION",
+      "invalid_analogy": true,
+      "invalid_transfer_accepted": false,
+      "invalid_transfer_rejected": true,
+      "reasoning_depth": 6,
+      "relation_preservation_passed": true,
+      "required_assumptions_satisfied": false,
+      "role_mappings": [
+        {
+          "essential_relations_preserved": 5,
+          "essential_relations_total": 5,
+          "relation_preservation_pass": true,
+          "required_roles_mapped": 5,
+          "required_roles_total": 5,
+          "role_bindings": {
+            "M0008-R0": "Z090_0",
+            "M0008-R1": "Z090_1",
+            "M0008-R2": "Z090_2",
+            "M0008-R3": "Z090_3",
+            "M0008-R4": "Z090_4"
+          },
+          "semantic_role_pass": true,
+          "source_mechanism_id": "M0008",
+          "target_task_id": "SEM8-T-090-b3c815cd"
+        }
+      ],
+      "search_expansions": 22,
+      "selected_source_mechanism_ids": [
+        "M0008"
+      ],
+      "semantic_equivalence_different_structure": false,
+      "solved": true,
+      "source_used": false,
+      "structural_mimic": true,
+      "target_candidate_instantiated": false,
+      "target_domain": "STATEFUL_MACHINE",
+      "target_verifier_passed": true,
+      "task_id": "SEM8-T-090-b3c815cd",
+      "transfer_attempted": true,
+      "wall_time_class": "BOUNDED_LOCAL",
+      "zero_shot": false
+    },
+    {
+      "active_branches": 1,
+      "active_concept_budget": 4,
+      "assumption_ledger": [
+        {
+          "assumption_id": "M0005-A0",
+          "kind": "DETERMINISTIC",
+          "required": true,
+          "source_mechanism_id": "M0005",
+          "status": "VIOLATED",
+          "target_evidence": "FORMAL_COUNTEREXAMPLE:91:Deterministic:VIOLATED",
+          "task_id": "SEM8-T-091-70f8664a"
+        },
+        {
+          "assumption_id": "M0005-A1",
+          "kind": "PURE",
+          "required": true,
+          "source_mechanism_id": "M0005",
+          "status": "SATISFIED",
+          "target_evidence": "FORMAL_TARGET_PROBE:91:Pure:SATISFIED",
+          "task_id": "SEM8-T-091-70f8664a"
+        }
+      ],
+      "candidate_mechanisms_considered": 1,
+      "category": "STRUCTURAL_MIMIC_ADVERSARIAL",
+      "causal_utility": false,
+      "condition": "FULL_MECHANISM_TRANSFER_D",
+      "disposition": "REJECTED_ASSUMPTION",
+      "invalid_analogy": true,
+      "invalid_transfer_accepted": false,
+      "invalid_transfer_rejected": true,
+      "reasoning_depth": 6,
+      "relation_preservation_passed": true,
+      "required_assumptions_satisfied": false,
+      "role_mappings": [
+        {
+          "essential_relations_preserved": 5,
+          "essential_relations_total": 5,
+          "relation_preservation_pass": true,
+          "required_roles_mapped": 5,
+          "required_roles_total": 5,
+          "role_bindings": {
+            "M0005-R0": "Z091_0",
+            "M0005-R1": "Z091_1",
+            "M0005-R2": "Z091_2",
+            "M0005-R3": "Z091_3",
+            "M0005-R4": "Z091_4"
+          },
+          "semantic_role_pass": true,
+          "source_mechanism_id": "M0005",
+          "target_task_id": "SEM8-T-091-70f8664a"
+        }
+      ],
+      "search_expansions": 22,
+      "selected_source_mechanism_ids": [
+        "M0005"
+      ],
+      "semantic_equivalence_different_structure": false,
+      "solved": true,
+      "source_used": false,
+      "structural_mimic": true,
+      "target_candidate_instantiated": false,
+      "target_domain": "DATA_TRANSFORM",
+      "target_verifier_passed": true,
+      "task_id": "SEM8-T-091-70f8664a",
+      "transfer_attempted": true,
+      "wall_time_class": "BOUNDED_LOCAL",
+      "zero_shot": false
+    },
+    {
+      "active_branches": 1,
+      "active_concept_budget": 4,
+      "assumption_ledger": [
+        {
+          "assumption_id": "M0001-A0",
+          "kind": "DETERMINISTIC",
+          "required": true,
+          "source_mechanism_id": "M0001",
+          "status": "VIOLATED",
+          "target_evidence": "FORMAL_COUNTEREXAMPLE:92:Deterministic:VIOLATED",
+          "task_id": "SEM8-T-092-d8d9f5eb"
+        },
+        {
+          "assumption_id": "M0001-A1",
+          "kind": "TERMINATES",
+          "required": true,
+          "source_mechanism_id": "M0001",
+          "status": "SATISFIED",
+          "target_evidence": "FORMAL_TARGET_PROBE:92:Terminates:SATISFIED",
+          "task_id": "SEM8-T-092-d8d9f5eb"
+        },
+        {
+          "assumption_id": "M0001-A2",
+          "kind": "INVARIANT_GLOBAL",
+          "required": true,
+          "source_mechanism_id": "M0001",
+          "status": "SATISFIED",
+          "target_evidence": "FORMAL_TARGET_PROBE:92:InvariantGlobal:SATISFIED",
+          "task_id": "SEM8-T-092-d8d9f5eb"
+        }
+      ],
+      "candidate_mechanisms_considered": 1,
+      "category": "STRUCTURAL_MIMIC_ADVERSARIAL",
+      "causal_utility": false,
+      "condition": "FULL_MECHANISM_TRANSFER_D",
+      "disposition": "REJECTED_ASSUMPTION",
+      "invalid_analogy": true,
+      "invalid_transfer_accepted": false,
+      "invalid_transfer_rejected": true,
+      "reasoning_depth": 6,
+      "relation_preservation_passed": true,
+      "required_assumptions_satisfied": false,
+      "role_mappings": [
+        {
+          "essential_relations_preserved": 5,
+          "essential_relations_total": 5,
+          "relation_preservation_pass": true,
+          "required_roles_mapped": 5,
+          "required_roles_total": 5,
+          "role_bindings": {
+            "M0001-R0": "Z092_0",
+            "M0001-R1": "Z092_1",
+            "M0001-R2": "Z092_2",
+            "M0001-R3": "Z092_3",
+            "M0001-R4": "Z092_4"
+          },
+          "semantic_role_pass": true,
+          "source_mechanism_id": "M0001",
+          "target_task_id": "SEM8-T-092-d8d9f5eb"
+        }
+      ],
+      "search_expansions": 22,
+      "selected_source_mechanism_ids": [
+        "M0001"
+      ],
+      "semantic_equivalence_different_structure": false,
+      "solved": true,
+      "source_used": false,
+      "structural_mimic": true,
+      "target_candidate_instantiated": false,
+      "target_domain": "PROGRAMMING",
+      "target_verifier_passed": true,
+      "task_id": "SEM8-T-092-d8d9f5eb",
+      "transfer_attempted": true,
+      "wall_time_class": "BOUNDED_LOCAL",
+      "zero_shot": false
+    },
+    {
+      "active_branches": 1,
+      "active_concept_budget": 4,
+      "assumption_ledger": [
+        {
+          "assumption_id": "M0002-A0",
+          "kind": "DETERMINISTIC",
+          "required": true,
+          "source_mechanism_id": "M0002",
+          "status": "VIOLATED",
+          "target_evidence": "FORMAL_COUNTEREXAMPLE:93:Deterministic:VIOLATED",
+          "task_id": "SEM8-T-093-766e9300"
+        },
+        {
+          "assumption_id": "M0002-A1",
+          "kind": "ORDER_PRESERVING",
+          "required": true,
+          "source_mechanism_id": "M0002",
+          "status": "SATISFIED",
+          "target_evidence": "FORMAL_TARGET_PROBE:93:OrderPreserving:SATISFIED",
+          "task_id": "SEM8-T-093-766e9300"
+        },
+        {
+          "assumption_id": "M0002-A2",
+          "kind": "PURE",
+          "required": true,
+          "source_mechanism_id": "M0002",
+          "status": "SATISFIED",
+          "target_evidence": "FORMAL_TARGET_PROBE:93:Pure:SATISFIED",
+          "task_id": "SEM8-T-093-766e9300"
+        }
+      ],
+      "candidate_mechanisms_considered": 1,
+      "category": "STRUCTURAL_MIMIC_ADVERSARIAL",
+      "causal_utility": false,
+      "condition": "FULL_MECHANISM_TRANSFER_D",
+      "disposition": "REJECTED_ASSUMPTION",
+      "invalid_analogy": true,
+      "invalid_transfer_accepted": false,
+      "invalid_transfer_rejected": true,
+      "reasoning_depth": 6,
+      "relation_preservation_passed": true,
+      "required_assumptions_satisfied": false,
+      "role_mappings": [
+        {
+          "essential_relations_preserved": 4,
+          "essential_relations_total": 4,
+          "relation_preservation_pass": true,
+          "required_roles_mapped": 4,
+          "required_roles_total": 4,
+          "role_bindings": {
+            "M0002-R0": "Z093_0",
+            "M0002-R1": "Z093_1",
+            "M0002-R2": "Z093_2",
+            "M0002-R3": "Z093_3"
+          },
+          "semantic_role_pass": true,
+          "source_mechanism_id": "M0002",
+          "target_task_id": "SEM8-T-093-766e9300"
+        }
+      ],
+      "search_expansions": 22,
+      "selected_source_mechanism_ids": [
+        "M0002"
+      ],
+      "semantic_equivalence_different_structure": false,
+      "solved": true,
+      "source_used": false,
+      "structural_mimic": true,
+      "target_candidate_instantiated": false,
+      "target_domain": "MATHEMATICS",
+      "target_verifier_passed": true,
+      "task_id": "SEM8-T-093-766e9300",
+      "transfer_attempted": true,
+      "wall_time_class": "BOUNDED_LOCAL",
+      "zero_shot": false
+    },
+    {
+      "active_branches": 1,
+      "active_concept_budget": 4,
+      "assumption_ledger": [
+        {
+          "assumption_id": "M0008-A0",
+          "kind": "DETERMINISTIC",
+          "required": true,
+          "source_mechanism_id": "M0008",
+          "status": "VIOLATED",
+          "target_evidence": "FORMAL_COUNTEREXAMPLE:94:Deterministic:VIOLATED",
+          "task_id": "SEM8-T-094-0c3d3019"
+        },
+        {
+          "assumption_id": "M0008-A1",
+          "kind": "REVERSIBLE",
+          "required": true,
+          "source_mechanism_id": "M0008",
+          "status": "SATISFIED",
+          "target_evidence": "FORMAL_TARGET_PROBE:94:Reversible:SATISFIED",
+          "task_id": "SEM8-T-094-0c3d3019"
+        },
+        {
+          "assumption_id": "M0008-A2",
+          "kind": "LOSSLESS",
+          "required": true,
+          "source_mechanism_id": "M0008",
+          "status": "SATISFIED",
+          "target_evidence": "FORMAL_TARGET_PROBE:94:Lossless:SATISFIED",
+          "task_id": "SEM8-T-094-0c3d3019"
+        }
+      ],
+      "candidate_mechanisms_considered": 1,
+      "category": "STRUCTURAL_MIMIC_ADVERSARIAL",
+      "causal_utility": false,
+      "condition": "FULL_MECHANISM_TRANSFER_D",
+      "disposition": "REJECTED_ASSUMPTION",
+      "invalid_analogy": true,
+      "invalid_transfer_accepted": false,
+      "invalid_transfer_rejected": true,
+      "reasoning_depth": 6,
+      "relation_preservation_passed": true,
+      "required_assumptions_satisfied": false,
+      "role_mappings": [
+        {
+          "essential_relations_preserved": 5,
+          "essential_relations_total": 5,
+          "relation_preservation_pass": true,
+          "required_roles_mapped": 5,
+          "required_roles_total": 5,
+          "role_bindings": {
+            "M0008-R0": "Z094_0",
+            "M0008-R1": "Z094_1",
+            "M0008-R2": "Z094_2",
+            "M0008-R3": "Z094_3",
+            "M0008-R4": "Z094_4"
+          },
+          "semantic_role_pass": true,
+          "source_mechanism_id": "M0008",
+          "target_task_id": "SEM8-T-094-0c3d3019"
+        }
+      ],
+      "search_expansions": 22,
+      "selected_source_mechanism_ids": [
+        "M0008"
+      ],
+      "semantic_equivalence_different_structure": false,
+      "solved": true,
+      "source_used": false,
+      "structural_mimic": true,
+      "target_candidate_instantiated": false,
+      "target_domain": "STATEFUL_MACHINE",
+      "target_verifier_passed": true,
+      "task_id": "SEM8-T-094-0c3d3019",
+      "transfer_attempted": true,
+      "wall_time_class": "BOUNDED_LOCAL",
+      "zero_shot": false
+    },
+    {
+      "active_branches": 1,
+      "active_concept_budget": 4,
+      "assumption_ledger": [
+        {
+          "assumption_id": "M0005-A0",
+          "kind": "DETERMINISTIC",
+          "required": true,
+          "source_mechanism_id": "M0005",
+          "status": "VIOLATED",
+          "target_evidence": "FORMAL_COUNTEREXAMPLE:95:Deterministic:VIOLATED",
+          "task_id": "SEM8-T-095-0a227106"
+        },
+        {
+          "assumption_id": "M0005-A1",
+          "kind": "PURE",
+          "required": true,
+          "source_mechanism_id": "M0005",
+          "status": "SATISFIED",
+          "target_evidence": "FORMAL_TARGET_PROBE:95:Pure:SATISFIED",
+          "task_id": "SEM8-T-095-0a227106"
+        }
+      ],
+      "candidate_mechanisms_considered": 1,
+      "category": "STRUCTURAL_MIMIC_ADVERSARIAL",
+      "causal_utility": false,
+      "condition": "FULL_MECHANISM_TRANSFER_D",
+      "disposition": "REJECTED_ASSUMPTION",
+      "invalid_analogy": true,
+      "invalid_transfer_accepted": false,
+      "invalid_transfer_rejected": true,
+      "reasoning_depth": 6,
+      "relation_preservation_passed": true,
+      "required_assumptions_satisfied": false,
+      "role_mappings": [
+        {
+          "essential_relations_preserved": 5,
+          "essential_relations_total": 5,
+          "relation_preservation_pass": true,
+          "required_roles_mapped": 5,
+          "required_roles_total": 5,
+          "role_bindings": {
+            "M0005-R0": "Z095_0",
+            "M0005-R1": "Z095_1",
+            "M0005-R2": "Z095_2",
+            "M0005-R3": "Z095_3",
+            "M0005-R4": "Z095_4"
+          },
+          "semantic_role_pass": true,
+          "source_mechanism_id": "M0005",
+          "target_task_id": "SEM8-T-095-0a227106"
+        }
+      ],
+      "search_expansions": 22,
+      "selected_source_mechanism_ids": [
+        "M0005"
+      ],
+      "semantic_equivalence_different_structure": false,
+      "solved": true,
+      "source_used": false,
+      "structural_mimic": true,
+      "target_candidate_instantiated": false,
+      "target_domain": "DATA_TRANSFORM",
+      "target_verifier_passed": true,
+      "task_id": "SEM8-T-095-0a227106",
+      "transfer_attempted": true,
+      "wall_time_class": "BOUNDED_LOCAL",
+      "zero_shot": false
+    },
+    {
+      "active_branches": 1,
+      "active_concept_budget": 4,
+      "assumption_ledger": [
+        {
+          "assumption_id": "M0001-A0",
+          "kind": "DETERMINISTIC",
+          "required": true,
+          "source_mechanism_id": "M0001",
+          "status": "VIOLATED",
+          "target_evidence": "FORMAL_COUNTEREXAMPLE:96:Deterministic:VIOLATED",
+          "task_id": "SEM8-T-096-44ef9bd7"
+        },
+        {
+          "assumption_id": "M0001-A1",
+          "kind": "TERMINATES",
+          "required": true,
+          "source_mechanism_id": "M0001",
+          "status": "SATISFIED",
+          "target_evidence": "FORMAL_TARGET_PROBE:96:Terminates:SATISFIED",
+          "task_id": "SEM8-T-096-44ef9bd7"
+        },
+        {
+          "assumption_id": "M0001-A2",
+          "kind": "INVARIANT_GLOBAL",
+          "required": true,
+          "source_mechanism_id": "M0001",
+          "status": "SATISFIED",
+          "target_evidence": "FORMAL_TARGET_PROBE:96:InvariantGlobal:SATISFIED",
+          "task_id": "SEM8-T-096-44ef9bd7"
+        }
+      ],
+      "candidate_mechanisms_considered": 1,
+      "category": "STRUCTURAL_MIMIC_ADVERSARIAL",
+      "causal_utility": false,
+      "condition": "FULL_MECHANISM_TRANSFER_D",
+      "disposition": "REJECTED_ASSUMPTION",
+      "invalid_analogy": true,
+      "invalid_transfer_accepted": false,
+      "invalid_transfer_rejected": true,
+      "reasoning_depth": 6,
+      "relation_preservation_passed": true,
+      "required_assumptions_satisfied": false,
+      "role_mappings": [
+        {
+          "essential_relations_preserved": 5,
+          "essential_relations_total": 5,
+          "relation_preservation_pass": true,
+          "required_roles_mapped": 5,
+          "required_roles_total": 5,
+          "role_bindings": {
+            "M0001-R0": "Z096_0",
+            "M0001-R1": "Z096_1",
+            "M0001-R2": "Z096_2",
+            "M0001-R3": "Z096_3",
+            "M0001-R4": "Z096_4"
+          },
+          "semantic_role_pass": true,
+          "source_mechanism_id": "M0001",
+          "target_task_id": "SEM8-T-096-44ef9bd7"
+        }
+      ],
+      "search_expansions": 22,
+      "selected_source_mechanism_ids": [
+        "M0001"
+      ],
+      "semantic_equivalence_different_structure": false,
+      "solved": true,
+      "source_used": false,
+      "structural_mimic": true,
+      "target_candidate_instantiated": false,
+      "target_domain": "PROGRAMMING",
+      "target_verifier_passed": true,
+      "task_id": "SEM8-T-096-44ef9bd7",
+      "transfer_attempted": true,
+      "wall_time_class": "BOUNDED_LOCAL",
+      "zero_shot": false
+    },
+    {
+      "active_branches": 1,
+      "active_concept_budget": 4,
+      "assumption_ledger": [
+        {
+          "assumption_id": "M0002-A0",
+          "kind": "DETERMINISTIC",
+          "required": true,
+          "source_mechanism_id": "M0002",
+          "status": "VIOLATED",
+          "target_evidence": "FORMAL_COUNTEREXAMPLE:97:Deterministic:VIOLATED",
+          "task_id": "SEM8-T-097-5c2f3ddc"
+        },
+        {
+          "assumption_id": "M0002-A1",
+          "kind": "ORDER_PRESERVING",
+          "required": true,
+          "source_mechanism_id": "M0002",
+          "status": "SATISFIED",
+          "target_evidence": "FORMAL_TARGET_PROBE:97:OrderPreserving:SATISFIED",
+          "task_id": "SEM8-T-097-5c2f3ddc"
+        },
+        {
+          "assumption_id": "M0002-A2",
+          "kind": "PURE",
+          "required": true,
+          "source_mechanism_id": "M0002",
+          "status": "SATISFIED",
+          "target_evidence": "FORMAL_TARGET_PROBE:97:Pure:SATISFIED",
+          "task_id": "SEM8-T-097-5c2f3ddc"
+        }
+      ],
+      "candidate_mechanisms_considered": 1,
+      "category": "STRUCTURAL_MIMIC_ADVERSARIAL",
+      "causal_utility": false,
+      "condition": "FULL_MECHANISM_TRANSFER_D",
+      "disposition": "REJECTED_ASSUMPTION",
+      "invalid_analogy": true,
+      "invalid_transfer_accepted": false,
+      "invalid_transfer_rejected": true,
+      "reasoning_depth": 6,
+      "relation_preservation_passed": true,
+      "required_assumptions_satisfied": false,
+      "role_mappings": [
+        {
+          "essential_relations_preserved": 4,
+          "essential_relations_total": 4,
+          "relation_preservation_pass": true,
+          "required_roles_mapped": 4,
+          "required_roles_total": 4,
+          "role_bindings": {
+            "M0002-R0": "Z097_0",
+            "M0002-R1": "Z097_1",
+            "M0002-R2": "Z097_2",
+            "M0002-R3": "Z097_3"
+          },
+          "semantic_role_pass": true,
+          "source_mechanism_id": "M0002",
+          "target_task_id": "SEM8-T-097-5c2f3ddc"
+        }
+      ],
+      "search_expansions": 22,
+      "selected_source_mechanism_ids": [
+        "M0002"
+      ],
+      "semantic_equivalence_different_structure": false,
+      "solved": true,
+      "source_used": false,
+      "structural_mimic": true,
+      "target_candidate_instantiated": false,
+      "target_domain": "MATHEMATICS",
+      "target_verifier_passed": true,
+      "task_id": "SEM8-T-097-5c2f3ddc",
+      "transfer_attempted": true,
+      "wall_time_class": "BOUNDED_LOCAL",
+      "zero_shot": false
+    },
+    {
+      "active_branches": 1,
+      "active_concept_budget": 4,
+      "assumption_ledger": [
+        {
+          "assumption_id": "M0008-A0",
+          "kind": "DETERMINISTIC",
+          "required": true,
+          "source_mechanism_id": "M0008",
+          "status": "VIOLATED",
+          "target_evidence": "FORMAL_COUNTEREXAMPLE:98:Deterministic:VIOLATED",
+          "task_id": "SEM8-T-098-b21f14a5"
+        },
+        {
+          "assumption_id": "M0008-A1",
+          "kind": "REVERSIBLE",
+          "required": true,
+          "source_mechanism_id": "M0008",
+          "status": "SATISFIED",
+          "target_evidence": "FORMAL_TARGET_PROBE:98:Reversible:SATISFIED",
+          "task_id": "SEM8-T-098-b21f14a5"
+        },
+        {
+          "assumption_id": "M0008-A2",
+          "kind": "LOSSLESS",
+          "required": true,
+          "source_mechanism_id": "M0008",
+          "status": "SATISFIED",
+          "target_evidence": "FORMAL_TARGET_PROBE:98:Lossless:SATISFIED",
+          "task_id": "SEM8-T-098-b21f14a5"
+        }
+      ],
+      "candidate_mechanisms_considered": 1,
+      "category": "STRUCTURAL_MIMIC_ADVERSARIAL",
+      "causal_utility": false,
+      "condition": "FULL_MECHANISM_TRANSFER_D",
+      "disposition": "REJECTED_ASSUMPTION",
+      "invalid_analogy": true,
+      "invalid_transfer_accepted": false,
+      "invalid_transfer_rejected": true,
+      "reasoning_depth": 6,
+      "relation_preservation_passed": true,
+      "required_assumptions_satisfied": false,
+      "role_mappings": [
+        {
+          "essential_relations_preserved": 5,
+          "essential_relations_total": 5,
+          "relation_preservation_pass": true,
+          "required_roles_mapped": 5,
+          "required_roles_total": 5,
+          "role_bindings": {
+            "M0008-R0": "Z098_0",
+            "M0008-R1": "Z098_1",
+            "M0008-R2": "Z098_2",
+            "M0008-R3": "Z098_3",
+            "M0008-R4": "Z098_4"
+          },
+          "semantic_role_pass": true,
+          "source_mechanism_id": "M0008",
+          "target_task_id": "SEM8-T-098-b21f14a5"
+        }
+      ],
+      "search_expansions": 22,
+      "selected_source_mechanism_ids": [
+        "M0008"
+      ],
+      "semantic_equivalence_different_structure": false,
+      "solved": true,
+      "source_used": false,
+      "structural_mimic": true,
+      "target_candidate_instantiated": false,
+      "target_domain": "STATEFUL_MACHINE",
+      "target_verifier_passed": true,
+      "task_id": "SEM8-T-098-b21f14a5",
+      "transfer_attempted": true,
+      "wall_time_class": "BOUNDED_LOCAL",
+      "zero_shot": false
+    },
+    {
+      "active_branches": 1,
+      "active_concept_budget": 4,
+      "assumption_ledger": [
+        {
+          "assumption_id": "M0005-A0",
+          "kind": "DETERMINISTIC",
+          "required": true,
+          "source_mechanism_id": "M0005",
+          "status": "VIOLATED",
+          "target_evidence": "FORMAL_COUNTEREXAMPLE:99:Deterministic:VIOLATED",
+          "task_id": "SEM8-T-099-77440b02"
+        },
+        {
+          "assumption_id": "M0005-A1",
+          "kind": "PURE",
+          "required": true,
+          "source_mechanism_id": "M0005",
+          "status": "SATISFIED",
+          "target_evidence": "FORMAL_TARGET_PROBE:99:Pure:SATISFIED",
+          "task_id": "SEM8-T-099-77440b02"
+        }
+      ],
+      "candidate_mechanisms_considered": 1,
+      "category": "STRUCTURAL_MIMIC_ADVERSARIAL",
+      "causal_utility": false,
+      "condition": "FULL_MECHANISM_TRANSFER_D",
+      "disposition": "REJECTED_ASSUMPTION",
+      "invalid_analogy": true,
+      "invalid_transfer_accepted": false,
+      "invalid_transfer_rejected": true,
+      "reasoning_depth": 6,
+      "relation_preservation_passed": true,
+      "required_assumptions_satisfied": false,
+      "role_mappings": [
+        {
+          "essential_relations_preserved": 5,
+          "essential_relations_total": 5,
+          "relation_preservation_pass": true,
+          "required_roles_mapped": 5,
+          "required_roles_total": 5,
+          "role_bindings": {
+            "M0005-R0": "Z099_0",
+            "M0005-R1": "Z099_1",
+            "M0005-R2": "Z099_2",
+            "M0005-R3": "Z099_3",
+            "M0005-R4": "Z099_4"
+          },
+          "semantic_role_pass": true,
+          "source_mechanism_id": "M0005",
+          "target_task_id": "SEM8-T-099-77440b02"
+        }
+      ],
+      "search_expansions": 22,
+      "selected_source_mechanism_ids": [
+        "M0005"
+      ],
+      "semantic_equivalence_different_structure": false,
+      "solved": true,
+      "source_used": false,
+      "structural_mimic": true,
+      "target_candidate_instantiated": false,
+      "target_domain": "DATA_TRANSFORM",
+      "target_verifier_passed": true,
+      "task_id": "SEM8-T-099-77440b02",
+      "transfer_attempted": true,
+      "wall_time_class": "BOUNDED_LOCAL",
+      "zero_shot": false
+    }
+  ]
+}

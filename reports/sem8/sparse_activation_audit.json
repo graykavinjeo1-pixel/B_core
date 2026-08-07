@@ -1,0 +1,9 @@
+{
+  "total_source_mechanisms": 8,
+  "indexed_route_keys": 10,
+  "peak_candidates_retrieved": 2,
+  "peak_active_concepts": 2,
+  "full_catalog_scans": 0,
+  "routing_false_negatives": 0,
+  "passed": true
+}

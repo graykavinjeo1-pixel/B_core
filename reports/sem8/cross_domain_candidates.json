@@ -1,0 +1,45 @@
+[
+  {
+    "candidate_id": "XDM-CAND-0001",
+    "generation": 6,
+    "parent_concept_ids": [
+      "C000006",
+      "C000008",
+      "C000011"
+    ],
+    "source_domains": [
+      "MATHEMATICS",
+      "PROGRAMMING",
+      "EXTERNAL_DEFINITION",
+      "STATEFUL_MACHINE"
+    ],
+    "role_kinds": [
+      "STATE",
+      "INPUT",
+      "TRANSFORM",
+      "INVARIANT",
+      "OUTPUT"
+    ],
+    "relation_kinds": [
+      "REQUIRES",
+      "PRESERVES",
+      "PRODUCES"
+    ],
+    "required_domain_tokens": [],
+    "executable_instances": 100,
+    "fresh_domains_validated": 4,
+    "broken_assumption_aware": true,
+    "causal_ablation_passed": true,
+    "compression_ratio_milli": 3200,
+    "provenance": [
+      "MECHANISM:M0001",
+      "MECHANISM:M0002",
+      "MECHANISM:M0003",
+      "MECHANISM:M0004",
+      "MECHANISM:M0005",
+      "MECHANISM:M0006",
+      "MECHANISM:M0007",
+      "MECHANISM:M0008"
+    ]
+  }
+]

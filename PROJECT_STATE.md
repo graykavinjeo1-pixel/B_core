@@ -1,20 +1,20 @@
 # Project State
 
-**Canonical version:** 1.8.0
-**State frozen for:** SEM-7 completed baseline
+**Canonical version:** 1.9.0
+**State frozen for:** SEM-8 completed baseline
 
 This is an operational snapshot. It does not replace or override
 `CONSTITUTION.md`.
 
 | Field | Value |
 |---|---|
-| Current stage | `SEM-7 COMPLETE` |
+| Current stage | `SEM-8 COMPLETE` |
 | Stage S0 status | `PASS` |
 | SEM-0 implementation | `COMPLETE` |
 | SEM-0 result | `PASS - MINIMAL_AUTONOMOUS_CONCEPT_EMERGENCE` |
 | SEM-1 implementation | `COMPLETE` |
 | SEM-1 result | `PASS - RECURSIVE_LADDER_AND_SEMANTIC_SEPARATION_VERIFIED` |
-| Promoted concepts | `11` (`C000001`, `C000002`, `C000004`, `C000005`, `C000006`, `C000007`, `C000008`, `C000009`, `C000010`, `C000011`, `C000012`) |
+| Promoted concepts | `12` (`C000001`, `C000002`, `C000004`, `C000005`, `C000006`, `C000007`, `C000008`, `C000009`, `C000010`, `C000011`, `C000012`, `C000013`) |
 | SEM-2 implementation | `COMPLETE` |
 | SEM-2 result | `PASS - ADAPTIVE_REASONING_COMPLEXITY_CONTROL_VERIFIED` |
 | SEM-3 implementation | `COMPLETE` |
@@ -27,7 +27,9 @@ This is an operational snapshot. It does not replace or override
 | SEM-6 result | `PASS - DEFINITION_ONLY_KNOWLEDGE_FORAGING_AND_CONSOLIDATION_VERIFIED` |
 | SEM-7 implementation | `COMPLETE` |
 | SEM-7 result | `PASS - LANGUAGE_CORTEX_ATTACHED_AND_SEMANTIC_BOUNDARY_VERIFIED` |
-| SEM-8 | `NOT STARTED` |
+| SEM-8 implementation | `COMPLETE` |
+| SEM-8 result | `PASS - CROSS_DOMAIN_SEMANTIC_MECHANISM_TRANSFER_VERIFIED` |
+| SEM-9 | `NOT STARTED` |
 | Recursive self-mutation | `DISABLED` |
 | Recursive-improvement mode | `OBSERVE_MEASURE_ONLY` |
 | Proposal generation | `DISABLED` |
@@ -40,12 +42,12 @@ This is an operational snapshot. It does not replace or override
 | Current branch | `main` |
 | Current commit | `SELF` - resolve with `git rev-parse HEAD` |
 | Worktree at committed freeze | `CLEAN` |
-| Next allowed stage | `SEM-8_CROSS_DOMAIN_STRUCTURAL_MECHANISM_TRANSFER` |
+| Next allowed stage | `SEM-9_RECURSIVE_SELF_APPLICATION_SANDBOX` |
 
 ## Canonical document status
 
 The normative documents remain complete and frozen at version 1.0.0. This
-operational state record advanced to version 1.8.0 after the sealed SEM-7 run:
+operational state record advanced to version 1.9.0 after the sealed SEM-8 run:
 
 - `CONSTITUTION.md`
 - `RESEARCH_HYPOTHESIS.md`
@@ -287,7 +289,36 @@ The detailed classification and contamination decisions are in
   and routing false negatives were zero. All 13 gates passed. Reports are
   sealed under `reports/sem7/`.
 
+## SEM-8 evidence snapshot
+
+- Frozen `SEM8-RUN-0001` used 120 fresh blind transfer tasks: 20 each for
+  math-to-program/state, program-to-math/state, cross-data-domain, opaque
+  state-machine, structural-mimic/broken-assumption, and semantically
+  equivalent but structurally different targets. Forty targets were zero-shot.
+- Eight domain-light `MechanismIR` views were extracted from sealed SEM-4/5/6
+  evidence and split into four development and four blind source mechanisms.
+  Solver-visible manifests contained no source-target pairs, analogy labels,
+  evaluator families, hidden cases, or target solutions.
+- Equal-budget solve rates were target-only A `0.25`, structural B
+  `0.24166666666666667`, semantic-role C `0.8333333333333334`, and full D
+  `1.0`. Median expansions were `120.0` for A and `37.0` for D.
+- D produced 100 valid transfers, 99 causally useful transfers, 76 direct and
+  24 adapted transfers, and composed at most two source mechanisms. All eight
+  available source mechanisms were selected autonomously.
+- Zero-shot transfer, role mapping, relation preservation, broken-assumption
+  detection, and structurally different semantic-equivalence transfer rates
+  were all `1.0`. All 20 invalid analogies were rejected; invalid accepted
+  transfers and full-D structural-mimic false transfers were zero.
+- Domain-light Generation-6 `C000013` was promoted from mathematics,
+  programming, external-definition, and synthetic state-machine evidence with
+  parents `C000006`, `C000008`, and `C000011`. No predecessor semantic payload
+  changed.
+- Lexical similarity authority uses, external transfer-solution dependencies,
+  network calls, external LLM or teacher calls, recursive source mutations,
+  full-catalog scans, and routing false negatives were zero. All 12 gates
+  passed. Reports are sealed under `reports/sem8/`.
+
 ## Advancement constraint
 
-Starting SEM-8 requires an explicit subsequent task. SEM-7 completion does not
-authorize recursive self-application, which remains reserved for SEM-9.
+Starting SEM-9 requires an explicit subsequent task. SEM-8 completion does not
+itself authorize recursive self-application; the sandbox remains unstarted.

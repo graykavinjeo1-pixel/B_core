@@ -1,0 +1,2073 @@
+{
+  "mapping_count": 124,
+  "mappings": [
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0001-R0": "Z000_0",
+        "M0001-R1": "Z000_1",
+        "M0001-R2": "Z000_2",
+        "M0001-R3": "Z000_3",
+        "M0001-R4": "Z000_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0001",
+      "target_task_id": "SEM8-T-000-88bae2b7"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0008-R0": "Z001_0",
+        "M0008-R1": "Z001_1",
+        "M0008-R2": "Z001_2",
+        "M0008-R3": "Z001_3",
+        "M0008-R4": "Z001_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0008",
+      "target_task_id": "SEM8-T-001-ff2d123c"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0001-R0": "Z002_0",
+        "M0001-R1": "Z002_1",
+        "M0001-R2": "Z002_2",
+        "M0001-R3": "Z002_3",
+        "M0001-R4": "Z002_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0001",
+      "target_task_id": "SEM8-T-002-ca1a5485"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0008-R0": "Z003_0",
+        "M0008-R1": "Z003_1",
+        "M0008-R2": "Z003_2",
+        "M0008-R3": "Z003_3",
+        "M0008-R4": "Z003_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0008",
+      "target_task_id": "SEM8-T-003-a8132c62"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0001-R0": "Z004_0",
+        "M0001-R1": "Z004_1",
+        "M0001-R2": "Z004_2",
+        "M0001-R3": "Z004_3",
+        "M0001-R4": "Z004_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0001",
+      "target_task_id": "SEM8-T-004-15e54ae3"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0008-R0": "Z005_0",
+        "M0008-R1": "Z005_1",
+        "M0008-R2": "Z005_2",
+        "M0008-R3": "Z005_3",
+        "M0008-R4": "Z005_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0008",
+      "target_task_id": "SEM8-T-005-5f65a458"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0001-R0": "Z006_0",
+        "M0001-R1": "Z006_1",
+        "M0001-R2": "Z006_2",
+        "M0001-R3": "Z006_3",
+        "M0001-R4": "Z006_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0001",
+      "target_task_id": "SEM8-T-006-4d1e8951"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0008-R0": "Z007_0",
+        "M0008-R1": "Z007_1",
+        "M0008-R2": "Z007_2",
+        "M0008-R3": "Z007_3",
+        "M0008-R4": "Z007_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0008",
+      "target_task_id": "SEM8-T-007-2cd5939e"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0001-R0": "Z008_0",
+        "M0001-R1": "Z008_1",
+        "M0001-R2": "Z008_2",
+        "M0001-R3": "Z008_3",
+        "M0001-R4": "Z008_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0001",
+      "target_task_id": "SEM8-T-008-27bf774f"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0008-R0": "Z009_0",
+        "M0008-R1": "Z009_1",
+        "M0008-R2": "Z009_2",
+        "M0008-R3": "Z009_3",
+        "M0008-R4": "Z009_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0008",
+      "target_task_id": "SEM8-T-009-0fbf07b4"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0001-R0": "Z010_0",
+        "M0001-R1": "Z010_1",
+        "M0001-R2": "Z010_2",
+        "M0001-R3": "Z010_3",
+        "M0001-R4": "Z010_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0001",
+      "target_task_id": "SEM8-T-010-5e7d005d"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0008-R0": "Z011_0",
+        "M0008-R1": "Z011_1",
+        "M0008-R2": "Z011_2",
+        "M0008-R3": "Z011_3",
+        "M0008-R4": "Z011_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0008",
+      "target_task_id": "SEM8-T-011-1b93621a"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0001-R0": "Z012_0",
+        "M0001-R1": "Z012_1",
+        "M0001-R2": "Z012_2",
+        "M0001-R3": "Z012_3",
+        "M0001-R4": "Z012_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0001",
+      "target_task_id": "SEM8-T-012-5b9573fb"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0008-R0": "Z013_0",
+        "M0008-R1": "Z013_1",
+        "M0008-R2": "Z013_2",
+        "M0008-R3": "Z013_3",
+        "M0008-R4": "Z013_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0008",
+      "target_task_id": "SEM8-T-013-37e0b850"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0001-R0": "Z014_0",
+        "M0001-R1": "Z014_1",
+        "M0001-R2": "Z014_2",
+        "M0001-R3": "Z014_3",
+        "M0001-R4": "Z014_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0001",
+      "target_task_id": "SEM8-T-014-08df65a9"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0008-R0": "Z015_0",
+        "M0008-R1": "Z015_1",
+        "M0008-R2": "Z015_2",
+        "M0008-R3": "Z015_3",
+        "M0008-R4": "Z015_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0008",
+      "target_task_id": "SEM8-T-015-078e33d6"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0001-R0": "Z016_0",
+        "M0001-R1": "Z016_1",
+        "M0001-R2": "Z016_2",
+        "M0001-R3": "Z016_3",
+        "M0001-R4": "Z016_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0001",
+      "target_task_id": "SEM8-T-016-6b918ce7"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0008-R0": "Z017_0",
+        "M0008-R1": "Z017_1",
+        "M0008-R2": "Z017_2",
+        "M0008-R3": "Z017_3",
+        "M0008-R4": "Z017_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0008",
+      "target_task_id": "SEM8-T-017-9a25722c"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0001-R0": "Z018_0",
+        "M0001-R1": "Z018_1",
+        "M0001-R2": "Z018_2",
+        "M0001-R3": "Z018_3",
+        "M0001-R4": "Z018_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0001",
+      "target_task_id": "SEM8-T-018-a67ba535"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0008-R0": "Z019_0",
+        "M0008-R1": "Z019_1",
+        "M0008-R2": "Z019_2",
+        "M0008-R3": "Z019_3",
+        "M0008-R4": "Z019_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0008",
+      "target_task_id": "SEM8-T-019-cf40e4d2"
+    },
+    {
+      "essential_relations_preserved": 4,
+      "essential_relations_total": 4,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 4,
+      "required_roles_total": 4,
+      "role_bindings": {
+        "M0002-R0": "Z020_0",
+        "M0002-R1": "Z020_1",
+        "M0002-R2": "Z020_2",
+        "M0002-R3": "Z020_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0002",
+      "target_task_id": "SEM8-T-020-41a84e13"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0003-R0": "Z021_0",
+        "M0003-R1": "Z021_1",
+        "M0003-R2": "Z021_2",
+        "M0003-R3": "Z021_3",
+        "M0003-R4": "Z021_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0003",
+      "target_task_id": "SEM8-T-021-8f773148"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0004-R0": "Z022_0",
+        "M0004-R1": "Z022_1",
+        "M0004-R2": "Z022_2",
+        "M0004-R3": "Z022_3",
+        "M0004-R4": "Z022_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0004",
+      "target_task_id": "SEM8-T-022-4a9feb01"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0005-R0": "Z023_0",
+        "M0005-R1": "Z023_1",
+        "M0005-R2": "Z023_2",
+        "M0005-R3": "Z023_3",
+        "M0005-R4": "Z023_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0005",
+      "target_task_id": "SEM8-T-023-7f5b910e"
+    },
+    {
+      "essential_relations_preserved": 4,
+      "essential_relations_total": 4,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 4,
+      "required_roles_total": 4,
+      "role_bindings": {
+        "M0002-R0": "Z024_0",
+        "M0002-R1": "Z024_1",
+        "M0002-R2": "Z024_2",
+        "M0002-R3": "Z024_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0002",
+      "target_task_id": "SEM8-T-024-92c4837f"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0003-R0": "Z025_0",
+        "M0003-R1": "Z025_1",
+        "M0003-R2": "Z025_2",
+        "M0003-R3": "Z025_3",
+        "M0003-R4": "Z025_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0003",
+      "target_task_id": "SEM8-T-025-686b31a4"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0004-R0": "Z026_0",
+        "M0004-R1": "Z026_1",
+        "M0004-R2": "Z026_2",
+        "M0004-R3": "Z026_3",
+        "M0004-R4": "Z026_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0004",
+      "target_task_id": "SEM8-T-026-117ea30d"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0005-R0": "Z027_0",
+        "M0005-R1": "Z027_1",
+        "M0005-R2": "Z027_2",
+        "M0005-R3": "Z027_3",
+        "M0005-R4": "Z027_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0005",
+      "target_task_id": "SEM8-T-027-90ff948a"
+    },
+    {
+      "essential_relations_preserved": 4,
+      "essential_relations_total": 4,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 4,
+      "required_roles_total": 4,
+      "role_bindings": {
+        "M0002-R0": "Z028_0",
+        "M0002-R1": "Z028_1",
+        "M0002-R2": "Z028_2",
+        "M0002-R3": "Z028_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0002",
+      "target_task_id": "SEM8-T-028-ce33392b"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0003-R0": "Z029_0",
+        "M0003-R1": "Z029_1",
+        "M0003-R2": "Z029_2",
+        "M0003-R3": "Z029_3",
+        "M0003-R4": "Z029_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0003",
+      "target_task_id": "SEM8-T-029-6f9def40"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0004-R0": "Z030_0",
+        "M0004-R1": "Z030_1",
+        "M0004-R2": "Z030_2",
+        "M0004-R3": "Z030_3",
+        "M0004-R4": "Z030_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0004",
+      "target_task_id": "SEM8-T-030-c23a7959"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0005-R0": "Z031_0",
+        "M0005-R1": "Z031_1",
+        "M0005-R2": "Z031_2",
+        "M0005-R3": "Z031_3",
+        "M0005-R4": "Z031_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0005",
+      "target_task_id": "SEM8-T-031-df3b8b46"
+    },
+    {
+      "essential_relations_preserved": 4,
+      "essential_relations_total": 4,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 4,
+      "required_roles_total": 4,
+      "role_bindings": {
+        "M0002-R0": "Z032_0",
+        "M0002-R1": "Z032_1",
+        "M0002-R2": "Z032_2",
+        "M0002-R3": "Z032_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0002",
+      "target_task_id": "SEM8-T-032-6d4fbb17"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0003-R0": "Z033_0",
+        "M0003-R1": "Z033_1",
+        "M0003-R2": "Z033_2",
+        "M0003-R3": "Z033_3",
+        "M0003-R4": "Z033_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0003",
+      "target_task_id": "SEM8-T-033-094f261c"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0004-R0": "Z034_0",
+        "M0004-R1": "Z034_1",
+        "M0004-R2": "Z034_2",
+        "M0004-R3": "Z034_3",
+        "M0004-R4": "Z034_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0004",
+      "target_task_id": "SEM8-T-034-6f3259e5"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0005-R0": "Z035_0",
+        "M0005-R1": "Z035_1",
+        "M0005-R2": "Z035_2",
+        "M0005-R3": "Z035_3",
+        "M0005-R4": "Z035_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0005",
+      "target_task_id": "SEM8-T-035-efc75142"
+    },
+    {
+      "essential_relations_preserved": 4,
+      "essential_relations_total": 4,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 4,
+      "required_roles_total": 4,
+      "role_bindings": {
+        "M0002-R0": "Z036_0",
+        "M0002-R1": "Z036_1",
+        "M0002-R2": "Z036_2",
+        "M0002-R3": "Z036_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0002",
+      "target_task_id": "SEM8-T-036-ef6f9543"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0003-R0": "Z037_0",
+        "M0003-R1": "Z037_1",
+        "M0003-R2": "Z037_2",
+        "M0003-R3": "Z037_3",
+        "M0003-R4": "Z037_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0003",
+      "target_task_id": "SEM8-T-037-ac3dd238"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0004-R0": "Z038_0",
+        "M0004-R1": "Z038_1",
+        "M0004-R2": "Z038_2",
+        "M0004-R3": "Z038_3",
+        "M0004-R4": "Z038_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0004",
+      "target_task_id": "SEM8-T-038-008d70b1"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0005-R0": "Z039_0",
+        "M0005-R1": "Z039_1",
+        "M0005-R2": "Z039_2",
+        "M0005-R3": "Z039_3",
+        "M0005-R4": "Z039_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0005",
+      "target_task_id": "SEM8-T-039-6b00027e"
+    },
+    {
+      "essential_relations_preserved": 4,
+      "essential_relations_total": 4,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 4,
+      "required_roles_total": 4,
+      "role_bindings": {
+        "M0006-R0": "Z040_0",
+        "M0006-R1": "Z040_1",
+        "M0006-R2": "Z040_2",
+        "M0006-R3": "Z040_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0006",
+      "target_task_id": "SEM8-T-040-0e0e93af"
+    },
+    {
+      "essential_relations_preserved": 4,
+      "essential_relations_total": 4,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 4,
+      "required_roles_total": 4,
+      "role_bindings": {
+        "M0007-R0": "Z041_0",
+        "M0007-R1": "Z041_1",
+        "M0007-R2": "Z041_2",
+        "M0007-R3": "Z041_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0007",
+      "target_task_id": "SEM8-T-041-afc42f94"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0001-R0": "Z042_0",
+        "M0001-R1": "Z042_1",
+        "M0001-R2": "Z042_2",
+        "M0001-R3": "Z042_3",
+        "M0001-R4": "Z042_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0001",
+      "target_task_id": "SEM8-T-042-d50729bd"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0005-R0": "Z043_0",
+        "M0005-R1": "Z043_1",
+        "M0005-R2": "Z043_2",
+        "M0005-R3": "Z043_3",
+        "M0005-R4": "Z043_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0005",
+      "target_task_id": "SEM8-T-043-df23fafa"
+    },
+    {
+      "essential_relations_preserved": 4,
+      "essential_relations_total": 4,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 4,
+      "required_roles_total": 4,
+      "role_bindings": {
+        "M0006-R0": "Z044_0",
+        "M0006-R1": "Z044_1",
+        "M0006-R2": "Z044_2",
+        "M0006-R3": "Z044_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0006",
+      "target_task_id": "SEM8-T-044-f53ac25b"
+    },
+    {
+      "essential_relations_preserved": 4,
+      "essential_relations_total": 4,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 4,
+      "required_roles_total": 4,
+      "role_bindings": {
+        "M0007-R0": "Z045_0",
+        "M0007-R1": "Z045_1",
+        "M0007-R2": "Z045_2",
+        "M0007-R3": "Z045_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0007",
+      "target_task_id": "SEM8-T-045-2b33ba30"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0001-R0": "Z046_0",
+        "M0001-R1": "Z046_1",
+        "M0001-R2": "Z046_2",
+        "M0001-R3": "Z046_3",
+        "M0001-R4": "Z046_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0001",
+      "target_task_id": "SEM8-T-046-e4fb3109"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0005-R0": "Z047_0",
+        "M0005-R1": "Z047_1",
+        "M0005-R2": "Z047_2",
+        "M0005-R3": "Z047_3",
+        "M0005-R4": "Z047_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0005",
+      "target_task_id": "SEM8-T-047-2aced6b6"
+    },
+    {
+      "essential_relations_preserved": 4,
+      "essential_relations_total": 4,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 4,
+      "required_roles_total": 4,
+      "role_bindings": {
+        "M0006-R0": "Z048_0",
+        "M0006-R1": "Z048_1",
+        "M0006-R2": "Z048_2",
+        "M0006-R3": "Z048_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0006",
+      "target_task_id": "SEM8-T-048-8c406d47"
+    },
+    {
+      "essential_relations_preserved": 4,
+      "essential_relations_total": 4,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 4,
+      "required_roles_total": 4,
+      "role_bindings": {
+        "M0007-R0": "Z049_0",
+        "M0007-R1": "Z049_1",
+        "M0007-R2": "Z049_2",
+        "M0007-R3": "Z049_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0007",
+      "target_task_id": "SEM8-T-049-62712e0c"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0001-R0": "Z050_0",
+        "M0001-R1": "Z050_1",
+        "M0001-R2": "Z050_2",
+        "M0001-R3": "Z050_3",
+        "M0001-R4": "Z050_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0001",
+      "target_task_id": "SEM8-T-050-13b17295"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0005-R0": "Z051_0",
+        "M0005-R1": "Z051_1",
+        "M0005-R2": "Z051_2",
+        "M0005-R3": "Z051_3",
+        "M0005-R4": "Z051_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0005",
+      "target_task_id": "SEM8-T-051-2ab571b2"
+    },
+    {
+      "essential_relations_preserved": 4,
+      "essential_relations_total": 4,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 4,
+      "required_roles_total": 4,
+      "role_bindings": {
+        "M0006-R0": "Z052_0",
+        "M0006-R1": "Z052_1",
+        "M0006-R2": "Z052_2",
+        "M0006-R3": "Z052_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0006",
+      "target_task_id": "SEM8-T-052-1a962073"
+    },
+    {
+      "essential_relations_preserved": 4,
+      "essential_relations_total": 4,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 4,
+      "required_roles_total": 4,
+      "role_bindings": {
+        "M0007-R0": "Z053_0",
+        "M0007-R1": "Z053_1",
+        "M0007-R2": "Z053_2",
+        "M0007-R3": "Z053_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0007",
+      "target_task_id": "SEM8-T-053-7bd08728"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0001-R0": "Z054_0",
+        "M0001-R1": "Z054_1",
+        "M0001-R2": "Z054_2",
+        "M0001-R3": "Z054_3",
+        "M0001-R4": "Z054_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0001",
+      "target_task_id": "SEM8-T-054-9aea1a61"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0005-R0": "Z055_0",
+        "M0005-R1": "Z055_1",
+        "M0005-R2": "Z055_2",
+        "M0005-R3": "Z055_3",
+        "M0005-R4": "Z055_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0005",
+      "target_task_id": "SEM8-T-055-86a1e7ee"
+    },
+    {
+      "essential_relations_preserved": 4,
+      "essential_relations_total": 4,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 4,
+      "required_roles_total": 4,
+      "role_bindings": {
+        "M0006-R0": "Z056_0",
+        "M0006-R1": "Z056_1",
+        "M0006-R2": "Z056_2",
+        "M0006-R3": "Z056_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0006",
+      "target_task_id": "SEM8-T-056-d508a7df"
+    },
+    {
+      "essential_relations_preserved": 4,
+      "essential_relations_total": 4,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 4,
+      "required_roles_total": 4,
+      "role_bindings": {
+        "M0007-R0": "Z057_0",
+        "M0007-R1": "Z057_1",
+        "M0007-R2": "Z057_2",
+        "M0007-R3": "Z057_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0007",
+      "target_task_id": "SEM8-T-057-7b310184"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0001-R0": "Z058_0",
+        "M0001-R1": "Z058_1",
+        "M0001-R2": "Z058_2",
+        "M0001-R3": "Z058_3",
+        "M0001-R4": "Z058_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0001",
+      "target_task_id": "SEM8-T-058-bca9946d"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0005-R0": "Z059_0",
+        "M0005-R1": "Z059_1",
+        "M0005-R2": "Z059_2",
+        "M0005-R3": "Z059_3",
+        "M0005-R4": "Z059_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0005",
+      "target_task_id": "SEM8-T-059-b9af956a"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0001-R0": "Z060_0",
+        "M0001-R1": "Z060_1",
+        "M0001-R2": "Z060_2",
+        "M0001-R3": "Z060_3",
+        "M0001-R4": "Z060_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0001",
+      "target_task_id": "SEM8-T-060-1f270f8b"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0008-R0": "Z061_0",
+        "M0008-R1": "Z061_1",
+        "M0008-R2": "Z061_2",
+        "M0008-R3": "Z061_3",
+        "M0008-R4": "Z061_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0008",
+      "target_task_id": "SEM8-T-061-be591920"
+    },
+    {
+      "essential_relations_preserved": 4,
+      "essential_relations_total": 4,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 4,
+      "required_roles_total": 4,
+      "role_bindings": {
+        "M0006-R0": "Z062_0",
+        "M0006-R1": "Z062_1",
+        "M0006-R2": "Z062_2",
+        "M0006-R3": "Z062_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0006",
+      "target_task_id": "SEM8-T-062-27448cb9"
+    },
+    {
+      "essential_relations_preserved": 4,
+      "essential_relations_total": 4,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 4,
+      "required_roles_total": 4,
+      "role_bindings": {
+        "M0007-R0": "Z063_0",
+        "M0007-R1": "Z063_1",
+        "M0007-R2": "Z063_2",
+        "M0007-R3": "Z063_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0007",
+      "target_task_id": "SEM8-T-063-b1c71626"
+    },
+    {
+      "essential_relations_preserved": 4,
+      "essential_relations_total": 4,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 4,
+      "required_roles_total": 4,
+      "role_bindings": {
+        "M0002-R0": "Z064_0",
+        "M0002-R1": "Z064_1",
+        "M0002-R2": "Z064_2",
+        "M0002-R3": "Z064_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0002",
+      "target_task_id": "SEM8-T-064-8ceea377"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0004-R0": "Z064_4",
+        "M0004-R1": "Z064_0",
+        "M0004-R2": "Z064_5",
+        "M0004-R3": "Z064_2",
+        "M0004-R4": "Z064_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0004",
+      "target_task_id": "SEM8-T-064-8ceea377"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0001-R0": "Z065_0",
+        "M0001-R1": "Z065_1",
+        "M0001-R2": "Z065_2",
+        "M0001-R3": "Z065_3",
+        "M0001-R4": "Z065_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0001",
+      "target_task_id": "SEM8-T-065-769289fc"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0008-R0": "Z066_0",
+        "M0008-R1": "Z066_1",
+        "M0008-R2": "Z066_2",
+        "M0008-R3": "Z066_3",
+        "M0008-R4": "Z066_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0008",
+      "target_task_id": "SEM8-T-066-b7abef45"
+    },
+    {
+      "essential_relations_preserved": 4,
+      "essential_relations_total": 4,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 4,
+      "required_roles_total": 4,
+      "role_bindings": {
+        "M0006-R0": "Z067_0",
+        "M0006-R1": "Z067_1",
+        "M0006-R2": "Z067_2",
+        "M0006-R3": "Z067_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0006",
+      "target_task_id": "SEM8-T-067-a25a4622"
+    },
+    {
+      "essential_relations_preserved": 4,
+      "essential_relations_total": 4,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 4,
+      "required_roles_total": 4,
+      "role_bindings": {
+        "M0007-R0": "Z068_0",
+        "M0007-R1": "Z068_1",
+        "M0007-R2": "Z068_2",
+        "M0007-R3": "Z068_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0007",
+      "target_task_id": "SEM8-T-068-f0b6efa3"
+    },
+    {
+      "essential_relations_preserved": 4,
+      "essential_relations_total": 4,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 4,
+      "required_roles_total": 4,
+      "role_bindings": {
+        "M0002-R0": "Z069_0",
+        "M0002-R1": "Z069_1",
+        "M0002-R2": "Z069_2",
+        "M0002-R3": "Z069_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0002",
+      "target_task_id": "SEM8-T-069-db865018"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0004-R0": "Z069_4",
+        "M0004-R1": "Z069_0",
+        "M0004-R2": "Z069_5",
+        "M0004-R3": "Z069_2",
+        "M0004-R4": "Z069_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0004",
+      "target_task_id": "SEM8-T-069-db865018"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0001-R0": "Z070_0",
+        "M0001-R1": "Z070_1",
+        "M0001-R2": "Z070_2",
+        "M0001-R3": "Z070_3",
+        "M0001-R4": "Z070_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0001",
+      "target_task_id": "SEM8-T-070-85f8e811"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0008-R0": "Z071_0",
+        "M0008-R1": "Z071_1",
+        "M0008-R2": "Z071_2",
+        "M0008-R3": "Z071_3",
+        "M0008-R4": "Z071_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0008",
+      "target_task_id": "SEM8-T-071-e660415e"
+    },
+    {
+      "essential_relations_preserved": 4,
+      "essential_relations_total": 4,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 4,
+      "required_roles_total": 4,
+      "role_bindings": {
+        "M0006-R0": "Z072_0",
+        "M0006-R1": "Z072_1",
+        "M0006-R2": "Z072_2",
+        "M0006-R3": "Z072_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0006",
+      "target_task_id": "SEM8-T-072-015dc00f"
+    },
+    {
+      "essential_relations_preserved": 4,
+      "essential_relations_total": 4,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 4,
+      "required_roles_total": 4,
+      "role_bindings": {
+        "M0007-R0": "Z073_0",
+        "M0007-R1": "Z073_1",
+        "M0007-R2": "Z073_2",
+        "M0007-R3": "Z073_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0007",
+      "target_task_id": "SEM8-T-073-1358a774"
+    },
+    {
+      "essential_relations_preserved": 4,
+      "essential_relations_total": 4,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 4,
+      "required_roles_total": 4,
+      "role_bindings": {
+        "M0002-R0": "Z074_0",
+        "M0002-R1": "Z074_1",
+        "M0002-R2": "Z074_2",
+        "M0002-R3": "Z074_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0002",
+      "target_task_id": "SEM8-T-074-6838e31d"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0004-R0": "Z074_4",
+        "M0004-R1": "Z074_0",
+        "M0004-R2": "Z074_5",
+        "M0004-R3": "Z074_2",
+        "M0004-R4": "Z074_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0004",
+      "target_task_id": "SEM8-T-074-6838e31d"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0001-R0": "Z075_0",
+        "M0001-R1": "Z075_1",
+        "M0001-R2": "Z075_2",
+        "M0001-R3": "Z075_3",
+        "M0001-R4": "Z075_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0001",
+      "target_task_id": "SEM8-T-075-0d9163da"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0008-R0": "Z076_0",
+        "M0008-R1": "Z076_1",
+        "M0008-R2": "Z076_2",
+        "M0008-R3": "Z076_3",
+        "M0008-R4": "Z076_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0008",
+      "target_task_id": "SEM8-T-076-64b320bb"
+    },
+    {
+      "essential_relations_preserved": 4,
+      "essential_relations_total": 4,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 4,
+      "required_roles_total": 4,
+      "role_bindings": {
+        "M0006-R0": "Z077_0",
+        "M0006-R1": "Z077_1",
+        "M0006-R2": "Z077_2",
+        "M0006-R3": "Z077_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0006",
+      "target_task_id": "SEM8-T-077-0c050c10"
+    },
+    {
+      "essential_relations_preserved": 4,
+      "essential_relations_total": 4,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 4,
+      "required_roles_total": 4,
+      "role_bindings": {
+        "M0007-R0": "Z078_0",
+        "M0007-R1": "Z078_1",
+        "M0007-R2": "Z078_2",
+        "M0007-R3": "Z078_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0007",
+      "target_task_id": "SEM8-T-078-57798c69"
+    },
+    {
+      "essential_relations_preserved": 4,
+      "essential_relations_total": 4,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 4,
+      "required_roles_total": 4,
+      "role_bindings": {
+        "M0002-R0": "Z079_0",
+        "M0002-R1": "Z079_1",
+        "M0002-R2": "Z079_2",
+        "M0002-R3": "Z079_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0002",
+      "target_task_id": "SEM8-T-079-70e34996"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0004-R0": "Z079_4",
+        "M0004-R1": "Z079_0",
+        "M0004-R2": "Z079_5",
+        "M0004-R3": "Z079_2",
+        "M0004-R4": "Z079_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0004",
+      "target_task_id": "SEM8-T-079-70e34996"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0001-R0": "Z080_0",
+        "M0001-R1": "Z080_1",
+        "M0001-R2": "Z080_2",
+        "M0001-R3": "Z080_3",
+        "M0001-R4": "Z080_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0001",
+      "target_task_id": "SEM8-T-080-2a255da7"
+    },
+    {
+      "essential_relations_preserved": 4,
+      "essential_relations_total": 4,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 4,
+      "required_roles_total": 4,
+      "role_bindings": {
+        "M0002-R0": "Z081_0",
+        "M0002-R1": "Z081_1",
+        "M0002-R2": "Z081_2",
+        "M0002-R3": "Z081_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0002",
+      "target_task_id": "SEM8-T-081-c1fa39ec"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0008-R0": "Z082_0",
+        "M0008-R1": "Z082_1",
+        "M0008-R2": "Z082_2",
+        "M0008-R3": "Z082_3",
+        "M0008-R4": "Z082_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0008",
+      "target_task_id": "SEM8-T-082-6314cff5"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0005-R0": "Z083_0",
+        "M0005-R1": "Z083_1",
+        "M0005-R2": "Z083_2",
+        "M0005-R3": "Z083_3",
+        "M0005-R4": "Z083_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0005",
+      "target_task_id": "SEM8-T-083-ea44ce92"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0001-R0": "Z084_0",
+        "M0001-R1": "Z084_1",
+        "M0001-R2": "Z084_2",
+        "M0001-R3": "Z084_3",
+        "M0001-R4": "Z084_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0001",
+      "target_task_id": "SEM8-T-084-01ad02d3"
+    },
+    {
+      "essential_relations_preserved": 4,
+      "essential_relations_total": 4,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 4,
+      "required_roles_total": 4,
+      "role_bindings": {
+        "M0002-R0": "Z085_0",
+        "M0002-R1": "Z085_1",
+        "M0002-R2": "Z085_2",
+        "M0002-R3": "Z085_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0002",
+      "target_task_id": "SEM8-T-085-aff62d08"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0008-R0": "Z086_0",
+        "M0008-R1": "Z086_1",
+        "M0008-R2": "Z086_2",
+        "M0008-R3": "Z086_3",
+        "M0008-R4": "Z086_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0008",
+      "target_task_id": "SEM8-T-086-1e3cd9c1"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0005-R0": "Z087_0",
+        "M0005-R1": "Z087_1",
+        "M0005-R2": "Z087_2",
+        "M0005-R3": "Z087_3",
+        "M0005-R4": "Z087_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0005",
+      "target_task_id": "SEM8-T-087-8b9a0ece"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0001-R0": "Z088_0",
+        "M0001-R1": "Z088_1",
+        "M0001-R2": "Z088_2",
+        "M0001-R3": "Z088_3",
+        "M0001-R4": "Z088_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0001",
+      "target_task_id": "SEM8-T-088-baf8dc3f"
+    },
+    {
+      "essential_relations_preserved": 4,
+      "essential_relations_total": 4,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 4,
+      "required_roles_total": 4,
+      "role_bindings": {
+        "M0002-R0": "Z089_0",
+        "M0002-R1": "Z089_1",
+        "M0002-R2": "Z089_2",
+        "M0002-R3": "Z089_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0002",
+      "target_task_id": "SEM8-T-089-64222164"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0008-R0": "Z090_0",
+        "M0008-R1": "Z090_1",
+        "M0008-R2": "Z090_2",
+        "M0008-R3": "Z090_3",
+        "M0008-R4": "Z090_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0008",
+      "target_task_id": "SEM8-T-090-b3c815cd"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0005-R0": "Z091_0",
+        "M0005-R1": "Z091_1",
+        "M0005-R2": "Z091_2",
+        "M0005-R3": "Z091_3",
+        "M0005-R4": "Z091_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0005",
+      "target_task_id": "SEM8-T-091-70f8664a"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0001-R0": "Z092_0",
+        "M0001-R1": "Z092_1",
+        "M0001-R2": "Z092_2",
+        "M0001-R3": "Z092_3",
+        "M0001-R4": "Z092_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0001",
+      "target_task_id": "SEM8-T-092-d8d9f5eb"
+    },
+    {
+      "essential_relations_preserved": 4,
+      "essential_relations_total": 4,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 4,
+      "required_roles_total": 4,
+      "role_bindings": {
+        "M0002-R0": "Z093_0",
+        "M0002-R1": "Z093_1",
+        "M0002-R2": "Z093_2",
+        "M0002-R3": "Z093_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0002",
+      "target_task_id": "SEM8-T-093-766e9300"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0008-R0": "Z094_0",
+        "M0008-R1": "Z094_1",
+        "M0008-R2": "Z094_2",
+        "M0008-R3": "Z094_3",
+        "M0008-R4": "Z094_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0008",
+      "target_task_id": "SEM8-T-094-0c3d3019"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0005-R0": "Z095_0",
+        "M0005-R1": "Z095_1",
+        "M0005-R2": "Z095_2",
+        "M0005-R3": "Z095_3",
+        "M0005-R4": "Z095_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0005",
+      "target_task_id": "SEM8-T-095-0a227106"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0001-R0": "Z096_0",
+        "M0001-R1": "Z096_1",
+        "M0001-R2": "Z096_2",
+        "M0001-R3": "Z096_3",
+        "M0001-R4": "Z096_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0001",
+      "target_task_id": "SEM8-T-096-44ef9bd7"
+    },
+    {
+      "essential_relations_preserved": 4,
+      "essential_relations_total": 4,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 4,
+      "required_roles_total": 4,
+      "role_bindings": {
+        "M0002-R0": "Z097_0",
+        "M0002-R1": "Z097_1",
+        "M0002-R2": "Z097_2",
+        "M0002-R3": "Z097_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0002",
+      "target_task_id": "SEM8-T-097-5c2f3ddc"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0008-R0": "Z098_0",
+        "M0008-R1": "Z098_1",
+        "M0008-R2": "Z098_2",
+        "M0008-R3": "Z098_3",
+        "M0008-R4": "Z098_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0008",
+      "target_task_id": "SEM8-T-098-b21f14a5"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0005-R0": "Z099_0",
+        "M0005-R1": "Z099_1",
+        "M0005-R2": "Z099_2",
+        "M0005-R3": "Z099_3",
+        "M0005-R4": "Z099_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0005",
+      "target_task_id": "SEM8-T-099-77440b02"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0005-R0": "Z100_0",
+        "M0005-R1": "Z100_1",
+        "M0005-R2": "Z100_2",
+        "M0005-R3": "Z100_3",
+        "M0005-R4": "Z100_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0005",
+      "target_task_id": "SEM8-T-100-6f935a03"
+    },
+    {
+      "essential_relations_preserved": 4,
+      "essential_relations_total": 4,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 4,
+      "required_roles_total": 4,
+      "role_bindings": {
+        "M0006-R0": "Z101_0",
+        "M0006-R1": "Z101_1",
+        "M0006-R2": "Z101_2",
+        "M0006-R3": "Z101_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0006",
+      "target_task_id": "SEM8-T-101-d4f71df8"
+    },
+    {
+      "essential_relations_preserved": 4,
+      "essential_relations_total": 4,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 4,
+      "required_roles_total": 4,
+      "role_bindings": {
+        "M0007-R0": "Z102_0",
+        "M0007-R1": "Z102_1",
+        "M0007-R2": "Z102_2",
+        "M0007-R3": "Z102_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0007",
+      "target_task_id": "SEM8-T-102-6078ef71"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0008-R0": "Z103_0",
+        "M0008-R1": "Z103_1",
+        "M0008-R2": "Z103_2",
+        "M0008-R3": "Z103_3",
+        "M0008-R4": "Z103_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0008",
+      "target_task_id": "SEM8-T-103-d4ee503e"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0005-R0": "Z104_0",
+        "M0005-R1": "Z104_1",
+        "M0005-R2": "Z104_2",
+        "M0005-R3": "Z104_3",
+        "M0005-R4": "Z104_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0005",
+      "target_task_id": "SEM8-T-104-6804fc6f"
+    },
+    {
+      "essential_relations_preserved": 4,
+      "essential_relations_total": 4,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 4,
+      "required_roles_total": 4,
+      "role_bindings": {
+        "M0006-R0": "Z105_0",
+        "M0006-R1": "Z105_1",
+        "M0006-R2": "Z105_2",
+        "M0006-R3": "Z105_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0006",
+      "target_task_id": "SEM8-T-105-ecb46f54"
+    },
+    {
+      "essential_relations_preserved": 4,
+      "essential_relations_total": 4,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 4,
+      "required_roles_total": 4,
+      "role_bindings": {
+        "M0007-R0": "Z106_0",
+        "M0007-R1": "Z106_1",
+        "M0007-R2": "Z106_2",
+        "M0007-R3": "Z106_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0007",
+      "target_task_id": "SEM8-T-106-67aa2c7d"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0008-R0": "Z107_0",
+        "M0008-R1": "Z107_1",
+        "M0008-R2": "Z107_2",
+        "M0008-R3": "Z107_3",
+        "M0008-R4": "Z107_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0008",
+      "target_task_id": "SEM8-T-107-93539cba"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0005-R0": "Z108_0",
+        "M0005-R1": "Z108_1",
+        "M0005-R2": "Z108_2",
+        "M0005-R3": "Z108_3",
+        "M0005-R4": "Z108_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0005",
+      "target_task_id": "SEM8-T-108-b8d68f1b"
+    },
+    {
+      "essential_relations_preserved": 4,
+      "essential_relations_total": 4,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 4,
+      "required_roles_total": 4,
+      "role_bindings": {
+        "M0006-R0": "Z109_0",
+        "M0006-R1": "Z109_1",
+        "M0006-R2": "Z109_2",
+        "M0006-R3": "Z109_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0006",
+      "target_task_id": "SEM8-T-109-cf0cadf0"
+    },
+    {
+      "essential_relations_preserved": 4,
+      "essential_relations_total": 4,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 4,
+      "required_roles_total": 4,
+      "role_bindings": {
+        "M0007-R0": "Z110_0",
+        "M0007-R1": "Z110_1",
+        "M0007-R2": "Z110_2",
+        "M0007-R3": "Z110_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0007",
+      "target_task_id": "SEM8-T-110-547277c9"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0008-R0": "Z111_0",
+        "M0008-R1": "Z111_1",
+        "M0008-R2": "Z111_2",
+        "M0008-R3": "Z111_3",
+        "M0008-R4": "Z111_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0008",
+      "target_task_id": "SEM8-T-111-34c38c76"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0005-R0": "Z112_0",
+        "M0005-R1": "Z112_1",
+        "M0005-R2": "Z112_2",
+        "M0005-R3": "Z112_3",
+        "M0005-R4": "Z112_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0005",
+      "target_task_id": "SEM8-T-112-14985e07"
+    },
+    {
+      "essential_relations_preserved": 4,
+      "essential_relations_total": 4,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 4,
+      "required_roles_total": 4,
+      "role_bindings": {
+        "M0006-R0": "Z113_0",
+        "M0006-R1": "Z113_1",
+        "M0006-R2": "Z113_2",
+        "M0006-R3": "Z113_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0006",
+      "target_task_id": "SEM8-T-113-e7f895cc"
+    },
+    {
+      "essential_relations_preserved": 4,
+      "essential_relations_total": 4,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 4,
+      "required_roles_total": 4,
+      "role_bindings": {
+        "M0007-R0": "Z114_0",
+        "M0007-R1": "Z114_1",
+        "M0007-R2": "Z114_2",
+        "M0007-R3": "Z114_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0007",
+      "target_task_id": "SEM8-T-114-853dbd55"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0008-R0": "Z115_0",
+        "M0008-R1": "Z115_1",
+        "M0008-R2": "Z115_2",
+        "M0008-R3": "Z115_3",
+        "M0008-R4": "Z115_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0008",
+      "target_task_id": "SEM8-T-115-0f66fb72"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0005-R0": "Z116_0",
+        "M0005-R1": "Z116_1",
+        "M0005-R2": "Z116_2",
+        "M0005-R3": "Z116_3",
+        "M0005-R4": "Z116_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0005",
+      "target_task_id": "SEM8-T-116-1ec4f533"
+    },
+    {
+      "essential_relations_preserved": 4,
+      "essential_relations_total": 4,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 4,
+      "required_roles_total": 4,
+      "role_bindings": {
+        "M0006-R0": "Z117_0",
+        "M0006-R1": "Z117_1",
+        "M0006-R2": "Z117_2",
+        "M0006-R3": "Z117_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0006",
+      "target_task_id": "SEM8-T-117-0da022e8"
+    },
+    {
+      "essential_relations_preserved": 4,
+      "essential_relations_total": 4,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 4,
+      "required_roles_total": 4,
+      "role_bindings": {
+        "M0007-R0": "Z118_0",
+        "M0007-R1": "Z118_1",
+        "M0007-R2": "Z118_2",
+        "M0007-R3": "Z118_3"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0007",
+      "target_task_id": "SEM8-T-118-99b02921"
+    },
+    {
+      "essential_relations_preserved": 5,
+      "essential_relations_total": 5,
+      "relation_preservation_pass": true,
+      "required_roles_mapped": 5,
+      "required_roles_total": 5,
+      "role_bindings": {
+        "M0008-R0": "Z119_0",
+        "M0008-R1": "Z119_1",
+        "M0008-R2": "Z119_2",
+        "M0008-R3": "Z119_3",
+        "M0008-R4": "Z119_4"
+      },
+      "semantic_role_pass": true,
+      "source_mechanism_id": "M0008",
+      "target_task_id": "SEM8-T-119-ee3c05ae"
+    }
+  ],
+  "pass_rate": 1.0,
+  "relation_preservation_pass_rate": 1.0
+}

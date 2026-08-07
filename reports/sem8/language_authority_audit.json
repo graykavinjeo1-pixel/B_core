@@ -1,0 +1,7 @@
+{
+  "language_cortex_used_as_adapter_only": true,
+  "language_embedding_similarity_calls": 0,
+  "lexical_similarity_used_as_transfer_authority": 0,
+  "passed": true,
+  "raw_language_used_as_mechanism_proof": 0
+}

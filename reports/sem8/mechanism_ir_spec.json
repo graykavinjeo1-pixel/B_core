@@ -1,0 +1,40 @@
+{
+  "canonical_roles": [
+    "STATE",
+    "INPUT",
+    "TRANSFORM",
+    "CONDITION",
+    "ACCUMULATOR",
+    "BOUNDARY",
+    "TERMINATION",
+    "INVARIANT",
+    "RESOURCE",
+    "OBSERVATION",
+    "OUTPUT",
+    "STAGE"
+  ],
+  "fields": [
+    "roles",
+    "states",
+    "inputs",
+    "outputs",
+    "preconditions",
+    "invariants",
+    "transformations",
+    "dependency_edges",
+    "causal_edges",
+    "branch_conditions",
+    "termination_conditions",
+    "preserved_properties",
+    "consumed_properties",
+    "produced_properties",
+    "failure_conditions",
+    "provenance"
+  ],
+  "lexical_similarity_authoritative": false,
+  "name": "MechanismIR",
+  "purpose": "transferable domain-light view over immutable ConceptIR and derivations",
+  "replaces_concept_ir": false,
+  "surface_names_authoritative": false,
+  "target_verifier_final_authority": true
+}

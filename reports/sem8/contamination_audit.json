@@ -1,0 +1,20 @@
+{
+  "source_target_pair_labels_visible": 0,
+  "target_solutions_visible": 0,
+  "human_analogy_labels_visible": 0,
+  "lexical_similarity_used_as_transfer_authority": 0,
+  "external_transfer_solution_dependencies": 0,
+  "network_calls": 0,
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "recursive_source_mutations": 0,
+  "self_observe": true,
+  "self_measure": true,
+  "self_propose": false,
+  "self_apply": false,
+  "source_mutation": false,
+  "auto_patch": false,
+  "auto_commit": false,
+  "auto_push": false,
+  "passed": true
+}

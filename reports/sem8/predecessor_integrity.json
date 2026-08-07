@@ -1,0 +1,90 @@
+{
+  "passed": true,
+  "predecessor_commit": "a3cf50d3263e156bce7b81e6fa1198b5446898f3",
+  "canonical_manifest_sha256": "f973c6f860411573de3c6d040d10d29563ff0728d0cd59782354749321f77865",
+  "canonical_files_verified": 8,
+  "sem7_tree": {
+    "relative_path": "reports/sem7",
+    "files": 24,
+    "sha256": "ff41c4cf31950909ceaa386b17ee00eabfbc783b97edaccecc04601785f0e0ad",
+    "expected_sha256": "ff41c4cf31950909ceaa386b17ee00eabfbc783b97edaccecc04601785f0e0ad",
+    "passed": true
+  },
+  "sem7_run_id": "SEM7-RUN-0002",
+  "sem7_final_report_sha256": "d240a855c02726ed8e7b72c0601f39f46b5bdb43956d9e66148c91641bcad278",
+  "sem7_blind_manifest_sha256": "7d5d52399663e1186a6998fec6b9e859bd4795ad0d5d06dcedb3d74d9e118355",
+  "sem7_gates_verified": 13,
+  "sem7_failed_run_0001_preserved": true,
+  "sem7_failed_run_manifest_sha256": "1665aa208ef49e55a5a7baa4162125f164244e1ebf266beda78b487f5d9ed102",
+  "language_cortex_adapter_only": true,
+  "language_semantic_separation_pass": true,
+  "promoted_concepts_verified_immutable": [
+    "C000001",
+    "C000002",
+    "C000004",
+    "C000005",
+    "C000006",
+    "C000007",
+    "C000008",
+    "C000009",
+    "C000010",
+    "C000011",
+    "C000012"
+  ],
+  "predecessor_semantic_payload_hashes": [
+    {
+      "concept_id": "C000006",
+      "sha256": "ff1388941d703189e6685744aaba03496dfaab599b5e74a7734713b17a0615b7"
+    },
+    {
+      "concept_id": "C000007",
+      "sha256": "7dc2ffc0de4178bf6f85cea1c31869855e1334d57e4dbeef34084f8aad8261a5"
+    },
+    {
+      "concept_id": "C000008",
+      "sha256": "4c373088189966ca53f6e1e5301a376dce22a656d4707149f873a4a705dc8944"
+    },
+    {
+      "concept_id": "C000009",
+      "sha256": "f16d6f9356de42a680906ad0890d5c722dc7985dac43a9122eba4682fc07cb9b"
+    },
+    {
+      "concept_id": "C000010",
+      "sha256": "5a91e09fe6993fd64c9bbe4bd6fd12de25c70b825c19e483286d01b0439ba2ad"
+    },
+    {
+      "concept_id": "C000011",
+      "sha256": "84504f86f54b9a109a900082fd3a555936f854db1a95713f4dae67d9fe6e4040"
+    },
+    {
+      "concept_id": "C000012",
+      "sha256": "f20af5f8b570b6163aed44cd489e43dfc1e116ce02303363760cede4a4e3d960"
+    }
+  ],
+  "predecessor_semantic_hash_changes": 0,
+  "recursive_improvement_quarantine": {
+    "stage": "S0",
+    "mode": "OBSERVE_MEASURE_ONLY",
+    "observe_enabled": true,
+    "measure_enabled": true,
+    "proposal_generation_enabled": false,
+    "source_patching_enabled": false,
+    "sandbox_apply_enabled": false,
+    "auto_apply_enabled": false,
+    "auto_merge_enabled": false,
+    "auto_commit_enabled": false,
+    "auto_push_enabled": false,
+    "external_provider_repair_enabled": false,
+    "recursive_benchmark_mutation_enabled": false,
+    "network_enabled": false,
+    "external_llm_enabled": false
+  },
+  "self_observe": true,
+  "self_measure": true,
+  "self_propose": false,
+  "self_apply": false,
+  "source_mutation": false,
+  "auto_patch": false,
+  "auto_commit": false,
+  "auto_push": false
+}
