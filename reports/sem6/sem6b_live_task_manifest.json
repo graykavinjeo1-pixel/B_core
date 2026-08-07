@@ -1,0 +1,888 @@
+{
+  "run_id": "SEM6-RUN-0001",
+  "generator_version": "SEM6-LIVE-INTENT-GENERATOR-1.0.0",
+  "environment": "CONTROLLED_LIVE_B",
+  "seed_commitment_sha256": "c028db2695d464ce5c149c3d9cb85747a6c270ab0d82350be88d6dce947bd0f9",
+  "tasks": [
+    {
+      "task_id": "B-000-3c87301e",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "PROGRAMMING_API",
+      "active_problem": "Use the unfamiliar official definition i64::div_euclid in scope rust-std-i64 version 1.90 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "031c8f76b39829d5b626035a1f5edec5edb8d4f4cba95a777a66f88951c6e377",
+      "unknown_symbol": "i64::div_euclid",
+      "required_version": "1.90",
+      "required_scope": "rust-std-i64",
+      "input_types": [
+        "INT",
+        "INT"
+      ],
+      "output_type": "INT",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-001-21b7ed03",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "PROGRAMMING_API",
+      "active_problem": "Use the unfamiliar official definition i64::rem_euclid in scope rust-std-i64 version 1.90 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "b3270134835a39707c6fe49a7d9d9751116fd6c8c5e0e1dddbca02fed1f4f129",
+      "unknown_symbol": "i64::rem_euclid",
+      "required_version": "1.90",
+      "required_scope": "rust-std-i64",
+      "input_types": [
+        "INT",
+        "INT"
+      ],
+      "output_type": "INT",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-002-7e2ef694",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "PROGRAMMING_API",
+      "active_problem": "Use the unfamiliar official definition i64::midpoint in scope rust-std-i64 version 1.90 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "a0e7f6d99400b22db3e21145fffa5c14e9717f0b17df8e0e188bb611bc5e5b8c",
+      "unknown_symbol": "i64::midpoint",
+      "required_version": "1.90",
+      "required_scope": "rust-std-i64",
+      "input_types": [
+        "INT",
+        "INT"
+      ],
+      "output_type": "INT",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-003-86dce921",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "PROGRAMMING_API",
+      "active_problem": "Use the unfamiliar official definition i64::abs_diff in scope rust-std-i64 version 1.90 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "fee2251cbffa0531edee616a0c73a1b4caedc09bc86ee6c456041c793edc725a",
+      "unknown_symbol": "i64::abs_diff",
+      "required_version": "1.90",
+      "required_scope": "rust-std-i64",
+      "input_types": [
+        "INT",
+        "INT"
+      ],
+      "output_type": "INT",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-004-ef5004c2",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "PROTOCOL_SPECIFICATION",
+      "active_problem": "Use the unfamiliar official definition RFC4648-BASE64-ENCODED-LENGTH in scope rfc4648-base64 version RFC4648 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "31f9a96e145be9c8e68073ecfd8462ad0861137092cc9ca11340c2fc5655cb32",
+      "unknown_symbol": "RFC4648-BASE64-ENCODED-LENGTH",
+      "required_version": "RFC4648",
+      "required_scope": "rfc4648-base64",
+      "input_types": [
+        "INT"
+      ],
+      "output_type": "INT",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-005-8ad431ff",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "AMBIGUOUS_CONFLICT",
+      "active_problem": "Use the unfamiliar official definition RFC9110-STATUS-CLASS in scope http-status-code version RFC9110 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "eec9f699fd2ea09d1e10e287dd3c3807eff913522c42d7a158680506e968c45f",
+      "unknown_symbol": "RFC9110-STATUS-CLASS",
+      "required_version": "RFC9110",
+      "required_scope": "http-status-code",
+      "input_types": [
+        "INT"
+      ],
+      "output_type": "INT",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-006-cb30ade8",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "PROTOCOL_SPECIFICATION",
+      "active_problem": "Use the unfamiliar official definition RFC8259-JSON-WHITESPACE in scope json-grammar version RFC8259 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "6d0cea00de95c9ea27727a5dc5ceab369e47e7c6da135ba3b44bc47c80a41f86",
+      "unknown_symbol": "RFC8259-JSON-WHITESPACE",
+      "required_version": "RFC8259",
+      "required_scope": "json-grammar",
+      "input_types": [
+        "INT"
+      ],
+      "output_type": "BOOL",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-007-e3305175",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "PROTOCOL_SPECIFICATION",
+      "active_problem": "Use the unfamiliar official definition RFC3986-ASCII-DIGIT-UNRESERVED in scope uri-unreserved version RFC3986 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "24d1b07f0b1493c4a977530de626996c88aa142115b5ee6363c6ff1c557dd917",
+      "unknown_symbol": "RFC3986-ASCII-DIGIT-UNRESERVED",
+      "required_version": "RFC3986",
+      "required_scope": "uri-unreserved",
+      "input_types": [
+        "INT"
+      ],
+      "output_type": "BOOL",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-008-2735e3ce",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "MATHEMATICAL_FORMAL",
+      "active_problem": "Use the unfamiliar official definition DLMF-FLOOR-POSITIVE-QUOTIENT in scope real-floor-restricted-positive-rational version DLMF-1.2.4 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "eb9228fd5ae3744386fc65b31552b221d567af6c2a9a5fcebb795f9bd0b993a0",
+      "unknown_symbol": "DLMF-FLOOR-POSITIVE-QUOTIENT",
+      "required_version": "DLMF-1.2.4",
+      "required_scope": "real-floor-restricted-positive-rational",
+      "input_types": [
+        "INT",
+        "INT"
+      ],
+      "output_type": "INT",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-009-1c2e4df3",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "MATHEMATICAL_FORMAL",
+      "active_problem": "Use the unfamiliar official definition RFC4648-BASE64-PAD-COUNT in scope rfc4648-base64 version RFC4648 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "f0270eae1a107fdcb8e005d1206af7c8078dd5a59e1749f5ef4e544bebf6dde7",
+      "unknown_symbol": "RFC4648-BASE64-PAD-COUNT",
+      "required_version": "RFC4648",
+      "required_scope": "rfc4648-base64",
+      "input_types": [
+        "INT"
+      ],
+      "output_type": "INT",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-010-8247488c",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "PROGRAMMING_API",
+      "active_problem": "Use the unfamiliar official definition i64::div_euclid in scope rust-std-i64 version 1.90 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "031c8f76b39829d5b626035a1f5edec5edb8d4f4cba95a777a66f88951c6e377",
+      "unknown_symbol": "i64::div_euclid",
+      "required_version": "1.90",
+      "required_scope": "rust-std-i64",
+      "input_types": [
+        "INT",
+        "INT"
+      ],
+      "output_type": "INT",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-011-e64a9939",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "PROGRAMMING_API",
+      "active_problem": "Use the unfamiliar official definition i64::rem_euclid in scope rust-std-i64 version 1.90 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "b3270134835a39707c6fe49a7d9d9751116fd6c8c5e0e1dddbca02fed1f4f129",
+      "unknown_symbol": "i64::rem_euclid",
+      "required_version": "1.90",
+      "required_scope": "rust-std-i64",
+      "input_types": [
+        "INT",
+        "INT"
+      ],
+      "output_type": "INT",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-012-73aff172",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "PROGRAMMING_API",
+      "active_problem": "Use the unfamiliar official definition i64::midpoint in scope rust-std-i64 version 1.90 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "a0e7f6d99400b22db3e21145fffa5c14e9717f0b17df8e0e188bb611bc5e5b8c",
+      "unknown_symbol": "i64::midpoint",
+      "required_version": "1.90",
+      "required_scope": "rust-std-i64",
+      "input_types": [
+        "INT",
+        "INT"
+      ],
+      "output_type": "INT",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-013-71b15a07",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "PROGRAMMING_API",
+      "active_problem": "Use the unfamiliar official definition i64::abs_diff in scope rust-std-i64 version 1.90 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "fee2251cbffa0531edee616a0c73a1b4caedc09bc86ee6c456041c793edc725a",
+      "unknown_symbol": "i64::abs_diff",
+      "required_version": "1.90",
+      "required_scope": "rust-std-i64",
+      "input_types": [
+        "INT",
+        "INT"
+      ],
+      "output_type": "INT",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-014-c91296d0",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "PROTOCOL_SPECIFICATION",
+      "active_problem": "Use the unfamiliar official definition RFC4648-BASE64-ENCODED-LENGTH in scope rfc4648-base64 version RFC4648 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "31f9a96e145be9c8e68073ecfd8462ad0861137092cc9ca11340c2fc5655cb32",
+      "unknown_symbol": "RFC4648-BASE64-ENCODED-LENGTH",
+      "required_version": "RFC4648",
+      "required_scope": "rfc4648-base64",
+      "input_types": [
+        "INT"
+      ],
+      "output_type": "INT",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-015-16626595",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "AMBIGUOUS_CONFLICT",
+      "active_problem": "Use the unfamiliar official definition RFC9110-STATUS-CLASS in scope http-status-code version RFC9110 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "eec9f699fd2ea09d1e10e287dd3c3807eff913522c42d7a158680506e968c45f",
+      "unknown_symbol": "RFC9110-STATUS-CLASS",
+      "required_version": "RFC9110",
+      "required_scope": "http-status-code",
+      "input_types": [
+        "INT"
+      ],
+      "output_type": "INT",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-016-b9168de6",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "PROTOCOL_SPECIFICATION",
+      "active_problem": "Use the unfamiliar official definition RFC8259-JSON-WHITESPACE in scope json-grammar version RFC8259 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "6d0cea00de95c9ea27727a5dc5ceab369e47e7c6da135ba3b44bc47c80a41f86",
+      "unknown_symbol": "RFC8259-JSON-WHITESPACE",
+      "required_version": "RFC8259",
+      "required_scope": "json-grammar",
+      "input_types": [
+        "INT"
+      ],
+      "output_type": "BOOL",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-017-f9fd4f7b",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "PROTOCOL_SPECIFICATION",
+      "active_problem": "Use the unfamiliar official definition RFC3986-ASCII-DIGIT-UNRESERVED in scope uri-unreserved version RFC3986 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "24d1b07f0b1493c4a977530de626996c88aa142115b5ee6363c6ff1c557dd917",
+      "unknown_symbol": "RFC3986-ASCII-DIGIT-UNRESERVED",
+      "required_version": "RFC3986",
+      "required_scope": "uri-unreserved",
+      "input_types": [
+        "INT"
+      ],
+      "output_type": "BOOL",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-018-6c910fbc",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "MATHEMATICAL_FORMAL",
+      "active_problem": "Use the unfamiliar official definition DLMF-FLOOR-POSITIVE-QUOTIENT in scope real-floor-restricted-positive-rational version DLMF-1.2.4 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "eb9228fd5ae3744386fc65b31552b221d567af6c2a9a5fcebb795f9bd0b993a0",
+      "unknown_symbol": "DLMF-FLOOR-POSITIVE-QUOTIENT",
+      "required_version": "DLMF-1.2.4",
+      "required_scope": "real-floor-restricted-positive-rational",
+      "input_types": [
+        "INT",
+        "INT"
+      ],
+      "output_type": "INT",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-019-0f131fa9",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "MATHEMATICAL_FORMAL",
+      "active_problem": "Use the unfamiliar official definition RFC4648-BASE64-PAD-COUNT in scope rfc4648-base64 version RFC4648 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "f0270eae1a107fdcb8e005d1206af7c8078dd5a59e1749f5ef4e544bebf6dde7",
+      "unknown_symbol": "RFC4648-BASE64-PAD-COUNT",
+      "required_version": "RFC4648",
+      "required_scope": "rfc4648-base64",
+      "input_types": [
+        "INT"
+      ],
+      "output_type": "INT",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-020-db36922a",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "PROGRAMMING_API",
+      "active_problem": "Use the unfamiliar official definition i64::div_euclid in scope rust-std-i64 version 1.90 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "031c8f76b39829d5b626035a1f5edec5edb8d4f4cba95a777a66f88951c6e377",
+      "unknown_symbol": "i64::div_euclid",
+      "required_version": "1.90",
+      "required_scope": "rust-std-i64",
+      "input_types": [
+        "INT",
+        "INT"
+      ],
+      "output_type": "INT",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-021-fc3e0ddf",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "PROGRAMMING_API",
+      "active_problem": "Use the unfamiliar official definition i64::rem_euclid in scope rust-std-i64 version 1.90 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "b3270134835a39707c6fe49a7d9d9751116fd6c8c5e0e1dddbca02fed1f4f129",
+      "unknown_symbol": "i64::rem_euclid",
+      "required_version": "1.90",
+      "required_scope": "rust-std-i64",
+      "input_types": [
+        "INT",
+        "INT"
+      ],
+      "output_type": "INT",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-022-360e7f00",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "PROGRAMMING_API",
+      "active_problem": "Use the unfamiliar official definition i64::midpoint in scope rust-std-i64 version 1.90 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "a0e7f6d99400b22db3e21145fffa5c14e9717f0b17df8e0e188bb611bc5e5b8c",
+      "unknown_symbol": "i64::midpoint",
+      "required_version": "1.90",
+      "required_scope": "rust-std-i64",
+      "input_types": [
+        "INT",
+        "INT"
+      ],
+      "output_type": "INT",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-023-894c4edd",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "PROGRAMMING_API",
+      "active_problem": "Use the unfamiliar official definition i64::abs_diff in scope rust-std-i64 version 1.90 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "fee2251cbffa0531edee616a0c73a1b4caedc09bc86ee6c456041c793edc725a",
+      "unknown_symbol": "i64::abs_diff",
+      "required_version": "1.90",
+      "required_scope": "rust-std-i64",
+      "input_types": [
+        "INT",
+        "INT"
+      ],
+      "output_type": "INT",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-024-53995b0e",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "PROTOCOL_SPECIFICATION",
+      "active_problem": "Use the unfamiliar official definition RFC4648-BASE64-ENCODED-LENGTH in scope rfc4648-base64 version RFC4648 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "31f9a96e145be9c8e68073ecfd8462ad0861137092cc9ca11340c2fc5655cb32",
+      "unknown_symbol": "RFC4648-BASE64-ENCODED-LENGTH",
+      "required_version": "RFC4648",
+      "required_scope": "rfc4648-base64",
+      "input_types": [
+        "INT"
+      ],
+      "output_type": "INT",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-025-0d3c889b",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "AMBIGUOUS_CONFLICT",
+      "active_problem": "Use the unfamiliar official definition RFC9110-STATUS-CLASS in scope http-status-code version RFC9110 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "eec9f699fd2ea09d1e10e287dd3c3807eff913522c42d7a158680506e968c45f",
+      "unknown_symbol": "RFC9110-STATUS-CLASS",
+      "required_version": "RFC9110",
+      "required_scope": "http-status-code",
+      "input_types": [
+        "INT"
+      ],
+      "output_type": "INT",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-026-bca7cd94",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "PROTOCOL_SPECIFICATION",
+      "active_problem": "Use the unfamiliar official definition RFC8259-JSON-WHITESPACE in scope json-grammar version RFC8259 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "6d0cea00de95c9ea27727a5dc5ceab369e47e7c6da135ba3b44bc47c80a41f86",
+      "unknown_symbol": "RFC8259-JSON-WHITESPACE",
+      "required_version": "RFC8259",
+      "required_scope": "json-grammar",
+      "input_types": [
+        "INT"
+      ],
+      "output_type": "BOOL",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-027-e5f0de71",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "PROTOCOL_SPECIFICATION",
+      "active_problem": "Use the unfamiliar official definition RFC3986-ASCII-DIGIT-UNRESERVED in scope uri-unreserved version RFC3986 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "24d1b07f0b1493c4a977530de626996c88aa142115b5ee6363c6ff1c557dd917",
+      "unknown_symbol": "RFC3986-ASCII-DIGIT-UNRESERVED",
+      "required_version": "RFC3986",
+      "required_scope": "uri-unreserved",
+      "input_types": [
+        "INT"
+      ],
+      "output_type": "BOOL",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-028-11ae78da",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "MATHEMATICAL_FORMAL",
+      "active_problem": "Use the unfamiliar official definition DLMF-FLOOR-POSITIVE-QUOTIENT in scope real-floor-restricted-positive-rational version DLMF-1.2.4 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "eb9228fd5ae3744386fc65b31552b221d567af6c2a9a5fcebb795f9bd0b993a0",
+      "unknown_symbol": "DLMF-FLOOR-POSITIVE-QUOTIENT",
+      "required_version": "DLMF-1.2.4",
+      "required_scope": "real-floor-restricted-positive-rational",
+      "input_types": [
+        "INT",
+        "INT"
+      ],
+      "output_type": "INT",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-029-d92695cf",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "MATHEMATICAL_FORMAL",
+      "active_problem": "Use the unfamiliar official definition RFC4648-BASE64-PAD-COUNT in scope rfc4648-base64 version RFC4648 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "f0270eae1a107fdcb8e005d1206af7c8078dd5a59e1749f5ef4e544bebf6dde7",
+      "unknown_symbol": "RFC4648-BASE64-PAD-COUNT",
+      "required_version": "RFC4648",
+      "required_scope": "rfc4648-base64",
+      "input_types": [
+        "INT"
+      ],
+      "output_type": "INT",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-030-337bbc78",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "PROGRAMMING_API",
+      "active_problem": "Use the unfamiliar official definition i64::div_euclid in scope rust-std-i64 version 1.90 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "031c8f76b39829d5b626035a1f5edec5edb8d4f4cba95a777a66f88951c6e377",
+      "unknown_symbol": "i64::div_euclid",
+      "required_version": "1.90",
+      "required_scope": "rust-std-i64",
+      "input_types": [
+        "INT",
+        "INT"
+      ],
+      "output_type": "INT",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-031-231c9c75",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "PROGRAMMING_API",
+      "active_problem": "Use the unfamiliar official definition i64::rem_euclid in scope rust-std-i64 version 1.90 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "b3270134835a39707c6fe49a7d9d9751116fd6c8c5e0e1dddbca02fed1f4f129",
+      "unknown_symbol": "i64::rem_euclid",
+      "required_version": "1.90",
+      "required_scope": "rust-std-i64",
+      "input_types": [
+        "INT",
+        "INT"
+      ],
+      "output_type": "INT",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-032-32688abe",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "PROGRAMMING_API",
+      "active_problem": "Use the unfamiliar official definition i64::midpoint in scope rust-std-i64 version 1.90 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "a0e7f6d99400b22db3e21145fffa5c14e9717f0b17df8e0e188bb611bc5e5b8c",
+      "unknown_symbol": "i64::midpoint",
+      "required_version": "1.90",
+      "required_scope": "rust-std-i64",
+      "input_types": [
+        "INT",
+        "INT"
+      ],
+      "output_type": "INT",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-033-31f56523",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "PROGRAMMING_API",
+      "active_problem": "Use the unfamiliar official definition i64::abs_diff in scope rust-std-i64 version 1.90 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "fee2251cbffa0531edee616a0c73a1b4caedc09bc86ee6c456041c793edc725a",
+      "unknown_symbol": "i64::abs_diff",
+      "required_version": "1.90",
+      "required_scope": "rust-std-i64",
+      "input_types": [
+        "INT",
+        "INT"
+      ],
+      "output_type": "INT",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-034-4a2328fc",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "PROTOCOL_SPECIFICATION",
+      "active_problem": "Use the unfamiliar official definition RFC4648-BASE64-ENCODED-LENGTH in scope rfc4648-base64 version RFC4648 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "31f9a96e145be9c8e68073ecfd8462ad0861137092cc9ca11340c2fc5655cb32",
+      "unknown_symbol": "RFC4648-BASE64-ENCODED-LENGTH",
+      "required_version": "RFC4648",
+      "required_scope": "rfc4648-base64",
+      "input_types": [
+        "INT"
+      ],
+      "output_type": "INT",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-035-045b0491",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "AMBIGUOUS_CONFLICT",
+      "active_problem": "Use the unfamiliar official definition RFC9110-STATUS-CLASS in scope http-status-code version RFC9110 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "eec9f699fd2ea09d1e10e287dd3c3807eff913522c42d7a158680506e968c45f",
+      "unknown_symbol": "RFC9110-STATUS-CLASS",
+      "required_version": "RFC9110",
+      "required_scope": "http-status-code",
+      "input_types": [
+        "INT"
+      ],
+      "output_type": "INT",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-036-acba6072",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "PROTOCOL_SPECIFICATION",
+      "active_problem": "Use the unfamiliar official definition RFC8259-JSON-WHITESPACE in scope json-grammar version RFC8259 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "6d0cea00de95c9ea27727a5dc5ceab369e47e7c6da135ba3b44bc47c80a41f86",
+      "unknown_symbol": "RFC8259-JSON-WHITESPACE",
+      "required_version": "RFC8259",
+      "required_scope": "json-grammar",
+      "input_types": [
+        "INT"
+      ],
+      "output_type": "BOOL",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-037-f7e4a3d7",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "PROTOCOL_SPECIFICATION",
+      "active_problem": "Use the unfamiliar official definition RFC3986-ASCII-DIGIT-UNRESERVED in scope uri-unreserved version RFC3986 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "24d1b07f0b1493c4a977530de626996c88aa142115b5ee6363c6ff1c557dd917",
+      "unknown_symbol": "RFC3986-ASCII-DIGIT-UNRESERVED",
+      "required_version": "RFC3986",
+      "required_scope": "uri-unreserved",
+      "input_types": [
+        "INT"
+      ],
+      "output_type": "BOOL",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-038-e76eaea8",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "MATHEMATICAL_FORMAL",
+      "active_problem": "Use the unfamiliar official definition DLMF-FLOOR-POSITIVE-QUOTIENT in scope real-floor-restricted-positive-rational version DLMF-1.2.4 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "eb9228fd5ae3744386fc65b31552b221d567af6c2a9a5fcebb795f9bd0b993a0",
+      "unknown_symbol": "DLMF-FLOOR-POSITIVE-QUOTIENT",
+      "required_version": "DLMF-1.2.4",
+      "required_scope": "real-floor-restricted-positive-rational",
+      "input_types": [
+        "INT",
+        "INT"
+      ],
+      "output_type": "INT",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-039-08dd61e5",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "MATHEMATICAL_FORMAL",
+      "active_problem": "Use the unfamiliar official definition RFC4648-BASE64-PAD-COUNT in scope rfc4648-base64 version RFC4648 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "f0270eae1a107fdcb8e005d1206af7c8078dd5a59e1749f5ef4e544bebf6dde7",
+      "unknown_symbol": "RFC4648-BASE64-PAD-COUNT",
+      "required_version": "RFC4648",
+      "required_scope": "rfc4648-base64",
+      "input_types": [
+        "INT"
+      ],
+      "output_type": "INT",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-040-0c60e2f6",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "PROGRAMMING_API",
+      "active_problem": "Use the unfamiliar official definition i64::div_euclid in scope rust-std-i64 version 1.90 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "031c8f76b39829d5b626035a1f5edec5edb8d4f4cba95a777a66f88951c6e377",
+      "unknown_symbol": "i64::div_euclid",
+      "required_version": "1.90",
+      "required_scope": "rust-std-i64",
+      "input_types": [
+        "INT",
+        "INT"
+      ],
+      "output_type": "INT",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-041-48c5527b",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "PROGRAMMING_API",
+      "active_problem": "Use the unfamiliar official definition i64::rem_euclid in scope rust-std-i64 version 1.90 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "b3270134835a39707c6fe49a7d9d9751116fd6c8c5e0e1dddbca02fed1f4f129",
+      "unknown_symbol": "i64::rem_euclid",
+      "required_version": "1.90",
+      "required_scope": "rust-std-i64",
+      "input_types": [
+        "INT",
+        "INT"
+      ],
+      "output_type": "INT",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-042-b660cc2c",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "PROGRAMMING_API",
+      "active_problem": "Use the unfamiliar official definition i64::midpoint in scope rust-std-i64 version 1.90 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "a0e7f6d99400b22db3e21145fffa5c14e9717f0b17df8e0e188bb611bc5e5b8c",
+      "unknown_symbol": "i64::midpoint",
+      "required_version": "1.90",
+      "required_scope": "rust-std-i64",
+      "input_types": [
+        "INT",
+        "INT"
+      ],
+      "output_type": "INT",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-043-bd9cd659",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "PROGRAMMING_API",
+      "active_problem": "Use the unfamiliar official definition i64::abs_diff in scope rust-std-i64 version 1.90 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "fee2251cbffa0531edee616a0c73a1b4caedc09bc86ee6c456041c793edc725a",
+      "unknown_symbol": "i64::abs_diff",
+      "required_version": "1.90",
+      "required_scope": "rust-std-i64",
+      "input_types": [
+        "INT",
+        "INT"
+      ],
+      "output_type": "INT",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-044-d158841a",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "PROTOCOL_SPECIFICATION",
+      "active_problem": "Use the unfamiliar official definition RFC4648-BASE64-ENCODED-LENGTH in scope rfc4648-base64 version RFC4648 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "31f9a96e145be9c8e68073ecfd8462ad0861137092cc9ca11340c2fc5655cb32",
+      "unknown_symbol": "RFC4648-BASE64-ENCODED-LENGTH",
+      "required_version": "RFC4648",
+      "required_scope": "rfc4648-base64",
+      "input_types": [
+        "INT"
+      ],
+      "output_type": "INT",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-045-73bebef7",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "AMBIGUOUS_CONFLICT",
+      "active_problem": "Use the unfamiliar official definition RFC9110-STATUS-CLASS in scope http-status-code version RFC9110 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "eec9f699fd2ea09d1e10e287dd3c3807eff913522c42d7a158680506e968c45f",
+      "unknown_symbol": "RFC9110-STATUS-CLASS",
+      "required_version": "RFC9110",
+      "required_scope": "http-status-code",
+      "input_types": [
+        "INT"
+      ],
+      "output_type": "INT",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-046-43ea4600",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "PROTOCOL_SPECIFICATION",
+      "active_problem": "Use the unfamiliar official definition RFC8259-JSON-WHITESPACE in scope json-grammar version RFC8259 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "6d0cea00de95c9ea27727a5dc5ceab369e47e7c6da135ba3b44bc47c80a41f86",
+      "unknown_symbol": "RFC8259-JSON-WHITESPACE",
+      "required_version": "RFC8259",
+      "required_scope": "json-grammar",
+      "input_types": [
+        "INT"
+      ],
+      "output_type": "BOOL",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-047-03ac212d",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "PROTOCOL_SPECIFICATION",
+      "active_problem": "Use the unfamiliar official definition RFC3986-ASCII-DIGIT-UNRESERVED in scope uri-unreserved version RFC3986 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "24d1b07f0b1493c4a977530de626996c88aa142115b5ee6363c6ff1c557dd917",
+      "unknown_symbol": "RFC3986-ASCII-DIGIT-UNRESERVED",
+      "required_version": "RFC3986",
+      "required_scope": "uri-unreserved",
+      "input_types": [
+        "INT"
+      ],
+      "output_type": "BOOL",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-048-36e0aca6",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "MATHEMATICAL_FORMAL",
+      "active_problem": "Use the unfamiliar official definition DLMF-FLOOR-POSITIVE-QUOTIENT in scope real-floor-restricted-positive-rational version DLMF-1.2.4 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "eb9228fd5ae3744386fc65b31552b221d567af6c2a9a5fcebb795f9bd0b993a0",
+      "unknown_symbol": "DLMF-FLOOR-POSITIVE-QUOTIENT",
+      "required_version": "DLMF-1.2.4",
+      "required_scope": "real-floor-restricted-positive-rational",
+      "input_types": [
+        "INT",
+        "INT"
+      ],
+      "output_type": "INT",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    },
+    {
+      "task_id": "B-049-bd9ff16b",
+      "environment": "CONTROLLED_LIVE_B",
+      "domain": "MATHEMATICAL_FORMAL",
+      "active_problem": "Use the unfamiliar official definition RFC4648-BASE64-PAD-COUNT in scope rfc4648-base64 version RFC4648 to derive a result for hidden bounded inputs",
+      "active_problem_sha256": "f0270eae1a107fdcb8e005d1206af7c8078dd5a59e1749f5ef4e544bebf6dde7",
+      "unknown_symbol": "RFC4648-BASE64-PAD-COUNT",
+      "required_version": "RFC4648",
+      "required_scope": "rfc4648-base64",
+      "input_types": [
+        "INT"
+      ],
+      "output_type": "INT",
+      "demonstrations": [],
+      "target_solution_included": false,
+      "intent_frozen": true
+    }
+  ],
+  "expected_facts_included": false,
+  "relevant_source_ids_included": false,
+  "hidden_cases_included": false,
+  "target_solutions_included": false,
+  "manifest_sha256": "b47fa3d568a42ee04e4c5798671df290d8674e5ab14e25007520083fadf654b2"
+}

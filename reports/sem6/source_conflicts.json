@@ -1,0 +1,377 @@
+[
+  {
+    "conflict_id": "CONFLICT-A-070-47855f3c",
+    "symbol": "u_9d8384ed",
+    "source_ids": [
+      "DOC-A-070-OFFICIAL",
+      "DOC-A-070-STALE"
+    ],
+    "disagreement": "formal relations differ for the same lexical alias",
+    "authority_compared": true,
+    "versions_compared": true,
+    "scopes_compared": true,
+    "resolution": "selected highest-authority fact applicable to required version and scope",
+    "resolved": true,
+    "unresolved_hypotheses_preserved": 0
+  },
+  {
+    "conflict_id": "CONFLICT-A-071-06c64730",
+    "symbol": "u_69a629d1",
+    "source_ids": [
+      "DOC-A-071-OFFICIAL",
+      "DOC-A-071-STALE"
+    ],
+    "disagreement": "formal relations differ for the same lexical alias",
+    "authority_compared": true,
+    "versions_compared": true,
+    "scopes_compared": true,
+    "resolution": "selected highest-authority fact applicable to required version and scope",
+    "resolved": true,
+    "unresolved_hypotheses_preserved": 0
+  },
+  {
+    "conflict_id": "CONFLICT-A-072-67cd8fe4",
+    "symbol": "u_7371e075",
+    "source_ids": [
+      "DOC-A-072-OFFICIAL",
+      "DOC-A-072-STALE"
+    ],
+    "disagreement": "formal relations differ for the same lexical alias",
+    "authority_compared": true,
+    "versions_compared": true,
+    "scopes_compared": true,
+    "resolution": "selected highest-authority fact applicable to required version and scope",
+    "resolved": true,
+    "unresolved_hypotheses_preserved": 0
+  },
+  {
+    "conflict_id": "CONFLICT-A-073-68221010",
+    "symbol": "u_1ed0e131",
+    "source_ids": [
+      "DOC-A-073-OFFICIAL",
+      "DOC-A-073-STALE"
+    ],
+    "disagreement": "formal relations differ for the same lexical alias",
+    "authority_compared": true,
+    "versions_compared": true,
+    "scopes_compared": true,
+    "resolution": "selected highest-authority fact applicable to required version and scope",
+    "resolved": true,
+    "unresolved_hypotheses_preserved": 0
+  },
+  {
+    "conflict_id": "CONFLICT-A-074-9351cac4",
+    "symbol": "u_e6f221d5",
+    "source_ids": [
+      "DOC-A-074-OFFICIAL",
+      "DOC-A-074-STALE"
+    ],
+    "disagreement": "formal relations differ for the same lexical alias",
+    "authority_compared": true,
+    "versions_compared": true,
+    "scopes_compared": true,
+    "resolution": "selected highest-authority fact applicable to required version and scope",
+    "resolved": true,
+    "unresolved_hypotheses_preserved": 0
+  },
+  {
+    "conflict_id": "CONFLICT-A-075-42bcba38",
+    "symbol": "u_588cb839",
+    "source_ids": [
+      "DOC-A-075-OFFICIAL",
+      "DOC-A-075-STALE"
+    ],
+    "disagreement": "formal relations differ for the same lexical alias",
+    "authority_compared": true,
+    "versions_compared": true,
+    "scopes_compared": true,
+    "resolution": "selected highest-authority fact applicable to required version and scope",
+    "resolved": true,
+    "unresolved_hypotheses_preserved": 0
+  },
+  {
+    "conflict_id": "CONFLICT-A-076-4b41b5a4",
+    "symbol": "u_c1845335",
+    "source_ids": [
+      "DOC-A-076-OFFICIAL",
+      "DOC-A-076-STALE"
+    ],
+    "disagreement": "formal relations differ for the same lexical alias",
+    "authority_compared": true,
+    "versions_compared": true,
+    "scopes_compared": true,
+    "resolution": "selected highest-authority fact applicable to required version and scope",
+    "resolved": true,
+    "unresolved_hypotheses_preserved": 0
+  },
+  {
+    "conflict_id": "CONFLICT-A-077-55c2f718",
+    "symbol": "u_996cd399",
+    "source_ids": [
+      "DOC-A-077-OFFICIAL",
+      "DOC-A-077-STALE"
+    ],
+    "disagreement": "formal relations differ for the same lexical alias",
+    "authority_compared": true,
+    "versions_compared": true,
+    "scopes_compared": true,
+    "resolution": "selected highest-authority fact applicable to required version and scope",
+    "resolved": true,
+    "unresolved_hypotheses_preserved": 0
+  },
+  {
+    "conflict_id": "CONFLICT-A-078-87a9014c",
+    "symbol": "u_9774adbd",
+    "source_ids": [
+      "DOC-A-078-OFFICIAL",
+      "DOC-A-078-STALE"
+    ],
+    "disagreement": "formal relations differ for the same lexical alias",
+    "authority_compared": true,
+    "versions_compared": true,
+    "scopes_compared": true,
+    "resolution": "selected highest-authority fact applicable to required version and scope",
+    "resolved": true,
+    "unresolved_hypotheses_preserved": 0
+  },
+  {
+    "conflict_id": "CONFLICT-A-079-9ff1e3f8",
+    "symbol": "u_cc57def9",
+    "source_ids": [
+      "DOC-A-079-OFFICIAL",
+      "DOC-A-079-STALE"
+    ],
+    "disagreement": "formal relations differ for the same lexical alias",
+    "authority_compared": true,
+    "versions_compared": true,
+    "scopes_compared": true,
+    "resolution": "selected highest-authority fact applicable to required version and scope",
+    "resolved": true,
+    "unresolved_hypotheses_preserved": 0
+  },
+  {
+    "conflict_id": "CONFLICT-A-080-182e202c",
+    "symbol": "u_1a90031d",
+    "source_ids": [
+      "DOC-A-080-OFFICIAL",
+      "DOC-A-080-STALE"
+    ],
+    "disagreement": "formal relations differ for the same lexical alias",
+    "authority_compared": true,
+    "versions_compared": true,
+    "scopes_compared": true,
+    "resolution": "selected highest-authority fact applicable to required version and scope",
+    "resolved": true,
+    "unresolved_hypotheses_preserved": 0
+  },
+  {
+    "conflict_id": "CONFLICT-A-081-ad417920",
+    "symbol": "u_0a674501",
+    "source_ids": [
+      "DOC-A-081-OFFICIAL",
+      "DOC-A-081-STALE"
+    ],
+    "disagreement": "formal relations differ for the same lexical alias",
+    "authority_compared": true,
+    "versions_compared": true,
+    "scopes_compared": true,
+    "resolution": "selected highest-authority fact applicable to required version and scope",
+    "resolved": true,
+    "unresolved_hypotheses_preserved": 0
+  },
+  {
+    "conflict_id": "CONFLICT-A-082-1348ef0c",
+    "symbol": "u_059f487d",
+    "source_ids": [
+      "DOC-A-082-OFFICIAL",
+      "DOC-A-082-STALE"
+    ],
+    "disagreement": "formal relations differ for the same lexical alias",
+    "authority_compared": true,
+    "versions_compared": true,
+    "scopes_compared": true,
+    "resolution": "selected highest-authority fact applicable to required version and scope",
+    "resolved": true,
+    "unresolved_hypotheses_preserved": 0
+  },
+  {
+    "conflict_id": "CONFLICT-A-083-34245a00",
+    "symbol": "u_13d33461",
+    "source_ids": [
+      "DOC-A-083-OFFICIAL",
+      "DOC-A-083-STALE"
+    ],
+    "disagreement": "formal relations differ for the same lexical alias",
+    "authority_compared": true,
+    "versions_compared": true,
+    "scopes_compared": true,
+    "resolution": "selected highest-authority fact applicable to required version and scope",
+    "resolved": true,
+    "unresolved_hypotheses_preserved": 0
+  },
+  {
+    "conflict_id": "CONFLICT-A-084-13e5f5b4",
+    "symbol": "u_85c3c205",
+    "source_ids": [
+      "DOC-A-084-OFFICIAL",
+      "DOC-A-084-STALE"
+    ],
+    "disagreement": "formal relations differ for the same lexical alias",
+    "authority_compared": true,
+    "versions_compared": true,
+    "scopes_compared": true,
+    "resolution": "selected highest-authority fact applicable to required version and scope",
+    "resolved": true,
+    "unresolved_hypotheses_preserved": 0
+  },
+  {
+    "conflict_id": "CONFLICT-A-085-4eb9eae0",
+    "symbol": "u_cf0c13c1",
+    "source_ids": [
+      "DOC-A-085-OFFICIAL",
+      "DOC-A-085-STALE"
+    ],
+    "disagreement": "formal relations differ for the same lexical alias",
+    "authority_compared": true,
+    "versions_compared": true,
+    "scopes_compared": true,
+    "resolution": "selected highest-authority fact applicable to required version and scope",
+    "resolved": true,
+    "unresolved_hypotheses_preserved": 0
+  },
+  {
+    "conflict_id": "CONFLICT-A-086-8bc77894",
+    "symbol": "u_fe2fab65",
+    "source_ids": [
+      "DOC-A-086-OFFICIAL",
+      "DOC-A-086-STALE"
+    ],
+    "disagreement": "formal relations differ for the same lexical alias",
+    "authority_compared": true,
+    "versions_compared": true,
+    "scopes_compared": true,
+    "resolution": "selected highest-authority fact applicable to required version and scope",
+    "resolved": true,
+    "unresolved_hypotheses_preserved": 0
+  },
+  {
+    "conflict_id": "CONFLICT-A-087-4d7b0b08",
+    "symbol": "u_ff4f28c9",
+    "source_ids": [
+      "DOC-A-087-OFFICIAL",
+      "DOC-A-087-STALE"
+    ],
+    "disagreement": "formal relations differ for the same lexical alias",
+    "authority_compared": true,
+    "versions_compared": true,
+    "scopes_compared": true,
+    "resolution": "selected highest-authority fact applicable to required version and scope",
+    "resolved": true,
+    "unresolved_hypotheses_preserved": 0
+  },
+  {
+    "conflict_id": "CONFLICT-A-088-d328ab74",
+    "symbol": "u_1f3184c5",
+    "source_ids": [
+      "DOC-A-088-OFFICIAL",
+      "DOC-A-088-STALE"
+    ],
+    "disagreement": "formal relations differ for the same lexical alias",
+    "authority_compared": true,
+    "versions_compared": true,
+    "scopes_compared": true,
+    "resolution": "selected highest-authority fact applicable to required version and scope",
+    "resolved": true,
+    "unresolved_hypotheses_preserved": 0
+  },
+  {
+    "conflict_id": "CONFLICT-A-089-939e0fe8",
+    "symbol": "u_e3646c29",
+    "source_ids": [
+      "DOC-A-089-OFFICIAL",
+      "DOC-A-089-STALE"
+    ],
+    "disagreement": "formal relations differ for the same lexical alias",
+    "authority_compared": true,
+    "versions_compared": true,
+    "scopes_compared": true,
+    "resolution": "selected highest-authority fact applicable to required version and scope",
+    "resolved": true,
+    "unresolved_hypotheses_preserved": 0
+  },
+  {
+    "conflict_id": "CONFLICT-B-005-8ad431ff",
+    "symbol": "RFC9110-STATUS-CLASS",
+    "source_ids": [
+      "LIVE-RFC9110",
+      "LIVE-RFC2616-STALE"
+    ],
+    "disagreement": "definitions differ in version applicability; obsolete hypothesis retained for audit",
+    "authority_compared": true,
+    "versions_compared": true,
+    "scopes_compared": true,
+    "resolution": "selected the authoritative definition matching the frozen target version and scope",
+    "resolved": true,
+    "unresolved_hypotheses_preserved": 0
+  },
+  {
+    "conflict_id": "CONFLICT-B-015-16626595",
+    "symbol": "RFC9110-STATUS-CLASS",
+    "source_ids": [
+      "LIVE-RFC9110",
+      "LIVE-RFC2616-STALE"
+    ],
+    "disagreement": "definitions differ in version applicability; obsolete hypothesis retained for audit",
+    "authority_compared": true,
+    "versions_compared": true,
+    "scopes_compared": true,
+    "resolution": "selected the authoritative definition matching the frozen target version and scope",
+    "resolved": true,
+    "unresolved_hypotheses_preserved": 0
+  },
+  {
+    "conflict_id": "CONFLICT-B-025-0d3c889b",
+    "symbol": "RFC9110-STATUS-CLASS",
+    "source_ids": [
+      "LIVE-RFC9110",
+      "LIVE-RFC2616-STALE"
+    ],
+    "disagreement": "definitions differ in version applicability; obsolete hypothesis retained for audit",
+    "authority_compared": true,
+    "versions_compared": true,
+    "scopes_compared": true,
+    "resolution": "selected the authoritative definition matching the frozen target version and scope",
+    "resolved": true,
+    "unresolved_hypotheses_preserved": 0
+  },
+  {
+    "conflict_id": "CONFLICT-B-035-045b0491",
+    "symbol": "RFC9110-STATUS-CLASS",
+    "source_ids": [
+      "LIVE-RFC9110",
+      "LIVE-RFC2616-STALE"
+    ],
+    "disagreement": "definitions differ in version applicability; obsolete hypothesis retained for audit",
+    "authority_compared": true,
+    "versions_compared": true,
+    "scopes_compared": true,
+    "resolution": "selected the authoritative definition matching the frozen target version and scope",
+    "resolved": true,
+    "unresolved_hypotheses_preserved": 0
+  },
+  {
+    "conflict_id": "CONFLICT-B-045-73bebef7",
+    "symbol": "RFC9110-STATUS-CLASS",
+    "source_ids": [
+      "LIVE-RFC9110",
+      "LIVE-RFC2616-STALE"
+    ],
+    "disagreement": "definitions differ in version applicability; obsolete hypothesis retained for audit",
+    "authority_compared": true,
+    "versions_compared": true,
+    "scopes_compared": true,
+    "resolution": "selected the authoritative definition matching the frozen target version and scope",
+    "resolved": true,
+    "unresolved_hypotheses_preserved": 0
+  }
+]

@@ -1,0 +1,13 @@
+{
+  "queries_issued": 175,
+  "documents_retrieved": 137,
+  "bytes_retrieved": 156280,
+  "authoritative_documents_used": 106,
+  "semantic_facts_extracted": 180,
+  "semantic_facts_accepted": 145,
+  "semantic_facts_rejected": 35,
+  "tasks_solved": 145,
+  "tasks_solved_per_query": 0.8285714285714286,
+  "useful_concepts_per_retrieved_kb": 0.013104683900691068,
+  "knowledge_gain_per_retrieved_kb": 0.9500895828001024
+}

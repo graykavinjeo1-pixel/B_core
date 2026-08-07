@@ -1,0 +1,3067 @@
+[
+  {
+    "task_id": "A-000-bbc6a904",
+    "source_id": "DOC-A-000-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "0ac3d88f7242c2355bc33a86aa7e68babc5ac13eec17bc74d323407075d5be96"
+    ]
+  },
+  {
+    "task_id": "A-001-39182b30",
+    "source_id": "DOC-A-001-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "efa98ba1cf6c22820bf26af925c6519c78b8b3b2f3a30e27407f28f230d37ba3"
+    ]
+  },
+  {
+    "task_id": "A-002-006133e4",
+    "source_id": "DOC-A-002-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "9a5e7879cee19ade037acec5f474e0c36e40bff853d7113e6d6e8492abf46b68"
+    ]
+  },
+  {
+    "task_id": "A-003-daa09158",
+    "source_id": "DOC-A-003-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "5a2799085e029846a3cf8820fdc8ffb665aa4f32a88e25e62d7ef7a07ca7c3fb"
+    ]
+  },
+  {
+    "task_id": "A-004-95ef6ec4",
+    "source_id": "DOC-A-004-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "2ffeb66ea5fd1677030b989f74c68d7dd4378ed02343c6dcf8a455620a5a9cde"
+    ]
+  },
+  {
+    "task_id": "A-005-e0e01e38",
+    "source_id": "DOC-A-005-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "604da437f9cdb43a2188476aa75915701ed22f2316fb733959f9dd42b3470386"
+    ]
+  },
+  {
+    "task_id": "A-006-1f8eb66c",
+    "source_id": "DOC-A-006-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "3ade5e569e78a89778bc470f7ba51b0d526f47f919bc74181a4d370a8c07ce33"
+    ]
+  },
+  {
+    "task_id": "A-007-4e505b18",
+    "source_id": "DOC-A-007-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "1afa5458c2c6645d26ded89c7b35ce7ae6db37c053f44339bb88b8f358e6c69d"
+    ]
+  },
+  {
+    "task_id": "A-008-56c0254c",
+    "source_id": "DOC-A-008-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "7363b71dc89ab712aa66cf7a041c2c14a4f83522ff1685eb42d16cefb7ae410a"
+    ]
+  },
+  {
+    "task_id": "A-009-1f1e2c40",
+    "source_id": "DOC-A-009-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "041a99b852bd8063c61b7cdef1eee19030a8b206d1fa9360edaaacc0a4d33a78"
+    ]
+  },
+  {
+    "task_id": "A-010-9c0f442c",
+    "source_id": "DOC-A-010-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "b5ac08ce0e1312dcb61ff460d619961fe5d2768dec0128fbcb9d674345c265b0"
+    ]
+  },
+  {
+    "task_id": "A-011-4c705d20",
+    "source_id": "DOC-A-011-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "d1f81ea128019826cdf7579c3208e4da8baa00ea73c92344670ec174a82bcfc4"
+    ]
+  },
+  {
+    "task_id": "A-012-8cacc6d4",
+    "source_id": "DOC-A-012-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "c0555f13dba8f99198f023c1b234e57522ed03f411edb47b43a4e3e3ffb5e713"
+    ]
+  },
+  {
+    "task_id": "A-013-ac7d3e00",
+    "source_id": "DOC-A-013-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "3c3cee2fa201f8e00574d0aa6be08e9ee942efcbd12ff5a504a00df2b418fcb2"
+    ]
+  },
+  {
+    "task_id": "A-014-ba1099b4",
+    "source_id": "DOC-A-014-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "e9038bd5d17221a84720f6c1b1a18fe820ef3b9edaaba0bb5c47959e6958704a"
+    ]
+  },
+  {
+    "task_id": "A-015-803d1a28",
+    "source_id": "DOC-A-015-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "ef984990bf147cef002302f9d5ce3552517d075370181ae386d9bb5f57f10af1"
+    ]
+  },
+  {
+    "task_id": "A-016-597c1c94",
+    "source_id": "DOC-A-016-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "f0f4fadbe44b276559e463e1cd92cc2a98f0af349d06f40f7d4ecf433e877217"
+    ]
+  },
+  {
+    "task_id": "A-017-ad456f08",
+    "source_id": "DOC-A-017-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "6c1e146104bd3c06c8955dec0a2820cdc157949a328441c2d89bc68d632ccf4f"
+    ]
+  },
+  {
+    "task_id": "A-018-e10a7a3c",
+    "source_id": "DOC-A-018-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "2005fa279449d052a062973085dd02d7cec90ef65b1ea03d4bc7ac7f29abe9bf"
+    ]
+  },
+  {
+    "task_id": "A-019-f35273e8",
+    "source_id": "DOC-A-019-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "19c4f3a147021a983d8af32a7f3d6fc54f23b1dd6b03a6d1ca39eddf5faf7886"
+    ]
+  },
+  {
+    "task_id": "A-020-55cc311c",
+    "source_id": "DOC-A-020-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "e0db86a99f01f9692a0401b0cad546b6cabe79583d4b948c9c4d5bd3c9e44e49"
+    ]
+  },
+  {
+    "task_id": "A-021-88dcfb10",
+    "source_id": "DOC-A-021-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "8952fa347e774821d486c1902d68b3fe2967ff59a8d97658e3cd53517fe19d5f"
+    ]
+  },
+  {
+    "task_id": "A-022-ef3f97fc",
+    "source_id": "DOC-A-022-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "3329ac2dec73ebba8f4c3e2a5474f4daa0a07739cb6583e34912a14a50d53efc"
+    ]
+  },
+  {
+    "task_id": "A-023-aacef3f0",
+    "source_id": "DOC-A-023-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "c5521dbf53a581b36a9b91c2408533bd8b710aadbb3b76ba3824b2385c3bbf4e"
+    ]
+  },
+  {
+    "task_id": "A-024-741d70a4",
+    "source_id": "DOC-A-024-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "1fc5859045825b5ee8562005d4648b798aebf6b4c78da5edf313cf1f7677be27"
+    ]
+  },
+  {
+    "task_id": "A-025-0ecf9cd0",
+    "source_id": "DOC-A-025-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "834f9319e04e9e8ada15b8293659cbc9c658603c13435f639fc5fcb8bb352d74"
+    ]
+  },
+  {
+    "task_id": "A-026-fcf88b84",
+    "source_id": "DOC-A-026-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "d64ac05113c91ac01849badfdd6c68a6cfde5a74423fc8525629dd084e595df1"
+    ]
+  },
+  {
+    "task_id": "A-027-12a96ef8",
+    "source_id": "DOC-A-027-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "29563a0582b9fb8f2584ace324e5a97d0ee7f6a90fc50ad3d40df90304a5dcf5"
+    ]
+  },
+  {
+    "task_id": "A-028-53ef5664",
+    "source_id": "DOC-A-028-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "2d303444fd559a61eca15b6993160de4209fcd154901e4a3618fe844d3518bc5"
+    ]
+  },
+  {
+    "task_id": "A-029-89488bd8",
+    "source_id": "DOC-A-029-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "c857978a2b49d1e528da6304fd17a7dd51add11c984cce551cc38375eb11698c"
+    ]
+  },
+  {
+    "task_id": "A-030-8d674a0c",
+    "source_id": "DOC-A-030-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "3ade713ec9768cf88013c6586d03db8bfd98d92410845ee179851c0bb571d0ea"
+    ]
+  },
+  {
+    "task_id": "A-031-d5c058b8",
+    "source_id": "DOC-A-031-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "7c01d0f2b634c2886d843849b5dcbe19052b350557fae222f48facea64a4f79c"
+    ]
+  },
+  {
+    "task_id": "A-032-e0a748ec",
+    "source_id": "DOC-A-032-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "6c13466643ffece30412addb1fad8c041817ad3acd9c8c5c81a01b06bc026585"
+    ]
+  },
+  {
+    "task_id": "A-033-949a15e0",
+    "source_id": "DOC-A-033-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "31ff34cf276bbf2626e2f41326ce1c7bdf41f4f2cb666c8f756d01035f990e23"
+    ]
+  },
+  {
+    "task_id": "A-034-4a2cf7cc",
+    "source_id": "DOC-A-034-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "5e0a247e31db093c935c1f26f4a795b9edd38d55a6f9534db7bd76c034043597"
+    ]
+  },
+  {
+    "task_id": "A-035-b839d6c0",
+    "source_id": "DOC-A-035-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "ca1cdf60b24d59e78ccd5adaaec4fb4fd0878eed19573b832b04b2783d55dfb8"
+    ]
+  },
+  {
+    "task_id": "A-036-0af5a674",
+    "source_id": "DOC-A-036-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "ad2a269352153885121c5804f96708ad6b45842e4144d5f56938bcc37bfe45b8"
+    ]
+  },
+  {
+    "task_id": "A-037-d83c47a0",
+    "source_id": "DOC-A-037-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "443c9cd695fdc26b119e313aee34d4698e58e44b356e1e19b85b9b22ef9d0d8b"
+    ]
+  },
+  {
+    "task_id": "A-038-76760954",
+    "source_id": "DOC-A-038-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "1d8db4686c0e2987fdbc65a8122ae79475c93d4e2c4fe2e0d34f0062c7379ad3"
+    ]
+  },
+  {
+    "task_id": "A-039-a1728fc8",
+    "source_id": "DOC-A-039-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "c111b6323611b044335d9f68b2402a0718723e8f61ec1dcf5a909603aef0895c"
+    ]
+  },
+  {
+    "task_id": "A-040-87261c34",
+    "source_id": "DOC-A-040-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "8d59d9c6520307dcd6037e3e137ec18b5e1c2897a56ebeb2b98fb48c6d389cbb"
+    ]
+  },
+  {
+    "task_id": "A-041-90f674a8",
+    "source_id": "DOC-A-041-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "e9a7a5361f34c87969a6b682ab024c93f72a3011cdb1f87ffac64ff867b21d0a"
+    ]
+  },
+  {
+    "task_id": "A-042-37e225dc",
+    "source_id": "DOC-A-042-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "9f3ad4e20dfe4e86aad40f7de3be2058f1c0cdb6809fe8846a15696027818e47"
+    ]
+  },
+  {
+    "task_id": "A-043-5e270988",
+    "source_id": "DOC-A-043-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "41e1b93e69f6cab011e4d247c08864ff9957c7a47a9e5c28720c789cc150cb38"
+    ]
+  },
+  {
+    "task_id": "A-044-8f0e6cbc",
+    "source_id": "DOC-A-044-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "1550d54ae198ae6c13d0de5f6b417db2b206e1e8233791d62f8334bb8aa1aa57"
+    ]
+  },
+  {
+    "task_id": "A-045-96427cb0",
+    "source_id": "DOC-A-045-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "1c867e3206c145c69c5ad802ab077f32142ecf9a70c19c17e6a4d1545ab21002"
+    ]
+  },
+  {
+    "task_id": "A-046-0914639c",
+    "source_id": "DOC-A-046-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "1a256ea345090f3b22d7188c7087f0435b5d30c8e1a5112eebd913eaf4b95ecd"
+    ]
+  },
+  {
+    "task_id": "A-047-451e0590",
+    "source_id": "DOC-A-047-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "98485b7f5088191274563c991eef9ef76bf7720cf4dd7ccaa809014acd783cf8"
+    ]
+  },
+  {
+    "task_id": "A-048-d2d26844",
+    "source_id": "DOC-A-048-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "1249ab8e4d85f79650cd82026d9cdc2ac76e9f85844767b206396fdeeaf82079"
+    ]
+  },
+  {
+    "task_id": "A-049-95b03e70",
+    "source_id": "DOC-A-049-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "752e08d2289da49b49333ffb3211455e8c466405854636cfdb28c5c9bcfbaaa0"
+    ]
+  },
+  {
+    "task_id": "A-050-9ca61324",
+    "source_id": "DOC-A-050-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "94478d613f72420429cf5ca9f4df44a881c173aa2542fc070a96f05eab185f91"
+    ]
+  },
+  {
+    "task_id": "A-051-78e57c98",
+    "source_id": "DOC-A-051-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "ff0738514df650daa982a705f9a9dab33f0a82913c82d4e69f9f83c2a8733851"
+    ]
+  },
+  {
+    "task_id": "A-052-9dbd6e04",
+    "source_id": "DOC-A-052-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "51d885843d33e187d68c20190740d0001c14acada88389357619b13fa36a04c2"
+    ]
+  },
+  {
+    "task_id": "A-053-fd1c2978",
+    "source_id": "DOC-A-053-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "822adf4a7dd96896b3ee695c10b789e9102e32a8417624609ac03b2466505a31"
+    ]
+  },
+  {
+    "task_id": "A-054-44780dac",
+    "source_id": "DOC-A-054-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "d33c637f5ec9c9c84d43d1e19c1081251794a4f0557a66cd7e62d1bb90e75943"
+    ]
+  },
+  {
+    "task_id": "A-055-f1d38658",
+    "source_id": "DOC-A-055-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "37c2fd7ba2cc4b3310c6520d119ac2115e3730f0920c37a10d4a839dce20b318"
+    ]
+  },
+  {
+    "task_id": "A-056-297e9c8c",
+    "source_id": "DOC-A-056-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "1369b81ffd34c5434677c0f6e7767f39176f58688f7ab1f93520922d769410e0"
+    ]
+  },
+  {
+    "task_id": "A-057-06832f80",
+    "source_id": "DOC-A-057-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "f7ddd5e6e50a6ebf3e4fa0078ecdc5ce3c5e43eaeb45b27a5c06dbd77f20dfe5"
+    ]
+  },
+  {
+    "task_id": "A-058-98f2db6c",
+    "source_id": "DOC-A-058-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "a31f4b9f4a50a1930edbbcf8a7ba86bb7fc3fec41d985b85edb54305a8b7d62c"
+    ]
+  },
+  {
+    "task_id": "A-059-26a88060",
+    "source_id": "DOC-A-059-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "a80f55fc04fb690511616c810081e649709457d4c5d12ef2210e429b6fef528d"
+    ]
+  },
+  {
+    "task_id": "A-060-0610b614",
+    "source_id": "DOC-A-060-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "fd71d7adea8f47d5b021257de90bb20f016bf768a606fd0d7a67cd10ebba0bac"
+    ]
+  },
+  {
+    "task_id": "A-061-b8d88140",
+    "source_id": "DOC-A-061-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "ec9359871363b481bea0f1d5e7d562b7d07169bae5bbe69b6f2422c8a9e22ce4"
+    ]
+  },
+  {
+    "task_id": "A-062-7e65a8f4",
+    "source_id": "DOC-A-062-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "3cd22c3ccac3e36c3245330ced325aa9a5b79082931e7581c32ea361ff130f6f"
+    ]
+  },
+  {
+    "task_id": "A-063-f20f3568",
+    "source_id": "DOC-A-063-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "f966f89819a6cf6f1ac6a1d0aed5c614531f8fe67476e9064db71bfd1fa82b05"
+    ]
+  },
+  {
+    "task_id": "A-064-bb124bd4",
+    "source_id": "DOC-A-064-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "bf46547d55d4b5f2f444d368bad0a00b3cc0834052c417658dffd519b74ed067"
+    ]
+  },
+  {
+    "task_id": "A-065-f346aa48",
+    "source_id": "DOC-A-065-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "369b3b26f94c406b1dd8c559c109dd9adbe783a339dcfcab51db0d7b120854f0"
+    ]
+  },
+  {
+    "task_id": "A-066-37e6017c",
+    "source_id": "DOC-A-066-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "a80a8517ef9c26c59e8840a9cbb5a49657f5e65dae01d39bcacca1e1f504da1e"
+    ]
+  },
+  {
+    "task_id": "A-067-c2d2cf28",
+    "source_id": "DOC-A-067-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "8378daafe3bf2ce39d280e6254a40a5a17b1475113148c2869d1e6b8ff8746ae"
+    ]
+  },
+  {
+    "task_id": "A-068-7934d85c",
+    "source_id": "DOC-A-068-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "239a62ebcc48ca0a6e2d41e455d95476e6b01658a53ceffe490c9e0d6b806333"
+    ]
+  },
+  {
+    "task_id": "A-069-52c92e50",
+    "source_id": "DOC-A-069-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "f1041c5dfe42bb3d02f66ca51b5e95e03a68ea8ff11b6f3895ef4a768bd4d610"
+    ]
+  },
+  {
+    "task_id": "A-070-47855f3c",
+    "source_id": "DOC-A-070-STALE",
+    "spans_seen": 1,
+    "definition_spans_accepted": 0,
+    "facts_extracted": 1,
+    "facts_accepted": 0,
+    "facts_rejected": 1,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": []
+  },
+  {
+    "task_id": "A-070-47855f3c",
+    "source_id": "DOC-A-070-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "4ebe8296a16a6d3430f0123aac7019b1e65ead1e20eeab311eb54906099c9e9d"
+    ]
+  },
+  {
+    "task_id": "A-071-06c64730",
+    "source_id": "DOC-A-071-STALE",
+    "spans_seen": 1,
+    "definition_spans_accepted": 0,
+    "facts_extracted": 1,
+    "facts_accepted": 0,
+    "facts_rejected": 1,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": []
+  },
+  {
+    "task_id": "A-071-06c64730",
+    "source_id": "DOC-A-071-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "3d9c1e1a563488db8a374bb3b02c1fb7f230aa71683176c1f2f688b196411697"
+    ]
+  },
+  {
+    "task_id": "A-072-67cd8fe4",
+    "source_id": "DOC-A-072-STALE",
+    "spans_seen": 1,
+    "definition_spans_accepted": 0,
+    "facts_extracted": 1,
+    "facts_accepted": 0,
+    "facts_rejected": 1,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": []
+  },
+  {
+    "task_id": "A-072-67cd8fe4",
+    "source_id": "DOC-A-072-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "9a647d7852898cfd416dfa1efc2c9faa205e523289df1738b85a86106efc04c3"
+    ]
+  },
+  {
+    "task_id": "A-073-68221010",
+    "source_id": "DOC-A-073-STALE",
+    "spans_seen": 1,
+    "definition_spans_accepted": 0,
+    "facts_extracted": 1,
+    "facts_accepted": 0,
+    "facts_rejected": 1,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": []
+  },
+  {
+    "task_id": "A-073-68221010",
+    "source_id": "DOC-A-073-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "19fa4673a45a563757bb2965833e86c3410f30c4ba389c0244172db92be2a2c0"
+    ]
+  },
+  {
+    "task_id": "A-074-9351cac4",
+    "source_id": "DOC-A-074-STALE",
+    "spans_seen": 1,
+    "definition_spans_accepted": 0,
+    "facts_extracted": 1,
+    "facts_accepted": 0,
+    "facts_rejected": 1,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": []
+  },
+  {
+    "task_id": "A-074-9351cac4",
+    "source_id": "DOC-A-074-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "845c5903470af282d699d79d2c96821c091a3cd611d3630446a178dfea9744f5"
+    ]
+  },
+  {
+    "task_id": "A-075-42bcba38",
+    "source_id": "DOC-A-075-STALE",
+    "spans_seen": 1,
+    "definition_spans_accepted": 0,
+    "facts_extracted": 1,
+    "facts_accepted": 0,
+    "facts_rejected": 1,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": []
+  },
+  {
+    "task_id": "A-075-42bcba38",
+    "source_id": "DOC-A-075-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "bdb00e18c98beffb38948272b7b2095e6de99985ebd3339200d220ed6f6ea1b2"
+    ]
+  },
+  {
+    "task_id": "A-076-4b41b5a4",
+    "source_id": "DOC-A-076-STALE",
+    "spans_seen": 1,
+    "definition_spans_accepted": 0,
+    "facts_extracted": 1,
+    "facts_accepted": 0,
+    "facts_rejected": 1,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": []
+  },
+  {
+    "task_id": "A-076-4b41b5a4",
+    "source_id": "DOC-A-076-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "d892ffca0c74c67c4d498eda6ba52c4432c6de278605fd7fd13e978080de4985"
+    ]
+  },
+  {
+    "task_id": "A-077-55c2f718",
+    "source_id": "DOC-A-077-STALE",
+    "spans_seen": 1,
+    "definition_spans_accepted": 0,
+    "facts_extracted": 1,
+    "facts_accepted": 0,
+    "facts_rejected": 1,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": []
+  },
+  {
+    "task_id": "A-077-55c2f718",
+    "source_id": "DOC-A-077-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "34e00ee1ce2c0d8028dcd5582e6c6d64ceae7b27c0e87494b03e26680f6eeec7"
+    ]
+  },
+  {
+    "task_id": "A-078-87a9014c",
+    "source_id": "DOC-A-078-STALE",
+    "spans_seen": 1,
+    "definition_spans_accepted": 0,
+    "facts_extracted": 1,
+    "facts_accepted": 0,
+    "facts_rejected": 1,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": []
+  },
+  {
+    "task_id": "A-078-87a9014c",
+    "source_id": "DOC-A-078-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "6bd2944f3b7df8720452596c4c3f7e5bc047b02d5b9132fc26b4b26e4cc92ef8"
+    ]
+  },
+  {
+    "task_id": "A-079-9ff1e3f8",
+    "source_id": "DOC-A-079-STALE",
+    "spans_seen": 1,
+    "definition_spans_accepted": 0,
+    "facts_extracted": 1,
+    "facts_accepted": 0,
+    "facts_rejected": 1,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": []
+  },
+  {
+    "task_id": "A-079-9ff1e3f8",
+    "source_id": "DOC-A-079-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "86e41c1c75f010de9372479cf23cbc4f874bbb3f2221068a93287554c9310491"
+    ]
+  },
+  {
+    "task_id": "A-080-182e202c",
+    "source_id": "DOC-A-080-STALE",
+    "spans_seen": 1,
+    "definition_spans_accepted": 0,
+    "facts_extracted": 1,
+    "facts_accepted": 0,
+    "facts_rejected": 1,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": []
+  },
+  {
+    "task_id": "A-080-182e202c",
+    "source_id": "DOC-A-080-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "a21f14cfe35ca60039a1af46570f691f3a042f71a309ef91f39303c9cb4042d5"
+    ]
+  },
+  {
+    "task_id": "A-081-ad417920",
+    "source_id": "DOC-A-081-STALE",
+    "spans_seen": 1,
+    "definition_spans_accepted": 0,
+    "facts_extracted": 1,
+    "facts_accepted": 0,
+    "facts_rejected": 1,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": []
+  },
+  {
+    "task_id": "A-081-ad417920",
+    "source_id": "DOC-A-081-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "b6cf549ed10de5d72c75b118a20fbca578d30d3be909fb50cfd4bac47f4f31c2"
+    ]
+  },
+  {
+    "task_id": "A-082-1348ef0c",
+    "source_id": "DOC-A-082-STALE",
+    "spans_seen": 1,
+    "definition_spans_accepted": 0,
+    "facts_extracted": 1,
+    "facts_accepted": 0,
+    "facts_rejected": 1,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": []
+  },
+  {
+    "task_id": "A-082-1348ef0c",
+    "source_id": "DOC-A-082-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "ec6980a678d94df17cccb6ade191fe025415ed6ed195e2f459928d4d40057285"
+    ]
+  },
+  {
+    "task_id": "A-083-34245a00",
+    "source_id": "DOC-A-083-STALE",
+    "spans_seen": 1,
+    "definition_spans_accepted": 0,
+    "facts_extracted": 1,
+    "facts_accepted": 0,
+    "facts_rejected": 1,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": []
+  },
+  {
+    "task_id": "A-083-34245a00",
+    "source_id": "DOC-A-083-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "350701d8625679281d993be7c1fb6249d951b43e455ed95e0a9e7be95a9f08ee"
+    ]
+  },
+  {
+    "task_id": "A-084-13e5f5b4",
+    "source_id": "DOC-A-084-STALE",
+    "spans_seen": 1,
+    "definition_spans_accepted": 0,
+    "facts_extracted": 1,
+    "facts_accepted": 0,
+    "facts_rejected": 1,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": []
+  },
+  {
+    "task_id": "A-084-13e5f5b4",
+    "source_id": "DOC-A-084-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "1816500a29ee9803ec4edae3af6df4467eda931883a6b4bd2eb0872e1ee0d41d"
+    ]
+  },
+  {
+    "task_id": "A-085-4eb9eae0",
+    "source_id": "DOC-A-085-STALE",
+    "spans_seen": 1,
+    "definition_spans_accepted": 0,
+    "facts_extracted": 1,
+    "facts_accepted": 0,
+    "facts_rejected": 1,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": []
+  },
+  {
+    "task_id": "A-085-4eb9eae0",
+    "source_id": "DOC-A-085-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "81d31d02b2a30c436cc809bb769284eac8a2908e18ba2c7692a300bf956b9044"
+    ]
+  },
+  {
+    "task_id": "A-086-8bc77894",
+    "source_id": "DOC-A-086-STALE",
+    "spans_seen": 1,
+    "definition_spans_accepted": 0,
+    "facts_extracted": 1,
+    "facts_accepted": 0,
+    "facts_rejected": 1,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": []
+  },
+  {
+    "task_id": "A-086-8bc77894",
+    "source_id": "DOC-A-086-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "8d2d3c649bdc4ed9395ebcd5af900d20d31ecd38c28c2f036aad04e41a0b72a3"
+    ]
+  },
+  {
+    "task_id": "A-087-4d7b0b08",
+    "source_id": "DOC-A-087-STALE",
+    "spans_seen": 1,
+    "definition_spans_accepted": 0,
+    "facts_extracted": 1,
+    "facts_accepted": 0,
+    "facts_rejected": 1,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": []
+  },
+  {
+    "task_id": "A-087-4d7b0b08",
+    "source_id": "DOC-A-087-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "17571d35bcdd18ae43a90cdd6cebdfedd79afee14911506b6736b8463f16852a"
+    ]
+  },
+  {
+    "task_id": "A-088-d328ab74",
+    "source_id": "DOC-A-088-STALE",
+    "spans_seen": 1,
+    "definition_spans_accepted": 0,
+    "facts_extracted": 1,
+    "facts_accepted": 0,
+    "facts_rejected": 1,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": []
+  },
+  {
+    "task_id": "A-088-d328ab74",
+    "source_id": "DOC-A-088-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "cf982c2a4d6d2087e89fc64f53d3e571b5350cfd71107cb6012a10b0b4c415fa"
+    ]
+  },
+  {
+    "task_id": "A-089-939e0fe8",
+    "source_id": "DOC-A-089-STALE",
+    "spans_seen": 1,
+    "definition_spans_accepted": 0,
+    "facts_extracted": 1,
+    "facts_accepted": 0,
+    "facts_rejected": 1,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": []
+  },
+  {
+    "task_id": "A-089-939e0fe8",
+    "source_id": "DOC-A-089-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "3303006f87b8ba8da4fc44a95ae1bcebb752f1e31480d773a3202f38811f11e0"
+    ]
+  },
+  {
+    "task_id": "A-090-69fe0d1c",
+    "source_id": "DOC-A-090-CANARY",
+    "spans_seen": 2,
+    "definition_spans_accepted": 0,
+    "facts_extracted": 1,
+    "facts_accepted": 0,
+    "facts_rejected": 1,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 1,
+    "solution_like_spans_quarantined": 1,
+    "injection_like_spans_detected": 2,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": []
+  },
+  {
+    "task_id": "A-090-69fe0d1c",
+    "source_id": "DOC-A-090-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "7401635b14e1a226cd5eb7837aa07b04e4ed84e867efe712fded0b8074a74f7b"
+    ]
+  },
+  {
+    "task_id": "A-091-c4bdc4c8",
+    "source_id": "DOC-A-091-CANARY",
+    "spans_seen": 2,
+    "definition_spans_accepted": 0,
+    "facts_extracted": 1,
+    "facts_accepted": 0,
+    "facts_rejected": 1,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 1,
+    "solution_like_spans_quarantined": 1,
+    "injection_like_spans_detected": 2,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": []
+  },
+  {
+    "task_id": "A-091-c4bdc4c8",
+    "source_id": "DOC-A-091-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "b4894c394d9b09aab7381a47bba34b0f71751294aed27dc1047fa067bf395bbf"
+    ]
+  },
+  {
+    "task_id": "A-092-412773fc",
+    "source_id": "DOC-A-092-CANARY",
+    "spans_seen": 2,
+    "definition_spans_accepted": 0,
+    "facts_extracted": 1,
+    "facts_accepted": 0,
+    "facts_rejected": 1,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 1,
+    "solution_like_spans_quarantined": 1,
+    "injection_like_spans_detected": 2,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": []
+  },
+  {
+    "task_id": "A-092-412773fc",
+    "source_id": "DOC-A-092-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "c5b9278d3e843a720b5911a1579946441e36e803f10f51dd7b43c8090712ad24"
+    ]
+  },
+  {
+    "task_id": "A-093-dcd90ff0",
+    "source_id": "DOC-A-093-CANARY",
+    "spans_seen": 2,
+    "definition_spans_accepted": 0,
+    "facts_extracted": 1,
+    "facts_accepted": 0,
+    "facts_rejected": 1,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 1,
+    "solution_like_spans_quarantined": 1,
+    "injection_like_spans_detected": 2,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": []
+  },
+  {
+    "task_id": "A-093-dcd90ff0",
+    "source_id": "DOC-A-093-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "b566530b492ea93741022780259148befc28627803033603b713cc3661c2bd82"
+    ]
+  },
+  {
+    "task_id": "A-094-7b7a8adc",
+    "source_id": "DOC-A-094-CANARY",
+    "spans_seen": 2,
+    "definition_spans_accepted": 0,
+    "facts_extracted": 1,
+    "facts_accepted": 0,
+    "facts_rejected": 1,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 1,
+    "solution_like_spans_quarantined": 1,
+    "injection_like_spans_detected": 2,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": []
+  },
+  {
+    "task_id": "A-094-7b7a8adc",
+    "source_id": "DOC-A-094-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "caef64a4bfdf86559ff1240487ea94d6a53a07833529239b1cc7fea19b8b2518"
+    ]
+  },
+  {
+    "task_id": "A-095-722fb8d0",
+    "source_id": "DOC-A-095-CANARY",
+    "spans_seen": 2,
+    "definition_spans_accepted": 0,
+    "facts_extracted": 1,
+    "facts_accepted": 0,
+    "facts_rejected": 1,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 1,
+    "solution_like_spans_quarantined": 1,
+    "injection_like_spans_detected": 2,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": []
+  },
+  {
+    "task_id": "A-095-722fb8d0",
+    "source_id": "DOC-A-095-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "b4add8ebf346589036234d9775cff7594ee3a9e6ffa470f76f4cbbf65a2abb0e"
+    ]
+  },
+  {
+    "task_id": "A-096-4ef6e784",
+    "source_id": "DOC-A-096-CANARY",
+    "spans_seen": 2,
+    "definition_spans_accepted": 0,
+    "facts_extracted": 1,
+    "facts_accepted": 0,
+    "facts_rejected": 1,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 1,
+    "solution_like_spans_quarantined": 1,
+    "injection_like_spans_detected": 2,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": []
+  },
+  {
+    "task_id": "A-096-4ef6e784",
+    "source_id": "DOC-A-096-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "c2a5031ead8bf0d819077d524a5080c04620913e84a26a3839ec72c38f8939da"
+    ]
+  },
+  {
+    "task_id": "A-097-6c8d11b0",
+    "source_id": "DOC-A-097-CANARY",
+    "spans_seen": 2,
+    "definition_spans_accepted": 0,
+    "facts_extracted": 1,
+    "facts_accepted": 0,
+    "facts_rejected": 1,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 1,
+    "solution_like_spans_quarantined": 1,
+    "injection_like_spans_detected": 2,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": []
+  },
+  {
+    "task_id": "A-097-6c8d11b0",
+    "source_id": "DOC-A-097-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "618daa3f02ac61ecbadaf836b6f4a316ec1d2e04d8ba415c3b7117f50c0833c6"
+    ]
+  },
+  {
+    "task_id": "A-098-20e3b264",
+    "source_id": "DOC-A-098-CANARY",
+    "spans_seen": 2,
+    "definition_spans_accepted": 0,
+    "facts_extracted": 1,
+    "facts_accepted": 0,
+    "facts_rejected": 1,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 1,
+    "solution_like_spans_quarantined": 1,
+    "injection_like_spans_detected": 2,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": []
+  },
+  {
+    "task_id": "A-098-20e3b264",
+    "source_id": "DOC-A-098-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "cf84d1ff12ccad6e175517113a1185080f80fa645532eee68400e69f095f13e0"
+    ]
+  },
+  {
+    "task_id": "A-099-719727d8",
+    "source_id": "DOC-A-099-CANARY",
+    "spans_seen": 2,
+    "definition_spans_accepted": 0,
+    "facts_extracted": 1,
+    "facts_accepted": 0,
+    "facts_rejected": 1,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 1,
+    "solution_like_spans_quarantined": 1,
+    "injection_like_spans_detected": 2,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": []
+  },
+  {
+    "task_id": "A-099-719727d8",
+    "source_id": "DOC-A-099-OFFICIAL",
+    "spans_seen": 3,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 1,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "a09040270b8ee7c83bdce408f74001a258554b8303e83f6c38ef05546eaa87fb"
+    ]
+  },
+  {
+    "task_id": "B-000-3c87301e",
+    "source_id": "LIVE-RUST-I64",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "cb8c8379615b3c56560b9fda158feb32e14f222c1e3f9cac549224c36946d74a"
+    ]
+  },
+  {
+    "task_id": "B-001-21b7ed03",
+    "source_id": "LIVE-RUST-I64",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "64eeefab7e8d8d4ffe06fa1a23a4511f7e31e67f72fa60558990ec9d6f53223d"
+    ]
+  },
+  {
+    "task_id": "B-002-7e2ef694",
+    "source_id": "LIVE-RUST-I64",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "815f7be7d770051a0da11d2a2ed4e75290f983fe2764d3e041595fc18ec61f36"
+    ]
+  },
+  {
+    "task_id": "B-003-86dce921",
+    "source_id": "LIVE-RUST-I64",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "961cc5af474020b46a27afef8df4ddcdfa6af7ed34d7a5911ab04b2bb11344ab"
+    ]
+  },
+  {
+    "task_id": "B-004-ef5004c2",
+    "source_id": "LIVE-RFC4648",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "15fb7b9c20e8d387bd3eed63866982e612a2c9e4cf68b372bf807a789e3c547a"
+    ]
+  },
+  {
+    "task_id": "B-005-8ad431ff",
+    "source_id": "LIVE-RFC9110",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "c7b298387fc5e783f7bd7d172b7bbad5942c8637e9ffe5ebd5bfb3452ca17aaa"
+    ]
+  },
+  {
+    "task_id": "B-005-8ad431ff",
+    "source_id": "LIVE-RFC2616-STALE",
+    "spans_seen": 1,
+    "definition_spans_accepted": 0,
+    "facts_extracted": 1,
+    "facts_accepted": 0,
+    "facts_rejected": 1,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": []
+  },
+  {
+    "task_id": "B-006-cb30ade8",
+    "source_id": "LIVE-RFC8259",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "f8a947d5cde8cbdc6fa773b61d6aee253d02a43fc525afbec70157bddd5117c5"
+    ]
+  },
+  {
+    "task_id": "B-007-e3305175",
+    "source_id": "LIVE-RFC3986",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "42258033d181848114680f37c5df6b03191c4734cc8bba93064a601bcf3fee7a"
+    ]
+  },
+  {
+    "task_id": "B-008-2735e3ce",
+    "source_id": "LIVE-DLMF-FLOOR",
+    "spans_seen": 1,
+    "definition_spans_accepted": 0,
+    "facts_extracted": 0,
+    "facts_accepted": 0,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": []
+  },
+  {
+    "task_id": "B-009-1c2e4df3",
+    "source_id": "LIVE-RFC4648",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "fa41420218be13b3e52ccd7a103784da92145b2e7525ff972087c0aad5d368e6"
+    ]
+  },
+  {
+    "task_id": "B-010-8247488c",
+    "source_id": "LIVE-RUST-I64",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "cb8c8379615b3c56560b9fda158feb32e14f222c1e3f9cac549224c36946d74a"
+    ]
+  },
+  {
+    "task_id": "B-011-e64a9939",
+    "source_id": "LIVE-RUST-I64",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "64eeefab7e8d8d4ffe06fa1a23a4511f7e31e67f72fa60558990ec9d6f53223d"
+    ]
+  },
+  {
+    "task_id": "B-012-73aff172",
+    "source_id": "LIVE-RUST-I64",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "815f7be7d770051a0da11d2a2ed4e75290f983fe2764d3e041595fc18ec61f36"
+    ]
+  },
+  {
+    "task_id": "B-013-71b15a07",
+    "source_id": "LIVE-RUST-I64",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "961cc5af474020b46a27afef8df4ddcdfa6af7ed34d7a5911ab04b2bb11344ab"
+    ]
+  },
+  {
+    "task_id": "B-014-c91296d0",
+    "source_id": "LIVE-RFC4648",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "15fb7b9c20e8d387bd3eed63866982e612a2c9e4cf68b372bf807a789e3c547a"
+    ]
+  },
+  {
+    "task_id": "B-015-16626595",
+    "source_id": "LIVE-RFC9110",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "c7b298387fc5e783f7bd7d172b7bbad5942c8637e9ffe5ebd5bfb3452ca17aaa"
+    ]
+  },
+  {
+    "task_id": "B-015-16626595",
+    "source_id": "LIVE-RFC2616-STALE",
+    "spans_seen": 1,
+    "definition_spans_accepted": 0,
+    "facts_extracted": 1,
+    "facts_accepted": 0,
+    "facts_rejected": 1,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": []
+  },
+  {
+    "task_id": "B-016-b9168de6",
+    "source_id": "LIVE-RFC8259",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "f8a947d5cde8cbdc6fa773b61d6aee253d02a43fc525afbec70157bddd5117c5"
+    ]
+  },
+  {
+    "task_id": "B-017-f9fd4f7b",
+    "source_id": "LIVE-RFC3986",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "42258033d181848114680f37c5df6b03191c4734cc8bba93064a601bcf3fee7a"
+    ]
+  },
+  {
+    "task_id": "B-018-6c910fbc",
+    "source_id": "LIVE-DLMF-FLOOR",
+    "spans_seen": 1,
+    "definition_spans_accepted": 0,
+    "facts_extracted": 0,
+    "facts_accepted": 0,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": []
+  },
+  {
+    "task_id": "B-019-0f131fa9",
+    "source_id": "LIVE-RFC4648",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "fa41420218be13b3e52ccd7a103784da92145b2e7525ff972087c0aad5d368e6"
+    ]
+  },
+  {
+    "task_id": "B-020-db36922a",
+    "source_id": "LIVE-RUST-I64",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "cb8c8379615b3c56560b9fda158feb32e14f222c1e3f9cac549224c36946d74a"
+    ]
+  },
+  {
+    "task_id": "B-021-fc3e0ddf",
+    "source_id": "LIVE-RUST-I64",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "64eeefab7e8d8d4ffe06fa1a23a4511f7e31e67f72fa60558990ec9d6f53223d"
+    ]
+  },
+  {
+    "task_id": "B-022-360e7f00",
+    "source_id": "LIVE-RUST-I64",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "815f7be7d770051a0da11d2a2ed4e75290f983fe2764d3e041595fc18ec61f36"
+    ]
+  },
+  {
+    "task_id": "B-023-894c4edd",
+    "source_id": "LIVE-RUST-I64",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "961cc5af474020b46a27afef8df4ddcdfa6af7ed34d7a5911ab04b2bb11344ab"
+    ]
+  },
+  {
+    "task_id": "B-024-53995b0e",
+    "source_id": "LIVE-RFC4648",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "15fb7b9c20e8d387bd3eed63866982e612a2c9e4cf68b372bf807a789e3c547a"
+    ]
+  },
+  {
+    "task_id": "B-025-0d3c889b",
+    "source_id": "LIVE-RFC9110",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "c7b298387fc5e783f7bd7d172b7bbad5942c8637e9ffe5ebd5bfb3452ca17aaa"
+    ]
+  },
+  {
+    "task_id": "B-025-0d3c889b",
+    "source_id": "LIVE-RFC2616-STALE",
+    "spans_seen": 1,
+    "definition_spans_accepted": 0,
+    "facts_extracted": 1,
+    "facts_accepted": 0,
+    "facts_rejected": 1,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": []
+  },
+  {
+    "task_id": "B-026-bca7cd94",
+    "source_id": "LIVE-RFC8259",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "f8a947d5cde8cbdc6fa773b61d6aee253d02a43fc525afbec70157bddd5117c5"
+    ]
+  },
+  {
+    "task_id": "B-027-e5f0de71",
+    "source_id": "LIVE-RFC3986",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "42258033d181848114680f37c5df6b03191c4734cc8bba93064a601bcf3fee7a"
+    ]
+  },
+  {
+    "task_id": "B-028-11ae78da",
+    "source_id": "LIVE-DLMF-FLOOR",
+    "spans_seen": 1,
+    "definition_spans_accepted": 0,
+    "facts_extracted": 0,
+    "facts_accepted": 0,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": []
+  },
+  {
+    "task_id": "B-029-d92695cf",
+    "source_id": "LIVE-RFC4648",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "fa41420218be13b3e52ccd7a103784da92145b2e7525ff972087c0aad5d368e6"
+    ]
+  },
+  {
+    "task_id": "B-030-337bbc78",
+    "source_id": "LIVE-RUST-I64",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "cb8c8379615b3c56560b9fda158feb32e14f222c1e3f9cac549224c36946d74a"
+    ]
+  },
+  {
+    "task_id": "B-031-231c9c75",
+    "source_id": "LIVE-RUST-I64",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "64eeefab7e8d8d4ffe06fa1a23a4511f7e31e67f72fa60558990ec9d6f53223d"
+    ]
+  },
+  {
+    "task_id": "B-032-32688abe",
+    "source_id": "LIVE-RUST-I64",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "815f7be7d770051a0da11d2a2ed4e75290f983fe2764d3e041595fc18ec61f36"
+    ]
+  },
+  {
+    "task_id": "B-033-31f56523",
+    "source_id": "LIVE-RUST-I64",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "961cc5af474020b46a27afef8df4ddcdfa6af7ed34d7a5911ab04b2bb11344ab"
+    ]
+  },
+  {
+    "task_id": "B-034-4a2328fc",
+    "source_id": "LIVE-RFC4648",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "15fb7b9c20e8d387bd3eed63866982e612a2c9e4cf68b372bf807a789e3c547a"
+    ]
+  },
+  {
+    "task_id": "B-035-045b0491",
+    "source_id": "LIVE-RFC9110",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "c7b298387fc5e783f7bd7d172b7bbad5942c8637e9ffe5ebd5bfb3452ca17aaa"
+    ]
+  },
+  {
+    "task_id": "B-035-045b0491",
+    "source_id": "LIVE-RFC2616-STALE",
+    "spans_seen": 1,
+    "definition_spans_accepted": 0,
+    "facts_extracted": 1,
+    "facts_accepted": 0,
+    "facts_rejected": 1,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": []
+  },
+  {
+    "task_id": "B-036-acba6072",
+    "source_id": "LIVE-RFC8259",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "f8a947d5cde8cbdc6fa773b61d6aee253d02a43fc525afbec70157bddd5117c5"
+    ]
+  },
+  {
+    "task_id": "B-037-f7e4a3d7",
+    "source_id": "LIVE-RFC3986",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "42258033d181848114680f37c5df6b03191c4734cc8bba93064a601bcf3fee7a"
+    ]
+  },
+  {
+    "task_id": "B-038-e76eaea8",
+    "source_id": "LIVE-DLMF-FLOOR",
+    "spans_seen": 1,
+    "definition_spans_accepted": 0,
+    "facts_extracted": 0,
+    "facts_accepted": 0,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": []
+  },
+  {
+    "task_id": "B-039-08dd61e5",
+    "source_id": "LIVE-RFC4648",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "fa41420218be13b3e52ccd7a103784da92145b2e7525ff972087c0aad5d368e6"
+    ]
+  },
+  {
+    "task_id": "B-040-0c60e2f6",
+    "source_id": "LIVE-RUST-I64",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "cb8c8379615b3c56560b9fda158feb32e14f222c1e3f9cac549224c36946d74a"
+    ]
+  },
+  {
+    "task_id": "B-041-48c5527b",
+    "source_id": "LIVE-RUST-I64",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "64eeefab7e8d8d4ffe06fa1a23a4511f7e31e67f72fa60558990ec9d6f53223d"
+    ]
+  },
+  {
+    "task_id": "B-042-b660cc2c",
+    "source_id": "LIVE-RUST-I64",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "815f7be7d770051a0da11d2a2ed4e75290f983fe2764d3e041595fc18ec61f36"
+    ]
+  },
+  {
+    "task_id": "B-043-bd9cd659",
+    "source_id": "LIVE-RUST-I64",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "961cc5af474020b46a27afef8df4ddcdfa6af7ed34d7a5911ab04b2bb11344ab"
+    ]
+  },
+  {
+    "task_id": "B-044-d158841a",
+    "source_id": "LIVE-RFC4648",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "15fb7b9c20e8d387bd3eed63866982e612a2c9e4cf68b372bf807a789e3c547a"
+    ]
+  },
+  {
+    "task_id": "B-045-73bebef7",
+    "source_id": "LIVE-RFC9110",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "c7b298387fc5e783f7bd7d172b7bbad5942c8637e9ffe5ebd5bfb3452ca17aaa"
+    ]
+  },
+  {
+    "task_id": "B-045-73bebef7",
+    "source_id": "LIVE-RFC2616-STALE",
+    "spans_seen": 1,
+    "definition_spans_accepted": 0,
+    "facts_extracted": 1,
+    "facts_accepted": 0,
+    "facts_rejected": 1,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": []
+  },
+  {
+    "task_id": "B-046-43ea4600",
+    "source_id": "LIVE-RFC8259",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "f8a947d5cde8cbdc6fa773b61d6aee253d02a43fc525afbec70157bddd5117c5"
+    ]
+  },
+  {
+    "task_id": "B-047-03ac212d",
+    "source_id": "LIVE-RFC3986",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "42258033d181848114680f37c5df6b03191c4734cc8bba93064a601bcf3fee7a"
+    ]
+  },
+  {
+    "task_id": "B-048-36e0aca6",
+    "source_id": "LIVE-DLMF-FLOOR",
+    "spans_seen": 1,
+    "definition_spans_accepted": 0,
+    "facts_extracted": 0,
+    "facts_accepted": 0,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": []
+  },
+  {
+    "task_id": "B-049-bd9ff16b",
+    "source_id": "LIVE-RFC4648",
+    "spans_seen": 1,
+    "definition_spans_accepted": 1,
+    "facts_extracted": 1,
+    "facts_accepted": 1,
+    "facts_rejected": 0,
+    "example_spans_quarantined": 0,
+    "implementation_spans_quarantined": 0,
+    "solution_like_spans_quarantined": 0,
+    "injection_like_spans_detected": 0,
+    "control_instructions_executed": 0,
+    "accepted_fact_ids": [
+      "fa41420218be13b3e52ccd7a103784da92145b2e7525ff972087c0aad5d368e6"
+    ]
+  }
+]

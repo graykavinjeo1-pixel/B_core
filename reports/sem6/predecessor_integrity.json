@@ -1,0 +1,60 @@
+{
+  "passed": true,
+  "predecessor_commit": "e61adb6f94ede876b7ddabd467473c848c7c0155",
+  "canonical_manifest_sha256": "c9dda0ece4d0d44ae507cca2f7c719f2a7fa8a4a2566c58da384190c70071188",
+  "canonical_files_verified": 8,
+  "predecessor_trees": [
+    {
+      "relative_path": "reports/sem5",
+      "files": 29,
+      "sha256": "b47dd3a0f174bb460000a45b115f4c48f3f1c034a22cceb0e9efae1a954ba8cc",
+      "expected_sha256": "b47dd3a0f174bb460000a45b115f4c48f3f1c034a22cceb0e9efae1a954ba8cc",
+      "passed": true
+    }
+  ],
+  "sem1_failed_run_preserved": true,
+  "sem2_failed_run_preserved": true,
+  "sem5_passing_run_sealed": true,
+  "sem5_run_id": "SEM5-RUN-0002",
+  "sem5_final_report_sha256": "d7fdafde600c858dd540309d771e2dc4917c7c687e0ce881fde756bedf51dca0",
+  "sem5_blind_manifest_sha256": "37750d9d33de85b2c648980294ebc6281d0d57a5239bfe4cf7570d268b866783",
+  "promoted_concepts_verified_immutable": [
+    "C000001",
+    "C000002",
+    "C000004",
+    "C000005",
+    "C000006",
+    "C000007",
+    "C000008",
+    "C000009",
+    "C000010"
+  ],
+  "recursive_improvement_quarantine": {
+    "stage": "S0",
+    "mode": "OBSERVE_MEASURE_ONLY",
+    "observe_enabled": true,
+    "measure_enabled": true,
+    "proposal_generation_enabled": false,
+    "source_patching_enabled": false,
+    "sandbox_apply_enabled": false,
+    "auto_apply_enabled": false,
+    "auto_merge_enabled": false,
+    "auto_commit_enabled": false,
+    "auto_push_enabled": false,
+    "external_provider_repair_enabled": false,
+    "recursive_benchmark_mutation_enabled": false,
+    "network_enabled": false,
+    "external_llm_enabled": false
+  },
+  "network_enabled_before_firewall": false,
+  "external_llm_enabled": false,
+  "local_teacher_enabled": false,
+  "self_observe": true,
+  "self_measure": true,
+  "self_propose": false,
+  "self_apply": false,
+  "source_mutation": false,
+  "auto_patch": false,
+  "auto_commit": false,
+  "auto_push": false
+}

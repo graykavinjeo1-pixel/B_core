@@ -1,0 +1,704 @@
+{
+  "attempts": [
+    {
+      "outcome": "RETRIEVED",
+      "representation": "HTML",
+      "sequence": 1,
+      "source_id": "LIVE-RUST-I64"
+    },
+    {
+      "outcome": "RETRIEVED",
+      "representation": "HTML",
+      "sequence": 2,
+      "source_id": "LIVE-RFC4648"
+    },
+    {
+      "outcome": "TOOL_RETRIEVAL_ERROR",
+      "representation": "HTML",
+      "sequence": 3,
+      "source_id": "LIVE-RFC9110"
+    },
+    {
+      "outcome": "RETRIEVED",
+      "representation": "HTML",
+      "sequence": 4,
+      "source_id": "LIVE-RFC2616-STALE"
+    },
+    {
+      "outcome": "RETRIEVED",
+      "representation": "HTML",
+      "sequence": 5,
+      "source_id": "LIVE-RFC8259"
+    },
+    {
+      "outcome": "RETRIEVED",
+      "representation": "HTML",
+      "sequence": 6,
+      "source_id": "LIVE-RFC3986"
+    },
+    {
+      "outcome": "RETRIEVED_BUT_DEFINITION_MISMATCH",
+      "representation": "HTML",
+      "sequence": 7,
+      "source_id": "LIVE-DLMF-FLOOR"
+    },
+    {
+      "outcome": "TOOL_RETRIEVAL_ERROR",
+      "representation": "HTML_RETRY",
+      "sequence": 8,
+      "source_id": "LIVE-RFC9110"
+    },
+    {
+      "outcome": "TOOL_RETRIEVAL_ERROR",
+      "representation": "INFO_HTML_RETRY",
+      "sequence": 9,
+      "source_id": "LIVE-RFC9110"
+    },
+    {
+      "outcome": "RETRIEVED",
+      "representation": "OFFICIAL_PLAIN_TEXT",
+      "sequence": 10,
+      "source_id": "LIVE-RFC9110"
+    }
+  ],
+  "documents": [
+    {
+      "authority": "OFFICIAL_DOCUMENTATION",
+      "content_sha256": "44cba13d538c8f4ab1045c02e4af44f4adfae7aca0700f29f7d098fe08f09b48",
+      "live_retrieval": true,
+      "retrieval_time_utc": "2026-08-08T01:36:16+09:00",
+      "retrieved_bytes": 3381,
+      "scope": "rust-std-i64",
+      "search_snippet_only": false,
+      "source_id": "LIVE-RUST-I64",
+      "source_identifier": "https://doc.rust-lang.org/std/primitive.i64.html",
+      "source_version": "1.97.1 (contracts applicable to 1.90)",
+      "spans": [
+        {
+          "class": "NORMATIVE_RULE",
+          "fact": {
+            "applicability_version_range": "1.90",
+            "effects": [
+              "PURE"
+            ],
+            "formal_body": {
+              "expression_kind": "BINARY",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "operator": "DIVIDE",
+              "right": {
+                "expression_kind": "ARGUMENT",
+                "index": 1
+              }
+            },
+            "invariants": [
+              "definition scope and version remain fixed"
+            ],
+            "postconditions": [
+              "result satisfies the normative formal relation"
+            ],
+            "preconditions": [
+              "inputs are bounded signed integers satisfying the named official domain"
+            ],
+            "scope": "rust-std-i64",
+            "signature_inputs": [
+              "INT",
+              "INT"
+            ],
+            "signature_output": "INT",
+            "source_version": "1.90",
+            "symbol": "i64::div_euclid"
+          },
+          "injection_like": false,
+          "span_id": "LIVE-i64::div_euclid-RULE",
+          "text": "Official signatures, return contracts, remainder invariant, overflow and panic constraints were isolated; examples were not imported."
+        },
+        {
+          "class": "NORMATIVE_RULE",
+          "fact": {
+            "applicability_version_range": "1.90",
+            "effects": [
+              "PURE"
+            ],
+            "formal_body": {
+              "expression_kind": "BINARY",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "operator": "MODULO",
+              "right": {
+                "expression_kind": "ARGUMENT",
+                "index": 1
+              }
+            },
+            "invariants": [
+              "definition scope and version remain fixed"
+            ],
+            "postconditions": [
+              "result satisfies the normative formal relation"
+            ],
+            "preconditions": [
+              "inputs are bounded signed integers satisfying the named official domain"
+            ],
+            "scope": "rust-std-i64",
+            "signature_inputs": [
+              "INT",
+              "INT"
+            ],
+            "signature_output": "INT",
+            "source_version": "1.90",
+            "symbol": "i64::rem_euclid"
+          },
+          "injection_like": false,
+          "span_id": "LIVE-i64::rem_euclid-RULE",
+          "text": "Official signatures, return contracts, remainder invariant, overflow and panic constraints were isolated; examples were not imported."
+        },
+        {
+          "class": "NORMATIVE_RULE",
+          "fact": {
+            "applicability_version_range": "1.90",
+            "effects": [
+              "PURE"
+            ],
+            "formal_body": {
+              "expression_kind": "BINARY",
+              "left": {
+                "expression_kind": "BINARY",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 0
+                },
+                "operator": "ADD",
+                "right": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 1
+                }
+              },
+              "operator": "DIVIDE",
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 2
+              }
+            },
+            "invariants": [
+              "definition scope and version remain fixed"
+            ],
+            "postconditions": [
+              "result satisfies the normative formal relation"
+            ],
+            "preconditions": [
+              "inputs are bounded signed integers satisfying the named official domain"
+            ],
+            "scope": "rust-std-i64",
+            "signature_inputs": [
+              "INT",
+              "INT"
+            ],
+            "signature_output": "INT",
+            "source_version": "1.90",
+            "symbol": "i64::midpoint"
+          },
+          "injection_like": false,
+          "span_id": "LIVE-i64::midpoint-RULE",
+          "text": "Official signatures, return contracts, remainder invariant, overflow and panic constraints were isolated; examples were not imported."
+        },
+        {
+          "class": "NORMATIVE_RULE",
+          "fact": {
+            "applicability_version_range": "1.90",
+            "effects": [
+              "PURE"
+            ],
+            "formal_body": {
+              "expression_kind": "UNARY",
+              "input": {
+                "expression_kind": "BINARY",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 0
+                },
+                "operator": "SUBTRACT",
+                "right": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 1
+                }
+              },
+              "operator": "NEGATE"
+            },
+            "invariants": [
+              "definition scope and version remain fixed"
+            ],
+            "postconditions": [
+              "result satisfies the normative formal relation"
+            ],
+            "preconditions": [
+              "inputs are bounded signed integers satisfying the named official domain"
+            ],
+            "scope": "rust-std-i64",
+            "signature_inputs": [
+              "INT",
+              "INT"
+            ],
+            "signature_output": "INT",
+            "source_version": "1.90",
+            "symbol": "i64::abs_diff"
+          },
+          "injection_like": false,
+          "span_id": "LIVE-i64::abs_diff-RULE",
+          "text": "Official signatures, return contracts, remainder invariant, overflow and panic constraints were isolated; examples were not imported."
+        }
+      ],
+      "title": "Rust i64 primitive documentation",
+      "url": "https://doc.rust-lang.org/std/primitive.i64.html"
+    },
+    {
+      "authority": "OFFICIAL_STANDARD",
+      "content_sha256": "04cf98708bf680788392a61b5a60402a2c310eb7546b1d09fc62dec6c8dffca1",
+      "live_retrieval": true,
+      "retrieval_time_utc": "2026-08-08T01:36:16+09:00",
+      "retrieved_bytes": 2026,
+      "scope": "rfc4648-base64",
+      "search_snippet_only": false,
+      "source_id": "LIVE-RFC4648",
+      "source_identifier": "https://www.rfc-editor.org/rfc/rfc4648",
+      "source_version": "RFC4648",
+      "spans": [
+        {
+          "class": "NORMATIVE_RULE",
+          "fact": {
+            "applicability_version_range": "RFC4648",
+            "effects": [
+              "PURE"
+            ],
+            "formal_body": {
+              "expression_kind": "BINARY",
+              "left": {
+                "expression_kind": "BINARY",
+                "left": {
+                  "expression_kind": "BINARY",
+                  "left": {
+                    "expression_kind": "ARGUMENT",
+                    "index": 0
+                  },
+                  "operator": "ADD",
+                  "right": {
+                    "expression_kind": "CONSTANT",
+                    "value": 2
+                  }
+                },
+                "operator": "DIVIDE",
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 3
+                }
+              },
+              "operator": "MULTIPLY",
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 4
+              }
+            },
+            "invariants": [
+              "definition scope and version remain fixed"
+            ],
+            "postconditions": [
+              "result satisfies the normative formal relation"
+            ],
+            "preconditions": [
+              "inputs are bounded signed integers satisfying the named official domain"
+            ],
+            "scope": "rfc4648-base64",
+            "signature_inputs": [
+              "INT"
+            ],
+            "signature_output": "INT",
+            "source_version": "RFC4648",
+            "symbol": "RFC4648-BASE64-ENCODED-LENGTH"
+          },
+          "injection_like": false,
+          "span_id": "LIVE-RFC4648-BASE64-ENCODED-LENGTH-RULE",
+          "text": "Normative 24-bit to four-character grouping and terminal padding cases were isolated from the standard."
+        },
+        {
+          "class": "NORMATIVE_RULE",
+          "fact": {
+            "applicability_version_range": "RFC4648",
+            "effects": [
+              "PURE"
+            ],
+            "formal_body": {
+              "expression_kind": "BINARY",
+              "left": {
+                "expression_kind": "BINARY",
+                "left": {
+                  "expression_kind": "CONSTANT",
+                  "value": 3
+                },
+                "operator": "SUBTRACT",
+                "right": {
+                  "expression_kind": "BINARY",
+                  "left": {
+                    "expression_kind": "ARGUMENT",
+                    "index": 0
+                  },
+                  "operator": "MODULO",
+                  "right": {
+                    "expression_kind": "CONSTANT",
+                    "value": 3
+                  }
+                }
+              },
+              "operator": "MODULO",
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 3
+              }
+            },
+            "invariants": [
+              "definition scope and version remain fixed"
+            ],
+            "postconditions": [
+              "result satisfies the normative formal relation"
+            ],
+            "preconditions": [
+              "inputs are bounded signed integers satisfying the named official domain"
+            ],
+            "scope": "rfc4648-base64",
+            "signature_inputs": [
+              "INT"
+            ],
+            "signature_output": "INT",
+            "source_version": "RFC4648",
+            "symbol": "RFC4648-BASE64-PAD-COUNT"
+          },
+          "injection_like": false,
+          "span_id": "LIVE-RFC4648-BASE64-PAD-COUNT-RULE",
+          "text": "Normative 24-bit to four-character grouping and terminal padding cases were isolated from the standard."
+        }
+      ],
+      "title": "RFC 4648 Base-N Encodings",
+      "url": "https://www.rfc-editor.org/rfc/rfc4648"
+    },
+    {
+      "authority": "OFFICIAL_STANDARD",
+      "content_sha256": "4965c898d1fe047afac274fc70f0b1367e2910c8589aeb4b5afe3b4f5872513e",
+      "live_retrieval": true,
+      "retrieval_time_utc": "2026-08-08T01:36:16+09:00",
+      "retrieved_bytes": 807,
+      "scope": "http-status-code",
+      "search_snippet_only": false,
+      "source_id": "LIVE-RFC9110",
+      "source_identifier": "https://www.rfc-editor.org/rfc/rfc9110.txt",
+      "source_version": "RFC9110",
+      "spans": [
+        {
+          "class": "NORMATIVE_RULE",
+          "fact": {
+            "applicability_version_range": "RFC9110",
+            "effects": [
+              "PURE"
+            ],
+            "formal_body": {
+              "expression_kind": "BINARY",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "operator": "DIVIDE",
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 100
+              }
+            },
+            "invariants": [
+              "definition scope and version remain fixed"
+            ],
+            "postconditions": [
+              "result satisfies the normative formal relation"
+            ],
+            "preconditions": [
+              "inputs are bounded signed integers satisfying the named official domain"
+            ],
+            "scope": "http-status-code",
+            "signature_inputs": [
+              "INT"
+            ],
+            "signature_output": "INT",
+            "source_version": "RFC9110",
+            "symbol": "RFC9110-STATUS-CLASS"
+          },
+          "injection_like": false,
+          "span_id": "LIVE-RFC9110-STATUS-CLASS-RULE",
+          "text": "RFC 9110 section 15 defines valid status codes as 100 through 599 and assigns the response class by the first digit."
+        }
+      ],
+      "title": "RFC 9110 HTTP Semantics",
+      "url": "https://www.rfc-editor.org/rfc/rfc9110.txt"
+    },
+    {
+      "authority": "OFFICIAL_STANDARD",
+      "content_sha256": "7d454608552bf8d8f4f6b4d5ce9c03f4b29640b98b5087c0bc044e5287fa2654",
+      "live_retrieval": true,
+      "retrieval_time_utc": "2026-08-08T01:36:16+09:00",
+      "retrieved_bytes": 756,
+      "scope": "http-status-code",
+      "search_snippet_only": false,
+      "source_id": "LIVE-RFC2616-STALE",
+      "source_identifier": "https://www.rfc-editor.org/rfc/rfc2616",
+      "source_version": "RFC2616",
+      "spans": [
+        {
+          "class": "NORMATIVE_RULE",
+          "fact": {
+            "applicability_version_range": "RFC2616",
+            "effects": [
+              "PURE"
+            ],
+            "formal_body": {
+              "expression_kind": "BINARY",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "operator": "DIVIDE",
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 100
+              }
+            },
+            "invariants": [
+              "obsolete source is never silently applied to RFC9110"
+            ],
+            "postconditions": [
+              "first digit determines the response class"
+            ],
+            "preconditions": [
+              "status code is within the obsolete RFC2616 scope"
+            ],
+            "scope": "http-status-code",
+            "signature_inputs": [
+              "INT"
+            ],
+            "signature_output": "INT",
+            "source_version": "RFC2616",
+            "symbol": "RFC9110-STATUS-CLASS"
+          },
+          "injection_like": false,
+          "span_id": "LIVE-RFC2616-STALE-RULE",
+          "text": "Obsolete HTTP status-class definition retained only as a versioned comparison hypothesis."
+        }
+      ],
+      "title": "RFC 2616 HTTP/1.1 (obsolete comparison)",
+      "url": "https://www.rfc-editor.org/rfc/rfc2616"
+    },
+    {
+      "authority": "OFFICIAL_STANDARD",
+      "content_sha256": "9d4b6a7a5ea75346833666cab6bf11f1d267650b50daffc451df487f12a333b3",
+      "live_retrieval": true,
+      "retrieval_time_utc": "2026-08-08T01:36:16+09:00",
+      "retrieved_bytes": 1424,
+      "scope": "json-grammar",
+      "search_snippet_only": false,
+      "source_id": "LIVE-RFC8259",
+      "source_identifier": "https://www.rfc-editor.org/rfc/rfc8259",
+      "source_version": "RFC8259",
+      "spans": [
+        {
+          "class": "NORMATIVE_RULE",
+          "fact": {
+            "applicability_version_range": "RFC8259",
+            "effects": [
+              "PURE"
+            ],
+            "formal_body": {
+              "expression_kind": "BINARY",
+              "left": {
+                "expression_kind": "BINARY",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 0
+                },
+                "operator": "EQUAL",
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 32
+                }
+              },
+              "operator": "OR",
+              "right": {
+                "expression_kind": "BINARY",
+                "left": {
+                  "expression_kind": "BINARY",
+                  "left": {
+                    "expression_kind": "ARGUMENT",
+                    "index": 0
+                  },
+                  "operator": "EQUAL",
+                  "right": {
+                    "expression_kind": "CONSTANT",
+                    "value": 9
+                  }
+                },
+                "operator": "OR",
+                "right": {
+                  "expression_kind": "BINARY",
+                  "left": {
+                    "expression_kind": "BINARY",
+                    "left": {
+                      "expression_kind": "ARGUMENT",
+                      "index": 0
+                    },
+                    "operator": "EQUAL",
+                    "right": {
+                      "expression_kind": "CONSTANT",
+                      "value": 10
+                    }
+                  },
+                  "operator": "OR",
+                  "right": {
+                    "expression_kind": "BINARY",
+                    "left": {
+                      "expression_kind": "ARGUMENT",
+                      "index": 0
+                    },
+                    "operator": "EQUAL",
+                    "right": {
+                      "expression_kind": "CONSTANT",
+                      "value": 13
+                    }
+                  }
+                }
+              }
+            },
+            "invariants": [
+              "definition scope and version remain fixed"
+            ],
+            "postconditions": [
+              "result satisfies the normative formal relation"
+            ],
+            "preconditions": [
+              "inputs are bounded signed integers satisfying the named official domain"
+            ],
+            "scope": "json-grammar",
+            "signature_inputs": [
+              "INT"
+            ],
+            "signature_output": "BOOL",
+            "source_version": "RFC8259",
+            "symbol": "RFC8259-JSON-WHITESPACE"
+          },
+          "injection_like": false,
+          "span_id": "LIVE-RFC8259-JSON-WHITESPACE-RULE",
+          "text": "The JSON grammar permits exactly space, horizontal tab, line feed, and carriage return as insignificant whitespace."
+        }
+      ],
+      "title": "RFC 8259 JSON",
+      "url": "https://www.rfc-editor.org/rfc/rfc8259"
+    },
+    {
+      "authority": "OFFICIAL_STANDARD",
+      "content_sha256": "605e0051fc97c753aa2c8988c306e2c967056cb58315a8758f6d31bc065cacb2",
+      "live_retrieval": true,
+      "retrieval_time_utc": "2026-08-08T01:36:16+09:00",
+      "retrieved_bytes": 1007,
+      "scope": "uri-unreserved",
+      "search_snippet_only": false,
+      "source_id": "LIVE-RFC3986",
+      "source_identifier": "https://www.rfc-editor.org/rfc/rfc3986",
+      "source_version": "RFC3986",
+      "spans": [
+        {
+          "class": "NORMATIVE_RULE",
+          "fact": {
+            "applicability_version_range": "RFC3986",
+            "effects": [
+              "PURE"
+            ],
+            "formal_body": {
+              "expression_kind": "BINARY",
+              "left": {
+                "expression_kind": "BINARY",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 0
+                },
+                "operator": "GREATER_THAN",
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 47
+                }
+              },
+              "operator": "AND",
+              "right": {
+                "expression_kind": "BINARY",
+                "left": {
+                  "expression_kind": "ARGUMENT",
+                  "index": 0
+                },
+                "operator": "LESS_THAN",
+                "right": {
+                  "expression_kind": "CONSTANT",
+                  "value": 58
+                }
+              }
+            },
+            "invariants": [
+              "definition scope and version remain fixed"
+            ],
+            "postconditions": [
+              "result satisfies the normative formal relation"
+            ],
+            "preconditions": [
+              "inputs are bounded signed integers satisfying the named official domain"
+            ],
+            "scope": "uri-unreserved",
+            "signature_inputs": [
+              "INT"
+            ],
+            "signature_output": "BOOL",
+            "source_version": "RFC3986",
+            "symbol": "RFC3986-ASCII-DIGIT-UNRESERVED"
+          },
+          "injection_like": false,
+          "span_id": "LIVE-RFC3986-ASCII-DIGIT-UNRESERVED-RULE",
+          "text": "The unreserved production contains DIGIT, whose ASCII range is 0x30 through 0x39."
+        }
+      ],
+      "title": "RFC 3986 URI Generic Syntax",
+      "url": "https://www.rfc-editor.org/rfc/rfc3986"
+    },
+    {
+      "authority": "INSTITUTIONAL_REFERENCE",
+      "content_sha256": "7d2e098af329ae2b4ddbc00733ac344565f37fc4ca3a04030fdb1d887d7e6851",
+      "live_retrieval": true,
+      "retrieval_time_utc": "2026-08-08T01:36:16+09:00",
+      "retrieved_bytes": 225,
+      "scope": "real-floor-restricted-positive-rational",
+      "search_snippet_only": false,
+      "source_id": "LIVE-DLMF-FLOOR",
+      "source_identifier": "https://dlmf.nist.gov/4.2",
+      "source_version": "DLMF-1.2.4",
+      "spans": [
+        {
+          "class": "COMMENTARY",
+          "fact": null,
+          "injection_like": false,
+          "span_id": "LIVE-DLMF-FLOOR-MISMATCH",
+          "text": "The frozen URL resolved to logarithm definitions and supplied no authoritative floor definition; claim left unresolved."
+        }
+      ],
+      "title": "DLMF section 4.2 retrieval",
+      "url": "https://dlmf.nist.gov/4.2"
+    }
+  ],
+  "hash_kind": "SHA256_OF_EXTRACTED_SPAN_SNAPSHOT",
+  "live_network_read_requests": 10,
+  "live_unique_documents_retrieved": 7,
+  "remote_writes": 0,
+  "sealed_corpus_documents_available": 185,
+  "search_queries": 0,
+  "search_snippets_used_as_authority": 0
+}

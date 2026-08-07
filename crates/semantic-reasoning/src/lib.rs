@@ -8,6 +8,7 @@ pub mod sem2;
 pub mod sem3;
 pub mod sem4;
 pub mod sem5;
+pub mod sem6;
 pub mod substrate;
 pub mod tasks;
 
@@ -17,3 +18,4 @@ pub use sem2::experiment::{run_sem2, Sem2Outcome};
 pub use sem3::experiment::{run_sem3, Sem3Outcome};
 pub use sem4::experiment::{run_sem4, Sem4Outcome};
 pub use sem5::experiment::{run_sem5, Sem5Outcome};
+pub use sem6::experiment::{run_sem6, Sem6Outcome};

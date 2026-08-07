@@ -1,0 +1,11 @@
+{
+  "run_id": "SEM6-RUN-0001",
+  "system_version": "SEM6-FORAGING-1.0.0",
+  "corpus_generator_version": "SEM6-CORPUS-GENERATOR-1.0.0",
+  "sem6a_manifest_sha256": "61f836e349ac21c33dd0fa4b8eecd9f11f8199950db00bf7e3a8e2dbc19df8d9",
+  "sem6b_intent_manifest_sha256": "b47fa3d568a42ee04e4c5798671df290d8674e5ab14e25007520083fadf654b2",
+  "live_source_snapshot_sha256": "03eec76af578b23cb65fba573c21a8ea322a49b38f4c18bacd57b7ba9ecc27f3",
+  "task_intent_frozen_before_live_retrieval": true,
+  "frozen_before_final_tuning": true,
+  "post_blind_tuning": false
+}

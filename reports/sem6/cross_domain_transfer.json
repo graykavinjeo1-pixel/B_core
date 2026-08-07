@@ -1,0 +1,13 @@
+[
+  {
+    "concept_id": "C000012",
+    "source_domain": "MATHEMATICAL_FORMAL",
+    "target_domain": "PROTOCOL_SPECIFICATION",
+    "task_ids": [
+      "B-008-2735e3ce",
+      "B-004-ef5004c2"
+    ],
+    "selected_by_semantic_compatibility": true,
+    "passed": true
+  }
+]

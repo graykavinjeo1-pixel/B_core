@@ -1,0 +1,6421 @@
+{
+  "compiled_facts": [
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "0ac3d88f7242c2355bc33a86aa7e68babc5ac13eec17bc74d323407075d5be96",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "ARGUMENT",
+          "index": 1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_5da06315",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-0ac3d88f7242",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-library",
+      "signature_inputs": [
+        "INT",
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-000-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "efa98ba1cf6c22820bf26af925c6519c78b8b3b2f3a30e27407f28f230d37ba3",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": -1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_2f3e3dd1",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-efa98ba1cf6c",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-library",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-001-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "9a5e7879cee19ade037acec5f474e0c36e40bff853d7113e6d6e8492abf46b68",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": 2
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_a768b475",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-9a5e7879cee1",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-library",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-002-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "5a2799085e029846a3cf8820fdc8ffb665aa4f32a88e25e62d7ef7a07ca7c3fb",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "ARGUMENT",
+          "index": 1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_c28920d9",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-5a2799085e02",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-library",
+      "signature_inputs": [
+        "INT",
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-003-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "2ffeb66ea5fd1677030b989f74c68d7dd4378ed02343c6dcf8a455620a5a9cde",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": 2
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_5a2af5d5",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-2ffeb66ea5fd",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-library",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-004-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "604da437f9cdb43a2188476aa75915701ed22f2316fb733959f9dd42b3470386",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": 4
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_12184c39",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-604da437f9cd",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-library",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-005-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "3ade5e569e78a89778bc470f7ba51b0d526f47f919bc74181a4d370a8c07ce33",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "ARGUMENT",
+          "index": 1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_30e79c5d",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-3ade5e569e78",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-library",
+      "signature_inputs": [
+        "INT",
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-006-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "1afa5458c2c6645d26ded89c7b35ce7ae6db37c053f44339bb88b8f358e6c69d",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": -6
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_db1a6799",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-1afa5458c2c6",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-library",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-007-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "7363b71dc89ab712aa66cf7a041c2c14a4f83522ff1685eb42d16cefb7ae410a",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": 5
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_ca2901bd",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-7363b71dc89a",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-library",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-008-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "041a99b852bd8063c61b7cdef1eee19030a8b206d1fa9360edaaacc0a4d33a78",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "ARGUMENT",
+          "index": 1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_e57f59a1",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-041a99b852bd",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-library",
+      "signature_inputs": [
+        "INT",
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-009-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "b5ac08ce0e1312dcb61ff460d619961fe5d2768dec0128fbcb9d674345c265b0",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": 5
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_4046571d",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-b5ac08ce0e13",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-library",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-010-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "d1f81ea128019826cdf7579c3208e4da8baa00ea73c92344670ec174a82bcfc4",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": -4
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_52985901",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-d1f81ea12801",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-library",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-011-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "c0555f13dba8f99198f023c1b234e57522ed03f411edb47b43a4e3e3ffb5e713",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "ARGUMENT",
+          "index": 1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_85d59ca5",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-c0555f13dba8",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-library",
+      "signature_inputs": [
+        "INT",
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-012-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "3c3cee2fa201f8e00574d0aa6be08e9ee942efcbd12ff5a504a00df2b418fcb2",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": 7
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_bbe64861",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-3c3cee2fa201",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-library",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-013-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "e9038bd5d17221a84720f6c1b1a18fe820ef3b9edaaba0bb5c47959e6958704a",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": 2
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_7c859605",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-e9038bd5d172",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-library",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-014-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "ef984990bf147cef002302f9d5ce3552517d075370181ae386d9bb5f57f10af1",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "ARGUMENT",
+          "index": 1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_6d756969",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-ef984990bf14",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-library",
+      "signature_inputs": [
+        "INT",
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-015-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "f0f4fadbe44b276559e463e1cd92cc2a98f0af349d06f40f7d4ecf433e877217",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": -6
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_a3b37f65",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-f0f4fadbe44b",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-library",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-016-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "6c1e146104bd3c06c8955dec0a2820cdc157949a328441c2d89bc68d632ccf4f",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": 6
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_4e75bcc9",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-6c1e146104bd",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-library",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-017-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "2005fa279449d052a062973085dd02d7cec90ef65b1ea03d4bc7ac7f29abe9bf",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "ARGUMENT",
+          "index": 1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_80f383ed",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-2005fa279449",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-library",
+      "signature_inputs": [
+        "INT",
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-018-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "19c4f3a147021a983d8af32a7f3d6fc54f23b1dd6b03a6d1ca39eddf5faf7886",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": 4
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_f22d0029",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-19c4f3a14702",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-library",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-019-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "e0db86a99f01f9692a0401b0cad546b6cabe79583d4b948c9c4d5bd3c9e44e49",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": -1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_d157914d",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-e0db86a99f01",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-library",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-020-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "8952fa347e774821d486c1902d68b3fe2967ff59a8d97658e3cd53517fe19d5f",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "ARGUMENT",
+          "index": 1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_8ab27031",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-8952fa347e77",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-library",
+      "signature_inputs": [
+        "INT",
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-021-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "3329ac2dec73ebba8f4c3e2a5474f4daa0a07739cb6583e34912a14a50d53efc",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": -6
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_0d9b8ead",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-3329ac2dec73",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-library",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-022-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "c5521dbf53a581b36a9b91c2408533bd8b710aadbb3b76ba3824b2385c3bbf4e",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": -5
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_c7479791",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-c5521dbf53a5",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-library",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-023-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "1fc5859045825b5ee8562005d4648b798aebf6b4c78da5edf313cf1f7677be27",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "ARGUMENT",
+          "index": 1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_e5667235",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-1fc585904582",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-library",
+      "signature_inputs": [
+        "INT",
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-024-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "834f9319e04e9e8ada15b8293659cbc9c658603c13435f639fc5fcb8bb352d74",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": 4
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_d8d5aef1",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-834f9319e04e",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-library",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-025-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "d64ac05113c91ac01849badfdd6c68a6cfde5a74423fc8525629dd084e595df1",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": -5
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_10141395",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-d64ac05113c9",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-library",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-026-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "29563a0582b9fb8f2584ace324e5a97d0ee7f6a90fc50ad3d40df90304a5dcf5",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "ARGUMENT",
+          "index": 1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_f8598df9",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-29563a0582b9",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-library",
+      "signature_inputs": [
+        "INT",
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-027-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "2d303444fd559a61eca15b6993160de4209fcd154901e4a3618fe844d3518bc5",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": 6
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_d1c3a4f5",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-2d303444fd55",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-library",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-028-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "c857978a2b49d1e528da6304fd17a7dd51add11c984cce551cc38375eb11698c",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": -3
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_3f810959",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-c857978a2b49",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-library",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-029-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "3ade713ec9768cf88013c6586d03db8bfd98d92410845ee179851c0bb571d0ea",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "ARGUMENT",
+          "index": 1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_c96f877d",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-3ade713ec976",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-formal-system",
+      "signature_inputs": [
+        "INT",
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-030-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "7c01d0f2b634c2886d843849b5dcbe19052b350557fae222f48facea64a4f79c",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": -3
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_c1a374b9",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-7c01d0f2b634",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-formal-system",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-031-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "6c13466643ffece30412addb1fad8c041817ad3acd9c8c5c81a01b06bc026585",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": 7
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_a94c3cdd",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-6c13466643ff",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-formal-system",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-032-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "31ff34cf276bbf2626e2f41326ce1c7bdf41f4f2cb666c8f756d01035f990e23",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "ARGUMENT",
+          "index": 1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_a8e9e2c1",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-31ff34cf276b",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-formal-system",
+      "signature_inputs": [
+        "INT",
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-033-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "5e0a247e31db093c935c1f26f4a795b9edd38d55a6f9534db7bd76c034043597",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": -5
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_430ce23d",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-5e0a247e31db",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-formal-system",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-034-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "ca1cdf60b24d59e78ccd5adaaec4fb4fd0878eed19573b832b04b2783d55dfb8",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": 4
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_e6f13221",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-ca1cdf60b24d",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-formal-system",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-035-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "ad2a269352153885121c5804f96708ad6b45842e4144d5f56938bcc37bfe45b8",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "ARGUMENT",
+          "index": 1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_baebe3c5",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-ad2a26935215",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-formal-system",
+      "signature_inputs": [
+        "INT",
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-036-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "443c9cd695fdc26b119e313aee34d4698e58e44b356e1e19b85b9b22ef9d0d8b",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": 4
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_21b57181",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-443c9cd695fd",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-formal-system",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-037-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "1d8db4686c0e2987fdbc65a8122ae79475c93d4e2c4fe2e0d34f0062c7379ad3",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": 0
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_9b2d2d25",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-1d8db4686c0e",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-formal-system",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-038-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "c111b6323611b044335d9f68b2402a0718723e8f61ec1dcf5a909603aef0895c",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "ARGUMENT",
+          "index": 1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_e2be8e89",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-c111b6323611",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-formal-system",
+      "signature_inputs": [
+        "INT",
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-039-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "8d59d9c6520307dcd6037e3e137ec18b5e1c2897a56ebeb2b98fb48c6d389cbb",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": 1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_57f46685",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-8d59d9c65203",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-formal-system",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-040-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "e9a7a5361f34c87969a6b682ab024c93f72a3011cdb1f87ffac64ff867b21d0a",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": 6
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_f74331e9",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-e9a7a5361f34",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-formal-system",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-041-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "9f3ad4e20dfe4e86aad40f7de3be2058f1c0cdb6809fe8846a15696027818e47",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "ARGUMENT",
+          "index": 1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_53d4a70d",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-9f3ad4e20dfe",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-formal-system",
+      "signature_inputs": [
+        "INT",
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-042-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "41e1b93e69f6cab011e4d247c08864ff9957c7a47a9e5c28720c789cc150cb38",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": -6
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_2e06c549",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-41e1b93e69f6",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-formal-system",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-043-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "1550d54ae198ae6c13d0de5f6b417db2b206e1e8233791d62f8334bb8aa1aa57",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": -3
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_4600046d",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-1550d54ae198",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-formal-system",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-044-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "1c867e3206c145c69c5ad802ab077f32142ecf9a70c19c17e6a4d1545ab21002",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "ARGUMENT",
+          "index": 1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_cc8eb151",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-1c867e3206c1",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-formal-system",
+      "signature_inputs": [
+        "INT",
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-045-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "1a256ea345090f3b22d7188c7087f0435b5d30c8e1a5112eebd913eaf4b95ecd",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": -6
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_bf1351cd",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-1a256ea34509",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-formal-system",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-046-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "98485b7f5088191274563c991eef9ef76bf7720cf4dd7ccaa809014acd783cf8",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": -3
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_807e28b1",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-98485b7f5088",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-formal-system",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-047-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "1249ab8e4d85f79650cd82026d9cdc2ac76e9f85844767b206396fdeeaf82079",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "ARGUMENT",
+          "index": 1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_3ebef155",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-1249ab8e4d85",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-formal-system",
+      "signature_inputs": [
+        "INT",
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-048-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "752e08d2289da49b49333ffb3211455e8c466405854636cfdb28c5c9bcfbaaa0",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": 3
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_e7ee9011",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-752e08d2289d",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-formal-system",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-049-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "94478d613f72420429cf5ca9f4df44a881c173aa2542fc070a96f05eab185f91",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": 2
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_b0a9e2b5",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-94478d613f72",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-protocol",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-050-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "ff0738514df650daa982a705f9a9dab33f0a82913c82d4e69f9f83c2a8733851",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "ARGUMENT",
+          "index": 1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_69ed6b19",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-ff0738514df6",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-protocol",
+      "signature_inputs": [
+        "INT",
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-051-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "51d885843d33e187d68c20190740d0001c14acada88389357619b13fa36a04c2",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": 1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_639ec415",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-51d885843d33",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-protocol",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-052-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "822adf4a7dd96896b3ee695c10b789e9102e32a8417624609ac03b2466505a31",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": 2
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_a5853679",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-822adf4a7dd9",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-protocol",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-053-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "d33c637f5ec9c9c84d43d1e19c1081251794a4f0557a66cd7e62d1bb90e75943",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "ARGUMENT",
+          "index": 1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_ab5be29d",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-d33c637f5ec9",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-protocol",
+      "signature_inputs": [
+        "INT",
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-054-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "37c2fd7ba2cc4b3310c6520d119ac2115e3730f0920c37a10d4a839dce20b318",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": -1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_999ff1d9",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-37c2fd7ba2cc",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-protocol",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-055-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "1369b81ffd34c5434677c0f6e7767f39176f58688f7ab1f93520922d769410e0",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": 1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_3d2be7fd",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-1369b81ffd34",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-protocol",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-056-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "f7ddd5e6e50a6ebf3e4fa0078ecdc5ce3c5e43eaeb45b27a5c06dbd77f20dfe5",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "ARGUMENT",
+          "index": 1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_07c9dbe1",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-f7ddd5e6e50a",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-protocol",
+      "signature_inputs": [
+        "INT",
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-057-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "a31f4b9f4a50a1930edbbcf8a7ba86bb7fc3fec41d985b85edb54305a8b7d62c",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": -7
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_61e7dd5d",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-a31f4b9f4a50",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-protocol",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-058-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "a80f55fc04fb690511616c810081e649709457d4c5d12ef2210e429b6fef528d",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": 2
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_48977b41",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-a80f55fc04fb",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-protocol",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-059-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "fd71d7adea8f47d5b021257de90bb20f016bf768a606fd0d7a67cd10ebba0bac",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "ARGUMENT",
+          "index": 1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_32f89ae5",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-fd71d7adea8f",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-protocol",
+      "signature_inputs": [
+        "INT",
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-060-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "ec9359871363b481bea0f1d5e7d562b7d07169bae5bbe69b6f2422c8a9e22ce4",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": 7
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_c2aa0aa1",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-ec9359871363",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-protocol",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-061-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "3cd22c3ccac3e36c3245330ced325aa9a5b79082931e7581c32ea361ff130f6f",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": -3
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_cd233445",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-3cd22c3ccac3",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-protocol",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-062-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "f966f89819a6cf6f1ac6a1d0aed5c614531f8fe67476e9064db71bfd1fa82b05",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "ARGUMENT",
+          "index": 1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_18ef23a9",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-f966f89819a6",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-protocol",
+      "signature_inputs": [
+        "INT",
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-063-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "bf46547d55d4b5f2f444d368bad0a00b3cc0834052c417658dffd519b74ed067",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": 4
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_6bdbbda5",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-bf46547d55d4",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-protocol",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-064-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "369b3b26f94c406b1dd8c559c109dd9adbe783a339dcfcab51db0d7b120854f0",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": -1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_27d01709",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-369b3b26f94c",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-protocol",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-065-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "a80a8517ef9c26c59e8840a9cbb5a49657f5e65dae01d39bcacca1e1f504da1e",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "ARGUMENT",
+          "index": 1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_2cfe3a2d",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-a80a8517ef9c",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-protocol",
+      "signature_inputs": [
+        "INT",
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-066-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "8378daafe3bf2ce39d280e6254a40a5a17b1475113148c2869d1e6b8ff8746ae",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": -7
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_7477fa69",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-8378daafe3bf",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-protocol",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-067-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "239a62ebcc48ca0a6e2d41e455d95476e6b01658a53ceffe490c9e0d6b806333",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": 0
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_5648e78d",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-239a62ebcc48",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-protocol",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-068-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "f1041c5dfe42bb3d02f66ca51b5e95e03a68ea8ff11b6f3895ef4a768bd4d610",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "ARGUMENT",
+          "index": 1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_82846271",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-f1041c5dfe42",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-protocol",
+      "signature_inputs": [
+        "INT",
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-069-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "2",
+      "confidence": 0.99,
+      "conflict": true,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "4ebe8296a16a6d3430f0123aac7019b1e65ead1e20eeab311eb54906099c9e9d",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": -4
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_9d8384ed",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-4ebe8296a16a",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-versioned-interface",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-070-OFFICIAL"
+      ],
+      "source_versions": [
+        "2"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "2",
+      "confidence": 0.99,
+      "conflict": true,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "3d9c1e1a563488db8a374bb3b02c1fb7f230aa71683176c1f2f688b196411697",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": 1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_69a629d1",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-3d9c1e1a5634",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-versioned-interface",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-071-OFFICIAL"
+      ],
+      "source_versions": [
+        "2"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "2",
+      "confidence": 0.99,
+      "conflict": true,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "9a647d7852898cfd416dfa1efc2c9faa205e523289df1738b85a86106efc04c3",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "ARGUMENT",
+          "index": 1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_7371e075",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-9a647d785289",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-versioned-interface",
+      "signature_inputs": [
+        "INT",
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-072-OFFICIAL"
+      ],
+      "source_versions": [
+        "2"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "2",
+      "confidence": 0.99,
+      "conflict": true,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "19fa4673a45a563757bb2965833e86c3410f30c4ba389c0244172db92be2a2c0",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": 0
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_1ed0e131",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-19fa4673a45a",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-versioned-interface",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-073-OFFICIAL"
+      ],
+      "source_versions": [
+        "2"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "2",
+      "confidence": 0.99,
+      "conflict": true,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "845c5903470af282d699d79d2c96821c091a3cd611d3630446a178dfea9744f5",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": -1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_e6f221d5",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-845c5903470a",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-versioned-interface",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-074-OFFICIAL"
+      ],
+      "source_versions": [
+        "2"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "2",
+      "confidence": 0.99,
+      "conflict": true,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "bdb00e18c98beffb38948272b7b2095e6de99985ebd3339200d220ed6f6ea1b2",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "ARGUMENT",
+          "index": 1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_588cb839",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-bdb00e18c98b",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-versioned-interface",
+      "signature_inputs": [
+        "INT",
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-075-OFFICIAL"
+      ],
+      "source_versions": [
+        "2"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "2",
+      "confidence": 0.99,
+      "conflict": true,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "d892ffca0c74c67c4d498eda6ba52c4432c6de278605fd7fd13e978080de4985",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": -1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_c1845335",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-d892ffca0c74",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-versioned-interface",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-076-OFFICIAL"
+      ],
+      "source_versions": [
+        "2"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "2",
+      "confidence": 0.99,
+      "conflict": true,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "34e00ee1ce2c0d8028dcd5582e6c6d64ceae7b27c0e87494b03e26680f6eeec7",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": -3
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_996cd399",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-34e00ee1ce2c",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-versioned-interface",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-077-OFFICIAL"
+      ],
+      "source_versions": [
+        "2"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "2",
+      "confidence": 0.99,
+      "conflict": true,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "6bd2944f3b7df8720452596c4c3f7e5bc047b02d5b9132fc26b4b26e4cc92ef8",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "ARGUMENT",
+          "index": 1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_9774adbd",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-6bd2944f3b7d",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-versioned-interface",
+      "signature_inputs": [
+        "INT",
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-078-OFFICIAL"
+      ],
+      "source_versions": [
+        "2"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "2",
+      "confidence": 0.99,
+      "conflict": true,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "86e41c1c75f010de9372479cf23cbc4f874bbb3f2221068a93287554c9310491",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": 5
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_cc57def9",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-86e41c1c75f0",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-versioned-interface",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-079-OFFICIAL"
+      ],
+      "source_versions": [
+        "2"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "2",
+      "confidence": 0.99,
+      "conflict": true,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "a21f14cfe35ca60039a1af46570f691f3a042f71a309ef91f39303c9cb4042d5",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": -5
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_1a90031d",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-a21f14cfe35c",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-versioned-interface",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-080-OFFICIAL"
+      ],
+      "source_versions": [
+        "2"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "2",
+      "confidence": 0.99,
+      "conflict": true,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "b6cf549ed10de5d72c75b118a20fbca578d30d3be909fb50cfd4bac47f4f31c2",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "ARGUMENT",
+          "index": 1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_0a674501",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-b6cf549ed10d",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-versioned-interface",
+      "signature_inputs": [
+        "INT",
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-081-OFFICIAL"
+      ],
+      "source_versions": [
+        "2"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "2",
+      "confidence": 0.99,
+      "conflict": true,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "ec6980a678d94df17cccb6ade191fe025415ed6ed195e2f459928d4d40057285",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": -5
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_059f487d",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-ec6980a678d9",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-versioned-interface",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-082-OFFICIAL"
+      ],
+      "source_versions": [
+        "2"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "2",
+      "confidence": 0.99,
+      "conflict": true,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "350701d8625679281d993be7c1fb6249d951b43e455ed95e0a9e7be95a9f08ee",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": -7
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_13d33461",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-350701d86256",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-versioned-interface",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-083-OFFICIAL"
+      ],
+      "source_versions": [
+        "2"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "2",
+      "confidence": 0.99,
+      "conflict": true,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "1816500a29ee9803ec4edae3af6df4467eda931883a6b4bd2eb0872e1ee0d41d",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "ARGUMENT",
+          "index": 1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_85c3c205",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-1816500a29ee",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-versioned-interface",
+      "signature_inputs": [
+        "INT",
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-084-OFFICIAL"
+      ],
+      "source_versions": [
+        "2"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "2",
+      "confidence": 0.99,
+      "conflict": true,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "81d31d02b2a30c436cc809bb769284eac8a2908e18ba2c7692a300bf956b9044",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": -1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_cf0c13c1",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-81d31d02b2a3",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-versioned-interface",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-085-OFFICIAL"
+      ],
+      "source_versions": [
+        "2"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "2",
+      "confidence": 0.99,
+      "conflict": true,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "8d2d3c649bdc4ed9395ebcd5af900d20d31ecd38c28c2f036aad04e41a0b72a3",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": 6
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_fe2fab65",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-8d2d3c649bdc",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-versioned-interface",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-086-OFFICIAL"
+      ],
+      "source_versions": [
+        "2"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "2",
+      "confidence": 0.99,
+      "conflict": true,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "17571d35bcdd18ae43a90cdd6cebdfedd79afee14911506b6736b8463f16852a",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "ARGUMENT",
+          "index": 1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_ff4f28c9",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-17571d35bcdd",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-versioned-interface",
+      "signature_inputs": [
+        "INT",
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-087-OFFICIAL"
+      ],
+      "source_versions": [
+        "2"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "2",
+      "confidence": 0.99,
+      "conflict": true,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "cf982c2a4d6d2087e89fc64f53d3e571b5350cfd71107cb6012a10b0b4c415fa",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": 5
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_1f3184c5",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-cf982c2a4d6d",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-versioned-interface",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-088-OFFICIAL"
+      ],
+      "source_versions": [
+        "2"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "2",
+      "confidence": 0.99,
+      "conflict": true,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "3303006f87b8ba8da4fc44a95ae1bcebb752f1e31480d773a3202f38811f11e0",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": 7
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_e3646c29",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-3303006f87b8",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-versioned-interface",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-089-OFFICIAL"
+      ],
+      "source_versions": [
+        "2"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "7401635b14e1a226cd5eb7837aa07b04e4ed84e867efe712fded0b8074a74f7b",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "ARGUMENT",
+          "index": 1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_9b383d4d",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-7401635b14e1",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-canary-interface",
+      "signature_inputs": [
+        "INT",
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-090-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "b4894c394d9b09aab7381a47bba34b0f71751294aed27dc1047fa067bf395bbf",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": 4
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_dcc89f89",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-b4894c394d9b",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-canary-interface",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-091-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "c5b9278d3e843a720b5911a1579946441e36e803f10f51dd7b43c8090712ad24",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": 4
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_64fa3aad",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-c5b9278d3e84",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-canary-interface",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-092-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "b566530b492ea93741022780259148befc28627803033603b713cc3661c2bd82",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "ARGUMENT",
+          "index": 1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_a2db8391",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-b566530b492e",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-canary-interface",
+      "signature_inputs": [
+        "INT",
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-093-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "caef64a4bfdf86559ff1240487ea94d6a53a07833529239b1cc7fea19b8b2518",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": -5
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_dfb4280d",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-caef64a4bfdf",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-canary-interface",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-094-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "b4add8ebf346589036234d9775cff7594ee3a9e6ffa470f76f4cbbf65a2abb0e",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": 6
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_0d079af1",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-b4add8ebf346",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-canary-interface",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-095-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "c2a5031ead8bf0d819077d524a5080c04620913e84a26a3839ec72c38f8939da",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "ARGUMENT",
+          "index": 1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_29473f95",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-c2a5031ead8b",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-canary-interface",
+      "signature_inputs": [
+        "INT",
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-096-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "618daa3f02ac61ecbadaf836b6f4a316ec1d2e04d8ba415c3b7117f50c0833c6",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": -4
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_9bc4a251",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-618daa3f02ac",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-canary-interface",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-097-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "cf84d1ff12ccad6e175517113a1185080f80fa645532eee68400e69f095f13e0",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": 6
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_acb4d0f5",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-cf84d1ff12cc",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-canary-interface",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-098-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "a09040270b8ee7c83bdce408f74001a258554b8303e83f6c38ef05546eaa87fb",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "MULTIPLY",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "ADD",
+        "right": {
+          "expression_kind": "ARGUMENT",
+          "index": 1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "u_e17f7559",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-a09040270b8e",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "sealed-canary-interface",
+      "signature_inputs": [
+        "INT",
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "DOC-A-099-OFFICIAL"
+      ],
+      "source_versions": [
+        "1"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1.90",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "cb8c8379615b3c56560b9fda158feb32e14f222c1e3f9cac549224c36946d74a",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "ARGUMENT",
+          "index": 0
+        },
+        "operator": "DIVIDE",
+        "right": {
+          "expression_kind": "ARGUMENT",
+          "index": 1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "i64::div_euclid",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-cb8c8379615b",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "rust-std-i64",
+      "signature_inputs": [
+        "INT",
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "LIVE-RUST-I64"
+      ],
+      "source_versions": [
+        "1.90"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1.90",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "64eeefab7e8d8d4ffe06fa1a23a4511f7e31e67f72fa60558990ec9d6f53223d",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "ARGUMENT",
+          "index": 0
+        },
+        "operator": "MODULO",
+        "right": {
+          "expression_kind": "ARGUMENT",
+          "index": 1
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "i64::rem_euclid",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-64eeefab7e8d",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "rust-std-i64",
+      "signature_inputs": [
+        "INT",
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "LIVE-RUST-I64"
+      ],
+      "source_versions": [
+        "1.90"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1.90",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "815f7be7d770051a0da11d2a2ed4e75290f983fe2764d3e041595fc18ec61f36",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "ADD",
+          "right": {
+            "expression_kind": "ARGUMENT",
+            "index": 1
+          }
+        },
+        "operator": "DIVIDE",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": 2
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "i64::midpoint",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-815f7be7d770",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "rust-std-i64",
+      "signature_inputs": [
+        "INT",
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "LIVE-RUST-I64"
+      ],
+      "source_versions": [
+        "1.90"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "1.90",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "961cc5af474020b46a27afef8df4ddcdfa6af7ed34d7a5911ab04b2bb11344ab",
+      "formal_body": {
+        "expression_kind": "UNARY",
+        "input": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "SUBTRACT",
+          "right": {
+            "expression_kind": "ARGUMENT",
+            "index": 1
+          }
+        },
+        "operator": "NEGATE"
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "i64::abs_diff",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-961cc5af4740",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "rust-std-i64",
+      "signature_inputs": [
+        "INT",
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "LIVE-RUST-I64"
+      ],
+      "source_versions": [
+        "1.90"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "RFC4648",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "15fb7b9c20e8d387bd3eed63866982e612a2c9e4cf68b372bf807a789e3c547a",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "BINARY",
+            "left": {
+              "expression_kind": "ARGUMENT",
+              "index": 0
+            },
+            "operator": "ADD",
+            "right": {
+              "expression_kind": "CONSTANT",
+              "value": 2
+            }
+          },
+          "operator": "DIVIDE",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          }
+        },
+        "operator": "MULTIPLY",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": 4
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "RFC4648-BASE64-ENCODED-LENGTH",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-15fb7b9c20e8",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "rfc4648-base64",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "LIVE-RFC4648"
+      ],
+      "source_versions": [
+        "RFC4648"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 2,
+      "applicability_version_range": "RFC9110",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "c7b298387fc5e783f7bd7d172b7bbad5942c8637e9ffe5ebd5bfb3452ca17aaa",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "ARGUMENT",
+          "index": 0
+        },
+        "operator": "DIVIDE",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": 100
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "RFC9110-STATUS-CLASS",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-c7b298387fc5",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "http-status-code",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "LIVE-RFC9110",
+        "LIVE-RFC2616-STALE"
+      ],
+      "source_versions": [
+        "RFC9110",
+        "RFC2616"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "RFC8259",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "f8a947d5cde8cbdc6fa773b61d6aee253d02a43fc525afbec70157bddd5117c5",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "EQUAL",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 32
+          }
+        },
+        "operator": "OR",
+        "right": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "BINARY",
+            "left": {
+              "expression_kind": "ARGUMENT",
+              "index": 0
+            },
+            "operator": "EQUAL",
+            "right": {
+              "expression_kind": "CONSTANT",
+              "value": 9
+            }
+          },
+          "operator": "OR",
+          "right": {
+            "expression_kind": "BINARY",
+            "left": {
+              "expression_kind": "BINARY",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "operator": "EQUAL",
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 10
+              }
+            },
+            "operator": "OR",
+            "right": {
+              "expression_kind": "BINARY",
+              "left": {
+                "expression_kind": "ARGUMENT",
+                "index": 0
+              },
+              "operator": "EQUAL",
+              "right": {
+                "expression_kind": "CONSTANT",
+                "value": 13
+              }
+            }
+          }
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "RFC8259-JSON-WHITESPACE",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-f8a947d5cde8",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "json-grammar",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "BOOL",
+      "source_ids": [
+        "LIVE-RFC8259"
+      ],
+      "source_versions": [
+        "RFC8259"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "RFC3986",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "42258033d181848114680f37c5df6b03191c4734cc8bba93064a601bcf3fee7a",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "GREATER_THAN",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 47
+          }
+        },
+        "operator": "AND",
+        "right": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "ARGUMENT",
+            "index": 0
+          },
+          "operator": "LESS_THAN",
+          "right": {
+            "expression_kind": "CONSTANT",
+            "value": 58
+          }
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "RFC3986-ASCII-DIGIT-UNRESERVED",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-42258033d181",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "uri-unreserved",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "BOOL",
+      "source_ids": [
+        "LIVE-RFC3986"
+      ],
+      "source_versions": [
+        "RFC3986"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    },
+    {
+      "agreement_count": 1,
+      "applicability_version_range": "RFC4648",
+      "confidence": 1.0,
+      "conflict": false,
+      "effects": [
+        "PURE"
+      ],
+      "fact_id": "fa41420218be13b3e52ccd7a103784da92145b2e7525ff972087c0aad5d368e6",
+      "formal_body": {
+        "expression_kind": "BINARY",
+        "left": {
+          "expression_kind": "BINARY",
+          "left": {
+            "expression_kind": "CONSTANT",
+            "value": 3
+          },
+          "operator": "SUBTRACT",
+          "right": {
+            "expression_kind": "BINARY",
+            "left": {
+              "expression_kind": "ARGUMENT",
+              "index": 0
+            },
+            "operator": "MODULO",
+            "right": {
+              "expression_kind": "CONSTANT",
+              "value": 3
+            }
+          }
+        },
+        "operator": "MODULO",
+        "right": {
+          "expression_kind": "CONSTANT",
+          "value": 3
+        }
+      },
+      "generated_probe_count": 4,
+      "generated_probes_passed": 4,
+      "invariants": [
+        "definition scope and version remain fixed"
+      ],
+      "lexical_alias": "RFC4648-BASE64-PAD-COUNT",
+      "normative_consistency_passed": true,
+      "opaque_concept_id": "EXT-fa41420218be",
+      "postconditions": [
+        "result satisfies the normative formal relation"
+      ],
+      "preconditions": [
+        "inputs are bounded signed integers satisfying the named official domain"
+      ],
+      "scope": "rfc4648-base64",
+      "signature_inputs": [
+        "INT"
+      ],
+      "signature_output": "INT",
+      "source_ids": [
+        "LIVE-RFC4648"
+      ],
+      "source_versions": [
+        "RFC4648"
+      ],
+      "state": "EXTERNAL_CANDIDATE",
+      "type_check_passed": true,
+      "validation_passed": true
+    }
+  ],
+  "definition_to_rust_batch": {
+    "compile_timed_out": false,
+    "compiled": true,
+    "compiler_status": 0,
+    "compiler_stderr": "",
+    "compiler_stdout": "",
+    "containment_violations": 0,
+    "output_file_created": false,
+    "output_file_matches": true,
+    "program_id": "SEM6-DEFINITION-TO-RUST-BATCH",
+    "runtime_status": 0,
+    "runtime_stderr": "",
+    "runtime_stdout": "SEM6_INTERNAL_CHECKS=400\n",
+    "runtime_timed_out": false,
+    "runtime_valid": true,
+    "source_audit_passed": true,
+    "source_sha256": "ef8328ca575b1ea13369283893911072de05b9e3e7c8835e0388ecebf36fd729",
+    "workspace_removed": true
+  }
+}

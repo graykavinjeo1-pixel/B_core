@@ -1,20 +1,20 @@
 # Project State
 
-**Canonical version:** 1.6.0
-**State frozen for:** SEM-5 completed baseline
+**Canonical version:** 1.7.0
+**State frozen for:** SEM-6 completed baseline
 
 This is an operational snapshot. It does not replace or override
 `CONSTITUTION.md`.
 
 | Field | Value |
 |---|---|
-| Current stage | `SEM-5 COMPLETE` |
+| Current stage | `SEM-6 COMPLETE` |
 | Stage S0 status | `PASS` |
 | SEM-0 implementation | `COMPLETE` |
 | SEM-0 result | `PASS - MINIMAL_AUTONOMOUS_CONCEPT_EMERGENCE` |
 | SEM-1 implementation | `COMPLETE` |
 | SEM-1 result | `PASS - RECURSIVE_LADDER_AND_SEMANTIC_SEPARATION_VERIFIED` |
-| Promoted concepts | `9` (`C000001`, `C000002`, `C000004`, `C000005`, `C000006`, `C000007`, `C000008`, `C000009`, `C000010`) |
+| Promoted concepts | `11` (`C000001`, `C000002`, `C000004`, `C000005`, `C000006`, `C000007`, `C000008`, `C000009`, `C000010`, `C000011`, `C000012`) |
 | SEM-2 implementation | `COMPLETE` |
 | SEM-2 result | `PASS - ADAPTIVE_REASONING_COMPLEXITY_CONTROL_VERIFIED` |
 | SEM-3 implementation | `COMPLETE` |
@@ -23,7 +23,9 @@ This is an operational snapshot. It does not replace or override
 | SEM-4 result | `PASS - MATHEMATICAL_FIRST_PRINCIPLES_DERIVATION_VERIFIED` |
 | SEM-5 implementation | `COMPLETE` |
 | SEM-5 result | `PASS - PROGRAMMING_FIRST_PRINCIPLES_EXPANSION_VERIFIED` |
-| SEM-6 | `NOT STARTED` |
+| SEM-6 implementation | `COMPLETE` |
+| SEM-6 result | `PASS - DEFINITION_ONLY_KNOWLEDGE_FORAGING_AND_CONSOLIDATION_VERIFIED` |
+| SEM-7 | `NOT STARTED` |
 | Recursive self-mutation | `DISABLED` |
 | Recursive-improvement mode | `OBSERVE_MEASURE_ONLY` |
 | Proposal generation | `DISABLED` |
@@ -32,16 +34,16 @@ This is an operational snapshot. It does not replace or override
 | External provider repair | `DISABLED` |
 | Recursive benchmark-driven mutation | `DISABLED` |
 | LLM reasoning dependency | `DISABLED` |
-| Web/network learning | `DISABLED` |
+| Web/network learning | `BOUNDED READ-ONLY DEFINITION FORAGING VERIFIED IN SEM-6` |
 | Current branch | `main` |
 | Current commit | `SELF` - resolve with `git rev-parse HEAD` |
 | Worktree at committed freeze | `CLEAN` |
-| Next allowed stage | `SEM-6_DEFINITION_ONLY_KNOWLEDGE_FORAGING` |
+| Next allowed stage | `SEM-7_LANGUAGE_CONCEPT_GROUNDING` |
 
 ## Canonical document status
 
 The normative documents remain complete and frozen at version 1.0.0. This
-operational state record advanced to version 1.6.0 after the sealed SEM-5 run:
+operational state record advanced to version 1.7.0 after the sealed SEM-6 run:
 
 - `CONSTITUTION.md`
 - `RESEARCH_HYPOTHESIS.md`
@@ -229,7 +231,35 @@ The detailed classification and contamination decisions are in
   full catalog scans, and routing false negatives were zero. Reports are
   sealed under `reports/sem5/`.
 
+## SEM-6 evidence snapshot
+
+- The pre-network checkpoint verified the canonical manifest, all SEM-0 through
+  SEM-5 report trees, nine immutable promoted concepts, prior blind manifests,
+  and the recursive-improvement quarantine before any external retrieval.
+- Frozen SEM-6A contained 100 blind tasks in the required 30 programming/API,
+  20 mathematical/formal, 20 protocol/specification, 20 ambiguous/conflict,
+  and 10 contamination categories. Full definition foraging solved all 100;
+  the keyword and semantic-gap-only controls each solved 70.
+- The separately frozen 50-task SEM-6B live set used ten read-only requests
+  against seven predeclared official or institutional sources. The full system
+  solved 45 tasks. Five floor-definition tasks were left unresolved because
+  the frozen DLMF section returned logarithm definitions; no replacement answer
+  was fabricated. The resulting live zero-shot rate was `0.9`.
+- Aggregate equal-budget solve rates were A `0.0`, B `0.7666666666666667`, C
+  `0.7666666666666667`, and D `0.9666666666666667`. The semantic compiler
+  accepted 145 fact uses, rejected 35 inapplicable or quarantined candidates,
+  and passed 400 hidden-case assertions in a locally synthesized Rust batch.
+- All ten planted solution spans and ten implementation spans were quarantined.
+  Twenty instruction-like spans were detected as data and none were executed.
+  False semantic imports, contamination events, external solution dependencies,
+  network writes, remote execution, recursive source mutations, full-catalog
+  scans, and routing false negatives were zero.
+- Three Generation-5 candidates were evaluated. `C000011` and `C000012` passed
+  all promotion requirements and were consolidated with source, scope, version,
+  and lineage provenance; the unresolved DLMF candidate was not promoted. One
+  cross-domain transfer passed. Reports are sealed under `reports/sem6/`.
+
 ## Advancement constraint
 
-Starting SEM-6 requires an explicit subsequent task. SEM-5 completion does not
+Starting SEM-7 requires an explicit subsequent task. SEM-6 completion does not
 authorize recursive self-application, which remains reserved for SEM-9.

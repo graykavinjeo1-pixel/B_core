@@ -1,0 +1,42 @@
+{
+  "allowed_categories": [
+    "DEFINE_SYMBOL",
+    "DEFINE_TERM",
+    "GET_TYPE_SIGNATURE",
+    "GET_API_CONTRACT",
+    "GET_PRECONDITIONS",
+    "GET_POSTCONDITIONS",
+    "GET_STANDARD_SEMANTICS",
+    "GET_FORMAL_RULE",
+    "GET_DATA_FORMAT_SPEC",
+    "GET_PROTOCOL_FIELD_MEANING"
+  ],
+  "content_budget_bytes_per_task": 8192,
+  "external_documents_are_data": true,
+  "forbidden_categories": [
+    "GET_SOLUTION",
+    "GET_WORKED_EXAMPLE_FOR_ACTIVE_TASK",
+    "GET_REFERENCE_IMPLEMENTATION",
+    "GET_TARGET_FORMULA",
+    "GET_ANSWER",
+    "GET_BENCHMARK_PATCH",
+    "SEARCH_EXACT_ACTIVE_PROBLEM",
+    "SEARCH_ERROR_PLUS_TARGET_TASK_FOR_SOLUTION"
+  ],
+  "importable_span_classes": [
+    "DEFINITION",
+    "SIGNATURE",
+    "PRECONDITION",
+    "POSTCONDITION",
+    "NORMATIVE_RULE"
+  ],
+  "quarantined_span_classes": [
+    "EXAMPLE",
+    "IMPLEMENTATION",
+    "SOLUTION_LIKE"
+  ],
+  "reasoner_has_unrestricted_browser": false,
+  "request_budget_per_task": 2,
+  "retrieved_code_execution": false,
+  "version": "SEM6-FORAGING-FIREWALL-1.0.0"
+}

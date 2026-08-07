@@ -1,0 +1,47 @@
+[
+  {
+    "ablation": "D_MINUS_AUTHORITY_RANKING",
+    "sealed_corpus_only": true,
+    "solve_rate": 0.7,
+    "contamination_events": 0,
+    "false_import_rate": 0.0,
+    "retained_concepts": 1,
+    "passed": true
+  },
+  {
+    "ablation": "D_MINUS_SPAN_FIREWALL",
+    "sealed_corpus_only": true,
+    "solve_rate": 1.0,
+    "contamination_events": 10,
+    "false_import_rate": 0.07692307692307693,
+    "retained_concepts": 0,
+    "passed": false
+  },
+  {
+    "ablation": "D_MINUS_MULTI_SOURCE",
+    "sealed_corpus_only": true,
+    "solve_rate": 0.7,
+    "contamination_events": 0,
+    "false_import_rate": 0.0,
+    "retained_concepts": 1,
+    "passed": true
+  },
+  {
+    "ablation": "D_MINUS_SEMANTIC_VALIDATION",
+    "sealed_corpus_only": true,
+    "solve_rate": 0.99,
+    "contamination_events": 0,
+    "false_import_rate": 0.01,
+    "retained_concepts": 1,
+    "passed": true
+  },
+  {
+    "ablation": "D_MINUS_PERSISTENCE",
+    "sealed_corpus_only": true,
+    "solve_rate": 1.0,
+    "contamination_events": 0,
+    "false_import_rate": 0.0,
+    "retained_concepts": 0,
+    "passed": true
+  }
+]

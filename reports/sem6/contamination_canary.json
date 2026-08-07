@@ -1,0 +1,8 @@
+{
+  "planted_solution_documents": 10,
+  "planted_solution_spans": 10,
+  "solution_like_spans_quarantined": 10,
+  "planted_solutions_reaching_solver": 0,
+  "solution_contamination_events": 0,
+  "passed": true
+}

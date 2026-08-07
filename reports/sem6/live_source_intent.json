@@ -1,0 +1,45 @@
+{
+  "allowlisted_sources": [
+    {
+      "authority": "OFFICIAL_DOCUMENTATION",
+      "source_id": "LIVE-RUST-I64",
+      "url": "https://doc.rust-lang.org/std/primitive.i64.html"
+    },
+    {
+      "authority": "OFFICIAL_STANDARD",
+      "source_id": "LIVE-RFC4648",
+      "url": "https://www.rfc-editor.org/rfc/rfc4648"
+    },
+    {
+      "authority": "OFFICIAL_STANDARD",
+      "source_id": "LIVE-RFC9110",
+      "url": "https://www.rfc-editor.org/rfc/rfc9110"
+    },
+    {
+      "authority": "OFFICIAL_STANDARD_DEPRECATED",
+      "source_id": "LIVE-RFC2616-STALE",
+      "url": "https://www.rfc-editor.org/rfc/rfc2616"
+    },
+    {
+      "authority": "OFFICIAL_STANDARD",
+      "source_id": "LIVE-RFC8259",
+      "url": "https://www.rfc-editor.org/rfc/rfc8259"
+    },
+    {
+      "authority": "OFFICIAL_STANDARD",
+      "source_id": "LIVE-RFC3986",
+      "url": "https://www.rfc-editor.org/rfc/rfc3986"
+    },
+    {
+      "authority": "INSTITUTIONAL_REFERENCE",
+      "source_id": "LIVE-DLMF-FLOOR",
+      "url": "https://dlmf.nist.gov/4.2"
+    }
+  ],
+  "authenticated_account_mutation": false,
+  "download_execution": false,
+  "frozen_before_network": true,
+  "http_method": "GET",
+  "remote_write": false,
+  "solution_foraging": false
+}

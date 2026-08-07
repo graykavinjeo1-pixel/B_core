@@ -1,0 +1,1502 @@
+[
+  {
+    "event_id": "GAP-00000",
+    "task_id": "A-000-bbc6a904",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "u_5da06315",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00001",
+    "task_id": "A-001-39182b30",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "u_2f3e3dd1",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00002",
+    "task_id": "A-002-006133e4",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "u_a768b475",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00003",
+    "task_id": "A-003-daa09158",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "u_c28920d9",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00004",
+    "task_id": "A-004-95ef6ec4",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "u_5a2af5d5",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00005",
+    "task_id": "A-005-e0e01e38",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "u_12184c39",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00006",
+    "task_id": "A-006-1f8eb66c",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "u_30e79c5d",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00007",
+    "task_id": "A-007-4e505b18",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "u_db1a6799",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00008",
+    "task_id": "A-008-56c0254c",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "u_ca2901bd",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00009",
+    "task_id": "A-009-1f1e2c40",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "u_e57f59a1",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00010",
+    "task_id": "A-010-9c0f442c",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "u_4046571d",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00011",
+    "task_id": "A-011-4c705d20",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "u_52985901",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00012",
+    "task_id": "A-012-8cacc6d4",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "u_85d59ca5",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00013",
+    "task_id": "A-013-ac7d3e00",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "u_bbe64861",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00014",
+    "task_id": "A-014-ba1099b4",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "u_7c859605",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00015",
+    "task_id": "A-015-803d1a28",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "u_6d756969",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00016",
+    "task_id": "A-016-597c1c94",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "u_a3b37f65",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00017",
+    "task_id": "A-017-ad456f08",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "u_4e75bcc9",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00018",
+    "task_id": "A-018-e10a7a3c",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "u_80f383ed",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00019",
+    "task_id": "A-019-f35273e8",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "u_f22d0029",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00020",
+    "task_id": "A-020-55cc311c",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "u_d157914d",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00021",
+    "task_id": "A-021-88dcfb10",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "u_8ab27031",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00022",
+    "task_id": "A-022-ef3f97fc",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "u_0d9b8ead",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00023",
+    "task_id": "A-023-aacef3f0",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "u_c7479791",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00024",
+    "task_id": "A-024-741d70a4",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "u_e5667235",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00025",
+    "task_id": "A-025-0ecf9cd0",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "u_d8d5aef1",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00026",
+    "task_id": "A-026-fcf88b84",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "u_10141395",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00027",
+    "task_id": "A-027-12a96ef8",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "u_f8598df9",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00028",
+    "task_id": "A-028-53ef5664",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "u_d1c3a4f5",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00029",
+    "task_id": "A-029-89488bd8",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "u_3f810959",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00030",
+    "task_id": "A-030-8d674a0c",
+    "gap_class": "UNKNOWN_RELATION",
+    "unknown": "u_c96f877d",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00031",
+    "task_id": "A-031-d5c058b8",
+    "gap_class": "UNKNOWN_RELATION",
+    "unknown": "u_c1a374b9",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00032",
+    "task_id": "A-032-e0a748ec",
+    "gap_class": "UNKNOWN_RELATION",
+    "unknown": "u_a94c3cdd",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00033",
+    "task_id": "A-033-949a15e0",
+    "gap_class": "UNKNOWN_RELATION",
+    "unknown": "u_a8e9e2c1",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00034",
+    "task_id": "A-034-4a2cf7cc",
+    "gap_class": "UNKNOWN_RELATION",
+    "unknown": "u_430ce23d",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00035",
+    "task_id": "A-035-b839d6c0",
+    "gap_class": "UNKNOWN_RELATION",
+    "unknown": "u_e6f13221",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00036",
+    "task_id": "A-036-0af5a674",
+    "gap_class": "UNKNOWN_RELATION",
+    "unknown": "u_baebe3c5",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00037",
+    "task_id": "A-037-d83c47a0",
+    "gap_class": "UNKNOWN_RELATION",
+    "unknown": "u_21b57181",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00038",
+    "task_id": "A-038-76760954",
+    "gap_class": "UNKNOWN_RELATION",
+    "unknown": "u_9b2d2d25",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00039",
+    "task_id": "A-039-a1728fc8",
+    "gap_class": "UNKNOWN_RELATION",
+    "unknown": "u_e2be8e89",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00040",
+    "task_id": "A-040-87261c34",
+    "gap_class": "UNKNOWN_RELATION",
+    "unknown": "u_57f46685",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00041",
+    "task_id": "A-041-90f674a8",
+    "gap_class": "UNKNOWN_RELATION",
+    "unknown": "u_f74331e9",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00042",
+    "task_id": "A-042-37e225dc",
+    "gap_class": "UNKNOWN_RELATION",
+    "unknown": "u_53d4a70d",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00043",
+    "task_id": "A-043-5e270988",
+    "gap_class": "UNKNOWN_RELATION",
+    "unknown": "u_2e06c549",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00044",
+    "task_id": "A-044-8f0e6cbc",
+    "gap_class": "UNKNOWN_RELATION",
+    "unknown": "u_4600046d",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00045",
+    "task_id": "A-045-96427cb0",
+    "gap_class": "UNKNOWN_RELATION",
+    "unknown": "u_cc8eb151",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00046",
+    "task_id": "A-046-0914639c",
+    "gap_class": "UNKNOWN_RELATION",
+    "unknown": "u_bf1351cd",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00047",
+    "task_id": "A-047-451e0590",
+    "gap_class": "UNKNOWN_RELATION",
+    "unknown": "u_807e28b1",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00048",
+    "task_id": "A-048-d2d26844",
+    "gap_class": "UNKNOWN_RELATION",
+    "unknown": "u_3ebef155",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00049",
+    "task_id": "A-049-95b03e70",
+    "gap_class": "UNKNOWN_RELATION",
+    "unknown": "u_e7ee9011",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00050",
+    "task_id": "A-050-9ca61324",
+    "gap_class": "UNKNOWN_PROTOCOL",
+    "unknown": "u_b0a9e2b5",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00051",
+    "task_id": "A-051-78e57c98",
+    "gap_class": "UNKNOWN_PROTOCOL",
+    "unknown": "u_69ed6b19",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00052",
+    "task_id": "A-052-9dbd6e04",
+    "gap_class": "UNKNOWN_PROTOCOL",
+    "unknown": "u_639ec415",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00053",
+    "task_id": "A-053-fd1c2978",
+    "gap_class": "UNKNOWN_PROTOCOL",
+    "unknown": "u_a5853679",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00054",
+    "task_id": "A-054-44780dac",
+    "gap_class": "UNKNOWN_PROTOCOL",
+    "unknown": "u_ab5be29d",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00055",
+    "task_id": "A-055-f1d38658",
+    "gap_class": "UNKNOWN_PROTOCOL",
+    "unknown": "u_999ff1d9",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00056",
+    "task_id": "A-056-297e9c8c",
+    "gap_class": "UNKNOWN_PROTOCOL",
+    "unknown": "u_3d2be7fd",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00057",
+    "task_id": "A-057-06832f80",
+    "gap_class": "UNKNOWN_PROTOCOL",
+    "unknown": "u_07c9dbe1",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00058",
+    "task_id": "A-058-98f2db6c",
+    "gap_class": "UNKNOWN_PROTOCOL",
+    "unknown": "u_61e7dd5d",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00059",
+    "task_id": "A-059-26a88060",
+    "gap_class": "UNKNOWN_PROTOCOL",
+    "unknown": "u_48977b41",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00060",
+    "task_id": "A-060-0610b614",
+    "gap_class": "UNKNOWN_PROTOCOL",
+    "unknown": "u_32f89ae5",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00061",
+    "task_id": "A-061-b8d88140",
+    "gap_class": "UNKNOWN_PROTOCOL",
+    "unknown": "u_c2aa0aa1",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00062",
+    "task_id": "A-062-7e65a8f4",
+    "gap_class": "UNKNOWN_PROTOCOL",
+    "unknown": "u_cd233445",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00063",
+    "task_id": "A-063-f20f3568",
+    "gap_class": "UNKNOWN_PROTOCOL",
+    "unknown": "u_18ef23a9",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00064",
+    "task_id": "A-064-bb124bd4",
+    "gap_class": "UNKNOWN_PROTOCOL",
+    "unknown": "u_6bdbbda5",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00065",
+    "task_id": "A-065-f346aa48",
+    "gap_class": "UNKNOWN_PROTOCOL",
+    "unknown": "u_27d01709",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00066",
+    "task_id": "A-066-37e6017c",
+    "gap_class": "UNKNOWN_PROTOCOL",
+    "unknown": "u_2cfe3a2d",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00067",
+    "task_id": "A-067-c2d2cf28",
+    "gap_class": "UNKNOWN_PROTOCOL",
+    "unknown": "u_7477fa69",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00068",
+    "task_id": "A-068-7934d85c",
+    "gap_class": "UNKNOWN_PROTOCOL",
+    "unknown": "u_5648e78d",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00069",
+    "task_id": "A-069-52c92e50",
+    "gap_class": "UNKNOWN_PROTOCOL",
+    "unknown": "u_82846271",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00070",
+    "task_id": "A-070-47855f3c",
+    "gap_class": "AMBIGUOUS_DEFINITION",
+    "unknown": "u_9d8384ed",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00071",
+    "task_id": "A-071-06c64730",
+    "gap_class": "AMBIGUOUS_DEFINITION",
+    "unknown": "u_69a629d1",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00072",
+    "task_id": "A-072-67cd8fe4",
+    "gap_class": "AMBIGUOUS_DEFINITION",
+    "unknown": "u_7371e075",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00073",
+    "task_id": "A-073-68221010",
+    "gap_class": "AMBIGUOUS_DEFINITION",
+    "unknown": "u_1ed0e131",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00074",
+    "task_id": "A-074-9351cac4",
+    "gap_class": "AMBIGUOUS_DEFINITION",
+    "unknown": "u_e6f221d5",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00075",
+    "task_id": "A-075-42bcba38",
+    "gap_class": "AMBIGUOUS_DEFINITION",
+    "unknown": "u_588cb839",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00076",
+    "task_id": "A-076-4b41b5a4",
+    "gap_class": "AMBIGUOUS_DEFINITION",
+    "unknown": "u_c1845335",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00077",
+    "task_id": "A-077-55c2f718",
+    "gap_class": "AMBIGUOUS_DEFINITION",
+    "unknown": "u_996cd399",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00078",
+    "task_id": "A-078-87a9014c",
+    "gap_class": "AMBIGUOUS_DEFINITION",
+    "unknown": "u_9774adbd",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00079",
+    "task_id": "A-079-9ff1e3f8",
+    "gap_class": "AMBIGUOUS_DEFINITION",
+    "unknown": "u_cc57def9",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00080",
+    "task_id": "A-080-182e202c",
+    "gap_class": "AMBIGUOUS_DEFINITION",
+    "unknown": "u_1a90031d",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00081",
+    "task_id": "A-081-ad417920",
+    "gap_class": "AMBIGUOUS_DEFINITION",
+    "unknown": "u_0a674501",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00082",
+    "task_id": "A-082-1348ef0c",
+    "gap_class": "AMBIGUOUS_DEFINITION",
+    "unknown": "u_059f487d",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00083",
+    "task_id": "A-083-34245a00",
+    "gap_class": "AMBIGUOUS_DEFINITION",
+    "unknown": "u_13d33461",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00084",
+    "task_id": "A-084-13e5f5b4",
+    "gap_class": "AMBIGUOUS_DEFINITION",
+    "unknown": "u_85c3c205",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00085",
+    "task_id": "A-085-4eb9eae0",
+    "gap_class": "AMBIGUOUS_DEFINITION",
+    "unknown": "u_cf0c13c1",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00086",
+    "task_id": "A-086-8bc77894",
+    "gap_class": "AMBIGUOUS_DEFINITION",
+    "unknown": "u_fe2fab65",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00087",
+    "task_id": "A-087-4d7b0b08",
+    "gap_class": "AMBIGUOUS_DEFINITION",
+    "unknown": "u_ff4f28c9",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00088",
+    "task_id": "A-088-d328ab74",
+    "gap_class": "AMBIGUOUS_DEFINITION",
+    "unknown": "u_1f3184c5",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00089",
+    "task_id": "A-089-939e0fe8",
+    "gap_class": "AMBIGUOUS_DEFINITION",
+    "unknown": "u_e3646c29",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00090",
+    "task_id": "A-090-69fe0d1c",
+    "gap_class": "UNKNOWN_SYMBOL",
+    "unknown": "u_9b383d4d",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00091",
+    "task_id": "A-091-c4bdc4c8",
+    "gap_class": "UNKNOWN_SYMBOL",
+    "unknown": "u_dcc89f89",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00092",
+    "task_id": "A-092-412773fc",
+    "gap_class": "UNKNOWN_SYMBOL",
+    "unknown": "u_64fa3aad",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00093",
+    "task_id": "A-093-dcd90ff0",
+    "gap_class": "UNKNOWN_SYMBOL",
+    "unknown": "u_a2db8391",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00094",
+    "task_id": "A-094-7b7a8adc",
+    "gap_class": "UNKNOWN_SYMBOL",
+    "unknown": "u_dfb4280d",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00095",
+    "task_id": "A-095-722fb8d0",
+    "gap_class": "UNKNOWN_SYMBOL",
+    "unknown": "u_0d079af1",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00096",
+    "task_id": "A-096-4ef6e784",
+    "gap_class": "UNKNOWN_SYMBOL",
+    "unknown": "u_29473f95",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00097",
+    "task_id": "A-097-6c8d11b0",
+    "gap_class": "UNKNOWN_SYMBOL",
+    "unknown": "u_9bc4a251",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00098",
+    "task_id": "A-098-20e3b264",
+    "gap_class": "UNKNOWN_SYMBOL",
+    "unknown": "u_acb4d0f5",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00099",
+    "task_id": "A-099-719727d8",
+    "gap_class": "UNKNOWN_SYMBOL",
+    "unknown": "u_e17f7559",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00100",
+    "task_id": "B-000-3c87301e",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "i64::div_euclid",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00101",
+    "task_id": "B-001-21b7ed03",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "i64::rem_euclid",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00102",
+    "task_id": "B-002-7e2ef694",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "i64::midpoint",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00103",
+    "task_id": "B-003-86dce921",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "i64::abs_diff",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00104",
+    "task_id": "B-004-ef5004c2",
+    "gap_class": "UNKNOWN_PROTOCOL",
+    "unknown": "RFC4648-BASE64-ENCODED-LENGTH",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00105",
+    "task_id": "B-005-8ad431ff",
+    "gap_class": "AMBIGUOUS_DEFINITION",
+    "unknown": "RFC9110-STATUS-CLASS",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00106",
+    "task_id": "B-006-cb30ade8",
+    "gap_class": "UNKNOWN_PROTOCOL",
+    "unknown": "RFC8259-JSON-WHITESPACE",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00107",
+    "task_id": "B-007-e3305175",
+    "gap_class": "UNKNOWN_PROTOCOL",
+    "unknown": "RFC3986-ASCII-DIGIT-UNRESERVED",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00108",
+    "task_id": "B-008-2735e3ce",
+    "gap_class": "UNKNOWN_RELATION",
+    "unknown": "DLMF-FLOOR-POSITIVE-QUOTIENT",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00109",
+    "task_id": "B-009-1c2e4df3",
+    "gap_class": "UNKNOWN_RELATION",
+    "unknown": "RFC4648-BASE64-PAD-COUNT",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00110",
+    "task_id": "B-010-8247488c",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "i64::div_euclid",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00111",
+    "task_id": "B-011-e64a9939",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "i64::rem_euclid",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00112",
+    "task_id": "B-012-73aff172",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "i64::midpoint",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00113",
+    "task_id": "B-013-71b15a07",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "i64::abs_diff",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00114",
+    "task_id": "B-014-c91296d0",
+    "gap_class": "UNKNOWN_PROTOCOL",
+    "unknown": "RFC4648-BASE64-ENCODED-LENGTH",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00115",
+    "task_id": "B-015-16626595",
+    "gap_class": "AMBIGUOUS_DEFINITION",
+    "unknown": "RFC9110-STATUS-CLASS",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00116",
+    "task_id": "B-016-b9168de6",
+    "gap_class": "UNKNOWN_PROTOCOL",
+    "unknown": "RFC8259-JSON-WHITESPACE",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00117",
+    "task_id": "B-017-f9fd4f7b",
+    "gap_class": "UNKNOWN_PROTOCOL",
+    "unknown": "RFC3986-ASCII-DIGIT-UNRESERVED",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00118",
+    "task_id": "B-018-6c910fbc",
+    "gap_class": "UNKNOWN_RELATION",
+    "unknown": "DLMF-FLOOR-POSITIVE-QUOTIENT",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00119",
+    "task_id": "B-019-0f131fa9",
+    "gap_class": "UNKNOWN_RELATION",
+    "unknown": "RFC4648-BASE64-PAD-COUNT",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00120",
+    "task_id": "B-020-db36922a",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "i64::div_euclid",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00121",
+    "task_id": "B-021-fc3e0ddf",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "i64::rem_euclid",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00122",
+    "task_id": "B-022-360e7f00",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "i64::midpoint",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00123",
+    "task_id": "B-023-894c4edd",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "i64::abs_diff",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00124",
+    "task_id": "B-024-53995b0e",
+    "gap_class": "UNKNOWN_PROTOCOL",
+    "unknown": "RFC4648-BASE64-ENCODED-LENGTH",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00125",
+    "task_id": "B-025-0d3c889b",
+    "gap_class": "AMBIGUOUS_DEFINITION",
+    "unknown": "RFC9110-STATUS-CLASS",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00126",
+    "task_id": "B-026-bca7cd94",
+    "gap_class": "UNKNOWN_PROTOCOL",
+    "unknown": "RFC8259-JSON-WHITESPACE",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00127",
+    "task_id": "B-027-e5f0de71",
+    "gap_class": "UNKNOWN_PROTOCOL",
+    "unknown": "RFC3986-ASCII-DIGIT-UNRESERVED",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00128",
+    "task_id": "B-028-11ae78da",
+    "gap_class": "UNKNOWN_RELATION",
+    "unknown": "DLMF-FLOOR-POSITIVE-QUOTIENT",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00129",
+    "task_id": "B-029-d92695cf",
+    "gap_class": "UNKNOWN_RELATION",
+    "unknown": "RFC4648-BASE64-PAD-COUNT",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00130",
+    "task_id": "B-030-337bbc78",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "i64::div_euclid",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00131",
+    "task_id": "B-031-231c9c75",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "i64::rem_euclid",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00132",
+    "task_id": "B-032-32688abe",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "i64::midpoint",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00133",
+    "task_id": "B-033-31f56523",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "i64::abs_diff",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00134",
+    "task_id": "B-034-4a2328fc",
+    "gap_class": "UNKNOWN_PROTOCOL",
+    "unknown": "RFC4648-BASE64-ENCODED-LENGTH",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00135",
+    "task_id": "B-035-045b0491",
+    "gap_class": "AMBIGUOUS_DEFINITION",
+    "unknown": "RFC9110-STATUS-CLASS",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00136",
+    "task_id": "B-036-acba6072",
+    "gap_class": "UNKNOWN_PROTOCOL",
+    "unknown": "RFC8259-JSON-WHITESPACE",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00137",
+    "task_id": "B-037-f7e4a3d7",
+    "gap_class": "UNKNOWN_PROTOCOL",
+    "unknown": "RFC3986-ASCII-DIGIT-UNRESERVED",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00138",
+    "task_id": "B-038-e76eaea8",
+    "gap_class": "UNKNOWN_RELATION",
+    "unknown": "DLMF-FLOOR-POSITIVE-QUOTIENT",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00139",
+    "task_id": "B-039-08dd61e5",
+    "gap_class": "UNKNOWN_RELATION",
+    "unknown": "RFC4648-BASE64-PAD-COUNT",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00140",
+    "task_id": "B-040-0c60e2f6",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "i64::div_euclid",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00141",
+    "task_id": "B-041-48c5527b",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "i64::rem_euclid",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00142",
+    "task_id": "B-042-b660cc2c",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "i64::midpoint",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00143",
+    "task_id": "B-043-bd9cd659",
+    "gap_class": "UNKNOWN_API",
+    "unknown": "i64::abs_diff",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00144",
+    "task_id": "B-044-d158841a",
+    "gap_class": "UNKNOWN_PROTOCOL",
+    "unknown": "RFC4648-BASE64-ENCODED-LENGTH",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00145",
+    "task_id": "B-045-73bebef7",
+    "gap_class": "AMBIGUOUS_DEFINITION",
+    "unknown": "RFC9110-STATUS-CLASS",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00146",
+    "task_id": "B-046-43ea4600",
+    "gap_class": "UNKNOWN_PROTOCOL",
+    "unknown": "RFC8259-JSON-WHITESPACE",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00147",
+    "task_id": "B-047-03ac212d",
+    "gap_class": "UNKNOWN_PROTOCOL",
+    "unknown": "RFC3986-ASCII-DIGIT-UNRESERVED",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00148",
+    "task_id": "B-048-36e0aca6",
+    "gap_class": "UNKNOWN_RELATION",
+    "unknown": "DLMF-FLOOR-POSITIVE-QUOTIENT",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  },
+  {
+    "event_id": "GAP-00149",
+    "task_id": "B-049-bd9ff16b",
+    "gap_class": "UNKNOWN_RELATION",
+    "unknown": "RFC4648-BASE64-PAD-COUNT",
+    "existing_concepts_insufficient_because": "no validated semantic fact matches the requested alias, scope, and version",
+    "minimum_information_needed": "typed signature, normative relation, preconditions, and applicable version",
+    "external_retrieval_necessary": true,
+    "confidence": 1.0
+  }
+]

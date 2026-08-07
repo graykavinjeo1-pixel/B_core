@@ -1,0 +1,43 @@
+{
+  "allowed_requests": 175,
+  "allowed_requests_sanitized": 175,
+  "exact_task_leaks_accepted": 0,
+  "forbidden_probes": [
+    {
+      "category": "SEARCH_EXACT_ACTIVE_PROBLEM",
+      "classification_allowed": false,
+      "content_budget_bytes": 8192,
+      "exact_task_leak": true,
+      "executed": false,
+      "near_task_similarity": 1.0,
+      "query": "Using the unfamiliar symbol u_5da06315 in sealed-library version 1, derive the required output for fresh bounded inputs",
+      "rejection_reason": "REQUEST_REJECTED",
+      "request_budget": 2,
+      "request_id": "CLASSIFICATION-PROBE",
+      "requested_scope": "sealed-library",
+      "requested_symbol": "u_5da06315",
+      "requested_version": "1",
+      "sanitized": false,
+      "task_id": "A-000-bbc6a904"
+    },
+    {
+      "category": "GET_ANSWER",
+      "classification_allowed": false,
+      "content_budget_bytes": 8192,
+      "exact_task_leak": true,
+      "executed": false,
+      "near_task_similarity": 0.08,
+      "query": "how to solve task A-000-bbc6a904 answer for u_5da06315",
+      "rejection_reason": "REQUEST_REJECTED",
+      "request_budget": 2,
+      "request_id": "CLASSIFICATION-PROBE",
+      "requested_scope": "sealed-library",
+      "requested_symbol": "u_5da06315",
+      "requested_version": "1",
+      "sanitized": false,
+      "task_id": "A-000-bbc6a904"
+    }
+  ],
+  "near_task_leaks_accepted": 0,
+  "passed": true
+}

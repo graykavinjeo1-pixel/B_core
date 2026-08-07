@@ -1,0 +1,19 @@
+{
+  "conflict_resolution_order": [
+    "AUTHORITY",
+    "VERSION_DATE",
+    "SCOPE_CONTEXT",
+    "DISCRIMINATING_CHECK",
+    "ABSTAIN"
+  ],
+  "primary_required_when_available": true,
+  "ranking": [
+    "OFFICIAL_STANDARD",
+    "OFFICIAL_DOCUMENTATION",
+    "ORIGINAL_PAPER",
+    "INSTITUTIONAL_REFERENCE",
+    "SECONDARY_SOURCE"
+  ],
+  "search_snippets_are_authority": false,
+  "untrusted_sources_importable": false
+}

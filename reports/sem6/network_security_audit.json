@@ -1,0 +1,15 @@
+{
+  "network_access": true,
+  "unrestricted_web_access": false,
+  "solution_foraging": false,
+  "definition_foraging": true,
+  "http_read_only": true,
+  "network_read_requests": 10,
+  "network_write_requests": 0,
+  "remote_executions": 0,
+  "authenticated_account_mutations": 0,
+  "download_executions": 0,
+  "search_snippets_used_as_authority": 0,
+  "retrieved_code_executed": 0,
+  "passed": true
+}

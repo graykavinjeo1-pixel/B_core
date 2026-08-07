@@ -34,6 +34,14 @@ path = "src/sem4_main.rs"
 name = "sem5-run"
 path = "src/sem5_main.rs"
 
+[[bin]]
+name = "sem6-run"
+path = "src/sem6_main.rs"
+
+[[bin]]
+name = "sem6-freeze"
+path = "src/sem6_freeze_main.rs"
+
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
