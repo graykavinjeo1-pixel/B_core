@@ -1,0 +1,216 @@
+{
+  "generator_version": "SEM0_TASK_GENERATOR_V1",
+  "seed": 20260807,
+  "expected_query_outputs_included": false,
+  "hidden_generator_metadata_included": false,
+  "tasks": [
+    {
+      "task_id": "T000001",
+      "split": "TRAIN_DISCOVERY",
+      "scalar_parameter": 2,
+      "demonstrations": [
+        {
+          "input": [
+            1,
+            -2,
+            4
+          ],
+          "observed_output": [
+            3,
+            0,
+            6
+          ]
+        },
+        {
+          "input": [
+            0,
+            3
+          ],
+          "observed_output": [
+            2,
+            5
+          ]
+        }
+      ],
+      "query_input": [
+        3,
+        -1,
+        5
+      ]
+    },
+    {
+      "task_id": "T000002",
+      "split": "TRAIN_DISCOVERY",
+      "scalar_parameter": 3,
+      "demonstrations": [
+        {
+          "input": [
+            1,
+            -2,
+            4
+          ],
+          "observed_output": [
+            3,
+            -6,
+            12
+          ]
+        },
+        {
+          "input": [
+            0,
+            3
+          ],
+          "observed_output": [
+            0,
+            9
+          ]
+        }
+      ],
+      "query_input": [
+        4,
+        0,
+        -2,
+        7
+      ]
+    },
+    {
+      "task_id": "T000003",
+      "split": "TRAIN_DISCOVERY",
+      "scalar_parameter": 4,
+      "demonstrations": [
+        {
+          "input": [
+            1,
+            -2,
+            4
+          ],
+          "observed_output": [
+            -3,
+            -6,
+            0
+          ]
+        },
+        {
+          "input": [
+            0,
+            3
+          ],
+          "observed_output": [
+            -4,
+            -1
+          ]
+        }
+      ],
+      "query_input": [
+        9,
+        -3
+      ]
+    },
+    {
+      "task_id": "T000004",
+      "split": "TRAIN_DISCOVERY",
+      "scalar_parameter": -3,
+      "demonstrations": [
+        {
+          "input": [
+            1,
+            -2,
+            4
+          ],
+          "observed_output": [
+            -2,
+            -5,
+            1
+          ]
+        },
+        {
+          "input": [
+            0,
+            3
+          ],
+          "observed_output": [
+            -3,
+            0
+          ]
+        }
+      ],
+      "query_input": [
+        8,
+        1,
+        -6,
+        2,
+        0
+      ]
+    },
+    {
+      "task_id": "T000005",
+      "split": "TRAIN_DISCOVERY",
+      "scalar_parameter": -2,
+      "demonstrations": [
+        {
+          "input": [
+            1,
+            -2,
+            4
+          ],
+          "observed_output": [
+            -2,
+            4,
+            -8
+          ]
+        },
+        {
+          "input": [
+            0,
+            3
+          ],
+          "observed_output": [
+            0,
+            -6
+          ]
+        }
+      ],
+      "query_input": [
+        -4,
+        5,
+        1
+      ]
+    },
+    {
+      "task_id": "T000006",
+      "split": "TRAIN_DISCOVERY",
+      "scalar_parameter": -5,
+      "demonstrations": [
+        {
+          "input": [
+            1,
+            -2,
+            4
+          ],
+          "observed_output": [
+            6,
+            3,
+            9
+          ]
+        },
+        {
+          "input": [
+            0,
+            3
+          ],
+          "observed_output": [
+            5,
+            8
+          ]
+        }
+      ],
+      "query_input": [
+        0,
+        6,
+        -8,
+        3
+      ]
+    }
+  ],
+  "manifest_sha256": "cdc90ddd700ba14125ee1d9b278277ab21754a6baaf43d1352a38d75f23c51e6"
+}

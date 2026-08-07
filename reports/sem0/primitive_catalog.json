@@ -1,0 +1,106 @@
+{
+  "primitive_count": 12,
+  "lexical_semantic_names_present": false,
+  "primitives": [
+    {
+      "primitive_id": "P000001",
+      "input_types": [
+        "INTEGER"
+      ],
+      "output_type": "INTEGER",
+      "executable_code": "VALUE"
+    },
+    {
+      "primitive_id": "P000002",
+      "input_types": [
+        "INTEGER"
+      ],
+      "output_type": "INTEGER_SEQUENCE",
+      "executable_code": "SEQUENCE"
+    },
+    {
+      "primitive_id": "P000003",
+      "input_types": [],
+      "output_type": "INTEGER_SEQUENCE",
+      "executable_code": "INIT_OUTPUT"
+    },
+    {
+      "primitive_id": "P000004",
+      "input_types": [
+        "INTEGER_SEQUENCE",
+        "INTEGER"
+      ],
+      "output_type": "INTEGER",
+      "executable_code": "READ_CURRENT"
+    },
+    {
+      "primitive_id": "P000005",
+      "input_types": [
+        "INTEGER_SEQUENCE"
+      ],
+      "output_type": "INTEGER_SEQUENCE",
+      "executable_code": "RETURN"
+    },
+    {
+      "primitive_id": "P000006",
+      "input_types": [
+        "INTEGER_SEQUENCE",
+        "INTEGER"
+      ],
+      "output_type": "INTEGER_SEQUENCE",
+      "executable_code": "APPEND"
+    },
+    {
+      "primitive_id": "P000007",
+      "input_types": [
+        "INTEGER"
+      ],
+      "output_type": "INTEGER",
+      "executable_code": "ADVANCE"
+    },
+    {
+      "primitive_id": "P000008",
+      "input_types": [
+        "INTEGER_SEQUENCE"
+      ],
+      "output_type": "INTEGER",
+      "executable_code": "COMPARE_EMPTY_BRANCH"
+    },
+    {
+      "primitive_id": "P000009",
+      "input_types": [
+        "INTEGER_SEQUENCE",
+        "INTEGER"
+      ],
+      "output_type": "INTEGER",
+      "executable_code": "COMPARE_REMAINING_BRANCH"
+    },
+    {
+      "primitive_id": "P000010",
+      "input_types": [
+        "INTEGER",
+        "SCALAR_OPERATOR"
+      ],
+      "output_type": "INTEGER",
+      "executable_code": "CHECKED_ADD"
+    },
+    {
+      "primitive_id": "P000011",
+      "input_types": [
+        "INTEGER",
+        "SCALAR_OPERATOR"
+      ],
+      "output_type": "INTEGER",
+      "executable_code": "CHECKED_SUB"
+    },
+    {
+      "primitive_id": "P000012",
+      "input_types": [
+        "INTEGER",
+        "SCALAR_OPERATOR"
+      ],
+      "output_type": "INTEGER",
+      "executable_code": "CHECKED_MUL"
+    }
+  ]
+}

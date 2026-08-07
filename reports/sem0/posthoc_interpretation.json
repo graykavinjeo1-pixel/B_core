@@ -1,0 +1,9 @@
+{
+  "concept_id": "C000001",
+  "interpretation": "Functionally resembles element-wise mapping with a parameterized checked scalar operator.",
+  "attached_after_canonical_evaluation": true,
+  "used_by_reasoner": false,
+  "used_by_miner": false,
+  "used_by_promotion_gate": false,
+  "promotion_evidence": false
+}

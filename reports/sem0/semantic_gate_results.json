@@ -1,0 +1,86 @@
+{
+  "candidate_id": "C000001",
+  "all_required_gates_passed": true,
+  "gates": [
+    {
+      "gate_id": "A",
+      "passed": true,
+      "observations": 6,
+      "metric": 6.0,
+      "threshold": 3.0,
+      "evidence_artifact_ids": [
+        "candidate_concepts.json"
+      ]
+    },
+    {
+      "gate_id": "B",
+      "passed": true,
+      "observations": 3,
+      "metric": 1.0,
+      "threshold": 1.0,
+      "evidence_artifact_ids": [
+        "derivation_metrics.json"
+      ]
+    },
+    {
+      "gate_id": "C",
+      "passed": true,
+      "observations": 3,
+      "metric": 1.0,
+      "threshold": 1.0,
+      "evidence_artifact_ids": [
+        "semantic_gate_results.json"
+      ]
+    },
+    {
+      "gate_id": "D",
+      "passed": true,
+      "observations": 10,
+      "metric": 1.0,
+      "threshold": 1.0,
+      "evidence_artifact_ids": [
+        "counterfactual_results.json"
+      ]
+    },
+    {
+      "gate_id": "E",
+      "passed": true,
+      "observations": 1,
+      "metric": 8.0,
+      "threshold": 2.0,
+      "evidence_artifact_ids": [
+        "candidate_concepts.json"
+      ]
+    },
+    {
+      "gate_id": "F",
+      "passed": true,
+      "observations": 6,
+      "metric": 1.0,
+      "threshold": 1.0,
+      "evidence_artifact_ids": [
+        "fresh_blind_results.json"
+      ]
+    },
+    {
+      "gate_id": "G",
+      "passed": true,
+      "observations": 6,
+      "metric": 1.0,
+      "threshold": 1.0,
+      "evidence_artifact_ids": [
+        "semantic_gate_results.json"
+      ]
+    },
+    {
+      "gate_id": "H",
+      "passed": true,
+      "observations": 6,
+      "metric": 1.0,
+      "threshold": 2.220446049250313e-16,
+      "evidence_artifact_ids": [
+        "ablation_results.json"
+      ]
+    }
+  ]
+}

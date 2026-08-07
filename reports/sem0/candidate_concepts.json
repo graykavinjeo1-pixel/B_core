@@ -1,0 +1,321 @@
+{
+  "concepts": [
+    {
+      "concept_id": "C000001",
+      "content_hash_sha256": "320762a4b6c274773353fde90e1a3c9145f4e90b9c2c458d0ab229d1e5762a80",
+      "counterfactual_interface": [
+        "EMPTY_INPUT",
+        "SINGLETON_INPUT",
+        "REPEATED_VALUES",
+        "NEGATIVE_VALUES",
+        "REORDERED_INPUT",
+        "CHANGED_OPERATOR",
+        "CHANGED_PARAMETER",
+        "NUMERIC_BOUNDARY",
+        "ARITHMETIC_OVERFLOW",
+        "MISSING_EVIDENCE"
+      ],
+      "derivation_graph_ids": [
+        "D-T000001",
+        "D-T000002",
+        "D-T000003",
+        "D-T000004",
+        "D-T000005",
+        "D-T000006"
+      ],
+      "evidence": [
+        {
+          "artifact_ids": [
+            "candidate_concepts.json"
+          ],
+          "gate_id": "A",
+          "metric": 6.0,
+          "observations": 6,
+          "passed": true
+        },
+        {
+          "artifact_ids": [
+            "derivation_metrics.json"
+          ],
+          "gate_id": "B",
+          "metric": 1.0,
+          "observations": 3,
+          "passed": true
+        },
+        {
+          "artifact_ids": [
+            "semantic_gate_results.json"
+          ],
+          "gate_id": "C",
+          "metric": 1.0,
+          "observations": 3,
+          "passed": true
+        },
+        {
+          "artifact_ids": [
+            "counterfactual_results.json"
+          ],
+          "gate_id": "D",
+          "metric": 1.0,
+          "observations": 10,
+          "passed": true
+        },
+        {
+          "artifact_ids": [
+            "candidate_concepts.json"
+          ],
+          "gate_id": "E",
+          "metric": 8.0,
+          "observations": 1,
+          "passed": true
+        },
+        {
+          "artifact_ids": [
+            "fresh_blind_results.json"
+          ],
+          "gate_id": "F",
+          "metric": 1.0,
+          "observations": 6,
+          "passed": true
+        },
+        {
+          "artifact_ids": [
+            "semantic_gate_results.json"
+          ],
+          "gate_id": "G",
+          "metric": 1.0,
+          "observations": 6,
+          "passed": true
+        },
+        {
+          "artifact_ids": [
+            "ablation_results.json"
+          ],
+          "gate_id": "H",
+          "metric": 1.0,
+          "observations": 6,
+          "passed": true
+        }
+      ],
+      "historical_derivation_cost": 8,
+      "invariants": [
+        "INPUT_REMAINS_IMMUTABLE",
+        "OUTPUT_ORDER_MATCHES_INPUT_ORDER",
+        "OUTPUT_LENGTH_MATCHES_INPUT_LENGTH",
+        "EVERY_OUTPUT_HAS_ONE_INPUT_DEPENDENCY"
+      ],
+      "kind": "PROMOTED",
+      "operational_cost": 1,
+      "parameters": [
+        {
+          "parameter_id": "A000001",
+          "value_type": "SCALAR_OPERATOR"
+        }
+      ],
+      "preconditions": [
+        "INPUT_IS_FINITE_SEQUENCE",
+        "SCALAR_OPERATOR_IS_CHECKED"
+      ],
+      "predictions": [
+        "DETERMINISTIC_SEQUENCE_OUTPUT",
+        "PRESERVES_INPUT_CARDINALITY",
+        "REJECTS_CHECKED_ARITHMETIC_FAILURE"
+      ],
+      "promotion_state": "PROMOTED",
+      "provenance": {
+        "discovery_run_id": "SEM0-RUN-0001",
+        "lexical_information_used": false,
+        "parent_concept_ids": [],
+        "primitive_ids": [
+          "P000003",
+          "P000004",
+          "P000005",
+          "P000006",
+          "P000007",
+          "P000008",
+          "P000009",
+          "P000010",
+          "P000011",
+          "P000012"
+        ],
+        "source_derivation_ids": [
+          "D-T000001",
+          "D-T000002",
+          "D-T000003",
+          "D-T000004",
+          "D-T000005",
+          "D-T000006"
+        ],
+        "source_task_ids": [
+          "T000001",
+          "T000002",
+          "T000003",
+          "T000004",
+          "T000005",
+          "T000006"
+        ],
+        "supplied_by_teacher": false
+      },
+      "relations": [
+        {
+          "relation": "DERIVED_FROM",
+          "target_id": "D-T000001"
+        },
+        {
+          "relation": "DERIVED_FROM",
+          "target_id": "D-T000002"
+        },
+        {
+          "relation": "DERIVED_FROM",
+          "target_id": "D-T000003"
+        },
+        {
+          "relation": "DERIVED_FROM",
+          "target_id": "D-T000004"
+        },
+        {
+          "relation": "DERIVED_FROM",
+          "target_id": "D-T000005"
+        },
+        {
+          "relation": "DERIVED_FROM",
+          "target_id": "D-T000006"
+        },
+        {
+          "relation": "EXPANDS_TO",
+          "target_id": "P000003"
+        },
+        {
+          "relation": "EXPANDS_TO",
+          "target_id": "P000004"
+        },
+        {
+          "relation": "EXPANDS_TO",
+          "target_id": "P000005"
+        },
+        {
+          "relation": "EXPANDS_TO",
+          "target_id": "P000006"
+        },
+        {
+          "relation": "EXPANDS_TO",
+          "target_id": "P000007"
+        },
+        {
+          "relation": "EXPANDS_TO",
+          "target_id": "P000008"
+        },
+        {
+          "relation": "EXPANDS_TO",
+          "target_id": "P000009"
+        },
+        {
+          "relation": "EXPANDS_TO",
+          "target_id": "P000010"
+        },
+        {
+          "relation": "EXPANDS_TO",
+          "target_id": "P000011"
+        },
+        {
+          "relation": "EXPANDS_TO",
+          "target_id": "P000012"
+        }
+      ],
+      "signature": {
+        "inputs": [
+          "INTEGER_SEQUENCE",
+          "SCALAR_OPERATOR"
+        ],
+        "output": "INTEGER_SEQUENCE"
+      },
+      "transition_semantics": {
+        "body": [
+          {
+            "instruction": "INIT_OUTPUT"
+          },
+          {
+            "argument": 7,
+            "instruction": "BRANCH_IF_EMPTY"
+          },
+          {
+            "instruction": "READ_CURRENT"
+          },
+          {
+            "instruction": "SCALAR_SLOT"
+          },
+          {
+            "instruction": "APPEND_CURRENT"
+          },
+          {
+            "instruction": "ADVANCE"
+          },
+          {
+            "argument": 2,
+            "instruction": "BRANCH_IF_REMAINING"
+          },
+          {
+            "instruction": "RETURN"
+          }
+        ],
+        "form": "PATTERN"
+      },
+      "version": 2
+    }
+  ],
+  "mining": {
+    "aligned_occurrences": 6,
+    "candidate_ids": [
+      "C000001"
+    ],
+    "connected_substructures_examined": 216,
+    "rejected_patterns": 0,
+    "successful_graphs_examined": 6,
+    "typed_parameter_slots": 1
+  },
+  "structural_macros": [
+    {
+      "macro_id": "M000001",
+      "parameter_types": [
+        "SCALAR_OPERATOR"
+      ],
+      "pattern": [
+        {
+          "instruction": "INIT_OUTPUT"
+        },
+        {
+          "argument": 7,
+          "instruction": "BRANCH_IF_EMPTY"
+        },
+        {
+          "instruction": "READ_CURRENT"
+        },
+        {
+          "instruction": "SCALAR_SLOT"
+        },
+        {
+          "instruction": "APPEND_CURRENT"
+        },
+        {
+          "instruction": "ADVANCE"
+        },
+        {
+          "argument": 2,
+          "instruction": "BRANCH_IF_REMAINING"
+        },
+        {
+          "instruction": "RETURN"
+        }
+      ],
+      "source_derivation_ids": [
+        "D-T000001",
+        "D-T000002",
+        "D-T000003",
+        "D-T000004",
+        "D-T000005",
+        "D-T000006"
+      ],
+      "validated_semantically": false
+    }
+  ]
+}

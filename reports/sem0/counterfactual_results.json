@@ -1,0 +1,142 @@
+{
+  "candidate_id": "C000001",
+  "attempted": 10,
+  "passed": 10,
+  "pass_rate": 1.0,
+  "results": [
+    {
+      "case_id": "X000001",
+      "kind": "EMPTY_INPUT",
+      "passed": true,
+      "rejected_as_precondition_violation": false,
+      "candidate_output": [],
+      "primitive_output": []
+    },
+    {
+      "case_id": "X000002",
+      "kind": "SINGLETON_INPUT",
+      "passed": true,
+      "rejected_as_precondition_violation": false,
+      "candidate_output": [
+        -18
+      ],
+      "primitive_output": [
+        -18
+      ]
+    },
+    {
+      "case_id": "X000003",
+      "kind": "REPEATED_VALUES",
+      "passed": true,
+      "rejected_as_precondition_violation": false,
+      "candidate_output": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "primitive_output": [
+        2,
+        2,
+        2,
+        2
+      ]
+    },
+    {
+      "case_id": "X000004",
+      "kind": "NEGATIVE_VALUES",
+      "passed": true,
+      "rejected_as_precondition_violation": false,
+      "candidate_output": [
+        -8,
+        -15,
+        -20
+      ],
+      "primitive_output": [
+        -8,
+        -15,
+        -20
+      ]
+    },
+    {
+      "case_id": "X000005",
+      "kind": "REORDERED_INPUT",
+      "passed": true,
+      "rejected_as_precondition_violation": false,
+      "candidate_output": [
+        18,
+        2,
+        14,
+        -4
+      ],
+      "primitive_output": [
+        18,
+        2,
+        14,
+        -4
+      ]
+    },
+    {
+      "case_id": "X000006",
+      "kind": "CHANGED_OPERATOR",
+      "passed": true,
+      "rejected_as_precondition_violation": false,
+      "candidate_output": [
+        -2,
+        5,
+        -9
+      ],
+      "primitive_output": [
+        -2,
+        5,
+        -9
+      ]
+    },
+    {
+      "case_id": "X000007",
+      "kind": "CHANGED_PARAMETER",
+      "passed": true,
+      "rejected_as_precondition_violation": false,
+      "candidate_output": [
+        21,
+        12,
+        23
+      ],
+      "primitive_output": [
+        21,
+        12,
+        23
+      ]
+    },
+    {
+      "case_id": "X000008",
+      "kind": "NUMERIC_BOUNDARY",
+      "passed": true,
+      "rejected_as_precondition_violation": false,
+      "candidate_output": [
+        -9223372036854775808,
+        9223372036854775806
+      ],
+      "primitive_output": [
+        -9223372036854775808,
+        9223372036854775806
+      ]
+    },
+    {
+      "case_id": "X000009",
+      "kind": "ARITHMETIC_OVERFLOW",
+      "passed": true,
+      "rejected_as_precondition_violation": true,
+      "candidate_output": null,
+      "primitive_output": null
+    },
+    {
+      "case_id": "X000010",
+      "kind": "MISSING_EVIDENCE",
+      "passed": true,
+      "rejected_as_precondition_violation": true,
+      "candidate_output": null,
+      "primitive_output": null
+    }
+  ]
+}

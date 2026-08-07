@@ -1,16 +1,19 @@
 # Project State
 
-**Canonical version:** 1.0.0
-**State frozen for:** Stage S0 baseline
+**Canonical version:** 1.1.0
+**State frozen for:** SEM-0 completed baseline
 
 This is an operational snapshot. It does not replace or override
 `CONSTITUTION.md`.
 
 | Field | Value |
 |---|---|
-| Current stage | `S0` |
+| Current stage | `SEM-0 COMPLETE` |
 | Stage S0 status | `PASS` |
-| SEM-0 implementation | `NOT STARTED` |
+| SEM-0 implementation | `COMPLETE` |
+| SEM-0 result | `PASS — MINIMAL_AUTONOMOUS_CONCEPT_EMERGENCE` |
+| Promoted concepts | `1` (`C000001`) |
+| SEM-1 | `NOT STARTED` |
 | Recursive self-mutation | `DISABLED` |
 | Recursive-improvement mode | `OBSERVE_MEASURE_ONLY` |
 | Proposal generation | `DISABLED` |
@@ -23,11 +26,12 @@ This is an operational snapshot. It does not replace or override
 | Current branch | `main` |
 | Current commit | `SELF` — the commit containing this frozen state; resolve with `git rev-parse HEAD` |
 | Worktree at committed freeze | `CLEAN` |
-| Next allowed stage | `SEM-0_MINIMAL_AUTONOMOUS_CONCEPT_EMERGENCE` |
+| Next allowed stage | `SEM-1_RECURSIVE_CONCEPT_LADDER` |
 
 ## Canonical document status
 
-The following version 1.0.0 documents are complete and frozen:
+The normative documents remain complete and frozen at version 1.0.0. This
+operational state record advanced to version 1.1.0 after the sealed SEM-0 run:
 
 - `CONSTITUTION.md`
 - `RESEARCH_HYPOTHESIS.md`
@@ -63,8 +67,23 @@ eligible to claim canonical compliance.
 The detailed classification and contamination decisions are in
 `reports/stage_s0/inherited_component_inventory.json`.
 
+## SEM-0 evidence snapshot
+
+- Canonical pre-run manifest self-hash:
+  `3c116e2e0fc228360c4247a9d4069e2b0be07a4be2448726d2f45b9678f1adc7`.
+- Six independently solved primitive derivations produced one opaque candidate
+  through typed anti-unification.
+- All eight promotion gates passed, including 10/10 counterfactual probes,
+  6/6 frozen fresh-blind tasks, primitive-expansion equivalence, regression,
+  compression ratio `8.0`, and causal ablation solve-rate delta `1.0`.
+- The matched structural-macro control also solved 6/6 with the same expansion
+  count as the semantic condition. No D-over-C performance advantage is
+  claimed; the distinction is validation, provenance, promotion, and ablation.
+- Network, external LLM, local teacher, and recursive source mutation counts
+  were zero. Full concept-catalog scans were zero.
+- Reports are sealed under `reports/sem0/`.
+
 ## Advancement constraint
 
-Starting SEM-0 requires an explicit subsequent task. It may implement only the
-minimal closed-world concept-emergence experiment governed by the canonical
-documents. S0 completion does not authorize SEM-1 or recursive self-application.
+Starting SEM-1 requires an explicit subsequent task. SEM-0 completion does not
+authorize recursive self-application, which remains reserved for SEM-9.

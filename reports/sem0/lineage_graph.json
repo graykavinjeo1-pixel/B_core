@@ -1,0 +1,156 @@
+{
+  "nodes": [
+    {
+      "node_id": "P000003",
+      "node_kind": "PRIMITIVE"
+    },
+    {
+      "node_id": "P000004",
+      "node_kind": "PRIMITIVE"
+    },
+    {
+      "node_id": "P000005",
+      "node_kind": "PRIMITIVE"
+    },
+    {
+      "node_id": "P000006",
+      "node_kind": "PRIMITIVE"
+    },
+    {
+      "node_id": "P000007",
+      "node_kind": "PRIMITIVE"
+    },
+    {
+      "node_id": "P000008",
+      "node_kind": "PRIMITIVE"
+    },
+    {
+      "node_id": "P000009",
+      "node_kind": "PRIMITIVE"
+    },
+    {
+      "node_id": "P000010",
+      "node_kind": "PRIMITIVE"
+    },
+    {
+      "node_id": "P000011",
+      "node_kind": "PRIMITIVE"
+    },
+    {
+      "node_id": "P000012",
+      "node_kind": "PRIMITIVE"
+    },
+    {
+      "node_id": "D-T000001",
+      "node_kind": "DERIVATION"
+    },
+    {
+      "node_id": "D-T000002",
+      "node_kind": "DERIVATION"
+    },
+    {
+      "node_id": "D-T000003",
+      "node_kind": "DERIVATION"
+    },
+    {
+      "node_id": "D-T000004",
+      "node_kind": "DERIVATION"
+    },
+    {
+      "node_id": "D-T000005",
+      "node_kind": "DERIVATION"
+    },
+    {
+      "node_id": "D-T000006",
+      "node_kind": "DERIVATION"
+    },
+    {
+      "node_id": "C000001",
+      "node_kind": "PROMOTED"
+    }
+  ],
+  "edges": [
+    {
+      "source": "P000003",
+      "target": "C000001",
+      "relation": "EXPANDS_TO"
+    },
+    {
+      "source": "P000004",
+      "target": "C000001",
+      "relation": "EXPANDS_TO"
+    },
+    {
+      "source": "P000005",
+      "target": "C000001",
+      "relation": "EXPANDS_TO"
+    },
+    {
+      "source": "P000006",
+      "target": "C000001",
+      "relation": "EXPANDS_TO"
+    },
+    {
+      "source": "P000007",
+      "target": "C000001",
+      "relation": "EXPANDS_TO"
+    },
+    {
+      "source": "P000008",
+      "target": "C000001",
+      "relation": "EXPANDS_TO"
+    },
+    {
+      "source": "P000009",
+      "target": "C000001",
+      "relation": "EXPANDS_TO"
+    },
+    {
+      "source": "P000010",
+      "target": "C000001",
+      "relation": "EXPANDS_TO"
+    },
+    {
+      "source": "P000011",
+      "target": "C000001",
+      "relation": "EXPANDS_TO"
+    },
+    {
+      "source": "P000012",
+      "target": "C000001",
+      "relation": "EXPANDS_TO"
+    },
+    {
+      "source": "D-T000001",
+      "target": "C000001",
+      "relation": "EVIDENCE_FOR"
+    },
+    {
+      "source": "D-T000002",
+      "target": "C000001",
+      "relation": "EVIDENCE_FOR"
+    },
+    {
+      "source": "D-T000003",
+      "target": "C000001",
+      "relation": "EVIDENCE_FOR"
+    },
+    {
+      "source": "D-T000004",
+      "target": "C000001",
+      "relation": "EVIDENCE_FOR"
+    },
+    {
+      "source": "D-T000005",
+      "target": "C000001",
+      "relation": "EVIDENCE_FOR"
+    },
+    {
+      "source": "D-T000006",
+      "target": "C000001",
+      "relation": "EVIDENCE_FOR"
+    }
+  ],
+  "historical_epistemic_derivation_complexity": 8,
+  "current_operational_cost": 1
+}

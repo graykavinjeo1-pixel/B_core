@@ -1,0 +1,47 @@
+{
+  "run_id": "SEM0-RUN-0001",
+  "rust_package": "semantic-reasoning@0.1.0",
+  "deterministic": true,
+  "source_baseline_commit": "8d137d66661b601d145a348dcbe19f9facf5ec20",
+  "source_tree_sha256": "c0103f0b338879a884763960eb44baffa4485042ace51367856fa77a83523913",
+  "source_committed_at_evaluation": false,
+  "clean_process_evaluation": true,
+  "offline_dependency_resolution": true,
+  "loaded_artifacts": [
+    "Cargo.lock",
+    "docs/CANONICAL_MANIFEST.json",
+    "crates/semantic-reasoning",
+    "crates/synapse-recursive-core/src/quarantine.rs"
+  ],
+  "canonical_integrity": {
+    "passed": true,
+    "pre_run_manifest_self_hash_sha256": "3c116e2e0fc228360c4247a9d4069e2b0be07a4be2448726d2f45b9678f1adc7",
+    "verified_file_count": 8,
+    "constitution_sha256": "51fdf4909fa4e064f82d5c0e101939e828fefe4d87dd0776a0a40d4efbcefad4",
+    "unauthorized_drift_detected": false
+  },
+  "recursive_quarantine": {
+    "stage": "S0",
+    "mode": "OBSERVE_MEASURE_ONLY",
+    "observe_enabled": true,
+    "measure_enabled": true,
+    "proposal_generation_enabled": false,
+    "source_patching_enabled": false,
+    "sandbox_apply_enabled": false,
+    "auto_apply_enabled": false,
+    "auto_merge_enabled": false,
+    "auto_commit_enabled": false,
+    "auto_push_enabled": false,
+    "external_provider_repair_enabled": false,
+    "recursive_benchmark_mutation_enabled": false,
+    "network_enabled": false,
+    "external_llm_enabled": false
+  },
+  "network_calls": 0,
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "recursive_source_mutations": 0,
+  "target_abstraction_lookups": 0,
+  "solution_retrievals": 0,
+  "expected_answer_lookups_during_solving": 0
+}

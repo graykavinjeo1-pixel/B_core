@@ -1,0 +1,3004 @@
+{
+  "blind_manifest_sha256": "b5b29580d21f79fdbd4b860d9761ad3ce8c3a14386cac9c72836278006b1a8f5",
+  "candidate_semantics_sha256_before_blind": "53bd5409cb782180fa5091d2c8ad212339394bfef80d6a43236989e3f5e268ba",
+  "config_sha256_before_blind": "434ffb84c106d88a4a067cf0a661ce2d3b754caa118bd09c433af0976ac3c70a",
+  "expected_outputs_opened_only_after_commit": true,
+  "per_condition": {
+    "PRIMITIVE_ONLY": [
+      {
+        "task_id": "B000001",
+        "committed_output": null,
+        "execution_error": null,
+        "verified_after_commit": false,
+        "termination": "EXPANSION_BUDGET_EXHAUSTED",
+        "inferred_operator": null,
+        "program": null,
+        "derivation": {
+          "graph_id": "D-B000001",
+          "task_id": "B000001",
+          "nodes": [
+            {
+              "node_id": "N000000",
+              "kind": "GOAL",
+              "executable_id": "G000001",
+              "depth": 0,
+              "branch_id": 0,
+              "state_before": "[7,-3,2,0,11]",
+              "state_after": "EXPANSION_BUDGET_EXHAUSTED",
+              "cost": 0
+            }
+          ],
+          "edges": [],
+          "primitive_expansion": [],
+          "final_output": null,
+          "verified": false,
+          "historical_cost": 0,
+          "operational_cost": 0
+        },
+        "metrics": {
+          "reasoning_depth": 0,
+          "reasoning_width": 3,
+          "live_branches": 3,
+          "concepts_composed": 0,
+          "peak_active_concepts": 3,
+          "search_expansions": 8,
+          "rollback_count": 4,
+          "decomposition_count": 0,
+          "recombination_count": 0,
+          "wall_time_ns": 2800,
+          "memory_bytes": 337,
+          "total_available_primitives_concepts": 12,
+          "full_catalog_scans": 0,
+          "cache_hits": 0,
+          "macro_uses": 0,
+          "concept_uses": 0
+        },
+        "routing_trace": [
+          {
+            "step": 0,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 1,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 2,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 3,
+            "total_available": 12,
+            "candidates_considered": 2,
+            "active_count": 2,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 4,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          }
+        ]
+      },
+      {
+        "task_id": "B000002",
+        "committed_output": null,
+        "execution_error": null,
+        "verified_after_commit": false,
+        "termination": "EXPANSION_BUDGET_EXHAUSTED",
+        "inferred_operator": null,
+        "program": null,
+        "derivation": {
+          "graph_id": "D-B000002",
+          "task_id": "B000002",
+          "nodes": [
+            {
+              "node_id": "N000000",
+              "kind": "GOAL",
+              "executable_id": "G000001",
+              "depth": 0,
+              "branch_id": 0,
+              "state_before": "[-8,4,19]",
+              "state_after": "EXPANSION_BUDGET_EXHAUSTED",
+              "cost": 0
+            }
+          ],
+          "edges": [],
+          "primitive_expansion": [],
+          "final_output": null,
+          "verified": false,
+          "historical_cost": 0,
+          "operational_cost": 0
+        },
+        "metrics": {
+          "reasoning_depth": 0,
+          "reasoning_width": 3,
+          "live_branches": 3,
+          "concepts_composed": 0,
+          "peak_active_concepts": 3,
+          "search_expansions": 8,
+          "rollback_count": 4,
+          "decomposition_count": 0,
+          "recombination_count": 0,
+          "wall_time_ns": 2500,
+          "memory_bytes": 333,
+          "total_available_primitives_concepts": 12,
+          "full_catalog_scans": 0,
+          "cache_hits": 0,
+          "macro_uses": 0,
+          "concept_uses": 0
+        },
+        "routing_trace": [
+          {
+            "step": 0,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 1,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 2,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 3,
+            "total_available": 12,
+            "candidates_considered": 2,
+            "active_count": 2,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 4,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          }
+        ]
+      },
+      {
+        "task_id": "B000003",
+        "committed_output": null,
+        "execution_error": null,
+        "verified_after_commit": false,
+        "termination": "EXPANSION_BUDGET_EXHAUSTED",
+        "inferred_operator": null,
+        "program": null,
+        "derivation": {
+          "graph_id": "D-B000003",
+          "task_id": "B000003",
+          "nodes": [
+            {
+              "node_id": "N000000",
+              "kind": "GOAL",
+              "executable_id": "G000001",
+              "depth": 0,
+              "branch_id": 0,
+              "state_before": "[20,-2,5,14]",
+              "state_after": "EXPANSION_BUDGET_EXHAUSTED",
+              "cost": 0
+            }
+          ],
+          "edges": [],
+          "primitive_expansion": [],
+          "final_output": null,
+          "verified": false,
+          "historical_cost": 0,
+          "operational_cost": 0
+        },
+        "metrics": {
+          "reasoning_depth": 0,
+          "reasoning_width": 3,
+          "live_branches": 3,
+          "concepts_composed": 0,
+          "peak_active_concepts": 3,
+          "search_expansions": 8,
+          "rollback_count": 4,
+          "decomposition_count": 0,
+          "recombination_count": 0,
+          "wall_time_ns": 2300,
+          "memory_bytes": 336,
+          "total_available_primitives_concepts": 12,
+          "full_catalog_scans": 0,
+          "cache_hits": 0,
+          "macro_uses": 0,
+          "concept_uses": 0
+        },
+        "routing_trace": [
+          {
+            "step": 0,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 1,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 2,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 3,
+            "total_available": 12,
+            "candidates_considered": 2,
+            "active_count": 2,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 4,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          }
+        ]
+      },
+      {
+        "task_id": "B000004",
+        "committed_output": null,
+        "execution_error": null,
+        "verified_after_commit": false,
+        "termination": "EXPANSION_BUDGET_EXHAUSTED",
+        "inferred_operator": null,
+        "program": null,
+        "derivation": {
+          "graph_id": "D-B000004",
+          "task_id": "B000004",
+          "nodes": [
+            {
+              "node_id": "N000000",
+              "kind": "GOAL",
+              "executable_id": "G000001",
+              "depth": 0,
+              "branch_id": 0,
+              "state_before": "[6,-7,1]",
+              "state_after": "EXPANSION_BUDGET_EXHAUSTED",
+              "cost": 0
+            }
+          ],
+          "edges": [],
+          "primitive_expansion": [],
+          "final_output": null,
+          "verified": false,
+          "historical_cost": 0,
+          "operational_cost": 0
+        },
+        "metrics": {
+          "reasoning_depth": 0,
+          "reasoning_width": 3,
+          "live_branches": 3,
+          "concepts_composed": 0,
+          "peak_active_concepts": 3,
+          "search_expansions": 8,
+          "rollback_count": 4,
+          "decomposition_count": 0,
+          "recombination_count": 0,
+          "wall_time_ns": 2400,
+          "memory_bytes": 332,
+          "total_available_primitives_concepts": 12,
+          "full_catalog_scans": 0,
+          "cache_hits": 0,
+          "macro_uses": 0,
+          "concept_uses": 0
+        },
+        "routing_trace": [
+          {
+            "step": 0,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 1,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 2,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 3,
+            "total_available": 12,
+            "candidates_considered": 2,
+            "active_count": 2,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 4,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          }
+        ]
+      },
+      {
+        "task_id": "B000005",
+        "committed_output": null,
+        "execution_error": null,
+        "verified_after_commit": false,
+        "termination": "EXPANSION_BUDGET_EXHAUSTED",
+        "inferred_operator": null,
+        "program": null,
+        "derivation": {
+          "graph_id": "D-B000005",
+          "task_id": "B000005",
+          "nodes": [
+            {
+              "node_id": "N000000",
+              "kind": "GOAL",
+              "executable_id": "G000001",
+              "depth": 0,
+              "branch_id": 0,
+              "state_before": "[15,0,-6,8,3,-1]",
+              "state_after": "EXPANSION_BUDGET_EXHAUSTED",
+              "cost": 0
+            }
+          ],
+          "edges": [],
+          "primitive_expansion": [],
+          "final_output": null,
+          "verified": false,
+          "historical_cost": 0,
+          "operational_cost": 0
+        },
+        "metrics": {
+          "reasoning_depth": 0,
+          "reasoning_width": 3,
+          "live_branches": 3,
+          "concepts_composed": 0,
+          "peak_active_concepts": 3,
+          "search_expansions": 8,
+          "rollback_count": 4,
+          "decomposition_count": 0,
+          "recombination_count": 0,
+          "wall_time_ns": 2300,
+          "memory_bytes": 340,
+          "total_available_primitives_concepts": 12,
+          "full_catalog_scans": 0,
+          "cache_hits": 0,
+          "macro_uses": 0,
+          "concept_uses": 0
+        },
+        "routing_trace": [
+          {
+            "step": 0,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 1,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 2,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 3,
+            "total_available": 12,
+            "candidates_considered": 2,
+            "active_count": 2,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 4,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          }
+        ]
+      },
+      {
+        "task_id": "B000006",
+        "committed_output": null,
+        "execution_error": null,
+        "verified_after_commit": false,
+        "termination": "EXPANSION_BUDGET_EXHAUSTED",
+        "inferred_operator": null,
+        "program": null,
+        "derivation": {
+          "graph_id": "D-B000006",
+          "task_id": "B000006",
+          "nodes": [
+            {
+              "node_id": "N000000",
+              "kind": "GOAL",
+              "executable_id": "G000001",
+              "depth": 0,
+              "branch_id": 0,
+              "state_before": "[-10,2,17]",
+              "state_after": "EXPANSION_BUDGET_EXHAUSTED",
+              "cost": 0
+            }
+          ],
+          "edges": [],
+          "primitive_expansion": [],
+          "final_output": null,
+          "verified": false,
+          "historical_cost": 0,
+          "operational_cost": 0
+        },
+        "metrics": {
+          "reasoning_depth": 0,
+          "reasoning_width": 3,
+          "live_branches": 3,
+          "concepts_composed": 0,
+          "peak_active_concepts": 3,
+          "search_expansions": 8,
+          "rollback_count": 4,
+          "decomposition_count": 0,
+          "recombination_count": 0,
+          "wall_time_ns": 2300,
+          "memory_bytes": 334,
+          "total_available_primitives_concepts": 12,
+          "full_catalog_scans": 0,
+          "cache_hits": 0,
+          "macro_uses": 0,
+          "concept_uses": 0
+        },
+        "routing_trace": [
+          {
+            "step": 0,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 1,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 2,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 3,
+            "total_available": 12,
+            "candidates_considered": 2,
+            "active_count": 2,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 4,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          }
+        ]
+      }
+    ],
+    "SOLUTION_CACHE": [
+      {
+        "task_id": "B000001",
+        "committed_output": null,
+        "execution_error": null,
+        "verified_after_commit": false,
+        "termination": "EXPANSION_BUDGET_EXHAUSTED",
+        "inferred_operator": null,
+        "program": null,
+        "derivation": {
+          "graph_id": "D-B000001",
+          "task_id": "B000001",
+          "nodes": [
+            {
+              "node_id": "N000000",
+              "kind": "GOAL",
+              "executable_id": "G000001",
+              "depth": 0,
+              "branch_id": 0,
+              "state_before": "[7,-3,2,0,11]",
+              "state_after": "EXPANSION_BUDGET_EXHAUSTED",
+              "cost": 0
+            }
+          ],
+          "edges": [],
+          "primitive_expansion": [],
+          "final_output": null,
+          "verified": false,
+          "historical_cost": 0,
+          "operational_cost": 0
+        },
+        "metrics": {
+          "reasoning_depth": 0,
+          "reasoning_width": 3,
+          "live_branches": 3,
+          "concepts_composed": 0,
+          "peak_active_concepts": 3,
+          "search_expansions": 8,
+          "rollback_count": 4,
+          "decomposition_count": 0,
+          "recombination_count": 0,
+          "wall_time_ns": 2400,
+          "memory_bytes": 337,
+          "total_available_primitives_concepts": 12,
+          "full_catalog_scans": 0,
+          "cache_hits": 0,
+          "macro_uses": 0,
+          "concept_uses": 0
+        },
+        "routing_trace": [
+          {
+            "step": 0,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 1,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 2,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 3,
+            "total_available": 12,
+            "candidates_considered": 2,
+            "active_count": 2,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 4,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          }
+        ]
+      },
+      {
+        "task_id": "B000002",
+        "committed_output": null,
+        "execution_error": null,
+        "verified_after_commit": false,
+        "termination": "EXPANSION_BUDGET_EXHAUSTED",
+        "inferred_operator": null,
+        "program": null,
+        "derivation": {
+          "graph_id": "D-B000002",
+          "task_id": "B000002",
+          "nodes": [
+            {
+              "node_id": "N000000",
+              "kind": "GOAL",
+              "executable_id": "G000001",
+              "depth": 0,
+              "branch_id": 0,
+              "state_before": "[-8,4,19]",
+              "state_after": "EXPANSION_BUDGET_EXHAUSTED",
+              "cost": 0
+            }
+          ],
+          "edges": [],
+          "primitive_expansion": [],
+          "final_output": null,
+          "verified": false,
+          "historical_cost": 0,
+          "operational_cost": 0
+        },
+        "metrics": {
+          "reasoning_depth": 0,
+          "reasoning_width": 3,
+          "live_branches": 3,
+          "concepts_composed": 0,
+          "peak_active_concepts": 3,
+          "search_expansions": 8,
+          "rollback_count": 4,
+          "decomposition_count": 0,
+          "recombination_count": 0,
+          "wall_time_ns": 2500,
+          "memory_bytes": 333,
+          "total_available_primitives_concepts": 12,
+          "full_catalog_scans": 0,
+          "cache_hits": 0,
+          "macro_uses": 0,
+          "concept_uses": 0
+        },
+        "routing_trace": [
+          {
+            "step": 0,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 1,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 2,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 3,
+            "total_available": 12,
+            "candidates_considered": 2,
+            "active_count": 2,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 4,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          }
+        ]
+      },
+      {
+        "task_id": "B000003",
+        "committed_output": null,
+        "execution_error": null,
+        "verified_after_commit": false,
+        "termination": "EXPANSION_BUDGET_EXHAUSTED",
+        "inferred_operator": null,
+        "program": null,
+        "derivation": {
+          "graph_id": "D-B000003",
+          "task_id": "B000003",
+          "nodes": [
+            {
+              "node_id": "N000000",
+              "kind": "GOAL",
+              "executable_id": "G000001",
+              "depth": 0,
+              "branch_id": 0,
+              "state_before": "[20,-2,5,14]",
+              "state_after": "EXPANSION_BUDGET_EXHAUSTED",
+              "cost": 0
+            }
+          ],
+          "edges": [],
+          "primitive_expansion": [],
+          "final_output": null,
+          "verified": false,
+          "historical_cost": 0,
+          "operational_cost": 0
+        },
+        "metrics": {
+          "reasoning_depth": 0,
+          "reasoning_width": 3,
+          "live_branches": 3,
+          "concepts_composed": 0,
+          "peak_active_concepts": 3,
+          "search_expansions": 8,
+          "rollback_count": 4,
+          "decomposition_count": 0,
+          "recombination_count": 0,
+          "wall_time_ns": 2400,
+          "memory_bytes": 336,
+          "total_available_primitives_concepts": 12,
+          "full_catalog_scans": 0,
+          "cache_hits": 0,
+          "macro_uses": 0,
+          "concept_uses": 0
+        },
+        "routing_trace": [
+          {
+            "step": 0,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 1,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 2,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 3,
+            "total_available": 12,
+            "candidates_considered": 2,
+            "active_count": 2,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 4,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          }
+        ]
+      },
+      {
+        "task_id": "B000004",
+        "committed_output": null,
+        "execution_error": null,
+        "verified_after_commit": false,
+        "termination": "EXPANSION_BUDGET_EXHAUSTED",
+        "inferred_operator": null,
+        "program": null,
+        "derivation": {
+          "graph_id": "D-B000004",
+          "task_id": "B000004",
+          "nodes": [
+            {
+              "node_id": "N000000",
+              "kind": "GOAL",
+              "executable_id": "G000001",
+              "depth": 0,
+              "branch_id": 0,
+              "state_before": "[6,-7,1]",
+              "state_after": "EXPANSION_BUDGET_EXHAUSTED",
+              "cost": 0
+            }
+          ],
+          "edges": [],
+          "primitive_expansion": [],
+          "final_output": null,
+          "verified": false,
+          "historical_cost": 0,
+          "operational_cost": 0
+        },
+        "metrics": {
+          "reasoning_depth": 0,
+          "reasoning_width": 3,
+          "live_branches": 3,
+          "concepts_composed": 0,
+          "peak_active_concepts": 3,
+          "search_expansions": 8,
+          "rollback_count": 4,
+          "decomposition_count": 0,
+          "recombination_count": 0,
+          "wall_time_ns": 2500,
+          "memory_bytes": 332,
+          "total_available_primitives_concepts": 12,
+          "full_catalog_scans": 0,
+          "cache_hits": 0,
+          "macro_uses": 0,
+          "concept_uses": 0
+        },
+        "routing_trace": [
+          {
+            "step": 0,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 1,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 2,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 3,
+            "total_available": 12,
+            "candidates_considered": 2,
+            "active_count": 2,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 4,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          }
+        ]
+      },
+      {
+        "task_id": "B000005",
+        "committed_output": null,
+        "execution_error": null,
+        "verified_after_commit": false,
+        "termination": "EXPANSION_BUDGET_EXHAUSTED",
+        "inferred_operator": null,
+        "program": null,
+        "derivation": {
+          "graph_id": "D-B000005",
+          "task_id": "B000005",
+          "nodes": [
+            {
+              "node_id": "N000000",
+              "kind": "GOAL",
+              "executable_id": "G000001",
+              "depth": 0,
+              "branch_id": 0,
+              "state_before": "[15,0,-6,8,3,-1]",
+              "state_after": "EXPANSION_BUDGET_EXHAUSTED",
+              "cost": 0
+            }
+          ],
+          "edges": [],
+          "primitive_expansion": [],
+          "final_output": null,
+          "verified": false,
+          "historical_cost": 0,
+          "operational_cost": 0
+        },
+        "metrics": {
+          "reasoning_depth": 0,
+          "reasoning_width": 3,
+          "live_branches": 3,
+          "concepts_composed": 0,
+          "peak_active_concepts": 3,
+          "search_expansions": 8,
+          "rollback_count": 4,
+          "decomposition_count": 0,
+          "recombination_count": 0,
+          "wall_time_ns": 2400,
+          "memory_bytes": 340,
+          "total_available_primitives_concepts": 12,
+          "full_catalog_scans": 0,
+          "cache_hits": 0,
+          "macro_uses": 0,
+          "concept_uses": 0
+        },
+        "routing_trace": [
+          {
+            "step": 0,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 1,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 2,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 3,
+            "total_available": 12,
+            "candidates_considered": 2,
+            "active_count": 2,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 4,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          }
+        ]
+      },
+      {
+        "task_id": "B000006",
+        "committed_output": null,
+        "execution_error": null,
+        "verified_after_commit": false,
+        "termination": "EXPANSION_BUDGET_EXHAUSTED",
+        "inferred_operator": null,
+        "program": null,
+        "derivation": {
+          "graph_id": "D-B000006",
+          "task_id": "B000006",
+          "nodes": [
+            {
+              "node_id": "N000000",
+              "kind": "GOAL",
+              "executable_id": "G000001",
+              "depth": 0,
+              "branch_id": 0,
+              "state_before": "[-10,2,17]",
+              "state_after": "EXPANSION_BUDGET_EXHAUSTED",
+              "cost": 0
+            }
+          ],
+          "edges": [],
+          "primitive_expansion": [],
+          "final_output": null,
+          "verified": false,
+          "historical_cost": 0,
+          "operational_cost": 0
+        },
+        "metrics": {
+          "reasoning_depth": 0,
+          "reasoning_width": 3,
+          "live_branches": 3,
+          "concepts_composed": 0,
+          "peak_active_concepts": 3,
+          "search_expansions": 8,
+          "rollback_count": 4,
+          "decomposition_count": 0,
+          "recombination_count": 0,
+          "wall_time_ns": 2800,
+          "memory_bytes": 334,
+          "total_available_primitives_concepts": 12,
+          "full_catalog_scans": 0,
+          "cache_hits": 0,
+          "macro_uses": 0,
+          "concept_uses": 0
+        },
+        "routing_trace": [
+          {
+            "step": 0,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 1,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 2,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 3,
+            "total_available": 12,
+            "candidates_considered": 2,
+            "active_count": 2,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 4,
+            "total_available": 12,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          }
+        ]
+      }
+    ],
+    "STRUCTURAL_MACRO": [
+      {
+        "task_id": "B000001",
+        "committed_output": [
+          35,
+          -15,
+          10,
+          0,
+          55
+        ],
+        "execution_error": null,
+        "verified_after_commit": true,
+        "termination": "COMMITTED_UNSCORED",
+        "inferred_operator": {
+          "code": "MUL",
+          "parameter": 5
+        },
+        "program": [
+          {
+            "instruction": "INIT_OUTPUT"
+          },
+          {
+            "instruction": "BRANCH_IF_EMPTY",
+            "argument": 7
+          },
+          {
+            "instruction": "READ_CURRENT"
+          },
+          {
+            "instruction": "APPLY_SCALAR",
+            "argument": {
+              "code": "MUL",
+              "parameter": 5
+            }
+          },
+          {
+            "instruction": "APPEND_CURRENT"
+          },
+          {
+            "instruction": "ADVANCE"
+          },
+          {
+            "instruction": "BRANCH_IF_REMAINING",
+            "argument": 2
+          },
+          {
+            "instruction": "RETURN"
+          }
+        ],
+        "derivation": {
+          "graph_id": "D-B000001",
+          "task_id": "B000001",
+          "nodes": [
+            {
+              "node_id": "N000000",
+              "kind": "GOAL",
+              "executable_id": "G000001",
+              "depth": 0,
+              "branch_id": 0,
+              "state_before": "[7,-3,2,0,11]",
+              "state_after": "",
+              "cost": 0
+            },
+            {
+              "node_id": "N000001",
+              "kind": "MACRO_EXECUTION",
+              "executable_id": "M000001",
+              "depth": 1,
+              "branch_id": 0,
+              "state_before": "[7,-3,2,0,11]",
+              "state_after": "[35,-15,10,0,55]",
+              "cost": 1
+            },
+            {
+              "node_id": "N000002",
+              "kind": "FINAL_OUTPUT",
+              "executable_id": "V000001",
+              "depth": 2,
+              "branch_id": 0,
+              "state_before": "[35,-15,10,0,55]",
+              "state_after": "COMMITTED",
+              "cost": 0
+            }
+          ],
+          "edges": [
+            {
+              "source": "N000000",
+              "target": "N000001",
+              "dependency": "REQUIRES"
+            },
+            {
+              "source": "N000001",
+              "target": "N000002",
+              "dependency": "VERIFIED_AFTER_COMMIT"
+            }
+          ],
+          "primitive_expansion": [
+            "P000003",
+            "P000008",
+            "P000004",
+            "P000012",
+            "P000006",
+            "P000007",
+            "P000009",
+            "P000005"
+          ],
+          "final_output": [
+            35,
+            -15,
+            10,
+            0,
+            55
+          ],
+          "verified": true,
+          "historical_cost": 8,
+          "operational_cost": 1
+        },
+        "metrics": {
+          "reasoning_depth": 1,
+          "reasoning_width": 3,
+          "live_branches": 3,
+          "concepts_composed": 0,
+          "peak_active_concepts": 3,
+          "search_expansions": 4,
+          "rollback_count": 2,
+          "decomposition_count": 0,
+          "recombination_count": 0,
+          "wall_time_ns": 10800,
+          "memory_bytes": 875,
+          "total_available_primitives_concepts": 13,
+          "full_catalog_scans": 0,
+          "cache_hits": 0,
+          "macro_uses": 1,
+          "concept_uses": 0
+        },
+        "routing_trace": [
+          {
+            "step": 0,
+            "total_available": 13,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 1,
+            "total_available": 13,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 2,
+            "total_available": 13,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 3,
+            "total_available": 13,
+            "candidates_considered": 1,
+            "active_count": 1,
+            "full_catalog_scan": false
+          }
+        ]
+      },
+      {
+        "task_id": "B000002",
+        "committed_output": [
+          5,
+          17,
+          32
+        ],
+        "execution_error": null,
+        "verified_after_commit": true,
+        "termination": "COMMITTED_UNSCORED",
+        "inferred_operator": {
+          "code": "ADD",
+          "parameter": 13
+        },
+        "program": [
+          {
+            "instruction": "INIT_OUTPUT"
+          },
+          {
+            "instruction": "BRANCH_IF_EMPTY",
+            "argument": 7
+          },
+          {
+            "instruction": "READ_CURRENT"
+          },
+          {
+            "instruction": "APPLY_SCALAR",
+            "argument": {
+              "code": "ADD",
+              "parameter": 13
+            }
+          },
+          {
+            "instruction": "APPEND_CURRENT"
+          },
+          {
+            "instruction": "ADVANCE"
+          },
+          {
+            "instruction": "BRANCH_IF_REMAINING",
+            "argument": 2
+          },
+          {
+            "instruction": "RETURN"
+          }
+        ],
+        "derivation": {
+          "graph_id": "D-B000002",
+          "task_id": "B000002",
+          "nodes": [
+            {
+              "node_id": "N000000",
+              "kind": "GOAL",
+              "executable_id": "G000001",
+              "depth": 0,
+              "branch_id": 0,
+              "state_before": "[-8,4,19]",
+              "state_after": "",
+              "cost": 0
+            },
+            {
+              "node_id": "N000001",
+              "kind": "MACRO_EXECUTION",
+              "executable_id": "M000001",
+              "depth": 1,
+              "branch_id": 0,
+              "state_before": "[-8,4,19]",
+              "state_after": "[5,17,32]",
+              "cost": 1
+            },
+            {
+              "node_id": "N000002",
+              "kind": "FINAL_OUTPUT",
+              "executable_id": "V000001",
+              "depth": 2,
+              "branch_id": 0,
+              "state_before": "[5,17,32]",
+              "state_after": "COMMITTED",
+              "cost": 0
+            }
+          ],
+          "edges": [
+            {
+              "source": "N000000",
+              "target": "N000001",
+              "dependency": "REQUIRES"
+            },
+            {
+              "source": "N000001",
+              "target": "N000002",
+              "dependency": "VERIFIED_AFTER_COMMIT"
+            }
+          ],
+          "primitive_expansion": [
+            "P000003",
+            "P000008",
+            "P000004",
+            "P000010",
+            "P000006",
+            "P000007",
+            "P000009",
+            "P000005"
+          ],
+          "final_output": [
+            5,
+            17,
+            32
+          ],
+          "verified": true,
+          "historical_cost": 8,
+          "operational_cost": 1
+        },
+        "metrics": {
+          "reasoning_depth": 1,
+          "reasoning_width": 3,
+          "live_branches": 3,
+          "concepts_composed": 0,
+          "peak_active_concepts": 3,
+          "search_expansions": 4,
+          "rollback_count": 2,
+          "decomposition_count": 0,
+          "recombination_count": 0,
+          "wall_time_ns": 7900,
+          "memory_bytes": 846,
+          "total_available_primitives_concepts": 13,
+          "full_catalog_scans": 0,
+          "cache_hits": 0,
+          "macro_uses": 1,
+          "concept_uses": 0
+        },
+        "routing_trace": [
+          {
+            "step": 0,
+            "total_available": 13,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 1,
+            "total_available": 13,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 2,
+            "total_available": 13,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 3,
+            "total_available": 13,
+            "candidates_considered": 1,
+            "active_count": 1,
+            "full_catalog_scan": false
+          }
+        ]
+      },
+      {
+        "task_id": "B000003",
+        "committed_output": [
+          11,
+          -11,
+          -4,
+          5
+        ],
+        "execution_error": null,
+        "verified_after_commit": true,
+        "termination": "COMMITTED_UNSCORED",
+        "inferred_operator": {
+          "code": "SUB",
+          "parameter": 9
+        },
+        "program": [
+          {
+            "instruction": "INIT_OUTPUT"
+          },
+          {
+            "instruction": "BRANCH_IF_EMPTY",
+            "argument": 7
+          },
+          {
+            "instruction": "READ_CURRENT"
+          },
+          {
+            "instruction": "APPLY_SCALAR",
+            "argument": {
+              "code": "SUB",
+              "parameter": 9
+            }
+          },
+          {
+            "instruction": "APPEND_CURRENT"
+          },
+          {
+            "instruction": "ADVANCE"
+          },
+          {
+            "instruction": "BRANCH_IF_REMAINING",
+            "argument": 2
+          },
+          {
+            "instruction": "RETURN"
+          }
+        ],
+        "derivation": {
+          "graph_id": "D-B000003",
+          "task_id": "B000003",
+          "nodes": [
+            {
+              "node_id": "N000000",
+              "kind": "GOAL",
+              "executable_id": "G000001",
+              "depth": 0,
+              "branch_id": 0,
+              "state_before": "[20,-2,5,14]",
+              "state_after": "",
+              "cost": 0
+            },
+            {
+              "node_id": "N000001",
+              "kind": "MACRO_EXECUTION",
+              "executable_id": "M000001",
+              "depth": 1,
+              "branch_id": 0,
+              "state_before": "[20,-2,5,14]",
+              "state_after": "[11,-11,-4,5]",
+              "cost": 1
+            },
+            {
+              "node_id": "N000002",
+              "kind": "FINAL_OUTPUT",
+              "executable_id": "V000001",
+              "depth": 2,
+              "branch_id": 0,
+              "state_before": "[11,-11,-4,5]",
+              "state_after": "COMMITTED",
+              "cost": 0
+            }
+          ],
+          "edges": [
+            {
+              "source": "N000000",
+              "target": "N000001",
+              "dependency": "REQUIRES"
+            },
+            {
+              "source": "N000001",
+              "target": "N000002",
+              "dependency": "VERIFIED_AFTER_COMMIT"
+            }
+          ],
+          "primitive_expansion": [
+            "P000003",
+            "P000008",
+            "P000004",
+            "P000011",
+            "P000006",
+            "P000007",
+            "P000009",
+            "P000005"
+          ],
+          "final_output": [
+            11,
+            -11,
+            -4,
+            5
+          ],
+          "verified": true,
+          "historical_cost": 8,
+          "operational_cost": 1
+        },
+        "metrics": {
+          "reasoning_depth": 1,
+          "reasoning_width": 3,
+          "live_branches": 3,
+          "concepts_composed": 0,
+          "peak_active_concepts": 3,
+          "search_expansions": 4,
+          "rollback_count": 2,
+          "decomposition_count": 0,
+          "recombination_count": 0,
+          "wall_time_ns": 7500,
+          "memory_bytes": 864,
+          "total_available_primitives_concepts": 13,
+          "full_catalog_scans": 0,
+          "cache_hits": 0,
+          "macro_uses": 1,
+          "concept_uses": 0
+        },
+        "routing_trace": [
+          {
+            "step": 0,
+            "total_available": 13,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 1,
+            "total_available": 13,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 2,
+            "total_available": 13,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 3,
+            "total_available": 13,
+            "candidates_considered": 1,
+            "active_count": 1,
+            "full_catalog_scan": false
+          }
+        ]
+      },
+      {
+        "task_id": "B000004",
+        "committed_output": [
+          -18,
+          21,
+          -3
+        ],
+        "execution_error": null,
+        "verified_after_commit": true,
+        "termination": "COMMITTED_UNSCORED",
+        "inferred_operator": {
+          "code": "MUL",
+          "parameter": -3
+        },
+        "program": [
+          {
+            "instruction": "INIT_OUTPUT"
+          },
+          {
+            "instruction": "BRANCH_IF_EMPTY",
+            "argument": 7
+          },
+          {
+            "instruction": "READ_CURRENT"
+          },
+          {
+            "instruction": "APPLY_SCALAR",
+            "argument": {
+              "code": "MUL",
+              "parameter": -3
+            }
+          },
+          {
+            "instruction": "APPEND_CURRENT"
+          },
+          {
+            "instruction": "ADVANCE"
+          },
+          {
+            "instruction": "BRANCH_IF_REMAINING",
+            "argument": 2
+          },
+          {
+            "instruction": "RETURN"
+          }
+        ],
+        "derivation": {
+          "graph_id": "D-B000004",
+          "task_id": "B000004",
+          "nodes": [
+            {
+              "node_id": "N000000",
+              "kind": "GOAL",
+              "executable_id": "G000001",
+              "depth": 0,
+              "branch_id": 0,
+              "state_before": "[6,-7,1]",
+              "state_after": "",
+              "cost": 0
+            },
+            {
+              "node_id": "N000001",
+              "kind": "MACRO_EXECUTION",
+              "executable_id": "M000001",
+              "depth": 1,
+              "branch_id": 0,
+              "state_before": "[6,-7,1]",
+              "state_after": "[-18,21,-3]",
+              "cost": 1
+            },
+            {
+              "node_id": "N000002",
+              "kind": "FINAL_OUTPUT",
+              "executable_id": "V000001",
+              "depth": 2,
+              "branch_id": 0,
+              "state_before": "[-18,21,-3]",
+              "state_after": "COMMITTED",
+              "cost": 0
+            }
+          ],
+          "edges": [
+            {
+              "source": "N000000",
+              "target": "N000001",
+              "dependency": "REQUIRES"
+            },
+            {
+              "source": "N000001",
+              "target": "N000002",
+              "dependency": "VERIFIED_AFTER_COMMIT"
+            }
+          ],
+          "primitive_expansion": [
+            "P000003",
+            "P000008",
+            "P000004",
+            "P000012",
+            "P000006",
+            "P000007",
+            "P000009",
+            "P000005"
+          ],
+          "final_output": [
+            -18,
+            21,
+            -3
+          ],
+          "verified": true,
+          "historical_cost": 8,
+          "operational_cost": 1
+        },
+        "metrics": {
+          "reasoning_depth": 1,
+          "reasoning_width": 3,
+          "live_branches": 3,
+          "concepts_composed": 0,
+          "peak_active_concepts": 3,
+          "search_expansions": 4,
+          "rollback_count": 2,
+          "decomposition_count": 0,
+          "recombination_count": 0,
+          "wall_time_ns": 6800,
+          "memory_bytes": 850,
+          "total_available_primitives_concepts": 13,
+          "full_catalog_scans": 0,
+          "cache_hits": 0,
+          "macro_uses": 1,
+          "concept_uses": 0
+        },
+        "routing_trace": [
+          {
+            "step": 0,
+            "total_available": 13,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 1,
+            "total_available": 13,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 2,
+            "total_available": 13,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 3,
+            "total_available": 13,
+            "candidates_considered": 1,
+            "active_count": 1,
+            "full_catalog_scan": false
+          }
+        ]
+      },
+      {
+        "task_id": "B000005",
+        "committed_output": [
+          3,
+          -12,
+          -18,
+          -4,
+          -9,
+          -13
+        ],
+        "execution_error": null,
+        "verified_after_commit": true,
+        "termination": "COMMITTED_UNSCORED",
+        "inferred_operator": {
+          "code": "ADD",
+          "parameter": -12
+        },
+        "program": [
+          {
+            "instruction": "INIT_OUTPUT"
+          },
+          {
+            "instruction": "BRANCH_IF_EMPTY",
+            "argument": 7
+          },
+          {
+            "instruction": "READ_CURRENT"
+          },
+          {
+            "instruction": "APPLY_SCALAR",
+            "argument": {
+              "code": "ADD",
+              "parameter": -12
+            }
+          },
+          {
+            "instruction": "APPEND_CURRENT"
+          },
+          {
+            "instruction": "ADVANCE"
+          },
+          {
+            "instruction": "BRANCH_IF_REMAINING",
+            "argument": 2
+          },
+          {
+            "instruction": "RETURN"
+          }
+        ],
+        "derivation": {
+          "graph_id": "D-B000005",
+          "task_id": "B000005",
+          "nodes": [
+            {
+              "node_id": "N000000",
+              "kind": "GOAL",
+              "executable_id": "G000001",
+              "depth": 0,
+              "branch_id": 0,
+              "state_before": "[15,0,-6,8,3,-1]",
+              "state_after": "",
+              "cost": 0
+            },
+            {
+              "node_id": "N000001",
+              "kind": "MACRO_EXECUTION",
+              "executable_id": "M000001",
+              "depth": 1,
+              "branch_id": 0,
+              "state_before": "[15,0,-6,8,3,-1]",
+              "state_after": "[3,-12,-18,-4,-9,-13]",
+              "cost": 1
+            },
+            {
+              "node_id": "N000002",
+              "kind": "FINAL_OUTPUT",
+              "executable_id": "V000001",
+              "depth": 2,
+              "branch_id": 0,
+              "state_before": "[3,-12,-18,-4,-9,-13]",
+              "state_after": "COMMITTED",
+              "cost": 0
+            }
+          ],
+          "edges": [
+            {
+              "source": "N000000",
+              "target": "N000001",
+              "dependency": "REQUIRES"
+            },
+            {
+              "source": "N000001",
+              "target": "N000002",
+              "dependency": "VERIFIED_AFTER_COMMIT"
+            }
+          ],
+          "primitive_expansion": [
+            "P000003",
+            "P000008",
+            "P000004",
+            "P000010",
+            "P000006",
+            "P000007",
+            "P000009",
+            "P000005"
+          ],
+          "final_output": [
+            3,
+            -12,
+            -18,
+            -4,
+            -9,
+            -13
+          ],
+          "verified": true,
+          "historical_cost": 8,
+          "operational_cost": 1
+        },
+        "metrics": {
+          "reasoning_depth": 1,
+          "reasoning_width": 3,
+          "live_branches": 3,
+          "concepts_composed": 0,
+          "peak_active_concepts": 3,
+          "search_expansions": 4,
+          "rollback_count": 2,
+          "decomposition_count": 0,
+          "recombination_count": 0,
+          "wall_time_ns": 11500,
+          "memory_bytes": 896,
+          "total_available_primitives_concepts": 13,
+          "full_catalog_scans": 0,
+          "cache_hits": 0,
+          "macro_uses": 1,
+          "concept_uses": 0
+        },
+        "routing_trace": [
+          {
+            "step": 0,
+            "total_available": 13,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 1,
+            "total_available": 13,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 2,
+            "total_available": 13,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 3,
+            "total_available": 13,
+            "candidates_considered": 1,
+            "active_count": 1,
+            "full_catalog_scan": false
+          }
+        ]
+      },
+      {
+        "task_id": "B000006",
+        "committed_output": [
+          -2,
+          10,
+          25
+        ],
+        "execution_error": null,
+        "verified_after_commit": true,
+        "termination": "COMMITTED_UNSCORED",
+        "inferred_operator": {
+          "code": "SUB",
+          "parameter": -8
+        },
+        "program": [
+          {
+            "instruction": "INIT_OUTPUT"
+          },
+          {
+            "instruction": "BRANCH_IF_EMPTY",
+            "argument": 7
+          },
+          {
+            "instruction": "READ_CURRENT"
+          },
+          {
+            "instruction": "APPLY_SCALAR",
+            "argument": {
+              "code": "SUB",
+              "parameter": -8
+            }
+          },
+          {
+            "instruction": "APPEND_CURRENT"
+          },
+          {
+            "instruction": "ADVANCE"
+          },
+          {
+            "instruction": "BRANCH_IF_REMAINING",
+            "argument": 2
+          },
+          {
+            "instruction": "RETURN"
+          }
+        ],
+        "derivation": {
+          "graph_id": "D-B000006",
+          "task_id": "B000006",
+          "nodes": [
+            {
+              "node_id": "N000000",
+              "kind": "GOAL",
+              "executable_id": "G000001",
+              "depth": 0,
+              "branch_id": 0,
+              "state_before": "[-10,2,17]",
+              "state_after": "",
+              "cost": 0
+            },
+            {
+              "node_id": "N000001",
+              "kind": "MACRO_EXECUTION",
+              "executable_id": "M000001",
+              "depth": 1,
+              "branch_id": 0,
+              "state_before": "[-10,2,17]",
+              "state_after": "[-2,10,25]",
+              "cost": 1
+            },
+            {
+              "node_id": "N000002",
+              "kind": "FINAL_OUTPUT",
+              "executable_id": "V000001",
+              "depth": 2,
+              "branch_id": 0,
+              "state_before": "[-2,10,25]",
+              "state_after": "COMMITTED",
+              "cost": 0
+            }
+          ],
+          "edges": [
+            {
+              "source": "N000000",
+              "target": "N000001",
+              "dependency": "REQUIRES"
+            },
+            {
+              "source": "N000001",
+              "target": "N000002",
+              "dependency": "VERIFIED_AFTER_COMMIT"
+            }
+          ],
+          "primitive_expansion": [
+            "P000003",
+            "P000008",
+            "P000004",
+            "P000011",
+            "P000006",
+            "P000007",
+            "P000009",
+            "P000005"
+          ],
+          "final_output": [
+            -2,
+            10,
+            25
+          ],
+          "verified": true,
+          "historical_cost": 8,
+          "operational_cost": 1
+        },
+        "metrics": {
+          "reasoning_depth": 1,
+          "reasoning_width": 3,
+          "live_branches": 3,
+          "concepts_composed": 0,
+          "peak_active_concepts": 3,
+          "search_expansions": 4,
+          "rollback_count": 2,
+          "decomposition_count": 0,
+          "recombination_count": 0,
+          "wall_time_ns": 6700,
+          "memory_bytes": 851,
+          "total_available_primitives_concepts": 13,
+          "full_catalog_scans": 0,
+          "cache_hits": 0,
+          "macro_uses": 1,
+          "concept_uses": 0
+        },
+        "routing_trace": [
+          {
+            "step": 0,
+            "total_available": 13,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 1,
+            "total_available": 13,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 2,
+            "total_available": 13,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 3,
+            "total_available": 13,
+            "candidates_considered": 1,
+            "active_count": 1,
+            "full_catalog_scan": false
+          }
+        ]
+      }
+    ],
+    "SEMANTIC_EVOLUTION": [
+      {
+        "task_id": "B000001",
+        "committed_output": [
+          35,
+          -15,
+          10,
+          0,
+          55
+        ],
+        "execution_error": null,
+        "verified_after_commit": true,
+        "termination": "COMMITTED_UNSCORED",
+        "inferred_operator": {
+          "code": "MUL",
+          "parameter": 5
+        },
+        "program": [
+          {
+            "instruction": "INIT_OUTPUT"
+          },
+          {
+            "instruction": "BRANCH_IF_EMPTY",
+            "argument": 7
+          },
+          {
+            "instruction": "READ_CURRENT"
+          },
+          {
+            "instruction": "APPLY_SCALAR",
+            "argument": {
+              "code": "MUL",
+              "parameter": 5
+            }
+          },
+          {
+            "instruction": "APPEND_CURRENT"
+          },
+          {
+            "instruction": "ADVANCE"
+          },
+          {
+            "instruction": "BRANCH_IF_REMAINING",
+            "argument": 2
+          },
+          {
+            "instruction": "RETURN"
+          }
+        ],
+        "derivation": {
+          "graph_id": "D-B000001",
+          "task_id": "B000001",
+          "nodes": [
+            {
+              "node_id": "N000000",
+              "kind": "GOAL",
+              "executable_id": "G000001",
+              "depth": 0,
+              "branch_id": 0,
+              "state_before": "[7,-3,2,0,11]",
+              "state_after": "",
+              "cost": 0
+            },
+            {
+              "node_id": "N000001",
+              "kind": "CONCEPT_EXECUTION",
+              "executable_id": "C000001",
+              "depth": 1,
+              "branch_id": 0,
+              "state_before": "[7,-3,2,0,11]",
+              "state_after": "[35,-15,10,0,55]",
+              "cost": 1
+            },
+            {
+              "node_id": "N000002",
+              "kind": "FINAL_OUTPUT",
+              "executable_id": "V000001",
+              "depth": 2,
+              "branch_id": 0,
+              "state_before": "[35,-15,10,0,55]",
+              "state_after": "COMMITTED",
+              "cost": 0
+            }
+          ],
+          "edges": [
+            {
+              "source": "N000000",
+              "target": "N000001",
+              "dependency": "REQUIRES"
+            },
+            {
+              "source": "N000001",
+              "target": "N000002",
+              "dependency": "VERIFIED_AFTER_COMMIT"
+            }
+          ],
+          "primitive_expansion": [
+            "P000003",
+            "P000008",
+            "P000004",
+            "P000012",
+            "P000006",
+            "P000007",
+            "P000009",
+            "P000005"
+          ],
+          "final_output": [
+            35,
+            -15,
+            10,
+            0,
+            55
+          ],
+          "verified": true,
+          "historical_cost": 8,
+          "operational_cost": 1
+        },
+        "metrics": {
+          "reasoning_depth": 1,
+          "reasoning_width": 3,
+          "live_branches": 3,
+          "concepts_composed": 1,
+          "peak_active_concepts": 3,
+          "search_expansions": 4,
+          "rollback_count": 2,
+          "decomposition_count": 0,
+          "recombination_count": 0,
+          "wall_time_ns": 8100,
+          "memory_bytes": 877,
+          "total_available_primitives_concepts": 13,
+          "full_catalog_scans": 0,
+          "cache_hits": 0,
+          "macro_uses": 0,
+          "concept_uses": 1
+        },
+        "routing_trace": [
+          {
+            "step": 0,
+            "total_available": 13,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 1,
+            "total_available": 13,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 2,
+            "total_available": 13,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 3,
+            "total_available": 13,
+            "candidates_considered": 1,
+            "active_count": 1,
+            "full_catalog_scan": false
+          }
+        ]
+      },
+      {
+        "task_id": "B000002",
+        "committed_output": [
+          5,
+          17,
+          32
+        ],
+        "execution_error": null,
+        "verified_after_commit": true,
+        "termination": "COMMITTED_UNSCORED",
+        "inferred_operator": {
+          "code": "ADD",
+          "parameter": 13
+        },
+        "program": [
+          {
+            "instruction": "INIT_OUTPUT"
+          },
+          {
+            "instruction": "BRANCH_IF_EMPTY",
+            "argument": 7
+          },
+          {
+            "instruction": "READ_CURRENT"
+          },
+          {
+            "instruction": "APPLY_SCALAR",
+            "argument": {
+              "code": "ADD",
+              "parameter": 13
+            }
+          },
+          {
+            "instruction": "APPEND_CURRENT"
+          },
+          {
+            "instruction": "ADVANCE"
+          },
+          {
+            "instruction": "BRANCH_IF_REMAINING",
+            "argument": 2
+          },
+          {
+            "instruction": "RETURN"
+          }
+        ],
+        "derivation": {
+          "graph_id": "D-B000002",
+          "task_id": "B000002",
+          "nodes": [
+            {
+              "node_id": "N000000",
+              "kind": "GOAL",
+              "executable_id": "G000001",
+              "depth": 0,
+              "branch_id": 0,
+              "state_before": "[-8,4,19]",
+              "state_after": "",
+              "cost": 0
+            },
+            {
+              "node_id": "N000001",
+              "kind": "CONCEPT_EXECUTION",
+              "executable_id": "C000001",
+              "depth": 1,
+              "branch_id": 0,
+              "state_before": "[-8,4,19]",
+              "state_after": "[5,17,32]",
+              "cost": 1
+            },
+            {
+              "node_id": "N000002",
+              "kind": "FINAL_OUTPUT",
+              "executable_id": "V000001",
+              "depth": 2,
+              "branch_id": 0,
+              "state_before": "[5,17,32]",
+              "state_after": "COMMITTED",
+              "cost": 0
+            }
+          ],
+          "edges": [
+            {
+              "source": "N000000",
+              "target": "N000001",
+              "dependency": "REQUIRES"
+            },
+            {
+              "source": "N000001",
+              "target": "N000002",
+              "dependency": "VERIFIED_AFTER_COMMIT"
+            }
+          ],
+          "primitive_expansion": [
+            "P000003",
+            "P000008",
+            "P000004",
+            "P000010",
+            "P000006",
+            "P000007",
+            "P000009",
+            "P000005"
+          ],
+          "final_output": [
+            5,
+            17,
+            32
+          ],
+          "verified": true,
+          "historical_cost": 8,
+          "operational_cost": 1
+        },
+        "metrics": {
+          "reasoning_depth": 1,
+          "reasoning_width": 3,
+          "live_branches": 3,
+          "concepts_composed": 1,
+          "peak_active_concepts": 3,
+          "search_expansions": 4,
+          "rollback_count": 2,
+          "decomposition_count": 0,
+          "recombination_count": 0,
+          "wall_time_ns": 8900,
+          "memory_bytes": 848,
+          "total_available_primitives_concepts": 13,
+          "full_catalog_scans": 0,
+          "cache_hits": 0,
+          "macro_uses": 0,
+          "concept_uses": 1
+        },
+        "routing_trace": [
+          {
+            "step": 0,
+            "total_available": 13,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 1,
+            "total_available": 13,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 2,
+            "total_available": 13,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 3,
+            "total_available": 13,
+            "candidates_considered": 1,
+            "active_count": 1,
+            "full_catalog_scan": false
+          }
+        ]
+      },
+      {
+        "task_id": "B000003",
+        "committed_output": [
+          11,
+          -11,
+          -4,
+          5
+        ],
+        "execution_error": null,
+        "verified_after_commit": true,
+        "termination": "COMMITTED_UNSCORED",
+        "inferred_operator": {
+          "code": "SUB",
+          "parameter": 9
+        },
+        "program": [
+          {
+            "instruction": "INIT_OUTPUT"
+          },
+          {
+            "instruction": "BRANCH_IF_EMPTY",
+            "argument": 7
+          },
+          {
+            "instruction": "READ_CURRENT"
+          },
+          {
+            "instruction": "APPLY_SCALAR",
+            "argument": {
+              "code": "SUB",
+              "parameter": 9
+            }
+          },
+          {
+            "instruction": "APPEND_CURRENT"
+          },
+          {
+            "instruction": "ADVANCE"
+          },
+          {
+            "instruction": "BRANCH_IF_REMAINING",
+            "argument": 2
+          },
+          {
+            "instruction": "RETURN"
+          }
+        ],
+        "derivation": {
+          "graph_id": "D-B000003",
+          "task_id": "B000003",
+          "nodes": [
+            {
+              "node_id": "N000000",
+              "kind": "GOAL",
+              "executable_id": "G000001",
+              "depth": 0,
+              "branch_id": 0,
+              "state_before": "[20,-2,5,14]",
+              "state_after": "",
+              "cost": 0
+            },
+            {
+              "node_id": "N000001",
+              "kind": "CONCEPT_EXECUTION",
+              "executable_id": "C000001",
+              "depth": 1,
+              "branch_id": 0,
+              "state_before": "[20,-2,5,14]",
+              "state_after": "[11,-11,-4,5]",
+              "cost": 1
+            },
+            {
+              "node_id": "N000002",
+              "kind": "FINAL_OUTPUT",
+              "executable_id": "V000001",
+              "depth": 2,
+              "branch_id": 0,
+              "state_before": "[11,-11,-4,5]",
+              "state_after": "COMMITTED",
+              "cost": 0
+            }
+          ],
+          "edges": [
+            {
+              "source": "N000000",
+              "target": "N000001",
+              "dependency": "REQUIRES"
+            },
+            {
+              "source": "N000001",
+              "target": "N000002",
+              "dependency": "VERIFIED_AFTER_COMMIT"
+            }
+          ],
+          "primitive_expansion": [
+            "P000003",
+            "P000008",
+            "P000004",
+            "P000011",
+            "P000006",
+            "P000007",
+            "P000009",
+            "P000005"
+          ],
+          "final_output": [
+            11,
+            -11,
+            -4,
+            5
+          ],
+          "verified": true,
+          "historical_cost": 8,
+          "operational_cost": 1
+        },
+        "metrics": {
+          "reasoning_depth": 1,
+          "reasoning_width": 3,
+          "live_branches": 3,
+          "concepts_composed": 1,
+          "peak_active_concepts": 3,
+          "search_expansions": 4,
+          "rollback_count": 2,
+          "decomposition_count": 0,
+          "recombination_count": 0,
+          "wall_time_ns": 7300,
+          "memory_bytes": 866,
+          "total_available_primitives_concepts": 13,
+          "full_catalog_scans": 0,
+          "cache_hits": 0,
+          "macro_uses": 0,
+          "concept_uses": 1
+        },
+        "routing_trace": [
+          {
+            "step": 0,
+            "total_available": 13,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 1,
+            "total_available": 13,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 2,
+            "total_available": 13,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 3,
+            "total_available": 13,
+            "candidates_considered": 1,
+            "active_count": 1,
+            "full_catalog_scan": false
+          }
+        ]
+      },
+      {
+        "task_id": "B000004",
+        "committed_output": [
+          -18,
+          21,
+          -3
+        ],
+        "execution_error": null,
+        "verified_after_commit": true,
+        "termination": "COMMITTED_UNSCORED",
+        "inferred_operator": {
+          "code": "MUL",
+          "parameter": -3
+        },
+        "program": [
+          {
+            "instruction": "INIT_OUTPUT"
+          },
+          {
+            "instruction": "BRANCH_IF_EMPTY",
+            "argument": 7
+          },
+          {
+            "instruction": "READ_CURRENT"
+          },
+          {
+            "instruction": "APPLY_SCALAR",
+            "argument": {
+              "code": "MUL",
+              "parameter": -3
+            }
+          },
+          {
+            "instruction": "APPEND_CURRENT"
+          },
+          {
+            "instruction": "ADVANCE"
+          },
+          {
+            "instruction": "BRANCH_IF_REMAINING",
+            "argument": 2
+          },
+          {
+            "instruction": "RETURN"
+          }
+        ],
+        "derivation": {
+          "graph_id": "D-B000004",
+          "task_id": "B000004",
+          "nodes": [
+            {
+              "node_id": "N000000",
+              "kind": "GOAL",
+              "executable_id": "G000001",
+              "depth": 0,
+              "branch_id": 0,
+              "state_before": "[6,-7,1]",
+              "state_after": "",
+              "cost": 0
+            },
+            {
+              "node_id": "N000001",
+              "kind": "CONCEPT_EXECUTION",
+              "executable_id": "C000001",
+              "depth": 1,
+              "branch_id": 0,
+              "state_before": "[6,-7,1]",
+              "state_after": "[-18,21,-3]",
+              "cost": 1
+            },
+            {
+              "node_id": "N000002",
+              "kind": "FINAL_OUTPUT",
+              "executable_id": "V000001",
+              "depth": 2,
+              "branch_id": 0,
+              "state_before": "[-18,21,-3]",
+              "state_after": "COMMITTED",
+              "cost": 0
+            }
+          ],
+          "edges": [
+            {
+              "source": "N000000",
+              "target": "N000001",
+              "dependency": "REQUIRES"
+            },
+            {
+              "source": "N000001",
+              "target": "N000002",
+              "dependency": "VERIFIED_AFTER_COMMIT"
+            }
+          ],
+          "primitive_expansion": [
+            "P000003",
+            "P000008",
+            "P000004",
+            "P000012",
+            "P000006",
+            "P000007",
+            "P000009",
+            "P000005"
+          ],
+          "final_output": [
+            -18,
+            21,
+            -3
+          ],
+          "verified": true,
+          "historical_cost": 8,
+          "operational_cost": 1
+        },
+        "metrics": {
+          "reasoning_depth": 1,
+          "reasoning_width": 3,
+          "live_branches": 3,
+          "concepts_composed": 1,
+          "peak_active_concepts": 3,
+          "search_expansions": 4,
+          "rollback_count": 2,
+          "decomposition_count": 0,
+          "recombination_count": 0,
+          "wall_time_ns": 6400,
+          "memory_bytes": 852,
+          "total_available_primitives_concepts": 13,
+          "full_catalog_scans": 0,
+          "cache_hits": 0,
+          "macro_uses": 0,
+          "concept_uses": 1
+        },
+        "routing_trace": [
+          {
+            "step": 0,
+            "total_available": 13,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 1,
+            "total_available": 13,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 2,
+            "total_available": 13,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 3,
+            "total_available": 13,
+            "candidates_considered": 1,
+            "active_count": 1,
+            "full_catalog_scan": false
+          }
+        ]
+      },
+      {
+        "task_id": "B000005",
+        "committed_output": [
+          3,
+          -12,
+          -18,
+          -4,
+          -9,
+          -13
+        ],
+        "execution_error": null,
+        "verified_after_commit": true,
+        "termination": "COMMITTED_UNSCORED",
+        "inferred_operator": {
+          "code": "ADD",
+          "parameter": -12
+        },
+        "program": [
+          {
+            "instruction": "INIT_OUTPUT"
+          },
+          {
+            "instruction": "BRANCH_IF_EMPTY",
+            "argument": 7
+          },
+          {
+            "instruction": "READ_CURRENT"
+          },
+          {
+            "instruction": "APPLY_SCALAR",
+            "argument": {
+              "code": "ADD",
+              "parameter": -12
+            }
+          },
+          {
+            "instruction": "APPEND_CURRENT"
+          },
+          {
+            "instruction": "ADVANCE"
+          },
+          {
+            "instruction": "BRANCH_IF_REMAINING",
+            "argument": 2
+          },
+          {
+            "instruction": "RETURN"
+          }
+        ],
+        "derivation": {
+          "graph_id": "D-B000005",
+          "task_id": "B000005",
+          "nodes": [
+            {
+              "node_id": "N000000",
+              "kind": "GOAL",
+              "executable_id": "G000001",
+              "depth": 0,
+              "branch_id": 0,
+              "state_before": "[15,0,-6,8,3,-1]",
+              "state_after": "",
+              "cost": 0
+            },
+            {
+              "node_id": "N000001",
+              "kind": "CONCEPT_EXECUTION",
+              "executable_id": "C000001",
+              "depth": 1,
+              "branch_id": 0,
+              "state_before": "[15,0,-6,8,3,-1]",
+              "state_after": "[3,-12,-18,-4,-9,-13]",
+              "cost": 1
+            },
+            {
+              "node_id": "N000002",
+              "kind": "FINAL_OUTPUT",
+              "executable_id": "V000001",
+              "depth": 2,
+              "branch_id": 0,
+              "state_before": "[3,-12,-18,-4,-9,-13]",
+              "state_after": "COMMITTED",
+              "cost": 0
+            }
+          ],
+          "edges": [
+            {
+              "source": "N000000",
+              "target": "N000001",
+              "dependency": "REQUIRES"
+            },
+            {
+              "source": "N000001",
+              "target": "N000002",
+              "dependency": "VERIFIED_AFTER_COMMIT"
+            }
+          ],
+          "primitive_expansion": [
+            "P000003",
+            "P000008",
+            "P000004",
+            "P000010",
+            "P000006",
+            "P000007",
+            "P000009",
+            "P000005"
+          ],
+          "final_output": [
+            3,
+            -12,
+            -18,
+            -4,
+            -9,
+            -13
+          ],
+          "verified": true,
+          "historical_cost": 8,
+          "operational_cost": 1
+        },
+        "metrics": {
+          "reasoning_depth": 1,
+          "reasoning_width": 3,
+          "live_branches": 3,
+          "concepts_composed": 1,
+          "peak_active_concepts": 3,
+          "search_expansions": 4,
+          "rollback_count": 2,
+          "decomposition_count": 0,
+          "recombination_count": 0,
+          "wall_time_ns": 9500,
+          "memory_bytes": 898,
+          "total_available_primitives_concepts": 13,
+          "full_catalog_scans": 0,
+          "cache_hits": 0,
+          "macro_uses": 0,
+          "concept_uses": 1
+        },
+        "routing_trace": [
+          {
+            "step": 0,
+            "total_available": 13,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 1,
+            "total_available": 13,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 2,
+            "total_available": 13,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 3,
+            "total_available": 13,
+            "candidates_considered": 1,
+            "active_count": 1,
+            "full_catalog_scan": false
+          }
+        ]
+      },
+      {
+        "task_id": "B000006",
+        "committed_output": [
+          -2,
+          10,
+          25
+        ],
+        "execution_error": null,
+        "verified_after_commit": true,
+        "termination": "COMMITTED_UNSCORED",
+        "inferred_operator": {
+          "code": "SUB",
+          "parameter": -8
+        },
+        "program": [
+          {
+            "instruction": "INIT_OUTPUT"
+          },
+          {
+            "instruction": "BRANCH_IF_EMPTY",
+            "argument": 7
+          },
+          {
+            "instruction": "READ_CURRENT"
+          },
+          {
+            "instruction": "APPLY_SCALAR",
+            "argument": {
+              "code": "SUB",
+              "parameter": -8
+            }
+          },
+          {
+            "instruction": "APPEND_CURRENT"
+          },
+          {
+            "instruction": "ADVANCE"
+          },
+          {
+            "instruction": "BRANCH_IF_REMAINING",
+            "argument": 2
+          },
+          {
+            "instruction": "RETURN"
+          }
+        ],
+        "derivation": {
+          "graph_id": "D-B000006",
+          "task_id": "B000006",
+          "nodes": [
+            {
+              "node_id": "N000000",
+              "kind": "GOAL",
+              "executable_id": "G000001",
+              "depth": 0,
+              "branch_id": 0,
+              "state_before": "[-10,2,17]",
+              "state_after": "",
+              "cost": 0
+            },
+            {
+              "node_id": "N000001",
+              "kind": "CONCEPT_EXECUTION",
+              "executable_id": "C000001",
+              "depth": 1,
+              "branch_id": 0,
+              "state_before": "[-10,2,17]",
+              "state_after": "[-2,10,25]",
+              "cost": 1
+            },
+            {
+              "node_id": "N000002",
+              "kind": "FINAL_OUTPUT",
+              "executable_id": "V000001",
+              "depth": 2,
+              "branch_id": 0,
+              "state_before": "[-2,10,25]",
+              "state_after": "COMMITTED",
+              "cost": 0
+            }
+          ],
+          "edges": [
+            {
+              "source": "N000000",
+              "target": "N000001",
+              "dependency": "REQUIRES"
+            },
+            {
+              "source": "N000001",
+              "target": "N000002",
+              "dependency": "VERIFIED_AFTER_COMMIT"
+            }
+          ],
+          "primitive_expansion": [
+            "P000003",
+            "P000008",
+            "P000004",
+            "P000011",
+            "P000006",
+            "P000007",
+            "P000009",
+            "P000005"
+          ],
+          "final_output": [
+            -2,
+            10,
+            25
+          ],
+          "verified": true,
+          "historical_cost": 8,
+          "operational_cost": 1
+        },
+        "metrics": {
+          "reasoning_depth": 1,
+          "reasoning_width": 3,
+          "live_branches": 3,
+          "concepts_composed": 1,
+          "peak_active_concepts": 3,
+          "search_expansions": 4,
+          "rollback_count": 2,
+          "decomposition_count": 0,
+          "recombination_count": 0,
+          "wall_time_ns": 6900,
+          "memory_bytes": 853,
+          "total_available_primitives_concepts": 13,
+          "full_catalog_scans": 0,
+          "cache_hits": 0,
+          "macro_uses": 0,
+          "concept_uses": 1
+        },
+        "routing_trace": [
+          {
+            "step": 0,
+            "total_available": 13,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 1,
+            "total_available": 13,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 2,
+            "total_available": 13,
+            "candidates_considered": 3,
+            "active_count": 3,
+            "full_catalog_scan": false
+          },
+          {
+            "step": 3,
+            "total_available": 13,
+            "candidates_considered": 1,
+            "active_count": 1,
+            "full_catalog_scan": false
+          }
+        ]
+      }
+    ]
+  }
+}

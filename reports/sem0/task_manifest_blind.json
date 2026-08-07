@@ -1,0 +1,219 @@
+{
+  "generator_version": "SEM0_TASK_GENERATOR_V1",
+  "seed": 20260808,
+  "expected_query_outputs_included": false,
+  "hidden_generator_metadata_included": false,
+  "tasks": [
+    {
+      "task_id": "B000001",
+      "split": "FRESH_BLIND",
+      "scalar_parameter": 5,
+      "demonstrations": [
+        {
+          "input": [
+            1,
+            -2,
+            4
+          ],
+          "observed_output": [
+            5,
+            -10,
+            20
+          ]
+        },
+        {
+          "input": [
+            0,
+            3
+          ],
+          "observed_output": [
+            0,
+            15
+          ]
+        }
+      ],
+      "query_input": [
+        7,
+        -3,
+        2,
+        0,
+        11
+      ]
+    },
+    {
+      "task_id": "B000002",
+      "split": "FRESH_BLIND",
+      "scalar_parameter": 13,
+      "demonstrations": [
+        {
+          "input": [
+            1,
+            -2,
+            4
+          ],
+          "observed_output": [
+            14,
+            11,
+            17
+          ]
+        },
+        {
+          "input": [
+            0,
+            3
+          ],
+          "observed_output": [
+            13,
+            16
+          ]
+        }
+      ],
+      "query_input": [
+        -8,
+        4,
+        19
+      ]
+    },
+    {
+      "task_id": "B000003",
+      "split": "FRESH_BLIND",
+      "scalar_parameter": 9,
+      "demonstrations": [
+        {
+          "input": [
+            1,
+            -2,
+            4
+          ],
+          "observed_output": [
+            -8,
+            -11,
+            -5
+          ]
+        },
+        {
+          "input": [
+            0,
+            3
+          ],
+          "observed_output": [
+            -9,
+            -6
+          ]
+        }
+      ],
+      "query_input": [
+        20,
+        -2,
+        5,
+        14
+      ]
+    },
+    {
+      "task_id": "B000004",
+      "split": "FRESH_BLIND",
+      "scalar_parameter": -3,
+      "demonstrations": [
+        {
+          "input": [
+            1,
+            -2,
+            4
+          ],
+          "observed_output": [
+            -3,
+            6,
+            -12
+          ]
+        },
+        {
+          "input": [
+            0,
+            3
+          ],
+          "observed_output": [
+            0,
+            -9
+          ]
+        }
+      ],
+      "query_input": [
+        6,
+        -7,
+        1
+      ]
+    },
+    {
+      "task_id": "B000005",
+      "split": "FRESH_BLIND",
+      "scalar_parameter": -12,
+      "demonstrations": [
+        {
+          "input": [
+            1,
+            -2,
+            4
+          ],
+          "observed_output": [
+            -11,
+            -14,
+            -8
+          ]
+        },
+        {
+          "input": [
+            0,
+            3
+          ],
+          "observed_output": [
+            -12,
+            -9
+          ]
+        }
+      ],
+      "query_input": [
+        15,
+        0,
+        -6,
+        8,
+        3,
+        -1
+      ]
+    },
+    {
+      "task_id": "B000006",
+      "split": "FRESH_BLIND",
+      "scalar_parameter": -8,
+      "demonstrations": [
+        {
+          "input": [
+            1,
+            -2,
+            4
+          ],
+          "observed_output": [
+            9,
+            6,
+            12
+          ]
+        },
+        {
+          "input": [
+            0,
+            3
+          ],
+          "observed_output": [
+            8,
+            11
+          ]
+        }
+      ],
+      "query_input": [
+        -10,
+        2,
+        17
+      ]
+    }
+  ],
+  "manifest_sha256": "b5b29580d21f79fdbd4b860d9761ad3ce8c3a14386cac9c72836278006b1a8f5"
+}

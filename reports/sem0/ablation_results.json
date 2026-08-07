@@ -1,0 +1,12 @@
+{
+  "enabled_solve_rate": 1.0,
+  "disabled_solve_rate": 0.0,
+  "matched_macro_solve_rate": 1.0,
+  "unrelated_ablation_solve_rate": 1.0,
+  "solve_rate_delta": 1.0,
+  "enabled_search_expansions": 24,
+  "disabled_search_expansions": 48,
+  "search_expansion_delta": 24,
+  "causal_contribution_passed": true,
+  "derived_state_cleared_between_conditions": true
+}

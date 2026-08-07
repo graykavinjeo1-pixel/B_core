@@ -2,6 +2,7 @@
 members = [
     "crates/synapse-core",
     "crates/synapse-recursive-core",
+    "crates/semantic-reasoning",
 ]
 resolver = "2"
 
