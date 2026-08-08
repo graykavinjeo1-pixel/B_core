@@ -1,0 +1,52 @@
+{
+  "discovery_method": "CROSS_TRACE_ANTI_UNIFICATION_OVER_SEMANTIC_ROLES_EFFECTS_AND_RESOURCE_RELATIONSHIPS",
+  "motifs": [
+    {
+      "applicability_conditions": "RETAINED_BYTES_EXCEED_CAPACITY_AND_RECOMPUTE_WORK_IS_BOUNDED",
+      "counterfactual_behavior_defined": true,
+      "ecir_mask": 44,
+      "failure_conditions": "RECOMPUTE_COST_EXCEEDS_RETAIN_BENEFIT",
+      "id": "M1_RECOMPUTE_INSTEAD_OF_RETAIN",
+      "predicted_effects": "LOWER_LIFETIME_MEMORY",
+      "required_resource_relationships": true,
+      "source_code_template": false,
+      "transformation": "SYNTHESIZE_BOUNDED_EFFECT_GRAPH_AND_SCHEDULE"
+    },
+    {
+      "applicability_conditions": "TRANSFER_DOMINATES_AND_INDEPENDENT_COMPUTE_EXISTS",
+      "counterfactual_behavior_defined": true,
+      "ecir_mask": 2496,
+      "failure_conditions": "DEPENDENCY_PREVENTS_OVERLAP",
+      "id": "M2_TRANSFER_COMPUTE_OVERLAP",
+      "predicted_effects": "LOWER_EXPOSED_TRANSFER_COST",
+      "required_resource_relationships": true,
+      "source_code_template": false,
+      "transformation": "SYNTHESIZE_BOUNDED_EFFECT_GRAPH_AND_SCHEDULE"
+    },
+    {
+      "applicability_conditions": "ACTIVE_REGION_IS_SMALL_AND_INDEXABLE",
+      "counterfactual_behavior_defined": true,
+      "ecir_mask": 4102,
+      "failure_conditions": "ACTIVATION_IS_DENSE_OR_INDEX_UNSOUND",
+      "id": "M3_SPARSE_WORKING_SET",
+      "predicted_effects": "LOWER_ACTIVE_WORKING_SET",
+      "required_resource_relationships": true,
+      "source_code_template": false,
+      "transformation": "SYNTHESIZE_BOUNDED_EFFECT_GRAPH_AND_SCHEDULE"
+    },
+    {
+      "applicability_conditions": "STAGES_SHARE_INPUT_AND_HAVE_COMPATIBLE_REPRESENTATION",
+      "counterfactual_behavior_defined": true,
+      "ecir_mask": 9729,
+      "failure_conditions": "STAGE_DEPENDENCY_REQUIRES_SERIALIZATION",
+      "id": "M4_FUSE_SHARED_PARALLEL_STAGES",
+      "predicted_effects": "LOWER_MOVEMENT_AND_RAISE_OCCUPANCY",
+      "required_resource_relationships": true,
+      "source_code_template": false,
+      "transformation": "SYNTHESIZE_BOUNDED_EFFECT_GRAPH_AND_SCHEDULE"
+    }
+  ],
+  "motifs_discovered": 4,
+  "motifs_verified": 4,
+  "text_template_mining": false
+}

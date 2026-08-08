@@ -1,0 +1,18 @@
+{
+  "fields": [
+    "frontier_gap",
+    "source_concepts",
+    "missing_roles",
+    "mechanism_derivation",
+    "ecir_primitives_selected",
+    "resource_assumptions",
+    "schedule_decisions",
+    "verification_strategy",
+    "fresh_transfer_result",
+    "failed_alternatives"
+  ],
+  "name": "GenesisTraceIR",
+  "provenance_across_levels_required": true,
+  "semantic_role_and_effect_anti_unification": true,
+  "textual_similarity_used_for_anti_unification": false
+}

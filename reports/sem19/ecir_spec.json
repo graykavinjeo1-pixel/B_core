@@ -1,0 +1,54 @@
+{
+  "canonical_text_syntax_required": false,
+  "core_depends_on_gpu_runtime": false,
+  "core_mandatory_vram": 0,
+  "hardware_brand_primitives": [],
+  "high_level_semantic_provenance_preserved": true,
+  "levels": [
+    {
+      "ir": "CapabilityIR",
+      "level": "L0",
+      "role": "WHAT"
+    },
+    {
+      "ir": "MechanismIR",
+      "level": "L1",
+      "role": "WHY_CAUSAL_MECHANISM"
+    },
+    {
+      "ir": "ElementalComputeIR",
+      "level": "L2",
+      "role": "COMPUTE_AND_RESOURCE_EFFECTS"
+    },
+    {
+      "ir": "SchedulePlacementIR",
+      "level": "L3",
+      "role": "WHEN_WHERE_ORDER_LIFETIME_PARALLELISM"
+    },
+    {
+      "ir": "BackendLowering",
+      "level": "L4",
+      "role": "NONAUTHORITATIVE_CONCRETE_IMPLEMENTATION"
+    }
+  ],
+  "name": "ElementalComputeIR",
+  "observation_and_reasoning_substrate": true,
+  "resource_roles": {
+    "ExecutionDomain": [
+      "concurrency",
+      "vector_width",
+      "local_memory",
+      "synchronization_model",
+      "transfer_cost"
+    ],
+    "MemoryRegion": [
+      "locality",
+      "capacity",
+      "bandwidth",
+      "latency",
+      "persistence",
+      "visibility"
+    ]
+  },
+  "source_language_is_compute_authority": false
+}

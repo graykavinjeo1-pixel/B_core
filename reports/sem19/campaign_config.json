@@ -1,0 +1,26 @@
+{
+  "active_substrate_efficiency_rule": "FRONTIER_GAIN_PER_ACTIVE_ECIR_PRIMITIVE_IS_NONDECREASING_WITH_POSITIVE_NET_IMPROVEMENT",
+  "arms": [
+    "A_SEM18_INDEPENDENT_GENESIS",
+    "B_ECIR_ONLY",
+    "C_ECIR_MOTIF_SCHEMA",
+    "D_FULL_COMPOUNDING_GENESIS"
+  ],
+  "branch": "codex/sem19-elemental-compute",
+  "campaign_id": "SEM19-ELEMENTAL-COMPUTE-0001",
+  "capability_independence_definition": "NEW_WEIGHTED_MECHANISM_DECISIONS_DIVIDED_BY_ALL_NEW_AND_VALIDATED_REUSED_MECHANISM_DECISIONS",
+  "equal_max_genesis_budget_per_wave": 140,
+  "external_llm_calls": 0,
+  "final_fresh_blind_count": 240,
+  "frontier_waves_budget": 4,
+  "frontier_yield_acceleration_rule": "ALL_SUCCESSIVE_D_ARM_MARGINAL_WAVE_GAINS_STRICTLY_INCREASE_UNDER_EQUAL_MAX_BUDGET",
+  "gen8_promotion_required": false,
+  "genesis_efficiency_acceleration_rule": "D_ARM_COST_PER_NEW_CLASS_DECLINES_BEYOND_REPRODUCED_A_ARM_AND_ARCHIVE_ABLATION_REVERSES_LATER_BENEFIT",
+  "local_teacher_calls": 0,
+  "network_reads": 0,
+  "network_writes": 0,
+  "predecessor_commit": "16bf29a57bd29bcd7789e59b0542db42d6197efb",
+  "remote_executions": 0,
+  "wall_time_acceleration_rule": "FINAL_D_MEDIAN_WALL_TIME_AT_LEAST_10_PERCENT_BELOW_A_WITH_NONINCREASING_DETERMINISTIC_COST",
+  "wave_target_count": 48
+}

@@ -1,0 +1,13 @@
+{
+  "assumption_pruning": true,
+  "bounded_top_k_schedules": 8,
+  "counterfactual_cost_model": true,
+  "ecir_candidates_actually_evaluated": 32,
+  "ecir_combinatorial_candidates_theoretical": 16384,
+  "full_catalog_scans": 0,
+  "full_ecir_combination_enumeration": 0,
+  "passed": true,
+  "role_constraint_pruning": true,
+  "routing_false_negatives": 0,
+  "semantic_sparse_routing": true
+}

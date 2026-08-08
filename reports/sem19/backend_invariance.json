@@ -1,0 +1,814 @@
+{
+  "backend_invariant_semantics_pass": true,
+  "backend_representations": [
+    "TEXTUAL_EFFECT_SCHEDULE",
+    "COMPACT_NUMERIC_EFFECT_BYTECODE"
+  ],
+  "backend_token_dependent_general_concepts": 0,
+  "cases": 64,
+  "performance_equivalence_claimed": false,
+  "records": [
+    {
+      "backend_a_textual_schedule": "READ->WRITE->RECOMPUTE",
+      "backend_b_compact_bytecode": [
+        2,
+        3,
+        5
+      ],
+      "case": 1,
+      "ecir_semantic_mask": 44,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "MOVE->PREFETCH->PIPELINE->DEPEND",
+      "backend_b_compact_bytecode": [
+        6,
+        7,
+        8,
+        11
+      ],
+      "case": 2,
+      "ecir_semantic_mask": 2496,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "SELECT->READ->SPARSE_ACTIVATE",
+      "backend_b_compact_bytecode": [
+        1,
+        2,
+        12
+      ],
+      "case": 3,
+      "ecir_semantic_mask": 4102,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "TRANSFORM->FUSE->PARALLELIZE->PACK",
+      "backend_b_compact_bytecode": [
+        0,
+        9,
+        10,
+        13
+      ],
+      "case": 4,
+      "ecir_semantic_mask": 9729,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "READ->WRITE->RECOMPUTE",
+      "backend_b_compact_bytecode": [
+        2,
+        3,
+        5
+      ],
+      "case": 5,
+      "ecir_semantic_mask": 44,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "MOVE->PREFETCH->PIPELINE->DEPEND",
+      "backend_b_compact_bytecode": [
+        6,
+        7,
+        8,
+        11
+      ],
+      "case": 6,
+      "ecir_semantic_mask": 2496,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "SELECT->READ->SPARSE_ACTIVATE",
+      "backend_b_compact_bytecode": [
+        1,
+        2,
+        12
+      ],
+      "case": 7,
+      "ecir_semantic_mask": 4102,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "TRANSFORM->FUSE->PARALLELIZE->PACK",
+      "backend_b_compact_bytecode": [
+        0,
+        9,
+        10,
+        13
+      ],
+      "case": 8,
+      "ecir_semantic_mask": 9729,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "READ->WRITE->RECOMPUTE",
+      "backend_b_compact_bytecode": [
+        2,
+        3,
+        5
+      ],
+      "case": 9,
+      "ecir_semantic_mask": 44,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "MOVE->PREFETCH->PIPELINE->DEPEND",
+      "backend_b_compact_bytecode": [
+        6,
+        7,
+        8,
+        11
+      ],
+      "case": 10,
+      "ecir_semantic_mask": 2496,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "SELECT->READ->SPARSE_ACTIVATE",
+      "backend_b_compact_bytecode": [
+        1,
+        2,
+        12
+      ],
+      "case": 11,
+      "ecir_semantic_mask": 4102,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "TRANSFORM->FUSE->PARALLELIZE->PACK",
+      "backend_b_compact_bytecode": [
+        0,
+        9,
+        10,
+        13
+      ],
+      "case": 12,
+      "ecir_semantic_mask": 9729,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "READ->WRITE->RECOMPUTE",
+      "backend_b_compact_bytecode": [
+        2,
+        3,
+        5
+      ],
+      "case": 13,
+      "ecir_semantic_mask": 44,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "MOVE->PREFETCH->PIPELINE->DEPEND",
+      "backend_b_compact_bytecode": [
+        6,
+        7,
+        8,
+        11
+      ],
+      "case": 14,
+      "ecir_semantic_mask": 2496,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "SELECT->READ->SPARSE_ACTIVATE",
+      "backend_b_compact_bytecode": [
+        1,
+        2,
+        12
+      ],
+      "case": 15,
+      "ecir_semantic_mask": 4102,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "TRANSFORM->FUSE->PARALLELIZE->PACK",
+      "backend_b_compact_bytecode": [
+        0,
+        9,
+        10,
+        13
+      ],
+      "case": 16,
+      "ecir_semantic_mask": 9729,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "READ->WRITE->RECOMPUTE",
+      "backend_b_compact_bytecode": [
+        2,
+        3,
+        5
+      ],
+      "case": 17,
+      "ecir_semantic_mask": 44,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "MOVE->PREFETCH->PIPELINE->DEPEND",
+      "backend_b_compact_bytecode": [
+        6,
+        7,
+        8,
+        11
+      ],
+      "case": 18,
+      "ecir_semantic_mask": 2496,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "SELECT->READ->SPARSE_ACTIVATE",
+      "backend_b_compact_bytecode": [
+        1,
+        2,
+        12
+      ],
+      "case": 19,
+      "ecir_semantic_mask": 4102,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "TRANSFORM->FUSE->PARALLELIZE->PACK",
+      "backend_b_compact_bytecode": [
+        0,
+        9,
+        10,
+        13
+      ],
+      "case": 20,
+      "ecir_semantic_mask": 9729,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "READ->WRITE->RECOMPUTE",
+      "backend_b_compact_bytecode": [
+        2,
+        3,
+        5
+      ],
+      "case": 21,
+      "ecir_semantic_mask": 44,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "MOVE->PREFETCH->PIPELINE->DEPEND",
+      "backend_b_compact_bytecode": [
+        6,
+        7,
+        8,
+        11
+      ],
+      "case": 22,
+      "ecir_semantic_mask": 2496,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "SELECT->READ->SPARSE_ACTIVATE",
+      "backend_b_compact_bytecode": [
+        1,
+        2,
+        12
+      ],
+      "case": 23,
+      "ecir_semantic_mask": 4102,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "TRANSFORM->FUSE->PARALLELIZE->PACK",
+      "backend_b_compact_bytecode": [
+        0,
+        9,
+        10,
+        13
+      ],
+      "case": 24,
+      "ecir_semantic_mask": 9729,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "READ->WRITE->RECOMPUTE",
+      "backend_b_compact_bytecode": [
+        2,
+        3,
+        5
+      ],
+      "case": 25,
+      "ecir_semantic_mask": 44,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "MOVE->PREFETCH->PIPELINE->DEPEND",
+      "backend_b_compact_bytecode": [
+        6,
+        7,
+        8,
+        11
+      ],
+      "case": 26,
+      "ecir_semantic_mask": 2496,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "SELECT->READ->SPARSE_ACTIVATE",
+      "backend_b_compact_bytecode": [
+        1,
+        2,
+        12
+      ],
+      "case": 27,
+      "ecir_semantic_mask": 4102,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "TRANSFORM->FUSE->PARALLELIZE->PACK",
+      "backend_b_compact_bytecode": [
+        0,
+        9,
+        10,
+        13
+      ],
+      "case": 28,
+      "ecir_semantic_mask": 9729,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "READ->WRITE->RECOMPUTE",
+      "backend_b_compact_bytecode": [
+        2,
+        3,
+        5
+      ],
+      "case": 29,
+      "ecir_semantic_mask": 44,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "MOVE->PREFETCH->PIPELINE->DEPEND",
+      "backend_b_compact_bytecode": [
+        6,
+        7,
+        8,
+        11
+      ],
+      "case": 30,
+      "ecir_semantic_mask": 2496,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "SELECT->READ->SPARSE_ACTIVATE",
+      "backend_b_compact_bytecode": [
+        1,
+        2,
+        12
+      ],
+      "case": 31,
+      "ecir_semantic_mask": 4102,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "TRANSFORM->FUSE->PARALLELIZE->PACK",
+      "backend_b_compact_bytecode": [
+        0,
+        9,
+        10,
+        13
+      ],
+      "case": 32,
+      "ecir_semantic_mask": 9729,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "READ->WRITE->RECOMPUTE",
+      "backend_b_compact_bytecode": [
+        2,
+        3,
+        5
+      ],
+      "case": 33,
+      "ecir_semantic_mask": 44,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "MOVE->PREFETCH->PIPELINE->DEPEND",
+      "backend_b_compact_bytecode": [
+        6,
+        7,
+        8,
+        11
+      ],
+      "case": 34,
+      "ecir_semantic_mask": 2496,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "SELECT->READ->SPARSE_ACTIVATE",
+      "backend_b_compact_bytecode": [
+        1,
+        2,
+        12
+      ],
+      "case": 35,
+      "ecir_semantic_mask": 4102,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "TRANSFORM->FUSE->PARALLELIZE->PACK",
+      "backend_b_compact_bytecode": [
+        0,
+        9,
+        10,
+        13
+      ],
+      "case": 36,
+      "ecir_semantic_mask": 9729,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "READ->WRITE->RECOMPUTE",
+      "backend_b_compact_bytecode": [
+        2,
+        3,
+        5
+      ],
+      "case": 37,
+      "ecir_semantic_mask": 44,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "MOVE->PREFETCH->PIPELINE->DEPEND",
+      "backend_b_compact_bytecode": [
+        6,
+        7,
+        8,
+        11
+      ],
+      "case": 38,
+      "ecir_semantic_mask": 2496,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "SELECT->READ->SPARSE_ACTIVATE",
+      "backend_b_compact_bytecode": [
+        1,
+        2,
+        12
+      ],
+      "case": 39,
+      "ecir_semantic_mask": 4102,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "TRANSFORM->FUSE->PARALLELIZE->PACK",
+      "backend_b_compact_bytecode": [
+        0,
+        9,
+        10,
+        13
+      ],
+      "case": 40,
+      "ecir_semantic_mask": 9729,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "READ->WRITE->RECOMPUTE",
+      "backend_b_compact_bytecode": [
+        2,
+        3,
+        5
+      ],
+      "case": 41,
+      "ecir_semantic_mask": 44,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "MOVE->PREFETCH->PIPELINE->DEPEND",
+      "backend_b_compact_bytecode": [
+        6,
+        7,
+        8,
+        11
+      ],
+      "case": 42,
+      "ecir_semantic_mask": 2496,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "SELECT->READ->SPARSE_ACTIVATE",
+      "backend_b_compact_bytecode": [
+        1,
+        2,
+        12
+      ],
+      "case": 43,
+      "ecir_semantic_mask": 4102,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "TRANSFORM->FUSE->PARALLELIZE->PACK",
+      "backend_b_compact_bytecode": [
+        0,
+        9,
+        10,
+        13
+      ],
+      "case": 44,
+      "ecir_semantic_mask": 9729,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "READ->WRITE->RECOMPUTE",
+      "backend_b_compact_bytecode": [
+        2,
+        3,
+        5
+      ],
+      "case": 45,
+      "ecir_semantic_mask": 44,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "MOVE->PREFETCH->PIPELINE->DEPEND",
+      "backend_b_compact_bytecode": [
+        6,
+        7,
+        8,
+        11
+      ],
+      "case": 46,
+      "ecir_semantic_mask": 2496,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "SELECT->READ->SPARSE_ACTIVATE",
+      "backend_b_compact_bytecode": [
+        1,
+        2,
+        12
+      ],
+      "case": 47,
+      "ecir_semantic_mask": 4102,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "TRANSFORM->FUSE->PARALLELIZE->PACK",
+      "backend_b_compact_bytecode": [
+        0,
+        9,
+        10,
+        13
+      ],
+      "case": 48,
+      "ecir_semantic_mask": 9729,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "READ->WRITE->RECOMPUTE",
+      "backend_b_compact_bytecode": [
+        2,
+        3,
+        5
+      ],
+      "case": 49,
+      "ecir_semantic_mask": 44,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "MOVE->PREFETCH->PIPELINE->DEPEND",
+      "backend_b_compact_bytecode": [
+        6,
+        7,
+        8,
+        11
+      ],
+      "case": 50,
+      "ecir_semantic_mask": 2496,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "SELECT->READ->SPARSE_ACTIVATE",
+      "backend_b_compact_bytecode": [
+        1,
+        2,
+        12
+      ],
+      "case": 51,
+      "ecir_semantic_mask": 4102,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "TRANSFORM->FUSE->PARALLELIZE->PACK",
+      "backend_b_compact_bytecode": [
+        0,
+        9,
+        10,
+        13
+      ],
+      "case": 52,
+      "ecir_semantic_mask": 9729,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "READ->WRITE->RECOMPUTE",
+      "backend_b_compact_bytecode": [
+        2,
+        3,
+        5
+      ],
+      "case": 53,
+      "ecir_semantic_mask": 44,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "MOVE->PREFETCH->PIPELINE->DEPEND",
+      "backend_b_compact_bytecode": [
+        6,
+        7,
+        8,
+        11
+      ],
+      "case": 54,
+      "ecir_semantic_mask": 2496,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "SELECT->READ->SPARSE_ACTIVATE",
+      "backend_b_compact_bytecode": [
+        1,
+        2,
+        12
+      ],
+      "case": 55,
+      "ecir_semantic_mask": 4102,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "TRANSFORM->FUSE->PARALLELIZE->PACK",
+      "backend_b_compact_bytecode": [
+        0,
+        9,
+        10,
+        13
+      ],
+      "case": 56,
+      "ecir_semantic_mask": 9729,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "READ->WRITE->RECOMPUTE",
+      "backend_b_compact_bytecode": [
+        2,
+        3,
+        5
+      ],
+      "case": 57,
+      "ecir_semantic_mask": 44,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "MOVE->PREFETCH->PIPELINE->DEPEND",
+      "backend_b_compact_bytecode": [
+        6,
+        7,
+        8,
+        11
+      ],
+      "case": 58,
+      "ecir_semantic_mask": 2496,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "SELECT->READ->SPARSE_ACTIVATE",
+      "backend_b_compact_bytecode": [
+        1,
+        2,
+        12
+      ],
+      "case": 59,
+      "ecir_semantic_mask": 4102,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "TRANSFORM->FUSE->PARALLELIZE->PACK",
+      "backend_b_compact_bytecode": [
+        0,
+        9,
+        10,
+        13
+      ],
+      "case": 60,
+      "ecir_semantic_mask": 9729,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "READ->WRITE->RECOMPUTE",
+      "backend_b_compact_bytecode": [
+        2,
+        3,
+        5
+      ],
+      "case": 61,
+      "ecir_semantic_mask": 44,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "MOVE->PREFETCH->PIPELINE->DEPEND",
+      "backend_b_compact_bytecode": [
+        6,
+        7,
+        8,
+        11
+      ],
+      "case": 62,
+      "ecir_semantic_mask": 2496,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "SELECT->READ->SPARSE_ACTIVATE",
+      "backend_b_compact_bytecode": [
+        1,
+        2,
+        12
+      ],
+      "case": 63,
+      "ecir_semantic_mask": 4102,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    },
+    {
+      "backend_a_textual_schedule": "TRANSFORM->FUSE->PARALLELIZE->PACK",
+      "backend_b_compact_bytecode": [
+        0,
+        9,
+        10,
+        13
+      ],
+      "case": 64,
+      "ecir_semantic_mask": 9729,
+      "performance_identity_required": false,
+      "semantic_result_equivalent": true
+    }
+  ],
+  "semantic_mismatches": 0,
+  "source_language_is_compute_authority": false
+}

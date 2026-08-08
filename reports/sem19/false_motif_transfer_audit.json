@@ -1,0 +1,11 @@
+{
+  "adversarial_cases": 24,
+  "false_execution_motif_transfers": 0,
+  "passed": true,
+  "resource_assumption_checks": [
+    "INVARIANT",
+    "MEMORY_LIFETIME",
+    "TRANSFER_BOUND",
+    "DOMAIN_INDEPENDENT_APPLICABILITY"
+  ]
+}

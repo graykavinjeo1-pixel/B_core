@@ -1,0 +1,71 @@
+{
+  "arm": "SCHEMA_GENESIS",
+  "arm_id": "C_ECIR_MOTIF_SCHEMA",
+  "ecir_enabled": true,
+  "equal_max_budget_per_wave": 140,
+  "frontier_gains": [
+    24,
+    30,
+    36,
+    42
+  ],
+  "genesis_costs": [
+    {
+      "arm": "SCHEMA_GENESIS",
+      "ecir_candidates_evaluated": 8,
+      "ecir_primitives_reused": 0,
+      "failed_evidence_reuse_events": 0,
+      "invalid_candidate_count": 2,
+      "motifs_reused": 0,
+      "schemas_reused": 0,
+      "semantic_roles_reused": 0,
+      "total_genesis_deterministic_cost": 140,
+      "wall_time_ns": 6252800,
+      "wave": 1
+    },
+    {
+      "arm": "SCHEMA_GENESIS",
+      "ecir_candidates_evaluated": 5,
+      "ecir_primitives_reused": 3,
+      "failed_evidence_reuse_events": 0,
+      "invalid_candidate_count": 1,
+      "motifs_reused": 1,
+      "schemas_reused": 1,
+      "semantic_roles_reused": 2,
+      "total_genesis_deterministic_cost": 92,
+      "wall_time_ns": 5914200,
+      "wave": 2
+    },
+    {
+      "arm": "SCHEMA_GENESIS",
+      "ecir_candidates_evaluated": 3,
+      "ecir_primitives_reused": 5,
+      "failed_evidence_reuse_events": 0,
+      "invalid_candidate_count": 0,
+      "motifs_reused": 2,
+      "schemas_reused": 2,
+      "semantic_roles_reused": 3,
+      "total_genesis_deterministic_cost": 57,
+      "wall_time_ns": 6440200,
+      "wave": 3
+    },
+    {
+      "arm": "SCHEMA_GENESIS",
+      "ecir_candidates_evaluated": 2,
+      "ecir_primitives_reused": 7,
+      "failed_evidence_reuse_events": 0,
+      "invalid_candidate_count": 0,
+      "motifs_reused": 3,
+      "schemas_reused": 3,
+      "semantic_roles_reused": 4,
+      "total_genesis_deterministic_cost": 24,
+      "wall_time_ns": 5954200,
+      "wave": 4
+    }
+  ],
+  "mean_frontier_gain_per_capability": 33.0,
+  "mean_genesis_cost_per_capability": 78.25,
+  "motif_and_schema_reuse_enabled": true,
+  "stepping_stone_and_failed_evidence_archive_enabled": false,
+  "total_frontier_gain": 132
+}

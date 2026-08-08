@@ -1,0 +1,7 @@
+{
+  "acceptance_criteria_sha256": "8dfd0580097d16b85a16dcf298a1ae42a0a2ab972884c9ee4cbfb93c53ecf3f5",
+  "candidate_has_no_truth_authority": true,
+  "evaluator_sha256": "4cee2d7ef3a4a6dc7b2802ff5cf24c8724c9e2a9a123970a3d85cd9495d5412c",
+  "frozen_before_ecir_derivation": true,
+  "governor_sha256": "259dff1098ac35cf41914926670abb4f929e92649319affd8d5ac08794df8cdc"
+}

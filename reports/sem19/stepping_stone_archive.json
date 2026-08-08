@@ -1,0 +1,31 @@
+{
+  "bounded_capacity": 32,
+  "canonical_authority": false,
+  "classes": [
+    "verified_capability",
+    "provisional_capability",
+    "failed_but_informative",
+    "failed_role_mapping",
+    "violated_assumption",
+    "partial_ecir_fragment",
+    "execution_motif",
+    "capability_schema",
+    "verification_motif"
+  ],
+  "failed_evidence": [
+    {
+      "failure": "RETAIN_LIFETIME_EXCEEDED_MEMORY",
+      "reused_in_wave": 2
+    },
+    {
+      "failure": "DEMAND_MOVE_EXCEEDED_TRANSFER_BOUND",
+      "reused_in_wave": 3
+    },
+    {
+      "failure": "DENSE_ACTIVATION_EXPANDED_WORKING_SET",
+      "reused_in_wave": 4
+    }
+  ],
+  "failed_evidence_reuse_events": 3,
+  "stored_entries": 14
+}

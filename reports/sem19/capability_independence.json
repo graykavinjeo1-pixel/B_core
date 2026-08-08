@@ -1,0 +1,142 @@
+{
+  "base_capability_independence_ratio": 1.0,
+  "base_reused_motif_fraction": 0.0,
+  "base_reused_primitive_fraction": 0.0,
+  "base_reused_schema_fraction": 0.0,
+  "decreased_over_waves": true,
+  "definition": "NEW_WEIGHTED_MECHANISM_DECISIONS_DIVIDED_BY_ALL_NEW_AND_VALIDATED_REUSED_MECHANISM_DECISIONS",
+  "final_capability_independence_ratio": 0.2,
+  "final_reused_motif_fraction": 0.25,
+  "final_reused_primitive_fraction": 0.3,
+  "final_reused_schema_fraction": 0.25,
+  "rows": [
+    {
+      "arm": "INDEPENDENT_GENESIS",
+      "new_mechanism_fraction": 1.0,
+      "reused_motif_fraction": 0.0,
+      "reused_primitive_fraction": 0.0,
+      "reused_schema_fraction": 0.0,
+      "wave": 1
+    },
+    {
+      "arm": "ECIR_ONLY",
+      "new_mechanism_fraction": 1.0,
+      "reused_motif_fraction": 0.0,
+      "reused_primitive_fraction": 0.0,
+      "reused_schema_fraction": 0.0,
+      "wave": 1
+    },
+    {
+      "arm": "SCHEMA_GENESIS",
+      "new_mechanism_fraction": 1.0,
+      "reused_motif_fraction": 0.0,
+      "reused_primitive_fraction": 0.0,
+      "reused_schema_fraction": 0.0,
+      "wave": 1
+    },
+    {
+      "arm": "COMPOUNDING_GENESIS",
+      "new_mechanism_fraction": 1.0,
+      "reused_motif_fraction": 0.0,
+      "reused_primitive_fraction": 0.0,
+      "reused_schema_fraction": 0.0,
+      "wave": 1
+    },
+    {
+      "arm": "INDEPENDENT_GENESIS",
+      "new_mechanism_fraction": 1.0,
+      "reused_motif_fraction": 0.0,
+      "reused_primitive_fraction": 0.0,
+      "reused_schema_fraction": 0.0,
+      "wave": 2
+    },
+    {
+      "arm": "ECIR_ONLY",
+      "new_mechanism_fraction": 0.75,
+      "reused_motif_fraction": 0.0,
+      "reused_primitive_fraction": 0.25,
+      "reused_schema_fraction": 0.0,
+      "wave": 2
+    },
+    {
+      "arm": "SCHEMA_GENESIS",
+      "new_mechanism_fraction": 0.55,
+      "reused_motif_fraction": 0.15,
+      "reused_primitive_fraction": 0.2,
+      "reused_schema_fraction": 0.1,
+      "wave": 2
+    },
+    {
+      "arm": "COMPOUNDING_GENESIS",
+      "new_mechanism_fraction": 0.55,
+      "reused_motif_fraction": 0.15,
+      "reused_primitive_fraction": 0.2,
+      "reused_schema_fraction": 0.1,
+      "wave": 2
+    },
+    {
+      "arm": "INDEPENDENT_GENESIS",
+      "new_mechanism_fraction": 1.0,
+      "reused_motif_fraction": 0.0,
+      "reused_primitive_fraction": 0.0,
+      "reused_schema_fraction": 0.0,
+      "wave": 3
+    },
+    {
+      "arm": "ECIR_ONLY",
+      "new_mechanism_fraction": 0.6,
+      "reused_motif_fraction": 0.0,
+      "reused_primitive_fraction": 0.4,
+      "reused_schema_fraction": 0.0,
+      "wave": 3
+    },
+    {
+      "arm": "SCHEMA_GENESIS",
+      "new_mechanism_fraction": 0.35,
+      "reused_motif_fraction": 0.2,
+      "reused_primitive_fraction": 0.25,
+      "reused_schema_fraction": 0.2,
+      "wave": 3
+    },
+    {
+      "arm": "COMPOUNDING_GENESIS",
+      "new_mechanism_fraction": 0.35,
+      "reused_motif_fraction": 0.2,
+      "reused_primitive_fraction": 0.25,
+      "reused_schema_fraction": 0.2,
+      "wave": 3
+    },
+    {
+      "arm": "INDEPENDENT_GENESIS",
+      "new_mechanism_fraction": 1.0,
+      "reused_motif_fraction": 0.0,
+      "reused_primitive_fraction": 0.0,
+      "reused_schema_fraction": 0.0,
+      "wave": 4
+    },
+    {
+      "arm": "ECIR_ONLY",
+      "new_mechanism_fraction": 0.5,
+      "reused_motif_fraction": 0.0,
+      "reused_primitive_fraction": 0.5,
+      "reused_schema_fraction": 0.0,
+      "wave": 4
+    },
+    {
+      "arm": "SCHEMA_GENESIS",
+      "new_mechanism_fraction": 0.2,
+      "reused_motif_fraction": 0.25,
+      "reused_primitive_fraction": 0.3,
+      "reused_schema_fraction": 0.25,
+      "wave": 4
+    },
+    {
+      "arm": "COMPOUNDING_GENESIS",
+      "new_mechanism_fraction": 0.2,
+      "reused_motif_fraction": 0.25,
+      "reused_primitive_fraction": 0.3,
+      "reused_schema_fraction": 0.25,
+      "wave": 4
+    }
+  ]
+}

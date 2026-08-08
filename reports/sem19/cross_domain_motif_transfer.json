@@ -1,0 +1,26 @@
+{
+  "arm_b_domain_local_gain": [
+    24,
+    24,
+    24,
+    24
+  ],
+  "arm_c_extra_cross_domain_tasks": 36,
+  "arm_c_schema_transfer_gain": [
+    24,
+    30,
+    36,
+    42
+  ],
+  "arm_d_archive_supported_transfer_gain": [
+    24,
+    32,
+    40,
+    48
+  ],
+  "arm_d_extra_cross_domain_tasks": 48,
+  "cross_domain_execution_motif_transfer_tested": true,
+  "cross_domain_execution_motif_transfer_verified": true,
+  "false_execution_motif_transfers": 0,
+  "surface_domains_share_only_resource_relationship": true
+}

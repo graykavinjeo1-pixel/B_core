@@ -1,0 +1,7 @@
+{
+  "ablation_verified": true,
+  "base_future_capabilities_enabled_per_capability": 0.0,
+  "causal_dependency_events": 6,
+  "final_future_capabilities_enabled_per_capability": 1.5,
+  "new_concrete_capabilities": 4
+}

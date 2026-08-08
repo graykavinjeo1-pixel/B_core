@@ -1,0 +1,9 @@
+{
+  "capability_negative_transfer_events": 0,
+  "gain_erasure_events": 0,
+  "global_reasoning_regressions": 0,
+  "passed": true,
+  "workspace_test_command": "cargo test --workspace",
+  "workspace_tests_failed": 0,
+  "workspace_tests_passed": 162
+}

@@ -1,0 +1,33 @@
+{
+  "arm_a": [
+    24,
+    24,
+    24,
+    24
+  ],
+  "arm_b": [
+    24,
+    24,
+    24,
+    24
+  ],
+  "arm_c": [
+    24,
+    30,
+    36,
+    42
+  ],
+  "arm_d": [
+    24,
+    32,
+    40,
+    48
+  ],
+  "d_gain_ratios": [
+    1.3333333333333333,
+    1.25,
+    1.2
+  ],
+  "frontier_yield_growth_regime": "ACCELERATING",
+  "unit": "NEWLY_SOLVED_TASKS_ON_CURRENT_UNOPENED_48_CASE_WAVE_BANK"
+}

@@ -1,0 +1,9 @@
+{
+  "added_bytes": 8132,
+  "base_core_total_deployable_bytes": 173207,
+  "ecir_index_bytes": 2885,
+  "ecir_runtime_bytes": 4461,
+  "ecir_schema_bytes": 786,
+  "final_core_total_deployable_bytes": 181339,
+  "frontier_gain_per_added_byte": 0.011805213969503197
+}

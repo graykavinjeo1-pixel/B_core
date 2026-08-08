@@ -1,0 +1,44 @@
+{
+  "ablation_verified": true,
+  "causal_capability_genesis_chain_depth": 4,
+  "chronology_alone_counted_as_causality": false,
+  "edges": [
+    {
+      "causal": true,
+      "from": "ECIR_PRIMITIVE_SET",
+      "to": "M1_RECOMPUTE_INSTEAD_OF_RETAIN"
+    },
+    {
+      "causal": true,
+      "from": "M1_RECOMPUTE_INSTEAD_OF_RETAIN",
+      "to": "RESOURCE_BOUNDED_DATAFLOW_SCHEMA"
+    },
+    {
+      "causal": true,
+      "from": "RESOURCE_BOUNDED_DATAFLOW_SCHEMA",
+      "to": "C2_TRANSFER_OVERLAP_CONTROLLER"
+    },
+    {
+      "causal": true,
+      "from": "C2_TRANSFER_OVERLAP_CONTROLLER",
+      "to": "C3_SPARSE_WORKING_SET_CONTROLLER"
+    },
+    {
+      "causal": true,
+      "from": "C3_SPARSE_WORKING_SET_CONTROLLER",
+      "to": "C4_FUSED_PARALLEL_REPRESENTATION"
+    }
+  ],
+  "future_capability_dependency_events": 6,
+  "nodes": [
+    "ECIR_PRIMITIVE_SET",
+    "M1_RECOMPUTE_INSTEAD_OF_RETAIN",
+    "M2_TRANSFER_COMPUTE_OVERLAP",
+    "M3_SPARSE_WORKING_SET",
+    "RESOURCE_BOUNDED_DATAFLOW_SCHEMA",
+    "C1_LIFETIME_BALANCER",
+    "C2_TRANSFER_OVERLAP_CONTROLLER",
+    "C3_SPARSE_WORKING_SET_CONTROLLER",
+    "C4_FUSED_PARALLEL_REPRESENTATION"
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "execution_motif_reuse_ablation_pass": true,
+  "lost_cross_domain_families": 4,
+  "motif_reuse_on_solved": 216,
+  "raw_ecir_without_motif_reuse_solved": 120
+}

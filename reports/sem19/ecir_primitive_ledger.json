@@ -1,0 +1,91 @@
+{
+  "primitive_count": 14,
+  "primitives": [
+    {
+      "bit": 1,
+      "category": "COMPUTATION",
+      "name": "TRANSFORM",
+      "semantic_effect_not_hardware_brand": true
+    },
+    {
+      "bit": 2,
+      "category": "COMPUTATION",
+      "name": "SELECT",
+      "semantic_effect_not_hardware_brand": true
+    },
+    {
+      "bit": 4,
+      "category": "MEMORY_EFFECT",
+      "name": "READ",
+      "semantic_effect_not_hardware_brand": true
+    },
+    {
+      "bit": 8,
+      "category": "MEMORY_EFFECT",
+      "name": "WRITE",
+      "semantic_effect_not_hardware_brand": true
+    },
+    {
+      "bit": 16,
+      "category": "MEMORY_EFFECT",
+      "name": "RETAIN",
+      "semantic_effect_not_hardware_brand": true
+    },
+    {
+      "bit": 32,
+      "category": "MEMORY_EFFECT",
+      "name": "RECOMPUTE",
+      "semantic_effect_not_hardware_brand": true
+    },
+    {
+      "bit": 64,
+      "category": "PLACEMENT",
+      "name": "MOVE",
+      "semantic_effect_not_hardware_brand": true
+    },
+    {
+      "bit": 128,
+      "category": "PLACEMENT",
+      "name": "PREFETCH",
+      "semantic_effect_not_hardware_brand": true
+    },
+    {
+      "bit": 256,
+      "category": "EXECUTION_STRUCTURE",
+      "name": "PIPELINE",
+      "semantic_effect_not_hardware_brand": true
+    },
+    {
+      "bit": 512,
+      "category": "EXECUTION_STRUCTURE",
+      "name": "FUSE",
+      "semantic_effect_not_hardware_brand": true
+    },
+    {
+      "bit": 1024,
+      "category": "EXECUTION_STRUCTURE",
+      "name": "PARALLELIZE",
+      "semantic_effect_not_hardware_brand": true
+    },
+    {
+      "bit": 2048,
+      "category": "DEPENDENCY_SYNCHRONIZATION",
+      "name": "DEPEND",
+      "semantic_effect_not_hardware_brand": true
+    },
+    {
+      "bit": 4096,
+      "category": "ACTIVATION",
+      "name": "SPARSE_ACTIVATE",
+      "semantic_effect_not_hardware_brand": true
+    },
+    {
+      "bit": 8192,
+      "category": "REPRESENTATION",
+      "name": "PACK",
+      "semantic_effect_not_hardware_brand": true
+    }
+  ],
+  "primitives_added_for_completeness_only": 0,
+  "selection_basis": "ONLY_EFFECTS_REQUIRED_BY_FROZEN_MEMORY_LIFETIME_DATA_MOVEMENT_ACTIVATION_AND_PARALLEL_REPRESENTATION_FRONTIERS"
+}

@@ -1,0 +1,32 @@
+{
+  "fields": [
+    "applicable_frontier_pattern",
+    "required_roles",
+    "source_concept_constraints",
+    "mechanism_structure",
+    "ecir_structure",
+    "unresolved_slots",
+    "resource_constraints",
+    "verification_strategy",
+    "non_applicability_conditions"
+  ],
+  "name": "CapabilitySchemaIR",
+  "schema_generates_multiple_capabilities": true,
+  "verified_schemas": [
+    {
+      "generated_capabilities": [
+        "LIFETIME_BALANCER",
+        "TRANSFER_OVERLAP_CONTROLLER",
+        "SPARSE_WORKING_SET_CONTROLLER"
+      ],
+      "id": "RESOURCE_BOUNDED_DATAFLOW_SCHEMA"
+    },
+    {
+      "generated_capabilities": [
+        "SPARSE_WORKING_SET_CONTROLLER",
+        "FUSED_PARALLEL_REPRESENTATION"
+      ],
+      "id": "CROSS_DOMAIN_EFFECT_SCHEDULE_SCHEMA"
+    }
+  ]
+}

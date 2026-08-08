@@ -1,0 +1,22 @@
+{
+  "candidate": "ECIR_CROSS_CAPABILITY_SCHEMA_CONSTRUCTOR",
+  "gates": {
+    "archive_ablation": true,
+    "counterfactual_correctness": true,
+    "cross_frontier_reuse": true,
+    "executable_semantics": true,
+    "fresh_transfer": true,
+    "motif_ablation": true,
+    "necessity": true,
+    "schema_ablation": true
+  },
+  "gen8_candidates": 1,
+  "gen8_promoted": 1,
+  "gen8_promotion_required": false,
+  "max_autonomous_concept_generation": "GEN8_EXPERIMENTAL_SEALED_DESCENDANT",
+  "new_semantic_candidates": 1,
+  "new_semantic_promotions": 1,
+  "production_promotion": false,
+  "promotion_gates_weakened": false,
+  "promotion_scope": "EXPERIMENTAL_SEALED_DESCENDANT_ONLY"
+}

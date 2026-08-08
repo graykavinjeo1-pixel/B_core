@@ -1,0 +1,85 @@
+{
+  "abstract_resource_cost_separate_from_real_wall_time": true,
+  "candidate_synthesis_input_excludes_wave_and_domain_labels": true,
+  "counterfactual_choices": [
+    "RETAIN_VS_RECOMPUTE",
+    "COPY_VS_ALIAS",
+    "RESIDENT_VS_STREAMED",
+    "DENSE_VS_SPARSE_ACTIVATION",
+    "FUSE_VS_SEPARATE",
+    "PARALLEL_VS_SERIAL",
+    "PREFETCH_VS_DEMAND_LOAD",
+    "REPRESENTATION_PRECISION"
+  ],
+  "deterministic_simulated_contracts": true,
+  "dimensions": [
+    "compute_work",
+    "memory_footprint",
+    "memory_lifetime",
+    "transfer_amount",
+    "transfer_count",
+    "synchronization",
+    "parallel_occupancy",
+    "recomputation",
+    "active_working_set"
+  ],
+  "real_gpu_required": false,
+  "sequentially_revealed_contracts": [
+    {
+      "active_items": 64,
+      "concurrency": 1,
+      "contract_id": "RC_MEMORY_LIFETIME",
+      "memory_capacity": 80,
+      "packed_precision_limit": 4,
+      "precision_bytes": 4,
+      "recompute_work": 20,
+      "retained_bytes": 200,
+      "shared_stages": 1,
+      "total_items": 64,
+      "transfer_budget": 96,
+      "transfer_bytes": 24
+    },
+    {
+      "active_items": 64,
+      "concurrency": 4,
+      "contract_id": "RC_TRANSFER_OVERLAP",
+      "memory_capacity": 96,
+      "packed_precision_limit": 4,
+      "precision_bytes": 4,
+      "recompute_work": 40,
+      "retained_bytes": 40,
+      "shared_stages": 1,
+      "total_items": 64,
+      "transfer_budget": 80,
+      "transfer_bytes": 240
+    },
+    {
+      "active_items": 16,
+      "concurrency": 1,
+      "contract_id": "RC_SPARSE_WORKING_SET",
+      "memory_capacity": 96,
+      "packed_precision_limit": 4,
+      "precision_bytes": 4,
+      "recompute_work": 40,
+      "retained_bytes": 40,
+      "shared_stages": 1,
+      "total_items": 128,
+      "transfer_budget": 96,
+      "transfer_bytes": 24
+    },
+    {
+      "active_items": 64,
+      "concurrency": 8,
+      "contract_id": "RC_FUSED_PARALLEL_REPRESENTATION",
+      "memory_capacity": 96,
+      "packed_precision_limit": 4,
+      "precision_bytes": 8,
+      "recompute_work": 40,
+      "retained_bytes": 40,
+      "shared_stages": 3,
+      "total_items": 64,
+      "transfer_budget": 96,
+      "transfer_bytes": 24
+    }
+  ]
+}

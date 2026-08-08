@@ -1,0 +1,76 @@
+{
+  "condition": "INDEPENDENT_GENESIS",
+  "equivalent_campaign_genesis_costs": [
+    {
+      "arm": "INDEPENDENT_GENESIS",
+      "ecir_candidates_evaluated": 8,
+      "ecir_primitives_reused": 0,
+      "failed_evidence_reuse_events": 0,
+      "invalid_candidate_count": 2,
+      "motifs_reused": 0,
+      "schemas_reused": 0,
+      "semantic_roles_reused": 0,
+      "total_genesis_deterministic_cost": 120,
+      "wall_time_ns": 4997100,
+      "wave": 1
+    },
+    {
+      "arm": "INDEPENDENT_GENESIS",
+      "ecir_candidates_evaluated": 5,
+      "ecir_primitives_reused": 0,
+      "failed_evidence_reuse_events": 0,
+      "invalid_candidate_count": 1,
+      "motifs_reused": 0,
+      "schemas_reused": 0,
+      "semantic_roles_reused": 2,
+      "total_genesis_deterministic_cost": 96,
+      "wall_time_ns": 6705100,
+      "wave": 2
+    },
+    {
+      "arm": "INDEPENDENT_GENESIS",
+      "ecir_candidates_evaluated": 3,
+      "ecir_primitives_reused": 0,
+      "failed_evidence_reuse_events": 0,
+      "invalid_candidate_count": 0,
+      "motifs_reused": 0,
+      "schemas_reused": 0,
+      "semantic_roles_reused": 3,
+      "total_genesis_deterministic_cost": 83,
+      "wall_time_ns": 6009100,
+      "wave": 3
+    },
+    {
+      "arm": "INDEPENDENT_GENESIS",
+      "ecir_candidates_evaluated": 2,
+      "ecir_primitives_reused": 0,
+      "failed_evidence_reuse_events": 0,
+      "invalid_candidate_count": 0,
+      "motifs_reused": 0,
+      "schemas_reused": 0,
+      "semantic_roles_reused": 4,
+      "total_genesis_deterministic_cost": 72,
+      "wall_time_ns": 5889700,
+      "wave": 4
+    }
+  ],
+  "equivalent_campaign_wave_gains": [
+    24,
+    24,
+    24,
+    24
+  ],
+  "expected_sem18_genesis_costs": [
+    120,
+    96,
+    83,
+    72
+  ],
+  "expected_sem18_wave_gains": [
+    24,
+    24,
+    24,
+    24
+  ],
+  "sem18_style_baseline_reproduced": true
+}

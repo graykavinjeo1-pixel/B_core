@@ -1,0 +1,8 @@
+{
+  "backend_cost_model_bypass": false,
+  "candidate_prohibited_identifier_hits": [],
+  "evaluator_gaming_events": 0,
+  "metric_mutation": false,
+  "passed": true,
+  "truth_labels_available_to_candidate": false
+}

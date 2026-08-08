@@ -1,0 +1,71 @@
+{
+  "arm": "INDEPENDENT_GENESIS",
+  "arm_id": "A_SEM18_INDEPENDENT_GENESIS",
+  "ecir_enabled": false,
+  "equal_max_budget_per_wave": 140,
+  "frontier_gains": [
+    24,
+    24,
+    24,
+    24
+  ],
+  "genesis_costs": [
+    {
+      "arm": "INDEPENDENT_GENESIS",
+      "ecir_candidates_evaluated": 8,
+      "ecir_primitives_reused": 0,
+      "failed_evidence_reuse_events": 0,
+      "invalid_candidate_count": 2,
+      "motifs_reused": 0,
+      "schemas_reused": 0,
+      "semantic_roles_reused": 0,
+      "total_genesis_deterministic_cost": 120,
+      "wall_time_ns": 4997100,
+      "wave": 1
+    },
+    {
+      "arm": "INDEPENDENT_GENESIS",
+      "ecir_candidates_evaluated": 5,
+      "ecir_primitives_reused": 0,
+      "failed_evidence_reuse_events": 0,
+      "invalid_candidate_count": 1,
+      "motifs_reused": 0,
+      "schemas_reused": 0,
+      "semantic_roles_reused": 2,
+      "total_genesis_deterministic_cost": 96,
+      "wall_time_ns": 6705100,
+      "wave": 2
+    },
+    {
+      "arm": "INDEPENDENT_GENESIS",
+      "ecir_candidates_evaluated": 3,
+      "ecir_primitives_reused": 0,
+      "failed_evidence_reuse_events": 0,
+      "invalid_candidate_count": 0,
+      "motifs_reused": 0,
+      "schemas_reused": 0,
+      "semantic_roles_reused": 3,
+      "total_genesis_deterministic_cost": 83,
+      "wall_time_ns": 6009100,
+      "wave": 3
+    },
+    {
+      "arm": "INDEPENDENT_GENESIS",
+      "ecir_candidates_evaluated": 2,
+      "ecir_primitives_reused": 0,
+      "failed_evidence_reuse_events": 0,
+      "invalid_candidate_count": 0,
+      "motifs_reused": 0,
+      "schemas_reused": 0,
+      "semantic_roles_reused": 4,
+      "total_genesis_deterministic_cost": 72,
+      "wall_time_ns": 5889700,
+      "wave": 4
+    }
+  ],
+  "mean_frontier_gain_per_capability": 24.0,
+  "mean_genesis_cost_per_capability": 92.75,
+  "motif_and_schema_reuse_enabled": false,
+  "stepping_stone_and_failed_evidence_archive_enabled": false,
+  "total_frontier_gain": 96
+}

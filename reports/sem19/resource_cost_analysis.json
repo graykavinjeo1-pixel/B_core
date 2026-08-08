@@ -1,0 +1,16 @@
+{
+  "abstract_resource_cost_separate_from_wall_time": true,
+  "base": {
+    "active_working_set": 80,
+    "data_movement_cost": 18240,
+    "peak_abstract_memory": 128,
+    "recomputation_cost": 1152
+  },
+  "final": {
+    "active_working_set": 80,
+    "data_movement_cost": 18240,
+    "peak_abstract_memory": 128,
+    "recomputation_cost": 1152
+  },
+  "real_wall_time_reported_separately": true
+}

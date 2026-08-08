@@ -1,0 +1,14 @@
+{
+  "active_capabilities_base": 8,
+  "active_capabilities_final": 9,
+  "active_ecir_primitives_max": 8,
+  "active_execution_motifs_max": 2,
+  "active_substrate_efficiency_growth_regime": "ACCELERATING",
+  "frontier_size_per_active_capability_base": 15.0,
+  "frontier_size_per_active_capability_final": 24.0,
+  "frontier_size_per_active_ecir_primitive": 27.0,
+  "total_capabilities_base": 12,
+  "total_capabilities_final": 18,
+  "total_ecir_primitives": 14,
+  "total_execution_motifs": 4
+}

@@ -111,6 +111,10 @@ name = "sem18-run"
 path = "src/sem18_main.rs"
 
 [[bin]]
+name = "sem19-run"
+path = "src/sem19_main.rs"
+
+[[bin]]
 name = "core-x0-evaluate"
 path = "src/core_x0_main.rs"
 

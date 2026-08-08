@@ -1,0 +1,14 @@
+{
+  "binary_path": "D:\\B_Core_SEM19\\reports/sem19\\artifacts/ecir-engine\\sem19-ecir-probe-release.exe",
+  "binary_sha256": "ec0c5ded6c76bb28a9eb5d117bfb938c772cfd2cc02c50574381e3b2c0e6afa4",
+  "candidate_id": "ECIR_CAPABILITY_GENESIS_COMPILER",
+  "compiler": "rustc",
+  "debug_symbols_retained": false,
+  "domain_labels_in_candidate": false,
+  "hardware_brand_tokens_in_candidate": false,
+  "optimization": 3,
+  "source_bytes": 4461,
+  "source_path": "D:\\B_Core_SEM19\\reports/sem19\\artifacts/ecir-engine\\lib.rs",
+  "source_sha256": "becaed4fa4f44aac7a4256b51a44a084433ce80192de177c5d9522dce7fc8509",
+  "wave_identifiers_in_candidate": false
+}
