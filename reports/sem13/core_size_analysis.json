@@ -1,0 +1,8 @@
+{
+  "added_bytes_m1_vs_m0": -7170,
+  "m0_core_total_deployable_bytes": 167649,
+  "m1_core_total_deployable_bytes": 160479,
+  "m2_core_total_deployable_bytes": "NOT_ATTEMPTED",
+  "meta_gain_per_added_byte": 0.46551724137931033,
+  "size_decrease_required": false
+}

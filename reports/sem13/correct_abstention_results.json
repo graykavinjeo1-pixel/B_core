@@ -1,0 +1,8 @@
+{
+  "M0_correct_no_patch_rate": 1.0,
+  "M0_false_patch_rate": 0.0,
+  "M1_correct_no_patch_rate": 1.0,
+  "M1_false_patch_rate": 0.0,
+  "fresh_blind_no_actionable_challenges": 12,
+  "passed": true
+}

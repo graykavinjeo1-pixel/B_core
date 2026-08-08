@@ -1,0 +1,32 @@
+{
+  "autonomous_discovery": true,
+  "external_teacher_identification": false,
+  "meta_weaknesses_detected": 1,
+  "records": [
+    {
+      "causal_hypothesis": "Repeated evidence reconstruction plus proposal-before-causal-rejection duplicates work and biases selection toward raw rank rather than externally verified gain.",
+      "confidence": 0.99,
+      "evidence": {
+        "family_labels_observed_by_meta_engine": false,
+        "invalid_candidates": 48,
+        "mechanism_candidates_generated": 72,
+        "median_diagnosis_cost": 10.0,
+        "target_component_supplied_by_operator": false,
+        "trace_set": "META_DIAGNOSTIC_SET",
+        "verified_improvements": 24
+      },
+      "measured_cost": 58.0,
+      "observed_meta_component": [
+        "EVIDENCE_CONSTRUCTION",
+        "CANDIDATE_SEARCH_ORDER"
+      ],
+      "observed_subfeatures": [
+        "EVIDENCE_RECONSTRUCTION_DUPLICATION",
+        "CAUSAL_REJECTION_RECHECK"
+      ],
+      "verified": true,
+      "weakness_id": "MW-AUTO-0001"
+    }
+  ],
+  "verified": true
+}

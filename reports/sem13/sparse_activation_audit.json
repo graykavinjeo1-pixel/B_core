@@ -1,0 +1,9 @@
+{
+  "bounded_top_k": 3,
+  "full_catalog_scans": 0,
+  "human_concept_id_assignment": false,
+  "max_meta_source_concepts_composed": 2,
+  "meta_source_concepts_available": 5,
+  "passed": true,
+  "routing_false_negatives": 0
+}

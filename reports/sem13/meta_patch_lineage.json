@@ -1,0 +1,42 @@
+{
+  "candidate_source_sha256_before_build": "666c070096872cc608b6abf16cc50d338f8bfa242d9c7cd4306a2e2221d8db9b",
+  "change_ir": [
+    {
+      "from": false,
+      "source_mechanism": "M0004",
+      "target": "EVIDENCE_REUSE",
+      "to": true
+    },
+    {
+      "from": false,
+      "source_mechanism": "M0003",
+      "target": "CAUSAL_GUARD",
+      "to": true
+    }
+  ],
+  "lineage": [
+    "M0_META_BEHAVIOR_OBSERVATION",
+    "MW-AUTO-0001",
+    "M0004+M0003",
+    "META_ROLE_MAPPING",
+    "META_ASSUMPTION_LEDGER",
+    "META_SELF_MECHANISM_IR",
+    "CHANGE_IR",
+    "SANDBOX_META_ENGINE_PATCH",
+    "M1"
+  ],
+  "meta_self_mechanism_ir": {
+    "bounded_top_k": 3,
+    "causal_guard_before_proposal": true,
+    "evaluation_authority_mutation": false,
+    "evidence_reuse": true
+  },
+  "observation_sha256": "0010fea9c1d206a58342e83912134a6495a5ca16b1463232cf6ee5072ae756df",
+  "parent_source_sha256": "9f9f8f4f3ebb5a5bba87fe29c049dfe6a1ef0eddc0a3ba4fc1655239b48f4166",
+  "passed": true,
+  "role_mapping_sha256": "139cd459690d4e4e481f18553e96afe456c9d12a10bfe6927706e6394b6b61c5",
+  "selection_sha256": "870ad34a29472f65f1e26cfb4fcf741ca886db24d2537778107c68ca5d08380d",
+  "self_application_proposals": 1,
+  "semantically_grounded_patches": 1,
+  "ungrounded_random_patches": 0
+}

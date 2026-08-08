@@ -1,0 +1,179 @@
+{
+  "weakness_id": "MW-AUTO-0001",
+  "observed_subfeatures": [
+    "EVIDENCE_RECONSTRUCTION_DUPLICATION",
+    "CAUSAL_REJECTION_RECHECK"
+  ],
+  "top_k_by_subfeature": {
+    "CAUSAL_REJECTION_RECHECK": [
+      {
+        "mechanism_id": "M0003",
+        "rank": 1,
+        "score": 100,
+        "semantic_sha256": "638ff28804b17acb5ea48ff20c1231ee82c151edfac93ed02cd3495b4d531e74",
+        "source_concept_ids": [
+          "C000008"
+        ],
+        "source_domain": "DATA_TRANSFORM",
+        "transform": "GUARDED_TRAVERSAL"
+      },
+      {
+        "mechanism_id": "M0006",
+        "rank": 2,
+        "score": 90,
+        "semantic_sha256": "f0ba3b584879225ea4c482dbc58727ae2aef5633e5cbfbf41a640b265ee1a5dc",
+        "source_concept_ids": [
+          "C000012"
+        ],
+        "source_domain": "EXTERNAL_DEFINITION",
+        "transform": "QUOTIENT_PARTITION"
+      },
+      {
+        "mechanism_id": "M0005",
+        "rank": 3,
+        "score": 80,
+        "semantic_sha256": "d2bf0fd822f012bc188096794a44a228d4b9201fe0006633c085f65afc04ad20",
+        "source_concept_ids": [
+          "C000010"
+        ],
+        "source_domain": "PROGRAMMING",
+        "transform": "STAGE_COMPOSITION"
+      }
+    ],
+    "EVIDENCE_RECONSTRUCTION_DUPLICATION": [
+      {
+        "mechanism_id": "M0004",
+        "rank": 1,
+        "score": 100,
+        "semantic_sha256": "e0bd2c23d482da2bd1d1b158e66c6bfddfc2d8bbe08e089fa3075b339b5c72fb",
+        "source_concept_ids": [
+          "C000009"
+        ],
+        "source_domain": "PROGRAMMING",
+        "transform": "STATEFUL_REDUCTION"
+      },
+      {
+        "mechanism_id": "M0001",
+        "rank": 2,
+        "score": 90,
+        "semantic_sha256": "cd0b31940b195f901f05b1d16d5dc1a2f7f8aafd9bcf2d937efa09389253b893",
+        "source_concept_ids": [
+          "C000006",
+          "C000007"
+        ],
+        "source_domain": "MATHEMATICS",
+        "transform": "STATE_EVOLUTION"
+      },
+      {
+        "mechanism_id": "M0005",
+        "rank": 3,
+        "score": 80,
+        "semantic_sha256": "d2bf0fd822f012bc188096794a44a228d4b9201fe0006633c085f65afc04ad20",
+        "source_concept_ids": [
+          "C000010"
+        ],
+        "source_domain": "PROGRAMMING",
+        "transform": "STAGE_COMPOSITION"
+      }
+    ]
+  },
+  "selected_mechanisms": [
+    {
+      "assumptions": [
+        {
+          "assumption_id": "M0004-A0",
+          "kind": "DETERMINISTIC",
+          "required": true
+        },
+        {
+          "assumption_id": "M0004-A1",
+          "kind": "ASSOCIATIVE",
+          "required": true
+        }
+      ],
+      "mechanism_id": "M0004",
+      "roles": [
+        {
+          "kind": "STATE",
+          "role_id": "M0004-R0"
+        },
+        {
+          "kind": "INPUT",
+          "role_id": "M0004-R1"
+        },
+        {
+          "kind": "ACCUMULATOR",
+          "role_id": "M0004-R2"
+        },
+        {
+          "kind": "INVARIANT",
+          "role_id": "M0004-R3"
+        },
+        {
+          "kind": "OUTPUT",
+          "role_id": "M0004-R4"
+        }
+      ],
+      "selection_origin": "BOUNDED_ROUTING_TOP_K",
+      "semantic_sha256": "e0bd2c23d482da2bd1d1b158e66c6bfddfc2d8bbe08e089fa3075b339b5c72fb",
+      "source_concept_ids": [
+        "C000009"
+      ],
+      "source_domain": "PROGRAMMING",
+      "transform": "STATEFUL_REDUCTION"
+    },
+    {
+      "assumptions": [
+        {
+          "assumption_id": "M0003-A0",
+          "kind": "DETERMINISTIC",
+          "required": true
+        },
+        {
+          "assumption_id": "M0003-A1",
+          "kind": "TERMINATES",
+          "required": true
+        },
+        {
+          "assumption_id": "M0003-A2",
+          "kind": "INVARIANT_GLOBAL",
+          "required": true
+        }
+      ],
+      "mechanism_id": "M0003",
+      "roles": [
+        {
+          "kind": "INPUT",
+          "role_id": "M0003-R0"
+        },
+        {
+          "kind": "CONDITION",
+          "role_id": "M0003-R1"
+        },
+        {
+          "kind": "TRANSFORM",
+          "role_id": "M0003-R2"
+        },
+        {
+          "kind": "BOUNDARY",
+          "role_id": "M0003-R3"
+        },
+        {
+          "kind": "OUTPUT",
+          "role_id": "M0003-R4"
+        }
+      ],
+      "selection_origin": "BOUNDED_ROUTING_TOP_K",
+      "semantic_sha256": "638ff28804b17acb5ea48ff20c1231ee82c151edfac93ed02cd3495b4d531e74",
+      "source_concept_ids": [
+        "C000008"
+      ],
+      "source_domain": "DATA_TRANSFORM",
+      "transform": "GUARDED_TRAVERSAL"
+    }
+  ],
+  "max_meta_source_concepts_composed": 2,
+  "human_concept_id_assignment": false,
+  "full_catalog_scan": false,
+  "selection_sha256": "870ad34a29472f65f1e26cfb4fcf741ca886db24d2537778107c68ca5d08380d"
+}

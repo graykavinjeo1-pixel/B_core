@@ -1,0 +1,41 @@
+{
+  "critical_violations": 0,
+  "entries": [
+    {
+      "assumption": "DETERMINISTIC",
+      "evidence": "Five identical-output trials",
+      "mechanism_id": "M0004",
+      "status": "SATISFIED"
+    },
+    {
+      "assumption": "ASSOCIATIVE",
+      "evidence": "Evidence counters are order-independent sums",
+      "mechanism_id": "M0004",
+      "status": "SATISFIED"
+    },
+    {
+      "assumption": "DETERMINISTIC",
+      "evidence": "Stable bounded ranking and tie order",
+      "mechanism_id": "M0003",
+      "status": "SATISFIED"
+    },
+    {
+      "assumption": "TERMINATES",
+      "evidence": "Finite routed candidate bank",
+      "mechanism_id": "M0003",
+      "status": "SATISFIED"
+    },
+    {
+      "assumption": "INVARIANT_GLOBAL",
+      "evidence": "External correctness and no-patch gates remain invariant",
+      "mechanism_id": "M0003",
+      "status": "SATISFIED"
+    }
+  ],
+  "irrelevant": 0,
+  "passed": true,
+  "satisfied": 5,
+  "selection_sha256": "870ad34a29472f65f1e26cfb4fcf741ca886db24d2537778107c68ca5d08380d",
+  "unknown": 0,
+  "violated": 0
+}

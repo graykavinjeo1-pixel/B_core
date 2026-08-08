@@ -1,0 +1,41 @@
+{
+  "deep_reasoning_preserved": true,
+  "global_reasoning_regressions": 0,
+  "index_sha256_actual": "77b17332b5ff7204c28e9445e689276049afd6e89308e7e242904570a283e6fc",
+  "index_sha256_expected": "77b17332b5ff7204c28e9445e689276049afd6e89308e7e242904570a283e6fc",
+  "language_separation_preserved": true,
+  "passed": true,
+  "predecessor_promoted_concept_hash_changes": 0,
+  "sem12_reasoner_binary_sha256_actual": "e2ffa3b0ea8e8670ce69384f39b60c186b4af2a72a81955ab808862f7a3bec18",
+  "sem12_reasoner_binary_sha256_expected": "e2ffa3b0ea8e8670ce69384f39b60c186b4af2a72a81955ab808862f7a3bec18",
+  "sem12_reasoner_source_sha256_actual": "e24a65f9e200dbf46daf25c03c95fab24c2ceb808ac9805b146a26ac013487d2",
+  "sem12_reasoner_source_sha256_expected": "e24a65f9e200dbf46daf25c03c95fab24c2ceb808ac9805b146a26ac013487d2",
+  "semantic_state_sha256_actual": "d1abd8de410f5284773f1e582937922dc514513ed738eb9f04e8bf2735185d3c",
+  "semantic_state_sha256_expected": "d1abd8de410f5284773f1e582937922dc514513ed738eb9f04e8bf2735185d3c",
+  "workspace_gate": {
+    "core_dockability_preserved": true,
+    "core_only_build_pass": true,
+    "core_release_build": {
+      "command": "cargo build -p dockable-semantic-core --release --bin core-x0-canary --locked --offline",
+      "exit_code": 0,
+      "stderr_sha256": "8f50b35b0e87911993ec1f8f261ce9c5209a178395f47a3398c76ab8208255d1",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "success": true
+    },
+    "core_runtime_canary": {
+      "command": "D:\\B_Core_SEM13\\target/release/core-x0-canary.exe ",
+      "exit_code": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "d69578aa374b866369e18a5c880b8a6decd0a7d80be5f3d0ab312cdedb82a3c3",
+      "success": true
+    },
+    "core_runtime_canary_pass": true,
+    "workspace_tests": {
+      "command": "cargo test --workspace --locked --offline -- --test-threads=1",
+      "exit_code": 0,
+      "stderr_sha256": "4ad6ae99f382bcf6de0467d9ce1187518a8c85271cc1a86293d02d6f2de28e06",
+      "stdout_sha256": "5d87375ec678d2ab2dd9bf1bfa7dad97395bcf4b43e7d4cd4928fc80cd809bc9",
+      "success": true
+    }
+  }
+}

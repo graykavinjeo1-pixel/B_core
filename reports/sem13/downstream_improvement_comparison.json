@@ -1,0 +1,21 @@
+{
+  "M0_derived_descendant_primary_cost": 923.0,
+  "M0_derived_descendant_quality": {
+    "mechanism_selection_accuracy": 0.0,
+    "regressive_candidates": 0,
+    "verified_improvement_rate": 1.0
+  },
+  "M1_derived_descendant_primary_cost": 706.5,
+  "M1_derived_descendant_quality": {
+    "mechanism_selection_accuracy": 1.0,
+    "regressive_candidates": 0,
+    "verified_improvement_rate": 1.0
+  },
+  "better_mechanism_selection": true,
+  "causal_benefit": true,
+  "descendant_cost_gain": 0.23456121343445288,
+  "external_evaluator_frozen": true,
+  "identical_fresh_problems": true,
+  "lower_primary_cost": true,
+  "quality_not_lower": true
+}

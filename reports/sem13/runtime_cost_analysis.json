@@ -1,0 +1,15 @@
+{
+  "deterministic": {
+    "M0_median_cost": 58.0,
+    "M1_median_cost": 31.0,
+    "gain_fraction": 0.46551724137931033
+  },
+  "fixed_runtime_overhead_classified_separately": true,
+  "wall_time": {
+    "M0_median_ns": 5022800.0,
+    "M1_median_ns": 4826200.0,
+    "gain_fraction": 0.039141514692999924,
+    "semantic_speed_claim": false
+  },
+  "wall_time_not_acceptance_metric": true
+}

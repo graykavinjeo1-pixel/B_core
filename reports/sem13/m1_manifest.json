@@ -1,0 +1,180 @@
+{
+  "acceptance_criteria_hash": "ee9b688df59703f5656b93ddad0f767f26a7512404e10edd67dd665d168c98e2",
+  "binary_sha256": "5b6c2e496808d9371132487e1d165a5e589a3f3fe6ee8fa89fa5f1b6cb5f3bd2",
+  "build": {
+    "commands": [
+      {
+        "command": "cargo fmt --all",
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success": true
+      },
+      {
+        "command": "cargo fmt --all -- --check",
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success": true
+      },
+      {
+        "command": "cargo clippy --workspace --all-targets --offline -- -D warnings",
+        "exit_code": 0,
+        "stderr_sha256": "43a9f0cfe607e5cf89d948c3573beecfc196fb6226cf83c4d5e3a833af0161b1",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success": true
+      },
+      {
+        "command": "cargo test --workspace --offline",
+        "exit_code": 0,
+        "stderr_sha256": "449140b38f2c5635ca00b5316cf43d59026aee69ae7c4f5079f0b9f9b9032e5b",
+        "stdout_sha256": "e139c00863ac9a91bcc33451aed0a64057fc241f5f7eafc41cd8f5d3a9b5a802",
+        "success": true
+      },
+      {
+        "command": "cargo build --workspace --offline",
+        "exit_code": 0,
+        "stderr_sha256": "931e183c64ca88343bcad49fbb72c05f789e784982200cd8a8989befe8b4abd3",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success": true
+      },
+      {
+        "command": "cargo build --workspace --release --offline",
+        "exit_code": 0,
+        "stderr_sha256": "c90409b793c52ea626ae208f9ba78931851eaed8636c884a32b57155db3841d8",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success": true
+      }
+    ],
+    "debug_binary_bytes": 202752,
+    "debug_binary_sha256": "419ea226c99440a22d93b2aea97c76b8f7199eb5b2400603228c1ed72bad0a34",
+    "debug_build_pass": true,
+    "engine_id": "M1",
+    "mode": {
+      "causal_guard": true,
+      "evidence_reuse": true
+    },
+    "non_format_token_changes": 0,
+    "release_binary_bytes": 155136,
+    "release_binary_sha256": "5b6c2e496808d9371132487e1d165a5e589a3f3fe6ee8fa89fa5f1b6cb5f3bd2",
+    "release_build_pass": true,
+    "rustfmt_check_pass": true,
+    "sandbox_contained": true,
+    "sandbox_path": "D:/B_Core_SEM13/target/sem13/SEM13-BOUNDED-META-IMPROVEMENT-0001/M1",
+    "source_bytes": 5343,
+    "source_sha256_after_rustfmt": "95fa2e599aa6c87ab96210c40451b9ff45eb57b7de4d1064cec5456ca39df3e0",
+    "source_sha256_before_rustfmt": "666c070096872cc608b6abf16cc50d338f8bfa242d9c7cd4306a2e2221d8db9b",
+    "strict_clippy_pass": true,
+    "tests_pass": true
+  },
+  "evaluator_hash": "ee8849c94ce673eea59f304042fd78e976acb8ef1dafe3fab36118ae164c02db",
+  "governor_hash": "0e00c511c43d064937a06763c1401fd1e72aababab8cbeb9072f20c95593a08c",
+  "lineage_sha256": "7c02fceda87ce1ef50e103c9870d6842dd0bbf62a2f13590efc608433cfe99e3",
+  "max_meta_source_concepts_composed": 2,
+  "meta_generation": "M1",
+  "meta_source_concepts": [
+    {
+      "assumptions": [
+        {
+          "assumption_id": "M0004-A0",
+          "kind": "DETERMINISTIC",
+          "required": true
+        },
+        {
+          "assumption_id": "M0004-A1",
+          "kind": "ASSOCIATIVE",
+          "required": true
+        }
+      ],
+      "mechanism_id": "M0004",
+      "roles": [
+        {
+          "kind": "STATE",
+          "role_id": "M0004-R0"
+        },
+        {
+          "kind": "INPUT",
+          "role_id": "M0004-R1"
+        },
+        {
+          "kind": "ACCUMULATOR",
+          "role_id": "M0004-R2"
+        },
+        {
+          "kind": "INVARIANT",
+          "role_id": "M0004-R3"
+        },
+        {
+          "kind": "OUTPUT",
+          "role_id": "M0004-R4"
+        }
+      ],
+      "selection_origin": "BOUNDED_ROUTING_TOP_K",
+      "semantic_sha256": "e0bd2c23d482da2bd1d1b158e66c6bfddfc2d8bbe08e089fa3075b339b5c72fb",
+      "source_concept_ids": [
+        "C000009"
+      ],
+      "source_domain": "PROGRAMMING",
+      "transform": "STATEFUL_REDUCTION"
+    },
+    {
+      "assumptions": [
+        {
+          "assumption_id": "M0003-A0",
+          "kind": "DETERMINISTIC",
+          "required": true
+        },
+        {
+          "assumption_id": "M0003-A1",
+          "kind": "TERMINATES",
+          "required": true
+        },
+        {
+          "assumption_id": "M0003-A2",
+          "kind": "INVARIANT_GLOBAL",
+          "required": true
+        }
+      ],
+      "mechanism_id": "M0003",
+      "roles": [
+        {
+          "kind": "INPUT",
+          "role_id": "M0003-R0"
+        },
+        {
+          "kind": "CONDITION",
+          "role_id": "M0003-R1"
+        },
+        {
+          "kind": "TRANSFORM",
+          "role_id": "M0003-R2"
+        },
+        {
+          "kind": "BOUNDARY",
+          "role_id": "M0003-R3"
+        },
+        {
+          "kind": "OUTPUT",
+          "role_id": "M0003-R4"
+        }
+      ],
+      "selection_origin": "BOUNDED_ROUTING_TOP_K",
+      "semantic_sha256": "638ff28804b17acb5ea48ff20c1231ee82c151edfac93ed02cd3495b4d531e74",
+      "source_concept_ids": [
+        "C000008"
+      ],
+      "source_domain": "DATA_TRANSFORM",
+      "transform": "GUARDED_TRAVERSAL"
+    }
+  ],
+  "meta_source_domains": [
+    "DATA_TRANSFORM",
+    "PROGRAMMING"
+  ],
+  "mode": {
+    "causal_guard": true,
+    "evidence_reuse": true
+  },
+  "production_promoted": false,
+  "self_improvement_engine_hash": "95fa2e599aa6c87ab96210c40451b9ff45eb57b7de4d1064cec5456ca39df3e0"
+}

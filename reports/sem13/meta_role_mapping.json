@@ -1,0 +1,40 @@
+{
+  "complete_required_roles": true,
+  "mappings": [
+    {
+      "predicted_effect": "Eliminate repeated reconstruction of the same improvement evidence.",
+      "self_improvement_process_roles": {
+        "accumulator": "single-pass weakness statistics",
+        "input": "M0 trace record",
+        "invariant": "diagnosis truth unchanged",
+        "state": "cached evidence summary"
+      },
+      "source_mechanism": "M0004:STATEFUL_REDUCTION",
+      "source_roles": {
+        "ACCUMULATOR": "reusable diagnosis summary",
+        "INPUT": "one trace event",
+        "INVARIANT": "same externally visible diagnosis",
+        "STATE": "meta-evidence accumulator"
+      }
+    },
+    {
+      "predicted_effect": "Reject invalid or causally irrelevant candidates before role mapping and patch construction.",
+      "self_improvement_process_roles": {
+        "boundary": "three routed candidates per subfeature",
+        "condition": "assumption_valid && causal_relevant",
+        "input": "candidate mechanism",
+        "output": "maximum expected-gain admissible mechanism"
+      },
+      "source_mechanism": "M0003:GUARDED_TRAVERSAL",
+      "source_roles": {
+        "BOUNDARY": "bounded Top-k",
+        "CONDITION": "assumption and causal relevance",
+        "INPUT": "routed mechanism candidates",
+        "OUTPUT": "one causally admissible proposal"
+      }
+    }
+  ],
+  "passed": true,
+  "predicted_composed_effect": "Reuse evidence, then causally guard bounded candidate traversal before proposal generation.",
+  "weakness_id": "MW-AUTO-0001"
+}

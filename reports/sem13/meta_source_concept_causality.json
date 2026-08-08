@@ -1,0 +1,11 @@
+{
+  "M0003_guarded_traversal_predicted_effect": "fewer invalid candidates and higher mechanism-selection accuracy",
+  "M0003_observed_effect": true,
+  "M0004_observed_effect": true,
+  "M0004_stateful_reduction_predicted_effect": "lower diagnosis cost only",
+  "benchmark_specific_explanation": false,
+  "composed_observed_effect": true,
+  "composed_predicted_effect": "both component benefits and lowest total cost",
+  "passed": true,
+  "selection_sha256": "870ad34a29472f65f1e26cfb4fcf741ca886db24d2537778107c68ca5d08380d"
+}
