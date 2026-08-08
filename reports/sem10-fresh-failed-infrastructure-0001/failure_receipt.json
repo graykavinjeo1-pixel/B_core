@@ -1,0 +1,21 @@
+{
+  "campaign_id": "SEM10-FRESH-RUN-0002",
+  "phase": "PRE_BLIND_R0_TO_R1_CHILD_BUILD_AUDIT",
+  "status": "PRESERVED_INFRASTRUCTURE_FALSE_POSITIVE",
+  "disposition": "OPTIONAL_RUSTFMT_TRAILING_COMMAS_MISCLASSIFIED_AS_NON_FORMAT_TOKEN_CHANGES",
+  "blind_manifests_generated": 0,
+  "blind_tasks_opened": 0,
+  "production_source_mutations": 0,
+  "candidate_source_sha256": "cd45f5a0b20dc053b5d55397e3ae525c7e8376760ca4ed3076dfaf65abc90ab3",
+  "candidate_binary_sha256": "330638282f567e2526fbc5f9c3a2fbc78564e16fada6a2143ee19e591904737d",
+  "candidate_rustfmt_check_pass": true,
+  "candidate_strict_clippy_pass": true,
+  "candidate_tests_passed": 1,
+  "candidate_tests_failed": 0,
+  "candidate_build_pass": true,
+  "incorrect_gate": "non_format_token_changes=1",
+  "root_cause": "rustfmt inserted optional trailing commas before closing struct delimiters; the initial SEM10 tokenizer did not canonicalize this layout punctuation",
+  "repair_basis": "same optional-trailing-comma canonicalization already used and verified by the sealed SEM9-R1 format-equivalence audit",
+  "repair_scope": "evaluation infrastructure only; no candidate logic, source concept, role mapping, assumption, task, or metric changed",
+  "fresh_refreeze_required": true
+}

@@ -2117,7 +2117,7 @@ fn full_file_patch(parent: &str, child: &str, before: &str, after: &str) -> Stri
 
 fn normalize_non_format_tokens(source: &[u8]) -> Vec<u8> {
     let text = String::from_utf8_lossy(source);
-    let mut output = Vec::new();
+    let mut normalized = Vec::new();
     let mut chars = text.chars().peekable();
     while let Some(character) = chars.next() {
         if character == '/' && chars.peek() == Some(&'/') {
@@ -2131,9 +2131,36 @@ fn normalize_non_format_tokens(source: &[u8]) -> Vec<u8> {
         if character.is_whitespace() {
             continue;
         }
-        output.extend(character.to_string().as_bytes());
+        normalized.extend(character.to_string().as_bytes());
     }
-    output
+    // rustfmt may add or remove a trailing comma before a closing delimiter.
+    // Rust assigns that comma no executable meaning, so it is formatting
+    // punctuation rather than a semantic token change.
+    let mut semantic_tokens = Vec::with_capacity(normalized.len());
+    let mut index = 0usize;
+    let mut quote = None;
+    while index < normalized.len() {
+        let byte = normalized[index];
+        if let Some(delimiter) = quote {
+            semantic_tokens.push(byte);
+            if byte == b'\\' && index + 1 < normalized.len() {
+                index += 1;
+                semantic_tokens.push(normalized[index]);
+            } else if byte == delimiter {
+                quote = None;
+            }
+        } else if byte == b'"' || byte == b'\'' {
+            quote = Some(byte);
+            semantic_tokens.push(byte);
+        } else if byte == b',' && matches!(normalized.get(index + 1), Some(b'}' | b']')) {
+            index += 1;
+            continue;
+        } else {
+            semantic_tokens.push(byte);
+        }
+        index += 1;
+    }
+    semantic_tokens
 }
 
 fn generation_id(name: &str, source: &str, binary: &str, parent: &str) -> String {
