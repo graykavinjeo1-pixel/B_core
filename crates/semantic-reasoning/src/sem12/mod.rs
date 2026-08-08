@@ -3658,10 +3658,11 @@ fn route(task: &TaskInput) -> (u64, usize, usize) {
     if SCOPED_ROUTING {
         for candidate in &task.candidates {
             operations += 1;
-            if candidate.scope == task.required_scope && candidate.assumption {
-                if selected.is_none_or(|current| better(*candidate, current)) {
-                    selected = Some(*candidate);
-                }
+            if candidate.scope == task.required_scope
+                && candidate.assumption
+                && selected.is_none_or(|current| better(*candidate, current))
+            {
+                selected = Some(*candidate);
             }
         }
     } else {
@@ -3779,7 +3780,11 @@ fn revise(task: &TaskInput) -> (u64, usize) {
         let mut winner = None;
         for (id, (valid, score)) in state {
             operations += 1;
-            if valid && winner.is_none_or(|(winner_id, winner_score)| score > winner_score || (score == winner_score && id < winner_id)) {
+            if valid
+                && winner.is_none_or(|(winner_id, winner_score)| {
+                    score > winner_score || (score == winner_score && id < winner_id)
+                })
+            {
                 winner = Some((id, score));
             }
         }
@@ -3799,7 +3804,9 @@ fn revise(task: &TaskInput) -> (u64, usize) {
             for explanation in &revised {
                 operations += 1;
                 if explanation.valid
-                    && winner.is_none_or(|current: Explanation| better_explanation(*explanation, current))
+                    && winner.is_none_or(|current: Explanation| {
+                        better_explanation(*explanation, current)
+                    })
                 {
                     winner = Some(*explanation);
                 }
