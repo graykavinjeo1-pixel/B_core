@@ -1,0 +1,11 @@
+{
+  "all_bounds_assumed_additive": false,
+  "composed_bounds": [
+    "MEMORY",
+    "ACTIVE_WORKING_SET",
+    "DATA_MOVEMENT",
+    "OPERATION_COUNT"
+  ],
+  "latency_requires_representative_measurement": true,
+  "nonlinear_exceptions_tracked": 3
+}

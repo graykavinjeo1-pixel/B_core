@@ -1,0 +1,124 @@
+{
+  "arms": [
+    "A_FULL_REVALIDATION",
+    "B_EXACT_RESULT_CACHE",
+    "C_COMPOSITIONAL_CERTIFICATES",
+    "D_RECURSIVE_COMPOSITIONAL_VERIFICATION"
+  ],
+  "branch": "codex/sem24-proof-carrying-verification",
+  "campaign_id": "SEM24-RECURSIVE-COMPOSITIONAL-VERIFICATION-0001",
+  "epoch_count_extended_after_observation": false,
+  "fixed_hardware": {
+    "build_mode": "RELEASE",
+    "cpu_threads": 1,
+    "gpu": false,
+    "network": false
+  },
+  "generative_reaction_frontier_epochs": 20,
+  "predecessor_commit": "1ed45dd0d20b5bc00226456e5334635a49d0410a",
+  "protocol_sha256": "0a5044abd84390819ea33d595824e4ffb3c14b917972c337a20533f2840597cf",
+  "same_correctness_requirements_all_arms": true,
+  "same_generated_semantic_work_all_arms": true,
+  "unopened_instance_commitments": [
+    {
+      "epoch": 1,
+      "seed_commitment": "143f80f79ad67a07073e7228aa22ec4f3f466ed2847a19022f1a0d962c18b7fc",
+      "seed_visible_to_verification_policy": false
+    },
+    {
+      "epoch": 2,
+      "seed_commitment": "c89bba9ccaf6b49e363b0f16dc2d62ab7d73a4911a4912c68945363a18dce506",
+      "seed_visible_to_verification_policy": false
+    },
+    {
+      "epoch": 3,
+      "seed_commitment": "50d0e98b977ffc6f9800c37d1795220329864db86dd9ba1b6444eec010f6d19b",
+      "seed_visible_to_verification_policy": false
+    },
+    {
+      "epoch": 4,
+      "seed_commitment": "61939f5c2413734635c1f3ed9e57162c8a0bbe0b3d620157e9cee06aebf0fb5d",
+      "seed_visible_to_verification_policy": false
+    },
+    {
+      "epoch": 5,
+      "seed_commitment": "6cb26b3b74c31dc833272b5e7be9bf76824b9194e31420dadf1355c4598bb2a2",
+      "seed_visible_to_verification_policy": false
+    },
+    {
+      "epoch": 6,
+      "seed_commitment": "79b44c6e8c9b567a9b17dbdaeebae07194e0d4cd1fd41455ec45e5691892a3ce",
+      "seed_visible_to_verification_policy": false
+    },
+    {
+      "epoch": 7,
+      "seed_commitment": "1767bdc1e06aec2f77bc953ad25a62534f269a5ab2799a5583791fe1deefc0f6",
+      "seed_visible_to_verification_policy": false
+    },
+    {
+      "epoch": 8,
+      "seed_commitment": "83f659564e6e6846ca870f34a3f00159e5fbd72b7e09a46b08ac56f5eac416b7",
+      "seed_visible_to_verification_policy": false
+    },
+    {
+      "epoch": 9,
+      "seed_commitment": "5600ada7ae7d5190054beb25bd1b27d84215b42ff73a9ff724c6e05944b92070",
+      "seed_visible_to_verification_policy": false
+    },
+    {
+      "epoch": 10,
+      "seed_commitment": "cc75460383f31b85d26c1d9cc622eecdb5114bd7ac213c38a960545a098383fa",
+      "seed_visible_to_verification_policy": false
+    },
+    {
+      "epoch": 11,
+      "seed_commitment": "9377f99fff92df533ad9288c1f7875c22d14b81c78b20509abfefaffccd5453a",
+      "seed_visible_to_verification_policy": false
+    },
+    {
+      "epoch": 12,
+      "seed_commitment": "de7fe4d4b72006d962c3b70943dbe2fa1d006bd79d7c047aea4dc56b5d25736e",
+      "seed_visible_to_verification_policy": false
+    },
+    {
+      "epoch": 13,
+      "seed_commitment": "bbdeea0df7cb9a23b0ec66f41f10be94c130eca8859a510c6ccbd9772575dde8",
+      "seed_visible_to_verification_policy": false
+    },
+    {
+      "epoch": 14,
+      "seed_commitment": "f138d85ff50d3cd8f26889b4bfb62acb222754643003b8976ac0ac35a09940b2",
+      "seed_visible_to_verification_policy": false
+    },
+    {
+      "epoch": 15,
+      "seed_commitment": "3bf80207ef6e48a33e2dc5c9298ecfc026996eabfa16493c726cccccb9a2c32d",
+      "seed_visible_to_verification_policy": false
+    },
+    {
+      "epoch": 16,
+      "seed_commitment": "13c66ad4653bdee2a92490532e6ccf685c21faec3a5f596a8e7df216730fc941",
+      "seed_visible_to_verification_policy": false
+    },
+    {
+      "epoch": 17,
+      "seed_commitment": "dc43475a788843a67a2db4638822911d8a89bd4de214afd05e355c0cf6faccb5",
+      "seed_visible_to_verification_policy": false
+    },
+    {
+      "epoch": 18,
+      "seed_commitment": "043a0bffa2e5d808f8ebcf98f4bd08f3f7ec7dc133dc45be7df0dcec8b822ab3",
+      "seed_visible_to_verification_policy": false
+    },
+    {
+      "epoch": 19,
+      "seed_commitment": "cf571a89aadcffe568ed1810d0a62fb6456f5e6df430d1e8b178f71e38c68e5b",
+      "seed_visible_to_verification_policy": false
+    },
+    {
+      "epoch": 20,
+      "seed_commitment": "ddaeebdcf82d169369e2e3645a6e6d4d3de2721841bfcb1c73c6b78d9dc6ae27",
+      "seed_visible_to_verification_policy": false
+    }
+  ]
+}

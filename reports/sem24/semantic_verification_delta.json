@@ -1,0 +1,185 @@
+{
+  "present": true,
+  "records": [
+    {
+      "affected_invariants": 1,
+      "affected_properties": 7,
+      "affected_resource_behavior": 1,
+      "changed_semantics": 7,
+      "epoch": 1,
+      "new_emergent_risks": 1,
+      "unchanged_semantics": 14
+    },
+    {
+      "affected_invariants": 1,
+      "affected_properties": 7,
+      "affected_resource_behavior": 1,
+      "changed_semantics": 7,
+      "epoch": 2,
+      "new_emergent_risks": 1,
+      "unchanged_semantics": 14
+    },
+    {
+      "affected_invariants": 1,
+      "affected_properties": 7,
+      "affected_resource_behavior": 0,
+      "changed_semantics": 7,
+      "epoch": 3,
+      "new_emergent_risks": 1,
+      "unchanged_semantics": 14
+    },
+    {
+      "affected_invariants": 1,
+      "affected_properties": 7,
+      "affected_resource_behavior": 0,
+      "changed_semantics": 7,
+      "epoch": 4,
+      "new_emergent_risks": 1,
+      "unchanged_semantics": 14
+    },
+    {
+      "affected_invariants": 1,
+      "affected_properties": 6,
+      "affected_resource_behavior": 1,
+      "changed_semantics": 6,
+      "epoch": 5,
+      "new_emergent_risks": 1,
+      "unchanged_semantics": 16
+    },
+    {
+      "affected_invariants": 1,
+      "affected_properties": 6,
+      "affected_resource_behavior": 0,
+      "changed_semantics": 6,
+      "epoch": 6,
+      "new_emergent_risks": 1,
+      "unchanged_semantics": 16
+    },
+    {
+      "affected_invariants": 1,
+      "affected_properties": 6,
+      "affected_resource_behavior": 1,
+      "changed_semantics": 6,
+      "epoch": 7,
+      "new_emergent_risks": 2,
+      "unchanged_semantics": 15
+    },
+    {
+      "affected_invariants": 1,
+      "affected_properties": 6,
+      "affected_resource_behavior": 1,
+      "changed_semantics": 6,
+      "epoch": 8,
+      "new_emergent_risks": 1,
+      "unchanged_semantics": 16
+    },
+    {
+      "affected_invariants": 1,
+      "affected_properties": 5,
+      "affected_resource_behavior": 0,
+      "changed_semantics": 5,
+      "epoch": 9,
+      "new_emergent_risks": 1,
+      "unchanged_semantics": 18
+    },
+    {
+      "affected_invariants": 1,
+      "affected_properties": 5,
+      "affected_resource_behavior": 0,
+      "changed_semantics": 5,
+      "epoch": 10,
+      "new_emergent_risks": 1,
+      "unchanged_semantics": 18
+    },
+    {
+      "affected_invariants": 1,
+      "affected_properties": 5,
+      "affected_resource_behavior": 1,
+      "changed_semantics": 5,
+      "epoch": 11,
+      "new_emergent_risks": 1,
+      "unchanged_semantics": 18
+    },
+    {
+      "affected_invariants": 1,
+      "affected_properties": 5,
+      "affected_resource_behavior": 0,
+      "changed_semantics": 5,
+      "epoch": 12,
+      "new_emergent_risks": 1,
+      "unchanged_semantics": 18
+    },
+    {
+      "affected_invariants": 1,
+      "affected_properties": 4,
+      "affected_resource_behavior": 0,
+      "changed_semantics": 4,
+      "epoch": 13,
+      "new_emergent_risks": 1,
+      "unchanged_semantics": 20
+    },
+    {
+      "affected_invariants": 1,
+      "affected_properties": 4,
+      "affected_resource_behavior": 1,
+      "changed_semantics": 4,
+      "epoch": 14,
+      "new_emergent_risks": 2,
+      "unchanged_semantics": 19
+    },
+    {
+      "affected_invariants": 1,
+      "affected_properties": 4,
+      "affected_resource_behavior": 0,
+      "changed_semantics": 4,
+      "epoch": 15,
+      "new_emergent_risks": 1,
+      "unchanged_semantics": 20
+    },
+    {
+      "affected_invariants": 1,
+      "affected_properties": 4,
+      "affected_resource_behavior": 0,
+      "changed_semantics": 4,
+      "epoch": 16,
+      "new_emergent_risks": 1,
+      "unchanged_semantics": 20
+    },
+    {
+      "affected_invariants": 1,
+      "affected_properties": 3,
+      "affected_resource_behavior": 1,
+      "changed_semantics": 3,
+      "epoch": 17,
+      "new_emergent_risks": 1,
+      "unchanged_semantics": 22
+    },
+    {
+      "affected_invariants": 1,
+      "affected_properties": 3,
+      "affected_resource_behavior": 0,
+      "changed_semantics": 3,
+      "epoch": 18,
+      "new_emergent_risks": 1,
+      "unchanged_semantics": 22
+    },
+    {
+      "affected_invariants": 1,
+      "affected_properties": 3,
+      "affected_resource_behavior": 0,
+      "changed_semantics": 3,
+      "epoch": 19,
+      "new_emergent_risks": 1,
+      "unchanged_semantics": 22
+    },
+    {
+      "affected_invariants": 1,
+      "affected_properties": 3,
+      "affected_resource_behavior": 1,
+      "changed_semantics": 3,
+      "epoch": 20,
+      "new_emergent_risks": 1,
+      "unchanged_semantics": 22
+    }
+  ]
+}

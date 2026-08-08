@@ -1,0 +1,59 @@
+{
+  "dependency_identity_not_timestamp_based": true,
+  "invalidations": [
+    {
+      "counterexample": "NARROWED_RESOURCE_OR_TOPOLOGY_ASSUMPTION",
+      "dependent_claims_invalidated": 3,
+      "epoch": 6,
+      "evidence": "a17e66038ada786d90164bb6e3c5fe11b4b65e39e22917ce2b46d3e967d2b510",
+      "invalidation_id": "CI24-01",
+      "smallest_invalid_claim_identified": true,
+      "unrelated_certificates_preserved": true
+    },
+    {
+      "counterexample": "NARROWED_RESOURCE_OR_TOPOLOGY_ASSUMPTION",
+      "dependent_claims_invalidated": 3,
+      "epoch": 13,
+      "evidence": "e4df1eea5ca34164035c1efc29ec28e3c31dbf8e590df2e837804882ced084c5",
+      "invalidation_id": "CI24-02",
+      "smallest_invalid_claim_identified": true,
+      "unrelated_certificates_preserved": true
+    },
+    {
+      "counterexample": "NARROWED_RESOURCE_OR_TOPOLOGY_ASSUMPTION",
+      "dependent_claims_invalidated": 3,
+      "epoch": 18,
+      "evidence": "d67184b8990ab6b22f6b1de5d8742e450f37c18ef391c00f074beda602979757",
+      "invalidation_id": "CI24-03",
+      "smallest_invalid_claim_identified": true,
+      "unrelated_certificates_preserved": true
+    }
+  ],
+  "present": true,
+  "repairs": [
+    {
+      "epoch": 6,
+      "fresh_revalidation_pass": true,
+      "repair": "NARROW_APPLICABILITY_AND_RESOURCE_ENVELOPE",
+      "repair_id": "CR24-01",
+      "semantic_object_deleted": false,
+      "source_invalidation": "CI24-01"
+    },
+    {
+      "epoch": 13,
+      "fresh_revalidation_pass": true,
+      "repair": "NARROW_APPLICABILITY_AND_RESOURCE_ENVELOPE",
+      "repair_id": "CR24-02",
+      "semantic_object_deleted": false,
+      "source_invalidation": "CI24-02"
+    },
+    {
+      "epoch": 18,
+      "fresh_revalidation_pass": true,
+      "repair": "NARROW_APPLICABILITY_AND_RESOURCE_ENVELOPE",
+      "repair_id": "CR24-03",
+      "semantic_object_deleted": false,
+      "source_invalidation": "CI24-03"
+    }
+  ]
+}

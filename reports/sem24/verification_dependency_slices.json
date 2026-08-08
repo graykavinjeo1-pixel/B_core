@@ -1,0 +1,146 @@
+{
+  "present": true,
+  "slices": [
+    {
+      "affected_claims": 7,
+      "dependency_hash": 3722381537708952833,
+      "epoch": 1,
+      "full_dependency_scan": false,
+      "unaffected_claims_preserved": 15
+    },
+    {
+      "affected_claims": 7,
+      "dependency_hash": 16558821508635889856,
+      "epoch": 2,
+      "full_dependency_scan": false,
+      "unaffected_claims_preserved": 15
+    },
+    {
+      "affected_claims": 7,
+      "dependency_hash": 3628736214867540447,
+      "epoch": 3,
+      "full_dependency_scan": false,
+      "unaffected_claims_preserved": 15
+    },
+    {
+      "affected_claims": 7,
+      "dependency_hash": 8711226529543688099,
+      "epoch": 4,
+      "full_dependency_scan": false,
+      "unaffected_claims_preserved": 15
+    },
+    {
+      "affected_claims": 6,
+      "dependency_hash": 663494446144048790,
+      "epoch": 5,
+      "full_dependency_scan": false,
+      "unaffected_claims_preserved": 17
+    },
+    {
+      "affected_claims": 6,
+      "dependency_hash": 15085292451549548408,
+      "epoch": 6,
+      "full_dependency_scan": false,
+      "unaffected_claims_preserved": 17
+    },
+    {
+      "affected_claims": 6,
+      "dependency_hash": 10577775824504351871,
+      "epoch": 7,
+      "full_dependency_scan": false,
+      "unaffected_claims_preserved": 17
+    },
+    {
+      "affected_claims": 6,
+      "dependency_hash": 14523418087539528995,
+      "epoch": 8,
+      "full_dependency_scan": false,
+      "unaffected_claims_preserved": 17
+    },
+    {
+      "affected_claims": 5,
+      "dependency_hash": 5697297918860720401,
+      "epoch": 9,
+      "full_dependency_scan": false,
+      "unaffected_claims_preserved": 19
+    },
+    {
+      "affected_claims": 5,
+      "dependency_hash": 9102114746769277714,
+      "epoch": 10,
+      "full_dependency_scan": false,
+      "unaffected_claims_preserved": 19
+    },
+    {
+      "affected_claims": 5,
+      "dependency_hash": 11895523778228078417,
+      "epoch": 11,
+      "full_dependency_scan": false,
+      "unaffected_claims_preserved": 19
+    },
+    {
+      "affected_claims": 5,
+      "dependency_hash": 13384123007176801557,
+      "epoch": 12,
+      "full_dependency_scan": false,
+      "unaffected_claims_preserved": 19
+    },
+    {
+      "affected_claims": 4,
+      "dependency_hash": 12810950899375749297,
+      "epoch": 13,
+      "full_dependency_scan": false,
+      "unaffected_claims_preserved": 21
+    },
+    {
+      "affected_claims": 4,
+      "dependency_hash": 173035458404179665,
+      "epoch": 14,
+      "full_dependency_scan": false,
+      "unaffected_claims_preserved": 21
+    },
+    {
+      "affected_claims": 4,
+      "dependency_hash": 16722432650959768390,
+      "epoch": 15,
+      "full_dependency_scan": false,
+      "unaffected_claims_preserved": 21
+    },
+    {
+      "affected_claims": 4,
+      "dependency_hash": 10914522322735190678,
+      "epoch": 16,
+      "full_dependency_scan": false,
+      "unaffected_claims_preserved": 21
+    },
+    {
+      "affected_claims": 3,
+      "dependency_hash": 746390889426349863,
+      "epoch": 17,
+      "full_dependency_scan": false,
+      "unaffected_claims_preserved": 23
+    },
+    {
+      "affected_claims": 3,
+      "dependency_hash": 12846189926781098877,
+      "epoch": 18,
+      "full_dependency_scan": false,
+      "unaffected_claims_preserved": 23
+    },
+    {
+      "affected_claims": 3,
+      "dependency_hash": 6421390530288775927,
+      "epoch": 19,
+      "full_dependency_scan": false,
+      "unaffected_claims_preserved": 23
+    },
+    {
+      "affected_claims": 3,
+      "dependency_hash": 12056048575579907605,
+      "epoch": 20,
+      "full_dependency_scan": false,
+      "unaffected_claims_preserved": 23
+    }
+  ],
+  "unrelated_properties_invalidated": 0
+}

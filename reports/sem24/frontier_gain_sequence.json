@@ -1,0 +1,26 @@
+{
+  "composite_score": null,
+  "metric": "frontier_gain_sequence",
+  "raw_sequence": [
+    51,
+    54,
+    57,
+    60,
+    271,
+    66,
+    69,
+    72,
+    75,
+    334,
+    81,
+    84,
+    87,
+    90,
+    397,
+    96,
+    99,
+    102,
+    409,
+    108
+  ]
+}

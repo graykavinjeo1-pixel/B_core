@@ -1,0 +1,39 @@
+{
+  "cross_domain_transfer_tested": true,
+  "lexical_authority": false,
+  "schemas": [
+    {
+      "cross_domain_roles_not_labels": true,
+      "discovered_epoch": 8,
+      "generates_sound_obligations": true,
+      "motif_dependencies": [
+        "VM24-01",
+        "VM24-02"
+      ],
+      "schema_id": "VS24-01"
+    },
+    {
+      "cross_domain_roles_not_labels": true,
+      "discovered_epoch": 14,
+      "generates_sound_obligations": true,
+      "motif_dependencies": [
+        "VM24-01",
+        "VM24-02",
+        "VM24-03"
+      ],
+      "schema_id": "VS24-02"
+    },
+    {
+      "cross_domain_roles_not_labels": true,
+      "discovered_epoch": 19,
+      "generates_sound_obligations": true,
+      "motif_dependencies": [
+        "VM24-01",
+        "VM24-02",
+        "VM24-03",
+        "VM24-04"
+      ],
+      "schema_id": "VS24-03"
+    }
+  ]
+}

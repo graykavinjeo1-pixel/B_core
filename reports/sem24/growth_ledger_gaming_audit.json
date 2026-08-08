@@ -1,0 +1,8 @@
+{
+  "acceptance_rules_unchanged": true,
+  "events": 0,
+  "failed_and_escalated_work_retained": true,
+  "passed": true,
+  "same_generated_work_all_arms": true,
+  "verification_count_is_not_objective": true
+}

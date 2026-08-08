@@ -1,0 +1,12 @@
+{
+  "lineage_preserved": true,
+  "revisions": [
+    {
+      "change": "NARROW_RESOURCE_AND_ORDERING_SCOPE",
+      "epoch": 13,
+      "prior_lineage_preserved": true,
+      "revision_id": "VLR24-01",
+      "verification_law_id": "VL24-02"
+    }
+  ]
+}

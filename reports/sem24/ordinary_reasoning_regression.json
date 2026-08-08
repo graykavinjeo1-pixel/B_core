@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "regressions": 0,
+  "test_failures": 0,
+  "tests_passed": 179,
+  "validation_command": "cargo test --workspace --all-targets --all-features",
+  "validation_status": "COMPLETED_AFTER_CAMPAIGN"
+}

@@ -1,0 +1,306 @@
+{
+  "predictor_is_correctness_authority": false,
+  "present": true,
+  "records": [
+    {
+      "epoch": 1,
+      "verification_ir": {
+        "affected_dependencies": 7,
+        "assumptions": 6,
+        "changed_claims": 7,
+        "claims": 22,
+        "emergent_property_checks": 1,
+        "executable_checks": 1,
+        "inherited_claims": 14,
+        "proof_obligations": 22,
+        "resource_checks": 1,
+        "unresolved_claims": 0
+      }
+    },
+    {
+      "epoch": 2,
+      "verification_ir": {
+        "affected_dependencies": 7,
+        "assumptions": 5,
+        "changed_claims": 7,
+        "claims": 22,
+        "emergent_property_checks": 1,
+        "executable_checks": 1,
+        "inherited_claims": 14,
+        "proof_obligations": 9,
+        "resource_checks": 1,
+        "unresolved_claims": 0
+      }
+    },
+    {
+      "epoch": 3,
+      "verification_ir": {
+        "affected_dependencies": 7,
+        "assumptions": 3,
+        "changed_claims": 7,
+        "claims": 22,
+        "emergent_property_checks": 1,
+        "executable_checks": 1,
+        "inherited_claims": 14,
+        "proof_obligations": 9,
+        "resource_checks": 1,
+        "unresolved_claims": 0
+      }
+    },
+    {
+      "epoch": 4,
+      "verification_ir": {
+        "affected_dependencies": 7,
+        "assumptions": 4,
+        "changed_claims": 7,
+        "claims": 22,
+        "emergent_property_checks": 1,
+        "executable_checks": 1,
+        "inherited_claims": 14,
+        "proof_obligations": 9,
+        "resource_checks": 1,
+        "unresolved_claims": 0
+      }
+    },
+    {
+      "epoch": 5,
+      "verification_ir": {
+        "affected_dependencies": 6,
+        "assumptions": 5,
+        "changed_claims": 6,
+        "claims": 23,
+        "emergent_property_checks": 1,
+        "executable_checks": 1,
+        "inherited_claims": 16,
+        "proof_obligations": 7,
+        "resource_checks": 1,
+        "unresolved_claims": 0
+      }
+    },
+    {
+      "epoch": 6,
+      "verification_ir": {
+        "affected_dependencies": 6,
+        "assumptions": 3,
+        "changed_claims": 6,
+        "claims": 23,
+        "emergent_property_checks": 1,
+        "executable_checks": 1,
+        "inherited_claims": 16,
+        "proof_obligations": 7,
+        "resource_checks": 1,
+        "unresolved_claims": 0
+      }
+    },
+    {
+      "epoch": 7,
+      "verification_ir": {
+        "affected_dependencies": 6,
+        "assumptions": 6,
+        "changed_claims": 6,
+        "claims": 23,
+        "emergent_property_checks": 2,
+        "executable_checks": 2,
+        "inherited_claims": 15,
+        "proof_obligations": 23,
+        "resource_checks": 1,
+        "unresolved_claims": 0
+      }
+    },
+    {
+      "epoch": 8,
+      "verification_ir": {
+        "affected_dependencies": 6,
+        "assumptions": 5,
+        "changed_claims": 6,
+        "claims": 23,
+        "emergent_property_checks": 1,
+        "executable_checks": 1,
+        "inherited_claims": 16,
+        "proof_obligations": 7,
+        "resource_checks": 1,
+        "unresolved_claims": 0
+      }
+    },
+    {
+      "epoch": 9,
+      "verification_ir": {
+        "affected_dependencies": 5,
+        "assumptions": 3,
+        "changed_claims": 5,
+        "claims": 24,
+        "emergent_property_checks": 1,
+        "executable_checks": 1,
+        "inherited_claims": 18,
+        "proof_obligations": 6,
+        "resource_checks": 1,
+        "unresolved_claims": 0
+      }
+    },
+    {
+      "epoch": 10,
+      "verification_ir": {
+        "affected_dependencies": 5,
+        "assumptions": 4,
+        "changed_claims": 5,
+        "claims": 24,
+        "emergent_property_checks": 1,
+        "executable_checks": 1,
+        "inherited_claims": 18,
+        "proof_obligations": 6,
+        "resource_checks": 1,
+        "unresolved_claims": 0
+      }
+    },
+    {
+      "epoch": 11,
+      "verification_ir": {
+        "affected_dependencies": 5,
+        "assumptions": 5,
+        "changed_claims": 5,
+        "claims": 24,
+        "emergent_property_checks": 1,
+        "executable_checks": 1,
+        "inherited_claims": 18,
+        "proof_obligations": 6,
+        "resource_checks": 1,
+        "unresolved_claims": 0
+      }
+    },
+    {
+      "epoch": 12,
+      "verification_ir": {
+        "affected_dependencies": 5,
+        "assumptions": 3,
+        "changed_claims": 5,
+        "claims": 24,
+        "emergent_property_checks": 1,
+        "executable_checks": 1,
+        "inherited_claims": 18,
+        "proof_obligations": 6,
+        "resource_checks": 1,
+        "unresolved_claims": 0
+      }
+    },
+    {
+      "epoch": 13,
+      "verification_ir": {
+        "affected_dependencies": 4,
+        "assumptions": 4,
+        "changed_claims": 4,
+        "claims": 25,
+        "emergent_property_checks": 1,
+        "executable_checks": 1,
+        "inherited_claims": 20,
+        "proof_obligations": 5,
+        "resource_checks": 1,
+        "unresolved_claims": 0
+      }
+    },
+    {
+      "epoch": 14,
+      "verification_ir": {
+        "affected_dependencies": 4,
+        "assumptions": 6,
+        "changed_claims": 4,
+        "claims": 25,
+        "emergent_property_checks": 2,
+        "executable_checks": 2,
+        "inherited_claims": 19,
+        "proof_obligations": 25,
+        "resource_checks": 1,
+        "unresolved_claims": 0
+      }
+    },
+    {
+      "epoch": 15,
+      "verification_ir": {
+        "affected_dependencies": 4,
+        "assumptions": 3,
+        "changed_claims": 4,
+        "claims": 25,
+        "emergent_property_checks": 1,
+        "executable_checks": 1,
+        "inherited_claims": 20,
+        "proof_obligations": 5,
+        "resource_checks": 1,
+        "unresolved_claims": 0
+      }
+    },
+    {
+      "epoch": 16,
+      "verification_ir": {
+        "affected_dependencies": 4,
+        "assumptions": 4,
+        "changed_claims": 4,
+        "claims": 25,
+        "emergent_property_checks": 1,
+        "executable_checks": 1,
+        "inherited_claims": 20,
+        "proof_obligations": 5,
+        "resource_checks": 1,
+        "unresolved_claims": 0
+      }
+    },
+    {
+      "epoch": 17,
+      "verification_ir": {
+        "affected_dependencies": 3,
+        "assumptions": 5,
+        "changed_claims": 3,
+        "claims": 26,
+        "emergent_property_checks": 1,
+        "executable_checks": 1,
+        "inherited_claims": 22,
+        "proof_obligations": 4,
+        "resource_checks": 1,
+        "unresolved_claims": 0
+      }
+    },
+    {
+      "epoch": 18,
+      "verification_ir": {
+        "affected_dependencies": 3,
+        "assumptions": 3,
+        "changed_claims": 3,
+        "claims": 26,
+        "emergent_property_checks": 1,
+        "executable_checks": 1,
+        "inherited_claims": 22,
+        "proof_obligations": 6,
+        "resource_checks": 1,
+        "unresolved_claims": 0
+      }
+    },
+    {
+      "epoch": 19,
+      "verification_ir": {
+        "affected_dependencies": 3,
+        "assumptions": 4,
+        "changed_claims": 3,
+        "claims": 26,
+        "emergent_property_checks": 1,
+        "executable_checks": 1,
+        "inherited_claims": 22,
+        "proof_obligations": 4,
+        "resource_checks": 1,
+        "unresolved_claims": 0
+      }
+    },
+    {
+      "epoch": 20,
+      "verification_ir": {
+        "affected_dependencies": 3,
+        "assumptions": 5,
+        "changed_claims": 3,
+        "claims": 26,
+        "emergent_property_checks": 1,
+        "executable_checks": 1,
+        "inherited_claims": 22,
+        "proof_obligations": 6,
+        "resource_checks": 1,
+        "unresolved_claims": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "inputs": [
+    "CANDIDATE_COMPOSITE",
+    "CONSTITUENT_CERTIFICATES",
+    "REACTION_LAWS",
+    "PROPERTY_PROVENANCE",
+    "SEMANTIC_DELTA",
+    "DESIRED_PHENOTYPE",
+    "PREDICTION_UNCERTAINTY",
+    "RESOURCE_ENVIRONMENT"
+  ],
+  "minimum_sufficient_not_minimum_unsound": true,
+  "outputs": [
+    "INHERITED",
+    "MECHANICALLY_IMPLIED",
+    "SYMBOLIC_CHECK",
+    "TARGETED_EXECUTION",
+    "FULL_FRESH_VALIDATION",
+    "RESOURCE_MEASUREMENT"
+  ],
+  "present": true,
+  "requirement_omissions": 0
+}

@@ -1,0 +1,976 @@
+{
+  "edges": [
+    {
+      "causal": true,
+      "dependency_hash": 3722381537708952833,
+      "edge_id": "PPG24-01-00",
+      "object_id": 24001,
+      "origin": "INHERITED_CONSTITUENT_PROPERTY",
+      "property_index": 0
+    },
+    {
+      "causal": true,
+      "dependency_hash": 3722381537708952833,
+      "edge_id": "PPG24-01-01",
+      "object_id": 24001,
+      "origin": "REACTION_LAW",
+      "property_index": 1
+    },
+    {
+      "causal": true,
+      "dependency_hash": 3722381537708952833,
+      "edge_id": "PPG24-01-02",
+      "object_id": 24001,
+      "origin": "COMPOSITION_TOPOLOGY",
+      "property_index": 2
+    },
+    {
+      "causal": true,
+      "dependency_hash": 3722381537708952833,
+      "edge_id": "PPG24-01-03",
+      "object_id": 24001,
+      "origin": "NEW_EMERGENT_INTERACTION",
+      "property_index": 3
+    },
+    {
+      "causal": true,
+      "dependency_hash": 3722381537708952833,
+      "edge_id": "PPG24-01-04",
+      "object_id": 24001,
+      "origin": "RESOURCE_CONDITION",
+      "property_index": 4
+    },
+    {
+      "causal": true,
+      "dependency_hash": 3722381537708952833,
+      "edge_id": "PPG24-01-05",
+      "object_id": 24001,
+      "origin": "FRESH_EXECUTION",
+      "property_index": 5
+    },
+    {
+      "causal": true,
+      "dependency_hash": 16558821508635889856,
+      "edge_id": "PPG24-02-00",
+      "object_id": 24002,
+      "origin": "INHERITED_CONSTITUENT_PROPERTY",
+      "property_index": 0
+    },
+    {
+      "causal": true,
+      "dependency_hash": 16558821508635889856,
+      "edge_id": "PPG24-02-01",
+      "object_id": 24002,
+      "origin": "REACTION_LAW",
+      "property_index": 1
+    },
+    {
+      "causal": true,
+      "dependency_hash": 16558821508635889856,
+      "edge_id": "PPG24-02-02",
+      "object_id": 24002,
+      "origin": "COMPOSITION_TOPOLOGY",
+      "property_index": 2
+    },
+    {
+      "causal": true,
+      "dependency_hash": 16558821508635889856,
+      "edge_id": "PPG24-02-03",
+      "object_id": 24002,
+      "origin": "NEW_EMERGENT_INTERACTION",
+      "property_index": 3
+    },
+    {
+      "causal": true,
+      "dependency_hash": 16558821508635889856,
+      "edge_id": "PPG24-02-04",
+      "object_id": 24002,
+      "origin": "RESOURCE_CONDITION",
+      "property_index": 4
+    },
+    {
+      "causal": true,
+      "dependency_hash": 16558821508635889856,
+      "edge_id": "PPG24-02-05",
+      "object_id": 24002,
+      "origin": "FRESH_EXECUTION",
+      "property_index": 5
+    },
+    {
+      "causal": true,
+      "dependency_hash": 3628736214867540447,
+      "edge_id": "PPG24-03-00",
+      "object_id": 24003,
+      "origin": "INHERITED_CONSTITUENT_PROPERTY",
+      "property_index": 0
+    },
+    {
+      "causal": true,
+      "dependency_hash": 3628736214867540447,
+      "edge_id": "PPG24-03-01",
+      "object_id": 24003,
+      "origin": "REACTION_LAW",
+      "property_index": 1
+    },
+    {
+      "causal": true,
+      "dependency_hash": 3628736214867540447,
+      "edge_id": "PPG24-03-02",
+      "object_id": 24003,
+      "origin": "COMPOSITION_TOPOLOGY",
+      "property_index": 2
+    },
+    {
+      "causal": true,
+      "dependency_hash": 3628736214867540447,
+      "edge_id": "PPG24-03-03",
+      "object_id": 24003,
+      "origin": "NEW_EMERGENT_INTERACTION",
+      "property_index": 3
+    },
+    {
+      "causal": true,
+      "dependency_hash": 3628736214867540447,
+      "edge_id": "PPG24-03-04",
+      "object_id": 24003,
+      "origin": "RESOURCE_CONDITION",
+      "property_index": 4
+    },
+    {
+      "causal": true,
+      "dependency_hash": 3628736214867540447,
+      "edge_id": "PPG24-03-05",
+      "object_id": 24003,
+      "origin": "FRESH_EXECUTION",
+      "property_index": 5
+    },
+    {
+      "causal": true,
+      "dependency_hash": 8711226529543688099,
+      "edge_id": "PPG24-04-00",
+      "object_id": 24004,
+      "origin": "INHERITED_CONSTITUENT_PROPERTY",
+      "property_index": 0
+    },
+    {
+      "causal": true,
+      "dependency_hash": 8711226529543688099,
+      "edge_id": "PPG24-04-01",
+      "object_id": 24004,
+      "origin": "REACTION_LAW",
+      "property_index": 1
+    },
+    {
+      "causal": true,
+      "dependency_hash": 8711226529543688099,
+      "edge_id": "PPG24-04-02",
+      "object_id": 24004,
+      "origin": "COMPOSITION_TOPOLOGY",
+      "property_index": 2
+    },
+    {
+      "causal": true,
+      "dependency_hash": 8711226529543688099,
+      "edge_id": "PPG24-04-03",
+      "object_id": 24004,
+      "origin": "NEW_EMERGENT_INTERACTION",
+      "property_index": 3
+    },
+    {
+      "causal": true,
+      "dependency_hash": 8711226529543688099,
+      "edge_id": "PPG24-04-04",
+      "object_id": 24004,
+      "origin": "RESOURCE_CONDITION",
+      "property_index": 4
+    },
+    {
+      "causal": true,
+      "dependency_hash": 8711226529543688099,
+      "edge_id": "PPG24-04-05",
+      "object_id": 24004,
+      "origin": "FRESH_EXECUTION",
+      "property_index": 5
+    },
+    {
+      "causal": true,
+      "dependency_hash": 663494446144048790,
+      "edge_id": "PPG24-05-00",
+      "object_id": 24005,
+      "origin": "INHERITED_CONSTITUENT_PROPERTY",
+      "property_index": 0
+    },
+    {
+      "causal": true,
+      "dependency_hash": 663494446144048790,
+      "edge_id": "PPG24-05-01",
+      "object_id": 24005,
+      "origin": "REACTION_LAW",
+      "property_index": 1
+    },
+    {
+      "causal": true,
+      "dependency_hash": 663494446144048790,
+      "edge_id": "PPG24-05-02",
+      "object_id": 24005,
+      "origin": "COMPOSITION_TOPOLOGY",
+      "property_index": 2
+    },
+    {
+      "causal": true,
+      "dependency_hash": 663494446144048790,
+      "edge_id": "PPG24-05-03",
+      "object_id": 24005,
+      "origin": "NEW_EMERGENT_INTERACTION",
+      "property_index": 3
+    },
+    {
+      "causal": true,
+      "dependency_hash": 663494446144048790,
+      "edge_id": "PPG24-05-04",
+      "object_id": 24005,
+      "origin": "RESOURCE_CONDITION",
+      "property_index": 4
+    },
+    {
+      "causal": true,
+      "dependency_hash": 663494446144048790,
+      "edge_id": "PPG24-05-05",
+      "object_id": 24005,
+      "origin": "FRESH_EXECUTION",
+      "property_index": 5
+    },
+    {
+      "causal": true,
+      "dependency_hash": 15085292451549548408,
+      "edge_id": "PPG24-06-00",
+      "object_id": 24006,
+      "origin": "INHERITED_CONSTITUENT_PROPERTY",
+      "property_index": 0
+    },
+    {
+      "causal": true,
+      "dependency_hash": 15085292451549548408,
+      "edge_id": "PPG24-06-01",
+      "object_id": 24006,
+      "origin": "REACTION_LAW",
+      "property_index": 1
+    },
+    {
+      "causal": true,
+      "dependency_hash": 15085292451549548408,
+      "edge_id": "PPG24-06-02",
+      "object_id": 24006,
+      "origin": "COMPOSITION_TOPOLOGY",
+      "property_index": 2
+    },
+    {
+      "causal": true,
+      "dependency_hash": 15085292451549548408,
+      "edge_id": "PPG24-06-03",
+      "object_id": 24006,
+      "origin": "NEW_EMERGENT_INTERACTION",
+      "property_index": 3
+    },
+    {
+      "causal": true,
+      "dependency_hash": 15085292451549548408,
+      "edge_id": "PPG24-06-04",
+      "object_id": 24006,
+      "origin": "RESOURCE_CONDITION",
+      "property_index": 4
+    },
+    {
+      "causal": true,
+      "dependency_hash": 15085292451549548408,
+      "edge_id": "PPG24-06-05",
+      "object_id": 24006,
+      "origin": "FRESH_EXECUTION",
+      "property_index": 5
+    },
+    {
+      "causal": true,
+      "dependency_hash": 10577775824504351871,
+      "edge_id": "PPG24-07-00",
+      "object_id": 24007,
+      "origin": "INHERITED_CONSTITUENT_PROPERTY",
+      "property_index": 0
+    },
+    {
+      "causal": true,
+      "dependency_hash": 10577775824504351871,
+      "edge_id": "PPG24-07-01",
+      "object_id": 24007,
+      "origin": "REACTION_LAW",
+      "property_index": 1
+    },
+    {
+      "causal": true,
+      "dependency_hash": 10577775824504351871,
+      "edge_id": "PPG24-07-02",
+      "object_id": 24007,
+      "origin": "COMPOSITION_TOPOLOGY",
+      "property_index": 2
+    },
+    {
+      "causal": true,
+      "dependency_hash": 10577775824504351871,
+      "edge_id": "PPG24-07-03",
+      "object_id": 24007,
+      "origin": "NEW_EMERGENT_INTERACTION",
+      "property_index": 3
+    },
+    {
+      "causal": true,
+      "dependency_hash": 10577775824504351871,
+      "edge_id": "PPG24-07-04",
+      "object_id": 24007,
+      "origin": "RESOURCE_CONDITION",
+      "property_index": 4
+    },
+    {
+      "causal": true,
+      "dependency_hash": 10577775824504351871,
+      "edge_id": "PPG24-07-05",
+      "object_id": 24007,
+      "origin": "FRESH_EXECUTION",
+      "property_index": 5
+    },
+    {
+      "causal": true,
+      "dependency_hash": 14523418087539528995,
+      "edge_id": "PPG24-08-00",
+      "object_id": 24008,
+      "origin": "INHERITED_CONSTITUENT_PROPERTY",
+      "property_index": 0
+    },
+    {
+      "causal": true,
+      "dependency_hash": 14523418087539528995,
+      "edge_id": "PPG24-08-01",
+      "object_id": 24008,
+      "origin": "REACTION_LAW",
+      "property_index": 1
+    },
+    {
+      "causal": true,
+      "dependency_hash": 14523418087539528995,
+      "edge_id": "PPG24-08-02",
+      "object_id": 24008,
+      "origin": "COMPOSITION_TOPOLOGY",
+      "property_index": 2
+    },
+    {
+      "causal": true,
+      "dependency_hash": 14523418087539528995,
+      "edge_id": "PPG24-08-03",
+      "object_id": 24008,
+      "origin": "NEW_EMERGENT_INTERACTION",
+      "property_index": 3
+    },
+    {
+      "causal": true,
+      "dependency_hash": 14523418087539528995,
+      "edge_id": "PPG24-08-04",
+      "object_id": 24008,
+      "origin": "RESOURCE_CONDITION",
+      "property_index": 4
+    },
+    {
+      "causal": true,
+      "dependency_hash": 14523418087539528995,
+      "edge_id": "PPG24-08-05",
+      "object_id": 24008,
+      "origin": "FRESH_EXECUTION",
+      "property_index": 5
+    },
+    {
+      "causal": true,
+      "dependency_hash": 5697297918860720401,
+      "edge_id": "PPG24-09-00",
+      "object_id": 24009,
+      "origin": "INHERITED_CONSTITUENT_PROPERTY",
+      "property_index": 0
+    },
+    {
+      "causal": true,
+      "dependency_hash": 5697297918860720401,
+      "edge_id": "PPG24-09-01",
+      "object_id": 24009,
+      "origin": "REACTION_LAW",
+      "property_index": 1
+    },
+    {
+      "causal": true,
+      "dependency_hash": 5697297918860720401,
+      "edge_id": "PPG24-09-02",
+      "object_id": 24009,
+      "origin": "COMPOSITION_TOPOLOGY",
+      "property_index": 2
+    },
+    {
+      "causal": true,
+      "dependency_hash": 5697297918860720401,
+      "edge_id": "PPG24-09-03",
+      "object_id": 24009,
+      "origin": "NEW_EMERGENT_INTERACTION",
+      "property_index": 3
+    },
+    {
+      "causal": true,
+      "dependency_hash": 5697297918860720401,
+      "edge_id": "PPG24-09-04",
+      "object_id": 24009,
+      "origin": "RESOURCE_CONDITION",
+      "property_index": 4
+    },
+    {
+      "causal": true,
+      "dependency_hash": 5697297918860720401,
+      "edge_id": "PPG24-09-05",
+      "object_id": 24009,
+      "origin": "FRESH_EXECUTION",
+      "property_index": 5
+    },
+    {
+      "causal": true,
+      "dependency_hash": 9102114746769277714,
+      "edge_id": "PPG24-10-00",
+      "object_id": 24010,
+      "origin": "INHERITED_CONSTITUENT_PROPERTY",
+      "property_index": 0
+    },
+    {
+      "causal": true,
+      "dependency_hash": 9102114746769277714,
+      "edge_id": "PPG24-10-01",
+      "object_id": 24010,
+      "origin": "REACTION_LAW",
+      "property_index": 1
+    },
+    {
+      "causal": true,
+      "dependency_hash": 9102114746769277714,
+      "edge_id": "PPG24-10-02",
+      "object_id": 24010,
+      "origin": "COMPOSITION_TOPOLOGY",
+      "property_index": 2
+    },
+    {
+      "causal": true,
+      "dependency_hash": 9102114746769277714,
+      "edge_id": "PPG24-10-03",
+      "object_id": 24010,
+      "origin": "NEW_EMERGENT_INTERACTION",
+      "property_index": 3
+    },
+    {
+      "causal": true,
+      "dependency_hash": 9102114746769277714,
+      "edge_id": "PPG24-10-04",
+      "object_id": 24010,
+      "origin": "RESOURCE_CONDITION",
+      "property_index": 4
+    },
+    {
+      "causal": true,
+      "dependency_hash": 9102114746769277714,
+      "edge_id": "PPG24-10-05",
+      "object_id": 24010,
+      "origin": "FRESH_EXECUTION",
+      "property_index": 5
+    },
+    {
+      "causal": true,
+      "dependency_hash": 11895523778228078417,
+      "edge_id": "PPG24-11-00",
+      "object_id": 24011,
+      "origin": "INHERITED_CONSTITUENT_PROPERTY",
+      "property_index": 0
+    },
+    {
+      "causal": true,
+      "dependency_hash": 11895523778228078417,
+      "edge_id": "PPG24-11-01",
+      "object_id": 24011,
+      "origin": "REACTION_LAW",
+      "property_index": 1
+    },
+    {
+      "causal": true,
+      "dependency_hash": 11895523778228078417,
+      "edge_id": "PPG24-11-02",
+      "object_id": 24011,
+      "origin": "COMPOSITION_TOPOLOGY",
+      "property_index": 2
+    },
+    {
+      "causal": true,
+      "dependency_hash": 11895523778228078417,
+      "edge_id": "PPG24-11-03",
+      "object_id": 24011,
+      "origin": "NEW_EMERGENT_INTERACTION",
+      "property_index": 3
+    },
+    {
+      "causal": true,
+      "dependency_hash": 11895523778228078417,
+      "edge_id": "PPG24-11-04",
+      "object_id": 24011,
+      "origin": "RESOURCE_CONDITION",
+      "property_index": 4
+    },
+    {
+      "causal": true,
+      "dependency_hash": 11895523778228078417,
+      "edge_id": "PPG24-11-05",
+      "object_id": 24011,
+      "origin": "FRESH_EXECUTION",
+      "property_index": 5
+    },
+    {
+      "causal": true,
+      "dependency_hash": 13384123007176801557,
+      "edge_id": "PPG24-12-00",
+      "object_id": 24012,
+      "origin": "INHERITED_CONSTITUENT_PROPERTY",
+      "property_index": 0
+    },
+    {
+      "causal": true,
+      "dependency_hash": 13384123007176801557,
+      "edge_id": "PPG24-12-01",
+      "object_id": 24012,
+      "origin": "REACTION_LAW",
+      "property_index": 1
+    },
+    {
+      "causal": true,
+      "dependency_hash": 13384123007176801557,
+      "edge_id": "PPG24-12-02",
+      "object_id": 24012,
+      "origin": "COMPOSITION_TOPOLOGY",
+      "property_index": 2
+    },
+    {
+      "causal": true,
+      "dependency_hash": 13384123007176801557,
+      "edge_id": "PPG24-12-03",
+      "object_id": 24012,
+      "origin": "NEW_EMERGENT_INTERACTION",
+      "property_index": 3
+    },
+    {
+      "causal": true,
+      "dependency_hash": 13384123007176801557,
+      "edge_id": "PPG24-12-04",
+      "object_id": 24012,
+      "origin": "RESOURCE_CONDITION",
+      "property_index": 4
+    },
+    {
+      "causal": true,
+      "dependency_hash": 13384123007176801557,
+      "edge_id": "PPG24-12-05",
+      "object_id": 24012,
+      "origin": "FRESH_EXECUTION",
+      "property_index": 5
+    },
+    {
+      "causal": true,
+      "dependency_hash": 12810950899375749297,
+      "edge_id": "PPG24-13-00",
+      "object_id": 24013,
+      "origin": "INHERITED_CONSTITUENT_PROPERTY",
+      "property_index": 0
+    },
+    {
+      "causal": true,
+      "dependency_hash": 12810950899375749297,
+      "edge_id": "PPG24-13-01",
+      "object_id": 24013,
+      "origin": "REACTION_LAW",
+      "property_index": 1
+    },
+    {
+      "causal": true,
+      "dependency_hash": 12810950899375749297,
+      "edge_id": "PPG24-13-02",
+      "object_id": 24013,
+      "origin": "COMPOSITION_TOPOLOGY",
+      "property_index": 2
+    },
+    {
+      "causal": true,
+      "dependency_hash": 12810950899375749297,
+      "edge_id": "PPG24-13-03",
+      "object_id": 24013,
+      "origin": "NEW_EMERGENT_INTERACTION",
+      "property_index": 3
+    },
+    {
+      "causal": true,
+      "dependency_hash": 12810950899375749297,
+      "edge_id": "PPG24-13-04",
+      "object_id": 24013,
+      "origin": "RESOURCE_CONDITION",
+      "property_index": 4
+    },
+    {
+      "causal": true,
+      "dependency_hash": 12810950899375749297,
+      "edge_id": "PPG24-13-05",
+      "object_id": 24013,
+      "origin": "FRESH_EXECUTION",
+      "property_index": 5
+    },
+    {
+      "causal": true,
+      "dependency_hash": 173035458404179665,
+      "edge_id": "PPG24-14-00",
+      "object_id": 24014,
+      "origin": "INHERITED_CONSTITUENT_PROPERTY",
+      "property_index": 0
+    },
+    {
+      "causal": true,
+      "dependency_hash": 173035458404179665,
+      "edge_id": "PPG24-14-01",
+      "object_id": 24014,
+      "origin": "REACTION_LAW",
+      "property_index": 1
+    },
+    {
+      "causal": true,
+      "dependency_hash": 173035458404179665,
+      "edge_id": "PPG24-14-02",
+      "object_id": 24014,
+      "origin": "COMPOSITION_TOPOLOGY",
+      "property_index": 2
+    },
+    {
+      "causal": true,
+      "dependency_hash": 173035458404179665,
+      "edge_id": "PPG24-14-03",
+      "object_id": 24014,
+      "origin": "NEW_EMERGENT_INTERACTION",
+      "property_index": 3
+    },
+    {
+      "causal": true,
+      "dependency_hash": 173035458404179665,
+      "edge_id": "PPG24-14-04",
+      "object_id": 24014,
+      "origin": "RESOURCE_CONDITION",
+      "property_index": 4
+    },
+    {
+      "causal": true,
+      "dependency_hash": 173035458404179665,
+      "edge_id": "PPG24-14-05",
+      "object_id": 24014,
+      "origin": "FRESH_EXECUTION",
+      "property_index": 5
+    },
+    {
+      "causal": true,
+      "dependency_hash": 16722432650959768390,
+      "edge_id": "PPG24-15-00",
+      "object_id": 24015,
+      "origin": "INHERITED_CONSTITUENT_PROPERTY",
+      "property_index": 0
+    },
+    {
+      "causal": true,
+      "dependency_hash": 16722432650959768390,
+      "edge_id": "PPG24-15-01",
+      "object_id": 24015,
+      "origin": "REACTION_LAW",
+      "property_index": 1
+    },
+    {
+      "causal": true,
+      "dependency_hash": 16722432650959768390,
+      "edge_id": "PPG24-15-02",
+      "object_id": 24015,
+      "origin": "COMPOSITION_TOPOLOGY",
+      "property_index": 2
+    },
+    {
+      "causal": true,
+      "dependency_hash": 16722432650959768390,
+      "edge_id": "PPG24-15-03",
+      "object_id": 24015,
+      "origin": "NEW_EMERGENT_INTERACTION",
+      "property_index": 3
+    },
+    {
+      "causal": true,
+      "dependency_hash": 16722432650959768390,
+      "edge_id": "PPG24-15-04",
+      "object_id": 24015,
+      "origin": "RESOURCE_CONDITION",
+      "property_index": 4
+    },
+    {
+      "causal": true,
+      "dependency_hash": 16722432650959768390,
+      "edge_id": "PPG24-15-05",
+      "object_id": 24015,
+      "origin": "FRESH_EXECUTION",
+      "property_index": 5
+    },
+    {
+      "causal": true,
+      "dependency_hash": 10914522322735190678,
+      "edge_id": "PPG24-16-00",
+      "object_id": 24016,
+      "origin": "INHERITED_CONSTITUENT_PROPERTY",
+      "property_index": 0
+    },
+    {
+      "causal": true,
+      "dependency_hash": 10914522322735190678,
+      "edge_id": "PPG24-16-01",
+      "object_id": 24016,
+      "origin": "REACTION_LAW",
+      "property_index": 1
+    },
+    {
+      "causal": true,
+      "dependency_hash": 10914522322735190678,
+      "edge_id": "PPG24-16-02",
+      "object_id": 24016,
+      "origin": "COMPOSITION_TOPOLOGY",
+      "property_index": 2
+    },
+    {
+      "causal": true,
+      "dependency_hash": 10914522322735190678,
+      "edge_id": "PPG24-16-03",
+      "object_id": 24016,
+      "origin": "NEW_EMERGENT_INTERACTION",
+      "property_index": 3
+    },
+    {
+      "causal": true,
+      "dependency_hash": 10914522322735190678,
+      "edge_id": "PPG24-16-04",
+      "object_id": 24016,
+      "origin": "RESOURCE_CONDITION",
+      "property_index": 4
+    },
+    {
+      "causal": true,
+      "dependency_hash": 10914522322735190678,
+      "edge_id": "PPG24-16-05",
+      "object_id": 24016,
+      "origin": "FRESH_EXECUTION",
+      "property_index": 5
+    },
+    {
+      "causal": true,
+      "dependency_hash": 746390889426349863,
+      "edge_id": "PPG24-17-00",
+      "object_id": 24017,
+      "origin": "INHERITED_CONSTITUENT_PROPERTY",
+      "property_index": 0
+    },
+    {
+      "causal": true,
+      "dependency_hash": 746390889426349863,
+      "edge_id": "PPG24-17-01",
+      "object_id": 24017,
+      "origin": "REACTION_LAW",
+      "property_index": 1
+    },
+    {
+      "causal": true,
+      "dependency_hash": 746390889426349863,
+      "edge_id": "PPG24-17-02",
+      "object_id": 24017,
+      "origin": "COMPOSITION_TOPOLOGY",
+      "property_index": 2
+    },
+    {
+      "causal": true,
+      "dependency_hash": 746390889426349863,
+      "edge_id": "PPG24-17-03",
+      "object_id": 24017,
+      "origin": "NEW_EMERGENT_INTERACTION",
+      "property_index": 3
+    },
+    {
+      "causal": true,
+      "dependency_hash": 746390889426349863,
+      "edge_id": "PPG24-17-04",
+      "object_id": 24017,
+      "origin": "RESOURCE_CONDITION",
+      "property_index": 4
+    },
+    {
+      "causal": true,
+      "dependency_hash": 746390889426349863,
+      "edge_id": "PPG24-17-05",
+      "object_id": 24017,
+      "origin": "FRESH_EXECUTION",
+      "property_index": 5
+    },
+    {
+      "causal": true,
+      "dependency_hash": 12846189926781098877,
+      "edge_id": "PPG24-18-00",
+      "object_id": 24018,
+      "origin": "INHERITED_CONSTITUENT_PROPERTY",
+      "property_index": 0
+    },
+    {
+      "causal": true,
+      "dependency_hash": 12846189926781098877,
+      "edge_id": "PPG24-18-01",
+      "object_id": 24018,
+      "origin": "REACTION_LAW",
+      "property_index": 1
+    },
+    {
+      "causal": true,
+      "dependency_hash": 12846189926781098877,
+      "edge_id": "PPG24-18-02",
+      "object_id": 24018,
+      "origin": "COMPOSITION_TOPOLOGY",
+      "property_index": 2
+    },
+    {
+      "causal": true,
+      "dependency_hash": 12846189926781098877,
+      "edge_id": "PPG24-18-03",
+      "object_id": 24018,
+      "origin": "NEW_EMERGENT_INTERACTION",
+      "property_index": 3
+    },
+    {
+      "causal": true,
+      "dependency_hash": 12846189926781098877,
+      "edge_id": "PPG24-18-04",
+      "object_id": 24018,
+      "origin": "RESOURCE_CONDITION",
+      "property_index": 4
+    },
+    {
+      "causal": true,
+      "dependency_hash": 12846189926781098877,
+      "edge_id": "PPG24-18-05",
+      "object_id": 24018,
+      "origin": "FRESH_EXECUTION",
+      "property_index": 5
+    },
+    {
+      "causal": true,
+      "dependency_hash": 6421390530288775927,
+      "edge_id": "PPG24-19-00",
+      "object_id": 24019,
+      "origin": "INHERITED_CONSTITUENT_PROPERTY",
+      "property_index": 0
+    },
+    {
+      "causal": true,
+      "dependency_hash": 6421390530288775927,
+      "edge_id": "PPG24-19-01",
+      "object_id": 24019,
+      "origin": "REACTION_LAW",
+      "property_index": 1
+    },
+    {
+      "causal": true,
+      "dependency_hash": 6421390530288775927,
+      "edge_id": "PPG24-19-02",
+      "object_id": 24019,
+      "origin": "COMPOSITION_TOPOLOGY",
+      "property_index": 2
+    },
+    {
+      "causal": true,
+      "dependency_hash": 6421390530288775927,
+      "edge_id": "PPG24-19-03",
+      "object_id": 24019,
+      "origin": "NEW_EMERGENT_INTERACTION",
+      "property_index": 3
+    },
+    {
+      "causal": true,
+      "dependency_hash": 6421390530288775927,
+      "edge_id": "PPG24-19-04",
+      "object_id": 24019,
+      "origin": "RESOURCE_CONDITION",
+      "property_index": 4
+    },
+    {
+      "causal": true,
+      "dependency_hash": 6421390530288775927,
+      "edge_id": "PPG24-19-05",
+      "object_id": 24019,
+      "origin": "FRESH_EXECUTION",
+      "property_index": 5
+    },
+    {
+      "causal": true,
+      "dependency_hash": 12056048575579907605,
+      "edge_id": "PPG24-20-00",
+      "object_id": 24020,
+      "origin": "INHERITED_CONSTITUENT_PROPERTY",
+      "property_index": 0
+    },
+    {
+      "causal": true,
+      "dependency_hash": 12056048575579907605,
+      "edge_id": "PPG24-20-01",
+      "object_id": 24020,
+      "origin": "REACTION_LAW",
+      "property_index": 1
+    },
+    {
+      "causal": true,
+      "dependency_hash": 12056048575579907605,
+      "edge_id": "PPG24-20-02",
+      "object_id": 24020,
+      "origin": "COMPOSITION_TOPOLOGY",
+      "property_index": 2
+    },
+    {
+      "causal": true,
+      "dependency_hash": 12056048575579907605,
+      "edge_id": "PPG24-20-03",
+      "object_id": 24020,
+      "origin": "NEW_EMERGENT_INTERACTION",
+      "property_index": 3
+    },
+    {
+      "causal": true,
+      "dependency_hash": 12056048575579907605,
+      "edge_id": "PPG24-20-04",
+      "object_id": 24020,
+      "origin": "RESOURCE_CONDITION",
+      "property_index": 4
+    },
+    {
+      "causal": true,
+      "dependency_hash": 12056048575579907605,
+      "edge_id": "PPG24-20-05",
+      "object_id": 24020,
+      "origin": "FRESH_EXECUTION",
+      "property_index": 5
+    }
+  ],
+  "origin_classes": [
+    "BASE_ELEMENT",
+    "INHERITED_CONSTITUENT",
+    "REACTION_LAW",
+    "COMPOSITION_TOPOLOGY",
+    "MEDIATOR",
+    "CATALYST",
+    "EMERGENT_INTERACTION",
+    "RESOURCE_CONDITION",
+    "FRESH_EXECUTION"
+  ],
+  "present": true
+}

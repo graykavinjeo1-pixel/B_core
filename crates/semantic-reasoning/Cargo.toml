@@ -147,6 +147,14 @@ name = "sem23-probe"
 path = "src/sem23_probe_main.rs"
 
 [[bin]]
+name = "sem24-run"
+path = "src/sem24_main.rs"
+
+[[bin]]
+name = "sem24-probe"
+path = "src/sem24_probe_main.rs"
+
+[[bin]]
 name = "core-x0-evaluate"
 path = "src/core_x0_main.rs"
 

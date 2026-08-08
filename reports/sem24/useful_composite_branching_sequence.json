@@ -1,0 +1,26 @@
+{
+  "composite_score": null,
+  "metric": "useful_composite_branching_sequence",
+  "raw_sequence": [
+    2,
+    2,
+    3,
+    2,
+    3,
+    2,
+    3,
+    2,
+    3,
+    2,
+    3,
+    2,
+    3,
+    2,
+    3,
+    2,
+    3,
+    2,
+    2,
+    1
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "full_atom_store_scans": 0,
+  "full_certificate_store_scan": 0,
+  "full_composite_store_scans": 0,
+  "full_reaction_law_scans": 0,
+  "full_reaction_space_enumeration": 0,
+  "full_verification_dependency_scan": 0,
+  "passed": true,
+  "routing_false_negatives": 0
+}

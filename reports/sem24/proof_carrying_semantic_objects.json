@@ -1,0 +1,387 @@
+{
+  "certificate_self_assertion_authority": false,
+  "objects": [
+    {
+      "assumptions": 17,
+      "certificate_id": "VC24-01-0648ab8707614ad809010f55579219e83b5fecce0b78d1b00da08055fc426e92",
+      "composition_depth": 13,
+      "dependency_hashes": [
+        3722381537708952833
+      ],
+      "guarantees": 4194303,
+      "integrity_hash": 8776401398492738819,
+      "mechanically_validated": true,
+      "object_id": 24001,
+      "parent_certificate": "SEM23-GEN12-SEALED",
+      "preserved_invariants": 15,
+      "proof_provenance": 14411612460966118271,
+      "proven_properties": 4194303,
+      "resource_bounds": 603979777,
+      "semantic_hash": 4398644356724312930,
+      "verification_method": "MECHANICAL_COMPOSITIONAL_AND_TARGETED_EXECUTION"
+    },
+    {
+      "assumptions": 9,
+      "certificate_id": "VC24-02-5844e2c609fc40ece4e93bf2974539e1ca9ff14027a06e615ef45a2672f4f94b",
+      "composition_depth": 14,
+      "dependency_hashes": [
+        16558821508635889856
+      ],
+      "guarantees": 4194303,
+      "integrity_hash": 6674550078716107702,
+      "mechanically_validated": true,
+      "object_id": 24002,
+      "parent_certificate": "VC24-01",
+      "preserved_invariants": 15,
+      "proof_provenance": 1052054998663682424,
+      "proven_properties": 4194303,
+      "resource_bounds": 603979778,
+      "semantic_hash": 18160600025733098788,
+      "verification_method": "MECHANICAL_COMPOSITIONAL_AND_TARGETED_EXECUTION"
+    },
+    {
+      "assumptions": 3,
+      "certificate_id": "VC24-03-98e0c87f7ff4c0d7ddc33719b334944c1d1d2b5d3c190cfecceb42eea8e745a4",
+      "composition_depth": 15,
+      "dependency_hashes": [
+        3628736214867540447
+      ],
+      "guarantees": 4194303,
+      "integrity_hash": 18025517651918413889,
+      "mechanically_validated": true,
+      "object_id": 24003,
+      "parent_certificate": "VC24-02",
+      "preserved_invariants": 15,
+      "proof_provenance": 7032269931767452112,
+      "proven_properties": 4194303,
+      "resource_bounds": 603979779,
+      "semantic_hash": 6772151591776790309,
+      "verification_method": "MECHANICAL_COMPOSITIONAL_AND_TARGETED_EXECUTION"
+    },
+    {
+      "assumptions": 5,
+      "certificate_id": "VC24-04-3c8674b35ca20c8ab3884fd57b111aa03b9dff2dbb0da20acfc3db547729c1f6",
+      "composition_depth": 16,
+      "dependency_hashes": [
+        8711226529543688099
+      ],
+      "guarantees": 4194303,
+      "integrity_hash": 5591238592914633825,
+      "mechanically_validated": true,
+      "object_id": 24004,
+      "parent_certificate": "VC24-03",
+      "preserved_invariants": 15,
+      "proof_provenance": 2878081352628530109,
+      "proven_properties": 4194303,
+      "resource_bounds": 603979780,
+      "semantic_hash": 11964555617351751140,
+      "verification_method": "MECHANICAL_COMPOSITIONAL_AND_TARGETED_EXECUTION"
+    },
+    {
+      "assumptions": 9,
+      "certificate_id": "VC24-05-886f9576725aef456279b1551791e9ee468f068ed92a99aac071d0a7bb8fda03",
+      "composition_depth": 17,
+      "dependency_hashes": [
+        663494446144048790
+      ],
+      "guarantees": 8388607,
+      "integrity_hash": 1640958946940557787,
+      "mechanically_validated": true,
+      "object_id": 24005,
+      "parent_certificate": "VC24-04",
+      "preserved_invariants": 15,
+      "proof_provenance": 565114102973967484,
+      "proven_properties": 8388607,
+      "resource_bounds": 603979781,
+      "semantic_hash": 17933443823337928307,
+      "verification_method": "MECHANICAL_COMPOSITIONAL_AND_TARGETED_EXECUTION"
+    },
+    {
+      "assumptions": 3,
+      "certificate_id": "VC24-06-a17e66038ada786d90164bb6e3c5fe11b4b65e39e22917ce2b46d3e967d2b510",
+      "composition_depth": 18,
+      "dependency_hashes": [
+        15085292451549548408
+      ],
+      "guarantees": 8388607,
+      "integrity_hash": 1177240887144768554,
+      "mechanically_validated": true,
+      "object_id": 24006,
+      "parent_certificate": "VC24-05",
+      "preserved_invariants": 15,
+      "proof_provenance": 6653893388084875618,
+      "proven_properties": 8388607,
+      "resource_bounds": 603979782,
+      "semantic_hash": 13100525791602127837,
+      "verification_method": "MECHANICAL_COMPOSITIONAL_AND_TARGETED_EXECUTION"
+    },
+    {
+      "assumptions": 17,
+      "certificate_id": "VC24-07-e7707ce3d3f791e746e665e48a6633279a2802cedb7c5fe4ffdbde0c928f6b2a",
+      "composition_depth": 19,
+      "dependency_hashes": [
+        10577775824504351871
+      ],
+      "guarantees": 8388607,
+      "integrity_hash": 2431498576809763791,
+      "mechanically_validated": true,
+      "object_id": 24007,
+      "parent_certificate": "VC24-06",
+      "preserved_invariants": 15,
+      "proof_provenance": 1124547483727973933,
+      "proven_properties": 8388607,
+      "resource_bounds": 603979783,
+      "semantic_hash": 12662491416932786934,
+      "verification_method": "MECHANICAL_COMPOSITIONAL_AND_TARGETED_EXECUTION"
+    },
+    {
+      "assumptions": 9,
+      "certificate_id": "VC24-08-7f6e3612d4917e991655e89bfb5dcff9c6b59aa837e395d8b40fd0f0c4e04865",
+      "composition_depth": 20,
+      "dependency_hashes": [
+        14523418087539528995
+      ],
+      "guarantees": 8388607,
+      "integrity_hash": 17494416360615780309,
+      "mechanically_validated": true,
+      "object_id": 24008,
+      "parent_certificate": "VC24-07",
+      "preserved_invariants": 15,
+      "proof_provenance": 11869942214934365998,
+      "proven_properties": 8388607,
+      "resource_bounds": 603979784,
+      "semantic_hash": 14740206948163208783,
+      "verification_method": "MECHANICAL_COMPOSITIONAL_AND_TARGETED_EXECUTION"
+    },
+    {
+      "assumptions": 3,
+      "certificate_id": "VC24-09-0010940ec4a43c11d200457c862dc3e0d6faa7bb066ab457cefe6a3620409bb7",
+      "composition_depth": 21,
+      "dependency_hashes": [
+        5697297918860720401
+      ],
+      "guarantees": 16777215,
+      "integrity_hash": 6458395540243293570,
+      "mechanically_validated": true,
+      "object_id": 24009,
+      "parent_certificate": "VC24-08",
+      "preserved_invariants": 15,
+      "proof_provenance": 8363380792780173758,
+      "proven_properties": 16777215,
+      "resource_bounds": 603979785,
+      "semantic_hash": 13925380408162867718,
+      "verification_method": "MECHANICAL_COMPOSITIONAL_AND_TARGETED_EXECUTION"
+    },
+    {
+      "assumptions": 5,
+      "certificate_id": "VC24-10-d5d099c007cbe1b6a26e04ad8b0c0d245f2522a22d8b9f38bfe11216a3777d58",
+      "composition_depth": 22,
+      "dependency_hashes": [
+        9102114746769277714
+      ],
+      "guarantees": 16777215,
+      "integrity_hash": 10836456878689626937,
+      "mechanically_validated": true,
+      "object_id": 24010,
+      "parent_certificate": "VC24-09",
+      "preserved_invariants": 15,
+      "proof_provenance": 9042211479621907680,
+      "proven_properties": 16777215,
+      "resource_bounds": 603979786,
+      "semantic_hash": 4374208354938452259,
+      "verification_method": "MECHANICAL_COMPOSITIONAL_AND_TARGETED_EXECUTION"
+    },
+    {
+      "assumptions": 9,
+      "certificate_id": "VC24-11-9e6937631cffde56ffe921fdc3e1e94fafb1989534784fa04d5cf41e77791763",
+      "composition_depth": 23,
+      "dependency_hashes": [
+        11895523778228078417
+      ],
+      "guarantees": 16777215,
+      "integrity_hash": 4847330971711274061,
+      "mechanically_validated": true,
+      "object_id": 24011,
+      "parent_certificate": "VC24-10",
+      "preserved_invariants": 15,
+      "proof_provenance": 1411863659784470738,
+      "proven_properties": 16777215,
+      "resource_bounds": 603979787,
+      "semantic_hash": 1063167746614947720,
+      "verification_method": "MECHANICAL_COMPOSITIONAL_AND_TARGETED_EXECUTION"
+    },
+    {
+      "assumptions": 3,
+      "certificate_id": "VC24-12-75b60bc879e24b85440da35107e701ef9364a164953520482c62707fb4f85187",
+      "composition_depth": 24,
+      "dependency_hashes": [
+        13384123007176801557
+      ],
+      "guarantees": 16777215,
+      "integrity_hash": 3710426625283368488,
+      "mechanically_validated": true,
+      "object_id": 24012,
+      "parent_certificate": "VC24-11",
+      "preserved_invariants": 15,
+      "proof_provenance": 11461880414787968605,
+      "proven_properties": 16777215,
+      "resource_bounds": 603979788,
+      "semantic_hash": 12584266199060472838,
+      "verification_method": "MECHANICAL_COMPOSITIONAL_AND_TARGETED_EXECUTION"
+    },
+    {
+      "assumptions": 5,
+      "certificate_id": "VC24-13-e4df1eea5ca34164035c1efc29ec28e3c31dbf8e590df2e837804882ced084c5",
+      "composition_depth": 25,
+      "dependency_hashes": [
+        12810950899375749297
+      ],
+      "guarantees": 33554431,
+      "integrity_hash": 11980362652167997253,
+      "mechanically_validated": true,
+      "object_id": 24013,
+      "parent_certificate": "VC24-12",
+      "preserved_invariants": 15,
+      "proof_provenance": 14669149680335865321,
+      "proven_properties": 33554431,
+      "resource_bounds": 603979789,
+      "semantic_hash": 14711711402889595547,
+      "verification_method": "MECHANICAL_COMPOSITIONAL_AND_TARGETED_EXECUTION"
+    },
+    {
+      "assumptions": 17,
+      "certificate_id": "VC24-14-97c87cbc08659043fcb346bfc1af056e725b451b82ee06666d1e9693335c86af",
+      "composition_depth": 26,
+      "dependency_hashes": [
+        173035458404179665
+      ],
+      "guarantees": 33554431,
+      "integrity_hash": 14481224877159509095,
+      "mechanically_validated": true,
+      "object_id": 24014,
+      "parent_certificate": "VC24-13",
+      "preserved_invariants": 15,
+      "proof_provenance": 13295149840003048516,
+      "proven_properties": 33554431,
+      "resource_bounds": 603979790,
+      "semantic_hash": 12867756799744989247,
+      "verification_method": "MECHANICAL_COMPOSITIONAL_AND_TARGETED_EXECUTION"
+    },
+    {
+      "assumptions": 3,
+      "certificate_id": "VC24-15-b6ea5e0c272a4b17b35d78026095aec3840def3d3598349ef2574db680dc5bbf",
+      "composition_depth": 27,
+      "dependency_hashes": [
+        16722432650959768390
+      ],
+      "guarantees": 33554431,
+      "integrity_hash": 1506047731710429645,
+      "mechanically_validated": true,
+      "object_id": 24015,
+      "parent_certificate": "VC24-14",
+      "preserved_invariants": 15,
+      "proof_provenance": 8229704471948803428,
+      "proven_properties": 33554431,
+      "resource_bounds": 603979791,
+      "semantic_hash": 16167143600716496755,
+      "verification_method": "MECHANICAL_COMPOSITIONAL_AND_TARGETED_EXECUTION"
+    },
+    {
+      "assumptions": 5,
+      "certificate_id": "VC24-16-7e4d640a45231c661cd0cc592dcc6cc1d7b5c5e0dd39b68c915d9704c278d0c6",
+      "composition_depth": 28,
+      "dependency_hashes": [
+        10914522322735190678
+      ],
+      "guarantees": 33554431,
+      "integrity_hash": 12961935944764869069,
+      "mechanically_validated": true,
+      "object_id": 24016,
+      "parent_certificate": "VC24-15",
+      "preserved_invariants": 15,
+      "proof_provenance": 1979336022859094457,
+      "proven_properties": 33554431,
+      "resource_bounds": 603979792,
+      "semantic_hash": 13290700504943298080,
+      "verification_method": "MECHANICAL_COMPOSITIONAL_AND_TARGETED_EXECUTION"
+    },
+    {
+      "assumptions": 9,
+      "certificate_id": "VC24-17-75f29df8288bac588e6366ff39be0a2f6b97a236901e8e8e508cdcd098a7b856",
+      "composition_depth": 29,
+      "dependency_hashes": [
+        746390889426349863
+      ],
+      "guarantees": 67108863,
+      "integrity_hash": 966406752227714523,
+      "mechanically_validated": true,
+      "object_id": 24017,
+      "parent_certificate": "VC24-16",
+      "preserved_invariants": 15,
+      "proof_provenance": 15373732368409945728,
+      "proven_properties": 67108863,
+      "resource_bounds": 603979793,
+      "semantic_hash": 5779377107523104704,
+      "verification_method": "MECHANICAL_COMPOSITIONAL_AND_TARGETED_EXECUTION"
+    },
+    {
+      "assumptions": 3,
+      "certificate_id": "VC24-18-d67184b8990ab6b22f6b1de5d8742e450f37c18ef391c00f074beda602979757",
+      "composition_depth": 30,
+      "dependency_hashes": [
+        12846189926781098877
+      ],
+      "guarantees": 67108863,
+      "integrity_hash": 16046534920556911736,
+      "mechanically_validated": true,
+      "object_id": 24018,
+      "parent_certificate": "VC24-17",
+      "preserved_invariants": 15,
+      "proof_provenance": 5279483827558656731,
+      "proven_properties": 67108863,
+      "resource_bounds": 603979794,
+      "semantic_hash": 2365753627758002023,
+      "verification_method": "MECHANICAL_COMPOSITIONAL_AND_TARGETED_EXECUTION"
+    },
+    {
+      "assumptions": 5,
+      "certificate_id": "VC24-19-e7e91219c26b7bef6eb395f74ae577ba5008000777c18d7e591b010fd1a549b7",
+      "composition_depth": 31,
+      "dependency_hashes": [
+        6421390530288775927
+      ],
+      "guarantees": 67108863,
+      "integrity_hash": 6391150960647459661,
+      "mechanically_validated": true,
+      "object_id": 24019,
+      "parent_certificate": "VC24-18",
+      "preserved_invariants": 15,
+      "proof_provenance": 14415906353533626395,
+      "proven_properties": 67108863,
+      "resource_bounds": 603979795,
+      "semantic_hash": 15105471864370633041,
+      "verification_method": "MECHANICAL_COMPOSITIONAL_AND_TARGETED_EXECUTION"
+    },
+    {
+      "assumptions": 9,
+      "certificate_id": "VC24-20-bdfa306c7123bb1845db0c0df045bfe9168eb7d6d2d8a764df70a12a4fa4e442",
+      "composition_depth": 32,
+      "dependency_hashes": [
+        12056048575579907605
+      ],
+      "guarantees": 67108863,
+      "integrity_hash": 17823671102251372943,
+      "mechanically_validated": true,
+      "object_id": 24020,
+      "parent_certificate": "VC24-19",
+      "preserved_invariants": 15,
+      "proof_provenance": 11412780647415640310,
+      "proven_properties": 67108863,
+      "resource_bounds": 603979796,
+      "semantic_hash": 8051315194612173828,
+      "verification_method": "MECHANICAL_COMPOSITIONAL_AND_TARGETED_EXECUTION"
+    }
+  ],
+  "present": true,
+  "semantic_object_separate_from_claims_and_evidence": true
+}

@@ -1,0 +1,42 @@
+{
+  "certificate_replay_onto_incompatible_object_rejected": true,
+  "false_acceptances": 0,
+  "false_rejections": 0,
+  "fresh_cases": [
+    {
+      "case": "STALE_DEPENDENCY",
+      "rejected": true
+    },
+    {
+      "case": "CHANGED_HIDDEN_ASSUMPTION",
+      "rejected": true
+    },
+    {
+      "case": "INVALID_REACTION_LAW_SCOPE",
+      "rejected": true
+    },
+    {
+      "case": "SAME_SURFACE_DIFFERENT_SEMANTICS",
+      "rejected": true
+    },
+    {
+      "case": "STALE_RESOURCE_ASSUMPTION",
+      "rejected": true
+    },
+    {
+      "case": "ORDERING_CHANGE",
+      "rejected": true
+    },
+    {
+      "case": "EMERGENT_PROPERTY_SURPRISE",
+      "escalated_to_fresh_check": true,
+      "rejected": false,
+      "sound": true
+    },
+    {
+      "case": "MEDIATOR_OR_CATALYST_CONTEXT_CHANGE",
+      "rejected": true
+    }
+  ],
+  "passed": true
+}

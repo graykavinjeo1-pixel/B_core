@@ -1,0 +1,26 @@
+{
+  "A_FULL_REVALIDATION": {
+    "same_generated_work": true,
+    "verification_operation_budget": 36000000,
+    "verified_frontier_classes": 38,
+    "verified_useful_composites": 38
+  },
+  "B_EXACT_RESULT_CACHE": {
+    "same_generated_work": true,
+    "verification_operation_budget": 36000000,
+    "verified_frontier_classes": 38,
+    "verified_useful_composites": 38
+  },
+  "C_COMPOSITIONAL_CERTIFICATES": {
+    "same_generated_work": true,
+    "verification_operation_budget": 36000000,
+    "verified_frontier_classes": 190,
+    "verified_useful_composites": 190
+  },
+  "D_RECURSIVE_COMPOSITIONAL_VERIFICATION": {
+    "same_generated_work": true,
+    "verification_operation_budget": 36000000,
+    "verified_frontier_classes": 273,
+    "verified_useful_composites": 273
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "artifact_binary_sha256": "931caccc1011a0dda29f6804a705b758b6889c796f8b15041ef48f2076653b55",
+  "artifact_source_sha256": "4d363b81133f3c60ffeb73598958a55762064ebb8f3d5203f5a6420035d52a59",
+  "exact_commit": "1ed45dd0d20b5bc00226456e5334635a49d0410a",
+  "historical_evidence_rewritten": false,
+  "next_allowed_stage": "OPERATOR_REVIEW_FOR_SEM24",
+  "next_dominant_growth_limit": "REACTION_VERIFICATION_COST",
+  "passed": true,
+  "sem23_levels_A_to_J_pass": true,
+  "sem23_status": "PASS",
+  "sem24_started": false
+}

@@ -1,0 +1,20 @@
+{
+  "prevents_repeated_unsound_attempts": true,
+  "records": [
+    {
+      "epoch": 6,
+      "knowledge": "LAW_CANNOT_JUSTIFY_PROPERTY_OUTSIDE_VALIDATED_RESOURCE_OR_TOPOLOGY_SCOPE",
+      "reusable": true
+    },
+    {
+      "epoch": 13,
+      "knowledge": "LAW_CANNOT_JUSTIFY_PROPERTY_OUTSIDE_VALIDATED_RESOURCE_OR_TOPOLOGY_SCOPE",
+      "reusable": true
+    },
+    {
+      "epoch": 18,
+      "knowledge": "LAW_CANNOT_JUSTIFY_PROPERTY_OUTSIDE_VALIDATED_RESOURCE_OR_TOPOLOGY_SCOPE",
+      "reusable": true
+    }
+  ]
+}

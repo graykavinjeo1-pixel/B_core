@@ -1,0 +1,8 @@
+{
+  "broad_invalidated_certificates": 20,
+  "broad_repair_work_units": 160,
+  "passed": true,
+  "precise_invalidated_claims": 3,
+  "precise_repair_work_units": 9,
+  "unrelated_verified_structure_preserved": true
+}

@@ -1,0 +1,8 @@
+{
+  "adversarial_bank_pass": true,
+  "behavioral_regressions": 0,
+  "broad_fresh_end_to_end_validation": true,
+  "final_full_revalidation_accepted": true,
+  "hot_path_strategy": false,
+  "protected_predecessor_capabilities_compared": 173
+}

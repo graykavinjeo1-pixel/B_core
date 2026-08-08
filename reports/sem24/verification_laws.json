@@ -1,0 +1,48 @@
+{
+  "laws": [
+    {
+      "ablation_pass": true,
+      "counterexample_search_pass": true,
+      "dependency_validation_pass": true,
+      "discovered_epoch": 5,
+      "fresh_transfer_pass": true,
+      "required_invariant": "SEMANTIC_IDENTITY_AND_DEPENDENCY_HASH_MATCH",
+      "required_topology": "EXPLICIT_VALIDATED_TOPOLOGY",
+      "role_pattern": "CERTIFIED_ROLE_PATTERN_WITH_STABLE_INTERFACE",
+      "scope_validation_pass": true,
+      "sufficient_new_obligation": "AFFECTED_INTERACTION_AND_EMERGENT_SURFACE_ONLY",
+      "verification_law_id": "VL24-01",
+      "verified": true
+    },
+    {
+      "ablation_pass": true,
+      "counterexample_search_pass": true,
+      "dependency_validation_pass": true,
+      "discovered_epoch": 9,
+      "fresh_transfer_pass": true,
+      "required_invariant": "SEMANTIC_IDENTITY_AND_DEPENDENCY_HASH_MATCH",
+      "required_topology": "EXPLICIT_VALIDATED_TOPOLOGY",
+      "role_pattern": "CERTIFIED_ROLE_PATTERN_WITH_STABLE_INTERFACE",
+      "scope_validation_pass": true,
+      "sufficient_new_obligation": "AFFECTED_INTERACTION_AND_EMERGENT_SURFACE_ONLY",
+      "verification_law_id": "VL24-02",
+      "verified": true
+    },
+    {
+      "ablation_pass": true,
+      "counterexample_search_pass": true,
+      "dependency_validation_pass": true,
+      "discovered_epoch": 13,
+      "fresh_transfer_pass": true,
+      "required_invariant": "SEMANTIC_IDENTITY_AND_DEPENDENCY_HASH_MATCH",
+      "required_topology": "EXPLICIT_VALIDATED_TOPOLOGY",
+      "role_pattern": "CERTIFIED_ROLE_PATTERN_WITH_STABLE_INTERFACE",
+      "scope_validation_pass": true,
+      "sufficient_new_obligation": "AFFECTED_INTERACTION_AND_EMERGENT_SURFACE_ONLY",
+      "verification_law_id": "VL24-03",
+      "verified": true
+    }
+  ],
+  "promoted_only_after_transfer_counterexample_ablation_scope_and_dependency_validation": true,
+  "reaction_law_distinction_preserved": true
+}

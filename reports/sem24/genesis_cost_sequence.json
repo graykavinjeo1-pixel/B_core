@@ -1,0 +1,26 @@
+{
+  "composite_score": null,
+  "metric": "genesis_cost_sequence",
+  "raw_sequence": [
+    42,
+    42,
+    42,
+    42,
+    37,
+    37,
+    37,
+    34,
+    29,
+    29,
+    29,
+    29,
+    24,
+    21,
+    21,
+    21,
+    21,
+    21,
+    18,
+    18
+  ]
+}

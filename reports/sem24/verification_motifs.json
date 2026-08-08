@@ -1,0 +1,33 @@
+{
+  "discovered_from_actual_history": true,
+  "motifs": [
+    {
+      "derived_from_actual_verification_history": true,
+      "discovered_epoch": 3,
+      "kind": "INVARIANT_PRESERVATION",
+      "later_work_reduction_verified": true,
+      "motif_id": "VM24-01"
+    },
+    {
+      "derived_from_actual_verification_history": true,
+      "discovered_epoch": 6,
+      "kind": "NON_INTERFERENCE",
+      "later_work_reduction_verified": true,
+      "motif_id": "VM24-02"
+    },
+    {
+      "derived_from_actual_verification_history": true,
+      "discovered_epoch": 11,
+      "kind": "TOPOLOGY_COMPATIBILITY",
+      "later_work_reduction_verified": true,
+      "motif_id": "VM24-03"
+    },
+    {
+      "derived_from_actual_verification_history": true,
+      "discovered_epoch": 16,
+      "kind": "RESOURCE_BOUND_PROPAGATION",
+      "later_work_reduction_verified": true,
+      "motif_id": "VM24-04"
+    }
+  ]
+}
