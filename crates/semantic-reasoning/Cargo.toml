@@ -79,6 +79,10 @@ name = "sem10-fresh"
 path = "src/sem10_fresh_main.rs"
 
 [[bin]]
+name = "sem11-run"
+path = "src/sem11_main.rs"
+
+[[bin]]
 name = "core-x0-evaluate"
 path = "src/core_x0_main.rs"
 
