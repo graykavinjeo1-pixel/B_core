@@ -1,0 +1,43 @@
+{
+  "campaign_id": "SEM10-P0",
+  "status": "PASS_WITH_SEALED_TOOLCHAIN_UNKNOWN",
+  "sealed_environment": {
+    "rustc": "UNKNOWN",
+    "cargo": "UNKNOWN",
+    "toolchain_channel": "stable (name embedded in binary paths; exact version UNKNOWN)",
+    "host_triple": "UNKNOWN",
+    "target_triple": "x86_64-pc-windows-msvc (inferred from AMD64 PE and MSVC linker)",
+    "linker": "Microsoft linker 14.44 (patch version UNKNOWN)",
+    "rustflags": "UNKNOWN",
+    "cargo_encoded_rustflags": "UNKNOWN",
+    "target_cpu": "UNKNOWN",
+    "target_features": "UNKNOWN",
+    "source_date_epoch": "UNKNOWN",
+    "path_remapping": "UNKNOWN"
+  },
+  "portable_environment": {
+    "build_environment_id": "B_CORE_R0_WIN64_RUSTC_1.96.0_MSVC14.44_BREPRO_REMAP_V1",
+    "rustc": "rustc 1.96.0 (ac68faa20 2026-05-25)",
+    "rustc_commit_hash": "ac68faa20c58cbccd01ee7208bf3b6e93a7d7f96",
+    "cargo": "cargo 1.96.0 (30a34c682 2026-05-25)",
+    "llvm": "22.1.2",
+    "host_triple": "x86_64-pc-windows-msvc",
+    "target_triple": "x86_64-pc-windows-msvc",
+    "linker": "Microsoft Incremental Linker 14.44.35226.0",
+    "cargo_lock_sha256": "a25438f5b5aa4a4f6732e95f885a68d6dd5e51a9bc1463eece6ace12c4d953a5",
+    "workspace_manifest_sha256": "60b216b971cb41d725e84aab5a88a5d91ac01795f02a9787a49c9578f65b38da",
+    "dockable_core_manifest_sha256": "628625ff8d584d0e45cd69518de4e122979cbb4086232e8b8773e8afe02ea971",
+    "release_profile": "Cargo default release profile; no workspace profile override",
+    "features": "default",
+    "source_date_epoch": 1786132966,
+    "cargo_incremental": false,
+    "link_args": ["/Brepro"],
+    "path_remapping": ["repository root -> /b_core", "Cargo home -> /cargo_home", "Rustup home -> /rustup_home"],
+    "network": "OFFLINE"
+  },
+  "reproducible_build_command": "powershell -ExecutionPolicy Bypass -File scripts/build_portable_r0.ps1 -TargetDirectory <clean-target-directory>",
+  "repro_build_1_sha256": "dad15e03eec28fed770bbf671e65559a68366b801b5c464f7dda560366273a8d",
+  "repro_build_2_sha256": "dad15e03eec28fed770bbf671e65559a68366b801b5c464f7dda560366273a8d",
+  "repro_build_bytes": 382976,
+  "same_host_build_reproducible": true
+}

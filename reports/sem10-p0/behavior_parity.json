@@ -1,0 +1,53 @@
+{
+  "campaign_id": "SEM10-P0",
+  "status": "PASS",
+  "workspace_tests": {
+    "command": "cargo test --workspace --locked --offline -- --test-threads=1",
+    "passed": 155,
+    "failed": 0,
+    "ignored": 0
+  },
+  "capability_coverage": [
+    {"capability":"semantic concept reasoning","representation":"SEM-0/SEM-1 integrity, experiment, mining and model tests","passed":true},
+    {"capability":"adaptive reasoning","representation":"SEM-2 controller, experiment and task tests","passed":true},
+    {"capability":"active learning","representation":"SEM-3 selector, world and experiment tests","passed":true},
+    {"capability":"mathematics","representation":"SEM-4 algebra, proof-kernel and reasoner tests","passed":true},
+    {"capability":"programming","representation":"SEM-5 IR, learner, sandbox and experiment tests","passed":true},
+    {"capability":"knowledge foraging","representation":"SEM-6 corpus, firewall and experiment tests","passed":true},
+    {"capability":"language and GoalIR boundary","representation":"SEM-7 language boundary plus adapter equivalence tests","passed":true},
+    {"capability":"mechanism transfer","representation":"SEM-8 catalog, transfer and experiment tests","passed":true},
+    {"capability":"self-application predecessor behavior","representation":"SEM9-R1 integrity and nine-stage regression matrix tests","passed":true},
+    {"capability":"sparse routing","representation":"CORE-X0 parity suite and runtime canary","passed":true},
+    {"capability":"dockable core runtime","representation":"dockable core tests, CORE-X0 parity suite and direct canary","passed":true}
+  ],
+  "core_x0_parity_suite": {
+    "tasks": 21,
+    "canonical_semantic_equal": 21,
+    "correctness_regressions": 0,
+    "core_behavior_parity": 1.0
+  },
+  "sem9_r1_predecessor_behavior": {
+    "regression_stages": 9,
+    "tasks_per_stage": 20,
+    "strict_correctness_preserved": true,
+    "regressed_tasks": 0,
+    "predecessor_median_expansions": 120.0,
+    "accepted_r1_median_expansions": 68.0,
+    "predecessor_peak_frontier": 67,
+    "accepted_r1_peak_frontier": 37,
+    "expansion_benefit_preserved": true,
+    "frontier_benefit_preserved": true,
+    "new_candidate_created": false
+  },
+  "sealed_vs_local_canary": {
+    "json_exact": true,
+    "output_exact": true,
+    "derivation_sha256_exact": true,
+    "verified": true,
+    "search_expansions": 4,
+    "peak_active_concepts": 3,
+    "full_catalog_scans": 0,
+    "routing_false_negatives": 0
+  },
+  "core_behavior_parity": 1.0
+}

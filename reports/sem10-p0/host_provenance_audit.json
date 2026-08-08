@@ -1,0 +1,21 @@
+{
+  "campaign_id": "SEM10-P0",
+  "status": "PASS",
+  "host_dependent_research_evidence_files": [
+    "reports/sem5/baseline_results.json",
+    "reports/sem5/compile_results.json",
+    "reports/sem5/opaque_api_zero_shot.json",
+    "reports/sem5/program_synthesis_results.json",
+    "reports/sem5/runtime_results.json",
+    "reports/sem6/sem6a_corpus_manifest.json"
+  ],
+  "host_dependent_runtime_identity_files": [],
+  "classification": "RUN_PROVENANCE_RETAINED_OUTSIDE_SEMANTIC_RUNTIME_IDENTITY",
+  "historical_evidence_deleted": false,
+  "semantic_identity_uses_host_provenance": false,
+  "notes": [
+    "Historical SEM-5 compiler receipts retain original Administrator temporary paths and process-specific directory names.",
+    "CORE-X0 project inventory retains its historical generation timestamp as run provenance.",
+    "The semantic state, sparse index, runtime provenance receipt, ABI, and core config contain no absolute host path, username, hostname, process ID, or temporary directory."
+  ]
+}

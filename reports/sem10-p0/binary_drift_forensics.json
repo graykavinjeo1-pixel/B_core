@@ -1,0 +1,40 @@
+{
+  "campaign_id": "SEM10-P0",
+  "status": "KNOWN_NON_SEMANTIC_BUILD_ENVIRONMENT_DRIFT",
+  "sealed_core_x0_binary": {
+    "bytes": 404992,
+    "sha256": "57a81bbe59dd9e524d7aea5f17ba7ecf471cec8e90da922d2f65de73f53b4ae2",
+    "pe_timestamp": "2026-08-07T19:50:56Z",
+    "pdb_guid": "FFC96DAD-7398-41A5-A623-F27971B0A02F",
+    "embedded_administrator_paths": true
+  },
+  "portable_reconstructed_r0_binary": {
+    "bytes": 382976,
+    "sha256": "dad15e03eec28fed770bbf671e65559a68366b801b5c464f7dda560366273a8d",
+    "pe_timestamp": "deterministic /Brepro content value 0x9165A9EA",
+    "pdb_guid": "CEAD0B4E-4EA3-CFEB-81BF-DF23DC6C4A4F",
+    "embedded_personal_or_checkout_paths": false
+  },
+  "section_comparison": [
+    {"section":".text","sealed_bytes":287375,"sealed_sha256":"0f8b764886e64e6da6da93eda4e8a9ae7192a43992fd0ebfed657dcc00b76add","local_bytes":273354,"local_sha256":"3fd06244d3b0b6c1514ec88ab76668260c1503e58b9739b5f0962fa29e63c0ae","classification":"TOOLCHAIN_CODEGEN_DRIFT"},
+    {"section":".rdata","sealed_bytes":101758,"sealed_sha256":"cbd38578fef867985354bfc16ae417647c7575f7080e4d1c3a032360d02a7446","local_bytes":95134,"local_sha256":"12a88eaf78efa040cae01beb7e3cee87a15e32e7cc226a9f0537d5f0aa88402a","classification":"TOOLCHAIN_CODEGEN_AND_PATH_DRIFT"},
+    {"section":".data","sealed_bytes":512,"sealed_sha256":"82de3214a7d8d624265fa330cf50100ac66b673884c8b932248b9283225df01c","local_bytes":512,"local_sha256":"7a5b2ac5f093d0dc5ac2baafad22fba6655996cbaaa3045e9d6e618adae45c82","classification":"TOOLCHAIN_LAYOUT_DRIFT"},
+    {"section":".pdata","sealed_bytes":12012,"sealed_sha256":"ac95e2571c1158c9eeacc94bce8ac1222a49468911fccca20eb54d83524228e6","local_bytes":10884,"local_sha256":"e83f8b60a8b47db297cd4f503f44199f651066f59449c17a50f2ef9d48743a5a","classification":"TOOLCHAIN_UNWIND_METADATA_DRIFT"},
+    {"section":".reloc","sealed_bytes":1528,"sealed_sha256":"0d1ade878f52fff2e1f2a1f9194aa3d7c99a0022d183b0dcd8075d48d48d83ba","local_bytes":1084,"local_sha256":"6f7275de73734030e64fdecfeea0382b47676875741478b553d1c06c65f75d97","classification":"LINK_LAYOUT_DRIFT"}
+  ],
+  "cross_host_binary_byte_exact": false,
+  "sealed_toolchain_known": false,
+  "same_host_portable_build_byte_exact": true,
+  "source_git_identity_exact": true,
+  "semantic_state_exact": true,
+  "index_exact": true,
+  "promoted_concept_hashes_exact": true,
+  "abi_and_versions_exact": true,
+  "full_predecessor_regression_pass": true,
+  "core_behavior_parity": 1.0,
+  "sealed_and_local_canary_json_exact": true,
+  "executable_semantic_drift_detected": false,
+  "binary_drift_classification": "TOOLCHAIN_CODEGEN_PLUS_HOST_PATH_AND_PE_PDB_METADATA_DRIFT",
+  "binary_drift_classified_non_semantic": true,
+  "justification": "The immutable Git source, byte-exact runtime state/index/ABI, 12 promoted payload receipts, all 155 workspace tests, the 21-case CORE-X0 parity suite, SEM9-R1 regression representation, and the sealed/local runtime canary agree. The remaining machine-code difference is attributable to an unrecorded sealed compiler/codegen environment plus demonstrable embedded host paths and non-reproducible PE/PDB metadata."
+}

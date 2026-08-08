@@ -1,0 +1,47 @@
+{
+  "campaign_id": "SEM10-P0",
+  "status": "PASS",
+  "canonical_commit": "2961a975fd57e3ad0f5cabe29a2058fb0ca4fcba",
+  "canonical_git_tree": "97b0a60dfd18c146f78053400105f158c70745af",
+  "repair_control_commit": "76af48d1d5fddf6ff4b18e89c8062d0cd92403ef",
+  "fresh_checkout": {
+    "path": "D:/B_Core_SEM10_P0_REGATE",
+    "head_commit": "76af48d1d5fddf6ff4b18e89c8062d0cd92403ef",
+    "head_git_tree": "a49a926d847993ed1d0db445c5acdbba7a8fa9bc",
+    "worktree_clean_before_validation": true,
+    "git_diff_empty": true,
+    "git_diff_cached_empty": true,
+    "tracked_text_files_with_lf": 527,
+    "tracked_binary_files": 4,
+    "tracked_text_files_with_non_lf_worktree_eol": 0
+  },
+  "canonical_runtime_source_diff": {
+    "paths": [
+      "crates/dockable-semantic-core",
+      "crates/semantic-core-adapters",
+      "crates/semantic-reasoning",
+      "crates/synapse-core",
+      "crates/synapse-recursive-core"
+    ],
+    "diff_against_canonical_commit": false
+  },
+  "checkout_environment": {
+    "global_core_autocrlf": true,
+    "repository_core_filemode": false,
+    "tracked_modes": {
+      "100644": 522
+    },
+    "active_checkout_filters_on_predecessor_paths": [],
+    "untracked_files_in_fresh_checkout": 0
+  },
+  "repair": {
+    "type": "CHECKOUT_NORMALIZATION_METADATA_ONLY",
+    "gitattributes_rule": "* text=auto eol=lf",
+    "binary_exclusions": ["*.exe", "*.dll", "*.lib", "*.pdb"],
+    "reasoning_source_changed": false,
+    "semantic_state_changed": false,
+    "promoted_concepts_changed": false
+  },
+  "canonical_source_identity": "PASS",
+  "canonical_git_tree_exact": true
+}

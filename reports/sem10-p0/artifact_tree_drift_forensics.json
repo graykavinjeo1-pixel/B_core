@@ -1,0 +1,51 @@
+{
+  "campaign_id": "SEM10-P0",
+  "status": "CLASSIFIED",
+  "root_cause": "GLOBAL_CORE_AUTOCRLF_TRUE_WITH_INCOMPLETE_GITATTRIBUTES",
+  "change_type": "LINE_ENDING_DRIFT",
+  "artifact_tree_drift_files": 257,
+  "all_changed_files_reduce_exactly_to_the_git_bytes_by_crlf_to_lf_normalization": true,
+  "changed_files_by_tree": {
+    "reports/sem2": 48,
+    "reports/sem3": 23,
+    "reports/sem4": 26,
+    "reports/sem5": 29,
+    "reports/sem6": 31,
+    "reports/sem7": 24,
+    "reports/sem8": 27,
+    "reports/sem9": 30,
+    "reports/sem9-r1": 19
+  },
+  "sealed_stage_tree_regate": [
+    {"file_path":"reports/sem0","before_hash":"6ccf0423ca5c7106d70492f107c23980b9e9f31a807f778f16d66462e2558cbe","after_hash":"6ccf0423ca5c7106d70492f107c23980b9e9f31a807f778f16d66462e2558cbe","change_type":"NO_DRIFT","passed":true},
+    {"file_path":"reports/sem1","before_hash":"b5083b272995fbeabb735608db43b08d289359e5f03601cc91b4eb99756f87f8","after_hash":"b5083b272995fbeabb735608db43b08d289359e5f03601cc91b4eb99756f87f8","change_type":"NO_DRIFT","passed":true},
+    {"file_path":"reports/sem2","before_hash":"871901e5e45a8ef0ed7d44c2a25806f6297b5c53a95f63eb1734258e7e4c7e11","after_hash":"9e0f2ee39cd7ea11f60a66842f650c0f269054a6cdcaa061e4de02f2bbb37e0c","change_type":"LINE_ENDING_DRIFT","passed":true},
+    {"file_path":"reports/sem3","before_hash":"4005b9aea28c5d9ef273af720d3bf6f2a9972cc9a9716f05b7a12fa1985ceb52","after_hash":"90ad74b1a86ee455a3d20ac52d906a6ee82435b163665580c9d8b8ac5720abdd","change_type":"LINE_ENDING_DRIFT","passed":true},
+    {"file_path":"reports/sem4","before_hash":"6e31a2e1b4fbf7f589e11f903a0bd108e598f3ee35792a72ed986cdae294b951","after_hash":"1abcd9cbe97ffa8bdeb28444137d7b5a7348868e632cb47defac0f73c2d0c11e","change_type":"LINE_ENDING_DRIFT","passed":true},
+    {"file_path":"reports/sem5","before_hash":"d7b1572fde29b04dc9995a1ad901e27883482e23b17e9eeb31d2da3ace6c4bd1","after_hash":"b47dd3a0f174bb460000a45b115f4c48f3f1c034a22cceb0e9efae1a954ba8cc","change_type":"LINE_ENDING_DRIFT","passed":true},
+    {"file_path":"reports/sem6","before_hash":"696e0656733137bcd60c0dbe8db3fe6ee8fe0b2fb75183b5e9d13dfda755a984","after_hash":"29deb5012dc736504ebeaf020faac8b73693701016bba922172ed91a3842c143","change_type":"LINE_ENDING_DRIFT","passed":true},
+    {"file_path":"reports/sem7","before_hash":"d9298ad66f5e60fe75326ed429b027a0de98a7e5cd31c3fdb7a397b2f1553a1b","after_hash":"ff41c4cf31950909ceaa386b17ee00eabfbc783b97edaccecc04601785f0e0ad","change_type":"LINE_ENDING_DRIFT","passed":true},
+    {"file_path":"reports/sem8","before_hash":"e5f164c111478f887912c5ff9e43068809132a58ab9dfa565914a7c9d7b773b5","after_hash":"0b61431f13f428d47f0ec482816791008e79bc62c0d224110aba97c8439bbb35","change_type":"LINE_ENDING_DRIFT","passed":true}
+  ],
+  "failed_test_forensics": [
+    {"test_name":"sem3::experiment::tests::sem3_run_keeps_sem4_and_recursive_mutation_disabled","file_path":"reports/sem2","before_hash":"871901e5e45a8ef0ed7d44c2a25806f6297b5c53a95f63eb1734258e7e4c7e11","after_hash":"9e0f2ee39cd7ea11f60a66842f650c0f269054a6cdcaa061e4de02f2bbb37e0c","change_type":"LINE_ENDING_DRIFT"},
+    {"test_name":"sem3::integrity::tests::all_predecessor_stages_failures_concepts_and_quarantine_verify","file_path":"reports/sem2","before_hash":"871901e5e45a8ef0ed7d44c2a25806f6297b5c53a95f63eb1734258e7e4c7e11","after_hash":"9e0f2ee39cd7ea11f60a66842f650c0f269054a6cdcaa061e4de02f2bbb37e0c","change_type":"LINE_ENDING_DRIFT"},
+    {"test_name":"sem3::reporting::tests::all_required_sem3_reports_are_written","file_path":"reports/sem2","before_hash":"871901e5e45a8ef0ed7d44c2a25806f6297b5c53a95f63eb1734258e7e4c7e11","after_hash":"9e0f2ee39cd7ea11f60a66842f650c0f269054a6cdcaa061e4de02f2bbb37e0c","change_type":"LINE_ENDING_DRIFT"},
+    {"test_name":"sem4::experiment::tests::promotion_and_ablation_require_formal_reusable_compression","file_path":"reports/sem2","before_hash":"871901e5e45a8ef0ed7d44c2a25806f6297b5c53a95f63eb1734258e7e4c7e11","after_hash":"9e0f2ee39cd7ea11f60a66842f650c0f269054a6cdcaa061e4de02f2bbb37e0c","change_type":"LINE_ENDING_DRIFT"},
+    {"test_name":"sem4::experiment::tests::sem4_run_passes_without_formula_or_recursive_contamination","file_path":"reports/sem2","before_hash":"871901e5e45a8ef0ed7d44c2a25806f6297b5c53a95f63eb1734258e7e4c7e11","after_hash":"9e0f2ee39cd7ea11f60a66842f650c0f269054a6cdcaa061e4de02f2bbb37e0c","change_type":"LINE_ENDING_DRIFT"},
+    {"test_name":"sem4::integrity::tests::sem0_through_sem3_and_quarantine_are_immutable","file_path":"reports/sem2","before_hash":"871901e5e45a8ef0ed7d44c2a25806f6297b5c53a95f63eb1734258e7e4c7e11","after_hash":"9e0f2ee39cd7ea11f60a66842f650c0f269054a6cdcaa061e4de02f2bbb37e0c","change_type":"LINE_ENDING_DRIFT"},
+    {"test_name":"sem4::reporting::tests::every_required_sem4_report_is_written","file_path":"reports/sem2","before_hash":"871901e5e45a8ef0ed7d44c2a25806f6297b5c53a95f63eb1734258e7e4c7e11","after_hash":"9e0f2ee39cd7ea11f60a66842f650c0f269054a6cdcaa061e4de02f2bbb37e0c","change_type":"LINE_ENDING_DRIFT"},
+    {"test_name":"sem5::integrity::tests::sem0_through_sem4_and_quarantine_are_immutable","file_path":"reports/sem2","before_hash":"871901e5e45a8ef0ed7d44c2a25806f6297b5c53a95f63eb1734258e7e4c7e11","after_hash":"9e0f2ee39cd7ea11f60a66842f650c0f269054a6cdcaa061e4de02f2bbb37e0c","change_type":"LINE_ENDING_DRIFT"},
+    {"test_name":"sem6::experiment::tests::canonical_evaluation_hits_strong_targets_without_contamination","file_path":"reports/sem2","before_hash":"871901e5e45a8ef0ed7d44c2a25806f6297b5c53a95f63eb1734258e7e4c7e11","after_hash":"9e0f2ee39cd7ea11f60a66842f650c0f269054a6cdcaa061e4de02f2bbb37e0c","change_type":"LINE_ENDING_DRIFT"},
+    {"test_name":"sem6::integrity::tests::sem0_through_sem5_and_quarantine_are_immutable_before_network","file_path":"reports/sem2","before_hash":"871901e5e45a8ef0ed7d44c2a25806f6297b5c53a95f63eb1734258e7e4c7e11","after_hash":"9e0f2ee39cd7ea11f60a66842f650c0f269054a6cdcaa061e4de02f2bbb37e0c","change_type":"LINE_ENDING_DRIFT"},
+    {"test_name":"sem7::integrity::tests::sem0_through_sem6_concepts_provenance_and_quarantine_are_immutable","file_path":"reports/sem2","before_hash":"871901e5e45a8ef0ed7d44c2a25806f6297b5c53a95f63eb1734258e7e4c7e11","after_hash":"9e0f2ee39cd7ea11f60a66842f650c0f269054a6cdcaa061e4de02f2bbb37e0c","change_type":"LINE_ENDING_DRIFT"},
+    {"test_name":"sem8::integrity::tests::sem0_through_sem7_failure_history_language_boundary_and_quarantine_are_sealed","file_path":"reports/sem2","before_hash":"871901e5e45a8ef0ed7d44c2a25806f6297b5c53a95f63eb1734258e7e4c7e11","after_hash":"9e0f2ee39cd7ea11f60a66842f650c0f269054a6cdcaa061e4de02f2bbb37e0c","change_type":"LINE_ENDING_DRIFT"},
+    {"test_name":"sem9::integrity::tests::sem0_through_sem8_transfer_and_quarantine_are_sealed","file_path":"reports/sem2","before_hash":"871901e5e45a8ef0ed7d44c2a25806f6297b5c53a95f63eb1734258e7e4c7e11","after_hash":"9e0f2ee39cd7ea11f60a66842f650c0f269054a6cdcaa061e4de02f2bbb37e0c","change_type":"LINE_ENDING_DRIFT"},
+    {"test_name":"sem9r1::integrity::tests::run0001_failure_is_exact_and_receiptable","file_path":"reports/sem2","before_hash":"871901e5e45a8ef0ed7d44c2a25806f6297b5c53a95f63eb1734258e7e4c7e11","after_hash":"9e0f2ee39cd7ea11f60a66842f650c0f269054a6cdcaa061e4de02f2bbb37e0c","change_type":"LINE_ENDING_DRIFT"}
+  ],
+  "note": "All 14 observed failures stopped at the inherited SEM-3 predecessor gate, whose first nonmatching sealed tree was reports/sem2. Later trees had the same latent checkout-only drift and are enumerated separately above.",
+  "predecessor_tree_mutations_during_tests": 0,
+  "pre_test_predecessor_tree_sha256": "661c373bec608f2a3cf86c9de4641158fa2504ebc58d59565f96e8f41b3b9b7f",
+  "post_test_predecessor_tree_sha256": "661c373bec608f2a3cf86c9de4641158fa2504ebc58d59565f96e8f41b3b9b7f",
+  "predecessor_tracked_files_checked": 315
+}
