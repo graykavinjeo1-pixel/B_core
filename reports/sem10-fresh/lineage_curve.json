@@ -1,0 +1,11 @@
+{
+  "metric": "MEDIAN_DETERMINISTIC_OPS",
+  "r0": 1259.5,
+  "r0_to_r1_gain": 0.36006351726875746,
+  "r1_on_r0_r1_manifest": 806.0,
+  "r1_on_r1_r2_manifest": 806.5,
+  "r1_to_r2_gain": 0.7668939863608184,
+  "r2": 188.0,
+  "serial_lineage_verified": true,
+  "total_r0_to_r2_gain": 0.850734418420008
+}

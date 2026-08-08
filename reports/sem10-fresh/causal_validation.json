@@ -1,0 +1,40 @@
+[
+  {
+    "assumptions_precede_patch": true,
+    "causal_chain": [
+      "a1287948d9eb91e9224a036b8642fbb6f34f20db572781dfe4c3325ec87688fc",
+      "b3a693b5cbb862960098faf2543a67486dff3604bd7004fdf3d4faaf97bfadfe",
+      "08f7ec412def4db3ef3f2a891e52ffee5d1183499941539719441e50e6933d08",
+      "02fc65fd97f7faead6f5ac2ff2d365790bf4e9f4c70be19d9bbdc7f67594d22a",
+      "299d9ec53437ab89df06693b9307b8adf4d700e4071db60d165a02081e7c2297",
+      "8e30eb60ba5294d8c68f2d7358e58b3283590feb2a39018d4fc5429197ab4482"
+    ],
+    "observation_precedes_weakness": true,
+    "passed": true,
+    "patch_ablation_removes_gain": true,
+    "role_mapping_precedes_change_ir": true,
+    "source_concept_ablation_recovers_same_transform": false,
+    "source_concept_causality_pass": true,
+    "transition": "R0_TO_R1",
+    "weakness_precedes_mechanism_selection": true
+  },
+  {
+    "assumptions_precede_patch": true,
+    "causal_chain": [
+      "0ae108506922319577af72248c6c0e851c88a45a8f41cdcea23e3fe0de9f7542",
+      "90c9a02d3200483ab3a2751dec85faa64b8b9fbfbe2b032180b106dfc98965b5",
+      "96cefae9d18f2112af938af1e400d21a385ca297f9293136f62c158882f5540d",
+      "4db282cf0480859e6009a99ab56a59087ae7dd5c7bf68908a1cb3b339fb589e2",
+      "14ef95ab3e551a74f2f4cd7c691076a16fa64e00734b947c0eafa8efa6e89b42",
+      "27a4dfa5b4cde7bf29685b7536c06656be787e269cadd5273a9308147ba66361"
+    ],
+    "observation_precedes_weakness": true,
+    "passed": true,
+    "patch_ablation_removes_gain": true,
+    "role_mapping_precedes_change_ir": true,
+    "source_concept_ablation_recovers_same_transform": false,
+    "source_concept_causality_pass": true,
+    "transition": "R1_TO_R2",
+    "weakness_precedes_mechanism_selection": true
+  }
+]

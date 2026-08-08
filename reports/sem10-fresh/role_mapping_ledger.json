@@ -1,0 +1,91 @@
+[
+  {
+    "causal_target": "the same canonical membership fact is materialized in more than one ordered stage",
+    "child_generation": "R1",
+    "mapping_declared_before_patch": true,
+    "mappings": [
+      {
+        "required": true,
+        "source_kind": "INPUT",
+        "source_role_id": "M0005-R0",
+        "source_type_class": "value<T>",
+        "target_binding": "reasoning_state_stream"
+      },
+      {
+        "required": true,
+        "source_kind": "STAGE",
+        "source_role_id": "M0005-R1",
+        "source_type_class": "pure_relation<T,U>",
+        "target_binding": "membership_materialization_stage"
+      },
+      {
+        "required": true,
+        "source_kind": "TRANSFORM",
+        "source_role_id": "M0005-R2",
+        "source_type_class": "pure_relation<T,U>",
+        "target_binding": "equivalence_preserving_scheduler_transform"
+      },
+      {
+        "required": true,
+        "source_kind": "STAGE",
+        "source_role_id": "M0005-R3",
+        "source_type_class": "pure_relation<T,U>",
+        "target_binding": "membership_materialization_stage"
+      },
+      {
+        "required": true,
+        "source_kind": "OUTPUT",
+        "source_role_id": "M0005-R4",
+        "source_type_class": "value<T>",
+        "target_binding": "semantically_distinct_reachable_keys"
+      }
+    ],
+    "mechanism_id": "M0005",
+    "parent_generation": "R0",
+    "source_concept_ids": [
+      "C000010"
+    ],
+    "weakness_id": "R0-REDUNDANT_STAGE_COMPOSITION"
+  },
+  {
+    "causal_target": "an ordered search is repeatedly used where the observed canonical boundary admits direct activation",
+    "child_generation": "R2",
+    "mapping_declared_before_patch": true,
+    "mappings": [
+      {
+        "required": true,
+        "source_kind": "INPUT",
+        "source_role_id": "M0006-R0",
+        "source_type_class": "value<T>",
+        "target_binding": "reasoning_state_stream"
+      },
+      {
+        "required": true,
+        "source_kind": "BOUNDARY",
+        "source_role_id": "M0006-R1",
+        "source_type_class": "bounded_index_or_partition",
+        "target_binding": "canonical_key_activation_boundary"
+      },
+      {
+        "required": true,
+        "source_kind": "TRANSFORM",
+        "source_role_id": "M0006-R2",
+        "source_type_class": "pure_relation<T,U>",
+        "target_binding": "equivalence_preserving_scheduler_transform"
+      },
+      {
+        "required": true,
+        "source_kind": "OUTPUT",
+        "source_role_id": "M0006-R3",
+        "source_type_class": "value<T>",
+        "target_binding": "semantically_distinct_reachable_keys"
+      }
+    ],
+    "mechanism_id": "M0006",
+    "parent_generation": "R1",
+    "source_concept_ids": [
+      "C000012"
+    ],
+    "weakness_id": "R1-ORDERED_BOUNDARY_LOOKUP"
+  }
+]

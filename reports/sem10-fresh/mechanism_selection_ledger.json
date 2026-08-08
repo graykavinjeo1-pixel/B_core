@@ -1,0 +1,422 @@
+[
+  {
+    "full_catalog_scan": false,
+    "human_concept_id_assignment": false,
+    "observer_generation": "R0",
+    "rankings": [
+      {
+        "assumptions": [
+          {
+            "assumption_id": "M0005-A0",
+            "evidence_origin": "reports/sem5/transfer_results.json",
+            "kind": "DETERMINISTIC",
+            "required": true
+          },
+          {
+            "assumption_id": "M0005-A1",
+            "evidence_origin": "reports/sem5/transfer_results.json",
+            "kind": "PURE",
+            "required": true
+          }
+        ],
+        "compatibility_reason": "directly composes adjacent stages while preserving the declared relation",
+        "compatibility_score": 100,
+        "mechanism_id": "M0005",
+        "roles": [
+          {
+            "kind": "INPUT",
+            "required": true,
+            "role_id": "M0005-R0",
+            "type_class": "value<T>"
+          },
+          {
+            "kind": "STAGE",
+            "required": true,
+            "role_id": "M0005-R1",
+            "type_class": "pure_relation<T,U>"
+          },
+          {
+            "kind": "TRANSFORM",
+            "required": true,
+            "role_id": "M0005-R2",
+            "type_class": "pure_relation<T,U>"
+          },
+          {
+            "kind": "STAGE",
+            "required": true,
+            "role_id": "M0005-R3",
+            "type_class": "pure_relation<T,U>"
+          },
+          {
+            "kind": "OUTPUT",
+            "required": true,
+            "role_id": "M0005-R4",
+            "type_class": "value<T>"
+          }
+        ],
+        "semantic_sha256": "d2bf0fd822f012bc188096794a44a228d4b9201fe0006633c085f65afc04ad20",
+        "source_concept_ids": [
+          "C000010"
+        ],
+        "source_domain": "PROGRAMMING",
+        "transform": "STAGE_COMPOSITION"
+      },
+      {
+        "assumptions": [
+          {
+            "assumption_id": "M0004-A0",
+            "evidence_origin": "reports/sem5/condition_d_results.json",
+            "kind": "DETERMINISTIC",
+            "required": true
+          },
+          {
+            "assumption_id": "M0004-A1",
+            "evidence_origin": "reports/sem5/condition_d_results.json",
+            "kind": "ASSOCIATIVE",
+            "required": true
+          }
+        ],
+        "compatibility_reason": "can reduce repeated state writes but has a stronger associativity assumption",
+        "compatibility_score": 80,
+        "mechanism_id": "M0004",
+        "roles": [
+          {
+            "kind": "STATE",
+            "required": true,
+            "role_id": "M0004-R0",
+            "type_class": "state<T>"
+          },
+          {
+            "kind": "INPUT",
+            "required": true,
+            "role_id": "M0004-R1",
+            "type_class": "value<T>"
+          },
+          {
+            "kind": "ACCUMULATOR",
+            "required": true,
+            "role_id": "M0004-R2",
+            "type_class": "state<T>"
+          },
+          {
+            "kind": "INVARIANT",
+            "required": true,
+            "role_id": "M0004-R3",
+            "type_class": "predicate<T>"
+          },
+          {
+            "kind": "OUTPUT",
+            "required": true,
+            "role_id": "M0004-R4",
+            "type_class": "value<T>"
+          }
+        ],
+        "semantic_sha256": "e0bd2c23d482da2bd1d1b158e66c6bfddfc2d8bbe08e089fa3075b339b5c72fb",
+        "source_concept_ids": [
+          "C000009"
+        ],
+        "source_domain": "PROGRAMMING",
+        "transform": "STATEFUL_REDUCTION"
+      },
+      {
+        "assumptions": [
+          {
+            "assumption_id": "M0001-A0",
+            "evidence_origin": "reports/sem4/derivation_records.json",
+            "kind": "DETERMINISTIC",
+            "required": true
+          },
+          {
+            "assumption_id": "M0001-A1",
+            "evidence_origin": "reports/sem4/derivation_records.json",
+            "kind": "TERMINATES",
+            "required": true
+          },
+          {
+            "assumption_id": "M0001-A2",
+            "evidence_origin": "reports/sem4/derivation_records.json",
+            "kind": "INVARIANT_GLOBAL",
+            "required": true
+          }
+        ],
+        "compatibility_reason": "state transition is compatible but indirect",
+        "compatibility_score": 60,
+        "mechanism_id": "M0001",
+        "roles": [
+          {
+            "kind": "STATE",
+            "required": true,
+            "role_id": "M0001-R0",
+            "type_class": "state<T>"
+          },
+          {
+            "kind": "INPUT",
+            "required": true,
+            "role_id": "M0001-R1",
+            "type_class": "value<T>"
+          },
+          {
+            "kind": "TRANSFORM",
+            "required": true,
+            "role_id": "M0001-R2",
+            "type_class": "pure_relation<T,U>"
+          },
+          {
+            "kind": "INVARIANT",
+            "required": true,
+            "role_id": "M0001-R3",
+            "type_class": "predicate<T>"
+          },
+          {
+            "kind": "OUTPUT",
+            "required": true,
+            "role_id": "M0001-R4",
+            "type_class": "value<T>"
+          }
+        ],
+        "semantic_sha256": "cd0b31940b195f901f05b1d16d5dc1a2f7f8aafd9bcf2d937efa09389253b893",
+        "source_concept_ids": [
+          "C000006",
+          "C000007"
+        ],
+        "source_domain": "MATHEMATICS",
+        "transform": "STATE_EVOLUTION"
+      }
+    ],
+    "selected": {
+      "assumptions": [
+        {
+          "assumption_id": "M0005-A0",
+          "evidence_origin": "reports/sem5/transfer_results.json",
+          "kind": "DETERMINISTIC",
+          "required": true
+        },
+        {
+          "assumption_id": "M0005-A1",
+          "evidence_origin": "reports/sem5/transfer_results.json",
+          "kind": "PURE",
+          "required": true
+        }
+      ],
+      "compatibility_reason": "directly composes adjacent stages while preserving the declared relation",
+      "compatibility_score": 100,
+      "mechanism_id": "M0005",
+      "roles": [
+        {
+          "kind": "INPUT",
+          "required": true,
+          "role_id": "M0005-R0",
+          "type_class": "value<T>"
+        },
+        {
+          "kind": "STAGE",
+          "required": true,
+          "role_id": "M0005-R1",
+          "type_class": "pure_relation<T,U>"
+        },
+        {
+          "kind": "TRANSFORM",
+          "required": true,
+          "role_id": "M0005-R2",
+          "type_class": "pure_relation<T,U>"
+        },
+        {
+          "kind": "STAGE",
+          "required": true,
+          "role_id": "M0005-R3",
+          "type_class": "pure_relation<T,U>"
+        },
+        {
+          "kind": "OUTPUT",
+          "required": true,
+          "role_id": "M0005-R4",
+          "type_class": "value<T>"
+        }
+      ],
+      "semantic_sha256": "d2bf0fd822f012bc188096794a44a228d4b9201fe0006633c085f65afc04ad20",
+      "source_concept_ids": [
+        "C000010"
+      ],
+      "source_domain": "PROGRAMMING",
+      "transform": "STAGE_COMPOSITION"
+    },
+    "selection_sha256": "08f7ec412def4db3ef3f2a891e52ffee5d1183499941539719441e50e6933d08",
+    "top_one_applied_only": true,
+    "weakness_id": "R0-REDUNDANT_STAGE_COMPOSITION"
+  },
+  {
+    "full_catalog_scan": false,
+    "human_concept_id_assignment": false,
+    "observer_generation": "R1",
+    "rankings": [
+      {
+        "assumptions": [
+          {
+            "assumption_id": "M0006-A0",
+            "evidence_origin": "reports/sem6/semantic_compilation_results.json",
+            "kind": "DETERMINISTIC",
+            "required": true
+          },
+          {
+            "assumption_id": "M0006-A1",
+            "evidence_origin": "reports/sem6/semantic_compilation_results.json",
+            "kind": "TERMINATES",
+            "required": true
+          }
+        ],
+        "compatibility_reason": "maps a bounded canonical key to a direct equivalence-class activation boundary",
+        "compatibility_score": 100,
+        "mechanism_id": "M0006",
+        "roles": [
+          {
+            "kind": "INPUT",
+            "required": true,
+            "role_id": "M0006-R0",
+            "type_class": "value<T>"
+          },
+          {
+            "kind": "BOUNDARY",
+            "required": true,
+            "role_id": "M0006-R1",
+            "type_class": "bounded_index_or_partition"
+          },
+          {
+            "kind": "TRANSFORM",
+            "required": true,
+            "role_id": "M0006-R2",
+            "type_class": "pure_relation<T,U>"
+          },
+          {
+            "kind": "OUTPUT",
+            "required": true,
+            "role_id": "M0006-R3",
+            "type_class": "value<T>"
+          }
+        ],
+        "semantic_sha256": "f0ba3b584879225ea4c482dbc58727ae2aef5633e5cbfbf41a640b265ee1a5dc",
+        "source_concept_ids": [
+          "C000012"
+        ],
+        "source_domain": "EXTERNAL_DEFINITION",
+        "transform": "QUOTIENT_PARTITION"
+      },
+      {
+        "assumptions": [
+          {
+            "assumption_id": "M0003-A0",
+            "evidence_origin": "reports/sem5/definition_only_results.json",
+            "kind": "DETERMINISTIC",
+            "required": true
+          },
+          {
+            "assumption_id": "M0003-A1",
+            "evidence_origin": "reports/sem5/definition_only_results.json",
+            "kind": "TERMINATES",
+            "required": true
+          },
+          {
+            "assumption_id": "M0003-A2",
+            "evidence_origin": "reports/sem5/definition_only_results.json",
+            "kind": "INVARIANT_GLOBAL",
+            "required": true
+          }
+        ],
+        "compatibility_reason": "supports a bounded guard but retains traversal work",
+        "compatibility_score": 80,
+        "mechanism_id": "M0003",
+        "roles": [
+          {
+            "kind": "INPUT",
+            "required": true,
+            "role_id": "M0003-R0",
+            "type_class": "value<T>"
+          },
+          {
+            "kind": "CONDITION",
+            "required": true,
+            "role_id": "M0003-R1",
+            "type_class": "predicate<T>"
+          },
+          {
+            "kind": "TRANSFORM",
+            "required": true,
+            "role_id": "M0003-R2",
+            "type_class": "pure_relation<T,U>"
+          },
+          {
+            "kind": "BOUNDARY",
+            "required": true,
+            "role_id": "M0003-R3",
+            "type_class": "bounded_index_or_partition"
+          },
+          {
+            "kind": "OUTPUT",
+            "required": true,
+            "role_id": "M0003-R4",
+            "type_class": "value<T>"
+          }
+        ],
+        "semantic_sha256": "638ff28804b17acb5ea48ff20c1231ee82c151edfac93ed02cd3495b4d531e74",
+        "source_concept_ids": [
+          "C000008"
+        ],
+        "source_domain": "DATA_TRANSFORM",
+        "transform": "GUARDED_TRAVERSAL"
+      }
+    ],
+    "selected": {
+      "assumptions": [
+        {
+          "assumption_id": "M0006-A0",
+          "evidence_origin": "reports/sem6/semantic_compilation_results.json",
+          "kind": "DETERMINISTIC",
+          "required": true
+        },
+        {
+          "assumption_id": "M0006-A1",
+          "evidence_origin": "reports/sem6/semantic_compilation_results.json",
+          "kind": "TERMINATES",
+          "required": true
+        }
+      ],
+      "compatibility_reason": "maps a bounded canonical key to a direct equivalence-class activation boundary",
+      "compatibility_score": 100,
+      "mechanism_id": "M0006",
+      "roles": [
+        {
+          "kind": "INPUT",
+          "required": true,
+          "role_id": "M0006-R0",
+          "type_class": "value<T>"
+        },
+        {
+          "kind": "BOUNDARY",
+          "required": true,
+          "role_id": "M0006-R1",
+          "type_class": "bounded_index_or_partition"
+        },
+        {
+          "kind": "TRANSFORM",
+          "required": true,
+          "role_id": "M0006-R2",
+          "type_class": "pure_relation<T,U>"
+        },
+        {
+          "kind": "OUTPUT",
+          "required": true,
+          "role_id": "M0006-R3",
+          "type_class": "value<T>"
+        }
+      ],
+      "semantic_sha256": "f0ba3b584879225ea4c482dbc58727ae2aef5633e5cbfbf41a640b265ee1a5dc",
+      "source_concept_ids": [
+        "C000012"
+      ],
+      "source_domain": "EXTERNAL_DEFINITION",
+      "transform": "QUOTIENT_PARTITION"
+    },
+    "selection_sha256": "96cefae9d18f2112af938af1e400d21a385ca297f9293136f62c158882f5540d",
+    "top_one_applied_only": true,
+    "weakness_id": "R1-ORDERED_BOUNDARY_LOOKUP"
+  }
+]

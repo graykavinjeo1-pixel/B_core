@@ -1,0 +1,8 @@
+{
+  "experimental_descendants_not_promoted": true,
+  "portable_r0_core_total_deployable_bytes": 382976,
+  "portable_r0_binary_sha256": "dad15e03eec28fed770bbf671e65559a68366b801b5c464f7dda560366273a8d",
+  "r0_profile_binary_bytes": 237056,
+  "r1_profile_binary_bytes": 236544,
+  "r2_profile_binary_bytes": 237568
+}

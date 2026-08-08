@@ -1,0 +1,30 @@
+[
+  {
+    "weakness_id": "R0-REDUNDANT_STAGE_COMPOSITION",
+    "observer_generation": "R0",
+    "feature": "REDUNDANT_STAGE_COMPOSITION",
+    "priority": 1,
+    "confidence": 0.99,
+    "evidence": [
+      "median_stage_writes=136",
+      "median_expansions=68",
+      "redundant_stage_ratio=0.500000"
+    ],
+    "causal_hypothesis": "the same canonical membership fact is materialized in more than one ordered stage",
+    "weakness_sha256": "b3a693b5cbb862960098faf2543a67486dff3604bd7004fdf3d4faaf97bfadfe"
+  },
+  {
+    "weakness_id": "R1-ORDERED_BOUNDARY_LOOKUP",
+    "observer_generation": "R1",
+    "feature": "ORDERED_BOUNDARY_LOOKUP",
+    "priority": 1,
+    "confidence": 0.98,
+    "evidence": [
+      "median_ordered_comparisons=730",
+      "ordered_comparisons_per_input=6.134454",
+      "bounded_key_fraction=1.000000"
+    ],
+    "causal_hypothesis": "an ordered search is repeatedly used where the observed canonical boundary admits direct activation",
+    "weakness_sha256": "90c9a02d3200483ab3a2751dec85faa64b8b9fbfbe2b032180b106dfc98965b5"
+  }
+]

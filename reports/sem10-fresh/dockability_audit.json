@@ -1,0 +1,61 @@
+{
+  "core_depends_on_language_layer": false,
+  "core_depends_on_research_artifacts": false,
+  "core_dockability_preserved": true,
+  "core_only_build_all_pass": true,
+  "core_runtime_canary_all_pass": true,
+  "r0_to_r1": {
+    "core_only_build": {
+      "command": "cargo build -p dockable-semantic-core --release --bin core-x0-canary --locked --offline",
+      "exit_code": 0,
+      "stderr_sha256": "9576f1f7e73fc2bb1ec2336aae60cb485c591eadc60a1b998573411c34057e08",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "success": true
+    },
+    "core_only_build_pass": true,
+    "core_runtime_canary": {
+      "command": "D:\\B_Core_SEM10_FRESH_0002\\target/release/core-x0-canary.exe",
+      "exit_code": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "d69578aa374b866369e18a5c880b8a6decd0a7d80be5f3d0ab312cdedb82a3c3",
+      "success": true
+    },
+    "core_runtime_canary_pass": true,
+    "dockability_preserved": true,
+    "transition": "R0_TO_R1",
+    "workspace_tests": {
+      "command": "cargo test --workspace --locked --offline -- --test-threads=1",
+      "exit_code": 0,
+      "stderr_sha256": "6d8e9cb6fdd2b5a85797f3f0c2cd33593b111d4e0de673c52deea77bf213233f",
+      "stdout_sha256": "e0d9710dd52b34ff6ad3cb7f303c982a41ebe5f70486d5caee4a693421c84a68",
+      "success": true
+    }
+  },
+  "r1_to_r2": {
+    "core_only_build": {
+      "command": "cargo build -p dockable-semantic-core --release --bin core-x0-canary --locked --offline",
+      "exit_code": 0,
+      "stderr_sha256": "9576f1f7e73fc2bb1ec2336aae60cb485c591eadc60a1b998573411c34057e08",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "success": true
+    },
+    "core_only_build_pass": true,
+    "core_runtime_canary": {
+      "command": "D:\\B_Core_SEM10_FRESH_0002\\target/release/core-x0-canary.exe",
+      "exit_code": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "d69578aa374b866369e18a5c880b8a6decd0a7d80be5f3d0ab312cdedb82a3c3",
+      "success": true
+    },
+    "core_runtime_canary_pass": true,
+    "dockability_preserved": true,
+    "transition": "R1_TO_R2",
+    "workspace_tests": {
+      "command": "cargo test --workspace --locked --offline -- --test-threads=1",
+      "exit_code": 0,
+      "stderr_sha256": "cc936a6b3517c5d02ab94ef2df4099f047f0cf2ae2f0809fc93dc238f066eab6",
+      "stdout_sha256": "2f693ff4cb3e84e4f4ff1e97d2b81741cf8311ce96fabf1f8537fa227bf6c50f",
+      "success": true
+    }
+  }
+}

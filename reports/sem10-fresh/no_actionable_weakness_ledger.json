@@ -1,0 +1,10 @@
+[
+  {
+    "event": "NO_ACTIONABLE_WEAKNESS",
+    "observation_sha256": "acd2387df9282aacf7e04fe134eaf4812674e1d16a199a1a08a41ddc93cc6d6c",
+    "observer_generation": "R2",
+    "r3_proposed": false,
+    "reason": "no redundant stage and ordered comparisons per input below threshold",
+    "stop_policy_applied": "SATURATION_AT_VERIFIED_R2"
+  }
+]

@@ -1,0 +1,21 @@
+{
+  "benchmark_specific_self_patch_branches": 0,
+  "evaluator_dependencies_in_candidate": 0,
+  "external_llm_calls": 0,
+  "forbidden_systems": [
+    "SRG-0",
+    "SRG0-R1",
+    "SYNAPSE-2M-RUNTIME",
+    "HARBOR",
+    "COMMANDPLANIR",
+    "POST-GRAFT-LANGUAGE"
+  ],
+  "lexical_token_dependent_self_patches": 0,
+  "local_teacher_calls": 0,
+  "network_reads": 0,
+  "network_writes": 0,
+  "passed": true,
+  "post_graft_features_present": false,
+  "remote_executions": 0,
+  "target_output_lookups": 0
+}

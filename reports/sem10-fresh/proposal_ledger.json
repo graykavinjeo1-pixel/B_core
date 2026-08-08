@@ -1,0 +1,28 @@
+[
+  {
+    "autonomous": true,
+    "change_ir_sha256": "02fc65fd97f7faead6f5ac2ff2d365790bf4e9f4c70be19d9bbdc7f67594d22a",
+    "human_concept_id_assignment": false,
+    "mechanism_id": "M0005",
+    "observer_generation": "R0",
+    "source_concept_ids": [
+      "C000010"
+    ],
+    "target_component": "ISOLATED_SELF_CANDIDATE_ROUTER_PROFILE",
+    "transition": "R0_TO_R1",
+    "weakness_id": "R0-REDUNDANT_STAGE_COMPOSITION"
+  },
+  {
+    "autonomous": true,
+    "change_ir_sha256": "4db282cf0480859e6009a99ab56a59087ae7dd5c7bf68908a1cb3b339fb589e2",
+    "human_concept_id_assignment": false,
+    "mechanism_id": "M0006",
+    "observer_generation": "R1",
+    "source_concept_ids": [
+      "C000012"
+    ],
+    "target_component": "ISOLATED_SELF_CANDIDATE_ROUTER_PROFILE",
+    "transition": "R1_TO_R2",
+    "weakness_id": "R1-ORDERED_BOUNDARY_LOOKUP"
+  }
+]

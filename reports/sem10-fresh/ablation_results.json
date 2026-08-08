@@ -1,0 +1,30 @@
+[
+  {
+    "candidate_on_median_deterministic_ops": 806.0,
+    "candidate_on_solve_rate": 1.0,
+    "gain_removed_when_mechanism_disabled": true,
+    "mechanism_disabled_parent_median_deterministic_ops": 1259.5,
+    "mechanism_disabled_parent_solve_rate": 1.0,
+    "mechanism_id": "M0005",
+    "passed": true,
+    "single_change_parent_is_exact_ablation": true,
+    "source_concept_ids": [
+      "C000010"
+    ],
+    "transition": "R0_TO_R1"
+  },
+  {
+    "candidate_on_median_deterministic_ops": 188.0,
+    "candidate_on_solve_rate": 1.0,
+    "gain_removed_when_mechanism_disabled": true,
+    "mechanism_disabled_parent_median_deterministic_ops": 806.5,
+    "mechanism_disabled_parent_solve_rate": 1.0,
+    "mechanism_id": "M0006",
+    "passed": true,
+    "single_change_parent_is_exact_ablation": true,
+    "source_concept_ids": [
+      "C000012"
+    ],
+    "transition": "R1_TO_R2"
+  }
+]

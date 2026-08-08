@@ -1,0 +1,52 @@
+[
+  {
+    "all_required_assumptions_satisfied": true,
+    "assumptions": [
+      {
+        "assumption_id": "M0005-A0",
+        "evidence": "same binary and input produce content-addressed deterministic counters",
+        "kind": "DETERMINISTIC",
+        "required": true,
+        "satisfied": true
+      },
+      {
+        "assumption_id": "M0005-A1",
+        "evidence": "sandbox transform has no external state or I/O",
+        "kind": "PURE",
+        "required": true,
+        "satisfied": true
+      }
+    ],
+    "bounded_key_fraction_observed": 1.0,
+    "declared_before_patch": true,
+    "fallback_included": false,
+    "fallback_required_for_unbounded_keys": false,
+    "mechanism_id": "M0005",
+    "observer_generation": "R0"
+  },
+  {
+    "all_required_assumptions_satisfied": true,
+    "assumptions": [
+      {
+        "assumption_id": "M0006-A0",
+        "evidence": "same binary and input produce content-addressed deterministic counters",
+        "kind": "DETERMINISTIC",
+        "required": true,
+        "satisfied": true
+      },
+      {
+        "assumption_id": "M0006-A1",
+        "evidence": "finite input and bounded loop",
+        "kind": "TERMINATES",
+        "required": true,
+        "satisfied": true
+      }
+    ],
+    "bounded_key_fraction_observed": 1.0,
+    "declared_before_patch": true,
+    "fallback_included": true,
+    "fallback_required_for_unbounded_keys": true,
+    "mechanism_id": "M0006",
+    "observer_generation": "R1"
+  }
+]

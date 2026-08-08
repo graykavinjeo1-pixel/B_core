@@ -1,0 +1,158 @@
+[
+  {
+    "binary_bytes": 236544,
+    "binary_sha256": "38e8bc412969a83237edb0e36e3dda51e003fa54737704ba04af52b89158eb7c",
+    "build_pass": true,
+    "commands": [
+      {
+        "command": "cargo fmt --all",
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success": true
+      },
+      {
+        "command": "cargo fmt --all -- --check",
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success": true
+      },
+      {
+        "command": "cargo clippy --workspace --all-targets --offline -- -D warnings",
+        "exit_code": 0,
+        "stderr_sha256": "82eb3116ed50cc89419fedf9e8a1220e2f2937190623178eb3a0b2bd719f12c8",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success": true
+      },
+      {
+        "command": "cargo test --workspace --offline",
+        "exit_code": 0,
+        "stderr_sha256": "5859997e48cf5e81956377c537e489d643fc6188c4b10b4a2032dda1e5cdea13",
+        "stdout_sha256": "95c8fc9ebc0e06f17d804391a1b60db3b55b57762f597af421fc967a0cb6ec03",
+        "success": true
+      },
+      {
+        "command": "cargo build --workspace --offline",
+        "exit_code": 0,
+        "stderr_sha256": "8c1bc2a238a877042f70d2e79b76a5bcb7e50e8a8364d989110648965f966f4b",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success": true
+      }
+    ],
+    "generation": "R1",
+    "non_format_token_changes": 0,
+    "rustfmt_check_pass": true,
+    "sandbox_contained": true,
+    "sandbox_path": "D:/B_Core_SEM10_FRESH_0002/target/sem10-fresh/SEM10-FRESH-RUN-0002/R1",
+    "source_sha256_after_rustfmt": "cd45f5a0b20dc053b5d55397e3ae525c7e8376760ca4ed3076dfaf65abc90ab3",
+    "source_sha256_before_rustfmt": "b89416b43ba5bf2914ff236f72dbb5c67f195ee748177bbb91620d9daf48a83a",
+    "strict_clippy_pass": true,
+    "tests_pass": true
+  },
+  {
+    "binary_bytes": 237568,
+    "binary_sha256": "28d47d5eeeaf95a43711e943fd206f7b954509f78d6ad38bdf5da9fa6842466e",
+    "build_pass": true,
+    "commands": [
+      {
+        "command": "cargo fmt --all",
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success": true
+      },
+      {
+        "command": "cargo fmt --all -- --check",
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success": true
+      },
+      {
+        "command": "cargo clippy --workspace --all-targets --offline -- -D warnings",
+        "exit_code": 0,
+        "stderr_sha256": "291af6547f39a05f4d401cf3e1a9a25d9a0e958fc3c37679edba2f8d5edf8dbb",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success": true
+      },
+      {
+        "command": "cargo test --workspace --offline",
+        "exit_code": 0,
+        "stderr_sha256": "f1ffc602c7beda774b06c2cb2a34133936659d09b267a42f9eccafcce15e5cc1",
+        "stdout_sha256": "af6240d8a042c66afec1938d8612d927ea6b204f8d2dfb90945272737bf4f229",
+        "success": true
+      },
+      {
+        "command": "cargo build --workspace --offline",
+        "exit_code": 0,
+        "stderr_sha256": "de10ec7bf54ad5748c128fcfdcb7df58f593b6c8ac82917b4dc50425d3a5df0e",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success": true
+      }
+    ],
+    "generation": "R2",
+    "non_format_token_changes": 0,
+    "rustfmt_check_pass": true,
+    "sandbox_contained": true,
+    "sandbox_path": "D:/B_Core_SEM10_FRESH_0002/target/sem10-fresh/SEM10-FRESH-RUN-0002/R2",
+    "source_sha256_after_rustfmt": "5e18b4997942ffbd664e87f230cdb210faeafc55539a5a41a2f18117949d1414",
+    "source_sha256_before_rustfmt": "0b451385c87b6927b9bb34e8371c4e3f369222f42315fb262265ba1ca7de113e",
+    "strict_clippy_pass": true,
+    "tests_pass": true
+  },
+  {
+    "core_only_build": {
+      "command": "cargo build -p dockable-semantic-core --release --bin core-x0-canary --locked --offline",
+      "exit_code": 0,
+      "stderr_sha256": "9576f1f7e73fc2bb1ec2336aae60cb485c591eadc60a1b998573411c34057e08",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "success": true
+    },
+    "core_only_build_pass": true,
+    "core_runtime_canary": {
+      "command": "D:\\B_Core_SEM10_FRESH_0002\\target/release/core-x0-canary.exe",
+      "exit_code": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "d69578aa374b866369e18a5c880b8a6decd0a7d80be5f3d0ab312cdedb82a3c3",
+      "success": true
+    },
+    "core_runtime_canary_pass": true,
+    "dockability_preserved": true,
+    "transition": "R0_TO_R1",
+    "workspace_tests": {
+      "command": "cargo test --workspace --locked --offline -- --test-threads=1",
+      "exit_code": 0,
+      "stderr_sha256": "6d8e9cb6fdd2b5a85797f3f0c2cd33593b111d4e0de673c52deea77bf213233f",
+      "stdout_sha256": "e0d9710dd52b34ff6ad3cb7f303c982a41ebe5f70486d5caee4a693421c84a68",
+      "success": true
+    }
+  },
+  {
+    "core_only_build": {
+      "command": "cargo build -p dockable-semantic-core --release --bin core-x0-canary --locked --offline",
+      "exit_code": 0,
+      "stderr_sha256": "9576f1f7e73fc2bb1ec2336aae60cb485c591eadc60a1b998573411c34057e08",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "success": true
+    },
+    "core_only_build_pass": true,
+    "core_runtime_canary": {
+      "command": "D:\\B_Core_SEM10_FRESH_0002\\target/release/core-x0-canary.exe",
+      "exit_code": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "d69578aa374b866369e18a5c880b8a6decd0a7d80be5f3d0ab312cdedb82a3c3",
+      "success": true
+    },
+    "core_runtime_canary_pass": true,
+    "dockability_preserved": true,
+    "transition": "R1_TO_R2",
+    "workspace_tests": {
+      "command": "cargo test --workspace --locked --offline -- --test-threads=1",
+      "exit_code": 0,
+      "stderr_sha256": "cc936a6b3517c5d02ab94ef2df4099f047f0cf2ae2f0809fc93dc238f066eab6",
+      "stdout_sha256": "2f693ff4cb3e84e4f4ff1e97d2b81741cf8311ce96fabf1f8537fa227bf6c50f",
+      "success": true
+    }
+  }
+]

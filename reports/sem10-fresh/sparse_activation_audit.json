@@ -1,0 +1,12 @@
+{
+  "activated_mechanisms": [
+    "M0005",
+    "M0006"
+  ],
+  "passed": true,
+  "peak_active_concepts": 3,
+  "routing_false_negatives": 0,
+  "runtime_full_catalog_scans": 0,
+  "source_index_built_before_generation": true,
+  "top_one_applied_each_transition": true
+}

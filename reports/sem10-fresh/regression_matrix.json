@@ -1,0 +1,134 @@
+{
+  "passed": true,
+  "r0_to_r1": [
+    {
+      "capability_family": "SEMANTIC_CONCEPT",
+      "child_correct": 20,
+      "parent_correct": 20,
+      "passed": true,
+      "regressed_tasks": 0,
+      "tasks": 20,
+      "transition": "R0_TO_R1"
+    },
+    {
+      "capability_family": "ADAPTIVE_REASONING",
+      "child_correct": 20,
+      "parent_correct": 20,
+      "passed": true,
+      "regressed_tasks": 0,
+      "tasks": 20,
+      "transition": "R0_TO_R1"
+    },
+    {
+      "capability_family": "MATHEMATICAL_DERIVATION",
+      "child_correct": 20,
+      "parent_correct": 20,
+      "passed": true,
+      "regressed_tasks": 0,
+      "tasks": 20,
+      "transition": "R0_TO_R1"
+    },
+    {
+      "capability_family": "PROGRAMMING",
+      "child_correct": 20,
+      "parent_correct": 20,
+      "passed": true,
+      "regressed_tasks": 0,
+      "tasks": 20,
+      "transition": "R0_TO_R1"
+    },
+    {
+      "capability_family": "DEFINITION_FORAGING",
+      "child_correct": 20,
+      "parent_correct": 20,
+      "passed": true,
+      "regressed_tasks": 0,
+      "tasks": 20,
+      "transition": "R0_TO_R1"
+    },
+    {
+      "capability_family": "LANGUAGE_ADAPTER",
+      "child_correct": 20,
+      "parent_correct": 20,
+      "passed": true,
+      "regressed_tasks": 0,
+      "tasks": 20,
+      "transition": "R0_TO_R1"
+    },
+    {
+      "capability_family": "CROSS_DOMAIN_TRANSFER",
+      "child_correct": 20,
+      "parent_correct": 20,
+      "passed": true,
+      "regressed_tasks": 0,
+      "tasks": 20,
+      "transition": "R0_TO_R1"
+    }
+  ],
+  "r1_to_r2": [
+    {
+      "capability_family": "SEMANTIC_CONCEPT",
+      "child_correct": 20,
+      "parent_correct": 20,
+      "passed": true,
+      "regressed_tasks": 0,
+      "tasks": 20,
+      "transition": "R1_TO_R2"
+    },
+    {
+      "capability_family": "ADAPTIVE_REASONING",
+      "child_correct": 20,
+      "parent_correct": 20,
+      "passed": true,
+      "regressed_tasks": 0,
+      "tasks": 20,
+      "transition": "R1_TO_R2"
+    },
+    {
+      "capability_family": "MATHEMATICAL_DERIVATION",
+      "child_correct": 20,
+      "parent_correct": 20,
+      "passed": true,
+      "regressed_tasks": 0,
+      "tasks": 20,
+      "transition": "R1_TO_R2"
+    },
+    {
+      "capability_family": "PROGRAMMING",
+      "child_correct": 20,
+      "parent_correct": 20,
+      "passed": true,
+      "regressed_tasks": 0,
+      "tasks": 20,
+      "transition": "R1_TO_R2"
+    },
+    {
+      "capability_family": "DEFINITION_FORAGING",
+      "child_correct": 20,
+      "parent_correct": 20,
+      "passed": true,
+      "regressed_tasks": 0,
+      "tasks": 20,
+      "transition": "R1_TO_R2"
+    },
+    {
+      "capability_family": "LANGUAGE_ADAPTER",
+      "child_correct": 20,
+      "parent_correct": 20,
+      "passed": true,
+      "regressed_tasks": 0,
+      "tasks": 20,
+      "transition": "R1_TO_R2"
+    },
+    {
+      "capability_family": "CROSS_DOMAIN_TRANSFER",
+      "child_correct": 20,
+      "parent_correct": 20,
+      "passed": true,
+      "regressed_tasks": 0,
+      "tasks": 20,
+      "transition": "R1_TO_R2"
+    }
+  ],
+  "regressed_tasks_total": 0
+}

@@ -1,0 +1,25 @@
+{
+  "all_pass": true,
+  "baseline_warning_count": 22,
+  "inherited_warnings_removed": 0,
+  "r0_to_r1": {
+    "baseline_warning_count": 22,
+    "child_sandbox_strict_clippy_pass": true,
+    "current_warning_count": 22,
+    "new_warning_signatures": [],
+    "passed": true,
+    "removed_inherited_warning_signatures": [],
+    "transition": "R0_TO_R1"
+  },
+  "r1_to_r2": {
+    "baseline_warning_count": 22,
+    "child_sandbox_strict_clippy_pass": true,
+    "current_warning_count": 22,
+    "new_warning_signatures": [],
+    "passed": true,
+    "removed_inherited_warning_signatures": [],
+    "transition": "R1_TO_R2"
+  },
+  "r1_warning_count": 22,
+  "r2_warning_count": 22
+}

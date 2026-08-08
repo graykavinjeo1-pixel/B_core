@@ -1,0 +1,13 @@
+{
+  "auto_merges": 0,
+  "auto_pushes": 0,
+  "candidate_paths": [
+    "target/sem10-fresh",
+    "reports/sem10-fresh/artifacts"
+  ],
+  "passed": true,
+  "production_source_mutations": 0,
+  "protected_core_mutation_attempts_accepted": 0,
+  "protected_core_sha256_after": "e403d7b5a525adbd1e3eec2c8394fa687244749ff88e2b277254b8bfe8850324",
+  "protected_core_sha256_before": "e403d7b5a525adbd1e3eec2c8394fa687244749ff88e2b277254b8bfe8850324"
+}

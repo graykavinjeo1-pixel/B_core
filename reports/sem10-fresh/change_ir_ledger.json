@@ -1,0 +1,82 @@
+[
+  {
+    "change_id": "R0-R1-CHANGE-0001",
+    "change_ir_sha256": "02fc65fd97f7faead6f5ac2ff2d365790bf4e9f4c70be19d9bbdc7f67594d22a",
+    "child_generation": "R1",
+    "forbidden_paths": [
+      "Cargo.toml",
+      "Cargo.lock",
+      "rust-toolchain.toml",
+      ".gitattributes",
+      "scripts/build_portable_r0.ps1",
+      "crates/dockable-semantic-core",
+      "crates/semantic-core-adapters",
+      "crates/semantic-reasoning",
+      "crates/synapse-core",
+      "crates/synapse-recursive-core",
+      "artifacts/core-x0/semantic_state.json",
+      "artifacts/core-x0/sparse_index.json",
+      "reports/sem8/source_mechanism_catalog.json",
+      "reports/sem10-p0"
+    ],
+    "mechanism_id": "M0005",
+    "operations": [
+      "compose duplicate ordered membership materialization stages",
+      "use the single insertion result as the unseen-state guard"
+    ],
+    "parent_generation": "R0",
+    "preserved_invariants": [
+      "semantic output membership",
+      "equivalence merge",
+      "determinism",
+      "termination",
+      "unbounded-key correctness through fallback"
+    ],
+    "source_concept_ids": [
+      "C000010"
+    ],
+    "target_component": "ISOLATED_SELF_CANDIDATE_ROUTER_PROFILE",
+    "transform": "STAGE_COMPOSITION",
+    "weakness_id": "R0-REDUNDANT_STAGE_COMPOSITION"
+  },
+  {
+    "change_id": "R1-R2-CHANGE-0001",
+    "change_ir_sha256": "4db282cf0480859e6009a99ab56a59087ae7dd5c7bf68908a1cb3b339fb589e2",
+    "child_generation": "R2",
+    "forbidden_paths": [
+      "Cargo.toml",
+      "Cargo.lock",
+      "rust-toolchain.toml",
+      ".gitattributes",
+      "scripts/build_portable_r0.ps1",
+      "crates/dockable-semantic-core",
+      "crates/semantic-core-adapters",
+      "crates/semantic-reasoning",
+      "crates/synapse-core",
+      "crates/synapse-recursive-core",
+      "artifacts/core-x0/semantic_state.json",
+      "artifacts/core-x0/sparse_index.json",
+      "reports/sem8/source_mechanism_catalog.json",
+      "reports/sem10-p0"
+    ],
+    "mechanism_id": "M0006",
+    "operations": [
+      "partition bounded canonical keys into direct activation cells",
+      "retain an ordered overflow fallback for keys outside the observed boundary"
+    ],
+    "parent_generation": "R1",
+    "preserved_invariants": [
+      "semantic output membership",
+      "equivalence merge",
+      "determinism",
+      "termination",
+      "unbounded-key correctness through fallback"
+    ],
+    "source_concept_ids": [
+      "C000012"
+    ],
+    "target_component": "ISOLATED_SELF_CANDIDATE_ROUTER_PROFILE",
+    "transform": "QUOTIENT_PARTITION",
+    "weakness_id": "R1-ORDERED_BOUNDARY_LOOKUP"
+  }
+]

@@ -1,0 +1,22 @@
+{
+  "campaign_id": "SEM10-FRESH-RUN-0002",
+  "corrections": [
+    {
+      "field": "core_size_comparison.r0_profile_binary_bytes",
+      "generated_value": 236544,
+      "corrected_value": 237056,
+      "evidence": "reports/sem10-fresh/artifacts/r0/reasoner-probe.exe filesystem length"
+    },
+    {
+      "field": "sem10_fresh_final_report.r0.core_total_deployable_bytes",
+      "generated_value": 236544,
+      "corrected_value": 382976,
+      "evidence": "reports/sem10-p0/sem10_p0_final_report.json and portable R0 reproducible build evidence"
+    }
+  ],
+  "candidate_source_changed": false,
+  "candidate_binary_changed": false,
+  "evaluation_result_changed": false,
+  "protected_core_changed": false,
+  "status_changed": false
+}

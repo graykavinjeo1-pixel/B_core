@@ -1,0 +1,11 @@
+{
+  "gen7_candidates": 0,
+  "gen7_promoted": 0,
+  "maximum_autonomous_concept_generation": 5,
+  "new_semantic_candidates": 2,
+  "new_semantic_promotions": 0,
+  "r3_status": "NOT_PROPOSED_SATURATION_AT_R2",
+  "recursion_attempt_budget": 3,
+  "recursion_attempts_executed": 2,
+  "verified_recursive_descendants": 2
+}
