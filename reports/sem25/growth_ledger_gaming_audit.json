@@ -1,0 +1,9 @@
+{
+  "artificial_frontier_splitting": false,
+  "easy_frontier_bias": false,
+  "events": 0,
+  "existing_class_relabeling": false,
+  "future_instance_inspection": false,
+  "high_value_difficult_frontier_avoidance": false,
+  "predictor_confidence_counted_as_success": false
+}

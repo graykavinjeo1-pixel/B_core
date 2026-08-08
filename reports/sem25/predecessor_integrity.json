@@ -1,0 +1,12 @@
+{
+  "artifact_binary_sha256": "9fdb09948dc73f09e1810894327a0bde783cb9244fc50f3b4127da307fae90c1",
+  "artifact_source_sha256": "3e454efca8aceb5e65e816ad13883a159f1a9747338a000e736c7721dc7eeb0c",
+  "exact_commit": "e30956b337c4ecf469aa399996113b07d868ba09",
+  "historical_evidence_rewritten": false,
+  "next_allowed_stage": "OPERATOR_REVIEW_FOR_SEM25",
+  "next_dominant_growth_limit": "REACTION_DISCOVERY_AND_FRONTIER_SELECTION_COST",
+  "passed": true,
+  "sem24_status": "PASS",
+  "sem25_started": false,
+  "verification_remains_dominant_growth_limit": false
+}

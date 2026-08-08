@@ -1,0 +1,35 @@
+{
+  "reuse_events": 15,
+  "schemas": [
+    {
+      "candidate_families": [
+        "CATALYTIC_BRIDGE",
+        "MEDIATED_FAMILY_TRANSFER"
+      ],
+      "common_conflicts": "HIGH_IMMEDIATE_GAIN_LOW_DESCENDANT_PRODUCTIVITY",
+      "discovered_epoch": 9,
+      "exact_reactant_identities_fixed": false,
+      "expected_catalysts": true,
+      "expected_mediators": true,
+      "gap_pattern": "MISSING_ROLE_OR_FRONTIER_BRANCHING_DEFICIT",
+      "likely_downstream_affordances": true,
+      "required_roles": "SPARSE_PROPERTY_ROLE_SIGNATURE",
+      "schema_id": "GRS25-01"
+    },
+    {
+      "candidate_families": [
+        "CATALYTIC_BRIDGE",
+        "MEDIATED_FAMILY_TRANSFER"
+      ],
+      "common_conflicts": "HIGH_IMMEDIATE_GAIN_LOW_DESCENDANT_PRODUCTIVITY",
+      "discovered_epoch": 18,
+      "exact_reactant_identities_fixed": false,
+      "expected_catalysts": true,
+      "expected_mediators": true,
+      "gap_pattern": "MISSING_ROLE_OR_FRONTIER_BRANCHING_DEFICIT",
+      "likely_downstream_affordances": true,
+      "required_roles": "SPARSE_PROPERTY_ROLE_SIGNATURE",
+      "schema_id": "GRS25-02"
+    }
+  ]
+}

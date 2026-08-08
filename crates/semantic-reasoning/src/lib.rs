@@ -21,6 +21,7 @@ pub mod sem21;
 pub mod sem22;
 pub mod sem23;
 pub mod sem24;
+pub mod sem25;
 pub mod sem3;
 pub mod sem4;
 pub mod sem5;

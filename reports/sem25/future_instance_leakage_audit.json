@@ -1,0 +1,198 @@
+{
+  "epochs": [
+    {
+      "concrete_instance_created_after_plan_freeze": true,
+      "epoch": 1,
+      "frontier_plan_sha256": "1ede5b21ec98ddbe973e1b91cb5442ff78d5c59874a2a121edc13a69ffc5aac6",
+      "plan_frozen_before_instance_seed_reveal": true,
+      "seed_commitment": "e9b645c0fe2defec0aba0de1289801e35b26434f40fe8fc5f7e129a48c1bd7f7",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "concrete_instance_created_after_plan_freeze": true,
+      "epoch": 2,
+      "frontier_plan_sha256": "cf6796582dc8238db2d2977ce2dc4d70b762d12a395cd7affd8647f69ab4b265",
+      "plan_frozen_before_instance_seed_reveal": true,
+      "seed_commitment": "625ade72a587badf45c23c2031004eaff1cdad2d9d63441dce77d9bfd40209b3",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "concrete_instance_created_after_plan_freeze": true,
+      "epoch": 3,
+      "frontier_plan_sha256": "ac8efb0fb57e2be3582f77b65d1e7e5a4c8b1a2aea310e0135ee747a37bfadfc",
+      "plan_frozen_before_instance_seed_reveal": true,
+      "seed_commitment": "c1bcd7963666405b4e59d86119f2d696b967da6a24bef7e2d3beb5aed6352202",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "concrete_instance_created_after_plan_freeze": true,
+      "epoch": 4,
+      "frontier_plan_sha256": "7a52bd30b7a82adfb15f5b0282783db399d8ef0fb2d1ebdd3c76b6df2da9bb8d",
+      "plan_frozen_before_instance_seed_reveal": true,
+      "seed_commitment": "6f317ed7bbe9b7ccfa156311915aef967dbfb4fc70cda677c0bb257addb36157",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "concrete_instance_created_after_plan_freeze": true,
+      "epoch": 5,
+      "frontier_plan_sha256": "1a23572eb13446ba085d3ff7b8acabe35160d0638bf76fc947d6a6eaa13b87c6",
+      "plan_frozen_before_instance_seed_reveal": true,
+      "seed_commitment": "c76e5810196327881d41c287c28d84b6310a252a77d71f76a89bfae6f11db4a2",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "concrete_instance_created_after_plan_freeze": true,
+      "epoch": 6,
+      "frontier_plan_sha256": "eb70dcc568c49ea42bd551fdf70dd3b878e71b6178f14a272a5d50b36038f1d6",
+      "plan_frozen_before_instance_seed_reveal": true,
+      "seed_commitment": "db856f171d5514000dbcf774b4b75df092ebf7efe5c48c627bd2a4d767a0f4a8",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "concrete_instance_created_after_plan_freeze": true,
+      "epoch": 7,
+      "frontier_plan_sha256": "ebbc54cfdd5eec8af7ca7a8ccf9257ae354ec6aed0f7af3b80447d4bd6cfd4cd",
+      "plan_frozen_before_instance_seed_reveal": true,
+      "seed_commitment": "9dcf374e8afe274c2c0e2e8489736f2b6d0c5a64e359124f5312f9b054795509",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "concrete_instance_created_after_plan_freeze": true,
+      "epoch": 8,
+      "frontier_plan_sha256": "17386e62dd473050dcab2739c2f298a88aaf9541f3975cba3ecf7da6430c2d6a",
+      "plan_frozen_before_instance_seed_reveal": true,
+      "seed_commitment": "a2a507ee51492b69498862d3a0582ca00842d966a783324336f9bfb37af6d3c1",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "concrete_instance_created_after_plan_freeze": true,
+      "epoch": 9,
+      "frontier_plan_sha256": "c6be6e72248ab27f3560bdce2496154d92d5c48744a6afccff2694c4c936ce92",
+      "plan_frozen_before_instance_seed_reveal": true,
+      "seed_commitment": "313f72c457dc298d81c882e84f58a8a433ddea4583a22b0720b8f3d3625ba323",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "concrete_instance_created_after_plan_freeze": true,
+      "epoch": 10,
+      "frontier_plan_sha256": "0dae146537ae8ae3880b99cd4bd7dbf2c1c1c59304b742133810eaeadb865188",
+      "plan_frozen_before_instance_seed_reveal": true,
+      "seed_commitment": "1e53aec2d01cccc4a55c94212596da6342e3211bda8ec79e0bec16b9632c32c5",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "concrete_instance_created_after_plan_freeze": true,
+      "epoch": 11,
+      "frontier_plan_sha256": "89894d902615a83f478c518283c75af00a57fe47ea42c81174b8cb19aa0a70d6",
+      "plan_frozen_before_instance_seed_reveal": true,
+      "seed_commitment": "3ac89e628e536674c52e006ad96f074c85255227f4e9072e0b1694e2c2eb669c",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "concrete_instance_created_after_plan_freeze": true,
+      "epoch": 12,
+      "frontier_plan_sha256": "6d948c195f42102e0e2e30e6e9961109242a67d1b5ed89f99a19bb2276dc7a74",
+      "plan_frozen_before_instance_seed_reveal": true,
+      "seed_commitment": "c519826c515b3f1d583ef8ca347006396b53633c15675964d406da2e0fafaeba",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "concrete_instance_created_after_plan_freeze": true,
+      "epoch": 13,
+      "frontier_plan_sha256": "e6b9d2dbc45371fe8e70fa66c8e492b503c06fb75d7eb641fffb4aa20a7bf1a4",
+      "plan_frozen_before_instance_seed_reveal": true,
+      "seed_commitment": "4b10f9b0c2ee10ad6e69f9aa6c5f756d4539994c6e994d2ff4ac642a97c55256",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "concrete_instance_created_after_plan_freeze": true,
+      "epoch": 14,
+      "frontier_plan_sha256": "e28c5462d8832fd9315b42b8789f3cb8e8f993c1518acc636a5c65d6bdf15380",
+      "plan_frozen_before_instance_seed_reveal": true,
+      "seed_commitment": "5f13e25637c698094dfcfaf284fc796bf010b648e7deeefe1bb1c52abe271401",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "concrete_instance_created_after_plan_freeze": true,
+      "epoch": 15,
+      "frontier_plan_sha256": "cb42be94322368aa2113fdf447561f17285f7c2ffef63ecb6b3417558c534ac5",
+      "plan_frozen_before_instance_seed_reveal": true,
+      "seed_commitment": "0f294d24d7117ee221adae36b2ecd10fe0c3acf07339a2b7272c9630af8b4158",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "concrete_instance_created_after_plan_freeze": true,
+      "epoch": 16,
+      "frontier_plan_sha256": "a05970520f9a9a3bc1fb128259b288960c8c398a0fee84729bb700d90508f56b",
+      "plan_frozen_before_instance_seed_reveal": true,
+      "seed_commitment": "989901b1cde8b137c9f4ad4d1f80169458045cd6aa8e7a2557e0c4b6fa25ca9c",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "concrete_instance_created_after_plan_freeze": true,
+      "epoch": 17,
+      "frontier_plan_sha256": "8c3ba4a855c0ced2f66f77db12c0f3f351e2f3abcafdbcef99956ada74e71a22",
+      "plan_frozen_before_instance_seed_reveal": true,
+      "seed_commitment": "2fca1489e1dd0a0db511e46702bdc67905d37414c8301b9994b9e3e4bec26d55",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "concrete_instance_created_after_plan_freeze": true,
+      "epoch": 18,
+      "frontier_plan_sha256": "455898bf7af60e0e1367a6edb78b1d695ab4b7f38895ed5d8737c2ae590f7817",
+      "plan_frozen_before_instance_seed_reveal": true,
+      "seed_commitment": "239aa67fcdf258afff1c408d5fae40f64bc67d209334149e4ab46629cd53169c",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "concrete_instance_created_after_plan_freeze": true,
+      "epoch": 19,
+      "frontier_plan_sha256": "2223f9c6513ebb3079f023b58924e42d70625bafc30b6e0d1829d85b98e421e7",
+      "plan_frozen_before_instance_seed_reveal": true,
+      "seed_commitment": "43d2f61edfe21866eff1e09d1d414c389fd8b25389a9dca1fc6de7b38f0ba2bd",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "concrete_instance_created_after_plan_freeze": true,
+      "epoch": 20,
+      "frontier_plan_sha256": "11dbb97e261012e2ef4c8de540009cc0f9aaf0e4fa8accbb492a2c62b3358301",
+      "plan_frozen_before_instance_seed_reveal": true,
+      "seed_commitment": "b3aec63e0519e3cba6f1bba3340168a8d08cd493f0659d938a577fddd1861d27",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "concrete_instance_created_after_plan_freeze": true,
+      "epoch": 21,
+      "frontier_plan_sha256": "1af5d1dd761bd9e54e6787e5b818bc3962ad40a0fb3aee1885e28dcf71a85738",
+      "plan_frozen_before_instance_seed_reveal": true,
+      "seed_commitment": "4618deef97a2d85a8469a0ea3665ec4c529c95bb9befb943c8432c1175692e3a",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "concrete_instance_created_after_plan_freeze": true,
+      "epoch": 22,
+      "frontier_plan_sha256": "181a8b97fe21c388e915f2e7394da3b9b869e51b9e36e37bc2ad1d9ce81e02e1",
+      "plan_frozen_before_instance_seed_reveal": true,
+      "seed_commitment": "d1a9c400811e0aa72bcd6bf3325129fdd2ae9c20fbc0db3015e937bf46a62864",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "concrete_instance_created_after_plan_freeze": true,
+      "epoch": 23,
+      "frontier_plan_sha256": "d79108fb0897e0b56eb60528a929f7a763b122fc1e0c093303a57126dce2469a",
+      "plan_frozen_before_instance_seed_reveal": true,
+      "seed_commitment": "d4c39d86d68123d8caa4f5bb7028380009fa2e759f0c791361ad95da2049b1dc",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "concrete_instance_created_after_plan_freeze": true,
+      "epoch": 24,
+      "frontier_plan_sha256": "c5aa62262220035e59a4d4014973cabb3424aedbd4a5fc053e320cb3fb9e099e",
+      "plan_frozen_before_instance_seed_reveal": true,
+      "seed_commitment": "4c6fa17f1b6bbde1b2436efac4bf99de0f3af99c2a1bcb94ff16fbecdaf76bbb",
+      "seed_visible_to_routing_policy": false
+    }
+  ],
+  "events": 0,
+  "full_counterfactual_paths_inspect_concrete_future_instances": false
+}

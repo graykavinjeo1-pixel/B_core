@@ -1,0 +1,18 @@
+{
+  "after": {
+    "candidate_retrieval_time_ns": 1196300,
+    "frontier_ranking_selection_time_ns": 1594000,
+    "multi_step_consequence_reasoning_time_ns": 720500,
+    "property_matching_time_ns": 609700,
+    "reaction_law_lookup_time_ns": 162700,
+    "uncertainty_probe_time_ns": 100
+  },
+  "before": {
+    "candidate_retrieval_time_ns": 4338200,
+    "frontier_ranking_selection_time_ns": 1600700,
+    "multi_step_consequence_reasoning_time_ns": 2176600,
+    "property_matching_time_ns": 2162800,
+    "reaction_law_lookup_time_ns": 419600,
+    "uncertainty_probe_time_ns": 100
+  }
+}

@@ -1,0 +1,146 @@
+{
+  "arms": [
+    "A_SEM24_ONE_STEP_DISCOVERY",
+    "B_IMMEDIATE_GREEDY_ROUTING",
+    "C_MULTI_HORIZON_WITHOUT_ROUTING_LAWS",
+    "D_FULL_PREDICTIVE_GROWTH_ROUTING"
+  ],
+  "branch": "codex/sem25-predictive-growth-routing",
+  "campaign_id": "SEM25-PREDICTIVE-GROWTH-ROUTING-0001",
+  "epoch_count_extended_after_observation": false,
+  "fixed_hardware": {
+    "build_mode": "RELEASE",
+    "cpu_threads": 1,
+    "gpu": false,
+    "network": false
+  },
+  "frontier_reaction_epochs": 24,
+  "open_loop_multi_step_self_modification": false,
+  "predecessor_commit": "e30956b337c4ecf469aa399996113b07d868ba09",
+  "protocol_sha256": "776173650f8869b7755533d665e5455b83123cf2d9a57194c8590e558e4bfe5e",
+  "same_hardware_all_arms": true,
+  "same_proof_carrying_verification_all_arms": true,
+  "same_work_universe_all_arms": true,
+  "unopened_instance_commitments": [
+    {
+      "epoch": 1,
+      "seed_commitment": "e9b645c0fe2defec0aba0de1289801e35b26434f40fe8fc5f7e129a48c1bd7f7",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "epoch": 2,
+      "seed_commitment": "625ade72a587badf45c23c2031004eaff1cdad2d9d63441dce77d9bfd40209b3",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "epoch": 3,
+      "seed_commitment": "c1bcd7963666405b4e59d86119f2d696b967da6a24bef7e2d3beb5aed6352202",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "epoch": 4,
+      "seed_commitment": "6f317ed7bbe9b7ccfa156311915aef967dbfb4fc70cda677c0bb257addb36157",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "epoch": 5,
+      "seed_commitment": "c76e5810196327881d41c287c28d84b6310a252a77d71f76a89bfae6f11db4a2",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "epoch": 6,
+      "seed_commitment": "db856f171d5514000dbcf774b4b75df092ebf7efe5c48c627bd2a4d767a0f4a8",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "epoch": 7,
+      "seed_commitment": "9dcf374e8afe274c2c0e2e8489736f2b6d0c5a64e359124f5312f9b054795509",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "epoch": 8,
+      "seed_commitment": "a2a507ee51492b69498862d3a0582ca00842d966a783324336f9bfb37af6d3c1",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "epoch": 9,
+      "seed_commitment": "313f72c457dc298d81c882e84f58a8a433ddea4583a22b0720b8f3d3625ba323",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "epoch": 10,
+      "seed_commitment": "1e53aec2d01cccc4a55c94212596da6342e3211bda8ec79e0bec16b9632c32c5",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "epoch": 11,
+      "seed_commitment": "3ac89e628e536674c52e006ad96f074c85255227f4e9072e0b1694e2c2eb669c",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "epoch": 12,
+      "seed_commitment": "c519826c515b3f1d583ef8ca347006396b53633c15675964d406da2e0fafaeba",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "epoch": 13,
+      "seed_commitment": "4b10f9b0c2ee10ad6e69f9aa6c5f756d4539994c6e994d2ff4ac642a97c55256",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "epoch": 14,
+      "seed_commitment": "5f13e25637c698094dfcfaf284fc796bf010b648e7deeefe1bb1c52abe271401",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "epoch": 15,
+      "seed_commitment": "0f294d24d7117ee221adae36b2ecd10fe0c3acf07339a2b7272c9630af8b4158",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "epoch": 16,
+      "seed_commitment": "989901b1cde8b137c9f4ad4d1f80169458045cd6aa8e7a2557e0c4b6fa25ca9c",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "epoch": 17,
+      "seed_commitment": "2fca1489e1dd0a0db511e46702bdc67905d37414c8301b9994b9e3e4bec26d55",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "epoch": 18,
+      "seed_commitment": "239aa67fcdf258afff1c408d5fae40f64bc67d209334149e4ab46629cd53169c",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "epoch": 19,
+      "seed_commitment": "43d2f61edfe21866eff1e09d1d414c389fd8b25389a9dca1fc6de7b38f0ba2bd",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "epoch": 20,
+      "seed_commitment": "b3aec63e0519e3cba6f1bba3340168a8d08cd493f0659d938a577fddd1861d27",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "epoch": 21,
+      "seed_commitment": "4618deef97a2d85a8469a0ea3665ec4c529c95bb9befb943c8432c1175692e3a",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "epoch": 22,
+      "seed_commitment": "d1a9c400811e0aa72bcd6bf3325129fdd2ae9c20fbc0db3015e937bf46a62864",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "epoch": 23,
+      "seed_commitment": "d4c39d86d68123d8caa4f5bb7028380009fa2e759f0c791361ad95da2049b1dc",
+      "seed_visible_to_routing_policy": false
+    },
+    {
+      "epoch": 24,
+      "seed_commitment": "4c6fa17f1b6bbde1b2436efac4bf99de0f3af99c2a1bcb94ff16fbecdaf76bbb",
+      "seed_visible_to_routing_policy": false
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "arms": [
+    {
+      "arm": "A_SEM24_ONE_STEP_DISCOVERY",
+      "false_invalid_growth_claims": 0,
+      "final_frontier_scale": 7490,
+      "mean_routing_hit_rate": 0.046338456176842895,
+      "total_frontier_gain": 1752,
+      "total_objects_touched": 1116
+    },
+    {
+      "arm": "B_IMMEDIATE_GREEDY_ROUTING",
+      "false_invalid_growth_claims": 0,
+      "final_frontier_scale": 7490,
+      "mean_routing_hit_rate": 0.11203703703703705,
+      "total_frontier_gain": 1752,
+      "total_objects_touched": 300
+    },
+    {
+      "arm": "C_MULTI_HORIZON_WITHOUT_ROUTING_LAWS",
+      "false_invalid_growth_claims": 0,
+      "final_frontier_scale": 8719,
+      "mean_routing_hit_rate": 0.09141414141414143,
+      "total_frontier_gain": 2981,
+      "total_objects_touched": 504
+    },
+    {
+      "arm": "D_FULL_PREDICTIVE_GROWTH_ROUTING",
+      "false_invalid_growth_claims": 0,
+      "final_frontier_scale": 8875,
+      "mean_routing_hit_rate": 0.16071428571428573,
+      "total_frontier_gain": 3137,
+      "total_objects_touched": 287
+    }
+  ],
+  "same_epoch_budget": 24,
+  "same_hardware": true
+}

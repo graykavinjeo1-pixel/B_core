@@ -1,0 +1,10 @@
+{
+  "certificate_closure_preserved": true,
+  "delta_verification_preserved": true,
+  "dependency_slicing_preserved": true,
+  "predicted_only_frontier_gains_counted_as_real": 0,
+  "proof_carrying_verification_preserved": true,
+  "routing_bypass_verification_events": 0,
+  "verification_laws_preserved": true,
+  "verification_plan_compiler_preserved": true
+}

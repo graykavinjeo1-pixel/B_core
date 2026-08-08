@@ -1,0 +1,60 @@
+{
+  "revisions": [
+    {
+      "change": "NARROW_AFFORDANCE_COUNT_AND_RESOURCE_SCOPE_FROM_OBSERVED_RESIDUAL",
+      "epoch": 7,
+      "law_id": "GRL25-01",
+      "prior_lineage_preserved": true,
+      "revision_id": "GRLR25-01"
+    },
+    {
+      "change": "NARROW_AFFORDANCE_COUNT_AND_RESOURCE_SCOPE_FROM_OBSERVED_RESIDUAL",
+      "epoch": 9,
+      "law_id": "GRL25-01",
+      "prior_lineage_preserved": true,
+      "revision_id": "GRLR25-02"
+    },
+    {
+      "change": "NARROW_AFFORDANCE_COUNT_AND_RESOURCE_SCOPE_FROM_OBSERVED_RESIDUAL",
+      "epoch": 13,
+      "law_id": "GRL25-02",
+      "prior_lineage_preserved": true,
+      "revision_id": "GRLR25-03"
+    },
+    {
+      "change": "NARROW_AFFORDANCE_COUNT_AND_RESOURCE_SCOPE_FROM_OBSERVED_RESIDUAL",
+      "epoch": 15,
+      "law_id": "GRL25-02",
+      "prior_lineage_preserved": true,
+      "revision_id": "GRLR25-04"
+    },
+    {
+      "change": "NARROW_AFFORDANCE_COUNT_AND_RESOURCE_SCOPE_FROM_OBSERVED_RESIDUAL",
+      "epoch": 19,
+      "law_id": "GRL25-02",
+      "prior_lineage_preserved": true,
+      "revision_id": "GRLR25-05"
+    },
+    {
+      "change": "NARROW_AFFORDANCE_COUNT_AND_RESOURCE_SCOPE_FROM_OBSERVED_RESIDUAL",
+      "epoch": 20,
+      "law_id": "GRL25-03",
+      "prior_lineage_preserved": true,
+      "revision_id": "GRLR25-06"
+    },
+    {
+      "change": "NARROW_AFFORDANCE_COUNT_AND_RESOURCE_SCOPE_FROM_OBSERVED_RESIDUAL",
+      "epoch": 21,
+      "law_id": "GRL25-03",
+      "prior_lineage_preserved": true,
+      "revision_id": "GRLR25-07"
+    },
+    {
+      "change": "NARROW_AFFORDANCE_COUNT_AND_RESOURCE_SCOPE_FROM_OBSERVED_RESIDUAL",
+      "epoch": 22,
+      "law_id": "GRL25-03",
+      "prior_lineage_preserved": true,
+      "revision_id": "GRLR25-08"
+    }
+  ]
+}

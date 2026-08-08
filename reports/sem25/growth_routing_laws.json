@@ -1,0 +1,38 @@
+{
+  "laws": [
+    {
+      "candidate_family": "ROLE_COMPATIBLE_REACTION_FAMILY",
+      "counterexample_scope_check": true,
+      "cross_identity_transfer": true,
+      "cross_surface_domain_transfer": true,
+      "discovered_epoch": 6,
+      "expected_frontier_family": "CAUSALLY_ENABLED_DESCENDANT_FRONTIER",
+      "gap_pattern": "PROPERTY_ROLE_GAP_WITH_COMPATIBLE_CATALYTIC_BRIDGE",
+      "growth_routing_law_id": "GRL25-01",
+      "verified": true
+    },
+    {
+      "candidate_family": "ROLE_COMPATIBLE_REACTION_FAMILY",
+      "counterexample_scope_check": true,
+      "cross_identity_transfer": true,
+      "cross_surface_domain_transfer": true,
+      "discovered_epoch": 13,
+      "expected_frontier_family": "CAUSALLY_ENABLED_DESCENDANT_FRONTIER",
+      "gap_pattern": "PROPERTY_ROLE_GAP_WITH_COMPATIBLE_CATALYTIC_BRIDGE",
+      "growth_routing_law_id": "GRL25-02",
+      "verified": true
+    },
+    {
+      "candidate_family": "ROLE_COMPATIBLE_REACTION_FAMILY",
+      "counterexample_scope_check": true,
+      "cross_identity_transfer": true,
+      "cross_surface_domain_transfer": true,
+      "discovered_epoch": 20,
+      "expected_frontier_family": "CAUSALLY_ENABLED_DESCENDANT_FRONTIER",
+      "gap_pattern": "PROPERTY_ROLE_GAP_WITH_COMPATIBLE_CATALYTIC_BRIDGE",
+      "growth_routing_law_id": "GRL25-03",
+      "verified": true
+    }
+  ],
+  "reaction_laws_kept_distinct": true
+}

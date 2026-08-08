@@ -1,0 +1,142 @@
+{
+  "events": [
+    {
+      "catalyst_ids": [
+        3396993028
+      ],
+      "causal_descendant_sources_realized_this_epoch": [
+        30004
+      ],
+      "epoch": 4,
+      "later_frontiers_enabled": 3,
+      "opportunity_id": 40001
+    },
+    {
+      "catalyst_ids": [
+        3396993029
+      ],
+      "causal_descendant_sources_realized_this_epoch": [
+        40001
+      ],
+      "epoch": 5,
+      "later_frontiers_enabled": 3,
+      "opportunity_id": 50001
+    },
+    {
+      "catalyst_ids": [
+        3396993032
+      ],
+      "causal_descendant_sources_realized_this_epoch": [
+        70004
+      ],
+      "epoch": 8,
+      "later_frontiers_enabled": 3,
+      "opportunity_id": 80001
+    },
+    {
+      "catalyst_ids": [
+        3396993034
+      ],
+      "causal_descendant_sources_realized_this_epoch": [
+        80001,
+        90004
+      ],
+      "epoch": 10,
+      "later_frontiers_enabled": 3,
+      "opportunity_id": 100001
+    },
+    {
+      "catalyst_ids": [
+        3396993035
+      ],
+      "causal_descendant_sources_realized_this_epoch": [
+        100001
+      ],
+      "epoch": 11,
+      "later_frontiers_enabled": 3,
+      "opportunity_id": 110001
+    },
+    {
+      "catalyst_ids": [
+        3396993036
+      ],
+      "causal_descendant_sources_realized_this_epoch": [
+        100001,
+        110001
+      ],
+      "epoch": 12,
+      "later_frontiers_enabled": 3,
+      "opportunity_id": 120001
+    },
+    {
+      "catalyst_ids": [
+        3396993038
+      ],
+      "causal_descendant_sources_realized_this_epoch": [
+        120001,
+        130004
+      ],
+      "epoch": 14,
+      "later_frontiers_enabled": 3,
+      "opportunity_id": 140001
+    },
+    {
+      "catalyst_ids": [
+        3396993040
+      ],
+      "causal_descendant_sources_realized_this_epoch": [
+        140001,
+        150004
+      ],
+      "epoch": 16,
+      "later_frontiers_enabled": 3,
+      "opportunity_id": 160001
+    },
+    {
+      "catalyst_ids": [
+        3396993041
+      ],
+      "causal_descendant_sources_realized_this_epoch": [
+        160001
+      ],
+      "epoch": 17,
+      "later_frontiers_enabled": 3,
+      "opportunity_id": 170001
+    },
+    {
+      "catalyst_ids": [
+        3396993042
+      ],
+      "causal_descendant_sources_realized_this_epoch": [
+        160001,
+        170001
+      ],
+      "epoch": 18,
+      "later_frontiers_enabled": 3,
+      "opportunity_id": 180001
+    },
+    {
+      "catalyst_ids": [
+        3396993047
+      ],
+      "causal_descendant_sources_realized_this_epoch": [
+        220004
+      ],
+      "epoch": 23,
+      "later_frontiers_enabled": 3,
+      "opportunity_id": 230001
+    },
+    {
+      "catalyst_ids": [
+        3396993048
+      ],
+      "causal_descendant_sources_realized_this_epoch": [
+        230001
+      ],
+      "epoch": 24,
+      "later_frontiers_enabled": 3,
+      "opportunity_id": 240001
+    }
+  ],
+  "regime_advance_events": 12
+}

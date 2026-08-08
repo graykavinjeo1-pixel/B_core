@@ -1,0 +1,23 @@
+{
+  "frontier_gap_routing": true,
+  "full_growth_opportunity_scan": 0,
+  "keys": [
+    "missing_properties",
+    "missing_roles",
+    "resource_bounds",
+    "frontier_deficits",
+    "desired_phenotype"
+  ],
+  "present": true,
+  "property_to_reaction_routing": true,
+  "routes_to": [
+    "reaction_families",
+    "reaction_laws",
+    "reactants",
+    "composites",
+    "catalysts",
+    "mediators",
+    "multi_step_paths"
+  ],
+  "self_phenotype_routing": true
+}

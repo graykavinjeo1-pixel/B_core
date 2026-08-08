@@ -1,0 +1,1439 @@
+{
+  "arms": [
+    {
+      "actual_frontier_gain": 82,
+      "actual_frontier_scale": 6860,
+      "arm": "A_SEM24_ONE_STEP_DISCOVERY",
+      "causal_predecessor_opportunities": [],
+      "causally_realized_delayed_gain": 0,
+      "epoch": 17,
+      "parent_probe_completion_wall_time_ns": 32189100,
+      "peak_process_rss_bytes": 0,
+      "process_cpu_time_ns": 0,
+      "routing": {
+        "affordance_prediction_hits": 0,
+        "arm_code": 0,
+        "candidate_retrieval_time_ns": 11934900,
+        "catalytic_frontier_selected": false,
+        "dead_end_selected": false,
+        "discovery_checksum": 16977405465251454782,
+        "epoch": 17,
+        "false_affordances": 0,
+        "frontier_portfolio": {
+          "non_dominated_paths": [
+            {
+              "concrete_future_instances_inspected": false,
+              "horizon": 1,
+              "opportunity_id": 170001,
+              "path_id": 14271797118470205640,
+              "predicted_consequences": {
+                "discovery_cost_units": 51,
+                "frontier_classes_opened": 2,
+                "frontier_scale_gain": 64,
+                "future_useful_composites": 0,
+                "future_useful_frontiers": 0,
+                "genesis_cost_units": 14,
+                "memory_bytes": 576,
+                "new_reaction_affordances": 0,
+                "uncertainty_ppm": 72000,
+                "verification_cost_units": 13,
+                "wall_time_units": 37
+              },
+              "predicted_reaction_ids": [
+                2720016
+              ]
+            },
+            {
+              "concrete_future_instances_inspected": false,
+              "horizon": 1,
+              "opportunity_id": 170002,
+              "path_id": 14748481481224784870,
+              "predicted_consequences": {
+                "discovery_cost_units": 51,
+                "frontier_classes_opened": 1,
+                "frontier_scale_gain": 82,
+                "future_useful_composites": 0,
+                "future_useful_frontiers": 0,
+                "genesis_cost_units": 8,
+                "memory_bytes": 288,
+                "new_reaction_affordances": 0,
+                "uncertainty_ppm": 38000,
+                "verification_cost_units": 14,
+                "wall_time_units": 31
+              },
+              "predicted_reaction_ids": [
+                2720032
+              ]
+            },
+            {
+              "concrete_future_instances_inspected": false,
+              "horizon": 1,
+              "opportunity_id": 170003,
+              "path_id": 14611983954682906407,
+              "predicted_consequences": {
+                "discovery_cost_units": 51,
+                "frontier_classes_opened": 1,
+                "frontier_scale_gain": 57,
+                "future_useful_composites": 0,
+                "future_useful_frontiers": 0,
+                "genesis_cost_units": 9,
+                "memory_bytes": 224,
+                "new_reaction_affordances": 0,
+                "uncertainty_ppm": 46000,
+                "verification_cost_units": 15,
+                "wall_time_units": 32
+              },
+              "predicted_reaction_ids": [
+                2720048
+              ]
+            },
+            {
+              "concrete_future_instances_inspected": false,
+              "horizon": 1,
+              "opportunity_id": 170004,
+              "path_id": 6092657749029338026,
+              "predicted_consequences": {
+                "discovery_cost_units": 51,
+                "frontier_classes_opened": 1,
+                "frontier_scale_gain": 41,
+                "future_useful_composites": 0,
+                "future_useful_frontiers": 0,
+                "genesis_cost_units": 11,
+                "memory_bytes": 320,
+                "new_reaction_affordances": 0,
+                "uncertainty_ppm": 28000,
+                "verification_cost_units": 16,
+                "wall_time_units": 34
+              },
+              "predicted_reaction_ids": [
+                2720064
+              ]
+            }
+          ],
+          "scalar_growth_score_used": false
+        },
+        "frontier_selection_time_ns": 1559600,
+        "full_atom_store_scan": false,
+        "full_composite_store_scan": false,
+        "full_counterfactual_tree_enumeration": false,
+        "full_growth_opportunity_scan": false,
+        "full_reaction_law_scan": false,
+        "full_reaction_space_enumeration": false,
+        "future_instance_leakage": false,
+        "gap_code": 3,
+        "implemented_reactions": 1,
+        "information_seeking_frontier": false,
+        "missed_affordances": 2,
+        "multi_horizon_prediction_time_ns": 100,
+        "observed_future_affordances": 2,
+        "observed_future_useful_composites": 1,
+        "observed_future_useful_frontiers": 1,
+        "observed_immediate_frontier_gain": 82,
+        "open_loop_multi_step_self_modification": false,
+        "opportunities_fully_evaluated": 4,
+        "opportunities_generated": 25,
+        "pareto_selection_time_ns": 1559400,
+        "predicted_future_affordances": 0,
+        "property_matching_time_ns": 5947500,
+        "reaction_candidate_routing_time_ns": 17889900,
+        "reaction_discovery_time_ns": 17889900,
+        "reaction_law_lookup_time_ns": 7500,
+        "reaction_objects_touched": 51,
+        "reaction_realization_time_ns": 4266100,
+        "realization_checksum": 10720226289437954320,
+        "rejected_non_dominated_paths": [
+          {
+            "concrete_future_instances_inspected": false,
+            "horizon": 1,
+            "opportunity_id": 170001,
+            "path_id": 14271797118470205640,
+            "predicted_consequences": {
+              "discovery_cost_units": 51,
+              "frontier_classes_opened": 2,
+              "frontier_scale_gain": 64,
+              "future_useful_composites": 0,
+              "future_useful_frontiers": 0,
+              "genesis_cost_units": 14,
+              "memory_bytes": 576,
+              "new_reaction_affordances": 0,
+              "uncertainty_ppm": 72000,
+              "verification_cost_units": 13,
+              "wall_time_units": 37
+            },
+            "predicted_reaction_ids": [
+              2720016
+            ]
+          },
+          {
+            "concrete_future_instances_inspected": false,
+            "horizon": 1,
+            "opportunity_id": 170003,
+            "path_id": 14611983954682906407,
+            "predicted_consequences": {
+              "discovery_cost_units": 51,
+              "frontier_classes_opened": 1,
+              "frontier_scale_gain": 57,
+              "future_useful_composites": 0,
+              "future_useful_frontiers": 0,
+              "genesis_cost_units": 9,
+              "memory_bytes": 224,
+              "new_reaction_affordances": 0,
+              "uncertainty_ppm": 46000,
+              "verification_cost_units": 15,
+              "wall_time_units": 32
+            },
+            "predicted_reaction_ids": [
+              2720048
+            ]
+          },
+          {
+            "concrete_future_instances_inspected": false,
+            "horizon": 1,
+            "opportunity_id": 170004,
+            "path_id": 6092657749029338026,
+            "predicted_consequences": {
+              "discovery_cost_units": 51,
+              "frontier_classes_opened": 1,
+              "frontier_scale_gain": 41,
+              "future_useful_composites": 0,
+              "future_useful_frontiers": 0,
+              "genesis_cost_units": 11,
+              "memory_bytes": 320,
+              "new_reaction_affordances": 0,
+              "uncertainty_ppm": 28000,
+              "verification_cost_units": 16,
+              "wall_time_units": 34
+            },
+            "predicted_reaction_ids": [
+              2720064
+            ]
+          }
+        ],
+        "routed_candidates": 23,
+        "routing_hit_rate": 0.043478260869565216,
+        "routing_surprise": true,
+        "selected_opportunity": {
+          "catalyst_ids": [],
+          "family_code": 2,
+          "future_affordance_signature": {
+            "applicability_boundary_mask": 32,
+            "catalyst_mask": 0,
+            "compatible_family_mask": 4,
+            "creates_properties_mask": 32,
+            "creates_roles_mask": 512,
+            "frontier_gap_mask": 8,
+            "incompatible_family_mask": 2147483648,
+            "mediator_mask": 0,
+            "modifies_properties_mask": 131072,
+            "negative_condition_mask": 8,
+            "predicted_downstream_affordances": 0,
+            "predicted_future_useful_composites": 0,
+            "predicted_future_useful_frontiers": 0,
+            "reaction_law_mask": 0,
+            "resource_effect": 8
+          },
+          "gap_code": 3,
+          "mediator_ids": [],
+          "opportunity_id": 170002,
+          "predicted_growth": {
+            "discovery_cost_units": 51,
+            "frontier_classes_opened": 1,
+            "frontier_scale_gain": 82,
+            "future_useful_composites": 0,
+            "future_useful_frontiers": 0,
+            "genesis_cost_units": 8,
+            "memory_bytes": 288,
+            "new_reaction_affordances": 0,
+            "uncertainty_ppm": 38000,
+            "verification_cost_units": 14,
+            "wall_time_units": 31
+          },
+          "predicted_immediate_properties_mask": 393216,
+          "prediction_horizon": 1,
+          "reactant_ids": [
+            620759169,
+            603979800
+          ],
+          "required_properties_mask": 131072,
+          "required_roles_mask": 1024
+        },
+        "selected_prediction_horizon": 1,
+        "theoretical_reaction_space": 127449,
+        "total_reaction_objects": 119,
+        "uncertainty_probe_time_ns": 100,
+        "verified_useful_reactions": 1
+      },
+      "same_frozen_frontier_plan_sha256": "8c3ba4a855c0ced2f66f77db12c0f3f351e2f3abcafdbcef99956ada74e71a22",
+      "same_resource_envelope": true,
+      "same_work_universe": true,
+      "verification": {
+        "accepted": true,
+        "active_certificate_bytes": 456,
+        "affected_claim_fraction": 0.10714285714285714,
+        "affected_claims": 3,
+        "arm_code": 3,
+        "certificate": {
+          "applicability_conditions": 4,
+          "assumptions_mask": 17,
+          "composition_depth": 49,
+          "dependency_hashes": [
+            746429168504494812
+          ],
+          "evidence_refs": [
+            7949423346472549016,
+            15188015554221771237
+          ],
+          "guarantees_mask": 268435455,
+          "integrity_hash": 8186506066707919530,
+          "negative_conditions": 1,
+          "object_identity": 170002,
+          "preserved_invariants_mask": 15,
+          "proof_provenance": 1901671943389873657,
+          "proven_properties_mask": 268435455,
+          "resource_bound": 620757009,
+          "semantic_hash": 1978394840637253462,
+          "stability_conditions": 3,
+          "verification_method": 3
+        },
+        "certificate_bytes": 720,
+        "certificate_check_time_ns": 16500,
+        "certificate_compression_ratio": 7.444444444444445,
+        "certificate_mechanically_valid": true,
+        "certificate_reuse_count": 49,
+        "certificate_self_assertion_authority": false,
+        "delta_verification_time_ns": 30800,
+        "dependency_identity_valid": true,
+        "environment_contract_valid": true,
+        "false_verification_acceptance": false,
+        "full_revalidation_fraction": 1.0,
+        "full_revalidation_time_ns": 6053600,
+        "full_revalidation_used": true,
+        "inherited_verified_claims": 22,
+        "new_verification_obligations": 28,
+        "object_id": 170002,
+        "prediction_used_as_sole_proof": false,
+        "proof_reuse_fraction": 0.7857142857142857,
+        "result_checksum": 6576991650372450248,
+        "semantic_hash": 1978394840637253462,
+        "stale_certificate_accepted": false,
+        "structural_sharing_events": 71,
+        "surprise_escalated": false,
+        "targeted_execution_time_ns": 0,
+        "topology_identity_valid": true,
+        "total_accepted_claims": 28,
+        "total_verification_wall_time_ns": 6100900,
+        "unverified_emergent_property_accepted": false,
+        "verification_index_bytes": 1688,
+        "verification_ir": {
+          "affected_dependencies": 3,
+          "assumptions": 6,
+          "changed_claims": 3,
+          "claims": 28,
+          "emergent_property_checks": 2,
+          "executable_checks": 2,
+          "inherited_claims": 22,
+          "proof_obligations": 28,
+          "resource_checks": 1,
+          "unresolved_claims": 0
+        },
+        "verification_law_reuse_count": 1,
+        "verification_operations": 2133360,
+        "verification_requirement_omissions": 0,
+        "verification_runtime_bytes": 2048
+      }
+    },
+    {
+      "actual_frontier_gain": 82,
+      "actual_frontier_scale": 6860,
+      "arm": "B_IMMEDIATE_GREEDY_ROUTING",
+      "causal_predecessor_opportunities": [],
+      "causally_realized_delayed_gain": 0,
+      "epoch": 17,
+      "parent_probe_completion_wall_time_ns": 18339700,
+      "peak_process_rss_bytes": 0,
+      "process_cpu_time_ns": 0,
+      "routing": {
+        "affordance_prediction_hits": 0,
+        "arm_code": 1,
+        "candidate_retrieval_time_ns": 2815700,
+        "catalytic_frontier_selected": false,
+        "dead_end_selected": false,
+        "discovery_checksum": 5133167469457608075,
+        "epoch": 17,
+        "false_affordances": 0,
+        "frontier_portfolio": {
+          "non_dominated_paths": [
+            {
+              "concrete_future_instances_inspected": false,
+              "horizon": 1,
+              "opportunity_id": 170001,
+              "path_id": 14271797118470205640,
+              "predicted_consequences": {
+                "discovery_cost_units": 12,
+                "frontier_classes_opened": 2,
+                "frontier_scale_gain": 64,
+                "future_useful_composites": 0,
+                "future_useful_frontiers": 0,
+                "genesis_cost_units": 14,
+                "memory_bytes": 576,
+                "new_reaction_affordances": 0,
+                "uncertainty_ppm": 72000,
+                "verification_cost_units": 13,
+                "wall_time_units": 37
+              },
+              "predicted_reaction_ids": [
+                2720016
+              ]
+            },
+            {
+              "concrete_future_instances_inspected": false,
+              "horizon": 1,
+              "opportunity_id": 170002,
+              "path_id": 14748481481224784870,
+              "predicted_consequences": {
+                "discovery_cost_units": 12,
+                "frontier_classes_opened": 1,
+                "frontier_scale_gain": 82,
+                "future_useful_composites": 0,
+                "future_useful_frontiers": 0,
+                "genesis_cost_units": 8,
+                "memory_bytes": 288,
+                "new_reaction_affordances": 0,
+                "uncertainty_ppm": 38000,
+                "verification_cost_units": 14,
+                "wall_time_units": 31
+              },
+              "predicted_reaction_ids": [
+                2720032
+              ]
+            },
+            {
+              "concrete_future_instances_inspected": false,
+              "horizon": 1,
+              "opportunity_id": 170003,
+              "path_id": 14611983954682906407,
+              "predicted_consequences": {
+                "discovery_cost_units": 12,
+                "frontier_classes_opened": 1,
+                "frontier_scale_gain": 57,
+                "future_useful_composites": 0,
+                "future_useful_frontiers": 0,
+                "genesis_cost_units": 9,
+                "memory_bytes": 224,
+                "new_reaction_affordances": 0,
+                "uncertainty_ppm": 46000,
+                "verification_cost_units": 15,
+                "wall_time_units": 32
+              },
+              "predicted_reaction_ids": [
+                2720048
+              ]
+            },
+            {
+              "concrete_future_instances_inspected": false,
+              "horizon": 1,
+              "opportunity_id": 170004,
+              "path_id": 6092657749029338026,
+              "predicted_consequences": {
+                "discovery_cost_units": 12,
+                "frontier_classes_opened": 1,
+                "frontier_scale_gain": 41,
+                "future_useful_composites": 0,
+                "future_useful_frontiers": 0,
+                "genesis_cost_units": 11,
+                "memory_bytes": 320,
+                "new_reaction_affordances": 0,
+                "uncertainty_ppm": 28000,
+                "verification_cost_units": 16,
+                "wall_time_units": 34
+              },
+              "predicted_reaction_ids": [
+                2720064
+              ]
+            }
+          ],
+          "scalar_growth_score_used": false
+        },
+        "frontier_selection_time_ns": 1555600,
+        "full_atom_store_scan": false,
+        "full_composite_store_scan": false,
+        "full_counterfactual_tree_enumeration": false,
+        "full_growth_opportunity_scan": false,
+        "full_reaction_law_scan": false,
+        "full_reaction_space_enumeration": false,
+        "future_instance_leakage": false,
+        "gap_code": 3,
+        "implemented_reactions": 1,
+        "information_seeking_frontier": false,
+        "missed_affordances": 2,
+        "multi_horizon_prediction_time_ns": 0,
+        "observed_future_affordances": 2,
+        "observed_future_useful_composites": 1,
+        "observed_future_useful_frontiers": 1,
+        "observed_immediate_frontier_gain": 82,
+        "open_loop_multi_step_self_modification": false,
+        "opportunities_fully_evaluated": 4,
+        "opportunities_generated": 10,
+        "pareto_selection_time_ns": 1555500,
+        "predicted_future_affordances": 0,
+        "property_matching_time_ns": 1460700,
+        "reaction_candidate_routing_time_ns": 4276400,
+        "reaction_discovery_time_ns": 4276400,
+        "reaction_law_lookup_time_ns": 0,
+        "reaction_objects_touched": 12,
+        "reaction_realization_time_ns": 4324900,
+        "realization_checksum": 4946650830679594193,
+        "rejected_non_dominated_paths": [
+          {
+            "concrete_future_instances_inspected": false,
+            "horizon": 1,
+            "opportunity_id": 170001,
+            "path_id": 14271797118470205640,
+            "predicted_consequences": {
+              "discovery_cost_units": 12,
+              "frontier_classes_opened": 2,
+              "frontier_scale_gain": 64,
+              "future_useful_composites": 0,
+              "future_useful_frontiers": 0,
+              "genesis_cost_units": 14,
+              "memory_bytes": 576,
+              "new_reaction_affordances": 0,
+              "uncertainty_ppm": 72000,
+              "verification_cost_units": 13,
+              "wall_time_units": 37
+            },
+            "predicted_reaction_ids": [
+              2720016
+            ]
+          },
+          {
+            "concrete_future_instances_inspected": false,
+            "horizon": 1,
+            "opportunity_id": 170003,
+            "path_id": 14611983954682906407,
+            "predicted_consequences": {
+              "discovery_cost_units": 12,
+              "frontier_classes_opened": 1,
+              "frontier_scale_gain": 57,
+              "future_useful_composites": 0,
+              "future_useful_frontiers": 0,
+              "genesis_cost_units": 9,
+              "memory_bytes": 224,
+              "new_reaction_affordances": 0,
+              "uncertainty_ppm": 46000,
+              "verification_cost_units": 15,
+              "wall_time_units": 32
+            },
+            "predicted_reaction_ids": [
+              2720048
+            ]
+          },
+          {
+            "concrete_future_instances_inspected": false,
+            "horizon": 1,
+            "opportunity_id": 170004,
+            "path_id": 6092657749029338026,
+            "predicted_consequences": {
+              "discovery_cost_units": 12,
+              "frontier_classes_opened": 1,
+              "frontier_scale_gain": 41,
+              "future_useful_composites": 0,
+              "future_useful_frontiers": 0,
+              "genesis_cost_units": 11,
+              "memory_bytes": 320,
+              "new_reaction_affordances": 0,
+              "uncertainty_ppm": 28000,
+              "verification_cost_units": 16,
+              "wall_time_units": 34
+            },
+            "predicted_reaction_ids": [
+              2720064
+            ]
+          }
+        ],
+        "routed_candidates": 8,
+        "routing_hit_rate": 0.125,
+        "routing_surprise": true,
+        "selected_opportunity": {
+          "catalyst_ids": [],
+          "family_code": 2,
+          "future_affordance_signature": {
+            "applicability_boundary_mask": 32,
+            "catalyst_mask": 0,
+            "compatible_family_mask": 4,
+            "creates_properties_mask": 32,
+            "creates_roles_mask": 512,
+            "frontier_gap_mask": 8,
+            "incompatible_family_mask": 2147483648,
+            "mediator_mask": 0,
+            "modifies_properties_mask": 131072,
+            "negative_condition_mask": 8,
+            "predicted_downstream_affordances": 0,
+            "predicted_future_useful_composites": 0,
+            "predicted_future_useful_frontiers": 0,
+            "reaction_law_mask": 0,
+            "resource_effect": 8
+          },
+          "gap_code": 3,
+          "mediator_ids": [],
+          "opportunity_id": 170002,
+          "predicted_growth": {
+            "discovery_cost_units": 12,
+            "frontier_classes_opened": 1,
+            "frontier_scale_gain": 82,
+            "future_useful_composites": 0,
+            "future_useful_frontiers": 0,
+            "genesis_cost_units": 8,
+            "memory_bytes": 288,
+            "new_reaction_affordances": 0,
+            "uncertainty_ppm": 38000,
+            "verification_cost_units": 14,
+            "wall_time_units": 31
+          },
+          "predicted_immediate_properties_mask": 393216,
+          "prediction_horizon": 1,
+          "reactant_ids": [
+            620759169,
+            603979800
+          ],
+          "required_properties_mask": 131072,
+          "required_roles_mask": 1024
+        },
+        "selected_prediction_horizon": 1,
+        "theoretical_reaction_space": 127449,
+        "total_reaction_objects": 119,
+        "uncertainty_probe_time_ns": 100,
+        "verified_useful_reactions": 1
+      },
+      "same_frozen_frontier_plan_sha256": "8c3ba4a855c0ced2f66f77db12c0f3f351e2f3abcafdbcef99956ada74e71a22",
+      "same_resource_envelope": true,
+      "same_work_universe": true,
+      "verification": {
+        "accepted": true,
+        "active_certificate_bytes": 456,
+        "affected_claim_fraction": 0.10714285714285714,
+        "affected_claims": 3,
+        "arm_code": 3,
+        "certificate": {
+          "applicability_conditions": 5,
+          "assumptions_mask": 17,
+          "composition_depth": 49,
+          "dependency_hashes": [
+            746429168504494812
+          ],
+          "evidence_refs": [
+            6406898476740509383,
+            9395743913691054464
+          ],
+          "guarantees_mask": 268435455,
+          "integrity_hash": 16089424288988224785,
+          "negative_conditions": 1,
+          "object_identity": 170002,
+          "preserved_invariants_mask": 15,
+          "proof_provenance": 2235909602750724428,
+          "proven_properties_mask": 268435455,
+          "resource_bound": 620757009,
+          "semantic_hash": 931944757698503235,
+          "stability_conditions": 3,
+          "verification_method": 3
+        },
+        "certificate_bytes": 720,
+        "certificate_check_time_ns": 16500,
+        "certificate_compression_ratio": 7.444444444444445,
+        "certificate_mechanically_valid": true,
+        "certificate_reuse_count": 49,
+        "certificate_self_assertion_authority": false,
+        "delta_verification_time_ns": 30800,
+        "dependency_identity_valid": true,
+        "environment_contract_valid": true,
+        "false_verification_acceptance": false,
+        "full_revalidation_fraction": 1.0,
+        "full_revalidation_time_ns": 6031300,
+        "full_revalidation_used": true,
+        "inherited_verified_claims": 22,
+        "new_verification_obligations": 28,
+        "object_id": 170002,
+        "prediction_used_as_sole_proof": false,
+        "proof_reuse_fraction": 0.7857142857142857,
+        "result_checksum": 643127501579375734,
+        "semantic_hash": 931944757698503235,
+        "stale_certificate_accepted": false,
+        "structural_sharing_events": 71,
+        "surprise_escalated": false,
+        "targeted_execution_time_ns": 100,
+        "topology_identity_valid": true,
+        "total_accepted_claims": 28,
+        "total_verification_wall_time_ns": 6078700,
+        "unverified_emergent_property_accepted": false,
+        "verification_index_bytes": 1688,
+        "verification_ir": {
+          "affected_dependencies": 3,
+          "assumptions": 6,
+          "changed_claims": 3,
+          "claims": 28,
+          "emergent_property_checks": 2,
+          "executable_checks": 2,
+          "inherited_claims": 22,
+          "proof_obligations": 28,
+          "resource_checks": 1,
+          "unresolved_claims": 0
+        },
+        "verification_law_reuse_count": 1,
+        "verification_operations": 2133360,
+        "verification_requirement_omissions": 0,
+        "verification_runtime_bytes": 2048
+      }
+    },
+    {
+      "actual_frontier_gain": 146,
+      "actual_frontier_scale": 7516,
+      "arm": "C_MULTI_HORIZON_WITHOUT_ROUTING_LAWS",
+      "causal_predecessor_opportunities": [
+        160001
+      ],
+      "causally_realized_delayed_gain": 82,
+      "epoch": 17,
+      "parent_probe_completion_wall_time_ns": 28609900,
+      "peak_process_rss_bytes": 0,
+      "process_cpu_time_ns": 0,
+      "routing": {
+        "affordance_prediction_hits": 6,
+        "arm_code": 2,
+        "candidate_retrieval_time_ns": 4681400,
+        "catalytic_frontier_selected": true,
+        "dead_end_selected": false,
+        "discovery_checksum": 6036894882552125702,
+        "epoch": 17,
+        "false_affordances": 0,
+        "frontier_portfolio": {
+          "non_dominated_paths": [
+            {
+              "concrete_future_instances_inspected": false,
+              "horizon": 4,
+              "opportunity_id": 170001,
+              "path_id": 12286268014799422037,
+              "predicted_consequences": {
+                "discovery_cost_units": 20,
+                "frontier_classes_opened": 2,
+                "frontier_scale_gain": 64,
+                "future_useful_composites": 6,
+                "future_useful_frontiers": 3,
+                "genesis_cost_units": 14,
+                "memory_bytes": 576,
+                "new_reaction_affordances": 6,
+                "uncertainty_ppm": 72000,
+                "verification_cost_units": 13,
+                "wall_time_units": 46
+              },
+              "predicted_reaction_ids": [
+                2720016,
+                2720017,
+                2720018,
+                2720019
+              ]
+            },
+            {
+              "concrete_future_instances_inspected": false,
+              "horizon": 4,
+              "opportunity_id": 170002,
+              "path_id": 2622232383518217882,
+              "predicted_consequences": {
+                "discovery_cost_units": 20,
+                "frontier_classes_opened": 1,
+                "frontier_scale_gain": 82,
+                "future_useful_composites": 1,
+                "future_useful_frontiers": 1,
+                "genesis_cost_units": 8,
+                "memory_bytes": 288,
+                "new_reaction_affordances": 2,
+                "uncertainty_ppm": 38000,
+                "verification_cost_units": 14,
+                "wall_time_units": 40
+              },
+              "predicted_reaction_ids": [
+                2720032,
+                2720033,
+                2720034,
+                2720035
+              ]
+            },
+            {
+              "concrete_future_instances_inspected": false,
+              "horizon": 4,
+              "opportunity_id": 170003,
+              "path_id": 17784409152829658882,
+              "predicted_consequences": {
+                "discovery_cost_units": 20,
+                "frontier_classes_opened": 1,
+                "frontier_scale_gain": 57,
+                "future_useful_composites": 2,
+                "future_useful_frontiers": 2,
+                "genesis_cost_units": 9,
+                "memory_bytes": 224,
+                "new_reaction_affordances": 4,
+                "uncertainty_ppm": 46000,
+                "verification_cost_units": 15,
+                "wall_time_units": 41
+              },
+              "predicted_reaction_ids": [
+                2720048,
+                2720049,
+                2720050,
+                2720051
+              ]
+            },
+            {
+              "concrete_future_instances_inspected": false,
+              "horizon": 4,
+              "opportunity_id": 170004,
+              "path_id": 15634513641471145970,
+              "predicted_consequences": {
+                "discovery_cost_units": 20,
+                "frontier_classes_opened": 1,
+                "frontier_scale_gain": 41,
+                "future_useful_composites": 3,
+                "future_useful_frontiers": 2,
+                "genesis_cost_units": 11,
+                "memory_bytes": 320,
+                "new_reaction_affordances": 5,
+                "uncertainty_ppm": 28000,
+                "verification_cost_units": 16,
+                "wall_time_units": 43
+              },
+              "predicted_reaction_ids": [
+                2720064,
+                2720065,
+                2720066,
+                2720067
+              ]
+            }
+          ],
+          "scalar_growth_score_used": false
+        },
+        "frontier_selection_time_ns": 8806800,
+        "full_atom_store_scan": false,
+        "full_composite_store_scan": false,
+        "full_counterfactual_tree_enumeration": false,
+        "full_growth_opportunity_scan": false,
+        "full_reaction_law_scan": false,
+        "full_reaction_space_enumeration": false,
+        "future_instance_leakage": false,
+        "gap_code": 3,
+        "implemented_reactions": 1,
+        "information_seeking_frontier": true,
+        "missed_affordances": 0,
+        "multi_horizon_prediction_time_ns": 6047500,
+        "observed_future_affordances": 6,
+        "observed_future_useful_composites": 5,
+        "observed_future_useful_frontiers": 3,
+        "observed_immediate_frontier_gain": 64,
+        "open_loop_multi_step_self_modification": false,
+        "opportunities_fully_evaluated": 4,
+        "opportunities_generated": 12,
+        "pareto_selection_time_ns": 1559400,
+        "predicted_future_affordances": 6,
+        "property_matching_time_ns": 2343300,
+        "reaction_candidate_routing_time_ns": 7481300,
+        "reaction_discovery_time_ns": 7481300,
+        "reaction_law_lookup_time_ns": 456600,
+        "reaction_objects_touched": 20,
+        "reaction_realization_time_ns": 4113600,
+        "realization_checksum": 9986777016048293515,
+        "rejected_non_dominated_paths": [
+          {
+            "concrete_future_instances_inspected": false,
+            "horizon": 4,
+            "opportunity_id": 170002,
+            "path_id": 2622232383518217882,
+            "predicted_consequences": {
+              "discovery_cost_units": 20,
+              "frontier_classes_opened": 1,
+              "frontier_scale_gain": 82,
+              "future_useful_composites": 1,
+              "future_useful_frontiers": 1,
+              "genesis_cost_units": 8,
+              "memory_bytes": 288,
+              "new_reaction_affordances": 2,
+              "uncertainty_ppm": 38000,
+              "verification_cost_units": 14,
+              "wall_time_units": 40
+            },
+            "predicted_reaction_ids": [
+              2720032,
+              2720033,
+              2720034,
+              2720035
+            ]
+          },
+          {
+            "concrete_future_instances_inspected": false,
+            "horizon": 4,
+            "opportunity_id": 170003,
+            "path_id": 17784409152829658882,
+            "predicted_consequences": {
+              "discovery_cost_units": 20,
+              "frontier_classes_opened": 1,
+              "frontier_scale_gain": 57,
+              "future_useful_composites": 2,
+              "future_useful_frontiers": 2,
+              "genesis_cost_units": 9,
+              "memory_bytes": 224,
+              "new_reaction_affordances": 4,
+              "uncertainty_ppm": 46000,
+              "verification_cost_units": 15,
+              "wall_time_units": 41
+            },
+            "predicted_reaction_ids": [
+              2720048,
+              2720049,
+              2720050,
+              2720051
+            ]
+          },
+          {
+            "concrete_future_instances_inspected": false,
+            "horizon": 4,
+            "opportunity_id": 170004,
+            "path_id": 15634513641471145970,
+            "predicted_consequences": {
+              "discovery_cost_units": 20,
+              "frontier_classes_opened": 1,
+              "frontier_scale_gain": 41,
+              "future_useful_composites": 3,
+              "future_useful_frontiers": 2,
+              "genesis_cost_units": 11,
+              "memory_bytes": 320,
+              "new_reaction_affordances": 5,
+              "uncertainty_ppm": 28000,
+              "verification_cost_units": 16,
+              "wall_time_units": 43
+            },
+            "predicted_reaction_ids": [
+              2720064,
+              2720065,
+              2720066,
+              2720067
+            ]
+          }
+        ],
+        "routed_candidates": 10,
+        "routing_hit_rate": 0.1,
+        "routing_surprise": false,
+        "selected_opportunity": {
+          "catalyst_ids": [
+            3396993041
+          ],
+          "family_code": 1,
+          "future_affordance_signature": {
+            "applicability_boundary_mask": 16,
+            "catalyst_mask": 8,
+            "compatible_family_mask": 2,
+            "creates_properties_mask": 16,
+            "creates_roles_mask": 64,
+            "frontier_gap_mask": 8,
+            "incompatible_family_mask": 0,
+            "mediator_mask": 0,
+            "modifies_properties_mask": 4096,
+            "negative_condition_mask": 0,
+            "predicted_downstream_affordances": 6,
+            "predicted_future_useful_composites": 6,
+            "predicted_future_useful_frontiers": 3,
+            "reaction_law_mask": 0,
+            "resource_effect": 2
+          },
+          "gap_code": 3,
+          "mediator_ids": [],
+          "opportunity_id": 170001,
+          "predicted_growth": {
+            "discovery_cost_units": 20,
+            "frontier_classes_opened": 2,
+            "frontier_scale_gain": 64,
+            "future_useful_composites": 6,
+            "future_useful_frontiers": 3,
+            "genesis_cost_units": 14,
+            "memory_bytes": 576,
+            "new_reaction_affordances": 6,
+            "uncertainty_ppm": 72000,
+            "verification_cost_units": 13,
+            "wall_time_units": 46
+          },
+          "predicted_immediate_properties_mask": 131072,
+          "prediction_horizon": 4,
+          "reactant_ids": [
+            620759168,
+            603979793
+          ],
+          "required_properties_mask": 131072,
+          "required_roles_mask": 1024
+        },
+        "selected_prediction_horizon": 4,
+        "theoretical_reaction_space": 127449,
+        "total_reaction_objects": 119,
+        "uncertainty_probe_time_ns": 1199900,
+        "verified_useful_reactions": 1
+      },
+      "same_frozen_frontier_plan_sha256": "8c3ba4a855c0ced2f66f77db12c0f3f351e2f3abcafdbcef99956ada74e71a22",
+      "same_resource_envelope": true,
+      "same_work_universe": true,
+      "verification": {
+        "accepted": true,
+        "active_certificate_bytes": 456,
+        "affected_claim_fraction": 0.10714285714285714,
+        "affected_claims": 3,
+        "arm_code": 3,
+        "certificate": {
+          "applicability_conditions": 1,
+          "assumptions_mask": 17,
+          "composition_depth": 49,
+          "dependency_hashes": [
+            746429168504494812
+          ],
+          "evidence_refs": [
+            10830328459808960741,
+            10158758936801872895
+          ],
+          "guarantees_mask": 268435455,
+          "integrity_hash": 9145565561885430919,
+          "negative_conditions": 1,
+          "object_identity": 170001,
+          "preserved_invariants_mask": 15,
+          "proof_provenance": 11400111893760397757,
+          "proven_properties_mask": 268435455,
+          "resource_bound": 620757009,
+          "semantic_hash": 10260392715863622117,
+          "stability_conditions": 3,
+          "verification_method": 3
+        },
+        "certificate_bytes": 720,
+        "certificate_check_time_ns": 16400,
+        "certificate_compression_ratio": 7.444444444444445,
+        "certificate_mechanically_valid": true,
+        "certificate_reuse_count": 49,
+        "certificate_self_assertion_authority": false,
+        "delta_verification_time_ns": 30800,
+        "dependency_identity_valid": true,
+        "environment_contract_valid": true,
+        "false_verification_acceptance": false,
+        "full_revalidation_fraction": 1.0,
+        "full_revalidation_time_ns": 6078900,
+        "full_revalidation_used": true,
+        "inherited_verified_claims": 22,
+        "new_verification_obligations": 28,
+        "object_id": 170001,
+        "prediction_used_as_sole_proof": false,
+        "proof_reuse_fraction": 0.7857142857142857,
+        "result_checksum": 9972041410837773913,
+        "semantic_hash": 10260392715863622117,
+        "stale_certificate_accepted": false,
+        "structural_sharing_events": 71,
+        "surprise_escalated": false,
+        "targeted_execution_time_ns": 0,
+        "topology_identity_valid": true,
+        "total_accepted_claims": 28,
+        "total_verification_wall_time_ns": 6126100,
+        "unverified_emergent_property_accepted": false,
+        "verification_index_bytes": 1688,
+        "verification_ir": {
+          "affected_dependencies": 3,
+          "assumptions": 6,
+          "changed_claims": 3,
+          "claims": 28,
+          "emergent_property_checks": 2,
+          "executable_checks": 2,
+          "inherited_claims": 22,
+          "proof_obligations": 28,
+          "resource_checks": 1,
+          "unresolved_claims": 0
+        },
+        "verification_law_reuse_count": 1,
+        "verification_operations": 2133360,
+        "verification_requirement_omissions": 0,
+        "verification_runtime_bytes": 2048
+      }
+    },
+    {
+      "actual_frontier_gain": 146,
+      "actual_frontier_scale": 7684,
+      "arm": "D_FULL_PREDICTIVE_GROWTH_ROUTING",
+      "causal_predecessor_opportunities": [
+        160001
+      ],
+      "causally_realized_delayed_gain": 82,
+      "epoch": 17,
+      "parent_probe_completion_wall_time_ns": 18626800,
+      "peak_process_rss_bytes": 4231168,
+      "process_cpu_time_ns": 15625000,
+      "routing": {
+        "affordance_prediction_hits": 7,
+        "arm_code": 3,
+        "candidate_retrieval_time_ns": 2110400,
+        "catalytic_frontier_selected": true,
+        "dead_end_selected": false,
+        "discovery_checksum": 10523101638050570367,
+        "epoch": 17,
+        "false_affordances": 0,
+        "frontier_portfolio": {
+          "non_dominated_paths": [
+            {
+              "concrete_future_instances_inspected": false,
+              "horizon": 4,
+              "opportunity_id": 170001,
+              "path_id": 12286268014799422037,
+              "predicted_consequences": {
+                "discovery_cost_units": 9,
+                "frontier_classes_opened": 2,
+                "frontier_scale_gain": 64,
+                "future_useful_composites": 6,
+                "future_useful_frontiers": 3,
+                "genesis_cost_units": 14,
+                "memory_bytes": 576,
+                "new_reaction_affordances": 7,
+                "uncertainty_ppm": 64500,
+                "verification_cost_units": 13,
+                "wall_time_units": 46
+              },
+              "predicted_reaction_ids": [
+                2720016,
+                2720017,
+                2720018,
+                2720019
+              ]
+            },
+            {
+              "concrete_future_instances_inspected": false,
+              "horizon": 4,
+              "opportunity_id": 170002,
+              "path_id": 2622232383518217882,
+              "predicted_consequences": {
+                "discovery_cost_units": 9,
+                "frontier_classes_opened": 1,
+                "frontier_scale_gain": 82,
+                "future_useful_composites": 1,
+                "future_useful_frontiers": 1,
+                "genesis_cost_units": 8,
+                "memory_bytes": 288,
+                "new_reaction_affordances": 3,
+                "uncertainty_ppm": 30500,
+                "verification_cost_units": 14,
+                "wall_time_units": 40
+              },
+              "predicted_reaction_ids": [
+                2720032,
+                2720033,
+                2720034,
+                2720035
+              ]
+            },
+            {
+              "concrete_future_instances_inspected": false,
+              "horizon": 4,
+              "opportunity_id": 170003,
+              "path_id": 17784409152829658882,
+              "predicted_consequences": {
+                "discovery_cost_units": 9,
+                "frontier_classes_opened": 1,
+                "frontier_scale_gain": 57,
+                "future_useful_composites": 2,
+                "future_useful_frontiers": 2,
+                "genesis_cost_units": 9,
+                "memory_bytes": 224,
+                "new_reaction_affordances": 5,
+                "uncertainty_ppm": 38500,
+                "verification_cost_units": 15,
+                "wall_time_units": 41
+              },
+              "predicted_reaction_ids": [
+                2720048,
+                2720049,
+                2720050,
+                2720051
+              ]
+            },
+            {
+              "concrete_future_instances_inspected": false,
+              "horizon": 4,
+              "opportunity_id": 170004,
+              "path_id": 15634513641471145970,
+              "predicted_consequences": {
+                "discovery_cost_units": 9,
+                "frontier_classes_opened": 1,
+                "frontier_scale_gain": 41,
+                "future_useful_composites": 3,
+                "future_useful_frontiers": 2,
+                "genesis_cost_units": 11,
+                "memory_bytes": 320,
+                "new_reaction_affordances": 6,
+                "uncertainty_ppm": 20500,
+                "verification_cost_units": 16,
+                "wall_time_units": 43
+              },
+              "predicted_reaction_ids": [
+                2720064,
+                2720065,
+                2720066,
+                2720067
+              ]
+            }
+          ],
+          "scalar_growth_score_used": false
+        },
+        "frontier_selection_time_ns": 4852500,
+        "full_atom_store_scan": false,
+        "full_composite_store_scan": false,
+        "full_counterfactual_tree_enumeration": false,
+        "full_growth_opportunity_scan": false,
+        "full_reaction_law_scan": false,
+        "full_reaction_space_enumeration": false,
+        "future_instance_leakage": false,
+        "gap_code": 3,
+        "implemented_reactions": 1,
+        "information_seeking_frontier": true,
+        "missed_affordances": 0,
+        "multi_horizon_prediction_time_ns": 2119200,
+        "observed_future_affordances": 7,
+        "observed_future_useful_composites": 5,
+        "observed_future_useful_frontiers": 3,
+        "observed_immediate_frontier_gain": 64,
+        "open_loop_multi_step_self_modification": false,
+        "opportunities_fully_evaluated": 4,
+        "opportunities_generated": 8,
+        "pareto_selection_time_ns": 1544400,
+        "predicted_future_affordances": 7,
+        "property_matching_time_ns": 1046500,
+        "reaction_candidate_routing_time_ns": 3290300,
+        "reaction_discovery_time_ns": 3290300,
+        "reaction_law_lookup_time_ns": 133400,
+        "reaction_objects_touched": 9,
+        "reaction_realization_time_ns": 4129300,
+        "realization_checksum": 1717014830553481124,
+        "rejected_non_dominated_paths": [
+          {
+            "concrete_future_instances_inspected": false,
+            "horizon": 4,
+            "opportunity_id": 170002,
+            "path_id": 2622232383518217882,
+            "predicted_consequences": {
+              "discovery_cost_units": 9,
+              "frontier_classes_opened": 1,
+              "frontier_scale_gain": 82,
+              "future_useful_composites": 1,
+              "future_useful_frontiers": 1,
+              "genesis_cost_units": 8,
+              "memory_bytes": 288,
+              "new_reaction_affordances": 3,
+              "uncertainty_ppm": 30500,
+              "verification_cost_units": 14,
+              "wall_time_units": 40
+            },
+            "predicted_reaction_ids": [
+              2720032,
+              2720033,
+              2720034,
+              2720035
+            ]
+          },
+          {
+            "concrete_future_instances_inspected": false,
+            "horizon": 4,
+            "opportunity_id": 170003,
+            "path_id": 17784409152829658882,
+            "predicted_consequences": {
+              "discovery_cost_units": 9,
+              "frontier_classes_opened": 1,
+              "frontier_scale_gain": 57,
+              "future_useful_composites": 2,
+              "future_useful_frontiers": 2,
+              "genesis_cost_units": 9,
+              "memory_bytes": 224,
+              "new_reaction_affordances": 5,
+              "uncertainty_ppm": 38500,
+              "verification_cost_units": 15,
+              "wall_time_units": 41
+            },
+            "predicted_reaction_ids": [
+              2720048,
+              2720049,
+              2720050,
+              2720051
+            ]
+          },
+          {
+            "concrete_future_instances_inspected": false,
+            "horizon": 4,
+            "opportunity_id": 170004,
+            "path_id": 15634513641471145970,
+            "predicted_consequences": {
+              "discovery_cost_units": 9,
+              "frontier_classes_opened": 1,
+              "frontier_scale_gain": 41,
+              "future_useful_composites": 3,
+              "future_useful_frontiers": 2,
+              "genesis_cost_units": 11,
+              "memory_bytes": 320,
+              "new_reaction_affordances": 6,
+              "uncertainty_ppm": 20500,
+              "verification_cost_units": 16,
+              "wall_time_units": 43
+            },
+            "predicted_reaction_ids": [
+              2720064,
+              2720065,
+              2720066,
+              2720067
+            ]
+          }
+        ],
+        "routed_candidates": 6,
+        "routing_hit_rate": 0.16666666666666666,
+        "routing_surprise": false,
+        "selected_opportunity": {
+          "catalyst_ids": [
+            3396993041
+          ],
+          "family_code": 1,
+          "future_affordance_signature": {
+            "applicability_boundary_mask": 16,
+            "catalyst_mask": 8,
+            "compatible_family_mask": 2,
+            "creates_properties_mask": 16,
+            "creates_roles_mask": 64,
+            "frontier_gap_mask": 8,
+            "incompatible_family_mask": 0,
+            "mediator_mask": 0,
+            "modifies_properties_mask": 4096,
+            "negative_condition_mask": 0,
+            "predicted_downstream_affordances": 7,
+            "predicted_future_useful_composites": 6,
+            "predicted_future_useful_frontiers": 3,
+            "reaction_law_mask": 8,
+            "resource_effect": 2
+          },
+          "gap_code": 3,
+          "mediator_ids": [],
+          "opportunity_id": 170001,
+          "predicted_growth": {
+            "discovery_cost_units": 9,
+            "frontier_classes_opened": 2,
+            "frontier_scale_gain": 64,
+            "future_useful_composites": 6,
+            "future_useful_frontiers": 3,
+            "genesis_cost_units": 14,
+            "memory_bytes": 576,
+            "new_reaction_affordances": 7,
+            "uncertainty_ppm": 64500,
+            "verification_cost_units": 13,
+            "wall_time_units": 46
+          },
+          "predicted_immediate_properties_mask": 131072,
+          "prediction_horizon": 4,
+          "reactant_ids": [
+            620759168,
+            603979793
+          ],
+          "required_properties_mask": 131072,
+          "required_roles_mask": 1024
+        },
+        "selected_prediction_horizon": 4,
+        "theoretical_reaction_space": 127449,
+        "total_reaction_objects": 119,
+        "uncertainty_probe_time_ns": 1188900,
+        "verified_useful_reactions": 1
+      },
+      "same_frozen_frontier_plan_sha256": "8c3ba4a855c0ced2f66f77db12c0f3f351e2f3abcafdbcef99956ada74e71a22",
+      "same_resource_envelope": true,
+      "same_work_universe": true,
+      "verification": {
+        "accepted": true,
+        "active_certificate_bytes": 456,
+        "affected_claim_fraction": 0.10714285714285714,
+        "affected_claims": 3,
+        "arm_code": 3,
+        "certificate": {
+          "applicability_conditions": 2,
+          "assumptions_mask": 17,
+          "composition_depth": 49,
+          "dependency_hashes": [
+            746429168504494812
+          ],
+          "evidence_refs": [
+            1065107191361967725,
+            16040405219811028277
+          ],
+          "guarantees_mask": 268435455,
+          "integrity_hash": 4360316462579545438,
+          "negative_conditions": 1,
+          "object_identity": 170001,
+          "preserved_invariants_mask": 15,
+          "proof_provenance": 11738859866374465706,
+          "proven_properties_mask": 268435455,
+          "resource_bound": 620757009,
+          "semantic_hash": 15910815521987827553,
+          "stability_conditions": 3,
+          "verification_method": 3
+        },
+        "certificate_bytes": 720,
+        "certificate_check_time_ns": 16400,
+        "certificate_compression_ratio": 7.444444444444445,
+        "certificate_mechanically_valid": true,
+        "certificate_reuse_count": 49,
+        "certificate_self_assertion_authority": false,
+        "delta_verification_time_ns": 30700,
+        "dependency_identity_valid": true,
+        "environment_contract_valid": true,
+        "false_verification_acceptance": false,
+        "full_revalidation_fraction": 1.0,
+        "full_revalidation_time_ns": 6086900,
+        "full_revalidation_used": true,
+        "inherited_verified_claims": 22,
+        "new_verification_obligations": 28,
+        "object_id": 170001,
+        "prediction_used_as_sole_proof": false,
+        "proof_reuse_fraction": 0.7857142857142857,
+        "result_checksum": 5764491649634997124,
+        "semantic_hash": 15910815521987827553,
+        "stale_certificate_accepted": false,
+        "structural_sharing_events": 71,
+        "surprise_escalated": false,
+        "targeted_execution_time_ns": 0,
+        "topology_identity_valid": true,
+        "total_accepted_claims": 28,
+        "total_verification_wall_time_ns": 6134000,
+        "unverified_emergent_property_accepted": false,
+        "verification_index_bytes": 1688,
+        "verification_ir": {
+          "affected_dependencies": 3,
+          "assumptions": 6,
+          "changed_claims": 3,
+          "claims": 28,
+          "emergent_property_checks": 2,
+          "executable_checks": 2,
+          "inherited_claims": 22,
+          "proof_obligations": 28,
+          "resource_checks": 1,
+          "unresolved_claims": 0
+        },
+        "verification_law_reuse_count": 1,
+        "verification_operations": 2133360,
+        "verification_requirement_omissions": 0,
+        "verification_runtime_bytes": 2048
+      }
+    }
+  ],
+  "epoch": 17,
+  "frozen_plan": {
+    "concrete_instance_opened": false,
+    "desired_phenotype": "PROPERTY_ROLE_GROWTH_PHENOTYPE_03",
+    "epoch": 17,
+    "gap_code": 3,
+    "growth_routing_laws_available": 2,
+    "growth_routing_schemas_available": 1,
+    "required_properties_mask": 131072,
+    "required_roles_mask": 1024,
+    "resource_ceiling": 24,
+    "target_gap": "INSUFFICIENT_CATALYST_REUSE",
+    "theoretical_reaction_space": 127449,
+    "total_reaction_objects": 119
+  },
+  "frozen_plan_sha256": "8c3ba4a855c0ced2f66f77db12c0f3f351e2f3abcafdbcef99956ada74e71a22",
+  "instance_seed_revealed_after_plan_freeze": true
+}
