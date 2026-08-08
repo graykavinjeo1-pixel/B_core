@@ -103,6 +103,10 @@ name = "sem16-run"
 path = "src/sem16_main.rs"
 
 [[bin]]
+name = "sem17-run"
+path = "src/sem17_main.rs"
+
+[[bin]]
 name = "core-x0-evaluate"
 path = "src/core_x0_main.rs"
 
