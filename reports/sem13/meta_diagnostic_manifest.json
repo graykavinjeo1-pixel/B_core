@@ -1,0 +1,263 @@
+{
+  "set_id": "META_DIAGNOSTIC_SET",
+  "seed_commitment_sha256": "e2e592c0cc7d635637853548643c5fafa6c5cb7d923138d272d861d2a394c189",
+  "generator_version": "SEM13-META-CHALLENGE-GENERATOR-V1",
+  "challenges": [
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-001",
+      "opaque_schema_sha256": "24906f3162de1684d2d35c2c698ceb45de47113eb4fa663269b40d51fc091a85",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-002",
+      "opaque_schema_sha256": "6777abda724db1d758cd79578acca7d263c1096ebdd41735fd9fe028e5b0df1a",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-003",
+      "opaque_schema_sha256": "1a6726e6f9bc38d486de2626d7a59bf62a2c820f44dbbdc72387ac65972fe501",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-004",
+      "opaque_schema_sha256": "4237e93e9ec6fe8e4c3748c901045e0d409dcd34aa0a9c4be3dae37c15d38199",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-005",
+      "opaque_schema_sha256": "f995a36f6d45a68d3483f85bb0a466053252f750238626bebadcb290a7e173e1",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-006",
+      "opaque_schema_sha256": "3bb607c4ffd344dc7c374012d62eadaed8397ae6d66898f8e32b5962d957285f",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-007",
+      "opaque_schema_sha256": "b26d3cbc1df65a84f2677aa635129d28ea1c7736c04087f84e6c9e02c931a89d",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-008",
+      "opaque_schema_sha256": "f4a5c3697dd109fcbfa2efe49c8101fc9e75e0458585b71493f82ef5c51517a5",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-009",
+      "opaque_schema_sha256": "d756c5d0d61afbb69f72ebf747003ad7adb8b49ca7d6752d6f0587a0ec5a5c1d",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-010",
+      "opaque_schema_sha256": "8d74a9fffe78c78ad54b176380c03f5c8a1a7cd8a6756476cf7dd931f4c20cf2",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-011",
+      "opaque_schema_sha256": "04d708e727fca1d0f95e2f0aa7b6d2d715beeb41ab3119e4a601d7ece5c265e1",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-012",
+      "opaque_schema_sha256": "5819956dae8f898287f0b3ad7b9a4aac20c36e36b6d5f4fd1f616b16e345c021",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-013",
+      "opaque_schema_sha256": "8fb4bfc89a7761673d458bf43fb3bbddb5da52b1056e5f255fc1ddf86d531a43",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-014",
+      "opaque_schema_sha256": "5fe6448b15b849360c841e6cbfb1e771c98f4ce6dbeb0d416081f59db7accef5",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-015",
+      "opaque_schema_sha256": "df0bc7ca44ee6f3da89ced02bc2ba26380e4ceb82491fed269e79d7069769109",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-016",
+      "opaque_schema_sha256": "b4c46dfe610e1ae1f66ac81d680a5788cecd6d98669236f325a6cfbecfb1dddf",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-017",
+      "opaque_schema_sha256": "086a75c15871e21778fde0c99026dc4fef8395886d15f30c4cf7af265d655a22",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-018",
+      "opaque_schema_sha256": "4ba8563986a52af1d354048b9481d9882d469532b4c1ede2aa32722015da16c7",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-019",
+      "opaque_schema_sha256": "141d70bb45a2fcd12d6da479b078cd38bf15e9b168e94f3c9e25bac57921dbb3",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-020",
+      "opaque_schema_sha256": "d44a4a90a44396f89baf3835edfba815d4e51d7c77982528d750846ce3e6190b",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-021",
+      "opaque_schema_sha256": "31ada98680a020376c2bba5e6ae710af3678b105888b12c6cb30497a5c77e8aa",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-022",
+      "opaque_schema_sha256": "c508246a20823e898df89b249a2355b853026cde2246f4949e68247989bf117a",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-023",
+      "opaque_schema_sha256": "7a1263596f18d7b745c3b5648d4e2db4d65510207605f141188a22d7a0151ad4",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-024",
+      "opaque_schema_sha256": "557b12f84db39bee9c439291a6af709a6f984c0def0ca0fcd1b68d0ab07626d8",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-025",
+      "opaque_schema_sha256": "4a20dad254c9f8aeda9b5c73261e47252a2364647d6dfc408e83a7157c36e12d",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-026",
+      "opaque_schema_sha256": "b2aa1401a2c5c15f1b04975adb3fdd49fded13b493633d0a297d32264d0b333a",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-027",
+      "opaque_schema_sha256": "e62972c1673e0c865df4d35adcc796f247e988754f808df8a8050f7cbca8556e",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-028",
+      "opaque_schema_sha256": "4d1fc6f62d7e2ab99b79cc04ec503fe64ff6c83c3517af3aec40377d172e3760",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    }
+  ],
+  "hidden_inputs_included": false,
+  "truth_included": false,
+  "frozen_before_m1_tuning": true,
+  "manifest_sha256": "f0183ab9af39da2aa6d4b042bd47818290bcc69efe02e3a340e26415bf8d3845"
+}

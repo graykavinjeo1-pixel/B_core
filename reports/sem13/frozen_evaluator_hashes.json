@@ -1,0 +1,8 @@
+{
+  "acceptance_criteria_hash": "ee9b688df59703f5656b93ddad0f767f26a7512404e10edd67dd665d168c98e2",
+  "acceptance_policy": "SEM13-ACCEPTANCE-V1|M1_RATE_GE_M0|FALSE_WEAKNESS_LE_M0|REGRESSIVE_LE_M0|ABLATION|CAUSALITY|DOCKABILITY",
+  "blind_authority_external": true,
+  "evaluator_hash": "ee8849c94ce673eea59f304042fd78e976acb8ef1dafe3fab36118ae164c02db",
+  "evaluator_spec": "SEM13-EXTERNAL-EVALUATOR-V1|IDENTICAL_INPUTS|TRUTH_AUTHORITY_EXTERNAL|QUALITY_NOT_TRADED_FOR_SPEED|BLIND_UNOPENED_UNTIL_M1_FREEZE",
+  "frozen_before_m1": true
+}

@@ -1,0 +1,7 @@
+{
+  "frozen_before_m1": true,
+  "governor_hash": "0e00c511c43d064937a06763c1401fd1e72aababab8cbeb9072f20c95593a08c",
+  "governor_policy": "SEM13-GOVERNOR-V1|ZERO_REGRESSION|NO_EVALUATOR_MUTATION|NO_ACCEPTANCE_MUTATION|ONE_OPTIONAL_M2|NO_PRODUCTION_PROMOTION",
+  "meta_engine_mutation_allowed": true,
+  "meta_governor_mutation_allowed": false
+}

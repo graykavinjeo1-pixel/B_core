@@ -1,0 +1,66 @@
+{
+  "engine_id": "M0",
+  "mode": {
+    "evidence_reuse": false,
+    "causal_guard": false
+  },
+  "source_sha256_before_rustfmt": "76f7f1c07b53270eb267514f50f67869dd25622252da2a55c23d496554dbe93f",
+  "source_sha256_after_rustfmt": "9f9f8f4f3ebb5a5bba87fe29c049dfe6a1ef0eddc0a3ba4fc1655239b48f4166",
+  "non_format_token_changes": 0,
+  "debug_binary_sha256": "a2952630fc2adfee02840404abb04636a5460c9750666f2e8f69302879908ba0",
+  "release_binary_sha256": "54091766bf166c8fb19e5dbc242c2f664b0df83504fcad633a44bae20e4ef702",
+  "source_bytes": 5345,
+  "debug_binary_bytes": 233472,
+  "release_binary_bytes": 162304,
+  "sandbox_path": "D:/B_Core_SEM13/target/sem13/SEM13-BOUNDED-META-IMPROVEMENT-0001/M0",
+  "sandbox_contained": true,
+  "rustfmt_check_pass": true,
+  "strict_clippy_pass": true,
+  "tests_pass": true,
+  "debug_build_pass": true,
+  "release_build_pass": true,
+  "commands": [
+    {
+      "command": "cargo fmt --all",
+      "success": true,
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": "cargo fmt --all -- --check",
+      "success": true,
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": "cargo clippy --workspace --all-targets --offline -- -D warnings",
+      "success": true,
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "38b51ca1305b64b162147dd91cf4939551da5e3d171dabc189693794c2b6583f"
+    },
+    {
+      "command": "cargo test --workspace --offline",
+      "success": true,
+      "exit_code": 0,
+      "stdout_sha256": "e139c00863ac9a91bcc33451aed0a64057fc241f5f7eafc41cd8f5d3a9b5a802",
+      "stderr_sha256": "7b7be2e2af36292db33cbb93a11fe4cec37b82012d3c871b73c03504bcfe76bc"
+    },
+    {
+      "command": "cargo build --workspace --offline",
+      "success": true,
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "05bb6c99cf34182699e55312ca8460b00a27f69b3cbc2df0b9aa9c19aeff1fcb"
+    },
+    {
+      "command": "cargo build --workspace --release --offline",
+      "success": true,
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "c412371074c323f2c26b1094578bd46cdcadbc446baf1781b2516a1e3227bd8b"
+    }
+  ]
+}

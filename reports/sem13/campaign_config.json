@@ -1,0 +1,23 @@
+{
+  "campaign_id": "SEM13-BOUNDED-META-IMPROVEMENT-0001",
+  "infrastructure_commit": "ac5c91da995b27f31e1999f3d9f87a830646501a",
+  "predecessor_commit": "f3323487f535374f932ffb4e299c1a8e1da6817d",
+  "meta_engine_mutation_allowed": true,
+  "meta_governor_mutation_allowed": false,
+  "optional_m2_limit": 1,
+  "diagnostic_challenges": 28,
+  "validation_challenges": 35,
+  "fresh_blind_challenges": 60,
+  "inherited_clippy_warning_count": 22,
+  "external_llm_calls_allowed": 0,
+  "local_teacher_calls_allowed": 0,
+  "network_writes_allowed": 0,
+  "remote_executions_allowed": 0,
+  "production_promotion_allowed": false,
+  "sem14_started": false,
+  "seed_commitments": {
+    "META_DIAGNOSTIC_SET": "e2e592c0cc7d635637853548643c5fafa6c5cb7d923138d272d861d2a394c189",
+    "META_FRESH_BLIND_SET": "89d118255b80a945ceba0fe0f82170badfda29711380e02658a5c373bf4857dd",
+    "META_VALIDATION_SET": "4fb569d28ae9ef0524dc0ee1487a6b521274877bbdcfcbf8ee3015100cd82967"
+  }
+}

@@ -1,0 +1,551 @@
+{
+  "set_id": "META_FRESH_BLIND_SET",
+  "seed_commitment_sha256": "89d118255b80a945ceba0fe0f82170badfda29711380e02658a5c373bf4857dd",
+  "generator_version": "SEM13-META-CHALLENGE-GENERATOR-V1",
+  "challenges": [
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-001",
+      "opaque_schema_sha256": "5597b3964f8d59e9bf362569dbdd2dd1747813d5815dffd58ec8138f019776d3",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-002",
+      "opaque_schema_sha256": "39f70b7927c6061facf38340a344064388a068639bed829a05c03f17d833c62a",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-003",
+      "opaque_schema_sha256": "4049f98fd33a52d02fe938d9097eb7b2a7a5ba21801d9a148cdae54bb4258abd",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-004",
+      "opaque_schema_sha256": "62a34f5296987b0ced9b2a8f8c32404fd8b95488077b85c66df91a74262af872",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-005",
+      "opaque_schema_sha256": "30c1d8b9e9bb48150e82de7b498639eada53f69d41a1195a7aa492cadd0e98d9",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-006",
+      "opaque_schema_sha256": "277534433d411a4599803c5376d201b9b6ba26d2b800bc9809870b8c31a5e698",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-007",
+      "opaque_schema_sha256": "cb85e76da751f70fb7a1fe47a669e2ed57e8aebbfc3e5f1d138cc4ab8445f408",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-008",
+      "opaque_schema_sha256": "addaca33334d92560c2b1592d2576ab33bc7fbf3ade7a05f1e17e37a25aa61a5",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-009",
+      "opaque_schema_sha256": "a8db64012243b4c863b59ef9709e7e1db485f278560a5aabefc5bc7f76a4e1bc",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-010",
+      "opaque_schema_sha256": "8d1814cb3cd3ff58d32b0f62f46b4adcd663528ce4eb810d398bfaf10941da54",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-011",
+      "opaque_schema_sha256": "f2852b050373a3c5bad90cd011ecba36ccf7981ab62c3350a1365f38ab858f30",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-012",
+      "opaque_schema_sha256": "daed8f2333921be10d7275c446dcac16282218cd12289d1748be01e791f17824",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-013",
+      "opaque_schema_sha256": "87ccf4dcda1055b1bb54b078a6e7905712399b3c756b0a383ab5c0d7dec98385",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-014",
+      "opaque_schema_sha256": "817f25f53e204daf86b6d472511188623abeb37e228a5390b9307129b541c51a",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-015",
+      "opaque_schema_sha256": "a0ad36ecf52a08163bb8ec81adbe2b52cc0c4c77521b8cc470e44c93ecdcc8ef",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-016",
+      "opaque_schema_sha256": "ddcf873fd8ddbaa2e2aa0f18055bb06954192603b0839b5db0c514bc0b7be76a",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-017",
+      "opaque_schema_sha256": "7353dd05dd02ac0e935dbab2148e4073447c9f7f0711ce703789564ce53f98f5",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-018",
+      "opaque_schema_sha256": "f1bf53d5b12d3ab763a628ebf516da2a7638ca02d957bec48ff073611e624a34",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-019",
+      "opaque_schema_sha256": "800f16d7afd37ff790386ebc9ce7e95c15ed13af7b68e0be812f8493022a3eff",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-020",
+      "opaque_schema_sha256": "9611a22cb8390ba0de86fc692bfad1d3f55ba1f830ab8da9557ecadcdba75c8d",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-021",
+      "opaque_schema_sha256": "f59e174f649d576134781522284004df016450d2802e364ac08ccb8ed49b1d06",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-022",
+      "opaque_schema_sha256": "3bb697d45aada595d61626da977e9ac6b16eaef01c386ea55ededdd39d202c65",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-023",
+      "opaque_schema_sha256": "8b709de71bdcc0517e4658feeaead16726f43f667103ef343503dd234b0a0084",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-024",
+      "opaque_schema_sha256": "02d848a670cce81f22c88ba2ad399dea1cc8c348b6bf271e836fd1f24dfdec1b",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-025",
+      "opaque_schema_sha256": "8edda4fbfe1c3b177db756e5671602a8b7461ee52bb041f0ec307bfcf342f088",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-026",
+      "opaque_schema_sha256": "f5271c9ad7a516b7ebee790036a19757a92c6a505ac283ab402d76da235f1dcc",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-027",
+      "opaque_schema_sha256": "c6765227a4da83f99d3b454e86493daace7e975e208de98a98cec27bc4b66f4f",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-028",
+      "opaque_schema_sha256": "5fb5da2cbd42b0e4ae8d5be4bd79bf91bb9a6179d924937ee7f17744a1bca002",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-029",
+      "opaque_schema_sha256": "ea7519cd475344a842ba05c6ab1a1547b4424454492ced222687e30b4621c455",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-030",
+      "opaque_schema_sha256": "7075bd9c6f2eb120c20623c1cead6c78b656e9279f57f52ab827ed5a1da91120",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-031",
+      "opaque_schema_sha256": "931f0e8effe1812223736b695b1f81de42f79e9a8361651756579f876409d29c",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-032",
+      "opaque_schema_sha256": "930481ed16afcdfac99b1170c2de89938d02e8e7d32c2a9ce01fee3e23320a35",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-033",
+      "opaque_schema_sha256": "9e925d6fa5e67c71daeb484c6cec1de4df5383372a32dedbc79caed8f2723f3f",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-034",
+      "opaque_schema_sha256": "17ea31971f66fb285e0251c7cba6149e8163cfdc65d20f907b4c7b0ebd170ee5",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-035",
+      "opaque_schema_sha256": "c3dcab38ea33b3064f55537dfdb2e329bee97ef8e08047cd6b004caabe2cefc6",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-036",
+      "opaque_schema_sha256": "fbd19d268d4c222228299739642a98fb8e60bf336fe8f1dc791087faefb61355",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-037",
+      "opaque_schema_sha256": "23c9e1e99fb3751a0bc517f9bf6b11ce6966cd870cfb20745d4f27a41a7bd2a8",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-038",
+      "opaque_schema_sha256": "4d3bc5208463faba6207153d793783bf2a0053afb625c283c5ddf20c2cd4bb61",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-039",
+      "opaque_schema_sha256": "64f238d344752b420edc060dc578011b0dc878af4d6f7dc9fa738d98f9b45bc5",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-040",
+      "opaque_schema_sha256": "6b70d7aa8bb76cfae760f7d997a913fbd29037d55ef49bd73a652633d31fcb69",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-041",
+      "opaque_schema_sha256": "cf1e9d9860c9baf0c944e10d76faeeb85c900c1b37cc4798570d074e2784f9f8",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-042",
+      "opaque_schema_sha256": "84495de2afb3fe877ef31d6c87462a86feb1f531d8098abf462c1cc775edace3",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-043",
+      "opaque_schema_sha256": "f4972eee066cc548c5b7011d0cb024c1371e38b18d20c4ecf40bfb7644cd5ba5",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-044",
+      "opaque_schema_sha256": "370ad6cd7de29e06bdd68663f7babcbae820091f5bac880dda28346c731bb550",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-045",
+      "opaque_schema_sha256": "d62c250faf03ef1a06fe56eafc80a913d86b48cb6330549ae634a583c60d4305",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-046",
+      "opaque_schema_sha256": "fae92e78c89d690f42bf6292f7d7a965c4c80d5a8285322b3a8ade34e57653b0",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-047",
+      "opaque_schema_sha256": "a8802beb0eaa891eb06a2079407d6e01a65eca0dacb9bd7f707d1019f3f9fe9f",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-048",
+      "opaque_schema_sha256": "23ae5ea398bd45693d92ce079c0b244d00a7d29a5d993bbc4b659cac4bb7fc5d",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-049",
+      "opaque_schema_sha256": "452736434d887cf27fb6e6a1dacf2d5a586fb22f064b0a260425e10cdb3fd3b9",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-050",
+      "opaque_schema_sha256": "8f6bd5bb13c09522aaac9405d19475617d477c4ff08de213ebb74bae8dd67bbb",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-051",
+      "opaque_schema_sha256": "1d48043aa36ff70cf82650c88814a4184d453f0e198ed1748b1b31f1bb590658",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-052",
+      "opaque_schema_sha256": "7bc6e1dca2cb21e37c5f0d6d8d3f964492f00106fc609767b9a72f02b29d143d",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-053",
+      "opaque_schema_sha256": "b8bf3f8e06d9820c661e19670bf9176c34ba4f26ef8135311de8f4a2f2df0465",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-054",
+      "opaque_schema_sha256": "05494b56e7a1db396455cf1cb1bba6fd68ae1fdebe662aeb6ec0ed9691255a7a",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-055",
+      "opaque_schema_sha256": "b00c8c29c4367e7dcc11f88a067e3ca8579393c9957686683d4b465fb6417204",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-056",
+      "opaque_schema_sha256": "7de6ff3396744600ed6f03ada92328f05cf752ae9a59cb08b1002128994229da",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-057",
+      "opaque_schema_sha256": "a125a3e315eb34cd4308b38a477a046fe20090c11722da9c1c7307655ad45dc7",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-058",
+      "opaque_schema_sha256": "fe60e5363cffc9c875c34f74ad37de80846f7750b37fc4b204cdd134afac32af",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-059",
+      "opaque_schema_sha256": "2c2bba0744e8e774a7b784cd0af01e9cfe74b5db46cce00138c5eef9b876b952",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_FRESH_BLIND_SET-060",
+      "opaque_schema_sha256": "0d3f2ad53acf80fcdd7f2ba8b64c61f18be9a3f4886ad1285e8f48dbcd71a1f0",
+      "public_contract_sha256": "aef8a85a341670c448fecc6b3b9c825f45da951add02b9ab7729084537e0a1fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    }
+  ],
+  "hidden_inputs_included": false,
+  "truth_included": false,
+  "frozen_before_m1_tuning": true,
+  "manifest_sha256": "21308b02b858a6979591295ff24904067a5c5de775d3b48aaf6019bc86903129"
+}
