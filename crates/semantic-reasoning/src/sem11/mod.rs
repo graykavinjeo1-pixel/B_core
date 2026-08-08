@@ -2981,7 +2981,7 @@ fn normalize_non_format_tokens(source: &[u8]) -> Vec<u8> {
         } else if byte == b'"' || byte == b'\'' {
             quote = Some(byte);
             tokens.push(byte);
-        } else if byte == b',' && matches!(normalized.get(index + 1), Some(b'}' | b']')) {
+        } else if byte == b',' && matches!(normalized.get(index + 1), Some(b'}' | b']' | b')')) {
             index += 1;
             continue;
         } else {
