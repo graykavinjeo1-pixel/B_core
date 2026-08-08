@@ -1,8 +1,11 @@
+#![recursion_limit = "256"]
+
 pub mod core_x0;
 pub mod experiment;
 pub mod mining;
 pub mod reporting;
 pub mod sem1;
+pub mod sem10fresh;
 pub mod sem2;
 pub mod sem3;
 pub mod sem4;
