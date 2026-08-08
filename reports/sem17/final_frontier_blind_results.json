@@ -1,0 +1,3948 @@
+{
+  "base": {
+    "challenges": 192,
+    "condition": "SEM17_BASE_FINAL_FRONTIER_BLIND",
+    "correct_outcomes": 48,
+    "false_capability_applications": 0,
+    "median_deterministic_cost": 8.0,
+    "median_wall_time_ns": 4644200.0,
+    "outcome_rate": 0.25,
+    "output_sha256": "fa932fbf4553298876b256b2d661557fd5b4c9c9d325de6e2503a30a9379bc17",
+    "peak_active_capabilities": 4,
+    "peak_frontier": 3,
+    "peak_memory": 88,
+    "peak_routed_capabilities": 3,
+    "records": [
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-001",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-002",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-003",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-004",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-005",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-006",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-007",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-008",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-009",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-010",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-011",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-012",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-013",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-014",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-015",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-016",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-017",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-018",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-019",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-020",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-021",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-022",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-023",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-024",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-001",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-002",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-003",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-004",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-005",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-006",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-007",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-008",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-009",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-010",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-011",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-012",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-013",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-014",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-015",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-016",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-017",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-018",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-019",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-020",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-021",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-022",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-023",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-024",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-001",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-002",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-003",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-004",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-005",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-006",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-007",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-008",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-009",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-010",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-011",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-012",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-013",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-014",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-015",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-016",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-017",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-018",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-019",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-020",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-021",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-022",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-023",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-024",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-001",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-002",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-003",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-004",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-005",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-006",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-007",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-008",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-009",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-010",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-011",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-012",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-013",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-014",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-015",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-016",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-017",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-018",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-019",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-020",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-021",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-022",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-023",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-024",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-001",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-002",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-003",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-004",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-005",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-006",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-007",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-008",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-009",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-010",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-011",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-012",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-013",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-014",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-015",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-016",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-017",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-018",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-019",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-020",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-021",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-022",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-023",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-024",
+        "deterministic_cost": 8,
+        "frontier": 2,
+        "memory": 80,
+        "routed_capabilities": 2,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-001",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-002",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-003",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-004",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-005",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-006",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-007",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-008",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-009",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-010",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-011",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-012",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-013",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-014",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-015",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-016",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-017",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-018",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-019",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-020",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-021",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-022",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-023",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-024",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-001",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-002",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-003",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-004",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-005",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-006",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-007",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-008",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-009",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-010",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-011",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-012",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-013",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-014",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-015",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-016",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-017",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-018",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-019",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-020",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-021",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-022",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-023",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-024",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-001",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-002",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-003",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-004",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-005",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-006",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-007",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-008",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-009",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-010",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-011",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-012",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-013",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-014",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-015",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-016",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-017",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-018",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-019",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-020",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-021",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-022",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-023",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-024",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      }
+    ],
+    "repeat_output_mismatches": 0,
+    "set_id": "SEM17_FINAL_FRONTIER_BLIND",
+    "solvable_frontier_tasks": 168,
+    "solved_frontier_tasks": 24
+  },
+  "challenges": 192,
+  "equal_resource_budget_where_meaningful": true,
+  "false_capability_applications": 0,
+  "families": [
+    {
+      "base_solved_frontier_tasks": 0,
+      "count": 24,
+      "family": "REPRESENTATIONAL_GAP",
+      "final_solved_frontier_tasks": 24,
+      "newly_solved": 24
+    },
+    {
+      "base_solved_frontier_tasks": 0,
+      "count": 24,
+      "family": "NOVEL_MECHANISM_GAP",
+      "final_solved_frontier_tasks": 24,
+      "newly_solved": 24
+    },
+    {
+      "base_solved_frontier_tasks": 0,
+      "count": 24,
+      "family": "EXPERIMENT_GAP",
+      "final_solved_frontier_tasks": 24,
+      "newly_solved": 24
+    },
+    {
+      "base_solved_frontier_tasks": 0,
+      "count": 24,
+      "family": "SEARCH_CONTROL_GAP",
+      "final_solved_frontier_tasks": 24,
+      "newly_solved": 24
+    },
+    {
+      "base_solved_frontier_tasks": 0,
+      "count": 24,
+      "family": "CROSS_DOMAIN_NOVELTY",
+      "final_solved_frontier_tasks": 24,
+      "newly_solved": 24
+    },
+    {
+      "base_solved_frontier_tasks": 24,
+      "count": 24,
+      "family": "EXISTING_CAPABILITY_CONTROL",
+      "final_solved_frontier_tasks": 24,
+      "newly_solved": 0
+    },
+    {
+      "base_solved_frontier_tasks": 0,
+      "count": 24,
+      "family": "ADVERSARIAL_NON_APPLICABILITY",
+      "final_solved_frontier_tasks": 0,
+      "newly_solved": 0
+    },
+    {
+      "base_solved_frontier_tasks": 0,
+      "count": 24,
+      "family": "MIXED_NEW_FRONTIER",
+      "final_solved_frontier_tasks": 24,
+      "newly_solved": 24
+    }
+  ],
+  "final": {
+    "challenges": 192,
+    "condition": "SEM17_FINAL_DESCENDANT_FRONTIER_BLIND",
+    "correct_outcomes": 192,
+    "false_capability_applications": 0,
+    "median_deterministic_cost": 16.0,
+    "median_wall_time_ns": 5166400.0,
+    "outcome_rate": 1.0,
+    "output_sha256": "73625a9def90e3760f6c152ab8ef484296f1a939a7d57b578b6dfc3e241e0e0c",
+    "peak_active_capabilities": 7,
+    "peak_frontier": 3,
+    "peak_memory": 160,
+    "peak_routed_capabilities": 3,
+    "records": [
+      {
+        "active_capabilities": 5,
+        "applied_mask": 1,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-001",
+        "deterministic_cost": 16,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 1,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-002",
+        "deterministic_cost": 14,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 1,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-003",
+        "deterministic_cost": 16,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 1,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-004",
+        "deterministic_cost": 16,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 1,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-005",
+        "deterministic_cost": 16,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 1,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-006",
+        "deterministic_cost": 16,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 1,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-007",
+        "deterministic_cost": 14,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 1,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-008",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 1,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-009",
+        "deterministic_cost": 14,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 1,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-010",
+        "deterministic_cost": 16,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 1,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-011",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 1,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-012",
+        "deterministic_cost": 16,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 1,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-013",
+        "deterministic_cost": 16,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 1,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-014",
+        "deterministic_cost": 16,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 1,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-015",
+        "deterministic_cost": 16,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 1,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-016",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 1,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-017",
+        "deterministic_cost": 16,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 1,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-018",
+        "deterministic_cost": 14,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 1,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-019",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 1,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-020",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 1,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-021",
+        "deterministic_cost": 14,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 1,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-022",
+        "deterministic_cost": 16,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 1,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-023",
+        "deterministic_cost": 16,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 1,
+        "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-024",
+        "deterministic_cost": 14,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-001",
+        "deterministic_cost": 23,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-002",
+        "deterministic_cost": 21,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-003",
+        "deterministic_cost": 22,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-004",
+        "deterministic_cost": 21,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-005",
+        "deterministic_cost": 23,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-006",
+        "deterministic_cost": 21,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-007",
+        "deterministic_cost": 22,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-008",
+        "deterministic_cost": 23,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-009",
+        "deterministic_cost": 22,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-010",
+        "deterministic_cost": 21,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-011",
+        "deterministic_cost": 23,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-012",
+        "deterministic_cost": 23,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-013",
+        "deterministic_cost": 21,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-014",
+        "deterministic_cost": 22,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-015",
+        "deterministic_cost": 22,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-016",
+        "deterministic_cost": 23,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-017",
+        "deterministic_cost": 22,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-018",
+        "deterministic_cost": 23,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-019",
+        "deterministic_cost": 21,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-020",
+        "deterministic_cost": 21,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-021",
+        "deterministic_cost": 21,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-022",
+        "deterministic_cost": 21,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-023",
+        "deterministic_cost": 22,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-024",
+        "deterministic_cost": 23,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 2,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-001",
+        "deterministic_cost": 17,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 2,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-002",
+        "deterministic_cost": 16,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 2,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-003",
+        "deterministic_cost": 16,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 2,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-004",
+        "deterministic_cost": 16,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 2,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-005",
+        "deterministic_cost": 16,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 2,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-006",
+        "deterministic_cost": 16,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 2,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-007",
+        "deterministic_cost": 17,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 2,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-008",
+        "deterministic_cost": 16,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 2,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-009",
+        "deterministic_cost": 16,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 2,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-010",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 2,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-011",
+        "deterministic_cost": 17,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 2,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-012",
+        "deterministic_cost": 16,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 2,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-013",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 2,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-014",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 2,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-015",
+        "deterministic_cost": 17,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 2,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-016",
+        "deterministic_cost": 16,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 2,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-017",
+        "deterministic_cost": 17,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 2,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-018",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 2,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-019",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 2,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-020",
+        "deterministic_cost": 17,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 2,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-021",
+        "deterministic_cost": 16,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 2,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-022",
+        "deterministic_cost": 17,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 2,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-023",
+        "deterministic_cost": 17,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 2,
+        "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-024",
+        "deterministic_cost": 17,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-001",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-002",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-003",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-004",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-005",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-006",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-007",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-008",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-009",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-010",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-011",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-012",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-013",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-014",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-015",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-016",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-017",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-018",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-019",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-020",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-021",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-022",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-023",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-024",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-001",
+        "deterministic_cost": 23,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-002",
+        "deterministic_cost": 24,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-003",
+        "deterministic_cost": 23,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-004",
+        "deterministic_cost": 25,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-005",
+        "deterministic_cost": 23,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-006",
+        "deterministic_cost": 25,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-007",
+        "deterministic_cost": 25,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-008",
+        "deterministic_cost": 23,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-009",
+        "deterministic_cost": 25,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-010",
+        "deterministic_cost": 24,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-011",
+        "deterministic_cost": 25,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-012",
+        "deterministic_cost": 25,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-013",
+        "deterministic_cost": 25,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-014",
+        "deterministic_cost": 24,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-015",
+        "deterministic_cost": 24,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-016",
+        "deterministic_cost": 24,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-017",
+        "deterministic_cost": 24,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-018",
+        "deterministic_cost": 24,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-019",
+        "deterministic_cost": 25,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-020",
+        "deterministic_cost": 25,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-021",
+        "deterministic_cost": 24,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-022",
+        "deterministic_cost": 25,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-023",
+        "deterministic_cost": 24,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 6,
+        "applied_mask": 3,
+        "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-024",
+        "deterministic_cost": 24,
+        "frontier": 2,
+        "memory": 128,
+        "routed_capabilities": 2,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-001",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-002",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-003",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-004",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-005",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-006",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-007",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-008",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-009",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-010",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-011",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-012",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-013",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-014",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-015",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-016",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-017",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-018",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-019",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-020",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-021",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-022",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-023",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-024",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-001",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-002",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-003",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-004",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-005",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-006",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-007",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-008",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-009",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-010",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-011",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-012",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-013",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-014",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-015",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-016",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-017",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-018",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-019",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-020",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-021",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-022",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-023",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-024",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 7,
+        "applied_mask": 7,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-001",
+        "deterministic_cost": 29,
+        "frontier": 3,
+        "memory": 160,
+        "routed_capabilities": 3,
+        "solved": true
+      },
+      {
+        "active_capabilities": 7,
+        "applied_mask": 7,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-002",
+        "deterministic_cost": 28,
+        "frontier": 3,
+        "memory": 160,
+        "routed_capabilities": 3,
+        "solved": true
+      },
+      {
+        "active_capabilities": 7,
+        "applied_mask": 7,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-003",
+        "deterministic_cost": 28,
+        "frontier": 3,
+        "memory": 160,
+        "routed_capabilities": 3,
+        "solved": true
+      },
+      {
+        "active_capabilities": 7,
+        "applied_mask": 7,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-004",
+        "deterministic_cost": 28,
+        "frontier": 3,
+        "memory": 160,
+        "routed_capabilities": 3,
+        "solved": true
+      },
+      {
+        "active_capabilities": 7,
+        "applied_mask": 7,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-005",
+        "deterministic_cost": 29,
+        "frontier": 3,
+        "memory": 160,
+        "routed_capabilities": 3,
+        "solved": true
+      },
+      {
+        "active_capabilities": 7,
+        "applied_mask": 7,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-006",
+        "deterministic_cost": 30,
+        "frontier": 3,
+        "memory": 160,
+        "routed_capabilities": 3,
+        "solved": true
+      },
+      {
+        "active_capabilities": 7,
+        "applied_mask": 7,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-007",
+        "deterministic_cost": 30,
+        "frontier": 3,
+        "memory": 160,
+        "routed_capabilities": 3,
+        "solved": true
+      },
+      {
+        "active_capabilities": 7,
+        "applied_mask": 7,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-008",
+        "deterministic_cost": 30,
+        "frontier": 3,
+        "memory": 160,
+        "routed_capabilities": 3,
+        "solved": true
+      },
+      {
+        "active_capabilities": 7,
+        "applied_mask": 7,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-009",
+        "deterministic_cost": 30,
+        "frontier": 3,
+        "memory": 160,
+        "routed_capabilities": 3,
+        "solved": true
+      },
+      {
+        "active_capabilities": 7,
+        "applied_mask": 7,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-010",
+        "deterministic_cost": 30,
+        "frontier": 3,
+        "memory": 160,
+        "routed_capabilities": 3,
+        "solved": true
+      },
+      {
+        "active_capabilities": 7,
+        "applied_mask": 7,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-011",
+        "deterministic_cost": 28,
+        "frontier": 3,
+        "memory": 160,
+        "routed_capabilities": 3,
+        "solved": true
+      },
+      {
+        "active_capabilities": 7,
+        "applied_mask": 7,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-012",
+        "deterministic_cost": 29,
+        "frontier": 3,
+        "memory": 160,
+        "routed_capabilities": 3,
+        "solved": true
+      },
+      {
+        "active_capabilities": 7,
+        "applied_mask": 7,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-013",
+        "deterministic_cost": 29,
+        "frontier": 3,
+        "memory": 160,
+        "routed_capabilities": 3,
+        "solved": true
+      },
+      {
+        "active_capabilities": 7,
+        "applied_mask": 7,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-014",
+        "deterministic_cost": 29,
+        "frontier": 3,
+        "memory": 160,
+        "routed_capabilities": 3,
+        "solved": true
+      },
+      {
+        "active_capabilities": 7,
+        "applied_mask": 7,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-015",
+        "deterministic_cost": 30,
+        "frontier": 3,
+        "memory": 160,
+        "routed_capabilities": 3,
+        "solved": true
+      },
+      {
+        "active_capabilities": 7,
+        "applied_mask": 7,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-016",
+        "deterministic_cost": 28,
+        "frontier": 3,
+        "memory": 160,
+        "routed_capabilities": 3,
+        "solved": true
+      },
+      {
+        "active_capabilities": 7,
+        "applied_mask": 7,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-017",
+        "deterministic_cost": 28,
+        "frontier": 3,
+        "memory": 160,
+        "routed_capabilities": 3,
+        "solved": true
+      },
+      {
+        "active_capabilities": 7,
+        "applied_mask": 7,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-018",
+        "deterministic_cost": 30,
+        "frontier": 3,
+        "memory": 160,
+        "routed_capabilities": 3,
+        "solved": true
+      },
+      {
+        "active_capabilities": 7,
+        "applied_mask": 7,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-019",
+        "deterministic_cost": 29,
+        "frontier": 3,
+        "memory": 160,
+        "routed_capabilities": 3,
+        "solved": true
+      },
+      {
+        "active_capabilities": 7,
+        "applied_mask": 7,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-020",
+        "deterministic_cost": 28,
+        "frontier": 3,
+        "memory": 160,
+        "routed_capabilities": 3,
+        "solved": true
+      },
+      {
+        "active_capabilities": 7,
+        "applied_mask": 7,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-021",
+        "deterministic_cost": 28,
+        "frontier": 3,
+        "memory": 160,
+        "routed_capabilities": 3,
+        "solved": true
+      },
+      {
+        "active_capabilities": 7,
+        "applied_mask": 7,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-022",
+        "deterministic_cost": 28,
+        "frontier": 3,
+        "memory": 160,
+        "routed_capabilities": 3,
+        "solved": true
+      },
+      {
+        "active_capabilities": 7,
+        "applied_mask": 7,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-023",
+        "deterministic_cost": 29,
+        "frontier": 3,
+        "memory": 160,
+        "routed_capabilities": 3,
+        "solved": true
+      },
+      {
+        "active_capabilities": 7,
+        "applied_mask": 7,
+        "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-024",
+        "deterministic_cost": 30,
+        "frontier": 3,
+        "memory": 160,
+        "routed_capabilities": 3,
+        "solved": true
+      }
+    ],
+    "repeat_output_mismatches": 0,
+    "set_id": "SEM17_FINAL_FRONTIER_BLIND",
+    "solvable_frontier_tasks": 168,
+    "solved_frontier_tasks": 168
+  },
+  "frontier_expansion_rate": 1.0,
+  "newly_solved_frontier_classes": 6,
+  "newly_solved_frontier_tasks": 144,
+  "opened_after_final_descendant_frozen": true,
+  "unnecessary_capability_genesis_events": 0
+}

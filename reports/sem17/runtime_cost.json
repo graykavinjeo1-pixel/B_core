@@ -1,0 +1,29 @@
+[
+  {
+    "child_deterministic_cost": 15.5,
+    "child_wall_time_ns": 4193800.0,
+    "frontier_gain": 24,
+    "parent_deterministic_cost": 8.0,
+    "parent_wall_time_ns": 3986700.0,
+    "wall_time_claimed_as_cost_reduction": false,
+    "wave": 1
+  },
+  {
+    "child_deterministic_cost": 16.0,
+    "child_wall_time_ns": 4213400.0,
+    "frontier_gain": 24,
+    "parent_deterministic_cost": 8.0,
+    "parent_wall_time_ns": 4193900.0,
+    "wall_time_claimed_as_cost_reduction": false,
+    "wave": 2
+  },
+  {
+    "child_deterministic_cost": 15.0,
+    "child_wall_time_ns": 4913700.0,
+    "frontier_gain": 24,
+    "parent_deterministic_cost": 8.0,
+    "parent_wall_time_ns": 4369000.0,
+    "wall_time_claimed_as_cost_reduction": false,
+    "wave": 3
+  }
+]

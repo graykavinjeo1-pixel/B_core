@@ -1,0 +1,86 @@
+[
+  {
+    "confidence": 1.0,
+    "frontier_gap": "SEMANTIC_REPRESENTATION",
+    "manually_provided_missing_capability": false,
+    "predicted_frontier_effect": "solve unseen representational gaps and become composable with later capabilities",
+    "predicted_new_capability": "FC1_RELATIONAL_CLOSURE_IR",
+    "required_inputs": [
+      "relation_depth",
+      "relation_edges",
+      "invariant"
+    ],
+    "required_invariants": [
+      "invariant_holds",
+      "bounded_resource_use",
+      "no_external_truth_access"
+    ],
+    "required_outputs": [
+      "closure_reachable"
+    ],
+    "required_role": "bounded relational closure representation",
+    "required_transformations": "construct and validate a bounded transitive relation closure",
+    "risks": [
+      "false applicability",
+      "active-set creep",
+      "cross-capability interference"
+    ],
+    "wave": 1
+  },
+  {
+    "confidence": 1.0,
+    "frontier_gap": "EXPERIMENT_GENERATION",
+    "manually_provided_missing_capability": false,
+    "predicted_frontier_effect": "solve unseen experiment gaps and novel relation/probe compositions",
+    "predicted_new_capability": "FC2_COUNTERFACTUAL_PROBE_GENERATOR",
+    "required_inputs": [
+      "live_hypotheses",
+      "probe_contrast",
+      "invariant"
+    ],
+    "required_invariants": [
+      "invariant_holds",
+      "bounded_resource_use",
+      "no_external_truth_access"
+    ],
+    "required_outputs": [
+      "discriminating_probe"
+    ],
+    "required_role": "counterfactual experiment generation",
+    "required_transformations": "select a bounded probe whose contrast separates the live hypotheses",
+    "risks": [
+      "false applicability",
+      "active-set creep",
+      "cross-capability interference"
+    ],
+    "wave": 2
+  },
+  {
+    "confidence": 1.0,
+    "frontier_gap": "SEARCH_CONTROL",
+    "manually_provided_missing_capability": false,
+    "predicted_frontier_effect": "solve unseen control gaps and mixed three-capability tasks",
+    "predicted_new_capability": "FC3_BOUNDED_SEMANTIC_BEAM_CONTROLLER",
+    "required_inputs": [
+      "branching",
+      "solution_rank",
+      "invariant"
+    ],
+    "required_invariants": [
+      "invariant_holds",
+      "bounded_resource_use",
+      "no_external_truth_access"
+    ],
+    "required_outputs": [
+      "retained_candidate"
+    ],
+    "required_role": "bounded semantic beam control",
+    "required_transformations": "retain only the bounded causally ranked frontier",
+    "risks": [
+      "false applicability",
+      "active-set creep",
+      "cross-capability interference"
+    ],
+    "wave": 3
+  }
+]

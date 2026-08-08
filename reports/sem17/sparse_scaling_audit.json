@@ -1,0 +1,8 @@
+{
+  "capability_active_set_creep_ratio": 0.75,
+  "full_catalog_scans": 0,
+  "peak_active_capabilities": 7,
+  "peak_routed_capabilities": 3,
+  "routing_false_negatives": 0,
+  "total_capabilities": 7
+}

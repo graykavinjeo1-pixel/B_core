@@ -1,0 +1,992 @@
+{
+  "acceptance_criteria_hash_unchanged": true,
+  "accepted": true,
+  "capability_negative_transfer_events": 0,
+  "child_adversarial": {
+    "challenges": 8,
+    "condition": "WAVE_3_CHILD_ADVERSARIAL",
+    "correct_outcomes": 8,
+    "false_capability_applications": 0,
+    "median_deterministic_cost": 8.0,
+    "median_wall_time_ns": 4416100.0,
+    "outcome_rate": 1.0,
+    "output_sha256": "74f3e7a987d7de35a8642cea838928eb86c0c9ff1ea2e3534028a39f4fa7fb6f",
+    "peak_active_capabilities": 4,
+    "peak_frontier": 3,
+    "peak_memory": 88,
+    "peak_routed_capabilities": 3,
+    "records": [
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_ADVERSARIAL_NON_APPLICABILITY-001",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_ADVERSARIAL_NON_APPLICABILITY-002",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_ADVERSARIAL_NON_APPLICABILITY-003",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_ADVERSARIAL_NON_APPLICABILITY-004",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_ADVERSARIAL_NON_APPLICABILITY-005",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_ADVERSARIAL_NON_APPLICABILITY-006",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_ADVERSARIAL_NON_APPLICABILITY-007",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_ADVERSARIAL_NON_APPLICABILITY-008",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      }
+    ],
+    "repeat_output_mismatches": 0,
+    "set_id": "WAVE_3_ADVERSARIAL_NON_APPLICABILITY",
+    "solvable_frontier_tasks": 0,
+    "solved_frontier_tasks": 0
+  },
+  "child_control": {
+    "challenges": 8,
+    "condition": "WAVE_3_CHILD_CONTROL",
+    "correct_outcomes": 8,
+    "false_capability_applications": 0,
+    "median_deterministic_cost": 8.0,
+    "median_wall_time_ns": 4417600.0,
+    "outcome_rate": 1.0,
+    "output_sha256": "a340ddbdb256370e449fa5b7c212af3817fe9d0d7df1ae9f1c27a5d1f910f3dd",
+    "peak_active_capabilities": 4,
+    "peak_frontier": 1,
+    "peak_memory": 64,
+    "peak_routed_capabilities": 0,
+    "records": [
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_SUFFICIENT_CONTROL-001",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_SUFFICIENT_CONTROL-002",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_SUFFICIENT_CONTROL-003",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_SUFFICIENT_CONTROL-004",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_SUFFICIENT_CONTROL-005",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_SUFFICIENT_CONTROL-006",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_SUFFICIENT_CONTROL-007",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_SUFFICIENT_CONTROL-008",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      }
+    ],
+    "repeat_output_mismatches": 0,
+    "set_id": "WAVE_3_SUFFICIENT_CONTROL",
+    "solvable_frontier_tasks": 8,
+    "solved_frontier_tasks": 8
+  },
+  "child_id": "FC3_BOUNDED_SEMANTIC_BEAM_CONTROLLER",
+  "child_validation": {
+    "challenges": 24,
+    "condition": "WAVE_3_CHILD_VALIDATION",
+    "correct_outcomes": 24,
+    "false_capability_applications": 0,
+    "median_deterministic_cost": 15.0,
+    "median_wall_time_ns": 4913700.0,
+    "outcome_rate": 1.0,
+    "output_sha256": "b054c2e01fe816142ac47eeb17953d1cc01ffbeb6f6039c216df3988a1e97f7e",
+    "peak_active_capabilities": 5,
+    "peak_frontier": 1,
+    "peak_memory": 96,
+    "peak_routed_capabilities": 1,
+    "records": [
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-001",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-002",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-003",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-004",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-005",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-006",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-007",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-008",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-009",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-010",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-011",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-012",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-013",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-014",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-015",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-016",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-017",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-018",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-019",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-020",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-021",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-022",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-023",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      },
+      {
+        "active_capabilities": 5,
+        "applied_mask": 4,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-024",
+        "deterministic_cost": 15,
+        "frontier": 1,
+        "memory": 96,
+        "routed_capabilities": 1,
+        "solved": true
+      }
+    ],
+    "repeat_output_mismatches": 0,
+    "set_id": "WAVE_3_FRONTIER_VALIDATION",
+    "solvable_frontier_tasks": 24,
+    "solved_frontier_tasks": 24
+  },
+  "design": {
+    "candidate_id": "FC3_BOUNDED_SEMANTIC_BEAM_CONTROLLER",
+    "classification": "CAPABILITY_EXTENSION",
+    "counterfactual_behavior_defined": true,
+    "executable_runtime_required": true,
+    "failure_conditions_defined": true,
+    "inputs_defined": true,
+    "invariants_defined": true,
+    "max_source_concepts_composed": 2,
+    "novel_mechanism_components": [
+      "SEMANTIC_BEAM_RETENTION"
+    ],
+    "outputs_defined": true,
+    "preconditions_defined": true,
+    "random_program_synthesis": false,
+    "resource_behavior_defined": true,
+    "semantically_derived": true,
+    "source_concepts": [
+      "SPARSE_ROUTING",
+      "BOUNDED_FRONTIER_PRIORITY"
+    ],
+    "source_domains": [
+      "SEARCH_CONTROL",
+      "SPARSE_ACTIVATION"
+    ],
+    "transformation_defined": true,
+    "wave": 3
+  },
+  "diagnostic_family": "SEARCH_CONTROL_GAP",
+  "evaluator_hash_unchanged": true,
+  "existing_capability_sufficiency": "INSUFFICIENT",
+  "global_reasoning_regressions": 0,
+  "governor_hash_unchanged": true,
+  "hypothesis": {
+    "confidence": 1.0,
+    "frontier_gap": "SEARCH_CONTROL",
+    "manually_provided_missing_capability": false,
+    "predicted_frontier_effect": "solve unseen control gaps and mixed three-capability tasks",
+    "predicted_new_capability": "FC3_BOUNDED_SEMANTIC_BEAM_CONTROLLER",
+    "required_inputs": [
+      "branching",
+      "solution_rank",
+      "invariant"
+    ],
+    "required_invariants": [
+      "invariant_holds",
+      "bounded_resource_use",
+      "no_external_truth_access"
+    ],
+    "required_outputs": [
+      "retained_candidate"
+    ],
+    "required_role": "bounded semantic beam control",
+    "required_transformations": "retain only the bounded causally ranked frontier",
+    "risks": [
+      "false applicability",
+      "active-set creep",
+      "cross-capability interference"
+    ],
+    "wave": 3
+  },
+  "limit_class": "SEARCH_CONTROL",
+  "meta_quality_regressions": 0,
+  "newly_solved_frontier_tasks": 24,
+  "parent_diagnostic": {
+    "challenges": 18,
+    "condition": "WAVE_3_PARENT_DIAGNOSTIC",
+    "correct_outcomes": 0,
+    "false_capability_applications": 0,
+    "median_deterministic_cost": 8.0,
+    "median_wall_time_ns": 4148100.0,
+    "outcome_rate": 0.0,
+    "output_sha256": "a991c1202545822f4d4ea6a25a03d5aa4a677d039d42fc087d358af65a9fd3bb",
+    "peak_active_capabilities": 4,
+    "peak_frontier": 1,
+    "peak_memory": 72,
+    "peak_routed_capabilities": 1,
+    "records": [
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_FRONTIER_DIAGNOSTIC-001",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_FRONTIER_DIAGNOSTIC-002",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_FRONTIER_DIAGNOSTIC-003",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_FRONTIER_DIAGNOSTIC-004",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_FRONTIER_DIAGNOSTIC-005",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_FRONTIER_DIAGNOSTIC-006",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_FRONTIER_DIAGNOSTIC-007",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_FRONTIER_DIAGNOSTIC-008",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_FRONTIER_DIAGNOSTIC-009",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_FRONTIER_DIAGNOSTIC-010",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_FRONTIER_DIAGNOSTIC-011",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_FRONTIER_DIAGNOSTIC-012",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_FRONTIER_DIAGNOSTIC-013",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_FRONTIER_DIAGNOSTIC-014",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_FRONTIER_DIAGNOSTIC-015",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_FRONTIER_DIAGNOSTIC-016",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_FRONTIER_DIAGNOSTIC-017",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_FRONTIER_DIAGNOSTIC-018",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      }
+    ],
+    "repeat_output_mismatches": 0,
+    "set_id": "WAVE_3_FRONTIER_DIAGNOSTIC",
+    "solvable_frontier_tasks": 18,
+    "solved_frontier_tasks": 0
+  },
+  "parent_id": "FC2_COUNTERFACTUAL_PROBE_GENERATOR",
+  "parent_validation": {
+    "challenges": 24,
+    "condition": "WAVE_3_PARENT_VALIDATION",
+    "correct_outcomes": 0,
+    "false_capability_applications": 0,
+    "median_deterministic_cost": 8.0,
+    "median_wall_time_ns": 4369000.0,
+    "outcome_rate": 0.0,
+    "output_sha256": "df1dd5ead5dcd456c58e899eec38a6ce0c5205be55a90a5e9dcc1b134019bf4c",
+    "peak_active_capabilities": 4,
+    "peak_frontier": 1,
+    "peak_memory": 72,
+    "peak_routed_capabilities": 1,
+    "records": [
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-001",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-002",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-003",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-004",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-005",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-006",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-007",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-008",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-009",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-010",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-011",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-012",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-013",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-014",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-015",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-016",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-017",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-018",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-019",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-020",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-021",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-022",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-023",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "WAVE_3_FRONTIER_VALIDATION-024",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      }
+    ],
+    "repeat_output_mismatches": 0,
+    "set_id": "WAVE_3_FRONTIER_VALIDATION",
+    "solvable_frontier_tasks": 24,
+    "solved_frontier_tasks": 0
+  },
+  "wave": 3
+}

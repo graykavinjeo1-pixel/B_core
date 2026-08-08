@@ -1,0 +1,55 @@
+{
+  "base_core_total_deployable_bytes": 170446,
+  "final_core_total_deployable_bytes": 171130,
+  "frontier_gain_per_added_byte": 0.21052631578947367,
+  "rows": [
+    {
+      "added_bytes_vs_base": "0",
+      "candidate": "SEM17_BASE",
+      "core_release_binary_bytes": 153600,
+      "core_source_bytes": 3888,
+      "core_total_deployable_bytes": 170446,
+      "frontier_gain": 0,
+      "frontier_gain_per_added_byte": 0.0,
+      "index_bytes": 281,
+      "semantic_state_and_index_shared_not_reduplicated": true,
+      "semantic_state_bytes": 2662
+    },
+    {
+      "added_bytes_vs_base": "568",
+      "candidate": "FC1_RELATIONAL_CLOSURE_IR",
+      "core_release_binary_bytes": 154112,
+      "core_source_bytes": 3944,
+      "core_total_deployable_bytes": 171014,
+      "frontier_gain": 24,
+      "frontier_gain_per_added_byte": 0.04225352112676056,
+      "index_bytes": 281,
+      "semantic_state_and_index_shared_not_reduplicated": true,
+      "semantic_state_bytes": 2662
+    },
+    {
+      "added_bytes_vs_base": "627",
+      "candidate": "FC2_COUNTERFACTUAL_PROBE_GENERATOR",
+      "core_release_binary_bytes": 154112,
+      "core_source_bytes": 4003,
+      "core_total_deployable_bytes": 171073,
+      "frontier_gain": 24,
+      "frontier_gain_per_added_byte": 0.03827751196172249,
+      "index_bytes": 281,
+      "semantic_state_and_index_shared_not_reduplicated": true,
+      "semantic_state_bytes": 2662
+    },
+    {
+      "added_bytes_vs_base": "684",
+      "candidate": "FC3_BOUNDED_SEMANTIC_BEAM_CONTROLLER",
+      "core_release_binary_bytes": 154112,
+      "core_source_bytes": 4060,
+      "core_total_deployable_bytes": 171130,
+      "frontier_gain": 24,
+      "frontier_gain_per_added_byte": 0.03508771929824561,
+      "index_bytes": 281,
+      "semantic_state_and_index_shared_not_reduplicated": true,
+      "semantic_state_bytes": 2662
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+[
+  {
+    "can_existing_mechanisms_compose_to_solve": false,
+    "desired_capability": "represent transitive relational reachability as an executable invariant",
+    "missing_experiment": "none",
+    "missing_information": "none",
+    "missing_representation": "closure-capable relation IR",
+    "missing_role": "represent transitive relational reachability as an executable invariant",
+    "missing_tool": "none",
+    "missing_transformation": "bounded relation closure",
+    "observed_failure": "SEMANTIC_REPRESENTATION",
+    "requires_capability_genesis": true,
+    "wave": 1
+  },
+  {
+    "can_existing_mechanisms_compose_to_solve": false,
+    "desired_capability": "choose information that causally separates live hypotheses",
+    "missing_experiment": "discriminating counterfactual probe",
+    "missing_information": "discriminating counterfactual probe",
+    "missing_representation": "hypothesis/probe contrast state",
+    "missing_role": "choose information that causally separates live hypotheses",
+    "missing_tool": "none",
+    "missing_transformation": "counterfactual probe selection",
+    "observed_failure": "EXPERIMENT_GENERATION",
+    "requires_capability_genesis": true,
+    "wave": 2
+  },
+  {
+    "can_existing_mechanisms_compose_to_solve": false,
+    "desired_capability": "retain the causally promising candidates under branching pressure",
+    "missing_experiment": "none",
+    "missing_information": "none",
+    "missing_representation": "ranked frontier state",
+    "missing_role": "retain the causally promising candidates under branching pressure",
+    "missing_tool": "none",
+    "missing_transformation": "bounded semantic beam control",
+    "observed_failure": "SEARCH_CONTROL",
+    "requires_capability_genesis": true,
+    "wave": 3
+  }
+]

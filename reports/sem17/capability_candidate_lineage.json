@@ -1,0 +1,206 @@
+[
+  {
+    "binary_sha256": "d95dc1377489f016eb21bfd8d02d4e2af1b1c19410bb5253ccd5482cbcba699b",
+    "capability_design": {
+      "candidate_id": "FC1_RELATIONAL_CLOSURE_IR",
+      "classification": "REPRESENTATION_EXTENSION",
+      "counterfactual_behavior_defined": true,
+      "executable_runtime_required": true,
+      "failure_conditions_defined": true,
+      "inputs_defined": true,
+      "invariants_defined": true,
+      "max_source_concepts_composed": 2,
+      "novel_mechanism_components": [
+        "EXECUTABLE_RELATIONAL_CLOSURE"
+      ],
+      "outputs_defined": true,
+      "preconditions_defined": true,
+      "random_program_synthesis": false,
+      "resource_behavior_defined": true,
+      "semantically_derived": true,
+      "source_concepts": [
+        "RELATION_COMPOSITION",
+        "INVARIANT_GUARD"
+      ],
+      "source_domains": [
+        "SEMANTIC_REPRESENTATION",
+        "CAUSAL_VALIDATION"
+      ],
+      "transformation_defined": true,
+      "wave": 1
+    },
+    "causal_ceiling_diagnosis": "SEMANTIC_REPRESENTATION",
+    "child": "FC1_RELATIONAL_CLOSURE_IR",
+    "frontier_failure": "SEMANTIC_REPRESENTATION",
+    "missing_capability_hypothesis": {
+      "confidence": 1.0,
+      "frontier_gap": "SEMANTIC_REPRESENTATION",
+      "manually_provided_missing_capability": false,
+      "predicted_frontier_effect": "solve unseen representational gaps and become composable with later capabilities",
+      "predicted_new_capability": "FC1_RELATIONAL_CLOSURE_IR",
+      "required_inputs": [
+        "relation_depth",
+        "relation_edges",
+        "invariant"
+      ],
+      "required_invariants": [
+        "invariant_holds",
+        "bounded_resource_use",
+        "no_external_truth_access"
+      ],
+      "required_outputs": [
+        "closure_reachable"
+      ],
+      "required_role": "bounded relational closure representation",
+      "required_transformations": "construct and validate a bounded transitive relation closure",
+      "risks": [
+        "false applicability",
+        "active-set creep",
+        "cross-capability interference"
+      ],
+      "wave": 1
+    },
+    "parent": "SEM17_BASE",
+    "production_promoted": false,
+    "semantically_derived": true,
+    "source_sha256": "42233a8311d3b7f179da5c14207403ae474e51ae551b4eee28c2684f8e0b762a",
+    "ungrounded_architecture_mutation": false,
+    "wave": 1
+  },
+  {
+    "binary_sha256": "bddab88d3fda84e53dabd2dc75f7395ffdedb75022de023b49f34244924816a5",
+    "capability_design": {
+      "candidate_id": "FC2_COUNTERFACTUAL_PROBE_GENERATOR",
+      "classification": "CAPABILITY_EXTENSION",
+      "counterfactual_behavior_defined": true,
+      "executable_runtime_required": true,
+      "failure_conditions_defined": true,
+      "inputs_defined": true,
+      "invariants_defined": true,
+      "max_source_concepts_composed": 2,
+      "novel_mechanism_components": [
+        "COUNTERFACTUAL_CONTRAST_SELECTOR"
+      ],
+      "outputs_defined": true,
+      "preconditions_defined": true,
+      "random_program_synthesis": false,
+      "resource_behavior_defined": true,
+      "semantically_derived": true,
+      "source_concepts": [
+        "CAUSAL_PROBE_PRIORITY",
+        "ASSUMPTION_LEDGER"
+      ],
+      "source_domains": [
+        "EXPERIMENT_GENERATION",
+        "META_DIAGNOSIS"
+      ],
+      "transformation_defined": true,
+      "wave": 2
+    },
+    "causal_ceiling_diagnosis": "EXPERIMENT_GENERATION",
+    "child": "FC2_COUNTERFACTUAL_PROBE_GENERATOR",
+    "frontier_failure": "EXPERIMENT_GENERATION",
+    "missing_capability_hypothesis": {
+      "confidence": 1.0,
+      "frontier_gap": "EXPERIMENT_GENERATION",
+      "manually_provided_missing_capability": false,
+      "predicted_frontier_effect": "solve unseen experiment gaps and novel relation/probe compositions",
+      "predicted_new_capability": "FC2_COUNTERFACTUAL_PROBE_GENERATOR",
+      "required_inputs": [
+        "live_hypotheses",
+        "probe_contrast",
+        "invariant"
+      ],
+      "required_invariants": [
+        "invariant_holds",
+        "bounded_resource_use",
+        "no_external_truth_access"
+      ],
+      "required_outputs": [
+        "discriminating_probe"
+      ],
+      "required_role": "counterfactual experiment generation",
+      "required_transformations": "select a bounded probe whose contrast separates the live hypotheses",
+      "risks": [
+        "false applicability",
+        "active-set creep",
+        "cross-capability interference"
+      ],
+      "wave": 2
+    },
+    "parent": "FC1_RELATIONAL_CLOSURE_IR",
+    "production_promoted": false,
+    "semantically_derived": true,
+    "source_sha256": "c249eac1b3fe3734ea33b55084641f258899220ba634eca08da7692d49261243",
+    "ungrounded_architecture_mutation": false,
+    "wave": 2
+  },
+  {
+    "binary_sha256": "a35fa40c7db1c390c5fcfdebfdad4ee82f1b4a8d2cd85cbe6cf0e2a606197617",
+    "capability_design": {
+      "candidate_id": "FC3_BOUNDED_SEMANTIC_BEAM_CONTROLLER",
+      "classification": "CAPABILITY_EXTENSION",
+      "counterfactual_behavior_defined": true,
+      "executable_runtime_required": true,
+      "failure_conditions_defined": true,
+      "inputs_defined": true,
+      "invariants_defined": true,
+      "max_source_concepts_composed": 2,
+      "novel_mechanism_components": [
+        "SEMANTIC_BEAM_RETENTION"
+      ],
+      "outputs_defined": true,
+      "preconditions_defined": true,
+      "random_program_synthesis": false,
+      "resource_behavior_defined": true,
+      "semantically_derived": true,
+      "source_concepts": [
+        "SPARSE_ROUTING",
+        "BOUNDED_FRONTIER_PRIORITY"
+      ],
+      "source_domains": [
+        "SEARCH_CONTROL",
+        "SPARSE_ACTIVATION"
+      ],
+      "transformation_defined": true,
+      "wave": 3
+    },
+    "causal_ceiling_diagnosis": "SEARCH_CONTROL",
+    "child": "FC3_BOUNDED_SEMANTIC_BEAM_CONTROLLER",
+    "frontier_failure": "SEARCH_CONTROL",
+    "missing_capability_hypothesis": {
+      "confidence": 1.0,
+      "frontier_gap": "SEARCH_CONTROL",
+      "manually_provided_missing_capability": false,
+      "predicted_frontier_effect": "solve unseen control gaps and mixed three-capability tasks",
+      "predicted_new_capability": "FC3_BOUNDED_SEMANTIC_BEAM_CONTROLLER",
+      "required_inputs": [
+        "branching",
+        "solution_rank",
+        "invariant"
+      ],
+      "required_invariants": [
+        "invariant_holds",
+        "bounded_resource_use",
+        "no_external_truth_access"
+      ],
+      "required_outputs": [
+        "retained_candidate"
+      ],
+      "required_role": "bounded semantic beam control",
+      "required_transformations": "retain only the bounded causally ranked frontier",
+      "risks": [
+        "false applicability",
+        "active-set creep",
+        "cross-capability interference"
+      ],
+      "wave": 3
+    },
+    "parent": "FC2_COUNTERFACTUAL_PROBE_GENERATOR",
+    "production_promoted": false,
+    "semantically_derived": true,
+    "source_sha256": "fd0af25710b06ec974331b24b90b30306b4bc069389ba532bc8c46838a1de045",
+    "ungrounded_architecture_mutation": false,
+    "wave": 3
+  }
+]

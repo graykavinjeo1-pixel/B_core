@@ -1,0 +1,65 @@
+[
+  {
+    "architecture_or_capability_failure": true,
+    "confidence": 1.0,
+    "evidence": {
+      "fresh_failed_tasks": 18,
+      "median_deterministic_cost": 8.0,
+      "missing_application_stage_derived_from_trace": true,
+      "output_sha256": "b0d206b880fe0b45a742b319c542e6fc59b5913ea8af0729864959155979b2a5"
+    },
+    "existing_mechanisms_attempted": [
+      "SEM12_D3_OBJECT_PIPELINE",
+      "SEM16_MD3_META_PIPELINE",
+      "BOUNDED_SEMANTIC_COMPOSITION"
+    ],
+    "failure_class": "SEMANTIC_REPRESENTATION",
+    "frontier_causal_diagnosis_pass": true,
+    "knowledge_failure": false,
+    "resource_failure": false,
+    "wave": 1,
+    "why_existing_mechanisms_are_insufficient": "required multi-hop relation has no executable closure representation"
+  },
+  {
+    "architecture_or_capability_failure": true,
+    "confidence": 1.0,
+    "evidence": {
+      "fresh_failed_tasks": 18,
+      "median_deterministic_cost": 8.0,
+      "missing_application_stage_derived_from_trace": true,
+      "output_sha256": "09d22ba47b6ce3f7b7c25fde6ab4a53c34f47040768a7c33b30da11c2f5fd533"
+    },
+    "existing_mechanisms_attempted": [
+      "SEM12_D3_OBJECT_PIPELINE",
+      "SEM16_MD3_META_PIPELINE",
+      "BOUNDED_SEMANTIC_COMPOSITION"
+    ],
+    "failure_class": "EXPERIMENT_GENERATION",
+    "frontier_causal_diagnosis_pass": true,
+    "knowledge_failure": false,
+    "resource_failure": false,
+    "wave": 2,
+    "why_existing_mechanisms_are_insufficient": "existing probes cannot select a discriminating counterfactual among multiple hypotheses"
+  },
+  {
+    "architecture_or_capability_failure": true,
+    "confidence": 1.0,
+    "evidence": {
+      "fresh_failed_tasks": 18,
+      "median_deterministic_cost": 8.0,
+      "missing_application_stage_derived_from_trace": true,
+      "output_sha256": "a991c1202545822f4d4ea6a25a03d5aa4a677d039d42fc087d358af65a9fd3bb"
+    },
+    "existing_mechanisms_attempted": [
+      "SEM12_D3_OBJECT_PIPELINE",
+      "SEM16_MD3_META_PIPELINE",
+      "BOUNDED_SEMANTIC_COMPOSITION"
+    ],
+    "failure_class": "SEARCH_CONTROL",
+    "frontier_causal_diagnosis_pass": true,
+    "knowledge_failure": false,
+    "resource_failure": false,
+    "wave": 3,
+    "why_existing_mechanisms_are_insufficient": "correct candidates exist beyond the predecessor control frontier without bounded prioritization"
+  }
+]

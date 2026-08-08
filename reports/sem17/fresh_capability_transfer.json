@@ -1,0 +1,32 @@
+{
+  "all_pass": true,
+  "waves": [
+    {
+      "diagnostic_set_id": "WAVE_1_FRONTIER_DIAGNOSTIC",
+      "fresh_capability_transfer_pass": true,
+      "structurally_and_lexically_distinct": true,
+      "transfer_rate": 1.0,
+      "transferred_tasks": 24,
+      "unopened_validation_set_id": "WAVE_1_FRONTIER_VALIDATION",
+      "wave": 1
+    },
+    {
+      "diagnostic_set_id": "WAVE_2_FRONTIER_DIAGNOSTIC",
+      "fresh_capability_transfer_pass": true,
+      "structurally_and_lexically_distinct": true,
+      "transfer_rate": 1.0,
+      "transferred_tasks": 24,
+      "unopened_validation_set_id": "WAVE_2_FRONTIER_VALIDATION",
+      "wave": 2
+    },
+    {
+      "diagnostic_set_id": "WAVE_3_FRONTIER_DIAGNOSTIC",
+      "fresh_capability_transfer_pass": true,
+      "structurally_and_lexically_distinct": true,
+      "transfer_rate": 1.0,
+      "transferred_tasks": 24,
+      "unopened_validation_set_id": "WAVE_3_FRONTIER_VALIDATION",
+      "wave": 3
+    }
+  ]
+}

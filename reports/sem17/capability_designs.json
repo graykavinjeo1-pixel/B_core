@@ -1,0 +1,86 @@
+[
+  {
+    "candidate_id": "FC1_RELATIONAL_CLOSURE_IR",
+    "classification": "REPRESENTATION_EXTENSION",
+    "counterfactual_behavior_defined": true,
+    "executable_runtime_required": true,
+    "failure_conditions_defined": true,
+    "inputs_defined": true,
+    "invariants_defined": true,
+    "max_source_concepts_composed": 2,
+    "novel_mechanism_components": [
+      "EXECUTABLE_RELATIONAL_CLOSURE"
+    ],
+    "outputs_defined": true,
+    "preconditions_defined": true,
+    "random_program_synthesis": false,
+    "resource_behavior_defined": true,
+    "semantically_derived": true,
+    "source_concepts": [
+      "RELATION_COMPOSITION",
+      "INVARIANT_GUARD"
+    ],
+    "source_domains": [
+      "SEMANTIC_REPRESENTATION",
+      "CAUSAL_VALIDATION"
+    ],
+    "transformation_defined": true,
+    "wave": 1
+  },
+  {
+    "candidate_id": "FC2_COUNTERFACTUAL_PROBE_GENERATOR",
+    "classification": "CAPABILITY_EXTENSION",
+    "counterfactual_behavior_defined": true,
+    "executable_runtime_required": true,
+    "failure_conditions_defined": true,
+    "inputs_defined": true,
+    "invariants_defined": true,
+    "max_source_concepts_composed": 2,
+    "novel_mechanism_components": [
+      "COUNTERFACTUAL_CONTRAST_SELECTOR"
+    ],
+    "outputs_defined": true,
+    "preconditions_defined": true,
+    "random_program_synthesis": false,
+    "resource_behavior_defined": true,
+    "semantically_derived": true,
+    "source_concepts": [
+      "CAUSAL_PROBE_PRIORITY",
+      "ASSUMPTION_LEDGER"
+    ],
+    "source_domains": [
+      "EXPERIMENT_GENERATION",
+      "META_DIAGNOSIS"
+    ],
+    "transformation_defined": true,
+    "wave": 2
+  },
+  {
+    "candidate_id": "FC3_BOUNDED_SEMANTIC_BEAM_CONTROLLER",
+    "classification": "CAPABILITY_EXTENSION",
+    "counterfactual_behavior_defined": true,
+    "executable_runtime_required": true,
+    "failure_conditions_defined": true,
+    "inputs_defined": true,
+    "invariants_defined": true,
+    "max_source_concepts_composed": 2,
+    "novel_mechanism_components": [
+      "SEMANTIC_BEAM_RETENTION"
+    ],
+    "outputs_defined": true,
+    "preconditions_defined": true,
+    "random_program_synthesis": false,
+    "resource_behavior_defined": true,
+    "semantically_derived": true,
+    "source_concepts": [
+      "SPARSE_ROUTING",
+      "BOUNDED_FRONTIER_PRIORITY"
+    ],
+    "source_domains": [
+      "SEARCH_CONTROL",
+      "SPARSE_ACTIVATION"
+    ],
+    "transformation_defined": true,
+    "wave": 3
+  }
+]

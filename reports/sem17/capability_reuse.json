@@ -1,0 +1,9 @@
+{
+  "one_off_only": false,
+  "reuse_events": 3,
+  "reused_on_families": [
+    "NOVEL_MECHANISM_GAP",
+    "CROSS_DOMAIN_NOVELTY",
+    "MIXED_NEW_FRONTIER"
+  ]
+}

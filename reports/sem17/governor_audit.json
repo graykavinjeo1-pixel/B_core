@@ -1,0 +1,7 @@
+{
+  "acceptance_criteria_hash_unchanged": true,
+  "evaluator_hash_unchanged": true,
+  "governor_hash_unchanged": true,
+  "production_promotion": false,
+  "protected_tree_unchanged": true
+}

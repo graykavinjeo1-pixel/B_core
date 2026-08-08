@@ -1,0 +1,13 @@
+{
+  "exponential_claim": false,
+  "frontier_gain_wave_1": 24,
+  "frontier_gain_wave_2": 24,
+  "frontier_gain_wave_3": 24,
+  "gain_acceleration_ratio": 1.0,
+  "growth_regime": "LINEAR",
+  "wave_gains": [
+    24,
+    24,
+    24
+  ]
+}

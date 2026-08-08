@@ -1,0 +1,62 @@
+{
+  "engine_id": "FC2_COUNTERFACTUAL_PROBE_GENERATOR",
+  "mode": {
+    "relational_closure": true,
+    "counterfactual_probe": true,
+    "bounded_beam_control": false
+  },
+  "source_sha256": "c249eac1b3fe3734ea33b55084641f258899220ba634eca08da7692d49261243",
+  "release_binary_sha256": "bddab88d3fda84e53dabd2dc75f7395ffdedb75022de023b49f34244924816a5",
+  "source_bytes": 4003,
+  "release_binary_bytes": 154112,
+  "rustfmt_pass": true,
+  "strict_clippy_pass": true,
+  "tests_pass": true,
+  "debug_build_pass": true,
+  "release_build_pass": true,
+  "sandbox_contained": true,
+  "commands": [
+    {
+      "command": "cargo fmt --all",
+      "success": true,
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": "cargo fmt --all -- --check",
+      "success": true,
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": "cargo clippy --all-targets --offline -- -D warnings",
+      "success": true,
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "fc35b70319283cc2fecdd40b51ee98bea894d61ed2867b4caa6875fc7a71c229"
+    },
+    {
+      "command": "cargo test --offline",
+      "success": true,
+      "exit_code": 0,
+      "stdout_sha256": "721f8650d88aedb0a545e3536d349caa1b7ca2545294056f82d865e20e56469d",
+      "stderr_sha256": "ff1d27701b1353a9f13695e6967b5e514c621a6051501fb6225da376b853654c"
+    },
+    {
+      "command": "cargo build --offline",
+      "success": true,
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "2740a33d26e1b18ef798a424af3c1c7fbd113de6a3b4462afc36fe2238c05bce"
+    },
+    {
+      "command": "cargo build --release --offline",
+      "success": true,
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "9f5243b2f2ee3bad04c1807a5974f9f9db7df3b5506d68b43cade737f24306db"
+    }
+  ]
+}

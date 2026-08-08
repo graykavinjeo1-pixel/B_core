@@ -1,0 +1,31 @@
+{
+  "autonomous_semantic_frontier_escape": {
+    "newly_solved_frontier_tasks": 144,
+    "semantically_derived_capabilities": 3,
+    "solved_frontier_tasks": 168
+  },
+  "equal_resource_budget": true,
+  "human_predefined_extension_catalog": {
+    "catalog_contains_generated_capabilities": false,
+    "newly_solved_frontier_tasks": 0,
+    "solved_frontier_tasks": 24
+  },
+  "local_only": {
+    "newly_solved_frontier_tasks": 0,
+    "semantic_capability_genesis": false,
+    "solved_frontier_tasks": 24
+  },
+  "random_architecture_extension": {
+    "accepted_mutations": 0,
+    "newly_solved_frontier_tasks": 0,
+    "solved_frontier_tasks": 24,
+    "ungrounded_mutations": 1
+  },
+  "resource_budget": {
+    "build_test": 8,
+    "candidate": 8,
+    "diagnostic": 64,
+    "experiment": 32,
+    "search": 64
+  }
+}
