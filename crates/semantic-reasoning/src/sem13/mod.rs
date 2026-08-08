@@ -684,12 +684,9 @@ pub fn run_campaign(root: &Path) -> Result<String, String> {
     )?;
 
     let ordinary_gate = run_workspace_gate(root)?;
-    let reasoner_source_hash =
-        hash_file(&root.join("reports/sem12/artifacts/checkpoints/D3-FINAL-STRONG/lib.rs"))?;
-    let reasoner_binary_hash = hash_file(
-        &root
-            .join("reports/sem12/artifacts/checkpoints/D3-FINAL-STRONG/reasoner-probe-release.exe"),
-    )?;
+    let reasoner_source_hash = hash_file(&root.join("reports/sem12/artifacts/d3/lib.rs"))?;
+    let reasoner_binary_hash =
+        hash_file(&root.join("reports/sem12/artifacts/d3/reasoner-probe-release.exe"))?;
     let semantic_state_hash =
         hash_file(&root.join("crates/dockable-semantic-core/state/semantic_state.json"))?;
     let index_hash =
@@ -2135,14 +2132,12 @@ fn verify_predecessor(root: &Path) -> Result<(), String> {
         return Err("SEM12_PREDECESSOR_INVALID".to_string());
     }
     require_same_hash(
-        &hash_file(&root.join("reports/sem12/artifacts/checkpoints/D3-FINAL-STRONG/lib.rs"))?,
+        &hash_file(&root.join("reports/sem12/artifacts/d3/lib.rs"))?,
         M0_REASONER_SOURCE_SHA256,
         "SEM12_FINAL_REASONER_SOURCE",
     )?;
     require_same_hash(
-        &hash_file(&root.join(
-            "reports/sem12/artifacts/checkpoints/D3-FINAL-STRONG/reasoner-probe-release.exe",
-        ))?,
+        &hash_file(&root.join("reports/sem12/artifacts/d3/reasoner-probe-release.exe"))?,
         M0_REASONER_BINARY_SHA256,
         "SEM12_FINAL_REASONER_BINARY",
     )?;
