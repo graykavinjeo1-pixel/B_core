@@ -1,0 +1,39 @@
+{
+  "campaign_id": "SEM10-FRESH-RUN-0002",
+  "protocol_version": "SEM-10-BOUNDED-SERIAL-RECURSION-1.0.0",
+  "infrastructure_commit": "3c305289126fc7ae2645a70bf97709edbbb8b828",
+  "recursion_attempt_budget": 3,
+  "fresh_blind_tasks_per_transition": 140,
+  "repeated_trials": 7,
+  "improvement_floor": 0.01,
+  "strong_gain_target": 0.2,
+  "zero_regression_required": true,
+  "r0_r1_seed_commitment_sha256": "1dfbbb0159a5768ae343e9830ad3e32253007b175e5aee148f107b28969d6333",
+  "r1_r2_seed_commitment_sha256": "824a7b4b68a8ad8080c0f5350319ceb76c11843ea41495624c82d57a5f2c6584",
+  "diagnostic_seed_commitments_sha256": [
+    "d947f0fe61f71d7e3ee42bcdd42df0e27355bd9f289b59810e90239d3e2e0de0",
+    "112fa9433f0ff1f8306cb1038a5a68212974a56dec092af2bd999682b55c8772",
+    "ddbc50bdd59efa50204c055fdd2ab4040af0957ea5438280068429205a6068d7"
+  ],
+  "blind_generation_after_child_build_gate": true,
+  "same_manifest_for_parent_and_child": true,
+  "external_llm_calls_allowed": 0,
+  "local_teacher_calls_allowed": 0,
+  "network_reads_allowed": 0,
+  "network_writes_allowed": 0,
+  "auto_merge_allowed": false,
+  "auto_push_allowed": false,
+  "production_promotion_allowed": false,
+  "clippy_policy": "DIFFERENTIAL_NO_NEW_SIGNATURES;INHERITED_22_ALLOWED;CLEAN_SANDBOX_STRICT",
+  "generation_policy": "CURRENT_GENERATION_SELF_OBSERVATION_TO_SPARSE_MECHANISM_ROUTE_TO_ROLE_MAPPING_TO_ASSUMPTIONS_TO_CHANGE_IR_TO_PATCH",
+  "stop_policy": [
+    "BUILD_FAILURE",
+    "NEW_CLIPPY_SIGNATURE",
+    "ANY_CORRECTNESS_REGRESSION",
+    "NO_MEASURABLE_GAIN",
+    "ABLATION_FAILURE",
+    "CAUSAL_VALIDATION_FAILURE",
+    "NO_ACTIONABLE_WEAKNESS",
+    "RECURSION_BUDGET_EXHAUSTED"
+  ]
+}
