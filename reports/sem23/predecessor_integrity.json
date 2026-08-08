@@ -1,0 +1,20 @@
+{
+  "campaign_id": "SEM22-AUTONOMOUS-SEMANTIC-REACTION-CATALYSIS-0001",
+  "commit_expected": "da79989fa6bf6ddf55057dfc8c1eca8d487461c4",
+  "commit_observed": "da79989fa6bf6ddf55057dfc8c1eca8d487461c4",
+  "historical_evidence_rewritten": false,
+  "next_allowed_stage": "OPERATOR_REVIEW_FOR_SEM23",
+  "next_dominant_growth_limit": "ACTIVE_SEMANTIC_WORKING_SET_AND_REACTION_STATE_GROWTH",
+  "sem22_artifact_binary_sha256": "35f37b455f6fa010b96ec1cba68f138dfd6d3ca6f0835e1e8549ce3a1e46ec58",
+  "sem22_artifact_source_sha256": "8f44f3f2038cc23f10b33325a3260574f1d40dc12a357135a0d03264c63c4269",
+  "sem22_levels": {
+    "A": true,
+    "B": true,
+    "C": true,
+    "D": true,
+    "E": true,
+    "F": true
+  },
+  "sem22_status": "PASS",
+  "status": "PASS"
+}

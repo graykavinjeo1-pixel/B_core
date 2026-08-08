@@ -1,0 +1,214 @@
+{
+  "cross_domain_transfer_tested": true,
+  "identity_specific_laws": 0,
+  "laws": [
+    {
+      "applicable_property_family_pattern": "IDENTITY_INDEPENDENT_FAMILY_PAIR",
+      "applicable_role_pattern": "COMPLEMENTARY_PROPERTY_ROLE_PATTERN",
+      "contextual_conditions": [
+        "FIXED_RESOURCE_ENVELOPE",
+        "STABLE_TOPOLOGY"
+      ],
+      "counterexamples": [
+        {
+          "composite_id": "GC23-04-2d324d3e9156",
+          "correctly_predicted_properties": 8,
+          "epoch": 4,
+          "false_predicted_properties": 0,
+          "missed_emergent_properties": 2,
+          "observed_property_mask": 5503,
+          "predicted_property_mask": 1375,
+          "prediction_error_count": 2,
+          "revision_triggered": true,
+          "unexpected_negative_properties": 0,
+          "unexpected_positive_properties": 2
+        },
+        {
+          "composite_id": "GC23-03-33d694ae07fb",
+          "correctly_predicted_properties": 6,
+          "epoch": 3,
+          "false_predicted_properties": 0,
+          "missed_emergent_properties": 1,
+          "observed_property_mask": 127,
+          "predicted_property_mask": 95,
+          "prediction_error_count": 1,
+          "revision_triggered": true,
+          "unexpected_negative_properties": 0,
+          "unexpected_positive_properties": 1
+        }
+      ],
+      "discovered_epoch": 4,
+      "emergent_property_conditions": [
+        "STRUCTURED_INTERACTION"
+      ],
+      "evidence_composite": "GC23-04-2d324d3e9156",
+      "failure_boundaries": [
+        "ROLE_OR_STATE_CONFLICT"
+      ],
+      "law_id": "RL23-01",
+      "predicted_property_transformation": 1152,
+      "reaction_topology": "EMPIRICALLY_ROUTED",
+      "resource_transformation": "REDUCED_SYNTHESIS_OPERATIONS",
+      "stability_conditions": [
+        "INVARIANT_LINEAGE_PRESERVED"
+      ],
+      "verified": true
+    },
+    {
+      "applicable_property_family_pattern": "IDENTITY_INDEPENDENT_FAMILY_PAIR",
+      "applicable_role_pattern": "COMPLEMENTARY_PROPERTY_ROLE_PATTERN",
+      "contextual_conditions": [
+        "FIXED_RESOURCE_ENVELOPE",
+        "STABLE_TOPOLOGY"
+      ],
+      "counterexamples": [
+        {
+          "composite_id": "GC23-07-ed7ab6b3073f",
+          "correctly_predicted_properties": 11,
+          "epoch": 7,
+          "false_predicted_properties": 0,
+          "missed_emergent_properties": 0,
+          "observed_property_mask": 2047,
+          "predicted_property_mask": 2047,
+          "prediction_error_count": 0,
+          "revision_triggered": false,
+          "unexpected_negative_properties": 0,
+          "unexpected_positive_properties": 0
+        },
+        {
+          "composite_id": "GC23-06-51cb7de2ba79",
+          "correctly_predicted_properties": 10,
+          "epoch": 6,
+          "false_predicted_properties": 0,
+          "missed_emergent_properties": 1,
+          "observed_property_mask": 5887,
+          "predicted_property_mask": 1791,
+          "prediction_error_count": 1,
+          "revision_triggered": true,
+          "unexpected_negative_properties": 0,
+          "unexpected_positive_properties": 1
+        }
+      ],
+      "discovered_epoch": 7,
+      "emergent_property_conditions": [
+        "STRUCTURED_INTERACTION"
+      ],
+      "evidence_composite": "GC23-07-ed7ab6b3073f",
+      "failure_boundaries": [
+        "ROLE_OR_STATE_CONFLICT"
+      ],
+      "law_id": "RL23-02",
+      "predicted_property_transformation": 1152,
+      "reaction_topology": "EMPIRICALLY_ROUTED",
+      "resource_transformation": "REDUCED_SYNTHESIS_OPERATIONS",
+      "stability_conditions": [
+        "INVARIANT_LINEAGE_PRESERVED"
+      ],
+      "verified": true
+    },
+    {
+      "applicable_property_family_pattern": "IDENTITY_INDEPENDENT_FAMILY_PAIR",
+      "applicable_role_pattern": "COMPLEMENTARY_PROPERTY_ROLE_PATTERN",
+      "contextual_conditions": [
+        "FIXED_RESOURCE_ENVELOPE",
+        "STABLE_TOPOLOGY"
+      ],
+      "counterexamples": [
+        {
+          "composite_id": "GC23-10-1a4cd9a3ede9",
+          "correctly_predicted_properties": 12,
+          "epoch": 10,
+          "false_predicted_properties": 0,
+          "missed_emergent_properties": 0,
+          "observed_property_mask": 4095,
+          "predicted_property_mask": 4095,
+          "prediction_error_count": 0,
+          "revision_triggered": false,
+          "unexpected_negative_properties": 0,
+          "unexpected_positive_properties": 0
+        },
+        {
+          "composite_id": "GC23-09-db38af64504c",
+          "correctly_predicted_properties": 11,
+          "epoch": 9,
+          "false_predicted_properties": 0,
+          "missed_emergent_properties": 0,
+          "observed_property_mask": 3839,
+          "predicted_property_mask": 3839,
+          "prediction_error_count": 0,
+          "revision_triggered": false,
+          "unexpected_negative_properties": 0,
+          "unexpected_positive_properties": 0
+        }
+      ],
+      "discovered_epoch": 10,
+      "emergent_property_conditions": [
+        "STRUCTURED_INTERACTION"
+      ],
+      "evidence_composite": "GC23-10-1a4cd9a3ede9",
+      "failure_boundaries": [
+        "ROLE_OR_STATE_CONFLICT"
+      ],
+      "law_id": "RL23-03",
+      "predicted_property_transformation": 1152,
+      "reaction_topology": "EMPIRICALLY_ROUTED",
+      "resource_transformation": "REDUCED_SYNTHESIS_OPERATIONS",
+      "stability_conditions": [
+        "INVARIANT_LINEAGE_PRESERVED"
+      ],
+      "verified": true
+    },
+    {
+      "applicable_property_family_pattern": "IDENTITY_INDEPENDENT_FAMILY_PAIR",
+      "applicable_role_pattern": "COMPLEMENTARY_PROPERTY_ROLE_PATTERN",
+      "contextual_conditions": [
+        "FIXED_RESOURCE_ENVELOPE",
+        "STABLE_TOPOLOGY"
+      ],
+      "counterexamples": [
+        {
+          "composite_id": "GC23-13-c339beb7bda8",
+          "correctly_predicted_properties": 12,
+          "epoch": 13,
+          "false_predicted_properties": 0,
+          "missed_emergent_properties": 0,
+          "observed_property_mask": 4095,
+          "predicted_property_mask": 4095,
+          "prediction_error_count": 0,
+          "revision_triggered": false,
+          "unexpected_negative_properties": 0,
+          "unexpected_positive_properties": 0
+        },
+        {
+          "composite_id": "GC23-12-f731543d883e",
+          "correctly_predicted_properties": 11,
+          "epoch": 12,
+          "false_predicted_properties": 0,
+          "missed_emergent_properties": 0,
+          "observed_property_mask": 3839,
+          "predicted_property_mask": 3839,
+          "prediction_error_count": 0,
+          "revision_triggered": false,
+          "unexpected_negative_properties": 0,
+          "unexpected_positive_properties": 0
+        }
+      ],
+      "discovered_epoch": 13,
+      "emergent_property_conditions": [
+        "STRUCTURED_INTERACTION"
+      ],
+      "evidence_composite": "GC23-13-c339beb7bda8",
+      "failure_boundaries": [
+        "ROLE_OR_STATE_CONFLICT"
+      ],
+      "law_id": "RL23-04",
+      "predicted_property_transformation": 1152,
+      "reaction_topology": "EMPIRICALLY_ROUTED",
+      "resource_transformation": "REDUCED_SYNTHESIS_OPERATIONS",
+      "stability_conditions": [
+        "INVARIANT_LINEAGE_PRESERVED"
+      ],
+      "verified": true
+    }
+  ]
+}

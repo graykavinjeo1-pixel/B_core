@@ -1,0 +1,36 @@
+[
+  {
+    "epoch": 8,
+    "evidence": [
+      "5dd7e0ac9408d50b85ee8e8de3e16dc3d920d878fdb5727dd38ecce41d607ec0"
+    ],
+    "existing_composition_sufficient": false,
+    "expected_composition_role": "MISSING_PROPERTY_BRIDGE",
+    "hypothesis_id": "MEH23-01",
+    "predicted_downstream_phenotype": "DSP23-08",
+    "required_properties": 2048,
+    "required_reaction_affordances": [
+      "COMPOSITE_AND_ELEMENT",
+      "COMPOSITE_AND_COMPOSITE"
+    ],
+    "required_role": "ACTIVE_REACTION_SET_COMPACTION",
+    "required_transformation": "GENERAL_EXECUTABLE_PROPERTY_TRANSFORMATION"
+  },
+  {
+    "epoch": 14,
+    "evidence": [
+      "e60e7f44cba6108d2ed20ff3b8d1c3333a011c56461fed80a4a9f0700080ad5a"
+    ],
+    "existing_composition_sufficient": false,
+    "expected_composition_role": "MISSING_PROPERTY_BRIDGE",
+    "hypothesis_id": "MEH23-02",
+    "predicted_downstream_phenotype": "DSP23-14",
+    "required_properties": 4096,
+    "required_reaction_affordances": [
+      "COMPOSITE_AND_ELEMENT",
+      "COMPOSITE_AND_COMPOSITE"
+    ],
+    "required_role": "UNMODELLED_PROPERTY_MEDIATION",
+    "required_transformation": "GENERAL_EXECUTABLE_PROPERTY_TRANSFORMATION"
+  }
+]

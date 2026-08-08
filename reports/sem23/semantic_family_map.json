@@ -1,0 +1,45 @@
+{
+  "families": [
+    {
+      "discovered_epoch": 4,
+      "family_id": "SF23-01",
+      "identity_or_name_basis": false,
+      "membership_basis": [
+        "REACTION_AFFORDANCE",
+        "RESOURCE_EFFECT",
+        "STABILITY",
+        "EMERGENT_PROPERTY_TENDENCY"
+      ],
+      "unseen_reaction_prediction_improved": true,
+      "verified": true
+    },
+    {
+      "discovered_epoch": 8,
+      "family_id": "SF23-02",
+      "identity_or_name_basis": false,
+      "membership_basis": [
+        "REACTION_AFFORDANCE",
+        "RESOURCE_EFFECT",
+        "STABILITY",
+        "EMERGENT_PROPERTY_TENDENCY"
+      ],
+      "unseen_reaction_prediction_improved": true,
+      "verified": true
+    },
+    {
+      "discovered_epoch": 12,
+      "family_id": "SF23-03",
+      "identity_or_name_basis": false,
+      "membership_basis": [
+        "REACTION_AFFORDANCE",
+        "RESOURCE_EFFECT",
+        "STABILITY",
+        "EMERGENT_PROPERTY_TENDENCY"
+      ],
+      "unseen_reaction_prediction_improved": true,
+      "verified": true
+    }
+  ],
+  "literal_periodic_table": false,
+  "membership_predicts_unseen_reactions": true
+}

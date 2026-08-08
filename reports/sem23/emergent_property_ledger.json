@@ -1,0 +1,85 @@
+{
+  "composites": [
+    {
+      "causally_verified": true,
+      "composite_id": "GC23-01-5c83c06cb991",
+      "emergent_property_mask": 352
+    },
+    {
+      "causally_verified": true,
+      "composite_id": "GC23-02-183a0d8807de",
+      "emergent_property_mask": 352
+    },
+    {
+      "causally_verified": true,
+      "composite_id": "GC23-03-33d694ae07fb",
+      "emergent_property_mask": 96
+    },
+    {
+      "causally_verified": true,
+      "composite_id": "GC23-04-2d324d3e9156",
+      "emergent_property_mask": 5472
+    },
+    {
+      "causally_verified": true,
+      "composite_id": "GC23-05-ccd9026c598b",
+      "emergent_property_mask": 2016
+    },
+    {
+      "causally_verified": true,
+      "composite_id": "GC23-06-51cb7de2ba79",
+      "emergent_property_mask": 5856
+    },
+    {
+      "causally_verified": true,
+      "composite_id": "GC23-07-ed7ab6b3073f",
+      "emergent_property_mask": 2016
+    },
+    {
+      "causally_verified": true,
+      "composite_id": "GC23-08-5dd7e0ac9408",
+      "emergent_property_mask": 4064
+    },
+    {
+      "causally_verified": true,
+      "composite_id": "GC23-09-db38af64504c",
+      "emergent_property_mask": 1760
+    },
+    {
+      "causally_verified": true,
+      "composite_id": "GC23-10-1a4cd9a3ede9",
+      "emergent_property_mask": 2016
+    },
+    {
+      "causally_verified": true,
+      "composite_id": "GC23-11-e8d3fd64dee7",
+      "emergent_property_mask": 2016
+    },
+    {
+      "causally_verified": true,
+      "composite_id": "GC23-12-f731543d883e",
+      "emergent_property_mask": 1760
+    },
+    {
+      "causally_verified": true,
+      "composite_id": "GC23-13-c339beb7bda8",
+      "emergent_property_mask": 2016
+    },
+    {
+      "causally_verified": true,
+      "composite_id": "GC23-14-e60e7f44cba6",
+      "emergent_property_mask": 6112
+    },
+    {
+      "causally_verified": true,
+      "composite_id": "GC23-15-cabd3783c709",
+      "emergent_property_mask": 1760
+    },
+    {
+      "causally_verified": true,
+      "composite_id": "GC23-16-b3dfbda18b8c",
+      "emergent_property_mask": 2016
+    }
+  ],
+  "naive_independent_execution_reproduces_effect": false
+}

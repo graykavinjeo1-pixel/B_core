@@ -1,0 +1,22 @@
+{
+  "composite_score": null,
+  "metric": "implementations_per_verified_composite",
+  "raw_sequence": [
+    2.0,
+    2.0,
+    2.0,
+    2.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+  ]
+}

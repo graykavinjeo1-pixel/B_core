@@ -1,0 +1,15 @@
+{
+  "fields": [
+    "reactants",
+    "multiplicity",
+    "topology",
+    "ordering",
+    "relative_influence",
+    "initial_state",
+    "environment",
+    "resource_conditions",
+    "activation_conditions",
+    "intermediate_representations"
+  ],
+  "only_causal_dimensions_retained": true
+}

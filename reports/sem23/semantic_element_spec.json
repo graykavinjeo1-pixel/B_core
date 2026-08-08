@@ -1,0 +1,21 @@
+{
+  "decomposable_to_semantic_primitives": true,
+  "fields": [
+    "identity",
+    "required_roles",
+    "produced_roles",
+    "relations",
+    "transformations",
+    "required_invariants",
+    "preserved_invariants",
+    "effects",
+    "resource_traits",
+    "applicability",
+    "reaction_affordances",
+    "incompatibilities",
+    "state_variables",
+    "uncertainty",
+    "provenance"
+  ],
+  "opaque_arbitrary_elements_allowed": false
+}

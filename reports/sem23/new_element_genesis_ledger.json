@@ -1,0 +1,38 @@
+{
+  "causality_pass": true,
+  "elements": [
+    {
+      "counterfactual_behavior_verified": true,
+      "created_epoch": 8,
+      "element_id": "E23-01",
+      "executable_transformation": true,
+      "fresh_reuse_epochs": [
+        9,
+        12,
+        13,
+        15
+      ],
+      "general_semantic_role": true,
+      "property_mask": 2048,
+      "resource_behavior_measured": true,
+      "source_hypothesis": "MEH23-01",
+      "verified": true
+    },
+    {
+      "counterfactual_behavior_verified": true,
+      "created_epoch": 14,
+      "element_id": "E23-02",
+      "executable_transformation": true,
+      "fresh_reuse_epochs": [
+        15,
+        16
+      ],
+      "general_semantic_role": true,
+      "property_mask": 4096,
+      "resource_behavior_measured": true,
+      "source_hypothesis": "MEH23-02",
+      "verified": true
+    }
+  ],
+  "one_off_helpers": 0
+}

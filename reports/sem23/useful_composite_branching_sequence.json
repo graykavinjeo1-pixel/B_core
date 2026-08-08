@@ -1,0 +1,22 @@
+{
+  "composite_score": null,
+  "metric": "useful_verified_descendants_per_composite",
+  "raw_sequence": [
+    2,
+    2,
+    2,
+    3,
+    2,
+    2,
+    3,
+    2,
+    3,
+    2,
+    3,
+    2,
+    3,
+    2,
+    2,
+    1
+  ]
+}

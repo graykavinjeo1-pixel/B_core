@@ -1,0 +1,13 @@
+{
+  "fields": [
+    "capability_traits",
+    "transformation_traits",
+    "applicability_traits",
+    "resource_traits",
+    "stability_traits",
+    "reaction_affordances",
+    "conflicts",
+    "emergent_traits"
+  ],
+  "sparse_prediction_index_not_full_semantics": true
+}

@@ -1,0 +1,16 @@
+{
+  "fields": [
+    "required_capabilities",
+    "desired_frontier_effect",
+    "desired_runtime_effect",
+    "desired_memory_effect",
+    "desired_working_set",
+    "required_invariants",
+    "forbidden_effects",
+    "applicability_target",
+    "stability_requirements",
+    "acceptable_resource_envelope"
+  ],
+  "multi_objective_vector_preserved": true,
+  "scalar_objective": null
+}

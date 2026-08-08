@@ -1,0 +1,9 @@
+{
+  "composite_score_used": false,
+  "events": 0,
+  "failed_predictions_included": true,
+  "opaque_composite_hiding": false,
+  "passed": true,
+  "reaction_space_manipulation": false,
+  "useful_descendant_requires_mechanical_verification": true
+}

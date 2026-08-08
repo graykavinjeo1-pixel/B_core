@@ -1,0 +1,106 @@
+{
+  "arms": [
+    "A_SEM22_REACTIVE_COMPOSITION",
+    "B_COMPOSITE_CLOSURE_ONLY",
+    "C_CLOSURE_PLUS_FORWARD_PROPERTY_PREDICTION",
+    "D_FULL_RECURSIVE_GENERATIVE_CHEMISTRY"
+  ],
+  "branch": "codex/sem23-generative-chemistry",
+  "campaign_id": "SEM23-RECURSIVE-GENERATIVE-SEMANTIC-CHEMISTRY-0001",
+  "epoch_count_extended_after_observation": false,
+  "exact_reactions_predefined": false,
+  "fixed_resource_envelope": {
+    "cpu_threads_per_probe": 1,
+    "executable_mode": "RELEASE",
+    "gpu_policy": "DISABLED",
+    "network_policy": "DISABLED",
+    "peak_rss_limit_bytes": 134217728,
+    "wall_time_limit_ns": 600000000,
+    "work_unit_limit": 6000000
+  },
+  "generative_reaction_frontier_epochs": 16,
+  "growth_labels_visible_to_improvement_policy": false,
+  "predecessor_commit": "da79989fa6bf6ddf55057dfc8c1eca8d487461c4",
+  "unopened_instance_commitments": [
+    {
+      "epoch": 1,
+      "sealed_instance_seed_commitment": "eeb466e68cbae4f9b81c196f1120852d93e33b139cf61037658e03a1ba07b873",
+      "seed_visible_to_synthesis_policy": false
+    },
+    {
+      "epoch": 2,
+      "sealed_instance_seed_commitment": "7666395cc8886141a406bf2ec4a09777ba8199887e5924983c70c1d5b889714d",
+      "seed_visible_to_synthesis_policy": false
+    },
+    {
+      "epoch": 3,
+      "sealed_instance_seed_commitment": "41f2096c8371abd1aabf6b7258558ddc440bff8b608bdc30281f6bfd99d7a85f",
+      "seed_visible_to_synthesis_policy": false
+    },
+    {
+      "epoch": 4,
+      "sealed_instance_seed_commitment": "7a0f8bc04742ee79453dee27412583f2bbb4676d33c599a4496ae7284a40b21c",
+      "seed_visible_to_synthesis_policy": false
+    },
+    {
+      "epoch": 5,
+      "sealed_instance_seed_commitment": "a4ccead74fd4f3151aed95ad0feb2164d91b28a1ce36801e78ee8d867db01cd4",
+      "seed_visible_to_synthesis_policy": false
+    },
+    {
+      "epoch": 6,
+      "sealed_instance_seed_commitment": "49e33dc2597c71e82a4e9563eba1046405989f3511a431d7d13cf3135b791e3a",
+      "seed_visible_to_synthesis_policy": false
+    },
+    {
+      "epoch": 7,
+      "sealed_instance_seed_commitment": "cb28d6c7fbea8e5e662fddec79203b6df03f6830bb736e316e5e12e9a360ed7d",
+      "seed_visible_to_synthesis_policy": false
+    },
+    {
+      "epoch": 8,
+      "sealed_instance_seed_commitment": "bb25911d31567d99d3b4f1073b4e9db3729db84feccbebcb0b6005512b71e49b",
+      "seed_visible_to_synthesis_policy": false
+    },
+    {
+      "epoch": 9,
+      "sealed_instance_seed_commitment": "a33f510a9d59c14548766a82ac2f5fc4bcbfdb9eaeebf9e20f0643536cb8405e",
+      "seed_visible_to_synthesis_policy": false
+    },
+    {
+      "epoch": 10,
+      "sealed_instance_seed_commitment": "27f2147f6b6502482109258a07e6921e16f942a2d0b394a35d73ce066b30622d",
+      "seed_visible_to_synthesis_policy": false
+    },
+    {
+      "epoch": 11,
+      "sealed_instance_seed_commitment": "70d7c26ee51e4b6facffe1a0b5bfd7287a240b05f72e4b9d888e3deb017c1835",
+      "seed_visible_to_synthesis_policy": false
+    },
+    {
+      "epoch": 12,
+      "sealed_instance_seed_commitment": "3fcec3531ee84b9bdc300b2af821bc918da4e73eb7f55ee85003d0bb1c824eb1",
+      "seed_visible_to_synthesis_policy": false
+    },
+    {
+      "epoch": 13,
+      "sealed_instance_seed_commitment": "4f5d1b83dae96d085f6dea550261985d3c2fa16a5eb6fe317bc1c2da0f40cf41",
+      "seed_visible_to_synthesis_policy": false
+    },
+    {
+      "epoch": 14,
+      "sealed_instance_seed_commitment": "e59960a663eb41185d9a2bdca8b32b04715d39964f8d74dd411e7dfbf53f8a9d",
+      "seed_visible_to_synthesis_policy": false
+    },
+    {
+      "epoch": 15,
+      "sealed_instance_seed_commitment": "81674506db7ccac34f35a298a8fd6df3c1a4e4e98d67eef85a7329307fc945d7",
+      "seed_visible_to_synthesis_policy": false
+    },
+    {
+      "epoch": 16,
+      "sealed_instance_seed_commitment": "1e7f1c7c64f1d48ed8fb513696a1ee762d8c2ed8c8fb58a26f6671b85d1fe637",
+      "seed_visible_to_synthesis_policy": false
+    }
+  ]
+}

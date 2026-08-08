@@ -1,0 +1,8 @@
+{
+  "core_depends_on_gpu_runtime": false,
+  "core_depends_on_language_layer": false,
+  "core_depends_on_research_artifacts": false,
+  "mandatory_vram_bytes": 0,
+  "network_dependency": false,
+  "passed": true
+}

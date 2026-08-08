@@ -1,0 +1,10 @@
+{
+  "causal_events": 11,
+  "forms": [
+    "PRIMARY_AUXILIARY",
+    "RESOURCE_RATIO",
+    "CONDITIONAL_PARTICIPATION"
+  ],
+  "meaningless_continuous_coefficients": false,
+  "used": true
+}

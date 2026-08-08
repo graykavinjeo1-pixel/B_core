@@ -1,0 +1,25 @@
+{
+  "dimensions": [
+    "CAPABILITY",
+    "APPLICABILITY",
+    "SEMANTIC_EFFECT",
+    "CORRECTNESS",
+    "REPRESENTATION",
+    "MEMORY",
+    "ACTIVE_WORKING_SET",
+    "DATA_MOVEMENT",
+    "LATENCY",
+    "ACTIVATION",
+    "STABILITY",
+    "REACTION_AFFORDANCE",
+    "FUTURE_GENESIS",
+    "FAILURE_RISK"
+  ],
+  "property_calculus": [
+    "PRESERVED",
+    "AMPLIFIED",
+    "REDUCED",
+    "SUPPRESSED",
+    "EMERGENT"
+  ]
+}

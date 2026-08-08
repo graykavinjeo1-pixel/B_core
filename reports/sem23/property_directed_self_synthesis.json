@@ -1,0 +1,22 @@
+{
+  "events": [
+    {
+      "desired_self_phenotype": {
+        "acceptable_core_growth": true,
+        "broader_frontier": true,
+        "lower_active_semantic_bytes": true,
+        "preserved_correctness": true
+      },
+      "event_id": "SELF23-01",
+      "growth_ledger_deficit": "ACTIVE_SEMANTIC_WORKING_SET_AND_REACTION_STATE_GROWTH",
+      "inverse_synthesis_used": true,
+      "observed_capability_direction": "INCREASE",
+      "observed_memory_direction": "DECREASE",
+      "predicted_capability_direction": "INCREASE",
+      "predicted_memory_direction": "DECREASE",
+      "self_architecture_composite": "GC23-13-c339beb7bda8",
+      "successful": true
+    }
+  ],
+  "successful": 1
+}

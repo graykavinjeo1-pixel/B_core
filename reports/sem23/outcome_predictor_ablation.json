@@ -1,0 +1,9 @@
+{
+  "full_discovery_cost_units": 16,
+  "full_failed_implementations": 4,
+  "full_implementations": 20,
+  "passed": true,
+  "prediction_free_discovery_cost_units": 52,
+  "prediction_free_failed_implementations": 48,
+  "prediction_free_implementations": 64
+}

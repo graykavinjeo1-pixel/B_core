@@ -1,0 +1,37 @@
+{
+  "depth_forced": false,
+  "layers": [
+    {
+      "kind": "PRIMITIVE_SEMANTIC_EFFECTS",
+      "level": "L0"
+    },
+    {
+      "kind": "SEMANTIC_ELEMENTS",
+      "level": "L1"
+    },
+    {
+      "kind": "ABSTRACTIONS_CAPABILITIES",
+      "level": "L2"
+    },
+    {
+      "kind": "COMPOSITE_CAPABILITIES",
+      "level": "L3"
+    },
+    {
+      "kind": "RECURSIVE_COMPOSITES",
+      "level": "L4"
+    },
+    {
+      "kind": "COMPOSITION_MOTIFS_REACTION_LAWS",
+      "level": "L5"
+    },
+    {
+      "kind": "REACTION_SCHEMAS_PROPERTY_FAMILIES",
+      "level": "L6"
+    },
+    {
+      "kind": "PROPERTY_DIRECTED_SYNTHESIS",
+      "level": "L7"
+    }
+  ]
+}

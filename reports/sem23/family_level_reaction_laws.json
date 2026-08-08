@@ -1,0 +1,20 @@
+[
+  {
+    "cross_domain_transfer_verified": true,
+    "family_law_id": "FL23-01",
+    "predicted_property": 512,
+    "source_families": [
+      "SF23-02",
+      "SF23-01"
+    ]
+  },
+  {
+    "cross_domain_transfer_verified": true,
+    "family_law_id": "FL23-02",
+    "predicted_property": 512,
+    "source_families": [
+      "SF23-03",
+      "SF23-02"
+    ]
+  }
+]

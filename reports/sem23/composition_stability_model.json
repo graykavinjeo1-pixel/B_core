@@ -1,0 +1,21 @@
+{
+  "derived_from_invariants_and_effects": true,
+  "envelope_fields": [
+    "valid_conditions",
+    "invalid_conditions",
+    "required_invariants",
+    "resource_limits",
+    "ordering_constraints",
+    "tolerated_perturbations",
+    "known_failure_boundaries"
+  ],
+  "states": [
+    "STABLE",
+    "CONDITIONALLY_STABLE",
+    "CONTEXT_DEPENDENT",
+    "RESOURCE_UNSTABLE",
+    "SEMANTICALLY_CONFLICTING",
+    "SELF_CANCELLING",
+    "FRAGILE_UNDER_PERTURBATION"
+  ]
+}

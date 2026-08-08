@@ -1,0 +1,25 @@
+{
+  "abstention_supported": true,
+  "abstention_value": "INSUFFICIENT_REACTION_MODEL",
+  "inputs": [
+    "REACTANTS",
+    "PROPERTY_SIGNATURES",
+    "TOPOLOGY",
+    "ROLE_BINDINGS",
+    "ENVIRONMENT",
+    "RESOURCE_CONDITIONS",
+    "REACTION_LAWS",
+    "NEGATIVE_KNOWLEDGE",
+    "STABILITY"
+  ],
+  "outputs": [
+    "PROPERTY_VECTOR",
+    "EMERGENT_PROPERTIES",
+    "CONFLICTS",
+    "STABILITY",
+    "RESOURCE_BEHAVIOR",
+    "FUTURE_AFFORDANCES",
+    "UNCERTAINTY"
+  ],
+  "present": true
+}
