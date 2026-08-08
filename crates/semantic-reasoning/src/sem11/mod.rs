@@ -1949,8 +1949,15 @@ fn ensure_build_pass(receipt: &BuildReceipt) -> Result<(), String> {
         Ok(())
     } else {
         Err(format!(
-            "CANONICAL_BUILD_GATE_FAILURE:{}",
-            receipt.candidate_id
+            "CANONICAL_BUILD_GATE_FAILURE:{}:non_format_token_changes={}:rustfmt={}:clippy={}:tests={}:debug={}:release={}:sandbox={}",
+            receipt.candidate_id,
+            receipt.non_format_token_changes,
+            receipt.rustfmt_check_pass,
+            receipt.strict_clippy_pass,
+            receipt.tests_pass,
+            receipt.debug_build_pass,
+            receipt.release_build_pass,
+            receipt.sandbox_contained,
         ))
     }
 }
