@@ -1,0 +1,9 @@
+{
+  "base_meta_deterministic_cost": 33.5,
+  "base_meta_wall_time_ns": 4943400.0,
+  "combined_meta_cost_gain": 0.16417910447761194,
+  "final_meta_deterministic_cost": 28.0,
+  "final_meta_wall_time_ns": 4762900.0,
+  "fixed_runtime_overhead_classified_separately": true,
+  "meta_wall_time_gain": 0.03651333090585427
+}

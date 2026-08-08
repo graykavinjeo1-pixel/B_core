@@ -1,0 +1,77 @@
+{
+  "binary_sha256": "c546b87444f48762401d741ae58abc9b97a0015cfe2f8ea4a89c1c3b236bdc0d",
+  "build": {
+    "commands": [
+      {
+        "command": "cargo fmt --all",
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success": true
+      },
+      {
+        "command": "cargo fmt --all -- --check",
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success": true
+      },
+      {
+        "command": "cargo clippy --workspace --all-targets --offline -- -D warnings",
+        "exit_code": 0,
+        "stderr_sha256": "89b29693be285ef829ea0e6b1cbc2331c627330fefaf6b0ccf3eda6cd8f14aaa",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success": true
+      },
+      {
+        "command": "cargo test --workspace --offline",
+        "exit_code": 0,
+        "stderr_sha256": "0d8ca580140345ce30f433f39164ffaecb1e8428b066f59145f9ba53f1ce3e3b",
+        "stdout_sha256": "b4e02674edf3c07e343265c443bf884c102d940f204a61dfd2f059bf3564ce23",
+        "success": true
+      },
+      {
+        "command": "cargo build --workspace --offline",
+        "exit_code": 0,
+        "stderr_sha256": "c9742c4325750b69cb89082994d5321d55f15a945d0af87c201e63691dfa692e",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success": true
+      },
+      {
+        "command": "cargo build --workspace --release --offline",
+        "exit_code": 0,
+        "stderr_sha256": "bf6f81db35b9a7857e1c0339d00186a94adb2a5aa561c5f51ce76bcacfd849d0",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success": true
+      }
+    ],
+    "debug_build_pass": true,
+    "engine_id": "M2-ABC-COMPOSED",
+    "mode": {
+      "causal_probe_priority": true,
+      "compatibility_precheck": true,
+      "role_mapping_reuse": true
+    },
+    "release_binary_bytes": 163328,
+    "release_binary_sha256": "c546b87444f48762401d741ae58abc9b97a0015cfe2f8ea4a89c1c3b236bdc0d",
+    "release_build_pass": true,
+    "rustfmt_pass": true,
+    "sandbox_contained": true,
+    "source_bytes": 5363,
+    "source_sha256": "69944a68af9bd4463ce2e741d2197c7c3b4e6767f9d4395410d1f1c76e00a563",
+    "strict_clippy_pass": true,
+    "tests_pass": true
+  },
+  "candidate_id": "M2-ABC-COMPOSED",
+  "common_parent": "M2",
+  "compatibility_sha256": "aef9568d117cc1a9d3f58c0a91b2578e223e13e835875d65eb56c9620a280f39",
+  "independent_components": [
+    "M2-A1",
+    "M2-B1",
+    "M2-C1"
+  ],
+  "production_promoted": false,
+  "serial_M3_claim": false,
+  "source_sha256": "69944a68af9bd4463ce2e741d2197c7c3b4e6767f9d4395410d1f1c76e00a563",
+  "verified": true
+}

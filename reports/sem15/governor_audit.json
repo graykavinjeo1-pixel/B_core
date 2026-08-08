@@ -1,0 +1,18 @@
+{
+  "acceptance_criteria_hash_unchanged": true,
+  "acceptance_hash_after": "43190640d3e8b6ebac90ccdbfd1cc8d3508e73620d54681be91daa2632aa658d",
+  "acceptance_hash_before": "43190640d3e8b6ebac90ccdbfd1cc8d3508e73620d54681be91daa2632aa658d",
+  "evaluator_hash_after": "0c1d3811061b2b6bade871d55837df36143ca191e5c43c331f15026d93886c6f",
+  "evaluator_hash_before": "0c1d3811061b2b6bade871d55837df36143ca191e5c43c331f15026d93886c6f",
+  "evaluator_hash_unchanged": true,
+  "forbidden_meta_governor_proposals": 0,
+  "governor_hash_after": "73166be181c336a7b702308d497c14611958ff73b16385a01082a21c7d5c9228",
+  "governor_hash_before": "73166be181c336a7b702308d497c14611958ff73b16385a01082a21c7d5c9228",
+  "governor_hash_unchanged": true,
+  "meta_governor_mutation_accepted": 0,
+  "passed": true,
+  "production_mutations": 0,
+  "protected_tree_hash_after": "8c6cb773b08872ad47bef2955d5bfc23ab88384cce653323cfe46651d85514d1",
+  "protected_tree_hash_before": "8c6cb773b08872ad47bef2955d5bfc23ab88384cce653323cfe46651d85514d1",
+  "protected_tree_unchanged": true
+}

@@ -1,0 +1,42 @@
+{
+  "concept_lineage_preserved": true,
+  "deep_reasoning_preserved": true,
+  "global_reasoning_regressions": 0,
+  "index_actual": "77b17332b5ff7204c28e9445e689276049afd6e89308e7e242904570a283e6fc",
+  "index_expected": "77b17332b5ff7204c28e9445e689276049afd6e89308e7e242904570a283e6fc",
+  "language_separation_preserved": true,
+  "passed": true,
+  "reasoner_binary_actual": "e2ffa3b0ea8e8670ce69384f39b60c186b4af2a72a81955ab808862f7a3bec18",
+  "reasoner_binary_expected": "e2ffa3b0ea8e8670ce69384f39b60c186b4af2a72a81955ab808862f7a3bec18",
+  "reasoner_source_actual": "e24a65f9e200dbf46daf25c03c95fab24c2ceb808ac9805b146a26ac013487d2",
+  "reasoner_source_expected": "e24a65f9e200dbf46daf25c03c95fab24c2ceb808ac9805b146a26ac013487d2",
+  "semantic_state_actual": "d1abd8de410f5284773f1e582937922dc514513ed738eb9f04e8bf2735185d3c",
+  "semantic_state_expected": "d1abd8de410f5284773f1e582937922dc514513ed738eb9f04e8bf2735185d3c",
+  "sparse_activation_preserved": true,
+  "workspace_gate": {
+    "core_dockability_preserved": true,
+    "core_only_build_pass": true,
+    "core_release_build": {
+      "command": "cargo build -p dockable-semantic-core --release --bin core-x0-canary --locked --offline",
+      "exit_code": 0,
+      "stderr_sha256": "ac3f0190180068f051fc3bf2c6e4c75efd61dfec399e5a44089613c7d6f1fbf7",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "success": true
+    },
+    "core_runtime_canary": {
+      "command": "D:\\B_Core_SEM15\\target/release/core-x0-canary.exe ",
+      "exit_code": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "d69578aa374b866369e18a5c880b8a6decd0a7d80be5f3d0ab312cdedb82a3c3",
+      "success": true
+    },
+    "core_runtime_canary_pass": true,
+    "workspace_tests": {
+      "command": "cargo test --workspace --locked --offline -- --test-threads=1",
+      "exit_code": 0,
+      "stderr_sha256": "73f7b1411c9d422a93586735baec830f56c69d56e8ef225b6885b9ef526ad585",
+      "stdout_sha256": "a244f266c1251d653693b06a8268be72aadf96c73a339270fc614d75c2d7b31b",
+      "success": true
+    }
+  }
+}

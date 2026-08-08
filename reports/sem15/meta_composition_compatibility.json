@@ -1,0 +1,21 @@
+{
+  "blind_concatenation": false,
+  "candidate_hashes": [
+    "f5d0e68312724d06b0dc9abe5eb235bfe2fe8c9324d7b98f8d0ccb8f5e8005ac",
+    "daad92ea635b412f4dec3240e6d2e88d0dfde87546363a1b6acde263d6a3112f",
+    "a217357808bec80aec265faa690bd5f149099225b1cd17db815d2f04eb228aa2"
+  ],
+  "classification": "COMPATIBLE",
+  "critical_unknowns": 0,
+  "interactions": {
+    "assumption_interactions": "all satisfied under frozen signatures",
+    "invalidation_events": 0,
+    "ordering_dependencies": "A diagnosis precedes B selection; C mapping follows selection",
+    "resource_assumptions": "bounded Top-3 and finite cache",
+    "shared_candidate_ranking": "B filters compatibility; A does not reorder mechanisms",
+    "shared_evidence_cache": "C keyspace is role signatures and disjoint from A probes",
+    "shared_state": "C role-map cache only; A and B stateless"
+  },
+  "meta_composition_attempted": true,
+  "passed": true
+}

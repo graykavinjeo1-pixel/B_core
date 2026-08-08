@@ -1,0 +1,39 @@
+{
+  "critical_unknowns_accepted": 0,
+  "critical_violations_accepted": 0,
+  "entries": [
+    {
+      "assumption": "DISCRIMINATING_PROBE_EXISTS",
+      "regime": "A",
+      "status": "SATISFIED"
+    },
+    {
+      "assumption": "DETERMINISTIC",
+      "regime": "A",
+      "status": "SATISFIED"
+    },
+    {
+      "assumption": "COMPATIBILITY_GUARD_SOUND",
+      "regime": "B",
+      "status": "SATISFIED"
+    },
+    {
+      "assumption": "TOP_K_BOUNDED",
+      "regime": "B",
+      "status": "SATISFIED"
+    },
+    {
+      "assumption": "ROLE_SIGNATURE_LOSSLESS",
+      "regime": "C",
+      "status": "SATISFIED"
+    },
+    {
+      "assumption": "CROSS_SIGNATURE_REUSE",
+      "disposition": "REJECT_UNSAFE_REUSE",
+      "regime": "C",
+      "status": "VIOLATED"
+    }
+  ],
+  "passed": true,
+  "selection_sha256": "9409f30d6ed4d526b51f43bee07cfaa28cba0836f749b6c0d657851c08a29756"
+}

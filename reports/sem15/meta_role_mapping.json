@@ -1,0 +1,37 @@
+{
+  "complete_meta_causal_lineage": true,
+  "mappings": [
+    {
+      "expected_effect": "lower causal discrimination cost",
+      "meta_engine_role": "highest-information causal probe boundary",
+      "meta_target_assumptions": "one probe has strictly highest information",
+      "meta_transformation": "probe only the discriminating cause first",
+      "regime": "A",
+      "source_assumptions": "scope predicate discriminates causes",
+      "source_role": "SCOPED_CONDITION",
+      "source_transformation": "SCOPED_RELATION"
+    },
+    {
+      "expected_effect": "fewer candidate evaluations",
+      "meta_engine_role": "composition compatibility precheck",
+      "meta_target_assumptions": "compatibility signature is frozen and causal",
+      "meta_transformation": "filter interaction-incompatible pairs before evaluation",
+      "regime": "B",
+      "source_assumptions": "guard is sound",
+      "source_role": "GUARD_CONDITION",
+      "source_transformation": "GUARDED_TRAVERSAL"
+    },
+    {
+      "expected_effect": "fewer role-map reconstructions",
+      "meta_engine_role": "role-mapping equivalence signature",
+      "meta_target_assumptions": "signature equality implies role-contract equality",
+      "meta_transformation": "reuse existing role mapping only for the same signature",
+      "regime": "C",
+      "source_assumptions": "mapping is lossless inside equivalence class",
+      "source_role": "REVERSIBLE_STATE_KEY",
+      "source_transformation": "REVERSIBLE_STATE_TRANSFORM"
+    }
+  ],
+  "passed": true,
+  "selection_sha256": "9409f30d6ed4d526b51f43bee07cfaa28cba0836f749b6c0d657851c08a29756"
+}

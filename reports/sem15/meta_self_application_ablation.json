@@ -1,0 +1,19 @@
+{
+  "A": {
+    "benefit_disappears_when_disabled": true,
+    "disabled_condition": "M2",
+    "enabled_condition": "M2-A1"
+  },
+  "B": {
+    "benefit_disappears_when_disabled": true,
+    "disabled_condition": "M2",
+    "enabled_condition": "M2-B1"
+  },
+  "C": {
+    "benefit_disappears_when_disabled": true,
+    "disabled_condition": "M2",
+    "enabled_condition": "M2-C1"
+  },
+  "meta_self_application_ablation_all_pass": true,
+  "passed": true
+}

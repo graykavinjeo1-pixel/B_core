@@ -1,0 +1,71 @@
+{
+  "distinct_meta_source_domains": 3,
+  "full_catalog_scans": 0,
+  "human_concept_id_assignment": false,
+  "max_meta_source_concepts_composed": 3,
+  "passed": true,
+  "per_regime": [
+    {
+      "observed_feature": "MULTIPLE_PLAUSIBLE_CAUSES",
+      "ranked": [
+        "M0007:SCOPED_RELATION",
+        "M0003:GUARDED_TRAVERSAL",
+        "M0001:STATE_EVOLUTION"
+      ],
+      "regime_id": "META_REGIME_A",
+      "selected": [
+        {
+          "mechanism_id": "M0007",
+          "source_concepts": [
+            "C000011"
+          ],
+          "source_domain": "EXTERNAL_DEFINITION",
+          "transform": "SCOPED_RELATION"
+        }
+      ]
+    },
+    {
+      "observed_feature": "COMPETING_INTERACTION_ASSUMPTIONS",
+      "ranked": [
+        "M0003:GUARDED_TRAVERSAL",
+        "M0005:STAGE_COMPOSITION",
+        "M0006:QUOTIENT_PARTITION"
+      ],
+      "regime_id": "META_REGIME_B",
+      "selected": [
+        {
+          "mechanism_id": "M0003",
+          "source_concepts": [
+            "C000008"
+          ],
+          "source_domain": "DATA_TRANSFORM",
+          "transform": "GUARDED_TRAVERSAL"
+        }
+      ]
+    },
+    {
+      "observed_feature": "REPEATED_EQUIVALENT_ROLE_MAPPING",
+      "ranked": [
+        "M0008:REVERSIBLE_STATE_TRANSFORM",
+        "M0001:STATE_EVOLUTION",
+        "M0004:STATEFUL_REDUCTION"
+      ],
+      "regime_id": "META_REGIME_C",
+      "selected": [
+        {
+          "mechanism_id": "M0008",
+          "source_concepts": [
+            "C000006",
+            "C000010"
+          ],
+          "source_domain": "MATHEMATICS",
+          "transform": "REVERSIBLE_STATE_TRANSFORM"
+        }
+      ]
+    }
+  ],
+  "retrieval_mode": "BOUNDED_ROUTING_TOP_K",
+  "smallest_causally_sufficient_per_branch": true,
+  "top_k": 3,
+  "weakness_ledger_sha256": "f4444190568b9cd4e9c271814c0009c767c7e000baf49b2ac6c852f45be41bbc"
+}

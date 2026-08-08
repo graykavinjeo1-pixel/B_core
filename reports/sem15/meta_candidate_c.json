@@ -1,0 +1,105 @@
+{
+  "binary_sha256": "ae1e4d28da7955135fc4479adf280ae8116cf9683b89bb5052cfd6f993d16e79",
+  "build": {
+    "commands": [
+      {
+        "command": "cargo fmt --all",
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success": true
+      },
+      {
+        "command": "cargo fmt --all -- --check",
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success": true
+      },
+      {
+        "command": "cargo clippy --workspace --all-targets --offline -- -D warnings",
+        "exit_code": 0,
+        "stderr_sha256": "3c07cbddc9277867be7f1f98e8dcf133ba1d5cbc7c50477b3d03f1df75280fee",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success": true
+      },
+      {
+        "command": "cargo test --workspace --offline",
+        "exit_code": 0,
+        "stderr_sha256": "3c9fbf2e88f614462a5f41f797f0d81538960b867b1831eaea7edca8de9388cc",
+        "stdout_sha256": "b4e02674edf3c07e343265c443bf884c102d940f204a61dfd2f059bf3564ce23",
+        "success": true
+      },
+      {
+        "command": "cargo build --workspace --offline",
+        "exit_code": 0,
+        "stderr_sha256": "3b0ccf6e4b2c9d8fcba815c5afe25529878ddf1a08dfbfdac327458623de7a39",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success": true
+      },
+      {
+        "command": "cargo build --workspace --release --offline",
+        "exit_code": 0,
+        "stderr_sha256": "1a9ee2ce04c2067413c7249b0bf60be659d7b6767757a656aadb139fcd523bfa",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success": true
+      }
+    ],
+    "debug_build_pass": true,
+    "engine_id": "M2-C1",
+    "mode": {
+      "causal_probe_priority": false,
+      "compatibility_precheck": false,
+      "role_mapping_reuse": true
+    },
+    "release_binary_bytes": 163328,
+    "release_binary_sha256": "ae1e4d28da7955135fc4479adf280ae8116cf9683b89bb5052cfd6f993d16e79",
+    "release_build_pass": true,
+    "rustfmt_pass": true,
+    "sandbox_contained": true,
+    "source_bytes": 5365,
+    "source_sha256": "51adf9d737ed7e1d25b513f1d3f54cf891162832954579888666547d09647c12",
+    "strict_clippy_pass": true,
+    "tests_pass": true
+  },
+  "candidate_id": "M2-C1",
+  "change_ir": "ROLE_MAPPING_REUSE=true",
+  "common_parent": "M2",
+  "gate": {
+    "deterministic_cost_gain": 0.32142857142857145,
+    "passed": true,
+    "primary_meta_gain": 0.9545454545454546,
+    "primary_metric": "ROLE_MAPPINGS",
+    "quality_never_drops": true
+  },
+  "independent_branch": true,
+  "meta_self_mechanism_ir": {
+    "causal_probe_priority": false,
+    "compatibility_precheck": false,
+    "role_mapping_reuse": true
+  },
+  "mode": {
+    "causal_probe_priority": false,
+    "compatibility_precheck": false,
+    "role_mapping_reuse": true
+  },
+  "production_promoted": false,
+  "serial_generation_claim": false,
+  "source_sha256": "51adf9d737ed7e1d25b513f1d3f54cf891162832954579888666547d09647c12",
+  "verified": true,
+  "weakness_lineage": {
+    "actionable_status": "ACTIONABLE_META_WEAKNESS",
+    "causal_hypothesis": "Role mappings may be reused only inside a stable equivalence signature, avoiding reconstruction without cross-problem leakage.",
+    "confidence": 0.99,
+    "measured_behavior": {
+      "invalid_candidates": 0,
+      "role_mappings_per_actionable": 3.0
+    },
+    "measured_cost": 28.0,
+    "meta_target_component": "evidence and search reuse",
+    "meta_target_role": "equivalent role-map reuse",
+    "meta_weakness_class": "SAFE_ROLE_MAPPING_REUSE",
+    "observed_meta_component": "ROLE_MAPPING_CONSTRUCTION",
+    "regime_id": "META_REGIME_C"
+  }
+}

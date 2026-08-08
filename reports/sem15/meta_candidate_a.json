@@ -1,0 +1,105 @@
+{
+  "binary_sha256": "e7343ab17b27f7bd2de3047e55661d723525d2eb25339f312f513441c828698b",
+  "build": {
+    "commands": [
+      {
+        "command": "cargo fmt --all",
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success": true
+      },
+      {
+        "command": "cargo fmt --all -- --check",
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success": true
+      },
+      {
+        "command": "cargo clippy --workspace --all-targets --offline -- -D warnings",
+        "exit_code": 0,
+        "stderr_sha256": "113434e1da0c8f63252895f3412e17af87b1c2150f37f3880f24bbdd0d368e14",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success": true
+      },
+      {
+        "command": "cargo test --workspace --offline",
+        "exit_code": 0,
+        "stderr_sha256": "646401ba847f8b2cbae01bc68c2c43f4e7d0d58f36b3d7b9fc9af8a03856bdb6",
+        "stdout_sha256": "b4e02674edf3c07e343265c443bf884c102d940f204a61dfd2f059bf3564ce23",
+        "success": true
+      },
+      {
+        "command": "cargo build --workspace --offline",
+        "exit_code": 0,
+        "stderr_sha256": "2094b68856104f1f826d03660e5a5d8997c96a99212caf2a429fb12ba6894bc5",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success": true
+      },
+      {
+        "command": "cargo build --workspace --release --offline",
+        "exit_code": 0,
+        "stderr_sha256": "4058d06a581c3f3d341eb49f7ae786bcc730088918e81fa68579ff287525f412",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success": true
+      }
+    ],
+    "debug_build_pass": true,
+    "engine_id": "M2-A1",
+    "mode": {
+      "causal_probe_priority": true,
+      "compatibility_precheck": false,
+      "role_mapping_reuse": false
+    },
+    "release_binary_bytes": 159232,
+    "release_binary_sha256": "e7343ab17b27f7bd2de3047e55661d723525d2eb25339f312f513441c828698b",
+    "release_build_pass": true,
+    "rustfmt_pass": true,
+    "sandbox_contained": true,
+    "source_bytes": 5365,
+    "source_sha256": "d327ede80a22c6d4220818ffb9077c9fc64af66d8d86f73d18dfa7898cbf564b",
+    "strict_clippy_pass": true,
+    "tests_pass": true
+  },
+  "candidate_id": "M2-A1",
+  "change_ir": "CAUSAL_PROBE_PRIORITY=true",
+  "common_parent": "M2",
+  "gate": {
+    "deterministic_cost_gain": 0.23076923076923078,
+    "passed": true,
+    "primary_meta_gain": 0.75,
+    "primary_metric": "CAUSAL_PROBES",
+    "quality_never_drops": true
+  },
+  "independent_branch": true,
+  "meta_self_mechanism_ir": {
+    "causal_probe_priority": true,
+    "compatibility_precheck": false,
+    "role_mapping_reuse": false
+  },
+  "mode": {
+    "causal_probe_priority": true,
+    "compatibility_precheck": false,
+    "role_mapping_reuse": false
+  },
+  "production_promoted": false,
+  "serial_generation_claim": false,
+  "source_sha256": "d327ede80a22c6d4220818ffb9077c9fc64af66d8d86f73d18dfa7898cbf564b",
+  "verified": true,
+  "weakness_lineage": {
+    "actionable_status": "ACTIONABLE_META_WEAKNESS",
+    "causal_hypothesis": "A bounded highest-information causal probe can reject false causes without exhaustive sequential probing.",
+    "confidence": 0.99,
+    "measured_behavior": {
+      "causal_probes_per_actionable": 4.0,
+      "quality": 1.0
+    },
+    "measured_cost": 39.0,
+    "meta_target_component": "weakness diagnosis",
+    "meta_target_role": "causal discriminator",
+    "meta_weakness_class": "DIAGNOSTIC_CAUSAL_AMBIGUITY",
+    "observed_meta_component": "CAUSAL_DIAGNOSIS_PROBE_SELECTION",
+    "regime_id": "META_REGIME_A"
+  }
+}

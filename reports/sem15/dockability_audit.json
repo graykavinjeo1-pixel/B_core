@@ -1,0 +1,10 @@
+{
+  "all_meta_descendants_sandbox_only": true,
+  "core_depends_on_language_layer": false,
+  "core_depends_on_research_artifacts": false,
+  "core_dockability_preserved": true,
+  "core_only_build_pass": true,
+  "core_runtime_canary_pass": true,
+  "passed": true,
+  "production_promotion_performed": false
+}

@@ -1,0 +1,9 @@
+{
+  "bounded_top_k": 3,
+  "full_catalog_scans": 0,
+  "meta_mechanism_candidates": 270,
+  "meta_peak_frontier": 4,
+  "meta_search_expansions": 363,
+  "passed": true,
+  "routing_false_negatives": 0
+}

@@ -1,0 +1,20 @@
+{
+  "A": {
+    "observed": true,
+    "predicted_dimension": "causal probes",
+    "source_mechanism": "M0007"
+  },
+  "B": {
+    "observed": true,
+    "predicted_dimension": "candidate evaluations",
+    "source_mechanism": "M0003"
+  },
+  "C": {
+    "observed": true,
+    "predicted_dimension": "role mappings",
+    "source_mechanism": "M0008"
+  },
+  "generic_optimizer_relabeling": false,
+  "meta_source_concept_causality_all_pass": true,
+  "passed": true
+}

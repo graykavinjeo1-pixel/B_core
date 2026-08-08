@@ -1,0 +1,20 @@
+{
+  "base_core_total_deployable_bytes": 183382,
+  "branch_core_bytes": [
+    {
+      "bytes": 164597,
+      "candidate": "M2-A1"
+    },
+    {
+      "bytes": 164597,
+      "candidate": "M2-B1"
+    },
+    {
+      "bytes": 168693,
+      "candidate": "M2-C1"
+    }
+  ],
+  "final_composed_core_bytes": 168691,
+  "meta_core_bloat_ratio": -0.08011146132117657,
+  "meta_gain_per_added_byte": 0.16417910447761194
+}

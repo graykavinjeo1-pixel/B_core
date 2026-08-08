@@ -1,0 +1,58 @@
+{
+  "autonomous_meta_weakness_diagnosis": true,
+  "distinct_meta_weakness_classes": 3,
+  "records": [
+    {
+      "actionable_status": "ACTIONABLE_META_WEAKNESS",
+      "causal_hypothesis": "A bounded highest-information causal probe can reject false causes without exhaustive sequential probing.",
+      "confidence": 0.99,
+      "measured_behavior": {
+        "causal_probes_per_actionable": 4.0,
+        "quality": 1.0
+      },
+      "measured_cost": 39.0,
+      "meta_target_component": "weakness diagnosis",
+      "meta_target_role": "causal discriminator",
+      "meta_weakness_class": "DIAGNOSTIC_CAUSAL_AMBIGUITY",
+      "observed_meta_component": "CAUSAL_DIAGNOSIS_PROBE_SELECTION",
+      "regime_id": "META_REGIME_A"
+    },
+    {
+      "actionable_status": "ACTIONABLE_META_WEAKNESS",
+      "causal_hypothesis": "A guarded compatibility precheck can retain the same valid plan while avoiding redundant pair evaluation.",
+      "confidence": 0.99,
+      "measured_behavior": {
+        "candidate_evaluations_per_actionable": 3.0,
+        "invalid_candidates": 0
+      },
+      "measured_cost": 40.0,
+      "meta_target_component": "mechanism selection and composition",
+      "meta_target_role": "interaction compatibility filter",
+      "meta_weakness_class": "COMPOSITION_COMPATIBILITY_SEARCH",
+      "observed_meta_component": "MECHANISM_COMPOSITION_INTERACTION_CHECK",
+      "regime_id": "META_REGIME_B"
+    },
+    {
+      "actionable_status": "ACTIONABLE_META_WEAKNESS",
+      "causal_hypothesis": "Role mappings may be reused only inside a stable equivalence signature, avoiding reconstruction without cross-problem leakage.",
+      "confidence": 0.99,
+      "measured_behavior": {
+        "invalid_candidates": 0,
+        "role_mappings_per_actionable": 3.0
+      },
+      "measured_cost": 28.0,
+      "meta_target_component": "evidence and search reuse",
+      "meta_target_role": "equivalent role-map reuse",
+      "meta_weakness_class": "SAFE_ROLE_MAPPING_REUSE",
+      "observed_meta_component": "ROLE_MAPPING_CONSTRUCTION",
+      "regime_id": "META_REGIME_C"
+    }
+  ],
+  "regime_labels_exposed_to_M2": false,
+  "target_classes_supplied_to_M2": false,
+  "valid_outcomes_allowed": [
+    "ACTIONABLE_META_WEAKNESS",
+    "NO_ACTIONABLE_META_WEAKNESS",
+    "INSUFFICIENT_META_EVIDENCE"
+  ]
+}
