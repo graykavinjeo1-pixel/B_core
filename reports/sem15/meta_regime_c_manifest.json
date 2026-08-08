@@ -1,0 +1,544 @@
+{
+  "regime_id": "META_REGIME_C",
+  "external_research_label": "EVIDENCE_SEARCH_REUSE_PRESSURE",
+  "label_exposed_to_engine": false,
+  "diagnostic": {
+    "set_id": "META_REGIME_C_DIAGNOSTIC",
+    "count": 24,
+    "seed_commitment_sha256": "f4d7ed5b002a27555c71ce4fa1f3982b0a9279827ddc677119217a73e66f9b4f",
+    "challenge_commitments": [
+      {
+        "challenge_id": "META_REGIME_C_DIAGNOSTIC-001",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "73a48722d3caaf3aa6a4ffdea80693d2f3276e961bcaf2c6f26d0e5e5032038c",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_DIAGNOSTIC-002",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "ca6452721aba2b5c812eadb783549b3c7ebd294062306b66f1a9ef9f4c7bcf50",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_DIAGNOSTIC-003",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "420beef057bb4bdc41d2778c31aff876c450829d3b54ff3aee48684156ed3a18",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_DIAGNOSTIC-004",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "1df1cd65da8233a564c52e2b15400b2c6888b98b80839582b8c2e6ae97accea1",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_DIAGNOSTIC-005",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "47d316b1e0861558b6a1b8bfba956584770de7adbbbb656e645017f3971ef5f6",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_DIAGNOSTIC-006",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "70e503d9c3d7e7ef8e2bda310c9dd8cc95a396451aa6e48312f054cad7b2911f",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_DIAGNOSTIC-007",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "5b81ad31878b72d2987701e25dd1301c137d5129c744be73c16fc35957fc4c6a",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_DIAGNOSTIC-008",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "1dbc56504f7760cfd1a9b8338b6a75faf25f83e896c6a2fcae19d69cb217045d",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_DIAGNOSTIC-009",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "db46221167a123b5719129e0fb647ab924e19f612a7a1814c8d79f9fad9c0f34",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_DIAGNOSTIC-010",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "cbab1a4876b2b61beb8a0ea83522ad18e4ad1757fdd897faa762c973a7232d5a",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_DIAGNOSTIC-011",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "2b02716c71d4c35a6fc1fb02c51b408d6b40f835b98ec1b93338ae1e1b6c41e1",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_DIAGNOSTIC-012",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "4ff5461fb95eea5a2416b55666e260f96376b5554253539f80d972ce1b00cb6e",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_DIAGNOSTIC-013",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "c7fff947597eb0a4a01af8931699f3a7071f63aa30300c7e536973c9f877d741",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_DIAGNOSTIC-014",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "3936ce14b329e520f810f5882f5b50596959b3499e92b86d6b1ae1e18c84bf02",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_DIAGNOSTIC-015",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "9369ac4e1d916e87626fe075da099857d2fcdf68372011d6137beb1b1b268ac2",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_DIAGNOSTIC-016",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "b542fdbe544d8061cb6da506183e9a346fb52f266622ad16c1695798e506ca0a",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_DIAGNOSTIC-017",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "d6fba34a5fea477ce68d2707e4189a3071d6524183a1225c1888f6761a558375",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_DIAGNOSTIC-018",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "abf045b3c05bb84432d2e2ced9ebe7f875d5b418956e83738c4bc21f62a10ae0",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_DIAGNOSTIC-019",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "f0db3ecb569ef959a67663d51539996cdaea7b77b6985b2ee67dcec7f9b16235",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_DIAGNOSTIC-020",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "66e43f4fb0e85302cd4bbf1e8e191d97bb589f1d3feb61de4d7d87c812d5dc42",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_DIAGNOSTIC-021",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "206a771d82891d8fbd0174c22085d1e86ba7bf8c4af9d3baf226c00e68503e33",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_DIAGNOSTIC-022",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "933283978e6eb8b0e5e08be42363a08fc55e898f8644163758b1802837b3e926",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_DIAGNOSTIC-023",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "5176a34e6be92d07975df0c0496484bd4bdfe2ca05897ea34d6866e6cc7b7007",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_DIAGNOSTIC-024",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "cff4c3921091a2763bf8e427b16bd1691fc38fd8c046f5e79d4548b50882944b",
+        "truth_exposed": false
+      }
+    ],
+    "family_exposed_to_engine": false,
+    "truth_exposed_to_engine": false,
+    "frozen_before_candidate_tuning": true,
+    "manifest_sha256": "92f72d21c16bc3a68742840d929e6b70e86dfa4b91fdc81baadd103a21aa20ff"
+  },
+  "validation": {
+    "set_id": "META_REGIME_C_VALIDATION",
+    "count": 30,
+    "seed_commitment_sha256": "37df2684e9a489e3f601bafd0da896b6eda54352ed6668bf3a1d51bd5800d239",
+    "challenge_commitments": [
+      {
+        "challenge_id": "META_REGIME_C_VALIDATION-001",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "03ff9296e0bb9db19490930a5b5004845ba9c6ebdf25562d31a3817b03b02618",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_VALIDATION-002",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "85991b3c37c3364853e967842a5abd44f0bfd10dcc58fab7fc11e1f2dab4193d",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_VALIDATION-003",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "c47d6304ef6e78719bc4e7015c46befe9021863ca586e97a2d0fc6535e03b635",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_VALIDATION-004",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "b6886cc2fb27a232ea64158abd355b21d20a069180309e4ec372debb9894c789",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_VALIDATION-005",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "0aa5d40b38f7c0e42e2cdfb66262a194db9391d46b7f2bc9de37ffdd5ccd1750",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_VALIDATION-006",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "6bb9f39127d6e63eff4f9ed7b2af41ff24f09101503ab196e7d5fe78db084856",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_VALIDATION-007",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "75e4c4600fbfbc242386f2d0fc4de1614c0b23821576ff9ef67e84bb75b52e87",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_VALIDATION-008",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "af87ae7a974f4e66840a0664d711e74a6ed79cc4f3ebdfb5df64cab7fa2b2e9e",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_VALIDATION-009",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "ddd4ce649495aa9d91deb855b5baecf02eadcad3b1a52a19f5eb5c8bbcdb5d84",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_VALIDATION-010",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "1ad4ad07e1351938c8c1944503f5f9474b3bde2b190e4e60266875d600a770c3",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_VALIDATION-011",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "f7e8c00ba7a5b1fbddae335f7b41a3edc1062f53316fda58e894ad0e1ce55b15",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_VALIDATION-012",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "754fa96d9dab162e3933aad06a5bd054c8fe4fff8e8ec05dbd630eaed1a2cdfd",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_VALIDATION-013",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "2dfc036f684bfc5c79844edeb7bc1368d7780413e1e1933597c58f68dd0b946d",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_VALIDATION-014",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "006329268961451859367b771f054ed1caf2dd4aaea3650ed263f36e5a0ed5e4",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_VALIDATION-015",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "0d6124b02bed6c34a8bbc8aeb145d84133329f08cc8528fe322f09088d128631",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_VALIDATION-016",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "b79c653c3a916bde619f66177751da342d3af4233e879ef2e0acee14a380ab6b",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_VALIDATION-017",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "7441949ac66e6d80fd16df2a6d51e1818f91f62ec709caf96f25616e375f7701",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_VALIDATION-018",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "4680a1a8c0ba5125213c6a467e12fdca903ebac9399069611182cb6b5e1abf91",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_VALIDATION-019",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "fe32b0e4462d97b37afeea7ebbb5779f0cab6a12c14e3736e162fe5f4012c273",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_VALIDATION-020",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "37d2e56be579b16574f50e1222b30e77caa3a406a695a0ed423b875e211f9e69",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_VALIDATION-021",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "c611e2ecb92a4c0265f10972dc5c72930ec16d545bd65a52c4c9ff7a86af7b2f",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_VALIDATION-022",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "bb4d59d1d3e10e7f27844e25a76d7078b22a7eb6264d083675695f1a497fdf7c",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_VALIDATION-023",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "423ac73eca562f0ee2f9ff3247d09004a9321e42099e969e3ccdb59f30bf6366",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_VALIDATION-024",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "33142d7d3d3d825a3f2b30252eea539e9f0df8390d2491c9496273465d4a6e82",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_VALIDATION-025",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "e41beeeb07cc40119e9015e19bba30315f8cdf246dfa24306a4f8274e0bcbb3e",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_VALIDATION-026",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "17f2fc6ca40e9020ada9ddc97b86583932e3c05b6610ef9310fde37b59068bff",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_VALIDATION-027",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "572b40f165381b0e2fb7cdfdbb5f066a473faa0561d4bfa0ce50d197b77e97d5",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_VALIDATION-028",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "1b423087a56ddbdcb0955b656c82244e1c55c7b014dfa49e2205e6d6eeb6cf8d",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_VALIDATION-029",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "ad0d4ef78ebf38a2d34851c0bd6103242f7b8e4ac15196d3bdeae17ca358e52e",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_VALIDATION-030",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "346af4d4f916c99c9c805dd2f424906b4c82e19d6d6b7415fdb84649b4f95d58",
+        "truth_exposed": false
+      }
+    ],
+    "family_exposed_to_engine": false,
+    "truth_exposed_to_engine": false,
+    "frozen_before_candidate_tuning": true,
+    "manifest_sha256": "26e1f7d48701cd8ff015e88b0087441e31b5c3a8e1caeb788555a01d3b8921ac"
+  },
+  "adversarial": {
+    "set_id": "META_REGIME_C_ADVERSARIAL",
+    "count": 18,
+    "seed_commitment_sha256": "94b223bb73edcedc03e010af2beaf25fb271ba35354e8424a897223579b3ed8a",
+    "challenge_commitments": [
+      {
+        "challenge_id": "META_REGIME_C_ADVERSARIAL-001",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "12d6f33b3296128c90cda41669db5a0e2e85efa80fb0a1f23681a8dc88350190",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_ADVERSARIAL-002",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "6ec040a9966918c83f5327d9ff5a95b6e439bdf7094d0c44531f856a07c118d4",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_ADVERSARIAL-003",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "2ab3aeea27524c4351b0b574b14278b1b76f618c5adee6dab22d78f8ddac23e1",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_ADVERSARIAL-004",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "c8cf315f5672e3e534f148b98edf9b34443cbd1dc8b889db74d46a2524dfad6e",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_ADVERSARIAL-005",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "85b3161c63f93de27e9b5a8ed680e58be512de4a5aa5a9a278cd72f064ea680d",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_ADVERSARIAL-006",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "60526be8cb55ac0ebcbd6eff72bb195092be9b7d5f4c730c106c3f5a0a2f0269",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_ADVERSARIAL-007",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "522d609631fff369238aa84707b11917af9c1ef6ecefcaa2a950a57769bdaf9f",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_ADVERSARIAL-008",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "6be52a6801b580b98ce13f2387bd8d6fa487727020587a7c52ac80fa8539cfaf",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_ADVERSARIAL-009",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "b2fa9e860b55adaa98e1682e0838828af5cf4cd49a7272611367c351f619d32d",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_ADVERSARIAL-010",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "4f2afd61279de622b676e37252ebf0e36dcc760b79fd995a3d8bd4eaf77296ad",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_ADVERSARIAL-011",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "5a71b110e20dea780488ef0280bd9e1381009dd3e1d0c0b2ceaf5bedf9f743d0",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_ADVERSARIAL-012",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "cb162544152b30aab0f6aaee4fef1a0f5fdf6cf6963bc05e3430a05a0c15c096",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_ADVERSARIAL-013",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "c1250b6a2b38360409c7d3427fbe96a96a8ef296674b67dc2a25e6c00f6b539d",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_ADVERSARIAL-014",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "9c774e12e9762b16095f56c55f42a27e7c79fa7044e9adeca2b0cb1db0264cfc",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_ADVERSARIAL-015",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "cdb3f31d3da17ee552fa4a947ab0ca70b1c78ac52c897f235dd702d24339e566",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_ADVERSARIAL-016",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "900e0010468109f7ff0338332c8bfe17c4e76fc45c8f64219d7b29d9a34ae5fb",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_ADVERSARIAL-017",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "a9139272d4f7e99f860a096cd50c343dd9ba79291cef13a5e9f49e61c8b9c0a8",
+        "truth_exposed": false
+      },
+      {
+        "challenge_id": "META_REGIME_C_ADVERSARIAL-018",
+        "expected_output_exposed": false,
+        "frozen": true,
+        "opaque_schema_sha256": "8f7f41509175016716786f848a48e52f32d8c7b8152e3db14c7565036fd06d7e",
+        "truth_exposed": false
+      }
+    ],
+    "family_exposed_to_engine": false,
+    "truth_exposed_to_engine": false,
+    "frozen_before_candidate_tuning": true,
+    "manifest_sha256": "c3d9338d154a7b2006822ca827883f1630c92e0f8bc6525ef99b8e0f7aa6791c"
+  },
+  "frozen_before_meta_patching": true,
+  "manifest_sha256": "a4cf008eb54f9f4f538a912b17d5bf76ec59f0c4c27877c1256c9531e1dd7272"
+}

@@ -1,0 +1,851 @@
+{
+  "set_id": "COMBINED_META_FRESH_BLIND",
+  "count": 120,
+  "seed_commitment_sha256": "e83b5b6751a145452b5791d8f653793b17c2cf5d60f57d1c4e1d6507d59dc6f3",
+  "challenge_commitments": [
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-001",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "0587580875be1acc1f0f6c925b86183d278de82131f1e3a6ad31c24b43343f48",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-002",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "85fd0e13571b94d39a6bbf521b7a0007efb92a48c31f8a9567ed982a941a93da",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-003",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "e918259b84ea9415df9625dead0be2d06da85328d1e7c1de05bb346e91158389",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-004",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "51f99429f7d0892ad038b902688172fc0a57e01c98e65f42e79f1367bda72f8a",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-005",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "77b32e5f6327394d9e9fd6711ea3289be1d55edcfcdba9ff63404171d487278d",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-006",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "2d8219978497c21f3665a6d824c29201fcaf84c158d05ca066e4e74ff7189106",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-007",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "2497e4cd2ed46543d2230ba23e6086bd6de8231dde36308415ac770edee789fe",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-008",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "dd586cac808802205916cf8e73e5058d4aa3f53a8c884ebdb28b463d8b48f80e",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-009",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "82108fb966a680e8de6ccce1748a358ccc26db7d7ebfdfcdfd7f3d0e4dcacd1e",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-010",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "e49db2db6de15101bd39256b5f47219340e71b15698170d8a3ca35d4555c95d1",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-011",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "f92ce960108c9a09557c8a3e4f3d3c8499a8a73c5b1846c2a0daafe83ffb9ecb",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-012",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "b5f847d2182d807d6907f9a18b5f20d31c73ca9dd9a39a583612ecc77ae4eabb",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-013",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "7596d268e4db35ea57d3a7afa6587f55c79f2498e53df3d812b81c2e92b85700",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-014",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "776d3dd83b06fc8e23e501c75defcde4ba1e2b23c34323a9fdbca977e722a6e3",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-015",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "dab9a1228f71c3377e7e4986c9e73ddc00c57cc6a61c170718141c31b4ffbacf",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-016",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "dffbbff59a589928074870a966a9b6058245affa57fcae721d9b7a91c3b87638",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-017",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "e78c8c1133abf4816724ba6050d2cf3ba4c853d2c819647f8baedecde37b917d",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-018",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "3e1953eab614380ed02bd60258050471e4ec2f1e3131b5edd78f72c28a465b76",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-019",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "eaf7386c92604550d8793dcb6b601d70e2784122d2c73741db2c496b0cb61f78",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-020",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "6f7c239d4878350e203770bf656c1fcdb0d2868d0012ea2da067d78d99a07403",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-021",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "1ae1670a97fd86c93b7eb2245cdc3c8788d1cb6dabc37e6c993021b71baa932f",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-022",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "4c5727f99736fa9e1bc4e11d99f8fedecf95ad78d4f34cda69aa6587a401a6c4",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-023",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "0dd923ae7f46a31dcc922dcede20bec32612a5174d63387d5e6c1858a5448dd0",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-024",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "31e1cc30f228ce1e919ec8861b9d1d7b4ad478fcc08ae9c18cb54e62d8d361fc",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-025",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "5b503bafe5db0c4b2066d3670692cbe8e0a1130cca3175247ef5ae55069cbc12",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-026",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "fad7592260b14d252d1cf42c70f23a72850e5037c2147d079b6f2fb04613b4d0",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-027",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "2fa0380f3f1b3ebd124888d3a67f5c4076ef0623641e3663fcabd1408e8bc2cc",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-028",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "934a88455363112f1b8e136c8cbe0f2bd808153f38da86404f5f69362c23999a",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-029",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "cafe72b51f9cbfeeddf3d4577e87d8075a519ab04f2d544ecee1471ef7c3aaad",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-030",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "fd51b6709b0f25e3ab45c740fff448ad7b7620f6ac5caf998e5c512d74348687",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-031",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "0319400d0e5e9f55cc712fb3bcc73a7f955501851aced8e6d6ab844a32a0cd17",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-032",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "4e2affc660fcc8b71760a894b3df9b5542068f1dff9461ca1d9272b85b92eb15",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-033",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "192297e43254374ffa05136e7bfe55acf75f9099e0ab8a61860a309ca25a00e6",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-034",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "ed514da1b6c2a46f3d11276b3861f14814a24f5c5fa813c398dca07334616472",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-035",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "79e3d4f5b9c2d977c0eec5262421352aaf3c061762c15e28fbdaf6309aa4980a",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-036",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "1e39051019dbae61c5359dfc17ccbe29de815da53309ff997b6361f41210dcd9",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-037",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "ba6996ff4a000cecd156efc604687228aff221353ed058505c8fd20f6910be7b",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-038",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "29d897f78d8f0b1aad8e0161e8efcbe3dffb7b6c99e5aa99554f0378e469b63e",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-039",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "e4369fa91ff21564f64bed3f8e19c5504d7b03c17077cb93a2198e6f1de37d13",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-040",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "d88e9bb6e913397bfb5a812e562f8deb90153ce16824523f392b6109c59261bc",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-041",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "6a43b0e8c4e78f8eac73e14fff85b5e4afb0342728461ad40b209f4315ac7ca5",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-042",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "96a9240a51cc73ad622aab10a349293b04babc833d67c9e93d553ed5b85dc5d3",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-043",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "af583b568f351fd5f8f95411293116f8fadc5b72b644d2087e05ce1f72df193c",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-044",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "1d270117252471dd98b4c103bc6df17b6b0485db24f4391c44ebb135ceb773fd",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-045",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "7413ea7a148fb067b73f7a464b25aa568c9b71a5c7f1ad3730ea1fd722e6898e",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-046",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "670c3dd3f77f2a2c5999443e4f474e0ebdae735dfac0aa9c1ec8392589d9a193",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-047",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "9e9f795f8ac285b16578bb50bf09bcf52daabefeb1f736aaeba1ba8afe7b2654",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-048",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "1729a610f1b4b5ac54307526e238befafdfc7a94618958f7bfd9d5c5517edb77",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-049",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "2640f350228ea0e99dc5742290622b1af81708f18584ff35250d499337cc7541",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-050",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "ada44ca37b49a16c3805e56ccc58e9305755b9e09a94afe35031bf63de588f84",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-051",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "4c5522b3b407371031d311afaf3566dd6a620644f9a525be6f111565a7a6f80c",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-052",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "1ad445706317fc3166a680a49cc49ce5ad950081cee4309e0a42923a27de15cd",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-053",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "9678ce483cdf13ef25ea03d099c886d125d6b196c0953867991ba11629e397eb",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-054",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "4959be4b8c5f0963cc2f620b7945f429d1f72ecadc2d555eefa86b9fc56ca426",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-055",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "fbec69e2952e7fe3afb160283426bdd752f07b7354e0e0cbafef550fc289cc0b",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-056",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "db9c750779b230d43341a3e0ef774fb1a6880bbe88a916b2326a660f5a65d261",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-057",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "0031db75b18e00c1810c1a129a283a4a0d3381c5ff2cb8815254442b8b6920e6",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-058",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "5c4ddd7b0a58a8287aa9da94451973c640f5df014cbe0b83fd2430f896ca2249",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-059",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "bd06372421730a1987c30b874049fd5f3981a25039b8ae23c1776d6a929f41f9",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-060",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "7e10ee1dee84f4c099478ab64479368551c927301079eae812d19ac5f2b55247",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-061",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "aebfd09dd28b0a58d1911a31e652c23d34a07e1acd6b23f9b87b928927d9683f",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-062",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "53b9bb209acb6adac02856466e9b84941af663db6106f28520c96259169e2ad2",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-063",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "106eb0d0f1ad0cdc428945907110e047a45de70aca0980e6a674e315c29753c4",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-064",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "6ef679adf3545f214381f7ef5346a66f14be9ec588f7216486cdd46b4444b358",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-065",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "f063941f78c3b173a919d15fc5c32f477684d6089c1e4a15e66a4010d260e3c0",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-066",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "65d10aeff8bfa8e4ac7ea5b8bb5762397047b4cd7cdc4f060faa958b3ec5a760",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-067",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "1f077c0b5eae5f93edba135bb7841f30e6a993754926606e06a34acf6153e038",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-068",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "41efee6b7858640cbb85c6162ed6e3139feefac4b578d0d0dbf5f6da534618ac",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-069",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "3ddbe473dbc2cbc0510d0ad22ea7cda552e458ce3e4444b237f711bda6f98743",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-070",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "dabe62d34787bd939f3ce2e12a01cb3fee402f01091a984d4f2e0d23cf44ef49",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-071",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "d9a5a455279f74bc37048ae6efd08b6d08dee3563eb95d09c1e38735acb5b787",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-072",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "00aa94226bb6fbe623b43a0507c2b2f42af9498976019e81c8ea8570d865f5f8",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-073",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "34a98ceabc26b1557ee44e4920a2795271547bc769d8bcfd5a967bb5fbd49902",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-074",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "0a3521faee3527b11fc3e409dacfead8894e51c51b7815edc1f054eeb19fe09e",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-075",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "fcca8925f24f549fe63bf25a284ab3ae9d4f74500674ff9ddf610a3bf91c0a46",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-076",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "f09dc813b84b72604b6db5d6bb40e2e356b196289762e8430bdbef7639478850",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-077",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "aba27b97584ef4e93f0b228c61e5a5bb9776caca88b3de9865f079e83facf5a0",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-078",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "5438cd957cae50e3e949b355fe3af430327cc2726910c1ea63b2b8a650c4ee36",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-079",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "0abb8cb19098b5e4c175010bcc18cfd960203f2525cc7ea6786109e84ed94c1b",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-080",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "97d120d807c51aeabe6537fb8c8131c7e83e78009ecb7457d5a56c7e9db24a18",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-081",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "ec603c2d15284176c6d7a63369e3d93e658107954703e6105e51ecf1c1bd8f6e",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-082",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "edd316abb6cf6859d6ff915f03f1407aa46524b49df62f96341242db9c49bbac",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-083",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "11376f7aef471e3e627b108e68fbca4ad2d56afb96a1a82f43d5c7cc4f30bb4f",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-084",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "67087e1397b977689adc536dc940d3262ac92cca28bc11ad619d1784700634b0",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-085",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "078036c64761a07376b809f550c66f1d4a87555044d6d2b999eb11d8b66527db",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-086",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "726c237c1d143268c5bb827f49ec1679700ddd7d772c479da625bff09b21de53",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-087",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "9b8aa1c88b8fbba005ea0e736ddeee5de970b46f670ad58756eca284e455c5a5",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-088",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "120f67742b89990e580e7b286f659712bccdd166d007c899ceefe369c601d6b8",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-089",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "df4e1d541f5b2fdca84a9094fe7d778bf0333cd0a8bb1a0529cc3c9eb25b7054",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-090",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "29d5a22ffe6e937eed04b55a637f9a489f2ecdb0ea7f21953124ffa2694c3c82",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-091",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "779f70308d304bc87f1226dc44459214cef424c7e227c65131f4f587013fdb29",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-092",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "8cfad326cb23e08226d285ea424931eb1eab14d77006b4f08a8c20badde2d8cd",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-093",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "8fb3c8ef0408d87360db96b831b6b59b0086016d56397f026eb7626145600fe4",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-094",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "502a94e8d5a469ae1199c798459b724e47ec767f508d156ea86698c2799aacaf",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-095",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "31a21671ccc5dc95edc3bdecf4905c811b1d26eedf5c3dc03232494fce8d0c60",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-096",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "f2edada648f914e38731127642cc8ccefc0c2b38d7c2e9177dfb051c5b39c946",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-097",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "aef5996baca58f53b249588c202f41637c5dee30bd3746278e60f15167ca11c3",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-098",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "e68e13c0d21d3f5c99b3773532dbb007dd9c2ab6737eb9b69ee6195f803d5b16",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-099",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "1324df14573becac689cd4e83059804701eabeaed61f616707933433861e70e9",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-100",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "531f2a16e0e83581151d5adc2cf3f456b7290dd9540aff17bbf9effb2e03b8f4",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-101",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "ff6adf768c07e65f6ab5330ad6964fc6a85b321b503138659e79537136bfd423",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-102",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "4662e11bded1a3b5ce301b34e1b8478b6dc4f9cc31d4dbc507304672db31795a",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-103",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "39bf7c6c8af20204a2df8bb9478cf370cd8f51e2e6a85438076da9c7038d58c1",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-104",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "57be066cd1d7bdf53c5546121c28bd5bc36a6aa11375613a24014792d0db4d11",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-105",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "6142122aeff051aa7416591bd79f1ceb85927614a3cdb7d103d9813a10e29175",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-106",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "9e9e620de0318e74c8a30360bddaf0c5d7b9ebc94cd3f02b10a75c10d4e2708c",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-107",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "8baab2fdaef78e6c82bde42f7d8196bdd16a3c4c93b2cd54121cf40293d600a1",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-108",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "ef1d3d176600d215bbf355b39b08cecadd8cb4644737d322e3ca92b714b93a9d",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-109",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "356f25a375c2c92157248578f9485f0b89d0606b1e70d8cc1d46089e1ba524cf",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-110",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "ca0d65fd791fbf9b0f646f0ccb58098905c1416fb4f56b681ffb12c773fad143",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-111",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "16bc3ab0d60e8f032b009afe447a3629100843c0959891108d8b2910a9e51912",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-112",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "26ff3f5b71f8dac65400fc996878156362a44f1e8975054ead96a1cafd0f1ed9",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-113",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "4412f3a478c257ffb79a9f77bc223bddf8eb65c77424b187d41eab1ebb343db4",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-114",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "c546420b3c6ecb5eae70ba15464adaf4c23a55b99cdc28d513bd31c7a1c80f6f",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-115",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "1ea8775e498e6bf2ba078e0aba0d128fd9495a838e2cf8a2da65928f7ddcc4a4",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-116",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "f2d99ef3c9c74a5dfe4dfb7bddf81f6749185ae26e274b8441063d4ead7f218b",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-117",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "4fd59d16141af3de712ab7057c75b8e22d94d1420cd5dfb5a911a5edff87753d",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-118",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "87a503d2da0f0096ca3228f8968cc5657feb1d6bc44b479bf2d396b7b7258698",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-119",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "075e9e4736714607f1742a8aa33d410e85795f98b1fd62feb4a53a509ebbb27e",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_META_FRESH_BLIND-120",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "febf264b77a1f9db8c720fd15dc31bee752c65cc500888226434ab5844b3b1f8",
+      "truth_exposed": false
+    }
+  ],
+  "family_exposed_to_engine": false,
+  "truth_exposed_to_engine": false,
+  "frozen_before_candidate_tuning": true,
+  "manifest_sha256": "a33d1f7c23587e40deb59fbf542f066a6c533ad76c75fc4c34a8031bc12bed60"
+}

@@ -1,0 +1,62 @@
+{
+  "engine_id": "M2-BASE",
+  "mode": {
+    "causal_probe_priority": false,
+    "compatibility_precheck": false,
+    "role_mapping_reuse": false
+  },
+  "source_sha256": "6db11c4a3a689aaa2db743c184ad1220c7ab02487caef66f3878b2544af880de",
+  "release_binary_sha256": "f4b05f56ecac4ce72741ffc09358f6dcb9d5f9e48b1ea26c302ad36e013935e0",
+  "source_bytes": 5366,
+  "release_binary_bytes": 159232,
+  "sandbox_contained": true,
+  "rustfmt_pass": true,
+  "strict_clippy_pass": true,
+  "tests_pass": true,
+  "debug_build_pass": true,
+  "release_build_pass": true,
+  "commands": [
+    {
+      "command": "cargo fmt --all",
+      "success": true,
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": "cargo fmt --all -- --check",
+      "success": true,
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": "cargo clippy --workspace --all-targets --offline -- -D warnings",
+      "success": true,
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "04b2b12926e16f91a8f27b96793cb6a2dbbcc1a7f2e0f9b5406ca82f005f87f8"
+    },
+    {
+      "command": "cargo test --workspace --offline",
+      "success": true,
+      "exit_code": 0,
+      "stdout_sha256": "efa0a32ad3e11c56f36e2d17140e2a71c1e4ccc9d5d0f5122efa5e92f4b894c9",
+      "stderr_sha256": "7675781a1298bc341dc761529f26787d3e4b50b03d526b1f48a3906eebda80b5"
+    },
+    {
+      "command": "cargo build --workspace --offline",
+      "success": true,
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "56c4fa4f64e8fa8f85d6539e6f9ec3442f6d8c02fcee296e0f2fae439c75665b"
+    },
+    {
+      "command": "cargo build --workspace --release --offline",
+      "success": true,
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "f1d5dadae1acb5a9ac3c69775d9a6abe6c7c29df65dbba4a2903c6746cade95b"
+    }
+  ]
+}

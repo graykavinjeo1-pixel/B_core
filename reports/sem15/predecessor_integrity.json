@@ -1,0 +1,17 @@
+{
+  "M2_binary_sha256": "c0b01e49fee392dbe76bfddf8f2b749d714ba166f175f19189e26478ece84ca9",
+  "M2_core_total_deployable_bytes": 183382,
+  "M2_source_sha256": "87a751f0d8ca292eb72e385a66451842fc5ed16cb51e2e3902d3b2470282e4b9",
+  "acceptance_unchanged": true,
+  "core_dockability_preserved": true,
+  "evaluator_unchanged": true,
+  "governor_unchanged": true,
+  "index_sha256": "77b17332b5ff7204c28e9445e689276049afd6e89308e7e242904570a283e6fc",
+  "predecessor_integrity": "PASS",
+  "sem14_commit": "f29d7ac374c8270f2a9ed3688053ca4ac6db839f",
+  "sem14_commit_object_type": "commit",
+  "sem14_level_A": true,
+  "sem14_level_B": true,
+  "sem14_level_C": true,
+  "semantic_state_sha256": "d1abd8de410f5284773f1e582937922dc514513ed738eb9f04e8bf2735185d3c"
+}

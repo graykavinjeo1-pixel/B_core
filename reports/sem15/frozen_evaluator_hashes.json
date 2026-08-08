@@ -1,0 +1,6 @@
+{
+  "evaluator_hash": "0c1d3811061b2b6bade871d55837df36143ca191e5c43c331f15026d93886c6f",
+  "frozen_before_branches": true,
+  "policy": "SEM15-EXTERNAL-EVALUATOR-V1|FROZEN_REGIME_AUTHORITY|IDENTICAL_PAIR_INPUTS|CROSS_REGIME_MATRIX|COMBINED_BLIND_UNOPENED_UNTIL_COMPOSITION",
+  "truth_authority_external": true
+}

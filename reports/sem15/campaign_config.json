@@ -1,0 +1,21 @@
+{
+  "campaign_id": "SEM15-META-GENERALIZATION-STABLE-COMPOSITION-0001",
+  "combined_fresh_blind_challenges": 120,
+  "common_meta_base": "M2",
+  "downstream_problems": 60,
+  "external_llm_calls_allowed": 0,
+  "independent_branch_labels": [
+    "M2-A1",
+    "M2-B1",
+    "M2-C1"
+  ],
+  "infrastructure_commit": "00666291ca824b1bbc87e92be659ba03f45ed399",
+  "local_teacher_calls_allowed": 0,
+  "meta_governor_mutation_allowed": false,
+  "network_writes_allowed": 0,
+  "predecessor_commit": "f29d7ac374c8270f2a9ed3688053ca4ac6db839f",
+  "production_promotion_allowed": false,
+  "remote_executions_allowed": 0,
+  "sem16_started": false,
+  "serial_M3_claim_allowed": false
+}

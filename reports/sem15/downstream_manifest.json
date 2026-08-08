@@ -1,0 +1,431 @@
+{
+  "set_id": "COMBINED_DOWNSTREAM_BANK",
+  "count": 60,
+  "seed_commitment_sha256": "db5a054f11d98992a0bd0f6c838bd987182fc53f2a6b8212704880e445f566fa",
+  "challenge_commitments": [
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-001",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "551a25fd70185a559a67e0930ff5f65c4484b961514a9302e670f16e1dc8cc66",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-002",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "86363f1497a1b6315c1fbe61548062dc8435300c0413f0cd8f92b317280ef7f9",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-003",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "f1aec3044a5db2ec05b7f657e81fa706a20c190b9e706a24163228c3f500d29f",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-004",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "bd748c46a2223abaa1853b00d2b76f9a58d839e1fa904a1981042f89bb4bf819",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-005",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "e57d5e0f0cd0f5e356b4140086694b7a6506e60fb9205ba9633bd43ae835c422",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-006",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "32daca57125485290d0c11345cb376459ea75ae014c5b91a6505b56265ff92de",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-007",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "0b324dd01bddfb061a3c9252dc2d60ff429375491ac198268706f25edda6a18f",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-008",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "c92294ab0eec72265b5f0507ef18bc0b0a9e36bccf7b566b45b1a24db3b4059c",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-009",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "69bd81ca9cc9b21071cfb1793cede1ea550926809e7fe821422fbc75743d13ba",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-010",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "661771b6e6709005cb8dd4d761de28a6c0652dd0564db2b8bb6629cd9546c8f7",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-011",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "e35b0a704c65fc90fa239a75eaad09c4a09667c1f86f812677b711f6c02f2ee5",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-012",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "4c75464bd12b83ad1b0799273410a81c805b8a32e2d167b42e7131bfcd213cdd",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-013",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "bc6eab5b418bf7f903bdb98bd1c96c994607fb41a52d3f3eed1f768bec69896d",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-014",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "717fd3e7824f976c2c114a54b23a47935e7b3bcfc2be9bf03b46458807d677fa",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-015",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "66de93e380d35b329f484bc80daba1895357eedcff8417046648e7b4e82e589f",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-016",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "37a45a48e4ff9b4660958fe43dfc46329fe8a181afa95f1568ca3bf09ffcd92e",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-017",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "fa92089634580d7aef87936ab9cdd637b6d69e1798d0b9302eae2b8b6f3e639f",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-018",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "4e4310d1739eba9b385b449190cb2bacf219664f118b8ca1f07582fc1028e91e",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-019",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "7eb3bac81b906455c698c5329ddd8b3c9c4765e22602996a683410026ace4558",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-020",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "d83d51e5ef27e7ed1ad6a98d8d141b5f3e469a77073eff9b0b8504b146f8687d",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-021",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "a06ed03da2aa9aa9f2f619b195ac9920ec3f8515f1907f946ec6fc760d2a3844",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-022",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "9e052e7a7295aa3150d5557ab60dd832294fa66f82a981adb61c2f05163efb92",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-023",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "7077498e0b0ae2bcfc0b3819bbec8d4ab213f107f78ef59a90579cf0689df6fa",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-024",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "064137e262f117222cfe191f4c7539203a14aef19d4d2bdf13d482d78d90b292",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-025",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "1caadd06deef235849d85120f207d7420992f30f14d3ac454584488bb86090fe",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-026",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "0fef4bb9a6f437b57db2257d2328a8681acc7289871d054d76d3d4d79a7d1f8d",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-027",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "237390910d3affc50160b160ce0dc3715c8aebd5771841f639d2ab1c7e4ec964",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-028",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "808cf05b1b52c921f2ad881498cc2242ba089be64caae1b69549c3a57350cebe",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-029",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "d6c053091e3eac5e9492048ca47491da0717745c2df4edf586d6d5ef16519130",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-030",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "d3c2bb0031acac2aa556c56052927e39fac71e4c5fa0076fb8c268a33e973731",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-031",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "98ec83195f6b9a2964eab3effadde3a7664a403fe9d1da5deec1142866add47d",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-032",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "b8f24ccf6c29584d5a88448ef4890fd4b1b62472d57cf5c71015a008cc7742a8",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-033",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "a13946a32c0d7daee42a4805919a2237566985072df33904f04a93158bed1e20",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-034",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "466be881ff8b3bcdf3743a84e0900bee2a3dee64991b1b6127302f076e3163a2",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-035",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "481e1783046d8cbcd9e76c61255a42cf984911390a6b96e64c5cbe1bb3e42750",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-036",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "39ad9f014e3ad2e1ce4bdb334a10f91160b70ba950fd0d157323d15cc299ac8a",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-037",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "6f0a969599287f01760327aac9262b439f37bd153f52256b5fd854fda5b028b6",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-038",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "419a4f7c99782c296c50d604eaf2b68736b5c8c09b3de5410d88d87a71324c69",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-039",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "27f54dff2f1a7173d6966e93136e3cd8074a7cca4ed2cd0e88aa5426971bd0dd",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-040",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "d799dab1886f71ea8f695648fa34e53b9c9ee3a0cf5df2dfd39744c06312bf96",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-041",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "e9039308232e829ec448f3f4191d57b3f0e99042e79356be42a1e39a42637150",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-042",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "b2e4fb897e04d0704269248feac338fe67f3f3da90d32b7bb3bd2af263e0241d",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-043",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "ac84c9c787e631262f606a2a8de9d259cfac22dd9ac3c81cf78afd42e9a528ce",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-044",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "67c8823bd6195595f1e6be300f7e84e3bc1f66a2add4340f3d2d7b086b63f2c8",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-045",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "1a5c8b87f09ff91e3e6345f390eda05126fe54cabb9d4edef1cc0e139eb5ade0",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-046",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "44d381e5e9934e5a2ff2592f8c1b17cac63637f9e4947f23c2066ab3d3539026",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-047",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "9cc4b8f6492dae3b2ce4d196541cadfe304ec2660c58bded53741e1673bb0eb9",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-048",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "2e56daaf2854934ace323397dc6874297e6e3b76e46494e6b3be94ccfb6f5e5d",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-049",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "4f7cad7ceda3c5e432f5e06c9dfd33c4f6b8c7d64d8cbcce68de4ef3452a6508",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-050",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "412638612cee84b8882dd7a6747c85817ced7a7759c22b24f341707c8ca23de8",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-051",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "dc4038b7bdd4af27ef85eaef2624786a1a24d6f848f5193a6ae3eb094af75ad6",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-052",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "cf16142837a7467f1f0ee860b70f76d42fd5c30e37185ee0d46a1fe016405239",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-053",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "7dc783b6f442e5a7b6be9e1593b350d1ad664c68f6e7e94e33a1943cdf903b5a",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-054",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "17121b19153c28ebc36575e5652ba15775d3d9930782b071e78231a1aea5ff46",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-055",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "1136f650f55b2b2b881d6386ef7b1730bf433b9ad0ca40c05fed64f397e9421e",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-056",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "8e9b611f0f44e809897c700937134da17b541aa70f9ff5dff97c0cc0ca3fa195",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-057",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "0ebf50a12d4bab7a2c0151505ee15f1b41a9ef9fec68648f11ec897a5bfff49f",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-058",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "215a5f8e13163f4fce4628ef3beecbd9f690fef4b6d07797d7548b608ed9c812",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-059",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "000dab865413bfdcf4243dc714a35cbf02dae7e2e931731fc19d0815c4be1317",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "COMBINED_DOWNSTREAM_BANK-060",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "918166c8b1f5a0358d98f8e81f226ac792a2514d7cc603c89d15a23223f50a5b",
+      "truth_exposed": false
+    }
+  ],
+  "family_exposed_to_engine": false,
+  "truth_exposed_to_engine": false,
+  "frozen_before_candidate_tuning": true,
+  "manifest_sha256": "9edd3f3d0bd9adc1cffad13f29585356d2b2162199df799d78c7e493e38b61d8"
+}
