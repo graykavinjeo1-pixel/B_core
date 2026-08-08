@@ -614,7 +614,7 @@ fn generate_challenges(
                 Pressure::AmbiguousCausalEvidence => vec![120, 210, 310, 420, 490],
                 Pressure::ManyMechanismCombinations => vec![180, 260, 430],
                 Pressure::StrongPriorRejectionEvidence => vec![150, 240, 410],
-                Pressure::MixedAmbiguityComposition => vec![110, 220, 330, 440, 810, 820],
+                Pressure::MixedAmbiguityComposition => vec![110, 220, 330, 440, 450, 460],
                 Pressure::ResourceConstrainedSearch => vec![170, 250, 360, 470],
                 Pressure::ReturningAmbiguityFreshBudget => {
                     vec![105, 205, 305, 405, 455, 475, 485, 495]
@@ -623,6 +623,10 @@ fn generate_challenges(
             };
             if actionable {
                 evidence[0] = 600 + rng.next() % 90;
+                if pressure == Pressure::MixedAmbiguityComposition {
+                    evidence[4] = 810;
+                    evidence[5] = 820;
+                }
             }
             let mechanism_count = match pressure {
                 Pressure::ManyMechanismCombinations => 12,
