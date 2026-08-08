@@ -1,0 +1,17 @@
+{
+  "campaign_id": "SEM-10",
+  "independent_b_core_lineage_only": true,
+  "srg_code_imported": false,
+  "synapse_2m_runtime_imported": false,
+  "harbor_imported": false,
+  "post_graft_command_planner_imported": false,
+  "post_graft_language_changes_imported": false,
+  "tracked_tree_forbidden_term_matches": 0,
+  "dependency_manifest_forbidden_term_matches": 0,
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "network_reads": 0,
+  "network_writes": 0,
+  "remote_executions": 0,
+  "passed": true
+}

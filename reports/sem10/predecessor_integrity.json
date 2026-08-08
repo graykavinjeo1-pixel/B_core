@@ -1,0 +1,136 @@
+{
+  "campaign_id": "SEM-10",
+  "evaluated_on": "2026-08-08",
+  "status": "FAIL",
+  "disposition": "PREDECESSOR_INTEGRITY_FAILURE:ARTIFACT_TREE_DRIFT_AND_FRESH_RECONSTRUCTION_DRIFT",
+  "canonical_integrity": "PASS",
+  "predecessor_integrity": "FAIL",
+  "stop_required": true,
+  "sem10_started": false,
+  "recursive_attempts_executed": 0,
+  "lineage": {
+    "sem9_r1_commit": "4cc21b3c2d3358160a06d57232b3ee371a5f9b73",
+    "core_x0_commit": "2961a975fd57e3ad0f5cabe29a2058fb0ca4fcba",
+    "sem9_r1_is_direct_parent_of_core_x0": true,
+    "core_x0_tree_sha1": "97b0a60dfd18c146f78053400105f158c70745af",
+    "independent_b_core_lineage_only": true
+  },
+  "canonical": {
+    "files_verified": 8,
+    "manifest_self_hash_sha256": "2b01a4fc03e14d89a1bc20a64fd863f399fc12f2410856389ff35a90bf4b7ee3",
+    "manifest_file_sha256": "b663e4589754d545c37575061d613a4f4f90027d73b8c2ee0df8c9294ae4ea0e"
+  },
+  "historical_evidence": {
+    "core_x0_stage_artifacts_verified": 12,
+    "core_x0_stage_artifacts_total": 12,
+    "sem9_failed_run_preserved": true,
+    "sem9_r1_pass_preserved": true,
+    "portable_components_verified": 6,
+    "portable_components_total": 6,
+    "portable_source_hash_mismatches_against_original_worktree": 0
+  },
+  "repository_state": {
+    "original_main_tracked_files_clean": true,
+    "original_main_untracked_paths": [
+      "pakage/"
+    ],
+    "fresh_sem10_worktree_clean_before_validation": true,
+    "git_fsck_pass": true,
+    "git_fsck_dangling_blob_count": 10
+  },
+  "artifact_tree_drift": [
+    {
+      "tree": "reports/sem0",
+      "expected_sha256": "6ccf0423ca5c7106d70492f107c23980b9e9f31a807f778f16d66462e2558cbe",
+      "fresh_checkout_sha256": "4752bde87fd3a3ec3cabfae59c88ada4ca228c0b3dafdd771cca4f55380be5f9"
+    },
+    {
+      "tree": "reports/sem1",
+      "expected_sha256": "b5083b272995fbeabb735608db43b08d289359e5f03601cc91b4eb99756f87f8",
+      "fresh_checkout_sha256": "fcf6792184c3ce8791e71ec613ae635ccf3537728938dc648cb41649ee8d4923"
+    },
+    {
+      "tree": "reports/sem2",
+      "expected_sha256": "9e0f2ee39cd7ea11f60a66842f650c0f269054a6cdcaa061e4de02f2bbb37e0c",
+      "fresh_checkout_sha256": "2e2f9748546a5c65c0a0e55704d8b6ebfcf996a83e9898130084dbf2644bed8c"
+    },
+    {
+      "tree": "reports/sem3",
+      "expected_sha256": "90ad74b1a86ee455a3d20ac52d906a6ee82435b163665580c9d8b8ac5720abdd",
+      "fresh_checkout_sha256": "9b828bcd6d5548e63a5d54d3b78fab60880784830f5b8cf8f4a334141c22f2de"
+    },
+    {
+      "tree": "reports/sem4",
+      "expected_sha256": "1abcd9cbe97ffa8bdeb28444137d7b5a7348868e632cb47defac0f73c2d0c11e",
+      "fresh_checkout_sha256": "8eed2f39ab8b336adbaf3bc04f4d0b759203e1e34e3fbbc10cf70ff79d7d0127"
+    },
+    {
+      "tree": "reports/sem5",
+      "expected_sha256": "b47dd3a0f174bb460000a45b115f4c48f3f1c034a22cceb0e9efae1a954ba8cc",
+      "fresh_checkout_sha256": "e05d7fb0155d4638d1bbfd3d749b3d398d7b64acc4b1e5c5bba6ccc4c8264161"
+    }
+  ],
+  "fresh_checkout_core_identity_drift": [
+    {
+      "path": "state/semantic_state.json",
+      "sealed_bytes": 2662,
+      "sealed_sha256": "d1abd8de410f5284773f1e582937922dc514513ed738eb9f04e8bf2735185d3c",
+      "fresh_bytes": 2694,
+      "fresh_sha256": "c784b75278b99897977382c20132440a39fb51ba1f4b24df855d91a8f2fe0b18"
+    },
+    {
+      "path": "state/sparse_index.json",
+      "sealed_bytes": 281,
+      "sealed_sha256": "77b17332b5ff7204c28e9445e689276049afd6e89308e7e242904570a283e6fc",
+      "fresh_bytes": 298,
+      "fresh_sha256": "cfe57d1344514c0e35fa53b9529388e537c1c8f5644fc1f2505acec629d32896"
+    },
+    {
+      "path": "state/runtime_provenance.json",
+      "sealed_bytes": 782,
+      "sealed_sha256": "4074ebe22ab02fb45708ada5e59519fd531e90dd0045d74af6739be6a2e05131",
+      "fresh_bytes": 792,
+      "fresh_sha256": "6b5d1c9938f9fb29f92773b2b839c271e5210c3637c5f1ecc1f810ee764255d2"
+    },
+    {
+      "path": "config/core-config.json",
+      "sealed_bytes": 254,
+      "sealed_sha256": "0f4d4820216d1fcb1aa05a7719fdb6e586b0c969850cff2d4732f070ff2a6451",
+      "fresh_bytes": 263,
+      "fresh_sha256": "8bda7e89eaaf6b0b3c76b30ac2d8e10bb1546071739ec8ed20e2eebb9269ec91"
+    },
+    {
+      "path": "abi/core-abi.json",
+      "sealed_bytes": 218,
+      "sealed_sha256": "87affaee5f9c2c9fa4a467fabebb6d9de655df9e782a04022beab6f04f921564",
+      "fresh_bytes": 226,
+      "fresh_sha256": "42c68901e789c244e2355761002a7574e479bda41c9ff22b56cb6ca4f6548452"
+    }
+  ],
+  "fresh_validation": {
+    "cargo_fmt_check_pass": true,
+    "cargo_clippy_d_warnings_pass": false,
+    "clippy_error_count": 22,
+    "clippy_failure_class": "UNPINNED_TOOLCHAIN_LINT_DRIFT:clippy::manual_is_multiple_of",
+    "cargo_test_workspace_pass": false,
+    "workspace_tests_executed_before_stop": 140,
+    "workspace_tests_passed": 126,
+    "workspace_tests_failed": 14,
+    "workspace_test_failure_class": "PREDECESSOR_INTEGRITY_FAILURE:ARTIFACT_TREE_DRIFT",
+    "core_only_build_pass": true,
+    "core_runtime_canary_pass": true,
+    "fresh_binary_bytes": 382976,
+    "fresh_binary_sha256": "f1fde0d0482f5fafe8d47f1d4f253df35df83ad56eab1d382bb9b8d5357a62ae",
+    "sealed_binary_bytes": 404992,
+    "sealed_binary_sha256": "57a81bbe59dd9e524d7aea5f17ba7ecf471cec8e90da922d2f65de73f53b4ae2",
+    "binary_hash_match": false,
+    "rustc": "rustc 1.96.0 (ac68faa20 2026-05-25)",
+    "cargo": "cargo 1.96.0 (30a34c682 2026-05-25)"
+  },
+  "root_cause_assessment": {
+    "status": "EVIDENCE_BACKED_HYPOTHESIS",
+    "primary": "Fresh checkout changes unpinned text files under global core.autocrlf=true; .gitattributes pins only a subset of canonical and early report paths.",
+    "secondary": "The sealed toolchain identity is not recorded, so current Clippy and release-binary reconstruction are not byte-reproducible.",
+    "repair_performed": false
+  }
+}
