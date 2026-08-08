@@ -555,7 +555,7 @@ pub fn run_campaign(root: &Path) -> Result<String, String> {
         source_sha256: transition1.child_source_sha256.clone(),
         binary: root
             .join(TARGET_DIRECTORY)
-            .join("R1/target-build/debug/reasoner-probe.exe"),
+            .join("R1/target/debug/reasoner-probe.exe"),
         receipt: transition1.build.clone(),
     };
     if hash_file(&r1.binary)? != transition1.child_binary_sha256 {
@@ -584,7 +584,7 @@ pub fn run_campaign(root: &Path) -> Result<String, String> {
         source_sha256: transition2.child_source_sha256.clone(),
         binary: root
             .join(TARGET_DIRECTORY)
-            .join("R2/target-build/debug/reasoner-probe.exe"),
+            .join("R2/target/debug/reasoner-probe.exe"),
         receipt: transition2.build.clone(),
     };
     if hash_file(&r2.binary)? != transition2.child_binary_sha256 {
