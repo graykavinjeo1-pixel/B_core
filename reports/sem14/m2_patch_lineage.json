@@ -1,0 +1,46 @@
+{
+  "M1_source_sha256": "d15a49f10b1102d6fc0a68d62695b5d4aefb48b90a9f6a7a5000c900460cc26a",
+  "M2_proposed_from_M1": true,
+  "M2_source_sha256": "87a751f0d8ca292eb72e385a66451842fc5ed16cb51e2e3902d3b2470282e4b9",
+  "assumption_ledger_sha256": "c7bc00750e6e00de241dc078ac76cf9dbe9e4d4eadc778494ae337acb9ef2e47",
+  "change_ir": [
+    {
+      "from": false,
+      "source_mechanism": "M0006",
+      "target": "FAILURE_EVIDENCE_REUSE",
+      "to": true
+    },
+    {
+      "from": false,
+      "source_mechanism": "M0005",
+      "target": "MULTI_MECHANISM_PLANNING",
+      "to": true
+    }
+  ],
+  "child_generation": "M2",
+  "lineage": [
+    "M1_BEHAVIOR",
+    "M1_META_WEAKNESS",
+    "M0006+M0005_SELECTION",
+    "META_ROLE_MAPPING",
+    "META_ASSUMPTION_LEDGER",
+    "META_SELF_MECHANISM_IR",
+    "CHANGE_IR",
+    "M2"
+  ],
+  "meta_self_application_proposals": 1,
+  "meta_self_mechanism_ir": {
+    "bounded_two_stage_composition": true,
+    "causal_failure_partition_reuse": true,
+    "evaluator_mutation": false,
+    "governor_mutation": false,
+    "top_k": 3
+  },
+  "parent_generation": "M1",
+  "passed": true,
+  "role_mapping_sha256": "dcc374a3dead20fb287444d6b4626e6aa9b5fe0c076a64074864a14c591a1776",
+  "selection_sha256": "6d4f1c620f2977e20289d8a3ff9425943bfe33855091db143ed7c375ae5c3eec",
+  "semantically_grounded_patches": 1,
+  "ungrounded_random_patches": 0,
+  "weakness_sha256": "ccb0b242fabd99a58a765148032a354a87cf8e64e078a310329f339dc58e9be9"
+}

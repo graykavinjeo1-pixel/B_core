@@ -1,0 +1,41 @@
+{
+  "complete_required_roles": true,
+  "mappings": [
+    {
+      "meta_engine_roles": {
+        "boundary": "stable causal signature",
+        "input": "failed meta mechanism",
+        "output": "reusable rejection evidence",
+        "transform": "failure-class insertion/lookup"
+      },
+      "predicted_effect": "avoid repeating assumption probes for an already rejected causal class",
+      "source_mechanism": "M0006:QUOTIENT_PARTITION",
+      "source_preconditions_to_M1": "failure signatures are stable within a frozen pressure bank",
+      "source_roles": {
+        "BOUNDARY": "equivalence relation",
+        "INPUT": "candidate failure",
+        "OUTPUT": "causal class",
+        "TRANSFORM": "partition"
+      }
+    },
+    {
+      "meta_engine_roles": {
+        "input": "interaction-bearing weakness evidence",
+        "output": "bounded two-mechanism plan",
+        "stage_1": "highest-gain admissible mechanism",
+        "stage_2": "next compatible admissible mechanism"
+      },
+      "predicted_effect": "remove the single-mechanism planning ceiling without widening Top-k",
+      "source_mechanism": "M0005:STAGE_COMPOSITION",
+      "source_preconditions_to_M1": "interaction evidence and two causally admissible stages are present",
+      "source_roles": {
+        "INPUT": "problem state",
+        "OUTPUT": "composed result",
+        "STAGE_1": "first compatible transform",
+        "STAGE_2": "second compatible transform"
+      }
+    }
+  ],
+  "passed": true,
+  "selection_sha256": "6d4f1c620f2977e20289d8a3ff9425943bfe33855091db143ed7c375ae5c3eec"
+}

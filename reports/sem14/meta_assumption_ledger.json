@@ -1,0 +1,41 @@
+{
+  "critical_violations": 0,
+  "entries": [
+    {
+      "assumption": "DETERMINISTIC",
+      "evidence": "stable signature encoder",
+      "mechanism_id": "M0006",
+      "status": "SATISFIED"
+    },
+    {
+      "assumption": "TERMINATES",
+      "evidence": "finite bounded bank",
+      "mechanism_id": "M0006",
+      "status": "SATISFIED"
+    },
+    {
+      "assumption": "DETERMINISTIC",
+      "evidence": "stable score and ID tie ordering",
+      "mechanism_id": "M0005",
+      "status": "SATISFIED"
+    },
+    {
+      "assumption": "PURE",
+      "evidence": "composition cannot modify governor or evaluator",
+      "mechanism_id": "M0005",
+      "status": "SATISFIED"
+    },
+    {
+      "assumption": "COMPATIBLE_STAGES",
+      "evidence": "external causal admissibility verification",
+      "mechanism_id": "M0005",
+      "status": "SATISFIED"
+    }
+  ],
+  "irrelevant": 0,
+  "passed": true,
+  "satisfied": 5,
+  "selection_sha256": "6d4f1c620f2977e20289d8a3ff9425943bfe33855091db143ed7c375ae5c3eec",
+  "unknown": 0,
+  "violated": 0
+}

@@ -1,0 +1,10 @@
+{
+  "M1_meta_deterministic_cost": 44.0,
+  "M1_meta_wall_time_ns": 4917400.0,
+  "M2_meta_deterministic_cost": 36.0,
+  "M2_meta_wall_time_ns": 4771400.0,
+  "fixed_runtime_overhead_classified_separately": true,
+  "meta_deterministic_cost_gain": 0.18181818181818182,
+  "meta_wall_time_gain": 0.02969048684264042,
+  "wall_time_not_conflated_with_deterministic_cost": true
+}

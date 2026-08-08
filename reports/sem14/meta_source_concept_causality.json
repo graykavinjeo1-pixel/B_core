@@ -1,0 +1,10 @@
+{
+  "M0005_causal_effect_observed": true,
+  "M0005_predicted_dimension": "two-stage plan accuracy and descendant cost",
+  "M0006_causal_effect_observed": true,
+  "M0006_predicted_dimension": "assumption probes",
+  "combined_effect_matches_components": true,
+  "generic_optimizer_relabeling": false,
+  "passed": true,
+  "selection_sha256": "6d4f1c620f2977e20289d8a3ff9425943bfe33855091db143ed7c375ae5c3eec"
+}

@@ -1,0 +1,99 @@
+{
+  "max_meta_source_concepts_composed": 2,
+  "passed": true,
+  "retrieval": {
+    "full_catalog_scan": false,
+    "human_concept_id_assignment": false,
+    "mode": "BOUNDED_ROUTING_TOP_K",
+    "routes": [
+      {
+        "observed_feature": "REPEATED_CAUSAL_FAILURE_SIGNATURE",
+        "ranked": [
+          {
+            "domain": "EXTERNAL_DEFINITION",
+            "mechanism_id": "M0006",
+            "rank": 1,
+            "source_concept_ids": [
+              "C000012"
+            ],
+            "transform": "QUOTIENT_PARTITION"
+          },
+          {
+            "domain": "EXTERNAL_DEFINITION",
+            "mechanism_id": "M0007",
+            "rank": 2,
+            "source_concept_ids": [
+              "C000011"
+            ],
+            "transform": "SCOPED_RELATION"
+          },
+          {
+            "domain": "MATHEMATICS",
+            "mechanism_id": "M0008",
+            "rank": 3,
+            "source_concept_ids": [
+              "C000006",
+              "C000010"
+            ],
+            "transform": "REVERSIBLE_STATE_TRANSFORM"
+          }
+        ]
+      },
+      {
+        "observed_feature": "SINGLE_PLAN_INTERACTION_CEILING",
+        "ranked": [
+          {
+            "domain": "PROGRAMMING",
+            "mechanism_id": "M0005",
+            "rank": 1,
+            "source_concept_ids": [
+              "C000010"
+            ],
+            "transform": "STAGE_COMPOSITION"
+          },
+          {
+            "domain": "MATHEMATICS",
+            "mechanism_id": "M0001",
+            "rank": 2,
+            "source_concept_ids": [
+              "C000006",
+              "C000007"
+            ],
+            "transform": "STATE_EVOLUTION"
+          },
+          {
+            "domain": "DATA_TRANSFORM",
+            "mechanism_id": "M0003",
+            "rank": 3,
+            "source_concept_ids": [
+              "C000008"
+            ],
+            "transform": "GUARDED_TRAVERSAL"
+          }
+        ]
+      }
+    ],
+    "routing_false_negatives": 0,
+    "top_k": 3
+  },
+  "selected": [
+    {
+      "effect": "partition failures by stable causal signature and reuse rejection evidence",
+      "mechanism_id": "M0006",
+      "source_concept_ids": [
+        "C000012"
+      ],
+      "transform": "QUOTIENT_PARTITION"
+    },
+    {
+      "effect": "form the smallest compatible two-stage meta plan",
+      "mechanism_id": "M0005",
+      "source_concept_ids": [
+        "C000010"
+      ],
+      "transform": "STAGE_COMPOSITION"
+    }
+  ],
+  "smallest_sufficient_causal_set": true,
+  "weakness_sha256": "ccb0b242fabd99a58a765148032a354a87cf8e64e078a310329f339dc58e9be9"
+}

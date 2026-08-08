@@ -1,0 +1,11 @@
+{
+  "M1_meta_active_concepts": 1,
+  "M1_meta_peak_frontier": 3,
+  "M2_meta_active_concepts": 2,
+  "M2_meta_peak_frontier": 3,
+  "bounded_top_k": 3,
+  "full_catalog_scans": 0,
+  "max_meta_source_concepts_composed": 2,
+  "passed": true,
+  "routing_false_negatives": 0
+}

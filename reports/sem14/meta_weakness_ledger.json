@@ -1,0 +1,28 @@
+{
+  "M1_meta_self_observation": true,
+  "family_labels_exposed_to_engine": false,
+  "meta_weaknesses_detected": 1,
+  "no_actionable_meta_weakness_events": 0,
+  "records": [
+    {
+      "actionable_status": "ACTIONABLE_META_WEAKNESS",
+      "causal_hypothesis": "Persisting causal rejection classes and composing the smallest compatible two-stage mechanism set will reduce repeated probing and remove the single-plan ceiling.",
+      "confidence": 0.99,
+      "current_engine": "M1",
+      "measured_cost": {
+        "assumption_probes_per_actionable_problem": 6.0,
+        "composition_plan_misses": 16,
+        "excess_candidates_generated": 0,
+        "invalid_candidates_generated": 0
+      },
+      "observed_behavior": [
+        "causal failure signatures are re-probed across independent challenges",
+        "one admissible mechanism is selected when interaction evidence supports a two-stage plan"
+      ],
+      "repeats_SEM13_candidate_reduction_weakness": false,
+      "weakness_id": "M1-MW-AUTO-0001"
+    }
+  ],
+  "target_component_supplied_by_operator": false,
+  "verified": true
+}

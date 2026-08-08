@@ -1,0 +1,7 @@
+{
+  "M1_core_total_deployable_bytes": 178776,
+  "M2_core_total_deployable_bytes": 183382,
+  "meta_core_bloat_ratio": 0.025764084664608226,
+  "meta_gain_per_added_byte": 0.00003947420360794221,
+  "size_decrease_required": false
+}

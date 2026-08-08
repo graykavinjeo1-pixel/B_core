@@ -1,0 +1,23 @@
+{
+  "M1_derived": {
+    "candidate_efficiency": 60,
+    "meta_cost": 44.0,
+    "primary_descendant_cost": 836.5,
+    "regressions": 0,
+    "verified_improvements": 60
+  },
+  "M2_derived": {
+    "candidate_efficiency": 60,
+    "meta_cost": 36.0,
+    "primary_descendant_cost": 623.5,
+    "regressions": 0,
+    "verified_improvements": 60
+  },
+  "causal_benefit": true,
+  "lower_descendant_cost": true,
+  "lower_meta_cost": true,
+  "same_fresh_ordinary_weaknesses": true,
+  "same_frozen_external_evaluator": true,
+  "same_quality_or_better": true,
+  "second_order_downstream_gain": 0.2546323968918111
+}

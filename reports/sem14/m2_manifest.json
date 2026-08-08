@@ -1,0 +1,79 @@
+{
+  "M2_proposed_from_M1": true,
+  "acceptance_criteria_hash": "548035b4f3a27146345608e73c2cd215a98b02317c4437c8f9bbb4ee485ecc4c",
+  "binary_sha256": "c0b01e49fee392dbe76bfddf8f2b749d714ba166f175f19189e26478ece84ca9",
+  "build": {
+    "commands": [
+      {
+        "command": "cargo fmt --all",
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success": true
+      },
+      {
+        "command": "cargo fmt --all -- --check",
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success": true
+      },
+      {
+        "command": "cargo clippy --workspace --all-targets --offline -- -D warnings",
+        "exit_code": 0,
+        "stderr_sha256": "e3f7c96a0e90e394ea367c7da2503c1eeb85acd5405e3aec434e876c18222f7b",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success": true
+      },
+      {
+        "command": "cargo test --workspace --offline",
+        "exit_code": 0,
+        "stderr_sha256": "5977b0be1212c24f237d26db648ec6e38a0b36cea455d98011cba7f360724c71",
+        "stdout_sha256": "e7ae4f6ee710ea7277252189c94c3ba5536f0265a5f38bc304a9c12128715a26",
+        "success": true
+      },
+      {
+        "command": "cargo build --workspace --offline",
+        "exit_code": 0,
+        "stderr_sha256": "4e8bd939406bdc854b1e571806065ef64affdbcaf991544fccac5f3d2f5b8618",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success": true
+      },
+      {
+        "command": "cargo build --workspace --release --offline",
+        "exit_code": 0,
+        "stderr_sha256": "d94b423bd707e25107e4380503bff492611f4e7260cd534b7862f16cdfd42351",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success": true
+      }
+    ],
+    "debug_binary_bytes": 315904,
+    "debug_binary_sha256": "45b9bad9c675ff2c4e5e008cc54925b18018a76d7effa68765b830d78012eb93",
+    "debug_build_pass": true,
+    "engine_id": "M2",
+    "mode": {
+      "failure_evidence_reuse": true,
+      "multi_mechanism_planning": true
+    },
+    "release_binary_bytes": 178176,
+    "release_binary_sha256": "c0b01e49fee392dbe76bfddf8f2b749d714ba166f175f19189e26478ece84ca9",
+    "release_build_pass": true,
+    "rustfmt_pass": true,
+    "sandbox_contained": true,
+    "source_bytes": 5206,
+    "source_sha256": "87a751f0d8ca292eb72e385a66451842fc5ed16cb51e2e3902d3b2470282e4b9",
+    "strict_clippy_pass": true,
+    "tests_pass": true
+  },
+  "evaluator_hash": "20d87b7e48f7d39fcd29e9f94b768a805ba796c92c3b14c3e3fe43a78152cecd",
+  "governor_hash": "1ea88cf1b4dcce2f5362e90103833a7442a636d07ec52f8cc80a07052d7041af",
+  "lineage_sha256": "3237e35c7db31177e0d0d359b0270ff0e9cee2f36efbf9ab8c3dd319ede8a30d",
+  "meta_generation": "M2",
+  "mode": {
+    "failure_evidence_reuse": true,
+    "multi_mechanism_planning": true
+  },
+  "parent_generation": "M1",
+  "production_promoted": false,
+  "self_improvement_engine_hash": "87a751f0d8ca292eb72e385a66451842fc5ed16cb51e2e3902d3b2470282e4b9"
+}

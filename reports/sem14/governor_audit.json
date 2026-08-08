@@ -1,0 +1,19 @@
+{
+  "M3_attempted": false,
+  "acceptance_criteria_hash_unchanged": true,
+  "acceptance_hash_after": "548035b4f3a27146345608e73c2cd215a98b02317c4437c8f9bbb4ee485ecc4c",
+  "acceptance_hash_before": "548035b4f3a27146345608e73c2cd215a98b02317c4437c8f9bbb4ee485ecc4c",
+  "evaluator_hash_after": "20d87b7e48f7d39fcd29e9f94b768a805ba796c92c3b14c3e3fe43a78152cecd",
+  "evaluator_hash_before": "20d87b7e48f7d39fcd29e9f94b768a805ba796c92c3b14c3e3fe43a78152cecd",
+  "evaluator_hash_unchanged": true,
+  "forbidden_meta_governor_proposals": 0,
+  "governor_hash_after": "1ea88cf1b4dcce2f5362e90103833a7442a636d07ec52f8cc80a07052d7041af",
+  "governor_hash_before": "1ea88cf1b4dcce2f5362e90103833a7442a636d07ec52f8cc80a07052d7041af",
+  "governor_hash_unchanged": true,
+  "meta_governor_mutation_accepted": 0,
+  "passed": true,
+  "production_mutations": 0,
+  "protected_tree_hash_after": "489cbb2509a7ddee0029b63437f2eec0ba2ac7dbd454c4be25a9cadbd081a283",
+  "protected_tree_hash_before": "489cbb2509a7ddee0029b63437f2eec0ba2ac7dbd454c4be25a9cadbd081a283",
+  "protected_tree_unchanged": true
+}

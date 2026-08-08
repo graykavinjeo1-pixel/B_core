@@ -1,0 +1,11 @@
+{
+  "benchmark_specific_branches": 0,
+  "blind_set_recognition": 0,
+  "evaluator_dependent_conditionals": 0,
+  "expected_answer_access": 0,
+  "forbidden_source_tokens_found": [],
+  "meta_evaluator_gaming_events": 0,
+  "metric_suppression": 0,
+  "passed": true,
+  "test_skipping": 0
+}
