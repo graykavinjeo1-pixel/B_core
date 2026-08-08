@@ -1,0 +1,6 @@
+{
+  "evaluator_hash": "20d87b7e48f7d39fcd29e9f94b768a805ba796c92c3b14c3e3fe43a78152cecd",
+  "frozen_before_M2": true,
+  "policy": "SEM14-EXTERNAL-EVALUATOR-V1|IDENTICAL_INPUTS|TRUTH_EXTERNAL|QUALITY_NOT_TRADED_FOR_SPEED|BLIND_UNOPENED_UNTIL_M2_FREEZE",
+  "truth_authority_external": true
+}

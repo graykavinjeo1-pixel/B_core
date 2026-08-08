@@ -1,0 +1,300 @@
+{
+  "set_id": "META_DIAGNOSTIC_SET",
+  "count": 36,
+  "seed_commitment_sha256": "4181abdbd60e086104e801d124b1a5b6a85aeb93ea37abd4af2f1d7e1745cfac",
+  "generator_version": "SEM14-SERIAL-META-PRESSURE-V1",
+  "challenges": [
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-001",
+      "opaque_schema_sha256": "234b3b048f121b4e9be15b6432f0005ab369e5793b3a82dc0cb9f16f8f70cc51",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-002",
+      "opaque_schema_sha256": "a92f3bd75c2005a9a6b878e316d1ce78c8ffba6c5999e804399030c9428b7bf3",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-003",
+      "opaque_schema_sha256": "40b61bbe87398afce697f1429756cabf5d67b33849d436145b6fb05f39487379",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-004",
+      "opaque_schema_sha256": "363d4e1fc7224af682b27e30e57af5de23a51e521b02e5b05b4519d35972f7d1",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-005",
+      "opaque_schema_sha256": "69b609ae0434f1db0e5c32b8f22c030348c9a7809d641323a31bb598563056cb",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-006",
+      "opaque_schema_sha256": "11c867ff46109f8eb5086ef1ab127557e677cf65f6975a76510bccecd41e860e",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-007",
+      "opaque_schema_sha256": "27982aa8fecd709e747f17aacd26765a2051b21b2629f2e13f153597028d954f",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-008",
+      "opaque_schema_sha256": "433b458acb58bcbfe6dfafa581b6bf31acd2472f2a4773b4887231bff8aebdea",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-009",
+      "opaque_schema_sha256": "445c0bf88a1d3f80977bb358d50e2d92b4358f4e14c28d69528e2df06a12c70e",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-010",
+      "opaque_schema_sha256": "9033bfa72790309e4573d608ef587cc42feac7ad836a2eeecdb43ed35efa12b1",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-011",
+      "opaque_schema_sha256": "11b0843b0ab694d2a90af2dc12ed395e9f0307e884d771f9b60257b1872f8022",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-012",
+      "opaque_schema_sha256": "07aef770d7e479ba1c2aa26882b9e1faf0c85d7298c2e47fea8d68e7f6ec4ba3",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-013",
+      "opaque_schema_sha256": "cacd27689b4876eba8ef4cb897746ed166775752b0b4718eba3099218d969a69",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-014",
+      "opaque_schema_sha256": "22c8d2337af69763cc66482b24e03afe4da6835a57c75e982a7df22d17e244db",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-015",
+      "opaque_schema_sha256": "7cbd350ec563f05afd4bcfd169fc1c2d0e31f8c1ff0ead01f07ee2f6b845dcd2",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-016",
+      "opaque_schema_sha256": "b817371d9e64d9272638cab66511765d64480df0cb40c547a0db98febbaa904c",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-017",
+      "opaque_schema_sha256": "55c3e6044a2214a32a53e4db91fb8e3a6ccd86a97eb90cee8c6c2025bfc9e49a",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-018",
+      "opaque_schema_sha256": "f34ac4c157b7c29a7751553db2f0fd06635185d59e062b4b18ae49c92497489a",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-019",
+      "opaque_schema_sha256": "dd6629c3d47419914ded3cf51277dd7f4cc4e5090079eac8059486f0fc2ed648",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-020",
+      "opaque_schema_sha256": "4378f2e68fe4b502e213cbbf7c31acda9b831b206d15ea518365ac83386cac6a",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-021",
+      "opaque_schema_sha256": "0a4b54ec100c2a36d2bebc5bc834ccf57717c6a6d087b971d559e45531c0c8bd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-022",
+      "opaque_schema_sha256": "ca5a77d044777f359c77c24e7417f57162115e85419f7badd94342a5c74d03ad",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-023",
+      "opaque_schema_sha256": "bfc425b306568db638bf0096f70d265b7296776f73a57b9f2677093f5136f100",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-024",
+      "opaque_schema_sha256": "5932d71850698a9aeb818fbc7c525beea7f43c08acf7dc6e5efd32ff1659b2e9",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-025",
+      "opaque_schema_sha256": "f4a9291ffc5e6d6fc79f671e37cec722598634a4f42609128daac2c8de678247",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-026",
+      "opaque_schema_sha256": "b370fb8c3c7680c97ea98d07623db906da8ffe5fab3f5b9e3b7efb8485ed1267",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-027",
+      "opaque_schema_sha256": "185206aafbcdc5ddd6e39c926d4728580ef2bb512c1b04c5b50ac061c8b09518",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-028",
+      "opaque_schema_sha256": "7f873961d973d6c3de8e8758dfa21be82b8a9b496bc8d8d09461b0b87ee536b6",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-029",
+      "opaque_schema_sha256": "3e894d44d97a3cdcd091181c5e45fce8af2912bbc5a95aded84ec77b2bb2bcc4",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-030",
+      "opaque_schema_sha256": "ddabff07e33de73635f7008df0bdaee5ece02e9971d808518c0d5e25f5842a0e",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-031",
+      "opaque_schema_sha256": "72e73b4c9136fabec159499cea57ec183d21348b22ae3e5db19e786b60739b3d",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-032",
+      "opaque_schema_sha256": "994959c34923d160a4b855631cb2feaa70a27db970291aabbdf88cd24df3717b",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-033",
+      "opaque_schema_sha256": "5aab71a1f81d3052fc7775e59e634f881749a699bd65e788a00f4c798009e4da",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-034",
+      "opaque_schema_sha256": "c85894dda7ec22b90deafe7e347b0d5b62dd808ed01cc549f2795cb1dfa7ea5a",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-035",
+      "opaque_schema_sha256": "860d3022920b217a8ca2c3b6f268ea3fc5188a231e6d5f404dd6fa87ba89bea2",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    },
+    {
+      "challenge_id": "META_DIAGNOSTIC_SET-036",
+      "opaque_schema_sha256": "1acfce8142d4a20325117a5f2f1b9091f5c0325c2fd1b9e3410e077093f0b5fd",
+      "family_exposed_to_engine": false,
+      "truth_exposed_to_engine": false,
+      "expected_output_exposed_to_engine": false,
+      "frozen": true
+    }
+  ],
+  "hidden_inputs_included": false,
+  "truth_included": false,
+  "frozen_before_m2": true,
+  "manifest_sha256": "ca47dd479cfcc41cee8211085160d853b402c8c6fb73aec936dd5b46d3ce163d"
+}

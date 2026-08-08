@@ -1,0 +1,17 @@
+{
+  "blind_seed_commitment": "c3ce959637d630d133090e2a00cf42128207b49f615bcf6ba2a84cb8c2441bcb",
+  "diagnostic_seed_commitment": "4181abdbd60e086104e801d124b1a5b6a85aeb93ea37abd4af2f1d7e1745cfac",
+  "families": [
+    "MECHANISM_SELECTION_PRESSURE",
+    "DIAGNOSTIC_AMBIGUITY",
+    "MULTI_MECHANISM_META_PLANNING",
+    "PRIOR_FAILURE_EVIDENCE_REUSE",
+    "NOVEL_MIXED_META_PROBLEM",
+    "NO_ACTIONABLE_META_WEAKNESS"
+  ],
+  "frozen_before_M2": true,
+  "regime_names_exposed_to_engine": false,
+  "schedule_id": "SEM14-META-PRESSURES-V1",
+  "target_components_exposed_to_engine": false,
+  "validation_seed_commitment": "213bd378a46e3620b00d9127a9da7dfe47a551c6e86f9c573e92235e0d192eec"
+}

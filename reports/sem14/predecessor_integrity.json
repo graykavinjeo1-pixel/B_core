@@ -1,0 +1,16 @@
+{
+  "M1_binary_sha256": "5b6c2e496808d9371132487e1d165a5e589a3f3fe6ee8fa89fa5f1b6cb5f3bd2",
+  "M1_source_sha256": "95fa2e599aa6c87ab96210c40451b9ff45eb57b7de4d1064cec5456ca39df3e0",
+  "acceptance_unchanged_in_SEM13": true,
+  "core_dockability_preserved": true,
+  "evaluator_unchanged_in_SEM13": true,
+  "governor_unchanged_in_SEM13": true,
+  "index_sha256": "77b17332b5ff7204c28e9445e689276049afd6e89308e7e242904570a283e6fc",
+  "predecessor_integrity": "PASS",
+  "sem13_commit": "6d161ebabfe326cde8f13ab7eaa940bc45908c08",
+  "sem13_commit_object_type": "commit",
+  "sem13_level_A": true,
+  "sem13_level_B": true,
+  "sem13_level_C": true,
+  "semantic_state_sha256": "d1abd8de410f5284773f1e582937922dc514513ed738eb9f04e8bf2735185d3c"
+}

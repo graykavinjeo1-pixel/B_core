@@ -1,0 +1,18 @@
+{
+  "M3_allowed": false,
+  "campaign_id": "SEM14-BOUNDED-SERIAL-META-RECURSION-0001",
+  "diagnostic_challenges": 36,
+  "external_llm_calls_allowed": 0,
+  "fresh_blind_challenges": 80,
+  "infrastructure_commit": "97f630717ca3faf8b8910fc399d4d4df4d0de054",
+  "local_teacher_calls_allowed": 0,
+  "maximum_candidate_generation": "M2",
+  "meta_generation_base": "M1",
+  "meta_governor_mutation_allowed": false,
+  "network_writes_allowed": 0,
+  "predecessor_commit": "6d161ebabfe326cde8f13ab7eaa940bc45908c08",
+  "production_promotion_allowed": false,
+  "remote_executions_allowed": 0,
+  "sem15_started": false,
+  "validation_challenges": 42
+}
