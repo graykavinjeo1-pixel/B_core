@@ -1,0 +1,27 @@
+{
+  "acceptance_criteria_mutable": false,
+  "architecture_change_requires_causal_ceiling": true,
+  "campaign_id": "SEM17-AUTONOMOUS-FRONTIER-ESCAPE-0001",
+  "equal_resource_budget": {
+    "build_test": 8,
+    "candidate": 8,
+    "diagnostic": 64,
+    "experiment": 32,
+    "search": 64
+  },
+  "evaluator_mutable": false,
+  "external_llm_calls_allowed": 0,
+  "final_fresh_blind_challenges": 192,
+  "frontier_diagnostic_per_wave": 18,
+  "frontier_validation_per_wave": 24,
+  "frontier_waves_budget": 3,
+  "governor_mutable": false,
+  "infrastructure_commit": "f775d3ff2c629d25aabb79f34258ddf21dc038e8",
+  "local_teacher_calls_allowed": 0,
+  "network_reads_allowed": 0,
+  "network_writes_allowed": 0,
+  "predecessor_commit": "e635aaf85c2a6aa191671051f849f1b0028735d0",
+  "production_promotion_allowed": false,
+  "remote_executions_allowed": 0,
+  "sem18_started": false
+}

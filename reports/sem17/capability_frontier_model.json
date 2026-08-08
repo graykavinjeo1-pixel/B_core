@@ -1,0 +1,39 @@
+{
+  "available_experiments": [
+    "PREDECESSOR_CAUSAL_PROBES"
+  ],
+  "available_meta_mechanisms": [
+    "SEM16_MD3_META_ENGINE"
+  ],
+  "available_reasoning_mechanisms": [
+    "SEM12_D3_OBJECT_ENGINE"
+  ],
+  "available_representations": [
+    "PREDECESSOR_RELATION_FORMAT"
+  ],
+  "available_semantic_primitives": [
+    "GEN6_AND_PRIOR_FROZEN_CATALOG"
+  ],
+  "currently_failed_problem_classes": [
+    "F1_REPRESENTATIONAL_GAP",
+    "F2_NOVEL_MECHANISM_GAP",
+    "F3_EXPERIMENT_GAP",
+    "F4_SEARCH_CONTROL_GAP",
+    "F5_CROSS_DOMAIN_NOVELTY",
+    "F8_MIXED_NEW_FRONTIER"
+  ],
+  "currently_solved_problem_classes": [
+    "F6_EXISTING_CAPABILITY_CONTROL"
+  ],
+  "descriptive_state_only": true,
+  "dominant_failure_modes": [
+    "UNREPRESENTABLE_MULTI_HOP_RELATION",
+    "NO_DISCRIMINATING_COUNTERFACTUAL_PROBE",
+    "UNBOUNDED_CONTROL_FRONTIER"
+  ],
+  "evaluation_authority": false,
+  "resource_limits": {
+    "bounded_composition": true,
+    "full_catalog_scan": false
+  }
+}

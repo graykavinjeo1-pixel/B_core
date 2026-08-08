@@ -1,0 +1,1385 @@
+[
+  {
+    "wave": 1,
+    "diagnostic_family": "REPRESENTATIONAL_GAP",
+    "expected_limit_not_disclosed": "HIDDEN_FROM_FRONTIER_ENGINE",
+    "diagnostic": {
+      "set_id": "WAVE_1_FRONTIER_DIAGNOSTIC",
+      "family": "REPRESENTATIONAL_GAP",
+      "count": 18,
+      "seed": 1702360659414536614,
+      "seed_commitment_sha256": "3fb4b7cf9f30a0dd3bd26092c631c7ece473cdea46de43172dcf2238d66f86f2",
+      "challenge_commitments": [
+        {
+          "challenge_id": "WAVE_1_FRONTIER_DIAGNOSTIC-001",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "15cb1643e092b3256f52f15705edd199e09700773a1ff33489f32a87e57d4950",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_FRONTIER_DIAGNOSTIC-002",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "af1cd629d66d6dc4c0b36f11190061561807cab529f4f6610812e157c8c0042b",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_FRONTIER_DIAGNOSTIC-003",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "6fd92ebf3109a07890e4233394da1362cfe1492239ac6a6a609477b3d0900d80",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_FRONTIER_DIAGNOSTIC-004",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "e166e750c37abce2ec0b0a8f9a91149f1156db7becdb310db8c7289b2c0f23c0",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_FRONTIER_DIAGNOSTIC-005",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "5a39d62a28d44eec242729d5e5529a85cfe564d24b555dc794bbfa943d150b31",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_FRONTIER_DIAGNOSTIC-006",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "9d4af78aca6dca3e49cd5b63d1a5ebdc985b37875a5b5008c6b2b883a9fa1cab",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_FRONTIER_DIAGNOSTIC-007",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "a25c455ffb345cf962d0733123de4e3ffba8e144427699f235707648fd32698d",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_FRONTIER_DIAGNOSTIC-008",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "36c6ed77304ea9238f221eca55583e063d2f5113611edd3500ce94ebf8a574b5",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_FRONTIER_DIAGNOSTIC-009",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "920399df1406230cb68ed83fb5056da1b27a54cbf9f6b8525c89df9afe40fea4",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_FRONTIER_DIAGNOSTIC-010",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "e6d4ffb53fc5ee68257877929ccf9739eb46fe8c1b61c5771a19aa535149f669",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_FRONTIER_DIAGNOSTIC-011",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "7ea75c2272133a7af91c009c19d66f5ba38b7d630ffe1369f5817cdc35c90c97",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_FRONTIER_DIAGNOSTIC-012",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "24b20d80e670564f1e42add2a36e517042181d0eb24a0ce1e14a6d416477b70b",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_FRONTIER_DIAGNOSTIC-013",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "fc2381f1d2b26a99e13286cf4f1ea213cadf858436f8456e2052a40ac74401a7",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_FRONTIER_DIAGNOSTIC-014",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "93a524e316fd048330eb1b2aa86d9da704a0afb589557a22ad3a3215f0c56793",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_FRONTIER_DIAGNOSTIC-015",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "7b13fd2ecbdae7b9b7ce296038507803815c28199597468d27bd952ad4ccf3b0",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_FRONTIER_DIAGNOSTIC-016",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "da38024fc35a11cc3bd7b5d3255e000ecd4a4a64bf7a0d370d446c435b3b956e",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_FRONTIER_DIAGNOSTIC-017",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "042911d0085c8cb07352a28afb36a9c9ade5cb31d67454fe620ad3ae0c6a6b6a",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_FRONTIER_DIAGNOSTIC-018",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "a8afc57b152ca89117325cffd64babf89a4624224c7c5a987bfa93b35303bfab",
+          "truth_exposed": false
+        }
+      ],
+      "truth_exposed_to_engine": false,
+      "frozen_before_capability_design": true,
+      "manifest_sha256": "7f2eb7dee62c4e5cc7bcc9e3106ff4b6afb275ff030421dcf66a26d7bca73bcd"
+    },
+    "validation": {
+      "set_id": "WAVE_1_FRONTIER_VALIDATION",
+      "family": "REPRESENTATIONAL_GAP",
+      "count": 24,
+      "seed": 1702360659414528285,
+      "seed_commitment_sha256": "39bdc1adb8ebf88c3563b53afe0a8e5520e0f851f93a5cc11ee8cc37842c01c6",
+      "challenge_commitments": [
+        {
+          "challenge_id": "WAVE_1_FRONTIER_VALIDATION-001",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "514cb4b12127bd5e51621a48fcc1eb778d4cb54497650f8abc376658b41bca8f",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_FRONTIER_VALIDATION-002",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "f3979dee918a6199e1ae8282fef55939b46752fbfd75b7530b187cb1633efe08",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_FRONTIER_VALIDATION-003",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "7ca1c617fdb0d5bdb0b0ff16b2bf15c17fff805ab422d13b7386bb33359a19c1",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_FRONTIER_VALIDATION-004",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "e38f569210fd98aa649d3c22f736e7d4d36cedb7ffe730048caa802a8177e2b6",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_FRONTIER_VALIDATION-005",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "852b5b1fc9fcb59c6a5568e5e4ccd11872c9dffe76d6863d675cc37f0a5303dd",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_FRONTIER_VALIDATION-006",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "108d648a233331e8e9de5f61336531f0f97408b38a93367aa0f56d5fa8da72fb",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_FRONTIER_VALIDATION-007",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "3fb092b1498c7288569c737c03678fd8a5ac41d04408c055e8d462582fa702df",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_FRONTIER_VALIDATION-008",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "874f0d2a3fc8b12a5cbae9e74e2a15a50c98a6c5953c09d489f9344e1cae31c1",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_FRONTIER_VALIDATION-009",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "91bd5447ca429ddc02a424ab7e5feb4c63a64d12c4d79c43d0a252a04824406f",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_FRONTIER_VALIDATION-010",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "75fcf803df6a9d2e8fa49bf22bb38c4456b1c37e5951f37fd2c204aec78f90fc",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_FRONTIER_VALIDATION-011",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "2e30c0955131fb9d582aad20931b8c097dd5faf59e7c79e8f4180b4475985b98",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_FRONTIER_VALIDATION-012",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "61b5d97633563618c38e5212a8715151c26f8608921de295ffe7e79fd2752d54",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_FRONTIER_VALIDATION-013",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "15c89bc88d37b578fd0975ff7683fa90da461a5087cc82c17049726fe048437e",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_FRONTIER_VALIDATION-014",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "963a0e7c11f18244eb6a91dde8b16a5c63f0c6078de9eb6694399f401baceb94",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_FRONTIER_VALIDATION-015",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "d89252a107428797913c9069902d6b4973c95c0cd9047c194f0f6cf12bf30b8c",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_FRONTIER_VALIDATION-016",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "030a64c5e333fbf049dd7744c8110298c97b537a63336b848c52e549443b4e5e",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_FRONTIER_VALIDATION-017",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "d5f27189e075e75cb3a52cbf09db311fadcfdd5a7ce1e347f38469e2395118ac",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_FRONTIER_VALIDATION-018",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "b4ac65d343b7358ea3e69827015747aab5999989639449c44687c52ff086cc5e",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_FRONTIER_VALIDATION-019",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "bac603f842cf6ac609563f943fac9313169ddcbc4ce7dd3d886cf6da95923433",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_FRONTIER_VALIDATION-020",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "cf8b83115e1d61b92e5aca6915dd66009d0468b9cc13e329f3c91c852446388d",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_FRONTIER_VALIDATION-021",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "a87c460e9a654d1c436d76277e79620c945c80c6936df3313d1725ed9a192110",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_FRONTIER_VALIDATION-022",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "03b740d7336d7af2235deaacbfdcb0de377550fce4e5fd9ffa089f72c39f6580",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_FRONTIER_VALIDATION-023",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "81bb02afb61fd0bfa21110875d484a25613494ce1d6ff31ebe1acd7b4b6bb8f5",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_FRONTIER_VALIDATION-024",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "b8d18dc3a8cd877f896a520aae99fba19ce6549796bae0e64ea75ea266e4c8e4",
+          "truth_exposed": false
+        }
+      ],
+      "truth_exposed_to_engine": false,
+      "frozen_before_capability_design": true,
+      "manifest_sha256": "b5fcad89dce7fb5139505613a820ad602c375f84ffc511d63c50e3fcf0b47078"
+    },
+    "control": {
+      "set_id": "WAVE_1_SUFFICIENT_CONTROL",
+      "family": "EXISTING_CAPABILITY_CONTROL",
+      "count": 8,
+      "seed": 1702360659414532119,
+      "seed_commitment_sha256": "24ac4208a0e5cef01eda39a0db2e6832827a00cc94d6e30bd70a58b91517d90d",
+      "challenge_commitments": [
+        {
+          "challenge_id": "WAVE_1_SUFFICIENT_CONTROL-001",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "abb75f6cde5af4f5b0f163e83ea169ed297e1ca4d50589eedf5f63a45c4a289e",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_SUFFICIENT_CONTROL-002",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "e2364b85d341bdf454c10e050b9dfc01ca4aa34dd57eb3aef28bcbf83f26a9d6",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_SUFFICIENT_CONTROL-003",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "c846d54d24ea56a6261928d39925bbe21db5961abf986854a5a1cb00e2a2f443",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_SUFFICIENT_CONTROL-004",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "c4d504c6447f67e4ffd812150da12a82ca09b23f25eee00addfc790897758caf",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_SUFFICIENT_CONTROL-005",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "715c2a9cac455840a60e9eecc0c9811c8580323494bea1cfe8fa278d3b55b024",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_SUFFICIENT_CONTROL-006",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "d5853ec4ccc4be3e7e8539a7e94b731ced9ed3809cbe4d970d4ea5e568096475",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_SUFFICIENT_CONTROL-007",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "ccfe0f65f9b6b07e653daa8d273325023e21e740551dc4f17d4733cd86cef40b",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_SUFFICIENT_CONTROL-008",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "2b8720b5e38495a2610195235a33590ff401566cf9186d5c9b58874280bf6d29",
+          "truth_exposed": false
+        }
+      ],
+      "truth_exposed_to_engine": false,
+      "frozen_before_capability_design": true,
+      "manifest_sha256": "cf12ae75acc8f5adce78aea94da7d8329cb660558056986669ddace23ac8e356"
+    },
+    "adversarial": {
+      "set_id": "WAVE_1_ADVERSARIAL_NON_APPLICABILITY",
+      "family": "ADVERSARIAL_NON_APPLICABILITY",
+      "count": 8,
+      "seed": 1702360659414527358,
+      "seed_commitment_sha256": "2f810945c760c56fc12bb0a1a127a3ee353a7c1deb7c390f79aa09fade274b23",
+      "challenge_commitments": [
+        {
+          "challenge_id": "WAVE_1_ADVERSARIAL_NON_APPLICABILITY-001",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "253a7c6e665aef7c75647568cc2111b32bc9d53a6bf594c39e5174ebc515b97f",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_ADVERSARIAL_NON_APPLICABILITY-002",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "6f83aa6902476c79770db8f5086540eafff2ce9f3a4f0f3e9e319cdff3bc72f2",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_ADVERSARIAL_NON_APPLICABILITY-003",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "39a7c8953db89073ad3f10c92372dfb6ee90bc3e8d3593f50901c4a93753bf3e",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_ADVERSARIAL_NON_APPLICABILITY-004",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "e4ccc87377b83fd6f88e24be9997a023111a5f377161b7fc974b38083195057c",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_ADVERSARIAL_NON_APPLICABILITY-005",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "fc5018f4c6d59960c98a4f2aad6d6a2c525863b0942e335b3600c6ef579a372d",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_ADVERSARIAL_NON_APPLICABILITY-006",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "70ceb4e48e6807e8ab55209787fc7ebd3c80a1527dc9bfab6a5d61a8030b7a5b",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_ADVERSARIAL_NON_APPLICABILITY-007",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "dd227c547d4042adbc802ca55439dbd8bc38b488fb51817f5b1ca94992b020bb",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_1_ADVERSARIAL_NON_APPLICABILITY-008",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "1b413a2e3994c06f3f884215c3282d9699895af7ebc76100f441cc37dce45d7d",
+          "truth_exposed": false
+        }
+      ],
+      "truth_exposed_to_engine": false,
+      "frozen_before_capability_design": true,
+      "manifest_sha256": "644f24bc27350d36bbbdd3df813ed5912c077bf561efa0ec543aa31b81ceca67"
+    },
+    "capability_name_not_predefined": true,
+    "frozen_before_run": true
+  },
+  {
+    "wave": 2,
+    "diagnostic_family": "EXPERIMENT_GAP",
+    "expected_limit_not_disclosed": "HIDDEN_FROM_FRONTIER_ENGINE",
+    "diagnostic": {
+      "set_id": "WAVE_2_FRONTIER_DIAGNOSTIC",
+      "family": "EXPERIMENT_GAP",
+      "count": 18,
+      "seed": 1702360659682972070,
+      "seed_commitment_sha256": "2c8b9cdef132a9443a22527481cc1f7f89af8a8ce656c15c17b66da6c855fe89",
+      "challenge_commitments": [
+        {
+          "challenge_id": "WAVE_2_FRONTIER_DIAGNOSTIC-001",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "043f3a9ce7d8ba612b91e3672db14a30ed2370ad93b222d6af9ebc9c582a4de5",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_FRONTIER_DIAGNOSTIC-002",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "3c0adc260450048ba0dec072625edf8be3e89330e669b807aab88081149b2e10",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_FRONTIER_DIAGNOSTIC-003",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "ac509f7e1f6d310cff7e335fa0eca18db8654d1dd5f8c4abbe95bbf8d663c688",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_FRONTIER_DIAGNOSTIC-004",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "72e732de14cb7476eb65052ab299edbc7f1f11085af6c1dc581a3edf06e3fe94",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_FRONTIER_DIAGNOSTIC-005",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "b4971e6dc43d85943128cb5b6497a555a7365e9eb2dd18281b4609d67dc5b6d5",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_FRONTIER_DIAGNOSTIC-006",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "3c37311e3efd64d8701d07fc9f890c4958fee7ae2aa0d35b052e69d7723117e0",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_FRONTIER_DIAGNOSTIC-007",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "6868ba71159530677349fe591dd5f8e5c7155fa478ef7678fad3f3ca94e4ff85",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_FRONTIER_DIAGNOSTIC-008",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "d20f3fcdc7126f28af620542b226a34d1cb656be84d62ff99973dba119339366",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_FRONTIER_DIAGNOSTIC-009",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "e80d34708eac5c33be7fa4400f7881c8c458a934b4e420572917e0e50030c910",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_FRONTIER_DIAGNOSTIC-010",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "c015c53469ff1497f009b8edc162c35c1e62800df51e9295f6370ae6db5a4766",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_FRONTIER_DIAGNOSTIC-011",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "f1c9453a099b5edd9fdbfd0a010ff6797bfa70f43f3cfefdddfb8c611edf9a04",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_FRONTIER_DIAGNOSTIC-012",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "804e2ef573996620f334e2c73a85995c8fbe9be7031de409ab5440d6df170e58",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_FRONTIER_DIAGNOSTIC-013",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "92af4de8eca8a2c5a2f41d06ea5cf62559ce29905f9c13b653392889cf83cd12",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_FRONTIER_DIAGNOSTIC-014",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "127e939e073b831de076958c227f4d9ff7e43d519f9d91f7c5eb2b9ca4c7f620",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_FRONTIER_DIAGNOSTIC-015",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "0f84e9fb4312559710eaa331a5b3c89becb7d8a5cc886b0daaca8451448dd906",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_FRONTIER_DIAGNOSTIC-016",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "e0bc9c2ac9dd92ad04c522a782665483508f4b5153a64489fccfedda7e49b32f",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_FRONTIER_DIAGNOSTIC-017",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "7a8f6667827143a790080d712aa3573faa5ef4edf1cf21c07ea5015f61389885",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_FRONTIER_DIAGNOSTIC-018",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "b1c67f9eb818dd65d9262a8be33603123563c96de38926f6ce91ac432cd102f0",
+          "truth_exposed": false
+        }
+      ],
+      "truth_exposed_to_engine": false,
+      "frozen_before_capability_design": true,
+      "manifest_sha256": "38d91bf42a6960b81395332bc01412eb27d9d342f85558b53991c06bf7d2714a"
+    },
+    "validation": {
+      "set_id": "WAVE_2_FRONTIER_VALIDATION",
+      "family": "EXPERIMENT_GAP",
+      "count": 24,
+      "seed": 1702360659682963741,
+      "seed_commitment_sha256": "03ba453eddfce06a9bcaf037d6bc2afdfe07ba36dfeb421a2b909596eb731113",
+      "challenge_commitments": [
+        {
+          "challenge_id": "WAVE_2_FRONTIER_VALIDATION-001",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "39017f705e20dc42e3fd820e4ee7185bae21099be6831c0fbc9a588e32d5c065",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_FRONTIER_VALIDATION-002",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "90f0fb8bda60636bb4a56f3ffaec7f9af71cf692e0875945a1d5deeb7bc56531",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_FRONTIER_VALIDATION-003",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "00bc89f66ea1e6c619ba8dc7e869e456c235ac23c8cd2815d7fc858cbf4755f3",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_FRONTIER_VALIDATION-004",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "9f5548c9ad986e35c1510b6ab765ea4f1c67cb7ef2f079e25dfa9581ffe2f31c",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_FRONTIER_VALIDATION-005",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "28b00b79e65bca440786e63e179a868133982456b860a5000d7cb3684a9a4e37",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_FRONTIER_VALIDATION-006",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "648a6fa1049564583fa8cdd4f27636bcbdbee4aa25458523991772390195880c",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_FRONTIER_VALIDATION-007",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "3c9eab76051428250a1486bf8865e3424085ea5ce2ee44f1709bf2391e5f5b2c",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_FRONTIER_VALIDATION-008",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "2220dd56d813390a46871b4e046ea0558108b42896501fb00e61e5a77e9b0e63",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_FRONTIER_VALIDATION-009",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "11d6140d0d3a6175358e6a81c9de04e94b7ba5ce02b2b1fb29675ea584a2d6ad",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_FRONTIER_VALIDATION-010",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "7f3c629666a72a0b19886423ddab88f4a2b93d8df95ea7fe01c54915099fe3e0",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_FRONTIER_VALIDATION-011",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "16270b01765c07c649c88c6f07b796e157530995b4cf4e13726d76b2725f5e57",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_FRONTIER_VALIDATION-012",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "75d5a2cfa0a47fbdfa5da12f8463e6d3af9a8364d0ebc1fc3556a705dbf5ed5e",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_FRONTIER_VALIDATION-013",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "f36494c894b139bd3fc32b3600e6b1b8bec393dd19208675adfb2d606014bff5",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_FRONTIER_VALIDATION-014",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "f7b81af04f41680ce0d353d48d8a2bd85f1b6ee896be1030c22a7dc4d4805797",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_FRONTIER_VALIDATION-015",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "1304a9a1aba456303bf1a5523c56c18bedbb274bc17ed40d2481ba2c777d5518",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_FRONTIER_VALIDATION-016",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "396f68945029c0b957e68e946eb50ce14087e96c1e6769bc971901e359397596",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_FRONTIER_VALIDATION-017",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "c733811824e783ce7b601deb8645def1d39442f7331921381e538e1b5e26b3cc",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_FRONTIER_VALIDATION-018",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "e03c572e0067ff9f8c7ca7561ce53939f2dfddd36c9c2511d382bbb7c242131b",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_FRONTIER_VALIDATION-019",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "8a000882a6d249b103f52205ca65ed3aacf9dbdec5f64f404f4319c4201822ad",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_FRONTIER_VALIDATION-020",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "9aab8adfa240c2594de59f3d8cc2dc98a26126f4b0f514baa353e86e59c01169",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_FRONTIER_VALIDATION-021",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "94594533e87e14e08c5edc87275aa71857ac73925ab9b06fdac90c410df698b4",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_FRONTIER_VALIDATION-022",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "00cb56248f7b359ddeeee43a5b2a40d0c812b61f389159745e003e83b0c51736",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_FRONTIER_VALIDATION-023",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "67db7a1edc0dcc7135b9b70f41bb758ece2ac771a39a903167c57514e09ab6bf",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_FRONTIER_VALIDATION-024",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "012ffc0195d3bb4b8d82cae70bc677ce349cd81229ddaa5047ee1695f6f8f3b4",
+          "truth_exposed": false
+        }
+      ],
+      "truth_exposed_to_engine": false,
+      "frozen_before_capability_design": true,
+      "manifest_sha256": "49deed854dbc46a38654edf5a4e19d049e19412e751410f10ad84b52e65a3538"
+    },
+    "control": {
+      "set_id": "WAVE_2_SUFFICIENT_CONTROL",
+      "family": "EXISTING_CAPABILITY_CONTROL",
+      "count": 8,
+      "seed": 1702360659682967575,
+      "seed_commitment_sha256": "e7ef571aff9a75f67dddca4c3083379ffb56723ec54e7801ef5dfab63551e3c3",
+      "challenge_commitments": [
+        {
+          "challenge_id": "WAVE_2_SUFFICIENT_CONTROL-001",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "51ed620ef8bb19b404eeff122436a8e043fce0482c7a3ebc87756de2368ee575",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_SUFFICIENT_CONTROL-002",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "0bc924f1e774e5dacc937448d2903ab71cfa8bc62e60954334fb574a847f742d",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_SUFFICIENT_CONTROL-003",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "6a746806c15af3aad5b706472e488aa5ea381d13003dc967b66f2fac80700d5f",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_SUFFICIENT_CONTROL-004",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "c0b4b4ed5ea388fae91a1fea88dbde001b2e3dc41d7e4d2a2adbd0813374f081",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_SUFFICIENT_CONTROL-005",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "5e87c29f5a00c4cac09bf3719aa323ade78e7bd01ab0edd333f6a68ebca651b4",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_SUFFICIENT_CONTROL-006",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "8267013ffed63a5ea393b7b030367ec697971b73ee116c44609f77e43be492cf",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_SUFFICIENT_CONTROL-007",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "ef17e7bb89c66f3831a5a31305f3421fff0a80093dd408e09aa83e458081a0f7",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_SUFFICIENT_CONTROL-008",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "f9a26555d84c88b4bbaddf7f21fd14ffbc074d0d09823e281d7a4a45acbd7603",
+          "truth_exposed": false
+        }
+      ],
+      "truth_exposed_to_engine": false,
+      "frozen_before_capability_design": true,
+      "manifest_sha256": "1148e99f4fa1246bd345634b3d8c69b324da05171f636622cc53ad48da209af8"
+    },
+    "adversarial": {
+      "set_id": "WAVE_2_ADVERSARIAL_NON_APPLICABILITY",
+      "family": "ADVERSARIAL_NON_APPLICABILITY",
+      "count": 8,
+      "seed": 1702360659682962814,
+      "seed_commitment_sha256": "d03a08337a0cfdc689b8b15cd33cc2461c7c5bc152d3a0a74ff43e6ee3ae8593",
+      "challenge_commitments": [
+        {
+          "challenge_id": "WAVE_2_ADVERSARIAL_NON_APPLICABILITY-001",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "090e61d0d4c53a0f755731a3b3edae8d7e2ba129d06583d4c0a15b29d756d393",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_ADVERSARIAL_NON_APPLICABILITY-002",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "b8670cebceff5808461551c82ac4435e6d51af364371807566e0584e84ff7988",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_ADVERSARIAL_NON_APPLICABILITY-003",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "3ed386145310792abd0ed915093d348dc0ed00e93cd5c4c9ed711d136f78f171",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_ADVERSARIAL_NON_APPLICABILITY-004",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "d39750f6f1624f1ca618aac488f831cc29ce54af61b27acac368bd73ce93c851",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_ADVERSARIAL_NON_APPLICABILITY-005",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "68f3a62ce0477a979ee4fc495272a85333aef77dfb1cc62145710bcf57ed6457",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_ADVERSARIAL_NON_APPLICABILITY-006",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "2aeac118f06c37e96bfc2e1503beb7e7378f4b28d8bdaa3ce13f6abfe01e35aa",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_ADVERSARIAL_NON_APPLICABILITY-007",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "eed6ba12b8be4cbf82b30f0c28e3ca2d01382d13cfa0ffb8e4c1755cc5b894c4",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_2_ADVERSARIAL_NON_APPLICABILITY-008",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "9c130d3fce861811f51e7bea0161b8dca48c679da0a93322254f1598658231b6",
+          "truth_exposed": false
+        }
+      ],
+      "truth_exposed_to_engine": false,
+      "frozen_before_capability_design": true,
+      "manifest_sha256": "fee6d341557beb51947c1f8a6e3c648981015c022725d10bd15c02451432bf0f"
+    },
+    "capability_name_not_predefined": true,
+    "frozen_before_run": true
+  },
+  {
+    "wave": 3,
+    "diagnostic_family": "SEARCH_CONTROL_GAP",
+    "expected_limit_not_disclosed": "HIDDEN_FROM_FRONTIER_ENGINE",
+    "diagnostic": {
+      "set_id": "WAVE_3_FRONTIER_DIAGNOSTIC",
+      "family": "SEARCH_CONTROL_GAP",
+      "count": 18,
+      "seed": 1702360659951407526,
+      "seed_commitment_sha256": "17cd4822de21fab9b4eb91f9475ec5a8374288892d5f3cf486ac9b67b072b695",
+      "challenge_commitments": [
+        {
+          "challenge_id": "WAVE_3_FRONTIER_DIAGNOSTIC-001",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "badb7d517a36cff8663985cf2d1b274236111421641ebf75a52f84bd63ca4aeb",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_FRONTIER_DIAGNOSTIC-002",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "f320aea90baea715f2425bb3eda180486407491c5292ec7bdf63857b444f84ea",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_FRONTIER_DIAGNOSTIC-003",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "83bd40c0737d97dd2a74ef98f28cdfe69dc76a287b2f31ecf1e4e3dd4883cf6c",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_FRONTIER_DIAGNOSTIC-004",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "2c499442997a37dcb01bc582f88d3948bc758c873313612318a47b968f67ce97",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_FRONTIER_DIAGNOSTIC-005",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "41faaab414b0acff6f4a0e57b4e1996ba0b9da424efdca5dcb32097f76546d7e",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_FRONTIER_DIAGNOSTIC-006",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "834d06ae1d074caf83461439981be8d4b98202b28bb174c180e6e64fcaddd31c",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_FRONTIER_DIAGNOSTIC-007",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "9ae37b86595bbb2461038ad4a8d62d94c8b36ccc1ad2278ce1579679612a4faf",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_FRONTIER_DIAGNOSTIC-008",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "5ecccccd9d655b358a97859b36a3ac5ce1660a2961b3e3c83f979e75b68867ec",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_FRONTIER_DIAGNOSTIC-009",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "ee3c42eed69ecddefd86bafb310dfbdeddaf6cd1af46aac3da63b51c36eefde3",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_FRONTIER_DIAGNOSTIC-010",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "d25c86d28ac8f29e17d7c3c47696b1d11c09491acf392fac66ba97c88795b959",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_FRONTIER_DIAGNOSTIC-011",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "549c2caaac4f176e514d3c9b9d4dd857a9d182ce7e57fdb90b418c58ccd6c9fd",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_FRONTIER_DIAGNOSTIC-012",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "3a3dd2b3c6badf0ad9be43d0a9c21b522fa9f75f3597dc44a23ef97b26eed888",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_FRONTIER_DIAGNOSTIC-013",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "5036062a99bbc26fcc9664fc8b9745c526a1b407f9d701b8c4fb9731527497b1",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_FRONTIER_DIAGNOSTIC-014",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "9184860a417df11823b881249e3c7905e2d0448ded00051bea1db2b281a63c4e",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_FRONTIER_DIAGNOSTIC-015",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "aea0751ae09972df728c4a6fa9662ad8726010b57a2b403f94a9a0a8630ba62e",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_FRONTIER_DIAGNOSTIC-016",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "3910fc198cfcf193a8fe570417bfc27ac15863412803d5e41c510a91e46de619",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_FRONTIER_DIAGNOSTIC-017",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "9de1e74cf64679f9bdada5dfe68817425c4595b24ebdbaf14701adaa85003fb3",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_FRONTIER_DIAGNOSTIC-018",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "93649802ce5d8431715b46b23ab8e967c9aee8fd64e2f630fa7bcdd4321d33db",
+          "truth_exposed": false
+        }
+      ],
+      "truth_exposed_to_engine": false,
+      "frozen_before_capability_design": true,
+      "manifest_sha256": "81808ac0759b2f7462b70e9d3dadc2c962393832c29ba35bca582641f7250a07"
+    },
+    "validation": {
+      "set_id": "WAVE_3_FRONTIER_VALIDATION",
+      "family": "SEARCH_CONTROL_GAP",
+      "count": 24,
+      "seed": 1702360659951399197,
+      "seed_commitment_sha256": "4c6bb348a2b32ffd9fba44fbe4e1730ab937560306359503b4669bf1f2539759",
+      "challenge_commitments": [
+        {
+          "challenge_id": "WAVE_3_FRONTIER_VALIDATION-001",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "49ffb71fe9690567fa691c154b40bebde60dadd7f2dd380faaf3b8c8775e22f5",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_FRONTIER_VALIDATION-002",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "6e17280bebf22992779ebdb3f1dd132d936804945a9b8ee6d8ab78cb6ba24cbf",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_FRONTIER_VALIDATION-003",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "caf7184f0afd2864f9e956edb11ecd3cb8f21a06cb368e8d8279aaf4f2f7c8b1",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_FRONTIER_VALIDATION-004",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "a254b75bfa873cd58983285069071b3d59b280143d3e7f0d6975a3926836e4db",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_FRONTIER_VALIDATION-005",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "81751191cfc02c19a964e6a6603f952b9ef8f0ee40fd497f17ffa580fa00d22c",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_FRONTIER_VALIDATION-006",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "2012a007fb161bff2ef1f976bb101735341f700fa4b1a7f5b5b1afa7d0bd0990",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_FRONTIER_VALIDATION-007",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "d0b4be6b48683cf37136e7a7e9001a2db86449d33ada75ae2fcede73f787f310",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_FRONTIER_VALIDATION-008",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "f3d76e1926ab659b9b480165f3bb7b878147fb590b973c51912fb6552896712e",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_FRONTIER_VALIDATION-009",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "59b922e5faac8f3286c505353761f8ebb29df0121091a8854e54ad87bd0b1802",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_FRONTIER_VALIDATION-010",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "eeb7dce2d910886019187b4f6584b3a791000e65be64b29df1098fcc0ac50cd2",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_FRONTIER_VALIDATION-011",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "aa3d31a1f6a149ca477d65d2c2d21a2121c287f925d132a51dcd2d7db577deab",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_FRONTIER_VALIDATION-012",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "5862fcbb0460d412461f116a51531a31e0ca64968833eb0b1fcf38e41862c605",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_FRONTIER_VALIDATION-013",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "86958fdc3532ccf35e1661dc22996a9aa1c09ac62d8a02de9a4887caa0584a27",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_FRONTIER_VALIDATION-014",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "cdf44c345f4a49f7f072f2dbe93901ebee563f7e61e242081209b3d9b511433f",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_FRONTIER_VALIDATION-015",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "e2d846dd91474b67145dd5c19f6d9a4222ffcef922535eb7d1c56c2840228f78",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_FRONTIER_VALIDATION-016",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "fcf7d00456318468e1aaac864140e04b926465c5dc2905d82a9443a02966d94a",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_FRONTIER_VALIDATION-017",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "f49a5b66da06ae3090380f298cfbc3bbbf93e29cc6deb8ff35ddbaa49de98cfc",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_FRONTIER_VALIDATION-018",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "8ae3891ba0b4dec7aa9c01b08c1221774496ee1dddad15a9b4b29c12210c1baa",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_FRONTIER_VALIDATION-019",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "75914098a67a82548992763afd1b33aa8bcf2fd24324822ccef7fcc99b923c9f",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_FRONTIER_VALIDATION-020",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "52ec4d7c29bb0beff7a10aa96d8473fd9c1f70266cd1f5a64fea455e26f8458f",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_FRONTIER_VALIDATION-021",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "48a38ec147ed61d203c479348e729e76f67adf62a945b06e97167e755043707e",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_FRONTIER_VALIDATION-022",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "c8cb60a00dd838d976113d8764e3e7890699c3b2ea14976922181d1646b5d618",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_FRONTIER_VALIDATION-023",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "eb6474e2b174b2f5fdf8cd5fdb063e094b6349f2de8d59ca5d1789e1fb19502e",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_FRONTIER_VALIDATION-024",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "93e2d3b51db7c123f3721590459033ab776a46241a45b2fdc89d720649e20f97",
+          "truth_exposed": false
+        }
+      ],
+      "truth_exposed_to_engine": false,
+      "frozen_before_capability_design": true,
+      "manifest_sha256": "c7f12e3bb2c280169cc25487885bb85f37b74fa704649ffda041471a8a3734d9"
+    },
+    "control": {
+      "set_id": "WAVE_3_SUFFICIENT_CONTROL",
+      "family": "EXISTING_CAPABILITY_CONTROL",
+      "count": 8,
+      "seed": 1702360659951403031,
+      "seed_commitment_sha256": "db32acec6bbf4cd5bea45844186ce05034eb0f055a3b0726285474316226bece",
+      "challenge_commitments": [
+        {
+          "challenge_id": "WAVE_3_SUFFICIENT_CONTROL-001",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "fc84fd3c6ed4e0b7926970692e92493c14b21dbaf807a1cfec72638173dfc35b",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_SUFFICIENT_CONTROL-002",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "c1ca9b5eca7b6bee943615b38db8c3319fc5b2ba521e85eb8d5348b6a325f9ef",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_SUFFICIENT_CONTROL-003",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "750f8b0cd59ffb70666bb9857d886c85b19096b64495c90d6a67034578f01a4b",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_SUFFICIENT_CONTROL-004",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "96d50f26e3a93ca7d400d058691125bce00f96bd1f761858bbe27bf15eef9a8b",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_SUFFICIENT_CONTROL-005",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "57d657595f9436a2f2a5a5e94f6d8bfce72ca8e29b56bfc8e5f42d8ca28d7a6b",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_SUFFICIENT_CONTROL-006",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "4b6a1a33bf79915937ac301e5a479095f667dc28a238abfb9f2ab15ba3420371",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_SUFFICIENT_CONTROL-007",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "b2db62b33db902ea7715b5ddccf9579aa56d41df5e52d97141d36a1cc94ae1e3",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_SUFFICIENT_CONTROL-008",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "b10bcb6ff27dd3a4771a137d4dcf3fd3d84844e6e48e18ce810395fedeb5383f",
+          "truth_exposed": false
+        }
+      ],
+      "truth_exposed_to_engine": false,
+      "frozen_before_capability_design": true,
+      "manifest_sha256": "145db592824dcccfcce896cebf9e1690ab0586e72bf307a0fe43a9ab79773a85"
+    },
+    "adversarial": {
+      "set_id": "WAVE_3_ADVERSARIAL_NON_APPLICABILITY",
+      "family": "ADVERSARIAL_NON_APPLICABILITY",
+      "count": 8,
+      "seed": 1702360659951398270,
+      "seed_commitment_sha256": "7558ad859b164b293205885f0be69ef126948f5bcb73a8b7e6e105344d76f297",
+      "challenge_commitments": [
+        {
+          "challenge_id": "WAVE_3_ADVERSARIAL_NON_APPLICABILITY-001",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "2d2787a316b852ba5be169c5fe85ac47208cbaee797deb28ca6976ee4c5f10ee",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_ADVERSARIAL_NON_APPLICABILITY-002",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "8ab824c571a349c3908dbd7f8c9034f7ccefea9ebfbe39f50a210749809bdc08",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_ADVERSARIAL_NON_APPLICABILITY-003",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "ba0fd73651b089e70d6003a3c32c5537439c79e575e9a57b77cf04da43899a50",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_ADVERSARIAL_NON_APPLICABILITY-004",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "fcfba78c686e92bf78c1736339a9811a8c889b979a390dbd36076c9e2fe41e10",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_ADVERSARIAL_NON_APPLICABILITY-005",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "ed36a110d24d81ebc090842da376e2bed1f037a58cdf239034eaacd5f40dec6d",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_ADVERSARIAL_NON_APPLICABILITY-006",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "e83858123cc1ee237870edbd20ab1bde5932062a9180d08ace096dc6b1596cac",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_ADVERSARIAL_NON_APPLICABILITY-007",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "93a658d9035f94853c3414834b664392e7d902ea01c07fb8f4d421afacd25ab2",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "WAVE_3_ADVERSARIAL_NON_APPLICABILITY-008",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "be1a1039389f41afb014d2b3e1e3050b991542e47a796beb1247aba1ecbeda7e",
+          "truth_exposed": false
+        }
+      ],
+      "truth_exposed_to_engine": false,
+      "frozen_before_capability_design": true,
+      "manifest_sha256": "da6044b232c1f09b3b30ff317faed3a8832095bd27ca63dab0ebb4452c2ee674"
+    },
+    "capability_name_not_predefined": true,
+    "frozen_before_run": true
+  }
+]

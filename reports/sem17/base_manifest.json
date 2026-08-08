@@ -1,0 +1,518 @@
+{
+  "ACCEPTANCE_CRITERIA_HASH": "9196670ea57d76cc314ef1ac65442370288d05bd0193a6d823491e18cdfcdfcd",
+  "BASE_CORE_TOTAL_DEPLOYABLE_BYTES": 170446,
+  "EVALUATOR_HASH": "4efd158fa347e96caedfcc0aaea5e35be79dce960e8952f6958bcd1c77dee11a",
+  "FRONTIER_ENGINE_BASE_BINARY_HASH": "b584409fed8418d9285312076e0c9d9151cc1a111443b78dc782922c2dc0669d",
+  "FRONTIER_ENGINE_BASE_HASH": "c9c7c0eb45ff6992252654aab38f241484792669c7e7596ddc5376a80e215c29",
+  "GOVERNOR_HASH": "f6b3494684d2b1734129c5b2d102fe023910f6ab63255cddba55ad6dad9db35a",
+  "INDEX_HASH": "77b17332b5ff7204c28e9445e689276049afd6e89308e7e242904570a283e6fc",
+  "META_IMPROVEMENT_BINARY_HASH": "0cbdda006486b925e14a72c5cfa05e4ebda70bfb57d685f0f2b8e93e12024afa",
+  "META_IMPROVEMENT_ENGINE_HASH": "3736dc22f40595b2425bf8dd9e8cecba41358434ed199c2fcf5101e84d670c87",
+  "OBJECT_IMPROVEMENT_BINARY_HASH": "e2ffa3b0ea8e8670ce69384f39b60c186b4af2a72a81955ab808862f7a3bec18",
+  "OBJECT_IMPROVEMENT_ENGINE_HASH": "e24a65f9e200dbf46daf25c03c95fab24c2ceb808ac9805b146a26ac013487d2",
+  "SEM17_BASE_BINARY_HASH": "29715f5636ba1fad69b76c6a5e16bea8e0ea1ee418270513f11bdd45ef512588",
+  "SEM17_BASE_SOURCE_HASH": "79eb94f039eb2d2a2ffc75096a2d10f3c6cfb39ec8d0d90425b71eb47a99ced4",
+  "SEMANTIC_STATE_HASH": "d1abd8de410f5284773f1e582937922dc514513ed738eb9f04e8bf2735185d3c",
+  "base_adversarial_smoke": {
+    "challenges": 12,
+    "condition": "BASE_ADVERSARIAL_SMOKE",
+    "correct_outcomes": 12,
+    "false_capability_applications": 0,
+    "median_deterministic_cost": 8.0,
+    "median_wall_time_ns": 4542800.0,
+    "outcome_rate": 1.0,
+    "output_sha256": "722e078ea55f2238d54243cf913de5fe690a20c2d774cd1fe4580c0a1590c43f",
+    "peak_active_capabilities": 4,
+    "peak_frontier": 3,
+    "peak_memory": 88,
+    "peak_routed_capabilities": 3,
+    "records": [
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "SEM17-BASE-ADVERSARIAL-001",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "SEM17-BASE-ADVERSARIAL-002",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "SEM17-BASE-ADVERSARIAL-003",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "SEM17-BASE-ADVERSARIAL-004",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "SEM17-BASE-ADVERSARIAL-005",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "SEM17-BASE-ADVERSARIAL-006",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "SEM17-BASE-ADVERSARIAL-007",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "SEM17-BASE-ADVERSARIAL-008",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "SEM17-BASE-ADVERSARIAL-009",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "SEM17-BASE-ADVERSARIAL-010",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "SEM17-BASE-ADVERSARIAL-011",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "SEM17-BASE-ADVERSARIAL-012",
+        "deterministic_cost": 8,
+        "frontier": 3,
+        "memory": 88,
+        "routed_capabilities": 3,
+        "solved": false
+      }
+    ],
+    "repeat_output_mismatches": 0,
+    "set_id": "SEM17-BASE-ADVERSARIAL",
+    "solvable_frontier_tasks": 0,
+    "solved_frontier_tasks": 0
+  },
+  "base_control_smoke": {
+    "challenges": 12,
+    "condition": "BASE_CONTROL_SMOKE",
+    "correct_outcomes": 12,
+    "false_capability_applications": 0,
+    "median_deterministic_cost": 8.0,
+    "median_wall_time_ns": 4565900.0,
+    "outcome_rate": 1.0,
+    "output_sha256": "a44c2a93c5ee1ef3cd4b45774ded403ea5726c75071b56ff27e0fdbf29f54047",
+    "peak_active_capabilities": 4,
+    "peak_frontier": 1,
+    "peak_memory": 64,
+    "peak_routed_capabilities": 0,
+    "records": [
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "SEM17-BASE-CONTROL-001",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "SEM17-BASE-CONTROL-002",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "SEM17-BASE-CONTROL-003",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "SEM17-BASE-CONTROL-004",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "SEM17-BASE-CONTROL-005",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "SEM17-BASE-CONTROL-006",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "SEM17-BASE-CONTROL-007",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "SEM17-BASE-CONTROL-008",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "SEM17-BASE-CONTROL-009",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "SEM17-BASE-CONTROL-010",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "SEM17-BASE-CONTROL-011",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "SEM17-BASE-CONTROL-012",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 64,
+        "routed_capabilities": 0,
+        "solved": true
+      }
+    ],
+    "repeat_output_mismatches": 0,
+    "set_id": "SEM17-BASE-CONTROL",
+    "solvable_frontier_tasks": 12,
+    "solved_frontier_tasks": 12
+  },
+  "base_frontier_engine": {
+    "commands": [
+      {
+        "command": "cargo fmt --all",
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success": true
+      },
+      {
+        "command": "cargo fmt --all -- --check",
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success": true
+      },
+      {
+        "command": "cargo clippy --all-targets --offline -- -D warnings",
+        "exit_code": 0,
+        "stderr_sha256": "4baca6c7ee182ee80b87c4fd1fa37f9984cd79982b999383a4b89ef545d96e87",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success": true
+      },
+      {
+        "command": "cargo test --offline",
+        "exit_code": 0,
+        "stderr_sha256": "8fdd1945405aece7b59d023565175b4229b199cbb4615f619982043ca3e5133c",
+        "stdout_sha256": "721f8650d88aedb0a545e3536d349caa1b7ca2545294056f82d865e20e56469d",
+        "success": true
+      },
+      {
+        "command": "cargo build --offline",
+        "exit_code": 0,
+        "stderr_sha256": "233d94ab0271f2bac7a3867e01d9e28bb3a88ae58159c615d008ffcc3f3e5b15",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success": true
+      },
+      {
+        "command": "cargo build --release --offline",
+        "exit_code": 0,
+        "stderr_sha256": "1e804ff35f8fb47bee091b6e3d8f707301de41f36caa2120dc8e0eadd2c4c755",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success": true
+      }
+    ],
+    "debug_build_pass": true,
+    "engine_id": "SEM17_BASE",
+    "mode": {
+      "bounded_beam_control": false,
+      "counterfactual_probe": false,
+      "relational_closure": false
+    },
+    "release_binary_bytes": 153600,
+    "release_binary_sha256": "b584409fed8418d9285312076e0c9d9151cc1a111443b78dc782922c2dc0669d",
+    "release_build_pass": true,
+    "rustfmt_pass": true,
+    "sandbox_contained": true,
+    "source_bytes": 3888,
+    "source_sha256": "c9c7c0eb45ff6992252654aab38f241484792669c7e7596ddc5376a80e215c29",
+    "strict_clippy_pass": true,
+    "tests_pass": true
+  },
+  "base_frontier_smoke": {
+    "challenges": 12,
+    "condition": "BASE_FRONTIER_SMOKE",
+    "correct_outcomes": 0,
+    "false_capability_applications": 0,
+    "median_deterministic_cost": 8.0,
+    "median_wall_time_ns": 4684900.0,
+    "outcome_rate": 0.0,
+    "output_sha256": "5aa4b80c7765f3fcd29df8fe03a18929556d41790e29ec8fc5ad80674d2b7b79",
+    "peak_active_capabilities": 4,
+    "peak_frontier": 1,
+    "peak_memory": 72,
+    "peak_routed_capabilities": 1,
+    "records": [
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "SEM17-BASE-FRONTIER-001",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "SEM17-BASE-FRONTIER-002",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "SEM17-BASE-FRONTIER-003",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "SEM17-BASE-FRONTIER-004",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "SEM17-BASE-FRONTIER-005",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "SEM17-BASE-FRONTIER-006",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "SEM17-BASE-FRONTIER-007",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "SEM17-BASE-FRONTIER-008",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "SEM17-BASE-FRONTIER-009",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "SEM17-BASE-FRONTIER-010",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "SEM17-BASE-FRONTIER-011",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      },
+      {
+        "active_capabilities": 4,
+        "applied_mask": 0,
+        "challenge_id": "SEM17-BASE-FRONTIER-012",
+        "deterministic_cost": 8,
+        "frontier": 1,
+        "memory": 72,
+        "routed_capabilities": 1,
+        "solved": false
+      }
+    ],
+    "repeat_output_mismatches": 0,
+    "set_id": "SEM17-BASE-FRONTIER",
+    "solvable_frontier_tasks": 12,
+    "solved_frontier_tasks": 0
+  },
+  "production_promotion": false,
+  "protected_paths": [
+    "Cargo.toml",
+    "Cargo.lock",
+    "rust-toolchain.toml",
+    ".gitattributes",
+    "scripts/build_portable_r0.ps1",
+    "crates",
+    "reports/sem8",
+    "reports/sem9",
+    "reports/sem10-p0",
+    "reports/sem10-fresh",
+    "reports/sem11",
+    "reports/sem12",
+    "reports/sem13",
+    "reports/sem14",
+    "reports/sem15",
+    "reports/sem16"
+  ],
+  "protected_tree_sha256": "8b8ebcb7927c815854cc738126ff29ea2fd8bd0077430b89bf8f54738827d6d1"
+}

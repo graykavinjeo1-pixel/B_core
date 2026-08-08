@@ -1,0 +1,4010 @@
+[
+  {
+    "family": "REPRESENTATIONAL_GAP",
+    "diagnostic": {
+      "set_id": "F1_REPRESENTATIONAL_GAP_DIAGNOSTIC",
+      "family": "REPRESENTATIONAL_GAP",
+      "count": 18,
+      "seed": 1724878657299730854,
+      "seed_commitment_sha256": "5ca08d7362188b9956696ba263a7f0a4da4771c89fdfdbe18c93740b33780971",
+      "challenge_commitments": [
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_DIAGNOSTIC-001",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "e00f2c73d7a760dbd3e01f8ad13eb617adc17530e272a50fdc02fcf1a34ddf8a",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_DIAGNOSTIC-002",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "59f432b805daf1b1f6339905802874531a2d2e72d9906ce078e4e6a92198ec0f",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_DIAGNOSTIC-003",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "8124c8ed27b1862a43e1348c0dcf8dc6ce532424e99f1656465da3b1fb0b6d09",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_DIAGNOSTIC-004",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "6a6cad133c49ca868250f746ea09fae2ea69ebba7a6c1cd0f699f7c6bba6aec2",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_DIAGNOSTIC-005",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "f4ab76cd2165db571f96a457c6509bc81fa5455eabf07fef7b5962ada4987ab2",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_DIAGNOSTIC-006",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "4c512c1e74ceb0931ed9976fffb4982cb9f0f15043f9e6008433dd0e9a6b906a",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_DIAGNOSTIC-007",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "f5af7fe137d48acca8bd9de4868876df8d856e475ecaac44ac99e129595a4964",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_DIAGNOSTIC-008",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "d4d4a261eb0cbc53a5cb6ec86e2ea346851c200375c47bf8605be5b152e6959f",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_DIAGNOSTIC-009",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "8b226e2fff88fe7502e0eae7a742e7f477a7096426aa52baa78976c37cc9f80e",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_DIAGNOSTIC-010",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "46e8b59e772dbd07bc86319034bfc7766894ebc23c86f8d0cb3b24ec8f9c26b1",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_DIAGNOSTIC-011",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "b2d9962c90868c69e7f4880a5fafe1513cf6ea5ae2509befdebe8a33bfe629d7",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_DIAGNOSTIC-012",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "8fa714dca73e3f8438a359f406408ddc7169c731954ddb3694fb7105b951e901",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_DIAGNOSTIC-013",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "1cc63867a6ef14a603dd9a2ae35c7602dcf7a8115159203db866be2f5b3e38a4",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_DIAGNOSTIC-014",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "16efbd78fd9b89c92a0ecd7d82e9b0846ac833351debb905f61879d74bca7df7",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_DIAGNOSTIC-015",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "ae2f3bbf58ddca7ce1d8ef07d6117bc14f8afb42be764910345f84846dae42fd",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_DIAGNOSTIC-016",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "ead3d647f46f8cb2368e0b694aea88f17e7bffcbae92395fef74f07924aca110",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_DIAGNOSTIC-017",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "c049a47f62e65c27cb020ee0c196130fb849da24915aff9b2647981f9cd08c11",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_DIAGNOSTIC-018",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "bcb105287bf3cbac6ee364ac7ef7a535c467f0844ee8ea5a5f06d258804bb396",
+          "truth_exposed": false
+        }
+      ],
+      "truth_exposed_to_engine": false,
+      "frozen_before_capability_design": true,
+      "manifest_sha256": "6a29e0ab4d320029b239ba003aee82a6a2761e9c9ef48a2f1896eeda29bd17e0"
+    },
+    "validation": {
+      "set_id": "F1_REPRESENTATIONAL_GAP_VALIDATION",
+      "family": "REPRESENTATIONAL_GAP",
+      "count": 24,
+      "seed": 1724878657299722525,
+      "seed_commitment_sha256": "fa04935d7ef52e27e71b08d1480ca84b283a9625ca0b4c2464389f842f7a4808",
+      "challenge_commitments": [
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_VALIDATION-001",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "0b90497255244a8dd05b9fe8a9c29fd543e6b2a5f477fe1e61e91fc9df290c63",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_VALIDATION-002",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "78c9e70335f2eb4dab5dd5e7390f22bd8ada53422b5071e82c18ce2457229e5e",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_VALIDATION-003",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "947c7ced7bb5bd4ad552cca265b2f8cca73803028c97d8bb57eab41ba146aee3",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_VALIDATION-004",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "95a0c3995ddfb9c5433216d19b70bc8938e338979c8bb370d8fff7678007b99d",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_VALIDATION-005",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "0c906c481e04d0061def70a92e69ba4a1fa51b9bba44950e2d454c0294b4b48c",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_VALIDATION-006",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "e78189df123eced09f7a24d7128e931caa06eb96fc416d00122967595cd64994",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_VALIDATION-007",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "c3d804873b1c562a2f2a1e4803314e2ecaffbc3d06f8c05304fcae5a6562535a",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_VALIDATION-008",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "fe4890a27628333573a49f9496b1cb94b37371e0f9a3bebde01d9d5f313d318a",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_VALIDATION-009",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "26b1fd9a3ee49f7bd89d2a254cb9e7ee48b0735f3adacecab4663d6c2aee5bc1",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_VALIDATION-010",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "e5b0be36bb6c7b1933ee0ae689e245cdae17e025555a91e79eb7e00a2f791cb8",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_VALIDATION-011",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "62c7a3d6fb49bf5b613d49020c17b5fe9916c834ccba0e0b0736e70929de4141",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_VALIDATION-012",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "cdb9a471e80df13fda716b38b2a5442130f982e86073e88a2d6e3e8a85436ad0",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_VALIDATION-013",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "b9bfcd6da86ac64a1905c39dbe4616c663434bf665ed3c9e08a49f4a4f14bc00",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_VALIDATION-014",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "d532c458a2947b2da6877b4347d50ba221acdff09e973a827b46cbd86cbd2765",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_VALIDATION-015",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "dfcc4d2efd0097513af3da117d7b7cfb2890a076d0b0eb7cd3d6f4e7bdc1c40b",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_VALIDATION-016",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "f8cc60fdec5f269332d07dd22973b56a3ee3358f3c665e3abb3aab6a1053232b",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_VALIDATION-017",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "9d9cb3b7da819e2d6ac834137c07eebea78ef076f2b60fc5961f55c3579e780b",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_VALIDATION-018",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "b1c3e8cb82e9bf86d7c49dbc6ce7a1bd1cc2ee2baaa0f9fa777127247e7293b2",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_VALIDATION-019",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "5a6579710cfd6a83953eb44eb79b7b7a91c5955fba8d114e79cf5ed3e608305a",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_VALIDATION-020",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "1c83a210e47a8c46da2dcca69f7b33e27fcaf86607f65a6278a5c0a26e7d2fda",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_VALIDATION-021",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "77868f4fbdc4d9dd013740095315a108011d220fad1c023378fd2cab5d4b37fa",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_VALIDATION-022",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "8d52ff3fb10a5f2eee12073d4b98066a86418333f7af0533a3f2667d885567ca",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_VALIDATION-023",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "0da1ffebec276a56ffac7aa23aeded78db8e0b1d2179da93db12c1a56ae97de8",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_VALIDATION-024",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "7e6da92d215d8531af5343d28b992a978f51d46045c841222763e3f882874278",
+          "truth_exposed": false
+        }
+      ],
+      "truth_exposed_to_engine": false,
+      "frozen_before_capability_design": true,
+      "manifest_sha256": "b15814d8776938b44475514605a25d4a3fe229a10964a538e622351ec389bc97"
+    },
+    "blind": {
+      "set_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND",
+      "family": "REPRESENTATIONAL_GAP",
+      "count": 24,
+      "seed": 1724878657299739006,
+      "seed_commitment_sha256": "a46544fafb2b13b0e0b5c79860d3600d42ab1cc1bc4de793f30d674287c9c526",
+      "challenge_commitments": [
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-001",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "1ecb5c25b9e43e884c013f8899c50bee15004266e45193f5bd23d567beacfe0d",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-002",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "c669e9f401b486e62b3202848cc015d2dbd51334d9df873e33ad7e9c0fb968a0",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-003",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "c0351b02f31abd80f923c6e9d91df369317e7cf4d557e29cf742e2fb2b4beecf",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-004",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "d6f2b5f706a2122f6dbd482d67c6d34d236ff96d8d869410323bf74080e3ec36",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-005",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "97367cfb40b257e49a4c81c74f7e7f180c21861c1d83e913faa8015068928c96",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-006",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "2202f707940e49462142fffea89b177ef500113cab155de719873c74c19e59e0",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-007",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "1daaa314dbbe465ca2b244e4f41a50c4112e41f66cbc8a376583c8904be29ea8",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-008",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "d8a30b0065159ca62c24fdd9201b19abe31854e423e3158cf2c0a8f7f68a58e8",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-009",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "0daf8714dd91f51cf58303c1b93fbabbc236393e99411468073ebaec135c5ee3",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-010",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "0e70e08bbaa5f78c00f3ef42e607e90eda705fa6955641f189bcb99f793b6cc8",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-011",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "8dcdd1748ded7deb2b638632c7f030b9ae700759d77a5520facb21b8364ee546",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-012",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "15e3ffcc285fd5025ae6f5eeea5c286f6655b92fe7466c8885e66a3cc6c51716",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-013",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "7db5ec61593c9a5e3ee6aa27b7c460a6113688bb2becf34a2139ec9581fd37ab",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-014",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "e908c3243c3ddba1a0f0c5881feb5ef830e6444b8643efe2f56b68b0a925dc1b",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-015",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "558de45fb1283f3d7baf06aa3e72ac2b77c412b09f0ef56338879f8a8ef144e0",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-016",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "98ab8b6fb3e175df25019db4b9157fdeb0a5e60b944310fee2837fa1506b75ca",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-017",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "a593510b5552650424ab20cedd29a7f40304666561011934ed97f6201ddca493",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-018",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "ab95547f28e65815850a453fa3d63eb9903ded3999fd96ff9c40c71d9cb5a9d3",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-019",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "183e4aa0e2b299a6a0e1ec624cbc616426a7e4a43b23fb327f0dbe68de26ddca",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-020",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "3b4ee97121d8456de39c6d99d32b7da9478b17dbd8084033274d7579b3646f94",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-021",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "4bf803248ac9b7945600a5ddbf5b11d8de51c74b2d250949ee3906d202f462b3",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-022",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "b945271a648265a467f31ee1dab73c8b9e22a801839cd0d6e985e7904341f211",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-023",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "6f88ea5ad0323ebd3c1a255a18dbe4979c9fe311d62505bb957984394a7a3edc",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND-024",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "d29f4d3874626bfe8ab5d503c7b9fe6c1a15a068e64460dcead56d9e5d5d094c",
+          "truth_exposed": false
+        }
+      ],
+      "truth_exposed_to_engine": false,
+      "frozen_before_capability_design": true,
+      "manifest_sha256": "b2b0591ffe13977e5645378a0bdcedd822225af3f4dc0034fe70a2b5867dd1d5"
+    }
+  },
+  {
+    "family": "NOVEL_MECHANISM_GAP",
+    "diagnostic": {
+      "set_id": "F2_NOVEL_MECHANISM_GAP_DIAGNOSTIC",
+      "family": "NOVEL_MECHANISM_GAP",
+      "count": 18,
+      "seed": 1724878657316508070,
+      "seed_commitment_sha256": "cb2f7fcd1663c6c882f395c359850184787ccf789576e137d585f3bcdd6b872d",
+      "challenge_commitments": [
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_DIAGNOSTIC-001",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "8f8e8065bf0098c4657b2ed66999b5aa4e698d4b65fc1a0c9eafca790d9deb57",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_DIAGNOSTIC-002",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "62d97c164ed549340e685d4867a9e13ea211318d730fec673932c36a188d02e6",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_DIAGNOSTIC-003",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "52a9ed9cf35564b730048abfe7de5b0173530a669783f59dda3cf71fd40ad07a",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_DIAGNOSTIC-004",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "55e28a7a0c38c4018f15273b8600a153496571f9f6762689ba0d755f455a5fb4",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_DIAGNOSTIC-005",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "704592b0b68a298b04145b9988a85ffecb96c07f878267da7334737009d1b8a5",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_DIAGNOSTIC-006",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "500f3e48a8bf6e5ae516597948654aa744c614628ce88274e8fe09e6dea67c3b",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_DIAGNOSTIC-007",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "eae724d311956302d8cb159f0a84aed22816feaca5de4373c47c80a65f3c9c4e",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_DIAGNOSTIC-008",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "4656c60af7f596b23b5954ceba090b1d9cf9e742fd18110f6a991ba6995ca57c",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_DIAGNOSTIC-009",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "63283ff97505ac38bf6caf31a2ad1f019f595bed967be0bd3e84c15f3cd733a2",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_DIAGNOSTIC-010",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "bce318280a44ca3e500f1bbeb2ecb97ccb0bd4374500d85077e1c6a2410845b2",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_DIAGNOSTIC-011",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "4a2430646e4fdefad9d318f03ba1d1d7da0783ea7fd767b9a392fd6fb09e90a6",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_DIAGNOSTIC-012",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "05f02766a31b646c2a9e7662e4551c2562d37a31c8f898b68610fec95c61be17",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_DIAGNOSTIC-013",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "ef40749841dde062de48afe6b557da05775c740f87b54ae95c6edbd85eca7e79",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_DIAGNOSTIC-014",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "5ad358b9f9e3855279108e4948db11239a15c02aea6b54ef4b2a7ef444d4ed4e",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_DIAGNOSTIC-015",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "1044077628c86e03deca836cf29af0e4e38d4cd691d1db9b35d7ffb232429cea",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_DIAGNOSTIC-016",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "40f8dc090c4b7dc5e1567f34585f325e81e204663d32dcedc78b20667851bd96",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_DIAGNOSTIC-017",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "fb0d190959ea0732cbab30fa3272b7ff2eb234a54ee2e0d1721e46eeabea7aaf",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_DIAGNOSTIC-018",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "103a65eaacf8446a8865b71892cd9e81c809f689d26fb0bad6ef311efed1137c",
+          "truth_exposed": false
+        }
+      ],
+      "truth_exposed_to_engine": false,
+      "frozen_before_capability_design": true,
+      "manifest_sha256": "0a418b5708db5cce913d6692876afcdf81571eab3050499b835c2af58c39689b"
+    },
+    "validation": {
+      "set_id": "F2_NOVEL_MECHANISM_GAP_VALIDATION",
+      "family": "NOVEL_MECHANISM_GAP",
+      "count": 24,
+      "seed": 1724878657316499741,
+      "seed_commitment_sha256": "04b0b045efbbc385f84b77c7e1c6b8c5f56b071832e9b8d35a009a306866223c",
+      "challenge_commitments": [
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_VALIDATION-001",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "8a16ba67a52578bd7854e80dc4fe31a7306ae330878b94aac3c3cd24bd452ddc",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_VALIDATION-002",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "b9f19ae3d62239932c9d8d34fea743e9be795855072bd5c4b8d04671a70e476d",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_VALIDATION-003",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "030592b2c86a1f533aa4560081bf08e3148d239bbd4cdfa0963782cf83a0c4d0",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_VALIDATION-004",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "30081c1ead511c294cfb406d2f733e8e324e8c2b370a09040411d1f9aced09b9",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_VALIDATION-005",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "b4753cd28a44ef1e8c57c7a7257829900d1768f2bf4bdca68927e9dbb6bbf785",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_VALIDATION-006",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "3b1b5cba5518d4318bee31b4168394ac6aa962e694429d19b2400ea60e911008",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_VALIDATION-007",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "f2faa88e3ade37071698feed662c6f89989f15aa44c4afc4f8a493d9a15090e5",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_VALIDATION-008",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "426ee729c38d219449c771ff0a26136603034c5377ecbbf91ea30bf0cc708627",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_VALIDATION-009",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "03ba04e3248c99b4fd40169931ae32bf1a146858d80eab4a65c724f8ae7756bd",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_VALIDATION-010",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "d64e73998384c51357089187936812c93c2964f0a95039daaac0d3572cd27c82",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_VALIDATION-011",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "4aa5ea30c7b1753d738af637399412db1ce86bf9a1428147d0f61914ecbea77f",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_VALIDATION-012",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "af131cba0f060e29339510c9df187f7ac5d65c01ee7358608d022e0eb4959247",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_VALIDATION-013",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "b65de485055f5ffcaaa5963632fb65e44c61129685dd7648fe0e301a2d8c1d26",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_VALIDATION-014",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "dcc93a1a5e9cf4fbaea3a2cafba3a43efa28e5dc7923e6f298067526e75bd54e",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_VALIDATION-015",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "da7aa49d5ab0b51126d81f42a6ab9eb979ee7459653a190fcff37a1e1ee81934",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_VALIDATION-016",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "0e3dde931d27fe2fbf0c6f8a784b7992e3a3c5be3f6a457bab77c7ce60c7b407",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_VALIDATION-017",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "e181cad233d6e3472a632cca82beb36075cc315864726aec6e75e3fecb637451",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_VALIDATION-018",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "240e507d01acaeca8fc9cf4252c65c848430586dadf328f0c32bf7373ac2d984",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_VALIDATION-019",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "b794025659fe31cefee7b113d6e98fd3a5dd949968c1156076da8547ca15abd1",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_VALIDATION-020",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "fd9fba06e347d6a9c0b0c10913f0478af51fd5d0777179603c840ff08f26f3c0",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_VALIDATION-021",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "589fe42a24883ddeeba8a15a3e5c09dd9e85a0a726a6d52120f2e0e8182a715c",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_VALIDATION-022",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "e43a8858d69ee4a1ccc1e1f1d1c3ba0f67f89e5c35e193f593a71b14b2a096da",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_VALIDATION-023",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "6e4dabcb98ff67f97a5b63e66bd9e1c1a7862b2c0ed1104ea267d6b74c10775a",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_VALIDATION-024",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "8cd017f8e0f2e5fa1b0e5dccbc33c5a939f4ee3a2c1471ee7c0a92fb2bfa73a8",
+          "truth_exposed": false
+        }
+      ],
+      "truth_exposed_to_engine": false,
+      "frozen_before_capability_design": true,
+      "manifest_sha256": "f54a778155bf0bab83c72183d1ce5d30cbf3f7004ebc68ca54d43f7d9475d66c"
+    },
+    "blind": {
+      "set_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND",
+      "family": "NOVEL_MECHANISM_GAP",
+      "count": 24,
+      "seed": 1724878657316516222,
+      "seed_commitment_sha256": "c9ad2202f4d4a35637086e852e8969f35cdee04a9e622723960c6674d83d9caf",
+      "challenge_commitments": [
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-001",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "12e5b478f826ba9be691ac00107ac14d86d6b9a4d583a73913adc7404a23e09e",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-002",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "0ee386519addac0baa062d77d9d4346993eff21bc316d2f90c4a79ebfe557635",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-003",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "641752adf33ab36a292ea8d009d9caf60a7249c29a2921fe4944981afb438375",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-004",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "a7dcbd0ac2c96fa26689dfad8ef69e9f55849e9e44dfda3e75da26cef1896ca2",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-005",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "3dc9fb1fe5abcd90d0b016d291538f8d4dede8c5beab677088ac764980e2cd0e",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-006",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "4127cbcbd85258ac9735eb798760166d4dafbac6aa0ec6155347358436a8b863",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-007",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "d83753a2614595cb688fbc1f8fbd243088c01a87ac12e884b09865859784e7c7",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-008",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "8bcb0ab00ad8ddd30c5f4e8c561cdd1c607cc25a3aecc75711a8a970c66bf1e7",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-009",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "85a505ece5dac42e352afa9fa87f14b837f182cedc644b56a5800163f2b6512e",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-010",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "9c6ddfa0526af0ff3dabf0ea8fc6cecd6d083d0f9c5f16467e0e64f28db85fda",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-011",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "f7f25d9f13709dd5c00beaabc1dabd2cc863871298ed042e7ef9a992e2bbd6e0",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-012",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "304e474394a800ca98ee6d399b880e86760ce1214b4cc9dff4a764f9701d8ca6",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-013",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "5bb9fab92ee0cffaa8e38376728e2b680a464a26b7c0c11220f1dd3d2cc2061a",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-014",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "d8c42009df7ef88622d557e43b1543fcc977b5ca315dce228effcb444f038000",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-015",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "1732e9eb338d85355b9f7c2e62013b63a2695ff42cd3d2ab591a4a79b70ba111",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-016",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "67863666e9ede0b6b002e9882657a2317278f105e0eac7eee908cd9d322e18e2",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-017",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "fd68525d4dc22cebc51f4722e97a24c6ca2b8cf3aa5a6ceb5bc0c376d2fe0892",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-018",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "c66ced4f7cb55f111f6d530dbdcbf5d4560f692e121abbd7b050276dbb57dafe",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-019",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "8bd88a7d2da3f482ce9f7951d7b390247f03746523e80dcf8f807c23022d1f04",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-020",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "00c26b147f14c92e65036004542776979f092c81957e85961abcaf6dc7b07f6b",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-021",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "38ef01f27bb02b59ce59a09dbc72dbe8d94a338b68259762b848cd21ce32509a",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-022",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "470cf798e605cfdb012f1f918c5efa8406aae1fb599a613a85327c1c7113071a",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-023",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "1a0064f8dd6ca3035f9f65ccf7668f770e35fd17f28b2cb95e26d3a19b491a16",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND-024",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "77d0ed2584f810f7631d50728d6b2404255ef096f802446603d281d4fd37121a",
+          "truth_exposed": false
+        }
+      ],
+      "truth_exposed_to_engine": false,
+      "frozen_before_capability_design": true,
+      "manifest_sha256": "1994ddfd7950421b61f8d03ae495febe41d27470139592994a5479ccaf2148ca"
+    }
+  },
+  {
+    "family": "EXPERIMENT_GAP",
+    "diagnostic": {
+      "set_id": "F3_EXPERIMENT_GAP_DIAGNOSTIC",
+      "family": "EXPERIMENT_GAP",
+      "count": 18,
+      "seed": 1724878657333285286,
+      "seed_commitment_sha256": "dccd5b956059f6cb60c72a9e6e92d2cd0003eda8291fc0137a4a9243cbf983bf",
+      "challenge_commitments": [
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_DIAGNOSTIC-001",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "94dc0cb0f9ab12fc1022e1b42adf553ee0368ef894ade971c7f5b7ee2f03ab9e",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_DIAGNOSTIC-002",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "930f81e14e66301f024e42d0e068e59d0f5dc696b1bf5123222f4f45d28523cb",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_DIAGNOSTIC-003",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "7932fba33902c273011dde336e89a60e64531bacaafec99ae6fe39db17141749",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_DIAGNOSTIC-004",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "499d7985caa62231bdea591a3ced792e2f0948af22b29eda5e3c8e69daec1c28",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_DIAGNOSTIC-005",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "776048ccf548a79629970812ccb5d33d6ca282c7debe273d48781424d014e99b",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_DIAGNOSTIC-006",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "3175c4faa9725f080622ec8d54bbe1c219cc95afe110a649d5cbd08d41b85d28",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_DIAGNOSTIC-007",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "8450ff0dead1432ca3928a2e0282e0ec91d8eaff00b51871f49513a94a2b1cb7",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_DIAGNOSTIC-008",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "7cfec22b149ee7407a6bdf10be8d788c93c9102a2a6e7dcea78c5ecdad78f600",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_DIAGNOSTIC-009",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "253e39f2e3aabff55ccbf1fd740dec4162e044e3930a23641883dabcb7d06d9e",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_DIAGNOSTIC-010",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "dbcb528eefe3bc4b8cfb86e867ac02705a92fb2e613dbe04e4cd899b671e80f7",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_DIAGNOSTIC-011",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "52412dda3cbf85ca2427f5348fbc670e833ff41120eb89420a7d02f911723748",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_DIAGNOSTIC-012",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "4564ec64d71dbd35a11297ff38140e546a04c04cf260a9687bd85b32e1eaf20d",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_DIAGNOSTIC-013",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "087c844c5c2f952abb2d50f8e140d475ea29ff586872f38bed36017417417803",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_DIAGNOSTIC-014",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "b227230e8bd8100ca82bd9f80f88e2a65ac415d05219bb1cc4638ce521e377c0",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_DIAGNOSTIC-015",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "ebf9ea9dce3348a2202d12a0d764e8889152ce1b59537c2c56a6c38bb32a52c5",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_DIAGNOSTIC-016",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "30ad7b58808d24357498ae08cdff7b3193edf4d0783dee7caebddaef45d9c9b0",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_DIAGNOSTIC-017",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "779cee747d721d5f586ed2ef9d7998e153dfbbfec1dcf5afe6dabc13c9be08c4",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_DIAGNOSTIC-018",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "e0b3bc0becb7259807cd20d3bab7e799f1ebe2f28848a2a0bf9465c709adec10",
+          "truth_exposed": false
+        }
+      ],
+      "truth_exposed_to_engine": false,
+      "frozen_before_capability_design": true,
+      "manifest_sha256": "170e4fab8f98fd8197b7cc40facaee59985b9176a744e8caa71414f2515c3aa5"
+    },
+    "validation": {
+      "set_id": "F3_EXPERIMENT_GAP_VALIDATION",
+      "family": "EXPERIMENT_GAP",
+      "count": 24,
+      "seed": 1724878657333276957,
+      "seed_commitment_sha256": "fd2a5c5fc0b7c7318fa5cfd60e6e446947dc84f82469a7842fc14cfb13872e3d",
+      "challenge_commitments": [
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_VALIDATION-001",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "151ba5570aef193e3f71154079d1c3675a957e2d9b6ac426b2922f862d3c0a76",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_VALIDATION-002",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "00e79b9e4edbd57473c8ffedbf0bbed5ea5654110f520f6f5661364150346c1e",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_VALIDATION-003",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "0e83673bf6cbaa9e1ca2b0d4946a448e0f9b1d2b794456ae96c43a85b2394967",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_VALIDATION-004",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "9f3bb208f5083675549b9cd19c7991663bdd1cc540c2dbc84e9ffbeccdb0791d",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_VALIDATION-005",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "06d870c465727ae7818e65c5359411f0cc5b29337f50c0cf072dfed0db121ff6",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_VALIDATION-006",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "6c7a26bb29bd966245643e56197f7ffd3af041ed0e49364cc12e2aa03c019d32",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_VALIDATION-007",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "0538ef084c1209db980d696719abf27312843d309157ac5b455f278f7f85f79f",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_VALIDATION-008",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "e2da0623a2d41c32e1ab348bb4501da908590f55ed71587003a554cc61c61b34",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_VALIDATION-009",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "5383c38962f982a6e8345904381c780fca6b9cc039b58b694804d45b09e33f15",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_VALIDATION-010",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "7ebedbbe19045b4e8166c32de3cbbb890dc584abdd6e4a6c13d4b51a3a16ac72",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_VALIDATION-011",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "5ba1411208a14e0b27c3ad595d2b12ad1b0d7249a5dbbc3afd92bfa24223f047",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_VALIDATION-012",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "c0041a987094541c1e3c5e9507c1ef4951bc7ca080f2348688418fb088814608",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_VALIDATION-013",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "d338187c801f7f30aa3971e09bc552cec5ad4385ddcec3df6bd22cc3a79ba506",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_VALIDATION-014",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "d0c92ff304c2b1247d30deadf5498a1ed6f2af2c9e248a3e51f65ff985703d4d",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_VALIDATION-015",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "d8a140307d76903ace73a44526b8fb0494a0503b7cdae42f7bbd74110ed035c9",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_VALIDATION-016",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "f313609f3f317ce95b90329e18edc3f9022fa2085aa87f892e4db01ef4a591e8",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_VALIDATION-017",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "a206d5c7582125a077089a75b4f00f221e5d35b7fc993e5fbc442c325eca6d6e",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_VALIDATION-018",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "5e50640efb6801c9e979a8928a802b96261bef62fc41b20c2824fe6ad97eecf6",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_VALIDATION-019",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "0056d34a6ca740b8b52ac3c124daaa193edf006e2423a945326791fb1d1f830f",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_VALIDATION-020",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "acf4f2cb9595e57f8a62f0258282f95cf1eaa6828740b9eadd6bf6903c79b702",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_VALIDATION-021",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "42ef710e8425457502abba0e00a0d4d2161f25ad3e0903cf1d39654c416f046a",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_VALIDATION-022",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "2f910e50c09f4fe42dd649725675a2070edb3d7d5821346079dcf2d5ac54c489",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_VALIDATION-023",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "a84b286e137f4d03e7d2c2c246c9bd3bae757b6fa17f7c5e2fb1957523a62a5c",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_VALIDATION-024",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "d74f6d13d90e16e75bb948fc4a530d974d524f8dd38d6beabc3a9bd32cabc2b1",
+          "truth_exposed": false
+        }
+      ],
+      "truth_exposed_to_engine": false,
+      "frozen_before_capability_design": true,
+      "manifest_sha256": "437db4e30d8706c3289d60f41d1feeed024d293074a7321e6854eec3c42156c2"
+    },
+    "blind": {
+      "set_id": "F3_EXPERIMENT_GAP_FRESH_BLIND",
+      "family": "EXPERIMENT_GAP",
+      "count": 24,
+      "seed": 1724878657333293438,
+      "seed_commitment_sha256": "517757c3c8f52563fccfbb7aa48fd04f066f5643f8a9e2425fd0ddcb0e95d7aa",
+      "challenge_commitments": [
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-001",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "8549296fde0f95e1dd843bbc895e89a0513e62cfa05b1380cbd98eecd2118ed3",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-002",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "b3d73f7406328902b05fc98d0126e572daf559a9bc38682d645eaff06250358e",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-003",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "10ef5782a0cb0a29b58af47f22860831844ec858a1b9855ca074d1b25ccc003e",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-004",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "340f8e05424ff933afe5595d27db47be64df2a1cd9ad497a5819c2d45a11e313",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-005",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "c4a6803fb310687453bb01c812ddd058c772ff5522ee6099a99cb5533a250af1",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-006",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "d4f22792c4a464e6c23671a04c096c47d48b9e41e3b096952172a17b3f346ade",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-007",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "46f7e0edc2ddc22770f48d7fb831b2f9a7b7672bef50d80f657615ed918a39a1",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-008",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "d920a9a7e4b7a9b515a3f299830077c168fce17aef790941ea4e14b9bb64df01",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-009",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "7e5dee723ab1a068644fce93ad185c58d0b98a78bc0eedf1f8cb8c82cb4ae3e4",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-010",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "634ec0cfc571b91db44f8cdc9e26f2871c70b4d2290bf80875b7e94c1d32ac20",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-011",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "3bcb1ca1259c6abdcba0a625792a871f54fee795d3f6c7dbc95a5e1b818e66bd",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-012",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "03ab83543a5df7d54cd2d68bc4a0e2566ec61701998bf7ae955ab225bf3cae25",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-013",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "82dd226b55f356ca456897cf693631b17e1a962bf3e837b683157d820b96d4fd",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-014",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "6eefc358433bdd35b3c26311cde8f3f83c45a767f364a8f560ad94dbd62d9309",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-015",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "ca8059bd55793336173fdb842086c2f5daf7741bb23cb454942f05c2d20e34e6",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-016",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "657234919f0a7e7129f8b5fad96c34674e9bfc87c4f7f55544e35e4085b0682a",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-017",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "6097eed93eb2c8090f08c9c926d905ddf837bcdb397edfdfee1dbb74e2149546",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-018",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "4950785764b4f892f7c1f4a221758620472a54e44dbc47b7eb3a6231aa9c79b8",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-019",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "df51b123c7c8b88bed24c5c91b7386b622b50299e57cd09cb3768d173875b76d",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-020",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "429472038b126cded2fe14de56e467966587ebb7ec09e1e70d35a01feaa318e4",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-021",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "d66d1af60d81c8971ad524fa00562434ba6677e3c57272a56c3995785e5dc165",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-022",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "c35476372fae76980962a221f59a8a30105a823728bd6635dc66f542a5587d6a",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-023",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "19fae2271327387c2705310f61171f55f39dc513363a7ae4c8e65f357dc95aed",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F3_EXPERIMENT_GAP_FRESH_BLIND-024",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "408f42d73f054dfa0eab05274482c210c367788262208141c034f3c6d37d9ada",
+          "truth_exposed": false
+        }
+      ],
+      "truth_exposed_to_engine": false,
+      "frozen_before_capability_design": true,
+      "manifest_sha256": "42497d781051a2bc915e1fa7dadd5e0ca344b8bc250ce611d71f4bea485cbeb2"
+    }
+  },
+  {
+    "family": "SEARCH_CONTROL_GAP",
+    "diagnostic": {
+      "set_id": "F4_SEARCH_CONTROL_GAP_DIAGNOSTIC",
+      "family": "SEARCH_CONTROL_GAP",
+      "count": 18,
+      "seed": 1724878657350062502,
+      "seed_commitment_sha256": "c9a449566c28a58a24c96426b2a2bcdad310a16b07f9f854de05ee8e942b3496",
+      "challenge_commitments": [
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_DIAGNOSTIC-001",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "e2650e0f94a6fc650ff2f56784d0057697ed18d0574c8eb83ed68527f3dda795",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_DIAGNOSTIC-002",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "f44e73789ca5a3068aa6f2c2c8f30d4eee9a43c4ee4bbc52ce0cd00b9054a73e",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_DIAGNOSTIC-003",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "466810673b003b20aec668180ea9f59bc1e2929b5338417f0e547fac2af903f4",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_DIAGNOSTIC-004",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "0bc36bf567cca555ea236e9b3b52be0aae904ae5dd71657845d90fe19def6d19",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_DIAGNOSTIC-005",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "73ffc8ec3becdf0fe2dff9eb0f8413f5f2eab8fce1c600c3f5bade66b6859c44",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_DIAGNOSTIC-006",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "8095f8516b4cd98ceb09b4b4fd4a48ced53c337fff9d7c8459a234aa56cb61c4",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_DIAGNOSTIC-007",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "b43cdb918a49592a5018dcd82bc98b93d1d19817d6b838670dbdce415313ec08",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_DIAGNOSTIC-008",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "7e133c3df24e0c68d78bce9dba877c83c9fbc7f43e48fe51f67fd93be8ea52d5",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_DIAGNOSTIC-009",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "3d6d572c5a2bcbb985db2ce77ab799533657da7c2f3625cdfd4f5911d259cf79",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_DIAGNOSTIC-010",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "db0e87546d02b450228e77669c543ffee64bb9746842c6916122a9f4589f63c7",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_DIAGNOSTIC-011",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "a6c241ee9faa34c435b4ffb405391ef0a917b3d1374d1d4647a0dbde64fe339c",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_DIAGNOSTIC-012",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "221f44ff8f84f07044d30b1eeaf269c401c34e65b55f2bfbfe26c688b9e2d2b8",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_DIAGNOSTIC-013",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "d57092731dbf20d49a191436c92dd8f28b81031ce4fec87c1d094d9cd6556cb0",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_DIAGNOSTIC-014",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "73f71ebfc28ede1a9ef133da0cec5eebeb847e169178a3a35af7af45dce4a97b",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_DIAGNOSTIC-015",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "d27daca0567d51b54342ba8a9a1902aca79085fadd10e463d6914324dfe57ad2",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_DIAGNOSTIC-016",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "ed7c3f32abcc3d61e9c0a400b32577d44d643bc5240b59ba87ecef884a423c30",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_DIAGNOSTIC-017",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "611a63e0df6bd5934cacd0da76390c4a2e644908b09d167f59af2d7cf65d632a",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_DIAGNOSTIC-018",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "ab40a0aa529c266a5797caf3af659a903e238cd0a019659884860267b04f08f8",
+          "truth_exposed": false
+        }
+      ],
+      "truth_exposed_to_engine": false,
+      "frozen_before_capability_design": true,
+      "manifest_sha256": "aa077b17e0cf39accff66733522357fb758a1b956f8f41c35321365519f744e9"
+    },
+    "validation": {
+      "set_id": "F4_SEARCH_CONTROL_GAP_VALIDATION",
+      "family": "SEARCH_CONTROL_GAP",
+      "count": 24,
+      "seed": 1724878657350054173,
+      "seed_commitment_sha256": "468900c90c760df125e1bab102dff4ed72cc2d525673a591ced766b9e46c4f5f",
+      "challenge_commitments": [
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_VALIDATION-001",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "0bb6fa63ecb92994c2cabe701c163b09609af886d95d29ef4408cd607418b84c",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_VALIDATION-002",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "a0f82804eee5a4ed9bb2c23caac5ed396a216f19f82b01697e7870843ecefdc3",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_VALIDATION-003",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "90794b7b2cd1ee344d45dc420f943cd0f0e284c8c02be4d0cb75f7f974996b0b",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_VALIDATION-004",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "b93f35aeee18081f551f4c4afa438b9bc88ea752c3bb1b1c297c0aaa60902956",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_VALIDATION-005",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "64ce4a7a38d641b827af97c3890b9d458aef8bb78e5d6c1d2285f72aa0b8a32d",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_VALIDATION-006",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "22d3d3ccdb994f51b62db17b43cd1d3159a43e06d9b426ec462212f6a15f2e84",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_VALIDATION-007",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "3b7cd9c41919e482bb889d974b749399314f956efc8da860222a1b6f44bd41e7",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_VALIDATION-008",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "5a0b33742752df1aaa1186a8a681667347ed218413105e9335feb14dd0dea843",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_VALIDATION-009",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "019a3a4aa2aa8f3d139f694d5f25d5754e81e53f4e693307aa79ed791f1e2c79",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_VALIDATION-010",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "4a37495af97b46d4ea7291c17541bfaa94c522ceb5e93b2fd06fd678b32054e2",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_VALIDATION-011",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "292927d3afaa7c69c5c23ba109822e480d53a1bdafa6f410c9ffc040df22097c",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_VALIDATION-012",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "234e54797b18787d246790652a7894e949923dcd933edf1573faf2cf9cbce2c3",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_VALIDATION-013",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "e14e6369b4ae076b793f84884e0778387663230fdd24ebaa9f3f0b42b7704983",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_VALIDATION-014",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "ac9e24f44f90be0def209f9882be9d02cda5c27f0b593b57f445684ecf777e0b",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_VALIDATION-015",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "06c8f5e9f400d779ac1288d3f53413de4800fde8e6efbc1cd7a9942468029963",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_VALIDATION-016",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "c6be965bceadc52af0feda9dd7d9cb24b07911493290ec98f45e51cf67230df4",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_VALIDATION-017",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "8c73d7322ebe3139e34e366789d8d45ad9ec32ba8b1073cebb84fdd6af33b4b3",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_VALIDATION-018",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "ce9b543f85c06aedbef21a21c1852fdee0de0926b3a35b8e12ece03ab52c930f",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_VALIDATION-019",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "57c8d9b797a23a1975ac4d6f671ec7255babdfb528c42426ae8f87ef06014da5",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_VALIDATION-020",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "fcbc5bb2a29c3fde17e0dd5270ec83b2a10c76fafe40f985942d6b850aeb2183",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_VALIDATION-021",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "0a272228188c30a66cb91088e554800b56f4cc7eb1e8da186cf635bbf30b113e",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_VALIDATION-022",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "5c99df4c6c5debab4e98b2166df86c40eeb8ebcb927841fb856b570678294e10",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_VALIDATION-023",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "d23493b7f3f32f1965950eeb1c13e00584d0bd5cdb12d7eaf6c89a596c013ad6",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_VALIDATION-024",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "ba00cebaf7eef7dbe976d48dc79fd9e7992519558ebc93d09b2b106b1920f64a",
+          "truth_exposed": false
+        }
+      ],
+      "truth_exposed_to_engine": false,
+      "frozen_before_capability_design": true,
+      "manifest_sha256": "7fb14fdeef459936e7a6169ed3571e208bfef4785b347f8440b5d9ed6b0372a0"
+    },
+    "blind": {
+      "set_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND",
+      "family": "SEARCH_CONTROL_GAP",
+      "count": 24,
+      "seed": 1724878657350070654,
+      "seed_commitment_sha256": "365d9b5587da89d4cfb5bc624c595c5eb0f5af378ca945bf0f28c995f484f50d",
+      "challenge_commitments": [
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-001",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "49676964990d292bd06c9abb5b486ac686bb465d4f557401a32aecafc0100ee3",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-002",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "88d7edc62515503a6e7fffc4032b7aee25ec146559f42ac8d59655ce9e5b09c8",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-003",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "e6689af448c374ef0d2aaf23c693bb458c512e837340507ea9667ea5de11d5cf",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-004",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "b4fbf15c6a95bacede5c702b8301a37cf439019a864aaa6a842f01fad579f712",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-005",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "dece5312ae24091a145015666547133f843390f8e957f62fc7be609401a687f4",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-006",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "db69d41119a8e66305c4bf0f010036cf5a6e216b5cc7fb1a8fcfb90aa32397f5",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-007",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "f59a6d0050cdbfb81bed5279a1c7c44b4ce90623592ad553ce9f44e5b10aff7a",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-008",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "e1020f59c670216f9ac05f945d9de2a78fba7e2643cd20626a61d414ac5c4d8c",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-009",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "1c2652f13281926ef3a571b2359f78b2f8ec529c7b339bac08a755265ae1b19e",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-010",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "632f5b37fd7149c2dfb98db56785ab60c163ef4cd5d4c66912da326c920b5beb",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-011",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "e71f70c1e16382dcd80350914fa23f754a98307fe558903c8075e4ca035efe38",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-012",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "eefe275d1fda72c593fd575ae99e6a2c1c4f491b425280a4e7aaab6713709b52",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-013",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "e0fd0676afccdd453320523744c3c2f5a7584f3db80cb42d0e9f9c31644bd85a",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-014",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "321cb5cbb6492cc9067f3f5d297023d97fe05095815f1c1450a2db7d02ac499a",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-015",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "8f8ea209591c40b2d2671c993fecae1a92470f79f871634913bc1bc5d8c08021",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-016",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "5295a7258c6d28aae0e7bcf4c8a1b07b0f623607fc091c2211c148284cdd421a",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-017",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "7df669ceef3254829681e861e96d2dae984bb379e1df16173c70da3c565bdccc",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-018",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "4273e0679a2a60f64db4f9fcd3b5468aec8ae4983ef36c333782669f5a23bff4",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-019",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "b1f990e03280404235a493e65453ee5e7279de8b7019353230657946dba0e87f",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-020",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "39d5b63d90b54f0afc39f777da1ac81fe5150f1208f65f333e2d3c246b5c5422",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-021",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "d748605626dac723df244af3c415ffc4768b9f1220040fc737899fc494a47832",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-022",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "1fed0a9c7a0e3bb2ea399ed413ce6417c582639468eaea407af5e1e2394f1eb7",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-023",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "9c17b1a85e0a9f42014dcbd23ecda9d8e71934d5ea2115a8dce655406cb4f3ab",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND-024",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "2a06d4aaa4c346d31f6588c21619206c816544130cc77a65068e7d19e88f7ba8",
+          "truth_exposed": false
+        }
+      ],
+      "truth_exposed_to_engine": false,
+      "frozen_before_capability_design": true,
+      "manifest_sha256": "f69c5fc7bef9aef10fe31e0b26159ed4fd86dcd92bac42f2548576a3bcc634ce"
+    }
+  },
+  {
+    "family": "CROSS_DOMAIN_NOVELTY",
+    "diagnostic": {
+      "set_id": "F5_CROSS_DOMAIN_NOVELTY_DIAGNOSTIC",
+      "family": "CROSS_DOMAIN_NOVELTY",
+      "count": 18,
+      "seed": 1724878657366839718,
+      "seed_commitment_sha256": "a0a78231802a491f220a01f5116cfe489ea46442c2368f9c9cd4fb471c995da8",
+      "challenge_commitments": [
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_DIAGNOSTIC-001",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "d7f78cde9c3fe382a8bfb14003a471a865d9e2c86b7461f275ddafa4293ff949",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_DIAGNOSTIC-002",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "d433d5ddaa79367a96c119b9e35e1631f26a7f1eb2ed87ed3ea8e908d029c607",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_DIAGNOSTIC-003",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "50e45aa4f53f7a1a40455c434bb4b6d9f2f8d3583c8d7217abba8221f5cf17ae",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_DIAGNOSTIC-004",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "f9ee30a58314309708f32c2f107548a37f474b0fa764862041fbaa8b93cba003",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_DIAGNOSTIC-005",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "78fe05c7f5fa3c3ce21a6ad65edd630346ddea1d60cc705fd08fcc11e107560b",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_DIAGNOSTIC-006",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "d197ea366f3616df6f180dfd0a0e996a5c6603490f0e9ae4dfa6af39a50fa627",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_DIAGNOSTIC-007",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "6c94ac6646c546a2162a24d71c9b412a96e7187e145878662a381d746a901946",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_DIAGNOSTIC-008",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "35e7320f5eb8486d485787beb5825deec3c36a095548e5b748adc292ccc10d31",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_DIAGNOSTIC-009",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "e4ce452331e4b3bd155d35cedf7454b24fc6f34b7d9e16766bd506607c9a89fc",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_DIAGNOSTIC-010",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "be12b4fd7ff2b46ad983ccb5b3e35f87cca5a5a697269cf6f68253095e228a79",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_DIAGNOSTIC-011",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "a9c4827ce70d76d5659650321269fef5d8593c5a8567aa86dadebb95a183e478",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_DIAGNOSTIC-012",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "9b435aa4cfdc0dc5d602f28b7ed0506b6c4ce28c81a0cafab468570c1fabe0ea",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_DIAGNOSTIC-013",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "7092de4d5b3b2ad623d7b02313c52b8da2da24fa88913c7edec4effe6093347c",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_DIAGNOSTIC-014",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "02194ed4e513882b9815ebb285ded5827d47a67a8aac3b89cb4c25adfa341564",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_DIAGNOSTIC-015",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "8338dbebb1905ed6fec3c35f9035ab60d97103ec9eec1cd1f5c44e848bf2883b",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_DIAGNOSTIC-016",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "753ef640a03fb6fb835e9f57dbf2b84c83d3402559c80d2eea58ca43e5582372",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_DIAGNOSTIC-017",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "eb93bfe2d043c024183028d9ff6c568baedcaf9c5ab6769155c2efb81e6bb367",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_DIAGNOSTIC-018",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "88a57bc296ac15b453df22ffb316c2756f60570f8d81fc5373529d9d5284cdb1",
+          "truth_exposed": false
+        }
+      ],
+      "truth_exposed_to_engine": false,
+      "frozen_before_capability_design": true,
+      "manifest_sha256": "d0e0a4913627882571a47944721bc7db90ad0e2a12aeb549c8b359296e92f936"
+    },
+    "validation": {
+      "set_id": "F5_CROSS_DOMAIN_NOVELTY_VALIDATION",
+      "family": "CROSS_DOMAIN_NOVELTY",
+      "count": 24,
+      "seed": 1724878657366831389,
+      "seed_commitment_sha256": "6dd82998e1c6748b63c1c5187e0c4cf9baef13b46c93a0d18019ce091106fb02",
+      "challenge_commitments": [
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_VALIDATION-001",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "e2e7908274da27102e8fe8a39c6be7c8bde9e8b164c4558b68169075c611334e",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_VALIDATION-002",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "ab10d1be8be3becbbba88c8c69acd9e737e2285f1c401c9b40e29a29cf797a61",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_VALIDATION-003",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "ad08ab5a3b46cac92071cdd8dfc279c8d24f691c9812927f24f1d10713a10734",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_VALIDATION-004",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "b4065da934739d3a71a072938ae4c6bb829911fe02c9b902485a7a3c9e74d4a5",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_VALIDATION-005",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "b72afd31918844d7adea13fb79b42673a2a7c1f635bef1f0a228361867cf3321",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_VALIDATION-006",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "9cefaa0fffa7b483ecfa4453d4e33b749ce12099f269c5af7589a69abe6b3272",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_VALIDATION-007",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "7802b46f4a87f26a00c71040c05170e1f384839a6775b518aa7d8df5a75e81a2",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_VALIDATION-008",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "d06cda2e376e1a0adbf4d71afa20e5957a583df9a138663b967f831c4b296582",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_VALIDATION-009",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "c79cb60aa35c32ba235b9141c80687fc0f6695e34c02f8f29650afd8ca946ca4",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_VALIDATION-010",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "38c7f80fb4f7b1f4587e8e836c6291e736b2131afc9cf73025385f52f58ce537",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_VALIDATION-011",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "428037921379e9a779587d9d0a2b8ac96c83b898962911851a91c89c5c78b191",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_VALIDATION-012",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "058dd5a31aaebb83bc1df507007bbdaa5f45bcb2168fe316d38726596da220df",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_VALIDATION-013",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "a8681aae1193c5e852de3b7ae0b5e768ab89f69bd9de45777caccd1815e4753d",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_VALIDATION-014",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "1e6dde448a55784cda06b7c605da59db2e826de9fd84391bd28c59584bb3de27",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_VALIDATION-015",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "26645726e20befbc1a80ccb9e058c07aedfa135ea1e6d53aaace5a230cb502d5",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_VALIDATION-016",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "e584007673b468e4e47bbeec9601293b20434a4da5d8007ca3b14050546bf538",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_VALIDATION-017",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "1e3340a34777725956b94f3d63ad99d465e9a7f6820f63a938b9c3cc038b8a3b",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_VALIDATION-018",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "f2d7df2d837ab0580ddf57ecc4196917738d6a51a5ec713885f0f9e7aff619ad",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_VALIDATION-019",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "0015cae434659fd0e46f4b11222ad268f9c2c161f91edda659d3a6c32800fcf7",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_VALIDATION-020",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "5c389079bb2b98e57c49817a509f1d19d56aa3d0a6bc936ccc9c6d3e1858462d",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_VALIDATION-021",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "4d558241ee916c56be7f6341370ada0fe348de576f8d280ffdbbbe855c192b35",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_VALIDATION-022",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "d6e7f4ebae6787717c4d0200a156e70efaa1cdec9d335fc19d0ae15235849c72",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_VALIDATION-023",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "a7eda82979788ec809bb7cf3bc00d0f8db32ec45b419309b20cffc2d3830c1fb",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_VALIDATION-024",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "04a719b543642754efe3636ef4c4140df011c721729f76412bf1cbb43fd8f4b4",
+          "truth_exposed": false
+        }
+      ],
+      "truth_exposed_to_engine": false,
+      "frozen_before_capability_design": true,
+      "manifest_sha256": "de2380eaa20919f90933ab2a1c797e2c724e678b284f306591d5be06cd2bc684"
+    },
+    "blind": {
+      "set_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND",
+      "family": "CROSS_DOMAIN_NOVELTY",
+      "count": 24,
+      "seed": 1724878657366847870,
+      "seed_commitment_sha256": "17d104d1c0b0dacbdba12a1ccf9584c97834ce01c430af5918d8e7386455c5e7",
+      "challenge_commitments": [
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-001",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "7cc3914534c80869a6065d943435cac791956d4a4ded6dd948e7d4804c7d5fda",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-002",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "c49fbe3d611b6138e6f2e9fce72fd9e98e5ec6bbf236c8bb4df3f6a83443c080",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-003",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "dfa3f8ce349b9e898d7fcd2c38274ad176e57446a1dc6fe0f46401675de3d352",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-004",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "c82d24dbbeeca0cd9bd66c28efcd7259cb69ed5ffe367f053ee32df70cfb7cde",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-005",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "a7a11460283e8fb9393df7857adaf02f6e762075f839bf6eaf1f02bf2314b386",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-006",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "d1162a13e767923ca4310e22815b83747e37f1dd584ba6cb167c9ca48620c5ef",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-007",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "fd1761cfd727e71ed98512c3786be7323381498f374241769f06b575fde4ff5b",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-008",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "5434f8a3e00d0a867d91dbf69f50b55600f84bfe66da491e368c388e7a55b8e3",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-009",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "be514425e51203b95ffab214db980a492267163e31edd37f00342172b7cf0949",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-010",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "f252eb26c11cf4a8c495677736697ee4eb643229c6d76364e1b66bc5edb69446",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-011",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "11cec074cf5de33c6fe8e37be62056dc31916ac96f75a9d6f02b0ac58b63b818",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-012",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "e9f11dece85103d2fb98666980b9bce20229509c06eea05d646f481df6a866c3",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-013",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "5033558eac1608187ffab56198c8a2fd7a90f83ddf355360f4a4e684f577421e",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-014",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "49a309c5b8e1e10f88a1dadb9b8298de6e7d7282d50a11d0e78bbd7c6653b7c5",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-015",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "b1e8c70eff91392ef130f98dcb447a7b4f798120c968ab48754860ed971025c2",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-016",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "a7e35326e4390cf67e93bc92250bda155de191e1e50bd87552bb8ef5a22f21cc",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-017",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "4c23522f93d74e66eb397e58104180cc2b46e46c891b62bb0418c788872d4416",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-018",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "172f0c0c3e7aa2f0322c3007a052fac9a2d51de65540542e5ffa58b3a02d5ab8",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-019",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "a5966c36cd489422cf995542484179b8bbcafc0edb0f41b5fd458a9902e5b2cb",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-020",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "c838b5ea4adc8aef8e893bbb2121b333b9095549613f49f42b1b42ceb1930518",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-021",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "4765c0d0951d29f9a3da4a5ec2fad3f32a5cf11a2e805c043b1435bc9c4a208e",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-022",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "77adf04ff0a579b9fc19fe9510660a9b6c07498aef74a5b7cdc7376d55545f98",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-023",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "734749ff5786b3fb1a57424ff877c980211591321b1671f2088fe8ae009cac19",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND-024",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "96f2d3fda58ffc07155951048779e9e011bcdb5d03a934057a3d23bb9487046c",
+          "truth_exposed": false
+        }
+      ],
+      "truth_exposed_to_engine": false,
+      "frozen_before_capability_design": true,
+      "manifest_sha256": "2bb4021cdeb9095bfa2eb7e104f27f87e0beed600632e0074de07cbc6be2f3ac"
+    }
+  },
+  {
+    "family": "EXISTING_CAPABILITY_CONTROL",
+    "diagnostic": {
+      "set_id": "F6_EXISTING_CAPABILITY_CONTROL_DIAGNOSTIC",
+      "family": "EXISTING_CAPABILITY_CONTROL",
+      "count": 18,
+      "seed": 1724878657383616934,
+      "seed_commitment_sha256": "ab269512f337779f2de8750ee23bd82aff31d84df66e1017eece3c9de3bff258",
+      "challenge_commitments": [
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_DIAGNOSTIC-001",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "61a02a3fa65c8de1c91b4b4ee1335daec01b84b7a8cf69ec1e974efdff884c70",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_DIAGNOSTIC-002",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "921ee4124b17896d42e0a84e4cb106c2af304e628a1a39cb8a51c2a583d36e26",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_DIAGNOSTIC-003",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "107067247ed6c4bb700c9cf2afc8cbd5c35abdfabecb35bba27f9d968d981c8f",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_DIAGNOSTIC-004",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "85ac8472af52d69f732369818975e08a39d54aae5f1c60ee2bf6082315309a20",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_DIAGNOSTIC-005",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "935eec61bece7ffc64241d2c5a37f0fa7e2217855425b85737aacfc6f762e951",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_DIAGNOSTIC-006",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "3a1a00e6b82eb31554bb98c7e02ca9d44196266a557e271d642af35c4e1fc396",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_DIAGNOSTIC-007",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "cea745125c63b67d7cd02b9082e62caf269410b5937bb3ef0ea498641cb888c1",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_DIAGNOSTIC-008",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "2a6bcc84b114a1b5bb219579ce5f03e470dd8cb1796b6eff5b5a461786a837ca",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_DIAGNOSTIC-009",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "5553e208ebeac176936249f9db1ab49a31079b71ddc809233f07ee8a363593b2",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_DIAGNOSTIC-010",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "89c68719bd85b2475705314f57063abbed8e6ad43e11fcfa9a688a447990babe",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_DIAGNOSTIC-011",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "66a0985c755c859f0198c73346c43cbafbd6ac428f8f08f6e1d71cc95b874e25",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_DIAGNOSTIC-012",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "b6dc0b6d958d4f504b81a61192b94380095877fad660ec6c58e89c19bbdac9f3",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_DIAGNOSTIC-013",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "df720a02ff2ff82b8dba95f8ee2dddd929ab788c749c0d639e353ed41e5a1dfc",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_DIAGNOSTIC-014",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "73bcdb5e99788a9e04f2cfe325510998a0c4a38ce172b46cc67fae6eb8a68a25",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_DIAGNOSTIC-015",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "b2b6c4a95542aa7fe8501bc3fa1d7eb4fa8817b5314f455b379236616047f295",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_DIAGNOSTIC-016",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "2ea728a82c4c0680970efeeb78d9fd78c5bff8d1f4f310b927186e37bc0d6b0e",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_DIAGNOSTIC-017",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "8bf300c0cdb057d6fb2295b13384c0992bae7eedd01d0a5c3a58f251f3540bb1",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_DIAGNOSTIC-018",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "0b624fc71eba3ea1689290379e3d6fdebe2fad7e4f18285b0a0b00432b430879",
+          "truth_exposed": false
+        }
+      ],
+      "truth_exposed_to_engine": false,
+      "frozen_before_capability_design": true,
+      "manifest_sha256": "cfefb1f6196bf2323fe67a464f081a0275c0fb6c8f4f45aa323976cc8eca8e7a"
+    },
+    "validation": {
+      "set_id": "F6_EXISTING_CAPABILITY_CONTROL_VALIDATION",
+      "family": "EXISTING_CAPABILITY_CONTROL",
+      "count": 24,
+      "seed": 1724878657383608605,
+      "seed_commitment_sha256": "d647eeb4b74a033b4de9dfdf66fcdbed78453ee27130c25d6a142377427602e9",
+      "challenge_commitments": [
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_VALIDATION-001",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "d158b16ddde94487277ff9fc102df0e9dfa117043e6f5439ec2f3c4893d99b52",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_VALIDATION-002",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "1dcdf92a6cf49ec8dca7406b83b81e320ca22bcf5069902589a5023a68ef4c98",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_VALIDATION-003",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "34f379fb338c2f3b5df668fb2bb1cd3f2b34595ad9b88f4e0c57ef347556ea53",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_VALIDATION-004",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "70b5b300e5b8d901ae82b765bf9af22cc908480ab0ea8f90a1b68f5ee47d4709",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_VALIDATION-005",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "8af010ebae8a149f32583c0bc4d7fbc0c0bd2e229050b5e0b278c499a62299d9",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_VALIDATION-006",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "41715830a37f42586f9f1eb9cc437fdd2f27bd76cdd196229bb963f808ecfb1e",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_VALIDATION-007",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "d366796e1d0e972fb5cf0bdcf0bd29ce939e57fff730666aee27e07f6efd45c1",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_VALIDATION-008",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "9d817ab5f1dba3cb4a39f40f6f31196944548a83730c3cab1029d615c16ccf32",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_VALIDATION-009",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "3bcd08b33862c9b575033d4ea477c86bba6de0ef07efde3549ff9de3bd60593f",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_VALIDATION-010",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "1fe722602c61414c7bc468e4b7e38299c463a2e92776355227a20e248575589a",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_VALIDATION-011",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "194cc7ae9a378e2bb9255c495f44b246e66dba1e7b332f5498ffcefc3d8a857a",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_VALIDATION-012",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "e490a825f6e120971a097b2cae322b361aa7f417eac15246c90da515c64abf57",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_VALIDATION-013",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "c12dd19c826c0439b3566be7ac38e6075a675bfeab855e22eaa2c4a44ff90798",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_VALIDATION-014",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "da7cf65dd8e8bf2bb5376b2432fc6c967340cafba393f4849063ee0dab77c344",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_VALIDATION-015",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "b504d82992bfd406696b1b2b5f2d972d26b846129ed991d8f6dea1a99cee7125",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_VALIDATION-016",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "cd5a9b2be1a421591e85870066d3c1e99dea2daa9942b5c242ddf5cb4f1966c7",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_VALIDATION-017",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "18432c96012edcb21289f158b64cd228e82c0ba2bbd49af9a05126407290ed11",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_VALIDATION-018",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "4ac66e972b0665b96a93cd83be23a943b12073dcda94db38b6f02b809099dbd6",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_VALIDATION-019",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "97916004505854b87a81f97ee1aef179648a8f6761d7ee449d4eb8b35a545720",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_VALIDATION-020",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "cb79dad9a9334906ad032ee09d121d1020de26932c42c0b2db9140637c7050b3",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_VALIDATION-021",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "45f1b7e1c1e36c52d14644d762461ed869f1d711edc2bafe5848947ab08a634d",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_VALIDATION-022",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "47ef4acc5068718cf390fe3b6d12872d83bb225ca22f04ea0dcc214a54ab034a",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_VALIDATION-023",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "dee138a8b922ba640d0bab77f8dab01b4666c4e3d984a167e4edef7c2da979de",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_VALIDATION-024",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "7911dd6315fdd15fd7d7282b30000e0edcd3a16617a803c0869bf9b3449d147a",
+          "truth_exposed": false
+        }
+      ],
+      "truth_exposed_to_engine": false,
+      "frozen_before_capability_design": true,
+      "manifest_sha256": "991f411f0a59bc68d3b40fc9d8ac71b9b7a92028c557678497243c83f5379c25"
+    },
+    "blind": {
+      "set_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND",
+      "family": "EXISTING_CAPABILITY_CONTROL",
+      "count": 24,
+      "seed": 1724878657383625086,
+      "seed_commitment_sha256": "7084e761d4c28db266e3b2aab36f61c2730e9535043c9a2a70fd95bf642a2c8c",
+      "challenge_commitments": [
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-001",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "9969c6c36ef945b7c5f468e976a50835a111c15078efd6083e00c25fe8464e0b",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-002",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "16c939f51de6edce101175784ff7dd6732bf29bc6c7055ded62158daabf644ba",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-003",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "9842ed160c984c8796f4b3737fe516587d8e6ed1441c67031d88f1fde329d2c5",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-004",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "2ff7433f8a9ccbb620ea5b9bf110c14cd96433bb36c6e08eaf085414f3007f06",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-005",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "6e9765546f1ac4d2fdbcd36c32e5ec7d7e4a71ae2b54d57f2f97162f91c5183e",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-006",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "b9a5bac78341849889ac1730a3f32e8ed2a92597d2eb9238691012a239029bda",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-007",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "66c77b6c29621951316a3040c6f14ba188f5d64a05966449f9e042f59fb6a22d",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-008",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "a208927419c1b96560ac81f1f394f1c693b059c78813028afefc425a221d9fd5",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-009",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "da33d90d6676866841e282e483e061258f95850209e4db4a374c79d35095f5ae",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-010",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "48260830ddb7195cb2403b2cb92f6fade46128291c5108575894bd1327697a4b",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-011",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "bf689d1e9eb6aa6b1fd9116ada9a705a1ff3c5e397c8d679373bd5a0a788451a",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-012",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "8c552f7a4b54aae5d119ccf533f340353110adb09ecae778eeae5d460010a8db",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-013",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "024e6fdb2e20b156d8b70d7585545e0434f4e889b2211915d9fa0afe94488542",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-014",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "9bb23477405bb04e58391095c1c0678b7d8aa5f0813ecb619c58077f1f4ec66d",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-015",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "0288b3db70261829cf094f63a2e924cb058b81a484185385ee8f1de898a33192",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-016",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "c7f094511a185fd0b85f09239f45a45c521a16556c5e7521557fb6e586e924f6",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-017",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "d920a1ca7f4d48c497488d950062caaf11ca17364e54057345c1d91c8fab94ae",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-018",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "b04ace28cd0a2f0a1051b49b22d276365a5fd7b97c6cb80b801ef6e02c15faa8",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-019",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "3c90230237bc49040c016e064019355e47e2db9f7b2758577ab1110554f8f9e0",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-020",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "cedd4efef732e468f95891be9001fa425dd5ce7eba64cf525a4be0bbfe855530",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-021",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "9e0da5bb5b636626fa823b7eafcaa9e171daaa43fec3c1112b96c4025ebe42f2",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-022",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "f1ec0c6d6bef60ad2c8e9390cf5474b6e056fa153a12a1e9a65d07269ea674bd",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-023",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "6443eab0bd7470da86c65035f312f43e08c55cb935643c301b159aa6d20dd12f",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F6_EXISTING_CAPABILITY_CONTROL_FRESH_BLIND-024",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "c8d38a89de84f6421eb487e37d974fb873fe0c325fcb879e6000736d1eba4992",
+          "truth_exposed": false
+        }
+      ],
+      "truth_exposed_to_engine": false,
+      "frozen_before_capability_design": true,
+      "manifest_sha256": "78195944f1f71dc6ad05638c506ecd2ada845d0e59cef55364a71789fb220edd"
+    }
+  },
+  {
+    "family": "ADVERSARIAL_NON_APPLICABILITY",
+    "diagnostic": {
+      "set_id": "F7_ADVERSARIAL_NON_APPLICABILITY_DIAGNOSTIC",
+      "family": "ADVERSARIAL_NON_APPLICABILITY",
+      "count": 18,
+      "seed": 1724878657400394150,
+      "seed_commitment_sha256": "b6a21daefc47e6c14c0a6ef6e119a13941c5dee6f98c71859240cc380d08e1ca",
+      "challenge_commitments": [
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_DIAGNOSTIC-001",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "ff4bccf1c823ea887d4aa985cbac1c0466df1dbf21cb5264c5ac1d960fef0ca3",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_DIAGNOSTIC-002",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "28d858f6cfc74c60836a0772ab2b63ff92de546300c37254d0411a8c3dca0154",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_DIAGNOSTIC-003",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "4201cd099f2f1a2d31dc451d67219ff79048f8a9c94a361f6b11988a0ba77e39",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_DIAGNOSTIC-004",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "c32bf57bec8dd216b9e748fa1fbe32aa22cdfe8b922d11d50aab06075f95a772",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_DIAGNOSTIC-005",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "7835d0fe9ba7063de3784862a0cc0caaa33f6e91e3708afeb23cf37758dd9dbb",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_DIAGNOSTIC-006",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "fe7860a231fac55ec96a2f4b26eeb036cc6a89341ae2f8e41da0533d431ec845",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_DIAGNOSTIC-007",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "de8d20ea3e39a275cb90d151cb6a13553ac21c111378be09000efb3cecca73ab",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_DIAGNOSTIC-008",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "be359014932a56a508045dba7522dd6e130b0f3aa9ee5865ce154931f8a71840",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_DIAGNOSTIC-009",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "6278ab1e0e9ed9476f9e233f7c05cbad6ef7c979bb1a83564c15db0af977b56a",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_DIAGNOSTIC-010",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "b08dde07d5b64441927506486fca07a78a07d75ba59dcf83805a56f7b1c875bf",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_DIAGNOSTIC-011",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "8406b196e9e7fe216658fb52f4046c3e79d21d9cc6fd384d2144b110973615fd",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_DIAGNOSTIC-012",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "6ba97231e349f9971a7faa090e4d0e945c2923e4118bac0be6fb574bc2da298f",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_DIAGNOSTIC-013",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "bb297875d0fcc321fb100d8994d0ccbec698bfd91c19fedf226020c6f20fd1f2",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_DIAGNOSTIC-014",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "4df50a4f732039510e07f9e51991d021dc2b8371b1098136aa45609e55a3fee2",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_DIAGNOSTIC-015",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "5db2f0a65f3127b5939cec8ee90bcb59610d5f8c1baf8fae5162c41aac85706f",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_DIAGNOSTIC-016",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "fd53f00d869de45335e76694fd8806db408ebe15e7d0bb6af478615a4393ef78",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_DIAGNOSTIC-017",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "3820271bd85ac443db393724d53ecdc8f317ac25991ac1af0379ff35ae34d690",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_DIAGNOSTIC-018",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "e8826403da5ec6cbf984e61d9544a7e8591fc091a79ca55cee2b6e2a12675a6b",
+          "truth_exposed": false
+        }
+      ],
+      "truth_exposed_to_engine": false,
+      "frozen_before_capability_design": true,
+      "manifest_sha256": "5286e4a4b6db1f57967632430cf2c3f1df25c208318a0e30058d5a67bc198e7f"
+    },
+    "validation": {
+      "set_id": "F7_ADVERSARIAL_NON_APPLICABILITY_VALIDATION",
+      "family": "ADVERSARIAL_NON_APPLICABILITY",
+      "count": 24,
+      "seed": 1724878657400385821,
+      "seed_commitment_sha256": "707fdba10c9ed25e364f57f7b2e1e6bd58e4bfcf587f958c460f855439010108",
+      "challenge_commitments": [
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_VALIDATION-001",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "846046bf969c1915b76de86315f7e98acb8880e5fd352667fa36b576d19fb177",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_VALIDATION-002",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "4b6ab722bf7eded36196837d0f7b32241036651b3a8d6864396fdf739e3b42f2",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_VALIDATION-003",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "61144286699ce5289cf11f692fc4b02acad5ea57c9280e5b5ea9ba5883f002c0",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_VALIDATION-004",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "e44621386d02964194c1218b39e61576779b4c1f1bb4513be5850d8f9d1ae23e",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_VALIDATION-005",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "d73728dd78d40e70406f0de49db7e3bbeac7e9619489e1b333a3fbac73e77122",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_VALIDATION-006",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "7050dd9a9f9efcbb5df83e23e2ed0b43cd265204ddc5da8032c950279a4c5646",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_VALIDATION-007",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "03341da64ffb70f9e6ba09a443bfa02db5c0a9d3d549a59a2f8cedcf8644da89",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_VALIDATION-008",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "71e6755809ec2aa612b52fcda45214537628d3811b492148772680096c57c3cd",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_VALIDATION-009",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "430d49b11be570e1b4ac0ea2768de8679ab2838a660b2b3e66b0ac4aedb63ea7",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_VALIDATION-010",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "08a32072925efb35ac8d1a574de5ef31c5b55935275d4d7de06aa4ea7c3ceaa9",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_VALIDATION-011",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "ac4ac81d096fed92f76854ac9608722429479759b701140bb7f0ba2495760aab",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_VALIDATION-012",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "9ffc2ecec6eebe193bc92ca9ab857fb6bc48c350c69a0b4eabeeea368e33c5c3",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_VALIDATION-013",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "1283634105577aef11ed92a1c95f50500fcc4f70d2cf07828daf6b817a72d88a",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_VALIDATION-014",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "431b95415da26964d1ead0564e22647f09ce6a23c4b40f795aac7dc38db3929b",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_VALIDATION-015",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "6efd4f96ff1409addd2c66aaff3fb9c2ed8d670b8e016d7468352418b4fcad6c",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_VALIDATION-016",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "8e6a86502106bd49f169db42ab4d17bc9930a85f5e08f6eb577a0f09a0e5834a",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_VALIDATION-017",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "ba85b6df556d5625bcf6ca5bfead3fc64819dedd5cf5a8b9c2c9f3b0bca3fee4",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_VALIDATION-018",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "2d6adf3aea1fe38f2df2782d56ea4c286b3232a2d90a77c134c3dcacff157d24",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_VALIDATION-019",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "dde6c1624b13a4f8e5e19ce27f5f58b7a0511456f918e069eab283cd464b3353",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_VALIDATION-020",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "dd884f47b904df9191daae4c07f58086db165556d378b85760ca1969417638c1",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_VALIDATION-021",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "84a9eda828b367b063e663da6aa580f0668c4b53368fd0d109cbe95e9a2778de",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_VALIDATION-022",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "f3fc8314ebdf6163f2e5b4f4976802f3cbc6bca6a48571d8b89e3ec41730dacf",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_VALIDATION-023",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "4d4c636e35e80011222dee2cd8708330596ab3779672c58daa0325f4c293e852",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_VALIDATION-024",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "8fad16b3a1b20da9174bf2c015f256cc92af3ff2894b78226247c5ffef1e98e1",
+          "truth_exposed": false
+        }
+      ],
+      "truth_exposed_to_engine": false,
+      "frozen_before_capability_design": true,
+      "manifest_sha256": "a493a265e5f6e05f149ad6e148732a8c1b3f23debb5720268e33538ce4046dd7"
+    },
+    "blind": {
+      "set_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND",
+      "family": "ADVERSARIAL_NON_APPLICABILITY",
+      "count": 24,
+      "seed": 1724878657400402302,
+      "seed_commitment_sha256": "a48b134e134f046874338a305a157e40a2681f88b17d285fbe7b64a29a162207",
+      "challenge_commitments": [
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-001",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "9b2adebc17cef404b1f418004310bb2c8dadc89fbe174ffa087846d04358fe1a",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-002",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "f237c110e199622162501f31a08c522c9f2064ef0cf54109f0ff5b66a332442f",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-003",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "2a7cedda5532db11ff73dc4afe343ab9d21947bba29bd4e60f0605fa715b84d8",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-004",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "2ac22933d9f7b929b197dbd463001e3777dac47202e28d75c13f2eaccbdb6ed2",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-005",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "715d9e307fb09c33f3e741718c921ad0a51cac2840d20664ccf48a49b945894f",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-006",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "546841b1d8b67ecaab5d82d49473d7d923649b81aaddddbabe9d26a590cc4f19",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-007",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "d4a82dc064c05abfc007a771df39fb7a9d33c85f06dba9cc83c7ac26db088126",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-008",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "3f82e72d8e22ba8b78814b9ebb42fa00db4c666a7da811ad8daa29181563a1c2",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-009",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "885070081f8230e469350e3e29b25e17e397790880742222d63df38a89c75d04",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-010",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "23303a44a712378afad67953fa207cb4b36cf65551ff87f063866a20498c9c49",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-011",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "2b7a2f1d3db1e98ae2ca2212c287b26ec87ff34561376ddf5e97cc9fdaf008bb",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-012",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "46c1e9426e275341ee23d0c488b72b0aac241fa6c4c3e0c29f2452f1a8392ef6",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-013",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "ba4a5ac3a4e42c573d30278b1ddd015333716588ad63cfda74e4df528b882ac5",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-014",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "233ee429ecc2fbcb785b9713a3ec3eadb5395a7ab93825fca968f104e461d069",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-015",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "d88228d5ded390979c1d44568f5ee61e2d7578493b58feb1323b9ddf75e67c3b",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-016",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "7f23041e103974fcbe64588c2773d548369b7ded447fba50ec670c192f88016a",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-017",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "2c860648466903757bd22c085905d4c4d31633473b372cac930ef262993fc445",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-018",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "6ab02ac0a53e0d5b8aaa48f1afcbf9b35a8d80901594ad2b1d56bbd56baf2132",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-019",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "3a50a9589bb05879185495cda4fba7afc8eba409d4460777196fd7176bb72a78",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-020",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "802ee05049d93b64f8e9bc46566a5ca9859795b2ba8773236ac574a85a80d4b7",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-021",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "5c0b62c92472036eca54d7e662163fcbc25cf1445cf3be877c3816172339f0d8",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-022",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "e5b91b1598f6ac40c7033931f2a66cf627df1be2b104c1b02285ab7082c6c721",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-023",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "355557b1062a7cd3c1e8d4198e356821849811732f73e1270273a36b396b90d4",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F7_ADVERSARIAL_NON_APPLICABILITY_FRESH_BLIND-024",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "426bda7b8321c006018f5e20dd9a174230f6d2b2b06a0f5a3c269017c83fa50c",
+          "truth_exposed": false
+        }
+      ],
+      "truth_exposed_to_engine": false,
+      "frozen_before_capability_design": true,
+      "manifest_sha256": "3bbf1678d19f9bb6c7b04ce972c8fce36b45427a64cde9af48b635c807d2cb32"
+    }
+  },
+  {
+    "family": "MIXED_NEW_FRONTIER",
+    "diagnostic": {
+      "set_id": "F8_MIXED_NEW_FRONTIER_DIAGNOSTIC",
+      "family": "MIXED_NEW_FRONTIER",
+      "count": 18,
+      "seed": 1724878657417171366,
+      "seed_commitment_sha256": "1164ff8f568b8ade84410bc895d714ca02b83b881bbf4e9e9ac4445844ba3b25",
+      "challenge_commitments": [
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_DIAGNOSTIC-001",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "4de7cce3f2b0805ea6496f56f3110546c5ddf3d60f3da6b7d4e7939b975af5bf",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_DIAGNOSTIC-002",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "b774f46b882ec7b791a56cb4976f556b42c63433979a0b52330ef1daf33ee326",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_DIAGNOSTIC-003",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "39def0ec162a9f326f9bdac98890560dfdf3c01a6cb16576e77eb35c657c977d",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_DIAGNOSTIC-004",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "1933c79b9a8efea5a70da6f2272b36a022582912d55e45075a9f1fcb3f892cfb",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_DIAGNOSTIC-005",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "049709f14b067fcd847abe32fe99c890c4b9fcb09d55b8e4f1267437982063be",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_DIAGNOSTIC-006",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "b927af62d9c0b09ffec91fc70555eff6d418e9a7967432bab54770a18ea1501d",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_DIAGNOSTIC-007",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "759f5727fcad26313b2d08989d01b2b9f6029c3f553e1e6bf1f54fb9542d65ee",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_DIAGNOSTIC-008",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "fb9f80d514846f4bc704d826079698bc1871adcd7e8a8135fb6f1a80626a0a7f",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_DIAGNOSTIC-009",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "830e5262fb55f78a9a2a8cdbce5071076f1814d88d7f5999ba2795ade4880d63",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_DIAGNOSTIC-010",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "9cddf1f811379f43c7eedec7cd9fcde76aed80e3b0e96967393bc29c54dbca95",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_DIAGNOSTIC-011",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "341071a636cea9830c9ed9046c07a4b76265b0fe885530ce4530e2957a77316c",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_DIAGNOSTIC-012",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "5b21d0df594dbace1971eb8bd42eac9ca62bb454742c1e5dc52e46b2d9e89826",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_DIAGNOSTIC-013",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "95bf1d5001761baaa55f09c3739adb10bb940c6570907b5a4977ca6e874873b5",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_DIAGNOSTIC-014",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "fdee912cdb6a3a9fbf81e7e7d9719829bec2cd356d2ddeddde74b70a9a366168",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_DIAGNOSTIC-015",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "c5c52fda65eeb3abab523f30bfc6edee85ca2db6587c9eb7486b4cf1a76d398b",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_DIAGNOSTIC-016",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "0b086ff534d3265ceaa34da7b5016faa0b0f2f423753c00f8b82c83af37a89fb",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_DIAGNOSTIC-017",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "e51d01e98ca811ce348cd7edef7ca95c8d25283d73412fb545afdc17386ca7e8",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_DIAGNOSTIC-018",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "7d5054dd6dccb03b5f5d36147b528a5070e6034a835fed95a991601223e15d59",
+          "truth_exposed": false
+        }
+      ],
+      "truth_exposed_to_engine": false,
+      "frozen_before_capability_design": true,
+      "manifest_sha256": "7377ad523c0da35e1148a0be42e3b557f1fd3225e50f3a26837bf677fce75432"
+    },
+    "validation": {
+      "set_id": "F8_MIXED_NEW_FRONTIER_VALIDATION",
+      "family": "MIXED_NEW_FRONTIER",
+      "count": 24,
+      "seed": 1724878657417163037,
+      "seed_commitment_sha256": "cb19f2bbf00964d9fd94890c91e1d4b104b380f4bc15607c04faf1d02dd5137e",
+      "challenge_commitments": [
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_VALIDATION-001",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "327c8d62a334854b7d9363e7a01593d221cccf0a21deb671b84e724cf6a44697",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_VALIDATION-002",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "62261a090a30550a57b4f624fadfae77a502e8d91fd263ec790bd650e70d0374",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_VALIDATION-003",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "e607a7265543a3f337b2ed8ffebfa2588b6251790b39215080206c8b0ee07ae0",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_VALIDATION-004",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "0bec9ddcdef1a4d934d8e43abffd0880422e06b4f703642a0746cf9fed69ce52",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_VALIDATION-005",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "f70e86d92f75b7ae6337a26bdc8b87bddc8743bc6bd1bc0291d1a8253a1d1984",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_VALIDATION-006",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "edf4bdd1122fc766a9ab71b2fdc7758fe6a38e19a73a2662f24332beff73f41a",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_VALIDATION-007",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "c791db14d1d7b3cf5c6aaca8bd92916d91e39cef786797952dd61b8830dbee49",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_VALIDATION-008",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "06497f62cab33e838099ea762c269e89d3d2aaf9a44ac3060c7278fa3c4b99e1",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_VALIDATION-009",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "563fa2f59a1db23c92d55c7b3d402b66947c2f7a9e89d4e661b02c734acc148c",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_VALIDATION-010",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "dd344e6c78c7a29ece8081dd9f97acd0370a32092e473e892e00de4e983d462b",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_VALIDATION-011",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "3c6ea624271cd2e97b08bb4f6930521ced5d0d1b8881fdc4dc9812997b9bda0b",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_VALIDATION-012",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "21062b901ae7cdb3eb950f4674772ee54cf4189749da59cc2b5117e367a63b0b",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_VALIDATION-013",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "2853287d04385a90070e9372e34b984ee78bc6aec657d8fb2641ab613bfdedec",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_VALIDATION-014",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "65999f3c21693c90aa54ffc4bc4c8fff9ab501fb1eadfb4ac119ae1527877c67",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_VALIDATION-015",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "ec6afcf147db4d60e9fb69c108ffb38da024cabad7a4bd1665958d4a47471d25",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_VALIDATION-016",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "d25911986bd428711a7705bb16122d2335563a76db10e2aff42b388f65ab23ce",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_VALIDATION-017",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "8e59988a515cb7d24975652fa3cf2cbe2c87b29ddea19a558e119a872bb1dffe",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_VALIDATION-018",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "b334fb30778c0dfc89669659ccab50847d63c2d672a2a8ac6fd09f3fbc8e147a",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_VALIDATION-019",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "8b1f74244a3a06bd5583e32a2d4a1aee00ef55cec8d0c776a00e3cdf18867309",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_VALIDATION-020",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "95c762a680e694cec03f13827320feb4e136e616baf5af1580d391e86949e20b",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_VALIDATION-021",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "b61390654764fc9bb07043ba85a0bb50b679f85ba85eca6d72f06444deac9a7e",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_VALIDATION-022",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "4c68ae297f5596b9e43dde3fe80d684ff80e3cd698e54a98b0b496f20ba96ea0",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_VALIDATION-023",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "8ebb9557a6e15279af1bf6fe0ada01ba382c0c0612bed5e6eac63db5776fd27e",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_VALIDATION-024",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "879344bbd1cbb155ccbc3dba5b934c840380b7a3848f734524b8f4c7394530e6",
+          "truth_exposed": false
+        }
+      ],
+      "truth_exposed_to_engine": false,
+      "frozen_before_capability_design": true,
+      "manifest_sha256": "642bc793f536cdaec7fa93c5fbb91bb924a9d3ef4471bbca595c81551190ca08"
+    },
+    "blind": {
+      "set_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND",
+      "family": "MIXED_NEW_FRONTIER",
+      "count": 24,
+      "seed": 1724878657417179518,
+      "seed_commitment_sha256": "37c6560ba2dea231654d053dbf587fa7ec18ff89f42a4a84fe82b770a3cf4069",
+      "challenge_commitments": [
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-001",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "4c99ea6df9c58bcac38f7ca6d6500700fd89c0cc3e268ef14d7ca8dc01f42e46",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-002",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "b9d3251e4b9a1528db929e812055d66757fedba2ad965a239e4329c7dd68809a",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-003",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "51492a79d63dba3da3ed7266f1efdb404fdccdfe97e8dfcced891cb6686e7c1c",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-004",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "c0d049b1aa33d37ea36a6194c435f6243344186a0584c31d0d5fa065eed036bb",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-005",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "4dc972f9bfbe46147245dbb3ec14cdd66fbf4629c1fb26bc7dc2c39229a76944",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-006",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "c21582d7afc6ac85711493054d6fd9031c843f017d0069164576bc0a2813ac98",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-007",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "a8eaab81d7815de4e8d0945e2e0404553aab139882e2a848b3e1ea347876de77",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-008",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "3dc439d2fa842370c33033a7b053b04544163640de1be08487b0447972730305",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-009",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "259bf19eac323e6c68bbe000aff973fc726c13e3593547c0183ed902ca1d7bd6",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-010",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "4e4cbc627bc2dc295736357a11ee0dd107d0807cc4fc56a73a866a44a00c9561",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-011",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "6672c9ad420ec794ea6b6b00b97d81ac20bb436ea771e2db5c450980a908aa6a",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-012",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "70e4053c8033b94c97d1162affad7bb0667174c11963d94e30d4a94b279486c7",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-013",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "91b8f561d94b226440ec8a60ab163d69d97930ed4a658b8fe48b1a9dedf4d0da",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-014",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "40f1b05bbfebfae16c8ab2ff567f90d3ee859274597e78df67c68583099df194",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-015",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "e96f5c8e6b60d2f86c412a641798935bca7de5e972afc4aa1b9ddd89077b1860",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-016",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "6f30ff965e21932f8f7a1e8ec0e631e3ec6cc044fa1834059f368bf728f6c162",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-017",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "630611acaef3c65797759c643d19278c4d52ee66957d778c9a1a32f3866b688f",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-018",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "df4309fb562837b0fa994fca4f688269cccb439056bc4e677a2809fff790f51a",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-019",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "096970aa9a9eb25829df379340c3f19394105fe9b750ac0dd02704277481bf78",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-020",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "19fce407a460142a8af6716e5ba985be877df5439f56e57f400b7da503c75250",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-021",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "2598755bd4379e683c3b67d3d0b455a350250a333b34b20c6f0c8805ef142252",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-022",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "a6e411e354339c8cef101916bcd6c3315959662592607a4e2593173bedc56ab2",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-023",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "fbde85d92af9b3c1315181fd2fb89da040345dadcea0ea1cd4222da50066ea01",
+          "truth_exposed": false
+        },
+        {
+          "challenge_id": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND-024",
+          "expected_output_exposed": false,
+          "frozen": true,
+          "opaque_schema_sha256": "f5bbff4b85ac4bccc548c566b192f3d0b7989dbb2ecb2d255a7a97425c9163a0",
+          "truth_exposed": false
+        }
+      ],
+      "truth_exposed_to_engine": false,
+      "frozen_before_capability_design": true,
+      "manifest_sha256": "5c9a0acd0a1f8d963ab777c4b6c2010ddbb0de96058aa5bb78bd3e8ff062f170"
+    }
+  }
+]
