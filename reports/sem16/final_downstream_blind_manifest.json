@@ -1,0 +1,573 @@
+{
+  "set_id": "SEM16_FINAL_DOWNSTREAM_BLIND",
+  "pressure": "DOWNSTREAM",
+  "count": 80,
+  "seed": 1656480237942210688,
+  "seed_commitment_sha256": "e702c26293044ceb9d3d88b63d0727c5b214fdc1551eb3979e41509feee6d133",
+  "challenge_commitments": [
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-001",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "900fbda751ae11331fd9b8cd66255cd0fc5f63301066b8b121fc8431553bac30",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-002",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "690c99e2048871527449d10334edc002fc09e099dcac7a431256cf1c19bdffab",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-003",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "5ee372ccc38a460e0624bf2469ecb6fd9cf711e0a35196c76e666169dea7512a",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-004",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "7e5e89f0b4ce72eea202b78b0726234377aabc7a1b8a4fa0d4e620e873ca3348",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-005",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "921db338bd3ec67227ee5b1187912f65c4bd00fadb0125085c67206252d4b95d",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-006",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "d305c6b3136b38483b991bb86ac6f7b5283b2b87a5dedbbd8f58be80a89fd94b",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-007",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "9bd47202abb979a494c0ce402250b1e46c5b2dfdfdd2b25671b4cf1db7bd6f28",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-008",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "d16a65a98e1103979e837ab4ffecf9f02af08308119a599653c0e0547ccbf966",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-009",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "d3caab17497d3931005a4bae7799dbc7b2a68ede141ae4ad0bdd55c17ffa800e",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-010",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "7dd75e72b592b59235a38465326a5d64ebb8cce5699c43cab2e8594c64f37567",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-011",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "d2cc50a6d7dcead4250f1c86d1f686b86e008b52de66c3c84afa44826709ffb8",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-012",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "7b233e1243b1ad6f9d3fb45a934d15f2e8f9e6d78e26a832998090c7d295a87c",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-013",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "f84a01b88f7ed6f73b2f6c60e13344f4b925d789344de1ee909e6ab90c1c6f32",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-014",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "9cd423fc3b9aac609ce75ccc721f680c22bdb1a53c7b62fc169b8df597669ebe",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-015",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "978aa45216574d98884ef9ba04517a4332306b83d71eda1c15e608ce0a1a95f0",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-016",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "d589748bcb2817a906a16016248c2c38902b0a9971503465f6c045ce447c9ca4",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-017",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "0cb77bbf51cc59b4de16ba4af88311b6986c3941213300eb87c81c68d50063d3",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-018",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "da40aac163b1390d330e2e5f8aa01d83ed9ba4c6089df014f74d2586608ae00f",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-019",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "ba6086096217626074f0979f2eb5b5dbc0a4146a7652fedfcc794e72e4830cdc",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-020",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "f1f186727ec2d564b4f3954cc7e7fe7cde7046a587cd11408b107200b8de2084",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-021",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "bf5cc07bb84f547dacbccae670509c27df87ac9ba242d03e2b162a0941b6788d",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-022",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "1330ab4801893bfc9a6bb05896afc859c8c89dbaf3f2fe066cc0153af0f7e290",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-023",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "ac07d57be11f2bf6635c4c860a7c14d3ca238c006e3d7259e9f92bfa5f421893",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-024",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "5fb7d9390593cb6df220bf83c080a406e54151d4ff9bf81a5da77b130ff70f8b",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-025",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "22c74811a7e3223b54a186040491f4e8becaca4652bdd9e55a380abc9151293b",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-026",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "f7318fa7f0afa4f8c6091c5c284d93709f8169f059bcbfd871867102feecc373",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-027",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "4f3e129e20fe39d9282a1f4905a16a783d3ceab89b0a607d3e38dbbb7ae3aa2a",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-028",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "32edab51aae208825ce1b8af99ab4e1751a84d2d0678bc435666828dcbb090ba",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-029",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "68cb6f78e401d05b417ca971a977b37c7750841a14127466bc75a85c8258bbfc",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-030",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "81a51f103305d5a5296b67eb7ed28a800e19ff5b0159b7df7209cf992a58f6c4",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-031",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "11045b1b70250528aacf4843539457ef75fc6d565da3eab8b9a0371b6dc8fb84",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-032",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "89b61a3e3c92a73d1390d763a7d5679787435762db225562fd534029f2ff0231",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-033",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "99913237af7145fb667c00f1e5ff826e934d0c309b109e7eef7e4938b28c3748",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-034",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "9cba733fed3d0fe65128bdd83727a4d6065d676f4e43dce075d2ce7b38b9fb12",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-035",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "5f35692693b46a6247f3e466945b88530be563f29319e1039b84593f8d348cff",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-036",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "c6bde094ff2575133db8ee4fec044dcbd27e35497d4dc3cd05729c78d3b046a4",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-037",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "2c07dc17acf8a4ad1ed860b2cc6ca7fa6bb68296e5d5ac6eb3b542e8bd66a635",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-038",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "290ad85d0e5618d461e742a0de8b9a6c26e5584a719fa66d18246383b1d74715",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-039",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "5e044f55d13aa35e8515262589241f48f605a44c763335d18ffbe7c0a55b7463",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-040",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "97d0efc9f58e25b2bcae886ba3229f31b0f84020252bfeff02259ba1560dae09",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-041",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "9f3aa6a049b20f982e1047e9035fe1dd8c4185274d808951d149038acd977814",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-042",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "b5ff77f71786564bfb6861b809b013acf40f06d9467ec063654aa55599fac887",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-043",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "e0d8b30924dac81b0289e90d9f5c70af34ba8b35cb3a066ca90a18da631f1fab",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-044",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "03456738f31e5e5e8e468dd00d95c7938639492c234a632ba0a08d264fb253d2",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-045",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "2a41cd42e120aaa232a0e0d95b3f92d0a1142722560a9166599ad3d93e5fda41",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-046",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "17ab846ce3f834144ea9c42be6e5ba8b39f065d8f6b9c64410598f23610bc353",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-047",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "c18b4a9658177885e8fe898897b46bcce0b0ca17d1a6b938fcedf96eb53711cf",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-048",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "f0de033c046baaeb3f6ce2804b5e7b0b987c9c7533dda4e3a2ca49e8fa632d4e",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-049",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "5ae538b544e8413f47f1299f1a57db04bf072746ca1f673a00fcc4041cdf7923",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-050",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "8420f95d736b0127c8e1cb7c04392e968c1c27d30626faf81b1f47f6a498781c",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-051",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "b0d4f377ac92771acba356da27c74479666313bcbca62309d1a5834cdcd3b45c",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-052",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "8def33ba15d5d7b0e11e7b5a99da0f1e2f08f3a7677010ff2d774fd1bd6978a8",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-053",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "1c1da606a28d74cd96f9137a85de6ceb77c2c1cd5768365de9da1b41a4903380",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-054",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "54e4c55a7893d30167fe1b534ea8b00a5269b8a7ec48d72f12dd633ad30033b6",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-055",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "21ec88f9cb27fe6cb38b3532fc74063b7e69f1ace80f842e9a352e9af0818930",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-056",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "28ed7f104314e29b3fa64786effc76790ce0d4eaaf22cbd01f65a72b41d65642",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-057",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "e35704147eb47fc024c0d54055828812a967bbe109467096f5e2a4214a6c8d0e",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-058",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "8deaa6001a29768077680ed5c78d95d8933a13d02b67c2e65fb8dc3e752876fe",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-059",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "0961cfbe737402012fc6d09b56ae690aa977014f0a1e5df97d31cb2396ca6d31",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-060",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "b0cdda839f609a79a5edd2f1f77b7ebc29457c608b5ca464dce89a0202dfbaef",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-061",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "1dae80cbf45a7101019e44aa6173fa5b37ef7934382520f92dba239d3b0aacb3",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-062",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "45a24b208b068b4f10b436660c6393c47607344d526eb2ac7474455fbf6cea74",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-063",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "004ffb914aa41f35f06fb9271575dafb37625461afc083b69c19bc67c8a5015e",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-064",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "0873c410c30aa3d19f505ad658ffb629871a1a5610eebc040f9c4e4e19110b82",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-065",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "1d0d03c46f6c72611bb9576d64f34fe2fe0676b978543ec4dab14bfde43a1cc9",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-066",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "54d8d23ce1beb13cf503e0a66b46683086671f22a5583fa04c8294765fe864d3",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-067",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "6ae42fea1f5173ee07a8651b6bc2acba5e95a3933b19098dd110bf4b30758fa0",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-068",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "1599830e94ecb7dbf5656c729972e46e40f3dae16c423fe63d7fc9bf30d36c14",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-069",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "57007f10571e777f4ed63507a15b1d251fab8f5f55e4c50d6201d323cf5a0190",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-070",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "84bffdf3d47589080870c564fbca7dbecf88bd4dcb54ba2c98f7a540a7b1cf04",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-071",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "b7364f8eabbbb7ec4a0e270919ac37a9846e489d31e9377dac9795be01b4a458",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-072",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "9970866084efd99740455fb36d4c247ded6d678ff69ed6ef872e6af8d13944f4",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-073",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "496236bfdaa8a59486c10eb54b4d33f00a3dc5ce5d838d96fc0809ea6540df92",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-074",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "1e105b0be41d27c15deb01e64aea1d8de75e0b73347079f8e077f7043eedbc1e",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-075",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "97fa55ff43d3e5abd220dd1cd76e9887b76fad25de6a3d29c839c7b12bd5ade5",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-076",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "9590a29076ce38e0b85fbc4a36a658934be58e93473e4ba253c8eb18855ea025",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-077",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "43385a95a9cdade37b50c524e100d3217edae1ddaa358e3a1c7bf771707b8f3d",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-078",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "d9758539f963f9668e82c81ea939df84ebd94852deb1850949cb7b60e98ac2d4",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-079",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "bdf90886dd65746730dbde460d7256bbd88a7add78324c4a47f9dc5446dc0ecb",
+      "truth_exposed": false
+    },
+    {
+      "challenge_id": "SEM16_FINAL_DOWNSTREAM_BLIND-080",
+      "expected_output_exposed": false,
+      "frozen": true,
+      "opaque_schema_sha256": "8596cb1e9157edbf26b8874897af50f7cd22cbb2454fa0b12bc3f15445f4dc40",
+      "truth_exposed": false
+    }
+  ],
+  "truth_exposed_to_engine": false,
+  "expected_output_exposed_to_engine": false,
+  "frozen_before_epoch_execution": true,
+  "manifest_sha256": "a71bc54eeec5b8709653ff78afcbfd297d859b0bb8d98fb11d04777a8b0ea91d"
+}

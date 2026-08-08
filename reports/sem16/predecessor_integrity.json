@@ -1,0 +1,18 @@
+{
+  "acceptance_criteria_unchanged": true,
+  "evaluator_unchanged": true,
+  "governor_unchanged": true,
+  "index_sha256": "77b17332b5ff7204c28e9445e689276049afd6e89308e7e242904570a283e6fc",
+  "predecessor_commit": "1a5b8b9ee591e41ea9f4be4ac46b03890e439e60",
+  "production_promotion_detected": false,
+  "sem15_composed_binary_sha256": "c546b87444f48762401d741ae58abc9b97a0015cfe2f8ea4a89c1c3b236bdc0d",
+  "sem15_composed_source_sha256": "69944a68af9bd4463ce2e741d2197c7c3b4e6767f9d4395410d1f1c76e00a563",
+  "sem15_levels": {
+    "A": true,
+    "B": true,
+    "C": true
+  },
+  "sem15_status": "PASS",
+  "semantic_state_sha256": "d1abd8de410f5284773f1e582937922dc514513ed738eb9f04e8bf2735185d3c",
+  "status": "PASS"
+}

@@ -1,0 +1,98 @@
+{
+  "SEM16_META_BASE": "SEM15_FINAL_COMPOSED_META_ENGINE",
+  "acceptance_criteria_sha256": "7294f0848009837f14d357919c0955aa070282d0f8be0fd0bce60e5930895bc0",
+  "core_total_deployable_bytes": 168691,
+  "equivalence_output_sha256": "2683a9515fecf247e29dc68856b3e1d8a590429dffa4c259b95b6dbcbde0bb0e",
+  "evaluator_sha256": "7f1f36f4a413b566fb158540f86c7d162fddee27ee9d33e9d94011e02a0f0ba0",
+  "governor_sha256": "ca944e91df610175ad219e6e94383064b16e7e0462bcb327fd73ba3a2ccca171",
+  "instrumented_proxy": {
+    "commands": [
+      {
+        "command": "cargo fmt --all",
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success": true
+      },
+      {
+        "command": "cargo fmt --all -- --check",
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success": true
+      },
+      {
+        "command": "cargo clippy --all-targets --offline -- -D warnings",
+        "exit_code": 0,
+        "stderr_sha256": "4eac66aecaa8d049af2fb20667fe12136ee198852cccdd347cf646475511b595",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success": true
+      },
+      {
+        "command": "cargo test --offline",
+        "exit_code": 0,
+        "stderr_sha256": "77a19012c7feed2ef52ae91ebff549df18f030f20dbbc9c54a91dcdadad89637",
+        "stdout_sha256": "b4e02674edf3c07e343265c443bf884c102d940f204a61dfd2f059bf3564ce23",
+        "success": true
+      },
+      {
+        "command": "cargo build --offline",
+        "exit_code": 0,
+        "stderr_sha256": "ba25861c73464bcd5e0f3d2ab1ae196b0d383667432896b857915f83b3e3cfb6",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success": true
+      },
+      {
+        "command": "cargo build --release --offline",
+        "exit_code": 0,
+        "stderr_sha256": "6a0c5d924567f6412720409210261e0de8c5350d113bd3f7da2a7a9437a89284",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "success": true
+      }
+    ],
+    "debug_build_pass": true,
+    "engine_id": "SEM16-META-BASE-PROXY",
+    "mode": {
+      "adaptive_probe_budget": false,
+      "frontier_priority": false,
+      "state_snapshot_reuse": false
+    },
+    "release_binary_bytes": 163328,
+    "release_binary_sha256": "8c4df8c23ef3c3e582961f504dfd4852cadf7636a02c5407526d8cbcf2c550e3",
+    "release_build_pass": true,
+    "rustfmt_pass": true,
+    "sandbox_contained": true,
+    "source_bytes": 6609,
+    "source_sha256": "221c54f3f5cff80c2796ace6c55f0f679a88c1a744938732d697e6dc62264323",
+    "strict_clippy_pass": true,
+    "tests_pass": true
+  },
+  "instrumented_proxy_output_equivalent": true,
+  "official_binary_bytes": 163328,
+  "official_binary_sha256": "c546b87444f48762401d741ae58abc9b97a0015cfe2f8ea4a89c1c3b236bdc0d",
+  "official_source_bytes": 5363,
+  "official_source_sha256": "69944a68af9bd4463ce2e741d2197c7c3b4e6767f9d4395410d1f1c76e00a563",
+  "predecessor_commit": "1a5b8b9ee591e41ea9f4be4ac46b03890e439e60",
+  "production_source_mutations": 0,
+  "protected_paths": [
+    "Cargo.toml",
+    "Cargo.lock",
+    "rust-toolchain.toml",
+    ".gitattributes",
+    "scripts/build_portable_r0.ps1",
+    "crates",
+    "reports/sem8",
+    "reports/sem9",
+    "reports/sem10-p0",
+    "reports/sem10-fresh",
+    "reports/sem11",
+    "reports/sem12",
+    "reports/sem13",
+    "reports/sem14",
+    "reports/sem15"
+  ],
+  "protected_tree_sha256": "b738448bfbebe60c0480b8637098fb4a6648f2e5883f9040f25539b4f7521d05",
+  "self_improvement_engine_sha256": "69944a68af9bd4463ce2e741d2197c7c3b4e6767f9d4395410d1f1c76e00a563",
+  "semantic_index_sha256": "77b17332b5ff7204c28e9445e689276049afd6e89308e7e242904570a283e6fc",
+  "semantic_state_sha256": "d1abd8de410f5284773f1e582937922dc514513ed738eb9f04e8bf2735185d3c"
+}
