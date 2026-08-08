@@ -1,0 +1,20 @@
+{
+  "candidate": "G1_INVARIANT_GUIDED_CAPABILITY_SCHEMA_COMPILER",
+  "gates": {
+    "ablation": true,
+    "counterfactual_correctness": true,
+    "cross_frontier_reuse": true,
+    "executable_semantics": true,
+    "fresh_transfer": true,
+    "necessity": true
+  },
+  "gen7_candidates": 1,
+  "gen7_promoted": 1,
+  "max_autonomous_concept_generation": "GEN7_EXPERIMENTAL_SEALED_DESCENDANT",
+  "new_semantic_candidates": 1,
+  "new_semantic_promotions": 1,
+  "production_promotion": false,
+  "promotion_gates_weakened": false,
+  "promotion_scope": "EXPERIMENTAL_SEALED_DESCENDANT_ONLY",
+  "sem17_gen7_rejection_audit": "NOT_GENERAL_ENOUGH_AND_NO_CAUSAL_GENESIS_REUSE"
+}

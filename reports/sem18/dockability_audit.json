@@ -1,0 +1,8 @@
+{
+  "candidate_is_standalone_core_contract": true,
+  "core_depends_on_language_layer": false,
+  "core_depends_on_research_artifacts": false,
+  "core_dockability_preserved": true,
+  "passed": true,
+  "production_core_modified": false
+}

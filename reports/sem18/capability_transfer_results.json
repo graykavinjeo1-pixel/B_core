@@ -1,0 +1,12 @@
+{
+  "adversarial_non_applicability_pass": true,
+  "counterfactual_correctness_pass": true,
+  "fresh_transfer_families": [
+    "F5_MIXED_SCHEMA_REUSE",
+    "F6_CROSS_DOMAIN_TRANSFER_A",
+    "F7_CROSS_DOMAIN_TRANSFER_B"
+  ],
+  "fresh_transfer_tasks": 72,
+  "necessity_ablation_pass": true,
+  "passed": true
+}

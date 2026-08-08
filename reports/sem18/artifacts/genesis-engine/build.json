@@ -1,0 +1,14 @@
+{
+  "binary_path": "D:\\B_Core_SEM18\\reports/sem18\\artifacts/genesis-engine\\sem18-genesis-probe-release.exe",
+  "binary_sha256": "1b2c8308e0127587bd278637ed508270369a3b2bc0d7c6f4f9e26a407c6eaefa",
+  "candidate_id": "G1_INVARIANT_GUIDED_CAPABILITY_SCHEMA_COMPILER",
+  "compiler": "rustc",
+  "debug_symbols_retained": false,
+  "frontier_family_identifiers_in_candidate": false,
+  "generic_role_mask_only": true,
+  "optimization": 3,
+  "source_bytes": 2077,
+  "source_path": "D:\\B_Core_SEM18\\reports/sem18\\artifacts/genesis-engine\\lib.rs",
+  "source_sha256": "34354d108c3682a8718a1a6bab8b8c86597d4256bce52f19faec4e8561bf6c82",
+  "wave_identifiers_in_candidate": false
+}

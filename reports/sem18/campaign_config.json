@@ -1,0 +1,25 @@
+{
+  "branch": "codex/sem18-growth-law",
+  "campaign_id": "SEM18-GROWTH-LAW-0001",
+  "conditions": [
+    "SEM18_BASE",
+    "LINEAR_GENESIS_BASELINE",
+    "COMPOUNDING_GENESIS"
+  ],
+  "equal_max_genesis_cost_per_wave": 120,
+  "external_llm_calls": 0,
+  "final_fresh_frontier_blind_count": 240,
+  "frontier_waves_budget": 4,
+  "frontier_yield_acceleration_rule": "ALL_SUCCESSIVE_DIRECT_WAVE_GAIN_RATIOS_GT_1_UNDER_EQUAL_MAX_BUDGET",
+  "gen7_promotion_required_for_pass": false,
+  "genesis_efficiency_acceleration_rule": "SAME_OR_HIGHER_DIRECT_YIELD_AND_STRICTLY_LOWER_GENESIS_COST_IN_AT_LEAST_TWO_LATER_WAVES_WITH_MONOTONE_NONINCREASING_COST",
+  "growth_regime_rule": "ACCELERATING_IFF_ALL_SUCCESSIVE_DIRECT_WAVE_GAIN_RATIOS_GT_1; LINEAR_IFF_ALL_EQUAL; DIMINISHING_IFF_ALL_NONINCREASING_WITH_AT_LEAST_ONE_DECREASE; OTHERWISE_SATURATING_IF_FINAL_GAIN_ZERO_ELSE_MIXED_REPORTED_AS_DIMINISHING",
+  "local_teacher_calls": 0,
+  "network_reads": 0,
+  "network_writes": 0,
+  "predecessor_commit": "6e8785be0f03695afecc871bb88861fc7475ff31",
+  "remote_executions": 0,
+  "wall_time_acceleration_rule": "FINAL_COMPOUNDING_MEDIAN_WALL_TIME_AT_LEAST_10_PERCENT_BELOW_LINEAR_BASELINE_AND_DETERMINISTIC_COST_NONINCREASING",
+  "wave_gain_metric_definition": "NEWLY_SOLVED_TASKS_ON_EACH_WAVE_UNOPENED_24_CASE_TARGET_VALIDATION_BANK_EXCLUDING_FINAL_BLIND_CROSS_CAPABILITY_REUSE_CLASSES",
+  "wave_target_validation_count": 24
+}

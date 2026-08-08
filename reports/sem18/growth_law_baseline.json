@@ -1,0 +1,32 @@
+{
+  "capability_genesis_cost_measurement_status": "NOT_INSTRUMENTED_IN_SEM17",
+  "evaluator_authority": false,
+  "growth_law_state": {
+    "active_capabilities": 7,
+    "active_concepts": 7,
+    "capability_genesis_cost": null,
+    "capability_reuse": 3,
+    "deployable_bytes": 171130,
+    "deterministic_cost": 16,
+    "frontier_gain_per_wave": [
+      24,
+      24,
+      24
+    ],
+    "frontier_size": 168,
+    "marginal_frontier_gain": [
+      24,
+      24,
+      24
+    ],
+    "marginal_gain_per_added_byte": 0.21052631578947367,
+    "marginal_gain_per_cost": null,
+    "memory_bytes": 160,
+    "number_of_new_capabilities": 3,
+    "observed_growth_regime": "LINEAR",
+    "source_concepts_required": 6,
+    "wall_time_ns": 5166400.0
+  },
+  "observation_model_only": true,
+  "wave_gain_metric_definition": "NEWLY_SOLVED_TASKS_ON_EACH_WAVE_UNOPENED_24_CASE_TARGET_VALIDATION_BANK_EXCLUDING_FINAL_BLIND_CROSS_CAPABILITY_REUSE_CLASSES"
+}

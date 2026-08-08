@@ -1,0 +1,16 @@
+{
+  "frontier_yield_acceleration_verified": false,
+  "gain_ratios": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "growth_regime": "LINEAR",
+  "interpretation": "Direct wave yield remained constant; total frontier size alone is not acceleration.",
+  "wave_gains": [
+    24,
+    24,
+    24,
+    24
+  ]
+}

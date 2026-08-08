@@ -1,0 +1,13 @@
+{
+  "frontier_yield_acceleration_claimed": false,
+  "growth_limit_causality_pass": true,
+  "growth_mechanism_causality_pass": true,
+  "lineage": [
+    "SEM17_EQUAL_DIRECT_GAIN_WITH_INDEPENDENT_CAPABILITY_DESIGNS",
+    "CAPABILITY_INDEPENDENCE_LIMIT",
+    "REUSE_VERIFIED_INVARIANT_ROLES",
+    "G1_INVARIANT_GUIDED_CAPABILITY_SCHEMA_COMPILER",
+    "LOWER_LATER_WAVE_GENESIS_COST",
+    "SAME_FRONTIER_YIELD_AT_IMPROVED_GENESIS_EFFICIENCY"
+  ]
+}

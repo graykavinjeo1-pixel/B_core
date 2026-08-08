@@ -1,0 +1,22 @@
+{
+  "claim_scope": "SAME_DIRECT_FRONTIER_YIELD_WITH_DECREASING_GENESIS_COST",
+  "compounding_costs": [
+    120,
+    96,
+    83,
+    72
+  ],
+  "genesis_efficiency_acceleration_verified": true,
+  "linear_costs": [
+    120,
+    120,
+    120,
+    120
+  ],
+  "wave_gains": [
+    24,
+    24,
+    24,
+    24
+  ]
+}

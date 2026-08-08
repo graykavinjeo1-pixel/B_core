@@ -1,0 +1,26 @@
+{
+  "autonomous_growth_limit_diagnosis": true,
+  "classifier_input": {
+    "causal_genesis_reuse_instrumented_in_sem17": false,
+    "equal_direct_wave_gain": true,
+    "one_independently_designed_capability_per_wave": true,
+    "sem17_active_capability_growth": [
+      4,
+      7
+    ],
+    "task_solution_reuse_exists": true
+  },
+  "counterfactual_prediction": "If independent genesis is causal, a reusable schema mechanism should preserve direct wave yield while reducing later-wave search, design, candidate, and verification cost; disabling it should restore constant cost.",
+  "diagnosis": "SEM17 capabilities were generated as independent one-off designs. Their task-level composition broadened the final blind yield, but no verified capability changed the genesis process for the next capability.",
+  "label_was_classification_vocabulary_not_prescribed_answer": true,
+  "permitted_class_scores": {
+    "ACTIVE_SET_GROWTH_LIMIT": 1,
+    "CAPABILITY_COMPOSITION_LIMIT": 1,
+    "CAPABILITY_INDEPENDENCE_LIMIT": 5,
+    "CAPABILITY_REUSE_LIMIT": 3,
+    "GENESIS_SEARCH_LIMIT": 1,
+    "UNKNOWN_GROWTH_LIMIT": 0
+  },
+  "selected_limit_class": "CAPABILITY_INDEPENDENCE_LIMIT",
+  "selection_rule": "HIGHEST_PREDECLARED_SYMPTOM_SCORE; TIES_RESOLVE_TO_UNKNOWN"
+}

@@ -1,0 +1,62 @@
+{
+  "base_frontier_solved_tasks": 24,
+  "cumulative_final_blind_yield_used_as_wave_gain": false,
+  "cumulative_newly_solved_frontier_tasks": 144,
+  "direct_wave_gain_total": 72,
+  "direct_wave_target_families": [
+    "REPRESENTATIONAL_GAP",
+    "EXPERIMENT_GAP",
+    "SEARCH_CONTROL_GAP"
+  ],
+  "final_blind_cross_capability_and_transfer_yield": 72,
+  "final_frontier_solved_tasks": 168,
+  "growth_regime_scope": "DIRECT_WAVE_LOCAL_VALIDATION_GAIN_ONLY",
+  "historical_evidence_modified": false,
+  "improved_final_blind_families": [
+    {
+      "base": 0,
+      "family": "F1_REPRESENTATIONAL_GAP_FRESH_BLIND",
+      "final": 24,
+      "gain": 24
+    },
+    {
+      "base": 0,
+      "family": "F2_NOVEL_MECHANISM_GAP_FRESH_BLIND",
+      "final": 24,
+      "gain": 24
+    },
+    {
+      "base": 0,
+      "family": "F3_EXPERIMENT_GAP_FRESH_BLIND",
+      "final": 24,
+      "gain": 24
+    },
+    {
+      "base": 0,
+      "family": "F4_SEARCH_CONTROL_GAP_FRESH_BLIND",
+      "final": 24,
+      "gain": 24
+    },
+    {
+      "base": 0,
+      "family": "F5_CROSS_DOMAIN_NOVELTY_FRESH_BLIND",
+      "final": 24,
+      "gain": 24
+    },
+    {
+      "base": 0,
+      "family": "F8_MIXED_NEW_FRONTIER_FRESH_BLIND",
+      "final": 24,
+      "gain": 24
+    }
+  ],
+  "reconciled_growth_regime": "LINEAR",
+  "reconciliation_equation": "144_CUMULATIVE_FINAL_BLIND_GAIN = 72_DIRECT_WAVE_LOCAL_VALIDATION_GAIN + 72_FINAL_BLIND_CROSS_CAPABILITY_REUSE_AND_TRANSFER_GAIN",
+  "sem17_growth_metric_reconciled": true,
+  "wave_direct_validation_gains": [
+    24,
+    24,
+    24
+  ],
+  "wave_gain_metric_definition": "NEWLY_SOLVED_TASKS_ON_EACH_WAVE_UNOPENED_24_CASE_TARGET_VALIDATION_BANK_EXCLUDING_FINAL_BLIND_CROSS_CAPABILITY_REUSE_CLASSES"
+}

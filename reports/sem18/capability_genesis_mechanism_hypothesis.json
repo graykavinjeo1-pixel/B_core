@@ -1,0 +1,28 @@
+{
+  "candidate_class": "CAPABILITY_GENESIS_MECHANISM",
+  "candidate_id": "G1_INVARIANT_GUIDED_CAPABILITY_SCHEMA_COMPILER",
+  "expected_later_wave_effect": [
+    "shallower source search",
+    "fewer implementation candidates",
+    "fewer invalid candidates",
+    "lower design and verification cost"
+  ],
+  "frontier_yield_acceleration_claimed_before_run": false,
+  "generic_operation": "factor previously verified invariant roles, synthesize only the missing role, and route one compiled schema without family or wave identifiers",
+  "genesis_efficiency_acceleration_hypothesized": true,
+  "input_contract": [
+    "visible_frontier_role_constraints",
+    "known_semantic_primitives",
+    "invariant_constraints",
+    "prior_verified_schema_roles"
+  ],
+  "mechanism_not_prescribed_by_protocol": true,
+  "output_contract": [
+    "bounded_reusable_capability_schema",
+    "concrete_capability_role_mask",
+    "verification_plan",
+    "genesis_cost_trace"
+  ],
+  "production_promotion_authorized": false,
+  "selected_after_growth_limit_diagnosis": true
+}

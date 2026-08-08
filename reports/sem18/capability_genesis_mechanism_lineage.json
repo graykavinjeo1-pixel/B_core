@@ -1,0 +1,22 @@
+{
+  "candidate_binary_sha256": "1b2c8308e0127587bd278637ed508270369a3b2bc0d7c6f4f9e26a407c6eaefa",
+  "candidate_source_sha256": "34354d108c3682a8718a1a6bab8b8c86597d4256bce52f19faec4e8561bf6c82",
+  "derived_common_invariant": "BOUNDED_GUARDED_ROLE_SCHEMA",
+  "external_teacher_used": false,
+  "max_source_concepts_composed": 5,
+  "observed_limit": "CAPABILITY_INDEPENDENCE_LIMIT",
+  "selected_mechanism": "G1_INVARIANT_GUIDED_CAPABILITY_SCHEMA_COMPILER",
+  "source_concepts": [
+    "INVARIANT_GUARD",
+    "RELATIONAL_CLOSURE",
+    "COUNTERFACTUAL_PROBE",
+    "BOUNDED_SEMANTIC_BEAM",
+    "SPARSE_ROUTING"
+  ],
+  "source_domains": [
+    "SEMANTIC_REPRESENTATION",
+    "EXPERIMENT_GENERATION",
+    "SEARCH_CONTROL",
+    "SPARSE_ACTIVATION"
+  ]
+}

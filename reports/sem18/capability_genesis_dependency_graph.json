@@ -1,0 +1,39 @@
+{
+  "causal_capability_genesis_chain_depth": 4,
+  "chronology_alone_counted_as_causality": false,
+  "edges": [
+    {
+      "causal": true,
+      "cost_with_edge": 96,
+      "cost_without_edge": 120,
+      "from": "C1_SCHEMA_LIBRARY",
+      "relation": "REUSED_VERIFIED_ROLES_DURING_GENESIS",
+      "shared_verified_roles": 2,
+      "to": "C2_CONCRETE_CAPABILITY"
+    },
+    {
+      "causal": true,
+      "cost_with_edge": 83,
+      "cost_without_edge": 120,
+      "from": "C2_SCHEMA_LIBRARY",
+      "relation": "REUSED_VERIFIED_ROLES_DURING_GENESIS",
+      "shared_verified_roles": 3,
+      "to": "C3_CONCRETE_CAPABILITY"
+    },
+    {
+      "causal": true,
+      "cost_with_edge": 72,
+      "cost_without_edge": 120,
+      "from": "C3_SCHEMA_LIBRARY",
+      "relation": "REUSED_VERIFIED_ROLES_DURING_GENESIS",
+      "shared_verified_roles": 4,
+      "to": "C4_CONCRETE_CAPABILITY"
+    }
+  ],
+  "nodes": [
+    "C1_RELATIONAL_ROLE_SCHEMA",
+    "C2_INTERVENTIONAL_ROLE_SCHEMA",
+    "C3_EXPERIMENT_ROLE_SCHEMA",
+    "C4_CONTROL_ROLE_SCHEMA"
+  ]
+}

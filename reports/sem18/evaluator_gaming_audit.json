@@ -1,0 +1,9 @@
+{
+  "evaluator_gaming_events": 0,
+  "frontier_family_identifier_hard_coding": false,
+  "future_wave_identifier_hard_coding": false,
+  "growth_metric_mutation": false,
+  "passed": true,
+  "resource_budget_mutation": false,
+  "truth_labels_available_to_candidate": false
+}

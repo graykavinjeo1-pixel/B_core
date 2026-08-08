@@ -1,0 +1,15 @@
+{
+  "gain_ratios": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "growth_regime": "LINEAR",
+  "marginal_gains": [
+    24,
+    24,
+    24,
+    24
+  ],
+  "metric_definition": "NEWLY_SOLVED_TASKS_ON_EACH_WAVE_UNOPENED_24_CASE_TARGET_VALIDATION_BANK_EXCLUDING_FINAL_BLIND_CROSS_CAPABILITY_REUSE_CLASSES"
+}

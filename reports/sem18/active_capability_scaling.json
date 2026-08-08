@@ -1,0 +1,10 @@
+{
+  "active_set_growth": 1,
+  "base_active_capabilities": 7,
+  "base_total_capabilities": 7,
+  "final_active_capabilities": 8,
+  "final_total_capabilities": 12,
+  "growth_mode": "GENESIS_MECHANISM_REUSE_AND_HIGHER_ORDER_ABSTRACTION",
+  "higher_order_genesis_mechanisms_added": 1,
+  "raw_concrete_capabilities_added": 4
+}

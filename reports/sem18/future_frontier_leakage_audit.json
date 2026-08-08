@@ -1,0 +1,7 @@
+{
+  "candidate_source_forbidden_identifier_hits": [],
+  "candidate_uses_generic_role_constraints_only": true,
+  "future_frontier_leakage_events": 0,
+  "passed": true,
+  "waves_exposed_sequentially_after_previous_capability_freeze": true
+}

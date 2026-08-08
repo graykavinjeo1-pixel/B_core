@@ -1,0 +1,11 @@
+{
+  "capability_genesis_reuse_events": 3,
+  "causal_chain_depth": 4,
+  "events_are_separately_counted": true,
+  "later_waves_benefited": [
+    2,
+    3,
+    4
+  ],
+  "task_solution_reuse_events": 3
+}

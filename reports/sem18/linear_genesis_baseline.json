@@ -1,0 +1,75 @@
+{
+  "condition": "LINEAR_GENESIS_BASELINE",
+  "equal_max_resource_budget_per_wave": 120,
+  "genesis_costs": [
+    {
+      "condition": "LINEAR_GENESIS_BASELINE",
+      "design_cost": 24,
+      "diagnosis_cost": 20,
+      "implementation_candidate_count": 3,
+      "invalid_candidate_count": 2,
+      "missing_capability_inference_cost": 20,
+      "required_roles": 3,
+      "reusable_roles": 0,
+      "source_mechanism_search_cost": 30,
+      "total_genesis_deterministic_cost": 120,
+      "total_genesis_wall_time_ns": 6077700,
+      "verification_cost": 21,
+      "wave": 1
+    },
+    {
+      "condition": "LINEAR_GENESIS_BASELINE",
+      "design_cost": 24,
+      "diagnosis_cost": 20,
+      "implementation_candidate_count": 3,
+      "invalid_candidate_count": 2,
+      "missing_capability_inference_cost": 20,
+      "required_roles": 7,
+      "reusable_roles": 0,
+      "source_mechanism_search_cost": 30,
+      "total_genesis_deterministic_cost": 120,
+      "total_genesis_wall_time_ns": 5497500,
+      "verification_cost": 21,
+      "wave": 2
+    },
+    {
+      "condition": "LINEAR_GENESIS_BASELINE",
+      "design_cost": 24,
+      "diagnosis_cost": 20,
+      "implementation_candidate_count": 3,
+      "invalid_candidate_count": 2,
+      "missing_capability_inference_cost": 20,
+      "required_roles": 15,
+      "reusable_roles": 0,
+      "source_mechanism_search_cost": 30,
+      "total_genesis_deterministic_cost": 120,
+      "total_genesis_wall_time_ns": 5735400,
+      "verification_cost": 21,
+      "wave": 3
+    },
+    {
+      "condition": "LINEAR_GENESIS_BASELINE",
+      "design_cost": 24,
+      "diagnosis_cost": 20,
+      "implementation_candidate_count": 3,
+      "invalid_candidate_count": 2,
+      "missing_capability_inference_cost": 20,
+      "required_roles": 31,
+      "reusable_roles": 0,
+      "source_mechanism_search_cost": 30,
+      "total_genesis_deterministic_cost": 120,
+      "total_genesis_wall_time_ns": 5461000,
+      "verification_cost": 21,
+      "wave": 4
+    }
+  ],
+  "growth_regime": "LINEAR",
+  "prior_capability_schema_reuse_enabled": false,
+  "total_direct_frontier_gain": 96,
+  "wave_frontier_gains": [
+    24,
+    24,
+    24,
+    24
+  ]
+}

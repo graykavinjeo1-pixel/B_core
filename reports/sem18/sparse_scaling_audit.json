@@ -1,0 +1,8 @@
+{
+  "catalog_lookup_complexity": "O(1)",
+  "full_catalog_scans": 0,
+  "passed": true,
+  "peak_routed_capabilities": 1,
+  "routing_false_negatives": 0,
+  "routing_mechanism": "DIRECT_ROLE_MASK_INDEX"
+}

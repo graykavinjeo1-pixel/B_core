@@ -1,0 +1,6 @@
+{
+  "compounding_median_wall_time_ns": 4675800.0,
+  "linear_median_wall_time_ns": 4885650.0,
+  "predeclared_minimum_reduction_ratio": 0.1,
+  "wall_time_acceleration_verified": false
+}

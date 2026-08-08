@@ -1,0 +1,9 @@
+{
+  "added_deployable_bytes": 2077,
+  "artifact_binary_sha256": "1b2c8308e0127587bd278637ed508270369a3b2bc0d7c6f4f9e26a407c6eaefa",
+  "artifact_source_sha256": "34354d108c3682a8718a1a6bab8b8c86597d4256bce52f19faec4e8561bf6c82",
+  "base_core_total_deployable_bytes": 171130,
+  "final_core_total_deployable_bytes": 173207,
+  "frontier_gain_per_added_byte": 0.08088589311506982,
+  "newly_solved_frontier_tasks": 168
+}

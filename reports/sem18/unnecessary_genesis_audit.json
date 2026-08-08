@@ -1,0 +1,8 @@
+{
+  "existing_direct_capability_checks": 4,
+  "existing_higher_order_composition_checks": 4,
+  "passed": true,
+  "reuse_before_genesis_checked_each_wave": true,
+  "reuse_controls": 32,
+  "unnecessary_capability_genesis_events": 0
+}

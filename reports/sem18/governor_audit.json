@@ -1,0 +1,12 @@
+{
+  "acceptance_criteria_hash_after": "4aca2ab5ae4776f3634511bc0bc9e537162ecfc313ce53aeecaa2508f7b6def9",
+  "acceptance_criteria_hash_before": "4aca2ab5ae4776f3634511bc0bc9e537162ecfc313ce53aeecaa2508f7b6def9",
+  "acceptance_criteria_hash_unchanged": true,
+  "evaluator_hash_after": "eabf2edceb0d77333e46e1ec2cbb7e3020d8cf08d03555758337db61f39bcfa7",
+  "evaluator_hash_before": "eabf2edceb0d77333e46e1ec2cbb7e3020d8cf08d03555758337db61f39bcfa7",
+  "evaluator_hash_unchanged": true,
+  "governor_hash_after": "e812155e78a840f5941ac73ec83525fed67605b1f5b478dbe7e77a07a15a1cb5",
+  "governor_hash_before": "e812155e78a840f5941ac73ec83525fed67605b1f5b478dbe7e77a07a15a1cb5",
+  "governor_hash_unchanged": true,
+  "passed": true
+}
