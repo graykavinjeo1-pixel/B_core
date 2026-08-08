@@ -1,0 +1,146 @@
+{
+  "base": {
+    "binary_sha256": "3c7e0245a5b4752ded463b81ee7d1c90d5b5c4af526e0fdfee5a32dd1982ce8a",
+    "index_sha256": "77b17332b5ff7204c28e9445e689276049afd6e89308e7e242904570a283e6fc",
+    "semantic_state_sha256": "d1abd8de410f5284773f1e582937922dc514513ed738eb9f04e8bf2735185d3c",
+    "source_sha256": "227ac195a9f4209c821013edda6d689979b614ed4e7246ba5f0560cc818e2bef"
+  },
+  "composition": {
+    "automatic_canonical_promotion": false,
+    "build": {
+      "candidate_id": "R2-AB-COMPOSED",
+      "commands": [
+        {
+          "command": "cargo fmt --all",
+          "exit_code": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "success": true
+        },
+        {
+          "command": "cargo fmt --all -- --check",
+          "exit_code": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "success": true
+        },
+        {
+          "command": "cargo clippy --workspace --all-targets --offline -- -D warnings",
+          "exit_code": 0,
+          "stderr_sha256": "d2a89f895872f9c553a8c466b22df6fd7f3eb0a1f3e8294c1e4da26c0f7f4fa9",
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "success": true
+        },
+        {
+          "command": "cargo test --workspace --offline",
+          "exit_code": 0,
+          "stderr_sha256": "2ad0e7f958418f0acbe02a13f7bdab0ea7cae455ee7bd5ec60c6e50c05375ca4",
+          "stdout_sha256": "49c2dc7df75948150fbaa6d037dd11db73b69d06bdf0f60573678bf684bd8cd2",
+          "success": true
+        },
+        {
+          "command": "cargo build --workspace --offline",
+          "exit_code": 0,
+          "stderr_sha256": "08877ee80d52ff49a9fb9eb420c58e30fa75159864730f82289af47f8bc7a8ea",
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "success": true
+        },
+        {
+          "command": "cargo build --workspace --release --offline",
+          "exit_code": 0,
+          "stderr_sha256": "c1729f8309c4226d58948f346d651949ef204670b36206670d6ad24c91538ebe",
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "success": true
+        }
+      ],
+      "debug_binary_bytes": 278016,
+      "debug_binary_sha256": "fc56334913f09287030605cbac59008e5e607733584ffc1884aaea13b388f5ac",
+      "debug_build_pass": true,
+      "mode": {
+        "cached_composition": false,
+        "reduced_state": true,
+        "scoped_routing": true
+      },
+      "non_format_token_changes": 0,
+      "release_binary_bytes": 169472,
+      "release_binary_sha256": "7e033259e2e29cfcee7c9d23bba80e438532af60b7713d8afa3ebe0f0957b4ba",
+      "release_build_pass": true,
+      "rustfmt_check_pass": true,
+      "sandbox_contained": true,
+      "sandbox_path": "D:/B_Core_SEM11/target/sem11/SEM11-GENERALIZATION-STABILITY-0001/R2_AB_COMPOSED",
+      "source_bytes": 9303,
+      "source_sha256_after_rustfmt": "e72567760c9c026d1f499ef0698ad6d7ce5fd3e61f730113ec7dc289b9959201",
+      "source_sha256_before_rustfmt": "66ce036df21ccfdebe77cbcb1ef8357776b62af838846f8420306ee524511412",
+      "strict_clippy_pass": true,
+      "tests_pass": true
+    },
+    "candidate_id": "R2-AB-COMPOSED",
+    "combined_gain": 0.7008888888888889,
+    "combined_regressions": 0,
+    "constituent_retention": {
+      "constituent_benefits_retained": true,
+      "routing_base": 86.0,
+      "routing_benefit_retained": true,
+      "routing_composed": 57.0,
+      "state_base": 10752,
+      "state_benefit_retained": true,
+      "state_composed": 1536
+    },
+    "constituent_target_classes": [
+      "ROUTING_SELECTIVITY",
+      "STATE_RESOURCE_ECONOMY"
+    ],
+    "constituents": [
+      "R2-A1",
+      "R2-B1"
+    ],
+    "debug_binary_sha256": "fc56334913f09287030605cbac59008e5e607733584ffc1884aaea13b388f5ac",
+    "mode": {
+      "cached_composition": false,
+      "reduced_state": true,
+      "scoped_routing": true
+    },
+    "parent": "SEM11_BASE_R2",
+    "release_binary_sha256": "7e033259e2e29cfcee7c9d23bba80e438532af60b7713d8afa3ebe0f0957b4ba",
+    "source_concept_ids": [
+      "C000011",
+      "C000009"
+    ],
+    "source_sha256": "e72567760c9c026d1f499ef0698ad6d7ce5fd3e61f730113ec7dc289b9959201",
+    "verified": true
+  },
+  "generalization_branching_preserved": true,
+  "independent_branches": [
+    {
+      "binary_sha256": "59bfca8cffdbd7ab03972f8d0143c987afccad78b607a9f304d258623dbfae5a",
+      "candidate_id": "R2-A1",
+      "diff_sha256": "b42eb2395e41a3892f23d4ddd96fba11e5a5ec1b1e57015a8a81fedfa3a53c8c",
+      "parent": "SEM11_BASE_R2",
+      "selection_sha256": "666b5fa3bfd37aa3932bd388e79cd8fb3c0924cecef2be9b29e625f69c8cc95c",
+      "source_sha256": "bae06449b5f57fe82f87941afb69d6acaf90e7ef8bc586de8d558fa93e944f34",
+      "verified": true,
+      "weakness_sha256": "1f9dc6c669d9345663601882e697140ecd67670647507e7b8804adf03e00da34"
+    },
+    {
+      "binary_sha256": "6497b6ba4ba22f37b5e91a95f06887a7c50c088d7a362c512f82522ac131ea0c",
+      "candidate_id": "R2-B1",
+      "diff_sha256": "4ade1984ebd3d1c0733c86b39d5226476938511ce8472238d5872a7bf61475c4",
+      "parent": "SEM11_BASE_R2",
+      "selection_sha256": "e280dc46f5e627d93514bb76e7df1de6c24fccd227db2c0aa3961249809751ec",
+      "source_sha256": "38ae8183d55a34475aa4b5bcb393a89caa3693675e1fc54f76ebc8fb7b9834e8",
+      "verified": true,
+      "weakness_sha256": "170903f51075209fd4c18ac196676bd5f5837c186a6741225f3bfe6b3d6ea46f"
+    },
+    {
+      "binary_sha256": "0b56219b7321ebd3005bef1b6a10dbe0db889fba37b9fbf65180f55702743039",
+      "candidate_id": "R2-C1",
+      "diff_sha256": "809a861af9b17a8401928adfa3fd6303e897468acb3b00cc0e4d0f4ab1f26c79",
+      "parent": "SEM11_BASE_R2",
+      "selection_sha256": "da2e0236411752ebc4db83f3793303afb800ac1bb3375277804d8927d570a566",
+      "source_sha256": "b1d2d6517dd1fd49d559520a23fb4150441f5cdf27b8072bd5f7055baca76d6a",
+      "verified": true,
+      "weakness_sha256": "ac3467ee0f56be7695d66e9fd3f94d8e8680eb14ff813307fe6c55fcebb736d5"
+    }
+  ],
+  "serial_generation_claimed": false
+}

@@ -1,0 +1,52 @@
+[
+  {
+    "condition": "BASE",
+    "core_index_bytes": 281,
+    "core_release_binary_bytes": 171008,
+    "core_semantic_state_bytes": 2662,
+    "core_source_bytes": 9305,
+    "core_total_deployable_bytes": 173951,
+    "release_binary_sha256": "0293255c908a7c5449ff493509b036389348a6e11c66b308a70a3aae47a08bae",
+    "source_sha256": "227ac195a9f4209c821013edda6d689979b614ed4e7246ba5f0560cc818e2bef"
+  },
+  {
+    "condition": "A1",
+    "core_index_bytes": 281,
+    "core_release_binary_bytes": 171008,
+    "core_semantic_state_bytes": 2662,
+    "core_source_bytes": 9304,
+    "core_total_deployable_bytes": 173951,
+    "release_binary_sha256": "e5b32dc24b8a713b1a56c537dd3cb84148acfdf73f6c97263352ff5ed7c767f7",
+    "source_sha256": "bae06449b5f57fe82f87941afb69d6acaf90e7ef8bc586de8d558fa93e944f34"
+  },
+  {
+    "condition": "B1",
+    "core_index_bytes": 281,
+    "core_release_binary_bytes": 169984,
+    "core_semantic_state_bytes": 2662,
+    "core_source_bytes": 9304,
+    "core_total_deployable_bytes": 172927,
+    "release_binary_sha256": "85ccaccfa8a239c3f150fa2c7ca8a0185d186fea454e6ca8bb427e386d60f018",
+    "source_sha256": "38ae8183d55a34475aa4b5bcb393a89caa3693675e1fc54f76ebc8fb7b9834e8"
+  },
+  {
+    "condition": "C1",
+    "core_index_bytes": 281,
+    "core_release_binary_bytes": 178176,
+    "core_semantic_state_bytes": 2662,
+    "core_source_bytes": 9304,
+    "core_total_deployable_bytes": 181119,
+    "release_binary_sha256": "732d9a879c1caaf362b589a78400d12085808436b5d18e14caa2fea56a5c7c78",
+    "source_sha256": "b1d2d6517dd1fd49d559520a23fb4150441f5cdf27b8072bd5f7055baca76d6a"
+  },
+  {
+    "condition": "AB_COMPOSED",
+    "core_index_bytes": 281,
+    "core_release_binary_bytes": 169472,
+    "core_semantic_state_bytes": 2662,
+    "core_source_bytes": 9303,
+    "core_total_deployable_bytes": 172415,
+    "release_binary_sha256": "7e033259e2e29cfcee7c9d23bba80e438532af60b7713d8afa3ebe0f0957b4ba",
+    "source_sha256": "e72567760c9c026d1f499ef0698ad6d7ce5fd3e61f730113ec7dc289b9959201"
+  }
+]

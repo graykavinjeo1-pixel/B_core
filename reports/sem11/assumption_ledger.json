@@ -1,0 +1,74 @@
+[
+  {
+    "all_critical_assumptions_satisfied": true,
+    "assumptions": [
+      {
+        "assumption_id": "M0007-A0",
+        "evidence": "trace-backed ROUTING_SELECTIVITY observation 8b56b92a82484db54f3a09dea6d60ae66fb1a32c4870ecf36e36a65ba419623d",
+        "kind": "DETERMINISTIC",
+        "required": true,
+        "status": "SATISFIED"
+      },
+      {
+        "assumption_id": "M0007-A1",
+        "evidence": "trace-backed ROUTING_SELECTIVITY observation 8b56b92a82484db54f3a09dea6d60ae66fb1a32c4870ecf36e36a65ba419623d",
+        "kind": "PURE",
+        "required": true,
+        "status": "SATISFIED"
+      }
+    ],
+    "critical_unknowns": 0,
+    "critical_violations": 0,
+    "declared_before_patch": true,
+    "mechanism_id": "M0007",
+    "weakness_id": "REGIME_A-SELECTIVITY_LEAKAGE-0001"
+  },
+  {
+    "all_critical_assumptions_satisfied": true,
+    "assumptions": [
+      {
+        "assumption_id": "M0004-A0",
+        "evidence": "trace-backed STATE_RESOURCE_ECONOMY observation f6cec57a84bc70452acb3c6c5b3df598f521df5dfaac9eb66a03489ed4db7ef3",
+        "kind": "DETERMINISTIC",
+        "required": true,
+        "status": "SATISFIED"
+      },
+      {
+        "assumption_id": "M0004-A1",
+        "evidence": "trace-backed STATE_RESOURCE_ECONOMY observation f6cec57a84bc70452acb3c6c5b3df598f521df5dfaac9eb66a03489ed4db7ef3",
+        "kind": "ASSOCIATIVE",
+        "required": true,
+        "status": "SATISFIED"
+      }
+    ],
+    "critical_unknowns": 0,
+    "critical_violations": 0,
+    "declared_before_patch": true,
+    "mechanism_id": "M0004",
+    "weakness_id": "REGIME_B-TRANSIENT_RECONSTRUCTION_DUPLICATION-0001"
+  },
+  {
+    "all_critical_assumptions_satisfied": true,
+    "assumptions": [
+      {
+        "assumption_id": "M0005-A0",
+        "evidence": "trace-backed COMPOSITION_CONTROL observation 961cb5bafc9ac1928579a7f60e78cd7734ea86458e04e1fb5b532827dc12326f",
+        "kind": "DETERMINISTIC",
+        "required": true,
+        "status": "SATISFIED"
+      },
+      {
+        "assumption_id": "M0005-A1",
+        "evidence": "trace-backed COMPOSITION_CONTROL observation 961cb5bafc9ac1928579a7f60e78cd7734ea86458e04e1fb5b532827dc12326f",
+        "kind": "PURE",
+        "required": true,
+        "status": "SATISFIED"
+      }
+    ],
+    "critical_unknowns": 0,
+    "critical_violations": 0,
+    "declared_before_patch": true,
+    "mechanism_id": "M0005",
+    "weakness_id": "REGIME_C-RECOMBINATION_PREFIX_REDUNDANCY-0001"
+  }
+]

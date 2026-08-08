@@ -1,0 +1,11 @@
+{
+  "automatic_production_promotion": false,
+  "gen7_candidates": 0,
+  "gen7_promoted": 0,
+  "historical_max_autonomous_concept_generation": 6,
+  "max_autonomous_concept_generation": 6,
+  "max_self_source_concepts_composed": 2,
+  "new_semantic_candidates": 3,
+  "new_semantic_promotions": 0,
+  "sem10_reported_max_autonomous_concept_generation": 5
+}

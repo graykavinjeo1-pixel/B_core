@@ -1,0 +1,9 @@
+{
+  "base_max_concepts_composed": 3,
+  "base_max_primitive_expanded_depth": 11,
+  "base_max_solution_depth": 11,
+  "depth_preserved": true,
+  "final_max_concepts_composed": 3,
+  "final_max_primitive_expanded_depth": 11,
+  "final_max_solution_depth": 11
+}

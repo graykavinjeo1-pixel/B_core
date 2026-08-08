@@ -1,0 +1,69 @@
+[
+  {
+    "weakness_id": "REGIME_A-SELECTIVITY_LEAKAGE-0001",
+    "regime_id": "REGIME_A",
+    "observed_component": "SPARSE_CANDIDATE_SELECTOR",
+    "target_class": "ROUTING_SELECTIVITY",
+    "feature": "SELECTIVITY_LEAKAGE",
+    "observed_behavior": "invalid scoped candidates survive into a second ranking stage",
+    "measured_cost": {
+      "median_false_activations": 7.0,
+      "routing_ops_per_candidate": 1.412280701754386
+    },
+    "evidence": [
+      "median_candidates=57",
+      "median_routing_ops=80.5",
+      "median_false_activations=7"
+    ],
+    "causal_hypothesis": "a scoped relation guard can reject assumption-invalid candidates before ranking without scanning the full catalog",
+    "confidence": 0.99,
+    "outcome": "ACTIONABLE_WEAKNESS",
+    "autonomous_weakness_diagnosis": true,
+    "weakness_sha256": "1f9dc6c669d9345663601882e697140ecd67670647507e7b8804adf03e00da34"
+  },
+  {
+    "weakness_id": "REGIME_B-TRANSIENT_RECONSTRUCTION_DUPLICATION-0001",
+    "regime_id": "REGIME_B",
+    "observed_component": "TRANSIENT_SEMANTIC_STATE_STORE",
+    "target_class": "STATE_RESOURCE_ECONOMY",
+    "feature": "TRANSIENT_RECONSTRUCTION_DUPLICATION",
+    "observed_behavior": "equivalent canonical state is reconstructed and retained once per reuse",
+    "measured_cost": {
+      "peak_transient_bytes": 10752,
+      "reconstruction_ops_per_input_state": 8.345864661654135
+    },
+    "evidence": [
+      "median_states=133",
+      "median_reuse_count=8",
+      "median_reconstruction_ops=1110",
+      "peak_transient_bytes=10752"
+    ],
+    "causal_hypothesis": "stateful reduction can construct the canonical state once and reuse it without changing membership",
+    "confidence": 0.99,
+    "outcome": "ACTIONABLE_WEAKNESS",
+    "autonomous_weakness_diagnosis": true,
+    "weakness_sha256": "170903f51075209fd4c18ac196676bd5f5837c186a6741225f3bfe6b3d6ea46f"
+  },
+  {
+    "weakness_id": "REGIME_C-RECOMBINATION_PREFIX_REDUNDANCY-0001",
+    "regime_id": "REGIME_C",
+    "observed_component": "MECHANISM_COMPOSITION_PLANNER",
+    "target_class": "COMPOSITION_CONTROL",
+    "feature": "RECOMBINATION_PREFIX_REDUNDANCY",
+    "observed_behavior": "shared mechanism prefixes are primitive-expanded independently for every branch",
+    "measured_cost": {
+      "composition_to_unique_prefix_ratio": 2.3043478260869565,
+      "median_composition_ops": 159.0
+    },
+    "evidence": [
+      "median_chain_operations=159",
+      "median_unique_prefix_operations=69",
+      "median_composition_ops=159"
+    ],
+    "causal_hypothesis": "stage composition can reuse verified prefix results while preserving branch order and invariants",
+    "confidence": 0.98,
+    "outcome": "ACTIONABLE_WEAKNESS",
+    "autonomous_weakness_diagnosis": true,
+    "weakness_sha256": "ac3467ee0f56be7695d66e9fd3f94d8e8680eb14ff813307fe6c55fcebb736d5"
+  }
+]

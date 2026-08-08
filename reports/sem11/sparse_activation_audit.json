@@ -1,0 +1,7 @@
+{
+  "candidate_runtime_receives_only_activated_working_set": true,
+  "full_catalog_scans": 0,
+  "passed": true,
+  "routing_false_negatives": 0,
+  "sparse_index_built_before_candidates": true
+}

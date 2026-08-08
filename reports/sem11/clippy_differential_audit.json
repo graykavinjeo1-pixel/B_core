@@ -1,0 +1,8 @@
+{
+  "candidate_sandbox_strict_pass": true,
+  "clippy_lint_as_self_improvement_target": false,
+  "new_warning_signatures": [],
+  "new_warning_signatures_total": 0,
+  "passed": true,
+  "predecessor_warning_count": 22
+}

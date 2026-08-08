@@ -1,0 +1,35 @@
+{
+  "all_branch_sandbox_builds_pass": true,
+  "composed_sandbox_build_pass": true,
+  "core_depends_on_language_layer": false,
+  "core_depends_on_research_artifacts": false,
+  "core_dockability_preserved": true,
+  "core_only_build_all_pass": true,
+  "core_runtime_canary_all_pass": true,
+  "workspace_gate": {
+    "core_dockability_preserved": true,
+    "core_only_build_pass": true,
+    "core_release_build": {
+      "command": "cargo build -p dockable-semantic-core --release --bin core-x0-canary --locked --offline",
+      "exit_code": 0,
+      "stderr_sha256": "afdd84158cd289d3e39b1c341dbbc3a430727552a0e737f31f407eee6b1a42f5",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "success": true
+    },
+    "core_runtime_canary": {
+      "command": "D:\\B_Core_SEM11\\target/release/core-x0-canary.exe",
+      "exit_code": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "d69578aa374b866369e18a5c880b8a6decd0a7d80be5f3d0ab312cdedb82a3c3",
+      "success": true
+    },
+    "core_runtime_canary_pass": true,
+    "workspace_tests": {
+      "command": "cargo test --workspace --locked --offline -- --test-threads=1",
+      "exit_code": 0,
+      "stderr_sha256": "08ceb5ec81868de376ff7e9f93f2abd6142952262dcadf3667d5b46950684fc4",
+      "stdout_sha256": "6d68f7d446da8e2c530aeef0eabee47bf84c2b08e54efd201e4373bd2a734e28",
+      "success": true
+    }
+  }
+}

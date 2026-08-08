@@ -1,0 +1,139 @@
+[
+  {
+    "declared_before_patch": true,
+    "mappings": [
+      {
+        "required": true,
+        "source_kind": "INPUT",
+        "source_role_id": "M0007-R0",
+        "source_type_class": "value<T>",
+        "target_binding": "sparse_activated_candidate"
+      },
+      {
+        "required": true,
+        "source_kind": "CONDITION",
+        "source_role_id": "M0007-R1",
+        "source_type_class": "predicate<T>",
+        "target_binding": "scope_and_assumption_guard"
+      },
+      {
+        "required": true,
+        "source_kind": "TRANSFORM",
+        "source_role_id": "M0007-R2",
+        "source_type_class": "pure_relation<T,U>",
+        "target_binding": "valid_candidate_ranking"
+      },
+      {
+        "required": true,
+        "source_kind": "OUTPUT",
+        "source_role_id": "M0007-R3",
+        "source_type_class": "value<T>",
+        "target_binding": "selected_semantic_candidate"
+      }
+    ],
+    "mechanism_id": "M0007",
+    "passed": true,
+    "source_concept_ids": [
+      "C000011"
+    ],
+    "target_class": "ROUTING_SELECTIVITY",
+    "target_component": "SPARSE_CANDIDATE_SELECTOR",
+    "weakness_id": "REGIME_A-SELECTIVITY_LEAKAGE-0001"
+  },
+  {
+    "declared_before_patch": true,
+    "mappings": [
+      {
+        "required": true,
+        "source_kind": "STATE",
+        "source_role_id": "M0004-R0",
+        "source_type_class": "state<T>",
+        "target_binding": "canonical_transient_state"
+      },
+      {
+        "required": true,
+        "source_kind": "INPUT",
+        "source_role_id": "M0004-R1",
+        "source_type_class": "value<T>",
+        "target_binding": "reasoning_state_stream"
+      },
+      {
+        "required": true,
+        "source_kind": "ACCUMULATOR",
+        "source_role_id": "M0004-R2",
+        "source_type_class": "state<T>",
+        "target_binding": "single_reusable_state"
+      },
+      {
+        "required": true,
+        "source_kind": "INVARIANT",
+        "source_role_id": "M0004-R3",
+        "source_type_class": "predicate<T>",
+        "target_binding": "membership_equality"
+      },
+      {
+        "required": true,
+        "source_kind": "OUTPUT",
+        "source_role_id": "M0004-R4",
+        "source_type_class": "value<T>",
+        "target_binding": "reused_semantic_state"
+      }
+    ],
+    "mechanism_id": "M0004",
+    "passed": true,
+    "source_concept_ids": [
+      "C000009"
+    ],
+    "target_class": "STATE_RESOURCE_ECONOMY",
+    "target_component": "TRANSIENT_SEMANTIC_STATE_STORE",
+    "weakness_id": "REGIME_B-TRANSIENT_RECONSTRUCTION_DUPLICATION-0001"
+  },
+  {
+    "declared_before_patch": true,
+    "mappings": [
+      {
+        "required": true,
+        "source_kind": "INPUT",
+        "source_role_id": "M0005-R0",
+        "source_type_class": "value<T>",
+        "target_binding": "mechanism_branch"
+      },
+      {
+        "required": true,
+        "source_kind": "STAGE",
+        "source_role_id": "M0005-R1",
+        "source_type_class": "pure_relation<T,U>",
+        "target_binding": "verified_prefix_stage"
+      },
+      {
+        "required": true,
+        "source_kind": "TRANSFORM",
+        "source_role_id": "M0005-R2",
+        "source_type_class": "pure_relation<T,U>",
+        "target_binding": "prefix_result_reuse"
+      },
+      {
+        "required": true,
+        "source_kind": "STAGE",
+        "source_role_id": "M0005-R3",
+        "source_type_class": "pure_relation<T,U>",
+        "target_binding": "verified_prefix_stage"
+      },
+      {
+        "required": true,
+        "source_kind": "OUTPUT",
+        "source_role_id": "M0005-R4",
+        "source_type_class": "value<T>",
+        "target_binding": "composed_branch_result"
+      }
+    ],
+    "mechanism_id": "M0005",
+    "passed": true,
+    "source_concept_ids": [
+      "C000010"
+    ],
+    "target_class": "COMPOSITION_CONTROL",
+    "target_component": "MECHANISM_COMPOSITION_PLANNER",
+    "weakness_id": "REGIME_C-RECOMBINATION_PREFIX_REDUNDANCY-0001"
+  }
+]

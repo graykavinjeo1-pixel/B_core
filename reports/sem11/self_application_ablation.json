@@ -1,0 +1,32 @@
+[
+  {
+    "candidate_id": "R2-A1",
+    "gain_removed_when_off": true,
+    "mechanism_id": "M0007",
+    "mechanism_off_parent_primary_value": 87.5,
+    "mechanism_on_primary_value": 57.5,
+    "passed": true,
+    "strict_solve_rate_off": 1.0,
+    "strict_solve_rate_on": 1.0
+  },
+  {
+    "candidate_id": "R2-B1",
+    "gain_removed_when_off": true,
+    "mechanism_id": "M0004",
+    "mechanism_off_parent_primary_value": 10752.0,
+    "mechanism_on_primary_value": 1536.0,
+    "passed": true,
+    "strict_solve_rate_off": 1.0,
+    "strict_solve_rate_on": 1.0
+  },
+  {
+    "candidate_id": "R2-C1",
+    "gain_removed_when_off": true,
+    "mechanism_id": "M0005",
+    "mechanism_off_parent_primary_value": 159.0,
+    "mechanism_on_primary_value": 69.0,
+    "passed": true,
+    "strict_solve_rate_off": 1.0,
+    "strict_solve_rate_on": 1.0
+  }
+]

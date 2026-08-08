@@ -1,0 +1,18 @@
+{
+  "a_affects_b_preconditions": false,
+  "b_affects_a_preconditions": false,
+  "blind_patch_concatenation": false,
+  "candidate_a": "R2-A1",
+  "candidate_b": "R2-B1",
+  "classification": "COMPATIBLE",
+  "compatibility_probes": [
+    "semantic output equality under both modes",
+    "routing result independent of transient-state representation",
+    "state checksum independent of candidate selection work counter"
+  ],
+  "distinct_target_components": true,
+  "ordering_dependency": false,
+  "shared_resource_assumptions": false,
+  "shared_router": false,
+  "shared_state": false
+}

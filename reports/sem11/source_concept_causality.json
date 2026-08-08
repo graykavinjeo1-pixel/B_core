@@ -1,0 +1,29 @@
+[
+  {
+    "candidate_id": "R2-A1",
+    "removed_source_concepts": [
+      "C000011"
+    ],
+    "same_transform_recovered_without_selected_source": false,
+    "source_concept_causality_pass": true,
+    "weakness_to_mechanism_to_role_to_assumption_to_change_lineage": true
+  },
+  {
+    "candidate_id": "R2-B1",
+    "removed_source_concepts": [
+      "C000009"
+    ],
+    "same_transform_recovered_without_selected_source": false,
+    "source_concept_causality_pass": true,
+    "weakness_to_mechanism_to_role_to_assumption_to_change_lineage": true
+  },
+  {
+    "candidate_id": "R2-C1",
+    "removed_source_concepts": [
+      "C000010"
+    ],
+    "same_transform_recovered_without_selected_source": false,
+    "source_concept_causality_pass": true,
+    "weakness_to_mechanism_to_role_to_assumption_to_change_lineage": true
+  }
+]
