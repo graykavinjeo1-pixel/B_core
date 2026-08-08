@@ -1,0 +1,51 @@
+{
+  "generation": "R0",
+  "source_sha256_before_rustfmt": "f5ff509569c130104abb8f906f5f49d89273764554ff1dbff62f250e44b4450a",
+  "source_sha256_after_rustfmt": "ea151361d091f5e9dbe7231ea26cfa2d96813ed9dda1a8ac7404648c601ac199",
+  "non_format_token_changes": 0,
+  "binary_sha256": "cb145fccea075c0496b1ea1791232d1dfa6f785da43cc5dfd088f48f963c796e",
+  "binary_bytes": 237056,
+  "sandbox_path": "D:/B_Core_SEM10_FRESH_0002/target/sem10-fresh/SEM10-FRESH-RUN-0002/R0",
+  "sandbox_contained": true,
+  "commands": [
+    {
+      "command": "cargo fmt --all",
+      "success": true,
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": "cargo fmt --all -- --check",
+      "success": true,
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": "cargo clippy --workspace --all-targets --offline -- -D warnings",
+      "success": true,
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "ec443d2b081248cae96f614157ad32223c9d60fceba7d2ac56504100a0c3cb3f"
+    },
+    {
+      "command": "cargo test --workspace --offline",
+      "success": true,
+      "exit_code": 0,
+      "stdout_sha256": "bcfe0b7d5838b55082cc9f7b1c892a24518223497590c7d60b1402859c200372",
+      "stderr_sha256": "4a5268f88df120e03ff5cf72abcc0ed1e6acf0695a09ff5cf06b43be9178c201"
+    },
+    {
+      "command": "cargo build --workspace --offline",
+      "success": true,
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "eac3e9bb7b216e52d771d33c051fc13aec730c1525603b8c1adfa7f833e19013"
+    }
+  ],
+  "rustfmt_check_pass": true,
+  "strict_clippy_pass": true,
+  "tests_pass": true,
+  "build_pass": true
+}

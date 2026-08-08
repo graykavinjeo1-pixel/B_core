@@ -1,0 +1,33 @@
+{
+  "build_environment_id": "B_CORE_R0_WIN64_RUSTC_1.96.0_MSVC14.44_BREPRO_REMAP_V1",
+  "campaign_id": "SEM10-FRESH-RUN-0002",
+  "experimental_profile_binary_bytes": 237056,
+  "experimental_profile_binary_sha256": "cb145fccea075c0496b1ea1791232d1dfa6f785da43cc5dfd088f48f963c796e",
+  "experimental_profile_source_sha256": "ea151361d091f5e9dbe7231ea26cfa2d96813ed9dda1a8ac7404648c601ac199",
+  "index_sha256": "77b17332b5ff7204c28e9445e689276049afd6e89308e7e242904570a283e6fc",
+  "infrastructure_commit": "b7f2e043ce99d1b073ce56d073b02172474a9b69",
+  "portable_predecessor_evidence": "reports/sem10-p0/sem10_p0_final_report.json",
+  "predecessor_integrity": "PASS",
+  "production_source_mutations": 0,
+  "profile_semantics": "portable accepted equivalence-merge behavior plus deterministic operational counters in an isolated evaluator replica",
+  "protected_core_sha256": "6f4c7a706829a3dfc266e83c5d2418e9cbbbeef7a747925a1d65f3f701315093",
+  "protected_paths": [
+    "Cargo.toml",
+    "Cargo.lock",
+    "rust-toolchain.toml",
+    ".gitattributes",
+    "scripts/build_portable_r0.ps1",
+    "crates/dockable-semantic-core",
+    "crates/semantic-core-adapters",
+    "crates/semantic-reasoning",
+    "crates/synapse-core",
+    "crates/synapse-recursive-core",
+    "artifacts/core-x0/semantic_state.json",
+    "artifacts/core-x0/sparse_index.json",
+    "reports/sem8/source_mechanism_catalog.json",
+    "reports/sem10-p0"
+  ],
+  "sem10_r0_binary_sha256": "dad15e03eec28fed770bbf671e65559a68366b801b5c464f7dda560366273a8d",
+  "sem10_r0_source_id": "CORE-X0:2961a975fd57e3ad0f5cabe29a2058fb0ca4fcba:TREE:97b0a60dfd18c146f78053400105f158c70745af+SEM10-P0-CONTROLS:76af48d1d5fddf6ff4b18e89c8062d0cd92403ef",
+  "semantic_state_sha256": "d1abd8de410f5284773f1e582937922dc514513ed738eb9f04e8bf2735185d3c"
+}
