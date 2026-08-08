@@ -1,0 +1,12 @@
+{
+  "minimal_semantic_delta_required": true,
+  "negative_knowledge_must_be_preserved": true,
+  "probe_before_genesis": true,
+  "probe_order": [
+    "INSIDE",
+    "BOUNDARY",
+    "JUST_OUTSIDE"
+  ],
+  "unknown_is_valid": true,
+  "version": "SEM21-BOUNDARY-V1"
+}

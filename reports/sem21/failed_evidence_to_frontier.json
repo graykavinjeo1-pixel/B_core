@@ -1,0 +1,17 @@
+{
+  "event_count": 3,
+  "events": [
+    {
+      "enabled_frontier": "F21-04-8a41a65012e2",
+      "failure_evidence": "FE21-03-NEAREST-BOUNDARY"
+    },
+    {
+      "enabled_frontier": "F21-07-36f1a8b27e29",
+      "failure_evidence": "FE21-06-NEAREST-BOUNDARY"
+    },
+    {
+      "enabled_frontier": "F21-10-fee8f677b859",
+      "failure_evidence": "FE21-09-NEAREST-BOUNDARY"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "chain_depth": 5,
+  "chronology_only": false,
+  "counterfactual_without_prior_abstractions_productive_composed_frontiers": 0,
+  "passed": true,
+  "treatment_productive_composed_frontiers": 5
+}

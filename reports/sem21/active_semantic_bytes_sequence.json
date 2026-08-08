@@ -1,0 +1,16 @@
+{
+  "composite_score": null,
+  "metric": "active_semantic_bytes",
+  "raw_sequence": [
+    2200,
+    2224,
+    2248,
+    2272,
+    2296,
+    2344,
+    2392,
+    2440,
+    2488,
+    2536
+  ]
+}

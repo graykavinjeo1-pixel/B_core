@@ -1,0 +1,77 @@
+{
+  "arms": [
+    "A_FIXED_HARNESS_FRONTIER",
+    "B_RANDOM_FRONTIER_BASELINE",
+    "C_FAILURE_GUIDED_WITHOUT_ENVELOPE",
+    "D_SEMANTIC_APPLICABILITY_BOUNDARY"
+  ],
+  "branch": "codex/sem21-frontier-discovery",
+  "campaign_id": "SEM21-AUTONOMOUS-SEMANTIC-FRONTIER-DISCOVERY-0001",
+  "exact_frontier_curriculum_frozen": false,
+  "fixed_resource_envelope": {
+    "cpu_threads_per_probe": 1,
+    "executable_mode": "RELEASE",
+    "gpu_policy": "DISABLED",
+    "network_policy": "DISABLED",
+    "peak_rss_limit_bytes": 134217728,
+    "wall_time_limit_ns": 500000000,
+    "work_unit_limit": 2200000
+  },
+  "frontier_epochs": 10,
+  "frontier_selected_by_current_semantic_state": true,
+  "growth_labels_visible_to_improvement_policy": false,
+  "predecessor_commit": "1ad6a0cb0dcd25f82b765728e07af9b430313644",
+  "safe_primitive_universe_size": 5,
+  "unopened_instance_commitments": [
+    {
+      "epoch": 1,
+      "sealed_instance_seed_commitment": "4818b9b61638552124c312405452782b2651ea1cdff4e4ca5f1f3a2a35cce6d3",
+      "seed_visible_to_frontier_discovery": false
+    },
+    {
+      "epoch": 2,
+      "sealed_instance_seed_commitment": "929b898a2de39a8c52faba8e985b415fd2e7d47adf62b7bd9dd3b8c0a64e72bb",
+      "seed_visible_to_frontier_discovery": false
+    },
+    {
+      "epoch": 3,
+      "sealed_instance_seed_commitment": "ed2d5bd49a7facf0fb633baf4d96e07b9cfd10511fabb4a2162a4e1b36891c3a",
+      "seed_visible_to_frontier_discovery": false
+    },
+    {
+      "epoch": 4,
+      "sealed_instance_seed_commitment": "8b25fe4eddf9e10b5d452ff2f3b4e1a5f5d297ab31766b9af70a271ce3209796",
+      "seed_visible_to_frontier_discovery": false
+    },
+    {
+      "epoch": 5,
+      "sealed_instance_seed_commitment": "7924d825a4d125e8fb1751cd37ae6264778408e14d2e809c1797fdd5be0a5ab8",
+      "seed_visible_to_frontier_discovery": false
+    },
+    {
+      "epoch": 6,
+      "sealed_instance_seed_commitment": "e01bed63bb5363f8cd749eaeb72b88318603d2f1e64cd8a243d8cf50e85e2813",
+      "seed_visible_to_frontier_discovery": false
+    },
+    {
+      "epoch": 7,
+      "sealed_instance_seed_commitment": "2946847dc7b7316b0476d1624cec5cff9d3505ae14ef23cf3bd4ff390a4d68c4",
+      "seed_visible_to_frontier_discovery": false
+    },
+    {
+      "epoch": 8,
+      "sealed_instance_seed_commitment": "eee801d100f6b50007750b8294a46cce9ffd5240453174932c98b68728aec3f3",
+      "seed_visible_to_frontier_discovery": false
+    },
+    {
+      "epoch": 9,
+      "sealed_instance_seed_commitment": "af0b862f04c4e7e2c5a50a7391764293deb813f4491f9b91fbbe3a4736928fa4",
+      "seed_visible_to_frontier_discovery": false
+    },
+    {
+      "epoch": 10,
+      "sealed_instance_seed_commitment": "c63b28ee98e9878c4025589465a5b984b85ee59ebb418b2655ebf55f9bd75cfe",
+      "seed_visible_to_frontier_discovery": false
+    }
+  ]
+}

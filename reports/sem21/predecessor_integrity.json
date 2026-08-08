@@ -1,0 +1,19 @@
+{
+  "campaign_id": "SEM20-RECURSIVE-SEMANTIC-COMPRESSION-0001",
+  "commit_expected": "1ad6a0cb0dcd25f82b765728e07af9b430313644",
+  "commit_observed": "1ad6a0cb0dcd25f82b765728e07af9b430313644",
+  "historical_evidence_rewritten": false,
+  "next_allowed_stage": "OPERATOR_REVIEW_FOR_SEM21",
+  "next_dominant_growth_limit": "FRONTIER_DISCOVERY_AND_ABSTRACTION_APPLICABILITY",
+  "sem20_artifact_binary_sha256": "5ddbd16de261a5448d5986c2442168c2770e0106ebda325d1470659faca0602f",
+  "sem20_artifact_source_sha256": "eb3b4ca9d15e665f7b7ae7cbedd1dd530688f3e61751927439abf05d73ebbbe2",
+  "sem20_levels": {
+    "A": true,
+    "B": true,
+    "C": true,
+    "D": true,
+    "E": true
+  },
+  "sem20_status": "PASS",
+  "status": "PASS"
+}

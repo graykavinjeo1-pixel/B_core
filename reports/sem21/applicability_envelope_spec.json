@@ -1,0 +1,222 @@
+{
+  "initial_envelopes": [
+    {
+      "abstraction_id": "SEM20-A00",
+      "applicability_domains": 1,
+      "counterexamples": [
+        "COUNTEREXAMPLE_0_RELATION_REMOVED"
+      ],
+      "evidence_ids": [
+        "SEM20-COMPRESSION-ABSTRACTION-0"
+      ],
+      "invariants": [
+        "MECHANICAL_RESULT_PRESERVED"
+      ],
+      "last_tested_epoch": 0,
+      "mechanism_bit": 1,
+      "negative_domains": [
+        "MISSING_REQUIRED_RELATION_0"
+      ],
+      "positive_domains": [
+        "SEM20_OBSERVED_DOMAIN_0"
+      ],
+      "required_assumptions": 6,
+      "required_relations": [
+        "CAUSAL_PRECONDITION_PRECEDES_EFFECT"
+      ],
+      "resource_assumptions": [
+        "SINGLE_CPU_THREAD",
+        "BOUNDED_MEMORY"
+      ],
+      "scale_assumptions": [
+        "FINITE_SCALE_1_TO_2048"
+      ],
+      "semantic_roles": [
+        "INPUT_ROLE_0",
+        "EFFECT_ROLE_0"
+      ],
+      "uncertainty": "UNTESTED_NEAREST_SEMANTIC_BOUNDARY",
+      "valid_transformations": [
+        "ROLE_PRESERVING_TRANSFER"
+      ]
+    },
+    {
+      "abstraction_id": "SEM20-A01",
+      "applicability_domains": 1,
+      "counterexamples": [
+        "COUNTEREXAMPLE_1_RELATION_REMOVED"
+      ],
+      "evidence_ids": [
+        "SEM20-COMPRESSION-ABSTRACTION-1"
+      ],
+      "invariants": [
+        "MECHANICAL_RESULT_PRESERVED"
+      ],
+      "last_tested_epoch": 0,
+      "mechanism_bit": 2,
+      "negative_domains": [
+        "MISSING_REQUIRED_RELATION_1"
+      ],
+      "positive_domains": [
+        "SEM20_OBSERVED_DOMAIN_1"
+      ],
+      "required_assumptions": 6,
+      "required_relations": [
+        "CAUSAL_PRECONDITION_PRECEDES_EFFECT"
+      ],
+      "resource_assumptions": [
+        "SINGLE_CPU_THREAD",
+        "BOUNDED_MEMORY"
+      ],
+      "scale_assumptions": [
+        "FINITE_SCALE_1_TO_2048"
+      ],
+      "semantic_roles": [
+        "INPUT_ROLE_1",
+        "EFFECT_ROLE_1"
+      ],
+      "uncertainty": "UNTESTED_NEAREST_SEMANTIC_BOUNDARY",
+      "valid_transformations": [
+        "ROLE_PRESERVING_TRANSFER"
+      ]
+    },
+    {
+      "abstraction_id": "SEM20-A02",
+      "applicability_domains": 1,
+      "counterexamples": [
+        "COUNTEREXAMPLE_2_RELATION_REMOVED"
+      ],
+      "evidence_ids": [
+        "SEM20-COMPRESSION-ABSTRACTION-2"
+      ],
+      "invariants": [
+        "MECHANICAL_RESULT_PRESERVED"
+      ],
+      "last_tested_epoch": 0,
+      "mechanism_bit": 4,
+      "negative_domains": [
+        "MISSING_REQUIRED_RELATION_2"
+      ],
+      "positive_domains": [
+        "SEM20_OBSERVED_DOMAIN_2"
+      ],
+      "required_assumptions": 6,
+      "required_relations": [
+        "CAUSAL_PRECONDITION_PRECEDES_EFFECT"
+      ],
+      "resource_assumptions": [
+        "SINGLE_CPU_THREAD",
+        "BOUNDED_MEMORY"
+      ],
+      "scale_assumptions": [
+        "FINITE_SCALE_1_TO_2048"
+      ],
+      "semantic_roles": [
+        "INPUT_ROLE_2",
+        "EFFECT_ROLE_2"
+      ],
+      "uncertainty": "UNTESTED_NEAREST_SEMANTIC_BOUNDARY",
+      "valid_transformations": [
+        "ROLE_PRESERVING_TRANSFER"
+      ]
+    },
+    {
+      "abstraction_id": "SEM20-A03",
+      "applicability_domains": 1,
+      "counterexamples": [
+        "COUNTEREXAMPLE_3_RELATION_REMOVED"
+      ],
+      "evidence_ids": [
+        "SEM20-COMPRESSION-ABSTRACTION-3"
+      ],
+      "invariants": [
+        "MECHANICAL_RESULT_PRESERVED"
+      ],
+      "last_tested_epoch": 0,
+      "mechanism_bit": 8,
+      "negative_domains": [
+        "MISSING_REQUIRED_RELATION_3"
+      ],
+      "positive_domains": [
+        "SEM20_OBSERVED_DOMAIN_3"
+      ],
+      "required_assumptions": 6,
+      "required_relations": [
+        "CAUSAL_PRECONDITION_PRECEDES_EFFECT"
+      ],
+      "resource_assumptions": [
+        "SINGLE_CPU_THREAD",
+        "BOUNDED_MEMORY"
+      ],
+      "scale_assumptions": [
+        "FINITE_SCALE_1_TO_2048"
+      ],
+      "semantic_roles": [
+        "INPUT_ROLE_3",
+        "EFFECT_ROLE_3"
+      ],
+      "uncertainty": "UNTESTED_NEAREST_SEMANTIC_BOUNDARY",
+      "valid_transformations": [
+        "ROLE_PRESERVING_TRANSFER"
+      ]
+    },
+    {
+      "abstraction_id": "SEM20-A04",
+      "applicability_domains": 1,
+      "counterexamples": [
+        "COUNTEREXAMPLE_4_RELATION_REMOVED"
+      ],
+      "evidence_ids": [
+        "SEM20-COMPRESSION-ABSTRACTION-4"
+      ],
+      "invariants": [
+        "MECHANICAL_RESULT_PRESERVED"
+      ],
+      "last_tested_epoch": 0,
+      "mechanism_bit": 16,
+      "negative_domains": [
+        "MISSING_REQUIRED_RELATION_4"
+      ],
+      "positive_domains": [
+        "SEM20_OBSERVED_DOMAIN_4"
+      ],
+      "required_assumptions": 6,
+      "required_relations": [
+        "CAUSAL_PRECONDITION_PRECEDES_EFFECT"
+      ],
+      "resource_assumptions": [
+        "SINGLE_CPU_THREAD",
+        "BOUNDED_MEMORY"
+      ],
+      "scale_assumptions": [
+        "FINITE_SCALE_1_TO_2048"
+      ],
+      "semantic_roles": [
+        "INPUT_ROLE_4",
+        "EFFECT_ROLE_4"
+      ],
+      "uncertainty": "UNTESTED_NEAREST_SEMANTIC_BOUNDARY",
+      "valid_transformations": [
+        "ROLE_PRESERVING_TRANSFER"
+      ]
+    }
+  ],
+  "lexical_applicability_authority": false,
+  "required_fields": [
+    "semantic_roles",
+    "required_relations",
+    "invariants",
+    "valid_transformations",
+    "resource_assumptions",
+    "scale_assumptions",
+    "positive_domains",
+    "negative_domains",
+    "counterexamples",
+    "uncertainty",
+    "boundaries",
+    "evidence_ids"
+  ],
+  "semantic_authority_only": true,
+  "source_structure_applicability_authority": false,
+  "version": "SEM21-ENVELOPE-V1"
+}

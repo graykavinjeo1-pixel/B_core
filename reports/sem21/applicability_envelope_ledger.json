@@ -1,0 +1,401 @@
+{
+  "events": [
+    {
+      "abstraction_id": "SEM20-A00",
+      "epoch": 1,
+      "evidence_id": "F21-01-6c610881faef",
+      "false_applicability": false,
+      "final_applicability_domains": 2,
+      "fresh_transfer": true,
+      "mechanically_correct": true,
+      "prior_applicability_domains": 1,
+      "same_abstraction_or_justified_generalization": true
+    },
+    {
+      "abstraction_id": "SEM20-A01",
+      "epoch": 2,
+      "evidence_id": "F21-02-b96d8b98d046",
+      "false_applicability": false,
+      "final_applicability_domains": 2,
+      "fresh_transfer": true,
+      "mechanically_correct": true,
+      "prior_applicability_domains": 1,
+      "same_abstraction_or_justified_generalization": true
+    },
+    {
+      "abstraction_id": "SEM20-A02",
+      "epoch": 3,
+      "evidence_id": "F21-03-c2bdb95ddbb8",
+      "false_applicability": false,
+      "final_applicability_domains": 2,
+      "fresh_transfer": true,
+      "mechanically_correct": true,
+      "prior_applicability_domains": 1,
+      "same_abstraction_or_justified_generalization": true
+    },
+    {
+      "abstraction_id": "SEM20-A03",
+      "epoch": 4,
+      "evidence_id": "F21-04-8a41a65012e2",
+      "false_applicability": false,
+      "final_applicability_domains": 2,
+      "fresh_transfer": true,
+      "mechanically_correct": true,
+      "prior_applicability_domains": 1,
+      "same_abstraction_or_justified_generalization": true
+    },
+    {
+      "abstraction_id": "SEM20-A04",
+      "epoch": 5,
+      "evidence_id": "F21-05-a6de987bc1ce",
+      "false_applicability": false,
+      "final_applicability_domains": 2,
+      "fresh_transfer": true,
+      "mechanically_correct": true,
+      "prior_applicability_domains": 1,
+      "same_abstraction_or_justified_generalization": true
+    },
+    {
+      "abstraction_id": "SEM20-A00",
+      "epoch": 6,
+      "evidence_id": "F21-06-313a7ffd75f9",
+      "false_applicability": false,
+      "final_applicability_domains": 3,
+      "fresh_transfer": true,
+      "mechanically_correct": true,
+      "prior_applicability_domains": 2,
+      "same_abstraction_or_justified_generalization": true
+    },
+    {
+      "abstraction_id": "SEM20-A02",
+      "epoch": 6,
+      "evidence_id": "F21-06-313a7ffd75f9",
+      "false_applicability": false,
+      "final_applicability_domains": 3,
+      "fresh_transfer": true,
+      "mechanically_correct": true,
+      "prior_applicability_domains": 2,
+      "same_abstraction_or_justified_generalization": true
+    },
+    {
+      "abstraction_id": "SEM20-A01",
+      "epoch": 7,
+      "evidence_id": "F21-07-36f1a8b27e29",
+      "false_applicability": false,
+      "final_applicability_domains": 3,
+      "fresh_transfer": true,
+      "mechanically_correct": true,
+      "prior_applicability_domains": 2,
+      "same_abstraction_or_justified_generalization": true
+    },
+    {
+      "abstraction_id": "SEM20-A04",
+      "epoch": 7,
+      "evidence_id": "F21-07-36f1a8b27e29",
+      "false_applicability": false,
+      "final_applicability_domains": 3,
+      "fresh_transfer": true,
+      "mechanically_correct": true,
+      "prior_applicability_domains": 2,
+      "same_abstraction_or_justified_generalization": true
+    },
+    {
+      "abstraction_id": "SEM20-A03",
+      "epoch": 8,
+      "evidence_id": "F21-08-314de56d95cc",
+      "false_applicability": false,
+      "final_applicability_domains": 3,
+      "fresh_transfer": true,
+      "mechanically_correct": true,
+      "prior_applicability_domains": 2,
+      "same_abstraction_or_justified_generalization": true
+    },
+    {
+      "abstraction_id": "SEM20-A01",
+      "epoch": 8,
+      "evidence_id": "F21-08-314de56d95cc",
+      "false_applicability": false,
+      "final_applicability_domains": 4,
+      "fresh_transfer": true,
+      "mechanically_correct": true,
+      "prior_applicability_domains": 3,
+      "same_abstraction_or_justified_generalization": true
+    },
+    {
+      "abstraction_id": "SEM20-A00",
+      "epoch": 9,
+      "evidence_id": "F21-09-020a74855f05",
+      "false_applicability": false,
+      "final_applicability_domains": 4,
+      "fresh_transfer": true,
+      "mechanically_correct": true,
+      "prior_applicability_domains": 3,
+      "same_abstraction_or_justified_generalization": true
+    },
+    {
+      "abstraction_id": "SEM20-A03",
+      "epoch": 9,
+      "evidence_id": "F21-09-020a74855f05",
+      "false_applicability": false,
+      "final_applicability_domains": 4,
+      "fresh_transfer": true,
+      "mechanically_correct": true,
+      "prior_applicability_domains": 3,
+      "same_abstraction_or_justified_generalization": true
+    },
+    {
+      "abstraction_id": "SEM20-A02",
+      "epoch": 10,
+      "evidence_id": "F21-10-fee8f677b859",
+      "false_applicability": false,
+      "final_applicability_domains": 4,
+      "fresh_transfer": true,
+      "mechanically_correct": true,
+      "prior_applicability_domains": 3,
+      "same_abstraction_or_justified_generalization": true
+    },
+    {
+      "abstraction_id": "SEM20-A01",
+      "epoch": 10,
+      "evidence_id": "F21-10-fee8f677b859",
+      "false_applicability": false,
+      "final_applicability_domains": 5,
+      "fresh_transfer": true,
+      "mechanically_correct": true,
+      "prior_applicability_domains": 4,
+      "same_abstraction_or_justified_generalization": true
+    }
+  ],
+  "final_envelopes": [
+    {
+      "abstraction_id": "SEM20-A00",
+      "applicability_domains": 4,
+      "counterexamples": [
+        "COUNTEREXAMPLE_0_RELATION_REMOVED"
+      ],
+      "evidence_ids": [
+        "SEM20-COMPRESSION-ABSTRACTION-0",
+        "F21-01-6c610881faef",
+        "F21-06-313a7ffd75f9",
+        "F21-09-020a74855f05"
+      ],
+      "invariants": [
+        "MECHANICAL_RESULT_PRESERVED"
+      ],
+      "last_tested_epoch": 9,
+      "mechanism_bit": 1,
+      "negative_domains": [
+        "MISSING_REQUIRED_RELATION_0"
+      ],
+      "positive_domains": [
+        "SEM20_OBSERVED_DOMAIN_0",
+        "TRANSFER_DOMAIN_01",
+        "TRANSFER_DOMAIN_06",
+        "TRANSFER_DOMAIN_09"
+      ],
+      "required_assumptions": 3,
+      "required_relations": [
+        "CAUSAL_PRECONDITION_PRECEDES_EFFECT"
+      ],
+      "resource_assumptions": [
+        "SINGLE_CPU_THREAD",
+        "BOUNDED_MEMORY"
+      ],
+      "scale_assumptions": [
+        "FINITE_SCALE_1_TO_2048"
+      ],
+      "semantic_roles": [
+        "INPUT_ROLE_0",
+        "EFFECT_ROLE_0"
+      ],
+      "uncertainty": "UNTESTED_NEAREST_SEMANTIC_BOUNDARY",
+      "valid_transformations": [
+        "ROLE_PRESERVING_TRANSFER"
+      ]
+    },
+    {
+      "abstraction_id": "SEM20-A01",
+      "applicability_domains": 5,
+      "counterexamples": [
+        "COUNTEREXAMPLE_1_RELATION_REMOVED"
+      ],
+      "evidence_ids": [
+        "SEM20-COMPRESSION-ABSTRACTION-1",
+        "F21-02-b96d8b98d046",
+        "F21-07-36f1a8b27e29",
+        "F21-08-314de56d95cc",
+        "F21-10-fee8f677b859"
+      ],
+      "invariants": [
+        "MECHANICAL_RESULT_PRESERVED"
+      ],
+      "last_tested_epoch": 10,
+      "mechanism_bit": 2,
+      "negative_domains": [
+        "MISSING_REQUIRED_RELATION_1"
+      ],
+      "positive_domains": [
+        "SEM20_OBSERVED_DOMAIN_1",
+        "TRANSFER_DOMAIN_02",
+        "TRANSFER_DOMAIN_07",
+        "TRANSFER_DOMAIN_08",
+        "TRANSFER_DOMAIN_10"
+      ],
+      "required_assumptions": 2,
+      "required_relations": [
+        "CAUSAL_PRECONDITION_PRECEDES_EFFECT"
+      ],
+      "resource_assumptions": [
+        "SINGLE_CPU_THREAD",
+        "BOUNDED_MEMORY"
+      ],
+      "scale_assumptions": [
+        "FINITE_SCALE_1_TO_2048"
+      ],
+      "semantic_roles": [
+        "INPUT_ROLE_1",
+        "EFFECT_ROLE_1"
+      ],
+      "uncertainty": "UNTESTED_NEAREST_SEMANTIC_BOUNDARY",
+      "valid_transformations": [
+        "ROLE_PRESERVING_TRANSFER"
+      ]
+    },
+    {
+      "abstraction_id": "SEM20-A02",
+      "applicability_domains": 4,
+      "counterexamples": [
+        "COUNTEREXAMPLE_2_RELATION_REMOVED"
+      ],
+      "evidence_ids": [
+        "SEM20-COMPRESSION-ABSTRACTION-2",
+        "F21-03-c2bdb95ddbb8",
+        "F21-06-313a7ffd75f9",
+        "F21-10-fee8f677b859"
+      ],
+      "invariants": [
+        "MECHANICAL_RESULT_PRESERVED"
+      ],
+      "last_tested_epoch": 10,
+      "mechanism_bit": 4,
+      "negative_domains": [
+        "MISSING_REQUIRED_RELATION_2"
+      ],
+      "positive_domains": [
+        "SEM20_OBSERVED_DOMAIN_2",
+        "TRANSFER_DOMAIN_03",
+        "TRANSFER_DOMAIN_06",
+        "TRANSFER_DOMAIN_10"
+      ],
+      "required_assumptions": 3,
+      "required_relations": [
+        "CAUSAL_PRECONDITION_PRECEDES_EFFECT"
+      ],
+      "resource_assumptions": [
+        "SINGLE_CPU_THREAD",
+        "BOUNDED_MEMORY"
+      ],
+      "scale_assumptions": [
+        "FINITE_SCALE_1_TO_2048"
+      ],
+      "semantic_roles": [
+        "INPUT_ROLE_2",
+        "EFFECT_ROLE_2"
+      ],
+      "uncertainty": "UNTESTED_NEAREST_SEMANTIC_BOUNDARY",
+      "valid_transformations": [
+        "ROLE_PRESERVING_TRANSFER"
+      ]
+    },
+    {
+      "abstraction_id": "SEM20-A03",
+      "applicability_domains": 4,
+      "counterexamples": [
+        "COUNTEREXAMPLE_3_RELATION_REMOVED"
+      ],
+      "evidence_ids": [
+        "SEM20-COMPRESSION-ABSTRACTION-3",
+        "F21-04-8a41a65012e2",
+        "F21-08-314de56d95cc",
+        "F21-09-020a74855f05"
+      ],
+      "invariants": [
+        "MECHANICAL_RESULT_PRESERVED"
+      ],
+      "last_tested_epoch": 9,
+      "mechanism_bit": 8,
+      "negative_domains": [
+        "MISSING_REQUIRED_RELATION_3"
+      ],
+      "positive_domains": [
+        "SEM20_OBSERVED_DOMAIN_3",
+        "TRANSFER_DOMAIN_04",
+        "TRANSFER_DOMAIN_08",
+        "TRANSFER_DOMAIN_09"
+      ],
+      "required_assumptions": 3,
+      "required_relations": [
+        "CAUSAL_PRECONDITION_PRECEDES_EFFECT"
+      ],
+      "resource_assumptions": [
+        "SINGLE_CPU_THREAD",
+        "BOUNDED_MEMORY"
+      ],
+      "scale_assumptions": [
+        "FINITE_SCALE_1_TO_2048"
+      ],
+      "semantic_roles": [
+        "INPUT_ROLE_3",
+        "EFFECT_ROLE_3"
+      ],
+      "uncertainty": "UNTESTED_NEAREST_SEMANTIC_BOUNDARY",
+      "valid_transformations": [
+        "ROLE_PRESERVING_TRANSFER"
+      ]
+    },
+    {
+      "abstraction_id": "SEM20-A04",
+      "applicability_domains": 3,
+      "counterexamples": [
+        "COUNTEREXAMPLE_4_RELATION_REMOVED"
+      ],
+      "evidence_ids": [
+        "SEM20-COMPRESSION-ABSTRACTION-4",
+        "F21-05-a6de987bc1ce",
+        "F21-07-36f1a8b27e29"
+      ],
+      "invariants": [
+        "MECHANICAL_RESULT_PRESERVED"
+      ],
+      "last_tested_epoch": 7,
+      "mechanism_bit": 16,
+      "negative_domains": [
+        "MISSING_REQUIRED_RELATION_4"
+      ],
+      "positive_domains": [
+        "SEM20_OBSERVED_DOMAIN_4",
+        "TRANSFER_DOMAIN_05",
+        "TRANSFER_DOMAIN_07"
+      ],
+      "required_assumptions": 4,
+      "required_relations": [
+        "CAUSAL_PRECONDITION_PRECEDES_EFFECT"
+      ],
+      "resource_assumptions": [
+        "SINGLE_CPU_THREAD",
+        "BOUNDED_MEMORY"
+      ],
+      "scale_assumptions": [
+        "FINITE_SCALE_1_TO_2048"
+      ],
+      "semantic_roles": [
+        "INPUT_ROLE_4",
+        "EFFECT_ROLE_4"
+      ],
+      "uncertainty": "UNTESTED_NEAREST_SEMANTIC_BOUNDARY",
+      "valid_transformations": [
+        "ROLE_PRESERVING_TRANSFER"
+      ]
+    }
+  ]
+}

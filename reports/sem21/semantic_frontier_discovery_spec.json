@@ -1,0 +1,15 @@
+{
+  "fixed_curriculum": false,
+  "full_space_enumeration": false,
+  "inputs": [
+    "CURRENT_SEMANTIC_STATE",
+    "NEAREST_FAILURE_EVIDENCE",
+    "OBSERVER_ONLY_GROWTH_LEDGER",
+    "APPLICABILITY_BOUNDARIES"
+  ],
+  "instance_generated_after_spec_freeze": true,
+  "output": "FRONTIER_SPEC_WITHOUT_INSTANCE_SEED",
+  "random_hypotheses_outside_baseline": 0,
+  "sparse_direct_routing": true,
+  "version": "SEM21-FRONTIER-DISCOVERY-V1"
+}

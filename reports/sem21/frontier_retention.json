@@ -1,0 +1,7 @@
+{
+  "gain_erasure_events": 0,
+  "mean_retention": 1.0,
+  "min_retention": 1.0,
+  "negative_transfer_events": 0,
+  "passed": true
+}

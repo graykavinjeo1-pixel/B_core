@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "regressions": 0,
+  "semantic_provenance_preserved": true,
+  "sem21_engine_tests_passed": 2,
+  "sem21_engine_test_failures": 0,
+  "workspace_tests_passed": 166,
+  "workspace_test_failures": 0
+}

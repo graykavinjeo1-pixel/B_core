@@ -1,0 +1,11 @@
+{
+  "full_applicability_combination_enumeration": 0,
+  "full_atom_store_scans": 0,
+  "full_capability_catalog_scans": 0,
+  "full_frontier_space_enumeration": 0,
+  "full_motif_store_scans": 0,
+  "full_rewrite_enumeration": 0,
+  "full_schema_store_scans": 0,
+  "passed": true,
+  "routing_false_negatives": 0
+}

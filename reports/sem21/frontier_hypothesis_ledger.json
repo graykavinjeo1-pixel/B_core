@@ -1,0 +1,202 @@
+{
+  "productive_hypotheses": [
+    {
+      "candidate_type": "SINGLE_BOUNDARY_FRONTIER",
+      "epoch": 1,
+      "frontier_id": "F21-01-6c610881faef",
+      "frontier_spec_sha256": "6c610881faef01b3c0e035df9bb136514e1db089b5899a7bcd8c3341ac6ce0dd",
+      "future_instance_information_used": false,
+      "grounded_in_current_state": true,
+      "grounded_in_failure_evidence": false,
+      "grounded_in_growth_ledger": false,
+      "mechanism_mask": 1,
+      "productive": true,
+      "random_hypothesis": false,
+      "source_abstractions": [
+        "SEM20-A00"
+      ],
+      "tested": true,
+      "trivial_rejected_sibling": true,
+      "unreachable_rejected_sibling": true
+    },
+    {
+      "candidate_type": "SINGLE_BOUNDARY_FRONTIER",
+      "epoch": 2,
+      "frontier_id": "F21-02-b96d8b98d046",
+      "frontier_spec_sha256": "b96d8b98d0465dbcebd789caeac70966dd1f6fb8343f39337523a0245ddf2568",
+      "future_instance_information_used": false,
+      "grounded_in_current_state": true,
+      "grounded_in_failure_evidence": false,
+      "grounded_in_growth_ledger": true,
+      "mechanism_mask": 2,
+      "productive": true,
+      "random_hypothesis": false,
+      "source_abstractions": [
+        "SEM20-A01"
+      ],
+      "tested": true,
+      "trivial_rejected_sibling": true,
+      "unreachable_rejected_sibling": true
+    },
+    {
+      "candidate_type": "SINGLE_BOUNDARY_FRONTIER",
+      "epoch": 3,
+      "frontier_id": "F21-03-c2bdb95ddbb8",
+      "frontier_spec_sha256": "c2bdb95ddbb8ce11d5e8463a7bdf2c253b9ad941e8bfbc331fccb1a0c2848285",
+      "future_instance_information_used": false,
+      "grounded_in_current_state": true,
+      "grounded_in_failure_evidence": false,
+      "grounded_in_growth_ledger": true,
+      "mechanism_mask": 4,
+      "productive": true,
+      "random_hypothesis": false,
+      "source_abstractions": [
+        "SEM20-A02"
+      ],
+      "tested": true,
+      "trivial_rejected_sibling": true,
+      "unreachable_rejected_sibling": true
+    },
+    {
+      "candidate_type": "SINGLE_BOUNDARY_FRONTIER",
+      "epoch": 4,
+      "frontier_id": "F21-04-8a41a65012e2",
+      "frontier_spec_sha256": "8a41a65012e2ccb488aa8b8e94e49bd08bf51ab0eec64ca75ea3cc1094b3fbcc",
+      "future_instance_information_used": false,
+      "grounded_in_current_state": true,
+      "grounded_in_failure_evidence": true,
+      "grounded_in_growth_ledger": true,
+      "mechanism_mask": 8,
+      "productive": true,
+      "random_hypothesis": false,
+      "source_abstractions": [
+        "SEM20-A03"
+      ],
+      "tested": true,
+      "trivial_rejected_sibling": true,
+      "unreachable_rejected_sibling": true
+    },
+    {
+      "candidate_type": "SINGLE_BOUNDARY_FRONTIER",
+      "epoch": 5,
+      "frontier_id": "F21-05-a6de987bc1ce",
+      "frontier_spec_sha256": "a6de987bc1cef01d1e8d399cf9015995bd577a3265ada77a2819bbdbb1a430f7",
+      "future_instance_information_used": false,
+      "grounded_in_current_state": true,
+      "grounded_in_failure_evidence": true,
+      "grounded_in_growth_ledger": true,
+      "mechanism_mask": 16,
+      "productive": true,
+      "random_hypothesis": false,
+      "source_abstractions": [
+        "SEM20-A04"
+      ],
+      "tested": true,
+      "trivial_rejected_sibling": true,
+      "unreachable_rejected_sibling": true
+    },
+    {
+      "candidate_type": "NOVEL_COMPOSED_FRONTIER",
+      "epoch": 6,
+      "frontier_id": "F21-06-313a7ffd75f9",
+      "frontier_spec_sha256": "313a7ffd75f91de18485426df1304b730aa6548517498b0e477b653ad86da043",
+      "future_instance_information_used": false,
+      "grounded_in_current_state": true,
+      "grounded_in_failure_evidence": true,
+      "grounded_in_growth_ledger": true,
+      "mechanism_mask": 5,
+      "productive": true,
+      "random_hypothesis": false,
+      "source_abstractions": [
+        "SEM20-A00",
+        "SEM20-A02"
+      ],
+      "tested": true,
+      "trivial_rejected_sibling": true,
+      "unreachable_rejected_sibling": true
+    },
+    {
+      "candidate_type": "NOVEL_COMPOSED_FRONTIER",
+      "epoch": 7,
+      "frontier_id": "F21-07-36f1a8b27e29",
+      "frontier_spec_sha256": "36f1a8b27e29c5c8c99b5c8c4fa35d6ebea31accc22e4220cd30dcb11c577189",
+      "future_instance_information_used": false,
+      "grounded_in_current_state": true,
+      "grounded_in_failure_evidence": true,
+      "grounded_in_growth_ledger": true,
+      "mechanism_mask": 18,
+      "productive": true,
+      "random_hypothesis": false,
+      "source_abstractions": [
+        "SEM20-A01",
+        "SEM20-A04"
+      ],
+      "tested": true,
+      "trivial_rejected_sibling": true,
+      "unreachable_rejected_sibling": true
+    },
+    {
+      "candidate_type": "NOVEL_COMPOSED_FRONTIER",
+      "epoch": 8,
+      "frontier_id": "F21-08-314de56d95cc",
+      "frontier_spec_sha256": "314de56d95cc384e2290e164ac4c6ddada8a139473502a5c34fe26636cb19c53",
+      "future_instance_information_used": false,
+      "grounded_in_current_state": true,
+      "grounded_in_failure_evidence": true,
+      "grounded_in_growth_ledger": true,
+      "mechanism_mask": 10,
+      "productive": true,
+      "random_hypothesis": false,
+      "source_abstractions": [
+        "SEM20-A03",
+        "SEM20-A01"
+      ],
+      "tested": true,
+      "trivial_rejected_sibling": true,
+      "unreachable_rejected_sibling": true
+    },
+    {
+      "candidate_type": "NOVEL_COMPOSED_FRONTIER",
+      "epoch": 9,
+      "frontier_id": "F21-09-020a74855f05",
+      "frontier_spec_sha256": "020a74855f0586891de0c1ccd63a5a17c811bc0d2a4360b347a40de285901934",
+      "future_instance_information_used": false,
+      "grounded_in_current_state": true,
+      "grounded_in_failure_evidence": true,
+      "grounded_in_growth_ledger": true,
+      "mechanism_mask": 9,
+      "productive": true,
+      "random_hypothesis": false,
+      "source_abstractions": [
+        "SEM20-A00",
+        "SEM20-A03"
+      ],
+      "tested": true,
+      "trivial_rejected_sibling": true,
+      "unreachable_rejected_sibling": true
+    },
+    {
+      "candidate_type": "NOVEL_COMPOSED_FRONTIER",
+      "epoch": 10,
+      "frontier_id": "F21-10-fee8f677b859",
+      "frontier_spec_sha256": "fee8f677b859378980c67adde456152449eca80d261fa9c37e4ab53291b87376",
+      "future_instance_information_used": false,
+      "grounded_in_current_state": true,
+      "grounded_in_failure_evidence": true,
+      "grounded_in_growth_ledger": true,
+      "mechanism_mask": 6,
+      "productive": true,
+      "random_hypothesis": false,
+      "source_abstractions": [
+        "SEM20-A02",
+        "SEM20-A01"
+      ],
+      "tested": true,
+      "trivial_rejected_sibling": true,
+      "unreachable_rejected_sibling": true
+    }
+  ],
+  "random_frontier_hypotheses_outside_explicit_baseline": 0,
+  "trivial_rejected_siblings": 10,
+  "unreachable_rejected_siblings": 10
+}

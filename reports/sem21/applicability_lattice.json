@@ -1,0 +1,48 @@
+{
+  "composition_edges": [
+    {
+      "frontier_id": "F21-06-313a7ffd75f9",
+      "sources": [
+        "SEM20-A00",
+        "SEM20-A02"
+      ]
+    },
+    {
+      "frontier_id": "F21-07-36f1a8b27e29",
+      "sources": [
+        "SEM20-A01",
+        "SEM20-A04"
+      ]
+    },
+    {
+      "frontier_id": "F21-08-314de56d95cc",
+      "sources": [
+        "SEM20-A03",
+        "SEM20-A01"
+      ]
+    },
+    {
+      "frontier_id": "F21-09-020a74855f05",
+      "sources": [
+        "SEM20-A00",
+        "SEM20-A03"
+      ]
+    },
+    {
+      "frontier_id": "F21-10-fee8f677b859",
+      "sources": [
+        "SEM20-A02",
+        "SEM20-A01"
+      ]
+    }
+  ],
+  "full_combination_enumeration": false,
+  "nodes": [
+    "SEM20-A00",
+    "SEM20-A01",
+    "SEM20-A02",
+    "SEM20-A03",
+    "SEM20-A04"
+  ],
+  "structure": "SPARSE_DAG_WITH_COMPOSED_EDGES"
+}

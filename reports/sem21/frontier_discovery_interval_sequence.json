@@ -1,0 +1,16 @@
+{
+  "composite_score": null,
+  "metric": "time_to_discover_frontier_ns",
+  "raw_sequence": [
+    909000,
+    893100,
+    786700,
+    795400,
+    672300,
+    674800,
+    566600,
+    449200,
+    444400,
+    440400
+  ]
+}

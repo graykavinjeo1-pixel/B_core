@@ -1,0 +1,16 @@
+{
+  "composite_score": null,
+  "metric": "time_to_cross_frontier_ns",
+  "raw_sequence": [
+    37600,
+    21400,
+    5300,
+    58600,
+    38800,
+    43100,
+    109900,
+    116200,
+    130600,
+    65800
+  ]
+}

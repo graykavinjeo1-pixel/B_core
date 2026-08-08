@@ -1,0 +1,8 @@
+{
+  "applicability_state_bytes": 2640,
+  "base_core_total_deployable_bytes": 294397,
+  "final_active_semantic_working_set_bytes": 2536,
+  "final_core_total_deployable_bytes": 378534,
+  "frontier_discovery_runtime_source_bytes": 81497,
+  "research_reports_required_at_runtime": false
+}

@@ -1,0 +1,51 @@
+{
+  "false_applications": 0,
+  "preserved": true,
+  "records": [
+    {
+      "abstraction_id": "SEM20-A00",
+      "counterexamples": [
+        "COUNTEREXAMPLE_0_RELATION_REMOVED"
+      ],
+      "negative_domains": [
+        "MISSING_REQUIRED_RELATION_0"
+      ]
+    },
+    {
+      "abstraction_id": "SEM20-A01",
+      "counterexamples": [
+        "COUNTEREXAMPLE_1_RELATION_REMOVED"
+      ],
+      "negative_domains": [
+        "MISSING_REQUIRED_RELATION_1"
+      ]
+    },
+    {
+      "abstraction_id": "SEM20-A02",
+      "counterexamples": [
+        "COUNTEREXAMPLE_2_RELATION_REMOVED"
+      ],
+      "negative_domains": [
+        "MISSING_REQUIRED_RELATION_2"
+      ]
+    },
+    {
+      "abstraction_id": "SEM20-A03",
+      "counterexamples": [
+        "COUNTEREXAMPLE_3_RELATION_REMOVED"
+      ],
+      "negative_domains": [
+        "MISSING_REQUIRED_RELATION_3"
+      ]
+    },
+    {
+      "abstraction_id": "SEM20-A04",
+      "counterexamples": [
+        "COUNTEREXAMPLE_4_RELATION_REMOVED"
+      ],
+      "negative_domains": [
+        "MISSING_REQUIRED_RELATION_4"
+      ]
+    }
+  ]
+}

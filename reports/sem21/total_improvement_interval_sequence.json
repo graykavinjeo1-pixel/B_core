@@ -1,0 +1,16 @@
+{
+  "composite_score": null,
+  "metric": "total_improvement_interval_ns",
+  "raw_sequence": [
+    946600,
+    914500,
+    792000,
+    854000,
+    711100,
+    717900,
+    676500,
+    565400,
+    575000,
+    506200
+  ]
+}

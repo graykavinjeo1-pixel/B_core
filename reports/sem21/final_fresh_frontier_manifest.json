@@ -1,0 +1,6 @@
+{
+  "descriptor_sha256": "2ec601d510871755f0c95534f77ab9bcdcf54130b161beb2e7331e7f8f44ab77",
+  "future_instance_leakage_events": 0,
+  "instance_seed_commitment": "bdd1c4ceaad33cac2d3e338af838f192da4cd1fd4ff9104f08a6a5f937ac97bb",
+  "spec_frozen_before_instance_seed_reveal": true
+}

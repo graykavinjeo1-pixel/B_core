@@ -1,0 +1,232 @@
+[
+  {
+    "boundary": {
+      "abstraction_id": "SEM20-A00",
+      "boundary_id": "B21-01",
+      "boundary_probe_scale": 76,
+      "inside_probe_scale": 66,
+      "just_outside_probe_scale": 86,
+      "minimal_semantic_delta": 10,
+      "necessary_conditions": [
+        "REQUIRED_ROLES_PRESENT",
+        "RESOURCE_BOUNDED"
+      ],
+      "negative_knowledge_preserved": true,
+      "sufficient_conditions": [
+        "ALL_INTERNAL_INVARIANTS_HOLD"
+      ]
+    },
+    "classification": "EXPANDED_AFTER_FRESH_TRANSFER",
+    "epoch": 1,
+    "frontier_id": "F21-01-6c610881faef",
+    "lexical_authority_used": false,
+    "source_structure_authority_used": false
+  },
+  {
+    "boundary": {
+      "abstraction_id": "SEM20-A01",
+      "boundary_id": "B21-02",
+      "boundary_probe_scale": 92,
+      "inside_probe_scale": 82,
+      "just_outside_probe_scale": 102,
+      "minimal_semantic_delta": 10,
+      "necessary_conditions": [
+        "REQUIRED_ROLES_PRESENT",
+        "RESOURCE_BOUNDED"
+      ],
+      "negative_knowledge_preserved": true,
+      "sufficient_conditions": [
+        "ALL_INTERNAL_INVARIANTS_HOLD"
+      ]
+    },
+    "classification": "EXPANDED_AFTER_FRESH_TRANSFER",
+    "epoch": 2,
+    "frontier_id": "F21-02-b96d8b98d046",
+    "lexical_authority_used": false,
+    "source_structure_authority_used": false
+  },
+  {
+    "boundary": {
+      "abstraction_id": "SEM20-A02",
+      "boundary_id": "B21-03",
+      "boundary_probe_scale": 108,
+      "inside_probe_scale": 99,
+      "just_outside_probe_scale": 117,
+      "minimal_semantic_delta": 9,
+      "necessary_conditions": [
+        "REQUIRED_ROLES_PRESENT",
+        "RESOURCE_BOUNDED"
+      ],
+      "negative_knowledge_preserved": true,
+      "sufficient_conditions": [
+        "ALL_INTERNAL_INVARIANTS_HOLD"
+      ]
+    },
+    "classification": "EXPANDED_AFTER_FRESH_TRANSFER",
+    "epoch": 3,
+    "frontier_id": "F21-03-c2bdb95ddbb8",
+    "lexical_authority_used": false,
+    "source_structure_authority_used": false
+  },
+  {
+    "boundary": {
+      "abstraction_id": "SEM20-A03",
+      "boundary_id": "B21-04",
+      "boundary_probe_scale": 124,
+      "inside_probe_scale": 115,
+      "just_outside_probe_scale": 133,
+      "minimal_semantic_delta": 9,
+      "necessary_conditions": [
+        "REQUIRED_ROLES_PRESENT",
+        "RESOURCE_BOUNDED"
+      ],
+      "negative_knowledge_preserved": true,
+      "sufficient_conditions": [
+        "ALL_INTERNAL_INVARIANTS_HOLD"
+      ]
+    },
+    "classification": "EXPANDED_AFTER_FRESH_TRANSFER",
+    "epoch": 4,
+    "frontier_id": "F21-04-8a41a65012e2",
+    "lexical_authority_used": false,
+    "source_structure_authority_used": false
+  },
+  {
+    "boundary": {
+      "abstraction_id": "SEM20-A04",
+      "boundary_id": "B21-05",
+      "boundary_probe_scale": 140,
+      "inside_probe_scale": 132,
+      "just_outside_probe_scale": 148,
+      "minimal_semantic_delta": 8,
+      "necessary_conditions": [
+        "REQUIRED_ROLES_PRESENT",
+        "RESOURCE_BOUNDED"
+      ],
+      "negative_knowledge_preserved": true,
+      "sufficient_conditions": [
+        "ALL_INTERNAL_INVARIANTS_HOLD"
+      ]
+    },
+    "classification": "EXPANDED_AFTER_FRESH_TRANSFER",
+    "epoch": 5,
+    "frontier_id": "F21-05-a6de987bc1ce",
+    "lexical_authority_used": false,
+    "source_structure_authority_used": false
+  },
+  {
+    "boundary": {
+      "abstraction_id": "SEM20-A00+SEM20-A02",
+      "boundary_id": "B21-06",
+      "boundary_probe_scale": 172,
+      "inside_probe_scale": 164,
+      "just_outside_probe_scale": 180,
+      "minimal_semantic_delta": 8,
+      "necessary_conditions": [
+        "REQUIRED_ROLES_PRESENT",
+        "RESOURCE_BOUNDED"
+      ],
+      "negative_knowledge_preserved": true,
+      "sufficient_conditions": [
+        "ALL_INTERNAL_INVARIANTS_HOLD"
+      ]
+    },
+    "classification": "EXPANDED_AFTER_FRESH_TRANSFER",
+    "epoch": 6,
+    "frontier_id": "F21-06-313a7ffd75f9",
+    "lexical_authority_used": false,
+    "source_structure_authority_used": false
+  },
+  {
+    "boundary": {
+      "abstraction_id": "SEM20-A01+SEM20-A04",
+      "boundary_id": "B21-07",
+      "boundary_probe_scale": 192,
+      "inside_probe_scale": 185,
+      "just_outside_probe_scale": 199,
+      "minimal_semantic_delta": 7,
+      "necessary_conditions": [
+        "REQUIRED_ROLES_PRESENT",
+        "RESOURCE_BOUNDED"
+      ],
+      "negative_knowledge_preserved": true,
+      "sufficient_conditions": [
+        "ALL_INTERNAL_INVARIANTS_HOLD"
+      ]
+    },
+    "classification": "EXPANDED_AFTER_FRESH_TRANSFER",
+    "epoch": 7,
+    "frontier_id": "F21-07-36f1a8b27e29",
+    "lexical_authority_used": false,
+    "source_structure_authority_used": false
+  },
+  {
+    "boundary": {
+      "abstraction_id": "SEM20-A03+SEM20-A01",
+      "boundary_id": "B21-08",
+      "boundary_probe_scale": 212,
+      "inside_probe_scale": 206,
+      "just_outside_probe_scale": 218,
+      "minimal_semantic_delta": 6,
+      "necessary_conditions": [
+        "REQUIRED_ROLES_PRESENT",
+        "RESOURCE_BOUNDED"
+      ],
+      "negative_knowledge_preserved": true,
+      "sufficient_conditions": [
+        "ALL_INTERNAL_INVARIANTS_HOLD"
+      ]
+    },
+    "classification": "EXPANDED_AFTER_FRESH_TRANSFER",
+    "epoch": 8,
+    "frontier_id": "F21-08-314de56d95cc",
+    "lexical_authority_used": false,
+    "source_structure_authority_used": false
+  },
+  {
+    "boundary": {
+      "abstraction_id": "SEM20-A00+SEM20-A03",
+      "boundary_id": "B21-09",
+      "boundary_probe_scale": 232,
+      "inside_probe_scale": 226,
+      "just_outside_probe_scale": 238,
+      "minimal_semantic_delta": 6,
+      "necessary_conditions": [
+        "REQUIRED_ROLES_PRESENT",
+        "RESOURCE_BOUNDED"
+      ],
+      "negative_knowledge_preserved": true,
+      "sufficient_conditions": [
+        "ALL_INTERNAL_INVARIANTS_HOLD"
+      ]
+    },
+    "classification": "EXPANDED_AFTER_FRESH_TRANSFER",
+    "epoch": 9,
+    "frontier_id": "F21-09-020a74855f05",
+    "lexical_authority_used": false,
+    "source_structure_authority_used": false
+  },
+  {
+    "boundary": {
+      "abstraction_id": "SEM20-A02+SEM20-A01",
+      "boundary_id": "B21-10",
+      "boundary_probe_scale": 252,
+      "inside_probe_scale": 246,
+      "just_outside_probe_scale": 258,
+      "minimal_semantic_delta": 6,
+      "necessary_conditions": [
+        "REQUIRED_ROLES_PRESENT",
+        "RESOURCE_BOUNDED"
+      ],
+      "negative_knowledge_preserved": true,
+      "sufficient_conditions": [
+        "ALL_INTERNAL_INVARIANTS_HOLD"
+      ]
+    },
+    "classification": "EXPANDED_AFTER_FRESH_TRANSFER",
+    "epoch": 10,
+    "frontier_id": "F21-10-fee8f677b859",
+    "lexical_authority_used": false,
+    "source_structure_authority_used": false
+  }
+]

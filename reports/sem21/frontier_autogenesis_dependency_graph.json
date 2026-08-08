@@ -1,0 +1,42 @@
+{
+  "causal_edges": [
+    {
+      "from": "F21-01-6c610881faef",
+      "mechanism": "PRIOR_APPLICABILITY_EXPANSION_ENABLED_COMPOSITION",
+      "to": "F21-06-313a7ffd75f9"
+    },
+    {
+      "from": "F21-06-313a7ffd75f9",
+      "mechanism": "PRIOR_APPLICABILITY_EXPANSION_ENABLED_COMPOSITION",
+      "to": "F21-07-36f1a8b27e29"
+    },
+    {
+      "from": "F21-07-36f1a8b27e29",
+      "mechanism": "PRIOR_APPLICABILITY_EXPANSION_ENABLED_COMPOSITION",
+      "to": "F21-08-314de56d95cc"
+    },
+    {
+      "from": "F21-08-314de56d95cc",
+      "mechanism": "PRIOR_APPLICABILITY_EXPANSION_ENABLED_COMPOSITION",
+      "to": "F21-09-020a74855f05"
+    },
+    {
+      "from": "F21-09-020a74855f05",
+      "mechanism": "PRIOR_APPLICABILITY_EXPANSION_ENABLED_COMPOSITION",
+      "to": "F21-10-fee8f677b859"
+    }
+  ],
+  "chain_depth": 5,
+  "nodes": [
+    "F21-01-6c610881faef",
+    "F21-02-b96d8b98d046",
+    "F21-03-c2bdb95ddbb8",
+    "F21-04-8a41a65012e2",
+    "F21-05-a6de987bc1ce",
+    "F21-06-313a7ffd75f9",
+    "F21-07-36f1a8b27e29",
+    "F21-08-314de56d95cc",
+    "F21-09-020a74855f05",
+    "F21-10-fee8f677b859"
+  ]
+}

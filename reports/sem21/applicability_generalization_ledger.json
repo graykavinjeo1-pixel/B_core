@@ -1,0 +1,137 @@
+[
+  {
+    "abstraction_id": "SEM20-A00",
+    "assumptions_after_minimization": 5,
+    "epoch": 1,
+    "fresh_transfer_pass": true,
+    "from_domain_count": 1,
+    "negative_domain_constraints_preserved": true,
+    "to_domain_count": 2
+  },
+  {
+    "abstraction_id": "SEM20-A01",
+    "assumptions_after_minimization": 5,
+    "epoch": 2,
+    "fresh_transfer_pass": true,
+    "from_domain_count": 1,
+    "negative_domain_constraints_preserved": true,
+    "to_domain_count": 2
+  },
+  {
+    "abstraction_id": "SEM20-A02",
+    "assumptions_after_minimization": 5,
+    "epoch": 3,
+    "fresh_transfer_pass": true,
+    "from_domain_count": 1,
+    "negative_domain_constraints_preserved": true,
+    "to_domain_count": 2
+  },
+  {
+    "abstraction_id": "SEM20-A03",
+    "assumptions_after_minimization": 5,
+    "epoch": 4,
+    "fresh_transfer_pass": true,
+    "from_domain_count": 1,
+    "negative_domain_constraints_preserved": true,
+    "to_domain_count": 2
+  },
+  {
+    "abstraction_id": "SEM20-A04",
+    "assumptions_after_minimization": 5,
+    "epoch": 5,
+    "fresh_transfer_pass": true,
+    "from_domain_count": 1,
+    "negative_domain_constraints_preserved": true,
+    "to_domain_count": 2
+  },
+  {
+    "abstraction_id": "SEM20-A00",
+    "assumptions_after_minimization": 4,
+    "epoch": 6,
+    "fresh_transfer_pass": true,
+    "from_domain_count": 2,
+    "negative_domain_constraints_preserved": true,
+    "to_domain_count": 3
+  },
+  {
+    "abstraction_id": "SEM20-A02",
+    "assumptions_after_minimization": 4,
+    "epoch": 6,
+    "fresh_transfer_pass": true,
+    "from_domain_count": 2,
+    "negative_domain_constraints_preserved": true,
+    "to_domain_count": 3
+  },
+  {
+    "abstraction_id": "SEM20-A01",
+    "assumptions_after_minimization": 4,
+    "epoch": 7,
+    "fresh_transfer_pass": true,
+    "from_domain_count": 2,
+    "negative_domain_constraints_preserved": true,
+    "to_domain_count": 3
+  },
+  {
+    "abstraction_id": "SEM20-A04",
+    "assumptions_after_minimization": 4,
+    "epoch": 7,
+    "fresh_transfer_pass": true,
+    "from_domain_count": 2,
+    "negative_domain_constraints_preserved": true,
+    "to_domain_count": 3
+  },
+  {
+    "abstraction_id": "SEM20-A03",
+    "assumptions_after_minimization": 4,
+    "epoch": 8,
+    "fresh_transfer_pass": true,
+    "from_domain_count": 2,
+    "negative_domain_constraints_preserved": true,
+    "to_domain_count": 3
+  },
+  {
+    "abstraction_id": "SEM20-A01",
+    "assumptions_after_minimization": 3,
+    "epoch": 8,
+    "fresh_transfer_pass": true,
+    "from_domain_count": 3,
+    "negative_domain_constraints_preserved": true,
+    "to_domain_count": 4
+  },
+  {
+    "abstraction_id": "SEM20-A00",
+    "assumptions_after_minimization": 3,
+    "epoch": 9,
+    "fresh_transfer_pass": true,
+    "from_domain_count": 3,
+    "negative_domain_constraints_preserved": true,
+    "to_domain_count": 4
+  },
+  {
+    "abstraction_id": "SEM20-A03",
+    "assumptions_after_minimization": 3,
+    "epoch": 9,
+    "fresh_transfer_pass": true,
+    "from_domain_count": 3,
+    "negative_domain_constraints_preserved": true,
+    "to_domain_count": 4
+  },
+  {
+    "abstraction_id": "SEM20-A02",
+    "assumptions_after_minimization": 3,
+    "epoch": 10,
+    "fresh_transfer_pass": true,
+    "from_domain_count": 3,
+    "negative_domain_constraints_preserved": true,
+    "to_domain_count": 4
+  },
+  {
+    "abstraction_id": "SEM20-A01",
+    "assumptions_after_minimization": 2,
+    "epoch": 10,
+    "fresh_transfer_pass": true,
+    "from_domain_count": 4,
+    "negative_domain_constraints_preserved": true,
+    "to_domain_count": 5
+  }
+]
