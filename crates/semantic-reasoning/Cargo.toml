@@ -183,6 +183,10 @@ name = "sem27-continuation-run"
 path = "src/sem27_continuation_main.rs"
 
 [[bin]]
+name = "sem27-r1-run"
+path = "src/sem27_r1_main.rs"
+
+[[bin]]
 name = "core-x0-evaluate"
 path = "src/core_x0_main.rs"
 

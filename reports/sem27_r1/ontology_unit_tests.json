@@ -1,0 +1,30 @@
+{
+  "cases": [
+    {
+      "case": "A_PRODUCTIVE_BUT_OPEN",
+      "passed": true
+    },
+    {
+      "case": "B_PRODUCTIVE_AND_CLOSED",
+      "passed": true
+    },
+    {
+      "case": "C_HARDER_NOT_ADAPTED",
+      "passed": true
+    },
+    {
+      "case": "D_ADAPTED_GAIN_NOT_RETAINED",
+      "passed": true
+    },
+    {
+      "case": "E_ONE_CLOSED_PRODUCTIVE_ESCALATION",
+      "passed": true
+    },
+    {
+      "case": "F_TWO_PRODUCTIVE_ESCALATIONS_WITH_INTERMEDIATE_CLOSURE",
+      "passed": true
+    }
+  ],
+  "ontology_version": "SEM27-R1-OUTCOME-ONTOLOGY-1",
+  "passed": true
+}

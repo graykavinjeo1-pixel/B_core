@@ -1,0 +1,9 @@
+{
+  "all_fresh_pairs_mechanically_verified": true,
+  "fresh_pair_count": 8,
+  "fresh_replay_retains_exceedance": true,
+  "frontier_gain_retention_confirmed": true,
+  "new_regime_capability": 1600,
+  "previous_regime_capability": 1216,
+  "protected_predecessor_capabilities_intact": true
+}

@@ -1,0 +1,16 @@
+{
+  "campaign_json_files_parsed": 148,
+  "campaign_jsonl_files_parsed": 7,
+  "cargo_test_command": "cargo test --workspace --all-targets --all-features --quiet",
+  "cargo_test_status": "PASS",
+  "clippy_command": "cargo clippy --workspace --all-targets --all-features --message-format short",
+  "clippy_status": "PASS",
+  "engine_behavior_diff_lines": 0,
+  "historical_sem27_artifact_diff_lines": 0,
+  "new_clippy_warning_signatures_total": 0,
+  "ontology_source_sha256": "097ba7b170d2263fb8b87671cb83253f836eef79a9210a60ee8f2772e8d91f92",
+  "ontology_unit_tests_passed": 6,
+  "predecessor_clippy_warning_count": 22,
+  "raw_continuation_epochs_verified": 128,
+  "sealed_sem27_engine_sha256": "519557be10710d2a74d1ae21fddd75c55940811ac8017b4c871278cfd311f28b"
+}

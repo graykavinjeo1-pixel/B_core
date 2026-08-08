@@ -1,0 +1,17 @@
+{
+  "metric": "within_regime_cost_sequences",
+  "sequence": [
+    {
+      "final_observed_cost_ns": 1000,
+      "initial_cost_ns": 92200,
+      "min_observed_cost_ns": 800,
+      "regime_id": 1
+    },
+    {
+      "final_observed_cost_ns": 1500,
+      "initial_cost_ns": 7600,
+      "min_observed_cost_ns": 800,
+      "regime_id": 2
+    }
+  ]
+}

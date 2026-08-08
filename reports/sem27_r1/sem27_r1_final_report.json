@@ -1,0 +1,2306 @@
+{
+  "autonomous_adaptation_events": 1,
+  "autonomous_frontier_continuation_observed": true,
+  "autonomous_policy_diff_lines": 0,
+  "autonomous_termination_reason": "MAXIMUM_R1_CONTINUATION_BUDGET_REACHED",
+  "branch": "codex/sem27-r1-outcome-ontology",
+  "capability_negative_transfer_events": 0,
+  "capability_productivity_acceleration_observed": true,
+  "capability_productivity_sequence": [
+    59387,
+    61125,
+    4332,
+    59591,
+    4134,
+    55436,
+    4224,
+    4309,
+    61870,
+    63406,
+    3888,
+    60553,
+    63024,
+    64137,
+    64380,
+    65536,
+    58429,
+    64404,
+    4184,
+    63884,
+    66699,
+    62088,
+    65486,
+    4206,
+    67989,
+    70278,
+    68587,
+    66332,
+    67973,
+    67710,
+    69192,
+    68510,
+    69235,
+    70903,
+    4326,
+    70890,
+    4129,
+    70033,
+    73432,
+    4321,
+    4297,
+    72007,
+    4137,
+    71737,
+    72116,
+    4225,
+    70564,
+    65532,
+    4277,
+    74108,
+    4243,
+    73948,
+    75532,
+    76065,
+    76086,
+    77827,
+    75407,
+    78941,
+    77442,
+    77465,
+    75175,
+    70187,
+    71495,
+    70294,
+    79545,
+    73079,
+    3904,
+    3900,
+    78452,
+    80542,
+    74655,
+    3892,
+    73025,
+    73292,
+    73689,
+    72375,
+    3816,
+    72465,
+    75490,
+    3770,
+    74593,
+    75597,
+    76575,
+    77047,
+    3888,
+    75811,
+    77753,
+    85829,
+    4285,
+    86667,
+    86095,
+    85066,
+    85176,
+    87920,
+    89451,
+    89075,
+    84527,
+    4217,
+    88195,
+    89835,
+    91076,
+    4249,
+    92899,
+    4295,
+    89288,
+    4266,
+    89748,
+    91747,
+    4293,
+    91479,
+    93047,
+    93027,
+    93465,
+    95284,
+    94874,
+    4322,
+    92831,
+    92919,
+    95426,
+    96183,
+    4270,
+    95429,
+    94757,
+    97766,
+    96467,
+    93790,
+    98780,
+    97614
+  ],
+  "closed_regime_events": 0,
+  "continuation_autonomous_bottleneck_migrations": 82,
+  "continuation_autonomous_repairs_accepted": 99,
+  "continuation_difficulty_escalation_events": 0,
+  "continuation_epochs_budget": 128,
+  "continuation_epochs_executed": 128,
+  "cumulative_difficulty_transitions": [
+    {
+      "changed_dimension": "TRANSFER_ARITY",
+      "new_dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "operator_selected": false,
+      "predicted_capability_opportunity_units": 1241,
+      "predicted_challenge_increase_units": 6,
+      "previous_dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "previous_plateau_type": "CURRENT_FRONTIER_EXHAUSTION",
+      "previous_regime_id": 1,
+      "reason_escalation_chosen": "AUTONOMOUSLY_ESCALATE_STRUCTURED_DIFFICULTY",
+      "transition_id": 1
+    }
+  ],
+  "difficulty_mastery_acceleration_observed": false,
+  "difficulty_regime_sequence": [
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 2
+      },
+      "mechanically_verified": true,
+      "regime_id": 2,
+      "semantic_recurrence_depth": 9600
+    }
+  ],
+  "difficulty_transition_sequence": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "disposition": "OUTCOME_ONTOLOGY_REPAIRED_AND_FRESH_STAIRCASE_REGATE_COMPLETED_WITHOUT_ENGINE_OR_POLICY_CHANGE",
+  "engine_behavior_diff_lines": 0,
+  "external_llm_calls": 0,
+  "failed_difficulty_escalation_events": 0,
+  "final_frontier_scale": 92714,
+  "fixed_resource_frontier_sequence": [
+    41916,
+    42312,
+    42340,
+    42738,
+    42766,
+    43166,
+    43194,
+    43222,
+    43629,
+    44047,
+    44075,
+    44489,
+    44902,
+    45321,
+    45760,
+    46193,
+    46620,
+    47053,
+    47081,
+    47510,
+    47950,
+    48384,
+    48817,
+    48845,
+    49294,
+    49758,
+    50208,
+    50660,
+    51108,
+    51559,
+    52014,
+    52469,
+    52931,
+    53396,
+    53424,
+    53883,
+    53911,
+    54375,
+    54860,
+    54888,
+    54916,
+    55393,
+    55421,
+    55903,
+    56386,
+    56414,
+    56898,
+    57387,
+    57415,
+    57906,
+    57934,
+    58432,
+    58932,
+    59432,
+    59943,
+    60447,
+    60950,
+    61462,
+    61969,
+    62479,
+    62998,
+    63512,
+    64034,
+    64561,
+    65087,
+    65613,
+    65641,
+    65669,
+    66195,
+    66729,
+    67265,
+    67293,
+    67826,
+    68361,
+    68899,
+    69440,
+    69468,
+    70013,
+    70561,
+    70589,
+    71141,
+    71694,
+    72248,
+    72805,
+    72833,
+    73397,
+    73966,
+    74534,
+    74562,
+    75136,
+    75710,
+    76292,
+    76872,
+    77456,
+    78045,
+    78628,
+    79213,
+    79241,
+    79827,
+    80414,
+    81007,
+    81035,
+    81649,
+    81677,
+    82274,
+    82302,
+    82908,
+    83512,
+    83540,
+    84151,
+    84768,
+    85386,
+    86000,
+    86625,
+    87242,
+    87270,
+    87893,
+    88516,
+    89148,
+    89779,
+    89807,
+    90443,
+    91082,
+    91728,
+    92373,
+    93016,
+    93668,
+    94314
+  ],
+  "frontier_exceeded_prior_regime_events": 1,
+  "frontier_exhaustion_closures": 0,
+  "frontier_gain_retention_confirmed": true,
+  "future_instance_leakage_events": 0,
+  "gain_erasure_events": 0,
+  "global_epoch_range_executed": [
+    129,
+    256
+  ],
+  "global_reasoning_regressions": 0,
+  "growth_ledger_gaming_events": 0,
+  "human_bottleneck_selection_events": 0,
+  "human_difficulty_escalation_events": 0,
+  "human_difficulty_level_selection_events": 0,
+  "human_experiment_selection_events": 0,
+  "human_frontier_selection_events": 0,
+  "human_repair_design_events": 0,
+  "human_research_steering_events": 0,
+  "insufficient_evidence_closures": 0,
+  "legacy_escalation_outcome": "UNRESOLVED",
+  "local_mastery_floor_closures": 0,
+  "meta_quality_regressions": 0,
+  "network_reads": 0,
+  "network_writes": 0,
+  "new_clippy_warning_signatures_total": 0,
+  "new_regime_genuinely_harder_events": 1,
+  "next_allowed_stage": "OPERATOR_REVIEW_ONLY",
+  "next_dominant_growth_limit": "DIAGNOSTIC_EXPERIMENT_COST",
+  "ontology_hash": "eaeea20da0fffa392cec7669918fecc2a2cc28ba0b92c5fc27eb3bed4f9cacf2",
+  "ontology_repair_present": true,
+  "ontology_unit_tests_pass": true,
+  "ontology_version": "SEM27-R1-OUTCOME-ONTOLOGY-1",
+  "open_regime_events": 1,
+  "predecessor_commit": "b279eca8bae9e12ab8232695b4a6b8c24cdb668d",
+  "productive_difficulty_escalation_events": 1,
+  "push_performed": false,
+  "r1_commit": "PENDING_R1_COMMIT",
+  "regime_closure_state": "OPEN",
+  "regime_frontier_capability_sequence": [
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600,
+    1600
+  ],
+  "remote_executions": 0,
+  "retained_frontier_exceedance_events": 1,
+  "retrospective_regate_pass": true,
+  "revised_escalation_adaptation_outcome": "PRODUCTIVE",
+  "self_amplifying_growth_observed": true,
+  "self_directed_recursive_improvement_observed": true,
+  "sem27_r1_status": "PASS",
+  "sem28_started": false,
+  "speed_acceleration_observed": true,
+  "staircase_growth_observed": false,
+  "staircase_self_amplifying_regime_observed": false,
+  "staircase_state": "NOT_YET_OBSERVED",
+  "starting_frontier_scale": 39917,
+  "time_to_exceed_prior_frontier_sequence": [
+    6738300
+  ],
+  "time_to_master_difficulty_sequence": [],
+  "total_improvement_interval_sequence": [
+    6718600,
+    6478500,
+    6462200,
+    6678800,
+    6772400,
+    7215500,
+    6628600,
+    6497000,
+    6578300,
+    6592400,
+    7200100,
+    6836900,
+    6553000,
+    6532800,
+    6818800,
+    6607000,
+    7308000,
+    6723100,
+    6691600,
+    6715200,
+    6596800,
+    6990000,
+    6612100,
+    6657100,
+    6604000,
+    6602300,
+    6561000,
+    6814200,
+    6590800,
+    6660700,
+    6575900,
+    6641300,
+    6672900,
+    6558200,
+    6471700,
+    6474800,
+    6780900,
+    6625400,
+    6604700,
+    6478900,
+    6515800,
+    6624300,
+    6767600,
+    6718900,
+    6697500,
+    6627000,
+    6859000,
+    7461900,
+    6545700,
+    6625400,
+    6598100,
+    6734400,
+    6619700,
+    6573300,
+    6716000,
+    6475900,
+    6670400,
+    6485800,
+    6546800,
+    6583600,
+    6903800,
+    7323200,
+    7301200,
+    7497000,
+    6612600,
+    7197600,
+    7171000,
+    7177900,
+    6704700,
+    6630000,
+    7179600,
+    7193700,
+    7298800,
+    7299500,
+    7300900,
+    7474900,
+    7335800,
+    7520800,
+    7259200,
+    7426000,
+    7400100,
+    7315100,
+    7234700,
+    7229300,
+    7200300,
+    7439500,
+    7318000,
+    6617800,
+    6534000,
+    6623000,
+    6667000,
+    6841700,
+    6809400,
+    6642400,
+    6584600,
+    6545000,
+    6920800,
+    6638700,
+    6644300,
+    6534200,
+    6511000,
+    6589300,
+    6609300,
+    6518600,
+    6686200,
+    6563400,
+    6752200,
+    6583300,
+    6521300,
+    6679100,
+    6631000,
+    6643200,
+    6569300,
+    6559300,
+    6503300,
+    6477000,
+    6711100,
+    6704700,
+    6622900,
+    6560400,
+    6556800,
+    6664600,
+    6743500,
+    6607600,
+    6686200,
+    6855700,
+    6600500,
+    6617900
+  ],
+  "unresolved_bottleneck_closures": 0,
+  "within_regime_cost_sequences": [
+    {
+      "final_observed_cost_ns": 1000,
+      "initial_cost_ns": 92200,
+      "min_observed_cost_ns": 800,
+      "regime_id": 1
+    },
+    {
+      "final_observed_cost_ns": 1500,
+      "initial_cost_ns": 7600,
+      "min_observed_cost_ns": 800,
+      "regime_id": 2
+    }
+  ],
+  "worktree_clean": false
+}

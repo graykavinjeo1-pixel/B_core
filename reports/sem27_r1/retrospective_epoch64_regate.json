@@ -1,0 +1,26 @@
+{
+  "evidence": {
+    "autonomous_adaptation_observed": true,
+    "capability_negative_transfer_events": 0,
+    "frontier_exceeded_prior_regime": true,
+    "frontier_gain_retention_confirmed": true,
+    "gain_erasure_events": 0,
+    "global_reasoning_regressions": 0,
+    "justified_research_attempts_exhausted": false,
+    "meta_quality_regressions": 0,
+    "new_regime_genuinely_harder": true,
+    "new_regime_unreachable": false,
+    "resource_burden_unsustainable": false
+  },
+  "immutable_raw_artifacts_only": true,
+  "legacy_escalation_outcome": "UNRESOLVED",
+  "retrospective_regate_pass": true,
+  "revised_classification": {
+    "adaptation_outcome": "PRODUCTIVE",
+    "failed_difficulty_escalation": false,
+    "productive_difficulty_escalation": true,
+    "regime_closure_state": "OPEN"
+  },
+  "source_campaigns_rerun": false,
+  "staircase_state": "NOT_YET_OBSERVED"
+}

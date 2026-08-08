@@ -1,0 +1,53 @@
+{
+  "concepts_are_independent": [
+    "PRODUCTIVE_DIFFICULTY_ESCALATION",
+    "REGIME_CLOSURE",
+    "STAIRCASE_GROWTH"
+  ],
+  "failed_difficulty_escalation": {
+    "failure_evidence": [
+      "REGIME_NOT_GENUINELY_HARDER_AFTER_JUSTIFIED_ATTEMPTS",
+      "AUTONOMOUS_ADAPTATION_FAILED_AFTER_JUSTIFIED_ATTEMPTS",
+      "PRIOR_FRONTIER_NOT_EXCEEDED_AFTER_JUSTIFIED_ATTEMPTS",
+      "RESOURCE_BURDEN_UNSUSTAINABLE",
+      "PROTECTED_REGRESSION",
+      "NEW_REGIME_UNREACHABLE"
+    ],
+    "open_alone_is_failure": false,
+    "requires_sufficient_failure_evidence": true
+  },
+  "historical_verdicts_rewritten": false,
+  "ontology_version": "SEM27-R1-OUTCOME-ONTOLOGY-1",
+  "physical_runtime_must_decrease_indefinitely": false,
+  "productive_difficulty_escalation": {
+    "all_required": [
+      "NEW_REGIME_GENUINELY_HARDER",
+      "AUTONOMOUS_ADAPTATION_OBSERVED",
+      "FRONTIER_EXCEEDED_PRIOR_REGIME",
+      "FRONTIER_GAIN_RETENTION_CONFIRMED",
+      "GLOBAL_REASONING_REGRESSIONS=0",
+      "META_QUALITY_REGRESSIONS=0",
+      "GAIN_ERASURE_EVENTS=0",
+      "CAPABILITY_NEGATIVE_TRANSFER_EVENTS=0"
+    ],
+    "plateau_or_closure_required": false
+  },
+  "regime_closure_states": [
+    "OPEN",
+    "CLOSED_UNRESOLVED_BOTTLENECK",
+    "CLOSED_LOCAL_MASTERY_OR_PHYSICAL_FLOOR",
+    "CLOSED_FRONTIER_EXHAUSTION",
+    "CLOSED_INSUFFICIENT_EVIDENCE"
+  ],
+  "staircase_growth": {
+    "minimum_productive_escalations_beyond_start": 2,
+    "newest_regime_closure_required": false,
+    "requires": [
+      "PRODUCTIVE_ADAPTATION_IN_REGIME_N_BEYOND_START",
+      "CAUSALLY_SUPPORTED_CLOSURE_OF_REGIME_N",
+      "AUTONOMOUS_ESCALATION_TO_REGIME_N_PLUS_1",
+      "REGIME_N_PLUS_1_GENUINELY_HARDER",
+      "PRODUCTIVE_ADAPTATION_IN_REGIME_N_PLUS_1"
+    ]
+  }
+}

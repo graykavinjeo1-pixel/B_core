@@ -1,0 +1,19 @@
+{
+  "allowed_changes": [
+    "DIFFICULTY_ESCALATION_OUTCOME_ONTOLOGY",
+    "REGIME_LIFECYCLE_REPORTING",
+    "STAIRCASE_REPORTING",
+    "EVALUATOR_SCHEMA_WIRING"
+  ],
+  "autonomous_improvement_director_changed": false,
+  "autonomous_policy_diff_lines": 0,
+  "difficulty_generation_policy_changed": false,
+  "engine_behavior_diff_lines": 0,
+  "frontier_acceptance_policy_changed": false,
+  "growth_ledger_raw_measurements_changed": false,
+  "passed": true,
+  "plateau_detection_policy_changed": false,
+  "reasoning_engine_changed": false,
+  "repair_synthesis_changed": false,
+  "verification_policy_changed": false
+}

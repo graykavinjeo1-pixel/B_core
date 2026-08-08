@@ -1,0 +1,8 @@
+{
+  "historical_report_modified": false,
+  "legacy_escalation_outcome": "UNRESOLVED",
+  "regime_closure_state": "OPEN",
+  "revised_escalation_adaptation_outcome": "PRODUCTIVE",
+  "semantic_consistency": "LEGACY_BUNDLED_CLOSURE_WHILE_R1_SEPARATES_ADAPTATION_FROM_LIFECYCLE",
+  "staircase_state": "NOT_YET_OBSERVED"
+}

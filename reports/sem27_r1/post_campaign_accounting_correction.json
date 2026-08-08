@@ -1,0 +1,10 @@
+{
+  "autonomous_decision_policy_affected": false,
+  "corrected_field": "frontier_exhaustion_closures",
+  "corrected_value": 0,
+  "correction": "CLOSURE_COUNTS_APPLY_ONLY_TO_DIFFICULTY_REGIMES_BEYOND_THE_STARTING_REGIME",
+  "ontology_affected": false,
+  "raw_campaign_evidence_modified": false,
+  "raw_value_before_scope_correction": 1,
+  "reason": "THE_PREVIOUS_AGGREGATE_INCLUDED_HISTORICAL_STARTING_REGIME_1_CLOSURE_WHILE_OPEN_AND_CLOSED_REGIME_EVENT_COUNTS_EXPLICITLY_SCOPE_REGIME_ID_GREATER_THAN_1"
+}
