@@ -1145,9 +1145,9 @@ fn predecessor_integrity(root: &Path) -> Result<Value, String> {
 fn concept_lineage_audit(root: &Path) -> Result<Value, String> {
     let state_path = root.join("crates/dockable-semantic-core/state/semantic_state.json");
     let state: Value = read_json(&state_path)?;
-    let concepts = state["promoted_concepts"]
+    let concepts = state["concepts"]
         .as_array()
-        .ok_or_else(|| "PROMOTED_CONCEPTS_MISSING".to_string())?;
+        .ok_or_else(|| "SEMANTIC_CONCEPTS_MISSING".to_string())?;
     let max_generation = concepts
         .iter()
         .filter_map(|concept| concept["generation"].as_u64())
