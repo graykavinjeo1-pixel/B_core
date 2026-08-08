@@ -1,0 +1,659 @@
+{
+  "set_id": "SEM12_GENERAL_CONTROL",
+  "seed_commitment_sha256": "c0798bc06c28ee05b7f17841f738f8b23e75974eb25b2424977beb0163d719a2",
+  "generator_version": "SEM12-LONG-HORIZON-GENERATOR-1.0.0",
+  "tasks": [
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-000",
+      "opaque_schema_sha256": "ac19621f4e2393a7ce53b6f910972d3a457e1777ad5a400d3bb135f6bed19246",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-001",
+      "opaque_schema_sha256": "606f6d2d9d28da18325025ff522d763c4bd8274df1937887881cb05aa2019241",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-002",
+      "opaque_schema_sha256": "1f71b8e05cbce6d47277f567414fb935606ab613b2eb27b52fc909720fbff2c6",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-003",
+      "opaque_schema_sha256": "3c0bb605227dc89c4fb86e4df3a979951875368564dec2651ce57470042dbebe",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-004",
+      "opaque_schema_sha256": "cffafcbdc413dde69ea2ab95b160d16bf1b13c282ed3f87cf7d1d8da4f99fba3",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-005",
+      "opaque_schema_sha256": "5ce5cc9667a2231706ecf8fa8ca81668bba9e602e6d1da643451a0112421a394",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-006",
+      "opaque_schema_sha256": "d9e428fc8d68beb06dc74b2f6dbc200483cb9df0997da76eb26e4bec55404167",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-007",
+      "opaque_schema_sha256": "eb0c0ce1d19ad7d6bb12b9384e5f89fbcc5beaf7113b70eec901e1ac805e70e7",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-008",
+      "opaque_schema_sha256": "6708af23606d95262a4426f48e691f57370643a9334c25624ddc98654eb421c6",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-009",
+      "opaque_schema_sha256": "1269b8a4665a441e751562fd555effcb44898fda8216df451bf744e6add46598",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-010",
+      "opaque_schema_sha256": "f14a27ddb0dc5d56a0979c2a7e26163ac9acce6d30877cbb1c3087fdb9bf4769",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-011",
+      "opaque_schema_sha256": "ee00164ceee4b5015e0917a67cb9999e61187bd0e805d1e45622952c3ad5a980",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-012",
+      "opaque_schema_sha256": "cab1348f00cc2455b3918b56775678a344c38a988a95a3f724bf2b69e387c65d",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-013",
+      "opaque_schema_sha256": "bc7e69876dfb19d754efee4e7f15d6e27b894963f8903129c6e750bce9bb081d",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-014",
+      "opaque_schema_sha256": "ea49abdb42d88cd3499a838aea4257d3f193c35e6dd876badd45cbf575307868",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-015",
+      "opaque_schema_sha256": "712e4bd12c1fc2cfa3b3861851a672f06c21dd55bae88d5868868c189e2c4bb1",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-016",
+      "opaque_schema_sha256": "aa906d9afd6971641fd6b27a01a3e78b6a8d1c12bf5c86283602eb3153eaf5fa",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-017",
+      "opaque_schema_sha256": "c18d96143c30dbce78d6cca0355fc88b85885d3b9cec74812ed4a53a0ebfa478",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-018",
+      "opaque_schema_sha256": "afaf13c877e348c6181f483c53c9d14f57d09ed4617435a3bd1eb33e197cf3fb",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-019",
+      "opaque_schema_sha256": "a9ddce57960aa9f5c03436b46f03671097816c5f42e1531960cee84b18119123",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-020",
+      "opaque_schema_sha256": "a1647c21f7e4ca9adb2e90be34287808b01ea3b47164e7d2972399a9878136e8",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-021",
+      "opaque_schema_sha256": "40c8fee382f7a77affb8d5435cc0fff3e3e66dedc91b6b9001b0bca8b5071aa3",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-022",
+      "opaque_schema_sha256": "4df5a25c232cf1febcf81ec836583facf922716725d24ee459e686d99aa98ecb",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-023",
+      "opaque_schema_sha256": "470dc9ec71240b980ad97e7509d6acf513e6f180ecb2ea7fd77b850a07413063",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-024",
+      "opaque_schema_sha256": "748155f09af3e8a0acc7c69896f0f997bd7b861e811dda3209fb3f5c35ce9893",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-025",
+      "opaque_schema_sha256": "8d2042aa0bebc7d9d70b517668df509e86ca836d302fe1c03bfd2d954239dec0",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-026",
+      "opaque_schema_sha256": "99bd26e6c46798df61c28498f16d0477ffe218381973dc086916831d29659aac",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-027",
+      "opaque_schema_sha256": "ffb1181b4e384f598f0aea8b805239d13f5a05b3e063c60868e86f599a8b3d3f",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-028",
+      "opaque_schema_sha256": "566464a3fd2a8fc049cd56f479c40a4c90711d2e4d3e55898e52b3bfad05949d",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-029",
+      "opaque_schema_sha256": "934544ae0bb8d5ddd4f8f01e2084e97b5936689658d2032457456815113db4ef",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-030",
+      "opaque_schema_sha256": "3e64a0b7fc8fb9c8d18d9b08598ce3e837064954bb931ba09b3c49cb68e2841e",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-031",
+      "opaque_schema_sha256": "dde440b6d8e9bf70255d2311e7ee15ba376b351865d9e2adf884ca3848c5fb1d",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-032",
+      "opaque_schema_sha256": "a2cf46817ba64e32d6ab3e0ff9831bae2550daa6c38deb0e3a3d988e23d5d246",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-033",
+      "opaque_schema_sha256": "034c81da255ee8f040e9ca9ad36cb22e78e3e55be1a31de1fab334fdc5a4005e",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-034",
+      "opaque_schema_sha256": "f50ca7dc21cbb8ee771c855856c615d8b9a279708c293212ea6cfaafbb0aac5d",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-035",
+      "opaque_schema_sha256": "2bce0e152b2bf7e09129c99880b666ada92ead7a531435c5890f197ab7f366c6",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-036",
+      "opaque_schema_sha256": "287aa1ae7b842a62951644282d1b4de906500f06497f5c5a0ff285ac3f6bd3ee",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-037",
+      "opaque_schema_sha256": "bd1b6330c96b02af825eebac398e5fa7881c71dcb5285a0ca711d51d719842fc",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-038",
+      "opaque_schema_sha256": "0ccb4ff20c64c409d890431daf2f9b79eaecd6df62356ec8de570c8ec9b2d7b4",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-039",
+      "opaque_schema_sha256": "1c21f07e84161c897ca7da06e2d07c0ca49d23c1fc8bc07b4ebab17e9d88aae1",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-040",
+      "opaque_schema_sha256": "da9678cc62cedb2614ec6571588df3cd5e95fbb9592ce0293ead779b590ce7ba",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-041",
+      "opaque_schema_sha256": "c6bc2eb9311e33776aae2b1f4958a18ac0ce5b20e8285d905dfa633c033f99a3",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-042",
+      "opaque_schema_sha256": "a5bc0340e6cd5cd7023d1bca514861516870a178eecf6c86ef5ce009e664d68f",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-043",
+      "opaque_schema_sha256": "1933944192ae92dccd14a15b85167104084053a58b5286f5b55d878d33af3cff",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-044",
+      "opaque_schema_sha256": "04e3974e2e61ddb09f90ebbc08f98d3d41b20d02efcc0542c0cd106c57e30a05",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-045",
+      "opaque_schema_sha256": "6fc4ff6b6bead5b48026f5d0e5465df747e3111f160dbcd7c319d91d2c8bd726",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-046",
+      "opaque_schema_sha256": "5353a2737ed49f7de5ab8c7d3286a0021905c89a5e37de3286d60aaf62663c70",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-047",
+      "opaque_schema_sha256": "a1ce666608d329588513ed535884d2a87ea3cfae8113bb225e3e4d4f5c3d1100",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-048",
+      "opaque_schema_sha256": "04365a336d9b0c874a6112b34b7894688c22623b50700f457c3a2dc6c885823e",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-049",
+      "opaque_schema_sha256": "e30381d58d97f8429dc370ae99f0728f6101753a5fdaa72b698370fdea3fc7b0",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-050",
+      "opaque_schema_sha256": "cb3a7e947a89de86c7e20bbb1f24582818b082d9f7f84aac4a21ea460e483b68",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-051",
+      "opaque_schema_sha256": "1d11b80092cc71326219bd33427bd4002e6071cf1b39a574ceb1e6baa4d7cb25",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-052",
+      "opaque_schema_sha256": "0064138bc8347a29cb30ffa6d0a3ba87915b031d210f4472d629d79a0a7edb98",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-053",
+      "opaque_schema_sha256": "a7d935a241758a5cd19b2792e0d7d74787d9cfb429efa8ae1c540405275363d6",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-054",
+      "opaque_schema_sha256": "34265701a36845bbec08518d35712e813d6b9d459714e27afe9281d0535dafa5",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-055",
+      "opaque_schema_sha256": "abaf7e508c3cc45b1c9fe182583982251718a0c820fefad1ba48e7e182b46b7f",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-056",
+      "opaque_schema_sha256": "8488396a68a4d6e43e650aeed8bad201f69c78ff5b1514f101ba5118cf8f3ea2",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-057",
+      "opaque_schema_sha256": "b7c9b8a23ccc74bf812b22f348b7c94c43c728849e92da6d523f6003b3f7e27f",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-058",
+      "opaque_schema_sha256": "b4378b4fc8136765b2c5f9d7029cdb28f52c821d518827b79420d6c4aed06df4",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-059",
+      "opaque_schema_sha256": "6510799232b7d2f79777f4907296346bf2432e2044b2eda3a33b600aa73527aa",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-060",
+      "opaque_schema_sha256": "ad29c26754475485a2f35b0643c5ce9f4b8c67aa5d171e9770f0515dfd14e35a",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-061",
+      "opaque_schema_sha256": "ae4ef741cf5b73c4c714cca4666694949c4f7f4eb05bfc0a3aedac4a49013db8",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-062",
+      "opaque_schema_sha256": "3fdc350723af21477b54cc0c4464ea52c64ee4c7bd767c695e6eafae1dc566ef",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-063",
+      "opaque_schema_sha256": "ffb4b39de3b9b6c965687510ca14ffdbc72eafbbf64c56e73cf4cdb832301bbe",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-064",
+      "opaque_schema_sha256": "cbc3c04e31b37b9c1719acc32db7f9f09e51c381b32272620417981b30e2e169",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-065",
+      "opaque_schema_sha256": "2805a29d0576e6eca4a217c20bd85893ed80c44fd9a1db115cb9e3b97262010c",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-066",
+      "opaque_schema_sha256": "fa7175e49de9b4d3764721df52aaaee0216aa0d1f229d6a4b69786b602041146",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-067",
+      "opaque_schema_sha256": "f3b7785c4665c41daf722d71e053c2cc9803e0875c53a6b629ff904842aa5b7f",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-068",
+      "opaque_schema_sha256": "c4787f0285434bcbb5bc191de10dd3626327f2a5dd8d4be703c8fcd050d9eac4",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-069",
+      "opaque_schema_sha256": "23442ba774227f1e7c387305c673bebafbb7cb4527d7a882fd467a4ade87c833",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-070",
+      "opaque_schema_sha256": "b7ae80fbd5ae0e91a391dda7b0177c865120e56d5bb2b4d66a50ce61b552de55",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12_GENERAL_CONTROL-071",
+      "opaque_schema_sha256": "4cce7f632c5aab5751fc517b5b024bb6314b1ebbf182d3976849b5275745706f",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    }
+  ],
+  "hidden_inputs_included": false,
+  "expected_outputs_included": false,
+  "frozen_before_candidate_generation": true,
+  "manifest_sha256": "0452f14d848774fcc51697e30392c73da75d95ea50a588a01b70cf4b116800e7"
+}

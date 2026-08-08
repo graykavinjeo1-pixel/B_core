@@ -1,0 +1,31 @@
+{
+  "campaign_id": "SEM12-LONG-HORIZON-FRONTIER-0001",
+  "infrastructure_commit": "f0d8b82001500e33ea56358d8424554753157bb7",
+  "predecessor_commit": "c163dca4d31926863c8bcd4fe32baf9d9806e363",
+  "min_epochs": 5,
+  "max_epochs": 8,
+  "epoch_budget": 6,
+  "tasks_per_epoch": 120,
+  "final_blind_tasks": 240,
+  "schedule_frozen_before_epoch_execution": true,
+  "validation_hidden_until_candidate_freeze": true,
+  "current_descendant_is_epoch_parent": true,
+  "one_patch_per_epoch_required": false,
+  "inherited_clippy_warning_count": 22,
+  "external_llm_calls_allowed": 0,
+  "local_teacher_calls_allowed": 0,
+  "network_writes_allowed": 0,
+  "remote_executions_allowed": 0,
+  "automatic_production_promotion": false,
+  "sem13_started": false,
+  "seed_commitments": {
+    "EPOCH_01": "618c44e118a594bdb6c1c63cc729fe529544ce6014455820e8c2766e83ef4867",
+    "EPOCH_02": "86db8d77ca1e9c8fc191ce8ccba54e96634b897157b7427e5ac21590132a3a29",
+    "EPOCH_03": "58c949c39e2742b60d93c7576c1bc84d758d495e4a6e4b7b07210ed2d9b45487",
+    "EPOCH_04": "be53f876d00f52c0f1bdca10c7b4237fab3ed8df0e6a8fb4ae5dbef5ee2d016f",
+    "EPOCH_05": "165ae0ac8e66f6ea4bd673a0db8eaf9458dcb0a2c42252778d9be51179d058e3",
+    "EPOCH_06": "235fc41eb72c511744f11d38d8437259d520ac349ee623704e6f225f277726ae",
+    "FINAL_BLIND": "3ae2bb7c813c3655a81104ec962488a9efe3a557be2b00cb64cb07a3ca7ee790",
+    "GENERAL_CONTROL": "ea0628ea92e4a94bba8c3e128bf8e33ec22d95f9e63c5d347a29b984de905014"
+  }
+}
