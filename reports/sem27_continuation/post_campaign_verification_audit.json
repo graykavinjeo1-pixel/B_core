@@ -1,0 +1,14 @@
+{
+  "artifact_audit": "PASS",
+  "campaign_json_files_parsed": 81,
+  "campaign_jsonl_files_parsed": 3,
+  "cargo_test_command": "cargo test --workspace --all-targets --all-features --quiet",
+  "cargo_test_status": "PASS",
+  "clippy_command": "cargo clippy --workspace --all-targets --all-features --message-format short",
+  "clippy_status": "PASS",
+  "new_clippy_warning_signatures_total": 0,
+  "predecessor_clippy_warning_count": 22,
+  "raw_epoch_files_verified": 64,
+  "sealed_sem27_engine_sha256": "519557be10710d2a74d1ae21fddd75c55940811ac8017b4c871278cfd311f28b",
+  "sealed_sem27_policy_source_diff_lines": 0
+}
