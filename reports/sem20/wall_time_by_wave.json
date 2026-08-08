@@ -1,0 +1,24 @@
+{
+  "actual_child_cpu_time_ns": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    15625000,
+    0
+  ],
+  "actual_parent_observed_wall_time_ns": [
+    357489100,
+    312700300,
+    369178400,
+    361247500,
+    341871700,
+    397848300,
+    420111000,
+    399930600
+  ],
+  "deterministic_work_units_not_substituted_for_wall_time": true,
+  "zero_cpu_time_values_mean": "BELOW_WINDOWS_TIMER_RESOLUTION_NOT_ZERO_WORK"
+}

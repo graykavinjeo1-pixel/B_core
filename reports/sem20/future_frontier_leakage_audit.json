@@ -1,0 +1,56 @@
+{
+  "final_fresh_manifest_revealed_after_final_descendant_freeze": true,
+  "future_frontier_leakage_events": 0,
+  "passed": true,
+  "sequential_exposure": true,
+  "waves": [
+    {
+      "candidate_received_only_current_numeric_work_descriptor": true,
+      "future_descriptor_available_to_candidate": false,
+      "prior_wave_closed_before_reveal": true,
+      "wave": 1
+    },
+    {
+      "candidate_received_only_current_numeric_work_descriptor": true,
+      "future_descriptor_available_to_candidate": false,
+      "prior_wave_closed_before_reveal": true,
+      "wave": 2
+    },
+    {
+      "candidate_received_only_current_numeric_work_descriptor": true,
+      "future_descriptor_available_to_candidate": false,
+      "prior_wave_closed_before_reveal": true,
+      "wave": 3
+    },
+    {
+      "candidate_received_only_current_numeric_work_descriptor": true,
+      "future_descriptor_available_to_candidate": false,
+      "prior_wave_closed_before_reveal": true,
+      "wave": 4
+    },
+    {
+      "candidate_received_only_current_numeric_work_descriptor": true,
+      "future_descriptor_available_to_candidate": false,
+      "prior_wave_closed_before_reveal": true,
+      "wave": 5
+    },
+    {
+      "candidate_received_only_current_numeric_work_descriptor": true,
+      "future_descriptor_available_to_candidate": false,
+      "prior_wave_closed_before_reveal": true,
+      "wave": 6
+    },
+    {
+      "candidate_received_only_current_numeric_work_descriptor": true,
+      "future_descriptor_available_to_candidate": false,
+      "prior_wave_closed_before_reveal": true,
+      "wave": 7
+    },
+    {
+      "candidate_received_only_current_numeric_work_descriptor": true,
+      "future_descriptor_available_to_candidate": false,
+      "prior_wave_closed_before_reveal": true,
+      "wave": 8
+    }
+  ]
+}

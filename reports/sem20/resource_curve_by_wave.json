@@ -1,0 +1,45 @@
+{
+  "bytes_touched": [
+    34586728,
+    32313152,
+    35748336,
+    32983552,
+    35888904,
+    32534600,
+    35974376,
+    37090224
+  ],
+  "cpu_time_measurement_resolution_ns": 15625000,
+  "cpu_time_measurement_status": "ZERO_VALUES_ARE_BELOW_WINDOWS_TIMER_RESOLUTION",
+  "cpu_time_ns": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    15625000,
+    0
+  ],
+  "deterministic_cost_reported_separately": true,
+  "peak_rss_bytes": [
+    4227072,
+    4218880,
+    4210688,
+    4202496,
+    4149248,
+    4141056,
+    4136960,
+    4132864
+  ],
+  "wall_time_ns": [
+    357489100,
+    312700300,
+    369178400,
+    361247500,
+    341871700,
+    397848300,
+    420111000,
+    399930600
+  ]
+}

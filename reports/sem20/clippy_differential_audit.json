@@ -1,0 +1,33 @@
+{
+  "final_warning_count": 22,
+  "new_clippy_warning_signatures_total": 0,
+  "new_warning_signatures": [],
+  "passed": true,
+  "predecessor_warning_count": 22,
+  "predecessor_warning_signatures": [
+    "clippy::manual_is_multiple_of|crates/semantic-reasoning/src/sem2/experiment.rs|1086|manual implementation of `.is_multiple_of()`",
+    "clippy::manual_is_multiple_of|crates/semantic-reasoning/src/sem2/tasks.rs|169|manual implementation of `.is_multiple_of()`",
+    "clippy::manual_is_multiple_of|crates/semantic-reasoning/src/sem3/experiment.rs|1022|manual implementation of `.is_multiple_of()`",
+    "clippy::manual_is_multiple_of|crates/semantic-reasoning/src/sem3/selector.rs|234|manual implementation of `.is_multiple_of()`",
+    "clippy::manual_is_multiple_of|crates/semantic-reasoning/src/sem4/reasoner.rs|815|manual implementation of `.is_multiple_of()`",
+    "clippy::manual_is_multiple_of|crates/semantic-reasoning/src/sem5/tasks.rs|256|manual implementation of `.is_multiple_of()`",
+    "clippy::manual_is_multiple_of|crates/semantic-reasoning/src/sem5/tasks.rs|282|manual implementation of `.is_multiple_of()`",
+    "clippy::manual_is_multiple_of|crates/semantic-reasoning/src/sem5/tasks.rs|302|manual implementation of `.is_multiple_of()`",
+    "clippy::manual_is_multiple_of|crates/semantic-reasoning/src/sem5/tasks.rs|321|manual implementation of `.is_multiple_of()`",
+    "clippy::manual_is_multiple_of|crates/semantic-reasoning/src/sem5/tasks.rs|325|manual implementation of `.is_multiple_of()`",
+    "clippy::manual_is_multiple_of|crates/semantic-reasoning/src/sem5/tasks.rs|345|manual implementation of `.is_multiple_of()`",
+    "clippy::manual_is_multiple_of|crates/semantic-reasoning/src/sem5/tasks.rs|416|manual implementation of `.is_multiple_of()`",
+    "clippy::manual_is_multiple_of|crates/semantic-reasoning/src/sem5/tasks.rs|445|manual implementation of `.is_multiple_of()`",
+    "clippy::manual_is_multiple_of|crates/semantic-reasoning/src/sem7/corpus.rs|389|manual implementation of `.is_multiple_of()`",
+    "clippy::manual_is_multiple_of|crates/semantic-reasoning/src/sem8/tasks.rs|249|manual implementation of `.is_multiple_of()`",
+    "clippy::manual_is_multiple_of|crates/semantic-reasoning/src/sem8/tasks.rs|256|manual implementation of `.is_multiple_of()`",
+    "clippy::manual_is_multiple_of|crates/semantic-reasoning/src/sem8/tasks.rs|282|manual implementation of `.is_multiple_of()`",
+    "clippy::manual_is_multiple_of|crates/semantic-reasoning/src/sem8/tasks.rs|332|manual implementation of `.is_multiple_of()`",
+    "clippy::manual_is_multiple_of|crates/semantic-reasoning/src/sem8/transfer.rs|465|manual implementation of `.is_multiple_of()`",
+    "clippy::manual_is_multiple_of|crates/semantic-reasoning/src/sem9/controller.rs|654|manual implementation of `.is_multiple_of()`",
+    "clippy::manual_is_multiple_of|crates/semantic-reasoning/src/sem9r1/experiment.rs|509|manual implementation of `.is_multiple_of()`",
+    "clippy::manual_is_multiple_of|crates/semantic-reasoning/src/sem9r1/experiment.rs|521|manual implementation of `.is_multiple_of()`"
+  ],
+  "tool_command": "cargo clippy --workspace --all-targets",
+  "tool_run_completed_before_seal": true
+}

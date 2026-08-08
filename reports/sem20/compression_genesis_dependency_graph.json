@@ -1,0 +1,34 @@
+{
+  "causal_compression_genesis_chain_depth": 5,
+  "counterfactual_ablation_verified": true,
+  "edges": [
+    [
+      "SEMANTIC_ATOMS",
+      "CAUSAL_MOTIF_M1"
+    ],
+    [
+      "CAUSAL_MOTIF_M1",
+      "CAPABILITY_C1"
+    ],
+    [
+      "CAPABILITY_C1",
+      "GENESIS_SCHEMA_S1"
+    ],
+    [
+      "GENESIS_SCHEMA_S1",
+      "HIGHER_ORDER_COMPRESSION_H1"
+    ],
+    [
+      "HIGHER_ORDER_COMPRESSION_H1",
+      "LATER_FRESH_CAPABILITY"
+    ]
+  ],
+  "nodes": [
+    "SEMANTIC_ATOMS",
+    "CAUSAL_MOTIF_M1",
+    "CAPABILITY_C1",
+    "GENESIS_SCHEMA_S1",
+    "HIGHER_ORDER_COMPRESSION_H1",
+    "LATER_FRESH_CAPABILITY"
+  ]
+}

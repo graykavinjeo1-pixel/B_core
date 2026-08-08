@@ -1,0 +1,33 @@
+{
+  "actual_improvement_interval_wall_time_ns": [
+    11495400,
+    11150000,
+    10523600,
+    9725200,
+    8383200,
+    6772400,
+    4790500,
+    2547600
+  ],
+  "deterministic_genesis_cost": [
+    144,
+    140,
+    132,
+    120,
+    104,
+    84,
+    60,
+    32
+  ],
+  "genesis_acceleration_observed": true,
+  "wave_actions": [
+    "CREATE_NEW_CAPABILITY",
+    "COMPRESS_EXISTING_STRUCTURE",
+    "REUSE_EXISTING_STRUCTURE",
+    "CREATE_NEW_ABSTRACTION",
+    "COMPRESS_EXISTING_STRUCTURE",
+    "NO_ACTIONABLE_IMPROVEMENT",
+    "CREATE_NEW_ABSTRACTION",
+    "REUSE_EXISTING_STRUCTURE"
+  ]
+}

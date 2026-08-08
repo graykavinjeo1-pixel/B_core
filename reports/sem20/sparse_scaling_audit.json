@@ -1,0 +1,11 @@
+{
+  "actually_evaluated_rewrites": 48,
+  "full_atom_store_scans": 0,
+  "full_capability_catalog_scans": 0,
+  "full_motif_store_scans": 0,
+  "full_rewrite_enumeration": 0,
+  "passed": true,
+  "routing_false_negatives": 0,
+  "sparse_routing_precedes_local_codebook_construction": true,
+  "theoretical_rewrite_space": 4294967296
+}

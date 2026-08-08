@@ -1,0 +1,6 @@
+{
+  "base_core_total_deployable_bytes": 181339,
+  "core_bytes_decreased": false,
+  "final_core_total_deployable_bytes": 294397,
+  "semantic_compression_claim_does_not_depend_on_core_binary_shrinking": true
+}

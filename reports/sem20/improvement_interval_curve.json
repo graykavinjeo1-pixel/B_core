@@ -1,0 +1,14 @@
+{
+  "improvement_interval_wall_time_ns": [
+    11495400,
+    11150000,
+    10523600,
+    9725200,
+    8383200,
+    6772400,
+    4790500,
+    2547600
+  ],
+  "mean_or_median_does_not_replace_raw_sequence": true,
+  "wall_time_acceleration_observed": true
+}

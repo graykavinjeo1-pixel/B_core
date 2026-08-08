@@ -1,0 +1,25 @@
+{
+  "actually_evaluated_rewrites": 48,
+  "all_layers_semantically_inspectable": true,
+  "compression_hierarchy_depth": 4,
+  "full_rewrite_enumeration": 0,
+  "levels": [
+    {
+      "level": 1,
+      "unit": "ATOMS"
+    },
+    {
+      "level": 2,
+      "unit": "MOTIFS"
+    },
+    {
+      "level": 3,
+      "unit": "SCHEMAS"
+    },
+    {
+      "level": 4,
+      "unit": "GENESIS_MOTIFS_AND_HIGHER_ORDER_SCHEMAS"
+    }
+  ],
+  "theoretical_rewrite_space": 4294967296
+}

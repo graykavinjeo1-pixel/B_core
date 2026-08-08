@@ -1,0 +1,10 @@
+{
+  "dictionary_cost_included": true,
+  "exact_shared_bytes": 11550,
+  "expanded_occurrence_bytes": 20747,
+  "mechanism": "HASH_CONSING_AND_CANONICAL_DAG_SHARING",
+  "opaque_super_atom_events": 0,
+  "semantic_behavior_preserved": true,
+  "shared_total_bytes_including_dictionary": 9197,
+  "structural_compression_events": 174
+}

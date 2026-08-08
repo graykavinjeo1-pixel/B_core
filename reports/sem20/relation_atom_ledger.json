@@ -1,0 +1,300 @@
+{
+  "applicability_constraints_are_explicit": true,
+  "edges_are_explicit": true,
+  "relation_atoms_total": 19,
+  "relations": [
+    {
+      "applicability_bits": 18446744073709551615,
+      "atom_id": "0c8a1ad01e4e99fd3e2d8d53ba687b25",
+      "constraint_bits": 0,
+      "effect_bits": 1,
+      "kind": "RELATION_ATOM",
+      "opcode": 507,
+      "provenance": [
+        20000
+      ],
+      "relation_edges": [
+        "42adeda7d0475eefa3b34daba05ab360",
+        "aba76856459efdf8634e3547ad0a7aa2"
+      ]
+    },
+    {
+      "applicability_bits": 18446744073709551615,
+      "atom_id": "2937fd02e206d7d194c21207fea111e6",
+      "constraint_bits": 1,
+      "effect_bits": 1,
+      "kind": "RELATION_ATOM",
+      "opcode": 808,
+      "provenance": [
+        20008
+      ],
+      "relation_edges": [
+        "55b0da64d84363ced759b3798494729c",
+        "da85a719a04009dfcd590dfd2617d1c8",
+        "de0cce2c60ed369b4ea2ad570ae4494b"
+      ]
+    },
+    {
+      "applicability_bits": 18446744073709551615,
+      "atom_id": "436972c33a46da34e9e75a2f4855c2c4",
+      "constraint_bits": 1,
+      "effect_bits": 1,
+      "kind": "RELATION_ATOM",
+      "opcode": 807,
+      "provenance": [
+        20007
+      ],
+      "relation_edges": [
+        "55b0da64d84363ced759b3798494729c",
+        "da85a719a04009dfcd590dfd2617d1c8",
+        "f3a300e18b11884f33bc17d76b57aeba"
+      ]
+    },
+    {
+      "applicability_bits": 18446744073709551615,
+      "atom_id": "54f0238e69659a669a555c1fe6e07068",
+      "constraint_bits": 1,
+      "effect_bits": 1,
+      "kind": "RELATION_ATOM",
+      "opcode": 806,
+      "provenance": [
+        20006
+      ],
+      "relation_edges": [
+        "55b0da64d84363ced759b3798494729c",
+        "6662c3ef66bd17939e6983ca715b6bb5",
+        "da85a719a04009dfcd590dfd2617d1c8"
+      ]
+    },
+    {
+      "applicability_bits": 18446744073709551615,
+      "atom_id": "59d178ed8a529d1a3a708a65d1d48ddb",
+      "constraint_bits": 1,
+      "effect_bits": 1,
+      "kind": "RELATION_ATOM",
+      "opcode": 801,
+      "provenance": [
+        20001
+      ],
+      "relation_edges": [
+        "0c633f5a0ce15196564bca3c7b118435",
+        "55b0da64d84363ced759b3798494729c",
+        "da85a719a04009dfcd590dfd2617d1c8"
+      ]
+    },
+    {
+      "applicability_bits": 18446744073709551615,
+      "atom_id": "8812a6680379824848ed6e87da087900",
+      "constraint_bits": 0,
+      "effect_bits": 1,
+      "kind": "RELATION_ATOM",
+      "opcode": 501,
+      "provenance": [
+        20000
+      ],
+      "relation_edges": [
+        "2e256b9131b90c4a165c62990bf8af3f",
+        "cc18af75642f59c020426ba0a065697f"
+      ]
+    },
+    {
+      "applicability_bits": 18446744073709551615,
+      "atom_id": "8b060d9c1ce150c69614e536ecac3700",
+      "constraint_bits": 1,
+      "effect_bits": 1,
+      "kind": "RELATION_ATOM",
+      "opcode": 805,
+      "provenance": [
+        20005
+      ],
+      "relation_edges": [
+        "267c2ee7e0a006036132819dc630f6eb",
+        "55b0da64d84363ced759b3798494729c",
+        "da85a719a04009dfcd590dfd2617d1c8"
+      ]
+    },
+    {
+      "applicability_bits": 18446744073709551615,
+      "atom_id": "90c11d9034470c1f15c151a7621910fe",
+      "constraint_bits": 0,
+      "effect_bits": 1,
+      "kind": "RELATION_ATOM",
+      "opcode": 510,
+      "provenance": [
+        20000
+      ],
+      "relation_edges": [
+        "2646239b0a6d80b12c49ea4c679fdc59",
+        "7dfa04eec7328787c2a73f5e5a7d70ac"
+      ]
+    },
+    {
+      "applicability_bits": 18446744073709551615,
+      "atom_id": "9ad0c0962650895a9d2a8133bed5f2f4",
+      "constraint_bits": 1,
+      "effect_bits": 1,
+      "kind": "RELATION_ATOM",
+      "opcode": 803,
+      "provenance": [
+        20003
+      ],
+      "relation_edges": [
+        "55b0da64d84363ced759b3798494729c",
+        "da85a719a04009dfcd590dfd2617d1c8",
+        "e8005909e80d9a72d3760adee3c95b69"
+      ]
+    },
+    {
+      "applicability_bits": 18446744073709551615,
+      "atom_id": "9ae4e19eac6eb341fbe7a81415cb41e8",
+      "constraint_bits": 1,
+      "effect_bits": 1,
+      "kind": "RELATION_ATOM",
+      "opcode": 804,
+      "provenance": [
+        20004
+      ],
+      "relation_edges": [
+        "55b0da64d84363ced759b3798494729c",
+        "a0f0de0e98a32c4b8ce7dbb26cbbd25b",
+        "da85a719a04009dfcd590dfd2617d1c8"
+      ]
+    },
+    {
+      "applicability_bits": 18446744073709551615,
+      "atom_id": "9f8530a71514a27821845e9881e09d1e",
+      "constraint_bits": 0,
+      "effect_bits": 1,
+      "kind": "RELATION_ATOM",
+      "opcode": 509,
+      "provenance": [
+        20000
+      ],
+      "relation_edges": [
+        "17674c3f9b4f5783d1e31c706fc5361a",
+        "7dfa04eec7328787c2a73f5e5a7d70ac"
+      ]
+    },
+    {
+      "applicability_bits": 18446744073709551615,
+      "atom_id": "c6a3248a68bdec0ce261fdaaeb9aa10f",
+      "constraint_bits": 0,
+      "effect_bits": 1,
+      "kind": "RELATION_ATOM",
+      "opcode": 503,
+      "provenance": [
+        20000
+      ],
+      "relation_edges": [
+        "8a0258a1b46c3210e261f0fe680a44b3",
+        "ea0f35b346f9485b3156dcd1aca5e716"
+      ]
+    },
+    {
+      "applicability_bits": 18446744073709551615,
+      "atom_id": "d63a949126975826e6547502d90a43a5",
+      "constraint_bits": 1,
+      "effect_bits": 1,
+      "kind": "RELATION_ATOM",
+      "opcode": 802,
+      "provenance": [
+        20002
+      ],
+      "relation_edges": [
+        "55b0da64d84363ced759b3798494729c",
+        "b7bbc214573740e14b16ce34185bbb3a",
+        "da85a719a04009dfcd590dfd2617d1c8"
+      ]
+    },
+    {
+      "applicability_bits": 18446744073709551615,
+      "atom_id": "d9803b3ff2b33c74585d9bf949385697",
+      "constraint_bits": 0,
+      "effect_bits": 1,
+      "kind": "RELATION_ATOM",
+      "opcode": 502,
+      "provenance": [
+        20000
+      ],
+      "relation_edges": [
+        "8a0258a1b46c3210e261f0fe680a44b3",
+        "cc18af75642f59c020426ba0a065697f"
+      ]
+    },
+    {
+      "applicability_bits": 18446744073709551615,
+      "atom_id": "e94a5e786e5c06c0ff8d3ac94e7c15f4",
+      "constraint_bits": 0,
+      "effect_bits": 1,
+      "kind": "RELATION_ATOM",
+      "opcode": 505,
+      "provenance": [
+        20000
+      ],
+      "relation_edges": [
+        "9dc9d1d7997bc0bc7e8f7b342d6473a2",
+        "cd906d53b4e0be9d3b2e701225ff6ec8"
+      ]
+    },
+    {
+      "applicability_bits": 18446744073709551615,
+      "atom_id": "e94c12fd03a229eec2d78d3bed986e18",
+      "constraint_bits": 0,
+      "effect_bits": 1,
+      "kind": "RELATION_ATOM",
+      "opcode": 506,
+      "provenance": [
+        20000
+      ],
+      "relation_edges": [
+        "42adeda7d0475eefa3b34daba05ab360",
+        "cd906d53b4e0be9d3b2e701225ff6ec8"
+      ]
+    },
+    {
+      "applicability_bits": 18446744073709551615,
+      "atom_id": "ee0f6b5e5f9a1052317d5bb8c75e7533",
+      "constraint_bits": 0,
+      "effect_bits": 1,
+      "kind": "RELATION_ATOM",
+      "opcode": 511,
+      "provenance": [
+        20000
+      ],
+      "relation_edges": [
+        "2646239b0a6d80b12c49ea4c679fdc59",
+        "c4149ba0ab6b34ac1c50e604a25a4236"
+      ]
+    },
+    {
+      "applicability_bits": 18446744073709551615,
+      "atom_id": "fdac95039637dfad291624f0aac8a8b3",
+      "constraint_bits": 0,
+      "effect_bits": 1,
+      "kind": "RELATION_ATOM",
+      "opcode": 508,
+      "provenance": [
+        20000
+      ],
+      "relation_edges": [
+        "17674c3f9b4f5783d1e31c706fc5361a",
+        "aba76856459efdf8634e3547ad0a7aa2"
+      ]
+    },
+    {
+      "applicability_bits": 18446744073709551615,
+      "atom_id": "fe4a120b7d9ce0b46499389657a95c5c",
+      "constraint_bits": 0,
+      "effect_bits": 1,
+      "kind": "RELATION_ATOM",
+      "opcode": 504,
+      "provenance": [
+        20000
+      ],
+      "relation_edges": [
+        "9dc9d1d7997bc0bc7e8f7b342d6473a2",
+        "ea0f35b346f9485b3156dcd1aca5e716"
+      ]
+    }
+  ]
+}

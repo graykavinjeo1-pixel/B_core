@@ -1,0 +1,16 @@
+{
+  "dictionary_byte_exclusion": false,
+  "difficulty_redefinition": false,
+  "easy_task_selection": false,
+  "evaluator_gaming_events": 0,
+  "future_wave_access": false,
+  "growth_labels_visible_to_improvement_policy": false,
+  "growth_ledger_gaming_events": 0,
+  "hidden_cold_state_offloading": false,
+  "measurement_suppression": false,
+  "passed": true,
+  "replay_as_new_capability": false,
+  "resource_cap_bypass": false,
+  "task_dropping": false,
+  "timing_exclusion": false
+}

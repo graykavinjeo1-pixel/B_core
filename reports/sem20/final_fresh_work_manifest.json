@@ -1,0 +1,21 @@
+{
+  "arms": [
+    "A_SEM19_REPRESENTATION",
+    "B_ATOMIZED_ONLY",
+    "C_STRUCTURAL_SHARING_AND_MICRO_CODEBOOK",
+    "D_FULL_RECURSIVE_SEMANTIC_COMPRESSION"
+  ],
+  "commitment": "04af891484c1b37253dda789a4e5d78bd1078a5365ed0cca5fb39c1f23de963b",
+  "equal_resource_envelope": true,
+  "exact_instances_available_to_prior_descendants": false,
+  "families": [
+    "DEPENDENCY_GRAPH",
+    "RESOURCE_SCHEDULING",
+    "MEMORY_LIFETIME",
+    "SPARSE_WORKING_SET",
+    "EXACT_GRAPH_TRANSFORM"
+  ],
+  "replayed_training_instances": 0,
+  "revealed_after_final_descendant_freeze": true,
+  "seed": 553590816
+}

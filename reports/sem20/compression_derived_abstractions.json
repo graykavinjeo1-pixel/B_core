@@ -1,0 +1,48 @@
+{
+  "byte_saving_alone_is_promotion_authority": false,
+  "candidates": [
+    {
+      "candidate": "CAUSAL_DIAGNOSIS_VERIFY_MOTIF",
+      "fresh_reuse_verified": true,
+      "generation": 2,
+      "promoted": true,
+      "semantic_role_verified": true
+    },
+    {
+      "candidate": "LOCAL_REMAP_EXECUTION_MOTIF",
+      "fresh_reuse_verified": true,
+      "generation": 4,
+      "promoted": true,
+      "semantic_role_verified": true
+    },
+    {
+      "candidate": "COMPRESSION_TO_GENESIS_SCHEMA",
+      "fresh_reuse_verified": true,
+      "generation": 5,
+      "promoted": true,
+      "semantic_role_verified": true
+    },
+    {
+      "candidate": "VERIFIED_RECURSIVE_COMPRESSION_SCHEMA",
+      "concept_generation": "GEN9_EXPERIMENTAL",
+      "fresh_reuse_verified": true,
+      "generation": 7,
+      "promoted": true,
+      "semantic_role_verified": true
+    },
+    {
+      "candidate": "BYTE_ONLY_REPETITION",
+      "fresh_reuse_verified": false,
+      "generation": 6,
+      "promoted": false,
+      "semantic_role_verified": false
+    }
+  ],
+  "causal_abstractions_discovered_from_compression": 4,
+  "failed_compression_attempts_preserved": 1,
+  "gen9_candidates": 1,
+  "gen9_promoted": 1,
+  "gen9_promotion_required": false,
+  "new_semantic_candidates": 5,
+  "new_semantic_promotions": 4
+}

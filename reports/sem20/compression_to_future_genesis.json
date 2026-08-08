@@ -1,0 +1,31 @@
+{
+  "all_effects_occur_on_later_unopened_work": true,
+  "causal_ablation_pass": true,
+  "compression_to_future_genesis_events": 4,
+  "events": [
+    {
+      "abstraction_created_wave": 2,
+      "causally_verified": true,
+      "effect": "REDUCED_REPRESENTATION_WORK",
+      "later_wave": 3
+    },
+    {
+      "abstraction_created_wave": 4,
+      "causally_verified": true,
+      "effect": "LOWER_ACTIVE_REFERENCE_WIDTH",
+      "later_wave": 5
+    },
+    {
+      "abstraction_created_wave": 5,
+      "causally_verified": true,
+      "effect": "REDUCED_GENESIS_WORK",
+      "later_wave": 6
+    },
+    {
+      "abstraction_created_wave": 7,
+      "causally_verified": true,
+      "effect": "HIGHER_FRESH_FIXED_RESOURCE_FRONTIER",
+      "later_wave": 9
+    }
+  ]
+}

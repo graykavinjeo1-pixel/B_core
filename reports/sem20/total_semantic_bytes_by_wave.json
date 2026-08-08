@@ -1,0 +1,15 @@
+{
+  "all_dictionary_and_reconstruction_costs_included": true,
+  "base_expanded_semantic_bytes_at_final_scope": 20747,
+  "cold_storage_bytes": 0,
+  "total_semantic_representation_bytes": [
+    6990,
+    7356,
+    7587,
+    7953,
+    8327,
+    8558,
+    8932,
+    9163
+  ]
+}

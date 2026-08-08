@@ -1,0 +1,17 @@
+{
+  "campaign_id": "SEM19-ELEMENTAL-COMPUTE-0001",
+  "commit_expected": "b660fc7cef82ecbad7c9b32ffbea68bec7779bf3",
+  "commit_observed": "b660fc7cef82ecbad7c9b32ffbea68bec7779bf3",
+  "ecir_binary_sha256": "ec0c5ded6c76bb28a9eb5d117bfb938c772cfd2cc02c50574381e3b2c0e6afa4",
+  "ecir_source_sha256": "becaed4fa4f44aac7a4256b51a44a084433ce80192de177c5d9522dce7fc8509",
+  "historical_evidence_rewritten": false,
+  "next_allowed_stage": "OPERATOR_REVIEW_FOR_SEM20",
+  "sem19_levels": {
+    "A": true,
+    "B": true,
+    "C": true,
+    "D": true
+  },
+  "sem19_status": "PASS",
+  "status": "PASS"
+}

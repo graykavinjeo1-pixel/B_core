@@ -1,0 +1,11 @@
+{
+  "global_reasoning_regressions": 0,
+  "new_sem20_tests_passed": 2,
+  "passed": true,
+  "protected_predecessor_tests_failed": 0,
+  "protected_predecessor_tests_passed": 162,
+  "tool_command": "cargo test --workspace",
+  "tool_run_completed_before_seal": true,
+  "workspace_tests_failed": 0,
+  "workspace_tests_passed": 164
+}

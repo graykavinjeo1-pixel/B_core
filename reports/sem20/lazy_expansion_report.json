@@ -1,0 +1,16 @@
+{
+  "expansion_triggers": [
+    "CAUSAL_INSPECTION",
+    "NOVEL_COMPOSITION",
+    "ABLATION",
+    "REVISION",
+    "VERIFICATION",
+    "DEBUGGING"
+  ],
+  "lazy_expansion_supported": true,
+  "ordinary_reasoning_uses_compact_refs": true,
+  "ordinary_reference_events": 320,
+  "provenance_available_without_eager_expansion": true,
+  "semantic_expansion_events": 16,
+  "unnecessary_materializations": 0
+}

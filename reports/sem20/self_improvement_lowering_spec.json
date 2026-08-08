@@ -1,0 +1,87 @@
+{
+  "backend_is_output": true,
+  "pipeline": [
+    "SELF_IMPROVEMENT_INTENT",
+    "SELF_IMPROVEMENT_MECHANISM_IR",
+    "COMPRESSED_SEMANTIC_ATOMS",
+    "ECIR_CONTROL_STRUCTURE",
+    "VERIFIED_BACKEND_IMPLEMENTATION"
+  ],
+  "raw_source_code_only_mutation_authority": false,
+  "self_improvement_stages": [
+    {
+      "atom_id": "2e256b9131b90c4a165c62990bf8af3f",
+      "lowering_order": 0,
+      "report_label_outside_hot_path": "WEAKNESS_DIAGNOSIS",
+      "stage_code": 400
+    },
+    {
+      "atom_id": "cc18af75642f59c020426ba0a065697f",
+      "lowering_order": 1,
+      "report_label_outside_hot_path": "FRONTIER_GAP_ANALYSIS",
+      "stage_code": 401
+    },
+    {
+      "atom_id": "8a0258a1b46c3210e261f0fe680a44b3",
+      "lowering_order": 2,
+      "report_label_outside_hot_path": "MISSING_CAPABILITY_INFERENCE",
+      "stage_code": 402
+    },
+    {
+      "atom_id": "ea0f35b346f9485b3156dcd1aca5e716",
+      "lowering_order": 3,
+      "report_label_outside_hot_path": "SOURCE_CONCEPT_RETRIEVAL",
+      "stage_code": 403
+    },
+    {
+      "atom_id": "9dc9d1d7997bc0bc7e8f7b342d6473a2",
+      "lowering_order": 4,
+      "report_label_outside_hot_path": "CAPABILITY_GENESIS",
+      "stage_code": 404
+    },
+    {
+      "atom_id": "cd906d53b4e0be9d3b2e701225ff6ec8",
+      "lowering_order": 5,
+      "report_label_outside_hot_path": "ECIR_CONSTRUCTION",
+      "stage_code": 405
+    },
+    {
+      "atom_id": "42adeda7d0475eefa3b34daba05ab360",
+      "lowering_order": 6,
+      "report_label_outside_hot_path": "MOTIF_DISCOVERY",
+      "stage_code": 406
+    },
+    {
+      "atom_id": "aba76856459efdf8634e3547ad0a7aa2",
+      "lowering_order": 7,
+      "report_label_outside_hot_path": "SCHEMA_SYNTHESIS",
+      "stage_code": 407
+    },
+    {
+      "atom_id": "17674c3f9b4f5783d1e31c706fc5361a",
+      "lowering_order": 8,
+      "report_label_outside_hot_path": "EXPERIMENT_PROBE_SELECTION",
+      "stage_code": 408
+    },
+    {
+      "atom_id": "7dfa04eec7328787c2a73f5e5a7d70ac",
+      "lowering_order": 9,
+      "report_label_outside_hot_path": "VERIFICATION_PLANNING",
+      "stage_code": 409
+    },
+    {
+      "atom_id": "2646239b0a6d80b12c49ea4c679fdc59",
+      "lowering_order": 10,
+      "report_label_outside_hot_path": "ABLATION_PLANNING",
+      "stage_code": 410
+    },
+    {
+      "atom_id": "c4149ba0ab6b34ac1c50e604a25a4236",
+      "lowering_order": 11,
+      "report_label_outside_hot_path": "PROMOTION_RESOURCE_TRADEOFF",
+      "stage_code": 411
+    }
+  ],
+  "semantic_lineage_preserved": true,
+  "source_language_is_compute_authority": false
+}

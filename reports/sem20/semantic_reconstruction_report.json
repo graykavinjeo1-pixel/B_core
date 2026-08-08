@@ -1,0 +1,9 @@
+{
+  "backend_source_format_identity_required": false,
+  "canonical_graph_hash_after": "ab8481ed64223063ea8553cd13e2b986117acc4d29b596e7b9ae4682882cd612",
+  "canonical_graph_hash_before": "ab8481ed64223063ea8553cd13e2b986117acc4d29b596e7b9ae4682882cd612",
+  "provenance_preserved": true,
+  "ram_address_identity_required": false,
+  "relation_edges_preserved": true,
+  "semantic_reconstruction_pass": true
+}

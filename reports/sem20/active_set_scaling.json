@@ -1,0 +1,84 @@
+{
+  "active_atoms": [
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26
+  ],
+  "active_capabilities": [
+    9,
+    9,
+    9,
+    9,
+    10,
+    10,
+    10,
+    10
+  ],
+  "active_motifs": [
+    4,
+    4,
+    4,
+    4,
+    4,
+    4,
+    4,
+    4
+  ],
+  "active_schemas": [
+    2,
+    2,
+    2,
+    2,
+    3,
+    3,
+    3,
+    3
+  ],
+  "active_set_remained_sparsely_bounded": true,
+  "full_catalog_scans": 0,
+  "total_atoms": [
+    69,
+    72,
+    74,
+    77,
+    80,
+    82,
+    85,
+    87
+  ],
+  "total_capabilities": [
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26
+  ],
+  "total_motifs": [
+    4,
+    5,
+    5,
+    6,
+    6,
+    6,
+    6,
+    6
+  ],
+  "total_schemas": [
+    2,
+    2,
+    2,
+    2,
+    3,
+    3,
+    4,
+    4
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "capability_negative_transfer_events": 0,
+  "gain_erasure_events": 0,
+  "meta_quality_regressions": 0,
+  "passed": true,
+  "semantic_corruption_events": 0
+}

@@ -1,0 +1,73 @@
+{
+  "arms": [
+    "A_SEM19_REPRESENTATION",
+    "B_ATOMIZED_ONLY",
+    "C_STRUCTURAL_SHARING_AND_MICRO_CODEBOOK",
+    "D_FULL_RECURSIVE_SEMANTIC_COMPRESSION"
+  ],
+  "branch": "codex/sem20-recursive-compression",
+  "campaign_id": "SEM20-RECURSIVE-SEMANTIC-COMPRESSION-0001",
+  "final_fresh_work_commitment": "04af891484c1b37253dda789a4e5d78bd1078a5365ed0cca5fb39c1f23de963b",
+  "fixed_resource_envelope": {
+    "cpu_threads_per_probe": 1,
+    "executable_mode": "RELEASE",
+    "gpu_policy": "DISABLED",
+    "network_policy": "DISABLED",
+    "peak_rss_limit_bytes": 134217728,
+    "wall_time_limit_ns": 500000000,
+    "work_unit_limit": 150000
+  },
+  "frontier_waves": 8,
+  "future_wave_contents_present_in_candidate_input": false,
+  "predecessor_commit": "b660fc7cef82ecbad7c9b32ffbea68bec7779bf3",
+  "wave_commitments": [
+    {
+      "future_descriptor_exposed_to_candidate": false,
+      "sealed_descriptor_commitment": "5116ab3dea5fcefd12d050bc213e35b7d03335715721bc0a3b8a62bda6bb8d78",
+      "wave": 1
+    },
+    {
+      "future_descriptor_exposed_to_candidate": false,
+      "sealed_descriptor_commitment": "73e06e5ea598eeffe7d86ace7381cc91505cc3046f9486c5ac3ddf18264f4983",
+      "wave": 2
+    },
+    {
+      "future_descriptor_exposed_to_candidate": false,
+      "sealed_descriptor_commitment": "2cdd428844f00d62e503e02994f533cc82eefcca2a25772e2c56ba736c77e583",
+      "wave": 3
+    },
+    {
+      "future_descriptor_exposed_to_candidate": false,
+      "sealed_descriptor_commitment": "ba81b9b563a34305e0c7a9a9a961a0a2071b1f458e3944361d4d38da64434dad",
+      "wave": 4
+    },
+    {
+      "future_descriptor_exposed_to_candidate": false,
+      "sealed_descriptor_commitment": "31d5f2749e8435462cb8bb5c26748d832083e58a5f6a70a61bc00dc56dd6db3f",
+      "wave": 5
+    },
+    {
+      "future_descriptor_exposed_to_candidate": false,
+      "sealed_descriptor_commitment": "e1ace4edb755c2db321a0e118fdc5b9af82181a4bc01e5485580c008d93d6fce",
+      "wave": 6
+    },
+    {
+      "future_descriptor_exposed_to_candidate": false,
+      "sealed_descriptor_commitment": "4ce7d690c5e1db6bdd7f6d39b8aed2ebb53c7e1b21bdde55d0750e02a7e3e04e",
+      "wave": 7
+    },
+    {
+      "future_descriptor_exposed_to_candidate": false,
+      "sealed_descriptor_commitment": "a49f3290b0d608a9d5c8c9413da9bfa8899c97352c49fdc5d1276e86463fbb8a",
+      "wave": 8
+    }
+  ],
+  "wave_count_extended_after_observation": false,
+  "work_families": [
+    "DEPENDENCY_GRAPH",
+    "RESOURCE_SCHEDULING",
+    "MEMORY_LIFETIME",
+    "SPARSE_WORKING_SET",
+    "EXACT_GRAPH_TRANSFORM"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "binary_bytes": 181248,
+  "binary_path": "D:\\B_Core_SEM20\\reports/sem20\\artifacts/semantic-probe\\sem20-probe-release.exe",
+  "binary_sha256": "5ddbd16de261a5448d5986c2442168c2770e0106ebda325d1470659faca0602f",
+  "candidate_prohibited_identifier_hits": [],
+  "compiled_mode": "RELEASE",
+  "future_wave_labels_available_to_probe": false,
+  "source_path": "D:\\B_Core_SEM20\\reports/sem20\\artifacts/semantic-probe\\engine.rs",
+  "source_sha256": "eb3b4ca9d15e665f7b7ae7cbedd1dd530688f3e61751927439abf05d73ebbbe2"
+}

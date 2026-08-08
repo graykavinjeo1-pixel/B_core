@@ -1,0 +1,7 @@
+{
+  "canonical_graph_hash": "ab8481ed64223063ea8553cd13e2b986117acc4d29b596e7b9ae4682882cd612",
+  "dag_shared_bytes": 9197,
+  "duplicated_subgraph_bytes": 20747,
+  "passed": true,
+  "semantic_behavior_preserved": true
+}

@@ -1,0 +1,54 @@
+{
+  "curve": [
+    {
+      "aggregate_fixed_resource_frontier": 1952,
+      "new_frontier_scale": 1952,
+      "wave": 1,
+      "wave_action": "CREATE_NEW_CAPABILITY"
+    },
+    {
+      "aggregate_fixed_resource_frontier": 1952,
+      "new_frontier_scale": 0,
+      "wave": 2,
+      "wave_action": "COMPRESS_EXISTING_STRUCTURE"
+    },
+    {
+      "aggregate_fixed_resource_frontier": 2208,
+      "new_frontier_scale": 256,
+      "wave": 3,
+      "wave_action": "REUSE_EXISTING_STRUCTURE"
+    },
+    {
+      "aggregate_fixed_resource_frontier": 2208,
+      "new_frontier_scale": 0,
+      "wave": 4,
+      "wave_action": "CREATE_NEW_ABSTRACTION"
+    },
+    {
+      "aggregate_fixed_resource_frontier": 2720,
+      "new_frontier_scale": 512,
+      "wave": 5,
+      "wave_action": "COMPRESS_EXISTING_STRUCTURE"
+    },
+    {
+      "aggregate_fixed_resource_frontier": 2720,
+      "new_frontier_scale": 0,
+      "wave": 6,
+      "wave_action": "NO_ACTIONABLE_IMPROVEMENT"
+    },
+    {
+      "aggregate_fixed_resource_frontier": 3264,
+      "new_frontier_scale": 544,
+      "wave": 7,
+      "wave_action": "CREATE_NEW_ABSTRACTION"
+    },
+    {
+      "aggregate_fixed_resource_frontier": 3776,
+      "new_frontier_scale": 512,
+      "wave": 8,
+      "wave_action": "REUSE_EXISTING_STRUCTURE"
+    }
+  ],
+  "frontier_acceleration_observed": false,
+  "raw_family_scales_are_authoritative": true
+}

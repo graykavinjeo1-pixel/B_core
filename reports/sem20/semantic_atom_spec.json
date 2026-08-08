@@ -1,0 +1,35 @@
+{
+  "atom_kinds": [
+    "SEMANTIC_ATOM",
+    "RELATION_ATOM",
+    "TRANSFORMATION_ATOM",
+    "RESOURCE_ATOM",
+    "CONSTRAINT_ATOM",
+    "EFFECT_ATOM",
+    "COUNTERFACTUAL_ATOM",
+    "CAPABILITY_REF",
+    "MOTIF_REF",
+    "SCHEMA_REF"
+  ],
+  "canonical_hot_path_uses_natural_language": false,
+  "ecir_semantics_duplicated": false,
+  "hot_path_natural_language_bytes": 0,
+  "hot_path_source_token_bytes": 0,
+  "id_is_address_not_meaning": true,
+  "identity": {
+    "algorithm": "SHA256_TRUNCATED_128_FOR_ADDRESS_WITH_FULL_CANONICAL_PAYLOAD_VERIFICATION",
+    "payload_fields": [
+      "ATOM_KIND",
+      "OPCODE",
+      "CONSTRAINT_BITS",
+      "EFFECT_BITS",
+      "APPLICABILITY_BITS",
+      "RELATION_EDGE_IDS"
+    ],
+    "provenance_merged_on_equivalent_identity": true,
+    "provenance_part_of_identity": false
+  },
+  "opaque_super_atoms_allowed": false,
+  "substrate": "COMPRESSED_SEMANTIC_ATOM_SUBSTRATE_V1",
+  "text_compression_scheme": false
+}

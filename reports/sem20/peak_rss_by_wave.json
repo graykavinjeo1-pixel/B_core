@@ -1,0 +1,13 @@
+{
+  "actual_peak_process_rss_bytes": [
+    4227072,
+    4218880,
+    4210688,
+    4202496,
+    4149248,
+    4141056,
+    4136960,
+    4132864
+  ],
+  "measurement": "WINDOWS_GET_PROCESS_MEMORY_INFO"
+}

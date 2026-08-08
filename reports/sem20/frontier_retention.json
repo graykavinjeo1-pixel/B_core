@@ -1,0 +1,7 @@
+{
+  "mean_frontier_gain_retention": 1.0,
+  "min_frontier_gain_retention": 1.0,
+  "passed": true,
+  "protected_sem19_frontier_capabilities": 18,
+  "retained": 18
+}
