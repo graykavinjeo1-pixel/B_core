@@ -1,0 +1,93 @@
+{
+  "manifest_id": "B_CORE_RESEARCH_CONTINUATION_SEED_SEM10_P0_1",
+  "purpose": "Reconstruct the independent pre-SYNAPSE-merger B_Core predecessor without semantic relaxation.",
+  "canonical_source_identity": {
+    "commit": "2961a975fd57e3ad0f5cabe29a2058fb0ca4fcba",
+    "git_tree": "97b0a60dfd18c146f78053400105f158c70745af",
+    "preserved_sem10_failure_commit": "4b097f6fda09453d970051a73dd3e64375059eef"
+  },
+  "toolchain": {
+    "channel": "1.96.0",
+    "rustc_commit_hash": "ac68faa20c58cbccd01ee7208bf3b6e93a7d7f96",
+    "llvm_version": "22.1.2",
+    "target_triple": "x86_64-pc-windows-msvc",
+    "linker": "Microsoft Incremental Linker 14.44.35226.0",
+    "linker_reproducibility_flag": "/Brepro"
+  },
+  "locked_inputs": {
+    "cargo_lock_sha256": "a25438f5b5aa4a4f6732e95f885a68d6dd5e51a9bc1463eece6ace12c4d953a5",
+    "workspace_manifest_sha256": "60b216b971cb41d725e84aab5a88a5d91ac01795f02a9787a49c9578f65b38da",
+    "dockable_core_manifest_sha256": "628625ff8d584d0e45cd69518de4e122979cbb4086232e8b8773e8afe02ea971"
+  },
+  "semantic_runtime_identity": {
+    "semantic_state_sha256": "d1abd8de410f5284773f1e582937922dc514513ed738eb9f04e8bf2735185d3c",
+    "index_sha256": "77b17332b5ff7204c28e9445e689276049afd6e89308e7e242904570a283e6fc",
+    "runtime_provenance_sha256": "4074ebe22ab02fb45708ada5e59519fd531e90dd0045d74af6739be6a2e05131",
+    "core_abi_sha256": "87affaee5f9c2c9fa4a467fabebb6d9de655df9e782a04022beab6f04f921564",
+    "core_abi_version": 1,
+    "semantic_state_version": "SEMANTIC-STATE-SEM8-1",
+    "capability_contract_version": 1,
+    "promoted_concepts": 12
+  },
+  "required_source_directories": [
+    "crates/dockable-semantic-core",
+    "crates/semantic-core-adapters",
+    "crates/semantic-reasoning",
+    "crates/synapse-core",
+    "crates/synapse-recursive-core"
+  ],
+  "required_test_and_evaluator_directories": [
+    "crates/semantic-reasoning/src",
+    "reports/sem0",
+    "reports/sem1",
+    "reports/sem2",
+    "reports/sem3",
+    "reports/sem4",
+    "reports/sem5",
+    "reports/sem6",
+    "reports/sem7",
+    "reports/sem8",
+    "reports/sem9",
+    "reports/sem9-r1",
+    "scripts"
+  ],
+  "commands": {
+    "portable_build": "powershell -ExecutionPolicy Bypass -File scripts/build_portable_r0.ps1 -TargetDirectory <clean-target-directory>",
+    "workspace_test": "cargo test --workspace --locked --offline -- --test-threads=1",
+    "canonical_integrity": "powershell -ExecutionPolicy Bypass -File scripts/verify_canonical_manifest.ps1",
+    "core_canary": "<clean-target-directory>/x86_64-pc-windows-msvc/release/core-x0-canary.exe"
+  },
+  "build_environment": {
+    "source_date_epoch": 1786132966,
+    "cargo_incremental": false,
+    "path_remapping_required": true,
+    "unintended_rustflags_allowed": false,
+    "network_allowed_during_build_or_test": false
+  },
+  "excluded_regenerable_paths": [
+    "target/",
+    "**/target/",
+    "compiler caches",
+    "temporary worktrees",
+    "diagnostic target directories",
+    "host-local Git configuration"
+  ],
+  "portable_r0_identity_rules": {
+    "sealed_core_x0_binary_sha256": "57a81bbe59dd9e524d7aea5f17ba7ecf471cec8e90da922d2f65de73f53b4ae2",
+    "sealed_binary_hash_is_historical_and_must_not_be_rewritten": true,
+    "same_host_builds_must_be_byte_exact": true,
+    "cross_host_binary_mismatch_requires_binary_forensics": true,
+    "semantic_state_and_index_must_be_byte_exact": true,
+    "full_predecessor_regression_must_pass": true,
+    "core_behavior_parity_must_equal": 1.0,
+    "full_catalog_scans_must_equal": 0,
+    "routing_false_negatives_must_equal": 0
+  },
+  "campaign_boundary": {
+    "new_reasoning_features": 0,
+    "semantic_logic_changes": 0,
+    "promoted_concept_changes": 0,
+    "self_improvement_attempts": 0,
+    "sem10_recursion_started": false
+  }
+}

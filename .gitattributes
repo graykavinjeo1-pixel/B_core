@@ -1,3 +1,10 @@
+* text=auto eol=lf
+
+*.exe binary
+*.dll binary
+*.lib binary
+*.pdb binary
+
 /CONSTITUTION.md text eol=lf
 /RESEARCH_HYPOTHESIS.md text eol=lf
 /SEMANTIC_SUBSTRATE_SPEC.md text eol=lf
