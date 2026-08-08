@@ -1,0 +1,20 @@
+{
+  "contextual_inputs": [
+    "CURRENT_FRONTIER_GAP",
+    "ACTIVE_ABSTRACTIONS",
+    "MISSING_ROLES",
+    "RESOURCE_CONDITIONS",
+    "APPLICABILITY_BOUNDARIES"
+  ],
+  "full_abstraction_pair_enumeration": false,
+  "full_composition_enumeration": false,
+  "keys": [
+    "UNFILLED_ROLE_TO_PRODUCED_ROLE",
+    "REQUIRED_TO_PRESERVED_INVARIANT",
+    "MISSING_TO_PROVIDED_TRANSFORMATION",
+    "RESOURCE_DEFICIENCY_TO_SAVING_MOTIF",
+    "REPRESENTATION_MISMATCH_TO_ADAPTER",
+    "BLOCKER_TO_REMOVAL_EFFECT"
+  ],
+  "version": "SEM22-SPARSE-REACTIVITY-INDEX-V1"
+}

@@ -1,0 +1,23 @@
+[
+  {
+    "discovered_epoch": 6,
+    "generated_later_composites": 2,
+    "schema_id": "H22-01",
+    "source_motifs": [
+      "M22-01",
+      "M22-02"
+    ],
+    "verified": true
+  },
+  {
+    "discovered_epoch": 10,
+    "generated_later_composites": 3,
+    "schema_id": "H22-02",
+    "source_motifs": [
+      "M22-01",
+      "M22-02",
+      "M22-03"
+    ],
+    "verified": true
+  }
+]

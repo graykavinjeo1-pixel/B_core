@@ -1,0 +1,11 @@
+{
+  "base_core_total_deployable_bytes": 378534,
+  "catalysis_runtime_bytes": 336,
+  "composition_motif_bytes": 288,
+  "final_active_semantic_working_set_bytes": 3460,
+  "final_core_total_deployable_bytes": 481972,
+  "final_total_semantic_representation_bytes": 14373,
+  "reaction_runtime_source_bytes": 100902,
+  "reactivity_index_bytes": 1088,
+  "research_reports_required_at_runtime": false
+}

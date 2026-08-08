@@ -1,0 +1,19 @@
+{
+  "campaign_id": "SEM21-AUTONOMOUS-SEMANTIC-FRONTIER-DISCOVERY-0001",
+  "commit_expected": "1030d7d05c870c5e815e85befbf7465c9713d090",
+  "commit_observed": "1030d7d05c870c5e815e85befbf7465c9713d090",
+  "historical_evidence_rewritten": false,
+  "next_allowed_stage": "OPERATOR_REVIEW_FOR_SEM22",
+  "next_dominant_growth_limit": "CROSS_ABSTRACTION_COMPOSITION_DIVERSITY",
+  "sem21_artifact_binary_sha256": "daff2562759a450789063144350835e00f2dcc49d8fa04eaae547edc8774d557",
+  "sem21_artifact_source_sha256": "e02098be2e13490cb167b8beaf92031f3816f2d84ddfead855ffacca8eda4d3b",
+  "sem21_levels": {
+    "A": true,
+    "B": true,
+    "C": true,
+    "D": true,
+    "E": true
+  },
+  "sem21_status": "PASS",
+  "status": "PASS"
+}

@@ -1,0 +1,66 @@
+[
+  {
+    "conflict": "CONCRETE_ROLE_OR_STATE_CONFLICT",
+    "enabled_composite": "C22-03-0adc5f90d1ad",
+    "epoch": 3,
+    "generated_only_after_conflict": true,
+    "mediator_id": "MED22-01",
+    "reusable": true
+  },
+  {
+    "conflict": "CONCRETE_ROLE_OR_STATE_CONFLICT",
+    "enabled_composite": "C22-04-6b4383555691",
+    "epoch": 4,
+    "generated_only_after_conflict": true,
+    "mediator_id": "MED22-02",
+    "reusable": true
+  },
+  {
+    "conflict": "CONCRETE_ROLE_OR_STATE_CONFLICT",
+    "enabled_composite": "C22-05-120125db3c40",
+    "epoch": 5,
+    "generated_only_after_conflict": true,
+    "mediator_id": "MED22-03",
+    "reusable": true
+  },
+  {
+    "conflict": "CONCRETE_ROLE_OR_STATE_CONFLICT",
+    "enabled_composite": "C22-08-0ed1bfd4f598",
+    "epoch": 8,
+    "generated_only_after_conflict": true,
+    "mediator_id": "MED22-04",
+    "reusable": true
+  },
+  {
+    "conflict": "CONCRETE_ROLE_OR_STATE_CONFLICT",
+    "enabled_composite": "C22-09-534bd7c4fe2e",
+    "epoch": 9,
+    "generated_only_after_conflict": true,
+    "mediator_id": "MED22-05",
+    "reusable": true
+  },
+  {
+    "conflict": "CONCRETE_ROLE_OR_STATE_CONFLICT",
+    "enabled_composite": "C22-10-f0cd7086b580",
+    "epoch": 10,
+    "generated_only_after_conflict": true,
+    "mediator_id": "MED22-06",
+    "reusable": true
+  },
+  {
+    "conflict": "CONCRETE_ROLE_OR_STATE_CONFLICT",
+    "enabled_composite": "C22-11-1c1b6b900f47",
+    "epoch": 11,
+    "generated_only_after_conflict": true,
+    "mediator_id": "MED22-07",
+    "reusable": true
+  },
+  {
+    "conflict": "CONCRETE_ROLE_OR_STATE_CONFLICT",
+    "enabled_composite": "C22-12-648e292873c5",
+    "epoch": 12,
+    "generated_only_after_conflict": true,
+    "mediator_id": "MED22-08",
+    "reusable": true
+  }
+]

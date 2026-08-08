@@ -1,0 +1,300 @@
+{
+  "initial_contracts": [
+    {
+      "abstraction_id": "SEM21-A00",
+      "applicability_envelope": "SEM21-ENVELOPE-0",
+      "composition_affordances": [
+        "ROLE_COMPLEMENTARITY"
+      ],
+      "composition_conflicts": [
+        "STATE_OR_RESOURCE_CONFLICT_IF_UNMEDIATED"
+      ],
+      "effects": [
+        "EFFECT_0"
+      ],
+      "failure_conditions": [
+        "MISSING_ROLE_OR_CONFLICT"
+      ],
+      "postconditions": [
+        "INVARIANTS_PRESERVED"
+      ],
+      "preconditions": [
+        "APPLICABILITY_ENVELOPE_SATISFIED"
+      ],
+      "preserved_invariants": [
+        "SEMANTIC_RESULT_IDENTITY"
+      ],
+      "produced_outputs": [
+        "ROLE_OUTPUT_0"
+      ],
+      "produced_roles": [
+        "ROLE_0",
+        "ROLE_1"
+      ],
+      "required_inputs": [
+        "ROLE_INPUT_0"
+      ],
+      "required_invariants": [
+        "MECHANICAL_CORRECTNESS"
+      ],
+      "required_roles": [
+        "REQUIRED_ROLE_0"
+      ],
+      "resource_requirements": [
+        "SINGLE_CPU_THREAD"
+      ],
+      "role_surface_mask": 3,
+      "side_effects": [
+        "BOUNDED_RESOURCE_TOUCH"
+      ],
+      "source_domain": "RELATIONAL_DEPENDENCY",
+      "state_reads": [
+        "STATE_0"
+      ],
+      "state_writes": [
+        "STATE_1"
+      ]
+    },
+    {
+      "abstraction_id": "SEM21-A01",
+      "applicability_envelope": "SEM21-ENVELOPE-1",
+      "composition_affordances": [
+        "ROLE_COMPLEMENTARITY"
+      ],
+      "composition_conflicts": [
+        "STATE_OR_RESOURCE_CONFLICT_IF_UNMEDIATED"
+      ],
+      "effects": [
+        "EFFECT_1"
+      ],
+      "failure_conditions": [
+        "MISSING_ROLE_OR_CONFLICT"
+      ],
+      "postconditions": [
+        "INVARIANTS_PRESERVED"
+      ],
+      "preconditions": [
+        "APPLICABILITY_ENVELOPE_SATISFIED"
+      ],
+      "preserved_invariants": [
+        "SEMANTIC_RESULT_IDENTITY"
+      ],
+      "produced_outputs": [
+        "ROLE_OUTPUT_1"
+      ],
+      "produced_roles": [
+        "ROLE_1",
+        "ROLE_2"
+      ],
+      "required_inputs": [
+        "ROLE_INPUT_1"
+      ],
+      "required_invariants": [
+        "MECHANICAL_CORRECTNESS"
+      ],
+      "required_roles": [
+        "REQUIRED_ROLE_1"
+      ],
+      "resource_requirements": [
+        "SINGLE_CPU_THREAD"
+      ],
+      "role_surface_mask": 6,
+      "side_effects": [
+        "BOUNDED_RESOURCE_TOUCH"
+      ],
+      "source_domain": "RESOURCE_SCHEDULING",
+      "state_reads": [
+        "STATE_1"
+      ],
+      "state_writes": [
+        "STATE_2"
+      ]
+    },
+    {
+      "abstraction_id": "SEM21-A02",
+      "applicability_envelope": "SEM21-ENVELOPE-2",
+      "composition_affordances": [
+        "ROLE_COMPLEMENTARITY"
+      ],
+      "composition_conflicts": [
+        "STATE_OR_RESOURCE_CONFLICT_IF_UNMEDIATED"
+      ],
+      "effects": [
+        "EFFECT_2"
+      ],
+      "failure_conditions": [
+        "MISSING_ROLE_OR_CONFLICT"
+      ],
+      "postconditions": [
+        "INVARIANTS_PRESERVED"
+      ],
+      "preconditions": [
+        "APPLICABILITY_ENVELOPE_SATISFIED"
+      ],
+      "preserved_invariants": [
+        "SEMANTIC_RESULT_IDENTITY"
+      ],
+      "produced_outputs": [
+        "ROLE_OUTPUT_2"
+      ],
+      "produced_roles": [
+        "ROLE_2",
+        "ROLE_3"
+      ],
+      "required_inputs": [
+        "ROLE_INPUT_2"
+      ],
+      "required_invariants": [
+        "MECHANICAL_CORRECTNESS"
+      ],
+      "required_roles": [
+        "REQUIRED_ROLE_2"
+      ],
+      "resource_requirements": [
+        "SINGLE_CPU_THREAD"
+      ],
+      "role_surface_mask": 12,
+      "side_effects": [
+        "BOUNDED_RESOURCE_TOUCH"
+      ],
+      "source_domain": "MEMORY_LIFETIME",
+      "state_reads": [
+        "STATE_2"
+      ],
+      "state_writes": [
+        "STATE_3"
+      ]
+    },
+    {
+      "abstraction_id": "SEM21-A03",
+      "applicability_envelope": "SEM21-ENVELOPE-3",
+      "composition_affordances": [
+        "ROLE_COMPLEMENTARITY"
+      ],
+      "composition_conflicts": [
+        "STATE_OR_RESOURCE_CONFLICT_IF_UNMEDIATED"
+      ],
+      "effects": [
+        "EFFECT_3"
+      ],
+      "failure_conditions": [
+        "MISSING_ROLE_OR_CONFLICT"
+      ],
+      "postconditions": [
+        "INVARIANTS_PRESERVED"
+      ],
+      "preconditions": [
+        "APPLICABILITY_ENVELOPE_SATISFIED"
+      ],
+      "preserved_invariants": [
+        "SEMANTIC_RESULT_IDENTITY"
+      ],
+      "produced_outputs": [
+        "ROLE_OUTPUT_3"
+      ],
+      "produced_roles": [
+        "ROLE_3",
+        "ROLE_4"
+      ],
+      "required_inputs": [
+        "ROLE_INPUT_3"
+      ],
+      "required_invariants": [
+        "MECHANICAL_CORRECTNESS"
+      ],
+      "required_roles": [
+        "REQUIRED_ROLE_3"
+      ],
+      "resource_requirements": [
+        "SINGLE_CPU_THREAD"
+      ],
+      "role_surface_mask": 24,
+      "side_effects": [
+        "BOUNDED_RESOURCE_TOUCH"
+      ],
+      "source_domain": "SPARSE_ACTIVATION",
+      "state_reads": [
+        "STATE_3"
+      ],
+      "state_writes": [
+        "STATE_4"
+      ]
+    },
+    {
+      "abstraction_id": "SEM21-A04",
+      "applicability_envelope": "SEM21-ENVELOPE-4",
+      "composition_affordances": [
+        "ROLE_COMPLEMENTARITY"
+      ],
+      "composition_conflicts": [
+        "STATE_OR_RESOURCE_CONFLICT_IF_UNMEDIATED"
+      ],
+      "effects": [
+        "EFFECT_4"
+      ],
+      "failure_conditions": [
+        "MISSING_ROLE_OR_CONFLICT"
+      ],
+      "postconditions": [
+        "INVARIANTS_PRESERVED"
+      ],
+      "preconditions": [
+        "APPLICABILITY_ENVELOPE_SATISFIED"
+      ],
+      "preserved_invariants": [
+        "SEMANTIC_RESULT_IDENTITY"
+      ],
+      "produced_outputs": [
+        "ROLE_OUTPUT_4"
+      ],
+      "produced_roles": [
+        "ROLE_4",
+        "ROLE_5"
+      ],
+      "required_inputs": [
+        "ROLE_INPUT_4"
+      ],
+      "required_invariants": [
+        "MECHANICAL_CORRECTNESS"
+      ],
+      "required_roles": [
+        "REQUIRED_ROLE_4"
+      ],
+      "resource_requirements": [
+        "SINGLE_CPU_THREAD"
+      ],
+      "role_surface_mask": 48,
+      "side_effects": [
+        "BOUNDED_RESOURCE_TOUCH"
+      ],
+      "source_domain": "EXACT_TRANSFORMATION",
+      "state_reads": [
+        "STATE_4"
+      ],
+      "state_writes": [
+        "STATE_0"
+      ]
+    }
+  ],
+  "name_or_source_similarity_authority": false,
+  "required_fields": [
+    "required_inputs",
+    "produced_outputs",
+    "required_roles",
+    "produced_roles",
+    "required_invariants",
+    "preserved_invariants",
+    "effects",
+    "side_effects",
+    "resource_requirements",
+    "state_reads",
+    "state_writes",
+    "preconditions",
+    "postconditions",
+    "failure_conditions",
+    "applicability_envelope",
+    "composition_affordances",
+    "composition_conflicts"
+  ],
+  "version": "SEM22-COMPOSITION-CONTRACT-V1"
+}

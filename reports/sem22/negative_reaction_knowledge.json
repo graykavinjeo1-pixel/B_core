@@ -1,0 +1,149 @@
+{
+  "records": [
+    {
+      "condition": "ROLE_MISMATCH",
+      "reaction_exclusion_id": "FC22-01-0",
+      "reusable": true,
+      "source_epoch": 1
+    },
+    {
+      "condition": "ORDERING_CONFLICT",
+      "reaction_exclusion_id": "FC22-01-1",
+      "reusable": true,
+      "source_epoch": 1
+    },
+    {
+      "condition": "ROLE_MISMATCH",
+      "reaction_exclusion_id": "FC22-02-0",
+      "reusable": true,
+      "source_epoch": 2
+    },
+    {
+      "condition": "RESOURCE_CONFLICT",
+      "reaction_exclusion_id": "FC22-02-1",
+      "reusable": true,
+      "source_epoch": 2
+    },
+    {
+      "condition": "ROLE_MISMATCH",
+      "reaction_exclusion_id": "FC22-03-0",
+      "reusable": true,
+      "source_epoch": 3
+    },
+    {
+      "condition": "ORDERING_CONFLICT",
+      "reaction_exclusion_id": "FC22-03-1",
+      "reusable": true,
+      "source_epoch": 3
+    },
+    {
+      "condition": "ROLE_MISMATCH",
+      "reaction_exclusion_id": "FC22-04-0",
+      "reusable": true,
+      "source_epoch": 4
+    },
+    {
+      "condition": "RESOURCE_CONFLICT",
+      "reaction_exclusion_id": "FC22-04-1",
+      "reusable": true,
+      "source_epoch": 4
+    },
+    {
+      "condition": "ROLE_MISMATCH",
+      "reaction_exclusion_id": "FC22-05-0",
+      "reusable": true,
+      "source_epoch": 5
+    },
+    {
+      "condition": "ORDERING_CONFLICT",
+      "reaction_exclusion_id": "FC22-05-1",
+      "reusable": true,
+      "source_epoch": 5
+    },
+    {
+      "condition": "ROLE_MISMATCH",
+      "reaction_exclusion_id": "FC22-06-0",
+      "reusable": true,
+      "source_epoch": 6
+    },
+    {
+      "condition": "RESOURCE_CONFLICT",
+      "reaction_exclusion_id": "FC22-06-1",
+      "reusable": true,
+      "source_epoch": 6
+    },
+    {
+      "condition": "ROLE_MISMATCH",
+      "reaction_exclusion_id": "FC22-07-0",
+      "reusable": true,
+      "source_epoch": 7
+    },
+    {
+      "condition": "ORDERING_CONFLICT",
+      "reaction_exclusion_id": "FC22-07-1",
+      "reusable": true,
+      "source_epoch": 7
+    },
+    {
+      "condition": "ROLE_MISMATCH",
+      "reaction_exclusion_id": "FC22-08-0",
+      "reusable": true,
+      "source_epoch": 8
+    },
+    {
+      "condition": "RESOURCE_CONFLICT",
+      "reaction_exclusion_id": "FC22-08-1",
+      "reusable": true,
+      "source_epoch": 8
+    },
+    {
+      "condition": "ROLE_MISMATCH",
+      "reaction_exclusion_id": "FC22-09-0",
+      "reusable": true,
+      "source_epoch": 9
+    },
+    {
+      "condition": "ORDERING_CONFLICT",
+      "reaction_exclusion_id": "FC22-09-1",
+      "reusable": true,
+      "source_epoch": 9
+    },
+    {
+      "condition": "ROLE_MISMATCH",
+      "reaction_exclusion_id": "FC22-10-0",
+      "reusable": true,
+      "source_epoch": 10
+    },
+    {
+      "condition": "RESOURCE_CONFLICT",
+      "reaction_exclusion_id": "FC22-10-1",
+      "reusable": true,
+      "source_epoch": 10
+    },
+    {
+      "condition": "ROLE_MISMATCH",
+      "reaction_exclusion_id": "FC22-11-0",
+      "reusable": true,
+      "source_epoch": 11
+    },
+    {
+      "condition": "ORDERING_CONFLICT",
+      "reaction_exclusion_id": "FC22-11-1",
+      "reusable": true,
+      "source_epoch": 11
+    },
+    {
+      "condition": "ROLE_MISMATCH",
+      "reaction_exclusion_id": "FC22-12-0",
+      "reusable": true,
+      "source_epoch": 12
+    },
+    {
+      "condition": "RESOURCE_CONFLICT",
+      "reaction_exclusion_id": "FC22-12-1",
+      "reusable": true,
+      "source_epoch": 12
+    }
+  ],
+  "repeated_invalid_attempts_prevented": 18
+}

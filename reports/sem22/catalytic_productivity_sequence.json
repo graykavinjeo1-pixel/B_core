@@ -1,0 +1,27 @@
+{
+  "chronological": true,
+  "composite_score": null,
+  "records": [
+    {
+      "catalyst_id": "K22-01",
+      "composition_cost_reduction_observed": true,
+      "future_capabilities_enabled": 9,
+      "future_composites_enabled": 9,
+      "future_frontier_families_enabled": 3
+    },
+    {
+      "catalyst_id": "K22-02",
+      "composition_cost_reduction_observed": true,
+      "future_capabilities_enabled": 5,
+      "future_composites_enabled": 5,
+      "future_frontier_families_enabled": 2
+    },
+    {
+      "catalyst_id": "K22-03",
+      "composition_cost_reduction_observed": true,
+      "future_capabilities_enabled": 2,
+      "future_composites_enabled": 2,
+      "future_frontier_families_enabled": 1
+    }
+  ]
+}

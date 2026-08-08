@@ -1,0 +1,20 @@
+{
+  "complete_operator_catalog_hard_coded": false,
+  "concatenation_is_composition": false,
+  "duplicates_ecir": false,
+  "fields": [
+    "reactants",
+    "role_bindings",
+    "interaction_topology",
+    "shared_state",
+    "ordering_constraints",
+    "invariants",
+    "conflicts",
+    "expected_emergent_effect",
+    "predicted_frontier_effect",
+    "resource_effect",
+    "failure_conditions"
+  ],
+  "lowers_to_existing_ecir": true,
+  "version": "SEM22-REACTION-IR-V1"
+}

@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "regressions": 0,
+  "semantic_provenance_preserved": true,
+  "sem22_engine_tests_passed": 3,
+  "sem22_engine_test_failures": 0,
+  "workspace_tests_passed": 169,
+  "workspace_test_failures": 0
+}

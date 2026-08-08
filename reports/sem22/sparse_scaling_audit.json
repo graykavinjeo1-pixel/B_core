@@ -1,0 +1,11 @@
+{
+  "full_abstraction_pair_enumeration": 0,
+  "full_atom_store_scans": 0,
+  "full_capability_catalog_scans": 0,
+  "full_composition_enumeration": 0,
+  "full_motif_store_scans": 0,
+  "full_schema_store_scans": 0,
+  "passed": true,
+  "routed_candidate_fraction": 0.0038363171355498722,
+  "routing_false_negatives": 0
+}

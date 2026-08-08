@@ -1,0 +1,103 @@
+{
+  "events": 0,
+  "passed": true,
+  "records": [
+    {
+      "concrete_instance_created_after_spec_freeze": true,
+      "epoch": 1,
+      "reaction_spec_sha256": "61da53d286cc35cbae89e2e7b0c7f4fff3b3851ab50cbe5be26e4d48cbd0488d",
+      "seed_commitment": "0865884c584b573ee8dffc3d240f45d62895b12683d9f88889ce0d267544ade1",
+      "seed_visible_to_composition_policy": false,
+      "spec_frozen_before_instance_seed_reveal": true
+    },
+    {
+      "concrete_instance_created_after_spec_freeze": true,
+      "epoch": 2,
+      "reaction_spec_sha256": "90e72d28d38787560807624edf74b0c07f159e4008ab65a009f7c519073771ac",
+      "seed_commitment": "28ae9c27d6e6a9756d2f54958f335d01f0f965ba4e18bbada235b41394652cff",
+      "seed_visible_to_composition_policy": false,
+      "spec_frozen_before_instance_seed_reveal": true
+    },
+    {
+      "concrete_instance_created_after_spec_freeze": true,
+      "epoch": 3,
+      "reaction_spec_sha256": "0adc5f90d1adb4aba011e380ddd89c9440e83301c6d80dec9688eb347b23da71",
+      "seed_commitment": "ea5d6b60db97548d7caf06dceb0b613a9001b8820c7ddb948361e2ce054a969f",
+      "seed_visible_to_composition_policy": false,
+      "spec_frozen_before_instance_seed_reveal": true
+    },
+    {
+      "concrete_instance_created_after_spec_freeze": true,
+      "epoch": 4,
+      "reaction_spec_sha256": "6b4383555691907ea217a300705759569a73abcbb92bd1870d0845e636aa66ba",
+      "seed_commitment": "f21c00d2faeaf33599f11ae917d51457c2b1e252a56a8f73de6d7d3ff81e1bd3",
+      "seed_visible_to_composition_policy": false,
+      "spec_frozen_before_instance_seed_reveal": true
+    },
+    {
+      "concrete_instance_created_after_spec_freeze": true,
+      "epoch": 5,
+      "reaction_spec_sha256": "120125db3c4073404f566cb359d01af61b0010ebf2ba66cae86df6ebc72244f7",
+      "seed_commitment": "25c28bbb0da4a842335e5136434030716b9e72f73e6e720c01edc1cf406a0384",
+      "seed_visible_to_composition_policy": false,
+      "spec_frozen_before_instance_seed_reveal": true
+    },
+    {
+      "concrete_instance_created_after_spec_freeze": true,
+      "epoch": 6,
+      "reaction_spec_sha256": "9d1de846cca340e9f938d6ff5889156b7b9ec92e5cc8a2bf02ad84639781359a",
+      "seed_commitment": "fc7f66d89921dcdd8f979dded88538151c6800c18bda05b1e515da4d04fba05c",
+      "seed_visible_to_composition_policy": false,
+      "spec_frozen_before_instance_seed_reveal": true
+    },
+    {
+      "concrete_instance_created_after_spec_freeze": true,
+      "epoch": 7,
+      "reaction_spec_sha256": "088992e41aef2d7617feef75ad202ab7c205cfe991ea89a3a9c254de87c78e4c",
+      "seed_commitment": "eaa4077570908115af32686707662e177e650aaf3891f75afa65a6d3e09d6d22",
+      "seed_visible_to_composition_policy": false,
+      "spec_frozen_before_instance_seed_reveal": true
+    },
+    {
+      "concrete_instance_created_after_spec_freeze": true,
+      "epoch": 8,
+      "reaction_spec_sha256": "0ed1bfd4f598cfab40bdf964851c9ffd9d5cce21c1ccfac19333b0732a35bdff",
+      "seed_commitment": "bb7cb4558aa57c1f8ebab7dd739afbb2daf504a0696d2b2f5689ad4715995ed7",
+      "seed_visible_to_composition_policy": false,
+      "spec_frozen_before_instance_seed_reveal": true
+    },
+    {
+      "concrete_instance_created_after_spec_freeze": true,
+      "epoch": 9,
+      "reaction_spec_sha256": "534bd7c4fe2ed5552aa0363773c859239c765251ddb18a1657f1e3f3619aa30c",
+      "seed_commitment": "16ba73459c394529281b282761138f7742ca6f27fcd572723045394bd8cf1533",
+      "seed_visible_to_composition_policy": false,
+      "spec_frozen_before_instance_seed_reveal": true
+    },
+    {
+      "concrete_instance_created_after_spec_freeze": true,
+      "epoch": 10,
+      "reaction_spec_sha256": "f0cd7086b580dee94c10c04f3e9ed38e7b9bee342a4bb0203688827e048179c9",
+      "seed_commitment": "b79bc7bc37bc3c89d510ad8b5d352d82e053811e85a59372b38572f7178640ee",
+      "seed_visible_to_composition_policy": false,
+      "spec_frozen_before_instance_seed_reveal": true
+    },
+    {
+      "concrete_instance_created_after_spec_freeze": true,
+      "epoch": 11,
+      "reaction_spec_sha256": "1c1b6b900f47b6920d87c1fb7834fb10d28c18c16fafb743e489f1d7cc0e8144",
+      "seed_commitment": "9aa93e33813227d0ca253aa54a3902b272ca9210a27d038439b0215a2b88676e",
+      "seed_visible_to_composition_policy": false,
+      "spec_frozen_before_instance_seed_reveal": true
+    },
+    {
+      "concrete_instance_created_after_spec_freeze": true,
+      "epoch": 12,
+      "reaction_spec_sha256": "648e292873c5f9352c6aeeade88b985e97e823ed0ebd61b23aa529e43c470ed2",
+      "seed_commitment": "d0414a02b87b0e4223852d32302e0f3ea329cf655dc962580f2b52c9e91770b2",
+      "seed_visible_to_composition_policy": false,
+      "spec_frozen_before_instance_seed_reveal": true
+    }
+  ],
+  "spec_hash_precedes_instance_reveal_all_epochs": true
+}

@@ -1,0 +1,52 @@
+{
+  "catalysts": [
+    {
+      "catalyst_id": "K22-01",
+      "discovered_epoch": 3,
+      "future_productivity_not_immediate_score": true,
+      "source_composite": "C22-03-0adc5f90d1ad",
+      "verified_by_on_off_ablation": true
+    },
+    {
+      "catalyst_id": "K22-02",
+      "discovered_epoch": 7,
+      "future_productivity_not_immediate_score": true,
+      "source_composite": "C22-07-088992e41aef",
+      "verified_by_on_off_ablation": true
+    },
+    {
+      "catalyst_id": "K22-03",
+      "discovered_epoch": 10,
+      "future_productivity_not_immediate_score": true,
+      "source_composite": "C22-10-f0cd7086b580",
+      "verified_by_on_off_ablation": true
+    }
+  ],
+  "productivity": {
+    "chronological": true,
+    "composite_score": null,
+    "records": [
+      {
+        "catalyst_id": "K22-01",
+        "composition_cost_reduction_observed": true,
+        "future_capabilities_enabled": 9,
+        "future_composites_enabled": 9,
+        "future_frontier_families_enabled": 3
+      },
+      {
+        "catalyst_id": "K22-02",
+        "composition_cost_reduction_observed": true,
+        "future_capabilities_enabled": 5,
+        "future_composites_enabled": 5,
+        "future_frontier_families_enabled": 2
+      },
+      {
+        "catalyst_id": "K22-03",
+        "composition_cost_reduction_observed": true,
+        "future_capabilities_enabled": 2,
+        "future_composites_enabled": 2,
+        "future_frontier_families_enabled": 1
+      }
+    ]
+  }
+}

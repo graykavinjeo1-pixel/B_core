@@ -1,0 +1,18 @@
+{
+  "composite_score": null,
+  "metric": "time_to_discover_useful_composition_ns",
+  "raw_sequence": [
+    1707500,
+    950900,
+    949600,
+    741200,
+    734800,
+    736000,
+    576800,
+    392900,
+    394800,
+    357000,
+    175400,
+    175500
+  ]
+}

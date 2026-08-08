@@ -1,0 +1,33 @@
+{
+  "event_count": 3,
+  "events": [
+    {
+      "catalyst_id": "K22-01",
+      "causal_ablation_pass": true,
+      "epoch": 4,
+      "frontier_gain": 162,
+      "persistent_higher_growth_level": true,
+      "predefined_difficulty_schedule": false,
+      "qualitative_change": "ARITY_3_WITH_REUSABLE_REACTION_SCHEMA"
+    },
+    {
+      "catalyst_id": "K22-02",
+      "causal_ablation_pass": true,
+      "epoch": 8,
+      "frontier_gain": 212,
+      "persistent_higher_growth_level": true,
+      "predefined_difficulty_schedule": false,
+      "qualitative_change": "ARITY_4_WITH_REUSABLE_REACTION_SCHEMA"
+    },
+    {
+      "catalyst_id": "K22-03",
+      "causal_ablation_pass": true,
+      "epoch": 11,
+      "frontier_gain": 262,
+      "persistent_higher_growth_level": true,
+      "predefined_difficulty_schedule": false,
+      "qualitative_change": "ARITY_5_WITH_REUSABLE_REACTION_SCHEMA"
+    }
+  ],
+  "single_spike_only": false
+}

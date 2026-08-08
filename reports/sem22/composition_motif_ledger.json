@@ -1,0 +1,26 @@
+[
+  {
+    "cross_domain_transfers": 3,
+    "discovered_epoch": 3,
+    "evidence_composite": "C22-03-0adc5f90d1ad",
+    "motif_id": "M22-01",
+    "semantic_roles_not_names": true,
+    "verified": true
+  },
+  {
+    "cross_domain_transfers": 3,
+    "discovered_epoch": 6,
+    "evidence_composite": "C22-06-9d1de846cca3",
+    "motif_id": "M22-02",
+    "semantic_roles_not_names": true,
+    "verified": true
+  },
+  {
+    "cross_domain_transfers": 3,
+    "discovered_epoch": 9,
+    "evidence_composite": "C22-09-534bd7c4fe2e",
+    "motif_id": "M22-03",
+    "semantic_roles_not_names": true,
+    "verified": true
+  }
+]

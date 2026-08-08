@@ -1,0 +1,446 @@
+{
+  "records": [
+    {
+      "candidate_id": "C22-01-61da53d286cc",
+      "epoch": 1,
+      "future_instance_information_used": false,
+      "productive": true,
+      "reactants": [
+        "SEM21-A00",
+        "SEM21-A01"
+      ],
+      "reaction_spec_sha256": "61da53d286cc35cbae89e2e7b0c7f4fff3b3851ab50cbe5be26e4d48cbd0488d",
+      "route_basis": "CURRENT_FRONTIER_GAP_PLUS_MISSING_ROLES_PLUS_RESOURCE_CONDITIONS",
+      "source_domains": [
+        "RELATIONAL_DEPENDENCY",
+        "RESOURCE_SCHEDULING"
+      ],
+      "tested": true,
+      "topology": "PARALLEL_COOPERATION"
+    },
+    {
+      "candidate_id": "FC22-01-0",
+      "epoch": 1,
+      "productive": false,
+      "rejection_reason": "ROLE_MISMATCH",
+      "route_basis": "NEAREST_COMPLEMENTARITY_WITH_DISCRIMINATING_PROBE",
+      "tested": true
+    },
+    {
+      "candidate_id": "FC22-01-1",
+      "epoch": 1,
+      "productive": false,
+      "rejection_reason": "ORDERING_CONFLICT",
+      "route_basis": "NEAREST_COMPLEMENTARITY_WITH_DISCRIMINATING_PROBE",
+      "tested": true
+    },
+    {
+      "candidate_id": "C22-02-90e72d28d387",
+      "epoch": 2,
+      "future_instance_information_used": false,
+      "productive": true,
+      "reactants": [
+        "SEM21-A01",
+        "SEM21-A02"
+      ],
+      "reaction_spec_sha256": "90e72d28d38787560807624edf74b0c07f159e4008ab65a009f7c519073771ac",
+      "route_basis": "CURRENT_FRONTIER_GAP_PLUS_MISSING_ROLES_PLUS_RESOURCE_CONDITIONS",
+      "source_domains": [
+        "RESOURCE_SCHEDULING",
+        "MEMORY_LIFETIME"
+      ],
+      "tested": true,
+      "topology": "CONDITIONAL_GATING"
+    },
+    {
+      "candidate_id": "FC22-02-0",
+      "epoch": 2,
+      "productive": false,
+      "rejection_reason": "ROLE_MISMATCH",
+      "route_basis": "NEAREST_COMPLEMENTARITY_WITH_DISCRIMINATING_PROBE",
+      "tested": true
+    },
+    {
+      "candidate_id": "FC22-02-1",
+      "epoch": 2,
+      "productive": false,
+      "rejection_reason": "RESOURCE_CONFLICT",
+      "route_basis": "NEAREST_COMPLEMENTARITY_WITH_DISCRIMINATING_PROBE",
+      "tested": true
+    },
+    {
+      "candidate_id": "C22-03-0adc5f90d1ad",
+      "epoch": 3,
+      "future_instance_information_used": false,
+      "productive": true,
+      "reactants": [
+        "SEM21-A00",
+        "SEM21-A03"
+      ],
+      "reaction_spec_sha256": "0adc5f90d1adb4aba011e380ddd89c9440e83301c6d80dec9688eb347b23da71",
+      "route_basis": "CURRENT_FRONTIER_GAP_PLUS_MISSING_ROLES_PLUS_RESOURCE_CONDITIONS",
+      "source_domains": [
+        "RELATIONAL_DEPENDENCY",
+        "SPARSE_ACTIVATION"
+      ],
+      "tested": true,
+      "topology": "FEEDBACK_WITH_CATALYSIS"
+    },
+    {
+      "candidate_id": "FC22-03-0",
+      "epoch": 3,
+      "productive": false,
+      "rejection_reason": "ROLE_MISMATCH",
+      "route_basis": "NEAREST_COMPLEMENTARITY_WITH_DISCRIMINATING_PROBE",
+      "tested": true
+    },
+    {
+      "candidate_id": "FC22-03-1",
+      "epoch": 3,
+      "productive": false,
+      "rejection_reason": "ORDERING_CONFLICT",
+      "route_basis": "NEAREST_COMPLEMENTARITY_WITH_DISCRIMINATING_PROBE",
+      "tested": true
+    },
+    {
+      "candidate_id": "C22-04-6b4383555691",
+      "epoch": 4,
+      "future_instance_information_used": false,
+      "productive": true,
+      "reactants": [
+        "SEM21-A00",
+        "SEM21-A03",
+        "SEM21-A04"
+      ],
+      "reaction_spec_sha256": "6b4383555691907ea217a300705759569a73abcbb92bd1870d0845e636aa66ba",
+      "route_basis": "CURRENT_FRONTIER_GAP_PLUS_MISSING_ROLES_PLUS_RESOURCE_CONDITIONS",
+      "source_domains": [
+        "RELATIONAL_DEPENDENCY",
+        "SPARSE_ACTIVATION",
+        "EXACT_TRANSFORMATION"
+      ],
+      "tested": true,
+      "topology": "SERIAL_ROLE_DEPENDENCY"
+    },
+    {
+      "candidate_id": "FC22-04-0",
+      "epoch": 4,
+      "productive": false,
+      "rejection_reason": "ROLE_MISMATCH",
+      "route_basis": "NEAREST_COMPLEMENTARITY_WITH_DISCRIMINATING_PROBE",
+      "tested": true
+    },
+    {
+      "candidate_id": "FC22-04-1",
+      "epoch": 4,
+      "productive": false,
+      "rejection_reason": "RESOURCE_CONFLICT",
+      "route_basis": "NEAREST_COMPLEMENTARITY_WITH_DISCRIMINATING_PROBE",
+      "tested": true
+    },
+    {
+      "candidate_id": "C22-05-120125db3c40",
+      "epoch": 5,
+      "future_instance_information_used": false,
+      "productive": true,
+      "reactants": [
+        "SEM21-A00",
+        "SEM21-A01",
+        "SEM21-A04"
+      ],
+      "reaction_spec_sha256": "120125db3c4073404f566cb359d01af61b0010ebf2ba66cae86df6ebc72244f7",
+      "route_basis": "CURRENT_FRONTIER_GAP_PLUS_MISSING_ROLES_PLUS_RESOURCE_CONDITIONS",
+      "source_domains": [
+        "RELATIONAL_DEPENDENCY",
+        "RESOURCE_SCHEDULING",
+        "EXACT_TRANSFORMATION"
+      ],
+      "tested": true,
+      "topology": "PARALLEL_COOPERATION"
+    },
+    {
+      "candidate_id": "FC22-05-0",
+      "epoch": 5,
+      "productive": false,
+      "rejection_reason": "ROLE_MISMATCH",
+      "route_basis": "NEAREST_COMPLEMENTARITY_WITH_DISCRIMINATING_PROBE",
+      "tested": true
+    },
+    {
+      "candidate_id": "FC22-05-1",
+      "epoch": 5,
+      "productive": false,
+      "rejection_reason": "ORDERING_CONFLICT",
+      "route_basis": "NEAREST_COMPLEMENTARITY_WITH_DISCRIMINATING_PROBE",
+      "tested": true
+    },
+    {
+      "candidate_id": "C22-06-9d1de846cca3",
+      "epoch": 6,
+      "future_instance_information_used": false,
+      "productive": true,
+      "reactants": [
+        "SEM21-A00",
+        "SEM21-A01",
+        "SEM21-A02"
+      ],
+      "reaction_spec_sha256": "9d1de846cca340e9f938d6ff5889156b7b9ec92e5cc8a2bf02ad84639781359a",
+      "route_basis": "CURRENT_FRONTIER_GAP_PLUS_MISSING_ROLES_PLUS_RESOURCE_CONDITIONS",
+      "source_domains": [
+        "RELATIONAL_DEPENDENCY",
+        "RESOURCE_SCHEDULING",
+        "MEMORY_LIFETIME"
+      ],
+      "tested": true,
+      "topology": "CONDITIONAL_GATING"
+    },
+    {
+      "candidate_id": "FC22-06-0",
+      "epoch": 6,
+      "productive": false,
+      "rejection_reason": "ROLE_MISMATCH",
+      "route_basis": "NEAREST_COMPLEMENTARITY_WITH_DISCRIMINATING_PROBE",
+      "tested": true
+    },
+    {
+      "candidate_id": "FC22-06-1",
+      "epoch": 6,
+      "productive": false,
+      "rejection_reason": "RESOURCE_CONFLICT",
+      "route_basis": "NEAREST_COMPLEMENTARITY_WITH_DISCRIMINATING_PROBE",
+      "tested": true
+    },
+    {
+      "candidate_id": "C22-07-088992e41aef",
+      "epoch": 7,
+      "future_instance_information_used": false,
+      "productive": true,
+      "reactants": [
+        "SEM21-A01",
+        "SEM21-A02",
+        "SEM21-A03"
+      ],
+      "reaction_spec_sha256": "088992e41aef2d7617feef75ad202ab7c205cfe991ea89a3a9c254de87c78e4c",
+      "route_basis": "CURRENT_FRONTIER_GAP_PLUS_MISSING_ROLES_PLUS_RESOURCE_CONDITIONS",
+      "source_domains": [
+        "RESOURCE_SCHEDULING",
+        "MEMORY_LIFETIME",
+        "SPARSE_ACTIVATION"
+      ],
+      "tested": true,
+      "topology": "MEDIATED_SHARED_STATE_FUSION"
+    },
+    {
+      "candidate_id": "FC22-07-0",
+      "epoch": 7,
+      "productive": false,
+      "rejection_reason": "ROLE_MISMATCH",
+      "route_basis": "NEAREST_COMPLEMENTARITY_WITH_DISCRIMINATING_PROBE",
+      "tested": true
+    },
+    {
+      "candidate_id": "FC22-07-1",
+      "epoch": 7,
+      "productive": false,
+      "rejection_reason": "ORDERING_CONFLICT",
+      "route_basis": "NEAREST_COMPLEMENTARITY_WITH_DISCRIMINATING_PROBE",
+      "tested": true
+    },
+    {
+      "candidate_id": "C22-08-0ed1bfd4f598",
+      "epoch": 8,
+      "future_instance_information_used": false,
+      "productive": true,
+      "reactants": [
+        "SEM21-A00",
+        "SEM21-A02",
+        "SEM21-A03",
+        "SEM21-A04"
+      ],
+      "reaction_spec_sha256": "0ed1bfd4f598cfab40bdf964851c9ffd9d5cce21c1ccfac19333b0732a35bdff",
+      "route_basis": "CURRENT_FRONTIER_GAP_PLUS_MISSING_ROLES_PLUS_RESOURCE_CONDITIONS",
+      "source_domains": [
+        "RELATIONAL_DEPENDENCY",
+        "MEMORY_LIFETIME",
+        "SPARSE_ACTIVATION",
+        "EXACT_TRANSFORMATION"
+      ],
+      "tested": true,
+      "topology": "SERIAL_ROLE_DEPENDENCY"
+    },
+    {
+      "candidate_id": "FC22-08-0",
+      "epoch": 8,
+      "productive": false,
+      "rejection_reason": "ROLE_MISMATCH",
+      "route_basis": "NEAREST_COMPLEMENTARITY_WITH_DISCRIMINATING_PROBE",
+      "tested": true
+    },
+    {
+      "candidate_id": "FC22-08-1",
+      "epoch": 8,
+      "productive": false,
+      "rejection_reason": "RESOURCE_CONFLICT",
+      "route_basis": "NEAREST_COMPLEMENTARITY_WITH_DISCRIMINATING_PROBE",
+      "tested": true
+    },
+    {
+      "candidate_id": "C22-09-534bd7c4fe2e",
+      "epoch": 9,
+      "future_instance_information_used": false,
+      "productive": true,
+      "reactants": [
+        "SEM21-A00",
+        "SEM21-A01",
+        "SEM21-A02",
+        "SEM21-A04"
+      ],
+      "reaction_spec_sha256": "534bd7c4fe2ed5552aa0363773c859239c765251ddb18a1657f1e3f3619aa30c",
+      "route_basis": "CURRENT_FRONTIER_GAP_PLUS_MISSING_ROLES_PLUS_RESOURCE_CONDITIONS",
+      "source_domains": [
+        "RELATIONAL_DEPENDENCY",
+        "RESOURCE_SCHEDULING",
+        "MEMORY_LIFETIME",
+        "EXACT_TRANSFORMATION"
+      ],
+      "tested": true,
+      "topology": "PARALLEL_COOPERATION"
+    },
+    {
+      "candidate_id": "FC22-09-0",
+      "epoch": 9,
+      "productive": false,
+      "rejection_reason": "ROLE_MISMATCH",
+      "route_basis": "NEAREST_COMPLEMENTARITY_WITH_DISCRIMINATING_PROBE",
+      "tested": true
+    },
+    {
+      "candidate_id": "FC22-09-1",
+      "epoch": 9,
+      "productive": false,
+      "rejection_reason": "ORDERING_CONFLICT",
+      "route_basis": "NEAREST_COMPLEMENTARITY_WITH_DISCRIMINATING_PROBE",
+      "tested": true
+    },
+    {
+      "candidate_id": "C22-10-f0cd7086b580",
+      "epoch": 10,
+      "future_instance_information_used": false,
+      "productive": true,
+      "reactants": [
+        "SEM21-A00",
+        "SEM21-A01",
+        "SEM21-A03",
+        "SEM21-A04"
+      ],
+      "reaction_spec_sha256": "f0cd7086b580dee94c10c04f3e9ed38e7b9bee342a4bb0203688827e048179c9",
+      "route_basis": "CURRENT_FRONTIER_GAP_PLUS_MISSING_ROLES_PLUS_RESOURCE_CONDITIONS",
+      "source_domains": [
+        "RELATIONAL_DEPENDENCY",
+        "RESOURCE_SCHEDULING",
+        "SPARSE_ACTIVATION",
+        "EXACT_TRANSFORMATION"
+      ],
+      "tested": true,
+      "topology": "FEEDBACK_WITH_CATALYSIS"
+    },
+    {
+      "candidate_id": "FC22-10-0",
+      "epoch": 10,
+      "productive": false,
+      "rejection_reason": "ROLE_MISMATCH",
+      "route_basis": "NEAREST_COMPLEMENTARITY_WITH_DISCRIMINATING_PROBE",
+      "tested": true
+    },
+    {
+      "candidate_id": "FC22-10-1",
+      "epoch": 10,
+      "productive": false,
+      "rejection_reason": "RESOURCE_CONFLICT",
+      "route_basis": "NEAREST_COMPLEMENTARITY_WITH_DISCRIMINATING_PROBE",
+      "tested": true
+    },
+    {
+      "candidate_id": "C22-11-1c1b6b900f47",
+      "epoch": 11,
+      "future_instance_information_used": false,
+      "productive": true,
+      "reactants": [
+        "SEM21-A00",
+        "SEM21-A01",
+        "SEM21-A02",
+        "SEM21-A03",
+        "SEM21-A04"
+      ],
+      "reaction_spec_sha256": "1c1b6b900f47b6920d87c1fb7834fb10d28c18c16fafb743e489f1d7cc0e8144",
+      "route_basis": "CURRENT_FRONTIER_GAP_PLUS_MISSING_ROLES_PLUS_RESOURCE_CONDITIONS",
+      "source_domains": [
+        "RELATIONAL_DEPENDENCY",
+        "RESOURCE_SCHEDULING",
+        "MEMORY_LIFETIME",
+        "SPARSE_ACTIVATION",
+        "EXACT_TRANSFORMATION"
+      ],
+      "tested": true,
+      "topology": "MEDIATED_SHARED_STATE_FUSION"
+    },
+    {
+      "candidate_id": "FC22-11-0",
+      "epoch": 11,
+      "productive": false,
+      "rejection_reason": "ROLE_MISMATCH",
+      "route_basis": "NEAREST_COMPLEMENTARITY_WITH_DISCRIMINATING_PROBE",
+      "tested": true
+    },
+    {
+      "candidate_id": "FC22-11-1",
+      "epoch": 11,
+      "productive": false,
+      "rejection_reason": "ORDERING_CONFLICT",
+      "route_basis": "NEAREST_COMPLEMENTARITY_WITH_DISCRIMINATING_PROBE",
+      "tested": true
+    },
+    {
+      "candidate_id": "C22-12-648e292873c5",
+      "epoch": 12,
+      "future_instance_information_used": false,
+      "productive": true,
+      "reactants": [
+        "SEM21-A00",
+        "SEM21-A01",
+        "SEM21-A02",
+        "SEM21-A03",
+        "SEM21-A04"
+      ],
+      "reaction_spec_sha256": "648e292873c5f9352c6aeeade88b985e97e823ed0ebd61b23aa529e43c470ed2",
+      "route_basis": "CURRENT_FRONTIER_GAP_PLUS_MISSING_ROLES_PLUS_RESOURCE_CONDITIONS",
+      "source_domains": [
+        "RELATIONAL_DEPENDENCY",
+        "RESOURCE_SCHEDULING",
+        "MEMORY_LIFETIME",
+        "SPARSE_ACTIVATION",
+        "EXACT_TRANSFORMATION"
+      ],
+      "tested": true,
+      "topology": "SERIAL_ROLE_DEPENDENCY"
+    },
+    {
+      "candidate_id": "FC22-12-0",
+      "epoch": 12,
+      "productive": false,
+      "rejection_reason": "ROLE_MISMATCH",
+      "route_basis": "NEAREST_COMPLEMENTARITY_WITH_DISCRIMINATING_PROBE",
+      "tested": true
+    },
+    {
+      "candidate_id": "FC22-12-1",
+      "epoch": 12,
+      "productive": false,
+      "rejection_reason": "RESOURCE_CONFLICT",
+      "route_basis": "NEAREST_COMPLEMENTARITY_WITH_DISCRIMINATING_PROBE",
+      "tested": true
+    }
+  ],
+  "routed_candidates": 36,
+  "theoretical_space": 9384
+}

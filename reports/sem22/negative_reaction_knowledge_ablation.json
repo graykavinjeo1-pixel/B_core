@@ -1,0 +1,7 @@
+{
+  "candidate_count_with_knowledge": 36,
+  "candidate_count_without_knowledge": 144,
+  "passed": true,
+  "repeated_invalid_attempts_with_knowledge": 0,
+  "repeated_invalid_attempts_without_knowledge": 18
+}

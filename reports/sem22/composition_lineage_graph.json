@@ -1,0 +1,80 @@
+{
+  "causal_depth": 7,
+  "edges": [
+    {
+      "from": "C22-01-61da53d286cc",
+      "mechanism": "COMPOSITE_TO_NEW_ABSTRACTION_TO_LATER_REACTION_AFFORDANCE",
+      "to": "C22-02-90e72d28d387"
+    },
+    {
+      "from": "C22-02-90e72d28d387",
+      "mechanism": "COMPOSITE_TO_NEW_ABSTRACTION_TO_LATER_REACTION_AFFORDANCE",
+      "to": "C22-03-0adc5f90d1ad"
+    },
+    {
+      "from": "C22-03-0adc5f90d1ad",
+      "mechanism": "COMPOSITE_TO_NEW_ABSTRACTION_TO_LATER_REACTION_AFFORDANCE",
+      "to": "C22-04-6b4383555691"
+    },
+    {
+      "from": "C22-04-6b4383555691",
+      "mechanism": "COMPOSITE_TO_NEW_ABSTRACTION_TO_LATER_REACTION_AFFORDANCE",
+      "to": "C22-05-120125db3c40"
+    },
+    {
+      "from": "C22-05-120125db3c40",
+      "mechanism": "COMPOSITE_TO_NEW_ABSTRACTION_TO_LATER_REACTION_AFFORDANCE",
+      "to": "C22-06-9d1de846cca3"
+    },
+    {
+      "from": "C22-06-9d1de846cca3",
+      "mechanism": "COMPOSITE_TO_NEW_ABSTRACTION_TO_LATER_REACTION_AFFORDANCE",
+      "to": "C22-07-088992e41aef"
+    },
+    {
+      "from": "C22-07-088992e41aef",
+      "mechanism": "COMPOSITE_TO_NEW_ABSTRACTION_TO_LATER_REACTION_AFFORDANCE",
+      "to": "C22-08-0ed1bfd4f598"
+    },
+    {
+      "from": "C22-08-0ed1bfd4f598",
+      "mechanism": "COMPOSITE_TO_NEW_ABSTRACTION_TO_LATER_REACTION_AFFORDANCE",
+      "to": "C22-09-534bd7c4fe2e"
+    },
+    {
+      "from": "C22-09-534bd7c4fe2e",
+      "mechanism": "COMPOSITE_TO_NEW_ABSTRACTION_TO_LATER_REACTION_AFFORDANCE",
+      "to": "C22-10-f0cd7086b580"
+    },
+    {
+      "from": "C22-10-f0cd7086b580",
+      "mechanism": "COMPOSITE_TO_NEW_ABSTRACTION_TO_LATER_REACTION_AFFORDANCE",
+      "to": "C22-11-1c1b6b900f47"
+    },
+    {
+      "from": "C22-11-1c1b6b900f47",
+      "mechanism": "COMPOSITE_TO_NEW_ABSTRACTION_TO_LATER_REACTION_AFFORDANCE",
+      "to": "C22-12-648e292873c5"
+    }
+  ],
+  "nodes": [
+    "C22-01-61da53d286cc",
+    "C22-02-90e72d28d387",
+    "C22-03-0adc5f90d1ad",
+    "C22-04-6b4383555691",
+    "C22-05-120125db3c40",
+    "C22-06-9d1de846cca3",
+    "C22-07-088992e41aef",
+    "C22-08-0ed1bfd4f598",
+    "C22-09-534bd7c4fe2e",
+    "C22-10-f0cd7086b580",
+    "C22-11-1c1b6b900f47",
+    "C22-12-648e292873c5",
+    "M22-01",
+    "M22-02",
+    "M22-03",
+    "K22-01",
+    "K22-02",
+    "K22-03"
+  ]
+}
