@@ -1,0 +1,27 @@
+{
+  "event_count": 3,
+  "events": [
+    {
+      "later_pressure_fresh": true,
+      "parent_advanced": true,
+      "reactivation_epoch": 2,
+      "saturation_epoch": 1,
+      "verified_new_meta_improvement": true
+    },
+    {
+      "later_pressure_fresh": true,
+      "parent_advanced": true,
+      "reactivation_epoch": 4,
+      "saturation_epoch": 3,
+      "verified_new_meta_improvement": true
+    },
+    {
+      "later_pressure_fresh": true,
+      "parent_advanced": true,
+      "reactivation_epoch": 6,
+      "saturation_epoch": 5,
+      "verified_new_meta_improvement": true
+    }
+  ],
+  "reactivated_after_saturation": true
+}

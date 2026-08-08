@@ -1,0 +1,68 @@
+[
+  {
+    "current_deterministic_cost": 21.0,
+    "current_id": "SEM16_META_BASE",
+    "current_wall_time_ns": 4322000.0,
+    "deterministic_cost_gain": 0.0,
+    "epoch": 1,
+    "parent_deterministic_cost": 21.0,
+    "parent_id": "SEM16_META_BASE",
+    "parent_wall_time_ns": 4322000.0,
+    "wall_time_claimed_as_abstract_cost": false
+  },
+  {
+    "current_deterministic_cost": 16.0,
+    "current_id": "SEM16_MD1_BOUNDED_FRONTIER_PRIORITY",
+    "current_wall_time_ns": 4511800.0,
+    "deterministic_cost_gain": 0.15789473684210525,
+    "epoch": 2,
+    "parent_deterministic_cost": 19.0,
+    "parent_id": "SEM16_META_BASE",
+    "parent_wall_time_ns": 4492300.0,
+    "wall_time_claimed_as_abstract_cost": false
+  },
+  {
+    "current_deterministic_cost": 19.0,
+    "current_id": "SEM16_MD1_BOUNDED_FRONTIER_PRIORITY",
+    "current_wall_time_ns": 4513900.0,
+    "deterministic_cost_gain": 0.0,
+    "epoch": 3,
+    "parent_deterministic_cost": 19.0,
+    "parent_id": "SEM16_MD1_BOUNDED_FRONTIER_PRIORITY",
+    "parent_wall_time_ns": 4513900.0,
+    "wall_time_claimed_as_abstract_cost": false
+  },
+  {
+    "current_deterministic_cost": 15.0,
+    "current_id": "SEM16_MD2_META_STATE_SNAPSHOT_REUSE",
+    "current_wall_time_ns": 4729700.0,
+    "deterministic_cost_gain": 0.21052631578947367,
+    "epoch": 4,
+    "parent_deterministic_cost": 19.0,
+    "parent_id": "SEM16_MD1_BOUNDED_FRONTIER_PRIORITY",
+    "parent_wall_time_ns": 4653000.0,
+    "wall_time_claimed_as_abstract_cost": false
+  },
+  {
+    "current_deterministic_cost": 20.0,
+    "current_id": "SEM16_MD2_META_STATE_SNAPSHOT_REUSE",
+    "current_wall_time_ns": 4564500.0,
+    "deterministic_cost_gain": 0.0,
+    "epoch": 5,
+    "parent_deterministic_cost": 20.0,
+    "parent_id": "SEM16_MD2_META_STATE_SNAPSHOT_REUSE",
+    "parent_wall_time_ns": 4564500.0,
+    "wall_time_claimed_as_abstract_cost": false
+  },
+  {
+    "current_deterministic_cost": 18.0,
+    "current_id": "SEM16_MD3_ADAPTIVE_PROBE_BUDGET",
+    "current_wall_time_ns": 4596500.0,
+    "deterministic_cost_gain": 0.25,
+    "epoch": 6,
+    "parent_deterministic_cost": 24.0,
+    "parent_id": "SEM16_MD2_META_STATE_SNAPSHOT_REUSE",
+    "parent_wall_time_ns": 4710000.0,
+    "wall_time_claimed_as_abstract_cost": false
+  }
+]

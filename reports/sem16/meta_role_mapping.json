@@ -1,0 +1,26 @@
+[
+  {
+    "epoch": 2,
+    "mapping_verified_by_ablation": true,
+    "source_role": "sparse semantic routing frontier",
+    "structural_role_alignment": true,
+    "surface_label_copy": false,
+    "target_role": "meta mechanism ordering frontier"
+  },
+  {
+    "epoch": 4,
+    "mapping_verified_by_ablation": true,
+    "source_role": "bounded recursive state reuse",
+    "structural_role_alignment": true,
+    "surface_label_copy": false,
+    "target_role": "repeated meta-state reconstruction"
+  },
+  {
+    "epoch": 6,
+    "mapping_verified_by_ablation": true,
+    "source_role": "causal probe prioritization",
+    "structural_role_alignment": true,
+    "surface_label_copy": false,
+    "target_role": "fresh returning-pressure probe budget"
+  }
+]

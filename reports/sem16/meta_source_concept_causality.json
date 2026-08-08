@@ -1,0 +1,36 @@
+{
+  "all_pass": true,
+  "complete_causal_lineage": true,
+  "source_concepts": [
+    {
+      "epoch": 2,
+      "passed": true,
+      "quality_unchanged": true,
+      "removal_erases_targeted_efficiency_gain": true,
+      "restoration_recovers_gain": true,
+      "restored_gain": 0.15789473684210525,
+      "source_concept": "SPARSE_ROUTING_AS_BOUNDED_META_FRONTIER_PRIORITY",
+      "target_pressure": "MANY_MECHANISM_COMBINATIONS"
+    },
+    {
+      "epoch": 4,
+      "passed": true,
+      "quality_unchanged": true,
+      "removal_erases_targeted_efficiency_gain": true,
+      "restoration_recovers_gain": true,
+      "restored_gain": 0.21052631578947367,
+      "source_concept": "RECURSIVE_STATE_AS_CONTEXT_LOCAL_META_SNAPSHOT_REUSE",
+      "target_pressure": "MIXED_AMBIGUITY_AND_COMPOSITION"
+    },
+    {
+      "epoch": 6,
+      "passed": true,
+      "quality_unchanged": true,
+      "removal_erases_targeted_efficiency_gain": true,
+      "restoration_recovers_gain": true,
+      "restored_gain": 0.25,
+      "source_concept": "CAUSAL_PROBE_PRIORITY_AS_ADAPTIVE_EVIDENCE_BUDGET",
+      "target_pressure": "RETURNING_AMBIGUITY_UNDER_FRESH_TIGHT_BUDGET"
+    }
+  ]
+}

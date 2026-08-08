@@ -1,0 +1,59 @@
+[
+  {
+    "epoch": 1,
+    "fresh_evidence_only": true,
+    "parent_retained": true,
+    "pressure": "AMBIGUOUS_CAUSAL_EVIDENCE",
+    "stale_weakness_targeted": false,
+    "status": "NO_ACTIONABLE_META_WEAKNESS"
+  },
+  {
+    "causal_hypothesis": "the composed SEM15 engine scans a correct mechanism set but pays a reusable fixed frontier-ordering cost",
+    "efficiency_weakness": true,
+    "epoch": 2,
+    "fresh_evidence_only": true,
+    "observed_parent_validation_cost": 19.0,
+    "pressure": "MANY_MECHANISM_COMBINATIONS",
+    "quality_weakness": false,
+    "stale_weakness_targeted": false,
+    "status": "ACTIONABLE_META_WEAKNESS"
+  },
+  {
+    "epoch": 3,
+    "fresh_evidence_only": true,
+    "parent_retained": true,
+    "pressure": "STRONG_REUSABLE_PRIOR_REJECTION_EVIDENCE",
+    "stale_weakness_targeted": false,
+    "status": "NO_ACTIONABLE_META_WEAKNESS"
+  },
+  {
+    "causal_hypothesis": "mixed ambiguity and composition reconstruct the same meta-state signatures instead of reusing a bounded snapshot",
+    "efficiency_weakness": true,
+    "epoch": 4,
+    "fresh_evidence_only": true,
+    "observed_parent_validation_cost": 19.0,
+    "pressure": "MIXED_AMBIGUITY_AND_COMPOSITION",
+    "quality_weakness": false,
+    "stale_weakness_targeted": false,
+    "status": "ACTIONABLE_META_WEAKNESS"
+  },
+  {
+    "epoch": 5,
+    "fresh_evidence_only": true,
+    "parent_retained": true,
+    "pressure": "RESOURCE_CONSTRAINED_SEARCH",
+    "stale_weakness_targeted": false,
+    "status": "NO_ACTIONABLE_META_WEAKNESS"
+  },
+  {
+    "causal_hypothesis": "returning ambiguity under a longer fresh evidence sequence keeps the old fixed probe budget",
+    "efficiency_weakness": true,
+    "epoch": 6,
+    "fresh_evidence_only": true,
+    "observed_parent_validation_cost": 24.0,
+    "pressure": "RETURNING_AMBIGUITY_UNDER_FRESH_TIGHT_BUDGET",
+    "quality_weakness": false,
+    "stale_weakness_targeted": false,
+    "status": "ACTIONABLE_META_WEAKNESS"
+  }
+]

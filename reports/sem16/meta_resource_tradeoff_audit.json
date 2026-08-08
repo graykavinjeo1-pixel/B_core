@@ -1,0 +1,6 @@
+{
+  "accepted": true,
+  "events": 1,
+  "quality_cost": 0,
+  "tradeoff": "one context-local active concept and bounded snapshot memory exchanged for verified deterministic cost reduction"
+}

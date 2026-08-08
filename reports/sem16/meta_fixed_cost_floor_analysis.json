@@ -1,0 +1,8 @@
+{
+  "abstract_cost_claimed_as_wall_clock_speedup": false,
+  "base_wall_time_ns": 4943700.0,
+  "deterministic_cost_gain": 0.05263157894736842,
+  "final_wall_time_ns": 5588000.0,
+  "fixed_runtime_overhead_dominant": true,
+  "wall_time_gain": -0.13032748750935533
+}

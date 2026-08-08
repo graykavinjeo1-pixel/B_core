@@ -1,0 +1,55 @@
+{
+  "base_core_total_deployable_bytes": 168691,
+  "final_core_total_deployable_bytes": 170446,
+  "meta_core_bloat_ratio": 0.01040363741989792,
+  "rows": [
+    {
+      "added_deployable_bytes_vs_base": "0",
+      "candidate": "SEM16_META_BASE",
+      "core_index_bytes": 281,
+      "core_release_binary_bytes": 163328,
+      "core_semantic_state_bytes": 2662,
+      "core_source_bytes": 5363,
+      "core_total_deployable_bytes": 168691,
+      "meta_gain": 0.0,
+      "meta_gain_per_added_byte": 0.0,
+      "semantic_state_and_index_shared_not_reduplicated": true
+    },
+    {
+      "added_deployable_bytes_vs_base": "1245",
+      "candidate": "SEM16_MD1_BOUNDED_FRONTIER_PRIORITY",
+      "core_index_bytes": 281,
+      "core_release_binary_bytes": 163328,
+      "core_semantic_state_bytes": 2662,
+      "core_source_bytes": 6608,
+      "core_total_deployable_bytes": 169936,
+      "meta_gain": 0.15789473684210525,
+      "meta_gain_per_added_byte": 0.00012682308180088776,
+      "semantic_state_and_index_shared_not_reduplicated": true
+    },
+    {
+      "added_deployable_bytes_vs_base": "1756",
+      "candidate": "SEM16_MD2_META_STATE_SNAPSHOT_REUSE",
+      "core_index_bytes": 281,
+      "core_release_binary_bytes": 163840,
+      "core_semantic_state_bytes": 2662,
+      "core_source_bytes": 6607,
+      "core_total_deployable_bytes": 170447,
+      "meta_gain": 0.21052631578947367,
+      "meta_gain_per_added_byte": 0.00011988970147464332,
+      "semantic_state_and_index_shared_not_reduplicated": true
+    },
+    {
+      "added_deployable_bytes_vs_base": "1755",
+      "candidate": "SEM16_MD3_ADAPTIVE_PROBE_BUDGET",
+      "core_index_bytes": 281,
+      "core_release_binary_bytes": 163840,
+      "core_semantic_state_bytes": 2662,
+      "core_source_bytes": 6606,
+      "core_total_deployable_bytes": 170446,
+      "meta_gain": 0.25,
+      "meta_gain_per_added_byte": 0.00014245014245014244,
+      "semantic_state_and_index_shared_not_reduplicated": true
+    }
+  ]
+}

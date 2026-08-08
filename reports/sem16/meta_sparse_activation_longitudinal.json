@@ -1,0 +1,68 @@
+[
+  {
+    "contextual_activation_only": true,
+    "current_id": "SEM16_META_BASE",
+    "epoch": 1,
+    "full_catalog_scans": 0,
+    "parent_id": "SEM16_META_BASE",
+    "peak_active_concepts": 3,
+    "peak_frontier": 4,
+    "pressure": "AMBIGUOUS_CAUSAL_EVIDENCE",
+    "routing_false_negatives": 0
+  },
+  {
+    "contextual_activation_only": true,
+    "current_id": "SEM16_MD1_BOUNDED_FRONTIER_PRIORITY",
+    "epoch": 2,
+    "full_catalog_scans": 0,
+    "parent_id": "SEM16_META_BASE",
+    "peak_active_concepts": 4,
+    "peak_frontier": 3,
+    "pressure": "MANY_MECHANISM_COMBINATIONS",
+    "routing_false_negatives": 0
+  },
+  {
+    "contextual_activation_only": true,
+    "current_id": "SEM16_MD1_BOUNDED_FRONTIER_PRIORITY",
+    "epoch": 3,
+    "full_catalog_scans": 0,
+    "parent_id": "SEM16_MD1_BOUNDED_FRONTIER_PRIORITY",
+    "peak_active_concepts": 3,
+    "peak_frontier": 4,
+    "pressure": "STRONG_REUSABLE_PRIOR_REJECTION_EVIDENCE",
+    "routing_false_negatives": 0
+  },
+  {
+    "contextual_activation_only": true,
+    "current_id": "SEM16_MD2_META_STATE_SNAPSHOT_REUSE",
+    "epoch": 4,
+    "full_catalog_scans": 0,
+    "parent_id": "SEM16_MD1_BOUNDED_FRONTIER_PRIORITY",
+    "peak_active_concepts": 4,
+    "peak_frontier": 3,
+    "pressure": "MIXED_AMBIGUITY_AND_COMPOSITION",
+    "routing_false_negatives": 0
+  },
+  {
+    "contextual_activation_only": true,
+    "current_id": "SEM16_MD2_META_STATE_SNAPSHOT_REUSE",
+    "epoch": 5,
+    "full_catalog_scans": 0,
+    "parent_id": "SEM16_MD2_META_STATE_SNAPSHOT_REUSE",
+    "peak_active_concepts": 3,
+    "peak_frontier": 4,
+    "pressure": "RESOURCE_CONSTRAINED_SEARCH",
+    "routing_false_negatives": 0
+  },
+  {
+    "contextual_activation_only": true,
+    "current_id": "SEM16_MD3_ADAPTIVE_PROBE_BUDGET",
+    "epoch": 6,
+    "full_catalog_scans": 0,
+    "parent_id": "SEM16_MD2_META_STATE_SNAPSHOT_REUSE",
+    "peak_active_concepts": 4,
+    "peak_frontier": 4,
+    "pressure": "RETURNING_AMBIGUITY_UNDER_FRESH_TIGHT_BUDGET",
+    "routing_false_negatives": 0
+  }
+]

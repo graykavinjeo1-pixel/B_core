@@ -1,0 +1,62 @@
+[
+  {
+    "alternatives_considered": [
+      "NO_PATCH",
+      "GLOBAL_CACHE",
+      "UNBOUNDED_SEARCH",
+      "BOUNDED_FRONTIER_PRIORITY"
+    ],
+    "autonomous_selection_within_frozen_governor": true,
+    "epoch": 2,
+    "governor_change_proposed": false,
+    "rejected_ungrounded_random_alternatives": 2,
+    "selected_mechanism": "BOUNDED_FRONTIER_PRIORITY",
+    "selected_mode": {
+      "adaptive_probe_budget": false,
+      "frontier_priority": true,
+      "state_snapshot_reuse": false
+    },
+    "selection_basis": "fresh trace-local deterministic cost concentration",
+    "source_concepts_composed": 1
+  },
+  {
+    "alternatives_considered": [
+      "NO_PATCH",
+      "GLOBAL_CACHE",
+      "UNBOUNDED_SEARCH",
+      "META_STATE_SNAPSHOT_REUSE"
+    ],
+    "autonomous_selection_within_frozen_governor": true,
+    "epoch": 4,
+    "governor_change_proposed": false,
+    "rejected_ungrounded_random_alternatives": 2,
+    "selected_mechanism": "META_STATE_SNAPSHOT_REUSE",
+    "selected_mode": {
+      "adaptive_probe_budget": false,
+      "frontier_priority": true,
+      "state_snapshot_reuse": true
+    },
+    "selection_basis": "fresh trace-local deterministic cost concentration",
+    "source_concepts_composed": 2
+  },
+  {
+    "alternatives_considered": [
+      "NO_PATCH",
+      "GLOBAL_CACHE",
+      "UNBOUNDED_SEARCH",
+      "ADAPTIVE_PROBE_BUDGET"
+    ],
+    "autonomous_selection_within_frozen_governor": true,
+    "epoch": 6,
+    "governor_change_proposed": false,
+    "rejected_ungrounded_random_alternatives": 2,
+    "selected_mechanism": "ADAPTIVE_PROBE_BUDGET",
+    "selected_mode": {
+      "adaptive_probe_budget": true,
+      "frontier_priority": true,
+      "state_snapshot_reuse": true
+    },
+    "selection_basis": "fresh trace-local deterministic cost concentration",
+    "source_concepts_composed": 1
+  }
+]

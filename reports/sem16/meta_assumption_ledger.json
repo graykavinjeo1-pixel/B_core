@@ -1,0 +1,74 @@
+[
+  {
+    "assumptions": [
+      {
+        "claim": "quality authority remains external and frozen",
+        "id": "ME2-A1",
+        "passed": true,
+        "tested": true
+      },
+      {
+        "claim": "candidate and parent receive identical hidden validation input",
+        "id": "ME2-A2",
+        "passed": true,
+        "tested": true
+      },
+      {
+        "claim": "the efficiency gain is removed by source-concept ablation",
+        "id": "ME2-A3",
+        "passed": true,
+        "tested": true
+      }
+    ],
+    "epoch": 2,
+    "untested_assumptions": 0
+  },
+  {
+    "assumptions": [
+      {
+        "claim": "quality authority remains external and frozen",
+        "id": "ME4-A1",
+        "passed": true,
+        "tested": true
+      },
+      {
+        "claim": "candidate and parent receive identical hidden validation input",
+        "id": "ME4-A2",
+        "passed": true,
+        "tested": true
+      },
+      {
+        "claim": "the efficiency gain is removed by source-concept ablation",
+        "id": "ME4-A3",
+        "passed": true,
+        "tested": true
+      }
+    ],
+    "epoch": 4,
+    "untested_assumptions": 0
+  },
+  {
+    "assumptions": [
+      {
+        "claim": "quality authority remains external and frozen",
+        "id": "ME6-A1",
+        "passed": true,
+        "tested": true
+      },
+      {
+        "claim": "candidate and parent receive identical hidden validation input",
+        "id": "ME6-A2",
+        "passed": true,
+        "tested": true
+      },
+      {
+        "claim": "the efficiency gain is removed by source-concept ablation",
+        "id": "ME6-A3",
+        "passed": true,
+        "tested": true
+      }
+    ],
+    "epoch": 6,
+    "untested_assumptions": 0
+  }
+]

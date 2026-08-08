@@ -1,0 +1,62 @@
+[
+  {
+    "assessment": "NO_ACTIONABLE_META_WEAKNESS",
+    "candidate_accepted": false,
+    "correct_no_patch": true,
+    "epoch": 1,
+    "fresh_evidence": true,
+    "insufficient_meta_evidence": false,
+    "parent_id": "SEM16_META_BASE",
+    "resulting_id": "SEM16_META_BASE"
+  },
+  {
+    "assessment": "ACTIONABLE_META_WEAKNESS_VERIFIED_CHILD_ACCEPTED",
+    "candidate_accepted": true,
+    "correct_no_patch": false,
+    "epoch": 2,
+    "fresh_evidence": true,
+    "insufficient_meta_evidence": false,
+    "parent_id": "SEM16_META_BASE",
+    "resulting_id": "SEM16_MD1_BOUNDED_FRONTIER_PRIORITY"
+  },
+  {
+    "assessment": "NO_ACTIONABLE_META_WEAKNESS",
+    "candidate_accepted": false,
+    "correct_no_patch": true,
+    "epoch": 3,
+    "fresh_evidence": true,
+    "insufficient_meta_evidence": false,
+    "parent_id": "SEM16_MD1_BOUNDED_FRONTIER_PRIORITY",
+    "resulting_id": "SEM16_MD1_BOUNDED_FRONTIER_PRIORITY"
+  },
+  {
+    "assessment": "ACTIONABLE_META_WEAKNESS_VERIFIED_CHILD_ACCEPTED",
+    "candidate_accepted": true,
+    "correct_no_patch": false,
+    "epoch": 4,
+    "fresh_evidence": true,
+    "insufficient_meta_evidence": false,
+    "parent_id": "SEM16_MD1_BOUNDED_FRONTIER_PRIORITY",
+    "resulting_id": "SEM16_MD2_META_STATE_SNAPSHOT_REUSE"
+  },
+  {
+    "assessment": "NO_ACTIONABLE_META_WEAKNESS",
+    "candidate_accepted": false,
+    "correct_no_patch": true,
+    "epoch": 5,
+    "fresh_evidence": true,
+    "insufficient_meta_evidence": false,
+    "parent_id": "SEM16_MD2_META_STATE_SNAPSHOT_REUSE",
+    "resulting_id": "SEM16_MD2_META_STATE_SNAPSHOT_REUSE"
+  },
+  {
+    "assessment": "ACTIONABLE_META_WEAKNESS_VERIFIED_CHILD_ACCEPTED",
+    "candidate_accepted": true,
+    "correct_no_patch": false,
+    "epoch": 6,
+    "fresh_evidence": true,
+    "insufficient_meta_evidence": false,
+    "parent_id": "SEM16_MD2_META_STATE_SNAPSHOT_REUSE",
+    "resulting_id": "SEM16_MD3_ADAPTIVE_PROBE_BUDGET"
+  }
+]

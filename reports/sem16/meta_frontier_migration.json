@@ -1,0 +1,41 @@
+{
+  "distinct_dominant_classes": 6,
+  "event_count": 5,
+  "events": [
+    {
+      "dominant_meta_weakness_class_changed": true,
+      "from_epoch": 1,
+      "from_pressure": "AMBIGUOUS_CAUSAL_EVIDENCE",
+      "to_epoch": 2,
+      "to_pressure": "MANY_MECHANISM_COMBINATIONS"
+    },
+    {
+      "dominant_meta_weakness_class_changed": true,
+      "from_epoch": 2,
+      "from_pressure": "MANY_MECHANISM_COMBINATIONS",
+      "to_epoch": 3,
+      "to_pressure": "STRONG_REUSABLE_PRIOR_REJECTION_EVIDENCE"
+    },
+    {
+      "dominant_meta_weakness_class_changed": true,
+      "from_epoch": 3,
+      "from_pressure": "STRONG_REUSABLE_PRIOR_REJECTION_EVIDENCE",
+      "to_epoch": 4,
+      "to_pressure": "MIXED_AMBIGUITY_AND_COMPOSITION"
+    },
+    {
+      "dominant_meta_weakness_class_changed": true,
+      "from_epoch": 4,
+      "from_pressure": "MIXED_AMBIGUITY_AND_COMPOSITION",
+      "to_epoch": 5,
+      "to_pressure": "RESOURCE_CONSTRAINED_SEARCH"
+    },
+    {
+      "dominant_meta_weakness_class_changed": true,
+      "from_epoch": 5,
+      "from_pressure": "RESOURCE_CONSTRAINED_SEARCH",
+      "to_epoch": 6,
+      "to_pressure": "RETURNING_AMBIGUITY_UNDER_FRESH_TIGHT_BUDGET"
+    }
+  ]
+}

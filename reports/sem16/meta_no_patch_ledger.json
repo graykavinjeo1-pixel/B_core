@@ -1,0 +1,44 @@
+[
+  {
+    "correct_no_patch_rate": 1.0,
+    "correct_weakness_rate": 1.0,
+    "cost_within_frozen_pressure_envelope": true,
+    "epoch": 1,
+    "false_patch_rate": 0.0,
+    "fresh_diagnostic_challenges": 24,
+    "fresh_unopened_validation_challenges": 36,
+    "parent_retained": true,
+    "pressure": "AMBIGUOUS_CAUSAL_EVIDENCE",
+    "quality_saturated": true,
+    "stale_patch_attempted": false,
+    "status": "CORRECT_META_NO_PATCH"
+  },
+  {
+    "correct_no_patch_rate": 1.0,
+    "correct_weakness_rate": 1.0,
+    "cost_within_frozen_pressure_envelope": true,
+    "epoch": 3,
+    "false_patch_rate": 0.0,
+    "fresh_diagnostic_challenges": 24,
+    "fresh_unopened_validation_challenges": 36,
+    "parent_retained": true,
+    "pressure": "STRONG_REUSABLE_PRIOR_REJECTION_EVIDENCE",
+    "quality_saturated": true,
+    "stale_patch_attempted": false,
+    "status": "CORRECT_META_NO_PATCH"
+  },
+  {
+    "correct_no_patch_rate": 1.0,
+    "correct_weakness_rate": 1.0,
+    "cost_within_frozen_pressure_envelope": true,
+    "epoch": 5,
+    "false_patch_rate": 0.0,
+    "fresh_diagnostic_challenges": 24,
+    "fresh_unopened_validation_challenges": 36,
+    "parent_retained": true,
+    "pressure": "RESOURCE_CONSTRAINED_SEARCH",
+    "quality_saturated": true,
+    "stale_patch_attempted": false,
+    "status": "CORRECT_META_NO_PATCH"
+  }
+]

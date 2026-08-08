@@ -1,0 +1,35 @@
+[
+  {
+    "binary_sha256": "cea5a67c5a74bce0b97cde630dc9ecd302f49d35db50207455252451506c0396",
+    "child_id": "SEM16_MD1_BOUNDED_FRONTIER_PRIORITY",
+    "epoch": 2,
+    "parent_id": "SEM16_META_BASE",
+    "patch": "BOUNDED_FRONTIER_PRIORITY",
+    "production_promoted": false,
+    "random_patch": false,
+    "semantically_grounded": true,
+    "source_sha256": "81017b5b3a0847c2435377aa51a7fb645d5d557a1f05e50c43c05d7644a9ed5c"
+  },
+  {
+    "binary_sha256": "f15afab165d0c91d9303eb1ed8db7f4152f631b72460669cda366e3d776c4cfd",
+    "child_id": "SEM16_MD2_META_STATE_SNAPSHOT_REUSE",
+    "epoch": 4,
+    "parent_id": "SEM16_MD1_BOUNDED_FRONTIER_PRIORITY",
+    "patch": "META_STATE_SNAPSHOT_REUSE",
+    "production_promoted": false,
+    "random_patch": false,
+    "semantically_grounded": true,
+    "source_sha256": "05b25e76fb9c704cbb1d248ab067557333a3c8ec9e69be8081b35dea46c98f65"
+  },
+  {
+    "binary_sha256": "0cbdda006486b925e14a72c5cfa05e4ebda70bfb57d685f0f2b8e93e12024afa",
+    "child_id": "SEM16_MD3_ADAPTIVE_PROBE_BUDGET",
+    "epoch": 6,
+    "parent_id": "SEM16_MD2_META_STATE_SNAPSHOT_REUSE",
+    "patch": "ADAPTIVE_PROBE_BUDGET",
+    "production_promoted": false,
+    "random_patch": false,
+    "semantically_grounded": true,
+    "source_sha256": "3736dc22f40595b2425bf8dd9e8cecba41358434ed199c2fcf5101e84d670c87"
+  }
+]

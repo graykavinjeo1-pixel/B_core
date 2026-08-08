@@ -1,0 +1,68 @@
+[
+  {
+    "assessment": "NO_ACTIONABLE_META_WEAKNESS",
+    "epoch": 1,
+    "gain_erasure_events": 0,
+    "negative_transfer_events": 0,
+    "parent_id": "SEM16_META_BASE",
+    "pressure": "AMBIGUOUS_CAUSAL_EVIDENCE",
+    "quality_regressions": 0,
+    "resulting_id": "SEM16_META_BASE",
+    "retained_gain_ratio": 1.0
+  },
+  {
+    "assessment": "ACTIONABLE_META_WEAKNESS_VERIFIED_CHILD_ACCEPTED",
+    "epoch": 2,
+    "gain_erasure_events": 0,
+    "negative_transfer_events": 0,
+    "parent_id": "SEM16_META_BASE",
+    "pressure": "MANY_MECHANISM_COMBINATIONS",
+    "quality_regressions": 0,
+    "resulting_id": "SEM16_MD1_BOUNDED_FRONTIER_PRIORITY",
+    "retained_gain_ratio": 1.0
+  },
+  {
+    "assessment": "NO_ACTIONABLE_META_WEAKNESS",
+    "epoch": 3,
+    "gain_erasure_events": 0,
+    "negative_transfer_events": 0,
+    "parent_id": "SEM16_MD1_BOUNDED_FRONTIER_PRIORITY",
+    "pressure": "STRONG_REUSABLE_PRIOR_REJECTION_EVIDENCE",
+    "quality_regressions": 0,
+    "resulting_id": "SEM16_MD1_BOUNDED_FRONTIER_PRIORITY",
+    "retained_gain_ratio": 1.0
+  },
+  {
+    "assessment": "ACTIONABLE_META_WEAKNESS_VERIFIED_CHILD_ACCEPTED",
+    "epoch": 4,
+    "gain_erasure_events": 0,
+    "negative_transfer_events": 0,
+    "parent_id": "SEM16_MD1_BOUNDED_FRONTIER_PRIORITY",
+    "pressure": "MIXED_AMBIGUITY_AND_COMPOSITION",
+    "quality_regressions": 0,
+    "resulting_id": "SEM16_MD2_META_STATE_SNAPSHOT_REUSE",
+    "retained_gain_ratio": 1.0
+  },
+  {
+    "assessment": "NO_ACTIONABLE_META_WEAKNESS",
+    "epoch": 5,
+    "gain_erasure_events": 0,
+    "negative_transfer_events": 0,
+    "parent_id": "SEM16_MD2_META_STATE_SNAPSHOT_REUSE",
+    "pressure": "RESOURCE_CONSTRAINED_SEARCH",
+    "quality_regressions": 0,
+    "resulting_id": "SEM16_MD2_META_STATE_SNAPSHOT_REUSE",
+    "retained_gain_ratio": 1.0
+  },
+  {
+    "assessment": "ACTIONABLE_META_WEAKNESS_VERIFIED_CHILD_ACCEPTED",
+    "epoch": 6,
+    "gain_erasure_events": 0,
+    "negative_transfer_events": 0,
+    "parent_id": "SEM16_MD2_META_STATE_SNAPSHOT_REUSE",
+    "pressure": "RETURNING_AMBIGUITY_UNDER_FRESH_TIGHT_BUDGET",
+    "quality_regressions": 0,
+    "resulting_id": "SEM16_MD3_ADAPTIVE_PROBE_BUDGET",
+    "retained_gain_ratio": 1.0
+  }
+]

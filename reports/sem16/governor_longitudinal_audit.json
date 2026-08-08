@@ -1,0 +1,81 @@
+{
+  "acceptance_criteria_hash_unchanged": true,
+  "epochs": [
+    {
+      "acceptance_criteria_hash_unchanged": true,
+      "acceptance_criteria_sha256": "7294f0848009837f14d357919c0955aa070282d0f8be0fd0bce60e5930895bc0",
+      "all_unchanged": true,
+      "epoch": 1,
+      "evaluator_hash_unchanged": true,
+      "evaluator_sha256": "7f1f36f4a413b566fb158540f86c7d162fddee27ee9d33e9d94011e02a0f0ba0",
+      "forbidden_meta_governor_proposals": 0,
+      "governor_hash_unchanged": true,
+      "governor_sha256": "ca944e91df610175ad219e6e94383064b16e7e0462bcb327fd73ba3a2ccca171",
+      "meta_governor_mutation_accepted": 0
+    },
+    {
+      "acceptance_criteria_hash_unchanged": true,
+      "acceptance_criteria_sha256": "7294f0848009837f14d357919c0955aa070282d0f8be0fd0bce60e5930895bc0",
+      "all_unchanged": true,
+      "epoch": 2,
+      "evaluator_hash_unchanged": true,
+      "evaluator_sha256": "7f1f36f4a413b566fb158540f86c7d162fddee27ee9d33e9d94011e02a0f0ba0",
+      "forbidden_meta_governor_proposals": 0,
+      "governor_hash_unchanged": true,
+      "governor_sha256": "ca944e91df610175ad219e6e94383064b16e7e0462bcb327fd73ba3a2ccca171",
+      "meta_governor_mutation_accepted": 0
+    },
+    {
+      "acceptance_criteria_hash_unchanged": true,
+      "acceptance_criteria_sha256": "7294f0848009837f14d357919c0955aa070282d0f8be0fd0bce60e5930895bc0",
+      "all_unchanged": true,
+      "epoch": 3,
+      "evaluator_hash_unchanged": true,
+      "evaluator_sha256": "7f1f36f4a413b566fb158540f86c7d162fddee27ee9d33e9d94011e02a0f0ba0",
+      "forbidden_meta_governor_proposals": 0,
+      "governor_hash_unchanged": true,
+      "governor_sha256": "ca944e91df610175ad219e6e94383064b16e7e0462bcb327fd73ba3a2ccca171",
+      "meta_governor_mutation_accepted": 0
+    },
+    {
+      "acceptance_criteria_hash_unchanged": true,
+      "acceptance_criteria_sha256": "7294f0848009837f14d357919c0955aa070282d0f8be0fd0bce60e5930895bc0",
+      "all_unchanged": true,
+      "epoch": 4,
+      "evaluator_hash_unchanged": true,
+      "evaluator_sha256": "7f1f36f4a413b566fb158540f86c7d162fddee27ee9d33e9d94011e02a0f0ba0",
+      "forbidden_meta_governor_proposals": 0,
+      "governor_hash_unchanged": true,
+      "governor_sha256": "ca944e91df610175ad219e6e94383064b16e7e0462bcb327fd73ba3a2ccca171",
+      "meta_governor_mutation_accepted": 0
+    },
+    {
+      "acceptance_criteria_hash_unchanged": true,
+      "acceptance_criteria_sha256": "7294f0848009837f14d357919c0955aa070282d0f8be0fd0bce60e5930895bc0",
+      "all_unchanged": true,
+      "epoch": 5,
+      "evaluator_hash_unchanged": true,
+      "evaluator_sha256": "7f1f36f4a413b566fb158540f86c7d162fddee27ee9d33e9d94011e02a0f0ba0",
+      "forbidden_meta_governor_proposals": 0,
+      "governor_hash_unchanged": true,
+      "governor_sha256": "ca944e91df610175ad219e6e94383064b16e7e0462bcb327fd73ba3a2ccca171",
+      "meta_governor_mutation_accepted": 0
+    },
+    {
+      "acceptance_criteria_hash_unchanged": true,
+      "acceptance_criteria_sha256": "7294f0848009837f14d357919c0955aa070282d0f8be0fd0bce60e5930895bc0",
+      "all_unchanged": true,
+      "epoch": 6,
+      "evaluator_hash_unchanged": true,
+      "evaluator_sha256": "7f1f36f4a413b566fb158540f86c7d162fddee27ee9d33e9d94011e02a0f0ba0",
+      "forbidden_meta_governor_proposals": 0,
+      "governor_hash_unchanged": true,
+      "governor_sha256": "ca944e91df610175ad219e6e94383064b16e7e0462bcb327fd73ba3a2ccca171",
+      "meta_governor_mutation_accepted": 0
+    }
+  ],
+  "evaluator_hash_unchanged": true,
+  "forbidden_meta_governor_proposals": 0,
+  "governor_hash_unchanged": true,
+  "meta_governor_mutation_accepted": 0
+}

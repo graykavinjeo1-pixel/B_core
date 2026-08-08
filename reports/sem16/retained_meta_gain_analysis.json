@@ -1,0 +1,99 @@
+{
+  "all_prior_gains_retained": true,
+  "mean_retained_gain_ratio": 1.0,
+  "min_retained_gain_ratio": 1.0,
+  "rows": [
+    {
+      "epoch": 1,
+      "gain_erasure_events": 0,
+      "negative_transfer_events": 0,
+      "retained_concepts": [],
+      "retained_gain_ratio": 1.0
+    },
+    {
+      "epoch": 2,
+      "gain_erasure_events": 0,
+      "negative_transfer_events": 0,
+      "retained_concepts": [
+        {
+          "concept": "BOUNDED_FRONTIER_PRIORITY",
+          "retained": true,
+          "retained_gain_ratio": 1.0
+        }
+      ],
+      "retained_gain_ratio": 1.0
+    },
+    {
+      "epoch": 3,
+      "gain_erasure_events": 0,
+      "negative_transfer_events": 0,
+      "retained_concepts": [
+        {
+          "concept": "BOUNDED_FRONTIER_PRIORITY",
+          "retained": true,
+          "retained_gain_ratio": 1.0
+        }
+      ],
+      "retained_gain_ratio": 1.0
+    },
+    {
+      "epoch": 4,
+      "gain_erasure_events": 0,
+      "negative_transfer_events": 0,
+      "retained_concepts": [
+        {
+          "concept": "BOUNDED_FRONTIER_PRIORITY",
+          "retained": true,
+          "retained_gain_ratio": 1.0
+        },
+        {
+          "concept": "META_STATE_SNAPSHOT_REUSE",
+          "retained": true,
+          "retained_gain_ratio": 1.0
+        }
+      ],
+      "retained_gain_ratio": 1.0
+    },
+    {
+      "epoch": 5,
+      "gain_erasure_events": 0,
+      "negative_transfer_events": 0,
+      "retained_concepts": [
+        {
+          "concept": "BOUNDED_FRONTIER_PRIORITY",
+          "retained": true,
+          "retained_gain_ratio": 1.0
+        },
+        {
+          "concept": "META_STATE_SNAPSHOT_REUSE",
+          "retained": true,
+          "retained_gain_ratio": 1.0
+        }
+      ],
+      "retained_gain_ratio": 1.0
+    },
+    {
+      "epoch": 6,
+      "gain_erasure_events": 0,
+      "negative_transfer_events": 0,
+      "retained_concepts": [
+        {
+          "concept": "BOUNDED_FRONTIER_PRIORITY",
+          "retained": true,
+          "retained_gain_ratio": 1.0
+        },
+        {
+          "concept": "META_STATE_SNAPSHOT_REUSE",
+          "retained": true,
+          "retained_gain_ratio": 1.0
+        },
+        {
+          "concept": "ADAPTIVE_PROBE_BUDGET",
+          "retained": true,
+          "retained_gain_ratio": 1.0
+        }
+      ],
+      "retained_gain_ratio": 1.0
+    }
+  ]
+}
