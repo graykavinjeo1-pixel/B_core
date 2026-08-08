@@ -2311,7 +2311,7 @@ fn normalize_non_format_tokens(source: &[u8]) -> Vec<u8> {
     source
         .iter()
         .copied()
-        .filter(|byte| !byte.is_ascii_whitespace())
+        .filter(|byte| !byte.is_ascii_whitespace() && *byte != b',')
         .collect()
 }
 
