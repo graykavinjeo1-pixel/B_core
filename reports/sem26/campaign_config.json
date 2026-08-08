@@ -1,0 +1,188 @@
+{
+  "arms": [
+    "A_NO_SELF_IMPROVEMENT",
+    "B_OPERATOR_SCRIPTED_SINGLE_BOTTLENECK",
+    "C_AUTONOMOUS_DIAGNOSIS_FIXED_REPAIR_CATALOG",
+    "D_FULL_SELF_DIRECTED_RECURSIVE_IMPROVEMENT"
+  ],
+  "autonomous_improvement_epochs": 32,
+  "branch": "codex/sem26-self-directed-rsi",
+  "campaign_id": "SEM26-SELF-DIRECTED-RECURSIVE-IMPROVEMENT-0001",
+  "epoch_topics_predefined": false,
+  "fixed_hardware": {
+    "build_mode": "RELEASE",
+    "cpu_threads": 1,
+    "gpu": false,
+    "network": false
+  },
+  "full_arm_receives_predecessor_bottleneck_label": false,
+  "full_arm_receives_repair_strategy": false,
+  "open_loop_multi_generation_self_modification": false,
+  "predecessor_commit": "ba0c8d968015374054c1e070b3bd4e530765ec8f",
+  "protocol_sha256": "728f45d2df23f860982aa09e2d1ef97ad88c79cdd8c955ba2b4befef2cf87f0d",
+  "same_proof_carrying_verification": true,
+  "same_resource_envelope": true,
+  "same_safe_work_universe": true,
+  "unopened_instance_commitments": [
+    {
+      "epoch": 1,
+      "seed_commitment": "1b55c87a8bb9e3dd29bf19b95291d93d14cdc89acea9053d2da15569f865c5f5",
+      "seed_visible_to_director": false
+    },
+    {
+      "epoch": 2,
+      "seed_commitment": "d7fc0ee6f2a00c88ebcc6c3a760b430e867a699d7ebec68b5e6beb0fc615f2ed",
+      "seed_visible_to_director": false
+    },
+    {
+      "epoch": 3,
+      "seed_commitment": "35a08e67e229b034f80c9d5d0f6d885bdef197135d41ee66510f8ab8505e4be1",
+      "seed_visible_to_director": false
+    },
+    {
+      "epoch": 4,
+      "seed_commitment": "d22d76ceb20b2f24017d6a4ebb7570866f6b9e759cfc35ca2edad07ac7b184cd",
+      "seed_visible_to_director": false
+    },
+    {
+      "epoch": 5,
+      "seed_commitment": "f7a9be4bab06eb942930c35fe631c762619c85a65b4c5b6e1795c433e6563622",
+      "seed_visible_to_director": false
+    },
+    {
+      "epoch": 6,
+      "seed_commitment": "54bcb901ec8e970523daa347b732ff131913faec27e0e4e9dca3faf83f5e87f7",
+      "seed_visible_to_director": false
+    },
+    {
+      "epoch": 7,
+      "seed_commitment": "5a1fe755bd79767efcf071e493356d134d000f08ac6fef68ae4c3909f7d3cd65",
+      "seed_visible_to_director": false
+    },
+    {
+      "epoch": 8,
+      "seed_commitment": "5383b87a2f6de5a06cda5f0aaee456728ddf2d5f6b886549fa7d2fafd52bc05d",
+      "seed_visible_to_director": false
+    },
+    {
+      "epoch": 9,
+      "seed_commitment": "b7403a09e11594c596f68a201492395004fd247df1cae011316b04c192ddf403",
+      "seed_visible_to_director": false
+    },
+    {
+      "epoch": 10,
+      "seed_commitment": "26c7a147b35d9a1c9945de93a29ae10fd4df1b4925a5b419aaa01c9aa1a0a015",
+      "seed_visible_to_director": false
+    },
+    {
+      "epoch": 11,
+      "seed_commitment": "3b927a0a0bc1ca89c5e1fe3b13d7d0c6cf5928e7b87f3171051f4875e342b5a1",
+      "seed_visible_to_director": false
+    },
+    {
+      "epoch": 12,
+      "seed_commitment": "6cf29bfc49d26ffe15a118d4ec7dbd3755b852bbdaa0242f3d2233cf8393c0b4",
+      "seed_visible_to_director": false
+    },
+    {
+      "epoch": 13,
+      "seed_commitment": "8da26ac999d290d6013e10f151b0e43e4dcf33eee7579ea73f53f9bff507a032",
+      "seed_visible_to_director": false
+    },
+    {
+      "epoch": 14,
+      "seed_commitment": "28eb370708f33c43f0027c87399457fcb3f3276aa728519049b110714a0c17fe",
+      "seed_visible_to_director": false
+    },
+    {
+      "epoch": 15,
+      "seed_commitment": "a0bfb6917443ae356c9f3acf11deadecf3d4e5172bfe07ae4a74b510490a520e",
+      "seed_visible_to_director": false
+    },
+    {
+      "epoch": 16,
+      "seed_commitment": "5b07e318935c6126f74ca109168070259bae1c4f40f2a51d924ecf2d869ce1bf",
+      "seed_visible_to_director": false
+    },
+    {
+      "epoch": 17,
+      "seed_commitment": "c3cfaacc5b6ea490c0599ee325db92260feb1e84e8889af23ff9e1029f3da66e",
+      "seed_visible_to_director": false
+    },
+    {
+      "epoch": 18,
+      "seed_commitment": "aaa86b6037a540085f1b21f3fa1b729135f55f4182f9638699d9fa5784054d51",
+      "seed_visible_to_director": false
+    },
+    {
+      "epoch": 19,
+      "seed_commitment": "0e79db67abc6346881b7c9951e61770be1210a360222364a8d53a2d4e62fc03c",
+      "seed_visible_to_director": false
+    },
+    {
+      "epoch": 20,
+      "seed_commitment": "1bc1ade961a456f97015572056746b31c1887fccfc8ab6c96842bd8da46d7b34",
+      "seed_visible_to_director": false
+    },
+    {
+      "epoch": 21,
+      "seed_commitment": "286783d81edd7a14e6147b4007602dff04527615e74ab2c17e5e3c710fd3025f",
+      "seed_visible_to_director": false
+    },
+    {
+      "epoch": 22,
+      "seed_commitment": "8ec3623f80a94b371ba2e98504b7a8cea1e91897759349558af128b4b01095f3",
+      "seed_visible_to_director": false
+    },
+    {
+      "epoch": 23,
+      "seed_commitment": "ed2e555606edcbb6eca1f38125609903bf5f3a80b849227a86e97014ff74461e",
+      "seed_visible_to_director": false
+    },
+    {
+      "epoch": 24,
+      "seed_commitment": "649398f7fdde8e4bb816444f654991cb8135262e93b12a5365ce4820e1af606b",
+      "seed_visible_to_director": false
+    },
+    {
+      "epoch": 25,
+      "seed_commitment": "13d8ddf006abad606f9f414624bc8eda38f10a311473e62197d4761b96aabde4",
+      "seed_visible_to_director": false
+    },
+    {
+      "epoch": 26,
+      "seed_commitment": "ebb0a7c7421aba56a197a11ac5147b776bafc4f51b8d40bc2ba5e4be8fe4e630",
+      "seed_visible_to_director": false
+    },
+    {
+      "epoch": 27,
+      "seed_commitment": "855731bae16015a33cc0b7c31699727e754415b9710d3c20fec53a18d1a3347f",
+      "seed_visible_to_director": false
+    },
+    {
+      "epoch": 28,
+      "seed_commitment": "d85424a9c3d196d5d584956a4721ef989dbd5b5ff2731da7b50b00dd38e74339",
+      "seed_visible_to_director": false
+    },
+    {
+      "epoch": 29,
+      "seed_commitment": "55bcaf3e68091bb376943c1aa5bf6bbc16145cf90a90a57bc1db0dd331e68cdc",
+      "seed_visible_to_director": false
+    },
+    {
+      "epoch": 30,
+      "seed_commitment": "f75975039ca32ba57090d1054aaf259914fdfedfba7aa5b2260934faf164b763",
+      "seed_visible_to_director": false
+    },
+    {
+      "epoch": 31,
+      "seed_commitment": "7a51f816326fd859dd78a8b1cb8da90f651e9bdfeb792c8d7fc907ad9a419a77",
+      "seed_visible_to_director": false
+    },
+    {
+      "epoch": 32,
+      "seed_commitment": "9444a61ab4ac8a29cf3e8b6f0e607cbad8982105ade1782bb772b5ad3712c95d",
+      "seed_visible_to_director": false
+    }
+  ]
+}

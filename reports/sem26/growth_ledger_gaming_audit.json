@@ -1,0 +1,8 @@
+{
+  "events": 0,
+  "failed_repairs_hidden": false,
+  "preassigned_epoch_topics": false,
+  "preassigned_repairs": false,
+  "predecessor_label_used_by_full_arm": false,
+  "predicted_gain_counted_as_real": false
+}

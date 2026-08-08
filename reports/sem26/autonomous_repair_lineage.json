@@ -1,0 +1,2792 @@
+{
+  "lineages": [
+    {
+      "accepted": true,
+      "bottleneck": "REACTION_REALIZATION_COST",
+      "cross_bottleneck_transfer": true,
+      "desired_self_phenotype": {
+        "desired_reduction_ppm": 540000,
+        "diagnosed_cause_mask": 1,
+        "max_added_bytes": 1536,
+        "preserve_invariant_mask": 65535,
+        "required_property_mask": 64,
+        "required_role_mask": 65536,
+        "target_phase_code": 6
+      },
+      "diagnostic_experiment": 14160005841170804301,
+      "epoch": 1,
+      "implementation_executed": true,
+      "measured_target_reduction_ppm": 555168,
+      "mechanism_lineage": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -78397,
+          -40135,
+          -97628,
+          -44995,
+          -146022,
+          24000,
+          -555168,
+          -39865,
+          -92237,
+          0
+        ],
+        "diagnosed_cause_mask": 1,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 17975302605595871177,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 555168,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 14006767510483754462,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              -40135,
+              -43375,
+              -44995,
+              -73305,
+              12000,
+              -287280,
+              -51865,
+              0,
+              0
+            ],
+            "property_mask": 64,
+            "role_mask": 1073741824
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 14006767510483754460,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -90397,
+              0,
+              -54253,
+              0,
+              -72717,
+              12000,
+              -267888,
+              12000,
+              -92237,
+              0
+            ],
+            "property_mask": 64,
+            "role_mask": 2097152
+          }
+        ],
+        "target_phase_code": 6,
+        "uses_existing_chemistry": true
+      },
+      "proof_carrying_verification_time_ns": 392400
+    },
+    {
+      "accepted": true,
+      "bottleneck": "CAUSAL_INTEGRATION_COST",
+      "cross_bottleneck_transfer": true,
+      "desired_self_phenotype": {
+        "desired_reduction_ppm": 620000,
+        "diagnosed_cause_mask": 2,
+        "max_added_bytes": 1536,
+        "preserve_invariant_mask": 65535,
+        "required_property_mask": 128,
+        "required_role_mask": 131072,
+        "target_phase_code": 7
+      },
+      "diagnostic_experiment": 12497565016625082246,
+      "epoch": 2,
+      "implementation_executed": true,
+      "measured_target_reduction_ppm": 760000,
+      "mechanism_lineage": {
+        "added_bytes": 672,
+        "combined_effect_ppm": [
+          -168712,
+          -121536,
+          -159112,
+          -61983,
+          -42299,
+          -165254,
+          -41127,
+          -760000,
+          -185111,
+          -136426
+        ],
+        "diagnosed_cause_mask": 2,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 2860831489986366617,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 760000,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 2,
+            "element_id": 7581784931895130107,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -90283,
+              -68449,
+              0,
+              0,
+              12000,
+              0,
+              -53127,
+              -269764,
+              -48243,
+              -74929
+            ],
+            "property_mask": 128,
+            "role_mask": 524288
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 2,
+            "element_id": 7581784931895130110,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              -53087,
+              -77351,
+              -61983,
+              -54299,
+              -77957,
+              12000,
+              -263682,
+              -76379,
+              -61497
+            ],
+            "property_mask": 128,
+            "role_mask": 1073741824
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 2,
+            "element_id": 7581784931895130109,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -90429,
+              0,
+              -81761,
+              0,
+              0,
+              -87297,
+              0,
+              -254717,
+              -60489,
+              0
+            ],
+            "property_mask": 128,
+            "role_mask": 2097152
+          }
+        ],
+        "target_phase_code": 7,
+        "uses_existing_chemistry": true
+      },
+      "proof_carrying_verification_time_ns": 386400
+    },
+    {
+      "accepted": true,
+      "bottleneck": "REACTION_DISCOVERY_COST",
+      "cross_bottleneck_transfer": true,
+      "desired_self_phenotype": {
+        "desired_reduction_ppm": 540000,
+        "diagnosed_cause_mask": 4,
+        "max_added_bytes": 1536,
+        "preserve_invariant_mask": 65535,
+        "required_property_mask": 32,
+        "required_role_mask": 262144,
+        "target_phase_code": 5
+      },
+      "diagnostic_experiment": 15936054608071795959,
+      "epoch": 3,
+      "implementation_executed": true,
+      "measured_target_reduction_ppm": 616807,
+      "mechanism_lineage": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -146556,
+          -42005,
+          0,
+          -46905,
+          12000,
+          -616807,
+          -40809,
+          24000,
+          12000,
+          12000
+        ],
+        "diagnosed_cause_mask": 4,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 3874063920352004858,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 616807,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 6783529977419147243,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -85161,
+              12000,
+              0,
+              12000,
+              0,
+              -309622,
+              -40809,
+              12000,
+              12000,
+              12000
+            ],
+            "property_mask": 32,
+            "role_mask": 131072
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 6783529977419147241,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -61395,
+              -54005,
+              0,
+              -58905,
+              12000,
+              -307185,
+              0,
+              12000,
+              0,
+              0
+            ],
+            "property_mask": 32,
+            "role_mask": 134217728
+          }
+        ],
+        "target_phase_code": 5,
+        "uses_existing_chemistry": true
+      },
+      "proof_carrying_verification_time_ns": 372100
+    },
+    {
+      "accepted": true,
+      "bottleneck": "PROOF_CARRYING_VERIFICATION_COST",
+      "cross_bottleneck_transfer": true,
+      "desired_self_phenotype": {
+        "desired_reduction_ppm": 540000,
+        "diagnosed_cause_mask": 4,
+        "max_added_bytes": 1536,
+        "preserve_invariant_mask": 65535,
+        "required_property_mask": 256,
+        "required_role_mask": 262144,
+        "target_phase_code": 8
+      },
+      "diagnostic_experiment": 9005509283987599484,
+      "epoch": 4,
+      "implementation_executed": true,
+      "measured_target_reduction_ppm": 568248,
+      "mechanism_lineage": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -64135,
+          -55375,
+          -78495,
+          -159896,
+          -40835,
+          -71225,
+          -85807,
+          -81711,
+          -568248,
+          -169374
+        ],
+        "diagnosed_cause_mask": 4,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 9371030293888067793,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 568248,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 2844138618318290564,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              0,
+              0,
+              -69841,
+              0,
+              0,
+              -85807,
+              -93711,
+              -293113,
+              -85889
+            ],
+            "property_mask": 256,
+            "role_mask": 16777216
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 2844138618318290563,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -64135,
+              -55375,
+              -78495,
+              -90055,
+              -40835,
+              -71225,
+              0,
+              12000,
+              -275135,
+              -83485
+            ],
+            "property_mask": 256,
+            "role_mask": 2147483648
+          }
+        ],
+        "target_phase_code": 8,
+        "uses_existing_chemistry": true
+      },
+      "proof_carrying_verification_time_ns": 375000
+    },
+    {
+      "accepted": true,
+      "bottleneck": "REACTION_REALIZATION_COST",
+      "cross_bottleneck_transfer": true,
+      "desired_self_phenotype": {
+        "desired_reduction_ppm": 620000,
+        "diagnosed_cause_mask": 1,
+        "max_added_bytes": 1536,
+        "preserve_invariant_mask": 65535,
+        "required_property_mask": 64,
+        "required_role_mask": 65536,
+        "target_phase_code": 6
+      },
+      "diagnostic_experiment": 17380901746052038876,
+      "epoch": 5,
+      "implementation_executed": true,
+      "measured_target_reduction_ppm": 760000,
+      "mechanism_lineage": {
+        "added_bytes": 672,
+        "combined_effect_ppm": [
+          -172354,
+          -30679,
+          -66147,
+          -130506,
+          12000,
+          -52237,
+          -760000,
+          -52463,
+          -139044,
+          -98866
+        ],
+        "diagnosed_cause_mask": 1,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 12340264757532875682,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 760000,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 12899222270363752985,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -92969,
+              12000,
+              0,
+              12000,
+              12000,
+              -76237,
+              -305726,
+              -64463,
+              -83039,
+              -64827
+            ],
+            "property_mask": 64,
+            "role_mask": 131072
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 12899222270363752986,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -79385,
+              12000,
+              12000,
+              -52625,
+              0,
+              12000,
+              -292190,
+              12000,
+              -56005,
+              12000
+            ],
+            "property_mask": 64,
+            "role_mask": 33554432
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 12899222270363752987,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              -54679,
+              -78147,
+              -89881,
+              0,
+              12000,
+              -285927,
+              0,
+              0,
+              -46039
+            ],
+            "property_mask": 64,
+            "role_mask": 1073741824
+          }
+        ],
+        "target_phase_code": 6,
+        "uses_existing_chemistry": true
+      },
+      "proof_carrying_verification_time_ns": 374200
+    },
+    {
+      "accepted": true,
+      "bottleneck": "FRESH_WORK_VALIDATION_COST",
+      "cross_bottleneck_transfer": true,
+      "desired_self_phenotype": {
+        "desired_reduction_ppm": 540000,
+        "diagnosed_cause_mask": 1,
+        "max_added_bytes": 1536,
+        "preserve_invariant_mask": 65535,
+        "required_property_mask": 512,
+        "required_role_mask": 65536,
+        "target_phase_code": 9
+      },
+      "diagnostic_experiment": 15676754106000735835,
+      "epoch": 6,
+      "implementation_executed": true,
+      "measured_target_reduction_ppm": 599435,
+      "mechanism_lineage": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          0,
+          -48617,
+          12000,
+          -53797,
+          -50529,
+          -48103,
+          -62859,
+          -145630,
+          12000,
+          -599435
+        ],
+        "diagnosed_cause_mask": 1,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 5090078420788813310,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 599435,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 533027804357233288,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              0,
+              0,
+              -65797,
+              12000,
+              -48103,
+              -74859,
+              -60737,
+              0,
+              -300257
+            ],
+            "property_mask": 512,
+            "role_mask": 16777216
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 533027804357233286,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              -48617,
+              12000,
+              12000,
+              -62529,
+              0,
+              12000,
+              -84893,
+              12000,
+              -299178
+            ],
+            "property_mask": 512,
+            "role_mask": 262144
+          }
+        ],
+        "target_phase_code": 9,
+        "uses_existing_chemistry": true
+      },
+      "proof_carrying_verification_time_ns": 373500
+    },
+    {
+      "accepted": true,
+      "bottleneck": "REPAIR_SYNTHESIS_COST",
+      "cross_bottleneck_transfer": true,
+      "desired_self_phenotype": {
+        "desired_reduction_ppm": 540000,
+        "diagnosed_cause_mask": 2,
+        "max_added_bytes": 1536,
+        "preserve_invariant_mask": 65535,
+        "required_property_mask": 16,
+        "required_role_mask": 131072,
+        "target_phase_code": 4
+      },
+      "diagnostic_experiment": 8186989097471829107,
+      "epoch": 7,
+      "implementation_executed": true,
+      "measured_target_reduction_ppm": 562680,
+      "mechanism_lineage": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -63385,
+          -52545,
+          24000,
+          24000,
+          -562680,
+          -116380,
+          -60995,
+          -164460,
+          -61885,
+          24000
+        ],
+        "diagnosed_cause_mask": 2,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 17399762038333142087,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 562680,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 2,
+            "element_id": 11789019072316930378,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              -52545,
+              12000,
+              12000,
+              -290135,
+              -72005,
+              12000,
+              -77155,
+              -61885,
+              12000
+            ],
+            "property_mask": 16,
+            "role_mask": 262144
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 2,
+            "element_id": 11789019072316930379,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -63385,
+              0,
+              12000,
+              12000,
+              -272545,
+              -44375,
+              -72995,
+              -87305,
+              0,
+              12000
+            ],
+            "property_mask": 16,
+            "role_mask": 131072
+          }
+        ],
+        "target_phase_code": 4,
+        "uses_existing_chemistry": true
+      },
+      "proof_carrying_verification_time_ns": 372600
+    },
+    {
+      "accepted": true,
+      "bottleneck": "PROOF_CARRYING_VERIFICATION_COST",
+      "cross_bottleneck_transfer": true,
+      "desired_self_phenotype": {
+        "desired_reduction_ppm": 540000,
+        "diagnosed_cause_mask": 4,
+        "max_added_bytes": 1536,
+        "preserve_invariant_mask": 65535,
+        "required_property_mask": 256,
+        "required_role_mask": 262144,
+        "target_phase_code": 8
+      },
+      "diagnostic_experiment": 11248455418887745738,
+      "epoch": 8,
+      "implementation_executed": true,
+      "measured_target_reduction_ppm": 760000,
+      "mechanism_lineage": {
+        "added_bytes": 672,
+        "combined_effect_ppm": [
+          -64851,
+          -140758,
+          24000,
+          -114582,
+          -33705,
+          -36613,
+          24000,
+          -124472,
+          -760000,
+          -76445
+        ],
+        "diagnosed_cause_mask": 4,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 5814892390667331813,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 760000,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 11437017307442681644,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              -79025,
+              12000,
+              0,
+              -45705,
+              12000,
+              12000,
+              -62165,
+              -272660,
+              -88445
+            ],
+            "property_mask": 256,
+            "role_mask": 262144
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 11437017307442681645,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -76851,
+              -61733,
+              12000,
+              -60837,
+              0,
+              -60613,
+              12000,
+              -74307,
+              -264461,
+              12000
+            ],
+            "property_mask": 256,
+            "role_mask": 134217728
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 11437017307442681643,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              0,
+              0,
+              -53745,
+              12000,
+              12000,
+              0,
+              12000,
+              -249680,
+              0
+            ],
+            "property_mask": 256,
+            "role_mask": 16777216
+          }
+        ],
+        "target_phase_code": 8,
+        "uses_existing_chemistry": true
+      },
+      "proof_carrying_verification_time_ns": 386600
+    },
+    {
+      "accepted": true,
+      "bottleneck": "REACTION_DISCOVERY_COST",
+      "cross_bottleneck_transfer": true,
+      "desired_self_phenotype": {
+        "desired_reduction_ppm": 620000,
+        "diagnosed_cause_mask": 4,
+        "max_added_bytes": 1536,
+        "preserve_invariant_mask": 65535,
+        "required_property_mask": 32,
+        "required_role_mask": 262144,
+        "target_phase_code": 5
+      },
+      "diagnostic_experiment": 1388726914667373064,
+      "epoch": 9,
+      "implementation_executed": true,
+      "measured_target_reduction_ppm": 760000,
+      "mechanism_lineage": {
+        "added_bytes": 672,
+        "combined_effect_ppm": [
+          -211143,
+          -74782,
+          24000,
+          -30469,
+          -89106,
+          -760000,
+          12000,
+          -73159,
+          -148806,
+          -148518
+        ],
+        "diagnosed_cause_mask": 4,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 4340733017014728126,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 760000,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 12425189618472218878,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -40427,
+              -43521,
+              12000,
+              12000,
+              -55017,
+              -279129,
+              0,
+              0,
+              0,
+              0
+            ],
+            "property_mask": 32,
+            "role_mask": 524288
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 12425189618472218877,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -75809,
+              12000,
+              0,
+              0,
+              -46089,
+              -265203,
+              12000,
+              0,
+              -61419,
+              -54017
+            ],
+            "property_mask": 32,
+            "role_mask": 131072
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 12425189618472218874,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -94907,
+              -43261,
+              12000,
+              -42469,
+              12000,
+              -262489,
+              0,
+              -73159,
+              -87387,
+              -94501
+            ],
+            "property_mask": 32,
+            "role_mask": 134217728
+          }
+        ],
+        "target_phase_code": 5,
+        "uses_existing_chemistry": true
+      },
+      "proof_carrying_verification_time_ns": 375800
+    },
+    {
+      "accepted": true,
+      "bottleneck": "CAUSAL_INTEGRATION_COST",
+      "cross_bottleneck_transfer": true,
+      "desired_self_phenotype": {
+        "desired_reduction_ppm": 540000,
+        "diagnosed_cause_mask": 2,
+        "max_added_bytes": 1536,
+        "preserve_invariant_mask": 65535,
+        "required_property_mask": 128,
+        "required_role_mask": 131072,
+        "target_phase_code": 7
+      },
+      "diagnostic_experiment": 9842824558876866855,
+      "epoch": 10,
+      "implementation_executed": true,
+      "measured_target_reduction_ppm": 565617,
+      "mechanism_lineage": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          0,
+          -135712,
+          -51299,
+          -82457,
+          -44543,
+          -79079,
+          -129606,
+          -565617,
+          -157324,
+          -83019
+        ],
+        "diagnosed_cause_mask": 2,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 17607947618212611666,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 565617,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 2,
+            "element_id": 8333974919115918324,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              -79983,
+              -63299,
+              -82457,
+              12000,
+              0,
+              -66759,
+              -305453,
+              -92901,
+              0
+            ],
+            "property_mask": 128,
+            "role_mask": 1073741824
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 2,
+            "element_id": 8333974919115918323,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              -55729,
+              12000,
+              0,
+              -56543,
+              -79079,
+              -62847,
+              -260164,
+              -64423,
+              -83019
+            ],
+            "property_mask": 128,
+            "role_mask": 262144
+          }
+        ],
+        "target_phase_code": 7,
+        "uses_existing_chemistry": true
+      },
+      "proof_carrying_verification_time_ns": 379800
+    },
+    {
+      "accepted": true,
+      "bottleneck": "REACTION_REALIZATION_COST",
+      "cross_bottleneck_transfer": true,
+      "desired_self_phenotype": {
+        "desired_reduction_ppm": 540000,
+        "diagnosed_cause_mask": 1,
+        "max_added_bytes": 1536,
+        "preserve_invariant_mask": 65535,
+        "required_property_mask": 64,
+        "required_role_mask": 65536,
+        "target_phase_code": 6
+      },
+      "diagnostic_experiment": 5127410032645962792,
+      "epoch": 11,
+      "implementation_executed": true,
+      "measured_target_reduction_ppm": 562227,
+      "mechanism_lineage": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          12000,
+          -70875,
+          -135692,
+          -89281,
+          12000,
+          12000,
+          -562227,
+          12000,
+          12000,
+          -156664
+        ],
+        "diagnosed_cause_mask": 1,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 6220990020465663678,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 562227,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 1583867236816409038,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              0,
+              -76947,
+              -89281,
+              12000,
+              12000,
+              -294142,
+              0,
+              12000,
+              -88139
+            ],
+            "property_mask": 64,
+            "role_mask": 268435456
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 1583867236816409037,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              -70875,
+              -58745,
+              0,
+              0,
+              0,
+              -268085,
+              12000,
+              0,
+              -68525
+            ],
+            "property_mask": 64,
+            "role_mask": 4194304
+          }
+        ],
+        "target_phase_code": 6,
+        "uses_existing_chemistry": true
+      },
+      "proof_carrying_verification_time_ns": 386700
+    },
+    {
+      "accepted": true,
+      "bottleneck": "FRESH_WORK_VALIDATION_COST",
+      "cross_bottleneck_transfer": true,
+      "desired_self_phenotype": {
+        "desired_reduction_ppm": 540000,
+        "diagnosed_cause_mask": 1,
+        "max_added_bytes": 1536,
+        "preserve_invariant_mask": 65535,
+        "required_property_mask": 512,
+        "required_role_mask": 65536,
+        "target_phase_code": 9
+      },
+      "diagnostic_experiment": 14235996277285964555,
+      "epoch": 12,
+      "implementation_executed": true,
+      "measured_target_reduction_ppm": 597248,
+      "mechanism_lineage": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          0,
+          24000,
+          -104626,
+          -126428,
+          -75503,
+          -111972,
+          -72337,
+          12000,
+          -43191,
+          -597248
+        ],
+        "diagnosed_cause_mask": 1,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 10964093575443824238,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 597248,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 16825779024426348819,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              12000,
+              -59459,
+              -53037,
+              12000,
+              -44913,
+              12000,
+              12000,
+              -55191,
+              -304202
+            ],
+            "property_mask": 512,
+            "role_mask": 268435456
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 16825779024426348815,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              12000,
+              -45167,
+              -73391,
+              -87503,
+              -67059,
+              -84337,
+              0,
+              12000,
+              -293046
+            ],
+            "property_mask": 512,
+            "role_mask": 268435456
+          }
+        ],
+        "target_phase_code": 9,
+        "uses_existing_chemistry": true
+      },
+      "proof_carrying_verification_time_ns": 381900
+    },
+    {
+      "accepted": true,
+      "bottleneck": "DIAGNOSTIC_EXPERIMENT_COST",
+      "cross_bottleneck_transfer": true,
+      "desired_self_phenotype": {
+        "desired_reduction_ppm": 540000,
+        "diagnosed_cause_mask": 1,
+        "max_added_bytes": 1536,
+        "preserve_invariant_mask": 65535,
+        "required_property_mask": 8,
+        "required_role_mask": 65536,
+        "target_phase_code": 3
+      },
+      "diagnostic_experiment": 3869324313014733343,
+      "epoch": 13,
+      "implementation_executed": true,
+      "measured_target_reduction_ppm": 580218,
+      "mechanism_lineage": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -130796,
+          -87551,
+          -140564,
+          -580218,
+          -129256,
+          -40611,
+          -65113,
+          0,
+          0,
+          -66091
+        ],
+        "diagnosed_cause_mask": 1,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 17762636254263161898,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 580218,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 6544932482582256773,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -57309,
+              0,
+              -45981,
+              -293627,
+              -70649,
+              12000,
+              12000,
+              0,
+              0,
+              0
+            ],
+            "property_mask": 8,
+            "role_mask": 2097152
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 6544932482582256772,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -73487,
+              -87551,
+              -94583,
+              -286591,
+              -58607,
+              -52611,
+              -77113,
+              0,
+              0,
+              -66091
+            ],
+            "property_mask": 8,
+            "role_mask": 2147483648
+          }
+        ],
+        "target_phase_code": 3,
+        "uses_existing_chemistry": true
+      },
+      "proof_carrying_verification_time_ns": 372800
+    },
+    {
+      "accepted": true,
+      "bottleneck": "CAUSAL_INTEGRATION_COST",
+      "cross_bottleneck_transfer": true,
+      "desired_self_phenotype": {
+        "desired_reduction_ppm": 540000,
+        "diagnosed_cause_mask": 2,
+        "max_added_bytes": 1536,
+        "preserve_invariant_mask": 65535,
+        "required_property_mask": 128,
+        "required_role_mask": 131072,
+        "target_phase_code": 7
+      },
+      "diagnostic_experiment": 13997766185435217939,
+      "epoch": 14,
+      "implementation_executed": true,
+      "measured_target_reduction_ppm": 553536,
+      "mechanism_lineage": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          12000,
+          0,
+          24000,
+          -64295,
+          -61455,
+          -81535,
+          -131528,
+          -553536,
+          -64017,
+          -52365
+        ],
+        "diagnosed_cause_mask": 2,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 4673071615624174663,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 553536,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 2,
+            "element_id": 14878501100443447790,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              0,
+              12000,
+              -76295,
+              -61455,
+              -81535,
+              -64075,
+              -283095,
+              12000,
+              -52365
+            ],
+            "property_mask": 128,
+            "role_mask": 16777216
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 2,
+            "element_id": 14878501100443447794,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              0,
+              12000,
+              12000,
+              0,
+              0,
+              -67453,
+              -270441,
+              -76017,
+              0
+            ],
+            "property_mask": 128,
+            "role_mask": 65536
+          }
+        ],
+        "target_phase_code": 7,
+        "uses_existing_chemistry": true
+      },
+      "proof_carrying_verification_time_ns": 373100
+    },
+    {
+      "accepted": true,
+      "bottleneck": "AUTONOMOUS_DIAGNOSIS_COST",
+      "cross_bottleneck_transfer": true,
+      "desired_self_phenotype": {
+        "desired_reduction_ppm": 540000,
+        "diagnosed_cause_mask": 2,
+        "max_added_bytes": 1536,
+        "preserve_invariant_mask": 65535,
+        "required_property_mask": 2,
+        "required_role_mask": 131072,
+        "target_phase_code": 1
+      },
+      "diagnostic_experiment": 18358925341126214295,
+      "epoch": 15,
+      "implementation_executed": true,
+      "measured_target_reduction_ppm": 594447,
+      "mechanism_lineage": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -59523,
+          -594447,
+          -90377,
+          12000,
+          0,
+          -38199,
+          -48407,
+          -47511,
+          -35063,
+          -74339
+        ],
+        "diagnosed_cause_mask": 2,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 16811756877539491886,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 594447,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 2,
+            "element_id": 5422651698137152268,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -71523,
+              -303046,
+              0,
+              12000,
+              0,
+              -50199,
+              -48407,
+              -47511,
+              -47063,
+              -74339
+            ],
+            "property_mask": 2,
+            "role_mask": 524288
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 2,
+            "element_id": 5422651698137152273,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              -291401,
+              -90377,
+              0,
+              0,
+              12000,
+              0,
+              0,
+              12000,
+              0
+            ],
+            "property_mask": 2,
+            "role_mask": 1048576
+          }
+        ],
+        "target_phase_code": 1,
+        "uses_existing_chemistry": true
+      },
+      "proof_carrying_verification_time_ns": 376700
+    },
+    {
+      "accepted": true,
+      "bottleneck": "REPAIR_SYNTHESIS_COST",
+      "cross_bottleneck_transfer": true,
+      "desired_self_phenotype": {
+        "desired_reduction_ppm": 540000,
+        "diagnosed_cause_mask": 2,
+        "max_added_bytes": 1536,
+        "preserve_invariant_mask": 65535,
+        "required_property_mask": 16,
+        "required_role_mask": 131072,
+        "target_phase_code": 4
+      },
+      "diagnostic_experiment": 1123179160300046396,
+      "epoch": 16,
+      "implementation_executed": true,
+      "measured_target_reduction_ppm": 611236,
+      "mechanism_lineage": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -57979,
+          -132168,
+          -60243,
+          -80929,
+          -611236,
+          24000,
+          12000,
+          -45513,
+          -55267,
+          -72441
+        ],
+        "diagnosed_cause_mask": 2,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 13074553790300637914,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 611236,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 2,
+            "element_id": 18414734453393864424,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              -73871,
+              -60243,
+              -80929,
+              -305797,
+              12000,
+              12000,
+              0,
+              -67267,
+              -84441
+            ],
+            "property_mask": 16,
+            "role_mask": 1073741824
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 2,
+            "element_id": 18414734453393864425,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -69979,
+              -58297,
+              0,
+              0,
+              -305439,
+              12000,
+              0,
+              -45513,
+              12000,
+              12000
+            ],
+            "property_mask": 16,
+            "role_mask": 524288
+          }
+        ],
+        "target_phase_code": 4,
+        "uses_existing_chemistry": true
+      },
+      "proof_carrying_verification_time_ns": 374500
+    },
+    {
+      "accepted": true,
+      "bottleneck": "REACTION_REALIZATION_COST",
+      "cross_bottleneck_transfer": true,
+      "desired_self_phenotype": {
+        "desired_reduction_ppm": 540000,
+        "diagnosed_cause_mask": 1,
+        "max_added_bytes": 1536,
+        "preserve_invariant_mask": 65535,
+        "required_property_mask": 64,
+        "required_role_mask": 65536,
+        "target_phase_code": 6
+      },
+      "diagnostic_experiment": 9621647135217019418,
+      "epoch": 17,
+      "implementation_executed": true,
+      "measured_target_reduction_ppm": 594008,
+      "mechanism_lineage": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -47797,
+          -45635,
+          -130978,
+          24000,
+          -164802,
+          -156516,
+          -594008,
+          -146994,
+          24000,
+          12000
+        ],
+        "diagnosed_cause_mask": 1,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 8192469982794861197,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 594008,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 8010409639182431798,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -47797,
+              0,
+              -84853,
+              12000,
+              -80367,
+              -90991,
+              -302108,
+              -85209,
+              12000,
+              0
+            ],
+            "property_mask": 64,
+            "role_mask": 2097152
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 8010409639182431794,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              -45635,
+              -46125,
+              12000,
+              -84435,
+              -65525,
+              -291900,
+              -61785,
+              12000,
+              12000
+            ],
+            "property_mask": 64,
+            "role_mask": 4194304
+          }
+        ],
+        "target_phase_code": 6,
+        "uses_existing_chemistry": true
+      },
+      "proof_carrying_verification_time_ns": 376800
+    },
+    {
+      "accepted": true,
+      "bottleneck": "PROOF_CARRYING_VERIFICATION_COST",
+      "cross_bottleneck_transfer": true,
+      "desired_self_phenotype": {
+        "desired_reduction_ppm": 540000,
+        "diagnosed_cause_mask": 4,
+        "max_added_bytes": 1536,
+        "preserve_invariant_mask": 65535,
+        "required_property_mask": 256,
+        "required_role_mask": 262144,
+        "target_phase_code": 8
+      },
+      "diagnostic_experiment": 7512115402931684944,
+      "epoch": 18,
+      "implementation_executed": true,
+      "measured_target_reduction_ppm": 609361,
+      "mechanism_lineage": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -48313,
+          24000,
+          -30007,
+          -44311,
+          -128396,
+          -34039,
+          -153714,
+          -123472,
+          -609361,
+          -87959
+        ],
+        "diagnosed_cause_mask": 4,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 4927477137255200158,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 609361,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 11862686038728717061,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -60313,
+              12000,
+              12000,
+              0,
+              -82933,
+              12000,
+              -79887,
+              -63251,
+              -307683,
+              0
+            ],
+            "property_mask": 256,
+            "role_mask": 131072
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 11862686038728717063,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              12000,
+              -42007,
+              -44311,
+              -45463,
+              -46039,
+              -73827,
+              -60221,
+              -301678,
+              -87959
+            ],
+            "property_mask": 256,
+            "role_mask": 268435456
+          }
+        ],
+        "target_phase_code": 8,
+        "uses_existing_chemistry": true
+      },
+      "proof_carrying_verification_time_ns": 375700
+    },
+    {
+      "accepted": false,
+      "bottleneck": "REACTION_DISCOVERY_COST",
+      "cross_bottleneck_transfer": false,
+      "desired_self_phenotype": {
+        "desired_reduction_ppm": 540000,
+        "diagnosed_cause_mask": 4,
+        "max_added_bytes": 1536,
+        "preserve_invariant_mask": 65535,
+        "required_property_mask": 32,
+        "required_role_mask": 262144,
+        "target_phase_code": 5
+      },
+      "diagnostic_experiment": 4436595246454543026,
+      "epoch": 19,
+      "implementation_executed": true,
+      "measured_target_reduction_ppm": 565727,
+      "mechanism_lineage": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -144556,
+          -31121,
+          24000,
+          12000,
+          12000,
+          -565727,
+          -133584,
+          -52879,
+          -71247,
+          -182688
+        ],
+        "diagnosed_cause_mask": 4,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 5254505588354003631,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 565727,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 11843111878646725649,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -94627,
+              -43121,
+              12000,
+              12000,
+              12000,
+              -283219,
+              -83143,
+              -64879,
+              -83247,
+              -92431
+            ],
+            "property_mask": 32,
+            "role_mask": 524288
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 11843111878646725645,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -49929,
+              12000,
+              12000,
+              0,
+              0,
+              -282508,
+              -50441,
+              12000,
+              12000,
+              -90257
+            ],
+            "property_mask": 32,
+            "role_mask": 131072
+          }
+        ],
+        "target_phase_code": 5,
+        "uses_existing_chemistry": true
+      },
+      "proof_carrying_verification_time_ns": 373900
+    },
+    {
+      "accepted": true,
+      "bottleneck": "REACTION_REALIZATION_COST",
+      "cross_bottleneck_transfer": true,
+      "desired_self_phenotype": {
+        "desired_reduction_ppm": 540000,
+        "diagnosed_cause_mask": 1,
+        "max_added_bytes": 1536,
+        "preserve_invariant_mask": 65535,
+        "required_property_mask": 64,
+        "required_role_mask": 65536,
+        "target_phase_code": 6
+      },
+      "diagnostic_experiment": 2455670909858610890,
+      "epoch": 20,
+      "implementation_executed": true,
+      "measured_target_reduction_ppm": 591717,
+      "mechanism_lineage": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -30583,
+          -150754,
+          -176992,
+          -56375,
+          -45495,
+          -146864,
+          -591717,
+          -50231,
+          -69923,
+          -118294
+        ],
+        "diagnosed_cause_mask": 1,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 4299589633556706059,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 591717,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 869118088851094680,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -42583,
+              -72099,
+              -86857,
+              12000,
+              12000,
+              -67309,
+              -300027,
+              -62231,
+              -81923,
+              -64269
+            ],
+            "property_mask": 64,
+            "role_mask": 8388608
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 869118088851094682,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              -78655,
+              -90135,
+              -68375,
+              -57495,
+              -79555,
+              -291690,
+              12000,
+              12000,
+              -54025
+            ],
+            "property_mask": 64,
+            "role_mask": 1073741824
+          }
+        ],
+        "target_phase_code": 6,
+        "uses_existing_chemistry": true
+      },
+      "proof_carrying_verification_time_ns": 382100
+    },
+    {
+      "accepted": false,
+      "bottleneck": "CAUSAL_INTEGRATION_COST",
+      "cross_bottleneck_transfer": false,
+      "desired_self_phenotype": {
+        "desired_reduction_ppm": 540000,
+        "diagnosed_cause_mask": 2,
+        "max_added_bytes": 1536,
+        "preserve_invariant_mask": 65535,
+        "required_property_mask": 128,
+        "required_role_mask": 131072,
+        "target_phase_code": 7
+      },
+      "diagnostic_experiment": 12590929378644100265,
+      "epoch": 21,
+      "implementation_executed": true,
+      "measured_target_reduction_ppm": 564444,
+      "mechanism_lineage": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -158188,
+          -42937,
+          24000,
+          0,
+          -131228,
+          -64137,
+          24000,
+          -564444,
+          -66219,
+          -135514
+        ],
+        "diagnosed_cause_mask": 2,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 5080104181859661980,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 564444,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 2,
+            "element_id": 11113835346607908247,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -63259,
+              -54937,
+              12000,
+              0,
+              -49569,
+              0,
+              12000,
+              -290122,
+              12000,
+              -45597
+            ],
+            "property_mask": 128,
+            "role_mask": 524288
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 2,
+            "element_id": 11113835346607908246,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -94929,
+              12000,
+              12000,
+              0,
+              -81659,
+              -64137,
+              12000,
+              -274322,
+              -78219,
+              -89917
+            ],
+            "property_mask": 128,
+            "role_mask": 131072
+          }
+        ],
+        "target_phase_code": 7,
+        "uses_existing_chemistry": true
+      },
+      "proof_carrying_verification_time_ns": 372000
+    },
+    {
+      "accepted": true,
+      "bottleneck": "CAUSAL_INTEGRATION_COST",
+      "cross_bottleneck_transfer": true,
+      "desired_self_phenotype": {
+        "desired_reduction_ppm": 540000,
+        "diagnosed_cause_mask": 2,
+        "max_added_bytes": 1536,
+        "preserve_invariant_mask": 65535,
+        "required_property_mask": 128,
+        "required_role_mask": 131072,
+        "target_phase_code": 7
+      },
+      "diagnostic_experiment": 15678880516921338616,
+      "epoch": 22,
+      "implementation_executed": true,
+      "measured_target_reduction_ppm": 563880,
+      "mechanism_lineage": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -53517,
+          12000,
+          -74283,
+          -129150,
+          0,
+          -47329,
+          0,
+          -563880,
+          12000,
+          -126870
+        ],
+        "diagnosed_cause_mask": 2,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 755283883526060631,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 563880,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 2,
+            "element_id": 12383210173789158546,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              12000,
+              12000,
+              -62701,
+              0,
+              -47329,
+              0,
+              -295824,
+              0,
+              -85559
+            ],
+            "property_mask": 128,
+            "role_mask": 16777216
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 2,
+            "element_id": 12383210173789158543,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -53517,
+              0,
+              -86283,
+              -66449,
+              0,
+              0,
+              0,
+              -268056,
+              12000,
+              -41311
+            ],
+            "property_mask": 128,
+            "role_mask": 536870912
+          }
+        ],
+        "target_phase_code": 7,
+        "uses_existing_chemistry": true
+      },
+      "proof_carrying_verification_time_ns": 379700
+    },
+    {
+      "accepted": true,
+      "bottleneck": "PROOF_CARRYING_VERIFICATION_COST",
+      "cross_bottleneck_transfer": true,
+      "desired_self_phenotype": {
+        "desired_reduction_ppm": 540000,
+        "diagnosed_cause_mask": 4,
+        "max_added_bytes": 1536,
+        "preserve_invariant_mask": 65535,
+        "required_property_mask": 256,
+        "required_role_mask": 262144,
+        "target_phase_code": 8
+      },
+      "diagnostic_experiment": 14659284920672270153,
+      "epoch": 23,
+      "implementation_executed": true,
+      "measured_target_reduction_ppm": 613715,
+      "mechanism_lineage": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -59439,
+          -108790,
+          -128510,
+          12000,
+          -59951,
+          -59283,
+          -130070,
+          24000,
+          -613715,
+          -73383
+        ],
+        "diagnosed_cause_mask": 4,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 8485009358715244438,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 613715,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 7723268685838882086,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              -55763,
+              -51189,
+              12000,
+              -71951,
+              -59283,
+              -80449,
+              12000,
+              -309091,
+              -73383
+            ],
+            "property_mask": 256,
+            "role_mask": 4194304
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 7723268685838882085,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -59439,
+              -53027,
+              -77321,
+              0,
+              12000,
+              0,
+              -49621,
+              12000,
+              -304624,
+              0
+            ],
+            "property_mask": 256,
+            "role_mask": 8388608
+          }
+        ],
+        "target_phase_code": 8,
+        "uses_existing_chemistry": true
+      },
+      "proof_carrying_verification_time_ns": 375200
+    },
+    {
+      "accepted": true,
+      "bottleneck": "REACTION_REALIZATION_COST",
+      "cross_bottleneck_transfer": true,
+      "desired_self_phenotype": {
+        "desired_reduction_ppm": 540000,
+        "diagnosed_cause_mask": 1,
+        "max_added_bytes": 1536,
+        "preserve_invariant_mask": 65535,
+        "required_property_mask": 64,
+        "required_role_mask": 65536,
+        "target_phase_code": 6
+      },
+      "diagnostic_experiment": 4889163638820953423,
+      "epoch": 24,
+      "implementation_executed": true,
+      "measured_target_reduction_ppm": 600232,
+      "mechanism_lineage": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -43833,
+          -64965,
+          24000,
+          -50895,
+          -117658,
+          -160444,
+          -600232,
+          -92976,
+          -48073,
+          -56265
+        ],
+        "diagnosed_cause_mask": 1,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 7951902300052867730,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 600232,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 8843851774851346906,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              -76965,
+              12000,
+              -50895,
+              -76255,
+              -88935,
+              -308600,
+              -43445,
+              0,
+              -56265
+            ],
+            "property_mask": 64,
+            "role_mask": 67108864
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 8843851774851346907,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -55833,
+              12000,
+              12000,
+              0,
+              -41403,
+              -71509,
+              -291632,
+              -49531,
+              -48073,
+              0
+            ],
+            "property_mask": 64,
+            "role_mask": 131072
+          }
+        ],
+        "target_phase_code": 6,
+        "uses_existing_chemistry": true
+      },
+      "proof_carrying_verification_time_ns": 371900
+    },
+    {
+      "accepted": false,
+      "bottleneck": "CAUSAL_INTEGRATION_COST",
+      "cross_bottleneck_transfer": false,
+      "desired_self_phenotype": {
+        "desired_reduction_ppm": 540000,
+        "diagnosed_cause_mask": 2,
+        "max_added_bytes": 1536,
+        "preserve_invariant_mask": 65535,
+        "required_property_mask": 128,
+        "required_role_mask": 131072,
+        "target_phase_code": 7
+      },
+      "diagnostic_experiment": 7285769170902466053,
+      "epoch": 25,
+      "implementation_executed": true,
+      "measured_target_reduction_ppm": 760000,
+      "mechanism_lineage": {
+        "added_bytes": 672,
+        "combined_effect_ppm": [
+          -108596,
+          -33351,
+          -175807,
+          -86622,
+          -77926,
+          0,
+          -151734,
+          -760000,
+          -16687,
+          -151502
+        ],
+        "diagnosed_cause_mask": 2,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 11835251480109342006,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 760000,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 2,
+            "element_id": 1557210613108504266,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -64509,
+              0,
+              -89031,
+              -40323,
+              -43469,
+              0,
+              -83771,
+              -279697,
+              12000,
+              0
+            ],
+            "property_mask": 128,
+            "role_mask": 536870912
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 2,
+            "element_id": 1557210613108504269,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              12000,
+              -40793,
+              0,
+              12000,
+              0,
+              -67963,
+              -252901,
+              12000,
+              -80351
+            ],
+            "property_mask": 128,
+            "role_mask": 1048576
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 2,
+            "element_id": 1557210613108504265,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -44087,
+              -45351,
+              -45983,
+              -46299,
+              -46457,
+              0,
+              0,
+              -246546,
+              -40687,
+              -71151
+            ],
+            "property_mask": 128,
+            "role_mask": 2147483648
+          }
+        ],
+        "target_phase_code": 7,
+        "uses_existing_chemistry": true
+      },
+      "proof_carrying_verification_time_ns": 373900
+    },
+    {
+      "accepted": true,
+      "bottleneck": "REACTION_REALIZATION_COST",
+      "cross_bottleneck_transfer": true,
+      "desired_self_phenotype": {
+        "desired_reduction_ppm": 540000,
+        "diagnosed_cause_mask": 1,
+        "max_added_bytes": 1536,
+        "preserve_invariant_mask": 65535,
+        "required_property_mask": 64,
+        "required_role_mask": 65536,
+        "target_phase_code": 6
+      },
+      "diagnostic_experiment": 3662592647307698482,
+      "epoch": 26,
+      "implementation_executed": true,
+      "measured_target_reduction_ppm": 571343,
+      "mechanism_lineage": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -126702,
+          12000,
+          -42333,
+          12000,
+          -55987,
+          -101476,
+          -571343,
+          -133234,
+          0,
+          0
+        ],
+        "diagnosed_cause_mask": 1,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 423487409297230609,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 571343,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 13071870302548905249,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -42717,
+              0,
+              -42333,
+              12000,
+              -55987,
+              -51301,
+              -293203,
+              -85729,
+              0,
+              0
+            ],
+            "property_mask": 64,
+            "role_mask": 2097152
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 13071870302548905248,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -83985,
+              12000,
+              0,
+              0,
+              0,
+              -50175,
+              -278140,
+              -47505,
+              0,
+              0
+            ],
+            "property_mask": 64,
+            "role_mask": 131072
+          }
+        ],
+        "target_phase_code": 6,
+        "uses_existing_chemistry": true
+      },
+      "proof_carrying_verification_time_ns": 478900
+    },
+    {
+      "accepted": true,
+      "bottleneck": "PROOF_CARRYING_VERIFICATION_COST",
+      "cross_bottleneck_transfer": true,
+      "desired_self_phenotype": {
+        "desired_reduction_ppm": 540000,
+        "diagnosed_cause_mask": 4,
+        "max_added_bytes": 1536,
+        "preserve_invariant_mask": 65535,
+        "required_property_mask": 256,
+        "required_role_mask": 262144,
+        "target_phase_code": 8
+      },
+      "diagnostic_experiment": 5942343672556043209,
+      "epoch": 27,
+      "implementation_executed": true,
+      "measured_target_reduction_ppm": 608515,
+      "mechanism_lineage": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -28301,
+          -54497,
+          -69229,
+          24000,
+          -106850,
+          -127540,
+          -64389,
+          0,
+          -608515,
+          -59557
+        ],
+        "diagnosed_cause_mask": 4,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 3483221717125187818,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 608515,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 5379240961764409407,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -40301,
+              12000,
+              -69229,
+              12000,
+              -62711,
+              -82163,
+              -64389,
+              0,
+              -309341,
+              12000
+            ],
+            "property_mask": 256,
+            "role_mask": 2097152
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 5379240961764409409,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              -66497,
+              0,
+              12000,
+              -44139,
+              -45377,
+              0,
+              0,
+              -299174,
+              -71557
+            ],
+            "property_mask": 256,
+            "role_mask": 262144
+          }
+        ],
+        "target_phase_code": 8,
+        "uses_existing_chemistry": true
+      },
+      "proof_carrying_verification_time_ns": 460100
+    },
+    {
+      "accepted": true,
+      "bottleneck": "FRESH_WORK_VALIDATION_COST",
+      "cross_bottleneck_transfer": true,
+      "desired_self_phenotype": {
+        "desired_reduction_ppm": 540000,
+        "diagnosed_cause_mask": 1,
+        "max_added_bytes": 1536,
+        "preserve_invariant_mask": 65535,
+        "required_property_mask": 512,
+        "required_role_mask": 65536,
+        "target_phase_code": 9
+      },
+      "diagnostic_experiment": 3168205287941227421,
+      "epoch": 28,
+      "implementation_executed": true,
+      "measured_target_reduction_ppm": 589139,
+      "mechanism_lineage": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -39155,
+          -135456,
+          -40843,
+          -37729,
+          12000,
+          12000,
+          12000,
+          -71959,
+          -169662,
+          -589139
+        ],
+        "diagnosed_cause_mask": 1,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 12802533637269832716,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 589139,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 1039445976379833790,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -51155,
+              -76385,
+              12000,
+              12000,
+              0,
+              0,
+              12000,
+              0,
+              -82875,
+              -300970
+            ],
+            "property_mask": 512,
+            "role_mask": 524288
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 1039445976379833793,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              -59071,
+              -52843,
+              -49729,
+              12000,
+              12000,
+              0,
+              -71959,
+              -86787,
+              -288169
+            ],
+            "property_mask": 512,
+            "role_mask": 1073741824
+          }
+        ],
+        "target_phase_code": 9,
+        "uses_existing_chemistry": true
+      },
+      "proof_carrying_verification_time_ns": 496000
+    },
+    {
+      "accepted": true,
+      "bottleneck": "REACTION_DISCOVERY_COST",
+      "cross_bottleneck_transfer": true,
+      "desired_self_phenotype": {
+        "desired_reduction_ppm": 540000,
+        "diagnosed_cause_mask": 4,
+        "max_added_bytes": 1536,
+        "preserve_invariant_mask": 65535,
+        "required_property_mask": 32,
+        "required_role_mask": 262144,
+        "target_phase_code": 5
+      },
+      "diagnostic_experiment": 9069675426588405937,
+      "epoch": 29,
+      "implementation_executed": true,
+      "measured_target_reduction_ppm": 603202,
+      "mechanism_lineage": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          12000,
+          -121038,
+          -162134,
+          24000,
+          -67083,
+          -603202,
+          -66997,
+          12000,
+          -77653,
+          -86529
+        ],
+        "diagnosed_cause_mask": 4,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 323586998990882634,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 603202,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 15063466231486396115,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              -57819,
+              -79717,
+              12000,
+              -79083,
+              -308801,
+              0,
+              12000,
+              12000,
+              -86529
+            ],
+            "property_mask": 32,
+            "role_mask": 4194304
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 15063466231486396114,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              -63219,
+              -82417,
+              12000,
+              12000,
+              -294401,
+              -66997,
+              0,
+              -89653,
+              0
+            ],
+            "property_mask": 32,
+            "role_mask": 4194304
+          }
+        ],
+        "target_phase_code": 5,
+        "uses_existing_chemistry": true
+      },
+      "proof_carrying_verification_time_ns": 376100
+    },
+    {
+      "accepted": true,
+      "bottleneck": "CAUSAL_INTEGRATION_COST",
+      "cross_bottleneck_transfer": true,
+      "desired_self_phenotype": {
+        "desired_reduction_ppm": 540000,
+        "diagnosed_cause_mask": 2,
+        "max_added_bytes": 1536,
+        "preserve_invariant_mask": 65535,
+        "required_property_mask": 128,
+        "required_role_mask": 131072,
+        "target_phase_code": 7
+      },
+      "diagnostic_experiment": 16924707804983346545,
+      "epoch": 30,
+      "implementation_executed": true,
+      "measured_target_reduction_ppm": 606753,
+      "mechanism_lineage": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -54507,
+          -176498,
+          0,
+          -107432,
+          -78189,
+          -72321,
+          -92451,
+          -606753,
+          -86117,
+          -37037
+        ],
+        "diagnosed_cause_mask": 2,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 11112709809498945669,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 606753,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 2,
+            "element_id": 13767482332724204893,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              -92437,
+              0,
+              -54763,
+              -78189,
+              0,
+              -92451,
+              -307592,
+              0,
+              -49037
+            ],
+            "property_mask": 128,
+            "role_mask": 67108864
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 2,
+            "element_id": 13767482332724204898,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -66507,
+              -84061,
+              0,
+              -52669,
+              0,
+              -72321,
+              0,
+              -299161,
+              -86117,
+              12000
+            ],
+            "property_mask": 128,
+            "role_mask": 134217728
+          }
+        ],
+        "target_phase_code": 7,
+        "uses_existing_chemistry": true
+      },
+      "proof_carrying_verification_time_ns": 372400
+    },
+    {
+      "accepted": true,
+      "bottleneck": "REACTION_REALIZATION_COST",
+      "cross_bottleneck_transfer": true,
+      "desired_self_phenotype": {
+        "desired_reduction_ppm": 540000,
+        "diagnosed_cause_mask": 1,
+        "max_added_bytes": 1536,
+        "preserve_invariant_mask": 65535,
+        "required_property_mask": 64,
+        "required_role_mask": 65536,
+        "target_phase_code": 6
+      },
+      "diagnostic_experiment": 8463647171278084583,
+      "epoch": 31,
+      "implementation_executed": true,
+      "measured_target_reduction_ppm": 573674,
+      "mechanism_lineage": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -48281,
+          12000,
+          0,
+          12000,
+          -82931,
+          -64773,
+          -573674,
+          -63347,
+          -76481,
+          -76925
+        ],
+        "diagnosed_cause_mask": 1,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 7372420528795396062,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 573674,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 2578653380991171149,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -60281,
+              12000,
+              0,
+              12000,
+              -82931,
+              -64773,
+              -295994,
+              -75347,
+              -88481,
+              12000
+            ],
+            "property_mask": 64,
+            "role_mask": 131072
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 2578653380991171147,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              0,
+              0,
+              0,
+              0,
+              0,
+              -277680,
+              12000,
+              12000,
+              -88925
+            ],
+            "property_mask": 64,
+            "role_mask": 65536
+          }
+        ],
+        "target_phase_code": 6,
+        "uses_existing_chemistry": true
+      },
+      "proof_carrying_verification_time_ns": 375700
+    },
+    {
+      "accepted": true,
+      "bottleneck": "REACTION_REALIZATION_COST",
+      "cross_bottleneck_transfer": true,
+      "desired_self_phenotype": {
+        "desired_reduction_ppm": 540000,
+        "diagnosed_cause_mask": 1,
+        "max_added_bytes": 1536,
+        "preserve_invariant_mask": 65535,
+        "required_property_mask": 64,
+        "required_role_mask": 65536,
+        "target_phase_code": 6
+      },
+      "diagnostic_experiment": 15862777601110012461,
+      "epoch": 32,
+      "implementation_executed": true,
+      "measured_target_reduction_ppm": 570590,
+      "mechanism_lineage": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -62069,
+          12000,
+          -180540,
+          -28367,
+          -111750,
+          -102490,
+          -570590,
+          -33883,
+          -118580,
+          -33723
+        ],
+        "diagnosed_cause_mask": 1,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 9731348036513613662,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 570590,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 11394702284202262880,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -74069,
+              12000,
+              -91421,
+              12000,
+              -40759,
+              -43687,
+              -297741,
+              -45883,
+              -73749,
+              12000
+            ],
+            "property_mask": 64,
+            "role_mask": 2097152
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 11394702284202262875,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              0,
+              -89119,
+              -40367,
+              -70991,
+              -58803,
+              -272849,
+              12000,
+              -44831,
+              -45723
+            ],
+            "property_mask": 64,
+            "role_mask": 268435456
+          }
+        ],
+        "target_phase_code": 6,
+        "uses_existing_chemistry": true
+      },
+      "proof_carrying_verification_time_ns": 372100
+    }
+  ]
+}

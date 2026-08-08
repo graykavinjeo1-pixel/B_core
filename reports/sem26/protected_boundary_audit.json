@@ -1,0 +1,9 @@
+{
+  "acceptance_rule_mutations": 0,
+  "constitution_mutations": 0,
+  "evaluator_mutations": 0,
+  "governor_mutations": 0,
+  "production_mutations": 0,
+  "sandbox_boundary_mutations": 0,
+  "unsafe_certificate_reuse": 0
+}

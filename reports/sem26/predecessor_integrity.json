@@ -1,0 +1,19 @@
+{
+  "artifact_binary_sha256": "2ba36c9c3404690228b6f74c4759a88c55c886afc6247d5e9897cd6dfbebf9d4",
+  "artifact_source_sha256": "c417d0d0cfdd4f3fe210e9d0f32daa91267e93b1ff9882cc7c11e465a722cd75",
+  "exact_commit": "ba0c8d968015374054c1e070b3bd4e530765ec8f",
+  "historical_evidence_rewritten": false,
+  "next_allowed_stage": "OPERATOR_REVIEW_FOR_SEM26",
+  "passed": true,
+  "raw_predecessor_observations": {
+    "frontier_selection_time_ns": 2314600,
+    "reaction_discovery_time_ns": 1968700,
+    "reaction_realization_time_ns": 4311300,
+    "reported_next_limit_excluded_from_director_input": true,
+    "verification_time_ns": 494200
+  },
+  "reported_bottleneck_is_authority": false,
+  "sem25_all_levels_pass": true,
+  "sem25_status": "PASS",
+  "sem26_started": false
+}

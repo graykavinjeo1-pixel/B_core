@@ -1,0 +1,37 @@
+{
+  "correctness_authority": false,
+  "fixed_complete_repair_catalog": false,
+  "hard_coded_bottleneck_to_repair_map": false,
+  "hot_path_natural_language_bytes": 0,
+  "hot_path_source_token_bytes": 0,
+  "inputs": [
+    "RAW_GROWTH_LEDGER",
+    "CAPABILITY_GRAPH",
+    "REACTION_HYPERGRAPH",
+    "SEMANTIC_FAMILIES",
+    "REACTION_LAWS",
+    "GROWTH_ROUTING_LAWS",
+    "VERIFICATION_CERTIFICATES",
+    "RESOURCE_MEASUREMENTS",
+    "FAILED_ATTEMPTS",
+    "FRONTIER_HISTORY",
+    "CORE_STATE"
+  ],
+  "loop": [
+    "OBSERVE",
+    "DIAGNOSE",
+    "HYPOTHESIZE",
+    "EXPERIMENT",
+    "DESIRED_SELF_PHENOTYPE",
+    "INVERSE_SYNTHESIS",
+    "IMPLEMENT",
+    "VERIFY",
+    "MEASURE",
+    "RETAIN_OR_REJECT",
+    "REOBSERVE"
+  ],
+  "open_loop_multi_generation_self_modification": false,
+  "predecessor_bottleneck_label_is_input": false,
+  "present": true,
+  "raw_effect_vector_inverse_synthesis": true
+}

@@ -1,0 +1,325 @@
+{
+  "epochs": [
+    {
+      "bottleneck_topic_assigned": false,
+      "concrete_instance_created_after_spec_freeze": true,
+      "epoch": 1,
+      "repair_strategy_assigned": false,
+      "safe_work_spec_sha256": "6348d1c81ed389183486489a14c0ee59f285d4a52fba6e3a09e9ed08377a4280",
+      "seed_commitment": "1b55c87a8bb9e3dd29bf19b95291d93d14cdc89acea9053d2da15569f865c5f5",
+      "seed_visible_to_director": false,
+      "spec_frozen_before_instance_seed_reveal": true
+    },
+    {
+      "bottleneck_topic_assigned": false,
+      "concrete_instance_created_after_spec_freeze": true,
+      "epoch": 2,
+      "repair_strategy_assigned": false,
+      "safe_work_spec_sha256": "29fcaac23cac06989363bef013142162f7c38ea30b8ae0289ae5c3307fb39160",
+      "seed_commitment": "d7fc0ee6f2a00c88ebcc6c3a760b430e867a699d7ebec68b5e6beb0fc615f2ed",
+      "seed_visible_to_director": false,
+      "spec_frozen_before_instance_seed_reveal": true
+    },
+    {
+      "bottleneck_topic_assigned": false,
+      "concrete_instance_created_after_spec_freeze": true,
+      "epoch": 3,
+      "repair_strategy_assigned": false,
+      "safe_work_spec_sha256": "72c70f11000a1e4dbc30b4644ee8b0ecbfc6b7bffa4241dbd3275496072b4240",
+      "seed_commitment": "35a08e67e229b034f80c9d5d0f6d885bdef197135d41ee66510f8ab8505e4be1",
+      "seed_visible_to_director": false,
+      "spec_frozen_before_instance_seed_reveal": true
+    },
+    {
+      "bottleneck_topic_assigned": false,
+      "concrete_instance_created_after_spec_freeze": true,
+      "epoch": 4,
+      "repair_strategy_assigned": false,
+      "safe_work_spec_sha256": "ca47ee253f29f6d11bbbe9f835afe0f9f0a03b4f479a06a4a0339bb1c6fafbbf",
+      "seed_commitment": "d22d76ceb20b2f24017d6a4ebb7570866f6b9e759cfc35ca2edad07ac7b184cd",
+      "seed_visible_to_director": false,
+      "spec_frozen_before_instance_seed_reveal": true
+    },
+    {
+      "bottleneck_topic_assigned": false,
+      "concrete_instance_created_after_spec_freeze": true,
+      "epoch": 5,
+      "repair_strategy_assigned": false,
+      "safe_work_spec_sha256": "066b254a35c58ec2a3cad440176788c9945f95f14adc41bfc8ac9ad7e93790f1",
+      "seed_commitment": "f7a9be4bab06eb942930c35fe631c762619c85a65b4c5b6e1795c433e6563622",
+      "seed_visible_to_director": false,
+      "spec_frozen_before_instance_seed_reveal": true
+    },
+    {
+      "bottleneck_topic_assigned": false,
+      "concrete_instance_created_after_spec_freeze": true,
+      "epoch": 6,
+      "repair_strategy_assigned": false,
+      "safe_work_spec_sha256": "0fb7cde8515eb9f7c53d73ce18876fac585bec4d2ac74cf539290a87ad3abf24",
+      "seed_commitment": "54bcb901ec8e970523daa347b732ff131913faec27e0e4e9dca3faf83f5e87f7",
+      "seed_visible_to_director": false,
+      "spec_frozen_before_instance_seed_reveal": true
+    },
+    {
+      "bottleneck_topic_assigned": false,
+      "concrete_instance_created_after_spec_freeze": true,
+      "epoch": 7,
+      "repair_strategy_assigned": false,
+      "safe_work_spec_sha256": "802357ec037dc00829d25ef508112d524ff40830c0b3b931042e6291833a74ed",
+      "seed_commitment": "5a1fe755bd79767efcf071e493356d134d000f08ac6fef68ae4c3909f7d3cd65",
+      "seed_visible_to_director": false,
+      "spec_frozen_before_instance_seed_reveal": true
+    },
+    {
+      "bottleneck_topic_assigned": false,
+      "concrete_instance_created_after_spec_freeze": true,
+      "epoch": 8,
+      "repair_strategy_assigned": false,
+      "safe_work_spec_sha256": "7aad18a3556236a39e3e3ef59fa2e7f583b72c736603328368079522be75671d",
+      "seed_commitment": "5383b87a2f6de5a06cda5f0aaee456728ddf2d5f6b886549fa7d2fafd52bc05d",
+      "seed_visible_to_director": false,
+      "spec_frozen_before_instance_seed_reveal": true
+    },
+    {
+      "bottleneck_topic_assigned": false,
+      "concrete_instance_created_after_spec_freeze": true,
+      "epoch": 9,
+      "repair_strategy_assigned": false,
+      "safe_work_spec_sha256": "2af4ef8eae9cfa4addda7a8b5f5ebb18f86e6a5600a697fb8c8bdebb8c8c614f",
+      "seed_commitment": "b7403a09e11594c596f68a201492395004fd247df1cae011316b04c192ddf403",
+      "seed_visible_to_director": false,
+      "spec_frozen_before_instance_seed_reveal": true
+    },
+    {
+      "bottleneck_topic_assigned": false,
+      "concrete_instance_created_after_spec_freeze": true,
+      "epoch": 10,
+      "repair_strategy_assigned": false,
+      "safe_work_spec_sha256": "f0deabf832528542f491b90348b590021f8f6273ddea46fc21b30379c60bf4c6",
+      "seed_commitment": "26c7a147b35d9a1c9945de93a29ae10fd4df1b4925a5b419aaa01c9aa1a0a015",
+      "seed_visible_to_director": false,
+      "spec_frozen_before_instance_seed_reveal": true
+    },
+    {
+      "bottleneck_topic_assigned": false,
+      "concrete_instance_created_after_spec_freeze": true,
+      "epoch": 11,
+      "repair_strategy_assigned": false,
+      "safe_work_spec_sha256": "1d6a6b70c0f2cdd576d470758270bb51d2a95a1686b1f828bd2bb71eb9d07faa",
+      "seed_commitment": "3b927a0a0bc1ca89c5e1fe3b13d7d0c6cf5928e7b87f3171051f4875e342b5a1",
+      "seed_visible_to_director": false,
+      "spec_frozen_before_instance_seed_reveal": true
+    },
+    {
+      "bottleneck_topic_assigned": false,
+      "concrete_instance_created_after_spec_freeze": true,
+      "epoch": 12,
+      "repair_strategy_assigned": false,
+      "safe_work_spec_sha256": "ed5501e71145d2c02228b97b750d971eeb20be744a3070bde501b37df7f16321",
+      "seed_commitment": "6cf29bfc49d26ffe15a118d4ec7dbd3755b852bbdaa0242f3d2233cf8393c0b4",
+      "seed_visible_to_director": false,
+      "spec_frozen_before_instance_seed_reveal": true
+    },
+    {
+      "bottleneck_topic_assigned": false,
+      "concrete_instance_created_after_spec_freeze": true,
+      "epoch": 13,
+      "repair_strategy_assigned": false,
+      "safe_work_spec_sha256": "b562c6dda3c27cc3bae11869f49deeaddfecf956ed4f55241cdc40d715d75277",
+      "seed_commitment": "8da26ac999d290d6013e10f151b0e43e4dcf33eee7579ea73f53f9bff507a032",
+      "seed_visible_to_director": false,
+      "spec_frozen_before_instance_seed_reveal": true
+    },
+    {
+      "bottleneck_topic_assigned": false,
+      "concrete_instance_created_after_spec_freeze": true,
+      "epoch": 14,
+      "repair_strategy_assigned": false,
+      "safe_work_spec_sha256": "3b74850863267bc058103a72d95a2678074e98e123afea99d3208e7a92e77c5f",
+      "seed_commitment": "28eb370708f33c43f0027c87399457fcb3f3276aa728519049b110714a0c17fe",
+      "seed_visible_to_director": false,
+      "spec_frozen_before_instance_seed_reveal": true
+    },
+    {
+      "bottleneck_topic_assigned": false,
+      "concrete_instance_created_after_spec_freeze": true,
+      "epoch": 15,
+      "repair_strategy_assigned": false,
+      "safe_work_spec_sha256": "0d7dc100cd77963d2e952d8c054412d3be419ca99b29c8d30d40a63d8f0965d5",
+      "seed_commitment": "a0bfb6917443ae356c9f3acf11deadecf3d4e5172bfe07ae4a74b510490a520e",
+      "seed_visible_to_director": false,
+      "spec_frozen_before_instance_seed_reveal": true
+    },
+    {
+      "bottleneck_topic_assigned": false,
+      "concrete_instance_created_after_spec_freeze": true,
+      "epoch": 16,
+      "repair_strategy_assigned": false,
+      "safe_work_spec_sha256": "2b05cc9ee199027b8869bbacb9e4e97e9c5e6a262463bcb3addb60509bf80097",
+      "seed_commitment": "5b07e318935c6126f74ca109168070259bae1c4f40f2a51d924ecf2d869ce1bf",
+      "seed_visible_to_director": false,
+      "spec_frozen_before_instance_seed_reveal": true
+    },
+    {
+      "bottleneck_topic_assigned": false,
+      "concrete_instance_created_after_spec_freeze": true,
+      "epoch": 17,
+      "repair_strategy_assigned": false,
+      "safe_work_spec_sha256": "230108ad3ece6b1ef58be616922491477cfb02bc453759a425ad813cb9064c91",
+      "seed_commitment": "c3cfaacc5b6ea490c0599ee325db92260feb1e84e8889af23ff9e1029f3da66e",
+      "seed_visible_to_director": false,
+      "spec_frozen_before_instance_seed_reveal": true
+    },
+    {
+      "bottleneck_topic_assigned": false,
+      "concrete_instance_created_after_spec_freeze": true,
+      "epoch": 18,
+      "repair_strategy_assigned": false,
+      "safe_work_spec_sha256": "3c951608805da4fe99ade4e75afa32068f6b229852f1799475cd345461d2f7b9",
+      "seed_commitment": "aaa86b6037a540085f1b21f3fa1b729135f55f4182f9638699d9fa5784054d51",
+      "seed_visible_to_director": false,
+      "spec_frozen_before_instance_seed_reveal": true
+    },
+    {
+      "bottleneck_topic_assigned": false,
+      "concrete_instance_created_after_spec_freeze": true,
+      "epoch": 19,
+      "repair_strategy_assigned": false,
+      "safe_work_spec_sha256": "771ffb39f75027233ff27f747a60723a86ba7856891e91ecd60f895ff9948f15",
+      "seed_commitment": "0e79db67abc6346881b7c9951e61770be1210a360222364a8d53a2d4e62fc03c",
+      "seed_visible_to_director": false,
+      "spec_frozen_before_instance_seed_reveal": true
+    },
+    {
+      "bottleneck_topic_assigned": false,
+      "concrete_instance_created_after_spec_freeze": true,
+      "epoch": 20,
+      "repair_strategy_assigned": false,
+      "safe_work_spec_sha256": "e936e1f243f44014658b569b7b9d192fd27942fba61b02950180d6bb4d4b1e7d",
+      "seed_commitment": "1bc1ade961a456f97015572056746b31c1887fccfc8ab6c96842bd8da46d7b34",
+      "seed_visible_to_director": false,
+      "spec_frozen_before_instance_seed_reveal": true
+    },
+    {
+      "bottleneck_topic_assigned": false,
+      "concrete_instance_created_after_spec_freeze": true,
+      "epoch": 21,
+      "repair_strategy_assigned": false,
+      "safe_work_spec_sha256": "58c0f40a6a579324ea688f78e26f61e6bd3eb874a6fb15f48ef1602a913f7a28",
+      "seed_commitment": "286783d81edd7a14e6147b4007602dff04527615e74ab2c17e5e3c710fd3025f",
+      "seed_visible_to_director": false,
+      "spec_frozen_before_instance_seed_reveal": true
+    },
+    {
+      "bottleneck_topic_assigned": false,
+      "concrete_instance_created_after_spec_freeze": true,
+      "epoch": 22,
+      "repair_strategy_assigned": false,
+      "safe_work_spec_sha256": "54be481aa2d46a7951fd7b211dcb3fc73ae331de9e159f624a9c2293a8fc7725",
+      "seed_commitment": "8ec3623f80a94b371ba2e98504b7a8cea1e91897759349558af128b4b01095f3",
+      "seed_visible_to_director": false,
+      "spec_frozen_before_instance_seed_reveal": true
+    },
+    {
+      "bottleneck_topic_assigned": false,
+      "concrete_instance_created_after_spec_freeze": true,
+      "epoch": 23,
+      "repair_strategy_assigned": false,
+      "safe_work_spec_sha256": "1b7c02453c2d81e3742491e7b2dee7c68faed34c86926e4b1b4b21744a9f553f",
+      "seed_commitment": "ed2e555606edcbb6eca1f38125609903bf5f3a80b849227a86e97014ff74461e",
+      "seed_visible_to_director": false,
+      "spec_frozen_before_instance_seed_reveal": true
+    },
+    {
+      "bottleneck_topic_assigned": false,
+      "concrete_instance_created_after_spec_freeze": true,
+      "epoch": 24,
+      "repair_strategy_assigned": false,
+      "safe_work_spec_sha256": "f6721a0d30d0d6b196798b25ca217ed96a5e847e70e0cded2207629e36280060",
+      "seed_commitment": "649398f7fdde8e4bb816444f654991cb8135262e93b12a5365ce4820e1af606b",
+      "seed_visible_to_director": false,
+      "spec_frozen_before_instance_seed_reveal": true
+    },
+    {
+      "bottleneck_topic_assigned": false,
+      "concrete_instance_created_after_spec_freeze": true,
+      "epoch": 25,
+      "repair_strategy_assigned": false,
+      "safe_work_spec_sha256": "3efa20955233e76efc656728cde0879ca9df271c8c8493a1ba3f04a43e7b5d36",
+      "seed_commitment": "13d8ddf006abad606f9f414624bc8eda38f10a311473e62197d4761b96aabde4",
+      "seed_visible_to_director": false,
+      "spec_frozen_before_instance_seed_reveal": true
+    },
+    {
+      "bottleneck_topic_assigned": false,
+      "concrete_instance_created_after_spec_freeze": true,
+      "epoch": 26,
+      "repair_strategy_assigned": false,
+      "safe_work_spec_sha256": "ec0a6ca35310c4861c45c1ff0994bf18a51ef65083f5a853524a5556b621690d",
+      "seed_commitment": "ebb0a7c7421aba56a197a11ac5147b776bafc4f51b8d40bc2ba5e4be8fe4e630",
+      "seed_visible_to_director": false,
+      "spec_frozen_before_instance_seed_reveal": true
+    },
+    {
+      "bottleneck_topic_assigned": false,
+      "concrete_instance_created_after_spec_freeze": true,
+      "epoch": 27,
+      "repair_strategy_assigned": false,
+      "safe_work_spec_sha256": "18952e6bbd19964408fd1b578796a20806da6cd69c7e061edf5cfeff8eed7696",
+      "seed_commitment": "855731bae16015a33cc0b7c31699727e754415b9710d3c20fec53a18d1a3347f",
+      "seed_visible_to_director": false,
+      "spec_frozen_before_instance_seed_reveal": true
+    },
+    {
+      "bottleneck_topic_assigned": false,
+      "concrete_instance_created_after_spec_freeze": true,
+      "epoch": 28,
+      "repair_strategy_assigned": false,
+      "safe_work_spec_sha256": "45f9161433f748703a0dc678080c93defe0241a8f686d3446a06eeb7556d8907",
+      "seed_commitment": "d85424a9c3d196d5d584956a4721ef989dbd5b5ff2731da7b50b00dd38e74339",
+      "seed_visible_to_director": false,
+      "spec_frozen_before_instance_seed_reveal": true
+    },
+    {
+      "bottleneck_topic_assigned": false,
+      "concrete_instance_created_after_spec_freeze": true,
+      "epoch": 29,
+      "repair_strategy_assigned": false,
+      "safe_work_spec_sha256": "5be2715d90d3ed0903a2b1c099b52d1735e0c98dae37518226ee75e45bc749fa",
+      "seed_commitment": "55bcaf3e68091bb376943c1aa5bf6bbc16145cf90a90a57bc1db0dd331e68cdc",
+      "seed_visible_to_director": false,
+      "spec_frozen_before_instance_seed_reveal": true
+    },
+    {
+      "bottleneck_topic_assigned": false,
+      "concrete_instance_created_after_spec_freeze": true,
+      "epoch": 30,
+      "repair_strategy_assigned": false,
+      "safe_work_spec_sha256": "6f6fcb695dade70a13b4afcfda0a47b95b57507a3a5c5155c1a2a30b54c26b08",
+      "seed_commitment": "f75975039ca32ba57090d1054aaf259914fdfedfba7aa5b2260934faf164b763",
+      "seed_visible_to_director": false,
+      "spec_frozen_before_instance_seed_reveal": true
+    },
+    {
+      "bottleneck_topic_assigned": false,
+      "concrete_instance_created_after_spec_freeze": true,
+      "epoch": 31,
+      "repair_strategy_assigned": false,
+      "safe_work_spec_sha256": "56cbb9c466053547fe0c1fd204232cfca5c26c21147f39b442fee5a2e851042e",
+      "seed_commitment": "7a51f816326fd859dd78a8b1cb8da90f651e9bdfeb792c8d7fc907ad9a419a77",
+      "seed_visible_to_director": false,
+      "spec_frozen_before_instance_seed_reveal": true
+    },
+    {
+      "bottleneck_topic_assigned": false,
+      "concrete_instance_created_after_spec_freeze": true,
+      "epoch": 32,
+      "repair_strategy_assigned": false,
+      "safe_work_spec_sha256": "98b4bd17573ccfebe5acfb8d3f7d0e5aacdc96ea520059221e0db2626134dfdc",
+      "seed_commitment": "9444a61ab4ac8a29cf3e8b6f0e607cbad8982105ade1782bb772b5ad3712c95d",
+      "seed_visible_to_director": false,
+      "spec_frozen_before_instance_seed_reveal": true
+    }
+  ],
+  "events": 0
+}
