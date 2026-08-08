@@ -1,0 +1,43 @@
+{
+  "campaign_id": "SEM11-GENERALIZATION-STABILITY-0001",
+  "infrastructure_commit": "0e2cab3138662279460e709a8db86a2dd9466ded",
+  "predecessor_commit": "b41faedbac6733a2701d67e57b21478cffdc68b9",
+  "regimes": [
+    "REGIME_A",
+    "REGIME_B",
+    "REGIME_C"
+  ],
+  "diagnostic_tasks_per_regime": 30,
+  "validation_tasks_per_regime": 84,
+  "adversarial_tasks_per_regime": 21,
+  "combined_blind_tasks": 180,
+  "validation_hidden_until_candidate_freeze": true,
+  "same_base_for_all_regimes": true,
+  "candidate_primary_gain_floor": 0.01,
+  "strong_gain_target": 0.2,
+  "zero_global_regression_required": true,
+  "negative_transfer_allowed": 0,
+  "inherited_clippy_warning_count": 22,
+  "new_clippy_warning_signatures_allowed": 0,
+  "full_catalog_scans_allowed": 0,
+  "routing_false_negatives_allowed": 0,
+  "external_llm_calls_allowed": 0,
+  "local_teacher_calls_allowed": 0,
+  "network_writes_allowed": 0,
+  "remote_executions_allowed": 0,
+  "automatic_production_promotion": false,
+  "sem12_started": false,
+  "seed_commitments": {
+    "A_ADVERSARIAL": "89e8a5ac9bfc4505db2ff8fc9baf396fdd841a28a58b618d3004dfd1ce4ef99a",
+    "A_DIAGNOSTIC": "e81959b0572cbdf10150046b6648cb20dfe1e77a9bffeb4345c89dd074eee53c",
+    "A_VALIDATION": "9e8c80cdad0cc17339c8c8d5cd61003e1d0589da6ce5243f0feb208da2f14903",
+    "B_ADVERSARIAL": "45f9323332abaeeb5196a0cf33a7d84edb6092d9b639cd736c067c8de7f249ee",
+    "B_DIAGNOSTIC": "df101560a15b7c80e5aaa29c683fd7845b8dec790026ba1ce233b115f783babf",
+    "B_VALIDATION": "e4ead2e82891a8060d9460e795510821456e6cd8ae03cdd27c091c600b4727a6",
+    "COMBINED": "b66f00354b63057e9feb60d3120a1268ccd117d6a0656aaefc508253f0c9536f",
+    "C_ADVERSARIAL": "242c628f523ae29cc91a4c2347db1ffd0772cbfdbdfc93f4b398019e189e09f6",
+    "C_DIAGNOSTIC": "2936e50f2383fa70f7ebfa3439a00fe0b2a6091ab68fe4fc6eb402f88e0fc115",
+    "C_VALIDATION": "2d2cfda3982a36d262643070800af7dbac9bff68a146e77f61147f79ea1ee802",
+    "GENERAL": "990869199ac6e187305eb64c415bc88bfff6669767b70e095b95f9c01749f4e5"
+  }
+}

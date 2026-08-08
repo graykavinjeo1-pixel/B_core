@@ -1,0 +1,17 @@
+{
+  "commit_object_type": "commit",
+  "forbidden_post_graft_imports": 0,
+  "index_sha256": "77b17332b5ff7204c28e9445e689276049afd6e89308e7e242904570a283e6fc",
+  "r2_binary_expected_sha256": "28d47d5eeeaf95a43711e943fd206f7b954509f78d6ad38bdf5da9fa6842466e",
+  "r2_binary_path": "D:/B_Core_SEM11/reports/sem10-fresh/artifacts/r2/reasoner-probe.exe",
+  "r2_binary_sha256": "28d47d5eeeaf95a43711e943fd206f7b954509f78d6ad38bdf5da9fa6842466e",
+  "r2_observed_from_r1": true,
+  "r2_source_expected_sha256": "5e18b4997942ffbd664e87f230cdb210faeafc55539a5a41a2f18117949d1414",
+  "r2_source_path": "D:/B_Core_SEM11/reports/sem10-fresh/artifacts/r2/lib.rs",
+  "r2_source_sha256": "5e18b4997942ffbd664e87f230cdb210faeafc55539a5a41a2f18117949d1414",
+  "sem10_level_b_pass": true,
+  "sem10_p0_seed_unchanged": true,
+  "semantic_state_sha256": "d1abd8de410f5284773f1e582937922dc514513ed738eb9f04e8bf2735185d3c",
+  "status": "PASS",
+  "verified_sem10_commit": "b41faedbac6733a2701d67e57b21478cffdc68b9"
+}

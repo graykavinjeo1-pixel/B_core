@@ -1,0 +1,23 @@
+{
+  "classification_detail": "SEM10 reported the maximum generation among selected source mechanisms (generation 5) under a global-looking field name; it did not recompute promoted concept ancestry",
+  "concept_generation_discrepancy_classification": "CAMPAIGN_LOCAL_METRIC",
+  "concept_lineage_integrity": "PASS",
+  "generation_6_concept_id": "C000013",
+  "generation_6_payload_sha256": "46d66d74017434f21f8c892365baff230a8d8bec454d6ec323ce25ea30299977",
+  "generation_6_runtime_role": "CROSS_DOMAIN_MECHANISM_TRANSFER",
+  "historical_max_autonomous_concept_generation": 6,
+  "index_expected_sha256": "77b17332b5ff7204c28e9445e689276049afd6e89308e7e242904570a283e6fc",
+  "index_sha256": "77b17332b5ff7204c28e9445e689276049afd6e89308e7e242904570a283e6fc",
+  "lineage_bookkeeping_error": false,
+  "promoted_concept_ancestry_lost": false,
+  "promoted_concept_hash_changes": 0,
+  "promoted_concepts": 12,
+  "real_semantic_state_drift": false,
+  "sem10_reported_max_autonomous_concept_generation": 5,
+  "sem8_reported_max_autonomous_concept_generation": 6,
+  "sem9_reported_max_autonomous_concept_generation": 6,
+  "semantic_state_expected_sha256": "d1abd8de410f5284773f1e582937922dc514513ed738eb9f04e8bf2735185d3c",
+  "semantic_state_repair_performed": false,
+  "semantic_state_sha256": "d1abd8de410f5284773f1e582937922dc514513ed738eb9f04e8bf2735185d3c",
+  "state_loading_difference": false
+}

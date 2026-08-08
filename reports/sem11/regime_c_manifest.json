@@ -1,0 +1,1255 @@
+{
+  "regime_id": "REGIME_C",
+  "researcher_classification": "COMPOSITION_ABSTRACTION_PRESSURE",
+  "classification_exposed_to_candidate": false,
+  "diagnostic": {
+    "set_id": "REGIME_C_DIAGNOSTIC",
+    "seed_commitment_sha256": "232aa0714aa2f085bc5528e980f0f9d4132c771815690205c4c8f633a4d9ae7e",
+    "generator_version": "SEM11-CROSS-REGIME-GENERATOR-1.0.0",
+    "tasks": [
+      {
+        "task_id": "REGIME_C_DIAGNOSTIC-000",
+        "opaque_schema_sha256": "c451f2b0e6ca538603eeef645dcfda477ee8c2163322f6826a0ba03cecf76ecb",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_DIAGNOSTIC-001",
+        "opaque_schema_sha256": "66d03962c703c37656f7ed6966e2c5cc7826a61793f6641de2f94f3766d03c2b",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_DIAGNOSTIC-002",
+        "opaque_schema_sha256": "fb17f69e7b2cfb4b0b7668b22a0949fba8aad9d41e3fb771046c7a04eb35752d",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_DIAGNOSTIC-003",
+        "opaque_schema_sha256": "f430e19b0994ed639176ef2c1365d6534331c368e297c7290752abc936b05a5b",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_DIAGNOSTIC-004",
+        "opaque_schema_sha256": "bc9fc45ca8157f12cfa7359956a2b6c5c4399db13182fa384d483499eeb89685",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_DIAGNOSTIC-005",
+        "opaque_schema_sha256": "4cb1a911059175090c471cb22a06f2a7a0a19f67aef917806045ee455b81a57d",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_DIAGNOSTIC-006",
+        "opaque_schema_sha256": "0460aad60d49d0532091ec4ea69ecb5559be704b55ef774baea867e6d5c12d01",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_DIAGNOSTIC-007",
+        "opaque_schema_sha256": "8da287a8a94e02209791b7abe1a6425e790657542624099aa19343f56c008e05",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_DIAGNOSTIC-008",
+        "opaque_schema_sha256": "a638df936f0165060ecaebab1d742044bbcef65b471a8a7ca2b303cc7024dcd4",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_DIAGNOSTIC-009",
+        "opaque_schema_sha256": "a7ffda4184db549fc7de7096ef4a8df6d22e37e30cb1f1226201baa77b626f28",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_DIAGNOSTIC-010",
+        "opaque_schema_sha256": "0e92f10298959dffd34fb802cb30d1e5e52182ba7ce1ca9ccaa5f313a7c8c609",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_DIAGNOSTIC-011",
+        "opaque_schema_sha256": "eeb3a86b8323f0252ecc0e062d1ae7a9df08855ad20dffadb239e44844206908",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_DIAGNOSTIC-012",
+        "opaque_schema_sha256": "98074cdc9ec793d4ef752666329025b3bc6393ab741321bb5461f6462b9e3c05",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_DIAGNOSTIC-013",
+        "opaque_schema_sha256": "f0f1ddc54be11ef8c7a1b2a51bd8f1b1c55ab31309343408934d6e22af03e3ee",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_DIAGNOSTIC-014",
+        "opaque_schema_sha256": "c272b9413031301510b14448fb8a5fb59e944de3f077a11d966479dab93ebc9c",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_DIAGNOSTIC-015",
+        "opaque_schema_sha256": "77fc6c7e67efcd7016cf0a63c8265da47638f4192d7d288f19f1972132bd64e6",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_DIAGNOSTIC-016",
+        "opaque_schema_sha256": "b31653de2c689c06b0c8b0ee956400875cf660576bd0747274e554e535c989de",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_DIAGNOSTIC-017",
+        "opaque_schema_sha256": "c6588db27348a8f7073fcc861e2767d592463ed43cacfbab9e2c6fd57ebbea24",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_DIAGNOSTIC-018",
+        "opaque_schema_sha256": "fa5272b0ded8d1c86118d27be5a5260077af6317d32447d322faa89df7998597",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_DIAGNOSTIC-019",
+        "opaque_schema_sha256": "d168d84c54e490a744e146c9641403929389f17df53fe495727c9fa3b0005ba4",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_DIAGNOSTIC-020",
+        "opaque_schema_sha256": "a3e6553e264581997752be26368006d34599bc504eb54b2a0e15b38a06114bd8",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_DIAGNOSTIC-021",
+        "opaque_schema_sha256": "cff49cfb801f63d8833544ff51355b750723e128cc67cbc261d27eb5b2ca8e7b",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_DIAGNOSTIC-022",
+        "opaque_schema_sha256": "58740668a27e468e958e0fe5b35c8b7cc15e2036131ff84dfe8ab0325365e3d1",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_DIAGNOSTIC-023",
+        "opaque_schema_sha256": "0654ec25c6aaf29ea159a2f217e1142755ef54cb604e64d8fdda797714e12bde",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_DIAGNOSTIC-024",
+        "opaque_schema_sha256": "415b376cc5e172377027232fa34924f4aa2a87837edd8b816b71d16c77f8c880",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_DIAGNOSTIC-025",
+        "opaque_schema_sha256": "850fc64a36b2af773fd6670d79fdfe4599d898dc5d5b45ea8a3bc25d19e8d8bd",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_DIAGNOSTIC-026",
+        "opaque_schema_sha256": "1c9ba56a77bffe534a493460e927d5b8aa95201a0c3f88867cdac607fbf00ba0",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_DIAGNOSTIC-027",
+        "opaque_schema_sha256": "33b59e069edbe11eb89b1ea5a931e23988e3ee6adf085407178173125c7d669b",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_DIAGNOSTIC-028",
+        "opaque_schema_sha256": "6382fe5924124ece9ab8397e78afec4632088b6d413a4f5773dd4858069fd1a3",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_DIAGNOSTIC-029",
+        "opaque_schema_sha256": "566b662366a01d7c55ed8bd7f59009116c3e9df77bc628cde4a64886ff048718",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      }
+    ],
+    "hidden_inputs_included": false,
+    "expected_outputs_included": false,
+    "frozen_before_candidate_generation": true,
+    "manifest_sha256": "38af6158613bf46d86ffaf369047fd4d0d974d930cc9a61bfcecc52351639ab6"
+  },
+  "fresh_validation": {
+    "set_id": "REGIME_C_FRESH_VALIDATION",
+    "seed_commitment_sha256": "49646ec526b76ad3bed6983e8e95b4f7b8c1c75dfd1cfd8d422e19012f593faf",
+    "generator_version": "SEM11-CROSS-REGIME-GENERATOR-1.0.0",
+    "tasks": [
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-000",
+        "opaque_schema_sha256": "4fda9a515884093270f8a4699240d786fa44d40ef83e1768fccdb3ba59115da7",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-001",
+        "opaque_schema_sha256": "3fa65c963e553e7247e21f1a36f99611af5f9b13aa46cdfd786b4ddc53b88b76",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-002",
+        "opaque_schema_sha256": "48fe7abb14fed0d95df9cf6d4c26706647c2584720dc0b4bdd743e49a29d69ba",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-003",
+        "opaque_schema_sha256": "b0af2120e761b72349ed2716577c93b3a54ad351ac2602eca37da8c46061f281",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-004",
+        "opaque_schema_sha256": "3fe089004b05d188eabff0f6186897d5c54bb6ab941278ea7b743baec7353a6c",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-005",
+        "opaque_schema_sha256": "ad9dcb2d5b5f9122490d33edeeb40ce84d7c6f09fc43a09dd5b05b1acd3287f4",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-006",
+        "opaque_schema_sha256": "028fa5ef64f5b1aced7dd625f29b17d159a089760bc05571d78e77725d7fe41c",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-007",
+        "opaque_schema_sha256": "bab6319219c0e07a4a08d30e8cf0a0b1fc92fe53549f6dcf2999ea20af8140cb",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-008",
+        "opaque_schema_sha256": "59c363618eede35f86b3aa54f2ccf7bc5edf928bdd52f9d263f644853141675b",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-009",
+        "opaque_schema_sha256": "8b740978ae089c5df4eb55ec6dbd3cbf69b77e145b9751882d812b1cb0a36916",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-010",
+        "opaque_schema_sha256": "151b55a3aca7eb5b4a302dea3e74baa6f28bdd48b0c975fb5b1c686fe59a8bc2",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-011",
+        "opaque_schema_sha256": "360591c7ca8473f336a436fb8bd4036e480f62fb727b5c8c53e4c9585d25cc34",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-012",
+        "opaque_schema_sha256": "58d626a29b56cd49d3c80addb020c4335779d532763468f1d5dad83012c7f5df",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-013",
+        "opaque_schema_sha256": "7d1f48bdff4565d4494bfe17e7c01f34136e3cbc9d8ba453ac066a3d3be0e92f",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-014",
+        "opaque_schema_sha256": "a0537bf7e660101cc37255635b4ba8878382243dbc51d9b6cf321609cc2a1fb2",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-015",
+        "opaque_schema_sha256": "fa02952eefbeac92f52b824594633c10dcae397d7997188f38e16043e5d702fe",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-016",
+        "opaque_schema_sha256": "210919c8562c590651fbe84fa813078207d3149d7bd64ab3f55e760e35ac4396",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-017",
+        "opaque_schema_sha256": "8f5afc98a670922d43f565e1f79ceecbc6651b340f8da883785c26f717ecd709",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-018",
+        "opaque_schema_sha256": "5672163bc5adfd081799f8741cea5aa946cb4f467db3ada04fb2cf22521068c4",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-019",
+        "opaque_schema_sha256": "6fc5f732ee06ba143ea725635f414583545417586e6462bc835e2d9f9f2c1b32",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-020",
+        "opaque_schema_sha256": "16ce8d64db1432c4cc19ed0621419a8f1d0852ee099e49c78b5b537e803bc445",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-021",
+        "opaque_schema_sha256": "c7add8f501bea86856caf131b33084f9feb92752bfcc6f1466a6cdde30fcf301",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-022",
+        "opaque_schema_sha256": "93ed5f43d287ed1762b21c40801f06a11c69ee76765eb4b6973b11ad08687143",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-023",
+        "opaque_schema_sha256": "67b7c3ff84e6dde576f776e6c2646401d6f0d01b0de7b0d2528417416d75dc3e",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-024",
+        "opaque_schema_sha256": "ebdd4259a7f8c7ca94378eb2059c9ec4c28cbe938e483514687774d09c485522",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-025",
+        "opaque_schema_sha256": "ddc342555308b8d852455634bcf143133ec3c1678b0052334edb6441005b6ea3",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-026",
+        "opaque_schema_sha256": "5c7a5829f1a962b125d57109854b8b9d62865ef1125546a01fef624876da1433",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-027",
+        "opaque_schema_sha256": "372a38bd934c2ba373fe39751c810baf207f2074daa5e3fb06e7ad097dd948f2",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-028",
+        "opaque_schema_sha256": "ae61d4271583192c5f6e095bc7068ff16f8ef35be92a76d467041897557ba9a6",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-029",
+        "opaque_schema_sha256": "fb112266451e3e56cbfbb81041624edac4d493d3100837fb4b23e8c03ab26914",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-030",
+        "opaque_schema_sha256": "03ad660952236025932d6c631c121bb76f419d11dbad0b358b56a331feb3951a",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-031",
+        "opaque_schema_sha256": "8a08012e5375e7dae6de433ce31811cc7fe7412cef324ee6cefa52ea70cc52c5",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-032",
+        "opaque_schema_sha256": "11a40c8c1997adc0f24486aceec54a64aacd1b0b23d12938f547c4eda027d98c",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-033",
+        "opaque_schema_sha256": "edca4e68365abe003e8583fca576ca4eda55f896d1b988d562c60c1569f440c9",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-034",
+        "opaque_schema_sha256": "49b6e78acec24b6412477f967ad0b34c60f62bd1ba77e4433f098c2ed41bd360",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-035",
+        "opaque_schema_sha256": "09461c6ba5c1649b7539cc022b3252799c6f44aabd7cd3de3751476c7257c926",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-036",
+        "opaque_schema_sha256": "ceca856fbd460582dba801e1b93be52272ed3843941b681fd85e859d5302312c",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-037",
+        "opaque_schema_sha256": "7e1524e8135bde9489910ff719c2583f92c75d20ab998cd426d50d242c2e529a",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-038",
+        "opaque_schema_sha256": "2302c2d8c2f2c29ca88c7b6da5fbce25d3cb14d700ab61fb250ebee408ee43fa",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-039",
+        "opaque_schema_sha256": "ba08ad240b830e7beebe4ba94b59e1b055f9209546752d57f475a54fc2be5669",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-040",
+        "opaque_schema_sha256": "266ba6ee7d513221a1f65f5ac16bc4a69ef21f6dd88ecf447af5084d4891887e",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-041",
+        "opaque_schema_sha256": "27a0f3fe481daf6212dbc885246a579a4bb85289ff42ff50c0e89ba8a12765c9",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-042",
+        "opaque_schema_sha256": "db6a0b65eb30a8c0846bd9e887754bf2642d5628c7bbc56d5050e7eb70110465",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-043",
+        "opaque_schema_sha256": "9d99c8db33c62736cdf4d3d79e9e03382359fadeaf11a30d5a2bca1cd04e2601",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-044",
+        "opaque_schema_sha256": "2929b5a7137d908b98f5cb77aeb49dbf8066edf9d80f09a2dde897dd80d50895",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-045",
+        "opaque_schema_sha256": "5ff75ced84692e6a4baf1d84ab8a5009df2060bad85f97d2e683e86c0509a613",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-046",
+        "opaque_schema_sha256": "792fc049160167dcd483768c89a6c851200b898c10053fa487bf4e81565ced80",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-047",
+        "opaque_schema_sha256": "40fb9f1d8456c9210d0d5af7098ff98a991119f466a8a1b0557a1ac21d35d5bd",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-048",
+        "opaque_schema_sha256": "65f534888954651cc44bcb3e7da20df5fa9649c9c1e61c8754f8c94504f7ac21",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-049",
+        "opaque_schema_sha256": "35057731135cd353198512d6a65c016dec9119a35d3cbcaaae8cf40268f309cc",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-050",
+        "opaque_schema_sha256": "f57e33ca9191f06656130580e365f0a7292751837ce1f3237bd98d1bf3fe3834",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-051",
+        "opaque_schema_sha256": "91f6c16d14cb8fc115356fd0964dc73a29729e106d719e7424f1c10ddf195848",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-052",
+        "opaque_schema_sha256": "435a3481a3571c07463fbb83d2f64bba5a55858a116d8fa45611123aabbd0b00",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-053",
+        "opaque_schema_sha256": "cab47a0b4666acbf39df1e21803da61d8f2fef850c38208337f230513b302407",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-054",
+        "opaque_schema_sha256": "9da803b4b8b7344b72f775fcb0651843e5b5ece93be315c2e44deec6e380b624",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-055",
+        "opaque_schema_sha256": "d0592c4f3b447d072535bdd517b87cf8a2084569854aac82d5ffdb5306ac56b2",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-056",
+        "opaque_schema_sha256": "54b52c68964558ff7ee58e3e9def1fcdd6512d7414d26dc0150e69cfae88d486",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-057",
+        "opaque_schema_sha256": "99d9fa5da6ab8743b95902f00f6b3266508d3bf4e9a5a44dc78f98226e04f0b0",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-058",
+        "opaque_schema_sha256": "0d335fa55385bf43b56acebc56d7bd7337b55609e1c03e2457ba078c0f2c4d90",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-059",
+        "opaque_schema_sha256": "66707543b7e2ae2fbbbb755667d67d2b267123199942e61cd54c9a7cc00e7f4b",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-060",
+        "opaque_schema_sha256": "7acba5603fe42203cf774e3059b44413956ef3746952a35caa931dd097553b39",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-061",
+        "opaque_schema_sha256": "aa7f279a791e44fcd4960a81112780486c93ab334db7e2f2bcd7b63457858537",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-062",
+        "opaque_schema_sha256": "014e49b47bfb84b89cb29df7438b5b20c384a96907cd0f2f9ad1e6e716fa34ba",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-063",
+        "opaque_schema_sha256": "46af8b19e69b94ba469b5b6afd0d2ef46d812e8f73e15af4ff044cc5ced028a4",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-064",
+        "opaque_schema_sha256": "7d218f4042f368def69a35281b98803fcd35d16768302d0c63ca8e15f586559d",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-065",
+        "opaque_schema_sha256": "4c198a17545433bb41ac4791b56cc791354e9dc6c43efb1dc11eae7737f0c8a6",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-066",
+        "opaque_schema_sha256": "1b05185e3ce5573dde1ea056c81905166625a252c8db859382fcb82c9ee0aeeb",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-067",
+        "opaque_schema_sha256": "e74895648f2e95ea5534e77df3001317ca036e7d789af69334d45f061bc9db92",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-068",
+        "opaque_schema_sha256": "2506b54585afb3dac1ec0f4b5fd77870aa5509be3dd45dd1c6c96e30294bb70a",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-069",
+        "opaque_schema_sha256": "f7949bfc29bc5d72a1397697c02debc53eef86c3fd9db54b940ab443e7516d7f",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-070",
+        "opaque_schema_sha256": "b92e90c37da322a2c3ea78d3d17e14c2eade6a61d698c85361f439b2179147ad",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-071",
+        "opaque_schema_sha256": "2c97d48dec6f87688fce32486ba9dc5d736ce194a56ec0bb30a957a19c39192e",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-072",
+        "opaque_schema_sha256": "a07c1c6fcf7f0c652a7a9cad5564346534af7f9ee0f05d4eca0e5a63d7829d0b",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-073",
+        "opaque_schema_sha256": "d5836dec8fe99867e438c66b840e200a36e55275d2d667797536e6cadc9ed1c0",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-074",
+        "opaque_schema_sha256": "a10e1f69c56acfdf464211b066a6513737771e5c9de35c8dd5b68201582554ce",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-075",
+        "opaque_schema_sha256": "cfcbcbf0844595e5622ea87d212c83779da9df379c6fe73a4e0e672f1cc38bb5",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-076",
+        "opaque_schema_sha256": "2dc01f52faf9db2204088e1ec37b2497be9774811c0d0fe037f937081a08bff1",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-077",
+        "opaque_schema_sha256": "a5f80ffbf861ceeac8566bf17977cf74ed6cd888353db09cabea579c92da6f41",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-078",
+        "opaque_schema_sha256": "5f1fe20f5243717e839c56c4a0e8737340e50b9c26c0d0daad6ee0d1ff387d29",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-079",
+        "opaque_schema_sha256": "7854e222f7a4abafa68e0dceff1215ac2963263f04c7335f092a54c66c7d8712",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-080",
+        "opaque_schema_sha256": "01b6bb4dba861be9c03090cd05469a2c3b6ddde61a5bf4b38b65b40bb3527bf7",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-081",
+        "opaque_schema_sha256": "d7e450883fc07574a643b6a41f66955b1de5fe3419d31615e4f46d383940cfc5",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-082",
+        "opaque_schema_sha256": "439efb3ef9748d1605f132dd3180adea2e07eeb9106cb520344105202ba647fb",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_FRESH_VALIDATION-083",
+        "opaque_schema_sha256": "7c17aac623b0f0d505cfc56628c58cfdc5f1257006510963127ff397b31e2a80",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      }
+    ],
+    "hidden_inputs_included": false,
+    "expected_outputs_included": false,
+    "frozen_before_candidate_generation": true,
+    "manifest_sha256": "15c8d870fbdc540fa1dd18801b0e2e1e31a38bb29632c34926dabf8067f2972e"
+  },
+  "adversarial": {
+    "set_id": "REGIME_C_ADVERSARIAL",
+    "seed_commitment_sha256": "b2115fcdd92cb02f917cd387cc18aea7b86f6075024f54b50bfc81e4983c6242",
+    "generator_version": "SEM11-CROSS-REGIME-GENERATOR-1.0.0",
+    "tasks": [
+      {
+        "task_id": "REGIME_C_ADVERSARIAL-000",
+        "opaque_schema_sha256": "c72a8d24bcea3b9120ab9eec2390094216c6f04e8bbcc781247a3e9e7b6cf0f1",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_ADVERSARIAL-001",
+        "opaque_schema_sha256": "e63b7d60afa958d143be79f4b23e9bf8b50203d125f4ff89c68115e13eb2d5ab",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_ADVERSARIAL-002",
+        "opaque_schema_sha256": "c19b9bc875189cf56b3c4c668c38b6a827285a59615fdd34566719ec623251ae",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_ADVERSARIAL-003",
+        "opaque_schema_sha256": "7253ee3232c412f5577d3e62c235d2a492a6472ca69b509b44b6a657162adfaa",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_ADVERSARIAL-004",
+        "opaque_schema_sha256": "d277c6c9e4118ef9b06300113237e68e15a5a7577390523234d52b60e9377f9e",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_ADVERSARIAL-005",
+        "opaque_schema_sha256": "1d864810b3d1ee2902ae6407f0e7cd62b237c2af3c185d441c432259d3745800",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_ADVERSARIAL-006",
+        "opaque_schema_sha256": "f0837f9d1128a8d3c6ca042f9861013fc251db0701c5aabf10cf41587d38e783",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_ADVERSARIAL-007",
+        "opaque_schema_sha256": "c43ab236c676364e9107029ba347cd4de354787ab414767ee608e990705b3ad2",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_ADVERSARIAL-008",
+        "opaque_schema_sha256": "8a8db6cd54d5a8e1c9f225567b75e0755152e26c02631f34dc85d5c5ba341963",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_ADVERSARIAL-009",
+        "opaque_schema_sha256": "6c64bd6a6527907d82bc2bb735d640326cfd35070ce5a0763f3831ca0a08b4ba",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_ADVERSARIAL-010",
+        "opaque_schema_sha256": "4bbb58b781a84316be0995034d92631697c50c87952fd965de800ddb958b763a",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_ADVERSARIAL-011",
+        "opaque_schema_sha256": "d789e34cf517c816db68fc5db835efd0ea5a9791af3ceec0ea5c64a8f22d9e0a",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_ADVERSARIAL-012",
+        "opaque_schema_sha256": "9e0ff4e429774fe9e58d074ba0fbdea79f0657e3786a80fc5017623c070ca15c",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_ADVERSARIAL-013",
+        "opaque_schema_sha256": "e5ee0eaed947e6d28ab805af4c20c5f91f82bc56c83584df5e6beb59fef25169",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_ADVERSARIAL-014",
+        "opaque_schema_sha256": "df4e9a79dd71f6a18a2d3733bd96c70ac50073a80f0f055d33aaa94e1aa5c5c0",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_ADVERSARIAL-015",
+        "opaque_schema_sha256": "62d4ae3df2f19ff2ca7d4a161093e727db140cedfe6386b0881487ec18f92e7e",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_ADVERSARIAL-016",
+        "opaque_schema_sha256": "c4758fd4bda644c0ab59a0b780234f8688eced9e7f1cfdf28bb9fac5a0f06267",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_ADVERSARIAL-017",
+        "opaque_schema_sha256": "f7cf7301d45c3f9f8d204cc94784d79dc5f2fb77b7b6cb75ee0ac8ed8a2bf23c",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_ADVERSARIAL-018",
+        "opaque_schema_sha256": "ccfa12dc4c38887b8351d2250b846a1962fd5a352b9430ee7b38c15d3bb86ffa",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_ADVERSARIAL-019",
+        "opaque_schema_sha256": "ab30c5b0f7036009ae783171fd0f0a64a52873f11c8371bc1fcc70453967619e",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      },
+      {
+        "task_id": "REGIME_C_ADVERSARIAL-020",
+        "opaque_schema_sha256": "21c920baf0bf1c5c6d65862bc7a2ea542c3273baf36ff73112523a2b3f91802a",
+        "public_contract_sha256": "20851ff8dd9bd94dd8267a4383910d4658f0600c7cef52c5630c1a9a508b35ad",
+        "hidden_inputs_included": false,
+        "expected_outputs_included": false,
+        "researcher_pressure_label_exposed_to_candidate": false,
+        "frozen": true
+      }
+    ],
+    "hidden_inputs_included": false,
+    "expected_outputs_included": false,
+    "frozen_before_candidate_generation": true,
+    "manifest_sha256": "7039ae1bf853fabd630bd53866491b07435d397f9e78fe2929777e47747409c3"
+  },
+  "frozen": true,
+  "manifest_sha256": "f7fca236ab8fbee7751d2fe43315b9d6b23586abac5695d243ce5322eaf87221"
+}
