@@ -7,6 +7,7 @@ pub mod reporting;
 pub mod sem1;
 pub mod sem10fresh;
 pub mod sem11;
+pub mod sem12;
 pub mod sem2;
 pub mod sem3;
 pub mod sem4;
