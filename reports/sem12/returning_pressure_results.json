@@ -1,0 +1,20 @@
+{
+  "results": [
+    {
+      "diagnosis": "NO_ACTIONABLE_WEAKNESS",
+      "epoch_id": "E01",
+      "new_weakness_replaced_old": false,
+      "pressure": "RETURNING_CANDIDATE_AMBIGUITY",
+      "previous_improvement_still_effective": true
+    },
+    {
+      "diagnosis": "NO_ACTIONABLE_WEAKNESS",
+      "epoch_id": "E03",
+      "new_weakness_replaced_old": false,
+      "pressure": "RETURNING_TRANSIENT_STATE",
+      "previous_improvement_still_effective": true
+    }
+  ],
+  "retention_pass": true,
+  "returning_pressure_epochs": 2
+}

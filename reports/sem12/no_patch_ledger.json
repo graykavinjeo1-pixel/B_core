@@ -1,0 +1,23 @@
+[
+  {
+    "correct_no_patch": true,
+    "decision": "NO_PATCH",
+    "epoch_id": "E01",
+    "parent_preserved": "SEM12-BASE-RUN",
+    "status": "NO_ACTIONABLE_WEAKNESS"
+  },
+  {
+    "correct_no_patch": true,
+    "decision": "NO_PATCH",
+    "epoch_id": "E03",
+    "parent_preserved": "SEM12-D1",
+    "status": "NO_ACTIONABLE_WEAKNESS"
+  },
+  {
+    "correct_no_patch": true,
+    "decision": "NO_PATCH",
+    "epoch_id": "E05",
+    "parent_preserved": "SEM12-D2",
+    "status": "NO_ACTIONABLE_WEAKNESS"
+  }
+]

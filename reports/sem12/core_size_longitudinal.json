@@ -1,0 +1,46 @@
+[
+  {
+    "core_index_bytes": 281,
+    "core_release_binary_bytes": 179200,
+    "core_semantic_state_bytes": 2662,
+    "core_source_bytes": 12039,
+    "core_total_deployable_bytes": 182143,
+    "descendant": "SEM12-BASE-RUN",
+    "generation": 0,
+    "release_binary_sha256": "89991280ca6066fac59fb25c1430da4407b3db762722689e02024dcd16f3caf7",
+    "source_sha256": "aaa1fa12aede4fca1db6365c35a2d21586043839f11f528fd3d2f82ec9848fc9"
+  },
+  {
+    "core_index_bytes": 281,
+    "core_release_binary_bytes": 184832,
+    "core_semantic_state_bytes": 2662,
+    "core_source_bytes": 12038,
+    "core_total_deployable_bytes": 187775,
+    "descendant": "SEM12-D1",
+    "generation": 1,
+    "release_binary_sha256": "486eaba44cc624069c5e580f59ac75628bf55951356e9d48f3f86937e4108401",
+    "source_sha256": "785ebbe3f7354974aea196f393c960128d44536a4dbac7fc6a64c48577956342"
+  },
+  {
+    "core_index_bytes": 281,
+    "core_release_binary_bytes": 189952,
+    "core_semantic_state_bytes": 2662,
+    "core_source_bytes": 12037,
+    "core_total_deployable_bytes": 192895,
+    "descendant": "SEM12-D2",
+    "generation": 2,
+    "release_binary_sha256": "65283e086b59e79613403df35d51500ec4ec37755f591b9961d54ca89f5fd769",
+    "source_sha256": "9befd5981bf0310544c84337d1c8a32177cc0e45359583aa577ebae3ab589d90"
+  },
+  {
+    "core_index_bytes": 281,
+    "core_release_binary_bytes": 195072,
+    "core_semantic_state_bytes": 2662,
+    "core_source_bytes": 12036,
+    "core_total_deployable_bytes": 198015,
+    "descendant": "SEM12-D3",
+    "generation": 3,
+    "release_binary_sha256": "e2ffa3b0ea8e8670ce69384f39b60c186b4af2a72a81955ab808862f7a3bec18",
+    "source_sha256": "e24a65f9e200dbf46daf25c03c95fab24c2ceb808ac9805b146a26ac013487d2"
+  }
+]

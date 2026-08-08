@@ -1,0 +1,151 @@
+[
+  {
+    "all_critical_assumptions_satisfied": true,
+    "critical_unknowns": 0,
+    "critical_violations": 0,
+    "entries": [
+      {
+        "assumption_id": "M0005-A0",
+        "evidence": {
+          "composition_ops_per_unique_prefix": 2.7790697674418605,
+          "peak_active_concepts": 3,
+          "peak_frontier": 22,
+          "peak_transient_bytes": 224,
+          "retrieval_ops_per_value_or_request": 0.8571428571428571,
+          "routing_ops_per_candidate": 1.0,
+          "state_reconstruction_ops_per_input": 1.0,
+          "strict_solve_rate": 1.0,
+          "uncertainty_ops_per_explanation_or_evidence": 1.6
+        },
+        "kind": "DETERMINISTIC",
+        "required": true,
+        "status": "SATISFIED"
+      },
+      {
+        "assumption_id": "M0005-A1",
+        "evidence": {
+          "composition_ops_per_unique_prefix": 2.7790697674418605,
+          "peak_active_concepts": 3,
+          "peak_frontier": 22,
+          "peak_transient_bytes": 224,
+          "retrieval_ops_per_value_or_request": 0.8571428571428571,
+          "routing_ops_per_candidate": 1.0,
+          "state_reconstruction_ops_per_input": 1.0,
+          "strict_solve_rate": 1.0,
+          "uncertainty_ops_per_explanation_or_evidence": 1.6
+        },
+        "kind": "PURE",
+        "required": true,
+        "status": "SATISFIED"
+      }
+    ],
+    "epoch_id": "E02",
+    "source_mechanism": "M0005",
+    "validated_before_patch": true
+  },
+  {
+    "all_critical_assumptions_satisfied": true,
+    "critical_unknowns": 0,
+    "critical_violations": 0,
+    "entries": [
+      {
+        "assumption_id": "M0008-A0",
+        "evidence": {
+          "composition_ops_per_unique_prefix": 1.0,
+          "peak_active_concepts": 3,
+          "peak_frontier": 6,
+          "peak_transient_bytes": 224,
+          "retrieval_ops_per_value_or_request": 0.8571428571428571,
+          "routing_ops_per_candidate": 1.0,
+          "state_reconstruction_ops_per_input": 1.0,
+          "strict_solve_rate": 1.0,
+          "uncertainty_ops_per_explanation_or_evidence": 36.83798882681564
+        },
+        "kind": "DETERMINISTIC",
+        "required": true,
+        "status": "SATISFIED"
+      },
+      {
+        "assumption_id": "M0008-A1",
+        "evidence": {
+          "composition_ops_per_unique_prefix": 1.0,
+          "peak_active_concepts": 3,
+          "peak_frontier": 6,
+          "peak_transient_bytes": 224,
+          "retrieval_ops_per_value_or_request": 0.8571428571428571,
+          "routing_ops_per_candidate": 1.0,
+          "state_reconstruction_ops_per_input": 1.0,
+          "strict_solve_rate": 1.0,
+          "uncertainty_ops_per_explanation_or_evidence": 36.83798882681564
+        },
+        "kind": "REVERSIBLE",
+        "required": true,
+        "status": "SATISFIED"
+      },
+      {
+        "assumption_id": "M0008-A2",
+        "evidence": {
+          "composition_ops_per_unique_prefix": 1.0,
+          "peak_active_concepts": 3,
+          "peak_frontier": 6,
+          "peak_transient_bytes": 224,
+          "retrieval_ops_per_value_or_request": 0.8571428571428571,
+          "routing_ops_per_candidate": 1.0,
+          "state_reconstruction_ops_per_input": 1.0,
+          "strict_solve_rate": 1.0,
+          "uncertainty_ops_per_explanation_or_evidence": 36.83798882681564
+        },
+        "kind": "LOSSLESS",
+        "required": true,
+        "status": "SATISFIED"
+      }
+    ],
+    "epoch_id": "E04",
+    "source_mechanism": "M0008",
+    "validated_before_patch": true
+  },
+  {
+    "all_critical_assumptions_satisfied": true,
+    "critical_unknowns": 0,
+    "critical_violations": 0,
+    "entries": [
+      {
+        "assumption_id": "M0006-A0",
+        "evidence": {
+          "composition_ops_per_unique_prefix": 1.0,
+          "peak_active_concepts": 3,
+          "peak_frontier": 6,
+          "peak_transient_bytes": 224,
+          "retrieval_ops_per_value_or_request": 25.72037914691943,
+          "routing_ops_per_candidate": 1.0,
+          "state_reconstruction_ops_per_input": 1.0,
+          "strict_solve_rate": 1.0,
+          "uncertainty_ops_per_explanation_or_evidence": 1.8
+        },
+        "kind": "DETERMINISTIC",
+        "required": true,
+        "status": "SATISFIED"
+      },
+      {
+        "assumption_id": "M0006-A1",
+        "evidence": {
+          "composition_ops_per_unique_prefix": 1.0,
+          "peak_active_concepts": 3,
+          "peak_frontier": 6,
+          "peak_transient_bytes": 224,
+          "retrieval_ops_per_value_or_request": 25.72037914691943,
+          "routing_ops_per_candidate": 1.0,
+          "state_reconstruction_ops_per_input": 1.0,
+          "strict_solve_rate": 1.0,
+          "uncertainty_ops_per_explanation_or_evidence": 1.8
+        },
+        "kind": "TERMINATES",
+        "required": true,
+        "status": "SATISFIED"
+      }
+    ],
+    "epoch_id": "E06",
+    "source_mechanism": "M0006",
+    "validated_before_patch": true
+  }
+]

@@ -1,0 +1,34 @@
+{
+  "events": [
+    {
+      "added_release_binary_bytes": 5632,
+      "causally_justified": true,
+      "deterministic_cost_gain": 0.6380753138075314,
+      "epoch_id": "E02",
+      "measured": true,
+      "predicted": true,
+      "type": "DEPLOYABLE_BYTES_FOR_DETERMINISTIC_COST"
+    },
+    {
+      "added_release_binary_bytes": 5120,
+      "causally_justified": true,
+      "deterministic_cost_gain": 0.9549228944246738,
+      "epoch_id": "E04",
+      "measured": true,
+      "predicted": true,
+      "type": "DEPLOYABLE_BYTES_FOR_DETERMINISTIC_COST"
+    },
+    {
+      "added_release_binary_bytes": 5120,
+      "causally_justified": true,
+      "deterministic_cost_gain": 0.9618024200830775,
+      "epoch_id": "E06",
+      "measured": true,
+      "predicted": true,
+      "type": "DEPLOYABLE_BYTES_FOR_DETERMINISTIC_COST"
+    }
+  ],
+  "passed": true,
+  "resource_tradeoff_events": 3,
+  "unmeasured_tradeoffs": 0
+}

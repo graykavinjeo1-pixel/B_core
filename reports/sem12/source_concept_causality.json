@@ -1,0 +1,33 @@
+[
+  {
+    "candidate_id": "SEM12-D1",
+    "epoch_id": "E02",
+    "same_transform_recovered_without_selected_source": false,
+    "selected_transform": "STAGE_COMPOSITION",
+    "source_concept_causality_pass": true,
+    "source_concept_ids": [
+      "C000010"
+    ]
+  },
+  {
+    "candidate_id": "SEM12-D2",
+    "epoch_id": "E04",
+    "same_transform_recovered_without_selected_source": false,
+    "selected_transform": "REVERSIBLE_STATE_TRANSFORM",
+    "source_concept_causality_pass": true,
+    "source_concept_ids": [
+      "C000006",
+      "C000010"
+    ]
+  },
+  {
+    "candidate_id": "SEM12-D3",
+    "epoch_id": "E06",
+    "same_transform_recovered_without_selected_source": false,
+    "selected_transform": "QUOTIENT_PARTITION",
+    "source_concept_causality_pass": true,
+    "source_concept_ids": [
+      "C000012"
+    ]
+  }
+]

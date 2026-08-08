@@ -1,0 +1,297 @@
+[
+  {
+    "deployable_bytes": null,
+    "dominant_weakness": "NO_ACTIONABLE_WEAKNESS",
+    "epoch": "E01",
+    "frontier_class": "RETURNING_CANDIDATE_AMBIGUITY",
+    "max_concepts_composed": 2,
+    "max_reasoning_depth": 4,
+    "memory": 224,
+    "new_descendant": null,
+    "new_gain": null,
+    "parent_generation": 0,
+    "patch_or_no_patch": "NO_PATCH",
+    "peak_active_concepts": 3,
+    "peak_frontier": 6,
+    "primary_deterministic_cost": 143.0,
+    "retained_prior_gains": true,
+    "source_mechanisms": null,
+    "strict_solve": 1.0,
+    "wall_time_ns": 8886600.0
+  },
+  {
+    "deployable_bytes": 184832,
+    "dominant_weakness": "RECOMBINATION_PREFIX_REDUNDANCY",
+    "epoch": "E02",
+    "frontier_class": "DEEP_RECOMBINATION",
+    "max_concepts_composed": 2,
+    "max_reasoning_depth": 13,
+    "memory": 224,
+    "new_descendant": "SEM12-D1",
+    "new_gain": 0.6380753138075314,
+    "parent_generation": 0,
+    "patch_or_no_patch": "PATCH_VERIFIED",
+    "peak_active_concepts": 3,
+    "peak_frontier": 22,
+    "primary_deterministic_cost": 157.5,
+    "retained_prior_gains": true,
+    "source_mechanisms": [
+      {
+        "assumptions": [
+          {
+            "assumption_id": "M0005-A0",
+            "evidence_origin": "reports/sem5/transfer_results.json",
+            "kind": "DETERMINISTIC",
+            "required": true
+          },
+          {
+            "assumption_id": "M0005-A1",
+            "evidence_origin": "reports/sem5/transfer_results.json",
+            "kind": "PURE",
+            "required": true
+          }
+        ],
+        "compatibility_reason": "role/transform compatibility for observed feature RECOMBINATION_PREFIX_REDUNDANCY",
+        "compatibility_score": 90,
+        "mechanism_id": "M0005",
+        "roles": [
+          {
+            "kind": "INPUT",
+            "required": true,
+            "role_id": "M0005-R0",
+            "type_class": "value<T>"
+          },
+          {
+            "kind": "STAGE",
+            "required": true,
+            "role_id": "M0005-R1",
+            "type_class": "pure_relation<T,U>"
+          },
+          {
+            "kind": "TRANSFORM",
+            "required": true,
+            "role_id": "M0005-R2",
+            "type_class": "pure_relation<T,U>"
+          },
+          {
+            "kind": "STAGE",
+            "required": true,
+            "role_id": "M0005-R3",
+            "type_class": "pure_relation<T,U>"
+          },
+          {
+            "kind": "OUTPUT",
+            "required": true,
+            "role_id": "M0005-R4",
+            "type_class": "value<T>"
+          }
+        ],
+        "semantic_sha256": "d2bf0fd822f012bc188096794a44a228d4b9201fe0006633c085f65afc04ad20",
+        "source_concept_ids": [
+          "C000010"
+        ],
+        "source_domain": "PROGRAMMING",
+        "transform": "STAGE_COMPOSITION"
+      }
+    ],
+    "strict_solve": 1.0,
+    "wall_time_ns": 16747200.0
+  },
+  {
+    "deployable_bytes": null,
+    "dominant_weakness": "NO_ACTIONABLE_WEAKNESS",
+    "epoch": "E03",
+    "frontier_class": "RETURNING_TRANSIENT_STATE",
+    "max_concepts_composed": 2,
+    "max_reasoning_depth": 4,
+    "memory": 768,
+    "new_descendant": null,
+    "new_gain": null,
+    "parent_generation": 1,
+    "patch_or_no_patch": "NO_PATCH",
+    "peak_active_concepts": 3,
+    "peak_frontier": 6,
+    "primary_deterministic_cost": 201.0,
+    "retained_prior_gains": true,
+    "source_mechanisms": null,
+    "strict_solve": 1.0,
+    "wall_time_ns": 11496900.0
+  },
+  {
+    "deployable_bytes": 189952,
+    "dominant_weakness": "COUNTERFACTUAL_REVISION_RESCAN",
+    "epoch": "E04",
+    "frontier_class": "COUNTERFACTUAL_REVISION",
+    "max_concepts_composed": 2,
+    "max_reasoning_depth": 4,
+    "memory": 224,
+    "new_descendant": "SEM12-D2",
+    "new_gain": 0.9549228944246738,
+    "parent_generation": 1,
+    "patch_or_no_patch": "PATCH_VERIFIED",
+    "peak_active_concepts": 3,
+    "peak_frontier": 6,
+    "primary_deterministic_cost": 230.0,
+    "retained_prior_gains": true,
+    "source_mechanisms": [
+      {
+        "assumptions": [
+          {
+            "assumption_id": "M0008-A0",
+            "evidence_origin": "reports/sem4/definition_only_results.json",
+            "kind": "DETERMINISTIC",
+            "required": true
+          },
+          {
+            "assumption_id": "M0008-A1",
+            "evidence_origin": "reports/sem4/definition_only_results.json",
+            "kind": "REVERSIBLE",
+            "required": true
+          },
+          {
+            "assumption_id": "M0008-A2",
+            "evidence_origin": "reports/sem4/definition_only_results.json",
+            "kind": "LOSSLESS",
+            "required": true
+          }
+        ],
+        "compatibility_reason": "role/transform compatibility for observed feature COUNTERFACTUAL_REVISION_RESCAN",
+        "compatibility_score": 90,
+        "mechanism_id": "M0008",
+        "roles": [
+          {
+            "kind": "STATE",
+            "required": true,
+            "role_id": "M0008-R0",
+            "type_class": "state<T>"
+          },
+          {
+            "kind": "INPUT",
+            "required": true,
+            "role_id": "M0008-R1",
+            "type_class": "value<T>"
+          },
+          {
+            "kind": "TRANSFORM",
+            "required": true,
+            "role_id": "M0008-R2",
+            "type_class": "pure_relation<T,U>"
+          },
+          {
+            "kind": "INVARIANT",
+            "required": true,
+            "role_id": "M0008-R3",
+            "type_class": "predicate<T>"
+          },
+          {
+            "kind": "OUTPUT",
+            "required": true,
+            "role_id": "M0008-R4",
+            "type_class": "value<T>"
+          }
+        ],
+        "semantic_sha256": "141f7c72f5e1b9a27559e05afc67c253b8964998aedb808ea07017bb96c30c17",
+        "source_concept_ids": [
+          "C000006",
+          "C000010"
+        ],
+        "source_domain": "MATHEMATICS",
+        "transform": "REVERSIBLE_STATE_TRANSFORM"
+      }
+    ],
+    "strict_solve": 1.0,
+    "wall_time_ns": 10761700.0
+  },
+  {
+    "deployable_bytes": null,
+    "dominant_weakness": "NO_ACTIONABLE_WEAKNESS",
+    "epoch": "E05",
+    "frontier_class": "MIXED_AMBIGUITY_DEPTH_REVISION",
+    "max_concepts_composed": 2,
+    "max_reasoning_depth": 11,
+    "memory": 512,
+    "new_descendant": null,
+    "new_gain": null,
+    "parent_generation": 2,
+    "patch_or_no_patch": "NO_PATCH",
+    "peak_active_concepts": 3,
+    "peak_frontier": 15,
+    "primary_deterministic_cost": 346.0,
+    "retained_prior_gains": true,
+    "source_mechanisms": null,
+    "strict_solve": 1.0,
+    "wall_time_ns": 18217600.0
+  },
+  {
+    "deployable_bytes": 195072,
+    "dominant_weakness": "RETRIEVAL_EQUIVALENCE_RESCAN",
+    "epoch": "E06",
+    "frontier_class": "REPEATED_EQUIVALENT_RETRIEVAL",
+    "max_concepts_composed": 2,
+    "max_reasoning_depth": 4,
+    "memory": 224,
+    "new_descendant": "SEM12-D3",
+    "new_gain": 0.9618024200830776,
+    "parent_generation": 2,
+    "patch_or_no_patch": "PATCH_VERIFIED",
+    "peak_active_concepts": 3,
+    "peak_frontier": 6,
+    "primary_deterministic_cost": 295.0,
+    "retained_prior_gains": true,
+    "source_mechanisms": [
+      {
+        "assumptions": [
+          {
+            "assumption_id": "M0006-A0",
+            "evidence_origin": "reports/sem6/semantic_compilation_results.json",
+            "kind": "DETERMINISTIC",
+            "required": true
+          },
+          {
+            "assumption_id": "M0006-A1",
+            "evidence_origin": "reports/sem6/semantic_compilation_results.json",
+            "kind": "TERMINATES",
+            "required": true
+          }
+        ],
+        "compatibility_reason": "role/transform compatibility for observed feature RETRIEVAL_EQUIVALENCE_RESCAN",
+        "compatibility_score": 90,
+        "mechanism_id": "M0006",
+        "roles": [
+          {
+            "kind": "INPUT",
+            "required": true,
+            "role_id": "M0006-R0",
+            "type_class": "value<T>"
+          },
+          {
+            "kind": "BOUNDARY",
+            "required": true,
+            "role_id": "M0006-R1",
+            "type_class": "bounded_index_or_partition"
+          },
+          {
+            "kind": "TRANSFORM",
+            "required": true,
+            "role_id": "M0006-R2",
+            "type_class": "pure_relation<T,U>"
+          },
+          {
+            "kind": "OUTPUT",
+            "required": true,
+            "role_id": "M0006-R3",
+            "type_class": "value<T>"
+          }
+        ],
+        "semantic_sha256": "f0ba3b584879225ea4c482dbc58727ae2aef5633e5cbfbf41a640b265ee1a5dc",
+        "source_concept_ids": [
+          "C000012"
+        ],
+        "source_domain": "EXTERNAL_DEFINITION",
+        "transform": "QUOTIENT_PARTITION"
+      }
+    ],
+    "strict_solve": 1.0,
+    "wall_time_ns": 15572500.0
+  }
+]

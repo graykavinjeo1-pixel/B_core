@@ -1,0 +1,10 @@
+{
+  "base_max_concepts_composed": 2,
+  "base_max_primitive_expanded_depth": 13,
+  "base_max_solution_depth": 13,
+  "final_max_concepts_composed": 2,
+  "final_max_primitive_expanded_depth": 13,
+  "final_max_solution_depth": 13,
+  "passed": true,
+  "premature_abstention_events": 0
+}

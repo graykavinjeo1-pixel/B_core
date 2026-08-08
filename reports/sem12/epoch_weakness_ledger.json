@@ -1,0 +1,158 @@
+[
+  {
+    "epoch_id": "E01",
+    "current_generation": 0,
+    "observed_pressure": "RETURNING_CANDIDATE_AMBIGUITY",
+    "measured_behavior": {
+      "composition_ops_per_unique_prefix": 1.0,
+      "peak_active_concepts": 3,
+      "peak_frontier": 6,
+      "peak_transient_bytes": 224,
+      "retrieval_ops_per_value_or_request": 0.8571428571428571,
+      "routing_ops_per_candidate": 1.0,
+      "state_reconstruction_ops_per_input": 1.0,
+      "strict_solve_rate": 1.0,
+      "uncertainty_ops_per_explanation_or_evidence": 1.6
+    },
+    "candidate_weaknesses": [],
+    "dominant_weakness": "NO_ACTIONABLE_WEAKNESS",
+    "target_class": "NONE",
+    "feature": "NONE",
+    "causal_hypothesis": "the measured pressure is already below the frozen action threshold",
+    "confidence": 0.98,
+    "actionable_status": "NO_ACTIONABLE_WEAKNESS",
+    "autonomous_weakness_diagnosis": true,
+    "assessment_sha256": "1eea3dd5fb6a57252912a44751711c3452ca463645f5f667fc7c51c32c3a192a"
+  },
+  {
+    "epoch_id": "E02",
+    "current_generation": 0,
+    "observed_pressure": "DEEP_RECOMBINATION",
+    "measured_behavior": {
+      "composition_ops_per_unique_prefix": 2.7790697674418605,
+      "peak_active_concepts": 3,
+      "peak_frontier": 22,
+      "peak_transient_bytes": 224,
+      "retrieval_ops_per_value_or_request": 0.8571428571428571,
+      "routing_ops_per_candidate": 1.0,
+      "state_reconstruction_ops_per_input": 1.0,
+      "strict_solve_rate": 1.0,
+      "uncertainty_ops_per_explanation_or_evidence": 1.6
+    },
+    "candidate_weaknesses": [
+      "RECOMBINATION_PREFIX_REDUNDANCY"
+    ],
+    "dominant_weakness": "RECOMBINATION_PREFIX_REDUNDANCY",
+    "target_class": "COMPOSITION_CONTROL",
+    "feature": "RECOMBINATION_PREFIX_REDUNDANCY",
+    "causal_hypothesis": "shared prefixes are re-expanded independently for every branch",
+    "confidence": 0.99,
+    "actionable_status": "ACTIONABLE_WEAKNESS",
+    "autonomous_weakness_diagnosis": true,
+    "assessment_sha256": "e1216037317914fcc59933b0a7bbdb4c6a5cc8c057da40bf9ce3512f453568c7"
+  },
+  {
+    "epoch_id": "E03",
+    "current_generation": 1,
+    "observed_pressure": "RETURNING_TRANSIENT_STATE",
+    "measured_behavior": {
+      "composition_ops_per_unique_prefix": 1.0,
+      "peak_active_concepts": 3,
+      "peak_frontier": 6,
+      "peak_transient_bytes": 768,
+      "retrieval_ops_per_value_or_request": 0.8571428571428571,
+      "routing_ops_per_candidate": 1.0,
+      "state_reconstruction_ops_per_input": 1.0,
+      "strict_solve_rate": 1.0,
+      "uncertainty_ops_per_explanation_or_evidence": 1.6
+    },
+    "candidate_weaknesses": [],
+    "dominant_weakness": "NO_ACTIONABLE_WEAKNESS",
+    "target_class": "NONE",
+    "feature": "NONE",
+    "causal_hypothesis": "the measured pressure is already below the frozen action threshold",
+    "confidence": 0.98,
+    "actionable_status": "NO_ACTIONABLE_WEAKNESS",
+    "autonomous_weakness_diagnosis": true,
+    "assessment_sha256": "99113f6ce1dc9e1fd4c69647d020c5801388f5730bd381d37086b488320cb910"
+  },
+  {
+    "epoch_id": "E04",
+    "current_generation": 1,
+    "observed_pressure": "COUNTERFACTUAL_REVISION",
+    "measured_behavior": {
+      "composition_ops_per_unique_prefix": 1.0,
+      "peak_active_concepts": 3,
+      "peak_frontier": 6,
+      "peak_transient_bytes": 224,
+      "retrieval_ops_per_value_or_request": 0.8571428571428571,
+      "routing_ops_per_candidate": 1.0,
+      "state_reconstruction_ops_per_input": 1.0,
+      "strict_solve_rate": 1.0,
+      "uncertainty_ops_per_explanation_or_evidence": 36.83798882681564
+    },
+    "candidate_weaknesses": [
+      "COUNTERFACTUAL_REVISION_RESCAN"
+    ],
+    "dominant_weakness": "COUNTERFACTUAL_REVISION_RESCAN",
+    "target_class": "UNCERTAINTY_REVISION_ECONOMY",
+    "feature": "COUNTERFACTUAL_REVISION_RESCAN",
+    "causal_hypothesis": "each counterevidence event rebuilds and rescans the explanation state",
+    "confidence": 0.99,
+    "actionable_status": "ACTIONABLE_WEAKNESS",
+    "autonomous_weakness_diagnosis": true,
+    "assessment_sha256": "04638751a1692dbc20a45a6b89d9e73de04aa1592f4677af04c0f8925e9e3972"
+  },
+  {
+    "epoch_id": "E05",
+    "current_generation": 2,
+    "observed_pressure": "MIXED_AMBIGUITY_DEPTH_REVISION",
+    "measured_behavior": {
+      "composition_ops_per_unique_prefix": 1.0,
+      "peak_active_concepts": 3,
+      "peak_frontier": 15,
+      "peak_transient_bytes": 512,
+      "retrieval_ops_per_value_or_request": 0.8571428571428571,
+      "routing_ops_per_candidate": 1.0,
+      "state_reconstruction_ops_per_input": 1.0,
+      "strict_solve_rate": 1.0,
+      "uncertainty_ops_per_explanation_or_evidence": 1.6893939393939394
+    },
+    "candidate_weaknesses": [],
+    "dominant_weakness": "NO_ACTIONABLE_WEAKNESS",
+    "target_class": "NONE",
+    "feature": "NONE",
+    "causal_hypothesis": "the measured pressure is already below the frozen action threshold",
+    "confidence": 0.98,
+    "actionable_status": "NO_ACTIONABLE_WEAKNESS",
+    "autonomous_weakness_diagnosis": true,
+    "assessment_sha256": "fff0ecc5680f40c98f746384ba894fab8323c1d3af6cbc5db3dd4837cf033447"
+  },
+  {
+    "epoch_id": "E06",
+    "current_generation": 2,
+    "observed_pressure": "REPEATED_EQUIVALENT_RETRIEVAL",
+    "measured_behavior": {
+      "composition_ops_per_unique_prefix": 1.0,
+      "peak_active_concepts": 3,
+      "peak_frontier": 6,
+      "peak_transient_bytes": 224,
+      "retrieval_ops_per_value_or_request": 25.72037914691943,
+      "routing_ops_per_candidate": 1.0,
+      "state_reconstruction_ops_per_input": 1.0,
+      "strict_solve_rate": 1.0,
+      "uncertainty_ops_per_explanation_or_evidence": 1.8
+    },
+    "candidate_weaknesses": [
+      "RETRIEVAL_EQUIVALENCE_RESCAN"
+    ],
+    "dominant_weakness": "RETRIEVAL_EQUIVALENCE_RESCAN",
+    "target_class": "RETRIEVAL_REUSE_ECONOMY",
+    "feature": "RETRIEVAL_EQUIVALENCE_RESCAN",
+    "causal_hypothesis": "equivalent retrieval requests repeatedly scan the same bounded value set",
+    "confidence": 0.99,
+    "actionable_status": "ACTIONABLE_WEAKNESS",
+    "autonomous_weakness_diagnosis": true,
+    "assessment_sha256": "1be03af8893c3f7cb92c7f16b9dc0a0d9eff0278f86aa13f0835219f8f1c86e4"
+  }
+]

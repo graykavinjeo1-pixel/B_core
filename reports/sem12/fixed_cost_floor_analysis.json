@@ -1,0 +1,10 @@
+{
+  "base_deterministic_cost": 1064.5,
+  "base_wall_time_ns": 27677800.0,
+  "classification_is_observational": true,
+  "final_deterministic_cost": 212.0,
+  "final_wall_time_ns": 35030600.0,
+  "fixed_runtime_overhead_dominant": true,
+  "total_deterministic_cost_gain": 0.8008454673555659,
+  "total_wall_time_gain": -0.2656569525034504
+}

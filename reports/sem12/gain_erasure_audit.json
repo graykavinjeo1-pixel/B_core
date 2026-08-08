@@ -1,0 +1,30 @@
+{
+  "gain_erasure_events": 0,
+  "passed": true,
+  "rows": [
+    {
+      "epoch_id": "E02",
+      "final_gain": 0.6380753138075314,
+      "gain_erased": false,
+      "original_gain": 0.6380753138075314,
+      "retained_gain_ratio": 1.0,
+      "target_class": "COMPOSITION_CONTROL"
+    },
+    {
+      "epoch_id": "E04",
+      "final_gain": 0.9549228944246738,
+      "gain_erased": false,
+      "original_gain": 0.9549228944246738,
+      "retained_gain_ratio": 1.0,
+      "target_class": "UNCERTAINTY_REVISION_ECONOMY"
+    },
+    {
+      "epoch_id": "E06",
+      "final_gain": 0.9618024200830775,
+      "gain_erased": false,
+      "original_gain": 0.9618024200830775,
+      "retained_gain_ratio": 1.0,
+      "target_class": "RETRIEVAL_REUSE_ECONOMY"
+    }
+  ]
+}

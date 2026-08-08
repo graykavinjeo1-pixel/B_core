@@ -1,0 +1,14 @@
+{
+  "external_llm_calls": 0,
+  "harbor_imports": 0,
+  "local_teacher_calls": 0,
+  "merged_synapse_imports": 0,
+  "network_reads": 0,
+  "network_writes": 0,
+  "passed": true,
+  "post_graft_commandplan_imports": 0,
+  "post_graft_language_imports": 0,
+  "remote_executions": 0,
+  "srg0_imports": 0,
+  "synapse_2m_imports": 0
+}

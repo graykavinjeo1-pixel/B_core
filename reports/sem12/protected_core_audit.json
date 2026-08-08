@@ -1,0 +1,9 @@
+{
+  "blind_generator_mutations": 0,
+  "evaluator_mutations": 0,
+  "hash_verifier_mutations": 0,
+  "passed": true,
+  "protected_core_mutation_attempts_accepted": 0,
+  "recursive_budget_mutations": 0,
+  "self_improvement_governor_mutations": 0
+}

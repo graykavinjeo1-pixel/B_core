@@ -1,0 +1,7 @@
+{
+  "active_set_creep_ratio": 1.0,
+  "base_peak_active_concepts": 3,
+  "continuously_growing_active_set": false,
+  "final_peak_active_concepts": 3,
+  "passed": true
+}

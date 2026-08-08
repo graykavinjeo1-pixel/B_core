@@ -1,0 +1,116 @@
+[
+  {
+    "created_before_patch": true,
+    "epoch_id": "E02",
+    "feature": "RECOMBINATION_PREFIX_REDUNDANCY",
+    "mappings": [
+      {
+        "mapping_status": "SATISFIED",
+        "self_target": "COMPOSITION_CONTROL",
+        "source_kind": "INPUT",
+        "source_role_id": "M0005-R0"
+      },
+      {
+        "mapping_status": "SATISFIED",
+        "self_target": "COMPOSITION_CONTROL",
+        "source_kind": "STAGE",
+        "source_role_id": "M0005-R1"
+      },
+      {
+        "mapping_status": "SATISFIED",
+        "self_target": "COMPOSITION_CONTROL",
+        "source_kind": "TRANSFORM",
+        "source_role_id": "M0005-R2"
+      },
+      {
+        "mapping_status": "SATISFIED",
+        "self_target": "COMPOSITION_CONTROL",
+        "source_kind": "STAGE",
+        "source_role_id": "M0005-R3"
+      },
+      {
+        "mapping_status": "SATISFIED",
+        "self_target": "COMPOSITION_CONTROL",
+        "source_kind": "OUTPUT",
+        "source_role_id": "M0005-R4"
+      }
+    ],
+    "role_mapping_pass": true,
+    "source_mechanism": "M0005",
+    "target_class": "COMPOSITION_CONTROL"
+  },
+  {
+    "created_before_patch": true,
+    "epoch_id": "E04",
+    "feature": "COUNTERFACTUAL_REVISION_RESCAN",
+    "mappings": [
+      {
+        "mapping_status": "SATISFIED",
+        "self_target": "UNCERTAINTY_REVISION_ECONOMY",
+        "source_kind": "STATE",
+        "source_role_id": "M0008-R0"
+      },
+      {
+        "mapping_status": "SATISFIED",
+        "self_target": "UNCERTAINTY_REVISION_ECONOMY",
+        "source_kind": "INPUT",
+        "source_role_id": "M0008-R1"
+      },
+      {
+        "mapping_status": "SATISFIED",
+        "self_target": "UNCERTAINTY_REVISION_ECONOMY",
+        "source_kind": "TRANSFORM",
+        "source_role_id": "M0008-R2"
+      },
+      {
+        "mapping_status": "SATISFIED",
+        "self_target": "UNCERTAINTY_REVISION_ECONOMY",
+        "source_kind": "INVARIANT",
+        "source_role_id": "M0008-R3"
+      },
+      {
+        "mapping_status": "SATISFIED",
+        "self_target": "UNCERTAINTY_REVISION_ECONOMY",
+        "source_kind": "OUTPUT",
+        "source_role_id": "M0008-R4"
+      }
+    ],
+    "role_mapping_pass": true,
+    "source_mechanism": "M0008",
+    "target_class": "UNCERTAINTY_REVISION_ECONOMY"
+  },
+  {
+    "created_before_patch": true,
+    "epoch_id": "E06",
+    "feature": "RETRIEVAL_EQUIVALENCE_RESCAN",
+    "mappings": [
+      {
+        "mapping_status": "SATISFIED",
+        "self_target": "RETRIEVAL_REUSE_ECONOMY",
+        "source_kind": "INPUT",
+        "source_role_id": "M0006-R0"
+      },
+      {
+        "mapping_status": "SATISFIED",
+        "self_target": "RETRIEVAL_REUSE_ECONOMY",
+        "source_kind": "BOUNDARY",
+        "source_role_id": "M0006-R1"
+      },
+      {
+        "mapping_status": "SATISFIED",
+        "self_target": "RETRIEVAL_REUSE_ECONOMY",
+        "source_kind": "TRANSFORM",
+        "source_role_id": "M0006-R2"
+      },
+      {
+        "mapping_status": "SATISFIED",
+        "self_target": "RETRIEVAL_REUSE_ECONOMY",
+        "source_kind": "OUTPUT",
+        "source_role_id": "M0006-R3"
+      }
+    ],
+    "role_mapping_pass": true,
+    "source_mechanism": "M0006",
+    "target_class": "RETRIEVAL_REUSE_ECONOMY"
+  }
+]

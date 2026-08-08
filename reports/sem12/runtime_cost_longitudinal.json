@@ -1,0 +1,29 @@
+[
+  {
+    "child": "SEM12-D1",
+    "deterministic_cost_gain": 0.6380753138075314,
+    "epoch_id": "E02",
+    "gain_per_added_byte": 0.00011329462248003043,
+    "parent": "SEM12-BASE-RUN",
+    "primary_metric": "COMPOSITION_OPERATIONS",
+    "wall_time_gain": -0.30692512993397947
+  },
+  {
+    "child": "SEM12-D2",
+    "deterministic_cost_gain": 0.9549228944246738,
+    "epoch_id": "E04",
+    "gain_per_added_byte": 0.0001865083778173191,
+    "parent": "SEM12-D1",
+    "primary_metric": "COUNTERFACTUAL_REVISION_OPERATIONS",
+    "wall_time_gain": 0.20913466838140732
+  },
+  {
+    "child": "SEM12-D3",
+    "deterministic_cost_gain": 0.9618024200830775,
+    "epoch_id": "E06",
+    "gain_per_added_byte": 0.00018785203517247606,
+    "parent": "SEM12-D2",
+    "primary_metric": "RETRIEVAL_OPERATIONS",
+    "wall_time_gain": -0.057555178268251274
+  }
+]

@@ -1,0 +1,2171 @@
+{
+  "set_id": "SEM12_FINAL_COMBINED_BLIND",
+  "seed_commitment_sha256": "f4c59de952bcf8cad2e0ab73c38c1ca83f97e6dde16c31af3ae34dab9c05a9d9",
+  "generator_version": "SEM12-LONG-HORIZON-GENERATOR-1.0.0",
+  "tasks": [
+    {
+      "task_id": "SEM12-FINAL-RETURNING_CANDIDATE_AMBIGUITY-000",
+      "opaque_schema_sha256": "8f8cad926fa1009c150957a1d41b92b5d5a77739b81e56b56a2c7baf050888d0",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_CANDIDATE_AMBIGUITY-001",
+      "opaque_schema_sha256": "203125f981d799824f758f57907f18d0581f8521ade459d166d8b4a61c6d0fbf",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_CANDIDATE_AMBIGUITY-002",
+      "opaque_schema_sha256": "afd9cb0ab5a406a6a80d84e19d74df73dc8ec4068fc28fe7d50b9a754f0e508b",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_CANDIDATE_AMBIGUITY-003",
+      "opaque_schema_sha256": "79ee7615e1687034fbed537ca10536a9b5038fed0b00957850aeb9be7ed8b325",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_CANDIDATE_AMBIGUITY-004",
+      "opaque_schema_sha256": "8440f6ecfae8301a1d40e3f6acb5daf7979bf99ab48732cbe4ae5e7047643bd1",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_CANDIDATE_AMBIGUITY-005",
+      "opaque_schema_sha256": "b7ae3dbe4f12cdad251a7a7a0dcf080818da19b4ff4e53a09ef5e4613b4241d9",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_CANDIDATE_AMBIGUITY-006",
+      "opaque_schema_sha256": "82d2344c4a997abe0a0cac21e5f3ecf861cc277dda8d34c9427a2a5585ea5ef0",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_CANDIDATE_AMBIGUITY-007",
+      "opaque_schema_sha256": "dc74d3a52654cd478a8f1a836e864b24797c0539cd36e211053c4f37641a2e70",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_CANDIDATE_AMBIGUITY-008",
+      "opaque_schema_sha256": "fa7590d89d808b9d9f2cd9fc1a75ac7d83dc24d6bb8e3cc664c9063498b345b6",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_CANDIDATE_AMBIGUITY-009",
+      "opaque_schema_sha256": "f63cdcfc48bb69076032f267f936816f8dac9c50b8f6bd9ff7d3405afab37819",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_CANDIDATE_AMBIGUITY-010",
+      "opaque_schema_sha256": "423004c68be74b60bc42649f1c8cd21d004b442c70d0a520f94153d86426fde2",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_CANDIDATE_AMBIGUITY-011",
+      "opaque_schema_sha256": "a620cc35ac2ed28848334171dc66701208644d31b78bfae3570c889f83bd8523",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_CANDIDATE_AMBIGUITY-012",
+      "opaque_schema_sha256": "e1a660af2382f66ddfcb7c535154a56f8cb9e16cd1dc43e233a821fc4977f136",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_CANDIDATE_AMBIGUITY-013",
+      "opaque_schema_sha256": "f343df3f03d16f4dd9d179d215bac1cae0fce79a31e13689096b6f31b1d9abb7",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_CANDIDATE_AMBIGUITY-014",
+      "opaque_schema_sha256": "f4055180e32770db9ac617e4431262d481ddb49b7c7ebd23f42a425a2b827063",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_CANDIDATE_AMBIGUITY-015",
+      "opaque_schema_sha256": "85b4a4c8f1ffed4ad535412776b34a8cabb9ff8c3da28223c27b7305cfc610c7",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_CANDIDATE_AMBIGUITY-016",
+      "opaque_schema_sha256": "82acfc9c00a591c0a88cfdbe0e3762c82d377d53f46dcea0bbfe7bf8c6f09c2b",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_CANDIDATE_AMBIGUITY-017",
+      "opaque_schema_sha256": "db31a2e9e83300298f5cd19af79b0234ee3b2d59c9a5542206c8ce46cdf9da34",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_CANDIDATE_AMBIGUITY-018",
+      "opaque_schema_sha256": "bdb13f3ee3c030992713fdff6ac894a09a7bfdcd6e5da8dd720a3638fef3495f",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_CANDIDATE_AMBIGUITY-019",
+      "opaque_schema_sha256": "528a4ac33e1db9490606930a50c5677ed8f658971e747a1084383df14fd84304",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_CANDIDATE_AMBIGUITY-020",
+      "opaque_schema_sha256": "4436986d2435794dd981bdb537909cac02f4477c8af59a7c5ee13bb6d4d37b41",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_CANDIDATE_AMBIGUITY-021",
+      "opaque_schema_sha256": "86da2725d2e7a669d704546decc66f09b8c7df6e117948c92592863b85e09892",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_CANDIDATE_AMBIGUITY-022",
+      "opaque_schema_sha256": "8a84685db580c1a61385699c1e1ed419832336176fdb0aceeb9f938e1dbab366",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_CANDIDATE_AMBIGUITY-023",
+      "opaque_schema_sha256": "2d8fe4cbd88027eb084e5d1f5a5a55b5fa0f12c4216b5ce91e38a437da8fa88f",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_CANDIDATE_AMBIGUITY-024",
+      "opaque_schema_sha256": "8008a9e962780dac629c191d40de182d4910db9be8e1228375f1368ba403a157",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_CANDIDATE_AMBIGUITY-025",
+      "opaque_schema_sha256": "428a40cfadbc2390c2815868d9f93c3d9186ccf987f9a0f5e918e2a3a9f07141",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_CANDIDATE_AMBIGUITY-026",
+      "opaque_schema_sha256": "e4a5143c89cd90f26fe852477f50b77539a64bbae05e421af447a0922baf78c7",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_CANDIDATE_AMBIGUITY-027",
+      "opaque_schema_sha256": "849ec026276ad8c22f6b84c1e6ed18ad4f4b5f6d6f56226b7bd1c5bfb5e2eaba",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_CANDIDATE_AMBIGUITY-028",
+      "opaque_schema_sha256": "d43c09b0167fa86772220bcfe4a887173fa93db8daf5f547e7424dd0d2e786c3",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_CANDIDATE_AMBIGUITY-029",
+      "opaque_schema_sha256": "f5e7dab0ccba10caf833b5af4ad4cbf22903e4862416298eee15208f9a620690",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_CANDIDATE_AMBIGUITY-030",
+      "opaque_schema_sha256": "ef2afa160861362913a7b542a431f7dd59d74afa307798c9a9d93af07ebcbde5",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_CANDIDATE_AMBIGUITY-031",
+      "opaque_schema_sha256": "5e3bbb6594db98ae228d23f055fa820f1e44bcf5787990e37738b922325a9407",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_CANDIDATE_AMBIGUITY-032",
+      "opaque_schema_sha256": "a48919d02d36ffadd6af6c7c06d88ba32cbe36880f38f141ee5ea7e5f46db3d6",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_CANDIDATE_AMBIGUITY-033",
+      "opaque_schema_sha256": "0a0cb70682356a466474ef7d783c11b90f57e458651d90ee5ab10ecdd24916a6",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_CANDIDATE_AMBIGUITY-034",
+      "opaque_schema_sha256": "6e307343341f2b84be76858b258b110723300cf789cccc85912d6e2c7a30f24c",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_CANDIDATE_AMBIGUITY-035",
+      "opaque_schema_sha256": "c5879ff8d9bd0482afc0fc27209df4a84b4fe5b9648e8f9c5ce8899818f21d56",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_CANDIDATE_AMBIGUITY-036",
+      "opaque_schema_sha256": "a22386e6ab0fb1cb5f8effaf5b2e9f1af369c087ca2940530dcd0073b62db9e0",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_CANDIDATE_AMBIGUITY-037",
+      "opaque_schema_sha256": "44343596379c0763c5cf8524a3c6873698800b9b4f1a93cfe7ed06b7876f5c86",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_CANDIDATE_AMBIGUITY-038",
+      "opaque_schema_sha256": "46e290279db516938053ad8d3ece329e974eaa227cfb6a485f50fefd95734477",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_CANDIDATE_AMBIGUITY-039",
+      "opaque_schema_sha256": "d197c71d54f97bdcb50d111396ce88bab89be11aba7f93639a737afe46fef2ba",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_TRANSIENT_STATE-000",
+      "opaque_schema_sha256": "8d06e76c8c7a85086c565c0952fbb35a8fa4fc484db94e926280e6ced82f1c7d",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_TRANSIENT_STATE-001",
+      "opaque_schema_sha256": "33ad81a0faf66d84967099446df4bd213f34e7ec0d845dabf8e94fcbe1e16baf",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_TRANSIENT_STATE-002",
+      "opaque_schema_sha256": "b2ebc545abd0733424e0108fd35778bbb4f62facaab8a542ef3e17444bc734e5",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_TRANSIENT_STATE-003",
+      "opaque_schema_sha256": "8034c5c9123778c07fccf6899c1e85a169ced37e99ef2aaddaf6ef00bec3cc0c",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_TRANSIENT_STATE-004",
+      "opaque_schema_sha256": "234e03b067b9fae0e84d0fdc78a279249a35f47f27f4f357b04728b1622f8ba4",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_TRANSIENT_STATE-005",
+      "opaque_schema_sha256": "663026bc8384653aea4b1651efb6630fcb636add92282358383bc7ed6572d0c2",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_TRANSIENT_STATE-006",
+      "opaque_schema_sha256": "04d6859efce7588ce11b7e98cbcd22c6cb08ea1b2baf617a1fa2ac7a5044e01d",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_TRANSIENT_STATE-007",
+      "opaque_schema_sha256": "8a0749d046b72ef479c2d35f6a2c71c2d474cf2e67000445a6841030d8523fb0",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_TRANSIENT_STATE-008",
+      "opaque_schema_sha256": "1377b4654e74270d71248c0e18838407e8ad2b27783cf06240c3c7ace2380caf",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_TRANSIENT_STATE-009",
+      "opaque_schema_sha256": "aa70e92285e47f54c3765ef99a1aab8e285335eab9ad72c7861f978003e0f177",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_TRANSIENT_STATE-010",
+      "opaque_schema_sha256": "089779cd3fb6910e5b30653ab6ff3e5c65ad81587e7873d804c6609998b941de",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_TRANSIENT_STATE-011",
+      "opaque_schema_sha256": "bb43f67c0b16e3eff210cdafda5679a4761607b7e8e82d56dd10cb083ad4ac8d",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_TRANSIENT_STATE-012",
+      "opaque_schema_sha256": "58cc24588b4338002df3425a16b4fb0ba383657c08afd9759304c5b449b47725",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_TRANSIENT_STATE-013",
+      "opaque_schema_sha256": "46db9ee74201515ed5857e2c10f6ac40738dfd91c3416e7b0c7fca5463563e8c",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_TRANSIENT_STATE-014",
+      "opaque_schema_sha256": "b4ae6c36b4c51df5170b76bc8428f8f8e379b7964e4c2e220770293ea5f84271",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_TRANSIENT_STATE-015",
+      "opaque_schema_sha256": "e07024be4e9a10e33a30e37188634713bfc9c703e8c4d23750f29ac7529c7ee0",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_TRANSIENT_STATE-016",
+      "opaque_schema_sha256": "0f869bcf6b94d3cf56ff657609e4917dd1c629197f854c6019b719738c80e381",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_TRANSIENT_STATE-017",
+      "opaque_schema_sha256": "2bc5750a582b5bb9b4843b84368d381fa725c2211f5b7cd1fca6deacf7bfc093",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_TRANSIENT_STATE-018",
+      "opaque_schema_sha256": "8708bd9109026181ce6629acf9efa27d77fccdc9b6452298826c0f180c7eef76",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_TRANSIENT_STATE-019",
+      "opaque_schema_sha256": "44e515220961a1af24d0871bf2e910f97af9e41a33cbbfbe9cc0bc6fcaf4c175",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_TRANSIENT_STATE-020",
+      "opaque_schema_sha256": "d628d8ea5c23254f9e8fda22742050a1fe91b5b0b15e12e51f8a708d3b8e4593",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_TRANSIENT_STATE-021",
+      "opaque_schema_sha256": "e7b4712ee85e01879748056950e4fee739362ab2f46590f1dbda377055db56bc",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_TRANSIENT_STATE-022",
+      "opaque_schema_sha256": "25aeb1d3b6888fdb76af8f0f39227ddcd80fb88fa3ed62337cc8963a306870d1",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_TRANSIENT_STATE-023",
+      "opaque_schema_sha256": "4842bd63a19c1654f0092b43be202d8bba578d7702cd5e1e81c7ba0c928e7fc6",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_TRANSIENT_STATE-024",
+      "opaque_schema_sha256": "380e6bcdc8b359a6a8262b0c2b57caf2275b22d7f09bebee862b2aa6bf706495",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_TRANSIENT_STATE-025",
+      "opaque_schema_sha256": "5a88b059903b83322fe4ead4e9725fbabc2f8915480a074fbe46686edbb568c4",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_TRANSIENT_STATE-026",
+      "opaque_schema_sha256": "cbb1b1e7d6764cfdee549f8ae3b054a4272d5c5d52f0ce4db4c1dab19ef0c4c3",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_TRANSIENT_STATE-027",
+      "opaque_schema_sha256": "8be2380dfe36e0e713f5592d96cb6161d7135096a2748066470302aafb39a837",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_TRANSIENT_STATE-028",
+      "opaque_schema_sha256": "ba2479fbf147ccf740247c144140b12aa1fa07872e12371162649f9adf34a522",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_TRANSIENT_STATE-029",
+      "opaque_schema_sha256": "e9270cce9447c13a347d55e026df298d712210cd0cceea8489ff0825f6df7077",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_TRANSIENT_STATE-030",
+      "opaque_schema_sha256": "0f7b6bb74077902ce22f7c4a523cfe1f17f8a3483cf493406bdc67eab84b614a",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_TRANSIENT_STATE-031",
+      "opaque_schema_sha256": "4b5b0c3212c8156131e18c213bea8d4c50ad872fe5963958cd7c193b8cfe9861",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_TRANSIENT_STATE-032",
+      "opaque_schema_sha256": "0d8d4ff5efff3c0ca1e0d4dee7c6527ed3a4ce6cb8c5b077019483eb9f9b7073",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_TRANSIENT_STATE-033",
+      "opaque_schema_sha256": "f355e746e0c4d03b588455f38fb9c9e49a025099860dc781427e4a0735b270b7",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_TRANSIENT_STATE-034",
+      "opaque_schema_sha256": "41ddd1b7da5a757d929f244c7dbb3442fcaa6807cd5b83c43d253473f9e00dea",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_TRANSIENT_STATE-035",
+      "opaque_schema_sha256": "1f49af1874f33324451177cabbeed6abf270435e1cec1ed2843315deb6400f89",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_TRANSIENT_STATE-036",
+      "opaque_schema_sha256": "9439002cf7cdac70ce8cedcbcc1221a79b6d3f63f1271c1ec857f0fb06faee5d",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_TRANSIENT_STATE-037",
+      "opaque_schema_sha256": "6445bb01e45728d4eac6fc4746fe14563998abe6f7dd37a548bc6ae6f07e1698",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_TRANSIENT_STATE-038",
+      "opaque_schema_sha256": "206122d6134cdb4c3f83d8404459766bb0bf78ada3716a891a65657fe231e903",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-RETURNING_TRANSIENT_STATE-039",
+      "opaque_schema_sha256": "d4558a21c1f513b0ec2964faf1529b57a718434b09f883db85a8ba2ac1fde30c",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-DEEP_RECOMBINATION-000",
+      "opaque_schema_sha256": "ab22098e7be46ea1d25ceb5293d25af5daa6a5868937a1a1377bfad8c95e6328",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-DEEP_RECOMBINATION-001",
+      "opaque_schema_sha256": "8b992c7cc20e2fb2e291548067331a6465c44d0561ecd2acaa719a5600c38f07",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-DEEP_RECOMBINATION-002",
+      "opaque_schema_sha256": "8199facb66bff0ed9fb1174dac47d5dcb6d1244657a13c82ee9227e53f6a5888",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-DEEP_RECOMBINATION-003",
+      "opaque_schema_sha256": "55b47f3ccb519175acdf98b6df4d103f039cc715a1941120181df27374eeb110",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-DEEP_RECOMBINATION-004",
+      "opaque_schema_sha256": "830952f0c2452e8299ca1daa3459a167609dc55f4b8f05967d5933f73befa2a2",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-DEEP_RECOMBINATION-005",
+      "opaque_schema_sha256": "ef9717a4f20f2ac05ea4f2fb4ae5e0ef688557d0090a4e4838d04d85cb1f77bb",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-DEEP_RECOMBINATION-006",
+      "opaque_schema_sha256": "d3f7abfe9544c11e671f44f95ad220d7eeb4b43242d0945d57508f6a2d8ac8d5",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-DEEP_RECOMBINATION-007",
+      "opaque_schema_sha256": "a565d44c02ea07280efca6fa6a32545582a59135c4dd67c85925c602e81b7c4d",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-DEEP_RECOMBINATION-008",
+      "opaque_schema_sha256": "14f0c9885fda02d10a8d39ff24ea659a7d7e82d60dfff157e7440a23357be994",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-DEEP_RECOMBINATION-009",
+      "opaque_schema_sha256": "52c072934e0bcd4d13eb9f4b0e9a2efdf2ab9d68a0e46094c95e696938d73b19",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-DEEP_RECOMBINATION-010",
+      "opaque_schema_sha256": "d5cfc838ff555680507b11dd10f05485ff09676e5a9f6f0ea321e5d9f131b495",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-DEEP_RECOMBINATION-011",
+      "opaque_schema_sha256": "7ed1f68268974b9c6cd6199b73576dcdce83c9d89042c24fab40840ef9702fc3",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-DEEP_RECOMBINATION-012",
+      "opaque_schema_sha256": "729ef741b9f2ec7581e9807083eed0a53cdb8cea098d148881db5f4d3c07f478",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-DEEP_RECOMBINATION-013",
+      "opaque_schema_sha256": "3f99bbf6d44c187ac52fd015614ec6c045f9e97fcac87f431fc066fff3de0020",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-DEEP_RECOMBINATION-014",
+      "opaque_schema_sha256": "73cd91f91d1c67e92b983f318401530132b9e7a37b00d004b675ca345a33f47c",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-DEEP_RECOMBINATION-015",
+      "opaque_schema_sha256": "07ae81e977d47c6931c4b159429b1eba9f2f17c7fcce8838277251f806125d66",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-DEEP_RECOMBINATION-016",
+      "opaque_schema_sha256": "b4b228abcf5268dbc3b478438ed4f12558d72402e229f15ca656f660ba2bea9c",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-DEEP_RECOMBINATION-017",
+      "opaque_schema_sha256": "1391d8ae8dd41c967b314480b7db4ce9e9857bb82c709c91f5cfd352339125dd",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-DEEP_RECOMBINATION-018",
+      "opaque_schema_sha256": "796311f23a43a7720a3127780ea547924fde4e8da1d87ef0ff80e619fdbb080c",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-DEEP_RECOMBINATION-019",
+      "opaque_schema_sha256": "d88d217513490e3b9456e2c4d8db65557bd2910735266ec89bf13db835ff6469",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-DEEP_RECOMBINATION-020",
+      "opaque_schema_sha256": "5532997d5dd98c38e1955dcbfa8d881969f93d7cba18fa0f0c6b2589de5e0cda",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-DEEP_RECOMBINATION-021",
+      "opaque_schema_sha256": "0b669b3af19ad8971d9094857a881f21f95a993bfffb19737f31f81a0d5db4ae",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-DEEP_RECOMBINATION-022",
+      "opaque_schema_sha256": "b989e214c47bbb5a3fecc09de80d5bfa7440afc65ff0ebc3f0f37a6a4c3a1283",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-DEEP_RECOMBINATION-023",
+      "opaque_schema_sha256": "a7639bfc1faf339b570a51cfbfaf2493657b1d5966309d9a538d5de42ca1e28c",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-DEEP_RECOMBINATION-024",
+      "opaque_schema_sha256": "9badbe1646257ff43e6ac22ea9f1a7599115afb97fb92ffb702cb87e6a90da32",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-DEEP_RECOMBINATION-025",
+      "opaque_schema_sha256": "e219743cb4081e30904ec427e06deee814c265364824e415f98a5581306303b0",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-DEEP_RECOMBINATION-026",
+      "opaque_schema_sha256": "16fb161ddee452ad28cc2121b0bd5a4d112b5e2a0a34a71dd4f8ba0d76a4014e",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-DEEP_RECOMBINATION-027",
+      "opaque_schema_sha256": "05e19f5f39bbc87e7dffd12dcb0d8f67cef5e4f6592de65cda874a4ab3160392",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-DEEP_RECOMBINATION-028",
+      "opaque_schema_sha256": "19c0d7220ce8ab4d8d7ad89db53adfc31de57028055373fb00d52576c381e27b",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-DEEP_RECOMBINATION-029",
+      "opaque_schema_sha256": "732d67c56e8ce09a42005fdb979f4733cdad0f6cf31113e7bb3f650dca325b64",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-DEEP_RECOMBINATION-030",
+      "opaque_schema_sha256": "6f875f85681a2038fd576f61d9c798c99df86567119bff06969b5c441a723a4d",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-DEEP_RECOMBINATION-031",
+      "opaque_schema_sha256": "37230051019bb85e1e670b88d3ddf6be26bd577216c9139b3728cd42b783e0c3",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-DEEP_RECOMBINATION-032",
+      "opaque_schema_sha256": "31abe9987281d0864433cb8f76f63b36cb7d9278b09448bffd071aa942c16b11",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-DEEP_RECOMBINATION-033",
+      "opaque_schema_sha256": "cbac76707a721a745682e075cbc17f7670485a494fe9a476a0a6b3d43140a8c2",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-DEEP_RECOMBINATION-034",
+      "opaque_schema_sha256": "33b59d1386415050ea43cbd6350576bd4e30d0719c232a08f96b41db2f224b79",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-DEEP_RECOMBINATION-035",
+      "opaque_schema_sha256": "20a5c447c5f1899edd5c4cb5c617a723a913279837fd71b8a60a5edcc0cc3e3e",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-DEEP_RECOMBINATION-036",
+      "opaque_schema_sha256": "c2beea4cbc27be6bbecaaba41f2b3ea472fb4f4dd7dd880676b88a95c5ed4114",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-DEEP_RECOMBINATION-037",
+      "opaque_schema_sha256": "a5d36bbc3c1849884d4d80ce004d6da6832dbd24f622ab4a52754ae9a48bdb3b",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-DEEP_RECOMBINATION-038",
+      "opaque_schema_sha256": "6641d6800bc6c1992b01e918b285c315ea41278bc8e8abe73239860437402c83",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-DEEP_RECOMBINATION-039",
+      "opaque_schema_sha256": "cc6312bbe926b6f3ac98463623a073e6006e104a043ecb17b6af6d0012c9319d",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-COUNTERFACTUAL_REVISION-000",
+      "opaque_schema_sha256": "110b0d15388adb00076103fbd32f2803acb01964c177fa6caab9dd5df4acb648",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-COUNTERFACTUAL_REVISION-001",
+      "opaque_schema_sha256": "2d064e22dc6e201328ff4eb9b21072692580bd395c8d75ca8e10e9b7f1ebcd38",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-COUNTERFACTUAL_REVISION-002",
+      "opaque_schema_sha256": "d852e4a1c7b30d9b0884082cc1d5c57fd0d2cfd8a51892760bcc6dafdbbf2d46",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-COUNTERFACTUAL_REVISION-003",
+      "opaque_schema_sha256": "c0756cdb0c94280f73892f08a202ee3f9b5fd2e8359797c397514a55a3c43bd6",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-COUNTERFACTUAL_REVISION-004",
+      "opaque_schema_sha256": "c945e1197a1b74cd436b82423a170ab5226024fbb417f1059dc4cee27d7714d8",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-COUNTERFACTUAL_REVISION-005",
+      "opaque_schema_sha256": "410d7d66c88bd48a8c4cfb46793530e58ae0f97e1696fbd95f1fcfd46aa63a74",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-COUNTERFACTUAL_REVISION-006",
+      "opaque_schema_sha256": "6e07b4ab87f250d8122f7b8843c62d9e0a11c22a997a1dbb135e8a3884b7b8a5",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-COUNTERFACTUAL_REVISION-007",
+      "opaque_schema_sha256": "4f85bda405129e04e5788473d586f1d87c4cf588c85e75722f32dd6184c08a09",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-COUNTERFACTUAL_REVISION-008",
+      "opaque_schema_sha256": "4afa612c4dc7984a3d6cc66013886987362be4a36d59aa5656e693cea3c3a5c6",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-COUNTERFACTUAL_REVISION-009",
+      "opaque_schema_sha256": "c3d7229b51f7b2092aea961e30877953d08e41c3fb57fc4dbd75deabe73cdb37",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-COUNTERFACTUAL_REVISION-010",
+      "opaque_schema_sha256": "e3779e2b4da55340350338c2c445f65dff0a3cb3c4818ba65613d4cf42a299be",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-COUNTERFACTUAL_REVISION-011",
+      "opaque_schema_sha256": "691ecae1f4e53498f235e9e7f416e8c2e3b1698bbc67da4f0eb47239b4304952",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-COUNTERFACTUAL_REVISION-012",
+      "opaque_schema_sha256": "79ca82ff5b4a98c2c48c257cec2e872d3a5f7e8d70d86eda3cbb70ef007aeeb6",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-COUNTERFACTUAL_REVISION-013",
+      "opaque_schema_sha256": "57f999f3f876c9de0b7d0bb6e1a11477dd20c494ad7d21792fed1ef352c537c1",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-COUNTERFACTUAL_REVISION-014",
+      "opaque_schema_sha256": "a4604bb953d93499eb0f75446aac51929c71cdbae99b4c3cee53f49792c7aae3",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-COUNTERFACTUAL_REVISION-015",
+      "opaque_schema_sha256": "f32d2cabd6442e25637a3cff56ab95502b2792e46f31c11f57e8d3c1a09b1031",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-COUNTERFACTUAL_REVISION-016",
+      "opaque_schema_sha256": "db0f1695b2508d1e43b579e3ee8b069d9aea703f0c18a487abdf4d32fdd375a1",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-COUNTERFACTUAL_REVISION-017",
+      "opaque_schema_sha256": "507acb1c2016cb4f681140a6cd745df12eeabfa8fe65e7194227cd6b17758ba9",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-COUNTERFACTUAL_REVISION-018",
+      "opaque_schema_sha256": "9b52647b18c151d25e57836cbf064c4799965403bb7e49784dea1f405c5296ed",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-COUNTERFACTUAL_REVISION-019",
+      "opaque_schema_sha256": "3b80c11d615965e5911490323a3795a3bdea16315272d78dcf13a7b3eb2a776c",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-COUNTERFACTUAL_REVISION-020",
+      "opaque_schema_sha256": "f16a9e7f91fe6ae7fdfa3320f52ac96072e863ac96dfc4502315d823ebd44f4e",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-COUNTERFACTUAL_REVISION-021",
+      "opaque_schema_sha256": "d7bdd1ee10e338d908ced656cd94a8d94fea0d876649a09355cd054bb1ce9686",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-COUNTERFACTUAL_REVISION-022",
+      "opaque_schema_sha256": "af353aeb668bdb3a0a074164e249558048ea1a6d815c6b67c7e92d4f19fc8e85",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-COUNTERFACTUAL_REVISION-023",
+      "opaque_schema_sha256": "4d2d362a4280f3cfcd079e06ef2086f7207c268a1603da13a903960109e0b0b3",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-COUNTERFACTUAL_REVISION-024",
+      "opaque_schema_sha256": "c5249cef85dd79e06fb874b71e45d85fb7c3f4f10564a776c9a4f75e793b03df",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-COUNTERFACTUAL_REVISION-025",
+      "opaque_schema_sha256": "b3dc3c9c6788e4c5d901fc52d4e8f3ca535a10096c1879b843b87a6641a05479",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-COUNTERFACTUAL_REVISION-026",
+      "opaque_schema_sha256": "b4951a93a11177923cf8468fdf2ffdd9642fe8c4f62a12a55a4e5b70d98618a3",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-COUNTERFACTUAL_REVISION-027",
+      "opaque_schema_sha256": "14e4863fc01300d548ae26d8d1e90dce16067ce5ce4d3bc76ce50853adbcc677",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-COUNTERFACTUAL_REVISION-028",
+      "opaque_schema_sha256": "688d9b3304fea81d548adc7ade505db780f278ecedf44008c769494f91393a73",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-COUNTERFACTUAL_REVISION-029",
+      "opaque_schema_sha256": "a7ffb9a042cab123dd083659fb750b926706ea2cdfba0c781565a8dc86b65962",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-COUNTERFACTUAL_REVISION-030",
+      "opaque_schema_sha256": "3164a4ce5931bff4d44319f81d3c7c2cf8bea997a5bb00bbaf2822a8a08c6636",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-COUNTERFACTUAL_REVISION-031",
+      "opaque_schema_sha256": "f39cfc6a0aa5d9d8d86d6e54506e2f221cc8f575f69f531c6a9bb3749fbe1476",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-COUNTERFACTUAL_REVISION-032",
+      "opaque_schema_sha256": "de225b7df3d28452a4857083380b5d45626dd7f7031ae1723078c65c4efa0dec",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-COUNTERFACTUAL_REVISION-033",
+      "opaque_schema_sha256": "56882ae56fa9523d8c07cf2f9622e83abde2593782f78c475da7435fdbcd12ba",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-COUNTERFACTUAL_REVISION-034",
+      "opaque_schema_sha256": "1e09b35d357df0923f068551c1c529ae21f26ad45098d8d623e44d0810c9ba82",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-COUNTERFACTUAL_REVISION-035",
+      "opaque_schema_sha256": "351a556056b73ee067bb60de8ca2648c8ab35423bb8aa137faf896eaeb976a7d",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-COUNTERFACTUAL_REVISION-036",
+      "opaque_schema_sha256": "559c8b0ea4aec7f0d72a4971921d719e45630500f0209254dbed8e0ba3605f0a",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-COUNTERFACTUAL_REVISION-037",
+      "opaque_schema_sha256": "b9224fb52e2a7040e4b7cade5f5964127aafa4f087bfe7dafff8af1224d3dc6b",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-COUNTERFACTUAL_REVISION-038",
+      "opaque_schema_sha256": "8735e5cc17b7d32b8dcd76294298bc1018715b7682c0a42ebb151b7280e3bd8e",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-COUNTERFACTUAL_REVISION-039",
+      "opaque_schema_sha256": "b197f739ed14654e77f95fcd618da6992d793d41e15acad47c1f6af8bbab3d69",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-REPEATED_EQUIVALENT_RETRIEVAL-000",
+      "opaque_schema_sha256": "284a49d6401c8fe030c1dfe71a31fbe35038efaac61aca4316107af2d0b272f9",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-REPEATED_EQUIVALENT_RETRIEVAL-001",
+      "opaque_schema_sha256": "27391e1b7c3be6204fa7b47f5ea0f76435900fe4694530ba3acc3a670c4bc11f",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-REPEATED_EQUIVALENT_RETRIEVAL-002",
+      "opaque_schema_sha256": "8b3cb852e2bd913840fcc4a803047de96348221d7db3eaed7f40c88a4b1b9146",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-REPEATED_EQUIVALENT_RETRIEVAL-003",
+      "opaque_schema_sha256": "63a667f243c6d7039c28fccdb875682847968ea2e6739b1ed14bc5fd8d72622e",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-REPEATED_EQUIVALENT_RETRIEVAL-004",
+      "opaque_schema_sha256": "8cc0eec44eea84e0d05602abec1f1027fcc4ae864c83be90a91092d38d67268e",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-REPEATED_EQUIVALENT_RETRIEVAL-005",
+      "opaque_schema_sha256": "5ecb3dc54e8b7f8b67a8ac4423476431fd30c41ac14c89b5c568e9f965ff5b3f",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-REPEATED_EQUIVALENT_RETRIEVAL-006",
+      "opaque_schema_sha256": "b4655366c5bd8d681b27759c091174939c52d3be8110deda072f52d28b7b5660",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-REPEATED_EQUIVALENT_RETRIEVAL-007",
+      "opaque_schema_sha256": "e717291150ac0ecf7873bc0da234dd479872e875424da1d6c8ae5d43aaa0d576",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-REPEATED_EQUIVALENT_RETRIEVAL-008",
+      "opaque_schema_sha256": "31f4bc139027d95cadf81270c983a5bcec0584965b32b8fba17e222c9db43e45",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-REPEATED_EQUIVALENT_RETRIEVAL-009",
+      "opaque_schema_sha256": "303914b2158a61b6bf75888a900310f6ecd6bc5c549b50d7ffa03c8d9e000c0c",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-REPEATED_EQUIVALENT_RETRIEVAL-010",
+      "opaque_schema_sha256": "bccab0b16ffe05d788ffbe62b378a78da283c5fe4047db5ae15e8a068693704c",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-REPEATED_EQUIVALENT_RETRIEVAL-011",
+      "opaque_schema_sha256": "9b986ebb8568aa217791a7200df7aa9e289149a8e7266aafeaa5689156c64fda",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-REPEATED_EQUIVALENT_RETRIEVAL-012",
+      "opaque_schema_sha256": "3c2b07b1bb75526d0c7ed2348382871c1af4ec84bca77771de22dfd534f8f40d",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-REPEATED_EQUIVALENT_RETRIEVAL-013",
+      "opaque_schema_sha256": "d0fdd05a8c857d370d4b5826bb0252781a07bac74fee9d2c957ffc611b15e99e",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-REPEATED_EQUIVALENT_RETRIEVAL-014",
+      "opaque_schema_sha256": "d8bdb2ff2406ef29cb675df683cb2be28bc8480e195921cd3165a9361dad1e6f",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-REPEATED_EQUIVALENT_RETRIEVAL-015",
+      "opaque_schema_sha256": "1d2777a31bcbd8bd53b9e13268d7c8258fcbea5cbcf6939e9ebff1c5034a5de5",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-REPEATED_EQUIVALENT_RETRIEVAL-016",
+      "opaque_schema_sha256": "17c3cc4698b38c48e82c87952dbc1bd0785297f3cb416bcd5b232919d642279b",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-REPEATED_EQUIVALENT_RETRIEVAL-017",
+      "opaque_schema_sha256": "f9c204c4efb14842945f84ebfa7a7e6d2a5892bb1b2051a33ad23f7be39f24f3",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-REPEATED_EQUIVALENT_RETRIEVAL-018",
+      "opaque_schema_sha256": "b4ef0ce63d99db9235ded795f039fb1105068da15b4e1db6fdad0b8f7779df69",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-REPEATED_EQUIVALENT_RETRIEVAL-019",
+      "opaque_schema_sha256": "5d446e9d7906fb620f82ecb77ff88dbc73d80812ad1f22d598ed409699c3afd2",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-REPEATED_EQUIVALENT_RETRIEVAL-020",
+      "opaque_schema_sha256": "11c48f7731a9f20ee9cd7977eccde2970e4b8a2bee846203f8095a6b6dfd3be7",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-REPEATED_EQUIVALENT_RETRIEVAL-021",
+      "opaque_schema_sha256": "40f7e342e6e5c56397921580c489770d1b606b9fad93c1fc40f04f923869dd28",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-REPEATED_EQUIVALENT_RETRIEVAL-022",
+      "opaque_schema_sha256": "beb860d7de5815b98228254053839a1637a43fb930db2811f9a56d8d37b00bfa",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-REPEATED_EQUIVALENT_RETRIEVAL-023",
+      "opaque_schema_sha256": "fa4dae94b99c3e7ca9bedbae6157078967a0379287f7cf978b5d98ddd1dce939",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-REPEATED_EQUIVALENT_RETRIEVAL-024",
+      "opaque_schema_sha256": "ca9bb486a8d18b7c753d26a93670bebc4dfd0c23db69a43555a5ab61b36420e0",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-REPEATED_EQUIVALENT_RETRIEVAL-025",
+      "opaque_schema_sha256": "36b1f9057b1242cea41b31165ce2b0eb7339ae0aea2b2cd77b54df0f83014a5a",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-REPEATED_EQUIVALENT_RETRIEVAL-026",
+      "opaque_schema_sha256": "f491109b039c4ae2a696582140f3c3b00c9ba312779e37a88444422577e25a5f",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-REPEATED_EQUIVALENT_RETRIEVAL-027",
+      "opaque_schema_sha256": "b88e7afbe641a89368d58741c0fbe6c85cdde281bf27b05f1bf0a8af1319e772",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-REPEATED_EQUIVALENT_RETRIEVAL-028",
+      "opaque_schema_sha256": "aac7e206197cf00009993a67550edb55c938949d8175fbc7f4f872ac7f70e0b5",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-REPEATED_EQUIVALENT_RETRIEVAL-029",
+      "opaque_schema_sha256": "040e83ca7560292b421ff16e4bfe536865f8a402ab19ae973e25ce157be214eb",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-REPEATED_EQUIVALENT_RETRIEVAL-030",
+      "opaque_schema_sha256": "a82c97fd6307edbf285c39b2970de0c6a28cb8552f5844a30c3905a5545b03c0",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-REPEATED_EQUIVALENT_RETRIEVAL-031",
+      "opaque_schema_sha256": "6b9fcfd059ebda7eeb8c5acd44d4ff538a4994e62cbfcbcfa17fba000487a31d",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-REPEATED_EQUIVALENT_RETRIEVAL-032",
+      "opaque_schema_sha256": "00d70a008c8f3786179927a833091710ab19f91b29a3135c8ad55529637fac58",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-REPEATED_EQUIVALENT_RETRIEVAL-033",
+      "opaque_schema_sha256": "54866733dfbd44632ef6fc176ae6c654c3a6e79824ec71f9b64615b1ddb95940",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-REPEATED_EQUIVALENT_RETRIEVAL-034",
+      "opaque_schema_sha256": "651ed1dcb0b6d86b2e315eba34f7c3d08a06dc71bc2ba5cedda1bfa0c5c364d0",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-REPEATED_EQUIVALENT_RETRIEVAL-035",
+      "opaque_schema_sha256": "9985c59aee51024f1c68ffa9c03c01bb5587814009d796d38cd775a4f235fe73",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-REPEATED_EQUIVALENT_RETRIEVAL-036",
+      "opaque_schema_sha256": "7e6f559d8540122c51f4c17295f8fe081894d672cde1a3d2d34a5046f1da0aaa",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-REPEATED_EQUIVALENT_RETRIEVAL-037",
+      "opaque_schema_sha256": "220783e28001a65f8e8330fd4823f4f008e50041f74ce67360a27a644cc4d28c",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-REPEATED_EQUIVALENT_RETRIEVAL-038",
+      "opaque_schema_sha256": "21f99ac6a5a29cb6b09e804c342a91206f73a1d881f16c5446a51d51edc712ca",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-REPEATED_EQUIVALENT_RETRIEVAL-039",
+      "opaque_schema_sha256": "8c5633736cbdb2fca70d487018570947a47c37e1f50e4fd8ef1626401ebcfd05",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-MIXED_AMBIGUITY_DEPTH_REVISION-000",
+      "opaque_schema_sha256": "6935398834abf151be024ac5970ff429ef3dd71bbbaa9150e900b357b7ef9cb2",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-MIXED_AMBIGUITY_DEPTH_REVISION-001",
+      "opaque_schema_sha256": "02c57777c3ccb8b35eff86bf6f2484545997a94d97aec0f35ac133939f65be7e",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-MIXED_AMBIGUITY_DEPTH_REVISION-002",
+      "opaque_schema_sha256": "5be89c9391696e3b71a96d409c5d69f76521715b893539a5cd2dfbaecf107054",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-MIXED_AMBIGUITY_DEPTH_REVISION-003",
+      "opaque_schema_sha256": "f9a9efb6ca2b0990f6563aff64d1ffa7a19a098dde261f0eb176ccdb5bed7b58",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-MIXED_AMBIGUITY_DEPTH_REVISION-004",
+      "opaque_schema_sha256": "234408ab80774e04aa55a5aabd1e19506ee317253812149bde8b4af6c79dbae8",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-MIXED_AMBIGUITY_DEPTH_REVISION-005",
+      "opaque_schema_sha256": "69409cb41c5fbac735a5cdfe7193fac43d88a186f4168436e577fd6a717a78ca",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-MIXED_AMBIGUITY_DEPTH_REVISION-006",
+      "opaque_schema_sha256": "2c5fdf2aab5229682ae4dca1255d2d1bb6744ffe11ab19f6bbe924d09a945a56",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-MIXED_AMBIGUITY_DEPTH_REVISION-007",
+      "opaque_schema_sha256": "98c55a06c425ac31258c633aaacc4c48ba56ab798551d62341ff8a3da652f955",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-MIXED_AMBIGUITY_DEPTH_REVISION-008",
+      "opaque_schema_sha256": "81f14a7e616b16f4bf4e3e55cb486f75fc2bfe2cd30b6249ebfcb122f634273c",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-MIXED_AMBIGUITY_DEPTH_REVISION-009",
+      "opaque_schema_sha256": "3cdb097c90d86de3e57cdd56b02f0660446940585da512147be203d453dda134",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-MIXED_AMBIGUITY_DEPTH_REVISION-010",
+      "opaque_schema_sha256": "fe102c1c2704bc9d700b045893a2cffb459d4f09ac91c7d773efb015877f6eab",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-MIXED_AMBIGUITY_DEPTH_REVISION-011",
+      "opaque_schema_sha256": "9c183dd615741c58846da07404524f2613bb0bfaa84d186fc3b47f66f82b2be7",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-MIXED_AMBIGUITY_DEPTH_REVISION-012",
+      "opaque_schema_sha256": "64f2574e78043af77f8b699cf9ca37d88cdb471aa01bf7e73a410ae189073f6f",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-MIXED_AMBIGUITY_DEPTH_REVISION-013",
+      "opaque_schema_sha256": "64a4e53465ccf5ae12db1b0533f3f1fb25b8ee63a4dd14778d5063ce2ab793b0",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-MIXED_AMBIGUITY_DEPTH_REVISION-014",
+      "opaque_schema_sha256": "5e803c86490d1318749d5989c6a358dc93611574b5b6681bff6ab94194f94696",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-MIXED_AMBIGUITY_DEPTH_REVISION-015",
+      "opaque_schema_sha256": "27dceabb7b3b62ad8bafa14d33dfaf46b1f43c071ebcbbe18dd7134df50e3082",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-MIXED_AMBIGUITY_DEPTH_REVISION-016",
+      "opaque_schema_sha256": "151ce1eccf52a8b286a961147bca1360cfecbe75a14f4deffa16f3f081faff06",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-MIXED_AMBIGUITY_DEPTH_REVISION-017",
+      "opaque_schema_sha256": "8333791ccc0aad252e887df560b8ff0f2ac2037492591b643ca2ea3c940b6f90",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-MIXED_AMBIGUITY_DEPTH_REVISION-018",
+      "opaque_schema_sha256": "55b4234039871544ca9a2673e563644930d1592bfd94e96db0f4f48040ee1294",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-MIXED_AMBIGUITY_DEPTH_REVISION-019",
+      "opaque_schema_sha256": "166a8871d3a69c4082a7130be078482108e56bcc69337845e89b9baf5c3bd96b",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-MIXED_AMBIGUITY_DEPTH_REVISION-020",
+      "opaque_schema_sha256": "aa4f8427513898b9ee84dfb921c8ba0a19dbbd9c085eb39092af54188889d950",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-MIXED_AMBIGUITY_DEPTH_REVISION-021",
+      "opaque_schema_sha256": "74fc1cbea9b88c92f515b0d4d241446cb89abdcafb8bffaae28d407996b5c53e",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-MIXED_AMBIGUITY_DEPTH_REVISION-022",
+      "opaque_schema_sha256": "da7fa63b6eda1bd12b042ade9c630e755459541a4d3deacdfcf916e8cadb23a2",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-MIXED_AMBIGUITY_DEPTH_REVISION-023",
+      "opaque_schema_sha256": "c0881eae2ab4d5b3efd8d22942963c2a98e0bf20283dc59fa858ae9d7bb7c220",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-MIXED_AMBIGUITY_DEPTH_REVISION-024",
+      "opaque_schema_sha256": "07809892d47fd854f21876cabdbaa917b007cdef8c821d049a5772f474c90d6e",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-MIXED_AMBIGUITY_DEPTH_REVISION-025",
+      "opaque_schema_sha256": "f1d561122b7084d1537f6abc4c259a73959c775439c40361d867f5652bd8bc95",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-MIXED_AMBIGUITY_DEPTH_REVISION-026",
+      "opaque_schema_sha256": "56c7b6a194a5e66148272edcc05d19d1fcd6d578f93dfc95742fb9f3488a0d84",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-MIXED_AMBIGUITY_DEPTH_REVISION-027",
+      "opaque_schema_sha256": "0aba4cf57d71a955f6e10e2472421a2852a05279a753d5ae8cb5514456ed8d06",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-MIXED_AMBIGUITY_DEPTH_REVISION-028",
+      "opaque_schema_sha256": "7a363e47797ae649e6517905bece9e72368aaf40177ed85dde83515e096198d4",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-MIXED_AMBIGUITY_DEPTH_REVISION-029",
+      "opaque_schema_sha256": "9aefdedc64912aa2bbf24d7e1feba28b67bf9b4aa9d14cb663b68ea813d93a38",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-MIXED_AMBIGUITY_DEPTH_REVISION-030",
+      "opaque_schema_sha256": "09e59f9cefe84c619aafdb623a9495b6eda02d41ca1fb72a669fba1d5a33d6cc",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-MIXED_AMBIGUITY_DEPTH_REVISION-031",
+      "opaque_schema_sha256": "7e80aa50f6f48852bfcec40b93d949cd5778f30e1762dbc5d05c17b9a5ad7c9d",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-MIXED_AMBIGUITY_DEPTH_REVISION-032",
+      "opaque_schema_sha256": "1ed230a84e498d048ad10c540c08301a5ff7285460917124776c4edef82a39ad",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-MIXED_AMBIGUITY_DEPTH_REVISION-033",
+      "opaque_schema_sha256": "3328861cdce8d9d08821c78756ab914c1c5376538d83c5dbca9fb469a75437c1",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-MIXED_AMBIGUITY_DEPTH_REVISION-034",
+      "opaque_schema_sha256": "e347610c6f17416ae6429437fb2c0a74f37d58305827147c52e29f48904be774",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-MIXED_AMBIGUITY_DEPTH_REVISION-035",
+      "opaque_schema_sha256": "0ef53324e4537487e5265f72dd82968f7e4f8bfcd6cade3a4f800e35bced367d",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-MIXED_AMBIGUITY_DEPTH_REVISION-036",
+      "opaque_schema_sha256": "abe788288c7ef145c8c5795c5a9ad337abd10877f1ff63d09940fb89606665e5",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-MIXED_AMBIGUITY_DEPTH_REVISION-037",
+      "opaque_schema_sha256": "7608469d783e94f79f93de7db10919c4205d55955db250522504d1d13fa6a01d",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-MIXED_AMBIGUITY_DEPTH_REVISION-038",
+      "opaque_schema_sha256": "d06c1496fd5f97b0791f1615b9a07f260c0f9afa3bd913d3312140c40cd33c1b",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    },
+    {
+      "task_id": "SEM12-FINAL-MIXED_AMBIGUITY_DEPTH_REVISION-039",
+      "opaque_schema_sha256": "665d63e5806f17f87a11e7fc16b29e4f188d76a27ed11f1b83e7d93c331def95",
+      "public_contract_sha256": "08facf10396367235a6b0269d8b499dd8a3c8605f2712e074c597dc7e4bb41a8",
+      "hidden_inputs_included": false,
+      "expected_outputs_included": false,
+      "pressure_label_exposed_to_candidate": false,
+      "frozen": true
+    }
+  ],
+  "hidden_inputs_included": false,
+  "expected_outputs_included": false,
+  "frozen_before_candidate_generation": true,
+  "manifest_sha256": "c37dc267fb700b07898d255859490195c9d0fd97a40aa4a1a0bdb824e24ba048"
+}

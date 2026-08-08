@@ -1,0 +1,67 @@
+{
+  "epochs": [
+    {
+      "active_concepts": 3,
+      "descendant": "SEM12-BASE-RUN",
+      "epoch_id": "E01",
+      "full_catalog_scans": 0,
+      "peak_active_concepts": 3,
+      "routed_concepts": 3,
+      "routing_false_negatives": 0,
+      "total_concepts": 12
+    },
+    {
+      "active_concepts": 3,
+      "descendant": "SEM12-D1",
+      "epoch_id": "E02",
+      "full_catalog_scans": 0,
+      "peak_active_concepts": 3,
+      "routed_concepts": 3,
+      "routing_false_negatives": 0,
+      "total_concepts": 12
+    },
+    {
+      "active_concepts": 3,
+      "descendant": "SEM12-D1",
+      "epoch_id": "E03",
+      "full_catalog_scans": 0,
+      "peak_active_concepts": 3,
+      "routed_concepts": 3,
+      "routing_false_negatives": 0,
+      "total_concepts": 12
+    },
+    {
+      "active_concepts": 3,
+      "descendant": "SEM12-D2",
+      "epoch_id": "E04",
+      "full_catalog_scans": 0,
+      "peak_active_concepts": 3,
+      "routed_concepts": 3,
+      "routing_false_negatives": 0,
+      "total_concepts": 12
+    },
+    {
+      "active_concepts": 3,
+      "descendant": "SEM12-D2",
+      "epoch_id": "E05",
+      "full_catalog_scans": 0,
+      "peak_active_concepts": 3,
+      "routed_concepts": 3,
+      "routing_false_negatives": 0,
+      "total_concepts": 12
+    },
+    {
+      "active_concepts": 3,
+      "descendant": "SEM12-D3",
+      "epoch_id": "E06",
+      "full_catalog_scans": 0,
+      "peak_active_concepts": 3,
+      "routed_concepts": 3,
+      "routing_false_negatives": 0,
+      "total_concepts": 12
+    }
+  ],
+  "full_catalog_scans": 0,
+  "passed": true,
+  "routing_false_negatives": 0
+}

@@ -1,0 +1,27 @@
+{
+  "events": [
+    {
+      "epoch_id": "E02",
+      "new_actionable_weakness": "RECOMBINATION_PREFIX_REDUNDANCY",
+      "new_pressure": "DEEP_RECOMBINATION",
+      "previous_status": "NO_ACTIONABLE_WEAKNESS",
+      "verified_improvement": true
+    },
+    {
+      "epoch_id": "E04",
+      "new_actionable_weakness": "COUNTERFACTUAL_REVISION_RESCAN",
+      "new_pressure": "COUNTERFACTUAL_REVISION",
+      "previous_status": "NO_ACTIONABLE_WEAKNESS",
+      "verified_improvement": true
+    },
+    {
+      "epoch_id": "E06",
+      "new_actionable_weakness": "RETRIEVAL_EQUIVALENCE_RESCAN",
+      "new_pressure": "REPEATED_EQUIVALENT_RETRIEVAL",
+      "previous_status": "NO_ACTIONABLE_WEAKNESS",
+      "verified_improvement": true
+    }
+  ],
+  "reactivation_events": 3,
+  "self_improvement_reactivated_after_saturation": true
+}

@@ -1,0 +1,61 @@
+{
+  "checkpoints": [
+    {
+      "checkpoint": "SEM12-BASE-RUN",
+      "generation": 0,
+      "stdout_sha256": [
+        "5d463fca53bbd62e6c8b85eda57a83ec1080b8c63ab726c2cda9060e3c3ee5ad",
+        "5d463fca53bbd62e6c8b85eda57a83ec1080b8c63ab726c2cda9060e3c3ee5ad",
+        "5d463fca53bbd62e6c8b85eda57a83ec1080b8c63ab726c2cda9060e3c3ee5ad",
+        "5d463fca53bbd62e6c8b85eda57a83ec1080b8c63ab726c2cda9060e3c3ee5ad",
+        "5d463fca53bbd62e6c8b85eda57a83ec1080b8c63ab726c2cda9060e3c3ee5ad",
+        "5d463fca53bbd62e6c8b85eda57a83ec1080b8c63ab726c2cda9060e3c3ee5ad",
+        "5d463fca53bbd62e6c8b85eda57a83ec1080b8c63ab726c2cda9060e3c3ee5ad",
+        "5d463fca53bbd62e6c8b85eda57a83ec1080b8c63ab726c2cda9060e3c3ee5ad",
+        "5d463fca53bbd62e6c8b85eda57a83ec1080b8c63ab726c2cda9060e3c3ee5ad"
+      ],
+      "trials": 9,
+      "unique_outputs": 1
+    },
+    {
+      "checkpoint": "SEM12-D2",
+      "generation": 2,
+      "stdout_sha256": [
+        "4a92c8f80f0196a3d0578ba8ff809b193424b17c11ee1550a75d494bc4de30af",
+        "4a92c8f80f0196a3d0578ba8ff809b193424b17c11ee1550a75d494bc4de30af",
+        "4a92c8f80f0196a3d0578ba8ff809b193424b17c11ee1550a75d494bc4de30af",
+        "4a92c8f80f0196a3d0578ba8ff809b193424b17c11ee1550a75d494bc4de30af",
+        "4a92c8f80f0196a3d0578ba8ff809b193424b17c11ee1550a75d494bc4de30af",
+        "4a92c8f80f0196a3d0578ba8ff809b193424b17c11ee1550a75d494bc4de30af",
+        "4a92c8f80f0196a3d0578ba8ff809b193424b17c11ee1550a75d494bc4de30af",
+        "4a92c8f80f0196a3d0578ba8ff809b193424b17c11ee1550a75d494bc4de30af",
+        "4a92c8f80f0196a3d0578ba8ff809b193424b17c11ee1550a75d494bc4de30af"
+      ],
+      "trials": 9,
+      "unique_outputs": 1
+    },
+    {
+      "checkpoint": "SEM12-D3",
+      "generation": 3,
+      "stdout_sha256": [
+        "d17f6d29da401775d0f00f15df792fd87a6733fe1e2461bb1379142a2120e9de",
+        "d17f6d29da401775d0f00f15df792fd87a6733fe1e2461bb1379142a2120e9de",
+        "d17f6d29da401775d0f00f15df792fd87a6733fe1e2461bb1379142a2120e9de",
+        "d17f6d29da401775d0f00f15df792fd87a6733fe1e2461bb1379142a2120e9de",
+        "d17f6d29da401775d0f00f15df792fd87a6733fe1e2461bb1379142a2120e9de",
+        "d17f6d29da401775d0f00f15df792fd87a6733fe1e2461bb1379142a2120e9de",
+        "d17f6d29da401775d0f00f15df792fd87a6733fe1e2461bb1379142a2120e9de",
+        "d17f6d29da401775d0f00f15df792fd87a6733fe1e2461bb1379142a2120e9de",
+        "d17f6d29da401775d0f00f15df792fd87a6733fe1e2461bb1379142a2120e9de"
+      ],
+      "trials": 9,
+      "unique_outputs": 1
+    }
+  ],
+  "index_drift_events": 0,
+  "metric_variance_events": 0,
+  "output_mismatches": 0,
+  "passed": true,
+  "state_drift_events": 0,
+  "trials_per_checkpoint": 9
+}

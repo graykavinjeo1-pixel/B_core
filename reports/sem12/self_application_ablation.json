@@ -1,0 +1,32 @@
+[
+  {
+    "candidate_id": "SEM12-D1",
+    "epoch_id": "E02",
+    "gain_removed_when_off": true,
+    "mechanism_off_parent_primary_value": 239.0,
+    "mechanism_on_primary_value": 86.5,
+    "passed": true,
+    "strict_solve_rate_off": 1.0,
+    "strict_solve_rate_on": 1.0
+  },
+  {
+    "candidate_id": "SEM12-D2",
+    "epoch_id": "E04",
+    "gain_removed_when_off": true,
+    "mechanism_off_parent_primary_value": 3372.0,
+    "mechanism_on_primary_value": 152.0,
+    "passed": true,
+    "strict_solve_rate_off": 1.0,
+    "strict_solve_rate_on": 1.0
+  },
+  {
+    "candidate_id": "SEM12-D3",
+    "epoch_id": "E06",
+    "gain_removed_when_off": true,
+    "mechanism_off_parent_primary_value": 5537.0,
+    "mechanism_on_primary_value": 211.5,
+    "passed": true,
+    "strict_solve_rate_off": 1.0,
+    "strict_solve_rate_on": 1.0
+  }
+]

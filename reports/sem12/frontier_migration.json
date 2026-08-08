@@ -1,0 +1,60 @@
+{
+  "events": [
+    {
+      "actionable_status": "NO_ACTIONABLE_WEAKNESS",
+      "bottleneck_class_changed": true,
+      "dominant_bottleneck_after": "CURRENT_FRONTIER_SATURATED",
+      "dominant_bottleneck_before": "SEM11_COMPOSED_FRONTIER",
+      "dominant_weakness": "NO_ACTIONABLE_WEAKNESS",
+      "epoch_id": "E01",
+      "observed_frontier": "ROUTING_FRONTIER"
+    },
+    {
+      "actionable_status": "ACTIONABLE_WEAKNESS",
+      "bottleneck_class_changed": true,
+      "dominant_bottleneck_after": "FRONTIER_MOVED_AFTER_VERIFIED_PATCH",
+      "dominant_bottleneck_before": "ROUTING_FRONTIER",
+      "dominant_weakness": "RECOMBINATION_PREFIX_REDUNDANCY",
+      "epoch_id": "E02",
+      "observed_frontier": "COMPOSITION_FRONTIER"
+    },
+    {
+      "actionable_status": "NO_ACTIONABLE_WEAKNESS",
+      "bottleneck_class_changed": true,
+      "dominant_bottleneck_after": "CURRENT_FRONTIER_SATURATED",
+      "dominant_bottleneck_before": "COMPOSITION_FRONTIER",
+      "dominant_weakness": "NO_ACTIONABLE_WEAKNESS",
+      "epoch_id": "E03",
+      "observed_frontier": "STATE_FRONTIER"
+    },
+    {
+      "actionable_status": "ACTIONABLE_WEAKNESS",
+      "bottleneck_class_changed": true,
+      "dominant_bottleneck_after": "FRONTIER_MOVED_AFTER_VERIFIED_PATCH",
+      "dominant_bottleneck_before": "STATE_FRONTIER",
+      "dominant_weakness": "COUNTERFACTUAL_REVISION_RESCAN",
+      "epoch_id": "E04",
+      "observed_frontier": "UNCERTAINTY_FRONTIER"
+    },
+    {
+      "actionable_status": "NO_ACTIONABLE_WEAKNESS",
+      "bottleneck_class_changed": true,
+      "dominant_bottleneck_after": "CURRENT_FRONTIER_SATURATED",
+      "dominant_bottleneck_before": "UNCERTAINTY_FRONTIER",
+      "dominant_weakness": "NO_ACTIONABLE_WEAKNESS",
+      "epoch_id": "E05",
+      "observed_frontier": "MIXED_FRONTIER"
+    },
+    {
+      "actionable_status": "ACTIONABLE_WEAKNESS",
+      "bottleneck_class_changed": true,
+      "dominant_bottleneck_after": "FRONTIER_MOVED_AFTER_VERIFIED_PATCH",
+      "dominant_bottleneck_before": "MIXED_FRONTIER",
+      "dominant_weakness": "RETRIEVAL_EQUIVALENCE_RESCAN",
+      "epoch_id": "E06",
+      "observed_frontier": "RETRIEVAL_FRONTIER"
+    }
+  ],
+  "frontier_migration_events": 6,
+  "passed": true
+}

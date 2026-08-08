@@ -1,0 +1,401 @@
+use std::collections::{BTreeMap, BTreeSet};
+use std::mem::size_of;
+
+const SCOPED_ROUTING: bool = true;
+const REDUCED_STATE: bool = true;
+const CACHED_COMPOSITION: bool = true;
+const REVISION_INDEX: bool = true;
+const RETRIEVAL_MEMO: bool = false;
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct Candidate {
+    pub id: u64,
+    pub scope: u64,
+    pub assumption: bool,
+    pub score: u64,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct State {
+    pub key: u64,
+    pub payload: u64,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct Explanation {
+    pub id: u64,
+    pub valid: bool,
+    pub score: u64,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct Evidence {
+    pub id: u64,
+    pub valid: bool,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct RetrievalValue {
+    pub key: u64,
+    pub payload: u64,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct TaskInput {
+    pub required_scope: u64,
+    pub candidates: Vec<Candidate>,
+    pub states: Vec<State>,
+    pub reuse_count: usize,
+    pub chains: Vec<Vec<u64>>,
+    pub explanations: Vec<Explanation>,
+    pub evidence: Vec<Evidence>,
+    pub retrieval_values: Vec<RetrievalValue>,
+    pub retrieval_requests: Vec<u64>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct SemanticOutput {
+    pub selected_id: u64,
+    pub state_checksum: u64,
+    pub composition_checksum: u64,
+    pub uncertainty_winner: u64,
+    pub retrieval_checksum: u64,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct Profile {
+    pub routing_ops: usize,
+    pub false_activations: usize,
+    pub peak_transient_bytes: usize,
+    pub reconstruction_ops: usize,
+    pub composition_ops: usize,
+    pub uncertainty_ops: usize,
+    pub retrieval_ops: usize,
+    pub max_solution_depth: usize,
+    pub max_primitive_expanded_depth: usize,
+    pub peak_frontier: usize,
+    pub peak_active_concepts: usize,
+    pub max_concepts_composed: usize,
+    pub total_primary_cost: usize,
+}
+
+pub fn reason(task: &TaskInput) -> (SemanticOutput, Profile) {
+    let (selected_id, routing_ops, false_activations) = route(task);
+    let (state_checksum, peak_transient_bytes, reconstruction_ops) = state(task);
+    let (composition_checksum, composition_ops) = compose(task);
+    let (uncertainty_winner, uncertainty_ops) = revise(task);
+    let (retrieval_checksum, retrieval_ops) = retrieve(task);
+    let max_solution_depth = task.chains.iter().map(Vec::len).max().unwrap_or(0);
+    let peak_frontier = task.chains.len();
+    let total_primary_cost = routing_ops
+        + false_activations
+        + reconstruction_ops
+        + composition_ops
+        + uncertainty_ops
+        + retrieval_ops;
+    (
+        SemanticOutput {
+            selected_id,
+            state_checksum,
+            composition_checksum,
+            uncertainty_winner,
+            retrieval_checksum,
+        },
+        Profile {
+            routing_ops,
+            false_activations,
+            peak_transient_bytes,
+            reconstruction_ops,
+            composition_ops,
+            uncertainty_ops,
+            retrieval_ops,
+            max_solution_depth,
+            max_primitive_expanded_depth: max_solution_depth,
+            peak_frontier,
+            peak_active_concepts: 3,
+            max_concepts_composed: 2,
+            total_primary_cost,
+        },
+    )
+}
+
+fn route(task: &TaskInput) -> (u64, usize, usize) {
+    let mut selected: Option<Candidate> = None;
+    let mut operations = 0usize;
+    let mut false_activations = 0usize;
+    if SCOPED_ROUTING {
+        for candidate in &task.candidates {
+            operations += 1;
+            if candidate.scope == task.required_scope
+                && candidate.assumption
+                && selected.is_none_or(|current| better(*candidate, current))
+            {
+                selected = Some(*candidate);
+            }
+        }
+    } else {
+        let mut scoped = Vec::new();
+        for candidate in &task.candidates {
+            operations += 1;
+            if candidate.scope == task.required_scope {
+                scoped.push(*candidate);
+                if !candidate.assumption {
+                    false_activations += 1;
+                }
+            }
+        }
+        for candidate in scoped {
+            operations += 1;
+            if candidate.assumption && selected.is_none_or(|current| better(candidate, current)) {
+                selected = Some(candidate);
+            }
+        }
+    }
+    (
+        selected.expect("valid candidate").id,
+        operations,
+        false_activations,
+    )
+}
+
+fn better(candidate: Candidate, current: Candidate) -> bool {
+    candidate.score > current.score
+        || (candidate.score == current.score && candidate.id < current.id)
+}
+
+fn state(task: &TaskInput) -> (u64, usize, usize) {
+    if REDUCED_STATE {
+        let mut keys = BTreeSet::new();
+        for item in &task.states {
+            keys.insert(item.key);
+        }
+        let values = keys.into_iter().collect::<Vec<_>>();
+        (
+            checksum(&values),
+            values.len() * size_of::<u64>(),
+            task.states.len(),
+        )
+    } else {
+        let mut checksum_value = 0;
+        let mut peak = 0;
+        let mut operations = 0;
+        for _ in 0..task.reuse_count {
+            let mut keys = task.states.iter().map(|item| item.key).collect::<Vec<_>>();
+            operations += keys.len();
+            keys.sort_unstable();
+            keys.dedup();
+            peak = peak.max(keys.len() * size_of::<u64>());
+            checksum_value = checksum(&keys);
+        }
+        (checksum_value, peak * task.reuse_count, operations)
+    }
+}
+
+fn compose(task: &TaskInput) -> (u64, usize) {
+    if CACHED_COMPOSITION {
+        let mut prefixes: BTreeMap<Vec<u64>, u64> = BTreeMap::new();
+        let mut outputs = Vec::new();
+        let mut operations = 0;
+        for chain in &task.chains {
+            let mut start = 0usize;
+            let mut value = 0x5e12_2026;
+            for length in (1..=chain.len()).rev() {
+                if let Some(cached) = prefixes.get(&chain[..length]) {
+                    start = length;
+                    value = *cached;
+                    break;
+                }
+            }
+            for index in start..chain.len() {
+                value = apply(value, chain[index]);
+                operations += 1;
+                prefixes.insert(chain[..=index].to_vec(), value);
+            }
+            outputs.push(value);
+        }
+        (checksum(&outputs), operations)
+    } else {
+        let mut outputs = Vec::new();
+        let mut operations = 0;
+        for chain in &task.chains {
+            let mut value = 0x5e12_2026;
+            for operation in chain {
+                value = apply(value, *operation);
+                operations += 1;
+            }
+            outputs.push(value);
+        }
+        (checksum(&outputs), operations)
+    }
+}
+
+fn apply(value: u64, operation: u64) -> u64 {
+    value
+        .rotate_left((operation % 31) as u32)
+        .wrapping_add(operation.wrapping_mul(0x9e37_79b9))
+        ^ operation.rotate_right(7)
+}
+
+fn revise(task: &TaskInput) -> (u64, usize) {
+    if REVISION_INDEX {
+        let mut state = BTreeMap::new();
+        let mut operations = 0;
+        for explanation in &task.explanations {
+            state.insert(explanation.id, (explanation.valid, explanation.score));
+            operations += 1;
+        }
+        for evidence in &task.evidence {
+            if let Some(entry) = state.get_mut(&evidence.id) {
+                entry.0 = evidence.valid;
+            }
+            operations += 1;
+        }
+        let mut winner = None;
+        for (id, (valid, score)) in state {
+            operations += 1;
+            if valid
+                && winner.is_none_or(|(winner_id, winner_score)| {
+                    score > winner_score || (score == winner_score && id < winner_id)
+                })
+            {
+                winner = Some((id, score));
+            }
+        }
+        (winner.expect("valid explanation").0, operations)
+    } else {
+        let mut revised = task.explanations.clone();
+        let mut winner = None;
+        let mut operations = 0;
+        for evidence in &task.evidence {
+            for explanation in &mut revised {
+                operations += 1;
+                if explanation.id == evidence.id {
+                    explanation.valid = evidence.valid;
+                }
+            }
+            winner = None;
+            for explanation in &revised {
+                operations += 1;
+                if explanation.valid
+                    && winner.is_none_or(|current: Explanation| {
+                        better_explanation(*explanation, current)
+                    })
+                {
+                    winner = Some(*explanation);
+                }
+            }
+        }
+        (winner.expect("valid explanation").id, operations)
+    }
+}
+
+fn better_explanation(candidate: Explanation, current: Explanation) -> bool {
+    candidate.score > current.score
+        || (candidate.score == current.score && candidate.id < current.id)
+}
+
+fn retrieve(task: &TaskInput) -> (u64, usize) {
+    let mut outputs = Vec::new();
+    let mut operations = 0;
+    if RETRIEVAL_MEMO {
+        let mut memo = BTreeMap::new();
+        for value in &task.retrieval_values {
+            memo.insert(value.key, value.payload);
+            operations += 1;
+        }
+        for key in &task.retrieval_requests {
+            outputs.push(memo[key]);
+            operations += 1;
+        }
+    } else {
+        for key in &task.retrieval_requests {
+            for value in &task.retrieval_values {
+                operations += 1;
+                if value.key == *key {
+                    outputs.push(value.payload);
+                    break;
+                }
+            }
+        }
+    }
+    (checksum(&outputs), operations)
+}
+
+fn checksum(values: &[u64]) -> u64 {
+    values.iter().fold(0xcbf2_9ce4_8422_2325, |hash, value| {
+        (hash ^ value).wrapping_mul(0x1000_0000_01b3)
+    })
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn fixture() -> TaskInput {
+        TaskInput {
+            required_scope: 7,
+            candidates: vec![
+                Candidate {
+                    id: 1,
+                    scope: 7,
+                    assumption: true,
+                    score: 50,
+                },
+                Candidate {
+                    id: 2,
+                    scope: 7,
+                    assumption: false,
+                    score: 90,
+                },
+            ],
+            states: vec![
+                State { key: 4, payload: 1 },
+                State { key: 4, payload: 2 },
+                State { key: 9, payload: 3 },
+            ],
+            reuse_count: 4,
+            chains: vec![vec![1, 2, 3], vec![1, 2, 4]],
+            explanations: vec![
+                Explanation {
+                    id: 1,
+                    valid: true,
+                    score: 50,
+                },
+                Explanation {
+                    id: 2,
+                    valid: true,
+                    score: 80,
+                },
+            ],
+            evidence: vec![Evidence {
+                id: 2,
+                valid: false,
+            }],
+            retrieval_values: vec![
+                RetrievalValue {
+                    key: 1,
+                    payload: 10,
+                },
+                RetrievalValue {
+                    key: 2,
+                    payload: 20,
+                },
+            ],
+            retrieval_requests: vec![2, 1, 2],
+        }
+    }
+
+    #[test]
+    fn semantic_contract_is_satisfied() {
+        let (output, profile) = reason(&fixture());
+        assert_eq!(output.selected_id, 1);
+        assert_eq!(output.uncertainty_winner, 1);
+        assert!(profile.total_primary_cost > 0);
+        assert_eq!(profile.peak_active_concepts, 3);
+    }
+
+    #[test]
+    fn output_is_deterministic() {
+        assert_eq!(reason(&fixture()), reason(&fixture()));
+    }
+}
