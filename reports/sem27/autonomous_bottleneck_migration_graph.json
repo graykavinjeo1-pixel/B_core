@@ -1,0 +1,1630 @@
+{
+  "all_edges_include_symptom_hypotheses_experiment_prediction_effect_and_next_pressure": true,
+  "edges": [
+    {
+      "actual_effect_ppm": 759170,
+      "causal_hypotheses": [
+        {
+          "cause_mask": 1,
+          "competing_rank": 0,
+          "evidence_time_ns": 314200,
+          "hypothesis_id": 1535239160584997288,
+          "phase_code": 9,
+          "phase_name": "FRESH_WORK_VALIDATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 2,
+          "competing_rank": 1,
+          "evidence_time_ns": 294000,
+          "hypothesis_id": 1082620121275246564,
+          "phase_code": 1,
+          "phase_name": "AUTONOMOUS_DIAGNOSIS_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 1,
+          "competing_rank": 2,
+          "evidence_time_ns": 280600,
+          "hypothesis_id": 1082620121275246564,
+          "phase_code": 0,
+          "phase_name": "OBSERVATION_COST",
+          "predecessor_label_used": false
+        }
+      ],
+      "diagnosis": "FRESH_WORK_VALIDATION_COST",
+      "epoch": 1,
+      "experiment": 583812031098662140,
+      "human_direction": false,
+      "measured_symptom": 739,
+      "migration_id": "SEM27-M01",
+      "next_observed_pressure": "DIAGNOSTIC_EXPERIMENT_COST",
+      "prediction": 759170,
+      "repair": 4034609102451075240
+    },
+    {
+      "actual_effect_ppm": 760000,
+      "causal_hypotheses": [
+        {
+          "cause_mask": 1,
+          "competing_rank": 0,
+          "evidence_time_ns": 328900,
+          "hypothesis_id": 4020810731767045183,
+          "phase_code": 6,
+          "phase_name": "REACTION_REALIZATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 2,
+          "competing_rank": 1,
+          "evidence_time_ns": 242600,
+          "hypothesis_id": 8319160999900709499,
+          "phase_code": 7,
+          "phase_name": "CAUSAL_INTEGRATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 4,
+          "competing_rank": 2,
+          "evidence_time_ns": 223500,
+          "hypothesis_id": 15311218771902825291,
+          "phase_code": 5,
+          "phase_name": "REACTION_DISCOVERY_COST",
+          "predecessor_label_used": false
+        }
+      ],
+      "diagnosis": "REACTION_REALIZATION_COST",
+      "epoch": 8,
+      "experiment": 9234691490973995624,
+      "human_direction": false,
+      "measured_symptom": 992,
+      "migration_id": "SEM27-M02",
+      "next_observed_pressure": "DIAGNOSTIC_EXPERIMENT_COST",
+      "prediction": 760000,
+      "repair": 4439000248713352564
+    },
+    {
+      "actual_effect_ppm": 582284,
+      "causal_hypotheses": [
+        {
+          "cause_mask": 2,
+          "competing_rank": 0,
+          "evidence_time_ns": 242800,
+          "hypothesis_id": 16458456322700682518,
+          "phase_code": 7,
+          "phase_name": "CAUSAL_INTEGRATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 4,
+          "competing_rank": 1,
+          "evidence_time_ns": 217700,
+          "hypothesis_id": 8133686894380042589,
+          "phase_code": 5,
+          "phase_name": "REACTION_DISCOVERY_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 4,
+          "competing_rank": 2,
+          "evidence_time_ns": 212400,
+          "hypothesis_id": 17055928404900445472,
+          "phase_code": 8,
+          "phase_name": "PROOF_CARRYING_VERIFICATION_COST",
+          "predecessor_label_used": false
+        }
+      ],
+      "diagnosis": "CAUSAL_INTEGRATION_COST",
+      "epoch": 9,
+      "experiment": 6199013008568216657,
+      "human_direction": false,
+      "measured_symptom": 992,
+      "migration_id": "SEM27-M03",
+      "next_observed_pressure": "DIAGNOSTIC_EXPERIMENT_COST",
+      "prediction": 582284,
+      "repair": 16901159930512035812
+    },
+    {
+      "actual_effect_ppm": 610291,
+      "causal_hypotheses": [
+        {
+          "cause_mask": 4,
+          "competing_rank": 0,
+          "evidence_time_ns": 243400,
+          "hypothesis_id": 14556327310601052666,
+          "phase_code": 8,
+          "phase_name": "PROOF_CARRYING_VERIFICATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 1,
+          "competing_rank": 1,
+          "evidence_time_ns": 229200,
+          "hypothesis_id": 16280961584875197726,
+          "phase_code": 9,
+          "phase_name": "FRESH_WORK_VALIDATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 2,
+          "competing_rank": 2,
+          "evidence_time_ns": 228900,
+          "hypothesis_id": 17803858190087568499,
+          "phase_code": 7,
+          "phase_name": "CAUSAL_INTEGRATION_COST",
+          "predecessor_label_used": false
+        }
+      ],
+      "diagnosis": "PROOF_CARRYING_VERIFICATION_COST",
+      "epoch": 11,
+      "experiment": 17248966444254901519,
+      "human_direction": false,
+      "measured_symptom": 992,
+      "migration_id": "SEM27-M04",
+      "next_observed_pressure": "DIAGNOSTIC_EXPERIMENT_COST",
+      "prediction": 610291,
+      "repair": 10907491745227071473
+    },
+    {
+      "actual_effect_ppm": 607844,
+      "causal_hypotheses": [
+        {
+          "cause_mask": 2,
+          "competing_rank": 0,
+          "evidence_time_ns": 242600,
+          "hypothesis_id": 17362626800894209540,
+          "phase_code": 7,
+          "phase_name": "CAUSAL_INTEGRATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 1,
+          "competing_rank": 1,
+          "evidence_time_ns": 238700,
+          "hypothesis_id": 12270064130115877641,
+          "phase_code": 6,
+          "phase_name": "REACTION_REALIZATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 4,
+          "competing_rank": 2,
+          "evidence_time_ns": 233800,
+          "hypothesis_id": 2347922669055638095,
+          "phase_code": 5,
+          "phase_name": "REACTION_DISCOVERY_COST",
+          "predecessor_label_used": false
+        }
+      ],
+      "diagnosis": "CAUSAL_INTEGRATION_COST",
+      "epoch": 12,
+      "experiment": 6440101523766901675,
+      "human_direction": false,
+      "measured_symptom": 992,
+      "migration_id": "SEM27-M05",
+      "next_observed_pressure": "DIAGNOSTIC_EXPERIMENT_COST",
+      "prediction": 607844,
+      "repair": 5033769718394836753
+    },
+    {
+      "actual_effect_ppm": 584549,
+      "causal_hypotheses": [
+        {
+          "cause_mask": 1,
+          "competing_rank": 0,
+          "evidence_time_ns": 252200,
+          "hypothesis_id": 3651993554891421350,
+          "phase_code": 6,
+          "phase_name": "REACTION_REALIZATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 1,
+          "competing_rank": 1,
+          "evidence_time_ns": 231200,
+          "hypothesis_id": 14616737114731825263,
+          "phase_code": 9,
+          "phase_name": "FRESH_WORK_VALIDATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 4,
+          "competing_rank": 2,
+          "evidence_time_ns": 220500,
+          "hypothesis_id": 14002012331183330493,
+          "phase_code": 5,
+          "phase_name": "REACTION_DISCOVERY_COST",
+          "predecessor_label_used": false
+        }
+      ],
+      "diagnosis": "REACTION_REALIZATION_COST",
+      "epoch": 13,
+      "experiment": 17062586169105110623,
+      "human_direction": false,
+      "measured_symptom": 992,
+      "migration_id": "SEM27-M06",
+      "next_observed_pressure": "DIAGNOSTIC_EXPERIMENT_COST",
+      "prediction": 584549,
+      "repair": 13655268917439441858
+    },
+    {
+      "actual_effect_ppm": 605869,
+      "causal_hypotheses": [
+        {
+          "cause_mask": 4,
+          "competing_rank": 0,
+          "evidence_time_ns": 239300,
+          "hypothesis_id": 16493700539079138164,
+          "phase_code": 8,
+          "phase_name": "PROOF_CARRYING_VERIFICATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 1,
+          "competing_rank": 1,
+          "evidence_time_ns": 231800,
+          "hypothesis_id": 9765929783275953617,
+          "phase_code": 6,
+          "phase_name": "REACTION_REALIZATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 2,
+          "competing_rank": 2,
+          "evidence_time_ns": 229300,
+          "hypothesis_id": 4719424205711032683,
+          "phase_code": 7,
+          "phase_name": "CAUSAL_INTEGRATION_COST",
+          "predecessor_label_used": false
+        }
+      ],
+      "diagnosis": "PROOF_CARRYING_VERIFICATION_COST",
+      "epoch": 16,
+      "experiment": 9489969733759049295,
+      "human_direction": false,
+      "measured_symptom": 992,
+      "migration_id": "SEM27-M07",
+      "next_observed_pressure": "DIAGNOSTIC_EXPERIMENT_COST",
+      "prediction": 605869,
+      "repair": 9751369431341900437
+    },
+    {
+      "actual_effect_ppm": 592377,
+      "causal_hypotheses": [
+        {
+          "cause_mask": 1,
+          "competing_rank": 0,
+          "evidence_time_ns": 254200,
+          "hypothesis_id": 3669230292345472202,
+          "phase_code": 9,
+          "phase_name": "FRESH_WORK_VALIDATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 2,
+          "competing_rank": 1,
+          "evidence_time_ns": 239300,
+          "hypothesis_id": 4590734024896337500,
+          "phase_code": 7,
+          "phase_name": "CAUSAL_INTEGRATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 4,
+          "competing_rank": 2,
+          "evidence_time_ns": 237300,
+          "hypothesis_id": 7452168542913319397,
+          "phase_code": 8,
+          "phase_name": "PROOF_CARRYING_VERIFICATION_COST",
+          "predecessor_label_used": false
+        }
+      ],
+      "diagnosis": "FRESH_WORK_VALIDATION_COST",
+      "epoch": 19,
+      "experiment": 18007893267151725957,
+      "human_direction": false,
+      "measured_symptom": 992,
+      "migration_id": "SEM27-M08",
+      "next_observed_pressure": "DIAGNOSTIC_EXPERIMENT_COST",
+      "prediction": 592377,
+      "repair": 9390207233168144532
+    },
+    {
+      "actual_effect_ppm": 551695,
+      "causal_hypotheses": [
+        {
+          "cause_mask": 4,
+          "competing_rank": 0,
+          "evidence_time_ns": 259200,
+          "hypothesis_id": 277866571889986810,
+          "phase_code": 5,
+          "phase_name": "REACTION_DISCOVERY_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 2,
+          "competing_rank": 1,
+          "evidence_time_ns": 235000,
+          "hypothesis_id": 11641122135400126187,
+          "phase_code": 7,
+          "phase_name": "CAUSAL_INTEGRATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 1,
+          "competing_rank": 2,
+          "evidence_time_ns": 222800,
+          "hypothesis_id": 15439792742849576970,
+          "phase_code": 9,
+          "phase_name": "FRESH_WORK_VALIDATION_COST",
+          "predecessor_label_used": false
+        }
+      ],
+      "diagnosis": "REACTION_DISCOVERY_COST",
+      "epoch": 21,
+      "experiment": 2413454277451016204,
+      "human_direction": false,
+      "measured_symptom": 992,
+      "migration_id": "SEM27-M09",
+      "next_observed_pressure": "DIAGNOSTIC_EXPERIMENT_COST",
+      "prediction": 551695,
+      "repair": 10704114560481622717
+    },
+    {
+      "actual_effect_ppm": 574842,
+      "causal_hypotheses": [
+        {
+          "cause_mask": 1,
+          "competing_rank": 0,
+          "evidence_time_ns": 249600,
+          "hypothesis_id": 5264231253855724963,
+          "phase_code": 9,
+          "phase_name": "FRESH_WORK_VALIDATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 1,
+          "competing_rank": 1,
+          "evidence_time_ns": 235100,
+          "hypothesis_id": 3153714239190231786,
+          "phase_code": 6,
+          "phase_name": "REACTION_REALIZATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 4,
+          "competing_rank": 2,
+          "evidence_time_ns": 231000,
+          "hypothesis_id": 4432977385494323088,
+          "phase_code": 8,
+          "phase_name": "PROOF_CARRYING_VERIFICATION_COST",
+          "predecessor_label_used": false
+        }
+      ],
+      "diagnosis": "FRESH_WORK_VALIDATION_COST",
+      "epoch": 22,
+      "experiment": 17399112329371887504,
+      "human_direction": false,
+      "measured_symptom": 992,
+      "migration_id": "SEM27-M10",
+      "next_observed_pressure": "DIAGNOSTIC_EXPERIMENT_COST",
+      "prediction": 574842,
+      "repair": 6336136770600133084
+    },
+    {
+      "actual_effect_ppm": 753772,
+      "causal_hypotheses": [
+        {
+          "cause_mask": 4,
+          "competing_rank": 0,
+          "evidence_time_ns": 249700,
+          "hypothesis_id": 8960728045163416700,
+          "phase_code": 8,
+          "phase_name": "PROOF_CARRYING_VERIFICATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 2,
+          "competing_rank": 1,
+          "evidence_time_ns": 245300,
+          "hypothesis_id": 8960728045163416700,
+          "phase_code": 7,
+          "phase_name": "CAUSAL_INTEGRATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 4,
+          "competing_rank": 2,
+          "evidence_time_ns": 221100,
+          "hypothesis_id": 12020744693825234366,
+          "phase_code": 5,
+          "phase_name": "REACTION_DISCOVERY_COST",
+          "predecessor_label_used": false
+        }
+      ],
+      "diagnosis": "PROOF_CARRYING_VERIFICATION_COST",
+      "epoch": 23,
+      "experiment": 4562548053415736495,
+      "human_direction": false,
+      "measured_symptom": 992,
+      "migration_id": "SEM27-M11",
+      "next_observed_pressure": "DIAGNOSTIC_EXPERIMENT_COST",
+      "prediction": 753772,
+      "repair": 14534274371107548350
+    },
+    {
+      "actual_effect_ppm": 566851,
+      "causal_hypotheses": [
+        {
+          "cause_mask": 2,
+          "competing_rank": 0,
+          "evidence_time_ns": 251800,
+          "hypothesis_id": 8995756255327877843,
+          "phase_code": 7,
+          "phase_name": "CAUSAL_INTEGRATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 1,
+          "competing_rank": 1,
+          "evidence_time_ns": 247600,
+          "hypothesis_id": 18246654142284963999,
+          "phase_code": 3,
+          "phase_name": "DIAGNOSTIC_EXPERIMENT_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 1,
+          "competing_rank": 2,
+          "evidence_time_ns": 239200,
+          "hypothesis_id": 8995756255327877843,
+          "phase_code": 9,
+          "phase_name": "FRESH_WORK_VALIDATION_COST",
+          "predecessor_label_used": false
+        }
+      ],
+      "diagnosis": "CAUSAL_INTEGRATION_COST",
+      "epoch": 24,
+      "experiment": 13374073503659538104,
+      "human_direction": false,
+      "measured_symptom": 744,
+      "migration_id": "SEM27-M12",
+      "next_observed_pressure": "DIAGNOSTIC_EXPERIMENT_COST",
+      "prediction": 566851,
+      "repair": 14000488775036758429
+    },
+    {
+      "actual_effect_ppm": 578060,
+      "causal_hypotheses": [
+        {
+          "cause_mask": 4,
+          "competing_rank": 0,
+          "evidence_time_ns": 257900,
+          "hypothesis_id": 9573012246208632891,
+          "phase_code": 5,
+          "phase_name": "REACTION_DISCOVERY_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 1,
+          "competing_rank": 1,
+          "evidence_time_ns": 237200,
+          "hypothesis_id": 8848972828921288614,
+          "phase_code": 9,
+          "phase_name": "FRESH_WORK_VALIDATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 2,
+          "competing_rank": 2,
+          "evidence_time_ns": 236100,
+          "hypothesis_id": 5407106579903762888,
+          "phase_code": 4,
+          "phase_name": "REPAIR_SYNTHESIS_COST",
+          "predecessor_label_used": false
+        }
+      ],
+      "diagnosis": "REACTION_DISCOVERY_COST",
+      "epoch": 25,
+      "experiment": 15032755260416316107,
+      "human_direction": false,
+      "measured_symptom": 1008,
+      "migration_id": "SEM27-M13",
+      "next_observed_pressure": "DIAGNOSTIC_EXPERIMENT_COST",
+      "prediction": 578060,
+      "repair": 8289475373454880060
+    },
+    {
+      "actual_effect_ppm": 619523,
+      "causal_hypotheses": [
+        {
+          "cause_mask": 4,
+          "competing_rank": 0,
+          "evidence_time_ns": 253200,
+          "hypothesis_id": 15446678264865865628,
+          "phase_code": 8,
+          "phase_name": "PROOF_CARRYING_VERIFICATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 2,
+          "competing_rank": 1,
+          "evidence_time_ns": 248400,
+          "hypothesis_id": 15446678264865865628,
+          "phase_code": 7,
+          "phase_name": "CAUSAL_INTEGRATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 1,
+          "competing_rank": 2,
+          "evidence_time_ns": 245400,
+          "hypothesis_id": 373554820160592870,
+          "phase_code": 6,
+          "phase_name": "REACTION_REALIZATION_COST",
+          "predecessor_label_used": false
+        }
+      ],
+      "diagnosis": "PROOF_CARRYING_VERIFICATION_COST",
+      "epoch": 29,
+      "experiment": 8123054758894509292,
+      "human_direction": false,
+      "measured_symptom": 992,
+      "migration_id": "SEM27-M14",
+      "next_observed_pressure": "DIAGNOSTIC_EXPERIMENT_COST",
+      "prediction": 619523,
+      "repair": 18058486628016024919
+    },
+    {
+      "actual_effect_ppm": 564025,
+      "causal_hypotheses": [
+        {
+          "cause_mask": 4,
+          "competing_rank": 0,
+          "evidence_time_ns": 271100,
+          "hypothesis_id": 11316206750854655274,
+          "phase_code": 5,
+          "phase_name": "REACTION_DISCOVERY_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 1,
+          "competing_rank": 1,
+          "evidence_time_ns": 240500,
+          "hypothesis_id": 11316206750854655274,
+          "phase_code": 6,
+          "phase_name": "REACTION_REALIZATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 2,
+          "competing_rank": 2,
+          "evidence_time_ns": 238700,
+          "hypothesis_id": 4934932638748920845,
+          "phase_code": 7,
+          "phase_name": "CAUSAL_INTEGRATION_COST",
+          "predecessor_label_used": false
+        }
+      ],
+      "diagnosis": "REACTION_DISCOVERY_COST",
+      "epoch": 30,
+      "experiment": 508586027914831058,
+      "human_direction": false,
+      "measured_symptom": 992,
+      "migration_id": "SEM27-M15",
+      "next_observed_pressure": "DIAGNOSTIC_EXPERIMENT_COST",
+      "prediction": 564025,
+      "repair": 5774422752456643834
+    },
+    {
+      "actual_effect_ppm": 609795,
+      "causal_hypotheses": [
+        {
+          "cause_mask": 1,
+          "competing_rank": 0,
+          "evidence_time_ns": 260000,
+          "hypothesis_id": 15008559045925076693,
+          "phase_code": 6,
+          "phase_name": "REACTION_REALIZATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 2,
+          "competing_rank": 1,
+          "evidence_time_ns": 244600,
+          "hypothesis_id": 4548734447787692233,
+          "phase_code": 7,
+          "phase_name": "CAUSAL_INTEGRATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 4,
+          "competing_rank": 2,
+          "evidence_time_ns": 243800,
+          "hypothesis_id": 11490126439144275492,
+          "phase_code": 5,
+          "phase_name": "REACTION_DISCOVERY_COST",
+          "predecessor_label_used": false
+        }
+      ],
+      "diagnosis": "REACTION_REALIZATION_COST",
+      "epoch": 31,
+      "experiment": 12138449381536276265,
+      "human_direction": false,
+      "measured_symptom": 992,
+      "migration_id": "SEM27-M16",
+      "next_observed_pressure": "DIAGNOSTIC_EXPERIMENT_COST",
+      "prediction": 609795,
+      "repair": 16100428008778379920
+    },
+    {
+      "actual_effect_ppm": 608988,
+      "causal_hypotheses": [
+        {
+          "cause_mask": 2,
+          "competing_rank": 0,
+          "evidence_time_ns": 249000,
+          "hypothesis_id": 817759159590315014,
+          "phase_code": 7,
+          "phase_name": "CAUSAL_INTEGRATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 4,
+          "competing_rank": 1,
+          "evidence_time_ns": 244400,
+          "hypothesis_id": 817759159590315014,
+          "phase_code": 8,
+          "phase_name": "PROOF_CARRYING_VERIFICATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 1,
+          "competing_rank": 2,
+          "evidence_time_ns": 238900,
+          "hypothesis_id": 66370564114321947,
+          "phase_code": 0,
+          "phase_name": "OBSERVATION_COST",
+          "predecessor_label_used": false
+        }
+      ],
+      "diagnosis": "CAUSAL_INTEGRATION_COST",
+      "epoch": 32,
+      "experiment": 15186388464724644963,
+      "human_direction": false,
+      "measured_symptom": 929,
+      "migration_id": "SEM27-M17",
+      "next_observed_pressure": "DIAGNOSTIC_EXPERIMENT_COST",
+      "prediction": 608988,
+      "repair": 12893881878217029545
+    },
+    {
+      "actual_effect_ppm": 581922,
+      "causal_hypotheses": [
+        {
+          "cause_mask": 4,
+          "competing_rank": 0,
+          "evidence_time_ns": 258800,
+          "hypothesis_id": 8549861196947039602,
+          "phase_code": 8,
+          "phase_name": "PROOF_CARRYING_VERIFICATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 4,
+          "competing_rank": 1,
+          "evidence_time_ns": 234500,
+          "hypothesis_id": 11771026183728665376,
+          "phase_code": 5,
+          "phase_name": "REACTION_DISCOVERY_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 1,
+          "competing_rank": 2,
+          "evidence_time_ns": 231700,
+          "hypothesis_id": 1331170991687798874,
+          "phase_code": 9,
+          "phase_name": "FRESH_WORK_VALIDATION_COST",
+          "predecessor_label_used": false
+        }
+      ],
+      "diagnosis": "PROOF_CARRYING_VERIFICATION_COST",
+      "epoch": 33,
+      "experiment": 16785300479486706813,
+      "human_direction": false,
+      "measured_symptom": 992,
+      "migration_id": "SEM27-M18",
+      "next_observed_pressure": "DIAGNOSTIC_EXPERIMENT_COST",
+      "prediction": 581922,
+      "repair": 7534267773136232768
+    },
+    {
+      "actual_effect_ppm": 570639,
+      "causal_hypotheses": [
+        {
+          "cause_mask": 1,
+          "competing_rank": 0,
+          "evidence_time_ns": 250500,
+          "hypothesis_id": 7514600686217024116,
+          "phase_code": 0,
+          "phase_name": "OBSERVATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 4,
+          "competing_rank": 1,
+          "evidence_time_ns": 231400,
+          "hypothesis_id": 9051354502137986171,
+          "phase_code": 5,
+          "phase_name": "REACTION_DISCOVERY_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 2,
+          "competing_rank": 2,
+          "evidence_time_ns": 226800,
+          "hypothesis_id": 10720847554557424453,
+          "phase_code": 7,
+          "phase_name": "CAUSAL_INTEGRATION_COST",
+          "predecessor_label_used": false
+        }
+      ],
+      "diagnosis": "OBSERVATION_COST",
+      "epoch": 35,
+      "experiment": 11443274619362044376,
+      "human_direction": false,
+      "measured_symptom": 929,
+      "migration_id": "SEM27-M19",
+      "next_observed_pressure": "DIAGNOSTIC_EXPERIMENT_COST",
+      "prediction": 570639,
+      "repair": 4850568305874325864
+    },
+    {
+      "actual_effect_ppm": 594813,
+      "causal_hypotheses": [
+        {
+          "cause_mask": 4,
+          "competing_rank": 0,
+          "evidence_time_ns": 242700,
+          "hypothesis_id": 16072700252860960510,
+          "phase_code": 5,
+          "phase_name": "REACTION_DISCOVERY_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 4,
+          "competing_rank": 1,
+          "evidence_time_ns": 231000,
+          "hypothesis_id": 3174021603402190581,
+          "phase_code": 8,
+          "phase_name": "PROOF_CARRYING_VERIFICATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 1,
+          "competing_rank": 2,
+          "evidence_time_ns": 220500,
+          "hypothesis_id": 6387427202451931696,
+          "phase_code": 6,
+          "phase_name": "REACTION_REALIZATION_COST",
+          "predecessor_label_used": false
+        }
+      ],
+      "diagnosis": "REACTION_DISCOVERY_COST",
+      "epoch": 36,
+      "experiment": 7997775061979140499,
+      "human_direction": false,
+      "measured_symptom": 992,
+      "migration_id": "SEM27-M20",
+      "next_observed_pressure": "DIAGNOSTIC_EXPERIMENT_COST",
+      "prediction": 594813,
+      "repair": 4347635728909640569
+    },
+    {
+      "actual_effect_ppm": 592861,
+      "causal_hypotheses": [
+        {
+          "cause_mask": 4,
+          "competing_rank": 0,
+          "evidence_time_ns": 258800,
+          "hypothesis_id": 1502548962708272503,
+          "phase_code": 5,
+          "phase_name": "REACTION_DISCOVERY_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 1,
+          "competing_rank": 1,
+          "evidence_time_ns": 240000,
+          "hypothesis_id": 1502548962708272503,
+          "phase_code": 6,
+          "phase_name": "REACTION_REALIZATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 2,
+          "competing_rank": 2,
+          "evidence_time_ns": 237400,
+          "hypothesis_id": 5674279209147286692,
+          "phase_code": 7,
+          "phase_name": "CAUSAL_INTEGRATION_COST",
+          "predecessor_label_used": false
+        }
+      ],
+      "diagnosis": "REACTION_DISCOVERY_COST",
+      "epoch": 39,
+      "experiment": 8479628397717634326,
+      "human_direction": false,
+      "measured_symptom": 992,
+      "migration_id": "SEM27-M21",
+      "next_observed_pressure": "DIAGNOSTIC_EXPERIMENT_COST",
+      "prediction": 592861,
+      "repair": 917837527133542319
+    },
+    {
+      "actual_effect_ppm": 760000,
+      "causal_hypotheses": [
+        {
+          "cause_mask": 1,
+          "competing_rank": 0,
+          "evidence_time_ns": 250100,
+          "hypothesis_id": 11760666954214572954,
+          "phase_code": 6,
+          "phase_name": "REACTION_REALIZATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 4,
+          "competing_rank": 1,
+          "evidence_time_ns": 242900,
+          "hypothesis_id": 18208702181383487377,
+          "phase_code": 8,
+          "phase_name": "PROOF_CARRYING_VERIFICATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 2,
+          "competing_rank": 2,
+          "evidence_time_ns": 240000,
+          "hypothesis_id": 6030267512761896505,
+          "phase_code": 7,
+          "phase_name": "CAUSAL_INTEGRATION_COST",
+          "predecessor_label_used": false
+        }
+      ],
+      "diagnosis": "REACTION_REALIZATION_COST",
+      "epoch": 40,
+      "experiment": 4895469357175633763,
+      "human_direction": false,
+      "measured_symptom": 992,
+      "migration_id": "SEM27-M22",
+      "next_observed_pressure": "DIAGNOSTIC_EXPERIMENT_COST",
+      "prediction": 760000,
+      "repair": 1362664534133281297
+    },
+    {
+      "actual_effect_ppm": 760000,
+      "causal_hypotheses": [
+        {
+          "cause_mask": 4,
+          "competing_rank": 0,
+          "evidence_time_ns": 246300,
+          "hypothesis_id": 11084066817058229901,
+          "phase_code": 5,
+          "phase_name": "REACTION_DISCOVERY_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 1,
+          "competing_rank": 1,
+          "evidence_time_ns": 230400,
+          "hypothesis_id": 8808447060136851152,
+          "phase_code": 9,
+          "phase_name": "FRESH_WORK_VALIDATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 2,
+          "competing_rank": 2,
+          "evidence_time_ns": 230300,
+          "hypothesis_id": 625906671282396833,
+          "phase_code": 7,
+          "phase_name": "CAUSAL_INTEGRATION_COST",
+          "predecessor_label_used": false
+        }
+      ],
+      "diagnosis": "REACTION_DISCOVERY_COST",
+      "epoch": 43,
+      "experiment": 10619526772673436719,
+      "human_direction": false,
+      "measured_symptom": 992,
+      "migration_id": "SEM27-M23",
+      "next_observed_pressure": "DIAGNOSTIC_EXPERIMENT_COST",
+      "prediction": 760000,
+      "repair": 12705723837062988468
+    },
+    {
+      "actual_effect_ppm": 575345,
+      "causal_hypotheses": [
+        {
+          "cause_mask": 1,
+          "competing_rank": 0,
+          "evidence_time_ns": 242300,
+          "hypothesis_id": 9696443539235226619,
+          "phase_code": 9,
+          "phase_name": "FRESH_WORK_VALIDATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 1,
+          "competing_rank": 1,
+          "evidence_time_ns": 238000,
+          "hypothesis_id": 7703020081868589250,
+          "phase_code": 6,
+          "phase_name": "REACTION_REALIZATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 2,
+          "competing_rank": 2,
+          "evidence_time_ns": 225700,
+          "hypothesis_id": 9696443539235226619,
+          "phase_code": 7,
+          "phase_name": "CAUSAL_INTEGRATION_COST",
+          "predecessor_label_used": false
+        }
+      ],
+      "diagnosis": "FRESH_WORK_VALIDATION_COST",
+      "epoch": 44,
+      "experiment": 7245045979270322593,
+      "human_direction": false,
+      "measured_symptom": 992,
+      "migration_id": "SEM27-M24",
+      "next_observed_pressure": "DIAGNOSTIC_EXPERIMENT_COST",
+      "prediction": 575345,
+      "repair": 14272547602189438078
+    },
+    {
+      "actual_effect_ppm": 567667,
+      "causal_hypotheses": [
+        {
+          "cause_mask": 1,
+          "competing_rank": 0,
+          "evidence_time_ns": 239600,
+          "hypothesis_id": 11473963736191839629,
+          "phase_code": 6,
+          "phase_name": "REACTION_REALIZATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 4,
+          "competing_rank": 1,
+          "evidence_time_ns": 236900,
+          "hypothesis_id": 11473963736191839629,
+          "phase_code": 5,
+          "phase_name": "REACTION_DISCOVERY_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 2,
+          "competing_rank": 2,
+          "evidence_time_ns": 222800,
+          "hypothesis_id": 877319237976952380,
+          "phase_code": 7,
+          "phase_name": "CAUSAL_INTEGRATION_COST",
+          "predecessor_label_used": false
+        }
+      ],
+      "diagnosis": "REACTION_REALIZATION_COST",
+      "epoch": 45,
+      "experiment": 11481023460405043345,
+      "human_direction": false,
+      "measured_symptom": 992,
+      "migration_id": "SEM27-M25",
+      "next_observed_pressure": "DIAGNOSTIC_EXPERIMENT_COST",
+      "prediction": 567667,
+      "repair": 6675725065527214052
+    },
+    {
+      "actual_effect_ppm": 596996,
+      "causal_hypotheses": [
+        {
+          "cause_mask": 1,
+          "competing_rank": 0,
+          "evidence_time_ns": 241700,
+          "hypothesis_id": 7329805437266591963,
+          "phase_code": 6,
+          "phase_name": "REACTION_REALIZATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 4,
+          "competing_rank": 1,
+          "evidence_time_ns": 225600,
+          "hypothesis_id": 3111260581099783455,
+          "phase_code": 8,
+          "phase_name": "PROOF_CARRYING_VERIFICATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 1,
+          "competing_rank": 2,
+          "evidence_time_ns": 224500,
+          "hypothesis_id": 3111260581099783455,
+          "phase_code": 9,
+          "phase_name": "FRESH_WORK_VALIDATION_COST",
+          "predecessor_label_used": false
+        }
+      ],
+      "diagnosis": "REACTION_REALIZATION_COST",
+      "epoch": 48,
+      "experiment": 14215667144722972163,
+      "human_direction": false,
+      "measured_symptom": 992,
+      "migration_id": "SEM27-M26",
+      "next_observed_pressure": "DIAGNOSTIC_EXPERIMENT_COST",
+      "prediction": 596996,
+      "repair": 8797668084006231101
+    },
+    {
+      "actual_effect_ppm": 606736,
+      "causal_hypotheses": [
+        {
+          "cause_mask": 4,
+          "competing_rank": 0,
+          "evidence_time_ns": 257300,
+          "hypothesis_id": 15279007653033403090,
+          "phase_code": 8,
+          "phase_name": "PROOF_CARRYING_VERIFICATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 1,
+          "competing_rank": 1,
+          "evidence_time_ns": 233400,
+          "hypothesis_id": 14278253994540736960,
+          "phase_code": 6,
+          "phase_name": "REACTION_REALIZATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 2,
+          "competing_rank": 2,
+          "evidence_time_ns": 229600,
+          "hypothesis_id": 4060217450381310663,
+          "phase_code": 7,
+          "phase_name": "CAUSAL_INTEGRATION_COST",
+          "predecessor_label_used": false
+        }
+      ],
+      "diagnosis": "PROOF_CARRYING_VERIFICATION_COST",
+      "epoch": 51,
+      "experiment": 15853710812187048968,
+      "human_direction": false,
+      "measured_symptom": 992,
+      "migration_id": "SEM27-M27",
+      "next_observed_pressure": "DIAGNOSTIC_EXPERIMENT_COST",
+      "prediction": 606736,
+      "repair": 6461876423816158977
+    },
+    {
+      "actual_effect_ppm": 570907,
+      "causal_hypotheses": [
+        {
+          "cause_mask": 2,
+          "competing_rank": 0,
+          "evidence_time_ns": 245100,
+          "hypothesis_id": 5912547283776626322,
+          "phase_code": 7,
+          "phase_name": "CAUSAL_INTEGRATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 1,
+          "competing_rank": 1,
+          "evidence_time_ns": 235200,
+          "hypothesis_id": 4902152832032926618,
+          "phase_code": 9,
+          "phase_name": "FRESH_WORK_VALIDATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 4,
+          "competing_rank": 2,
+          "evidence_time_ns": 229700,
+          "hypothesis_id": 5641790461688793386,
+          "phase_code": 5,
+          "phase_name": "REACTION_DISCOVERY_COST",
+          "predecessor_label_used": false
+        }
+      ],
+      "diagnosis": "CAUSAL_INTEGRATION_COST",
+      "epoch": 52,
+      "experiment": 45478612627730929,
+      "human_direction": false,
+      "measured_symptom": 992,
+      "migration_id": "SEM27-M28",
+      "next_observed_pressure": "DIAGNOSTIC_EXPERIMENT_COST",
+      "prediction": 570907,
+      "repair": 17790886730611434130
+    },
+    {
+      "actual_effect_ppm": 590228,
+      "causal_hypotheses": [
+        {
+          "cause_mask": 1,
+          "competing_rank": 0,
+          "evidence_time_ns": 249500,
+          "hypothesis_id": 6962173072623299923,
+          "phase_code": 9,
+          "phase_name": "FRESH_WORK_VALIDATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 4,
+          "competing_rank": 1,
+          "evidence_time_ns": 231800,
+          "hypothesis_id": 9409029916222169482,
+          "phase_code": 5,
+          "phase_name": "REACTION_DISCOVERY_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 1,
+          "competing_rank": 2,
+          "evidence_time_ns": 227500,
+          "hypothesis_id": 6480681942201988923,
+          "phase_code": 6,
+          "phase_name": "REACTION_REALIZATION_COST",
+          "predecessor_label_used": false
+        }
+      ],
+      "diagnosis": "FRESH_WORK_VALIDATION_COST",
+      "epoch": 53,
+      "experiment": 13439278890784665524,
+      "human_direction": false,
+      "measured_symptom": 992,
+      "migration_id": "SEM27-M29",
+      "next_observed_pressure": "DIAGNOSTIC_EXPERIMENT_COST",
+      "prediction": 590228,
+      "repair": 10206147684789323908
+    },
+    {
+      "actual_effect_ppm": 581981,
+      "causal_hypotheses": [
+        {
+          "cause_mask": 2,
+          "competing_rank": 0,
+          "evidence_time_ns": 235500,
+          "hypothesis_id": 4919437449355417073,
+          "phase_code": 7,
+          "phase_name": "CAUSAL_INTEGRATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 1,
+          "competing_rank": 1,
+          "evidence_time_ns": 231000,
+          "hypothesis_id": 2241306634723061674,
+          "phase_code": 6,
+          "phase_name": "REACTION_REALIZATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 4,
+          "competing_rank": 2,
+          "evidence_time_ns": 229000,
+          "hypothesis_id": 8284906323204444847,
+          "phase_code": 5,
+          "phase_name": "REACTION_DISCOVERY_COST",
+          "predecessor_label_used": false
+        }
+      ],
+      "diagnosis": "CAUSAL_INTEGRATION_COST",
+      "epoch": 54,
+      "experiment": 12125358176900886988,
+      "human_direction": false,
+      "measured_symptom": 992,
+      "migration_id": "SEM27-M30",
+      "next_observed_pressure": "DIAGNOSTIC_EXPERIMENT_COST",
+      "prediction": 581981,
+      "repair": 15660831802294440793
+    },
+    {
+      "actual_effect_ppm": 596531,
+      "causal_hypotheses": [
+        {
+          "cause_mask": 1,
+          "competing_rank": 0,
+          "evidence_time_ns": 236900,
+          "hypothesis_id": 16955622102909942058,
+          "phase_code": 6,
+          "phase_name": "REACTION_REALIZATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 4,
+          "competing_rank": 1,
+          "evidence_time_ns": 227400,
+          "hypothesis_id": 16955622102909942058,
+          "phase_code": 5,
+          "phase_name": "REACTION_DISCOVERY_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 2,
+          "competing_rank": 2,
+          "evidence_time_ns": 219600,
+          "hypothesis_id": 1434722876480325422,
+          "phase_code": 7,
+          "phase_name": "CAUSAL_INTEGRATION_COST",
+          "predecessor_label_used": false
+        }
+      ],
+      "diagnosis": "REACTION_REALIZATION_COST",
+      "epoch": 55,
+      "experiment": 8263834828797808980,
+      "human_direction": false,
+      "measured_symptom": 992,
+      "migration_id": "SEM27-M31",
+      "next_observed_pressure": "DIAGNOSTIC_EXPERIMENT_COST",
+      "prediction": 596531,
+      "repair": 5284539906935639988
+    },
+    {
+      "actual_effect_ppm": 599974,
+      "causal_hypotheses": [
+        {
+          "cause_mask": 4,
+          "competing_rank": 0,
+          "evidence_time_ns": 279700,
+          "hypothesis_id": 168747573257709731,
+          "phase_code": 2,
+          "phase_name": "EXPERIMENT_SELECTION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 4,
+          "competing_rank": 1,
+          "evidence_time_ns": 268300,
+          "hypothesis_id": 7489808085513163157,
+          "phase_code": 5,
+          "phase_name": "REACTION_DISCOVERY_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 4,
+          "competing_rank": 2,
+          "evidence_time_ns": 237200,
+          "hypothesis_id": 10615799827503195463,
+          "phase_code": 8,
+          "phase_name": "PROOF_CARRYING_VERIFICATION_COST",
+          "predecessor_label_used": false
+        }
+      ],
+      "diagnosis": "EXPERIMENT_SELECTION_COST",
+      "epoch": 57,
+      "experiment": 4224304053477220535,
+      "human_direction": false,
+      "measured_symptom": 421,
+      "migration_id": "SEM27-M32",
+      "next_observed_pressure": "DIAGNOSTIC_EXPERIMENT_COST",
+      "prediction": 599974,
+      "repair": 3094169963185706072
+    },
+    {
+      "actual_effect_ppm": 570289,
+      "causal_hypotheses": [
+        {
+          "cause_mask": 4,
+          "competing_rank": 0,
+          "evidence_time_ns": 259100,
+          "hypothesis_id": 4077065280135994257,
+          "phase_code": 5,
+          "phase_name": "REACTION_DISCOVERY_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 2,
+          "competing_rank": 1,
+          "evidence_time_ns": 247800,
+          "hypothesis_id": 12370069013034110402,
+          "phase_code": 7,
+          "phase_name": "CAUSAL_INTEGRATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 1,
+          "competing_rank": 2,
+          "evidence_time_ns": 239200,
+          "hypothesis_id": 8897658129659573280,
+          "phase_code": 9,
+          "phase_name": "FRESH_WORK_VALIDATION_COST",
+          "predecessor_label_used": false
+        }
+      ],
+      "diagnosis": "REACTION_DISCOVERY_COST",
+      "epoch": 58,
+      "experiment": 9788560534900487888,
+      "human_direction": false,
+      "measured_symptom": 992,
+      "migration_id": "SEM27-M33",
+      "next_observed_pressure": "DIAGNOSTIC_EXPERIMENT_COST",
+      "prediction": 570289,
+      "repair": 9755619559099305568
+    },
+    {
+      "actual_effect_ppm": 595774,
+      "causal_hypotheses": [
+        {
+          "cause_mask": 1,
+          "competing_rank": 0,
+          "evidence_time_ns": 245500,
+          "hypothesis_id": 5314992547802672375,
+          "phase_code": 6,
+          "phase_name": "REACTION_REALIZATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 4,
+          "competing_rank": 1,
+          "evidence_time_ns": 240000,
+          "hypothesis_id": 2345093256090349950,
+          "phase_code": 8,
+          "phase_name": "PROOF_CARRYING_VERIFICATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 2,
+          "competing_rank": 2,
+          "evidence_time_ns": 235700,
+          "hypothesis_id": 16592233423342920199,
+          "phase_code": 7,
+          "phase_name": "CAUSAL_INTEGRATION_COST",
+          "predecessor_label_used": false
+        }
+      ],
+      "diagnosis": "REACTION_REALIZATION_COST",
+      "epoch": 60,
+      "experiment": 14014186311016519344,
+      "human_direction": false,
+      "measured_symptom": 992,
+      "migration_id": "SEM27-M34",
+      "next_observed_pressure": "DIAGNOSTIC_EXPERIMENT_COST",
+      "prediction": 595774,
+      "repair": 17957247945158598868
+    },
+    {
+      "actual_effect_ppm": 598621,
+      "causal_hypotheses": [
+        {
+          "cause_mask": 4,
+          "competing_rank": 0,
+          "evidence_time_ns": 236500,
+          "hypothesis_id": 2005726797945852459,
+          "phase_code": 8,
+          "phase_name": "PROOF_CARRYING_VERIFICATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 1,
+          "competing_rank": 1,
+          "evidence_time_ns": 223000,
+          "hypothesis_id": 9663657855428045870,
+          "phase_code": 6,
+          "phase_name": "REACTION_REALIZATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 4,
+          "competing_rank": 2,
+          "evidence_time_ns": 217400,
+          "hypothesis_id": 15330054650474635676,
+          "phase_code": 5,
+          "phase_name": "REACTION_DISCOVERY_COST",
+          "predecessor_label_used": false
+        }
+      ],
+      "diagnosis": "PROOF_CARRYING_VERIFICATION_COST",
+      "epoch": 61,
+      "experiment": 5242471022293387071,
+      "human_direction": false,
+      "measured_symptom": 992,
+      "migration_id": "SEM27-M35",
+      "next_observed_pressure": "DIAGNOSTIC_EXPERIMENT_COST",
+      "prediction": 598621,
+      "repair": 2605271541438516045
+    },
+    {
+      "actual_effect_ppm": 597874,
+      "causal_hypotheses": [
+        {
+          "cause_mask": 4,
+          "competing_rank": 0,
+          "evidence_time_ns": 232500,
+          "hypothesis_id": 14258947123710791942,
+          "phase_code": 5,
+          "phase_name": "REACTION_DISCOVERY_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 1,
+          "competing_rank": 1,
+          "evidence_time_ns": 231500,
+          "hypothesis_id": 14258947123710791942,
+          "phase_code": 6,
+          "phase_name": "REACTION_REALIZATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 1,
+          "competing_rank": 2,
+          "evidence_time_ns": 223100,
+          "hypothesis_id": 6119268971845709573,
+          "phase_code": 9,
+          "phase_name": "FRESH_WORK_VALIDATION_COST",
+          "predecessor_label_used": false
+        }
+      ],
+      "diagnosis": "REACTION_DISCOVERY_COST",
+      "epoch": 62,
+      "experiment": 5875798479692511902,
+      "human_direction": false,
+      "measured_symptom": 992,
+      "migration_id": "SEM27-M36",
+      "next_observed_pressure": "DIAGNOSTIC_EXPERIMENT_COST",
+      "prediction": 597874,
+      "repair": 2816920449108056714
+    },
+    {
+      "actual_effect_ppm": 586039,
+      "causal_hypotheses": [
+        {
+          "cause_mask": 1,
+          "competing_rank": 0,
+          "evidence_time_ns": 241200,
+          "hypothesis_id": 15980236383143351922,
+          "phase_code": 6,
+          "phase_name": "REACTION_REALIZATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 1,
+          "competing_rank": 1,
+          "evidence_time_ns": 226800,
+          "hypothesis_id": 16880546048388979118,
+          "phase_code": 9,
+          "phase_name": "FRESH_WORK_VALIDATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 2,
+          "competing_rank": 2,
+          "evidence_time_ns": 226300,
+          "hypothesis_id": 13056218610602311139,
+          "phase_code": 7,
+          "phase_name": "CAUSAL_INTEGRATION_COST",
+          "predecessor_label_used": false
+        }
+      ],
+      "diagnosis": "REACTION_REALIZATION_COST",
+      "epoch": 63,
+      "experiment": 5976224359675605371,
+      "human_direction": false,
+      "measured_symptom": 992,
+      "migration_id": "SEM27-M37",
+      "next_observed_pressure": "DIAGNOSTIC_EXPERIMENT_COST",
+      "prediction": 586039,
+      "repair": 15305426651156879207
+    },
+    {
+      "actual_effect_ppm": 599242,
+      "causal_hypotheses": [
+        {
+          "cause_mask": 2,
+          "competing_rank": 0,
+          "evidence_time_ns": 245800,
+          "hypothesis_id": 18269279406999477082,
+          "phase_code": 7,
+          "phase_name": "CAUSAL_INTEGRATION_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 4,
+          "competing_rank": 1,
+          "evidence_time_ns": 230600,
+          "hypothesis_id": 746821206895391619,
+          "phase_code": 5,
+          "phase_name": "REACTION_DISCOVERY_COST",
+          "predecessor_label_used": false
+        },
+        {
+          "cause_mask": 4,
+          "competing_rank": 2,
+          "evidence_time_ns": 229700,
+          "hypothesis_id": 10599219312527787014,
+          "phase_code": 8,
+          "phase_name": "PROOF_CARRYING_VERIFICATION_COST",
+          "predecessor_label_used": false
+        }
+      ],
+      "diagnosis": "CAUSAL_INTEGRATION_COST",
+      "epoch": 64,
+      "experiment": 1471248413624503525,
+      "human_direction": false,
+      "measured_symptom": 992,
+      "migration_id": "SEM27-M38",
+      "next_observed_pressure": "DIAGNOSTIC_EXPERIMENT_COST",
+      "prediction": 599242,
+      "repair": 5783579790694643366
+    }
+  ],
+  "human_selected_intermediate_steps": 0,
+  "nodes": [
+    "FRESH_WORK_VALIDATION_COST",
+    "FRESH_WORK_VALIDATION_COST",
+    "REACTION_REALIZATION_COST",
+    "REACTION_DISCOVERY_COST",
+    "REACTION_DISCOVERY_COST",
+    "PROOF_CARRYING_VERIFICATION_COST",
+    "PROOF_CARRYING_VERIFICATION_COST",
+    "REACTION_REALIZATION_COST",
+    "CAUSAL_INTEGRATION_COST",
+    "REACTION_REALIZATION_COST",
+    "PROOF_CARRYING_VERIFICATION_COST",
+    "CAUSAL_INTEGRATION_COST",
+    "REACTION_REALIZATION_COST",
+    "REACTION_DISCOVERY_COST",
+    "REACTION_DISCOVERY_COST",
+    "PROOF_CARRYING_VERIFICATION_COST",
+    "REACTION_REALIZATION_COST",
+    "CAUSAL_INTEGRATION_COST",
+    "FRESH_WORK_VALIDATION_COST",
+    "FRESH_WORK_VALIDATION_COST",
+    "REACTION_DISCOVERY_COST",
+    "FRESH_WORK_VALIDATION_COST",
+    "PROOF_CARRYING_VERIFICATION_COST",
+    "CAUSAL_INTEGRATION_COST",
+    "REACTION_DISCOVERY_COST",
+    "REACTION_DISCOVERY_COST",
+    "REACTION_DISCOVERY_COST",
+    "REACTION_DISCOVERY_COST",
+    "PROOF_CARRYING_VERIFICATION_COST",
+    "REACTION_DISCOVERY_COST",
+    "REACTION_REALIZATION_COST",
+    "CAUSAL_INTEGRATION_COST",
+    "PROOF_CARRYING_VERIFICATION_COST",
+    "REACTION_DISCOVERY_COST",
+    "OBSERVATION_COST",
+    "REACTION_DISCOVERY_COST",
+    "REACTION_REALIZATION_COST",
+    "REACTION_REALIZATION_COST",
+    "REACTION_DISCOVERY_COST",
+    "REACTION_REALIZATION_COST",
+    "REACTION_REALIZATION_COST",
+    "PROOF_CARRYING_VERIFICATION_COST",
+    "REACTION_DISCOVERY_COST",
+    "FRESH_WORK_VALIDATION_COST",
+    "REACTION_REALIZATION_COST",
+    "CAUSAL_INTEGRATION_COST",
+    "CAUSAL_INTEGRATION_COST",
+    "REACTION_REALIZATION_COST",
+    "REACTION_DISCOVERY_COST",
+    "REACTION_DISCOVERY_COST",
+    "PROOF_CARRYING_VERIFICATION_COST",
+    "CAUSAL_INTEGRATION_COST",
+    "FRESH_WORK_VALIDATION_COST",
+    "CAUSAL_INTEGRATION_COST",
+    "REACTION_REALIZATION_COST",
+    "REACTION_REALIZATION_COST",
+    "EXPERIMENT_SELECTION_COST",
+    "REACTION_DISCOVERY_COST",
+    "REACTION_DISCOVERY_COST",
+    "REACTION_REALIZATION_COST",
+    "PROOF_CARRYING_VERIFICATION_COST",
+    "REACTION_DISCOVERY_COST",
+    "REACTION_REALIZATION_COST",
+    "CAUSAL_INTEGRATION_COST"
+  ]
+}

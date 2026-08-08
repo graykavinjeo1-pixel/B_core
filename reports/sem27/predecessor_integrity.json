@@ -1,0 +1,37 @@
+{
+  "autonomous_frontier_continuation_observed": true,
+  "exact_commit": "61f8096ee698d77fd44498497c57dc46ddbce96f",
+  "historical_evidence_rewritten": false,
+  "passed": true,
+  "raw_final_active_semantic_bytes": 13717,
+  "raw_final_frontier_scale": 12974,
+  "raw_final_phase_times_ns": [
+    123400,
+    133200,
+    122700,
+    1532700,
+    126100,
+    198700,
+    198500,
+    209600,
+    198500,
+    213600
+  ],
+  "raw_final_phase_work_units": [
+    70000,
+    70000,
+    70000,
+    70000,
+    70000,
+    75840,
+    75840,
+    79776,
+    75840,
+    81192
+  ],
+  "reported_next_limit_is_authority": false,
+  "sealed_sem26_director_sha256": "7d87b21d28b98f4e1c89c7316a875e5eda60bc5568727efae62ceec2a5015fd2",
+  "self_amplifying_growth_observed": false,
+  "self_directed_recursive_improvement_observed": true,
+  "sem26_status": "PASS"
+}

@@ -1,0 +1,10 @@
+{
+  "inherited_research_methods": [
+    "SEM26_RESEARCH_MOTIFS",
+    "SEM26_IMPROVEMENT_LAWS",
+    "SEM26_ROUTING_SCHEMAS"
+  ],
+  "new_method_claim_made": false,
+  "sem27_causally_useful_new_method_edges": [],
+  "sem27_new_method_nodes": []
+}

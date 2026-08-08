@@ -1,0 +1,12 @@
+{
+  "full_arm_historical_roadmap_visible": false,
+  "full_arm_predecessor_label_visible": false,
+  "full_arm_repair_strategy_visible": false,
+  "hardcoded_bottleneck_to_repair_rules": 0,
+  "passed": true,
+  "sem27_specific_repair_templates": 0,
+  "source_audit_targets": [
+    "crates/semantic-reasoning/src/sem27/engine.rs",
+    "crates/semantic-reasoning/src/sem27/mod.rs"
+  ]
+}

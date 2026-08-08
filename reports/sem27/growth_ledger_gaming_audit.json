@@ -1,0 +1,12 @@
+{
+  "bottlenecks_relabelled_for_count": false,
+  "cost_moved_outside_measurement_window": false,
+  "easy_frontier_selection": false,
+  "events": 0,
+  "failed_experiments_excluded": false,
+  "hard_work_dropped": false,
+  "known_repairs_replayed_as_novel": false,
+  "predicted_gain_counted_as_real": false,
+  "repairs_artificially_split": false,
+  "research_time_hidden": false
+}

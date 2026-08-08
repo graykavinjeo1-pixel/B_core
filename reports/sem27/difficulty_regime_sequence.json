@@ -1,0 +1,709 @@
+{
+  "metric": "difficulty_regime_sequence",
+  "sequence": [
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    },
+    {
+      "dimensions": {
+        "causal_depth": 2,
+        "compositional_depth": 2,
+        "constraint_complexity": 2,
+        "planning_depth": 1,
+        "transfer_arity": 1
+      },
+      "mechanically_verified": true,
+      "regime_id": 1
+    }
+  ]
+}

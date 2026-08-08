@@ -1,0 +1,30 @@
+{
+  "event_count": 3,
+  "persistent_regime_shifts": [
+    {
+      "epoch": 5,
+      "persistent_four_epoch_confirmation": true,
+      "post_frontier_gain_mean": 128,
+      "post_interval_mean_ns": 6781750,
+      "pre_frontier_gain_mean": 61,
+      "pre_interval_mean_ns": 6882425
+    },
+    {
+      "epoch": 38,
+      "persistent_four_epoch_confirmation": true,
+      "post_frontier_gain_mean": 171,
+      "post_interval_mean_ns": 6833275,
+      "pre_frontier_gain_mean": 118,
+      "pre_interval_mean_ns": 6844600
+    },
+    {
+      "epoch": 51,
+      "persistent_four_epoch_confirmation": true,
+      "post_frontier_gain_mean": 242,
+      "post_interval_mean_ns": 6886850,
+      "pre_frontier_gain_mean": 181,
+      "pre_interval_mean_ns": 6958625
+    }
+  ],
+  "weak_candidates_excluded": true
+}

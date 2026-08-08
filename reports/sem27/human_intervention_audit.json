@@ -1,0 +1,14 @@
+{
+  "campaign_initialization_by_operator": true,
+  "human_architecture_selection_events": 0,
+  "human_bottleneck_selection_events": 0,
+  "human_difficulty_escalation_events": 0,
+  "human_difficulty_level_selection_events": 0,
+  "human_experiment_selection_events": 0,
+  "human_frontier_selection_events": 0,
+  "human_repair_design_events": 0,
+  "human_repair_priority_events": 0,
+  "human_research_agenda_selection_events": 0,
+  "mid_campaign_intellectual_steering_events": 0,
+  "passed": true
+}

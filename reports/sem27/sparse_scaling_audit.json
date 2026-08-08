@@ -1,0 +1,11 @@
+{
+  "full_atom_store_scans": 0,
+  "full_composite_store_scans": 0,
+  "full_growth_opportunity_scan": 0,
+  "full_reaction_law_scans": 0,
+  "full_repair_space_enumeration": 0,
+  "full_self_improvement_space_enumeration": 0,
+  "full_self_model_scan": 0,
+  "passed": true,
+  "routing_false_negatives": 0
+}

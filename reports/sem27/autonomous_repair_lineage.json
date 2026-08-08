@@ -1,0 +1,4712 @@
+{
+  "lineages": [
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 759170,
+      "bottleneck": "FRESH_WORK_VALIDATION_COST",
+      "epoch": 1,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 672,
+        "combined_effect_ppm": [
+          -43067,
+          -258485,
+          -70079,
+          -125086,
+          -196185,
+          -50071,
+          -216065,
+          -150455,
+          -88714,
+          -759170
+        ],
+        "diagnosed_cause_mask": 1,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 4034609102451075240,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 759170,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 7509592962678141783,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              -93543,
+              -70079,
+              -58347,
+              -79981,
+              0,
+              -92899,
+              -42257,
+              12000,
+              -264967
+            ],
+            "property_mask": 512,
+            "role_mask": 1073741824
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 7509592962678141785,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              -86601,
+              0,
+              12000,
+              -53527,
+              -50071,
+              -48343,
+              -47479,
+              -47047,
+              -252524
+            ],
+            "property_mask": 512,
+            "role_mask": 262144
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 7509592962678141781,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -55067,
+              -78341,
+              0,
+              -78739,
+              -62677,
+              0,
+              -74823,
+              -60719,
+              -53667,
+              -241679
+            ],
+            "property_mask": 512,
+            "role_mask": 134217728
+          }
+        ],
+        "target_phase_code": 9,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": false,
+      "actual_target_reduction_ppm": 585965,
+      "bottleneck": "FRESH_WORK_VALIDATION_COST",
+      "epoch": 2,
+      "failure_causal_evidence_retained": true,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -85639,
+          -93627,
+          -103550,
+          0,
+          -30309,
+          12000,
+          -142390,
+          -172810,
+          12000,
+          -585965
+        ],
+        "diagnosed_cause_mask": 1,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 12801220153061763004,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 585965,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 18435939865416635930,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -85639,
+              -93627,
+              -42621,
+              0,
+              -42309,
+              12000,
+              -69731,
+              -85673,
+              0,
+              -307203
+            ],
+            "property_mask": 512,
+            "role_mask": 8388608
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 18435939865416635931,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              0,
+              -60929,
+              0,
+              12000,
+              0,
+              -72659,
+              -87137,
+              12000,
+              -278762
+            ],
+            "property_mask": 512,
+            "role_mask": 1048576
+          }
+        ],
+        "target_phase_code": 9,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": false,
+      "actual_target_reduction_ppm": 596705,
+      "bottleneck": "REACTION_REALIZATION_COST",
+      "epoch": 3,
+      "failure_causal_evidence_retained": true,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -42445,
+          12000,
+          -123480,
+          -64165,
+          -49845,
+          -91945,
+          -596705,
+          -86615,
+          -82115,
+          -162150
+        ],
+        "diagnosed_cause_mask": 1,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 4053285402363591880,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 596705,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 15363153477069714785,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -54445,
+              12000,
+              -72765,
+              12000,
+              -49845,
+              0,
+              -301495,
+              -86615,
+              -94115,
+              -70365
+            ],
+            "property_mask": 64,
+            "role_mask": 2097152
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 15363153477069714786,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              0,
+              -50715,
+              -76165,
+              0,
+              -91945,
+              -295210,
+              0,
+              12000,
+              -91785
+            ],
+            "property_mask": 64,
+            "role_mask": 268435456
+          }
+        ],
+        "target_phase_code": 6,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": false,
+      "actual_target_reduction_ppm": 561123,
+      "bottleneck": "REACTION_DISCOVERY_COST",
+      "epoch": 4,
+      "failure_causal_evidence_retained": true,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -45607,
+          -67611,
+          -63113,
+          -82549,
+          24000,
+          -561123,
+          -63203,
+          -82409,
+          -49057,
+          12000
+        ],
+        "diagnosed_cause_mask": 4,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 6612346082263886078,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 561123,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 16120181004301246013,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              12000,
+              0,
+              -82549,
+              12000,
+              -297699,
+              -63203,
+              -82409,
+              12000,
+              0
+            ],
+            "property_mask": 32,
+            "role_mask": 16777216
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 16120181004301246014,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -57607,
+              -79611,
+              -63113,
+              0,
+              12000,
+              -263424,
+              0,
+              0,
+              -61057,
+              12000
+            ],
+            "property_mask": 32,
+            "role_mask": 8388608
+          }
+        ],
+        "target_phase_code": 5,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 592264,
+      "bottleneck": "REACTION_DISCOVERY_COST",
+      "epoch": 5,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -51807,
+          -125446,
+          -109338,
+          24000,
+          0,
+          -592264,
+          -140968,
+          -60949,
+          -48075,
+          -121736
+        ],
+        "diagnosed_cause_mask": 4,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 153596478272372164,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 592264,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 5151106074461326042,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -51807,
+              -49211,
+              -47913,
+              12000,
+              0,
+              -306829,
+              -75283,
+              -60949,
+              0,
+              -74391
+            ],
+            "property_mask": 32,
+            "role_mask": 8388608
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 5151106074461326038,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              -76235,
+              -61425,
+              12000,
+              0,
+              -285435,
+              -65685,
+              0,
+              -48075,
+              -47345
+            ],
+            "property_mask": 32,
+            "role_mask": 4194304
+          }
+        ],
+        "target_phase_code": 5,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": false,
+      "actual_target_reduction_ppm": 543723,
+      "bottleneck": "PROOF_CARRYING_VERIFICATION_COST",
+      "epoch": 6,
+      "failure_causal_evidence_retained": true,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          12000,
+          0,
+          -48587,
+          -69101,
+          -59055,
+          -152014,
+          -122622,
+          12000,
+          -543723,
+          -73355
+        ],
+        "diagnosed_cause_mask": 4,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 15484307499872584740,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 543723,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 11966654760759866755,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              0,
+              12000,
+              12000,
+              -71055,
+              -58835,
+              -80225,
+              12000,
+              -278230,
+              -73355
+            ],
+            "property_mask": 256,
+            "role_mask": 65536
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 11966654760759866753,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              0,
+              -60587,
+              -81101,
+              12000,
+              -93179,
+              -42397,
+              0,
+              -265493,
+              0
+            ],
+            "property_mask": 256,
+            "role_mask": 268435456
+          }
+        ],
+        "target_phase_code": 8,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 580045,
+      "bottleneck": "PROOF_CARRYING_VERIFICATION_COST",
+      "epoch": 7,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -93800,
+          -73641,
+          -31687,
+          -33151,
+          -33883,
+          -136890,
+          0,
+          12000,
+          -580045,
+          -170320
+        ],
+        "diagnosed_cause_mask": 4,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 13330818020287307504,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 580045,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 6041323888587502537,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -48133,
+              0,
+              -43687,
+              -45151,
+              -45883,
+              -46249,
+              0,
+              0,
+              -293583,
+              -88929
+            ],
+            "property_mask": 256,
+            "role_mask": 536870912
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 6041323888587502534,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -45667,
+              -73641,
+              12000,
+              12000,
+              12000,
+              -90641,
+              0,
+              12000,
+              -286462,
+              -81391
+            ],
+            "property_mask": 256,
+            "role_mask": 524288
+          }
+        ],
+        "target_phase_code": 8,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 760000,
+      "bottleneck": "REACTION_REALIZATION_COST",
+      "epoch": 8,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 672,
+        "combined_effect_ppm": [
+          -53261,
+          -93510,
+          -232839,
+          24000,
+          -66771,
+          -78193,
+          -760000,
+          -30983,
+          -139150,
+          -253643
+        ],
+        "diagnosed_cause_mask": 1,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 4439000248713352564,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 760000,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 12433440611780540733,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -77261,
+              12000,
+              -78469,
+              0,
+              -78771,
+              -90193,
+              -281719,
+              12000,
+              -60851,
+              -81233
+            ],
+            "property_mask": 64,
+            "role_mask": 2097152
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 12433440611780540736,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              -53123,
+              -77369,
+              12000,
+              12000,
+              12000,
+              -264834,
+              12000,
+              0,
+              -82453
+            ],
+            "property_mask": 64,
+            "role_mask": 4194304
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 12433440611780540734,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              -52387,
+              -77001,
+              12000,
+              0,
+              0,
+              -261311,
+              -54983,
+              -78299,
+              -89957
+            ],
+            "property_mask": 64,
+            "role_mask": 4194304
+          }
+        ],
+        "target_phase_code": 6,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 582284,
+      "bottleneck": "CAUSAL_INTEGRATION_COST",
+      "epoch": 9,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          12000,
+          -59883,
+          -53249,
+          -46409,
+          12000,
+          -42483,
+          -60049,
+          -582284,
+          24000,
+          -133284
+        ],
+        "diagnosed_cause_mask": 2,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 16901159930512035812,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 582284,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 2,
+            "element_id": 6317829143304915156,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              0,
+              0,
+              -58409,
+              0,
+              0,
+              12000,
+              -307521,
+              12000,
+              -74701
+            ],
+            "property_mask": 128,
+            "role_mask": 16777216
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 2,
+            "element_id": 6317829143304915155,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              -59883,
+              -53249,
+              12000,
+              12000,
+              -42483,
+              -72049,
+              -274763,
+              12000,
+              -58583
+            ],
+            "property_mask": 128,
+            "role_mask": 4194304
+          }
+        ],
+        "target_phase_code": 7,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": false,
+      "actual_target_reduction_ppm": 596268,
+      "bottleneck": "REACTION_REALIZATION_COST",
+      "epoch": 10,
+      "failure_causal_evidence_retained": true,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -142732,
+          -82653,
+          0,
+          -54067,
+          -44341,
+          -74083,
+          -596268,
+          12000,
+          24000,
+          -110696
+        ],
+        "diagnosed_cause_mask": 1,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 5571747089231919641,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 596268,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 8786420301214137035,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -79041,
+              0,
+              0,
+              12000,
+              12000,
+              -74083,
+              -299799,
+              12000,
+              12000,
+              -53683
+            ],
+            "property_mask": 64,
+            "role_mask": 131072
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 8786420301214137033,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -63691,
+              -82653,
+              0,
+              -66067,
+              -56341,
+              0,
+              -296469,
+              0,
+              12000,
+              -57013
+            ],
+            "property_mask": 64,
+            "role_mask": 134217728
+          }
+        ],
+        "target_phase_code": 6,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 610291,
+      "bottleneck": "PROOF_CARRYING_VERIFICATION_COST",
+      "epoch": 11,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -45143,
+          -109978,
+          -129104,
+          -46431,
+          -34523,
+          -46569,
+          0,
+          12000,
+          -610291,
+          -64319
+        ],
+        "diagnosed_cause_mask": 4,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 10907491745227071473,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 610291,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 6634836618800364190,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -45143,
+              -45879,
+              -46247,
+              -46431,
+              -46523,
+              -46569,
+              0,
+              12000,
+              -307703,
+              0
+            ],
+            "property_mask": 256,
+            "role_mask": 2147483648
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 6634836618800364191,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              -64099,
+              -82857,
+              0,
+              12000,
+              0,
+              0,
+              0,
+              -302588,
+              -64319
+            ],
+            "property_mask": 256,
+            "role_mask": 4194304
+          }
+        ],
+        "target_phase_code": 8,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 607844,
+      "bottleneck": "CAUSAL_INTEGRATION_COST",
+      "epoch": 12,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -145568,
+          -69835,
+          -52225,
+          -94391,
+          -31003,
+          -44809,
+          24000,
+          -607844,
+          -111858,
+          24000
+        ],
+        "diagnosed_cause_mask": 2,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 5033769718394836753,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 607844,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 2,
+            "element_id": 1267362662720854067,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -62055,
+              -81835,
+              -64225,
+              0,
+              12000,
+              0,
+              12000,
+              -307935,
+              -49805,
+              12000
+            ],
+            "property_mask": 128,
+            "role_mask": 8388608
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 2,
+            "element_id": 1267362662720854063,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -83513,
+              12000,
+              12000,
+              -94391,
+              -43003,
+              -44809,
+              12000,
+              -299909,
+              -62053,
+              12000
+            ],
+            "property_mask": 128,
+            "role_mask": 33554432
+          }
+        ],
+        "target_phase_code": 7,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 584549,
+      "bottleneck": "REACTION_REALIZATION_COST",
+      "epoch": 13,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          12000,
+          12000,
+          -81587,
+          -89522,
+          24000,
+          0,
+          -584549,
+          -122542,
+          -135386,
+          -141808
+        ],
+        "diagnosed_cause_mask": 1,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 13655268917439441858,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 584549,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 13689003975653409879,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              0,
+              -93587,
+              -42601,
+              12000,
+              0,
+              -294292,
+              -74951,
+              -88283,
+              -67449
+            ],
+            "property_mask": 64,
+            "role_mask": 268435456
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 13689003975653409881,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              12000,
+              12000,
+              -46921,
+              12000,
+              0,
+              -290257,
+              -47591,
+              -47103,
+              -74359
+            ],
+            "property_mask": 64,
+            "role_mask": 16777216
+          }
+        ],
+        "target_phase_code": 6,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": false,
+      "actual_target_reduction_ppm": 601293,
+      "bottleneck": "REACTION_DISCOVERY_COST",
+      "epoch": 14,
+      "failure_causal_evidence_retained": true,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -92469,
+          12000,
+          -56521,
+          0,
+          12000,
+          -601293,
+          -64441,
+          -38655,
+          -64135,
+          -49375
+        ],
+        "diagnosed_cause_mask": 4,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 4554905596005362248,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 601293,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 13985297686859950730,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              0,
+              12000,
+              0,
+              0,
+              -303280,
+              12000,
+              -50655,
+              -76135,
+              -61375
+            ],
+            "property_mask": 32,
+            "role_mask": 65536
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 13985297686859950729,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -92469,
+              12000,
+              -68521,
+              0,
+              12000,
+              -298013,
+              -76441,
+              12000,
+              12000,
+              12000
+            ],
+            "property_mask": 32,
+            "role_mask": 2097152
+          }
+        ],
+        "target_phase_code": 5,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 575904,
+      "bottleneck": "REACTION_DISCOVERY_COST",
+      "epoch": 15,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -114612,
+          -40813,
+          12000,
+          -86107,
+          -54361,
+          -575904,
+          -79019,
+          -62817,
+          12000,
+          -78843
+        ],
+        "diagnosed_cause_mask": 4,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 2511297546408607789,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 575904,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 15068058968677654366,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -55601,
+              12000,
+              12000,
+              0,
+              12000,
+              -296932,
+              -79019,
+              -62817,
+              0,
+              0
+            ],
+            "property_mask": 32,
+            "role_mask": 131072
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 15068058968677654370,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -59011,
+              -52813,
+              0,
+              -86107,
+              -66361,
+              -278972,
+              0,
+              0,
+              12000,
+              -78843
+            ],
+            "property_mask": 32,
+            "role_mask": 134217728
+          }
+        ],
+        "target_phase_code": 5,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 605869,
+      "bottleneck": "PROOF_CARRYING_VERIFICATION_COST",
+      "epoch": 16,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -58063,
+          -85839,
+          -81727,
+          -110348,
+          -60143,
+          -149202,
+          -148716,
+          -72181,
+          -605869,
+          -140022
+        ],
+        "diagnosed_cause_mask": 4,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 9751369431341900437,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 605869,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 10691309758766172355,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -70063,
+              -85839,
+              -93727,
+              -42671,
+              -72143,
+              -86879,
+              -66747,
+              -84181,
+              -307598,
+              -52699
+            ],
+            "property_mask": 256,
+            "role_mask": 2147483648
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 10691309758766172356,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              0,
+              12000,
+              -67677,
+              12000,
+              -62323,
+              -81969,
+              12000,
+              -298271,
+              -87323
+            ],
+            "property_mask": 256,
+            "role_mask": 16777216
+          }
+        ],
+        "target_phase_code": 8,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": false,
+      "actual_target_reduction_ppm": 596652,
+      "bottleneck": "REACTION_REALIZATION_COST",
+      "epoch": 17,
+      "failure_causal_evidence_retained": true,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -77889,
+          24000,
+          24000,
+          -64013,
+          12000,
+          -138454,
+          -596652,
+          -173286,
+          0,
+          -53647
+        ],
+        "diagnosed_cause_mask": 1,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 14701008384534250621,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 596652,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 7343638442997113123,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -77889,
+              12000,
+              12000,
+              12000,
+              0,
+              -74047,
+              -300916,
+              -80973,
+              0,
+              -65647
+            ],
+            "property_mask": 64,
+            "role_mask": 131072
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 7343638442997113124,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              12000,
+              12000,
+              -76013,
+              12000,
+              -64407,
+              -295736,
+              -92313,
+              0,
+              12000
+            ],
+            "property_mask": 64,
+            "role_mask": 16777216
+          }
+        ],
+        "target_phase_code": 6,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": false,
+      "actual_target_reduction_ppm": 557781,
+      "bottleneck": "CAUSAL_INTEGRATION_COST",
+      "epoch": 18,
+      "failure_causal_evidence_retained": true,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          24000,
+          12000,
+          -55417,
+          0,
+          12000,
+          -42737,
+          -70627,
+          -557781,
+          0,
+          24000
+        ],
+        "diagnosed_cause_mask": 2,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 2769173543739063449,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 557781,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 2,
+            "element_id": 17840364812360256691,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              0,
+              -55417,
+              0,
+              0,
+              0,
+              -82627,
+              -279084,
+              0,
+              12000
+            ],
+            "property_mask": 128,
+            "role_mask": 1048576
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 2,
+            "element_id": 17840364812360256690,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              12000,
+              0,
+              0,
+              12000,
+              -42737,
+              12000,
+              -278697,
+              0,
+              12000
+            ],
+            "property_mask": 128,
+            "role_mask": 65536
+          }
+        ],
+        "target_phase_code": 7,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 592377,
+      "bottleneck": "FRESH_WORK_VALIDATION_COST",
+      "epoch": 19,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -66333,
+          -84379,
+          -185484,
+          -30051,
+          -126736,
+          -78259,
+          -89937,
+          0,
+          -42403,
+          -592377
+        ],
+        "diagnosed_cause_mask": 1,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 9390207233168144532,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 592377,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 16279061391586418629,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              -84379,
+              -92997,
+              12000,
+              -54903,
+              -78259,
+              -89937,
+              0,
+              0,
+              -303251
+            ],
+            "property_mask": 512,
+            "role_mask": 4194304
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 16279061391586418630,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -78333,
+              0,
+              -92487,
+              -42051,
+              -71833,
+              0,
+              0,
+              0,
+              -42403,
+              -289126
+            ],
+            "property_mask": 512,
+            "role_mask": 536870912
+          }
+        ],
+        "target_phase_code": 9,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 556606,
+      "bottleneck": "FRESH_WORK_VALIDATION_COST",
+      "epoch": 20,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -28363,
+          -128744,
+          -65935,
+          -83775,
+          -92695,
+          -57655,
+          -137982,
+          -143106,
+          -173168,
+          -556606
+        ],
+        "diagnosed_cause_mask": 1,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 11106259089063705636,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 556606,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 12951719357335586711,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              -85255,
+              -65935,
+              -83775,
+              -92695,
+              -69655,
+              -58135,
+              -79875,
+              -90745,
+              -279165
+            ],
+            "property_mask": 512,
+            "role_mask": 1073741824
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 12951719357335586714,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -40363,
+              -43489,
+              0,
+              0,
+              0,
+              12000,
+              -79847,
+              -63231,
+              -82423,
+              -277441
+            ],
+            "property_mask": 512,
+            "role_mask": 524288
+          }
+        ],
+        "target_phase_code": 9,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 551695,
+      "bottleneck": "REACTION_DISCOVERY_COST",
+      "epoch": 21,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          12000,
+          -109090,
+          -101160,
+          -77361,
+          -59167,
+          -551695,
+          -139500,
+          -66681,
+          0,
+          24000
+        ],
+        "diagnosed_cause_mask": 4,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 10704114560481622717,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 551695,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 3798505765031091381,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              -59599,
+              -53107,
+              -77361,
+              12000,
+              -278186,
+              -86747,
+              -66681,
+              0,
+              12000
+            ],
+            "property_mask": 32,
+            "role_mask": 1073741824
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 3798505765031091382,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              -49491,
+              -48053,
+              0,
+              -71167,
+              -273509,
+              -52753,
+              0,
+              0,
+              12000
+            ],
+            "property_mask": 32,
+            "role_mask": 4194304
+          }
+        ],
+        "target_phase_code": 5,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 574842,
+      "bottleneck": "FRESH_WORK_VALIDATION_COST",
+      "epoch": 22,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          12000,
+          -63131,
+          -60873,
+          -86093,
+          12000,
+          -82427,
+          -119114,
+          0,
+          12000,
+          -574842
+        ],
+        "diagnosed_cause_mask": 1,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 6336136770600133084,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 574842,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 17618993863988127299,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              12000,
+              0,
+              -86093,
+              12000,
+              -94427,
+              -70521,
+              0,
+              12000,
+              -305918
+            ],
+            "property_mask": 512,
+            "role_mask": 16777216
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 17618993863988127304,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              -75131,
+              -60873,
+              0,
+              0,
+              12000,
+              -48593,
+              0,
+              0,
+              -268924
+            ],
+            "property_mask": 512,
+            "role_mask": 4194304
+          }
+        ],
+        "target_phase_code": 9,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 753772,
+      "bottleneck": "PROOF_CARRYING_VERIFICATION_COST",
+      "epoch": 23,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 672,
+        "combined_effect_ppm": [
+          -28499,
+          -85610,
+          0,
+          -167210,
+          12000,
+          -61041,
+          -48051,
+          -29333,
+          -753772,
+          -140670
+        ],
+        "diagnosed_cause_mask": 4,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 14534274371107548350,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 753772,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 12577546895463310735,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              0,
+              0,
+              0,
+              12000,
+              -73041,
+              12000,
+              12000,
+              -266327,
+              12000
+            ],
+            "property_mask": 256,
+            "role_mask": 65536
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 12577546895463310733,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              -42053,
+              0,
+              -83417,
+              0,
+              0,
+              0,
+              12000,
+              -244236,
+              -93933
+            ],
+            "property_mask": 256,
+            "role_mask": 67108864
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 12577546895463310731,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -40499,
+              -43557,
+              0,
+              -83793,
+              0,
+              12000,
+              -60051,
+              -53333,
+              -243209,
+              -58737
+            ],
+            "property_mask": 256,
+            "role_mask": 134217728
+          }
+        ],
+        "target_phase_code": 8,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 566851,
+      "bottleneck": "CAUSAL_INTEGRATION_COST",
+      "epoch": 24,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -29567,
+          -135886,
+          -87058,
+          24000,
+          0,
+          12000,
+          -163768,
+          -566851,
+          -55565,
+          -34871
+        ],
+        "diagnosed_cause_mask": 2,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 14000488775036758429,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 566851,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 2,
+            "element_id": 10418384439896111822,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              -91795,
+              -41705,
+              12000,
+              0,
+              0,
+              -88645,
+              -283615,
+              -67565,
+              12000
+            ],
+            "property_mask": 128,
+            "role_mask": 4194304
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 2,
+            "element_id": 10418384439896111819,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -41567,
+              -44091,
+              -45353,
+              12000,
+              0,
+              12000,
+              -75123,
+              -283236,
+              12000,
+              -46871
+            ],
+            "property_mask": 128,
+            "role_mask": 8388608
+          }
+        ],
+        "target_phase_code": 7,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 578060,
+      "bottleneck": "REACTION_DISCOVERY_COST",
+      "epoch": 25,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -104790,
+          24000,
+          -42201,
+          -64277,
+          24000,
+          -578060,
+          -28421,
+          -40147,
+          -112640,
+          -73437
+        ],
+        "diagnosed_cause_mask": 4,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 8289475373454880060,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 578060,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 14411668084576386595,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -42189,
+              12000,
+              -42201,
+              0,
+              12000,
+              -298058,
+              -40421,
+              0,
+              -69259,
+              -85437
+            ],
+            "property_mask": 32,
+            "role_mask": 2097152
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 14411668084576386597,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -62601,
+              12000,
+              0,
+              -64277,
+              12000,
+              -280002,
+              12000,
+              -40147,
+              -43381,
+              12000
+            ],
+            "property_mask": 32,
+            "role_mask": 33554432
+          }
+        ],
+        "target_phase_code": 5,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 589518,
+      "bottleneck": "REACTION_DISCOVERY_COST",
+      "epoch": 26,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          24000,
+          24000,
+          -81685,
+          12000,
+          -41325,
+          -589518,
+          -146866,
+          -120048,
+          -50645,
+          -83247
+        ],
+        "diagnosed_cause_mask": 4,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 3982967264822242631,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 589518,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 18341846662705491634,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              12000,
+              -93685,
+              12000,
+              -41325,
+              -296150,
+              -55735,
+              -78675,
+              -62645,
+              0
+            ],
+            "property_mask": 32,
+            "role_mask": 1048576
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 18341846662705491631,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              12000,
+              12000,
+              0,
+              0,
+              -293368,
+              -91131,
+              -41373,
+              12000,
+              -83247
+            ],
+            "property_mask": 32,
+            "role_mask": 65536
+          }
+        ],
+        "target_phase_code": 5,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 614111,
+      "bottleneck": "REACTION_DISCOVERY_COST",
+      "epoch": 27,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -48963,
+          -47789,
+          12000,
+          -72851,
+          -53733,
+          -614111,
+          -118032,
+          -74851,
+          -48733,
+          -53195
+        ],
+        "diagnosed_cause_mask": 4,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 18127036681224763379,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 614111,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 7914405599503925657,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              0,
+              0,
+              12000,
+              12000,
+              -309595,
+              -69945,
+              0,
+              12000,
+              -65195
+            ],
+            "property_mask": 32,
+            "role_mask": 65536
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 7914405599503925653,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -48963,
+              -47789,
+              12000,
+              -84851,
+              -65733,
+              -304516,
+              -48087,
+              -74851,
+              -60733,
+              12000
+            ],
+            "property_mask": 32,
+            "role_mask": 134217728
+          }
+        ],
+        "target_phase_code": 5,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 572055,
+      "bottleneck": "REACTION_DISCOVERY_COST",
+      "epoch": 28,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          12000,
+          -62907,
+          -117800,
+          -42827,
+          -50721,
+          -572055,
+          12000,
+          24000,
+          12000,
+          -55667
+        ],
+        "diagnosed_cause_mask": 4,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 4021162801651965781,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 572055,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 17347257671456275369,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              -62907,
+              -54761,
+              12000,
+              0,
+              -297598,
+              12000,
+              12000,
+              0,
+              -67667
+            ],
+            "property_mask": 32,
+            "role_mask": 4194304
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 17347257671456275370,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              0,
+              -63039,
+              -54827,
+              -50721,
+              -274457,
+              0,
+              12000,
+              12000,
+              12000
+            ],
+            "property_mask": 32,
+            "role_mask": 268435456
+          }
+        ],
+        "target_phase_code": 5,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 619523,
+      "bottleneck": "PROOF_CARRYING_VERIFICATION_COST",
+      "epoch": 29,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          0,
+          -71491,
+          -47053,
+          -73377,
+          -61917,
+          12000,
+          -63883,
+          -82749,
+          -619523,
+          -136794
+        ],
+        "diagnosed_cause_mask": 4,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 18058486628016024919,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 619523,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 4099035203716653228,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              -71491,
+              -59053,
+              0,
+              -73917,
+              12000,
+              -63883,
+              -82749,
+              -309902,
+              -52341
+            ],
+            "property_mask": 256,
+            "role_mask": 4194304
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 4099035203716653233,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              0,
+              12000,
+              -73377,
+              12000,
+              0,
+              0,
+              0,
+              -309621,
+              -84453
+            ],
+            "property_mask": 256,
+            "role_mask": 16777216
+          }
+        ],
+        "target_phase_code": 8,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 564025,
+      "bottleneck": "REACTION_DISCOVERY_COST",
+      "epoch": 30,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -141700,
+          -40755,
+          -115790,
+          12000,
+          -45825,
+          -564025,
+          0,
+          -56805,
+          -64605,
+          -45855
+        ],
+        "diagnosed_cause_mask": 4,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 5774422752456643834,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 564025,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 11059651260308898616,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -82805,
+              12000,
+              -66105,
+              0,
+              12000,
+              -300690,
+              0,
+              0,
+              -76605,
+              0
+            ],
+            "property_mask": 32,
+            "role_mask": 2097152
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 11059651260308898612,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -58895,
+              -52755,
+              -49685,
+              12000,
+              -57825,
+              -263335,
+              0,
+              -56805,
+              12000,
+              -45855
+            ],
+            "property_mask": 32,
+            "role_mask": 8388608
+          }
+        ],
+        "target_phase_code": 5,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 609795,
+      "bottleneck": "REACTION_REALIZATION_COST",
+      "epoch": 31,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -67509,
+          12000,
+          -134810,
+          -114020,
+          -42719,
+          -136370,
+          -609795,
+          -40753,
+          12000,
+          -63003
+        ],
+        "diagnosed_cause_mask": 1,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 16100428008778379920,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 609795,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 12706187761604138763,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              0,
+              -55779,
+              -51197,
+              12000,
+              -58203,
+              -305819,
+              0,
+              0,
+              -63003
+            ],
+            "property_mask": 64,
+            "role_mask": 268435456
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 12706187761604138766,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -79509,
+              12000,
+              -79031,
+              -62823,
+              -54719,
+              -78167,
+              -303976,
+              -40753,
+              12000,
+              0
+            ],
+            "property_mask": 64,
+            "role_mask": 536870912
+          }
+        ],
+        "target_phase_code": 6,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 608988,
+      "bottleneck": "CAUSAL_INTEGRATION_COST",
+      "epoch": 32,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -129916,
+          -65421,
+          24000,
+          -110172,
+          -54187,
+          -162908,
+          -81311,
+          -608988,
+          -44539,
+          -124388
+        ],
+        "diagnosed_cause_mask": 2,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 12893881878217029545,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 608988,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 2,
+            "element_id": 11519797473673202859,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -84227,
+              -65421,
+              12000,
+              -61759,
+              -54187,
+              -77901,
+              12000,
+              -305461,
+              0,
+              -78811
+            ],
+            "property_mask": 128,
+            "role_mask": 134217728
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 2,
+            "element_id": 11519797473673202855,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -45689,
+              0,
+              12000,
+              -48413,
+              0,
+              -85007,
+              -93311,
+              -303527,
+              -44539,
+              -45577
+            ],
+            "property_mask": 128,
+            "role_mask": 33554432
+          }
+        ],
+        "target_phase_code": 7,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 581922,
+      "bottleneck": "PROOF_CARRYING_VERIFICATION_COST",
+      "epoch": 33,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -75519,
+          -187206,
+          -140218,
+          -144224,
+          -68109,
+          -82309,
+          -79181,
+          -68981,
+          -581922,
+          -50649
+        ],
+        "diagnosed_cause_mask": 4,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 7534267773136232768,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 581922,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 1170977600904595448,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -87519,
+              -94567,
+              -70591,
+              -58603,
+              -80109,
+              12000,
+              -79181,
+              0,
+              -293739,
+              12000
+            ],
+            "property_mask": 256,
+            "role_mask": 2147483648
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 1170977600904595443,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              -92639,
+              -69627,
+              -85621,
+              12000,
+              -94309,
+              0,
+              -68981,
+              -288183,
+              -62649
+            ],
+            "property_mask": 256,
+            "role_mask": 1073741824
+          }
+        ],
+        "target_phase_code": 8,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": false,
+      "actual_target_reduction_ppm": 567232,
+      "bottleneck": "REACTION_DISCOVERY_COST",
+      "epoch": 34,
+      "failure_causal_evidence_retained": true,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -52193,
+          -58139,
+          -46377,
+          -73101,
+          12000,
+          -567232,
+          -63937,
+          12000,
+          -71693,
+          -47069
+        ],
+        "diagnosed_cause_mask": 4,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 17495091333416379861,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 567232,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 8396695205865068216,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              -70139,
+              -58377,
+              12000,
+              12000,
+              -284361,
+              -75937,
+              12000,
+              12000,
+              -59069
+            ],
+            "property_mask": 32,
+            "role_mask": 4194304
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 8396695205865068218,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -64193,
+              12000,
+              12000,
+              -85101,
+              0,
+              -282871,
+              12000,
+              0,
+              -83693,
+              12000
+            ],
+            "property_mask": 32,
+            "role_mask": 33554432
+          }
+        ],
+        "target_phase_code": 5,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 570639,
+      "bottleneck": "OBSERVATION_COST",
+      "epoch": 35,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -570639,
+          -74813,
+          -72657,
+          -55107,
+          -72361,
+          -60159,
+          -41387,
+          -144498,
+          0,
+          -126932
+        ],
+        "diagnosed_cause_mask": 1,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 4850568305874325864,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 570639,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 3900305826925846590,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -287013,
+              12000,
+              -84657,
+              12000,
+              12000,
+              -60159,
+              -53387,
+              -77501,
+              0,
+              -64779
+            ],
+            "property_mask": 1,
+            "role_mask": 2097152
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 3900305826925846591,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -283626,
+              -86813,
+              12000,
+              -67107,
+              -84361,
+              0,
+              12000,
+              -66997,
+              0,
+              -62153
+            ],
+            "property_mask": 1,
+            "role_mask": 67108864
+          }
+        ],
+        "target_phase_code": 0,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 594813,
+      "bottleneck": "REACTION_DISCOVERY_COST",
+      "epoch": 36,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -110234,
+          -129232,
+          -40167,
+          -64891,
+          -182144,
+          -594813,
+          -53967,
+          -65791,
+          -182374,
+          -137802
+        ],
+        "diagnosed_cause_mask": 4,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 4347635728909640569,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 594813,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 11607614712653371479,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -68823,
+              -57719,
+              -52167,
+              -76891,
+              -89253,
+              -304881,
+              -53967,
+              -77791,
+              -89703,
+              -68159
+            ],
+            "property_mask": 32,
+            "role_mask": 2147483648
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 11607614712653371477,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -41411,
+              -71513,
+              12000,
+              12000,
+              -92891,
+              -289932,
+              0,
+              12000,
+              -92671,
+              -69643
+            ],
+            "property_mask": 32,
+            "role_mask": 524288
+          }
+        ],
+        "target_phase_code": 5,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": false,
+      "actual_target_reduction_ppm": 611520,
+      "bottleneck": "REACTION_REALIZATION_COST",
+      "epoch": 37,
+      "failure_causal_evidence_retained": true,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -31209,
+          12000,
+          -66989,
+          0,
+          -53151,
+          -55883,
+          -611520,
+          0,
+          -111080,
+          -68677
+        ],
+        "diagnosed_cause_mask": 1,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 10098817469774926519,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 611520,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 15690127448541308494,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -43209,
+              0,
+              12000,
+              0,
+              12000,
+              0,
+              -306241,
+              0,
+              -59739,
+              -80677
+            ],
+            "property_mask": 64,
+            "role_mask": 131072
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 15690127448541308493,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              12000,
+              -78989,
+              0,
+              -65151,
+              -55883,
+              -305279,
+              0,
+              -51341,
+              12000
+            ],
+            "property_mask": 64,
+            "role_mask": 1048576
+          }
+        ],
+        "target_phase_code": 6,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": false,
+      "actual_target_reduction_ppm": 580869,
+      "bottleneck": "REACTION_REALIZATION_COST",
+      "epoch": 38,
+      "failure_causal_evidence_retained": true,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          0,
+          -111268,
+          -43051,
+          -108182,
+          12000,
+          -61491,
+          -580869,
+          -51403,
+          -123176,
+          -74141
+        ],
+        "diagnosed_cause_mask": 1,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 9030023620412754029,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 580869,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 6958116053686940256,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              -47781,
+              12000,
+              -57349,
+              12000,
+              -73491,
+              -295903,
+              0,
+              -46667,
+              -74141
+            ],
+            "property_mask": 64,
+            "role_mask": 67108864
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 6958116053686940257,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              -63487,
+              -55051,
+              -50833,
+              0,
+              12000,
+              -284966,
+              -51403,
+              -76509,
+              0
+            ],
+            "property_mask": 64,
+            "role_mask": 1073741824
+          }
+        ],
+        "target_phase_code": 6,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 592861,
+      "bottleneck": "REACTION_DISCOVERY_COST",
+      "epoch": 39,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -34403,
+          -34509,
+          -68975,
+          -134576,
+          -68955,
+          -592861,
+          12000,
+          0,
+          12000,
+          -43275
+        ],
+        "diagnosed_cause_mask": 4,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 917837527133542319,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 592861,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 2249049988528786192,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -46403,
+              -46509,
+              12000,
+              -43281,
+              0,
+              -305516,
+              12000,
+              0,
+              12000,
+              12000
+            ],
+            "property_mask": 32,
+            "role_mask": 134217728
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 2249049988528786193,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              12000,
+              -80975,
+              -91295,
+              -68955,
+              -287345,
+              0,
+              0,
+              0,
+              -55275
+            ],
+            "property_mask": 32,
+            "role_mask": 268435456
+          }
+        ],
+        "target_phase_code": 5,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 760000,
+      "bottleneck": "REACTION_REALIZATION_COST",
+      "epoch": 40,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 672,
+        "combined_effect_ppm": [
+          -208363,
+          -137668,
+          -93033,
+          12000,
+          -94096,
+          -115572,
+          -760000,
+          -166051,
+          -116536,
+          -60911
+        ],
+        "diagnosed_cause_mask": 1,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 1362664534133281297,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 760000,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 972963818980990180,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -83819,
+              -65217,
+              0,
+              0,
+              -57729,
+              0,
+              -269881,
+              -43043,
+              -72329,
+              12000
+            ],
+            "property_mask": 64,
+            "role_mask": 524288
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 972963818980990178,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -67287,
+              -84451,
+              -93033,
+              0,
+              12000,
+              -40581,
+              -268293,
+              -41799,
+              -44207,
+              -72911
+            ],
+            "property_mask": 64,
+            "role_mask": 8388608
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 972963818980990182,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -57257,
+              12000,
+              0,
+              12000,
+              -48367,
+              -74991,
+              -267613,
+              -81209,
+              0,
+              0
+            ],
+            "property_mask": 64,
+            "role_mask": 131072
+          }
+        ],
+        "target_phase_code": 6,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 578457,
+      "bottleneck": "REACTION_REALIZATION_COST",
+      "epoch": 41,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -88811,
+          -67713,
+          -33973,
+          0,
+          -31147,
+          -72381,
+          -578457,
+          -90999,
+          -125768,
+          -73211
+        ],
+        "diagnosed_cause_mask": 1,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 6378418268215079320,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 578457,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 3964639733968787848,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              0,
+              -45973,
+              0,
+              -43147,
+              -72381,
+              -309398,
+              -90999,
+              -68807,
+              -85211
+            ],
+            "property_mask": 64,
+            "role_mask": 1048576
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 3964639733968787849,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -88811,
+              -67713,
+              12000,
+              0,
+              12000,
+              0,
+              -269059,
+              0,
+              -56961,
+              12000
+            ],
+            "property_mask": 64,
+            "role_mask": 524288
+          }
+        ],
+        "target_phase_code": 6,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": false,
+      "actual_target_reduction_ppm": 595752,
+      "bottleneck": "PROOF_CARRYING_VERIFICATION_COST",
+      "epoch": 42,
+      "failure_causal_evidence_retained": true,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -46511,
+          -120006,
+          -134118,
+          24000,
+          -85301,
+          -75643,
+          -188858,
+          0,
+          -595752,
+          -170626
+        ],
+        "diagnosed_cause_mask": 4,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 5299900986062907764,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 595752,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 16757333409978752858,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              -67443,
+              -84529,
+              12000,
+              0,
+              -87643,
+              -94629,
+              0,
+              -299496,
+              -78463
+            ],
+            "property_mask": 256,
+            "role_mask": 4194304
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 16757333409978752859,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -58511,
+              -52563,
+              -49589,
+              12000,
+              -85301,
+              12000,
+              -94229,
+              0,
+              -296256,
+              -92163
+            ],
+            "property_mask": 256,
+            "role_mask": 8388608
+          }
+        ],
+        "target_phase_code": 8,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 760000,
+      "bottleneck": "REACTION_DISCOVERY_COST",
+      "epoch": 43,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 672,
+        "combined_effect_ppm": [
+          24000,
+          -124656,
+          -115902,
+          -72953,
+          -45745,
+          -760000,
+          -50197,
+          -34295,
+          -209207,
+          -132992
+        ],
+        "diagnosed_cause_mask": 4,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 12705723837062988468,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 760000,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 562619714043951079,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              -69459,
+              -85537,
+              0,
+              12000,
+              -272146,
+              -74197,
+              12000,
+              -91453,
+              0
+            ],
+            "property_mask": 32,
+            "role_mask": 4194304
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 562619714043951081,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              0,
+              -42365,
+              0,
+              -69745,
+              -257500,
+              12000,
+              -58295,
+              -52455,
+              -77035
+            ],
+            "property_mask": 32,
+            "role_mask": 1048576
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 562619714043951078,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              -55197,
+              12000,
+              -72953,
+              12000,
+              -254533,
+              12000,
+              12000,
+              -65299,
+              -55957
+            ],
+            "property_mask": 32,
+            "role_mask": 67108864
+          }
+        ],
+        "target_phase_code": 5,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 575345,
+      "bottleneck": "FRESH_WORK_VALIDATION_COST",
+      "epoch": 44,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          12000,
+          12000,
+          -135360,
+          -73215,
+          -47915,
+          -127910,
+          12000,
+          -77815,
+          -50215,
+          -575345
+        ],
+        "diagnosed_cause_mask": 1,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 14272547602189438078,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 575345,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 12106141572633797717,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              12000,
+              -90545,
+              0,
+              12000,
+              -74645,
+              12000,
+              -77815,
+              -62215,
+              -290420
+            ],
+            "property_mask": 512,
+            "role_mask": 1048576
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 12106141572633797719,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              0,
+              -44815,
+              -73215,
+              -59915,
+              -53265,
+              0,
+              0,
+              12000,
+              -284925
+            ],
+            "property_mask": 512,
+            "role_mask": 268435456
+          }
+        ],
+        "target_phase_code": 9,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 567667,
+      "bottleneck": "REACTION_REALIZATION_COST",
+      "epoch": 45,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -62211,
+          -54413,
+          -68103,
+          -143866,
+          -146048,
+          -90963,
+          -567667,
+          12000,
+          -62647,
+          -82131
+        ],
+        "diagnosed_cause_mask": 1,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 6675725065527214052,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 567667,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 7146522892346383343,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -62211,
+              -54413,
+              0,
+              -59007,
+              -80311,
+              -90963,
+              -287524,
+              12000,
+              0,
+              0
+            ],
+            "property_mask": 64,
+            "role_mask": 134217728
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 7146522892346383341,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              0,
+              -68103,
+              -84859,
+              -65737,
+              0,
+              -280143,
+              0,
+              -62647,
+              -82131
+            ],
+            "property_mask": 64,
+            "role_mask": 268435456
+          }
+        ],
+        "target_phase_code": 6,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": false,
+      "actual_target_reduction_ppm": 612295,
+      "bottleneck": "CAUSAL_INTEGRATION_COST",
+      "epoch": 46,
+      "failure_causal_evidence_retained": true,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -61363,
+          -87489,
+          -57573,
+          24000,
+          -87297,
+          12000,
+          0,
+          -612295,
+          -127920,
+          -50179
+        ],
+        "diagnosed_cause_mask": 2,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 17405196457982889811,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 612295,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 2,
+            "element_id": 110307950699277228,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -73363,
+              -87489,
+              0,
+              12000,
+              0,
+              0,
+              0,
+              -309649,
+              -53743,
+              -50179
+            ],
+            "property_mask": 128,
+            "role_mask": 524288
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 2,
+            "element_id": 110307950699277227,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              0,
+              -57573,
+              12000,
+              -87297,
+              12000,
+              0,
+              -302646,
+              -74177,
+              0
+            ],
+            "property_mask": 128,
+            "role_mask": 1048576
+          }
+        ],
+        "target_phase_code": 7,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 549668,
+      "bottleneck": "CAUSAL_INTEGRATION_COST",
+      "epoch": 47,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -67979,
+          -104038,
+          12000,
+          -29839,
+          -59727,
+          -118228,
+          -52893,
+          -549668,
+          -60377,
+          -65667
+        ],
+        "diagnosed_cause_mask": 2,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 601910518600847958,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 549668,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 2,
+            "element_id": 8241465182643561920,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              -40741,
+              12000,
+              -41839,
+              -71727,
+              -59171,
+              -52893,
+              -275716,
+              -72377,
+              0
+            ],
+            "property_mask": 128,
+            "role_mask": 67108864
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 2,
+            "element_id": 8241465182643561919,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -79979,
+              -63297,
+              0,
+              12000,
+              12000,
+              -59057,
+              0,
+              -273952,
+              12000,
+              -65667
+            ],
+            "property_mask": 128,
+            "role_mask": 524288
+          }
+        ],
+        "target_phase_code": 7,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 596996,
+      "bottleneck": "REACTION_REALIZATION_COST",
+      "epoch": 48,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -81179,
+          -118862,
+          12000,
+          -85145,
+          -53189,
+          0,
+          -596996,
+          -47283,
+          -46949,
+          -57995
+        ],
+        "diagnosed_cause_mask": 1,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 8797668084006231101,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 596996,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 6513201316877703298,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -93179,
+              -69897,
+              12000,
+              0,
+              -65189,
+              0,
+              -306996,
+              -47283,
+              -46949,
+              12000
+            ],
+            "property_mask": 64,
+            "role_mask": 524288
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 6513201316877703299,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              -48965,
+              0,
+              -85145,
+              12000,
+              0,
+              -290000,
+              0,
+              0,
+              -69995
+            ],
+            "property_mask": 64,
+            "role_mask": 67108864
+          }
+        ],
+        "target_phase_code": 6,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": false,
+      "actual_target_reduction_ppm": 602670,
+      "bottleneck": "REACTION_DISCOVERY_COST",
+      "epoch": 49,
+      "failure_causal_evidence_retained": true,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -91773,
+          -57691,
+          -126500,
+          -71231,
+          -153240,
+          -602670,
+          -58317,
+          -44179,
+          -122130,
+          12000
+        ],
+        "diagnosed_cause_mask": 4,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 1715836170505238228,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 602670,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 9606330603116063537,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              -69691,
+              -85653,
+              0,
+              -66817,
+              -306619,
+              12000,
+              -44179,
+              -72897,
+              12000
+            ],
+            "property_mask": 32,
+            "role_mask": 4194304
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 9606330603116063533,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -91773,
+              12000,
+              -40847,
+              -71231,
+              -86423,
+              -296051,
+              -70317,
+              0,
+              -49233,
+              0
+            ],
+            "property_mask": 32,
+            "role_mask": 536870912
+          }
+        ],
+        "target_phase_code": 5,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 615428,
+      "bottleneck": "REACTION_DISCOVERY_COST",
+      "epoch": 50,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -34883,
+          -62249,
+          12000,
+          24000,
+          -84401,
+          -615428,
+          -54897,
+          -73877,
+          12000,
+          -147812
+        ],
+        "diagnosed_cause_mask": 4,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 11379094930538206920,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 615428,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 10008379795724388326,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -46883,
+              -74249,
+              12000,
+              12000,
+              0,
+              -309571,
+              -54897,
+              0,
+              0,
+              -56439
+            ],
+            "property_mask": 32,
+            "role_mask": 524288
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 10008379795724388325,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              12000,
+              0,
+              12000,
+              -84401,
+              -305857,
+              0,
+              -73877,
+              12000,
+              -91373
+            ],
+            "property_mask": 32,
+            "role_mask": 65536
+          }
+        ],
+        "target_phase_code": 5,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 606736,
+      "bottleneck": "PROOF_CARRYING_VERIFICATION_COST",
+      "epoch": 51,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          24000,
+          -103778,
+          12000,
+          24000,
+          -153376,
+          -50027,
+          -81821,
+          12000,
+          -606736,
+          0
+        ],
+        "diagnosed_cause_mask": 4,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 6461876423816158977,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 606736,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 14871866463590106436,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              -57897,
+              12000,
+              12000,
+              -77439,
+              -62027,
+              -81821,
+              12000,
+              -305614,
+              0
+            ],
+            "property_mask": 256,
+            "role_mask": 262144
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 14871866463590106433,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              -45881,
+              0,
+              12000,
+              -75937,
+              12000,
+              0,
+              0,
+              -301122,
+              0
+            ],
+            "property_mask": 256,
+            "role_mask": 262144
+          }
+        ],
+        "target_phase_code": 8,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 570907,
+      "bottleneck": "CAUSAL_INTEGRATION_COST",
+      "epoch": 52,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -160114,
+          -99172,
+          -39747,
+          -160158,
+          12000,
+          -66273,
+          -66037,
+          -570907,
+          -147274,
+          0
+        ],
+        "diagnosed_cause_mask": 2,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 17790886730611434130,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 570907,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 2,
+            "element_id": 3596894324878955562,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -92971,
+              -42293,
+              12000,
+              -83477,
+              0,
+              -66273,
+              0,
+              -300713,
+              -85361,
+              0
+            ],
+            "property_mask": 128,
+            "role_mask": 134217728
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 2,
+            "element_id": 3596894324878955566,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -67143,
+              -56879,
+              -51747,
+              -76681,
+              12000,
+              0,
+              -66037,
+              -270194,
+              -61913,
+              0
+            ],
+            "property_mask": 128,
+            "role_mask": 2147483648
+          }
+        ],
+        "target_phase_code": 7,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 590228,
+      "bottleneck": "FRESH_WORK_VALIDATION_COST",
+      "epoch": 53,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -92163,
+          -157472,
+          -94849,
+          -37001,
+          12000,
+          0,
+          -61029,
+          24000,
+          -46911,
+          -590228
+        ],
+        "diagnosed_cause_mask": 1,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 10206147684789323908,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 590228,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 5677903350228698525,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -92163,
+              -69389,
+              0,
+              -49001,
+              12000,
+              0,
+              0,
+              12000,
+              0,
+              -304196
+            ],
+            "property_mask": 512,
+            "role_mask": 134217728
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 5677903350228698529,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              -88083,
+              -94849,
+              12000,
+              0,
+              0,
+              -61029,
+              12000,
+              -46911,
+              -286032
+            ],
+            "property_mask": 512,
+            "role_mask": 4194304
+          }
+        ],
+        "target_phase_code": 9,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 581981,
+      "bottleneck": "CAUSAL_INTEGRATION_COST",
+      "epoch": 54,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -89403,
+          -56009,
+          -92341,
+          24000,
+          -42739,
+          -78177,
+          -35957,
+          -581981,
+          -157992,
+          -75357
+        ],
+        "diagnosed_cause_mask": 2,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 15660831802294440793,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 581981,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 2,
+            "element_id": 5438204203146967241,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -89403,
+              -68009,
+              0,
+              12000,
+              12000,
+              0,
+              -47957,
+              -297059,
+              -84893,
+              12000
+            ],
+            "property_mask": 128,
+            "role_mask": 524288
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 2,
+            "element_id": 5438204203146967237,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              12000,
+              -92341,
+              12000,
+              -54739,
+              -78177,
+              12000,
+              -284922,
+              -73099,
+              -87357
+            ],
+            "property_mask": 128,
+            "role_mask": 1048576
+          }
+        ],
+        "target_phase_code": 7,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 596531,
+      "bottleneck": "REACTION_REALIZATION_COST",
+      "epoch": 55,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          12000,
+          0,
+          -182896,
+          -68113,
+          -54975,
+          -50795,
+          -596531,
+          -93603,
+          -70109,
+          -69415
+        ],
+        "diagnosed_cause_mask": 1,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 5284539906935639988,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 596531,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 12841608889512974703,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              0,
+              -89611,
+              -68113,
+              0,
+              0,
+              -300416,
+              -93603,
+              -70109,
+              0
+            ],
+            "property_mask": 64,
+            "role_mask": 268435456
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 12841608889512974705,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              0,
+              -93285,
+              0,
+              -54975,
+              -50795,
+              -296115,
+              0,
+              0,
+              -69415
+            ],
+            "property_mask": 64,
+            "role_mask": 1048576
+          }
+        ],
+        "target_phase_code": 6,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 570226,
+      "bottleneck": "REACTION_REALIZATION_COST",
+      "epoch": 56,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          12000,
+          -156212,
+          -60673,
+          24000,
+          -54637,
+          12000,
+          -570226,
+          -54339,
+          -38477,
+          -31221
+        ],
+        "diagnosed_cause_mask": 1,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 12230770779535620106,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 570226,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 9521256044328751567,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              -74731,
+              -60673,
+              12000,
+              12000,
+              0,
+              -303953,
+              0,
+              12000,
+              -43221
+            ],
+            "property_mask": 64,
+            "role_mask": 4194304
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 9521256044328751572,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              -81481,
+              0,
+              12000,
+              -66637,
+              12000,
+              -266273,
+              -54339,
+              -50477,
+              12000
+            ],
+            "property_mask": 64,
+            "role_mask": 262144
+          }
+        ],
+        "target_phase_code": 6,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 599974,
+      "bottleneck": "EXPERIMENT_SELECTION_COST",
+      "epoch": 57,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -61583,
+          -131208,
+          -599974,
+          -64681,
+          -73493,
+          12000,
+          -68527,
+          -51571,
+          -43093,
+          12000
+        ],
+        "diagnosed_cause_mask": 4,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 3094169963185706072,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 599974,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 9965120528042690633,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              -77109,
+              -303642,
+              -64681,
+              12000,
+              12000,
+              12000,
+              12000,
+              12000,
+              0
+            ],
+            "property_mask": 4,
+            "role_mask": 67108864
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 9965120528042690635,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -61583,
+              -54099,
+              -296332,
+              0,
+              -85493,
+              0,
+              -80527,
+              -63571,
+              -55093,
+              12000
+            ],
+            "property_mask": 4,
+            "role_mask": 8388608
+          }
+        ],
+        "target_phase_code": 2,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 570289,
+      "bottleneck": "REACTION_DISCOVERY_COST",
+      "epoch": 58,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -72611,
+          -65613,
+          -50939,
+          -151834,
+          0,
+          -570289,
+          -50419,
+          -115994,
+          12000,
+          -119806
+        ],
+        "diagnosed_cause_mask": 4,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 9755619559099305568,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 570289,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 6177147984044465839,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              0,
+              -50939,
+              -76277,
+              0,
+              -285967,
+              -62419,
+              -54517,
+              12000,
+              -72783
+            ],
+            "property_mask": 32,
+            "role_mask": 268435456
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 6177147984044465841,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -84611,
+              -65613,
+              0,
+              -75557,
+              0,
+              -284322,
+              12000,
+              -61477,
+              0,
+              -47023
+            ],
+            "property_mask": 32,
+            "role_mask": 134217728
+          }
+        ],
+        "target_phase_code": 5,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 590375,
+      "bottleneck": "REACTION_DISCOVERY_COST",
+      "epoch": 59,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          12000,
+          12000,
+          0,
+          12000,
+          12000,
+          -590375,
+          -40713,
+          12000,
+          -83443,
+          -53029
+        ],
+        "diagnosed_cause_mask": 4,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 5122892273920077721,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 590375,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 16424381604295808380,
+            "inherited": true,
+            "phase_effect_ppm": [
+              0,
+              12000,
+              0,
+              0,
+              0,
+              -304609,
+              -52713,
+              0,
+              0,
+              12000
+            ],
+            "property_mask": 32,
+            "role_mask": 65536
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 16424381604295808378,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              0,
+              0,
+              12000,
+              12000,
+              -285766,
+              12000,
+              12000,
+              -83443,
+              -65029
+            ],
+            "property_mask": 32,
+            "role_mask": 65536
+          }
+        ],
+        "target_phase_code": 5,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 595774,
+      "bottleneck": "REACTION_REALIZATION_COST",
+      "epoch": 60,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          24000,
+          -111908,
+          -73661,
+          24000,
+          -51819,
+          -152268,
+          -595774,
+          -145932,
+          -70107,
+          -144348
+        ],
+        "diagnosed_cause_mask": 1,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 17957247945158598868,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 595774,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 5974451518678546303,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              -45707,
+              -73661,
+              12000,
+              -63819,
+              -82717,
+              -304656,
+              -52333,
+              0,
+              -58487
+            ],
+            "property_mask": 64,
+            "role_mask": 4194304
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 5974451518678546298,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              -66201,
+              0,
+              12000,
+              12000,
+              -69551,
+              -291118,
+              -93599,
+              -70107,
+              -85861
+            ],
+            "property_mask": 64,
+            "role_mask": 262144
+          }
+        ],
+        "target_phase_code": 6,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 598621,
+      "bottleneck": "PROOF_CARRYING_VERIFICATION_COST",
+      "epoch": 61,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -141516,
+          -54891,
+          -115744,
+          -43803,
+          -39209,
+          0,
+          -72023,
+          -59319,
+          -598621,
+          -158968
+        ],
+        "diagnosed_cause_mask": 4,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 2605271541438516045,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 598621,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 11967266379962094856,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -63167,
+              -54891,
+              -50753,
+              12000,
+              12000,
+              0,
+              -72023,
+              -59319,
+              -300362,
+              -77291
+            ],
+            "property_mask": 256,
+            "role_mask": 8388608
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 11967266379962094855,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -78349,
+              0,
+              -64991,
+              -55803,
+              -51209,
+              0,
+              0,
+              0,
+              -298259,
+              -81677
+            ],
+            "property_mask": 256,
+            "role_mask": 536870912
+          }
+        ],
+        "target_phase_code": 8,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 597874,
+      "bottleneck": "REACTION_DISCOVERY_COST",
+      "epoch": 62,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -41983,
+          -38299,
+          -117138,
+          12000,
+          12000,
+          -597874,
+          -35687,
+          -62651,
+          -173372,
+          -53927
+        ],
+        "diagnosed_cause_mask": 4,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 2816920449108056714,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 597874,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 12205506103797574799,
+            "inherited": true,
+            "phase_effect_ppm": [
+              12000,
+              12000,
+              -68681,
+              0,
+              0,
+              -307563,
+              12000,
+              12000,
+              -85239,
+              -65927
+            ],
+            "property_mask": 32,
+            "role_mask": 1048576
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 4,
+            "element_id": 12205506103797574800,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -53983,
+              -50299,
+              -48457,
+              12000,
+              12000,
+              -290311,
+              -47687,
+              -74651,
+              -88133,
+              12000
+            ],
+            "property_mask": 32,
+            "role_mask": 8388608
+          }
+        ],
+        "target_phase_code": 5,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 586039,
+      "bottleneck": "REACTION_REALIZATION_COST",
+      "epoch": 63,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -103266,
+          -125748,
+          -62527,
+          -166802,
+          -157516,
+          -58729,
+          -586039,
+          12000,
+          -40143,
+          -126088
+        ],
+        "diagnosed_cause_mask": 1,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 15305426651156879207,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 586039,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 2151253607790195245,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -55003,
+              -78309,
+              12000,
+              -78731,
+              -62673,
+              12000,
+              -305282,
+              12000,
+              -52143,
+              -49379
+            ],
+            "property_mask": 64,
+            "role_mask": 134217728
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 1,
+            "element_id": 2151253607790195244,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -48263,
+              -47439,
+              -74527,
+              -88071,
+              -94843,
+              -70729,
+              -280757,
+              0,
+              12000,
+              -76709
+            ],
+            "property_mask": 64,
+            "role_mask": 2147483648
+          }
+        ],
+        "target_phase_code": 6,
+        "uses_existing_chemistry": true
+      }
+    },
+    {
+      "accepted": true,
+      "actual_target_reduction_ppm": 599242,
+      "bottleneck": "CAUSAL_INTEGRATION_COST",
+      "epoch": 64,
+      "failure_causal_evidence_retained": false,
+      "repair": {
+        "added_bytes": 448,
+        "combined_effect_ppm": [
+          -152204,
+          -93369,
+          12000,
+          12000,
+          -90231,
+          -112172,
+          -43769,
+          -599242,
+          -60233,
+          0
+        ],
+        "diagnosed_cause_mask": 2,
+        "directly_encoded_bottleneck_to_repair_mapping": false,
+        "fixed_catalog_selection": false,
+        "lineage_hash": 5783579790694643366,
+        "missing_element_genesis": false,
+        "predicted_reduction_ppm": 599242,
+        "source_elements": [
+          {
+            "added_bytes": 224,
+            "cause_mask": 2,
+            "element_id": 6399021173085682882,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -67081,
+              0,
+              0,
+              12000,
+              -90231,
+              -40923,
+              -43769,
+              -299713,
+              12000,
+              0
+            ],
+            "property_mask": 128,
+            "role_mask": 131072
+          },
+          {
+            "added_bytes": 224,
+            "cause_mask": 2,
+            "element_id": 6399021173085682886,
+            "inherited": true,
+            "phase_effect_ppm": [
+              -85123,
+              -93369,
+              12000,
+              0,
+              0,
+              -71249,
+              0,
+              -299529,
+              -72233,
+              0
+            ],
+            "property_mask": 128,
+            "role_mask": 524288
+          }
+        ],
+        "target_phase_code": 7,
+        "uses_existing_chemistry": true
+      }
+    }
+  ]
+}

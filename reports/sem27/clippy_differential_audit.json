@@ -1,0 +1,5 @@
+{
+  "new_warning_signatures_total": 0,
+  "predecessor_warning_count": 22,
+  "verification_command": "cargo clippy --workspace --all-targets --all-features"
+}

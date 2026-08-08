@@ -1,0 +1,413 @@
+{
+  "arms": [
+    "A_FROZEN_SEM26",
+    "B_REPLAYED_HUMAN_STAGE_ROADMAP",
+    "C_SELF_DIRECTED_WITHOUT_RESEARCH_MEMORY",
+    "D_FULL_POST_SCAFFOLD_AUTONOMOUS_RSI"
+  ],
+  "autonomous_epochs_budget": 64,
+  "branch": "codex/sem27-post-scaffold-autonomy",
+  "campaign_id": "SEM27-POST-SCAFFOLD-AUTONOMOUS-RSI-0001",
+  "critical_addendum_sha256": "0f397f0004a498c7d4b471ea2f95953e60144a644d926b2ba57bb9c639b1e4e7",
+  "fixed_hardware": {
+    "cpu_threads": 1,
+    "gpu": false,
+    "mode": "RELEASE",
+    "network": false
+  },
+  "full_arm_receives_historical_roadmap": false,
+  "full_arm_receives_predecessor_textual_bottleneck": false,
+  "full_arm_receives_repair_strategy": false,
+  "operator_supplies_repair_architecture": false,
+  "operator_supplies_research_roadmap": false,
+  "predecessor_commit": "61f8096ee698d77fd44498497c57dc46ddbce96f",
+  "protocol_sha256": "af3ca001f5c2a665f9cf932bcca5fa388111be770d43f23bffa9968abc4b5596",
+  "resource_ceiling_bytes": 2000000,
+  "safe_closed_work": true,
+  "unopened_instance_commitments": [
+    {
+      "epoch": 1,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "36c0e355d0fa212af290d2edebb534197046f6e8dac6091329134b74743c6264"
+    },
+    {
+      "epoch": 2,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "6a4d20e966832a02273ef2bd870ea396de6390a6699e3c1c326a00533cb8dd6d"
+    },
+    {
+      "epoch": 3,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "437e4e78b82cfd3b6f2b702fbb4ea245462512f98221241fecd74b45bc22c0d9"
+    },
+    {
+      "epoch": 4,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "cd9a9835f6a09671a8c4e877ff6deef201710914c24c73bccf07e23f8dcef719"
+    },
+    {
+      "epoch": 5,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "9f3d7ab8986561174c8ee6f407666a51d5ab4192a5ed77007d35e9d713f1c7db"
+    },
+    {
+      "epoch": 6,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "1461ebe98471fa85222b2de1a0298a6844677ed48c08606e9629a0c9bce19460"
+    },
+    {
+      "epoch": 7,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "a8b17b711ed1d32439339eedde41ced1225c4923dfbe6f10eb301d84110b18ad"
+    },
+    {
+      "epoch": 8,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "04d2e1314b016f1c2223e1ccf78c454b5846386f0f04c62cefbc1229edec93da"
+    },
+    {
+      "epoch": 9,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "6f56ff28ff8c6fbf5d17979f0ec84a378392d7f9cc5b5717fa6904dd14b226d1"
+    },
+    {
+      "epoch": 10,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "1a20f5006786ee798873796835c0659745347ae66e3df4e134dcdfb6fde32dec"
+    },
+    {
+      "epoch": 11,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "b62cd66a756202a4895f02b5b7c334dbd5e304889797d6e64b238dd5aa2cbff2"
+    },
+    {
+      "epoch": 12,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "84253f2d5d6bec56d06cae53af19f0978c8667ea2c35c973d6d7e33556d2eeb5"
+    },
+    {
+      "epoch": 13,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "dee570a15b49dcbf276b31aec7b1e63feabdb751b416a2e97ae6c875eb98fa1a"
+    },
+    {
+      "epoch": 14,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "8700f54d381f8b0f25be5fe741dc9e0a9f0029a59b2662caadb495f0a3af886a"
+    },
+    {
+      "epoch": 15,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "b53f5e2047df4bb1bb70caaecf9a29449f2c884436def50ef133887e59ba1210"
+    },
+    {
+      "epoch": 16,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "e827fc713678cb07e9248290a8332652e4cca43ef25749a0fe37816273a74d9e"
+    },
+    {
+      "epoch": 17,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "82ade89b8e55fc5d72fc345fc01ebfc6e9c0352b13fa935d1469df7019829dd5"
+    },
+    {
+      "epoch": 18,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "2aeb43b81fba20b09ce3f6be6b54fbdb80c33018580fabf6c075797df0ce8040"
+    },
+    {
+      "epoch": 19,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "01592c963ab2eab563c0cc04f5faf964afd1c7dafbb135d3088acc3a79657616"
+    },
+    {
+      "epoch": 20,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "a2cbccec30d8de435e6bc9b43e42533cfe78c69821e5f673d0ece954eaf9984a"
+    },
+    {
+      "epoch": 21,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "4bd6f8e21f17284e9c05f4311a2e40bb291bc66f80e3afe5ca9e97903279203c"
+    },
+    {
+      "epoch": 22,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "b358c70babbcc67dfd0744a83e305da4597b6c3e784b70c8c3eee3b328820826"
+    },
+    {
+      "epoch": 23,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "e7517c32be99a1f9fded9e526dfc4814847393a97d495a6ef0359496eb6c6d37"
+    },
+    {
+      "epoch": 24,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "7d0d25e1207237f143f20ac2e3b1a8e26931f62ce56156aa21492dda24caa380"
+    },
+    {
+      "epoch": 25,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "f58da8c76dc60b60839c056f077e07a7d1867700c3671e3fedc591e5c54a4673"
+    },
+    {
+      "epoch": 26,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "fbe6ff03029aa95c7cfca1f9f54c75b01ca87575f52f22c60d477adcdbf5927e"
+    },
+    {
+      "epoch": 27,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "2cf196c96b69d2eb53dad50060079ad8ca27d067863048825984033b19b297f7"
+    },
+    {
+      "epoch": 28,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "06e69b2c2b886719e8892580719cc0b6ab58a664ac060ae592402461e22d3c7a"
+    },
+    {
+      "epoch": 29,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "c741ad6643c20a2a5ffd777563962068c9401ed74d867f054cb8eff0eeaa9b37"
+    },
+    {
+      "epoch": 30,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "bad7deaaa41af0786b664523da3f02fda008cbfa9c364fa1d7e8ad56aa72bb2b"
+    },
+    {
+      "epoch": 31,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "ef7b8ef10100cbf040045fcfacad30cd7a157643d303b3c9f9411b769592f790"
+    },
+    {
+      "epoch": 32,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "d7214c8cf5cb0402f27cdd373e0f3ae70292a78b8124214c13e4416974c6aeef"
+    },
+    {
+      "epoch": 33,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "1aa998000d815d1c4c0f357087ab81bb799b10ce61803a156886b3aa74cf4fcd"
+    },
+    {
+      "epoch": 34,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "2e1209f31672e2d0341bd1d55b8c74088c20b0f38cb6a6298ed68d5fc9da37f2"
+    },
+    {
+      "epoch": 35,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "34dcf34f9bb5bd91e1b710a866a7c571200cfadce8d1db3ed1a5cde090021c08"
+    },
+    {
+      "epoch": 36,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "be4e037388ce8d003581307762d16d5bafc533d2d3aac7c493395663481aa064"
+    },
+    {
+      "epoch": 37,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "8e39b7ec187073b1f443858c5d76c1fee777e3b2417bbf4dc1457936c2bba5b1"
+    },
+    {
+      "epoch": 38,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "eedbd6ad591897e392beb5ea075e0b70f5585fd511bc482240dd2d2ceb8b1373"
+    },
+    {
+      "epoch": 39,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "bcb2474c000a8fd82793ebfae612e377d4737ed5936184e3cd5dfc180fd8c610"
+    },
+    {
+      "epoch": 40,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "1ef9db79814063aafae8e8cb671d1de33ce6b84aecb667a60bf3379699fd3327"
+    },
+    {
+      "epoch": 41,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "acdf7e0bec7de4cc3de5fa3987741942cb4bdcb7cb0a1f1ac52e1f6e8c0469eb"
+    },
+    {
+      "epoch": 42,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "0beef94189613c352c6a4f381daf2d12da79c539cfa743084e8b2190085b296d"
+    },
+    {
+      "epoch": 43,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "be6c0b8753f76c1030f11d81e0ce016ee0a16c10a81c57b2bfb228397a12bf04"
+    },
+    {
+      "epoch": 44,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "369675e79e3e537b30fa11d918d27d23f745a9d57a382e51d0f40efabd99cbe1"
+    },
+    {
+      "epoch": 45,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "410c39590a56f04c9a46c831d4449492b77467338293c0af60da952002421f9a"
+    },
+    {
+      "epoch": 46,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "38ede0b2b743b032d7dcaebd6ae93a2de935a538deeb323969af25a32af44f08"
+    },
+    {
+      "epoch": 47,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "7169b8fb5aa86091eaeddc185e50707ec2cf7a7194d6ea6a32bb1ada12ff0828"
+    },
+    {
+      "epoch": 48,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "f7918f88a99f15a9203376f8be7288508b690e85cfd83b4688f49466cce1b3b4"
+    },
+    {
+      "epoch": 49,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "f10fb1508a20e5b95f082cbce677bad0dc34a120897238d8a98f1f262dece5de"
+    },
+    {
+      "epoch": 50,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "66fdc6a1a4e15f9458757bc3b1fdcc6347803336d5b9080cc8a8575e1c143d20"
+    },
+    {
+      "epoch": 51,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "9ad2f258b7e356f66428aa9c21b2af41d8dff5a1f3752219905f4b925e95a881"
+    },
+    {
+      "epoch": 52,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "b9cf6de1a2c39759c86c88bdba06a730ce085c3835e17ec21bfa517edb4fd7d5"
+    },
+    {
+      "epoch": 53,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "ed4225caffdae7aae4fbe3103f87568e434bea5e1447f33c172d03e8de848f2e"
+    },
+    {
+      "epoch": 54,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "c66cc8632d377dc4a7f8e8e60ab8bae497bc1436c8cb5ba954cb24b9d69f30e9"
+    },
+    {
+      "epoch": 55,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "a3f4af2244beaf2d9bf27e1cf6ea2d299c4e074cb770cfcbfe4d0a113d2ec512"
+    },
+    {
+      "epoch": 56,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "2d303e4347510eaa8008de7e8dc7805d2e14b992f1b878a23b81bd821000aab5"
+    },
+    {
+      "epoch": 57,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "7fb9d94296b09d4edef7c2b7df9ed1f8c4dbdaa0a18ecfdfb875d8185580e091"
+    },
+    {
+      "epoch": 58,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "cbc9e1b7f96c429441467a832ca0832e4c0debd26c545eeccced87b616b54e75"
+    },
+    {
+      "epoch": 59,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "afb2e5ee76391d4034bcfbabb6614e4688a576dd5df7ce79a344805307fa25ab"
+    },
+    {
+      "epoch": 60,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "964e88e58899ccd1eeda7c4ff58e7ff18708f98b3c34e03994c0ab706409b305"
+    },
+    {
+      "epoch": 61,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "cf922978d72f32abada0ce81bd4a5089cc3d081ee23016f8153b2858f51810f8"
+    },
+    {
+      "epoch": 62,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "5cb4a7c9ba87ad1798f3f8a8d33ee34958a6b6c32c06a52c6cd6b5043d60f0d6"
+    },
+    {
+      "epoch": 63,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "3a1a68c18905c6ff3333ee0ab1ce260082dd336e955ee0a5b641ae474f4b6f2c"
+    },
+    {
+      "epoch": 64,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "6d7b7eb15593141e136562e6068b6adbefde977a0e4995b1d858f5a18531f590"
+    }
+  ]
+}
