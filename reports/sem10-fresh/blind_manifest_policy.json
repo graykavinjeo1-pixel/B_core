@@ -1,0 +1,20 @@
+{
+  "campaign_id": "SEM10-FRESH-RUN-0002",
+  "capability_families": [
+    "SEMANTIC_CONCEPT",
+    "ADAPTIVE_REASONING",
+    "MATHEMATICAL_DERIVATION",
+    "PROGRAMMING",
+    "DEFINITION_FORAGING",
+    "LANGUAGE_ADAPTER",
+    "CROSS_DOMAIN_TRANSFER"
+  ],
+  "expected_outputs_are_hidden": true,
+  "generation_occurs_after_child_build_gate": true,
+  "generator_version": "SEM10-FRESH-BOUNDED-STATE-GENERATOR-1.0.0",
+  "historical_metrics_are_not_primary_evidence": true,
+  "keys_are_hidden": true,
+  "parent_and_child_share_exact_manifest": true,
+  "tasks_per_family": 20,
+  "tasks_per_transition": 140
+}
