@@ -1,0 +1,10 @@
+pub const CAMPAIGN_ID: &str = "SEM35-R1-EXACT-NUMERIC-TRANSPORT-REGATE-0001";
+pub const BRANCH: &str = "codex/sem35-r1-exact-numeric-transport";
+pub const HISTORICAL_SEM35_COMMIT: &str = "0aff6e2f1a21652ca21a40592b93f23af3f57cfc";
+pub const CAPABILITY_PREDECESSOR: &str = "4bc64294cdf4a33b1be5d67dbb99327c7c24f35f";
+pub const TEMPORAL_CANDIDATE_SOURCE_COMMIT: &str = "494cdc1ac7b9918d6bc893fe8c9fdf7482cb4022";
+pub const MAX_AUTONOMOUS_RESEARCH_EPOCHS: u64 = 4096;
+pub const FRESH_HOLDOUT_SEED: u64 = 12_118_749_330_625_887_043;
+pub const FRESH_HOLDOUT_TASK_COUNT: usize = 15;
+pub const REPORT_DIR: &str = "reports/sem35_r1";
+pub const CONTRACT_VERSION: &str = "SEM35_R1_EXACT_NUMERIC_TEMPORAL_VERIFIER_1";
