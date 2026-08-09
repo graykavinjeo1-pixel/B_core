@@ -1,0 +1,13 @@
+{
+  "schema_version": "SEM37_P0_BASELINE_EXECUTION_RECEIPT_1",
+  "baseline_command": "sem37-p0 baseline",
+  "baseline_freeze_commit": "baed1ece7923a4e5d5486ab79e77479717125ea6",
+  "exit_status": "FAIL_CLOSED",
+  "raw_failure_reason": "SEM37_EXTERNAL_EVALUATOR_REJECTED:SEM37_NONFINITE_EXTERNAL_NUMERIC_VALUE",
+  "external_result_or_gold_exposed": false,
+  "repair_implemented_before_measurement": false,
+  "set_b_exposure_events": 0,
+  "set_c_exposure_events": 0,
+  "network_reads_during_canonical": 0,
+  "network_writes_during_canonical": 0
+}

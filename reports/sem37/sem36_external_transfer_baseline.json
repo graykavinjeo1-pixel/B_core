@@ -1,0 +1,32 @@
+{
+  "schema_version": "SEM37_SEM36_EXTERNAL_TRANSFER_BASELINE_RESULT_1",
+  "external_baseline_worlds": 24,
+  "lane_a_worlds": 10,
+  "lane_b_worlds": 14,
+  "external_baseline_observation_requests": 24,
+  "external_baseline_observations_transportable_to_generic_adapter": 22,
+  "external_baseline_adapter_failures": 2,
+  "external_baseline_adapter_failure_reason_counts": {
+    "SEM37_NONFINITE_EXTERNAL_NUMERIC_VALUE": 2
+  },
+  "external_baseline_frontiers_detected": 2,
+  "external_baseline_hypotheses": "NOT_SAMPLED_ADAPTER_FAILED_FIRST",
+  "external_baseline_discoveries": "NOT_SAMPLED_ADAPTER_FAILED_FIRST",
+  "external_baseline_novel_predictions": "NOT_SAMPLED_ADAPTER_FAILED_FIRST",
+  "external_baseline_predictions_verified": "NOT_SAMPLED_ADAPTER_FAILED_FIRST",
+  "external_baseline_counterfactual_accuracy": "NOT_SAMPLED_ADAPTER_FAILED_FIRST",
+  "external_repair_required": true,
+  "measured_disposition": "EXTERNAL_GROUNDING_LIMIT",
+  "measured_subclass": "NONFINITE_NUMERIC_TRANSPORT_LIMIT",
+  "human_research_question_selection_events": 0,
+  "human_hypothesis_selection_events": 0,
+  "human_experiment_selection_events": 0,
+  "benchmark_specific_causal_hint_branches": 0,
+  "external_generator_source_reads_by_bcore": 0,
+  "external_ground_truth_graph_reads": 0,
+  "external_ground_truth_equation_reads": 0,
+  "expected_external_result_lookups": 0,
+  "network_reads_during_baseline": 0,
+  "network_writes_during_baseline": 0,
+  "zero_is_distinct_from_not_sampled": true
+}
