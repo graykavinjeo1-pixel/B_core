@@ -438,6 +438,7 @@ def run_campaign() -> int:
                 text=True,
                 encoding="utf-8",
                 errors="replace",
+                env={**os.environ, "SEM27_MEASUREMENT_HOLD_MS": "350"},
                 creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
             )
             result = json.loads(completed.stdout)
