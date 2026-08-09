@@ -50,10 +50,10 @@ pub fn preflight_campaign(root: &Path) -> Result<String, String> {
     fs::create_dir_all(&report).map_err(|error| format!("CREATE_SEM35_REPORT_DIR:{error}"))?;
     verify_git_ancestry(root)?;
     let sem34: Value = read_json(&root.join("reports/sem34/sem34_final_report.json"))?;
-    if sem34["SEM34_STATUS"] != "PASS"
-        || sem34["DISPOSITION"] != "MEASURED_SCALING_ADVANTAGE"
-        || sem34["BASELINE_PLANNING_WORK"] != 12_335
-        || sem34["FINAL_PLANNING_WORK"] != 5_011
+    if sem34["sem34_status"] != "PASS"
+        || sem34["disposition"] != "MEASURED_SCALING_ADVANTAGE"
+        || sem34["baseline_planning_work"] != 12_335
+        || sem34["final_planning_work"] != 5_011
     {
         return Err("SEM35_SEM34_PREDECESSOR_FACT_MISMATCH".to_string());
     }
