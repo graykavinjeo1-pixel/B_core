@@ -9,5 +9,5 @@
   "preexisting_clippy_warning_signatures_total": 22,
   "new_sem33_clippy_warning_signatures_total": 0,
   "warm_cache_used": true,
-  "clean_reconstruction_status": "PENDING_POST_COMMIT"
+  "clean_reconstruction_status": "PASS"
 }

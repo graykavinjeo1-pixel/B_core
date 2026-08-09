@@ -1,0 +1,14 @@
+{
+  "schema_version": "SEM33_CLEAN_RECONSTRUCTION_1",
+  "reconstructed_commit": "ec98cedd49369813a5a43fb04dea145c894d3cf6",
+  "warm_cache_used": false,
+  "locked_dependencies": true,
+  "network_used": false,
+  "cargo_offline": true,
+  "workspace_all_targets": true,
+  "workspace_tests_passed": 241,
+  "workspace_tests_failed": 0,
+  "status": "PASS",
+  "scientific_result_status": "FAIL_UNCHANGED",
+  "scientific_failure_boundary": "VERIFIER_TRANSPORT_DESERIALIZATION_LIMIT"
+}

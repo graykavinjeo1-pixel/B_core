@@ -10,6 +10,7 @@
     {"path":"reports/sem33/artifacts/frozen_verifier/sem33-verify.exe","sha256":"25362e49246aa0c289d6cf05526efc0be5642fd8e1c45e46616c62c606c37563","bytes":867328},
     {"path":"reports/sem33/artifacts/frozen_verifier/verifier.rs","sha256":"da8a0247ced33fee1ba7f96a0093d4b227add07de110bdc94085c89981d39d6f","bytes":51090},
     {"path":"reports/sem33/campaign_config.json","sha256":"a88b389bba03b46a97ec163baccb1707093e1114cb31813154de113586c7e02b","bytes":177},
+    {"path":"reports/sem33/clean_reconstruction.json","sha256":"23dff21d3f5eb5ab97fa602b8814ba969da56a3f4663821137a655dd15d02815","bytes":476},
     {"path":"reports/sem33/canonical_protocol_abort.json","sha256":"5b51cc097c9f2075065118d896d86ce0b26fbf28c6941ecc42969229c0fbe630","bytes":1939},
     {"path":"reports/sem33/literature_adapter_audit.json","sha256":"46271f07d6da1e7bc02e09b2777c5b22156bf840cc09cd14d8e2a7ae6c12bcb9","bytes":353},
     {"path":"reports/sem33/one_shot_initial_planning_baseline.json","sha256":"6c8577b50389ca7bbb0f995c72a0bf9f4b710b928df2040eacf588298a6150ee","bytes":207},
@@ -21,7 +22,7 @@
     {"path":"reports/sem33/prefreeze_planning_canaries.json","sha256":"9d01c77bae5d4084b19757b3dc117fca19eb47c6b930dbade91b7286d2094172","bytes":442},
     {"path":"reports/sem33/protocol_diagnostic_request.json","sha256":"d3315910a9cfeb410e79e8eebc40be9be672c24c54eb6a00b5022d89aa478dee","bytes":633},
     {"path":"reports/sem33/raw_sequences.json","sha256":"26ea18fbe917e38f70b477b99188d8a519ada8abd197651e5752aefb0e7a2972","bytes":593},
-    {"path":"reports/sem33/regression_receipt.json","sha256":"0f798897d1edb8ed1ad214573ac0c86b2055ae0642d171807cb34810266f27b0","bytes":471},
+    {"path":"reports/sem33/regression_receipt.json","sha256":"b3d4396cf1deedba1f95b8963e63af70e9e75e3d959c1e0022f7f5ac3a4137fc","bytes":456},
     {"path":"reports/sem33/sem33_final_report.json","sha256":"0b4a5f8c4aac3d8b7800e295e0a17f4370cfdf0194ec1f1d9e2a2c54112b38da","bytes":3881}
   ]
 }
