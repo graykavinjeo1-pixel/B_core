@@ -1,0 +1,11 @@
+{
+  "campaign_budget_selected_by_operator": true,
+  "human_research_steering_events": 0,
+  "human_bottleneck_selection_events": 0,
+  "human_repair_design_events": 0,
+  "human_experiment_selection_events": 0,
+  "human_frontier_selection_events": 0,
+  "human_difficulty_escalation_events": 0,
+  "human_difficulty_level_selection_events": 0,
+  "passed": true
+}

@@ -1,0 +1,17 @@
+{
+  "classification": "WINDOWS_COMMAND_LINE_TRANSPORT_LIMIT",
+  "failure": "serialized growing state exceeded Windows CreateProcess command-line length at campaign epoch 85",
+  "repair": "transport the identical JSON request over stdin when sem27-probe receives a single dash argument",
+  "last_complete_checkpoint_epoch": 84,
+  "completed_epoch_artifacts_preserved": 84,
+  "engine_changed": false,
+  "autonomous_policy_changed": false,
+  "difficulty_policy_changed": false,
+  "repair_policy_changed": false,
+  "request_schema_changed": false,
+  "request_payload_changed": false,
+  "seed_changed": false,
+  "budget_changed": false,
+  "research_outcome_used_to_design_repair": false,
+  "resume_same_frozen_campaign": true
+}

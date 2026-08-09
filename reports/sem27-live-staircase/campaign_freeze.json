@@ -1,0 +1,2338 @@
+{
+  "schema_version": "SEM27_LIVE_CAMPAIGN_FREEZE_1",
+  "campaign_id": "SEM27-LIVE-AUTONOMOUS-STAIRCASE-0001",
+  "campaign_state": "CAMPAIGN_FROZEN",
+  "contains_campaign_results": false,
+  "semantic_predecessor_commit": "9dbebdd280db2c292bff4865bcf8f1d8c39c335d",
+  "instrumentation_commit": "c91572bbc7c9e6081b1b80a8f98d72696dee3f0e",
+  "sealed_state_sha256": "4f9546947828044e996b7cae159f3a1bfef5fa94b324e992fae563212e221b1e",
+  "sealed_report_sha256": "b0c869117c17c31a296d04aa7bbdfd75324873f8bcc5910f4cf4b2bc8264bef6",
+  "engine_sha256": "519557be10710d2a74d1ae21fddd75c55940811ac8017b4c871278cfd311f28b",
+  "ontology_sha256": "097ba7b170d2263fb8b87671cb83253f836eef79a9210a60ee8f2772e8d91f92",
+  "sem27_probe_sha256": "9a02050a7c42970d81fe545b46a7c47d84daa6d2f18b7ff9e99106733775a332",
+  "sem24_probe_sha256": "c2bb641cfe5c1a6f1c9b9c71475dbfbdd8668d26ccc0214f1a623cdf1013e30b",
+  "instruction_sha256": "c77bb6d826a8b7414687fdbfdb89efe74e219d8ee7b561785f97a3f494af6345",
+  "budget": 256,
+  "base_seed": 6784623360610402305,
+  "global_epoch_range_ceiling": [
+    513,
+    768
+  ],
+  "resource_ceiling_bytes": 2000000,
+  "engine_epoch_mapping": "((CAMPAIGN_EPOCH-1)%64)+1",
+  "engine_epoch_origin_rebase_is_administrative_only": true,
+  "operator_selects_budget_only": true,
+  "operator_selects_research_content": false,
+  "operator_selects_difficulty": false,
+  "outcome_dependent_policy_modifications_allowed": false,
+  "prestart_autonomous_research_events": 0,
+  "prestart_future_instance_exposure_events": 0,
+  "success_condition": "REGIME_GE_3_AND_TRANSITIONS_GE_2_AND_OPERATOR_FALSE_AND_STRUCTURALLY_HARDER",
+  "seed_commitments": [
+    {
+      "campaign_epoch": 1,
+      "global_epoch": 513,
+      "engine_epoch": 1,
+      "seed_commitment": "0e9bd802a617199ddca07c04aba4011ff336dee291301a05f862a17f9a4adced",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 2,
+      "global_epoch": 514,
+      "engine_epoch": 2,
+      "seed_commitment": "5531e027674e884e3eb7bf7fbe2d0c16846b4f9e89b38c8f50c3b06b13462cd6",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 3,
+      "global_epoch": 515,
+      "engine_epoch": 3,
+      "seed_commitment": "211aeff926a02837407c0d66b41d8d174212a4ecd4010d0dd2d319ca3aa38426",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 4,
+      "global_epoch": 516,
+      "engine_epoch": 4,
+      "seed_commitment": "8b3702b0656e45522ab0d26d169c12d24c690e0ec39792363108460b521f8759",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 5,
+      "global_epoch": 517,
+      "engine_epoch": 5,
+      "seed_commitment": "19a70edc31cdf46931e14728f74eb95a343e2c5862dc5bd7447b1dca192ab550",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 6,
+      "global_epoch": 518,
+      "engine_epoch": 6,
+      "seed_commitment": "be117302ddaa25d4daf578f261382d9cae605d4d859acec9dcd19fcc875bc755",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 7,
+      "global_epoch": 519,
+      "engine_epoch": 7,
+      "seed_commitment": "4e39bf9f910e9649da3ab908fe6b5c342a55c2a7de93d9dbb29403860e74996d",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 8,
+      "global_epoch": 520,
+      "engine_epoch": 8,
+      "seed_commitment": "308356135736b3bd3920869a083eb2ef67b1ac42a75a55ff45af1d0d24b2e952",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 9,
+      "global_epoch": 521,
+      "engine_epoch": 9,
+      "seed_commitment": "8b885f0af7c046af694f1067ad80010a3b0253ced229e5223ab24e90e50c898e",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 10,
+      "global_epoch": 522,
+      "engine_epoch": 10,
+      "seed_commitment": "620757493b02b7f0cce726f7c1d98671279f3407c7705a720ff5308eb939ff1d",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 11,
+      "global_epoch": 523,
+      "engine_epoch": 11,
+      "seed_commitment": "d688ad6e256d658e1c11c3be8a8ea040c4caf1dac169aa48ed7c89ace53e226d",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 12,
+      "global_epoch": 524,
+      "engine_epoch": 12,
+      "seed_commitment": "63b9168f4a3ca3dd62c0f87e14c76669cf095efaee86bc763f1f539a3cef5eb3",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 13,
+      "global_epoch": 525,
+      "engine_epoch": 13,
+      "seed_commitment": "865735bc11e5f46e5f076231b374f8f1e11e95ad16d2a83f80df1b04f2aaf608",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 14,
+      "global_epoch": 526,
+      "engine_epoch": 14,
+      "seed_commitment": "12e2cb3fc0fabb024eb7129fe8371c83123c1dc525bcf4f2a9d25bb89106f8c2",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 15,
+      "global_epoch": 527,
+      "engine_epoch": 15,
+      "seed_commitment": "1dd81d0c84697b6fb224908bd0ac5db61bae55c5588d1bd86cbc4f0ac65bac1e",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 16,
+      "global_epoch": 528,
+      "engine_epoch": 16,
+      "seed_commitment": "44e28c71a6c6ce661519aef506f10cd93c0da35cdc70832ac7ae32d9e200cbd7",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 17,
+      "global_epoch": 529,
+      "engine_epoch": 17,
+      "seed_commitment": "66dca6fd07b681bde8f9138f86c8d530d85cdb3afd236434c2cf739c5bf0a2bd",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 18,
+      "global_epoch": 530,
+      "engine_epoch": 18,
+      "seed_commitment": "0243a2ce34f4f9af93dc23eafb45f3d1c505a8232184b7648bf07787588a09eb",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 19,
+      "global_epoch": 531,
+      "engine_epoch": 19,
+      "seed_commitment": "cb58e24fa2a108f99b27e741445ef257acee82e961dc194fbb807702a2752482",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 20,
+      "global_epoch": 532,
+      "engine_epoch": 20,
+      "seed_commitment": "48cf610b15497029fe000b7a2204a6eaaee2f4476ca75017d9482b58551a8f99",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 21,
+      "global_epoch": 533,
+      "engine_epoch": 21,
+      "seed_commitment": "a49b0a0852262d3647be2ff69ce5ba57ab9aedcdeef1ccdcb46e34bf2dbfe2ea",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 22,
+      "global_epoch": 534,
+      "engine_epoch": 22,
+      "seed_commitment": "f155106e25612fcfc2955e56bde13298d559f514c0192f589ff80c609f6aafc9",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 23,
+      "global_epoch": 535,
+      "engine_epoch": 23,
+      "seed_commitment": "92cd0c41344a4db5eb01a190a4858f5755b859f97924766bcbeeea6fca64f34c",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 24,
+      "global_epoch": 536,
+      "engine_epoch": 24,
+      "seed_commitment": "ad4138c47d5494898888675c7d900434988c3551669ec708c484d7b1c72c7283",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 25,
+      "global_epoch": 537,
+      "engine_epoch": 25,
+      "seed_commitment": "c2d943ea41eeb35e787549ce1260d6383120b6a9fef3fe407021107112690e8a",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 26,
+      "global_epoch": 538,
+      "engine_epoch": 26,
+      "seed_commitment": "f77ddb604cca6638a3c819e4961ce35314fdea149447b6e92457bbc2621b4bde",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 27,
+      "global_epoch": 539,
+      "engine_epoch": 27,
+      "seed_commitment": "4b76ff7ae775ab8cffa3a0e9e90a7a25dc0167f17d9bc8e0575b9926a7f89dd9",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 28,
+      "global_epoch": 540,
+      "engine_epoch": 28,
+      "seed_commitment": "9d6a94d13eaae178493c3d07687cc17966d8b3844e3cd248225fead1deefdc67",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 29,
+      "global_epoch": 541,
+      "engine_epoch": 29,
+      "seed_commitment": "0ac688436bbeb49be3b46084410783fe03b57342cb0b4fc9391596b565dc7417",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 30,
+      "global_epoch": 542,
+      "engine_epoch": 30,
+      "seed_commitment": "68d62668d4162adad25e2f4739056e6cca45a40efa82eb0834a1f732ee7842b9",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 31,
+      "global_epoch": 543,
+      "engine_epoch": 31,
+      "seed_commitment": "39c52f0115149bb8a79e2bada271768569651cb013644a766b0a6f523310c6c3",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 32,
+      "global_epoch": 544,
+      "engine_epoch": 32,
+      "seed_commitment": "ab9005290aac0bfe2117fd4066590e0d5af3e07e38ad7baadb015f9bf5b796af",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 33,
+      "global_epoch": 545,
+      "engine_epoch": 33,
+      "seed_commitment": "5ef9f0f6bf5947d23fb4f11dc26b008a447d526269cebf1f638d08950b44605a",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 34,
+      "global_epoch": 546,
+      "engine_epoch": 34,
+      "seed_commitment": "447f710714c18063c3020818667f59b8f8f142a72b26f31e04d0d59ae934b6cc",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 35,
+      "global_epoch": 547,
+      "engine_epoch": 35,
+      "seed_commitment": "716cb42affddcecb48119ff3886321c5fc4a73b7665a7ec533687a54d462424d",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 36,
+      "global_epoch": 548,
+      "engine_epoch": 36,
+      "seed_commitment": "25a8725bb06d440e5c388465fefec7840b4b5778c35e166fbf94c18355a40c15",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 37,
+      "global_epoch": 549,
+      "engine_epoch": 37,
+      "seed_commitment": "36120de6e54308284de50c77b1eb0c87f2b9878cb9d3bfafc0ced7a51f697f11",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 38,
+      "global_epoch": 550,
+      "engine_epoch": 38,
+      "seed_commitment": "b4ed4f67504b185d6da3a2be233f47df167a2a703e2925ee91607630d243b7a0",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 39,
+      "global_epoch": 551,
+      "engine_epoch": 39,
+      "seed_commitment": "77e2527ab539ecb9ad15d200e6eed832db59efc96d2cfabf3db6c0faa2ab3725",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 40,
+      "global_epoch": 552,
+      "engine_epoch": 40,
+      "seed_commitment": "5fc0d8c264b44dcb15760510f3a4ded90f15d6e04410e8f0f0517b918545790f",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 41,
+      "global_epoch": 553,
+      "engine_epoch": 41,
+      "seed_commitment": "9c57f4064a59a6d6280b6de9386fc4e481aad8f9e004a852e3eeb2b84fd11865",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 42,
+      "global_epoch": 554,
+      "engine_epoch": 42,
+      "seed_commitment": "fdd8b157ecf2c39dd77161c687fa4037e2e8091a800543295a7ec520994650f7",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 43,
+      "global_epoch": 555,
+      "engine_epoch": 43,
+      "seed_commitment": "5481b51bb101b1d69d99d8d70a7b9e85dce9279a8620075dfefe41444517c56e",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 44,
+      "global_epoch": 556,
+      "engine_epoch": 44,
+      "seed_commitment": "e97b6a6309d87e4278104bcc1e5a0e8acc8b068ac77da48d97bd992ca11e62d4",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 45,
+      "global_epoch": 557,
+      "engine_epoch": 45,
+      "seed_commitment": "7a0ebe0a6c8843358c8481d7978dba7913109291503f098675dcf0191f2aa947",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 46,
+      "global_epoch": 558,
+      "engine_epoch": 46,
+      "seed_commitment": "34cb8c6e6bc72a6e07ea1388a805481427c078abd447a93294e057c30f9868cf",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 47,
+      "global_epoch": 559,
+      "engine_epoch": 47,
+      "seed_commitment": "7b43c9673b3f304999730ef3e1f5691fcdf26625bf9c9d7f22c40d91d6dddd93",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 48,
+      "global_epoch": 560,
+      "engine_epoch": 48,
+      "seed_commitment": "0cb525674b3455e1bf3b52ef1773dba3f1c4473748ce314173094d06c3eff191",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 49,
+      "global_epoch": 561,
+      "engine_epoch": 49,
+      "seed_commitment": "41227aa90ecfcad654d1bd5d102b5e5feee76e8ffa7fc5e31175e338a60be3c8",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 50,
+      "global_epoch": 562,
+      "engine_epoch": 50,
+      "seed_commitment": "f8ea044097c234fd6668e4797f257be3e9ff061f174976ec74ab8d457257bd48",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 51,
+      "global_epoch": 563,
+      "engine_epoch": 51,
+      "seed_commitment": "d6bf2c210f215d3ee4e59e6234220128b5ec3663d85e2bb6e6bb8cacfea88af4",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 52,
+      "global_epoch": 564,
+      "engine_epoch": 52,
+      "seed_commitment": "56b7300ea7a60c5343894e373623a1fac20f346ffc1e1eb5b94254c8a1704fad",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 53,
+      "global_epoch": 565,
+      "engine_epoch": 53,
+      "seed_commitment": "7875cd7167793deffe4efffa1b1208ad94976471273df13794d1f7a1d84dab6d",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 54,
+      "global_epoch": 566,
+      "engine_epoch": 54,
+      "seed_commitment": "6c89f2d1400f5ecd09140d8c8ccfc468dd4501ca65791c7a62d4e8b6cacde66b",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 55,
+      "global_epoch": 567,
+      "engine_epoch": 55,
+      "seed_commitment": "a59e41dbb7d8dc978d0c8ffad3bef585909bace3809ae062a1d56327b0c25d1a",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 56,
+      "global_epoch": 568,
+      "engine_epoch": 56,
+      "seed_commitment": "d1ea287149be6fda3a75946eafa0ef971a434006f760e523827ca551f8c267bf",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 57,
+      "global_epoch": 569,
+      "engine_epoch": 57,
+      "seed_commitment": "e70b903b20212da9082f49d98fac0a71ae3b4374aad402d33add685a868bf47b",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 58,
+      "global_epoch": 570,
+      "engine_epoch": 58,
+      "seed_commitment": "39a2869952c30a0c2b39f6b4850b39c5b78afbf0dd39e5e64c78bfa9cd794f72",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 59,
+      "global_epoch": 571,
+      "engine_epoch": 59,
+      "seed_commitment": "1f1f4e4d07b6144ad03822ba1f05e52829da46a544efca8f4ccb670a76b156c1",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 60,
+      "global_epoch": 572,
+      "engine_epoch": 60,
+      "seed_commitment": "1c26754c80a1e37e3af0f7cb9b46bd6d0f97c4255437dd12a9e93e2fe30ad316",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 61,
+      "global_epoch": 573,
+      "engine_epoch": 61,
+      "seed_commitment": "95b0cafeaf46cf920c5f6f60a4f6f0b1c93f8bc4e660c404796a071af758c794",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 62,
+      "global_epoch": 574,
+      "engine_epoch": 62,
+      "seed_commitment": "55863aeca4ebdd9eabc6baa7e0fc047631c6b00b3e2e16df38eca1cd0d6847f1",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 63,
+      "global_epoch": 575,
+      "engine_epoch": 63,
+      "seed_commitment": "3c074f9444e74f9c4403456fb629cf1bc2faecc712ecdc9090f11844dc09fae9",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 64,
+      "global_epoch": 576,
+      "engine_epoch": 64,
+      "seed_commitment": "83b8a03983e46645af8c006e16e92798fc450b68773dd5b2c039cf53b5ad7e66",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 65,
+      "global_epoch": 577,
+      "engine_epoch": 1,
+      "seed_commitment": "cabd148bd32e2e60b168963cc7222bc5f777320adc689e19194d29b55ba264df",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 66,
+      "global_epoch": 578,
+      "engine_epoch": 2,
+      "seed_commitment": "648158669b7eee367ffae00d55031a9d8f57b7ed1a570cc40750366b6f9f496d",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 67,
+      "global_epoch": 579,
+      "engine_epoch": 3,
+      "seed_commitment": "abf2d3f167418ab3a54b9c73da6eb3e0b7af6b5f0b8e08975d1ab586ad66d286",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 68,
+      "global_epoch": 580,
+      "engine_epoch": 4,
+      "seed_commitment": "3c0da2cbccab315968670236877b4b776abbb12d2123c66454f7053bdf0d8c6d",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 69,
+      "global_epoch": 581,
+      "engine_epoch": 5,
+      "seed_commitment": "1272aee543c72bdf05ea6bf8887b8a8541291158e9af3de777b90c9db671d9aa",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 70,
+      "global_epoch": 582,
+      "engine_epoch": 6,
+      "seed_commitment": "2fda50034ed76027efb7d8f4b03201f59acb86d8a2e7d3fff4ad55cdeda9e339",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 71,
+      "global_epoch": 583,
+      "engine_epoch": 7,
+      "seed_commitment": "124517efd4576aec139128b703a8ed0f142ba5b501fc988c4c66b813ac385e5b",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 72,
+      "global_epoch": 584,
+      "engine_epoch": 8,
+      "seed_commitment": "3c12e74dbc3007c75a5163850e0816f8e450ce6ca2d3b630903ef45775c0ef62",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 73,
+      "global_epoch": 585,
+      "engine_epoch": 9,
+      "seed_commitment": "71ecae80e0047bbccd81871d2ab63ee91b7c9288290b7776fa9ab6d25afeb88f",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 74,
+      "global_epoch": 586,
+      "engine_epoch": 10,
+      "seed_commitment": "5556f7df9fc161d0fd42bfed1b058f4ce8e493e1f612e840ac5b5913ec7f62ae",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 75,
+      "global_epoch": 587,
+      "engine_epoch": 11,
+      "seed_commitment": "6754b62f3b221060c5299cab6a6bd4d25e28133294abdd0323a1912a18140b92",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 76,
+      "global_epoch": 588,
+      "engine_epoch": 12,
+      "seed_commitment": "38d93b8034fb697465f45faa12567c787f00a44889e0dc59e66bd5d9dd950da3",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 77,
+      "global_epoch": 589,
+      "engine_epoch": 13,
+      "seed_commitment": "7c67246c10b19772f31731c19761ae228b5be4d5ce2d50e9a6ba4e6b137f0bfd",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 78,
+      "global_epoch": 590,
+      "engine_epoch": 14,
+      "seed_commitment": "af37db7e370e6d2b0309588c6536b1c4590ffc029b4a5937e24a2a046a64ecdc",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 79,
+      "global_epoch": 591,
+      "engine_epoch": 15,
+      "seed_commitment": "d9cc32b3628fcb6d0b36b05f16cb57805f5703e93734a921227898ac01d1ae4d",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 80,
+      "global_epoch": 592,
+      "engine_epoch": 16,
+      "seed_commitment": "c03a45856340b58c31672ca705c3d1f58911421c6fa171931ca30c6deb324341",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 81,
+      "global_epoch": 593,
+      "engine_epoch": 17,
+      "seed_commitment": "0d7eefc1c4a231f6f541cc1de274b090807ee615e61c4ec19219c7ab98731f04",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 82,
+      "global_epoch": 594,
+      "engine_epoch": 18,
+      "seed_commitment": "43a3f01f0f167b5dc888a6f6f9a36c49e49980e20472f16c6cb5d428114afbaf",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 83,
+      "global_epoch": 595,
+      "engine_epoch": 19,
+      "seed_commitment": "62393778d8addde22fa755a4205c41e33e7413d48ca2ddfbf5e34a2b47d6c524",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 84,
+      "global_epoch": 596,
+      "engine_epoch": 20,
+      "seed_commitment": "4c4ab0ef7a772ef8793e61838f730fae7ac572ca552ec7558ecde6febf4fe3d7",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 85,
+      "global_epoch": 597,
+      "engine_epoch": 21,
+      "seed_commitment": "acfd7a2cd0c493a0ba2408664acab6bfae2bbb055218a35a77f1950d5e5997d4",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 86,
+      "global_epoch": 598,
+      "engine_epoch": 22,
+      "seed_commitment": "f30542af15aef545e4db0818bc73aa15ab34139496a1a9b2001cbd9cf9446591",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 87,
+      "global_epoch": 599,
+      "engine_epoch": 23,
+      "seed_commitment": "0d8abbc43d23eec823ceb10cb6119228b34c3a6b973ea831dd22ced66a058da3",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 88,
+      "global_epoch": 600,
+      "engine_epoch": 24,
+      "seed_commitment": "4f4ba0389de6342ddc3520bd5ba17588676724fca1059bc5cb70c78a37ab1fd0",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 89,
+      "global_epoch": 601,
+      "engine_epoch": 25,
+      "seed_commitment": "ea63e96c3c0effc46bd61acf5817d45e4644bd7ae2138783399dae76f0a7689a",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 90,
+      "global_epoch": 602,
+      "engine_epoch": 26,
+      "seed_commitment": "0c0b26d62bedde7cb826687efda88ab1eccfab4f58b24d94d309079b205c0cb2",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 91,
+      "global_epoch": 603,
+      "engine_epoch": 27,
+      "seed_commitment": "070283d87f3ac2400e14c3d45250a34d741a860fc69c8d6d6dc73e59e8623a24",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 92,
+      "global_epoch": 604,
+      "engine_epoch": 28,
+      "seed_commitment": "5be3a5d2e86f28450b4a66d650be90b314e1bee6684174def60a27cb685fd0f0",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 93,
+      "global_epoch": 605,
+      "engine_epoch": 29,
+      "seed_commitment": "1355f681eff0870ce284a9172921f5576d16ad695d6c358be3b24279b708fb42",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 94,
+      "global_epoch": 606,
+      "engine_epoch": 30,
+      "seed_commitment": "d1cc04e604eaa8f004c75f6d1015b62964673d466fcd7b841111fe650ff34f4e",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 95,
+      "global_epoch": 607,
+      "engine_epoch": 31,
+      "seed_commitment": "4f4a2249a26bf7801abb5f1df1dfed217e2f92f2cba3262bbef1d84e9d7e9db3",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 96,
+      "global_epoch": 608,
+      "engine_epoch": 32,
+      "seed_commitment": "21eb22e1f54e1950787152d98f8d438dbfb83f32c3012468f8153ddf4cc3d75e",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 97,
+      "global_epoch": 609,
+      "engine_epoch": 33,
+      "seed_commitment": "6a0c4bbb859124d03261f37b86bb9ccd1a15ce57aaced4c99b5a3283155b36bd",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 98,
+      "global_epoch": 610,
+      "engine_epoch": 34,
+      "seed_commitment": "7422261a0254c3049a058ade8c880562b5fa4df3df74ced13215339805ef15f1",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 99,
+      "global_epoch": 611,
+      "engine_epoch": 35,
+      "seed_commitment": "f9b8ceeadea65c24e49ace869c56fbfba85a333bbe9ea3b3c1d5c80f254481a1",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 100,
+      "global_epoch": 612,
+      "engine_epoch": 36,
+      "seed_commitment": "0736c4216b75b333b59c274dd5af887a41685266e2382fefed0bbebb66c1b5c2",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 101,
+      "global_epoch": 613,
+      "engine_epoch": 37,
+      "seed_commitment": "fc0274a46a36feee82708164e857abcbe57d003c9d7088f34e45910312eebcb7",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 102,
+      "global_epoch": 614,
+      "engine_epoch": 38,
+      "seed_commitment": "36b9dbb413f8f3da2eeeb9ed82898d70256c0b026f1c6160beaecd3f2aa72cc7",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 103,
+      "global_epoch": 615,
+      "engine_epoch": 39,
+      "seed_commitment": "6bf59e106995521e2a977808496189fc3529d40c06f4815f8aa8b2866f36ee4c",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 104,
+      "global_epoch": 616,
+      "engine_epoch": 40,
+      "seed_commitment": "b110681a4527f89155b630f3d9698cbfedc8e50d8cf319a1bf4073eee11631e8",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 105,
+      "global_epoch": 617,
+      "engine_epoch": 41,
+      "seed_commitment": "1c9f3915a284257fab8b9827b607318e6e2e66abcf4c628f37e85ffbe92d40dc",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 106,
+      "global_epoch": 618,
+      "engine_epoch": 42,
+      "seed_commitment": "f0f0372efcd7de073c64189e30f0c70970077812ce6389f58f3cd0d3f210d0b3",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 107,
+      "global_epoch": 619,
+      "engine_epoch": 43,
+      "seed_commitment": "05fdd7cb4c0a03317d5e6b396b66a9c02ffd5036f1a6c4a2a1fb6ed1f56fdc61",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 108,
+      "global_epoch": 620,
+      "engine_epoch": 44,
+      "seed_commitment": "594eb93dd306be8fe2c226aa127beb6c58cd5ac32e67c7d83d631c1c53aa045a",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 109,
+      "global_epoch": 621,
+      "engine_epoch": 45,
+      "seed_commitment": "0a9f4d507ecd4194e2fb7f54e11e0ff1bf2f8c5a177f0895fe8d86a8bfb13c51",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 110,
+      "global_epoch": 622,
+      "engine_epoch": 46,
+      "seed_commitment": "042996ad9e2262a42025d2285da38babb1af071ad0a130238ea2900df5c1a020",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 111,
+      "global_epoch": 623,
+      "engine_epoch": 47,
+      "seed_commitment": "dcc4374a12a656add8f983235b7485731a646fac1f8730229da6e0ea3a75afae",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 112,
+      "global_epoch": 624,
+      "engine_epoch": 48,
+      "seed_commitment": "ceee9372474d4c76409f0d2b49fb99c566056684a8a2c514891e957e128a3076",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 113,
+      "global_epoch": 625,
+      "engine_epoch": 49,
+      "seed_commitment": "d0dd061c58bfe9ea8ad22b38574d908a7e07783fe9dd971b8d7919a26948e8e9",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 114,
+      "global_epoch": 626,
+      "engine_epoch": 50,
+      "seed_commitment": "794222ce43375909b96b9ea4cd9f7ac18daf85a48f19ecf73f692d3cf58281cb",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 115,
+      "global_epoch": 627,
+      "engine_epoch": 51,
+      "seed_commitment": "11eee18b437b1cf6bd723d668d082afa17fd08e4d5f51aa9c38c3126432fcbef",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 116,
+      "global_epoch": 628,
+      "engine_epoch": 52,
+      "seed_commitment": "c8de9e4d2e1c0478c666dcc40dbf60f766a1aebe2afd1803e67c3cd7b22adb4b",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 117,
+      "global_epoch": 629,
+      "engine_epoch": 53,
+      "seed_commitment": "25d7ac0f65e07c30ecbccff1ec2b60cb42e92a05be33c12c828bcdd2da424259",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 118,
+      "global_epoch": 630,
+      "engine_epoch": 54,
+      "seed_commitment": "b5d7cb2ecc1bbcc588e474cd3b43fedae48088094e559758e5ff64315f734f83",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 119,
+      "global_epoch": 631,
+      "engine_epoch": 55,
+      "seed_commitment": "3d8df586fa87488a9f7903771b20bb0a594bb240682f1b19358f98713fc2530e",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 120,
+      "global_epoch": 632,
+      "engine_epoch": 56,
+      "seed_commitment": "94ef2ed450a17be0d51cb4a491baf673ad1ce3b6a5b371d4e1da903d960a74ce",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 121,
+      "global_epoch": 633,
+      "engine_epoch": 57,
+      "seed_commitment": "156762642c8f3062136dc8be4c46ccd1b3f37473f3c69525117f9e3d881bfe5d",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 122,
+      "global_epoch": 634,
+      "engine_epoch": 58,
+      "seed_commitment": "63216802ec63b856dad76d912606ddd941166540ee9b9a40af11c9a5e3cade7d",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 123,
+      "global_epoch": 635,
+      "engine_epoch": 59,
+      "seed_commitment": "31ef160251d17cc0338fdf7bc780fc44478bc7243addcbac422f4818650340e6",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 124,
+      "global_epoch": 636,
+      "engine_epoch": 60,
+      "seed_commitment": "cbfdcd071cd588d9588a06ee9ff95dba25630e645d45fe9bac0c32759810eee5",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 125,
+      "global_epoch": 637,
+      "engine_epoch": 61,
+      "seed_commitment": "aa63cb98777380c94e0639998eebe4fac0d4f0e5cf5073f712fe45e022feec88",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 126,
+      "global_epoch": 638,
+      "engine_epoch": 62,
+      "seed_commitment": "93df49107bebac7c6f5e222771db5c936090741ea5865693a8486fe99564d757",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 127,
+      "global_epoch": 639,
+      "engine_epoch": 63,
+      "seed_commitment": "d0ccac1df9540f49f84a49aa88edd7e97a19e370719d78fbe765a2f41652d1e8",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 128,
+      "global_epoch": 640,
+      "engine_epoch": 64,
+      "seed_commitment": "60d9804998b4f69505d7a5f622e1f05ba4887e74aa0c089badddd7a604cfc2af",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 129,
+      "global_epoch": 641,
+      "engine_epoch": 1,
+      "seed_commitment": "391cc92ed5ff7d6e6b0f17f7c742d73dff01ccb4e0c7a3283814b13cf2f4e76a",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 130,
+      "global_epoch": 642,
+      "engine_epoch": 2,
+      "seed_commitment": "6dc1c25c963dc9384f71cce8047b4f85be1fefbabbf6e3d93a312cb3f780fbb2",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 131,
+      "global_epoch": 643,
+      "engine_epoch": 3,
+      "seed_commitment": "420ca7a1fbe97654f4ecbd21ddfd8067d86097961ce7109a6ca883cc41b8d319",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 132,
+      "global_epoch": 644,
+      "engine_epoch": 4,
+      "seed_commitment": "9c4e0840d88afddabab687698e2ac141ec01c286b920fb8e9fe45e75957dcfe1",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 133,
+      "global_epoch": 645,
+      "engine_epoch": 5,
+      "seed_commitment": "d3a558b0eba16add5e97c300e1db75d4c6c7a9a1ff332af47dd9da87245928cd",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 134,
+      "global_epoch": 646,
+      "engine_epoch": 6,
+      "seed_commitment": "c80789763ea296bd6d1f371b51f55003d555e6af40ab2964f6a99095466c77c5",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 135,
+      "global_epoch": 647,
+      "engine_epoch": 7,
+      "seed_commitment": "bef808c0071105fdbc7cd3cfaa02a5cec12cac7f1b421cc734d181336da66ca2",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 136,
+      "global_epoch": 648,
+      "engine_epoch": 8,
+      "seed_commitment": "66018b5e92442e7ca17eb8148620fe71b9c962957cce189a31b0c01cbe7f70db",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 137,
+      "global_epoch": 649,
+      "engine_epoch": 9,
+      "seed_commitment": "a8db56efdb9ba13e9b80ed99d51bb189b6711566b80fb9b0a4692ba8d6709384",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 138,
+      "global_epoch": 650,
+      "engine_epoch": 10,
+      "seed_commitment": "805881a316c13ad5373c4c8b46455c36e2bd1b7df5b3aff07f35d620cd67488b",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 139,
+      "global_epoch": 651,
+      "engine_epoch": 11,
+      "seed_commitment": "f4754c29806f4426c2a7a31a492e90b8068abe85d172ae359cb8ca9505b75b01",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 140,
+      "global_epoch": 652,
+      "engine_epoch": 12,
+      "seed_commitment": "b3032e0ced49f2e0f68af1fee0da3f4c65723e57a82a956e1fb8fcc2158632ee",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 141,
+      "global_epoch": 653,
+      "engine_epoch": 13,
+      "seed_commitment": "8f44e582c5c6708af1bf25e7b0b7395e946aa3be99759814cb80945c181ebc30",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 142,
+      "global_epoch": 654,
+      "engine_epoch": 14,
+      "seed_commitment": "08282dc70b1d0f20489ad1c40b83f82b6a5d1711e2968990bbf71daf5503e4f6",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 143,
+      "global_epoch": 655,
+      "engine_epoch": 15,
+      "seed_commitment": "f71bbf392a3643ada07c0a8f18fb7b941cab00cba8835373707b1502235a0f3c",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 144,
+      "global_epoch": 656,
+      "engine_epoch": 16,
+      "seed_commitment": "527b3aa9d63311a47bbae5b4b8e1e2c9f38a5a7b05d62dd62d61816e39001119",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 145,
+      "global_epoch": 657,
+      "engine_epoch": 17,
+      "seed_commitment": "d1e9171c2940235bec9fd1cd9a6f01e65a21c78ae5ba2aac6cdccac45933cf8b",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 146,
+      "global_epoch": 658,
+      "engine_epoch": 18,
+      "seed_commitment": "f7963df69bb33f0afc964e59f618b463eec59fb7c5b33660e933a22d293758fa",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 147,
+      "global_epoch": 659,
+      "engine_epoch": 19,
+      "seed_commitment": "101e121fdc224089bfe8aac33adc27c809aee8c27594ac30e819996d21ce85d0",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 148,
+      "global_epoch": 660,
+      "engine_epoch": 20,
+      "seed_commitment": "cb14b8f3043e5bca2341c555b4106dc9050efa3cb2f8b970aaa473a9b2cb13bc",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 149,
+      "global_epoch": 661,
+      "engine_epoch": 21,
+      "seed_commitment": "85e555f0270dc2bdc25b794f39cb397023cb28ce5e0df3a5e0553738a4052cb7",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 150,
+      "global_epoch": 662,
+      "engine_epoch": 22,
+      "seed_commitment": "8fdd8a66e5c2b5b2ebc2514820cb65d9af0b48af318db0ab208a98b34910d208",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 151,
+      "global_epoch": 663,
+      "engine_epoch": 23,
+      "seed_commitment": "593187b4ae80860e3f856d54da5141f09474b3d7f259e5434a19f94d4d34a22e",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 152,
+      "global_epoch": 664,
+      "engine_epoch": 24,
+      "seed_commitment": "adc3c3eb6bfa6135f2ea2ca0db8dac6a3f25d7ba5e54c504b97e44764ca34a64",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 153,
+      "global_epoch": 665,
+      "engine_epoch": 25,
+      "seed_commitment": "bd7ba07f0d8e12ea899d8bb8993f8ef479a039fd3a110e3208f94f5696e39e91",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 154,
+      "global_epoch": 666,
+      "engine_epoch": 26,
+      "seed_commitment": "a02ac874daac7e9ccc4ed25c21964f00aa57e357b6aacf133f7d2a2e2f69ed34",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 155,
+      "global_epoch": 667,
+      "engine_epoch": 27,
+      "seed_commitment": "12a3b5d5f297ac0edec8728c32919907167cbb4e650e2bc5b6bd6af04ec584e4",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 156,
+      "global_epoch": 668,
+      "engine_epoch": 28,
+      "seed_commitment": "e2a6298cbba1b1a96a90bf310958d2d5aab8fd89121e9f1020c8df3f1765b9de",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 157,
+      "global_epoch": 669,
+      "engine_epoch": 29,
+      "seed_commitment": "df1388ea835145ea64fc0cfff20fbb89e59ca378b80362ccbde76823745bdd01",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 158,
+      "global_epoch": 670,
+      "engine_epoch": 30,
+      "seed_commitment": "f05db5dd47d426359a158a4d241ae8e26300dcee6226669dfdafd7718710a409",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 159,
+      "global_epoch": 671,
+      "engine_epoch": 31,
+      "seed_commitment": "a6f750c3e3bb3917575d51bbc7d5454ae17edf2d569b682cdf3dedc614f2284e",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 160,
+      "global_epoch": 672,
+      "engine_epoch": 32,
+      "seed_commitment": "0300b0d2bb65f479dfc923b52ee77d760daaacbae68109f1daec7768c64b40f7",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 161,
+      "global_epoch": 673,
+      "engine_epoch": 33,
+      "seed_commitment": "6a80bcaa3e1e1504016a66d1103071e5e8d285906b173743f6632bf8d9b658b2",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 162,
+      "global_epoch": 674,
+      "engine_epoch": 34,
+      "seed_commitment": "7817d82473831c863a72c41258a429cd258fd2fc50eee4a5a6a8c77cd412a2be",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 163,
+      "global_epoch": 675,
+      "engine_epoch": 35,
+      "seed_commitment": "69eba051ea805022d5c3d23635718e7940b47f7ccc2b364d2ee86e0bb8470a80",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 164,
+      "global_epoch": 676,
+      "engine_epoch": 36,
+      "seed_commitment": "c3afe7db316c6f8e106cc5d8c7543b8ce53eb93d4b06df87fa69bd734fd6d006",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 165,
+      "global_epoch": 677,
+      "engine_epoch": 37,
+      "seed_commitment": "0b94a826e02b3e53b0cd42c56e146ab0ba3561c80ce46d13af029955547ff203",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 166,
+      "global_epoch": 678,
+      "engine_epoch": 38,
+      "seed_commitment": "dd6a2abae44abd991af08bb34184e36f6f42c1dbd6211ccb146ccdd0563a99aa",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 167,
+      "global_epoch": 679,
+      "engine_epoch": 39,
+      "seed_commitment": "9bb9b0f8cf02b935787536636ce9d2ec87c3fc0b99f1f053b576c12c329b7b03",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 168,
+      "global_epoch": 680,
+      "engine_epoch": 40,
+      "seed_commitment": "09d50b253ef1d5b75602d4679cde77c228828ce51ddfd7d86a8e1589e7583e83",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 169,
+      "global_epoch": 681,
+      "engine_epoch": 41,
+      "seed_commitment": "5464d1c9964a610c22e0f333a9e2b298727edf6cff1a8f08f89158cb7ef4dea5",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 170,
+      "global_epoch": 682,
+      "engine_epoch": 42,
+      "seed_commitment": "9586321e2d0c4d8a0e0abb5cb60a0b207a2fe8a2b69a19bbb4b3f5f2dc49feb7",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 171,
+      "global_epoch": 683,
+      "engine_epoch": 43,
+      "seed_commitment": "8837dfb215192c957c54a165752c845bf5b8dc126d8350b6f308a462b0fddc57",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 172,
+      "global_epoch": 684,
+      "engine_epoch": 44,
+      "seed_commitment": "ccd5419aab9626342741c0b4b4442d05033d536db66ef5016cddab14127d6f3b",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 173,
+      "global_epoch": 685,
+      "engine_epoch": 45,
+      "seed_commitment": "1d84f2c33260051368c77748d2102c3c36a48b174814f55c5c51ed253e23c358",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 174,
+      "global_epoch": 686,
+      "engine_epoch": 46,
+      "seed_commitment": "292bf425048f95884c139498d45ac17a2f1bbc9fecbdda3e118254060b98bf50",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 175,
+      "global_epoch": 687,
+      "engine_epoch": 47,
+      "seed_commitment": "062994dd3744dc8af6742acb36fce3f61a17aa92d36b98cb344b9e16fb0be96b",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 176,
+      "global_epoch": 688,
+      "engine_epoch": 48,
+      "seed_commitment": "46bd626adeca98bf241cd2df41cd593a0750ce5dd09b414b14de170e9bbfe375",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 177,
+      "global_epoch": 689,
+      "engine_epoch": 49,
+      "seed_commitment": "b07558d2069be088331767fa08b6a5ab841ee333c25be4b9dbbc437eb6950484",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 178,
+      "global_epoch": 690,
+      "engine_epoch": 50,
+      "seed_commitment": "9e705f350271f291466aa72cb1948cd6f280bb9d1ed5a84f417208f7b8c0ff3d",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 179,
+      "global_epoch": 691,
+      "engine_epoch": 51,
+      "seed_commitment": "e56b8dd394dc4028f4de656529b7eaba8a127b251890e6bf21e8174da85f6e47",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 180,
+      "global_epoch": 692,
+      "engine_epoch": 52,
+      "seed_commitment": "a76a571eaaf03bec1aea03e10a4447c9a34d9a5be44d5e241bc7c637de9f0d0a",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 181,
+      "global_epoch": 693,
+      "engine_epoch": 53,
+      "seed_commitment": "411347dc4ccac8ee1c8096c78cef60f736205823a9271986ec26c6f2641e7591",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 182,
+      "global_epoch": 694,
+      "engine_epoch": 54,
+      "seed_commitment": "c93bc7c26039749158d8885a4bb0e3e417a716ee3653f0b7c9a939e9ed2d4a05",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 183,
+      "global_epoch": 695,
+      "engine_epoch": 55,
+      "seed_commitment": "abac523d1036c8b89c3ae3475929b74bce9a25d8f49a52d1ac4609cf5d479ef4",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 184,
+      "global_epoch": 696,
+      "engine_epoch": 56,
+      "seed_commitment": "5535e96e2f8868250a2d119ee688d480d0f1d91e4e1d550da2ba709bc72a7667",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 185,
+      "global_epoch": 697,
+      "engine_epoch": 57,
+      "seed_commitment": "5d3c6d488d34babeb427bf282c17dcecf362acf77ce05c3623c597c3f01de572",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 186,
+      "global_epoch": 698,
+      "engine_epoch": 58,
+      "seed_commitment": "fe70bc9df505aeb359a104314641b349f7d167d3a16e5f9f19c6e308d0dffb78",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 187,
+      "global_epoch": 699,
+      "engine_epoch": 59,
+      "seed_commitment": "869bb9d7adce98ce125f520c3c60b53c708a24fd0464479612449bf8c7ff64c1",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 188,
+      "global_epoch": 700,
+      "engine_epoch": 60,
+      "seed_commitment": "dea5e11518b1d5b3c7ba7bb1577a2c6b2c09bdf165ab23a8ec20ef7f5f43adbc",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 189,
+      "global_epoch": 701,
+      "engine_epoch": 61,
+      "seed_commitment": "e5e07dae0120d004b5d9090b7cd95e005d69605caf308c86de0a603acc384d44",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 190,
+      "global_epoch": 702,
+      "engine_epoch": 62,
+      "seed_commitment": "acf82f8c607538143a923709a5dc80802ada245b02639f3bfa2b68099ebdb4d8",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 191,
+      "global_epoch": 703,
+      "engine_epoch": 63,
+      "seed_commitment": "2a4659009f2c6459c86831c8dcd898ed77c17fc9d5172a1d06d837c57a2f6f4e",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 192,
+      "global_epoch": 704,
+      "engine_epoch": 64,
+      "seed_commitment": "49fb9faffd851ae2907ea8d9b366910b9b6ec90a80ad50aa261575f2a63ce12a",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 193,
+      "global_epoch": 705,
+      "engine_epoch": 1,
+      "seed_commitment": "c495c7eeb2554b361cbbe48ae52b4116aee2aa0ab00e8becd8382b001a9b64ef",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 194,
+      "global_epoch": 706,
+      "engine_epoch": 2,
+      "seed_commitment": "80b71db886ba903819a7358d90e55ab13bc7fb6dee1ba254bd83dd6ac75d8d41",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 195,
+      "global_epoch": 707,
+      "engine_epoch": 3,
+      "seed_commitment": "4320ccf2e49cfbccf4310148b91639e34415d3d88e94106f467405648b5b0ee3",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 196,
+      "global_epoch": 708,
+      "engine_epoch": 4,
+      "seed_commitment": "08a62f3d813c33c2846d8da7f2552c7e00e13334acfdd7446db134a85874c3c0",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 197,
+      "global_epoch": 709,
+      "engine_epoch": 5,
+      "seed_commitment": "394eb007d30c4bb38abd1b533492c967f26a7f30b4f5ef4968539a7d854a0d1e",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 198,
+      "global_epoch": 710,
+      "engine_epoch": 6,
+      "seed_commitment": "f1550caa6415d62ed90588a7a71f021b4eccc67e70e79c246e2089cc87ea3dca",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 199,
+      "global_epoch": 711,
+      "engine_epoch": 7,
+      "seed_commitment": "f2ad98893dc0001506eae360674e0595c67b7bbe5b3863dfa8715b8c08e9c4f3",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 200,
+      "global_epoch": 712,
+      "engine_epoch": 8,
+      "seed_commitment": "9065780e574d159dd29f70d8b5a7eb696a8d653c956c4e434d9dce54bc5ab7a5",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 201,
+      "global_epoch": 713,
+      "engine_epoch": 9,
+      "seed_commitment": "9c438d1aa87b7b06ebe148a3848c34a4c76bc7ba92ff2ad10195b7753dc8e8d7",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 202,
+      "global_epoch": 714,
+      "engine_epoch": 10,
+      "seed_commitment": "965baded40f40baa9c1919fbb6504ffc27c43e881e9544947aead76034ff0338",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 203,
+      "global_epoch": 715,
+      "engine_epoch": 11,
+      "seed_commitment": "bba2d9250ac131fddd7f7276667e4f8e16326e9e07e655a32d666e108c583044",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 204,
+      "global_epoch": 716,
+      "engine_epoch": 12,
+      "seed_commitment": "6cb0f1910ab0d48456b9413e4eef7a38329d98da6048873dbd18c4010af99091",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 205,
+      "global_epoch": 717,
+      "engine_epoch": 13,
+      "seed_commitment": "7e9adbda44431f4e32cf3de05bc539ff1e618b962701ca1748d71eebbae98569",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 206,
+      "global_epoch": 718,
+      "engine_epoch": 14,
+      "seed_commitment": "39ee26adc81c656d1840b456032b9ac3a5453c20e436303978531cb1417b0107",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 207,
+      "global_epoch": 719,
+      "engine_epoch": 15,
+      "seed_commitment": "e30e37c0da055c8545557122e45d2b901616713d24b600c6c64b29b49724ef85",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 208,
+      "global_epoch": 720,
+      "engine_epoch": 16,
+      "seed_commitment": "79aa07a150348fdc146f9946cc12efe58f585b1b24edca602bf3d6f06d7ec45e",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 209,
+      "global_epoch": 721,
+      "engine_epoch": 17,
+      "seed_commitment": "63622584f4ed4189e09648703265a3eea69a2323d3a7a9599ded484e8f682581",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 210,
+      "global_epoch": 722,
+      "engine_epoch": 18,
+      "seed_commitment": "44fe49e71411d24f6d1b5de5dede1ac605bfdee6bf69bc0b6332eb311d13c4eb",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 211,
+      "global_epoch": 723,
+      "engine_epoch": 19,
+      "seed_commitment": "aec48ecec460ece31f846a6ea49063c20a234675cdbdee354f60caa04f880495",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 212,
+      "global_epoch": 724,
+      "engine_epoch": 20,
+      "seed_commitment": "73110add942f5fdca53d4ebf84baa5c800364045bd4c86e30d5d1bb96395e06a",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 213,
+      "global_epoch": 725,
+      "engine_epoch": 21,
+      "seed_commitment": "2fb1c5ea80eede6d8745d4ef164b7f66781c0b2c536ad1db6a4c6fc515ba2df4",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 214,
+      "global_epoch": 726,
+      "engine_epoch": 22,
+      "seed_commitment": "2fd35d78bd35dd7619cdccda1c6fbf0a9d0c807023d0b60ebf9facb3e53c75bc",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 215,
+      "global_epoch": 727,
+      "engine_epoch": 23,
+      "seed_commitment": "cd15f698a671abe5957bc46018c4630bc6ff6833f6ae4c04cef59d6e427eb438",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 216,
+      "global_epoch": 728,
+      "engine_epoch": 24,
+      "seed_commitment": "c5ba009c210818e6505e1aac489ab6bf9d21c1316c4252933f7738f582a4a501",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 217,
+      "global_epoch": 729,
+      "engine_epoch": 25,
+      "seed_commitment": "19bb36052bf84c838965fe966161e5a80d88d707c01a709ea7c2a8a4aaf50c68",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 218,
+      "global_epoch": 730,
+      "engine_epoch": 26,
+      "seed_commitment": "d434a3638d86b2b961d46c692592a93fa06921f4383bf8ac3049645d3e75de96",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 219,
+      "global_epoch": 731,
+      "engine_epoch": 27,
+      "seed_commitment": "de02cae5f91b9dc6ef69eafab6b4217e3c26cf8dfe0bdd99c6c63cfe65674b05",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 220,
+      "global_epoch": 732,
+      "engine_epoch": 28,
+      "seed_commitment": "a862c3e3d2896ffdd9dae3cb101aae838ef67fefc97477f408170d33f65ad7f5",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 221,
+      "global_epoch": 733,
+      "engine_epoch": 29,
+      "seed_commitment": "0d616a559b0097fc7cb030fc702fc33047e6c2e8b74c81c4fb92252c23647c38",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 222,
+      "global_epoch": 734,
+      "engine_epoch": 30,
+      "seed_commitment": "3b753555c9ed2ae1c41a66c2a965dd42e3d5264b88c9c163398dbe32b7b1bcc7",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 223,
+      "global_epoch": 735,
+      "engine_epoch": 31,
+      "seed_commitment": "97e48e3b8e3c609e0eb3172cc5d9b918dc1ac1203a9a36baf4eee64db0b42c75",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 224,
+      "global_epoch": 736,
+      "engine_epoch": 32,
+      "seed_commitment": "945424a32888930394b251fa102e1bc2e740e0cbcc44bac72d9e56d0602b614b",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 225,
+      "global_epoch": 737,
+      "engine_epoch": 33,
+      "seed_commitment": "e28ac852ea14effaf0fbada9538cfc041e76546294358f6667f0a97a12e91ae3",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 226,
+      "global_epoch": 738,
+      "engine_epoch": 34,
+      "seed_commitment": "85d9689787e456a1730b014c798126d7c176f759c35bfa71a15c8fa0a38d5022",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 227,
+      "global_epoch": 739,
+      "engine_epoch": 35,
+      "seed_commitment": "d7c799d8b7df3a91986e504962a8cdd3c9886f0f7dcae60b939144220a2bd978",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 228,
+      "global_epoch": 740,
+      "engine_epoch": 36,
+      "seed_commitment": "68e3bba8bb4936fce2a9a8970cbe67068eab48fcfd74eb795acdbb92f7000607",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 229,
+      "global_epoch": 741,
+      "engine_epoch": 37,
+      "seed_commitment": "d47b607368ed4be7a1e43d0a5ddb3e3d47ba44b6fee6fe648b854d38201edd05",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 230,
+      "global_epoch": 742,
+      "engine_epoch": 38,
+      "seed_commitment": "6284738698b8686e2b9fbb2bc2f72de0328d3beec6ec43d03ad9e6e7d0962ab0",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 231,
+      "global_epoch": 743,
+      "engine_epoch": 39,
+      "seed_commitment": "b71c47291f36e746bcdc3b4128cd06b6c4950d8e46b534436155736c399c6446",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 232,
+      "global_epoch": 744,
+      "engine_epoch": 40,
+      "seed_commitment": "e5c61bccc6dc5299d345aceb4fab0ba678e617e88d77937cfeb2683893e5e0b4",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 233,
+      "global_epoch": 745,
+      "engine_epoch": 41,
+      "seed_commitment": "8967f86281c9432b466c97d07fc88af060c02fd129407cc22a9976a8883c177d",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 234,
+      "global_epoch": 746,
+      "engine_epoch": 42,
+      "seed_commitment": "af8c90d2bf39e39d27fb7cd82d45bc0030440d785296e1a57adfec2ac3868b76",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 235,
+      "global_epoch": 747,
+      "engine_epoch": 43,
+      "seed_commitment": "52466a00696c0fd67f82074336cd7dbd5c3cd26e15c819beca46088cc0dfe195",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 236,
+      "global_epoch": 748,
+      "engine_epoch": 44,
+      "seed_commitment": "09e1511319bddf9bcd9c90d072937c0b8869954631f37a6cc31dc1d5e677458b",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 237,
+      "global_epoch": 749,
+      "engine_epoch": 45,
+      "seed_commitment": "540f32d3ca0a69b9f45f273c3feb4caa833abdbffe2466d1664c5d25c55b563b",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 238,
+      "global_epoch": 750,
+      "engine_epoch": 46,
+      "seed_commitment": "1624cd151af31653dda5670321e2ac3b5a2f928136b7093b0fe161841640cfd1",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 239,
+      "global_epoch": 751,
+      "engine_epoch": 47,
+      "seed_commitment": "392ac07ff2837460a2c5e07b75eb76378133a683a8189f5eba55e87362f4f0df",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 240,
+      "global_epoch": 752,
+      "engine_epoch": 48,
+      "seed_commitment": "e54cfa6e16bc0babbd69d2ce1b3f5d2e1ae33a0d5c19fab46c3e1006bf2c8888",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 241,
+      "global_epoch": 753,
+      "engine_epoch": 49,
+      "seed_commitment": "9c1142e3983acc6c3d44a2af7f0f17ca0585b327ca62e9999d0edf3158f0dde0",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 242,
+      "global_epoch": 754,
+      "engine_epoch": 50,
+      "seed_commitment": "4e54048f9d514b41348888ca8b67dc47f31d8b60d4d4609c090313a6452de500",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 243,
+      "global_epoch": 755,
+      "engine_epoch": 51,
+      "seed_commitment": "373805f20c9161978a35ad0c7ed4a8aac03c9d81fe7c32c5feaa9cc21869e197",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 244,
+      "global_epoch": 756,
+      "engine_epoch": 52,
+      "seed_commitment": "f0bcfdb1237c03460c9b99b38e4d800a9174aa9b4c38ef8eb6de3227784ced5e",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 245,
+      "global_epoch": 757,
+      "engine_epoch": 53,
+      "seed_commitment": "c42755bc7f301f9309e6b7e678ec609c73b0fd5b900f884e39c594960e6052be",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 246,
+      "global_epoch": 758,
+      "engine_epoch": 54,
+      "seed_commitment": "48b060295493d511ffb6de01e2d9e85070fb5ac2702e4ac055c342a8b37f01f2",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 247,
+      "global_epoch": 759,
+      "engine_epoch": 55,
+      "seed_commitment": "b9f8c0ae42d27615ad0d106be72b577678f8580b30b27a9cf45742619bb72901",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 248,
+      "global_epoch": 760,
+      "engine_epoch": 56,
+      "seed_commitment": "35a861da694ff53b5a5225cef0a77fb841dbf3d03aaac47be42a8fdf9d2c13d6",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 249,
+      "global_epoch": 761,
+      "engine_epoch": 57,
+      "seed_commitment": "596e7988a297111d8a942e0d0b63a5440c9f51bff6822b40f0ba3c62f68db134",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 250,
+      "global_epoch": 762,
+      "engine_epoch": 58,
+      "seed_commitment": "983b067bd377c2ecd2bda8d03aa968556e8dbe452384a736eaa398f23179757a",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 251,
+      "global_epoch": 763,
+      "engine_epoch": 59,
+      "seed_commitment": "e6ae8d61bf92314db8389bb8efab035c3c8d6bdce255bff3a93e0a689c396d3e",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 252,
+      "global_epoch": 764,
+      "engine_epoch": 60,
+      "seed_commitment": "c0cf1d12b5108db4a85913ee5fc0557f0e4b28a17b1e1922ff53ec377b8c4c9f",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 253,
+      "global_epoch": 765,
+      "engine_epoch": 61,
+      "seed_commitment": "c7bad836c131c6de6c6aed1ff2b4b3bdc483ddee95bfce0a1198c6c2cd0d0e3c",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 254,
+      "global_epoch": 766,
+      "engine_epoch": 62,
+      "seed_commitment": "87018415486a0a1650b432e155268923e2f29e68482e6121db2c729e839e6af2",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 255,
+      "global_epoch": 767,
+      "engine_epoch": 63,
+      "seed_commitment": "de1fce83e277068c65896984889a38e6b434615e11dfff2027b4e65681402aea",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    },
+    {
+      "campaign_epoch": 256,
+      "global_epoch": 768,
+      "engine_epoch": 64,
+      "seed_commitment": "b31e21e4018cfaed43ca011ca6dcb0be566c88cc6c670b4c01762ddadb3ec897",
+      "research_topic_committed": false,
+      "repair_committed": false,
+      "difficulty_response_committed": false
+    }
+  ],
+  "frozen_at_utc": "2026-08-09T03:39:37.358335Z"
+}

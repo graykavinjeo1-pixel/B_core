@@ -1,0 +1,12 @@
+{
+  "campaign_id": "SEM27-LIVE-AUTONOMOUS-STAIRCASE-0001",
+  "status": "SUCCESS",
+  "budget": 256,
+  "epochs_executed": 161,
+  "current_regime_id": 3,
+  "transition_count": 2,
+  "frontier_scale": 425930,
+  "success": true,
+  "resumable": false,
+  "updated_at_utc": "2026-08-09T03:45:50.882610Z"
+}

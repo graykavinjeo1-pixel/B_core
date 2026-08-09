@@ -1,0 +1,21 @@
+{
+  "schema_version": "SEM27_LIVE_INSTRUMENTATION_REPAIR_FREEZE_1",
+  "campaign_id": "SEM27-LIVE-AUTONOMOUS-STAIRCASE-0001",
+  "original_campaign_freeze_preserved": true,
+  "semantic_predecessor_commit": "9dbebdd280db2c292bff4865bcf8f1d8c39c335d",
+  "instrumentation_repair_commit": "0cf2de23ab324592ede3d1f18f43572e03f4fba8",
+  "checkpoint_epoch": 84,
+  "original_sem27_probe_sha256": "9a02050a7c42970d81fe545b46a7c47d84daa6d2f18b7ff9e99106733775a332",
+  "effective_sem27_probe_sha256": "ee4cbd8204d1c927a5031dd2f86dce14da2c8a7bc3073b9397fb46c0711b2a46",
+  "effective_sem27_probe_source_sha256": "7960685b89ec6345c0a499e0e60eaa1d328de15cc476830599141c56d7c9edfb",
+  "effective_runner_sha256": "f52ff45ab447fdf4bf7a1fb8aff5803d611cdffc75fde46e512851349b49873a",
+  "sem24_probe_sha256": "c2bb641cfe5c1a6f1c9b9c71475dbfbdd8668d26ccc0214f1a623cdf1013e30b",
+  "engine_sha256": "519557be10710d2a74d1ae21fddd75c55940811ac8017b4c871278cfd311f28b",
+  "change_scope": "REQUEST_TRANSPORT_ONLY_COMMAND_LINE_TO_STDIN",
+  "request_payload_semantics_changed": false,
+  "autonomous_policy_changed": false,
+  "seed_commitments_changed": false,
+  "budget_changed": false,
+  "future_instance_exposed_during_repair": false,
+  "resume_authorized_from_same_checkpoint": true
+}

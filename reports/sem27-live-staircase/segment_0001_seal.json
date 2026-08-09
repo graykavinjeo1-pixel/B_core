@@ -1,0 +1,22 @@
+{
+  "schema_version": "SEM27_LIVE_SEGMENT_SEAL_1",
+  "campaign_id": "SEM27-LIVE-AUTONOMOUS-STAIRCASE-0001",
+  "segment_id": 1,
+  "status": "PASS",
+  "disposition": "AUTONOMOUS_DIFFICULTY_TRANSITION_OBSERVED",
+  "semantic_predecessor_commit": "9dbebdd280db2c292bff4865bcf8f1d8c39c335d",
+  "instrumentation_commit": "0cf2de23ab324592ede3d1f18f43572e03f4fba8",
+  "frozen_budget": 256,
+  "epochs_executed": 161,
+  "final_regime_id": 3,
+  "final_transition_count": 2,
+  "final_frontier_scale": 425930,
+  "final_report_sha256": "534ed715caa564899d406a95fb8bcfde095ab85e613ac8d58d08bca5a5e76bd2",
+  "final_state_sha256": "0f929a0ea03309dd63cf1fcbc66b17a02861a5fd928c08e55daa3b608ad10880",
+  "last_epoch_sha256": "65c7c9190ade14f00f8928a168b5f2c6940040499a120cf871507c17f6941516",
+  "engine_sha256": "519557be10710d2a74d1ae21fddd75c55940811ac8017b4c871278cfd311f28b",
+  "operator_selected": false,
+  "human_difficulty_escalation_events": 0,
+  "human_difficulty_level_selection_events": 0,
+  "authoritative_in_git_after_seal_commit": true
+}

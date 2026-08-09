@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "disposition": "AUTONOMOUS_DIFFICULTY_TRANSITION_OBSERVED",
+  "budget": 256,
+  "epochs_executed": 161,
+  "current_regime_id": 3,
+  "transition_count": 2,
+  "human_research_steering_events": 0,
+  "human_difficulty_escalation_events": 0,
+  "human_difficulty_level_selection_events": 0,
+  "success_condition_met": true,
+  "completed_at_utc": "2026-08-09T03:45:50.887145Z"
+}

@@ -1,0 +1,15 @@
+{
+  "classification": "PRE_ARTIFACT_INSTRUMENTATION_FIELD_MAPPING_FAILURE",
+  "failed_runner_commit": "c91572b",
+  "failure": "difficulty_probe.local_execution_time_ns did not exist",
+  "repair": "read the existing difficulty_probe.wall_time_ns observer field",
+  "engine_changed": false,
+  "autonomous_policy_changed": false,
+  "difficulty_policy_changed": false,
+  "repair_policy_changed": false,
+  "seed_changed": false,
+  "budget_changed": false,
+  "epoch_artifacts_created_before_failure": 0,
+  "research_outcome_used_to_design_repair": false,
+  "resume_same_frozen_campaign": true
+}

@@ -1,0 +1,14 @@
+{
+  "classification": "CHECKPOINT_RESTORE_TELEMETRY_FIELD_MAPPING_FAILURE",
+  "failure": "checkpoint restore retained the obsolete local_execution_time_ns field name",
+  "repair": "restore the existing difficulty_probe.wall_time_ns field used by live execution",
+  "engine_changed": false,
+  "autonomous_policy_changed": false,
+  "difficulty_policy_changed": false,
+  "repair_policy_changed": false,
+  "seed_changed": false,
+  "budget_changed": false,
+  "completed_epoch_artifacts_preserved": 69,
+  "research_outcome_used_to_design_repair": false,
+  "resume_same_frozen_campaign": true
+}
