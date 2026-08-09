@@ -1,7 +1,16 @@
 {
-  "campaign_specific_tests": "PENDING_POST_CANONICAL",
-  "clean_reconstruction": "PENDING_POST_COMMIT",
-  "clippy_diff": "PENDING_POST_CANONICAL",
+  "campaign_specific_tests": "PASS",
+  "capability_negative_transfer_events": 0,
+  "clean_reconstruction": "PASS",
+  "clean_reconstruction_commit": "006298a5eb3fcbbaf709224f1edcc65a475ad41c",
+  "clippy_diff": "PASS",
+  "gain_erasure_events": 0,
+  "global_reasoning_regressions": 0,
+  "meta_quality_regressions": 0,
+  "new_clippy_warning_signatures_total": 0,
   "primary_secondary_acceptance_recomputation": true,
-  "workspace_all_targets_locked": "PENDING_POST_CANONICAL"
+  "sem33_r1_tests_passed": 8,
+  "workspace_all_targets_locked": "PASS",
+  "workspace_tests_failed": 0,
+  "workspace_tests_passed": 244
 }

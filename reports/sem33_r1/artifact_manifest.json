@@ -1,0 +1,163 @@
+{
+  "artifacts": [
+    {
+      "bytes": 337,
+      "path": "reports/sem33_r1/SEM33_R1_REPORT.md",
+      "sha256": "b7d21b15eed538cc81019bf0d39c8e69544ab27837b23e1522f0ff3212e988a5"
+    },
+    {
+      "bytes": 6376,
+      "path": "reports/sem33_r1/acceptance_recheck.json",
+      "sha256": "8ddd8db8d31fdf47f3eebe7bc26b2a23a7e5212bd09e723b95b7fae5b021f9fb"
+    },
+    {
+      "bytes": 961024,
+      "path": "reports/sem33_r1/artifacts/frozen_p0/sem33-r1-verify.exe",
+      "sha256": "f1d8c57447617e91123fc4b64dad449ed261e5a4b942bf387871fc98fae3013b"
+    },
+    {
+      "bytes": 189,
+      "path": "reports/sem33_r1/budget_contract.json",
+      "sha256": "d5744fae79d96646c8ad77049d4b0f2e3264630b02b154489b42abb5c9cdfdb8"
+    },
+    {
+      "bytes": 708,
+      "path": "reports/sem33_r1/clean_reconstruction.json",
+      "sha256": "78578e26c7a8419dc89a7add4016b135b53a09c1652807af8210d0505113f963"
+    },
+    {
+      "bytes": 182,
+      "path": "reports/sem33_r1/closed_loop_results.json",
+      "sha256": "9f28eee697ff6d29b7c4515c1465eeb746f506c94d7cfc89201df3b51fa1976e"
+    },
+    {
+      "bytes": 551,
+      "path": "reports/sem33_r1/final_regression.json",
+      "sha256": "aa5479779dc86a8b36e82e525ad8618e214fabba562364f13d6cac538db7debb"
+    },
+    {
+      "bytes": 2486,
+      "path": "reports/sem33_r1/fresh_set_a_manifest.json",
+      "sha256": "69328a137207c299cca1c1e39376c963d4550c30d37064ef5c9ef6c443c2fa0a"
+    },
+    {
+      "bytes": 2240,
+      "path": "reports/sem33_r1/fresh_set_b_manifest.json",
+      "sha256": "115844694876abd43a78c9088db6d42a44b34cfbc293aa7af4383145feabbb09"
+    },
+    {
+      "bytes": 199,
+      "path": "reports/sem33_r1/hierarchy_results.json",
+      "sha256": "6cddaa171904cefbc35d0cfecf27e37c5a7edea0e561258f08592edb7bda3dbe"
+    },
+    {
+      "bytes": 412,
+      "path": "reports/sem33_r1/historical_sem33_unresolved_receipt.json",
+      "sha256": "883b212687545476fe1fc5fc649c1fb9039b61287748fc8f7d96880d39e3e8ec"
+    },
+    {
+      "bytes": 106364,
+      "path": "reports/sem33_r1/initial_planner_measurement.json",
+      "sha256": "b9d664152684136f24dc0e06d5ec3824d72accef56d945f4f5678c321d8af143"
+    },
+    {
+      "bytes": 383,
+      "path": "reports/sem33_r1/malformed_transport_negative_tests.json",
+      "sha256": "f2736ea69d313a48db1aa55044700624862453ae9b295231dd64e570ae4e14c5"
+    },
+    {
+      "bytes": 786,
+      "path": "reports/sem33_r1/measured_failure_diagnosis.jsonl",
+      "sha256": "27c8708e598f617281290bba1b96a33310b2e17f5e2bc6423bcc57ccac31e4c1"
+    },
+    {
+      "bytes": 1926,
+      "path": "reports/sem33_r1/p0_infrastructure_freeze.json",
+      "sha256": "7a93c8f87ab2dd0d9123eb74b10748d96b33e3beec86123999c373b2de0d7857"
+    },
+    {
+      "bytes": 1957,
+      "path": "reports/sem33_r1/planner_repair_lineage.jsonl",
+      "sha256": "532626b418e288d01615387e654e58ce318482eff79ab4cd88634bbe4c6ced5c"
+    },
+    {
+      "bytes": 34161,
+      "path": "reports/sem33_r1/planning_ablations.json",
+      "sha256": "9d9cda190c7c7898ce04df50548ace3a9791d19ffa64d7af03ec88b46102a22e"
+    },
+    {
+      "bytes": 122,
+      "path": "reports/sem33_r1/primary_acceptance.json",
+      "sha256": "8c74938a0fcecd22a1d5b442a37ca564863a8cf906afd44f1121acd29d2117c3"
+    },
+    {
+      "bytes": 2926,
+      "path": "reports/sem33_r1/raw_level_inputs.json",
+      "sha256": "f90eba015c0921e382814c4266d9ef45d47fdb3f49662cd6eba29676fe17fefe"
+    },
+    {
+      "bytes": 194,
+      "path": "reports/sem33_r1/reachability_results.json",
+      "sha256": "785082aac6a1a4cc3dce565851c2634e588ce493b3da33b412cc694384ee2696"
+    },
+    {
+      "bytes": 255762,
+      "path": "reports/sem33_r1/repair_blind_regate.json",
+      "sha256": "bc84c499d460ccd208a93ef1a7996a1c03a5c4774ecfcd6d5a7a42acf8fc05dd"
+    },
+    {
+      "bytes": 1033,
+      "path": "reports/sem33_r1/repair_freeze.json",
+      "sha256": "baad25409d88b946cb792b5c9c4e755404f5b5d2b33cd3fb10e79c0c99ea1df5"
+    },
+    {
+      "bytes": 122,
+      "path": "reports/sem33_r1/secondary_acceptance.json",
+      "sha256": "8c74938a0fcecd22a1d5b442a37ca564863a8cf906afd44f1121acd29d2117c3"
+    },
+    {
+      "bytes": 4147,
+      "path": "reports/sem33_r1/sem33_r1_final_report.json",
+      "sha256": "24623eed0ec4a8501bdda27e649116746bb42dadfc7f54da49b67bb05d8950c4"
+    },
+    {
+      "bytes": 1436,
+      "path": "reports/sem33_r1/sparse_planning.json",
+      "sha256": "5ef998f4c9ee31fa72117933423c6fb9aee3b46c9b8c0772757fd911a70f25c4"
+    },
+    {
+      "bytes": 197,
+      "path": "reports/sem33_r1/structural_generalization.json",
+      "sha256": "e52d20c28183442db5f0789150e7a100d38465495f2486ae81eeb0dfb792fbf9"
+    },
+    {
+      "bytes": 310,
+      "path": "reports/sem33_r1/transport_root_cause.json",
+      "sha256": "f29576654887f339805a0c75796abfda7ee019ad42e0265bf4ed95f47190b120"
+    },
+    {
+      "bytes": 1171,
+      "path": "reports/sem33_r1/transport_roundtrip_canaries.json",
+      "sha256": "1fea7286613f6330d74cbf0f1697f584b9b6dd81be08518a81c54089f5fd6377"
+    },
+    {
+      "bytes": 385,
+      "path": "reports/sem33_r1/transport_schema_repair.json",
+      "sha256": "c24189054ad465d6bf892ee0baefb4442e8526d1bcee9da766c93c692c061cb4"
+    },
+    {
+      "bytes": 170,
+      "path": "reports/sem33_r1/uncertainty_planning_results.json",
+      "sha256": "94433ea87e473c847aed7b8563784e49c9332fd08717c330904aeb247fafbe04"
+    },
+    {
+      "bytes": 477,
+      "path": "reports/sem33_r1/verifier_runner_equivalence.json",
+      "sha256": "39160cc36f8e9fa9ce35cf5568cd259097f88a8762d5a795d0b3182bfa16c65b"
+    }
+  ],
+  "campaign_id": "SEM33-R1-FRESH-HIERARCHICAL-PLANNING-REGATE-0001",
+  "campaign_status": "PASS",
+  "manifest_excludes_self": true,
+  "schema_version": "SEM33_R1_ARTIFACT_MANIFEST_1"
+}
