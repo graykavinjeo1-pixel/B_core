@@ -1,0 +1,103 @@
+{
+  "CARRIED_FROM": "SEM35_R1_EXACT_NUMERIC_TRANSPORT",
+  "DERIVED_RATIO_FLOAT_IS_ACCEPTANCE_AUTHORITY": false,
+  "GLOBAL_FLOAT_EPSILON_ACCEPTANCE_RULE": false,
+  "NUMERIC_AUTHORITY_MANIFEST_PRESENT": true,
+  "VERIFIER_RUNNER_NUMERIC_TRANSPORT_EQUIVALENCE": true,
+  "matrix": {
+    "display_float": {
+      "authority_class": "DISPLAY_ONLY_FLOAT",
+      "value": {
+        "ieee754_bits": 4615889378079600367
+      }
+    },
+    "empty_array": [],
+    "empty_map": {},
+    "integer": {
+      "authority_class": "EXACT_INTEGER",
+      "value": 65536
+    },
+    "measured_float_canaries": [
+      {
+        "ieee754_bits": 0
+      },
+      {
+        "ieee754_bits": 9223372036854775808
+      },
+      {
+        "ieee754_bits": 4503599627370496
+      },
+      {
+        "ieee754_bits": 9218868437227405311
+      },
+      {
+        "ieee754_bits": 1
+      },
+      {
+        "ieee754_bits": 4607182418800017408
+      },
+      {
+        "ieee754_bits": 4607182418800017409
+      },
+      {
+        "ieee754_bits": 4615889378079600367
+      },
+      {
+        "ieee754_bits": 4591870180066957722
+      }
+    ],
+    "nested_ratios": [
+      [
+        {
+          "denominator": 15,
+          "numerator": 58
+        },
+        {
+          "denominator": 1,
+          "numerator": 22
+        }
+      ]
+    ],
+    "numeric_map": {
+      "measurement": {
+        "authority_class": "MEASURED_FLOAT",
+        "value": {
+          "ieee754_bits": 4591870180066957722
+        }
+      },
+      "ratio": {
+        "authority_class": "EXACT_DERIVED_RATIONAL",
+        "value": {
+          "denominator": 15,
+          "numerator": 58
+        }
+      },
+      "work": {
+        "authority_class": "EXACT_INTEGER",
+        "value": 11753
+      }
+    },
+    "optional_numeric": {
+      "authority_class": "EXACT_INTEGER",
+      "value": 0
+    },
+    "ratio_array": [
+      {
+        "denominator": 3,
+        "numerator": 50
+      },
+      {
+        "denominator": 5,
+        "numerator": 67
+      }
+    ],
+    "rational": {
+      "authority_class": "EXACT_DERIVED_RATIONAL",
+      "value": {
+        "denominator": 15,
+        "numerator": 58
+      }
+    }
+  },
+  "schema_version": "SEM36_NUMERIC_AUTHORITY_MANIFEST_1"
+}
