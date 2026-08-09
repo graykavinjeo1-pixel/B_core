@@ -1,0 +1,10 @@
+{
+  "actual_head": "7522f8c5c6e00bd238769fe57c0fb2194ef0d81a",
+  "historical_results_rewritten": false,
+  "historical_sem33_campaign_status": "FAIL",
+  "historical_sem33_capability_status": "UNRESOLVED_NOT_MEASURED",
+  "predecessor_integrity": "PASS",
+  "sealed_predecessor_commit": "7522f8c5c6e00bd238769fe57c0fb2194ef0d81a",
+  "sem33_r1_scientific_disposition": "MEASURED_PASS",
+  "sem33_r1_status": "PASS"
+}

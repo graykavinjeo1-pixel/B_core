@@ -1,0 +1,7 @@
+{
+  "accepted_repairs": 1,
+  "dominant_bottleneck": "CAUSAL_ROUTING_COST",
+  "epoch": 24,
+  "event": "EFFICIENCY_REPAIR_ACCEPTED",
+  "final_holdout_exposed": false
+}

@@ -1,0 +1,21 @@
+{
+  "baseline_planner": "EXACT_SEM33_R1_MEASURED_PASS_PLANNER",
+  "development_scaling_tasks_materialized_before_freeze": 0,
+  "efficiency_repair_events_before_baseline": 0,
+  "final_holdout_tasks_materialized_before_freeze": 0,
+  "planner_program": {
+    "adaptive_temporal_abstraction": false,
+    "bounded_local_execution": true,
+    "goal_hash_to_procedure_authority": false,
+    "hierarchy_reuse": false,
+    "mode": "BASELINE_SEM33_R1",
+    "reachability_pruning": true,
+    "semantic_index": false,
+    "sparse_world_routing": true,
+    "task_id_to_procedure_authority": false,
+    "world_hash_to_procedure_authority": false
+  },
+  "planner_source_hash": "02a2525e1ca1865c28380a59b3854b4af4881efd60571feae17cbd121cb9b694",
+  "planner_source_path": "crates/semantic-reasoning/src/sem33_r1/engine.rs",
+  "schema_version": "SEM34_BASELINE_PLANNER_FREEZE_1"
+}

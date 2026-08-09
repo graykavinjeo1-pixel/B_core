@@ -1,0 +1,15 @@
+{
+  "baseline_work_decomposition": {
+    "candidate_comparison": 1316,
+    "causal_routing": 3762,
+    "execution_replanning": 139,
+    "goal_grounding": 219,
+    "reachability": 1316,
+    "subgoal_synthesis": 704,
+    "uncertainty_reasoning": 64,
+    "world_model_rollout": 843
+  },
+  "diagnoses": 1,
+  "dominant_bottleneck": "CAUSAL_ROUTING_COST",
+  "human_planner_efficiency_repair_events": 0
+}

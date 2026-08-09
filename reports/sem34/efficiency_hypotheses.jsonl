@@ -1,0 +1,3 @@
+{"hypothesis_id":1,"diagnosis":"CAUSAL_ROUTING_COST","proposed_generic_mechanism":"SEMANTIC_CAUSAL_INDEX_WITH_REUSED_REACHABILITY_PROOFS"}
+{"hypothesis_id":2,"diagnosis":"REPEATED_FULL_PLAN_RECONSTRUCTION","proposed_generic_mechanism":"ADAPTIVE_TEMPORAL_ABSTRACTION_WITH_BOUNDED_LOCAL_EXECUTION"}
+{"hypothesis_id":3,"diagnosis":"HIERARCHY_OVERHEAD_ON_SIMPLE_TASKS","proposed_generic_mechanism":"STRUCTURE_CONDITIONED_FLAT_HIERARCHICAL_MIXED_SELECTION"}

@@ -1,0 +1,7 @@
+{
+  "reachability_efficiency_ablation_pass": true,
+  "temporal_abstraction_ablation_pass": true,
+  "hierarchical_planning_ablation_pass": true,
+  "sparse_planning_scaling_ablation_pass": true,
+  "procedural_memory_scaling_ablation_pass": "N/A_NO_NATURAL_PROMOTION"
+}

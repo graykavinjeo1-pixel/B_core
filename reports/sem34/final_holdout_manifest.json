@@ -1,0 +1,41 @@
+{
+  "contract_version": "SEM34_BLIND_SCALING_VERIFIER_1",
+  "set_id": "SET_B",
+  "seed": 16271030612443809517,
+  "holdout_selection_rule_hash": "e8c99e75e980cbb623727744281166db5ff62a2da5d5f604f582d625574f5374",
+  "task_generator_version": "SEM34_EFFECTIVE_SCALING_TASK_GENERATOR_1",
+  "challenge_hash": "f46205bcd7c9fc1a80d3b9b345a59e6cde81ac3f12c983173b6414e66a27e963",
+  "hidden_instance_commitment_hash": "1e5ee9ec0f9fe095b84452104e4f1aab6e9cad476336c7c23519acb7bf76d67c",
+  "instance_commitments": [
+    "9aabd0cbe628a94ae66bd0764462f345f00c6d59435b0aba90abfab5a16c6374",
+    "3f9dff62ff6b8c3098ca72154fafd61584ead59b579a0e9b97abdc830c9fe9f7",
+    "680f651f826abc9256bfa881e15249c261145d6f1c5a9ef534e8bec5cd0937e8",
+    "f457833dbcfb4fa01fe96208ef873fe8a817cf3f16c04f1c6f32790b63e6be8e",
+    "e8ca8d471d730baa321c9dea40b953fe132d86db2fc356e541ef22bcea3b23c0",
+    "91f968721cbfd5aab02f129422288e565f12e2bddc9602bc2e5d1fcbec6a4e97",
+    "3e8bab7a81fbee6f6fb20f8fd18ce9718e4b678d66c2a160d4aa02184705684d",
+    "334352b0e4426aa16abf52ccf6a911edec9165c389c74d9c59537a12cf6ef81b",
+    "96e45ebb66ee2452641f28f994f23af934a51122434cf94c1ec129b7e3db859d",
+    "2603bfdc95a752c37e024d749a22ca49135c406310fbabb25567825f1bf9e281",
+    "ba3078776edf662767974092c189edb4cd487664021c15dea871e769b3ef8ff5",
+    "b5d420e01022ae9acdd4555f5ddaa05428c869c689ba1e396170076e0dbb0602",
+    "64366fa500032fc9d2f1d2d22a2e4249b94453218f08ec25eb0f7225002cbfe9"
+  ],
+  "task_count": 13,
+  "planning_difficulty_axes": [
+    "REQUIRED_PRIMITIVE_ACTION_HORIZON",
+    "CAUSAL_DEPENDENCY_DEPTH",
+    "RAW_ACTION_BRANCHING",
+    "RELEVANT_ENTITY_COUNT",
+    "IRRELEVANT_ENTITY_COUNT",
+    "RELATION_TOPOLOGY_COMPLEXITY",
+    "HARD_CONSTRAINT_COUNT",
+    "PARTIAL_OBSERVATION_UNCERTAINTY",
+    "INFORMATION_GATHERING_REQUIREMENT",
+    "REQUIRED_REPLANNING_EVENTS",
+    "GOAL_COMPOSITION_DEPTH",
+    "SUBGOAL_HIERARCHY_DEPTH"
+  ],
+  "development_final_instance_overlap": 0,
+  "effective_verified_planning_structure_authority": true
+}

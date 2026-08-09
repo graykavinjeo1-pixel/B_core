@@ -1,0 +1,29 @@
+{
+  "autonomous_research_epochs_executed": 24,
+  "baseline_planning_work": 8363,
+  "correctness_preserved": true,
+  "efficiency_repairs_accepted": 1,
+  "efficiency_repairs_implemented": 3,
+  "human_branch_pruning_rule_selection_events": 0,
+  "human_flat_hierarchical_mode_selection_events": 0,
+  "human_subgoal_policy_selection_events": 0,
+  "human_temporal_scale_selection_events": 0,
+  "paper_name_is_promotion_authority": false,
+  "planning_work_reduction": 4676,
+  "research_wall_time_ns": 3120500,
+  "selected_planning_work": 3687,
+  "selected_program": {
+    "adaptive_temporal_abstraction": true,
+    "bounded_local_execution": true,
+    "goal_hash_to_procedure_authority": false,
+    "hierarchy_reuse": true,
+    "mode": "EFFICIENT_ADAPTIVE",
+    "reachability_pruning": true,
+    "semantic_index": true,
+    "sparse_world_routing": true,
+    "task_id_to_procedure_authority": false,
+    "world_hash_to_procedure_authority": false
+  },
+  "sota_result_is_promotion_authority": false,
+  "whole_planning_architecture_transplants": 0
+}

@@ -1,0 +1,37 @@
+{
+  "autonomous_research_epochs_executed": 24,
+  "baseline_planner_hash": "02a2525e1ca1865c28380a59b3854b4af4881efd60571feae17cbd121cb9b694",
+  "campaign_budget_contract_pass": true,
+  "canonical_final_holdout_instances_exposed": 0,
+  "configured_max_autonomous_research_epochs": 4096,
+  "development_manifest_hash": "9ea0376055c76c9ea77ae3d3fafe405880799af62c2bf481f9b20b17016e58cc",
+  "final_freeze_complete": true,
+  "future_world_event_leakage_events": 0,
+  "requested_max_autonomous_research_epochs": 4096,
+  "schema_version": "SEM34_FINAL_FREEZE_1",
+  "sealed_predecessor_commit": "7522f8c5c6e00bd238769fe57c0fb2194ef0d81a",
+  "selected_program": {
+    "adaptive_temporal_abstraction": true,
+    "bounded_local_execution": true,
+    "goal_hash_to_procedure_authority": false,
+    "hierarchy_reuse": true,
+    "mode": "EFFICIENT_ADAPTIVE",
+    "reachability_pruning": true,
+    "semantic_index": true,
+    "sparse_world_routing": true,
+    "task_id_to_procedure_authority": false,
+    "world_hash_to_procedure_authority": false
+  },
+  "sem35_started": false,
+  "source_hashes": {
+    "crates/semantic-reasoning/src/sem34/acceptance.rs": "85becbb6dc9dcff7dc8b18139de8b0540ce044549f96c4bf679918b482a93f65",
+    "crates/semantic-reasoning/src/sem34/config.rs": "f2797e4bf046df3beb3b48572cf6f81dce4c0809ea5ab4da1ccf954293b380e9",
+    "crates/semantic-reasoning/src/sem34/engine.rs": "d732ffc03a99dd0edfeaf58da439982ef65e76ed71017c94557f6bee353e93f5",
+    "crates/semantic-reasoning/src/sem34/mod.rs": "4bec453f18f450f8fc2bb3b841a3f0281b2621a9b74081c308b3a5c07aaced63",
+    "crates/semantic-reasoning/src/sem34/verifier.rs": "28ba805d470441f35b5f7fd4984af2f694a2eb064503d68d1b86a93621a31ea9",
+    "crates/semantic-reasoning/src/sem34_main.rs": "503ed381303e908705b159388858e585fb97cde769be6131e228e95b41a17f83",
+    "crates/semantic-reasoning/src/sem34_verify_main.rs": "94f121183837a152a2976be72def8131e0cf985b257453520b63caa3147b1e2a"
+  },
+  "verifier_binary_hash": "8554c18576bd2cd80c75111878a6780a31090ed452b879bd0fa70e22dee1209a",
+  "work_accounting_hash": "3c46e41d9d4a17710992e316cbd7146314afc7bb6462fdecd5a485f4e26241e6"
+}

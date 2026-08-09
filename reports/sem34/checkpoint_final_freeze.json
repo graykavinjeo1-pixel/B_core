@@ -1,0 +1,6 @@
+{
+  "epoch": 24,
+  "event": "FRESH_FINAL_FREEZE",
+  "final_freeze_hash": "2a539fb6dd0e976699fec5645f67d483115b9e98e3d5fd9b4e37501a284a29c2",
+  "final_holdout_exposed": false
+}

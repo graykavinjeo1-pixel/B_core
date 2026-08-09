@@ -1,0 +1,17 @@
+{
+  "frozen_before_development_baseline": true,
+  "planning_work_accounting_gaming_events": 0,
+  "planning_work_unit": [
+    "goal_grounding_evaluation",
+    "reachability_evaluation",
+    "subgoal_evaluation",
+    "world_model_candidate_rollout",
+    "causal_routing_evaluation",
+    "uncertainty_hypothesis_evaluation",
+    "candidate_comparison",
+    "execution_or_replanning_evaluation"
+  ],
+  "renaming_operations_changes_count": false,
+  "schema_version": "SEM34_PLANNING_WORK_UNIT_1",
+  "uncounted_planning_side_work_events": 0
+}

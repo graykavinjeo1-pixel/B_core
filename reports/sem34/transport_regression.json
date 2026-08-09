@@ -1,0 +1,51 @@
+{
+  "invalid_u16_key_rejection_results": [
+    [
+      "negative",
+      true,
+      "invalid value: integer `-1`, expected u16 at line 1 column 10"
+    ],
+    [
+      "overflow",
+      true,
+      "invalid value: integer `65536`, expected u16 at line 1 column 13"
+    ],
+    [
+      "non_numeric",
+      true,
+      "invalid type: string \"abc\", expected u16 at line 1 column 13"
+    ],
+    [
+      "empty",
+      true,
+      "invalid type: string \"\", expected u16 at line 1 column 10"
+    ],
+    [
+      "fractional",
+      true,
+      "invalid type: floating point `1.5`, expected u16 at line 1 column 11"
+    ],
+    [
+      "malformed",
+      true,
+      "invalid type: string \"1x\", expected u16 at line 1 column 12"
+    ],
+    [
+      "ambiguous_text",
+      true,
+      "invalid type: string \"01\", expected u16 at line 1 column 12"
+    ],
+    [
+      "duplicate",
+      true,
+      "DUPLICATE_U16_TRANSPORT_KEY:100"
+    ]
+  ],
+  "malformed_transport_fail_closed": true,
+  "nested_transport_canaries_pass": true,
+  "transport_fail_open_events": 0,
+  "transport_field_drop_events": 0,
+  "transport_semantic_roundtrip_diff": 0,
+  "valid_u16_key_roundtrip_pass": true,
+  "verifier_runner_transport_equivalence": true
+}

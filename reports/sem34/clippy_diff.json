@@ -1,0 +1,16 @@
+{
+  "schema_version": "SEM34_CLIPPY_DIFF_1",
+  "status": "RECORDED",
+  "predecessor_warning_signatures": 22,
+  "current_warning_signatures": 27,
+  "new_warning_signatures_total": 5,
+  "new_warning_signatures": [
+    "sem34/engine.rs: manual implementation of is_multiple_of",
+    "sem34/engine.rs: complex type can be factored",
+    "sem34/engine.rs: field assignment after Default initializer",
+    "sem34/engine.rs: manual implementation of div_ceil",
+    "sem34/mod.rs: useless format allocation"
+  ],
+  "semantic_correctness_effect": "NONE_OBSERVED",
+  "source_modified_after_final_freeze": false
+}

@@ -1,0 +1,21 @@
+{
+  "baseline_planner_freeze_hash": "7917341e2dd5ac2eba7b2ff6117ff8b0a05ff699b9669ce0d9848b7d1aa89776",
+  "budget_contract_hash": "e2661db0699b12ea9605f04222ffbbd68e9c3c0f9a6ee59a108b375f1feb57a0",
+  "canonical_final_holdout_instances_exposed": 0,
+  "instruction_hash": "cd03d36106cc375dd85055e41a77d4f2a9a89cbd27d4961549789d741a5c3e56",
+  "prestart_future_instance_exposure_events": 0,
+  "schema_version": "SEM34_PREFLIGHT_FREEZE_1",
+  "sealed_predecessor_commit": "7522f8c5c6e00bd238769fe57c0fb2194ef0d81a",
+  "sem35_started": false,
+  "source_hashes": {
+    "crates/semantic-reasoning/src/sem34/acceptance.rs": "85becbb6dc9dcff7dc8b18139de8b0540ce044549f96c4bf679918b482a93f65",
+    "crates/semantic-reasoning/src/sem34/config.rs": "f2797e4bf046df3beb3b48572cf6f81dce4c0809ea5ab4da1ccf954293b380e9",
+    "crates/semantic-reasoning/src/sem34/engine.rs": "d732ffc03a99dd0edfeaf58da439982ef65e76ed71017c94557f6bee353e93f5",
+    "crates/semantic-reasoning/src/sem34/mod.rs": "4bec453f18f450f8fc2bb3b841a3f0281b2621a9b74081c308b3a5c07aaced63",
+    "crates/semantic-reasoning/src/sem34/verifier.rs": "28ba805d470441f35b5f7fd4984af2f694a2eb064503d68d1b86a93621a31ea9",
+    "crates/semantic-reasoning/src/sem34_main.rs": "503ed381303e908705b159388858e585fb97cde769be6131e228e95b41a17f83",
+    "crates/semantic-reasoning/src/sem34_verify_main.rs": "94f121183837a152a2976be72def8131e0cf985b257453520b63caa3147b1e2a"
+  },
+  "verifier_runner_transport_equivalence": true,
+  "work_accounting_freeze_hash": "3c46e41d9d4a17710992e316cbd7146314afc7bb6462fdecd5a485f4e26241e6"
+}
