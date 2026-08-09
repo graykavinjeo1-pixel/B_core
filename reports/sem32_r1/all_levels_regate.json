@@ -1,0 +1,55 @@
+{
+  "all_levels_pass": true,
+  "levels": [
+    {
+      "level": "A",
+      "pass": true,
+      "secondary_pass": true
+    },
+    {
+      "level": "B",
+      "pass": true,
+      "secondary_pass": true
+    },
+    {
+      "level": "C",
+      "pass": true,
+      "secondary_pass": true
+    },
+    {
+      "level": "D",
+      "pass": true,
+      "secondary_pass": true
+    },
+    {
+      "level": "E",
+      "pass": true,
+      "secondary_pass": true
+    },
+    {
+      "level": "F",
+      "pass": true,
+      "secondary_pass": true
+    },
+    {
+      "level": "G",
+      "pass": true,
+      "secondary_pass": true
+    },
+    {
+      "level": "H",
+      "pass": true,
+      "secondary_pass": true
+    },
+    {
+      "level": "I",
+      "pass": true,
+      "secondary_pass": true
+    },
+    {
+      "level": "J",
+      "pass": true,
+      "secondary_pass": true
+    }
+  ]
+}

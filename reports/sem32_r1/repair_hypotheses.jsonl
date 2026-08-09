@@ -1,0 +1,6 @@
+{"hypothesis_id":1,"diagnosis":"ENTITY_ADDRESS_LEAKAGE","predicted_failure_signature":["ENTITY_ID_PERMUTATION"],"rejected_as_forbidden_authority":false}
+{"hypothesis_id":2,"diagnosis":"STORAGE_ORDER_DEPENDENCE","predicted_failure_signature":["EDGE_STORAGE_PERMUTATION"],"rejected_as_forbidden_authority":false}
+{"hypothesis_id":3,"diagnosis":"FIXED_CARDINALITY_BINDING","predicted_failure_signature":["UNRELATED_ENTITY_INSERTION"],"rejected_as_forbidden_authority":false}
+{"hypothesis_id":4,"diagnosis":"DIRECT_EDGE_ONLY_WITHOUT_LOCAL_COMPOSITION","predicted_failure_signature":["MULTIHOP_CHAIN","CONVERGING_DEPENDENCIES","CYCLE_WITH_VISITED_GUARD"],"rejected_as_forbidden_authority":false}
+{"hypothesis_id":5,"diagnosis":"CONTEXT_BOUND_TO_TOPOLOGY","predicted_failure_signature":["RELEVANT_CONTEXT_CHANGE"],"rejected_as_forbidden_authority":false}
+{"hypothesis_id":6,"diagnosis":"WHOLE_GRAPH_HASH_MEMORIZATION","predicted_failure_signature":["ANY_UNSEEN_GRAPH"],"rejected_as_forbidden_authority":true}

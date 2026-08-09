@@ -231,6 +231,14 @@ name = "sem32-r1-p0"
 path = "src/sem32_r1_p0_main.rs"
 
 [[bin]]
+name = "sem32-r1-run"
+path = "src/sem32_r1_main.rs"
+
+[[bin]]
+name = "sem32-r1-verify"
+path = "src/sem32_r1_verify_main.rs"
+
+[[bin]]
 name = "core-x0-evaluate"
 path = "src/core_x0_main.rs"
 

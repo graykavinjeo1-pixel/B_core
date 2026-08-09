@@ -1,0 +1,80 @@
+{
+  "case_count": 10,
+  "case_manifest": [
+    {
+      "case_id": 100,
+      "context": "KNOWN_TRUE",
+      "local_entity_count": 7,
+      "relation_edge_count": 7,
+      "total_entity_count": 7
+    },
+    {
+      "case_id": 101,
+      "context": "KNOWN_TRUE",
+      "local_entity_count": 7,
+      "relation_edge_count": 7,
+      "total_entity_count": 7
+    },
+    {
+      "case_id": 102,
+      "context": "KNOWN_TRUE",
+      "local_entity_count": 7,
+      "relation_edge_count": 7,
+      "total_entity_count": 7
+    },
+    {
+      "case_id": 103,
+      "context": "KNOWN_TRUE",
+      "local_entity_count": 7,
+      "relation_edge_count": 7,
+      "total_entity_count": 44
+    },
+    {
+      "case_id": 104,
+      "context": "KNOWN_TRUE",
+      "local_entity_count": 5,
+      "relation_edge_count": 5,
+      "total_entity_count": 5
+    },
+    {
+      "case_id": 105,
+      "context": "KNOWN_TRUE",
+      "local_entity_count": 5,
+      "relation_edge_count": 4,
+      "total_entity_count": 5
+    },
+    {
+      "case_id": 106,
+      "context": "KNOWN_TRUE",
+      "local_entity_count": 10,
+      "relation_edge_count": 9,
+      "total_entity_count": 100000
+    },
+    {
+      "case_id": 107,
+      "context": "KNOWN_TRUE",
+      "local_entity_count": 5,
+      "relation_edge_count": 4,
+      "total_entity_count": 5
+    },
+    {
+      "case_id": 108,
+      "context": "UNKNOWN",
+      "local_entity_count": 6,
+      "relation_edge_count": 5,
+      "total_entity_count": 6
+    },
+    {
+      "case_id": 109,
+      "context": "UNKNOWN",
+      "local_entity_count": 4,
+      "relation_edge_count": 3,
+      "total_entity_count": 4
+    }
+  ],
+  "contract_version": "SEM32_R1_FRESH_RELATIONAL_REGATE_1",
+  "generated_after_repair_freeze": true,
+  "holdout_selection_rule_hash": "4748e5c5b18d509e3122d59cf6b27433f488109b19a8aaa349634a89a37fd6ee",
+  "seed": 6787664615310377123,
+  "unopened_before_freeze": true
+}

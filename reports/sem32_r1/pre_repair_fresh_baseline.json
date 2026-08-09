@@ -1,0 +1,6 @@
+{
+  "correct": 1,
+  "frozen_before_holdout": true,
+  "pre_repair_novel_relation_topology_transfer_pass": false,
+  "total": 10
+}

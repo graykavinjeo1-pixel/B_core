@@ -1,0 +1,7 @@
+{
+  "arm_a": "FROZEN_RELATION_LOCAL_COMPOSITION_ENABLED",
+  "arm_a_correct": 10,
+  "arm_b": "SAME_WORLD_KNOWLEDGE_DIRECT_ONLY",
+  "arm_b_correct": 1,
+  "relational_topology_repair_ablation_pass": true
+}

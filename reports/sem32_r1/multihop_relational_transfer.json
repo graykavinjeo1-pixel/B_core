@@ -1,0 +1,21 @@
+{
+  "horizon_error_sequence": [
+    [
+      1,
+      0
+    ],
+    [
+      2,
+      0
+    ],
+    [
+      4,
+      0
+    ],
+    [
+      8,
+      0
+    ]
+  ],
+  "multihop_relational_transfer_events": 9
+}

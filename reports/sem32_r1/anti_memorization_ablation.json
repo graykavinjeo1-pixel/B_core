@@ -1,0 +1,6 @@
+{
+  "anti_memorization_ablation_pass": true,
+  "entity_id_permutation_pass": true,
+  "irrelevant_surroundings_pass": true,
+  "storage_order_permutation_pass": true
+}

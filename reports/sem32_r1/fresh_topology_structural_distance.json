@@ -1,0 +1,13 @@
+{
+  "fresh_topology_structurally_distinct": true,
+  "id_change_alone_is_novelty": false,
+  "structural_axes": [
+    "DEGREE_PATTERN",
+    "PATH_STRUCTURE",
+    "BRANCHING",
+    "RELATION_ARRANGEMENT",
+    "CYCLE_STRUCTURE",
+    "INTERACTION_LOCALITY",
+    "DEPENDENCY_STRUCTURE"
+  ]
+}

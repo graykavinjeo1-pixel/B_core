@@ -1,0 +1,735 @@
+{
+  "anti_memorization_ablation_pass": true,
+  "anti_overgeneralization_ablation_pass": true,
+  "baseline_predictions": [
+    {
+      "active_entities": 3,
+      "active_mechanisms": 1,
+      "active_relations": 2,
+      "branches": [
+        {
+          "confidence_bps": 10000,
+          "delta": {
+            "state_changes": [
+              [
+                3871801,
+                2
+              ],
+              [
+                3871802,
+                2
+              ]
+            ]
+          },
+          "epistemic": false
+        }
+      ],
+      "case_id": 100
+    },
+    {
+      "active_entities": 3,
+      "active_mechanisms": 1,
+      "active_relations": 2,
+      "branches": [
+        {
+          "confidence_bps": 10000,
+          "delta": {
+            "state_changes": [
+              [
+                3872601,
+                2
+              ],
+              [
+                3872602,
+                2
+              ]
+            ]
+          },
+          "epistemic": false
+        }
+      ],
+      "case_id": 101
+    },
+    {
+      "active_entities": 3,
+      "active_mechanisms": 1,
+      "active_relations": 2,
+      "branches": [
+        {
+          "confidence_bps": 10000,
+          "delta": {
+            "state_changes": [
+              [
+                3871801,
+                2
+              ],
+              [
+                3871802,
+                2
+              ]
+            ]
+          },
+          "epistemic": false
+        }
+      ],
+      "case_id": 102
+    },
+    {
+      "active_entities": 3,
+      "active_mechanisms": 1,
+      "active_relations": 2,
+      "branches": [
+        {
+          "confidence_bps": 10000,
+          "delta": {
+            "state_changes": [
+              [
+                3871801,
+                2
+              ],
+              [
+                3871802,
+                2
+              ]
+            ]
+          },
+          "epistemic": false
+        }
+      ],
+      "case_id": 103
+    },
+    {
+      "active_entities": 2,
+      "active_mechanisms": 1,
+      "active_relations": 1,
+      "branches": [
+        {
+          "confidence_bps": 10000,
+          "delta": {
+            "state_changes": [
+              [
+                3871901,
+                2
+              ]
+            ]
+          },
+          "epistemic": false
+        }
+      ],
+      "case_id": 104
+    },
+    {
+      "active_entities": 3,
+      "active_mechanisms": 1,
+      "active_relations": 2,
+      "branches": [
+        {
+          "confidence_bps": 10000,
+          "delta": {
+            "state_changes": [
+              [
+                3872001,
+                2
+              ],
+              [
+                3872002,
+                2
+              ]
+            ]
+          },
+          "epistemic": false
+        }
+      ],
+      "case_id": 105
+    },
+    {
+      "active_entities": 3,
+      "active_mechanisms": 1,
+      "active_relations": 2,
+      "branches": [
+        {
+          "confidence_bps": 10000,
+          "delta": {
+            "state_changes": [
+              [
+                3872101,
+                2
+              ],
+              [
+                3872109,
+                2
+              ]
+            ]
+          },
+          "epistemic": false
+        }
+      ],
+      "case_id": 106
+    },
+    {
+      "active_entities": 2,
+      "active_mechanisms": 1,
+      "active_relations": 1,
+      "branches": [
+        {
+          "confidence_bps": 10000,
+          "delta": {
+            "state_changes": [
+              [
+                3872201,
+                2
+              ]
+            ]
+          },
+          "epistemic": false
+        }
+      ],
+      "case_id": 107
+    },
+    {
+      "active_entities": 2,
+      "active_mechanisms": 1,
+      "active_relations": 1,
+      "branches": [
+        {
+          "confidence_bps": 5000,
+          "delta": {
+            "state_changes": []
+          },
+          "epistemic": true
+        },
+        {
+          "confidence_bps": 5000,
+          "delta": {
+            "state_changes": [
+              [
+                3872301,
+                2
+              ]
+            ]
+          },
+          "epistemic": true
+        }
+      ],
+      "case_id": 108
+    },
+    {
+      "active_entities": 2,
+      "active_mechanisms": 1,
+      "active_relations": 1,
+      "branches": [
+        {
+          "confidence_bps": 10000,
+          "delta": {
+            "state_changes": [
+              [
+                3872401,
+                2
+              ]
+            ]
+          },
+          "epistemic": false
+        }
+      ],
+      "case_id": 109
+    }
+  ],
+  "counterfactual_predictions": [
+    {
+      "actual_prediction": {
+        "active_entities": 6,
+        "active_mechanisms": 1,
+        "active_relations": 5,
+        "branches": [
+          {
+            "confidence_bps": 10000,
+            "delta": {
+              "state_changes": [
+                [
+                  3872301,
+                  2
+                ],
+                [
+                  3872302,
+                  2
+                ],
+                [
+                  3872303,
+                  2
+                ],
+                [
+                  3872304,
+                  2
+                ],
+                [
+                  3872305,
+                  2
+                ]
+              ]
+            },
+            "epistemic": false
+          }
+        ],
+        "case_id": 5010
+      },
+      "alternative_prediction": {
+        "active_entities": 1,
+        "active_mechanisms": 1,
+        "active_relations": 0,
+        "branches": [
+          {
+            "confidence_bps": 10000,
+            "delta": {
+              "state_changes": []
+            },
+            "epistemic": false
+          }
+        ],
+        "case_id": 5011
+      },
+      "anchor_unchanged": true,
+      "copy_on_write": true,
+      "counterfactual_id": 501
+    }
+  ],
+  "diagnostic_experiments": 8,
+  "instrumentation": {
+    "autonomous_research_epochs_executed": 18,
+    "causal_gold_law_reads": 0,
+    "causal_mechanism_full_scans": 0,
+    "counterfactual_gold_branch_reads": 0,
+    "expected_next_state_lookups": 0,
+    "false_causal_promotions": 0,
+    "fresh_topology_gold_reads": 0,
+    "future_world_event_leakage_events": 0,
+    "human_relational_repair_selection_events": 0,
+    "human_topology_template_selection_events": 0,
+    "predictive_uncertainty_collapse_events": 0,
+    "relational_mechanism_composition_events": 6,
+    "relational_overgeneralization_events": 0,
+    "restart_causally_affects_difficulty_decisions": false,
+    "restart_causally_affects_relational_reasoning": false,
+    "task_instance_transition_cache_authority": false,
+    "topology_hash_lookup_authority": false,
+    "world_memory_full_scans": 0
+  },
+  "reachability_results": [
+    {
+      "path_certificate": [
+        {
+          "from": 1,
+          "mechanism_code": 1,
+          "to": 2
+        },
+        {
+          "from": 2,
+          "mechanism_code": 1,
+          "to": 3
+        },
+        {
+          "from": 3,
+          "mechanism_code": 1,
+          "to": 4
+        },
+        {
+          "from": 4,
+          "mechanism_code": 1,
+          "to": 5
+        }
+      ],
+      "query_id": 1,
+      "status": "REACHABLE_WITHIN_BUDGET"
+    },
+    {
+      "path_certificate": [],
+      "query_id": 2,
+      "status": "UNREACHABLE"
+    }
+  ],
+  "repair_hypotheses": 6,
+  "repaired_predictions": [
+    {
+      "active_entities": 7,
+      "active_mechanisms": 1,
+      "active_relations": 7,
+      "branches": [
+        {
+          "confidence_bps": 10000,
+          "delta": {
+            "state_changes": [
+              [
+                3871801,
+                2
+              ],
+              [
+                3871802,
+                2
+              ],
+              [
+                3871803,
+                2
+              ],
+              [
+                3871804,
+                2
+              ],
+              [
+                3871805,
+                2
+              ],
+              [
+                3871806,
+                2
+              ]
+            ]
+          },
+          "epistemic": false
+        }
+      ],
+      "case_id": 100
+    },
+    {
+      "active_entities": 7,
+      "active_mechanisms": 1,
+      "active_relations": 7,
+      "branches": [
+        {
+          "confidence_bps": 10000,
+          "delta": {
+            "state_changes": [
+              [
+                3872601,
+                2
+              ],
+              [
+                3872602,
+                2
+              ],
+              [
+                3872603,
+                2
+              ],
+              [
+                3872604,
+                2
+              ],
+              [
+                3872605,
+                2
+              ],
+              [
+                3872606,
+                2
+              ]
+            ]
+          },
+          "epistemic": false
+        }
+      ],
+      "case_id": 101
+    },
+    {
+      "active_entities": 7,
+      "active_mechanisms": 1,
+      "active_relations": 7,
+      "branches": [
+        {
+          "confidence_bps": 10000,
+          "delta": {
+            "state_changes": [
+              [
+                3871801,
+                2
+              ],
+              [
+                3871802,
+                2
+              ],
+              [
+                3871803,
+                2
+              ],
+              [
+                3871804,
+                2
+              ],
+              [
+                3871805,
+                2
+              ],
+              [
+                3871806,
+                2
+              ]
+            ]
+          },
+          "epistemic": false
+        }
+      ],
+      "case_id": 102
+    },
+    {
+      "active_entities": 7,
+      "active_mechanisms": 1,
+      "active_relations": 7,
+      "branches": [
+        {
+          "confidence_bps": 10000,
+          "delta": {
+            "state_changes": [
+              [
+                3871801,
+                2
+              ],
+              [
+                3871802,
+                2
+              ],
+              [
+                3871803,
+                2
+              ],
+              [
+                3871804,
+                2
+              ],
+              [
+                3871805,
+                2
+              ],
+              [
+                3871806,
+                2
+              ]
+            ]
+          },
+          "epistemic": false
+        }
+      ],
+      "case_id": 103
+    },
+    {
+      "active_entities": 5,
+      "active_mechanisms": 1,
+      "active_relations": 4,
+      "branches": [
+        {
+          "confidence_bps": 10000,
+          "delta": {
+            "state_changes": [
+              [
+                3871901,
+                2
+              ],
+              [
+                3871902,
+                2
+              ],
+              [
+                3871903,
+                2
+              ],
+              [
+                3871904,
+                2
+              ]
+            ]
+          },
+          "epistemic": false
+        }
+      ],
+      "case_id": 104
+    },
+    {
+      "active_entities": 5,
+      "active_mechanisms": 1,
+      "active_relations": 4,
+      "branches": [
+        {
+          "confidence_bps": 10000,
+          "delta": {
+            "state_changes": [
+              [
+                3872001,
+                2
+              ],
+              [
+                3872002,
+                2
+              ],
+              [
+                3872003,
+                2
+              ],
+              [
+                3872004,
+                2
+              ]
+            ]
+          },
+          "epistemic": false
+        }
+      ],
+      "case_id": 105
+    },
+    {
+      "active_entities": 10,
+      "active_mechanisms": 1,
+      "active_relations": 9,
+      "branches": [
+        {
+          "confidence_bps": 10000,
+          "delta": {
+            "state_changes": [
+              [
+                3872101,
+                2
+              ],
+              [
+                3872102,
+                2
+              ],
+              [
+                3872103,
+                2
+              ],
+              [
+                3872104,
+                2
+              ],
+              [
+                3872105,
+                2
+              ],
+              [
+                3872106,
+                2
+              ],
+              [
+                3872107,
+                2
+              ],
+              [
+                3872108,
+                2
+              ],
+              [
+                3872109,
+                2
+              ]
+            ]
+          },
+          "epistemic": false
+        }
+      ],
+      "case_id": 106
+    },
+    {
+      "active_entities": 2,
+      "active_mechanisms": 1,
+      "active_relations": 1,
+      "branches": [
+        {
+          "confidence_bps": 10000,
+          "delta": {
+            "state_changes": [
+              [
+                3872201,
+                2
+              ]
+            ]
+          },
+          "epistemic": false
+        }
+      ],
+      "case_id": 107
+    },
+    {
+      "active_entities": 6,
+      "active_mechanisms": 1,
+      "active_relations": 5,
+      "branches": [
+        {
+          "confidence_bps": 5000,
+          "delta": {
+            "state_changes": []
+          },
+          "epistemic": true
+        },
+        {
+          "confidence_bps": 5000,
+          "delta": {
+            "state_changes": [
+              [
+                3872301,
+                2
+              ],
+              [
+                3872302,
+                2
+              ],
+              [
+                3872303,
+                2
+              ],
+              [
+                3872304,
+                2
+              ],
+              [
+                3872305,
+                2
+              ]
+            ]
+          },
+          "epistemic": true
+        }
+      ],
+      "case_id": 108
+    },
+    {
+      "active_entities": 4,
+      "active_mechanisms": 1,
+      "active_relations": 3,
+      "branches": [
+        {
+          "confidence_bps": 10000,
+          "delta": {
+            "state_changes": [
+              [
+                3872401,
+                2
+              ],
+              [
+                3872402,
+                2
+              ],
+              [
+                3872403,
+                2
+              ]
+            ]
+          },
+          "epistemic": false
+        }
+      ],
+      "case_id": 109
+    }
+  ],
+  "repairs_accepted": 1,
+  "repairs_implemented": 1,
+  "selected_program": {
+    "context_sensitive": true,
+    "entity_id_is_causal_authority": false,
+    "exact_graph_instance_is_causal_authority": false,
+    "program_cost": 3,
+    "required_relation": {
+      "directionality": 1,
+      "domain_code": 32,
+      "topology_code": 1
+    },
+    "storage_order_is_causal_authority": false,
+    "topology_hash_lookup_authority": false,
+    "traversal_rule": "RELATION_LOCAL_COMPOSITION"
+  }
+}

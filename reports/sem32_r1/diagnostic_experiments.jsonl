@@ -1,0 +1,8 @@
+{"experiment_id":1,"perturbation":"DIRECT_RELATION_CONTROL","direct_only_correct":true,"composed_local_correct":true,"hypotheses_eliminated":2}
+{"experiment_id":2,"perturbation":"MULTIHOP_CHAIN","direct_only_correct":false,"composed_local_correct":true,"hypotheses_eliminated":2}
+{"experiment_id":3,"perturbation":"BRANCHING_AND_CONVERGENCE","direct_only_correct":false,"composed_local_correct":true,"hypotheses_eliminated":2}
+{"experiment_id":4,"perturbation":"CYCLE_WITH_VISITED_GUARD","direct_only_correct":false,"composed_local_correct":true,"hypotheses_eliminated":2}
+{"experiment_id":5,"perturbation":"ENTITY_ID_PERMUTATION","direct_only_correct":false,"composed_local_correct":true,"hypotheses_eliminated":1}
+{"experiment_id":6,"perturbation":"EDGE_STORAGE_PERMUTATION","direct_only_correct":false,"composed_local_correct":true,"hypotheses_eliminated":1}
+{"experiment_id":7,"perturbation":"UNRELATED_ENTITY_INSERTION","direct_only_correct":false,"composed_local_correct":true,"hypotheses_eliminated":1}
+{"experiment_id":8,"perturbation":"RELEVANT_CONTEXT_CHANGE","direct_only_correct":true,"composed_local_correct":true,"hypotheses_eliminated":1}

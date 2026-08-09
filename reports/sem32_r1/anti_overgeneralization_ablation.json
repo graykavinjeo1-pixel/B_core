@@ -1,0 +1,6 @@
+{
+  "anti_overgeneralization_ablation_pass": true,
+  "causally_relevant_relation_changed": true,
+  "prediction_changed_appropriately": true,
+  "relational_overgeneralization_events": 0
+}

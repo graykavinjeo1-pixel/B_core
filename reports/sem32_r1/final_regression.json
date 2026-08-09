@@ -1,0 +1,14 @@
+{
+  "capability_negative_transfer_events": 0,
+  "core_dockability_preserved": true,
+  "gain_erasure_events": 0,
+  "global_reasoning_regressions": 0,
+  "historical_positive_evidence_preserved": {
+    "autonomous_interventions": 5,
+    "counterfactual": "3/3",
+    "multistep_error": 0,
+    "one_step_prediction": "18/18",
+    "sparse_routing_100k_pass": true
+  },
+  "meta_quality_regressions": 0
+}

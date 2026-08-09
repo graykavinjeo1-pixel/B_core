@@ -1,0 +1,4 @@
+{
+  "entity_permutation_invariance_pass": true,
+  "storage_order_invariance_pass": true
+}

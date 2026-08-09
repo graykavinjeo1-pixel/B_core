@@ -1,0 +1,19 @@
+{
+  "decision": {
+    "levels": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "sem32_r1_pass": true
+  },
+  "implementation": "MECHANICALLY_INDEPENDENT_BOOLEAN_RECOMPUTE",
+  "primary_secondary_acceptance_diff": 0
+}

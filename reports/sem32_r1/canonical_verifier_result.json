@@ -1,0 +1,80 @@
+{
+  "accepted": true,
+  "metrics": {
+    "active_entities_p50": 6,
+    "active_entities_p95": 7,
+    "active_mechanisms_p50": 1,
+    "active_mechanisms_p95": 1,
+    "active_relations_p50": 5,
+    "active_relations_p95": 7,
+    "anti_memorization_ablation_pass": true,
+    "anti_overgeneralization_ablation_pass": true,
+    "entity_cardinality_generalization_pass": true,
+    "entity_permutation_invariance_pass": true,
+    "fresh_topology_cases": 10,
+    "fresh_topology_structurally_distinct": true,
+    "horizon_error_sequence": [
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        4,
+        0
+      ],
+      [
+        8,
+        0
+      ]
+    ],
+    "multi_hop_relational_transfer_events": 9,
+    "novel_topology_counterfactual_pass": true,
+    "post_repair_correct": 10,
+    "pre_repair_correct": 1,
+    "relational_topology_repair_ablation_pass": true,
+    "storage_order_invariance_pass": true
+  },
+  "raw_fields": {
+    "belief_update_verified": true,
+    "causal_law_memory_ablation_pass": true,
+    "causal_mechanism_full_scans": 0,
+    "causal_refinement_or_composition_verified": true,
+    "confounded_causality_resolved": true,
+    "counterfactual_actual_mutation_events": 0,
+    "counterfactual_causal_model_ablation_pass": true,
+    "entity_cardinality_generalization_pass": true,
+    "entity_id_invariant_transfer_pass": true,
+    "epistemic_aleatoric_separation_pass": true,
+    "epistemic_uncertainty_ablation_pass": true,
+    "factored_dynamics_ablation_pass": true,
+    "factored_relational_mechanisms_verified": true,
+    "false_causal_promotions": 0,
+    "fresh_transition_prediction_verified": true,
+    "future_prediction_improves": true,
+    "horizon_1_verified": true,
+    "horizon_2_verified": true,
+    "horizon_4_verified": true,
+    "horizon_8_verified": true,
+    "horizon_failures_decomposed": true,
+    "interventional_causality_ablation_pass": true,
+    "isolated_counterfactuals_verified": true,
+    "language_is_reasoning_authority": false,
+    "large_world_canary_entities": 100000,
+    "novel_relation_topology_transfer_pass": true,
+    "observation_intervention_separated": true,
+    "partial_observability_present": true,
+    "persistent_world_layer_present": true,
+    "prediction_residuals_drive_learning": true,
+    "predictive_uncertainty_collapse_events": 0,
+    "relational_topology_repair_ablation_pass": true,
+    "sparse_causal_routing_ablation_pass": true,
+    "temporal_delta_prediction_verified": true,
+    "unreachable_shortcut_accepts": 0,
+    "world_memory_full_scans": 0
+  },
+  "violations": []
+}

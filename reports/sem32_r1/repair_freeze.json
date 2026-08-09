@@ -1,0 +1,42 @@
+{
+  "acceptance_harness_sha256": "8d6a815862f4a8e6b834b991560fb72a96a321f844a4e651ea97e22e7da65088",
+  "base_seed": 6787664615310377123,
+  "branch": "codex/sem32-r1-relational-topology",
+  "budget_is_research_semantic_input": false,
+  "campaign_budget_contract_pass": true,
+  "campaign_config_sha256": "c6b02f615e69d5d49feb3787bef3791ca2102449efa692cc930a1f537ecac812",
+  "campaign_id": "SEM32-R1-RELATIONAL-TOPOLOGY-REGATE-0001",
+  "configured_max_autonomous_research_epochs": 4096,
+  "corrected_predecessor_commit": "4a1040a3110d66ef5562c752afa84457c0ffd243",
+  "engine_sha256": "b591ed8d723eb3dd665cb20b7903728a5dbc1bb171d6e3778c6130c0c0eab716",
+  "fresh_holdout_materialized": false,
+  "holdout_selection_rule_hash": "4748e5c5b18d509e3122d59cf6b27433f488109b19a8aaa349634a89a37fd6ee",
+  "instruction_sha256": "f199ca44158eeca9862c3ba3c39452cb024da1caa52dc4e10a952c41f3936d6f",
+  "network_allowed_after_freeze": false,
+  "p0_seal_commit": "0de7db52abf8f3e78c0d1b1409a73f211e2eaa85",
+  "pre_repair_baseline_frozen_before_holdout": true,
+  "prestart_future_instance_exposure_events": 0,
+  "relational_dynamics_sha256": "b591ed8d723eb3dd665cb20b7903728a5dbc1bb171d6e3778c6130c0c0eab716",
+  "repair_frozen_before_holdout": true,
+  "requested_max_autonomous_research_epochs": 4096,
+  "routing_sha256": "b591ed8d723eb3dd665cb20b7903728a5dbc1bb171d6e3778c6130c0c0eab716",
+  "runner_sha256": "391f676562790ec63a3b54b94e35159b1169d183a8e48a2086068c4bf5987f20",
+  "schema_version": "SEM32_R1_REPAIR_FREEZE_1",
+  "selected_program": {
+    "context_sensitive": true,
+    "entity_id_is_causal_authority": false,
+    "exact_graph_instance_is_causal_authority": false,
+    "program_cost": 3,
+    "required_relation": {
+      "directionality": 1,
+      "domain_code": 32,
+      "topology_code": 1
+    },
+    "storage_order_is_causal_authority": false,
+    "topology_hash_lookup_authority": false,
+    "traversal_rule": "RELATION_LOCAL_COMPOSITION"
+  },
+  "verifier_binary": "D:\\B_Core_CAMPAIGNS\\sem32-r1-relational-topology\\reports/sem32_r1\\artifacts/frozen_verifier/sem32-r1-verify.exe",
+  "verifier_binary_sha256": "9c4b38f9d9c94e7a10f5bf92d1c1963e315c77bf8fcfdc47eed6615fb2cab94f",
+  "verifier_sha256": "cdf699adbb05d3109a8647d23862662eb33b9084853b37aae2e7f5b9c795799e"
+}
