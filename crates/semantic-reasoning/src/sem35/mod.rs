@@ -26,7 +26,8 @@ use engine::{
     TemporalResearchOutcome, TemporalSet,
 };
 use verifier::{
-    FinalTemporalManifest, Sem35VerificationRequest, Sem35VerificationResponse, TransportProbe,
+    FinalTemporalManifest, NumericMapEntry, Sem35VerificationRequest, Sem35VerificationResponse,
+    TransportProbe,
 };
 
 const SOURCE_PATHS: &[&str] = &[
@@ -646,9 +647,10 @@ fn transport_probe(root: &Path) -> Result<u64, String> {
     let verifier = current_verifier_path(root)?;
     let payload = TransportProbe {
         label: "SEM35_TEMPORAL_TRANSPORT".to_string(),
-        numeric_map: [(65_536, "VARIABLE_DURATION".to_string())]
-            .into_iter()
-            .collect(),
+        numeric_map: vec![NumericMapEntry {
+            key: 65_536,
+            value: "VARIABLE_DURATION".to_string(),
+        }],
         nested_sets: vec![[4, 7, 11].into_iter().collect()],
         adjacent: true,
     };

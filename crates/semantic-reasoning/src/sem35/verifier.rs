@@ -1,4 +1,4 @@
-use std::collections::{BTreeMap, BTreeSet};
+use std::collections::BTreeSet;
 
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
@@ -15,9 +15,15 @@ use super::{
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct TransportProbe {
     pub label: String,
-    pub numeric_map: BTreeMap<u64, String>,
+    pub numeric_map: Vec<NumericMapEntry>,
     pub nested_sets: Vec<BTreeSet<u16>>,
     pub adjacent: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct NumericMapEntry {
+    pub key: u64,
+    pub value: String,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -243,7 +249,10 @@ mod tests {
     fn transport_preserves_nested_numeric_keys() {
         let payload = TransportProbe {
             label: "SEM35".to_string(),
-            numeric_map: [(65_536, "BOUNDARY".to_string())].into_iter().collect(),
+            numeric_map: vec![NumericMapEntry {
+                key: 65_536,
+                value: "BOUNDARY".to_string(),
+            }],
             nested_sets: vec![[4, 7, 11].into_iter().collect()],
             adjacent: true,
         };
@@ -257,6 +266,26 @@ mod tests {
             }
             other => panic!("unexpected response: {other:?}"),
         }
+    }
+
+    #[test]
+    fn transport_request_json_roundtrip_is_exact() {
+        let request = Sem35VerificationRequest::TransportProbe {
+            contract_version: CONTRACT_VERSION.to_string(),
+            payload: TransportProbe {
+                label: "SEM35".to_string(),
+                numeric_map: vec![NumericMapEntry {
+                    key: 65_536,
+                    value: "BOUNDARY".to_string(),
+                }],
+                nested_sets: vec![[4, 7, 11].into_iter().collect()],
+                adjacent: true,
+            },
+        };
+        let encoded = serde_json::to_string(&request).unwrap();
+        assert!(encoded.contains("TRANSPORT_PROBE"));
+        serde_json::from_str::<Sem35VerificationRequest>(&encoded)
+            .unwrap_or_else(|error| panic!("{error}: {encoded}"));
     }
 
     #[test]
