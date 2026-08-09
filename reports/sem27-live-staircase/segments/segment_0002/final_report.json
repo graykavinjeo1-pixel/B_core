@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "disposition": "AUTONOMOUS_DIFFICULTY_TRANSITION_OBSERVED",
+  "segment_id": 2,
+  "budget": 512,
+  "segment_epochs_executed": 66,
+  "total_epochs_executed": 227,
+  "baseline_regime_id": 3,
+  "baseline_transition_count": 2,
+  "current_regime_id": 4,
+  "transition_count": 3,
+  "human_research_steering_events": 0,
+  "human_difficulty_escalation_events": 0,
+  "human_difficulty_level_selection_events": 0,
+  "success_condition_met": true,
+  "completed_at_utc": "2026-08-09T04:04:32.911749Z"
+}

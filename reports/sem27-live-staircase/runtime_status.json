@@ -1,12 +1,17 @@
 {
   "campaign_id": "SEM27-LIVE-AUTONOMOUS-STAIRCASE-0001",
+  "segment_id": 2,
   "status": "SUCCESS",
-  "budget": 256,
-  "epochs_executed": 161,
-  "current_regime_id": 3,
-  "transition_count": 2,
-  "frontier_scale": 425930,
+  "budget": 512,
+  "segment_epochs_executed": 66,
+  "epochs_executed": 227,
+  "total_epochs_executed": 227,
+  "baseline_regime_id": 3,
+  "baseline_transition_count": 2,
+  "current_regime_id": 4,
+  "transition_count": 3,
+  "frontier_scale": 503893,
   "success": true,
   "resumable": false,
-  "updated_at_utc": "2026-08-09T03:45:50.882610Z"
+  "updated_at_utc": "2026-08-09T04:04:32.905695Z"
 }
