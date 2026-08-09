@@ -923,8 +923,7 @@ fn build_case(
         actions,
         goal,
         long_horizon: action_horizon >= 8,
-        novel_relation_topology: matches!(set, ScalingSet::FinalHoldout)
-            && index.is_multiple_of(3),
+        novel_relation_topology: matches!(set, ScalingSet::FinalHoldout) && index.is_multiple_of(3),
         novel_entity_count: matches!(set, ScalingSet::FinalHoldout) && index % 3 == 1,
         novel_goal_composition: matches!(set, ScalingSet::FinalHoldout)
             && profile.composite_goals > 0,

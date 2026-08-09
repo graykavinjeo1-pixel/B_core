@@ -1,0 +1,12 @@
+pub const CAMPAIGN_ID: &str = "SEM35-AUTONOMOUS-SEMANTIC-TEMPORAL-ABSTRACTION-0001";
+pub const BRANCH: &str = "codex/sem35-autonomous-temporal-abstraction";
+pub const PREDECESSOR: &str = "4bc64294cdf4a33b1be5d67dbb99327c7c24f35f";
+pub const P0_COMMIT: &str = "b7b073d7c4e6b603c6924f50e6b9bffc4584010a";
+pub const MAX_AUTONOMOUS_RESEARCH_EPOCHS: u64 = 4096;
+pub const DEVELOPMENT_SEED: u64 = 8_035_210_771_294_611_027;
+pub const FINAL_HOLDOUT_SEED: u64 = 15_709_411_620_335_294_881;
+pub const DEVELOPMENT_TASK_COUNT: usize = 14;
+pub const FINAL_TASK_COUNT: usize = 13;
+pub const REPORT_DIR: &str = "reports/sem35";
+pub const CONTRACT_VERSION: &str = "SEM35_BLIND_TEMPORAL_VERIFIER_1";
+pub const WORK_ACCOUNTING_VERSION: &str = "SEM35_TEMPORAL_PLANNING_WORK_UNIT_1";
