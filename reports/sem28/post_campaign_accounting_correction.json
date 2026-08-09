@@ -1,0 +1,14 @@
+{
+  "schema_version": "SEM28_POST_CAMPAIGN_ACCOUNTING_CORRECTION_1",
+  "correction_is_research_policy_change": false,
+  "correction_is_outcome_dependent_repair": false,
+  "field": "TIME_TO_PRIOR_FRONTIER_EXCEEDANCE",
+  "previous_summary_value": 10,
+  "corrected_value": 11,
+  "authoritative_raw_evidence": "checkpoints/epoch_0011_PRIOR_FRONTIER_EXCEEDANCE.json",
+  "reason": "The summary used the fresh holdout exposure epoch rather than the following independently verified exceedance epoch.",
+  "frozen_engine_modified": false,
+  "frozen_verifier_modified": false,
+  "canonical_tasks_regenerated": false,
+  "canonical_results_regenerated": false
+}

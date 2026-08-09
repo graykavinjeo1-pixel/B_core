@@ -1,0 +1,208 @@
+{
+  "accepted": 0,
+  "attempts": [
+    {
+      "instance_id": 1,
+      "interaction_rank": 3,
+      "solution": {
+        "result_digest": 11813627571443029984,
+        "trace_commitment": 420427509195696608
+      },
+      "solver_representation": "PREDECESSOR_AFFINE_ONLY",
+      "substrate_id": "AUTO-SUBSTRATE-396b1471068e0ea8",
+      "verification": {
+        "accepted": false,
+        "contract_version": "SEM28-RELATIONAL-PROGRAM-CONTRACT-V1",
+        "dependency_depth": 4,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 37,
+        "structural_signature": 8805255881984475388,
+        "verifier_internal_witness_disclosed": false,
+        "violations": [
+          "RESULT_DIGEST_MISMATCH",
+          "TRACE_COMMITMENT_MISMATCH"
+        ]
+      },
+      "verification_wall_time_ns": 5361200
+    },
+    {
+      "instance_id": 2,
+      "interaction_rank": 3,
+      "solution": {
+        "result_digest": 18061515967168782488,
+        "trace_commitment": 12781705664901924825
+      },
+      "solver_representation": "PREDECESSOR_AFFINE_ONLY",
+      "substrate_id": "AUTO-SUBSTRATE-396b1471068e0ea8",
+      "verification": {
+        "accepted": false,
+        "contract_version": "SEM28-RELATIONAL-PROGRAM-CONTRACT-V1",
+        "dependency_depth": 4,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 37,
+        "structural_signature": 8805255881984475388,
+        "verifier_internal_witness_disclosed": false,
+        "violations": [
+          "RESULT_DIGEST_MISMATCH",
+          "TRACE_COMMITMENT_MISMATCH"
+        ]
+      },
+      "verification_wall_time_ns": 5497700
+    },
+    {
+      "instance_id": 3,
+      "interaction_rank": 3,
+      "solution": {
+        "result_digest": 4045661215455042117,
+        "trace_commitment": 1033484305347439129
+      },
+      "solver_representation": "PREDECESSOR_AFFINE_ONLY",
+      "substrate_id": "AUTO-SUBSTRATE-396b1471068e0ea8",
+      "verification": {
+        "accepted": false,
+        "contract_version": "SEM28-RELATIONAL-PROGRAM-CONTRACT-V1",
+        "dependency_depth": 4,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 37,
+        "structural_signature": 8805255881984475388,
+        "verifier_internal_witness_disclosed": false,
+        "violations": [
+          "RESULT_DIGEST_MISMATCH",
+          "TRACE_COMMITMENT_MISMATCH"
+        ]
+      },
+      "verification_wall_time_ns": 5390300
+    },
+    {
+      "instance_id": 4,
+      "interaction_rank": 3,
+      "solution": {
+        "result_digest": 6833085726244206735,
+        "trace_commitment": 14471262294514783247
+      },
+      "solver_representation": "PREDECESSOR_AFFINE_ONLY",
+      "substrate_id": "AUTO-SUBSTRATE-396b1471068e0ea8",
+      "verification": {
+        "accepted": false,
+        "contract_version": "SEM28-RELATIONAL-PROGRAM-CONTRACT-V1",
+        "dependency_depth": 4,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 37,
+        "structural_signature": 8805255881984475388,
+        "verifier_internal_witness_disclosed": false,
+        "violations": [
+          "RESULT_DIGEST_MISMATCH",
+          "TRACE_COMMITMENT_MISMATCH"
+        ]
+      },
+      "verification_wall_time_ns": 5191700
+    },
+    {
+      "instance_id": 5,
+      "interaction_rank": 3,
+      "solution": {
+        "result_digest": 12993622008112365583,
+        "trace_commitment": 964502574958875374
+      },
+      "solver_representation": "PREDECESSOR_AFFINE_ONLY",
+      "substrate_id": "AUTO-SUBSTRATE-396b1471068e0ea8",
+      "verification": {
+        "accepted": false,
+        "contract_version": "SEM28-RELATIONAL-PROGRAM-CONTRACT-V1",
+        "dependency_depth": 4,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 37,
+        "structural_signature": 8805255881984475388,
+        "verifier_internal_witness_disclosed": false,
+        "violations": [
+          "RESULT_DIGEST_MISMATCH",
+          "TRACE_COMMITMENT_MISMATCH"
+        ]
+      },
+      "verification_wall_time_ns": 5082500
+    },
+    {
+      "instance_id": 6,
+      "interaction_rank": 3,
+      "solution": {
+        "result_digest": 8577147510201113963,
+        "trace_commitment": 10640063635076733324
+      },
+      "solver_representation": "PREDECESSOR_AFFINE_ONLY",
+      "substrate_id": "AUTO-SUBSTRATE-396b1471068e0ea8",
+      "verification": {
+        "accepted": false,
+        "contract_version": "SEM28-RELATIONAL-PROGRAM-CONTRACT-V1",
+        "dependency_depth": 4,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 37,
+        "structural_signature": 8805255881984475388,
+        "verifier_internal_witness_disclosed": false,
+        "violations": [
+          "RESULT_DIGEST_MISMATCH",
+          "TRACE_COMMITMENT_MISMATCH"
+        ]
+      },
+      "verification_wall_time_ns": 5434000
+    },
+    {
+      "instance_id": 7,
+      "interaction_rank": 3,
+      "solution": {
+        "result_digest": 1112688525802386345,
+        "trace_commitment": 361498728653533816
+      },
+      "solver_representation": "PREDECESSOR_AFFINE_ONLY",
+      "substrate_id": "AUTO-SUBSTRATE-396b1471068e0ea8",
+      "verification": {
+        "accepted": false,
+        "contract_version": "SEM28-RELATIONAL-PROGRAM-CONTRACT-V1",
+        "dependency_depth": 4,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 37,
+        "structural_signature": 8805255881984475388,
+        "verifier_internal_witness_disclosed": false,
+        "violations": [
+          "RESULT_DIGEST_MISMATCH",
+          "TRACE_COMMITMENT_MISMATCH"
+        ]
+      },
+      "verification_wall_time_ns": 4715800
+    },
+    {
+      "instance_id": 8,
+      "interaction_rank": 3,
+      "solution": {
+        "result_digest": 14307849456829049049,
+        "trace_commitment": 14307026173869488138
+      },
+      "solver_representation": "PREDECESSOR_AFFINE_ONLY",
+      "substrate_id": "AUTO-SUBSTRATE-396b1471068e0ea8",
+      "verification": {
+        "accepted": false,
+        "contract_version": "SEM28-RELATIONAL-PROGRAM-CONTRACT-V1",
+        "dependency_depth": 4,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 37,
+        "structural_signature": 8805255881984475388,
+        "verifier_internal_witness_disclosed": false,
+        "violations": [
+          "RESULT_DIGEST_MISMATCH",
+          "TRACE_COMMITMENT_MISMATCH"
+        ]
+      },
+      "verification_wall_time_ns": 4753100
+    }
+  ],
+  "initial_new_substrate_cost": 1328,
+  "quality_classification": "LEARNABLE_FRONTIER",
+  "total": 8
+}

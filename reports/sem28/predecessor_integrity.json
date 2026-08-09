@@ -1,0 +1,14 @@
+{
+  "current_regime_id": 59,
+  "effective_verified_difficulty": 900000,
+  "later_nominal_regime_state_authority": false,
+  "later_nominal_regime_state_loaded": false,
+  "passed": true,
+  "predecessor_artifact": "research/sem28/predecessor/epoch_3414_r59.json",
+  "predecessor_artifact_sha256": "af208af39a08de40af02f7d6f49fb3a09ed4757c1d041e12db7d936bdb77a4ab",
+  "predecessor_seal_sha256": "ba82865454bdd08e763ccef638d5890e68e8cb8538bc59a04798e995d843dbdc",
+  "prior_frontier_scale": 8604841,
+  "requested_difficulty": 908160,
+  "sealed_predecessor_commit": "a0a6764a32aa1e6dd3ffdd229cdc18274ce2ede9",
+  "transition_count": 58
+}

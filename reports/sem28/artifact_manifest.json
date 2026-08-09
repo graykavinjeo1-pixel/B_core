@@ -1,0 +1,237 @@
+{
+  "artifact_count": 46,
+  "artifacts": [
+    {
+      "bytes": 6190,
+      "path": "reports/sem28/adapted_training_results.json",
+      "sha256": "e66da514a53f6508e4b04a2df16ee3a7e53ab679285a20c7bd70e33ae65bc0ba"
+    },
+    {
+      "bytes": 311296,
+      "path": "reports/sem28/artifacts/frozen_verifier/sem28-verify.exe",
+      "sha256": "f68aaf0ea6e826d8ca87e8ab71a1f48ccbfaa31eb6948d780ecc7cb63cc0faa3"
+    },
+    {
+      "bytes": 10978,
+      "path": "reports/sem28/artifacts/frozen_verifier/verifier.rs",
+      "sha256": "3ac3f3796f3ec12a6f026bd6b03cb3fc624af13e56faccf04f9100228f36c43d"
+    },
+    {
+      "bytes": 308,
+      "path": "reports/sem28/autonomous_adaptation_lineage.json",
+      "sha256": "97b454913962d32cae080341b74a037bbd7e969ee80d3d760bab24104d066ea1"
+    },
+    {
+      "bytes": 1370,
+      "path": "reports/sem28/autonomous_decision_ledger.json",
+      "sha256": "bb88857c18623e804fcc109e13522b0ba38216e1fbab46a9768236d2a682876c"
+    },
+    {
+      "bytes": 654,
+      "path": "reports/sem28/autonomous_substrate_selection.json",
+      "sha256": "4111d041957414741cd2918539519daa45e9a55825efa89f47f9144ae65e8c44"
+    },
+    {
+      "bytes": 8144,
+      "path": "reports/sem28/campaign_freeze.json",
+      "sha256": "adf1f429196e8c51cacf7e94d78a99c306d431b2101329435b6f2483e33e95ad"
+    },
+    {
+      "bytes": 90,
+      "path": "reports/sem28/capability_productivity_sequence.json",
+      "sha256": "59ae7a14b3f49068b640345adb071f80131146fe5ef8e34f75a96af5525e7f0b"
+    },
+    {
+      "bytes": 90,
+      "path": "reports/sem28/challenge_quality_sequence.json",
+      "sha256": "995fa9046f22274e2c649e28d614363186f1de4a30f2839c93b1bbd9985faabf"
+    },
+    {
+      "bytes": 337,
+      "path": "reports/sem28/checkpoints/epoch_0001_SUBSTRATE_SATURATION_CONFIRMATION.json",
+      "sha256": "dcab9f6d1ad9fff281a5c35cc196571309c7c38bc67de6b2b07f153dc8f59150"
+    },
+    {
+      "bytes": 545,
+      "path": "reports/sem28/checkpoints/epoch_0002_SUBSTRATE_HYPOTHESES_GENERATED.json",
+      "sha256": "5e34c7a6c6115af3e36249126edeb4880f276bf4185341c4d8ce92eb23fefe81"
+    },
+    {
+      "bytes": 809,
+      "path": "reports/sem28/checkpoints/epoch_0003_NEW_DIFFICULTY_DIMENSION_CREATION.json",
+      "sha256": "2946c0d137f4e38d2481106ed61e7fd7696be97ae511c30663ea7173f1b8e0b1"
+    },
+    {
+      "bytes": 804,
+      "path": "reports/sem28/checkpoints/epoch_0004_NEW_DIMENSION_CAUSALITY_PASS.json",
+      "sha256": "f4a07556459ad41c067d62b3206e2f6a7a21b07b4e0f8c26ac6cf9c5e9e85580"
+    },
+    {
+      "bytes": 1063,
+      "path": "reports/sem28/checkpoints/epoch_0005_NEW_SUBSTRATE_FREEZE.json",
+      "sha256": "7ab7385907fdfc230b33c6fe03069e1de587b906f89dd029cf73d1551be591e3"
+    },
+    {
+      "bytes": 1247,
+      "path": "reports/sem28/checkpoints/epoch_0006_FRESH_SUBSTRATE_EXPOSURE.json",
+      "sha256": "73b605175241d7ae14c95dcc4bca7cdb07cfbba09f03e009a2a4f4dbb15ae2aa"
+    },
+    {
+      "bytes": 1254,
+      "path": "reports/sem28/checkpoints/epoch_0007_INITIAL_NEW_SUBSTRATE_CHALLENGE.json",
+      "sha256": "2acd9e7c2dcd0dac48f54bfdb7abf248a20eb7882d0c07541ace0002746106ef"
+    },
+    {
+      "bytes": 1576,
+      "path": "reports/sem28/checkpoints/epoch_0008_FIRST_ADAPTATION.json",
+      "sha256": "73907a0b0316055ecdaf78041cf5542e3959e672cc195817e86cbf565b836461"
+    },
+    {
+      "bytes": 1580,
+      "path": "reports/sem28/checkpoints/epoch_0009_ADAPTATION_CONFIRMED.json",
+      "sha256": "b2b23db76c75fe9144481427e8eda314f83c4f8247afdc2b6cd3ff9e6cc47c1e"
+    },
+    {
+      "bytes": 1586,
+      "path": "reports/sem28/checkpoints/epoch_0010_FINAL_FRESH_WORK_EXPOSURE.json",
+      "sha256": "c37f49b6d2b6d7061b5b7ed50e23af09f7a5fc83888ed8928d97332f20caf01d"
+    },
+    {
+      "bytes": 1586,
+      "path": "reports/sem28/checkpoints/epoch_0011_PRIOR_FRONTIER_EXCEEDANCE.json",
+      "sha256": "7b3a4019e10e2d3621c3101f075593d974d48c1775b445ab358e8f6c742e398b"
+    },
+    {
+      "bytes": 1584,
+      "path": "reports/sem28/checkpoints/epoch_0012_FRONTIER_GAIN_RETENTION.json",
+      "sha256": "336657cbce17229a6cf1d41295d77bfcd147f8f08e4d8859f51d28276b919922"
+    },
+    {
+      "bytes": 585,
+      "path": "reports/sem28/clippy_differential_audit.json",
+      "sha256": "4d64bb9dd96e590f68cc796c486bf004f65b9bb4073095bb9d6ef375a3ae8f8c"
+    },
+    {
+      "bytes": 2840,
+      "path": "reports/sem28/curriculum_research_memory.json",
+      "sha256": "d403940d1ce11e033e6064b0a403d5f47f556b42ebc0a36007c4e9262ab53ccb"
+    },
+    {
+      "bytes": 146,
+      "path": "reports/sem28/external_execution_audit.json",
+      "sha256": "89dde2b7c98ef21dbb3c6458f9868d577d3f7d6ddfa7d10191b4f7fa91f56901"
+    },
+    {
+      "bytes": 6657,
+      "path": "reports/sem28/fresh_holdout_challenges.jsonl",
+      "sha256": "ecb9a9bbf8c5d8c6e433260f43e573d7ec0d3f0b27b2d24019aaa6131b58ac25"
+    },
+    {
+      "bytes": 6264,
+      "path": "reports/sem28/fresh_holdout_results.json",
+      "sha256": "dbe473e0573ac2d629187218e200eeb7648b171882dd2345c9e343c6329b4f13"
+    },
+    {
+      "bytes": 6645,
+      "path": "reports/sem28/fresh_training_challenges.jsonl",
+      "sha256": "ae779a2b1e037bcfafa284952063bfa2cd8d1fb16d829bf7681a614402ec3ae2"
+    },
+    {
+      "bytes": 87,
+      "path": "reports/sem28/frontier_scale_sequence.json",
+      "sha256": "49526b4481ce4dc7b104a75020591c7c087e7c3c75804f3571a3052a7f685410"
+    },
+    {
+      "bytes": 284,
+      "path": "reports/sem28/human_intervention_audit.json",
+      "sha256": "abb951f3bc8d313b98d7d2c98d7f1e6f5fc4e1b277739d69b77d2e406b271f03"
+    },
+    {
+      "bytes": 6938,
+      "path": "reports/sem28/initial_new_substrate_attempts.json",
+      "sha256": "e8a294c088475123d06f347b0eb657a651a037b19c6302e8888faec303ce1b2c"
+    },
+    {
+      "bytes": 325,
+      "path": "reports/sem28/leakage_and_gaming_audit.json",
+      "sha256": "66bb5b672c9526ccfc412823170b0a2d11d7c4df2fcc9b9ab3e6f1a7c9ff0b50"
+    },
+    {
+      "bytes": 545,
+      "path": "reports/sem28/new_difficulty_dimensions.json",
+      "sha256": "ad586edd94ec12eb0f5cc5db8077e682709775eaa7bdb1dd5372335279d4ab71"
+    },
+    {
+      "bytes": 945,
+      "path": "reports/sem28/new_dimension_causality.json",
+      "sha256": "b55c61115edae05822d4dfc96fa956dfe7acaba9daa6fb25d9d424dcd60ae700"
+    },
+    {
+      "bytes": 650,
+      "path": "reports/sem28/post_campaign_accounting_correction.json",
+      "sha256": "30f70bf043db529d164b32b4da8f3cbd10248b6e98e65099f95e69f6c2c05ba7"
+    },
+    {
+      "bytes": 629,
+      "path": "reports/sem28/predecessor_integrity.json",
+      "sha256": "845da935ac572a3f3f9b2c6823f73152517cdb2af225a74ce860fbd85289a3b9"
+    },
+    {
+      "bytes": 212,
+      "path": "reports/sem28/prestart_audit.json",
+      "sha256": "4d25959331700b2ae085dc952abd83d6c1598c4d83d10146bab5f4b2fafba418"
+    },
+    {
+      "bytes": 145,
+      "path": "reports/sem28/qualitative_capability_sequence.json",
+      "sha256": "cb2f18b8b8bf95c6f1134f05605c91af798e710f49b15d3548e50c2efee55469"
+    },
+    {
+      "bytes": 245,
+      "path": "reports/sem28/regression_and_retention.json",
+      "sha256": "709bd32649ed583032d95ea33fcab1713731421c7fe0e19ab7e4c0cd2c665fc9"
+    },
+    {
+      "bytes": 1396,
+      "path": "reports/sem28/reproducibility_receipt.json",
+      "sha256": "6174006dc726b73a7d5e39c60422be54d634a92791d81631bbe86491dbd342a2"
+    },
+    {
+      "bytes": 149,
+      "path": "reports/sem28/research_cost_sequence.json",
+      "sha256": "4efcadcc81fc0276a5ac09e1bf5ac7aec8c83c993e571c54750ed42abaf0e72e"
+    },
+    {
+      "bytes": 4365,
+      "path": "reports/sem28/sem28_final_report.json",
+      "sha256": "656ef9363467423081bb7e15bcfe451cfd240348c9250818f553cdf452a448fd"
+    },
+    {
+      "bytes": 702,
+      "path": "reports/sem28/SEM28_REPORT.md",
+      "sha256": "18bb0849251f78bbe327091e1309aa7c5c28d07063520097cae9dd5a90754fd1"
+    },
+    {
+      "bytes": 2579,
+      "path": "reports/sem28/substrate_hypotheses.json",
+      "sha256": "30b946eefe9ad3c4c632e95b60b5ed53e708770dce5beef978a4634bf9c3d9e2"
+    },
+    {
+      "bytes": 498,
+      "path": "reports/sem28/substrate_saturation_evidence.json",
+      "sha256": "e9ffcb43713add4fcc939a36023032f32b799bc02997f019beade22056177205"
+    },
+    {
+      "bytes": 469,
+      "path": "reports/sem28/test_receipt.json",
+      "sha256": "1f0260f1aac49b627960a44dff37bf90a704619fce19dddc88807083eb398630"
+    },
+    {
+      "bytes": 469,
+      "path": "reports/sem28/verifier_meta_validation.json",
+      "sha256": "b971f752a12c4a72958f454321784b4f3c332ad9e6da8bd69bbe872a2715e341"
+    }
+  ],
+  "campaign_id": "SEM28-AUTONOMOUS-SUBSTRATE-GENESIS-0001",
+  "schema_version": "SEM28_ARTIFACT_MANIFEST_1"
+}

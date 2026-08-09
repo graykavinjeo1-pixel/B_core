@@ -1,0 +1,14 @@
+{
+  "operator_selected": false,
+  "proposed": [
+    {
+      "fresh_instance_applicable": true,
+      "mechanical_effect": "changes the rule graph, dependency depth, semantic work units, and verified result under an otherwise fixed instance seed",
+      "name": "STRUCTURAL_INTERACTION_RANK",
+      "operator_selected": false,
+      "predecessor_value": 1,
+      "proposed_value": 3,
+      "semantic_definition": "maximum number of mutually dependent public semantic relations that must be resolved within one verified solution trace"
+    }
+  ]
+}

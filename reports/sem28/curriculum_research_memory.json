@@ -1,0 +1,90 @@
+{
+  "failed_challenge_structures": [
+    {
+      "candidate_id": "HYP-01-146d8bb5",
+      "features": {
+        "branch_count": 0,
+        "context_count": 1,
+        "latent_state_count": 0,
+        "localized_feedback_channels": 1,
+        "relation_count": 1,
+        "repeated_known_work": 10
+      },
+      "fresh_instance_applicable": true,
+      "mechanically_verifiable": true,
+      "predicted_learnability_score": 62,
+      "predicted_novelty_score": 0,
+      "predicted_resource_cost": 64,
+      "quality_classification": "TOO_EASY",
+      "rejection_reason": "SEMANTICALLY_REDUNDANT",
+      "selected_autonomously": false,
+      "selection_score": -128
+    },
+    {
+      "candidate_id": "HYP-02-b7de834b",
+      "features": {
+        "branch_count": 0,
+        "context_count": 2,
+        "latent_state_count": 6,
+        "localized_feedback_channels": 0,
+        "relation_count": 1,
+        "repeated_known_work": 0
+      },
+      "fresh_instance_applicable": true,
+      "mechanically_verifiable": false,
+      "predicted_learnability_score": -70,
+      "predicted_novelty_score": 83,
+      "predicted_resource_cost": 128,
+      "quality_classification": "UNINFORMATIVE_FAILURE",
+      "rejection_reason": "NOT_INDEPENDENTLY_VERIFIABLE",
+      "selected_autonomously": false,
+      "selection_score": 13
+    },
+    {
+      "candidate_id": "HYP-04-cacd07a7",
+      "features": {
+        "branch_count": 8,
+        "context_count": 16,
+        "latent_state_count": 8,
+        "localized_feedback_channels": 1,
+        "relation_count": 12,
+        "repeated_known_work": 0
+      },
+      "fresh_instance_applicable": false,
+      "mechanically_verifiable": true,
+      "predicted_learnability_score": 62,
+      "predicted_novelty_score": 828,
+      "predicted_resource_cost": 110592,
+      "quality_classification": "TOO_HARD",
+      "rejection_reason": "RESOURCE_DOMINATED",
+      "selected_autonomously": false,
+      "selection_score": 650
+    }
+  ],
+  "final_calibration_cost": 296,
+  "initial_calibration_cost": 1328,
+  "recursive_curriculum_improvement_observed": false,
+  "reusable_capability": "PUBLIC_COMPOSITE_RELATIONAL_RULE_GRAPH_INTERPRETER",
+  "successful_challenge_structures": [
+    {
+      "candidate_id": "HYP-03-9240a43d",
+      "features": {
+        "branch_count": 2,
+        "context_count": 3,
+        "latent_state_count": 1,
+        "localized_feedback_channels": 3,
+        "relation_count": 3,
+        "repeated_known_work": 0
+      },
+      "fresh_instance_applicable": true,
+      "mechanically_verifiable": true,
+      "predicted_learnability_score": 96,
+      "predicted_novelty_score": 149,
+      "predicted_resource_cost": 1728,
+      "quality_classification": "LEARNABLE_FRONTIER",
+      "rejection_reason": null,
+      "selected_autonomously": true,
+      "selection_score": 245
+    }
+  ]
+}

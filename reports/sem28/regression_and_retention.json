@@ -1,0 +1,9 @@
+{
+  "accepted": 16,
+  "capability_negative_transfer_events": 0,
+  "frontier_gain_retention_confirmed": true,
+  "gain_erasure_events": 0,
+  "global_reasoning_regressions": 0,
+  "meta_quality_regressions": 0,
+  "predecessor_anchor_instances": 16
+}

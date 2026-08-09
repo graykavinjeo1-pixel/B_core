@@ -1,0 +1,50 @@
+{
+  "checkpoint_alters_research_semantics": false,
+  "decision_state": [
+    {
+      "diagnosis": "CURRENT_DIFFICULTY_SUBSTRATE_EXHAUSTED",
+      "epoch": 1,
+      "observation": "REQUESTED_WORK_INCREASES_EFFECTIVE_WORK_DOES_NOT",
+      "operator_selected": false
+    },
+    {
+      "action": "GENERATE_CAUSALLY_DISTINCT_SUBSTRATE_HYPOTHESES",
+      "candidate_count": 4,
+      "epoch": 2,
+      "observation": "CURRENT_SUBSTRATE_EXHAUSTED",
+      "operator_selected": false
+    },
+    {
+      "action": "SELECT_LEARNABLE_VERIFIABLE_NOVEL_FRONTIER",
+      "derived_dimension": "STRUCTURAL_INTERACTION_RANK",
+      "epoch": 3,
+      "operator_selected": false,
+      "selected_candidate": "HYP-03-9240a43d",
+      "selection_score": 245
+    },
+    {
+      "action": "FREEZE_AND_META_VALIDATE_INDEPENDENT_VERIFIER",
+      "epoch": 5,
+      "generator_is_success_authority": false,
+      "operator_selected": false,
+      "verifier_hash": "f68aaf0ea6e826d8ca87e8ab71a1f48ccbfaa31eb6948d780ecc7cb63cc0faa3"
+    },
+    {
+      "action": "EXPOSE_FRESH_FROZEN_SUBSTRATE_WORK",
+      "epoch": 6,
+      "instance_count": 8,
+      "operator_selected": false,
+      "verifier_was_frozen": true
+    },
+    {
+      "autonomous_repair": "SYNTHESIZE_PUBLIC_CONTRACT_INTERPRETER",
+      "diagnosed_bottleneck": "MISSING_COMPOSITE_RELATIONAL_REPRESENTATION",
+      "epoch": 8,
+      "human_repair_design_event": false,
+      "observation": "BASELINE_REPRESENTATION_CANNOT_REALIZE_RELATIONAL_RULE_GRAPH",
+      "operator_selected": false
+    }
+  ],
+  "epoch": 12,
+  "event": "FRONTIER_GAIN_RETENTION"
+}

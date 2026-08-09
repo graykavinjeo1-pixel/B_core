@@ -1,0 +1,22 @@
+{
+  "causally_distinct_attempts": 5,
+  "classification": "CURRENT_DIFFICULTY_SUBSTRATE_EXHAUSTED",
+  "counterfactual_effective_difficulties": [
+    900000,
+    900000,
+    900000,
+    900000,
+    900000
+  ],
+  "counterfactual_requested_difficulties": [
+    1046400,
+    970368,
+    933120,
+    918528,
+    920832
+  ],
+  "current_effective_difficulty": 900000,
+  "current_requested_difficulty": 908160,
+  "current_substrate_saturated": true,
+  "requested_increase_without_effective_increase": true
+}

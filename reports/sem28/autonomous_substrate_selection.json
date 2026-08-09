@@ -1,0 +1,23 @@
+{
+  "selected": {
+    "candidate_id": "HYP-03-9240a43d",
+    "features": {
+      "branch_count": 2,
+      "context_count": 3,
+      "latent_state_count": 1,
+      "localized_feedback_channels": 3,
+      "relation_count": 3,
+      "repeated_known_work": 0
+    },
+    "fresh_instance_applicable": true,
+    "mechanically_verifiable": true,
+    "predicted_learnability_score": 96,
+    "predicted_novelty_score": 149,
+    "predicted_resource_cost": 1728,
+    "quality_classification": "LEARNABLE_FRONTIER",
+    "rejection_reason": null,
+    "selected_autonomously": true,
+    "selection_score": 245
+  },
+  "selection_authority": "AUTONOMOUS_EVIDENCE_SCORE"
+}

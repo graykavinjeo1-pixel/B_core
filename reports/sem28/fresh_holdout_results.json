@@ -1,0 +1,185 @@
+{
+  "accepted": 8,
+  "attempts": [
+    {
+      "instance_id": 1,
+      "interaction_rank": 3,
+      "solution": {
+        "result_digest": 5612657561626049573,
+        "trace_commitment": 7688679652993446904
+      },
+      "solver_representation": "ADAPTED_RELATIONAL",
+      "substrate_id": "AUTO-SUBSTRATE-396b1471068e0ea8",
+      "verification": {
+        "accepted": true,
+        "contract_version": "SEM28-RELATIONAL-PROGRAM-CONTRACT-V1",
+        "dependency_depth": 4,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 37,
+        "structural_signature": 8805255881984475388,
+        "verifier_internal_witness_disclosed": false,
+        "violations": []
+      },
+      "verification_wall_time_ns": 5117900
+    },
+    {
+      "instance_id": 2,
+      "interaction_rank": 3,
+      "solution": {
+        "result_digest": 17218641516164987952,
+        "trace_commitment": 795872120218726251
+      },
+      "solver_representation": "ADAPTED_RELATIONAL",
+      "substrate_id": "AUTO-SUBSTRATE-396b1471068e0ea8",
+      "verification": {
+        "accepted": true,
+        "contract_version": "SEM28-RELATIONAL-PROGRAM-CONTRACT-V1",
+        "dependency_depth": 4,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 37,
+        "structural_signature": 8805255881984475388,
+        "verifier_internal_witness_disclosed": false,
+        "violations": []
+      },
+      "verification_wall_time_ns": 5206900
+    },
+    {
+      "instance_id": 3,
+      "interaction_rank": 3,
+      "solution": {
+        "result_digest": 3332014080336152631,
+        "trace_commitment": 1415996563493764874
+      },
+      "solver_representation": "ADAPTED_RELATIONAL",
+      "substrate_id": "AUTO-SUBSTRATE-396b1471068e0ea8",
+      "verification": {
+        "accepted": true,
+        "contract_version": "SEM28-RELATIONAL-PROGRAM-CONTRACT-V1",
+        "dependency_depth": 4,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 37,
+        "structural_signature": 8805255881984475388,
+        "verifier_internal_witness_disclosed": false,
+        "violations": []
+      },
+      "verification_wall_time_ns": 5082200
+    },
+    {
+      "instance_id": 4,
+      "interaction_rank": 3,
+      "solution": {
+        "result_digest": 11394776052519284851,
+        "trace_commitment": 5953699867725298811
+      },
+      "solver_representation": "ADAPTED_RELATIONAL",
+      "substrate_id": "AUTO-SUBSTRATE-396b1471068e0ea8",
+      "verification": {
+        "accepted": true,
+        "contract_version": "SEM28-RELATIONAL-PROGRAM-CONTRACT-V1",
+        "dependency_depth": 4,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 37,
+        "structural_signature": 8805255881984475388,
+        "verifier_internal_witness_disclosed": false,
+        "violations": []
+      },
+      "verification_wall_time_ns": 5116400
+    },
+    {
+      "instance_id": 5,
+      "interaction_rank": 3,
+      "solution": {
+        "result_digest": 7589790689471319002,
+        "trace_commitment": 3963865512879806408
+      },
+      "solver_representation": "ADAPTED_RELATIONAL",
+      "substrate_id": "AUTO-SUBSTRATE-396b1471068e0ea8",
+      "verification": {
+        "accepted": true,
+        "contract_version": "SEM28-RELATIONAL-PROGRAM-CONTRACT-V1",
+        "dependency_depth": 4,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 37,
+        "structural_signature": 8805255881984475388,
+        "verifier_internal_witness_disclosed": false,
+        "violations": []
+      },
+      "verification_wall_time_ns": 4883500
+    },
+    {
+      "instance_id": 6,
+      "interaction_rank": 3,
+      "solution": {
+        "result_digest": 11095678134748427873,
+        "trace_commitment": 15570799389004369209
+      },
+      "solver_representation": "ADAPTED_RELATIONAL",
+      "substrate_id": "AUTO-SUBSTRATE-396b1471068e0ea8",
+      "verification": {
+        "accepted": true,
+        "contract_version": "SEM28-RELATIONAL-PROGRAM-CONTRACT-V1",
+        "dependency_depth": 4,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 37,
+        "structural_signature": 8805255881984475388,
+        "verifier_internal_witness_disclosed": false,
+        "violations": []
+      },
+      "verification_wall_time_ns": 5333700
+    },
+    {
+      "instance_id": 7,
+      "interaction_rank": 3,
+      "solution": {
+        "result_digest": 3644162820380837867,
+        "trace_commitment": 11700187187163276420
+      },
+      "solver_representation": "ADAPTED_RELATIONAL",
+      "substrate_id": "AUTO-SUBSTRATE-396b1471068e0ea8",
+      "verification": {
+        "accepted": true,
+        "contract_version": "SEM28-RELATIONAL-PROGRAM-CONTRACT-V1",
+        "dependency_depth": 4,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 37,
+        "structural_signature": 8805255881984475388,
+        "verifier_internal_witness_disclosed": false,
+        "violations": []
+      },
+      "verification_wall_time_ns": 5008000
+    },
+    {
+      "instance_id": 8,
+      "interaction_rank": 3,
+      "solution": {
+        "result_digest": 15856000688011902599,
+        "trace_commitment": 12197028598581205182
+      },
+      "solver_representation": "ADAPTED_RELATIONAL",
+      "substrate_id": "AUTO-SUBSTRATE-396b1471068e0ea8",
+      "verification": {
+        "accepted": true,
+        "contract_version": "SEM28-RELATIONAL-PROGRAM-CONTRACT-V1",
+        "dependency_depth": 4,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 37,
+        "structural_signature": 8805255881984475388,
+        "verifier_internal_witness_disclosed": false,
+        "violations": []
+      },
+      "verification_wall_time_ns": 4858300
+    }
+  ],
+  "final_frontier_scale": 8605137,
+  "prior_frontier_exceeded": true,
+  "prior_frontier_scale": 8604841,
+  "verified_new_work_units": 296
+}

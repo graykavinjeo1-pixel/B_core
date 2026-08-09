@@ -1,0 +1,229 @@
+{
+  "base_seed": 6784672845575142866,
+  "branch": "codex/sem28-substrate-genesis",
+  "budget_is_research_semantic_input": false,
+  "campaign_id": "SEM28-AUTONOMOUS-SUBSTRATE-GENESIS-0001",
+  "campaign_is_event_bounded": true,
+  "campaign_runner_sha256": "1f694b1903bdd235fa794d2c3a3e065a36f96c46276014ea0cd9ada7e6f4af55",
+  "checkpoint_interval_epochs": 64,
+  "engine_sha256": "3a577c2cb090db0dda90856b52aa0c923b7791c7bdbae70bad867f1b55b8b333",
+  "frozen_at_unix_ms": 1786260770856,
+  "future_instances_materialized": false,
+  "generator_is_success_authority": false,
+  "holdout_seed_commitments": [
+    {
+      "domain": "HOLDOUT",
+      "instance_index": 1,
+      "instance_materialized": false,
+      "seed_commitment": "4699866b0f88c73494cc50707efd4a8b3fd57946bf78ffa0c954aaa81a2d9d29"
+    },
+    {
+      "domain": "HOLDOUT",
+      "instance_index": 2,
+      "instance_materialized": false,
+      "seed_commitment": "e76b884158af8c3a78795c88ac0a7643ab8aa262c5d4ee2370e458638727b0b2"
+    },
+    {
+      "domain": "HOLDOUT",
+      "instance_index": 3,
+      "instance_materialized": false,
+      "seed_commitment": "1851649a8bb6d4cf120e3757d6fccd504a02838cb6111867596041b48b9dea64"
+    },
+    {
+      "domain": "HOLDOUT",
+      "instance_index": 4,
+      "instance_materialized": false,
+      "seed_commitment": "7317e79bc73749a9d2b8d38dff1d86d14eb1a94eac156186092f79691085f9a3"
+    },
+    {
+      "domain": "HOLDOUT",
+      "instance_index": 5,
+      "instance_materialized": false,
+      "seed_commitment": "f0ba65f07ee7bcd5c6fb8edb89313def2af708367aef66bb7a7fa616fffe565c"
+    },
+    {
+      "domain": "HOLDOUT",
+      "instance_index": 6,
+      "instance_materialized": false,
+      "seed_commitment": "4470970d3d475a0e27815c6e13767b02e1bbd72339fb7dc22579a42901fa9df7"
+    },
+    {
+      "domain": "HOLDOUT",
+      "instance_index": 7,
+      "instance_materialized": false,
+      "seed_commitment": "19ceaec952acf563770b12817d355d5bcbee5c91eb7a55737c14467c3c9f588d"
+    },
+    {
+      "domain": "HOLDOUT",
+      "instance_index": 8,
+      "instance_materialized": false,
+      "seed_commitment": "3ae39c206c1656950ac4ac5e8a8218b56165affb5f0fab61de3bad7fd2856f8a"
+    }
+  ],
+  "human_curriculum_selection_events": 0,
+  "human_difficulty_dimension_selection_events": 0,
+  "human_repair_design_events": 0,
+  "human_substrate_design_events": 0,
+  "instruction_sha256": "b11fad0f893c774e0004fed9c12962f074cc019f3356bc1118ab71718b5edac3",
+  "max_autonomous_research_epochs": 4096,
+  "network_allowed": false,
+  "nominal_difficulty_used_as_capability_authority": false,
+  "ontology_sha256": "e00f6e94bb71d5fdc4e6026efa85ada7e21058eac3a054053b7d0ca608a34359",
+  "prestart_autonomous_research_events": 0,
+  "prestart_future_instance_exposure_events": 0,
+  "retention_seed_commitments": [
+    {
+      "domain": "RETENTION",
+      "instance_index": 1,
+      "instance_materialized": false,
+      "seed_commitment": "8b69029f2551dba10c6c372550261f1038b3abe391ade66e8b5ef9dd02b2cf6b"
+    },
+    {
+      "domain": "RETENTION",
+      "instance_index": 2,
+      "instance_materialized": false,
+      "seed_commitment": "3b8767808022c55927d48abdb8a053d811a5bd4569d39e622fa32ece33e40635"
+    },
+    {
+      "domain": "RETENTION",
+      "instance_index": 3,
+      "instance_materialized": false,
+      "seed_commitment": "91c257d64c7cc89100018104ac3cd1bea1bb95cc0d87b56b45cf54b1a5b4ed8a"
+    },
+    {
+      "domain": "RETENTION",
+      "instance_index": 4,
+      "instance_materialized": false,
+      "seed_commitment": "be8cc8a24048e035ca1ca6c33a410f69468580cb9bbb6b7eb3740ef275d7c02f"
+    },
+    {
+      "domain": "RETENTION",
+      "instance_index": 5,
+      "instance_materialized": false,
+      "seed_commitment": "44aeb98a8b95d006793b4bed5df82653897abaae612ca7bbda5813a2e3b5120f"
+    },
+    {
+      "domain": "RETENTION",
+      "instance_index": 6,
+      "instance_materialized": false,
+      "seed_commitment": "0bee0aba80214ca323b323d572ed80fd3f970da9224dcd0daa45397f349a083c"
+    },
+    {
+      "domain": "RETENTION",
+      "instance_index": 7,
+      "instance_materialized": false,
+      "seed_commitment": "e1328b1aca683b323b40516664199247c1cf1f9140d28e7043c0eba88719aa50"
+    },
+    {
+      "domain": "RETENTION",
+      "instance_index": 8,
+      "instance_materialized": false,
+      "seed_commitment": "70725f1cdbba591ba6e273829226d83323172b3eb800b4ddd0554ab99783e82e"
+    },
+    {
+      "domain": "RETENTION",
+      "instance_index": 9,
+      "instance_materialized": false,
+      "seed_commitment": "fd7dde234ffbbca0b9c4f82153a36a0256c67dd272cb8986d1ae7a4dfb055e62"
+    },
+    {
+      "domain": "RETENTION",
+      "instance_index": 10,
+      "instance_materialized": false,
+      "seed_commitment": "d9f46cbab29cb8f17f6f087c234f8360c727cf51df6e46a3b056e0a9e4439852"
+    },
+    {
+      "domain": "RETENTION",
+      "instance_index": 11,
+      "instance_materialized": false,
+      "seed_commitment": "e8a7b74d7a22d3a9b05180a7b10f6724750986b62fe1cc82b53bdc828aec2d31"
+    },
+    {
+      "domain": "RETENTION",
+      "instance_index": 12,
+      "instance_materialized": false,
+      "seed_commitment": "0bc334dda3e5f18e0434c27fed8d479482a6f5eb91fef8c07568080ba657acb8"
+    },
+    {
+      "domain": "RETENTION",
+      "instance_index": 13,
+      "instance_materialized": false,
+      "seed_commitment": "1c7ea80f49016feb86d48205fd8f76a23de8004b45d28378fb55b5ec8d6f23e4"
+    },
+    {
+      "domain": "RETENTION",
+      "instance_index": 14,
+      "instance_materialized": false,
+      "seed_commitment": "7bc7cfc25cacb72e9e07ebdf077d28812e31a639a48d1d9042eac160ee429cf2"
+    },
+    {
+      "domain": "RETENTION",
+      "instance_index": 15,
+      "instance_materialized": false,
+      "seed_commitment": "47dc5c3db295c5187e6396fe2a1aa40d994e3ae0d034bd767f4937be0e82f5a7"
+    },
+    {
+      "domain": "RETENTION",
+      "instance_index": 16,
+      "instance_materialized": false,
+      "seed_commitment": "aa057421bd80a51978f3ffe7e4037979a45ebc8d49a18aa1852c0c6ecd69e55a"
+    }
+  ],
+  "schema_version": "SEM28_CAMPAIGN_FREEZE_1",
+  "sealed_predecessor_commit": "a0a6764a32aa1e6dd3ffdd229cdc18274ce2ede9",
+  "seed_derivation": "MIX(BASE_SEED, DOMAIN, INSTANCE_INDEX)",
+  "training_seed_commitments": [
+    {
+      "domain": "TRAIN",
+      "instance_index": 1,
+      "instance_materialized": false,
+      "seed_commitment": "fa15d3843de851e367e1875ebf0e8843ecaa9da9d0037d9fb3854e8a8d809f1a"
+    },
+    {
+      "domain": "TRAIN",
+      "instance_index": 2,
+      "instance_materialized": false,
+      "seed_commitment": "3a4452b1b02603c14820b1a4a7bfb3efe8fa05a041dac9ee1d0e358dea03fa4f"
+    },
+    {
+      "domain": "TRAIN",
+      "instance_index": 3,
+      "instance_materialized": false,
+      "seed_commitment": "d09fd609c31284a176d823c0bfd4367f074876bcfaccfb81b78f0abd481191d8"
+    },
+    {
+      "domain": "TRAIN",
+      "instance_index": 4,
+      "instance_materialized": false,
+      "seed_commitment": "7346e5ec9b42bfce5b1b0a183b1a0f97becc47f90beef157bd5719675fac7222"
+    },
+    {
+      "domain": "TRAIN",
+      "instance_index": 5,
+      "instance_materialized": false,
+      "seed_commitment": "e989fcc41b8e397b9d6606a1a9650b73790c711b596da5b143e28b5d99ed8476"
+    },
+    {
+      "domain": "TRAIN",
+      "instance_index": 6,
+      "instance_materialized": false,
+      "seed_commitment": "132f35534f8bf17c25350c9ef0c9a748eed013490c087137fb37ef2945effa49"
+    },
+    {
+      "domain": "TRAIN",
+      "instance_index": 7,
+      "instance_materialized": false,
+      "seed_commitment": "cf3341d57498721f876b03fa397d920d11da5a3750b0eb6047e4a0df94c67398"
+    },
+    {
+      "domain": "TRAIN",
+      "instance_index": 8,
+      "instance_materialized": false,
+      "seed_commitment": "99ed342c292e1c74a2092ea7efa05fd52a07f3fcdc798e2842a0d0369278b3af"
+    }
+  ],
+  "verifier_binary": "D:\\B_Core_WARM_START\\cargo-target\\bcore-db4b3e0325b151ae43663199\\release\\sem28-verify.exe",
+  "verifier_binary_sha256": "f68aaf0ea6e826d8ca87e8ab71a1f48ccbfaa31eb6948d780ecc7cb63cc0faa3",
+  "verifier_contract_version": "SEM28-RELATIONAL-PROGRAM-CONTRACT-V1",
+  "verifier_source_sha256": "3ac3f3796f3ec12a6f026bd6b03cb3fc624af13e56faccf04f9100228f36c43d"
+}

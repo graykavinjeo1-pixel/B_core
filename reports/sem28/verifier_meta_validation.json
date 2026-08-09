@@ -1,0 +1,13 @@
+{
+  "challenge_payload_gold_fields_present": false,
+  "constraint_violation_detected": true,
+  "deterministic": true,
+  "difficulty_transformation_changes_actual_work": true,
+  "generator_is_success_authority": false,
+  "generator_verifier_semantic_consistency": true,
+  "hidden_expected_result_path_present": false,
+  "known_invalid_instance_rejected": true,
+  "known_valid_instance_accepted": true,
+  "passed": true,
+  "verifier_frozen_before_fresh_instances": true
+}

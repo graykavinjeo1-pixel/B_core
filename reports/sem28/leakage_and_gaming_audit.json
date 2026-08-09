@@ -1,0 +1,10 @@
+{
+  "expected_result_lookup_present": false,
+  "future_instance_leakage_events": 0,
+  "generator_hidden_state_exposed": false,
+  "growth_ledger_gaming_events": 0,
+  "nominal_difficulty_used_as_capability_authority": false,
+  "passed": true,
+  "substrate_gold_leakage_events": 0,
+  "verifier_internal_witness_exposed": false
+}

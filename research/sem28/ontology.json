@@ -1,0 +1,31 @@
+{
+  "schema_version": "SEM28_DIFFICULTY_SUBSTRATE_ONTOLOGY_1",
+  "plateau_classes": [
+    "CURRENT_REGIME_STILL_PRODUCTIVE",
+    "CURRENT_REGIME_LOCALLY_MASTERED",
+    "CURRENT_DIFFICULTY_DIMENSION_EXHAUSTED",
+    "CURRENT_DIFFICULTY_SUBSTRATE_EXHAUSTED",
+    "PHYSICAL_OR_RESOURCE_CEILING",
+    "INSUFFICIENT_EVIDENCE"
+  ],
+  "challenge_quality_classes": [
+    "TOO_EASY",
+    "LEARNABLE_FRONTIER",
+    "TOO_HARD",
+    "UNINFORMATIVE_FAILURE"
+  ],
+  "candidate_failure_classes": [
+    "SEMANTICALLY_REDUNDANT",
+    "NOT_INDEPENDENTLY_VERIFIABLE",
+    "UNINFORMATIVE",
+    "COMPUTATIONALLY_INFEASIBLE",
+    "RESOURCE_DOMINATED"
+  ],
+  "success_levels": ["A", "B", "C", "D", "E", "F", "G"],
+  "nominal_difficulty_is_capability_authority": false,
+  "generator_is_success_authority": false,
+  "budget_is_research_semantic_input": false,
+  "operator_selected_substrate": null,
+  "operator_selected_difficulty_dimension": null,
+  "operator_selected_curriculum": null
+}

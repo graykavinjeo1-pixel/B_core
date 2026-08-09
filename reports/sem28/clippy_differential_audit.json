@@ -1,0 +1,12 @@
+{
+  "schema_version": "SEM28_CLIPPY_DIFFERENTIAL_AUDIT_1",
+  "toolchain": "clippy 1.96.0",
+  "strict_full_command_status": "PREDECESSOR_BASELINE_FINDINGS_ONLY",
+  "predecessor_warning_signature": "clippy::manual_is_multiple_of",
+  "predecessor_warning_occurrences": 22,
+  "sem28_warning_signatures": 0,
+  "sem28_warning_occurrences": 0,
+  "differential_command": "cargo clippy -p semantic-reasoning --lib --bin sem28-run --bin sem28-verify -- -D warnings -A clippy::manual-is-multiple-of",
+  "differential_status": "PASS",
+  "predecessor_sources_modified_to_silence_baseline": false
+}

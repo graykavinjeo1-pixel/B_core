@@ -1,0 +1,13 @@
+{
+  "checkpoint_alters_research_semantics": false,
+  "decision_state": [
+    {
+      "diagnosis": "CURRENT_DIFFICULTY_SUBSTRATE_EXHAUSTED",
+      "epoch": 1,
+      "observation": "REQUESTED_WORK_INCREASES_EFFECTIVE_WORK_DOES_NOT",
+      "operator_selected": false
+    }
+  ],
+  "epoch": 1,
+  "event": "SUBSTRATE_SATURATION_CONFIRMATION"
+}

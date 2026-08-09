@@ -1,0 +1,20 @@
+{
+  "schema_version": "SEM28_REPRODUCIBILITY_RECEIPT_1",
+  "sealed_predecessor_commit": "a0a6764a32aa1e6dd3ffdd229cdc18274ce2ede9",
+  "offline_clean_reconstruction_canary": "PASS",
+  "cargo_net_offline": true,
+  "clean_target_removed_after_canary": true,
+  "clean_run_binary_sha256": "253098b44de13cca0518e995b8eb4fd02bb285472edd844a8b6bcf6e41074728",
+  "clean_verifier_binary_sha256": "611fc143598882a2a8c41b9397c17492f5e19660c17ce9042ebbff1843785c3f",
+  "canonical_frozen_verifier_binary_sha256": "f68aaf0ea6e826d8ca87e8ab71a1f48ccbfaa31eb6948d780ecc7cb63cc0faa3",
+  "canonical_frozen_verifier_source_sha256": "3ac3f3796f3ec12a6f026bd6b03cb3fc624af13e56faccf04f9100228f36c43d",
+  "canonical_engine_source_sha256": "3a577c2cb090db0dda90856b52aa0c923b7791c7bdbae70bad867f1b55b8b333",
+  "canonical_campaign_runner_source_sha256": "1f694b1903bdd235fa794d2c3a3e065a36f96c46276014ea0cd9ada7e6f4af55",
+  "instruction_sha256": "b11fad0f893c774e0004fed9c12962f074cc019f3356bc1118ab71718b5edac3",
+  "binary_bit_identity_required": false,
+  "semantic_reconstruction_authority": "SEALED_GIT_SOURCE_PLUS_DOCUMENTED_TOOLCHAIN_PLUS_LOCAL_DEPENDENCY_CLOSURE",
+  "warm_state_is_semantic_authority": false,
+  "warm_state_is_research_authority": false,
+  "canonical_frozen_verifier_artifact": "reports/sem28/artifacts/frozen_verifier/sem28-verify.exe",
+  "warm_cache_deletion_destroys_scientific_result": false
+}

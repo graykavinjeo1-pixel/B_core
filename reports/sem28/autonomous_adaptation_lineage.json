@@ -1,0 +1,9 @@
+{
+  "adaptation_epoch": 8,
+  "candidate_representations_tested": 4,
+  "diagnosis_source": "LOCALIZED_VERIFIER_VIOLATION_SEQUENCE",
+  "gold_result_observed": false,
+  "human_repair_design_events": 0,
+  "selected_representation": "PUBLIC_RULE_GRAPH_INTERPRETER",
+  "verifier_internal_witness_observed": false
+}

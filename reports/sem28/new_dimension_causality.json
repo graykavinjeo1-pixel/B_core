@@ -1,0 +1,33 @@
+{
+  "changed_dimension": "STRUCTURAL_INTERACTION_RANK",
+  "held_constant": [
+    "public_seed",
+    "instance_id",
+    "context_generation"
+  ],
+  "high_metrics": {
+    "accepted": true,
+    "contract_version": "SEM28-RELATIONAL-PROGRAM-CONTRACT-V1",
+    "dependency_depth": 4,
+    "expected_result_disclosed": false,
+    "generator_is_success_authority": false,
+    "semantic_work_units": 37,
+    "structural_signature": 8805255881984475388,
+    "verifier_internal_witness_disclosed": false,
+    "violations": []
+  },
+  "high_rank": 3,
+  "low_metrics": {
+    "accepted": true,
+    "contract_version": "SEM28-RELATIONAL-PROGRAM-CONTRACT-V1",
+    "dependency_depth": 1,
+    "expected_result_disclosed": false,
+    "generator_is_success_authority": false,
+    "semantic_work_units": 2,
+    "structural_signature": 11338635416102384040,
+    "verifier_internal_witness_disclosed": false,
+    "violations": []
+  },
+  "low_rank": 1,
+  "passed": true
+}

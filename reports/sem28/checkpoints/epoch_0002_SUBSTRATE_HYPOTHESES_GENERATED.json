@@ -1,0 +1,20 @@
+{
+  "checkpoint_alters_research_semantics": false,
+  "decision_state": [
+    {
+      "diagnosis": "CURRENT_DIFFICULTY_SUBSTRATE_EXHAUSTED",
+      "epoch": 1,
+      "observation": "REQUESTED_WORK_INCREASES_EFFECTIVE_WORK_DOES_NOT",
+      "operator_selected": false
+    },
+    {
+      "action": "GENERATE_CAUSALLY_DISTINCT_SUBSTRATE_HYPOTHESES",
+      "candidate_count": 4,
+      "epoch": 2,
+      "observation": "CURRENT_SUBSTRATE_EXHAUSTED",
+      "operator_selected": false
+    }
+  ],
+  "epoch": 2,
+  "event": "SUBSTRATE_HYPOTHESES_GENERATED"
+}

@@ -187,6 +187,14 @@ name = "sem27-r1-run"
 path = "src/sem27_r1_main.rs"
 
 [[bin]]
+name = "sem28-run"
+path = "src/sem28_main.rs"
+
+[[bin]]
+name = "sem28-verify"
+path = "src/sem28_verify_main.rs"
+
+[[bin]]
 name = "core-x0-evaluate"
 path = "src/core_x0_main.rs"
 

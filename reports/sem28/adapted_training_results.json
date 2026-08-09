@@ -1,0 +1,183 @@
+{
+  "accepted": 8,
+  "attempts": [
+    {
+      "instance_id": 1,
+      "interaction_rank": 3,
+      "solution": {
+        "result_digest": 12736533380320420922,
+        "trace_commitment": 17274495085842796012
+      },
+      "solver_representation": "ADAPTED_RELATIONAL",
+      "substrate_id": "AUTO-SUBSTRATE-396b1471068e0ea8",
+      "verification": {
+        "accepted": true,
+        "contract_version": "SEM28-RELATIONAL-PROGRAM-CONTRACT-V1",
+        "dependency_depth": 4,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 37,
+        "structural_signature": 8805255881984475388,
+        "verifier_internal_witness_disclosed": false,
+        "violations": []
+      },
+      "verification_wall_time_ns": 4981600
+    },
+    {
+      "instance_id": 2,
+      "interaction_rank": 3,
+      "solution": {
+        "result_digest": 15305200032893155959,
+        "trace_commitment": 17955555250265573740
+      },
+      "solver_representation": "ADAPTED_RELATIONAL",
+      "substrate_id": "AUTO-SUBSTRATE-396b1471068e0ea8",
+      "verification": {
+        "accepted": true,
+        "contract_version": "SEM28-RELATIONAL-PROGRAM-CONTRACT-V1",
+        "dependency_depth": 4,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 37,
+        "structural_signature": 8805255881984475388,
+        "verifier_internal_witness_disclosed": false,
+        "violations": []
+      },
+      "verification_wall_time_ns": 4801900
+    },
+    {
+      "instance_id": 3,
+      "interaction_rank": 3,
+      "solution": {
+        "result_digest": 2365212467141723319,
+        "trace_commitment": 278980168407478444
+      },
+      "solver_representation": "ADAPTED_RELATIONAL",
+      "substrate_id": "AUTO-SUBSTRATE-396b1471068e0ea8",
+      "verification": {
+        "accepted": true,
+        "contract_version": "SEM28-RELATIONAL-PROGRAM-CONTRACT-V1",
+        "dependency_depth": 4,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 37,
+        "structural_signature": 8805255881984475388,
+        "verifier_internal_witness_disclosed": false,
+        "violations": []
+      },
+      "verification_wall_time_ns": 5163900
+    },
+    {
+      "instance_id": 4,
+      "interaction_rank": 3,
+      "solution": {
+        "result_digest": 5480291551403779342,
+        "trace_commitment": 9179276616100568580
+      },
+      "solver_representation": "ADAPTED_RELATIONAL",
+      "substrate_id": "AUTO-SUBSTRATE-396b1471068e0ea8",
+      "verification": {
+        "accepted": true,
+        "contract_version": "SEM28-RELATIONAL-PROGRAM-CONTRACT-V1",
+        "dependency_depth": 4,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 37,
+        "structural_signature": 8805255881984475388,
+        "verifier_internal_witness_disclosed": false,
+        "violations": []
+      },
+      "verification_wall_time_ns": 5274100
+    },
+    {
+      "instance_id": 5,
+      "interaction_rank": 3,
+      "solution": {
+        "result_digest": 3399298123643421682,
+        "trace_commitment": 14143213347911742943
+      },
+      "solver_representation": "ADAPTED_RELATIONAL",
+      "substrate_id": "AUTO-SUBSTRATE-396b1471068e0ea8",
+      "verification": {
+        "accepted": true,
+        "contract_version": "SEM28-RELATIONAL-PROGRAM-CONTRACT-V1",
+        "dependency_depth": 4,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 37,
+        "structural_signature": 8805255881984475388,
+        "verifier_internal_witness_disclosed": false,
+        "violations": []
+      },
+      "verification_wall_time_ns": 5046900
+    },
+    {
+      "instance_id": 6,
+      "interaction_rank": 3,
+      "solution": {
+        "result_digest": 10170233804025448783,
+        "trace_commitment": 9905079028007884358
+      },
+      "solver_representation": "ADAPTED_RELATIONAL",
+      "substrate_id": "AUTO-SUBSTRATE-396b1471068e0ea8",
+      "verification": {
+        "accepted": true,
+        "contract_version": "SEM28-RELATIONAL-PROGRAM-CONTRACT-V1",
+        "dependency_depth": 4,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 37,
+        "structural_signature": 8805255881984475388,
+        "verifier_internal_witness_disclosed": false,
+        "violations": []
+      },
+      "verification_wall_time_ns": 5055000
+    },
+    {
+      "instance_id": 7,
+      "interaction_rank": 3,
+      "solution": {
+        "result_digest": 14975739660221464406,
+        "trace_commitment": 5828328568576853415
+      },
+      "solver_representation": "ADAPTED_RELATIONAL",
+      "substrate_id": "AUTO-SUBSTRATE-396b1471068e0ea8",
+      "verification": {
+        "accepted": true,
+        "contract_version": "SEM28-RELATIONAL-PROGRAM-CONTRACT-V1",
+        "dependency_depth": 4,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 37,
+        "structural_signature": 8805255881984475388,
+        "verifier_internal_witness_disclosed": false,
+        "violations": []
+      },
+      "verification_wall_time_ns": 4664700
+    },
+    {
+      "instance_id": 8,
+      "interaction_rank": 3,
+      "solution": {
+        "result_digest": 2239097028206598917,
+        "trace_commitment": 2304227787533254237
+      },
+      "solver_representation": "ADAPTED_RELATIONAL",
+      "substrate_id": "AUTO-SUBSTRATE-396b1471068e0ea8",
+      "verification": {
+        "accepted": true,
+        "contract_version": "SEM28-RELATIONAL-PROGRAM-CONTRACT-V1",
+        "dependency_depth": 4,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 37,
+        "structural_signature": 8805255881984475388,
+        "verifier_internal_witness_disclosed": false,
+        "violations": []
+      },
+      "verification_wall_time_ns": 5481800
+    }
+  ],
+  "cost_below_initial": true,
+  "final_new_substrate_cost": 296
+}

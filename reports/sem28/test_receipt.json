@@ -1,0 +1,18 @@
+{
+  "schema_version": "SEM28_TEST_RECEIPT_1",
+  "sem28_targeted_tests": {
+    "passed": 6,
+    "failed": 0
+  },
+  "semantic_reasoning_full_library_regression": {
+    "passed": 181,
+    "failed": 0,
+    "ignored": 0
+  },
+  "verifier_determinism_tested": true,
+  "known_invalid_rejection_tested": true,
+  "dimension_causality_tested": true,
+  "restart_rehydration_invariance_tested": true,
+  "gold_field_absence_tested": true,
+  "adaptation_and_retention_tested": true
+}
