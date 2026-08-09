@@ -79,6 +79,12 @@ pub trait SafeClosedWorld {
         case_id: u64,
         intervention: Option<SafeIntervention>,
     ) -> Result<BlindObservation, String>;
+    fn materialize_fresh_validation(
+        &mut self,
+        source_case_id: u64,
+        seed: u64,
+        count: usize,
+    ) -> Result<Vec<BlindWorldCase>, String>;
     fn outcome_reads(&self) -> u64;
 }
 
@@ -302,6 +308,84 @@ impl SafeClosedWorld for WorldOracle {
             observed_outcome: existing + residual,
             observation_ordinal: self.observation_ordinal,
         })
+    }
+
+    fn materialize_fresh_validation(
+        &mut self,
+        source_case_id: u64,
+        seed: u64,
+        count: usize,
+    ) -> Result<Vec<BlindWorldCase>, String> {
+        let source = self
+            .specifications
+            .get(&source_case_id)
+            .cloned()
+            .ok_or("SEM36_UNKNOWN_VALIDATION_SOURCE_CASE")?;
+        let mut generated = Vec::with_capacity(count);
+        let mut state = seed ^ source_case_id.rotate_left(11);
+        for variant in 0..count {
+            state = splitmix64(state);
+            let mut specification = source.clone();
+            specification.public.case_id = state ^ 0x36F0_A11D_0000_0000 ^ variant as u64;
+            specification.public.set = WorldSet::NovelPrediction;
+            specification.public.entity_bindings = specification
+                .public
+                .entity_bindings
+                .iter()
+                .map(|entity| {
+                    entity
+                        .checked_add(1_000_000 + variant as u32 * 97)
+                        .ok_or("SEM36_VALIDATION_ENTITY_OVERFLOW")
+                })
+                .collect::<Result<Vec<_>, _>>()?;
+            specification.public.relation_topology = specification
+                .public
+                .relation_topology
+                .iter()
+                .map(|relation| {
+                    relation
+                        .checked_add(80 + (variant % 5) as u8)
+                        .ok_or("SEM36_VALIDATION_TOPOLOGY_OVERFLOW")
+                })
+                .collect::<Result<Vec<_>, _>>()?;
+            specification.public.temporal_context = specification
+                .public
+                .temporal_context
+                .checked_add(200 + variant as u16 * 7)
+                .ok_or("SEM36_VALIDATION_TEMPORAL_OVERFLOW")?;
+            let variable = match variant % 6 {
+                0 => SemanticVariable::Signal,
+                1 => SemanticVariable::Context,
+                2 => SemanticVariable::Catalyst,
+                3 => SemanticVariable::Load,
+                4 => SemanticVariable::Phase,
+                _ => SemanticVariable::Buffer,
+            };
+            let old = specification.public.visible_state[&variable];
+            let replacement = match variable {
+                SemanticVariable::Load => {
+                    if old > 1 {
+                        1
+                    } else {
+                        3
+                    }
+                }
+                _ => 1 - old,
+            };
+            specification
+                .public
+                .visible_state
+                .insert(variable, replacement);
+            let visible = &specification.public.visible_state;
+            specification.public.existing_law_prediction = visible[&SemanticVariable::Signal]
+                + visible[&SemanticVariable::Load]
+                - visible[&SemanticVariable::Buffer];
+            specification.noise_salt = state.rotate_left(29);
+            let public = specification.public.clone();
+            self.specifications.insert(public.case_id, specification);
+            generated.push(public);
+        }
+        Ok(generated)
     }
 
     fn outcome_reads(&self) -> u64 {

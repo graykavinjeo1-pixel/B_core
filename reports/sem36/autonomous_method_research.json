@@ -1,0 +1,62 @@
+{
+  "measured_limitation": "MEASURED_EPISTEMIC_RESEARCH_OPERATOR_ABSENT",
+  "candidate_methods": [
+    {
+      "mode": "FULL",
+      "useful_discoveries": 2,
+      "verified_novel_predictions": 16,
+      "prediction_errors": 0,
+      "noise_loops": 0,
+      "experiments_executed": 8,
+      "selected": true
+    },
+    {
+      "mode": "NEGATIVE_MEMORY_OFF",
+      "useful_discoveries": 2,
+      "verified_novel_predictions": 16,
+      "prediction_errors": 0,
+      "noise_loops": 0,
+      "experiments_executed": 12,
+      "selected": false
+    },
+    {
+      "mode": "OBSERVATION_ONLY",
+      "useful_discoveries": 0,
+      "verified_novel_predictions": 0,
+      "prediction_errors": 0,
+      "noise_loops": 0,
+      "experiments_executed": 0,
+      "selected": false
+    },
+    {
+      "mode": "PREMATURE_SINGLE_HYPOTHESIS",
+      "useful_discoveries": 0,
+      "verified_novel_predictions": 0,
+      "prediction_errors": 0,
+      "noise_loops": 0,
+      "experiments_executed": 7,
+      "selected": false
+    },
+    {
+      "mode": "FRONTIER_SELECTION_OFF",
+      "useful_discoveries": 5,
+      "verified_novel_predictions": 40,
+      "prediction_errors": 0,
+      "noise_loops": 2,
+      "experiments_executed": 32,
+      "selected": false
+    },
+    {
+      "mode": "MECHANISTIC_MEMORY_OFF",
+      "useful_discoveries": 5,
+      "verified_novel_predictions": 0,
+      "prediction_errors": 40,
+      "noise_loops": 0,
+      "experiments_executed": 22,
+      "selected": false
+    }
+  ],
+  "selected_mode": "FULL",
+  "selected_by_human": false,
+  "epochs_executed": 6
+}
