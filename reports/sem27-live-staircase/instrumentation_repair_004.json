@@ -1,0 +1,18 @@
+{
+  "classification": "WINDOWS_ATOMIC_REPLACE_SHARING_COLLISION",
+  "failure": "live_summary.json atomic replacement received transient WinError 5 while the read-only monitor was polling",
+  "repair": "retry the identical os.replace operation with bounded exponential backoff on PermissionError",
+  "last_complete_checkpoint_epoch": 707,
+  "segment_id": 3,
+  "segment_epoch": 480,
+  "completed_epoch_artifacts_preserved": 707,
+  "engine_changed": false,
+  "autonomous_policy_changed": false,
+  "difficulty_policy_changed": false,
+  "repair_policy_changed": false,
+  "report_payload_changed": false,
+  "seed_changed": false,
+  "budget_changed": false,
+  "research_outcome_used_to_design_repair": false,
+  "resume_same_frozen_campaign": true
+}

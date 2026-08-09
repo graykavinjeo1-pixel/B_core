@@ -7,6 +7,7 @@ import os
 import subprocess
 import sys
 import tempfile
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -60,7 +61,14 @@ def atomic_json(path: Path, value: Any) -> None:
             output.write("\n")
             output.flush()
             os.fsync(output.fileno())
-        os.replace(temporary, path)
+        for attempt in range(12):
+            try:
+                os.replace(temporary, path)
+                break
+            except PermissionError:
+                if attempt == 11:
+                    raise
+                time.sleep(min(0.01 * (2**attempt), 0.25))
     except BaseException:
         try:
             os.unlink(temporary)
