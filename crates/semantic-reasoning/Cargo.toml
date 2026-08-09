@@ -271,6 +271,10 @@ name = "sem35-r1-verify"
 path = "src/sem35_r1_verify_main.rs"
 
 [[bin]]
+name = "sem36-p0"
+path = "src/sem36_p0_main.rs"
+
+[[bin]]
 name = "core-x0-evaluate"
 path = "src/core_x0_main.rs"
 

@@ -1,0 +1,21 @@
+{
+  "autonomous_research_epochs_executed": 0,
+  "baseline_gap_measured": true,
+  "baseline_limitation": "MEASURED_EPISTEMIC_RESEARCH_OPERATOR_ABSENT",
+  "baseline_receipt_sha256": "7a439f07b68cc3f5655e8926560565c077e3b0f981237cf3a8ee3fa02023021e",
+  "development_public_fingerprint": "a17d91712c8fd284863cac4a965a0f477354f0a037c2397da78e9c94f877f264",
+  "development_seed": 4723611905334277891,
+  "development_world_count": 18,
+  "expected_discovery_lookups": 0,
+  "final_world_exposure_events": 0,
+  "gold_experiment_reads": 0,
+  "gold_hypothesis_reads": 0,
+  "instruction_sha256": "26ca4ebd1fb8fdfabe42f610435394b21c336f2271aca0f42fa3ea7a87139b0d",
+  "novel_prediction_world_exposure_events": 0,
+  "predecessor_integrity": "PASS",
+  "qis0_executed": false,
+  "quantum_inspired_core_changes": 0,
+  "schema_version": "SEM36_P0_PRE_RESEARCH_FREEZE_1",
+  "sealed_predecessor_commit": "2b2d7b6ecc48b6b677a2fc8ac3277c41353b968f",
+  "world_ground_truth_mechanism_reads": 0
+}

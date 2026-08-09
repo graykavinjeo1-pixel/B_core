@@ -1,0 +1,304 @@
+{
+  "observations_consumed": 18,
+  "passive_predictions": 18,
+  "correct_passive_predictions": 9,
+  "unexplained_residuals": 9,
+  "self_detected_epistemic_frontiers": 0,
+  "autonomous_scientific_questions": 0,
+  "hypotheses_generated": 0,
+  "experiments_proposed": 0,
+  "experiments_executed": 0,
+  "interventions_executed": 0,
+  "baseline_gap_measured": true,
+  "limitation": "MEASURED_EPISTEMIC_RESEARCH_OPERATOR_ABSENT",
+  "raw_observations": [
+    {
+      "case_id": 371290062385774666,
+      "family": "CATALYTIC_EXCHANGE",
+      "intervention": null,
+      "visible_state_after_intervention": {
+        "SIGNAL": 0,
+        "CONTEXT": 0,
+        "CATALYST": 0,
+        "LOAD": 2,
+        "PHASE": 0,
+        "BUFFER": 0
+      },
+      "existing_law_prediction": 2,
+      "observed_outcome": 7,
+      "observation_ordinal": 1
+    },
+    {
+      "case_id": 446975463438293929,
+      "family": "TEMPORAL_CONTAINMENT",
+      "intervention": null,
+      "visible_state_after_intervention": {
+        "SIGNAL": 0,
+        "CONTEXT": 1,
+        "CATALYST": 0,
+        "LOAD": 3,
+        "PHASE": 0,
+        "BUFFER": 1
+      },
+      "existing_law_prediction": 2,
+      "observed_outcome": 2,
+      "observation_ordinal": 2
+    },
+    {
+      "case_id": 1815212078767521729,
+      "family": "ECOLOGICAL_RELAY",
+      "intervention": null,
+      "visible_state_after_intervention": {
+        "SIGNAL": 0,
+        "CONTEXT": 1,
+        "CATALYST": 1,
+        "LOAD": 2,
+        "PHASE": 1,
+        "BUFFER": 1
+      },
+      "existing_law_prediction": 1,
+      "observed_outcome": 1,
+      "observation_ordinal": 3
+    },
+    {
+      "case_id": 1851984796899320270,
+      "family": "CATALYTIC_EXCHANGE",
+      "intervention": null,
+      "visible_state_after_intervention": {
+        "SIGNAL": 0,
+        "CONTEXT": 1,
+        "CATALYST": 0,
+        "LOAD": 2,
+        "PHASE": 1,
+        "BUFFER": 0
+      },
+      "existing_law_prediction": 2,
+      "observed_outcome": 2,
+      "observation_ordinal": 4
+    },
+    {
+      "case_id": 2840869971972976854,
+      "family": "ECOLOGICAL_RELAY",
+      "intervention": null,
+      "visible_state_after_intervention": {
+        "SIGNAL": 1,
+        "CONTEXT": 1,
+        "CATALYST": 0,
+        "LOAD": 3,
+        "PHASE": 1,
+        "BUFFER": 1
+      },
+      "existing_law_prediction": 3,
+      "observed_outcome": 4,
+      "observation_ordinal": 5
+    },
+    {
+      "case_id": 2945270031139083355,
+      "family": "CATALYTIC_EXCHANGE",
+      "intervention": null,
+      "visible_state_after_intervention": {
+        "SIGNAL": 1,
+        "CONTEXT": 0,
+        "CATALYST": 1,
+        "LOAD": 2,
+        "PHASE": 0,
+        "BUFFER": 1
+      },
+      "existing_law_prediction": 2,
+      "observed_outcome": 2,
+      "observation_ordinal": 6
+    },
+    {
+      "case_id": 3002729922957011963,
+      "family": "CATALYTIC_EXCHANGE",
+      "intervention": null,
+      "visible_state_after_intervention": {
+        "SIGNAL": 1,
+        "CONTEXT": 1,
+        "CATALYST": 0,
+        "LOAD": 3,
+        "PHASE": 1,
+        "BUFFER": 0
+      },
+      "existing_law_prediction": 4,
+      "observed_outcome": 4,
+      "observation_ordinal": 7
+    },
+    {
+      "case_id": 5826330865427217523,
+      "family": "CATALYTIC_EXCHANGE",
+      "intervention": null,
+      "visible_state_after_intervention": {
+        "SIGNAL": 1,
+        "CONTEXT": 0,
+        "CATALYST": 1,
+        "LOAD": 2,
+        "PHASE": 1,
+        "BUFFER": 1
+      },
+      "existing_law_prediction": 2,
+      "observed_outcome": 7,
+      "observation_ordinal": 8
+    },
+    {
+      "case_id": 6646106436291242544,
+      "family": "ECOLOGICAL_RELAY",
+      "intervention": null,
+      "visible_state_after_intervention": {
+        "SIGNAL": 1,
+        "CONTEXT": 0,
+        "CATALYST": 0,
+        "LOAD": 2,
+        "PHASE": 1,
+        "BUFFER": 0
+      },
+      "existing_law_prediction": 3,
+      "observed_outcome": 7,
+      "observation_ordinal": 9
+    },
+    {
+      "case_id": 8339552677766807354,
+      "family": "TEMPORAL_CONTAINMENT",
+      "intervention": null,
+      "visible_state_after_intervention": {
+        "SIGNAL": 1,
+        "CONTEXT": 0,
+        "CATALYST": 1,
+        "LOAD": 3,
+        "PHASE": 1,
+        "BUFFER": 0
+      },
+      "existing_law_prediction": 4,
+      "observed_outcome": 10,
+      "observation_ordinal": 10
+    },
+    {
+      "case_id": 10225508105003467099,
+      "family": "TEMPORAL_CONTAINMENT",
+      "intervention": null,
+      "visible_state_after_intervention": {
+        "SIGNAL": 1,
+        "CONTEXT": 0,
+        "CATALYST": 0,
+        "LOAD": 2,
+        "PHASE": 0,
+        "BUFFER": 1
+      },
+      "existing_law_prediction": 2,
+      "observed_outcome": 2,
+      "observation_ordinal": 11
+    },
+    {
+      "case_id": 11151608169452523086,
+      "family": "ECOLOGICAL_RELAY",
+      "intervention": null,
+      "visible_state_after_intervention": {
+        "SIGNAL": 0,
+        "CONTEXT": 0,
+        "CATALYST": 1,
+        "LOAD": 2,
+        "PHASE": 1,
+        "BUFFER": 1
+      },
+      "existing_law_prediction": 1,
+      "observed_outcome": 5,
+      "observation_ordinal": 12
+    },
+    {
+      "case_id": 12227983436871168733,
+      "family": "CATALYTIC_EXCHANGE",
+      "intervention": null,
+      "visible_state_after_intervention": {
+        "SIGNAL": 1,
+        "CONTEXT": 1,
+        "CATALYST": 0,
+        "LOAD": 2,
+        "PHASE": 1,
+        "BUFFER": 0
+      },
+      "existing_law_prediction": 3,
+      "observed_outcome": 4,
+      "observation_ordinal": 13
+    },
+    {
+      "case_id": 12340796048555696274,
+      "family": "TEMPORAL_CONTAINMENT",
+      "intervention": null,
+      "visible_state_after_intervention": {
+        "SIGNAL": 1,
+        "CONTEXT": 1,
+        "CATALYST": 0,
+        "LOAD": 2,
+        "PHASE": 1,
+        "BUFFER": 1
+      },
+      "existing_law_prediction": 2,
+      "observed_outcome": -3,
+      "observation_ordinal": 14
+    },
+    {
+      "case_id": 15165345774263750456,
+      "family": "ECOLOGICAL_RELAY",
+      "intervention": null,
+      "visible_state_after_intervention": {
+        "SIGNAL": 1,
+        "CONTEXT": 0,
+        "CATALYST": 1,
+        "LOAD": 2,
+        "PHASE": 0,
+        "BUFFER": 1
+      },
+      "existing_law_prediction": 2,
+      "observed_outcome": 2,
+      "observation_ordinal": 15
+    },
+    {
+      "case_id": 16309250894798437829,
+      "family": "TEMPORAL_CONTAINMENT",
+      "intervention": null,
+      "visible_state_after_intervention": {
+        "SIGNAL": 0,
+        "CONTEXT": 1,
+        "CATALYST": 1,
+        "LOAD": 1,
+        "PHASE": 1,
+        "BUFFER": 1
+      },
+      "existing_law_prediction": 0,
+      "observed_outcome": 0,
+      "observation_ordinal": 16
+    },
+    {
+      "case_id": 16609184058177349191,
+      "family": "ECOLOGICAL_RELAY",
+      "intervention": null,
+      "visible_state_after_intervention": {
+        "SIGNAL": 0,
+        "CONTEXT": 0,
+        "CATALYST": 1,
+        "LOAD": 2,
+        "PHASE": 1,
+        "BUFFER": 1
+      },
+      "existing_law_prediction": 1,
+      "observed_outcome": 1,
+      "observation_ordinal": 17
+    },
+    {
+      "case_id": 17849464973223786942,
+      "family": "TEMPORAL_CONTAINMENT",
+      "intervention": null,
+      "visible_state_after_intervention": {
+        "SIGNAL": 1,
+        "CONTEXT": 1,
+        "CATALYST": 0,
+        "LOAD": 2,
+        "PHASE": 1,
+        "BUFFER": 1
+      },
+      "existing_law_prediction": 2,
+      "observed_outcome": 8,
+      "observation_ordinal": 18
+    }
+  ]
+}
