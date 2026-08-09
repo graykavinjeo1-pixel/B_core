@@ -1,0 +1,30 @@
+{
+  "schema_version": "SEM28_R59_PREDECESSOR_SEAL_1",
+  "selection_authority": "OPERATOR_SELECTED_EFFECTIVE_R59_ENDPOINT",
+  "repository_base_commit": "ff626a49c528a032e15f36bb9c71af8aa9b39a7f",
+  "source_campaign_id": "sem27-live-staircase",
+  "source_campaign_epoch": 3414,
+  "source_global_epoch": 3926,
+  "source_artifact": "research/sem28/predecessor/epoch_3414_r59.json",
+  "source_artifact_sha256": "af208af39a08de40af02f7d6f49fb3a09ed4757c1d041e12db7d936bdb77a4ab",
+  "canonical_resulting_state_sha256": "f0fcb588b204a5d7e36601a5aab6d85b818fa18696f6f017e479f448cb640c4b",
+  "current_regime_id": 59,
+  "transition_count": 58,
+  "current_dimensions": {
+    "causal_depth": 4,
+    "compositional_depth": 13,
+    "transfer_arity": 27,
+    "constraint_complexity": 13,
+    "planning_depth": 16
+  },
+  "human_difficulty_escalation_event": false,
+  "human_difficulty_level_selection_event": false,
+  "agenda_selected_by_operator": false,
+  "later_nominal_regime_state_included": false,
+  "later_nominal_regime_state_authoritative": false,
+  "predecessor_worktree_clean_at_seal": true,
+  "rustc": "rustc 1.96.0 (ac68faa20 2026-05-25)",
+  "cargo": "cargo 1.96.0 (30a34c682 2026-05-25)",
+  "cargo_lock_sha256": "a25438f5b5aa4a4f6732e95f885a68d6dd5e51a9bc1463eece6ace12c4d953a5",
+  "sem27_engine_sha256": "519557be10710d2a74d1ae21fddd75c55940811ac8017b4c871278cfd311f28b"
+}
