@@ -1,6 +1,6 @@
 use std::{
     env,
-    io::{self, Write},
+    io::{self, Read, Write},
     process, thread,
     time::Duration,
 };
@@ -8,7 +8,7 @@ use std::{
 use semantic_reasoning::sem27::engine::{run_post_scaffold_epoch, PostScaffoldEpochRequest};
 
 fn main() {
-    let request_json = env::args().nth(1).unwrap_or_else(|| {
+    let request_argument = env::args().nth(1).unwrap_or_else(|| {
         eprintln!("missing request JSON");
         process::exit(2);
     });
@@ -16,6 +16,18 @@ fn main() {
         eprintln!("unexpected argument");
         process::exit(2);
     }
+    let request_json = if request_argument == "-" {
+        let mut input = String::new();
+        io::stdin()
+            .read_to_string(&mut input)
+            .unwrap_or_else(|error| {
+                eprintln!("failed to read request JSON from stdin: {error}");
+                process::exit(2);
+            });
+        input
+    } else {
+        request_argument
+    };
     let request: PostScaffoldEpochRequest =
         serde_json::from_str(&request_json).unwrap_or_else(|error| {
             eprintln!("invalid request JSON: {error}");

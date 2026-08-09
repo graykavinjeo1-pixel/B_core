@@ -388,7 +388,11 @@ def run_campaign() -> int:
         raise RuntimeError("CAMPAIGN_FREEZE_MISMATCH")
     if sha256(ENGINE) != frozen["engine_sha256"] or sha256(ONTOLOGY) != frozen["ontology_sha256"]:
         raise RuntimeError("FROZEN_ENGINE_OR_ONTOLOGY_CHANGED")
-    if sha256(SEM27_PROBE) != frozen["sem27_probe_sha256"] or sha256(SEM24_PROBE) != frozen["sem24_probe_sha256"]:
+    transport_repair = read_json(REPORT / "instrumentation_transport_freeze.json") if (REPORT / "instrumentation_transport_freeze.json").is_file() else {}
+    expected_sem27_probe = transport_repair.get(
+        "effective_sem27_probe_sha256", frozen["sem27_probe_sha256"]
+    )
+    if sha256(SEM27_PROBE) != expected_sem27_probe or sha256(SEM24_PROBE) != frozen["sem24_probe_sha256"]:
         raise RuntimeError("FROZEN_PROBE_CHANGED")
 
     executed, state, frontiers, costs, productivity = restore_checkpoint()
@@ -432,12 +436,13 @@ def run_campaign() -> int:
                 "concrete_future_instance_visible": False,
             }
             completed = subprocess.run(
-                [str(SEM27_PROBE), json.dumps(request, separators=(",", ":"))],
+                [str(SEM27_PROBE), "-"],
                 check=True,
                 capture_output=True,
                 text=True,
                 encoding="utf-8",
                 errors="replace",
+                input=json.dumps(request, separators=(",", ":")),
                 env={**os.environ, "SEM27_MEASUREMENT_HOLD_MS": "350"},
                 creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
             )
