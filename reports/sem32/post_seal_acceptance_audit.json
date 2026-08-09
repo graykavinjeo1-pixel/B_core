@@ -1,0 +1,42 @@
+{
+  "schema_version": "SEM32_POST_SEAL_ACCEPTANCE_AUDIT_1",
+  "canonical_commit": "3b65aac653f42ea756a8ad59f8132ef369fe9430",
+  "canonical_internal_verifier_status": "PASS",
+  "official_sem32_status": "FAIL",
+  "official_disposition": "RELATIONAL_DYNAMICS_LIMIT",
+  "acceptance_override_required": true,
+  "nonconformities": [
+    {
+      "code": "NOVEL_RELATION_TOPOLOGY_TRANSFER_NOT_ESTABLISHED",
+      "evidence": "reports/sem32/sem32_final_report.json:NOVEL_RELATION_TOPOLOGY_TRANSFER_PASS=false",
+      "violated_requirement": "SEM32_INSTRUCTION sections 14, 67, and Level B require transfer to novel relation topology/configuration"
+    },
+    {
+      "code": "VERIFIER_LEVEL_CONTRACT_MISALIGNED",
+      "evidence": "crates/semantic-reasoning/src/sem32/verifier.rs maps Level B to uncertainty rather than factored relational transfer and shifts other named gates",
+      "violated_requirement": "SEM32_INSTRUCTION Levels A-J are authoritative acceptance definitions"
+    },
+    {
+      "code": "HARD_CEILING_MISMATCH",
+      "evidence": "MAX_AUTONOMOUS_RESEARCH_EPOCHS=512",
+      "violated_requirement": "SEM32_INSTRUCTION section 68 requires MAX_AUTONOMOUS_RESEARCH_EPOCHS=4096"
+    }
+  ],
+  "official_levels": {
+    "A": true,
+    "B": false,
+    "C": true,
+    "D": true,
+    "E": true,
+    "F": true,
+    "G": true,
+    "H": true,
+    "I": true,
+    "J": true
+  },
+  "canonical_evidence_retained_unchanged": true,
+  "post_exposure_mechanism_repairs": 0,
+  "post_exposure_canonical_reruns": 0,
+  "sem33_started": false,
+  "next_allowed_stage": "OPERATOR_REVIEW_ONLY"
+}
