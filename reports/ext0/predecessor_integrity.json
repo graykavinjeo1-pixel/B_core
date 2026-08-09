@@ -5,8 +5,10 @@
   "separate_worktree": "D:/B_Core_CAMPAIGNS/ext0-fresh-one-task-transfer",
   "separate_branch": "codex/ext0-fresh-one-task-transfer",
   "remote_push_allowed": false,
+  "scope": "EXT0_CANONICAL_INPUT_AND_RESEARCH_PATH",
   "live_campaign_state_reads": 0,
   "live_campaign_artifact_reads": 0,
   "live_campaign_mutations": 0,
+  "out_of_band_operator_requested_gui_maintenance_excluded_from_ext0_inputs": true,
   "status": "PASS"
 }

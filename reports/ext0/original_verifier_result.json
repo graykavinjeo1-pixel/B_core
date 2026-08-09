@@ -1,0 +1,17 @@
+{
+  "verifier": "SWE-bench harness",
+  "verifier_version": "4.1.0",
+  "verifier_source_commit": "f7bbbb2e90de424fd55c7d2ae72172a299f494fa",
+  "selected_task_id": "django__django-13449",
+  "verifier_report_sha256": "253ea60310c687555a21e89d207d7ba2daf87628f993ffa3c115e81d75183697",
+  "total_instances": 1,
+  "submitted_instances": 1,
+  "completed_instances": 0,
+  "resolved_instances": 0,
+  "empty_patch_instances": 1,
+  "error_instances": 0,
+  "original_verifier_result": "EMPTY_PATCH",
+  "task_resolved": false,
+  "prediction_only_success_events": 0,
+  "self_asserted_success_events": 0
+}

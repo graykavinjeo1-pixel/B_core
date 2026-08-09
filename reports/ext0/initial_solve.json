@@ -1,0 +1,20 @@
+{
+  "attempt": 1,
+  "selected_task_id": "django__django-13449",
+  "initial_solve_result": "ADAPTER_UNSUPPORTED",
+  "initial_reasoning_cost": {
+    "semantic_evidence_records": 2,
+    "core_goal_bridge_attempts": 1,
+    "core_reasoning_depth": 0
+  },
+  "initial_wall_time_seconds": 0.5,
+  "initial_peak_rss_bytes": null,
+  "initial_peak_rss_status": "NOT_SAMPLED",
+  "initial_patch_nonempty": false,
+  "initial_patch_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "initial_test_result": "EMPTY_PATCH_NOT_EXECUTED_BY_OFFICIAL_HARNESS",
+  "adapter_compatibility": "UNSUPPORTED",
+  "adapter_reason": "CURRENT_GOAL_IR_SUPPORTS_CHECKED_INTEGER_SEQUENCE_TRANSFORMS_ONLY",
+  "reasoning_failure_claimed": false,
+  "boundary_classification": "INPUT_SEMANTIC_ADAPTER_LIMIT"
+}

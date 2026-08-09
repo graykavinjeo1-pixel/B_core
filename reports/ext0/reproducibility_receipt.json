@@ -1,0 +1,21 @@
+{
+  "predecessor_commit": "9dbebdd280db2c292bff4865bcf8f1d8c39c335d",
+  "instruction_sha256": "69b16e7b06f4f33c222f7bf3ccdaea08f384e081712d0815a74e4ec2ac3a301e",
+  "adapter_source_manifest_sha256": "5cffd0e39bbb6817eb5f82b16ff75e268c69980f0d2021af64a3a9fc8105fd8a",
+  "adapter_binary_sha256": "ce1db1d7eeab5a36d311b3a0917520c6bc53713bb6891c636486049baf1274a5",
+  "selected_task_id": "django__django-13449",
+  "selection_rule_sha256": "fe389cefd7956ab6c43ea39be9d8e5762fe0735f0876bec1c5c971217dd6bdf7",
+  "research_seed": 9990085697282346505,
+  "research_budget_total_boundaries": [32, 64, 128, 256],
+  "research_epochs_executed": 0,
+  "accepted_descendant_commits_before_result_seal": [
+    "8205c3205e5cbdc7f8a5f2bd909ff6a74161278f",
+    "1cdaaf72030b057dde9ff8f74c83f62718617d1e"
+  ],
+  "final_patch_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "final_verifier_report_sha256": "253ea60310c687555a21e89d207d7ba2daf87628f993ffa3c115e81d75183697",
+  "clean_reconstruction_canary": "PASS",
+  "clean_reconstruction_scope": "semantic-core-adapters package from local dependency closure",
+  "warm_cache_is_authority": false,
+  "clean_canary_temporary_artifacts_removed": true
+}

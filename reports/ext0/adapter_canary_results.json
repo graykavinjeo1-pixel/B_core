@@ -6,10 +6,10 @@
   "tests_passed": 4,
   "tests_failed": 0,
   "canaries": [
-    "canonicalizes_generic_repository_repair_input",
-    "rejects_path_traversal",
-    "rejects_duplicate_artifact_paths",
-    "rejects_invalid_digest"
+    "structural_order_does_not_change_frozen_ir",
+    "language_is_opaque_evidence_not_reasoning_authority",
+    "unsupported_core_domain_is_reported_without_fabricating_a_goal",
+    "parent_traversal_is_rejected"
   ],
   "clippy_command": "cargo clippy -p semantic-core-adapters --all-targets --offline -- -D warnings",
   "clippy_result": "PASS",

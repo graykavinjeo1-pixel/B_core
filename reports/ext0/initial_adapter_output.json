@@ -1,0 +1,38 @@
+{
+  "schema_version": "EXTERNAL-GOAL-IR-1",
+  "request_id": "EXT0::django__django-13449",
+  "problem_class": "REPOSITORY_REPAIR",
+  "repository_revision": "2a55431a5678af52f669ffe7dff3dd0bd21727f8",
+  "opaque_language_goal_sha256": "b082782316bb4c8f2899f9f31d81edd84d4ded60ed7627073f56014db30da0d9",
+  "semantic_evidence": [
+    {
+      "evidence_id": "EVIDENCE.LANGUAGE_GOAL",
+      "evidence_kind": "OPAQUE_LANGUAGE_GOAL",
+      "content_sha256": "b082782316bb4c8f2899f9f31d81edd84d4ded60ed7627073f56014db30da0d9",
+      "byte_length": 6278,
+      "executable_result": null
+    },
+    {
+      "evidence_id": "EVIDENCE.REPOSITORY.000000",
+      "evidence_kind": "REPOSITORY_ARTIFACT",
+      "content_sha256": "0d6bc13f6bedf6c649a1d9696d3ae25eafa80421b8a0c112eb744ab86dc4a691",
+      "byte_length": 1115101575,
+      "executable_result": null
+    }
+  ],
+  "constraints": [
+    "CANONICAL_NETWORK_DISABLED",
+    "GOLD_REFERENCE_FORBIDDEN",
+    "HIDDEN_TESTS_EVALUATOR_ONLY",
+    "PATCH_MUST_BE_PRODUCED_BY_B_CORE"
+  ],
+  "core_goal_bridge": {
+    "compatibility": "UNSUPPORTED",
+    "target_ir": "DOCKABLE-SEMANTIC-CORE-GOAL-IR-1",
+    "reason": "CURRENT_GOAL_IR_SUPPORTS_CHECKED_INTEGER_SEQUENCE_TRANSFORMS_ONLY"
+  },
+  "source_language_is_reasoning_authority": false,
+  "hot_reasoning_path_natural_language_authority": false,
+  "task_specific_adapter_branches": 0,
+  "content_sha256": "9e431073bce7fd4d4db5e1507133d27bf0c6b7e8e6d0c18ad15b271d619eb438"
+}

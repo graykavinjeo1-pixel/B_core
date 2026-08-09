@@ -1,0 +1,11 @@
+{
+  "benchmark": "SWE-bench Verified",
+  "dataset_snapshot": "c104f840cc67f8b6eec6f759ebc8b2693d585d4a",
+  "harness_version": "4.1.0",
+  "eligible_task_pool_sha256": "9aa5de87fd475c3a2763ba15daeb2a2a2f874557391edc303a887574cb1b8bcf",
+  "eligible_count": 12,
+  "manifest_details": "eligible_task_pool.json",
+  "task_contents_examined_during_pool_construction": false,
+  "gold_columns_read": false,
+  "network_used": false
+}

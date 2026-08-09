@@ -15,5 +15,10 @@
   "selection_material_sha256": "61a3ed416e1f9106bb8926143fe989d1798a5d282ab1259c21af8c2d2405c688",
   "selected_task_id": "django__django-13449",
   "selected_image_id_short": "0d6bc13f6bed",
-  "task_content_exposure_status": "NOT_YET_EXPOSED"
+  "task_content_exposure_status": "EXPOSED_PUBLIC_PROJECTION_ONLY",
+  "public_projection_sha256": "76300e10b3536b358bb8b740726b9c464e73c64b24f5feba52196c46bd57e910",
+  "evaluator_only_projection_sha256": "7bd46b1cc100dc8a5fc3756d1b0fd992f7b9002b994d6b90439a1e7b77551d95",
+  "reference_patch_in_public_projection": false,
+  "reference_patch_in_evaluator_projection": false,
+  "evaluator_projection_exposed_to_b_core": false
 }

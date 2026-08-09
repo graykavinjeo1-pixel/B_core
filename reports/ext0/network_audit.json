@@ -1,0 +1,9 @@
+{
+  "canonical_network_policy": "DENY",
+  "network_reads": 0,
+  "network_writes": 0,
+  "remote_executions": 0,
+  "fixture_source": "LOCAL_SEALED",
+  "container_executions": 0,
+  "status": "PASS"
+}

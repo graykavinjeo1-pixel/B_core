@@ -5,6 +5,7 @@
   "predecessor_commit": "9dbebdd280db2c292bff4865bcf8f1d8c39c335d",
   "eligible_task_pool_sha256": "9aa5de87fd475c3a2763ba15daeb2a2a2f874557391edc303a887574cb1b8bcf",
   "selection_material_sha256": "61a3ed416e1f9106bb8926143fe989d1798a5d282ab1259c21af8c2d2405c688",
+  "selection_rule_sha256": "fe389cefd7956ab6c43ea39be9d8e5762fe0735f0876bec1c5c971217dd6bdf7",
   "selection_uint64": 7035727908159066374,
   "selection_index_zero_based": 2,
   "selected_task_id": "django__django-13449",

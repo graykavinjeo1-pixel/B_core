@@ -1,0 +1,2 @@
+{"phase":"INITIAL_ADAPTER_ATTEMPT","wall_time_seconds":0.5,"cpu_time_seconds":null,"peak_rss_bytes":null,"peak_rss_status":"NOT_SAMPLED","active_semantic_bytes":73109,"core_bytes":1020308}
+{"phase":"AUTONOMOUS_RESEARCH","epochs":0,"wall_time_seconds":0.0,"cpu_time_seconds":0.0,"peak_rss_bytes":null,"peak_rss_status":"NOT_APPLICABLE_NOT_RUN","active_semantic_bytes":73109,"core_bytes":1020308}

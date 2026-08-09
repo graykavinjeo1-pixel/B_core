@@ -1,0 +1,21 @@
+{
+  "workspace_cargo_test": "PASS",
+  "adapter_clippy_deny_warnings": "PASS",
+  "workspace_clippy_deny_warnings": "FAIL_PREEXISTING_RUST_1_96_LINT_BASELINE",
+  "workspace_clippy_baseline_signatures": 22,
+  "workspace_clippy_candidate_signatures": 22,
+  "new_clippy_warning_signatures_total": 0,
+  "global_reasoning_regressions": 0,
+  "meta_quality_regressions": 0,
+  "gain_erasure_events": 0,
+  "core_dockability_preserved": true,
+  "core_mandatory_vram": 0,
+  "core_depends_on_gpu_runtime": false,
+  "governor_sha256": "519557be10710d2a74d1ae21fddd75c55940811ac8017b4c871278cfd311f28b",
+  "evaluator_primary_sha256": "097ba7b170d2263fb8b87671cb83253f836eef79a9210a60ee8f2772e8d91f92",
+  "evaluator_continuation_sha256": "13da3928cb319115f2549b028f20a249b52ad0b80ddfae4171dfd94eaaf0ad63",
+  "governor_hash_unchanged": true,
+  "evaluator_hash_unchanged": true,
+  "acceptance_criteria_hash_unchanged": true,
+  "semantic_reasoning_source_diff_from_predecessor": 0
+}

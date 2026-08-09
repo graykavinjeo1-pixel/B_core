@@ -1,0 +1,10 @@
+{
+  "selected_task_id": "django__django-13449",
+  "audit_root": "exact sealed predecessor materialized in isolated EXT-0 worktree",
+  "audit_method": "exact identifier search over predecessor files before task exposure, excluding the new reports/ext0 directory",
+  "matching_predecessor_artifacts": [],
+  "task_present_in_b_core_artifacts": false,
+  "task_freshness_pass": true,
+  "benchmark_pool_other_task_contents_inspected": 0,
+  "future_or_gold_leakage_events": 0
+}

@@ -1,0 +1,22 @@
+{
+  "campaign_id": "EXT0-FRESH-REAL-WORLD-ONE-TASK-BLIND-TRANSFER-0001",
+  "predecessor_commit": "9dbebdd280db2c292bff4865bcf8f1d8c39c335d",
+  "instruction_sha256": "69b16e7b06f4f33c222f7bf3ccdaea08f384e081712d0815a74e4ec2ac3a301e",
+  "adapter_freeze_commit": "8205c3205e5cbdc7f8a5f2bd909ff6a74161278f",
+  "adapter_frozen_at": "2026-08-09T14:16:07+09:00",
+  "selection_freeze_commit": "1cdaaf72030b057dde9ff8f74c83f62718617d1e",
+  "selection_frozen_at": "2026-08-09T14:19:05+09:00",
+  "task_exposed_at_utc": "2026-08-09T05:20:12.6097159Z",
+  "adapter_frozen_before_task_exposure": true,
+  "selection_frozen_before_task_exposure": true,
+  "research_seed": 9990085697282346505,
+  "research_seed_material_sha256": "8aa3ea030e398e0998c0513ad8eca5e3fa80fadbb48d9d1561c44ebd7c0bc3e8",
+  "research_budget_total_boundaries": [32, 64, 128, 256],
+  "maximum_autonomous_research_epochs": 512,
+  "canonical_network": false,
+  "gold_patch_access": false,
+  "external_teacher_access": false,
+  "rollup_generated_after_attempt": true,
+  "rollup_sources_are_pre_exposure_frozen_receipts": true,
+  "outcome_dependent_freeze_fields": 0
+}
