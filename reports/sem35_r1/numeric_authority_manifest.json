@@ -1,0 +1,87 @@
+{
+  "DERIVED_RATIO_FLOAT_IS_ACCEPTANCE_AUTHORITY": false,
+  "FLOAT_RECOMPUTATION_IS_EXACT_SEMANTIC_IDENTITY_AUTHORITY": false,
+  "GLOBAL_FLOAT_EPSILON_ACCEPTANCE_RULE": false,
+  "TEMPORAL_HORIZON_RATIO_EXACT_SOURCE_AUTHORITY": true,
+  "TRANSPORT_EQUALITY_SEPARATED_FROM_SCIENTIFIC_EQUALITY": true,
+  "authority_classes": [
+    "EXACT_INTEGER",
+    "EXACT_DERIVED_RATIONAL",
+    "EXACT_ENUM_OR_DISCRETE",
+    "MEASURED_FLOAT",
+    "DISPLAY_ONLY_FLOAT"
+  ],
+  "field_contracts": [
+    {
+      "authority_class": "EXACT_INTEGER",
+      "comparison_semantics": "INTEGER_EQUALITY",
+      "failure_policy": "REJECT",
+      "field_name": "CanonicalTaskEvidence.{task_id,primitive_action_horizon,effective_temporal_decision_horizon,subgoal_count,temporal_process_count,temporal_process_reuse,temporal_process_compositions,temporal_interruptions,cross_scale_errors,world_model_calls,causal_mechanism_calls,temporal_process_lookup_cost,active_temporal_processes,*_accepts,*_events,boundary_*_milli}",
+      "source_fields": "ENGINE_INTEGER_COUNTERS",
+      "valid_range": "TYPE_BOUNDED_NONNEGATIVE",
+      "wire_representation": "JSON_UNSIGNED_INTEGER"
+    },
+    {
+      "authority_class": "EXACT_INTEGER",
+      "comparison_semantics": "ORDERED_ARRAY_INTEGER_EQUALITY",
+      "failure_policy": "REJECT",
+      "field_name": "CanonicalTemporalArm.{*_horizon_sequence,*_count_sequence,*_cost_sequence,*_work_sequence,*_process_sequence}",
+      "source_fields": "TASK_EVIDENCE_AND_INTEGER_METRICS",
+      "valid_range": "TYPE_BOUNDED_NONNEGATIVE",
+      "wire_representation": "JSON_ARRAY_OF_UNSIGNED_INTEGER"
+    },
+    {
+      "authority_class": "EXACT_INTEGER",
+      "comparison_semantics": "INTEGER_EQUALITY",
+      "failure_policy": "REJECT_ON_OVERFLOW_OR_MISSING",
+      "field_name": "TemporalWork.* and TemporalArmMetrics.*",
+      "source_fields": "ACCOUNTING_COUNTERS",
+      "valid_range": "U64",
+      "wire_representation": "JSON_UNSIGNED_INTEGER"
+    },
+    {
+      "authority_class": "EXACT_DERIVED_RATIONAL",
+      "comparison_semantics": "REDUCED_RATIONAL_EQUALITY_RECOMPUTED_FROM_EXACT_SOURCE",
+      "failure_policy": "REJECT",
+      "field_name": "temporal_horizon_compression_ratio[_sequence]",
+      "source_fields": [
+        "primitive_action_horizon",
+        "effective_temporal_decision_horizon"
+      ],
+      "valid_range": "DENOMINATOR_NONZERO",
+      "wire_representation": "REDUCED_{numerator:u64,denominator:u64}"
+    },
+    {
+      "authority_class": "EXACT_ENUM_OR_DISCRETE",
+      "comparison_semantics": "EXACT_DISCRETE_EQUALITY",
+      "failure_policy": "REJECT_UNKNOWN_VARIANT",
+      "field_name": "program,set,class,goal_success_sequence,boolean flags",
+      "source_fields": "ENGINE_DISCRETE_STATE",
+      "valid_range": "DECLARED_VARIANTS",
+      "wire_representation": "TAGGED_ENUM_OR_BOOLEAN"
+    },
+    {
+      "authority_class": "MEASURED_FLOAT",
+      "comparison_semantics": "BIT_EXACT_TRANSPORT;FIELD_SPECIFIC_SCIENTIFIC_RULE",
+      "failure_policy": "REJECT_NAN_AND_INFINITY",
+      "field_name": "numeric_transport_matrix.measured_float_canaries",
+      "source_fields": "FROZEN_MEASUREMENT",
+      "valid_range": "FINITE_F64",
+      "wire_representation": "IEEE754_BINARY64_BITS_AS_U64"
+    },
+    {
+      "authority_class": "DISPLAY_ONLY_FLOAT",
+      "comparison_semantics": "TRANSPORT_ONLY_NOT_ACCEPTANCE_AUTHORITY",
+      "failure_policy": "REJECT_INCONSISTENT_WITH_EXACT_SOURCE",
+      "field_name": "temporal_horizon_compression_display[_sequence]",
+      "source_fields": [
+        "exact_ratio_numerator",
+        "exact_ratio_denominator"
+      ],
+      "valid_range": "FINITE_F64",
+      "wire_representation": "IEEE754_BINARY64_BITS_AS_U64"
+    }
+  ],
+  "frozen_before_fresh_exposure": true,
+  "schema_version": "SEM35_R1_NUMERIC_AUTHORITY_MANIFEST_1"
+}

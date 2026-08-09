@@ -1,0 +1,14 @@
+{
+  "AUTONOMOUS_RESEARCH_EPOCHS_EXECUTED": 0,
+  "HISTORICAL_FAILURE_COMMIT": "0aff6e2f1a21652ca21a40592b93f23af3f57cfc",
+  "OLD_FINAL_HOLDOUT_USED_FOR_RESEARCH": 0,
+  "PRE_EXPOSURE_TEMPORAL_FREEZE_PROVEN": true,
+  "RECOVERED_TEMPORAL_ENGINE_SEMANTIC_DIFF": 0,
+  "RECOVERY_AUTHORITY": "CRYPTographically_SEALED_PRE_EXPOSURE_CANDIDATE",
+  "TEMPORAL_CANDIDATE_SOURCE_COMMIT": "494cdc1ac7b9918d6bc893fe8c9fdf7482cb4022",
+  "candidate_is_ancestor": true,
+  "candidate_is_direct_parent_of_historical_seal": true,
+  "failure_record_exposure_events": 1,
+  "freeze_record_exposure_events": 0,
+  "temporal_engine_and_acceptance_unchanged_between_freeze_and_failure_seal": true
+}

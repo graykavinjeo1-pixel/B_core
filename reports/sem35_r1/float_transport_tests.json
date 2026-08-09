@@ -1,0 +1,46 @@
+{
+  "CANARIES": [
+    {
+      "finite": true,
+      "ieee754_bits": 0
+    },
+    {
+      "finite": true,
+      "ieee754_bits": 9223372036854775808
+    },
+    {
+      "finite": true,
+      "ieee754_bits": 4503599627370496
+    },
+    {
+      "finite": true,
+      "ieee754_bits": 9218868437227405311
+    },
+    {
+      "finite": true,
+      "ieee754_bits": 1
+    },
+    {
+      "finite": true,
+      "ieee754_bits": 4607182418800017408
+    },
+    {
+      "finite": true,
+      "ieee754_bits": 4607182418800017409
+    },
+    {
+      "finite": true,
+      "ieee754_bits": 4615889378079600367
+    },
+    {
+      "finite": true,
+      "ieee754_bits": 4591870180066957722
+    }
+  ],
+  "GENUINE_FLOAT_TRANSPORT_ROUNDTRIP_PASS": true,
+  "GLOBAL_FLOAT_EPSILON_ACCEPTANCE_RULE": false,
+  "NAN_POLICY": "REJECT",
+  "NEGATIVE_INFINITY_POLICY": "REJECT",
+  "POSITIVE_INFINITY_POLICY": "REJECT",
+  "WIRE_REPRESENTATION": "EXPLICIT_IEEE754_BINARY64_BITS"
+}
