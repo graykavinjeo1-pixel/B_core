@@ -1,0 +1,14 @@
+{
+  "schema_version": "SEM29_TEST_RECEIPT_1",
+  "workspace_test_command": "cargo test --workspace --all-targets",
+  "workspace_test_exit_code": 0,
+  "workspace_test_result_groups": 57,
+  "workspace_tests_passed": 209,
+  "workspace_tests_failed": 0,
+  "semantic_reasoning_tests_passed": 185,
+  "sem29_targeted_tests_passed": 4,
+  "format_check_command": "cargo fmt --all -- --check",
+  "format_check_exit_code": 0,
+  "canonical_source_hashes_unchanged_during_final_validation": true,
+  "passed": true
+}

@@ -1,0 +1,12 @@
+{
+  "schema_version": "SEM29_CLIPPY_DIFFERENTIAL_AUDIT_1",
+  "command": "cargo clippy --workspace --all-targets --all-features",
+  "exit_code": 0,
+  "predecessor_warning_signature": "clippy::manual_is_multiple_of",
+  "predecessor_warning_occurrences": 22,
+  "sem29_new_warning_signatures": [],
+  "new_clippy_warning_signatures_total": 0,
+  "invalidated_attempt_receipt": "research/sem29/invalidated_attempt_001.json",
+  "canonical_rerun_performed_after_semantics_preserving_warning_correction": true,
+  "passed": true
+}

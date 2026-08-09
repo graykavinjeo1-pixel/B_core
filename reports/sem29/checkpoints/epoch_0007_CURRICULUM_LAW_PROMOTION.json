@@ -1,0 +1,33 @@
+{
+  "checkpoint_alters_research_semantics": false,
+  "decision_state": [
+    {
+      "epoch": 1,
+      "event": "IMPORT_SEALED_S1_CURRICULUM_EXPERIENCE",
+      "operator_selected": false,
+      "source": "reports/sem28/curriculum_research_memory.json"
+    },
+    {
+      "candidate_ids": [
+        "CAND-TEMPORALCOUPLING-C9438E42",
+        "CAND-CROSSINSTANCEBINDING-6EA794D1"
+      ],
+      "epoch": 2,
+      "event": "S2_SPARSE_HYPOTHESIS_ROUTING",
+      "memory_observations": 1,
+      "operator_selected": false
+    },
+    {
+      "epoch": 7,
+      "event": "CURRICULUM_ABSTRACTION_PROMOTION",
+      "fresh_transfer_required": true,
+      "laws": 1,
+      "motifs": 1,
+      "operator_selected": false,
+      "schemas": 1,
+      "success_authority": false
+    }
+  ],
+  "epoch": 7,
+  "event": "CURRICULUM_LAW_PROMOTION"
+}

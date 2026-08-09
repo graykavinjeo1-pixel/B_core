@@ -1,0 +1,178 @@
+{
+  "base_seed": 6784954321707266753,
+  "branch": "codex/sem29-recursive-curriculum",
+  "budget_is_research_semantic_input": false,
+  "campaign_id": "SEM29-RECURSIVE-CURRICULUM-EVOLUTION-0001",
+  "campaign_is_event_bounded": true,
+  "checkpoint_interval_epochs": 64,
+  "curriculum_law_is_success_authority": false,
+  "engine_sha256": "3fcb889cb56c9a5581e80c2f401cb1746d5be5e2e130b11a730f1ed82609d940",
+  "frozen_at_unix_ms": 1786263013974,
+  "future_instances_materialized": false,
+  "generator_is_success_authority": false,
+  "holdout_seed_commitments": [
+    {
+      "domain": "S2_HOLDOUT",
+      "instance_index": 1,
+      "instance_materialized": false,
+      "seed_commitment": "bdf2b41b962822b77c5058d5a007a4871c5d7ce4cc34852cc6784152ea87696d"
+    },
+    {
+      "domain": "S2_HOLDOUT",
+      "instance_index": 2,
+      "instance_materialized": false,
+      "seed_commitment": "90c9ba216e87b4305432c1431d78cef50e8fe3585f4b50f9925339bc316a7ac3"
+    },
+    {
+      "domain": "S2_HOLDOUT",
+      "instance_index": 3,
+      "instance_materialized": false,
+      "seed_commitment": "4b14a023c43cee85646c1e4bada9c1b7007b110c25e56d60ea6c5e2ef1d7b535"
+    },
+    {
+      "domain": "S2_HOLDOUT",
+      "instance_index": 4,
+      "instance_materialized": false,
+      "seed_commitment": "0b02abc34efcbdea24e5e6a550c2bef556501d10ab7a5de7794e9fde1c025d22"
+    },
+    {
+      "domain": "S2_HOLDOUT",
+      "instance_index": 5,
+      "instance_materialized": false,
+      "seed_commitment": "58a339abd62f2e361c6d8d70117b1413c4327ac75b8be77a086cdefceed90193"
+    },
+    {
+      "domain": "S2_HOLDOUT",
+      "instance_index": 6,
+      "instance_materialized": false,
+      "seed_commitment": "e44ce965e840e97c84e3c00a1d96f0414b469ab673f1db41dbf35fe62e06b0c1"
+    },
+    {
+      "domain": "S3_HOLDOUT",
+      "instance_index": 1,
+      "instance_materialized": false,
+      "seed_commitment": "c2d8cf6218aeaee07afde274dd07ab6d7a1d55f909ff286e3b72aaab5c5ea348"
+    },
+    {
+      "domain": "S3_HOLDOUT",
+      "instance_index": 2,
+      "instance_materialized": false,
+      "seed_commitment": "2da73f2763e3bbe3136eee3147282fb3ead489609e2a2db4cee0433c944445da"
+    },
+    {
+      "domain": "S3_HOLDOUT",
+      "instance_index": 3,
+      "instance_materialized": false,
+      "seed_commitment": "99e7eb33481a7dd315caa06244990dc254c60ab6296cbda9f42a19b69b4b969c"
+    },
+    {
+      "domain": "S3_HOLDOUT",
+      "instance_index": 4,
+      "instance_materialized": false,
+      "seed_commitment": "fd8cd8a18caf52cec788dbfacfd27d98bf0182fc63b6137ba11f97f532095885"
+    },
+    {
+      "domain": "S3_HOLDOUT",
+      "instance_index": 5,
+      "instance_materialized": false,
+      "seed_commitment": "c8129c7be6ba40ee7761d5a5d08bc65b1038a3e369d1e30ef61e4542d84d7209"
+    },
+    {
+      "domain": "S3_HOLDOUT",
+      "instance_index": 6,
+      "instance_materialized": false,
+      "seed_commitment": "096208dce91f29707615965a5f4a7e72206c3bf6e90bbd2180ce14097e7fdbf8"
+    },
+    {
+      "domain": "ABLATION",
+      "instance_index": 1,
+      "instance_materialized": false,
+      "seed_commitment": "af6ae3a8360d868d39d724b762536871e52be16d3e07f6d492e9834d07798d9b"
+    },
+    {
+      "domain": "ABLATION",
+      "instance_index": 2,
+      "instance_materialized": false,
+      "seed_commitment": "146fab0139c5b37fb91859e2f7c8a631a66ea74e27962e67dc3541c73ad9f7e6"
+    },
+    {
+      "domain": "ABLATION",
+      "instance_index": 3,
+      "instance_materialized": false,
+      "seed_commitment": "dd06ed9226e35d00fe65eb423930dbd58b7565c3f1fba6d4499a342779eb6a3e"
+    },
+    {
+      "domain": "ABLATION",
+      "instance_index": 4,
+      "instance_materialized": false,
+      "seed_commitment": "41f3223c395e1428ebe017600ec28f20d18ced80b9e52da82bf26032e011dcd9"
+    },
+    {
+      "domain": "ABLATION",
+      "instance_index": 5,
+      "instance_materialized": false,
+      "seed_commitment": "ceda5fd4cea07df9c07a44e5463ca305fc7990af1bcf15d479370f72227b1141"
+    },
+    {
+      "domain": "ABLATION",
+      "instance_index": 6,
+      "instance_materialized": false,
+      "seed_commitment": "d896767d1c4398dfd288416b2dc1ed1a6b707218b6c1706b96f7ee626bd9a3f4"
+    },
+    {
+      "domain": "ANCHOR",
+      "instance_index": 1,
+      "instance_materialized": false,
+      "seed_commitment": "0ad3757fd31a30833b0925a60ec8d70c6ab66e98de5eb22b4b485ed78639764b"
+    },
+    {
+      "domain": "ANCHOR",
+      "instance_index": 2,
+      "instance_materialized": false,
+      "seed_commitment": "517d971f973f0ff46d6bbe38ec046f19b7e158444c6703dca2e6cff63d33c116"
+    },
+    {
+      "domain": "ANCHOR",
+      "instance_index": 3,
+      "instance_materialized": false,
+      "seed_commitment": "ecbeb8f9df07baa3cdc9abb6ab47c6aaba5373ac1016d726e2aafdc0758dec7f"
+    },
+    {
+      "domain": "ANCHOR",
+      "instance_index": 4,
+      "instance_materialized": false,
+      "seed_commitment": "5ce9c30a470327f72c6b35065e972241fbc5d72c6a21e9ff948345a6babcf3e6"
+    },
+    {
+      "domain": "ANCHOR",
+      "instance_index": 5,
+      "instance_materialized": false,
+      "seed_commitment": "b506557b85ed66d83637806e5fefbf40c9612d7d9585a91a4c6563c05145f2b2"
+    },
+    {
+      "domain": "ANCHOR",
+      "instance_index": 6,
+      "instance_materialized": false,
+      "seed_commitment": "54f9c3c73eeaa7f7fe2dbe1c0d52f1a46f29d0ec3aa81c3b363d506e3589b3d0"
+    }
+  ],
+  "human_curriculum_selection_events": 0,
+  "human_difficulty_dimension_selection_events": 0,
+  "human_repair_design_events": 0,
+  "human_substrate_design_events": 0,
+  "instruction_sha256": "71f51ea68050228e5b4694a96621437725ff48a7538a87980d3329c1b664ae6e",
+  "max_autonomous_research_epochs": 4096,
+  "max_candidate_budget_per_comparison": 4,
+  "network_allowed": false,
+  "ontology_sha256": "ce7686aab74446e92a62c479faffaebe2005334fe50f24b4d0dc79bd6ef947b0",
+  "prestart_autonomous_research_events": 0,
+  "prestart_future_instance_exposure_events": 0,
+  "runner_sha256": "fad1e84c4dd0539bfd0b9e34135999dddb0a6190a02e41b13097882296c918b0",
+  "schema_version": "SEM29_CAMPAIGN_FREEZE_1",
+  "sealed_predecessor_commit": "e29cf2c109239dc074ec2631ca660493c4432ff2",
+  "seed_derivation": "MIX(BASE_SEED, DOMAIN, INDEX)",
+  "verifier_binary": "D:\\B_Core_CAMPAIGNS\\sem29-recursive-curriculum\\reports/sem29\\artifacts/frozen_verifier/sem29-verify.exe",
+  "verifier_binary_sha256": "16074d120a5e30c1cf02a9b452b55856fdd6bb6d857ac9116ca64efcd05042e4",
+  "verifier_contract_version": "SEM29-OPEN-CURRICULUM-CONTRACT-V1",
+  "verifier_source_sha256": "cada5f260b3ba949eeb9b1e38aa1698650b9840904595eb9fc5111e15a017fe4"
+}

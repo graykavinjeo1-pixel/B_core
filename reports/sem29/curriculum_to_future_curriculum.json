@@ -1,0 +1,17 @@
+{
+  "event_count": 2,
+  "events": [
+    {
+      "ablation_supported": true,
+      "changed_behavior": "suppressed replay, unverifiable, and resource-dominated candidates",
+      "source": "S1",
+      "target": "S2"
+    },
+    {
+      "ablation_supported": true,
+      "changed_behavior": "promoted and transferred boundary-orthogonality routing law",
+      "source": "S2",
+      "target": "S3"
+    }
+  ]
+}

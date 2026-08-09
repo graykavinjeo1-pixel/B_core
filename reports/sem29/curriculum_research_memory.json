@@ -1,0 +1,141 @@
+{
+  "boundary_patterns": [
+    {
+      "failure_signature": "AFFINE_ONLY_SOLVER_REJECTED_COMPOSITE_RELATIONAL_GRAPH",
+      "mastered_dimensions": [
+        "STRUCTURAL_INTERACTION_RANK"
+      ],
+      "retained_gain": 296,
+      "substrate_id": "S1-SEM28-STRUCTURAL-INTERACTION",
+      "successful_adaptation": "PUBLIC_RELATIONAL_RULE_GRAPH_INTERPRETER",
+      "verifier_work_units": 296
+    },
+    {
+      "failure_signature": "RESULT_DIGEST_MISMATCH|TRACE_COMMITMENT_MISMATCH",
+      "mastered_dimensions": [
+        "TEMPORAL_COUPLING_ORDER"
+      ],
+      "retained_gain": 474,
+      "substrate_id": "S2",
+      "successful_adaptation": "add public temporal-coupling representation",
+      "verifier_work_units": 474
+    },
+    {
+      "failure_signature": "RESULT_DIGEST_MISMATCH|TRACE_COMMITMENT_MISMATCH",
+      "mastered_dimensions": [
+        "CROSS_INSTANCE_BINDING_ARITY"
+      ],
+      "retained_gain": 510,
+      "substrate_id": "S3",
+      "successful_adaptation": "add public cross-instance binding representation",
+      "verifier_work_units": 510
+    }
+  ],
+  "episodes": [
+    {
+      "calibration_probes": 4,
+      "difficulty_dimension": "STRUCTURAL_INTERACTION_RANK",
+      "failed_candidates": 3,
+      "family": "RELATIONAL_RULE_GRAPH",
+      "future_dimensions_enabled": 2,
+      "future_laws_enabled": 1,
+      "future_substrates_enabled": 2,
+      "genesis_cost": 1328,
+      "hypothesis_count": 4,
+      "prediction_error": 43,
+      "retained_capability_gain": 296,
+      "substrate_id": "S1-SEM28-STRUCTURAL-INTERACTION",
+      "time_to_learnable_frontier": 7,
+      "time_to_retained_gain": 12
+    },
+    {
+      "calibration_probes": 1,
+      "difficulty_dimension": "TEMPORAL_COUPLING_ORDER",
+      "failed_candidates": 0,
+      "family": "TEMPORAL_STATE_COUPLING",
+      "future_dimensions_enabled": 1,
+      "future_laws_enabled": 1,
+      "future_substrates_enabled": 1,
+      "genesis_cost": 219,
+      "hypothesis_count": 2,
+      "prediction_error": 11,
+      "retained_capability_gain": 474,
+      "substrate_id": "S2",
+      "time_to_learnable_frontier": 2,
+      "time_to_retained_gain": 4
+    },
+    {
+      "calibration_probes": 1,
+      "difficulty_dimension": "CROSS_INSTANCE_BINDING_ARITY",
+      "failed_candidates": 0,
+      "family": "CROSS_INSTANCE_BINDING",
+      "future_dimensions_enabled": 1,
+      "future_laws_enabled": 0,
+      "future_substrates_enabled": 2,
+      "genesis_cost": 160,
+      "hypothesis_count": 1,
+      "prediction_error": 3,
+      "retained_capability_gain": 510,
+      "substrate_id": "S3",
+      "time_to_learnable_frontier": 2,
+      "time_to_retained_gain": 4
+    }
+  ],
+  "failed_candidate_patterns": [
+    "REPEATED_KNOWN_WORK",
+    "NO_LOCALIZED_FEEDBACK",
+    "RESOURCE_DOMINATED"
+  ],
+  "generator_is_success_authority": false,
+  "laws": [
+    {
+      "antecedent": "a mastered boundary exposes an unsupported orthogonal public dependency with bounded independent verification",
+      "law_id": "LAW-BOUNDARY-ORTHOGONALITY-1",
+      "requires_fresh_independent_verification": true,
+      "routing_effect": "suppress replay and resource-dominated candidates; prioritize the unsupported dependency family",
+      "success_authority": false,
+      "support": 2
+    }
+  ],
+  "motifs": [
+    {
+      "motif_id": "MOTIF-NOVEL-LOCAL-VERIFIABLE",
+      "statement": "nonredundant structural stress plus localized verifier feedback identifies a bounded learnable frontier",
+      "success_authority": false,
+      "support": 2
+    }
+  ],
+  "predecessor_commit": "e29cf2c109239dc074ec2631ca660493c4432ff2",
+  "predictor": {
+    "calibration_residuals": [
+      43,
+      11,
+      3
+    ],
+    "learnability_weight": 5,
+    "novelty_weight": 7,
+    "observations": 3,
+    "verifier_work_bias": 8
+  },
+  "schema_version": "SEM29_CURRICULUM_RESEARCH_MEMORY_1",
+  "schemas": [
+    {
+      "schema_id": "SCHEMA-PREDICT-PROBE-ADAPT-RETAIN",
+      "stages": [
+        "predict boundary stress",
+        "probe with frozen independent verifier",
+        "adapt only from localized violation",
+        "confirm on fresh holdout and anchors"
+      ],
+      "success_authority": false,
+      "support": 2
+    }
+  ],
+  "successful_candidate_patterns": [
+    "NONREDUNDANT_STRUCTURE",
+    "LOCALIZED_FEEDBACK",
+    "INDEPENDENT_VERIFIER",
+    "S2:TEMPORAL_COUPLING_ORDER",
+    "S3:CROSS_INSTANCE_BINDING_ARITY"
+  ]
+}

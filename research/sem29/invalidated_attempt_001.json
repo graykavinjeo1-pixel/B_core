@@ -1,0 +1,15 @@
+{
+  "schema_version": "SEM29_INVALIDATED_ATTEMPT_1",
+  "attempt_id": "PRESEAL-CLIPPY-DIFFERENTIAL-001",
+  "scientific_authority": false,
+  "canonical_authority": false,
+  "reason": "A new clippy::if_same_then_else warning was detected during post-run differential validation, contradicting the required zero-new-warning invariant.",
+  "affected_source": "crates/semantic-reasoning/src/sem29/engine.rs",
+  "correction_class": "SEMANTICS_PRESERVING_CONTROL_FLOW_DEDUPLICATION",
+  "research_outcome_observed_before_correction": true,
+  "outcome_dependent_policy_change": false,
+  "seed_change": false,
+  "budget_change": false,
+  "acceptance_criteria_change": false,
+  "required_action": "Invalidate unsealed reports, rebuild, refreeze all hashes, and rerun from the exact predecessor."
+}

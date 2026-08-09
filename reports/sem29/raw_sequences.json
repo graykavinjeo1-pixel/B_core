@@ -1,0 +1,84 @@
+{
+  "calibration_probe_count_sequence": [
+    4,
+    1,
+    1
+  ],
+  "capability_productivity_sequence": [
+    222891,
+    2164383,
+    3187500
+  ],
+  "curriculum_to_future_curriculum_sequence": [
+    {
+      "ablation_supported": true,
+      "changed_behavior": "suppressed replay, unverifiable, and resource-dominated candidates",
+      "source": "S1",
+      "target": "S2"
+    },
+    {
+      "ablation_supported": true,
+      "changed_behavior": "promoted and transferred boundary-orthogonality routing law",
+      "source": "S2",
+      "target": "S3"
+    }
+  ],
+  "failed_substrate_candidate_sequence": [
+    3,
+    0,
+    0
+  ],
+  "frontier_scale_sequence": [
+    8605137,
+    8605611,
+    8606121
+  ],
+  "learnable_frontier_hit_rate_sequence": [
+    0.25,
+    0.5,
+    1.0
+  ],
+  "qualitative_capability_sequence": [
+    "S1_COMPOSITE_RELATIONAL_RULE_GRAPH",
+    "S2_TEMPORAL_STATE_COUPLING",
+    "S3_CROSS_INSTANCE_BINDING"
+  ],
+  "research_cost_sequence": [
+    1328,
+    219,
+    160,
+    876,
+    249,
+    967
+  ],
+  "retained_capability_gain_sequence": [
+    296,
+    474,
+    510
+  ],
+  "substrate_genesis_cost_sequence": [
+    1328,
+    219,
+    160
+  ],
+  "substrate_hypothesis_count_sequence": [
+    4,
+    2,
+    1
+  ],
+  "substrate_prediction_error_sequence": [
+    43,
+    11,
+    3
+  ],
+  "time_to_learnable_frontier_sequence": [
+    7,
+    2,
+    2
+  ],
+  "time_to_retained_gain_sequence": [
+    12,
+    4,
+    4
+  ]
+}

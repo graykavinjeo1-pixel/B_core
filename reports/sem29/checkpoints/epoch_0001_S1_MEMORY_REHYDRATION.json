@@ -1,0 +1,13 @@
+{
+  "checkpoint_alters_research_semantics": false,
+  "decision_state": [
+    {
+      "epoch": 1,
+      "event": "IMPORT_SEALED_S1_CURRICULUM_EXPERIENCE",
+      "operator_selected": false,
+      "source": "reports/sem28/curriculum_research_memory.json"
+    }
+  ],
+  "epoch": 1,
+  "event": "S1_MEMORY_REHYDRATION"
+}

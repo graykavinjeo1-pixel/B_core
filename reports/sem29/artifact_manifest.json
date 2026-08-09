@@ -1,0 +1,172 @@
+{
+    "schema_version":  "SEM29_ARTIFACT_MANIFEST_1",
+    "campaign_id":  "SEM29-RECURSIVE-CURRICULUM-EVOLUTION-0001",
+    "artifact_count":  33,
+    "artifacts":  [
+                      {
+                          "path":  "reports/sem29/artifacts/frozen_verifier/sem29-verify.exe",
+                          "bytes":  338944,
+                          "sha256":  "16074d120a5e30c1cf02a9b452b55856fdd6bb6d857ac9116ca64efcd05042e4"
+                      },
+                      {
+                          "path":  "reports/sem29/artifacts/frozen_verifier/verifier.rs",
+                          "bytes":  12911,
+                          "sha256":  "cada5f260b3ba949eeb9b1e38aa1698650b9840904595eb9fc5111e15a017fe4"
+                      },
+                      {
+                          "path":  "reports/sem29/autonomous_decision_ledger.json",
+                          "bytes":  864,
+                          "sha256":  "328d8cfa5f1e03ccab0cbb139ac28c6ecad472b1f1beacc38b686832094e5496"
+                      },
+                      {
+                          "path":  "reports/sem29/campaign_freeze.json",
+                          "bytes":  6535,
+                          "sha256":  "8569c706754618f894025d000e4324bc31694c955748dc7d5a66d0dc176adf8b"
+                      },
+                      {
+                          "path":  "reports/sem29/checkpoints/epoch_0001_S1_MEMORY_REHYDRATION.json",
+                          "bytes":  313,
+                          "sha256":  "11862466648304f95ae08fcc82e539eff8b1ca44e7645c168123cc931ffadb45"
+                      },
+                      {
+                          "path":  "reports/sem29/checkpoints/epoch_0006_S2_RETAINED_GAIN.json",
+                          "bytes":  572,
+                          "sha256":  "6a24609606626f420b8a3804f772f1c349feca59857514b9aab51c7826a4f330"
+                      },
+                      {
+                          "path":  "reports/sem29/checkpoints/epoch_0007_CURRICULUM_LAW_PROMOTION.json",
+                          "bytes":  824,
+                          "sha256":  "6d35428b95685765680d5f0b166c6f753dd62d116d715dead28fe5f5a79d800b"
+                      },
+                      {
+                          "path":  "reports/sem29/checkpoints/epoch_0008_S2_MEMORY_ABLATION.json",
+                          "bytes":  818,
+                          "sha256":  "8321a5b4f97c98dda091cf29957c2efd0ae33e9d4d9a940705a40b551a869d46"
+                      },
+                      {
+                          "path":  "reports/sem29/checkpoints/epoch_0013_S3_RETAINED_GAIN.json",
+                          "bytes":  1055,
+                          "sha256":  "526801cec809c0aefe390812fb44151129d3c259107b82cfbc408161525fe4b9"
+                      },
+                      {
+                          "path":  "reports/sem29/checkpoints/epoch_0015_EQUAL_RESOURCE_ABLATIONS.json",
+                          "bytes":  1063,
+                          "sha256":  "dc21dbda39c72f943223ffaca312ae4104f2bbf2b30d16bb146de99f9ebd4297"
+                      },
+                      {
+                          "path":  "reports/sem29/cleanup_receipt.json",
+                          "bytes":  758,
+                          "sha256":  "89002f72f617cfc0114ed00c5b0f7cc9a71658d43bb9861936ae3bddd5162b6b"
+                      },
+                      {
+                          "path":  "reports/sem29/clippy_differential_audit.json",
+                          "bytes":  520,
+                          "sha256":  "cf98da1fb1fab2ba3e80398a8af5c47d2dd93f36929964aaf84c9dbae3eef30b"
+                      },
+                      {
+                          "path":  "reports/sem29/curriculum_memory_after_s2.json",
+                          "bytes":  2480,
+                          "sha256":  "d96dc83ea2e9e827114e70d541c09b97669cfdb1a8177b84276dbd8fb65d1353"
+                      },
+                      {
+                          "path":  "reports/sem29/curriculum_research_memory.json",
+                          "bytes":  4381,
+                          "sha256":  "afc7badfb7c0648a7c7cb48a43f7dac9e83b05b5eee4d083dfc65bc46de32136"
+                      },
+                      {
+                          "path":  "reports/sem29/curriculum_to_future_curriculum.json",
+                          "bytes":  405,
+                          "sha256":  "8185882e4503f4825bb97bbec88d09030501e99485fd35cdc1bfae05ddf46bf5"
+                      },
+                      {
+                          "path":  "reports/sem29/cycles/S2.json",
+                          "bytes":  24582,
+                          "sha256":  "20ecadfec107cef5f6de3ea5a42b445bc1c2674b37f515a3717eab05a6baa3b6"
+                      },
+                      {
+                          "path":  "reports/sem29/cycles/S3.json",
+                          "bytes":  23577,
+                          "sha256":  "7f2ceae6d6a49f28757016e07736b43e54cbc51e41c1ab155fa96de62e6298ae"
+                      },
+                      {
+                          "path":  "reports/sem29/equal_resource_ablations.json",
+                          "bytes":  1568,
+                          "sha256":  "54b808d224406b70f718ab6db2bdffd81260e8ad45ed907c53ea29b148d2197f"
+                      },
+                      {
+                          "path":  "reports/sem29/human_intervention_audit.json",
+                          "bytes":  284,
+                          "sha256":  "abb951f3bc8d313b98d7d2c98d7f1e6f5fc4e1b277739d69b77d2e406b271f03"
+                      },
+                      {
+                          "path":  "reports/sem29/integrity_audit.json",
+                          "bytes":  499,
+                          "sha256":  "e1bb283c1b42563834c0ba38f2d26c8380c6636ddc9a48d5ef158d3f89298c7f"
+                      },
+                      {
+                          "path":  "reports/sem29/post_campaign_accounting.json",
+                          "bytes":  449,
+                          "sha256":  "5f7ca73a3444f654f7109d79e39e914f9f6e52f52ba64368af016ddfee37015b"
+                      },
+                      {
+                          "path":  "reports/sem29/predecessor_integrity.json",
+                          "bytes":  536,
+                          "sha256":  "cb91e1f4b11549fae65af286dc6d8634ac3f748b785b56c149848aa4c12d0c5a"
+                      },
+                      {
+                          "path":  "reports/sem29/predicted_vs_observed_curriculum_effects.json",
+                          "bytes":  1695,
+                          "sha256":  "b912e418ac6429ed6f6f4575dbfe9410b03cb49eccac5368c27868bb37517828"
+                      },
+                      {
+                          "path":  "reports/sem29/prestart_audit.json",
+                          "bytes":  202,
+                          "sha256":  "674d13251de3cec61a15ae23e920db9cbe097d2fb194d7a8cbadcc8379edd5a2"
+                      },
+                      {
+                          "path":  "reports/sem29/raw_sequences.json",
+                          "bytes":  1438,
+                          "sha256":  "b776ba4940aff825e99799cfbe48722aea1b076e92086441c32b07b70b97f27a"
+                      },
+                      {
+                          "path":  "reports/sem29/reproducibility_receipt.json",
+                          "bytes":  1148,
+                          "sha256":  "dd817ea4e10aa316b0e2da112b065563997602118d676cc1b1dcec3ff52f2bf8"
+                      },
+                      {
+                          "path":  "reports/sem29/sem29_final_report.json",
+                          "bytes":  3357,
+                          "sha256":  "90370322964123a81a377b512b166eeec13c2ca5875bc440f40fae7ad5a1f4a8"
+                      },
+                      {
+                          "path":  "reports/sem29/SEM29_REPORT.md",
+                          "bytes":  519,
+                          "sha256":  "d35d14e8d08038ea78fc88720c3e5fded488983db893e21be390dc2aae35a8c3"
+                      },
+                      {
+                          "path":  "reports/sem29/substrate_candidate_vocabulary.json",
+                          "bytes":  3988,
+                          "sha256":  "ab909361fc4a5359051e1fae8b42799086e491e9c3513a0e7fd7145eb336cf7e"
+                      },
+                      {
+                          "path":  "reports/sem29/test_receipt.json",
+                          "bytes":  502,
+                          "sha256":  "ecca2982342d7a3fbec01d76eed04b678318350d4ff24dea6763b1029384fb14"
+                      },
+                      {
+                          "path":  "research/sem29/invalidated_attempt_001.json",
+                          "bytes":  786,
+                          "sha256":  "4773fc57481e8fc3f93c9865ef86c857bc4ebe102cc01c2e92899003e2cc7ca8"
+                      },
+                      {
+                          "path":  "research/sem29/ontology.json",
+                          "bytes":  1182,
+                          "sha256":  "ce7686aab74446e92a62c479faffaebe2005334fe50f24b4d0dc79bd6ef947b0"
+                      },
+                      {
+                          "path":  "research/sem29/SEM29_INSTRUCTION.md",
+                          "bytes":  17764,
+                          "sha256":  "71f51ea68050228e5b4694a96621437725ff48a7538a87980d3329c1b664ae6e"
+                      }
+                  ]
+}

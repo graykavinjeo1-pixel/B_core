@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "predecessor_manifest_sha256": "0c4ae169138cbfa9589c0c510769623daa16753463e95cfe433badb2f210f73f",
+  "predecessor_memory_sha256": "d403940d1ce11e033e6064b0a403d5f47f556b42ebc0a36007c4e9262ab53ccb",
+  "predecessor_productive_substrates": 1,
+  "predecessor_report": "reports/sem28/sem28_final_report.json",
+  "predecessor_report_sha256": "656ef9363467423081bb7e15bcfe451cfd240348c9250818f553cdf452a448fd",
+  "prior_frontier_scale": 8605137,
+  "sealed_predecessor_commit": "e29cf2c109239dc074ec2631ca660493c4432ff2"
+}

@@ -1,0 +1,56 @@
+{
+  "curriculum_law_ablation_pass": true,
+  "curriculum_research_memory_ablation_pass": true,
+  "general_capability_preserved": true,
+  "law_ablation": {
+    "condition": "S3_LAW_DISABLED_RAW_HISTORY_RETAINED",
+    "equal_cpu_ram_envelope": true,
+    "failures_before_learnable": 1,
+    "hypotheses": 2,
+    "max_candidate_budget": 4,
+    "probes": 2,
+    "same_capability": {
+      "cross_instance": false,
+      "relational": true,
+      "temporal": true
+    },
+    "selected_feature": "CROSS_INSTANCE_BINDING",
+    "semantic_probe_work": 249,
+    "time_to_learnable": 3
+  },
+  "memory_ablation": {
+    "condition": "S2_MEMORY_UNAVAILABLE",
+    "equal_cpu_ram_envelope": true,
+    "failures_before_learnable": 2,
+    "hypotheses": 4,
+    "max_candidate_budget": 4,
+    "probes": 3,
+    "same_capability": {
+      "cross_instance": false,
+      "relational": true,
+      "temporal": false
+    },
+    "selected_feature": "TEMPORAL_COUPLING",
+    "semantic_probe_work": 876,
+    "time_to_learnable": 4
+  },
+  "predictor_ablation": {
+    "condition": "S3_PREDICTOR_DISABLED_EQUAL_CANDIDATE_BUDGET",
+    "equal_cpu_ram_envelope": true,
+    "failures_before_learnable": 3,
+    "hypotheses": 4,
+    "max_candidate_budget": 4,
+    "probes": 4,
+    "same_capability": {
+      "cross_instance": false,
+      "relational": true,
+      "temporal": true
+    },
+    "selected_feature": "CROSS_INSTANCE_BINDING",
+    "semantic_probe_work": 967,
+    "time_to_learnable": 5
+  },
+  "same_hardware": true,
+  "same_max_candidate_budget": 4,
+  "substrate_predictor_ablation_pass": true
+}

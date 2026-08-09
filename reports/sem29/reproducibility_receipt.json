@@ -1,0 +1,21 @@
+{
+  "schema_version": "SEM29_REPRODUCIBILITY_RECEIPT_1",
+  "sealed_predecessor_commit": "e29cf2c109239dc074ec2631ca660493c4432ff2",
+  "toolchain": "rustc 1.96.0 (ac68faa20 2026-05-25)",
+  "target_triple": "x86_64-pc-windows-msvc",
+  "cargo_lock_sha256": "a25438f5b5aa4a4f6732e95f885a68d6dd5e51a9bc1463eece6ace12c4d953a5",
+  "campaign_freeze_sha256": "8569c706754618f894025d000e4324bc31694c955748dc7d5a66d0dc176adf8b",
+  "final_report_sha256": "90370322964123a81a377b512b166eeec13c2ca5875bc440f40fae7ad5a1f4a8",
+  "curriculum_research_memory_sha256": "afc7badfb7c0648a7c7cb48a43f7dac9e83b05b5eee4d083dfc65bc46de32136",
+  "warm_execution_pass": true,
+  "warm_cache_authoritative": false,
+  "clean_reconstruction_command": "cargo build --offline --release -p semantic-reasoning --bin sem29-run --bin sem29-verify",
+  "clean_reconstruction_exit_code": 0,
+  "clean_reconstruction_runner_present": true,
+  "clean_reconstruction_verifier_present": true,
+  "clean_reconstruction_bytes": 268062638,
+  "clean_reconstruction_elapsed_ms": 67312,
+  "clean_canary_target_removed_after_pass": true,
+  "local_dependency_closure_complete": true,
+  "passed": true
+}

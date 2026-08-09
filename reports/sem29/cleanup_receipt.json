@@ -1,0 +1,15 @@
+{
+  "schema_version": "SEM29_CLEANUP_RECEIPT_1",
+  "obsolete_unsealed_report_tree_removed": "reports/sem29 from invalidated attempt 001",
+  "invalidated_attempt_preserved_as_non_authoritative_receipt": "research/sem29/invalidated_attempt_001.json",
+  "temporary_clean_canary_removed": "D:/B_Core_WARM_START/clean-canary/sem29-final",
+  "temporary_clean_canary_recoverable": false,
+  "authoritative_result_affected_by_cleanup": false,
+  "warm_cache_preserved": true,
+  "warm_cache_path": "D:/B_Core_WARM_START/cargo-target/bcore-db4b3e0325b151ae43663199",
+  "warm_cache_bytes_after_campaign": 7464683385,
+  "cache_budget_bytes": 12884901888,
+  "cache_over_budget": false,
+  "current_and_immediate_predecessor_cache_policy_satisfied": true,
+  "passed": true
+}

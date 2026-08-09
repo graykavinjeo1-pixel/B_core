@@ -1,0 +1,800 @@
+{
+  "anchor_results": [
+    {
+      "result": {
+        "accepted": true,
+        "contract_version": "SEM29-OPEN-CURRICULUM-CONTRACT-V1",
+        "dependency_depth": 4,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 37,
+        "structural_signature": 8617395091361484903,
+        "verifier_internal_witness_disclosed": false,
+        "violations": []
+      },
+      "wall_time_ns": 4453600
+    },
+    {
+      "result": {
+        "accepted": true,
+        "contract_version": "SEM29-OPEN-CURRICULUM-CONTRACT-V1",
+        "dependency_depth": 6,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 79,
+        "structural_signature": 6573475282977454959,
+        "verifier_internal_witness_disclosed": false,
+        "violations": []
+      },
+      "wall_time_ns": 4240700
+    }
+  ],
+  "calibration_probes": 1,
+  "capability_after": {
+    "cross_instance": true,
+    "relational": true,
+    "temporal": true
+  },
+  "failed_candidates": 0,
+  "future_dimensions_enabled": 1,
+  "future_laws_enabled": 0,
+  "future_substrates_enabled": 2,
+  "genesis_cost": 160,
+  "holdout_challenges": [
+    {
+      "context_values": [
+        11813968594297880643,
+        10745987660474512137,
+        5217452552164595223,
+        5511867332564209734,
+        11282402528201940523,
+        2484540304526217671
+      ],
+      "contract_version": "SEM29-OPEN-CURRICULUM-CONTRACT-V1",
+      "difficulty_dimension": "CROSS_INSTANCE_BINDING_ARITY",
+      "instance_id": 1,
+      "lagged_context_values": [
+        2736836639311257987,
+        5211382042154280355,
+        10607928775527064001,
+        10687568809963458809,
+        12466454624524923250,
+        6446002300163134318
+      ],
+      "peer_context_values": [
+        5125894138888461395,
+        74993199071911244,
+        17070534739221611594,
+        13090860989848982232,
+        1160131804274760649,
+        12185954293452257778
+      ],
+      "public_nonce": 9617362167350048822,
+      "public_seed": 16694898333145479193,
+      "rules": [
+        {
+          "increment": 4474989940989286968,
+          "multiplier": 275252654895357255,
+          "operation": "AFFINE",
+          "source": 0,
+          "target": 1
+        },
+        {
+          "increment": 8578291289491888185,
+          "multiplier": 17005181416835101829,
+          "operation": "AFFINE",
+          "source": 2,
+          "target": 3
+        },
+        {
+          "left": 1,
+          "operation": "RELATE",
+          "right": 3,
+          "rotate": 4,
+          "salt": 3240977857501354350,
+          "target": 4
+        },
+        {
+          "condition": 4,
+          "operation": "GATE",
+          "salt": 5947464239468839797,
+          "target": 5,
+          "when_even": 1,
+          "when_odd": 3
+        },
+        {
+          "left": 4,
+          "operation": "FOLD",
+          "right": 5,
+          "rotate": 6,
+          "salt": 7980611025183261625,
+          "target": 0
+        },
+        {
+          "local": 0,
+          "operation": "CROSS_BIND",
+          "peer": 4,
+          "rotate": 13,
+          "salt": 16932971232148668615,
+          "target": 3
+        }
+      ],
+      "substrate_family": "CROSS_INSTANCE_BINDING",
+      "substrate_id": "CAND-CROSSINSTANCEBINDING-6EA794D1"
+    },
+    {
+      "context_values": [
+        4249807978227672048,
+        2469713219209254850,
+        18090315583299824083,
+        13920387800015297669,
+        12170498024032175847,
+        2082112646833350601
+      ],
+      "contract_version": "SEM29-OPEN-CURRICULUM-CONTRACT-V1",
+      "difficulty_dimension": "CROSS_INSTANCE_BINDING_ARITY",
+      "instance_id": 2,
+      "lagged_context_values": [
+        5648070385186613295,
+        9269310196529191075,
+        1200010500897048647,
+        1147154428913085070,
+        18104254877100730774,
+        5808001532877952830
+      ],
+      "peer_context_values": [
+        4112290113000862863,
+        3518936511940366753,
+        18017768560059422192,
+        9729361471700981159,
+        16427192455173595987,
+        17102749720934906253
+      ],
+      "public_nonce": 1304345351818409181,
+      "public_seed": 10401667839763302746,
+      "rules": [
+        {
+          "increment": 466487694283839757,
+          "multiplier": 1167071337636942075,
+          "operation": "AFFINE",
+          "source": 0,
+          "target": 1
+        },
+        {
+          "increment": 5632343032360570108,
+          "multiplier": 3025263634847280273,
+          "operation": "AFFINE",
+          "source": 2,
+          "target": 3
+        },
+        {
+          "left": 1,
+          "operation": "RELATE",
+          "right": 3,
+          "rotate": 34,
+          "salt": 16659631735383100895,
+          "target": 4
+        },
+        {
+          "condition": 4,
+          "operation": "GATE",
+          "salt": 12096918838906412115,
+          "target": 5,
+          "when_even": 1,
+          "when_odd": 3
+        },
+        {
+          "left": 4,
+          "operation": "FOLD",
+          "right": 5,
+          "rotate": 22,
+          "salt": 5207547876942608674,
+          "target": 0
+        },
+        {
+          "local": 0,
+          "operation": "CROSS_BIND",
+          "peer": 4,
+          "rotate": 16,
+          "salt": 10175131019208946200,
+          "target": 3
+        }
+      ],
+      "substrate_family": "CROSS_INSTANCE_BINDING",
+      "substrate_id": "CAND-CROSSINSTANCEBINDING-6EA794D1"
+    },
+    {
+      "context_values": [
+        9065494659192067993,
+        6344749305873513546,
+        14747854960383854984,
+        1698904406117265857,
+        9062354355498108907,
+        11452493159392535180
+      ],
+      "contract_version": "SEM29-OPEN-CURRICULUM-CONTRACT-V1",
+      "difficulty_dimension": "CROSS_INSTANCE_BINDING_ARITY",
+      "instance_id": 3,
+      "lagged_context_values": [
+        1843412522779416572,
+        7466754261937455643,
+        2813641710933873401,
+        5726513267575104745,
+        4149252598553447592,
+        9769199242470797161
+      ],
+      "peer_context_values": [
+        1162001152140116210,
+        17086181476444795062,
+        15426761915337323866,
+        5154845884805039034,
+        12298465287026683107,
+        15573031089353567636
+      ],
+      "public_nonce": 12284996473794605286,
+      "public_seed": 10066661441881158859,
+      "rules": [
+        {
+          "increment": 13951082404282615058,
+          "multiplier": 12422475480709184609,
+          "operation": "AFFINE",
+          "source": 0,
+          "target": 1
+        },
+        {
+          "increment": 3274351691945868878,
+          "multiplier": 3414614932958419955,
+          "operation": "AFFINE",
+          "source": 2,
+          "target": 3
+        },
+        {
+          "left": 1,
+          "operation": "RELATE",
+          "right": 3,
+          "rotate": 38,
+          "salt": 6661392912196730499,
+          "target": 4
+        },
+        {
+          "condition": 4,
+          "operation": "GATE",
+          "salt": 4287318195506720252,
+          "target": 5,
+          "when_even": 1,
+          "when_odd": 3
+        },
+        {
+          "left": 4,
+          "operation": "FOLD",
+          "right": 5,
+          "rotate": 1,
+          "salt": 8824093823532810481,
+          "target": 0
+        },
+        {
+          "local": 0,
+          "operation": "CROSS_BIND",
+          "peer": 4,
+          "rotate": 28,
+          "salt": 13422238753724481696,
+          "target": 3
+        }
+      ],
+      "substrate_family": "CROSS_INSTANCE_BINDING",
+      "substrate_id": "CAND-CROSSINSTANCEBINDING-6EA794D1"
+    },
+    {
+      "context_values": [
+        18266538033230441287,
+        4451037548048343238,
+        12859872276457692176,
+        18306552850810691638,
+        231029223148615036,
+        13672762438121389610
+      ],
+      "contract_version": "SEM29-OPEN-CURRICULUM-CONTRACT-V1",
+      "difficulty_dimension": "CROSS_INSTANCE_BINDING_ARITY",
+      "instance_id": 4,
+      "lagged_context_values": [
+        14449749183791158583,
+        8354157093111895679,
+        17693029388346037012,
+        18416502213541578814,
+        13936079467406241218,
+        1936541182357392489
+      ],
+      "peer_context_values": [
+        13747636851165717828,
+        215363718822478713,
+        13544479157069977576,
+        18415246345917649741,
+        13484132448510714853,
+        3536543130154923044
+      ],
+      "public_nonce": 11971784934131620234,
+      "public_seed": 3250336755587201787,
+      "rules": [
+        {
+          "increment": 7742253151064333037,
+          "multiplier": 3933431944982954229,
+          "operation": "AFFINE",
+          "source": 0,
+          "target": 1
+        },
+        {
+          "increment": 6029101384782267708,
+          "multiplier": 4709011882312336691,
+          "operation": "AFFINE",
+          "source": 2,
+          "target": 3
+        },
+        {
+          "left": 1,
+          "operation": "RELATE",
+          "right": 3,
+          "rotate": 19,
+          "salt": 2061304589707420100,
+          "target": 4
+        },
+        {
+          "condition": 4,
+          "operation": "GATE",
+          "salt": 12231538388313095563,
+          "target": 5,
+          "when_even": 1,
+          "when_odd": 3
+        },
+        {
+          "left": 4,
+          "operation": "FOLD",
+          "right": 5,
+          "rotate": 60,
+          "salt": 12859872276457692176,
+          "target": 0
+        },
+        {
+          "local": 0,
+          "operation": "CROSS_BIND",
+          "peer": 4,
+          "rotate": 50,
+          "salt": 12631449398319230393,
+          "target": 3
+        }
+      ],
+      "substrate_family": "CROSS_INSTANCE_BINDING",
+      "substrate_id": "CAND-CROSSINSTANCEBINDING-6EA794D1"
+    },
+    {
+      "context_values": [
+        16249858688702396769,
+        14608901402249277608,
+        6702416270492976771,
+        4399873943394769745,
+        1042868347027949458,
+        16384059763318535122
+      ],
+      "contract_version": "SEM29-OPEN-CURRICULUM-CONTRACT-V1",
+      "difficulty_dimension": "CROSS_INSTANCE_BINDING_ARITY",
+      "instance_id": 5,
+      "lagged_context_values": [
+        9577335721645748149,
+        12516188452276481509,
+        14400742691399032007,
+        4166115001728466594,
+        17678904895044217136,
+        2367392685753425554
+      ],
+      "peer_context_values": [
+        5362827677990094137,
+        7633641497583481333,
+        1570112191877639230,
+        10021215215907487958,
+        615245168301352675,
+        339416217897895737
+      ],
+      "public_nonce": 5057954427818725749,
+      "public_seed": 16001545722024360709,
+      "rules": [
+        {
+          "increment": 9210878655841000391,
+          "multiplier": 1713908075940477895,
+          "operation": "AFFINE",
+          "source": 0,
+          "target": 1
+        },
+        {
+          "increment": 2119101222223024559,
+          "multiplier": 16279566398246552011,
+          "operation": "AFFINE",
+          "source": 2,
+          "target": 3
+        },
+        {
+          "left": 1,
+          "operation": "RELATE",
+          "right": 3,
+          "rotate": 14,
+          "salt": 9264667772249763263,
+          "target": 4
+        },
+        {
+          "condition": 4,
+          "operation": "GATE",
+          "salt": 10617421302257518984,
+          "target": 5,
+          "when_even": 1,
+          "when_odd": 3
+        },
+        {
+          "left": 4,
+          "operation": "FOLD",
+          "right": 5,
+          "rotate": 57,
+          "salt": 4399873943394769745,
+          "target": 0
+        },
+        {
+          "local": 0,
+          "operation": "CROSS_BIND",
+          "peer": 4,
+          "rotate": 56,
+          "salt": 2025158610694861664,
+          "target": 3
+        }
+      ],
+      "substrate_family": "CROSS_INSTANCE_BINDING",
+      "substrate_id": "CAND-CROSSINSTANCEBINDING-6EA794D1"
+    },
+    {
+      "context_values": [
+        5454315104856909180,
+        1511815664875947239,
+        10428925546396560440,
+        3063444773119919613,
+        2147812081672657647,
+        10849733216548689588
+      ],
+      "contract_version": "SEM29-OPEN-CURRICULUM-CONTRACT-V1",
+      "difficulty_dimension": "CROSS_INSTANCE_BINDING_ARITY",
+      "instance_id": 6,
+      "lagged_context_values": [
+        17778000046809855453,
+        6796389718229255209,
+        15541830505719774368,
+        15675811322900325359,
+        3202413364538158181,
+        420979955119163320
+      ],
+      "peer_context_values": [
+        17299665299782730977,
+        9302932589362939207,
+        9519904966311686491,
+        5923006982755896054,
+        16457135682913678192,
+        15429266015321575291
+      ],
+      "public_nonce": 8204008881771233254,
+      "public_seed": 14985478193896128608,
+      "rules": [
+        {
+          "increment": 6026582660213892601,
+          "multiplier": 2166213664892064531,
+          "operation": "AFFINE",
+          "source": 0,
+          "target": 1
+        },
+        {
+          "increment": 8039832149217594942,
+          "multiplier": 5662194860927796411,
+          "operation": "AFFINE",
+          "source": 2,
+          "target": 3
+        },
+        {
+          "left": 1,
+          "operation": "RELATE",
+          "right": 3,
+          "rotate": 30,
+          "salt": 6374297488473464143,
+          "target": 4
+        },
+        {
+          "condition": 4,
+          "operation": "GATE",
+          "salt": 16122299069368162023,
+          "target": 5,
+          "when_even": 1,
+          "when_odd": 3
+        },
+        {
+          "left": 4,
+          "operation": "FOLD",
+          "right": 5,
+          "rotate": 41,
+          "salt": 5454315104856909180,
+          "target": 0
+        },
+        {
+          "local": 0,
+          "operation": "CROSS_BIND",
+          "peer": 4,
+          "rotate": 31,
+          "salt": 8879259633589634938,
+          "target": 3
+        }
+      ],
+      "substrate_family": "CROSS_INSTANCE_BINDING",
+      "substrate_id": "CAND-CROSSINSTANCEBINDING-6EA794D1"
+    }
+  ],
+  "holdout_results": [
+    {
+      "result": {
+        "accepted": true,
+        "contract_version": "SEM29-OPEN-CURRICULUM-CONTRACT-V1",
+        "dependency_depth": 6,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 85,
+        "structural_signature": 15302548950590176281,
+        "verifier_internal_witness_disclosed": false,
+        "violations": []
+      },
+      "wall_time_ns": 4536600
+    },
+    {
+      "result": {
+        "accepted": true,
+        "contract_version": "SEM29-OPEN-CURRICULUM-CONTRACT-V1",
+        "dependency_depth": 6,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 85,
+        "structural_signature": 3510336239348898121,
+        "verifier_internal_witness_disclosed": false,
+        "violations": []
+      },
+      "wall_time_ns": 4250700
+    },
+    {
+      "result": {
+        "accepted": true,
+        "contract_version": "SEM29-OPEN-CURRICULUM-CONTRACT-V1",
+        "dependency_depth": 6,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 85,
+        "structural_signature": 5126868331213629263,
+        "verifier_internal_witness_disclosed": false,
+        "violations": []
+      },
+      "wall_time_ns": 4621000
+    },
+    {
+      "result": {
+        "accepted": true,
+        "contract_version": "SEM29-OPEN-CURRICULUM-CONTRACT-V1",
+        "dependency_depth": 6,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 85,
+        "structural_signature": 7124273473818213713,
+        "verifier_internal_witness_disclosed": false,
+        "violations": []
+      },
+      "wall_time_ns": 4437200
+    },
+    {
+      "result": {
+        "accepted": true,
+        "contract_version": "SEM29-OPEN-CURRICULUM-CONTRACT-V1",
+        "dependency_depth": 6,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 85,
+        "structural_signature": 16973368519262753104,
+        "verifier_internal_witness_disclosed": false,
+        "violations": []
+      },
+      "wall_time_ns": 4445500
+    },
+    {
+      "result": {
+        "accepted": true,
+        "contract_version": "SEM29-OPEN-CURRICULUM-CONTRACT-V1",
+        "dependency_depth": 6,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 85,
+        "structural_signature": 794790840900242240,
+        "verifier_internal_witness_disclosed": false,
+        "violations": []
+      },
+      "wall_time_ns": 4260700
+    }
+  ],
+  "hypothesis_count": 1,
+  "prediction_error": 3,
+  "probes": [
+    {
+      "adapted": {
+        "result": {
+          "accepted": true,
+          "contract_version": "SEM29-OPEN-CURRICULUM-CONTRACT-V1",
+          "dependency_depth": 6,
+          "expected_result_disclosed": false,
+          "generator_is_success_authority": false,
+          "semantic_work_units": 85,
+          "structural_signature": 18243907393867003134,
+          "verifier_internal_witness_disclosed": false,
+          "violations": []
+        },
+        "wall_time_ns": 4518800
+      },
+      "candidate": {
+        "candidate_id": "CAND-CROSSINSTANCEBINDING-6EA794D1",
+        "difficulty_dimension": "CROSS_INSTANCE_BINDING_ARITY",
+        "feature": "CROSS_INSTANCE_BINDING",
+        "mechanical_effect": "adds cross-instance value, depth, work and structural signature",
+        "operator_selected": false,
+        "predicted_adaptation": "add public cross-instance binding representation",
+        "predicted_boundary_stress": "lack of cross-instance binding",
+        "predicted_frontier_effect": 390,
+        "predicted_insufficiency": "temporal/relational interpreter cannot bind a peer context",
+        "predicted_learnability": "bounded because feedback localizes to one public binding rule",
+        "predicted_resource_effect": 128,
+        "predicted_structural_novelty": 49,
+        "predicted_verifier_work_units": 88,
+        "routed_by_law": true,
+        "routed_by_memory": true,
+        "semantic_definition": "dependency on a public peer-instance semantic state",
+        "substrate_family": "CROSS_INSTANCE_BINDING"
+      },
+      "challenge": {
+        "context_values": [
+          15306135216534969722,
+          8748435889236635313,
+          6784160917021390858,
+          13649262477565128435,
+          7835050557391479567,
+          15553525670817031809
+        ],
+        "contract_version": "SEM29-OPEN-CURRICULUM-CONTRACT-V1",
+        "difficulty_dimension": "CROSS_INSTANCE_BINDING_ARITY",
+        "instance_id": 1,
+        "lagged_context_values": [
+          9305123330906026553,
+          4896463205775338501,
+          5636390239218769019,
+          16518937131497559345,
+          590698894419532906,
+          4769615490005653446
+        ],
+        "peer_context_values": [
+          4674512803998849775,
+          13314618497633896599,
+          8504998460566216242,
+          10505603298166023670,
+          17042824993423823847,
+          5395071101309495170
+        ],
+        "public_nonce": 7654919075045525877,
+        "public_seed": 16952227940438795843,
+        "rules": [
+          {
+            "increment": 1644562220583170315,
+            "multiplier": 17503274931354571711,
+            "operation": "AFFINE",
+            "source": 0,
+            "target": 1
+          },
+          {
+            "increment": 1853977655386188536,
+            "multiplier": 8534140535597489285,
+            "operation": "AFFINE",
+            "source": 2,
+            "target": 3
+          },
+          {
+            "left": 1,
+            "operation": "RELATE",
+            "right": 3,
+            "rotate": 37,
+            "salt": 15350386645203626645,
+            "target": 4
+          },
+          {
+            "condition": 4,
+            "operation": "GATE",
+            "salt": 11830474035980996485,
+            "target": 5,
+            "when_even": 1,
+            "when_odd": 3
+          },
+          {
+            "left": 4,
+            "operation": "FOLD",
+            "right": 5,
+            "rotate": 62,
+            "salt": 1060127844692739266,
+            "target": 0
+          },
+          {
+            "local": 0,
+            "operation": "CROSS_BIND",
+            "peer": 4,
+            "rotate": 62,
+            "salt": 16042964041808735328,
+            "target": 3
+          }
+        ],
+        "substrate_family": "CROSS_INSTANCE_BINDING",
+        "substrate_id": "CAND-CROSSINSTANCEBINDING-6EA794D1"
+      },
+      "classification": "LEARNABLE_FRONTIER",
+      "initial": {
+        "result": {
+          "accepted": false,
+          "contract_version": "SEM29-OPEN-CURRICULUM-CONTRACT-V1",
+          "dependency_depth": 6,
+          "expected_result_disclosed": false,
+          "generator_is_success_authority": false,
+          "semantic_work_units": 85,
+          "structural_signature": 18243907393867003134,
+          "verifier_internal_witness_disclosed": false,
+          "violations": [
+            "RESULT_DIGEST_MISMATCH",
+            "TRACE_COMMITMENT_MISMATCH"
+          ]
+        },
+        "wall_time_ns": 4331400
+      },
+      "prediction_error": 3
+    }
+  ],
+  "retained_gain": 510,
+  "routed_candidates": [
+    {
+      "candidate_id": "CAND-CROSSINSTANCEBINDING-6EA794D1",
+      "difficulty_dimension": "CROSS_INSTANCE_BINDING_ARITY",
+      "feature": "CROSS_INSTANCE_BINDING",
+      "mechanical_effect": "adds cross-instance value, depth, work and structural signature",
+      "operator_selected": false,
+      "predicted_adaptation": "add public cross-instance binding representation",
+      "predicted_boundary_stress": "lack of cross-instance binding",
+      "predicted_frontier_effect": 390,
+      "predicted_insufficiency": "temporal/relational interpreter cannot bind a peer context",
+      "predicted_learnability": "bounded because feedback localizes to one public binding rule",
+      "predicted_resource_effect": 128,
+      "predicted_structural_novelty": 49,
+      "predicted_verifier_work_units": 88,
+      "routed_by_law": true,
+      "routed_by_memory": true,
+      "semantic_definition": "dependency on a public peer-instance semantic state",
+      "substrate_family": "CROSS_INSTANCE_BINDING"
+    }
+  ],
+  "selected": {
+    "candidate_id": "CAND-CROSSINSTANCEBINDING-6EA794D1",
+    "difficulty_dimension": "CROSS_INSTANCE_BINDING_ARITY",
+    "feature": "CROSS_INSTANCE_BINDING",
+    "mechanical_effect": "adds cross-instance value, depth, work and structural signature",
+    "operator_selected": false,
+    "predicted_adaptation": "add public cross-instance binding representation",
+    "predicted_boundary_stress": "lack of cross-instance binding",
+    "predicted_frontier_effect": 390,
+    "predicted_insufficiency": "temporal/relational interpreter cannot bind a peer context",
+    "predicted_learnability": "bounded because feedback localizes to one public binding rule",
+    "predicted_resource_effect": 128,
+    "predicted_structural_novelty": 49,
+    "predicted_verifier_work_units": 88,
+    "routed_by_law": true,
+    "routed_by_memory": true,
+    "semantic_definition": "dependency on a public peer-instance semantic state",
+    "substrate_family": "CROSS_INSTANCE_BINDING"
+  },
+  "substrate_id": "S3",
+  "time_to_learnable_frontier": 2,
+  "time_to_retained_gain": 4
+}

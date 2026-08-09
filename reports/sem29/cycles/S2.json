@@ -1,0 +1,819 @@
+{
+  "anchor_results": [
+    {
+      "result": {
+        "accepted": true,
+        "contract_version": "SEM29-OPEN-CURRICULUM-CONTRACT-V1",
+        "dependency_depth": 4,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 37,
+        "structural_signature": 14499259846769745324,
+        "verifier_internal_witness_disclosed": false,
+        "violations": []
+      },
+      "wall_time_ns": 4518300
+    },
+    {
+      "result": {
+        "accepted": true,
+        "contract_version": "SEM29-OPEN-CURRICULUM-CONTRACT-V1",
+        "dependency_depth": 6,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 79,
+        "structural_signature": 14822394130151277651,
+        "verifier_internal_witness_disclosed": false,
+        "violations": []
+      },
+      "wall_time_ns": 4426600
+    }
+  ],
+  "calibration_probes": 1,
+  "capability_after": {
+    "cross_instance": false,
+    "relational": true,
+    "temporal": true
+  },
+  "failed_candidates": 0,
+  "future_dimensions_enabled": 1,
+  "future_laws_enabled": 1,
+  "future_substrates_enabled": 1,
+  "genesis_cost": 219,
+  "holdout_challenges": [
+    {
+      "context_values": [
+        10489978485571864810,
+        16189667825419698645,
+        6009997896747174936,
+        7854279234515178537,
+        3477802676307307892,
+        9947245617792675
+      ],
+      "contract_version": "SEM29-OPEN-CURRICULUM-CONTRACT-V1",
+      "difficulty_dimension": "TEMPORAL_COUPLING_ORDER",
+      "instance_id": 1,
+      "lagged_context_values": [
+        12997425380362479470,
+        1013459943403304989,
+        17624817967217938845,
+        17687406872142307539,
+        16580899667220947648,
+        8216418383908604487
+      ],
+      "peer_context_values": [
+        8092631387122245076,
+        12256050896459699304,
+        1015683132163786941,
+        12320796676154814626,
+        4054230702273289877,
+        8472416476821631858
+      ],
+      "public_nonce": 37694637311517025,
+      "public_seed": 3409453489122773597,
+      "rules": [
+        {
+          "increment": 10821009619955391750,
+          "multiplier": 638724717593406551,
+          "operation": "AFFINE",
+          "source": 0,
+          "target": 1
+        },
+        {
+          "increment": 16458192064266975405,
+          "multiplier": 2394217648114572031,
+          "operation": "AFFINE",
+          "source": 2,
+          "target": 3
+        },
+        {
+          "left": 1,
+          "operation": "RELATE",
+          "right": 3,
+          "rotate": 10,
+          "salt": 12298816212402042098,
+          "target": 4
+        },
+        {
+          "condition": 4,
+          "operation": "GATE",
+          "salt": 9783227416482578264,
+          "target": 5,
+          "when_even": 1,
+          "when_odd": 3
+        },
+        {
+          "left": 4,
+          "operation": "FOLD",
+          "right": 5,
+          "rotate": 22,
+          "salt": 8708617230605407995,
+          "target": 0
+        },
+        {
+          "current": 0,
+          "lagged": 2,
+          "operation": "TEMPORAL_COUPLE",
+          "phase": 22,
+          "salt": 17447580482147605557,
+          "target": 3
+        }
+      ],
+      "substrate_family": "TEMPORAL_STATE_COUPLING",
+      "substrate_id": "CAND-TEMPORALCOUPLING-C9438E42"
+    },
+    {
+      "context_values": [
+        11590203001222624413,
+        14469890809365173358,
+        4224924972582973194,
+        12853193788601804640,
+        11518892941981087950,
+        10429056330554566486
+      ],
+      "contract_version": "SEM29-OPEN-CURRICULUM-CONTRACT-V1",
+      "difficulty_dimension": "TEMPORAL_COUPLING_ORDER",
+      "instance_id": 2,
+      "lagged_context_values": [
+        1018080608798354202,
+        5643847890879575704,
+        565925419537687075,
+        15178534234237885910,
+        8317557845339582665,
+        8771610529608298930
+      ],
+      "peer_context_values": [
+        131848225490654372,
+        9517274787830051707,
+        1830215916436842063,
+        14231039121227159556,
+        7682968459417725095,
+        16151695854922351445
+      ],
+      "public_nonce": 11358271247243001932,
+      "public_seed": 8055904563886628685,
+      "rules": [
+        {
+          "increment": 1906490349199519364,
+          "multiplier": 17969968480446887233,
+          "operation": "AFFINE",
+          "source": 0,
+          "target": 1
+        },
+        {
+          "increment": 17301963697303611240,
+          "multiplier": 17455776292651076719,
+          "operation": "AFFINE",
+          "source": 2,
+          "target": 3
+        },
+        {
+          "left": 1,
+          "operation": "RELATE",
+          "right": 3,
+          "rotate": 32,
+          "salt": 11695115228686837402,
+          "target": 4
+        },
+        {
+          "condition": 4,
+          "operation": "GATE",
+          "salt": 11345064976317397649,
+          "target": 5,
+          "when_even": 1,
+          "when_odd": 3
+        },
+        {
+          "left": 4,
+          "operation": "FOLD",
+          "right": 5,
+          "rotate": 29,
+          "salt": 13281032110371022031,
+          "target": 0
+        },
+        {
+          "current": 0,
+          "lagged": 2,
+          "operation": "TEMPORAL_COUPLE",
+          "phase": 40,
+          "salt": 11518892941981087950,
+          "target": 3
+        }
+      ],
+      "substrate_family": "TEMPORAL_STATE_COUPLING",
+      "substrate_id": "CAND-TEMPORALCOUPLING-C9438E42"
+    },
+    {
+      "context_values": [
+        11555269251304112758,
+        16991310195819270468,
+        9505355824853503652,
+        13004968551001924242,
+        700046802027355187,
+        2456879980480470176
+      ],
+      "contract_version": "SEM29-OPEN-CURRICULUM-CONTRACT-V1",
+      "difficulty_dimension": "TEMPORAL_COUPLING_ORDER",
+      "instance_id": 3,
+      "lagged_context_values": [
+        10627199142340857137,
+        11150824140321764664,
+        3997589631285858340,
+        6085844284490606463,
+        18039046868806825625,
+        17921267829357237502
+      ],
+      "peer_context_values": [
+        6348548144582078175,
+        10865126149093647760,
+        7836435152480102870,
+        3043224188592684136,
+        6820515651596152834,
+        10243703520062866023
+      ],
+      "public_nonce": 6267950950223618653,
+      "public_seed": 11360195769442250652,
+      "rules": [
+        {
+          "increment": 3081808002636721902,
+          "multiplier": 15876972316845682735,
+          "operation": "AFFINE",
+          "source": 0,
+          "target": 1
+        },
+        {
+          "increment": 36632844871693573,
+          "multiplier": 15293756834820800083,
+          "operation": "AFFINE",
+          "source": 2,
+          "target": 3
+        },
+        {
+          "left": 1,
+          "operation": "RELATE",
+          "right": 3,
+          "rotate": 1,
+          "salt": 4064502468857560816,
+          "target": 4
+        },
+        {
+          "condition": 4,
+          "operation": "GATE",
+          "salt": 18250885508548961472,
+          "target": 5,
+          "when_even": 1,
+          "when_odd": 3
+        },
+        {
+          "left": 4,
+          "operation": "FOLD",
+          "right": 5,
+          "rotate": 39,
+          "salt": 7424367914969042622,
+          "target": 0
+        },
+        {
+          "current": 0,
+          "lagged": 2,
+          "operation": "TEMPORAL_COUPLE",
+          "phase": 40,
+          "salt": 2456879980480470176,
+          "target": 3
+        }
+      ],
+      "substrate_family": "TEMPORAL_STATE_COUPLING",
+      "substrate_id": "CAND-TEMPORALCOUPLING-C9438E42"
+    },
+    {
+      "context_values": [
+        12897094772117997019,
+        13549311740054027237,
+        3783082865702673401,
+        6944843299174499461,
+        9681113202133550144,
+        14856042311016463796
+      ],
+      "contract_version": "SEM29-OPEN-CURRICULUM-CONTRACT-V1",
+      "difficulty_dimension": "TEMPORAL_COUPLING_ORDER",
+      "instance_id": 4,
+      "lagged_context_values": [
+        5785175578982759227,
+        16443621193563732861,
+        17090676586900914242,
+        2847472748819358423,
+        14389487588557191230,
+        6464964660835261332
+      ],
+      "peer_context_values": [
+        6711996905475712651,
+        16509337425059984127,
+        3459584152106469877,
+        190083249253522145,
+        13896219138414283420,
+        16471298826170591616
+      ],
+      "public_nonce": 3193156803961107750,
+      "public_seed": 6382066173715334204,
+      "rules": [
+        {
+          "increment": 1461902450118519385,
+          "multiplier": 10329714049068420391,
+          "operation": "AFFINE",
+          "source": 0,
+          "target": 1
+        },
+        {
+          "increment": 12555608979040406831,
+          "multiplier": 4598444192353771135,
+          "operation": "AFFINE",
+          "source": 2,
+          "target": 3
+        },
+        {
+          "left": 1,
+          "operation": "RELATE",
+          "right": 3,
+          "rotate": 24,
+          "salt": 4721151744881802246,
+          "target": 4
+        },
+        {
+          "condition": 4,
+          "operation": "GATE",
+          "salt": 15462861598765695216,
+          "target": 5,
+          "when_even": 1,
+          "when_odd": 3
+        },
+        {
+          "left": 4,
+          "operation": "FOLD",
+          "right": 5,
+          "rotate": 35,
+          "salt": 3783082865702673401,
+          "target": 0
+        },
+        {
+          "current": 0,
+          "lagged": 2,
+          "operation": "TEMPORAL_COUPLE",
+          "phase": 4,
+          "salt": 8634809277703059863,
+          "target": 3
+        }
+      ],
+      "substrate_family": "TEMPORAL_STATE_COUPLING",
+      "substrate_id": "CAND-TEMPORALCOUPLING-C9438E42"
+    },
+    {
+      "context_values": [
+        7144388036201501070,
+        635723788705888088,
+        7617957129655621050,
+        16984500499666704519,
+        18069850944852093849,
+        849649475977110864
+      ],
+      "contract_version": "SEM29-OPEN-CURRICULUM-CONTRACT-V1",
+      "difficulty_dimension": "TEMPORAL_COUPLING_ORDER",
+      "instance_id": 5,
+      "lagged_context_values": [
+        3131595058868289868,
+        3888241614753981646,
+        14652046763865825546,
+        16274558553589756591,
+        7461075371956896248,
+        9361799890778601265
+      ],
+      "peer_context_values": [
+        177303564999724183,
+        12892868983579550888,
+        13073350193666844458,
+        9564889737802649345,
+        14894167341363162146,
+        13479886601106378782
+      ],
+      "public_nonce": 3866488623085460568,
+      "public_seed": 5875343357040690069,
+      "rules": [
+        {
+          "increment": 5300051420343974554,
+          "multiplier": 11637444057343222541,
+          "operation": "AFFINE",
+          "source": 0,
+          "target": 1
+        },
+        {
+          "increment": 3309874918149003004,
+          "multiplier": 1412493723611393229,
+          "operation": "AFFINE",
+          "source": 2,
+          "target": 3
+        },
+        {
+          "left": 1,
+          "operation": "RELATE",
+          "right": 3,
+          "rotate": 6,
+          "salt": 10730199195215077147,
+          "target": 4
+        },
+        {
+          "condition": 4,
+          "operation": "GATE",
+          "salt": 14153183588651055990,
+          "target": 5,
+          "when_even": 1,
+          "when_odd": 3
+        },
+        {
+          "left": 4,
+          "operation": "FOLD",
+          "right": 5,
+          "rotate": 59,
+          "salt": 16984500499666704519,
+          "target": 0
+        },
+        {
+          "current": 0,
+          "lagged": 2,
+          "operation": "TEMPORAL_COUPLE",
+          "phase": 29,
+          "salt": 16511165149099720810,
+          "target": 3
+        }
+      ],
+      "substrate_family": "TEMPORAL_STATE_COUPLING",
+      "substrate_id": "CAND-TEMPORALCOUPLING-C9438E42"
+    },
+    {
+      "context_values": [
+        3883253244738849006,
+        13638719129397534996,
+        11242289738319645828,
+        1282505780713344766,
+        13017236205481716221,
+        9818617724578458128
+      ],
+      "contract_version": "SEM29-OPEN-CURRICULUM-CONTRACT-V1",
+      "difficulty_dimension": "TEMPORAL_COUPLING_ORDER",
+      "instance_id": 6,
+      "lagged_context_values": [
+        7462187893062784243,
+        3528266447614979679,
+        16639736429026986332,
+        6921392541881134850,
+        8341429061291293435,
+        14713904131723506863
+      ],
+      "peer_context_values": [
+        258715751831285756,
+        8252758339597500632,
+        1806064375022821801,
+        8607518151879716704,
+        16762836012046249619,
+        11719852332559153909
+      ],
+      "public_nonce": 5856562735060278015,
+      "public_seed": 3885117161179654694,
+      "rules": [
+        {
+          "increment": 17243020523739706860,
+          "multiplier": 17621735737437686879,
+          "operation": "AFFINE",
+          "source": 0,
+          "target": 1
+        },
+        {
+          "increment": 7754377116958065809,
+          "multiplier": 3450466618212988345,
+          "operation": "AFFINE",
+          "source": 2,
+          "target": 3
+        },
+        {
+          "left": 1,
+          "operation": "RELATE",
+          "right": 3,
+          "rotate": 45,
+          "salt": 2894768521465432214,
+          "target": 4
+        },
+        {
+          "condition": 4,
+          "operation": "GATE",
+          "salt": 16729140186145956971,
+          "target": 5,
+          "when_even": 1,
+          "when_odd": 3
+        },
+        {
+          "left": 4,
+          "operation": "FOLD",
+          "right": 5,
+          "rotate": 23,
+          "salt": 3883253244738849006,
+          "target": 0
+        },
+        {
+          "current": 0,
+          "lagged": 2,
+          "operation": "TEMPORAL_COUPLE",
+          "phase": 11,
+          "salt": 14172615402446711346,
+          "target": 3
+        }
+      ],
+      "substrate_family": "TEMPORAL_STATE_COUPLING",
+      "substrate_id": "CAND-TEMPORALCOUPLING-C9438E42"
+    }
+  ],
+  "holdout_results": [
+    {
+      "result": {
+        "accepted": true,
+        "contract_version": "SEM29-OPEN-CURRICULUM-CONTRACT-V1",
+        "dependency_depth": 6,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 79,
+        "structural_signature": 8201121023390254730,
+        "verifier_internal_witness_disclosed": false,
+        "violations": []
+      },
+      "wall_time_ns": 4695400
+    },
+    {
+      "result": {
+        "accepted": true,
+        "contract_version": "SEM29-OPEN-CURRICULUM-CONTRACT-V1",
+        "dependency_depth": 6,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 79,
+        "structural_signature": 3729290570868220311,
+        "verifier_internal_witness_disclosed": false,
+        "violations": []
+      },
+      "wall_time_ns": 4346800
+    },
+    {
+      "result": {
+        "accepted": true,
+        "contract_version": "SEM29-OPEN-CURRICULUM-CONTRACT-V1",
+        "dependency_depth": 6,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 79,
+        "structural_signature": 9094300520974086107,
+        "verifier_internal_witness_disclosed": false,
+        "violations": []
+      },
+      "wall_time_ns": 4389800
+    },
+    {
+      "result": {
+        "accepted": true,
+        "contract_version": "SEM29-OPEN-CURRICULUM-CONTRACT-V1",
+        "dependency_depth": 6,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 79,
+        "structural_signature": 15560872611650849625,
+        "verifier_internal_witness_disclosed": false,
+        "violations": []
+      },
+      "wall_time_ns": 4162400
+    },
+    {
+      "result": {
+        "accepted": true,
+        "contract_version": "SEM29-OPEN-CURRICULUM-CONTRACT-V1",
+        "dependency_depth": 6,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 79,
+        "structural_signature": 3316235007462248337,
+        "verifier_internal_witness_disclosed": false,
+        "violations": []
+      },
+      "wall_time_ns": 4401200
+    },
+    {
+      "result": {
+        "accepted": true,
+        "contract_version": "SEM29-OPEN-CURRICULUM-CONTRACT-V1",
+        "dependency_depth": 6,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 79,
+        "structural_signature": 9729071511139426778,
+        "verifier_internal_witness_disclosed": false,
+        "violations": []
+      },
+      "wall_time_ns": 45570000
+    }
+  ],
+  "hypothesis_count": 2,
+  "prediction_error": 11,
+  "probes": [
+    {
+      "adapted": {
+        "result": {
+          "accepted": true,
+          "contract_version": "SEM29-OPEN-CURRICULUM-CONTRACT-V1",
+          "dependency_depth": 6,
+          "expected_result_disclosed": false,
+          "generator_is_success_authority": false,
+          "semantic_work_units": 79,
+          "structural_signature": 12350339614234104476,
+          "verifier_internal_witness_disclosed": false,
+          "violations": []
+        },
+        "wall_time_ns": 5027600
+      },
+      "candidate": {
+        "candidate_id": "CAND-TEMPORALCOUPLING-C9438E42",
+        "difficulty_dimension": "TEMPORAL_COUPLING_ORDER",
+        "feature": "TEMPORAL_COUPLING",
+        "mechanical_effect": "adds lag-sensitive value, depth, work and structural signature",
+        "operator_selected": false,
+        "predicted_adaptation": "add public temporal-coupling representation",
+        "predicted_boundary_stress": "lack of temporal state coupling",
+        "predicted_frontier_effect": 340,
+        "predicted_insufficiency": "relational interpreter cannot consume lagged context",
+        "predicted_learnability": "bounded because feedback localizes to one public temporal rule",
+        "predicted_resource_effect": 119,
+        "predicted_structural_novelty": 37,
+        "predicted_verifier_work_units": 90,
+        "routed_by_law": false,
+        "routed_by_memory": true,
+        "semantic_definition": "dependency on a public lagged semantic state within one verified trace",
+        "substrate_family": "TEMPORAL_STATE_COUPLING"
+      },
+      "challenge": {
+        "context_values": [
+          13309714677063275364,
+          9202606119497928410,
+          3817007038497608674,
+          14974782887055792485,
+          3393295250359779572,
+          11875837706980176512
+        ],
+        "contract_version": "SEM29-OPEN-CURRICULUM-CONTRACT-V1",
+        "difficulty_dimension": "TEMPORAL_COUPLING_ORDER",
+        "instance_id": 1,
+        "lagged_context_values": [
+          1725342968640889361,
+          1494827403274721165,
+          1919550565986475952,
+          12624885939018041083,
+          8281423022138710660,
+          7181878500521665960
+        ],
+        "peer_context_values": [
+          12874211558958904376,
+          6531932740051548624,
+          5690772184538180355,
+          3043150619495730082,
+          17209109730276826954,
+          7857187804613227842
+        ],
+        "public_nonce": 7391270872319445363,
+        "public_seed": 8732539790054381210,
+        "rules": [
+          {
+            "increment": 6362812521487969279,
+            "multiplier": 5203937878713716155,
+            "operation": "AFFINE",
+            "source": 0,
+            "target": 1
+          },
+          {
+            "increment": 1351589398748750524,
+            "multiplier": 7779546651126655519,
+            "operation": "AFFINE",
+            "source": 2,
+            "target": 3
+          },
+          {
+            "left": 1,
+            "operation": "RELATE",
+            "right": 3,
+            "rotate": 58,
+            "salt": 12541102646519338148,
+            "target": 4
+          },
+          {
+            "condition": 4,
+            "operation": "GATE",
+            "salt": 591316878617854161,
+            "target": 5,
+            "when_even": 1,
+            "when_odd": 3
+          },
+          {
+            "left": 4,
+            "operation": "FOLD",
+            "right": 5,
+            "rotate": 30,
+            "salt": 2049697446858448927,
+            "target": 0
+          },
+          {
+            "current": 0,
+            "lagged": 2,
+            "operation": "TEMPORAL_COUPLE",
+            "phase": 36,
+            "salt": 10033581820688052791,
+            "target": 3
+          }
+        ],
+        "substrate_family": "TEMPORAL_STATE_COUPLING",
+        "substrate_id": "CAND-TEMPORALCOUPLING-C9438E42"
+      },
+      "classification": "LEARNABLE_FRONTIER",
+      "initial": {
+        "result": {
+          "accepted": false,
+          "contract_version": "SEM29-OPEN-CURRICULUM-CONTRACT-V1",
+          "dependency_depth": 6,
+          "expected_result_disclosed": false,
+          "generator_is_success_authority": false,
+          "semantic_work_units": 79,
+          "structural_signature": 12350339614234104476,
+          "verifier_internal_witness_disclosed": false,
+          "violations": [
+            "RESULT_DIGEST_MISMATCH",
+            "TRACE_COMMITMENT_MISMATCH"
+          ]
+        },
+        "wall_time_ns": 54053700
+      },
+      "prediction_error": 11
+    }
+  ],
+  "retained_gain": 474,
+  "routed_candidates": [
+    {
+      "candidate_id": "CAND-TEMPORALCOUPLING-C9438E42",
+      "difficulty_dimension": "TEMPORAL_COUPLING_ORDER",
+      "feature": "TEMPORAL_COUPLING",
+      "mechanical_effect": "adds lag-sensitive value, depth, work and structural signature",
+      "operator_selected": false,
+      "predicted_adaptation": "add public temporal-coupling representation",
+      "predicted_boundary_stress": "lack of temporal state coupling",
+      "predicted_frontier_effect": 340,
+      "predicted_insufficiency": "relational interpreter cannot consume lagged context",
+      "predicted_learnability": "bounded because feedback localizes to one public temporal rule",
+      "predicted_resource_effect": 119,
+      "predicted_structural_novelty": 37,
+      "predicted_verifier_work_units": 90,
+      "routed_by_law": false,
+      "routed_by_memory": true,
+      "semantic_definition": "dependency on a public lagged semantic state within one verified trace",
+      "substrate_family": "TEMPORAL_STATE_COUPLING"
+    },
+    {
+      "candidate_id": "CAND-CROSSINSTANCEBINDING-6EA794D1",
+      "difficulty_dimension": "CROSS_INSTANCE_BINDING_ARITY",
+      "feature": "CROSS_INSTANCE_BINDING",
+      "mechanical_effect": "adds cross-instance value, depth, work and structural signature",
+      "operator_selected": false,
+      "predicted_adaptation": "add public cross-instance binding representation",
+      "predicted_boundary_stress": "lack of cross-instance binding",
+      "predicted_frontier_effect": 390,
+      "predicted_insufficiency": "temporal/relational interpreter cannot bind a peer context",
+      "predicted_learnability": "bounded because feedback localizes to one public binding rule",
+      "predicted_resource_effect": 128,
+      "predicted_structural_novelty": 49,
+      "predicted_verifier_work_units": 88,
+      "routed_by_law": false,
+      "routed_by_memory": true,
+      "semantic_definition": "dependency on a public peer-instance semantic state",
+      "substrate_family": "CROSS_INSTANCE_BINDING"
+    }
+  ],
+  "selected": {
+    "candidate_id": "CAND-TEMPORALCOUPLING-C9438E42",
+    "difficulty_dimension": "TEMPORAL_COUPLING_ORDER",
+    "feature": "TEMPORAL_COUPLING",
+    "mechanical_effect": "adds lag-sensitive value, depth, work and structural signature",
+    "operator_selected": false,
+    "predicted_adaptation": "add public temporal-coupling representation",
+    "predicted_boundary_stress": "lack of temporal state coupling",
+    "predicted_frontier_effect": 340,
+    "predicted_insufficiency": "relational interpreter cannot consume lagged context",
+    "predicted_learnability": "bounded because feedback localizes to one public temporal rule",
+    "predicted_resource_effect": 119,
+    "predicted_structural_novelty": 37,
+    "predicted_verifier_work_units": 90,
+    "routed_by_law": false,
+    "routed_by_memory": true,
+    "semantic_definition": "dependency on a public lagged semantic state within one verified trace",
+    "substrate_family": "TEMPORAL_STATE_COUPLING"
+  },
+  "substrate_id": "S2",
+  "time_to_learnable_frontier": 2,
+  "time_to_retained_gain": 4
+}

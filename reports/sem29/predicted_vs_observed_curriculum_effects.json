@@ -1,0 +1,52 @@
+{
+  "S2": {
+    "absolute_verifier_work_prediction_error": 11,
+    "observed_substrate_properties": {
+      "adaptation_required": true,
+      "difficulty_increase": true,
+      "frontier_effect": 474,
+      "learnability": "LEARNABLE_FRONTIER",
+      "resource_effect": 79,
+      "structural_novelty": 12350339614234104476,
+      "verifier_work_units": 79
+    },
+    "predicted_substrate_properties": {
+      "adaptation_requirement": "add public temporal-coupling representation",
+      "difficulty_increase": "lack of temporal state coupling",
+      "frontier_effect": 340,
+      "learnability": "bounded because feedback localizes to one public temporal rule",
+      "resource_effect": 119,
+      "structural_novelty": 37,
+      "verifier_work_units": 90
+    },
+    "substrate_id": "S2"
+  },
+  "S3": {
+    "absolute_verifier_work_prediction_error": 3,
+    "observed_substrate_properties": {
+      "adaptation_required": true,
+      "difficulty_increase": true,
+      "frontier_effect": 510,
+      "learnability": "LEARNABLE_FRONTIER",
+      "resource_effect": 85,
+      "structural_novelty": 18243907393867003134,
+      "verifier_work_units": 85
+    },
+    "predicted_substrate_properties": {
+      "adaptation_requirement": "add public cross-instance binding representation",
+      "difficulty_increase": "lack of cross-instance binding",
+      "frontier_effect": 390,
+      "learnability": "bounded because feedback localizes to one public binding rule",
+      "resource_effect": 128,
+      "structural_novelty": 49,
+      "verifier_work_units": 88
+    },
+    "substrate_id": "S3"
+  },
+  "prediction_error_sequence": [
+    43,
+    11,
+    3
+  ],
+  "predictor_is_success_authority": false
+}

@@ -1,0 +1,38 @@
+{
+  "schema_version": "SEM29_RECURSIVE_CURRICULUM_ONTOLOGY_1",
+  "curriculum_evidence_types": [
+    "CAPABILITY_BOUNDARY_PATTERN",
+    "DIFFICULTY_GAP",
+    "SUBSTRATE_HYPOTHESIS",
+    "FAILED_SUBSTRATE_PATTERN",
+    "CHALLENGE_CALIBRATION_EVIDENCE",
+    "DIFFICULTY_DIMENSION_EVIDENCE",
+    "VERIFIER_CONSTRUCTION_PATTERN",
+    "LEARNABILITY_BOUNDARY",
+    "ADAPTATION_RESPONSE",
+    "DOWNSTREAM_CAPABILITY_EFFECT"
+  ],
+  "candidate_quality_classes": [
+    "TOO_EASY",
+    "LEARNABLE_FRONTIER",
+    "TOO_HARD",
+    "UNINFORMATIVE_FAILURE"
+  ],
+  "recursive_improvement_evidence_dimensions": [
+    "HYPOTHESIS_COUNT",
+    "FAILED_CANDIDATE_COUNT",
+    "CALIBRATION_PROBE_COUNT",
+    "TIME_TO_LEARNABLE_FRONTIER",
+    "SUBSTRATE_GENESIS_COST",
+    "LEARNABLE_FRONTIER_HIT_RATE",
+    "SUBSTRATE_PROPERTY_PREDICTION_ERROR",
+    "RETAINED_CAPABILITY_GAIN_PER_EFFORT"
+  ],
+  "hardcoded_saturation_to_substrate_rules": 0,
+  "generator_is_success_authority": false,
+  "curriculum_law_is_success_authority": false,
+  "budget_is_research_semantic_input": false,
+  "operator_selected_next_substrate": null,
+  "operator_selected_next_dimension": null,
+  "operator_selected_curriculum": null
+}

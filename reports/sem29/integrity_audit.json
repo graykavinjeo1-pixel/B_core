@@ -1,0 +1,17 @@
+{
+  "capability_negative_transfer_events": 0,
+  "curriculum_gaming_events": 0,
+  "curriculum_law_is_success_authority": false,
+  "external_llm_calls": 0,
+  "future_instance_leakage_events": 0,
+  "gain_erasure_events": 0,
+  "generator_is_success_authority": false,
+  "global_reasoning_regressions": 0,
+  "hardcoded_saturation_to_substrate_rules": 0,
+  "local_teacher_calls": 0,
+  "meta_quality_regressions": 0,
+  "network_reads": 0,
+  "network_writes": 0,
+  "passed": true,
+  "remote_executions": 0
+}

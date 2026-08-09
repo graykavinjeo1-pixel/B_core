@@ -1,0 +1,9 @@
+{
+  "campaign_initialization_by_operator": true,
+  "human_curriculum_selection_events": 0,
+  "human_difficulty_dimension_selection_events": 0,
+  "human_repair_design_events": 0,
+  "human_substrate_design_events": 0,
+  "mid_campaign_intellectual_steering_events": 0,
+  "passed": true
+}
