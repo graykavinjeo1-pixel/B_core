@@ -1,0 +1,176 @@
+{
+  "AVAILABLE_EPISTEMIC_FRONTIERS": 8,
+  "EPISTEMIC_FRONTIERS_SELECTED": 2,
+  "FRONTIER_SELECTION_SEQUENCE": [
+    "FRONTIER-221486c1222764a5",
+    "FRONTIER-61f8fdad98a19231"
+  ],
+  "frontiers": [
+    {
+      "absolute_residual": 4,
+      "case_ids": [
+        5947744752361524628
+      ],
+      "family": "ECOLOGICAL_RELAY",
+      "frontier_id": "FRONTIER-221486c1222764a5",
+      "minimum_experiment_cost": 2,
+      "planning_importance": 8,
+      "residual_coverage": 2,
+      "resolution": "DISCOVERED",
+      "safe_experiment_options": 4,
+      "selected": true,
+      "signals": [
+        "PERSISTENT_PREDICTION_RESIDUAL",
+        "EPISTEMIC_UNCERTAINTY",
+        "COMPETING_EXPLANATIONS",
+        "CONTEXT_DEPENDENT_INCONSISTENCY",
+        "POOR_EXPLANATORY_COMPRESSION"
+      ]
+    },
+    {
+      "absolute_residual": 6,
+      "case_ids": [
+        13733693412775407011
+      ],
+      "family": "TEMPORAL_CONTAINMENT",
+      "frontier_id": "FRONTIER-61f8fdad98a19231",
+      "minimum_experiment_cost": 2,
+      "planning_importance": 8,
+      "residual_coverage": 2,
+      "resolution": "DISCOVERED",
+      "safe_experiment_options": 4,
+      "selected": true,
+      "signals": [
+        "PERSISTENT_PREDICTION_RESIDUAL",
+        "EPISTEMIC_UNCERTAINTY",
+        "COMPETING_EXPLANATIONS",
+        "CONTEXT_DEPENDENT_INCONSISTENCY",
+        "POOR_EXPLANATORY_COMPRESSION"
+      ]
+    },
+    {
+      "absolute_residual": 4,
+      "case_ids": [
+        11770035741319832982
+      ],
+      "family": "ECOLOGICAL_RELAY",
+      "frontier_id": "FRONTIER-00bde2bde94fc657",
+      "minimum_experiment_cost": 1,
+      "planning_importance": 5,
+      "residual_coverage": 2,
+      "resolution": null,
+      "safe_experiment_options": 1,
+      "selected": false,
+      "signals": [
+        "PERSISTENT_PREDICTION_RESIDUAL",
+        "EPISTEMIC_UNCERTAINTY",
+        "COMPETING_EXPLANATIONS",
+        "CONTEXT_DEPENDENT_INCONSISTENCY",
+        "POOR_EXPLANATORY_COMPRESSION"
+      ]
+    },
+    {
+      "absolute_residual": 6,
+      "case_ids": [
+        801125954549973590
+      ],
+      "family": "TEMPORAL_CONTAINMENT",
+      "frontier_id": "FRONTIER-d75628bca7f1cec5",
+      "minimum_experiment_cost": 1,
+      "planning_importance": 5,
+      "residual_coverage": 2,
+      "resolution": null,
+      "safe_experiment_options": 1,
+      "selected": false,
+      "signals": [
+        "PERSISTENT_PREDICTION_RESIDUAL",
+        "EPISTEMIC_UNCERTAINTY",
+        "COMPETING_EXPLANATIONS",
+        "CONTEXT_DEPENDENT_INCONSISTENCY",
+        "POOR_EXPLANATORY_COMPRESSION"
+      ]
+    },
+    {
+      "absolute_residual": 5,
+      "case_ids": [
+        9360784598345065479
+      ],
+      "family": "CATALYTIC_EXCHANGE",
+      "frontier_id": "FRONTIER-b308d67c8160cc9e",
+      "minimum_experiment_cost": 1,
+      "planning_importance": 5,
+      "residual_coverage": 1,
+      "resolution": null,
+      "safe_experiment_options": 1,
+      "selected": false,
+      "signals": [
+        "PERSISTENT_PREDICTION_RESIDUAL",
+        "EPISTEMIC_UNCERTAINTY",
+        "COMPETING_EXPLANATIONS",
+        "CONTEXT_DEPENDENT_INCONSISTENCY"
+      ]
+    },
+    {
+      "absolute_residual": 5,
+      "case_ids": [
+        17777153771989477805
+      ],
+      "family": "ECOLOGICAL_RELAY",
+      "frontier_id": "FRONTIER-dec6d6150cdd8477",
+      "minimum_experiment_cost": 2,
+      "planning_importance": 2,
+      "residual_coverage": 1,
+      "resolution": null,
+      "safe_experiment_options": 4,
+      "selected": false,
+      "signals": [
+        "PERSISTENT_PREDICTION_RESIDUAL",
+        "EPISTEMIC_UNCERTAINTY",
+        "COMPETING_EXPLANATIONS",
+        "CONTEXT_DEPENDENT_INCONSISTENCY"
+      ]
+    },
+    {
+      "absolute_residual": 1,
+      "case_ids": [
+        9330166868623390641
+      ],
+      "family": "TEMPORAL_CONTAINMENT",
+      "frontier_id": "FRONTIER-1c3f71471f24c7fd",
+      "minimum_experiment_cost": 2,
+      "planning_importance": 1,
+      "residual_coverage": 2,
+      "resolution": null,
+      "safe_experiment_options": 4,
+      "selected": false,
+      "signals": [
+        "PERSISTENT_PREDICTION_RESIDUAL",
+        "EPISTEMIC_UNCERTAINTY",
+        "COMPETING_EXPLANATIONS",
+        "CONTEXT_DEPENDENT_INCONSISTENCY",
+        "POOR_EXPLANATORY_COMPRESSION"
+      ]
+    },
+    {
+      "absolute_residual": 1,
+      "case_ids": [
+        11105054359491045048
+      ],
+      "family": "ECOLOGICAL_RELAY",
+      "frontier_id": "FRONTIER-1f6defdaae43a8c2",
+      "minimum_experiment_cost": 2,
+      "planning_importance": 1,
+      "residual_coverage": 2,
+      "resolution": null,
+      "safe_experiment_options": 4,
+      "selected": false,
+      "signals": [
+        "PERSISTENT_PREDICTION_RESIDUAL",
+        "EPISTEMIC_UNCERTAINTY",
+        "COMPETING_EXPLANATIONS",
+        "CONTEXT_DEPENDENT_INCONSISTENCY",
+        "POOR_EXPLANATORY_COMPRESSION"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "contract_version": "SEM36_BLIND_EPISTEMIC_FRONTIER_VERIFIER_1",
+  "set": "FINAL_HOLDOUT",
+  "seed": 13607921844390117643,
+  "world_count": 24,
+  "public_world_fingerprint": "0058971471f32e99985a8dc032905c81c6b4e25fe1fb6495c9c489c9502e84e9",
+  "development_public_fingerprint": "a17d91712c8fd284863cac4a965a0f477354f0a037c2397da78e9c94f877f264",
+  "development_final_case_overlap": 0,
+  "world_family_count": 3,
+  "hidden_mechanism_family_commitment": "476185899f6d9e6efd055a0cb48a4a1a8a0d7dbcb2eed45ebea42af9b9c5adc0",
+  "safe_closed_world": true,
+  "offline_local_only": true,
+  "concrete_worlds_exposed_to_research_system_before_canonical_run": 0
+}

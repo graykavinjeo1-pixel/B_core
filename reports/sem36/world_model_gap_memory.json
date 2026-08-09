@@ -1,0 +1,109 @@
+[
+  {
+    "frontier_id": "FRONTIER-221486c1222764a5",
+    "why_selected": [
+      "PERSISTENT_PREDICTION_RESIDUAL",
+      "EPISTEMIC_UNCERTAINTY",
+      "COMPETING_EXPLANATIONS",
+      "CONTEXT_DEPENDENT_INCONSISTENCY",
+      "POOR_EXPLANATORY_COMPRESSION"
+    ],
+    "hypothesis_ids": [
+      "HYPOTHESIS-e6d9e133c0ed970c",
+      "HYPOTHESIS-ed9a497b7ea9b639",
+      "HYPOTHESIS-95aff1f8899536f3",
+      "HYPOTHESIS-ac831c175c8e7db2",
+      "HYPOTHESIS-2ed58947746a40bb",
+      "HYPOTHESIS-72455c0d05c87746",
+      "HYPOTHESIS-d46248df6a5b3806",
+      "HYPOTHESIS-e8ecbddef3f5c248",
+      "HYPOTHESIS-f8c160efe5a54226",
+      "HYPOTHESIS-c9a709b27f90ba22",
+      "HYPOTHESIS-5a206736512115f1",
+      "HYPOTHESIS-7cc71691289d0e59",
+      "HYPOTHESIS-b3ad45b0c357eb59",
+      "HYPOTHESIS-ca8924ad3115da4c",
+      "HYPOTHESIS-f03467b342ad58e2",
+      "HYPOTHESIS-64f0b0bbece3323f",
+      "HYPOTHESIS-999bad308f4b1ef1"
+    ],
+    "experiment_ids": [
+      "EXPERIMENT-75a83f7e8ed83ffa",
+      "EXPERIMENT-8af04edc7c2cf401"
+    ],
+    "rejected_hypothesis_ids": [
+      "HYPOTHESIS-e6d9e133c0ed970c",
+      "HYPOTHESIS-95aff1f8899536f3",
+      "HYPOTHESIS-ac831c175c8e7db2",
+      "HYPOTHESIS-2ed58947746a40bb",
+      "HYPOTHESIS-72455c0d05c87746",
+      "HYPOTHESIS-5a206736512115f1",
+      "HYPOTHESIS-7cc71691289d0e59",
+      "HYPOTHESIS-b3ad45b0c357eb59",
+      "HYPOTHESIS-ca8924ad3115da4c",
+      "HYPOTHESIS-f03467b342ad58e2",
+      "HYPOTHESIS-64f0b0bbece3323f",
+      "HYPOTHESIS-ed9a497b7ea9b639",
+      "HYPOTHESIS-e8ecbddef3f5c248",
+      "HYPOTHESIS-f8c160efe5a54226",
+      "HYPOTHESIS-c9a709b27f90ba22"
+    ],
+    "discovered_mechanism_id": "MECHANISM-eafa81e9f6bbba97",
+    "termination": "DISCOVERED",
+    "natural_language_only": false
+  },
+  {
+    "frontier_id": "FRONTIER-61f8fdad98a19231",
+    "why_selected": [
+      "PERSISTENT_PREDICTION_RESIDUAL",
+      "EPISTEMIC_UNCERTAINTY",
+      "COMPETING_EXPLANATIONS",
+      "CONTEXT_DEPENDENT_INCONSISTENCY",
+      "POOR_EXPLANATORY_COMPRESSION"
+    ],
+    "hypothesis_ids": [
+      "HYPOTHESIS-2afd735e8df0ca35",
+      "HYPOTHESIS-43d5a18e138e7b2d",
+      "HYPOTHESIS-69a5b22ba6e010d9",
+      "HYPOTHESIS-f2e9855d692e4108",
+      "HYPOTHESIS-9e0d10b962ddb73f",
+      "HYPOTHESIS-d22226b153363463",
+      "HYPOTHESIS-fdac8412c51d5ea0",
+      "HYPOTHESIS-32a9000862fb81fc",
+      "HYPOTHESIS-7ee802c668d1213d",
+      "HYPOTHESIS-e55fb681d52422b7",
+      "HYPOTHESIS-32d9c94c6386480b",
+      "HYPOTHESIS-c0de556b575d6481",
+      "HYPOTHESIS-cbaf4c2969907d37",
+      "HYPOTHESIS-948face8a9433cdf",
+      "HYPOTHESIS-1d1d55d3c835fa15",
+      "HYPOTHESIS-cf2c2da88184b59d",
+      "HYPOTHESIS-73e37e00962cbb80",
+      "HYPOTHESIS-2523bed9e0b67b14"
+    ],
+    "experiment_ids": [
+      "EXPERIMENT-caa01ad57dee31ad",
+      "EXPERIMENT-c38f8cf03577d921",
+      "EXPERIMENT-ad20fe7cf96e9b9f",
+      "EXPERIMENT-627c355a1b8223a4"
+    ],
+    "rejected_hypothesis_ids": [
+      "HYPOTHESIS-43d5a18e138e7b2d",
+      "HYPOTHESIS-d22226b153363463",
+      "HYPOTHESIS-fdac8412c51d5ea0",
+      "HYPOTHESIS-32a9000862fb81fc",
+      "HYPOTHESIS-7ee802c668d1213d",
+      "HYPOTHESIS-e55fb681d52422b7",
+      "HYPOTHESIS-9e0d10b962ddb73f",
+      "HYPOTHESIS-948face8a9433cdf",
+      "HYPOTHESIS-1d1d55d3c835fa15",
+      "HYPOTHESIS-cf2c2da88184b59d",
+      "HYPOTHESIS-73e37e00962cbb80",
+      "HYPOTHESIS-2afd735e8df0ca35",
+      "HYPOTHESIS-f2e9855d692e4108"
+    ],
+    "discovered_mechanism_id": "MECHANISM-393b2b46096159a5",
+    "termination": "DISCOVERED",
+    "natural_language_only": false
+  }
+]

@@ -1,0 +1,60 @@
+{
+  "LAW_COMPOSITION_EVENTS": 2,
+  "LAW_MERGE_EVENTS": 0,
+  "LAW_REFINEMENT_EVENTS": 0,
+  "LAW_SPLIT_EVENTS": 0,
+  "NEW_CAUSAL_LAW_GENESIS_EVENTS": 0,
+  "NEW_PROPERTY_GENESIS_EVENTS": 0,
+  "NEW_RELATION_GENESIS_EVENTS": 0,
+  "NEW_TEMPORAL_PROCESS_GENESIS_EVENTS": 0,
+  "mechanisms": [
+    {
+      "counterfactual_validations": 8,
+      "exceptions_required": 0,
+      "expression": {
+        "expression": "THRESHOLD_CONJUNCTION",
+        "left": "SIGNAL",
+        "left_threshold": 0,
+        "right": "CONTEXT",
+        "right_threshold": 0,
+        "scale": 4
+      },
+      "family": "ECOLOGICAL_RELAY",
+      "mechanism_id": "MECHANISM-eafa81e9f6bbba97",
+      "novel_prediction_errors": 0,
+      "novel_predictions": 8,
+      "novel_predictions_verified": 8,
+      "origin_case_id": 5947744752361524628,
+      "origin_frontier_id": "FRONTIER-221486c1222764a5",
+      "overgeneralization_events": 0,
+      "residuals_explained": 1,
+      "semantic_bytes": 121,
+      "semantic_structure_units": 5,
+      "transfer_events": 4
+    },
+    {
+      "counterfactual_validations": 8,
+      "exceptions_required": 0,
+      "expression": {
+        "expression": "THRESHOLD_CONJUNCTION",
+        "left": "CATALYST",
+        "left_threshold": 0,
+        "right": "LOAD",
+        "right_threshold": 1,
+        "scale": 6
+      },
+      "family": "TEMPORAL_CONTAINMENT",
+      "mechanism_id": "MECHANISM-393b2b46096159a5",
+      "novel_prediction_errors": 0,
+      "novel_predictions": 8,
+      "novel_predictions_verified": 8,
+      "origin_case_id": 13733693412775407011,
+      "origin_frontier_id": "FRONTIER-61f8fdad98a19231",
+      "overgeneralization_events": 0,
+      "residuals_explained": 1,
+      "semantic_bytes": 120,
+      "semantic_structure_units": 5,
+      "transfer_events": 4
+    }
+  ]
+}

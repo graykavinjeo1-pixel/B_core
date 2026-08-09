@@ -1,0 +1,935 @@
+{
+  "EXPERIMENTS_EXECUTED": 6,
+  "EXPERIMENTS_PROPOSED": 24,
+  "HUMAN_EXPERIMENT_SELECTION_EVENTS": 0,
+  "INTERVENTIONS_EXECUTED": 6,
+  "experiments": [
+    {
+      "case_id": 5947744752361524628,
+      "experiment_cost": 2,
+      "experiment_id": "EXPERIMENT-75a83f7e8ed83ffa",
+      "frontier_id": "FRONTIER-221486c1222764a5",
+      "intervention": {
+        "cost": 2,
+        "disturbance": 1,
+        "value": 0,
+        "variable": "SIGNAL"
+      },
+      "observed_outcome": 1,
+      "outcome_read_ordinal": 25,
+      "predictions": [
+        {
+          "case_id": 5947744752361524628,
+          "hypothesis_id": "HYPOTHESIS-e6d9e133c0ed970c",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "SIGNAL"
+          },
+          "predicted_outcome": 5,
+          "prediction_freeze_ordinal": 24
+        },
+        {
+          "case_id": 5947744752361524628,
+          "hypothesis_id": "HYPOTHESIS-ed9a497b7ea9b639",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "SIGNAL"
+          },
+          "predicted_outcome": 1,
+          "prediction_freeze_ordinal": 24
+        },
+        {
+          "case_id": 5947744752361524628,
+          "hypothesis_id": "HYPOTHESIS-95aff1f8899536f3",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "SIGNAL"
+          },
+          "predicted_outcome": 5,
+          "prediction_freeze_ordinal": 24
+        },
+        {
+          "case_id": 5947744752361524628,
+          "hypothesis_id": "HYPOTHESIS-ac831c175c8e7db2",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "SIGNAL"
+          },
+          "predicted_outcome": 5,
+          "prediction_freeze_ordinal": 24
+        },
+        {
+          "case_id": 5947744752361524628,
+          "hypothesis_id": "HYPOTHESIS-2ed58947746a40bb",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "SIGNAL"
+          },
+          "predicted_outcome": 5,
+          "prediction_freeze_ordinal": 24
+        },
+        {
+          "case_id": 5947744752361524628,
+          "hypothesis_id": "HYPOTHESIS-72455c0d05c87746",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "SIGNAL"
+          },
+          "predicted_outcome": 5,
+          "prediction_freeze_ordinal": 24
+        },
+        {
+          "case_id": 5947744752361524628,
+          "hypothesis_id": "HYPOTHESIS-d46248df6a5b3806",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "SIGNAL"
+          },
+          "predicted_outcome": 1,
+          "prediction_freeze_ordinal": 24
+        },
+        {
+          "case_id": 5947744752361524628,
+          "hypothesis_id": "HYPOTHESIS-e8ecbddef3f5c248",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "SIGNAL"
+          },
+          "predicted_outcome": 1,
+          "prediction_freeze_ordinal": 24
+        },
+        {
+          "case_id": 5947744752361524628,
+          "hypothesis_id": "HYPOTHESIS-f8c160efe5a54226",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "SIGNAL"
+          },
+          "predicted_outcome": 1,
+          "prediction_freeze_ordinal": 24
+        },
+        {
+          "case_id": 5947744752361524628,
+          "hypothesis_id": "HYPOTHESIS-c9a709b27f90ba22",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "SIGNAL"
+          },
+          "predicted_outcome": 1,
+          "prediction_freeze_ordinal": 24
+        },
+        {
+          "case_id": 5947744752361524628,
+          "hypothesis_id": "HYPOTHESIS-5a206736512115f1",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "SIGNAL"
+          },
+          "predicted_outcome": 5,
+          "prediction_freeze_ordinal": 24
+        },
+        {
+          "case_id": 5947744752361524628,
+          "hypothesis_id": "HYPOTHESIS-7cc71691289d0e59",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "SIGNAL"
+          },
+          "predicted_outcome": 5,
+          "prediction_freeze_ordinal": 24
+        },
+        {
+          "case_id": 5947744752361524628,
+          "hypothesis_id": "HYPOTHESIS-b3ad45b0c357eb59",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "SIGNAL"
+          },
+          "predicted_outcome": 5,
+          "prediction_freeze_ordinal": 24
+        },
+        {
+          "case_id": 5947744752361524628,
+          "hypothesis_id": "HYPOTHESIS-ca8924ad3115da4c",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "SIGNAL"
+          },
+          "predicted_outcome": 5,
+          "prediction_freeze_ordinal": 24
+        },
+        {
+          "case_id": 5947744752361524628,
+          "hypothesis_id": "HYPOTHESIS-f03467b342ad58e2",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "SIGNAL"
+          },
+          "predicted_outcome": 5,
+          "prediction_freeze_ordinal": 24
+        },
+        {
+          "case_id": 5947744752361524628,
+          "hypothesis_id": "HYPOTHESIS-64f0b0bbece3323f",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "SIGNAL"
+          },
+          "predicted_outcome": 5,
+          "prediction_freeze_ordinal": 24
+        },
+        {
+          "case_id": 5947744752361524628,
+          "hypothesis_id": "HYPOTHESIS-999bad308f4b1ef1",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "SIGNAL"
+          },
+          "predicted_outcome": null,
+          "prediction_freeze_ordinal": 24
+        }
+      ],
+      "rejected_hypotheses": [
+        "HYPOTHESIS-e6d9e133c0ed970c",
+        "HYPOTHESIS-95aff1f8899536f3",
+        "HYPOTHESIS-ac831c175c8e7db2",
+        "HYPOTHESIS-2ed58947746a40bb",
+        "HYPOTHESIS-72455c0d05c87746",
+        "HYPOTHESIS-5a206736512115f1",
+        "HYPOTHESIS-7cc71691289d0e59",
+        "HYPOTHESIS-b3ad45b0c357eb59",
+        "HYPOTHESIS-ca8924ad3115da4c",
+        "HYPOTHESIS-f03467b342ad58e2",
+        "HYPOTHESIS-64f0b0bbece3323f"
+      ],
+      "selected_autonomously": true,
+      "world_disturbance": 1
+    },
+    {
+      "case_id": 5947744752361524628,
+      "experiment_cost": 2,
+      "experiment_id": "EXPERIMENT-8af04edc7c2cf401",
+      "frontier_id": "FRONTIER-221486c1222764a5",
+      "intervention": {
+        "cost": 2,
+        "disturbance": 1,
+        "value": 0,
+        "variable": "CONTEXT"
+      },
+      "observed_outcome": 2,
+      "outcome_read_ordinal": 26,
+      "predictions": [
+        {
+          "case_id": 5947744752361524628,
+          "hypothesis_id": "HYPOTHESIS-ed9a497b7ea9b639",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "CONTEXT"
+          },
+          "predicted_outcome": 6,
+          "prediction_freeze_ordinal": 25
+        },
+        {
+          "case_id": 5947744752361524628,
+          "hypothesis_id": "HYPOTHESIS-d46248df6a5b3806",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "CONTEXT"
+          },
+          "predicted_outcome": 2,
+          "prediction_freeze_ordinal": 25
+        },
+        {
+          "case_id": 5947744752361524628,
+          "hypothesis_id": "HYPOTHESIS-e8ecbddef3f5c248",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "CONTEXT"
+          },
+          "predicted_outcome": 6,
+          "prediction_freeze_ordinal": 25
+        },
+        {
+          "case_id": 5947744752361524628,
+          "hypothesis_id": "HYPOTHESIS-f8c160efe5a54226",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "CONTEXT"
+          },
+          "predicted_outcome": 6,
+          "prediction_freeze_ordinal": 25
+        },
+        {
+          "case_id": 5947744752361524628,
+          "hypothesis_id": "HYPOTHESIS-c9a709b27f90ba22",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "CONTEXT"
+          },
+          "predicted_outcome": 6,
+          "prediction_freeze_ordinal": 25
+        },
+        {
+          "case_id": 5947744752361524628,
+          "hypothesis_id": "HYPOTHESIS-999bad308f4b1ef1",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "CONTEXT"
+          },
+          "predicted_outcome": null,
+          "prediction_freeze_ordinal": 25
+        }
+      ],
+      "rejected_hypotheses": [
+        "HYPOTHESIS-ed9a497b7ea9b639",
+        "HYPOTHESIS-e8ecbddef3f5c248",
+        "HYPOTHESIS-f8c160efe5a54226",
+        "HYPOTHESIS-c9a709b27f90ba22"
+      ],
+      "selected_autonomously": true,
+      "world_disturbance": 1
+    },
+    {
+      "case_id": 13733693412775407011,
+      "experiment_cost": 2,
+      "experiment_id": "EXPERIMENT-caa01ad57dee31ad",
+      "frontier_id": "FRONTIER-61f8fdad98a19231",
+      "intervention": {
+        "cost": 2,
+        "disturbance": 1,
+        "value": 0,
+        "variable": "CONTEXT"
+      },
+      "observed_outcome": 9,
+      "outcome_read_ordinal": 35,
+      "predictions": [
+        {
+          "case_id": 13733693412775407011,
+          "hypothesis_id": "HYPOTHESIS-2afd735e8df0ca35",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "CONTEXT"
+          },
+          "predicted_outcome": 9,
+          "prediction_freeze_ordinal": 34
+        },
+        {
+          "case_id": 13733693412775407011,
+          "hypothesis_id": "HYPOTHESIS-43d5a18e138e7b2d",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "CONTEXT"
+          },
+          "predicted_outcome": 3,
+          "prediction_freeze_ordinal": 34
+        },
+        {
+          "case_id": 13733693412775407011,
+          "hypothesis_id": "HYPOTHESIS-69a5b22ba6e010d9",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "CONTEXT"
+          },
+          "predicted_outcome": 9,
+          "prediction_freeze_ordinal": 34
+        },
+        {
+          "case_id": 13733693412775407011,
+          "hypothesis_id": "HYPOTHESIS-f2e9855d692e4108",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "CONTEXT"
+          },
+          "predicted_outcome": 9,
+          "prediction_freeze_ordinal": 34
+        },
+        {
+          "case_id": 13733693412775407011,
+          "hypothesis_id": "HYPOTHESIS-9e0d10b962ddb73f",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "CONTEXT"
+          },
+          "predicted_outcome": 9,
+          "prediction_freeze_ordinal": 34
+        },
+        {
+          "case_id": 13733693412775407011,
+          "hypothesis_id": "HYPOTHESIS-d22226b153363463",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "CONTEXT"
+          },
+          "predicted_outcome": 3,
+          "prediction_freeze_ordinal": 34
+        },
+        {
+          "case_id": 13733693412775407011,
+          "hypothesis_id": "HYPOTHESIS-fdac8412c51d5ea0",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "CONTEXT"
+          },
+          "predicted_outcome": 3,
+          "prediction_freeze_ordinal": 34
+        },
+        {
+          "case_id": 13733693412775407011,
+          "hypothesis_id": "HYPOTHESIS-32a9000862fb81fc",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "CONTEXT"
+          },
+          "predicted_outcome": 3,
+          "prediction_freeze_ordinal": 34
+        },
+        {
+          "case_id": 13733693412775407011,
+          "hypothesis_id": "HYPOTHESIS-7ee802c668d1213d",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "CONTEXT"
+          },
+          "predicted_outcome": 3,
+          "prediction_freeze_ordinal": 34
+        },
+        {
+          "case_id": 13733693412775407011,
+          "hypothesis_id": "HYPOTHESIS-e55fb681d52422b7",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "CONTEXT"
+          },
+          "predicted_outcome": 3,
+          "prediction_freeze_ordinal": 34
+        },
+        {
+          "case_id": 13733693412775407011,
+          "hypothesis_id": "HYPOTHESIS-32d9c94c6386480b",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "CONTEXT"
+          },
+          "predicted_outcome": 9,
+          "prediction_freeze_ordinal": 34
+        },
+        {
+          "case_id": 13733693412775407011,
+          "hypothesis_id": "HYPOTHESIS-c0de556b575d6481",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "CONTEXT"
+          },
+          "predicted_outcome": 9,
+          "prediction_freeze_ordinal": 34
+        },
+        {
+          "case_id": 13733693412775407011,
+          "hypothesis_id": "HYPOTHESIS-cbaf4c2969907d37",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "CONTEXT"
+          },
+          "predicted_outcome": 9,
+          "prediction_freeze_ordinal": 34
+        },
+        {
+          "case_id": 13733693412775407011,
+          "hypothesis_id": "HYPOTHESIS-948face8a9433cdf",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "CONTEXT"
+          },
+          "predicted_outcome": 9,
+          "prediction_freeze_ordinal": 34
+        },
+        {
+          "case_id": 13733693412775407011,
+          "hypothesis_id": "HYPOTHESIS-1d1d55d3c835fa15",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "CONTEXT"
+          },
+          "predicted_outcome": 9,
+          "prediction_freeze_ordinal": 34
+        },
+        {
+          "case_id": 13733693412775407011,
+          "hypothesis_id": "HYPOTHESIS-cf2c2da88184b59d",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "CONTEXT"
+          },
+          "predicted_outcome": 9,
+          "prediction_freeze_ordinal": 34
+        },
+        {
+          "case_id": 13733693412775407011,
+          "hypothesis_id": "HYPOTHESIS-73e37e00962cbb80",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "CONTEXT"
+          },
+          "predicted_outcome": 9,
+          "prediction_freeze_ordinal": 34
+        },
+        {
+          "case_id": 13733693412775407011,
+          "hypothesis_id": "HYPOTHESIS-2523bed9e0b67b14",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "CONTEXT"
+          },
+          "predicted_outcome": null,
+          "prediction_freeze_ordinal": 34
+        }
+      ],
+      "rejected_hypotheses": [
+        "HYPOTHESIS-43d5a18e138e7b2d",
+        "HYPOTHESIS-d22226b153363463",
+        "HYPOTHESIS-fdac8412c51d5ea0",
+        "HYPOTHESIS-32a9000862fb81fc",
+        "HYPOTHESIS-7ee802c668d1213d",
+        "HYPOTHESIS-e55fb681d52422b7"
+      ],
+      "selected_autonomously": true,
+      "world_disturbance": 1
+    },
+    {
+      "case_id": 13733693412775407011,
+      "experiment_cost": 2,
+      "experiment_id": "EXPERIMENT-c38f8cf03577d921",
+      "frontier_id": "FRONTIER-61f8fdad98a19231",
+      "intervention": {
+        "cost": 2,
+        "disturbance": 1,
+        "value": 0,
+        "variable": "PHASE"
+      },
+      "observed_outcome": 9,
+      "outcome_read_ordinal": 36,
+      "predictions": [
+        {
+          "case_id": 13733693412775407011,
+          "hypothesis_id": "HYPOTHESIS-2afd735e8df0ca35",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "PHASE"
+          },
+          "predicted_outcome": 9,
+          "prediction_freeze_ordinal": 35
+        },
+        {
+          "case_id": 13733693412775407011,
+          "hypothesis_id": "HYPOTHESIS-69a5b22ba6e010d9",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "PHASE"
+          },
+          "predicted_outcome": 9,
+          "prediction_freeze_ordinal": 35
+        },
+        {
+          "case_id": 13733693412775407011,
+          "hypothesis_id": "HYPOTHESIS-f2e9855d692e4108",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "PHASE"
+          },
+          "predicted_outcome": 9,
+          "prediction_freeze_ordinal": 35
+        },
+        {
+          "case_id": 13733693412775407011,
+          "hypothesis_id": "HYPOTHESIS-9e0d10b962ddb73f",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "PHASE"
+          },
+          "predicted_outcome": 3,
+          "prediction_freeze_ordinal": 35
+        },
+        {
+          "case_id": 13733693412775407011,
+          "hypothesis_id": "HYPOTHESIS-32d9c94c6386480b",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "PHASE"
+          },
+          "predicted_outcome": 9,
+          "prediction_freeze_ordinal": 35
+        },
+        {
+          "case_id": 13733693412775407011,
+          "hypothesis_id": "HYPOTHESIS-c0de556b575d6481",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "PHASE"
+          },
+          "predicted_outcome": 9,
+          "prediction_freeze_ordinal": 35
+        },
+        {
+          "case_id": 13733693412775407011,
+          "hypothesis_id": "HYPOTHESIS-cbaf4c2969907d37",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "PHASE"
+          },
+          "predicted_outcome": 9,
+          "prediction_freeze_ordinal": 35
+        },
+        {
+          "case_id": 13733693412775407011,
+          "hypothesis_id": "HYPOTHESIS-948face8a9433cdf",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "PHASE"
+          },
+          "predicted_outcome": 3,
+          "prediction_freeze_ordinal": 35
+        },
+        {
+          "case_id": 13733693412775407011,
+          "hypothesis_id": "HYPOTHESIS-1d1d55d3c835fa15",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "PHASE"
+          },
+          "predicted_outcome": 3,
+          "prediction_freeze_ordinal": 35
+        },
+        {
+          "case_id": 13733693412775407011,
+          "hypothesis_id": "HYPOTHESIS-cf2c2da88184b59d",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "PHASE"
+          },
+          "predicted_outcome": 3,
+          "prediction_freeze_ordinal": 35
+        },
+        {
+          "case_id": 13733693412775407011,
+          "hypothesis_id": "HYPOTHESIS-73e37e00962cbb80",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "PHASE"
+          },
+          "predicted_outcome": 3,
+          "prediction_freeze_ordinal": 35
+        },
+        {
+          "case_id": 13733693412775407011,
+          "hypothesis_id": "HYPOTHESIS-2523bed9e0b67b14",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 0,
+            "variable": "PHASE"
+          },
+          "predicted_outcome": null,
+          "prediction_freeze_ordinal": 35
+        }
+      ],
+      "rejected_hypotheses": [
+        "HYPOTHESIS-9e0d10b962ddb73f",
+        "HYPOTHESIS-948face8a9433cdf",
+        "HYPOTHESIS-1d1d55d3c835fa15",
+        "HYPOTHESIS-cf2c2da88184b59d",
+        "HYPOTHESIS-73e37e00962cbb80"
+      ],
+      "selected_autonomously": true,
+      "world_disturbance": 1
+    },
+    {
+      "case_id": 13733693412775407011,
+      "experiment_cost": 3,
+      "experiment_id": "EXPERIMENT-ad20fe7cf96e9b9f",
+      "frontier_id": "FRONTIER-61f8fdad98a19231",
+      "intervention": {
+        "cost": 3,
+        "disturbance": 2,
+        "value": 0,
+        "variable": "CATALYST"
+      },
+      "observed_outcome": 3,
+      "outcome_read_ordinal": 37,
+      "predictions": [
+        {
+          "case_id": 13733693412775407011,
+          "hypothesis_id": "HYPOTHESIS-2afd735e8df0ca35",
+          "intervention": {
+            "cost": 3,
+            "disturbance": 2,
+            "value": 0,
+            "variable": "CATALYST"
+          },
+          "predicted_outcome": 9,
+          "prediction_freeze_ordinal": 36
+        },
+        {
+          "case_id": 13733693412775407011,
+          "hypothesis_id": "HYPOTHESIS-69a5b22ba6e010d9",
+          "intervention": {
+            "cost": 3,
+            "disturbance": 2,
+            "value": 0,
+            "variable": "CATALYST"
+          },
+          "predicted_outcome": 3,
+          "prediction_freeze_ordinal": 36
+        },
+        {
+          "case_id": 13733693412775407011,
+          "hypothesis_id": "HYPOTHESIS-f2e9855d692e4108",
+          "intervention": {
+            "cost": 3,
+            "disturbance": 2,
+            "value": 0,
+            "variable": "CATALYST"
+          },
+          "predicted_outcome": 9,
+          "prediction_freeze_ordinal": 36
+        },
+        {
+          "case_id": 13733693412775407011,
+          "hypothesis_id": "HYPOTHESIS-32d9c94c6386480b",
+          "intervention": {
+            "cost": 3,
+            "disturbance": 2,
+            "value": 0,
+            "variable": "CATALYST"
+          },
+          "predicted_outcome": 3,
+          "prediction_freeze_ordinal": 36
+        },
+        {
+          "case_id": 13733693412775407011,
+          "hypothesis_id": "HYPOTHESIS-c0de556b575d6481",
+          "intervention": {
+            "cost": 3,
+            "disturbance": 2,
+            "value": 0,
+            "variable": "CATALYST"
+          },
+          "predicted_outcome": 3,
+          "prediction_freeze_ordinal": 36
+        },
+        {
+          "case_id": 13733693412775407011,
+          "hypothesis_id": "HYPOTHESIS-cbaf4c2969907d37",
+          "intervention": {
+            "cost": 3,
+            "disturbance": 2,
+            "value": 0,
+            "variable": "CATALYST"
+          },
+          "predicted_outcome": 3,
+          "prediction_freeze_ordinal": 36
+        },
+        {
+          "case_id": 13733693412775407011,
+          "hypothesis_id": "HYPOTHESIS-2523bed9e0b67b14",
+          "intervention": {
+            "cost": 3,
+            "disturbance": 2,
+            "value": 0,
+            "variable": "CATALYST"
+          },
+          "predicted_outcome": null,
+          "prediction_freeze_ordinal": 36
+        }
+      ],
+      "rejected_hypotheses": [
+        "HYPOTHESIS-2afd735e8df0ca35",
+        "HYPOTHESIS-f2e9855d692e4108"
+      ],
+      "selected_autonomously": true,
+      "world_disturbance": 2
+    },
+    {
+      "case_id": 13733693412775407011,
+      "experiment_cost": 2,
+      "experiment_id": "EXPERIMENT-627c355a1b8223a4",
+      "frontier_id": "FRONTIER-61f8fdad98a19231",
+      "intervention": {
+        "cost": 2,
+        "disturbance": 1,
+        "value": 1,
+        "variable": "SIGNAL"
+      },
+      "observed_outcome": 10,
+      "outcome_read_ordinal": 38,
+      "predictions": [
+        {
+          "case_id": 13733693412775407011,
+          "hypothesis_id": "HYPOTHESIS-69a5b22ba6e010d9",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 1,
+            "variable": "SIGNAL"
+          },
+          "predicted_outcome": 10,
+          "prediction_freeze_ordinal": 37
+        },
+        {
+          "case_id": 13733693412775407011,
+          "hypothesis_id": "HYPOTHESIS-32d9c94c6386480b",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 1,
+            "variable": "SIGNAL"
+          },
+          "predicted_outcome": 10,
+          "prediction_freeze_ordinal": 37
+        },
+        {
+          "case_id": 13733693412775407011,
+          "hypothesis_id": "HYPOTHESIS-c0de556b575d6481",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 1,
+            "variable": "SIGNAL"
+          },
+          "predicted_outcome": 10,
+          "prediction_freeze_ordinal": 37
+        },
+        {
+          "case_id": 13733693412775407011,
+          "hypothesis_id": "HYPOTHESIS-cbaf4c2969907d37",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 1,
+            "variable": "SIGNAL"
+          },
+          "predicted_outcome": 10,
+          "prediction_freeze_ordinal": 37
+        },
+        {
+          "case_id": 13733693412775407011,
+          "hypothesis_id": "HYPOTHESIS-2523bed9e0b67b14",
+          "intervention": {
+            "cost": 2,
+            "disturbance": 1,
+            "value": 1,
+            "variable": "SIGNAL"
+          },
+          "predicted_outcome": null,
+          "prediction_freeze_ordinal": 37
+        }
+      ],
+      "rejected_hypotheses": [],
+      "selected_autonomously": true,
+      "world_disturbance": 1
+    }
+  ]
+}

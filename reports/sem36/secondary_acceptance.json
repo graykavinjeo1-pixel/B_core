@@ -1,0 +1,21 @@
+{
+  "sem36_status": "PASS",
+  "levels": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+  ],
+  "ablations": [
+    true,
+    true,
+    true,
+    true,
+    true
+  ],
+  "invariants_pass": true
+}

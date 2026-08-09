@@ -1,0 +1,108 @@
+{
+  "EXPERIMENT_OUTCOME_READS_BEFORE_PREDICTION": 0,
+  "EXPERIMENT_PREDICTION_ORDER_VALID": true,
+  "NOVEL_PREDICTION_BEFORE_VALIDATION": true,
+  "experiment_ordering": [
+    {
+      "experiment_id": "EXPERIMENT-75a83f7e8ed83ffa",
+      "outcome_read_ordinal": 25,
+      "prediction_freeze_ordinals": [
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24
+      ]
+    },
+    {
+      "experiment_id": "EXPERIMENT-8af04edc7c2cf401",
+      "outcome_read_ordinal": 26,
+      "prediction_freeze_ordinals": [
+        25,
+        25,
+        25,
+        25,
+        25,
+        25
+      ]
+    },
+    {
+      "experiment_id": "EXPERIMENT-caa01ad57dee31ad",
+      "outcome_read_ordinal": 35,
+      "prediction_freeze_ordinals": [
+        34,
+        34,
+        34,
+        34,
+        34,
+        34,
+        34,
+        34,
+        34,
+        34,
+        34,
+        34,
+        34,
+        34,
+        34,
+        34,
+        34,
+        34
+      ]
+    },
+    {
+      "experiment_id": "EXPERIMENT-c38f8cf03577d921",
+      "outcome_read_ordinal": 36,
+      "prediction_freeze_ordinals": [
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35,
+        35
+      ]
+    },
+    {
+      "experiment_id": "EXPERIMENT-ad20fe7cf96e9b9f",
+      "outcome_read_ordinal": 37,
+      "prediction_freeze_ordinals": [
+        36,
+        36,
+        36,
+        36,
+        36,
+        36,
+        36
+      ]
+    },
+    {
+      "experiment_id": "EXPERIMENT-627c355a1b8223a4",
+      "outcome_read_ordinal": 38,
+      "prediction_freeze_ordinals": [
+        37,
+        37,
+        37,
+        37,
+        37
+      ]
+    }
+  ]
+}

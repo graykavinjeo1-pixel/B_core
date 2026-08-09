@@ -1,0 +1,488 @@
+{
+  "HUMAN_HYPOTHESIS_SELECTION_EVENTS": 0,
+  "HYPOTHESES_GENERATED": 35,
+  "HYPOTHESES_REJECTED": 28,
+  "HYPOTHESES_RETAINED": 7,
+  "hypotheses": [
+    {
+      "exceptions_required": 0,
+      "expression": {
+        "expression": "CONSTANT",
+        "value": 4
+      },
+      "frontier_id": "FRONTIER-221486c1222764a5",
+      "hypothesis_id": "HYPOTHESIS-e6d9e133c0ed970c",
+      "observations_explained": 1,
+      "status": "REJECTED"
+    },
+    {
+      "exceptions_required": 0,
+      "expression": {
+        "expression": "FEATURE",
+        "scale": 4,
+        "variable": "SIGNAL"
+      },
+      "frontier_id": "FRONTIER-221486c1222764a5",
+      "hypothesis_id": "HYPOTHESIS-ed9a497b7ea9b639",
+      "observations_explained": 1,
+      "status": "REJECTED"
+    },
+    {
+      "exceptions_required": 0,
+      "expression": {
+        "expression": "FEATURE",
+        "scale": 4,
+        "variable": "CONTEXT"
+      },
+      "frontier_id": "FRONTIER-221486c1222764a5",
+      "hypothesis_id": "HYPOTHESIS-95aff1f8899536f3",
+      "observations_explained": 1,
+      "status": "REJECTED"
+    },
+    {
+      "exceptions_required": 0,
+      "expression": {
+        "expression": "FEATURE",
+        "scale": 4,
+        "variable": "CATALYST"
+      },
+      "frontier_id": "FRONTIER-221486c1222764a5",
+      "hypothesis_id": "HYPOTHESIS-ac831c175c8e7db2",
+      "observations_explained": 1,
+      "status": "REJECTED"
+    },
+    {
+      "exceptions_required": 0,
+      "expression": {
+        "expression": "FEATURE",
+        "scale": 4,
+        "variable": "LOAD"
+      },
+      "frontier_id": "FRONTIER-221486c1222764a5",
+      "hypothesis_id": "HYPOTHESIS-2ed58947746a40bb",
+      "observations_explained": 1,
+      "status": "REJECTED"
+    },
+    {
+      "exceptions_required": 0,
+      "expression": {
+        "expression": "FEATURE",
+        "scale": 4,
+        "variable": "PHASE"
+      },
+      "frontier_id": "FRONTIER-221486c1222764a5",
+      "hypothesis_id": "HYPOTHESIS-72455c0d05c87746",
+      "observations_explained": 1,
+      "status": "REJECTED"
+    },
+    {
+      "exceptions_required": 0,
+      "expression": {
+        "expression": "THRESHOLD_CONJUNCTION",
+        "left": "SIGNAL",
+        "left_threshold": 0,
+        "right": "CONTEXT",
+        "right_threshold": 0,
+        "scale": 4
+      },
+      "frontier_id": "FRONTIER-221486c1222764a5",
+      "hypothesis_id": "HYPOTHESIS-d46248df6a5b3806",
+      "observations_explained": 1,
+      "status": "PROMOTED"
+    },
+    {
+      "exceptions_required": 0,
+      "expression": {
+        "expression": "THRESHOLD_CONJUNCTION",
+        "left": "SIGNAL",
+        "left_threshold": 0,
+        "right": "CATALYST",
+        "right_threshold": 0,
+        "scale": 4
+      },
+      "frontier_id": "FRONTIER-221486c1222764a5",
+      "hypothesis_id": "HYPOTHESIS-e8ecbddef3f5c248",
+      "observations_explained": 1,
+      "status": "REJECTED"
+    },
+    {
+      "exceptions_required": 0,
+      "expression": {
+        "expression": "THRESHOLD_CONJUNCTION",
+        "left": "SIGNAL",
+        "left_threshold": 0,
+        "right": "LOAD",
+        "right_threshold": 0,
+        "scale": 4
+      },
+      "frontier_id": "FRONTIER-221486c1222764a5",
+      "hypothesis_id": "HYPOTHESIS-f8c160efe5a54226",
+      "observations_explained": 1,
+      "status": "REJECTED"
+    },
+    {
+      "exceptions_required": 0,
+      "expression": {
+        "expression": "THRESHOLD_CONJUNCTION",
+        "left": "SIGNAL",
+        "left_threshold": 0,
+        "right": "PHASE",
+        "right_threshold": 0,
+        "scale": 4
+      },
+      "frontier_id": "FRONTIER-221486c1222764a5",
+      "hypothesis_id": "HYPOTHESIS-c9a709b27f90ba22",
+      "observations_explained": 1,
+      "status": "REJECTED"
+    },
+    {
+      "exceptions_required": 0,
+      "expression": {
+        "expression": "THRESHOLD_CONJUNCTION",
+        "left": "CONTEXT",
+        "left_threshold": 0,
+        "right": "CATALYST",
+        "right_threshold": 0,
+        "scale": 4
+      },
+      "frontier_id": "FRONTIER-221486c1222764a5",
+      "hypothesis_id": "HYPOTHESIS-5a206736512115f1",
+      "observations_explained": 1,
+      "status": "REJECTED"
+    },
+    {
+      "exceptions_required": 0,
+      "expression": {
+        "expression": "THRESHOLD_CONJUNCTION",
+        "left": "CONTEXT",
+        "left_threshold": 0,
+        "right": "LOAD",
+        "right_threshold": 0,
+        "scale": 4
+      },
+      "frontier_id": "FRONTIER-221486c1222764a5",
+      "hypothesis_id": "HYPOTHESIS-7cc71691289d0e59",
+      "observations_explained": 1,
+      "status": "REJECTED"
+    },
+    {
+      "exceptions_required": 0,
+      "expression": {
+        "expression": "THRESHOLD_CONJUNCTION",
+        "left": "CONTEXT",
+        "left_threshold": 0,
+        "right": "PHASE",
+        "right_threshold": 0,
+        "scale": 4
+      },
+      "frontier_id": "FRONTIER-221486c1222764a5",
+      "hypothesis_id": "HYPOTHESIS-b3ad45b0c357eb59",
+      "observations_explained": 1,
+      "status": "REJECTED"
+    },
+    {
+      "exceptions_required": 0,
+      "expression": {
+        "expression": "THRESHOLD_CONJUNCTION",
+        "left": "CATALYST",
+        "left_threshold": 0,
+        "right": "LOAD",
+        "right_threshold": 0,
+        "scale": 4
+      },
+      "frontier_id": "FRONTIER-221486c1222764a5",
+      "hypothesis_id": "HYPOTHESIS-ca8924ad3115da4c",
+      "observations_explained": 1,
+      "status": "REJECTED"
+    },
+    {
+      "exceptions_required": 0,
+      "expression": {
+        "expression": "THRESHOLD_CONJUNCTION",
+        "left": "CATALYST",
+        "left_threshold": 0,
+        "right": "PHASE",
+        "right_threshold": 0,
+        "scale": 4
+      },
+      "frontier_id": "FRONTIER-221486c1222764a5",
+      "hypothesis_id": "HYPOTHESIS-f03467b342ad58e2",
+      "observations_explained": 1,
+      "status": "REJECTED"
+    },
+    {
+      "exceptions_required": 0,
+      "expression": {
+        "expression": "THRESHOLD_CONJUNCTION",
+        "left": "LOAD",
+        "left_threshold": 0,
+        "right": "PHASE",
+        "right_threshold": 0,
+        "scale": 4
+      },
+      "frontier_id": "FRONTIER-221486c1222764a5",
+      "hypothesis_id": "HYPOTHESIS-64f0b0bbece3323f",
+      "observations_explained": 1,
+      "status": "REJECTED"
+    },
+    {
+      "exceptions_required": 0,
+      "expression": {
+        "expression": "STOCHASTIC_RESIDUAL"
+      },
+      "frontier_id": "FRONTIER-221486c1222764a5",
+      "hypothesis_id": "HYPOTHESIS-999bad308f4b1ef1",
+      "observations_explained": 1,
+      "status": "RETAINED"
+    },
+    {
+      "exceptions_required": 0,
+      "expression": {
+        "expression": "CONSTANT",
+        "value": 6
+      },
+      "frontier_id": "FRONTIER-61f8fdad98a19231",
+      "hypothesis_id": "HYPOTHESIS-2afd735e8df0ca35",
+      "observations_explained": 1,
+      "status": "REJECTED"
+    },
+    {
+      "exceptions_required": 0,
+      "expression": {
+        "expression": "FEATURE",
+        "scale": 6,
+        "variable": "CONTEXT"
+      },
+      "frontier_id": "FRONTIER-61f8fdad98a19231",
+      "hypothesis_id": "HYPOTHESIS-43d5a18e138e7b2d",
+      "observations_explained": 1,
+      "status": "REJECTED"
+    },
+    {
+      "exceptions_required": 0,
+      "expression": {
+        "expression": "FEATURE",
+        "scale": 6,
+        "variable": "CATALYST"
+      },
+      "frontier_id": "FRONTIER-61f8fdad98a19231",
+      "hypothesis_id": "HYPOTHESIS-69a5b22ba6e010d9",
+      "observations_explained": 1,
+      "status": "RETAINED"
+    },
+    {
+      "exceptions_required": 0,
+      "expression": {
+        "expression": "FEATURE",
+        "scale": 2,
+        "variable": "LOAD"
+      },
+      "frontier_id": "FRONTIER-61f8fdad98a19231",
+      "hypothesis_id": "HYPOTHESIS-f2e9855d692e4108",
+      "observations_explained": 1,
+      "status": "REJECTED"
+    },
+    {
+      "exceptions_required": 0,
+      "expression": {
+        "expression": "FEATURE",
+        "scale": 6,
+        "variable": "PHASE"
+      },
+      "frontier_id": "FRONTIER-61f8fdad98a19231",
+      "hypothesis_id": "HYPOTHESIS-9e0d10b962ddb73f",
+      "observations_explained": 1,
+      "status": "REJECTED"
+    },
+    {
+      "exceptions_required": 0,
+      "expression": {
+        "expression": "THRESHOLD_CONJUNCTION",
+        "left": "CONTEXT",
+        "left_threshold": 0,
+        "right": "CATALYST",
+        "right_threshold": 0,
+        "scale": 6
+      },
+      "frontier_id": "FRONTIER-61f8fdad98a19231",
+      "hypothesis_id": "HYPOTHESIS-d22226b153363463",
+      "observations_explained": 1,
+      "status": "REJECTED"
+    },
+    {
+      "exceptions_required": 0,
+      "expression": {
+        "expression": "THRESHOLD_CONJUNCTION",
+        "left": "CONTEXT",
+        "left_threshold": 0,
+        "right": "LOAD",
+        "right_threshold": 0,
+        "scale": 6
+      },
+      "frontier_id": "FRONTIER-61f8fdad98a19231",
+      "hypothesis_id": "HYPOTHESIS-fdac8412c51d5ea0",
+      "observations_explained": 1,
+      "status": "REJECTED"
+    },
+    {
+      "exceptions_required": 0,
+      "expression": {
+        "expression": "THRESHOLD_CONJUNCTION",
+        "left": "CONTEXT",
+        "left_threshold": 0,
+        "right": "LOAD",
+        "right_threshold": 1,
+        "scale": 6
+      },
+      "frontier_id": "FRONTIER-61f8fdad98a19231",
+      "hypothesis_id": "HYPOTHESIS-32a9000862fb81fc",
+      "observations_explained": 1,
+      "status": "REJECTED"
+    },
+    {
+      "exceptions_required": 0,
+      "expression": {
+        "expression": "THRESHOLD_CONJUNCTION",
+        "left": "CONTEXT",
+        "left_threshold": 0,
+        "right": "LOAD",
+        "right_threshold": 2,
+        "scale": 6
+      },
+      "frontier_id": "FRONTIER-61f8fdad98a19231",
+      "hypothesis_id": "HYPOTHESIS-7ee802c668d1213d",
+      "observations_explained": 1,
+      "status": "REJECTED"
+    },
+    {
+      "exceptions_required": 0,
+      "expression": {
+        "expression": "THRESHOLD_CONJUNCTION",
+        "left": "CONTEXT",
+        "left_threshold": 0,
+        "right": "PHASE",
+        "right_threshold": 0,
+        "scale": 6
+      },
+      "frontier_id": "FRONTIER-61f8fdad98a19231",
+      "hypothesis_id": "HYPOTHESIS-e55fb681d52422b7",
+      "observations_explained": 1,
+      "status": "REJECTED"
+    },
+    {
+      "exceptions_required": 0,
+      "expression": {
+        "expression": "THRESHOLD_CONJUNCTION",
+        "left": "CATALYST",
+        "left_threshold": 0,
+        "right": "LOAD",
+        "right_threshold": 0,
+        "scale": 6
+      },
+      "frontier_id": "FRONTIER-61f8fdad98a19231",
+      "hypothesis_id": "HYPOTHESIS-32d9c94c6386480b",
+      "observations_explained": 1,
+      "status": "RETAINED"
+    },
+    {
+      "exceptions_required": 0,
+      "expression": {
+        "expression": "THRESHOLD_CONJUNCTION",
+        "left": "CATALYST",
+        "left_threshold": 0,
+        "right": "LOAD",
+        "right_threshold": 1,
+        "scale": 6
+      },
+      "frontier_id": "FRONTIER-61f8fdad98a19231",
+      "hypothesis_id": "HYPOTHESIS-c0de556b575d6481",
+      "observations_explained": 1,
+      "status": "PROMOTED"
+    },
+    {
+      "exceptions_required": 0,
+      "expression": {
+        "expression": "THRESHOLD_CONJUNCTION",
+        "left": "CATALYST",
+        "left_threshold": 0,
+        "right": "LOAD",
+        "right_threshold": 2,
+        "scale": 6
+      },
+      "frontier_id": "FRONTIER-61f8fdad98a19231",
+      "hypothesis_id": "HYPOTHESIS-cbaf4c2969907d37",
+      "observations_explained": 1,
+      "status": "RETAINED"
+    },
+    {
+      "exceptions_required": 0,
+      "expression": {
+        "expression": "THRESHOLD_CONJUNCTION",
+        "left": "CATALYST",
+        "left_threshold": 0,
+        "right": "PHASE",
+        "right_threshold": 0,
+        "scale": 6
+      },
+      "frontier_id": "FRONTIER-61f8fdad98a19231",
+      "hypothesis_id": "HYPOTHESIS-948face8a9433cdf",
+      "observations_explained": 1,
+      "status": "REJECTED"
+    },
+    {
+      "exceptions_required": 0,
+      "expression": {
+        "expression": "THRESHOLD_CONJUNCTION",
+        "left": "LOAD",
+        "left_threshold": 0,
+        "right": "PHASE",
+        "right_threshold": 0,
+        "scale": 6
+      },
+      "frontier_id": "FRONTIER-61f8fdad98a19231",
+      "hypothesis_id": "HYPOTHESIS-1d1d55d3c835fa15",
+      "observations_explained": 1,
+      "status": "REJECTED"
+    },
+    {
+      "exceptions_required": 0,
+      "expression": {
+        "expression": "THRESHOLD_CONJUNCTION",
+        "left": "LOAD",
+        "left_threshold": 1,
+        "right": "PHASE",
+        "right_threshold": 0,
+        "scale": 6
+      },
+      "frontier_id": "FRONTIER-61f8fdad98a19231",
+      "hypothesis_id": "HYPOTHESIS-cf2c2da88184b59d",
+      "observations_explained": 1,
+      "status": "REJECTED"
+    },
+    {
+      "exceptions_required": 0,
+      "expression": {
+        "expression": "THRESHOLD_CONJUNCTION",
+        "left": "LOAD",
+        "left_threshold": 2,
+        "right": "PHASE",
+        "right_threshold": 0,
+        "scale": 6
+      },
+      "frontier_id": "FRONTIER-61f8fdad98a19231",
+      "hypothesis_id": "HYPOTHESIS-73e37e00962cbb80",
+      "observations_explained": 1,
+      "status": "REJECTED"
+    },
+    {
+      "exceptions_required": 0,
+      "expression": {
+        "expression": "STOCHASTIC_RESIDUAL"
+      },
+      "frontier_id": "FRONTIER-61f8fdad98a19231",
+      "hypothesis_id": "HYPOTHESIS-2523bed9e0b67b14",
+      "observations_explained": 1,
+      "status": "RETAINED"
+    }
+  ]
+}

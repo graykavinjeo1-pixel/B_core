@@ -1,0 +1,24 @@
+{
+  "HUMAN_RESEARCH_QUESTION_SELECTION_EVENTS": 0,
+  "NATURAL_LANGUAGE_IS_RESEARCH_QUESTION_AUTHORITY": false,
+  "questions": [
+    {
+      "frontier_id": "FRONTIER-221486c1222764a5",
+      "natural_language_is_authority": false,
+      "question_id": "QUESTION-a0da2378823b3b02",
+      "residual_case_ids": [
+        5947744752361524628
+      ],
+      "semantic_objective": "DISCRIMINATE_EXPLANATIONS_FOR_PERSISTENT_WORLD_MODEL_RESIDUAL"
+    },
+    {
+      "frontier_id": "FRONTIER-61f8fdad98a19231",
+      "natural_language_is_authority": false,
+      "question_id": "QUESTION-4eae283c180a6c3c",
+      "residual_case_ids": [
+        13733693412775407011
+      ],
+      "semantic_objective": "DISCRIMINATE_EXPLANATIONS_FOR_PERSISTENT_WORLD_MODEL_RESIDUAL"
+    }
+  ]
+}

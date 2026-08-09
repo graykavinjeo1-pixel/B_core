@@ -1,0 +1,152 @@
+{
+  "ARTIFACT_COUNT": 29,
+  "CAMPAIGN_ID": "SEM36-AUTONOMOUS-EPISTEMIC-FRONTIER-DISCOVERY-0001",
+  "artifacts": [
+    {
+      "bytes": 460,
+      "path": "reports/sem36/SEM36_REPORT.md",
+      "sha256": "f86efec21a6f6c1de8e7dd04844b220e6cc88c6b423347b877a9b068d9ec3af8"
+    },
+    {
+      "bytes": 1121280,
+      "path": "reports/sem36/artifacts/frozen/sem36-verify.exe",
+      "sha256": "e2c437cedd19968177105b60891c9c34baf4d5fb1a179acd2ca212e6656d0cd8"
+    },
+    {
+      "bytes": 1572,
+      "path": "reports/sem36/autonomous_method_research.json",
+      "sha256": "923a3f212f74640465767e36ad890f59bddff0e9b1d0021d9988b96f19e0273b"
+    },
+    {
+      "bytes": 7507,
+      "path": "reports/sem36/baseline_gap.json",
+      "sha256": "7a439f07b68cc3f5655e8926560565c077e3b0f981237cf3a8ee3fa02023021e"
+    },
+    {
+      "bytes": 298,
+      "path": "reports/sem36/clean_reconstruction.json",
+      "sha256": "afb537ff2d38b7d1ffd12b03d879ea445f2da5cfad00e0f4182f12a8f687eed3"
+    },
+    {
+      "bytes": 601,
+      "path": "reports/sem36/development_research_receipt.json",
+      "sha256": "94b524c4f0115fa13878fc8c8d67ecbdcc42642bb15c7fc7b83bff900cfdd304"
+    },
+    {
+      "bytes": 203,
+      "path": "reports/sem36/discovery_chain.json",
+      "sha256": "e077fa3c25ffab445b08d404751200e2773464d7df78e74e94d7385da0d9821e"
+    },
+    {
+      "bytes": 27015,
+      "path": "reports/sem36/experiment_ledger.json",
+      "sha256": "d5a47a371f057b252f953642fe43e82855523ffd8457e4672044390ceace4b05"
+    },
+    {
+      "bytes": 9864,
+      "path": "reports/sem36/final_baseline.json",
+      "sha256": "073e86496d5f959486f97384263944fe04ed64f75c7f447b3b6983028197329a"
+    },
+    {
+      "bytes": 3891,
+      "path": "reports/sem36/final_freeze.json",
+      "sha256": "db39f4aa93e4fe609b4be2c543996472c5569bf30790f737500394964c12fe52"
+    },
+    {
+      "bytes": 548275,
+      "path": "reports/sem36/final_raw_arms.json",
+      "sha256": "c07ab5a41c2470128b0f5c41eb9c48b7e8278c9590e1e757a4c95239862b7b60"
+    },
+    {
+      "bytes": 588,
+      "path": "reports/sem36/final_regression.json",
+      "sha256": "19d2f3613308217364f98d5eef1c16fcb77890f28db48dc771310e9fe15d0489"
+    },
+    {
+      "bytes": 655,
+      "path": "reports/sem36/final_world_manifest.json",
+      "sha256": "0887c011d91ddf94bb8efb9149312ad37d9f63dfbbfc65d3237370f2ce896d75"
+    },
+    {
+      "bytes": 4866,
+      "path": "reports/sem36/frontier_selection_evidence.json",
+      "sha256": "27cb5ebe910608bc6406abe52999cbb97ff9bc1d4d7606a172058b17e84ab967"
+    },
+    {
+      "bytes": 13463,
+      "path": "reports/sem36/hypothesis_ledger.json",
+      "sha256": "b414eaf3108cc573af0bc032c1a09e15e860ec83b459b2685406e9fa89db4b98"
+    },
+    {
+      "bytes": 396,
+      "path": "reports/sem36/information_efficiency.json",
+      "sha256": "a5ac6e3403435ca0326627659133d03d0ac06eb34aa182347fac52e4bf84a1a6"
+    },
+    {
+      "bytes": 1797,
+      "path": "reports/sem36/mechanism_discovery_evidence.json",
+      "sha256": "016250d3e9af6bda7ca9462d2976731d0c55ae03ab743e74a0e488d820412526"
+    },
+    {
+      "bytes": 183,
+      "path": "reports/sem36/novel_prediction_evidence.json",
+      "sha256": "a494da6f3409aaad31e3680eb239576353bfc7301e719987cf51d3e1f15576cb"
+    },
+    {
+      "bytes": 2201,
+      "path": "reports/sem36/numeric_authority_manifest.json",
+      "sha256": "326082170e6d4fe21d1a7e9171c395ec8a80526f873d05543b2db3dcaf04a57c"
+    },
+    {
+      "bytes": 247,
+      "path": "reports/sem36/numeric_transport_evidence.json",
+      "sha256": "3c42afa69b37a59353a0da0db9e59a0cc245d527098339ef85a0c5733528566a"
+    },
+    {
+      "bytes": 969,
+      "path": "reports/sem36/p0_pre_research_freeze.json",
+      "sha256": "4543ac6cb74b0c38ff3f6d89477071a35d43e2b8ad6cf2126e91250b4e698202"
+    },
+    {
+      "bytes": 1831,
+      "path": "reports/sem36/prediction_freeze_ordering.json",
+      "sha256": "12bc8140423cf7f5db6a3a76b0bdbadc0de358d3477bcf3065cbdbb80341fe3f"
+    },
+    {
+      "bytes": 601,
+      "path": "reports/sem36/primary_acceptance.json",
+      "sha256": "69f740309c6adfaf39aa1bf1b4e4dc54e129f0118c98dc1d7b15b3437f29b0ac"
+    },
+    {
+      "bytes": 13603,
+      "path": "reports/sem36/required_ablations.json",
+      "sha256": "44c7a031e553e2cbb4631c3e709d41c0207b5c33f1ce7b9ebf624c2b16425810"
+    },
+    {
+      "bytes": 767,
+      "path": "reports/sem36/scientific_question_ledger.json",
+      "sha256": "32c348689d079d256a8e06307e179f11fb14b30757fa8d79ee3427634fdcfffa"
+    },
+    {
+      "bytes": 224,
+      "path": "reports/sem36/secondary_acceptance.json",
+      "sha256": "abcd16bfce74d7b3c038f6152357d4e7477414717843ae7b02363863d41f94ed"
+    },
+    {
+      "bytes": 3314,
+      "path": "reports/sem36/sem36_final_report.json",
+      "sha256": "08016608995a53cdffc9c5b19bf01b2f59d544108bd1025c9939b7457a0284b7"
+    },
+    {
+      "bytes": 301,
+      "path": "reports/sem36/transfer_counterfactual_evidence.json",
+      "sha256": "43cd33982b3c92ee569f6e3229b89c51baec95aeaa62cbcb1728d9239025c54c"
+    },
+    {
+      "bytes": 3545,
+      "path": "reports/sem36/world_model_gap_memory.json",
+      "sha256": "c7c8640d38a34456789f1a0b93889457bb9f39f61d498f80b35d4b7918c721ba"
+    }
+  ],
+  "schema_version": "SEM36_ARTIFACT_MANIFEST_1"
+}

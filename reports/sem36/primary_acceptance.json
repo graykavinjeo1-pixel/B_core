@@ -1,0 +1,19 @@
+{
+  "sem36_status": "PASS",
+  "disposition": "VERIFIED_AUTONOMOUS_EPISTEMIC_FRONTIER_SCIENTIFIC_DISCOVERY",
+  "level_a_pass": true,
+  "level_b_pass": true,
+  "level_c_pass": true,
+  "level_d_pass": true,
+  "level_e_pass": true,
+  "level_f_pass": true,
+  "level_g_pass": true,
+  "level_h_pass": true,
+  "epistemic_frontier_selection_ablation_pass": true,
+  "scientific_intervention_ablation_pass": true,
+  "competing_hypothesis_ablation_pass": true,
+  "discovered_mechanism_memory_ablation_pass": true,
+  "negative_scientific_memory_ablation_pass": true,
+  "invariants_pass": true,
+  "violations": []
+}
