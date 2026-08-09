@@ -31,6 +31,7 @@ pub mod sem3;
 pub mod sem30;
 pub mod sem31;
 pub mod sem32;
+pub mod sem32_r1;
 pub mod sem4;
 pub mod sem5;
 pub mod sem6;

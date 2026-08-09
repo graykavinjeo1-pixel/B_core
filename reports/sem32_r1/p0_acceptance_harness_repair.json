@@ -1,0 +1,11 @@
+{
+  "acceptance_false_pass_events": 0,
+  "acceptance_harness_diff": "GREATER_THAN_ZERO",
+  "current_engine_sha256": "68ee47d9275221eb58e0a374252c5859d5a53a19371127992e7bda95acf9f644",
+  "level_a_through_j_mapping_corrected": true,
+  "orchestration_diff": "GREATER_THAN_ZERO",
+  "p0_sealed": true,
+  "phase": "P0",
+  "predecessor_engine_sha256": "68ee47d9275221eb58e0a374252c5859d5a53a19371127992e7bda95acf9f644",
+  "reasoning_engine_diff_in_p0": 0
+}

@@ -1,0 +1,7 @@
+{
+  "budget_is_research_semantic_input": false,
+  "campaign_budget_contract_pass": true,
+  "configured_hard_ceiling": 4096,
+  "configured_max_autonomous_research_epochs": 4096,
+  "requested_max_autonomous_research_epochs": 4096
+}

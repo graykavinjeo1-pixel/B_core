@@ -1,0 +1,82 @@
+{
+  "acceptance_false_pass_events": 0,
+  "negative_topology_canary": {
+    "levels": [
+      true,
+      false,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "sem32_r1_pass": false
+  },
+  "per_level_negative_canaries": [
+    {
+      "level": "A",
+      "level_pass": false,
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "level": "B",
+      "level_pass": false,
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "level": "C",
+      "level_pass": false,
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "level": "D",
+      "level_pass": false,
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "level": "E",
+      "level_pass": false,
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "level": "F",
+      "level_pass": false,
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "level": "G",
+      "level_pass": false,
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "level": "H",
+      "level_pass": false,
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "level": "I",
+      "level_pass": false,
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "level": "J",
+      "level_pass": false,
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    }
+  ],
+  "primary_secondary_acceptance_diff": 0,
+  "raw_field_acceptance_authority": true
+}

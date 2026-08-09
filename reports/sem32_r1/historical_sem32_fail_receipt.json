@@ -1,0 +1,8 @@
+{
+  "canonical_internal_commit": "3b65aac653f42ea756a8ad59f8132ef369fe9430",
+  "corrected_sem32_commit": "4a1040a3110d66ef5562c752afa84457c0ffd243",
+  "dominant_boundary": "RELATIONAL_DYNAMICS_LIMIT",
+  "historical_reports_immutable": true,
+  "historical_sem32_status": "FAIL",
+  "novel_relation_topology_transfer_pass": false
+}
