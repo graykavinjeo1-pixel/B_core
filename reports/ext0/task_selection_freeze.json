@@ -1,0 +1,15 @@
+{
+  "selection_frozen_before_task_content_exposure": true,
+  "selection_rule": "uint64_be(first_16_hex(SHA256(instruction_sha256 + LF + predecessor_commit + LF + eligible_pool_sha256 + LF + 'EXT0_DETERMINISTIC_ONE_TASK_V1' + LF))) modulo eligible_count over lexicographically sorted eligible instance IDs",
+  "instruction_sha256": "69b16e7b06f4f33c222f7bf3ccdaea08f384e081712d0815a74e4ec2ac3a301e",
+  "predecessor_commit": "9dbebdd280db2c292bff4865bcf8f1d8c39c335d",
+  "eligible_task_pool_sha256": "9aa5de87fd475c3a2763ba15daeb2a2a2f874557391edc303a887574cb1b8bcf",
+  "selection_material_sha256": "61a3ed416e1f9106bb8926143fe989d1798a5d282ab1259c21af8c2d2405c688",
+  "selection_uint64": 7035727908159066374,
+  "selection_index_zero_based": 2,
+  "selected_task_id": "django__django-13449",
+  "selected_image_reference": "swebench/sweb.eval.x86_64.django_1776_django-13449:latest",
+  "selected_image_id_short": "0d6bc13f6bed",
+  "manual_ease_selection": false,
+  "task_specific_adapter_changes_after_selection": false
+}

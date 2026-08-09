@@ -11,6 +11,9 @@
   },
   "canonical_network_policy": "DENY",
   "gold_solution_policy": "FORBIDDEN",
-  "selection_status": "NOT_YET_PERFORMED",
+  "selection_status": "FROZEN",
+  "selection_material_sha256": "61a3ed416e1f9106bb8926143fe989d1798a5d282ab1259c21af8c2d2405c688",
+  "selected_task_id": "django__django-13449",
+  "selected_image_id_short": "0d6bc13f6bed",
   "task_content_exposure_status": "NOT_YET_EXPOSED"
 }

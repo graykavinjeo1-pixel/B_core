@@ -1,0 +1,24 @@
+{
+  "pool_definition": "intersection of local official SWE-bench Verified task images and the locally sealed Verified dataset snapshot, excluding any instance identifier found in the exact sealed B_Core predecessor tree",
+  "dataset_snapshot": "c104f840cc67f8b6eec6f759ebc8b2693d585d4a",
+  "gold_columns_read": false,
+  "task_content_read_during_pool_construction": false,
+  "eligible_count": 12,
+  "eligible_instance_ids_sorted": [
+    "astropy__astropy-7166",
+    "django__django-12406",
+    "django__django-13449",
+    "django__django-7530",
+    "matplotlib__matplotlib-24570",
+    "mwaskom__seaborn-3187",
+    "pallets__flask-5014",
+    "psf__requests-5414",
+    "pydata__xarray-6938",
+    "pylint-dev__pylint-7277",
+    "pytest-dev__pytest-10081",
+    "scikit-learn__scikit-learn-25747"
+  ],
+  "freshness_scan_root": "exact sealed predecessor materialized in the isolated EXT-0 worktree",
+  "freshness_disqualifications": 0,
+  "eligible_task_pool_sha256": "9aa5de87fd475c3a2763ba15daeb2a2a2f874557391edc303a887574cb1b8bcf"
+}
