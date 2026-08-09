@@ -329,7 +329,7 @@ def restore_checkpoint() -> tuple[int, dict[str, Any], list[int], list[int], lis
         int(last["campaign_epoch"]),
         last["result"]["resulting_state"],
         [int(record["result"]["resulting_state"]["director"]["frontier_scale"]) for record in records],
-        [int(record["result"]["difficulty_probe"]["local_execution_time_ns"]) for record in records],
+        [int(record["result"]["difficulty_probe"]["wall_time_ns"]) for record in records],
         [int(record["result"].get("fixed_resource_frontier", 0)) for record in records],
     )
 
