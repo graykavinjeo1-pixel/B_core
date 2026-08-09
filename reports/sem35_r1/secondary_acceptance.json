@@ -1,0 +1,16 @@
+{
+  "evaluation": {
+    "invariants_pass": true,
+    "level_a_pass": true,
+    "level_b_pass": true,
+    "level_c_pass": true,
+    "level_d_pass": true,
+    "level_e_pass": true,
+    "level_f_pass": true,
+    "level_g_pass": true,
+    "level_h_pass": true,
+    "sem35_r1_status": "PASS",
+    "violations": []
+  },
+  "implementation": "SEM35_R1_INDEPENDENT_SECONDARY_RAW_FIELD_ACCEPTANCE"
+}

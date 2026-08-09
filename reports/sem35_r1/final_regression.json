@@ -1,0 +1,22 @@
+{
+  "schema_version": "SEM35_R1_FINAL_REGRESSION_1",
+  "PASS": true,
+  "commit_under_test": "d7194eab48e8a519827c698df8f059994bc52f8e",
+  "command": "cargo test --workspace --all-targets --locked",
+  "workspace_tests_passed": 278,
+  "workspace_tests_failed": 0,
+  "sem35_r1_tests_passed": 14,
+  "sem35_r1_tests_failed": 0,
+  "clippy_command": "cargo clippy --workspace --all-targets --locked",
+  "clippy_exit_code": 0,
+  "historical_toolchain_baseline_warning_signatures": 22,
+  "historical_toolchain_baseline_class": "RUST_1_96_MANUAL_IS_MULTIPLE_OF",
+  "sem35_r1_path_warning_mentions": 0,
+  "new_clippy_warning_signatures_total": 0,
+  "goal_correctness_regressions": 0,
+  "reachability_regressions": 0,
+  "constraint_regressions": 0,
+  "uncertainty_regressions": 0,
+  "causal_world_model_regressions": 0,
+  "relational_generalization_regressions": 0
+}

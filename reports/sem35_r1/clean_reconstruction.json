@@ -1,0 +1,16 @@
+{
+  "schema_version": "SEM35_R1_CLEAN_RECONSTRUCTION_1",
+  "PASS": true,
+  "commit_under_test": "d7194eab48e8a519827c698df8f059994bc52f8e",
+  "warm_cache_used": false,
+  "clean_target": "D:\\B_Core_CLEAN_CANARY\\sem35-r1-d7194eab",
+  "test_command": "cargo test --workspace --all-targets --locked",
+  "release_command": "cargo build --release -p semantic-reasoning --bin sem35-r1-verify --bin sem35-r1-run --locked",
+  "workspace_tests_passed": 278,
+  "workspace_tests_failed": 0,
+  "release_verifier_built": true,
+  "release_runner_built": true,
+  "local_dependency_closure_complete": true,
+  "toolchain": "rustc 1.96.0 (ac68faa20 2026-05-25)",
+  "temporary_clean_target_disposition": "DELETED_AFTER_RECEIPT"
+}

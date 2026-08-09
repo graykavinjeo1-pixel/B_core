@@ -1,0 +1,41 @@
+{
+  "AUTONOMOUS_EVENT_BOUNDARY_DISCOVERY_PRESENT": true,
+  "FIXED_ACTION_REPEAT_IS_TEMPORAL_MEANING_AUTHORITY": false,
+  "FIXED_CHUNK_LENGTH_IS_TEMPORAL_BOUNDARY_AUTHORITY": false,
+  "HUMAN_EVENT_BOUNDARY_SELECTION_EVENTS": 0,
+  "SURPRISE_IS_TEMPORAL_BOUNDARY_AUTHORITY": false,
+  "precision_milli": [
+    1000,
+    1000,
+    1000,
+    1000,
+    1000,
+    1000,
+    1000,
+    1000,
+    1000,
+    1000,
+    1000,
+    1000,
+    1000,
+    1000,
+    1000
+  ],
+  "recall_milli": [
+    1000,
+    1000,
+    1000,
+    1000,
+    1000,
+    1000,
+    1000,
+    1000,
+    1000,
+    1000,
+    1000,
+    1000,
+    1000,
+    1000,
+    1000
+  ]
+}

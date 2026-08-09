@@ -1,0 +1,20 @@
+{
+  "contract_version": "SEM35_R1_EXACT_NUMERIC_TEMPORAL_VERIFIER_1",
+  "set": "FINAL_HOLDOUT",
+  "seed": 12118749330625887043,
+  "task_count": 15,
+  "task_fingerprint": "9101c7ae79d3425ef886660d19b7a7dd9977c58e53166fe1ac2cd466c32cd493",
+  "task_id_commitment": "35ad256e2cd45221b6e9266bacd3c23df6c7f961ba263e3077c9e5da379d0b2c",
+  "historical_sem35_final_fingerprint": "74a1504fbaa75610bf47723f3e1e4ed4ce244da94251d1174ae971efef8c4b87",
+  "historical_sem35_final_holdout_reuse": 0,
+  "old_new_holdout_overlap": 0,
+  "fresh_temporal_holdout": true,
+  "unseen_durations_present": true,
+  "unseen_entity_ids_present": true,
+  "unseen_relation_topology_present": true,
+  "delayed_effects_present": true,
+  "interruptible_processes_present": true,
+  "same_process_different_duration_present": true,
+  "novel_process_composition_present": true,
+  "long_primitive_horizon_present": true
+}

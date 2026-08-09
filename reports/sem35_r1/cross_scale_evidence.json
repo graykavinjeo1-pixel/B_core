@@ -1,0 +1,22 @@
+{
+  "CROSS_SCALE_ERROR_SEQUENCE": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "CROSS_SCALE_SEMANTIC_EQUIVALENCE_PASS": true,
+  "TEMPORAL_PROCESS_DECOMPRESSION_AVAILABLE": true,
+  "UNREALIZABLE_TEMPORAL_MACRO_ACCEPTS": 0
+}
