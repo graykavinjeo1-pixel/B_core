@@ -1,0 +1,32 @@
+{
+  "adapter_id": "B_CORE_EXT0_GENERIC_EXTERNAL_PROBLEM_ADAPTER_V1",
+  "frozen_before_task_exposure": true,
+  "problem_classes": [
+    "REPOSITORY_REPAIR"
+  ],
+  "accepted_evidence": {
+    "issue_text": "opaque UTF-8 text hashed on ingestion",
+    "repository": "base revision plus artifact digest inventory",
+    "execution": "command digest, observation digest, exit code, and stable check identifiers only",
+    "constraints": "canonicalized key/value strings"
+  },
+  "canonicalization": [
+    "sort artifact records by path",
+    "sort observations by command digest then observation digest",
+    "sort and deduplicate constraints",
+    "reject duplicate paths and traversal components",
+    "reject malformed SHA-256 digests"
+  ],
+  "authority_boundaries": {
+    "source_language_is_reasoning_authority": false,
+    "hot_reasoning_path_natural_language_authority": false,
+    "gold_patch_access": false,
+    "hidden_test_access": false,
+    "task_specific_adapter_branches": 0
+  },
+  "current_core_bridge": {
+    "status": "UNSUPPORTED",
+    "reason": "CURRENT_GOAL_IR_SUPPORTS_CHECKED_INTEGER_SEQUENCE_TRANSFORMS_ONLY",
+    "meaning": "The adapter preserves external evidence without pretending that the current numeric GoalIR represents repository repair."
+  }
+}

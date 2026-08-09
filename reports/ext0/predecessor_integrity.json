@@ -1,0 +1,12 @@
+{
+  "requested_predecessor_commit": "9dbebdd280db2c292bff4865bcf8f1d8c39c335d",
+  "actual_initial_head": "9dbebdd280db2c292bff4865bcf8f1d8c39c335d",
+  "source": "independently sealed SEM-27-R2 descendant",
+  "separate_worktree": "D:/B_Core_CAMPAIGNS/ext0-fresh-one-task-transfer",
+  "separate_branch": "codex/ext0-fresh-one-task-transfer",
+  "remote_push_allowed": false,
+  "live_campaign_state_reads": 0,
+  "live_campaign_artifact_reads": 0,
+  "live_campaign_mutations": 0,
+  "status": "PASS"
+}

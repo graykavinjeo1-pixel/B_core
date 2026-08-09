@@ -1,0 +1,16 @@
+{
+  "adapter_id": "B_CORE_EXT0_GENERIC_EXTERNAL_PROBLEM_ADAPTER_V1",
+  "frozen_at_utc": "2026-08-09T05:15:08.0576936Z",
+  "frozen_before_task_selection": true,
+  "frozen_before_task_content_exposure": true,
+  "predecessor_commit": "9dbebdd280db2c292bff4865bcf8f1d8c39c335d",
+  "instruction_sha256": "69b16e7b06f4f33c222f7bf3ccdaea08f384e081712d0815a74e4ec2ac3a301e",
+  "adapter_source_manifest_sha256": "5cffd0e39bbb6817eb5f82b16ff75e268c69980f0d2021af64a3a9fc8105fd8a",
+  "adapter_binary_sha256": "ce1db1d7eeab5a36d311b3a0917520c6bc53713bb6891c636486049baf1274a5",
+  "release_binary_location": "DISPOSABLE_WARM_CACHE/release/external-problem-adapter.exe",
+  "task_specific_adapter_branches": 0,
+  "post_exposure_adapter_edits_allowed": false,
+  "gold_patch_access": false,
+  "hidden_test_access": false,
+  "network_used": false
+}

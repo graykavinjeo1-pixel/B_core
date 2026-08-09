@@ -1,0 +1,16 @@
+{
+  "campaign": "EXT-0",
+  "instruction_sha256": "69b16e7b06f4f33c222f7bf3ccdaea08f384e081712d0815a74e4ec2ac3a301e",
+  "predecessor_commit": "9dbebdd280db2c292bff4865bcf8f1d8c39c335d",
+  "fixture_authority": {
+    "dataset": "princeton-nlp/SWE-bench_Verified",
+    "dataset_snapshot": "c104f840cc67f8b6eec6f759ebc8b2693d585d4a",
+    "harness_version": "4.1.0",
+    "harness_source_commit": "f7bbbb2e90de424fd55c7d2ae72172a299f494fa",
+    "local_dependency_authority_receipt": "D:/SYNAPSE_EVALUATION_DEPENDENCY_AUTHORITY/receipts/SWEBENCH_VERIFIED_DEPENDENCY_AUTHORITY_V1.json"
+  },
+  "canonical_network_policy": "DENY",
+  "gold_solution_policy": "FORBIDDEN",
+  "selection_status": "NOT_YET_PERFORMED",
+  "task_content_exposure_status": "NOT_YET_EXPOSED"
+}
