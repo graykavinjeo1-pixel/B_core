@@ -1,0 +1,1452 @@
+{
+  "final_world": {
+    "active_relations": [
+      {
+        "asserted_at": 20,
+        "confidence_bps": 8600,
+        "provenance": {
+          "batch_code": 798641170,
+          "source_code": 12789
+        },
+        "relation": {
+          "directionality": 2,
+          "domain_code": 29392,
+          "topology_code": 5095
+        },
+        "role": "INFERRED",
+        "source": 15330388742527497308,
+        "target": 12519676740534067363
+      }
+    ],
+    "current_states": [
+      {
+        "asserted_at": 15,
+        "channel": {
+          "axis_code": 22792,
+          "domain_code": 3483
+        },
+        "confidence_bps": 10000,
+        "entity": 10043939365147514662,
+        "provenance": {
+          "batch_code": 3344143393,
+          "source_code": 6404
+        },
+        "role": "OBSERVED",
+        "value_code": 8
+      },
+      {
+        "asserted_at": 17,
+        "channel": {
+          "axis_code": 23346,
+          "domain_code": 20045
+        },
+        "confidence_bps": 6200,
+        "entity": 12519676740534067363,
+        "provenance": {
+          "batch_code": 4167459246,
+          "source_code": 16636
+        },
+        "role": "PREDICTED",
+        "value_code": 4
+      },
+      {
+        "asserted_at": 16,
+        "channel": {
+          "axis_code": 26174,
+          "domain_code": 10929
+        },
+        "confidence_bps": 8800,
+        "entity": 15330388742527497308,
+        "provenance": {
+          "batch_code": 1020576631,
+          "source_code": 9157
+        },
+        "role": "INFERRED",
+        "value_code": 1
+      },
+      {
+        "asserted_at": 18,
+        "channel": {
+          "axis_code": 30808,
+          "domain_code": 28516
+        },
+        "confidence_bps": 5100,
+        "entity": 17806126115212853721,
+        "provenance": {
+          "batch_code": 2725348666,
+          "source_code": 25720
+        },
+        "role": "HYPOTHESIZED",
+        "value_code": 2
+      }
+    ],
+    "entities": [
+      {
+        "entity": 1946779089085769045,
+        "exceptions": [],
+        "first_seen": 5,
+        "last_seen": 5,
+        "properties": [],
+        "schema": {
+          "domain_code": 24346,
+          "structural_axes": [
+            28822
+          ]
+        }
+      },
+      {
+        "entity": 7233227363997139852,
+        "exceptions": [],
+        "first_seen": 6,
+        "last_seen": 6,
+        "properties": [],
+        "schema": {
+          "domain_code": 24346,
+          "structural_axes": [
+            28822
+          ]
+        }
+      },
+      {
+        "entity": 10043939365147514662,
+        "exceptions": [],
+        "first_seen": 1,
+        "last_seen": 36,
+        "properties": [
+          {
+            "atom": {
+              "axis_code": 12443,
+              "namespace_code": 6735,
+              "value_code": 4132956630
+            },
+            "form": "PRIMITIVE"
+          },
+          {
+            "atom": {
+              "axis_code": 13790,
+              "namespace_code": 7298,
+              "value_code": 206006825
+            },
+            "form": "PRIMITIVE"
+          },
+          {
+            "atom": {
+              "axis_code": 14336,
+              "namespace_code": 7844,
+              "value_code": 1687317579
+            },
+            "form": "PRIMITIVE"
+          },
+          {
+            "atom": {
+              "axis_code": 5287,
+              "namespace_code": 32363,
+              "value_code": 4038446578
+            },
+            "form": "PRIMITIVE"
+          }
+        ],
+        "schema": {
+          "domain_code": 25959,
+          "structural_axes": [
+            925,
+            16100
+          ]
+        }
+      },
+      {
+        "entity": 12519676740534067363,
+        "exceptions": [
+          [
+            {
+              "atom": {
+                "axis_code": 5287,
+                "namespace_code": 32363,
+                "value_code": 4038446578
+              },
+              "form": "PRIMITIVE"
+            },
+            {
+              "atom": {
+                "axis_code": 26986,
+                "namespace_code": 12318,
+                "value_code": 4132605861
+              },
+              "form": "PRIMITIVE"
+            }
+          ]
+        ],
+        "first_seen": 3,
+        "last_seen": 38,
+        "properties": [
+          {
+            "atom": {
+              "axis_code": 13790,
+              "namespace_code": 7298,
+              "value_code": 206006825
+            },
+            "form": "PRIMITIVE"
+          },
+          {
+            "atom": {
+              "axis_code": 2467,
+              "namespace_code": 21335,
+              "value_code": 1513041662
+            },
+            "form": "PRIMITIVE"
+          },
+          {
+            "atom": {
+              "axis_code": 30030,
+              "namespace_code": 23794,
+              "value_code": 2381622169
+            },
+            "form": "PRIMITIVE"
+          }
+        ],
+        "schema": {
+          "domain_code": 25959,
+          "structural_axes": [
+            925,
+            16100
+          ]
+        }
+      },
+      {
+        "entity": 15330388742527497308,
+        "exceptions": [],
+        "first_seen": 2,
+        "last_seen": 37,
+        "properties": [
+          {
+            "atom": {
+              "axis_code": 26764,
+              "namespace_code": 12864,
+              "value_code": 3734864327
+            },
+            "form": "PRIMITIVE"
+          },
+          {
+            "atom": {
+              "axis_code": 21527,
+              "namespace_code": 16347,
+              "value_code": 2418216290
+            },
+            "form": "PRIMITIVE"
+          },
+          {
+            "atom": {
+              "axis_code": 5287,
+              "namespace_code": 32363,
+              "value_code": 4038446578
+            },
+            "form": "PRIMITIVE"
+          },
+          {
+            "components": [
+              {
+                "axis_code": 13790,
+                "namespace_code": 7298,
+                "value_code": 206006825
+              },
+              {
+                "axis_code": 5287,
+                "namespace_code": 32363,
+                "value_code": 4038446578
+              }
+            ],
+            "form": "COMPOSITION"
+          }
+        ],
+        "schema": {
+          "domain_code": 25959,
+          "structural_axes": [
+            925,
+            16100
+          ]
+        }
+      },
+      {
+        "entity": 17806126115212853721,
+        "exceptions": [],
+        "first_seen": 4,
+        "last_seen": 39,
+        "properties": [
+          {
+            "atom": {
+              "axis_code": 8596,
+              "namespace_code": 2888,
+              "value_code": 1903544047
+            },
+            "form": "PRIMITIVE"
+          },
+          {
+            "atom": {
+              "axis_code": 26986,
+              "namespace_code": 12318,
+              "value_code": 4132605861
+            },
+            "form": "PRIMITIVE"
+          },
+          {
+            "atom": {
+              "axis_code": 4708,
+              "namespace_code": 32024,
+              "value_code": 176572607
+            },
+            "form": "PRIMITIVE"
+          }
+        ],
+        "schema": {
+          "domain_code": 25959,
+          "structural_axes": [
+            925,
+            16100
+          ]
+        }
+      }
+    ],
+    "property_nodes": [
+      {
+        "atom": {
+          "axis_code": 8596,
+          "namespace_code": 2888,
+          "value_code": 1903544047
+        },
+        "form": "PRIMITIVE"
+      },
+      {
+        "atom": {
+          "axis_code": 12443,
+          "namespace_code": 6735,
+          "value_code": 4132956630
+        },
+        "form": "PRIMITIVE"
+      },
+      {
+        "atom": {
+          "axis_code": 13790,
+          "namespace_code": 7298,
+          "value_code": 206006825
+        },
+        "form": "PRIMITIVE"
+      },
+      {
+        "atom": {
+          "axis_code": 14336,
+          "namespace_code": 7844,
+          "value_code": 1687317579
+        },
+        "form": "PRIMITIVE"
+      },
+      {
+        "atom": {
+          "axis_code": 26986,
+          "namespace_code": 12318,
+          "value_code": 4132605861
+        },
+        "form": "PRIMITIVE"
+      },
+      {
+        "atom": {
+          "axis_code": 26764,
+          "namespace_code": 12864,
+          "value_code": 3734864327
+        },
+        "form": "PRIMITIVE"
+      },
+      {
+        "atom": {
+          "axis_code": 21527,
+          "namespace_code": 16347,
+          "value_code": 2418216290
+        },
+        "form": "PRIMITIVE"
+      },
+      {
+        "atom": {
+          "axis_code": 2467,
+          "namespace_code": 21335,
+          "value_code": 1513041662
+        },
+        "form": "PRIMITIVE"
+      },
+      {
+        "atom": {
+          "axis_code": 30030,
+          "namespace_code": 23794,
+          "value_code": 2381622169
+        },
+        "form": "PRIMITIVE"
+      },
+      {
+        "atom": {
+          "axis_code": 4708,
+          "namespace_code": 32024,
+          "value_code": 176572607
+        },
+        "form": "PRIMITIVE"
+      },
+      {
+        "atom": {
+          "axis_code": 5287,
+          "namespace_code": 32363,
+          "value_code": 4038446578
+        },
+        "form": "PRIMITIVE"
+      },
+      {
+        "components": [
+          {
+            "axis_code": 13790,
+            "namespace_code": 7298,
+            "value_code": 206006825
+          },
+          {
+            "axis_code": 5287,
+            "namespace_code": 32363,
+            "value_code": 4038446578
+          }
+        ],
+        "form": "COMPOSITION"
+      }
+    ],
+    "relation_types": [
+      {
+        "directionality": 1,
+        "domain_code": 19416,
+        "topology_code": 26639
+      },
+      {
+        "directionality": 2,
+        "domain_code": 29392,
+        "topology_code": 5095
+      }
+    ],
+    "state_channels": [
+      {
+        "axis_code": 22792,
+        "domain_code": 3483
+      },
+      {
+        "axis_code": 26174,
+        "domain_code": 10929
+      },
+      {
+        "axis_code": 23346,
+        "domain_code": 20045
+      },
+      {
+        "axis_code": 30808,
+        "domain_code": 28516
+      }
+    ]
+  },
+  "history_witnesses": [
+    {
+      "after_event_count": 6,
+      "world": {
+        "active_relations": [],
+        "current_states": [],
+        "entities": [
+          {
+            "entity": 1946779089085769045,
+            "exceptions": [],
+            "first_seen": 5,
+            "last_seen": 5,
+            "properties": [],
+            "schema": {
+              "domain_code": 24346,
+              "structural_axes": [
+                28822
+              ]
+            }
+          },
+          {
+            "entity": 7233227363997139852,
+            "exceptions": [],
+            "first_seen": 6,
+            "last_seen": 6,
+            "properties": [],
+            "schema": {
+              "domain_code": 24346,
+              "structural_axes": [
+                28822
+              ]
+            }
+          },
+          {
+            "entity": 10043939365147514662,
+            "exceptions": [],
+            "first_seen": 1,
+            "last_seen": 1,
+            "properties": [],
+            "schema": {
+              "domain_code": 25959,
+              "structural_axes": [
+                925,
+                16100
+              ]
+            }
+          },
+          {
+            "entity": 12519676740534067363,
+            "exceptions": [],
+            "first_seen": 3,
+            "last_seen": 3,
+            "properties": [],
+            "schema": {
+              "domain_code": 25959,
+              "structural_axes": [
+                925,
+                16100
+              ]
+            }
+          },
+          {
+            "entity": 15330388742527497308,
+            "exceptions": [],
+            "first_seen": 2,
+            "last_seen": 2,
+            "properties": [],
+            "schema": {
+              "domain_code": 25959,
+              "structural_axes": [
+                925,
+                16100
+              ]
+            }
+          },
+          {
+            "entity": 17806126115212853721,
+            "exceptions": [],
+            "first_seen": 4,
+            "last_seen": 4,
+            "properties": [],
+            "schema": {
+              "domain_code": 25959,
+              "structural_axes": [
+                925,
+                16100
+              ]
+            }
+          }
+        ],
+        "property_nodes": [],
+        "relation_types": [],
+        "state_channels": []
+      }
+    },
+    {
+      "after_event_count": 24,
+      "world": {
+        "active_relations": [
+          {
+            "asserted_at": 20,
+            "confidence_bps": 8600,
+            "provenance": {
+              "batch_code": 798641170,
+              "source_code": 12789
+            },
+            "relation": {
+              "directionality": 2,
+              "domain_code": 29392,
+              "topology_code": 5095
+            },
+            "role": "INFERRED",
+            "source": 15330388742527497308,
+            "target": 12519676740534067363
+          }
+        ],
+        "current_states": [
+          {
+            "asserted_at": 15,
+            "channel": {
+              "axis_code": 22792,
+              "domain_code": 3483
+            },
+            "confidence_bps": 10000,
+            "entity": 10043939365147514662,
+            "provenance": {
+              "batch_code": 3344143393,
+              "source_code": 6404
+            },
+            "role": "OBSERVED",
+            "value_code": 8
+          },
+          {
+            "asserted_at": 17,
+            "channel": {
+              "axis_code": 23346,
+              "domain_code": 20045
+            },
+            "confidence_bps": 6200,
+            "entity": 12519676740534067363,
+            "provenance": {
+              "batch_code": 4167459246,
+              "source_code": 16636
+            },
+            "role": "PREDICTED",
+            "value_code": 4
+          },
+          {
+            "asserted_at": 16,
+            "channel": {
+              "axis_code": 26174,
+              "domain_code": 10929
+            },
+            "confidence_bps": 8800,
+            "entity": 15330388742527497308,
+            "provenance": {
+              "batch_code": 1020576631,
+              "source_code": 9157
+            },
+            "role": "INFERRED",
+            "value_code": 1
+          },
+          {
+            "asserted_at": 18,
+            "channel": {
+              "axis_code": 30808,
+              "domain_code": 28516
+            },
+            "confidence_bps": 5100,
+            "entity": 17806126115212853721,
+            "provenance": {
+              "batch_code": 2725348666,
+              "source_code": 25720
+            },
+            "role": "HYPOTHESIZED",
+            "value_code": 2
+          }
+        ],
+        "entities": [
+          {
+            "entity": 1946779089085769045,
+            "exceptions": [],
+            "first_seen": 5,
+            "last_seen": 5,
+            "properties": [],
+            "schema": {
+              "domain_code": 24346,
+              "structural_axes": [
+                28822
+              ]
+            }
+          },
+          {
+            "entity": 7233227363997139852,
+            "exceptions": [],
+            "first_seen": 6,
+            "last_seen": 6,
+            "properties": [],
+            "schema": {
+              "domain_code": 24346,
+              "structural_axes": [
+                28822
+              ]
+            }
+          },
+          {
+            "entity": 10043939365147514662,
+            "exceptions": [],
+            "first_seen": 1,
+            "last_seen": 15,
+            "properties": [
+              {
+                "atom": {
+                  "axis_code": 13790,
+                  "namespace_code": 7298,
+                  "value_code": 206006825
+                },
+                "form": "PRIMITIVE"
+              },
+              {
+                "atom": {
+                  "axis_code": 5287,
+                  "namespace_code": 32363,
+                  "value_code": 4038446578
+                },
+                "form": "PRIMITIVE"
+              }
+            ],
+            "schema": {
+              "domain_code": 25959,
+              "structural_axes": [
+                925,
+                16100
+              ]
+            }
+          },
+          {
+            "entity": 12519676740534067363,
+            "exceptions": [
+              [
+                {
+                  "atom": {
+                    "axis_code": 5287,
+                    "namespace_code": 32363,
+                    "value_code": 4038446578
+                  },
+                  "form": "PRIMITIVE"
+                },
+                {
+                  "atom": {
+                    "axis_code": 26986,
+                    "namespace_code": 12318,
+                    "value_code": 4132605861
+                  },
+                  "form": "PRIMITIVE"
+                }
+              ]
+            ],
+            "first_seen": 3,
+            "last_seen": 23,
+            "properties": [
+              {
+                "atom": {
+                  "axis_code": 13790,
+                  "namespace_code": 7298,
+                  "value_code": 206006825
+                },
+                "form": "PRIMITIVE"
+              }
+            ],
+            "schema": {
+              "domain_code": 25959,
+              "structural_axes": [
+                925,
+                16100
+              ]
+            }
+          },
+          {
+            "entity": 15330388742527497308,
+            "exceptions": [],
+            "first_seen": 2,
+            "last_seen": 16,
+            "properties": [
+              {
+                "atom": {
+                  "axis_code": 5287,
+                  "namespace_code": 32363,
+                  "value_code": 4038446578
+                },
+                "form": "PRIMITIVE"
+              },
+              {
+                "components": [
+                  {
+                    "axis_code": 13790,
+                    "namespace_code": 7298,
+                    "value_code": 206006825
+                  },
+                  {
+                    "axis_code": 5287,
+                    "namespace_code": 32363,
+                    "value_code": 4038446578
+                  }
+                ],
+                "form": "COMPOSITION"
+              }
+            ],
+            "schema": {
+              "domain_code": 25959,
+              "structural_axes": [
+                925,
+                16100
+              ]
+            }
+          },
+          {
+            "entity": 17806126115212853721,
+            "exceptions": [],
+            "first_seen": 4,
+            "last_seen": 22,
+            "properties": [
+              {
+                "atom": {
+                  "axis_code": 26986,
+                  "namespace_code": 12318,
+                  "value_code": 4132605861
+                },
+                "form": "PRIMITIVE"
+              }
+            ],
+            "schema": {
+              "domain_code": 25959,
+              "structural_axes": [
+                925,
+                16100
+              ]
+            }
+          }
+        ],
+        "property_nodes": [
+          {
+            "atom": {
+              "axis_code": 13790,
+              "namespace_code": 7298,
+              "value_code": 206006825
+            },
+            "form": "PRIMITIVE"
+          },
+          {
+            "atom": {
+              "axis_code": 26986,
+              "namespace_code": 12318,
+              "value_code": 4132605861
+            },
+            "form": "PRIMITIVE"
+          },
+          {
+            "atom": {
+              "axis_code": 5287,
+              "namespace_code": 32363,
+              "value_code": 4038446578
+            },
+            "form": "PRIMITIVE"
+          },
+          {
+            "components": [
+              {
+                "axis_code": 13790,
+                "namespace_code": 7298,
+                "value_code": 206006825
+              },
+              {
+                "axis_code": 5287,
+                "namespace_code": 32363,
+                "value_code": 4038446578
+              }
+            ],
+            "form": "COMPOSITION"
+          }
+        ],
+        "relation_types": [
+          {
+            "directionality": 1,
+            "domain_code": 19416,
+            "topology_code": 26639
+          },
+          {
+            "directionality": 2,
+            "domain_code": 29392,
+            "topology_code": 5095
+          }
+        ],
+        "state_channels": [
+          {
+            "axis_code": 22792,
+            "domain_code": 3483
+          },
+          {
+            "axis_code": 26174,
+            "domain_code": 10929
+          },
+          {
+            "axis_code": 23346,
+            "domain_code": 20045
+          },
+          {
+            "axis_code": 30808,
+            "domain_code": 28516
+          }
+        ]
+      }
+    },
+    {
+      "after_event_count": 40,
+      "world": {
+        "active_relations": [
+          {
+            "asserted_at": 20,
+            "confidence_bps": 8600,
+            "provenance": {
+              "batch_code": 798641170,
+              "source_code": 12789
+            },
+            "relation": {
+              "directionality": 2,
+              "domain_code": 29392,
+              "topology_code": 5095
+            },
+            "role": "INFERRED",
+            "source": 15330388742527497308,
+            "target": 12519676740534067363
+          }
+        ],
+        "current_states": [
+          {
+            "asserted_at": 15,
+            "channel": {
+              "axis_code": 22792,
+              "domain_code": 3483
+            },
+            "confidence_bps": 10000,
+            "entity": 10043939365147514662,
+            "provenance": {
+              "batch_code": 3344143393,
+              "source_code": 6404
+            },
+            "role": "OBSERVED",
+            "value_code": 8
+          },
+          {
+            "asserted_at": 17,
+            "channel": {
+              "axis_code": 23346,
+              "domain_code": 20045
+            },
+            "confidence_bps": 6200,
+            "entity": 12519676740534067363,
+            "provenance": {
+              "batch_code": 4167459246,
+              "source_code": 16636
+            },
+            "role": "PREDICTED",
+            "value_code": 4
+          },
+          {
+            "asserted_at": 16,
+            "channel": {
+              "axis_code": 26174,
+              "domain_code": 10929
+            },
+            "confidence_bps": 8800,
+            "entity": 15330388742527497308,
+            "provenance": {
+              "batch_code": 1020576631,
+              "source_code": 9157
+            },
+            "role": "INFERRED",
+            "value_code": 1
+          },
+          {
+            "asserted_at": 18,
+            "channel": {
+              "axis_code": 30808,
+              "domain_code": 28516
+            },
+            "confidence_bps": 5100,
+            "entity": 17806126115212853721,
+            "provenance": {
+              "batch_code": 2725348666,
+              "source_code": 25720
+            },
+            "role": "HYPOTHESIZED",
+            "value_code": 2
+          }
+        ],
+        "entities": [
+          {
+            "entity": 1946779089085769045,
+            "exceptions": [],
+            "first_seen": 5,
+            "last_seen": 5,
+            "properties": [],
+            "schema": {
+              "domain_code": 24346,
+              "structural_axes": [
+                28822
+              ]
+            }
+          },
+          {
+            "entity": 7233227363997139852,
+            "exceptions": [],
+            "first_seen": 6,
+            "last_seen": 6,
+            "properties": [],
+            "schema": {
+              "domain_code": 24346,
+              "structural_axes": [
+                28822
+              ]
+            }
+          },
+          {
+            "entity": 10043939365147514662,
+            "exceptions": [],
+            "first_seen": 1,
+            "last_seen": 36,
+            "properties": [
+              {
+                "atom": {
+                  "axis_code": 12443,
+                  "namespace_code": 6735,
+                  "value_code": 4132956630
+                },
+                "form": "PRIMITIVE"
+              },
+              {
+                "atom": {
+                  "axis_code": 13790,
+                  "namespace_code": 7298,
+                  "value_code": 206006825
+                },
+                "form": "PRIMITIVE"
+              },
+              {
+                "atom": {
+                  "axis_code": 14336,
+                  "namespace_code": 7844,
+                  "value_code": 1687317579
+                },
+                "form": "PRIMITIVE"
+              },
+              {
+                "atom": {
+                  "axis_code": 5287,
+                  "namespace_code": 32363,
+                  "value_code": 4038446578
+                },
+                "form": "PRIMITIVE"
+              }
+            ],
+            "schema": {
+              "domain_code": 25959,
+              "structural_axes": [
+                925,
+                16100
+              ]
+            }
+          },
+          {
+            "entity": 12519676740534067363,
+            "exceptions": [
+              [
+                {
+                  "atom": {
+                    "axis_code": 5287,
+                    "namespace_code": 32363,
+                    "value_code": 4038446578
+                  },
+                  "form": "PRIMITIVE"
+                },
+                {
+                  "atom": {
+                    "axis_code": 26986,
+                    "namespace_code": 12318,
+                    "value_code": 4132605861
+                  },
+                  "form": "PRIMITIVE"
+                }
+              ]
+            ],
+            "first_seen": 3,
+            "last_seen": 38,
+            "properties": [
+              {
+                "atom": {
+                  "axis_code": 13790,
+                  "namespace_code": 7298,
+                  "value_code": 206006825
+                },
+                "form": "PRIMITIVE"
+              },
+              {
+                "atom": {
+                  "axis_code": 2467,
+                  "namespace_code": 21335,
+                  "value_code": 1513041662
+                },
+                "form": "PRIMITIVE"
+              },
+              {
+                "atom": {
+                  "axis_code": 30030,
+                  "namespace_code": 23794,
+                  "value_code": 2381622169
+                },
+                "form": "PRIMITIVE"
+              }
+            ],
+            "schema": {
+              "domain_code": 25959,
+              "structural_axes": [
+                925,
+                16100
+              ]
+            }
+          },
+          {
+            "entity": 15330388742527497308,
+            "exceptions": [],
+            "first_seen": 2,
+            "last_seen": 37,
+            "properties": [
+              {
+                "atom": {
+                  "axis_code": 26764,
+                  "namespace_code": 12864,
+                  "value_code": 3734864327
+                },
+                "form": "PRIMITIVE"
+              },
+              {
+                "atom": {
+                  "axis_code": 21527,
+                  "namespace_code": 16347,
+                  "value_code": 2418216290
+                },
+                "form": "PRIMITIVE"
+              },
+              {
+                "atom": {
+                  "axis_code": 5287,
+                  "namespace_code": 32363,
+                  "value_code": 4038446578
+                },
+                "form": "PRIMITIVE"
+              },
+              {
+                "components": [
+                  {
+                    "axis_code": 13790,
+                    "namespace_code": 7298,
+                    "value_code": 206006825
+                  },
+                  {
+                    "axis_code": 5287,
+                    "namespace_code": 32363,
+                    "value_code": 4038446578
+                  }
+                ],
+                "form": "COMPOSITION"
+              }
+            ],
+            "schema": {
+              "domain_code": 25959,
+              "structural_axes": [
+                925,
+                16100
+              ]
+            }
+          },
+          {
+            "entity": 17806126115212853721,
+            "exceptions": [],
+            "first_seen": 4,
+            "last_seen": 39,
+            "properties": [
+              {
+                "atom": {
+                  "axis_code": 8596,
+                  "namespace_code": 2888,
+                  "value_code": 1903544047
+                },
+                "form": "PRIMITIVE"
+              },
+              {
+                "atom": {
+                  "axis_code": 26986,
+                  "namespace_code": 12318,
+                  "value_code": 4132605861
+                },
+                "form": "PRIMITIVE"
+              },
+              {
+                "atom": {
+                  "axis_code": 4708,
+                  "namespace_code": 32024,
+                  "value_code": 176572607
+                },
+                "form": "PRIMITIVE"
+              }
+            ],
+            "schema": {
+              "domain_code": 25959,
+              "structural_axes": [
+                925,
+                16100
+              ]
+            }
+          }
+        ],
+        "property_nodes": [
+          {
+            "atom": {
+              "axis_code": 8596,
+              "namespace_code": 2888,
+              "value_code": 1903544047
+            },
+            "form": "PRIMITIVE"
+          },
+          {
+            "atom": {
+              "axis_code": 12443,
+              "namespace_code": 6735,
+              "value_code": 4132956630
+            },
+            "form": "PRIMITIVE"
+          },
+          {
+            "atom": {
+              "axis_code": 13790,
+              "namespace_code": 7298,
+              "value_code": 206006825
+            },
+            "form": "PRIMITIVE"
+          },
+          {
+            "atom": {
+              "axis_code": 14336,
+              "namespace_code": 7844,
+              "value_code": 1687317579
+            },
+            "form": "PRIMITIVE"
+          },
+          {
+            "atom": {
+              "axis_code": 26986,
+              "namespace_code": 12318,
+              "value_code": 4132605861
+            },
+            "form": "PRIMITIVE"
+          },
+          {
+            "atom": {
+              "axis_code": 26764,
+              "namespace_code": 12864,
+              "value_code": 3734864327
+            },
+            "form": "PRIMITIVE"
+          },
+          {
+            "atom": {
+              "axis_code": 21527,
+              "namespace_code": 16347,
+              "value_code": 2418216290
+            },
+            "form": "PRIMITIVE"
+          },
+          {
+            "atom": {
+              "axis_code": 2467,
+              "namespace_code": 21335,
+              "value_code": 1513041662
+            },
+            "form": "PRIMITIVE"
+          },
+          {
+            "atom": {
+              "axis_code": 30030,
+              "namespace_code": 23794,
+              "value_code": 2381622169
+            },
+            "form": "PRIMITIVE"
+          },
+          {
+            "atom": {
+              "axis_code": 4708,
+              "namespace_code": 32024,
+              "value_code": 176572607
+            },
+            "form": "PRIMITIVE"
+          },
+          {
+            "atom": {
+              "axis_code": 5287,
+              "namespace_code": 32363,
+              "value_code": 4038446578
+            },
+            "form": "PRIMITIVE"
+          },
+          {
+            "components": [
+              {
+                "axis_code": 13790,
+                "namespace_code": 7298,
+                "value_code": 206006825
+              },
+              {
+                "axis_code": 5287,
+                "namespace_code": 32363,
+                "value_code": 4038446578
+              }
+            ],
+            "form": "COMPOSITION"
+          }
+        ],
+        "relation_types": [
+          {
+            "directionality": 1,
+            "domain_code": 19416,
+            "topology_code": 26639
+          },
+          {
+            "directionality": 2,
+            "domain_code": 29392,
+            "topology_code": 5095
+          }
+        ],
+        "state_channels": [
+          {
+            "axis_code": 22792,
+            "domain_code": 3483
+          },
+          {
+            "axis_code": 26174,
+            "domain_code": 10929
+          },
+          {
+            "axis_code": 23346,
+            "domain_code": 20045
+          },
+          {
+            "axis_code": 30808,
+            "domain_code": 28516
+          }
+        ]
+      }
+    }
+  ],
+  "instrumentation": {
+    "active_entities_sequence": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "active_semantic_nodes_sequence": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      3,
+      1,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      0,
+      2,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "canonical_property_payload_instances": 12,
+    "conflict_evidence_records": 1,
+    "duplicated_shared_semantic_payload_events": 0,
+    "expected_world_state_lookups": 0,
+    "full_entity_rewrite_events": 0,
+    "full_world_snapshot_copies": 0,
+    "future_world_event_leakage_events": 0,
+    "natural_language_is_canonical_world_memory": false,
+    "natural_language_is_world_reasoning_authority": false,
+    "new_semantic_bytes_per_experience_sequence": [
+      235,
+      186,
+      186,
+      186,
+      232,
+      184,
+      493,
+      287,
+      495,
+      294,
+      650,
+      501,
+      261,
+      479,
+      335,
+      330,
+      482,
+      485,
+      487,
+      585,
+      586,
+      272,
+      261,
+      377,
+      310,
+      311,
+      311,
+      310,
+      309,
+      311,
+      310,
+      309,
+      499,
+      500,
+      498,
+      496,
+      499,
+      500,
+      503,
+      499
+    ],
+    "node_id_is_semantic_payload": false,
+    "persistent_property_transient_state_confusion_events": 0,
+    "total_semantic_memory_bytes": 15525,
+    "uncertain_assertions_collapsed_to_certain": 0,
+    "unnecessary_schema_fork_events": 0,
+    "unresolved_silent_world_contradictions": 0,
+    "world_delta_events": 40,
+    "world_gold_graph_reads": 0,
+    "world_memory_full_scans": 0,
+    "world_memory_natural_language_bytes_on_hot_path": 0
+  }
+}

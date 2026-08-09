@@ -1,0 +1,7 @@
+{
+  "autonomous_research_epochs_executed": 40,
+  "budget_influenced_semantic_decisions": false,
+  "hard_ceiling": 4096,
+  "sem32_started": false,
+  "stop_reason": "ALL_REQUIRED_PERSISTENT_WORLD_EVIDENCE_COMPLETE"
+}

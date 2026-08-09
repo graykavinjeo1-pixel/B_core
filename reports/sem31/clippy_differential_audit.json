@@ -1,0 +1,12 @@
+{
+    "schema_version":  "SEM31_CLIPPY_DIFFERENTIAL_AUDIT_1",
+    "status":  "PASS",
+    "workspace_clippy_exit_code":  0,
+    "baseline_warning_signature_count":  1,
+    "current_warning_signature_count":  1,
+    "new_warning_signatures_total":  0,
+    "sem31_path_warning_occurrences":  0,
+    "inherited_warning_signature":  "clippy::manual_is_multiple_of",
+    "inherited_warning_occurrences":  22,
+    "sem31_final_report_claim_matches":  true
+}

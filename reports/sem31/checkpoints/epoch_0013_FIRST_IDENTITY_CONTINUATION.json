@@ -1,0 +1,9 @@
+{
+  "canonical_total_events": 40,
+  "checkpoint_alters_research_semantics": false,
+  "checkpoint_is_canonical_world_snapshot": false,
+  "epoch": 13,
+  "event": "FIRST_IDENTITY_CONTINUATION",
+  "world_delta_count": 13,
+  "world_event_count": 13
+}

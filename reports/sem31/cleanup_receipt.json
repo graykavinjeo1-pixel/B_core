@@ -1,0 +1,11 @@
+{
+    "schema_version":  "SEM31_CLEANUP_RECEIPT_1",
+    "status":  "PASS",
+    "temporary_clean_rebuild_target_removed":  true,
+    "temporary_diagnostic_junk_removed":  true,
+    "canonical_artifacts_preserved":  true,
+    "reusable_warm_cache_preserved":  true,
+    "cache_policy":  "CURRENT_ACTIVE_CACHE_PLUS_IMMEDIATE_PREDECESSOR_CACHE_ONLY",
+    "obsolete_predecessor_worktree_cleanup":  "DEFERRED_UNTIL_SEM31_COMMIT_SEALED",
+    "scientific_results_recoverable_from_git":  true
+}

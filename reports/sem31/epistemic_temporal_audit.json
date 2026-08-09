@@ -1,0 +1,12 @@
+{
+  "contradiction_evidence_events": 1,
+  "hypothesized_assertions": 1,
+  "inferred_assertions": 2,
+  "observed_assertions": 30,
+  "passed": true,
+  "persistent_property_transient_state_confusion_events": 0,
+  "predicted_assertions": 1,
+  "uncertain_assertions_collapsed_to_certain": 0,
+  "uncertain_assertions_total": 24,
+  "unresolved_silent_world_contradictions": 0
+}

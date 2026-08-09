@@ -1,0 +1,218 @@
+{
+    "schema_version":  "SEM31_ARTIFACT_MANIFEST_1",
+    "campaign_id":  "SEM31-PERSISTENT-SEMANTIC-WORLD-STATE-0001",
+    "sealed_predecessor_commit":  "e7b3539a89e4870fd7461bc9ca6d65fbc93abd9c",
+    "artifact_count":  42,
+    "artifacts":  [
+                      {
+                          "path":  "Cargo.lock",
+                          "sha256":  "a25438f5b5aa4a4f6732e95f885a68d6dd5e51a9bc1463eece6ace12c4d953a5",
+                          "bytes":  5417
+                      },
+                      {
+                          "path":  "crates/semantic-reasoning/Cargo.toml",
+                          "sha256":  "185d115147361e42fdf9c79966253f18c8d0f6a60e94f8230e1fcd386b09c1be",
+                          "bytes":  3722
+                      },
+                      {
+                          "path":  "crates/semantic-reasoning/src/lib.rs",
+                          "sha256":  "fcff2dcb8ad9217bf703b7a2ab7c188f8f8bc3b58691dd50b439f6b063659142",
+                          "bytes":  1236
+                      },
+                      {
+                          "path":  "crates/semantic-reasoning/src/sem31/engine.rs",
+                          "sha256":  "692f9bd160d7a8151339c991ca5b03c1edef4c96fc5651b6d87820503a4d80c1",
+                          "bytes":  43880
+                      },
+                      {
+                          "path":  "crates/semantic-reasoning/src/sem31/mod.rs",
+                          "sha256":  "b1766db086ca7c1ef3208f77aa6957e37897074c221ee3fe556e6e673a1201f3",
+                          "bytes":  32214
+                      },
+                      {
+                          "path":  "crates/semantic-reasoning/src/sem31/verifier.rs",
+                          "sha256":  "c3d3cbe11041a0c39eb7f72ea5d4908194091a25b0c162fe788454d81928ef0a",
+                          "bytes":  29988
+                      },
+                      {
+                          "path":  "crates/semantic-reasoning/src/sem31_main.rs",
+                          "sha256":  "b0fffc93451094358728aa3b8366934fed8b1da9f5709a9450e217d1bf2dac2c",
+                          "bytes":  891
+                      },
+                      {
+                          "path":  "crates/semantic-reasoning/src/sem31_verify_main.rs",
+                          "sha256":  "1c32bd5ae07d883e3620025c354bda7d422ba1ff8bce7f8f48ccda397e9ad642",
+                          "bytes":  866
+                      },
+                      {
+                          "path":  "reports/sem31/artifacts/frozen_verifier/sem31-verify.exe",
+                          "sha256":  "20031b5ea7a3f9031680c286c2dc70834ac8090800b91519e1439ce86a1294e2",
+                          "bytes":  645632
+                      },
+                      {
+                          "path":  "reports/sem31/artifacts/frozen_verifier/verifier.rs",
+                          "sha256":  "c3d3cbe11041a0c39eb7f72ea5d4908194091a25b0c162fe788454d81928ef0a",
+                          "bytes":  29988
+                      },
+                      {
+                          "path":  "reports/sem31/campaign_freeze.json",
+                          "sha256":  "b5e2f659f1d640515cf6d3b1b8cfd07de04bed1332609c5b73f27bba59859e8e",
+                          "bytes":  1770
+                      },
+                      {
+                          "path":  "reports/sem31/campaign_startup_accounting.json",
+                          "sha256":  "dcaa3ad8bb1bb92a3795b0da86a2abc1d881b4fb336d011dcd1a6093f73dcf68",
+                          "bytes":  450
+                      },
+                      {
+                          "path":  "reports/sem31/causal_ablations.json",
+                          "sha256":  "cafd48a633bda480dfe70aa95b7a2af7dee8b6a89a94cfe24a80c76aad4f3bcb",
+                          "bytes":  491
+                      },
+                      {
+                          "path":  "reports/sem31/checkpoints/epoch_0001_FIRST_PERSISTENT_ENTITY.json",
+                          "sha256":  "aaa10c248270659e2c2dabab7d1e988ae64bf9866d7fb406dfd12d5b9bf77103",
+                          "bytes":  238
+                      },
+                      {
+                          "path":  "reports/sem31/checkpoints/epoch_0007_FIRST_NEW_SEMANTIC_PROPERTY_GENESIS.json",
+                          "sha256":  "afcdc3cdad78b5867a5b9016ac4f7785cfe6c2b1081832f0493e871784d73e06",
+                          "bytes":  250
+                      },
+                      {
+                          "path":  "reports/sem31/checkpoints/epoch_0010_FIRST_PROPERTY_EDGE_UPDATE.json",
+                          "sha256":  "3de7315788e2717f6a70d030b6b4d1b3f8611eff7c52a22adf37225be7f98c36",
+                          "bytes":  244
+                      },
+                      {
+                          "path":  "reports/sem31/checkpoints/epoch_0013_FIRST_IDENTITY_CONTINUATION.json",
+                          "sha256":  "13984016f7fdb2ed91472abff78bdb66dae6247a3372e3a76d4faa649f976739",
+                          "bytes":  245
+                      },
+                      {
+                          "path":  "reports/sem31/checkpoints/epoch_0014_FIRST_STATE_DELTA.json",
+                          "sha256":  "c5a342953ac457670f30d9a3386005665d4938b87e20f8396773ca3fcdc1c07b",
+                          "bytes":  235
+                      },
+                      {
+                          "path":  "reports/sem31/checkpoints/epoch_0015_FIRST_UNCERTAINTY_PRESERVING_UPDATE.json",
+                          "sha256":  "f2a8c8ec26722c64719daeb317dc91c693b144049bfaa2c001135c8c83d133b8",
+                          "bytes":  253
+                      },
+                      {
+                          "path":  "reports/sem31/checkpoints/epoch_0024_FIRST_RESIDUAL_DRIVEN_EXCEPTION_GROWTH.json",
+                          "sha256":  "c0b519b2c890b116c82cd630d5f8b7c1fcdb539cd7e1cdfc3ed837b2575753ce",
+                          "bytes":  256
+                      },
+                      {
+                          "path":  "reports/sem31/checkpoints/epoch_0040_ALL_REQUIRED_WORLD_EVIDENCE_COMPLETE.json",
+                          "sha256":  "15406d6377bcbb7ab033921cb59f0336954f0f145a9571a26dc624dccd7e1134",
+                          "bytes":  254
+                      },
+                      {
+                          "path":  "reports/sem31/cleanup_receipt.json",
+                          "sha256":  "1e2e935aede5e3b0827c319bf68c945e36dadea5b9929cb4060dc5b391ddc589",
+                          "bytes":  495
+                      },
+                      {
+                          "path":  "reports/sem31/clippy_differential_audit.json",
+                          "sha256":  "7aaa311173ca7e7e0713175f62078b6dad2ac48cb660fc9c09ca1ba2268b1177",
+                          "bytes":  461
+                      },
+                      {
+                          "path":  "reports/sem31/epistemic_temporal_audit.json",
+                          "sha256":  "828cf803b94f9f6ec578df81076251de21e08460ee6a9175b74a5107e0a08af4",
+                          "bytes":  370
+                      },
+                      {
+                          "path":  "reports/sem31/human_intervention_audit.json",
+                          "sha256":  "3de78b994c4276d790cfe3468aabc415773ffb9cd1a6e594c5fcc04b6287788d",
+                          "bytes":  341
+                      },
+                      {
+                          "path":  "reports/sem31/identity_relation_state_audit.json",
+                          "sha256":  "ce334fe3615c1958a587c2731171efb3b7d1123674bc519249f499536f84caf9",
+                          "bytes":  340
+                      },
+                      {
+                          "path":  "reports/sem31/independent_world_verification.json",
+                          "sha256":  "9fc62fc4985e6ac81aff266354d95a75c0487c188e6e8e5801660abac8dcd798",
+                          "bytes":  1537
+                      },
+                      {
+                          "path":  "reports/sem31/integrity_audit.json",
+                          "sha256":  "17956b7b96f623f938c28752da70259319b13466314e9486ec69cddf8c39e1b6",
+                          "bytes":  479
+                      },
+                      {
+                          "path":  "reports/sem31/post_campaign_accounting.json",
+                          "sha256":  "4b5ef9c9dd3da32158682c4c14e21d5bcb7aa2263d7d49eba888f983321d30ad",
+                          "bytes":  214
+                      },
+                      {
+                          "path":  "reports/sem31/predecessor_integrity.json",
+                          "sha256":  "d86847c57c497e345f7140206e884561eb2c62b33386121b9de2060e50445d8c",
+                          "bytes":  533
+                      },
+                      {
+                          "path":  "reports/sem31/prestart_audit.json",
+                          "sha256":  "45dc3ba134bfdb274dc97fc220d387802f2753d87c94633b9bc254ae27377111",
+                          "bytes":  266
+                      },
+                      {
+                          "path":  "reports/sem31/raw_world_events.jsonl",
+                          "sha256":  "23972051b54f6d4b27c0dfb50993aa801af10b3e45e37578a3093ca21e52c5a8",
+                          "bytes":  11741
+                      },
+                      {
+                          "path":  "reports/sem31/reproducibility_receipt.json",
+                          "sha256":  "6b32fec0f1dcc89fd1fffd41d2c9747fe34e81fd0994c4eb5fad03e3a55bb3f5",
+                          "bytes":  742
+                      },
+                      {
+                          "path":  "reports/sem31/sem31_final_report.json",
+                          "sha256":  "84a910ec06fa311e07afd048136c10c957dac97a3099edb026c8cb4bb3c81228",
+                          "bytes":  3815
+                      },
+                      {
+                          "path":  "reports/sem31/SEM31_REPORT.md",
+                          "sha256":  "bcfde6eae812447d515da70ed101ebb6468b599639d174e6b2601d760bc95f51",
+                          "bytes":  678
+                      },
+                      {
+                          "path":  "reports/sem31/storage_scaling_canary.json",
+                          "sha256":  "267fbec9f3ddabacfe78a599c1cebbde05d4d653dd2a20b162421997af975585",
+                          "bytes":  275
+                      },
+                      {
+                          "path":  "reports/sem31/test_receipt.json",
+                          "sha256":  "6fe831a3c050432c04d0ee5b62448e42444b40f2a13e8a078c6173b7f7ecf8e4",
+                          "bytes":  433
+                      },
+                      {
+                          "path":  "reports/sem31/world_deltas.jsonl",
+                          "sha256":  "dc4205d64597524e25b0f8fe5a0d1a723f9ce247f461f5d4da0f82ef3e009e72",
+                          "bytes":  5590
+                      },
+                      {
+                          "path":  "reports/sem31/world_size_scaling_canary.json",
+                          "sha256":  "d753776991a58dc86e8feb7fe61382b206945e97250372646a2d5380eb05766c",
+                          "bytes":  1067
+                      },
+                      {
+                          "path":  "reports/sem31/world_submission.json",
+                          "sha256":  "c783d61ce936257a2c3720988d38a94c9669ba2bc15b8c83ca529059766536df",
+                          "bytes":  35065
+                      },
+                      {
+                          "path":  "research/sem31/ontology.json",
+                          "sha256":  "3dd8d730812b6917c743a16c0e26daf5bdbc6b82f2ce52f65350fbd24a1a4712",
+                          "bytes":  744
+                      },
+                      {
+                          "path":  "research/sem31/SEM31_INSTRUCTION.md",
+                          "sha256":  "c3abcc8def3d5394cb7c03341ffed99042bf42d3e1a46fc2aa33eb2d70cfb5f7",
+                          "bytes":  20575
+                      }
+                  ]
+}

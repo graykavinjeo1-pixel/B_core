@@ -1,0 +1,12 @@
+{
+    "schema_version":  "SEM31_TEST_RECEIPT_1",
+    "status":  "PASS",
+    "full_workspace_test_pass":  true,
+    "full_workspace_discovered_tests":  214,
+    "full_workspace_failed_tests":  0,
+    "sem31_targeted_tests":  3,
+    "sem31_targeted_failed_tests":  0,
+    "post_campaign_sem31_targeted_pass":  true,
+    "post_campaign_artifact_audit_pass":  true,
+    "source_hashes_unchanged_after_campaign_freeze":  true
+}

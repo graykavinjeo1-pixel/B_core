@@ -1,0 +1,10 @@
+{
+  "duplicated_semantics_bytes": 203704,
+  "novel_bytes_per_event": 499,
+  "novel_event_count": 8,
+  "redundant_bytes_per_event": 310,
+  "redundant_event_count": 8,
+  "shared_entity_count": 2048,
+  "shared_semantics_once_bytes": 17440,
+  "thin_binding_bytes_per_entity": 8
+}

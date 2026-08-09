@@ -1,0 +1,40 @@
+{
+  "canonical_reasoning_tracks_active_field": true,
+  "largest_world_entities": 100000,
+  "mechanically_inappropriate_sizes_skipped": [],
+  "points": [
+    {
+      "full_scan_ablation_touches": 51,
+      "persistent_bytes": 1200,
+      "result_equivalent": true,
+      "sparse_active_entities": 1,
+      "sparse_lookup_touches": 1,
+      "world_entities": 100
+    },
+    {
+      "full_scan_ablation_touches": 501,
+      "persistent_bytes": 12000,
+      "result_equivalent": true,
+      "sparse_active_entities": 1,
+      "sparse_lookup_touches": 1,
+      "world_entities": 1000
+    },
+    {
+      "full_scan_ablation_touches": 5001,
+      "persistent_bytes": 120000,
+      "result_equivalent": true,
+      "sparse_active_entities": 1,
+      "sparse_lookup_touches": 1,
+      "world_entities": 10000
+    },
+    {
+      "full_scan_ablation_touches": 50001,
+      "persistent_bytes": 1200000,
+      "result_equivalent": true,
+      "sparse_active_entities": 1,
+      "sparse_lookup_touches": 1,
+      "world_entities": 100000
+    }
+  ],
+  "world_memory_full_scans": 0
+}

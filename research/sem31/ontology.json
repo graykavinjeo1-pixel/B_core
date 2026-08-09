@@ -1,0 +1,21 @@
+{
+  "schema_version": "SEM31_MINIMAL_WORLD_ONTOLOGY_1",
+  "canonical_payload_is_language_free": true,
+  "node_id_is_semantic_payload": false,
+  "natural_language_is_canonical_world_memory": false,
+  "semantic_terms": {
+    "schema": ["domain_code", "structural_axes"],
+    "property": ["namespace_code", "axis_code", "value_code", "composition"],
+    "relation": ["domain_code", "topology_code", "directionality"],
+    "state_channel": ["domain_code", "axis_code"]
+  },
+  "epistemic_roles": [
+    "OBSERVED",
+    "INFERRED",
+    "PREDICTED",
+    "HYPOTHESIZED"
+  ],
+  "history_storage": "INITIAL_ANCHOR_PLUS_TYPED_DELTAS",
+  "primitive_policy": "REUSE_THEN_COMPOSE_THEN_VERIFIED_GENESIS",
+  "predefined_world_vocabulary_is_exhaustive": false
+}

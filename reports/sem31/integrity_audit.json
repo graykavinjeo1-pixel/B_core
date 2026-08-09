@@ -1,0 +1,13 @@
+{
+  "duplicated_shared_semantic_payload_events": 0,
+  "expected_world_state_lookups": 0,
+  "future_world_event_leakage_events": 0,
+  "natural_language_is_canonical_world_memory": false,
+  "natural_language_is_world_reasoning_authority": false,
+  "node_id_is_semantic_payload": false,
+  "passed": true,
+  "semantic_information_loss_events": 0,
+  "world_generator_is_success_authority": false,
+  "world_gold_graph_reads": 0,
+  "world_memory_natural_language_bytes_on_hot_path": 0
+}

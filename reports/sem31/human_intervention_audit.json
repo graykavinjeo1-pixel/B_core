@@ -1,0 +1,13 @@
+{
+  "external_llm_calls": 0,
+  "human_property_selection_events": 0,
+  "human_relation_selection_events": 0,
+  "human_repair_design_events": 0,
+  "human_state_selection_events": 0,
+  "human_world_ontology_design_events": 0,
+  "local_teacher_calls": 0,
+  "network_reads": 0,
+  "network_writes": 0,
+  "passed": true,
+  "remote_executions": 0
+}

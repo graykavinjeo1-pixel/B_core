@@ -1,0 +1,14 @@
+{
+  "full_scan_max_touches": 50001,
+  "residual_all_novel_bytes": 19109,
+  "residual_canonical_incremental_bytes": 15344,
+  "residual_information_equal": true,
+  "residual_learning_ablation_pass": true,
+  "shared_reuse_canonical_bytes": 17440,
+  "shared_reuse_capability_equal": true,
+  "shared_reuse_duplicated_bytes": 203704,
+  "shared_semantic_reuse_ablation_pass": true,
+  "sparse_max_touches": 1,
+  "sparse_result_equivalent": true,
+  "sparse_world_memory_routing_ablation_pass": true
+}

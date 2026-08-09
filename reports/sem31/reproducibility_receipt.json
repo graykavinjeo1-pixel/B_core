@@ -1,0 +1,15 @@
+{
+    "schema_version":  "SEM31_REPRODUCIBILITY_RECEIPT_1",
+    "status":  "PASS",
+    "warm_execution_pass":  true,
+    "clean_reconstruction_pass":  true,
+    "clean_reconstruction_offline":  true,
+    "clean_reconstruction_target_reused_warm_cache":  false,
+    "clean_runner_artifact_audit_pass":  true,
+    "clean_runner_sha256":  "38f70e5ec7ba04d012e060a060b6165813eba47611da7bfb15e152d011302107",
+    "clean_verifier_sha256":  "1ad4de560834d8d11b7537ea968188039f20e11f6365a1b4b2f6799756abcbdb",
+    "clean_target_removed":  true,
+    "sealed_commit_plus_documented_toolchain_plus_local_dependency_closure_sufficient":  true,
+    "warm_state_is_semantic_authority":  false,
+    "warm_state_is_research_authority":  false
+}

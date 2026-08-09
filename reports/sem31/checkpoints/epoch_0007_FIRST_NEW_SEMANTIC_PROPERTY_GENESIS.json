@@ -1,0 +1,9 @@
+{
+  "canonical_total_events": 40,
+  "checkpoint_alters_research_semantics": false,
+  "checkpoint_is_canonical_world_snapshot": false,
+  "epoch": 7,
+  "event": "FIRST_NEW_SEMANTIC_PROPERTY_GENESIS",
+  "world_delta_count": 7,
+  "world_event_count": 7
+}

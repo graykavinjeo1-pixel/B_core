@@ -1,0 +1,12 @@
+{
+  "false_entity_duplication_events": 0,
+  "false_entity_merge_events": 0,
+  "full_world_snapshot_copies": 0,
+  "historical_state_reconstruction_pass": true,
+  "identity_continuity_events": 2,
+  "passed": true,
+  "relation_delta_events": 3,
+  "world_relation_types_total": 2,
+  "world_relations_total": 1,
+  "world_state_events_total": 6
+}
