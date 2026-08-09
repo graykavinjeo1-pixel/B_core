@@ -1,0 +1,6 @@
+{
+  "autonomous_research_started": false,
+  "epoch": 0,
+  "event": "TEMPORAL_BASELINE_AND_ACCOUNTING_FROZEN",
+  "final_holdout_exposed": false
+}

@@ -1,0 +1,13 @@
+{
+  "baseline_long_horizon_work": 11241,
+  "baseline_planning_work": 12335,
+  "final_long_horizon_work": 4436,
+  "final_planning_work": 5011,
+  "frozen": true,
+  "name": "TEMPORAL_BASELINE_PLANNER",
+  "p0_semantic_behavior_diff": 0,
+  "schema_version": "SEM35_TEMPORAL_BASELINE_PLANNER_1",
+  "sem34_status": "PASS",
+  "sem34_subgoal_to_action_horizon_relation": "MECHANICALLY_RECHARACTERIZE_ON_SEM35_DEVELOPMENT",
+  "source": "SEALED_SEM34_PLANNER_AFTER_P0_STYLE_ONLY_REPAIR"
+}

@@ -1,0 +1,18 @@
+{
+  "counted_work": [
+    "boundary_detection",
+    "process_routing",
+    "process_applicability_checks",
+    "coarse_rollout",
+    "decompression",
+    "verification",
+    "primitive_reasoning"
+  ],
+  "frozen": true,
+  "schema_version": "SEM35_TEMPORAL_PLANNING_WORK_UNIT_1",
+  "separately_counted": [
+    "temporal_process_discovery_cost",
+    "temporal_process_verification_cost",
+    "temporal_process_promotion_cost"
+  ]
+}

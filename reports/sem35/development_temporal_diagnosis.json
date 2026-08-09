@@ -1,0 +1,40 @@
+{
+  "diagnosis": "TEMPORAL_ABSTRACTION_LIMIT:SUBGOAL_COUNT_TRACKS_PRIMITIVE_HORIZON",
+  "diagnosis_assumed": false,
+  "mechanically_localized": true,
+  "primitive_action_horizon_sequence": [
+    33,
+    39,
+    44,
+    51,
+    27,
+    37,
+    48,
+    56,
+    33,
+    39,
+    44,
+    51,
+    27,
+    37
+  ],
+  "schema_version": "SEM35_TEMPORAL_LIMIT_DIAGNOSIS_1",
+  "subgoal_count_sequence": [
+    33,
+    39,
+    44,
+    51,
+    27,
+    37,
+    48,
+    56,
+    33,
+    39,
+    44,
+    51,
+    27,
+    37
+  ],
+  "subgoal_equals_primitive_horizon_tasks": 14,
+  "tasks_total": 14
+}

@@ -1,0 +1,81 @@
+{
+  "schema_version": "SEM35_FAILED_ARTIFACT_MANIFEST_1",
+  "campaign_id": "SEM35-AUTONOMOUS-SEMANTIC-TEMPORAL-ABSTRACTION-0001",
+  "campaign_status": "FAIL",
+  "artifacts": [
+    {
+      "path": "reports\\sem35\\preflight_freeze.json",
+      "sha256": "359fd160ac53a92628c337655e5c09df3d9121673a9fd94ef48519e63c31b794",
+      "bytes": 2718
+    },
+    {
+      "path": "reports\\sem35\\post_exposure_transport_diagnosis.json",
+      "sha256": "4932f86364ae8cc5bff89d6c9f766db5197641f7f0ed1e8daf6de20137f16c44",
+      "bytes": 1102
+    },
+    {
+      "path": "reports\\sem35\\postmortem_replay_bundle.json",
+      "sha256": "947f64cb982f374d1c463f28bfcec28a98ad47ffba2000e2ac491ed189dfd319",
+      "bytes": 965949
+    },
+    {
+      "path": "reports\\sem35\\regression_receipt.json",
+      "sha256": "78797c5cf874c704f676377ac28a7b6fa22939a5879fda384e926e87587eaa76",
+      "bytes": 995
+    },
+    {
+      "path": "reports\\sem35\\artifacts\\frozen_final\\sem35-verify.exe",
+      "sha256": "d78e6e38d427beaed1302e5172fd98cb5f2cb9c9acb5af7e8ed8aabdf19f23cc",
+      "bytes": 860672
+    },
+    {
+      "path": "reports\\sem35\\work_accounting_freeze.json",
+      "sha256": "148a73ef31a4664677fa57563e887dae346b0e84a8ec256c404accd304e4b613",
+      "bytes": 428
+    },
+    {
+      "path": "reports\\sem35\\temporal_baseline_planner.json",
+      "sha256": "8c1f44bebac98a20c542fa87178ea6bb4108f77b390f39cd5b4a291fea5492c7",
+      "bytes": 477
+    },
+    {
+      "path": "reports\\sem35\\checkpoint_epoch_0000.json",
+      "sha256": "909ecd7ccb4d1b66b2a178bca83adf6162ff9411998105e32961af78d38c4ccd",
+      "bytes": 144
+    },
+    {
+      "path": "reports\\sem35\\canonical_failure_report.json",
+      "sha256": "696e10407128b2bb929ae0d68e226dc0e816adc4857d20081949c9596927459c",
+      "bytes": 2911
+    },
+    {
+      "path": "reports\\sem35\\autonomous_research_outcome.json",
+      "sha256": "04267f63ff2bc02f49c7d31b26f090ab67819deec5ae735ca9556ebb20ae5a00",
+      "bytes": 273053
+    },
+    {
+      "path": "reports\\sem35\\checkpoint_epoch_0018.json",
+      "sha256": "cb6117fc54c7793ee7bc7fd414ac1a3f6029552df4cdef581e94ac93be9cf47b",
+      "bytes": 233
+    },
+    {
+      "path": "reports\\sem35\\final_holdout_manifest.json",
+      "sha256": "9be776295748a5cc82e7837010ffaeb7acec6fbf534ad35e5f4b954ad13d4eb9",
+      "bytes": 749
+    },
+    {
+      "path": "reports\\sem35\\final_freeze.json",
+      "sha256": "9b43f527a3ebb66d65472d47ec8ba6c8cf2b8238103e8f4db185e204a5f2f3cc",
+      "bytes": 3309
+    },
+    {
+      "path": "reports\\sem35\\development_temporal_diagnosis.json",
+      "sha256": "5602f4457fd2f900d5110a0001de3ed2750d46ee71544063498df470167b3257",
+      "bytes": 578
+    }
+  ],
+  "aggregate_hash": "8afbb411921123b0fe4c1dc43fa85ec666564a087459cf10f0a8448b2d505430",
+  "authoritative_state": "GIT_COMMIT_PLUS_SEALED_FAILURE_ARTIFACTS",
+  "warm_state_is_semantic_authority": false,
+  "warm_state_is_research_authority": false
+}

@@ -1,0 +1,18 @@
+{
+  "contract_version": "SEM35_BLIND_TEMPORAL_VERIFIER_1",
+  "set": "FINAL_HOLDOUT",
+  "seed": 15709411620335294881,
+  "task_count": 13,
+  "task_fingerprint": "74a1504fbaa75610bf47723f3e1e4ed4ce244da94251d1174ae971efef8c4b87",
+  "task_id_commitment": "2400efd8d1c918468bffee2bc6e486155343967e4f5e7a32078625436d26f8bb",
+  "development_final_instance_overlap": 0,
+  "unseen_durations_present": true,
+  "unseen_entity_ids_present": true,
+  "unseen_relation_topology_present": true,
+  "delayed_effects_present": true,
+  "interruptible_processes_present": true,
+  "same_process_different_duration_present": true,
+  "same_final_delta_different_process_present": true,
+  "novel_process_composition_present": true,
+  "long_primitive_horizon_present": true
+}

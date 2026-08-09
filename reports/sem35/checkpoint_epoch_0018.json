@@ -1,0 +1,10 @@
+{
+  "epoch": 18,
+  "event": "AUTONOMOUS_TEMPORAL_REPAIR_ACCEPTED_AND_FINAL_POLICY_FROZEN",
+  "final_holdout_exposed": false,
+  "repairs_accepted": [
+    "BOUNDARY_DISCOVERY",
+    "PROCESS_MEMORY",
+    "COMPOSITION_INTERRUPTION"
+  ]
+}

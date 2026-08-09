@@ -1,0 +1,23 @@
+{
+  "schema_version": "SEM35_REGRESSION_RECEIPT_1",
+  "status": "PASS",
+  "source_commit": "494cdc1ac7b9918d6bc893fe8c9fdf7482cb4022",
+  "workspace_all_targets": "264_OF_264_PASS",
+  "dockable_semantic_core": "7_OF_7_PASS",
+  "semantic_core_adapters": "1_OF_1_PASS",
+  "semantic_reasoning": "241_OF_241_PASS",
+  "synapse_core": "14_OF_14_PASS",
+  "synapse_recursive_core": "1_OF_1_PASS",
+  "clean_reconstruction_independent_of_warm_cache": true,
+  "clean_target": "D:\\B_Core_DIAGNOSTICS\\target-sem35-canonical-clean",
+  "warm_cache_contamination_event_detected": 1,
+  "warm_cache_contamination_effect_on_clean_result": 0,
+  "contamination_source": "DETACHED_POST_EXPOSURE_DIAGNOSTIC_TEST_BINARY",
+  "clippy_exit": 0,
+  "clippy_unique_legacy_warning_signatures": 11,
+  "sem34_clippy_warning_signatures": 0,
+  "sem35_clippy_warning_signatures": 0,
+  "new_clippy_warning_signatures_total": 0,
+  "core_dockability_preserved": true,
+  "scientific_acceptance_effect": "NONE_CAMPAIGN_REMAINS_FAIL"
+}
