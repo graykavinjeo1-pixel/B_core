@@ -449,7 +449,7 @@ def run_campaign() -> int:
             if new_frontier < previous_frontier:
                 raise RuntimeError("FRONTIER_REGRESSION")
             frontiers.append(new_frontier)
-            costs.append(int(result["difficulty_probe"]["local_execution_time_ns"]))
+            costs.append(int(result["difficulty_probe"]["wall_time_ns"]))
             interval = max(1, int(result["time"]["total_improvement_interval_ns"]))
             productivity.append((max(0, new_frontier - previous_frontier) * 1_000_000_000) // interval)
             is_success = success_from(result)
