@@ -1,0 +1,16 @@
+{
+  "schema_version": "SEM33_RAW_SEQUENCES_1",
+  "measurement_status": "NOT_AVAILABLE_CANONICAL_PROTOCOL_ABORT",
+  "raw_action_branching_factor_sequence": null,
+  "semantically_routed_candidates_sequence": null,
+  "actually_rolled_out_candidates_sequence": null,
+  "plan_length_sequence": null,
+  "subgoal_count_sequence": null,
+  "subgoal_depth_sequence": null,
+  "causal_path_depth_sequence": null,
+  "active_entity_sequence": null,
+  "active_relation_sequence": null,
+  "active_mechanism_sequence": null,
+  "planning_cost_sequence": null,
+  "zero_is_not_used_for_unmeasured_values": true
+}

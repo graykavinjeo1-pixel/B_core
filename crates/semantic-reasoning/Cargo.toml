@@ -239,6 +239,14 @@ name = "sem32-r1-verify"
 path = "src/sem32_r1_verify_main.rs"
 
 [[bin]]
+name = "sem33-verify"
+path = "src/sem33_verify_main.rs"
+
+[[bin]]
+name = "sem33-run"
+path = "src/sem33_main.rs"
+
+[[bin]]
 name = "core-x0-evaluate"
 path = "src/core_x0_main.rs"
 

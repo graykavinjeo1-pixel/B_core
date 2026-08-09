@@ -1,0 +1,247 @@
+{
+  "acceptance_false_pass_events": 0,
+  "mandatory_negative_canaries": [
+    {
+      "field": "autonomous_subgoals_created",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "causal_mechanism_full_scans",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "causal_model_planning_ablation_pass",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "causal_path_certificates",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "causal_path_decompression_available",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "closed_loop_replanning_ablation_pass",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "desired_world_phenotype_present",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "entity_cardinality_planning_generalization_pass",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "expected_goal_state_lookups",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "full_action_tree_enumeration_events",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "future_world_event_leakage_events",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "goal_can_mutate_world_model_causal_semantics",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "goal_directed_semantic_planner_present",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "goal_hash_to_plan_lookup_authority",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "goal_specific_policy_training_events",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "goal_tasks_solved",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "goal_tasks_total",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "goals_satisfied_after_replan",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "gold_action_reads",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "gold_plan_reads",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "hierarchical_plan_events",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "hierarchical_planning_ablation_pass",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "human_subgoal_selection_events",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "information_gathering_actions",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "known_dead_end_entries",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "max_subgoal_depth",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "natural_language_is_planning_authority",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "novel_goal_composition_pass",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "novel_relation_topology_planning_pass",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "plan_execution_actions",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "plan_ir_present",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "planner_is_goal_success_authority",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "planning_overgeneralization_events",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "reachability_planning_ablation_pass",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "replan_caused_by_model_residual",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "replan_events",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "scalar_reward_is_goal_authority",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "semantic_near_unreachable_shortcut_accepts",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "sparse_planning_ablation_pass",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "stochastic_plan_branch_events",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "task_id_to_plan_lookup_authority",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "task_specific_planner_branches",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "total_world_entities",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "uncertainty_planning_ablation_pass",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "unreachable_plan_accepts",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "unsupported_plan_confident_executions",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "world_hash_to_plan_lookup_authority",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    },
+    {
+      "field": "world_memory_full_scans",
+      "overall_pass": false,
+      "primary_secondary_equal": true
+    }
+  ],
+  "primary_secondary_acceptance_diff": 0,
+  "raw_field_acceptance_authority": true
+}

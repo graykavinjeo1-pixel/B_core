@@ -1,0 +1,6 @@
+{"hypothesis_id":1,"diagnosis":"DIRECT_EFFECT_ONLY_NO_INVERSE_PRECONDITION_SYNTHESIS","predicted_failure_signatures":["MULTIHOP_GOAL","COMPOSITE_GOAL"]}
+{"hypothesis_id":2,"diagnosis":"FLAT_HORIZON_BRANCH_EXPLOSION","predicted_failure_signatures":["LONG_DEPENDENCY_CHAIN"]}
+{"hypothesis_id":3,"diagnosis":"SEMANTIC_DISTANCE_CONFUSED_WITH_REACHABILITY","predicted_failure_signatures":["DECEPTIVE_NEAR_DEAD_END"]}
+{"hypothesis_id":4,"diagnosis":"UNCERTAINTY_NOT_PLANNING_AUTHORITY","predicted_failure_signatures":["INFORMATION_ACTION_REQUIRED"]}
+{"hypothesis_id":5,"diagnosis":"OPEN_LOOP_COMMITMENT_IGNORES_RESIDUAL","predicted_failure_signatures":["UNEXPECTED_RELATION_CHANGE"]}
+{"hypothesis_id":6,"diagnosis":"GLOBAL_WORLD_ROUTING","predicted_failure_signatures":["SPARSE_100K_WORLD"]}

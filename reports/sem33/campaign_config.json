@@ -1,0 +1,6 @@
+{
+  "budget_is_research_semantic_input": false,
+  "configured_max_autonomous_research_epochs": 4096,
+  "hard_ceiling": 4096,
+  "requested_max_autonomous_research_epochs": 4096
+}

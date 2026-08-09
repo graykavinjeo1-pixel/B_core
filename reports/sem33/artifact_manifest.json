@@ -1,0 +1,27 @@
+{
+  "schema_version": "SEM33_ARTIFACT_MANIFEST_1",
+  "campaign_status": "FAIL",
+  "manifest_excludes_self": true,
+  "artifacts": [
+    {"path":"reports/sem33/acceptance_truth_table.json","sha256":"90597b13768df6acf25bd2b22cc6e534bb9025cdba418121dedb25255b4cd0e2","bytes":6324},
+    {"path":"reports/sem33/artifacts/frozen_verifier/acceptance.rs","sha256":"7f694cfc6c3804bd0a3f063cd20706fc1f466db1f24c0a844263c24b34414a8d","bytes":14231},
+    {"path":"reports/sem33/artifacts/frozen_verifier/config.rs","sha256":"0aa67028719f65a924e4f6ddd32e48f63ccaa9a15704a40354f7998ca8c1eb6a","bytes":1335},
+    {"path":"reports/sem33/artifacts/frozen_verifier/engine.rs","sha256":"ba693edad25912ebb22b2485ee7d8e52322390da6429dd30c1e9d95d230b22e7","bytes":29297},
+    {"path":"reports/sem33/artifacts/frozen_verifier/sem33-verify.exe","sha256":"25362e49246aa0c289d6cf05526efc0be5642fd8e1c45e46616c62c606c37563","bytes":867328},
+    {"path":"reports/sem33/artifacts/frozen_verifier/verifier.rs","sha256":"da8a0247ced33fee1ba7f96a0093d4b227add07de110bdc94085c89981d39d6f","bytes":51090},
+    {"path":"reports/sem33/campaign_config.json","sha256":"a88b389bba03b46a97ec163baccb1707093e1114cb31813154de113586c7e02b","bytes":177},
+    {"path":"reports/sem33/canonical_protocol_abort.json","sha256":"5b51cc097c9f2075065118d896d86ce0b26fbf28c6941ecc42969229c0fbe630","bytes":1939},
+    {"path":"reports/sem33/literature_adapter_audit.json","sha256":"46271f07d6da1e7bc02e09b2777c5b22156bf840cc09cd14d8e2a7ae6c12bcb9","bytes":353},
+    {"path":"reports/sem33/one_shot_initial_planning_baseline.json","sha256":"6c8577b50389ca7bbb0f995c72a0bf9f4b710b928df2040eacf588298a6150ee","bytes":207},
+    {"path":"reports/sem33/planner_diagnostic_experiments.jsonl","sha256":"a628fd6e4ff28803eff909f3642123ad585312b2111ac6822726bb3accf5fc5d","bytes":1120},
+    {"path":"reports/sem33/planner_freeze.json","sha256":"e6f90f9569b0ded00189a0fc2dfe6506d16d497e13612ed0069636693aa2b9df","bytes":2722},
+    {"path":"reports/sem33/planner_hypotheses.jsonl","sha256":"27c8708e598f617281290bba1b96a33310b2e17f5e2bc6423bcc57ccac31e4c1","bytes":786},
+    {"path":"reports/sem33/planner_repair_lineage.jsonl","sha256":"3ce13611b7bcd0456b64cbb42af774928f6f319ef66edad4b9302373a71ed11c","bytes":615},
+    {"path":"reports/sem33/predecessor_integrity.json","sha256":"f6ed84f5bde8c29f34506c43e71d149afef9ecccd28e7d94b58cef73302065bd","bytes":293},
+    {"path":"reports/sem33/prefreeze_planning_canaries.json","sha256":"9d01c77bae5d4084b19757b3dc117fca19eb47c6b930dbade91b7286d2094172","bytes":442},
+    {"path":"reports/sem33/protocol_diagnostic_request.json","sha256":"d3315910a9cfeb410e79e8eebc40be9be672c24c54eb6a00b5022d89aa478dee","bytes":633},
+    {"path":"reports/sem33/raw_sequences.json","sha256":"26ea18fbe917e38f70b477b99188d8a519ada8abd197651e5752aefb0e7a2972","bytes":593},
+    {"path":"reports/sem33/regression_receipt.json","sha256":"0f798897d1edb8ed1ad214573ac0c86b2055ae0642d171807cb34810266f27b0","bytes":471},
+    {"path":"reports/sem33/sem33_final_report.json","sha256":"0b4a5f8c4aac3d8b7800e295e0a17f4370cfdf0194ec1f1d9e2a2c54112b38da","bytes":3881}
+  ]
+}

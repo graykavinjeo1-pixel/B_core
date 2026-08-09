@@ -1,0 +1,17 @@
+{
+  "baseline_goal_tasks_solved": 1,
+  "development_rule_hash": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+  "development_seed": 33,
+  "final_holdout_materialized": false,
+  "repaired_goal_tasks_solved": 12,
+  "repaired_goal_tasks_total": 12,
+  "topology_families": [
+    "CHAIN",
+    "BRANCH",
+    "COMPOSITE_CONVERGENCE",
+    "PARTIAL_OBSERVATION",
+    "UNEXPECTED_CHANGE",
+    "STOCHASTIC",
+    "SPARSE_100K"
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "canonical_network_reads": 0,
+  "literature_preflight_network_reads": 1,
+  "mechanism_level_use_only": true,
+  "sealed_sem32_audit_sha256": "1053633ee395af8dfddb520bfc65b621ee9294d41bfeb69d9ecc9d098d79d0d8",
+  "sem33_adapter_sha256": "1356ac2959bf20c30058b49f0123015255a82a6685c61d4865c13357544ccf0a",
+  "whole_planner_architecture_transplants": 0
+}

@@ -1,0 +1,8 @@
+{"experiment_id":1,"perturbation":"DIRECT_ONE_STEP_CONTROL","baseline_pass":true,"selected_program_pass":true,"hypotheses_eliminated":0}
+{"experiment_id":2,"perturbation":"MULTIHOP_CAUSAL_CHAIN","baseline_pass":false,"selected_program_pass":true,"hypotheses_eliminated":1}
+{"experiment_id":3,"perturbation":"LONG_HIERARCHICAL_DEPENDENCY","baseline_pass":false,"selected_program_pass":true,"hypotheses_eliminated":1}
+{"experiment_id":4,"perturbation":"DECEPTIVE_NEAR_UNREACHABLE","baseline_pass":false,"selected_program_pass":true,"hypotheses_eliminated":1}
+{"experiment_id":5,"perturbation":"PARTIAL_OBSERVATION_INFORMATION_VALUE","baseline_pass":false,"selected_program_pass":true,"hypotheses_eliminated":1}
+{"experiment_id":6,"perturbation":"UNEXPECTED_CHANGE_REPLAN","baseline_pass":false,"selected_program_pass":true,"hypotheses_eliminated":1}
+{"experiment_id":7,"perturbation":"NOVEL_RELATION_TOPOLOGY","baseline_pass":false,"selected_program_pass":true,"hypotheses_eliminated":1}
+{"experiment_id":8,"perturbation":"SPARSE_100K_ROUTING","baseline_pass":false,"selected_program_pass":true,"hypotheses_eliminated":1}
