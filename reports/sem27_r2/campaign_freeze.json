@@ -1,0 +1,2373 @@
+{
+  "branch": "codex/sem27-r2-open-regime-continuation",
+  "campaign_id": "SEM27-R2-SEALED-OPEN-REGIME-CONTINUATION-0001",
+  "continuation_epochs_budget": 256,
+  "engine_epoch_mapping": "((R2_EPOCH-1)%64)+1",
+  "epoch_origin_rebase_is_administrative_only": true,
+  "final_fresh_work_commitments": [
+    {
+      "pair": 1,
+      "seed_commitment": "3db913db89c4799a643ed4772b34efcf17582c22799edae6a06a1d1558211e6c"
+    },
+    {
+      "pair": 2,
+      "seed_commitment": "4342ffdc0685d9105bf315f60ea25e548f652fbda9299a6a3dc19ab818c0a419"
+    },
+    {
+      "pair": 3,
+      "seed_commitment": "c44be655ab5167ede366556f0b7f15bb95cf7dc4641094d026336e28e132a513"
+    },
+    {
+      "pair": 4,
+      "seed_commitment": "edd42c9744d841d926aea61edca8e42dbeac5146eb8a565efc308144db4b1b39"
+    },
+    {
+      "pair": 5,
+      "seed_commitment": "ee9685b55f364d5862e4b79a080b30667e7167e4b5ade8aa0a1ea28a8a9e3d32"
+    },
+    {
+      "pair": 6,
+      "seed_commitment": "d24c37a15b784025e287f5d085e749e7920faf8244ee66257647647b90b7826b"
+    },
+    {
+      "pair": 7,
+      "seed_commitment": "d53822c3aaa8dde4d148bdde42adba65135ea2692fec42525bffd452a65fcd40"
+    },
+    {
+      "pair": 8,
+      "seed_commitment": "e15fbaac42d2f58698e7470dac7eb67e360d2b1ff2f8c44e322d5b1d9e350a31"
+    }
+  ],
+  "fixed_hardware": {
+    "cpu_threads": 1,
+    "gpu": false,
+    "mode": "RELEASE",
+    "network": false
+  },
+  "global_epoch_range_ceiling": [
+    257,
+    512
+  ],
+  "new_research_method_prohibited": false,
+  "new_research_method_required": false,
+  "next_difficulty_prescribed": false,
+  "observer_can_override_classifier": false,
+  "operator_supplies_difficulty_response": false,
+  "operator_supplies_repair_architecture": false,
+  "operator_supplies_research_roadmap": false,
+  "predecessor_commit": "2c1ea6afca05b2b033bc087ee2fdab85d5f97774",
+  "protocol_sha256": "7566819e16d45831527be2475a0d9ce8e411b63589c003999b03ff4284976bec",
+  "r1_ontology_hash": "eaeea20da0fffa392cec7669918fecc2a2cc28ba0b92c5fc27eb3bed4f9cacf2",
+  "r1_ontology_source_sha256": "097ba7b170d2263fb8b87671cb83253f836eef79a9210a60ee8f2772e8d91f92",
+  "r1_ontology_version": "SEM27-R1-OUTCOME-ONTOLOGY-1",
+  "resource_ceiling_bytes": 2000000,
+  "sealed_r2_initial_state_file_sha256": "be5c9793a5dcd5e714f115741f5528bb40e241059393a9077375be1deb3fb970",
+  "sealed_r2_initial_state_sha256": "5b6459d3a8603fda2aee93ab057f227f2762190613babd2b9f2e35954bb3bf5e",
+  "sealed_sem27_engine_sha256": "519557be10710d2a74d1ae21fddd75c55940811ac8017b4c871278cfd311f28b",
+  "unopened_instance_commitments": [
+    {
+      "continuation_epoch": 1,
+      "difficulty_response_committed": false,
+      "engine_epoch": 1,
+      "global_epoch": 257,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "cebe1029e501fc3dbd6a3aad75e98eeb2852d015cf156e3ab78c2ef5c3d0dea4"
+    },
+    {
+      "continuation_epoch": 2,
+      "difficulty_response_committed": false,
+      "engine_epoch": 2,
+      "global_epoch": 258,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "c1f1a5e06e01ab1f64531ee2a619cf50ca397dc8d8cce1f70380001febb6bab3"
+    },
+    {
+      "continuation_epoch": 3,
+      "difficulty_response_committed": false,
+      "engine_epoch": 3,
+      "global_epoch": 259,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "78ed001bc9f94797a96db6c7175f10014b0783d37251a868275cc819083627ae"
+    },
+    {
+      "continuation_epoch": 4,
+      "difficulty_response_committed": false,
+      "engine_epoch": 4,
+      "global_epoch": 260,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "836a3a310a34a7b449acddf1ea718f8565c621e23b9f535e627d63c88a2ae629"
+    },
+    {
+      "continuation_epoch": 5,
+      "difficulty_response_committed": false,
+      "engine_epoch": 5,
+      "global_epoch": 261,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "aab6dc59ad01993f196cd54d0c9c14f5c4df1d950f331f82b005a9aebd322c9d"
+    },
+    {
+      "continuation_epoch": 6,
+      "difficulty_response_committed": false,
+      "engine_epoch": 6,
+      "global_epoch": 262,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "8a5506fff59bf75dca735dbf40b337aab2525e326077d9585469f8c3d4a634a2"
+    },
+    {
+      "continuation_epoch": 7,
+      "difficulty_response_committed": false,
+      "engine_epoch": 7,
+      "global_epoch": 263,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "40168449fcfea318cc600e70238f197eed91ba80d1bbfd5244ce92ac8af8658b"
+    },
+    {
+      "continuation_epoch": 8,
+      "difficulty_response_committed": false,
+      "engine_epoch": 8,
+      "global_epoch": 264,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "323d3669dd2475b1e4c0b0731db5d4cc2034d103b0dcf83cb98627a37a753f23"
+    },
+    {
+      "continuation_epoch": 9,
+      "difficulty_response_committed": false,
+      "engine_epoch": 9,
+      "global_epoch": 265,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "f5bff8cf03d0872caa171c3c1752336495f1e6a465ae63e45fbf673d2bc4e4fe"
+    },
+    {
+      "continuation_epoch": 10,
+      "difficulty_response_committed": false,
+      "engine_epoch": 10,
+      "global_epoch": 266,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "9e4bc9602777aecf2341649c5abcfa39784283a5e192f39bcca9a8acb6fd2b50"
+    },
+    {
+      "continuation_epoch": 11,
+      "difficulty_response_committed": false,
+      "engine_epoch": 11,
+      "global_epoch": 267,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "748163f1801f0652fd7be2d969d4af73a850159b5cd2dc04116e6c128d5022c8"
+    },
+    {
+      "continuation_epoch": 12,
+      "difficulty_response_committed": false,
+      "engine_epoch": 12,
+      "global_epoch": 268,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "32ee65418478bf6d3e309c26bd7380aedb972c486a3fafbb0462a5e138cd8d91"
+    },
+    {
+      "continuation_epoch": 13,
+      "difficulty_response_committed": false,
+      "engine_epoch": 13,
+      "global_epoch": 269,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "ec958a57e9528dc25b38872dd31c82835ec4146f5205c435c1ffdf32da3f536b"
+    },
+    {
+      "continuation_epoch": 14,
+      "difficulty_response_committed": false,
+      "engine_epoch": 14,
+      "global_epoch": 270,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "7a4ef91a9b74edf50f339225d86f82bb1373653019cf5f66359b795db064a0a5"
+    },
+    {
+      "continuation_epoch": 15,
+      "difficulty_response_committed": false,
+      "engine_epoch": 15,
+      "global_epoch": 271,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "3db65de83bc0f252d421c87cfca59d7146c4ec528979491499da9ef210896557"
+    },
+    {
+      "continuation_epoch": 16,
+      "difficulty_response_committed": false,
+      "engine_epoch": 16,
+      "global_epoch": 272,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "78ac9ca1edb01968a5b82ed7361b0e4933bf74652619b01ab67b983373af6a61"
+    },
+    {
+      "continuation_epoch": 17,
+      "difficulty_response_committed": false,
+      "engine_epoch": 17,
+      "global_epoch": 273,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "699aa0fab345a27be93ee12003445fe6dd743be097d44fde2ca0115d1e9c5549"
+    },
+    {
+      "continuation_epoch": 18,
+      "difficulty_response_committed": false,
+      "engine_epoch": 18,
+      "global_epoch": 274,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "d71f34e30885038f62a27f2eb3abcca43e359d0227485f2dc5de24578bf84b1b"
+    },
+    {
+      "continuation_epoch": 19,
+      "difficulty_response_committed": false,
+      "engine_epoch": 19,
+      "global_epoch": 275,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "ee747939ec46182f73030ec517b63e5666e73cba676a97f33881c30090c30ac7"
+    },
+    {
+      "continuation_epoch": 20,
+      "difficulty_response_committed": false,
+      "engine_epoch": 20,
+      "global_epoch": 276,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "e8de6de96d3c3e3e8cb02a3ba618f9a0c1164598a60c42fe601a3893bae7c74e"
+    },
+    {
+      "continuation_epoch": 21,
+      "difficulty_response_committed": false,
+      "engine_epoch": 21,
+      "global_epoch": 277,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "5d691d8bf8ed297d76cb099cdc712ddc9e7c6738bdbe3ea93c37ee83aa08bfec"
+    },
+    {
+      "continuation_epoch": 22,
+      "difficulty_response_committed": false,
+      "engine_epoch": 22,
+      "global_epoch": 278,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "bdf71841375d368ad4253f3c84eaefa062c298de9142df193f25c6a605b697fe"
+    },
+    {
+      "continuation_epoch": 23,
+      "difficulty_response_committed": false,
+      "engine_epoch": 23,
+      "global_epoch": 279,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "70de480181f2137468e78e980e144046dffae75d2cae55d6921ffae4df695586"
+    },
+    {
+      "continuation_epoch": 24,
+      "difficulty_response_committed": false,
+      "engine_epoch": 24,
+      "global_epoch": 280,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "c5142e1aa6e09e218966992628604770427b93beb569027ffe3fe8abdbfaebc9"
+    },
+    {
+      "continuation_epoch": 25,
+      "difficulty_response_committed": false,
+      "engine_epoch": 25,
+      "global_epoch": 281,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "b86f59d065330bc2e1fadc3695b38f3d0ad670c6bc87f6f62b3cfb4be45ae3d3"
+    },
+    {
+      "continuation_epoch": 26,
+      "difficulty_response_committed": false,
+      "engine_epoch": 26,
+      "global_epoch": 282,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "789e2a2c5b54f674f49482e7c1a3ff93071aaf790d05e9fe6366de9d156c011d"
+    },
+    {
+      "continuation_epoch": 27,
+      "difficulty_response_committed": false,
+      "engine_epoch": 27,
+      "global_epoch": 283,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "fa441ab42bfa38660ab74674b1754340744903fd47daa8547c5da8892d51b376"
+    },
+    {
+      "continuation_epoch": 28,
+      "difficulty_response_committed": false,
+      "engine_epoch": 28,
+      "global_epoch": 284,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "681b750b6bc37e4404ddb94baae35777664c5b377c6b10bb03c96c7f6bd0cde3"
+    },
+    {
+      "continuation_epoch": 29,
+      "difficulty_response_committed": false,
+      "engine_epoch": 29,
+      "global_epoch": 285,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "420d72071f0b2f6300f6c150895094bec4877b1126f8c6a538d29e87de65a13e"
+    },
+    {
+      "continuation_epoch": 30,
+      "difficulty_response_committed": false,
+      "engine_epoch": 30,
+      "global_epoch": 286,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "1522a41c5ea16b0b46bfa151654339661afb3bd72a593a39e10f81143bd6343f"
+    },
+    {
+      "continuation_epoch": 31,
+      "difficulty_response_committed": false,
+      "engine_epoch": 31,
+      "global_epoch": 287,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "cfbab5f4f77ba818a188b69ea10d2dcc13e6789a27cd673155ca7be19fa604aa"
+    },
+    {
+      "continuation_epoch": 32,
+      "difficulty_response_committed": false,
+      "engine_epoch": 32,
+      "global_epoch": 288,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "6303e2ff7f629b08c739833ca9e7e2f30662d785224dc2af81fd5806c903bd5b"
+    },
+    {
+      "continuation_epoch": 33,
+      "difficulty_response_committed": false,
+      "engine_epoch": 33,
+      "global_epoch": 289,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "dcb29709b772916ebbb20a0c32183a97b7c41557f7d2cdeaafcc69501123e793"
+    },
+    {
+      "continuation_epoch": 34,
+      "difficulty_response_committed": false,
+      "engine_epoch": 34,
+      "global_epoch": 290,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "ca0b995056c7fdc3f3ddd3118f94e788e32f94754421776ce111b2dc4fe43859"
+    },
+    {
+      "continuation_epoch": 35,
+      "difficulty_response_committed": false,
+      "engine_epoch": 35,
+      "global_epoch": 291,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "2ad4f26fbc1b91d8af78e12023b9298d1116f1b5abc4f3cd9494c12d9334a9cc"
+    },
+    {
+      "continuation_epoch": 36,
+      "difficulty_response_committed": false,
+      "engine_epoch": 36,
+      "global_epoch": 292,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "e35e97c1be11513ca7c8a5fb14410b15cebc4aa1946b265bef216d328ca4e335"
+    },
+    {
+      "continuation_epoch": 37,
+      "difficulty_response_committed": false,
+      "engine_epoch": 37,
+      "global_epoch": 293,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "7d921ceeb4affc2a5fde53802225993a5333d5350cc81f504be7f013c16f8863"
+    },
+    {
+      "continuation_epoch": 38,
+      "difficulty_response_committed": false,
+      "engine_epoch": 38,
+      "global_epoch": 294,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "017cd2163f9e7fc67c42d2316cc7efb0abbf5fe09f3bf4b7784d756b3e628edf"
+    },
+    {
+      "continuation_epoch": 39,
+      "difficulty_response_committed": false,
+      "engine_epoch": 39,
+      "global_epoch": 295,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "fa1b316cd1a674fe2263f51928a5e9b75a2d7db1efd6517a99f0e41dab470d0b"
+    },
+    {
+      "continuation_epoch": 40,
+      "difficulty_response_committed": false,
+      "engine_epoch": 40,
+      "global_epoch": 296,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "35f1db77ae976f4ddd3ec9354f27dc5455ac418886f963e480ec696f3a25236d"
+    },
+    {
+      "continuation_epoch": 41,
+      "difficulty_response_committed": false,
+      "engine_epoch": 41,
+      "global_epoch": 297,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "dfbd424582f71e7a96069d4cb972ab500bbb7c59b710ecea605bb364487edc08"
+    },
+    {
+      "continuation_epoch": 42,
+      "difficulty_response_committed": false,
+      "engine_epoch": 42,
+      "global_epoch": 298,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "921b93d7005545a4c305c63ee99ad3c3da796b282ed1762af261b4867eb3a873"
+    },
+    {
+      "continuation_epoch": 43,
+      "difficulty_response_committed": false,
+      "engine_epoch": 43,
+      "global_epoch": 299,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "37c38e03c64fea534b73e7800a59f464ec580bf1181347dbaa35fa80835814d6"
+    },
+    {
+      "continuation_epoch": 44,
+      "difficulty_response_committed": false,
+      "engine_epoch": 44,
+      "global_epoch": 300,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "831e0f167fdf198ad5dd1594108c8339aa0cc6bb6a992a32ab4e1cd69c0727c9"
+    },
+    {
+      "continuation_epoch": 45,
+      "difficulty_response_committed": false,
+      "engine_epoch": 45,
+      "global_epoch": 301,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "9c8ebc48e74afdda41c735a59f487358129373fc12a0d59b6e3060c9bf787cae"
+    },
+    {
+      "continuation_epoch": 46,
+      "difficulty_response_committed": false,
+      "engine_epoch": 46,
+      "global_epoch": 302,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "0b023262831566763f97b8466b0fb1c0fa96d693560bf2f6c81c95557c1a183d"
+    },
+    {
+      "continuation_epoch": 47,
+      "difficulty_response_committed": false,
+      "engine_epoch": 47,
+      "global_epoch": 303,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "f627aa749099dcf69c9d2c6c6edf742d36c05389f463505f06839d70a2c588fb"
+    },
+    {
+      "continuation_epoch": 48,
+      "difficulty_response_committed": false,
+      "engine_epoch": 48,
+      "global_epoch": 304,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "89da1112b925d44ea18e9445e83b1043092b6be8db30c3f735ea946459a562a8"
+    },
+    {
+      "continuation_epoch": 49,
+      "difficulty_response_committed": false,
+      "engine_epoch": 49,
+      "global_epoch": 305,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "784e86496822d3fdd31c31f8b7761e16e5c12d80562808e391d033f99a587790"
+    },
+    {
+      "continuation_epoch": 50,
+      "difficulty_response_committed": false,
+      "engine_epoch": 50,
+      "global_epoch": 306,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "2d6ec456a5b0c2c123c9a8d491337c2e7e4275bc918a0e0a916ab626cdc84352"
+    },
+    {
+      "continuation_epoch": 51,
+      "difficulty_response_committed": false,
+      "engine_epoch": 51,
+      "global_epoch": 307,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "5d88c688af423346cf5ab43942499ef145b4b807ff759a1464f318fb72b4162d"
+    },
+    {
+      "continuation_epoch": 52,
+      "difficulty_response_committed": false,
+      "engine_epoch": 52,
+      "global_epoch": 308,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "ef922bbd6aa2c36a2f97fdba8df1737b9b619547d0307de95296bd3984e4d69a"
+    },
+    {
+      "continuation_epoch": 53,
+      "difficulty_response_committed": false,
+      "engine_epoch": 53,
+      "global_epoch": 309,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "44174f90f8a6518926b2493de28c9bd068bbd2206a4d89822d97d2cd5a54ad4f"
+    },
+    {
+      "continuation_epoch": 54,
+      "difficulty_response_committed": false,
+      "engine_epoch": 54,
+      "global_epoch": 310,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "e692308145336aa98fc8ca44d64c218c70214961b917a79d76ac3d002d8505b6"
+    },
+    {
+      "continuation_epoch": 55,
+      "difficulty_response_committed": false,
+      "engine_epoch": 55,
+      "global_epoch": 311,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "1ce3cd967c887b3c3dc2e3afdced65d811db0964da41220ab737349ad46081e9"
+    },
+    {
+      "continuation_epoch": 56,
+      "difficulty_response_committed": false,
+      "engine_epoch": 56,
+      "global_epoch": 312,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "a19e9480d3afbf41312cad15e036b53485f61dab8c29cceab5cebf7eefa24b08"
+    },
+    {
+      "continuation_epoch": 57,
+      "difficulty_response_committed": false,
+      "engine_epoch": 57,
+      "global_epoch": 313,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "23158c985d87cbaaf6501a2eac956c2e2bef6d6dcc8ac21d9c935e80fecab692"
+    },
+    {
+      "continuation_epoch": 58,
+      "difficulty_response_committed": false,
+      "engine_epoch": 58,
+      "global_epoch": 314,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "e7ad8753fe3b308eab03d2c947b44e332cef9037b804f27fe5a4c3dc7720730c"
+    },
+    {
+      "continuation_epoch": 59,
+      "difficulty_response_committed": false,
+      "engine_epoch": 59,
+      "global_epoch": 315,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "4963b17908e8273276a3b98a4b34ee9a498447ae9fe55f56fe3304e3d15b137b"
+    },
+    {
+      "continuation_epoch": 60,
+      "difficulty_response_committed": false,
+      "engine_epoch": 60,
+      "global_epoch": 316,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "99187f3096b3e8f3ba3f3f862ba7a0e60370b5f6b55bd3bf16b596ba5bd59d90"
+    },
+    {
+      "continuation_epoch": 61,
+      "difficulty_response_committed": false,
+      "engine_epoch": 61,
+      "global_epoch": 317,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "83a587fdfca278e4ad2b7dabbd11a2c30149f4b24f97838b9580cdbf0b14599b"
+    },
+    {
+      "continuation_epoch": 62,
+      "difficulty_response_committed": false,
+      "engine_epoch": 62,
+      "global_epoch": 318,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "12dab29dc6d8fec1b3b5316d6a021ae6224405f42976e6ea6dec591dce16fbd4"
+    },
+    {
+      "continuation_epoch": 63,
+      "difficulty_response_committed": false,
+      "engine_epoch": 63,
+      "global_epoch": 319,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "0982bdd16d26a0c34c00a1ff90e56dcbb9789822dac8609277d50d8c7e93fdd8"
+    },
+    {
+      "continuation_epoch": 64,
+      "difficulty_response_committed": false,
+      "engine_epoch": 64,
+      "global_epoch": 320,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "f5885bf3a459c4d26291ec33f4788343d15b93a95804a4de1a5cd3885c169aee"
+    },
+    {
+      "continuation_epoch": 65,
+      "difficulty_response_committed": false,
+      "engine_epoch": 1,
+      "global_epoch": 321,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "a146832d1be15a9a571c577978ba988311359fcdcaea2dc20a62ba374d356164"
+    },
+    {
+      "continuation_epoch": 66,
+      "difficulty_response_committed": false,
+      "engine_epoch": 2,
+      "global_epoch": 322,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "af96421dd8bec2721a4a75336fe83d112d97335775ba2a1bb27df5e850068b95"
+    },
+    {
+      "continuation_epoch": 67,
+      "difficulty_response_committed": false,
+      "engine_epoch": 3,
+      "global_epoch": 323,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "61ff59c3310021b4e498183ce945810c8a5c6a9cb026d09cca37833dd0858444"
+    },
+    {
+      "continuation_epoch": 68,
+      "difficulty_response_committed": false,
+      "engine_epoch": 4,
+      "global_epoch": 324,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "f617d95b67921192362c4ccd2ca6e99d9325bccb6a13fedd0f6413e15f65caec"
+    },
+    {
+      "continuation_epoch": 69,
+      "difficulty_response_committed": false,
+      "engine_epoch": 5,
+      "global_epoch": 325,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "db644e74e2effe754d48e38df78e226b4f5b761d347d7dc9e765f6f4180589ec"
+    },
+    {
+      "continuation_epoch": 70,
+      "difficulty_response_committed": false,
+      "engine_epoch": 6,
+      "global_epoch": 326,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "637abd8e896403a5da4cef14836f471110dd9a6b331190a82d2c261952f435df"
+    },
+    {
+      "continuation_epoch": 71,
+      "difficulty_response_committed": false,
+      "engine_epoch": 7,
+      "global_epoch": 327,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "53b7728dcbe615dc85f0a21daf98522daaae436a236c481c4389a31407491ecf"
+    },
+    {
+      "continuation_epoch": 72,
+      "difficulty_response_committed": false,
+      "engine_epoch": 8,
+      "global_epoch": 328,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "0475daf9635d41a87a2fe0b9ebcba837417a97af05f26f56ec3647ec10c7e383"
+    },
+    {
+      "continuation_epoch": 73,
+      "difficulty_response_committed": false,
+      "engine_epoch": 9,
+      "global_epoch": 329,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "f5aa814f4a1d7215e12d2db9fb92cd0291e36d9cf1ee5f2397753e7617defb99"
+    },
+    {
+      "continuation_epoch": 74,
+      "difficulty_response_committed": false,
+      "engine_epoch": 10,
+      "global_epoch": 330,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "466917c58c5f77ac5d1bace54bb6b3e72c10a9e38df06ef9b839771c9c8122f6"
+    },
+    {
+      "continuation_epoch": 75,
+      "difficulty_response_committed": false,
+      "engine_epoch": 11,
+      "global_epoch": 331,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "4439821e851c62432dac76d1d4afbfc47feadcb4d96fdb7b7cac3e5c6c629b65"
+    },
+    {
+      "continuation_epoch": 76,
+      "difficulty_response_committed": false,
+      "engine_epoch": 12,
+      "global_epoch": 332,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "01c7af844becb14dc8e82a7a333163b0d471a65b929c5d3f25c423f636c8458e"
+    },
+    {
+      "continuation_epoch": 77,
+      "difficulty_response_committed": false,
+      "engine_epoch": 13,
+      "global_epoch": 333,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "07c259ee99861ec3b39b79e59eff64f18838d45fcd3713d1757150b87ca090d0"
+    },
+    {
+      "continuation_epoch": 78,
+      "difficulty_response_committed": false,
+      "engine_epoch": 14,
+      "global_epoch": 334,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "7b14ca61d42d10cbb8e448fb205a9816115f2c18a99c6f00bd8c975af5e4cc9b"
+    },
+    {
+      "continuation_epoch": 79,
+      "difficulty_response_committed": false,
+      "engine_epoch": 15,
+      "global_epoch": 335,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "2340a60a1464d6cb089ed0dc00d4b3577f0e84648f236277b5b86c9ed572acef"
+    },
+    {
+      "continuation_epoch": 80,
+      "difficulty_response_committed": false,
+      "engine_epoch": 16,
+      "global_epoch": 336,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "5748686dfcce2183a9f8c830f01b54a232ab31257b2b115d30e928ff96ddc4e1"
+    },
+    {
+      "continuation_epoch": 81,
+      "difficulty_response_committed": false,
+      "engine_epoch": 17,
+      "global_epoch": 337,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "232648c0c983d85ba38796b53ad1b93c5909d1543e9212a3799184e0f4252d3b"
+    },
+    {
+      "continuation_epoch": 82,
+      "difficulty_response_committed": false,
+      "engine_epoch": 18,
+      "global_epoch": 338,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "47f5d375b636f4b99bab9d4db7cd126f50b478248ad6dca7c6d77dd1269a8f39"
+    },
+    {
+      "continuation_epoch": 83,
+      "difficulty_response_committed": false,
+      "engine_epoch": 19,
+      "global_epoch": 339,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "6c7365434345c33b214029d40030997c13871a7c3e07723f9e5b5d0a6ddff087"
+    },
+    {
+      "continuation_epoch": 84,
+      "difficulty_response_committed": false,
+      "engine_epoch": 20,
+      "global_epoch": 340,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "e9f0b65f0f79ffa2e7d2e1d64518410c40092d95fd2ecf63b0078ed7d1e10cf3"
+    },
+    {
+      "continuation_epoch": 85,
+      "difficulty_response_committed": false,
+      "engine_epoch": 21,
+      "global_epoch": 341,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "975aa3bd0a8694e37c1e72d6705afa2c85559c671bad5c14ff608ba38bb32dda"
+    },
+    {
+      "continuation_epoch": 86,
+      "difficulty_response_committed": false,
+      "engine_epoch": 22,
+      "global_epoch": 342,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "763100153a3c6b76a773cb9701988eca3989aaa20df2beab2432d380b7174c5f"
+    },
+    {
+      "continuation_epoch": 87,
+      "difficulty_response_committed": false,
+      "engine_epoch": 23,
+      "global_epoch": 343,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "115f751bdba9049c54059ff0ffda9bc1b0fdbb7771e37ae630c5a34c777d5b1f"
+    },
+    {
+      "continuation_epoch": 88,
+      "difficulty_response_committed": false,
+      "engine_epoch": 24,
+      "global_epoch": 344,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "aedba769fb775af005a3afb16881bb90bbe29ec70f1224b0b7a9941a64156112"
+    },
+    {
+      "continuation_epoch": 89,
+      "difficulty_response_committed": false,
+      "engine_epoch": 25,
+      "global_epoch": 345,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "ed993ea60e7e49ed1e168a7cce15c6be9078745b4bff2c03c0b89a532f77a1b5"
+    },
+    {
+      "continuation_epoch": 90,
+      "difficulty_response_committed": false,
+      "engine_epoch": 26,
+      "global_epoch": 346,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "e92284a7f56b8ddf768d598fcde7d25a2ff503eebd394c6d59f89942e9d3c318"
+    },
+    {
+      "continuation_epoch": 91,
+      "difficulty_response_committed": false,
+      "engine_epoch": 27,
+      "global_epoch": 347,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "62fef14511fdef3b8e37d320cc6cc23cb033a2ae225da31858a8d94b8d2eeeca"
+    },
+    {
+      "continuation_epoch": 92,
+      "difficulty_response_committed": false,
+      "engine_epoch": 28,
+      "global_epoch": 348,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "daaeb19effe24805f721fa008a46cf0d8576293f6d4d0a6ed24ee4f6f4a65724"
+    },
+    {
+      "continuation_epoch": 93,
+      "difficulty_response_committed": false,
+      "engine_epoch": 29,
+      "global_epoch": 349,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "a05b0dbb4791fce12b2f38289e08371f29ba34a09afde30fca809f10b7615cde"
+    },
+    {
+      "continuation_epoch": 94,
+      "difficulty_response_committed": false,
+      "engine_epoch": 30,
+      "global_epoch": 350,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "b4309de8fc82b44e48df710eae066f2188e1edf429358b04be89c3937e59f559"
+    },
+    {
+      "continuation_epoch": 95,
+      "difficulty_response_committed": false,
+      "engine_epoch": 31,
+      "global_epoch": 351,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "fd93870401502fc2a20371e0f87897df00ec2fe73f2ab4fc7e214eb5fb68d99c"
+    },
+    {
+      "continuation_epoch": 96,
+      "difficulty_response_committed": false,
+      "engine_epoch": 32,
+      "global_epoch": 352,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "fa1a9d4a34935431ce437f3b8bbf5d1d2b4a3a4f7a064a3dd8feaecfe2e4992d"
+    },
+    {
+      "continuation_epoch": 97,
+      "difficulty_response_committed": false,
+      "engine_epoch": 33,
+      "global_epoch": 353,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "d537d1522fc03a4e111e357398cf14fb0957bf3e24cc75973cace240c6ef7ec5"
+    },
+    {
+      "continuation_epoch": 98,
+      "difficulty_response_committed": false,
+      "engine_epoch": 34,
+      "global_epoch": 354,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "81ff52138a62fbce46f3208ec0f677007e7190232e2562756511c604f197a5f5"
+    },
+    {
+      "continuation_epoch": 99,
+      "difficulty_response_committed": false,
+      "engine_epoch": 35,
+      "global_epoch": 355,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "c58ba9cc8ec16cfd76219af9ffc08e73a104376afa1d38c71d07fde98b065776"
+    },
+    {
+      "continuation_epoch": 100,
+      "difficulty_response_committed": false,
+      "engine_epoch": 36,
+      "global_epoch": 356,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "8bfc1e269f61a468dc939cd475f95520049ffa0bc00a3bff5b2b955f8d676632"
+    },
+    {
+      "continuation_epoch": 101,
+      "difficulty_response_committed": false,
+      "engine_epoch": 37,
+      "global_epoch": 357,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "b8ce07ff89d2f56d0f31ba622a8c42a64339c905751a5431436f72121a55dc21"
+    },
+    {
+      "continuation_epoch": 102,
+      "difficulty_response_committed": false,
+      "engine_epoch": 38,
+      "global_epoch": 358,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "31b8e72cca6b979c2652e96d1937a21e09d149b87310f55ffbe608bbfd5709ce"
+    },
+    {
+      "continuation_epoch": 103,
+      "difficulty_response_committed": false,
+      "engine_epoch": 39,
+      "global_epoch": 359,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "94157c9fb245b0d128b16b73114f8d5e532dd3f7c5aae420f19bb463c7b765b9"
+    },
+    {
+      "continuation_epoch": 104,
+      "difficulty_response_committed": false,
+      "engine_epoch": 40,
+      "global_epoch": 360,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "aefa4e18ad9d3cab94b46dba5d7e97c5056e466542429a513d2fcba86230bef3"
+    },
+    {
+      "continuation_epoch": 105,
+      "difficulty_response_committed": false,
+      "engine_epoch": 41,
+      "global_epoch": 361,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "62366b3dd7803994a70ff289da301e6d8ea40c4fd3c84997d93d018059b53575"
+    },
+    {
+      "continuation_epoch": 106,
+      "difficulty_response_committed": false,
+      "engine_epoch": 42,
+      "global_epoch": 362,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "7a0d59d2751ba6145687d35312687737333d55295cb25a6d4aa364c69ddab853"
+    },
+    {
+      "continuation_epoch": 107,
+      "difficulty_response_committed": false,
+      "engine_epoch": 43,
+      "global_epoch": 363,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "0760d3cdf03a0889e7755d7953d40021bed0e405c827c61effd80de42d43946c"
+    },
+    {
+      "continuation_epoch": 108,
+      "difficulty_response_committed": false,
+      "engine_epoch": 44,
+      "global_epoch": 364,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "4f582536f010f628a1d0d949b8f8784e53b6030591ade65597f71006578be7e9"
+    },
+    {
+      "continuation_epoch": 109,
+      "difficulty_response_committed": false,
+      "engine_epoch": 45,
+      "global_epoch": 365,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "1b8a23e73afbbf97683253f80aafdc1131749b9bc5db581a2d2e04ec82fca3f0"
+    },
+    {
+      "continuation_epoch": 110,
+      "difficulty_response_committed": false,
+      "engine_epoch": 46,
+      "global_epoch": 366,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "427942299eb4b46f3c8c958ce646ef0431f5299872d531481fba355d78da76d1"
+    },
+    {
+      "continuation_epoch": 111,
+      "difficulty_response_committed": false,
+      "engine_epoch": 47,
+      "global_epoch": 367,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "96173e4254bef79c601a36503147e5f55643f8b42b07196e4c2d3313c3187b65"
+    },
+    {
+      "continuation_epoch": 112,
+      "difficulty_response_committed": false,
+      "engine_epoch": 48,
+      "global_epoch": 368,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "1524aff23e5db8b12f11c16cbf644b2cc516453e83212685d5f5afd3fa8b3faa"
+    },
+    {
+      "continuation_epoch": 113,
+      "difficulty_response_committed": false,
+      "engine_epoch": 49,
+      "global_epoch": 369,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "f10e679de311db5f3326df626d399fe2a1bd30f5ef24b48ae1f5879dfaa8d648"
+    },
+    {
+      "continuation_epoch": 114,
+      "difficulty_response_committed": false,
+      "engine_epoch": 50,
+      "global_epoch": 370,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "1eb77eceb13c7c365ce00875fb019a0698e94583b37eef60ed014faac2e77e1c"
+    },
+    {
+      "continuation_epoch": 115,
+      "difficulty_response_committed": false,
+      "engine_epoch": 51,
+      "global_epoch": 371,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "485ccbf44f9b8b09c55b6ec37563f9153c7af09a371f208cfcb094795f5dda8e"
+    },
+    {
+      "continuation_epoch": 116,
+      "difficulty_response_committed": false,
+      "engine_epoch": 52,
+      "global_epoch": 372,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "415ed9efee7ad952a55390eeaa752e72a561640813653bbe70265d3fb31d43c6"
+    },
+    {
+      "continuation_epoch": 117,
+      "difficulty_response_committed": false,
+      "engine_epoch": 53,
+      "global_epoch": 373,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "c862b9997aa5c16076434de28bfe05906fb06c2b69655b44e9792e71da58129b"
+    },
+    {
+      "continuation_epoch": 118,
+      "difficulty_response_committed": false,
+      "engine_epoch": 54,
+      "global_epoch": 374,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "cc0fda339c5b45a00362c6c10b45912ceb582d91c1649e2a8f5bf0f388b2a237"
+    },
+    {
+      "continuation_epoch": 119,
+      "difficulty_response_committed": false,
+      "engine_epoch": 55,
+      "global_epoch": 375,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "008713abc3b57b9a47b32b86c2d54507bddf4b2f0bc17dbe596b4296b8749164"
+    },
+    {
+      "continuation_epoch": 120,
+      "difficulty_response_committed": false,
+      "engine_epoch": 56,
+      "global_epoch": 376,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "acafe3e6900e216feca4ef4a68540007523b29e8cc11f715a27a763102f32bb0"
+    },
+    {
+      "continuation_epoch": 121,
+      "difficulty_response_committed": false,
+      "engine_epoch": 57,
+      "global_epoch": 377,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "cb25ee24a9cfae43573994410e23ef0dde9762902236c1ee601622807da8c953"
+    },
+    {
+      "continuation_epoch": 122,
+      "difficulty_response_committed": false,
+      "engine_epoch": 58,
+      "global_epoch": 378,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "d2290e14260fe0ba91b47b22c931240e1ff0c0b7f699768bc22c8f842ffba29d"
+    },
+    {
+      "continuation_epoch": 123,
+      "difficulty_response_committed": false,
+      "engine_epoch": 59,
+      "global_epoch": 379,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "5f9e47f79f14d7f1f54a2a1169efe440864f7d62dbb030516d47f307a61fc136"
+    },
+    {
+      "continuation_epoch": 124,
+      "difficulty_response_committed": false,
+      "engine_epoch": 60,
+      "global_epoch": 380,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "4d026b05db3ac55bf02a9d038713ad237ec28c1c00cbcfaf0de03e2f2cd94335"
+    },
+    {
+      "continuation_epoch": 125,
+      "difficulty_response_committed": false,
+      "engine_epoch": 61,
+      "global_epoch": 381,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "1c2c7cc86932e2b227cdae9623ada2eb661a058b7b794de1ed4aa26ce4ada0f2"
+    },
+    {
+      "continuation_epoch": 126,
+      "difficulty_response_committed": false,
+      "engine_epoch": 62,
+      "global_epoch": 382,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "9465b1fe26d13c9a26e0d9331f8b2553b1fdd7b6e69554398c0ebbd910afc6e5"
+    },
+    {
+      "continuation_epoch": 127,
+      "difficulty_response_committed": false,
+      "engine_epoch": 63,
+      "global_epoch": 383,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "a2ed5aad9079eea4f0c0852400062dc81eeff754550c1dd08910bc9a2291146c"
+    },
+    {
+      "continuation_epoch": 128,
+      "difficulty_response_committed": false,
+      "engine_epoch": 64,
+      "global_epoch": 384,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "02288b96fa2ff51ecb0a1d2b623aaca4baa28a0c31adba3dd20737e8f423ca5f"
+    },
+    {
+      "continuation_epoch": 129,
+      "difficulty_response_committed": false,
+      "engine_epoch": 1,
+      "global_epoch": 385,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "768c569351f7a858edb7067c0b283f1b735d8a2ece885fb2c2ac18d19f912ce5"
+    },
+    {
+      "continuation_epoch": 130,
+      "difficulty_response_committed": false,
+      "engine_epoch": 2,
+      "global_epoch": 386,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "4b4297488496672efa1492fc9bb509c4060e1ca2738a787675bd8bbfa96b9d18"
+    },
+    {
+      "continuation_epoch": 131,
+      "difficulty_response_committed": false,
+      "engine_epoch": 3,
+      "global_epoch": 387,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "e41b000eec0cb8e9eb483eecd3e0aa030ab281249ba000d8d86ee48caf55713c"
+    },
+    {
+      "continuation_epoch": 132,
+      "difficulty_response_committed": false,
+      "engine_epoch": 4,
+      "global_epoch": 388,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "04d8f4488997518ea62060c10594c12dce41596a6964f53bd8b7b70c4401f9e1"
+    },
+    {
+      "continuation_epoch": 133,
+      "difficulty_response_committed": false,
+      "engine_epoch": 5,
+      "global_epoch": 389,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "989cf21ea638571af12041d2846e02493c1f656d03fde312212516785d4ad6df"
+    },
+    {
+      "continuation_epoch": 134,
+      "difficulty_response_committed": false,
+      "engine_epoch": 6,
+      "global_epoch": 390,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "37c29f0f07ee29e1a1635c6db7f6fbe1aa30cc65bd1c0b76fe692fbc97279de5"
+    },
+    {
+      "continuation_epoch": 135,
+      "difficulty_response_committed": false,
+      "engine_epoch": 7,
+      "global_epoch": 391,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "cfac002a247243d98f6e8556628199613ec729239803ebba8c73d1c553b099d0"
+    },
+    {
+      "continuation_epoch": 136,
+      "difficulty_response_committed": false,
+      "engine_epoch": 8,
+      "global_epoch": 392,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "995b70742c8a932bc48b8d499b7a947cbc4fa8b7521ff25b4940c6f7eab4b09e"
+    },
+    {
+      "continuation_epoch": 137,
+      "difficulty_response_committed": false,
+      "engine_epoch": 9,
+      "global_epoch": 393,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "e0cb35bd6cd2fcde6b9074fc31e231510cb99483670b8523ae781411ed1b5af9"
+    },
+    {
+      "continuation_epoch": 138,
+      "difficulty_response_committed": false,
+      "engine_epoch": 10,
+      "global_epoch": 394,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "2eef5f864b16b6c15e696f39c372777d283b5179e9050721d683f792673e5fe7"
+    },
+    {
+      "continuation_epoch": 139,
+      "difficulty_response_committed": false,
+      "engine_epoch": 11,
+      "global_epoch": 395,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "e5fe38df6ae5fe063ae5d685b8a2b123b385558ab2cb4ce85d12d5b054fa97d6"
+    },
+    {
+      "continuation_epoch": 140,
+      "difficulty_response_committed": false,
+      "engine_epoch": 12,
+      "global_epoch": 396,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "478f7dea6afe611e2b9a5425b1ca90374f40bdb90aa0eec3ad19fd18f759d234"
+    },
+    {
+      "continuation_epoch": 141,
+      "difficulty_response_committed": false,
+      "engine_epoch": 13,
+      "global_epoch": 397,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "24d3744a918d967e2ebd5096860f2c4cd872fea8da0eb568312a7518b6e388fa"
+    },
+    {
+      "continuation_epoch": 142,
+      "difficulty_response_committed": false,
+      "engine_epoch": 14,
+      "global_epoch": 398,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "b347913f1d6cdf9d999431f54698e83c51d5d9475bc61e88167447a7a38557ca"
+    },
+    {
+      "continuation_epoch": 143,
+      "difficulty_response_committed": false,
+      "engine_epoch": 15,
+      "global_epoch": 399,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "03a0c5045f530da7eb7b3fca9b0c636c3efa64e6dd8629266d5bcfb53649474f"
+    },
+    {
+      "continuation_epoch": 144,
+      "difficulty_response_committed": false,
+      "engine_epoch": 16,
+      "global_epoch": 400,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "2d91a475ec221b4a5dc4860002f5c70f9e48e32f0ffc93f46103d27d458fdc14"
+    },
+    {
+      "continuation_epoch": 145,
+      "difficulty_response_committed": false,
+      "engine_epoch": 17,
+      "global_epoch": 401,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "89ab1e1fe850103680680a7985f0283b8e490d62b47f052b7a68867db1ddcf33"
+    },
+    {
+      "continuation_epoch": 146,
+      "difficulty_response_committed": false,
+      "engine_epoch": 18,
+      "global_epoch": 402,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "746a1363f64238672f8a865e75271009d435f1480fb8124becd7ee66079d3196"
+    },
+    {
+      "continuation_epoch": 147,
+      "difficulty_response_committed": false,
+      "engine_epoch": 19,
+      "global_epoch": 403,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "e5a313e3aa41c0944ab6172b35462e9d169f94d629993b428c795e0529a55ed0"
+    },
+    {
+      "continuation_epoch": 148,
+      "difficulty_response_committed": false,
+      "engine_epoch": 20,
+      "global_epoch": 404,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "2cfbe66f66855e42a5d35fac88d505a278e287ae81f6f31f0b00dc0fa46f5c5a"
+    },
+    {
+      "continuation_epoch": 149,
+      "difficulty_response_committed": false,
+      "engine_epoch": 21,
+      "global_epoch": 405,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "11daf0b22f0fe14a15b53363ba3312cd0deedece06ff16477d02b70ef9f97b7b"
+    },
+    {
+      "continuation_epoch": 150,
+      "difficulty_response_committed": false,
+      "engine_epoch": 22,
+      "global_epoch": 406,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "99dcbd6e1381dbc04f687e11a9f2e8663a5ecc4e2e40a18d5f8adcc6f96daf18"
+    },
+    {
+      "continuation_epoch": 151,
+      "difficulty_response_committed": false,
+      "engine_epoch": 23,
+      "global_epoch": 407,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "3b9a7b0e9ee0c3b66ac17eac4d2d4577235f70686fc1424f72a4a13207067cc7"
+    },
+    {
+      "continuation_epoch": 152,
+      "difficulty_response_committed": false,
+      "engine_epoch": 24,
+      "global_epoch": 408,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "cd984c3fe5c83f5c4f90d3f36d56a01c5c9a6852a935ac21d6aa3b2ee342d41f"
+    },
+    {
+      "continuation_epoch": 153,
+      "difficulty_response_committed": false,
+      "engine_epoch": 25,
+      "global_epoch": 409,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "9968fc59aaaa295b8d32c2db5534c4d5ae45eb2cbd34c5aadde8df458b34c601"
+    },
+    {
+      "continuation_epoch": 154,
+      "difficulty_response_committed": false,
+      "engine_epoch": 26,
+      "global_epoch": 410,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "f23c30e0bebe0a5b7b2ad4c5e7f4269768242fa2a5421f1e7d1a7dce782a8800"
+    },
+    {
+      "continuation_epoch": 155,
+      "difficulty_response_committed": false,
+      "engine_epoch": 27,
+      "global_epoch": 411,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "0579cd8e8cba3572fb94dab94710903037103f519e76513017e937d7e9686b1e"
+    },
+    {
+      "continuation_epoch": 156,
+      "difficulty_response_committed": false,
+      "engine_epoch": 28,
+      "global_epoch": 412,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "5ef5eca012266b1e9a572655da987fe95abadac96c763507f96341dc8b25aeba"
+    },
+    {
+      "continuation_epoch": 157,
+      "difficulty_response_committed": false,
+      "engine_epoch": 29,
+      "global_epoch": 413,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "1677853bb9977e0efd39c6c8b05096f0d33f95e3340849f822174e96ec369110"
+    },
+    {
+      "continuation_epoch": 158,
+      "difficulty_response_committed": false,
+      "engine_epoch": 30,
+      "global_epoch": 414,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "e4d91014cd54a6e8a981ef55674d6b1ee4128ea28e48455018e302ff9eb74ff6"
+    },
+    {
+      "continuation_epoch": 159,
+      "difficulty_response_committed": false,
+      "engine_epoch": 31,
+      "global_epoch": 415,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "9eb7f52de3ee27681905975823147136eab305088d47b282e66014702e1a60ac"
+    },
+    {
+      "continuation_epoch": 160,
+      "difficulty_response_committed": false,
+      "engine_epoch": 32,
+      "global_epoch": 416,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "bc28fa2a258157bd8e922e5508dcc636464c807c99811c2b60e33be76a2e3993"
+    },
+    {
+      "continuation_epoch": 161,
+      "difficulty_response_committed": false,
+      "engine_epoch": 33,
+      "global_epoch": 417,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "6b06f4077c969e62a3bac7b0aa230b0d222e8549615530a74354dbc567ee4768"
+    },
+    {
+      "continuation_epoch": 162,
+      "difficulty_response_committed": false,
+      "engine_epoch": 34,
+      "global_epoch": 418,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "4826b170b162f2faf89bb8721354cf84896c8275a3354b8c9a6cc118340fd5cc"
+    },
+    {
+      "continuation_epoch": 163,
+      "difficulty_response_committed": false,
+      "engine_epoch": 35,
+      "global_epoch": 419,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "8e3c8ed25f9728fe83b34740d797134f667631cc65b2336b4a342de49ef20ee8"
+    },
+    {
+      "continuation_epoch": 164,
+      "difficulty_response_committed": false,
+      "engine_epoch": 36,
+      "global_epoch": 420,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "dfe859f8dae35964bb5e5d00958851a86da2a04607b18faf97e19200d56a7449"
+    },
+    {
+      "continuation_epoch": 165,
+      "difficulty_response_committed": false,
+      "engine_epoch": 37,
+      "global_epoch": 421,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "a5141c624e3aa48b106d8fc1d588729a72f99e07e2388479a65679227ee99e70"
+    },
+    {
+      "continuation_epoch": 166,
+      "difficulty_response_committed": false,
+      "engine_epoch": 38,
+      "global_epoch": 422,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "8c65933970f858c0e3b6a0ab24f2647be02f1bbe670ab945288b1146861d171a"
+    },
+    {
+      "continuation_epoch": 167,
+      "difficulty_response_committed": false,
+      "engine_epoch": 39,
+      "global_epoch": 423,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "891c2e710c90241c5d60ceb927a4f00898895139f2cc06f51eaa0ef68996b246"
+    },
+    {
+      "continuation_epoch": 168,
+      "difficulty_response_committed": false,
+      "engine_epoch": 40,
+      "global_epoch": 424,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "831d6212068374d772b31f413c6836ecd87b151e37828ce161ae8e5bcb29b00a"
+    },
+    {
+      "continuation_epoch": 169,
+      "difficulty_response_committed": false,
+      "engine_epoch": 41,
+      "global_epoch": 425,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "98d40d18557020188b77a34e73e9b4e5448a2e14d3ebbe92455bdbedd647313b"
+    },
+    {
+      "continuation_epoch": 170,
+      "difficulty_response_committed": false,
+      "engine_epoch": 42,
+      "global_epoch": 426,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "f9dd5909c2f4a897c016d396c08c11cc8ef0a3513f8a7217f6322f6eac315cca"
+    },
+    {
+      "continuation_epoch": 171,
+      "difficulty_response_committed": false,
+      "engine_epoch": 43,
+      "global_epoch": 427,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "e3687c7f81a4d15667836aef3c22df859ec3dba3212046bd3ce013184f37d3aa"
+    },
+    {
+      "continuation_epoch": 172,
+      "difficulty_response_committed": false,
+      "engine_epoch": 44,
+      "global_epoch": 428,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "9b058515aa5c65970fde1534bbc078a5c97cc2369866a9f8e18c680d28a1b5d5"
+    },
+    {
+      "continuation_epoch": 173,
+      "difficulty_response_committed": false,
+      "engine_epoch": 45,
+      "global_epoch": 429,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "d4c7576f243da641441825c1185c265d62c298b35c84eb370fa161d2d3ef24f4"
+    },
+    {
+      "continuation_epoch": 174,
+      "difficulty_response_committed": false,
+      "engine_epoch": 46,
+      "global_epoch": 430,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "8d57b309b0cde5b5fa7d74252ac5692ba06a9d19b2e54cb984c8203ab6cec3f8"
+    },
+    {
+      "continuation_epoch": 175,
+      "difficulty_response_committed": false,
+      "engine_epoch": 47,
+      "global_epoch": 431,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "6624f3f1bdeb78d10e86958287bdf54d1bb3740e97674862e66021ccf4779afe"
+    },
+    {
+      "continuation_epoch": 176,
+      "difficulty_response_committed": false,
+      "engine_epoch": 48,
+      "global_epoch": 432,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "daa26d0cb649e69d4bef6d917336cf3613f0dfecd3d1c33630f5d4a99b85ec5f"
+    },
+    {
+      "continuation_epoch": 177,
+      "difficulty_response_committed": false,
+      "engine_epoch": 49,
+      "global_epoch": 433,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "3b960ced693463e4595efef2b982a6b032a12359e0d53950b3d505a3143e234d"
+    },
+    {
+      "continuation_epoch": 178,
+      "difficulty_response_committed": false,
+      "engine_epoch": 50,
+      "global_epoch": 434,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "572e96acf21c61689861e98f10a9e1c320a97775b74dc95d253344c88af31202"
+    },
+    {
+      "continuation_epoch": 179,
+      "difficulty_response_committed": false,
+      "engine_epoch": 51,
+      "global_epoch": 435,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "312fc85749ba552e97b08355de5e3f342fb2d2877efc11a3d2c1f9af0c18f1f5"
+    },
+    {
+      "continuation_epoch": 180,
+      "difficulty_response_committed": false,
+      "engine_epoch": 52,
+      "global_epoch": 436,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "49301217c4a108ca8d57d21ca9d389df015418c719a626105b5a6b2d40921b27"
+    },
+    {
+      "continuation_epoch": 181,
+      "difficulty_response_committed": false,
+      "engine_epoch": 53,
+      "global_epoch": 437,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "e306a4c15f6d0f9c66381fdd2db8e6ca68985e031f2020a14dbb4725203f74f7"
+    },
+    {
+      "continuation_epoch": 182,
+      "difficulty_response_committed": false,
+      "engine_epoch": 54,
+      "global_epoch": 438,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "67d2d86e287dec059cfa93293981a4aee94b4a32c9d8d3c21b79a78eca6a4a6c"
+    },
+    {
+      "continuation_epoch": 183,
+      "difficulty_response_committed": false,
+      "engine_epoch": 55,
+      "global_epoch": 439,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "f799f5a0ba11d4be1c5994195f24f1ea8a0f0773951882d114b330fd6cce655c"
+    },
+    {
+      "continuation_epoch": 184,
+      "difficulty_response_committed": false,
+      "engine_epoch": 56,
+      "global_epoch": 440,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "81c78c68f03563b6a8d88422bd785c6e218f11bd74225693349159f0bae4c9fe"
+    },
+    {
+      "continuation_epoch": 185,
+      "difficulty_response_committed": false,
+      "engine_epoch": 57,
+      "global_epoch": 441,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "82a1f0770fb895141a02970a4a5e525291b2da3c2b01357aa4be46ac159b10c6"
+    },
+    {
+      "continuation_epoch": 186,
+      "difficulty_response_committed": false,
+      "engine_epoch": 58,
+      "global_epoch": 442,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "1cfa4e452d043b6ad2fe034223687ee7d0f42076a3b2eac312fde887728ed0ab"
+    },
+    {
+      "continuation_epoch": 187,
+      "difficulty_response_committed": false,
+      "engine_epoch": 59,
+      "global_epoch": 443,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "23b8334b3fd8a59cd8962d9acacb3451590fd4dd0698134147d7240465a486a2"
+    },
+    {
+      "continuation_epoch": 188,
+      "difficulty_response_committed": false,
+      "engine_epoch": 60,
+      "global_epoch": 444,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "98692d27af8bb1fbf8b3d105cb839723b4322b710507c4ba4865a60f1f6edf3c"
+    },
+    {
+      "continuation_epoch": 189,
+      "difficulty_response_committed": false,
+      "engine_epoch": 61,
+      "global_epoch": 445,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "06d2a5303ada7f9aa4ec5569197d266aac67df519434d5b611d5105675346c8a"
+    },
+    {
+      "continuation_epoch": 190,
+      "difficulty_response_committed": false,
+      "engine_epoch": 62,
+      "global_epoch": 446,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "490583c541b970fca428b166e18636de10d753e4999d47426e1246f2cf10f380"
+    },
+    {
+      "continuation_epoch": 191,
+      "difficulty_response_committed": false,
+      "engine_epoch": 63,
+      "global_epoch": 447,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "aac69d20fff405b88f3d11a0f85897de45837de905b35f44117ac01cc4d22ffa"
+    },
+    {
+      "continuation_epoch": 192,
+      "difficulty_response_committed": false,
+      "engine_epoch": 64,
+      "global_epoch": 448,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "33ff200eb9709e0d99165c22561ac19a1d2f1882a4d8725846a05ca05225a1f5"
+    },
+    {
+      "continuation_epoch": 193,
+      "difficulty_response_committed": false,
+      "engine_epoch": 1,
+      "global_epoch": 449,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "5b8c534702420c30b61127a3126b872ff2731a78aad6739c05d1c10ef2d7435b"
+    },
+    {
+      "continuation_epoch": 194,
+      "difficulty_response_committed": false,
+      "engine_epoch": 2,
+      "global_epoch": 450,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "a6617acb283a42a79cbd26f6368d7801636849b3043530be54a53c4637d27359"
+    },
+    {
+      "continuation_epoch": 195,
+      "difficulty_response_committed": false,
+      "engine_epoch": 3,
+      "global_epoch": 451,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "e2fae7902c73bcff7782b81a96d76f7dec7cbaf01b9748df29b866f760438d65"
+    },
+    {
+      "continuation_epoch": 196,
+      "difficulty_response_committed": false,
+      "engine_epoch": 4,
+      "global_epoch": 452,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "836f6f5aa3f578350d65aac17434ba09c87c99eded8a1bf99a05664df369730a"
+    },
+    {
+      "continuation_epoch": 197,
+      "difficulty_response_committed": false,
+      "engine_epoch": 5,
+      "global_epoch": 453,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "e9cf06a42e18412ae178668dc2e55264833a58cf49bf54c1f747ebf81430acfc"
+    },
+    {
+      "continuation_epoch": 198,
+      "difficulty_response_committed": false,
+      "engine_epoch": 6,
+      "global_epoch": 454,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "25e2f7fd29c9d43422c58648eedbc8b8f2cb65c641c4a9013a89231c308f53b1"
+    },
+    {
+      "continuation_epoch": 199,
+      "difficulty_response_committed": false,
+      "engine_epoch": 7,
+      "global_epoch": 455,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "be6b813193d8d59789308cca1eb5d7b894749327313d0417ff4bcf990137aded"
+    },
+    {
+      "continuation_epoch": 200,
+      "difficulty_response_committed": false,
+      "engine_epoch": 8,
+      "global_epoch": 456,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "f703fb416446f46bc0bd0ac9ae9558124b6fe24c9d950c6f38fdb22297bf517d"
+    },
+    {
+      "continuation_epoch": 201,
+      "difficulty_response_committed": false,
+      "engine_epoch": 9,
+      "global_epoch": 457,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "1a0946ad20444a00ddc71ad6beb6bf8e838eb139d02e2808a0c3292c63f3719e"
+    },
+    {
+      "continuation_epoch": 202,
+      "difficulty_response_committed": false,
+      "engine_epoch": 10,
+      "global_epoch": 458,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "eff412817e959c5ce1e7e95659ff278af66c342ae07c47dc8e5d16ea61bced10"
+    },
+    {
+      "continuation_epoch": 203,
+      "difficulty_response_committed": false,
+      "engine_epoch": 11,
+      "global_epoch": 459,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "a61871e387bb3f1eba4c76ee255aa2440a0bb7848f3df1dffa3d08de3ee5bad7"
+    },
+    {
+      "continuation_epoch": 204,
+      "difficulty_response_committed": false,
+      "engine_epoch": 12,
+      "global_epoch": 460,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "a64b9d66102434fb2ec0fc9a86458a5b0aaa7992cb3d291e724ceba0781f2fd1"
+    },
+    {
+      "continuation_epoch": 205,
+      "difficulty_response_committed": false,
+      "engine_epoch": 13,
+      "global_epoch": 461,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "e5483922de6d59a0676450094852efccafd23ffe1c3d4bc62cc27debec844b3f"
+    },
+    {
+      "continuation_epoch": 206,
+      "difficulty_response_committed": false,
+      "engine_epoch": 14,
+      "global_epoch": 462,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "497eb5f9f58b3bc043cb564b5d87e21cf0f233b877b560fe27bd4f3b378fb6d7"
+    },
+    {
+      "continuation_epoch": 207,
+      "difficulty_response_committed": false,
+      "engine_epoch": 15,
+      "global_epoch": 463,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "390d02f48c7d4f58c231f93641367ea61729be22dd73704c235fd3633c22a8b8"
+    },
+    {
+      "continuation_epoch": 208,
+      "difficulty_response_committed": false,
+      "engine_epoch": 16,
+      "global_epoch": 464,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "43d84c6a9751232ec60e60e2e4dd03ee4755ce04428ca40ba8e6012fb0ce01f7"
+    },
+    {
+      "continuation_epoch": 209,
+      "difficulty_response_committed": false,
+      "engine_epoch": 17,
+      "global_epoch": 465,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "3d105cb24a86b792d55dee00dbaab0651fbb905227855a5819e3ad03ae06a0e2"
+    },
+    {
+      "continuation_epoch": 210,
+      "difficulty_response_committed": false,
+      "engine_epoch": 18,
+      "global_epoch": 466,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "13ec59267107ff805018f0e286c7e268d3b03f1e1ada3c2770c47dc3de38f603"
+    },
+    {
+      "continuation_epoch": 211,
+      "difficulty_response_committed": false,
+      "engine_epoch": 19,
+      "global_epoch": 467,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "3cc52081c768fd7bd9b299378a9a442ba9951e19d32bb6359b9c73f7270ddbb7"
+    },
+    {
+      "continuation_epoch": 212,
+      "difficulty_response_committed": false,
+      "engine_epoch": 20,
+      "global_epoch": 468,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "ac1a6435c1eebf3baf5ea49c9811c630e1b059460f821dbedb1e514dab30dc14"
+    },
+    {
+      "continuation_epoch": 213,
+      "difficulty_response_committed": false,
+      "engine_epoch": 21,
+      "global_epoch": 469,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "2a28a412e00c1ee2d4db6c70a02d754b66867338de4e27d796160ddca59faf51"
+    },
+    {
+      "continuation_epoch": 214,
+      "difficulty_response_committed": false,
+      "engine_epoch": 22,
+      "global_epoch": 470,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "8fd3064dbfcef0ccf05e5af4e927b9b5e338e42f92879b5483dc78dec4bc1757"
+    },
+    {
+      "continuation_epoch": 215,
+      "difficulty_response_committed": false,
+      "engine_epoch": 23,
+      "global_epoch": 471,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "5a4dcc8c0ad6f2b00c280316cd979d5774222d497f44901802f92598526ee301"
+    },
+    {
+      "continuation_epoch": 216,
+      "difficulty_response_committed": false,
+      "engine_epoch": 24,
+      "global_epoch": 472,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "da4a3805149af5051282b015c868987f01f181affe7d676fbf4eed3e371f9c1f"
+    },
+    {
+      "continuation_epoch": 217,
+      "difficulty_response_committed": false,
+      "engine_epoch": 25,
+      "global_epoch": 473,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "10fb35de7d8fd6b7dc667cdeaab650a8a6a4f5d16a163a9bd76c0d0932029c66"
+    },
+    {
+      "continuation_epoch": 218,
+      "difficulty_response_committed": false,
+      "engine_epoch": 26,
+      "global_epoch": 474,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "c6d1e32dfff70aaaafddafe69f42dfdbb93c56c6eddc6c85cafd9fcc2edac389"
+    },
+    {
+      "continuation_epoch": 219,
+      "difficulty_response_committed": false,
+      "engine_epoch": 27,
+      "global_epoch": 475,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "415266b67bd7e933457537e81576135ebd3aaa79af0f0a6ef11e71fe954a51c6"
+    },
+    {
+      "continuation_epoch": 220,
+      "difficulty_response_committed": false,
+      "engine_epoch": 28,
+      "global_epoch": 476,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "69ab18c311f597cbc523a2ca8d1452720d949ec974a2a762da5c48c8cadc0918"
+    },
+    {
+      "continuation_epoch": 221,
+      "difficulty_response_committed": false,
+      "engine_epoch": 29,
+      "global_epoch": 477,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "ff62bda450badba337afbfaf1bc88eea12d9e90ee955212b67c2f37fcc59d156"
+    },
+    {
+      "continuation_epoch": 222,
+      "difficulty_response_committed": false,
+      "engine_epoch": 30,
+      "global_epoch": 478,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "7824db492e6eedce064d43ca883b0e4d6e87172e6d126bed462fd34df75c2dbd"
+    },
+    {
+      "continuation_epoch": 223,
+      "difficulty_response_committed": false,
+      "engine_epoch": 31,
+      "global_epoch": 479,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "ccf6c432b2e79045148baaf25efc730309d567056ff6c133fc44366e58c5d10a"
+    },
+    {
+      "continuation_epoch": 224,
+      "difficulty_response_committed": false,
+      "engine_epoch": 32,
+      "global_epoch": 480,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "016e8364a3acc7b3706361d596ac4a5555ce4b2c9a3682bbdf0241d7ecbeb16f"
+    },
+    {
+      "continuation_epoch": 225,
+      "difficulty_response_committed": false,
+      "engine_epoch": 33,
+      "global_epoch": 481,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "94fb7c89fa91984f7191fe7cc3c973737da14bb16ef69184165c1095e51583a6"
+    },
+    {
+      "continuation_epoch": 226,
+      "difficulty_response_committed": false,
+      "engine_epoch": 34,
+      "global_epoch": 482,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "ebab4d8d3d8009056e95c33b654c036d67dd9e644b9907d9837c724720ccfd8c"
+    },
+    {
+      "continuation_epoch": 227,
+      "difficulty_response_committed": false,
+      "engine_epoch": 35,
+      "global_epoch": 483,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "3b78c4d1553a5db216ca24a4a2cd8f6b9ea759bdbf7eb117630be819164a2e7e"
+    },
+    {
+      "continuation_epoch": 228,
+      "difficulty_response_committed": false,
+      "engine_epoch": 36,
+      "global_epoch": 484,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "bc7fb44f3784adbd9645150a4b990eced2fdd610904ece48f4804f42a94674c1"
+    },
+    {
+      "continuation_epoch": 229,
+      "difficulty_response_committed": false,
+      "engine_epoch": 37,
+      "global_epoch": 485,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "e7ace48c4273f8f8176e77d03e7180a1cf1aaeaa427b54a1ee282f0adc7c531b"
+    },
+    {
+      "continuation_epoch": 230,
+      "difficulty_response_committed": false,
+      "engine_epoch": 38,
+      "global_epoch": 486,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "e413f2f0662a33ed92c52033bd441ecf0124e67657d8e9e6bd6627e5771511c9"
+    },
+    {
+      "continuation_epoch": 231,
+      "difficulty_response_committed": false,
+      "engine_epoch": 39,
+      "global_epoch": 487,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "9ddb650a026df14a62794c54ed1f1b021d7e9f22fd794765df1f0a34c24b0990"
+    },
+    {
+      "continuation_epoch": 232,
+      "difficulty_response_committed": false,
+      "engine_epoch": 40,
+      "global_epoch": 488,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "97b3b5681e185f48134f6c5cf0dbd7eaed41a55736215777119f56c05534502c"
+    },
+    {
+      "continuation_epoch": 233,
+      "difficulty_response_committed": false,
+      "engine_epoch": 41,
+      "global_epoch": 489,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "519dce7fabf1ec97054ed96c6e09315c223a7daef388197b3c52b532897134cc"
+    },
+    {
+      "continuation_epoch": 234,
+      "difficulty_response_committed": false,
+      "engine_epoch": 42,
+      "global_epoch": 490,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "721226c64d061683f0ba38776fd4c51d2470205818f7e927c056c24316268884"
+    },
+    {
+      "continuation_epoch": 235,
+      "difficulty_response_committed": false,
+      "engine_epoch": 43,
+      "global_epoch": 491,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "b76a5939b7ed90b43a048830477d3319a2f8b6e072d05f47583746a59e83a6d4"
+    },
+    {
+      "continuation_epoch": 236,
+      "difficulty_response_committed": false,
+      "engine_epoch": 44,
+      "global_epoch": 492,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "9d06609716a5fd432cbd5131c48fa351682bdbda5f9273567ac7c33b7777ccca"
+    },
+    {
+      "continuation_epoch": 237,
+      "difficulty_response_committed": false,
+      "engine_epoch": 45,
+      "global_epoch": 493,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "2ef766122d9ca46c5cf5f11fb1d4a0d4d1a8a025b3eb329e6c9fae3dde5c1010"
+    },
+    {
+      "continuation_epoch": 238,
+      "difficulty_response_committed": false,
+      "engine_epoch": 46,
+      "global_epoch": 494,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "6a268035cb3753c6a7269a4e6a8eb4285bdcfebfbdaa8d702236dc9b8f52d573"
+    },
+    {
+      "continuation_epoch": 239,
+      "difficulty_response_committed": false,
+      "engine_epoch": 47,
+      "global_epoch": 495,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "4559c40f4c2d7a45a3e3eea776c7ec1e4c49cfb24417c09e1bc4d15c6a2262aa"
+    },
+    {
+      "continuation_epoch": 240,
+      "difficulty_response_committed": false,
+      "engine_epoch": 48,
+      "global_epoch": 496,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "3585032a8927f7f9c088c57440f59b13a2214405c48b6324b66b77836b7b6b7f"
+    },
+    {
+      "continuation_epoch": 241,
+      "difficulty_response_committed": false,
+      "engine_epoch": 49,
+      "global_epoch": 497,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "5b0ade7bd61182bab5b549aed89eb64ff76853ae7609b92af25be1eed24ac9e5"
+    },
+    {
+      "continuation_epoch": 242,
+      "difficulty_response_committed": false,
+      "engine_epoch": 50,
+      "global_epoch": 498,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "1c08f8427b322eb997f750b84a185903abab7b668f6ac201a5162177854a44e5"
+    },
+    {
+      "continuation_epoch": 243,
+      "difficulty_response_committed": false,
+      "engine_epoch": 51,
+      "global_epoch": 499,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "f683e1547f2102315e0e8b2cf52d2258814fa335d9e88b70930a5ea9f2a4ee28"
+    },
+    {
+      "continuation_epoch": 244,
+      "difficulty_response_committed": false,
+      "engine_epoch": 52,
+      "global_epoch": 500,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "e88adc402e3e8d17f2f7bf2a9d0865d5c1c45cc345fda5b32d6584d21f8128c1"
+    },
+    {
+      "continuation_epoch": 245,
+      "difficulty_response_committed": false,
+      "engine_epoch": 53,
+      "global_epoch": 501,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "fb2a8a6ffce3dd8fc19e74e78744683a9e38d88b269e0191dc286e23f547b717"
+    },
+    {
+      "continuation_epoch": 246,
+      "difficulty_response_committed": false,
+      "engine_epoch": 54,
+      "global_epoch": 502,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "4758438a9a417b212b7a66ee91ffe1f97a045e278aa8a62f81ce46109071eced"
+    },
+    {
+      "continuation_epoch": 247,
+      "difficulty_response_committed": false,
+      "engine_epoch": 55,
+      "global_epoch": 503,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "33713df9a02e0a63cc09bae0087f90f5f3d75238586b1f8b7528bf3159601cdd"
+    },
+    {
+      "continuation_epoch": 248,
+      "difficulty_response_committed": false,
+      "engine_epoch": 56,
+      "global_epoch": 504,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "c44dd11fbaf5d68e7a3163b5d3ff5a5c221502688cd5904e30259c4909e19885"
+    },
+    {
+      "continuation_epoch": 249,
+      "difficulty_response_committed": false,
+      "engine_epoch": 57,
+      "global_epoch": 505,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "ff1053b583368e56267ea6ecd3db35253d69477f59c42ff1cdb14c2241e55f1d"
+    },
+    {
+      "continuation_epoch": 250,
+      "difficulty_response_committed": false,
+      "engine_epoch": 58,
+      "global_epoch": 506,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "2520feebef09c37064eaaa3354bc1ecb0124900976162b172c6fc5f58c95e91c"
+    },
+    {
+      "continuation_epoch": 251,
+      "difficulty_response_committed": false,
+      "engine_epoch": 59,
+      "global_epoch": 507,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "fa9248b99e4a09af832c4caa873703041b514986f602a9510ce5514bf47df27e"
+    },
+    {
+      "continuation_epoch": 252,
+      "difficulty_response_committed": false,
+      "engine_epoch": 60,
+      "global_epoch": 508,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "e280993b13207c6a21d8fdccdcb5eff19ac2eabf91a2237a5f6ed66298daf3c0"
+    },
+    {
+      "continuation_epoch": 253,
+      "difficulty_response_committed": false,
+      "engine_epoch": 61,
+      "global_epoch": 509,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "0b4ce73fee9c6324b8097850e34c3d782616eac01cd70a92505bcc5d8cfdb4bd"
+    },
+    {
+      "continuation_epoch": 254,
+      "difficulty_response_committed": false,
+      "engine_epoch": 62,
+      "global_epoch": 510,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "548301858da4b0d4317e62ce52c12e6d43f05d89a8aa5cb1bc4356f0e84802c2"
+    },
+    {
+      "continuation_epoch": 255,
+      "difficulty_response_committed": false,
+      "engine_epoch": 63,
+      "global_epoch": 511,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "f00997fa6a576c5e32ecd6b8fbfb9dd188a1d74747c0680c316488710cbdb61d"
+    },
+    {
+      "continuation_epoch": 256,
+      "difficulty_response_committed": false,
+      "engine_epoch": 64,
+      "global_epoch": 512,
+      "repair_committed": false,
+      "research_topic_committed": false,
+      "seed_commitment": "edb36a5aa64751f21f99d90061cd1249763ed6fb742fee3e1681de4d58b3d3b9"
+    }
+  ]
+}

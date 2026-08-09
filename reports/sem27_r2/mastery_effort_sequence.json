@@ -1,0 +1,13 @@
+{
+  "sequence": [
+    {
+      "diagnostic_experiments_to_adapt": 9,
+      "failed_repairs_to_adapt": 1,
+      "regime_id": 2,
+      "repairs_to_adapt": 2,
+      "time_to_exceed_prior_frontier_ns": 6738300,
+      "time_to_first_valid_adaptation_ns": 19742300,
+      "time_to_regime_closure_ns": null
+    }
+  ]
+}

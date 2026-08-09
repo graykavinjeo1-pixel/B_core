@@ -1,0 +1,19 @@
+{
+  "autonomous_policy_diff_lines": 0,
+  "challenge_quality_is_observational": true,
+  "classifier_overrides": 0,
+  "closure_thresholds_added": 0,
+  "decision_authority": "NONE_OBSERVER_ONLY",
+  "engine_behavior_diff_lines": 0,
+  "open_productive_observation": "ACTIVE_REGIME_OPEN_AND_LAST_16_EPOCHS_HAVE_POSITIVE_FRONTIER_DELTA_AND_AT_LEAST_ONE_ACCEPTED_REPAIR",
+  "open_stalled_observation": "ACTIVE_REGIME_OPEN_AND_LAST_16_EPOCHS_HAVE_ZERO_TOTAL_FRONTIER_DELTA",
+  "policy_fields_changed": 0,
+  "potential_plateau_observation": "LAST_8_EPOCHS_HAVE_ZERO_FRONTIER_DELTA",
+  "regime_productivity_phases": {
+    "ADAPTATION_PHASE": "DIRECT_STRUCTURED_RECURRENCE_SOLVER_MODE",
+    "DIMINISHING_RETURN_PHASE": "CURRENT_ZERO_DELTA_WITH_RECENT_POSITIVE_DELTA",
+    "EXPANSION_PHASE": "POSITIVE_FRONTIER_DELTA",
+    "PLATEAU_CANDIDATE_PHASE": "LAST_8_EPOCHS_HAVE_ZERO_FRONTIER_DELTA"
+  },
+  "status": "PASS"
+}

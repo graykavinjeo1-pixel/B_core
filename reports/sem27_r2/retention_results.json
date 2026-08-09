@@ -1,0 +1,75 @@
+{
+  "capability_negative_transfer_events": 0,
+  "frontier_gain_retention_confirmed": true,
+  "gain_erasure_events": 0,
+  "mean_frontier_gain_retention": 1.0,
+  "min_frontier_gain_retention": 1.0,
+  "paired_results": [
+    {
+      "final_descendant_frontier_scale": 266546,
+      "final_descendant_qualitative_capability": 1600,
+      "initial_descendant_frontier_scale": 93361,
+      "pair": 1,
+      "retained": true,
+      "retention_ratio": 1.0
+    },
+    {
+      "final_descendant_frontier_scale": 266546,
+      "final_descendant_qualitative_capability": 1600,
+      "initial_descendant_frontier_scale": 93364,
+      "pair": 2,
+      "retained": true,
+      "retention_ratio": 1.0
+    },
+    {
+      "final_descendant_frontier_scale": 266546,
+      "final_descendant_qualitative_capability": 1600,
+      "initial_descendant_frontier_scale": 93363,
+      "pair": 3,
+      "retained": true,
+      "retention_ratio": 1.0
+    },
+    {
+      "final_descendant_frontier_scale": 266545,
+      "final_descendant_qualitative_capability": 1600,
+      "initial_descendant_frontier_scale": 93363,
+      "pair": 4,
+      "retained": true,
+      "retention_ratio": 1.0
+    },
+    {
+      "final_descendant_frontier_scale": 266546,
+      "final_descendant_qualitative_capability": 1600,
+      "initial_descendant_frontier_scale": 93381,
+      "pair": 5,
+      "retained": true,
+      "retention_ratio": 1.0
+    },
+    {
+      "final_descendant_frontier_scale": 266546,
+      "final_descendant_qualitative_capability": 1600,
+      "initial_descendant_frontier_scale": 93363,
+      "pair": 6,
+      "retained": true,
+      "retention_ratio": 1.0
+    },
+    {
+      "final_descendant_frontier_scale": 266546,
+      "final_descendant_qualitative_capability": 1600,
+      "initial_descendant_frontier_scale": 93363,
+      "pair": 7,
+      "retained": true,
+      "retention_ratio": 1.0
+    },
+    {
+      "final_descendant_frontier_scale": 266546,
+      "final_descendant_qualitative_capability": 1600,
+      "initial_descendant_frontier_scale": 93363,
+      "pair": 8,
+      "retained": true,
+      "retention_ratio": 1.0
+    }
+  ],
+  "protected_predecessor_capabilities_intact": true,
+  "status": "PASS"
+}

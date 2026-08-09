@@ -1,0 +1,12 @@
+{
+  "autonomous_policy_diff_lines": 0,
+  "capability_negative_transfer_events": 0,
+  "command": "cargo test --workspace --all-targets --all-features --quiet",
+  "engine_behavior_diff_lines": 0,
+  "fresh_pairs_mechanically_verified": true,
+  "gain_erasure_events": 0,
+  "global_reasoning_regressions": 0,
+  "meta_quality_regressions": 0,
+  "r1_ontology_diff_lines": 0,
+  "status": "PASS"
+}

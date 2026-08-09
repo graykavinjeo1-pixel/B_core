@@ -25,6 +25,9 @@ use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 use sha2::{Digest, Sha256};
 
+#[path = "sem27_r1_main/sem27_r2.rs"]
+mod sem27_r2;
+
 const PREDECESSOR_COMMIT: &str = "b279eca8bae9e12ab8232695b4a6b8c24cdb668d";
 const BRANCH: &str = "codex/sem27-r1-outcome-ontology";
 const CAMPAIGN_ID: &str = "SEM27-R1-SEALED-STAIRCASE-REGATE-0001";
@@ -121,6 +124,9 @@ fn main() {
         "regate" => retrospective_regate(&root),
         "freeze" => freeze(&root),
         "run" => run(&root),
+        "r2-freeze" => sem27_r2::freeze(&root),
+        "r2-run" => sem27_r2::run(&root),
+        "r2-seal" => sem27_r2::seal(&root),
         other => Err(format!("UNKNOWN_COMMAND:{other}")),
     };
     match result {

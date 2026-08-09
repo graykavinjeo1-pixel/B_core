@@ -1,0 +1,9 @@
+{
+  "core_depends_on_gpu_runtime": false,
+  "core_depends_on_language_layer": false,
+  "core_depends_on_research_artifacts": false,
+  "core_dockability_preserved": true,
+  "core_mandatory_vram": 0,
+  "status": "PASS",
+  "workspace_tests_pass": true
+}

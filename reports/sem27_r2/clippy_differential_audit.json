@@ -1,0 +1,7 @@
+{
+  "command": "cargo clippy --workspace --all-targets --all-features --message-format short",
+  "new_clippy_warning_signatures_total": 0,
+  "observed_clippy_warning_signatures_total": 22,
+  "predecessor_clippy_warning_count": 22,
+  "status": "PASS"
+}
