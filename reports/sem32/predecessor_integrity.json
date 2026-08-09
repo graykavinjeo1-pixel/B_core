@@ -1,0 +1,10 @@
+{
+  "manifest_entries_checked": 42,
+  "manifest_mismatches": 0,
+  "passed": true,
+  "predecessor_manifest_sha256": "da2be446843cf06ad7de747a43851ee72abf3612571e64a8afb4643ef7dff309",
+  "predecessor_report_sha256": "84a910ec06fa311e07afd048136c10c957dac97a3099edb026c8cb4bb3c81228",
+  "sealed_predecessor_commit": "106616f9920fe8c6de7abe884486c4aa8588d77f",
+  "sem31_levels_a_through_g": true,
+  "sem31_status": "PASS"
+}

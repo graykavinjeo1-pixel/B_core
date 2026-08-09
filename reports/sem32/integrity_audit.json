@@ -1,0 +1,10 @@
+{
+  "counterfactual_gold_branch_reads": 0,
+  "external_llm_calls": 0,
+  "future_world_event_leakage_events": 0,
+  "local_teacher_calls": 0,
+  "network_reads": 0,
+  "network_writes": 0,
+  "passed": true,
+  "remote_executions": 0
+}

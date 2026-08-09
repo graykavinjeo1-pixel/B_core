@@ -1,0 +1,174 @@
+{
+  "compiled_nodes": [
+    {
+      "applicability_guard_preserved": true,
+      "compiled_cost": 5,
+      "compiled_depth": 2,
+      "decomposable": true,
+      "deep_cost": 21,
+      "deep_depth": 7,
+      "node_id": 49202,
+      "semantic_dag_available": true,
+      "source_mechanism": {
+        "class": "DELAYED",
+        "confidence_bps": 10000,
+        "interventional_support": 1,
+        "mechanism_id": 9007203549708290,
+        "observation_lag": 1,
+        "observational_support": 24,
+        "operator": {
+          "atom": {
+            "axis_code": 1,
+            "namespace_code": 32,
+            "value_code": 0
+          },
+          "form": "PRIMITIVE"
+        },
+        "provenance_codes": [
+          32,
+          3201
+        ],
+        "required_material": {
+          "atom": {
+            "axis_code": 2,
+            "namespace_code": 32,
+            "value_code": 0
+          },
+          "form": "PRIMITIVE"
+        },
+        "required_relation": {
+          "directionality": 1,
+          "domain_code": 32,
+          "topology_code": 1
+        },
+        "requires_hidden_context_true": true,
+        "state_channel": {
+          "axis_code": 1,
+          "domain_code": 32
+        },
+        "verification_events": 1
+      }
+    }
+  ],
+  "composition_first": true,
+  "mechanisms": [
+    {
+      "class": "DELAYED",
+      "confidence_bps": 10000,
+      "interventional_support": 1,
+      "mechanism_id": 9007203549708290,
+      "observation_lag": 1,
+      "observational_support": 24,
+      "operator": {
+        "atom": {
+          "axis_code": 1,
+          "namespace_code": 32,
+          "value_code": 0
+        },
+        "form": "PRIMITIVE"
+      },
+      "provenance_codes": [
+        32,
+        3201
+      ],
+      "required_material": {
+        "atom": {
+          "axis_code": 2,
+          "namespace_code": 32,
+          "value_code": 0
+        },
+        "form": "PRIMITIVE"
+      },
+      "required_relation": {
+        "directionality": 1,
+        "domain_code": 32,
+        "topology_code": 1
+      },
+      "requires_hidden_context_true": true,
+      "state_channel": {
+        "axis_code": 1,
+        "domain_code": 32
+      },
+      "verification_events": 1
+    },
+    {
+      "class": "DETERMINISTIC_CONTEXTUAL",
+      "confidence_bps": 10000,
+      "interventional_support": 3,
+      "mechanism_id": 9007203549708289,
+      "observation_lag": 0,
+      "observational_support": 24,
+      "operator": {
+        "atom": {
+          "axis_code": 1,
+          "namespace_code": 32,
+          "value_code": 1
+        },
+        "form": "PRIMITIVE"
+      },
+      "provenance_codes": [
+        32,
+        3201
+      ],
+      "required_material": {
+        "atom": {
+          "axis_code": 2,
+          "namespace_code": 32,
+          "value_code": 0
+        },
+        "form": "PRIMITIVE"
+      },
+      "required_relation": {
+        "directionality": 1,
+        "domain_code": 32,
+        "topology_code": 1
+      },
+      "requires_hidden_context_true": true,
+      "state_channel": {
+        "axis_code": 1,
+        "domain_code": 32
+      },
+      "verification_events": 1
+    },
+    {
+      "class": "STOCHASTIC",
+      "confidence_bps": 9500,
+      "interventional_support": 1,
+      "mechanism_id": 9007203549708291,
+      "observation_lag": 0,
+      "observational_support": 24,
+      "operator": {
+        "atom": {
+          "axis_code": 1,
+          "namespace_code": 32,
+          "value_code": 2
+        },
+        "form": "PRIMITIVE"
+      },
+      "provenance_codes": [
+        32,
+        3201
+      ],
+      "required_material": {
+        "atom": {
+          "axis_code": 2,
+          "namespace_code": 32,
+          "value_code": 0
+        },
+        "form": "PRIMITIVE"
+      },
+      "required_relation": {
+        "directionality": 1,
+        "domain_code": 32,
+        "topology_code": 1
+      },
+      "requires_hidden_context_true": true,
+      "state_channel": {
+        "axis_code": 1,
+        "domain_code": 32
+      },
+      "verification_events": 1
+    }
+  ],
+  "new_causal_primitives": 0
+}

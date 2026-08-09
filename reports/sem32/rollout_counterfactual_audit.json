@@ -1,0 +1,40 @@
+{
+  "copy_on_write": true,
+  "counterfactual_predictions": 3,
+  "counterfactual_verified": 3,
+  "horizon_error_sequence": [
+    [
+      1,
+      0
+    ],
+    [
+      2,
+      0
+    ],
+    [
+      3,
+      0
+    ],
+    [
+      4,
+      0
+    ],
+    [
+      5,
+      0
+    ],
+    [
+      6,
+      0
+    ],
+    [
+      7,
+      0
+    ],
+    [
+      8,
+      0
+    ]
+  ],
+  "structural_delta_error_sequence": []
+}

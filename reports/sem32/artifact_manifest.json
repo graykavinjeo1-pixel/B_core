@@ -1,0 +1,132 @@
+{
+  "artifact_count": 25,
+  "artifacts": [
+    {
+      "bytes": 39124,
+      "path": "crates/semantic-reasoning/src/sem32/engine.rs",
+      "sha256": "68ee47d9275221eb58e0a374252c5859d5a53a19371127992e7bda95acf9f644"
+    },
+    {
+      "bytes": 32600,
+      "path": "crates/semantic-reasoning/src/sem32/mod.rs",
+      "sha256": "34b3493e0bf0f4673a112399bc53d8ab1048b338afd4eeac3572e7865e8767c8"
+    },
+    {
+      "bytes": 47962,
+      "path": "crates/semantic-reasoning/src/sem32/verifier.rs",
+      "sha256": "22586af642d777e2a20e6fe60d8241a727232e3065973b33f7c45d48be019997"
+    },
+    {
+      "bytes": 886,
+      "path": "crates/semantic-reasoning/src/sem32_main.rs",
+      "sha256": "1160fbcf498850c450c00dc3fcda83c889c1ddc721784391340d4d58076b2a71"
+    },
+    {
+      "bytes": 867,
+      "path": "crates/semantic-reasoning/src/sem32_verify_main.rs",
+      "sha256": "30f69bb2368f7c98a61e327828a7dcd7f4a5eb112710f871db0c58469d2fd848"
+    },
+    {
+      "bytes": 11205,
+      "path": "docs/research/SEM32_WORLD_MODEL_LITERATURE_AUDIT.md",
+      "sha256": "1053633ee395af8dfddb520bfc65b621ee9294d41bfeb69d9ecc9d098d79d0d8"
+    },
+    {
+      "bytes": 538,
+      "path": "reports/sem32/SEM32_REPORT.md",
+      "sha256": "060f4c33404a494e028c27ec21ad8be8340082586332fcdf9f75683ebd6c8b5c"
+    },
+    {
+      "bytes": 264,
+      "path": "reports/sem32/belief_uncertainty_audit.json",
+      "sha256": "0e5a73418b95b3f6362068064a1e93a22731c0fe10b879138f73c1c9c5d8e0b8"
+    },
+    {
+      "bytes": 1782,
+      "path": "reports/sem32/campaign_freeze.json",
+      "sha256": "ca3e51aa7b6b322d167a5be37ae91f25b16a979cd8a634b8c948d8dff542352e"
+    },
+    {
+      "bytes": 333,
+      "path": "reports/sem32/causal_ablations.json",
+      "sha256": "71edccf0138fe1c29bfbde69f1a41941847a1d075445dc2c1f220ce08e6a8317"
+    },
+    {
+      "bytes": 504132,
+      "path": "reports/sem32/causal_challenge.json",
+      "sha256": "642ef6176e6fbaf4288a692b63a05a1f57ebe0bd2c5b1141b62c2344bacf41b3"
+    },
+    {
+      "bytes": 4068,
+      "path": "reports/sem32/causal_mechanism_audit.json",
+      "sha256": "545c0844bc979ef319d5bd7fe3611cc684c66341b69e58b3ddf724522a5d105e"
+    },
+    {
+      "bytes": 477766,
+      "path": "reports/sem32/causal_submission.json",
+      "sha256": "6c911a6c82f9983d70f17242c13598070b92f3a98e64f2f15732bb883f38c52f"
+    },
+    {
+      "bytes": 2438,
+      "path": "reports/sem32/independent_causal_verification.json",
+      "sha256": "1bf77287f610b7e10a3fba907ad53a3e24eb9d69964cc8bfaa39fc0964554ec8"
+    },
+    {
+      "bytes": 229,
+      "path": "reports/sem32/integrity_audit.json",
+      "sha256": "c423fa329c020a92b426b63d8fd888bf311321a7a308484d8e9898d7c823635c"
+    },
+    {
+      "bytes": 12156,
+      "path": "reports/sem32/intervention_ledger.jsonl",
+      "sha256": "c68fc48753ba75d833f77149057514e85fb2e2c60253b7ee242faed0d725436d"
+    },
+    {
+      "bytes": 143323,
+      "path": "reports/sem32/observational_transitions.jsonl",
+      "sha256": "453b72bf74dea6262c1a09009f363590d4f093566433bb712e9433dee877dbc6"
+    },
+    {
+      "bytes": 419,
+      "path": "reports/sem32/predecessor_integrity.json",
+      "sha256": "969e1b35b721139d25645d974183856a4ef87494ad1ef2a8542d6447d1b23ecc"
+    },
+    {
+      "bytes": 257,
+      "path": "reports/sem32/prestart_audit.json",
+      "sha256": "cafd980215a20af7ca492eba05d0c14ecd89ac11236e6eb9ffcf21f42e14b4fd"
+    },
+    {
+      "bytes": 980,
+      "path": "reports/sem32/reachability_audit.json",
+      "sha256": "8ea16dfa4b226816590f538bf385a993930baf87c1c0068c6a4c17ff875fd0e4"
+    },
+    {
+      "bytes": 409,
+      "path": "reports/sem32/rollout_counterfactual_audit.json",
+      "sha256": "59e2b18a9c2e69b985d8ec1ace2ca144f4af2a9b9562c862bdc29188b6875526"
+    },
+    {
+      "bytes": 5189,
+      "path": "reports/sem32/sem32_final_report.json",
+      "sha256": "3637bb204f3beab5758bba99162506d1c7da76ee5dd4508c1a2c7eec5e0e794d"
+    },
+    {
+      "bytes": 901,
+      "path": "reports/sem32/sparse_scaling_audit.json",
+      "sha256": "27074e46d3735c80ea6fdfe4e8659b00c1f877c31ade34947af20064f83ed8dc"
+    },
+    {
+      "bytes": 31631,
+      "path": "research/sem32/SEM32_INSTRUCTION.md",
+      "sha256": "3713dfc82c173450b6de3abdafc13e45e27a1b56fb7510b2def60d6eb3b782f8"
+    },
+    {
+      "bytes": 1807,
+      "path": "research/sem32/ontology.json",
+      "sha256": "98d2b4acd10d0383f10afa64f5ca8a98b5f9b1e92c9d7ebae79fa6bf6f094545"
+    }
+  ],
+  "campaign_id": "SEM32-LITERATURE-INFORMED-CAUSAL-WORLD-MODEL-0001",
+  "schema_version": "SEM32_ARTIFACT_MANIFEST_1"
+}

@@ -1,0 +1,31 @@
+{
+  "active_entity_count": 2,
+  "active_mechanism_count": 1,
+  "active_semantic_nodes": 7,
+  "case_id": 1077,
+  "plausible_deltas": {
+    "branches": [
+      {
+        "confidence_bps": 7000,
+        "delta": {
+          "created_entities": [],
+          "destroyed_entities": [],
+          "property_changes": [],
+          "relation_changes": [],
+          "state_changes": [
+            {
+              "change": 2,
+              "channel": {
+                "axis_code": 1,
+                "domain_code": 32
+              },
+              "confidence_bps": 10000,
+              "entity": 10771
+            }
+          ]
+        },
+        "uncertainty": "EPISTEMIC"
+      }
+    ]
+  }
+}

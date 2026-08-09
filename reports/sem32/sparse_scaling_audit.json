@@ -1,0 +1,34 @@
+{
+  "causal_mechanism_full_scans": 0,
+  "largest_world_entities": 100000,
+  "points": [
+    {
+      "full_route_entity_touches": 1000,
+      "full_route_mechanism_touches": 3,
+      "result_equivalent": true,
+      "sparse_entity_touches": 2,
+      "sparse_mechanism_touches": 1,
+      "total_mechanisms": 3,
+      "world_entities": 1000
+    },
+    {
+      "full_route_entity_touches": 10000,
+      "full_route_mechanism_touches": 3,
+      "result_equivalent": true,
+      "sparse_entity_touches": 2,
+      "sparse_mechanism_touches": 1,
+      "total_mechanisms": 3,
+      "world_entities": 10000
+    },
+    {
+      "full_route_entity_touches": 100000,
+      "full_route_mechanism_touches": 3,
+      "result_equivalent": true,
+      "sparse_entity_touches": 2,
+      "sparse_mechanism_touches": 1,
+      "total_mechanisms": 3,
+      "world_entities": 100000
+    }
+  ],
+  "world_memory_full_scans": 0
+}

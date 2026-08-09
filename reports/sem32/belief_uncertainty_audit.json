@@ -1,0 +1,9 @@
+{
+  "aleatoric_stochastic_events": 4,
+  "epistemic_uncertainty_events": 2,
+  "partial_observability_cases": 3,
+  "passed": true,
+  "predictive_uncertainty_collapse_events": 0,
+  "stochastic_future_collapse_events": 0,
+  "unobserved_state_hallucinated_as_fact": 0
+}

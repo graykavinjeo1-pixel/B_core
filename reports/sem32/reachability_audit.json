@@ -1,0 +1,53 @@
+{
+  "planning_capability_established": false,
+  "results": [
+    {
+      "path_certificate": [
+        {
+          "from": 1,
+          "mechanism_code": 10,
+          "to": 2
+        },
+        {
+          "from": 2,
+          "mechanism_code": 11,
+          "to": 3
+        }
+      ],
+      "query_id": 1,
+      "status": "REACHABLE_WITHIN_BUDGET"
+    },
+    {
+      "path_certificate": [
+        {
+          "from": 1,
+          "mechanism_code": 10,
+          "to": 2
+        },
+        {
+          "from": 2,
+          "mechanism_code": 11,
+          "to": 3
+        },
+        {
+          "from": 3,
+          "mechanism_code": 12,
+          "to": 4
+        }
+      ],
+      "query_id": 2,
+      "status": "REACHABLE_EVENTUALLY"
+    },
+    {
+      "path_certificate": [],
+      "query_id": 3,
+      "status": "UNREACHABLE"
+    },
+    {
+      "path_certificate": [],
+      "query_id": 4,
+      "status": "UNKNOWN_REACHABILITY"
+    }
+  ],
+  "unreachable_shortcut_accepts": 0
+}

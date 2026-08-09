@@ -1,0 +1,9 @@
+{
+  "causal_law_memory_ablation_pass": true,
+  "compiled_causal_memory_ablation_pass": true,
+  "counterfactual_causal_model_ablation_pass": true,
+  "epistemic_uncertainty_ablation_pass": true,
+  "factored_dynamics_ablation_pass": true,
+  "interventional_causality_ablation_pass": true,
+  "sparse_causal_routing_ablation_pass": true
+}

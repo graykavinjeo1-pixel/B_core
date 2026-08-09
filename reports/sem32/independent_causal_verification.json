@@ -1,0 +1,91 @@
+{
+  "frozen_binary_sha256": "2386b938d30203ec9631b448e56121bb149f3bb41d1102db0cdc45e965fb26ed",
+  "result": {
+    "accepted": true,
+    "contract_version": "SEM32_LITERATURE_INFORMED_CAUSAL_VERIFIER_1",
+    "level_a_pass": true,
+    "level_b_pass": true,
+    "level_c_pass": true,
+    "level_d_pass": true,
+    "level_e_pass": true,
+    "level_f_pass": true,
+    "level_g_pass": true,
+    "level_h_pass": true,
+    "level_i_pass": true,
+    "level_j_pass": true,
+    "metrics": {
+      "active_entities_p50": 2,
+      "active_entities_p95": 2,
+      "active_mechanisms_p50": 1,
+      "active_mechanisms_p95": 1,
+      "aleatoric_stochastic_events": 4,
+      "autonomous_discriminating_interventions": 5,
+      "causal_hypothesis_competitions": 6,
+      "causal_law_memory_ablation_pass": true,
+      "causal_mechanisms_total": 3,
+      "compiled_causal_memory_ablation_pass": true,
+      "counterfactual_causal_model_ablation_pass": true,
+      "counterfactual_errors": 0,
+      "counterfactual_predictions": 3,
+      "counterfactual_verified": 3,
+      "delayed_causal_effect_events": 3,
+      "entity_id_invariant_transfer_pass": true,
+      "epistemic_uncertainty_ablation_pass": true,
+      "epistemic_uncertainty_events": 2,
+      "factored_dynamics_ablation_pass": true,
+      "hidden_context_discovery_events": 1,
+      "hidden_state_hypotheses": 8,
+      "horizon_error_sequence": [
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          8,
+          0
+        ]
+      ],
+      "hypotheses_resolved": 7,
+      "interventional_causality_ablation_pass": true,
+      "interventional_transitions": 5,
+      "multistep_predictions": 15,
+      "novel_entity_count_transfer_pass": true,
+      "novel_relation_topology_transfer_pass": false,
+      "observational_transitions": 72,
+      "one_step_correct": 18,
+      "one_step_predictions": 18,
+      "partial_observability_cases": 3,
+      "reachability_queries": 4,
+      "sparse_causal_routing_ablation_pass": true,
+      "structural_delta_error_sequence": [],
+      "total_world_entities": 100000,
+      "unreachable_shortcut_cases": 1
+    },
+    "violations": []
+  },
+  "wall_time_ns": 48894100
+}

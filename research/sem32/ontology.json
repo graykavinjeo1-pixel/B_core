@@ -1,0 +1,66 @@
+{
+  "schema_version": "SEM32_MINIMAL_CAUSAL_DYNAMICS_ONTOLOGY_1",
+  "inherits": "SEM31_MINIMAL_WORLD_ONTOLOGY_1",
+  "canonical_payload_is_language_free": true,
+  "node_id_is_semantic_payload": false,
+  "natural_language_is_causal_reasoning_authority": false,
+  "transition_representation": {
+    "input": [
+      "typed_anchor_state",
+      "typed_intervention_or_event",
+      "typed_context"
+    ],
+    "output": "predicted_world_delta",
+    "unchanged_state_is_implicit": true,
+    "full_future_snapshot_is_canonical": false
+  },
+  "causal_law_fields": [
+    "applicability",
+    "required_entities",
+    "required_relations",
+    "preconditions",
+    "intervention",
+    "predicted_delta_transform",
+    "uncertainty",
+    "exceptions",
+    "provenance",
+    "verification"
+  ],
+  "evidence_roles": [
+    "OBSERVATIONAL_TRANSITION",
+    "INTERVENTIONAL_TRANSITION"
+  ],
+  "world_layers": [
+    "PERSISTENT_SEMANTIC_WORLD",
+    "BELIEF_WORLD_STATE",
+    "READ_ONLY_ACTIVE_WORLD_SLICE"
+  ],
+  "belief_truth_states": [
+    "KNOWN_TRUE",
+    "KNOWN_FALSE",
+    "UNKNOWN",
+    "BELIEVED",
+    "COMPETING_HYPOTHESES"
+  ],
+  "uncertainty_kinds": [
+    "EPISTEMIC",
+    "ALEATORIC_OR_WORLD_STOCHASTICITY"
+  ],
+  "event_kinds": [
+    "ACTION",
+    "INTERVENTION",
+    "EXOGENOUS_EVENT",
+    "PASSIVE_OBSERVATION"
+  ],
+  "reachability_states": [
+    "REACHABLE_WITHIN_BUDGET",
+    "REACHABLE_EVENTUALLY",
+    "UNREACHABLE",
+    "UNKNOWN_REACHABILITY"
+  ],
+  "primitive_policy": "REUSE_THEN_COMPOSE_THEN_VERIFIED_CAUSAL_GENESIS",
+  "counterfactual_history_policy": "ISOLATED_NON_CANONICAL_BRANCH",
+  "stochastic_future_policy": "PRESERVE_ALL_MECHANICALLY_VALID_TYPED_DELTA_BRANCHES",
+  "unsupported_rollout_policy": "EXPLICIT_INSUFFICIENT_MODEL_SUPPORT",
+  "predefined_world_law_vocabulary_is_exhaustive": false
+}
