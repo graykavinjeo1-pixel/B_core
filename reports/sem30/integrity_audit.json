@@ -1,0 +1,21 @@
+{
+  "capability_negative_transfer_events": 0,
+  "curriculum_gaming_events": 0,
+  "external_llm_calls": 0,
+  "full_semantic_memory_scans": 0,
+  "future_instance_leakage_events": 0,
+  "gain_erasure_events": 0,
+  "global_reasoning_regressions": 0,
+  "hardcoded_difficulty_to_memory_rules": 0,
+  "hardcoded_substrate_to_law_rules": 0,
+  "local_teacher_calls": 0,
+  "meta_quality_regressions": 0,
+  "natural_language_is_canonical_memory": false,
+  "natural_language_is_reasoning_authority": false,
+  "network_reads": 0,
+  "network_writes": 0,
+  "node_id_is_semantic_payload": false,
+  "passed": true,
+  "remote_executions": 0,
+  "task_specific_compressed_nodes": 0
+}

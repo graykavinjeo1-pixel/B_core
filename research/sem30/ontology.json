@@ -1,0 +1,54 @@
+{
+  "schema_version": "SEM30_EVIDENCE_ONTOLOGY_1",
+  "semantic_authority": "TYPED_EXECUTABLE_STRUCTURES_AND_FROZEN_INDEPENDENT_VERIFICATION",
+  "natural_language_is_canonical_memory": false,
+  "natural_language_is_reasoning_authority": false,
+  "node_id_is_semantic_payload": false,
+  "transfer_classes": [
+    "SAME_FAMILY_REUSE",
+    "CROSS_FAMILY_TRANSFER",
+    "CROSS_DIMENSION_TRANSFER"
+  ],
+  "transfer_outcomes": [
+    "PREDICTED_APPLICABLE",
+    "ACTUALLY_USEFUL",
+    "NEUTRAL",
+    "HARMFUL",
+    "REJECTED_BEFORE_USE"
+  ],
+  "compressed_node_lifecycle": [
+    "PROMOTED",
+    "SPECIALIZED",
+    "SPLIT",
+    "MERGED",
+    "UPDATED",
+    "DEMOTED"
+  ],
+  "promotion_evidence": [
+    "REUSE",
+    "TRANSFER",
+    "PREDICTIVE_VALUE",
+    "CAUSAL_VALUE",
+    "COMPRESSION_GAIN",
+    "FUTURE_REASONING_UTILITY"
+  ],
+  "structural_distance_evidence": [
+    "REQUIRED_RELATIONS",
+    "DEPENDENCY_TOPOLOGY",
+    "INTERACTION_RANK",
+    "CAUSAL_STRUCTURE",
+    "CONSTRAINT_STRUCTURE",
+    "COMPOSITION_REQUIREMENTS",
+    "VERIFICATION_STRUCTURE",
+    "FAILURE_PHENOTYPE",
+    "ADAPTATION_TYPE"
+  ],
+  "hardcoded_substrate_to_law_rules": 0,
+  "hardcoded_difficulty_to_memory_rules": 0,
+  "task_specific_compressed_nodes": 0,
+  "generator_is_success_authority": false,
+  "curriculum_law_is_success_authority": false,
+  "budget_is_research_semantic_input": false,
+  "max_autonomous_research_epochs": 8192,
+  "checkpoint_interval_epochs": 64
+}

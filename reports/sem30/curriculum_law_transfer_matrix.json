@@ -1,0 +1,59 @@
+{
+  "outcome_vocabulary": [
+    "PREDICTED_APPLICABLE",
+    "ACTUALLY_USEFUL",
+    "NEUTRAL",
+    "HARMFUL",
+    "REJECTED_BEFORE_USE"
+  ],
+  "rows": [
+    {
+      "cells": [
+        {
+          "outcome": "ORIGIN",
+          "predicted_applicable": false,
+          "target": "S1"
+        },
+        {
+          "outcome": "ORIGIN",
+          "predicted_applicable": false,
+          "target": "S2"
+        },
+        {
+          "outcome": "ACTUALLY_USEFUL",
+          "predicted_applicable": true,
+          "target": "S3"
+        },
+        {
+          "dimension": "HIERARCHICAL_COMPOSITION_DEPTH",
+          "family": "HIERARCHICAL_COMPOSITION",
+          "outcome": "ACTUALLY_USEFUL",
+          "predicted_applicable": true,
+          "prediction_residual": 12,
+          "target": "S4"
+        },
+        {
+          "dimension": "CAUSAL_INTERVENTION_DEPTH",
+          "family": "CAUSAL_INTERVENTION",
+          "outcome": "ACTUALLY_USEFUL",
+          "predicted_applicable": true,
+          "prediction_residual": 14,
+          "target": "S5"
+        },
+        {
+          "dimension": "CONSTRAINT_PROPAGATION_WIDTH",
+          "family": "CONSTRAINT_PROPAGATION",
+          "outcome": "ACTUALLY_USEFUL",
+          "predicted_applicable": true,
+          "prediction_residual": 12,
+          "target": "S6"
+        }
+      ],
+      "law_id": "LAW-BOUNDARY-ORTHOGONALITY-1",
+      "origin_substrates": [
+        "S1",
+        "S2"
+      ]
+    }
+  ]
+}

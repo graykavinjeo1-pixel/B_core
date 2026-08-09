@@ -1,0 +1,14 @@
+{
+  "checkpoint_alters_research_semantics": false,
+  "decision_state": [
+    {
+      "episode_deltas": 3,
+      "epoch": 1,
+      "event": "SEALED_SEM29_TYPED_MEMORY_REHYDRATED",
+      "laws": 1,
+      "operator_selected": false
+    }
+  ],
+  "epoch": 1,
+  "event": "PREDECESSOR_MEMORY_REHYDRATION"
+}

@@ -1,0 +1,122 @@
+{
+  "calibration_probes_sequence": [
+    4,
+    1,
+    1,
+    1,
+    1,
+    1
+  ],
+  "cross_family_laws_used_sequence": [
+    [],
+    [],
+    [
+      "LAW-BOUNDARY-ORTHOGONALITY-1"
+    ],
+    [
+      "LAW-BOUNDARY-ORTHOGONALITY-1"
+    ],
+    [
+      "LAW-BOUNDARY-ORTHOGONALITY-1"
+    ],
+    [
+      "LAW-BOUNDARY-ORTHOGONALITY-1"
+    ]
+  ],
+  "difficulty_dimension_sequence": [
+    "STRUCTURAL_INTERACTION_RANK",
+    "TEMPORAL_COUPLING_ORDER",
+    "CROSS_INSTANCE_BINDING_ARITY",
+    "HIERARCHICAL_COMPOSITION_DEPTH",
+    "CAUSAL_INTERVENTION_DEPTH",
+    "CONSTRAINT_PROPAGATION_WIDTH"
+  ],
+  "failed_candidates_sequence": [
+    3,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "hypotheses_generated_sequence": [
+    4,
+    2,
+    1,
+    1,
+    1,
+    1
+  ],
+  "new_irreducible_semantic_bytes_per_episode_sequence": [
+    852,
+    547,
+    547,
+    548,
+    550,
+    550
+  ],
+  "origin_laws_used_sequence": [
+    [],
+    [],
+    [
+      "LAW-BOUNDARY-ORTHOGONALITY-1"
+    ],
+    [
+      "LAW-BOUNDARY-ORTHOGONALITY-1"
+    ],
+    [
+      "LAW-BOUNDARY-ORTHOGONALITY-1"
+    ],
+    [
+      "LAW-BOUNDARY-ORTHOGONALITY-1"
+    ]
+  ],
+  "prediction_error_sequence": [
+    43,
+    11,
+    3,
+    12,
+    14,
+    12
+  ],
+  "retained_capability_gain_sequence": [
+    296,
+    474,
+    510,
+    456,
+    388,
+    364
+  ],
+  "substrate_family_sequence": [
+    "RELATIONAL_RULE_GRAPH",
+    "TEMPORAL_STATE_COUPLING",
+    "CROSS_INSTANCE_BINDING",
+    "HIERARCHICAL_COMPOSITION",
+    "CAUSAL_INTERVENTION",
+    "CONSTRAINT_PROPAGATION"
+  ],
+  "substrate_genesis_cost_sequence": [
+    1328,
+    219,
+    160,
+    204,
+    171,
+    163
+  ],
+  "time_to_learnable_frontier_sequence": [
+    7,
+    2,
+    2,
+    2,
+    2,
+    2
+  ],
+  "time_to_retained_gain_sequence": [
+    12,
+    4,
+    4,
+    4,
+    3,
+    3
+  ]
+}

@@ -1,0 +1,482 @@
+{
+  "atoms": {
+    "ATOM-127bb4e7803612d7": {
+      "atom_id": "ATOM-127bb4e7803612d7",
+      "kind": "BOUNDED_ADAPTATION",
+      "relation_to": null,
+      "typed_value": 1
+    },
+    "ATOM-1ee974c2d9275f30": {
+      "atom_id": "ATOM-1ee974c2d9275f30",
+      "kind": "ADAPTATION_TYPE",
+      "relation_to": "DEPENDENCY_TOPOLOGY",
+      "typed_value": 2
+    },
+    "ATOM-299845d6d7ec7411": {
+      "atom_id": "ATOM-299845d6d7ec7411",
+      "kind": "LOCALIZED_FEEDBACK",
+      "relation_to": null,
+      "typed_value": 1
+    },
+    "ATOM-3b4c6701b015990b": {
+      "atom_id": "ATOM-3b4c6701b015990b",
+      "kind": "ADAPTATION_TYPE",
+      "relation_to": "DEPENDENCY_TOPOLOGY",
+      "typed_value": 3
+    },
+    "ATOM-4636d49d87c7c882": {
+      "atom_id": "ATOM-4636d49d87c7c882",
+      "kind": "DEPENDENCY_TOPOLOGY",
+      "relation_to": null,
+      "typed_value": 3
+    },
+    "ATOM-4e6b54886663b587": {
+      "atom_id": "ATOM-4e6b54886663b587",
+      "kind": "ADAPTATION_TYPE",
+      "relation_to": "DEPENDENCY_TOPOLOGY",
+      "typed_value": 1
+    },
+    "ATOM-50cfa1a9fe394e31": {
+      "atom_id": "ATOM-50cfa1a9fe394e31",
+      "kind": "DEPENDENCY_TOPOLOGY",
+      "relation_to": null,
+      "typed_value": 2
+    },
+    "ATOM-5c5e5fff8bde9699": {
+      "atom_id": "ATOM-5c5e5fff8bde9699",
+      "kind": "DEPENDENCY_TOPOLOGY",
+      "relation_to": null,
+      "typed_value": 4
+    },
+    "ATOM-5eace921988eacd9": {
+      "atom_id": "ATOM-5eace921988eacd9",
+      "kind": "PUBLIC_TYPED_RULE",
+      "relation_to": null,
+      "typed_value": 1
+    },
+    "ATOM-9062290bca83a030": {
+      "atom_id": "ATOM-9062290bca83a030",
+      "kind": "INDEPENDENT_VERIFICATION",
+      "relation_to": null,
+      "typed_value": 1
+    },
+    "ATOM-a7a45b8630a90a36": {
+      "atom_id": "ATOM-a7a45b8630a90a36",
+      "kind": "ADAPTATION_TYPE",
+      "relation_to": "DEPENDENCY_TOPOLOGY",
+      "typed_value": 6
+    },
+    "ATOM-d347f48c78cfb48c": {
+      "atom_id": "ATOM-d347f48c78cfb48c",
+      "kind": "DEPENDENCY_TOPOLOGY",
+      "relation_to": null,
+      "typed_value": 1
+    },
+    "ATOM-e826cbe5407bfb76": {
+      "atom_id": "ATOM-e826cbe5407bfb76",
+      "kind": "ADAPTATION_TYPE",
+      "relation_to": "DEPENDENCY_TOPOLOGY",
+      "typed_value": 4
+    },
+    "ATOM-f5242897a8aa8344": {
+      "atom_id": "ATOM-f5242897a8aa8344",
+      "kind": "DEPENDENCY_TOPOLOGY",
+      "relation_to": null,
+      "typed_value": 6
+    },
+    "ATOM-f6746f4c76065004": {
+      "atom_id": "ATOM-f6746f4c76065004",
+      "kind": "DEPENDENCY_TOPOLOGY",
+      "relation_to": null,
+      "typed_value": 5
+    },
+    "ATOM-fbe6cad183f6f477": {
+      "atom_id": "ATOM-fbe6cad183f6f477",
+      "kind": "ADAPTATION_TYPE",
+      "relation_to": "DEPENDENCY_TOPOLOGY",
+      "typed_value": 5
+    }
+  },
+  "compressed_nodes": [
+    {
+      "applicability_conditions": [
+        "CONTRACT_VERSION_MATCH",
+        "FIRST_FIVE_TYPED_OPERATIONS_MATCH",
+        "INDEX_TOPOLOGY_MATCH",
+        "NODE_LIFECYCLE_PROMOTED"
+      ],
+      "compressed_from": [
+        {
+          "Affine": {
+            "source": 0,
+            "target": 1
+          }
+        },
+        {
+          "Affine": {
+            "source": 2,
+            "target": 3
+          }
+        },
+        {
+          "Relate": {
+            "left": 1,
+            "right": 3,
+            "target": 4
+          }
+        },
+        {
+          "Gate": {
+            "condition": 4,
+            "target": 5,
+            "when_even": 1,
+            "when_odd": 3
+          }
+        },
+        {
+          "Fold": {
+            "left": 4,
+            "right": 5,
+            "target": 0
+          }
+        }
+      ],
+      "decompression_available": true,
+      "exceptions": [
+        "OPERATION_ORDER_CHANGE",
+        "INDEX_TOPOLOGY_CHANGE",
+        "CONTRACT_VERSION_CHANGE"
+      ],
+      "lifecycle_state": "PROMOTED",
+      "node_id": "NODE-820173d959608f11",
+      "node_id_is_semantic_payload": false,
+      "predicted_effects": [
+        "FIVE_INTERPRETER_DISPATCHES_TO_ONE_COMPILED_ACTIVATION",
+        "SEMANTIC_RESULT_UNCHANGED"
+      ],
+      "promotion_evidence": [
+        "REUSE",
+        "TRANSFER",
+        "PREDICTIVE_VALUE",
+        "CAUSAL_VALUE",
+        "COMPRESSION_GAIN",
+        "FUTURE_REASONING_UTILITY"
+      ],
+      "provenance": [
+        "S1",
+        "S2",
+        "S3",
+        "S4"
+      ],
+      "task_specific": false,
+      "verification_certificate": {
+        "certificate_hash": "820173d959608f11aa8856c8401ac66e57b27d47e1ef7887ec42a49d61d5dda8",
+        "cross_family_support_count": 4,
+        "exception_cases": 3,
+        "reference_equivalence_cases": 12,
+        "support_episode_ids": [
+          "S1",
+          "S2",
+          "S3",
+          "S4"
+        ]
+      }
+    }
+  ],
+  "episode_deltas": [
+    {
+      "dimension_fingerprint": 7911083623787452810,
+      "episode_id": "S1",
+      "family_fingerprint": 2016225705633006657,
+      "law_ids_used": [
+        "LAW-BOUNDARY-ORTHOGONALITY-1"
+      ],
+      "new_semantic_atoms": [
+        {
+          "atom_id": "ATOM-5eace921988eacd9",
+          "kind": "PUBLIC_TYPED_RULE",
+          "relation_to": null,
+          "typed_value": 1
+        },
+        {
+          "atom_id": "ATOM-299845d6d7ec7411",
+          "kind": "LOCALIZED_FEEDBACK",
+          "relation_to": null,
+          "typed_value": 1
+        },
+        {
+          "atom_id": "ATOM-9062290bca83a030",
+          "kind": "INDEPENDENT_VERIFICATION",
+          "relation_to": null,
+          "typed_value": 1
+        },
+        {
+          "atom_id": "ATOM-127bb4e7803612d7",
+          "kind": "BOUNDED_ADAPTATION",
+          "relation_to": null,
+          "typed_value": 1
+        },
+        {
+          "atom_id": "ATOM-d347f48c78cfb48c",
+          "kind": "DEPENDENCY_TOPOLOGY",
+          "relation_to": null,
+          "typed_value": 1
+        },
+        {
+          "atom_id": "ATOM-4e6b54886663b587",
+          "kind": "ADAPTATION_TYPE",
+          "relation_to": "DEPENDENCY_TOPOLOGY",
+          "typed_value": 1
+        }
+      ],
+      "prediction_residual": 0,
+      "retained_gain": 0,
+      "reused_atom_ids": []
+    },
+    {
+      "dimension_fingerprint": 17789802941813477982,
+      "episode_id": "S2",
+      "family_fingerprint": 4040744221573163666,
+      "law_ids_used": [
+        "LAW-BOUNDARY-ORTHOGONALITY-1"
+      ],
+      "new_semantic_atoms": [
+        {
+          "atom_id": "ATOM-50cfa1a9fe394e31",
+          "kind": "DEPENDENCY_TOPOLOGY",
+          "relation_to": null,
+          "typed_value": 2
+        },
+        {
+          "atom_id": "ATOM-1ee974c2d9275f30",
+          "kind": "ADAPTATION_TYPE",
+          "relation_to": "DEPENDENCY_TOPOLOGY",
+          "typed_value": 2
+        }
+      ],
+      "prediction_residual": 0,
+      "retained_gain": 0,
+      "reused_atom_ids": [
+        "ATOM-5eace921988eacd9",
+        "ATOM-299845d6d7ec7411",
+        "ATOM-9062290bca83a030",
+        "ATOM-127bb4e7803612d7"
+      ]
+    },
+    {
+      "dimension_fingerprint": 10331097378337627608,
+      "episode_id": "S3",
+      "family_fingerprint": 1529933757026086159,
+      "law_ids_used": [
+        "LAW-BOUNDARY-ORTHOGONALITY-1"
+      ],
+      "new_semantic_atoms": [
+        {
+          "atom_id": "ATOM-4636d49d87c7c882",
+          "kind": "DEPENDENCY_TOPOLOGY",
+          "relation_to": null,
+          "typed_value": 3
+        },
+        {
+          "atom_id": "ATOM-3b4c6701b015990b",
+          "kind": "ADAPTATION_TYPE",
+          "relation_to": "DEPENDENCY_TOPOLOGY",
+          "typed_value": 3
+        }
+      ],
+      "prediction_residual": 0,
+      "retained_gain": 0,
+      "reused_atom_ids": [
+        "ATOM-5eace921988eacd9",
+        "ATOM-299845d6d7ec7411",
+        "ATOM-9062290bca83a030",
+        "ATOM-127bb4e7803612d7"
+      ]
+    },
+    {
+      "dimension_fingerprint": 584951485025125477,
+      "episode_id": "S4",
+      "family_fingerprint": 1116957758460569317,
+      "law_ids_used": [
+        "LAW-BOUNDARY-ORTHOGONALITY-1"
+      ],
+      "new_semantic_atoms": [
+        {
+          "atom_id": "ATOM-f5242897a8aa8344",
+          "kind": "DEPENDENCY_TOPOLOGY",
+          "relation_to": null,
+          "typed_value": 6
+        },
+        {
+          "atom_id": "ATOM-a7a45b8630a90a36",
+          "kind": "ADAPTATION_TYPE",
+          "relation_to": "DEPENDENCY_TOPOLOGY",
+          "typed_value": 6
+        }
+      ],
+      "prediction_residual": 12,
+      "retained_gain": 456,
+      "reused_atom_ids": [
+        "ATOM-5eace921988eacd9",
+        "ATOM-299845d6d7ec7411",
+        "ATOM-9062290bca83a030",
+        "ATOM-127bb4e7803612d7"
+      ]
+    },
+    {
+      "dimension_fingerprint": 9965815853460730529,
+      "episode_id": "S5",
+      "family_fingerprint": 11496047950280189944,
+      "law_ids_used": [
+        "LAW-BOUNDARY-ORTHOGONALITY-1"
+      ],
+      "new_semantic_atoms": [
+        {
+          "atom_id": "ATOM-f6746f4c76065004",
+          "kind": "DEPENDENCY_TOPOLOGY",
+          "relation_to": null,
+          "typed_value": 5
+        },
+        {
+          "atom_id": "ATOM-fbe6cad183f6f477",
+          "kind": "ADAPTATION_TYPE",
+          "relation_to": "DEPENDENCY_TOPOLOGY",
+          "typed_value": 5
+        }
+      ],
+      "prediction_residual": 14,
+      "retained_gain": 388,
+      "reused_atom_ids": [
+        "ATOM-5eace921988eacd9",
+        "ATOM-299845d6d7ec7411",
+        "ATOM-9062290bca83a030",
+        "ATOM-127bb4e7803612d7"
+      ]
+    },
+    {
+      "dimension_fingerprint": 10672315882486785347,
+      "episode_id": "S6",
+      "family_fingerprint": 1954324651264961702,
+      "law_ids_used": [
+        "LAW-BOUNDARY-ORTHOGONALITY-1"
+      ],
+      "new_semantic_atoms": [
+        {
+          "atom_id": "ATOM-5c5e5fff8bde9699",
+          "kind": "DEPENDENCY_TOPOLOGY",
+          "relation_to": null,
+          "typed_value": 4
+        },
+        {
+          "atom_id": "ATOM-e826cbe5407bfb76",
+          "kind": "ADAPTATION_TYPE",
+          "relation_to": "DEPENDENCY_TOPOLOGY",
+          "typed_value": 4
+        }
+      ],
+      "prediction_residual": 12,
+      "retained_gain": 364,
+      "reused_atom_ids": [
+        "ATOM-5eace921988eacd9",
+        "ATOM-299845d6d7ec7411",
+        "ATOM-9062290bca83a030",
+        "ATOM-127bb4e7803612d7"
+      ]
+    }
+  ],
+  "full_semantic_memory_scans": 0,
+  "laws": [
+    {
+      "actual_successful_transfers": [
+        "S3",
+        "S4",
+        "S5",
+        "S6"
+      ],
+      "exceptions": [
+        "RESOURCE_DOMINATED_REPETITION"
+      ],
+      "failed_transfers": [],
+      "historical_entries_append_only": true,
+      "law_id": "LAW-BOUNDARY-ORTHOGONALITY-1",
+      "origin_substrates": [
+        "S1",
+        "S2"
+      ],
+      "predicted_useful_profile_classes": [
+        {
+          "adaptation_type": 6,
+          "causal_structure": 1,
+          "composition_requirements": 5,
+          "constraint_structure": 1,
+          "dependency_topology": 6,
+          "failure_phenotype": 6,
+          "interaction_rank": 5,
+          "required_relations": 6,
+          "verification_structure": 6
+        },
+        {
+          "adaptation_type": 5,
+          "causal_structure": 4,
+          "composition_requirements": 3,
+          "constraint_structure": 1,
+          "dependency_topology": 5,
+          "failure_phenotype": 5,
+          "interaction_rank": 4,
+          "required_relations": 5,
+          "verification_structure": 5
+        },
+        {
+          "adaptation_type": 4,
+          "causal_structure": 0,
+          "composition_requirements": 3,
+          "constraint_structure": 3,
+          "dependency_topology": 4,
+          "failure_phenotype": 4,
+          "interaction_rank": 4,
+          "required_relations": 5,
+          "verification_structure": 4
+        }
+      ],
+      "prediction_residuals": [
+        3,
+        12,
+        14,
+        12
+      ],
+      "semantic_applicability_conditions": [
+        "UNSUPPORTED_DEPENDENCY_CLASS",
+        "NONREDUNDANT_STRUCTURAL_DISTANCE",
+        "LOCALIZED_PUBLIC_FEEDBACK",
+        "INDEPENDENT_VERIFICATION",
+        "BOUNDED_RESOURCE_EFFECT"
+      ],
+      "success_authority": false
+    }
+  ],
+  "natural_language_is_canonical_memory": false,
+  "natural_language_is_reasoning_authority": false,
+  "predecessor_commit": "fc6796d455f6e5bb1122cefc84f9f239c742941f",
+  "retrieval_index": {
+    "1116957758460569317": [
+      "S4"
+    ],
+    "11496047950280189944": [
+      "S5"
+    ],
+    "1529933757026086159": [
+      "S3"
+    ],
+    "1954324651264961702": [
+      "S6"
+    ],
+    "2016225705633006657": [
+      "S1"
+    ],
+    "4040744221573163666": [
+      "S2"
+    ]
+  },
+  "schema_version": "SEM30_TYPED_SEMANTIC_LONG_TERM_MEMORY_1",
+  "total_experience_events": 21
+}

@@ -1,0 +1,703 @@
+{
+  "activated_hypotheses": 1,
+  "adapted_verification": {
+    "result": {
+      "accepted": true,
+      "contract_version": "SEM30-LONG-HORIZON-SEMANTIC-CONTRACT-V1",
+      "dependency_depth": 7,
+      "expected_result_disclosed": false,
+      "generator_is_success_authority": false,
+      "semantic_work_units": 114,
+      "structural_signature": 3736886776442971350,
+      "verifier_internal_witness_disclosed": false,
+      "violations": []
+    },
+    "wall_time_ns": 4226700
+  },
+  "calibration_probes": 1,
+  "capability_after": {
+    "causal": false,
+    "constraint": false,
+    "cross_instance": true,
+    "hierarchy": true,
+    "relational": true,
+    "temporal": true
+  },
+  "cross_family_laws_used": [
+    "LAW-BOUNDARY-ORTHOGONALITY-1"
+  ],
+  "episode_id": "S4",
+  "failed_candidates": 0,
+  "genesis_cost": 204,
+  "holdout_challenges": [
+    {
+      "constraint_values": [
+        10510746422053209601,
+        11268435885052301359,
+        12115347174605904008,
+        5407966068303980831,
+        2526149219387417577,
+        5607551911536609999
+      ],
+      "context_values": [
+        3605100749394373664,
+        2052835170401826060,
+        4290472915544998807,
+        1301885143175167886,
+        17348200137667246706,
+        1662455133246121912
+      ],
+      "contract_version": "SEM30-LONG-HORIZON-SEMANTIC-CONTRACT-V1",
+      "difficulty_dimension": "HIERARCHICAL_COMPOSITION_DEPTH",
+      "hierarchy_values": [
+        2465073533661987758,
+        12633706984848550538,
+        8384952755889219332,
+        4965193095145715158,
+        17547869817121963938,
+        5338351099635395686
+      ],
+      "instance_id": 1,
+      "intervention_values": [
+        17147515154963687492,
+        1566228666807914656,
+        16730175572923483016,
+        12122666702089146898,
+        13928416984346142103,
+        10959018994426766097
+      ],
+      "lagged_context_values": [
+        12468647754027471836,
+        13625709461288463226,
+        2849295722605360839,
+        16620021106962722405,
+        15309802331310159812,
+        5590389905815870627
+      ],
+      "peer_context_values": [
+        16572390939486737322,
+        7751228908209719754,
+        3917550798095261322,
+        16455626951905710051,
+        5369222230532168298,
+        13663462211256469762
+      ],
+      "public_nonce": 8010671659358462624,
+      "public_seed": 13300718843231471178,
+      "rules": [
+        {
+          "increment": 10218343066082717404,
+          "multiplier": 8700913388373835139,
+          "operation": "AFFINE",
+          "source": 0,
+          "target": 1
+        },
+        {
+          "increment": 2052835170401826060,
+          "multiplier": 3994051523363831473,
+          "operation": "AFFINE",
+          "source": 2,
+          "target": 3
+        },
+        {
+          "left": 1,
+          "operation": "RELATE",
+          "right": 3,
+          "rotate": 21,
+          "salt": 1013333479292564038,
+          "target": 4
+        },
+        {
+          "condition": 4,
+          "operation": "GATE",
+          "salt": 15923294019882877009,
+          "target": 5,
+          "when_even": 1,
+          "when_odd": 3
+        },
+        {
+          "left": 4,
+          "operation": "FOLD",
+          "right": 5,
+          "rotate": 41,
+          "salt": 1254148629963614358,
+          "target": 0
+        },
+        {
+          "left": 0,
+          "operation": "HIERARCHICAL_COMPOSE",
+          "parent": 2,
+          "right": 5,
+          "salt": 9131358671655247715,
+          "target": 3
+        }
+      ],
+      "substrate_family": "HIERARCHICAL_COMPOSITION",
+      "substrate_id": "PROFILE-0f803b29d628a6e5-1233"
+    },
+    {
+      "constraint_values": [
+        858818009953036939,
+        10737033587243910208,
+        10757902110491293833,
+        12136952652476839775,
+        13262110186702301967,
+        895767129862436284
+      ],
+      "context_values": [
+        2288459387359301945,
+        17317428699511737812,
+        10275910081349230984,
+        7543008077318299023,
+        18111228966070668943,
+        164801382359621476
+      ],
+      "contract_version": "SEM30-LONG-HORIZON-SEMANTIC-CONTRACT-V1",
+      "difficulty_dimension": "HIERARCHICAL_COMPOSITION_DEPTH",
+      "hierarchy_values": [
+        16215936180949932446,
+        13427288083208014997,
+        12701741140702689102,
+        15416587989455769375,
+        10518001808321403557,
+        4763028478440635793
+      ],
+      "instance_id": 2,
+      "intervention_values": [
+        9000350840202875639,
+        13847084894139899848,
+        12686325585988666588,
+        16769592509760440637,
+        12572503050056083247,
+        2396983919724049489
+      ],
+      "lagged_context_values": [
+        6993042992549574167,
+        11156560143795603871,
+        7389764019073439414,
+        14253587278519700554,
+        10012160294223098742,
+        16459531744315970388
+      ],
+      "peer_context_values": [
+        16443863341766140910,
+        5778402498247284858,
+        3823286454520567186,
+        12309387266344121751,
+        18300530886984970695,
+        15177899214155004158
+      ],
+      "public_nonce": 6178425958658754857,
+      "public_seed": 6268684841810386876,
+      "rules": [
+        {
+          "increment": 721673246969346737,
+          "multiplier": 16897981045681652129,
+          "operation": "AFFINE",
+          "source": 0,
+          "target": 1
+        },
+        {
+          "increment": 10275910081349230984,
+          "multiplier": 9007207934905905797,
+          "operation": "AFFINE",
+          "source": 2,
+          "target": 3
+        },
+        {
+          "left": 1,
+          "operation": "RELATE",
+          "right": 3,
+          "rotate": 6,
+          "salt": 18111228966070668943,
+          "target": 4
+        },
+        {
+          "condition": 4,
+          "operation": "GATE",
+          "salt": 12019578443867498086,
+          "target": 5,
+          "when_even": 1,
+          "when_odd": 3
+        },
+        {
+          "left": 4,
+          "operation": "FOLD",
+          "right": 5,
+          "rotate": 53,
+          "salt": 7622632793567480304,
+          "target": 0
+        },
+        {
+          "left": 0,
+          "operation": "HIERARCHICAL_COMPOSE",
+          "parent": 2,
+          "right": 5,
+          "salt": 15895479110064868795,
+          "target": 3
+        }
+      ],
+      "substrate_family": "HIERARCHICAL_COMPOSITION",
+      "substrate_id": "PROFILE-0f803b29d628a6e5-1233"
+    },
+    {
+      "constraint_values": [
+        10719034768511214948,
+        8395929670403795907,
+        4631484637863614291,
+        7135774994355227807,
+        757066675367217397,
+        7343093615586192907
+      ],
+      "context_values": [
+        8366273556176981437,
+        13560858141034458173,
+        12394717306416470281,
+        399202398208764842,
+        17033590398238597032,
+        1789422382889908150
+      ],
+      "contract_version": "SEM30-LONG-HORIZON-SEMANTIC-CONTRACT-V1",
+      "difficulty_dimension": "HIERARCHICAL_COMPOSITION_DEPTH",
+      "hierarchy_values": [
+        10417514196794316230,
+        10689975000934138693,
+        7962616902469756426,
+        7282270532873845418,
+        1470857549287156146,
+        13173531087823824804
+      ],
+      "instance_id": 3,
+      "intervention_values": [
+        10848684266546665274,
+        12640140327677592480,
+        7399316353692554147,
+        1533161762820508447,
+        15456301840150547784,
+        436462994697304600
+      ],
+      "lagged_context_values": [
+        16839453661431919149,
+        17655363877172252977,
+        2681240528372519573,
+        14589131954622026936,
+        14447652420594511997,
+        5672157697701189531
+      ],
+      "peer_context_values": [
+        1236358506018177803,
+        2031107715625274669,
+        6601650539307864656,
+        11621079021216605816,
+        10529208451687700174,
+        329018972186208088
+      ],
+      "public_nonce": 8567636367533966081,
+      "public_seed": 16154505455656486536,
+      "rules": [
+        {
+          "increment": 12558085803641810598,
+          "multiplier": 1809772323977603433,
+          "operation": "AFFINE",
+          "source": 0,
+          "target": 1
+        },
+        {
+          "increment": 399202398208764842,
+          "multiplier": 4625517064659282501,
+          "operation": "AFFINE",
+          "source": 2,
+          "target": 3
+        },
+        {
+          "left": 1,
+          "operation": "RELATE",
+          "right": 3,
+          "rotate": 60,
+          "salt": 1789422382889908150,
+          "target": 4
+        },
+        {
+          "condition": 4,
+          "operation": "GATE",
+          "salt": 14243772172507703735,
+          "target": 5,
+          "when_even": 1,
+          "when_odd": 3
+        },
+        {
+          "left": 4,
+          "operation": "FOLD",
+          "right": 5,
+          "rotate": 6,
+          "salt": 9772739856331420335,
+          "target": 0
+        },
+        {
+          "left": 0,
+          "operation": "HIERARCHICAL_COMPOSE",
+          "parent": 2,
+          "right": 5,
+          "salt": 2498601678334565205,
+          "target": 3
+        }
+      ],
+      "substrate_family": "HIERARCHICAL_COMPOSITION",
+      "substrate_id": "PROFILE-0f803b29d628a6e5-1233"
+    },
+    {
+      "constraint_values": [
+        8880981143969172615,
+        6341048637204940242,
+        5988163531147009250,
+        11205118979612859663,
+        5699274389492684274,
+        13317784250627739379
+      ],
+      "context_values": [
+        241025233828258165,
+        12101039090518971356,
+        8819849156086440082,
+        16960591677152136801,
+        1851791962895481362,
+        9715511235915731861
+      ],
+      "contract_version": "SEM30-LONG-HORIZON-SEMANTIC-CONTRACT-V1",
+      "difficulty_dimension": "HIERARCHICAL_COMPOSITION_DEPTH",
+      "hierarchy_values": [
+        10654514394175132737,
+        14060780541001124552,
+        12491641372656727100,
+        13273932152870822844,
+        2074524303982536626,
+        12223438506701017275
+      ],
+      "instance_id": 4,
+      "intervention_values": [
+        878875288296354971,
+        7743013768433896664,
+        4602955955608111105,
+        3094791152379765591,
+        18292103516424921075,
+        6725849756338388854
+      ],
+      "lagged_context_values": [
+        5699446490574263727,
+        4212949625634135086,
+        178349472594540584,
+        15285058667594237023,
+        7385909910784159332,
+        13347453944222053073
+      ],
+      "peer_context_values": [
+        17293290811796774522,
+        6265705294349078891,
+        13350080704861256473,
+        12634168628354958527,
+        11234230399006504294,
+        2460603003491117952
+      ],
+      "public_nonce": 1463251438233990961,
+      "public_seed": 12581271842377832150,
+      "rules": [
+        {
+          "increment": 5453957303777978802,
+          "multiplier": 755626426534871265,
+          "operation": "AFFINE",
+          "source": 0,
+          "target": 1
+        },
+        {
+          "increment": 1851791962895481362,
+          "multiplier": 3010986185484427697,
+          "operation": "AFFINE",
+          "source": 2,
+          "target": 3
+        },
+        {
+          "left": 1,
+          "operation": "RELATE",
+          "right": 3,
+          "rotate": 22,
+          "salt": 8819849156086440082,
+          "target": 4
+        },
+        {
+          "condition": 4,
+          "operation": "GATE",
+          "salt": 15972585157682051173,
+          "target": 5,
+          "when_even": 1,
+          "when_odd": 3
+        },
+        {
+          "left": 4,
+          "operation": "FOLD",
+          "right": 5,
+          "rotate": 52,
+          "salt": 14749599793729771256,
+          "target": 0
+        },
+        {
+          "left": 0,
+          "operation": "HIERARCHICAL_COMPOSE",
+          "parent": 2,
+          "right": 5,
+          "salt": 4756115953693253368,
+          "target": 3
+        }
+      ],
+      "substrate_family": "HIERARCHICAL_COMPOSITION",
+      "substrate_id": "PROFILE-0f803b29d628a6e5-1233"
+    }
+  ],
+  "holdout_solve_metrics": [
+    {
+      "active_semantic_objects": 6,
+      "compiled_reasoning_cost": 6,
+      "compressed_nodes_activated": 0,
+      "decompressions": 0,
+      "reasoning_depth": 6
+    },
+    {
+      "active_semantic_objects": 6,
+      "compiled_reasoning_cost": 6,
+      "compressed_nodes_activated": 0,
+      "decompressions": 0,
+      "reasoning_depth": 6
+    },
+    {
+      "active_semantic_objects": 6,
+      "compiled_reasoning_cost": 6,
+      "compressed_nodes_activated": 0,
+      "decompressions": 0,
+      "reasoning_depth": 6
+    },
+    {
+      "active_semantic_objects": 6,
+      "compiled_reasoning_cost": 6,
+      "compressed_nodes_activated": 0,
+      "decompressions": 0,
+      "reasoning_depth": 6
+    }
+  ],
+  "holdout_verifications": [
+    {
+      "result": {
+        "accepted": true,
+        "contract_version": "SEM30-LONG-HORIZON-SEMANTIC-CONTRACT-V1",
+        "dependency_depth": 7,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 114,
+        "structural_signature": 1246135615305161279,
+        "verifier_internal_witness_disclosed": false,
+        "violations": []
+      },
+      "wall_time_ns": 4136600
+    },
+    {
+      "result": {
+        "accepted": true,
+        "contract_version": "SEM30-LONG-HORIZON-SEMANTIC-CONTRACT-V1",
+        "dependency_depth": 7,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 114,
+        "structural_signature": 10871343574007126512,
+        "verifier_internal_witness_disclosed": false,
+        "violations": []
+      },
+      "wall_time_ns": 4187600
+    },
+    {
+      "result": {
+        "accepted": true,
+        "contract_version": "SEM30-LONG-HORIZON-SEMANTIC-CONTRACT-V1",
+        "dependency_depth": 7,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 114,
+        "structural_signature": 10064868521185084462,
+        "verifier_internal_witness_disclosed": false,
+        "violations": []
+      },
+      "wall_time_ns": 4154300
+    },
+    {
+      "result": {
+        "accepted": true,
+        "contract_version": "SEM30-LONG-HORIZON-SEMANTIC-CONTRACT-V1",
+        "dependency_depth": 7,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 114,
+        "structural_signature": 8981487339236993266,
+        "verifier_internal_witness_disclosed": false,
+        "violations": []
+      },
+      "wall_time_ns": 4049200
+    }
+  ],
+  "initial_challenge": {
+    "constraint_values": [
+      644690500097453742,
+      17915392413922733577,
+      12842141137403461606,
+      653060556221346177,
+      417000924221480166,
+      7647474664049392016
+    ],
+    "context_values": [
+      15492161818015418451,
+      11306223684770470553,
+      12900739129203960540,
+      14531457992203575774,
+      1781652080832327769,
+      8525094376061096526
+    ],
+    "contract_version": "SEM30-LONG-HORIZON-SEMANTIC-CONTRACT-V1",
+    "difficulty_dimension": "HIERARCHICAL_COMPOSITION_DEPTH",
+    "hierarchy_values": [
+      16967896206560722328,
+      8714337158410877100,
+      11434056554447361742,
+      2140692206093135089,
+      14344876848969139420,
+      3704470081973424861
+    ],
+    "instance_id": 1,
+    "intervention_values": [
+      4303208567948201033,
+      7977580747790747934,
+      8539135323733377363,
+      4833838501703026616,
+      10789494928858503661,
+      6755438700560092840
+    ],
+    "lagged_context_values": [
+      15351505514202570788,
+      4221430043862164423,
+      11399430254370828289,
+      5072781585467974148,
+      11199444859442391645,
+      17434950738209508842
+    ],
+    "peer_context_values": [
+      11501632865504982883,
+      15390002201090671759,
+      3734765826267786902,
+      18271276790569525810,
+      13687294989735925019,
+      857029853851908976
+    ],
+    "public_nonce": 18412134527532279820,
+    "public_seed": 421106750614797886,
+    "rules": [
+      {
+        "increment": 1437894584985365567,
+        "multiplier": 4954452451776109511,
+        "operation": "AFFINE",
+        "source": 0,
+        "target": 1
+      },
+      {
+        "increment": 11306223684770470553,
+        "multiplier": 14723311457385074651,
+        "operation": "AFFINE",
+        "source": 2,
+        "target": 3
+      },
+      {
+        "left": 1,
+        "operation": "RELATE",
+        "right": 3,
+        "rotate": 37,
+        "salt": 10613518027393290396,
+        "target": 4
+      },
+      {
+        "condition": 4,
+        "operation": "GATE",
+        "salt": 13344525997659257799,
+        "target": 5,
+        "when_even": 1,
+        "when_odd": 3
+      },
+      {
+        "left": 4,
+        "operation": "FOLD",
+        "right": 5,
+        "rotate": 34,
+        "salt": 7351518758104568925,
+        "target": 0
+      },
+      {
+        "left": 0,
+        "operation": "HIERARCHICAL_COMPOSE",
+        "parent": 2,
+        "right": 5,
+        "salt": 10486538984282221118,
+        "target": 3
+      }
+    ],
+    "substrate_family": "HIERARCHICAL_COMPOSITION",
+    "substrate_id": "PROFILE-0f803b29d628a6e5-1233"
+  },
+  "initial_verification": {
+    "result": {
+      "accepted": false,
+      "contract_version": "SEM30-LONG-HORIZON-SEMANTIC-CONTRACT-V1",
+      "dependency_depth": 7,
+      "expected_result_disclosed": false,
+      "generator_is_success_authority": false,
+      "semantic_work_units": 114,
+      "structural_signature": 3736886776442971350,
+      "verifier_internal_witness_disclosed": false,
+      "violations": [
+        "RESULT_DIGEST_MISMATCH",
+        "TRACE_COMMITMENT_MISMATCH"
+      ]
+    },
+    "wall_time_ns": 4654900
+  },
+  "latent_candidate_count": 4,
+  "new_irreducible_semantic_bytes": 548,
+  "origin_laws_used": [
+    "LAW-BOUNDARY-ORTHOGONALITY-1"
+  ],
+  "prediction_error": 12,
+  "retained_gain": 456,
+  "selected_candidate": {
+    "candidate_id": "PROFILE-0f803b29d628a6e5-1233",
+    "dimension": "HIERARCHICAL_COMPOSITION_DEPTH",
+    "family": "HIERARCHICAL_COMPOSITION",
+    "feature": "HIERARCHICAL_COMPOSITION",
+    "independently_verifiable": true,
+    "law_applicable": true,
+    "law_rejection_reason": null,
+    "localized_feedback": true,
+    "operator_selected": false,
+    "predicted_adaptation": "ADD_TYPED_HIERARCHICALCOMPOSITION_INTERPRETER",
+    "predicted_gain": 756,
+    "predicted_learnability": true,
+    "predicted_work": 126,
+    "profile": {
+      "adaptation_type": 6,
+      "causal_structure": 1,
+      "composition_requirements": 5,
+      "constraint_structure": 1,
+      "dependency_topology": 6,
+      "failure_phenotype": 6,
+      "interaction_rank": 5,
+      "required_relations": 6,
+      "verification_structure": 6
+    },
+    "selection_score": 293,
+    "structural_distance_from_nearest_mastered": 19
+  },
+  "structural_distance": 19,
+  "time_to_learnable_frontier": 2,
+  "time_to_retained_gain": 4,
+  "transfer_class": "CROSS_FAMILY_TRANSFER+CROSS_DIMENSION_TRANSFER"
+}

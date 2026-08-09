@@ -1,0 +1,16 @@
+{
+  "schema_version": "SEM30_INVALIDATED_ATTEMPT_1",
+  "attempt_id": "POSTRUN-TEST-FIXTURE-001",
+  "scientific_authority": false,
+  "canonical_authority": false,
+  "reason": "Two unit-test fixtures repeated one substrate family four times while the frozen promotion contract correctly required support from at least three distinct families.",
+  "affected_source": "crates/semantic-reasoning/src/sem30/engine.rs cfg(test)",
+  "correction_class": "TEST_FIXTURE_CONFORMANCE_ONLY",
+  "release_research_semantics_changed": false,
+  "research_outcome_observed_before_correction": true,
+  "outcome_dependent_policy_change": false,
+  "seed_change": false,
+  "budget_change": false,
+  "acceptance_criteria_change": false,
+  "required_action": "Invalidate unsealed reports, rebuild, refreeze all source hashes, rerun from the exact predecessor, and repeat all validation."
+}

@@ -1,0 +1,187 @@
+{
+    "schema_version":  "SEM30_ARTIFACT_MANIFEST_1",
+    "campaign_id":  "SEM30-LONG-HORIZON-CURRICULUM-MEMORY-0001",
+    "artifact_count":  36,
+    "artifacts":  [
+                      {
+                          "path":  "reports/sem30/artifacts/frozen_verifier/sem30-verify.exe",
+                          "bytes":  375808,
+                          "sha256":  "8244eb3cf81b947b8ea88bf571f69211705db41bb211ff360f845d1e3b12f14e"
+                      },
+                      {
+                          "path":  "reports/sem30/artifacts/frozen_verifier/verifier.rs",
+                          "bytes":  15245,
+                          "sha256":  "d8861ce300fee838fd5bca728af635c376e3c90e25321c747fc9722f5a46bd33"
+                      },
+                      {
+                          "path":  "reports/sem30/autonomous_decision_ledger.json",
+                          "bytes":  1939,
+                          "sha256":  "4743f9d514a9ee69f37c439c96351704b2f45c15e1e21393caf699ddfa1e1ad1"
+                      },
+                      {
+                          "path":  "reports/sem30/campaign_freeze.json",
+                          "bytes":  7453,
+                          "sha256":  "5a1cd2b229cdcccd1494affe96fa3103f95e73cfd0e541c7beb2f52005a28406"
+                      },
+                      {
+                          "path":  "reports/sem30/causal_ablations.json",
+                          "bytes":  1551,
+                          "sha256":  "d33ca7b16134b4890968a775be99f360280dde8171af55e4691eb89e303f0fe6"
+                      },
+                      {
+                          "path":  "reports/sem30/checkpoints/epoch_0001_PREDECESSOR_MEMORY_REHYDRATION.json",
+                          "bytes":  299,
+                          "sha256":  "f5ac4b2761e9e9c675dd56332edb30955da71795aa60ee17d13ee61be1156d29"
+                      },
+                      {
+                          "path":  "reports/sem30/checkpoints/epoch_0005_S4_PRODUCTIVE_CROSS_FAMILY_TRANSFER.json",
+                          "bytes":  848,
+                          "sha256":  "15fe6efb5360605c1a361bd1fff6e883f589531e0184183018b1f6fe0682c696"
+                      },
+                      {
+                          "path":  "reports/sem30/checkpoints/epoch_0006_COMPRESSED_NODE_PROMOTION.json",
+                          "bytes":  1124,
+                          "sha256":  "09ffac100e5dd1194da7df0e7cac59638000335bc5cc204da8bcb4ffbc9a9fb8"
+                      },
+                      {
+                          "path":  "reports/sem30/checkpoints/epoch_0010_S5_PRODUCTIVE_CROSS_FAMILY_TRANSFER.json",
+                          "bytes":  1682,
+                          "sha256":  "7393524ad7d65fa167b1ac70238255c51624a9d350fbf4a583c3a5a0445bfde0"
+                      },
+                      {
+                          "path":  "reports/sem30/checkpoints/epoch_0014_S6_PRODUCTIVE_CROSS_FAMILY_TRANSFER.json",
+                          "bytes":  2227,
+                          "sha256":  "c712f8b24901c878b1cd4741c10092f3958b75113552a73b73cb23a96bce2300"
+                      },
+                      {
+                          "path":  "reports/sem30/checkpoints/epoch_0015_COMPRESSION_EQUIVALENCE_AND_EXCEPTION_SAFETY.json",
+                          "bytes":  2236,
+                          "sha256":  "fd26e28807237fbec40799aff8ded19597ab85b2c633df88cb0e42b78caac5de"
+                      },
+                      {
+                          "path":  "reports/sem30/checkpoints/epoch_0016_MAJOR_CAUSAL_ABLATIONS.json",
+                          "bytes":  2214,
+                          "sha256":  "27270461652b89d7b9fe5aecee6b6420bb84a8a89ed643784a6961a8b9c2ef0b"
+                      },
+                      {
+                          "path":  "reports/sem30/cleanup_receipt.json",
+                          "bytes":  758,
+                          "sha256":  "06aaaa84005a62e76b4510ffa7cc47b120d14b1432be02bbfe7dc6032db4e33c"
+                      },
+                      {
+                          "path":  "reports/sem30/clippy_differential_audit.json",
+                          "bytes":  504,
+                          "sha256":  "a0ad8f11291b8c6f8b19577968c42db84beefff89aa6333c67fd43e402177d21"
+                      },
+                      {
+                          "path":  "reports/sem30/compressed_node.json",
+                          "bytes":  1619,
+                          "sha256":  "aee8813289fcb04276b0dbb1a183ae31ff9f758f5806f7a6e8d2ec6498ddec0b"
+                      },
+                      {
+                          "path":  "reports/sem30/compression_evidence.json",
+                          "bytes":  919,
+                          "sha256":  "40d7c9bd3fdea8d1d8f9895fd0a725037ddb146e20a97466e75d769b7a5cdebb"
+                      },
+                      {
+                          "path":  "reports/sem30/curriculum_law_transfer_matrix.json",
+                          "bytes":  1458,
+                          "sha256":  "2499da579b85df32028979231bc65e88537da9dbec3b4a9fe52c40dbb2ca028d"
+                      },
+                      {
+                          "path":  "reports/sem30/episodes/S4.json",
+                          "bytes":  19100,
+                          "sha256":  "02983f5fbb1519e8742dfc9fc8784cd8b0f4e9520ccfda7b2e38c4808c6d0510"
+                      },
+                      {
+                          "path":  "reports/sem30/episodes/S5.json",
+                          "bytes":  19041,
+                          "sha256":  "e110000678acc8cd2fd18912ba1ed9ab1acf8e341c3392466a9a908f3f76f2a7"
+                      },
+                      {
+                          "path":  "reports/sem30/episodes/S6.json",
+                          "bytes":  19106,
+                          "sha256":  "f7ad4433c86b7ad9e08cf37292770624ca364b6adcaca58191b24d4a8fadd38d"
+                      },
+                      {
+                          "path":  "reports/sem30/generic_candidate_vocabulary.json",
+                          "bytes":  6798,
+                          "sha256":  "3809c3b9fe1a15a1f063c4f0246e65f54cdf0fee4cdf880e565286f8e9413ffc"
+                      },
+                      {
+                          "path":  "reports/sem30/human_intervention_audit.json",
+                          "bytes":  250,
+                          "sha256":  "f7a28f1e725b051c50c050a6b9596f5a8108829280ebdcf169db896a086f4a67"
+                      },
+                      {
+                          "path":  "reports/sem30/integrity_audit.json",
+                          "bytes":  661,
+                          "sha256":  "55b433c445c04ebd0d9919999e0fe68640e706527c4306bec2f24cf65efd91db"
+                      },
+                      {
+                          "path":  "reports/sem30/long_horizon_raw_sequences.json",
+                          "bytes":  1796,
+                          "sha256":  "ad7e1cb293ee7670c5cf0ae3de091d24c493529badde9c028b53b969770d7abb"
+                      },
+                      {
+                          "path":  "reports/sem30/post_campaign_accounting.json",
+                          "bytes":  449,
+                          "sha256":  "c73b380c93543786cc373cc26ac49c22ee0d14a84ab1e1e49fc2633969725641"
+                      },
+                      {
+                          "path":  "reports/sem30/predecessor_integrity.json",
+                          "bytes":  661,
+                          "sha256":  "d46eac8f3c733a15dfd4f79fa281c2c8edb90cf6020805ae761d04825a79a8a2"
+                      },
+                      {
+                          "path":  "reports/sem30/prestart_audit.json",
+                          "bytes":  233,
+                          "sha256":  "55004f0235b00e093861d4bdca0c8dbe1db702cecef3e93d41b539867855bf67"
+                      },
+                      {
+                          "path":  "reports/sem30/reproducibility_receipt.json",
+                          "bytes":  1401,
+                          "sha256":  "8e1bf94a1423cad42fa6498b57962df69a889bddbb071060cdb3c5814d541749"
+                      },
+                      {
+                          "path":  "reports/sem30/sem30_final_report.json",
+                          "bytes":  3815,
+                          "sha256":  "8f07dc35cfa55f81e0463b7f246c17e5e5824badb2bc21499d166d1d32dcc101"
+                      },
+                      {
+                          "path":  "reports/sem30/SEM30_REPORT.md",
+                          "bytes":  583,
+                          "sha256":  "37d6d0e77813657fb5c4f0f3b457972290db3742bbc7a56800257e351abc4a08"
+                      },
+                      {
+                          "path":  "reports/sem30/structural_distance_matrix.json",
+                          "bytes":  3309,
+                          "sha256":  "b0d1f23688b64c7bf8238ac6e21238121580e54d663170fd572a192fe6c5e031"
+                      },
+                      {
+                          "path":  "reports/sem30/test_receipt.json",
+                          "bytes":  502,
+                          "sha256":  "77706405770ab537c1b30cadff706b4e546a9950d652bdeb0741d09074f66092"
+                      },
+                      {
+                          "path":  "reports/sem30/typed_semantic_long_term_memory.json",
+                          "bytes":  12673,
+                          "sha256":  "9783d3a5c424e366e1fcf4ac4d2b54e3eed0a2ed583d62cbbd2aae1b24a7d227"
+                      },
+                      {
+                          "path":  "research/sem30/invalidated_attempt_001.json",
+                          "bytes":  865,
+                          "sha256":  "a2d47a1a2f1e9d72e43661903a0010002ff601ac02aa560078cf33ed233b9a30"
+                      },
+                      {
+                          "path":  "research/sem30/ontology.json",
+                          "bytes":  1442,
+                          "sha256":  "121bab6972904eb024e2c549df8ef8ea64650ad448db03cad292cbd0f315f623"
+                      },
+                      {
+                          "path":  "research/sem30/SEM30_INSTRUCTION.md",
+                          "bytes":  18294,
+                          "sha256":  "3b2648a7ff4821323fd93a2129a20d9de4b431e15223acf8b8add2936445c28c"
+                      }
+                  ]
+}

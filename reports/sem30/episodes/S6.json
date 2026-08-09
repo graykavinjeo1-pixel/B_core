@@ -1,0 +1,703 @@
+{
+  "activated_hypotheses": 1,
+  "adapted_verification": {
+    "result": {
+      "accepted": true,
+      "contract_version": "SEM30-LONG-HORIZON-SEMANTIC-CONTRACT-V1",
+      "dependency_depth": 6,
+      "expected_result_disclosed": false,
+      "generator_is_success_authority": false,
+      "semantic_work_units": 91,
+      "structural_signature": 5892178522801517356,
+      "verifier_internal_witness_disclosed": false,
+      "violations": []
+    },
+    "wall_time_ns": 45609700
+  },
+  "calibration_probes": 1,
+  "capability_after": {
+    "causal": true,
+    "constraint": true,
+    "cross_instance": true,
+    "hierarchy": true,
+    "relational": true,
+    "temporal": true
+  },
+  "cross_family_laws_used": [
+    "LAW-BOUNDARY-ORTHOGONALITY-1"
+  ],
+  "episode_id": "S6",
+  "failed_candidates": 0,
+  "genesis_cost": 163,
+  "holdout_challenges": [
+    {
+      "constraint_values": [
+        13962827013658866566,
+        234733694746186233,
+        12957745517393106293,
+        14373871684909487837,
+        14824715511155884448,
+        4642135964822635360
+      ],
+      "context_values": [
+        8675549221984726620,
+        8917598273091675042,
+        17165741349007158231,
+        3262278441114807171,
+        7136301228609888796,
+        8836510801742682412
+      ],
+      "contract_version": "SEM30-LONG-HORIZON-SEMANTIC-CONTRACT-V1",
+      "difficulty_dimension": "CONSTRAINT_PROPAGATION_WIDTH",
+      "hierarchy_values": [
+        4420412624350702716,
+        18344397420608618487,
+        13748390579321558729,
+        9303406895398424979,
+        7228119807253865018,
+        4060491536225354645
+      ],
+      "instance_id": 1,
+      "intervention_values": [
+        5064412462509648938,
+        14132029578660186700,
+        5956258254965658223,
+        8060462566015021760,
+        5285083913012795312,
+        15696737341463293600
+      ],
+      "lagged_context_values": [
+        2514442778400901908,
+        7146181951014108125,
+        84208717716867408,
+        1782663476106252390,
+        11100015794110601203,
+        6498214764020498309
+      ],
+      "peer_context_values": [
+        1863176918481554150,
+        14433598838725966102,
+        7070647647454174087,
+        451436363210710969,
+        2364261742802481709,
+        126081420513766200
+      ],
+      "public_nonce": 10642451019659355559,
+      "public_seed": 3162519096598155279,
+      "rules": [
+        {
+          "increment": 15802625291976889984,
+          "multiplier": 2390597959515706191,
+          "operation": "AFFINE",
+          "source": 0,
+          "target": 1
+        },
+        {
+          "increment": 8917598273091675042,
+          "multiplier": 7806795319379288559,
+          "operation": "AFFINE",
+          "source": 2,
+          "target": 3
+        },
+        {
+          "left": 1,
+          "operation": "RELATE",
+          "right": 3,
+          "rotate": 16,
+          "salt": 7017308445854131390,
+          "target": 4
+        },
+        {
+          "condition": 4,
+          "operation": "GATE",
+          "salt": 7330631680286490951,
+          "target": 5,
+          "when_even": 1,
+          "when_odd": 3
+        },
+        {
+          "left": 4,
+          "operation": "FOLD",
+          "right": 5,
+          "rotate": 1,
+          "salt": 13501685670770860231,
+          "target": 0
+        },
+        {
+          "constraint": 2,
+          "modulus": 23,
+          "operation": "CONSTRAINT_PROPAGATE",
+          "salt": 8261874008964983899,
+          "source": 0,
+          "target": 3
+        }
+      ],
+      "substrate_family": "CONSTRAINT_PROPAGATION",
+      "substrate_id": "PROFILE-1b1f27ea766feca6-52f8"
+    },
+    {
+      "constraint_values": [
+        13688784143194761731,
+        3151143365126488889,
+        17377374742426289476,
+        9069719628866347176,
+        8424534738454511098,
+        9111013859149116101
+      ],
+      "context_values": [
+        5860465930259499129,
+        5205328130495312257,
+        15433507826018445264,
+        6111226909475138292,
+        4741321288367389495,
+        1474901774077604405
+      ],
+      "contract_version": "SEM30-LONG-HORIZON-SEMANTIC-CONTRACT-V1",
+      "difficulty_dimension": "CONSTRAINT_PROPAGATION_WIDTH",
+      "hierarchy_values": [
+        16524081071479918920,
+        13341629326517465287,
+        13940407515669918259,
+        16790373080001373547,
+        14302023665488708653,
+        3868544272443829228
+      ],
+      "instance_id": 2,
+      "intervention_values": [
+        8711090075262843463,
+        4257593516008905667,
+        2184053914999237736,
+        16855386404931711057,
+        14369064309855982735,
+        2347640208874392013
+      ],
+      "lagged_context_values": [
+        13472333957224673431,
+        17676115970893260833,
+        18409274719775993534,
+        12114731906184106542,
+        5393139418866789694,
+        11080805927093330006
+      ],
+      "peer_context_values": [
+        902337779290437642,
+        5515961195887278868,
+        2064067219472938536,
+        18068520702611566260,
+        6097304731191175076,
+        13027786630222062918
+      ],
+      "public_nonce": 13268763591613026383,
+      "public_seed": 11582805742255775447,
+      "rules": [
+        {
+          "increment": 8751591151704549211,
+          "multiplier": 4025896173935821331,
+          "operation": "AFFINE",
+          "source": 0,
+          "target": 1
+        },
+        {
+          "increment": 15433507826018445264,
+          "multiplier": 17313175077928174859,
+          "operation": "AFFINE",
+          "source": 2,
+          "target": 3
+        },
+        {
+          "left": 1,
+          "operation": "RELATE",
+          "right": 3,
+          "rotate": 61,
+          "salt": 4741321288367389495,
+          "target": 4
+        },
+        {
+          "condition": 4,
+          "operation": "GATE",
+          "salt": 886025187576959454,
+          "target": 5,
+          "when_even": 1,
+          "when_odd": 3
+        },
+        {
+          "left": 4,
+          "operation": "FOLD",
+          "right": 5,
+          "rotate": 5,
+          "salt": 13747933668280270376,
+          "target": 0
+        },
+        {
+          "constraint": 2,
+          "modulus": 180,
+          "operation": "CONSTRAINT_PROPAGATE",
+          "salt": 10974392508826678135,
+          "source": 0,
+          "target": 3
+        }
+      ],
+      "substrate_family": "CONSTRAINT_PROPAGATION",
+      "substrate_id": "PROFILE-1b1f27ea766feca6-52f8"
+    },
+    {
+      "constraint_values": [
+        12336878805059226182,
+        13247246888078673668,
+        12376529881659296528,
+        8818916184435981086,
+        14050686329690515154,
+        11209348648738697202
+      ],
+      "context_values": [
+        6730561516189732342,
+        15879473085150122654,
+        12247426814807798023,
+        16728203689235123162,
+        15535161720614503108,
+        16770136543784738340
+      ],
+      "contract_version": "SEM30-LONG-HORIZON-SEMANTIC-CONTRACT-V1",
+      "difficulty_dimension": "CONSTRAINT_PROPAGATION_WIDTH",
+      "hierarchy_values": [
+        8184558009514051636,
+        13785965187126018525,
+        2010244056774627374,
+        13686788759202215627,
+        10007872226872343339,
+        7291720207093727353
+      ],
+      "instance_id": 3,
+      "intervention_values": [
+        4058638771361035252,
+        5301062664037781533,
+        6126774744980605350,
+        14893449382074723778,
+        17680169663877932130,
+        146320651871578476
+      ],
+      "lagged_context_values": [
+        13451972388171327958,
+        8180141049205594298,
+        15862668488391083973,
+        1599867620974240526,
+        4294792543936161660,
+        5852579097242023630
+      ],
+      "peer_context_values": [
+        654097747987857052,
+        5630474489192789923,
+        9550785740061933277,
+        11872081840479667879,
+        15703661923653967989,
+        3201898336899558295
+      ],
+      "public_nonce": 3853893979499045501,
+      "public_seed": 12082501269816653913,
+      "rules": [
+        {
+          "increment": 12880740999335543473,
+          "multiplier": 18333577974823237893,
+          "operation": "AFFINE",
+          "source": 0,
+          "target": 1
+        },
+        {
+          "increment": 16728203689235123162,
+          "multiplier": 46389342350370505,
+          "operation": "AFFINE",
+          "source": 2,
+          "target": 3
+        },
+        {
+          "left": 1,
+          "operation": "RELATE",
+          "right": 3,
+          "rotate": 39,
+          "salt": 16770136543784738340,
+          "target": 4
+        },
+        {
+          "condition": 4,
+          "operation": "GATE",
+          "salt": 15569131130375746475,
+          "target": 5,
+          "when_even": 1,
+          "when_odd": 3
+        },
+        {
+          "left": 4,
+          "operation": "FOLD",
+          "right": 5,
+          "rotate": 38,
+          "salt": 15697568471400129518,
+          "target": 0
+        },
+        {
+          "constraint": 2,
+          "modulus": 14,
+          "operation": "CONSTRAINT_PROPAGATE",
+          "salt": 9410236235067661846,
+          "source": 0,
+          "target": 3
+        }
+      ],
+      "substrate_family": "CONSTRAINT_PROPAGATION",
+      "substrate_id": "PROFILE-1b1f27ea766feca6-52f8"
+    },
+    {
+      "constraint_values": [
+        5701952363249151664,
+        6885943614174356893,
+        1206256031556396101,
+        2355002212331140079,
+        6307658130121282993,
+        7427340918220990175
+      ],
+      "context_values": [
+        10417118996140321612,
+        10464962480149899830,
+        1920258398500229397,
+        12454785703134326498,
+        9273657063235914452,
+        3250503918743449397
+      ],
+      "contract_version": "SEM30-LONG-HORIZON-SEMANTIC-CONTRACT-V1",
+      "difficulty_dimension": "CONSTRAINT_PROPAGATION_WIDTH",
+      "hierarchy_values": [
+        812818792822790897,
+        16763143861914113551,
+        17595636989601320795,
+        11324221458623520624,
+        17181405422234193151,
+        10438385240971019615
+      ],
+      "instance_id": 4,
+      "intervention_values": [
+        4870417582591149790,
+        4661555329055952275,
+        12968985951477060782,
+        15389906302112995445,
+        9744308959064739122,
+        9968408173670333938
+      ],
+      "lagged_context_values": [
+        5964037115811459141,
+        401499040905365362,
+        3524388466367390629,
+        1483687701568334170,
+        15653232660500393144,
+        12173526145453077110
+      ],
+      "peer_context_values": [
+        14393020393032813566,
+        10968383880507010810,
+        1382862778887564589,
+        6820040718653074202,
+        4367247315496532454,
+        2905491592357165124
+      ],
+      "public_nonce": 9244261886179719574,
+      "public_seed": 2884253197022424810,
+      "rules": [
+        {
+          "increment": 12662180323761385555,
+          "multiplier": 8423338453167923537,
+          "operation": "AFFINE",
+          "source": 0,
+          "target": 1
+        },
+        {
+          "increment": 9273657063235914452,
+          "multiplier": 15469120942544168769,
+          "operation": "AFFINE",
+          "source": 2,
+          "target": 3
+        },
+        {
+          "left": 1,
+          "operation": "RELATE",
+          "right": 3,
+          "rotate": 36,
+          "salt": 1920258398500229397,
+          "target": 4
+        },
+        {
+          "condition": 4,
+          "operation": "GATE",
+          "salt": 7462418691240117314,
+          "target": 5,
+          "when_even": 1,
+          "when_odd": 3
+        },
+        {
+          "left": 4,
+          "operation": "FOLD",
+          "right": 5,
+          "rotate": 63,
+          "salt": 13628066714072722543,
+          "target": 0
+        },
+        {
+          "constraint": 2,
+          "modulus": 235,
+          "operation": "CONSTRAINT_PROPAGATE",
+          "salt": 14305206550213489481,
+          "source": 0,
+          "target": 3
+        }
+      ],
+      "substrate_family": "CONSTRAINT_PROPAGATION",
+      "substrate_id": "PROFILE-1b1f27ea766feca6-52f8"
+    }
+  ],
+  "holdout_solve_metrics": [
+    {
+      "active_semantic_objects": 2,
+      "compiled_reasoning_cost": 2,
+      "compressed_nodes_activated": 1,
+      "decompressions": 0,
+      "reasoning_depth": 2
+    },
+    {
+      "active_semantic_objects": 2,
+      "compiled_reasoning_cost": 2,
+      "compressed_nodes_activated": 1,
+      "decompressions": 0,
+      "reasoning_depth": 2
+    },
+    {
+      "active_semantic_objects": 2,
+      "compiled_reasoning_cost": 2,
+      "compressed_nodes_activated": 1,
+      "decompressions": 0,
+      "reasoning_depth": 2
+    },
+    {
+      "active_semantic_objects": 2,
+      "compiled_reasoning_cost": 2,
+      "compressed_nodes_activated": 1,
+      "decompressions": 0,
+      "reasoning_depth": 2
+    }
+  ],
+  "holdout_verifications": [
+    {
+      "result": {
+        "accepted": true,
+        "contract_version": "SEM30-LONG-HORIZON-SEMANTIC-CONTRACT-V1",
+        "dependency_depth": 6,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 91,
+        "structural_signature": 16359886973079735490,
+        "verifier_internal_witness_disclosed": false,
+        "violations": []
+      },
+      "wall_time_ns": 4564400
+    },
+    {
+      "result": {
+        "accepted": true,
+        "contract_version": "SEM30-LONG-HORIZON-SEMANTIC-CONTRACT-V1",
+        "dependency_depth": 6,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 91,
+        "structural_signature": 8271187579530802357,
+        "verifier_internal_witness_disclosed": false,
+        "violations": []
+      },
+      "wall_time_ns": 4121300
+    },
+    {
+      "result": {
+        "accepted": true,
+        "contract_version": "SEM30-LONG-HORIZON-SEMANTIC-CONTRACT-V1",
+        "dependency_depth": 6,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 91,
+        "structural_signature": 715348932675517200,
+        "verifier_internal_witness_disclosed": false,
+        "violations": []
+      },
+      "wall_time_ns": 4078000
+    },
+    {
+      "result": {
+        "accepted": true,
+        "contract_version": "SEM30-LONG-HORIZON-SEMANTIC-CONTRACT-V1",
+        "dependency_depth": 6,
+        "expected_result_disclosed": false,
+        "generator_is_success_authority": false,
+        "semantic_work_units": 91,
+        "structural_signature": 14464722803965240046,
+        "verifier_internal_witness_disclosed": false,
+        "violations": []
+      },
+      "wall_time_ns": 4076600
+    }
+  ],
+  "initial_challenge": {
+    "constraint_values": [
+      16060246467669460132,
+      8230652286309870541,
+      14680498738805817936,
+      12271705516002992326,
+      4358134948656728053,
+      1203331798892062010
+    ],
+    "context_values": [
+      16113319131528946397,
+      16675559335525675665,
+      16000633415906821081,
+      3345185575532316682,
+      14243161306311991558,
+      15399756354049929849
+    ],
+    "contract_version": "SEM30-LONG-HORIZON-SEMANTIC-CONTRACT-V1",
+    "difficulty_dimension": "CONSTRAINT_PROPAGATION_WIDTH",
+    "hierarchy_values": [
+      7731313360460805446,
+      1708998752497521088,
+      5383059250396851036,
+      17512133764414658737,
+      9281981906218840378,
+      1687516908433339475
+    ],
+    "instance_id": 1,
+    "intervention_values": [
+      16158952903716718590,
+      16850299136974577752,
+      10261765839579700968,
+      1373610140371170213,
+      10015256338669540872,
+      7646022855362035869
+    ],
+    "lagged_context_values": [
+      1688314109211389206,
+      3468764220234047932,
+      15008190819800976690,
+      17015663516067532101,
+      4969059219929613680,
+      5895552064199230768
+    ],
+    "peer_context_values": [
+      4774485002326775297,
+      8532479115853823882,
+      16381155616823331857,
+      14977522918766695421,
+      10636059867888238420,
+      5653635829897318219
+    ],
+    "public_nonce": 9853377457714754451,
+    "public_seed": 16330903757569921067,
+    "rules": [
+      {
+        "increment": 14482833796987597594,
+        "multiplier": 2678510605902870989,
+        "operation": "AFFINE",
+        "source": 0,
+        "target": 1
+      },
+      {
+        "increment": 16675559335525675665,
+        "multiplier": 1297881120633455637,
+        "operation": "AFFINE",
+        "source": 2,
+        "target": 3
+      },
+      {
+        "left": 1,
+        "operation": "RELATE",
+        "right": 3,
+        "rotate": 20,
+        "salt": 12628160586541353524,
+        "target": 4
+      },
+      {
+        "condition": 4,
+        "operation": "GATE",
+        "salt": 12253989805845735950,
+        "target": 5,
+        "when_even": 1,
+        "when_odd": 3
+      },
+      {
+        "left": 4,
+        "operation": "FOLD",
+        "right": 5,
+        "rotate": 4,
+        "salt": 6690078678135711453,
+        "target": 0
+      },
+      {
+        "constraint": 2,
+        "modulus": 128,
+        "operation": "CONSTRAINT_PROPAGATE",
+        "salt": 2560217530707904462,
+        "source": 0,
+        "target": 3
+      }
+    ],
+    "substrate_family": "CONSTRAINT_PROPAGATION",
+    "substrate_id": "PROFILE-1b1f27ea766feca6-52f8"
+  },
+  "initial_verification": {
+    "result": {
+      "accepted": false,
+      "contract_version": "SEM30-LONG-HORIZON-SEMANTIC-CONTRACT-V1",
+      "dependency_depth": 6,
+      "expected_result_disclosed": false,
+      "generator_is_success_authority": false,
+      "semantic_work_units": 91,
+      "structural_signature": 5892178522801517356,
+      "verifier_internal_witness_disclosed": false,
+      "violations": [
+        "RESULT_DIGEST_MISMATCH",
+        "TRACE_COMMITMENT_MISMATCH"
+      ]
+    },
+    "wall_time_ns": 4427000
+  },
+  "latent_candidate_count": 2,
+  "new_irreducible_semantic_bytes": 550,
+  "origin_laws_used": [
+    "LAW-BOUNDARY-ORTHOGONALITY-1"
+  ],
+  "prediction_error": 12,
+  "retained_gain": 364,
+  "selected_candidate": {
+    "candidate_id": "PROFILE-1b1f27ea766feca6-52f8",
+    "dimension": "CONSTRAINT_PROPAGATION_WIDTH",
+    "family": "CONSTRAINT_PROPAGATION",
+    "feature": "CONSTRAINT_PROPAGATION",
+    "independently_verifiable": true,
+    "law_applicable": true,
+    "law_rejection_reason": null,
+    "localized_feedback": true,
+    "operator_selected": false,
+    "predicted_adaptation": "ADD_TYPED_CONSTRAINTPROPAGATION_INTERPRETER",
+    "predicted_gain": 618,
+    "predicted_learnability": true,
+    "predicted_work": 103,
+    "profile": {
+      "adaptation_type": 4,
+      "causal_structure": 0,
+      "composition_requirements": 3,
+      "constraint_structure": 3,
+      "dependency_topology": 4,
+      "failure_phenotype": 4,
+      "interaction_rank": 4,
+      "required_relations": 5,
+      "verification_structure": 4
+    },
+    "selection_score": 136,
+    "structural_distance_from_nearest_mastered": 8
+  },
+  "structural_distance": 8,
+  "time_to_learnable_frontier": 2,
+  "time_to_retained_gain": 3,
+  "transfer_class": "CROSS_FAMILY_TRANSFER+CROSS_DIMENSION_TRANSFER"
+}

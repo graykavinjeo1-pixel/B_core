@@ -1,0 +1,190 @@
+{
+  "evidence_dimensions": [
+    "required_relations",
+    "dependency_topology",
+    "interaction_rank",
+    "causal_structure",
+    "constraint_structure",
+    "composition_requirements",
+    "verification_structure",
+    "failure_phenotype",
+    "adaptation_type"
+  ],
+  "names_or_numeric_labels_used_as_distinctness_proof": false,
+  "rows": [
+    {
+      "distances": [
+        {
+          "distance": 0,
+          "target": "S1"
+        },
+        {
+          "distance": 6,
+          "target": "S2"
+        },
+        {
+          "distance": 11,
+          "target": "S3"
+        },
+        {
+          "distance": 30,
+          "target": "S4"
+        },
+        {
+          "distance": 25,
+          "target": "S5"
+        },
+        {
+          "distance": 19,
+          "target": "S6"
+        }
+      ],
+      "source": "S1"
+    },
+    {
+      "distances": [
+        {
+          "distance": 6,
+          "target": "S1"
+        },
+        {
+          "distance": 0,
+          "target": "S2"
+        },
+        {
+          "distance": 7,
+          "target": "S3"
+        },
+        {
+          "distance": 24,
+          "target": "S4"
+        },
+        {
+          "distance": 19,
+          "target": "S5"
+        },
+        {
+          "distance": 15,
+          "target": "S6"
+        }
+      ],
+      "source": "S2"
+    },
+    {
+      "distances": [
+        {
+          "distance": 11,
+          "target": "S1"
+        },
+        {
+          "distance": 7,
+          "target": "S2"
+        },
+        {
+          "distance": 0,
+          "target": "S3"
+        },
+        {
+          "distance": 19,
+          "target": "S4"
+        },
+        {
+          "distance": 14,
+          "target": "S5"
+        },
+        {
+          "distance": 8,
+          "target": "S6"
+        }
+      ],
+      "source": "S3"
+    },
+    {
+      "distances": [
+        {
+          "distance": 30,
+          "target": "S1"
+        },
+        {
+          "distance": 24,
+          "target": "S2"
+        },
+        {
+          "distance": 19,
+          "target": "S3"
+        },
+        {
+          "distance": 0,
+          "target": "S4"
+        },
+        {
+          "distance": 11,
+          "target": "S5"
+        },
+        {
+          "distance": 15,
+          "target": "S6"
+        }
+      ],
+      "source": "S4"
+    },
+    {
+      "distances": [
+        {
+          "distance": 25,
+          "target": "S1"
+        },
+        {
+          "distance": 19,
+          "target": "S2"
+        },
+        {
+          "distance": 14,
+          "target": "S3"
+        },
+        {
+          "distance": 11,
+          "target": "S4"
+        },
+        {
+          "distance": 0,
+          "target": "S5"
+        },
+        {
+          "distance": 10,
+          "target": "S6"
+        }
+      ],
+      "source": "S5"
+    },
+    {
+      "distances": [
+        {
+          "distance": 19,
+          "target": "S1"
+        },
+        {
+          "distance": 15,
+          "target": "S2"
+        },
+        {
+          "distance": 8,
+          "target": "S3"
+        },
+        {
+          "distance": 15,
+          "target": "S4"
+        },
+        {
+          "distance": 10,
+          "target": "S5"
+        },
+        {
+          "distance": 0,
+          "target": "S6"
+        }
+      ],
+      "source": "S6"
+    }
+  ]
+}

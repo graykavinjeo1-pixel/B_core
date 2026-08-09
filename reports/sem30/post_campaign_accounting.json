@@ -1,0 +1,13 @@
+{
+  "schema_version": "SEM30_POST_CAMPAIGN_ACCOUNTING_1",
+  "canonical_research_result_changed": false,
+  "canonical_seed_changed": false,
+  "canonical_budget_changed": false,
+  "canonical_policy_changed": false,
+  "acceptance_criteria_changed": false,
+  "full_workspace_regression_pass": true,
+  "new_clippy_warning_signatures_total": 0,
+  "clean_offline_reconstruction_pass": true,
+  "core_dockability_preserved": true,
+  "sem31_started": false
+}

@@ -1,0 +1,53 @@
+{
+  "compressed_memory_ablation_pass": true,
+  "compressed_memory_arm": {
+    "enabled_cost": 24,
+    "equivalent_results": true,
+    "forced_decompressed_cost": 72,
+    "same_learned_knowledge": true
+  },
+  "cross_family_curriculum_law_ablation_pass": true,
+  "cross_family_law_ablation": {
+    "calibration_probes": 3,
+    "condition": "CLAIMED_CROSS_FAMILY_LAW_DISABLED",
+    "equal_cpu_ram_envelope": true,
+    "failed_or_neutral_candidates": 2,
+    "hypotheses_before_target": 3,
+    "same_candidate_budget": 7,
+    "same_general_capability": {
+      "causal": false,
+      "constraint": false,
+      "cross_instance": true,
+      "hierarchy": false,
+      "relational": true,
+      "temporal": true
+    },
+    "semantic_probe_work": 416,
+    "target_episode": "S4",
+    "target_feature": "HIERARCHICAL_COMPOSITION",
+    "target_found": true
+  },
+  "long_horizon_memory_causality_pass": true,
+  "memory_content_ablation": {
+    "calibration_probes": 6,
+    "condition": "PRIOR_CURRICULUM_SEMANTIC_MEMORY_REMOVED",
+    "equal_cpu_ram_envelope": true,
+    "failed_or_neutral_candidates": 5,
+    "hypotheses_before_target": 6,
+    "same_candidate_budget": 7,
+    "same_general_capability": {
+      "causal": false,
+      "constraint": false,
+      "cross_instance": true,
+      "hierarchy": false,
+      "relational": true,
+      "temporal": true
+    },
+    "semantic_probe_work": 617,
+    "target_episode": "S4",
+    "target_feature": "HIERARCHICAL_COMPOSITION",
+    "target_found": true
+  },
+  "same_candidate_budget": 7,
+  "same_hardware": true
+}

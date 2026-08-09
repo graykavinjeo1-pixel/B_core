@@ -1,0 +1,204 @@
+{
+  "base_seed": 6786924646976952020,
+  "branch": "codex/sem30-long-horizon-memory",
+  "budget_is_research_semantic_input": false,
+  "campaign_id": "SEM30-LONG-HORIZON-CURRICULUM-MEMORY-0001",
+  "campaign_is_event_bounded": true,
+  "checkpoint_interval_epochs": 64,
+  "compressed_node_is_success_authority": false,
+  "curriculum_law_is_success_authority": false,
+  "engine_sha256": "b8e46434c28478c86110e71879be93d8711ad487559633eec3e446604338c2b3",
+  "fresh_seed_commitments": [
+    {
+      "domain": "ROUTING",
+      "instance_index": 1,
+      "instance_materialized": false,
+      "seed_commitment": "a2aa61e559adc6129ca4894aa981fe594a83394030a3e42cd041b1c3206d87ff"
+    },
+    {
+      "domain": "ROUTING",
+      "instance_index": 2,
+      "instance_materialized": false,
+      "seed_commitment": "192f2d54874edede7b364284ba1e94f151f355e5ecf75e4de4a8bc0ba19d8009"
+    },
+    {
+      "domain": "ROUTING",
+      "instance_index": 3,
+      "instance_materialized": false,
+      "seed_commitment": "356d0fff5bc8dd97f305dba2821e7a62809c2e21692d719f699d4beed4b33fce"
+    },
+    {
+      "domain": "ROUTING",
+      "instance_index": 4,
+      "instance_materialized": false,
+      "seed_commitment": "9a6145f3db237bfe7a0f7b8289148f2f58a9dabbd64760bc19ec3637d125abbc"
+    },
+    {
+      "domain": "COMPRESSION_SUPPORT",
+      "instance_index": 1,
+      "instance_materialized": false,
+      "seed_commitment": "e730edf7ac905345946a78eba0d630a89d8a4184510f880207f2bd18b44497fa"
+    },
+    {
+      "domain": "COMPRESSION_SUPPORT",
+      "instance_index": 2,
+      "instance_materialized": false,
+      "seed_commitment": "56c6228e52333f4914a11138b91000d2eb02087cb8cc0cd2a3f27a8594a2dfc6"
+    },
+    {
+      "domain": "COMPRESSION_SUPPORT",
+      "instance_index": 3,
+      "instance_materialized": false,
+      "seed_commitment": "274cc42b4e895dcff202f0a802325edc53952f1037aebdf68be86dd6096dd474"
+    },
+    {
+      "domain": "COMPRESSION_SUPPORT",
+      "instance_index": 4,
+      "instance_materialized": false,
+      "seed_commitment": "fdffebf26e4e1a511df86491e66fce71e014f838b6a8b5548f002271e15e8117"
+    },
+    {
+      "domain": "S4_HOLDOUT",
+      "instance_index": 1,
+      "instance_materialized": false,
+      "seed_commitment": "cd8887ceb37e4bc117bbc57e818798959bbf36c17af57f0ae1b5aad892713e2d"
+    },
+    {
+      "domain": "S4_HOLDOUT",
+      "instance_index": 2,
+      "instance_materialized": false,
+      "seed_commitment": "7efb11b6ce71bba09b5c006400a5dec5f74bad04d379c69622c126daa53e5803"
+    },
+    {
+      "domain": "S4_HOLDOUT",
+      "instance_index": 3,
+      "instance_materialized": false,
+      "seed_commitment": "4144bd84b244ed332c6bfd648fcd07aa1f0c595f1fb277228509edc22959e7c5"
+    },
+    {
+      "domain": "S4_HOLDOUT",
+      "instance_index": 4,
+      "instance_materialized": false,
+      "seed_commitment": "75a2ec5975e8c0d84583a781f68c50309a34f30952455e2c447ad74cdc0b0872"
+    },
+    {
+      "domain": "S5_HOLDOUT",
+      "instance_index": 1,
+      "instance_materialized": false,
+      "seed_commitment": "14396ef52be3c9b042284850e9abb6d30496d10f1d0b5baf1ca82dc0b7430540"
+    },
+    {
+      "domain": "S5_HOLDOUT",
+      "instance_index": 2,
+      "instance_materialized": false,
+      "seed_commitment": "da1ead708e7ef4ff88a3794b7010a65ff5f4a1858d297f717596a81a58e80776"
+    },
+    {
+      "domain": "S5_HOLDOUT",
+      "instance_index": 3,
+      "instance_materialized": false,
+      "seed_commitment": "571a9319542331869f7212c1768d577030c1f799500b7ed6a1864abb2a3b40ea"
+    },
+    {
+      "domain": "S5_HOLDOUT",
+      "instance_index": 4,
+      "instance_materialized": false,
+      "seed_commitment": "50fd68154930e29fef9a75266479ea65a69e051e01e4eed2570a9e6ffca13217"
+    },
+    {
+      "domain": "S6_HOLDOUT",
+      "instance_index": 1,
+      "instance_materialized": false,
+      "seed_commitment": "8bcb7bff722c0d5bef068a5bd89a23466074448f21d8536fd57b5ceeaf798ae0"
+    },
+    {
+      "domain": "S6_HOLDOUT",
+      "instance_index": 2,
+      "instance_materialized": false,
+      "seed_commitment": "5eed5b16cade513620e90e24219cc8aa136f0b3a40a3eb63fafb6a5bf20c5e1b"
+    },
+    {
+      "domain": "S6_HOLDOUT",
+      "instance_index": 3,
+      "instance_materialized": false,
+      "seed_commitment": "2066662f4524e01b53a550c3b0c09a42cc7f57edf6a0f7c5f2b5c9c8a11fd15f"
+    },
+    {
+      "domain": "S6_HOLDOUT",
+      "instance_index": 4,
+      "instance_materialized": false,
+      "seed_commitment": "9e6523dd3046dc97f26a4a602c22b4044218aafd31c4ae9146f3d08219565149"
+    },
+    {
+      "domain": "EXCEPTION",
+      "instance_index": 1,
+      "instance_materialized": false,
+      "seed_commitment": "d87b1cdc39668b9ed72c32f812f936b6ea2a150de310e68ec5232360e6270359"
+    },
+    {
+      "domain": "EXCEPTION",
+      "instance_index": 2,
+      "instance_materialized": false,
+      "seed_commitment": "c76284a37004e99d0013d90c196f5819db2fb770690abef19fb7320d2fbe7f6e"
+    },
+    {
+      "domain": "EXCEPTION",
+      "instance_index": 3,
+      "instance_materialized": false,
+      "seed_commitment": "1b3b32f4bf372e7f8be240647e4645f8281d8c3225ffad966044498e4d1751fe"
+    },
+    {
+      "domain": "EXCEPTION",
+      "instance_index": 4,
+      "instance_materialized": false,
+      "seed_commitment": "efc053f8ba8ae9ea4fef7a1ec0426470a8e0c76e176d6f5d2f0215ed65009aa9"
+    },
+    {
+      "domain": "ABLATION",
+      "instance_index": 1,
+      "instance_materialized": false,
+      "seed_commitment": "f233f6e84c61147092af043b273851b128e7bbb156a352aa833c6ed4ce462d20"
+    },
+    {
+      "domain": "ABLATION",
+      "instance_index": 2,
+      "instance_materialized": false,
+      "seed_commitment": "9c28d350cff34c775538ee080b8805afbd741856a7683996fb44ea627446c8de"
+    },
+    {
+      "domain": "ABLATION",
+      "instance_index": 3,
+      "instance_materialized": false,
+      "seed_commitment": "0dbc31647000caf3c1f0de2cc759c0e7d9b70e0ec6da601eaf819300b7d5e910"
+    },
+    {
+      "domain": "ABLATION",
+      "instance_index": 4,
+      "instance_materialized": false,
+      "seed_commitment": "25b997c220845d92a7c9bd7bd82d16cd55a1969ff3dcf6dce714176b27a8031b"
+    }
+  ],
+  "frozen_at_unix_ms": 1786265214331,
+  "future_instances_materialized": false,
+  "generator_is_success_authority": false,
+  "human_curriculum_selection_events": 0,
+  "human_difficulty_selection_events": 0,
+  "human_law_selection_events": 0,
+  "human_memory_promotion_events": 0,
+  "human_repair_design_events": 0,
+  "human_substrate_design_events": 0,
+  "instruction_sha256": "3b2648a7ff4821323fd93a2129a20d9de4b431e15223acf8b8add2936445c28c",
+  "max_autonomous_research_epochs": 8192,
+  "network_allowed": false,
+  "ontology_sha256": "121bab6972904eb024e2c549df8ef8ea64650ad448db03cad292cbd0f315f623",
+  "prestart_autonomous_research_events": 0,
+  "prestart_future_instance_exposure_events": 0,
+  "runner_sha256": "cfa3d0fa850da7ab8a40882570b695ab1da22653815c1b2545316a3e94332ef7",
+  "schema_version": "SEM30_CAMPAIGN_FREEZE_1",
+  "sealed_predecessor_commit": "fc6796d455f6e5bb1122cefc84f9f239c742941f",
+  "seed_derivation": "MIX(BASE_SEED, DOMAIN, INDEX)",
+  "verifier_binary": "D:\\B_Core_CAMPAIGNS\\sem30-long-horizon-memory\\reports/sem30\\artifacts/frozen_verifier/sem30-verify.exe",
+  "verifier_binary_sha256": "8244eb3cf81b947b8ea88bf571f69211705db41bb211ff360f845d1e3b12f14e",
+  "verifier_contract_version": "SEM30-LONG-HORIZON-SEMANTIC-CONTRACT-V1",
+  "verifier_source_sha256": "d8861ce300fee838fd5bca728af635c376e3c90e25321c747fc9722f5a46bd33"
+}

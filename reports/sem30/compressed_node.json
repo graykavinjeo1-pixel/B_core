@@ -1,0 +1,84 @@
+{
+  "applicability_conditions": [
+    "CONTRACT_VERSION_MATCH",
+    "FIRST_FIVE_TYPED_OPERATIONS_MATCH",
+    "INDEX_TOPOLOGY_MATCH",
+    "NODE_LIFECYCLE_PROMOTED"
+  ],
+  "compressed_from": [
+    {
+      "Affine": {
+        "source": 0,
+        "target": 1
+      }
+    },
+    {
+      "Affine": {
+        "source": 2,
+        "target": 3
+      }
+    },
+    {
+      "Relate": {
+        "left": 1,
+        "right": 3,
+        "target": 4
+      }
+    },
+    {
+      "Gate": {
+        "condition": 4,
+        "target": 5,
+        "when_even": 1,
+        "when_odd": 3
+      }
+    },
+    {
+      "Fold": {
+        "left": 4,
+        "right": 5,
+        "target": 0
+      }
+    }
+  ],
+  "decompression_available": true,
+  "exceptions": [
+    "OPERATION_ORDER_CHANGE",
+    "INDEX_TOPOLOGY_CHANGE",
+    "CONTRACT_VERSION_CHANGE"
+  ],
+  "lifecycle_state": "PROMOTED",
+  "node_id": "NODE-820173d959608f11",
+  "node_id_is_semantic_payload": false,
+  "predicted_effects": [
+    "FIVE_INTERPRETER_DISPATCHES_TO_ONE_COMPILED_ACTIVATION",
+    "SEMANTIC_RESULT_UNCHANGED"
+  ],
+  "promotion_evidence": [
+    "REUSE",
+    "TRANSFER",
+    "PREDICTIVE_VALUE",
+    "CAUSAL_VALUE",
+    "COMPRESSION_GAIN",
+    "FUTURE_REASONING_UTILITY"
+  ],
+  "provenance": [
+    "S1",
+    "S2",
+    "S3",
+    "S4"
+  ],
+  "task_specific": false,
+  "verification_certificate": {
+    "certificate_hash": "820173d959608f11aa8856c8401ac66e57b27d47e1ef7887ec42a49d61d5dda8",
+    "cross_family_support_count": 4,
+    "exception_cases": 3,
+    "reference_equivalence_cases": 12,
+    "support_episode_ids": [
+      "S1",
+      "S2",
+      "S3",
+      "S4"
+    ]
+  }
+}

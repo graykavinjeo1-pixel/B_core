@@ -1,0 +1,45 @@
+{
+  "checkpoint_alters_research_semantics": false,
+  "decision_state": [
+    {
+      "episode_deltas": 3,
+      "epoch": 1,
+      "event": "SEALED_SEM29_TYPED_MEMORY_REHYDRATED",
+      "laws": 1,
+      "operator_selected": false
+    },
+    {
+      "activated_hypotheses": 1,
+      "episode": "S4",
+      "epoch": 2,
+      "event": "SPARSE_STRUCTURAL_PROFILE_ROUTING",
+      "latent_candidates": 4,
+      "nearest_mastered_structural_distance": 19,
+      "operator_selected": false,
+      "selected_profile_fingerprint": 1116957758460569317
+    },
+    {
+      "episode": "S4",
+      "epoch": 5,
+      "event": "NEW_PRODUCTIVE_SUBSTRATE_AND_CROSS_FAMILY_TRANSFER",
+      "family_fingerprint": 1116957758460569317,
+      "operator_selected": false,
+      "retained_gain": 456
+    },
+    {
+      "epoch": 6,
+      "event": "COMPRESSED_SEMANTIC_NODE_PROMOTION",
+      "node_id": "NODE-820173d959608f11",
+      "node_id_is_semantic_payload": false,
+      "operator_selected": false,
+      "support": [
+        "S1",
+        "S2",
+        "S3",
+        "S4"
+      ]
+    }
+  ],
+  "epoch": 6,
+  "event": "COMPRESSED_NODE_PROMOTION"
+}

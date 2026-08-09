@@ -1,0 +1,14 @@
+{
+  "manifest_eol_rehydration_is_semantic_change": false,
+  "manifest_eol_rehydration_paths": [
+    "research/sem29/SEM29_INSTRUCTION.md"
+  ],
+  "passed": true,
+  "predecessor_manifest_sha256": "7b24dd262c40ab228fb195dc1ee995bd65949d30561606aed576267c81fa9172",
+  "predecessor_memory_sha256": "afc7badfb7c0648a7c7cb48a43f7dac9e83b05b5eee4d083dfc65bc46de32136",
+  "predecessor_report_sha256": "90370322964123a81a377b512b166eeec13c2ca5875bc440f40fae7ad5a1f4a8",
+  "prior_frontier_scale": 8606121,
+  "productive_substrate_episodes": 3,
+  "recursive_curriculum_improvement_observed": true,
+  "sealed_predecessor_commit": "fc6796d455f6e5bb1122cefc84f9f239c742941f"
+}
