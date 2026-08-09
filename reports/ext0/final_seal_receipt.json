@@ -1,0 +1,19 @@
+{
+  "campaign_id": "EXT0-FRESH-REAL-WORLD-ONE-TASK-BLIND-TRANSFER-0001",
+  "sealed_at_utc": "2026-08-09T05:36:17.5612682Z",
+  "sealed_result_commit": "1fa5b26913a51b265dff202718f51db7207e90e0",
+  "sealed_result_tree": "1805b0651abb3fa142c7118dcca327b14a3cd91f",
+  "sealed_report_tree": "c1368f2f57c1cef2939bf7d6017a63fa1e503043",
+  "sealed_adapter_tree": "954035e6b3bee5daeaa86edbe440fdbd1dda96b2",
+  "predecessor_commit": "9dbebdd280db2c292bff4865bcf8f1d8c39c335d",
+  "accepted_descendant_commits": [
+    "8205c3205e5cbdc7f8a5f2bd909ff6a74161278f",
+    "1cdaaf72030b057dde9ff8f74c83f62718617d1e",
+    "1fa5b26913a51b265dff202718f51db7207e90e0"
+  ],
+  "final_patch_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "original_verifier_result": "EMPTY_PATCH",
+  "task_resolved": false,
+  "push_performed": false,
+  "ext1_started": false
+}
