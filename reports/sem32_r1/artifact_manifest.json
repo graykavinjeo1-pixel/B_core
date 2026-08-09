@@ -1,0 +1,171 @@
+{
+  "campaign_id": "SEM32-R1-RELATIONAL-TOPOLOGY-REGATE-0001",
+  "entries": [
+    {
+      "bytes": 568,
+      "path": "reports/sem32_r1/SEM32_R1_REPORT.md",
+      "sha256": "7df0eec0a4877f938aaead416976483fde09eb6710e2acb60b0fd5c7b631787e"
+    },
+    {
+      "bytes": 1639,
+      "path": "reports/sem32_r1/acceptance_truth_table_tests.json",
+      "sha256": "aea2ba5ec43693d54d91a10f610ac544b29c4c7f004083f65a400e549fd89a9d"
+    },
+    {
+      "bytes": 867,
+      "path": "reports/sem32_r1/all_levels_regate.json",
+      "sha256": "abda87a3008ba11ade9c735dc842da9e668f085dc4d24c254ca289534db38089"
+    },
+    {
+      "bytes": 165,
+      "path": "reports/sem32_r1/anti_memorization_ablation.json",
+      "sha256": "8c5061d3a4501e2f6c795236f5be6ee0ab5d4ec658922563a2eba8f787707801"
+    },
+    {
+      "bytes": 87,
+      "path": "reports/sem32_r1/anti_overgeneralization.json",
+      "sha256": "8b1fc1477c2c5123629ddddcf6177b3bad45043cdda813fc92b8d926bf15cda1"
+    },
+    {
+      "bytes": 186,
+      "path": "reports/sem32_r1/anti_overgeneralization_ablation.json",
+      "sha256": "b2e07aa1052d26aa07e12e0781695283a49864a90e47719d150cbb8905bc8595"
+    },
+    {
+      "bytes": 641536,
+      "path": "reports/sem32_r1/artifacts/frozen_verifier/sem32-r1-verify.exe",
+      "sha256": "9c4b38f9d9c94e7a10f5bf92d1c1963e315c77bf8fcfdc47eed6615fb2cab94f"
+    },
+    {
+      "bytes": 38367,
+      "path": "reports/sem32_r1/artifacts/frozen_verifier/verifier.rs",
+      "sha256": "cdf699adbb05d3109a8647d23862662eb33b9084853b37aae2e7f5b9c795799e"
+    },
+    {
+      "bytes": 229,
+      "path": "reports/sem32_r1/budget_contract_audit.json",
+      "sha256": "e941a3bed5b24a8ad38af8d7b8db992010bbfbec56b679e0c484933fd6f2c4d3"
+    },
+    {
+      "bytes": 14985,
+      "path": "reports/sem32_r1/canonical_submission.json",
+      "sha256": "2e61d86a091bec0aebd1c53ded92d85836e8857bfebf4687b219d7f0920e26b6"
+    },
+    {
+      "bytes": 2593,
+      "path": "reports/sem32_r1/canonical_verifier_result.json",
+      "sha256": "c7321ae1bb9ea98b3d79718818651747e13ef6f5e04a51602af97865f8ddcdaa"
+    },
+    {
+      "bytes": 52,
+      "path": "reports/sem32_r1/cardinality_generalization.json",
+      "sha256": "24be19a48ebc0397f1f06d12db2e8cd32bcdfd90d2d01f050edd16079f2b20de"
+    },
+    {
+      "bytes": 544,
+      "path": "reports/sem32_r1/clean_reconstruction.json",
+      "sha256": "4fbd3b213fe420b28f17e0218c145ad59ef2e9b49bf1ca86f9c72b52dfded9bd"
+    },
+    {
+      "bytes": 1154,
+      "path": "reports/sem32_r1/diagnostic_experiments.jsonl",
+      "sha256": "8744f2b13698a5e03c9a6e27da18bba55361ee3823b03e9845c0605576b62304"
+    },
+    {
+      "bytes": 396,
+      "path": "reports/sem32_r1/final_regression.json",
+      "sha256": "df3fc99eb89a5956da4d842ed869969717a4ac4fba7c126366870acdb982a0a8"
+    },
+    {
+      "bytes": 1905,
+      "path": "reports/sem32_r1/fresh_topology_manifest.json",
+      "sha256": "705566dcaaee0414c8381b9256014790c2a0e506a692067293128cae2a7f95c1"
+    },
+    {
+      "bytes": 284,
+      "path": "reports/sem32_r1/fresh_topology_structural_distance.json",
+      "sha256": "2395f09dbba09e13b8e5f04e629d2d95d14bc4b29c10f6c0aaac9ad7024c24b2"
+    },
+    {
+      "bytes": 328,
+      "path": "reports/sem32_r1/historical_sem32_fail_receipt.json",
+      "sha256": "824c3e801442c71d2bd18d6c18ce2cd3991fcf28b138e9dcf5e957f9ee7ab1c6"
+    },
+    {
+      "bytes": 200,
+      "path": "reports/sem32_r1/multihop_relational_transfer.json",
+      "sha256": "6fcacdf032f4d443dd3660ae80fa70a78c8cab648fc11a233831348bf0199c82"
+    },
+    {
+      "bytes": 113,
+      "path": "reports/sem32_r1/novel_topology_counterfactual.json",
+      "sha256": "e3f4aeb4d572279422f9e8eb42af511b7d1f4faecc3ae3ba738fde2470f1b20f"
+    },
+    {
+      "bytes": 449,
+      "path": "reports/sem32_r1/p0_acceptance_harness_repair.json",
+      "sha256": "700ea64393776bfb8643fad205c06e401eac2e679a4edd2edb30bc1e279b0575"
+    },
+    {
+      "bytes": 89,
+      "path": "reports/sem32_r1/permutation_invariance.json",
+      "sha256": "c7d009578d3ebd7f9f2f65a899b56c3e936015024b2189eda2adb517d47415be"
+    },
+    {
+      "bytes": 133,
+      "path": "reports/sem32_r1/post_repair_fresh_results.json",
+      "sha256": "e56706fc4349a6a1b5a4a53ec1e125348f3b862d73f1142ab6957f0d62f2e313"
+    },
+    {
+      "bytes": 277,
+      "path": "reports/sem32_r1/pre_freeze_relational_canaries.json",
+      "sha256": "e7493ec01791999a01ff7aecfd1d42c141294742f57f1529e6626389197c1e0d"
+    },
+    {
+      "bytes": 127,
+      "path": "reports/sem32_r1/pre_repair_fresh_baseline.json",
+      "sha256": "8bdfaad6f200a405a950fc9730f4fa9822bfffabe0cf949154a1684c3cfea375"
+    },
+    {
+      "bytes": 1859,
+      "path": "reports/sem32_r1/primary_acceptance_result.json",
+      "sha256": "cf9b6a679d3080c3a4345f8a16ea385b630959b5b5c951154fe908d4a0aeada5"
+    },
+    {
+      "bytes": 177,
+      "path": "reports/sem32_r1/relational_failure_diagnosis.jsonl",
+      "sha256": "44da939381377a88c4ccbcbc667fd3103343cd6bbdbf7e373577c0442a19c941"
+    },
+    {
+      "bytes": 202,
+      "path": "reports/sem32_r1/relational_repair_ablation.json",
+      "sha256": "d104983e630324d313e4c9b62151d2b0e2502f73970fa3b8d8391d010f2f18d0"
+    },
+    {
+      "bytes": 2265,
+      "path": "reports/sem32_r1/repair_freeze.json",
+      "sha256": "6077fe06ed767442da7e4fa3a5178c44eb76b8aedf3922ce5f1b1ff97fe11671"
+    },
+    {
+      "bytes": 1003,
+      "path": "reports/sem32_r1/repair_hypotheses.jsonl",
+      "sha256": "4853ddee0206acecf1d9abbf6bdcb3674a37e5bfb9e3af98af954bc501592968"
+    },
+    {
+      "bytes": 493,
+      "path": "reports/sem32_r1/repair_lineage.jsonl",
+      "sha256": "c28d023d745232cfc7aeb554f1274a5c637ea729b0fd9c3a32329b379b0cb83e"
+    },
+    {
+      "bytes": 299,
+      "path": "reports/sem32_r1/secondary_acceptance_result.json",
+      "sha256": "d3bb856c4b62c91a4a3abbe0bab1c5bcc40c1586c3836937ee142945a42d14ec"
+    },
+    {
+      "bytes": 5497,
+      "path": "reports/sem32_r1/sem32_r1_final_report.json",
+      "sha256": "bc932829aaec17260fe67fba3ed9bd1f7f3626044bbb316a5f455fe18c5d35cc"
+    }
+  ],
+  "schema_version": "SEM32_R1_ARTIFACT_MANIFEST_1"
+}

@@ -8,7 +8,7 @@
 - Relational repair ablation: `true`
 - Fresh topology structurally distinct: `true`
 - All Levels A-J: `true`
-- Clean reconstruction: `false`
+- Clean reconstruction: `true`
 - SEM-33 started: `false`
 
 The acceptance status is derived mechanically from canonical raw fields and independently recomputed by the secondary evaluator.

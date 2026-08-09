@@ -1,0 +1,13 @@
+{
+  "schema_version": "SEM32_R1_CLEAN_RECONSTRUCTION_1",
+  "reconstructed_commit": "bde90e00619ae90d9ecf59be2b6126197d994374",
+  "source_worktree": "D:\\B_Core_CLEAN_RECONSTRUCTION\\sem32-r1-bde90e0",
+  "target_directory": "D:\\B_Core_CLEAN_RECONSTRUCTION\\sem32-r1-bde90e0\\target-clean",
+  "warm_cache_used": false,
+  "target_preexisted": false,
+  "dependency_resolution_locked": true,
+  "command": "cargo test --workspace --all-targets --locked",
+  "exit_code": 0,
+  "workspace_all_targets_pass": true,
+  "clean_reconstruction_pass": true
+}
