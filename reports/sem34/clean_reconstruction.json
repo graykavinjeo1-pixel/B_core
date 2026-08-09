@@ -1,0 +1,19 @@
+{
+  "schema_version": "SEM34_CLEAN_RECONSTRUCTION_1",
+  "status": "PASS",
+  "reconstructed_commit": "de2092f006f2ebd0a252371d5249dcb66320dca0",
+  "worktree": "D:\\B_Core_CLEAN_RECONSTRUCTION\\sem34-de2092f",
+  "cargo_target_dir": "D:\\B_Core_CLEAN_RECONSTRUCTION\\sem34-de2092f-target",
+  "command": "cargo test --workspace --all-targets --locked --offline --quiet",
+  "offline": true,
+  "network_used": false,
+  "warm_cache_used": false,
+  "workspace_tests_passed": 251,
+  "workspace_tests_failed": 0,
+  "sem34_tests_passed": 7,
+  "dockable_semantic_core_tests_passed": 7,
+  "adapter_language_tests_passed": 1,
+  "semantic_reasoning_tests_passed": 228,
+  "synapse_core_tests_passed": 14,
+  "recursive_core_tests_passed": 1
+}

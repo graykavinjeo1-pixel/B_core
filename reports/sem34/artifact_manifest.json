@@ -1,0 +1,171 @@
+{
+  "artifacts": [
+    {
+      "bytes": 262,
+      "path": "reports/sem34/SEM34_REPORT.md",
+      "sha256": "68e85a153bd70c1a5c48f84789c849fffab32fbc29b5ca56786553a7e5c524ec"
+    },
+    {
+      "bytes": 1253888,
+      "path": "reports/sem34/artifacts/frozen_final/sem34-verify.exe",
+      "sha256": "8554c18576bd2cd80c75111878a6780a31090ed452b879bd0fa70e22dee1209a"
+    },
+    {
+      "bytes": 862,
+      "path": "reports/sem34/baseline_planner_freeze.json",
+      "sha256": "7917341e2dd5ac2eba7b2ff6117ff8b0a05ff699b9669ce0d9848b7d1aa89776"
+    },
+    {
+      "bytes": 320432,
+      "path": "reports/sem34/baseline_scaling_characterization.json",
+      "sha256": "231fc23c8a5a8f131aaf127077f75154e5fc4fb7ba74bc916cbf09547578cc9f"
+    },
+    {
+      "bytes": 148,
+      "path": "reports/sem34/budget_contract.json",
+      "sha256": "e2661db0699b12ea9605f04222ffbbd68e9c3c0f9a6ee59a108b375f1feb57a0"
+    },
+    {
+      "bytes": 148,
+      "path": "reports/sem34/checkpoint_epoch_0000.json",
+      "sha256": "909eb17c181721b688c974206398d1c9a67dae830a3563e3b329c6cc3a7c89b8"
+    },
+    {
+      "bytes": 165,
+      "path": "reports/sem34/checkpoint_epoch_0024.json",
+      "sha256": "c1e8687305cb9b6fa06a883caccf72241b3660b6c1918e1be068dc25d978e921"
+    },
+    {
+      "bytes": 175,
+      "path": "reports/sem34/checkpoint_final_freeze.json",
+      "sha256": "38ad15a5ede0454bad520b05ca63b85e2818fa8981eb82424a056b22cb7833a1"
+    },
+    {
+      "bytes": 726,
+      "path": "reports/sem34/clean_reconstruction.json",
+      "sha256": "6f5f21d765287ae2314de9ac4a5b6d01dedd0aaaa221ed321bc55e0beadb6022"
+    },
+    {
+      "bytes": 603,
+      "path": "reports/sem34/clippy_diff.json",
+      "sha256": "6ba2a4fa045c53e15cd22043622ce33dcf59960c2395ee20f32f081c8753f321"
+    },
+    {
+      "bytes": 175,
+      "path": "reports/sem34/development_ablations.json",
+      "sha256": "e9a3906eab6cb8a9e885b8db37108b43aadba177ecfb4ae4e70dd2419064eb0e"
+    },
+    {
+      "bytes": 8436,
+      "path": "reports/sem34/development_scaling_curves.json",
+      "sha256": "b2ce947675d34edaa7f0a40d60977fa2098b456fe0447b32b686f3fd0bed90f8"
+    },
+    {
+      "bytes": 1565,
+      "path": "reports/sem34/development_scaling_manifest.json",
+      "sha256": "9ea0376055c76c9ea77ae3d3fafe405880799af62c2bf481f9b20b17016e58cc"
+    },
+    {
+      "bytes": 324880,
+      "path": "reports/sem34/development_selected_planner.json",
+      "sha256": "07ed053b983f62a184af422362b9cff106e1058f8c69571508065f827666a649"
+    },
+    {
+      "bytes": 397,
+      "path": "reports/sem34/efficiency_diagnosis.json",
+      "sha256": "c8c173e9554eebc19166106ea9b4ef6627cdd8726bdc83fc59e28e25fe97b0e1"
+    },
+    {
+      "bytes": 1369,
+      "path": "reports/sem34/efficiency_experiments.jsonl",
+      "sha256": "97e2af5b72c839dd694ae138f1c6b4049d15e91e94a7cceccbca7e02be02a95c"
+    },
+    {
+      "bytes": 453,
+      "path": "reports/sem34/efficiency_hypotheses.jsonl",
+      "sha256": "b6223e104842f5cf6229c4b3f95cd68f96e63ee2826f287d8a7fea248a8d191f"
+    },
+    {
+      "bytes": 1039,
+      "path": "reports/sem34/efficiency_repair_lineage.json",
+      "sha256": "bbe6ec9a2d14be4883792aef98f244c9274b1a6ec0cecb4837b03822240e0359"
+    },
+    {
+      "bytes": 2130,
+      "path": "reports/sem34/final_freeze.json",
+      "sha256": "2a539fb6dd0e976699fec5645f67d483115b9e98e3d5fd9b4e37501a284a29c2"
+    },
+    {
+      "bytes": 2003,
+      "path": "reports/sem34/final_holdout_manifest.json",
+      "sha256": "b961d70ec846642cde8d4c35d2c1748a8087a3127b866311b2584c82dddb5367"
+    },
+    {
+      "bytes": 619,
+      "path": "reports/sem34/final_regression.json",
+      "sha256": "86c406c3ea54bec2ccb10954641675849bf8406f7a9fc8cb399705bb52941b34"
+    },
+    {
+      "bytes": 2359451,
+      "path": "reports/sem34/final_scaling_bundle.json",
+      "sha256": "29712af0aecd69735fa169bbc05563eb88b56b44af42d3b278b94e8ef3a0a682"
+    },
+    {
+      "bytes": 3957,
+      "path": "reports/sem34/final_scaling_verification.json",
+      "sha256": "e787bb6574bc836d3638dfdafd42df5c31287650b078759a9d21eaa3444487e3"
+    },
+    {
+      "bytes": 410,
+      "path": "reports/sem34/predecessor_integrity.json",
+      "sha256": "9953f4129e211eed14ce5d58ae05cb9c296a614ef730eaa246c62cf04a37c5ab"
+    },
+    {
+      "bytes": 1564,
+      "path": "reports/sem34/preflight_freeze.json",
+      "sha256": "d7ed47f5ef25b69c7b40c41cc645cfaa7c6e18147377a94f66f19a62e9d46429"
+    },
+    {
+      "bytes": 142,
+      "path": "reports/sem34/primary_acceptance.json",
+      "sha256": "4f7b022fde24ecf873eb31f7e98898945715131d51f0820d5a1f404f205a298b"
+    },
+    {
+      "bytes": 11235,
+      "path": "reports/sem34/raw_sequences.json",
+      "sha256": "7bf88b5ef5b8ef2ac284fd30745299943eeba8d6840a2640b21fa8ca6a14c19b"
+    },
+    {
+      "bytes": 266,
+      "path": "reports/sem34/scaling_ablations.json",
+      "sha256": "f735726e707fc5dd2b8f2c9cec57503737c332d3aa3aac3b0e5cbc5703202736"
+    },
+    {
+      "bytes": 866,
+      "path": "reports/sem34/search_compression.json",
+      "sha256": "52fea7ee4aa7ab262c85225e4d17442f1d2833e11e93a8a427aefbe7f928cc76"
+    },
+    {
+      "bytes": 142,
+      "path": "reports/sem34/secondary_acceptance.json",
+      "sha256": "4f7b022fde24ecf873eb31f7e98898945715131d51f0820d5a1f404f205a298b"
+    },
+    {
+      "bytes": 6321,
+      "path": "reports/sem34/sem34_final_report.json",
+      "sha256": "682e939eef9325493c8160b68d1385276c184a3764693915d6667e94a8d0ce3e"
+    },
+    {
+      "bytes": 1227,
+      "path": "reports/sem34/transport_regression.json",
+      "sha256": "d81b795405b19c96c00f4b12fc9c05f3b604ef7822c377e1d359fa3164190c5d"
+    },
+    {
+      "bytes": 536,
+      "path": "reports/sem34/work_accounting_freeze.json",
+      "sha256": "3c46e41d9d4a17710992e316cbd7146314afc7bb6462fdecd5a485f4e26241e6"
+    }
+  ],
+  "campaign_id": "SEM34-BOUNDED-PLANNING-EFFICIENCY-SCALING-0001",
+  "schema_version": "SEM34_ARTIFACT_MANIFEST_1"
+}
