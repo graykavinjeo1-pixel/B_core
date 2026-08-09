@@ -1,0 +1,8 @@
+{
+  "historical_sem33_campaign_status": "FAIL",
+  "historical_sem33_capability_status": "UNRESOLVED_NOT_MEASURED",
+  "historical_sem33_commit": "901ee1b01109e24b1f7b683b3f1e1b2e30b74e43",
+  "historical_sem33_dominant_boundary": "OTHER / VERIFIER_TRANSPORT_DESERIALIZATION_LIMIT",
+  "historical_sem33_result_rewritten": false,
+  "sealed_capability_predecessor_commit": "b23dcaf42365d202cbd03e0a8c7a11aa0a7e6c1b"
+}

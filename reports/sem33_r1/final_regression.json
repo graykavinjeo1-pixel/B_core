@@ -1,0 +1,7 @@
+{
+  "campaign_specific_tests": "PENDING_POST_CANONICAL",
+  "clean_reconstruction": "PENDING_POST_COMMIT",
+  "clippy_diff": "PENDING_POST_CANONICAL",
+  "primary_secondary_acceptance_recomputation": true,
+  "workspace_all_targets_locked": "PENDING_POST_CANONICAL"
+}

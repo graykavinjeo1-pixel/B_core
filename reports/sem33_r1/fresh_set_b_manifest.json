@@ -1,0 +1,37 @@
+{
+  "action_semantics_hash": "2c5db4f5258ac31f5eda5f72103f27aa6eadcec5941b0d1166cad8a62f1285d0",
+  "goal_semantics_hash": "7021714512c9098f79889c2e01c60dad8947181e50342a88e563f3d2b42dc2cf",
+  "historical_holdout_instance_overlap": 0,
+  "manifest": {
+    "action_semantics_hash": "2c5db4f5258ac31f5eda5f72103f27aa6eadcec5941b0d1166cad8a62f1285d0",
+    "challenge_hash": "16423629739b790ce3c087a6d200aa6bee63fbcc79513258de598f4ac4572ce5",
+    "contract_version": "SEM33_R1_BLIND_PLANNING_VERIFIER_1",
+    "goal_semantics_hash": "7021714512c9098f79889c2e01c60dad8947181e50342a88e563f3d2b42dc2cf",
+    "hidden_instance_commitment_hash": "657cbc8100bf2ab47daa22110113659db76c3b8c67368b32730dc997a385d91c",
+    "historical_holdout_instance_overlap": 0,
+    "holdout_selection_rule_hash": "cba575d2690ba43d7c8d8a208694768caf98ea381a58b3a449feec51b3b41d50",
+    "instance_commitments": [
+      "bc98977f07ae0f2424e3006316954c3c13e47f50c3296d947eaad4dbc4d50acc",
+      "6cdb73e3b651c28d1111d5d4725990496c83e339b1d5eb9162643a3671bc2996",
+      "7e70625272ca8e62ed83c8f574dbd14c42808cc36aa30d7b7eb3d733549acb39",
+      "ab5579342ba9c98ea48884a16b7a75eea9e1e41f5508d3cd8509e88fba4ceff9",
+      "fd467d8024af91a50467087caa018ea34aed201c38c11f533483c9d93a508c8c",
+      "4bf25365a55421353f77c51da21caca3be1e38471acb2d2d09a0fbee4c6884e4",
+      "aeedab274c8dde91888288fa57a8bfd6fe235bc6816f14b186dded346f1df214",
+      "c75894bb70c86e09b5cc9deb1c006da5e15fd2eaec08a5958c284b13ea562961",
+      "75a34748d40279333172dc8417cc1abf383fefdc133f46dd66912c4936270da2",
+      "60fa958d9a004eaf7093895b4d532dbd02a113da3e3013c54bae52b3e8fef29a",
+      "6f39c51ae15258e9d0f81906c64b29248ed238d759534f95bc18f2562f321ba4",
+      "30a431ac67d8053dccb576856e1e3a071ac3a677381b673c4a317a37faef89b3"
+    ],
+    "seed": 14439181292672894337,
+    "set_id": "SET_B",
+    "task_count": 12,
+    "task_generator_version": "SEM33_R1_FRESH_GENERATOR_1",
+    "world_semantics_hash": "16423629739b790ce3c087a6d200aa6bee63fbcc79513258de598f4ac4572ce5"
+  },
+  "repair_frozen_before_set_b_materialization": true,
+  "repair_regate_holdout_distinct": true,
+  "set_a_set_b_instance_overlap": 0,
+  "world_semantics_hash": "16423629739b790ce3c087a6d200aa6bee63fbcc79513258de598f4ac4572ce5"
+}

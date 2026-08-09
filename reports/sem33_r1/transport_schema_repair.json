@@ -1,0 +1,11 @@
+{
+  "ambiguous_textual_keys_accepted": false,
+  "canonical_representation": "ORDERED_KEY_VALUE_RECORD_ARRAY",
+  "duplicates_rejected": true,
+  "numeric_syntax_validated": true,
+  "p0_planner_semantic_diff": 0,
+  "p0_world_model_semantic_diff": 0,
+  "task_specific_transport_branches": 0,
+  "transport_schema_version": "SEM33_R1_U16_KEY_VALUE_RECORDS_1",
+  "u16_range_validated": true
+}

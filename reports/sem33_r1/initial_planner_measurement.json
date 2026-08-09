@@ -1,0 +1,3721 @@
+{
+  "arm_evidence": {
+    "challenge_hash": "b676707e26609b627f8ad7ebb4d770aa4d65da6896f0047c59aacba7ef1c1a39",
+    "contract_version": "SEM33_R1_BLIND_PLANNING_VERIFIER_1",
+    "metrics": {
+      "active_entities_p50": 1,
+      "active_entities_p95": 2,
+      "active_entity_sequence": [
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        1,
+        2
+      ],
+      "active_mechanism_sequence": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "active_mechanisms_p50": 1,
+      "active_mechanisms_p95": 1,
+      "active_relation_sequence": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "active_relations_p50": 1,
+      "active_relations_p95": 1,
+      "actually_rolled_out_candidates_sequence": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0
+      ],
+      "autonomous_subgoals_created": 0,
+      "causal_mechanism_full_scans": 0,
+      "causal_path_certificates": 1,
+      "causal_path_depth_sequence": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "full_action_tree_enumeration_events": 0,
+      "goal_tasks_solved": 1,
+      "goal_tasks_total": 12,
+      "goals_satisfied_after_replan": 0,
+      "hierarchical_plan_events": 0,
+      "information_gathering_actions": 0,
+      "known_dead_end_entries": 0,
+      "long_horizon_tasks": 4,
+      "long_horizon_tasks_solved": 0,
+      "max_subgoal_depth": 1,
+      "plan_execution_actions": 7,
+      "plan_length_sequence": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        6,
+        0,
+        0
+      ],
+      "planning_cost_sequence": [
+        6,
+        8,
+        14,
+        8,
+        5,
+        10,
+        7,
+        7,
+        8,
+        48,
+        12,
+        9
+      ],
+      "planning_overgeneralization_events": 0,
+      "raw_action_branching_factor_sequence": [
+        4,
+        7,
+        13,
+        7,
+        4,
+        9,
+        6,
+        6,
+        7,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        11,
+        7
+      ],
+      "reachability_queries": 17,
+      "replan_caused_by_model_residual": 5,
+      "replan_events": 5,
+      "semantic_near_unreachable_shortcut_accepts": 0,
+      "semantically_routed_candidates_sequence": [
+        4,
+        7,
+        13,
+        7,
+        4,
+        9,
+        6,
+        6,
+        7,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        11,
+        7
+      ],
+      "stochastic_plan_branch_events": 1,
+      "subgoal_count_sequence": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "subgoal_depth_sequence": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "unreachable_plan_accepts": 0,
+      "unreachable_plan_cases": 2,
+      "unsupported_plan_confident_executions": 6,
+      "world_memory_full_scans": 0
+    },
+    "mode": "PREDECESSOR_BASELINE",
+    "public_task_manifest": [
+      {
+        "actions": [
+          {
+            "action_id": 98170100,
+            "adds": [
+              101
+            ],
+            "causal_mechanism_code": 1,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 1,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              100
+            ],
+            "resource_cost": 1,
+            "role_code": 1,
+            "semantic_distance_to_goal": 10,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170150,
+            "adds": [
+              170
+            ],
+            "causal_mechanism_code": 800,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 800,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              100
+            ],
+            "resource_cost": 1,
+            "role_code": 800,
+            "semantic_distance_to_goal": 50,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170151,
+            "adds": [
+              171
+            ],
+            "causal_mechanism_code": 801,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 801,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              100
+            ],
+            "resource_cost": 1,
+            "role_code": 801,
+            "semantic_distance_to_goal": 51,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170152,
+            "adds": [
+              172
+            ],
+            "causal_mechanism_code": 802,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 802,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              100
+            ],
+            "resource_cost": 1,
+            "role_code": 802,
+            "semantic_distance_to_goal": 52,
+            "time_cost": 1
+          }
+        ],
+        "deceptive_near_shortcut_present": false,
+        "family_code": 11,
+        "goal": {
+          "epistemic_tolerance_bps": 1000,
+          "forbidden_true": [
+            191
+          ],
+          "max_actions": 3,
+          "maximum_failure_risk_bps": 1000,
+          "preserve_true": [],
+          "required_false": [],
+          "required_true": [
+            101
+          ],
+          "resource_budget": 5,
+          "time_budget": 6
+        },
+        "initial_belief": [
+          {
+            "key": 100,
+            "value": "KNOWN_TRUE"
+          }
+        ],
+        "local_entity_ids": [
+          100,
+          101,
+          170,
+          171,
+          172
+        ],
+        "long_horizon": false,
+        "novel_entity_count": false,
+        "novel_goal_composition": false,
+        "novel_relation_topology": false,
+        "relation_count": 4,
+        "stochastic_outcome_present": false,
+        "task_id": 1,
+        "total_world_entities": 100,
+        "unexpected_change_present": false
+      },
+      {
+        "actions": [
+          {
+            "action_id": 98170200,
+            "adds": [
+              201
+            ],
+            "causal_mechanism_code": 1,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 1,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              200
+            ],
+            "resource_cost": 1,
+            "role_code": 1,
+            "semantic_distance_to_goal": 10,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170201,
+            "adds": [
+              202
+            ],
+            "causal_mechanism_code": 2,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 2,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              201
+            ],
+            "resource_cost": 1,
+            "role_code": 2,
+            "semantic_distance_to_goal": 10,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170202,
+            "adds": [
+              203
+            ],
+            "causal_mechanism_code": 3,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 3,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              202
+            ],
+            "resource_cost": 1,
+            "role_code": 3,
+            "semantic_distance_to_goal": 10,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170203,
+            "adds": [
+              204
+            ],
+            "causal_mechanism_code": 4,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 4,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              203
+            ],
+            "resource_cost": 1,
+            "role_code": 4,
+            "semantic_distance_to_goal": 10,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170250,
+            "adds": [
+              270
+            ],
+            "causal_mechanism_code": 800,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 800,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              200
+            ],
+            "resource_cost": 1,
+            "role_code": 800,
+            "semantic_distance_to_goal": 50,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170251,
+            "adds": [
+              271
+            ],
+            "causal_mechanism_code": 801,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 801,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              200
+            ],
+            "resource_cost": 1,
+            "role_code": 801,
+            "semantic_distance_to_goal": 51,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170252,
+            "adds": [
+              272
+            ],
+            "causal_mechanism_code": 802,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 802,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              200
+            ],
+            "resource_cost": 1,
+            "role_code": 802,
+            "semantic_distance_to_goal": 52,
+            "time_cost": 1
+          }
+        ],
+        "deceptive_near_shortcut_present": false,
+        "family_code": 14,
+        "goal": {
+          "epistemic_tolerance_bps": 1000,
+          "forbidden_true": [
+            291
+          ],
+          "max_actions": 7,
+          "maximum_failure_risk_bps": 1000,
+          "preserve_true": [],
+          "required_false": [],
+          "required_true": [
+            204
+          ],
+          "resource_budget": 9,
+          "time_budget": 14
+        },
+        "initial_belief": [
+          {
+            "key": 200,
+            "value": "KNOWN_TRUE"
+          }
+        ],
+        "local_entity_ids": [
+          200,
+          201,
+          202,
+          203,
+          204,
+          270,
+          271,
+          272
+        ],
+        "long_horizon": false,
+        "novel_entity_count": false,
+        "novel_goal_composition": false,
+        "novel_relation_topology": false,
+        "relation_count": 7,
+        "stochastic_outcome_present": false,
+        "task_id": 2,
+        "total_world_entities": 200,
+        "unexpected_change_present": false
+      },
+      {
+        "actions": [
+          {
+            "action_id": 98170300,
+            "adds": [
+              301
+            ],
+            "causal_mechanism_code": 1,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 1,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              300
+            ],
+            "resource_cost": 1,
+            "role_code": 1,
+            "semantic_distance_to_goal": 10,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170301,
+            "adds": [
+              302
+            ],
+            "causal_mechanism_code": 2,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 2,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              301
+            ],
+            "resource_cost": 1,
+            "role_code": 2,
+            "semantic_distance_to_goal": 10,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170302,
+            "adds": [
+              303
+            ],
+            "causal_mechanism_code": 3,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 3,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              302
+            ],
+            "resource_cost": 1,
+            "role_code": 3,
+            "semantic_distance_to_goal": 10,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170303,
+            "adds": [
+              304
+            ],
+            "causal_mechanism_code": 4,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 4,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              303
+            ],
+            "resource_cost": 1,
+            "role_code": 4,
+            "semantic_distance_to_goal": 10,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170304,
+            "adds": [
+              305
+            ],
+            "causal_mechanism_code": 5,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 5,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              304
+            ],
+            "resource_cost": 1,
+            "role_code": 5,
+            "semantic_distance_to_goal": 10,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170305,
+            "adds": [
+              306
+            ],
+            "causal_mechanism_code": 6,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 6,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              305
+            ],
+            "resource_cost": 1,
+            "role_code": 6,
+            "semantic_distance_to_goal": 10,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170306,
+            "adds": [
+              307
+            ],
+            "causal_mechanism_code": 7,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 7,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              306
+            ],
+            "resource_cost": 1,
+            "role_code": 7,
+            "semantic_distance_to_goal": 10,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170307,
+            "adds": [
+              308
+            ],
+            "causal_mechanism_code": 8,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 8,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              307
+            ],
+            "resource_cost": 1,
+            "role_code": 8,
+            "semantic_distance_to_goal": 10,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170308,
+            "adds": [
+              309
+            ],
+            "causal_mechanism_code": 9,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 9,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              308
+            ],
+            "resource_cost": 1,
+            "role_code": 9,
+            "semantic_distance_to_goal": 10,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170309,
+            "adds": [
+              310
+            ],
+            "causal_mechanism_code": 10,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 10,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              309
+            ],
+            "resource_cost": 1,
+            "role_code": 10,
+            "semantic_distance_to_goal": 10,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170350,
+            "adds": [
+              370
+            ],
+            "causal_mechanism_code": 800,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 800,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              300
+            ],
+            "resource_cost": 1,
+            "role_code": 800,
+            "semantic_distance_to_goal": 50,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170351,
+            "adds": [
+              371
+            ],
+            "causal_mechanism_code": 801,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 801,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              300
+            ],
+            "resource_cost": 1,
+            "role_code": 801,
+            "semantic_distance_to_goal": 51,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170352,
+            "adds": [
+              372
+            ],
+            "causal_mechanism_code": 802,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 802,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              300
+            ],
+            "resource_cost": 1,
+            "role_code": 802,
+            "semantic_distance_to_goal": 52,
+            "time_cost": 1
+          }
+        ],
+        "deceptive_near_shortcut_present": false,
+        "family_code": 20,
+        "goal": {
+          "epistemic_tolerance_bps": 1000,
+          "forbidden_true": [
+            391
+          ],
+          "max_actions": 14,
+          "maximum_failure_risk_bps": 1000,
+          "preserve_true": [],
+          "required_false": [],
+          "required_true": [
+            310
+          ],
+          "resource_budget": 16,
+          "time_budget": 28
+        },
+        "initial_belief": [
+          {
+            "key": 300,
+            "value": "KNOWN_TRUE"
+          }
+        ],
+        "local_entity_ids": [
+          300,
+          301,
+          302,
+          303,
+          304,
+          305,
+          306,
+          307,
+          308,
+          309,
+          310,
+          370,
+          371,
+          372
+        ],
+        "long_horizon": true,
+        "novel_entity_count": false,
+        "novel_goal_composition": true,
+        "novel_relation_topology": true,
+        "relation_count": 13,
+        "stochastic_outcome_present": false,
+        "task_id": 3,
+        "total_world_entities": 300,
+        "unexpected_change_present": false
+      },
+      {
+        "actions": [
+          {
+            "action_id": 98170401,
+            "adds": [
+              401
+            ],
+            "causal_mechanism_code": 20,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 20,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              400
+            ],
+            "resource_cost": 1,
+            "role_code": 20,
+            "semantic_distance_to_goal": 10,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170402,
+            "adds": [
+              402
+            ],
+            "causal_mechanism_code": 21,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 21,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              401
+            ],
+            "resource_cost": 1,
+            "role_code": 21,
+            "semantic_distance_to_goal": 10,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170403,
+            "adds": [
+              403
+            ],
+            "causal_mechanism_code": 22,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 22,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              402
+            ],
+            "resource_cost": 1,
+            "role_code": 22,
+            "semantic_distance_to_goal": 10,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170400,
+            "adds": [
+              480
+            ],
+            "causal_mechanism_code": 999,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": true,
+            "observes": null,
+            "relation_code": 999,
+            "removes": [
+              490
+            ],
+            "requires_false": [],
+            "requires_true": [
+              400
+            ],
+            "resource_cost": 1,
+            "role_code": 999,
+            "semantic_distance_to_goal": 0,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170450,
+            "adds": [
+              470
+            ],
+            "causal_mechanism_code": 800,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 800,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              400
+            ],
+            "resource_cost": 1,
+            "role_code": 800,
+            "semantic_distance_to_goal": 50,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170451,
+            "adds": [
+              471
+            ],
+            "causal_mechanism_code": 801,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 801,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              400
+            ],
+            "resource_cost": 1,
+            "role_code": 801,
+            "semantic_distance_to_goal": 51,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170452,
+            "adds": [
+              472
+            ],
+            "causal_mechanism_code": 802,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 802,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              400
+            ],
+            "resource_cost": 1,
+            "role_code": 802,
+            "semantic_distance_to_goal": 52,
+            "time_cost": 1
+          }
+        ],
+        "deceptive_near_shortcut_present": true,
+        "family_code": 44,
+        "goal": {
+          "epistemic_tolerance_bps": 1000,
+          "forbidden_true": [
+            491
+          ],
+          "max_actions": 6,
+          "maximum_failure_risk_bps": 1000,
+          "preserve_true": [
+            490
+          ],
+          "required_false": [],
+          "required_true": [
+            403
+          ],
+          "resource_budget": 8,
+          "time_budget": 12
+        },
+        "initial_belief": [
+          {
+            "key": 400,
+            "value": "KNOWN_TRUE"
+          },
+          {
+            "key": 490,
+            "value": "KNOWN_TRUE"
+          }
+        ],
+        "local_entity_ids": [
+          400,
+          401,
+          402,
+          403,
+          470,
+          471,
+          472,
+          480,
+          490
+        ],
+        "long_horizon": false,
+        "novel_entity_count": false,
+        "novel_goal_composition": false,
+        "novel_relation_topology": true,
+        "relation_count": 7,
+        "stochastic_outcome_present": false,
+        "task_id": 4,
+        "total_world_entities": 500,
+        "unexpected_change_present": false
+      },
+      {
+        "actions": [
+          {
+            "action_id": 98170501,
+            "adds": [
+              501
+            ],
+            "causal_mechanism_code": 30,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 30,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              500
+            ],
+            "resource_cost": 1,
+            "role_code": 30,
+            "semantic_distance_to_goal": 10,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170550,
+            "adds": [
+              570
+            ],
+            "causal_mechanism_code": 800,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 800,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              500
+            ],
+            "resource_cost": 1,
+            "role_code": 800,
+            "semantic_distance_to_goal": 50,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170551,
+            "adds": [
+              571
+            ],
+            "causal_mechanism_code": 801,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 801,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              500
+            ],
+            "resource_cost": 1,
+            "role_code": 801,
+            "semantic_distance_to_goal": 51,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170552,
+            "adds": [
+              572
+            ],
+            "causal_mechanism_code": 802,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 802,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              500
+            ],
+            "resource_cost": 1,
+            "role_code": 802,
+            "semantic_distance_to_goal": 52,
+            "time_cost": 1
+          }
+        ],
+        "deceptive_near_shortcut_present": true,
+        "family_code": 55,
+        "goal": {
+          "epistemic_tolerance_bps": 1000,
+          "forbidden_true": [
+            591
+          ],
+          "max_actions": 5,
+          "maximum_failure_risk_bps": 1000,
+          "preserve_true": [],
+          "required_false": [],
+          "required_true": [
+            509
+          ],
+          "resource_budget": 7,
+          "time_budget": 10
+        },
+        "initial_belief": [
+          {
+            "key": 500,
+            "value": "KNOWN_TRUE"
+          }
+        ],
+        "local_entity_ids": [
+          500,
+          501,
+          570,
+          571,
+          572
+        ],
+        "long_horizon": false,
+        "novel_entity_count": false,
+        "novel_goal_composition": false,
+        "novel_relation_topology": true,
+        "relation_count": 4,
+        "stochastic_outcome_present": false,
+        "task_id": 5,
+        "total_world_entities": 250,
+        "unexpected_change_present": false
+      },
+      {
+        "actions": [
+          {
+            "action_id": 98170600,
+            "adds": [
+              601
+            ],
+            "causal_mechanism_code": 1,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 1,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              600
+            ],
+            "resource_cost": 1,
+            "role_code": 1,
+            "semantic_distance_to_goal": 10,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170601,
+            "adds": [
+              602
+            ],
+            "causal_mechanism_code": 2,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 2,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              601
+            ],
+            "resource_cost": 1,
+            "role_code": 2,
+            "semantic_distance_to_goal": 10,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170602,
+            "adds": [
+              603
+            ],
+            "causal_mechanism_code": 3,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 3,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              602
+            ],
+            "resource_cost": 1,
+            "role_code": 3,
+            "semantic_distance_to_goal": 10,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170603,
+            "adds": [
+              604
+            ],
+            "causal_mechanism_code": 4,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 4,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              603
+            ],
+            "resource_cost": 1,
+            "role_code": 4,
+            "semantic_distance_to_goal": 10,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170604,
+            "adds": [
+              605
+            ],
+            "causal_mechanism_code": 5,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 5,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              604
+            ],
+            "resource_cost": 1,
+            "role_code": 5,
+            "semantic_distance_to_goal": 10,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170605,
+            "adds": [
+              606
+            ],
+            "causal_mechanism_code": 6,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 6,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              605
+            ],
+            "resource_cost": 1,
+            "role_code": 6,
+            "semantic_distance_to_goal": 10,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170650,
+            "adds": [
+              670
+            ],
+            "causal_mechanism_code": 800,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 800,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              600
+            ],
+            "resource_cost": 1,
+            "role_code": 800,
+            "semantic_distance_to_goal": 50,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170651,
+            "adds": [
+              671
+            ],
+            "causal_mechanism_code": 801,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 801,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              600
+            ],
+            "resource_cost": 1,
+            "role_code": 801,
+            "semantic_distance_to_goal": 51,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170652,
+            "adds": [
+              672
+            ],
+            "causal_mechanism_code": 802,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 802,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              600
+            ],
+            "resource_cost": 1,
+            "role_code": 802,
+            "semantic_distance_to_goal": 52,
+            "time_cost": 1
+          }
+        ],
+        "deceptive_near_shortcut_present": false,
+        "family_code": 16,
+        "goal": {
+          "epistemic_tolerance_bps": 1000,
+          "forbidden_true": [
+            691
+          ],
+          "max_actions": 3,
+          "maximum_failure_risk_bps": 1000,
+          "preserve_true": [],
+          "required_false": [],
+          "required_true": [
+            606
+          ],
+          "resource_budget": 5,
+          "time_budget": 6
+        },
+        "initial_belief": [
+          {
+            "key": 600,
+            "value": "KNOWN_TRUE"
+          }
+        ],
+        "local_entity_ids": [
+          600,
+          601,
+          602,
+          603,
+          604,
+          605,
+          606,
+          670,
+          671,
+          672
+        ],
+        "long_horizon": true,
+        "novel_entity_count": false,
+        "novel_goal_composition": false,
+        "novel_relation_topology": false,
+        "relation_count": 9,
+        "stochastic_outcome_present": false,
+        "task_id": 6,
+        "total_world_entities": 600,
+        "unexpected_change_present": false
+      },
+      {
+        "actions": [
+          {
+            "action_id": 98170700,
+            "adds": [],
+            "causal_mechanism_code": 40,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": 701,
+            "relation_code": 40,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              700
+            ],
+            "resource_cost": 1,
+            "role_code": 40,
+            "semantic_distance_to_goal": 3,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170701,
+            "adds": [
+              702
+            ],
+            "causal_mechanism_code": 41,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 41,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              700,
+              701
+            ],
+            "resource_cost": 1,
+            "role_code": 41,
+            "semantic_distance_to_goal": 1,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170702,
+            "adds": [
+              702
+            ],
+            "causal_mechanism_code": 42,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 42,
+            "removes": [],
+            "requires_false": [
+              701
+            ],
+            "requires_true": [
+              700
+            ],
+            "resource_cost": 2,
+            "role_code": 42,
+            "semantic_distance_to_goal": 2,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170750,
+            "adds": [
+              770
+            ],
+            "causal_mechanism_code": 800,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 800,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              700
+            ],
+            "resource_cost": 1,
+            "role_code": 800,
+            "semantic_distance_to_goal": 50,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170751,
+            "adds": [
+              771
+            ],
+            "causal_mechanism_code": 801,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 801,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              700
+            ],
+            "resource_cost": 1,
+            "role_code": 801,
+            "semantic_distance_to_goal": 51,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170752,
+            "adds": [
+              772
+            ],
+            "causal_mechanism_code": 802,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 802,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              700
+            ],
+            "resource_cost": 1,
+            "role_code": 802,
+            "semantic_distance_to_goal": 52,
+            "time_cost": 1
+          }
+        ],
+        "deceptive_near_shortcut_present": false,
+        "family_code": 77,
+        "goal": {
+          "epistemic_tolerance_bps": 1000,
+          "forbidden_true": [
+            791
+          ],
+          "max_actions": 4,
+          "maximum_failure_risk_bps": 1000,
+          "preserve_true": [],
+          "required_false": [],
+          "required_true": [
+            702
+          ],
+          "resource_budget": 6,
+          "time_budget": 8
+        },
+        "initial_belief": [
+          {
+            "key": 700,
+            "value": "KNOWN_TRUE"
+          },
+          {
+            "key": 701,
+            "value": "UNKNOWN"
+          }
+        ],
+        "local_entity_ids": [
+          700,
+          701,
+          702,
+          770,
+          771,
+          772
+        ],
+        "long_horizon": false,
+        "novel_entity_count": false,
+        "novel_goal_composition": true,
+        "novel_relation_topology": true,
+        "relation_count": 6,
+        "stochastic_outcome_present": false,
+        "task_id": 7,
+        "total_world_entities": 307,
+        "unexpected_change_present": false
+      },
+      {
+        "actions": [
+          {
+            "action_id": 98170800,
+            "adds": [],
+            "causal_mechanism_code": 40,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": 801,
+            "relation_code": 40,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              800
+            ],
+            "resource_cost": 1,
+            "role_code": 40,
+            "semantic_distance_to_goal": 3,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170801,
+            "adds": [
+              802
+            ],
+            "causal_mechanism_code": 41,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 41,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              800,
+              801
+            ],
+            "resource_cost": 1,
+            "role_code": 41,
+            "semantic_distance_to_goal": 1,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170802,
+            "adds": [
+              802
+            ],
+            "causal_mechanism_code": 42,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 42,
+            "removes": [],
+            "requires_false": [
+              801
+            ],
+            "requires_true": [
+              800
+            ],
+            "resource_cost": 2,
+            "role_code": 42,
+            "semantic_distance_to_goal": 2,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170850,
+            "adds": [
+              870
+            ],
+            "causal_mechanism_code": 800,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 800,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              800
+            ],
+            "resource_cost": 1,
+            "role_code": 800,
+            "semantic_distance_to_goal": 50,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170851,
+            "adds": [
+              871
+            ],
+            "causal_mechanism_code": 801,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 801,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              800
+            ],
+            "resource_cost": 1,
+            "role_code": 801,
+            "semantic_distance_to_goal": 51,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170852,
+            "adds": [
+              872
+            ],
+            "causal_mechanism_code": 802,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 802,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              800
+            ],
+            "resource_cost": 1,
+            "role_code": 802,
+            "semantic_distance_to_goal": 52,
+            "time_cost": 1
+          }
+        ],
+        "deceptive_near_shortcut_present": false,
+        "family_code": 78,
+        "goal": {
+          "epistemic_tolerance_bps": 1000,
+          "forbidden_true": [
+            891
+          ],
+          "max_actions": 4,
+          "maximum_failure_risk_bps": 1000,
+          "preserve_true": [],
+          "required_false": [],
+          "required_true": [
+            802
+          ],
+          "resource_budget": 6,
+          "time_budget": 8
+        },
+        "initial_belief": [
+          {
+            "key": 800,
+            "value": "KNOWN_TRUE"
+          },
+          {
+            "key": 801,
+            "value": "UNKNOWN"
+          }
+        ],
+        "local_entity_ids": [
+          800,
+          801,
+          802,
+          870,
+          871,
+          872
+        ],
+        "long_horizon": false,
+        "novel_entity_count": false,
+        "novel_goal_composition": true,
+        "novel_relation_topology": true,
+        "relation_count": 6,
+        "stochastic_outcome_present": false,
+        "task_id": 8,
+        "total_world_entities": 308,
+        "unexpected_change_present": false
+      },
+      {
+        "actions": [
+          {
+            "action_id": 98170900,
+            "adds": [
+              901
+            ],
+            "causal_mechanism_code": 50,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 50,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              900
+            ],
+            "resource_cost": 1,
+            "role_code": 50,
+            "semantic_distance_to_goal": 1,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170901,
+            "adds": [
+              901
+            ],
+            "causal_mechanism_code": 51,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 51,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              900
+            ],
+            "resource_cost": 2,
+            "role_code": 51,
+            "semantic_distance_to_goal": 10,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170902,
+            "adds": [
+              902
+            ],
+            "causal_mechanism_code": 52,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 52,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              901
+            ],
+            "resource_cost": 1,
+            "role_code": 52,
+            "semantic_distance_to_goal": 10,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170903,
+            "adds": [
+              903
+            ],
+            "causal_mechanism_code": 53,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 53,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              902
+            ],
+            "resource_cost": 1,
+            "role_code": 53,
+            "semantic_distance_to_goal": 10,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170950,
+            "adds": [
+              970
+            ],
+            "causal_mechanism_code": 800,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 800,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              900
+            ],
+            "resource_cost": 1,
+            "role_code": 800,
+            "semantic_distance_to_goal": 50,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170951,
+            "adds": [
+              971
+            ],
+            "causal_mechanism_code": 801,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 801,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              900
+            ],
+            "resource_cost": 1,
+            "role_code": 801,
+            "semantic_distance_to_goal": 51,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98170952,
+            "adds": [
+              972
+            ],
+            "causal_mechanism_code": 802,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 802,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              900
+            ],
+            "resource_cost": 1,
+            "role_code": 802,
+            "semantic_distance_to_goal": 52,
+            "time_cost": 1
+          }
+        ],
+        "deceptive_near_shortcut_present": false,
+        "family_code": 99,
+        "goal": {
+          "epistemic_tolerance_bps": 1000,
+          "forbidden_true": [
+            991
+          ],
+          "max_actions": 7,
+          "maximum_failure_risk_bps": 1000,
+          "preserve_true": [],
+          "required_false": [],
+          "required_true": [
+            903
+          ],
+          "resource_budget": 9,
+          "time_budget": 14
+        },
+        "initial_belief": [
+          {
+            "key": 900,
+            "value": "KNOWN_TRUE"
+          }
+        ],
+        "local_entity_ids": [
+          900,
+          901,
+          902,
+          903,
+          970,
+          971,
+          972
+        ],
+        "long_horizon": false,
+        "novel_entity_count": false,
+        "novel_goal_composition": true,
+        "novel_relation_topology": true,
+        "relation_count": 7,
+        "stochastic_outcome_present": false,
+        "task_id": 9,
+        "total_world_entities": 800,
+        "unexpected_change_present": true
+      },
+      {
+        "actions": [
+          {
+            "action_id": 98171000,
+            "adds": [
+              1002
+            ],
+            "causal_mechanism_code": 60,
+            "failure_risk_bps": 5000,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 60,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              1000
+            ],
+            "resource_cost": 1,
+            "role_code": 60,
+            "semantic_distance_to_goal": 0,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98171001,
+            "adds": [
+              1001
+            ],
+            "causal_mechanism_code": 61,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 61,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              1000
+            ],
+            "resource_cost": 1,
+            "role_code": 61,
+            "semantic_distance_to_goal": 10,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98171002,
+            "adds": [
+              1002
+            ],
+            "causal_mechanism_code": 62,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 62,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              1001
+            ],
+            "resource_cost": 1,
+            "role_code": 62,
+            "semantic_distance_to_goal": 10,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98171050,
+            "adds": [
+              1070
+            ],
+            "causal_mechanism_code": 800,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 800,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              1000
+            ],
+            "resource_cost": 1,
+            "role_code": 800,
+            "semantic_distance_to_goal": 50,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98171051,
+            "adds": [
+              1071
+            ],
+            "causal_mechanism_code": 801,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 801,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              1000
+            ],
+            "resource_cost": 1,
+            "role_code": 801,
+            "semantic_distance_to_goal": 51,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98171052,
+            "adds": [
+              1072
+            ],
+            "causal_mechanism_code": 802,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 802,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              1000
+            ],
+            "resource_cost": 1,
+            "role_code": 802,
+            "semantic_distance_to_goal": 52,
+            "time_cost": 1
+          }
+        ],
+        "deceptive_near_shortcut_present": false,
+        "family_code": 110,
+        "goal": {
+          "epistemic_tolerance_bps": 1000,
+          "forbidden_true": [
+            1091
+          ],
+          "max_actions": 5,
+          "maximum_failure_risk_bps": 1000,
+          "preserve_true": [],
+          "required_false": [],
+          "required_true": [
+            1002
+          ],
+          "resource_budget": 7,
+          "time_budget": 10
+        },
+        "initial_belief": [
+          {
+            "key": 1000,
+            "value": "KNOWN_TRUE"
+          }
+        ],
+        "local_entity_ids": [
+          1000,
+          1001,
+          1002,
+          1070,
+          1071,
+          1072
+        ],
+        "long_horizon": false,
+        "novel_entity_count": false,
+        "novel_goal_composition": true,
+        "novel_relation_topology": true,
+        "relation_count": 6,
+        "stochastic_outcome_present": true,
+        "task_id": 10,
+        "total_world_entities": 1000,
+        "unexpected_change_present": false
+      },
+      {
+        "actions": [
+          {
+            "action_id": 98171100,
+            "adds": [
+              1101
+            ],
+            "causal_mechanism_code": 1,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 1,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              1100
+            ],
+            "resource_cost": 1,
+            "role_code": 1,
+            "semantic_distance_to_goal": 10,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98171101,
+            "adds": [
+              1102
+            ],
+            "causal_mechanism_code": 2,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 2,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              1101
+            ],
+            "resource_cost": 1,
+            "role_code": 2,
+            "semantic_distance_to_goal": 10,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98171102,
+            "adds": [
+              1103
+            ],
+            "causal_mechanism_code": 3,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 3,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              1102
+            ],
+            "resource_cost": 1,
+            "role_code": 3,
+            "semantic_distance_to_goal": 10,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98171103,
+            "adds": [
+              1104
+            ],
+            "causal_mechanism_code": 4,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 4,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              1103
+            ],
+            "resource_cost": 1,
+            "role_code": 4,
+            "semantic_distance_to_goal": 10,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98171104,
+            "adds": [
+              1105
+            ],
+            "causal_mechanism_code": 5,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 5,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              1104
+            ],
+            "resource_cost": 1,
+            "role_code": 5,
+            "semantic_distance_to_goal": 10,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98171105,
+            "adds": [
+              1106
+            ],
+            "causal_mechanism_code": 6,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 6,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              1105
+            ],
+            "resource_cost": 1,
+            "role_code": 6,
+            "semantic_distance_to_goal": 10,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98171106,
+            "adds": [
+              1107
+            ],
+            "causal_mechanism_code": 7,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 7,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              1106
+            ],
+            "resource_cost": 1,
+            "role_code": 7,
+            "semantic_distance_to_goal": 10,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98171107,
+            "adds": [
+              1108
+            ],
+            "causal_mechanism_code": 8,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 8,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              1107
+            ],
+            "resource_cost": 1,
+            "role_code": 8,
+            "semantic_distance_to_goal": 10,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98171150,
+            "adds": [
+              1170
+            ],
+            "causal_mechanism_code": 800,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 800,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              1100
+            ],
+            "resource_cost": 1,
+            "role_code": 800,
+            "semantic_distance_to_goal": 50,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98171151,
+            "adds": [
+              1171
+            ],
+            "causal_mechanism_code": 801,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 801,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              1100
+            ],
+            "resource_cost": 1,
+            "role_code": 801,
+            "semantic_distance_to_goal": 51,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98171152,
+            "adds": [
+              1172
+            ],
+            "causal_mechanism_code": 802,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 802,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              1100
+            ],
+            "resource_cost": 1,
+            "role_code": 802,
+            "semantic_distance_to_goal": 52,
+            "time_cost": 1
+          }
+        ],
+        "deceptive_near_shortcut_present": false,
+        "family_code": 18,
+        "goal": {
+          "epistemic_tolerance_bps": 1000,
+          "forbidden_true": [
+            1191
+          ],
+          "max_actions": 12,
+          "maximum_failure_risk_bps": 1000,
+          "preserve_true": [],
+          "required_false": [],
+          "required_true": [
+            1108
+          ],
+          "resource_budget": 14,
+          "time_budget": 24
+        },
+        "initial_belief": [
+          {
+            "key": 1100,
+            "value": "KNOWN_TRUE"
+          }
+        ],
+        "local_entity_ids": [
+          1100,
+          1101,
+          1102,
+          1103,
+          1104,
+          1105,
+          1106,
+          1107,
+          1108,
+          1170,
+          1171,
+          1172
+        ],
+        "long_horizon": true,
+        "novel_entity_count": true,
+        "novel_goal_composition": true,
+        "novel_relation_topology": true,
+        "relation_count": 11,
+        "stochastic_outcome_present": false,
+        "task_id": 11,
+        "total_world_entities": 100000,
+        "unexpected_change_present": false
+      },
+      {
+        "actions": [
+          {
+            "action_id": 98171200,
+            "adds": [
+              1201
+            ],
+            "causal_mechanism_code": 70,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 70,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              1200
+            ],
+            "resource_cost": 1,
+            "role_code": 70,
+            "semantic_distance_to_goal": 10,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98171201,
+            "adds": [
+              1202
+            ],
+            "causal_mechanism_code": 71,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 71,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              1200
+            ],
+            "resource_cost": 1,
+            "role_code": 71,
+            "semantic_distance_to_goal": 10,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98171202,
+            "adds": [
+              1203
+            ],
+            "causal_mechanism_code": 72,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 72,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              1201,
+              1202
+            ],
+            "resource_cost": 1,
+            "role_code": 72,
+            "semantic_distance_to_goal": 1,
+            "time_cost": 2
+          },
+          {
+            "action_id": 98171203,
+            "adds": [
+              1204
+            ],
+            "causal_mechanism_code": 73,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 73,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              1203
+            ],
+            "resource_cost": 1,
+            "role_code": 73,
+            "semantic_distance_to_goal": 10,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98171250,
+            "adds": [
+              1270
+            ],
+            "causal_mechanism_code": 800,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 800,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              1200
+            ],
+            "resource_cost": 1,
+            "role_code": 800,
+            "semantic_distance_to_goal": 50,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98171251,
+            "adds": [
+              1271
+            ],
+            "causal_mechanism_code": 801,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 801,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              1200
+            ],
+            "resource_cost": 1,
+            "role_code": 801,
+            "semantic_distance_to_goal": 51,
+            "time_cost": 1
+          },
+          {
+            "action_id": 98171252,
+            "adds": [
+              1272
+            ],
+            "causal_mechanism_code": 802,
+            "failure_risk_bps": 0,
+            "known_irreversible_dead_end": false,
+            "observes": null,
+            "relation_code": 802,
+            "removes": [],
+            "requires_false": [],
+            "requires_true": [
+              1200
+            ],
+            "resource_cost": 1,
+            "role_code": 802,
+            "semantic_distance_to_goal": 52,
+            "time_cost": 1
+          }
+        ],
+        "deceptive_near_shortcut_present": false,
+        "family_code": 122,
+        "goal": {
+          "epistemic_tolerance_bps": 1000,
+          "forbidden_true": [
+            1291
+          ],
+          "max_actions": 8,
+          "maximum_failure_risk_bps": 1000,
+          "preserve_true": [],
+          "required_false": [],
+          "required_true": [
+            1203,
+            1204
+          ],
+          "resource_budget": 10,
+          "time_budget": 16
+        },
+        "initial_belief": [
+          {
+            "key": 1200,
+            "value": "KNOWN_TRUE"
+          }
+        ],
+        "local_entity_ids": [
+          1200,
+          1201,
+          1202,
+          1203,
+          1204,
+          1270,
+          1271,
+          1272
+        ],
+        "long_horizon": true,
+        "novel_entity_count": false,
+        "novel_goal_composition": true,
+        "novel_relation_topology": true,
+        "relation_count": 7,
+        "stochastic_outcome_present": false,
+        "task_id": 12,
+        "total_world_entities": 5000,
+        "unexpected_change_present": false
+      }
+    ],
+    "task_results": [
+      {
+        "actions_executed": [
+          98170100
+        ],
+        "causal_path_certificate_present": true,
+        "causal_path_depth": 1,
+        "constraints_preserved": true,
+        "decisions": [
+          {
+            "active_causal_mechanisms": 1,
+            "active_entities": 2,
+            "active_relations": 1,
+            "candidate_actions_available": 4,
+            "candidate_actions_evaluated": 4,
+            "causal_mechanism_full_scan": false,
+            "confident": true,
+            "full_action_tree_enumeration": false,
+            "next_action_id": 98170100,
+            "plan": {
+              "action_sequence": [
+                98170100
+              ],
+              "causal_path_decompression_available": true,
+              "expected_resource_cost": 1,
+              "expected_time_cost": 1,
+              "goal": {
+                "epistemic_tolerance_bps": 1000,
+                "forbidden_true": [
+                  191
+                ],
+                "max_actions": 3,
+                "maximum_failure_risk_bps": 1000,
+                "preserve_true": [],
+                "required_false": [],
+                "required_true": [
+                  101
+                ],
+                "resource_budget": 5,
+                "time_budget": 6
+              },
+              "predicted_deltas": [
+                {
+                  "action_id": 98170100,
+                  "mechanism_code": 1,
+                  "predicted_adds": [
+                    101
+                  ],
+                  "predicted_removes": [],
+                  "relation_code": 1
+                }
+              ],
+              "reachability": "REACHABLE_WITHIN_CURRENT_BUDGET",
+              "subgoal_facts": [],
+              "task_id": 1,
+              "uncertainty_present": false
+            },
+            "plan_branches_expanded": 4,
+            "plan_branches_pruned": 7,
+            "replan_caused_by_model_residual": false,
+            "replanned": false,
+            "subgoal_depth": 1,
+            "task_id": 1,
+            "world_memory_full_scan": false
+          }
+        ],
+        "declared_reachability": "REACHABLE_WITHIN_CURRENT_BUDGET",
+        "goal_satisfied": true,
+        "information_actions": 0,
+        "known_dead_end_entries": 0,
+        "max_subgoal_depth": 1,
+        "model_residuals": 0,
+        "plan_length": 1,
+        "planning_cost_units": 6,
+        "replan_events": 0,
+        "replans_caused_by_residual": 0,
+        "resource_used": 1,
+        "semantic_near_unreachable_shortcut_accepts": 0,
+        "stochastic_branch_events": 0,
+        "subgoal_count": 0,
+        "task_id": 1,
+        "task_pass": true,
+        "time_used": 1,
+        "unreachable_plan_accepts": 0,
+        "unsupported_confident_executions": 0
+      },
+      {
+        "actions_executed": [],
+        "causal_path_certificate_present": false,
+        "causal_path_depth": 0,
+        "constraints_preserved": true,
+        "decisions": [
+          {
+            "active_causal_mechanisms": 1,
+            "active_entities": 1,
+            "active_relations": 1,
+            "candidate_actions_available": 7,
+            "candidate_actions_evaluated": 7,
+            "causal_mechanism_full_scan": false,
+            "confident": false,
+            "full_action_tree_enumeration": false,
+            "next_action_id": null,
+            "plan": {
+              "action_sequence": [],
+              "causal_path_decompression_available": true,
+              "expected_resource_cost": 0,
+              "expected_time_cost": 0,
+              "goal": {
+                "epistemic_tolerance_bps": 1000,
+                "forbidden_true": [
+                  291
+                ],
+                "max_actions": 7,
+                "maximum_failure_risk_bps": 1000,
+                "preserve_true": [],
+                "required_false": [],
+                "required_true": [
+                  204
+                ],
+                "resource_budget": 9,
+                "time_budget": 14
+              },
+              "predicted_deltas": [],
+              "reachability": "UNKNOWN",
+              "subgoal_facts": [],
+              "task_id": 2,
+              "uncertainty_present": true
+            },
+            "plan_branches_expanded": 7,
+            "plan_branches_pruned": 14,
+            "replan_caused_by_model_residual": false,
+            "replanned": false,
+            "subgoal_depth": 0,
+            "task_id": 2,
+            "world_memory_full_scan": false
+          }
+        ],
+        "declared_reachability": "UNKNOWN",
+        "goal_satisfied": false,
+        "information_actions": 0,
+        "known_dead_end_entries": 0,
+        "max_subgoal_depth": 0,
+        "model_residuals": 0,
+        "plan_length": 0,
+        "planning_cost_units": 8,
+        "replan_events": 0,
+        "replans_caused_by_residual": 0,
+        "resource_used": 0,
+        "semantic_near_unreachable_shortcut_accepts": 0,
+        "stochastic_branch_events": 0,
+        "subgoal_count": 0,
+        "task_id": 2,
+        "task_pass": false,
+        "time_used": 0,
+        "unreachable_plan_accepts": 0,
+        "unsupported_confident_executions": 0
+      },
+      {
+        "actions_executed": [],
+        "causal_path_certificate_present": false,
+        "causal_path_depth": 0,
+        "constraints_preserved": true,
+        "decisions": [
+          {
+            "active_causal_mechanisms": 1,
+            "active_entities": 1,
+            "active_relations": 1,
+            "candidate_actions_available": 13,
+            "candidate_actions_evaluated": 13,
+            "causal_mechanism_full_scan": false,
+            "confident": false,
+            "full_action_tree_enumeration": false,
+            "next_action_id": null,
+            "plan": {
+              "action_sequence": [],
+              "causal_path_decompression_available": true,
+              "expected_resource_cost": 0,
+              "expected_time_cost": 0,
+              "goal": {
+                "epistemic_tolerance_bps": 1000,
+                "forbidden_true": [
+                  391
+                ],
+                "max_actions": 14,
+                "maximum_failure_risk_bps": 1000,
+                "preserve_true": [],
+                "required_false": [],
+                "required_true": [
+                  310
+                ],
+                "resource_budget": 16,
+                "time_budget": 28
+              },
+              "predicted_deltas": [],
+              "reachability": "UNKNOWN",
+              "subgoal_facts": [],
+              "task_id": 3,
+              "uncertainty_present": true
+            },
+            "plan_branches_expanded": 13,
+            "plan_branches_pruned": 26,
+            "replan_caused_by_model_residual": false,
+            "replanned": false,
+            "subgoal_depth": 0,
+            "task_id": 3,
+            "world_memory_full_scan": false
+          }
+        ],
+        "declared_reachability": "UNKNOWN",
+        "goal_satisfied": false,
+        "information_actions": 0,
+        "known_dead_end_entries": 0,
+        "max_subgoal_depth": 0,
+        "model_residuals": 0,
+        "plan_length": 0,
+        "planning_cost_units": 14,
+        "replan_events": 0,
+        "replans_caused_by_residual": 0,
+        "resource_used": 0,
+        "semantic_near_unreachable_shortcut_accepts": 0,
+        "stochastic_branch_events": 0,
+        "subgoal_count": 0,
+        "task_id": 3,
+        "task_pass": false,
+        "time_used": 0,
+        "unreachable_plan_accepts": 0,
+        "unsupported_confident_executions": 0
+      },
+      {
+        "actions_executed": [],
+        "causal_path_certificate_present": false,
+        "causal_path_depth": 0,
+        "constraints_preserved": true,
+        "decisions": [
+          {
+            "active_causal_mechanisms": 1,
+            "active_entities": 1,
+            "active_relations": 1,
+            "candidate_actions_available": 7,
+            "candidate_actions_evaluated": 7,
+            "causal_mechanism_full_scan": false,
+            "confident": false,
+            "full_action_tree_enumeration": false,
+            "next_action_id": null,
+            "plan": {
+              "action_sequence": [],
+              "causal_path_decompression_available": true,
+              "expected_resource_cost": 0,
+              "expected_time_cost": 0,
+              "goal": {
+                "epistemic_tolerance_bps": 1000,
+                "forbidden_true": [
+                  491
+                ],
+                "max_actions": 6,
+                "maximum_failure_risk_bps": 1000,
+                "preserve_true": [
+                  490
+                ],
+                "required_false": [],
+                "required_true": [
+                  403
+                ],
+                "resource_budget": 8,
+                "time_budget": 12
+              },
+              "predicted_deltas": [],
+              "reachability": "UNKNOWN",
+              "subgoal_facts": [],
+              "task_id": 4,
+              "uncertainty_present": true
+            },
+            "plan_branches_expanded": 7,
+            "plan_branches_pruned": 14,
+            "replan_caused_by_model_residual": false,
+            "replanned": false,
+            "subgoal_depth": 0,
+            "task_id": 4,
+            "world_memory_full_scan": false
+          }
+        ],
+        "declared_reachability": "UNKNOWN",
+        "goal_satisfied": false,
+        "information_actions": 0,
+        "known_dead_end_entries": 0,
+        "max_subgoal_depth": 0,
+        "model_residuals": 0,
+        "plan_length": 0,
+        "planning_cost_units": 8,
+        "replan_events": 0,
+        "replans_caused_by_residual": 0,
+        "resource_used": 0,
+        "semantic_near_unreachable_shortcut_accepts": 0,
+        "stochastic_branch_events": 0,
+        "subgoal_count": 0,
+        "task_id": 4,
+        "task_pass": false,
+        "time_used": 0,
+        "unreachable_plan_accepts": 0,
+        "unsupported_confident_executions": 0
+      },
+      {
+        "actions_executed": [],
+        "causal_path_certificate_present": false,
+        "causal_path_depth": 0,
+        "constraints_preserved": true,
+        "decisions": [
+          {
+            "active_causal_mechanisms": 1,
+            "active_entities": 1,
+            "active_relations": 1,
+            "candidate_actions_available": 4,
+            "candidate_actions_evaluated": 4,
+            "causal_mechanism_full_scan": false,
+            "confident": false,
+            "full_action_tree_enumeration": false,
+            "next_action_id": null,
+            "plan": {
+              "action_sequence": [],
+              "causal_path_decompression_available": true,
+              "expected_resource_cost": 0,
+              "expected_time_cost": 0,
+              "goal": {
+                "epistemic_tolerance_bps": 1000,
+                "forbidden_true": [
+                  591
+                ],
+                "max_actions": 5,
+                "maximum_failure_risk_bps": 1000,
+                "preserve_true": [],
+                "required_false": [],
+                "required_true": [
+                  509
+                ],
+                "resource_budget": 7,
+                "time_budget": 10
+              },
+              "predicted_deltas": [],
+              "reachability": "UNKNOWN",
+              "subgoal_facts": [],
+              "task_id": 5,
+              "uncertainty_present": true
+            },
+            "plan_branches_expanded": 4,
+            "plan_branches_pruned": 8,
+            "replan_caused_by_model_residual": false,
+            "replanned": false,
+            "subgoal_depth": 0,
+            "task_id": 5,
+            "world_memory_full_scan": false
+          }
+        ],
+        "declared_reachability": "UNKNOWN",
+        "goal_satisfied": false,
+        "information_actions": 0,
+        "known_dead_end_entries": 0,
+        "max_subgoal_depth": 0,
+        "model_residuals": 0,
+        "plan_length": 0,
+        "planning_cost_units": 5,
+        "replan_events": 0,
+        "replans_caused_by_residual": 0,
+        "resource_used": 0,
+        "semantic_near_unreachable_shortcut_accepts": 0,
+        "stochastic_branch_events": 0,
+        "subgoal_count": 0,
+        "task_id": 5,
+        "task_pass": false,
+        "time_used": 0,
+        "unreachable_plan_accepts": 0,
+        "unsupported_confident_executions": 0
+      },
+      {
+        "actions_executed": [],
+        "causal_path_certificate_present": false,
+        "causal_path_depth": 0,
+        "constraints_preserved": true,
+        "decisions": [
+          {
+            "active_causal_mechanisms": 1,
+            "active_entities": 1,
+            "active_relations": 1,
+            "candidate_actions_available": 9,
+            "candidate_actions_evaluated": 9,
+            "causal_mechanism_full_scan": false,
+            "confident": false,
+            "full_action_tree_enumeration": false,
+            "next_action_id": null,
+            "plan": {
+              "action_sequence": [],
+              "causal_path_decompression_available": true,
+              "expected_resource_cost": 0,
+              "expected_time_cost": 0,
+              "goal": {
+                "epistemic_tolerance_bps": 1000,
+                "forbidden_true": [
+                  691
+                ],
+                "max_actions": 3,
+                "maximum_failure_risk_bps": 1000,
+                "preserve_true": [],
+                "required_false": [],
+                "required_true": [
+                  606
+                ],
+                "resource_budget": 5,
+                "time_budget": 6
+              },
+              "predicted_deltas": [],
+              "reachability": "UNKNOWN",
+              "subgoal_facts": [],
+              "task_id": 6,
+              "uncertainty_present": true
+            },
+            "plan_branches_expanded": 9,
+            "plan_branches_pruned": 18,
+            "replan_caused_by_model_residual": false,
+            "replanned": false,
+            "subgoal_depth": 0,
+            "task_id": 6,
+            "world_memory_full_scan": false
+          }
+        ],
+        "declared_reachability": "UNKNOWN",
+        "goal_satisfied": false,
+        "information_actions": 0,
+        "known_dead_end_entries": 0,
+        "max_subgoal_depth": 0,
+        "model_residuals": 0,
+        "plan_length": 0,
+        "planning_cost_units": 10,
+        "replan_events": 0,
+        "replans_caused_by_residual": 0,
+        "resource_used": 0,
+        "semantic_near_unreachable_shortcut_accepts": 0,
+        "stochastic_branch_events": 0,
+        "subgoal_count": 0,
+        "task_id": 6,
+        "task_pass": false,
+        "time_used": 0,
+        "unreachable_plan_accepts": 0,
+        "unsupported_confident_executions": 0
+      },
+      {
+        "actions_executed": [],
+        "causal_path_certificate_present": false,
+        "causal_path_depth": 0,
+        "constraints_preserved": true,
+        "decisions": [
+          {
+            "active_causal_mechanisms": 1,
+            "active_entities": 1,
+            "active_relations": 1,
+            "candidate_actions_available": 6,
+            "candidate_actions_evaluated": 6,
+            "causal_mechanism_full_scan": false,
+            "confident": false,
+            "full_action_tree_enumeration": false,
+            "next_action_id": null,
+            "plan": {
+              "action_sequence": [],
+              "causal_path_decompression_available": true,
+              "expected_resource_cost": 0,
+              "expected_time_cost": 0,
+              "goal": {
+                "epistemic_tolerance_bps": 1000,
+                "forbidden_true": [
+                  791
+                ],
+                "max_actions": 4,
+                "maximum_failure_risk_bps": 1000,
+                "preserve_true": [],
+                "required_false": [],
+                "required_true": [
+                  702
+                ],
+                "resource_budget": 6,
+                "time_budget": 8
+              },
+              "predicted_deltas": [],
+              "reachability": "UNKNOWN",
+              "subgoal_facts": [],
+              "task_id": 7,
+              "uncertainty_present": true
+            },
+            "plan_branches_expanded": 6,
+            "plan_branches_pruned": 12,
+            "replan_caused_by_model_residual": false,
+            "replanned": false,
+            "subgoal_depth": 0,
+            "task_id": 7,
+            "world_memory_full_scan": false
+          }
+        ],
+        "declared_reachability": "UNKNOWN",
+        "goal_satisfied": false,
+        "information_actions": 0,
+        "known_dead_end_entries": 0,
+        "max_subgoal_depth": 0,
+        "model_residuals": 0,
+        "plan_length": 0,
+        "planning_cost_units": 7,
+        "replan_events": 0,
+        "replans_caused_by_residual": 0,
+        "resource_used": 0,
+        "semantic_near_unreachable_shortcut_accepts": 0,
+        "stochastic_branch_events": 0,
+        "subgoal_count": 0,
+        "task_id": 7,
+        "task_pass": false,
+        "time_used": 0,
+        "unreachable_plan_accepts": 0,
+        "unsupported_confident_executions": 0
+      },
+      {
+        "actions_executed": [],
+        "causal_path_certificate_present": false,
+        "causal_path_depth": 0,
+        "constraints_preserved": true,
+        "decisions": [
+          {
+            "active_causal_mechanisms": 1,
+            "active_entities": 1,
+            "active_relations": 1,
+            "candidate_actions_available": 6,
+            "candidate_actions_evaluated": 6,
+            "causal_mechanism_full_scan": false,
+            "confident": false,
+            "full_action_tree_enumeration": false,
+            "next_action_id": null,
+            "plan": {
+              "action_sequence": [],
+              "causal_path_decompression_available": true,
+              "expected_resource_cost": 0,
+              "expected_time_cost": 0,
+              "goal": {
+                "epistemic_tolerance_bps": 1000,
+                "forbidden_true": [
+                  891
+                ],
+                "max_actions": 4,
+                "maximum_failure_risk_bps": 1000,
+                "preserve_true": [],
+                "required_false": [],
+                "required_true": [
+                  802
+                ],
+                "resource_budget": 6,
+                "time_budget": 8
+              },
+              "predicted_deltas": [],
+              "reachability": "UNKNOWN",
+              "subgoal_facts": [],
+              "task_id": 8,
+              "uncertainty_present": true
+            },
+            "plan_branches_expanded": 6,
+            "plan_branches_pruned": 12,
+            "replan_caused_by_model_residual": false,
+            "replanned": false,
+            "subgoal_depth": 0,
+            "task_id": 8,
+            "world_memory_full_scan": false
+          }
+        ],
+        "declared_reachability": "UNKNOWN",
+        "goal_satisfied": false,
+        "information_actions": 0,
+        "known_dead_end_entries": 0,
+        "max_subgoal_depth": 0,
+        "model_residuals": 0,
+        "plan_length": 0,
+        "planning_cost_units": 7,
+        "replan_events": 0,
+        "replans_caused_by_residual": 0,
+        "resource_used": 0,
+        "semantic_near_unreachable_shortcut_accepts": 0,
+        "stochastic_branch_events": 0,
+        "subgoal_count": 0,
+        "task_id": 8,
+        "task_pass": false,
+        "time_used": 0,
+        "unreachable_plan_accepts": 0,
+        "unsupported_confident_executions": 0
+      },
+      {
+        "actions_executed": [],
+        "causal_path_certificate_present": false,
+        "causal_path_depth": 0,
+        "constraints_preserved": true,
+        "decisions": [
+          {
+            "active_causal_mechanisms": 1,
+            "active_entities": 1,
+            "active_relations": 1,
+            "candidate_actions_available": 7,
+            "candidate_actions_evaluated": 7,
+            "causal_mechanism_full_scan": false,
+            "confident": false,
+            "full_action_tree_enumeration": false,
+            "next_action_id": null,
+            "plan": {
+              "action_sequence": [],
+              "causal_path_decompression_available": true,
+              "expected_resource_cost": 0,
+              "expected_time_cost": 0,
+              "goal": {
+                "epistemic_tolerance_bps": 1000,
+                "forbidden_true": [
+                  991
+                ],
+                "max_actions": 7,
+                "maximum_failure_risk_bps": 1000,
+                "preserve_true": [],
+                "required_false": [],
+                "required_true": [
+                  903
+                ],
+                "resource_budget": 9,
+                "time_budget": 14
+              },
+              "predicted_deltas": [],
+              "reachability": "UNKNOWN",
+              "subgoal_facts": [],
+              "task_id": 9,
+              "uncertainty_present": true
+            },
+            "plan_branches_expanded": 7,
+            "plan_branches_pruned": 14,
+            "replan_caused_by_model_residual": false,
+            "replanned": false,
+            "subgoal_depth": 0,
+            "task_id": 9,
+            "world_memory_full_scan": false
+          }
+        ],
+        "declared_reachability": "UNKNOWN",
+        "goal_satisfied": false,
+        "information_actions": 0,
+        "known_dead_end_entries": 0,
+        "max_subgoal_depth": 0,
+        "model_residuals": 0,
+        "plan_length": 0,
+        "planning_cost_units": 8,
+        "replan_events": 0,
+        "replans_caused_by_residual": 0,
+        "resource_used": 0,
+        "semantic_near_unreachable_shortcut_accepts": 0,
+        "stochastic_branch_events": 0,
+        "subgoal_count": 0,
+        "task_id": 9,
+        "task_pass": false,
+        "time_used": 0,
+        "unreachable_plan_accepts": 0,
+        "unsupported_confident_executions": 0
+      },
+      {
+        "actions_executed": [
+          98171000,
+          98171000,
+          98171000,
+          98171000,
+          98171000,
+          98171000
+        ],
+        "causal_path_certificate_present": false,
+        "causal_path_depth": 1,
+        "constraints_preserved": false,
+        "decisions": [
+          {
+            "active_causal_mechanisms": 1,
+            "active_entities": 2,
+            "active_relations": 1,
+            "candidate_actions_available": 6,
+            "candidate_actions_evaluated": 6,
+            "causal_mechanism_full_scan": false,
+            "confident": true,
+            "full_action_tree_enumeration": false,
+            "next_action_id": 98171000,
+            "plan": {
+              "action_sequence": [
+                98171000
+              ],
+              "causal_path_decompression_available": true,
+              "expected_resource_cost": 1,
+              "expected_time_cost": 1,
+              "goal": {
+                "epistemic_tolerance_bps": 1000,
+                "forbidden_true": [
+                  1091
+                ],
+                "max_actions": 5,
+                "maximum_failure_risk_bps": 1000,
+                "preserve_true": [],
+                "required_false": [],
+                "required_true": [
+                  1002
+                ],
+                "resource_budget": 7,
+                "time_budget": 10
+              },
+              "predicted_deltas": [
+                {
+                  "action_id": 98171000,
+                  "mechanism_code": 60,
+                  "predicted_adds": [
+                    1002
+                  ],
+                  "predicted_removes": [],
+                  "relation_code": 60
+                }
+              ],
+              "reachability": "REACHABLE_WITHIN_CURRENT_BUDGET",
+              "subgoal_facts": [],
+              "task_id": 10,
+              "uncertainty_present": false
+            },
+            "plan_branches_expanded": 6,
+            "plan_branches_pruned": 11,
+            "replan_caused_by_model_residual": false,
+            "replanned": false,
+            "subgoal_depth": 1,
+            "task_id": 10,
+            "world_memory_full_scan": false
+          },
+          {
+            "active_causal_mechanisms": 1,
+            "active_entities": 2,
+            "active_relations": 1,
+            "candidate_actions_available": 6,
+            "candidate_actions_evaluated": 6,
+            "causal_mechanism_full_scan": false,
+            "confident": true,
+            "full_action_tree_enumeration": false,
+            "next_action_id": 98171000,
+            "plan": {
+              "action_sequence": [
+                98171000
+              ],
+              "causal_path_decompression_available": true,
+              "expected_resource_cost": 1,
+              "expected_time_cost": 1,
+              "goal": {
+                "epistemic_tolerance_bps": 1000,
+                "forbidden_true": [
+                  1091
+                ],
+                "max_actions": 5,
+                "maximum_failure_risk_bps": 1000,
+                "preserve_true": [],
+                "required_false": [],
+                "required_true": [
+                  1002
+                ],
+                "resource_budget": 7,
+                "time_budget": 10
+              },
+              "predicted_deltas": [
+                {
+                  "action_id": 98171000,
+                  "mechanism_code": 60,
+                  "predicted_adds": [
+                    1002
+                  ],
+                  "predicted_removes": [],
+                  "relation_code": 60
+                }
+              ],
+              "reachability": "REACHABLE_WITHIN_CURRENT_BUDGET",
+              "subgoal_facts": [],
+              "task_id": 10,
+              "uncertainty_present": false
+            },
+            "plan_branches_expanded": 6,
+            "plan_branches_pruned": 11,
+            "replan_caused_by_model_residual": true,
+            "replanned": true,
+            "subgoal_depth": 1,
+            "task_id": 10,
+            "world_memory_full_scan": false
+          },
+          {
+            "active_causal_mechanisms": 1,
+            "active_entities": 2,
+            "active_relations": 1,
+            "candidate_actions_available": 6,
+            "candidate_actions_evaluated": 6,
+            "causal_mechanism_full_scan": false,
+            "confident": true,
+            "full_action_tree_enumeration": false,
+            "next_action_id": 98171000,
+            "plan": {
+              "action_sequence": [
+                98171000
+              ],
+              "causal_path_decompression_available": true,
+              "expected_resource_cost": 1,
+              "expected_time_cost": 1,
+              "goal": {
+                "epistemic_tolerance_bps": 1000,
+                "forbidden_true": [
+                  1091
+                ],
+                "max_actions": 5,
+                "maximum_failure_risk_bps": 1000,
+                "preserve_true": [],
+                "required_false": [],
+                "required_true": [
+                  1002
+                ],
+                "resource_budget": 7,
+                "time_budget": 10
+              },
+              "predicted_deltas": [
+                {
+                  "action_id": 98171000,
+                  "mechanism_code": 60,
+                  "predicted_adds": [
+                    1002
+                  ],
+                  "predicted_removes": [],
+                  "relation_code": 60
+                }
+              ],
+              "reachability": "REACHABLE_WITHIN_CURRENT_BUDGET",
+              "subgoal_facts": [],
+              "task_id": 10,
+              "uncertainty_present": false
+            },
+            "plan_branches_expanded": 6,
+            "plan_branches_pruned": 11,
+            "replan_caused_by_model_residual": true,
+            "replanned": true,
+            "subgoal_depth": 1,
+            "task_id": 10,
+            "world_memory_full_scan": false
+          },
+          {
+            "active_causal_mechanisms": 1,
+            "active_entities": 2,
+            "active_relations": 1,
+            "candidate_actions_available": 6,
+            "candidate_actions_evaluated": 6,
+            "causal_mechanism_full_scan": false,
+            "confident": true,
+            "full_action_tree_enumeration": false,
+            "next_action_id": 98171000,
+            "plan": {
+              "action_sequence": [
+                98171000
+              ],
+              "causal_path_decompression_available": true,
+              "expected_resource_cost": 1,
+              "expected_time_cost": 1,
+              "goal": {
+                "epistemic_tolerance_bps": 1000,
+                "forbidden_true": [
+                  1091
+                ],
+                "max_actions": 5,
+                "maximum_failure_risk_bps": 1000,
+                "preserve_true": [],
+                "required_false": [],
+                "required_true": [
+                  1002
+                ],
+                "resource_budget": 7,
+                "time_budget": 10
+              },
+              "predicted_deltas": [
+                {
+                  "action_id": 98171000,
+                  "mechanism_code": 60,
+                  "predicted_adds": [
+                    1002
+                  ],
+                  "predicted_removes": [],
+                  "relation_code": 60
+                }
+              ],
+              "reachability": "REACHABLE_WITHIN_CURRENT_BUDGET",
+              "subgoal_facts": [],
+              "task_id": 10,
+              "uncertainty_present": false
+            },
+            "plan_branches_expanded": 6,
+            "plan_branches_pruned": 11,
+            "replan_caused_by_model_residual": true,
+            "replanned": true,
+            "subgoal_depth": 1,
+            "task_id": 10,
+            "world_memory_full_scan": false
+          },
+          {
+            "active_causal_mechanisms": 1,
+            "active_entities": 2,
+            "active_relations": 1,
+            "candidate_actions_available": 6,
+            "candidate_actions_evaluated": 6,
+            "causal_mechanism_full_scan": false,
+            "confident": true,
+            "full_action_tree_enumeration": false,
+            "next_action_id": 98171000,
+            "plan": {
+              "action_sequence": [
+                98171000
+              ],
+              "causal_path_decompression_available": true,
+              "expected_resource_cost": 1,
+              "expected_time_cost": 1,
+              "goal": {
+                "epistemic_tolerance_bps": 1000,
+                "forbidden_true": [
+                  1091
+                ],
+                "max_actions": 5,
+                "maximum_failure_risk_bps": 1000,
+                "preserve_true": [],
+                "required_false": [],
+                "required_true": [
+                  1002
+                ],
+                "resource_budget": 7,
+                "time_budget": 10
+              },
+              "predicted_deltas": [
+                {
+                  "action_id": 98171000,
+                  "mechanism_code": 60,
+                  "predicted_adds": [
+                    1002
+                  ],
+                  "predicted_removes": [],
+                  "relation_code": 60
+                }
+              ],
+              "reachability": "REACHABLE_WITHIN_CURRENT_BUDGET",
+              "subgoal_facts": [],
+              "task_id": 10,
+              "uncertainty_present": false
+            },
+            "plan_branches_expanded": 6,
+            "plan_branches_pruned": 11,
+            "replan_caused_by_model_residual": true,
+            "replanned": true,
+            "subgoal_depth": 1,
+            "task_id": 10,
+            "world_memory_full_scan": false
+          },
+          {
+            "active_causal_mechanisms": 1,
+            "active_entities": 2,
+            "active_relations": 1,
+            "candidate_actions_available": 6,
+            "candidate_actions_evaluated": 6,
+            "causal_mechanism_full_scan": false,
+            "confident": true,
+            "full_action_tree_enumeration": false,
+            "next_action_id": 98171000,
+            "plan": {
+              "action_sequence": [
+                98171000
+              ],
+              "causal_path_decompression_available": true,
+              "expected_resource_cost": 1,
+              "expected_time_cost": 1,
+              "goal": {
+                "epistemic_tolerance_bps": 1000,
+                "forbidden_true": [
+                  1091
+                ],
+                "max_actions": 5,
+                "maximum_failure_risk_bps": 1000,
+                "preserve_true": [],
+                "required_false": [],
+                "required_true": [
+                  1002
+                ],
+                "resource_budget": 7,
+                "time_budget": 10
+              },
+              "predicted_deltas": [
+                {
+                  "action_id": 98171000,
+                  "mechanism_code": 60,
+                  "predicted_adds": [
+                    1002
+                  ],
+                  "predicted_removes": [],
+                  "relation_code": 60
+                }
+              ],
+              "reachability": "REACHABLE_WITHIN_CURRENT_BUDGET",
+              "subgoal_facts": [],
+              "task_id": 10,
+              "uncertainty_present": false
+            },
+            "plan_branches_expanded": 6,
+            "plan_branches_pruned": 11,
+            "replan_caused_by_model_residual": true,
+            "replanned": true,
+            "subgoal_depth": 1,
+            "task_id": 10,
+            "world_memory_full_scan": false
+          }
+        ],
+        "declared_reachability": "REACHABLE_WITHIN_CURRENT_BUDGET",
+        "goal_satisfied": false,
+        "information_actions": 0,
+        "known_dead_end_entries": 0,
+        "max_subgoal_depth": 1,
+        "model_residuals": 6,
+        "plan_length": 6,
+        "planning_cost_units": 48,
+        "replan_events": 5,
+        "replans_caused_by_residual": 5,
+        "resource_used": 6,
+        "semantic_near_unreachable_shortcut_accepts": 0,
+        "stochastic_branch_events": 1,
+        "subgoal_count": 0,
+        "task_id": 10,
+        "task_pass": false,
+        "time_used": 6,
+        "unreachable_plan_accepts": 0,
+        "unsupported_confident_executions": 6
+      },
+      {
+        "actions_executed": [],
+        "causal_path_certificate_present": false,
+        "causal_path_depth": 0,
+        "constraints_preserved": true,
+        "decisions": [
+          {
+            "active_causal_mechanisms": 1,
+            "active_entities": 1,
+            "active_relations": 1,
+            "candidate_actions_available": 11,
+            "candidate_actions_evaluated": 11,
+            "causal_mechanism_full_scan": false,
+            "confident": false,
+            "full_action_tree_enumeration": false,
+            "next_action_id": null,
+            "plan": {
+              "action_sequence": [],
+              "causal_path_decompression_available": true,
+              "expected_resource_cost": 0,
+              "expected_time_cost": 0,
+              "goal": {
+                "epistemic_tolerance_bps": 1000,
+                "forbidden_true": [
+                  1191
+                ],
+                "max_actions": 12,
+                "maximum_failure_risk_bps": 1000,
+                "preserve_true": [],
+                "required_false": [],
+                "required_true": [
+                  1108
+                ],
+                "resource_budget": 14,
+                "time_budget": 24
+              },
+              "predicted_deltas": [],
+              "reachability": "UNKNOWN",
+              "subgoal_facts": [],
+              "task_id": 11,
+              "uncertainty_present": true
+            },
+            "plan_branches_expanded": 11,
+            "plan_branches_pruned": 22,
+            "replan_caused_by_model_residual": false,
+            "replanned": false,
+            "subgoal_depth": 0,
+            "task_id": 11,
+            "world_memory_full_scan": false
+          }
+        ],
+        "declared_reachability": "UNKNOWN",
+        "goal_satisfied": false,
+        "information_actions": 0,
+        "known_dead_end_entries": 0,
+        "max_subgoal_depth": 0,
+        "model_residuals": 0,
+        "plan_length": 0,
+        "planning_cost_units": 12,
+        "replan_events": 0,
+        "replans_caused_by_residual": 0,
+        "resource_used": 0,
+        "semantic_near_unreachable_shortcut_accepts": 0,
+        "stochastic_branch_events": 0,
+        "subgoal_count": 0,
+        "task_id": 11,
+        "task_pass": false,
+        "time_used": 0,
+        "unreachable_plan_accepts": 0,
+        "unsupported_confident_executions": 0
+      },
+      {
+        "actions_executed": [],
+        "causal_path_certificate_present": false,
+        "causal_path_depth": 0,
+        "constraints_preserved": true,
+        "decisions": [
+          {
+            "active_causal_mechanisms": 1,
+            "active_entities": 2,
+            "active_relations": 1,
+            "candidate_actions_available": 7,
+            "candidate_actions_evaluated": 7,
+            "causal_mechanism_full_scan": false,
+            "confident": false,
+            "full_action_tree_enumeration": false,
+            "next_action_id": null,
+            "plan": {
+              "action_sequence": [],
+              "causal_path_decompression_available": true,
+              "expected_resource_cost": 0,
+              "expected_time_cost": 0,
+              "goal": {
+                "epistemic_tolerance_bps": 1000,
+                "forbidden_true": [
+                  1291
+                ],
+                "max_actions": 8,
+                "maximum_failure_risk_bps": 1000,
+                "preserve_true": [],
+                "required_false": [],
+                "required_true": [
+                  1203,
+                  1204
+                ],
+                "resource_budget": 10,
+                "time_budget": 16
+              },
+              "predicted_deltas": [],
+              "reachability": "UNKNOWN",
+              "subgoal_facts": [],
+              "task_id": 12,
+              "uncertainty_present": true
+            },
+            "plan_branches_expanded": 7,
+            "plan_branches_pruned": 14,
+            "replan_caused_by_model_residual": false,
+            "replanned": false,
+            "subgoal_depth": 0,
+            "task_id": 12,
+            "world_memory_full_scan": false
+          }
+        ],
+        "declared_reachability": "UNKNOWN",
+        "goal_satisfied": false,
+        "information_actions": 0,
+        "known_dead_end_entries": 0,
+        "max_subgoal_depth": 0,
+        "model_residuals": 0,
+        "plan_length": 0,
+        "planning_cost_units": 9,
+        "replan_events": 0,
+        "replans_caused_by_residual": 0,
+        "resource_used": 0,
+        "semantic_near_unreachable_shortcut_accepts": 0,
+        "stochastic_branch_events": 0,
+        "subgoal_count": 0,
+        "task_id": 12,
+        "task_pass": false,
+        "time_used": 0,
+        "unreachable_plan_accepts": 0,
+        "unsupported_confident_executions": 0
+      }
+    ]
+  },
+  "autonomous_planner_repair_events_before_measurement": 0,
+  "human_planner_repair_events_before_measurement": 0,
+  "initial_all_original_gates_pass": false,
+  "initial_closed_loop_result": false,
+  "initial_generalization_result": false,
+  "initial_goal_tasks_solved": 1,
+  "initial_goal_tasks_total": 12,
+  "initial_hierarchical_planning_result": false,
+  "initial_long_horizon_tasks_solved": 0,
+  "initial_planner_measurement_completed": true,
+  "initial_reachability_result": true,
+  "initial_uncertainty_planning_result": false,
+  "measurement_set": "SET_A",
+  "planner_capability_repair_events_before_measurement": 0
+}

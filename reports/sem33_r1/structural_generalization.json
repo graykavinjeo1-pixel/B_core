@@ -1,0 +1,6 @@
+{
+  "entity_cardinality_planning_generalization_pass": true,
+  "fresh_topology_structurally_distinct": true,
+  "novel_goal_composition_pass": true,
+  "novel_relation_topology_planning_pass": true
+}

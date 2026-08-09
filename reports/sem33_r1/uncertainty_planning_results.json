@@ -1,0 +1,6 @@
+{
+  "epistemic_uncertainty_planning_events": 2,
+  "information_gathering_actions": 2,
+  "stochastic_plan_branch_events": 1,
+  "unsupported_plan_confident_executions": 0
+}

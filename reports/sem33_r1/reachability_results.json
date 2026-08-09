@@ -1,0 +1,7 @@
+{
+  "reachability_planning_ablation_pass": true,
+  "reachability_queries": 42,
+  "semantic_near_unreachable_shortcut_accepts": 0,
+  "unreachable_plan_accepts": 0,
+  "unreachable_plan_cases": 2
+}

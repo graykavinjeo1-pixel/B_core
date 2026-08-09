@@ -1,0 +1,8 @@
+{
+  "autonomous_subgoals_created": 45,
+  "hierarchical_plan_events": 8,
+  "human_subgoal_selection_events": 0,
+  "long_horizon_tasks": 4,
+  "long_horizon_tasks_solved": 4,
+  "max_subgoal_depth": 11
+}

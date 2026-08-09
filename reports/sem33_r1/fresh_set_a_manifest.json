@@ -1,0 +1,39 @@
+{
+  "action_semantics_hash": "46e2e0d3848e1c2fa2ac09f5ceb214f524c95cf3fc70e2082962797c908ad35b",
+  "causal_verifier_hash": "a8ce41a42dafaf1c31e43fc9c818c5fe73a9ee9590fab3b2e4bbb65714592bc0",
+  "fresh_planning_holdout": true,
+  "goal_semantics_hash": "7021714512c9098f79889c2e01c60dad8947181e50342a88e563f3d2b42dc2cf",
+  "goal_verifier_hash": "a8ce41a42dafaf1c31e43fc9c818c5fe73a9ee9590fab3b2e4bbb65714592bc0",
+  "historical_holdout_instance_overlap": 0,
+  "manifest": {
+    "action_semantics_hash": "46e2e0d3848e1c2fa2ac09f5ceb214f524c95cf3fc70e2082962797c908ad35b",
+    "challenge_hash": "b676707e26609b627f8ad7ebb4d770aa4d65da6896f0047c59aacba7ef1c1a39",
+    "contract_version": "SEM33_R1_BLIND_PLANNING_VERIFIER_1",
+    "goal_semantics_hash": "7021714512c9098f79889c2e01c60dad8947181e50342a88e563f3d2b42dc2cf",
+    "hidden_instance_commitment_hash": "f9e7f0d8c3e1455a985a3752a37e1d16c7a307b60721d02bba0c81908f11d013",
+    "historical_holdout_instance_overlap": 0,
+    "holdout_selection_rule_hash": "ba95f57a1e3531323ab443273d547ea478579c17b3a8ca312f1f9c5680e542de",
+    "instance_commitments": [
+      "58c10e007082d669a79042254f54b266fa95ae59cc6dcd81e89efb34f1d1cce2",
+      "663050d1570fc8196a2c8c54c6fa484d27bb4dd5f7469117f70428b3f85e5f5a",
+      "38a1c82c0ec272469224e8c63cdf8720ec442b3d3f4734260537dfeac98300a5",
+      "7fe984290486af6af4c6a748ef985bba1403b08203c05fe1fced4630b7db83a4",
+      "15d55fa00b8e3095617321927804b4c8a45a4855e5f8bc5242154ece3edfe431",
+      "0baf28026e3a1b26dbb9624c2cbe4f5dd9de89d6d21710fbe0ed5e6ba5edb0bf",
+      "48cb1b9c24139e0fa98bf906ea438bc799667d1155d3a2d67f44e9e90a3d09b4",
+      "7306f6b2a12d6e772cba744bb22255fa76a516f3581001c07e52bf36997cf2c5",
+      "76ef6e6ae0ba8c11b5f5def45fa7b1f796365ccc8d6a93c4a1b7bff90d4996cb",
+      "f66f8b2606077a36287ecd021eaa3225ac179cde968e3bbafba3f92a460b0540",
+      "51a0377d9c4a111c71e95e71beeb0efdd8132f31fc5e5e654334729ee965a24c",
+      "2f62d5c9d7f93a3ba047872fe4b93560852c5357b22fccc04595762661bd8ffe"
+    ],
+    "seed": 9793762665409311041,
+    "set_id": "SET_A",
+    "task_count": 12,
+    "task_generator_version": "SEM33_R1_FRESH_GENERATOR_1",
+    "world_semantics_hash": "b676707e26609b627f8ad7ebb4d770aa4d65da6896f0047c59aacba7ef1c1a39"
+  },
+  "planner_exposure_status": "SEALED_BEFORE_FIRST_RUN_ARM",
+  "world_family_manifest_hash": "f9e7f0d8c3e1455a985a3752a37e1d16c7a307b60721d02bba0c81908f11d013",
+  "world_semantics_hash": "b676707e26609b627f8ad7ebb4d770aa4d65da6896f0047c59aacba7ef1c1a39"
+}

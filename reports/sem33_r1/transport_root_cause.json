@@ -1,0 +1,7 @@
+{
+  "historical_error": "PARSE_VERIFIER_RESPONSE:invalid type: string \"100\", expected u16",
+  "json_object_keys_are_strings": true,
+  "literal_100_special_cased": false,
+  "repair_scope": "GENERIC_U16_KEY_TRANSPORT_ONLY",
+  "root_cause": "NUMERIC_SEMANTIC_MAP_KEY_WAS_IMPLICITLY_ENCODED_AS_JSON_OBJECT_KEY"
+}

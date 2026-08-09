@@ -1,0 +1,8 @@
+{
+  "malformed_payload_rejected": true,
+  "planner_pass_emitted": false,
+  "precise_schema_error": "SEM33_R1_TRANSPORT_SCHEMA_ERROR:invalid value: integer `65536`, expected u16",
+  "production_binary": "D:\\B_Core_CAMPAIGNS\\sem33-r1-planning-regate\\reports/sem33_r1\\artifacts/frozen_p0\\sem33-r1-verify.exe",
+  "transport_fail_open_events": 0,
+  "transport_field_drop_events": 0
+}

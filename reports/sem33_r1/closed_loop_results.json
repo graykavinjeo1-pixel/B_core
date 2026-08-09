@@ -1,0 +1,7 @@
+{
+  "closed_loop_replanning_ablation_pass": true,
+  "goals_satisfied_after_replan": 1,
+  "plan_execution_actions": 40,
+  "replan_caused_by_model_residual": 1,
+  "replan_events": 30
+}

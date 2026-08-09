@@ -1,0 +1,9 @@
+{
+  "payload_semantic_hash_after": "c0dc53f87c3496bf045ecb37269d6ff9df63173a929f483979e5ae71b0bfaed5",
+  "payload_semantic_hash_before": "c0dc53f87c3496bf045ecb37269d6ff9df63173a929f483979e5ae71b0bfaed5",
+  "production_runner_path_used": true,
+  "production_verifier_binary_used": true,
+  "transport_field_drop_events": 0,
+  "verifier_reported_semantic_hash": "c0dc53f87c3496bf045ecb37269d6ff9df63173a929f483979e5ae71b0bfaed5",
+  "verifier_runner_transport_equivalence": true
+}
