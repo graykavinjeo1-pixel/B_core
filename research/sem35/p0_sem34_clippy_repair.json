@@ -1,0 +1,62 @@
+{
+  "schema_version": "SEM35_P0_SEM34_CLIPPY_REPAIR_1",
+  "predecessor_commit": "4bc64294cdf4a33b1be5d67dbb99327c7c24f35f",
+  "status": "PASS",
+  "repair_scope": "EXACT_FIVE_SEM34_CLIPPY_WARNINGS_ONLY",
+  "scientific_research_started": false,
+  "prestart_autonomous_research_events": 0,
+  "prestart_future_instance_exposure_events": 0,
+  "warnings_before": 5,
+  "warnings_after": 0,
+  "new_sem34_clippy_warning_signatures": 0,
+  "allowed_repairs": [
+    {
+      "warning": "manual implementation of is_multiple_of",
+      "transformation": "index % 3 == 0 -> index.is_multiple_of(3)",
+      "semantic_equivalence": "EXACT_FOR_NONNEGATIVE_USIZE"
+    },
+    {
+      "warning": "complex type can be factored",
+      "transformation": "inline tuple type -> ActionSemanticSignature alias",
+      "semantic_equivalence": "TYPE_ALIAS_ONLY"
+    },
+    {
+      "warning": "field assignment after Default initializer",
+      "transformation": "default then assignment -> struct update initialization",
+      "semantic_equivalence": "IDENTICAL_FIELD_VALUES"
+    },
+    {
+      "warning": "manual implementation of div_ceil",
+      "transformation": "(value + 99) / 100 -> value.div_ceil(100)",
+      "semantic_equivalence": "EXACT_FOR_USIZE_WITHOUT_PREVIOUS_OVERFLOW"
+    },
+    {
+      "warning": "useless format allocation",
+      "transformation": "format!(literal) -> literal.to_string()",
+      "semantic_equivalence": "IDENTICAL_UTF8_STRING"
+    }
+  ],
+  "predecessor_blobs": {
+    "engine": "af0ced63bc099807035e877829859c4600323ec1",
+    "governor": "2fc3eb8f7e130aab42fa4b061f746b16598f443f"
+  },
+  "repaired_blobs": {
+    "engine": "69fa7ddcc182231ef533918de3d5f0c4e6fecdef",
+    "governor": "dc65157677100e93f8dc647513cb40aeff30862d"
+  },
+  "source_diff_allowlist_violations": 0,
+  "historical_sem34_artifacts_modified": false,
+  "historical_sem34_audit_before_repair": "PASS",
+  "sem34_targeted_tests_after_repair": "7_OF_7_PASS",
+  "workspace_all_targets_after_repair": "251_OF_251_PASS",
+  "p0_semantic_behavior_diff": 0,
+  "p0_planner_behavior_diff": 0,
+  "p0_world_model_behavior_diff": 0,
+  "evidence_basis": [
+    "EXACT_TRANSFORMATION_ALLOWLIST",
+    "SEM34_TARGETED_REGRESSION",
+    "WORKSPACE_ALL_TARGETS_REGRESSION",
+    "CLIPPY_ZERO_SEM34_SIGNATURES"
+  ],
+  "p0_scientific_authority": false
+}

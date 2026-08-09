@@ -181,9 +181,7 @@ pub fn preflight_campaign(root: &Path) -> Result<String, String> {
             "final_holdout_exposed": false
         }),
     )?;
-    Ok(format!(
-        "SEM34_PREFLIGHT=PASS\nPREDECESSOR_INTEGRITY=PASS\nBASELINE_PLANNER_FROZEN=true\nWORK_ACCOUNTING_FROZEN=true\nVERIFIER_RUNNER_TRANSPORT_EQUIVALENCE=true\nFINAL_HOLDOUT_EXPOSURE_EVENTS=0"
-    ))
+    Ok("SEM34_PREFLIGHT=PASS\nPREDECESSOR_INTEGRITY=PASS\nBASELINE_PLANNER_FROZEN=true\nWORK_ACCOUNTING_FROZEN=true\nVERIFIER_RUNNER_TRANSPORT_EQUIVALENCE=true\nFINAL_HOLDOUT_EXPOSURE_EVENTS=0".to_string())
 }
 
 pub fn develop_campaign(root: &Path) -> Result<String, String> {

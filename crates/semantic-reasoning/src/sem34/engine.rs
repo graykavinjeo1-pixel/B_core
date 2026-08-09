@@ -11,6 +11,8 @@ use crate::sem33_r1::engine::{
     PublicPlanningTask, SemanticAction,
 };
 
+type ActionSemanticSignature = (Vec<Fact>, Vec<Fact>, Vec<Fact>, Vec<Fact>);
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum ScalingSet {
@@ -921,7 +923,8 @@ fn build_case(
         actions,
         goal,
         long_horizon: action_horizon >= 8,
-        novel_relation_topology: matches!(set, ScalingSet::FinalHoldout) && index % 3 == 0,
+        novel_relation_topology: matches!(set, ScalingSet::FinalHoldout)
+            && index.is_multiple_of(3),
         novel_entity_count: matches!(set, ScalingSet::FinalHoldout) && index % 3 == 1,
         novel_goal_composition: matches!(set, ScalingSet::FinalHoldout)
             && profile.composite_goals > 0,
@@ -1013,8 +1016,7 @@ fn analyze_task(task: &PublicPlanningTask) -> TaskAnalysis {
         .chain(task.actions.iter().filter_map(|action| action.observes))
         .collect::<BTreeSet<_>>();
     let mut analysis = TaskAnalysis::default();
-    let mut signatures: BTreeMap<(Vec<Fact>, Vec<Fact>, Vec<Fact>, Vec<Fact>), (u16, u16)> =
-        BTreeMap::new();
+    let mut signatures: BTreeMap<ActionSemanticSignature, (u16, u16)> = BTreeMap::new();
     for action in &task.actions {
         if !relevant_actions.contains(&action.action_id) {
             analysis.prune.causal_prune_events += 1;
@@ -1422,8 +1424,10 @@ fn current_working_set_bytes() -> u64 {
 }
 
 fn aggregate_metrics(tasks: &[TaskScalingEvidence]) -> ScalingArmMetrics {
-    let mut metrics = ScalingArmMetrics::default();
-    metrics.tasks_total = tasks.len() as u64;
+    let mut metrics = ScalingArmMetrics {
+        tasks_total: tasks.len() as u64,
+        ..ScalingArmMetrics::default()
+    };
     for task in tasks {
         metrics.tasks_passed += u64::from(task.task_pass);
         metrics.verified_goals_solved += u64::from(task.goal_success);
@@ -1544,7 +1548,7 @@ fn percentile(values: &[u64], percentile: usize) -> u64 {
     }
     let mut sorted = values.to_vec();
     sorted.sort_unstable();
-    let index = ((sorted.len() - 1) * percentile + 99) / 100;
+    let index = ((sorted.len() - 1) * percentile).div_ceil(100);
     sorted[index.min(sorted.len() - 1)]
 }
 
