@@ -1,0 +1,81 @@
+{
+  "BENCHMARK_SPECIFIC_CAUSAL_HINT_BRANCHES": 0,
+  "BRANCH": "codex/sem37-external-validity",
+  "B_CORE_AUTHORED_CANONICAL_WORLD_INSTANCES": 0,
+  "CAMPAIGN_BUDGET_CONTRACT_PASS": true,
+  "CAMPAIGN_ID": "SEM37-THIRD-PARTY-DYNAMICAL-WORLD-EXTERNAL-VALIDITY-0001",
+  "CONFIGURED_MAX_AUTONOMOUS_RESEARCH_EPOCHS": 4096,
+  "EXPECTED_EXTERNAL_RESULT_LOOKUPS": 0,
+  "EXTERNAL_EVALUATOR_SHA256": "fe64e747660af2bec8c772bf3957a2c8259f29276eef61fb02936fd53c86271d",
+  "EXTERNAL_FIXTURE_MANIFEST_SHA256": "ce7ca3b43b736ff500f87c2650965060cce8db98323882bb9f2bea8efd139a6b",
+  "EXTERNAL_GENERATOR_SOURCE_READS_BY_BCORE": 0,
+  "EXTERNAL_GROUND_TRUTH_EQUATION_READS": 0,
+  "EXTERNAL_GROUND_TRUTH_GRAPH_READS": 0,
+  "HEAD_AT_BASELINE_FREEZE": "e63f5fbe09ad1235b78555b6c6000593aef52ac6",
+  "NETWORK_READS_DURING_CANONICAL": 0,
+  "NETWORK_WRITES_DURING_CANONICAL": 0,
+  "PERCEPTION_GROUNDING_STARTED": false,
+  "PREDECESSOR_INTEGRITY": "PASS",
+  "PRE_BASELINE_AUTONOMOUS_RESEARCH_EVENTS": 0,
+  "PRE_BASELINE_EXTERNAL_OBSERVATION_EXPOSURE_EVENTS": 0,
+  "PRIVATE_PARTITION_MANIFEST_SHA256": "5438e40518e00c16b121def5279ca4d4d1481bb831cdb91caee8042c3bae8c16",
+  "QIS0_EXECUTED": false,
+  "QUANTUM_INSPIRED_CORE_CHANGES": 0,
+  "REQUESTED_MAX_AUTONOMOUS_RESEARCH_EPOCHS": 4096,
+  "SEALED_PREDECESSOR_COMMIT": "b33386e7a8793c5c27e2c2df3e19db0e6e04d0f4",
+  "SEM36_ACCEPTANCE_SHA256": "0a837a76ca3f63135e0eef8c8b8d1546f853a5522dc3c281db1db15c0d219309",
+  "SEM36_ENGINE_SHA256": "a14e5065c1ce830c78bf16937110aab5612f820344d87e3eca67b00db1ba6fcf",
+  "SEM36_EXTERNAL_TRANSFER_BASELINE": true,
+  "fixture_receipt": {
+    "b_core_authored_canonical_world_instances": 0,
+    "bcore_adaptive_exposure_events": 0,
+    "checked_fixture_files": 15,
+    "external_fixture_hashes_sealed": true,
+    "fixture_manifest_sha256": "ce7ca3b43b736ff500f87c2650965060cce8db98323882bb9f2bea8efd139a6b",
+    "status": "PASS"
+  },
+  "partition_receipt": {
+    "b_core_authored_canonical_world_instances": 0,
+    "bcore_adaptive_exposure_events": 0,
+    "checked_fixture_files": 15,
+    "concrete_case_ids_exposed_to_bcore": 0,
+    "external_fixture_hashes_sealed": true,
+    "final_external_holdout_development_overlap": 0,
+    "final_external_holdout_fresh": true,
+    "fixture_manifest_sha256": "ce7ca3b43b736ff500f87c2650965060cce8db98323882bb9f2bea8efd139a6b",
+    "fresh_set_a": true,
+    "fresh_set_b": true,
+    "fresh_set_c": true,
+    "partition_rule": "SHA256_STRATIFIED_EXTERNAL_METADATA_V1",
+    "private_partition_manifest_sha256": "5438e40518e00c16b121def5279ca4d4d1481bb831cdb91caee8042c3bae8c16",
+    "set_a_b_overlap": 0,
+    "set_a_c_overlap": 0,
+    "set_b_c_overlap": 0,
+    "set_counts": {
+      "A": {
+        "lane_a": 10,
+        "lane_b": 14
+      },
+      "B": {
+        "lane_a": 15,
+        "lane_b": 14
+      },
+      "C": {
+        "lane_a": 15,
+        "lane_b": 14
+      }
+    },
+    "status": "PASS"
+  },
+  "schema_version": "SEM37_SEM36_EXTERNAL_TRANSFER_BASELINE_FREEZE_1",
+  "source_hashes": {
+    "crates/semantic-reasoning/src/sem36/acceptance.rs": "0a837a76ca3f63135e0eef8c8b8d1546f853a5522dc3c281db1db15c0d219309",
+    "crates/semantic-reasoning/src/sem36/engine.rs": "a14e5065c1ce830c78bf16937110aab5612f820344d87e3eca67b00db1ba6fcf",
+    "crates/semantic-reasoning/src/sem37/adapter.rs": "ad9b525690c2cce4b053be62c1c7fb1fb16b385f5ad9617e09737516829d7b26",
+    "crates/semantic-reasoning/src/sem37/baseline.rs": "80cb250d79930e0f96b70d9bd593f50205cc24a41e52e123d06e7bc3ca986ddf",
+    "crates/semantic-reasoning/src/sem37/config.rs": "690591cb4bef99cac85734b5f3cbff953d1015500e890d0a28c7681c71f248c0",
+    "crates/semantic-reasoning/src/sem37/mod.rs": "792c0c0a6b0e5fe1c66e939669550e38b35a75512e93750a8222c176b562468d",
+    "crates/semantic-reasoning/src/sem37_p0_main.rs": "c9a23a81a0173d4453831205d5a69b0523faf250f3272ec0f7ebfaca4b9ccf10",
+    "research/sem37/SEM37_INSTRUCTION.md": "098b6e5e4dbcf6643c3a45a2c9c063f18adcef84731b1d1ab577379e2a4d5601"
+  }
+}
