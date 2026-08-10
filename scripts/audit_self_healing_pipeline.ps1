@@ -58,6 +58,10 @@ function Invoke-CargoProbe(
     $process.StartInfo.CreateNoWindow = $true
     $process.StartInfo.Arguments = $Arguments -join " "
     $process.StartInfo.Environment["CARGO_NET_OFFLINE"] = "true"
+    $process.StartInfo.Environment["HTTP_PROXY"] = ""
+    $process.StartInfo.Environment["HTTPS_PROXY"] = ""
+    $process.StartInfo.Environment["ALL_PROXY"] = ""
+    $process.StartInfo.Environment["NO_PROXY"] = "*"
     if (-not [string]::IsNullOrWhiteSpace($CargoTargetDirectory)) {
         $process.StartInfo.Environment["CARGO_TARGET_DIR"] = $CargoTargetDirectory
     }
@@ -94,7 +98,7 @@ function Invoke-CargoProbe(
         timeout_ms = $TimeoutSeconds * 1000
         output_sha256 = Get-Sha256 $combined
         log = $logPath
-        externally_observed = $true
+        independent_process_observed = $true
     }
 }
 
@@ -168,6 +172,11 @@ $receipt = [ordered]@{
     compiled_coverage_complete = $allPass
     all_compiled_probes_pass = $allPass
     quarantined_source_compiled_as_authority = $false
+    verification_mode = "INDEPENDENT_LOCAL_DETERMINISTIC_PROCESS"
+    codex_calls = 0
+    external_llm_calls = 0
+    network_reads = 0
+    network_writes = 0
     prestart_autonomous_research_events = 0
     prestart_future_instance_exposure_events = 0
 }

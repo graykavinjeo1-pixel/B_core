@@ -1,9 +1,11 @@
-//! Bounded self-healing coordination with an explicit operator-teaching path.
+//! Bounded, local-only self-healing coordination with an optional teaching
+//! input path.
 //!
 //! The core may audit, diagnose, learn a generalized repair schema, and emit a
-//! proposal. It still cannot approve or install its own patch. Operator repairs
-//! are useful as teaching evidence only after independent verification and
-//! successful replay on fresh, non-identical transfer scenarios.
+//! proposal. It still cannot approve or install its own patch. Teaching repairs
+//! are useful only after verification by a separate local deterministic
+//! process and successful replay on fresh, non-identical transfer scenarios.
+//! Codex, external LLM, human verification, and network calls are forbidden.
 
 use std::collections::{BTreeMap, BTreeSet};
 
@@ -96,7 +98,7 @@ pub struct HealthProbeReceipt {
     pub status: ProbeStatus,
     pub duration_ms: u64,
     pub bounded_timeout_ms: u64,
-    pub externally_observed: bool,
+    pub independent_process_observed: bool,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -336,7 +338,7 @@ pub struct OperatorTeachingReceipt {
     pub scenario_sha256: String,
     pub defect_contract_sha256: String,
     pub patch_candidate: PatchCandidateIR,
-    pub verification_receipt: VerificationReceipt,
+    pub verification: LocalDeterministicVerification,
     pub operator_patch_installed_in_isolation: bool,
     pub post_install_regression_passed: bool,
 }
@@ -347,8 +349,69 @@ pub struct FreshTransferReceipt {
     pub source_shape_sha256: String,
     pub core_generated: bool,
     pub patch_candidate: PatchCandidateIR,
-    pub verification_receipt: VerificationReceipt,
+    pub verification: LocalDeterministicVerification,
     pub regression_passed: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct LocalDeterministicVerification {
+    pub receipt: VerificationReceipt,
+    pub verifier_binary_sha256: String,
+    pub frozen_command_sha256: String,
+    pub local_process: bool,
+    pub deterministic_checks_only: bool,
+    pub result_derived_only_from_frozen_checks: bool,
+    pub codex_calls: usize,
+    pub external_llm_calls: usize,
+    pub network_reads: usize,
+    pub network_writes: usize,
+    pub human_verification_decisions: usize,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum LocalVerificationError {
+    NotLocal,
+    NondeterministicChecks,
+    UnfrozenOutcomeAuthority,
+    MissingVerifierBinaryIdentity,
+    MissingFrozenCommandIdentity,
+    CodexDependency,
+    ExternalLlmDependency,
+    NetworkDependency,
+    HumanDecisionDependency,
+}
+
+pub fn validate_local_deterministic_verification(
+    verification: &LocalDeterministicVerification,
+) -> Result<(), LocalVerificationError> {
+    if !verification.local_process {
+        return Err(LocalVerificationError::NotLocal);
+    }
+    if !verification.deterministic_checks_only {
+        return Err(LocalVerificationError::NondeterministicChecks);
+    }
+    if !verification.result_derived_only_from_frozen_checks {
+        return Err(LocalVerificationError::UnfrozenOutcomeAuthority);
+    }
+    if verification.verifier_binary_sha256.is_empty() {
+        return Err(LocalVerificationError::MissingVerifierBinaryIdentity);
+    }
+    if verification.frozen_command_sha256.is_empty() {
+        return Err(LocalVerificationError::MissingFrozenCommandIdentity);
+    }
+    if verification.codex_calls != 0 {
+        return Err(LocalVerificationError::CodexDependency);
+    }
+    if verification.external_llm_calls != 0 {
+        return Err(LocalVerificationError::ExternalLlmDependency);
+    }
+    if verification.network_reads != 0 || verification.network_writes != 0 {
+        return Err(LocalVerificationError::NetworkDependency);
+    }
+    if verification.human_verification_decisions != 0 {
+        return Err(LocalVerificationError::HumanDecisionDependency);
+    }
+    Ok(())
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -408,10 +471,11 @@ pub fn begin_operator_teaching(
     if teaching.scenario_sha256.is_empty() || teaching.operator_identity.is_empty() {
         return Err(LessonPromotionError::TeachingScenarioMismatch);
     }
-    if teaching.verification_receipt.defect_contract_sha256 != teaching.defect_contract_sha256
+    if validate_local_deterministic_verification(&teaching.verification).is_err()
+        || teaching.verification.receipt.defect_contract_sha256 != teaching.defect_contract_sha256
         || validate_installation_authority(
             &teaching.patch_candidate,
-            &teaching.verification_receipt,
+            &teaching.verification.receipt,
         )
         .is_err()
     {
@@ -453,12 +517,13 @@ pub fn promote_provisional_lesson(
         if !transfer.core_generated {
             return Err(LessonPromotionError::TransferNotCoreGenerated);
         }
-        if validate_installation_authority(
-            &transfer.patch_candidate,
-            &transfer.verification_receipt,
-        )
-        .is_err()
-            || transfer.verification_receipt.decision != VerificationDecision::Accept
+        if validate_local_deterministic_verification(&transfer.verification).is_err()
+            || validate_installation_authority(
+                &transfer.patch_candidate,
+                &transfer.verification.receipt,
+            )
+            .is_err()
+            || transfer.verification.receipt.decision != VerificationDecision::Accept
         {
             return Err(LessonPromotionError::TransferRepairNotVerified);
         }
@@ -518,6 +583,10 @@ pub struct CoreRepairAttempt {
     pub exact_patch_lookup_events: usize,
     pub task_identity_routing_events: usize,
     pub repository_identity_routing_events: usize,
+    pub codex_calls: usize,
+    pub external_llm_calls: usize,
+    pub network_reads: usize,
+    pub network_writes: usize,
     pub capability_gap: Option<String>,
 }
 
@@ -525,12 +594,13 @@ pub struct CoreRepairAttempt {
 pub enum SelfHealingInstallationGateError {
     ProvisionalTransferOnly,
     MissingPatchCandidate,
+    NonLocalOrDependentVerification(LocalVerificationError),
     RsiGate(InstallationGateError),
 }
 
 pub fn validate_self_healing_installation(
     attempt: &CoreRepairAttempt,
-    receipt: &VerificationReceipt,
+    verification: &LocalDeterministicVerification,
 ) -> Result<(), SelfHealingInstallationGateError> {
     if attempt.provisional_transfer_only {
         return Err(SelfHealingInstallationGateError::ProvisionalTransferOnly);
@@ -539,7 +609,9 @@ pub fn validate_self_healing_installation(
         .patch_candidate
         .as_ref()
         .ok_or(SelfHealingInstallationGateError::MissingPatchCandidate)?;
-    validate_installation_authority(patch, receipt)
+    validate_local_deterministic_verification(verification)
+        .map_err(SelfHealingInstallationGateError::NonLocalOrDependentVerification)?;
+    validate_installation_authority(patch, &verification.receipt)
         .map_err(SelfHealingInstallationGateError::RsiGate)
 }
 
@@ -557,6 +629,10 @@ pub struct SelfHealingRunnerResult {
     pub attempt: CoreRepairAttempt,
     pub original_source_write_events: usize,
     pub core_self_approval_events: usize,
+    pub codex_calls: usize,
+    pub external_llm_calls: usize,
+    pub network_reads: usize,
+    pub network_writes: usize,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -587,6 +663,10 @@ pub struct ProvisionalTransferRunnerResult {
     pub attempt: CoreRepairAttempt,
     pub original_source_write_events: usize,
     pub authoritative_install_eligible: bool,
+    pub codex_calls: usize,
+    pub external_llm_calls: usize,
+    pub network_reads: usize,
+    pub network_writes: usize,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -607,6 +687,10 @@ pub struct RepairLearningPromotionResult {
     pub exact_patch_lookup_events: usize,
     pub task_identity_routing_events: usize,
     pub repository_identity_routing_events: usize,
+    pub codex_calls: usize,
+    pub external_llm_calls: usize,
+    pub network_reads: usize,
+    pub network_writes: usize,
 }
 
 pub fn ingest_operator_teaching(
@@ -665,6 +749,10 @@ pub fn ingest_provisional_teaching(
         exact_patch_lookup_events: 0,
         task_identity_routing_events: 0,
         repository_identity_routing_events: 0,
+        codex_calls: 0,
+        external_llm_calls: 0,
+        network_reads: 0,
+        network_writes: 0,
     })
 }
 
@@ -685,6 +773,10 @@ pub fn run_provisional_transfer_request(
         attempt,
         original_source_write_events: 0,
         authoritative_install_eligible: false,
+        codex_calls: 0,
+        external_llm_calls: 0,
+        network_reads: 0,
+        network_writes: 0,
     })
 }
 
@@ -705,6 +797,10 @@ pub fn run_self_healing_request(
         request_sha256,
         memory_sha256,
         core_self_approval_events: attempt.core_self_approval_events,
+        codex_calls: attempt.codex_calls,
+        external_llm_calls: attempt.external_llm_calls,
+        network_reads: attempt.network_reads,
+        network_writes: attempt.network_writes,
         attempt,
         original_source_write_events: 0,
     })
@@ -801,6 +897,10 @@ fn attempt_with_lesson(
         exact_patch_lookup_events: 0,
         task_identity_routing_events: 0,
         repository_identity_routing_events: 0,
+        codex_calls: 0,
+        external_llm_calls: 0,
+        network_reads: 0,
+        network_writes: 0,
         capability_gap: None,
     }
 }
@@ -822,6 +922,10 @@ fn empty_attempt(status: RepairAttemptStatus, reason: &str) -> CoreRepairAttempt
         exact_patch_lookup_events: 0,
         task_identity_routing_events: 0,
         repository_identity_routing_events: 0,
+        codex_calls: 0,
+        external_llm_calls: 0,
+        network_reads: 0,
+        network_writes: 0,
         capability_gap: Some(reason.to_string()),
     }
 }
@@ -956,7 +1060,7 @@ mod tests {
             status,
             duration_ms: 1,
             bounded_timeout_ms: 100,
-            externally_observed: true,
+            independent_process_observed: true,
         }
     }
 
@@ -1111,21 +1215,33 @@ mod tests {
         patch: &PatchCandidateIR,
         defect_contract_hash: &str,
         scenario: &str,
-    ) -> VerificationReceipt {
-        VerificationReceipt {
-            patch_sha256: patch.unified_diff_sha256.clone(),
-            repair_spec_sha256: patch.repair_spec_sha256.clone(),
-            defect_contract_sha256: defect_contract_hash.into(),
-            semantic_checks_sha256: format!("semantic-{scenario}"),
-            regression_checks_sha256: format!("regression-{scenario}"),
-            resource_checks_sha256: format!("resource-{scenario}"),
-            invariant_checks_sha256: format!("invariant-{scenario}"),
-            decision: VerificationDecision::Accept,
-            verifier_identity: "independent-verifier".into(),
-            verifier_is_proposer: false,
-            gold_patch_text_equality_is_authority: false,
-            receipt_sha256: format!("receipt-{scenario}"),
-            authority_seal: format!("seal-{scenario}"),
+    ) -> LocalDeterministicVerification {
+        LocalDeterministicVerification {
+            receipt: VerificationReceipt {
+                patch_sha256: patch.unified_diff_sha256.clone(),
+                repair_spec_sha256: patch.repair_spec_sha256.clone(),
+                defect_contract_sha256: defect_contract_hash.into(),
+                semantic_checks_sha256: format!("semantic-{scenario}"),
+                regression_checks_sha256: format!("regression-{scenario}"),
+                resource_checks_sha256: format!("resource-{scenario}"),
+                invariant_checks_sha256: format!("invariant-{scenario}"),
+                decision: VerificationDecision::Accept,
+                verifier_identity: "independent-local-deterministic-verifier".into(),
+                verifier_is_proposer: false,
+                gold_patch_text_equality_is_authority: false,
+                receipt_sha256: format!("receipt-{scenario}"),
+                authority_seal: format!("seal-{scenario}"),
+            },
+            verifier_binary_sha256: format!("verifier-binary-{scenario}"),
+            frozen_command_sha256: format!("frozen-command-{scenario}"),
+            local_process: true,
+            deterministic_checks_only: true,
+            result_derived_only_from_frozen_checks: true,
+            codex_calls: 0,
+            external_llm_calls: 0,
+            network_reads: 0,
+            network_writes: 0,
+            human_verification_decisions: 0,
         }
     }
 
@@ -1133,10 +1249,10 @@ mod tests {
         let request = frozen_request("fn teaching(x: usize) -> bool { x % 2 == 0 }\n");
         let teaching_patch = candidate("operator-patch", &request.repair_spec.sha256);
         let teaching = OperatorTeachingReceipt {
-            operator_identity: "codex-operator-teacher".into(),
+            operator_identity: "local-deterministic-repair-teacher".into(),
             scenario_sha256: "teaching-scenario".into(),
             defect_contract_sha256: request.defect_contract.sha256.clone(),
-            verification_receipt: verification(
+            verification: verification(
                 &teaching_patch,
                 &request.defect_contract.sha256,
                 "teaching",
@@ -1153,11 +1269,7 @@ mod tests {
                     scenario_sha256: scenario.into(),
                     source_shape_sha256: format!("shape-{scenario}"),
                     core_generated: true,
-                    verification_receipt: verification(
-                        &patch,
-                        &request.defect_contract.sha256,
-                        scenario,
-                    ),
+                    verification: verification(&patch, &request.defect_contract.sha256, scenario),
                     patch_candidate: patch,
                     regression_passed: true,
                 }
@@ -1202,6 +1314,39 @@ mod tests {
     }
 
     #[test]
+    fn verifier_attestation_rejects_codex_llm_network_or_human_dependency() {
+        let request = frozen_request("fn verify(x: usize) -> bool { x % 2 == 0 }\n");
+        let patch = candidate("patch", &request.repair_spec.sha256);
+        let clean = verification(&patch, &request.defect_contract.sha256, "clean");
+        assert_eq!(validate_local_deterministic_verification(&clean), Ok(()));
+
+        let mut codex = clean.clone();
+        codex.codex_calls = 1;
+        assert_eq!(
+            validate_local_deterministic_verification(&codex),
+            Err(LocalVerificationError::CodexDependency)
+        );
+        let mut llm = clean.clone();
+        llm.external_llm_calls = 1;
+        assert_eq!(
+            validate_local_deterministic_verification(&llm),
+            Err(LocalVerificationError::ExternalLlmDependency)
+        );
+        let mut network = clean.clone();
+        network.network_reads = 1;
+        assert_eq!(
+            validate_local_deterministic_verification(&network),
+            Err(LocalVerificationError::NetworkDependency)
+        );
+        let mut human = clean;
+        human.human_verification_decisions = 1;
+        assert_eq!(
+            validate_local_deterministic_verification(&human),
+            Err(LocalVerificationError::HumanDecisionDependency)
+        );
+    }
+
+    #[test]
     fn core_records_capability_gap_before_operator_teaching() {
         let request = frozen_request("fn fresh(x: usize) -> bool { x % 7 == 0 }\n");
         let result = attempt_core_repair(&request, &RepairLearningMemory::default());
@@ -1223,7 +1368,7 @@ mod tests {
             operator_identity: "operator".into(),
             scenario_sha256: "teaching".into(),
             defect_contract_sha256: request.defect_contract.sha256.clone(),
-            verification_receipt: verification(&patch, &request.defect_contract.sha256, "teaching"),
+            verification: verification(&patch, &request.defect_contract.sha256, "teaching"),
             patch_candidate: patch,
             operator_patch_installed_in_isolation: true,
             post_install_regression_passed: true,
@@ -1308,6 +1453,10 @@ mod tests {
         );
         assert_eq!(result.original_source_write_events, 0);
         assert_eq!(result.core_self_approval_events, 0);
+        assert_eq!(result.codex_calls, 0);
+        assert_eq!(result.external_llm_calls, 0);
+        assert_eq!(result.network_reads, 0);
+        assert_eq!(result.network_writes, 0);
         assert!(!result.request_sha256.is_empty());
         assert!(!result.memory_sha256.is_empty());
     }
@@ -1317,10 +1466,10 @@ mod tests {
         let teaching_request = frozen_request("fn teaching(x: usize) -> bool { x % 2 == 0 }\n");
         let teaching_patch = candidate("operator-patch", &teaching_request.repair_spec.sha256);
         let teaching = OperatorTeachingReceipt {
-            operator_identity: "codex-operator-teacher".into(),
+            operator_identity: "local-deterministic-repair-teacher".into(),
             scenario_sha256: "teaching-scenario".into(),
             defect_contract_sha256: teaching_request.defect_contract.sha256.clone(),
-            verification_receipt: verification(
+            verification: verification(
                 &teaching_patch,
                 &teaching_request.defect_contract.sha256,
                 "teaching",
@@ -1363,14 +1512,10 @@ mod tests {
         let request = frozen_request("fn teaching(x: usize) -> bool { x % 2 == 0 }\n");
         let patch = candidate("second-operator-patch", &request.repair_spec.sha256);
         let teaching = OperatorTeachingReceipt {
-            operator_identity: "codex-operator-teacher".into(),
+            operator_identity: "local-deterministic-repair-teacher".into(),
             scenario_sha256: "second-teaching-scenario".into(),
             defect_contract_sha256: request.defect_contract.sha256.clone(),
-            verification_receipt: verification(
-                &patch,
-                &request.defect_contract.sha256,
-                "second-teaching",
-            ),
+            verification: verification(&patch, &request.defect_contract.sha256, "second-teaching"),
             patch_candidate: patch,
             operator_patch_installed_in_isolation: true,
             post_install_regression_passed: true,
@@ -1386,11 +1531,7 @@ mod tests {
                     scenario_sha256: scenario.into(),
                     source_shape_sha256: format!("second-shape-{scenario}"),
                     core_generated: true,
-                    verification_receipt: verification(
-                        &patch,
-                        &request.defect_contract.sha256,
-                        scenario,
-                    ),
+                    verification: verification(&patch, &request.defect_contract.sha256, scenario),
                     patch_candidate: patch,
                     regression_passed: true,
                 }
