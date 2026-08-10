@@ -1,0 +1,33 @@
+{
+  "schema_version": "SEM37_R5_FINAL_FREEZE_1",
+  "r5_final_freeze_complete": true,
+  "development_result_observed": true,
+  "selected_model": {
+    "kind": "OBSERVATIONAL_IDENTIFIABILITY_GUARD",
+    "lag": 1,
+    "fanout": 1,
+    "conditional_direct": true,
+    "direction_advantage": false,
+    "identifiability_guard": true,
+    "require_intervention_signal": false,
+    "direct_policy": "CONDITIONAL_PARALLEL"
+  },
+  "selected_by_frozen_autonomous_policy": true,
+  "operator_selected": false,
+  "scientific_engine_sha256": "3a01b8fe27fbc8083d5f37244ec699d4e6feaaf19704677e36f9dbac7aea0ff2",
+  "path_specific_causal_ir_sha256": "d7bd68efcad20a1f8a063e838904242b830ee90c381d5733e8231ef546bf04b1",
+  "acceptance_sha256": "3379a5c09aaa6672ec3d8a13c3b41db249c11c007a8f28d9f3d742119ae5799d",
+  "verifier_sha256": "1a83d51276427eb94958949c49f271a34ac02900d139ef919c0d433f1aebceaf",
+  "independent_evaluator_sha256": "a09d63589072d60911649200d9daca69d317e32dd0b1b2e880bce0ad4a48e870",
+  "final_selection_commitment": "6e6a2c71e38d13b5f505d0b49c11c7ed8d6c64dca23da6336fe3962690cedbb6",
+  "transfer_regression_policy": "EXACT_SEALED_R4_RAW_BEHAVIOR_NO_R5_RETUNING",
+  "numeric_authority": "SEM35_R1_EXACT_IEEE754_TRANSPORT",
+  "campaign_seed": 3705202608,
+  "campaign_budget": 4096,
+  "candidate_generation_changes_after_dev": 0,
+  "scientific_engine_changes_after_dev": 0,
+  "acceptance_changes_after_dev": 0,
+  "final_holdout_model_dependent_selection_events": 0,
+  "outcome_dependent_policy_modifications_allowed": false,
+  "status": "FROZEN_BEFORE_FINAL_I_SOLVER_EXPOSURE"
+}

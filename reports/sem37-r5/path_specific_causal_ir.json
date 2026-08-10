@@ -1,0 +1,915 @@
+[
+  {
+    "case_id": "R5A-035c742875a91faf34eb25ba",
+    "source": 0,
+    "target": 2,
+    "candidate_paths": [
+      [
+        0,
+        2
+      ]
+    ],
+    "direct_path_candidate": [
+      0,
+      2
+    ],
+    "mediator_paths": [],
+    "common_cause_hypotheses": [],
+    "available_interventions": [
+      "de5e7feee15b8f46ed394fa2"
+    ],
+    "intervention_constraints": [
+      "CONTRACT=de5e7feee15b8f46ed394fa2;TARGETS=[0];MEDIATOR_CONTROL_AVAILABLE=false"
+    ],
+    "path_identifiability": "FULLY_IDENTIFIABLE",
+    "direct_effect_evidence": [
+      "DIRECT_EDGE_LOCAL_RANKED=true;CONDITIONAL=true;INTERVENTION_SIGNAL=false"
+    ],
+    "mediated_effect_evidence": [],
+    "mixed_effect_evidence": [],
+    "unresolved_components": [],
+    "uncertainty_millionths": 100000,
+    "provenance": [
+      "THIRD_PARTY_DOTIME_PUBLIC_OBSERVATION"
+    ],
+    "verification": [
+      "INDEPENDENT_FROZEN_EVALUATOR"
+    ]
+  },
+  {
+    "case_id": "R5A-1f8b02e0a43c2ad965dbd0b2",
+    "source": 0,
+    "target": 2,
+    "candidate_paths": [],
+    "direct_path_candidate": null,
+    "mediator_paths": [],
+    "common_cause_hypotheses": [],
+    "available_interventions": [
+      "b64835e7ebe6eca8e9b907d0"
+    ],
+    "intervention_constraints": [
+      "CONTRACT=b64835e7ebe6eca8e9b907d0;TARGETS=[0];MEDIATOR_CONTROL_AVAILABLE=false"
+    ],
+    "path_identifiability": "FULLY_IDENTIFIABLE",
+    "direct_effect_evidence": [
+      "DIRECT_EDGE_LOCAL_RANKED=false;CONDITIONAL=true;INTERVENTION_SIGNAL=false"
+    ],
+    "mediated_effect_evidence": [],
+    "mixed_effect_evidence": [],
+    "unresolved_components": [
+      "AVAILABLE_EVIDENCE_DOES_NOT_SEPARATE_ALL_COMPONENTS"
+    ],
+    "uncertainty_millionths": 500000,
+    "provenance": [
+      "THIRD_PARTY_DOTIME_PUBLIC_OBSERVATION"
+    ],
+    "verification": [
+      "INDEPENDENT_FROZEN_EVALUATOR"
+    ]
+  },
+  {
+    "case_id": "R5A-2403d9dc90f8ec83b3bd1bcc",
+    "source": 0,
+    "target": 2,
+    "candidate_paths": [],
+    "direct_path_candidate": null,
+    "mediator_paths": [],
+    "common_cause_hypotheses": [],
+    "available_interventions": [
+      "0c3b8fa8ffc1755f612c12fe"
+    ],
+    "intervention_constraints": [
+      "CONTRACT=0c3b8fa8ffc1755f612c12fe;TARGETS=[0];MEDIATOR_CONTROL_AVAILABLE=false"
+    ],
+    "path_identifiability": "NOT_IDENTIFIABLE_UNDER_AVAILABLE_EVIDENCE",
+    "direct_effect_evidence": [
+      "DIRECT_EDGE_LOCAL_RANKED=false;CONDITIONAL=true;INTERVENTION_SIGNAL=true"
+    ],
+    "mediated_effect_evidence": [],
+    "mixed_effect_evidence": [],
+    "unresolved_components": [
+      "AVAILABLE_EVIDENCE_DOES_NOT_SEPARATE_ALL_COMPONENTS"
+    ],
+    "uncertainty_millionths": 1000000,
+    "provenance": [
+      "THIRD_PARTY_DOTIME_PUBLIC_OBSERVATION"
+    ],
+    "verification": [
+      "INDEPENDENT_FROZEN_EVALUATOR"
+    ]
+  },
+  {
+    "case_id": "R5A-33e7eede9529239127941290",
+    "source": 0,
+    "target": 1,
+    "candidate_paths": [
+      [
+        0,
+        1
+      ]
+    ],
+    "direct_path_candidate": [
+      0,
+      1
+    ],
+    "mediator_paths": [],
+    "common_cause_hypotheses": [],
+    "available_interventions": [
+      "ef79c6d4b7c7526736df4094"
+    ],
+    "intervention_constraints": [
+      "CONTRACT=ef79c6d4b7c7526736df4094;TARGETS=[0];MEDIATOR_CONTROL_AVAILABLE=false"
+    ],
+    "path_identifiability": "FULLY_IDENTIFIABLE",
+    "direct_effect_evidence": [
+      "DIRECT_EDGE_LOCAL_RANKED=true;CONDITIONAL=true;INTERVENTION_SIGNAL=true"
+    ],
+    "mediated_effect_evidence": [],
+    "mixed_effect_evidence": [],
+    "unresolved_components": [],
+    "uncertainty_millionths": 100000,
+    "provenance": [
+      "THIRD_PARTY_DOTIME_PUBLIC_OBSERVATION"
+    ],
+    "verification": [
+      "INDEPENDENT_FROZEN_EVALUATOR"
+    ]
+  },
+  {
+    "case_id": "R5A-35b11131fe2206b6bb521958",
+    "source": 0,
+    "target": 2,
+    "candidate_paths": [],
+    "direct_path_candidate": null,
+    "mediator_paths": [],
+    "common_cause_hypotheses": [],
+    "available_interventions": [
+      "b6bc2195dd3f2f917e1358c0"
+    ],
+    "intervention_constraints": [
+      "CONTRACT=b6bc2195dd3f2f917e1358c0;TARGETS=[0];MEDIATOR_CONTROL_AVAILABLE=false"
+    ],
+    "path_identifiability": "NOT_IDENTIFIABLE_UNDER_AVAILABLE_EVIDENCE",
+    "direct_effect_evidence": [
+      "DIRECT_EDGE_LOCAL_RANKED=false;CONDITIONAL=true;INTERVENTION_SIGNAL=false"
+    ],
+    "mediated_effect_evidence": [],
+    "mixed_effect_evidence": [],
+    "unresolved_components": [
+      "AVAILABLE_EVIDENCE_DOES_NOT_SEPARATE_ALL_COMPONENTS"
+    ],
+    "uncertainty_millionths": 1000000,
+    "provenance": [
+      "THIRD_PARTY_DOTIME_PUBLIC_OBSERVATION"
+    ],
+    "verification": [
+      "INDEPENDENT_FROZEN_EVALUATOR"
+    ]
+  },
+  {
+    "case_id": "R5A-39dd9f1f07497a1b4bf37b91",
+    "source": 0,
+    "target": 2,
+    "candidate_paths": [
+      [
+        0,
+        2
+      ]
+    ],
+    "direct_path_candidate": [
+      0,
+      2
+    ],
+    "mediator_paths": [],
+    "common_cause_hypotheses": [],
+    "available_interventions": [
+      "2396559b601b0da3bbb0f9e2"
+    ],
+    "intervention_constraints": [
+      "CONTRACT=2396559b601b0da3bbb0f9e2;TARGETS=[0];MEDIATOR_CONTROL_AVAILABLE=false"
+    ],
+    "path_identifiability": "FULLY_IDENTIFIABLE",
+    "direct_effect_evidence": [
+      "DIRECT_EDGE_LOCAL_RANKED=true;CONDITIONAL=true;INTERVENTION_SIGNAL=true"
+    ],
+    "mediated_effect_evidence": [],
+    "mixed_effect_evidence": [],
+    "unresolved_components": [],
+    "uncertainty_millionths": 100000,
+    "provenance": [
+      "THIRD_PARTY_DOTIME_PUBLIC_OBSERVATION"
+    ],
+    "verification": [
+      "INDEPENDENT_FROZEN_EVALUATOR"
+    ]
+  },
+  {
+    "case_id": "R5A-433fa6cc81c178934b37573a",
+    "source": 0,
+    "target": 1,
+    "candidate_paths": [
+      [
+        0,
+        1
+      ]
+    ],
+    "direct_path_candidate": [
+      0,
+      1
+    ],
+    "mediator_paths": [],
+    "common_cause_hypotheses": [],
+    "available_interventions": [
+      "363350682ffb6fccd9168aaf"
+    ],
+    "intervention_constraints": [
+      "CONTRACT=363350682ffb6fccd9168aaf;TARGETS=[0];MEDIATOR_CONTROL_AVAILABLE=false"
+    ],
+    "path_identifiability": "FULLY_IDENTIFIABLE",
+    "direct_effect_evidence": [
+      "DIRECT_EDGE_LOCAL_RANKED=true;CONDITIONAL=true;INTERVENTION_SIGNAL=false"
+    ],
+    "mediated_effect_evidence": [],
+    "mixed_effect_evidence": [],
+    "unresolved_components": [],
+    "uncertainty_millionths": 100000,
+    "provenance": [
+      "THIRD_PARTY_DOTIME_PUBLIC_OBSERVATION"
+    ],
+    "verification": [
+      "INDEPENDENT_FROZEN_EVALUATOR"
+    ]
+  },
+  {
+    "case_id": "R5A-4d9f7f6654d204648fd90892",
+    "source": 0,
+    "target": 2,
+    "candidate_paths": [],
+    "direct_path_candidate": null,
+    "mediator_paths": [],
+    "common_cause_hypotheses": [],
+    "available_interventions": [
+      "4ae939b5be8006a950d652c1"
+    ],
+    "intervention_constraints": [
+      "CONTRACT=4ae939b5be8006a950d652c1;TARGETS=[0];MEDIATOR_CONTROL_AVAILABLE=false"
+    ],
+    "path_identifiability": "FULLY_IDENTIFIABLE",
+    "direct_effect_evidence": [
+      "DIRECT_EDGE_LOCAL_RANKED=false;CONDITIONAL=true;INTERVENTION_SIGNAL=true"
+    ],
+    "mediated_effect_evidence": [],
+    "mixed_effect_evidence": [],
+    "unresolved_components": [
+      "AVAILABLE_EVIDENCE_DOES_NOT_SEPARATE_ALL_COMPONENTS"
+    ],
+    "uncertainty_millionths": 500000,
+    "provenance": [
+      "THIRD_PARTY_DOTIME_PUBLIC_OBSERVATION"
+    ],
+    "verification": [
+      "INDEPENDENT_FROZEN_EVALUATOR"
+    ]
+  },
+  {
+    "case_id": "R5A-50218f1f16abd09224fb77a4",
+    "source": 0,
+    "target": 2,
+    "candidate_paths": [],
+    "direct_path_candidate": null,
+    "mediator_paths": [],
+    "common_cause_hypotheses": [],
+    "available_interventions": [
+      "8a1060ecd564b1358cab0673"
+    ],
+    "intervention_constraints": [
+      "CONTRACT=8a1060ecd564b1358cab0673;TARGETS=[0];MEDIATOR_CONTROL_AVAILABLE=false"
+    ],
+    "path_identifiability": "NOT_IDENTIFIABLE_UNDER_AVAILABLE_EVIDENCE",
+    "direct_effect_evidence": [
+      "DIRECT_EDGE_LOCAL_RANKED=false;CONDITIONAL=true;INTERVENTION_SIGNAL=false"
+    ],
+    "mediated_effect_evidence": [],
+    "mixed_effect_evidence": [],
+    "unresolved_components": [
+      "AVAILABLE_EVIDENCE_DOES_NOT_SEPARATE_ALL_COMPONENTS"
+    ],
+    "uncertainty_millionths": 1000000,
+    "provenance": [
+      "THIRD_PARTY_DOTIME_PUBLIC_OBSERVATION"
+    ],
+    "verification": [
+      "INDEPENDENT_FROZEN_EVALUATOR"
+    ]
+  },
+  {
+    "case_id": "R5A-54a283dec4a27dc1a5eaefe6",
+    "source": 0,
+    "target": 2,
+    "candidate_paths": [
+      [
+        0,
+        1,
+        2
+      ]
+    ],
+    "direct_path_candidate": null,
+    "mediator_paths": [
+      [
+        0,
+        1,
+        2
+      ]
+    ],
+    "common_cause_hypotheses": [],
+    "available_interventions": [
+      "1ff8a632bce8b66db8a191f4"
+    ],
+    "intervention_constraints": [
+      "CONTRACT=1ff8a632bce8b66db8a191f4;TARGETS=[0];MEDIATOR_CONTROL_AVAILABLE=false"
+    ],
+    "path_identifiability": "FULLY_IDENTIFIABLE",
+    "direct_effect_evidence": [
+      "DIRECT_EDGE_LOCAL_RANKED=false;CONDITIONAL=true;INTERVENTION_SIGNAL=true"
+    ],
+    "mediated_effect_evidence": [
+      "BOUNDED_TEMPORAL_PATH=[0, 1, 2]"
+    ],
+    "mixed_effect_evidence": [],
+    "unresolved_components": [],
+    "uncertainty_millionths": 100000,
+    "provenance": [
+      "THIRD_PARTY_DOTIME_PUBLIC_OBSERVATION"
+    ],
+    "verification": [
+      "INDEPENDENT_FROZEN_EVALUATOR"
+    ]
+  },
+  {
+    "case_id": "R5A-726998d059b7d86d59f6a140",
+    "source": 0,
+    "target": 2,
+    "candidate_paths": [],
+    "direct_path_candidate": null,
+    "mediator_paths": [],
+    "common_cause_hypotheses": [],
+    "available_interventions": [
+      "2dc4d9f0534186db2dbdff2a"
+    ],
+    "intervention_constraints": [
+      "CONTRACT=2dc4d9f0534186db2dbdff2a;TARGETS=[0];MEDIATOR_CONTROL_AVAILABLE=false"
+    ],
+    "path_identifiability": "FULLY_IDENTIFIABLE",
+    "direct_effect_evidence": [
+      "DIRECT_EDGE_LOCAL_RANKED=false;CONDITIONAL=true;INTERVENTION_SIGNAL=false"
+    ],
+    "mediated_effect_evidence": [],
+    "mixed_effect_evidence": [],
+    "unresolved_components": [
+      "AVAILABLE_EVIDENCE_DOES_NOT_SEPARATE_ALL_COMPONENTS"
+    ],
+    "uncertainty_millionths": 500000,
+    "provenance": [
+      "THIRD_PARTY_DOTIME_PUBLIC_OBSERVATION"
+    ],
+    "verification": [
+      "INDEPENDENT_FROZEN_EVALUATOR"
+    ]
+  },
+  {
+    "case_id": "R5A-7790a0a14faf71f753dcca5c",
+    "source": 1,
+    "target": 3,
+    "candidate_paths": [
+      [
+        1,
+        3
+      ]
+    ],
+    "direct_path_candidate": null,
+    "mediator_paths": [],
+    "common_cause_hypotheses": [],
+    "available_interventions": [
+      "e7ac0f6fae1fa22e60653a72"
+    ],
+    "intervention_constraints": [
+      "CONTRACT=e7ac0f6fae1fa22e60653a72;TARGETS=[0];MEDIATOR_CONTROL_AVAILABLE=false"
+    ],
+    "path_identifiability": "FULLY_IDENTIFIABLE",
+    "direct_effect_evidence": [
+      "DIRECT_EDGE_LOCAL_RANKED=true;CONDITIONAL=true;INTERVENTION_SIGNAL=false"
+    ],
+    "mediated_effect_evidence": [],
+    "mixed_effect_evidence": [],
+    "unresolved_components": [
+      "AVAILABLE_EVIDENCE_DOES_NOT_SEPARATE_ALL_COMPONENTS"
+    ],
+    "uncertainty_millionths": 500000,
+    "provenance": [
+      "THIRD_PARTY_DOTIME_PUBLIC_OBSERVATION"
+    ],
+    "verification": [
+      "INDEPENDENT_FROZEN_EVALUATOR"
+    ]
+  },
+  {
+    "case_id": "R5A-7cbcca7685b631036bd6d20e",
+    "source": 0,
+    "target": 2,
+    "candidate_paths": [],
+    "direct_path_candidate": null,
+    "mediator_paths": [],
+    "common_cause_hypotheses": [],
+    "available_interventions": [
+      "9ea320267cad18d6d3ed0d34"
+    ],
+    "intervention_constraints": [
+      "CONTRACT=9ea320267cad18d6d3ed0d34;TARGETS=[0];MEDIATOR_CONTROL_AVAILABLE=false"
+    ],
+    "path_identifiability": "NOT_IDENTIFIABLE_UNDER_AVAILABLE_EVIDENCE",
+    "direct_effect_evidence": [
+      "DIRECT_EDGE_LOCAL_RANKED=false;CONDITIONAL=true;INTERVENTION_SIGNAL=false"
+    ],
+    "mediated_effect_evidence": [],
+    "mixed_effect_evidence": [],
+    "unresolved_components": [
+      "AVAILABLE_EVIDENCE_DOES_NOT_SEPARATE_ALL_COMPONENTS"
+    ],
+    "uncertainty_millionths": 1000000,
+    "provenance": [
+      "THIRD_PARTY_DOTIME_PUBLIC_OBSERVATION"
+    ],
+    "verification": [
+      "INDEPENDENT_FROZEN_EVALUATOR"
+    ]
+  },
+  {
+    "case_id": "R5A-8079a0f4318a807131a004b4",
+    "source": 1,
+    "target": 3,
+    "candidate_paths": [
+      [
+        1,
+        2,
+        3
+      ]
+    ],
+    "direct_path_candidate": null,
+    "mediator_paths": [
+      [
+        1,
+        2,
+        3
+      ]
+    ],
+    "common_cause_hypotheses": [],
+    "available_interventions": [
+      "91d0ecc8312883323fca2fea"
+    ],
+    "intervention_constraints": [
+      "CONTRACT=91d0ecc8312883323fca2fea;TARGETS=[0];MEDIATOR_CONTROL_AVAILABLE=false"
+    ],
+    "path_identifiability": "FULLY_IDENTIFIABLE",
+    "direct_effect_evidence": [
+      "DIRECT_EDGE_LOCAL_RANKED=false;CONDITIONAL=true;INTERVENTION_SIGNAL=false"
+    ],
+    "mediated_effect_evidence": [
+      "BOUNDED_TEMPORAL_PATH=[1, 2, 3]"
+    ],
+    "mixed_effect_evidence": [],
+    "unresolved_components": [],
+    "uncertainty_millionths": 100000,
+    "provenance": [
+      "THIRD_PARTY_DOTIME_PUBLIC_OBSERVATION"
+    ],
+    "verification": [
+      "INDEPENDENT_FROZEN_EVALUATOR"
+    ]
+  },
+  {
+    "case_id": "R5A-8ab93b6c8717f64b402b9397",
+    "source": 0,
+    "target": 3,
+    "candidate_paths": [],
+    "direct_path_candidate": null,
+    "mediator_paths": [],
+    "common_cause_hypotheses": [],
+    "available_interventions": [
+      "d2e3f3f3618678f3c5e929e7"
+    ],
+    "intervention_constraints": [
+      "CONTRACT=d2e3f3f3618678f3c5e929e7;TARGETS=[0];MEDIATOR_CONTROL_AVAILABLE=false"
+    ],
+    "path_identifiability": "NOT_IDENTIFIABLE_UNDER_AVAILABLE_EVIDENCE",
+    "direct_effect_evidence": [
+      "DIRECT_EDGE_LOCAL_RANKED=false;CONDITIONAL=true;INTERVENTION_SIGNAL=false"
+    ],
+    "mediated_effect_evidence": [],
+    "mixed_effect_evidence": [],
+    "unresolved_components": [
+      "AVAILABLE_EVIDENCE_DOES_NOT_SEPARATE_ALL_COMPONENTS"
+    ],
+    "uncertainty_millionths": 1000000,
+    "provenance": [
+      "THIRD_PARTY_DOTIME_PUBLIC_OBSERVATION"
+    ],
+    "verification": [
+      "INDEPENDENT_FROZEN_EVALUATOR"
+    ]
+  },
+  {
+    "case_id": "R5A-909c583a8c29abbf6b2987af",
+    "source": 0,
+    "target": 2,
+    "candidate_paths": [
+      [
+        0,
+        2
+      ]
+    ],
+    "direct_path_candidate": [
+      0,
+      2
+    ],
+    "mediator_paths": [],
+    "common_cause_hypotheses": [],
+    "available_interventions": [
+      "6a766d76814ad37bd6dddd3d"
+    ],
+    "intervention_constraints": [
+      "CONTRACT=6a766d76814ad37bd6dddd3d;TARGETS=[0];MEDIATOR_CONTROL_AVAILABLE=false"
+    ],
+    "path_identifiability": "FULLY_IDENTIFIABLE",
+    "direct_effect_evidence": [
+      "DIRECT_EDGE_LOCAL_RANKED=true;CONDITIONAL=true;INTERVENTION_SIGNAL=true"
+    ],
+    "mediated_effect_evidence": [],
+    "mixed_effect_evidence": [],
+    "unresolved_components": [],
+    "uncertainty_millionths": 100000,
+    "provenance": [
+      "THIRD_PARTY_DOTIME_PUBLIC_OBSERVATION"
+    ],
+    "verification": [
+      "INDEPENDENT_FROZEN_EVALUATOR"
+    ]
+  },
+  {
+    "case_id": "R5A-951acf2ae73be29ce789014b",
+    "source": 1,
+    "target": 3,
+    "candidate_paths": [
+      [
+        1,
+        3
+      ]
+    ],
+    "direct_path_candidate": [
+      1,
+      3
+    ],
+    "mediator_paths": [],
+    "common_cause_hypotheses": [],
+    "available_interventions": [
+      "7ece6bd048b018e81bc5a539"
+    ],
+    "intervention_constraints": [
+      "CONTRACT=7ece6bd048b018e81bc5a539;TARGETS=[0];MEDIATOR_CONTROL_AVAILABLE=false"
+    ],
+    "path_identifiability": "FULLY_IDENTIFIABLE",
+    "direct_effect_evidence": [
+      "DIRECT_EDGE_LOCAL_RANKED=true;CONDITIONAL=true;INTERVENTION_SIGNAL=false"
+    ],
+    "mediated_effect_evidence": [],
+    "mixed_effect_evidence": [],
+    "unresolved_components": [],
+    "uncertainty_millionths": 100000,
+    "provenance": [
+      "THIRD_PARTY_DOTIME_PUBLIC_OBSERVATION"
+    ],
+    "verification": [
+      "INDEPENDENT_FROZEN_EVALUATOR"
+    ]
+  },
+  {
+    "case_id": "R5A-9f408c7246f2001c7a6ab0f0",
+    "source": 0,
+    "target": 2,
+    "candidate_paths": [
+      [
+        0,
+        2
+      ]
+    ],
+    "direct_path_candidate": [
+      0,
+      2
+    ],
+    "mediator_paths": [],
+    "common_cause_hypotheses": [],
+    "available_interventions": [
+      "cc45702b4be67f454e882cf6"
+    ],
+    "intervention_constraints": [
+      "CONTRACT=cc45702b4be67f454e882cf6;TARGETS=[0];MEDIATOR_CONTROL_AVAILABLE=false"
+    ],
+    "path_identifiability": "FULLY_IDENTIFIABLE",
+    "direct_effect_evidence": [
+      "DIRECT_EDGE_LOCAL_RANKED=true;CONDITIONAL=true;INTERVENTION_SIGNAL=false"
+    ],
+    "mediated_effect_evidence": [],
+    "mixed_effect_evidence": [],
+    "unresolved_components": [],
+    "uncertainty_millionths": 100000,
+    "provenance": [
+      "THIRD_PARTY_DOTIME_PUBLIC_OBSERVATION"
+    ],
+    "verification": [
+      "INDEPENDENT_FROZEN_EVALUATOR"
+    ]
+  },
+  {
+    "case_id": "R5A-b7194d4e92732d7229031ee3",
+    "source": 0,
+    "target": 2,
+    "candidate_paths": [],
+    "direct_path_candidate": null,
+    "mediator_paths": [],
+    "common_cause_hypotheses": [],
+    "available_interventions": [
+      "b4a7c0122192a22baacb8c4f"
+    ],
+    "intervention_constraints": [
+      "CONTRACT=b4a7c0122192a22baacb8c4f;TARGETS=[0];MEDIATOR_CONTROL_AVAILABLE=false"
+    ],
+    "path_identifiability": "FULLY_IDENTIFIABLE",
+    "direct_effect_evidence": [
+      "DIRECT_EDGE_LOCAL_RANKED=false;CONDITIONAL=true;INTERVENTION_SIGNAL=false"
+    ],
+    "mediated_effect_evidence": [],
+    "mixed_effect_evidence": [],
+    "unresolved_components": [
+      "AVAILABLE_EVIDENCE_DOES_NOT_SEPARATE_ALL_COMPONENTS"
+    ],
+    "uncertainty_millionths": 500000,
+    "provenance": [
+      "THIRD_PARTY_DOTIME_PUBLIC_OBSERVATION"
+    ],
+    "verification": [
+      "INDEPENDENT_FROZEN_EVALUATOR"
+    ]
+  },
+  {
+    "case_id": "R5A-bfb797037bf9a11a5ed24b7c",
+    "source": 0,
+    "target": 3,
+    "candidate_paths": [],
+    "direct_path_candidate": null,
+    "mediator_paths": [],
+    "common_cause_hypotheses": [],
+    "available_interventions": [
+      "bb988a735b759cb5cb7d5a64"
+    ],
+    "intervention_constraints": [
+      "CONTRACT=bb988a735b759cb5cb7d5a64;TARGETS=[0];MEDIATOR_CONTROL_AVAILABLE=false"
+    ],
+    "path_identifiability": "NOT_IDENTIFIABLE_UNDER_AVAILABLE_EVIDENCE",
+    "direct_effect_evidence": [
+      "DIRECT_EDGE_LOCAL_RANKED=false;CONDITIONAL=true;INTERVENTION_SIGNAL=true"
+    ],
+    "mediated_effect_evidence": [],
+    "mixed_effect_evidence": [],
+    "unresolved_components": [
+      "AVAILABLE_EVIDENCE_DOES_NOT_SEPARATE_ALL_COMPONENTS"
+    ],
+    "uncertainty_millionths": 1000000,
+    "provenance": [
+      "THIRD_PARTY_DOTIME_PUBLIC_OBSERVATION"
+    ],
+    "verification": [
+      "INDEPENDENT_FROZEN_EVALUATOR"
+    ]
+  },
+  {
+    "case_id": "R5A-c14ab416b68c653931c3cac3",
+    "source": 0,
+    "target": 1,
+    "candidate_paths": [
+      [
+        0,
+        1
+      ]
+    ],
+    "direct_path_candidate": [
+      0,
+      1
+    ],
+    "mediator_paths": [],
+    "common_cause_hypotheses": [],
+    "available_interventions": [
+      "f4d7332e392193d5e6008250"
+    ],
+    "intervention_constraints": [
+      "CONTRACT=f4d7332e392193d5e6008250;TARGETS=[0];MEDIATOR_CONTROL_AVAILABLE=false"
+    ],
+    "path_identifiability": "FULLY_IDENTIFIABLE",
+    "direct_effect_evidence": [
+      "DIRECT_EDGE_LOCAL_RANKED=true;CONDITIONAL=true;INTERVENTION_SIGNAL=true"
+    ],
+    "mediated_effect_evidence": [],
+    "mixed_effect_evidence": [],
+    "unresolved_components": [],
+    "uncertainty_millionths": 100000,
+    "provenance": [
+      "THIRD_PARTY_DOTIME_PUBLIC_OBSERVATION"
+    ],
+    "verification": [
+      "INDEPENDENT_FROZEN_EVALUATOR"
+    ]
+  },
+  {
+    "case_id": "R5A-c485f1dda2b331974d114a68",
+    "source": 1,
+    "target": 3,
+    "candidate_paths": [],
+    "direct_path_candidate": null,
+    "mediator_paths": [],
+    "common_cause_hypotheses": [],
+    "available_interventions": [
+      "80c978cdda1d37e35d367db3"
+    ],
+    "intervention_constraints": [
+      "CONTRACT=80c978cdda1d37e35d367db3;TARGETS=[0];MEDIATOR_CONTROL_AVAILABLE=false"
+    ],
+    "path_identifiability": "FULLY_IDENTIFIABLE",
+    "direct_effect_evidence": [
+      "DIRECT_EDGE_LOCAL_RANKED=false;CONDITIONAL=true;INTERVENTION_SIGNAL=false"
+    ],
+    "mediated_effect_evidence": [],
+    "mixed_effect_evidence": [],
+    "unresolved_components": [
+      "AVAILABLE_EVIDENCE_DOES_NOT_SEPARATE_ALL_COMPONENTS"
+    ],
+    "uncertainty_millionths": 500000,
+    "provenance": [
+      "THIRD_PARTY_DOTIME_PUBLIC_OBSERVATION"
+    ],
+    "verification": [
+      "INDEPENDENT_FROZEN_EVALUATOR"
+    ]
+  },
+  {
+    "case_id": "R5A-d41e05a1962fcaddbdf70158",
+    "source": 0,
+    "target": 2,
+    "candidate_paths": [
+      [
+        0,
+        2
+      ]
+    ],
+    "direct_path_candidate": [
+      0,
+      2
+    ],
+    "mediator_paths": [],
+    "common_cause_hypotheses": [],
+    "available_interventions": [
+      "f15ca9b84825c1209b6c7997"
+    ],
+    "intervention_constraints": [
+      "CONTRACT=f15ca9b84825c1209b6c7997;TARGETS=[0];MEDIATOR_CONTROL_AVAILABLE=false"
+    ],
+    "path_identifiability": "FULLY_IDENTIFIABLE",
+    "direct_effect_evidence": [
+      "DIRECT_EDGE_LOCAL_RANKED=true;CONDITIONAL=true;INTERVENTION_SIGNAL=false"
+    ],
+    "mediated_effect_evidence": [],
+    "mixed_effect_evidence": [],
+    "unresolved_components": [],
+    "uncertainty_millionths": 100000,
+    "provenance": [
+      "THIRD_PARTY_DOTIME_PUBLIC_OBSERVATION"
+    ],
+    "verification": [
+      "INDEPENDENT_FROZEN_EVALUATOR"
+    ]
+  },
+  {
+    "case_id": "R5A-e89d3931d8887f0230bf906c",
+    "source": 0,
+    "target": 2,
+    "candidate_paths": [
+      [
+        0,
+        1,
+        2
+      ]
+    ],
+    "direct_path_candidate": null,
+    "mediator_paths": [
+      [
+        0,
+        1,
+        2
+      ]
+    ],
+    "common_cause_hypotheses": [],
+    "available_interventions": [
+      "b98e7931032bf8e8761a98b0"
+    ],
+    "intervention_constraints": [
+      "CONTRACT=b98e7931032bf8e8761a98b0;TARGETS=[0];MEDIATOR_CONTROL_AVAILABLE=false"
+    ],
+    "path_identifiability": "FULLY_IDENTIFIABLE",
+    "direct_effect_evidence": [
+      "DIRECT_EDGE_LOCAL_RANKED=false;CONDITIONAL=true;INTERVENTION_SIGNAL=false"
+    ],
+    "mediated_effect_evidence": [
+      "BOUNDED_TEMPORAL_PATH=[0, 1, 2]"
+    ],
+    "mixed_effect_evidence": [],
+    "unresolved_components": [],
+    "uncertainty_millionths": 100000,
+    "provenance": [
+      "THIRD_PARTY_DOTIME_PUBLIC_OBSERVATION"
+    ],
+    "verification": [
+      "INDEPENDENT_FROZEN_EVALUATOR"
+    ]
+  },
+  {
+    "case_id": "R5A-f29d62cd3e4ceaaeb71708c7",
+    "source": 0,
+    "target": 2,
+    "candidate_paths": [
+      [
+        0,
+        2
+      ]
+    ],
+    "direct_path_candidate": [
+      0,
+      2
+    ],
+    "mediator_paths": [],
+    "common_cause_hypotheses": [],
+    "available_interventions": [
+      "e46b78c101286fa17ddd166f"
+    ],
+    "intervention_constraints": [
+      "CONTRACT=e46b78c101286fa17ddd166f;TARGETS=[0];MEDIATOR_CONTROL_AVAILABLE=false"
+    ],
+    "path_identifiability": "FULLY_IDENTIFIABLE",
+    "direct_effect_evidence": [
+      "DIRECT_EDGE_LOCAL_RANKED=true;CONDITIONAL=true;INTERVENTION_SIGNAL=true"
+    ],
+    "mediated_effect_evidence": [],
+    "mixed_effect_evidence": [],
+    "unresolved_components": [],
+    "uncertainty_millionths": 100000,
+    "provenance": [
+      "THIRD_PARTY_DOTIME_PUBLIC_OBSERVATION"
+    ],
+    "verification": [
+      "INDEPENDENT_FROZEN_EVALUATOR"
+    ]
+  },
+  {
+    "case_id": "R5A-f7000ab9b6a7a81fbc482a49",
+    "source": 0,
+    "target": 1,
+    "candidate_paths": [
+      [
+        0,
+        1
+      ]
+    ],
+    "direct_path_candidate": [
+      0,
+      1
+    ],
+    "mediator_paths": [],
+    "common_cause_hypotheses": [],
+    "available_interventions": [
+      "ccd2f3e092ca7ec3f34766a0"
+    ],
+    "intervention_constraints": [
+      "CONTRACT=ccd2f3e092ca7ec3f34766a0;TARGETS=[0];MEDIATOR_CONTROL_AVAILABLE=false"
+    ],
+    "path_identifiability": "FULLY_IDENTIFIABLE",
+    "direct_effect_evidence": [
+      "DIRECT_EDGE_LOCAL_RANKED=true;CONDITIONAL=true;INTERVENTION_SIGNAL=true"
+    ],
+    "mediated_effect_evidence": [],
+    "mixed_effect_evidence": [],
+    "unresolved_components": [],
+    "uncertainty_millionths": 100000,
+    "provenance": [
+      "THIRD_PARTY_DOTIME_PUBLIC_OBSERVATION"
+    ],
+    "verification": [
+      "INDEPENDENT_FROZEN_EVALUATOR"
+    ]
+  }
+]

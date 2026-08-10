@@ -1,0 +1,6 @@
+{
+  "frozen_multi_objective": true,
+  "models": [
+    "INTERVENTION_CONDITIONAL_SPARSE"
+  ]
+}

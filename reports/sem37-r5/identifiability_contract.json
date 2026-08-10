@@ -1,0 +1,11 @@
+{
+  "identifiability_precedes_classification": true,
+  "predictive_residual_is_direct_effect_proof": false,
+  "states": [
+    "FULLY_IDENTIFIABLE",
+    "PARTIALLY_IDENTIFIABLE",
+    "NOT_IDENTIFIABLE_UNDER_AVAILABLE_EVIDENCE"
+  ],
+  "temporal_precedence_is_direct_effect_authority": false,
+  "unavailable_counterfactual_used_as_observed_evidence": 0
+}

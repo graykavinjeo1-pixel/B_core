@@ -1,0 +1,47 @@
+{
+  "candidate_behavior_observed_before_dev": false,
+  "final_solver_exposures": 0,
+  "fixture_integrity": {
+    "dotime_manifest_sha256": "657962d070d83cf2d012d9a220c9fbb77d77d00cf1103192326da117cdf68a7f",
+    "r5_evaluator_sha256": "a09d63589072d60911649200d9daca69d317e32dd0b1b2e880bce0ad4a48e870",
+    "third_party_fixture_integrity": "PASS",
+    "third_party_suite": "dot-Identifiability-v1 + dot-Continuous-v1 delayed-direct stratum",
+    "whole_causal_mediation_algorithm_transplants": 0
+  },
+  "freeze_receipt": {
+    "concrete_final_case_ids_exposed_to_bcore": 0,
+    "dev_contract": {
+      "fully_identifiable": 20,
+      "non_identifiable": 4,
+      "partially_identifiable": 2,
+      "pass": true,
+      "private_class_counts": {
+        "CONFOUNDED_DIRECT": 4,
+        "CONFOUNDED_NO_EFFECT": 3,
+        "DELAYED_DIRECT": 1,
+        "HIDDEN_MEDIATOR": 2,
+        "MIXED": 4,
+        "NON_IDENTIFIABLE": 2,
+        "PARTIALLY_IDENTIFIABLE": 2,
+        "PURE_DIRECT": 4,
+        "PURE_MEDIATED": 4
+      }
+    },
+    "dev_count": 26,
+    "dev_manifest_sha256": "adf6ef2ca2c2b6e5a4df0d4291bc532059aafb4bbb213e42a0ab287b00970473",
+    "dotime_manifest_sha256": "657962d070d83cf2d012d9a220c9fbb77d77d00cf1103192326da117cdf68a7f",
+    "final_holdout_model_dependent_selection_events": 0,
+    "partition_rule": "SEM37_R5_HASH_ORDERED_IDENTIFIABILITY_STRATIFIED_UNUSED_DOTIME_V1",
+    "prestart_future_instance_exposure_events": 0,
+    "r2_final_to_r5_dev_overlap": 0,
+    "r3_final_to_r5_dev_overlap": 0,
+    "r4_final_to_r5_dev_overlap": 0,
+    "r5_evaluator_sha256": "a09d63589072d60911649200d9daca69d317e32dd0b1b2e880bce0ad4a48e870",
+    "reserved_final_contract_pass": true,
+    "reserved_final_selection_commitment": "6e6a2c71e38d13b5f505d0b49c11c7ed8d6c64dca23da6336fe3962690cedbb6",
+    "third_party_fixture_integrity": "PASS",
+    "third_party_suite": "dot-Identifiability-v1 + dot-Continuous-v1 delayed-direct stratum",
+    "whole_causal_mediation_algorithm_transplants": 0
+  },
+  "invalid_fixture_solver_exposures": 0
+}
