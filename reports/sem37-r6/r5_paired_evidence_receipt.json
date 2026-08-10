@@ -1,0 +1,15 @@
+{
+  "comparator_source_commit": "e0be25a72dca621cf4e4017c15cb6703ceb1bdbe",
+  "final_manifest_sha256": "07889861de9514bd8dffed830350ddab0fb6449412062e26559fe9773c98e3b0",
+  "final_selection_commitment": "1ed9e2d1ede80b8d7ec46ee065bd40cee73d1219c98e80a344838b2cec371b3d",
+  "paired_comparator_execution_count": 1,
+  "paired_evidence_branch": "codex/sem37-r6-r5-paired-evidence",
+  "paired_evidence_commit": "4dc69973c5e3e4b50a0d8510e6ccf9528f862d0e",
+  "paired_raw_path": "reports/sem37-r5/r5_final_i_raw.json",
+  "paired_raw_sha256": "402a355c5cb609189ca66bfadb8867f0b5c5ab9e18ccf592e583e7f2b84361b3",
+  "r5_adaptation_on_final_events": 0,
+  "r5_final_execution_status": "PASS",
+  "r5_final_reexecution_events": 0,
+  "r5_source_or_policy_changes": 0,
+  "same_final_k_as_r6": true
+}

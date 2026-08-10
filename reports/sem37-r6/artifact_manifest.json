@@ -77,6 +77,11 @@
       "sha256": "56b6614fe5ec59f3ac46fe700c47f59f162a8748bfeb7f528f303efbec75c35e"
     },
     {
+      "bytes": 782,
+      "path": "reports/sem37-r6/r5_paired_evidence_receipt.json",
+      "sha256": "1c9c89f35d62a416ebf0f60a2e21ad040bc31e2e43f61405ec7f6c4331205be9"
+    },
+    {
       "bytes": 2769,
       "path": "reports/sem37-r6/r5_paired_metrics.json",
       "sha256": "dfe76951776956dc8c71aaee5a91a54bfd749bc105c4fcd9b368063c1b4354bd"
