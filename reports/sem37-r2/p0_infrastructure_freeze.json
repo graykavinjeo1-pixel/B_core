@@ -1,0 +1,82 @@
+{
+  "ACCEPTANCE_FALSE_PASS_EVENTS": 0,
+  "BRANCH": "codex/sem37-r2-causal-precision",
+  "CAMPAIGN_ID": "SEM37-R2-EXTERNAL-CAUSAL-STRUCTURE-PRECISION-0001",
+  "HISTORICAL_R1_FINAL_C_FINAL_AUTHORITY": false,
+  "HISTORICAL_SEM37_COMMIT": "4ab8fb474725b22fe0ef53dba60df2c53f5e6511",
+  "HISTORICAL_SEM37_R1_COMMIT": "0e55f7dd2952a69dca97a495385b0c5e11280d8e",
+  "MANUAL_PRECISION_THRESHOLD_REPAIR_EVENTS": 0,
+  "P0_SCIENTIFIC_ENGINE_DIFF": 0,
+  "PRESTART_AUTONOMOUS_RESEARCH_EVENTS": 0,
+  "PRESTART_FUTURE_INSTANCE_EXPOSURE_EVENTS": 0,
+  "PRIMARY_SECONDARY_ACCEPTANCE_DIFF": 0,
+  "R1_PRE_FINAL_ENGINE_SHA256": "4517378c0211eb307785c66a500fca0525dba64b00c7b4b3374cfa36049458bd",
+  "R1_PRE_FINAL_SOURCE_COMMIT": "fe9eec45d630c1c9aa36add0e5b3fa185619efdc",
+  "R1_SHIFT_AWARE_PRE_FINAL_FREEZE_PROVEN": true,
+  "RAW_FIELD_ACCEPTANCE_AUTHORITY": true,
+  "RECOVERED_R1_ENGINE_SHA256": "4517378c0211eb307785c66a500fca0525dba64b00c7b4b3374cfa36049458bd",
+  "RECOVERED_SHIFT_AWARE_SEMANTIC_DIFF": 0,
+  "SEALED_CAPABILITY_PREDECESSOR_COMMIT": "b33386e7a8793c5c27e2c2df3e19db0e6e04d0f4",
+  "fixture_receipt": {
+    "b_core_authored_canonical_world_instances": 0,
+    "bcore_adaptive_exposure_events": 0,
+    "checked_fixture_files": 15,
+    "external_fixture_hashes_sealed": true,
+    "fixture_manifest_sha256": "ce7ca3b43b736ff500f87c2650965060cce8db98323882bb9f2bea8efd139a6b",
+    "historical_r1_final_c_final_authority": false,
+    "r1_evaluator_sha256": "690f5af83d35b4631db2d7363c5b856dcd86c4728ebc667518d12f1db5144e73",
+    "r1_private_partition_manifest_sha256": "a8dcbca1740f4b4f4804937c4f23082c50d5f671878f9f2803fd55d5f310757f",
+    "r2_evaluator_sha256": "37b77f679350d59f699e4a0e4304cc3bad0da40b81dbb868f3613806b30f905f",
+    "status": "PASS"
+  },
+  "partition_receipt": {
+    "b_core_authored_canonical_world_instances": 0,
+    "bcore_adaptive_exposure_events": 0,
+    "checked_fixture_files": 15,
+    "concrete_final_case_ids_exposed_to_bcore": 0,
+    "external_fixture_hashes_sealed": true,
+    "fixture_manifest_sha256": "ce7ca3b43b736ff500f87c2650965060cce8db98323882bb9f2bea8efd139a6b",
+    "historical_r1_final_c_final_authority": false,
+    "historical_r1_identity_overlap": 0,
+    "historical_sem37_identity_overlap": 0,
+    "lane_a_motif_counts": {
+      "R2_DEV_A": {
+        "COMMON_CAUSE": 5,
+        "MEDIATION": 5
+      },
+      "R2_DEV_B": {
+        "COMMON_CAUSE": 5,
+        "MEDIATION": 5
+      },
+      "R2_FINAL_C": {
+        "COMMON_CAUSE": 5,
+        "MEDIATION": 5
+      }
+    },
+    "partition_rule": "SEM37_R2_SHA256_MOTIF_BALANCED_UNUSED_THIRD_PARTY_V1",
+    "prestart_future_instance_exposure_events": 0,
+    "r1_evaluator_sha256": "690f5af83d35b4631db2d7363c5b856dcd86c4728ebc667518d12f1db5144e73",
+    "r1_private_partition_manifest_sha256": "a8dcbca1740f4b4f4804937c4f23082c50d5f671878f9f2803fd55d5f310757f",
+    "r2_dev_a_dev_b_overlap": 0,
+    "r2_dev_a_final_overlap": 0,
+    "r2_dev_b_final_overlap": 0,
+    "r2_evaluator_sha256": "37b77f679350d59f699e4a0e4304cc3bad0da40b81dbb868f3613806b30f905f",
+    "r2_private_partition_manifest_sha256": "92a0715044feeec69047d65410e2842c90c99233ee0f203cfee6c57f5d2cf738",
+    "set_counts": {
+      "R2_DEV_A": {
+        "lane_a": 10,
+        "lane_b": 14
+      },
+      "R2_DEV_B": {
+        "lane_a": 10,
+        "lane_b": 14
+      },
+      "R2_FINAL_C": {
+        "lane_a": 10,
+        "lane_b": 14
+      }
+    },
+    "status": "PASS"
+  },
+  "schema_version": "SEM37_R2_P0_INFRASTRUCTURE_FREEZE_1"
+}
