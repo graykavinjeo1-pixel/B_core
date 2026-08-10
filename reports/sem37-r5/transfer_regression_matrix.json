@@ -1,0 +1,13 @@
+{
+  "ambiguous_transfer_abstentions": 2,
+  "ambiguous_transfer_opportunities": 4,
+  "negative_transfer_accepted": 0,
+  "negative_transfer_opportunities": 4,
+  "outcome_reads_before_decision": 0,
+  "positive_transfer_opportunities": 4,
+  "positive_transfer_verified": 4,
+  "r5_transfer_policy_research_events": 0,
+  "source": "SEM37_R4_RAW_FINAL_EVIDENCE_COMMIT_b2463a2e4e9bf2416f130bdd8e99230effcddee5",
+  "transfer_candidates_total": 12,
+  "transfer_regression_pass": true
+}

@@ -1,0 +1,20 @@
+{
+  "comparators_are_capability_predecessors": false,
+  "comparison_policy": "FROZEN_HISTORICAL_BEST_RECALL_16_OVER_51",
+  "paired_final_i_comparator_execution": false,
+  "r2_r3_historical_direct": {
+    "fn": 35,
+    "fp": 4,
+    "tp": 16
+  },
+  "r4_historical_direct": {
+    "fn": 38,
+    "fp": 4,
+    "tp": 13
+  },
+  "r4_historical_mediated": {
+    "fn": 13,
+    "fp": 14,
+    "tp": 4
+  }
+}
