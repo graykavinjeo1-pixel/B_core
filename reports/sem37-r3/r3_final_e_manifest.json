@@ -1,0 +1,26 @@
+{
+  "partition_receipt": {
+    "base_evaluator_sha256": "362308ed837dbe67e47be6c702eef825c66c15dd57f7fb7bbd2a09f5fde518a3",
+    "concrete_final_case_ids_exposed_before_freeze": 0,
+    "final_counts": {
+      "lane_a": 12,
+      "lane_b": 14
+    },
+    "final_manifest_sha256": "131b99d88f392bde8d512096fd45797f8de581817b546809c6073414861ab68b",
+    "final_selection_commitment": "6c2698848f8429540b62cdcb014b438b1c68adf86e73cf0306c14664d37fa30e",
+    "fixture_manifest_sha256": "ce7ca3b43b736ff500f87c2650965060cce8db98323882bb9f2bea8efd139a6b",
+    "frozen_r2_evaluator_sha256": "3d344a26154812984af1890f85c86a92913639104090758f809561c3b9b9a8d5",
+    "partition_rule": "SEM37_R3_UNSEEN_TOPOLOGY_AND_ROW_SHA256_V1",
+    "r1_final_final_e_overlap": 0,
+    "r1_partition_sha256": "a8dcbca1740f4b4f4804937c4f23082c50d5f671878f9f2803fd55d5f310757f",
+    "r2_final_final_e_overlap": 0,
+    "r2_partition_sha256": "92a0715044feeec69047d65410e2842c90c99233ee0f203cfee6c57f5d2cf738",
+    "r3_dev_final_overlap": 0,
+    "r3_evaluator_sha256": "0ded0b000323286a563614e54fa051dd1a6079e5a2e68bd41edfbf6a98ab2b85",
+    "third_party_fixture_integrity": "PASS"
+  },
+  "r1_final_final_e_overlap": 0,
+  "r2_final_final_e_overlap": 0,
+  "r3_dev_d_final_e_overlap": 0,
+  "schema_version": "SEM37_R3_FINAL_E_PUBLIC_MANIFEST_RECEIPT_1"
+}
