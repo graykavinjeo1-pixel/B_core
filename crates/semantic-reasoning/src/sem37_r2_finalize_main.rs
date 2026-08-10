@@ -1,6 +1,6 @@
 use std::{env, fs, path::PathBuf, process::ExitCode};
 
-use semantic_reasoning::sem37_r2::{acceptance, config};
+use semantic_reasoning::sem37_r2::{acceptance, config, verifier};
 use serde_json::{json, Value};
 
 fn main() -> ExitCode {
@@ -22,8 +22,16 @@ fn run() -> Result<(), String> {
     let raw: Value = read_json(report_dir.join("final_external_raw_evaluation.json"))?;
     let p0: Value = read_json(report_dir.join("p0_infrastructure_freeze.json"))?;
     let primary = acceptance::evaluate(&raw, &p0)?;
-    let secondary = acceptance::evaluate(&raw, &p0)?;
-    let diff = u64::from(primary != secondary);
+    let secondary = verifier::independently_verify(&raw, &p0)?;
+    let diff = u64::from(
+        secondary["status"].as_str() != Some(&primary.status)
+            || secondary["disposition"].as_str() != Some(&primary.disposition)
+            || secondary["lane_a_tp"].as_u64() != Some(primary.lane_a_tp)
+            || secondary["lane_a_fp"].as_u64() != Some(primary.lane_a_fp)
+            || secondary["lane_a_fn"].as_u64() != Some(primary.lane_a_fn)
+            || secondary["negative_transfer_accepted"].as_u64()
+                != Some(primary.negative_transfer_accepted),
+    );
     write_json(
         report_dir.join("primary_acceptance.json"),
         &serde_json::to_value(&primary).map_err(|error| error.to_string())?,
