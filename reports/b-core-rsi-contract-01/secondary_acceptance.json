@@ -1,0 +1,17 @@
+{
+  "disposition": "EXPLICIT_INDEPENDENTLY_VERIFIED_SELF_REPAIR_PIPELINE_ESTABLISHED",
+  "levels": {
+    "A": true,
+    "B": true,
+    "C": true,
+    "D": true,
+    "E": true,
+    "F": true,
+    "G": true,
+    "H": true
+  },
+  "next_dominant_growth_limit": "NONE",
+  "reads_primary_acceptance": false,
+  "schema_version": "B_CORE_RSI_CONTRACT_SECONDARY_ACCEPTANCE_1",
+  "status": "PASS"
+}

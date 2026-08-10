@@ -1,0 +1,67 @@
+{
+  "acceptance_policy_mutated_by_self_repair_events": 0,
+  "continuity": {
+    "alias": "c1",
+    "continuity_pass": true,
+    "decision": "ACCEPT",
+    "frozen_proposer_sha256": "652b18985e3c7b6bd0d6c823eaf5ad298247c4e605ca8649c9d10375a47041b7",
+    "installed": true,
+    "installed_proposer": "D:\\BCRSI01_RUN\\FINAL_B\\installed_continuity\\r1-c1\\.bcore_pipeline\\rsi_contract_proposer.py",
+    "installed_root": "D:\\BCRSI01_RUN\\FINAL_B\\installed_continuity\\r1-c1",
+    "post_install_regression_pass": true,
+    "r1_proposer_matches_frozen": true,
+    "r1_proposer_sha256": "652b18985e3c7b6bd0d6c823eaf5ad298247c4e605ca8649c9d10375a47041b7",
+    "report": "D:\\B_Core_CAMPAIGNS\\b-core-rsi-contract-01\\reports\\b-core-rsi-contract-01\\canonical\\CONTINUITY\\continuity-l3-rollback-checkpoint",
+    "rollback_available": true,
+    "sandbox": "D:\\BCRSI01_RUN\\FINAL_B\\CONTINUITY\\c1",
+    "task": "continuity-l3-rollback-checkpoint"
+  },
+  "final_exposure_ordinal": 1,
+  "installer_mutated_by_self_repair_events": 0,
+  "post_final_acceptance_changes": 0,
+  "post_final_diagnostic_policy_changes": 0,
+  "post_final_installer_changes": 0,
+  "post_final_patch_engine_changes": 0,
+  "post_final_repair_spec_policy_changes": 0,
+  "post_final_verifier_changes": 0,
+  "rows": [
+    {
+      "alias": "f1",
+      "decision": "ACCEPT",
+      "installed": true,
+      "installed_proposer": "D:\\BCRSI01_RUN\\FINAL_B\\installed\\r1-f1\\.bcore_pipeline\\rsi_contract_proposer.py",
+      "installed_root": "D:\\BCRSI01_RUN\\FINAL_B\\installed\\r1-f1",
+      "post_install_regression_pass": true,
+      "report": "D:\\B_Core_CAMPAIGNS\\b-core-rsi-contract-01\\reports\\b-core-rsi-contract-01\\canonical\\FINAL_B\\final-l3-retry-budget",
+      "rollback_available": true,
+      "sandbox": "D:\\BCRSI01_RUN\\FINAL_B\\FINAL_B\\f1",
+      "task": "final-l3-retry-budget"
+    },
+    {
+      "alias": "f2",
+      "decision": "ACCEPT",
+      "installed": true,
+      "installed_proposer": "D:\\BCRSI01_RUN\\FINAL_B\\installed\\r1-f2\\.bcore_pipeline\\rsi_contract_proposer.py",
+      "installed_root": "D:\\BCRSI01_RUN\\FINAL_B\\installed\\r1-f2",
+      "post_install_regression_pass": true,
+      "report": "D:\\B_Core_CAMPAIGNS\\b-core-rsi-contract-01\\reports\\b-core-rsi-contract-01\\canonical\\FINAL_B\\final-l3-generation-install",
+      "rollback_available": true,
+      "sandbox": "D:\\BCRSI01_RUN\\FINAL_B\\FINAL_B\\f2",
+      "task": "final-l3-generation-install"
+    },
+    {
+      "alias": "f3",
+      "decision": "ACCEPT",
+      "installed": true,
+      "installed_proposer": "D:\\BCRSI01_RUN\\FINAL_B\\installed\\r1-f3\\.bcore_pipeline\\rsi_contract_proposer.py",
+      "installed_root": "D:\\BCRSI01_RUN\\FINAL_B\\installed\\r1-f3",
+      "post_install_regression_pass": true,
+      "report": "D:\\B_Core_CAMPAIGNS\\b-core-rsi-contract-01\\reports\\b-core-rsi-contract-01\\canonical\\FINAL_B\\final-l3-resource-budget",
+      "rollback_available": true,
+      "sandbox": "D:\\BCRSI01_RUN\\FINAL_B\\FINAL_B\\f3",
+      "task": "final-l3-resource-budget"
+    }
+  ],
+  "schema_version": "B_CORE_RSI_CONTRACT_FINAL_EXECUTION_1",
+  "verifier_mutated_by_self_repair_events": 0
+}

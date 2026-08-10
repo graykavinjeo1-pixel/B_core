@@ -1,0 +1,260 @@
+{
+  "active_coding_object_count": 2,
+  "active_coding_objects": [
+    "FAILURE_REPAIR",
+    "TYPE_CONTROL"
+  ],
+  "attempts": [
+    {
+      "edit": {
+        "column_end": 14,
+        "column_start": 12,
+        "line_index": 226,
+        "localization_score": 102,
+        "original_operator": "<=",
+        "replacement_operator": "<",
+        "symbol": "retry_allowed"
+      },
+      "prediction": {
+        "behavior_expected_unchanged": [
+          "attempts smaller than the budget remain allowed",
+          "attempts above the budget remain rejected"
+        ],
+        "failure_expected_to_disappear": "attempt equal to the budget is rejected; only an attempt strictly below and smaller than the budget is allowed",
+        "frozen_before_execution": true,
+        "ordinal": 1,
+        "possible_regressions": [
+          "boundary neighbor",
+          "unaffected boolean combination"
+        ],
+        "resource_effect": "constant"
+      },
+      "public_probe": {
+        "output_sha256": "4c8dcf588a86d793179986f6006188ff9f5c30bc7d1b7acd27fbffbc28c3b813",
+        "output_tail": "\nrunning 1 test\n.\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
+        "returncode": 0,
+        "timed_out": false,
+        "wall_ms": 988.081
+      }
+    }
+  ],
+  "campaign_id": "B_CORE-RSI-CONTRACT-01",
+  "compile_runs": 2,
+  "core_self_approval_events": 0,
+  "cpu_time_ms": 31.25,
+  "defect_contract": {
+    "frozen_before_downstream_result": true,
+    "sha256": "cb541bfa3acc2f94ceb7b9e94d3565b13b13c2d925daae7a70c59e277602bb6f",
+    "value": {
+      "affected_behavior": "public failure while evaluating retry_allowed",
+      "affected_interfaces": [
+        "retry_allowed"
+      ],
+      "causal_evidence": [
+        "public assertion reports retry_allowed semantic mismatch",
+        "public_probe_sha256:081c80e4925b9b29acbd766c981213d613a2581ee2ac486dc13bc1dbed21e3e1"
+      ],
+      "expected_vs_observed": "expected=attempt equal to the budget is rejected; only an attempt strictly below and smaller than the budget is allowed; observed=retry_allowed(3,3) returned true",
+      "prescribes_concrete_edit": false,
+      "preserved_behavior": [
+        "attempts smaller than the budget remain allowed",
+        "attempts above the budget remain rejected"
+      ],
+      "provenance": [
+        "sandbox public test output",
+        "sandbox production source"
+      ],
+      "scope": "retry_allowed behavioral interface",
+      "suspected_mechanism_classes": [
+        "boundary relation",
+        "state composition",
+        "identity relation",
+        "other"
+      ],
+      "trigger_conditions": [
+        "attempt=3, budget=3"
+      ],
+      "uncertainty": "operator/mechanism class remains uncertain until bounded candidate discrimination",
+      "violated_invariant": "attempt equal to the budget is rejected; only an attempt strictly below and smaller than the budget is allowed"
+    }
+  },
+  "defect_contract_mutations_after_repair_spec_result": 0,
+  "defect_hypotheses": [
+    {
+      "class": "boundary relation",
+      "status": "RETAINED"
+    },
+    {
+      "class": "state composition",
+      "status": "REJECTED"
+    },
+    {
+      "class": "identity relation",
+      "status": "REJECTED"
+    },
+    {
+      "class": "other",
+      "status": "REJECTED"
+    }
+  ],
+  "defect_hypotheses_generated": 4,
+  "defect_hypotheses_rejected": 3,
+  "defect_hypotheses_retained": 1,
+  "defect_injection_manifest_reads": 0,
+  "diagnostic_experiments": [
+    {
+      "gold_information_used": false,
+      "kind": "PUBLIC_OBSERVATION_REPLAY",
+      "result_sha256": "081c80e4925b9b29acbd766c981213d613a2581ee2ac486dc13bc1dbed21e3e1",
+      "returncode": 101
+    }
+  ],
+  "expected_output_imports": 0,
+  "expected_repair_lookups": 0,
+  "external_llm_calls": 0,
+  "files_activated": 1,
+  "files_changed": 1,
+  "full_coding_knowledge_scans": 0,
+  "full_source_scan_events": 0,
+  "gold_patch_reads": 0,
+  "hidden_verifier_solution_leaks": 0,
+  "human_defect_contract_events_l3": 0,
+  "human_patch_selection_events_l3": 0,
+  "human_repair_spec_events_l2": 0,
+  "human_repair_spec_events_l3": 0,
+  "initial_public_probe": {
+    "output_sha256": "081c80e4925b9b29acbd766c981213d613a2581ee2ac486dc13bc1dbed21e3e1",
+    "output_tail": "\nrunning 1 test\nfinal_l3_retry_budget --- FAILED\n\nfailures:\n\n---- final_l3_retry_budget stdout ----\n\nthread 'final_l3_retry_budget' (19852) panicked at tests\\public.rs:5:5:\nassertion `left == right` failed: retry_allowed(3, 3)\n  left: true\n right: false\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\n\n\nfailures:\n    final_l3_retry_budget\n\ntest result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\nerror: test failed, to rerun pass `--test public`\n",
+    "returncode": 101,
+    "timed_out": false,
+    "wall_ms": 1915.823
+  },
+  "input_level": 3,
+  "lane": "SELF_SOURCE",
+  "lines_changed": 2,
+  "local_teacher_calls": 0,
+  "network_reads": 0,
+  "network_writes": 0,
+  "observation_ir": {
+    "actual_observable": "retry_allowed(3,3) returned true",
+    "affected_interfaces": [
+      "retry_allowed"
+    ],
+    "contains_hidden_diagnosis": false,
+    "evidence": [
+      "public assertion reports retry_allowed semantic mismatch"
+    ],
+    "expected_observable": "attempt equal to the budget is rejected; only an attempt strictly below and smaller than the budget is allowed",
+    "observed_event": "public failure while evaluating retry_allowed",
+    "preserved_behavior": [
+      "attempts smaller than the budget remain allowed",
+      "attempts above the budget remain rejected"
+    ],
+    "provenance": [
+      "sandbox public test output",
+      "sandbox production source"
+    ],
+    "scope": "retry_allowed behavioral interface",
+    "trigger": "attempt=3, budget=3"
+  },
+  "patch_attempts": 1,
+  "patch_candidate": {
+    "changed_files": [
+      "src/self_repair_contract.rs"
+    ],
+    "changed_symbols": [
+      "retry_allowed"
+    ],
+    "consequence_predictions": [
+      {
+        "behavior_expected_unchanged": [
+          "attempts smaller than the budget remain allowed",
+          "attempts above the budget remain rejected"
+        ],
+        "failure_expected_to_disappear": "attempt equal to the budget is rejected; only an attempt strictly below and smaller than the budget is allowed",
+        "frozen_before_execution": true,
+        "ordinal": 1,
+        "possible_regressions": [
+          "boundary neighbor",
+          "unaffected boolean combination"
+        ],
+        "resource_effect": "constant"
+      }
+    ],
+    "core_self_approved": false,
+    "defect_contract_sha256": "cb541bfa3acc2f94ceb7b9e94d3565b13b13c2d925daae7a70c59e277602bb6f",
+    "predecessor_tree_hash": "ea316656ed79ebb4c3aa07a3c9ecdcb1956ceb1e89c6eef4dbde817ecd04fb7d",
+    "proposer_confidence_millis": 900,
+    "repair_spec_sha256": "7c409334267a1bf606df223ee7d837f2a0fb7910b5438f8b82366d352416935e",
+    "unified_diff_sha256": "906c51738c340e214ab9910496183e318e48f547fa8285092f0dacd73f68c141"
+  },
+  "patch_consequence_prediction_errors": 0,
+  "patch_consequence_predictions": 1,
+  "patch_consequence_predictions_verified": 0,
+  "patch_diff": "--- src/self_repair_contract.rs\n+++ src/self_repair_contract.rs\n@@ -224,7 +224,7 @@\n }\r\n \r\n pub fn retry_allowed(attempt: u32, budget: u32) -> bool {\r\n-    attempt <= budget\r\n+    attempt < budget\r\n }\r\n \r\n pub fn generation_installable(verified: bool, post_install_regression: bool) -> bool {\r\n",
+  "patch_hash_routing_events": 0,
+  "patch_outcome_reads_before_repair_spec_freeze": 0,
+  "repair_spec": {
+    "frozen_before_downstream_result": true,
+    "sha256": "7c409334267a1bf606df223ee7d837f2a0fb7910b5438f8b82366d352416935e",
+    "value": {
+      "allowed_semantic_changes": [
+        "public failure while evaluating retry_allowed"
+      ],
+      "applicability": [
+        "attempt=3, budget=3"
+      ],
+      "compatibility_requirements": [
+        "attempts smaller than the budget remain allowed",
+        "attempts above the budget remain rejected"
+      ],
+      "encodes_exact_patch": false,
+      "expected_consequences": [
+        "attempt equal to the budget is rejected; only an attempt strictly below and smaller than the budget is allowed",
+        "attempts smaller than the budget remain allowed",
+        "attempts above the budget remain rejected"
+      ],
+      "forbidden_semantic_changes": [
+        "test suppression",
+        "error swallowing",
+        "hard-coded public output",
+        "feature deletion",
+        "unrelated control-flow change"
+      ],
+      "required_postcondition": "attempt equal to the budget is rejected; only an attempt strictly below and smaller than the budget is allowed",
+      "resource_constraints": [
+        "no new unbounded work"
+      ],
+      "restored_invariants": [
+        "attempt equal to the budget is rejected; only an attempt strictly below and smaller than the budget is allowed"
+      ],
+      "rollback_conditions": [
+        "independent verifier rejection",
+        "post-install regression"
+      ],
+      "uncertainty": "operator/mechanism class remains uncertain until bounded candidate discrimination",
+      "verification_requirements": [
+        "public observation disappears",
+        "hidden invariant checks pass",
+        "unaffected control behavior remains"
+      ]
+    }
+  },
+  "repair_spec_mutations_after_patch_result": 0,
+  "repair_spec_to_exact_patch_lookups": 0,
+  "repeated_equivalent_hypotheses": 0,
+  "repository_id_routing_events": 0,
+  "result_sha256": "8aa40139966900bd24159e3eb08ba48f36610486fc9f3fd8123d092af3116f54",
+  "schema_version": "B_CORE_RSI_CONTRACT_PROPOSAL_RESULT_1",
+  "source_files_total": 4,
+  "submitted": true,
+  "symbols_activated": 1,
+  "symbols_changed": 1,
+  "symbols_in_activated_file": 15,
+  "task_hash": "4b47e6a62b18e3a5bb202cb3636956e815439bb02a77dac93cf7d252b3c776e1",
+  "task_id_routing_events": 0,
+  "test_runs": 2,
+  "unnecessary_mechanism_changes": 0,
+  "unrelated_semantic_changes": 0,
+  "wall_ms": 2905.195
+}

@@ -1,0 +1,20 @@
+{
+  "authoritative_predecessor_mutated": false,
+  "independent_regression": {
+    "output_sha256": "ddfd5031312b01337628435c258fbd08f40302e1693fcc5752d9293a2c67d16c",
+    "output_tail": "\nrunning 5 tests\n.....\ntest result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 1 test\n.\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 1 test\n.\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
+    "returncode": 0,
+    "timed_out": false,
+    "wall_ms": 623.227
+  },
+  "post_install_regression_pass": true,
+  "public_regression": {
+    "output_sha256": "4c8dcf588a86d793179986f6006188ff9f5c30bc7d1b7acd27fbffbc28c3b813",
+    "output_tail": "\nrunning 1 test\n.\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
+    "returncode": 0,
+    "timed_out": false,
+    "wall_ms": 59.578
+  },
+  "schema_version": "B_CORE_RSI_CONTRACT_POST_INSTALL_REGRESSION_1",
+  "task_hash": "0b556eefadbe011b85759f566fbdef357a0162d2a145728307027f60998f1462"
+}

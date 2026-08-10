@@ -1,0 +1,65 @@
+{
+  "schema_version": "B_CORE_RSI_CONTRACT_QUALITY_GATE_1",
+  "status": "PASS",
+  "freeze_commit": "5d839aca83990fbebd1e77a6aa941f6adf0862f0",
+  "verified_at_utc": "2026-08-10T14:01:27.8726389Z",
+  "offline": true,
+  "workspace_test": {
+    "status": "PASS_AFTER_INHERITED_FLAKE_AUDIT",
+    "initial_log": {
+      "path": "quality_logs/cargo_test_workspace.log",
+      "sha256": "8317160b07ec41eacf39fc95c42767b5b9cc2bd0deebf2c5af86c371953ee53c",
+      "bytes": 54906
+    },
+    "retry_log": {
+      "path": "quality_logs/cargo_test_workspace_retry.log",
+      "sha256": "83b1202c592ecf0d4090f97d847b9edb37d57b61d8b3791ebe6bc946e7541b24",
+      "bytes": 97378
+    },
+    "inherited_flake_audit": {
+      "test": "sem26::engine::tests::full_synthesis_is_not_fixed_catalog_selection",
+      "changed_from_authoritative_predecessor": false,
+      "isolated_runs": 3,
+      "isolated_passes": 3,
+      "log": {
+        "path": "quality_logs/sem26_flake_audit.log",
+        "sha256": "29e997d0c4d27269609f822eb6bfd638eba039c0a0afacab504b84078b050eb9",
+        "bytes": 4752
+      }
+    }
+  },
+  "clippy": {
+    "status": "PASS",
+    "baseline_warning_signatures": [
+      "clippy::manual_is_multiple_of"
+    ],
+    "observed_warning_signatures": [
+      "clippy::manual_is_multiple_of"
+    ],
+    "new_warning_signatures": [],
+    "log": {
+      "path": "quality_logs/cargo_clippy_all_targets.log",
+      "sha256": "13b2ad06149160db4e511a80f066f0a451e94345d4ce8241017fd913a81414ac",
+      "bytes": 20438
+    }
+  },
+  "clean_release": {
+    "status": "PASS",
+    "commit": "5d839aca83990fbebd1e77a6aa941f6adf0862f0",
+    "worktree": "D:\\B_Core_COLD_REBUILD\\b-core-rsi-contract-01-canary-5d839aca",
+    "target": "D:\\B_Core_COLD_REBUILD\\b-core-rsi-contract-01-target-5d839aca",
+    "warm_cache_used": false,
+    "log": {
+      "path": "quality_logs/cargo_test_workspace_release_cold.log",
+      "sha256": "e8f68fca33fc1edab24243d8650f1df3c5e14401004008f390125ec533139ca8",
+      "bytes": 99330
+    }
+  },
+  "first_principles_reasoning_regressions": 0,
+  "autonomous_scientific_loop_regressions": 0,
+  "world_model_regressions": 0,
+  "planning_regressions": 0,
+  "temporal_abstraction_regressions": 0,
+  "new_clippy_warning_signatures_total": 0,
+  "clean_release_reconstruction": "PASS"
+}

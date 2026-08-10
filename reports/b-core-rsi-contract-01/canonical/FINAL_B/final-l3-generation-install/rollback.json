@@ -1,0 +1,10 @@
+{
+  "candidate_tree_hash": "8ef7217fc3ae5e07e5d020e12b516fe966f3271203fde45b488a9bf5d869fe83",
+  "historical_receipts_mutated": false,
+  "installation_receipt_sha256": "deec813492b55470e9836b6a5e94583427b9bb76bafc522078b06b1d4b54d8b6",
+  "mechanically_reversible": true,
+  "predecessor_tree_hash": "96c46f32833377b899eb9d0a8c456cd1126a468a8ddfa2ffd8d97a247b27fd97",
+  "rollback_receipt_sha256": "c142f1d78c3d5f56be0a65ae2d52b0623e7e114795420726a6f7c5d3f6b2f10b",
+  "rollback_reference": "D:\\B_Core_RSI_CONTRACT_01_EVALUATOR_VAULT\\rollback_blobs\\bf576ad577cbadf582805b5236d706db570a9a359f7b6120082dc95cb7f54751.json",
+  "schema_version": "B_CORE_RSI_CONTRACT_ROLLBACK_RECEIPT_1"
+}

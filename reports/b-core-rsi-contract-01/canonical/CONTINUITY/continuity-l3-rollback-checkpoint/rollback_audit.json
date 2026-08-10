@@ -1,0 +1,6 @@
+{
+  "historical_receipts_mutated": false,
+  "rollback_available": true,
+  "schema_version": "B_CORE_RSI_CONTRACT_ROLLBACK_AUDIT_1",
+  "status": "PASS"
+}

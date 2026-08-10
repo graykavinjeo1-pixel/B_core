@@ -1,0 +1,17 @@
+{
+  "campaign_id": "B_CORE-RSI-CONTRACT-01",
+  "defect_contract_sha256": "f3cf71a404ae4b479329330ce4c6506f8589503a54900687442c8fff06d6ce1e",
+  "install_without_valid_verification_receipt": 0,
+  "installation_receipt_sha256": "c88e9aa4643faa9da2632eecd53557c9932663ac987b0967313d121d696dad8f",
+  "installed_into_authoritative_predecessor": false,
+  "installed_proposer_sha256": "652b18985e3c7b6bd0d6c823eaf5ad298247c4e605ca8649c9d10375a47041b7",
+  "installer_identity": "B_CORE_RSI_CONTRACT_01_INDEPENDENT_INSTALLER_V1",
+  "patch_sha256": "98a866bd31ef9dd1cc2b6cbfc18ad69d03bafa3e24863e8f5d9d4e792b7a69c2",
+  "repair_spec_sha256": "f5245ca2c24ff836e371618d418b3ccb59652c6870089ba8f36ec5c1a345a533",
+  "resulting_source_tree_hash": "e31012c27a7f99d8908a07cb6f60f179d7e51fba553a23dc20abbc4416248cb5",
+  "rollback_reference": "D:\\B_Core_RSI_CONTRACT_01_EVALUATOR_VAULT\\rollback_blobs\\a7ee05f8a217f1614ebf6266b2299987c6c4330b0d933e97a784c1e87b7dd37b.json",
+  "schema_version": "B_CORE_RSI_CONTRACT_INSTALLATION_RECEIPT_1",
+  "source_predecessor_hash": "d8c90f109a918eebfd53f17182535ae7b0b1ba376b8d35a253ff3460be0c0d08",
+  "unverified_install_events": 0,
+  "verification_receipt_sha256": "a7ee05f8a217f1614ebf6266b2299987c6c4330b0d933e97a784c1e87b7dd37b"
+}

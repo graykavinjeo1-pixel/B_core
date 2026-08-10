@@ -1,0 +1,21 @@
+{
+  "coding_graft_self_repair_ablation_pass": true,
+  "defect_contract_ablation_pass": true,
+  "disposition": "EXPLICIT_INDEPENDENTLY_VERIFIED_SELF_REPAIR_PIPELINE_ESTABLISHED",
+  "independent_verifier_causal_value_pass": true,
+  "levels": {
+    "A": true,
+    "B": true,
+    "C": true,
+    "D": true,
+    "E": true,
+    "F": true,
+    "G": true,
+    "H": true
+  },
+  "next_dominant_growth_limit": "NONE",
+  "quality_status": "PASS",
+  "repair_spec_ablation_pass": true,
+  "schema_version": "B_CORE_RSI_CONTRACT_PRIMARY_ACCEPTANCE_1",
+  "status": "PASS"
+}

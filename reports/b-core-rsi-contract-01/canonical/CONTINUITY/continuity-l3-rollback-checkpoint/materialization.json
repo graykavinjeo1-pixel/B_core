@@ -1,0 +1,15 @@
+{
+  "arm": "FULL",
+  "authoritative_predecessor_mutated": false,
+  "bug_tree_sha256": "d8c90f109a918eebfd53f17182535ae7b0b1ba376b8d35a253ff3460be0c0d08",
+  "defect_injection_manifest_exposed": false,
+  "destination": "D:\\BCRSI01_RUN\\FINAL_B\\CONTINUITY\\c1",
+  "expected_edit_exposed": false,
+  "gold_patch_exposed": false,
+  "hidden_verifier_exposed": false,
+  "input_level": 3,
+  "lane": "SELF_SOURCE",
+  "schema_version": "B_CORE_RSI_CONTRACT_MATERIALIZATION_1",
+  "split": "CONTINUITY",
+  "task_hash": "6b2f6a3b7960c391c3c2b0b49ef82f5b156610c09192898acb6c4e3d21d3dc3d"
+}

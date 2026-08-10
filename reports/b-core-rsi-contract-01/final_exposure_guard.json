@@ -1,0 +1,6 @@
+{
+  "final_exposure_ordinal": 1,
+  "freeze_sha256": "b5b12c56f7df6b85c89041be28b4888337e135ad2b0247b70d7c39630fe4b064",
+  "post_final_changes_allowed": false,
+  "schema_version": "B_CORE_RSI_CONTRACT_FINAL_EXPOSURE_GUARD_1"
+}
