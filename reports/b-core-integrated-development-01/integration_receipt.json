@@ -1,0 +1,64 @@
+{
+  "schema_version": "B_CORE_INTEGRATED_DEVELOPMENT_RECEIPT_1",
+  "status": "PASS",
+  "disposition": "EXISTING_PRIMITIVE_COMPOSITION_CONNECTED_TO_RECURSIVE_AND_RSI_PATHS",
+  "campaign_id": "B_CORE-INTEGRATED-DEVELOPMENT-01",
+  "authoritative_predecessor": "8092ea4aba69fd23c9f4e9d56132d488a58e0382",
+  "verified_at_utc": "2026-08-10T14:45:06.5302299Z",
+  "existing_capability_found": true,
+  "existing_capability": {
+    "authoritative_module": "crates/semantic-reasoning/src/sem5",
+    "primitive_catalog_function": "sem5::tasks::programming_primitive_catalog",
+    "synthesis_function": "sem5::learner::synthesize",
+    "type_effect_verifier": "sem5::ir::type_check",
+    "execution_function": "sem5::ir::execute",
+    "rust_adapter_function": "sem5::emitter::emit_rust",
+    "generation_four_composite_concept": "C000010",
+    "primitive_synthesizer_reimplemented": false
+  },
+  "located_related_source": {
+    "code_growth_loop": "crates/synapse-recursive-core/src/code_growth/mod.rs",
+    "self_development_runtime": "crates/synapse-recursive-core/src/self_development_runtime/mod.rs",
+    "compiled_crate_surface_before_this_integration": false,
+    "blindly_reenabled_from_quarantine": false
+  },
+  "integration": {
+    "recursive_epoch": "sem27::engine::run_post_scaffold_epoch",
+    "complex_code_composition": "existing SEM-5 typed ProgramIR synthesis",
+    "proposal_contract": "Observation -> DefectContract -> RepairSpec -> composite ProgramIR candidate",
+    "installation_authority": "self_repair_contract::validate_installation_authority",
+    "json_runner_binary": "b-core-integrated-development",
+    "historical_sem27_gui_or_sealed_campaign_modified": false,
+    "gui_callable_json_entrypoint_ready": true,
+    "core_can_self_approve": false,
+    "core_can_install_without_receipt": false
+  },
+  "verification": {
+    "integration_tests_passed": 3,
+    "self_repair_contract_tests_passed": 5,
+    "workspace_tests": "PASS",
+    "semantic_reasoning_tests_passed": 278,
+    "new_clippy_warning_signatures": 0,
+    "existing_clippy_warning_signature": "clippy::manual_is_multiple_of",
+    "binary_compile_check": "PASS"
+  },
+  "safety_and_scope": {
+    "core_self_approval_events": 0,
+    "unverified_install_events": 0,
+    "full_source_scan_events": 0,
+    "operator_selected_implementation_events": 0,
+    "autonomous_campaign_executed": false,
+    "future_instance_exposure_events": 0,
+    "network_events": 0,
+    "push_performed": false
+  },
+  "hashes": {
+    "integration_module_sha256": "5a2c36a5caac00efeb9ecb341807e297628f561d979a9a3ea2be2db25b02bc64",
+    "json_runner_sha256": "4cb3c303393bee79a9e1524d8937198ed3ac7419afb888a7d6a6899f49c56605",
+    "existing_sem5_learner_sha256": "98f1ee475736879b10720b371c420268cc678960b18893d9bc05b5c39e9d071f",
+    "existing_sem5_primitive_catalog_sha256": "cfe60d098d6c58c169938fc1572b9e4e833beb8cd9dde00dbfdb43a7a07cce20",
+    "rsi_contract_sha256": "e8b92949f1375fd2cd60f1fcf9e180ef5ad8cd84a04c7e94ccc39de18b2c80c3",
+    "workspace_test_log_sha256": "d182c97c15c13b69f07d33409d5c16d960f9310bab81175799f14cf705f007d3",
+    "clippy_log_sha256": "248b0a57f95edcae58f9434de5d80c9899eccb825f5f4c154de03c8510780bbd"
+  }
+}

@@ -8,8 +8,7 @@ use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 
 pub const CAMPAIGN_ID: &str = "B_CORE-RSI-CONTRACT-01";
-pub const AUTHORITATIVE_PREDECESSOR: &str =
-    "09fe306e96711b6194eefa5b379ce775a1fe4079";
+pub const AUTHORITATIVE_PREDECESSOR: &str = "09fe306e96711b6194eefa5b379ce775a1fe4079";
 pub const MAX_ACTIVE_CODING_OBJECTS: usize = 3;
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -323,7 +322,10 @@ mod tests {
 
     #[test]
     fn external_receipt_binds_patch_and_spec() {
-        assert_eq!(validate_installation_authority(&patch(), &receipt()), Ok(()));
+        assert_eq!(
+            validate_installation_authority(&patch(), &receipt()),
+            Ok(())
+        );
     }
 
     #[test]
