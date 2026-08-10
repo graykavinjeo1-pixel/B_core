@@ -1,0 +1,27 @@
+{
+  "schema": "b_core_code_graft_01_pre_graft_inventory_v1",
+  "predecessor_commit": "b33386e7a8793c5c27e2c2df3e19db0e6e04d0f4",
+  "existing_semantic_substrates": [
+    "DOCKABLE_CONCEPT_IR",
+    "CONTENT_ADDRESSED_GLOBAL_ATOM_STORE",
+    "SPARSE_INDEX",
+    "ECIR_ELEMENTAL_PRIMITIVES",
+    "COMPOSITION_RELATIONS",
+    "COUNTERFACTUAL_AND_FAILURE_INTERFACES",
+    "PROVENANCE_AND_VERIFICATION_EVIDENCE"
+  ],
+  "existing_ecir_primitives": [
+    "TRANSFORM", "SELECT", "READ", "WRITE", "RETAIN", "RECOMPUTE", "MOVE",
+    "PREFETCH", "PIPELINE", "FUSE", "PARALLELIZE", "DEPEND", "SPARSE_ACTIVATE", "PACK"
+  ],
+  "existing_ecir_motifs": [
+    "RECOMPUTE_INSTEAD_OF_RETAIN",
+    "TRANSFER_COMPUTE_OVERLAP",
+    "SPARSE_WORKING_SET",
+    "FUSE_SHARED_PARALLEL_STAGES"
+  ],
+  "dedup_rule": "CONTENT_ADDRESSED_SEMANTIC_PAYLOAD_NOT_SOURCE_NAME",
+  "provenance_part_of_semantic_identity": false,
+  "natural_language_is_canonical_authority": false,
+  "inventory_complete_before_graft": true
+}

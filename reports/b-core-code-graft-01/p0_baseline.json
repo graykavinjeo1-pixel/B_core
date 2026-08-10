@@ -1,0 +1,21 @@
+{
+  "schema": "b_core_code_graft_01_p0_baseline_v1",
+  "campaign_id": "B_CORE-CODE-GRAFT-01",
+  "recorded_utc": "2026-08-10T00:00:00Z",
+  "predecessor_commit": "b33386e7a8793c5c27e2c2df3e19db0e6e04d0f4",
+  "branch": "codex/b-core-code-graft-01",
+  "worktree": "D:\\B_Core_CAMPAIGNS\\b-core-code-graft-01",
+  "worktree_clean_before_research": true,
+  "rustc": "rustc 1.96.0 (ac68faa20 2026-05-25)",
+  "cargo": "cargo 1.96.0 (30a34c682 2026-05-25)",
+  "target": "x86_64-pc-windows-msvc",
+  "instruction_sha256": "f6b05b5d811668f0f8c84977a5cb1bbdc3643e3648d828efd86bbf2515ad214",
+  "baseline_test_command": "cargo test -p semantic-reasoning --lib",
+  "baseline_tests_passed": 266,
+  "baseline_tests_failed": 0,
+  "baseline_test_result": "PASS",
+  "baseline_test_elapsed_seconds": 91.3,
+  "canonical_knowledge_mutations_before_graft_validation": 0,
+  "prestart_autonomous_research_events": 0,
+  "prestart_future_instance_exposure_events": 0
+}
