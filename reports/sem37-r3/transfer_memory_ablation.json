@@ -1,0 +1,4 @@
+{
+  "ablation": "REMOVE_LEARNED_PROMOTION_MARGIN",
+  "transfer_safety_memory_ablation_pass": true
+}

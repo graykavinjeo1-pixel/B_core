@@ -1,0 +1,1341 @@
+{
+  "always_abstain_baseline_dominated": false,
+  "autonomous_research_epochs_executed": 434,
+  "candidate_pareto_front": [],
+  "causal_candidates": [
+    {
+      "causal_tests_performed": 56,
+      "conditional_ablation_evaluations": 168,
+      "direct_hypotheses_considered": 14,
+      "mediator_hypotheses_considered": 22,
+      "method": "CONDITIONAL_PATH0",
+      "raw_metrics": {
+        "causal_path_certificates_received": 13,
+        "common_cause_as_direct_misidentifications": 0,
+        "direct_fn": 30,
+        "direct_fp": 3,
+        "direct_precision_exact": {
+          "denominator": 13,
+          "numerator": 10
+        },
+        "direct_recall_exact": {
+          "denominator": 40,
+          "numerator": 10
+        },
+        "direct_tn": 13,
+        "direct_tp": 10,
+        "direction_errors": 3,
+        "expected_external_result_lookups": 0,
+        "external_ground_truth_equation_reads_by_bcore": 0,
+        "external_ground_truth_graph_reads_by_bcore": 0,
+        "gold_direct_edge_reads": 0,
+        "gold_mediator_reads": 0,
+        "identifiable_pairs": 54,
+        "lag_errors": 0,
+        "mediated_false_negatives": 8,
+        "mediated_false_positives": 10,
+        "mediated_path_depth_sequence": [
+          2,
+          2,
+          2,
+          2
+        ],
+        "mediated_true_positives": 4,
+        "mediation_path_certificates_received": 14,
+        "mediator_as_direct_misidentifications": 3,
+        "mixed_direct_mediated_cases_present": true,
+        "non_identifiable_under_available_evidence_pairs": 2,
+        "partially_identifiable_pairs": 0,
+        "predicted_relation_counts": {
+          "CONFOUNDED": 5,
+          "DIRECT": 13,
+          "MEDIATED": 14,
+          "UNRESOLVED": 24
+        },
+        "prediction_commitment": "cedd5e4db3f9f3b5f15261d5a500d71328ff9f4e9dc3f02d9f4e91a56cf68385",
+        "raw_field_acceptance_authority": true,
+        "taxonomy_confusion_matrices": {
+          "CONFOUNDED": {
+            "fn": 2,
+            "fp": 5,
+            "tn": 49,
+            "tp": 0
+          },
+          "DIRECT": {
+            "fn": 30,
+            "fp": 3,
+            "tn": 13,
+            "tp": 10
+          },
+          "MEDIATED": {
+            "fn": 8,
+            "fp": 10,
+            "tn": 34,
+            "tp": 4
+          },
+          "UNRESOLVED": {
+            "fn": 0,
+            "fp": 22,
+            "tn": 32,
+            "tp": 2
+          }
+        }
+      }
+    },
+    {
+      "causal_tests_performed": 56,
+      "conditional_ablation_evaluations": 168,
+      "direct_hypotheses_considered": 14,
+      "mediator_hypotheses_considered": 22,
+      "method": "CONDITIONAL_PATH2",
+      "raw_metrics": {
+        "causal_path_certificates_received": 13,
+        "common_cause_as_direct_misidentifications": 0,
+        "direct_fn": 30,
+        "direct_fp": 3,
+        "direct_precision_exact": {
+          "denominator": 13,
+          "numerator": 10
+        },
+        "direct_recall_exact": {
+          "denominator": 40,
+          "numerator": 10
+        },
+        "direct_tn": 13,
+        "direct_tp": 10,
+        "direction_errors": 3,
+        "expected_external_result_lookups": 0,
+        "external_ground_truth_equation_reads_by_bcore": 0,
+        "external_ground_truth_graph_reads_by_bcore": 0,
+        "gold_direct_edge_reads": 0,
+        "gold_mediator_reads": 0,
+        "identifiable_pairs": 54,
+        "lag_errors": 0,
+        "mediated_false_negatives": 8,
+        "mediated_false_positives": 10,
+        "mediated_path_depth_sequence": [
+          2,
+          2,
+          2,
+          2
+        ],
+        "mediated_true_positives": 4,
+        "mediation_path_certificates_received": 14,
+        "mediator_as_direct_misidentifications": 3,
+        "mixed_direct_mediated_cases_present": true,
+        "non_identifiable_under_available_evidence_pairs": 2,
+        "partially_identifiable_pairs": 0,
+        "predicted_relation_counts": {
+          "CONFOUNDED": 5,
+          "DIRECT": 13,
+          "MEDIATED": 14,
+          "UNRESOLVED": 24
+        },
+        "prediction_commitment": "cedd5e4db3f9f3b5f15261d5a500d71328ff9f4e9dc3f02d9f4e91a56cf68385",
+        "raw_field_acceptance_authority": true,
+        "taxonomy_confusion_matrices": {
+          "CONFOUNDED": {
+            "fn": 2,
+            "fp": 5,
+            "tn": 49,
+            "tp": 0
+          },
+          "DIRECT": {
+            "fn": 30,
+            "fp": 3,
+            "tn": 13,
+            "tp": 10
+          },
+          "MEDIATED": {
+            "fn": 8,
+            "fp": 10,
+            "tn": 34,
+            "tp": 4
+          },
+          "UNRESOLVED": {
+            "fn": 0,
+            "fp": 22,
+            "tn": 32,
+            "tp": 2
+          }
+        }
+      }
+    },
+    {
+      "causal_tests_performed": 56,
+      "conditional_ablation_evaluations": 168,
+      "direct_hypotheses_considered": 14,
+      "mediator_hypotheses_considered": 22,
+      "method": "CONDITIONAL_PATH4",
+      "raw_metrics": {
+        "causal_path_certificates_received": 13,
+        "common_cause_as_direct_misidentifications": 0,
+        "direct_fn": 30,
+        "direct_fp": 3,
+        "direct_precision_exact": {
+          "denominator": 13,
+          "numerator": 10
+        },
+        "direct_recall_exact": {
+          "denominator": 40,
+          "numerator": 10
+        },
+        "direct_tn": 13,
+        "direct_tp": 10,
+        "direction_errors": 3,
+        "expected_external_result_lookups": 0,
+        "external_ground_truth_equation_reads_by_bcore": 0,
+        "external_ground_truth_graph_reads_by_bcore": 0,
+        "gold_direct_edge_reads": 0,
+        "gold_mediator_reads": 0,
+        "identifiable_pairs": 54,
+        "lag_errors": 0,
+        "mediated_false_negatives": 8,
+        "mediated_false_positives": 10,
+        "mediated_path_depth_sequence": [
+          2,
+          2,
+          2,
+          2
+        ],
+        "mediated_true_positives": 4,
+        "mediation_path_certificates_received": 14,
+        "mediator_as_direct_misidentifications": 3,
+        "mixed_direct_mediated_cases_present": true,
+        "non_identifiable_under_available_evidence_pairs": 2,
+        "partially_identifiable_pairs": 0,
+        "predicted_relation_counts": {
+          "CONFOUNDED": 5,
+          "DIRECT": 13,
+          "MEDIATED": 14,
+          "UNRESOLVED": 24
+        },
+        "prediction_commitment": "cedd5e4db3f9f3b5f15261d5a500d71328ff9f4e9dc3f02d9f4e91a56cf68385",
+        "raw_field_acceptance_authority": true,
+        "taxonomy_confusion_matrices": {
+          "CONFOUNDED": {
+            "fn": 2,
+            "fp": 5,
+            "tn": 49,
+            "tp": 0
+          },
+          "DIRECT": {
+            "fn": 30,
+            "fp": 3,
+            "tn": 13,
+            "tp": 10
+          },
+          "MEDIATED": {
+            "fn": 8,
+            "fp": 10,
+            "tn": 34,
+            "tp": 4
+          },
+          "UNRESOLVED": {
+            "fn": 0,
+            "fp": 22,
+            "tn": 32,
+            "tp": 2
+          }
+        }
+      }
+    },
+    {
+      "causal_tests_performed": 56,
+      "conditional_ablation_evaluations": 168,
+      "direct_hypotheses_considered": 14,
+      "mediator_hypotheses_considered": 22,
+      "method": "CONDITIONAL_PATH8",
+      "raw_metrics": {
+        "causal_path_certificates_received": 13,
+        "common_cause_as_direct_misidentifications": 0,
+        "direct_fn": 30,
+        "direct_fp": 3,
+        "direct_precision_exact": {
+          "denominator": 13,
+          "numerator": 10
+        },
+        "direct_recall_exact": {
+          "denominator": 40,
+          "numerator": 10
+        },
+        "direct_tn": 13,
+        "direct_tp": 10,
+        "direction_errors": 3,
+        "expected_external_result_lookups": 0,
+        "external_ground_truth_equation_reads_by_bcore": 0,
+        "external_ground_truth_graph_reads_by_bcore": 0,
+        "gold_direct_edge_reads": 0,
+        "gold_mediator_reads": 0,
+        "identifiable_pairs": 54,
+        "lag_errors": 0,
+        "mediated_false_negatives": 8,
+        "mediated_false_positives": 10,
+        "mediated_path_depth_sequence": [
+          2,
+          2,
+          2,
+          2
+        ],
+        "mediated_true_positives": 4,
+        "mediation_path_certificates_received": 14,
+        "mediator_as_direct_misidentifications": 3,
+        "mixed_direct_mediated_cases_present": true,
+        "non_identifiable_under_available_evidence_pairs": 2,
+        "partially_identifiable_pairs": 0,
+        "predicted_relation_counts": {
+          "CONFOUNDED": 5,
+          "DIRECT": 13,
+          "MEDIATED": 14,
+          "UNRESOLVED": 24
+        },
+        "prediction_commitment": "cedd5e4db3f9f3b5f15261d5a500d71328ff9f4e9dc3f02d9f4e91a56cf68385",
+        "raw_field_acceptance_authority": true,
+        "taxonomy_confusion_matrices": {
+          "CONFOUNDED": {
+            "fn": 2,
+            "fp": 5,
+            "tn": 49,
+            "tp": 0
+          },
+          "DIRECT": {
+            "fn": 30,
+            "fp": 3,
+            "tn": 13,
+            "tp": 10
+          },
+          "MEDIATED": {
+            "fn": 8,
+            "fp": 10,
+            "tn": 34,
+            "tp": 4
+          },
+          "UNRESOLVED": {
+            "fn": 0,
+            "fp": 22,
+            "tn": 32,
+            "tp": 2
+          }
+        }
+      }
+    },
+    {
+      "causal_tests_performed": 56,
+      "conditional_ablation_evaluations": 168,
+      "direct_hypotheses_considered": 14,
+      "mediator_hypotheses_considered": 22,
+      "method": "CONDITIONAL_PATH16",
+      "raw_metrics": {
+        "causal_path_certificates_received": 13,
+        "common_cause_as_direct_misidentifications": 0,
+        "direct_fn": 30,
+        "direct_fp": 3,
+        "direct_precision_exact": {
+          "denominator": 13,
+          "numerator": 10
+        },
+        "direct_recall_exact": {
+          "denominator": 40,
+          "numerator": 10
+        },
+        "direct_tn": 13,
+        "direct_tp": 10,
+        "direction_errors": 3,
+        "expected_external_result_lookups": 0,
+        "external_ground_truth_equation_reads_by_bcore": 0,
+        "external_ground_truth_graph_reads_by_bcore": 0,
+        "gold_direct_edge_reads": 0,
+        "gold_mediator_reads": 0,
+        "identifiable_pairs": 54,
+        "lag_errors": 0,
+        "mediated_false_negatives": 8,
+        "mediated_false_positives": 10,
+        "mediated_path_depth_sequence": [
+          2,
+          2,
+          2,
+          2
+        ],
+        "mediated_true_positives": 4,
+        "mediation_path_certificates_received": 14,
+        "mediator_as_direct_misidentifications": 3,
+        "mixed_direct_mediated_cases_present": true,
+        "non_identifiable_under_available_evidence_pairs": 2,
+        "partially_identifiable_pairs": 0,
+        "predicted_relation_counts": {
+          "CONFOUNDED": 5,
+          "DIRECT": 13,
+          "MEDIATED": 14,
+          "UNRESOLVED": 24
+        },
+        "prediction_commitment": "cedd5e4db3f9f3b5f15261d5a500d71328ff9f4e9dc3f02d9f4e91a56cf68385",
+        "raw_field_acceptance_authority": true,
+        "taxonomy_confusion_matrices": {
+          "CONFOUNDED": {
+            "fn": 2,
+            "fp": 5,
+            "tn": 49,
+            "tp": 0
+          },
+          "DIRECT": {
+            "fn": 30,
+            "fp": 3,
+            "tn": 13,
+            "tp": 10
+          },
+          "MEDIATED": {
+            "fn": 8,
+            "fp": 10,
+            "tn": 34,
+            "tp": 4
+          },
+          "UNRESOLVED": {
+            "fn": 0,
+            "fp": 22,
+            "tn": 32,
+            "tp": 2
+          }
+        }
+      }
+    },
+    {
+      "causal_tests_performed": 56,
+      "conditional_ablation_evaluations": 168,
+      "direct_hypotheses_considered": 14,
+      "mediator_hypotheses_considered": 22,
+      "method": "CONDITIONAL_PATH32",
+      "raw_metrics": {
+        "causal_path_certificates_received": 11,
+        "common_cause_as_direct_misidentifications": 0,
+        "direct_fn": 31,
+        "direct_fp": 2,
+        "direct_precision_exact": {
+          "denominator": 11,
+          "numerator": 9
+        },
+        "direct_recall_exact": {
+          "denominator": 40,
+          "numerator": 9
+        },
+        "direct_tn": 14,
+        "direct_tp": 9,
+        "direction_errors": 2,
+        "expected_external_result_lookups": 0,
+        "external_ground_truth_equation_reads_by_bcore": 0,
+        "external_ground_truth_graph_reads_by_bcore": 0,
+        "gold_direct_edge_reads": 0,
+        "gold_mediator_reads": 0,
+        "identifiable_pairs": 54,
+        "lag_errors": 0,
+        "mediated_false_negatives": 7,
+        "mediated_false_positives": 11,
+        "mediated_path_depth_sequence": [
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "mediated_true_positives": 5,
+        "mediation_path_certificates_received": 16,
+        "mediator_as_direct_misidentifications": 2,
+        "mixed_direct_mediated_cases_present": true,
+        "non_identifiable_under_available_evidence_pairs": 2,
+        "partially_identifiable_pairs": 0,
+        "predicted_relation_counts": {
+          "CONFOUNDED": 5,
+          "DIRECT": 11,
+          "MEDIATED": 16,
+          "UNRESOLVED": 24
+        },
+        "prediction_commitment": "5cfdd5d88c15c941a6480064dc8a9bf405f23ec814b440e327ab79abce3061aa",
+        "raw_field_acceptance_authority": true,
+        "taxonomy_confusion_matrices": {
+          "CONFOUNDED": {
+            "fn": 2,
+            "fp": 5,
+            "tn": 49,
+            "tp": 0
+          },
+          "DIRECT": {
+            "fn": 31,
+            "fp": 2,
+            "tn": 14,
+            "tp": 9
+          },
+          "MEDIATED": {
+            "fn": 7,
+            "fp": 11,
+            "tn": 33,
+            "tp": 5
+          },
+          "UNRESOLVED": {
+            "fn": 0,
+            "fp": 22,
+            "tn": 32,
+            "tp": 2
+          }
+        }
+      }
+    },
+    {
+      "causal_tests_performed": 56,
+      "conditional_ablation_evaluations": 168,
+      "direct_hypotheses_considered": 14,
+      "mediator_hypotheses_considered": 22,
+      "method": "CONDITIONAL_PATH64",
+      "raw_metrics": {
+        "causal_path_certificates_received": 11,
+        "common_cause_as_direct_misidentifications": 0,
+        "direct_fn": 31,
+        "direct_fp": 2,
+        "direct_precision_exact": {
+          "denominator": 11,
+          "numerator": 9
+        },
+        "direct_recall_exact": {
+          "denominator": 40,
+          "numerator": 9
+        },
+        "direct_tn": 14,
+        "direct_tp": 9,
+        "direction_errors": 2,
+        "expected_external_result_lookups": 0,
+        "external_ground_truth_equation_reads_by_bcore": 0,
+        "external_ground_truth_graph_reads_by_bcore": 0,
+        "gold_direct_edge_reads": 0,
+        "gold_mediator_reads": 0,
+        "identifiable_pairs": 54,
+        "lag_errors": 0,
+        "mediated_false_negatives": 7,
+        "mediated_false_positives": 11,
+        "mediated_path_depth_sequence": [
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "mediated_true_positives": 5,
+        "mediation_path_certificates_received": 16,
+        "mediator_as_direct_misidentifications": 2,
+        "mixed_direct_mediated_cases_present": true,
+        "non_identifiable_under_available_evidence_pairs": 2,
+        "partially_identifiable_pairs": 0,
+        "predicted_relation_counts": {
+          "CONFOUNDED": 5,
+          "DIRECT": 11,
+          "MEDIATED": 16,
+          "UNRESOLVED": 24
+        },
+        "prediction_commitment": "5cfdd5d88c15c941a6480064dc8a9bf405f23ec814b440e327ab79abce3061aa",
+        "raw_field_acceptance_authority": true,
+        "taxonomy_confusion_matrices": {
+          "CONFOUNDED": {
+            "fn": 2,
+            "fp": 5,
+            "tn": 49,
+            "tp": 0
+          },
+          "DIRECT": {
+            "fn": 31,
+            "fp": 2,
+            "tn": 14,
+            "tp": 9
+          },
+          "MEDIATED": {
+            "fn": 7,
+            "fp": 11,
+            "tn": 33,
+            "tp": 5
+          },
+          "UNRESOLVED": {
+            "fn": 0,
+            "fp": 22,
+            "tn": 32,
+            "tp": 2
+          }
+        }
+      }
+    }
+  ],
+  "causal_repair_hypotheses": [
+    "FIRST_CLASS_DIRECT_MEDIATED_CONFOUNDED_UNRESOLVED_ONTOLOGY",
+    "STABLE_CONDITIONAL_EVIDENCE_COMPETES_WITH_MEDIATOR_PATHS",
+    "TARGET_VALIDATED_PROMOTION_WITH_EXPLICIT_NO_CHANGE"
+  ],
+  "causal_selection_receipt": "PARETO_ZERO_MEDIATOR_AND_COMMON_FALSE_DIRECT_THEN_R2_NONINFERIOR_PRECISION_RECALL",
+  "diagnoses": [
+    "MEDIATOR_ROLE_NOT_FIRST_CLASS",
+    "PATH_EVIDENCE_COLLAPSED_INTO_PAIRWISE_DIRECT_EDGE",
+    "TRANSFER_PROMOTION_LACKED_EXPLICIT_NO_CHANGE_CAUSAL_GATE"
+  ],
+  "diagnostic_experiments": [
+    "PAIRED_R2_VS_CONDITIONAL_PATH_DECOMPOSITION",
+    "MULTI_THRESHOLD_PARETO_CAUSAL_SEARCH",
+    "TRANSFER_MARGIN_POLICY_MATRIX_WITH_ALWAYS_PROMOTE_AND_ABSTAIN"
+  ],
+  "direct_mediated_decomposition_ablation_pass": true,
+  "final_external_exposure_events": 0,
+  "human_causal_repair_selection_events": 0,
+  "human_mediator_rule_selection_events": 0,
+  "human_promotion_rule_selection_events": 0,
+  "r2_comparator_metrics": {
+    "causal_path_certificates_received": 0,
+    "common_cause_as_direct_misidentifications": 0,
+    "direct_fn": 29,
+    "direct_fp": 3,
+    "direct_precision_exact": {
+      "denominator": 14,
+      "numerator": 11
+    },
+    "direct_recall_exact": {
+      "denominator": 40,
+      "numerator": 11
+    },
+    "direct_tn": 13,
+    "direct_tp": 11,
+    "direction_errors": 3,
+    "expected_external_result_lookups": 0,
+    "external_ground_truth_equation_reads_by_bcore": 0,
+    "external_ground_truth_graph_reads_by_bcore": 0,
+    "gold_direct_edge_reads": 0,
+    "gold_mediator_reads": 0,
+    "identifiable_pairs": 54,
+    "lag_errors": 0,
+    "mediated_false_negatives": 12,
+    "mediated_false_positives": 0,
+    "mediated_path_depth_sequence": [],
+    "mediated_true_positives": 0,
+    "mediation_path_certificates_received": 0,
+    "mediator_as_direct_misidentifications": 3,
+    "mixed_direct_mediated_cases_present": true,
+    "non_identifiable_under_available_evidence_pairs": 2,
+    "partially_identifiable_pairs": 0,
+    "predicted_relation_counts": {
+      "CONFOUNDED": 0,
+      "DIRECT": 14,
+      "MEDIATED": 0,
+      "UNRESOLVED": 42
+    },
+    "prediction_commitment": "087d9aa413b127e99c4430ea94aadc21edd4a918dcf14b3d6fecda19adf6ae33",
+    "raw_field_acceptance_authority": true,
+    "taxonomy_confusion_matrices": {
+      "CONFOUNDED": {
+        "fn": 2,
+        "fp": 0,
+        "tn": 54,
+        "tp": 0
+      },
+      "DIRECT": {
+        "fn": 29,
+        "fp": 3,
+        "tn": 13,
+        "tp": 11
+      },
+      "MEDIATED": {
+        "fn": 12,
+        "fp": 0,
+        "tn": 44,
+        "tp": 0
+      },
+      "UNRESOLVED": {
+        "fn": 0,
+        "fp": 40,
+        "tn": 14,
+        "tp": 2
+      }
+    }
+  },
+  "schema_version": "SEM37_R3_AUTONOMOUS_DEVELOPMENT_1",
+  "selected_causal_method": "CONDITIONAL_PATH32",
+  "selected_transfer_policy": {
+    "margin_basis_points": 0,
+    "method": "SPARSE_COUPLED_LINEAR"
+  },
+  "transfer_candidates": [
+    {
+      "abstained": 0,
+      "policy": {
+        "margin_basis_points": 0,
+        "method": "INDEPENDENT_LINEAR"
+      },
+      "promoted": 14,
+      "raw_metrics": {
+        "ambiguous_transfer_abstentions": 0,
+        "ambiguous_transfer_cases": 1,
+        "gold_transfer_outcome_reads": 0,
+        "negative_transfer_accepted": 5,
+        "negative_transfer_opportunities": 1,
+        "outcomes_revealed_to_bcore": false,
+        "positive_transfer_accepted": 12,
+        "positive_transfer_opportunities": 12,
+        "positive_transfer_verified": 9,
+        "prediction_commitment": "c52561d596edb3bf5d0698fbfa177da88b76524204031b0f32d16eb3f7bdabf8",
+        "promotion_certificates_received": 14,
+        "raw_field_acceptance_authority": true,
+        "transfer_abstained": 0,
+        "transfer_candidates_total": 14,
+        "transfer_promoted": 14,
+        "transfer_rejected": 0
+      },
+      "rejected": 0
+    },
+    {
+      "abstained": 0,
+      "policy": {
+        "margin_basis_points": 100,
+        "method": "INDEPENDENT_LINEAR"
+      },
+      "promoted": 14,
+      "raw_metrics": {
+        "ambiguous_transfer_abstentions": 0,
+        "ambiguous_transfer_cases": 1,
+        "gold_transfer_outcome_reads": 0,
+        "negative_transfer_accepted": 5,
+        "negative_transfer_opportunities": 1,
+        "outcomes_revealed_to_bcore": false,
+        "positive_transfer_accepted": 12,
+        "positive_transfer_opportunities": 12,
+        "positive_transfer_verified": 9,
+        "prediction_commitment": "c52561d596edb3bf5d0698fbfa177da88b76524204031b0f32d16eb3f7bdabf8",
+        "promotion_certificates_received": 14,
+        "raw_field_acceptance_authority": true,
+        "transfer_abstained": 0,
+        "transfer_candidates_total": 14,
+        "transfer_promoted": 14,
+        "transfer_rejected": 0
+      },
+      "rejected": 0
+    },
+    {
+      "abstained": 0,
+      "policy": {
+        "margin_basis_points": 250,
+        "method": "INDEPENDENT_LINEAR"
+      },
+      "promoted": 14,
+      "raw_metrics": {
+        "ambiguous_transfer_abstentions": 0,
+        "ambiguous_transfer_cases": 1,
+        "gold_transfer_outcome_reads": 0,
+        "negative_transfer_accepted": 5,
+        "negative_transfer_opportunities": 1,
+        "outcomes_revealed_to_bcore": false,
+        "positive_transfer_accepted": 12,
+        "positive_transfer_opportunities": 12,
+        "positive_transfer_verified": 9,
+        "prediction_commitment": "c52561d596edb3bf5d0698fbfa177da88b76524204031b0f32d16eb3f7bdabf8",
+        "promotion_certificates_received": 14,
+        "raw_field_acceptance_authority": true,
+        "transfer_abstained": 0,
+        "transfer_candidates_total": 14,
+        "transfer_promoted": 14,
+        "transfer_rejected": 0
+      },
+      "rejected": 0
+    },
+    {
+      "abstained": 0,
+      "policy": {
+        "margin_basis_points": 500,
+        "method": "INDEPENDENT_LINEAR"
+      },
+      "promoted": 14,
+      "raw_metrics": {
+        "ambiguous_transfer_abstentions": 0,
+        "ambiguous_transfer_cases": 1,
+        "gold_transfer_outcome_reads": 0,
+        "negative_transfer_accepted": 5,
+        "negative_transfer_opportunities": 1,
+        "outcomes_revealed_to_bcore": false,
+        "positive_transfer_accepted": 12,
+        "positive_transfer_opportunities": 12,
+        "positive_transfer_verified": 9,
+        "prediction_commitment": "c52561d596edb3bf5d0698fbfa177da88b76524204031b0f32d16eb3f7bdabf8",
+        "promotion_certificates_received": 14,
+        "raw_field_acceptance_authority": true,
+        "transfer_abstained": 0,
+        "transfer_candidates_total": 14,
+        "transfer_promoted": 14,
+        "transfer_rejected": 0
+      },
+      "rejected": 0
+    },
+    {
+      "abstained": 0,
+      "policy": {
+        "margin_basis_points": 1000,
+        "method": "INDEPENDENT_LINEAR"
+      },
+      "promoted": 14,
+      "raw_metrics": {
+        "ambiguous_transfer_abstentions": 0,
+        "ambiguous_transfer_cases": 1,
+        "gold_transfer_outcome_reads": 0,
+        "negative_transfer_accepted": 5,
+        "negative_transfer_opportunities": 1,
+        "outcomes_revealed_to_bcore": false,
+        "positive_transfer_accepted": 12,
+        "positive_transfer_opportunities": 12,
+        "positive_transfer_verified": 9,
+        "prediction_commitment": "c52561d596edb3bf5d0698fbfa177da88b76524204031b0f32d16eb3f7bdabf8",
+        "promotion_certificates_received": 14,
+        "raw_field_acceptance_authority": true,
+        "transfer_abstained": 0,
+        "transfer_candidates_total": 14,
+        "transfer_promoted": 14,
+        "transfer_rejected": 0
+      },
+      "rejected": 0
+    },
+    {
+      "abstained": 0,
+      "policy": {
+        "margin_basis_points": 0,
+        "method": "SPARSE_COUPLED_LINEAR"
+      },
+      "promoted": 14,
+      "raw_metrics": {
+        "ambiguous_transfer_abstentions": 0,
+        "ambiguous_transfer_cases": 1,
+        "gold_transfer_outcome_reads": 0,
+        "negative_transfer_accepted": 4,
+        "negative_transfer_opportunities": 1,
+        "outcomes_revealed_to_bcore": false,
+        "positive_transfer_accepted": 12,
+        "positive_transfer_opportunities": 12,
+        "positive_transfer_verified": 10,
+        "prediction_commitment": "1e70a50f8791ba89a3acd066434be48bc3791bafb2cf5ba2a725c363f3fb7674",
+        "promotion_certificates_received": 14,
+        "raw_field_acceptance_authority": true,
+        "transfer_abstained": 0,
+        "transfer_candidates_total": 14,
+        "transfer_promoted": 14,
+        "transfer_rejected": 0
+      },
+      "rejected": 0
+    },
+    {
+      "abstained": 0,
+      "policy": {
+        "margin_basis_points": 100,
+        "method": "SPARSE_COUPLED_LINEAR"
+      },
+      "promoted": 14,
+      "raw_metrics": {
+        "ambiguous_transfer_abstentions": 0,
+        "ambiguous_transfer_cases": 1,
+        "gold_transfer_outcome_reads": 0,
+        "negative_transfer_accepted": 4,
+        "negative_transfer_opportunities": 1,
+        "outcomes_revealed_to_bcore": false,
+        "positive_transfer_accepted": 12,
+        "positive_transfer_opportunities": 12,
+        "positive_transfer_verified": 10,
+        "prediction_commitment": "1e70a50f8791ba89a3acd066434be48bc3791bafb2cf5ba2a725c363f3fb7674",
+        "promotion_certificates_received": 14,
+        "raw_field_acceptance_authority": true,
+        "transfer_abstained": 0,
+        "transfer_candidates_total": 14,
+        "transfer_promoted": 14,
+        "transfer_rejected": 0
+      },
+      "rejected": 0
+    },
+    {
+      "abstained": 0,
+      "policy": {
+        "margin_basis_points": 250,
+        "method": "SPARSE_COUPLED_LINEAR"
+      },
+      "promoted": 14,
+      "raw_metrics": {
+        "ambiguous_transfer_abstentions": 0,
+        "ambiguous_transfer_cases": 1,
+        "gold_transfer_outcome_reads": 0,
+        "negative_transfer_accepted": 4,
+        "negative_transfer_opportunities": 1,
+        "outcomes_revealed_to_bcore": false,
+        "positive_transfer_accepted": 12,
+        "positive_transfer_opportunities": 12,
+        "positive_transfer_verified": 10,
+        "prediction_commitment": "1e70a50f8791ba89a3acd066434be48bc3791bafb2cf5ba2a725c363f3fb7674",
+        "promotion_certificates_received": 14,
+        "raw_field_acceptance_authority": true,
+        "transfer_abstained": 0,
+        "transfer_candidates_total": 14,
+        "transfer_promoted": 14,
+        "transfer_rejected": 0
+      },
+      "rejected": 0
+    },
+    {
+      "abstained": 0,
+      "policy": {
+        "margin_basis_points": 500,
+        "method": "SPARSE_COUPLED_LINEAR"
+      },
+      "promoted": 14,
+      "raw_metrics": {
+        "ambiguous_transfer_abstentions": 0,
+        "ambiguous_transfer_cases": 1,
+        "gold_transfer_outcome_reads": 0,
+        "negative_transfer_accepted": 4,
+        "negative_transfer_opportunities": 1,
+        "outcomes_revealed_to_bcore": false,
+        "positive_transfer_accepted": 12,
+        "positive_transfer_opportunities": 12,
+        "positive_transfer_verified": 10,
+        "prediction_commitment": "1e70a50f8791ba89a3acd066434be48bc3791bafb2cf5ba2a725c363f3fb7674",
+        "promotion_certificates_received": 14,
+        "raw_field_acceptance_authority": true,
+        "transfer_abstained": 0,
+        "transfer_candidates_total": 14,
+        "transfer_promoted": 14,
+        "transfer_rejected": 0
+      },
+      "rejected": 0
+    },
+    {
+      "abstained": 0,
+      "policy": {
+        "margin_basis_points": 1000,
+        "method": "SPARSE_COUPLED_LINEAR"
+      },
+      "promoted": 14,
+      "raw_metrics": {
+        "ambiguous_transfer_abstentions": 0,
+        "ambiguous_transfer_cases": 1,
+        "gold_transfer_outcome_reads": 0,
+        "negative_transfer_accepted": 4,
+        "negative_transfer_opportunities": 1,
+        "outcomes_revealed_to_bcore": false,
+        "positive_transfer_accepted": 12,
+        "positive_transfer_opportunities": 12,
+        "positive_transfer_verified": 10,
+        "prediction_commitment": "1e70a50f8791ba89a3acd066434be48bc3791bafb2cf5ba2a725c363f3fb7674",
+        "promotion_certificates_received": 14,
+        "raw_field_acceptance_authority": true,
+        "transfer_abstained": 0,
+        "transfer_candidates_total": 14,
+        "transfer_promoted": 14,
+        "transfer_rejected": 0
+      },
+      "rejected": 0
+    },
+    {
+      "abstained": 0,
+      "policy": {
+        "margin_basis_points": 0,
+        "method": "DENSE_COUPLED_LINEAR"
+      },
+      "promoted": 14,
+      "raw_metrics": {
+        "ambiguous_transfer_abstentions": 0,
+        "ambiguous_transfer_cases": 1,
+        "gold_transfer_outcome_reads": 0,
+        "negative_transfer_accepted": 4,
+        "negative_transfer_opportunities": 1,
+        "outcomes_revealed_to_bcore": false,
+        "positive_transfer_accepted": 12,
+        "positive_transfer_opportunities": 12,
+        "positive_transfer_verified": 10,
+        "prediction_commitment": "dfe30fd04ccda49c8b46abeee265ef06742dbedab66859814c272803665fb5e1",
+        "promotion_certificates_received": 14,
+        "raw_field_acceptance_authority": true,
+        "transfer_abstained": 0,
+        "transfer_candidates_total": 14,
+        "transfer_promoted": 14,
+        "transfer_rejected": 0
+      },
+      "rejected": 0
+    },
+    {
+      "abstained": 0,
+      "policy": {
+        "margin_basis_points": 100,
+        "method": "DENSE_COUPLED_LINEAR"
+      },
+      "promoted": 14,
+      "raw_metrics": {
+        "ambiguous_transfer_abstentions": 0,
+        "ambiguous_transfer_cases": 1,
+        "gold_transfer_outcome_reads": 0,
+        "negative_transfer_accepted": 4,
+        "negative_transfer_opportunities": 1,
+        "outcomes_revealed_to_bcore": false,
+        "positive_transfer_accepted": 12,
+        "positive_transfer_opportunities": 12,
+        "positive_transfer_verified": 10,
+        "prediction_commitment": "dfe30fd04ccda49c8b46abeee265ef06742dbedab66859814c272803665fb5e1",
+        "promotion_certificates_received": 14,
+        "raw_field_acceptance_authority": true,
+        "transfer_abstained": 0,
+        "transfer_candidates_total": 14,
+        "transfer_promoted": 14,
+        "transfer_rejected": 0
+      },
+      "rejected": 0
+    },
+    {
+      "abstained": 0,
+      "policy": {
+        "margin_basis_points": 250,
+        "method": "DENSE_COUPLED_LINEAR"
+      },
+      "promoted": 14,
+      "raw_metrics": {
+        "ambiguous_transfer_abstentions": 0,
+        "ambiguous_transfer_cases": 1,
+        "gold_transfer_outcome_reads": 0,
+        "negative_transfer_accepted": 4,
+        "negative_transfer_opportunities": 1,
+        "outcomes_revealed_to_bcore": false,
+        "positive_transfer_accepted": 12,
+        "positive_transfer_opportunities": 12,
+        "positive_transfer_verified": 10,
+        "prediction_commitment": "dfe30fd04ccda49c8b46abeee265ef06742dbedab66859814c272803665fb5e1",
+        "promotion_certificates_received": 14,
+        "raw_field_acceptance_authority": true,
+        "transfer_abstained": 0,
+        "transfer_candidates_total": 14,
+        "transfer_promoted": 14,
+        "transfer_rejected": 0
+      },
+      "rejected": 0
+    },
+    {
+      "abstained": 0,
+      "policy": {
+        "margin_basis_points": 500,
+        "method": "DENSE_COUPLED_LINEAR"
+      },
+      "promoted": 14,
+      "raw_metrics": {
+        "ambiguous_transfer_abstentions": 0,
+        "ambiguous_transfer_cases": 1,
+        "gold_transfer_outcome_reads": 0,
+        "negative_transfer_accepted": 4,
+        "negative_transfer_opportunities": 1,
+        "outcomes_revealed_to_bcore": false,
+        "positive_transfer_accepted": 12,
+        "positive_transfer_opportunities": 12,
+        "positive_transfer_verified": 10,
+        "prediction_commitment": "dfe30fd04ccda49c8b46abeee265ef06742dbedab66859814c272803665fb5e1",
+        "promotion_certificates_received": 14,
+        "raw_field_acceptance_authority": true,
+        "transfer_abstained": 0,
+        "transfer_candidates_total": 14,
+        "transfer_promoted": 14,
+        "transfer_rejected": 0
+      },
+      "rejected": 0
+    },
+    {
+      "abstained": 0,
+      "policy": {
+        "margin_basis_points": 1000,
+        "method": "DENSE_COUPLED_LINEAR"
+      },
+      "promoted": 14,
+      "raw_metrics": {
+        "ambiguous_transfer_abstentions": 0,
+        "ambiguous_transfer_cases": 1,
+        "gold_transfer_outcome_reads": 0,
+        "negative_transfer_accepted": 4,
+        "negative_transfer_opportunities": 1,
+        "outcomes_revealed_to_bcore": false,
+        "positive_transfer_accepted": 12,
+        "positive_transfer_opportunities": 12,
+        "positive_transfer_verified": 10,
+        "prediction_commitment": "dfe30fd04ccda49c8b46abeee265ef06742dbedab66859814c272803665fb5e1",
+        "promotion_certificates_received": 14,
+        "raw_field_acceptance_authority": true,
+        "transfer_abstained": 0,
+        "transfer_candidates_total": 14,
+        "transfer_promoted": 14,
+        "transfer_rejected": 0
+      },
+      "rejected": 0
+    },
+    {
+      "abstained": 0,
+      "policy": {
+        "margin_basis_points": 0,
+        "method": "INTERVENTION_REGRESSION"
+      },
+      "promoted": 14,
+      "raw_metrics": {
+        "ambiguous_transfer_abstentions": 0,
+        "ambiguous_transfer_cases": 1,
+        "gold_transfer_outcome_reads": 0,
+        "negative_transfer_accepted": 7,
+        "negative_transfer_opportunities": 1,
+        "outcomes_revealed_to_bcore": false,
+        "positive_transfer_accepted": 12,
+        "positive_transfer_opportunities": 12,
+        "positive_transfer_verified": 7,
+        "prediction_commitment": "f747cf00a070b5e6ac22e884c35e9c0fd17673f7bd2adcadf17be33d1e238f56",
+        "promotion_certificates_received": 14,
+        "raw_field_acceptance_authority": true,
+        "transfer_abstained": 0,
+        "transfer_candidates_total": 14,
+        "transfer_promoted": 14,
+        "transfer_rejected": 0
+      },
+      "rejected": 0
+    },
+    {
+      "abstained": 0,
+      "policy": {
+        "margin_basis_points": 100,
+        "method": "INTERVENTION_REGRESSION"
+      },
+      "promoted": 14,
+      "raw_metrics": {
+        "ambiguous_transfer_abstentions": 0,
+        "ambiguous_transfer_cases": 1,
+        "gold_transfer_outcome_reads": 0,
+        "negative_transfer_accepted": 7,
+        "negative_transfer_opportunities": 1,
+        "outcomes_revealed_to_bcore": false,
+        "positive_transfer_accepted": 12,
+        "positive_transfer_opportunities": 12,
+        "positive_transfer_verified": 7,
+        "prediction_commitment": "f747cf00a070b5e6ac22e884c35e9c0fd17673f7bd2adcadf17be33d1e238f56",
+        "promotion_certificates_received": 14,
+        "raw_field_acceptance_authority": true,
+        "transfer_abstained": 0,
+        "transfer_candidates_total": 14,
+        "transfer_promoted": 14,
+        "transfer_rejected": 0
+      },
+      "rejected": 0
+    },
+    {
+      "abstained": 0,
+      "policy": {
+        "margin_basis_points": 250,
+        "method": "INTERVENTION_REGRESSION"
+      },
+      "promoted": 14,
+      "raw_metrics": {
+        "ambiguous_transfer_abstentions": 0,
+        "ambiguous_transfer_cases": 1,
+        "gold_transfer_outcome_reads": 0,
+        "negative_transfer_accepted": 7,
+        "negative_transfer_opportunities": 1,
+        "outcomes_revealed_to_bcore": false,
+        "positive_transfer_accepted": 12,
+        "positive_transfer_opportunities": 12,
+        "positive_transfer_verified": 7,
+        "prediction_commitment": "f747cf00a070b5e6ac22e884c35e9c0fd17673f7bd2adcadf17be33d1e238f56",
+        "promotion_certificates_received": 14,
+        "raw_field_acceptance_authority": true,
+        "transfer_abstained": 0,
+        "transfer_candidates_total": 14,
+        "transfer_promoted": 14,
+        "transfer_rejected": 0
+      },
+      "rejected": 0
+    },
+    {
+      "abstained": 0,
+      "policy": {
+        "margin_basis_points": 500,
+        "method": "INTERVENTION_REGRESSION"
+      },
+      "promoted": 14,
+      "raw_metrics": {
+        "ambiguous_transfer_abstentions": 0,
+        "ambiguous_transfer_cases": 1,
+        "gold_transfer_outcome_reads": 0,
+        "negative_transfer_accepted": 7,
+        "negative_transfer_opportunities": 1,
+        "outcomes_revealed_to_bcore": false,
+        "positive_transfer_accepted": 12,
+        "positive_transfer_opportunities": 12,
+        "positive_transfer_verified": 7,
+        "prediction_commitment": "f747cf00a070b5e6ac22e884c35e9c0fd17673f7bd2adcadf17be33d1e238f56",
+        "promotion_certificates_received": 14,
+        "raw_field_acceptance_authority": true,
+        "transfer_abstained": 0,
+        "transfer_candidates_total": 14,
+        "transfer_promoted": 14,
+        "transfer_rejected": 0
+      },
+      "rejected": 0
+    },
+    {
+      "abstained": 0,
+      "policy": {
+        "margin_basis_points": 1000,
+        "method": "INTERVENTION_REGRESSION"
+      },
+      "promoted": 14,
+      "raw_metrics": {
+        "ambiguous_transfer_abstentions": 0,
+        "ambiguous_transfer_cases": 1,
+        "gold_transfer_outcome_reads": 0,
+        "negative_transfer_accepted": 7,
+        "negative_transfer_opportunities": 1,
+        "outcomes_revealed_to_bcore": false,
+        "positive_transfer_accepted": 12,
+        "positive_transfer_opportunities": 12,
+        "positive_transfer_verified": 7,
+        "prediction_commitment": "f747cf00a070b5e6ac22e884c35e9c0fd17673f7bd2adcadf17be33d1e238f56",
+        "promotion_certificates_received": 14,
+        "raw_field_acceptance_authority": true,
+        "transfer_abstained": 0,
+        "transfer_candidates_total": 14,
+        "transfer_promoted": 14,
+        "transfer_rejected": 0
+      },
+      "rejected": 0
+    },
+    {
+      "abstained": 0,
+      "policy": {
+        "margin_basis_points": 0,
+        "method": "HYBRID_MECHANISM"
+      },
+      "promoted": 14,
+      "raw_metrics": {
+        "ambiguous_transfer_abstentions": 0,
+        "ambiguous_transfer_cases": 1,
+        "gold_transfer_outcome_reads": 0,
+        "negative_transfer_accepted": 6,
+        "negative_transfer_opportunities": 1,
+        "outcomes_revealed_to_bcore": false,
+        "positive_transfer_accepted": 12,
+        "positive_transfer_opportunities": 12,
+        "positive_transfer_verified": 8,
+        "prediction_commitment": "da4b79ef0066286f5f67b4f56600b6e686a6017659c75bacd65fb2fcc022ff50",
+        "promotion_certificates_received": 14,
+        "raw_field_acceptance_authority": true,
+        "transfer_abstained": 0,
+        "transfer_candidates_total": 14,
+        "transfer_promoted": 14,
+        "transfer_rejected": 0
+      },
+      "rejected": 0
+    },
+    {
+      "abstained": 0,
+      "policy": {
+        "margin_basis_points": 100,
+        "method": "HYBRID_MECHANISM"
+      },
+      "promoted": 14,
+      "raw_metrics": {
+        "ambiguous_transfer_abstentions": 0,
+        "ambiguous_transfer_cases": 1,
+        "gold_transfer_outcome_reads": 0,
+        "negative_transfer_accepted": 6,
+        "negative_transfer_opportunities": 1,
+        "outcomes_revealed_to_bcore": false,
+        "positive_transfer_accepted": 12,
+        "positive_transfer_opportunities": 12,
+        "positive_transfer_verified": 8,
+        "prediction_commitment": "da4b79ef0066286f5f67b4f56600b6e686a6017659c75bacd65fb2fcc022ff50",
+        "promotion_certificates_received": 14,
+        "raw_field_acceptance_authority": true,
+        "transfer_abstained": 0,
+        "transfer_candidates_total": 14,
+        "transfer_promoted": 14,
+        "transfer_rejected": 0
+      },
+      "rejected": 0
+    },
+    {
+      "abstained": 0,
+      "policy": {
+        "margin_basis_points": 250,
+        "method": "HYBRID_MECHANISM"
+      },
+      "promoted": 14,
+      "raw_metrics": {
+        "ambiguous_transfer_abstentions": 0,
+        "ambiguous_transfer_cases": 1,
+        "gold_transfer_outcome_reads": 0,
+        "negative_transfer_accepted": 6,
+        "negative_transfer_opportunities": 1,
+        "outcomes_revealed_to_bcore": false,
+        "positive_transfer_accepted": 12,
+        "positive_transfer_opportunities": 12,
+        "positive_transfer_verified": 8,
+        "prediction_commitment": "da4b79ef0066286f5f67b4f56600b6e686a6017659c75bacd65fb2fcc022ff50",
+        "promotion_certificates_received": 14,
+        "raw_field_acceptance_authority": true,
+        "transfer_abstained": 0,
+        "transfer_candidates_total": 14,
+        "transfer_promoted": 14,
+        "transfer_rejected": 0
+      },
+      "rejected": 0
+    },
+    {
+      "abstained": 0,
+      "policy": {
+        "margin_basis_points": 500,
+        "method": "HYBRID_MECHANISM"
+      },
+      "promoted": 14,
+      "raw_metrics": {
+        "ambiguous_transfer_abstentions": 0,
+        "ambiguous_transfer_cases": 1,
+        "gold_transfer_outcome_reads": 0,
+        "negative_transfer_accepted": 6,
+        "negative_transfer_opportunities": 1,
+        "outcomes_revealed_to_bcore": false,
+        "positive_transfer_accepted": 12,
+        "positive_transfer_opportunities": 12,
+        "positive_transfer_verified": 8,
+        "prediction_commitment": "da4b79ef0066286f5f67b4f56600b6e686a6017659c75bacd65fb2fcc022ff50",
+        "promotion_certificates_received": 14,
+        "raw_field_acceptance_authority": true,
+        "transfer_abstained": 0,
+        "transfer_candidates_total": 14,
+        "transfer_promoted": 14,
+        "transfer_rejected": 0
+      },
+      "rejected": 0
+    },
+    {
+      "abstained": 0,
+      "policy": {
+        "margin_basis_points": 1000,
+        "method": "HYBRID_MECHANISM"
+      },
+      "promoted": 14,
+      "raw_metrics": {
+        "ambiguous_transfer_abstentions": 0,
+        "ambiguous_transfer_cases": 1,
+        "gold_transfer_outcome_reads": 0,
+        "negative_transfer_accepted": 6,
+        "negative_transfer_opportunities": 1,
+        "outcomes_revealed_to_bcore": false,
+        "positive_transfer_accepted": 12,
+        "positive_transfer_opportunities": 12,
+        "positive_transfer_verified": 8,
+        "prediction_commitment": "da4b79ef0066286f5f67b4f56600b6e686a6017659c75bacd65fb2fcc022ff50",
+        "promotion_certificates_received": 14,
+        "raw_field_acceptance_authority": true,
+        "transfer_abstained": 0,
+        "transfer_candidates_total": 14,
+        "transfer_promoted": 14,
+        "transfer_rejected": 0
+      },
+      "rejected": 0
+    }
+  ],
+  "transfer_opportunity_counts": {
+    "AMBIGUOUS": 1,
+    "NEGATIVE": 1,
+    "POSITIVE": 12
+  },
+  "transfer_promotion_safety_ablation_pass": false,
+  "transfer_safety_memory_ablation_pass": true,
+  "transfer_selection_receipt": "ZERO_NEGATIVE_ACCEPTANCE_WITH_POSITIVE_VERIFICATION_THEN_COVERAGE_AND_ABSTENTION"
+}

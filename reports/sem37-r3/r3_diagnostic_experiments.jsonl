@@ -1,0 +1,3 @@
+{"experiment":"PAIRED_R2_VS_CONDITIONAL_PATH_DECOMPOSITION","experiment_id":"R3-EXP-000","operator_selected":false}
+{"experiment":"MULTI_THRESHOLD_PARETO_CAUSAL_SEARCH","experiment_id":"R3-EXP-001","operator_selected":false}
+{"experiment":"TRANSFER_MARGIN_POLICY_MATRIX_WITH_ALWAYS_PROMOTE_AND_ABSTAIN","experiment_id":"R3-EXP-002","operator_selected":false}

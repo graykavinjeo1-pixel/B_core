@@ -1,0 +1,10 @@
+{
+  "diagnoses": [
+    "MEDIATOR_ROLE_NOT_FIRST_CLASS",
+    "PATH_EVIDENCE_COLLAPSED_INTO_PAIRWISE_DIRECT_EDGE",
+    "TRANSFER_PROMOTION_LACKED_EXPLICIT_NO_CHANGE_CAUSAL_GATE"
+  ],
+  "historical_r2_status": "FAIL",
+  "human_diagnosis_selection_events": 0,
+  "schema_version": "SEM37_R3_AUTONOMOUS_R2_FAILURE_DIAGNOSIS_1"
+}

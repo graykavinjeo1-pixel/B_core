@@ -1,0 +1,4 @@
+{
+  "ablation": "ALWAYS_PROMOTE_SELECTED_METHOD",
+  "transfer_promotion_safety_ablation_pass": false
+}
