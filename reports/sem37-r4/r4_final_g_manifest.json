@@ -1,0 +1,29 @@
+{
+  "partition_receipt": {
+    "base_evaluator_sha256": "362308ed837dbe67e47be6c702eef825c66c15dd57f7fb7bbd2a09f5fde518a3",
+    "concrete_final_case_ids_exposed_before_freeze": 0,
+    "dev_final_overlap": 0,
+    "final_causal_fixture_contract_pass": true,
+    "final_counts": {
+      "lane_a": 14,
+      "lane_b": 12
+    },
+    "final_holdout_model_dependent_selection_events": 0,
+    "final_manifest_sha256": "2b61638c36c2691b6b3f1151fb6db4333cef8377604d898eef6bb1c77bb1ce8a",
+    "final_selection_commitment": "e402e072ab16126ba4e9ea748b6d7201c0fb2d41edb7cb842d769477f39d786e",
+    "final_solver_exposures_to_invalid_fixtures": 0,
+    "final_transfer_fixture_contract_pass": true,
+    "fixture_manifest_sha256": "ce7ca3b43b736ff500f87c2650965060cce8db98323882bb9f2bea8efd139a6b",
+    "frozen_r3_evaluator_sha256": "0ded0b000323286a563614e54fa051dd1a6079e5a2e68bd41edfbf6a98ab2b85",
+    "historical_final_overlap": 0,
+    "partition_rule": "SEM37_R4_HASH_ORDERED_FIRST_CONTRACT_SATISFYING_UNUSED_PARTITION_V1",
+    "r4_evaluator_sha256": "39aa92655295881187730d6a6555b5396aa34cc76c8861b91f91a38aaeb9ea77",
+    "third_party_fixture_integrity": "PASS"
+  },
+  "r1_final_final_g_overlap": 0,
+  "r2_final_final_g_overlap": 0,
+  "r3_final_final_g_overlap": 0,
+  "r4_dev_f_final_g_overlap": 0,
+  "schema_version": "SEM37_R4_FINAL_G_PUBLIC_MANIFEST_RECEIPT_1",
+  "structural_distinctness": "UNUSED_SOURCE_AND_ROW_IDENTITIES_PLUS_HASH_ORDER"
+}
