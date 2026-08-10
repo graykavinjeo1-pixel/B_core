@@ -1,63 +1,84 @@
 {
   "metrics": {
-    "active_causal_paths_p50": 0,
-    "active_causal_paths_p95": 1,
-    "available_interventions": 26,
-    "candidate_mediator_paths_evaluated": 34,
-    "candidate_mediator_paths_total": 38,
-    "common_cause_as_direct_misidentifications": 0,
-    "delayed_direct_effect_false_mediation_events": 0,
-    "external_path_causal_overgeneralization_events": 3,
+    "additive_mixed_cases": 2,
+    "additive_mixed_cases_correct": 0,
+    "additive_mixed_effect_identification_pass": false,
+    "available_interventions": 16,
+    "candidate_causal_paths_evaluated": 19,
+    "candidate_causal_paths_total": 32,
+    "candidate_component_sets_evaluated": 0,
+    "candidate_component_sets_total": 0,
+    "common_cause_as_direct_misidentifications": 1,
+    "cross_external_interaction_transfer_events": 0,
+    "cross_external_mixed_effect_transfer_events": 0,
+    "expected_external_result_lookups": 0,
+    "external_mixed_effect_overgeneralization_events": 4,
     "false_certainty_on_non_identifiable_cases": 0,
     "full_intervention_enumeration_events": 0,
-    "fully_identifiable_cases": 20,
+    "fully_identifiable_cases": 14,
     "gold_direct_edge_reads": 0,
     "gold_equation_reads_by_bcore": 0,
     "gold_graph_reads_by_bcore": 0,
+    "gold_interaction_component_reads": 0,
     "gold_mediator_reads": 0,
     "gold_path_specific_effect_reads": 0,
-    "hidden_mediator_false_direct_certainty_events": 0,
-    "identifiable_direct_cases": 13,
     "identifiable_direct_fn": 5,
-    "identifiable_direct_fp": 0,
+    "identifiable_direct_fp": 2,
     "identifiable_direct_precision": {
-      "denominator": 8,
-      "numerator": 8
+      "denominator": 7,
+      "numerator": 5
     },
     "identifiable_direct_recall": {
-      "denominator": 13,
-      "numerator": 8
+      "denominator": 10,
+      "numerator": 5
     },
-    "identifiable_direct_resolved": 8,
-    "identifiable_direct_tp": 8,
-    "identifiable_direct_unresolved": 5,
+    "identifiable_direct_tp": 5,
+    "interaction_components_promoted": 0,
+    "interaction_mixed_cases": 2,
+    "interaction_mixed_cases_correct": 0,
+    "interaction_mixed_effect_identification_pass": false,
     "intervention_outcome_reads_before_prediction": 0,
-    "interventions_considered": 26,
-    "interventions_executed": 26,
-    "mediated_fn": 7,
-    "mediated_fp": 3,
+    "interventions_considered": 16,
+    "interventions_executed": 16,
+    "joint_intervention_available_cases": 0,
+    "mediated_fn": 6,
+    "mediated_fp": 2,
+    "mediated_interaction_components_promoted": 0,
+    "mediated_precision": {
+      "denominator": 3,
+      "numerator": 1
+    },
+    "mediated_recall": {
+      "denominator": 7,
+      "numerator": 1
+    },
     "mediated_tp": 1,
-    "mixed_direct_mediated_cases": 4,
-    "mixed_direct_mediated_correct": 0,
-    "mixed_direct_mediated_identification_pass": false,
-    "non_identifiable_cases": 4,
-    "partially_identifiable_cases": 2,
-    "path_intervention_certificates_received": 8,
-    "path_specific_counterfactual_validations": 26,
-    "prediction_commitment": "c4b0bf4a5ef8c3bcbc033196b7ef6fc93ae6e0033ab5f13e58cfb7d55724d84c",
+    "mediator_intervention_available_cases": 0,
+    "missing_required_causal_components": 13,
+    "mixed_effect_cases": 4,
+    "mixed_effect_cases_correct": 0,
+    "mixed_effect_counterfactual_validations": 0,
+    "mixed_effect_identification_pass": false,
+    "mixed_effect_interventional_validations": 0,
+    "mixed_effect_novel_prediction_errors": 2,
+    "mixed_effect_novel_predictions": 0,
+    "non_identifiable_cases": 1,
+    "partially_identifiable_cases": 1,
+    "prediction_commitment": "34dcec57a8c91409a71fe9e231ff32c715d69c8397df99a70a2439f8eeacb970",
     "pure_direct_false_mediated_events": 0,
-    "pure_mediation_false_direct_events": 0,
+    "pure_mediation_false_direct_events": 1,
     "raw_field_acceptance_authority": true,
-    "unavailable_counterfactual_used_as_observed_evidence": 0,
-    "unresolved_certificates_received": 15
+    "redundant_causal_component_promotions": 4,
+    "source_intervention_available_cases": 16,
+    "unverified_causal_component_promotions": 0
   },
   "predictions": [
     {
       "available_interventions": 1,
       "candidate_confounders": [],
-      "candidate_mediator_paths_evaluated": 2,
-      "candidate_mediator_paths_total": 1,
-      "case_id": "R5A-0c73358d1f533c3542b8bd55",
+      "candidate_mediator_paths_evaluated": 1,
+      "candidate_mediator_paths_total": 6,
+      "case_id": "R6X-19269f387bdf313ec1a64a61",
       "counterfactual_validations": 1,
       "direct_present": false,
       "full_intervention_enumeration": false,
@@ -70,45 +91,12 @@
       "model": "OBSERVATIONAL_IDENTIFIABILITY_GUARD",
       "outcome_read_before_prediction": false,
       "path_intervention_certificate": null,
-      "source": 0,
-      "target": 2,
+      "source": 1,
+      "target": 3,
       "unavailable_counterfactual_used_as_observed_evidence": false,
       "unresolved": true,
       "unresolved_certificate": {
-        "case_id": "R5A-0c73358d1f533c3542b8bd55",
-        "discrimination_limit": "LOCAL_EVIDENCE_DID_NOT_SELECT_A_STABLE_PATH",
-        "remaining_hypotheses": [
-          "DIRECT_COMPONENT",
-          "MEDIATED_COMPONENT",
-          "COMMON_CAUSE_OR_HIDDEN_COMPONENT"
-        ],
-        "resolving_intervention_if_available": "LEGAL_MEDIATOR_CONTROL_OR_ADDITIONAL_RANDOMIZED_SOURCE_INTERVENTION"
-      }
-    },
-    {
-      "available_interventions": 1,
-      "candidate_confounders": [],
-      "candidate_mediator_paths_evaluated": 2,
-      "candidate_mediator_paths_total": 1,
-      "case_id": "R5A-13b597ef8c73c5efbfc96928",
-      "counterfactual_validations": 1,
-      "direct_present": false,
-      "full_intervention_enumeration": false,
-      "identifiability": "FULLY_IDENTIFIABLE",
-      "interventions_considered": 1,
-      "interventions_executed": 1,
-      "mediated_path_certificates": [],
-      "mediated_paths": [],
-      "mediator_intervention_available": false,
-      "model": "OBSERVATIONAL_IDENTIFIABILITY_GUARD",
-      "outcome_read_before_prediction": false,
-      "path_intervention_certificate": null,
-      "source": 0,
-      "target": 2,
-      "unavailable_counterfactual_used_as_observed_evidence": false,
-      "unresolved": true,
-      "unresolved_certificate": {
-        "case_id": "R5A-13b597ef8c73c5efbfc96928",
+        "case_id": "R6X-19269f387bdf313ec1a64a61",
         "discrimination_limit": "LOCAL_EVIDENCE_DID_NOT_SELECT_A_STABLE_PATH",
         "remaining_hypotheses": [
           "DIRECT_COMPONENT",
@@ -123,16 +111,16 @@
       "candidate_confounders": [],
       "candidate_mediator_paths_evaluated": 2,
       "candidate_mediator_paths_total": 6,
-      "case_id": "R5A-25786085681db620adeb05d1",
+      "case_id": "R6X-24d3de0221b8c60802ec0428",
       "counterfactual_validations": 1,
-      "direct_present": true,
+      "direct_present": false,
       "full_intervention_enumeration": false,
       "identifiability": "FULLY_IDENTIFIABLE",
       "interventions_considered": 1,
       "interventions_executed": 1,
       "mediated_path_certificates": [
         {
-          "case_id": "R5A-25786085681db620adeb05d1",
+          "case_id": "R6X-24d3de0221b8c60802ec0428",
           "identifiability": "FULLY_IDENTIFIABLE",
           "mediator_path": [
             1,
@@ -140,7 +128,7 @@
             3
           ],
           "path_intervention_evidence": [
-            "LEGAL_INTERVENTION=fdc38cd991e36280fbf165d9"
+            "LEGAL_INTERVENTION=5c0b3467b08fed5cb5b3aed9"
           ],
           "source": 1,
           "target": 3,
@@ -163,41 +151,7 @@
       "mediator_intervention_available": false,
       "model": "OBSERVATIONAL_IDENTIFIABILITY_GUARD",
       "outcome_read_before_prediction": false,
-      "path_intervention_certificate": {
-        "candidate_confounders": [],
-        "candidate_mediators": [
-          0,
-          2
-        ],
-        "case_id": "R5A-25786085681db620adeb05d1",
-        "identifiability": "FULLY_IDENTIFIABLE",
-        "interventions_available": [
-          "fdc38cd991e36280fbf165d9"
-        ],
-        "interventions_performed": [
-          "fdc38cd991e36280fbf165d9"
-        ],
-        "observed_outcomes": [
-          4602315186840272896
-        ],
-        "path_specific_evidence": [
-          "DIRECT_EDGE_LOCAL_RANKED=false;CONDITIONAL=true;INTERVENTION_SIGNAL=true"
-        ],
-        "predicted_outcomes_before_intervention": {
-          "candidate_mediator_count": 2,
-          "case_id": "R5A-25786085681db620adeb05d1",
-          "gold_fields_used": 0,
-          "hypothesis": "LEGAL_SOURCE_INTERVENTION_DISCRIMINATES_TOTAL_INFLUENCE;PATH_CLASS_REMAINS_OPEN",
-          "predicted_no_change_target_ieee754_bits": 13823206076922724352,
-          "prediction_frozen_before_outcome": true,
-          "source": 1,
-          "target": 3
-        },
-        "promotion_rationale": "DIRECT_COMPONENT_RETAINED_ONLY_AFTER_IDENTIFIABILITY_AND_LOCAL_PATH_ANALYSIS",
-        "remaining_uncertainty": [],
-        "source": 1,
-        "target": 3
-      },
+      "path_intervention_certificate": null,
       "source": 1,
       "target": 3,
       "unavailable_counterfactual_used_as_observed_evidence": false,
@@ -207,42 +161,9 @@
     {
       "available_interventions": 1,
       "candidate_confounders": [],
-      "candidate_mediator_paths_evaluated": 2,
-      "candidate_mediator_paths_total": 1,
-      "case_id": "R5A-45e6542ce566116eb5ad4618",
-      "counterfactual_validations": 1,
-      "direct_present": false,
-      "full_intervention_enumeration": false,
-      "identifiability": "FULLY_IDENTIFIABLE",
-      "interventions_considered": 1,
-      "interventions_executed": 1,
-      "mediated_path_certificates": [],
-      "mediated_paths": [],
-      "mediator_intervention_available": false,
-      "model": "OBSERVATIONAL_IDENTIFIABILITY_GUARD",
-      "outcome_read_before_prediction": false,
-      "path_intervention_certificate": null,
-      "source": 0,
-      "target": 2,
-      "unavailable_counterfactual_used_as_observed_evidence": false,
-      "unresolved": true,
-      "unresolved_certificate": {
-        "case_id": "R5A-45e6542ce566116eb5ad4618",
-        "discrimination_limit": "LOCAL_EVIDENCE_DID_NOT_SELECT_A_STABLE_PATH",
-        "remaining_hypotheses": [
-          "DIRECT_COMPONENT",
-          "MEDIATED_COMPONENT",
-          "COMMON_CAUSE_OR_HIDDEN_COMPONENT"
-        ],
-        "resolving_intervention_if_available": "LEGAL_MEDIATOR_CONTROL_OR_ADDITIONAL_RANDOMIZED_SOURCE_INTERVENTION"
-      }
-    },
-    {
-      "available_interventions": 1,
-      "candidate_confounders": [],
       "candidate_mediator_paths_evaluated": 1,
       "candidate_mediator_paths_total": 0,
-      "case_id": "R5A-48e2eaac7e83bbd98c99b165",
+      "case_id": "R6X-47c7661d16b2753837dad012",
       "counterfactual_validations": 1,
       "direct_present": true,
       "full_intervention_enumeration": false,
@@ -257,26 +178,26 @@
       "path_intervention_certificate": {
         "candidate_confounders": [],
         "candidate_mediators": [],
-        "case_id": "R5A-48e2eaac7e83bbd98c99b165",
+        "case_id": "R6X-47c7661d16b2753837dad012",
         "identifiability": "FULLY_IDENTIFIABLE",
         "interventions_available": [
-          "909b24d7f0280040d2b012f0"
+          "a08df876adf8e1ea2b7f851c"
         ],
         "interventions_performed": [
-          "909b24d7f0280040d2b012f0"
+          "a08df876adf8e1ea2b7f851c"
         ],
         "observed_outcomes": [
-          4610047803010318336
+          4591352389117673472
         ],
         "path_specific_evidence": [
           "DIRECT_EDGE_LOCAL_RANKED=true;CONDITIONAL=true;INTERVENTION_SIGNAL=true"
         ],
         "predicted_outcomes_before_intervention": {
           "candidate_mediator_count": 0,
-          "case_id": "R5A-48e2eaac7e83bbd98c99b165",
+          "case_id": "R6X-47c7661d16b2753837dad012",
           "gold_fields_used": 0,
           "hypothesis": "LEGAL_SOURCE_INTERVENTION_DISCRIMINATES_TOTAL_INFLUENCE;PATH_CLASS_REMAINS_OPEN",
-          "predicted_no_change_target_ieee754_bits": 13826493901768228864,
+          "predicted_no_change_target_ieee754_bits": 4600884612153999360,
           "prediction_frozen_before_outcome": true,
           "source": 0,
           "target": 1
@@ -295,108 +216,9 @@
     {
       "available_interventions": 1,
       "candidate_confounders": [],
-      "candidate_mediator_paths_evaluated": 0,
+      "candidate_mediator_paths_evaluated": 2,
       "candidate_mediator_paths_total": 1,
-      "case_id": "R5A-50b37a0bb8203a45d229fed5",
-      "counterfactual_validations": 1,
-      "direct_present": false,
-      "full_intervention_enumeration": false,
-      "identifiability": "NOT_IDENTIFIABLE_UNDER_AVAILABLE_EVIDENCE",
-      "interventions_considered": 1,
-      "interventions_executed": 1,
-      "mediated_path_certificates": [],
-      "mediated_paths": [],
-      "mediator_intervention_available": false,
-      "model": "OBSERVATIONAL_IDENTIFIABILITY_GUARD",
-      "outcome_read_before_prediction": false,
-      "path_intervention_certificate": null,
-      "source": 0,
-      "target": 3,
-      "unavailable_counterfactual_used_as_observed_evidence": false,
-      "unresolved": true,
-      "unresolved_certificate": {
-        "case_id": "R5A-50b37a0bb8203a45d229fed5",
-        "discrimination_limit": "UNOBSERVED_COMPONENT_PREVENTS_PATH_SEPARATION",
-        "remaining_hypotheses": [
-          "DIRECT_COMPONENT",
-          "MEDIATED_COMPONENT",
-          "COMMON_CAUSE_OR_HIDDEN_COMPONENT"
-        ],
-        "resolving_intervention_if_available": "LEGAL_MEDIATOR_CONTROL_OR_ADDITIONAL_RANDOMIZED_SOURCE_INTERVENTION"
-      }
-    },
-    {
-      "available_interventions": 1,
-      "candidate_confounders": [],
-      "candidate_mediator_paths_evaluated": 1,
-      "candidate_mediator_paths_total": 6,
-      "case_id": "R5A-56cc763085466bfc583a31f6",
-      "counterfactual_validations": 1,
-      "direct_present": false,
-      "full_intervention_enumeration": false,
-      "identifiability": "FULLY_IDENTIFIABLE",
-      "interventions_considered": 1,
-      "interventions_executed": 1,
-      "mediated_path_certificates": [],
-      "mediated_paths": [],
-      "mediator_intervention_available": false,
-      "model": "OBSERVATIONAL_IDENTIFIABILITY_GUARD",
-      "outcome_read_before_prediction": false,
-      "path_intervention_certificate": null,
-      "source": 1,
-      "target": 3,
-      "unavailable_counterfactual_used_as_observed_evidence": false,
-      "unresolved": true,
-      "unresolved_certificate": {
-        "case_id": "R5A-56cc763085466bfc583a31f6",
-        "discrimination_limit": "LOCAL_EVIDENCE_DID_NOT_SELECT_A_STABLE_PATH",
-        "remaining_hypotheses": [
-          "DIRECT_COMPONENT",
-          "MEDIATED_COMPONENT",
-          "COMMON_CAUSE_OR_HIDDEN_COMPONENT"
-        ],
-        "resolving_intervention_if_available": "LEGAL_MEDIATOR_CONTROL_OR_ADDITIONAL_RANDOMIZED_SOURCE_INTERVENTION"
-      }
-    },
-    {
-      "available_interventions": 1,
-      "candidate_confounders": [],
-      "candidate_mediator_paths_evaluated": 0,
-      "candidate_mediator_paths_total": 0,
-      "case_id": "R5A-69a0d291f3c617d11a0dafc3",
-      "counterfactual_validations": 1,
-      "direct_present": false,
-      "full_intervention_enumeration": false,
-      "identifiability": "NOT_IDENTIFIABLE_UNDER_AVAILABLE_EVIDENCE",
-      "interventions_considered": 1,
-      "interventions_executed": 1,
-      "mediated_path_certificates": [],
-      "mediated_paths": [],
-      "mediator_intervention_available": false,
-      "model": "OBSERVATIONAL_IDENTIFIABILITY_GUARD",
-      "outcome_read_before_prediction": false,
-      "path_intervention_certificate": null,
-      "source": 0,
-      "target": 2,
-      "unavailable_counterfactual_used_as_observed_evidence": false,
-      "unresolved": true,
-      "unresolved_certificate": {
-        "case_id": "R5A-69a0d291f3c617d11a0dafc3",
-        "discrimination_limit": "UNOBSERVED_COMPONENT_PREVENTS_PATH_SEPARATION",
-        "remaining_hypotheses": [
-          "DIRECT_COMPONENT",
-          "MEDIATED_COMPONENT",
-          "COMMON_CAUSE_OR_HIDDEN_COMPONENT"
-        ],
-        "resolving_intervention_if_available": "LEGAL_MEDIATOR_CONTROL_OR_ADDITIONAL_RANDOMIZED_SOURCE_INTERVENTION"
-      }
-    },
-    {
-      "available_interventions": 1,
-      "candidate_confounders": [],
-      "candidate_mediator_paths_evaluated": 3,
-      "candidate_mediator_paths_total": 6,
-      "case_id": "R5A-71145959e5fd911b0908ce07",
+      "case_id": "R6X-54b985110cbaba5e34848f36",
       "counterfactual_validations": 1,
       "direct_present": false,
       "full_intervention_enumeration": false,
@@ -405,21 +227,186 @@
       "interventions_executed": 1,
       "mediated_path_certificates": [
         {
-          "case_id": "R5A-71145959e5fd911b0908ce07",
+          "case_id": "R6X-54b985110cbaba5e34848f36",
+          "identifiability": "FULLY_IDENTIFIABLE",
+          "mediator_path": [
+            0,
+            1,
+            2
+          ],
+          "path_intervention_evidence": [
+            "LEGAL_INTERVENTION=e99512b8a452eaaa05c3de59"
+          ],
+          "source": 0,
+          "target": 2,
+          "temporal_evidence": [
+            "ORDERED_LOCAL_PATH=[0, 1, 2]"
+          ],
+          "transfer_evidence": [
+            "FRESH_EXTERNAL_WORLD"
+          ],
+          "uncertainty_millionths": 100000
+        }
+      ],
+      "mediated_paths": [
+        [
+          0,
+          1,
+          2
+        ]
+      ],
+      "mediator_intervention_available": false,
+      "model": "OBSERVATIONAL_IDENTIFIABILITY_GUARD",
+      "outcome_read_before_prediction": false,
+      "path_intervention_certificate": null,
+      "source": 0,
+      "target": 2,
+      "unavailable_counterfactual_used_as_observed_evidence": false,
+      "unresolved": false,
+      "unresolved_certificate": null
+    },
+    {
+      "available_interventions": 1,
+      "candidate_confounders": [],
+      "candidate_mediator_paths_evaluated": 1,
+      "candidate_mediator_paths_total": 1,
+      "case_id": "R6X-5b7bf990bda91c45de41fce9",
+      "counterfactual_validations": 1,
+      "direct_present": true,
+      "full_intervention_enumeration": false,
+      "identifiability": "FULLY_IDENTIFIABLE",
+      "interventions_considered": 1,
+      "interventions_executed": 1,
+      "mediated_path_certificates": [],
+      "mediated_paths": [],
+      "mediator_intervention_available": false,
+      "model": "OBSERVATIONAL_IDENTIFIABILITY_GUARD",
+      "outcome_read_before_prediction": false,
+      "path_intervention_certificate": {
+        "candidate_confounders": [],
+        "candidate_mediators": [
+          1
+        ],
+        "case_id": "R6X-5b7bf990bda91c45de41fce9",
+        "identifiability": "FULLY_IDENTIFIABLE",
+        "interventions_available": [
+          "9bd8d2c27bda458082421fef"
+        ],
+        "interventions_performed": [
+          "9bd8d2c27bda458082421fef"
+        ],
+        "observed_outcomes": [
+          13832767593246621696
+        ],
+        "path_specific_evidence": [
+          "DIRECT_EDGE_LOCAL_RANKED=true;CONDITIONAL=true;INTERVENTION_SIGNAL=true"
+        ],
+        "predicted_outcomes_before_intervention": {
+          "candidate_mediator_count": 1,
+          "case_id": "R6X-5b7bf990bda91c45de41fce9",
+          "gold_fields_used": 0,
+          "hypothesis": "LEGAL_SOURCE_INTERVENTION_DISCRIMINATES_TOTAL_INFLUENCE;PATH_CLASS_REMAINS_OPEN",
+          "predicted_no_change_target_ieee754_bits": 4590164931592060928,
+          "prediction_frozen_before_outcome": true,
+          "source": 0,
+          "target": 2
+        },
+        "promotion_rationale": "DIRECT_COMPONENT_RETAINED_ONLY_AFTER_IDENTIFIABILITY_AND_LOCAL_PATH_ANALYSIS",
+        "remaining_uncertainty": [],
+        "source": 0,
+        "target": 2
+      },
+      "source": 0,
+      "target": 2,
+      "unavailable_counterfactual_used_as_observed_evidence": false,
+      "unresolved": false,
+      "unresolved_certificate": null
+    },
+    {
+      "available_interventions": 1,
+      "candidate_confounders": [],
+      "candidate_mediator_paths_evaluated": 1,
+      "candidate_mediator_paths_total": 1,
+      "case_id": "R6X-5c33af3bea0234aa34ff9e02",
+      "counterfactual_validations": 1,
+      "direct_present": true,
+      "full_intervention_enumeration": false,
+      "identifiability": "FULLY_IDENTIFIABLE",
+      "interventions_considered": 1,
+      "interventions_executed": 1,
+      "mediated_path_certificates": [],
+      "mediated_paths": [],
+      "mediator_intervention_available": false,
+      "model": "OBSERVATIONAL_IDENTIFIABILITY_GUARD",
+      "outcome_read_before_prediction": false,
+      "path_intervention_certificate": {
+        "candidate_confounders": [],
+        "candidate_mediators": [
+          1
+        ],
+        "case_id": "R6X-5c33af3bea0234aa34ff9e02",
+        "identifiability": "FULLY_IDENTIFIABLE",
+        "interventions_available": [
+          "6cd7f8acaf0970967a9f122e"
+        ],
+        "interventions_performed": [
+          "6cd7f8acaf0970967a9f122e"
+        ],
+        "observed_outcomes": [
+          4598926151627309056
+        ],
+        "path_specific_evidence": [
+          "DIRECT_EDGE_LOCAL_RANKED=true;CONDITIONAL=true;INTERVENTION_SIGNAL=true"
+        ],
+        "predicted_outcomes_before_intervention": {
+          "candidate_mediator_count": 1,
+          "case_id": "R6X-5c33af3bea0234aa34ff9e02",
+          "gold_fields_used": 0,
+          "hypothesis": "LEGAL_SOURCE_INTERVENTION_DISCRIMINATES_TOTAL_INFLUENCE;PATH_CLASS_REMAINS_OPEN",
+          "predicted_no_change_target_ieee754_bits": 13816490176148406272,
+          "prediction_frozen_before_outcome": true,
+          "source": 0,
+          "target": 2
+        },
+        "promotion_rationale": "DIRECT_COMPONENT_RETAINED_ONLY_AFTER_IDENTIFIABILITY_AND_LOCAL_PATH_ANALYSIS",
+        "remaining_uncertainty": [],
+        "source": 0,
+        "target": 2
+      },
+      "source": 0,
+      "target": 2,
+      "unavailable_counterfactual_used_as_observed_evidence": false,
+      "unresolved": false,
+      "unresolved_certificate": null
+    },
+    {
+      "available_interventions": 1,
+      "candidate_confounders": [],
+      "candidate_mediator_paths_evaluated": 2,
+      "candidate_mediator_paths_total": 6,
+      "case_id": "R6X-8be0b30e7c60059fb57b621a",
+      "counterfactual_validations": 1,
+      "direct_present": false,
+      "full_intervention_enumeration": false,
+      "identifiability": "FULLY_IDENTIFIABLE",
+      "interventions_considered": 1,
+      "interventions_executed": 1,
+      "mediated_path_certificates": [
+        {
+          "case_id": "R6X-8be0b30e7c60059fb57b621a",
           "identifiability": "FULLY_IDENTIFIABLE",
           "mediator_path": [
             1,
-            2,
             0,
             3
           ],
           "path_intervention_evidence": [
-            "LEGAL_INTERVENTION=5705ef60bcc944b7f81753e9"
+            "LEGAL_INTERVENTION=510cc4442d8701319443073c"
           ],
           "source": 1,
           "target": 3,
           "temporal_evidence": [
-            "ORDERED_LOCAL_PATH=[1, 2, 0, 3]"
+            "ORDERED_LOCAL_PATH=[1, 0, 3]"
           ],
           "transfer_evidence": [
             "FRESH_EXTERNAL_WORLD"
@@ -430,7 +417,6 @@
       "mediated_paths": [
         [
           1,
-          2,
           0,
           3
         ]
@@ -448,64 +434,9 @@
     {
       "available_interventions": 1,
       "candidate_confounders": [],
-      "candidate_mediator_paths_evaluated": 1,
-      "candidate_mediator_paths_total": 0,
-      "case_id": "R5A-763089d28aa5cee67f994ce9",
-      "counterfactual_validations": 1,
-      "direct_present": true,
-      "full_intervention_enumeration": false,
-      "identifiability": "FULLY_IDENTIFIABLE",
-      "interventions_considered": 1,
-      "interventions_executed": 1,
-      "mediated_path_certificates": [],
-      "mediated_paths": [],
-      "mediator_intervention_available": false,
-      "model": "OBSERVATIONAL_IDENTIFIABILITY_GUARD",
-      "outcome_read_before_prediction": false,
-      "path_intervention_certificate": {
-        "candidate_confounders": [],
-        "candidate_mediators": [],
-        "case_id": "R5A-763089d28aa5cee67f994ce9",
-        "identifiability": "FULLY_IDENTIFIABLE",
-        "interventions_available": [
-          "5c5a758c71efa18a5d9c67dc"
-        ],
-        "interventions_performed": [
-          "5c5a758c71efa18a5d9c67dc"
-        ],
-        "observed_outcomes": [
-          4601574301760487424
-        ],
-        "path_specific_evidence": [
-          "DIRECT_EDGE_LOCAL_RANKED=true;CONDITIONAL=true;INTERVENTION_SIGNAL=true"
-        ],
-        "predicted_outcomes_before_intervention": {
-          "candidate_mediator_count": 0,
-          "case_id": "R5A-763089d28aa5cee67f994ce9",
-          "gold_fields_used": 0,
-          "hypothesis": "LEGAL_SOURCE_INTERVENTION_DISCRIMINATES_TOTAL_INFLUENCE;PATH_CLASS_REMAINS_OPEN",
-          "predicted_no_change_target_ieee754_bits": 13819307499674664960,
-          "prediction_frozen_before_outcome": true,
-          "source": 0,
-          "target": 1
-        },
-        "promotion_rationale": "DIRECT_COMPONENT_RETAINED_ONLY_AFTER_IDENTIFIABILITY_AND_LOCAL_PATH_ANALYSIS",
-        "remaining_uncertainty": [],
-        "source": 0,
-        "target": 1
-      },
-      "source": 0,
-      "target": 1,
-      "unavailable_counterfactual_used_as_observed_evidence": false,
-      "unresolved": false,
-      "unresolved_certificate": null
-    },
-    {
-      "available_interventions": 1,
-      "candidate_confounders": [],
       "candidate_mediator_paths_evaluated": 0,
-      "candidate_mediator_paths_total": 0,
-      "case_id": "R5A-7fe960a027311c5a70bd30ca",
+      "candidate_mediator_paths_total": 1,
+      "case_id": "R6X-8e50c14eca060aa786458fb2",
       "counterfactual_validations": 1,
       "direct_present": false,
       "full_intervention_enumeration": false,
@@ -519,44 +450,11 @@
       "outcome_read_before_prediction": false,
       "path_intervention_certificate": null,
       "source": 0,
-      "target": 2,
+      "target": 3,
       "unavailable_counterfactual_used_as_observed_evidence": false,
       "unresolved": true,
       "unresolved_certificate": {
-        "case_id": "R5A-7fe960a027311c5a70bd30ca",
-        "discrimination_limit": "UNOBSERVED_COMPONENT_PREVENTS_PATH_SEPARATION",
-        "remaining_hypotheses": [
-          "DIRECT_COMPONENT",
-          "MEDIATED_COMPONENT",
-          "COMMON_CAUSE_OR_HIDDEN_COMPONENT"
-        ],
-        "resolving_intervention_if_available": "LEGAL_MEDIATOR_CONTROL_OR_ADDITIONAL_RANDOMIZED_SOURCE_INTERVENTION"
-      }
-    },
-    {
-      "available_interventions": 1,
-      "candidate_confounders": [],
-      "candidate_mediator_paths_evaluated": 0,
-      "candidate_mediator_paths_total": 0,
-      "case_id": "R5A-801df9567a20c665bcf78ee4",
-      "counterfactual_validations": 1,
-      "direct_present": false,
-      "full_intervention_enumeration": false,
-      "identifiability": "NOT_IDENTIFIABLE_UNDER_AVAILABLE_EVIDENCE",
-      "interventions_considered": 1,
-      "interventions_executed": 1,
-      "mediated_path_certificates": [],
-      "mediated_paths": [],
-      "mediator_intervention_available": false,
-      "model": "OBSERVATIONAL_IDENTIFIABILITY_GUARD",
-      "outcome_read_before_prediction": false,
-      "path_intervention_certificate": null,
-      "source": 0,
-      "target": 2,
-      "unavailable_counterfactual_used_as_observed_evidence": false,
-      "unresolved": true,
-      "unresolved_certificate": {
-        "case_id": "R5A-801df9567a20c665bcf78ee4",
+        "case_id": "R6X-8e50c14eca060aa786458fb2",
         "discrimination_limit": "UNOBSERVED_COMPONENT_PREVENTS_PATH_SEPARATION",
         "remaining_hypotheses": [
           "DIRECT_COMPONENT",
@@ -571,7 +469,7 @@
       "candidate_confounders": [],
       "candidate_mediator_paths_evaluated": 1,
       "candidate_mediator_paths_total": 1,
-      "case_id": "R5A-932902855afcc2b971f52609",
+      "case_id": "R6X-9582e5ba8121078879d60b07",
       "counterfactual_validations": 1,
       "direct_present": true,
       "full_intervention_enumeration": false,
@@ -588,83 +486,26 @@
         "candidate_mediators": [
           1
         ],
-        "case_id": "R5A-932902855afcc2b971f52609",
+        "case_id": "R6X-9582e5ba8121078879d60b07",
         "identifiability": "FULLY_IDENTIFIABLE",
         "interventions_available": [
-          "572354e46a5deda42169b6ac"
+          "4117dc4a705a51e36dee5e52"
         ],
         "interventions_performed": [
-          "572354e46a5deda42169b6ac"
+          "4117dc4a705a51e36dee5e52"
         ],
         "observed_outcomes": [
-          13815175674563919872
-        ],
-        "path_specific_evidence": [
-          "DIRECT_EDGE_LOCAL_RANKED=true;CONDITIONAL=true;INTERVENTION_SIGNAL=false"
-        ],
-        "predicted_outcomes_before_intervention": {
-          "candidate_mediator_count": 1,
-          "case_id": "R5A-932902855afcc2b971f52609",
-          "gold_fields_used": 0,
-          "hypothesis": "LEGAL_SOURCE_INTERVENTION_DISCRIMINATES_TOTAL_INFLUENCE;PATH_CLASS_REMAINS_OPEN",
-          "predicted_no_change_target_ieee754_bits": 4585526781376724992,
-          "prediction_frozen_before_outcome": true,
-          "source": 0,
-          "target": 2
-        },
-        "promotion_rationale": "DIRECT_COMPONENT_RETAINED_ONLY_AFTER_IDENTIFIABILITY_AND_LOCAL_PATH_ANALYSIS",
-        "remaining_uncertainty": [],
-        "source": 0,
-        "target": 2
-      },
-      "source": 0,
-      "target": 2,
-      "unavailable_counterfactual_used_as_observed_evidence": false,
-      "unresolved": false,
-      "unresolved_certificate": null
-    },
-    {
-      "available_interventions": 1,
-      "candidate_confounders": [],
-      "candidate_mediator_paths_evaluated": 1,
-      "candidate_mediator_paths_total": 1,
-      "case_id": "R5A-a4e22250a9477b90e522c9fa",
-      "counterfactual_validations": 1,
-      "direct_present": true,
-      "full_intervention_enumeration": false,
-      "identifiability": "FULLY_IDENTIFIABLE",
-      "interventions_considered": 1,
-      "interventions_executed": 1,
-      "mediated_path_certificates": [],
-      "mediated_paths": [],
-      "mediator_intervention_available": false,
-      "model": "OBSERVATIONAL_IDENTIFIABILITY_GUARD",
-      "outcome_read_before_prediction": false,
-      "path_intervention_certificate": {
-        "candidate_confounders": [],
-        "candidate_mediators": [
-          1
-        ],
-        "case_id": "R5A-a4e22250a9477b90e522c9fa",
-        "identifiability": "FULLY_IDENTIFIABLE",
-        "interventions_available": [
-          "d3ff3750dceaa4f97ca3b32a"
-        ],
-        "interventions_performed": [
-          "d3ff3750dceaa4f97ca3b32a"
-        ],
-        "observed_outcomes": [
-          4601780548237524992
+          13819975193143017472
         ],
         "path_specific_evidence": [
           "DIRECT_EDGE_LOCAL_RANKED=true;CONDITIONAL=true;INTERVENTION_SIGNAL=true"
         ],
         "predicted_outcomes_before_intervention": {
           "candidate_mediator_count": 1,
-          "case_id": "R5A-a4e22250a9477b90e522c9fa",
+          "case_id": "R6X-9582e5ba8121078879d60b07",
           "gold_fields_used": 0,
           "hypothesis": "LEGAL_SOURCE_INTERVENTION_DISCRIMINATES_TOTAL_INFLUENCE;PATH_CLASS_REMAINS_OPEN",
-          "predicted_no_change_target_ieee754_bits": 13822175873182203904,
+          "predicted_no_change_target_ieee754_bits": 4600386348166152192,
           "prediction_frozen_before_outcome": true,
           "source": 0,
           "target": 2
@@ -684,93 +525,8 @@
       "available_interventions": 1,
       "candidate_confounders": [],
       "candidate_mediator_paths_evaluated": 2,
-      "candidate_mediator_paths_total": 1,
-      "case_id": "R5A-ac0cdca1985749880b175f13",
-      "counterfactual_validations": 1,
-      "direct_present": false,
-      "full_intervention_enumeration": false,
-      "identifiability": "FULLY_IDENTIFIABLE",
-      "interventions_considered": 1,
-      "interventions_executed": 1,
-      "mediated_path_certificates": [],
-      "mediated_paths": [],
-      "mediator_intervention_available": false,
-      "model": "OBSERVATIONAL_IDENTIFIABILITY_GUARD",
-      "outcome_read_before_prediction": false,
-      "path_intervention_certificate": null,
-      "source": 0,
-      "target": 2,
-      "unavailable_counterfactual_used_as_observed_evidence": false,
-      "unresolved": true,
-      "unresolved_certificate": {
-        "case_id": "R5A-ac0cdca1985749880b175f13",
-        "discrimination_limit": "LOCAL_EVIDENCE_DID_NOT_SELECT_A_STABLE_PATH",
-        "remaining_hypotheses": [
-          "DIRECT_COMPONENT",
-          "MEDIATED_COMPONENT",
-          "COMMON_CAUSE_OR_HIDDEN_COMPONENT"
-        ],
-        "resolving_intervention_if_available": "LEGAL_MEDIATOR_CONTROL_OR_ADDITIONAL_RANDOMIZED_SOURCE_INTERVENTION"
-      }
-    },
-    {
-      "available_interventions": 1,
-      "candidate_confounders": [],
-      "candidate_mediator_paths_evaluated": 2,
-      "candidate_mediator_paths_total": 1,
-      "case_id": "R5A-b08e001c372bcff214a109eb",
-      "counterfactual_validations": 1,
-      "direct_present": false,
-      "full_intervention_enumeration": false,
-      "identifiability": "FULLY_IDENTIFIABLE",
-      "interventions_considered": 1,
-      "interventions_executed": 1,
-      "mediated_path_certificates": [
-        {
-          "case_id": "R5A-b08e001c372bcff214a109eb",
-          "identifiability": "FULLY_IDENTIFIABLE",
-          "mediator_path": [
-            0,
-            1,
-            2
-          ],
-          "path_intervention_evidence": [
-            "LEGAL_INTERVENTION=9f5a14c5353cc9b5a3c8f477"
-          ],
-          "source": 0,
-          "target": 2,
-          "temporal_evidence": [
-            "ORDERED_LOCAL_PATH=[0, 1, 2]"
-          ],
-          "transfer_evidence": [
-            "FRESH_EXTERNAL_WORLD"
-          ],
-          "uncertainty_millionths": 100000
-        }
-      ],
-      "mediated_paths": [
-        [
-          0,
-          1,
-          2
-        ]
-      ],
-      "mediator_intervention_available": false,
-      "model": "OBSERVATIONAL_IDENTIFIABILITY_GUARD",
-      "outcome_read_before_prediction": false,
-      "path_intervention_certificate": null,
-      "source": 0,
-      "target": 2,
-      "unavailable_counterfactual_used_as_observed_evidence": false,
-      "unresolved": false,
-      "unresolved_certificate": null
-    },
-    {
-      "available_interventions": 1,
-      "candidate_confounders": [],
-      "candidate_mediator_paths_evaluated": 3,
       "candidate_mediator_paths_total": 6,
-      "case_id": "R5A-b3d8db2e1a392f1b1af49891",
+      "case_id": "R6X-b7cefb3ef7e7dad5eafcdc4d",
       "counterfactual_validations": 1,
       "direct_present": false,
       "full_intervention_enumeration": false,
@@ -788,182 +544,7 @@
       "unavailable_counterfactual_used_as_observed_evidence": false,
       "unresolved": true,
       "unresolved_certificate": {
-        "case_id": "R5A-b3d8db2e1a392f1b1af49891",
-        "discrimination_limit": "LOCAL_EVIDENCE_DID_NOT_SELECT_A_STABLE_PATH",
-        "remaining_hypotheses": [
-          "DIRECT_COMPONENT",
-          "MEDIATED_COMPONENT",
-          "COMMON_CAUSE_OR_HIDDEN_COMPONENT"
-        ],
-        "resolving_intervention_if_available": "LEGAL_MEDIATOR_CONTROL_OR_ADDITIONAL_RANDOMIZED_SOURCE_INTERVENTION"
-      }
-    },
-    {
-      "available_interventions": 1,
-      "candidate_confounders": [],
-      "candidate_mediator_paths_evaluated": 2,
-      "candidate_mediator_paths_total": 1,
-      "case_id": "R5A-c4e2d4858c011a56cdbbb088",
-      "counterfactual_validations": 1,
-      "direct_present": false,
-      "full_intervention_enumeration": false,
-      "identifiability": "FULLY_IDENTIFIABLE",
-      "interventions_considered": 1,
-      "interventions_executed": 1,
-      "mediated_path_certificates": [
-        {
-          "case_id": "R5A-c4e2d4858c011a56cdbbb088",
-          "identifiability": "FULLY_IDENTIFIABLE",
-          "mediator_path": [
-            0,
-            1,
-            2
-          ],
-          "path_intervention_evidence": [
-            "LEGAL_INTERVENTION=6eb265bf62621789f9dd376a"
-          ],
-          "source": 0,
-          "target": 2,
-          "temporal_evidence": [
-            "ORDERED_LOCAL_PATH=[0, 1, 2]"
-          ],
-          "transfer_evidence": [
-            "FRESH_EXTERNAL_WORLD"
-          ],
-          "uncertainty_millionths": 100000
-        }
-      ],
-      "mediated_paths": [
-        [
-          0,
-          1,
-          2
-        ]
-      ],
-      "mediator_intervention_available": false,
-      "model": "OBSERVATIONAL_IDENTIFIABILITY_GUARD",
-      "outcome_read_before_prediction": false,
-      "path_intervention_certificate": null,
-      "source": 0,
-      "target": 2,
-      "unavailable_counterfactual_used_as_observed_evidence": false,
-      "unresolved": false,
-      "unresolved_certificate": null
-    },
-    {
-      "available_interventions": 1,
-      "candidate_confounders": [],
-      "candidate_mediator_paths_evaluated": 1,
-      "candidate_mediator_paths_total": 1,
-      "case_id": "R5A-c5f1e51890e258b91d80572a",
-      "counterfactual_validations": 1,
-      "direct_present": true,
-      "full_intervention_enumeration": false,
-      "identifiability": "FULLY_IDENTIFIABLE",
-      "interventions_considered": 1,
-      "interventions_executed": 1,
-      "mediated_path_certificates": [],
-      "mediated_paths": [],
-      "mediator_intervention_available": false,
-      "model": "OBSERVATIONAL_IDENTIFIABILITY_GUARD",
-      "outcome_read_before_prediction": false,
-      "path_intervention_certificate": {
-        "candidate_confounders": [],
-        "candidate_mediators": [
-          1
-        ],
-        "case_id": "R5A-c5f1e51890e258b91d80572a",
-        "identifiability": "FULLY_IDENTIFIABLE",
-        "interventions_available": [
-          "fdb8d50239954fb7b948a35b"
-        ],
-        "interventions_performed": [
-          "fdb8d50239954fb7b948a35b"
-        ],
-        "observed_outcomes": [
-          4602444034785411072
-        ],
-        "path_specific_evidence": [
-          "DIRECT_EDGE_LOCAL_RANKED=true;CONDITIONAL=true;INTERVENTION_SIGNAL=false"
-        ],
-        "predicted_outcomes_before_intervention": {
-          "candidate_mediator_count": 1,
-          "case_id": "R5A-c5f1e51890e258b91d80572a",
-          "gold_fields_used": 0,
-          "hypothesis": "LEGAL_SOURCE_INTERVENTION_DISCRIMINATES_TOTAL_INFLUENCE;PATH_CLASS_REMAINS_OPEN",
-          "predicted_no_change_target_ieee754_bits": 4592544602245824512,
-          "prediction_frozen_before_outcome": true,
-          "source": 0,
-          "target": 2
-        },
-        "promotion_rationale": "DIRECT_COMPONENT_RETAINED_ONLY_AFTER_IDENTIFIABILITY_AND_LOCAL_PATH_ANALYSIS",
-        "remaining_uncertainty": [],
-        "source": 0,
-        "target": 2
-      },
-      "source": 0,
-      "target": 2,
-      "unavailable_counterfactual_used_as_observed_evidence": false,
-      "unresolved": false,
-      "unresolved_certificate": null
-    },
-    {
-      "available_interventions": 1,
-      "candidate_confounders": [],
-      "candidate_mediator_paths_evaluated": 0,
-      "candidate_mediator_paths_total": 1,
-      "case_id": "R5A-dceadcda3d9bcb6fe853ee9f",
-      "counterfactual_validations": 1,
-      "direct_present": false,
-      "full_intervention_enumeration": false,
-      "identifiability": "NOT_IDENTIFIABLE_UNDER_AVAILABLE_EVIDENCE",
-      "interventions_considered": 1,
-      "interventions_executed": 1,
-      "mediated_path_certificates": [],
-      "mediated_paths": [],
-      "mediator_intervention_available": false,
-      "model": "OBSERVATIONAL_IDENTIFIABILITY_GUARD",
-      "outcome_read_before_prediction": false,
-      "path_intervention_certificate": null,
-      "source": 0,
-      "target": 3,
-      "unavailable_counterfactual_used_as_observed_evidence": false,
-      "unresolved": true,
-      "unresolved_certificate": {
-        "case_id": "R5A-dceadcda3d9bcb6fe853ee9f",
-        "discrimination_limit": "UNOBSERVED_COMPONENT_PREVENTS_PATH_SEPARATION",
-        "remaining_hypotheses": [
-          "DIRECT_COMPONENT",
-          "MEDIATED_COMPONENT",
-          "COMMON_CAUSE_OR_HIDDEN_COMPONENT"
-        ],
-        "resolving_intervention_if_available": "LEGAL_MEDIATOR_CONTROL_OR_ADDITIONAL_RANDOMIZED_SOURCE_INTERVENTION"
-      }
-    },
-    {
-      "available_interventions": 1,
-      "candidate_confounders": [],
-      "candidate_mediator_paths_evaluated": 2,
-      "candidate_mediator_paths_total": 1,
-      "case_id": "R5A-e780b41fede90d5a726d9f4e",
-      "counterfactual_validations": 1,
-      "direct_present": false,
-      "full_intervention_enumeration": false,
-      "identifiability": "FULLY_IDENTIFIABLE",
-      "interventions_considered": 1,
-      "interventions_executed": 1,
-      "mediated_path_certificates": [],
-      "mediated_paths": [],
-      "mediator_intervention_available": false,
-      "model": "OBSERVATIONAL_IDENTIFIABILITY_GUARD",
-      "outcome_read_before_prediction": false,
-      "path_intervention_certificate": null,
-      "source": 0,
-      "target": 2,
-      "unavailable_counterfactual_used_as_observed_evidence": false,
-      "unresolved": true,
-      "unresolved_certificate": {
-        "case_id": "R5A-e780b41fede90d5a726d9f4e",
+        "case_id": "R6X-b7cefb3ef7e7dad5eafcdc4d",
         "discrimination_limit": "LOCAL_EVIDENCE_DID_NOT_SELECT_A_STABLE_PATH",
         "remaining_hypotheses": [
           "DIRECT_COMPONENT",
@@ -978,7 +559,7 @@
       "candidate_confounders": [],
       "candidate_mediator_paths_evaluated": 1,
       "candidate_mediator_paths_total": 0,
-      "case_id": "R5A-ed490c3505664d65ae4c20e6",
+      "case_id": "R6X-d5b6ad343a2f530c690ec2ab",
       "counterfactual_validations": 1,
       "direct_present": true,
       "full_intervention_enumeration": false,
@@ -993,26 +574,26 @@
       "path_intervention_certificate": {
         "candidate_confounders": [],
         "candidate_mediators": [],
-        "case_id": "R5A-ed490c3505664d65ae4c20e6",
+        "case_id": "R6X-d5b6ad343a2f530c690ec2ab",
         "identifiability": "FULLY_IDENTIFIABLE",
         "interventions_available": [
-          "d00906214bea6391cee54765"
+          "66a0dc7289b477839dda9fd8"
         ],
         "interventions_performed": [
-          "d00906214bea6391cee54765"
+          "66a0dc7289b477839dda9fd8"
         ],
         "observed_outcomes": [
-          4603406569705570304
+          13827248742807371776
         ],
         "path_specific_evidence": [
           "DIRECT_EDGE_LOCAL_RANKED=true;CONDITIONAL=true;INTERVENTION_SIGNAL=true"
         ],
         "predicted_outcomes_before_intervention": {
           "candidate_mediator_count": 0,
-          "case_id": "R5A-ed490c3505664d65ae4c20e6",
+          "case_id": "R6X-d5b6ad343a2f530c690ec2ab",
           "gold_fields_used": 0,
           "hypothesis": "LEGAL_SOURCE_INTERVENTION_DISCRIMINATES_TOTAL_INFLUENCE;PATH_CLASS_REMAINS_OPEN",
-          "predicted_no_change_target_ieee754_bits": 13827254351497789440,
+          "predicted_no_change_target_ieee754_bits": 4592762411311693824,
           "prediction_frozen_before_outcome": true,
           "source": 0,
           "target": 1
@@ -1033,7 +614,7 @@
       "candidate_confounders": [],
       "candidate_mediator_paths_evaluated": 2,
       "candidate_mediator_paths_total": 1,
-      "case_id": "R5A-f0ed3bfcb35ff8e298bc5545",
+      "case_id": "R6X-d9313674c142dcba88f920da",
       "counterfactual_validations": 1,
       "direct_present": false,
       "full_intervention_enumeration": false,
@@ -1051,7 +632,7 @@
       "unavailable_counterfactual_used_as_observed_evidence": false,
       "unresolved": true,
       "unresolved_certificate": {
-        "case_id": "R5A-f0ed3bfcb35ff8e298bc5545",
+        "case_id": "R6X-d9313674c142dcba88f920da",
         "discrimination_limit": "LOCAL_EVIDENCE_DID_NOT_SELECT_A_STABLE_PATH",
         "remaining_hypotheses": [
           "DIRECT_COMPONENT",
@@ -1064,9 +645,66 @@
     {
       "available_interventions": 1,
       "candidate_confounders": [],
+      "candidate_mediator_paths_evaluated": 1,
+      "candidate_mediator_paths_total": 1,
+      "case_id": "R6X-db7120130d402b2620f7a236",
+      "counterfactual_validations": 1,
+      "direct_present": true,
+      "full_intervention_enumeration": false,
+      "identifiability": "FULLY_IDENTIFIABLE",
+      "interventions_considered": 1,
+      "interventions_executed": 1,
+      "mediated_path_certificates": [],
+      "mediated_paths": [],
+      "mediator_intervention_available": false,
+      "model": "OBSERVATIONAL_IDENTIFIABILITY_GUARD",
+      "outcome_read_before_prediction": false,
+      "path_intervention_certificate": {
+        "candidate_confounders": [],
+        "candidate_mediators": [
+          1
+        ],
+        "case_id": "R6X-db7120130d402b2620f7a236",
+        "identifiability": "FULLY_IDENTIFIABLE",
+        "interventions_available": [
+          "a336d04a16abc7a2d6b5a340"
+        ],
+        "interventions_performed": [
+          "a336d04a16abc7a2d6b5a340"
+        ],
+        "observed_outcomes": [
+          4599536295755120640
+        ],
+        "path_specific_evidence": [
+          "DIRECT_EDGE_LOCAL_RANKED=true;CONDITIONAL=true;INTERVENTION_SIGNAL=false"
+        ],
+        "predicted_outcomes_before_intervention": {
+          "candidate_mediator_count": 1,
+          "case_id": "R6X-db7120130d402b2620f7a236",
+          "gold_fields_used": 0,
+          "hypothesis": "LEGAL_SOURCE_INTERVENTION_DISCRIMINATES_TOTAL_INFLUENCE;PATH_CLASS_REMAINS_OPEN",
+          "predicted_no_change_target_ieee754_bits": 4600564546896134144,
+          "prediction_frozen_before_outcome": true,
+          "source": 0,
+          "target": 2
+        },
+        "promotion_rationale": "DIRECT_COMPONENT_RETAINED_ONLY_AFTER_IDENTIFIABILITY_AND_LOCAL_PATH_ANALYSIS",
+        "remaining_uncertainty": [],
+        "source": 0,
+        "target": 2
+      },
+      "source": 0,
+      "target": 2,
+      "unavailable_counterfactual_used_as_observed_evidence": false,
+      "unresolved": false,
+      "unresolved_certificate": null
+    },
+    {
+      "available_interventions": 1,
+      "candidate_confounders": [],
       "candidate_mediator_paths_evaluated": 0,
       "candidate_mediator_paths_total": 0,
-      "case_id": "R5A-f45bb9a61dfd2521678468c0",
+      "case_id": "R6X-e660d9ee46170f887cec211e",
       "counterfactual_validations": 1,
       "direct_present": false,
       "full_intervention_enumeration": false,
@@ -1084,7 +722,7 @@
       "unavailable_counterfactual_used_as_observed_evidence": false,
       "unresolved": true,
       "unresolved_certificate": {
-        "case_id": "R5A-f45bb9a61dfd2521678468c0",
+        "case_id": "R6X-e660d9ee46170f887cec211e",
         "discrimination_limit": "UNOBSERVED_COMPONENT_PREVENTS_PATH_SEPARATION",
         "remaining_hypotheses": [
           "DIRECT_COMPONENT",
@@ -1097,9 +735,9 @@
     {
       "available_interventions": 1,
       "candidate_confounders": [],
-      "candidate_mediator_paths_evaluated": 2,
+      "candidate_mediator_paths_evaluated": 1,
       "candidate_mediator_paths_total": 1,
-      "case_id": "R5A-f4eb76d9bef1f53150f50e62",
+      "case_id": "R6X-e6b64bc7f4d293dcac2c1a9d",
       "counterfactual_validations": 1,
       "direct_present": false,
       "full_intervention_enumeration": false,
@@ -1117,7 +755,7 @@
       "unavailable_counterfactual_used_as_observed_evidence": false,
       "unresolved": true,
       "unresolved_certificate": {
-        "case_id": "R5A-f4eb76d9bef1f53150f50e62",
+        "case_id": "R6X-e6b64bc7f4d293dcac2c1a9d",
         "discrimination_limit": "LOCAL_EVIDENCE_DID_NOT_SELECT_A_STABLE_PATH",
         "remaining_hypotheses": [
           "DIRECT_COMPONENT",
@@ -1132,7 +770,7 @@
       "candidate_confounders": [],
       "candidate_mediator_paths_evaluated": 1,
       "candidate_mediator_paths_total": 0,
-      "case_id": "R5A-f80536e844b28a239daa914a",
+      "case_id": "R6X-e999e156a6181aeed96098af",
       "counterfactual_validations": 1,
       "direct_present": true,
       "full_intervention_enumeration": false,
@@ -1147,26 +785,26 @@
       "path_intervention_certificate": {
         "candidate_confounders": [],
         "candidate_mediators": [],
-        "case_id": "R5A-f80536e844b28a239daa914a",
+        "case_id": "R6X-e999e156a6181aeed96098af",
         "identifiability": "FULLY_IDENTIFIABLE",
         "interventions_available": [
-          "b9400f04c789e22978f47b1a"
+          "f3c48437016225e9aaac2654"
         ],
         "interventions_performed": [
-          "b9400f04c789e22978f47b1a"
+          "f3c48437016225e9aaac2654"
         ],
         "observed_outcomes": [
-          4599608958011834368
+          4603452817376542720
         ],
         "path_specific_evidence": [
-          "DIRECT_EDGE_LOCAL_RANKED=true;CONDITIONAL=true;INTERVENTION_SIGNAL=false"
+          "DIRECT_EDGE_LOCAL_RANKED=true;CONDITIONAL=true;INTERVENTION_SIGNAL=true"
         ],
         "predicted_outcomes_before_intervention": {
           "candidate_mediator_count": 0,
-          "case_id": "R5A-f80536e844b28a239daa914a",
+          "case_id": "R6X-e999e156a6181aeed96098af",
           "gold_fields_used": 0,
           "hypothesis": "LEGAL_SOURCE_INTERVENTION_DISCRIMINATES_TOTAL_INFLUENCE;PATH_CLASS_REMAINS_OPEN",
-          "predicted_no_change_target_ieee754_bits": 4598214920612347904,
+          "predicted_no_change_target_ieee754_bits": null,
           "prediction_frozen_before_outcome": true,
           "source": 0,
           "target": 1
