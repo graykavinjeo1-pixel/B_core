@@ -1,0 +1,10 @@
+{
+  "arm": "grafted",
+  "destination": "D:\\B_Core_CODE_GRAFT_02_EVALUATOR_VAULT\\sandboxes\\FINAL_B\\canonical\\final-go-branch-go-cmp\\grafted",
+  "faulty_file_sha256": "feced162e4500199bcdeccd0cfba0f219d8843735946d51a7f3763cb6567742b",
+  "gold_patch_exposed_to_arm": false,
+  "hidden_fault_manager_sha256": "63c7ca5fb6295db3ad842a62a661f6dbd7fc24ad3aca93541dd94c4b31c94943",
+  "public_manifest": "D:\\B_Core_CODE_GRAFT_02_EVALUATOR_VAULT\\sandboxes\\FINAL_B\\canonical\\final-go-branch-go-cmp\\grafted\\bcore_public_task_manifest.json",
+  "task_hash": "a771496695500fb10532d66d4e0f06d0050ccdb597957d067b016305f8096e5d",
+  "task_name": "final-go-branch-go-cmp"
+}

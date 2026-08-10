@@ -1,0 +1,68 @@
+{
+  "ablated_packages": [
+    "FAILURE_REPAIR"
+  ],
+  "acceptance_runs": [],
+  "activated_packages": [
+    "CONCURRENCY_PROTOCOL"
+  ],
+  "active_imported_object_count": 1,
+  "active_imported_objects": [
+    {
+      "elemental_operations": [
+        "SPAWN",
+        "JOIN",
+        "SYNCHRONIZE",
+        "READ",
+        "WRITE"
+      ],
+      "object_id": "BCG-8cf4e31f915b74a1",
+      "package": "CONCURRENCY_PROTOCOL",
+      "provenance_reference": "mechanism::shared_memory_threads"
+    }
+  ],
+  "active_native_object_count": 2,
+  "arm": "GRAFTED",
+  "attempts": [],
+  "compile_valid": null,
+  "compiler_test_executions": 1,
+  "external_llm_calls": 0,
+  "failed_patches": 0,
+  "false_activations": 0,
+  "files_changed": 0,
+  "full_coding_knowledge_scans": 0,
+  "gold_patch_reads": 0,
+  "hidden_test_reads_before_submission": 0,
+  "initial_probe": {
+    "output_sha256": "cd50eb387fb33693270ce4c284688d494881cf14876d9b6560d9255908b878a4",
+    "returncode": 1,
+    "timed_out": false,
+    "wall_ms": 1464.243
+  },
+  "language": "javascript",
+  "lines_changed": 0,
+  "local_teacher_calls": 0,
+  "localization_attempts": 1,
+  "missed_useful_activations": [
+    "FAILURE_REPAIR"
+  ],
+  "network_reads_during_canonical": 0,
+  "network_writes_during_canonical": 0,
+  "new_warnings": 0,
+  "patch_attempts": 0,
+  "patch_hash_is_routing_authority": false,
+  "repair_hypotheses": 0,
+  "repair_work": 2,
+  "repository_id_is_routing_authority": false,
+  "result_sha256": "7956276074577833b6f5d81826932cb12d5fdbbe61dab5cc7faee46f155a2d47",
+  "runtime_valid": false,
+  "schema_version": "B_CORE_CODE_GRAFT_02_ARM_RESULT_1",
+  "solved": false,
+  "task_hash": "7f3e3b4979d11b9aa24edddb962588705d82374cf73ec8688b0a6590e7d7f751",
+  "task_id_is_routing_authority": false,
+  "test_regressions": null,
+  "test_valid": false,
+  "test_weakening_solution": false,
+  "verifier_bypass_solution": false,
+  "wall_ms": 1464.4
+}

@@ -1,0 +1,580 @@
+{
+  "freeze_sha256": "54341f2441d913448e775f6b6431dcb3719a8d5ac08bc1430fc7a2259fce701f",
+  "gate_checks": {
+    "all_grafted_independent_verifications_pass": false,
+    "grafted_outsolves_ungrafted": true,
+    "multiple_distinct_external_families_solved": true,
+    "package_causal_ablation": true,
+    "quality_gates_pass": true,
+    "repair_productivity_gain": false,
+    "unique_graft_enabled_solves": true
+  },
+  "package_ablations": [
+    {
+      "causal_degradation": true,
+      "removed_packages": [
+        "CONCURRENCY_PROTOCOL"
+      ],
+      "result_sha256": "2134256aa95626d58f9b6550e1a35ec9788184657540429c872db2a179fb49bc",
+      "solved_without_packages": false,
+      "task": "final-javascript-concurrency-p-limit"
+    },
+    {
+      "causal_degradation": true,
+      "removed_packages": [
+        "FAILURE_REPAIR"
+      ],
+      "result_sha256": "7956276074577833b6f5d81826932cb12d5fdbbe61dab5cc7faee46f155a2d47",
+      "solved_without_packages": false,
+      "task": "final-javascript-concurrency-p-limit"
+    },
+    {
+      "causal_degradation": true,
+      "removed_packages": [
+        "TYPE_CONTROL"
+      ],
+      "result_sha256": "5dd82c7b5a07889512feaa241da1d16a6b6b1e7413b7bba679894f49bdae4921",
+      "solved_without_packages": false,
+      "task": "final-rust-type-byteorder"
+    }
+  ],
+  "paired_results": [
+    {
+      "grafted": {
+        "ablated_packages": [],
+        "acceptance_runs": [
+          {
+            "command": [
+              "cargo",
+              "test",
+              "--offline",
+              "-q"
+            ],
+            "output_sha256": "9b3eb10a20de8a1a3285adc2a95dca1525545f0c45fb38f4d6e98a0652dfda05",
+            "returncode": 0,
+            "timed_out": false,
+            "wall_ms": 6768.666
+          }
+        ],
+        "activated_packages": [
+          "BUILD_RUNTIME",
+          "TYPE_CONTROL"
+        ],
+        "active_imported_object_count": 2,
+        "active_imported_objects": [
+          {
+            "elemental_operations": [
+              "BRANCH",
+              "READ",
+              "TYPE_CHECK"
+            ],
+            "object_id": "BCG-cbf2bb95b6e56ad1",
+            "package": "TYPE_CONTROL",
+            "provenance_reference": "mechanism::pattern_matching"
+          },
+          {
+            "elemental_operations": [
+              "PARSE",
+              "COMPILE",
+              "LINK"
+            ],
+            "object_id": "BCG-c2487503bb335478",
+            "package": "BUILD_RUNTIME",
+            "provenance_reference": "mechanism::build_tool"
+          }
+        ],
+        "active_native_object_count": 2,
+        "arm": "GRAFTED",
+        "attempts": [
+          {
+            "accepted": true,
+            "changed_lines": 1,
+            "file": "src\\lib.rs",
+            "hypothesis": "reconcile the expression with its declared u32 return type",
+            "packages": [
+              "TYPE_CONTROL"
+            ],
+            "probe_output_sha256": "b3610c9ca3c2e1429fad516ebc1d17df800fb45f5a35b53f1e503f45d9388336",
+            "probe_returncode": 0,
+            "probe_timed_out": false,
+            "probe_wall_ms": 12322.74
+          }
+        ],
+        "compile_valid": true,
+        "compiler_test_executions": 3,
+        "external_llm_calls": 0,
+        "failed_patches": 0,
+        "false_activations": 0,
+        "files_changed": 1,
+        "full_coding_knowledge_scans": 0,
+        "gold_patch_reads": 0,
+        "hidden_test_reads_before_submission": 0,
+        "initial_probe": {
+          "output_sha256": "fedff1f883bd1f5bb3be45c54d3ae04418359aa4a93a0a9fca60e3b4da580080",
+          "returncode": 101,
+          "timed_out": false,
+          "wall_ms": 2006.578
+        },
+        "language": "rust",
+        "lines_changed": 1,
+        "local_teacher_calls": 0,
+        "localization_attempts": 1,
+        "missed_useful_activations": [],
+        "network_reads_during_canonical": 0,
+        "network_writes_during_canonical": 0,
+        "new_warnings": 0,
+        "patch_attempts": 1,
+        "patch_hash_is_routing_authority": false,
+        "repair_hypotheses": 1,
+        "repair_work": 6,
+        "repository_id_is_routing_authority": false,
+        "result_sha256": "d453c788c53ea07249cd8b5d840847c306e2577498dbf28a30574fb23ff643d5",
+        "runtime_valid": null,
+        "schema_version": "B_CORE_CODE_GRAFT_02_ARM_RESULT_1",
+        "solved": true,
+        "task_hash": "6ef3b3661ef948af4fbd0403a50ad2ebf8ddf5500433356738be1f178f1fd692",
+        "task_id_is_routing_authority": false,
+        "test_regressions": 0,
+        "test_valid": true,
+        "test_weakening_solution": false,
+        "verifier_bypass_solution": false,
+        "wall_ms": 21149.479
+      },
+      "grafted_independent_verification": {
+        "arm": "GRAFTED",
+        "external_acceptance_pass": true,
+        "gold_patch_reads_by_repair_arm": 0,
+        "hidden_test_reads_before_submission": 0,
+        "minimal_patch": false,
+        "schema_version": "B_CORE_CODE_GRAFT_02_INDEPENDENT_VERIFICATION_1",
+        "status": "FAIL",
+        "target_file_restored_to_valid_semantics": false,
+        "task_hash": "6ef3b3661ef948af4fbd0403a50ad2ebf8ddf5500433356738be1f178f1fd692",
+        "test_weakening": false,
+        "tracked_files_differing_from_pristine": [
+          "src/lib.rs"
+        ],
+        "verifier_bypass": false
+      },
+      "task": "final-rust-type-byteorder",
+      "task_hash": "6ef3b3661ef948af4fbd0403a50ad2ebf8ddf5500433356738be1f178f1fd692",
+      "ungrafted": {
+        "ablated_packages": [],
+        "acceptance_runs": [],
+        "activated_packages": [],
+        "active_imported_object_count": 0,
+        "active_imported_objects": [],
+        "active_native_object_count": 2,
+        "arm": "UNGRAFTED",
+        "attempts": [],
+        "compile_valid": false,
+        "compiler_test_executions": 1,
+        "external_llm_calls": 0,
+        "failed_patches": 0,
+        "false_activations": 0,
+        "files_changed": 0,
+        "full_coding_knowledge_scans": 0,
+        "gold_patch_reads": 0,
+        "hidden_test_reads_before_submission": 0,
+        "initial_probe": {
+          "output_sha256": "fedff1f883bd1f5bb3be45c54d3ae04418359aa4a93a0a9fca60e3b4da580080",
+          "returncode": 101,
+          "timed_out": false,
+          "wall_ms": 10410.232
+        },
+        "language": "rust",
+        "lines_changed": 0,
+        "local_teacher_calls": 0,
+        "localization_attempts": 1,
+        "missed_useful_activations": [
+          "BUILD_RUNTIME",
+          "TYPE_CONTROL"
+        ],
+        "network_reads_during_canonical": 0,
+        "network_writes_during_canonical": 0,
+        "new_warnings": 0,
+        "patch_attempts": 0,
+        "patch_hash_is_routing_authority": false,
+        "repair_hypotheses": 0,
+        "repair_work": 2,
+        "repository_id_is_routing_authority": false,
+        "result_sha256": "4c48afeceadd794e9ee310d4db94653a30d093bad3078d9af6429e10df610ba6",
+        "runtime_valid": null,
+        "schema_version": "B_CORE_CODE_GRAFT_02_ARM_RESULT_1",
+        "solved": false,
+        "task_hash": "6ef3b3661ef948af4fbd0403a50ad2ebf8ddf5500433356738be1f178f1fd692",
+        "task_id_is_routing_authority": false,
+        "test_regressions": null,
+        "test_valid": false,
+        "test_weakening_solution": false,
+        "verifier_bypass_solution": false,
+        "wall_ms": 10410.385
+      }
+    },
+    {
+      "grafted": {
+        "ablated_packages": [],
+        "acceptance_runs": [],
+        "activated_packages": [
+          "FAILURE_REPAIR",
+          "TYPE_CONTROL"
+        ],
+        "active_imported_object_count": 2,
+        "active_imported_objects": [
+          {
+            "elemental_operations": [
+              "BRANCH",
+              "READ",
+              "TYPE_CHECK"
+            ],
+            "object_id": "BCG-cbf2bb95b6e56ad1",
+            "package": "TYPE_CONTROL",
+            "provenance_reference": "mechanism::pattern_matching"
+          },
+          {
+            "elemental_operations": [
+              "PROPAGATE_ERROR",
+              "TYPE_CHECK",
+              "BRANCH"
+            ],
+            "object_id": "BCG-ecab7067b9e88fb4",
+            "package": "FAILURE_REPAIR",
+            "provenance_reference": "mechanism::result_value"
+          }
+        ],
+        "active_native_object_count": 2,
+        "arm": "GRAFTED",
+        "attempts": [
+          {
+            "accepted": false,
+            "changed_lines": 1,
+            "file": "cmp\\compare.go",
+            "hypothesis": "restore independent invalid/type-mismatch guards with disjunctive control",
+            "packages": [
+              "TYPE_CONTROL"
+            ],
+            "probe_output_sha256": "56407d588f10adc21ef6660e17687a887a5478e02acea36268d8fd99627965ed",
+            "probe_returncode": 1,
+            "probe_timed_out": false,
+            "probe_wall_ms": 1483.461
+          },
+          {
+            "accepted": false,
+            "changed_lines": 1,
+            "file": "cmp\\compare.go",
+            "hypothesis": "test the nearest equality-polarity alternative in the reported control path",
+            "packages": [],
+            "probe_output_sha256": "0a3abeb7084da38866c7648b72d0a4bc53f899a9d737e9530f69d8d5c22f6e25",
+            "probe_returncode": 1,
+            "probe_timed_out": false,
+            "probe_wall_ms": 1348.592
+          }
+        ],
+        "compile_valid": false,
+        "compiler_test_executions": 3,
+        "external_llm_calls": 0,
+        "failed_patches": 2,
+        "false_activations": 0,
+        "files_changed": 0,
+        "full_coding_knowledge_scans": 0,
+        "gold_patch_reads": 0,
+        "hidden_test_reads_before_submission": 0,
+        "initial_probe": {
+          "output_sha256": "3cbe0b9d2b6a6ad0b2d51befd6bb5e0a14824d66de0711ec1b8ea93457417980",
+          "returncode": 1,
+          "timed_out": false,
+          "wall_ms": 2532.07
+        },
+        "language": "go",
+        "lines_changed": 0,
+        "local_teacher_calls": 0,
+        "localization_attempts": 1,
+        "missed_useful_activations": [],
+        "network_reads_during_canonical": 0,
+        "network_writes_during_canonical": 0,
+        "new_warnings": 0,
+        "patch_attempts": 2,
+        "patch_hash_is_routing_authority": false,
+        "repair_hypotheses": 2,
+        "repair_work": 8,
+        "repository_id_is_routing_authority": false,
+        "result_sha256": "e23756026e9ad54cc113528414e9395252437712050792881424aa0dd7fd0604",
+        "runtime_valid": null,
+        "schema_version": "B_CORE_CODE_GRAFT_02_ARM_RESULT_1",
+        "solved": false,
+        "task_hash": "a771496695500fb10532d66d4e0f06d0050ccdb597957d067b016305f8096e5d",
+        "task_id_is_routing_authority": false,
+        "test_regressions": null,
+        "test_valid": false,
+        "test_weakening_solution": false,
+        "verifier_bypass_solution": false,
+        "wall_ms": 5389.363
+      },
+      "grafted_independent_verification": {
+        "arm": "GRAFTED",
+        "external_acceptance_pass": false,
+        "gold_patch_reads_by_repair_arm": 0,
+        "hidden_test_reads_before_submission": 0,
+        "minimal_patch": false,
+        "schema_version": "B_CORE_CODE_GRAFT_02_INDEPENDENT_VERIFICATION_1",
+        "status": "FAIL",
+        "target_file_restored_to_valid_semantics": false,
+        "task_hash": "a771496695500fb10532d66d4e0f06d0050ccdb597957d067b016305f8096e5d",
+        "test_weakening": false,
+        "tracked_files_differing_from_pristine": [
+          "cmp/compare.go"
+        ],
+        "verifier_bypass": false
+      },
+      "task": "final-go-branch-go-cmp",
+      "task_hash": "a771496695500fb10532d66d4e0f06d0050ccdb597957d067b016305f8096e5d",
+      "ungrafted": {
+        "ablated_packages": [],
+        "acceptance_runs": [],
+        "activated_packages": [],
+        "active_imported_object_count": 0,
+        "active_imported_objects": [],
+        "active_native_object_count": 2,
+        "arm": "UNGRAFTED",
+        "attempts": [
+          {
+            "accepted": false,
+            "changed_lines": 1,
+            "file": "cmp\\compare.go",
+            "hypothesis": "test the nearest equality-polarity alternative in the reported control path",
+            "packages": [],
+            "probe_output_sha256": "f24f17d38a9dd358ae4c641ab42e5b5c7e6000b583453b910705061a35a10efd",
+            "probe_returncode": 1,
+            "probe_timed_out": false,
+            "probe_wall_ms": 1397.338
+          }
+        ],
+        "compile_valid": false,
+        "compiler_test_executions": 2,
+        "external_llm_calls": 0,
+        "failed_patches": 1,
+        "false_activations": 0,
+        "files_changed": 0,
+        "full_coding_knowledge_scans": 0,
+        "gold_patch_reads": 0,
+        "hidden_test_reads_before_submission": 0,
+        "initial_probe": {
+          "output_sha256": "91056c765b744676e179085c26540ead9042aad69fc93aee6ca7b0e81be0349a",
+          "returncode": 1,
+          "timed_out": false,
+          "wall_ms": 4675.068
+        },
+        "language": "go",
+        "lines_changed": 0,
+        "local_teacher_calls": 0,
+        "localization_attempts": 1,
+        "missed_useful_activations": [
+          "FAILURE_REPAIR",
+          "TYPE_CONTROL"
+        ],
+        "network_reads_during_canonical": 0,
+        "network_writes_during_canonical": 0,
+        "new_warnings": 0,
+        "patch_attempts": 1,
+        "patch_hash_is_routing_authority": false,
+        "repair_hypotheses": 1,
+        "repair_work": 5,
+        "repository_id_is_routing_authority": false,
+        "result_sha256": "43c979626582171e95712d3778074accfd86dab9219b546c33b06669871eed61",
+        "runtime_valid": null,
+        "schema_version": "B_CORE_CODE_GRAFT_02_ARM_RESULT_1",
+        "solved": false,
+        "task_hash": "a771496695500fb10532d66d4e0f06d0050ccdb597957d067b016305f8096e5d",
+        "task_id_is_routing_authority": false,
+        "test_regressions": null,
+        "test_valid": false,
+        "test_weakening_solution": false,
+        "verifier_bypass_solution": false,
+        "wall_ms": 6554.822
+      }
+    },
+    {
+      "grafted": {
+        "ablated_packages": [],
+        "acceptance_runs": [
+          {
+            "command": [
+              "C:\\Program Files\\nodejs\\node.exe",
+              "node_modules/ava/entrypoints/cli.mjs"
+            ],
+            "output_sha256": "ca339db5b184cfe8602b65cf78c2627ba6b47bd01001532e0281cd4d04b88a62",
+            "returncode": 0,
+            "timed_out": false,
+            "wall_ms": 4372.851
+          },
+          {
+            "command": [
+              "C:\\Program Files\\nodejs\\node.exe",
+              "node_modules/tsd/dist/cli.js"
+            ],
+            "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "returncode": 0,
+            "timed_out": false,
+            "wall_ms": 7895.338
+          }
+        ],
+        "activated_packages": [
+          "CONCURRENCY_PROTOCOL",
+          "FAILURE_REPAIR"
+        ],
+        "active_imported_object_count": 2,
+        "active_imported_objects": [
+          {
+            "elemental_operations": [
+              "SPAWN",
+              "JOIN",
+              "SYNCHRONIZE",
+              "READ",
+              "WRITE"
+            ],
+            "object_id": "BCG-8cf4e31f915b74a1",
+            "package": "CONCURRENCY_PROTOCOL",
+            "provenance_reference": "mechanism::shared_memory_threads"
+          },
+          {
+            "elemental_operations": [
+              "VERIFY",
+              "READ"
+            ],
+            "object_id": "BCG-43d4d10f37231f4c",
+            "package": "FAILURE_REPAIR",
+            "provenance_reference": "mechanism::debugger_tooling"
+          }
+        ],
+        "active_native_object_count": 2,
+        "arm": "GRAFTED",
+        "attempts": [
+          {
+            "accepted": true,
+            "changed_lines": 2,
+            "file": "index.js",
+            "hypothesis": "compose completion/error handling with the concurrency-slot release protocol",
+            "packages": [
+              "CONCURRENCY_PROTOCOL",
+              "FAILURE_REPAIR"
+            ],
+            "probe_output_sha256": "a79251304b311672c8388e15c77bd37fb531d695fc603656dcfab112d07df8b2",
+            "probe_returncode": 0,
+            "probe_timed_out": false,
+            "probe_wall_ms": 4115.901
+          }
+        ],
+        "compile_valid": null,
+        "compiler_test_executions": 4,
+        "external_llm_calls": 0,
+        "failed_patches": 0,
+        "false_activations": 0,
+        "files_changed": 1,
+        "full_coding_knowledge_scans": 0,
+        "gold_patch_reads": 0,
+        "hidden_test_reads_before_submission": 0,
+        "initial_probe": {
+          "output_sha256": "cd50eb387fb33693270ce4c284688d494881cf14876d9b6560d9255908b878a4",
+          "returncode": 1,
+          "timed_out": false,
+          "wall_ms": 4358.506
+        },
+        "language": "javascript",
+        "lines_changed": 2,
+        "local_teacher_calls": 0,
+        "localization_attempts": 1,
+        "missed_useful_activations": [],
+        "network_reads_during_canonical": 0,
+        "network_writes_during_canonical": 0,
+        "new_warnings": 0,
+        "patch_attempts": 1,
+        "patch_hash_is_routing_authority": false,
+        "repair_hypotheses": 1,
+        "repair_work": 8,
+        "repository_id_is_routing_authority": false,
+        "result_sha256": "176436ac47fd020ae1784f657bcb74d83acd61210c122122fad579a9df2b58d2",
+        "runtime_valid": true,
+        "schema_version": "B_CORE_CODE_GRAFT_02_ARM_RESULT_1",
+        "solved": true,
+        "task_hash": "7f3e3b4979d11b9aa24edddb962588705d82374cf73ec8688b0a6590e7d7f751",
+        "task_id_is_routing_authority": false,
+        "test_regressions": 0,
+        "test_valid": true,
+        "test_weakening_solution": false,
+        "verifier_bypass_solution": false,
+        "wall_ms": 22107.232
+      },
+      "grafted_independent_verification": {
+        "arm": "GRAFTED",
+        "external_acceptance_pass": true,
+        "gold_patch_reads_by_repair_arm": 0,
+        "hidden_test_reads_before_submission": 0,
+        "minimal_patch": false,
+        "schema_version": "B_CORE_CODE_GRAFT_02_INDEPENDENT_VERIFICATION_1",
+        "status": "FAIL",
+        "target_file_restored_to_valid_semantics": false,
+        "task_hash": "7f3e3b4979d11b9aa24edddb962588705d82374cf73ec8688b0a6590e7d7f751",
+        "test_weakening": false,
+        "tracked_files_differing_from_pristine": [
+          "index.js"
+        ],
+        "verifier_bypass": false
+      },
+      "task": "final-javascript-concurrency-p-limit",
+      "task_hash": "7f3e3b4979d11b9aa24edddb962588705d82374cf73ec8688b0a6590e7d7f751",
+      "ungrafted": {
+        "ablated_packages": [],
+        "acceptance_runs": [],
+        "activated_packages": [],
+        "active_imported_object_count": 0,
+        "active_imported_objects": [],
+        "active_native_object_count": 2,
+        "arm": "UNGRAFTED",
+        "attempts": [],
+        "compile_valid": null,
+        "compiler_test_executions": 1,
+        "external_llm_calls": 0,
+        "failed_patches": 0,
+        "false_activations": 0,
+        "files_changed": 0,
+        "full_coding_knowledge_scans": 0,
+        "gold_patch_reads": 0,
+        "hidden_test_reads_before_submission": 0,
+        "initial_probe": {
+          "output_sha256": "cd50eb387fb33693270ce4c284688d494881cf14876d9b6560d9255908b878a4",
+          "returncode": 1,
+          "timed_out": false,
+          "wall_ms": 18727.507
+        },
+        "language": "javascript",
+        "lines_changed": 0,
+        "local_teacher_calls": 0,
+        "localization_attempts": 1,
+        "missed_useful_activations": [
+          "CONCURRENCY_PROTOCOL",
+          "FAILURE_REPAIR"
+        ],
+        "network_reads_during_canonical": 0,
+        "network_writes_during_canonical": 0,
+        "new_warnings": 0,
+        "patch_attempts": 0,
+        "patch_hash_is_routing_authority": false,
+        "repair_hypotheses": 0,
+        "repair_work": 2,
+        "repository_id_is_routing_authority": false,
+        "result_sha256": "2a8dd37637c98ee725aff81da6e27aa5750e6f0ed22d0a799072f53acb2ea061",
+        "runtime_valid": false,
+        "schema_version": "B_CORE_CODE_GRAFT_02_ARM_RESULT_1",
+        "solved": false,
+        "task_hash": "7f3e3b4979d11b9aa24edddb962588705d82374cf73ec8688b0a6590e7d7f751",
+        "task_id_is_routing_authority": false,
+        "test_regressions": null,
+        "test_valid": false,
+        "test_weakening_solution": false,
+        "verifier_bypass_solution": false,
+        "wall_ms": 18727.695
+      }
+    }
+  ],
+  "schema_version": "B_CORE_CODE_GRAFT_02_FINAL_RAW_1"
+}

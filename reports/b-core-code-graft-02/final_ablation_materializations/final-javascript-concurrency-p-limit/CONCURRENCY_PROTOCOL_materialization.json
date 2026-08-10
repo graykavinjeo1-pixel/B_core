@@ -1,0 +1,10 @@
+{
+  "arm": "grafted",
+  "destination": "D:\\B_CG02_ABL\\cp",
+  "faulty_file_sha256": "87838c216bb24d26efccbb57b1c134376eaf671d2f3a1e925e9305599e57c026",
+  "gold_patch_exposed_to_arm": false,
+  "hidden_fault_manager_sha256": "63c7ca5fb6295db3ad842a62a661f6dbd7fc24ad3aca93541dd94c4b31c94943",
+  "public_manifest": "D:\\B_CG02_ABL\\cp\\bcore_public_task_manifest.json",
+  "task_hash": "7f3e3b4979d11b9aa24edddb962588705d82374cf73ec8688b0a6590e7d7f751",
+  "task_name": "final-javascript-concurrency-p-limit"
+}

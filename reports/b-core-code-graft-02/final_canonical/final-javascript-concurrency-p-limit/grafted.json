@@ -1,0 +1,110 @@
+{
+  "ablated_packages": [],
+  "acceptance_runs": [
+    {
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "node_modules/ava/entrypoints/cli.mjs"
+      ],
+      "output_sha256": "ca339db5b184cfe8602b65cf78c2627ba6b47bd01001532e0281cd4d04b88a62",
+      "returncode": 0,
+      "timed_out": false,
+      "wall_ms": 4372.851
+    },
+    {
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "node_modules/tsd/dist/cli.js"
+      ],
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "returncode": 0,
+      "timed_out": false,
+      "wall_ms": 7895.338
+    }
+  ],
+  "activated_packages": [
+    "CONCURRENCY_PROTOCOL",
+    "FAILURE_REPAIR"
+  ],
+  "active_imported_object_count": 2,
+  "active_imported_objects": [
+    {
+      "elemental_operations": [
+        "SPAWN",
+        "JOIN",
+        "SYNCHRONIZE",
+        "READ",
+        "WRITE"
+      ],
+      "object_id": "BCG-8cf4e31f915b74a1",
+      "package": "CONCURRENCY_PROTOCOL",
+      "provenance_reference": "mechanism::shared_memory_threads"
+    },
+    {
+      "elemental_operations": [
+        "VERIFY",
+        "READ"
+      ],
+      "object_id": "BCG-43d4d10f37231f4c",
+      "package": "FAILURE_REPAIR",
+      "provenance_reference": "mechanism::debugger_tooling"
+    }
+  ],
+  "active_native_object_count": 2,
+  "arm": "GRAFTED",
+  "attempts": [
+    {
+      "accepted": true,
+      "changed_lines": 2,
+      "file": "index.js",
+      "hypothesis": "compose completion/error handling with the concurrency-slot release protocol",
+      "packages": [
+        "CONCURRENCY_PROTOCOL",
+        "FAILURE_REPAIR"
+      ],
+      "probe_output_sha256": "a79251304b311672c8388e15c77bd37fb531d695fc603656dcfab112d07df8b2",
+      "probe_returncode": 0,
+      "probe_timed_out": false,
+      "probe_wall_ms": 4115.901
+    }
+  ],
+  "compile_valid": null,
+  "compiler_test_executions": 4,
+  "external_llm_calls": 0,
+  "failed_patches": 0,
+  "false_activations": 0,
+  "files_changed": 1,
+  "full_coding_knowledge_scans": 0,
+  "gold_patch_reads": 0,
+  "hidden_test_reads_before_submission": 0,
+  "initial_probe": {
+    "output_sha256": "cd50eb387fb33693270ce4c284688d494881cf14876d9b6560d9255908b878a4",
+    "returncode": 1,
+    "timed_out": false,
+    "wall_ms": 4358.506
+  },
+  "language": "javascript",
+  "lines_changed": 2,
+  "local_teacher_calls": 0,
+  "localization_attempts": 1,
+  "missed_useful_activations": [],
+  "network_reads_during_canonical": 0,
+  "network_writes_during_canonical": 0,
+  "new_warnings": 0,
+  "patch_attempts": 1,
+  "patch_hash_is_routing_authority": false,
+  "repair_hypotheses": 1,
+  "repair_work": 8,
+  "repository_id_is_routing_authority": false,
+  "result_sha256": "176436ac47fd020ae1784f657bcb74d83acd61210c122122fad579a9df2b58d2",
+  "runtime_valid": true,
+  "schema_version": "B_CORE_CODE_GRAFT_02_ARM_RESULT_1",
+  "solved": true,
+  "task_hash": "7f3e3b4979d11b9aa24edddb962588705d82374cf73ec8688b0a6590e7d7f751",
+  "task_id_is_routing_authority": false,
+  "test_regressions": 0,
+  "test_valid": true,
+  "test_weakening_solution": false,
+  "verifier_bypass_solution": false,
+  "wall_ms": 22107.232
+}

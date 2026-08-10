@@ -1,0 +1,10 @@
+{
+  "arm": "grafted",
+  "destination": "D:\\B_Core_CODE_GRAFT_02_EVALUATOR_VAULT\\sandboxes\\FINAL_B\\canonical\\final-rust-type-byteorder\\grafted",
+  "faulty_file_sha256": "5ebbfe31af5d1331e519b05effcc87da8fc5246303911c7835e0769c1df77998",
+  "gold_patch_exposed_to_arm": false,
+  "hidden_fault_manager_sha256": "63c7ca5fb6295db3ad842a62a661f6dbd7fc24ad3aca93541dd94c4b31c94943",
+  "public_manifest": "D:\\B_Core_CODE_GRAFT_02_EVALUATOR_VAULT\\sandboxes\\FINAL_B\\canonical\\final-rust-type-byteorder\\grafted\\bcore_public_task_manifest.json",
+  "task_hash": "6ef3b3661ef948af4fbd0403a50ad2ebf8ddf5500433356738be1f178f1fd692",
+  "task_name": "final-rust-type-byteorder"
+}
