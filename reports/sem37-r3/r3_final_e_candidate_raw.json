@@ -1,0 +1,1828 @@
+{
+  "active_semantic_nodes": 32,
+  "causal_mechanism_full_scans": 0,
+  "causal_tests_performed": 56,
+  "conditional_ablation_evaluations": 168,
+  "direct_certificates": [
+    {
+      "case_id": "R3A-006f1251140c68c612d40e24",
+      "competing_common_cause_hypotheses": [],
+      "competing_mediator_paths": [],
+      "intervention_observation_evidence": "THREE_DISJOINT_TEMPORAL_FOLDS",
+      "promotion_rationale": "DIRECT_SUPPORT_SURVIVED_MEDIATOR_AND_COMMON_CAUSE_COMPETITION",
+      "source": 1,
+      "supporting_evidence": "STABLE_CONDITIONAL_MDL=873.535046555289",
+      "target": 0,
+      "uncertainty": 0.0011434647518574646
+    },
+    {
+      "case_id": "R3A-006f1251140c68c612d40e24",
+      "competing_common_cause_hypotheses": [],
+      "competing_mediator_paths": [],
+      "intervention_observation_evidence": "THREE_DISJOINT_TEMPORAL_FOLDS",
+      "promotion_rationale": "DIRECT_SUPPORT_SURVIVED_MEDIATOR_AND_COMMON_CAUSE_COMPETITION",
+      "source": 1,
+      "supporting_evidence": "STABLE_CONDITIONAL_MDL=206.414098568604",
+      "target": 2,
+      "uncertainty": 0.004821273032552513
+    },
+    {
+      "case_id": "R3A-006f1251140c68c612d40e24",
+      "competing_common_cause_hypotheses": [],
+      "competing_mediator_paths": [],
+      "intervention_observation_evidence": "THREE_DISJOINT_TEMPORAL_FOLDS",
+      "promotion_rationale": "DIRECT_SUPPORT_SURVIVED_MEDIATOR_AND_COMMON_CAUSE_COMPETITION",
+      "source": 2,
+      "supporting_evidence": "STABLE_CONDITIONAL_MDL=643.111922691878",
+      "target": 1,
+      "uncertainty": 0.0015525252130418443
+    },
+    {
+      "case_id": "R3A-159aeb7236b69767fe9196cd",
+      "competing_common_cause_hypotheses": [],
+      "competing_mediator_paths": [],
+      "intervention_observation_evidence": "THREE_DISJOINT_TEMPORAL_FOLDS",
+      "promotion_rationale": "DIRECT_SUPPORT_SURVIVED_MEDIATOR_AND_COMMON_CAUSE_COMPETITION",
+      "source": 0,
+      "supporting_evidence": "STABLE_CONDITIONAL_MDL=29.309918892186",
+      "target": 1,
+      "uncertainty": 0.03299250003132854
+    },
+    {
+      "case_id": "R3A-159aeb7236b69767fe9196cd",
+      "competing_common_cause_hypotheses": [],
+      "competing_mediator_paths": [],
+      "intervention_observation_evidence": "THREE_DISJOINT_TEMPORAL_FOLDS",
+      "promotion_rationale": "DIRECT_SUPPORT_SURVIVED_MEDIATOR_AND_COMMON_CAUSE_COMPETITION",
+      "source": 1,
+      "supporting_evidence": "STABLE_CONDITIONAL_MDL=24.085019737588",
+      "target": 0,
+      "uncertainty": 0.039864429466705084
+    },
+    {
+      "case_id": "R3A-1669612cd1ad68d03ef78491",
+      "competing_common_cause_hypotheses": [],
+      "competing_mediator_paths": [],
+      "intervention_observation_evidence": "THREE_DISJOINT_TEMPORAL_FOLDS",
+      "promotion_rationale": "DIRECT_SUPPORT_SURVIVED_MEDIATOR_AND_COMMON_CAUSE_COMPETITION",
+      "source": 0,
+      "supporting_evidence": "STABLE_CONDITIONAL_MDL=1284.537038101717",
+      "target": 1,
+      "uncertainty": 0.000777885016426011
+    },
+    {
+      "case_id": "R3A-1669612cd1ad68d03ef78491",
+      "competing_common_cause_hypotheses": [],
+      "competing_mediator_paths": [],
+      "intervention_observation_evidence": "THREE_DISJOINT_TEMPORAL_FOLDS",
+      "promotion_rationale": "DIRECT_SUPPORT_SURVIVED_MEDIATOR_AND_COMMON_CAUSE_COMPETITION",
+      "source": 1,
+      "supporting_evidence": "STABLE_CONDITIONAL_MDL=115.813371740297",
+      "target": 0,
+      "uncertainty": 0.008560663775917961
+    },
+    {
+      "case_id": "R3A-557f0d21ecbb96446215d281",
+      "competing_common_cause_hypotheses": [],
+      "competing_mediator_paths": [],
+      "intervention_observation_evidence": "THREE_DISJOINT_TEMPORAL_FOLDS",
+      "promotion_rationale": "DIRECT_SUPPORT_SURVIVED_MEDIATOR_AND_COMMON_CAUSE_COMPETITION",
+      "source": 0,
+      "supporting_evidence": "STABLE_CONDITIONAL_MDL=124.308458244300",
+      "target": 1,
+      "uncertainty": 0.00798030726745046
+    },
+    {
+      "case_id": "R3A-557f0d21ecbb96446215d281",
+      "competing_common_cause_hypotheses": [],
+      "competing_mediator_paths": [],
+      "intervention_observation_evidence": "THREE_DISJOINT_TEMPORAL_FOLDS",
+      "promotion_rationale": "DIRECT_SUPPORT_SURVIVED_MEDIATOR_AND_COMMON_CAUSE_COMPETITION",
+      "source": 1,
+      "supporting_evidence": "STABLE_CONDITIONAL_MDL=200.811015802748",
+      "target": 0,
+      "uncertainty": 0.004955130898193423
+    },
+    {
+      "case_id": "R3A-557f0d21ecbb96446215d281",
+      "competing_common_cause_hypotheses": [],
+      "competing_mediator_paths": [],
+      "intervention_observation_evidence": "THREE_DISJOINT_TEMPORAL_FOLDS",
+      "promotion_rationale": "DIRECT_SUPPORT_SURVIVED_MEDIATOR_AND_COMMON_CAUSE_COMPETITION",
+      "source": 1,
+      "supporting_evidence": "STABLE_CONDITIONAL_MDL=608.337488643429",
+      "target": 2,
+      "uncertainty": 0.0016411266640204661
+    },
+    {
+      "case_id": "R3A-557f0d21ecbb96446215d281",
+      "competing_common_cause_hypotheses": [],
+      "competing_mediator_paths": [],
+      "intervention_observation_evidence": "THREE_DISJOINT_TEMPORAL_FOLDS",
+      "promotion_rationale": "DIRECT_SUPPORT_SURVIVED_MEDIATOR_AND_COMMON_CAUSE_COMPETITION",
+      "source": 2,
+      "supporting_evidence": "STABLE_CONDITIONAL_MDL=445.475096714552",
+      "target": 1,
+      "uncertainty": 0.002239766579051413
+    },
+    {
+      "case_id": "R3A-5e2b3f6e4cf63f001cb14786",
+      "competing_common_cause_hypotheses": [
+        2
+      ],
+      "competing_mediator_paths": [
+        [
+          0,
+          2,
+          1
+        ]
+      ],
+      "intervention_observation_evidence": "THREE_DISJOINT_TEMPORAL_FOLDS",
+      "promotion_rationale": "DIRECT_SUPPORT_SURVIVED_MEDIATOR_AND_COMMON_CAUSE_COMPETITION",
+      "source": 0,
+      "supporting_evidence": "STABLE_CONDITIONAL_MDL=577.773047917511",
+      "target": 1,
+      "uncertainty": 0.0017277929640955277
+    },
+    {
+      "case_id": "R3A-5e2b3f6e4cf63f001cb14786",
+      "competing_common_cause_hypotheses": [
+        2
+      ],
+      "competing_mediator_paths": [
+        [
+          1,
+          2,
+          0
+        ]
+      ],
+      "intervention_observation_evidence": "THREE_DISJOINT_TEMPORAL_FOLDS",
+      "promotion_rationale": "DIRECT_SUPPORT_SURVIVED_MEDIATOR_AND_COMMON_CAUSE_COMPETITION",
+      "source": 1,
+      "supporting_evidence": "STABLE_CONDITIONAL_MDL=3128.838835796114",
+      "target": 0,
+      "uncertainty": 0.0003195052692691243
+    },
+    {
+      "case_id": "R3A-5e2b3f6e4cf63f001cb14786",
+      "competing_common_cause_hypotheses": [
+        0
+      ],
+      "competing_mediator_paths": [
+        [
+          2,
+          0,
+          1
+        ]
+      ],
+      "intervention_observation_evidence": "THREE_DISJOINT_TEMPORAL_FOLDS",
+      "promotion_rationale": "DIRECT_SUPPORT_SURVIVED_MEDIATOR_AND_COMMON_CAUSE_COMPETITION",
+      "source": 2,
+      "supporting_evidence": "STABLE_CONDITIONAL_MDL=242.117860802651",
+      "target": 1,
+      "uncertainty": 0.0041132313220366085
+    },
+    {
+      "case_id": "R3A-6aa0c61019d6d53fcc7981b9",
+      "competing_common_cause_hypotheses": [
+        2
+      ],
+      "competing_mediator_paths": [
+        [
+          0,
+          2,
+          1
+        ]
+      ],
+      "intervention_observation_evidence": "THREE_DISJOINT_TEMPORAL_FOLDS",
+      "promotion_rationale": "DIRECT_SUPPORT_SURVIVED_MEDIATOR_AND_COMMON_CAUSE_COMPETITION",
+      "source": 0,
+      "supporting_evidence": "STABLE_CONDITIONAL_MDL=82.230406197621",
+      "target": 1,
+      "uncertainty": 0.012014839836605128
+    },
+    {
+      "case_id": "R3A-6aa0c61019d6d53fcc7981b9",
+      "competing_common_cause_hypotheses": [
+        2
+      ],
+      "competing_mediator_paths": [
+        [
+          1,
+          2,
+          0
+        ]
+      ],
+      "intervention_observation_evidence": "THREE_DISJOINT_TEMPORAL_FOLDS",
+      "promotion_rationale": "DIRECT_SUPPORT_SURVIVED_MEDIATOR_AND_COMMON_CAUSE_COMPETITION",
+      "source": 1,
+      "supporting_evidence": "STABLE_CONDITIONAL_MDL=120.944016447248",
+      "target": 0,
+      "uncertainty": 0.008200484362696004
+    }
+  ],
+  "direct_hypotheses_considered": 16,
+  "mediated_certificates": [
+    {
+      "case_id": "R3A-006f1251140c68c612d40e24",
+      "counterfactual_implication": "BLOCKING_MEDIATOR_PATH_SHOULD_ATTENUATE_TOTAL_EFFECT",
+      "evidence": "ALTERNATE_STABLE_CAUSAL_PATH",
+      "mediator_path": [
+        1
+      ],
+      "semantic_temporal_ordering": "SOURCE_BEFORE_MEDIATOR_BEFORE_TARGET",
+      "source": 0,
+      "target": 2,
+      "uncertainty": 0.04300460806619667
+    },
+    {
+      "case_id": "R3A-006f1251140c68c612d40e24",
+      "counterfactual_implication": "BLOCKING_MEDIATOR_PATH_SHOULD_ATTENUATE_TOTAL_EFFECT",
+      "evidence": "ALTERNATE_STABLE_CAUSAL_PATH",
+      "mediator_path": [
+        1
+      ],
+      "semantic_temporal_ordering": "SOURCE_BEFORE_MEDIATOR_BEFORE_TARGET",
+      "source": 2,
+      "target": 0,
+      "uncertainty": 0.061250323842888955
+    },
+    {
+      "case_id": "R3A-159aeb7236b69767fe9196cd",
+      "counterfactual_implication": "BLOCKING_MEDIATOR_PATH_SHOULD_ATTENUATE_TOTAL_EFFECT",
+      "evidence": "ALTERNATE_STABLE_CAUSAL_PATH",
+      "mediator_path": [
+        0
+      ],
+      "semantic_temporal_ordering": "SOURCE_BEFORE_MEDIATOR_BEFORE_TARGET",
+      "source": 1,
+      "target": 2,
+      "uncertainty": 0.013356198010373178
+    },
+    {
+      "case_id": "R3A-1669612cd1ad68d03ef78491",
+      "counterfactual_implication": "BLOCKING_MEDIATOR_PATH_SHOULD_ATTENUATE_TOTAL_EFFECT",
+      "evidence": "ALTERNATE_STABLE_CAUSAL_PATH",
+      "mediator_path": [
+        0
+      ],
+      "semantic_temporal_ordering": "SOURCE_BEFORE_MEDIATOR_BEFORE_TARGET",
+      "source": 1,
+      "target": 2,
+      "uncertainty": 0.0027725315219486453
+    },
+    {
+      "case_id": "R3A-1669612cd1ad68d03ef78491",
+      "counterfactual_implication": "BLOCKING_MEDIATOR_PATH_SHOULD_ATTENUATE_TOTAL_EFFECT",
+      "evidence": "ALTERNATE_STABLE_CAUSAL_PATH",
+      "mediator_path": [
+        0
+      ],
+      "semantic_temporal_ordering": "SOURCE_BEFORE_MEDIATOR_BEFORE_TARGET",
+      "source": 2,
+      "target": 1,
+      "uncertainty": 0.037855403230011186
+    },
+    {
+      "case_id": "R3A-557f0d21ecbb96446215d281",
+      "counterfactual_implication": "BLOCKING_MEDIATOR_PATH_SHOULD_ATTENUATE_TOTAL_EFFECT",
+      "evidence": "ALTERNATE_STABLE_CAUSAL_PATH",
+      "mediator_path": [
+        1
+      ],
+      "semantic_temporal_ordering": "SOURCE_BEFORE_MEDIATOR_BEFORE_TARGET",
+      "source": 0,
+      "target": 2,
+      "uncertainty": 0.04614466741041657
+    },
+    {
+      "case_id": "R3A-557f0d21ecbb96446215d281",
+      "counterfactual_implication": "BLOCKING_MEDIATOR_PATH_SHOULD_ATTENUATE_TOTAL_EFFECT",
+      "evidence": "ALTERNATE_STABLE_CAUSAL_PATH",
+      "mediator_path": [
+        1
+      ],
+      "semantic_temporal_ordering": "SOURCE_BEFORE_MEDIATOR_BEFORE_TARGET",
+      "source": 2,
+      "target": 0,
+      "uncertainty": 0.029537983795702643
+    },
+    {
+      "case_id": "R3A-5e2b3f6e4cf63f001cb14786",
+      "counterfactual_implication": "BLOCKING_MEDIATOR_PATH_SHOULD_ATTENUATE_TOTAL_EFFECT",
+      "evidence": "ALTERNATE_STABLE_CAUSAL_PATH",
+      "mediator_path": [
+        1
+      ],
+      "semantic_temporal_ordering": "SOURCE_BEFORE_MEDIATOR_BEFORE_TARGET",
+      "source": 0,
+      "target": 2,
+      "uncertainty": 0.0029967141978166183
+    },
+    {
+      "case_id": "R3A-5e2b3f6e4cf63f001cb14786",
+      "counterfactual_implication": "BLOCKING_MEDIATOR_PATH_SHOULD_ATTENUATE_TOTAL_EFFECT",
+      "evidence": "ALTERNATE_STABLE_CAUSAL_PATH",
+      "mediator_path": [
+        0
+      ],
+      "semantic_temporal_ordering": "SOURCE_BEFORE_MEDIATOR_BEFORE_TARGET",
+      "source": 1,
+      "target": 2,
+      "uncertainty": 0.0038622915434725572
+    },
+    {
+      "case_id": "R3A-5e2b3f6e4cf63f001cb14786",
+      "counterfactual_implication": "BLOCKING_MEDIATOR_PATH_SHOULD_ATTENUATE_TOTAL_EFFECT",
+      "evidence": "ALTERNATE_STABLE_CAUSAL_PATH",
+      "mediator_path": [
+        1
+      ],
+      "semantic_temporal_ordering": "SOURCE_BEFORE_MEDIATOR_BEFORE_TARGET",
+      "source": 2,
+      "target": 0,
+      "uncertainty": 0.0006819814766776552
+    },
+    {
+      "case_id": "R3A-6aa0c61019d6d53fcc7981b9",
+      "counterfactual_implication": "BLOCKING_MEDIATOR_PATH_SHOULD_ATTENUATE_TOTAL_EFFECT",
+      "evidence": "ALTERNATE_STABLE_CAUSAL_PATH",
+      "mediator_path": [
+        1
+      ],
+      "semantic_temporal_ordering": "SOURCE_BEFORE_MEDIATOR_BEFORE_TARGET",
+      "source": 0,
+      "target": 2,
+      "uncertainty": 0.04830067642475528
+    },
+    {
+      "case_id": "R3A-6aa0c61019d6d53fcc7981b9",
+      "counterfactual_implication": "BLOCKING_MEDIATOR_PATH_SHOULD_ATTENUATE_TOTAL_EFFECT",
+      "evidence": "ALTERNATE_STABLE_CAUSAL_PATH",
+      "mediator_path": [
+        0
+      ],
+      "semantic_temporal_ordering": "SOURCE_BEFORE_MEDIATOR_BEFORE_TARGET",
+      "source": 1,
+      "target": 2,
+      "uncertainty": 0.08989026800392866
+    },
+    {
+      "case_id": "R3A-6aa0c61019d6d53fcc7981b9",
+      "counterfactual_implication": "BLOCKING_MEDIATOR_PATH_SHOULD_ATTENUATE_TOTAL_EFFECT",
+      "evidence": "ALTERNATE_STABLE_CAUSAL_PATH",
+      "mediator_path": [
+        1
+      ],
+      "semantic_temporal_ordering": "SOURCE_BEFORE_MEDIATOR_BEFORE_TARGET",
+      "source": 2,
+      "target": 0,
+      "uncertainty": 0.036339732593200814
+    },
+    {
+      "case_id": "R3A-6aa0c61019d6d53fcc7981b9",
+      "counterfactual_implication": "BLOCKING_MEDIATOR_PATH_SHOULD_ATTENUATE_TOTAL_EFFECT",
+      "evidence": "ALTERNATE_STABLE_CAUSAL_PATH",
+      "mediator_path": [
+        0
+      ],
+      "semantic_temporal_ordering": "SOURCE_BEFORE_MEDIATOR_BEFORE_TARGET",
+      "source": 2,
+      "target": 1,
+      "uncertainty": 0.19962586895317866
+    }
+  ],
+  "mediator_hypotheses_considered": 19,
+  "method": "CONDITIONAL_PATH32",
+  "prediction_commitment": "3dd365c154eb60270f7c52afbd523ac78b8029e341aa1889246c7873cf047499",
+  "predictions": [
+    {
+      "benchmark_id_to_causal_class_authority": false,
+      "case_id": "R3A-006f1251140c68c612d40e24",
+      "causal_path_certificates": [
+        {
+          "case_id": "R3A-006f1251140c68c612d40e24",
+          "competing_common_cause_hypotheses": [],
+          "competing_mediator_paths": [],
+          "intervention_observation_evidence": "THREE_DISJOINT_TEMPORAL_FOLDS",
+          "promotion_rationale": "DIRECT_SUPPORT_SURVIVED_MEDIATOR_AND_COMMON_CAUSE_COMPETITION",
+          "source": 1,
+          "supporting_evidence": "STABLE_CONDITIONAL_MDL=873.535046555289",
+          "target": 0,
+          "uncertainty": 0.0011434647518574646
+        },
+        {
+          "case_id": "R3A-006f1251140c68c612d40e24",
+          "competing_common_cause_hypotheses": [],
+          "competing_mediator_paths": [],
+          "intervention_observation_evidence": "THREE_DISJOINT_TEMPORAL_FOLDS",
+          "promotion_rationale": "DIRECT_SUPPORT_SURVIVED_MEDIATOR_AND_COMMON_CAUSE_COMPETITION",
+          "source": 1,
+          "supporting_evidence": "STABLE_CONDITIONAL_MDL=206.414098568604",
+          "target": 2,
+          "uncertainty": 0.004821273032552513
+        },
+        {
+          "case_id": "R3A-006f1251140c68c612d40e24",
+          "competing_common_cause_hypotheses": [],
+          "competing_mediator_paths": [],
+          "intervention_observation_evidence": "THREE_DISJOINT_TEMPORAL_FOLDS",
+          "promotion_rationale": "DIRECT_SUPPORT_SURVIVED_MEDIATOR_AND_COMMON_CAUSE_COMPETITION",
+          "source": 2,
+          "supporting_evidence": "STABLE_CONDITIONAL_MDL=643.111922691878",
+          "target": 1,
+          "uncertainty": 0.0015525252130418443
+        }
+      ],
+      "lag_used_as_mediator_authority": false,
+      "mediation_path_certificates": [
+        {
+          "case_id": "R3A-006f1251140c68c612d40e24",
+          "counterfactual_implication": "BLOCKING_MEDIATOR_PATH_SHOULD_ATTENUATE_TOTAL_EFFECT",
+          "evidence": "ALTERNATE_STABLE_CAUSAL_PATH",
+          "mediator_path": [
+            1
+          ],
+          "semantic_temporal_ordering": "SOURCE_BEFORE_MEDIATOR_BEFORE_TARGET",
+          "source": 0,
+          "target": 2,
+          "uncertainty": 0.04300460806619667
+        },
+        {
+          "case_id": "R3A-006f1251140c68c612d40e24",
+          "counterfactual_implication": "BLOCKING_MEDIATOR_PATH_SHOULD_ATTENUATE_TOTAL_EFFECT",
+          "evidence": "ALTERNATE_STABLE_CAUSAL_PATH",
+          "mediator_path": [
+            1
+          ],
+          "semantic_temporal_ordering": "SOURCE_BEFORE_MEDIATOR_BEFORE_TARGET",
+          "source": 2,
+          "target": 0,
+          "uncertainty": 0.061250323842888955
+        }
+      ],
+      "relations": [
+        {
+          "class": "UNRESOLVED",
+          "evidence_score": -28.005191300129546,
+          "lag": 0,
+          "source": 0,
+          "target": 1,
+          "uncertainty": 0.03447658695481638
+        },
+        {
+          "class": "MEDIATED",
+          "evidence_score": -22.253322026809485,
+          "lag": 0,
+          "source": 0,
+          "target": 2,
+          "uncertainty": 0.04300460806619667
+        },
+        {
+          "class": "DIRECT",
+          "evidence_score": 873.5350465552892,
+          "lag": 0,
+          "source": 1,
+          "target": 0,
+          "uncertainty": 0.0011434647518574646
+        },
+        {
+          "class": "DIRECT",
+          "evidence_score": 206.41409856860415,
+          "lag": 0,
+          "source": 1,
+          "target": 2,
+          "uncertainty": 0.004821273032552513
+        },
+        {
+          "class": "MEDIATED",
+          "evidence_score": -15.326444290565137,
+          "lag": 0,
+          "source": 2,
+          "target": 0,
+          "uncertainty": 0.061250323842888955
+        },
+        {
+          "class": "DIRECT",
+          "evidence_score": 643.1119226918781,
+          "lag": 0,
+          "source": 2,
+          "target": 1,
+          "uncertainty": 0.0015525252130418443
+        }
+      ],
+      "topology_template_to_causal_class_authority": false,
+      "total_effect_used_as_direct_edge_authority": false
+    },
+    {
+      "benchmark_id_to_causal_class_authority": false,
+      "case_id": "R3A-026dbc5836edb30115b1f306",
+      "causal_path_certificates": [],
+      "lag_used_as_mediator_authority": false,
+      "mediation_path_certificates": [],
+      "relations": [
+        {
+          "class": "UNRESOLVED",
+          "evidence_score": -22.333985235126796,
+          "lag": 0,
+          "source": 0,
+          "target": 1,
+          "uncertainty": 0.04285594551995379
+        },
+        {
+          "class": "UNRESOLVED",
+          "evidence_score": -22.333985235126796,
+          "lag": 0,
+          "source": 0,
+          "target": 2,
+          "uncertainty": 0.04285594551995379
+        },
+        {
+          "class": "UNRESOLVED",
+          "evidence_score": -22.333985235126796,
+          "lag": 0,
+          "source": 1,
+          "target": 0,
+          "uncertainty": 0.04285594551995379
+        },
+        {
+          "class": "UNRESOLVED",
+          "evidence_score": -22.333985235126796,
+          "lag": 0,
+          "source": 1,
+          "target": 2,
+          "uncertainty": 0.04285594551995379
+        },
+        {
+          "class": "UNRESOLVED",
+          "evidence_score": -22.333985235126796,
+          "lag": 0,
+          "source": 2,
+          "target": 0,
+          "uncertainty": 0.04285594551995379
+        },
+        {
+          "class": "UNRESOLVED",
+          "evidence_score": -22.333985235126796,
+          "lag": 0,
+          "source": 2,
+          "target": 1,
+          "uncertainty": 0.04285594551995379
+        }
+      ],
+      "topology_template_to_causal_class_authority": false,
+      "total_effect_used_as_direct_edge_authority": false
+    },
+    {
+      "benchmark_id_to_causal_class_authority": false,
+      "case_id": "R3A-028d84253f32fe9708472bbe",
+      "causal_path_certificates": [],
+      "lag_used_as_mediator_authority": false,
+      "mediation_path_certificates": [],
+      "relations": [
+        {
+          "class": "UNRESOLVED",
+          "evidence_score": -22.333985235126796,
+          "lag": 0,
+          "source": 0,
+          "target": 1,
+          "uncertainty": 0.04285594551995379
+        },
+        {
+          "class": "UNRESOLVED",
+          "evidence_score": -22.333985235126796,
+          "lag": 0,
+          "source": 1,
+          "target": 0,
+          "uncertainty": 0.04285594551995379
+        }
+      ],
+      "topology_template_to_causal_class_authority": false,
+      "total_effect_used_as_direct_edge_authority": false
+    },
+    {
+      "benchmark_id_to_causal_class_authority": false,
+      "case_id": "R3A-07db6e615f771dab3cb5c8c3",
+      "causal_path_certificates": [],
+      "lag_used_as_mediator_authority": false,
+      "mediation_path_certificates": [],
+      "relations": [
+        {
+          "class": "UNRESOLVED",
+          "evidence_score": 9.093888027109525,
+          "lag": 0,
+          "source": 0,
+          "target": 1,
+          "uncertainty": 0.0990698526984115
+        },
+        {
+          "class": "UNRESOLVED",
+          "evidence_score": 52.47203192896394,
+          "lag": 0,
+          "source": 1,
+          "target": 0,
+          "uncertainty": 0.01870136525442817
+        }
+      ],
+      "topology_template_to_causal_class_authority": false,
+      "total_effect_used_as_direct_edge_authority": false
+    },
+    {
+      "benchmark_id_to_causal_class_authority": false,
+      "case_id": "R3A-0cf3500d89cae25b7fc9cef1",
+      "causal_path_certificates": [],
+      "lag_used_as_mediator_authority": false,
+      "mediation_path_certificates": [],
+      "relations": [
+        {
+          "class": "UNRESOLVED",
+          "evidence_score": -22.333985235126796,
+          "lag": 0,
+          "source": 0,
+          "target": 1,
+          "uncertainty": 0.04285594551995379
+        },
+        {
+          "class": "UNRESOLVED",
+          "evidence_score": -22.333985235126796,
+          "lag": 0,
+          "source": 0,
+          "target": 2,
+          "uncertainty": 0.04285594551995379
+        },
+        {
+          "class": "UNRESOLVED",
+          "evidence_score": -22.333985235126796,
+          "lag": 0,
+          "source": 1,
+          "target": 0,
+          "uncertainty": 0.04285594551995379
+        },
+        {
+          "class": "UNRESOLVED",
+          "evidence_score": -22.333985235126796,
+          "lag": 0,
+          "source": 1,
+          "target": 2,
+          "uncertainty": 0.04285594551995379
+        },
+        {
+          "class": "UNRESOLVED",
+          "evidence_score": -22.333985235126796,
+          "lag": 0,
+          "source": 2,
+          "target": 0,
+          "uncertainty": 0.04285594551995379
+        },
+        {
+          "class": "UNRESOLVED",
+          "evidence_score": -22.333985235126796,
+          "lag": 0,
+          "source": 2,
+          "target": 1,
+          "uncertainty": 0.04285594551995379
+        }
+      ],
+      "topology_template_to_causal_class_authority": false,
+      "total_effect_used_as_direct_edge_authority": false
+    },
+    {
+      "benchmark_id_to_causal_class_authority": false,
+      "case_id": "R3A-159aeb7236b69767fe9196cd",
+      "causal_path_certificates": [
+        {
+          "case_id": "R3A-159aeb7236b69767fe9196cd",
+          "competing_common_cause_hypotheses": [],
+          "competing_mediator_paths": [],
+          "intervention_observation_evidence": "THREE_DISJOINT_TEMPORAL_FOLDS",
+          "promotion_rationale": "DIRECT_SUPPORT_SURVIVED_MEDIATOR_AND_COMMON_CAUSE_COMPETITION",
+          "source": 0,
+          "supporting_evidence": "STABLE_CONDITIONAL_MDL=29.309918892186",
+          "target": 1,
+          "uncertainty": 0.03299250003132854
+        },
+        {
+          "case_id": "R3A-159aeb7236b69767fe9196cd",
+          "competing_common_cause_hypotheses": [],
+          "competing_mediator_paths": [],
+          "intervention_observation_evidence": "THREE_DISJOINT_TEMPORAL_FOLDS",
+          "promotion_rationale": "DIRECT_SUPPORT_SURVIVED_MEDIATOR_AND_COMMON_CAUSE_COMPETITION",
+          "source": 1,
+          "supporting_evidence": "STABLE_CONDITIONAL_MDL=24.085019737588",
+          "target": 0,
+          "uncertainty": 0.039864429466705084
+        }
+      ],
+      "lag_used_as_mediator_authority": false,
+      "mediation_path_certificates": [
+        {
+          "case_id": "R3A-159aeb7236b69767fe9196cd",
+          "counterfactual_implication": "BLOCKING_MEDIATOR_PATH_SHOULD_ATTENUATE_TOTAL_EFFECT",
+          "evidence": "ALTERNATE_STABLE_CAUSAL_PATH",
+          "mediator_path": [
+            0
+          ],
+          "semantic_temporal_ordering": "SOURCE_BEFORE_MEDIATOR_BEFORE_TARGET",
+          "source": 1,
+          "target": 2,
+          "uncertainty": 0.013356198010373178
+        }
+      ],
+      "relations": [
+        {
+          "class": "DIRECT",
+          "evidence_score": 29.30991889218563,
+          "lag": 0,
+          "source": 0,
+          "target": 1,
+          "uncertainty": 0.03299250003132854
+        },
+        {
+          "class": "UNRESOLVED",
+          "evidence_score": 12.474060380691604,
+          "lag": 0,
+          "source": 0,
+          "target": 2,
+          "uncertainty": 0.07421667795351466
+        },
+        {
+          "class": "DIRECT",
+          "evidence_score": 24.085019737588457,
+          "lag": 0,
+          "source": 1,
+          "target": 0,
+          "uncertainty": 0.039864429466705084
+        },
+        {
+          "class": "MEDIATED",
+          "evidence_score": -73.87160636757133,
+          "lag": 0,
+          "source": 1,
+          "target": 2,
+          "uncertainty": 0.013356198010373178
+        },
+        {
+          "class": "UNRESOLVED",
+          "evidence_score": -19.690766920757692,
+          "lag": 0,
+          "source": 2,
+          "target": 0,
+          "uncertainty": 0.04833073630522441
+        },
+        {
+          "class": "CONFOUNDED",
+          "evidence_score": -28.622240440393007,
+          "lag": 0,
+          "source": 2,
+          "target": 1,
+          "uncertainty": 0.03375841884790037
+        }
+      ],
+      "topology_template_to_causal_class_authority": false,
+      "total_effect_used_as_direct_edge_authority": false
+    },
+    {
+      "benchmark_id_to_causal_class_authority": false,
+      "case_id": "R3A-1602ebdad71b7613cb01fda9",
+      "causal_path_certificates": [],
+      "lag_used_as_mediator_authority": false,
+      "mediation_path_certificates": [],
+      "relations": [
+        {
+          "class": "UNRESOLVED",
+          "evidence_score": 233.49590474964893,
+          "lag": 0,
+          "source": 0,
+          "target": 1,
+          "uncertainty": 0.004264466797693605
+        },
+        {
+          "class": "UNRESOLVED",
+          "evidence_score": 157.13936801491693,
+          "lag": 0,
+          "source": 1,
+          "target": 0,
+          "uncertainty": 0.006323536084358654
+        }
+      ],
+      "topology_template_to_causal_class_authority": false,
+      "total_effect_used_as_direct_edge_authority": false
+    },
+    {
+      "benchmark_id_to_causal_class_authority": false,
+      "case_id": "R3A-1669612cd1ad68d03ef78491",
+      "causal_path_certificates": [
+        {
+          "case_id": "R3A-1669612cd1ad68d03ef78491",
+          "competing_common_cause_hypotheses": [],
+          "competing_mediator_paths": [],
+          "intervention_observation_evidence": "THREE_DISJOINT_TEMPORAL_FOLDS",
+          "promotion_rationale": "DIRECT_SUPPORT_SURVIVED_MEDIATOR_AND_COMMON_CAUSE_COMPETITION",
+          "source": 0,
+          "supporting_evidence": "STABLE_CONDITIONAL_MDL=1284.537038101717",
+          "target": 1,
+          "uncertainty": 0.000777885016426011
+        },
+        {
+          "case_id": "R3A-1669612cd1ad68d03ef78491",
+          "competing_common_cause_hypotheses": [],
+          "competing_mediator_paths": [],
+          "intervention_observation_evidence": "THREE_DISJOINT_TEMPORAL_FOLDS",
+          "promotion_rationale": "DIRECT_SUPPORT_SURVIVED_MEDIATOR_AND_COMMON_CAUSE_COMPETITION",
+          "source": 1,
+          "supporting_evidence": "STABLE_CONDITIONAL_MDL=115.813371740297",
+          "target": 0,
+          "uncertainty": 0.008560663775917961
+        }
+      ],
+      "lag_used_as_mediator_authority": false,
+      "mediation_path_certificates": [
+        {
+          "case_id": "R3A-1669612cd1ad68d03ef78491",
+          "counterfactual_implication": "BLOCKING_MEDIATOR_PATH_SHOULD_ATTENUATE_TOTAL_EFFECT",
+          "evidence": "ALTERNATE_STABLE_CAUSAL_PATH",
+          "mediator_path": [
+            0
+          ],
+          "semantic_temporal_ordering": "SOURCE_BEFORE_MEDIATOR_BEFORE_TARGET",
+          "source": 1,
+          "target": 2,
+          "uncertainty": 0.0027725315219486453
+        },
+        {
+          "case_id": "R3A-1669612cd1ad68d03ef78491",
+          "counterfactual_implication": "BLOCKING_MEDIATOR_PATH_SHOULD_ATTENUATE_TOTAL_EFFECT",
+          "evidence": "ALTERNATE_STABLE_CAUSAL_PATH",
+          "mediator_path": [
+            0
+          ],
+          "semantic_temporal_ordering": "SOURCE_BEFORE_MEDIATOR_BEFORE_TARGET",
+          "source": 2,
+          "target": 1,
+          "uncertainty": 0.037855403230011186
+        }
+      ],
+      "relations": [
+        {
+          "class": "DIRECT",
+          "evidence_score": 1284.5370381017174,
+          "lag": 0,
+          "source": 0,
+          "target": 1,
+          "uncertainty": 0.000777885016426011
+        },
+        {
+          "class": "UNRESOLVED",
+          "evidence_score": 734.7452071558783,
+          "lag": 0,
+          "source": 0,
+          "target": 2,
+          "uncertainty": 0.001359166176380046
+        },
+        {
+          "class": "DIRECT",
+          "evidence_score": 115.81337174029707,
+          "lag": 0,
+          "source": 1,
+          "target": 0,
+          "uncertainty": 0.008560663775917961
+        },
+        {
+          "class": "MEDIATED",
+          "evidence_score": -359.6812013077349,
+          "lag": 0,
+          "source": 1,
+          "target": 2,
+          "uncertainty": 0.0027725315219486453
+        },
+        {
+          "class": "UNRESOLVED",
+          "evidence_score": -0.4551677538342389,
+          "lag": 0,
+          "source": 2,
+          "target": 0,
+          "uncertainty": 0.6872059921373931
+        },
+        {
+          "class": "MEDIATED",
+          "evidence_score": -25.416308232776007,
+          "lag": 0,
+          "source": 2,
+          "target": 1,
+          "uncertainty": 0.037855403230011186
+        }
+      ],
+      "topology_template_to_causal_class_authority": false,
+      "total_effect_used_as_direct_edge_authority": false
+    },
+    {
+      "benchmark_id_to_causal_class_authority": false,
+      "case_id": "R3A-3194225bb5fd3f92f500af45",
+      "causal_path_certificates": [],
+      "lag_used_as_mediator_authority": false,
+      "mediation_path_certificates": [],
+      "relations": [
+        {
+          "class": "UNRESOLVED",
+          "evidence_score": -30.73620411956475,
+          "lag": 0,
+          "source": 0,
+          "target": 1,
+          "uncertainty": 0.031509754482059164
+        },
+        {
+          "class": "UNRESOLVED",
+          "evidence_score": -46.11804829163044,
+          "lag": 0,
+          "source": 1,
+          "target": 0,
+          "uncertainty": 0.021223289933628885
+        }
+      ],
+      "topology_template_to_causal_class_authority": false,
+      "total_effect_used_as_direct_edge_authority": false
+    },
+    {
+      "benchmark_id_to_causal_class_authority": false,
+      "case_id": "R3A-557f0d21ecbb96446215d281",
+      "causal_path_certificates": [
+        {
+          "case_id": "R3A-557f0d21ecbb96446215d281",
+          "competing_common_cause_hypotheses": [],
+          "competing_mediator_paths": [],
+          "intervention_observation_evidence": "THREE_DISJOINT_TEMPORAL_FOLDS",
+          "promotion_rationale": "DIRECT_SUPPORT_SURVIVED_MEDIATOR_AND_COMMON_CAUSE_COMPETITION",
+          "source": 0,
+          "supporting_evidence": "STABLE_CONDITIONAL_MDL=124.308458244300",
+          "target": 1,
+          "uncertainty": 0.00798030726745046
+        },
+        {
+          "case_id": "R3A-557f0d21ecbb96446215d281",
+          "competing_common_cause_hypotheses": [],
+          "competing_mediator_paths": [],
+          "intervention_observation_evidence": "THREE_DISJOINT_TEMPORAL_FOLDS",
+          "promotion_rationale": "DIRECT_SUPPORT_SURVIVED_MEDIATOR_AND_COMMON_CAUSE_COMPETITION",
+          "source": 1,
+          "supporting_evidence": "STABLE_CONDITIONAL_MDL=200.811015802748",
+          "target": 0,
+          "uncertainty": 0.004955130898193423
+        },
+        {
+          "case_id": "R3A-557f0d21ecbb96446215d281",
+          "competing_common_cause_hypotheses": [],
+          "competing_mediator_paths": [],
+          "intervention_observation_evidence": "THREE_DISJOINT_TEMPORAL_FOLDS",
+          "promotion_rationale": "DIRECT_SUPPORT_SURVIVED_MEDIATOR_AND_COMMON_CAUSE_COMPETITION",
+          "source": 1,
+          "supporting_evidence": "STABLE_CONDITIONAL_MDL=608.337488643429",
+          "target": 2,
+          "uncertainty": 0.0016411266640204661
+        },
+        {
+          "case_id": "R3A-557f0d21ecbb96446215d281",
+          "competing_common_cause_hypotheses": [],
+          "competing_mediator_paths": [],
+          "intervention_observation_evidence": "THREE_DISJOINT_TEMPORAL_FOLDS",
+          "promotion_rationale": "DIRECT_SUPPORT_SURVIVED_MEDIATOR_AND_COMMON_CAUSE_COMPETITION",
+          "source": 2,
+          "supporting_evidence": "STABLE_CONDITIONAL_MDL=445.475096714552",
+          "target": 1,
+          "uncertainty": 0.002239766579051413
+        }
+      ],
+      "lag_used_as_mediator_authority": false,
+      "mediation_path_certificates": [
+        {
+          "case_id": "R3A-557f0d21ecbb96446215d281",
+          "counterfactual_implication": "BLOCKING_MEDIATOR_PATH_SHOULD_ATTENUATE_TOTAL_EFFECT",
+          "evidence": "ALTERNATE_STABLE_CAUSAL_PATH",
+          "mediator_path": [
+            1
+          ],
+          "semantic_temporal_ordering": "SOURCE_BEFORE_MEDIATOR_BEFORE_TARGET",
+          "source": 0,
+          "target": 2,
+          "uncertainty": 0.04614466741041657
+        },
+        {
+          "case_id": "R3A-557f0d21ecbb96446215d281",
+          "counterfactual_implication": "BLOCKING_MEDIATOR_PATH_SHOULD_ATTENUATE_TOTAL_EFFECT",
+          "evidence": "ALTERNATE_STABLE_CAUSAL_PATH",
+          "mediator_path": [
+            1
+          ],
+          "semantic_temporal_ordering": "SOURCE_BEFORE_MEDIATOR_BEFORE_TARGET",
+          "source": 2,
+          "target": 0,
+          "uncertainty": 0.029537983795702643
+        }
+      ],
+      "relations": [
+        {
+          "class": "DIRECT",
+          "evidence_score": 124.30845824430003,
+          "lag": 0,
+          "source": 0,
+          "target": 1,
+          "uncertainty": 0.00798030726745046
+        },
+        {
+          "class": "MEDIATED",
+          "evidence_score": -20.670976433872028,
+          "lag": 0,
+          "source": 0,
+          "target": 2,
+          "uncertainty": 0.04614466741041657
+        },
+        {
+          "class": "DIRECT",
+          "evidence_score": 200.81101580274844,
+          "lag": 0,
+          "source": 1,
+          "target": 0,
+          "uncertainty": 0.004955130898193423
+        },
+        {
+          "class": "DIRECT",
+          "evidence_score": 608.3374886434294,
+          "lag": 0,
+          "source": 1,
+          "target": 2,
+          "uncertainty": 0.0016411266640204661
+        },
+        {
+          "class": "MEDIATED",
+          "evidence_score": -32.854714218696465,
+          "lag": 0,
+          "source": 2,
+          "target": 0,
+          "uncertainty": 0.029537983795702643
+        },
+        {
+          "class": "DIRECT",
+          "evidence_score": 445.47509671455157,
+          "lag": 0,
+          "source": 2,
+          "target": 1,
+          "uncertainty": 0.002239766579051413
+        }
+      ],
+      "topology_template_to_causal_class_authority": false,
+      "total_effect_used_as_direct_edge_authority": false
+    },
+    {
+      "benchmark_id_to_causal_class_authority": false,
+      "case_id": "R3A-5e2b3f6e4cf63f001cb14786",
+      "causal_path_certificates": [
+        {
+          "case_id": "R3A-5e2b3f6e4cf63f001cb14786",
+          "competing_common_cause_hypotheses": [
+            2
+          ],
+          "competing_mediator_paths": [
+            [
+              0,
+              2,
+              1
+            ]
+          ],
+          "intervention_observation_evidence": "THREE_DISJOINT_TEMPORAL_FOLDS",
+          "promotion_rationale": "DIRECT_SUPPORT_SURVIVED_MEDIATOR_AND_COMMON_CAUSE_COMPETITION",
+          "source": 0,
+          "supporting_evidence": "STABLE_CONDITIONAL_MDL=577.773047917511",
+          "target": 1,
+          "uncertainty": 0.0017277929640955277
+        },
+        {
+          "case_id": "R3A-5e2b3f6e4cf63f001cb14786",
+          "competing_common_cause_hypotheses": [
+            2
+          ],
+          "competing_mediator_paths": [
+            [
+              1,
+              2,
+              0
+            ]
+          ],
+          "intervention_observation_evidence": "THREE_DISJOINT_TEMPORAL_FOLDS",
+          "promotion_rationale": "DIRECT_SUPPORT_SURVIVED_MEDIATOR_AND_COMMON_CAUSE_COMPETITION",
+          "source": 1,
+          "supporting_evidence": "STABLE_CONDITIONAL_MDL=3128.838835796114",
+          "target": 0,
+          "uncertainty": 0.0003195052692691243
+        },
+        {
+          "case_id": "R3A-5e2b3f6e4cf63f001cb14786",
+          "competing_common_cause_hypotheses": [
+            0
+          ],
+          "competing_mediator_paths": [
+            [
+              2,
+              0,
+              1
+            ]
+          ],
+          "intervention_observation_evidence": "THREE_DISJOINT_TEMPORAL_FOLDS",
+          "promotion_rationale": "DIRECT_SUPPORT_SURVIVED_MEDIATOR_AND_COMMON_CAUSE_COMPETITION",
+          "source": 2,
+          "supporting_evidence": "STABLE_CONDITIONAL_MDL=242.117860802651",
+          "target": 1,
+          "uncertainty": 0.0041132313220366085
+        }
+      ],
+      "lag_used_as_mediator_authority": false,
+      "mediation_path_certificates": [
+        {
+          "case_id": "R3A-5e2b3f6e4cf63f001cb14786",
+          "counterfactual_implication": "BLOCKING_MEDIATOR_PATH_SHOULD_ATTENUATE_TOTAL_EFFECT",
+          "evidence": "ALTERNATE_STABLE_CAUSAL_PATH",
+          "mediator_path": [
+            1
+          ],
+          "semantic_temporal_ordering": "SOURCE_BEFORE_MEDIATOR_BEFORE_TARGET",
+          "source": 0,
+          "target": 2,
+          "uncertainty": 0.0029967141978166183
+        },
+        {
+          "case_id": "R3A-5e2b3f6e4cf63f001cb14786",
+          "counterfactual_implication": "BLOCKING_MEDIATOR_PATH_SHOULD_ATTENUATE_TOTAL_EFFECT",
+          "evidence": "ALTERNATE_STABLE_CAUSAL_PATH",
+          "mediator_path": [
+            0
+          ],
+          "semantic_temporal_ordering": "SOURCE_BEFORE_MEDIATOR_BEFORE_TARGET",
+          "source": 1,
+          "target": 2,
+          "uncertainty": 0.0038622915434725572
+        },
+        {
+          "case_id": "R3A-5e2b3f6e4cf63f001cb14786",
+          "counterfactual_implication": "BLOCKING_MEDIATOR_PATH_SHOULD_ATTENUATE_TOTAL_EFFECT",
+          "evidence": "ALTERNATE_STABLE_CAUSAL_PATH",
+          "mediator_path": [
+            1
+          ],
+          "semantic_temporal_ordering": "SOURCE_BEFORE_MEDIATOR_BEFORE_TARGET",
+          "source": 2,
+          "target": 0,
+          "uncertainty": 0.0006819814766776552
+        }
+      ],
+      "relations": [
+        {
+          "class": "DIRECT",
+          "evidence_score": 577.7730479175115,
+          "lag": 0,
+          "source": 0,
+          "target": 1,
+          "uncertainty": 0.0017277929640955277
+        },
+        {
+          "class": "MEDIATED",
+          "evidence_score": 332.698822773487,
+          "lag": 0,
+          "source": 0,
+          "target": 2,
+          "uncertainty": 0.0029967141978166183
+        },
+        {
+          "class": "DIRECT",
+          "evidence_score": 3128.8388357961144,
+          "lag": 0,
+          "source": 1,
+          "target": 0,
+          "uncertainty": 0.0003195052692691243
+        },
+        {
+          "class": "MEDIATED",
+          "evidence_score": 257.9136497709615,
+          "lag": 0,
+          "source": 1,
+          "target": 2,
+          "uncertainty": 0.0038622915434725572
+        },
+        {
+          "class": "MEDIATED",
+          "evidence_score": 1465.315485387676,
+          "lag": 0,
+          "source": 2,
+          "target": 0,
+          "uncertainty": 0.0006819814766776552
+        },
+        {
+          "class": "DIRECT",
+          "evidence_score": 242.11786080265094,
+          "lag": 0,
+          "source": 2,
+          "target": 1,
+          "uncertainty": 0.0041132313220366085
+        }
+      ],
+      "topology_template_to_causal_class_authority": false,
+      "total_effect_used_as_direct_edge_authority": false
+    },
+    {
+      "benchmark_id_to_causal_class_authority": false,
+      "case_id": "R3A-6aa0c61019d6d53fcc7981b9",
+      "causal_path_certificates": [
+        {
+          "case_id": "R3A-6aa0c61019d6d53fcc7981b9",
+          "competing_common_cause_hypotheses": [
+            2
+          ],
+          "competing_mediator_paths": [
+            [
+              0,
+              2,
+              1
+            ]
+          ],
+          "intervention_observation_evidence": "THREE_DISJOINT_TEMPORAL_FOLDS",
+          "promotion_rationale": "DIRECT_SUPPORT_SURVIVED_MEDIATOR_AND_COMMON_CAUSE_COMPETITION",
+          "source": 0,
+          "supporting_evidence": "STABLE_CONDITIONAL_MDL=82.230406197621",
+          "target": 1,
+          "uncertainty": 0.012014839836605128
+        },
+        {
+          "case_id": "R3A-6aa0c61019d6d53fcc7981b9",
+          "competing_common_cause_hypotheses": [
+            2
+          ],
+          "competing_mediator_paths": [
+            [
+              1,
+              2,
+              0
+            ]
+          ],
+          "intervention_observation_evidence": "THREE_DISJOINT_TEMPORAL_FOLDS",
+          "promotion_rationale": "DIRECT_SUPPORT_SURVIVED_MEDIATOR_AND_COMMON_CAUSE_COMPETITION",
+          "source": 1,
+          "supporting_evidence": "STABLE_CONDITIONAL_MDL=120.944016447248",
+          "target": 0,
+          "uncertainty": 0.008200484362696004
+        }
+      ],
+      "lag_used_as_mediator_authority": false,
+      "mediation_path_certificates": [
+        {
+          "case_id": "R3A-6aa0c61019d6d53fcc7981b9",
+          "counterfactual_implication": "BLOCKING_MEDIATOR_PATH_SHOULD_ATTENUATE_TOTAL_EFFECT",
+          "evidence": "ALTERNATE_STABLE_CAUSAL_PATH",
+          "mediator_path": [
+            1
+          ],
+          "semantic_temporal_ordering": "SOURCE_BEFORE_MEDIATOR_BEFORE_TARGET",
+          "source": 0,
+          "target": 2,
+          "uncertainty": 0.04830067642475528
+        },
+        {
+          "case_id": "R3A-6aa0c61019d6d53fcc7981b9",
+          "counterfactual_implication": "BLOCKING_MEDIATOR_PATH_SHOULD_ATTENUATE_TOTAL_EFFECT",
+          "evidence": "ALTERNATE_STABLE_CAUSAL_PATH",
+          "mediator_path": [
+            0
+          ],
+          "semantic_temporal_ordering": "SOURCE_BEFORE_MEDIATOR_BEFORE_TARGET",
+          "source": 1,
+          "target": 2,
+          "uncertainty": 0.08989026800392866
+        },
+        {
+          "case_id": "R3A-6aa0c61019d6d53fcc7981b9",
+          "counterfactual_implication": "BLOCKING_MEDIATOR_PATH_SHOULD_ATTENUATE_TOTAL_EFFECT",
+          "evidence": "ALTERNATE_STABLE_CAUSAL_PATH",
+          "mediator_path": [
+            1
+          ],
+          "semantic_temporal_ordering": "SOURCE_BEFORE_MEDIATOR_BEFORE_TARGET",
+          "source": 2,
+          "target": 0,
+          "uncertainty": 0.036339732593200814
+        },
+        {
+          "case_id": "R3A-6aa0c61019d6d53fcc7981b9",
+          "counterfactual_implication": "BLOCKING_MEDIATOR_PATH_SHOULD_ATTENUATE_TOTAL_EFFECT",
+          "evidence": "ALTERNATE_STABLE_CAUSAL_PATH",
+          "mediator_path": [
+            0
+          ],
+          "semantic_temporal_ordering": "SOURCE_BEFORE_MEDIATOR_BEFORE_TARGET",
+          "source": 2,
+          "target": 1,
+          "uncertainty": 0.19962586895317866
+        }
+      ],
+      "relations": [
+        {
+          "class": "DIRECT",
+          "evidence_score": 82.23040619762074,
+          "lag": 0,
+          "source": 0,
+          "target": 1,
+          "uncertainty": 0.012014839836605128
+        },
+        {
+          "class": "MEDIATED",
+          "evidence_score": -19.70364380005816,
+          "lag": 0,
+          "source": 0,
+          "target": 2,
+          "uncertainty": 0.04830067642475528
+        },
+        {
+          "class": "DIRECT",
+          "evidence_score": 120.9440164472478,
+          "lag": 0,
+          "source": 1,
+          "target": 0,
+          "uncertainty": 0.008200484362696004
+        },
+        {
+          "class": "MEDIATED",
+          "evidence_score": 10.124674808582114,
+          "lag": 0,
+          "source": 1,
+          "target": 2,
+          "uncertainty": 0.08989026800392866
+        },
+        {
+          "class": "MEDIATED",
+          "evidence_score": -26.518089117339862,
+          "lag": 0,
+          "source": 2,
+          "target": 0,
+          "uncertainty": 0.036339732593200814
+        },
+        {
+          "class": "MEDIATED",
+          "evidence_score": 4.009370805717296,
+          "lag": 0,
+          "source": 2,
+          "target": 1,
+          "uncertainty": 0.19962586895317866
+        }
+      ],
+      "topology_template_to_causal_class_authority": false,
+      "total_effect_used_as_direct_edge_authority": false
+    }
+  ],
+  "relations": [
+    {
+      "class": "UNRESOLVED",
+      "evidence_score": -28.005191300129546,
+      "lag": 0,
+      "source": 0,
+      "target": 1,
+      "uncertainty": 0.03447658695481638
+    },
+    {
+      "class": "MEDIATED",
+      "evidence_score": -22.253322026809485,
+      "lag": 0,
+      "source": 0,
+      "target": 2,
+      "uncertainty": 0.04300460806619667
+    },
+    {
+      "class": "DIRECT",
+      "evidence_score": 873.5350465552892,
+      "lag": 0,
+      "source": 1,
+      "target": 0,
+      "uncertainty": 0.0011434647518574646
+    },
+    {
+      "class": "DIRECT",
+      "evidence_score": 206.41409856860415,
+      "lag": 0,
+      "source": 1,
+      "target": 2,
+      "uncertainty": 0.004821273032552513
+    },
+    {
+      "class": "MEDIATED",
+      "evidence_score": -15.326444290565137,
+      "lag": 0,
+      "source": 2,
+      "target": 0,
+      "uncertainty": 0.061250323842888955
+    },
+    {
+      "class": "DIRECT",
+      "evidence_score": 643.1119226918781,
+      "lag": 0,
+      "source": 2,
+      "target": 1,
+      "uncertainty": 0.0015525252130418443
+    },
+    {
+      "class": "UNRESOLVED",
+      "evidence_score": -22.333985235126796,
+      "lag": 0,
+      "source": 0,
+      "target": 1,
+      "uncertainty": 0.04285594551995379
+    },
+    {
+      "class": "UNRESOLVED",
+      "evidence_score": -22.333985235126796,
+      "lag": 0,
+      "source": 0,
+      "target": 2,
+      "uncertainty": 0.04285594551995379
+    },
+    {
+      "class": "UNRESOLVED",
+      "evidence_score": -22.333985235126796,
+      "lag": 0,
+      "source": 1,
+      "target": 0,
+      "uncertainty": 0.04285594551995379
+    },
+    {
+      "class": "UNRESOLVED",
+      "evidence_score": -22.333985235126796,
+      "lag": 0,
+      "source": 1,
+      "target": 2,
+      "uncertainty": 0.04285594551995379
+    },
+    {
+      "class": "UNRESOLVED",
+      "evidence_score": -22.333985235126796,
+      "lag": 0,
+      "source": 2,
+      "target": 0,
+      "uncertainty": 0.04285594551995379
+    },
+    {
+      "class": "UNRESOLVED",
+      "evidence_score": -22.333985235126796,
+      "lag": 0,
+      "source": 2,
+      "target": 1,
+      "uncertainty": 0.04285594551995379
+    },
+    {
+      "class": "UNRESOLVED",
+      "evidence_score": -22.333985235126796,
+      "lag": 0,
+      "source": 0,
+      "target": 1,
+      "uncertainty": 0.04285594551995379
+    },
+    {
+      "class": "UNRESOLVED",
+      "evidence_score": -22.333985235126796,
+      "lag": 0,
+      "source": 1,
+      "target": 0,
+      "uncertainty": 0.04285594551995379
+    },
+    {
+      "class": "UNRESOLVED",
+      "evidence_score": 9.093888027109525,
+      "lag": 0,
+      "source": 0,
+      "target": 1,
+      "uncertainty": 0.0990698526984115
+    },
+    {
+      "class": "UNRESOLVED",
+      "evidence_score": 52.47203192896394,
+      "lag": 0,
+      "source": 1,
+      "target": 0,
+      "uncertainty": 0.01870136525442817
+    },
+    {
+      "class": "UNRESOLVED",
+      "evidence_score": -22.333985235126796,
+      "lag": 0,
+      "source": 0,
+      "target": 1,
+      "uncertainty": 0.04285594551995379
+    },
+    {
+      "class": "UNRESOLVED",
+      "evidence_score": -22.333985235126796,
+      "lag": 0,
+      "source": 0,
+      "target": 2,
+      "uncertainty": 0.04285594551995379
+    },
+    {
+      "class": "UNRESOLVED",
+      "evidence_score": -22.333985235126796,
+      "lag": 0,
+      "source": 1,
+      "target": 0,
+      "uncertainty": 0.04285594551995379
+    },
+    {
+      "class": "UNRESOLVED",
+      "evidence_score": -22.333985235126796,
+      "lag": 0,
+      "source": 1,
+      "target": 2,
+      "uncertainty": 0.04285594551995379
+    },
+    {
+      "class": "UNRESOLVED",
+      "evidence_score": -22.333985235126796,
+      "lag": 0,
+      "source": 2,
+      "target": 0,
+      "uncertainty": 0.04285594551995379
+    },
+    {
+      "class": "UNRESOLVED",
+      "evidence_score": -22.333985235126796,
+      "lag": 0,
+      "source": 2,
+      "target": 1,
+      "uncertainty": 0.04285594551995379
+    },
+    {
+      "class": "DIRECT",
+      "evidence_score": 29.30991889218563,
+      "lag": 0,
+      "source": 0,
+      "target": 1,
+      "uncertainty": 0.03299250003132854
+    },
+    {
+      "class": "UNRESOLVED",
+      "evidence_score": 12.474060380691604,
+      "lag": 0,
+      "source": 0,
+      "target": 2,
+      "uncertainty": 0.07421667795351466
+    },
+    {
+      "class": "DIRECT",
+      "evidence_score": 24.085019737588457,
+      "lag": 0,
+      "source": 1,
+      "target": 0,
+      "uncertainty": 0.039864429466705084
+    },
+    {
+      "class": "MEDIATED",
+      "evidence_score": -73.87160636757133,
+      "lag": 0,
+      "source": 1,
+      "target": 2,
+      "uncertainty": 0.013356198010373178
+    },
+    {
+      "class": "UNRESOLVED",
+      "evidence_score": -19.690766920757692,
+      "lag": 0,
+      "source": 2,
+      "target": 0,
+      "uncertainty": 0.04833073630522441
+    },
+    {
+      "class": "CONFOUNDED",
+      "evidence_score": -28.622240440393007,
+      "lag": 0,
+      "source": 2,
+      "target": 1,
+      "uncertainty": 0.03375841884790037
+    },
+    {
+      "class": "UNRESOLVED",
+      "evidence_score": 233.49590474964893,
+      "lag": 0,
+      "source": 0,
+      "target": 1,
+      "uncertainty": 0.004264466797693605
+    },
+    {
+      "class": "UNRESOLVED",
+      "evidence_score": 157.13936801491693,
+      "lag": 0,
+      "source": 1,
+      "target": 0,
+      "uncertainty": 0.006323536084358654
+    },
+    {
+      "class": "DIRECT",
+      "evidence_score": 1284.5370381017174,
+      "lag": 0,
+      "source": 0,
+      "target": 1,
+      "uncertainty": 0.000777885016426011
+    },
+    {
+      "class": "UNRESOLVED",
+      "evidence_score": 734.7452071558783,
+      "lag": 0,
+      "source": 0,
+      "target": 2,
+      "uncertainty": 0.001359166176380046
+    },
+    {
+      "class": "DIRECT",
+      "evidence_score": 115.81337174029707,
+      "lag": 0,
+      "source": 1,
+      "target": 0,
+      "uncertainty": 0.008560663775917961
+    },
+    {
+      "class": "MEDIATED",
+      "evidence_score": -359.6812013077349,
+      "lag": 0,
+      "source": 1,
+      "target": 2,
+      "uncertainty": 0.0027725315219486453
+    },
+    {
+      "class": "UNRESOLVED",
+      "evidence_score": -0.4551677538342389,
+      "lag": 0,
+      "source": 2,
+      "target": 0,
+      "uncertainty": 0.6872059921373931
+    },
+    {
+      "class": "MEDIATED",
+      "evidence_score": -25.416308232776007,
+      "lag": 0,
+      "source": 2,
+      "target": 1,
+      "uncertainty": 0.037855403230011186
+    },
+    {
+      "class": "UNRESOLVED",
+      "evidence_score": -30.73620411956475,
+      "lag": 0,
+      "source": 0,
+      "target": 1,
+      "uncertainty": 0.031509754482059164
+    },
+    {
+      "class": "UNRESOLVED",
+      "evidence_score": -46.11804829163044,
+      "lag": 0,
+      "source": 1,
+      "target": 0,
+      "uncertainty": 0.021223289933628885
+    },
+    {
+      "class": "DIRECT",
+      "evidence_score": 124.30845824430003,
+      "lag": 0,
+      "source": 0,
+      "target": 1,
+      "uncertainty": 0.00798030726745046
+    },
+    {
+      "class": "MEDIATED",
+      "evidence_score": -20.670976433872028,
+      "lag": 0,
+      "source": 0,
+      "target": 2,
+      "uncertainty": 0.04614466741041657
+    },
+    {
+      "class": "DIRECT",
+      "evidence_score": 200.81101580274844,
+      "lag": 0,
+      "source": 1,
+      "target": 0,
+      "uncertainty": 0.004955130898193423
+    },
+    {
+      "class": "DIRECT",
+      "evidence_score": 608.3374886434294,
+      "lag": 0,
+      "source": 1,
+      "target": 2,
+      "uncertainty": 0.0016411266640204661
+    },
+    {
+      "class": "MEDIATED",
+      "evidence_score": -32.854714218696465,
+      "lag": 0,
+      "source": 2,
+      "target": 0,
+      "uncertainty": 0.029537983795702643
+    },
+    {
+      "class": "DIRECT",
+      "evidence_score": 445.47509671455157,
+      "lag": 0,
+      "source": 2,
+      "target": 1,
+      "uncertainty": 0.002239766579051413
+    },
+    {
+      "class": "DIRECT",
+      "evidence_score": 577.7730479175115,
+      "lag": 0,
+      "source": 0,
+      "target": 1,
+      "uncertainty": 0.0017277929640955277
+    },
+    {
+      "class": "MEDIATED",
+      "evidence_score": 332.698822773487,
+      "lag": 0,
+      "source": 0,
+      "target": 2,
+      "uncertainty": 0.0029967141978166183
+    },
+    {
+      "class": "DIRECT",
+      "evidence_score": 3128.8388357961144,
+      "lag": 0,
+      "source": 1,
+      "target": 0,
+      "uncertainty": 0.0003195052692691243
+    },
+    {
+      "class": "MEDIATED",
+      "evidence_score": 257.9136497709615,
+      "lag": 0,
+      "source": 1,
+      "target": 2,
+      "uncertainty": 0.0038622915434725572
+    },
+    {
+      "class": "MEDIATED",
+      "evidence_score": 1465.315485387676,
+      "lag": 0,
+      "source": 2,
+      "target": 0,
+      "uncertainty": 0.0006819814766776552
+    },
+    {
+      "class": "DIRECT",
+      "evidence_score": 242.11786080265094,
+      "lag": 0,
+      "source": 2,
+      "target": 1,
+      "uncertainty": 0.0041132313220366085
+    },
+    {
+      "class": "DIRECT",
+      "evidence_score": 82.23040619762074,
+      "lag": 0,
+      "source": 0,
+      "target": 1,
+      "uncertainty": 0.012014839836605128
+    },
+    {
+      "class": "MEDIATED",
+      "evidence_score": -19.70364380005816,
+      "lag": 0,
+      "source": 0,
+      "target": 2,
+      "uncertainty": 0.04830067642475528
+    },
+    {
+      "class": "DIRECT",
+      "evidence_score": 120.9440164472478,
+      "lag": 0,
+      "source": 1,
+      "target": 0,
+      "uncertainty": 0.008200484362696004
+    },
+    {
+      "class": "MEDIATED",
+      "evidence_score": 10.124674808582114,
+      "lag": 0,
+      "source": 1,
+      "target": 2,
+      "uncertainty": 0.08989026800392866
+    },
+    {
+      "class": "MEDIATED",
+      "evidence_score": -26.518089117339862,
+      "lag": 0,
+      "source": 2,
+      "target": 0,
+      "uncertainty": 0.036339732593200814
+    },
+    {
+      "class": "MEDIATED",
+      "evidence_score": 4.009370805717296,
+      "lag": 0,
+      "source": 2,
+      "target": 1,
+      "uncertainty": 0.19962586895317866
+    }
+  ],
+  "temporal_memory_full_scans": 0,
+  "world_memory_full_scans": 0
+}

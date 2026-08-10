@@ -1,0 +1,443 @@
+{
+  "causal_prediction_commitment": "b050dd7bd6230d6c025bee2ec2afdc975da7cb655d7ecaf2871ace42343d2c79",
+  "causal_predictions": [
+    {
+      "case_id": "R3A-006f1251140c68c612d40e24",
+      "edges": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          1,
+          2,
+          0
+        ],
+        [
+          2,
+          1,
+          0
+        ]
+      ],
+      "future_predictions": [
+        {
+          "channel": 0,
+          "entity": 0,
+          "previous_value_ieee754_bits": 4619095858141462528,
+          "time": 800,
+          "value_ieee754_bits": 4619464014301624153
+        },
+        {
+          "channel": 0,
+          "entity": 1,
+          "previous_value_ieee754_bits": 4628012549550374912,
+          "time": 800,
+          "value_ieee754_bits": 4627936359245894303
+        },
+        {
+          "channel": 0,
+          "entity": 2,
+          "previous_value_ieee754_bits": 4608820631532732416,
+          "time": 800,
+          "value_ieee754_bits": 13841059448406443700
+        }
+      ]
+    },
+    {
+      "case_id": "R3A-026dbc5836edb30115b1f306",
+      "edges": [],
+      "future_predictions": []
+    },
+    {
+      "case_id": "R3A-028d84253f32fe9708472bbe",
+      "edges": [],
+      "future_predictions": []
+    },
+    {
+      "case_id": "R3A-07db6e615f771dab3cb5c8c3",
+      "edges": [],
+      "future_predictions": [
+        {
+          "channel": 0,
+          "entity": 0,
+          "previous_value_ieee754_bits": 13829628022619111424,
+          "time": 800,
+          "value_ieee754_bits": 13829551789022070590
+        },
+        {
+          "channel": 0,
+          "entity": 1,
+          "previous_value_ieee754_bits": 4626975477620277248,
+          "time": 800,
+          "value_ieee754_bits": 4626960777386171991
+        }
+      ]
+    },
+    {
+      "case_id": "R3A-0cf3500d89cae25b7fc9cef1",
+      "edges": [],
+      "future_predictions": []
+    },
+    {
+      "case_id": "R3A-159aeb7236b69767fe9196cd",
+      "edges": [
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "future_predictions": [
+        {
+          "channel": 0,
+          "entity": 0,
+          "previous_value_ieee754_bits": 4616077274058326016,
+          "time": 800,
+          "value_ieee754_bits": 4614944690618650771
+        },
+        {
+          "channel": 0,
+          "entity": 1,
+          "previous_value_ieee754_bits": 4610767542355492864,
+          "time": 800,
+          "value_ieee754_bits": 4611825576789385067
+        },
+        {
+          "channel": 0,
+          "entity": 2,
+          "previous_value_ieee754_bits": 13838482028443467776,
+          "time": 800,
+          "value_ieee754_bits": 13838529186683463874
+        }
+      ]
+    },
+    {
+      "case_id": "R3A-1602ebdad71b7613cb01fda9",
+      "edges": [],
+      "future_predictions": [
+        {
+          "channel": 0,
+          "entity": 0,
+          "previous_value_ieee754_bits": 4607228677745278976,
+          "time": 800,
+          "value_ieee754_bits": 4607441835821600731
+        },
+        {
+          "channel": 0,
+          "entity": 1,
+          "previous_value_ieee754_bits": 13827521725023125504,
+          "time": 800,
+          "value_ieee754_bits": 13827973781940706053
+        }
+      ]
+    },
+    {
+      "case_id": "R3A-1669612cd1ad68d03ef78491",
+      "edges": [
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "future_predictions": [
+        {
+          "channel": 0,
+          "entity": 0,
+          "previous_value_ieee754_bits": 13836647236131356672,
+          "time": 800,
+          "value_ieee754_bits": 13835827567677678800
+        },
+        {
+          "channel": 0,
+          "entity": 1,
+          "previous_value_ieee754_bits": 13841724212282130432,
+          "time": 800,
+          "value_ieee754_bits": 13841966202748818293
+        },
+        {
+          "channel": 0,
+          "entity": 2,
+          "previous_value_ieee754_bits": 4576434997036056576,
+          "time": 800,
+          "value_ieee754_bits": 13812757754260906449
+        }
+      ]
+    },
+    {
+      "case_id": "R3A-3194225bb5fd3f92f500af45",
+      "edges": [],
+      "future_predictions": [
+        {
+          "channel": 0,
+          "entity": 0,
+          "previous_value_ieee754_bits": 13837408780540706816,
+          "time": 800,
+          "value_ieee754_bits": 13837406549560344318
+        },
+        {
+          "channel": 0,
+          "entity": 1,
+          "previous_value_ieee754_bits": 13847445982746247168,
+          "time": 800,
+          "value_ieee754_bits": 13847445897814956558
+        }
+      ]
+    },
+    {
+      "case_id": "R3A-557f0d21ecbb96446215d281",
+      "edges": [
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          1,
+          2,
+          0
+        ],
+        [
+          2,
+          1,
+          0
+        ]
+      ],
+      "future_predictions": [
+        {
+          "channel": 0,
+          "entity": 0,
+          "previous_value_ieee754_bits": 13813350083145498624,
+          "time": 800,
+          "value_ieee754_bits": 13809360550415366207
+        },
+        {
+          "channel": 0,
+          "entity": 1,
+          "previous_value_ieee754_bits": 4602908028692332544,
+          "time": 800,
+          "value_ieee754_bits": 4603007114725294670
+        },
+        {
+          "channel": 0,
+          "entity": 2,
+          "previous_value_ieee754_bits": 13821768045636354048,
+          "time": 800,
+          "value_ieee754_bits": 13819994921461923575
+        }
+      ]
+    },
+    {
+      "case_id": "R3A-5e2b3f6e4cf63f001cb14786",
+      "edges": [
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          2,
+          1,
+          0
+        ]
+      ],
+      "future_predictions": [
+        {
+          "channel": 0,
+          "entity": 0,
+          "previous_value_ieee754_bits": 4604607980506185728,
+          "time": 800,
+          "value_ieee754_bits": 4605203981124189696
+        },
+        {
+          "channel": 0,
+          "entity": 1,
+          "previous_value_ieee754_bits": 13833253005081706496,
+          "time": 800,
+          "value_ieee754_bits": 13833168007141519339
+        },
+        {
+          "channel": 0,
+          "entity": 2,
+          "previous_value_ieee754_bits": 13822869500199960576,
+          "time": 800,
+          "value_ieee754_bits": 13821284260638630397
+        }
+      ]
+    },
+    {
+      "case_id": "R3A-6aa0c61019d6d53fcc7981b9",
+      "edges": [
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "future_predictions": [
+        {
+          "channel": 0,
+          "entity": 0,
+          "previous_value_ieee754_bits": 4607296226306555904,
+          "time": 800,
+          "value_ieee754_bits": 4611596049618819006
+        },
+        {
+          "channel": 0,
+          "entity": 1,
+          "previous_value_ieee754_bits": 4619832647433060352,
+          "time": 800,
+          "value_ieee754_bits": 4620304055825603346
+        },
+        {
+          "channel": 0,
+          "entity": 2,
+          "previous_value_ieee754_bits": 4627991589573099520,
+          "time": 800,
+          "value_ieee754_bits": 4627995083712830364
+        }
+      ]
+    }
+  ],
+  "transfer_prediction_commitment": "b1d0d0f6baba3ca122d577b6b82b8775e890a30c139c801c4f0ed6a5fae0c02e",
+  "transfer_predictions": [
+    {
+      "case_id": "R3B-174cba0dad65f9f27dacf381",
+      "negative_transfer_attempt": true,
+      "predicted_y_ieee754_bits": [
+        13821660818556583936
+      ],
+      "promoted_transfer": false
+    },
+    {
+      "case_id": "R3B-3f33b30b3bb7588efa444f24",
+      "negative_transfer_attempt": true,
+      "predicted_y_ieee754_bits": [
+        13823298078343430144
+      ],
+      "promoted_transfer": false
+    },
+    {
+      "case_id": "R3B-41aa409d175588c4b882ddcc",
+      "negative_transfer_attempt": true,
+      "predicted_y_ieee754_bits": [
+        4603114147394093056
+      ],
+      "promoted_transfer": false
+    },
+    {
+      "case_id": "R3B-98f6d92681f0404009ebd87f",
+      "negative_transfer_attempt": true,
+      "predicted_y_ieee754_bits": [
+        4598124753142677504
+      ],
+      "promoted_transfer": false
+    },
+    {
+      "case_id": "R3B-a7a376e02e9db0ec52135f8c",
+      "negative_transfer_attempt": true,
+      "predicted_y_ieee754_bits": [
+        13830296424220196864
+      ],
+      "promoted_transfer": false
+    },
+    {
+      "case_id": "R3B-b9cf131187f6229d2424f2cd",
+      "negative_transfer_attempt": true,
+      "predicted_y_ieee754_bits": [
+        13825753990572277760
+      ],
+      "promoted_transfer": false
+    },
+    {
+      "case_id": "R3B-c4fcf82f09ca804408ab9230",
+      "negative_transfer_attempt": true,
+      "predicted_y_ieee754_bits": [
+        4602811083764269056
+      ],
+      "promoted_transfer": false
+    },
+    {
+      "case_id": "R3B-ce5a3997b8b62e4f9d5458b1",
+      "negative_transfer_attempt": true,
+      "predicted_y_ieee754_bits": [
+        13819612310282436608
+      ],
+      "promoted_transfer": false
+    },
+    {
+      "case_id": "R3B-d2120617d9c6576c33db003d",
+      "negative_transfer_attempt": false,
+      "predicted_y_ieee754_bits": [
+        4607511185389814486
+      ],
+      "promoted_transfer": true
+    },
+    {
+      "case_id": "R3B-d6f2b3429f1c91bb59f36c1b",
+      "negative_transfer_attempt": true,
+      "predicted_y_ieee754_bits": [
+        13823054404984504320
+      ],
+      "promoted_transfer": false
+    },
+    {
+      "case_id": "R3B-e9a321701b92575b6c43cfa4",
+      "negative_transfer_attempt": true,
+      "predicted_y_ieee754_bits": [
+        13812923196145401856
+      ],
+      "promoted_transfer": false
+    },
+    {
+      "case_id": "R3B-f09e6e91f277e4a19e2591b3",
+      "negative_transfer_attempt": true,
+      "predicted_y_ieee754_bits": [
+        13813392896990117888
+      ],
+      "promoted_transfer": false
+    },
+    {
+      "case_id": "R3B-f5ceeb6492d5558ff0d7c343",
+      "negative_transfer_attempt": true,
+      "predicted_y_ieee754_bits": [
+        13826970391882498048
+      ],
+      "promoted_transfer": false
+    },
+    {
+      "case_id": "R3B-f9390ab27b96be75ff2e8ce1",
+      "negative_transfer_attempt": true,
+      "predicted_y_ieee754_bits": [
+        13823085851124432896
+      ],
+      "promoted_transfer": false
+    }
+  ]
+}
