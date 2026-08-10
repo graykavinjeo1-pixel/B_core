@@ -1,0 +1,592 @@
+[
+  {
+    "case_id": "R6X-19269f387bdf313ec1a64a61",
+    "source": 1,
+    "mediator_set": [
+      0,
+      2
+    ],
+    "target": 3,
+    "components": [
+      "DIRECT_COMPONENT",
+      "PURE_MEDIATED_COMPONENT"
+    ],
+    "mediated_paths": [
+      [
+        1,
+        0,
+        2,
+        3
+      ]
+    ],
+    "intervention_signature": {
+      "available": {
+        "source_intervention_available": true,
+        "mediator_intervention_available": false,
+        "joint_intervention_available": false,
+        "counterfactual_validation_available": true
+      },
+      "performed_contracts": [
+        "ca2b6020995a32fa88a92f19"
+      ],
+      "predictions_frozen_before_intervention": true,
+      "unsupported_cross_world_assumptions": 0
+    },
+    "identifiability": "FULLY_IDENTIFIABLE",
+    "uncertainty_millionths": 125000,
+    "applicability": "SUPPORTED",
+    "provenance": [
+      "THIRD_PARTY_DOTIME_OBSERVATION",
+      "LEGAL_SOURCE_INTERVENTION"
+    ],
+    "verification": [
+      "HIDDEN_SUFFIX_NOVEL_CONSEQUENCE_RESERVED"
+    ]
+  },
+  {
+    "case_id": "R6X-24d3de0221b8c60802ec0428",
+    "source": 1,
+    "mediator_set": [
+      0,
+      2
+    ],
+    "target": 3,
+    "components": [
+      "DIRECT_COMPONENT",
+      "PURE_MEDIATED_COMPONENT",
+      "INTERACTION_COMPONENT"
+    ],
+    "mediated_paths": [
+      [
+        1,
+        0,
+        2,
+        3
+      ]
+    ],
+    "intervention_signature": {
+      "available": {
+        "source_intervention_available": true,
+        "mediator_intervention_available": false,
+        "joint_intervention_available": false,
+        "counterfactual_validation_available": true
+      },
+      "performed_contracts": [
+        "5c0b3467b08fed5cb5b3aed9"
+      ],
+      "predictions_frozen_before_intervention": true,
+      "unsupported_cross_world_assumptions": 0
+    },
+    "identifiability": "FULLY_IDENTIFIABLE",
+    "uncertainty_millionths": 125000,
+    "applicability": "SUPPORTED",
+    "provenance": [
+      "THIRD_PARTY_DOTIME_OBSERVATION",
+      "LEGAL_SOURCE_INTERVENTION"
+    ],
+    "verification": [
+      "HIDDEN_SUFFIX_NOVEL_CONSEQUENCE_RESERVED"
+    ]
+  },
+  {
+    "case_id": "R6X-47c7661d16b2753837dad012",
+    "source": 0,
+    "mediator_set": [],
+    "target": 1,
+    "components": [
+      "DIRECT_COMPONENT"
+    ],
+    "mediated_paths": [],
+    "intervention_signature": {
+      "available": {
+        "source_intervention_available": true,
+        "mediator_intervention_available": false,
+        "joint_intervention_available": false,
+        "counterfactual_validation_available": true
+      },
+      "performed_contracts": [
+        "a08df876adf8e1ea2b7f851c"
+      ],
+      "predictions_frozen_before_intervention": true,
+      "unsupported_cross_world_assumptions": 0
+    },
+    "identifiability": "FULLY_IDENTIFIABLE",
+    "uncertainty_millionths": 125000,
+    "applicability": "SUPPORTED",
+    "provenance": [
+      "THIRD_PARTY_DOTIME_OBSERVATION",
+      "LEGAL_SOURCE_INTERVENTION"
+    ],
+    "verification": [
+      "HIDDEN_SUFFIX_NOVEL_CONSEQUENCE_RESERVED"
+    ]
+  },
+  {
+    "case_id": "R6X-54b985110cbaba5e34848f36",
+    "source": 0,
+    "mediator_set": [
+      1
+    ],
+    "target": 2,
+    "components": [
+      "PURE_MEDIATED_COMPONENT"
+    ],
+    "mediated_paths": [
+      [
+        0,
+        1,
+        2
+      ]
+    ],
+    "intervention_signature": {
+      "available": {
+        "source_intervention_available": true,
+        "mediator_intervention_available": false,
+        "joint_intervention_available": false,
+        "counterfactual_validation_available": true
+      },
+      "performed_contracts": [
+        "e99512b8a452eaaa05c3de59"
+      ],
+      "predictions_frozen_before_intervention": true,
+      "unsupported_cross_world_assumptions": 0
+    },
+    "identifiability": "FULLY_IDENTIFIABLE",
+    "uncertainty_millionths": 125000,
+    "applicability": "SUPPORTED",
+    "provenance": [
+      "THIRD_PARTY_DOTIME_OBSERVATION",
+      "LEGAL_SOURCE_INTERVENTION"
+    ],
+    "verification": [
+      "HIDDEN_SUFFIX_NOVEL_CONSEQUENCE_RESERVED"
+    ]
+  },
+  {
+    "case_id": "R6X-5b7bf990bda91c45de41fce9",
+    "source": 0,
+    "mediator_set": [],
+    "target": 2,
+    "components": [],
+    "mediated_paths": [],
+    "intervention_signature": {
+      "available": {
+        "source_intervention_available": true,
+        "mediator_intervention_available": false,
+        "joint_intervention_available": false,
+        "counterfactual_validation_available": true
+      },
+      "performed_contracts": [
+        "9bd8d2c27bda458082421fef"
+      ],
+      "predictions_frozen_before_intervention": true,
+      "unsupported_cross_world_assumptions": 0
+    },
+    "identifiability": "FULLY_IDENTIFIABLE",
+    "uncertainty_millionths": 125000,
+    "applicability": "SUPPORTED",
+    "provenance": [
+      "THIRD_PARTY_DOTIME_OBSERVATION",
+      "LEGAL_SOURCE_INTERVENTION"
+    ],
+    "verification": [
+      "HIDDEN_SUFFIX_NOVEL_CONSEQUENCE_RESERVED"
+    ]
+  },
+  {
+    "case_id": "R6X-5c33af3bea0234aa34ff9e02",
+    "source": 0,
+    "mediator_set": [],
+    "target": 2,
+    "components": [],
+    "mediated_paths": [],
+    "intervention_signature": {
+      "available": {
+        "source_intervention_available": true,
+        "mediator_intervention_available": false,
+        "joint_intervention_available": false,
+        "counterfactual_validation_available": true
+      },
+      "performed_contracts": [
+        "6cd7f8acaf0970967a9f122e"
+      ],
+      "predictions_frozen_before_intervention": true,
+      "unsupported_cross_world_assumptions": 0
+    },
+    "identifiability": "FULLY_IDENTIFIABLE",
+    "uncertainty_millionths": 125000,
+    "applicability": "SUPPORTED",
+    "provenance": [
+      "THIRD_PARTY_DOTIME_OBSERVATION",
+      "LEGAL_SOURCE_INTERVENTION"
+    ],
+    "verification": [
+      "HIDDEN_SUFFIX_NOVEL_CONSEQUENCE_RESERVED"
+    ]
+  },
+  {
+    "case_id": "R6X-8be0b30e7c60059fb57b621a",
+    "source": 1,
+    "mediator_set": [
+      0,
+      2
+    ],
+    "target": 3,
+    "components": [
+      "DIRECT_COMPONENT",
+      "PURE_MEDIATED_COMPONENT"
+    ],
+    "mediated_paths": [
+      [
+        1,
+        0,
+        2,
+        3
+      ]
+    ],
+    "intervention_signature": {
+      "available": {
+        "source_intervention_available": true,
+        "mediator_intervention_available": false,
+        "joint_intervention_available": false,
+        "counterfactual_validation_available": true
+      },
+      "performed_contracts": [
+        "510cc4442d8701319443073c"
+      ],
+      "predictions_frozen_before_intervention": true,
+      "unsupported_cross_world_assumptions": 0
+    },
+    "identifiability": "FULLY_IDENTIFIABLE",
+    "uncertainty_millionths": 125000,
+    "applicability": "SUPPORTED",
+    "provenance": [
+      "THIRD_PARTY_DOTIME_OBSERVATION",
+      "LEGAL_SOURCE_INTERVENTION"
+    ],
+    "verification": [
+      "HIDDEN_SUFFIX_NOVEL_CONSEQUENCE_RESERVED"
+    ]
+  },
+  {
+    "case_id": "R6X-8e50c14eca060aa786458fb2",
+    "source": 0,
+    "mediator_set": [],
+    "target": 3,
+    "components": [
+      "UNRESOLVED_COMPONENT"
+    ],
+    "mediated_paths": [],
+    "intervention_signature": {
+      "available": {
+        "source_intervention_available": true,
+        "mediator_intervention_available": false,
+        "joint_intervention_available": false,
+        "counterfactual_validation_available": true
+      },
+      "performed_contracts": [
+        "f7b6d0949e6105dff6617e9b"
+      ],
+      "predictions_frozen_before_intervention": true,
+      "unsupported_cross_world_assumptions": 0
+    },
+    "identifiability": "PARTIALLY_IDENTIFIABLE",
+    "uncertainty_millionths": 1000000,
+    "applicability": "UNRESOLVED",
+    "provenance": [
+      "THIRD_PARTY_DOTIME_OBSERVATION",
+      "LEGAL_SOURCE_INTERVENTION"
+    ],
+    "verification": [
+      "HIDDEN_SUFFIX_NOVEL_CONSEQUENCE_RESERVED"
+    ]
+  },
+  {
+    "case_id": "R6X-9582e5ba8121078879d60b07",
+    "source": 0,
+    "mediator_set": [],
+    "target": 2,
+    "components": [],
+    "mediated_paths": [],
+    "intervention_signature": {
+      "available": {
+        "source_intervention_available": true,
+        "mediator_intervention_available": false,
+        "joint_intervention_available": false,
+        "counterfactual_validation_available": true
+      },
+      "performed_contracts": [
+        "4117dc4a705a51e36dee5e52"
+      ],
+      "predictions_frozen_before_intervention": true,
+      "unsupported_cross_world_assumptions": 0
+    },
+    "identifiability": "FULLY_IDENTIFIABLE",
+    "uncertainty_millionths": 125000,
+    "applicability": "SUPPORTED",
+    "provenance": [
+      "THIRD_PARTY_DOTIME_OBSERVATION",
+      "LEGAL_SOURCE_INTERVENTION"
+    ],
+    "verification": [
+      "HIDDEN_SUFFIX_NOVEL_CONSEQUENCE_RESERVED"
+    ]
+  },
+  {
+    "case_id": "R6X-b7cefb3ef7e7dad5eafcdc4d",
+    "source": 1,
+    "mediator_set": [
+      0,
+      2
+    ],
+    "target": 3,
+    "components": [
+      "DIRECT_COMPONENT",
+      "PURE_MEDIATED_COMPONENT",
+      "INTERACTION_COMPONENT"
+    ],
+    "mediated_paths": [
+      [
+        1,
+        0,
+        2,
+        3
+      ]
+    ],
+    "intervention_signature": {
+      "available": {
+        "source_intervention_available": true,
+        "mediator_intervention_available": false,
+        "joint_intervention_available": false,
+        "counterfactual_validation_available": true
+      },
+      "performed_contracts": [
+        "930f1758a30812ad89add532"
+      ],
+      "predictions_frozen_before_intervention": true,
+      "unsupported_cross_world_assumptions": 0
+    },
+    "identifiability": "FULLY_IDENTIFIABLE",
+    "uncertainty_millionths": 125000,
+    "applicability": "SUPPORTED",
+    "provenance": [
+      "THIRD_PARTY_DOTIME_OBSERVATION",
+      "LEGAL_SOURCE_INTERVENTION"
+    ],
+    "verification": [
+      "HIDDEN_SUFFIX_NOVEL_CONSEQUENCE_RESERVED"
+    ]
+  },
+  {
+    "case_id": "R6X-d5b6ad343a2f530c690ec2ab",
+    "source": 0,
+    "mediator_set": [],
+    "target": 1,
+    "components": [
+      "DIRECT_COMPONENT"
+    ],
+    "mediated_paths": [],
+    "intervention_signature": {
+      "available": {
+        "source_intervention_available": true,
+        "mediator_intervention_available": false,
+        "joint_intervention_available": false,
+        "counterfactual_validation_available": true
+      },
+      "performed_contracts": [
+        "66a0dc7289b477839dda9fd8"
+      ],
+      "predictions_frozen_before_intervention": true,
+      "unsupported_cross_world_assumptions": 0
+    },
+    "identifiability": "FULLY_IDENTIFIABLE",
+    "uncertainty_millionths": 125000,
+    "applicability": "SUPPORTED",
+    "provenance": [
+      "THIRD_PARTY_DOTIME_OBSERVATION",
+      "LEGAL_SOURCE_INTERVENTION"
+    ],
+    "verification": [
+      "HIDDEN_SUFFIX_NOVEL_CONSEQUENCE_RESERVED"
+    ]
+  },
+  {
+    "case_id": "R6X-d9313674c142dcba88f920da",
+    "source": 0,
+    "mediator_set": [],
+    "target": 2,
+    "components": [],
+    "mediated_paths": [],
+    "intervention_signature": {
+      "available": {
+        "source_intervention_available": true,
+        "mediator_intervention_available": false,
+        "joint_intervention_available": false,
+        "counterfactual_validation_available": true
+      },
+      "performed_contracts": [
+        "801cba9861e82e4e92a27027"
+      ],
+      "predictions_frozen_before_intervention": true,
+      "unsupported_cross_world_assumptions": 0
+    },
+    "identifiability": "FULLY_IDENTIFIABLE",
+    "uncertainty_millionths": 125000,
+    "applicability": "SUPPORTED",
+    "provenance": [
+      "THIRD_PARTY_DOTIME_OBSERVATION",
+      "LEGAL_SOURCE_INTERVENTION"
+    ],
+    "verification": [
+      "HIDDEN_SUFFIX_NOVEL_CONSEQUENCE_RESERVED"
+    ]
+  },
+  {
+    "case_id": "R6X-db7120130d402b2620f7a236",
+    "source": 0,
+    "mediator_set": [
+      1
+    ],
+    "target": 2,
+    "components": [
+      "PURE_MEDIATED_COMPONENT"
+    ],
+    "mediated_paths": [
+      [
+        0,
+        1,
+        2
+      ]
+    ],
+    "intervention_signature": {
+      "available": {
+        "source_intervention_available": true,
+        "mediator_intervention_available": false,
+        "joint_intervention_available": false,
+        "counterfactual_validation_available": true
+      },
+      "performed_contracts": [
+        "a336d04a16abc7a2d6b5a340"
+      ],
+      "predictions_frozen_before_intervention": true,
+      "unsupported_cross_world_assumptions": 0
+    },
+    "identifiability": "FULLY_IDENTIFIABLE",
+    "uncertainty_millionths": 125000,
+    "applicability": "SUPPORTED",
+    "provenance": [
+      "THIRD_PARTY_DOTIME_OBSERVATION",
+      "LEGAL_SOURCE_INTERVENTION"
+    ],
+    "verification": [
+      "HIDDEN_SUFFIX_NOVEL_CONSEQUENCE_RESERVED"
+    ]
+  },
+  {
+    "case_id": "R6X-e660d9ee46170f887cec211e",
+    "source": 0,
+    "mediator_set": [],
+    "target": 2,
+    "components": [
+      "UNRESOLVED_COMPONENT"
+    ],
+    "mediated_paths": [],
+    "intervention_signature": {
+      "available": {
+        "source_intervention_available": true,
+        "mediator_intervention_available": false,
+        "joint_intervention_available": false,
+        "counterfactual_validation_available": true
+      },
+      "performed_contracts": [
+        "4ba03fe2ab7429ad31eb5130"
+      ],
+      "predictions_frozen_before_intervention": true,
+      "unsupported_cross_world_assumptions": 0
+    },
+    "identifiability": "NOT_IDENTIFIABLE_UNDER_AVAILABLE_EVIDENCE",
+    "uncertainty_millionths": 1000000,
+    "applicability": "UNRESOLVED",
+    "provenance": [
+      "THIRD_PARTY_DOTIME_OBSERVATION",
+      "LEGAL_SOURCE_INTERVENTION"
+    ],
+    "verification": [
+      "HIDDEN_SUFFIX_NOVEL_CONSEQUENCE_RESERVED"
+    ]
+  },
+  {
+    "case_id": "R6X-e6b64bc7f4d293dcac2c1a9d",
+    "source": 0,
+    "mediator_set": [
+      1
+    ],
+    "target": 2,
+    "components": [
+      "PURE_MEDIATED_COMPONENT"
+    ],
+    "mediated_paths": [
+      [
+        0,
+        1,
+        2
+      ]
+    ],
+    "intervention_signature": {
+      "available": {
+        "source_intervention_available": true,
+        "mediator_intervention_available": false,
+        "joint_intervention_available": false,
+        "counterfactual_validation_available": true
+      },
+      "performed_contracts": [
+        "210e270bb53f75e4893100b8"
+      ],
+      "predictions_frozen_before_intervention": true,
+      "unsupported_cross_world_assumptions": 0
+    },
+    "identifiability": "FULLY_IDENTIFIABLE",
+    "uncertainty_millionths": 125000,
+    "applicability": "SUPPORTED",
+    "provenance": [
+      "THIRD_PARTY_DOTIME_OBSERVATION",
+      "LEGAL_SOURCE_INTERVENTION"
+    ],
+    "verification": [
+      "HIDDEN_SUFFIX_NOVEL_CONSEQUENCE_RESERVED"
+    ]
+  },
+  {
+    "case_id": "R6X-e999e156a6181aeed96098af",
+    "source": 0,
+    "mediator_set": [],
+    "target": 1,
+    "components": [
+      "DIRECT_COMPONENT"
+    ],
+    "mediated_paths": [],
+    "intervention_signature": {
+      "available": {
+        "source_intervention_available": true,
+        "mediator_intervention_available": false,
+        "joint_intervention_available": false,
+        "counterfactual_validation_available": true
+      },
+      "performed_contracts": [
+        "f3c48437016225e9aaac2654"
+      ],
+      "predictions_frozen_before_intervention": true,
+      "unsupported_cross_world_assumptions": 0
+    },
+    "identifiability": "FULLY_IDENTIFIABLE",
+    "uncertainty_millionths": 125000,
+    "applicability": "SUPPORTED",
+    "provenance": [
+      "THIRD_PARTY_DOTIME_OBSERVATION",
+      "LEGAL_SOURCE_INTERVENTION"
+    ],
+    "verification": [
+      "HIDDEN_SUFFIX_NOVEL_CONSEQUENCE_RESERVED"
+    ]
+  }
+]
