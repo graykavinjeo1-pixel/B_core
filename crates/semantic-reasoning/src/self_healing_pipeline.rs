@@ -616,6 +616,44 @@ pub fn validate_self_healing_installation(
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct SelfHealingVerificationRequest {
+    pub attempt: CoreRepairAttempt,
+    pub verification: LocalDeterministicVerification,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct SelfHealingVerificationResult {
+    pub schema: String,
+    pub eligible: bool,
+    pub rejection: Option<String>,
+    pub verification_mode: String,
+    pub verifier_is_proposer: bool,
+    pub codex_calls: usize,
+    pub external_llm_calls: usize,
+    pub network_reads: usize,
+    pub network_writes: usize,
+    pub human_verification_decisions: usize,
+}
+
+pub fn run_self_healing_verification(
+    request: SelfHealingVerificationRequest,
+) -> SelfHealingVerificationResult {
+    let decision = validate_self_healing_installation(&request.attempt, &request.verification);
+    SelfHealingVerificationResult {
+        schema: PIPELINE_SCHEMA.to_string(),
+        eligible: decision.is_ok(),
+        rejection: decision.err().map(|error| format!("{error:?}")),
+        verification_mode: "INDEPENDENT_LOCAL_DETERMINISTIC_PROCESS".to_string(),
+        verifier_is_proposer: request.verification.receipt.verifier_is_proposer,
+        codex_calls: request.verification.codex_calls,
+        external_llm_calls: request.verification.external_llm_calls,
+        network_reads: request.verification.network_reads,
+        network_writes: request.verification.network_writes,
+        human_verification_decisions: request.verification.human_verification_decisions,
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct SelfHealingRunnerRequest {
     pub request: CoreRepairRequest,
     pub memory: RepairLearningMemory,
@@ -1344,6 +1382,39 @@ mod tests {
             validate_local_deterministic_verification(&human),
             Err(LocalVerificationError::HumanDecisionDependency)
         );
+    }
+
+    #[test]
+    fn independent_local_verifier_binary_contract_accepts_only_clean_attestation() {
+        let request = frozen_request("fn verified(x: usize) -> bool { x % 17 == 0 }\n");
+        let attempt = attempt_core_repair(&request, &promoted_memory());
+        let patch = attempt.patch_candidate.as_ref().expect("candidate");
+        let clean = verification(patch, &request.defect_contract.sha256, "verified");
+        let accepted = run_self_healing_verification(SelfHealingVerificationRequest {
+            attempt: attempt.clone(),
+            verification: clean.clone(),
+        });
+        assert!(accepted.eligible);
+        assert_eq!(
+            accepted.verification_mode,
+            "INDEPENDENT_LOCAL_DETERMINISTIC_PROCESS"
+        );
+        assert_eq!(accepted.codex_calls, 0);
+        assert_eq!(accepted.external_llm_calls, 0);
+        assert_eq!(accepted.network_reads, 0);
+        assert_eq!(accepted.network_writes, 0);
+
+        let mut dependent = clean;
+        dependent.external_llm_calls = 1;
+        let rejected = run_self_healing_verification(SelfHealingVerificationRequest {
+            attempt,
+            verification: dependent,
+        });
+        assert!(!rejected.eligible);
+        assert!(rejected
+            .rejection
+            .as_deref()
+            .is_some_and(|reason| reason.contains("ExternalLlmDependency")));
     }
 
     #[test]
