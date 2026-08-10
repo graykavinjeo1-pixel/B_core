@@ -1,0 +1,31 @@
+{
+  "schema_version": "SEM37_ARTIFACT_MANIFEST_1",
+  "campaign_id": "SEM37-THIRD-PARTY-DYNAMICAL-WORLD-EXTERNAL-VALIDITY-0001",
+  "final_status": "FAIL",
+  "final_disposition": "EXTERNAL_MECHANISM_TRANSFER_LIMIT",
+  "final_pre_exposure_freeze_commit": "a764b6e2a195bcc77c0944c3b229450dc76bf24d",
+  "files": {
+    "autonomous_external_research.json": "11b457451edcb17fffd6c998c635f41644334a99886a9060360bb04bdaa85eef",
+    "campaign_ready_receipt.json": "7bc06018b2494d3a00afeca925b0724b556061b04525068ba6034b79cb3c31bb",
+    "clean_reconstruction.json": "79d858ee41afd1dc759e78aa53b3c6553e62997591af8f434c6e2cefd58fac94",
+    "cleanup_receipt.json": "70509dd0a48bf4cc3710fa589312c6d5c3ccb6ae3248ad552e810643b21913a2",
+    "final_external_freeze.json": "68fcdc36cd9420eb2f7480fddfc974141e32c07494ae79e573eae56dfef5c56d",
+    "final_external_raw_evaluation.json": "9893edc75a91d22e3eb5a6ce3cf4c3ca37cd41e0d6ff900e5dadbc33a8a2d459",
+    "final_regression.json": "8c1324cba3676250bb944bc417e302f4c80d7ba987bf1dedfef7ae285f19a790",
+    "generic_external_adapter_repair.json": "2a20f799dde07537236e20181086897b5dc130403f77f501a41894ed39812fd5",
+    "independent_verifier_receipt.json": "5d2179b1be28eea71cd5678a5206982f7f2d6b9afaca0b09e37ade7e6753f7d0",
+    "internal_world_regression_control.json": "8b8d22d78a8020163c346bcd00f188754f430e67810b88c417cb0c73309d3901",
+    "measured_external_gap.json": "b2e75e33ee0e6d1c62f9a3f91f7f7e5c3aa9ebcfa69589bef777bccac617deec",
+    "numeric_authority_manifest.json": "9d33fee4af2cb809cbb35eb4da0a50a67d516026a0b7bad015595d45e32eb05d",
+    "p0_baseline_execution_receipt.json": "2d6b8a263bcd2942dab31accf2a904810dfed93d01a06a61a87cbf94509bb6d0",
+    "p0_external_transfer_freeze.json": "036c98fd97a445c4f4260db0b617d67c8e100e01402a4b7974094c37cef0a310",
+    "primary_acceptance.json": "5937111a49eeedd4282da2e63acb0760997186430b4b370dbc0dc626e4d0cd19",
+    "secondary_acceptance.json": "615edc689d1a1010fbc837ec7cef023cc7c2875304263679e1d6fd67aeb48824",
+    "sem36_external_transfer_baseline.json": "c7dfe98c698ea045674545761139ebb7ecac8fb1fd8e883972c06d3645e36f0e",
+    "SEM37_REPORT.md": "0c0aaf1945417ff7fc4442037dc345dd81f8bca548dde47b835afbd4c50545f3",
+    "sem37_required_output.json": "e119f4f2f51f26f221e27b29aa5acc21949dc48bfad8b06cfff2d4843cf5e059"
+  },
+  "artifact_count_excluding_manifest": 19,
+  "hash_algorithm": "SHA256",
+  "manifest_self_hash_excluded": true
+}

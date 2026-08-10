@@ -1,0 +1,23 @@
+{
+  "schema_version": "SEM37_POST_CAMPAIGN_READINESS_1",
+  "CAMPAIGN_READY": true,
+  "SEALED_PREDECESSOR_COMMIT": "b33386e7a8793c5c27e2c2df3e19db0e6e04d0f4",
+  "SEM37_PROMOTED_TO_PREDECESSOR": false,
+  "SEM37_FINAL_DISPOSITION": "EXTERNAL_MECHANISM_TRANSFER_LIMIT",
+  "WARM_BUILD_CACHE_VALID": true,
+  "WARM_BUILD_CACHE_KEY": "bcore-db4b3e0325b151ae43663199",
+  "TOOLCHAIN_READY": true,
+  "TEST_INVENTORY_READY": true,
+  "AUDIT_TOOLING_READY": true,
+  "REPORT_SCHEMA_READY": true,
+  "WORKTREE_CREATION_READY": true,
+  "FREEZE_TOOLING_READY": true,
+  "PRESTART_AUTONOMOUS_RESEARCH_EVENTS": 0,
+  "PRESTART_FUTURE_INSTANCE_EXPOSURE_EVENTS": 0,
+  "ESTIMATED_REQUIRED_PRESTART_ACTIONS": [
+    "select_predecessor_final_state",
+    "freeze_instruction_and_addenda_hashes",
+    "freeze_campaign_seed_and_budget",
+    "launch_canonical_run"
+  ]
+}

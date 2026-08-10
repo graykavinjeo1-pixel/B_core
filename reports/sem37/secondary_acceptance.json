@@ -1,0 +1,19 @@
+{
+  "sem37_status": "FAIL",
+  "levels": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    false,
+    true,
+    true
+  ],
+  "ablations": [
+    true,
+    true,
+    true
+  ],
+  "invariants_pass": true
+}

@@ -1,0 +1,21 @@
+{
+  "sem37_status": "FAIL",
+  "disposition": "EXTERNAL_MECHANISM_TRANSFER_LIMIT",
+  "sem37_level_a_pass": true,
+  "sem37_level_b_pass": true,
+  "sem37_level_c_pass": true,
+  "sem37_level_d_pass": true,
+  "sem37_level_e_pass": true,
+  "sem37_level_f_pass": false,
+  "sem37_level_g_pass": true,
+  "sem37_level_h_pass": true,
+  "external_frontier_selection_ablation_pass": true,
+  "external_discovered_memory_ablation_pass": true,
+  "external_intervention_ablation_pass": true,
+  "internal_world_capability_regressions": 0,
+  "raw_field_acceptance_authority": true,
+  "invariants_pass": true,
+  "violations": [
+    "SEM37_LEVEL_F_FAILED"
+  ]
+}
