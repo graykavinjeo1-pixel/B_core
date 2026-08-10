@@ -1,0 +1,15 @@
+{
+  "causal_selection_law": "PARETO_ZERO_FALSE_DIRECT_THEN_MIXED_AND_BEST_COMPARATOR_NONINFERIOR",
+  "human_causal_repair_selection_events": 0,
+  "human_effect_decomposition_rule_selection_events": 0,
+  "human_mediator_rule_selection_events": 0,
+  "human_promotion_rule_selection_events": 0,
+  "schema_version": "SEM37_R4_CANDIDATE_SELECTION_RECEIPT_1",
+  "selected_causal_method": "RESIDUAL512",
+  "selected_transfer_policy": {
+    "margin_basis_points": 0,
+    "maximum_uncertainty_millionths": 250000,
+    "method": "INDEPENDENT_LINEAR"
+  },
+  "transfer_selection_law": "ZERO_NEGATIVE_THEN_POSITIVE_VERIFICATION_AND_AMBIGUOUS_ABSTENTION"
+}

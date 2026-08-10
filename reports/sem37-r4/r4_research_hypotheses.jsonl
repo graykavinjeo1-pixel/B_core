@@ -1,0 +1,3 @@
+{"hypothesis":"EXPLICIT_TOTAL_DIRECT_MEDIATED_CONFOUNDING_RESIDUAL_ACCOUNTING","hypothesis_id":"R4-HYP-000","operator_selected":false}
+{"hypothesis":"FROZEN_RESIDUAL_DIRECT_COMPONENT_THRESHOLD_FAMILY","hypothesis_id":"R4-HYP-001","operator_selected":false}
+{"hypothesis":"COUNTERFACTUAL_PROMOTION_WITH_MARGIN_AND_UNCERTAINTY","hypothesis_id":"R4-HYP-002","operator_selected":false}

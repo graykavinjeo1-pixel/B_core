@@ -1,0 +1,3 @@
+{"diagnosis":"TOTAL_AND_DIRECT_COMPONENTS_WERE_NOT_SEPARATE_PROMOTION_AUTHORITIES","diagnosis_id":"R4-DIAG-000","operator_selected":false}
+{"diagnosis":"MEDIATOR_PATH_WAS_REPRESENTED_BUT_NOT_SUBTRACTED_FROM_DIRECT_RESIDUAL","diagnosis_id":"R4-DIAG-001","operator_selected":false}
+{"diagnosis":"TRANSFER_PROMOTION_UNCERTAINTY_DID_NOT_GATE_APPLY_VS_NO_CHANGE","diagnosis_id":"R4-DIAG-002","operator_selected":false}
