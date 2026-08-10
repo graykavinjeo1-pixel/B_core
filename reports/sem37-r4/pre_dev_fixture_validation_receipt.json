@@ -1,0 +1,16 @@
+{
+  "schema_version": "SEM37_R4_PRE_DEV_FIXTURE_VALIDATION_RECEIPT_1",
+  "candidate_behavior_observed": false,
+  "dev_solver_exposure_events": 0,
+  "final_solver_exposure_events": 0,
+  "initial_preflight_status": "REJECTED_BEFORE_EXPOSURE",
+  "initial_rejection_reason": "STRUCTURAL_FEATURE_SET_COVER_WAS_INCORRECTLY_IMPLEMENTED_AS_DISJOINT_BUCKETS",
+  "repair_scope": "EVALUATOR_PARTITION_SET_COVER_ONLY",
+  "scientific_engine_changed": false,
+  "candidate_family_changed": false,
+  "selection_objectives_changed": false,
+  "acceptance_criteria_changed": false,
+  "corrected_reserved_final_causal_contract_pass": true,
+  "corrected_reserved_final_transfer_contract_pass": true,
+  "outcome_dependent_policy_modifications": 0
+}
