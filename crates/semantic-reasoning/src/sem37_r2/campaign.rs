@@ -130,7 +130,7 @@ pub fn run_development(
         candidate_methods: CausalPrecisionMethod::CANDIDATES.to_vec(),
         method_evidence: evidence,
         selected_method,
-        selection_law: "LEXICOGRAPHIC_MIN_COMMON_CAUSE_THEN_MEDIATED_FALSE_ACCEPTS_THEN_MAX_EXACT_F1_THEN_MIN_TOTAL_FP;MDL_EVIDENCE_ZERO_BOUNDARY_ONLY".to_string(),
+        selection_law: "MAX_EXACT_F0_5_PRECISION_WEIGHTED_THEN_MAX_EXACT_PRECISION_THEN_MIN_TOTAL_FP;FALSE_POSITIVE_TAXONOMY_REPORTING_ONLY;MDL_EVIDENCE_ZERO_BOUNDARY_ONLY".to_string(),
         false_positive_causal_taxonomy_is_reporting_only: true,
         historical_r1_final_c_final_authority: false,
         r1_shift_aware_pre_final_freeze_proven: true,
@@ -201,50 +201,28 @@ fn arm(lane_a: &CausalPrecisionBatch, lane_b: &CausalPrecisionBatch) -> Value {
 }
 
 fn compare_methods(left: &MethodEvidence, right: &MethodEvidence) -> Ordering {
-    let left_common = aggregate_field(
-        &left.dev_a_lane_a,
-        &left.dev_b_lane_a,
-        "common_cause_false_edge_accepts",
-    )
-    .unwrap_or(u64::MAX);
-    let right_common = aggregate_field(
-        &right.dev_a_lane_a,
-        &right.dev_b_lane_a,
-        "common_cause_false_edge_accepts",
-    )
-    .unwrap_or(u64::MAX);
-    let left_mediated = aggregate_taxonomy(
-        &left.dev_a_lane_a,
-        &left.dev_b_lane_a,
-        "MEDIATED_ASSOCIATION",
-    )
-    .unwrap_or(u64::MAX)
-        + aggregate_taxonomy(&left.dev_a_lane_a, &left.dev_b_lane_a, "INDIRECT_CAUSE")
-            .unwrap_or(u64::MAX);
-    let right_mediated = aggregate_taxonomy(
-        &right.dev_a_lane_a,
-        &right.dev_b_lane_a,
-        "MEDIATED_ASSOCIATION",
-    )
-    .unwrap_or(u64::MAX)
-        + aggregate_taxonomy(&right.dev_a_lane_a, &right.dev_b_lane_a, "INDIRECT_CAUSE")
-            .unwrap_or(u64::MAX);
-    left_common
-        .cmp(&right_common)
-        .then_with(|| left_mediated.cmp(&right_mediated))
-        .then_with(|| compare_f1(right, left))
+    compare_f_half(right, left)
+        .then_with(|| compare_precision(right, left))
         .then_with(|| total_fp(left).cmp(&total_fp(right)))
         .then_with(|| left.method.cmp(&right.method))
 }
 
-fn compare_f1(left: &MethodEvidence, right: &MethodEvidence) -> Ordering {
+fn compare_f_half(left: &MethodEvidence, right: &MethodEvidence) -> Ordering {
     let (left_tp, left_fp, left_fn) = confusion(left).unwrap_or((0, u64::MAX / 4, u64::MAX / 4));
     let (right_tp, right_fp, right_fn) =
         confusion(right).unwrap_or((0, u64::MAX / 4, u64::MAX / 4));
-    let left_denominator = 2_u128 * left_tp as u128 + left_fp as u128 + left_fn as u128;
-    let right_denominator = 2_u128 * right_tp as u128 + right_fp as u128 + right_fn as u128;
-    (2_u128 * left_tp as u128 * right_denominator)
-        .cmp(&(2_u128 * right_tp as u128 * left_denominator))
+    let left_denominator = 5_u128 * left_tp as u128 + 4_u128 * left_fp as u128 + left_fn as u128;
+    let right_denominator =
+        5_u128 * right_tp as u128 + 4_u128 * right_fp as u128 + right_fn as u128;
+    (5_u128 * left_tp as u128 * right_denominator)
+        .cmp(&(5_u128 * right_tp as u128 * left_denominator))
+}
+
+fn compare_precision(left: &MethodEvidence, right: &MethodEvidence) -> Ordering {
+    let (left_tp, left_fp, _) = confusion(left).unwrap_or((0, u64::MAX / 4, 0));
+    let (right_tp, right_fp, _) = confusion(right).unwrap_or((0, u64::MAX / 4, 0));
+    (left_tp as u128 * (right_tp + right_fp) as u128)
+        .cmp(&(right_tp as u128 * (left_tp + left_fp) as u128))
 }
 
 fn confusion(method: &MethodEvidence) -> Result<(u64, u64, u64), String> {
