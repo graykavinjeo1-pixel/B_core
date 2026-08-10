@@ -286,12 +286,7 @@ pub fn run_autonomous_epoch(
         candidate_experiments,
         request.seed ^ selection_checksum,
     );
-    let selected_experiment_index = diagnostic_experiments
-        .iter()
-        .enumerate()
-        .min_by_key(|(_, experiment)| experiment.perturbed_time_ns)
-        .map(|(index, _)| index)
-        .unwrap_or(0);
+    let selected_experiment_index = select_diagnostic_experiment(&diagnostic_experiments);
     if let Some(experiment) = diagnostic_experiments.get_mut(selected_experiment_index) {
         experiment.selected = true;
     }
@@ -686,6 +681,24 @@ fn execute_diagnostic_experiments(
     experiments
 }
 
+fn select_diagnostic_experiment(experiments: &[DiagnosticExperiment]) -> usize {
+    experiments
+        .iter()
+        .enumerate()
+        .max_by_key(|(index, experiment)| {
+            (
+                reduction_ppm(
+                    experiment.control_work_units,
+                    experiment.perturbed_work_units,
+                ),
+                experiment.observed_reduction_ppm,
+                Reverse(*index),
+            )
+        })
+        .map(|(index, _)| index)
+        .unwrap_or(0)
+}
+
 fn bottleneck_confidence(
     times: &[u64; PHASE_COUNT],
     phase: u8,
@@ -1051,6 +1064,37 @@ mod tests {
                 );
             }
         }
+    }
+
+    #[test]
+    fn diagnostic_selection_prefers_structural_effect_over_runtime_noise() {
+        let experiments = vec![
+            DiagnosticExperiment {
+                experiment_id: 1,
+                phase_code: 6,
+                tested_cause_mask: 1,
+                control_work_units: 100_000,
+                perturbed_work_units: 52_000,
+                control_time_ns: 100,
+                perturbed_time_ns: 140,
+                observed_reduction_ppm: 0,
+                distinguishes_competing_hypotheses: true,
+                selected: false,
+            },
+            DiagnosticExperiment {
+                experiment_id: 2,
+                phase_code: 6,
+                tested_cause_mask: 2,
+                control_work_units: 100_000,
+                perturbed_work_units: 98_000,
+                control_time_ns: 100,
+                perturbed_time_ns: 10,
+                observed_reduction_ppm: 900_000,
+                distinguishes_competing_hypotheses: true,
+                selected: false,
+            },
+        ];
+        assert_eq!(select_diagnostic_experiment(&experiments), 0);
     }
 
     #[test]
