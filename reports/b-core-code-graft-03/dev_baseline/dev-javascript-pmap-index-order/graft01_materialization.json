@@ -1,0 +1,12 @@
+{
+  "arm": "graft01",
+  "bug_tree_sha256": "81b924594290b5168d04a7f9e7406ac9020a985296c7956d6944c2629cd21901",
+  "destination": "D:\\BCG03_RUN\\DEV\\d3\\graft01",
+  "fix_commit_exposed_to_arm": false,
+  "gold_patch_exposed_to_arm": false,
+  "hidden_test_exposed_before_submission": false,
+  "public_manifest": "D:\\BCG03_RUN\\DEV\\d3\\graft01\\bcore_public_task_manifest.json",
+  "schema_version": "B_CORE_CODE_GRAFT_03_MATERIALIZATION_1",
+  "task_hash": "891fc29c9e92255ffcfde34ce9051c75043395e39a1766f11d28eb8a5719cd66",
+  "task_name": "dev-javascript-pmap-index-order"
+}

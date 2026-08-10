@@ -1,0 +1,38 @@
+{
+  "allowed_source_paths": [
+    "index.js"
+  ],
+  "arm": "GRAFT03",
+  "changed_lines": 3,
+  "changed_paths": [
+    "index.js"
+  ],
+  "fix_commit_reads_by_arm": 0,
+  "gold_patch_reads_by_arm": 0,
+  "hidden_result": {
+    "output_sha256": "d9dbfbee2a965b459232785bb8acc127b93c277a33e1cc557bed6c84384ec728",
+    "output_tail": "\r\n  \u221a test \u203a pMapIterable - index in mapper (out-of-order-settling promises)\r\n  \u2500\r\n\r\n  1 test passed\r\n",
+    "returncode": 0,
+    "timed_out": false,
+    "wall_ms": 482.594
+  },
+  "hidden_test_reads_before_submission": 0,
+  "independent_semantic_restoration_pass": true,
+  "minimal_semantic_delta_pass": true,
+  "public_result": {
+    "output_sha256": "75ed6333be5f3df0a9f91ba101f7af6b2edf92435696e42d9400da151ea15240",
+    "output_tail": "\r\n  \u221a test \u203a handles empty iterable\r\n  \u221a test \u203a asyncIterator - handles empty iterable\r\n  \u221a test \u203a pMapIterable - empty\r\n  \u221a test \u203a invalid mapper\r\n  \u221a test \u203a already aborted signal\r\n  \u221a test \u203a pMapIterable - iterable that throws\r\n  \u221a test \u203a pMapSkip\r\n  \u221a test \u203a pMapIterable - mapper that throws\r\n  \u221a test \u203a all pMapSkips\r\n  \u221a test \u203a multiple pMapSkips\r\n  \u221a test \u203a pMapIterable - pMapSkip\r\n  \u221a test \u203a enforce number in options.concurrency\r\n  \u221a test \u203a asyncIterator - enforce number in options.concurrency\r\n  \u221a multiple-pmapskips-performance \u203a multiple pMapSkips - algorithmic complexity\r\n  \u221a test \u203a asyncIterator - pMapSkip\r\n  \u221a test \u203a asyncIterator - all pMapSkips\r\n  \u221a test \u203a abort by AbortController (108ms)\r\n  \u221a test \u203a no unhandled rejected promises from mapper throws - infinite concurrency (108ms)\r\n  \u221a test \u203a no unhandled rejected promises from mapper throws - concurrency 1 (108ms)\r\n  \u221a test \u203a pMapIterable - stop on error (108ms)\r\n  \u221a test \u203a asyncIterator - multiple pMapSkips (125ms)\r\n  \u221a test \u203a async with concurrency: 2 (out of order time sequence) (203ms)\r\n  \u221a test \u203a asyncIterator - async with concurrency: 2 (out of order time sequence) (218ms)\r\n  \u221a test \u203a async with concurrency: 2 (problematic time sequence) (235ms)\r\n  \u221a test \u203a async with concurrency: 2 (random time sequence) (251ms)\r\n  \u221a test \u203a asyncIterator - async with concurrency: 2 (problematic time sequence) (298ms)\r\n  \u221a test \u203a main (315ms)\r\n  \u221a test \u203a pMapIterable (313ms)\r\n  \u221a test \u203a catches exception from source iterator - 1st item (315ms)\r\n  \u221a test \u203a asyncIterator - main (329ms)\r\n  \u221a test \u203a pMapIterable - async input, backpressure > concurrency (328ms)\r\n  \u221a test \u203a pMapIterable - concurrency: 2 (376ms)\r\n  \u221a test \u203a asyncIterator - async with concurrency: 2 (random time sequence) (407ms)\r\n  \u221a test \u203a catches exception from source iterator - 2nd item (424ms)\r\n  \u221a test \u203a catches exception from source iterator - 2nd item after 1st item mapper throw (424ms)\r\n  \u221a test \u203a asyncIterator - get the correct exception after stop-on-error (501ms)\r\n  \u221a test \u203a incorrect input type (501ms)\r\n  \u221a test \u203a immediately rejects when stopOnError is true (548ms)\r\n  \u221a test \u203a all mappers should run when concurrency is infinite, even after stop-on-error happened (611ms)\r\n  \u221a test \u203a pMapIterable - index in mapper (625ms)\r\n  \u221a test \u203a concurrency: 1 (627ms)\r\n  \u221a test \u203a pMapIterable - concurrency: 1 (625ms)\r\n  \u221a test \u203a asyncIterator - immediately rejects when stopOnError is true (626ms)\r\n  \u221a test \u203a asyncIterator - all mappers should run when concurrency is infinite, even after stop-on-error happened (627ms)\r\n  \u221a test \u203a asyncIterator - concurrency: 1 (673ms)\r\n  \u221a test \u203a pMapIterable - backpressure (1s)\r\n  \u221a test \u203a aggregate errors when stopOnError is false (1.3s)\r\n  \u221a test \u203a asyncIterator - aggregate errors when stopOnError is false (1.4s)\r\n  \u221a test \u203a concurrency: 4 (3s)\r\n  \u221a test \u203a asyncIterator - concurrency: 4 (3.6s)\r\n  \u2500\r\n\r\n  50 tests passed\r\n",
+    "returncode": 0,
+    "timed_out": false,
+    "wall_ms": 4037.832
+  },
+  "repair_revealing_issue_reads_by_arm": 0,
+  "schema_version": "B_CORE_CODE_GRAFT_03_INDEPENDENT_SEMANTIC_VERIFICATION_1",
+  "status": "PASS",
+  "task_hash": "891fc29c9e92255ffcfde34ce9051c75043395e39a1766f11d28eb8a5719cd66",
+  "task_name": "dev-javascript-pmap-index-order",
+  "test_changes": [],
+  "unrelated_semantic_change_events": 0,
+  "upstream_test_pass": true,
+  "visible_test_only_false_accept": false
+}

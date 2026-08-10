@@ -1,0 +1,110 @@
+{
+  "accepted_graft_state_sha256": "a4e1f5dd554b10fc15089fe95df2318d1192899b2654123694e6182338d9af56",
+  "authoritative_predecessor_commit": "09fe306e96711b6194eefa5b379ce775a1fe4079",
+  "budget": 4096,
+  "campaign_id": "B_CORE-CODE-GRAFT-03",
+  "canonical_arms": [
+    "UNGRAFTED",
+    "GRAFT01",
+    "GRAFT03"
+  ],
+  "contains_final_results": false,
+  "contamination_audit_sha256": "13ec3e45158f720269fe56abf3fb2b59c1df694ec4bf5c69708e1a323e492eb4",
+  "dev_ablation_sha256": "4143160c1f927f2fbefbf7d5e32d30d3f466f06173a88fc3021643a2904e4efe",
+  "dev_results_sha256": "2078d03df526a94470cfccf4b478bae0bd34187c613e53e0f4eb8882b1ea641d",
+  "external_fixture_inventory_sha256": "51c23c76629af01903fce537f854710da34a15277f8b94c69f7f3b7b2f659842",
+  "final_defect_families": [
+    "parser_progress_nontermination",
+    "encoded_empty_string_boundary",
+    "per_call_option_invariant_propagation"
+  ],
+  "final_freeze_complete": true,
+  "final_languages": [
+    "rust",
+    "go",
+    "typescript"
+  ],
+  "final_repositories": [
+    "thiserror",
+    "gjson",
+    "p-queue"
+  ],
+  "final_results_observed": false,
+  "final_task_count": 3,
+  "final_task_instances_materialized": false,
+  "final_tasks": [
+    {
+      "bug_tree": "a9ee7c033227496d1f543c9d28f70df68882bd35",
+      "defect_family": "parser_progress_nontermination",
+      "language": "rust",
+      "novel_recombination": true,
+      "public_command": [
+        "cargo",
+        "test",
+        "--offline",
+        "-j",
+        "1",
+        "-q"
+      ],
+      "repository": "thiserror",
+      "split": "REAL_REPAIR_FINAL_D",
+      "task_hash": "23d9a71695e6c3235a08da3afd40c640cacfabf3e304b8d934bef0347b877925",
+      "task_name": "final-rust-thiserror-parser-progress"
+    },
+    {
+      "bug_tree": "3af92d523d1cf7efc922a92f663d036e1f93913c",
+      "defect_family": "encoded_empty_string_boundary",
+      "language": "go",
+      "novel_recombination": true,
+      "public_command": [
+        "go",
+        "test",
+        ".",
+        "-count=1"
+      ],
+      "repository": "gjson",
+      "split": "REAL_REPAIR_FINAL_D",
+      "task_hash": "f4a364fa1fec445387c016a13853904af8a1441b445d29f5e07ee9481efc7fb6",
+      "task_name": "final-go-gjson-empty-query"
+    },
+    {
+      "bug_tree": "9699bbc2f7febf55dd7ba3061d91a9936d331f32",
+      "defect_family": "per_call_option_invariant_propagation",
+      "language": "typescript",
+      "novel_recombination": true,
+      "public_command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "--import=tsx/esm",
+        "--test",
+        "test/validation.ts"
+      ],
+      "repository": "p-queue",
+      "split": "REAL_REPAIR_FINAL_D",
+      "task_hash": "44111bce3cd1b1eae30cddb7e58d821741cce6f6be6ee4e12b7b735c55ad7a46",
+      "task_name": "final-typescript-pqueue-timeout-contract"
+    }
+  ],
+  "freeze_sha256": "a4a79fd0c75e293b2dfd3c32c904ab395b8201d41768106e3a5dd2966fb75868",
+  "generic_dev_repair_sha256": "b3ebb6236df1b185966469edb069abbda2dc01888d21c2e3be03944788cb5e5c",
+  "historical_graft02_commit": "88eb6aea188af384be5098c7b92d5cc1cd6f1d8d",
+  "historical_graft02_promoted": false,
+  "independent_evaluator_sha256": "2859e8b026c257ada4f91f032246276973f0cf23d4e03e8a5c3897d5b22dc7bf",
+  "instruction_bytes": 20281,
+  "instruction_sha256": "061317dea15aed488ee8ff55a3b9df30411ecbf1df16cb3859f1241f6fecffbe",
+  "max_patch_attempts_per_task": 8,
+  "network_policy": "LOCAL_OFFLINE_AFTER_FREEZE",
+  "post_final_acceptance_changes_allowed": false,
+  "post_final_knowledge_changes_allowed": false,
+  "post_final_repair_engine_changes_allowed": false,
+  "post_final_routing_changes_allowed": false,
+  "post_final_verifier_changes_allowed": false,
+  "repair_engine_sha256": "551776310bb1bdd623c6e3cee5eac2570e8c9f244a635be64246de5e577084e7",
+  "schema_version": "B_CORE_CODE_GRAFT_03_FINAL_FREEZE_1",
+  "seed": 13547676371011098083,
+  "toolchains": {
+    "cargo": "cargo 1.96.0 (30a34c682 2026-05-25)",
+    "go": "go version go1.26.5 windows/amd64",
+    "node": "v24.14.1",
+    "rustc": "rustc 1.96.0 (ac68faa20 2026-05-25)"
+  }
+}

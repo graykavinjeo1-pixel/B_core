@@ -1,0 +1,36 @@
+{
+  "allowed_source_paths": [
+    "suite/suite.go"
+  ],
+  "arm": "UNGRAFTED",
+  "changed_lines": 0,
+  "changed_paths": [],
+  "fix_commit_reads_by_arm": 0,
+  "gold_patch_reads_by_arm": 0,
+  "hidden_result": {
+    "output_sha256": "781e5262bb645cad087bb7e25a2632fc9c66d0d85ef3c125b48f1cd97e16407b",
+    "output_tail": "--- FAIL: TestSuiteWithSkipInSetupAndStats/skipSuite (0.00s)\n    --- FAIL: TestSuiteWithSkipInSetupAndStats/skipSuite/TestSomething (0.00s)\n        suite_test.go:593: skip in setup\n        panic.go:336: test panicked: runtime error: invalid memory address or nil pointer dereference\n            goroutine 22 [running]:\n            runtime/debug.Stack()\n            \tC:/Program Files/Go/src/runtime/debug/stack.go:26 +0x5e\n            github.com/stretchr/testify/suite.failOnPanic(0x2570f8d7ca00, {0x7ff6e55c5b20, 0x7ff6e5a52e90})\n            \tD:/B_Core_CODE_GRAFT_03_EVALUATOR_VAULT/verify-ivkfte1v/tree/suite/suite.go:93 +0x37\n            github.com/stretchr/testify/suite.recoverAndFailOnPanic(0x2570f8d7ca00)\n            \tD:/B_Core_CODE_GRAFT_03_EVALUATOR_VAULT/verify-ivkfte1v/tree/suite/suite.go:87 +0x2f\n            panic({0x7ff6e55c5b20?, 0x7ff6e5a52e90?})\n            \tC:/Program Files/Go/src/runtime/panic.go:860 +0x13a\n            github.com/stretchr/testify/suite.(*SuiteInformation).end(...)\n            \tD:/B_Core_CODE_GRAFT_03_EVALUATOR_VAULT/verify-ivkfte1v/tree/suite/stats.go:38\n            github.com/stretchr/testify/suite.Run.func2.1()\n            \tD:/B_Core_CODE_GRAFT_03_EVALUATOR_VAULT/verify-ivkfte1v/tree/suite/suite.go:189 +0x126\n            runtime.Goexit()\n            \tC:/Program Files/Go/src/runtime/panic.go:694 +0x5e\n            testing.(*common).SkipNow(0x2570f8d7ca00)\n            \tC:/Program Files/Go/src/testing/testing.go:1259 +0x45\n            testing.(*common).Skip(0x2570f8d7ca00, {0x2570f8db5db0?, 0x7ff6e5494601?, 0x2570f8d6c378?})\n            \tC:/Program Files/Go/src/testing/testing.go:1235 +0x4f\n            github.com/stretchr/testify/suite.(*suiteWithSkipInSetupAndStats).SetupTest(0x7ff6e5a53fe0?)\n            \tD:/B_Core_CODE_GRAFT_03_EVALUATOR_VAULT/verify-ivkfte1v/tree/suite/suite_test.go:593 +0x45\n            github.com/stretchr/testify/suite.Run.func2(0x2570f8d7ca00)\n            \tD:/B_Core_CODE_GRAFT_03_EVALUATOR_VAULT/verify-ivkfte1v/tree/suite/suite.go:204 +0x210\n            testing.tRunner(0x2570f8d7ca00, 0x2570f8d92240)\n            \tC:/Program Files/Go/src/testing/testing.go:2036 +0xc3\n            created by testing.(*T).Run in goroutine 21\n            \tC:/Program Files/Go/src/testing/testing.go:2101 +0x4a9\n--- FAIL: TestSuiteWithSkipInSetupAndStats (0.00s)\n    suite_test.go:619: \n        \tError Trace:\tD:/B_Core_CODE_GRAFT_03_EVALUATOR_VAULT/verify-ivkfte1v/tree/suite/suite_test.go:619\n        \tError:      \tExpected value not to be nil.\n        \tTest:       \tTestSuiteWithSkipInSetupAndStats\n        \tMessages:   \ttest stats entry should exist even when skipped in SetupTest\nFAIL\nFAIL\tgithub.com/stretchr/testify/suite\t0.512s\nFAIL\n",
+    "returncode": 1,
+    "timed_out": false,
+    "wall_ms": 1981.697
+  },
+  "hidden_test_reads_before_submission": 0,
+  "independent_semantic_restoration_pass": false,
+  "minimal_semantic_delta_pass": false,
+  "public_result": {
+    "output_sha256": "cce44896877663889d5ea307d8386f6142e48cdac3cdac503bf36c792ca06565",
+    "output_tail": "ok  \tgithub.com/stretchr/testify/suite\t7.810s\n",
+    "returncode": 0,
+    "timed_out": false,
+    "wall_ms": 8637.525
+  },
+  "repair_revealing_issue_reads_by_arm": 0,
+  "schema_version": "B_CORE_CODE_GRAFT_03_INDEPENDENT_SEMANTIC_VERIFICATION_1",
+  "status": "FAIL",
+  "task_hash": "85ffa8ea9ec93c6f4e545fc73c412e8fd2b0bfe76a9894f8c2e7e89cfa862e67",
+  "task_name": "dev-go-testify-setup-skip-stats",
+  "test_changes": [],
+  "unrelated_semantic_change_events": 1,
+  "upstream_test_pass": true,
+  "visible_test_only_false_accept": true
+}

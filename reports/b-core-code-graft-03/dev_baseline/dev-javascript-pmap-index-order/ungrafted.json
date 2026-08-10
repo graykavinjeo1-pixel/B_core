@@ -1,0 +1,132 @@
+{
+  "ablated_packages": [],
+  "active_coding_object_count": 0,
+  "active_imported_objects": [],
+  "active_native_object_count": 3,
+  "arm": "UNGRAFTED",
+  "attempts": [],
+  "candidate_repair_sites": 0,
+  "compiler_runs": 0,
+  "contract_ablated": false,
+  "contract_reconstruction_enabled": false,
+  "defect_class_to_patch_template_authority": false,
+  "defect_family": "async_input_index_ownership",
+  "external_llm_calls": 0,
+  "failed_patches": 0,
+  "failure_localization_attempts": 1,
+  "false_localizations": 4,
+  "files_activated": 4,
+  "files_inspected": 4,
+  "final_public_probe": {
+    "output_sha256": "624242b8078433fd9b59973a2c011b7c86bcde8e221acebdccdad0eba1dc4c2e",
+    "output_tail": "\r\n  \u221a test \u203a handles empty iterable\r\n  \u221a test \u203a asyncIterator - handles empty iterable\r\n  \u221a test \u203a pMapIterable - empty\r\n  \u221a test \u203a invalid mapper\r\n  \u221a test \u203a already aborted signal\r\n  \u221a test \u203a pMapIterable - iterable that throws\r\n  \u221a test \u203a pMapSkip\r\n  \u221a test \u203a pMapIterable - mapper that throws\r\n  \u221a test \u203a all pMapSkips\r\n  \u221a test \u203a multiple pMapSkips\r\n  \u221a test \u203a pMapIterable - pMapSkip\r\n  \u221a test \u203a enforce number in options.concurrency\r\n  \u221a test \u203a asyncIterator - enforce number in options.concurrency\r\n  \u221a test \u203a asyncIterator - pMapSkip\r\n  \u221a multiple-pmapskips-performance \u203a multiple pMapSkips - algorithmic complexity\r\n  \u221a test \u203a asyncIterator - all pMapSkips\r\n  \u221a test \u203a abort by AbortController (111ms)\r\n  \u221a test \u203a no unhandled rejected promises from mapper throws - infinite concurrency (111ms)\r\n  \u221a test \u203a no unhandled rejected promises from mapper throws - concurrency 1 (111ms)\r\n  \u221a test \u203a pMapIterable - stop on error (110ms)\r\n  \u221a test \u203a asyncIterator - multiple pMapSkips (126ms)\r\n  \u221a test \u203a async with concurrency: 2 (out of order time sequence) (203ms)\r\n  \u221a test \u203a asyncIterator - async with concurrency: 2 (out of order time sequence) (219ms)\r\n  \u221a test \u203a async with concurrency: 2 (problematic time sequence) (235ms)\r\n  \u221a test \u203a async with concurrency: 2 (random time sequence) (265ms)\r\n  \u221a test \u203a asyncIterator - async with concurrency: 2 (problematic time sequence) (295ms)\r\n  \u221a test \u203a main (312ms)\r\n  \u221a test \u203a pMapIterable (310ms)\r\n  \u221a test \u203a catches exception from source iterator - 1st item (310ms)\r\n  \u221a test \u203a asyncIterator - main (326ms)\r\n  \u221a test \u203a pMapIterable - async input, backpressure > concurrency (324ms)\r\n  \u221a test \u203a asyncIterator - async with concurrency: 2 (random time sequence) (342ms)\r\n  \u221a test \u203a pMapIterable - concurrency: 2 (372ms)\r\n  \u221a test \u203a catches exception from source iterator - 2nd item (420ms)\r\n  \u221a test \u203a catches exception from source iterator - 2nd item after 1st item mapper throw (420ms)\r\n  \u221a test \u203a asyncIterator - get the correct exception after stop-on-error (513ms)\r\n  \u221a test \u203a incorrect input type (513ms)\r\n  \u221a test \u203a immediately rejects when stopOnError is true (546ms)\r\n  \u221a test \u203a pMapIterable - index in mapper (623ms)\r\n  \u221a test \u203a all mappers should run when concurrency is infinite, even after stop-on-error happened (625ms)\r\n  \u221a test \u203a concurrency: 1 (626ms)\r\n  \u221a test \u203a pMapIterable - concurrency: 1 (624ms)\r\n  \u221a test \u203a asyncIterator - immediately rejects when stopOnError is true (625ms)\r\n  \u221a test \u203a asyncIterator - all mappers should run when concurrency is infinite, even after stop-on-error happened (641ms)\r\n  \u221a test \u203a asyncIterator - concurrency: 1 (673ms)\r\n  \u221a test \u203a pMapIterable - backpressure (1s)\r\n  \u221a test \u203a aggregate errors when stopOnError is false (1.3s)\r\n  \u221a test \u203a asyncIterator - aggregate errors when stopOnError is false (1.4s)\r\n  \u221a test \u203a concurrency: 4 (3s)\r\n  \u221a test \u203a asyncIterator - concurrency: 4 (3.5s)\r\n  \u2500\r\n\r\n  50 tests passed\r\n",
+    "returncode": 0,
+    "timed_out": false,
+    "wall_ms": 4028.613
+  },
+  "fix_commit_reads": 0,
+  "full_coding_knowledge_scans": 0,
+  "full_repository_scan_events": 0,
+  "gold_patch_reads": 0,
+  "hidden_test_reads_before_submission": 0,
+  "human_contract_rule_selection_events": 0,
+  "human_language_specific_fix_selection_events": 0,
+  "human_repair_rule_selection_events": 0,
+  "hypotheses_generated": 0,
+  "independent_semantic_restoration_pass": null,
+  "initial_public_probe": {
+    "output_sha256": "624242b8078433fd9b59973a2c011b7c86bcde8e221acebdccdad0eba1dc4c2e",
+    "output_tail": "\r\n  \u221a test \u203a handles empty iterable\r\n  \u221a test \u203a asyncIterator - handles empty iterable\r\n  \u221a test \u203a pMapIterable - empty\r\n  \u221a test \u203a invalid mapper\r\n  \u221a test \u203a already aborted signal\r\n  \u221a test \u203a pMapIterable - iterable that throws\r\n  \u221a test \u203a pMapSkip\r\n  \u221a test \u203a pMapIterable - mapper that throws\r\n  \u221a test \u203a all pMapSkips\r\n  \u221a test \u203a multiple pMapSkips\r\n  \u221a test \u203a pMapIterable - pMapSkip\r\n  \u221a test \u203a enforce number in options.concurrency\r\n  \u221a test \u203a asyncIterator - enforce number in options.concurrency\r\n  \u221a test \u203a asyncIterator - pMapSkip\r\n  \u221a multiple-pmapskips-performance \u203a multiple pMapSkips - algorithmic complexity\r\n  \u221a test \u203a asyncIterator - all pMapSkips\r\n  \u221a test \u203a abort by AbortController (111ms)\r\n  \u221a test \u203a no unhandled rejected promises from mapper throws - infinite concurrency (111ms)\r\n  \u221a test \u203a no unhandled rejected promises from mapper throws - concurrency 1 (111ms)\r\n  \u221a test \u203a pMapIterable - stop on error (110ms)\r\n  \u221a test \u203a asyncIterator - multiple pMapSkips (126ms)\r\n  \u221a test \u203a async with concurrency: 2 (out of order time sequence) (203ms)\r\n  \u221a test \u203a asyncIterator - async with concurrency: 2 (out of order time sequence) (219ms)\r\n  \u221a test \u203a async with concurrency: 2 (problematic time sequence) (235ms)\r\n  \u221a test \u203a async with concurrency: 2 (random time sequence) (265ms)\r\n  \u221a test \u203a asyncIterator - async with concurrency: 2 (problematic time sequence) (295ms)\r\n  \u221a test \u203a main (312ms)\r\n  \u221a test \u203a pMapIterable (310ms)\r\n  \u221a test \u203a catches exception from source iterator - 1st item (310ms)\r\n  \u221a test \u203a asyncIterator - main (326ms)\r\n  \u221a test \u203a pMapIterable - async input, backpressure > concurrency (324ms)\r\n  \u221a test \u203a asyncIterator - async with concurrency: 2 (random time sequence) (342ms)\r\n  \u221a test \u203a pMapIterable - concurrency: 2 (372ms)\r\n  \u221a test \u203a catches exception from source iterator - 2nd item (420ms)\r\n  \u221a test \u203a catches exception from source iterator - 2nd item after 1st item mapper throw (420ms)\r\n  \u221a test \u203a asyncIterator - get the correct exception after stop-on-error (513ms)\r\n  \u221a test \u203a incorrect input type (513ms)\r\n  \u221a test \u203a immediately rejects when stopOnError is true (546ms)\r\n  \u221a test \u203a pMapIterable - index in mapper (623ms)\r\n  \u221a test \u203a all mappers should run when concurrency is infinite, even after stop-on-error happened (625ms)\r\n  \u221a test \u203a concurrency: 1 (626ms)\r\n  \u221a test \u203a pMapIterable - concurrency: 1 (624ms)\r\n  \u221a test \u203a asyncIterator - immediately rejects when stopOnError is true (625ms)\r\n  \u221a test \u203a asyncIterator - all mappers should run when concurrency is infinite, even after stop-on-error happened (641ms)\r\n  \u221a test \u203a asyncIterator - concurrency: 1 (673ms)\r\n  \u221a test \u203a pMapIterable - backpressure (1s)\r\n  \u221a test \u203a aggregate errors when stopOnError is false (1.3s)\r\n  \u221a test \u203a asyncIterator - aggregate errors when stopOnError is false (1.4s)\r\n  \u221a test \u203a concurrency: 4 (3s)\r\n  \u221a test \u203a asyncIterator - concurrency: 4 (3.5s)\r\n  \u2500\r\n\r\n  50 tests passed\r\n",
+    "returncode": 0,
+    "timed_out": false,
+    "wall_ms": 4028.613
+  },
+  "language": "javascript",
+  "local_teacher_calls": 0,
+  "localization_ledger": [
+    {
+      "evidence_tokens": [
+        "each",
+        "index",
+        "input",
+        "maps",
+        "order",
+        "out",
+        "pmapiterable",
+        "promise",
+        "value"
+      ],
+      "file": "test.js",
+      "score": 44
+    },
+    {
+      "evidence_tokens": [
+        "index",
+        "input",
+        "maps",
+        "pmapiterable",
+        "promise",
+        "value"
+      ],
+      "file": "index.js",
+      "score": 28
+    },
+    {
+      "evidence_tokens": [
+        "index",
+        "input",
+        "maps",
+        "value"
+      ],
+      "file": "test-multiple-pmapskips-performance.js",
+      "score": 14
+    },
+    {
+      "evidence_tokens": [
+        "value"
+      ],
+      "file": "assert-in-range.js",
+      "score": 5
+    }
+  ],
+  "mechanism_localization_attempts": 0,
+  "network_reads_during_canonical": 0,
+  "network_writes_during_canonical": 0,
+  "patch_attempts": 0,
+  "patch_hash_routing_events": 0,
+  "patches_executed": 0,
+  "patches_generated": 0,
+  "rejected_before_execution": 0,
+  "repair_revealing_issue_reads": 0,
+  "repair_site_localization_attempts": 0,
+  "repair_work": 15,
+  "repeated_equivalent_patches": 0,
+  "repository_files_total": 4,
+  "repository_id_routing_events": 0,
+  "repository_repair_contract_ir": null,
+  "result_sha256": "48842a7abc89d94ebc62053a9ae7fad5d6936c75b1be0ba3a77d8df22aa42a39",
+  "schema_version": "B_CORE_CODE_GRAFT_03_ARM_RESULT_1",
+  "submitted": false,
+  "symbols_activated": [
+    "ThrowingIterator",
+    "AsyncTestData",
+    "collectAsyncIterable",
+    "pMap",
+    "is",
+    "to",
+    "pMapIterable",
+    "is",
+    "trySpawn",
+    "generateSkipPerformanceData",
+    "assertInRange"
+  ],
+  "symbols_activated_count": 11,
+  "symbols_inspected": 11,
+  "task_hash": "891fc29c9e92255ffcfde34ce9051c75043395e39a1766f11d28eb8a5719cd66",
+  "task_id_routing_events": 0,
+  "test_runs": 1,
+  "test_weakening_solution": false,
+  "upstream_test_pass": false,
+  "verifier_bypass_solution": false,
+  "wall_ms": 4445.042
+}

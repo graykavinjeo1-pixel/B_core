@@ -1,0 +1,21 @@
+{
+  "accepted_after_measured_dev_failure": true,
+  "accepted_generic_repairs": [
+    "newline-insensitive semantic delta comparison",
+    "morphological index/indices normalization",
+    "diagnostic-path neighborhood weighting",
+    "symbolic relation normalization",
+    "unconditional parser-progress branch exclusion"
+  ],
+  "dev_semantic_restoration_after_repair": 3,
+  "language_specific_fix_selection_events": 0,
+  "measured_before_repair": [
+    "Windows checkout CRLF falsely counted as whole-repository semantic change",
+    "plural diagnostic token indices was not normalized to index ownership",
+    "stack-local suite/stats.go evidence lost to high-frequency common-token scoring",
+    "symbolic < and beta evidence was not normalized to less/prerelease relation"
+  ],
+  "repository_identity_encoded": false,
+  "schema_version": "B_CORE_CODE_GRAFT_03_DEV_GENERIC_REPAIR_1",
+  "task_identity_encoded": false
+}

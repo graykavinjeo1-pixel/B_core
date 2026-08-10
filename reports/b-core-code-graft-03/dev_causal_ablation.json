@@ -1,0 +1,63 @@
+{
+  "contract_rows": [
+    {
+      "ablated_packages": [],
+      "contract_ablated": true,
+      "degradation": true,
+      "mode": "contract",
+      "semantic_restoration_pass": false,
+      "task": "dev-rust-semver-less-prerelease"
+    },
+    {
+      "ablated_packages": [],
+      "contract_ablated": true,
+      "degradation": false,
+      "mode": "contract",
+      "semantic_restoration_pass": true,
+      "task": "dev-go-testify-setup-skip-stats"
+    },
+    {
+      "ablated_packages": [],
+      "contract_ablated": true,
+      "degradation": false,
+      "mode": "contract",
+      "semantic_restoration_pass": true,
+      "task": "dev-javascript-pmap-index-order"
+    }
+  ],
+  "graft_package_external_ablation_pass": true,
+  "package_rows": [
+    {
+      "ablated_packages": [
+        "TYPE_CONTROL"
+      ],
+      "contract_ablated": false,
+      "degradation": true,
+      "mode": "package",
+      "semantic_restoration_pass": false,
+      "task": "dev-rust-semver-less-prerelease"
+    },
+    {
+      "ablated_packages": [
+        "FAILURE_REPAIR"
+      ],
+      "contract_ablated": false,
+      "degradation": true,
+      "mode": "package",
+      "semantic_restoration_pass": false,
+      "task": "dev-go-testify-setup-skip-stats"
+    },
+    {
+      "ablated_packages": [
+        "CONCURRENCY_PROTOCOL"
+      ],
+      "contract_ablated": false,
+      "degradation": true,
+      "mode": "package",
+      "semantic_restoration_pass": false,
+      "task": "dev-javascript-pmap-index-order"
+    }
+  ],
+  "repair_contract_ablation_pass": true,
+  "schema_version": "B_CORE_CODE_GRAFT_03_DEV_ABLATION_1"
+}

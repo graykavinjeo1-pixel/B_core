@@ -1,0 +1,25 @@
+{
+  "dev_c_final_d_overlap": 0,
+  "dev_c_repositories": [
+    "semver",
+    "testify",
+    "p-map"
+  ],
+  "final_d_repositories": [
+    "thiserror",
+    "gjson",
+    "p-queue"
+  ],
+  "fix_commit_reads_by_repair_arms": 0,
+  "gold_patch_reads_by_repair_arms": 0,
+  "graft02_final_repositories": [
+    "byteorder",
+    "go-cmp",
+    "p-limit"
+  ],
+  "graft02_final_to_dev_c_overlap": 0,
+  "graft02_final_to_final_d_overlap": 0,
+  "hidden_test_reads_before_submission": 0,
+  "repair_revealing_issue_reads_by_repair_arms": 0,
+  "schema_version": "B_CORE_CODE_GRAFT_03_CONTAMINATION_AUDIT_1"
+}

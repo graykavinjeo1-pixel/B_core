@@ -1,0 +1,38 @@
+{
+  "allowed_source_paths": [
+    "suite/suite.go"
+  ],
+  "arm": "GRAFT01",
+  "changed_lines": 4,
+  "changed_paths": [
+    "suite/suite.go"
+  ],
+  "fix_commit_reads_by_arm": 0,
+  "gold_patch_reads_by_arm": 0,
+  "hidden_result": {
+    "output_sha256": "722ec5f886545c141f74885fc0b3763569871c48d28bfad7caa8d3493ca274da",
+    "output_tail": "ok  \tgithub.com/stretchr/testify/suite\t0.496s\n",
+    "returncode": 0,
+    "timed_out": false,
+    "wall_ms": 1954.646
+  },
+  "hidden_test_reads_before_submission": 0,
+  "independent_semantic_restoration_pass": true,
+  "minimal_semantic_delta_pass": true,
+  "public_result": {
+    "output_sha256": "666531e0efaecc289d8634b3743cba126a04248087f577ec40c57ea32d7b833d",
+    "output_tail": "ok  \tgithub.com/stretchr/testify/suite\t7.116s\n",
+    "returncode": 0,
+    "timed_out": false,
+    "wall_ms": 7832.265
+  },
+  "repair_revealing_issue_reads_by_arm": 0,
+  "schema_version": "B_CORE_CODE_GRAFT_03_INDEPENDENT_SEMANTIC_VERIFICATION_1",
+  "status": "PASS",
+  "task_hash": "85ffa8ea9ec93c6f4e545fc73c412e8fd2b0bfe76a9894f8c2e7e89cfa862e67",
+  "task_name": "dev-go-testify-setup-skip-stats",
+  "test_changes": [],
+  "unrelated_semantic_change_events": 0,
+  "upstream_test_pass": true,
+  "visible_test_only_false_accept": false
+}

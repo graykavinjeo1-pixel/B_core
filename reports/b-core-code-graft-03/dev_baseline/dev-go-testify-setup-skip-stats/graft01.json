@@ -1,0 +1,280 @@
+{
+  "ablated_packages": [],
+  "active_coding_object_count": 3,
+  "active_imported_objects": [
+    {
+      "elemental_operations": [
+        "INFER",
+        "TYPE_CHECK"
+      ],
+      "object_id": "BCG-3b9d4b71887d2c6f",
+      "package": "TYPE_CONTROL"
+    },
+    {
+      "elemental_operations": [
+        "VERIFY",
+        "READ"
+      ],
+      "object_id": "BCG-43d4d10f37231f4c",
+      "package": "FAILURE_REPAIR"
+    },
+    {
+      "elemental_operations": [
+        "VERIFY",
+        "PROPAGATE_ERROR"
+      ],
+      "object_id": "BCG-4c12a26968a38bad",
+      "package": "FAILURE_REPAIR"
+    }
+  ],
+  "active_native_object_count": 3,
+  "arm": "GRAFT01",
+  "attempts": [
+    {
+      "changed_lines": 4,
+      "file": "suite/suite.go",
+      "hypothesis": "initialize deferred-finalization state before a hook that can terminate control flow",
+      "predicted_effect": "skipped setup has a statistics entry before deferred end executes",
+      "prediction_frozen_before_execution": true,
+      "preserved_behavior": "ordinary setup, before-test, and test method order is preserved",
+      "public_probe": {
+        "output_sha256": "1fb347e1375117673a25c93d25463d88cfe86221bbd4f4ac50af329553ea4df8",
+        "output_tail": "ok  \tgithub.com/stretchr/testify/suite\t7.850s\n",
+        "returncode": 0,
+        "timed_out": false,
+        "wall_ms": 8926.998
+      },
+      "public_probe_pass": true,
+      "required_packages": [
+        "FAILURE_REPAIR",
+        "TYPE_CONTROL"
+      ],
+      "transform": "STATE_INITIALIZATION_ORDER"
+    }
+  ],
+  "candidate_repair_sites": 1,
+  "compiler_runs": 0,
+  "contract_ablated": false,
+  "contract_reconstruction_enabled": false,
+  "defect_class_to_patch_template_authority": false,
+  "defect_family": "state_initialization_before_nonreturning_hook",
+  "external_llm_calls": 0,
+  "failed_patches": 0,
+  "failure_localization_attempts": 1,
+  "false_localizations": 7,
+  "files_activated": 8,
+  "files_inspected": 8,
+  "final_public_probe": {
+    "output_sha256": "1fb347e1375117673a25c93d25463d88cfe86221bbd4f4ac50af329553ea4df8",
+    "output_tail": "ok  \tgithub.com/stretchr/testify/suite\t7.850s\n",
+    "returncode": 0,
+    "timed_out": false,
+    "wall_ms": 8926.998
+  },
+  "fix_commit_reads": 0,
+  "full_coding_knowledge_scans": 0,
+  "full_repository_scan_events": 0,
+  "gold_patch_reads": 0,
+  "hidden_test_reads_before_submission": 0,
+  "human_contract_rule_selection_events": 0,
+  "human_language_specific_fix_selection_events": 0,
+  "human_repair_rule_selection_events": 0,
+  "hypotheses_generated": 3,
+  "independent_semantic_restoration_pass": null,
+  "initial_public_probe": {
+    "output_sha256": "5849d60136280f554ee815801c9b5ed445e6914ca344cfab6459fe08e8d8faf7",
+    "output_tail": "ok  \tgithub.com/stretchr/testify/suite\t9.161s\n",
+    "returncode": 0,
+    "timed_out": false,
+    "wall_ms": 10555.931
+  },
+  "language": "go",
+  "local_teacher_calls": 0,
+  "localization_ledger": [
+    {
+      "evidence_tokens": [
+        "any",
+        "calls",
+        "can",
+        "end",
+        "exist",
+        "flow",
+        "missing",
+        "panics",
+        "per",
+        "start",
+        "state",
+        "test"
+      ],
+      "file": "assert/assertions.go",
+      "score": 58
+    },
+    {
+      "evidence_tokens": [
+        "any",
+        "calls",
+        "can",
+        "end",
+        "entry",
+        "exist",
+        "missing",
+        "panics",
+        "per",
+        "skip",
+        "start",
+        "state"
+      ],
+      "file": "mock/mock.go",
+      "score": 56
+    },
+    {
+      "evidence_tokens": [
+        "any",
+        "can",
+        "end",
+        "exist",
+        "panics",
+        "per",
+        "start",
+        "state",
+        "test"
+      ],
+      "file": "assert/assertion_forward.go",
+      "score": 43
+    },
+    {
+      "evidence_tokens": [
+        "any",
+        "can",
+        "end",
+        "exist",
+        "panics",
+        "per",
+        "start",
+        "state",
+        "test"
+      ],
+      "file": "require/require.go",
+      "score": 43
+    },
+    {
+      "evidence_tokens": [
+        "any",
+        "can",
+        "end",
+        "exist",
+        "panics",
+        "per",
+        "start",
+        "state",
+        "test"
+      ],
+      "file": "require/require_forward.go",
+      "score": 43
+    },
+    {
+      "evidence_tokens": [
+        "can",
+        "end",
+        "per",
+        "setup",
+        "setuptest",
+        "start",
+        "stats",
+        "suite",
+        "suiteinformation",
+        "test"
+      ],
+      "file": "suite/suite.go",
+      "score": 42
+    },
+    {
+      "evidence_tokens": [
+        "any",
+        "can",
+        "end",
+        "exist",
+        "panics",
+        "per",
+        "start",
+        "test"
+      ],
+      "file": "assert/assertion_format.go",
+      "score": 40
+    },
+    {
+      "evidence_tokens": [
+        "end",
+        "start",
+        "stats",
+        "suite",
+        "suiteinformation",
+        "test",
+        "teststats"
+      ],
+      "file": "suite/stats.go",
+      "score": 39
+    }
+  ],
+  "mechanism_localization_attempts": 1,
+  "network_reads_during_canonical": 0,
+  "network_writes_during_canonical": 0,
+  "patch_attempts": 1,
+  "patch_hash_routing_events": 0,
+  "patches_executed": 1,
+  "patches_generated": 1,
+  "rejected_before_execution": 0,
+  "repair_revealing_issue_reads": 0,
+  "repair_site_localization_attempts": 1,
+  "repair_work": 49,
+  "repeated_equivalent_patches": 0,
+  "repository_files_total": 61,
+  "repository_id_routing_events": 0,
+  "repository_repair_contract_ir": null,
+  "result_sha256": "0b5e89e6bf7123498023ea279accdbc9328ba703462cfc62f3844a14cf0ac608",
+  "schema_version": "B_CORE_CODE_GRAFT_03_ARM_RESULT_1",
+  "submitted": true,
+  "symbols_activated": [
+    "prototype",
+    "prototype",
+    "prototype",
+    "prototype",
+    "prototype",
+    "that",
+    "does",
+    "ObjectsAreEqual",
+    "copyExportedFields",
+    "does",
+    "ObjectsExportedFieldsAreEqual",
+    "ObjectsAreEqualValues",
+    "isNumericType",
+    "CallerInfo",
+    "that",
+    "that",
+    "isTest",
+    "messageFromMsgAndArgs",
+    "indentMessageLines",
+    "FailNow",
+    "Fail",
+    "labeledOutput",
+    "Implements",
+    "NotImplements",
+    "isType",
+    "IsType",
+    "IsNotType",
+    "Equal",
+    "validateEqualArgs",
+    "type",
+    "Same",
+    "NotSame"
+  ],
+  "symbols_activated_count": 32,
+  "symbols_inspected": 32,
+  "task_hash": "85ffa8ea9ec93c6f4e545fc73c412e8fd2b0bfe76a9894f8c2e7e89cfa862e67",
+  "task_id_routing_events": 0,
+  "test_runs": 2,
+  "test_weakening_solution": false,
+  "upstream_test_pass": true,
+  "verifier_bypass_solution": false,
+  "wall_ms": 19501.194
+}

@@ -1,0 +1,12 @@
+{
+  "arm": "graft03",
+  "bug_tree_sha256": "7cdad6425b7702eab3d7be263b1239586835d1ed56a21cda2e624233caad07a0",
+  "destination": "D:\\BCG03_RUN\\DEV_C\\d2",
+  "fix_commit_exposed_to_arm": false,
+  "gold_patch_exposed_to_arm": false,
+  "hidden_test_exposed_before_submission": false,
+  "public_manifest": "D:\\BCG03_RUN\\DEV_C\\d2\\bcore_public_task_manifest.json",
+  "schema_version": "B_CORE_CODE_GRAFT_03_MATERIALIZATION_1",
+  "task_hash": "85ffa8ea9ec93c6f4e545fc73c412e8fd2b0bfe76a9894f8c2e7e89cfa862e67",
+  "task_name": "dev-go-testify-setup-skip-stats"
+}

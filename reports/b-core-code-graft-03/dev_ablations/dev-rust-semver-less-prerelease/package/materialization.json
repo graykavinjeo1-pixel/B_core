@@ -1,0 +1,12 @@
+{
+  "arm": "graft03",
+  "bug_tree_sha256": "1a60de64c8a57ffa50f3e25ff596be6ffedfb55d68b5dc27d2313310cec02ba3",
+  "destination": "D:\\BCG03_RUN\\ABL\\d1\\package",
+  "fix_commit_exposed_to_arm": false,
+  "gold_patch_exposed_to_arm": false,
+  "hidden_test_exposed_before_submission": false,
+  "public_manifest": "D:\\BCG03_RUN\\ABL\\d1\\package\\bcore_public_task_manifest.json",
+  "schema_version": "B_CORE_CODE_GRAFT_03_MATERIALIZATION_1",
+  "task_hash": "81ac3b66454bd33bb7fc8d93889285cbbdab0682d93aa188909c596824a49646",
+  "task_name": "dev-rust-semver-less-prerelease"
+}

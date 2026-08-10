@@ -1,0 +1,116 @@
+{
+  "dev_c_final_d_overlap": 0,
+  "fix_commits_present_in_public_inventory": false,
+  "gold_patches_present_in_public_inventory": false,
+  "graft02_final_repositories": [
+    "byteorder",
+    "go-cmp",
+    "p-limit"
+  ],
+  "graft02_final_to_dev_c_overlap": 0,
+  "graft02_final_to_final_d_overlap": 0,
+  "schema_version": "B_CORE_CODE_GRAFT_03_FIXTURE_INVENTORY_1",
+  "tasks": [
+    {
+      "bug_tree": "0d2d172f63c984a586f91d54346f2b9985008bd0",
+      "defect_family": "partial_order_prerelease_semantics",
+      "language": "rust",
+      "novel_recombination": true,
+      "public_command": [
+        "cargo",
+        "test",
+        "--offline",
+        "-j",
+        "1",
+        "--test",
+        "test_version_req",
+        "test_less_than",
+        "-q"
+      ],
+      "repository": "semver",
+      "split": "REAL_REPAIR_DEV_C",
+      "task_hash": "81ac3b66454bd33bb7fc8d93889285cbbdab0682d93aa188909c596824a49646",
+      "task_name": "dev-rust-semver-less-prerelease"
+    },
+    {
+      "bug_tree": "96514b3807cc2e210529f95181a5d8ba0b1045bf",
+      "defect_family": "state_initialization_before_nonreturning_hook",
+      "language": "go",
+      "novel_recombination": true,
+      "public_command": [
+        "go",
+        "test",
+        "./suite",
+        "-count=1"
+      ],
+      "repository": "testify",
+      "split": "REAL_REPAIR_DEV_C",
+      "task_hash": "85ffa8ea9ec93c6f4e545fc73c412e8fd2b0bfe76a9894f8c2e7e89cfa862e67",
+      "task_name": "dev-go-testify-setup-skip-stats"
+    },
+    {
+      "bug_tree": "2da41fe08e9c914a34a2559ca0bafdc24435a411",
+      "defect_family": "async_input_index_ownership",
+      "language": "javascript",
+      "novel_recombination": true,
+      "public_command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "node_modules/ava/entrypoints/cli.mjs"
+      ],
+      "repository": "p-map",
+      "split": "REAL_REPAIR_DEV_C",
+      "task_hash": "891fc29c9e92255ffcfde34ce9051c75043395e39a1766f11d28eb8a5719cd66",
+      "task_name": "dev-javascript-pmap-index-order"
+    },
+    {
+      "bug_tree": "a9ee7c033227496d1f543c9d28f70df68882bd35",
+      "defect_family": "parser_progress_nontermination",
+      "language": "rust",
+      "novel_recombination": true,
+      "public_command": [
+        "cargo",
+        "test",
+        "--offline",
+        "-j",
+        "1",
+        "-q"
+      ],
+      "repository": "thiserror",
+      "split": "REAL_REPAIR_FINAL_D",
+      "task_hash": "23d9a71695e6c3235a08da3afd40c640cacfabf3e304b8d934bef0347b877925",
+      "task_name": "final-rust-thiserror-parser-progress"
+    },
+    {
+      "bug_tree": "3af92d523d1cf7efc922a92f663d036e1f93913c",
+      "defect_family": "encoded_empty_string_boundary",
+      "language": "go",
+      "novel_recombination": true,
+      "public_command": [
+        "go",
+        "test",
+        ".",
+        "-count=1"
+      ],
+      "repository": "gjson",
+      "split": "REAL_REPAIR_FINAL_D",
+      "task_hash": "f4a364fa1fec445387c016a13853904af8a1441b445d29f5e07ee9481efc7fb6",
+      "task_name": "final-go-gjson-empty-query"
+    },
+    {
+      "bug_tree": "9699bbc2f7febf55dd7ba3061d91a9936d331f32",
+      "defect_family": "per_call_option_invariant_propagation",
+      "language": "typescript",
+      "novel_recombination": true,
+      "public_command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "--import=tsx/esm",
+        "--test",
+        "test/validation.ts"
+      ],
+      "repository": "p-queue",
+      "split": "REAL_REPAIR_FINAL_D",
+      "task_hash": "44111bce3cd1b1eae30cddb7e58d821741cce6f6be6ee4e12b7b735c55ad7a46",
+      "task_name": "final-typescript-pqueue-timeout-contract"
+    }
+  ]
+}
