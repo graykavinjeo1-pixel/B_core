@@ -1,0 +1,324 @@
+{
+  "candidates_extracted": 1000000,
+  "candidates_normalized": 61,
+  "candidates_rejected_as_expected_answer": 0,
+  "candidates_rejected_as_nonsemantic": 999939,
+  "candidates_rejected_as_task_specific": 0,
+  "candidates_rejected_as_unverified": 0,
+  "conflicting_objects": 0,
+  "dedup_rows": [
+    {
+      "classification": "EXISTING_PARTIAL",
+      "source_alias": "abstraction",
+      "target_object_id": null
+    },
+    {
+      "classification": "GENUINELY_NEW",
+      "source_alias": "algebraic_data_type",
+      "target_object_id": "BCG-d6e76cb7c894f3e5"
+    },
+    {
+      "classification": "EXISTING_EQUIVALENT",
+      "source_alias": "associative_map",
+      "target_object_id": null
+    },
+    {
+      "classification": "GENUINELY_NEW",
+      "source_alias": "async_await",
+      "target_object_id": "BCG-f17197499237468c"
+    },
+    {
+      "classification": "GENUINELY_NEW",
+      "source_alias": "borrow_checker",
+      "target_object_id": "BCG-808f5d30e8a94952"
+    },
+    {
+      "classification": "EXISTING_EQUIVALENT",
+      "source_alias": "branching",
+      "target_object_id": null
+    },
+    {
+      "classification": "GENUINELY_NEW",
+      "source_alias": "build_tool",
+      "target_object_id": "BCG-c2487503bb335478"
+    },
+    {
+      "classification": "GENUINELY_NEW",
+      "source_alias": "bytecode_vm",
+      "target_object_id": "BCG-6e639adb4a523965"
+    },
+    {
+      "classification": "EXISTING_PARTIAL",
+      "source_alias": "class_object_model",
+      "target_object_id": null
+    },
+    {
+      "classification": "EXISTING_EQUIVALENT",
+      "source_alias": "closure",
+      "target_object_id": null
+    },
+    {
+      "classification": "EXISTING_PARTIAL",
+      "source_alias": "clr_il",
+      "target_object_id": null
+    },
+    {
+      "classification": "EXISTING_PARTIAL",
+      "source_alias": "compiler_runtime",
+      "target_object_id": null
+    },
+    {
+      "classification": "EXISTING_PARTIAL",
+      "source_alias": "concurrency",
+      "target_object_id": null
+    },
+    {
+      "classification": "EXISTING_EQUIVALENT",
+      "source_alias": "control_flow",
+      "target_object_id": null
+    },
+    {
+      "classification": "EXISTING_EQUIVALENT",
+      "source_alias": "data_structures_algorithms",
+      "target_object_id": null
+    },
+    {
+      "classification": "GENUINELY_NEW",
+      "source_alias": "debugger_tooling",
+      "target_object_id": "BCG-43d4d10f37231f4c"
+    },
+    {
+      "classification": "GENUINELY_NEW",
+      "source_alias": "dependent_generic_types",
+      "target_object_id": "BCG-7d7f2042a8b88a22"
+    },
+    {
+      "classification": "EXISTING_PARTIAL",
+      "source_alias": "dynamic_typing",
+      "target_object_id": null
+    },
+    {
+      "classification": "EXISTING_PARTIAL",
+      "source_alias": "ecosystem",
+      "target_object_id": null
+    },
+    {
+      "classification": "GENUINELY_NEW",
+      "source_alias": "errno_status",
+      "target_object_id": "BCG-50ba0bc47c664795"
+    },
+    {
+      "classification": "EXISTING_PARTIAL",
+      "source_alias": "error_handling",
+      "target_object_id": null
+    },
+    {
+      "classification": "GENUINELY_NEW",
+      "source_alias": "event_loop",
+      "target_object_id": "BCG-dfd3876712ef133c"
+    },
+    {
+      "classification": "GENUINELY_NEW",
+      "source_alias": "exception",
+      "target_object_id": "BCG-7ccdeb7e98a9a7c3"
+    },
+    {
+      "classification": "EXISTING_EQUIVALENT",
+      "source_alias": "first_class_function",
+      "target_object_id": null
+    },
+    {
+      "classification": "EXISTING_EQUIVALENT",
+      "source_alias": "function_call",
+      "target_object_id": null
+    },
+    {
+      "classification": "EXISTING_EQUIVALENT",
+      "source_alias": "functional_purity",
+      "target_object_id": null
+    },
+    {
+      "classification": "EXISTING_EQUIVALENT",
+      "source_alias": "functions",
+      "target_object_id": null
+    },
+    {
+      "classification": "EXISTING_PARTIAL",
+      "source_alias": "garbage_collection",
+      "target_object_id": null
+    },
+    {
+      "classification": "EXISTING_PARTIAL",
+      "source_alias": "gil",
+      "target_object_id": null
+    },
+    {
+      "classification": "EXISTING_PARTIAL",
+      "source_alias": "goroutine",
+      "target_object_id": null
+    },
+    {
+      "classification": "EXISTING_PARTIAL",
+      "source_alias": "interface_protocol",
+      "target_object_id": null
+    },
+    {
+      "classification": "GENUINELY_NEW",
+      "source_alias": "interpreter",
+      "target_object_id": "BCG-4451158792bca754"
+    },
+    {
+      "classification": "EXISTING_EQUIVALENT",
+      "source_alias": "iteration",
+      "target_object_id": null
+    },
+    {
+      "classification": "GENUINELY_NEW",
+      "source_alias": "iterator_protocol",
+      "target_object_id": "BCG-96ea4c69a10f7595"
+    },
+    {
+      "classification": "GENUINELY_NEW",
+      "source_alias": "jit",
+      "target_object_id": "BCG-3f5fea0aafc3d862"
+    },
+    {
+      "classification": "EXISTING_PARTIAL",
+      "source_alias": "jvm_bytecode",
+      "target_object_id": null
+    },
+    {
+      "classification": "EXISTING_PARTIAL",
+      "source_alias": "lazy_evaluation",
+      "target_object_id": null
+    },
+    {
+      "classification": "EXISTING_EQUIVALENT",
+      "source_alias": "lexical_binding",
+      "target_object_id": null
+    },
+    {
+      "classification": "EXISTING_PARTIAL",
+      "source_alias": "macro_system",
+      "target_object_id": null
+    },
+    {
+      "classification": "GENUINELY_NEW",
+      "source_alias": "manual_memory",
+      "target_object_id": "BCG-e1c3e4d0460e92c0"
+    },
+    {
+      "classification": "EXISTING_PARTIAL",
+      "source_alias": "memory",
+      "target_object_id": null
+    },
+    {
+      "classification": "GENUINELY_NEW",
+      "source_alias": "message_passing",
+      "target_object_id": "BCG-4cbe978af520ce03"
+    },
+    {
+      "classification": "GENUINELY_NEW",
+      "source_alias": "native_compilation",
+      "target_object_id": "BCG-39e38d2d9b715b60"
+    },
+    {
+      "classification": "GENUINELY_NEW",
+      "source_alias": "ownership",
+      "target_object_id": "BCG-6680101536bd4b59"
+    },
+    {
+      "classification": "GENUINELY_NEW",
+      "source_alias": "package_manager",
+      "target_object_id": "BCG-109ccf23e770b8f1"
+    },
+    {
+      "classification": "GENUINELY_NEW",
+      "source_alias": "panic_boundary",
+      "target_object_id": "BCG-4c12a26968a38bad"
+    },
+    {
+      "classification": "GENUINELY_NEW",
+      "source_alias": "pattern_matching",
+      "target_object_id": "BCG-cbf2bb95b6e56ad1"
+    },
+    {
+      "classification": "GENUINELY_NEW",
+      "source_alias": "pointer_addressing",
+      "target_object_id": "BCG-54e2d1ce24f79222"
+    },
+    {
+      "classification": "EXISTING_PARTIAL",
+      "source_alias": "prototype_chain",
+      "target_object_id": null
+    },
+    {
+      "classification": "GENUINELY_NEW",
+      "source_alias": "raii",
+      "target_object_id": "BCG-da3698e2fcdccad4"
+    },
+    {
+      "classification": "GENUINELY_NEW",
+      "source_alias": "reference_counting",
+      "target_object_id": "BCG-e9d1e8a65daf2eb9"
+    },
+    {
+      "classification": "EXISTING_EQUIVALENT",
+      "source_alias": "relational_query",
+      "target_object_id": null
+    },
+    {
+      "classification": "GENUINELY_NEW",
+      "source_alias": "result_value",
+      "target_object_id": "BCG-ecab7067b9e88fb4"
+    },
+    {
+      "classification": "EXISTING_EQUIVALENT",
+      "source_alias": "sequence",
+      "target_object_id": null
+    },
+    {
+      "classification": "GENUINELY_NEW",
+      "source_alias": "shared_memory_threads",
+      "target_object_id": "BCG-8cf4e31f915b74a1"
+    },
+    {
+      "classification": "EXISTING_PARTIAL",
+      "source_alias": "shell_pipeline",
+      "target_object_id": null
+    },
+    {
+      "classification": "EXISTING_PARTIAL",
+      "source_alias": "standard_library",
+      "target_object_id": null
+    },
+    {
+      "classification": "GENUINELY_NEW",
+      "source_alias": "static_typing",
+      "target_object_id": "BCG-67ffc1aa9737c1f4"
+    },
+    {
+      "classification": "EXISTING_PARTIAL",
+      "source_alias": "trait_typeclass",
+      "target_object_id": null
+    },
+    {
+      "classification": "GENUINELY_NEW",
+      "source_alias": "type_inference",
+      "target_object_id": "BCG-3b9d4b71887d2c6f"
+    },
+    {
+      "classification": "EXISTING_EQUIVALENT",
+      "source_alias": "variables_types",
+      "target_object_id": null
+    }
+  ],
+  "existing_equivalents": 14,
+  "natural_language_is_imported_knowledge_authority": false,
+  "new_semantic_objects": 27,
+  "partial_equivalents": 20,
+  "raw_knowledge_store_copy_is_canonical_import": false,
+  "redundant_objects": 0,
+  "schema": "b_core_code_graft_normalization_v1",
+  "silent_conflict_overwrites": 0
+}

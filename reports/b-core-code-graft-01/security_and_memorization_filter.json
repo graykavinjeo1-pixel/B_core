@@ -1,0 +1,10 @@
+{
+  "benchmark_answer_imports": 0,
+  "exact_source_patch_reuse_as_generalization_credit": 0,
+  "expected_output_imports": 0,
+  "local_source_paths_as_reasoning_authority": 0,
+  "repository_path_solution_authority": false,
+  "secret_candidates_detected_among_normalized_candidates": 0,
+  "secret_candidates_imported": 0,
+  "task_id_solution_authority": false
+}

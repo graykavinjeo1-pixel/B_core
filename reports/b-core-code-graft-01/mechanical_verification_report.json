@@ -1,0 +1,9 @@
+{
+  "authority": "COMPILED_RUST_AND_DETERMINISTIC_RUNTIME",
+  "build_pipeline_order_invariant": true,
+  "explicit_failure_branch": true,
+  "generic_sum_type_match": true,
+  "message_transfer_join": true,
+  "ownership_exclusive_mutation": true,
+  "passed": true
+}

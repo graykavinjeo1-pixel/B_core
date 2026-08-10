@@ -1,0 +1,623 @@
+{
+  "epochs_used": 32,
+  "ledger": [
+    {
+      "active_max": 0,
+      "cross_language_solved": 0,
+      "epoch": 1,
+      "novel_recombination_solved": 0,
+      "package_mask": 0,
+      "research_solved": 0,
+      "research_work": 1812,
+      "score": [
+        6,
+        0,
+        0,
+        0,
+        18446744073709549803,
+        32
+      ],
+      "solved": 6,
+      "valid": true
+    },
+    {
+      "active_max": 2,
+      "cross_language_solved": 0,
+      "epoch": 2,
+      "novel_recombination_solved": 0,
+      "package_mask": 1,
+      "research_solved": 0,
+      "research_work": 1812,
+      "score": [
+        12,
+        0,
+        0,
+        0,
+        18446744073709549803,
+        31
+      ],
+      "solved": 12,
+      "valid": true
+    },
+    {
+      "active_max": 1,
+      "cross_language_solved": 0,
+      "epoch": 3,
+      "novel_recombination_solved": 0,
+      "package_mask": 2,
+      "research_solved": 0,
+      "research_work": 1812,
+      "score": [
+        12,
+        0,
+        0,
+        0,
+        18446744073709549803,
+        31
+      ],
+      "solved": 12,
+      "valid": true
+    },
+    {
+      "active_max": 2,
+      "cross_language_solved": 0,
+      "epoch": 4,
+      "novel_recombination_solved": 5,
+      "package_mask": 3,
+      "research_solved": 0,
+      "research_work": 1812,
+      "score": [
+        23,
+        5,
+        0,
+        0,
+        18446744073709549803,
+        30
+      ],
+      "solved": 23,
+      "valid": true
+    },
+    {
+      "active_max": 1,
+      "cross_language_solved": 0,
+      "epoch": 5,
+      "novel_recombination_solved": 0,
+      "package_mask": 4,
+      "research_solved": 0,
+      "research_work": 1812,
+      "score": [
+        11,
+        0,
+        0,
+        0,
+        18446744073709549803,
+        31
+      ],
+      "solved": 11,
+      "valid": true
+    },
+    {
+      "active_max": 2,
+      "cross_language_solved": 0,
+      "epoch": 6,
+      "novel_recombination_solved": 0,
+      "package_mask": 5,
+      "research_solved": 0,
+      "research_work": 1812,
+      "score": [
+        17,
+        0,
+        0,
+        0,
+        18446744073709549803,
+        30
+      ],
+      "solved": 17,
+      "valid": true
+    },
+    {
+      "active_max": 1,
+      "cross_language_solved": 0,
+      "epoch": 7,
+      "novel_recombination_solved": 0,
+      "package_mask": 6,
+      "research_solved": 0,
+      "research_work": 1812,
+      "score": [
+        17,
+        0,
+        0,
+        0,
+        18446744073709549803,
+        30
+      ],
+      "solved": 17,
+      "valid": true
+    },
+    {
+      "active_max": 2,
+      "cross_language_solved": 0,
+      "epoch": 8,
+      "novel_recombination_solved": 5,
+      "package_mask": 7,
+      "research_solved": 0,
+      "research_work": 1812,
+      "score": [
+        28,
+        5,
+        0,
+        0,
+        18446744073709549803,
+        29
+      ],
+      "solved": 28,
+      "valid": true
+    },
+    {
+      "active_max": 2,
+      "cross_language_solved": 5,
+      "epoch": 9,
+      "novel_recombination_solved": 0,
+      "package_mask": 8,
+      "research_solved": 0,
+      "research_work": 1922,
+      "score": [
+        16,
+        0,
+        5,
+        0,
+        18446744073709549693,
+        31
+      ],
+      "solved": 16,
+      "valid": true
+    },
+    {
+      "active_max": 2,
+      "cross_language_solved": 5,
+      "epoch": 10,
+      "novel_recombination_solved": 0,
+      "package_mask": 9,
+      "research_solved": 0,
+      "research_work": 1922,
+      "score": [
+        22,
+        0,
+        5,
+        0,
+        18446744073709549693,
+        30
+      ],
+      "solved": 22,
+      "valid": true
+    },
+    {
+      "active_max": 2,
+      "cross_language_solved": 5,
+      "epoch": 11,
+      "novel_recombination_solved": 0,
+      "package_mask": 10,
+      "research_solved": 0,
+      "research_work": 1922,
+      "score": [
+        22,
+        0,
+        5,
+        0,
+        18446744073709549693,
+        30
+      ],
+      "solved": 22,
+      "valid": true
+    },
+    {
+      "active_max": 2,
+      "cross_language_solved": 5,
+      "epoch": 12,
+      "novel_recombination_solved": 5,
+      "package_mask": 11,
+      "research_solved": 0,
+      "research_work": 1922,
+      "score": [
+        33,
+        5,
+        5,
+        0,
+        18446744073709549693,
+        29
+      ],
+      "solved": 33,
+      "valid": true
+    },
+    {
+      "active_max": 2,
+      "cross_language_solved": 5,
+      "epoch": 13,
+      "novel_recombination_solved": 0,
+      "package_mask": 12,
+      "research_solved": 0,
+      "research_work": 1922,
+      "score": [
+        21,
+        0,
+        5,
+        0,
+        18446744073709549693,
+        30
+      ],
+      "solved": 21,
+      "valid": true
+    },
+    {
+      "active_max": 2,
+      "cross_language_solved": 5,
+      "epoch": 14,
+      "novel_recombination_solved": 0,
+      "package_mask": 13,
+      "research_solved": 0,
+      "research_work": 1922,
+      "score": [
+        27,
+        0,
+        5,
+        0,
+        18446744073709549693,
+        29
+      ],
+      "solved": 27,
+      "valid": true
+    },
+    {
+      "active_max": 2,
+      "cross_language_solved": 5,
+      "epoch": 15,
+      "novel_recombination_solved": 0,
+      "package_mask": 14,
+      "research_solved": 0,
+      "research_work": 1922,
+      "score": [
+        27,
+        0,
+        5,
+        0,
+        18446744073709549693,
+        29
+      ],
+      "solved": 27,
+      "valid": true
+    },
+    {
+      "active_max": 2,
+      "cross_language_solved": 5,
+      "epoch": 16,
+      "novel_recombination_solved": 5,
+      "package_mask": 15,
+      "research_solved": 0,
+      "research_work": 1922,
+      "score": [
+        38,
+        5,
+        5,
+        0,
+        18446744073709549693,
+        28
+      ],
+      "solved": 38,
+      "valid": true
+    },
+    {
+      "active_max": 2,
+      "cross_language_solved": 0,
+      "epoch": 17,
+      "novel_recombination_solved": 0,
+      "package_mask": 16,
+      "research_solved": 0,
+      "research_work": 1957,
+      "score": [
+        11,
+        0,
+        0,
+        0,
+        18446744073709549658,
+        31
+      ],
+      "solved": 11,
+      "valid": true
+    },
+    {
+      "active_max": 2,
+      "cross_language_solved": 0,
+      "epoch": 18,
+      "novel_recombination_solved": 0,
+      "package_mask": 17,
+      "research_solved": 0,
+      "research_work": 1957,
+      "score": [
+        17,
+        0,
+        0,
+        0,
+        18446744073709549658,
+        30
+      ],
+      "solved": 17,
+      "valid": true
+    },
+    {
+      "active_max": 2,
+      "cross_language_solved": 0,
+      "epoch": 19,
+      "novel_recombination_solved": 0,
+      "package_mask": 18,
+      "research_solved": 0,
+      "research_work": 1957,
+      "score": [
+        17,
+        0,
+        0,
+        0,
+        18446744073709549658,
+        30
+      ],
+      "solved": 17,
+      "valid": true
+    },
+    {
+      "active_max": 2,
+      "cross_language_solved": 0,
+      "epoch": 20,
+      "novel_recombination_solved": 5,
+      "package_mask": 19,
+      "research_solved": 0,
+      "research_work": 1957,
+      "score": [
+        28,
+        5,
+        0,
+        0,
+        18446744073709549658,
+        29
+      ],
+      "solved": 28,
+      "valid": true
+    },
+    {
+      "active_max": 2,
+      "cross_language_solved": 0,
+      "epoch": 21,
+      "novel_recombination_solved": 0,
+      "package_mask": 20,
+      "research_solved": 0,
+      "research_work": 1957,
+      "score": [
+        16,
+        0,
+        0,
+        0,
+        18446744073709549658,
+        30
+      ],
+      "solved": 16,
+      "valid": true
+    },
+    {
+      "active_max": 2,
+      "cross_language_solved": 0,
+      "epoch": 22,
+      "novel_recombination_solved": 0,
+      "package_mask": 21,
+      "research_solved": 0,
+      "research_work": 1957,
+      "score": [
+        22,
+        0,
+        0,
+        0,
+        18446744073709549658,
+        29
+      ],
+      "solved": 22,
+      "valid": true
+    },
+    {
+      "active_max": 2,
+      "cross_language_solved": 0,
+      "epoch": 23,
+      "novel_recombination_solved": 0,
+      "package_mask": 22,
+      "research_solved": 0,
+      "research_work": 1957,
+      "score": [
+        22,
+        0,
+        0,
+        0,
+        18446744073709549658,
+        29
+      ],
+      "solved": 22,
+      "valid": true
+    },
+    {
+      "active_max": 2,
+      "cross_language_solved": 0,
+      "epoch": 24,
+      "novel_recombination_solved": 5,
+      "package_mask": 23,
+      "research_solved": 0,
+      "research_work": 1957,
+      "score": [
+        33,
+        5,
+        0,
+        0,
+        18446744073709549658,
+        28
+      ],
+      "solved": 33,
+      "valid": true
+    },
+    {
+      "active_max": 3,
+      "cross_language_solved": 5,
+      "epoch": 25,
+      "novel_recombination_solved": 0,
+      "package_mask": 24,
+      "research_solved": 5,
+      "research_work": 1327,
+      "score": [
+        26,
+        0,
+        5,
+        5,
+        18446744073709550288,
+        30
+      ],
+      "solved": 26,
+      "valid": true
+    },
+    {
+      "active_max": 3,
+      "cross_language_solved": 5,
+      "epoch": 26,
+      "novel_recombination_solved": 0,
+      "package_mask": 25,
+      "research_solved": 5,
+      "research_work": 1327,
+      "score": [
+        32,
+        0,
+        5,
+        5,
+        18446744073709550288,
+        29
+      ],
+      "solved": 32,
+      "valid": true
+    },
+    {
+      "active_max": 3,
+      "cross_language_solved": 5,
+      "epoch": 27,
+      "novel_recombination_solved": 0,
+      "package_mask": 26,
+      "research_solved": 5,
+      "research_work": 1327,
+      "score": [
+        32,
+        0,
+        5,
+        5,
+        18446744073709550288,
+        29
+      ],
+      "solved": 32,
+      "valid": true
+    },
+    {
+      "active_max": 3,
+      "cross_language_solved": 5,
+      "epoch": 28,
+      "novel_recombination_solved": 5,
+      "package_mask": 27,
+      "research_solved": 5,
+      "research_work": 1327,
+      "score": [
+        43,
+        5,
+        5,
+        5,
+        18446744073709550288,
+        28
+      ],
+      "solved": 43,
+      "valid": true
+    },
+    {
+      "active_max": 3,
+      "cross_language_solved": 5,
+      "epoch": 29,
+      "novel_recombination_solved": 0,
+      "package_mask": 28,
+      "research_solved": 5,
+      "research_work": 1327,
+      "score": [
+        31,
+        0,
+        5,
+        5,
+        18446744073709550288,
+        29
+      ],
+      "solved": 31,
+      "valid": true
+    },
+    {
+      "active_max": 3,
+      "cross_language_solved": 5,
+      "epoch": 30,
+      "novel_recombination_solved": 0,
+      "package_mask": 29,
+      "research_solved": 5,
+      "research_work": 1327,
+      "score": [
+        37,
+        0,
+        5,
+        5,
+        18446744073709550288,
+        28
+      ],
+      "solved": 37,
+      "valid": true
+    },
+    {
+      "active_max": 3,
+      "cross_language_solved": 5,
+      "epoch": 31,
+      "novel_recombination_solved": 0,
+      "package_mask": 30,
+      "research_solved": 5,
+      "research_work": 1327,
+      "score": [
+        37,
+        0,
+        5,
+        5,
+        18446744073709550288,
+        28
+      ],
+      "solved": 37,
+      "valid": true
+    },
+    {
+      "active_max": 3,
+      "cross_language_solved": 5,
+      "epoch": 32,
+      "novel_recombination_solved": 5,
+      "package_mask": 31,
+      "research_solved": 5,
+      "research_work": 1327,
+      "score": [
+        48,
+        5,
+        5,
+        5,
+        18446744073709550288,
+        27
+      ],
+      "solved": 48,
+      "valid": true
+    }
+  ],
+  "max_autonomous_research_epochs": 4096,
+  "operator_selected_package_events": 0,
+  "selected_package_mask": 31,
+  "selected_packages": [
+    "LIFETIME_ALIAS",
+    "CONCURRENCY_PROTOCOL",
+    "TYPE_CONTROL",
+    "FAILURE_REPAIR",
+    "BUILD_RUNTIME"
+  ]
+}

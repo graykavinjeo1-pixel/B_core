@@ -286,6 +286,18 @@ path = "src/sem36_main.rs"
 name = "core-x0-evaluate"
 path = "src/core_x0_main.rs"
 
+[[bin]]
+name = "b-core-code-graft-dev"
+path = "src/code_graft_dev_main.rs"
+
+[[bin]]
+name = "b-core-code-graft-final"
+path = "src/code_graft_final_main.rs"
+
+[[bin]]
+name = "b-core-code-graft-verify"
+path = "src/code_graft_verify_main.rs"
+
 [dependencies]
 dockable-semantic-core = { path = "../dockable-semantic-core", version = "0.1.0" }
 semantic-core-adapters = { path = "../semantic-core-adapters", version = "0.1.0" }

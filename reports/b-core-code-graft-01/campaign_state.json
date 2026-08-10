@@ -1,0 +1,8 @@
+{
+  "campaign_frozen": true,
+  "campaign_running": false,
+  "final_b_exposure_events": 0,
+  "infra_ready": true,
+  "prestart_future_instance_exposure_events": 0,
+  "state": "CAMPAIGN_FROZEN"
+}

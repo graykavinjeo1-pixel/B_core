@@ -1,0 +1,14 @@
+{
+  "bytes_per_new_verified_mechanism": 1026.2962962962963,
+  "normalized_candidate_bytes": 6137,
+  "promoted_semantic_bytes": 27710,
+  "structural_sharing": {
+    "expanded_element_name_bytes": 452,
+    "one_byte_relation_references": 70,
+    "scheme": "CONTENT_ADDRESSED_OBJECTS_PLUS_SHARED_ELEMENTAL_DICTIONARY",
+    "shared_dictionary_bytes": 170,
+    "source_language_duplicates_materialized": 0,
+    "structural_shared_bytes_saved": 212
+  },
+  "synapse4_raw_coding_bytes": 20223826864
+}

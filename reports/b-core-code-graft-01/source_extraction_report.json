@@ -1,0 +1,443 @@
+{
+  "source_coding_objects": 1000000,
+  "source_coding_relations": 1283732,
+  "source_coding_mechanisms": 61,
+  "source_verified_objects": 999939,
+  "source_supported_definitions": 61,
+  "source_unverified_objects": 0,
+  "source_bytes": 20223826864,
+  "source_node_stream_passes_this_run": 1,
+  "cumulative_source_extraction_passes": 3,
+  "full_reasoning_scans": 0,
+  "manifest_mechanism_count_claim": 0,
+  "manifest_count_inconsistency_detected": true,
+  "mechanisms": [
+    {
+      "source_object_reference": "mechanism::abstraction",
+      "source_node_sha256": "563004B81323A8C538748BB7B5C716B5D80AAA33F2681F06700268C220167A64",
+      "mechanism_alias": "abstraction",
+      "parent_alias": null,
+      "source_bytes": 1072
+    },
+    {
+      "source_object_reference": "mechanism::algebraic_data_type",
+      "source_node_sha256": "B4454C6A30A8C5FC1142C370C0C94BD12CD5C57B5DC83B1C2C1924FE537EF73D",
+      "mechanism_alias": "algebraic_data_type",
+      "parent_alias": "abstraction",
+      "source_bytes": 1002
+    },
+    {
+      "source_object_reference": "mechanism::associative_map",
+      "source_node_sha256": "A4B88E86EFC178F156BC1CDF9082A1E6B3CCD08CDE24F8641EE5A03975BD1A2E",
+      "mechanism_alias": "associative_map",
+      "parent_alias": "data_structures_algorithms",
+      "source_bytes": 1007
+    },
+    {
+      "source_object_reference": "mechanism::async_await",
+      "source_node_sha256": "055B68B3F8686854D9042B8404C8DE84638E28FD12CF09734890CBA45E5142B9",
+      "mechanism_alias": "async_await",
+      "parent_alias": "concurrency",
+      "source_bytes": 997
+    },
+    {
+      "source_object_reference": "mechanism::borrow_checker",
+      "source_node_sha256": "AB1F9E0E664B5370D7E1D80C76073C7CB0E1AC804046D6AE096A4EEEFF154CF8",
+      "mechanism_alias": "borrow_checker",
+      "parent_alias": "ownership",
+      "source_bytes": 980
+    },
+    {
+      "source_object_reference": "mechanism::branching",
+      "source_node_sha256": "DB2ADB1A3FE916D5E1D3C474DC5E41DFF4EEBFA10578F2C4F41889E8639E2F75",
+      "mechanism_alias": "branching",
+      "parent_alias": "control_flow",
+      "source_bytes": 947
+    },
+    {
+      "source_object_reference": "mechanism::build_tool",
+      "source_node_sha256": "447B64D634C060EEE2B1A922A5E2E075CD7946EF1134FB2DA5548BB136B471FE",
+      "mechanism_alias": "build_tool",
+      "parent_alias": "ecosystem",
+      "source_bytes": 950
+    },
+    {
+      "source_object_reference": "mechanism::bytecode_vm",
+      "source_node_sha256": "CC69B5299D9F26B2F789EA8746C3FFB150CEA21771A34A74E6A76C12EBA98AB8",
+      "mechanism_alias": "bytecode_vm",
+      "parent_alias": "compiler_runtime",
+      "source_bytes": 1001
+    },
+    {
+      "source_object_reference": "mechanism::class_object_model",
+      "source_node_sha256": "A051054A854FE0173218E230AFC5D6366EC79A5ECF01391787086EE039FDB80D",
+      "mechanism_alias": "class_object_model",
+      "parent_alias": "abstraction",
+      "source_bytes": 1030
+    },
+    {
+      "source_object_reference": "mechanism::closure",
+      "source_node_sha256": "6AFF75376B13C29472DBD5C382125FBFF61D0F688790197DD42E560AF0B0AA24",
+      "mechanism_alias": "closure",
+      "parent_alias": "functions",
+      "source_bytes": 933
+    },
+    {
+      "source_object_reference": "mechanism::clr_il",
+      "source_node_sha256": "5BD52407A82F036ECF1E10FB69CB0248D717C5FD7E9048C91760A1131201CBBA",
+      "mechanism_alias": "clr_il",
+      "parent_alias": "bytecode_vm",
+      "source_bytes": 979
+    },
+    {
+      "source_object_reference": "mechanism::compiler_runtime",
+      "source_node_sha256": "FE389FCFFD1DDB30FF503A69D944720E9948C5F500282F24DA78715AFFADBC91",
+      "mechanism_alias": "compiler_runtime",
+      "parent_alias": null,
+      "source_bytes": 1043
+    },
+    {
+      "source_object_reference": "mechanism::concurrency",
+      "source_node_sha256": "C207DC781E584D1D31BEB4DA4B25C0DD876C05CDCB7B5AAD66105718CE06668E",
+      "mechanism_alias": "concurrency",
+      "parent_alias": null,
+      "source_bytes": 997
+    },
+    {
+      "source_object_reference": "mechanism::control_flow",
+      "source_node_sha256": "2A8146DC0C136D77F93C3CCD2FD3FD16E6E0208415454A1B0199D9451BDEF5C2",
+      "mechanism_alias": "control_flow",
+      "parent_alias": null,
+      "source_bytes": 1000
+    },
+    {
+      "source_object_reference": "mechanism::data_structures_algorithms",
+      "source_node_sha256": "998B949857F9516EBF06C0C0F575A1538E2F28F68476153DCA41ABB711C47D65",
+      "mechanism_alias": "data_structures_algorithms",
+      "parent_alias": null,
+      "source_bytes": 1088
+    },
+    {
+      "source_object_reference": "mechanism::debugger_tooling",
+      "source_node_sha256": "9A8AACD2738A52B7AD7A979F6092D46689346417E8870EFA6559916A90521CF0",
+      "mechanism_alias": "debugger_tooling",
+      "parent_alias": "ecosystem",
+      "source_bytes": 1024
+    },
+    {
+      "source_object_reference": "mechanism::dependent_generic_types",
+      "source_node_sha256": "86C6350D47F7EC96EFB61D7A24D3B4C12170CF1A72F0842C96E88BB28D2AD844",
+      "mechanism_alias": "dependent_generic_types",
+      "parent_alias": "variables_types",
+      "source_bytes": 1042
+    },
+    {
+      "source_object_reference": "mechanism::dynamic_typing",
+      "source_node_sha256": "21B55B3771164EE7265D8C84BCF2EE36EBADB8FFD2B52DBBE37B690CE93476C6",
+      "mechanism_alias": "dynamic_typing",
+      "parent_alias": "variables_types",
+      "source_bytes": 971
+    },
+    {
+      "source_object_reference": "mechanism::ecosystem",
+      "source_node_sha256": "EFFCBD9E5DF32056B2AF69F78B16EE7CF62883132E12C98F9A093654CC7DA727",
+      "mechanism_alias": "ecosystem",
+      "parent_alias": null,
+      "source_bytes": 1026
+    },
+    {
+      "source_object_reference": "mechanism::errno_status",
+      "source_node_sha256": "8C70D231DC7D53156A1A62C81D5A62D259F92DAF7BF91EC238D628C2DD59E526",
+      "mechanism_alias": "errno_status",
+      "parent_alias": "error_handling",
+      "source_bytes": 1007
+    },
+    {
+      "source_object_reference": "mechanism::error_handling",
+      "source_node_sha256": "33B98337222D9F3C441AB736BD20D1B79540FA960D243791F5BC17E49B38BF5B",
+      "mechanism_alias": "error_handling",
+      "parent_alias": null,
+      "source_bytes": 1009
+    },
+    {
+      "source_object_reference": "mechanism::event_loop",
+      "source_node_sha256": "0B3374E4DDC38BE299A25978707119DBF3E92C9FF59B260EDC6A96D0D08F5EF2",
+      "mechanism_alias": "event_loop",
+      "parent_alias": "concurrency",
+      "source_bytes": 952
+    },
+    {
+      "source_object_reference": "mechanism::exception",
+      "source_node_sha256": "D519FF9C1A958FD3AEFF191B764D57E662C8CA546EC20CD8DF0BCD420D224120",
+      "mechanism_alias": "exception",
+      "parent_alias": "error_handling",
+      "source_bytes": 952
+    },
+    {
+      "source_object_reference": "mechanism::first_class_function",
+      "source_node_sha256": "C5F7F18F57CE72C64D5D9997D470D76FC8E93C5DA1EDDB7125772BC122F0C3C5",
+      "mechanism_alias": "first_class_function",
+      "parent_alias": "functions",
+      "source_bytes": 1010
+    },
+    {
+      "source_object_reference": "mechanism::function_call",
+      "source_node_sha256": "83EFC80D4652C504646FF8151B68025DEA972FD8A1DB0DB1CBD89A1937B739CB",
+      "mechanism_alias": "function_call",
+      "parent_alias": "functions",
+      "source_bytes": 995
+    },
+    {
+      "source_object_reference": "mechanism::functional_purity",
+      "source_node_sha256": "87736D5DDD88DA5EA2C1B26A10C0050425A7C17C48E1CC139BCF4DB4C10ABF1A",
+      "mechanism_alias": "functional_purity",
+      "parent_alias": "functions",
+      "source_bytes": 996
+    },
+    {
+      "source_object_reference": "mechanism::functions",
+      "source_node_sha256": "BA2BD374B37D64DECC661E7B8D76075A72BAB3F071F250DE4E1FD86964B904B1",
+      "mechanism_alias": "functions",
+      "parent_alias": null,
+      "source_bytes": 975
+    },
+    {
+      "source_object_reference": "mechanism::garbage_collection",
+      "source_node_sha256": "1CEFA2D459EBCC4372A31CA3C0E48BFBCB2F3B03EC74C991DCA5E512E7A3358A",
+      "mechanism_alias": "garbage_collection",
+      "parent_alias": "memory",
+      "source_bytes": 978
+    },
+    {
+      "source_object_reference": "mechanism::gil",
+      "source_node_sha256": "24B321955B28C6036B9E417634DB8C11A462CEA54D3025CFF39337C73085D871",
+      "mechanism_alias": "gil",
+      "parent_alias": "concurrency",
+      "source_bytes": 1017
+    },
+    {
+      "source_object_reference": "mechanism::goroutine",
+      "source_node_sha256": "77ADAC8178F6150B32427F24FE319D2DA6B722814A0FD78946F957E565DE3BF4",
+      "mechanism_alias": "goroutine",
+      "parent_alias": "concurrency",
+      "source_bytes": 944
+    },
+    {
+      "source_object_reference": "mechanism::interface_protocol",
+      "source_node_sha256": "336BAB3BF05929CE44BE1BF6B9E965BAEB010B1B19DE532B15B396AD7FD19D8B",
+      "mechanism_alias": "interface_protocol",
+      "parent_alias": "abstraction",
+      "source_bytes": 1035
+    },
+    {
+      "source_object_reference": "mechanism::interpreter",
+      "source_node_sha256": "3F39EEA79B03EECB74173E328C431CF6F157D06AD1E3E7CAC723BB2C41DC3868",
+      "mechanism_alias": "interpreter",
+      "parent_alias": "compiler_runtime",
+      "source_bytes": 975
+    },
+    {
+      "source_object_reference": "mechanism::iteration",
+      "source_node_sha256": "7ADEB295E7767F16ABC57085CB24EEC141B8C1BC4AD358642EDDB31F0E883C01",
+      "mechanism_alias": "iteration",
+      "parent_alias": "control_flow",
+      "source_bytes": 981
+    },
+    {
+      "source_object_reference": "mechanism::iterator_protocol",
+      "source_node_sha256": "EFD37A216E89F9A508A37CEA5DEE283B019CE12346A8BD1C173125459CFA1F0C",
+      "mechanism_alias": "iterator_protocol",
+      "parent_alias": "data_structures_algorithms",
+      "source_bytes": 995
+    },
+    {
+      "source_object_reference": "mechanism::jit",
+      "source_node_sha256": "66CB3D5BA4AD10F26C1EF6F7BA45570D931768B991992A54F3DB31069BE80415",
+      "mechanism_alias": "jit",
+      "parent_alias": "compiler_runtime",
+      "source_bytes": 968
+    },
+    {
+      "source_object_reference": "mechanism::jvm_bytecode",
+      "source_node_sha256": "DD1562CCA85D3A41044FE9AB0F74D6F5066DF807CED5D1DE0C6C0B41A8C36BB3",
+      "mechanism_alias": "jvm_bytecode",
+      "parent_alias": "bytecode_vm",
+      "source_bytes": 960
+    },
+    {
+      "source_object_reference": "mechanism::lazy_evaluation",
+      "source_node_sha256": "E196AA08BE9D3445A8ED40F898AE6DE1923F0078D5C849E0116E66324BE3ECEB",
+      "mechanism_alias": "lazy_evaluation",
+      "parent_alias": "control_flow",
+      "source_bytes": 963
+    },
+    {
+      "source_object_reference": "mechanism::lexical_binding",
+      "source_node_sha256": "091DE7B70F8D35E156686DD8BC4D69BC63D3C368C7AB363B3BC1962C49D9383D",
+      "mechanism_alias": "lexical_binding",
+      "parent_alias": "variables_types",
+      "source_bytes": 967
+    },
+    {
+      "source_object_reference": "mechanism::macro_system",
+      "source_node_sha256": "00B5D94307C7C3B8D4EF66B0D48D002356F7988609E358BE22C7546226E1E843",
+      "mechanism_alias": "macro_system",
+      "parent_alias": "compiler_runtime",
+      "source_bytes": 979
+    },
+    {
+      "source_object_reference": "mechanism::manual_memory",
+      "source_node_sha256": "5C7D7240B66B7FC48EB46838F0C1996EB19834CB579B1A739820FE24FB46DBD0",
+      "mechanism_alias": "manual_memory",
+      "parent_alias": "memory",
+      "source_bytes": 1018
+    },
+    {
+      "source_object_reference": "mechanism::memory",
+      "source_node_sha256": "B52F5DA12A333136B22A795F8B107E6BF4A7910DD15B372E164FE383102694A1",
+      "mechanism_alias": "memory",
+      "parent_alias": null,
+      "source_bytes": 958
+    },
+    {
+      "source_object_reference": "mechanism::message_passing",
+      "source_node_sha256": "1359327F5BF75947A3429A2209054D23CB98DA85B274460DBF65E68A99C647E3",
+      "mechanism_alias": "message_passing",
+      "parent_alias": "concurrency",
+      "source_bytes": 980
+    },
+    {
+      "source_object_reference": "mechanism::native_compilation",
+      "source_node_sha256": "CA91721F93B0CEFCDAB45A07E15A5B6008E1566287B44A5637C14504D7FC02F8",
+      "mechanism_alias": "native_compilation",
+      "parent_alias": "compiler_runtime",
+      "source_bytes": 1020
+    },
+    {
+      "source_object_reference": "mechanism::ownership",
+      "source_node_sha256": "36AC78A7DF197ACBF350606FDCE4026714E09896B4EC077EF474C0107E8D4FB8",
+      "mechanism_alias": "ownership",
+      "parent_alias": "memory",
+      "source_bytes": 941
+    },
+    {
+      "source_object_reference": "mechanism::package_manager",
+      "source_node_sha256": "D235CAE29F43D38E2B842D4723F83E31DAC27EC56BF01B27D3A9CB7CFAAAB227",
+      "mechanism_alias": "package_manager",
+      "parent_alias": "ecosystem",
+      "source_bytes": 981
+    },
+    {
+      "source_object_reference": "mechanism::panic_boundary",
+      "source_node_sha256": "61D7E0ED8E8A651FBC816B97CE5C4DED35D55F815958DFBEF9504EFEA89539E8",
+      "mechanism_alias": "panic_boundary",
+      "parent_alias": "error_handling",
+      "source_bytes": 1044
+    },
+    {
+      "source_object_reference": "mechanism::pattern_matching",
+      "source_node_sha256": "D5AE94F750559C76FC0710F36A488864905E82B9CE38CB38F0F2A784B9F86F8D",
+      "mechanism_alias": "pattern_matching",
+      "parent_alias": "control_flow",
+      "source_bytes": 975
+    },
+    {
+      "source_object_reference": "mechanism::pointer_addressing",
+      "source_node_sha256": "9086B8F112793D0EB8ED6C9445FD1CAD6BE3E1A2F57594531498FF08C54EC412",
+      "mechanism_alias": "pointer_addressing",
+      "parent_alias": "memory",
+      "source_bytes": 1022
+    },
+    {
+      "source_object_reference": "mechanism::prototype_chain",
+      "source_node_sha256": "67ADA4A769275B52BAB631F66AD5A8DD3AB842220A3E985569A9FBE729673159",
+      "mechanism_alias": "prototype_chain",
+      "parent_alias": "abstraction",
+      "source_bytes": 973
+    },
+    {
+      "source_object_reference": "mechanism::raii",
+      "source_node_sha256": "8934FEED12777DB52D69120114787D55AB0F3021866B68A36CCF649E4553B10B",
+      "mechanism_alias": "raii",
+      "parent_alias": "memory",
+      "source_bytes": 963
+    },
+    {
+      "source_object_reference": "mechanism::reference_counting",
+      "source_node_sha256": "963A3B67A5C5A496519098164B4CDE6D273F33A15CFE79FD0B599421B7E73263",
+      "mechanism_alias": "reference_counting",
+      "parent_alias": "memory",
+      "source_bytes": 1015
+    },
+    {
+      "source_object_reference": "mechanism::relational_query",
+      "source_node_sha256": "7B84B0059A719AB5DED9AB233EBDFF1E2C033BE46B67D024B4A94891A26CC258",
+      "mechanism_alias": "relational_query",
+      "parent_alias": "data_structures_algorithms",
+      "source_bytes": 998
+    },
+    {
+      "source_object_reference": "mechanism::result_value",
+      "source_node_sha256": "8FD4C643FF7A8DE5A0911DB01D069A0572514CADF978B031610A6B89AB202985",
+      "mechanism_alias": "result_value",
+      "parent_alias": "error_handling",
+      "source_bytes": 1018
+    },
+    {
+      "source_object_reference": "mechanism::sequence",
+      "source_node_sha256": "64CC5EA56D069858772822C5943D6726A9C0E3D51BB9029C8C2CFCFCA2EFD59A",
+      "mechanism_alias": "sequence",
+      "parent_alias": "data_structures_algorithms",
+      "source_bytes": 959
+    },
+    {
+      "source_object_reference": "mechanism::shared_memory_threads",
+      "source_node_sha256": "0CB60079B12794733BAF30B27E081DA7DC8452F777AE812886969F3C3AEC9C74",
+      "mechanism_alias": "shared_memory_threads",
+      "parent_alias": "concurrency",
+      "source_bytes": 1037
+    },
+    {
+      "source_object_reference": "mechanism::shell_pipeline",
+      "source_node_sha256": "EBCE7A92446855AB36C44BCD5B23DA6978B6A815ABD762DBBFD43A3CA34F8121",
+      "mechanism_alias": "shell_pipeline",
+      "parent_alias": "control_flow",
+      "source_bytes": 968
+    },
+    {
+      "source_object_reference": "mechanism::standard_library",
+      "source_node_sha256": "FD978F51F57ECEED61FE32EBE93CA6E1CF2AFB0B95D63A94679C0AEE65F32019",
+      "mechanism_alias": "standard_library",
+      "parent_alias": "ecosystem",
+      "source_bytes": 998
+    },
+    {
+      "source_object_reference": "mechanism::static_typing",
+      "source_node_sha256": "FEE4EDE168E80A7995BA1309A316975B24BA06583284A666833DA480499A2BCA",
+      "mechanism_alias": "static_typing",
+      "parent_alias": "variables_types",
+      "source_bytes": 968
+    },
+    {
+      "source_object_reference": "mechanism::trait_typeclass",
+      "source_node_sha256": "8B3BB6074F99E01865E8EA84308F32216D232086F6D8A7D0FBCFEEBF37514F09",
+      "mechanism_alias": "trait_typeclass",
+      "parent_alias": "abstraction",
+      "source_bytes": 1025
+    },
+    {
+      "source_object_reference": "mechanism::type_inference",
+      "source_node_sha256": "93050004071F6B8CA31708EA54D65270A702D209EF68B29162E6AF9AA420C685",
+      "mechanism_alias": "type_inference",
+      "parent_alias": "variables_types",
+      "source_bytes": 1006
+    },
+    {
+      "source_object_reference": "mechanism::variables_types",
+      "source_node_sha256": "8DCD1A4D1F69887462CB16FAA5BA80944E49040E825A3207887D8CF2601085E9",
+      "mechanism_alias": "variables_types",
+      "parent_alias": null,
+      "source_bytes": 1041
+    }
+  ]
+}

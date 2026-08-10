@@ -1,5 +1,7 @@
 #![recursion_limit = "512"]
 
+pub mod code_graft;
+pub mod code_graft_acceptance;
 pub mod core_x0;
 pub mod experiment;
 pub mod mining;

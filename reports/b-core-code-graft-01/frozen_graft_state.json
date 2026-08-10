@@ -1,0 +1,1066 @@
+{
+  "schema": "b_core_code_graft_state_v1",
+  "campaign_id": "B_CORE-CODE-GRAFT-01",
+  "predecessor_commit": "b33386e7a8793c5c27e2c2df3e19db0e6e04d0f4",
+  "source_commit": "c85290ce6f2142959cd8a8c241a53df7c24d119e",
+  "source_tree_hash": "b96bbd2701f2c6e4a9aab2aa3d77fe283dbd3e61",
+  "source_universe_sha256": "CBAF8D5548446D1D3165E4712A450F56A529AABB929AE757EAAC59596E51140C",
+  "selected_package_mask": 31,
+  "selected_packages": [
+    "LIFETIME_ALIAS",
+    "CONCURRENCY_PROTOCOL",
+    "TYPE_CONTROL",
+    "FAILURE_REPAIR",
+    "BUILD_RUNTIME"
+  ],
+  "objects": [
+    {
+      "object_id": "BCG-109ccf23e770b8f1",
+      "semantic_payload_sha256": "109ccf23e770b8f1ef89242fa182ab5c44e06ac0888342f12e36e16d6c342106",
+      "kind": "EXECUTABLE_PROCEDURE",
+      "package": "BUILD_RUNTIME",
+      "elemental_operations": [
+        "PARSE",
+        "VERIFY",
+        "LINK"
+      ],
+      "relation_codes": [
+        1,
+        2
+      ],
+      "constraint_codes": [
+        116
+      ],
+      "applicability_codes": [
+        216
+      ],
+      "negative_applicability_codes": [
+        316
+      ],
+      "verification_status": "VERIFIED",
+      "documentation_alias": "package_manager",
+      "natural_language_alias_is_authority": false,
+      "provenance": {
+        "source_system": "SYNAPSE4",
+        "source_commit": "c85290ce6f2142959cd8a8c241a53df7c24d119e",
+        "source_tree_hash": "b96bbd2701f2c6e4a9aab2aa3d77fe283dbd3e61",
+        "source_universe_sha256": "CBAF8D5548446D1D3165E4712A450F56A529AABB929AE757EAAC59596E51140C",
+        "source_object_reference": "mechanism::package_manager",
+        "source_evidence_type": "CANONICAL_PROGRAMMING_MECHANISM_DEFINITION",
+        "extraction_version": "BCORE_CODE_GRAFT_EXTRACTOR_V1",
+        "conversion_method": "STRUCTURAL_ELEMENTAL_PROJECTION_V1",
+        "campaign_id": "B_CORE-CODE-GRAFT-01",
+        "source_node_id_is_address_only": true
+      }
+    },
+    {
+      "object_id": "BCG-39e38d2d9b715b60",
+      "semantic_payload_sha256": "39e38d2d9b715b609eb06029ff20e81515b86c8728a3a31fe05b94dea291b92d",
+      "kind": "EXECUTABLE_PROCEDURE",
+      "package": "BUILD_RUNTIME",
+      "elemental_operations": [
+        "LOWER",
+        "COMPILE",
+        "LINK"
+      ],
+      "relation_codes": [
+        1,
+        2
+      ],
+      "constraint_codes": [
+        116
+      ],
+      "applicability_codes": [
+        216
+      ],
+      "negative_applicability_codes": [
+        316
+      ],
+      "verification_status": "VERIFIED",
+      "documentation_alias": "native_compilation",
+      "natural_language_alias_is_authority": false,
+      "provenance": {
+        "source_system": "SYNAPSE4",
+        "source_commit": "c85290ce6f2142959cd8a8c241a53df7c24d119e",
+        "source_tree_hash": "b96bbd2701f2c6e4a9aab2aa3d77fe283dbd3e61",
+        "source_universe_sha256": "CBAF8D5548446D1D3165E4712A450F56A529AABB929AE757EAAC59596E51140C",
+        "source_object_reference": "mechanism::native_compilation",
+        "source_evidence_type": "CANONICAL_PROGRAMMING_MECHANISM_DEFINITION",
+        "extraction_version": "BCORE_CODE_GRAFT_EXTRACTOR_V1",
+        "conversion_method": "STRUCTURAL_ELEMENTAL_PROJECTION_V1",
+        "campaign_id": "B_CORE-CODE-GRAFT-01",
+        "source_node_id_is_address_only": true
+      }
+    },
+    {
+      "object_id": "BCG-3b9d4b71887d2c6f",
+      "semantic_payload_sha256": "3b9d4b71887d2c6f8c8036118ef73b1fac61de98726efe55bccaff810b0f40d3",
+      "kind": "TRANSFORMATION",
+      "package": "TYPE_CONTROL",
+      "elemental_operations": [
+        "INFER",
+        "TYPE_CHECK"
+      ],
+      "relation_codes": [
+        1,
+        2
+      ],
+      "constraint_codes": [
+        104
+      ],
+      "applicability_codes": [
+        204
+      ],
+      "negative_applicability_codes": [
+        304
+      ],
+      "verification_status": "VERIFIED",
+      "documentation_alias": "type_inference",
+      "natural_language_alias_is_authority": false,
+      "provenance": {
+        "source_system": "SYNAPSE4",
+        "source_commit": "c85290ce6f2142959cd8a8c241a53df7c24d119e",
+        "source_tree_hash": "b96bbd2701f2c6e4a9aab2aa3d77fe283dbd3e61",
+        "source_universe_sha256": "CBAF8D5548446D1D3165E4712A450F56A529AABB929AE757EAAC59596E51140C",
+        "source_object_reference": "mechanism::type_inference",
+        "source_evidence_type": "CANONICAL_PROGRAMMING_MECHANISM_DEFINITION",
+        "extraction_version": "BCORE_CODE_GRAFT_EXTRACTOR_V1",
+        "conversion_method": "STRUCTURAL_ELEMENTAL_PROJECTION_V1",
+        "campaign_id": "B_CORE-CODE-GRAFT-01",
+        "source_node_id_is_address_only": true
+      }
+    },
+    {
+      "object_id": "BCG-3f5fea0aafc3d862",
+      "semantic_payload_sha256": "3f5fea0aafc3d86207d3102a7b16bf79dcc5d61c64fc60fc33b4abe99d1f0424",
+      "kind": "EXECUTABLE_PROCEDURE",
+      "package": "BUILD_RUNTIME",
+      "elemental_operations": [
+        "LOWER",
+        "COMPILE",
+        "DISPATCH"
+      ],
+      "relation_codes": [
+        1,
+        2
+      ],
+      "constraint_codes": [
+        116
+      ],
+      "applicability_codes": [
+        216
+      ],
+      "negative_applicability_codes": [
+        316
+      ],
+      "verification_status": "VERIFIED",
+      "documentation_alias": "jit",
+      "natural_language_alias_is_authority": false,
+      "provenance": {
+        "source_system": "SYNAPSE4",
+        "source_commit": "c85290ce6f2142959cd8a8c241a53df7c24d119e",
+        "source_tree_hash": "b96bbd2701f2c6e4a9aab2aa3d77fe283dbd3e61",
+        "source_universe_sha256": "CBAF8D5548446D1D3165E4712A450F56A529AABB929AE757EAAC59596E51140C",
+        "source_object_reference": "mechanism::jit",
+        "source_evidence_type": "CANONICAL_PROGRAMMING_MECHANISM_DEFINITION",
+        "extraction_version": "BCORE_CODE_GRAFT_EXTRACTOR_V1",
+        "conversion_method": "STRUCTURAL_ELEMENTAL_PROJECTION_V1",
+        "campaign_id": "B_CORE-CODE-GRAFT-01",
+        "source_node_id_is_address_only": true
+      }
+    },
+    {
+      "object_id": "BCG-43d4d10f37231f4c",
+      "semantic_payload_sha256": "43d4d10f37231f4c39d3462ad214c2db4babf9f5f3bad85b6c4ff853b4a035a4",
+      "kind": "REPAIR_MECHANISM",
+      "package": "FAILURE_REPAIR",
+      "elemental_operations": [
+        "VERIFY",
+        "READ"
+      ],
+      "relation_codes": [
+        1,
+        2
+      ],
+      "constraint_codes": [
+        108
+      ],
+      "applicability_codes": [
+        208
+      ],
+      "negative_applicability_codes": [
+        308
+      ],
+      "verification_status": "VERIFIED",
+      "documentation_alias": "debugger_tooling",
+      "natural_language_alias_is_authority": false,
+      "provenance": {
+        "source_system": "SYNAPSE4",
+        "source_commit": "c85290ce6f2142959cd8a8c241a53df7c24d119e",
+        "source_tree_hash": "b96bbd2701f2c6e4a9aab2aa3d77fe283dbd3e61",
+        "source_universe_sha256": "CBAF8D5548446D1D3165E4712A450F56A529AABB929AE757EAAC59596E51140C",
+        "source_object_reference": "mechanism::debugger_tooling",
+        "source_evidence_type": "CANONICAL_PROGRAMMING_MECHANISM_DEFINITION",
+        "extraction_version": "BCORE_CODE_GRAFT_EXTRACTOR_V1",
+        "conversion_method": "STRUCTURAL_ELEMENTAL_PROJECTION_V1",
+        "campaign_id": "B_CORE-CODE-GRAFT-01",
+        "source_node_id_is_address_only": true
+      }
+    },
+    {
+      "object_id": "BCG-4451158792bca754",
+      "semantic_payload_sha256": "4451158792bca754953b970dfdeb7dd83d45108c2ccef644b599146ff64d8b04",
+      "kind": "EXECUTABLE_PROCEDURE",
+      "package": "BUILD_RUNTIME",
+      "elemental_operations": [
+        "PARSE",
+        "DISPATCH"
+      ],
+      "relation_codes": [
+        1,
+        2
+      ],
+      "constraint_codes": [
+        116
+      ],
+      "applicability_codes": [
+        216
+      ],
+      "negative_applicability_codes": [
+        316
+      ],
+      "verification_status": "VERIFIED",
+      "documentation_alias": "interpreter",
+      "natural_language_alias_is_authority": false,
+      "provenance": {
+        "source_system": "SYNAPSE4",
+        "source_commit": "c85290ce6f2142959cd8a8c241a53df7c24d119e",
+        "source_tree_hash": "b96bbd2701f2c6e4a9aab2aa3d77fe283dbd3e61",
+        "source_universe_sha256": "CBAF8D5548446D1D3165E4712A450F56A529AABB929AE757EAAC59596E51140C",
+        "source_object_reference": "mechanism::interpreter",
+        "source_evidence_type": "CANONICAL_PROGRAMMING_MECHANISM_DEFINITION",
+        "extraction_version": "BCORE_CODE_GRAFT_EXTRACTOR_V1",
+        "conversion_method": "STRUCTURAL_ELEMENTAL_PROJECTION_V1",
+        "campaign_id": "B_CORE-CODE-GRAFT-01",
+        "source_node_id_is_address_only": true
+      }
+    },
+    {
+      "object_id": "BCG-4c12a26968a38bad",
+      "semantic_payload_sha256": "4c12a26968a38bad62afeca0a1c50fed54e73382b3087b461c1a5957c7753bb2",
+      "kind": "FAILURE_MECHANISM",
+      "package": "FAILURE_REPAIR",
+      "elemental_operations": [
+        "VERIFY",
+        "PROPAGATE_ERROR"
+      ],
+      "relation_codes": [
+        1,
+        2
+      ],
+      "constraint_codes": [
+        108
+      ],
+      "applicability_codes": [
+        208
+      ],
+      "negative_applicability_codes": [
+        308
+      ],
+      "verification_status": "VERIFIED",
+      "documentation_alias": "panic_boundary",
+      "natural_language_alias_is_authority": false,
+      "provenance": {
+        "source_system": "SYNAPSE4",
+        "source_commit": "c85290ce6f2142959cd8a8c241a53df7c24d119e",
+        "source_tree_hash": "b96bbd2701f2c6e4a9aab2aa3d77fe283dbd3e61",
+        "source_universe_sha256": "CBAF8D5548446D1D3165E4712A450F56A529AABB929AE757EAAC59596E51140C",
+        "source_object_reference": "mechanism::panic_boundary",
+        "source_evidence_type": "CANONICAL_PROGRAMMING_MECHANISM_DEFINITION",
+        "extraction_version": "BCORE_CODE_GRAFT_EXTRACTOR_V1",
+        "conversion_method": "STRUCTURAL_ELEMENTAL_PROJECTION_V1",
+        "campaign_id": "B_CORE-CODE-GRAFT-01",
+        "source_node_id_is_address_only": true
+      }
+    },
+    {
+      "object_id": "BCG-4cbe978af520ce03",
+      "semantic_payload_sha256": "4cbe978af520ce03934c2b3a42dd11ad75d7a760081602ea9649d15132104356",
+      "kind": "TRANSFORMATION",
+      "package": "CONCURRENCY_PROTOCOL",
+      "elemental_operations": [
+        "SPAWN",
+        "JOIN",
+        "MOVE",
+        "SYNCHRONIZE"
+      ],
+      "relation_codes": [
+        1,
+        2
+      ],
+      "constraint_codes": [
+        102
+      ],
+      "applicability_codes": [
+        202
+      ],
+      "negative_applicability_codes": [
+        302
+      ],
+      "verification_status": "VERIFIED",
+      "documentation_alias": "message_passing",
+      "natural_language_alias_is_authority": false,
+      "provenance": {
+        "source_system": "SYNAPSE4",
+        "source_commit": "c85290ce6f2142959cd8a8c241a53df7c24d119e",
+        "source_tree_hash": "b96bbd2701f2c6e4a9aab2aa3d77fe283dbd3e61",
+        "source_universe_sha256": "CBAF8D5548446D1D3165E4712A450F56A529AABB929AE757EAAC59596E51140C",
+        "source_object_reference": "mechanism::message_passing",
+        "source_evidence_type": "CANONICAL_PROGRAMMING_MECHANISM_DEFINITION",
+        "extraction_version": "BCORE_CODE_GRAFT_EXTRACTOR_V1",
+        "conversion_method": "STRUCTURAL_ELEMENTAL_PROJECTION_V1",
+        "campaign_id": "B_CORE-CODE-GRAFT-01",
+        "source_node_id_is_address_only": true
+      }
+    },
+    {
+      "object_id": "BCG-50ba0bc47c664795",
+      "semantic_payload_sha256": "50ba0bc47c664795fcaa7733dac21ed13309bd88b50b8c360626fd250e05c307",
+      "kind": "FAILURE_MECHANISM",
+      "package": "FAILURE_REPAIR",
+      "elemental_operations": [
+        "PROPAGATE_ERROR",
+        "BRANCH"
+      ],
+      "relation_codes": [
+        1,
+        2
+      ],
+      "constraint_codes": [
+        108
+      ],
+      "applicability_codes": [
+        208
+      ],
+      "negative_applicability_codes": [
+        308
+      ],
+      "verification_status": "VERIFIED",
+      "documentation_alias": "errno_status",
+      "natural_language_alias_is_authority": false,
+      "provenance": {
+        "source_system": "SYNAPSE4",
+        "source_commit": "c85290ce6f2142959cd8a8c241a53df7c24d119e",
+        "source_tree_hash": "b96bbd2701f2c6e4a9aab2aa3d77fe283dbd3e61",
+        "source_universe_sha256": "CBAF8D5548446D1D3165E4712A450F56A529AABB929AE757EAAC59596E51140C",
+        "source_object_reference": "mechanism::errno_status",
+        "source_evidence_type": "CANONICAL_PROGRAMMING_MECHANISM_DEFINITION",
+        "extraction_version": "BCORE_CODE_GRAFT_EXTRACTOR_V1",
+        "conversion_method": "STRUCTURAL_ELEMENTAL_PROJECTION_V1",
+        "campaign_id": "B_CORE-CODE-GRAFT-01",
+        "source_node_id_is_address_only": true
+      }
+    },
+    {
+      "object_id": "BCG-54e2d1ce24f79222",
+      "semantic_payload_sha256": "54e2d1ce24f792222f53bb80a43912bfb2d03114155cbc769c36a0ff09a41813",
+      "kind": "CONSTRAINT_MECHANISM",
+      "package": "LIFETIME_ALIAS",
+      "elemental_operations": [
+        "READ",
+        "WRITE",
+        "ALIAS"
+      ],
+      "relation_codes": [
+        1,
+        2
+      ],
+      "constraint_codes": [
+        101
+      ],
+      "applicability_codes": [
+        201
+      ],
+      "negative_applicability_codes": [
+        301
+      ],
+      "verification_status": "VERIFIED",
+      "documentation_alias": "pointer_addressing",
+      "natural_language_alias_is_authority": false,
+      "provenance": {
+        "source_system": "SYNAPSE4",
+        "source_commit": "c85290ce6f2142959cd8a8c241a53df7c24d119e",
+        "source_tree_hash": "b96bbd2701f2c6e4a9aab2aa3d77fe283dbd3e61",
+        "source_universe_sha256": "CBAF8D5548446D1D3165E4712A450F56A529AABB929AE757EAAC59596E51140C",
+        "source_object_reference": "mechanism::pointer_addressing",
+        "source_evidence_type": "CANONICAL_PROGRAMMING_MECHANISM_DEFINITION",
+        "extraction_version": "BCORE_CODE_GRAFT_EXTRACTOR_V1",
+        "conversion_method": "STRUCTURAL_ELEMENTAL_PROJECTION_V1",
+        "campaign_id": "B_CORE-CODE-GRAFT-01",
+        "source_node_id_is_address_only": true
+      }
+    },
+    {
+      "object_id": "BCG-6680101536bd4b59",
+      "semantic_payload_sha256": "6680101536bd4b592e4419fbbfdaae68846c70ffafe9983b274ddf021802c9ad",
+      "kind": "CONSTRAINT_MECHANISM",
+      "package": "LIFETIME_ALIAS",
+      "elemental_operations": [
+        "OWN",
+        "MOVE"
+      ],
+      "relation_codes": [
+        1,
+        2
+      ],
+      "constraint_codes": [
+        101
+      ],
+      "applicability_codes": [
+        201
+      ],
+      "negative_applicability_codes": [
+        301
+      ],
+      "verification_status": "VERIFIED",
+      "documentation_alias": "ownership",
+      "natural_language_alias_is_authority": false,
+      "provenance": {
+        "source_system": "SYNAPSE4",
+        "source_commit": "c85290ce6f2142959cd8a8c241a53df7c24d119e",
+        "source_tree_hash": "b96bbd2701f2c6e4a9aab2aa3d77fe283dbd3e61",
+        "source_universe_sha256": "CBAF8D5548446D1D3165E4712A450F56A529AABB929AE757EAAC59596E51140C",
+        "source_object_reference": "mechanism::ownership",
+        "source_evidence_type": "CANONICAL_PROGRAMMING_MECHANISM_DEFINITION",
+        "extraction_version": "BCORE_CODE_GRAFT_EXTRACTOR_V1",
+        "conversion_method": "STRUCTURAL_ELEMENTAL_PROJECTION_V1",
+        "campaign_id": "B_CORE-CODE-GRAFT-01",
+        "source_node_id_is_address_only": true
+      }
+    },
+    {
+      "object_id": "BCG-67ffc1aa9737c1f4",
+      "semantic_payload_sha256": "67ffc1aa9737c1f42b650a20fd67a9056fe168bb21492851c0a7e1363360855e",
+      "kind": "CONSTRAINT_MECHANISM",
+      "package": "TYPE_CONTROL",
+      "elemental_operations": [
+        "TYPE_CHECK"
+      ],
+      "relation_codes": [
+        1,
+        2
+      ],
+      "constraint_codes": [
+        104
+      ],
+      "applicability_codes": [
+        204
+      ],
+      "negative_applicability_codes": [
+        304
+      ],
+      "verification_status": "VERIFIED",
+      "documentation_alias": "static_typing",
+      "natural_language_alias_is_authority": false,
+      "provenance": {
+        "source_system": "SYNAPSE4",
+        "source_commit": "c85290ce6f2142959cd8a8c241a53df7c24d119e",
+        "source_tree_hash": "b96bbd2701f2c6e4a9aab2aa3d77fe283dbd3e61",
+        "source_universe_sha256": "CBAF8D5548446D1D3165E4712A450F56A529AABB929AE757EAAC59596E51140C",
+        "source_object_reference": "mechanism::static_typing",
+        "source_evidence_type": "CANONICAL_PROGRAMMING_MECHANISM_DEFINITION",
+        "extraction_version": "BCORE_CODE_GRAFT_EXTRACTOR_V1",
+        "conversion_method": "STRUCTURAL_ELEMENTAL_PROJECTION_V1",
+        "campaign_id": "B_CORE-CODE-GRAFT-01",
+        "source_node_id_is_address_only": true
+      }
+    },
+    {
+      "object_id": "BCG-6e639adb4a523965",
+      "semantic_payload_sha256": "6e639adb4a5239654f4d2f4ab0e666a6e7815a42d2520caceb7ca6c285e5ee41",
+      "kind": "EXECUTABLE_PROCEDURE",
+      "package": "BUILD_RUNTIME",
+      "elemental_operations": [
+        "LOWER",
+        "DISPATCH"
+      ],
+      "relation_codes": [
+        1,
+        2
+      ],
+      "constraint_codes": [
+        116
+      ],
+      "applicability_codes": [
+        216
+      ],
+      "negative_applicability_codes": [
+        316
+      ],
+      "verification_status": "VERIFIED",
+      "documentation_alias": "bytecode_vm",
+      "natural_language_alias_is_authority": false,
+      "provenance": {
+        "source_system": "SYNAPSE4",
+        "source_commit": "c85290ce6f2142959cd8a8c241a53df7c24d119e",
+        "source_tree_hash": "b96bbd2701f2c6e4a9aab2aa3d77fe283dbd3e61",
+        "source_universe_sha256": "CBAF8D5548446D1D3165E4712A450F56A529AABB929AE757EAAC59596E51140C",
+        "source_object_reference": "mechanism::bytecode_vm",
+        "source_evidence_type": "CANONICAL_PROGRAMMING_MECHANISM_DEFINITION",
+        "extraction_version": "BCORE_CODE_GRAFT_EXTRACTOR_V1",
+        "conversion_method": "STRUCTURAL_ELEMENTAL_PROJECTION_V1",
+        "campaign_id": "B_CORE-CODE-GRAFT-01",
+        "source_node_id_is_address_only": true
+      }
+    },
+    {
+      "object_id": "BCG-7ccdeb7e98a9a7c3",
+      "semantic_payload_sha256": "7ccdeb7e98a9a7c3d30d3a03c2303495871f7a45e48971fbb46b16aef924ac29",
+      "kind": "FAILURE_MECHANISM",
+      "package": "FAILURE_REPAIR",
+      "elemental_operations": [
+        "PROPAGATE_ERROR",
+        "RECOVER"
+      ],
+      "relation_codes": [
+        1,
+        2
+      ],
+      "constraint_codes": [
+        108
+      ],
+      "applicability_codes": [
+        208
+      ],
+      "negative_applicability_codes": [
+        308
+      ],
+      "verification_status": "VERIFIED",
+      "documentation_alias": "exception",
+      "natural_language_alias_is_authority": false,
+      "provenance": {
+        "source_system": "SYNAPSE4",
+        "source_commit": "c85290ce6f2142959cd8a8c241a53df7c24d119e",
+        "source_tree_hash": "b96bbd2701f2c6e4a9aab2aa3d77fe283dbd3e61",
+        "source_universe_sha256": "CBAF8D5548446D1D3165E4712A450F56A529AABB929AE757EAAC59596E51140C",
+        "source_object_reference": "mechanism::exception",
+        "source_evidence_type": "CANONICAL_PROGRAMMING_MECHANISM_DEFINITION",
+        "extraction_version": "BCORE_CODE_GRAFT_EXTRACTOR_V1",
+        "conversion_method": "STRUCTURAL_ELEMENTAL_PROJECTION_V1",
+        "campaign_id": "B_CORE-CODE-GRAFT-01",
+        "source_node_id_is_address_only": true
+      }
+    },
+    {
+      "object_id": "BCG-7d7f2042a8b88a22",
+      "semantic_payload_sha256": "7d7f2042a8b88a223727e4d02751e0dc8def3f081fda2b8f1533cc1cfb902944",
+      "kind": "CONSTRAINT_MECHANISM",
+      "package": "TYPE_CONTROL",
+      "elemental_operations": [
+        "TYPE_CHECK",
+        "DISPATCH"
+      ],
+      "relation_codes": [
+        1,
+        2
+      ],
+      "constraint_codes": [
+        104
+      ],
+      "applicability_codes": [
+        204
+      ],
+      "negative_applicability_codes": [
+        304
+      ],
+      "verification_status": "VERIFIED",
+      "documentation_alias": "dependent_generic_types",
+      "natural_language_alias_is_authority": false,
+      "provenance": {
+        "source_system": "SYNAPSE4",
+        "source_commit": "c85290ce6f2142959cd8a8c241a53df7c24d119e",
+        "source_tree_hash": "b96bbd2701f2c6e4a9aab2aa3d77fe283dbd3e61",
+        "source_universe_sha256": "CBAF8D5548446D1D3165E4712A450F56A529AABB929AE757EAAC59596E51140C",
+        "source_object_reference": "mechanism::dependent_generic_types",
+        "source_evidence_type": "CANONICAL_PROGRAMMING_MECHANISM_DEFINITION",
+        "extraction_version": "BCORE_CODE_GRAFT_EXTRACTOR_V1",
+        "conversion_method": "STRUCTURAL_ELEMENTAL_PROJECTION_V1",
+        "campaign_id": "B_CORE-CODE-GRAFT-01",
+        "source_node_id_is_address_only": true
+      }
+    },
+    {
+      "object_id": "BCG-808f5d30e8a94952",
+      "semantic_payload_sha256": "808f5d30e8a9495297ebaa712dc5f3440d60a8e17276e9f0408cf24f0fb5c8b7",
+      "kind": "CONSTRAINT_MECHANISM",
+      "package": "LIFETIME_ALIAS",
+      "elemental_operations": [
+        "BORROW",
+        "ALIAS",
+        "TYPE_CHECK"
+      ],
+      "relation_codes": [
+        1,
+        2
+      ],
+      "constraint_codes": [
+        101
+      ],
+      "applicability_codes": [
+        201
+      ],
+      "negative_applicability_codes": [
+        301
+      ],
+      "verification_status": "VERIFIED",
+      "documentation_alias": "borrow_checker",
+      "natural_language_alias_is_authority": false,
+      "provenance": {
+        "source_system": "SYNAPSE4",
+        "source_commit": "c85290ce6f2142959cd8a8c241a53df7c24d119e",
+        "source_tree_hash": "b96bbd2701f2c6e4a9aab2aa3d77fe283dbd3e61",
+        "source_universe_sha256": "CBAF8D5548446D1D3165E4712A450F56A529AABB929AE757EAAC59596E51140C",
+        "source_object_reference": "mechanism::borrow_checker",
+        "source_evidence_type": "CANONICAL_PROGRAMMING_MECHANISM_DEFINITION",
+        "extraction_version": "BCORE_CODE_GRAFT_EXTRACTOR_V1",
+        "conversion_method": "STRUCTURAL_ELEMENTAL_PROJECTION_V1",
+        "campaign_id": "B_CORE-CODE-GRAFT-01",
+        "source_node_id_is_address_only": true
+      }
+    },
+    {
+      "object_id": "BCG-8cf4e31f915b74a1",
+      "semantic_payload_sha256": "8cf4e31f915b74a1fc20a7bb951ada61888b1afea05e35ae3374e23f39dd1cc5",
+      "kind": "CONSTRAINT_MECHANISM",
+      "package": "CONCURRENCY_PROTOCOL",
+      "elemental_operations": [
+        "SPAWN",
+        "JOIN",
+        "SYNCHRONIZE",
+        "READ",
+        "WRITE"
+      ],
+      "relation_codes": [
+        1,
+        2
+      ],
+      "constraint_codes": [
+        102
+      ],
+      "applicability_codes": [
+        202
+      ],
+      "negative_applicability_codes": [
+        302
+      ],
+      "verification_status": "VERIFIED",
+      "documentation_alias": "shared_memory_threads",
+      "natural_language_alias_is_authority": false,
+      "provenance": {
+        "source_system": "SYNAPSE4",
+        "source_commit": "c85290ce6f2142959cd8a8c241a53df7c24d119e",
+        "source_tree_hash": "b96bbd2701f2c6e4a9aab2aa3d77fe283dbd3e61",
+        "source_universe_sha256": "CBAF8D5548446D1D3165E4712A450F56A529AABB929AE757EAAC59596E51140C",
+        "source_object_reference": "mechanism::shared_memory_threads",
+        "source_evidence_type": "CANONICAL_PROGRAMMING_MECHANISM_DEFINITION",
+        "extraction_version": "BCORE_CODE_GRAFT_EXTRACTOR_V1",
+        "conversion_method": "STRUCTURAL_ELEMENTAL_PROJECTION_V1",
+        "campaign_id": "B_CORE-CODE-GRAFT-01",
+        "source_node_id_is_address_only": true
+      }
+    },
+    {
+      "object_id": "BCG-96ea4c69a10f7595",
+      "semantic_payload_sha256": "96ea4c69a10f7595c9834dfd1e6178b750bd5e77016337cd75b86740754cbf01",
+      "kind": "EXECUTABLE_PROCEDURE",
+      "package": "TYPE_CONTROL",
+      "elemental_operations": [
+        "ITERATE",
+        "READ"
+      ],
+      "relation_codes": [
+        1,
+        2
+      ],
+      "constraint_codes": [
+        104
+      ],
+      "applicability_codes": [
+        204
+      ],
+      "negative_applicability_codes": [
+        304
+      ],
+      "verification_status": "VERIFIED",
+      "documentation_alias": "iterator_protocol",
+      "natural_language_alias_is_authority": false,
+      "provenance": {
+        "source_system": "SYNAPSE4",
+        "source_commit": "c85290ce6f2142959cd8a8c241a53df7c24d119e",
+        "source_tree_hash": "b96bbd2701f2c6e4a9aab2aa3d77fe283dbd3e61",
+        "source_universe_sha256": "CBAF8D5548446D1D3165E4712A450F56A529AABB929AE757EAAC59596E51140C",
+        "source_object_reference": "mechanism::iterator_protocol",
+        "source_evidence_type": "CANONICAL_PROGRAMMING_MECHANISM_DEFINITION",
+        "extraction_version": "BCORE_CODE_GRAFT_EXTRACTOR_V1",
+        "conversion_method": "STRUCTURAL_ELEMENTAL_PROJECTION_V1",
+        "campaign_id": "B_CORE-CODE-GRAFT-01",
+        "source_node_id_is_address_only": true
+      }
+    },
+    {
+      "object_id": "BCG-c2487503bb335478",
+      "semantic_payload_sha256": "c2487503bb3354782becd56bed99f87f2788c29810c516f09242d86c2e6af52c",
+      "kind": "EXECUTABLE_PROCEDURE",
+      "package": "BUILD_RUNTIME",
+      "elemental_operations": [
+        "PARSE",
+        "COMPILE",
+        "LINK"
+      ],
+      "relation_codes": [
+        1,
+        2
+      ],
+      "constraint_codes": [
+        116
+      ],
+      "applicability_codes": [
+        216
+      ],
+      "negative_applicability_codes": [
+        316
+      ],
+      "verification_status": "VERIFIED",
+      "documentation_alias": "build_tool",
+      "natural_language_alias_is_authority": false,
+      "provenance": {
+        "source_system": "SYNAPSE4",
+        "source_commit": "c85290ce6f2142959cd8a8c241a53df7c24d119e",
+        "source_tree_hash": "b96bbd2701f2c6e4a9aab2aa3d77fe283dbd3e61",
+        "source_universe_sha256": "CBAF8D5548446D1D3165E4712A450F56A529AABB929AE757EAAC59596E51140C",
+        "source_object_reference": "mechanism::build_tool",
+        "source_evidence_type": "CANONICAL_PROGRAMMING_MECHANISM_DEFINITION",
+        "extraction_version": "BCORE_CODE_GRAFT_EXTRACTOR_V1",
+        "conversion_method": "STRUCTURAL_ELEMENTAL_PROJECTION_V1",
+        "campaign_id": "B_CORE-CODE-GRAFT-01",
+        "source_node_id_is_address_only": true
+      }
+    },
+    {
+      "object_id": "BCG-cbf2bb95b6e56ad1",
+      "semantic_payload_sha256": "cbf2bb95b6e56ad16f2cd6860d69bee498d06cf0941f5146fd7d94f2197aa7ac",
+      "kind": "EXECUTABLE_PROCEDURE",
+      "package": "TYPE_CONTROL",
+      "elemental_operations": [
+        "BRANCH",
+        "READ",
+        "TYPE_CHECK"
+      ],
+      "relation_codes": [
+        1,
+        2
+      ],
+      "constraint_codes": [
+        104
+      ],
+      "applicability_codes": [
+        204
+      ],
+      "negative_applicability_codes": [
+        304
+      ],
+      "verification_status": "VERIFIED",
+      "documentation_alias": "pattern_matching",
+      "natural_language_alias_is_authority": false,
+      "provenance": {
+        "source_system": "SYNAPSE4",
+        "source_commit": "c85290ce6f2142959cd8a8c241a53df7c24d119e",
+        "source_tree_hash": "b96bbd2701f2c6e4a9aab2aa3d77fe283dbd3e61",
+        "source_universe_sha256": "CBAF8D5548446D1D3165E4712A450F56A529AABB929AE757EAAC59596E51140C",
+        "source_object_reference": "mechanism::pattern_matching",
+        "source_evidence_type": "CANONICAL_PROGRAMMING_MECHANISM_DEFINITION",
+        "extraction_version": "BCORE_CODE_GRAFT_EXTRACTOR_V1",
+        "conversion_method": "STRUCTURAL_ELEMENTAL_PROJECTION_V1",
+        "campaign_id": "B_CORE-CODE-GRAFT-01",
+        "source_node_id_is_address_only": true
+      }
+    },
+    {
+      "object_id": "BCG-d6e76cb7c894f3e5",
+      "semantic_payload_sha256": "d6e76cb7c894f3e5fab3f187a1a49675c5dbb998c5db07520861a44a9e6b8d93",
+      "kind": "PRIMITIVE_COMPOSITION",
+      "package": "TYPE_CONTROL",
+      "elemental_operations": [
+        "TYPE_CHECK",
+        "BRANCH"
+      ],
+      "relation_codes": [
+        1,
+        2
+      ],
+      "constraint_codes": [
+        104
+      ],
+      "applicability_codes": [
+        204
+      ],
+      "negative_applicability_codes": [
+        304
+      ],
+      "verification_status": "VERIFIED",
+      "documentation_alias": "algebraic_data_type",
+      "natural_language_alias_is_authority": false,
+      "provenance": {
+        "source_system": "SYNAPSE4",
+        "source_commit": "c85290ce6f2142959cd8a8c241a53df7c24d119e",
+        "source_tree_hash": "b96bbd2701f2c6e4a9aab2aa3d77fe283dbd3e61",
+        "source_universe_sha256": "CBAF8D5548446D1D3165E4712A450F56A529AABB929AE757EAAC59596E51140C",
+        "source_object_reference": "mechanism::algebraic_data_type",
+        "source_evidence_type": "CANONICAL_PROGRAMMING_MECHANISM_DEFINITION",
+        "extraction_version": "BCORE_CODE_GRAFT_EXTRACTOR_V1",
+        "conversion_method": "STRUCTURAL_ELEMENTAL_PROJECTION_V1",
+        "campaign_id": "B_CORE-CODE-GRAFT-01",
+        "source_node_id_is_address_only": true
+      }
+    },
+    {
+      "object_id": "BCG-da3698e2fcdccad4",
+      "semantic_payload_sha256": "da3698e2fcdccad45a0796fad2621d67d1f7ead8bbbfcb2beed9f83567b61d6e",
+      "kind": "CONSTRAINT_MECHANISM",
+      "package": "LIFETIME_ALIAS",
+      "elemental_operations": [
+        "OWN",
+        "ALLOCATE",
+        "FREE"
+      ],
+      "relation_codes": [
+        1,
+        2
+      ],
+      "constraint_codes": [
+        101
+      ],
+      "applicability_codes": [
+        201
+      ],
+      "negative_applicability_codes": [
+        301
+      ],
+      "verification_status": "VERIFIED",
+      "documentation_alias": "raii",
+      "natural_language_alias_is_authority": false,
+      "provenance": {
+        "source_system": "SYNAPSE4",
+        "source_commit": "c85290ce6f2142959cd8a8c241a53df7c24d119e",
+        "source_tree_hash": "b96bbd2701f2c6e4a9aab2aa3d77fe283dbd3e61",
+        "source_universe_sha256": "CBAF8D5548446D1D3165E4712A450F56A529AABB929AE757EAAC59596E51140C",
+        "source_object_reference": "mechanism::raii",
+        "source_evidence_type": "CANONICAL_PROGRAMMING_MECHANISM_DEFINITION",
+        "extraction_version": "BCORE_CODE_GRAFT_EXTRACTOR_V1",
+        "conversion_method": "STRUCTURAL_ELEMENTAL_PROJECTION_V1",
+        "campaign_id": "B_CORE-CODE-GRAFT-01",
+        "source_node_id_is_address_only": true
+      }
+    },
+    {
+      "object_id": "BCG-dfd3876712ef133c",
+      "semantic_payload_sha256": "dfd3876712ef133cda1cadad7f7097420688878bafea91d4326af5257a9701e5",
+      "kind": "EXECUTABLE_PROCEDURE",
+      "package": "CONCURRENCY_PROTOCOL",
+      "elemental_operations": [
+        "DISPATCH",
+        "SUSPEND",
+        "RESUME"
+      ],
+      "relation_codes": [
+        1,
+        2
+      ],
+      "constraint_codes": [
+        102
+      ],
+      "applicability_codes": [
+        202
+      ],
+      "negative_applicability_codes": [
+        302
+      ],
+      "verification_status": "VERIFIED",
+      "documentation_alias": "event_loop",
+      "natural_language_alias_is_authority": false,
+      "provenance": {
+        "source_system": "SYNAPSE4",
+        "source_commit": "c85290ce6f2142959cd8a8c241a53df7c24d119e",
+        "source_tree_hash": "b96bbd2701f2c6e4a9aab2aa3d77fe283dbd3e61",
+        "source_universe_sha256": "CBAF8D5548446D1D3165E4712A450F56A529AABB929AE757EAAC59596E51140C",
+        "source_object_reference": "mechanism::event_loop",
+        "source_evidence_type": "CANONICAL_PROGRAMMING_MECHANISM_DEFINITION",
+        "extraction_version": "BCORE_CODE_GRAFT_EXTRACTOR_V1",
+        "conversion_method": "STRUCTURAL_ELEMENTAL_PROJECTION_V1",
+        "campaign_id": "B_CORE-CODE-GRAFT-01",
+        "source_node_id_is_address_only": true
+      }
+    },
+    {
+      "object_id": "BCG-e1c3e4d0460e92c0",
+      "semantic_payload_sha256": "e1c3e4d0460e92c0864601c178083557f04a82c69493bf5aa6ac55d3f250caba",
+      "kind": "EXECUTABLE_PROCEDURE",
+      "package": "LIFETIME_ALIAS",
+      "elemental_operations": [
+        "ALLOCATE",
+        "FREE"
+      ],
+      "relation_codes": [
+        1,
+        2
+      ],
+      "constraint_codes": [
+        101
+      ],
+      "applicability_codes": [
+        201
+      ],
+      "negative_applicability_codes": [
+        301
+      ],
+      "verification_status": "VERIFIED",
+      "documentation_alias": "manual_memory",
+      "natural_language_alias_is_authority": false,
+      "provenance": {
+        "source_system": "SYNAPSE4",
+        "source_commit": "c85290ce6f2142959cd8a8c241a53df7c24d119e",
+        "source_tree_hash": "b96bbd2701f2c6e4a9aab2aa3d77fe283dbd3e61",
+        "source_universe_sha256": "CBAF8D5548446D1D3165E4712A450F56A529AABB929AE757EAAC59596E51140C",
+        "source_object_reference": "mechanism::manual_memory",
+        "source_evidence_type": "CANONICAL_PROGRAMMING_MECHANISM_DEFINITION",
+        "extraction_version": "BCORE_CODE_GRAFT_EXTRACTOR_V1",
+        "conversion_method": "STRUCTURAL_ELEMENTAL_PROJECTION_V1",
+        "campaign_id": "B_CORE-CODE-GRAFT-01",
+        "source_node_id_is_address_only": true
+      }
+    },
+    {
+      "object_id": "BCG-e9d1e8a65daf2eb9",
+      "semantic_payload_sha256": "e9d1e8a65daf2eb95ed0989619fc1153e0880caf2f25add0c403f4a5b791fc42",
+      "kind": "CONSTRAINT_MECHANISM",
+      "package": "LIFETIME_ALIAS",
+      "elemental_operations": [
+        "SHARE",
+        "FREE"
+      ],
+      "relation_codes": [
+        1,
+        2
+      ],
+      "constraint_codes": [
+        101
+      ],
+      "applicability_codes": [
+        201
+      ],
+      "negative_applicability_codes": [
+        301
+      ],
+      "verification_status": "VERIFIED",
+      "documentation_alias": "reference_counting",
+      "natural_language_alias_is_authority": false,
+      "provenance": {
+        "source_system": "SYNAPSE4",
+        "source_commit": "c85290ce6f2142959cd8a8c241a53df7c24d119e",
+        "source_tree_hash": "b96bbd2701f2c6e4a9aab2aa3d77fe283dbd3e61",
+        "source_universe_sha256": "CBAF8D5548446D1D3165E4712A450F56A529AABB929AE757EAAC59596E51140C",
+        "source_object_reference": "mechanism::reference_counting",
+        "source_evidence_type": "CANONICAL_PROGRAMMING_MECHANISM_DEFINITION",
+        "extraction_version": "BCORE_CODE_GRAFT_EXTRACTOR_V1",
+        "conversion_method": "STRUCTURAL_ELEMENTAL_PROJECTION_V1",
+        "campaign_id": "B_CORE-CODE-GRAFT-01",
+        "source_node_id_is_address_only": true
+      }
+    },
+    {
+      "object_id": "BCG-ecab7067b9e88fb4",
+      "semantic_payload_sha256": "ecab7067b9e88fb4b810a359718e1548da6ad135023ac4aebac76ab3578f18e1",
+      "kind": "FAILURE_MECHANISM",
+      "package": "FAILURE_REPAIR",
+      "elemental_operations": [
+        "PROPAGATE_ERROR",
+        "TYPE_CHECK",
+        "BRANCH"
+      ],
+      "relation_codes": [
+        1,
+        2
+      ],
+      "constraint_codes": [
+        108
+      ],
+      "applicability_codes": [
+        208
+      ],
+      "negative_applicability_codes": [
+        308
+      ],
+      "verification_status": "VERIFIED",
+      "documentation_alias": "result_value",
+      "natural_language_alias_is_authority": false,
+      "provenance": {
+        "source_system": "SYNAPSE4",
+        "source_commit": "c85290ce6f2142959cd8a8c241a53df7c24d119e",
+        "source_tree_hash": "b96bbd2701f2c6e4a9aab2aa3d77fe283dbd3e61",
+        "source_universe_sha256": "CBAF8D5548446D1D3165E4712A450F56A529AABB929AE757EAAC59596E51140C",
+        "source_object_reference": "mechanism::result_value",
+        "source_evidence_type": "CANONICAL_PROGRAMMING_MECHANISM_DEFINITION",
+        "extraction_version": "BCORE_CODE_GRAFT_EXTRACTOR_V1",
+        "conversion_method": "STRUCTURAL_ELEMENTAL_PROJECTION_V1",
+        "campaign_id": "B_CORE-CODE-GRAFT-01",
+        "source_node_id_is_address_only": true
+      }
+    },
+    {
+      "object_id": "BCG-f17197499237468c",
+      "semantic_payload_sha256": "f17197499237468cdf7f390c5fb42fd7904f59e38ef7e96f89c6a73544a6a0c4",
+      "kind": "EXECUTABLE_PROCEDURE",
+      "package": "CONCURRENCY_PROTOCOL",
+      "elemental_operations": [
+        "SUSPEND",
+        "RESUME",
+        "CALL",
+        "RETURN"
+      ],
+      "relation_codes": [
+        1,
+        2
+      ],
+      "constraint_codes": [
+        102
+      ],
+      "applicability_codes": [
+        202
+      ],
+      "negative_applicability_codes": [
+        302
+      ],
+      "verification_status": "VERIFIED",
+      "documentation_alias": "async_await",
+      "natural_language_alias_is_authority": false,
+      "provenance": {
+        "source_system": "SYNAPSE4",
+        "source_commit": "c85290ce6f2142959cd8a8c241a53df7c24d119e",
+        "source_tree_hash": "b96bbd2701f2c6e4a9aab2aa3d77fe283dbd3e61",
+        "source_universe_sha256": "CBAF8D5548446D1D3165E4712A450F56A529AABB929AE757EAAC59596E51140C",
+        "source_object_reference": "mechanism::async_await",
+        "source_evidence_type": "CANONICAL_PROGRAMMING_MECHANISM_DEFINITION",
+        "extraction_version": "BCORE_CODE_GRAFT_EXTRACTOR_V1",
+        "conversion_method": "STRUCTURAL_ELEMENTAL_PROJECTION_V1",
+        "campaign_id": "B_CORE-CODE-GRAFT-01",
+        "source_node_id_is_address_only": true
+      }
+    }
+  ],
+  "package_installable": true,
+  "package_disableable": true,
+  "package_ablatable": true,
+  "package_demotable": true,
+  "reversible_sandbox": true,
+  "canonical_knowledge_mutations": 0
+}

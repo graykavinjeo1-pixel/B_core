@@ -1,0 +1,45 @@
+{
+  "ablations": [
+    {
+      "ablated_solved": 37,
+      "causal_degradation": true,
+      "full_solved": 48,
+      "relevant_ablated_solved": 15,
+      "relevant_full_solved": 21,
+      "removed_package": "LIFETIME_ALIAS"
+    },
+    {
+      "ablated_solved": 37,
+      "causal_degradation": true,
+      "full_solved": 48,
+      "relevant_ablated_solved": 22,
+      "relevant_full_solved": 33,
+      "removed_package": "CONCURRENCY_PROTOCOL"
+    },
+    {
+      "ablated_solved": 43,
+      "causal_degradation": true,
+      "full_solved": 48,
+      "relevant_ablated_solved": 10,
+      "relevant_full_solved": 15,
+      "removed_package": "TYPE_CONTROL"
+    },
+    {
+      "ablated_solved": 33,
+      "causal_degradation": true,
+      "full_solved": 48,
+      "relevant_ablated_solved": 0,
+      "relevant_full_solved": 15,
+      "removed_package": "FAILURE_REPAIR"
+    },
+    {
+      "ablated_solved": 38,
+      "causal_degradation": true,
+      "full_solved": 48,
+      "relevant_ablated_solved": 0,
+      "relevant_full_solved": 10,
+      "removed_package": "BUILD_RUNTIME"
+    }
+  ],
+  "package_causal_ablation_pass": true
+}
