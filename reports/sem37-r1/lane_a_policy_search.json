@@ -1,0 +1,15 @@
+{
+  "schema_version": "SEM37_R1_LANE_A_AGGREGATE_POLICY_SEARCH_1",
+  "candidate_policy_count": 143,
+  "policy_family": "GENERIC_RESIDUAL_GAIN_X_DIRECTION_RATIO_GRID",
+  "ground_truth_edge_reads": 0,
+  "generator_source_reads": 0,
+  "dev_a_naive": {"tp": 37, "fp": 15, "fn": 0, "f1_numerator": 74, "f1_denominator": 89},
+  "dev_b_naive": {"tp": 111, "fp": 31, "fn": 0, "f1_numerator": 222, "f1_denominator": 253},
+  "nontrivial_policies_beating_naive_on_both_development_partitions": 0,
+  "selected_policy": "RETAIN_COMPLETE_CANDIDATE_SET_WITH_INSUFFICIENT_TARGET_EVIDENCE",
+  "selected_by_human": false,
+  "false_invariant_claims": 0,
+  "lane_a_precision_repair_supported": false,
+  "final_partition_exposure_events": 0
+}
