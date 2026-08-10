@@ -1,0 +1,58 @@
+{
+  "schema": "b_core_fullstack_ops_validation_receipt_v1",
+  "campaign_id": "B_CORE-CODE-GRAFT-04",
+  "audited_commit": "92a56fbde651ccbae377dc0743ec706500548c4c",
+  "source_universe_sha256": "BF9F10C31F6504473050028280C1DCB22AC54CFD29DFC9215EC29DDD42BBE52C",
+  "source_predecessor_universe_sha256": "CBAF8D5548446D1D3165E4712A450F56A529AABB929AE757EAAC59596E51140C",
+  "source_semantics_changed": false,
+  "manifest_projection_correction_absorbed": true,
+  "implementation_module_sha256": "F351C7F0368E8ACBA3B8E2883DB6C62F27AFBA1B3FE9274023240D5BA600F46F",
+  "knowledge_bundle_sha256": "6CD7DEBC966A62D6B986C1852E8C5E370A077076496A06E34106D94E0ACB1FD1",
+  "absorption_report_sha256": "031256B1B71E40214ABE87345E04FA56CAC0B70AE578ECDB04320B4C5BB02DAC",
+  "release_binary": "b-core-fullstack-ops-absorb.exe",
+  "release_binary_bytes": 489472,
+  "release_binary_sha256": "3B6C44757EF344085E9DC364159B83AF08D4BA29012624DE8E51196216591D42",
+  "validation": {
+    "cargo_fmt_check": "PASS",
+    "targeted_unit_tests": {
+      "status": "PASS",
+      "passed": 5,
+      "failed": 0
+    },
+    "workspace_all_targets": {
+      "status": "PASS",
+      "compiled_targets": 84,
+      "passed_tests": 320,
+      "failed_tests": 0
+    },
+    "workspace_clippy_all_targets_deny_warnings": "PASS",
+    "workspace_docs_no_dependencies": "PASS",
+    "release_build": "PASS",
+    "live_source_absorption": "PASS",
+    "source_family_hash_match": "PASS",
+    "typed_composition_transport": "PASS",
+    "sparse_activation_bound": 8
+  },
+  "absorbed": {
+    "frontend_source_count": 11,
+    "backend_source_count": 26,
+    "operations_source_count": 68,
+    "knowledge_atoms": 14,
+    "typed_cross_layer_recipes": 3,
+    "activation_canaries": 3
+  },
+  "authority_boundaries": {
+    "raw_training_data_files_copied": 0,
+    "raw_source_fragments_promoted": 0,
+    "natural_language_as_runtime_authority": false,
+    "self_install_authority_added": false,
+    "self_verification_authority_added": false,
+    "external_llm_calls": 0,
+    "codex_runtime_calls": 0,
+    "network_reads": 0,
+    "network_writes": 0,
+    "autonomous_research_epochs": 0,
+    "future_instance_exposure_events": 0
+  },
+  "status": "PASS"
+}
