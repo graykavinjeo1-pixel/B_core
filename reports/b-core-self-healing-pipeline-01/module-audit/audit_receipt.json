@@ -1,0 +1,817 @@
+{
+    "schema":  "B_CORE_SELF_HEALING_AUDIT_1",
+    "worktree":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01",
+    "git_commit":  "13c8b924dfdfd2414fab0fee82fb17e859badeb4",
+    "generated_at_utc":  "2026-08-10T16:16:47.8657713Z",
+    "compiled_surface_count":  82,
+    "quarantined_surface_count":  21,
+    "inventory":  [
+                      {
+                          "package":  "dockable-semantic-core",
+                          "target":  "dockable_semantic_core",
+                          "target_kind":  "lib",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\dockable-semantic-core\\src\\lib.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "dockable-semantic-core",
+                          "target":  "core-x0-canary",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\dockable-semantic-core\\src\\core_x0_canary.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-core-adapters",
+                          "target":  "semantic_core_adapters",
+                          "target_kind":  "lib",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-core-adapters\\src\\lib.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-core-adapters",
+                          "target":  "generic-capability-canary",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-core-adapters\\src\\generic_capability_canary.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-core-adapters",
+                          "target":  "language-adapter-canary",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-core-adapters\\src\\language_canary.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "synapse-core",
+                          "target":  "synapse_core",
+                          "target_kind":  "lib",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\synapse-core\\src\\lib.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "synapse-recursive-core",
+                          "target":  "synapse_recursive_core",
+                          "target_kind":  "lib",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\synapse-recursive-core\\src\\lib.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "semantic_reasoning",
+                          "target_kind":  "lib",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\lib.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "b-core-code-graft-dev",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\code_graft_dev_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "b-core-code-graft-final",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\code_graft_final_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "b-core-code-graft-verify",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\code_graft_verify_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "b-core-integrated-development",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\integrated_development_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "b-core-self-heal",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\self_healing_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "core-x0-evaluate",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\core_x0_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem0-run",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem1-run",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem1_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem10-fresh",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem10_fresh_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem11-run",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem11_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem12-run",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem12_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem13-run",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem13_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem14-run",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem14_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem15-run",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem15_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem16-run",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem16_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem17-run",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem17_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem18-run",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem18_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem19-run",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem19_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem2-run",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem2_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem20-probe",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem20_probe_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem20-run",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem20_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem21-probe",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem21_probe_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem21-run",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem21_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem22-probe",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem22_probe_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem22-run",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem22_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem23-probe",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem23_probe_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem23-run",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem23_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem24-probe",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem24_probe_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem24-run",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem24_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem25-probe",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem25_probe_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem25-run",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem25_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem26-probe",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem26_probe_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem26-run",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem26_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem27-continuation-run",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem27_continuation_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem27-probe",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem27_probe_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem27-r1-run",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem27_r1_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem27-run",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem27_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem28-run",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem28_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem28-verify",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem28_verify_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem29-run",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem29_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem29-verify",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem29_verify_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem3-run",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem3_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem30-run",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem30_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem30-verify",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem30_verify_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem31-run",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem31_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem31-verify",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem31_verify_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem32-r1-p0",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem32_r1_p0_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem32-r1-run",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem32_r1_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem32-r1-verify",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem32_r1_verify_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem32-run",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem32_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem32-verify",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem32_verify_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem33-r1-run",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem33_r1_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem33-r1-verify",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem33_r1_verify_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem34-run",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem34_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem34-verify",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem34_verify_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem35-r1-run",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem35_r1_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem35-r1-verify",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem35_r1_verify_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem35-run",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem35_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem35-verify",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem35_verify_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem36-p0",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem36_p0_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem36-run",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem36_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem36-verify",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem36_verify_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem4-run",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem4_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem5-run",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem5_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem6-freeze",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem6_freeze_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem6-run",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem6_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem7-freeze",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem7_freeze_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem7-run",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem7_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem8-freeze",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem8_freeze_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem8-run",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem8_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem9-freeze",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem9_freeze_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem9-r1-freeze",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem9_r1_freeze_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem9-r1-run",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem9_r1_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "sem9-run",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\sem9_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "synapse-recursive-core",
+                          "target":  "mod",
+                          "target_kind":  "source-only",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\synapse-recursive-core\\src\\autonomy_governor\\mod.rs",
+                          "authority":  "QUARANTINED"
+                      },
+                      {
+                          "package":  "synapse-recursive-core",
+                          "target":  "mod",
+                          "target_kind":  "source-only",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\synapse-recursive-core\\src\\closed_growth_cycle\\mod.rs",
+                          "authority":  "QUARANTINED"
+                      },
+                      {
+                          "package":  "synapse-recursive-core",
+                          "target":  "mod",
+                          "target_kind":  "source-only",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\synapse-recursive-core\\src\\code_growth\\mod.rs",
+                          "authority":  "QUARANTINED"
+                      },
+                      {
+                          "package":  "synapse-recursive-core",
+                          "target":  "mod",
+                          "target_kind":  "source-only",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\synapse-recursive-core\\src\\coding_knowledge\\mod.rs",
+                          "authority":  "QUARANTINED"
+                      },
+                      {
+                          "package":  "synapse-recursive-core",
+                          "target":  "active_field_budget",
+                          "target_kind":  "source-only",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\synapse-recursive-core\\src\\core_efficiency\\active_field_budget.rs",
+                          "authority":  "QUARANTINED"
+                      },
+                      {
+                          "package":  "synapse-recursive-core",
+                          "target":  "cold_storage_policy",
+                          "target_kind":  "source-only",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\synapse-recursive-core\\src\\core_efficiency\\cold_storage_policy.rs",
+                          "authority":  "QUARANTINED"
+                      },
+                      {
+                          "package":  "synapse-recursive-core",
+                          "target":  "core_efficiency_benchmark",
+                          "target_kind":  "source-only",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\synapse-recursive-core\\src\\core_efficiency\\core_efficiency_benchmark.rs",
+                          "authority":  "QUARANTINED"
+                      },
+                      {
+                          "package":  "synapse-recursive-core",
+                          "target":  "core_efficiency_report",
+                          "target_kind":  "source-only",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\synapse-recursive-core\\src\\core_efficiency\\core_efficiency_report.rs",
+                          "authority":  "QUARANTINED"
+                      },
+                      {
+                          "package":  "synapse-recursive-core",
+                          "target":  "device_profile",
+                          "target_kind":  "source-only",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\synapse-recursive-core\\src\\core_efficiency\\device_profile.rs",
+                          "authority":  "QUARANTINED"
+                      },
+                      {
+                          "package":  "synapse-recursive-core",
+                          "target":  "efficiency_budget",
+                          "target_kind":  "source-only",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\synapse-recursive-core\\src\\core_efficiency\\efficiency_budget.rs",
+                          "authority":  "QUARANTINED"
+                      },
+                      {
+                          "package":  "synapse-recursive-core",
+                          "target":  "memory_scale_audit",
+                          "target_kind":  "source-only",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\synapse-recursive-core\\src\\core_efficiency\\memory_scale_audit.rs",
+                          "authority":  "QUARANTINED"
+                      },
+                      {
+                          "package":  "synapse-recursive-core",
+                          "target":  "mod",
+                          "target_kind":  "source-only",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\synapse-recursive-core\\src\\core_efficiency\\mod.rs",
+                          "authority":  "QUARANTINED"
+                      },
+                      {
+                          "package":  "synapse-recursive-core",
+                          "target":  "module_residency",
+                          "target_kind":  "source-only",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\synapse-recursive-core\\src\\core_efficiency\\module_residency.rs",
+                          "authority":  "QUARANTINED"
+                      },
+                      {
+                          "package":  "synapse-recursive-core",
+                          "target":  "residency_registry",
+                          "target_kind":  "source-only",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\synapse-recursive-core\\src\\core_efficiency\\residency_registry.rs",
+                          "authority":  "QUARANTINED"
+                      },
+                      {
+                          "package":  "synapse-recursive-core",
+                          "target":  "runtime_tier",
+                          "target_kind":  "source-only",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\synapse-recursive-core\\src\\core_efficiency\\runtime_tier.rs",
+                          "authority":  "QUARANTINED"
+                      },
+                      {
+                          "package":  "synapse-recursive-core",
+                          "target":  "wake_sleep_controller",
+                          "target_kind":  "source-only",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\synapse-recursive-core\\src\\core_efficiency\\wake_sleep_controller.rs",
+                          "authority":  "QUARANTINED"
+                      },
+                      {
+                          "package":  "synapse-recursive-core",
+                          "target":  "mod",
+                          "target_kind":  "source-only",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\synapse-recursive-core\\src\\embryo\\mod.rs",
+                          "authority":  "QUARANTINED"
+                      },
+                      {
+                          "package":  "synapse-recursive-core",
+                          "target":  "mod",
+                          "target_kind":  "source-only",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\synapse-recursive-core\\src\\low_risk_loop\\mod.rs",
+                          "authority":  "QUARANTINED"
+                      },
+                      {
+                          "package":  "synapse-recursive-core",
+                          "target":  "mod",
+                          "target_kind":  "source-only",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\synapse-recursive-core\\src\\patch_feedback\\mod.rs",
+                          "authority":  "QUARANTINED"
+                      },
+                      {
+                          "package":  "synapse-recursive-core",
+                          "target":  "mod",
+                          "target_kind":  "source-only",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\synapse-recursive-core\\src\\patch_sandbox\\mod.rs",
+                          "authority":  "QUARANTINED"
+                      },
+                      {
+                          "package":  "synapse-recursive-core",
+                          "target":  "mod",
+                          "target_kind":  "source-only",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\synapse-recursive-core\\src\\self_development_runtime\\mod.rs",
+                          "authority":  "QUARANTINED"
+                      }
+                  ],
+    "probes":  [
+                   {
+                       "name":  "cargo_metadata",
+                       "command":  "cargo metadata --no-deps --format-version 1",
+                       "command_sha256":  "15b58628a438e7120741781318f7b1cf2fd342d477a01bea61586a3fd375dd65",
+                       "status":  "PASS",
+                       "exit_code":  0,
+                       "duration_ms":  151,
+                       "timeout_ms":  120000,
+                       "output_sha256":  "d826af134a581342eab98ff80a1e30144925e6748932a431bfea788477092bae",
+                       "log":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\reports\\b-core-self-healing-pipeline-01\\module-audit\\cargo_metadata.log",
+                       "independent_process_observed":  true
+                   },
+                   {
+                       "name":  "cargo_fmt",
+                       "command":  "cargo fmt --check",
+                       "command_sha256":  "194fabc0129ce4a90d69f396041f7dfad35653be552de104cfe6bc624f183b5f",
+                       "status":  "PASS",
+                       "exit_code":  0,
+                       "duration_ms":  1327,
+                       "timeout_ms":  120000,
+                       "output_sha256":  "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                       "log":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\reports\\b-core-self-healing-pipeline-01\\module-audit\\cargo_fmt.log",
+                       "independent_process_observed":  true
+                   },
+                   {
+                       "name":  "cargo_compile_all_targets_clean_canary",
+                       "command":  "cargo test --workspace --all-targets --all-features --no-run --quiet -j 1",
+                       "command_sha256":  "df57a1f4abc86594824e5911d0ddee26eb182b6d0cd7e4b2ef184a5b6e75cc79",
+                       "status":  "PASS",
+                       "exit_code":  0,
+                       "duration_ms":  210060,
+                       "timeout_ms":  600000,
+                       "output_sha256":  "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                       "log":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\reports\\b-core-self-healing-pipeline-01\\module-audit\\cargo_compile_all_targets_clean_canary.log",
+                       "independent_process_observed":  true
+                   },
+                   {
+                       "name":  "cargo_test_all_targets",
+                       "command":  "cargo test --workspace --all-targets --all-features --quiet",
+                       "command_sha256":  "689e7fc87d3a8fccbcfa80fc74b43ac0027db3b530b2d38de48eff96cd90d63f",
+                       "status":  "PASS",
+                       "exit_code":  0,
+                       "duration_ms":  183559,
+                       "timeout_ms":  600000,
+                       "output_sha256":  "37f8accb40e2669ede9386e8c8d44e0239c3d06905ce87ee469d7ca6d41e9035",
+                       "log":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\reports\\b-core-self-healing-pipeline-01\\module-audit\\cargo_test_all_targets.log",
+                       "independent_process_observed":  true
+                   },
+                   {
+                       "name":  "cargo_test_docs",
+                       "command":  "cargo test --workspace --doc --quiet",
+                       "command_sha256":  "283b128ff970a2a86f36199c8cbe5b7ad09887482c9ccb1ed995585be8c8593d",
+                       "status":  "PASS",
+                       "exit_code":  0,
+                       "duration_ms":  6775,
+                       "timeout_ms":  600000,
+                       "output_sha256":  "bb837efa38efe971f804e638272c7731bfb27c03f3ab293e679e68c728293bed",
+                       "log":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\reports\\b-core-self-healing-pipeline-01\\module-audit\\cargo_test_docs.log",
+                       "independent_process_observed":  true
+                   },
+                   {
+                       "name":  "cargo_clippy_strict",
+                       "command":  "cargo clippy --workspace --all-targets --all-features -- -D warnings",
+                       "command_sha256":  "f835224c850b7035081a0d43a5e7e89a10b25689b02cb7eb3716531f6ab68824",
+                       "status":  "PASS",
+                       "exit_code":  0,
+                       "duration_ms":  37909,
+                       "timeout_ms":  600000,
+                       "output_sha256":  "30368d62055475a05d6ca6288a7e843629f218b0d8eddb56baadec2e9ede29a8",
+                       "log":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\reports\\b-core-self-healing-pipeline-01\\module-audit\\cargo_clippy_strict.log",
+                       "independent_process_observed":  true
+                   }
+               ],
+    "clean_compile_canary_incremental":  false,
+    "clean_compile_canary_jobs":  1,
+    "compiled_coverage_complete":  true,
+    "all_compiled_probes_pass":  true,
+    "quarantined_source_compiled_as_authority":  false,
+    "verification_mode":  "INDEPENDENT_LOCAL_DETERMINISTIC_PROCESS",
+    "codex_calls":  0,
+    "external_llm_calls":  0,
+    "network_reads":  0,
+    "network_writes":  0,
+    "prestart_autonomous_research_events":  0,
+    "prestart_future_instance_exposure_events":  0
+}
