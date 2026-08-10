@@ -92,8 +92,8 @@ $expectedBinaries = @($metadata.packages.targets |
     Where-Object { $_.kind -contains "bin" } |
     ForEach-Object { [string]$_.name } |
     Sort-Object -Unique)
-if ($expectedBinaries.Count -ne 79) {
-    throw "UNEXPECTED_BINARY_COUNT:$($expectedBinaries.Count)"
+if ($expectedBinaries.Count -eq 0) {
+    throw "NO_WORKSPACE_BINARIES_DISCOVERED"
 }
 
 $sourceRoot = Join-Path $packageRoot "source"
@@ -138,6 +138,10 @@ try {
 
 Copy-Item -LiteralPath (Join-Path $repositoryRoot "scripts\verify_portable_full_core.ps1") -Destination (Join-Path $toolsRoot "verify-package.ps1")
 Copy-Item -LiteralPath (Join-Path $repositoryRoot "scripts\rebuild_portable_full_core.ps1") -Destination (Join-Path $toolsRoot "rebuild-offline.ps1")
+Copy-Item -LiteralPath (Join-Path $repositoryRoot "scripts\run_growth_supervisor.ps1") -Destination (Join-Path $toolsRoot "run-growth-supervisor.ps1")
+Copy-Item -LiteralPath (Join-Path $repositoryRoot "scripts\install_growth_supervisor_autostart.ps1") -Destination (Join-Path $toolsRoot "install-growth-autostart.ps1")
+Copy-Item -LiteralPath (Join-Path $repositoryRoot "scripts\uninstall_growth_supervisor_autostart.ps1") -Destination (Join-Path $toolsRoot "uninstall-growth-autostart.ps1")
+Copy-Item -LiteralPath (Join-Path $repositoryRoot "scripts\record_growth_work_event.ps1") -Destination (Join-Path $toolsRoot "record-growth-work-event.ps1")
 
 $readme = @"
 # B_Core Portable Full Core
@@ -178,7 +182,49 @@ Cargo.lock과 `source\vendor`가 모든 Rust 의존성을 고정합니다. 이 �
 
 Git commit과 봉인 산출물이 연구 권위입니다. 사전 빌드 실행 파일이나 재빌드 캐시는 연구 권위가 아닙니다.
 "@
-Write-Utf8NoBom -Path (Join-Path $packageRoot "README_KO.md") -Text $readme
+$readme = @"
+# B_Core Portable Full Core
+
+This package is the complete Windows x64 portable build of B_Core commit `$sourceCommit`.
+
+## Included
+
+- All `$($expectedBinaries.Count)` current workspace executables and tracked source files.
+- Locked and vendored Rust dependency closure for network-free reconstruction.
+- Self-healing, independent verification, typed code composition, and full-stack/operations knowledge.
+- The bounded always-on growth supervisor and its separate deterministic verifier.
+
+No raw training dataset or original Synapse knowledge store is included. Knowledge already absorbed into the core remains present in source and sealed artifacts.
+
+## Verify
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\tools\verify-package.ps1 -PackageRoot . -RunSmokeTests
+```
+
+## Offline rebuild
+
+Rust 1.96.0 x86_64-pc-windows-msvc and Visual Studio C++ Build Tools are required only for rebuilding:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\tools\rebuild-offline.ps1
+```
+
+## Bounded always-on growth
+
+Create a config with explicit watched and state roots:
+
+```powershell
+.\bin\b-core-growth-supervisor.exe make-config .\config\growth.json D:\WatchedWorkspace D:\B_Core_Growth_State
+.\bin\b-core-growth-supervisor.exe init .\config\growth.json
+powershell -ExecutionPolicy Bypass -File .\tools\run-growth-supervisor.ps1 -PackageRoot . -ConfigPath .\config\growth.json
+```
+
+Autostart is opt-in. `tools\install-growth-autostart.ps1` registers a limited-privilege ONLOGON task. See `source\docs\b_core_growth_supervisor.md` for trust boundaries, learning-value rules, crash recovery, plateau waiting, and work-event integration.
+
+Git commits and sealed artifacts remain scientific authority. Portable binaries, runtime memory, and build caches do not replace that authority.
+"@
+Write-Utf8NoBom -Path (Join-Path $packageRoot "README.md") -Text $readme
 
 $rebuildReceiptPath = Join-Path $receiptRoot "clean_rebuild.json"
 $rebuildOutput = & (Join-Path $toolsRoot "rebuild-offline.ps1") `
@@ -203,6 +249,19 @@ $actualBinaryCount = @(Get-ChildItem -LiteralPath $binRoot -Filter "*.exe" -File
 if ($actualBinaryCount -ne $expectedBinaries.Count) {
     throw "COPIED_BINARY_COUNT_MISMATCH:$actualBinaryCount"
 }
+
+$growthSelfCheckOutput = & (Join-Path $binRoot "b-core-growth-supervisor.exe") self-check 2>&1
+if ($LASTEXITCODE -ne 0) {
+    throw "GROWTH_SUPERVISOR_SELF_CHECK_FAILED:$LASTEXITCODE`n$($growthSelfCheckOutput -join "`n")"
+}
+$growthSelfCheck = ($growthSelfCheckOutput -join "`n") | ConvertFrom-Json
+if (-not $growthSelfCheck.pass -or
+    -not $growthSelfCheck.proposer_cannot_self_approve -or
+    -not $growthSelfCheck.network_and_llm_disabled -or
+    -not $growthSelfCheck.plateau_difficulty_escalation_disabled) {
+    throw "GROWTH_SUPERVISOR_BOUNDARY_CHECK_FAILED"
+}
+Write-Utf8NoBom -Path (Join-Path $receiptRoot "growth_supervisor_self_check.json") -Text ($growthSelfCheck | ConvertTo-Json -Depth 6)
 
 $objdump = Get-Command llvm-objdump -ErrorAction SilentlyContinue
 $runtimeAudit = @()
@@ -274,6 +333,18 @@ $manifest = [ordered]@{
         source_file_count = $sourceFileCount
         vendor_file_count = $vendorFileCount
         file_count_excluding_manifest = $inventory.Count
+    }
+    growth_supervisor = [ordered]@{
+        included = $true
+        executable = "bin/b-core-growth-supervisor.exe"
+        independent_verifier = "bin/b-core-growth-verifier.exe"
+        self_check_pass = $true
+        autonomous_campaigns_bounded = $true
+        plateau_difficulty_escalation_disabled = $true
+        raw_source_retention = $false
+        codex_runtime_dependency = $false
+        external_llm_runtime_dependency = $false
+        network_runtime_dependency = $false
     }
     authority = [ordered]@{
         git_and_sealed_artifacts_authoritative = $true

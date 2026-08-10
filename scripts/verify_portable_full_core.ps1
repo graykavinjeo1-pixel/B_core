@@ -103,6 +103,15 @@ if ($actualBinaries.Count -ne [int]$manifest.binaries.count -or
 if ((Compare-Object -ReferenceObject $expectedBinaries -DifferenceObject $actualBinaries).Count -ne 0) {
     throw "BINARY_NAME_SET_MISMATCH"
 }
+if ($manifest.growth_supervisor.included -ne $true -or
+    $expectedBinaries -notcontains "b-core-growth-supervisor" -or
+    $expectedBinaries -notcontains "b-core-growth-verifier" -or
+    $manifest.growth_supervisor.raw_source_retention -ne $false -or
+    $manifest.growth_supervisor.codex_runtime_dependency -ne $false -or
+    $manifest.growth_supervisor.external_llm_runtime_dependency -ne $false -or
+    $manifest.growth_supervisor.network_runtime_dependency -ne $false) {
+    throw "GROWTH_SUPERVISOR_MANIFEST_BOUNDARY_INVALID"
+}
 
 $smokeResults = @()
 if ($RunSmokeTests) {
@@ -122,6 +131,30 @@ if ($RunSmokeTests) {
                 )
             ).Replace('-', '').ToLowerInvariant()
         }
+    }
+    $growthBinary = Join-Path $root "bin\b-core-growth-supervisor.exe"
+    $growthOutput = & $growthBinary self-check 2>&1
+    $growthExitCode = $LASTEXITCODE
+    if ($growthExitCode -ne 0) {
+        throw "GROWTH_SUPERVISOR_SELF_CHECK_FAILED:exit=$growthExitCode"
+    }
+    $growthCheck = ($growthOutput -join "`n") | ConvertFrom-Json
+    if (-not $growthCheck.pass -or
+        -not $growthCheck.proposer_cannot_self_approve -or
+        -not $growthCheck.raw_source_retention_forbidden -or
+        -not $growthCheck.network_and_llm_disabled -or
+        -not $growthCheck.plateau_difficulty_escalation_disabled) {
+        throw "GROWTH_SUPERVISOR_SELF_CHECK_BOUNDARY_INVALID"
+    }
+    $smokeResults += [ordered]@{
+        binary = "b-core-growth-supervisor"
+        operation = "self-check"
+        exit_code = $growthExitCode
+        output_sha256 = [BitConverter]::ToString(
+            [Security.Cryptography.SHA256]::Create().ComputeHash(
+                [Text.Encoding]::UTF8.GetBytes(($growthOutput -join "`n"))
+            )
+        ).Replace('-', '').ToLowerInvariant()
     }
 }
 

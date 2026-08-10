@@ -314,6 +314,14 @@ path = "src/self_healing_verify_main.rs"
 name = "b-core-fullstack-ops-absorb"
 path = "src/fullstack_ops_knowledge_main.rs"
 
+[[bin]]
+name = "b-core-growth-supervisor"
+path = "src/growth_supervisor_main.rs"
+
+[[bin]]
+name = "b-core-growth-verifier"
+path = "src/growth_verifier_main.rs"
+
 [dependencies]
 dockable-semantic-core = { path = "../dockable-semantic-core", version = "0.1.0" }
 semantic-core-adapters = { path = "../semantic-core-adapters", version = "0.1.0" }
