@@ -1,0 +1,29 @@
+{
+  "ACCEPTANCE_FALSE_PASS_EVENTS": 0,
+  "PRIMARY_SECONDARY_ACCEPTANCE_DIFF": 0,
+  "decision": {
+    "ambiguous_transfer_abstentions": 2,
+    "bc_core_self_asserted_causal_success_events": 0,
+    "bc_core_self_asserted_transfer_success_events": 0,
+    "disposition": "DIRECT_EFFECT_IDENTIFICATION_LIMIT",
+    "levels": [
+      true,
+      false,
+      false,
+      false,
+      false,
+      true,
+      false,
+      true
+    ],
+    "negative_transfer_accepted": 4,
+    "positive_transfer_verified": 4,
+    "r4_direct_fn": 38,
+    "r4_direct_fp": 4,
+    "r4_direct_tp": 13,
+    "r4_mediator_as_direct": 3,
+    "schema_version": "SEM37_R4_INDEPENDENT_SECONDARY_ACCEPTANCE_1",
+    "status": "FAIL"
+  },
+  "schema_version": "SEM37_R4_INDEPENDENT_SECONDARY_ACCEPTANCE_RECEIPT_1"
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": "SEM37_R4_FINAL_SELECTION_RULE_1",
+  "causal_selection_rule": "PARETO_ZERO_FALSE_DIRECT_THEN_MIXED_AND_BEST_COMPARATOR_NONINFERIOR",
+  "transfer_selection_rule": "ZERO_NEGATIVE_THEN_POSITIVE_VERIFICATION_AND_AMBIGUOUS_ABSTENTION",
+  "selected_causal_method": "RESIDUAL512",
+  "selected_transfer_policy": {
+    "method": "INDEPENDENT_LINEAR",
+    "margin_basis_points": 0,
+    "maximum_uncertainty_millionths": 250000
+  },
+  "selection_frozen_before_final_g": true,
+  "human_selection_events": 0,
+  "outcome_dependent_policy_modifications": 0
+}

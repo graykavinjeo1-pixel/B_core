@@ -1,0 +1,6 @@
+{
+  "clean_reconstruction_pass": true,
+  "schema_version": "SEM37_R4_CLEAN_RECONSTRUCTION_1",
+  "sealed_commit_plus_toolchain_plus_local_dependency_closure": true,
+  "warm_cache_is_authority": false
+}

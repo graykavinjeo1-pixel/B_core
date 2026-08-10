@@ -1,0 +1,11 @@
+{
+  "schema_version": "SEM37_R4_CLIPPY_INVENTORY_1",
+  "historical_predecessor_warning_signatures": 22,
+  "historical_warning_kind": "clippy::manual_is_multiple_of",
+  "production_library_new_warning_signatures": 0,
+  "test_only_new_warning_signatures": 3,
+  "test_only_new_warning_kind": "clippy::assertions_on_constants",
+  "all_targets_new_warning_signatures": 3,
+  "post_final_source_repairs": 0,
+  "scientific_result_affected": false
+}
