@@ -1,0 +1,39 @@
+{
+  "continuity_task_hashes": [
+    "6b2f6a3b7960c391c3c2b0b49ef82f5b156610c09192898acb6c4e3d21d3dc3d"
+  ],
+  "defect_injection_manifest_present": false,
+  "dev_final_overlap": 0,
+  "expected_edit_present": false,
+  "final_exposure_events": 0,
+  "gold_patch_present": false,
+  "hidden_verifier_solution_present": false,
+  "materialized": false,
+  "schema_version": "B_CORE_RSI_CONTRACT_PUBLIC_INVENTORY_1",
+  "tasks": [
+    {
+      "input_level": 3,
+      "lane": "SELF_SOURCE",
+      "language": "rust",
+      "public_case_count": 2,
+      "split": "FINAL_B",
+      "task_hash": "4b47e6a62b18e3a5bb202cb3636956e815439bb02a77dac93cf7d252b3c776e1"
+    },
+    {
+      "input_level": 3,
+      "lane": "SELF_SOURCE",
+      "language": "rust",
+      "public_case_count": 2,
+      "split": "FINAL_B",
+      "task_hash": "0b556eefadbe011b85759f566fbdef357a0162d2a145728307027f60998f1462"
+    },
+    {
+      "input_level": 3,
+      "lane": "SELF_SOURCE",
+      "language": "rust",
+      "public_case_count": 2,
+      "split": "FINAL_B",
+      "task_hash": "d8e5c2810e2161d7a3b62491696d60ba6e5fcf37ee0beabc21e405f9e05ab7bc"
+    }
+  ]
+}

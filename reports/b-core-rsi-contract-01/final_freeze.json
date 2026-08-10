@@ -1,0 +1,37 @@
+{
+  "acceptance_semantics_sha256": "dab7690bea6bf3024d7dfda63694fc3dc437a309b0e0472346a5ebcb7378349c",
+  "artifact_composer_sha256": "d41e3226f96c7d9eb4111247e2ed05cc76e7e9511dec6203e27ee3c82ef818ad",
+  "authoritative_predecessor_commit": "09fe306e96711b6194eefa5b379ce775a1fe4079",
+  "budget": 4096,
+  "campaign_id": "B_CORE-RSI-CONTRACT-01",
+  "coding_graft_state_sha256": "a4e1f5dd554b10fc15089fe95df2318d1192899b2654123694e6182338d9af56",
+  "continuity_task_hashes": [
+    "6b2f6a3b7960c391c3c2b0b49ef82f5b156610c09192898acb6c4e3d21d3dc3d"
+  ],
+  "dev_final_overlap": 0,
+  "final_freeze_complete": true,
+  "final_task_hashes": [
+    "4b47e6a62b18e3a5bb202cb3636956e815439bb02a77dac93cf7d252b3c776e1",
+    "0b556eefadbe011b85759f566fbdef357a0162d2a145728307027f60998f1462",
+    "d8e5c2810e2161d7a3b62491696d60ba6e5fcf37ee0beabc21e405f9e05ab7bc"
+  ],
+  "final_task_selection_sha256": "7d8a058ea34a7914bda4ea0f41aaeb2936a0449051d151a628c1c485b1194878",
+  "freeze_sha256": "b5b12c56f7df6b85c89041be28b4888337e135ad2b0247b70d7c39630fe4b064",
+  "independent_installer_sha256": "6405c9fead94c1bf945adb3dd8762a3cc8d2f3a52236921989c6bb57d9e751a0",
+  "independent_verifier_sha256": "6405c9fead94c1bf945adb3dd8762a3cc8d2f3a52236921989c6bb57d9e751a0",
+  "instruction_bytes": 37108,
+  "instruction_sha256": "f675ed77c54ed468349daf640a90e780963fd3f23e57dcb08608e970bde523ce",
+  "outcome_dependent_policy_modifications_allowed": false,
+  "post_final_acceptance_changes": 0,
+  "post_final_diagnostic_policy_changes": 0,
+  "post_final_installer_changes": 0,
+  "post_final_patch_engine_changes": 0,
+  "post_final_repair_spec_policy_changes": 0,
+  "post_final_verifier_changes": 0,
+  "proposer_sha256": "652b18985e3c7b6bd0d6c823eaf5ad298247c4e605ca8649c9d10375a47041b7",
+  "run_final_sha256": "30369eb4f70cdbf71a00b07a6f086e83811f67f1f18d352147ab5fa4dcd5a00d",
+  "schema_version": "B_CORE_RSI_CONTRACT_FINAL_FREEZE_1",
+  "secondary_acceptance_sha256": "c7052b2bed3f90bb0005fffbd908d3136fa72fe95e3435c00a5612b7a8c64e86",
+  "seed": 12736269631307063334,
+  "self_repair_contract_module_sha256": "a90c94af2c5281774c285bece9d1503d164f27425051797d92a23a89194d9e81"
+}
