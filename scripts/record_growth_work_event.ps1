@@ -38,10 +38,10 @@ if (-not (Test-Path -LiteralPath $supervisor -PathType Leaf)) {
 }
 $config = Get-Content -LiteralPath $configPath -Raw -Encoding UTF8 | ConvertFrom-Json
 $stateRoot = [IO.Path]::GetFullPath([string]$config.state_dir)
-$controlRoot = Join-Path $stateRoot "control"
-$null = New-Item -ItemType Directory -Path $controlRoot -Force
+$controlRoot = [IO.Path]::Combine($stateRoot, "control")
+$null = [IO.Directory]::CreateDirectory($controlRoot)
 $eventId = "{0}-{1}" -f $Actor.ToLowerInvariant(), ([guid]::NewGuid().ToString("N"))
-$eventPath = Join-Path $controlRoot (".{0}.event.json" -f $eventId)
+$eventPath = [IO.Path]::Combine($controlRoot, (".{0}.event.json" -f $eventId))
 $event = [ordered]@{
     event_id = $eventId
     actor = $Actor
@@ -63,5 +63,7 @@ try {
         throw "WORK_EVENT_RECORD_FAILED:$LASTEXITCODE"
     }
 } finally {
-    Remove-Item -LiteralPath $eventPath -Force -ErrorAction SilentlyContinue
+    if ([IO.File]::Exists($eventPath)) {
+        [IO.File]::Delete($eventPath)
+    }
 }
