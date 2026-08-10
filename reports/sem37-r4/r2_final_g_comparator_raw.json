@@ -1,0 +1,503 @@
+{
+  "causal_prediction_commitment": "9ccd99b040cede7587136e54b65d21bdda558c4a19d395fb2bf25e63ca928d7d",
+  "causal_predictions": [
+    {
+      "case_id": "R4A-06d82a601f429bf89867703f",
+      "edges": [],
+      "future_predictions": [
+        {
+          "channel": 0,
+          "entity": 0,
+          "previous_value_ieee754_bits": 4617571606460366848,
+          "time": 800,
+          "value_ieee754_bits": 4617549540544297116
+        },
+        {
+          "channel": 0,
+          "entity": 1,
+          "previous_value_ieee754_bits": 4627219315798573056,
+          "time": 800,
+          "value_ieee754_bits": 4627131683575863772
+        }
+      ]
+    },
+    {
+      "case_id": "R4A-07447e7f2d297b8e9fd297cd",
+      "edges": [],
+      "future_predictions": []
+    },
+    {
+      "case_id": "R4A-077e46bf249454a012a7f42f",
+      "edges": [],
+      "future_predictions": [
+        {
+          "channel": 0,
+          "entity": 0,
+          "previous_value_ieee754_bits": 13831995355979317248,
+          "time": 800,
+          "value_ieee754_bits": 13832023185230306279
+        },
+        {
+          "channel": 0,
+          "entity": 1,
+          "previous_value_ieee754_bits": 13830360242602377216,
+          "time": 800,
+          "value_ieee754_bits": 13830481876358379558
+        }
+      ]
+    },
+    {
+      "case_id": "R4A-07ec7884c6c1d16ac33e6ee9",
+      "edges": [],
+      "future_predictions": []
+    },
+    {
+      "case_id": "R4A-0847a89eac06e556142b63a7",
+      "edges": [
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "future_predictions": [
+        {
+          "channel": 0,
+          "entity": 0,
+          "previous_value_ieee754_bits": 4611003632412786688,
+          "time": 800,
+          "value_ieee754_bits": 4610857211035664282
+        },
+        {
+          "channel": 0,
+          "entity": 1,
+          "previous_value_ieee754_bits": 4609730373251760128,
+          "time": 800,
+          "value_ieee754_bits": 4609801440398445512
+        },
+        {
+          "channel": 0,
+          "entity": 2,
+          "previous_value_ieee754_bits": 4615601059895705600,
+          "time": 800,
+          "value_ieee754_bits": 4615529989787811009
+        }
+      ]
+    },
+    {
+      "case_id": "R4A-09d60a11dd90c2c0dc3dfeea",
+      "edges": [],
+      "future_predictions": []
+    },
+    {
+      "case_id": "R4A-09f388b7200a8809724d2300",
+      "edges": [
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          2,
+          0
+        ],
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "future_predictions": [
+        {
+          "channel": 0,
+          "entity": 0,
+          "previous_value_ieee754_bits": 4596756081283170304,
+          "time": 800,
+          "value_ieee754_bits": 4602250122900381848
+        },
+        {
+          "channel": 0,
+          "entity": 1,
+          "previous_value_ieee754_bits": 13822395987571769344,
+          "time": 800,
+          "value_ieee754_bits": 13826573751243299888
+        },
+        {
+          "channel": 0,
+          "entity": 2,
+          "previous_value_ieee754_bits": 4615238922748821504,
+          "time": 800,
+          "value_ieee754_bits": 4614780968421099884
+        }
+      ]
+    },
+    {
+      "case_id": "R4A-0a2792150f0fd01f9b5c999c",
+      "edges": [
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "future_predictions": [
+        {
+          "channel": 0,
+          "entity": 0,
+          "previous_value_ieee754_bits": 13837582034152718336,
+          "time": 800,
+          "value_ieee754_bits": 13835493145072468767
+        },
+        {
+          "channel": 0,
+          "entity": 1,
+          "previous_value_ieee754_bits": 4616500528589832192,
+          "time": 800,
+          "value_ieee754_bits": 4616664252663594307
+        },
+        {
+          "channel": 0,
+          "entity": 2,
+          "previous_value_ieee754_bits": 4615997020983787520,
+          "time": 800,
+          "value_ieee754_bits": 4615914314265272972
+        }
+      ]
+    },
+    {
+      "case_id": "R4A-0a4ce84aab4efb933c039d63",
+      "edges": [
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          1,
+          2,
+          0
+        ],
+        [
+          2,
+          1,
+          0
+        ]
+      ],
+      "future_predictions": [
+        {
+          "channel": 0,
+          "entity": 0,
+          "previous_value_ieee754_bits": 4591138381634732032,
+          "time": 800,
+          "value_ieee754_bits": 4591450554741072381
+        },
+        {
+          "channel": 0,
+          "entity": 1,
+          "previous_value_ieee754_bits": 4590089639741620224,
+          "time": 800,
+          "value_ieee754_bits": 4589729498650526099
+        },
+        {
+          "channel": 0,
+          "entity": 2,
+          "previous_value_ieee754_bits": 13813910631138459648,
+          "time": 800,
+          "value_ieee754_bits": 13814260891821693616
+        }
+      ]
+    },
+    {
+      "case_id": "R4A-0ac85d9cdbb3969299d37edf",
+      "edges": [],
+      "future_predictions": [
+        {
+          "channel": 0,
+          "entity": 0,
+          "previous_value_ieee754_bits": 13847049926632013824,
+          "time": 800,
+          "value_ieee754_bits": 13847052782387851043
+        },
+        {
+          "channel": 0,
+          "entity": 1,
+          "previous_value_ieee754_bits": 4624678711109615616,
+          "time": 800,
+          "value_ieee754_bits": 4624826254418523322
+        }
+      ]
+    },
+    {
+      "case_id": "R4A-0adde03735a2193836770263",
+      "edges": [
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "future_predictions": [
+        {
+          "channel": 0,
+          "entity": 0,
+          "previous_value_ieee754_bits": 13826776967493451776,
+          "time": 800,
+          "value_ieee754_bits": 13826712229871721172
+        },
+        {
+          "channel": 0,
+          "entity": 1,
+          "previous_value_ieee754_bits": 13822532618534518784,
+          "time": 800,
+          "value_ieee754_bits": 13822950827849004166
+        },
+        {
+          "channel": 0,
+          "entity": 2,
+          "previous_value_ieee754_bits": 4590379492052041728,
+          "time": 800,
+          "value_ieee754_bits": 4591669205814562893
+        }
+      ]
+    },
+    {
+      "case_id": "R4A-0cc6f85e5d638dbb4f810aec",
+      "edges": [
+        [
+          1,
+          2,
+          0
+        ],
+        [
+          2,
+          1,
+          0
+        ]
+      ],
+      "future_predictions": [
+        {
+          "channel": 0,
+          "entity": 0,
+          "previous_value_ieee754_bits": 4611342115027288064,
+          "time": 800,
+          "value_ieee754_bits": 4611384657003297234
+        },
+        {
+          "channel": 0,
+          "entity": 1,
+          "previous_value_ieee754_bits": 4608577245936615424,
+          "time": 800,
+          "value_ieee754_bits": 4608673491494276845
+        },
+        {
+          "channel": 0,
+          "entity": 2,
+          "previous_value_ieee754_bits": 13824110089155379200,
+          "time": 800,
+          "value_ieee754_bits": 13822976047454535664
+        }
+      ]
+    },
+    {
+      "case_id": "R4A-7c4103db5544765f634134e1",
+      "edges": [
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          1,
+          2,
+          0
+        ],
+        [
+          2,
+          1,
+          0
+        ]
+      ],
+      "future_predictions": [
+        {
+          "channel": 0,
+          "entity": 0,
+          "previous_value_ieee754_bits": 4608496432905715712,
+          "time": 800,
+          "value_ieee754_bits": 4608648004810700188
+        },
+        {
+          "channel": 0,
+          "entity": 1,
+          "previous_value_ieee754_bits": 4602035716002676736,
+          "time": 800,
+          "value_ieee754_bits": 4601558770186459588
+        },
+        {
+          "channel": 0,
+          "entity": 2,
+          "previous_value_ieee754_bits": 13818366690309701632,
+          "time": 800,
+          "value_ieee754_bits": 13819347446547461845
+        }
+      ]
+    },
+    {
+      "case_id": "R4A-7f16488f344f9d9fb8eeee69",
+      "edges": [
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "future_predictions": [
+        {
+          "channel": 0,
+          "entity": 0,
+          "previous_value_ieee754_bits": 4607599920759701504,
+          "time": 800,
+          "value_ieee754_bits": 4616672423784058707
+        },
+        {
+          "channel": 0,
+          "entity": 1,
+          "previous_value_ieee754_bits": 4632088920727748608,
+          "time": 800,
+          "value_ieee754_bits": 4630449983774270044
+        },
+        {
+          "channel": 0,
+          "entity": 2,
+          "previous_value_ieee754_bits": 13817107303893041152,
+          "time": 800,
+          "value_ieee754_bits": 13816774406340469713
+        }
+      ]
+    }
+  ],
+  "transfer_prediction_commitment": "f27941c37bf1734286e37f999647e372cad4d0ad60703c96cbf9dcea01b254b2",
+  "transfer_predictions": [
+    {
+      "case_id": "R4B-00252ac26bc4a5c89f347ba4",
+      "negative_transfer_attempt": true,
+      "predicted_y_ieee754_bits": [
+        4601575346511282176
+      ],
+      "promoted_transfer": false
+    },
+    {
+      "case_id": "R4B-00253df3c361639e4647e703",
+      "negative_transfer_attempt": true,
+      "predicted_y_ieee754_bits": [
+        13826581094973046784
+      ],
+      "promoted_transfer": false
+    },
+    {
+      "case_id": "R4B-0026a1e954c1febab8537402",
+      "negative_transfer_attempt": true,
+      "predicted_y_ieee754_bits": [
+        13827128365611483136
+      ],
+      "promoted_transfer": false
+    },
+    {
+      "case_id": "R4B-0027e5b6edc204eb1a64b718",
+      "negative_transfer_attempt": true,
+      "predicted_y_ieee754_bits": [
+        13826955188235141120
+      ],
+      "promoted_transfer": false
+    },
+    {
+      "case_id": "R4B-0028c20b513891ea64d3eada",
+      "negative_transfer_attempt": true,
+      "predicted_y_ieee754_bits": [
+        4582213825066958848
+      ],
+      "promoted_transfer": false
+    },
+    {
+      "case_id": "R4B-0029bb3112439adc7e9a17c8",
+      "negative_transfer_attempt": true,
+      "predicted_y_ieee754_bits": [
+        13827506059666784256
+      ],
+      "promoted_transfer": false
+    },
+    {
+      "case_id": "R4B-00323e0017d6aa6cb7f4140a",
+      "negative_transfer_attempt": true,
+      "predicted_y_ieee754_bits": [
+        13825300095207211008
+      ],
+      "promoted_transfer": false
+    },
+    {
+      "case_id": "R4B-003443c1b6d4d2d2089cc028",
+      "negative_transfer_attempt": true,
+      "predicted_y_ieee754_bits": [
+        13815675422999838720
+      ],
+      "promoted_transfer": false
+    },
+    {
+      "case_id": "R4B-0297a4fff6e80faeb3ca1e0e",
+      "negative_transfer_attempt": true,
+      "predicted_y_ieee754_bits": [
+        4593616259936944128
+      ],
+      "promoted_transfer": false
+    },
+    {
+      "case_id": "R4B-02d20fcac3e22fd1fb945c4a",
+      "negative_transfer_attempt": true,
+      "predicted_y_ieee754_bits": [
+        0
+      ],
+      "promoted_transfer": false
+    },
+    {
+      "case_id": "R4B-0346934c7d565657c781d974",
+      "negative_transfer_attempt": true,
+      "predicted_y_ieee754_bits": [
+        0
+      ],
+      "promoted_transfer": false
+    },
+    {
+      "case_id": "R4B-036a88219671c5a5e324fd32",
+      "negative_transfer_attempt": true,
+      "predicted_y_ieee754_bits": [
+        4589405064367439872
+      ],
+      "promoted_transfer": false
+    }
+  ]
+}
