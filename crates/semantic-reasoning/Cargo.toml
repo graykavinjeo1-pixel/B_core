@@ -283,6 +283,18 @@ name = "sem36-run"
 path = "src/sem36_main.rs"
 
 [[bin]]
+name = "sem37-r6-run"
+path = "src/sem37_r6_main.rs"
+
+[[bin]]
+name = "sem37-r6-finalize"
+path = "src/sem37_r6_finalize_main.rs"
+
+[[bin]]
+name = "sem37-r6-verify"
+path = "src/sem37_r6_verify_main.rs"
+
+[[bin]]
 name = "core-x0-evaluate"
 path = "src/core_x0_main.rs"
 

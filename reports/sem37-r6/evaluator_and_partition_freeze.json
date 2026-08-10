@@ -1,0 +1,21 @@
+{
+  "concrete_final_case_ids_exposed_to_bcore": 0,
+  "dev_contract_pass": true,
+  "dev_manifest_sha256": "0d0f6c2ea2053e25f3717f285c6be76f694bfd13ef5d68de93b5d5b374e87d94",
+  "dev_worlds": 16,
+  "evaluator_protocol_alias_sha256": "4fb68c89c9e4840f9f6b83389ec77e13c6655a2e201749a2dfa0f6abb6587dd9",
+  "evaluator_sha256": "6d6c7d9d2415bb8b725d17197eb2be805abe367deefc69f7cad3c6051ae80359",
+  "final_holdout_model_dependent_selection_events": 0,
+  "interaction_classification_rule": "POLYNOMIAL_SUFFIX_SSE_X10_LE_ADDITIVE_SUFFIX_SSE_X9_AND_HIDDEN_SUFFIX_CONFIRMATION",
+  "joint_intervention_available_cases": 0,
+  "mediator_intervention_available_cases": 0,
+  "partition_rule": "SEM37_R6_HASH_ORDERED_UNUSED_DOTIME_MECHANISM_STRATIFIED_V1",
+  "prestart_future_instance_exposure_events": 0,
+  "reserved_final_contract_pass": true,
+  "reserved_final_selection_commitment": "1ed9e2d1ede80b8d7ec46ee065bd40cee73d1219c98e80a344838b2cec371b3d",
+  "selection_receipt_sha256": "84779633a59a69c6c3e794e55ca35635e360619135ce9a3fb018a185a8dc8cbe",
+  "status": "FROZEN_BEFORE_DEV",
+  "third_party_suite": "DoTime dot-Identifiability-v1 + dot-Continuous-v1",
+  "unsupported_cross_world_assumption_events": 0,
+  "whole_mediation_estimator_transplants": 0
+}
