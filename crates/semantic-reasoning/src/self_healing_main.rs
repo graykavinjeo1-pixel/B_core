@@ -4,7 +4,9 @@ use std::io::Write;
 use std::path::{Path, PathBuf};
 
 use semantic_reasoning::self_healing_pipeline::{
-    ingest_operator_teaching, run_self_healing_request, RepairLearningPromotionRequest,
+    begin_operator_teaching, ingest_operator_teaching, ingest_provisional_teaching,
+    run_provisional_transfer_request, run_self_healing_request, BeginOperatorTeachingRequest,
+    ProvisionalPromotionRequest, ProvisionalTransferRunnerRequest, RepairLearningPromotionRequest,
     SelfHealingRunnerRequest,
 };
 
@@ -21,14 +23,16 @@ fn run() -> Result<(), String> {
         .next()
         .and_then(|value| value.into_string().ok())
         .ok_or_else(|| {
-            "USAGE:<--attempt|--promote> <request.json> <immutable-result.json>".to_string()
+            "USAGE:<--attempt|--begin-teaching|--attempt-transfer|--promote-provisional|--promote> <request.json> <immutable-result.json>".to_string()
         })?;
-    let request_path = args.next().map(PathBuf::from).ok_or_else(|| {
-        "USAGE:<--attempt|--promote> <request.json> <immutable-result.json>".to_string()
-    })?;
-    let result_path = args.next().map(PathBuf::from).ok_or_else(|| {
-        "USAGE:<--attempt|--promote> <request.json> <immutable-result.json>".to_string()
-    })?;
+    let request_path = args
+        .next()
+        .map(PathBuf::from)
+        .ok_or_else(|| "REQUEST_PATH_MISSING".to_string())?;
+    let result_path = args
+        .next()
+        .map(PathBuf::from)
+        .ok_or_else(|| "RESULT_PATH_MISSING".to_string())?;
     if args.next().is_some() {
         return Err("UNEXPECTED_ARGUMENT".to_string());
     }
@@ -46,6 +50,27 @@ fn run() -> Result<(), String> {
             let request: SelfHealingRunnerRequest = serde_json::from_slice(&request_bytes)
                 .map_err(|error| format!("REQUEST_JSON:{error}"))?;
             serde_json::to_vec_pretty(&run_self_healing_request(request)?)
+                .map_err(|error| format!("RESULT_JSON:{error}"))?
+        }
+        "--begin-teaching" => {
+            let request: BeginOperatorTeachingRequest = serde_json::from_slice(&request_bytes)
+                .map_err(|error| format!("REQUEST_JSON:{error}"))?;
+            serde_json::to_vec_pretty(
+                &begin_operator_teaching(request.lesson, &request.teaching)
+                    .map_err(|error| format!("LESSON_BEGIN:{error:?}"))?,
+            )
+            .map_err(|error| format!("RESULT_JSON:{error}"))?
+        }
+        "--attempt-transfer" => {
+            let request: ProvisionalTransferRunnerRequest = serde_json::from_slice(&request_bytes)
+                .map_err(|error| format!("REQUEST_JSON:{error}"))?;
+            serde_json::to_vec_pretty(&run_provisional_transfer_request(request)?)
+                .map_err(|error| format!("RESULT_JSON:{error}"))?
+        }
+        "--promote-provisional" => {
+            let request: ProvisionalPromotionRequest = serde_json::from_slice(&request_bytes)
+                .map_err(|error| format!("REQUEST_JSON:{error}"))?;
+            serde_json::to_vec_pretty(&ingest_provisional_teaching(request)?)
                 .map_err(|error| format!("RESULT_JSON:{error}"))?
         }
         "--promote" => {

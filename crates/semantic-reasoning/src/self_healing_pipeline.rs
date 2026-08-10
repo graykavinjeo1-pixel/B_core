@@ -10,8 +10,8 @@ use std::collections::{BTreeMap, BTreeSet};
 use serde::{Deserialize, Serialize};
 
 use crate::self_repair_contract::{
-    sha256, validate_installation_authority, DefectContractIR, Frozen, ObservationIR,
-    PatchCandidateIR, RepairSpecIR, VerificationDecision, VerificationReceipt,
+    sha256, validate_installation_authority, DefectContractIR, Frozen, InstallationGateError,
+    ObservationIR, PatchCandidateIR, RepairSpecIR, VerificationDecision, VerificationReceipt,
 };
 
 pub const PIPELINE_SCHEMA: &str = "B_CORE_SELF_HEALING_PIPELINE_1";
@@ -352,6 +352,14 @@ pub struct FreshTransferReceipt {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ProvisionalRepairLesson {
+    pub lesson: Frozen<RepairLessonIR>,
+    pub teaching_scenario_sha256: String,
+    pub teaching_receipt_sha256: String,
+    pub authoritative_install_eligible: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct PromotedRepairLesson {
     pub lesson: Frozen<RepairLessonIR>,
     pub teaching_scenario_sha256: String,
@@ -385,11 +393,10 @@ pub enum LessonPromotionError {
     TransferRegressionFailed,
 }
 
-pub fn promote_operator_lesson(
+pub fn begin_operator_teaching(
     lesson: RepairLessonIR,
     teaching: &OperatorTeachingReceipt,
-    transfers: &[FreshTransferReceipt],
-) -> Result<PromotedRepairLesson, LessonPromotionError> {
+) -> Result<ProvisionalRepairLesson, LessonPromotionError> {
     if lesson.exact_patch_data_present
         || lesson.exact_repository_identity_present
         || lesson.exact_task_identity_present
@@ -413,13 +420,31 @@ pub fn promote_operator_lesson(
     if !teaching.operator_patch_installed_in_isolation || !teaching.post_install_regression_passed {
         return Err(LessonPromotionError::TeachingRepairNotInstalledAndRegated);
     }
+    let teaching_receipt_sha256 = sha256(
+        &serde_json::to_vec(teaching)
+            .map_err(|_| LessonPromotionError::TeachingRepairNotVerified)?,
+    );
+    let lesson = Frozen::new(lesson)
+        .map_err(|_| LessonPromotionError::LessonContainsExactSolutionAuthority)?;
+    Ok(ProvisionalRepairLesson {
+        lesson,
+        teaching_scenario_sha256: teaching.scenario_sha256.clone(),
+        teaching_receipt_sha256,
+        authoritative_install_eligible: false,
+    })
+}
+
+pub fn promote_provisional_lesson(
+    provisional: ProvisionalRepairLesson,
+    transfers: &[FreshTransferReceipt],
+) -> Result<PromotedRepairLesson, LessonPromotionError> {
     if transfers.len() < MIN_FRESH_TRANSFER_CASES {
         return Err(LessonPromotionError::InsufficientFreshTransfer);
     }
 
     let mut scenario_hashes = BTreeSet::new();
     for transfer in transfers {
-        if transfer.scenario_sha256 == teaching.scenario_sha256 {
+        if transfer.scenario_sha256 == provisional.teaching_scenario_sha256 {
             return Err(LessonPromotionError::ReusedTeachingScenario);
         }
         if !scenario_hashes.insert(transfer.scenario_sha256.clone()) {
@@ -442,17 +467,24 @@ pub fn promote_operator_lesson(
         }
     }
 
-    let lesson = Frozen::new(lesson)
-        .map_err(|_| LessonPromotionError::LessonContainsExactSolutionAuthority)?;
     Ok(PromotedRepairLesson {
-        lesson,
-        teaching_scenario_sha256: teaching.scenario_sha256.clone(),
+        lesson: provisional.lesson,
+        teaching_scenario_sha256: provisional.teaching_scenario_sha256,
         fresh_transfer_scenario_sha256: scenario_hashes.into_iter().collect(),
         independent_transfer_verifications: transfers.len(),
         exact_patch_lookup_events: 0,
         task_identity_routing_events: 0,
         repository_identity_routing_events: 0,
     })
+}
+
+pub fn promote_operator_lesson(
+    lesson: RepairLessonIR,
+    teaching: &OperatorTeachingReceipt,
+    transfers: &[FreshTransferReceipt],
+) -> Result<PromotedRepairLesson, LessonPromotionError> {
+    let provisional = begin_operator_teaching(lesson, teaching)?;
+    promote_provisional_lesson(provisional, transfers)
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -481,11 +513,34 @@ pub struct CoreRepairAttempt {
     pub activated_composition_id: Option<String>,
     pub activated_primitive_ids: Vec<String>,
     pub primitive_recombinations: usize,
+    pub provisional_transfer_only: bool,
     pub core_self_approval_events: usize,
     pub exact_patch_lookup_events: usize,
     pub task_identity_routing_events: usize,
     pub repository_identity_routing_events: usize,
     pub capability_gap: Option<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum SelfHealingInstallationGateError {
+    ProvisionalTransferOnly,
+    MissingPatchCandidate,
+    RsiGate(InstallationGateError),
+}
+
+pub fn validate_self_healing_installation(
+    attempt: &CoreRepairAttempt,
+    receipt: &VerificationReceipt,
+) -> Result<(), SelfHealingInstallationGateError> {
+    if attempt.provisional_transfer_only {
+        return Err(SelfHealingInstallationGateError::ProvisionalTransferOnly);
+    }
+    let patch = attempt
+        .patch_candidate
+        .as_ref()
+        .ok_or(SelfHealingInstallationGateError::MissingPatchCandidate)?;
+    validate_installation_authority(patch, receipt)
+        .map_err(SelfHealingInstallationGateError::RsiGate)
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -513,6 +568,35 @@ pub struct RepairLearningPromotionRequest {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct BeginOperatorTeachingRequest {
+    pub lesson: RepairLessonIR,
+    pub teaching: OperatorTeachingReceipt,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ProvisionalTransferRunnerRequest {
+    pub request: CoreRepairRequest,
+    pub provisional: ProvisionalRepairLesson,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ProvisionalTransferRunnerResult {
+    pub schema: String,
+    pub request_sha256: String,
+    pub provisional_lesson_sha256: String,
+    pub attempt: CoreRepairAttempt,
+    pub original_source_write_events: usize,
+    pub authoritative_install_eligible: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ProvisionalPromotionRequest {
+    pub memory: RepairLearningMemory,
+    pub provisional: ProvisionalRepairLesson,
+    pub transfers: Vec<FreshTransferReceipt>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct RepairLearningPromotionResult {
     pub schema: String,
     pub promoted_lesson_sha256: String,
@@ -528,7 +612,20 @@ pub struct RepairLearningPromotionResult {
 pub fn ingest_operator_teaching(
     request: RepairLearningPromotionRequest,
 ) -> Result<RepairLearningPromotionResult, String> {
-    let promoted = promote_operator_lesson(request.lesson, &request.teaching, &request.transfers)
+    let provisional = begin_operator_teaching(request.lesson, &request.teaching)
+        .map_err(|error| format!("LESSON_BEGIN:{error:?}"))?;
+    ingest_provisional_teaching(ProvisionalPromotionRequest {
+        memory: request.memory,
+        provisional,
+        transfers: request.transfers,
+    })
+}
+
+pub fn ingest_provisional_teaching(
+    request: ProvisionalPromotionRequest,
+) -> Result<RepairLearningPromotionResult, String> {
+    let transfer_count = request.transfers.len();
+    let promoted = promote_provisional_lesson(request.provisional, &request.transfers)
         .map_err(|error| format!("LESSON_PROMOTION:{error:?}"))?;
     if request
         .memory
@@ -556,7 +653,7 @@ pub fn ingest_operator_teaching(
     memory.operator_teaching_events = memory.operator_teaching_events.saturating_add(1);
     memory.successful_fresh_transfer_events = memory
         .successful_fresh_transfer_events
-        .saturating_add(request.transfers.len());
+        .saturating_add(transfer_count);
     memory.promoted_lessons.push(promoted);
     Ok(RepairLearningPromotionResult {
         schema: PIPELINE_SCHEMA.to_string(),
@@ -568,6 +665,26 @@ pub fn ingest_operator_teaching(
         exact_patch_lookup_events: 0,
         task_identity_routing_events: 0,
         repository_identity_routing_events: 0,
+    })
+}
+
+pub fn run_provisional_transfer_request(
+    runner_request: ProvisionalTransferRunnerRequest,
+) -> Result<ProvisionalTransferRunnerResult, String> {
+    let request_sha256 = sha256(
+        &serde_json::to_vec(&runner_request.request)
+            .map_err(|error| format!("REQUEST_SERIALIZE:{error}"))?,
+    );
+    let provisional_lesson_sha256 = runner_request.provisional.lesson.sha256.clone();
+    let attempt =
+        attempt_provisional_transfer(&runner_request.request, &runner_request.provisional);
+    Ok(ProvisionalTransferRunnerResult {
+        schema: PIPELINE_SCHEMA.to_string(),
+        request_sha256,
+        provisional_lesson_sha256,
+        attempt,
+        original_source_write_events: 0,
+        authoritative_install_eligible: false,
     })
 }
 
@@ -597,6 +714,31 @@ pub fn attempt_core_repair(
     request: &CoreRepairRequest,
     memory: &RepairLearningMemory,
 ) -> CoreRepairAttempt {
+    let Some(lesson) = memory
+        .promoted_lessons
+        .iter()
+        .find(|candidate| candidate.lesson.value.defect_class == request.defect_class)
+    else {
+        return empty_attempt(
+            RepairAttemptStatus::NoApplicableLesson,
+            "NO_PROMOTED_GENERALIZED_LESSON",
+        );
+    };
+    attempt_with_lesson(request, &lesson.lesson, false)
+}
+
+pub fn attempt_provisional_transfer(
+    request: &CoreRepairRequest,
+    provisional: &ProvisionalRepairLesson,
+) -> CoreRepairAttempt {
+    attempt_with_lesson(request, &provisional.lesson, true)
+}
+
+fn attempt_with_lesson(
+    request: &CoreRepairRequest,
+    lesson: &Frozen<RepairLessonIR>,
+    provisional_transfer_only: bool,
+) -> CoreRepairAttempt {
     if request.attempt >= request.max_attempts.max(1) {
         return empty_attempt(
             RepairAttemptStatus::BoundedAttemptExhausted,
@@ -612,16 +754,12 @@ pub fn attempt_core_repair(
             "FROZEN_INPUT_INTEGRITY_FAILURE",
         );
     }
-    let Some(lesson) = memory
-        .promoted_lessons
-        .iter()
-        .find(|candidate| candidate.lesson.value.defect_class == request.defect_class)
-    else {
+    if !lesson.integrity_valid() || lesson.value.defect_class != request.defect_class {
         return empty_attempt(
             RepairAttemptStatus::NoApplicableLesson,
-            "NO_PROMOTED_GENERALIZED_LESSON",
+            "LESSON_INTEGRITY_OR_CLASS_MISMATCH",
         );
-    };
+    }
 
     let transformed = match request.defect_class {
         DefectClass::ManualRemainderPredicate => {
@@ -649,27 +787,16 @@ pub fn attempt_core_repair(
     };
     CoreRepairAttempt {
         status: RepairAttemptStatus::CandidateProposed,
-        matched_lesson_sha256: Some(lesson.lesson.sha256.clone()),
+        matched_lesson_sha256: Some(lesson.sha256.clone()),
         candidate_source: Some(candidate_source),
         candidate_diff: Some(candidate_diff),
         patch_candidate: Some(patch_candidate),
         changed_line_count: changed_lines,
         activated_file_count: 1,
-        activated_composition_id: Some(
-            lesson
-                .lesson
-                .value
-                .composition_lesson
-                .composition_id
-                .clone(),
-        ),
-        activated_primitive_ids: lesson
-            .lesson
-            .value
-            .composition_lesson
-            .execution_order
-            .clone(),
-        primitive_recombinations: lesson.lesson.value.composition_lesson.edges.len(),
+        activated_composition_id: Some(lesson.value.composition_lesson.composition_id.clone()),
+        activated_primitive_ids: lesson.value.composition_lesson.execution_order.clone(),
+        primitive_recombinations: lesson.value.composition_lesson.edges.len(),
+        provisional_transfer_only,
         core_self_approval_events: 0,
         exact_patch_lookup_events: 0,
         task_identity_routing_events: 0,
@@ -690,6 +817,7 @@ fn empty_attempt(status: RepairAttemptStatus, reason: &str) -> CoreRepairAttempt
         activated_composition_id: None,
         activated_primitive_ids: vec![],
         primitive_recombinations: 0,
+        provisional_transfer_only: false,
         core_self_approval_events: 0,
         exact_patch_lookup_events: 0,
         task_identity_routing_events: 0,
@@ -1134,6 +1262,7 @@ mod tests {
             assert_eq!(result.exact_patch_lookup_events, 0);
             assert_eq!(result.task_identity_routing_events, 0);
             assert_eq!(result.repository_identity_routing_events, 0);
+            assert!(!result.provisional_transfer_only);
             assert_eq!(
                 result.activated_composition_id.as_deref(),
                 Some("COMPOSE_REMAINDER_CANONICALIZATION_V1")
@@ -1181,6 +1310,50 @@ mod tests {
         assert_eq!(result.core_self_approval_events, 0);
         assert!(!result.request_sha256.is_empty());
         assert!(!result.memory_sha256.is_empty());
+    }
+
+    #[test]
+    fn provisional_lesson_breaks_the_promotion_cycle_without_install_authority() {
+        let teaching_request = frozen_request("fn teaching(x: usize) -> bool { x % 2 == 0 }\n");
+        let teaching_patch = candidate("operator-patch", &teaching_request.repair_spec.sha256);
+        let teaching = OperatorTeachingReceipt {
+            operator_identity: "codex-operator-teacher".into(),
+            scenario_sha256: "teaching-scenario".into(),
+            defect_contract_sha256: teaching_request.defect_contract.sha256.clone(),
+            verification_receipt: verification(
+                &teaching_patch,
+                &teaching_request.defect_contract.sha256,
+                "teaching",
+            ),
+            patch_candidate: teaching_patch,
+            operator_patch_installed_in_isolation: true,
+            post_install_regression_passed: true,
+        };
+        let provisional = begin_operator_teaching(lesson(), &teaching).expect("provisional lesson");
+        assert!(!provisional.authoritative_install_eligible);
+
+        let transfer_request = frozen_request("fn fresh(x: usize) -> bool { x % 13 == 0 }\n");
+        let result = run_provisional_transfer_request(ProvisionalTransferRunnerRequest {
+            request: transfer_request.clone(),
+            provisional,
+        })
+        .expect("provisional transfer");
+        assert_eq!(
+            result.attempt.status,
+            RepairAttemptStatus::CandidateProposed
+        );
+        assert!(result.attempt.provisional_transfer_only);
+        assert!(!result.authoritative_install_eligible);
+        let patch = result.attempt.patch_candidate.as_ref().expect("candidate");
+        let receipt = verification(
+            patch,
+            &transfer_request.defect_contract.sha256,
+            "fresh-transfer",
+        );
+        assert_eq!(
+            validate_self_healing_installation(&result.attempt, &receipt),
+            Err(SelfHealingInstallationGateError::ProvisionalTransferOnly)
+        );
     }
 
     #[test]
