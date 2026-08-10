@@ -307,6 +307,14 @@ name = "sem37-r3-finalize"
 path = "src/sem37_r3_finalize_main.rs"
 
 [[bin]]
+name = "sem37-r4-run"
+path = "src/sem37_r4_main.rs"
+
+[[bin]]
+name = "sem37-r4-finalize"
+path = "src/sem37_r4_finalize_main.rs"
+
+[[bin]]
 name = "core-x0-evaluate"
 path = "src/core_x0_main.rs"
 

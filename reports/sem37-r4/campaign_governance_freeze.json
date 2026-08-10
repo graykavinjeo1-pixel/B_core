@@ -1,0 +1,49 @@
+{
+  "schema_version": "SEM37_R4_CAMPAIGN_GOVERNANCE_FREEZE_1",
+  "campaign_governance_frozen": true,
+  "contains_dev_or_final_results": false,
+  "authoritative_predecessor": "b33386e7a8793c5c27e2c2df3e19db0e6e04d0f4",
+  "historical_r2_comparator_commit": "73dab667e9f009025c969a4c025ca3c40519c1da",
+  "historical_r3_comparator_commit": "c7c399ef53829f21040722042b77ac3702019a92",
+  "historical_r3_final_freeze_commit": "3dc954a5bc9551548622a3d1d8171a5bda79fe9b",
+  "seed": 3704202608,
+  "budget": 4096,
+  "candidate_family_generation_rules": {
+    "causal": "EIGHT_FROZEN_RESIDUAL_COMPONENT_THRESHOLDS",
+    "transfer": "FIVE_METHODS_X_FIVE_MARGINS_X_FIVE_UNCERTAINTY_CEILINGS"
+  },
+  "multi_objective_selection_method": {
+    "causal": "PARETO_ZERO_FALSE_DIRECT_THEN_MIXED_AND_BEST_COMPARATOR_NONINFERIOR",
+    "transfer": "ZERO_NEGATIVE_THEN_POSITIVE_VERIFICATION_AND_AMBIGUOUS_ABSTENTION"
+  },
+  "final_holdout_selection_rule": "SEM37_R4_HASH_ORDERED_FIRST_CONTRACT_SATISFYING_UNUSED_PARTITION_V1",
+  "final_holdout_model_dependent_selection_allowed": false,
+  "final_fixture_contract": {
+    "causal": [
+      "DIRECT",
+      "MEDIATED",
+      "COMMON_CAUSE",
+      "MIXED_DIRECT_MEDIATED",
+      "PARTIAL_IDENTIFIABILITY"
+    ],
+    "transfer_minimum_each": {
+      "beneficial": 3,
+      "harmful": 3,
+      "ambiguous": 3
+    }
+  },
+  "numeric_authority": "RAW_INTEGER_COUNTS_EXACT_RATIONAL_CROSS_PRODUCTS_AND_IEEE754_BITS",
+  "resource_accounting": "EXPLICIT_CANDIDATE_AND_EVALUATION_COUNTS",
+  "dev_final_partition_method": "PRIVATE_UNUSED_IDENTITY_HASH_ORDER_WITH_RESERVED_FINAL_COMMITMENT",
+  "engine_sha256": "e098904ba47fad04f5f4332f39911bb5292c05eb694ee3b932daa55ad6f35237",
+  "ontology_sha256": "25411dace76c1ca2902b231642f2b4f5055f5848ee7640105d3dc373e2d69231",
+  "campaign_sha256": "b1bd283ea3fa0028547c8779db26940d3621ac51fbedec8ed0a94aaf76e5907d",
+  "acceptance_sha256": "20b19c07848d379dcf61195b38bd3805c24b7b1d55dbaecc243516775e9030f8",
+  "verifier_sha256": "469ef698bc885dfb493461a7055eafceb2def577cd9f1d3cd9ad65776b642579",
+  "adapter_sha256": "1e7de634351227474c58fbe65a44ecc508b03af7df69aeb8c2332d863a1d664f",
+  "external_evaluator_sha256": "0b05af95b6e17f460de427184cd956249f7fb420480f478ed6706040a6075718",
+  "outcome_dependent_policy_modifications_allowed": false,
+  "post_final_scientific_mutation_allowed": false,
+  "prestart_autonomous_research_events": 0,
+  "prestart_future_instance_exposure_events": 0
+}

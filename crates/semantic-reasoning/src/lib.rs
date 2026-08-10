@@ -41,6 +41,7 @@ pub mod sem37_r1;
 #[allow(clippy::needless_range_loop, clippy::unnecessary_cast)]
 pub mod sem37_r2;
 pub mod sem37_r3;
+pub mod sem37_r4;
 pub mod sem4;
 pub mod sem5;
 pub mod sem6;
