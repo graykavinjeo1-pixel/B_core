@@ -1,0 +1,32 @@
+{
+  "ACCEPTANCE_FALSE_PASS_EVENTS": 0,
+  "PRIMARY_SECONDARY_ACCEPTANCE_DIFF": 0,
+  "decision": {
+    "deterministic_recomputation_diff": 0,
+    "disposition": "MEDIATION_IDENTIFICATION_LIMIT",
+    "levels": {
+      "A": true,
+      "B": false,
+      "C": true,
+      "D": true,
+      "E": false,
+      "F": false,
+      "G": false,
+      "H": true
+    },
+    "negative_transfer_accepted": 8,
+    "positive_transfer_verified": 6,
+    "r2_direct_fn": 22,
+    "r2_direct_fp": 3,
+    "r2_direct_tp": 13,
+    "r3_common_cause_as_direct": 0,
+    "r3_direct_fn": 22,
+    "r3_direct_fp": 3,
+    "r3_direct_tp": 13,
+    "r3_mediator_as_direct": 3,
+    "schema_version": "SEM37_R3_INDEPENDENT_SECONDARY_ACCEPTANCE_1",
+    "status": "FAIL",
+    "verifier_runner_numeric_transport_equivalence": true
+  },
+  "schema_version": "SEM37_R3_INDEPENDENT_SECONDARY_ACCEPTANCE_RECEIPT_1"
+}
