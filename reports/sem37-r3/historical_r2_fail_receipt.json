@@ -1,0 +1,21 @@
+{
+  "schema_version": "SEM37_R3_HISTORICAL_R2_FAIL_RECEIPT_1",
+  "historical_r2_status": "FAIL",
+  "historical_r2_disposition": "EXTERNAL_DIRECT_CAUSAL_STRUCTURE_PRECISION_LIMIT",
+  "historical_r2_final_commit": "73dab667e9f009025c969a4c025ca3c40519c1da",
+  "historical_r2_raw_final_commit": "aff0ffcc54c23435417c58d6e7a6534bfd575c00",
+  "historical_r2_is_immutable": true,
+  "historical_r2_is_authoritative_predecessor": false,
+  "authoritative_predecessor_commit": "b33386e7a8793c5c27e2c2df3e19db0e6e04d0f4",
+  "frozen_r2_method": "PAIRWISE_TRIAD_STABLE_ABLATION_MDL",
+  "lane_a_direct_tp": 12,
+  "lane_a_direct_fp": 4,
+  "lane_a_direct_fn": 29,
+  "lane_a_direct_precision": {"numerator": 12, "denominator": 16},
+  "mediator_as_direct_misidentifications": 4,
+  "common_cause_as_direct_misidentifications": 0,
+  "negative_transfer_attempts": 13,
+  "negative_transfer_prevented": 13,
+  "negative_transfer_accepted": 1,
+  "r2_result_reinterpreted": false
+}

@@ -1,0 +1,15 @@
+{
+  "schema_version": "SEM37_R3_BUDGET_CONTRACT_1",
+  "requested_max_autonomous_research_epochs": 4096,
+  "configured_max_autonomous_research_epochs": 4096,
+  "campaign_budget_contract_pass": true,
+  "campaign_seed": 1964067999,
+  "seed_derivation": "LOWER_32_BITS_OF_SOURCE_ATTACHMENT_INSTRUCTION_SHA256_PREFIX_75114C9F",
+  "containment_only": true,
+  "early_stop_allowed": true,
+  "human_causal_repair_selection_events": 0,
+  "human_mediator_rule_selection_events": 0,
+  "human_promotion_rule_selection_events": 0,
+  "prestart_autonomous_research_events": 0,
+  "prestart_future_instance_exposure_events": 0
+}

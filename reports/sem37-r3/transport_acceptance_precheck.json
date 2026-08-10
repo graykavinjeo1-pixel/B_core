@@ -1,0 +1,27 @@
+{
+  "schema_version": "SEM37_R3_TRANSPORT_ACCEPTANCE_PRECHECK_1",
+  "status": "PASS",
+  "raw_field_acceptance_authority": true,
+  "primary_secondary_acceptance_diff": 0,
+  "acceptance_false_pass_events": 0,
+  "verifier_runner_numeric_transport_equivalence": true,
+  "deterministic_recomputation_diff": 0,
+  "numeric_authority_manifest_present": true,
+  "numeric_authority": {
+    "sem35_r1_numeric_sha256": "e088414a2d3e59ca05cd4a3d2280d76239ea84870b3035e199993341916adda7",
+    "sem35_r1_transport_sha256": "bebd037f4c11b53a16267b9f8f5f7d710442fc33b5349295cc5178073ec5c0b6",
+    "finite_ieee754_bits_roundtrip": true,
+    "rational_canonicalization_exact": true,
+    "nonfinite_values_fail_closed": true,
+    "nested_numeric_key_transport_exact": true
+  },
+  "evidence": {
+    "workspace_tests_passed": 273,
+    "workspace_tests_failed": 0,
+    "sem35_r1_numeric_transport_tests_passed": true,
+    "sem36_primary_secondary_acceptance_tests_passed": true
+  },
+  "canonical_world_exposure_events": 0,
+  "prestart_autonomous_research_events": 0,
+  "prestart_future_instance_exposure_events": 0
+}
