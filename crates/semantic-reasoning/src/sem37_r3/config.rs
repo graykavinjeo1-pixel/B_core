@@ -1,0 +1,10 @@
+pub const CAMPAIGN_ID: &str = "SEM37-R3-DIRECT-MEDIATED-CAUSAL-DECOMPOSITION-0001";
+pub const BRANCH: &str = "codex/sem37-r3-direct-mediated";
+pub const AUTHORITATIVE_PREDECESSOR: &str = "b33386e7a8793c5c27e2c2df3e19db0e6e04d0f4";
+pub const HISTORICAL_R2_COMMIT: &str = "73dab667e9f009025c969a4c025ca3c40519c1da";
+pub const HISTORICAL_R2_STATUS: &str = "FAIL";
+pub const FROZEN_R2_METHOD: &str = "PAIRWISE_TRIAD_STABLE_ABLATION_MDL";
+pub const MAX_AUTONOMOUS_RESEARCH_EPOCHS: u64 = 4096;
+pub const CAMPAIGN_SEED: u64 = 1_964_067_999;
+pub const REPORT_DIR: &str = "reports/sem37-r3";
+pub const INSTRUCTION_PATH: &str = "research/sem37_r3/SEM37_R3_INSTRUCTION.md";

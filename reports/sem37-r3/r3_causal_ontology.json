@@ -1,0 +1,16 @@
+{
+  "benchmark_id_to_causal_class_authority": false,
+  "causal_relation_ontology_present": true,
+  "lag_used_as_mediator_authority": false,
+  "mediated_causal_relations_first_class": true,
+  "r2_method_is_promotion_authority": false,
+  "schema_version": "SEM37_R3_CAUSAL_RELATION_ONTOLOGY_1",
+  "states": [
+    "DIRECT",
+    "MEDIATED",
+    "CONFOUNDED",
+    "UNRESOLVED"
+  ],
+  "topology_template_to_causal_class_authority": false,
+  "total_effect_used_as_direct_edge_authority": false
+}
