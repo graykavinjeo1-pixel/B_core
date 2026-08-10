@@ -1,0 +1,25 @@
+{
+  "benchmark_id_to_causal_decomposition_authority": false,
+  "causal_taxonomy_without_effect_decomposition_is_sufficient": false,
+  "dataset_id_to_directness_authority": false,
+  "fields": [
+    "total_effect",
+    "direct_component",
+    "mediated_components",
+    "common_cause_or_confounding_component",
+    "unresolved_component",
+    "mediator_paths",
+    "intervention_evidence",
+    "observational_evidence",
+    "temporal_evidence",
+    "uncertainty",
+    "identifiability",
+    "provenance",
+    "verification"
+  ],
+  "mdl_or_compression_is_directness_authority": false,
+  "schema_version": "SEM37_R4_CAUSAL_EFFECT_DECOMPOSITION_SPEC_1",
+  "temporal_lag_used_as_mediator_authority": false,
+  "topology_template_to_causal_decomposition_authority": false,
+  "total_effect_used_as_direct_edge_authority": false
+}
