@@ -1,0 +1,7 @@
+{
+  "baseline_warning_signatures_total": 22,
+  "baseline_warning_kind": "clippy::manual_is_multiple_of",
+  "new_r5_warning_signatures_total": 0,
+  "status": "PASS",
+  "verified_command": "cargo clippy --workspace --all-targets --message-format short"
+}

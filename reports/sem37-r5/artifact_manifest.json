@@ -1,0 +1,236 @@
+{
+  "authoritative_state": "GIT_COMMIT_PLUS_SEALED_ARTIFACTS",
+  "entries": [
+    {
+      "bytes": 500,
+      "path": "reports/sem37-r5/SEM37_R5_REPORT.md",
+      "sha256": "c6e12198b15c758b24e59c5414490c91e0915260cfc6b7faad1bd6fd55f5ec67"
+    },
+    {
+      "bytes": 590,
+      "path": "reports/sem37-r5/authoritative_predecessor_integrity.json",
+      "sha256": "6503327e52ceb4564de4aa68877c48209d74c96c3502dc9be5663a7f7993a3e4"
+    },
+    {
+      "bytes": 327,
+      "path": "reports/sem37-r5/budget_contract.json",
+      "sha256": "cb89742e7cc23d3c91bbd179fa935fd0c12eb99cce004e97c138dff36af4e240"
+    },
+    {
+      "bytes": 1552,
+      "path": "reports/sem37-r5/campaign_freeze.json",
+      "sha256": "9d51e5c2ad3d259acea46dd7140d17c1baf7d5404e1d6ad8203e1a9cab4daa96"
+    },
+    {
+      "bytes": 1814,
+      "path": "reports/sem37-r5/campaign_governance_freeze.json",
+      "sha256": "84981916856d519e72d3b87eb50a5608b306ac7dc522701ba1c9f5ff0be3b3c8"
+    },
+    {
+      "bytes": 93,
+      "path": "reports/sem37-r5/candidate_pareto_front.json",
+      "sha256": "c88c76e59c97111c1dc59a6608adb00ee4a40c900e7da7aad663526b5ad67095"
+    },
+    {
+      "bytes": 15865,
+      "path": "reports/sem37-r5/candidate_path_models.jsonl",
+      "sha256": "04e8e968c185b2248e2aa5d7599d0c8b36ccfdbb92d6c18554e78f466e3e0b6d"
+    },
+    {
+      "bytes": 583,
+      "path": "reports/sem37-r5/candidate_selection_receipt.json",
+      "sha256": "a8829bc3a90372194e4a69d905f8492bc6931199f701873a384c37db1b080eff"
+    },
+    {
+      "bytes": 233,
+      "path": "reports/sem37-r5/clean_reconstruction.json",
+      "sha256": "fa5eb051fe73250e102158327f098620f6278df9e7b0e75e2c9cf66ebe9beb42"
+    },
+    {
+      "bytes": 253,
+      "path": "reports/sem37-r5/clippy_inventory.json",
+      "sha256": "f2f00bf5732ec8155134b622aad195b12652dfa5de00290fd27698a00e3485dc"
+    },
+    {
+      "bytes": 24970,
+      "path": "reports/sem37-r5/development_result.json",
+      "sha256": "e46e2773c8c33f07f7e78e94544db87f51a56b43c7d72872f1d6e941731ec068"
+    },
+    {
+      "bytes": 9812,
+      "path": "reports/sem37-r5/direct_path_certificates.jsonl",
+      "sha256": "8749627c5dc060d7929ebdc01929ab303f3f91f09612a68ecbc28b0064b2121e"
+    },
+    {
+      "bytes": 486,
+      "path": "reports/sem37-r5/final_regression.json",
+      "sha256": "01b873e3a4c1253afc71a0451e25ec8559edf687fde53cd39a00de127382b391"
+    },
+    {
+      "bytes": 393,
+      "path": "reports/sem37-r5/historical_comparator_results.json",
+      "sha256": "c93ed897374ba67d12923bd8c92db3b121284a20c912f03655e5e9f2f02969f0"
+    },
+    {
+      "bytes": 942,
+      "path": "reports/sem37-r5/historical_r4_fail_receipt.json",
+      "sha256": "7a672999712ed2cb4662a7d0fd0f3d2d914df3191d5a49b082e4007f31cb30a5"
+    },
+    {
+      "bytes": 351,
+      "path": "reports/sem37-r5/identifiability_contract.json",
+      "sha256": "c8532ae0d20e0866e7b87a83a46469242388c65bed44d9d4fc942046705e62ba"
+    },
+    {
+      "bytes": 3994,
+      "path": "reports/sem37-r5/identifiability_state_ablation.json",
+      "sha256": "c925091024a69994c0303aefcd84499df8abb1addcaab32eec3f86475947168e"
+    },
+    {
+      "bytes": 43765,
+      "path": "reports/sem37-r5/identifiable_case_matrix.json",
+      "sha256": "5b3be12ff9e4c0725c9f04f1c93239be63a7e81360c7ae7d234baa9cb127c1bd"
+    },
+    {
+      "bytes": 8124,
+      "path": "reports/sem37-r5/intervention_predictions.jsonl",
+      "sha256": "4ab4f9a2b76c21f3c07dd959f55d7bafaf0f63595f8890e2d0a874c410d97f98"
+    },
+    {
+      "bytes": 5434,
+      "path": "reports/sem37-r5/intervention_results.jsonl",
+      "sha256": "11c9eb98c0b9c710c30b90edacac29b16c9e0f096201464cb07b1f48f5340d2f"
+    },
+    {
+      "bytes": 730,
+      "path": "reports/sem37-r5/literature_mechanism_receipt.json",
+      "sha256": "543036902334cc9ca8dcbd84a73332772f73d67b926fb68c4b3ac4663d6133ef"
+    },
+    {
+      "bytes": 1005,
+      "path": "reports/sem37-r5/mediated_path_certificates.jsonl",
+      "sha256": "f42290adb87f20240c9b5fa5f0db589a9556c66887e47c185b6c6ec62c73dd06"
+    },
+    {
+      "bytes": 130,
+      "path": "reports/sem37-r5/mixed_effect_matrix.json",
+      "sha256": "fbb92e0b2c54fd20bce47e159295d254ca46da5a49f7fbb026ebcd3a8bed69ab"
+    },
+    {
+      "bytes": 120,
+      "path": "reports/sem37-r5/non_identifiable_case_matrix.json",
+      "sha256": "4ff75269466c7bc0bdf7e32c1fc38ba3592c2923fe7682f6533dcb38e172067e"
+    },
+    {
+      "bytes": 3988,
+      "path": "reports/sem37-r5/observation_only_ablation.json",
+      "sha256": "7df36bf40ad8404b192c518b879611403784d953cec8141d1f3a1a57d46bce20"
+    },
+    {
+      "bytes": 630,
+      "path": "reports/sem37-r5/p0_static_quality.json",
+      "sha256": "e7b20d1ba6fbf6756543c962eeb96db8f25b2f6869c247b325783fa393216e6e"
+    },
+    {
+      "bytes": 3990,
+      "path": "reports/sem37-r5/path_representation_ablation.json",
+      "sha256": "70fcb8e6b610e0ed47d8b2c311096669b2b8832c5de3d133d89edd97cc1e68f6"
+    },
+    {
+      "bytes": 24519,
+      "path": "reports/sem37-r5/path_specific_causal_ir.json",
+      "sha256": "a7afa8b87d6725a42691919ca2af428b68dba7bae56185d571d735210b34ae8d"
+    },
+    {
+      "bytes": 3994,
+      "path": "reports/sem37-r5/path_specific_identification_ablation.json",
+      "sha256": "f120471a2c1f35c381d0e11e8e71abafa6d1a6b06d1b967118493e1338e66833"
+    },
+    {
+      "bytes": 2036,
+      "path": "reports/sem37-r5/pre_dev_fixture_validation_receipt.json",
+      "sha256": "e63e6b3ba46eb37d97b1b2284e9a326685750fdd126f5d9c662be39d6b06375a"
+    },
+    {
+      "bytes": 428,
+      "path": "reports/sem37-r5/primary_acceptance.json",
+      "sha256": "71c6d66a6d2c25d01ca8b87c3bc7f656761856083bf6faa88de6b9f2695b4ffc"
+    },
+    {
+      "bytes": 15501,
+      "path": "reports/sem37-r5/r5_dev_h_manifest.json",
+      "sha256": "975929deed5167d788061fb1b6ed0651452dd2e62da302bad776fb9255c29d6a"
+    },
+    {
+      "bytes": 15665,
+      "path": "reports/sem37-r5/r5_diagnostic_experiments.jsonl",
+      "sha256": "d4d864a1c91e73e70d073ab7a95336665b51ac7ebfb148ef884bfd4e4e5d7bd8"
+    },
+    {
+      "bytes": 386,
+      "path": "reports/sem37-r5/r5_failure_diagnosis.jsonl",
+      "sha256": "0fcf54c1877b8d77c3e885d272e4c04f90c31a0a39c6d6380d4e13420dce980e"
+    },
+    {
+      "bytes": 1441,
+      "path": "reports/sem37-r5/r5_final_fixture_contract.json",
+      "sha256": "b4c1b7088ee7d05f4d6a69f7480dd6d6d02372003d0fe83cde163cd8a047dbcf"
+    },
+    {
+      "bytes": 1574,
+      "path": "reports/sem37-r5/r5_final_freeze.json",
+      "sha256": "55108bc9c462e8763a84026b3db46b3653886b7b0c912d8a47030ef6b417efc7"
+    },
+    {
+      "bytes": 15555,
+      "path": "reports/sem37-r5/r5_final_i_manifest.json",
+      "sha256": "c26184e9b867264b3cf696fbc51faf5d7888824713e4ce3416c96c5f31ccfd71"
+    },
+    {
+      "bytes": 709059,
+      "path": "reports/sem37-r5/r5_final_i_raw.json",
+      "sha256": "6ea0ea4e4ef06f3beb3ac11e2383df8506ab3396cfaae4fc6c6f08278fd905c3"
+    },
+    {
+      "bytes": 711,
+      "path": "reports/sem37-r5/r5_final_selection_rule.json",
+      "sha256": "172649933e127f4d69cfc13671b93b94da270d3133ff967deaf8ed78cbe97f9c"
+    },
+    {
+      "bytes": 1237,
+      "path": "reports/sem37-r5/r5_research_hypotheses.jsonl",
+      "sha256": "88a913453ce6966a7d6e43e9b27fcc411b8061b1504c70bba1ac28e74baf6def"
+    },
+    {
+      "bytes": 0,
+      "path": "reports/sem37-r5/rejected_final_fixture_manifests.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 430,
+      "path": "reports/sem37-r5/secondary_acceptance.json",
+      "sha256": "61743bd2dd8a489a63c299f0428ef1a9302f5698d6d2a06d0b78f5f4ef414a03"
+    },
+    {
+      "bytes": 4950,
+      "path": "reports/sem37-r5/sem37_r5_required_output.json",
+      "sha256": "5a08948a642db2ac2eaa318fac99b83cb5c5117dc4e06d510fced5608c872dd5"
+    },
+    {
+      "bytes": 475,
+      "path": "reports/sem37-r5/transfer_regression_matrix.json",
+      "sha256": "1823ceee2c3c82dd47b050dc253a3d0b773cd84a9ce41427a244d4d530818fb8"
+    },
+    {
+      "bytes": 381,
+      "path": "reports/sem37-r5/transport_acceptance_precheck.json",
+      "sha256": "f069733cfd496a07007ef8ccc2c73abb091a408ce783f186be0aeae6e0613662"
+    },
+    {
+      "bytes": 3852,
+      "path": "reports/sem37-r5/unresolved_certificates.jsonl",
+      "sha256": "c402e7f83acef204c13156125c5d8cf01a199e836386cba25e93438184fa55e7"
+    }
+  ],
+  "schema_version": "SEM37_R5_ARTIFACT_MANIFEST_1"
+}

@@ -1,0 +1,11 @@
+{
+  "binaries_built": [
+    "sem37-r5-run",
+    "sem37-r5-finalize"
+  ],
+  "r5_tests_failed": 0,
+  "r5_tests_passed": 8,
+  "source_commit": "ce6b25eaf25d06a9c32fad4a4385463920851382",
+  "status": "PASS",
+  "warm_cache_used": false
+}

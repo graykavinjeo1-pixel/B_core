@@ -1,0 +1,15 @@
+{
+  "schema_version": "SEM37_R5_PRIMARY_ACCEPTANCE_1",
+  "status": "FAIL",
+  "disposition": "MIXED_EFFECT_IDENTIFICATION_LIMIT",
+  "level_a_pass": true,
+  "level_b_pass": true,
+  "level_c_pass": true,
+  "level_d_pass": false,
+  "level_e_pass": false,
+  "level_f_pass": false,
+  "level_g_pass": true,
+  "level_h_pass": true,
+  "direct_recall_noninferior_to_historical_best": true,
+  "path_specific_novel_prediction_pass": false
+}
