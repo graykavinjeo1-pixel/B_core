@@ -1,0 +1,327 @@
+{
+  "ablated_packages": [],
+  "active_coding_object_count": 3,
+  "active_imported_objects": [
+    {
+      "elemental_operations": [
+        "PARSE",
+        "VERIFY",
+        "LINK"
+      ],
+      "object_id": "BCG-109ccf23e770b8f1",
+      "package": "BUILD_RUNTIME"
+    },
+    {
+      "elemental_operations": [
+        "LOWER",
+        "COMPILE",
+        "LINK"
+      ],
+      "object_id": "BCG-39e38d2d9b715b60",
+      "package": "BUILD_RUNTIME"
+    },
+    {
+      "elemental_operations": [
+        "LOWER",
+        "COMPILE",
+        "DISPATCH"
+      ],
+      "object_id": "BCG-3f5fea0aafc3d862",
+      "package": "BUILD_RUNTIME"
+    }
+  ],
+  "active_native_object_count": 3,
+  "arm": "GRAFT03",
+  "attempts": [
+    {
+      "changed_lines": 2,
+      "file": "impl/src/fmt.rs",
+      "hypothesis": "consume one repository-native token when no structured argument branch applies",
+      "predicted_effect": "invalid format expressions terminate with diagnostics instead of looping",
+      "prediction_frozen_before_execution": true,
+      "preserved_behavior": "recognized named arguments and valid display expressions retain their existing paths",
+      "public_probe": {
+        "output_sha256": "82116c6da0c36fec6db7dddd711853eade4fa063785177b79338f4ddccd24007",
+        "output_tail": "\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 1 test\ni\ntest result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\ntest: ui, ignore_message: requires nightly\n\n\nrunning 1 test\ni\ntest result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\ntest: test_backtrace, ignore_message: requires `--cfg=thiserror_nightly_testing`\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 25 tests\n.........................\ntest result: ok. 25 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 3 tests\n...\ntest result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 1 test\n.\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 1 test\n.\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 1 test\n.\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 1 test\ni\ntest result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\ntest: test_option, ignore_message: requires `--cfg=thiserror_nightly_testing`\n\n\nrunning 1 test\n.\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 3 tests\n...\ntest result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 4 tests\n....\ntest result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 10 tests\n..........\ntest result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.99s\n\nwarning: hiding a lifetime that's elided elsewhere is confusing\n  --> impl\\src\\attr.rs:48:19\n   |\n48 | pub fn get(input: &[Attribute]) -> Result<Attrs> {\n   |                   ^^^^^^^^^^^^            ^^^^^ the same lifetime is hidden here\n   |                   |\n   |                   the lifetime is elided here\n   |\n   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing\n   = note: `#[warn(mismatched_lifetime_syntaxes)]` on by default\nhelp: use `'_` for type paths\n   |\n48 | pub fn get(input: &[Attribute]) -> Result<Attrs<'_>> {\n   |                                                ++++\n\nwarning: hiding a lifetime that's elided elsewhere is confusing\n --> impl\\src\\prop.rs:7:30\n  |\n7 |     pub(crate) fn from_field(&self) -> Option<&Field> {\n  |                              ^^^^^            ^^^^^^\n  |                              |                ||\n  |                              |                |the same lifetime is hidden here\n  |                              |                the same lifetime is elided here\n  |                              the lifetime is elided here\n  |\n  = help: the same lifetime is referred to in inconsistent ways, making the signature confusing\nhelp: use `'_` for type paths\n  |\n7 |     pub(crate) fn from_field(&self) -> Option<&Field<'_>> {\n  |                                                     ++++\n\nwarning: hiding a lifetime that's elided elsewhere is confusing\n  --> impl\\src\\prop.rs:11:32\n   |\n11 |     pub(crate) fn source_field(&self) -> Option<&Field> {\n   |                                ^^^^^            ^^^^^^\n   |                                |                ||\n   |                                |                |the same lifetime is hidden here\n   |                                |                the same lifetime is elided here\n   |                                the lifetime is elided here\n   |\n   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing\nhelp: use `'_` for type paths\n   |\n11 |     pub(crate) fn source_field(&self) -> Option<&Field<'_>> {\n   |                                                       ++++\n\nwarning: hiding a lifetime that's elided elsewhere is confusing\n  --> impl\\src\\prop.rs:15:35\n   |\n15 |     pub(crate) fn backtrace_field(&self) -> Option<&Field> {\n   |                                   ^^^^^            ^^^^^^\n   |                                   |                ||\n   |                                   |                |the same lifetime is hidden here\n   |                                   |                the same lifetime is elided here\n   |                                   the lifetime is elided here\n   |\n   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing\nhelp: use `'_` for type paths\n   |\n15 |     pub(crate) fn backtrace_field(&self) -> Option<&Field<'_>> {\n   |                                                          ++++\n\nwarning: hiding a lifetime that's elided elsewhere is confusing\n  --> impl\\src\\prop.rs:19:44\n   |\n19 |     pub(crate) fn distinct_backtrace_field(&self) -> Option<&Field> {\n   |                                            ^^^^^            ^^^^^^\n   |                                            |                ||\n   |                                            |                |the same lifetime is hidden here\n   |                                            |                the same lifetime is elided here\n   |                                            the lifetime is elided here\n   |\n   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing\nhelp: use `'_` for type paths\n   |\n19 |     pub(crate) fn distinct_backtrace_field(&self) -> Option<&Field<'_>> {\n   |                                                                   ++++\n\nwarning: hiding a lifetime that's elided elsewhere is confusing\n  --> impl\\src\\prop.rs:53:30\n   |\n53 |     pub(crate) fn from_field(&self) -> Option<&Field> {\n   |                              ^^^^^            ^^^^^^\n   |                              |                ||\n   |                              |                |the same lifetime is hidden here\n   |                              |                the same lifetime is elided here\n   |                              the lifetime is elided here\n   |\n   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing\nhelp: use `'_` for type paths\n   |\n53 |     pub(crate) fn from_field(&self) -> Option<&Field<'_>> {\n   |                                                     ++++\n\nwarning: hiding a lifetime that's elided elsewhere is confusing\n  --> impl\\src\\prop.rs:57:32\n   |\n57 |     pub(crate) fn source_field(&self) -> Option<&Field> {\n   |                                ^^^^^            ^^^^^^\n   |                                |                ||\n   |                                |                |the same lifetime is hidden here\n   |                                |                the same lifetime is elided here\n   |                                the lifetime is elided here\n   |\n   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing\nhelp: use `'_` for type paths\n   |\n57 |     pub(crate) fn source_field(&self) -> Option<&Field<'_>> {\n   |                                                       ++++\n\nwarning: hiding a lifetime that's elided elsewhere is confusing\n  --> impl\\src\\prop.rs:61:35\n   |\n61 |     pub(crate) fn backtrace_field(&self) -> Option<&Field> {\n   |                                   ^^^^^            ^^^^^^\n   |                                   |                ||\n   |                                   |                |the same lifetime is hidden here\n   |                                   |                the same lifetime is elided here\n   |                                   the lifetime is elided here\n   |\n   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing\nhelp: use `'_` for type paths\n   |\n61 |     pub(crate) fn backtrace_field(&self) -> Option<&Field<'_>> {\n   |                                                          ++++\n\nwarning: hiding a lifetime that's elided elsewhere is confusing\n  --> impl\\src\\prop.rs:65:44\n   |\n65 |     pub(crate) fn distinct_backtrace_field(&self) -> Option<&Field> {\n   |                                            ^^^^^            ^^^^^^\n   |                                            |                ||\n   |                                            |                |the same lifetime is hidden here\n   |                                            |                the same lifetime is elided here\n   |                                            the lifetime is elided here\n   |\n   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing\nhelp: use `'_` for type paths\n   |\n65 |     pub(crate) fn distinct_backtrace_field(&self) -> Option<&Field<'_>> {\n   |                                                                   ++++\n\nwarning: linker stdout: D:\\BCG03_RUN\\FINAL_D\\f1\\graft03\\.bcore-target\\debug\\deps\\thiserror_impl-083e222e75e0d478.dll.lib \ub77c\uc774\ube0c\ub7ec\ub9ac \ubc0f D:\\BCG03_RUN\\FINAL_D\\f1\\graft03\\.bcore-target\\debug\\deps\\thiserror_impl-083e222e75e0d478.dll.exp \uac1c\uccb4\ub97c \uc0dd\uc131\ud558\uace0 \uc788\uc2b5\ub2c8\ub2e4.\n  |\n  = note: `#[warn(linker_messages)]` on by default\n\n",
+        "returncode": 0,
+        "timed_out": false,
+        "wall_ms": 12703.821
+      },
+      "public_probe_pass": true,
+      "required_packages": [
+        "FAILURE_REPAIR",
+        "BUILD_RUNTIME"
+      ],
+      "transform": "PARSER_PROGRESS_FALLBACK"
+    }
+  ],
+  "candidate_repair_sites": 1,
+  "compiler_runs": 2,
+  "contract_ablated": false,
+  "contract_reconstruction_enabled": true,
+  "defect_class_to_patch_template_authority": false,
+  "defect_family": "parser_progress_nontermination",
+  "external_llm_calls": 0,
+  "failed_patches": 0,
+  "failure_localization_attempts": 1,
+  "false_localizations": 2,
+  "files_activated": 3,
+  "files_inspected": 3,
+  "final_public_probe": {
+    "output_sha256": "82116c6da0c36fec6db7dddd711853eade4fa063785177b79338f4ddccd24007",
+    "output_tail": "\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 1 test\ni\ntest result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\ntest: ui, ignore_message: requires nightly\n\n\nrunning 1 test\ni\ntest result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\ntest: test_backtrace, ignore_message: requires `--cfg=thiserror_nightly_testing`\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 25 tests\n.........................\ntest result: ok. 25 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 3 tests\n...\ntest result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 1 test\n.\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 1 test\n.\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 1 test\n.\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 1 test\ni\ntest result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\ntest: test_option, ignore_message: requires `--cfg=thiserror_nightly_testing`\n\n\nrunning 1 test\n.\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 3 tests\n...\ntest result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 4 tests\n....\ntest result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 10 tests\n..........\ntest result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.99s\n\nwarning: hiding a lifetime that's elided elsewhere is confusing\n  --> impl\\src\\attr.rs:48:19\n   |\n48 | pub fn get(input: &[Attribute]) -> Result<Attrs> {\n   |                   ^^^^^^^^^^^^            ^^^^^ the same lifetime is hidden here\n   |                   |\n   |                   the lifetime is elided here\n   |\n   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing\n   = note: `#[warn(mismatched_lifetime_syntaxes)]` on by default\nhelp: use `'_` for type paths\n   |\n48 | pub fn get(input: &[Attribute]) -> Result<Attrs<'_>> {\n   |                                                ++++\n\nwarning: hiding a lifetime that's elided elsewhere is confusing\n --> impl\\src\\prop.rs:7:30\n  |\n7 |     pub(crate) fn from_field(&self) -> Option<&Field> {\n  |                              ^^^^^            ^^^^^^\n  |                              |                ||\n  |                              |                |the same lifetime is hidden here\n  |                              |                the same lifetime is elided here\n  |                              the lifetime is elided here\n  |\n  = help: the same lifetime is referred to in inconsistent ways, making the signature confusing\nhelp: use `'_` for type paths\n  |\n7 |     pub(crate) fn from_field(&self) -> Option<&Field<'_>> {\n  |                                                     ++++\n\nwarning: hiding a lifetime that's elided elsewhere is confusing\n  --> impl\\src\\prop.rs:11:32\n   |\n11 |     pub(crate) fn source_field(&self) -> Option<&Field> {\n   |                                ^^^^^            ^^^^^^\n   |                                |                ||\n   |                                |                |the same lifetime is hidden here\n   |                                |                the same lifetime is elided here\n   |                                the lifetime is elided here\n   |\n   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing\nhelp: use `'_` for type paths\n   |\n11 |     pub(crate) fn source_field(&self) -> Option<&Field<'_>> {\n   |                                                       ++++\n\nwarning: hiding a lifetime that's elided elsewhere is confusing\n  --> impl\\src\\prop.rs:15:35\n   |\n15 |     pub(crate) fn backtrace_field(&self) -> Option<&Field> {\n   |                                   ^^^^^            ^^^^^^\n   |                                   |                ||\n   |                                   |                |the same lifetime is hidden here\n   |                                   |                the same lifetime is elided here\n   |                                   the lifetime is elided here\n   |\n   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing\nhelp: use `'_` for type paths\n   |\n15 |     pub(crate) fn backtrace_field(&self) -> Option<&Field<'_>> {\n   |                                                          ++++\n\nwarning: hiding a lifetime that's elided elsewhere is confusing\n  --> impl\\src\\prop.rs:19:44\n   |\n19 |     pub(crate) fn distinct_backtrace_field(&self) -> Option<&Field> {\n   |                                            ^^^^^            ^^^^^^\n   |                                            |                ||\n   |                                            |                |the same lifetime is hidden here\n   |                                            |                the same lifetime is elided here\n   |                                            the lifetime is elided here\n   |\n   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing\nhelp: use `'_` for type paths\n   |\n19 |     pub(crate) fn distinct_backtrace_field(&self) -> Option<&Field<'_>> {\n   |                                                                   ++++\n\nwarning: hiding a lifetime that's elided elsewhere is confusing\n  --> impl\\src\\prop.rs:53:30\n   |\n53 |     pub(crate) fn from_field(&self) -> Option<&Field> {\n   |                              ^^^^^            ^^^^^^\n   |                              |                ||\n   |                              |                |the same lifetime is hidden here\n   |                              |                the same lifetime is elided here\n   |                              the lifetime is elided here\n   |\n   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing\nhelp: use `'_` for type paths\n   |\n53 |     pub(crate) fn from_field(&self) -> Option<&Field<'_>> {\n   |                                                     ++++\n\nwarning: hiding a lifetime that's elided elsewhere is confusing\n  --> impl\\src\\prop.rs:57:32\n   |\n57 |     pub(crate) fn source_field(&self) -> Option<&Field> {\n   |                                ^^^^^            ^^^^^^\n   |                                |                ||\n   |                                |                |the same lifetime is hidden here\n   |                                |                the same lifetime is elided here\n   |                                the lifetime is elided here\n   |\n   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing\nhelp: use `'_` for type paths\n   |\n57 |     pub(crate) fn source_field(&self) -> Option<&Field<'_>> {\n   |                                                       ++++\n\nwarning: hiding a lifetime that's elided elsewhere is confusing\n  --> impl\\src\\prop.rs:61:35\n   |\n61 |     pub(crate) fn backtrace_field(&self) -> Option<&Field> {\n   |                                   ^^^^^            ^^^^^^\n   |                                   |                ||\n   |                                   |                |the same lifetime is hidden here\n   |                                   |                the same lifetime is elided here\n   |                                   the lifetime is elided here\n   |\n   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing\nhelp: use `'_` for type paths\n   |\n61 |     pub(crate) fn backtrace_field(&self) -> Option<&Field<'_>> {\n   |                                                          ++++\n\nwarning: hiding a lifetime that's elided elsewhere is confusing\n  --> impl\\src\\prop.rs:65:44\n   |\n65 |     pub(crate) fn distinct_backtrace_field(&self) -> Option<&Field> {\n   |                                            ^^^^^            ^^^^^^\n   |                                            |                ||\n   |                                            |                |the same lifetime is hidden here\n   |                                            |                the same lifetime is elided here\n   |                                            the lifetime is elided here\n   |\n   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing\nhelp: use `'_` for type paths\n   |\n65 |     pub(crate) fn distinct_backtrace_field(&self) -> Option<&Field<'_>> {\n   |                                                                   ++++\n\nwarning: linker stdout: D:\\BCG03_RUN\\FINAL_D\\f1\\graft03\\.bcore-target\\debug\\deps\\thiserror_impl-083e222e75e0d478.dll.lib \ub77c\uc774\ube0c\ub7ec\ub9ac \ubc0f D:\\BCG03_RUN\\FINAL_D\\f1\\graft03\\.bcore-target\\debug\\deps\\thiserror_impl-083e222e75e0d478.dll.exp \uac1c\uccb4\ub97c \uc0dd\uc131\ud558\uace0 \uc788\uc2b5\ub2c8\ub2e4.\n  |\n  = note: `#[warn(linker_messages)]` on by default\n\n",
+    "returncode": 0,
+    "timed_out": false,
+    "wall_ms": 12703.821
+  },
+  "fix_commit_reads": 0,
+  "full_coding_knowledge_scans": 0,
+  "full_repository_scan_events": 0,
+  "gold_patch_reads": 0,
+  "hidden_test_reads_before_submission": 0,
+  "human_contract_rule_selection_events": 0,
+  "human_language_specific_fix_selection_events": 0,
+  "human_repair_rule_selection_events": 0,
+  "hypotheses_generated": 1,
+  "independent_semantic_restoration_pass": null,
+  "initial_public_probe": {
+    "output_sha256": "0127eac8dc2343717bbaa2b4b2cfa5f92e282ef196250d48437e62350b86aa50",
+    "output_tail": "\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 1 test\ni\ntest result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\ntest: ui, ignore_message: requires nightly\n\n\nrunning 1 test\ni\ntest result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\ntest: test_backtrace, ignore_message: requires `--cfg=thiserror_nightly_testing`\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 25 tests\n.........................\ntest result: ok. 25 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 3 tests\n...\ntest result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 1 test\n.\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 1 test\n.\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 1 test\n.\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 1 test\ni\ntest result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\ntest: test_option, ignore_message: requires `--cfg=thiserror_nightly_testing`\n\n\nrunning 1 test\n.\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 3 tests\n...\ntest result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 4 tests\n....\ntest result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 10 tests\n..........\ntest result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.46s\n\nwarning: hiding a lifetime that's elided elsewhere is confusing\n  --> impl\\src\\attr.rs:48:19\n   |\n48 | pub fn get(input: &[Attribute]) -> Result<Attrs> {\n   |                   ^^^^^^^^^^^^            ^^^^^ the same lifetime is hidden here\n   |                   |\n   |                   the lifetime is elided here\n   |\n   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing\n   = note: `#[warn(mismatched_lifetime_syntaxes)]` on by default\nhelp: use `'_` for type paths\n   |\n48 | pub fn get(input: &[Attribute]) -> Result<Attrs<'_>> {\n   |                                                ++++\n\nwarning: hiding a lifetime that's elided elsewhere is confusing\n --> impl\\src\\prop.rs:7:30\n  |\n7 |     pub(crate) fn from_field(&self) -> Option<&Field> {\n  |                              ^^^^^            ^^^^^^\n  |                              |                ||\n  |                              |                |the same lifetime is hidden here\n  |                              |                the same lifetime is elided here\n  |                              the lifetime is elided here\n  |\n  = help: the same lifetime is referred to in inconsistent ways, making the signature confusing\nhelp: use `'_` for type paths\n  |\n7 |     pub(crate) fn from_field(&self) -> Option<&Field<'_>> {\n  |                                                     ++++\n\nwarning: hiding a lifetime that's elided elsewhere is confusing\n  --> impl\\src\\prop.rs:11:32\n   |\n11 |     pub(crate) fn source_field(&self) -> Option<&Field> {\n   |                                ^^^^^            ^^^^^^\n   |                                |                ||\n   |                                |                |the same lifetime is hidden here\n   |                                |                the same lifetime is elided here\n   |                                the lifetime is elided here\n   |\n   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing\nhelp: use `'_` for type paths\n   |\n11 |     pub(crate) fn source_field(&self) -> Option<&Field<'_>> {\n   |                                                       ++++\n\nwarning: hiding a lifetime that's elided elsewhere is confusing\n  --> impl\\src\\prop.rs:15:35\n   |\n15 |     pub(crate) fn backtrace_field(&self) -> Option<&Field> {\n   |                                   ^^^^^            ^^^^^^\n   |                                   |                ||\n   |                                   |                |the same lifetime is hidden here\n   |                                   |                the same lifetime is elided here\n   |                                   the lifetime is elided here\n   |\n   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing\nhelp: use `'_` for type paths\n   |\n15 |     pub(crate) fn backtrace_field(&self) -> Option<&Field<'_>> {\n   |                                                          ++++\n\nwarning: hiding a lifetime that's elided elsewhere is confusing\n  --> impl\\src\\prop.rs:19:44\n   |\n19 |     pub(crate) fn distinct_backtrace_field(&self) -> Option<&Field> {\n   |                                            ^^^^^            ^^^^^^\n   |                                            |                ||\n   |                                            |                |the same lifetime is hidden here\n   |                                            |                the same lifetime is elided here\n   |                                            the lifetime is elided here\n   |\n   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing\nhelp: use `'_` for type paths\n   |\n19 |     pub(crate) fn distinct_backtrace_field(&self) -> Option<&Field<'_>> {\n   |                                                                   ++++\n\nwarning: hiding a lifetime that's elided elsewhere is confusing\n  --> impl\\src\\prop.rs:53:30\n   |\n53 |     pub(crate) fn from_field(&self) -> Option<&Field> {\n   |                              ^^^^^            ^^^^^^\n   |                              |                ||\n   |                              |                |the same lifetime is hidden here\n   |                              |                the same lifetime is elided here\n   |                              the lifetime is elided here\n   |\n   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing\nhelp: use `'_` for type paths\n   |\n53 |     pub(crate) fn from_field(&self) -> Option<&Field<'_>> {\n   |                                                     ++++\n\nwarning: hiding a lifetime that's elided elsewhere is confusing\n  --> impl\\src\\prop.rs:57:32\n   |\n57 |     pub(crate) fn source_field(&self) -> Option<&Field> {\n   |                                ^^^^^            ^^^^^^\n   |                                |                ||\n   |                                |                |the same lifetime is hidden here\n   |                                |                the same lifetime is elided here\n   |                                the lifetime is elided here\n   |\n   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing\nhelp: use `'_` for type paths\n   |\n57 |     pub(crate) fn source_field(&self) -> Option<&Field<'_>> {\n   |                                                       ++++\n\nwarning: hiding a lifetime that's elided elsewhere is confusing\n  --> impl\\src\\prop.rs:61:35\n   |\n61 |     pub(crate) fn backtrace_field(&self) -> Option<&Field> {\n   |                                   ^^^^^            ^^^^^^\n   |                                   |                ||\n   |                                   |                |the same lifetime is hidden here\n   |                                   |                the same lifetime is elided here\n   |                                   the lifetime is elided here\n   |\n   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing\nhelp: use `'_` for type paths\n   |\n61 |     pub(crate) fn backtrace_field(&self) -> Option<&Field<'_>> {\n   |                                                          ++++\n\nwarning: hiding a lifetime that's elided elsewhere is confusing\n  --> impl\\src\\prop.rs:65:44\n   |\n65 |     pub(crate) fn distinct_backtrace_field(&self) -> Option<&Field> {\n   |                                            ^^^^^            ^^^^^^\n   |                                            |                ||\n   |                                            |                |the same lifetime is hidden here\n   |                                            |                the same lifetime is elided here\n   |                                            the lifetime is elided here\n   |\n   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing\nhelp: use `'_` for type paths\n   |\n65 |     pub(crate) fn distinct_backtrace_field(&self) -> Option<&Field<'_>> {\n   |                                                                   ++++\n\nwarning: linker stdout: D:\\BCG03_RUN\\FINAL_D\\f1\\graft03\\.bcore-target\\debug\\deps\\thiserror_impl-083e222e75e0d478.dll.lib \ub77c\uc774\ube0c\ub7ec\ub9ac \ubc0f D:\\BCG03_RUN\\FINAL_D\\f1\\graft03\\.bcore-target\\debug\\deps\\thiserror_impl-083e222e75e0d478.dll.exp \uac1c\uccb4\ub97c \uc0dd\uc131\ud558\uace0 \uc788\uc2b5\ub2c8\ub2e4.\n  |\n  = note: `#[warn(linker_messages)]` on by default\n\n",
+    "returncode": 0,
+    "timed_out": false,
+    "wall_ms": 43072.292
+  },
+  "language": "rust",
+  "local_teacher_calls": 0,
+  "localization_ledger": [
+    {
+      "evidence_tokens": [
+        "display",
+        "error",
+        "format",
+        "input",
+        "parse",
+        "return",
+        "stream",
+        "token"
+      ],
+      "file": "impl/src/attr.rs",
+      "score": 48
+    },
+    {
+      "evidence_tokens": [
+        "display",
+        "error",
+        "expression",
+        "fallback",
+        "format",
+        "input",
+        "parse",
+        "parser",
+        "return",
+        "stream",
+        "token"
+      ],
+      "file": "impl/src/fmt.rs",
+      "score": 48
+    },
+    {
+      "evidence_tokens": [
+        "display",
+        "error",
+        "fallback",
+        "format",
+        "input",
+        "invalid",
+        "return",
+        "stream",
+        "token"
+      ],
+      "file": "impl/src/expand.rs",
+      "score": 43
+    }
+  ],
+  "mechanism_localization_attempts": 1,
+  "network_reads_during_canonical": 0,
+  "network_writes_during_canonical": 0,
+  "patch_attempts": 1,
+  "patch_hash_routing_events": 0,
+  "patches_executed": 1,
+  "patches_generated": 1,
+  "rejected_before_execution": 0,
+  "repair_revealing_issue_reads": 0,
+  "repair_site_localization_attempts": 1,
+  "repair_work": 42,
+  "repeated_equivalent_patches": 0,
+  "repository_files_total": 60,
+  "repository_id_routing_events": 0,
+  "repository_repair_contract_ir": {
+    "affected_behavior": "every successful iteration over a nonempty parse stream must consume input or return an error",
+    "allowed_semantic_changes": [
+      "every successful iteration over a nonempty parse stream must consume input or return an error"
+    ],
+    "callee_expectations": "existing valid inputs preserve their current execution path",
+    "caller_expectations": "callers observe only the affected behavior stated by repository-local evidence",
+    "candidate_root_causes": [
+      "boundary relation",
+      "state ordering",
+      "suspension ownership",
+      "parser progress",
+      "local invariant omission",
+      "relation asymmetry"
+    ],
+    "concurrency_or_lifetime_constraints": [],
+    "forbidden_semantic_changes": [
+      "test modification",
+      "public API removal",
+      "unrelated control-flow rewrite"
+    ],
+    "observed_failure": "compiler does not terminate while parsing an invalid #[error(\"\".yellow)] display-format expression; fallback format parser makes no token progress.",
+    "predicted_repair_effect": "the observed failure disappears while repository public contracts remain passing",
+    "provenance": {
+      "files": [
+        "attr.rs",
+        "fmt.rs",
+        "expand.rs"
+      ],
+      "localization_ledger": [
+        {
+          "evidence_tokens": [
+            "display",
+            "error",
+            "format",
+            "input",
+            "parse",
+            "return",
+            "stream",
+            "token"
+          ],
+          "file": "impl/src/attr.rs",
+          "score": 48
+        },
+        {
+          "evidence_tokens": [
+            "display",
+            "error",
+            "expression",
+            "fallback",
+            "format",
+            "input",
+            "parse",
+            "parser",
+            "return",
+            "stream",
+            "token"
+          ],
+          "file": "impl/src/fmt.rs",
+          "score": 48
+        },
+        {
+          "evidence_tokens": [
+            "display",
+            "error",
+            "fallback",
+            "format",
+            "input",
+            "invalid",
+            "return",
+            "stream",
+            "token"
+          ],
+          "file": "impl/src/expand.rs",
+          "score": 43
+        }
+      ],
+      "symbols": [
+        "get",
+        "parse_error_attribute",
+        "parse_token_expr",
+        "to_tokens",
+        "to_tokens",
+        "expand_shorthand",
+        "explicit_named_args",
+        "try_explicit_named_args",
+        "fallback_explicit_named_args",
+        "is_syn_full",
+        "take_int",
+        "take_ident",
+        "derive",
+        "try_expand",
+        "fallback",
+        "fmt",
+        "impl_struct",
+        "source",
+        "provide",
+        "fmt",
+        "from",
+        "impl_enum",
+        "source",
+        "provide",
+        "fmt",
+        "from",
+        "fields_pat",
+        "use_as_display",
+        "from_initializer",
+        "type_is_option",
+        "unoptional_type",
+        "type_parameter_of_option"
+      ]
+    },
+    "relevant_api_contract": "every successful iteration over a nonempty parse stream must consume input or return an error",
+    "required_invariants": [
+      "empty",
+      "consume",
+      "terminate"
+    ],
+    "schema_version": "REPOSITORY_REPAIR_CONTRACT_IR_1",
+    "state_transition_constraints": [],
+    "type_constraints": [],
+    "uncertainty": "bounded candidate competition; independent semantic verifier remains authoritative"
+  },
+  "result_sha256": "a285408afd71dd16f114796d6efde94b1e0ac6cb1532906bd1f6dfad108d4549",
+  "schema_version": "B_CORE_CODE_GRAFT_03_ARM_RESULT_1",
+  "submitted": true,
+  "symbols_activated": [
+    "get",
+    "parse_error_attribute",
+    "parse_token_expr",
+    "to_tokens",
+    "to_tokens",
+    "expand_shorthand",
+    "explicit_named_args",
+    "try_explicit_named_args",
+    "fallback_explicit_named_args",
+    "is_syn_full",
+    "take_int",
+    "take_ident",
+    "derive",
+    "try_expand",
+    "fallback",
+    "fmt",
+    "impl_struct",
+    "source",
+    "provide",
+    "fmt",
+    "from",
+    "impl_enum",
+    "source",
+    "provide",
+    "fmt",
+    "from",
+    "fields_pat",
+    "use_as_display",
+    "from_initializer",
+    "type_is_option",
+    "unoptional_type",
+    "type_parameter_of_option"
+  ],
+  "symbols_activated_count": 32,
+  "symbols_inspected": 32,
+  "task_hash": "23d9a71695e6c3235a08da3afd40c640cacfabf3e304b8d934bef0347b877925",
+  "task_id_routing_events": 0,
+  "test_runs": 2,
+  "test_weakening_solution": false,
+  "upstream_test_pass": true,
+  "verifier_bypass_solution": false,
+  "wall_ms": 56016.584
+}

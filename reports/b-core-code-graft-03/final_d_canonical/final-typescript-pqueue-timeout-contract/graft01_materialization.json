@@ -1,0 +1,12 @@
+{
+  "arm": "graft01",
+  "bug_tree_sha256": "055c6c84fa23c23a1ad1d053a0c5ffd7e477e7b00743eb671795f665923c7f50",
+  "destination": "D:\\BCG03_RUN\\FINAL_D\\f3\\graft01",
+  "fix_commit_exposed_to_arm": false,
+  "gold_patch_exposed_to_arm": false,
+  "hidden_test_exposed_before_submission": false,
+  "public_manifest": "D:\\BCG03_RUN\\FINAL_D\\f3\\graft01\\bcore_public_task_manifest.json",
+  "schema_version": "B_CORE_CODE_GRAFT_03_MATERIALIZATION_1",
+  "task_hash": "44111bce3cd1b1eae30cddb7e58d821741cce6f6be6ee4e12b7b735c55ad7a46",
+  "task_name": "final-typescript-pqueue-timeout-contract"
+}

@@ -1,0 +1,12 @@
+{
+  "arm": "ungrafted",
+  "bug_tree_sha256": "d8274c1792002ce807892c3142fe7f1bc0b0df75f61b14a660003d1e91ed5347",
+  "destination": "D:\\BCG03_RUN\\FINAL_D\\f1\\ungrafted",
+  "fix_commit_exposed_to_arm": false,
+  "gold_patch_exposed_to_arm": false,
+  "hidden_test_exposed_before_submission": false,
+  "public_manifest": "D:\\BCG03_RUN\\FINAL_D\\f1\\ungrafted\\bcore_public_task_manifest.json",
+  "schema_version": "B_CORE_CODE_GRAFT_03_MATERIALIZATION_1",
+  "task_hash": "23d9a71695e6c3235a08da3afd40c640cacfabf3e304b8d934bef0347b877925",
+  "task_name": "final-rust-thiserror-parser-progress"
+}

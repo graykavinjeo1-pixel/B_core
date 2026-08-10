@@ -1,0 +1,13 @@
+{
+  "schema_version": "B_CORE_CODE_GRAFT_03_FINAL_ACCEPTANCE_SCOPE_DIAGNOSTIC_1",
+  "canonical_status_unchanged": "FAIL",
+  "canonical_visible_test_only_false_accepts": 5,
+  "graft03_visible_test_only_false_accepts": 0,
+  "ungrafted_visible_test_only_false_accepts": 3,
+  "graft01_visible_test_only_false_accepts": 2,
+  "false_accept_rows_with_submitted_repair": 0,
+  "diagnosis": "the frozen aggregate counts visible-pass/hidden-fail comparator rows even when the arm submitted no repair; the candidate arm has zero such rows",
+  "post_final_acceptance_changes": 0,
+  "candidate_promoted": false,
+  "operator_review_required": true
+}

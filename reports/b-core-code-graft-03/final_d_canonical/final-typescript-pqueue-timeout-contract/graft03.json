@@ -1,0 +1,277 @@
+{
+  "ablated_packages": [],
+  "active_coding_object_count": 3,
+  "active_imported_objects": [
+    {
+      "elemental_operations": [
+        "INFER",
+        "TYPE_CHECK"
+      ],
+      "object_id": "BCG-3b9d4b71887d2c6f",
+      "package": "TYPE_CONTROL"
+    },
+    {
+      "elemental_operations": [
+        "VERIFY",
+        "READ"
+      ],
+      "object_id": "BCG-43d4d10f37231f4c",
+      "package": "FAILURE_REPAIR"
+    },
+    {
+      "elemental_operations": [
+        "VERIFY",
+        "PROPAGATE_ERROR"
+      ],
+      "object_id": "BCG-4c12a26968a38bad",
+      "package": "FAILURE_REPAIR"
+    }
+  ],
+  "active_native_object_count": 3,
+  "arm": "GRAFT03",
+  "attempts": [
+    {
+      "changed_lines": 5,
+      "file": "source/index.ts",
+      "hypothesis": "propagate the existing option invariant to the per-call boundary using the repository's own validation",
+      "predicted_effect": "invalid per-call values fail before enqueue with the same API contract as defaults",
+      "prediction_frozen_before_execution": true,
+      "preserved_behavior": "valid finite positive options and unrelated enqueue semantics remain unchanged",
+      "public_probe": {
+        "output_sha256": "eb529c1ea86bc58ea620fe14f382b331a21d8b4923854be9a03429a5fa944b3a",
+        "output_tail": "\u2714 backlog drains before interval reset - triggers rate-limit-cleared (2073.1287ms)\n\u2714 setPriority validates input (223.4974ms)\n\u2714 timeout validation in constructor (0.7281ms)\n\u2714 abort before start frees concurrency immediately (1.568ms)\n\u2714 carryover mode with no backlog does not report limited (12.1097ms)\n\u2714 clear() triggers immediate state drop while rate-limited (31.5138ms)\n\u2714 abort before start rolls back interval count (1089.6362ms)\n\u2139 tests 7\n\u2139 suites 0\n\u2139 pass 7\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 3568.3553\n",
+        "returncode": 0,
+        "timed_out": false,
+        "wall_ms": 3610.493
+      },
+      "public_probe_pass": true,
+      "required_packages": [
+        "FAILURE_REPAIR",
+        "TYPE_CONTROL"
+      ],
+      "transform": "LOCAL_INVARIANT_PROPAGATION"
+    }
+  ],
+  "candidate_repair_sites": 1,
+  "compiler_runs": 0,
+  "contract_ablated": false,
+  "contract_reconstruction_enabled": true,
+  "defect_class_to_patch_template_authority": false,
+  "defect_family": "per_call_option_invariant_propagation",
+  "external_llm_calls": 0,
+  "failed_patches": 0,
+  "failure_localization_attempts": 1,
+  "false_localizations": 2,
+  "files_activated": 3,
+  "files_inspected": 3,
+  "final_public_probe": {
+    "output_sha256": "eb529c1ea86bc58ea620fe14f382b331a21d8b4923854be9a03429a5fa944b3a",
+    "output_tail": "\u2714 backlog drains before interval reset - triggers rate-limit-cleared (2073.1287ms)\n\u2714 setPriority validates input (223.4974ms)\n\u2714 timeout validation in constructor (0.7281ms)\n\u2714 abort before start frees concurrency immediately (1.568ms)\n\u2714 carryover mode with no backlog does not report limited (12.1097ms)\n\u2714 clear() triggers immediate state drop while rate-limited (31.5138ms)\n\u2714 abort before start rolls back interval count (1089.6362ms)\n\u2139 tests 7\n\u2139 suites 0\n\u2139 pass 7\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 3568.3553\n",
+    "returncode": 0,
+    "timed_out": false,
+    "wall_ms": 3610.493
+  },
+  "fix_commit_reads": 0,
+  "full_coding_knowledge_scans": 0,
+  "full_repository_scan_events": 0,
+  "gold_patch_reads": 0,
+  "hidden_test_reads_before_submission": 0,
+  "human_contract_rule_selection_events": 0,
+  "human_language_specific_fix_selection_events": 0,
+  "human_repair_rule_selection_events": 0,
+  "hypotheses_generated": 1,
+  "independent_semantic_restoration_pass": null,
+  "initial_public_probe": {
+    "output_sha256": "979038934028a1e88c29dbb0d4c63a66f581162be56b0f48584a2f07e954f523",
+    "output_tail": "\u2714 backlog drains before interval reset - triggers rate-limit-cleared (2072.5768ms)\n\u2714 setPriority validates input (218.2003ms)\n\u2714 timeout validation in constructor (0.4928ms)\n\u2714 abort before start frees concurrency immediately (1.3414ms)\n\u2714 carryover mode with no backlog does not report limited (13.2469ms)\n\u2714 clear() triggers immediate state drop while rate-limited (31.3205ms)\n\u2714 abort before start rolls back interval count (1085.9688ms)\n\u2139 tests 7\n\u2139 suites 0\n\u2139 pass 7\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 4632.9898\n",
+    "returncode": 0,
+    "timed_out": false,
+    "wall_ms": 4872.683
+  },
+  "language": "typescript",
+  "local_teacher_calls": 0,
+  "localization_ledger": [
+    {
+      "evidence_tokens": [
+        "accepts",
+        "add",
+        "call",
+        "constructor",
+        "default",
+        "enqueued",
+        "finite",
+        "number",
+        "option",
+        "per",
+        "positive",
+        "pqueue"
+      ],
+      "file": "source/index.ts",
+      "score": 76
+    },
+    {
+      "evidence_tokens": [
+        "add",
+        "boundaries",
+        "call",
+        "default",
+        "finite",
+        "number",
+        "option",
+        "per",
+        "pqueue",
+        "task",
+        "timeout"
+      ],
+      "file": "source/options.ts",
+      "score": 48
+    },
+    {
+      "evidence_tokens": [
+        "add",
+        "per",
+        "pqueue",
+        "task"
+      ],
+      "file": "bench.ts",
+      "score": 19
+    }
+  ],
+  "mechanism_localization_attempts": 1,
+  "network_reads_during_canonical": 0,
+  "network_writes_during_canonical": 0,
+  "patch_attempts": 1,
+  "patch_hash_routing_events": 0,
+  "patches_executed": 1,
+  "patches_generated": 1,
+  "rejected_before_execution": 0,
+  "repair_revealing_issue_reads": 0,
+  "repair_site_localization_attempts": 1,
+  "repair_work": 16,
+  "repeated_equivalent_patches": 0,
+  "repository_files_total": 14,
+  "repository_id_routing_events": 0,
+  "repository_repair_contract_ir": {
+    "affected_behavior": "the timeout invariant applies equally to default and per-call option boundaries before a task is enqueued",
+    "allowed_semantic_changes": [
+      "the timeout invariant applies equally to default and per-call option boundaries before a task is enqueued"
+    ],
+    "callee_expectations": "existing valid inputs preserve their current execution path",
+    "caller_expectations": "callers observe only the affected behavior stated by repository-local evidence",
+    "candidate_root_causes": [
+      "boundary relation",
+      "state ordering",
+      "suspension ownership",
+      "parser progress",
+      "local invariant omission",
+      "relation asymmetry"
+    ],
+    "concurrency_or_lifetime_constraints": [
+      "before"
+    ],
+    "forbidden_semantic_changes": [
+      "test modification",
+      "public API removal",
+      "unrelated control-flow rewrite"
+    ],
+    "observed_failure": "PQueue.add accepts per-task timeout 0 or -1 although constructor timeout requires a positive finite number; expected TypeError rejection is missing.",
+    "predicted_repair_effect": "the observed failure disappears while repository public contracts remain passing",
+    "provenance": {
+      "files": [
+        "index.ts",
+        "options.ts",
+        "bench.ts"
+      ],
+      "localization_ledger": [
+        {
+          "evidence_tokens": [
+            "accepts",
+            "add",
+            "call",
+            "constructor",
+            "default",
+            "enqueued",
+            "finite",
+            "number",
+            "option",
+            "per",
+            "positive",
+            "pqueue"
+          ],
+          "file": "source/index.ts",
+          "score": 76
+        },
+        {
+          "evidence_tokens": [
+            "add",
+            "boundaries",
+            "call",
+            "default",
+            "finite",
+            "number",
+            "option",
+            "per",
+            "pqueue",
+            "task",
+            "timeout"
+          ],
+          "file": "source/options.ts",
+          "score": 48
+        },
+        {
+          "evidence_tokens": [
+            "add",
+            "per",
+            "pqueue",
+            "task"
+          ],
+          "file": "bench.ts",
+          "score": 19
+        }
+      ],
+      "symbols": [
+        "PQueue",
+        "by",
+        "to",
+        "with",
+        "to",
+        "with"
+      ]
+    },
+    "relevant_api_contract": "the timeout invariant applies equally to default and per-call option boundaries before a task is enqueued",
+    "required_invariants": [
+      "before",
+      "positive",
+      "finite"
+    ],
+    "schema_version": "REPOSITORY_REPAIR_CONTRACT_IR_1",
+    "state_transition_constraints": [
+      "before"
+    ],
+    "type_constraints": [
+      "positive",
+      "finite"
+    ],
+    "uncertainty": "bounded candidate competition; independent semantic verifier remains authoritative"
+  },
+  "result_sha256": "a64e56b0f46d6a60a45ed62851cbf9ec45e7c5a1e19a48ac0f90e4b7b8c35aac",
+  "schema_version": "B_CORE_CODE_GRAFT_03_ARM_RESULT_1",
+  "submitted": true,
+  "symbols_activated": [
+    "PQueue",
+    "by",
+    "to",
+    "with",
+    "to",
+    "with"
+  ],
+  "symbols_activated_count": 6,
+  "symbols_inspected": 6,
+  "task_hash": "44111bce3cd1b1eae30cddb7e58d821741cce6f6be6ee4e12b7b735c55ad7a46",
+  "task_id_routing_events": 0,
+  "test_runs": 2,
+  "test_weakening_solution": false,
+  "upstream_test_pass": true,
+  "verifier_bypass_solution": false,
+  "wall_ms": 8801.538
+}

@@ -1,0 +1,36 @@
+{
+  "allowed_source_paths": [
+    "source/index.ts"
+  ],
+  "arm": "UNGRAFTED",
+  "changed_lines": 0,
+  "changed_paths": [],
+  "fix_commit_reads_by_arm": 0,
+  "gold_patch_reads_by_arm": 0,
+  "hidden_result": {
+    "output_sha256": "a9e8764c3b35ba33dcc42f339bc798f2c7d2df34170ac375cbc8ee3a021da9c2",
+    "output_tail": "\u2714 backlog drains before interval reset - triggers rate-limit-cleared (2067.7137ms)\n\u2714 setPriority validates input (223.97ms)\n\u2714 timeout validation in constructor (0.3781ms)\n\u2716 timeout validation in add (46.387ms)\n\u2714 abort before start frees concurrency immediately (1.3499ms)\n\u2714 carryover mode with no backlog does not report limited (13.2107ms)\n\u2714 clear() triggers immediate state drop while rate-limited (32.5003ms)\n\u2714 abort before start rolls back interval count (1094.9464ms)\n\u2139 tests 8\n\u2139 suites 0\n\u2139 pass 7\n\u2139 fail 1\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 4482.8601\n\n\u2716 failing tests:\n\ntest at test\\validation.ts:1:1479\n\u2716 timeout validation in add (46.387ms)\n  AssertionError [ERR_ASSERTION]: Missing expected rejection (TypeError).\n      at async TestContext.<anonymous> (D:\\B_Core_CODE_GRAFT_03_EVALUATOR_VAULT\\verify-94t9mutf\\tree\\test\\validation.ts:84:2)\n      at async Test.run (node:internal/test_runner/test:1125:7)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {\n    generatedMessage: false,\n    code: 'ERR_ASSERTION',\n    actual: undefined,\n    expected: { name: 'TypeError', message: /Expected `timeout` to be a positive finite number/ },\n    operator: 'rejects',\n    diff: 'simple'\n  }\n",
+    "returncode": 1,
+    "timed_out": false,
+    "wall_ms": 4655.981
+  },
+  "hidden_test_reads_before_submission": 0,
+  "independent_semantic_restoration_pass": false,
+  "minimal_semantic_delta_pass": false,
+  "public_result": {
+    "output_sha256": "ee54ed9f068640a043126d27fa3d989f27535d5135bb024ea7d0a34d754b9521",
+    "output_tail": "\u2714 backlog drains before interval reset - triggers rate-limit-cleared (2086.298ms)\n\u2714 setPriority validates input (217.821ms)\n\u2714 timeout validation in constructor (0.7403ms)\n\u2714 abort before start frees concurrency immediately (1.6443ms)\n\u2714 carryover mode with no backlog does not report limited (12.5222ms)\n\u2714 clear() triggers immediate state drop while rate-limited (30.5339ms)\n\u2714 abort before start rolls back interval count (1094.616ms)\n\u2139 tests 7\n\u2139 suites 0\n\u2139 pass 7\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 3677.038\n",
+    "returncode": 0,
+    "timed_out": false,
+    "wall_ms": 3926.991
+  },
+  "repair_revealing_issue_reads_by_arm": 0,
+  "schema_version": "B_CORE_CODE_GRAFT_03_INDEPENDENT_SEMANTIC_VERIFICATION_1",
+  "status": "FAIL",
+  "task_hash": "44111bce3cd1b1eae30cddb7e58d821741cce6f6be6ee4e12b7b735c55ad7a46",
+  "task_name": "final-typescript-pqueue-timeout-contract",
+  "test_changes": [],
+  "unrelated_semantic_change_events": 1,
+  "upstream_test_pass": true,
+  "visible_test_only_false_accept": true
+}

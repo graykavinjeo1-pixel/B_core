@@ -1,0 +1,12 @@
+{
+  "arm": "graft03",
+  "bug_tree_sha256": "b40ea8ac3e2b665d61cccd852d652e175865f91d26af0dca2a23bf7fd28a60c7",
+  "destination": "D:\\BCG03_RUN\\FINAL_D\\f2\\graft03",
+  "fix_commit_exposed_to_arm": false,
+  "gold_patch_exposed_to_arm": false,
+  "hidden_test_exposed_before_submission": false,
+  "public_manifest": "D:\\BCG03_RUN\\FINAL_D\\f2\\graft03\\bcore_public_task_manifest.json",
+  "schema_version": "B_CORE_CODE_GRAFT_03_MATERIALIZATION_1",
+  "task_hash": "f4a364fa1fec445387c016a13853904af8a1441b445d29f5e07ee9481efc7fb6",
+  "task_name": "final-go-gjson-empty-query"
+}

@@ -1,0 +1,38 @@
+{
+  "allowed_source_paths": [
+    "gjson.go"
+  ],
+  "arm": "GRAFT01",
+  "changed_lines": 2,
+  "changed_paths": [
+    "gjson.go"
+  ],
+  "fix_commit_reads_by_arm": 0,
+  "gold_patch_reads_by_arm": 0,
+  "hidden_result": {
+    "output_sha256": "78c34c195d84fd619536940cb75f2ff8400180d41aad1774cf04dae8a16e23a2",
+    "output_tail": "ok  \tgithub.com/tidwall/gjson\t0.248s\n",
+    "returncode": 0,
+    "timed_out": false,
+    "wall_ms": 955.951
+  },
+  "hidden_test_reads_before_submission": 0,
+  "independent_semantic_restoration_pass": true,
+  "minimal_semantic_delta_pass": true,
+  "public_result": {
+    "output_sha256": "886c6a7279ffc49d3e59077bfb5fde37caa9c8bd2f6f0f35265753ac2b46eedf",
+    "output_tail": "ok  \tgithub.com/tidwall/gjson\t7.847s\n",
+    "returncode": 0,
+    "timed_out": false,
+    "wall_ms": 8518.227
+  },
+  "repair_revealing_issue_reads_by_arm": 0,
+  "schema_version": "B_CORE_CODE_GRAFT_03_INDEPENDENT_SEMANTIC_VERIFICATION_1",
+  "status": "PASS",
+  "task_hash": "f4a364fa1fec445387c016a13853904af8a1441b445d29f5e07ee9481efc7fb6",
+  "task_name": "final-go-gjson-empty-query",
+  "test_changes": [],
+  "unrelated_semantic_change_events": 0,
+  "upstream_test_pass": true,
+  "visible_test_only_false_accept": false
+}

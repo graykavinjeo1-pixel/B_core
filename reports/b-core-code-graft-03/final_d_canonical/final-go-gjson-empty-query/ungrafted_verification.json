@@ -1,0 +1,36 @@
+{
+  "allowed_source_paths": [
+    "gjson.go"
+  ],
+  "arm": "UNGRAFTED",
+  "changed_lines": 0,
+  "changed_paths": [],
+  "fix_commit_reads_by_arm": 0,
+  "gold_patch_reads_by_arm": 0,
+  "hidden_result": {
+    "output_sha256": "5ef5ccbc70c2730e9360ec3dc70f0a26707aa43b3a054a917b025c35b72422f2",
+    "output_tail": "--- FAIL: TestEmptyValueQuery (0.00s)\npanic: assert failed [recovered, repanicked]\n\ngoroutine 6 [running]:\ntesting.tRunner.func1.2({0x7ff7cdaecb80, 0x7ff7cdb3cb60})\n\tC:/Program Files/Go/src/testing/testing.go:1974 +0x239\ntesting.tRunner.func1()\n\tC:/Program Files/Go/src/testing/testing.go:1977 +0x349\npanic({0x7ff7cdaecb80?, 0x7ff7cdb3cb60?})\n\tC:/Program Files/Go/src/runtime/panic.go:860 +0x13a\ngithub.com/tidwall/gjson.assert(...)\n\tD:/B_Core_CODE_GRAFT_03_EVALUATOR_VAULT/verify-_enj9h8b/tree/gjson_test.go:606\ngithub.com/tidwall/gjson.TestEmptyValueQuery(0x2ea15a212400?)\n\tD:/B_Core_CODE_GRAFT_03_EVALUATOR_VAULT/verify-_enj9h8b/tree/gjson_test.go:2267 +0x1b8\ntesting.tRunner(0x2ea15a212400, 0x7ff7cdb3ac28)\n\tC:/Program Files/Go/src/testing/testing.go:2036 +0xc3\ncreated by testing.(*T).Run in goroutine 1\n\tC:/Program Files/Go/src/testing/testing.go:2101 +0x4a9\nFAIL\tgithub.com/tidwall/gjson\t0.269s\nFAIL\n",
+    "returncode": 1,
+    "timed_out": false,
+    "wall_ms": 1143.823
+  },
+  "hidden_test_reads_before_submission": 0,
+  "independent_semantic_restoration_pass": false,
+  "minimal_semantic_delta_pass": false,
+  "public_result": {
+    "output_sha256": "f80053f8c1d10fc5b49c827122a3c5e5c4cab2a02a4d28c9a77620d85afda381",
+    "output_tail": "ok  \tgithub.com/tidwall/gjson\t8.352s\n",
+    "returncode": 0,
+    "timed_out": false,
+    "wall_ms": 9372.678
+  },
+  "repair_revealing_issue_reads_by_arm": 0,
+  "schema_version": "B_CORE_CODE_GRAFT_03_INDEPENDENT_SEMANTIC_VERIFICATION_1",
+  "status": "FAIL",
+  "task_hash": "f4a364fa1fec445387c016a13853904af8a1441b445d29f5e07ee9481efc7fb6",
+  "task_name": "final-go-gjson-empty-query",
+  "test_changes": [],
+  "unrelated_semantic_change_events": 1,
+  "upstream_test_pass": true,
+  "visible_test_only_false_accept": true
+}

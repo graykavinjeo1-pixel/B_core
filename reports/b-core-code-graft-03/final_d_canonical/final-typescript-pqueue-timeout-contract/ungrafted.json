@@ -1,0 +1,167 @@
+{
+  "ablated_packages": [],
+  "active_coding_object_count": 0,
+  "active_imported_objects": [],
+  "active_native_object_count": 3,
+  "arm": "UNGRAFTED",
+  "attempts": [],
+  "candidate_repair_sites": 0,
+  "compiler_runs": 0,
+  "contract_ablated": false,
+  "contract_reconstruction_enabled": false,
+  "defect_class_to_patch_template_authority": false,
+  "defect_family": "per_call_option_invariant_propagation",
+  "external_llm_calls": 0,
+  "failed_patches": 0,
+  "failure_localization_attempts": 1,
+  "false_localizations": 7,
+  "files_activated": 7,
+  "files_inspected": 7,
+  "final_public_probe": {
+    "output_sha256": "1503665328916dc0c74a39c795cef7b816b4075f4e269825a337edaeb413f4b4",
+    "output_tail": "\u2714 backlog drains before interval reset - triggers rate-limit-cleared (2072.1378ms)\n\u2714 setPriority validates input (217.9402ms)\n\u2714 timeout validation in constructor (0.5365ms)\n\u2714 abort before start frees concurrency immediately (1.2342ms)\n\u2714 carryover mode with no backlog does not report limited (14.2535ms)\n\u2714 clear() triggers immediate state drop while rate-limited (31.4141ms)\n\u2714 abort before start rolls back interval count (1097.935ms)\n\u2139 tests 7\n\u2139 suites 0\n\u2139 pass 7\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 4546.3398\n",
+    "returncode": 0,
+    "timed_out": false,
+    "wall_ms": 4620.659
+  },
+  "fix_commit_reads": 0,
+  "full_coding_knowledge_scans": 0,
+  "full_repository_scan_events": 0,
+  "gold_patch_reads": 0,
+  "hidden_test_reads_before_submission": 0,
+  "human_contract_rule_selection_events": 0,
+  "human_language_specific_fix_selection_events": 0,
+  "human_repair_rule_selection_events": 0,
+  "hypotheses_generated": 0,
+  "independent_semantic_restoration_pass": null,
+  "initial_public_probe": {
+    "output_sha256": "1503665328916dc0c74a39c795cef7b816b4075f4e269825a337edaeb413f4b4",
+    "output_tail": "\u2714 backlog drains before interval reset - triggers rate-limit-cleared (2072.1378ms)\n\u2714 setPriority validates input (217.9402ms)\n\u2714 timeout validation in constructor (0.5365ms)\n\u2714 abort before start frees concurrency immediately (1.2342ms)\n\u2714 carryover mode with no backlog does not report limited (14.2535ms)\n\u2714 clear() triggers immediate state drop while rate-limited (31.4141ms)\n\u2714 abort before start rolls back interval count (1097.935ms)\n\u2139 tests 7\n\u2139 suites 0\n\u2139 pass 7\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 4546.3398\n",
+    "returncode": 0,
+    "timed_out": false,
+    "wall_ms": 4620.659
+  },
+  "language": "typescript",
+  "local_teacher_calls": 0,
+  "localization_ledger": [
+    {
+      "evidence_tokens": [
+        "accepts",
+        "add",
+        "call",
+        "constructor",
+        "default",
+        "enqueued",
+        "finite",
+        "number",
+        "option",
+        "per",
+        "positive",
+        "pqueue"
+      ],
+      "file": "source/index.ts",
+      "score": 76
+    },
+    {
+      "evidence_tokens": [
+        "add",
+        "boundaries",
+        "call",
+        "default",
+        "finite",
+        "number",
+        "option",
+        "per",
+        "pqueue",
+        "task",
+        "timeout"
+      ],
+      "file": "source/options.ts",
+      "score": 48
+    },
+    {
+      "evidence_tokens": [
+        "add",
+        "per",
+        "pqueue",
+        "task"
+      ],
+      "file": "bench.ts",
+      "score": 19
+    },
+    {
+      "evidence_tokens": [
+        "add",
+        "call",
+        "default",
+        "invariant",
+        "number",
+        "option"
+      ],
+      "file": "source/priority-queue.ts",
+      "score": 14
+    },
+    {
+      "evidence_tokens": [
+        "number",
+        "option"
+      ],
+      "file": "source/queue.ts",
+      "score": 7
+    },
+    {
+      "evidence_tokens": [
+        "add",
+        "pqueue"
+      ],
+      "file": "test-d/index.test-d.ts",
+      "score": 4
+    },
+    {
+      "evidence_tokens": [
+        "default",
+        "number"
+      ],
+      "file": "source/lower-bound.ts",
+      "score": 3
+    }
+  ],
+  "mechanism_localization_attempts": 0,
+  "network_reads_during_canonical": 0,
+  "network_writes_during_canonical": 0,
+  "patch_attempts": 0,
+  "patch_hash_routing_events": 0,
+  "patches_executed": 0,
+  "patches_generated": 0,
+  "rejected_before_execution": 0,
+  "repair_revealing_issue_reads": 0,
+  "repair_site_localization_attempts": 0,
+  "repair_work": 16,
+  "repeated_equivalent_patches": 0,
+  "repository_files_total": 14,
+  "repository_id_routing_events": 0,
+  "repository_repair_contract_ir": null,
+  "result_sha256": "3384f24aedc82d88d87b34ac544d0a8e8c6de0b0e57a7cafe6f72443c8b4d980",
+  "schema_version": "B_CORE_CODE_GRAFT_03_ARM_RESULT_1",
+  "submitted": false,
+  "symbols_activated": [
+    "PQueue",
+    "by",
+    "to",
+    "with",
+    "to",
+    "with",
+    "PriorityQueue",
+    "with",
+    "lowerBound"
+  ],
+  "symbols_activated_count": 9,
+  "symbols_inspected": 9,
+  "task_hash": "44111bce3cd1b1eae30cddb7e58d821741cce6f6be6ee4e12b7b735c55ad7a46",
+  "task_id_routing_events": 0,
+  "test_runs": 1,
+  "test_weakening_solution": false,
+  "upstream_test_pass": false,
+  "verifier_bypass_solution": false,
+  "wall_ms": 5113.356
+}

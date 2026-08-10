@@ -1,0 +1,171 @@
+{
+  "ablated_packages": [],
+  "active_coding_object_count": 3,
+  "active_imported_objects": [
+    {
+      "elemental_operations": [
+        "INFER",
+        "TYPE_CHECK"
+      ],
+      "object_id": "BCG-3b9d4b71887d2c6f",
+      "package": "TYPE_CONTROL"
+    },
+    {
+      "elemental_operations": [
+        "TYPE_CHECK"
+      ],
+      "object_id": "BCG-67ffc1aa9737c1f4",
+      "package": "TYPE_CONTROL"
+    },
+    {
+      "elemental_operations": [
+        "TYPE_CHECK",
+        "DISPATCH"
+      ],
+      "object_id": "BCG-7d7f2042a8b88a22",
+      "package": "TYPE_CONTROL"
+    }
+  ],
+  "active_native_object_count": 3,
+  "arm": "GRAFT01",
+  "attempts": [
+    {
+      "changed_lines": 2,
+      "file": "gjson.go",
+      "hypothesis": "include the representable boundary",
+      "predicted_effect": "empty encoded strings cross the same quote boundary as nonempty strings",
+      "prediction_frozen_before_execution": true,
+      "preserved_behavior": "all parsing outside the single boundary relation remains byte-identical",
+      "public_probe": {
+        "output_sha256": "bed2517de236fd2676e89fb15f3a559699e81e9bc0313fdc69255886d431917d",
+        "output_tail": "ok  \tgithub.com/tidwall/gjson\t8.156s\n",
+        "returncode": 0,
+        "timed_out": false,
+        "wall_ms": 9612.327
+      },
+      "public_probe_pass": true,
+      "required_packages": [
+        "TYPE_CONTROL"
+      ],
+      "transform": "BOUNDARY_RELATION"
+    }
+  ],
+  "candidate_repair_sites": 1,
+  "compiler_runs": 0,
+  "contract_ablated": false,
+  "contract_reconstruction_enabled": false,
+  "defect_class_to_patch_template_authority": false,
+  "defect_family": "encoded_empty_string_boundary",
+  "external_llm_calls": 0,
+  "failed_patches": 0,
+  "failure_localization_attempts": 1,
+  "false_localizations": 0,
+  "files_activated": 1,
+  "files_inspected": 1,
+  "final_public_probe": {
+    "output_sha256": "bed2517de236fd2676e89fb15f3a559699e81e9bc0313fdc69255886d431917d",
+    "output_tail": "ok  \tgithub.com/tidwall/gjson\t8.156s\n",
+    "returncode": 0,
+    "timed_out": false,
+    "wall_ms": 9612.327
+  },
+  "fix_commit_reads": 0,
+  "full_coding_knowledge_scans": 0,
+  "full_repository_scan_events": 0,
+  "gold_patch_reads": 0,
+  "hidden_test_reads_before_submission": 0,
+  "human_contract_rule_selection_events": 0,
+  "human_language_specific_fix_selection_events": 0,
+  "human_repair_rule_selection_events": 0,
+  "hypotheses_generated": 4,
+  "independent_semantic_restoration_pass": null,
+  "initial_public_probe": {
+    "output_sha256": "7837576d401efbdb50020c2959346893ea92c82a8840cf76e87c82bf41095566",
+    "output_tail": "ok  \tgithub.com/tidwall/gjson\t7.792s\n",
+    "returncode": 0,
+    "timed_out": false,
+    "wall_ms": 8423.244
+  },
+  "language": "go",
+  "local_teacher_calls": 0,
+  "localization_ledger": [
+    {
+      "evidence_tokens": [
+        "both",
+        "but",
+        "empty",
+        "has",
+        "non",
+        "query",
+        "quote",
+        "string",
+        "strings",
+        "value",
+        "values"
+      ],
+      "file": "gjson.go",
+      "score": 50
+    }
+  ],
+  "mechanism_localization_attempts": 1,
+  "network_reads_during_canonical": 0,
+  "network_writes_during_canonical": 0,
+  "patch_attempts": 1,
+  "patch_hash_routing_events": 0,
+  "patches_executed": 1,
+  "patches_generated": 4,
+  "rejected_before_execution": 0,
+  "repair_revealing_issue_reads": 0,
+  "repair_site_localization_attempts": 1,
+  "repair_work": 44,
+  "repeated_equivalent_patches": 0,
+  "repository_files_total": 2,
+  "repository_id_routing_events": 0,
+  "repository_repair_contract_ir": null,
+  "result_sha256": "5d3930f34a78c9a92e7102f011748f0dd4f89bf40c7d7beb9a38253132a6b285",
+  "schema_version": "B_CORE_CODE_GRAFT_03_ARM_RESULT_1",
+  "submitted": true,
+  "symbols_activated": [
+    "expects",
+    "first",
+    "Parse",
+    "ParseBytes",
+    "squash",
+    "tonum",
+    "tolit",
+    "tostr",
+    "parseString",
+    "parseNumber",
+    "parseLiteral",
+    "parseArrayPath",
+    "parseQuery",
+    "trim",
+    "isDotPiperChar",
+    "parseObjectPath",
+    "parseSquash",
+    "parseObject",
+    "for",
+    "matchLimit",
+    "queryMatches",
+    "parseArray",
+    "splitPossiblePipe",
+    "ForEachLine",
+    "parseSubSelectors",
+    "nameOfLast",
+    "isSimpleName",
+    "appendJSONString",
+    "expects",
+    "first",
+    "Get",
+    "GetBytes"
+  ],
+  "symbols_activated_count": 32,
+  "symbols_inspected": 32,
+  "task_hash": "f4a364fa1fec445387c016a13853904af8a1441b445d29f5e07ee9481efc7fb6",
+  "task_id_routing_events": 0,
+  "test_runs": 2,
+  "test_weakening_solution": false,
+  "upstream_test_pass": true,
+  "verifier_bypass_solution": false,
+  "wall_ms": 18045.751
+}

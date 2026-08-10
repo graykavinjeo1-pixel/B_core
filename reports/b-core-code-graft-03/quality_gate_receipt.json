@@ -1,0 +1,28 @@
+{
+  "schema_version": "B_CORE_CODE_GRAFT_03_QUALITY_GATE_1",
+  "status": "PASS",
+  "workspace_test_exit_code": 0,
+  "workspace_test_wall_ms": 430985,
+  "workspace_test_log_sha256": "ba0e701795b0f742c35a69bc0eac66518580ab4a6989dcecdeed34e5a4d36706",
+  "clippy_exit_code": 0,
+  "clippy_wall_ms": 95236,
+  "clippy_observed_warning_lines": 24,
+  "clippy_baseline_warning_signatures": [
+    "manual implementation of `.is_multiple_of()`"
+  ],
+  "new_clippy_warning_signatures_total": 0,
+  "clippy_log_sha256": "bdf0535f6903154857376aacaFAFAE3C8070E1C9856B03FD955230B977BB38C7",
+  "clean_release_reconstruction": "PASS",
+  "clean_release_commit": "ebf093c7dcb41845fb77555398c7b36fa7210780",
+  "clean_release_offline": true,
+  "clean_release_warm_cache_used": false,
+  "clean_release_exit_code": 0,
+  "clean_release_wall_ms": 573722,
+  "clean_release_log_sha256": "624002f74ed848cd90955d21dcecebf3ecadaaE42faee922e503169706bd259b",
+  "controlled_coding_regressions": 0,
+  "first_principles_reasoning_regressions": 0,
+  "autonomous_scientific_loop_regressions": 0,
+  "world_model_regressions": 0,
+  "planning_regressions": 0,
+  "temporal_abstraction_regressions": 0
+}

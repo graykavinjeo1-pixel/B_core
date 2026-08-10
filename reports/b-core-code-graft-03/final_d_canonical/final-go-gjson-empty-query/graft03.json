@@ -1,0 +1,260 @@
+{
+  "ablated_packages": [],
+  "active_coding_object_count": 3,
+  "active_imported_objects": [
+    {
+      "elemental_operations": [
+        "INFER",
+        "TYPE_CHECK"
+      ],
+      "object_id": "BCG-3b9d4b71887d2c6f",
+      "package": "TYPE_CONTROL"
+    },
+    {
+      "elemental_operations": [
+        "TYPE_CHECK"
+      ],
+      "object_id": "BCG-67ffc1aa9737c1f4",
+      "package": "TYPE_CONTROL"
+    },
+    {
+      "elemental_operations": [
+        "TYPE_CHECK",
+        "DISPATCH"
+      ],
+      "object_id": "BCG-7d7f2042a8b88a22",
+      "package": "TYPE_CONTROL"
+    }
+  ],
+  "active_native_object_count": 3,
+  "arm": "GRAFT03",
+  "attempts": [
+    {
+      "changed_lines": 2,
+      "file": "gjson.go",
+      "hypothesis": "include the representable boundary",
+      "predicted_effect": "empty encoded strings cross the same quote boundary as nonempty strings",
+      "prediction_frozen_before_execution": true,
+      "preserved_behavior": "all parsing outside the single boundary relation remains byte-identical",
+      "public_probe": {
+        "output_sha256": "d4dade507db5f95639616ee9dff929a8d712af13e4bd90a834d2f85deec9876e",
+        "output_tail": "ok  \tgithub.com/tidwall/gjson\t7.926s\n",
+        "returncode": 0,
+        "timed_out": false,
+        "wall_ms": 8593.648
+      },
+      "public_probe_pass": true,
+      "required_packages": [
+        "TYPE_CONTROL"
+      ],
+      "transform": "BOUNDARY_RELATION"
+    }
+  ],
+  "candidate_repair_sites": 1,
+  "compiler_runs": 0,
+  "contract_ablated": false,
+  "contract_reconstruction_enabled": true,
+  "defect_class_to_patch_template_authority": false,
+  "defect_family": "encoded_empty_string_boundary",
+  "external_llm_calls": 0,
+  "failed_patches": 0,
+  "failure_localization_attempts": 1,
+  "false_localizations": 0,
+  "files_activated": 1,
+  "files_inspected": 1,
+  "final_public_probe": {
+    "output_sha256": "d4dade507db5f95639616ee9dff929a8d712af13e4bd90a834d2f85deec9876e",
+    "output_tail": "ok  \tgithub.com/tidwall/gjson\t7.926s\n",
+    "returncode": 0,
+    "timed_out": false,
+    "wall_ms": 8593.648
+  },
+  "fix_commit_reads": 0,
+  "full_coding_knowledge_scans": 0,
+  "full_repository_scan_events": 0,
+  "gold_patch_reads": 0,
+  "hidden_test_reads_before_submission": 0,
+  "human_contract_rule_selection_events": 0,
+  "human_language_specific_fix_selection_events": 0,
+  "human_repair_rule_selection_events": 0,
+  "hypotheses_generated": 4,
+  "independent_semantic_restoration_pass": null,
+  "initial_public_probe": {
+    "output_sha256": "ea88571bad3b6781fa96cc4cc3f72010f5cdc18cf4ef668dcbfe5f598ada7486",
+    "output_tail": "ok  \tgithub.com/tidwall/gjson\t7.835s\n",
+    "returncode": 0,
+    "timed_out": false,
+    "wall_ms": 8462.638
+  },
+  "language": "go",
+  "local_teacher_calls": 0,
+  "localization_ledger": [
+    {
+      "evidence_tokens": [
+        "both",
+        "but",
+        "empty",
+        "has",
+        "non",
+        "query",
+        "quote",
+        "string",
+        "strings",
+        "value",
+        "values"
+      ],
+      "file": "gjson.go",
+      "score": 50
+    }
+  ],
+  "mechanism_localization_attempts": 1,
+  "network_reads_during_canonical": 0,
+  "network_writes_during_canonical": 0,
+  "patch_attempts": 1,
+  "patch_hash_routing_events": 0,
+  "patches_executed": 1,
+  "patches_generated": 4,
+  "rejected_before_execution": 3,
+  "repair_revealing_issue_reads": 0,
+  "repair_site_localization_attempts": 1,
+  "repair_work": 43,
+  "repeated_equivalent_patches": 0,
+  "repository_files_total": 2,
+  "repository_id_routing_events": 0,
+  "repository_repair_contract_ir": {
+    "affected_behavior": "both empty and nonempty quoted query values must cross the quote-stripping boundary while preserving non-string query behavior",
+    "allowed_semantic_changes": [
+      "both empty and nonempty quoted query values must cross the quote-stripping boundary while preserving non-string query behavior"
+    ],
+    "callee_expectations": "existing valid inputs preserve their current execution path",
+    "caller_expectations": "callers observe only the affected behavior stated by repository-local evidence",
+    "candidate_root_causes": [
+      "boundary relation",
+      "state ordering",
+      "suspension ownership",
+      "parser progress",
+      "local invariant omission",
+      "relation asymmetry"
+    ],
+    "concurrency_or_lifetime_constraints": [],
+    "forbidden_semantic_changes": [
+      "test modification",
+      "public API removal",
+      "unrelated control-flow rewrite"
+    ],
+    "observed_failure": "empty quoted query value has encoded length 2 but is not unquoted, so #(!=\"\")# incorrectly retains empty strings.",
+    "predicted_repair_effect": "the observed failure disappears while repository public contracts remain passing",
+    "provenance": {
+      "files": [
+        "gjson.go"
+      ],
+      "localization_ledger": [
+        {
+          "evidence_tokens": [
+            "both",
+            "but",
+            "empty",
+            "has",
+            "non",
+            "query",
+            "quote",
+            "string",
+            "strings",
+            "value",
+            "values"
+          ],
+          "file": "gjson.go",
+          "score": 50
+        }
+      ],
+      "symbols": [
+        "expects",
+        "first",
+        "Parse",
+        "ParseBytes",
+        "squash",
+        "tonum",
+        "tolit",
+        "tostr",
+        "parseString",
+        "parseNumber",
+        "parseLiteral",
+        "parseArrayPath",
+        "parseQuery",
+        "trim",
+        "isDotPiperChar",
+        "parseObjectPath",
+        "parseSquash",
+        "parseObject",
+        "for",
+        "matchLimit",
+        "queryMatches",
+        "parseArray",
+        "splitPossiblePipe",
+        "ForEachLine",
+        "parseSubSelectors",
+        "nameOfLast",
+        "isSimpleName",
+        "appendJSONString",
+        "expects",
+        "first",
+        "Get",
+        "GetBytes"
+      ]
+    },
+    "relevant_api_contract": "both empty and nonempty quoted query values must cross the quote-stripping boundary while preserving non-string query behavior",
+    "required_invariants": [
+      "empty"
+    ],
+    "schema_version": "REPOSITORY_REPAIR_CONTRACT_IR_1",
+    "state_transition_constraints": [],
+    "type_constraints": [],
+    "uncertainty": "bounded candidate competition; independent semantic verifier remains authoritative"
+  },
+  "result_sha256": "4ed238706667811cd4accfcaf0296f02c9b820e482105ffcc72e68ef3ca534b7",
+  "schema_version": "B_CORE_CODE_GRAFT_03_ARM_RESULT_1",
+  "submitted": true,
+  "symbols_activated": [
+    "expects",
+    "first",
+    "Parse",
+    "ParseBytes",
+    "squash",
+    "tonum",
+    "tolit",
+    "tostr",
+    "parseString",
+    "parseNumber",
+    "parseLiteral",
+    "parseArrayPath",
+    "parseQuery",
+    "trim",
+    "isDotPiperChar",
+    "parseObjectPath",
+    "parseSquash",
+    "parseObject",
+    "for",
+    "matchLimit",
+    "queryMatches",
+    "parseArray",
+    "splitPossiblePipe",
+    "ForEachLine",
+    "parseSubSelectors",
+    "nameOfLast",
+    "isSimpleName",
+    "appendJSONString",
+    "expects",
+    "first",
+    "Get",
+    "GetBytes"
+  ],
+  "symbols_activated_count": 32,
+  "symbols_inspected": 32,
+  "task_hash": "f4a364fa1fec445387c016a13853904af8a1441b445d29f5e07ee9481efc7fb6",
+  "task_id_routing_events": 0,
+  "test_runs": 2,
+  "test_weakening_solution": false,
+  "upstream_test_pass": true,
+  "verifier_bypass_solution": false,
+  "wall_ms": 17061.931
+}

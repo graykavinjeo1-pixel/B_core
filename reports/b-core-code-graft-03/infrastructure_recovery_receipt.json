@@ -1,0 +1,23 @@
+{
+  "schema_version": "B_CORE_CODE_GRAFT_03_INFRASTRUCTURE_RECOVERY_1",
+  "event": "FINAL_D_MATERIALIZATION_RUNTIME_BINDING_RECOVERY",
+  "task": "final-typescript-pqueue-timeout-contract",
+  "failure_stage": "dependency closure lookup before public manifest creation",
+  "failure": "NameError: ROOT is not defined",
+  "incomplete_tree_exposed_to_repair_arm": false,
+  "incomplete_tree_removed_before_retry": true,
+  "repair_engine_changed": false,
+  "knowledge_changed": false,
+  "routing_changed": false,
+  "verifier_file_changed": false,
+  "acceptance_criteria_changed": false,
+  "frozen_evaluator_sha256_before": "2859e8b026c257ada4f91f032246276973f0cf23d4e03e8a5c3897d5b22dc7bf",
+  "frozen_evaluator_sha256_after": "2859e8b026c257ada4f91f032246276973f0cf23d4e03e8a5c3897d5b22dc7bf",
+  "runtime_binding": "ROOT=VAULT",
+  "binding_depended_on_final_content_or_outcome": false,
+  "post_final_repair_engine_changes": 0,
+  "post_final_knowledge_changes": 0,
+  "post_final_routing_changes": 0,
+  "post_final_verifier_changes": 0,
+  "post_final_acceptance_changes": 0
+}
