@@ -60,14 +60,24 @@ Remove-Item Env:RUSTFLAGS -ErrorAction SilentlyContinue
 
 Push-Location $source
 try {
-    & cargo build --quiet --jobs 1 --workspace --bins --release --target x86_64-pc-windows-msvc --locked --offline
-    if ($LASTEXITCODE -ne 0) {
-        throw "PORTABLE_RELEASE_BUILD_FAILED:$LASTEXITCODE"
+    $buildOutput = @(& cargo build --quiet --jobs 1 --workspace --bins --release --target x86_64-pc-windows-msvc --locked --offline 2>&1)
+    $buildExitCode = $LASTEXITCODE
+    if ($buildExitCode -ne 0) {
+        throw "PORTABLE_RELEASE_BUILD_FAILED:$buildExitCode`n$($buildOutput -join "`n")"
     }
+    $testsPassed = 0
+    $testBinariesRun = 0
     if (-not $SkipTests) {
-        & cargo test --quiet --jobs 1 --workspace --all-targets --all-features --target x86_64-pc-windows-msvc --locked --offline
-        if ($LASTEXITCODE -ne 0) {
-            throw "PORTABLE_TEST_FAILED:$LASTEXITCODE"
+        $testOutput = @(& cargo test --quiet --jobs 1 --workspace --all-targets --all-features --target x86_64-pc-windows-msvc --locked --offline 2>&1)
+        $testExitCode = $LASTEXITCODE
+        if ($testExitCode -ne 0) {
+            throw "PORTABLE_TEST_FAILED:$testExitCode`n$($testOutput -join "`n")"
+        }
+        foreach ($line in $testOutput) {
+            if ([string]$line -match '^test result: ok\. ([0-9]+) passed;') {
+                $testsPassed += [int]$Matches[1]
+                $testBinariesRun += 1
+            }
         }
     }
 } finally {
@@ -84,5 +94,8 @@ try {
     locked = $true
     offline = $true
     tests_run = (-not $SkipTests)
+    test_binaries_run = $testBinariesRun
+    tests_passed = $testsPassed
+    tests_failed = 0
     toolchain = $rustcIdentity
 } | ConvertTo-Json -Depth 5
