@@ -3,7 +3,7 @@
     "infrastructure_state":  "CAMPAIGN_FROZEN",
     "contains_campaign_results":  false,
     "campaign_name":  "sem37-r4",
-    "predecessor_commit":  "b3159ed386d60a2b199c8d038f8cda088008ff87",
+    "predecessor_commit":  "c57d4c8e56736819783370b13ed7be9b8d407295",
     "instruction":  {
                         "path":  "C:\\Users\\grayk\\.codex\\attachments\\7f9eea6b-dcb9-436e-9252-dbb6b8ef2722\\pasted-text.txt",
                         "sha256":  "f2f1fe6fdd4bdf9c7c0663d1b364fd33c71ac3f408253488461628e5b411d236"
@@ -19,7 +19,7 @@
     "toolchain_id":  "rustc 1.96.0 (ac68faa20 2026-05-25)\nbinary: rustc\ncommit-hash: ac68faa20c58cbccd01ee7208bf3b6e93a7d7f96\ncommit-date: 2026-05-25\nhost: x86_64-pc-windows-msvc\nrelease: 1.96.0\nLLVM version: 22.1.2",
     "cargo_lock_sha256":  "a25438f5b5aa4a4f6732e95f885a68d6dd5e51a9bc1463eece6ace12c4d953a5",
     "artifact_schema_sha256":  "959819e7c62464427a9245ecc495799ec45584eb81b5cf6b9d2dae6930ca62cf",
-    "frozen_at_utc":  "2026-08-10T04:23:40.0663348Z",
+    "frozen_at_utc":  "2026-08-10T04:29:05.0154500Z",
     "outcome_dependent_policy_modifications_allowed":  false,
     "prestart_autonomous_research_events":  0,
     "prestart_future_instance_exposure_events":  0
