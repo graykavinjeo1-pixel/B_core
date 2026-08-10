@@ -1,0 +1,9 @@
+{
+  "schema_version": "SEM37_R5_BUDGET_CONTRACT_1",
+  "requested_max_autonomous_research_epochs": 4096,
+  "configured_max_autonomous_research_epochs": 4096,
+  "campaign_seed": 3705202608,
+  "budget_frozen_before_development": true,
+  "budget_used_as_scientific_semantic_input": false,
+  "campaign_budget_contract_pass": true
+}

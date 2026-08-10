@@ -1,0 +1,19 @@
+{
+  "schema_version": "SEM37_R5_HISTORICAL_R4_FAIL_RECEIPT_1",
+  "historical_r4_status": "FAIL",
+  "historical_r4_disposition": "DIRECT_EFFECT_IDENTIFICATION_LIMIT",
+  "historical_r4_final_seal_commit": "a9d501d50b8ad82109606665b2e944db7b5e3c2f",
+  "historical_r4_raw_final_evidence_commit": "b2463a2e4e9bf2416f130bdd8e99230effcddee5",
+  "historical_r4_report_blob": "7d0419673d6f23e6d249896de374c63a0650e701",
+  "r2_r3_direct": {"tp": 16, "fp": 4, "fn": 35},
+  "r4_direct": {"tp": 13, "fp": 4, "fn": 38},
+  "r4_mediated": {"tp": 4, "fp": 14, "fn": 13},
+  "mediated_path_structure_pass": false,
+  "mixed_direct_mediated_decomposition_pass": false,
+  "autonomous_research_epochs_executed": 1612,
+  "configured_max_autonomous_research_epochs": 4096,
+  "post_final_repair_events": 0,
+  "primary_secondary_acceptance_diff": 0,
+  "promoted_to_capability_predecessor": false,
+  "receipt_source": "sealed Git commits and SEM37_R4 required output"
+}

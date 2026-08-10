@@ -1,0 +1,17 @@
+{
+  "schema_version": "SEM37_R5_P0_STATIC_QUALITY_1",
+  "stage": "PRE_RESEARCH",
+  "workspace_tests_pass": true,
+  "workspace_tests_observed_semantic_reasoning_count": 266,
+  "workspace_release_build_pass": true,
+  "clippy_all_targets_pass": true,
+  "clippy_baseline_warning_signatures": 22,
+  "new_clippy_warning_signatures": 0,
+  "clippy_warning_class": "clippy::manual_is_multiple_of",
+  "authoritative_predecessor_integrity": "PASS",
+  "external_dev_solver_exposures": 0,
+  "external_final_solver_exposures": 0,
+  "prestart_autonomous_research_events": 0,
+  "prestart_future_instance_exposure_events": 0,
+  "status": "PASS"
+}

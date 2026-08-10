@@ -1,0 +1,10 @@
+{
+  "schema_version": "SEM37_R5_TRANSPORT_ACCEPTANCE_PRECHECK_1",
+  "stage": "PRE_RESEARCH",
+  "sem35_r1_exact_numeric_transport_preserved": true,
+  "workspace_transport_tests_pass": true,
+  "verifier_runner_numeric_transport_equivalence_expected": true,
+  "r4_lane_b_acceptance_read_from_sealed_raw_evidence": true,
+  "r5_transfer_policy_research_events": 0,
+  "status": "PASS"
+}

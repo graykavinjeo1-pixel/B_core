@@ -1,0 +1,14 @@
+{
+  "schema_version": "SEM37_R5_AUTHORITATIVE_PREDECESSOR_INTEGRITY_1",
+  "authoritative_predecessor_commit": "b33386e7a8793c5c27e2c2df3e19db0e6e04d0f4",
+  "predecessor_tree": "a7cf631eef1a0129998f0eef53a9b7d5117e2338",
+  "prepared_worktree_head": "b33386e7a8793c5c27e2c2df3e19db0e6e04d0f4",
+  "prepared_worktree_clean_before_p0_artifacts": true,
+  "historical_r2_commit_available": true,
+  "historical_r4_final_seal_commit_available": true,
+  "historical_r4_raw_evidence_commit_available": true,
+  "r2_promoted": false,
+  "r3_promoted": false,
+  "r4_promoted": false,
+  "status": "PASS"
+}
