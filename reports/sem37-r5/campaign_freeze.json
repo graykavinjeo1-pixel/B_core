@@ -1,0 +1,26 @@
+﻿{
+    "schema_version":  "B_CORE_CAMPAIGN_FREEZE_1",
+    "infrastructure_state":  "CAMPAIGN_FROZEN",
+    "contains_campaign_results":  false,
+    "campaign_name":  "sem37-r5",
+    "predecessor_commit":  "9313f94d006b74fddb8146d25b8bb1700038511c",
+    "instruction":  {
+                        "path":  "C:\\Users\\grayk\\.codex\\attachments\\025f134f-57ae-4e75-a081-d74eca846cc8\\pasted-text.txt",
+                        "sha256":  "99e7585e4e2320bbd1de79ead13741d69555f2ff195320217e40b1afba8daff3"
+                    },
+    "addenda":  [
+
+                ],
+    "ontology_sha256":  "d7bd68efcad20a1f8a063e838904242b830ee90c381d5733e8231ef546bf04b1",
+    "engine_sha256":  "3a01b8fe27fbc8083d5f37244ec699d4e6feaaf19704677e36f9dbac7aea0ff2",
+    "autonomous_policy_sha256":  "eb002289ca05513413b760aa0bf83e0423870f355fe5857c092bb75839f9a82b",
+    "seed":  3705202608,
+    "budget":  4096,
+    "toolchain_id":  "rustc 1.96.0 (ac68faa20 2026-05-25)\nbinary: rustc\ncommit-hash: ac68faa20c58cbccd01ee7208bf3b6e93a7d7f96\ncommit-date: 2026-05-25\nhost: x86_64-pc-windows-msvc\nrelease: 1.96.0\nLLVM version: 22.1.2",
+    "cargo_lock_sha256":  "a25438f5b5aa4a4f6732e95f885a68d6dd5e51a9bc1463eece6ace12c4d953a5",
+    "artifact_schema_sha256":  "959819e7c62464427a9245ecc495799ec45584eb81b5cf6b9d2dae6930ca62cf",
+    "frozen_at_utc":  "2026-08-10T05:26:35.6137737Z",
+    "outcome_dependent_policy_modifications_allowed":  false,
+    "prestart_autonomous_research_events":  0,
+    "prestart_future_instance_exposure_events":  0
+}
