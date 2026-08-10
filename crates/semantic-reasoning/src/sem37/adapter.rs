@@ -77,6 +77,35 @@ impl ExternalEvaluatorClient {
         }))?;
         serde_json::from_value(value).map_err(|error| format!("SEM37_OBSERVATION_SCHEMA:{error}"))
     }
+
+    pub fn execute_intervention(
+        &self,
+        case_id: &str,
+        prediction_commitment: &str,
+    ) -> Result<ExternalInterventionObservation, String> {
+        let value = self.request(&json!({
+            "action": "execute_intervention",
+            "case_id": case_id,
+            "predictions_frozen": true,
+            "prediction_commitment": prediction_commitment
+        }))?;
+        serde_json::from_value(value)
+            .map_err(|error| format!("SEM37_INTERVENTION_OBSERVATION_SCHEMA:{error}"))
+    }
+
+    pub fn evaluate(
+        &self,
+        lane: ExternalLane,
+        predictions: &[Value],
+        prediction_commitment: &str,
+    ) -> Result<Value, String> {
+        self.request(&json!({
+            "action": "evaluate",
+            "lane": lane,
+            "predictions": predictions,
+            "prediction_commitment": prediction_commitment
+        }))
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
@@ -142,11 +171,21 @@ pub struct ExternalObservation {
     pub bindings: Vec<ExternalBinding>,
     pub time_start: u64,
     pub time_end_exclusive: u64,
-    pub values_ieee754_bits: Vec<Vec<u64>>,
+    pub values_ieee754_bits: Vec<Vec<Option<u64>>>,
     pub legal_interventions: Vec<ExternalInterventionContract>,
+    pub nonfinite_cells_have_numeric_authority: bool,
+    pub missingness_transport: String,
     pub outcome_revealed: bool,
     pub ground_truth_revealed: bool,
     pub generator_source_revealed: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ExternalInterventionObservation {
+    pub case_id: String,
+    pub post_intervention_values_ieee754_bits: Vec<Vec<u64>>,
+    pub query_outcome_ieee754_bits: Vec<u64>,
+    pub outcome_revealed_after_prediction: bool,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -185,6 +224,10 @@ pub fn transport_to_sealed_sem36(
             continue;
         }
         for (index, bits) in row.iter().enumerate() {
+            let Some(bits) = bits else {
+                missing = true;
+                continue;
+            };
             let value = f64::from_bits(*bits);
             if !value.is_finite() {
                 missing = true;
@@ -234,8 +277,10 @@ mod tests {
             }],
             time_start: 0,
             time_end_exclusive: 1,
-            values_ieee754_bits: vec![vec![1.25_f64.to_bits()]],
+            values_ieee754_bits: vec![vec![Some(1.25_f64.to_bits())]],
             legal_interventions: Vec::new(),
+            nonfinite_cells_have_numeric_authority: false,
+            missingness_transport: "EXPLICIT_NULL_NO_SENTINEL".to_string(),
             outcome_revealed: false,
             ground_truth_revealed: false,
             generator_source_revealed: false,
