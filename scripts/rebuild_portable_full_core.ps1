@@ -21,13 +21,18 @@ if ([string]::IsNullOrWhiteSpace($TargetDirectory)) {
 }
 $target = [IO.Path]::GetFullPath($TargetDirectory)
 
-$rustcIdentity = (& rustc -vV) -join "`n"
-if ($LASTEXITCODE -ne 0) {
-    throw "RUSTC_NOT_READY"
-}
-if ($rustcIdentity -notmatch "release: 1\.96\.0" -or
-    $rustcIdentity -notmatch "host: x86_64-pc-windows-msvc") {
-    throw "TOOLCHAIN_MISMATCH:requires rustc 1.96.0 x86_64-pc-windows-msvc"
+Push-Location $source
+try {
+    $rustcIdentity = (& rustc -vV) -join "`n"
+    if ($LASTEXITCODE -ne 0) {
+        throw "RUSTC_NOT_READY"
+    }
+    if ($rustcIdentity -notmatch "release: 1\.96\.0" -or
+        $rustcIdentity -notmatch "host: x86_64-pc-windows-msvc") {
+        throw "TOOLCHAIN_MISMATCH:requires rustc 1.96.0 x86_64-pc-windows-msvc"
+    }
+} finally {
+    Pop-Location
 }
 
 $cargoHome = if ($env:CARGO_HOME) {
