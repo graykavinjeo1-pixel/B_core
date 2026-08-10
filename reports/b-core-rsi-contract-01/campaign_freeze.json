@@ -1,0 +1,26 @@
+﻿{
+    "schema_version":  "B_CORE_CAMPAIGN_FREEZE_1",
+    "infrastructure_state":  "CAMPAIGN_FROZEN",
+    "contains_campaign_results":  false,
+    "campaign_name":  "b-core-rsi-contract-01",
+    "predecessor_commit":  "cd792b2e26d2c6be75db9f8d63642649051399c3",
+    "instruction":  {
+                        "path":  "C:\\Users\\grayk\\.codex\\attachments\\dd787a7a-efb3-4b85-90e6-c3c8493de2f4\\pasted-text.txt",
+                        "sha256":  "f675ed77c54ed468349daf640a90e780963fd3f23e57dcb08608e970bde523ce"
+                    },
+    "addenda":  [
+
+                ],
+    "ontology_sha256":  "a4e1f5dd554b10fc15089fe95df2318d1192899b2654123694e6182338d9af56",
+    "engine_sha256":  "652b18985e3c7b6bd0d6c823eaf5ad298247c4e605ca8649c9d10375a47041b7",
+    "autonomous_policy_sha256":  "80a18fa07046d09fcea35c173dc98e5041a3cd77bd67043e82f7e023bf0fa5f1",
+    "seed":  12736269631307063334,
+    "budget":  4096,
+    "toolchain_id":  "rustc 1.96.0 (ac68faa20 2026-05-25)\nbinary: rustc\ncommit-hash: ac68faa20c58cbccd01ee7208bf3b6e93a7d7f96\ncommit-date: 2026-05-25\nhost: x86_64-pc-windows-msvc\nrelease: 1.96.0\nLLVM version: 22.1.2",
+    "cargo_lock_sha256":  "a25438f5b5aa4a4f6732e95f885a68d6dd5e51a9bc1463eece6ace12c4d953a5",
+    "artifact_schema_sha256":  "959819e7c62464427a9245ecc495799ec45584eb81b5cf6b9d2dae6930ca62cf",
+    "frozen_at_utc":  "2026-08-10T13:42:13.7932054Z",
+    "outcome_dependent_policy_modifications_allowed":  false,
+    "prestart_autonomous_research_events":  0,
+    "prestart_future_instance_exposure_events":  0
+}
