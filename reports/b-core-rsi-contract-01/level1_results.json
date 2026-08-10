@@ -1,0 +1,456 @@
+{
+  "false_repairs": 0,
+  "level": 1,
+  "schema_version": "B_CORE_RSI_CONTRACT_LEVEL_1_RESULTS_1",
+  "tasks": [
+    {
+      "lane": "SELF_SOURCE",
+      "result": {
+        "active_coding_object_count": 2,
+        "active_coding_objects": [
+          "FAILURE_REPAIR",
+          "TYPE_CONTROL"
+        ],
+        "attempts": [
+          {
+            "edit": {
+              "column_end": 10,
+              "column_start": 9,
+              "line_index": 202,
+              "localization_score": 3,
+              "original_operator": "<",
+              "replacement_operator": "<=",
+              "symbol": "capacity_allows"
+            },
+            "prediction": {
+              "behavior_expected_unchanged": [
+                "usage above the limit remains rejected",
+                "usage below the limit remains allowed"
+              ],
+              "failure_expected_to_disappear": "usage must not exceed capacity; usage equal to the limit remains allowed",
+              "frozen_before_execution": true,
+              "ordinal": 1,
+              "possible_regressions": [
+                "boundary neighbor",
+                "unaffected boolean combination"
+              ],
+              "resource_effect": "constant"
+            },
+            "public_probe": {
+              "output_sha256": "4c8dcf588a86d793179986f6006188ff9f5c30bc7d1b7acd27fbffbc28c3b813",
+              "output_tail": "\nrunning 1 test\n.\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
+              "returncode": 0,
+              "timed_out": false,
+              "wall_ms": 825.708
+            }
+          }
+        ],
+        "campaign_id": "B_CORE-RSI-CONTRACT-01",
+        "compile_runs": 2,
+        "core_self_approval_events": 0,
+        "cpu_time_ms": 62.5,
+        "defect_contract": null,
+        "defect_contract_mutations_after_repair_spec_result": 0,
+        "defect_hypotheses": [],
+        "defect_hypotheses_generated": 0,
+        "defect_hypotheses_rejected": 0,
+        "defect_hypotheses_retained": 0,
+        "defect_injection_manifest_reads": 0,
+        "diagnostic_experiments": [],
+        "expected_output_imports": 0,
+        "expected_repair_lookups": 0,
+        "external_llm_calls": 0,
+        "files_activated": 1,
+        "files_changed": 1,
+        "full_coding_knowledge_scans": 0,
+        "full_source_scan_events": 0,
+        "gold_patch_reads": 0,
+        "hidden_verifier_solution_leaks": 0,
+        "human_defect_contract_events_l3": 0,
+        "human_patch_selection_events_l3": 0,
+        "human_repair_spec_events_l2": 0,
+        "human_repair_spec_events_l3": 0,
+        "initial_public_probe": {
+          "output_sha256": "7b70b3e77c57026beb47a41bd32be147f88d4e686ccb8ede3d553889bd5105c3",
+          "output_tail": "\nrunning 1 test\ndev_l1_capacity_boundary --- FAILED\n\nfailures:\n\n---- dev_l1_capacity_boundary stdout ----\n\nthread 'dev_l1_capacity_boundary' (48132) panicked at tests\\public.rs:5:5:\nassertion `left == right` failed: capacity_allows(4, 4)\n  left: false\n right: true\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\n\n\nfailures:\n    dev_l1_capacity_boundary\n\ntest result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\nerror: test failed, to rerun pass `--test public`\n",
+          "returncode": 101,
+          "timed_out": false,
+          "wall_ms": 869.879
+        },
+        "input_level": 1,
+        "lane": "SELF_SOURCE",
+        "lines_changed": 2,
+        "local_teacher_calls": 0,
+        "network_reads": 0,
+        "network_writes": 0,
+        "observation_ir": null,
+        "patch_attempts": 1,
+        "patch_candidate": {
+          "changed_files": [
+            "src/self_repair_contract.rs"
+          ],
+          "changed_symbols": [
+            "capacity_allows"
+          ],
+          "consequence_predictions": [
+            {
+              "behavior_expected_unchanged": [
+                "usage above the limit remains rejected",
+                "usage below the limit remains allowed"
+              ],
+              "failure_expected_to_disappear": "usage must not exceed capacity; usage equal to the limit remains allowed",
+              "frozen_before_execution": true,
+              "ordinal": 1,
+              "possible_regressions": [
+                "boundary neighbor",
+                "unaffected boolean combination"
+              ],
+              "resource_effect": "constant"
+            }
+          ],
+          "core_self_approved": false,
+          "defect_contract_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "predecessor_tree_hash": "5c771985d3f8d5df1cc15a520fa4145febacc3426991eb7a6a6971a01e544300",
+          "proposer_confidence_millis": 900,
+          "repair_spec_sha256": "14bb8b1a52abcfa76ecea1956a50a7aa967fd4985d530dde60bc8c074361dea5",
+          "unified_diff_sha256": "0747a55b663f26fdba60b7159ef10ddb1b08c36e160c22ddcd38e9cabf350f92"
+        },
+        "patch_consequence_prediction_errors": 0,
+        "patch_consequence_predictions": 1,
+        "patch_consequence_predictions_verified": 0,
+        "patch_diff": "--- src/self_repair_contract.rs\n+++ src/self_repair_contract.rs\n@@ -200,7 +200,7 @@\n }\r\n \r\n pub fn capacity_allows(used: u32, limit: u32) -> bool {\r\n-    used < limit\r\n+    used <= limit\r\n }\r\n \r\n pub fn verifier_quorum(primary: bool, secondary: bool) -> bool {\r\n",
+        "patch_hash_routing_events": 0,
+        "patch_outcome_reads_before_repair_spec_freeze": 0,
+        "repair_spec": {
+          "frozen_before_downstream_result": true,
+          "sha256": "14bb8b1a52abcfa76ecea1956a50a7aa967fd4985d530dde60bc8c074361dea5",
+          "value": {
+            "allowed_semantic_changes": [
+              "capacity_allows contract restoration"
+            ],
+            "applicability": [
+              "capacity_allows semantic boundary"
+            ],
+            "compatibility_requirements": [
+              "usage above the limit remains rejected",
+              "usage below the limit remains allowed"
+            ],
+            "encodes_exact_patch": false,
+            "expected_consequences": [
+              "usage must not exceed capacity; usage equal to the limit remains allowed",
+              "usage above the limit remains rejected",
+              "usage below the limit remains allowed"
+            ],
+            "forbidden_semantic_changes": [
+              "test suppression",
+              "hard-coded output",
+              "feature deletion",
+              "unrelated source edits"
+            ],
+            "required_postcondition": "usage must not exceed capacity; usage equal to the limit remains allowed",
+            "resource_constraints": [
+              "constant work and allocation behavior"
+            ],
+            "restored_invariants": [
+              "usage must not exceed capacity; usage equal to the limit remains allowed"
+            ],
+            "rollback_conditions": [
+              "verifier rejection",
+              "post-install regression"
+            ],
+            "uncertainty": "concrete edit and symbol location are not prescribed",
+            "verification_requirements": [
+              "public cases",
+              "independent boundary/property cases"
+            ]
+          }
+        },
+        "repair_spec_mutations_after_patch_result": 0,
+        "repair_spec_to_exact_patch_lookups": 0,
+        "repeated_equivalent_hypotheses": 0,
+        "repository_id_routing_events": 0,
+        "result_sha256": "e9e11defc0260bd3cc814a230c9e7236032de170fff0fe988d9773c6dc23bcca",
+        "schema_version": "B_CORE_RSI_CONTRACT_PROPOSAL_RESULT_1",
+        "source_files_total": 4,
+        "submitted": true,
+        "symbols_activated": 1,
+        "symbols_changed": 1,
+        "symbols_in_activated_file": 15,
+        "task_hash": "296399c1522704f6eaa65491a6dce7b310317ec5a70aebec1b2cfbc0f9fb6e09",
+        "task_id_routing_events": 0,
+        "test_runs": 2,
+        "unnecessary_mechanism_changes": 0,
+        "unrelated_semantic_changes": 0,
+        "wall_ms": 1696.906
+      },
+      "task_hash": "296399c1522704f6eaa65491a6dce7b310317ec5a70aebec1b2cfbc0f9fb6e09",
+      "verification": {
+        "authority_seal": "e3f9e7438ed351afbb39623c2fefc2f79806cd1c8b7d12ee6c82379c1246ac2a",
+        "changed_lines": 2,
+        "changed_paths": [
+          "src/self_repair_contract.rs"
+        ],
+        "core_self_approval_events": 0,
+        "decision": "ACCEPT",
+        "defect_contract_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "expected_repair_lookups": 0,
+        "gold_patch_reads": 0,
+        "gold_patch_text_equality_is_acceptance_authority": false,
+        "hidden_verifier_solution_leaks": 0,
+        "independent_result": {
+          "output_sha256": "4c8dcf588a86d793179986f6006188ff9f5c30bc7d1b7acd27fbffbc28c3b813",
+          "output_tail": "\nrunning 1 test\n.\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
+          "returncode": 0,
+          "timed_out": false,
+          "wall_ms": 293.081
+        },
+        "invariant_checks_sha256": "e2af3a3b321c0a4fdb74ec88af9ee89242b00a8590dfa810876b403a0fb5f22e",
+        "minimal_semantic_delta_pass": true,
+        "patch_hash_matches_submission": true,
+        "patch_sha256": "0747a55b663f26fdba60b7159ef10ddb1b08c36e160c22ddcd38e9cabf350f92",
+        "public_result": {
+          "output_sha256": "4c8dcf588a86d793179986f6006188ff9f5c30bc7d1b7acd27fbffbc28c3b813",
+          "output_tail": "\nrunning 1 test\n.\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
+          "returncode": 0,
+          "timed_out": false,
+          "wall_ms": 69.876
+        },
+        "receipt_sha256": "520292f2afb4e2ccdcca04334d57999841b9c7ad853907016a72ff38fa21f49a",
+        "regression_checks_sha256": "4c8dcf588a86d793179986f6006188ff9f5c30bc7d1b7acd27fbffbc28c3b813",
+        "repair_spec_sha256": "14bb8b1a52abcfa76ecea1956a50a7aa967fd4985d530dde60bc8c074361dea5",
+        "resource_checks_sha256": "692d225368218f73e14890b2910ba68b788eb01af12458ca5b2570d71f3c561e",
+        "schema_version": "B_CORE_RSI_CONTRACT_VERIFICATION_RECEIPT_1",
+        "semantic_checks_sha256": "4c8dcf588a86d793179986f6006188ff9f5c30bc7d1b7acd27fbffbc28c3b813",
+        "semantic_correctness_pass": true,
+        "task_hash": "296399c1522704f6eaa65491a6dce7b310317ec5a70aebec1b2cfbc0f9fb6e09",
+        "test_suppression_detected": false,
+        "verifier_false_accept": false,
+        "verifier_identity": "B_CORE_RSI_CONTRACT_01_INDEPENDENT_VERIFIER_V1",
+        "verifier_is_proposer": false
+      }
+    },
+    {
+      "lane": "SELF_SOURCE",
+      "result": {
+        "active_coding_object_count": 2,
+        "active_coding_objects": [
+          "FAILURE_REPAIR",
+          "TYPE_CONTROL"
+        ],
+        "attempts": [
+          {
+            "edit": {
+              "column_end": 17,
+              "column_start": 15,
+              "line_index": 198,
+              "localization_score": 3,
+              "original_operator": ">=",
+              "replacement_operator": ">",
+              "symbol": "timeout_is_valid"
+            },
+            "prediction": {
+              "behavior_expected_unchanged": [
+                "positive timeout values remain valid"
+              ],
+              "failure_expected_to_disappear": "timeout is valid only when strictly positive; zero and negative values are invalid",
+              "frozen_before_execution": true,
+              "ordinal": 1,
+              "possible_regressions": [
+                "boundary neighbor",
+                "unaffected boolean combination"
+              ],
+              "resource_effect": "constant"
+            },
+            "public_probe": {
+              "output_sha256": "4c8dcf588a86d793179986f6006188ff9f5c30bc7d1b7acd27fbffbc28c3b813",
+              "output_tail": "\nrunning 1 test\n.\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
+              "returncode": 0,
+              "timed_out": false,
+              "wall_ms": 839.938
+            }
+          }
+        ],
+        "campaign_id": "B_CORE-RSI-CONTRACT-01",
+        "compile_runs": 2,
+        "core_self_approval_events": 0,
+        "cpu_time_ms": 46.875,
+        "defect_contract": null,
+        "defect_contract_mutations_after_repair_spec_result": 0,
+        "defect_hypotheses": [],
+        "defect_hypotheses_generated": 0,
+        "defect_hypotheses_rejected": 0,
+        "defect_hypotheses_retained": 0,
+        "defect_injection_manifest_reads": 0,
+        "diagnostic_experiments": [],
+        "expected_output_imports": 0,
+        "expected_repair_lookups": 0,
+        "external_llm_calls": 0,
+        "files_activated": 1,
+        "files_changed": 1,
+        "full_coding_knowledge_scans": 0,
+        "full_source_scan_events": 0,
+        "gold_patch_reads": 0,
+        "hidden_verifier_solution_leaks": 0,
+        "human_defect_contract_events_l3": 0,
+        "human_patch_selection_events_l3": 0,
+        "human_repair_spec_events_l2": 0,
+        "human_repair_spec_events_l3": 0,
+        "initial_public_probe": {
+          "output_sha256": "12a25b616e5ff7c108edc2b95141f0d05a5013bf11a53cb8418df60b625a914b",
+          "output_tail": "\nrunning 1 test\ndev_l1_timeout_positive --- FAILED\n\nfailures:\n\n---- dev_l1_timeout_positive stdout ----\n\nthread 'dev_l1_timeout_positive' (48672) panicked at tests\\public.rs:5:5:\nassertion `left == right` failed: timeout_is_valid(0)\n  left: true\n right: false\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\n\n\nfailures:\n    dev_l1_timeout_positive\n\ntest result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\nerror: test failed, to rerun pass `--test public`\n",
+          "returncode": 101,
+          "timed_out": false,
+          "wall_ms": 891.815
+        },
+        "input_level": 1,
+        "lane": "SELF_SOURCE",
+        "lines_changed": 2,
+        "local_teacher_calls": 0,
+        "network_reads": 0,
+        "network_writes": 0,
+        "observation_ir": null,
+        "patch_attempts": 1,
+        "patch_candidate": {
+          "changed_files": [
+            "src/self_repair_contract.rs"
+          ],
+          "changed_symbols": [
+            "timeout_is_valid"
+          ],
+          "consequence_predictions": [
+            {
+              "behavior_expected_unchanged": [
+                "positive timeout values remain valid"
+              ],
+              "failure_expected_to_disappear": "timeout is valid only when strictly positive; zero and negative values are invalid",
+              "frozen_before_execution": true,
+              "ordinal": 1,
+              "possible_regressions": [
+                "boundary neighbor",
+                "unaffected boolean combination"
+              ],
+              "resource_effect": "constant"
+            }
+          ],
+          "core_self_approved": false,
+          "defect_contract_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "predecessor_tree_hash": "2284a1c29c423d9034807825b33aa9e729d835ea485ea8d7656184210a37b963",
+          "proposer_confidence_millis": 900,
+          "repair_spec_sha256": "fb676b722f58c25a2dbe0f2c2ee35f7c75d26dc485acdc3b8a0019abb4d57fca",
+          "unified_diff_sha256": "2932e00d4f713fab61de219d8941b15d8f370ccc54d1f89d0fd19ee8f1621b0f"
+        },
+        "patch_consequence_prediction_errors": 0,
+        "patch_consequence_predictions": 1,
+        "patch_consequence_predictions_verified": 0,
+        "patch_diff": "--- src/self_repair_contract.rs\n+++ src/self_repair_contract.rs\n@@ -196,7 +196,7 @@\n // The authoritative file is never modified in place by a repair task.\r\n \r\n pub fn timeout_is_valid(timeout_ms: i64) -> bool {\r\n-    timeout_ms >= 0\r\n+    timeout_ms > 0\r\n }\r\n \r\n pub fn capacity_allows(used: u32, limit: u32) -> bool {\r\n",
+        "patch_hash_routing_events": 0,
+        "patch_outcome_reads_before_repair_spec_freeze": 0,
+        "repair_spec": {
+          "frozen_before_downstream_result": true,
+          "sha256": "fb676b722f58c25a2dbe0f2c2ee35f7c75d26dc485acdc3b8a0019abb4d57fca",
+          "value": {
+            "allowed_semantic_changes": [
+              "timeout_is_valid contract restoration"
+            ],
+            "applicability": [
+              "timeout_is_valid semantic boundary"
+            ],
+            "compatibility_requirements": [
+              "positive timeout values remain valid"
+            ],
+            "encodes_exact_patch": false,
+            "expected_consequences": [
+              "timeout is valid only when strictly positive; zero and negative values are invalid",
+              "positive timeout values remain valid"
+            ],
+            "forbidden_semantic_changes": [
+              "test suppression",
+              "hard-coded output",
+              "feature deletion",
+              "unrelated source edits"
+            ],
+            "required_postcondition": "timeout is valid only when strictly positive; zero and negative values are invalid",
+            "resource_constraints": [
+              "constant work and allocation behavior"
+            ],
+            "restored_invariants": [
+              "timeout is valid only when strictly positive; zero and negative values are invalid"
+            ],
+            "rollback_conditions": [
+              "verifier rejection",
+              "post-install regression"
+            ],
+            "uncertainty": "concrete edit and symbol location are not prescribed",
+            "verification_requirements": [
+              "public cases",
+              "independent boundary/property cases"
+            ]
+          }
+        },
+        "repair_spec_mutations_after_patch_result": 0,
+        "repair_spec_to_exact_patch_lookups": 0,
+        "repeated_equivalent_hypotheses": 0,
+        "repository_id_routing_events": 0,
+        "result_sha256": "90717e79184cc0c8b813f68ed780025a2e5aea9ab7e6b9ca5c8cc822c91684f3",
+        "schema_version": "B_CORE_RSI_CONTRACT_PROPOSAL_RESULT_1",
+        "source_files_total": 4,
+        "submitted": true,
+        "symbols_activated": 1,
+        "symbols_changed": 1,
+        "symbols_in_activated_file": 15,
+        "task_hash": "44682d12711a3d60e3136e2173c8ef246ccc705b238f2affe6cd01f56cccbb5e",
+        "task_id_routing_events": 0,
+        "test_runs": 2,
+        "unnecessary_mechanism_changes": 0,
+        "unrelated_semantic_changes": 0,
+        "wall_ms": 1733.011
+      },
+      "task_hash": "44682d12711a3d60e3136e2173c8ef246ccc705b238f2affe6cd01f56cccbb5e",
+      "verification": {
+        "authority_seal": "3f02ee8c3c40382b1de9e4b2b8078a5d0b458c838bf202c459f63c64ef89b411",
+        "changed_lines": 2,
+        "changed_paths": [
+          "src/self_repair_contract.rs"
+        ],
+        "core_self_approval_events": 0,
+        "decision": "ACCEPT",
+        "defect_contract_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "expected_repair_lookups": 0,
+        "gold_patch_reads": 0,
+        "gold_patch_text_equality_is_acceptance_authority": false,
+        "hidden_verifier_solution_leaks": 0,
+        "independent_result": {
+          "output_sha256": "4c8dcf588a86d793179986f6006188ff9f5c30bc7d1b7acd27fbffbc28c3b813",
+          "output_tail": "\nrunning 1 test\n.\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
+          "returncode": 0,
+          "timed_out": false,
+          "wall_ms": 294.377
+        },
+        "invariant_checks_sha256": "2da2907fe3dc5cf56f9bc0d6e18903e8757edf74dcbbfb2bc82b73dbc2a9f7c5",
+        "minimal_semantic_delta_pass": true,
+        "patch_hash_matches_submission": true,
+        "patch_sha256": "2932e00d4f713fab61de219d8941b15d8f370ccc54d1f89d0fd19ee8f1621b0f",
+        "public_result": {
+          "output_sha256": "4c8dcf588a86d793179986f6006188ff9f5c30bc7d1b7acd27fbffbc28c3b813",
+          "output_tail": "\nrunning 1 test\n.\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
+          "returncode": 0,
+          "timed_out": false,
+          "wall_ms": 59.631
+        },
+        "receipt_sha256": "7adc1340f36cbb7442c5940572bb2e7229d082d906da16769248c5eae444a243",
+        "regression_checks_sha256": "4c8dcf588a86d793179986f6006188ff9f5c30bc7d1b7acd27fbffbc28c3b813",
+        "repair_spec_sha256": "fb676b722f58c25a2dbe0f2c2ee35f7c75d26dc485acdc3b8a0019abb4d57fca",
+        "resource_checks_sha256": "692d225368218f73e14890b2910ba68b788eb01af12458ca5b2570d71f3c561e",
+        "schema_version": "B_CORE_RSI_CONTRACT_VERIFICATION_RECEIPT_1",
+        "semantic_checks_sha256": "4c8dcf588a86d793179986f6006188ff9f5c30bc7d1b7acd27fbffbc28c3b813",
+        "semantic_correctness_pass": true,
+        "task_hash": "44682d12711a3d60e3136e2173c8ef246ccc705b238f2affe6cd01f56cccbb5e",
+        "test_suppression_detected": false,
+        "verifier_false_accept": false,
+        "verifier_identity": "B_CORE_RSI_CONTRACT_01_INDEPENDENT_VERIFIER_V1",
+        "verifier_is_proposer": false
+      }
+    }
+  ],
+  "verified_repairs": 2
+}

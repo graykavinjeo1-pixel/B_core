@@ -1,0 +1,11 @@
+{
+  "authoritative_predecessor_commit": "09fe306e96711b6194eefa5b379ce775a1fe4079",
+  "commit_matches": true,
+  "commit_object_available": true,
+  "instruction_bytes": 37108,
+  "instruction_sha256": "f675ed77c54ed468349daf640a90e780963fd3f23e57dcb08608e970bde523ce",
+  "integrity": "PASS",
+  "observed_head": "09fe306e96711b6194eefa5b379ce775a1fe4079",
+  "schema_version": "B_CORE_RSI_CONTRACT_PREDECESSOR_INTEGRITY_1",
+  "worktree_clean": true
+}

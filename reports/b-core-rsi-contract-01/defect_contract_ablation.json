@@ -1,0 +1,33 @@
+{
+  "ablated_verified": 0,
+  "arm": "no_contract",
+  "full_verified": 3,
+  "pass": true,
+  "rows": [
+    {
+      "ablated_decision": "REJECT",
+      "ablated_patch_attempts": 1,
+      "degradation": true,
+      "full_decision": "ACCEPT",
+      "full_patch_attempts": 1,
+      "task_hash": "326202b611910fea6dd8ba077ad19b9ff82b0381628f25043e3343c2455c8900"
+    },
+    {
+      "ablated_decision": "REJECT",
+      "ablated_patch_attempts": 1,
+      "degradation": true,
+      "full_decision": "ACCEPT",
+      "full_patch_attempts": 1,
+      "task_hash": "86f4b79f0b266b35b06a385f399510fc0db58bf45a27a8dbb9c93ea38912fcd0"
+    },
+    {
+      "ablated_decision": "REJECT",
+      "ablated_patch_attempts": 3,
+      "degradation": true,
+      "full_decision": "ACCEPT",
+      "full_patch_attempts": 1,
+      "task_hash": "acd8b0cf54c834fd0f904afa8eb51294e71f3e368c0b9b7a413eeb85e47aa1aa"
+    }
+  ],
+  "schema_version": "B_CORE_RSI_CONTRACT_ABLATION_1"
+}

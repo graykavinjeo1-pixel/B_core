@@ -1,0 +1,44 @@
+{
+  "authority_seal": "809ef01aaa3d3001c052d8f0804f3f5fed1682ea4e4182f8f232db5a260d5bc1",
+  "changed_lines": 2,
+  "changed_paths": [
+    "src/self_repair_contract.rs"
+  ],
+  "core_self_approval_events": 0,
+  "decision": "REJECT",
+  "defect_contract_sha256": "6c76a9d7312256c8ca4d027d1678840cb07bd4e4ab36b581650d3cb1d2bfa77f",
+  "expected_repair_lookups": 0,
+  "gold_patch_reads": 0,
+  "gold_patch_text_equality_is_acceptance_authority": false,
+  "hidden_verifier_solution_leaks": 0,
+  "independent_result": {
+    "output_sha256": "de3f4189e2c834f5525eba1d431c0951b7922deb78be7c45634140083a896aeb",
+    "output_tail": "\nrunning 1 test\ndev_l3_evidence_composition_independent --- FAILED\n\nfailures:\n\n---- dev_l3_evidence_composition_independent stdout ----\n\nthread 'dev_l3_evidence_composition_independent' (9432) panicked at tests\\independent_contract.rs:6:5:\nassertion `left == right` failed: evidence_is_sufficient(false, false)\n  left: true\n right: false\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\n\n\nfailures:\n    dev_l3_evidence_composition_independent\n\ntest result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\nerror: test failed, to rerun pass `--test independent_contract`\n",
+    "returncode": 101,
+    "timed_out": false,
+    "wall_ms": 387.552
+  },
+  "invariant_checks_sha256": "9029a0617ff6fae6fed23544f58571581221257156c6e57be8d952c6a8f2d1ba",
+  "minimal_semantic_delta_pass": true,
+  "patch_hash_matches_submission": true,
+  "patch_sha256": "b22174aea0da71da390eee71197eba0430663dad9d1bf83166ccf6826945c9e9",
+  "public_result": {
+    "output_sha256": "4c8dcf588a86d793179986f6006188ff9f5c30bc7d1b7acd27fbffbc28c3b813",
+    "output_tail": "\nrunning 1 test\n.\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
+    "returncode": 0,
+    "timed_out": false,
+    "wall_ms": 104.711
+  },
+  "receipt_sha256": "0b2a14d736dee0565061b98675f8865a8f6a7ddc3d5edb3471b80578ea0bfede",
+  "regression_checks_sha256": "4c8dcf588a86d793179986f6006188ff9f5c30bc7d1b7acd27fbffbc28c3b813",
+  "repair_spec_sha256": "e3c5637bcbca4da3eac774de4779add83b5563cb15840fc96321d75eefcb42e6",
+  "resource_checks_sha256": "692d225368218f73e14890b2910ba68b788eb01af12458ca5b2570d71f3c561e",
+  "schema_version": "B_CORE_RSI_CONTRACT_VERIFICATION_RECEIPT_1",
+  "semantic_checks_sha256": "de3f4189e2c834f5525eba1d431c0951b7922deb78be7c45634140083a896aeb",
+  "semantic_correctness_pass": false,
+  "task_hash": "326202b611910fea6dd8ba077ad19b9ff82b0381628f25043e3343c2455c8900",
+  "test_suppression_detected": false,
+  "verifier_false_accept": false,
+  "verifier_identity": "B_CORE_RSI_CONTRACT_01_INDEPENDENT_VERIFIER_V1",
+  "verifier_is_proposer": false
+}

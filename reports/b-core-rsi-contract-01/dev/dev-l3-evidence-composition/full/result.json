@@ -1,0 +1,260 @@
+{
+  "active_coding_object_count": 2,
+  "active_coding_objects": [
+    "FAILURE_REPAIR",
+    "CONCURRENCY_PROTOCOL"
+  ],
+  "attempts": [
+    {
+      "edit": {
+        "column_end": 28,
+        "column_start": 26,
+        "line_index": 218,
+        "localization_score": 3,
+        "original_operator": "||",
+        "replacement_operator": "&&",
+        "symbol": "evidence_is_sufficient"
+      },
+      "prediction": {
+        "behavior_expected_unchanged": [
+          "both supported remains sufficient",
+          "both unsupported remains insufficient"
+        ],
+        "failure_expected_to_disappear": "evidence is sufficient only when both observation and control evidence are supported",
+        "frozen_before_execution": true,
+        "ordinal": 1,
+        "possible_regressions": [
+          "boundary neighbor",
+          "unaffected boolean combination"
+        ],
+        "resource_effect": "constant"
+      },
+      "public_probe": {
+        "output_sha256": "4c8dcf588a86d793179986f6006188ff9f5c30bc7d1b7acd27fbffbc28c3b813",
+        "output_tail": "\nrunning 1 test\n.\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
+        "returncode": 0,
+        "timed_out": false,
+        "wall_ms": 751.182
+      }
+    }
+  ],
+  "campaign_id": "B_CORE-RSI-CONTRACT-01",
+  "compile_runs": 2,
+  "core_self_approval_events": 0,
+  "cpu_time_ms": 46.875,
+  "defect_contract": {
+    "frozen_before_downstream_result": true,
+    "sha256": "5f52b909f5ab269e6046825777473a2c5bf76ab00625ef68425050c2ae4d3b57",
+    "value": {
+      "affected_behavior": "public failure while evaluating evidence_is_sufficient",
+      "affected_interfaces": [
+        "evidence_is_sufficient"
+      ],
+      "causal_evidence": [
+        "public assertion reports evidence_is_sufficient semantic mismatch",
+        "public_probe_sha256:427e378b514bf9e17b46d621a450d9a3b249c6d79f837485f979fbb2620ef7c6"
+      ],
+      "expected_vs_observed": "expected=evidence is sufficient only when both observation and control evidence are supported; observed=evidence_is_sufficient(true,false) returned true",
+      "prescribes_concrete_edit": false,
+      "preserved_behavior": [
+        "both supported remains sufficient",
+        "both unsupported remains insufficient"
+      ],
+      "provenance": [
+        "sandbox public test output",
+        "sandbox production source"
+      ],
+      "scope": "evidence_is_sufficient behavioral interface",
+      "suspected_mechanism_classes": [
+        "boundary relation",
+        "state composition",
+        "identity relation",
+        "other"
+      ],
+      "trigger_conditions": [
+        "observation_supported=true, control_supported=false"
+      ],
+      "uncertainty": "operator/mechanism class remains uncertain until bounded candidate discrimination",
+      "violated_invariant": "evidence is sufficient only when both observation and control evidence are supported"
+    }
+  },
+  "defect_contract_mutations_after_repair_spec_result": 0,
+  "defect_hypotheses": [
+    {
+      "class": "boundary relation",
+      "status": "REJECTED"
+    },
+    {
+      "class": "state composition",
+      "status": "RETAINED"
+    },
+    {
+      "class": "identity relation",
+      "status": "REJECTED"
+    },
+    {
+      "class": "other",
+      "status": "REJECTED"
+    }
+  ],
+  "defect_hypotheses_generated": 4,
+  "defect_hypotheses_rejected": 3,
+  "defect_hypotheses_retained": 1,
+  "defect_injection_manifest_reads": 0,
+  "diagnostic_experiments": [
+    {
+      "gold_information_used": false,
+      "kind": "PUBLIC_OBSERVATION_REPLAY",
+      "result_sha256": "427e378b514bf9e17b46d621a450d9a3b249c6d79f837485f979fbb2620ef7c6",
+      "returncode": 101
+    }
+  ],
+  "expected_output_imports": 0,
+  "expected_repair_lookups": 0,
+  "external_llm_calls": 0,
+  "files_activated": 1,
+  "files_changed": 1,
+  "full_coding_knowledge_scans": 0,
+  "full_source_scan_events": 0,
+  "gold_patch_reads": 0,
+  "hidden_verifier_solution_leaks": 0,
+  "human_defect_contract_events_l3": 0,
+  "human_patch_selection_events_l3": 0,
+  "human_repair_spec_events_l2": 0,
+  "human_repair_spec_events_l3": 0,
+  "initial_public_probe": {
+    "output_sha256": "427e378b514bf9e17b46d621a450d9a3b249c6d79f837485f979fbb2620ef7c6",
+    "output_tail": "\nrunning 1 test\ndev_l3_evidence_composition --- FAILED\n\nfailures:\n\n---- dev_l3_evidence_composition stdout ----\n\nthread 'dev_l3_evidence_composition' (55900) panicked at tests\\public.rs:5:5:\nassertion `left == right` failed: evidence_is_sufficient(true, false)\n  left: true\n right: false\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\n\n\nfailures:\n    dev_l3_evidence_composition\n\ntest result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\nerror: test failed, to rerun pass `--test public`\n",
+    "returncode": 101,
+    "timed_out": false,
+    "wall_ms": 857.357
+  },
+  "input_level": 3,
+  "lane": "SELF_SOURCE",
+  "lines_changed": 2,
+  "local_teacher_calls": 0,
+  "network_reads": 0,
+  "network_writes": 0,
+  "observation_ir": {
+    "actual_observable": "evidence_is_sufficient(true,false) returned true",
+    "affected_interfaces": [
+      "evidence_is_sufficient"
+    ],
+    "contains_hidden_diagnosis": false,
+    "evidence": [
+      "public assertion reports evidence_is_sufficient semantic mismatch"
+    ],
+    "expected_observable": "evidence is sufficient only when both observation and control evidence are supported",
+    "observed_event": "public failure while evaluating evidence_is_sufficient",
+    "preserved_behavior": [
+      "both supported remains sufficient",
+      "both unsupported remains insufficient"
+    ],
+    "provenance": [
+      "sandbox public test output",
+      "sandbox production source"
+    ],
+    "scope": "evidence_is_sufficient behavioral interface",
+    "trigger": "observation_supported=true, control_supported=false"
+  },
+  "patch_attempts": 1,
+  "patch_candidate": {
+    "changed_files": [
+      "src/self_repair_contract.rs"
+    ],
+    "changed_symbols": [
+      "evidence_is_sufficient"
+    ],
+    "consequence_predictions": [
+      {
+        "behavior_expected_unchanged": [
+          "both supported remains sufficient",
+          "both unsupported remains insufficient"
+        ],
+        "failure_expected_to_disappear": "evidence is sufficient only when both observation and control evidence are supported",
+        "frozen_before_execution": true,
+        "ordinal": 1,
+        "possible_regressions": [
+          "boundary neighbor",
+          "unaffected boolean combination"
+        ],
+        "resource_effect": "constant"
+      }
+    ],
+    "core_self_approved": false,
+    "defect_contract_sha256": "5f52b909f5ab269e6046825777473a2c5bf76ab00625ef68425050c2ae4d3b57",
+    "predecessor_tree_hash": "c5d47f725e2c55baae1a94cb1e5125c1241e1cafcd303d4be5ade671147dee5b",
+    "proposer_confidence_millis": 900,
+    "repair_spec_sha256": "e3c5637bcbca4da3eac774de4779add83b5563cb15840fc96321d75eefcb42e6",
+    "unified_diff_sha256": "f95a61c3befa0b372810112d7d00f9870d2717969cfbf3c34d8264f3a01d6660"
+  },
+  "patch_consequence_prediction_errors": 0,
+  "patch_consequence_predictions": 1,
+  "patch_consequence_predictions_verified": 0,
+  "patch_diff": "--- src/self_repair_contract.rs\n+++ src/self_repair_contract.rs\n@@ -216,7 +216,7 @@\n }\r\n \r\n pub fn evidence_is_sufficient(observation_supported: bool, control_supported: bool) -> bool {\r\n-    observation_supported || control_supported\r\n+    observation_supported && control_supported\r\n }\r\n \r\n pub fn external_control_gate(type_valid: bool, state_valid: bool) -> bool {\r\n",
+  "patch_hash_routing_events": 0,
+  "patch_outcome_reads_before_repair_spec_freeze": 0,
+  "repair_spec": {
+    "frozen_before_downstream_result": true,
+    "sha256": "e3c5637bcbca4da3eac774de4779add83b5563cb15840fc96321d75eefcb42e6",
+    "value": {
+      "allowed_semantic_changes": [
+        "public failure while evaluating evidence_is_sufficient"
+      ],
+      "applicability": [
+        "observation_supported=true, control_supported=false"
+      ],
+      "compatibility_requirements": [
+        "both supported remains sufficient",
+        "both unsupported remains insufficient"
+      ],
+      "encodes_exact_patch": false,
+      "expected_consequences": [
+        "evidence is sufficient only when both observation and control evidence are supported",
+        "both supported remains sufficient",
+        "both unsupported remains insufficient"
+      ],
+      "forbidden_semantic_changes": [
+        "test suppression",
+        "error swallowing",
+        "hard-coded public output",
+        "feature deletion",
+        "unrelated control-flow change"
+      ],
+      "required_postcondition": "evidence is sufficient only when both observation and control evidence are supported",
+      "resource_constraints": [
+        "no new unbounded work"
+      ],
+      "restored_invariants": [
+        "evidence is sufficient only when both observation and control evidence are supported"
+      ],
+      "rollback_conditions": [
+        "independent verifier rejection",
+        "post-install regression"
+      ],
+      "uncertainty": "operator/mechanism class remains uncertain until bounded candidate discrimination",
+      "verification_requirements": [
+        "public observation disappears",
+        "hidden invariant checks pass",
+        "unaffected control behavior remains"
+      ]
+    }
+  },
+  "repair_spec_mutations_after_patch_result": 0,
+  "repair_spec_to_exact_patch_lookups": 0,
+  "repeated_equivalent_hypotheses": 0,
+  "repository_id_routing_events": 0,
+  "result_sha256": "d119da513f5dbdb2a32da0cad6b578333f28dbbc90544ee5cb2fe7edb4db11d2",
+  "schema_version": "B_CORE_RSI_CONTRACT_PROPOSAL_RESULT_1",
+  "source_files_total": 4,
+  "submitted": true,
+  "symbols_activated": 1,
+  "symbols_changed": 1,
+  "symbols_in_activated_file": 15,
+  "task_hash": "326202b611910fea6dd8ba077ad19b9ff82b0381628f25043e3343c2455c8900",
+  "task_id_routing_events": 0,
+  "test_runs": 2,
+  "unnecessary_mechanism_changes": 0,
+  "unrelated_semantic_changes": 0,
+  "wall_ms": 1609.872
+}

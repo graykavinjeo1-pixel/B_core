@@ -1,0 +1,22 @@
+{
+  "authoritative_in_place_mutation_allowed": false,
+  "campaign_id": "B_CORE-RSI-CONTRACT-01",
+  "core_self_approval_allowed": false,
+  "fresh_blind_regate_required_for_promotion": true,
+  "gold_patch_text_equality_is_acceptance_authority": false,
+  "maximum_active_coding_objects": 3,
+  "pipeline": [
+    "ObservationIR",
+    "DefectContractIR",
+    "RepairSpecIR",
+    "PatchCandidateIR"
+  ],
+  "post_install_regate_required": true,
+  "rollback_required": true,
+  "schema_version": "B_CORE_SELF_REPAIR_CONTRACT_1",
+  "trust_boundary": {
+    "core_authority": "PROPOSAL_ONLY",
+    "installer_authority": "VERIFIED_ISOLATED_INSTALL_ONLY",
+    "verifier_authority": "ACCEPT_OR_REJECT_ONLY"
+  }
+}

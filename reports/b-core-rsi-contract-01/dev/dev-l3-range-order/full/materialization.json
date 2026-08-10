@@ -1,0 +1,15 @@
+{
+  "arm": "FULL",
+  "authoritative_predecessor_mutated": false,
+  "bug_tree_sha256": "eaf607da5b62dfb3295ad48d6c61c7129d0e3d92d6b8d045dd74a56d8e2c8734",
+  "defect_injection_manifest_exposed": false,
+  "destination": "D:\\BCRSI01_RUN\\DEV_A\\d5\\full",
+  "expected_edit_exposed": false,
+  "gold_patch_exposed": false,
+  "hidden_verifier_exposed": false,
+  "input_level": 3,
+  "lane": "SELF_SOURCE",
+  "schema_version": "B_CORE_RSI_CONTRACT_MATERIALIZATION_1",
+  "split": "DEV_A",
+  "task_hash": "acd8b0cf54c834fd0f904afa8eb51294e71f3e368c0b9b7a413eeb85e47aa1aa"
+}

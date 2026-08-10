@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "allowed_semantic_changes": {},
+    "forbidden_semantic_changes": {},
+    "required_postcondition": {},
+    "restored_invariants": {},
+    "verification_requirements": {}
+  },
+  "required": [
+    "required_postcondition",
+    "restored_invariants",
+    "allowed_semantic_changes",
+    "forbidden_semantic_changes",
+    "verification_requirements"
+  ],
+  "title": "RepairSpecIR",
+  "type": "object"
+}

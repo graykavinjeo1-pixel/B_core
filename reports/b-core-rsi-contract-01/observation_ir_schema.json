@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "actual_observable": {},
+    "evidence": {},
+    "expected_observable": {},
+    "observed_event": {},
+    "provenance": {},
+    "trigger": {}
+  },
+  "required": [
+    "observed_event",
+    "trigger",
+    "expected_observable",
+    "actual_observable",
+    "evidence",
+    "provenance"
+  ],
+  "title": "ObservationIR",
+  "type": "object"
+}

@@ -1,0 +1,213 @@
+{
+  "active_coding_object_count": 2,
+  "active_coding_objects": [
+    "FAILURE_REPAIR",
+    "CONCURRENCY_PROTOCOL"
+  ],
+  "attempts": [
+    {
+      "edit": {
+        "column_end": 14,
+        "column_start": 12,
+        "line_index": 206,
+        "localization_score": 102,
+        "original_operator": "||",
+        "replacement_operator": "&&",
+        "symbol": "verifier_quorum"
+      },
+      "prediction": {
+        "behavior_expected_unchanged": [
+          "two approvals remain sufficient",
+          "two rejections remain rejected"
+        ],
+        "failure_expected_to_disappear": "approval requires all prerequisites: only when both primary and secondary verifiers approve",
+        "frozen_before_execution": true,
+        "ordinal": 1,
+        "possible_regressions": [
+          "boundary neighbor",
+          "unaffected boolean combination"
+        ],
+        "resource_effect": "constant"
+      },
+      "public_probe": {
+        "output_sha256": "4c8dcf588a86d793179986f6006188ff9f5c30bc7d1b7acd27fbffbc28c3b813",
+        "output_tail": "\nrunning 1 test\n.\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
+        "returncode": 0,
+        "timed_out": false,
+        "wall_ms": 707.988
+      }
+    }
+  ],
+  "campaign_id": "B_CORE-RSI-CONTRACT-01",
+  "compile_runs": 2,
+  "core_self_approval_events": 0,
+  "cpu_time_ms": 46.875,
+  "defect_contract": {
+    "frozen_before_downstream_result": true,
+    "sha256": "c9463d3acfe158aca695bb33ac08f6d36953ee0a8195eb5a132e5caff65cad98",
+    "value": {
+      "affected_behavior": "verifier_quorum violates its public behavioral contract",
+      "affected_interfaces": [
+        "verifier_quorum"
+      ],
+      "causal_evidence": [
+        "public assertion",
+        "repository-local function contract"
+      ],
+      "expected_vs_observed": "public observation differs from the stated invariant",
+      "prescribes_concrete_edit": false,
+      "preserved_behavior": [
+        "two approvals remain sufficient",
+        "two rejections remain rejected"
+      ],
+      "provenance": [
+        "evaluator-authored semantic contract"
+      ],
+      "scope": "verifier_quorum behavioral interface",
+      "suspected_mechanism_classes": [
+        "relation",
+        "composition",
+        "other"
+      ],
+      "trigger_conditions": [
+        "one verifier approves while the other rejects"
+      ],
+      "uncertainty": "concrete implementation mechanism is not prescribed",
+      "violated_invariant": "approval requires all prerequisites: only when both primary and secondary verifiers approve"
+    }
+  },
+  "defect_contract_mutations_after_repair_spec_result": 0,
+  "defect_hypotheses": [],
+  "defect_hypotheses_generated": 0,
+  "defect_hypotheses_rejected": 0,
+  "defect_hypotheses_retained": 0,
+  "defect_injection_manifest_reads": 0,
+  "diagnostic_experiments": [],
+  "expected_output_imports": 0,
+  "expected_repair_lookups": 0,
+  "external_llm_calls": 0,
+  "files_activated": 1,
+  "files_changed": 1,
+  "full_coding_knowledge_scans": 0,
+  "full_source_scan_events": 0,
+  "gold_patch_reads": 0,
+  "hidden_verifier_solution_leaks": 0,
+  "human_defect_contract_events_l3": 0,
+  "human_patch_selection_events_l3": 0,
+  "human_repair_spec_events_l2": 0,
+  "human_repair_spec_events_l3": 0,
+  "initial_public_probe": {
+    "output_sha256": "a873a69fe2af8b09cce3e2a76d7c31d166e74406ddc8e000f21416b0cb1917b7",
+    "output_tail": "\nrunning 1 test\ndev_l2_verifier_quorum --- FAILED\n\nfailures:\n\n---- dev_l2_verifier_quorum stdout ----\n\nthread 'dev_l2_verifier_quorum' (66660) panicked at tests\\public.rs:5:5:\nassertion `left == right` failed: verifier_quorum(true, false)\n  left: true\n right: false\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\n\n\nfailures:\n    dev_l2_verifier_quorum\n\ntest result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\nerror: test failed, to rerun pass `--test public`\n",
+    "returncode": 101,
+    "timed_out": false,
+    "wall_ms": 973.063
+  },
+  "input_level": 2,
+  "lane": "SELF_SOURCE",
+  "lines_changed": 2,
+  "local_teacher_calls": 0,
+  "network_reads": 0,
+  "network_writes": 0,
+  "observation_ir": null,
+  "patch_attempts": 1,
+  "patch_candidate": {
+    "changed_files": [
+      "src/self_repair_contract.rs"
+    ],
+    "changed_symbols": [
+      "verifier_quorum"
+    ],
+    "consequence_predictions": [
+      {
+        "behavior_expected_unchanged": [
+          "two approvals remain sufficient",
+          "two rejections remain rejected"
+        ],
+        "failure_expected_to_disappear": "approval requires all prerequisites: only when both primary and secondary verifiers approve",
+        "frozen_before_execution": true,
+        "ordinal": 1,
+        "possible_regressions": [
+          "boundary neighbor",
+          "unaffected boolean combination"
+        ],
+        "resource_effect": "constant"
+      }
+    ],
+    "core_self_approved": false,
+    "defect_contract_sha256": "c9463d3acfe158aca695bb33ac08f6d36953ee0a8195eb5a132e5caff65cad98",
+    "predecessor_tree_hash": "685cff61fca4ac0b2fc0b06495c466a6752ecc8d1ff8a86c844f6d5caa43f365",
+    "proposer_confidence_millis": 900,
+    "repair_spec_sha256": "502e6ee7935732b6cfa3eda2daae0313a0125fb98ce9ddb2f4e0bf8ce631aad2",
+    "unified_diff_sha256": "d1d7cbe7ec5d2f2b508c0003c5bc3eebc7ceadc4c308f53af05167690e8e61d7"
+  },
+  "patch_consequence_prediction_errors": 0,
+  "patch_consequence_predictions": 1,
+  "patch_consequence_predictions_verified": 0,
+  "patch_diff": "--- src/self_repair_contract.rs\n+++ src/self_repair_contract.rs\n@@ -204,7 +204,7 @@\n }\r\n \r\n pub fn verifier_quorum(primary: bool, secondary: bool) -> bool {\r\n-    primary || secondary\r\n+    primary && secondary\r\n }\r\n \r\n pub fn receipt_binds_patch(receipt_patch_hash: u64, candidate_patch_hash: u64) -> bool {\r\n",
+  "patch_hash_routing_events": 0,
+  "patch_outcome_reads_before_repair_spec_freeze": 0,
+  "repair_spec": {
+    "frozen_before_downstream_result": true,
+    "sha256": "502e6ee7935732b6cfa3eda2daae0313a0125fb98ce9ddb2f4e0bf8ce631aad2",
+    "value": {
+      "allowed_semantic_changes": [
+        "verifier_quorum violates its public behavioral contract"
+      ],
+      "applicability": [
+        "one verifier approves while the other rejects"
+      ],
+      "compatibility_requirements": [
+        "two approvals remain sufficient",
+        "two rejections remain rejected"
+      ],
+      "encodes_exact_patch": false,
+      "expected_consequences": [
+        "approval requires all prerequisites: only when both primary and secondary verifiers approve",
+        "two approvals remain sufficient",
+        "two rejections remain rejected"
+      ],
+      "forbidden_semantic_changes": [
+        "test suppression",
+        "error swallowing",
+        "hard-coded public output",
+        "feature deletion",
+        "unrelated control-flow change"
+      ],
+      "required_postcondition": "approval requires all prerequisites: only when both primary and secondary verifiers approve",
+      "resource_constraints": [
+        "no new unbounded work"
+      ],
+      "restored_invariants": [
+        "approval requires all prerequisites: only when both primary and secondary verifiers approve"
+      ],
+      "rollback_conditions": [
+        "independent verifier rejection",
+        "post-install regression"
+      ],
+      "uncertainty": "concrete implementation mechanism is not prescribed",
+      "verification_requirements": [
+        "public observation disappears",
+        "hidden invariant checks pass",
+        "unaffected control behavior remains"
+      ]
+    }
+  },
+  "repair_spec_mutations_after_patch_result": 0,
+  "repair_spec_to_exact_patch_lookups": 0,
+  "repeated_equivalent_hypotheses": 0,
+  "repository_id_routing_events": 0,
+  "result_sha256": "74faac64b14a1daec03fa8474aebd7d348f86855c92bcee4725cc9a9992d716a",
+  "schema_version": "B_CORE_RSI_CONTRACT_PROPOSAL_RESULT_1",
+  "source_files_total": 4,
+  "submitted": true,
+  "symbols_activated": 1,
+  "symbols_changed": 1,
+  "symbols_in_activated_file": 15,
+  "task_hash": "f98efcc0f68359f09ab8b4b8f21509f03a5091a540ac508e193b34b87d5c85ba",
+  "task_id_routing_events": 0,
+  "test_runs": 2,
+  "unnecessary_mechanism_changes": 0,
+  "unrelated_semantic_changes": 0,
+  "wall_ms": 1682.471
+}

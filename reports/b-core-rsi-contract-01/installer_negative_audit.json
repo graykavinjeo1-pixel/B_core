@@ -1,0 +1,8 @@
+{
+  "candidate_destination_created": false,
+  "install_without_valid_verification_receipt": 0,
+  "rejected_verification_receipt_install_exit_nonzero": true,
+  "schema_version": "B_CORE_RSI_CONTRACT_INSTALLER_NEGATIVE_AUDIT_1",
+  "status": "PASS",
+  "unverified_install_events": 0
+}

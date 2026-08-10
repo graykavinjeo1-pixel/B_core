@@ -1,0 +1,926 @@
+{
+  "false_repairs": 0,
+  "level": 3,
+  "schema_version": "B_CORE_RSI_CONTRACT_LEVEL_3_RESULTS_1",
+  "tasks": [
+    {
+      "lane": "SELF_SOURCE",
+      "result": {
+        "active_coding_object_count": 2,
+        "active_coding_objects": [
+          "FAILURE_REPAIR",
+          "CONCURRENCY_PROTOCOL"
+        ],
+        "attempts": [
+          {
+            "edit": {
+              "column_end": 28,
+              "column_start": 26,
+              "line_index": 218,
+              "localization_score": 3,
+              "original_operator": "||",
+              "replacement_operator": "&&",
+              "symbol": "evidence_is_sufficient"
+            },
+            "prediction": {
+              "behavior_expected_unchanged": [
+                "both supported remains sufficient",
+                "both unsupported remains insufficient"
+              ],
+              "failure_expected_to_disappear": "evidence is sufficient only when both observation and control evidence are supported",
+              "frozen_before_execution": true,
+              "ordinal": 1,
+              "possible_regressions": [
+                "boundary neighbor",
+                "unaffected boolean combination"
+              ],
+              "resource_effect": "constant"
+            },
+            "public_probe": {
+              "output_sha256": "4c8dcf588a86d793179986f6006188ff9f5c30bc7d1b7acd27fbffbc28c3b813",
+              "output_tail": "\nrunning 1 test\n.\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
+              "returncode": 0,
+              "timed_out": false,
+              "wall_ms": 751.182
+            }
+          }
+        ],
+        "campaign_id": "B_CORE-RSI-CONTRACT-01",
+        "compile_runs": 2,
+        "core_self_approval_events": 0,
+        "cpu_time_ms": 46.875,
+        "defect_contract": {
+          "frozen_before_downstream_result": true,
+          "sha256": "5f52b909f5ab269e6046825777473a2c5bf76ab00625ef68425050c2ae4d3b57",
+          "value": {
+            "affected_behavior": "public failure while evaluating evidence_is_sufficient",
+            "affected_interfaces": [
+              "evidence_is_sufficient"
+            ],
+            "causal_evidence": [
+              "public assertion reports evidence_is_sufficient semantic mismatch",
+              "public_probe_sha256:427e378b514bf9e17b46d621a450d9a3b249c6d79f837485f979fbb2620ef7c6"
+            ],
+            "expected_vs_observed": "expected=evidence is sufficient only when both observation and control evidence are supported; observed=evidence_is_sufficient(true,false) returned true",
+            "prescribes_concrete_edit": false,
+            "preserved_behavior": [
+              "both supported remains sufficient",
+              "both unsupported remains insufficient"
+            ],
+            "provenance": [
+              "sandbox public test output",
+              "sandbox production source"
+            ],
+            "scope": "evidence_is_sufficient behavioral interface",
+            "suspected_mechanism_classes": [
+              "boundary relation",
+              "state composition",
+              "identity relation",
+              "other"
+            ],
+            "trigger_conditions": [
+              "observation_supported=true, control_supported=false"
+            ],
+            "uncertainty": "operator/mechanism class remains uncertain until bounded candidate discrimination",
+            "violated_invariant": "evidence is sufficient only when both observation and control evidence are supported"
+          }
+        },
+        "defect_contract_mutations_after_repair_spec_result": 0,
+        "defect_hypotheses": [
+          {
+            "class": "boundary relation",
+            "status": "REJECTED"
+          },
+          {
+            "class": "state composition",
+            "status": "RETAINED"
+          },
+          {
+            "class": "identity relation",
+            "status": "REJECTED"
+          },
+          {
+            "class": "other",
+            "status": "REJECTED"
+          }
+        ],
+        "defect_hypotheses_generated": 4,
+        "defect_hypotheses_rejected": 3,
+        "defect_hypotheses_retained": 1,
+        "defect_injection_manifest_reads": 0,
+        "diagnostic_experiments": [
+          {
+            "gold_information_used": false,
+            "kind": "PUBLIC_OBSERVATION_REPLAY",
+            "result_sha256": "427e378b514bf9e17b46d621a450d9a3b249c6d79f837485f979fbb2620ef7c6",
+            "returncode": 101
+          }
+        ],
+        "expected_output_imports": 0,
+        "expected_repair_lookups": 0,
+        "external_llm_calls": 0,
+        "files_activated": 1,
+        "files_changed": 1,
+        "full_coding_knowledge_scans": 0,
+        "full_source_scan_events": 0,
+        "gold_patch_reads": 0,
+        "hidden_verifier_solution_leaks": 0,
+        "human_defect_contract_events_l3": 0,
+        "human_patch_selection_events_l3": 0,
+        "human_repair_spec_events_l2": 0,
+        "human_repair_spec_events_l3": 0,
+        "initial_public_probe": {
+          "output_sha256": "427e378b514bf9e17b46d621a450d9a3b249c6d79f837485f979fbb2620ef7c6",
+          "output_tail": "\nrunning 1 test\ndev_l3_evidence_composition --- FAILED\n\nfailures:\n\n---- dev_l3_evidence_composition stdout ----\n\nthread 'dev_l3_evidence_composition' (55900) panicked at tests\\public.rs:5:5:\nassertion `left == right` failed: evidence_is_sufficient(true, false)\n  left: true\n right: false\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\n\n\nfailures:\n    dev_l3_evidence_composition\n\ntest result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\nerror: test failed, to rerun pass `--test public`\n",
+          "returncode": 101,
+          "timed_out": false,
+          "wall_ms": 857.357
+        },
+        "input_level": 3,
+        "lane": "SELF_SOURCE",
+        "lines_changed": 2,
+        "local_teacher_calls": 0,
+        "network_reads": 0,
+        "network_writes": 0,
+        "observation_ir": {
+          "actual_observable": "evidence_is_sufficient(true,false) returned true",
+          "affected_interfaces": [
+            "evidence_is_sufficient"
+          ],
+          "contains_hidden_diagnosis": false,
+          "evidence": [
+            "public assertion reports evidence_is_sufficient semantic mismatch"
+          ],
+          "expected_observable": "evidence is sufficient only when both observation and control evidence are supported",
+          "observed_event": "public failure while evaluating evidence_is_sufficient",
+          "preserved_behavior": [
+            "both supported remains sufficient",
+            "both unsupported remains insufficient"
+          ],
+          "provenance": [
+            "sandbox public test output",
+            "sandbox production source"
+          ],
+          "scope": "evidence_is_sufficient behavioral interface",
+          "trigger": "observation_supported=true, control_supported=false"
+        },
+        "patch_attempts": 1,
+        "patch_candidate": {
+          "changed_files": [
+            "src/self_repair_contract.rs"
+          ],
+          "changed_symbols": [
+            "evidence_is_sufficient"
+          ],
+          "consequence_predictions": [
+            {
+              "behavior_expected_unchanged": [
+                "both supported remains sufficient",
+                "both unsupported remains insufficient"
+              ],
+              "failure_expected_to_disappear": "evidence is sufficient only when both observation and control evidence are supported",
+              "frozen_before_execution": true,
+              "ordinal": 1,
+              "possible_regressions": [
+                "boundary neighbor",
+                "unaffected boolean combination"
+              ],
+              "resource_effect": "constant"
+            }
+          ],
+          "core_self_approved": false,
+          "defect_contract_sha256": "5f52b909f5ab269e6046825777473a2c5bf76ab00625ef68425050c2ae4d3b57",
+          "predecessor_tree_hash": "c5d47f725e2c55baae1a94cb1e5125c1241e1cafcd303d4be5ade671147dee5b",
+          "proposer_confidence_millis": 900,
+          "repair_spec_sha256": "e3c5637bcbca4da3eac774de4779add83b5563cb15840fc96321d75eefcb42e6",
+          "unified_diff_sha256": "f95a61c3befa0b372810112d7d00f9870d2717969cfbf3c34d8264f3a01d6660"
+        },
+        "patch_consequence_prediction_errors": 0,
+        "patch_consequence_predictions": 1,
+        "patch_consequence_predictions_verified": 0,
+        "patch_diff": "--- src/self_repair_contract.rs\n+++ src/self_repair_contract.rs\n@@ -216,7 +216,7 @@\n }\r\n \r\n pub fn evidence_is_sufficient(observation_supported: bool, control_supported: bool) -> bool {\r\n-    observation_supported || control_supported\r\n+    observation_supported && control_supported\r\n }\r\n \r\n pub fn external_control_gate(type_valid: bool, state_valid: bool) -> bool {\r\n",
+        "patch_hash_routing_events": 0,
+        "patch_outcome_reads_before_repair_spec_freeze": 0,
+        "repair_spec": {
+          "frozen_before_downstream_result": true,
+          "sha256": "e3c5637bcbca4da3eac774de4779add83b5563cb15840fc96321d75eefcb42e6",
+          "value": {
+            "allowed_semantic_changes": [
+              "public failure while evaluating evidence_is_sufficient"
+            ],
+            "applicability": [
+              "observation_supported=true, control_supported=false"
+            ],
+            "compatibility_requirements": [
+              "both supported remains sufficient",
+              "both unsupported remains insufficient"
+            ],
+            "encodes_exact_patch": false,
+            "expected_consequences": [
+              "evidence is sufficient only when both observation and control evidence are supported",
+              "both supported remains sufficient",
+              "both unsupported remains insufficient"
+            ],
+            "forbidden_semantic_changes": [
+              "test suppression",
+              "error swallowing",
+              "hard-coded public output",
+              "feature deletion",
+              "unrelated control-flow change"
+            ],
+            "required_postcondition": "evidence is sufficient only when both observation and control evidence are supported",
+            "resource_constraints": [
+              "no new unbounded work"
+            ],
+            "restored_invariants": [
+              "evidence is sufficient only when both observation and control evidence are supported"
+            ],
+            "rollback_conditions": [
+              "independent verifier rejection",
+              "post-install regression"
+            ],
+            "uncertainty": "operator/mechanism class remains uncertain until bounded candidate discrimination",
+            "verification_requirements": [
+              "public observation disappears",
+              "hidden invariant checks pass",
+              "unaffected control behavior remains"
+            ]
+          }
+        },
+        "repair_spec_mutations_after_patch_result": 0,
+        "repair_spec_to_exact_patch_lookups": 0,
+        "repeated_equivalent_hypotheses": 0,
+        "repository_id_routing_events": 0,
+        "result_sha256": "d119da513f5dbdb2a32da0cad6b578333f28dbbc90544ee5cb2fe7edb4db11d2",
+        "schema_version": "B_CORE_RSI_CONTRACT_PROPOSAL_RESULT_1",
+        "source_files_total": 4,
+        "submitted": true,
+        "symbols_activated": 1,
+        "symbols_changed": 1,
+        "symbols_in_activated_file": 15,
+        "task_hash": "326202b611910fea6dd8ba077ad19b9ff82b0381628f25043e3343c2455c8900",
+        "task_id_routing_events": 0,
+        "test_runs": 2,
+        "unnecessary_mechanism_changes": 0,
+        "unrelated_semantic_changes": 0,
+        "wall_ms": 1609.872
+      },
+      "task_hash": "326202b611910fea6dd8ba077ad19b9ff82b0381628f25043e3343c2455c8900",
+      "verification": {
+        "authority_seal": "2876200c37b7de911d5e8fd5e512fa951baf4597a2d2a82650373d8bbebdf98e",
+        "changed_lines": 2,
+        "changed_paths": [
+          "src/self_repair_contract.rs"
+        ],
+        "core_self_approval_events": 0,
+        "decision": "ACCEPT",
+        "defect_contract_sha256": "5f52b909f5ab269e6046825777473a2c5bf76ab00625ef68425050c2ae4d3b57",
+        "expected_repair_lookups": 0,
+        "gold_patch_reads": 0,
+        "gold_patch_text_equality_is_acceptance_authority": false,
+        "hidden_verifier_solution_leaks": 0,
+        "independent_result": {
+          "output_sha256": "4c8dcf588a86d793179986f6006188ff9f5c30bc7d1b7acd27fbffbc28c3b813",
+          "output_tail": "\nrunning 1 test\n.\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
+          "returncode": 0,
+          "timed_out": false,
+          "wall_ms": 314.156
+        },
+        "invariant_checks_sha256": "9029a0617ff6fae6fed23544f58571581221257156c6e57be8d952c6a8f2d1ba",
+        "minimal_semantic_delta_pass": true,
+        "patch_hash_matches_submission": true,
+        "patch_sha256": "f95a61c3befa0b372810112d7d00f9870d2717969cfbf3c34d8264f3a01d6660",
+        "public_result": {
+          "output_sha256": "4c8dcf588a86d793179986f6006188ff9f5c30bc7d1b7acd27fbffbc28c3b813",
+          "output_tail": "\nrunning 1 test\n.\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
+          "returncode": 0,
+          "timed_out": false,
+          "wall_ms": 94.266
+        },
+        "receipt_sha256": "b9ce8b9d4b626394ee3cfe729ad2198ba5948e2ed68616b8202f5914e53bd3cf",
+        "regression_checks_sha256": "4c8dcf588a86d793179986f6006188ff9f5c30bc7d1b7acd27fbffbc28c3b813",
+        "repair_spec_sha256": "e3c5637bcbca4da3eac774de4779add83b5563cb15840fc96321d75eefcb42e6",
+        "resource_checks_sha256": "692d225368218f73e14890b2910ba68b788eb01af12458ca5b2570d71f3c561e",
+        "schema_version": "B_CORE_RSI_CONTRACT_VERIFICATION_RECEIPT_1",
+        "semantic_checks_sha256": "4c8dcf588a86d793179986f6006188ff9f5c30bc7d1b7acd27fbffbc28c3b813",
+        "semantic_correctness_pass": true,
+        "task_hash": "326202b611910fea6dd8ba077ad19b9ff82b0381628f25043e3343c2455c8900",
+        "test_suppression_detected": false,
+        "verifier_false_accept": false,
+        "verifier_identity": "B_CORE_RSI_CONTRACT_01_INDEPENDENT_VERIFIER_V1",
+        "verifier_is_proposer": false
+      }
+    },
+    {
+      "lane": "EXTERNAL_CONTROL",
+      "result": {
+        "active_coding_object_count": 2,
+        "active_coding_objects": [
+          "FAILURE_REPAIR",
+          "CONCURRENCY_PROTOCOL"
+        ],
+        "attempts": [
+          {
+            "edit": {
+              "column_end": 17,
+              "column_start": 15,
+              "line_index": 222,
+              "localization_score": 3,
+              "original_operator": "||",
+              "replacement_operator": "&&",
+              "symbol": "external_control_gate"
+            },
+            "prediction": {
+              "behavior_expected_unchanged": [
+                "both valid remains accepted",
+                "both invalid remains rejected"
+              ],
+              "failure_expected_to_disappear": "control passes only when both conditions, type validity and state validity, hold",
+              "frozen_before_execution": true,
+              "ordinal": 1,
+              "possible_regressions": [
+                "boundary neighbor",
+                "unaffected boolean combination"
+              ],
+              "resource_effect": "constant"
+            },
+            "public_probe": {
+              "output_sha256": "4c8dcf588a86d793179986f6006188ff9f5c30bc7d1b7acd27fbffbc28c3b813",
+              "output_tail": "\nrunning 1 test\n.\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
+              "returncode": 0,
+              "timed_out": false,
+              "wall_ms": 750.637
+            }
+          }
+        ],
+        "campaign_id": "B_CORE-RSI-CONTRACT-01",
+        "compile_runs": 2,
+        "core_self_approval_events": 0,
+        "cpu_time_ms": 31.25,
+        "defect_contract": {
+          "frozen_before_downstream_result": true,
+          "sha256": "f212153fd099f3d933f1d8ccde87cbef9fd9721ca3dabd4b835039a29414ed8f",
+          "value": {
+            "affected_behavior": "public failure while evaluating external_control_gate",
+            "affected_interfaces": [
+              "external_control_gate"
+            ],
+            "causal_evidence": [
+              "public assertion reports external_control_gate semantic mismatch",
+              "public_probe_sha256:9c63895045af33814c4fac45802dc8aa7ce75d4a6a0d76107e17c0ed71d1e717"
+            ],
+            "expected_vs_observed": "expected=control passes only when both conditions, type validity and state validity, hold; observed=external_control_gate(false,true) returned true",
+            "prescribes_concrete_edit": false,
+            "preserved_behavior": [
+              "both valid remains accepted",
+              "both invalid remains rejected"
+            ],
+            "provenance": [
+              "sandbox public test output",
+              "sandbox production source"
+            ],
+            "scope": "external_control_gate behavioral interface",
+            "suspected_mechanism_classes": [
+              "boundary relation",
+              "state composition",
+              "identity relation",
+              "other"
+            ],
+            "trigger_conditions": [
+              "type_valid=false, state_valid=true"
+            ],
+            "uncertainty": "operator/mechanism class remains uncertain until bounded candidate discrimination",
+            "violated_invariant": "control passes only when both conditions, type validity and state validity, hold"
+          }
+        },
+        "defect_contract_mutations_after_repair_spec_result": 0,
+        "defect_hypotheses": [
+          {
+            "class": "boundary relation",
+            "status": "REJECTED"
+          },
+          {
+            "class": "state composition",
+            "status": "RETAINED"
+          },
+          {
+            "class": "identity relation",
+            "status": "REJECTED"
+          },
+          {
+            "class": "other",
+            "status": "REJECTED"
+          }
+        ],
+        "defect_hypotheses_generated": 4,
+        "defect_hypotheses_rejected": 3,
+        "defect_hypotheses_retained": 1,
+        "defect_injection_manifest_reads": 0,
+        "diagnostic_experiments": [
+          {
+            "gold_information_used": false,
+            "kind": "PUBLIC_OBSERVATION_REPLAY",
+            "result_sha256": "9c63895045af33814c4fac45802dc8aa7ce75d4a6a0d76107e17c0ed71d1e717",
+            "returncode": 101
+          }
+        ],
+        "expected_output_imports": 0,
+        "expected_repair_lookups": 0,
+        "external_llm_calls": 0,
+        "files_activated": 1,
+        "files_changed": 1,
+        "full_coding_knowledge_scans": 0,
+        "full_source_scan_events": 0,
+        "gold_patch_reads": 0,
+        "hidden_verifier_solution_leaks": 0,
+        "human_defect_contract_events_l3": 0,
+        "human_patch_selection_events_l3": 0,
+        "human_repair_spec_events_l2": 0,
+        "human_repair_spec_events_l3": 0,
+        "initial_public_probe": {
+          "output_sha256": "9c63895045af33814c4fac45802dc8aa7ce75d4a6a0d76107e17c0ed71d1e717",
+          "output_tail": "\nrunning 1 test\ndev_l3_external_control --- FAILED\n\nfailures:\n\n---- dev_l3_external_control stdout ----\n\nthread 'dev_l3_external_control' (8380) panicked at tests\\public.rs:5:5:\nassertion `left == right` failed: external_control_gate(false, true)\n  left: true\n right: false\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\n\n\nfailures:\n    dev_l3_external_control\n\ntest result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\nerror: test failed, to rerun pass `--test public`\n",
+          "returncode": 101,
+          "timed_out": false,
+          "wall_ms": 909.085
+        },
+        "input_level": 3,
+        "lane": "EXTERNAL_CONTROL",
+        "lines_changed": 2,
+        "local_teacher_calls": 0,
+        "network_reads": 0,
+        "network_writes": 0,
+        "observation_ir": {
+          "actual_observable": "external_control_gate(false,true) returned true",
+          "affected_interfaces": [
+            "external_control_gate"
+          ],
+          "contains_hidden_diagnosis": false,
+          "evidence": [
+            "public assertion reports external_control_gate semantic mismatch"
+          ],
+          "expected_observable": "control passes only when both conditions, type validity and state validity, hold",
+          "observed_event": "public failure while evaluating external_control_gate",
+          "preserved_behavior": [
+            "both valid remains accepted",
+            "both invalid remains rejected"
+          ],
+          "provenance": [
+            "sandbox public test output",
+            "sandbox production source"
+          ],
+          "scope": "external_control_gate behavioral interface",
+          "trigger": "type_valid=false, state_valid=true"
+        },
+        "patch_attempts": 1,
+        "patch_candidate": {
+          "changed_files": [
+            "src/self_repair_contract.rs"
+          ],
+          "changed_symbols": [
+            "external_control_gate"
+          ],
+          "consequence_predictions": [
+            {
+              "behavior_expected_unchanged": [
+                "both valid remains accepted",
+                "both invalid remains rejected"
+              ],
+              "failure_expected_to_disappear": "control passes only when both conditions, type validity and state validity, hold",
+              "frozen_before_execution": true,
+              "ordinal": 1,
+              "possible_regressions": [
+                "boundary neighbor",
+                "unaffected boolean combination"
+              ],
+              "resource_effect": "constant"
+            }
+          ],
+          "core_self_approved": false,
+          "defect_contract_sha256": "f212153fd099f3d933f1d8ccde87cbef9fd9721ca3dabd4b835039a29414ed8f",
+          "predecessor_tree_hash": "9faacc0ce7ef3c452b34ecb67e04148a991a151241d75a8921a1d7e0ff3823ce",
+          "proposer_confidence_millis": 900,
+          "repair_spec_sha256": "6323b0ae499e3716f4492fdf4abbc193c848bb7e227e30d87a4085636c1e2c39",
+          "unified_diff_sha256": "7555962a6aa92676eb9fb1ae3ef5ed9d53432bd6bbd7f7dd93eec9f9f344c427"
+        },
+        "patch_consequence_prediction_errors": 0,
+        "patch_consequence_predictions": 1,
+        "patch_consequence_predictions_verified": 0,
+        "patch_diff": "--- src/self_repair_contract.rs\n+++ src/self_repair_contract.rs\n@@ -220,7 +220,7 @@\n }\r\n \r\n pub fn external_control_gate(type_valid: bool, state_valid: bool) -> bool {\r\n-    type_valid || state_valid\r\n+    type_valid && state_valid\r\n }\r\n \r\n pub fn retry_allowed(attempt: u32, budget: u32) -> bool {\r\n",
+        "patch_hash_routing_events": 0,
+        "patch_outcome_reads_before_repair_spec_freeze": 0,
+        "repair_spec": {
+          "frozen_before_downstream_result": true,
+          "sha256": "6323b0ae499e3716f4492fdf4abbc193c848bb7e227e30d87a4085636c1e2c39",
+          "value": {
+            "allowed_semantic_changes": [
+              "public failure while evaluating external_control_gate"
+            ],
+            "applicability": [
+              "type_valid=false, state_valid=true"
+            ],
+            "compatibility_requirements": [
+              "both valid remains accepted",
+              "both invalid remains rejected"
+            ],
+            "encodes_exact_patch": false,
+            "expected_consequences": [
+              "control passes only when both conditions, type validity and state validity, hold",
+              "both valid remains accepted",
+              "both invalid remains rejected"
+            ],
+            "forbidden_semantic_changes": [
+              "test suppression",
+              "error swallowing",
+              "hard-coded public output",
+              "feature deletion",
+              "unrelated control-flow change"
+            ],
+            "required_postcondition": "control passes only when both conditions, type validity and state validity, hold",
+            "resource_constraints": [
+              "no new unbounded work"
+            ],
+            "restored_invariants": [
+              "control passes only when both conditions, type validity and state validity, hold"
+            ],
+            "rollback_conditions": [
+              "independent verifier rejection",
+              "post-install regression"
+            ],
+            "uncertainty": "operator/mechanism class remains uncertain until bounded candidate discrimination",
+            "verification_requirements": [
+              "public observation disappears",
+              "hidden invariant checks pass",
+              "unaffected control behavior remains"
+            ]
+          }
+        },
+        "repair_spec_mutations_after_patch_result": 0,
+        "repair_spec_to_exact_patch_lookups": 0,
+        "repeated_equivalent_hypotheses": 0,
+        "repository_id_routing_events": 0,
+        "result_sha256": "052298a218a8f1261ca932509c6502c20ea63e8066b189ffac96e96b995f9cd6",
+        "schema_version": "B_CORE_RSI_CONTRACT_PROPOSAL_RESULT_1",
+        "source_files_total": 4,
+        "submitted": true,
+        "symbols_activated": 1,
+        "symbols_changed": 1,
+        "symbols_in_activated_file": 15,
+        "task_hash": "86f4b79f0b266b35b06a385f399510fc0db58bf45a27a8dbb9c93ea38912fcd0",
+        "task_id_routing_events": 0,
+        "test_runs": 2,
+        "unnecessary_mechanism_changes": 0,
+        "unrelated_semantic_changes": 0,
+        "wall_ms": 1661.098
+      },
+      "task_hash": "86f4b79f0b266b35b06a385f399510fc0db58bf45a27a8dbb9c93ea38912fcd0",
+      "verification": {
+        "authority_seal": "ebf1e8f1f1e89e0dd151d8b3c620850921fca5e53763837f6ca12996faebd442",
+        "changed_lines": 2,
+        "changed_paths": [
+          "src/self_repair_contract.rs"
+        ],
+        "core_self_approval_events": 0,
+        "decision": "ACCEPT",
+        "defect_contract_sha256": "f212153fd099f3d933f1d8ccde87cbef9fd9721ca3dabd4b835039a29414ed8f",
+        "expected_repair_lookups": 0,
+        "gold_patch_reads": 0,
+        "gold_patch_text_equality_is_acceptance_authority": false,
+        "hidden_verifier_solution_leaks": 0,
+        "independent_result": {
+          "output_sha256": "4c8dcf588a86d793179986f6006188ff9f5c30bc7d1b7acd27fbffbc28c3b813",
+          "output_tail": "\nrunning 1 test\n.\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
+          "returncode": 0,
+          "timed_out": false,
+          "wall_ms": 307.041
+        },
+        "invariant_checks_sha256": "c1e80882af7d75cfbc0c8b23a479f20963ae36ac1b2efd77b1b50187c94c4145",
+        "minimal_semantic_delta_pass": true,
+        "patch_hash_matches_submission": true,
+        "patch_sha256": "7555962a6aa92676eb9fb1ae3ef5ed9d53432bd6bbd7f7dd93eec9f9f344c427",
+        "public_result": {
+          "output_sha256": "4c8dcf588a86d793179986f6006188ff9f5c30bc7d1b7acd27fbffbc28c3b813",
+          "output_tail": "\nrunning 1 test\n.\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
+          "returncode": 0,
+          "timed_out": false,
+          "wall_ms": 63.677
+        },
+        "receipt_sha256": "ce4f1ead804fab2ced4a6087f543b03334ecf4dced8ef69dbee987932b58e680",
+        "regression_checks_sha256": "4c8dcf588a86d793179986f6006188ff9f5c30bc7d1b7acd27fbffbc28c3b813",
+        "repair_spec_sha256": "6323b0ae499e3716f4492fdf4abbc193c848bb7e227e30d87a4085636c1e2c39",
+        "resource_checks_sha256": "692d225368218f73e14890b2910ba68b788eb01af12458ca5b2570d71f3c561e",
+        "schema_version": "B_CORE_RSI_CONTRACT_VERIFICATION_RECEIPT_1",
+        "semantic_checks_sha256": "4c8dcf588a86d793179986f6006188ff9f5c30bc7d1b7acd27fbffbc28c3b813",
+        "semantic_correctness_pass": true,
+        "task_hash": "86f4b79f0b266b35b06a385f399510fc0db58bf45a27a8dbb9c93ea38912fcd0",
+        "test_suppression_detected": false,
+        "verifier_false_accept": false,
+        "verifier_identity": "B_CORE_RSI_CONTRACT_01_INDEPENDENT_VERIFIER_V1",
+        "verifier_is_proposer": false
+      }
+    },
+    {
+      "lane": "SELF_SOURCE",
+      "result": {
+        "active_coding_object_count": 2,
+        "active_coding_objects": [
+          "FAILURE_REPAIR",
+          "TYPE_CONTROL"
+        ],
+        "attempts": [
+          {
+            "edit": {
+              "column_end": 12,
+              "column_start": 10,
+              "line_index": 214,
+              "localization_score": 3,
+              "original_operator": ">=",
+              "replacement_operator": "<=",
+              "symbol": "range_is_ordered"
+            },
+            "prediction": {
+              "behavior_expected_unchanged": [
+                "lower greater than upper remains unordered"
+              ],
+              "failure_expected_to_disappear": "lower must not exceed upper; equal boundaries remain ordered",
+              "frozen_before_execution": true,
+              "ordinal": 1,
+              "possible_regressions": [
+                "boundary neighbor",
+                "unaffected boolean combination"
+              ],
+              "resource_effect": "constant"
+            },
+            "public_probe": {
+              "output_sha256": "4c8dcf588a86d793179986f6006188ff9f5c30bc7d1b7acd27fbffbc28c3b813",
+              "output_tail": "\nrunning 1 test\n.\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
+              "returncode": 0,
+              "timed_out": false,
+              "wall_ms": 741.332
+            }
+          }
+        ],
+        "campaign_id": "B_CORE-RSI-CONTRACT-01",
+        "compile_runs": 2,
+        "core_self_approval_events": 0,
+        "cpu_time_ms": 46.875,
+        "defect_contract": {
+          "frozen_before_downstream_result": true,
+          "sha256": "5effed6ad6134ddca182ab049b9ba68daf07144e0171435ccb31b316e3219693",
+          "value": {
+            "affected_behavior": "public failure while evaluating range_is_ordered",
+            "affected_interfaces": [
+              "range_is_ordered"
+            ],
+            "causal_evidence": [
+              "public assertion reports range_is_ordered semantic mismatch",
+              "public_probe_sha256:4228890e0be96ad5f5822e81cf5c67d3eb9223238597b3e6b44eb597e4683cf3"
+            ],
+            "expected_vs_observed": "expected=lower must not exceed upper; equal boundaries remain ordered; observed=range_is_ordered(2,3) returned false",
+            "prescribes_concrete_edit": false,
+            "preserved_behavior": [
+              "lower greater than upper remains unordered"
+            ],
+            "provenance": [
+              "sandbox public test output",
+              "sandbox production source"
+            ],
+            "scope": "range_is_ordered behavioral interface",
+            "suspected_mechanism_classes": [
+              "boundary relation",
+              "state composition",
+              "identity relation",
+              "other"
+            ],
+            "trigger_conditions": [
+              "lower=2, upper=3"
+            ],
+            "uncertainty": "operator/mechanism class remains uncertain until bounded candidate discrimination",
+            "violated_invariant": "lower must not exceed upper; equal boundaries remain ordered"
+          }
+        },
+        "defect_contract_mutations_after_repair_spec_result": 0,
+        "defect_hypotheses": [
+          {
+            "class": "boundary relation",
+            "status": "RETAINED"
+          },
+          {
+            "class": "state composition",
+            "status": "REJECTED"
+          },
+          {
+            "class": "identity relation",
+            "status": "REJECTED"
+          },
+          {
+            "class": "other",
+            "status": "REJECTED"
+          }
+        ],
+        "defect_hypotheses_generated": 4,
+        "defect_hypotheses_rejected": 3,
+        "defect_hypotheses_retained": 1,
+        "defect_injection_manifest_reads": 0,
+        "diagnostic_experiments": [
+          {
+            "gold_information_used": false,
+            "kind": "PUBLIC_OBSERVATION_REPLAY",
+            "result_sha256": "4228890e0be96ad5f5822e81cf5c67d3eb9223238597b3e6b44eb597e4683cf3",
+            "returncode": 101
+          }
+        ],
+        "expected_output_imports": 0,
+        "expected_repair_lookups": 0,
+        "external_llm_calls": 0,
+        "files_activated": 1,
+        "files_changed": 1,
+        "full_coding_knowledge_scans": 0,
+        "full_source_scan_events": 0,
+        "gold_patch_reads": 0,
+        "hidden_verifier_solution_leaks": 0,
+        "human_defect_contract_events_l3": 0,
+        "human_patch_selection_events_l3": 0,
+        "human_repair_spec_events_l2": 0,
+        "human_repair_spec_events_l3": 0,
+        "initial_public_probe": {
+          "output_sha256": "4228890e0be96ad5f5822e81cf5c67d3eb9223238597b3e6b44eb597e4683cf3",
+          "output_tail": "\nrunning 1 test\ndev_l3_range_order --- FAILED\n\nfailures:\n\n---- dev_l3_range_order stdout ----\n\nthread 'dev_l3_range_order' (50308) panicked at tests\\public.rs:5:5:\nassertion `left == right` failed: range_is_ordered(2, 3)\n  left: false\n right: true\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\n\n\nfailures:\n    dev_l3_range_order\n\ntest result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\nerror: test failed, to rerun pass `--test public`\n",
+          "returncode": 101,
+          "timed_out": false,
+          "wall_ms": 864.669
+        },
+        "input_level": 3,
+        "lane": "SELF_SOURCE",
+        "lines_changed": 2,
+        "local_teacher_calls": 0,
+        "network_reads": 0,
+        "network_writes": 0,
+        "observation_ir": {
+          "actual_observable": "range_is_ordered(2,3) returned false",
+          "affected_interfaces": [
+            "range_is_ordered"
+          ],
+          "contains_hidden_diagnosis": false,
+          "evidence": [
+            "public assertion reports range_is_ordered semantic mismatch"
+          ],
+          "expected_observable": "lower must not exceed upper; equal boundaries remain ordered",
+          "observed_event": "public failure while evaluating range_is_ordered",
+          "preserved_behavior": [
+            "lower greater than upper remains unordered"
+          ],
+          "provenance": [
+            "sandbox public test output",
+            "sandbox production source"
+          ],
+          "scope": "range_is_ordered behavioral interface",
+          "trigger": "lower=2, upper=3"
+        },
+        "patch_attempts": 1,
+        "patch_candidate": {
+          "changed_files": [
+            "src/self_repair_contract.rs"
+          ],
+          "changed_symbols": [
+            "range_is_ordered"
+          ],
+          "consequence_predictions": [
+            {
+              "behavior_expected_unchanged": [
+                "lower greater than upper remains unordered"
+              ],
+              "failure_expected_to_disappear": "lower must not exceed upper; equal boundaries remain ordered",
+              "frozen_before_execution": true,
+              "ordinal": 1,
+              "possible_regressions": [
+                "boundary neighbor",
+                "unaffected boolean combination"
+              ],
+              "resource_effect": "constant"
+            }
+          ],
+          "core_self_approved": false,
+          "defect_contract_sha256": "5effed6ad6134ddca182ab049b9ba68daf07144e0171435ccb31b316e3219693",
+          "predecessor_tree_hash": "eaf607da5b62dfb3295ad48d6c61c7129d0e3d92d6b8d045dd74a56d8e2c8734",
+          "proposer_confidence_millis": 900,
+          "repair_spec_sha256": "006085228b6646ffac9bccd7973cb013064c2001780f4b40e2e6d9a0622a24a3",
+          "unified_diff_sha256": "a1a981e180f3c8740775caad5424d17dd69fbc10c00678c56d0b965f9f805524"
+        },
+        "patch_consequence_prediction_errors": 0,
+        "patch_consequence_predictions": 1,
+        "patch_consequence_predictions_verified": 0,
+        "patch_diff": "--- src/self_repair_contract.rs\n+++ src/self_repair_contract.rs\n@@ -212,7 +212,7 @@\n }\r\n \r\n pub fn range_is_ordered(lower: i32, upper: i32) -> bool {\r\n-    lower >= upper\r\n+    lower <= upper\r\n }\r\n \r\n pub fn evidence_is_sufficient(observation_supported: bool, control_supported: bool) -> bool {\r\n",
+        "patch_hash_routing_events": 0,
+        "patch_outcome_reads_before_repair_spec_freeze": 0,
+        "repair_spec": {
+          "frozen_before_downstream_result": true,
+          "sha256": "006085228b6646ffac9bccd7973cb013064c2001780f4b40e2e6d9a0622a24a3",
+          "value": {
+            "allowed_semantic_changes": [
+              "public failure while evaluating range_is_ordered"
+            ],
+            "applicability": [
+              "lower=2, upper=3"
+            ],
+            "compatibility_requirements": [
+              "lower greater than upper remains unordered"
+            ],
+            "encodes_exact_patch": false,
+            "expected_consequences": [
+              "lower must not exceed upper; equal boundaries remain ordered",
+              "lower greater than upper remains unordered"
+            ],
+            "forbidden_semantic_changes": [
+              "test suppression",
+              "error swallowing",
+              "hard-coded public output",
+              "feature deletion",
+              "unrelated control-flow change"
+            ],
+            "required_postcondition": "lower must not exceed upper; equal boundaries remain ordered",
+            "resource_constraints": [
+              "no new unbounded work"
+            ],
+            "restored_invariants": [
+              "lower must not exceed upper; equal boundaries remain ordered"
+            ],
+            "rollback_conditions": [
+              "independent verifier rejection",
+              "post-install regression"
+            ],
+            "uncertainty": "operator/mechanism class remains uncertain until bounded candidate discrimination",
+            "verification_requirements": [
+              "public observation disappears",
+              "hidden invariant checks pass",
+              "unaffected control behavior remains"
+            ]
+          }
+        },
+        "repair_spec_mutations_after_patch_result": 0,
+        "repair_spec_to_exact_patch_lookups": 0,
+        "repeated_equivalent_hypotheses": 0,
+        "repository_id_routing_events": 0,
+        "result_sha256": "4b4c4ff12cc7cb0a8616a250c13952573882b7ecb60f62fe5c1ad04f3d613e0d",
+        "schema_version": "B_CORE_RSI_CONTRACT_PROPOSAL_RESULT_1",
+        "source_files_total": 4,
+        "submitted": true,
+        "symbols_activated": 1,
+        "symbols_changed": 1,
+        "symbols_in_activated_file": 15,
+        "task_hash": "acd8b0cf54c834fd0f904afa8eb51294e71f3e368c0b9b7a413eeb85e47aa1aa",
+        "task_id_routing_events": 0,
+        "test_runs": 2,
+        "unnecessary_mechanism_changes": 0,
+        "unrelated_semantic_changes": 0,
+        "wall_ms": 1607.33
+      },
+      "task_hash": "acd8b0cf54c834fd0f904afa8eb51294e71f3e368c0b9b7a413eeb85e47aa1aa",
+      "verification": {
+        "authority_seal": "5c8e3e7a9fab0b1229f4cfbc6d7fb7d8d2fd537bf0a52724a27ff930598475d8",
+        "changed_lines": 2,
+        "changed_paths": [
+          "src/self_repair_contract.rs"
+        ],
+        "core_self_approval_events": 0,
+        "decision": "ACCEPT",
+        "defect_contract_sha256": "5effed6ad6134ddca182ab049b9ba68daf07144e0171435ccb31b316e3219693",
+        "expected_repair_lookups": 0,
+        "gold_patch_reads": 0,
+        "gold_patch_text_equality_is_acceptance_authority": false,
+        "hidden_verifier_solution_leaks": 0,
+        "independent_result": {
+          "output_sha256": "4c8dcf588a86d793179986f6006188ff9f5c30bc7d1b7acd27fbffbc28c3b813",
+          "output_tail": "\nrunning 1 test\n.\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
+          "returncode": 0,
+          "timed_out": false,
+          "wall_ms": 316.484
+        },
+        "invariant_checks_sha256": "1ac33556076e55cf9e7584c9d3c07932d6ed16843b8a836d00a25bd125d77f58",
+        "minimal_semantic_delta_pass": true,
+        "patch_hash_matches_submission": true,
+        "patch_sha256": "a1a981e180f3c8740775caad5424d17dd69fbc10c00678c56d0b965f9f805524",
+        "public_result": {
+          "output_sha256": "4c8dcf588a86d793179986f6006188ff9f5c30bc7d1b7acd27fbffbc28c3b813",
+          "output_tail": "\nrunning 1 test\n.\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
+          "returncode": 0,
+          "timed_out": false,
+          "wall_ms": 62.766
+        },
+        "receipt_sha256": "0dfb728a6687cf100c8e507a0e42dc4bd45f752a01029ed0fd9b0ba24ceb763d",
+        "regression_checks_sha256": "4c8dcf588a86d793179986f6006188ff9f5c30bc7d1b7acd27fbffbc28c3b813",
+        "repair_spec_sha256": "006085228b6646ffac9bccd7973cb013064c2001780f4b40e2e6d9a0622a24a3",
+        "resource_checks_sha256": "692d225368218f73e14890b2910ba68b788eb01af12458ca5b2570d71f3c561e",
+        "schema_version": "B_CORE_RSI_CONTRACT_VERIFICATION_RECEIPT_1",
+        "semantic_checks_sha256": "4c8dcf588a86d793179986f6006188ff9f5c30bc7d1b7acd27fbffbc28c3b813",
+        "semantic_correctness_pass": true,
+        "task_hash": "acd8b0cf54c834fd0f904afa8eb51294e71f3e368c0b9b7a413eeb85e47aa1aa",
+        "test_suppression_detected": false,
+        "verifier_false_accept": false,
+        "verifier_identity": "B_CORE_RSI_CONTRACT_01_INDEPENDENT_VERIFIER_V1",
+        "verifier_is_proposer": false
+      }
+    }
+  ],
+  "verified_repairs": 3
+}

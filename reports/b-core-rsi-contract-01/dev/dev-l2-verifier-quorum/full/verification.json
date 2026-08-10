@@ -1,0 +1,44 @@
+{
+  "authority_seal": "40311e2f74d5437a712600cc5a745ff9853a29bc654afd748f3975d286b26023",
+  "changed_lines": 2,
+  "changed_paths": [
+    "src/self_repair_contract.rs"
+  ],
+  "core_self_approval_events": 0,
+  "decision": "ACCEPT",
+  "defect_contract_sha256": "c9463d3acfe158aca695bb33ac08f6d36953ee0a8195eb5a132e5caff65cad98",
+  "expected_repair_lookups": 0,
+  "gold_patch_reads": 0,
+  "gold_patch_text_equality_is_acceptance_authority": false,
+  "hidden_verifier_solution_leaks": 0,
+  "independent_result": {
+    "output_sha256": "4c8dcf588a86d793179986f6006188ff9f5c30bc7d1b7acd27fbffbc28c3b813",
+    "output_tail": "\nrunning 1 test\n.\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
+    "returncode": 0,
+    "timed_out": false,
+    "wall_ms": 477.613
+  },
+  "invariant_checks_sha256": "0c0b7a8691c87439ccf6fcc6e50bfd34267ed182048a65b01f0af6f2692047fd",
+  "minimal_semantic_delta_pass": true,
+  "patch_hash_matches_submission": true,
+  "patch_sha256": "d1d7cbe7ec5d2f2b508c0003c5bc3eebc7ceadc4c308f53af05167690e8e61d7",
+  "public_result": {
+    "output_sha256": "4c8dcf588a86d793179986f6006188ff9f5c30bc7d1b7acd27fbffbc28c3b813",
+    "output_tail": "\nrunning 1 test\n.\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
+    "returncode": 0,
+    "timed_out": false,
+    "wall_ms": 63.319
+  },
+  "receipt_sha256": "b09644a7faf04f27c37140db4e2d8b7a00983927fbb5886acaa5bddd2d3c7d73",
+  "regression_checks_sha256": "4c8dcf588a86d793179986f6006188ff9f5c30bc7d1b7acd27fbffbc28c3b813",
+  "repair_spec_sha256": "502e6ee7935732b6cfa3eda2daae0313a0125fb98ce9ddb2f4e0bf8ce631aad2",
+  "resource_checks_sha256": "692d225368218f73e14890b2910ba68b788eb01af12458ca5b2570d71f3c561e",
+  "schema_version": "B_CORE_RSI_CONTRACT_VERIFICATION_RECEIPT_1",
+  "semantic_checks_sha256": "4c8dcf588a86d793179986f6006188ff9f5c30bc7d1b7acd27fbffbc28c3b813",
+  "semantic_correctness_pass": true,
+  "task_hash": "f98efcc0f68359f09ab8b4b8f21509f03a5091a540ac508e193b34b87d5c85ba",
+  "test_suppression_detected": false,
+  "verifier_false_accept": false,
+  "verifier_identity": "B_CORE_RSI_CONTRACT_01_INDEPENDENT_VERIFIER_V1",
+  "verifier_is_proposer": false
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "authority_seal": {},
+    "decision": {},
+    "defect_contract_sha256": {},
+    "patch_sha256": {},
+    "receipt_sha256": {},
+    "repair_spec_sha256": {},
+    "verifier_identity": {}
+  },
+  "required": [
+    "patch_sha256",
+    "repair_spec_sha256",
+    "defect_contract_sha256",
+    "decision",
+    "verifier_identity",
+    "receipt_sha256",
+    "authority_seal"
+  ],
+  "title": "VerificationReceipt",
+  "type": "object"
+}

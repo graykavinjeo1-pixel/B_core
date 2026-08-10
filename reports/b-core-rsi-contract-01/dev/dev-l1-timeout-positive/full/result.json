@@ -1,0 +1,174 @@
+{
+  "active_coding_object_count": 2,
+  "active_coding_objects": [
+    "FAILURE_REPAIR",
+    "TYPE_CONTROL"
+  ],
+  "attempts": [
+    {
+      "edit": {
+        "column_end": 17,
+        "column_start": 15,
+        "line_index": 198,
+        "localization_score": 3,
+        "original_operator": ">=",
+        "replacement_operator": ">",
+        "symbol": "timeout_is_valid"
+      },
+      "prediction": {
+        "behavior_expected_unchanged": [
+          "positive timeout values remain valid"
+        ],
+        "failure_expected_to_disappear": "timeout is valid only when strictly positive; zero and negative values are invalid",
+        "frozen_before_execution": true,
+        "ordinal": 1,
+        "possible_regressions": [
+          "boundary neighbor",
+          "unaffected boolean combination"
+        ],
+        "resource_effect": "constant"
+      },
+      "public_probe": {
+        "output_sha256": "4c8dcf588a86d793179986f6006188ff9f5c30bc7d1b7acd27fbffbc28c3b813",
+        "output_tail": "\nrunning 1 test\n.\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
+        "returncode": 0,
+        "timed_out": false,
+        "wall_ms": 839.938
+      }
+    }
+  ],
+  "campaign_id": "B_CORE-RSI-CONTRACT-01",
+  "compile_runs": 2,
+  "core_self_approval_events": 0,
+  "cpu_time_ms": 46.875,
+  "defect_contract": null,
+  "defect_contract_mutations_after_repair_spec_result": 0,
+  "defect_hypotheses": [],
+  "defect_hypotheses_generated": 0,
+  "defect_hypotheses_rejected": 0,
+  "defect_hypotheses_retained": 0,
+  "defect_injection_manifest_reads": 0,
+  "diagnostic_experiments": [],
+  "expected_output_imports": 0,
+  "expected_repair_lookups": 0,
+  "external_llm_calls": 0,
+  "files_activated": 1,
+  "files_changed": 1,
+  "full_coding_knowledge_scans": 0,
+  "full_source_scan_events": 0,
+  "gold_patch_reads": 0,
+  "hidden_verifier_solution_leaks": 0,
+  "human_defect_contract_events_l3": 0,
+  "human_patch_selection_events_l3": 0,
+  "human_repair_spec_events_l2": 0,
+  "human_repair_spec_events_l3": 0,
+  "initial_public_probe": {
+    "output_sha256": "12a25b616e5ff7c108edc2b95141f0d05a5013bf11a53cb8418df60b625a914b",
+    "output_tail": "\nrunning 1 test\ndev_l1_timeout_positive --- FAILED\n\nfailures:\n\n---- dev_l1_timeout_positive stdout ----\n\nthread 'dev_l1_timeout_positive' (48672) panicked at tests\\public.rs:5:5:\nassertion `left == right` failed: timeout_is_valid(0)\n  left: true\n right: false\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\n\n\nfailures:\n    dev_l1_timeout_positive\n\ntest result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\nerror: test failed, to rerun pass `--test public`\n",
+    "returncode": 101,
+    "timed_out": false,
+    "wall_ms": 891.815
+  },
+  "input_level": 1,
+  "lane": "SELF_SOURCE",
+  "lines_changed": 2,
+  "local_teacher_calls": 0,
+  "network_reads": 0,
+  "network_writes": 0,
+  "observation_ir": null,
+  "patch_attempts": 1,
+  "patch_candidate": {
+    "changed_files": [
+      "src/self_repair_contract.rs"
+    ],
+    "changed_symbols": [
+      "timeout_is_valid"
+    ],
+    "consequence_predictions": [
+      {
+        "behavior_expected_unchanged": [
+          "positive timeout values remain valid"
+        ],
+        "failure_expected_to_disappear": "timeout is valid only when strictly positive; zero and negative values are invalid",
+        "frozen_before_execution": true,
+        "ordinal": 1,
+        "possible_regressions": [
+          "boundary neighbor",
+          "unaffected boolean combination"
+        ],
+        "resource_effect": "constant"
+      }
+    ],
+    "core_self_approved": false,
+    "defect_contract_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "predecessor_tree_hash": "2284a1c29c423d9034807825b33aa9e729d835ea485ea8d7656184210a37b963",
+    "proposer_confidence_millis": 900,
+    "repair_spec_sha256": "fb676b722f58c25a2dbe0f2c2ee35f7c75d26dc485acdc3b8a0019abb4d57fca",
+    "unified_diff_sha256": "2932e00d4f713fab61de219d8941b15d8f370ccc54d1f89d0fd19ee8f1621b0f"
+  },
+  "patch_consequence_prediction_errors": 0,
+  "patch_consequence_predictions": 1,
+  "patch_consequence_predictions_verified": 0,
+  "patch_diff": "--- src/self_repair_contract.rs\n+++ src/self_repair_contract.rs\n@@ -196,7 +196,7 @@\n // The authoritative file is never modified in place by a repair task.\r\n \r\n pub fn timeout_is_valid(timeout_ms: i64) -> bool {\r\n-    timeout_ms >= 0\r\n+    timeout_ms > 0\r\n }\r\n \r\n pub fn capacity_allows(used: u32, limit: u32) -> bool {\r\n",
+  "patch_hash_routing_events": 0,
+  "patch_outcome_reads_before_repair_spec_freeze": 0,
+  "repair_spec": {
+    "frozen_before_downstream_result": true,
+    "sha256": "fb676b722f58c25a2dbe0f2c2ee35f7c75d26dc485acdc3b8a0019abb4d57fca",
+    "value": {
+      "allowed_semantic_changes": [
+        "timeout_is_valid contract restoration"
+      ],
+      "applicability": [
+        "timeout_is_valid semantic boundary"
+      ],
+      "compatibility_requirements": [
+        "positive timeout values remain valid"
+      ],
+      "encodes_exact_patch": false,
+      "expected_consequences": [
+        "timeout is valid only when strictly positive; zero and negative values are invalid",
+        "positive timeout values remain valid"
+      ],
+      "forbidden_semantic_changes": [
+        "test suppression",
+        "hard-coded output",
+        "feature deletion",
+        "unrelated source edits"
+      ],
+      "required_postcondition": "timeout is valid only when strictly positive; zero and negative values are invalid",
+      "resource_constraints": [
+        "constant work and allocation behavior"
+      ],
+      "restored_invariants": [
+        "timeout is valid only when strictly positive; zero and negative values are invalid"
+      ],
+      "rollback_conditions": [
+        "verifier rejection",
+        "post-install regression"
+      ],
+      "uncertainty": "concrete edit and symbol location are not prescribed",
+      "verification_requirements": [
+        "public cases",
+        "independent boundary/property cases"
+      ]
+    }
+  },
+  "repair_spec_mutations_after_patch_result": 0,
+  "repair_spec_to_exact_patch_lookups": 0,
+  "repeated_equivalent_hypotheses": 0,
+  "repository_id_routing_events": 0,
+  "result_sha256": "90717e79184cc0c8b813f68ed780025a2e5aea9ab7e6b9ca5c8cc822c91684f3",
+  "schema_version": "B_CORE_RSI_CONTRACT_PROPOSAL_RESULT_1",
+  "source_files_total": 4,
+  "submitted": true,
+  "symbols_activated": 1,
+  "symbols_changed": 1,
+  "symbols_in_activated_file": 15,
+  "task_hash": "44682d12711a3d60e3136e2173c8ef246ccc705b238f2affe6cd01f56cccbb5e",
+  "task_id_routing_events": 0,
+  "test_runs": 2,
+  "unnecessary_mechanism_changes": 0,
+  "unrelated_semantic_changes": 0,
+  "wall_ms": 1733.011
+}

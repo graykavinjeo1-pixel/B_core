@@ -1,0 +1,276 @@
+{
+  "active_coding_object_count": 2,
+  "active_coding_objects": [
+    "FAILURE_REPAIR",
+    "CONCURRENCY_PROTOCOL"
+  ],
+  "attempts": [
+    {
+      "edit": {
+        "column_end": 12,
+        "column_start": 10,
+        "line_index": 214,
+        "localization_score": 103,
+        "original_operator": ">=",
+        "replacement_operator": "==",
+        "symbol": "range_is_ordered"
+      },
+      "prediction": {
+        "behavior_expected_unchanged": [],
+        "failure_expected_to_disappear": "lower must not exceed upper; equal boundaries remain ordered",
+        "frozen_before_execution": true,
+        "ordinal": 1,
+        "possible_regressions": [
+          "boundary neighbor",
+          "unaffected boolean combination"
+        ],
+        "resource_effect": "constant"
+      },
+      "public_probe": {
+        "output_sha256": "b13d3f9e409ee5bc9395159e5dd4ccf791ead82b9f6d94c9776c7ee74ea1acb3",
+        "output_tail": "\nrunning 1 test\ndev_l3_range_order --- FAILED\n\nfailures:\n\n---- dev_l3_range_order stdout ----\n\nthread 'dev_l3_range_order' (66164) panicked at tests\\public.rs:5:5:\nassertion `left == right` failed: range_is_ordered(2, 3)\n  left: false\n right: true\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\n\n\nfailures:\n    dev_l3_range_order\n\ntest result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\nerror: test failed, to rerun pass `--test public`\n",
+        "returncode": 101,
+        "timed_out": false,
+        "wall_ms": 802.587
+      }
+    },
+    {
+      "edit": {
+        "column_end": 12,
+        "column_start": 10,
+        "line_index": 214,
+        "localization_score": 103,
+        "original_operator": ">=",
+        "replacement_operator": "!=",
+        "symbol": "range_is_ordered"
+      },
+      "prediction": {
+        "behavior_expected_unchanged": [],
+        "failure_expected_to_disappear": "lower must not exceed upper; equal boundaries remain ordered",
+        "frozen_before_execution": true,
+        "ordinal": 2,
+        "possible_regressions": [
+          "boundary neighbor",
+          "unaffected boolean combination"
+        ],
+        "resource_effect": "constant"
+      },
+      "public_probe": {
+        "output_sha256": "28c5b04d1372c78f35b04a1e7e9d6fc8a777f2d2b127741727f47d89cf3be8e6",
+        "output_tail": "\nrunning 1 test\ndev_l3_range_order --- FAILED\n\nfailures:\n\n---- dev_l3_range_order stdout ----\n\nthread 'dev_l3_range_order' (33756) panicked at tests\\public.rs:6:5:\nassertion `left == right` failed: range_is_ordered(4, 3)\n  left: true\n right: false\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\n\n\nfailures:\n    dev_l3_range_order\n\ntest result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\nerror: test failed, to rerun pass `--test public`\n",
+        "returncode": 101,
+        "timed_out": false,
+        "wall_ms": 807.296
+      }
+    },
+    {
+      "edit": {
+        "column_end": 12,
+        "column_start": 10,
+        "line_index": 214,
+        "localization_score": 103,
+        "original_operator": ">=",
+        "replacement_operator": "<",
+        "symbol": "range_is_ordered"
+      },
+      "prediction": {
+        "behavior_expected_unchanged": [],
+        "failure_expected_to_disappear": "lower must not exceed upper; equal boundaries remain ordered",
+        "frozen_before_execution": true,
+        "ordinal": 3,
+        "possible_regressions": [
+          "boundary neighbor",
+          "unaffected boolean combination"
+        ],
+        "resource_effect": "constant"
+      },
+      "public_probe": {
+        "output_sha256": "4c8dcf588a86d793179986f6006188ff9f5c30bc7d1b7acd27fbffbc28c3b813",
+        "output_tail": "\nrunning 1 test\n.\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
+        "returncode": 0,
+        "timed_out": false,
+        "wall_ms": 785.37
+      }
+    }
+  ],
+  "campaign_id": "B_CORE-RSI-CONTRACT-01",
+  "compile_runs": 4,
+  "core_self_approval_events": 0,
+  "cpu_time_ms": 125.0,
+  "defect_contract": null,
+  "defect_contract_mutations_after_repair_spec_result": 0,
+  "defect_hypotheses": [
+    {
+      "class": "boundary relation",
+      "status": "REJECTED"
+    },
+    {
+      "class": "state composition",
+      "status": "REJECTED"
+    },
+    {
+      "class": "identity relation",
+      "status": "REJECTED"
+    },
+    {
+      "class": "other",
+      "status": "REJECTED"
+    }
+  ],
+  "defect_hypotheses_generated": 4,
+  "defect_hypotheses_rejected": 4,
+  "defect_hypotheses_retained": 0,
+  "defect_injection_manifest_reads": 0,
+  "diagnostic_experiments": [
+    {
+      "gold_information_used": false,
+      "kind": "PUBLIC_OBSERVATION_REPLAY",
+      "result_sha256": "46275d7b83afecac08d2df940fc6d14cc7511321b0474f554564008bf07c35b5",
+      "returncode": 101
+    }
+  ],
+  "expected_output_imports": 0,
+  "expected_repair_lookups": 0,
+  "external_llm_calls": 0,
+  "files_activated": 1,
+  "files_changed": 1,
+  "full_coding_knowledge_scans": 0,
+  "full_source_scan_events": 0,
+  "gold_patch_reads": 0,
+  "hidden_verifier_solution_leaks": 0,
+  "human_defect_contract_events_l3": 0,
+  "human_patch_selection_events_l3": 0,
+  "human_repair_spec_events_l2": 0,
+  "human_repair_spec_events_l3": 0,
+  "initial_public_probe": {
+    "output_sha256": "46275d7b83afecac08d2df940fc6d14cc7511321b0474f554564008bf07c35b5",
+    "output_tail": "\nrunning 1 test\ndev_l3_range_order --- FAILED\n\nfailures:\n\n---- dev_l3_range_order stdout ----\n\nthread 'dev_l3_range_order' (37752) panicked at tests\\public.rs:5:5:\nassertion `left == right` failed: range_is_ordered(2, 3)\n  left: false\n right: true\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\n\n\nfailures:\n    dev_l3_range_order\n\ntest result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\nerror: test failed, to rerun pass `--test public`\n",
+    "returncode": 101,
+    "timed_out": false,
+    "wall_ms": 887.0
+  },
+  "input_level": 3,
+  "lane": "SELF_SOURCE",
+  "lines_changed": 2,
+  "local_teacher_calls": 0,
+  "network_reads": 0,
+  "network_writes": 0,
+  "observation_ir": {
+    "actual_observable": "range_is_ordered(2,3) returned false",
+    "affected_interfaces": [
+      "range_is_ordered"
+    ],
+    "contains_hidden_diagnosis": false,
+    "evidence": [
+      "public assertion reports range_is_ordered semantic mismatch"
+    ],
+    "expected_observable": "lower must not exceed upper; equal boundaries remain ordered",
+    "observed_event": "public failure while evaluating range_is_ordered",
+    "preserved_behavior": [
+      "lower greater than upper remains unordered"
+    ],
+    "provenance": [
+      "sandbox public test output",
+      "sandbox production source"
+    ],
+    "scope": "range_is_ordered behavioral interface",
+    "trigger": "lower=2, upper=3"
+  },
+  "patch_attempts": 3,
+  "patch_candidate": {
+    "changed_files": [
+      "src/self_repair_contract.rs"
+    ],
+    "changed_symbols": [
+      "range_is_ordered"
+    ],
+    "consequence_predictions": [
+      {
+        "behavior_expected_unchanged": [],
+        "failure_expected_to_disappear": "lower must not exceed upper; equal boundaries remain ordered",
+        "frozen_before_execution": true,
+        "ordinal": 1,
+        "possible_regressions": [
+          "boundary neighbor",
+          "unaffected boolean combination"
+        ],
+        "resource_effect": "constant"
+      },
+      {
+        "behavior_expected_unchanged": [],
+        "failure_expected_to_disappear": "lower must not exceed upper; equal boundaries remain ordered",
+        "frozen_before_execution": true,
+        "ordinal": 2,
+        "possible_regressions": [
+          "boundary neighbor",
+          "unaffected boolean combination"
+        ],
+        "resource_effect": "constant"
+      },
+      {
+        "behavior_expected_unchanged": [],
+        "failure_expected_to_disappear": "lower must not exceed upper; equal boundaries remain ordered",
+        "frozen_before_execution": true,
+        "ordinal": 3,
+        "possible_regressions": [
+          "boundary neighbor",
+          "unaffected boolean combination"
+        ],
+        "resource_effect": "constant"
+      }
+    ],
+    "core_self_approved": false,
+    "defect_contract_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "predecessor_tree_hash": "eaf607da5b62dfb3295ad48d6c61c7129d0e3d92d6b8d045dd74a56d8e2c8734",
+    "proposer_confidence_millis": 900,
+    "repair_spec_sha256": "7ed22a54749af5efd8918b2fd17a9bce262652e91584b90bdb6dd06c2ef4cf7c",
+    "unified_diff_sha256": "c38113df99a734e11e0a4e56d856ad6871f07b1ef9caea67729657292a03333d"
+  },
+  "patch_consequence_prediction_errors": 0,
+  "patch_consequence_predictions": 3,
+  "patch_consequence_predictions_verified": 0,
+  "patch_diff": "--- src/self_repair_contract.rs\n+++ src/self_repair_contract.rs\n@@ -212,7 +212,7 @@\n }\r\n \r\n pub fn range_is_ordered(lower: i32, upper: i32) -> bool {\r\n-    lower >= upper\r\n+    lower < upper\r\n }\r\n \r\n pub fn evidence_is_sufficient(observation_supported: bool, control_supported: bool) -> bool {\r\n",
+  "patch_hash_routing_events": 0,
+  "patch_outcome_reads_before_repair_spec_freeze": 0,
+  "repair_spec": {
+    "frozen_before_downstream_result": true,
+    "sha256": "7ed22a54749af5efd8918b2fd17a9bce262652e91584b90bdb6dd06c2ef4cf7c",
+    "value": {
+      "allowed_semantic_changes": [],
+      "applicability": [],
+      "compatibility_requirements": [],
+      "encodes_exact_patch": false,
+      "expected_consequences": [],
+      "forbidden_semantic_changes": [
+        "test suppression"
+      ],
+      "required_postcondition": "lower must not exceed upper; equal boundaries remain ordered",
+      "resource_constraints": [],
+      "restored_invariants": [],
+      "rollback_conditions": [
+        "verifier rejection"
+      ],
+      "uncertainty": "defect contract ablated",
+      "verification_requirements": [
+        "public probe"
+      ]
+    }
+  },
+  "repair_spec_mutations_after_patch_result": 0,
+  "repair_spec_to_exact_patch_lookups": 0,
+  "repeated_equivalent_hypotheses": 0,
+  "repository_id_routing_events": 0,
+  "result_sha256": "fc9029b05d30aa596df83617d8f4ac5c51150105fab128f5cd53dc978c0a1748",
+  "schema_version": "B_CORE_RSI_CONTRACT_PROPOSAL_RESULT_1",
+  "source_files_total": 4,
+  "submitted": true,
+  "symbols_activated": 1,
+  "symbols_changed": 1,
+  "symbols_in_activated_file": 15,
+  "task_hash": "acd8b0cf54c834fd0f904afa8eb51294e71f3e368c0b9b7a413eeb85e47aa1aa",
+  "task_id_routing_events": 0,
+  "test_runs": 4,
+  "unnecessary_mechanism_changes": 0,
+  "unrelated_semantic_changes": 0,
+  "wall_ms": 3284.536
+}

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "changed_files": {},
+    "changed_symbols": {},
+    "core_self_approved": {},
+    "predecessor_tree_hash": {},
+    "repair_spec_sha256": {},
+    "unified_diff_sha256": {}
+  },
+  "required": [
+    "predecessor_tree_hash",
+    "changed_files",
+    "changed_symbols",
+    "unified_diff_sha256",
+    "repair_spec_sha256",
+    "core_self_approved"
+  ],
+  "title": "PatchCandidateIR",
+  "type": "object"
+}

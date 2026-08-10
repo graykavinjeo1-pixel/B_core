@@ -1,0 +1,65 @@
+{
+  "defect_injection_manifest_present": false,
+  "expected_edit_present": false,
+  "gold_patch_present": false,
+  "hidden_verifier_solution_present": false,
+  "schema_version": "B_CORE_RSI_CONTRACT_PUBLIC_INVENTORY_1",
+  "tasks": [
+    {
+      "input_level": 1,
+      "lane": "SELF_SOURCE",
+      "language": "rust",
+      "public_case_count": 2,
+      "split": "DEV_A",
+      "task_hash": "44682d12711a3d60e3136e2173c8ef246ccc705b238f2affe6cd01f56cccbb5e"
+    },
+    {
+      "input_level": 1,
+      "lane": "SELF_SOURCE",
+      "language": "rust",
+      "public_case_count": 2,
+      "split": "DEV_A",
+      "task_hash": "296399c1522704f6eaa65491a6dce7b310317ec5a70aebec1b2cfbc0f9fb6e09"
+    },
+    {
+      "input_level": 2,
+      "lane": "SELF_SOURCE",
+      "language": "rust",
+      "public_case_count": 2,
+      "split": "DEV_A",
+      "task_hash": "f98efcc0f68359f09ab8b4b8f21509f03a5091a540ac508e193b34b87d5c85ba"
+    },
+    {
+      "input_level": 2,
+      "lane": "SELF_SOURCE",
+      "language": "rust",
+      "public_case_count": 2,
+      "split": "DEV_A",
+      "task_hash": "3c833d750b0bc8f6a4d0a433e7bd3a9d18298fa901fcc3fe515c8dcd1bdef8c2"
+    },
+    {
+      "input_level": 3,
+      "lane": "SELF_SOURCE",
+      "language": "rust",
+      "public_case_count": 2,
+      "split": "DEV_A",
+      "task_hash": "acd8b0cf54c834fd0f904afa8eb51294e71f3e368c0b9b7a413eeb85e47aa1aa"
+    },
+    {
+      "input_level": 3,
+      "lane": "SELF_SOURCE",
+      "language": "rust",
+      "public_case_count": 2,
+      "split": "DEV_A",
+      "task_hash": "326202b611910fea6dd8ba077ad19b9ff82b0381628f25043e3343c2455c8900"
+    },
+    {
+      "input_level": 3,
+      "lane": "EXTERNAL_CONTROL",
+      "language": "rust",
+      "public_case_count": 2,
+      "split": "DEV_A",
+      "task_hash": "86f4b79f0b266b35b06a385f399510fc0db58bf45a27a8dbb9c93ea38912fcd0"
+    }
+  ]
+}

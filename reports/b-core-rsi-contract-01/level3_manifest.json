@@ -1,0 +1,12 @@
+{
+  "expected_edit_reads_allowed": false,
+  "gold_patch_reads_allowed": false,
+  "level": 3,
+  "schema_version": "B_CORE_RSI_CONTRACT_LEVEL_3_MANIFEST_1",
+  "task_count": 3,
+  "task_hashes": [
+    "326202b611910fea6dd8ba077ad19b9ff82b0381628f25043e3343c2455c8900",
+    "86f4b79f0b266b35b06a385f399510fc0db58bf45a27a8dbb9c93ea38912fcd0",
+    "acd8b0cf54c834fd0f904afa8eb51294e71f3e368c0b9b7a413eeb85e47aa1aa"
+  ]
+}

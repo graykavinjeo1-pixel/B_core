@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "installer_identity": {},
+    "patch_sha256": {},
+    "resulting_source_tree_hash": {},
+    "rollback_reference": {},
+    "source_predecessor_hash": {},
+    "verification_receipt_sha256": {}
+  },
+  "required": [
+    "source_predecessor_hash",
+    "patch_sha256",
+    "verification_receipt_sha256",
+    "resulting_source_tree_hash",
+    "installer_identity",
+    "rollback_reference"
+  ],
+  "title": "InstallationReceipt",
+  "type": "object"
+}
