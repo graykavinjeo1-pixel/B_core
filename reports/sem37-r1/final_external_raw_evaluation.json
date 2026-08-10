@@ -1,0 +1,6249 @@
+{
+  "arm_results_exposed_to_adaptive_research": false,
+  "batches": {
+    "naive_a": {
+      "case_receipts": [
+        {
+          "active_causal_mechanisms": 6,
+          "active_temporal_processes": 1,
+          "active_variables": 3,
+          "case_id": "R1A-00e5ee199d3688ec370ae4db",
+          "future_predictions_frozen": 3,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "NAIVE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 480,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 6,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 2,
+          "active_temporal_processes": 1,
+          "active_variables": 2,
+          "case_id": "R1A-08b93273a891b98871712630",
+          "future_predictions_frozen": 2,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "NAIVE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 320,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 2,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 6,
+          "active_temporal_processes": 0,
+          "active_variables": 3,
+          "case_id": "R1A-178bb120f59584cdb2f7bfbd",
+          "future_predictions_frozen": 0,
+          "hypotheses_generated": 0,
+          "hypotheses_rejected": 0,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "NAIVE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 480,
+            "finite_cells": 0,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 6,
+          "self_detected_frontier": false,
+          "termination": "INSUFFICIENT_EVIDENCE"
+        },
+        {
+          "active_causal_mechanisms": 6,
+          "active_temporal_processes": 0,
+          "active_variables": 3,
+          "case_id": "R1A-298f9439273155c290dcc2bf",
+          "future_predictions_frozen": 0,
+          "hypotheses_generated": 0,
+          "hypotheses_rejected": 0,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "NAIVE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 480,
+            "finite_cells": 0,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 6,
+          "self_detected_frontier": false,
+          "termination": "INSUFFICIENT_EVIDENCE"
+        },
+        {
+          "active_causal_mechanisms": 90,
+          "active_temporal_processes": 1,
+          "active_variables": 10,
+          "case_id": "R1A-45fe329cece6a5fd8ab4279c",
+          "future_predictions_frozen": 10,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "NAIVE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 1600,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 90,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 6,
+          "active_temporal_processes": 1,
+          "active_variables": 3,
+          "case_id": "R1A-4fecdd4aaa2207b5158295c0",
+          "future_predictions_frozen": 3,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "NAIVE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 480,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 6,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 2,
+          "active_temporal_processes": 1,
+          "active_variables": 2,
+          "case_id": "R1A-608c752dbc2a33d4026af54c",
+          "future_predictions_frozen": 2,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "NAIVE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 320,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 2,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 2,
+          "active_temporal_processes": 1,
+          "active_variables": 2,
+          "case_id": "R1A-728ab9f143efe6933e6a4066",
+          "future_predictions_frozen": 2,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "NAIVE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 320,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 2,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 6,
+          "active_temporal_processes": 0,
+          "active_variables": 3,
+          "case_id": "R1A-7e4017c8cd5857ababf031fa",
+          "future_predictions_frozen": 0,
+          "hypotheses_generated": 0,
+          "hypotheses_rejected": 0,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "NAIVE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 480,
+            "finite_cells": 0,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 6,
+          "self_detected_frontier": false,
+          "termination": "INSUFFICIENT_EVIDENCE"
+        },
+        {
+          "active_causal_mechanisms": 6,
+          "active_temporal_processes": 0,
+          "active_variables": 3,
+          "case_id": "R1A-95171cf3bb42a37de9259c19",
+          "future_predictions_frozen": 0,
+          "hypotheses_generated": 0,
+          "hypotheses_rejected": 0,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "NAIVE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 480,
+            "finite_cells": 0,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 6,
+          "self_detected_frontier": false,
+          "termination": "INSUFFICIENT_EVIDENCE"
+        },
+        {
+          "active_causal_mechanisms": 2,
+          "active_temporal_processes": 1,
+          "active_variables": 2,
+          "case_id": "R1A-9956cee4592be812071e33a1",
+          "future_predictions_frozen": 2,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "NAIVE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 320,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 2,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 6,
+          "active_temporal_processes": 1,
+          "active_variables": 3,
+          "case_id": "R1A-f191cba7e7fba98f4ac4d762",
+          "future_predictions_frozen": 3,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "NAIVE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 480,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 6,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 2,
+          "active_temporal_processes": 1,
+          "active_variables": 2,
+          "case_id": "R1A-f92448983d1266b9b74077c1",
+          "future_predictions_frozen": 2,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "NAIVE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 320,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 2,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        }
+      ],
+      "lane": "A",
+      "method": "NAIVE_TRANSFER",
+      "mode": "FULL",
+      "prediction_commitment": "73e263a3ca0d14af37511529fbd4abebc7a236c32c16c2d639526c2d33fdb45b",
+      "predictions": [
+        {
+          "case_id": "R1A-00e5ee199d3688ec370ae4db",
+          "edges": [
+            [
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              2,
+              0
+            ],
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              2,
+              0
+            ],
+            [
+              2,
+              0,
+              0
+            ],
+            [
+              2,
+              1,
+              0
+            ]
+          ],
+          "future_predictions": [
+            {
+              "channel": 0,
+              "entity": 0,
+              "previous_value_ieee754_bits": 13827993541676105728,
+              "time": 160,
+              "value_ieee754_bits": 13827993541676105728
+            },
+            {
+              "channel": 0,
+              "entity": 1,
+              "previous_value_ieee754_bits": 4606865626844102656,
+              "time": 160,
+              "value_ieee754_bits": 4606865626844102656
+            },
+            {
+              "channel": 0,
+              "entity": 2,
+              "previous_value_ieee754_bits": 13817533095139606528,
+              "time": 160,
+              "value_ieee754_bits": 13817533095139606528
+            }
+          ]
+        },
+        {
+          "case_id": "R1A-08b93273a891b98871712630",
+          "edges": [
+            [
+              0,
+              1,
+              0
+            ],
+            [
+              1,
+              0,
+              0
+            ]
+          ],
+          "future_predictions": [
+            {
+              "channel": 0,
+              "entity": 0,
+              "previous_value_ieee754_bits": 4589392124167847936,
+              "time": 160,
+              "value_ieee754_bits": 4589392124167847936
+            },
+            {
+              "channel": 0,
+              "entity": 1,
+              "previous_value_ieee754_bits": 4600596392468021248,
+              "time": 160,
+              "value_ieee754_bits": 4600596392468021248
+            }
+          ]
+        },
+        {
+          "case_id": "R1A-178bb120f59584cdb2f7bfbd",
+          "edges": [
+            [
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              2,
+              0
+            ],
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              2,
+              0
+            ],
+            [
+              2,
+              0,
+              0
+            ],
+            [
+              2,
+              1,
+              0
+            ]
+          ],
+          "future_predictions": []
+        },
+        {
+          "case_id": "R1A-298f9439273155c290dcc2bf",
+          "edges": [
+            [
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              2,
+              0
+            ],
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              2,
+              0
+            ],
+            [
+              2,
+              0,
+              0
+            ],
+            [
+              2,
+              1,
+              0
+            ]
+          ],
+          "future_predictions": []
+        },
+        {
+          "case_id": "R1A-45fe329cece6a5fd8ab4279c",
+          "edges": [
+            [
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              2,
+              0
+            ],
+            [
+              0,
+              3,
+              0
+            ],
+            [
+              0,
+              4,
+              0
+            ],
+            [
+              0,
+              5,
+              0
+            ],
+            [
+              0,
+              6,
+              0
+            ],
+            [
+              0,
+              7,
+              0
+            ],
+            [
+              0,
+              8,
+              0
+            ],
+            [
+              0,
+              9,
+              0
+            ],
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              2,
+              0
+            ],
+            [
+              1,
+              3,
+              0
+            ],
+            [
+              1,
+              4,
+              0
+            ],
+            [
+              1,
+              5,
+              0
+            ],
+            [
+              1,
+              6,
+              0
+            ],
+            [
+              1,
+              7,
+              0
+            ],
+            [
+              1,
+              8,
+              0
+            ],
+            [
+              1,
+              9,
+              0
+            ],
+            [
+              2,
+              0,
+              0
+            ],
+            [
+              2,
+              1,
+              0
+            ],
+            [
+              2,
+              3,
+              0
+            ],
+            [
+              2,
+              4,
+              0
+            ],
+            [
+              2,
+              5,
+              0
+            ],
+            [
+              2,
+              6,
+              0
+            ],
+            [
+              2,
+              7,
+              0
+            ],
+            [
+              2,
+              8,
+              0
+            ],
+            [
+              2,
+              9,
+              0
+            ],
+            [
+              3,
+              0,
+              0
+            ],
+            [
+              3,
+              1,
+              0
+            ],
+            [
+              3,
+              2,
+              0
+            ],
+            [
+              3,
+              4,
+              0
+            ],
+            [
+              3,
+              5,
+              0
+            ],
+            [
+              3,
+              6,
+              0
+            ],
+            [
+              3,
+              7,
+              0
+            ],
+            [
+              3,
+              8,
+              0
+            ],
+            [
+              3,
+              9,
+              0
+            ],
+            [
+              4,
+              0,
+              0
+            ],
+            [
+              4,
+              1,
+              0
+            ],
+            [
+              4,
+              2,
+              0
+            ],
+            [
+              4,
+              3,
+              0
+            ],
+            [
+              4,
+              5,
+              0
+            ],
+            [
+              4,
+              6,
+              0
+            ],
+            [
+              4,
+              7,
+              0
+            ],
+            [
+              4,
+              8,
+              0
+            ],
+            [
+              4,
+              9,
+              0
+            ],
+            [
+              5,
+              0,
+              0
+            ],
+            [
+              5,
+              1,
+              0
+            ],
+            [
+              5,
+              2,
+              0
+            ],
+            [
+              5,
+              3,
+              0
+            ],
+            [
+              5,
+              4,
+              0
+            ],
+            [
+              5,
+              6,
+              0
+            ],
+            [
+              5,
+              7,
+              0
+            ],
+            [
+              5,
+              8,
+              0
+            ],
+            [
+              5,
+              9,
+              0
+            ],
+            [
+              6,
+              0,
+              0
+            ],
+            [
+              6,
+              1,
+              0
+            ],
+            [
+              6,
+              2,
+              0
+            ],
+            [
+              6,
+              3,
+              0
+            ],
+            [
+              6,
+              4,
+              0
+            ],
+            [
+              6,
+              5,
+              0
+            ],
+            [
+              6,
+              7,
+              0
+            ],
+            [
+              6,
+              8,
+              0
+            ],
+            [
+              6,
+              9,
+              0
+            ],
+            [
+              7,
+              0,
+              0
+            ],
+            [
+              7,
+              1,
+              0
+            ],
+            [
+              7,
+              2,
+              0
+            ],
+            [
+              7,
+              3,
+              0
+            ],
+            [
+              7,
+              4,
+              0
+            ],
+            [
+              7,
+              5,
+              0
+            ],
+            [
+              7,
+              6,
+              0
+            ],
+            [
+              7,
+              8,
+              0
+            ],
+            [
+              7,
+              9,
+              0
+            ],
+            [
+              8,
+              0,
+              0
+            ],
+            [
+              8,
+              1,
+              0
+            ],
+            [
+              8,
+              2,
+              0
+            ],
+            [
+              8,
+              3,
+              0
+            ],
+            [
+              8,
+              4,
+              0
+            ],
+            [
+              8,
+              5,
+              0
+            ],
+            [
+              8,
+              6,
+              0
+            ],
+            [
+              8,
+              7,
+              0
+            ],
+            [
+              8,
+              9,
+              0
+            ],
+            [
+              9,
+              0,
+              0
+            ],
+            [
+              9,
+              1,
+              0
+            ],
+            [
+              9,
+              2,
+              0
+            ],
+            [
+              9,
+              3,
+              0
+            ],
+            [
+              9,
+              4,
+              0
+            ],
+            [
+              9,
+              5,
+              0
+            ],
+            [
+              9,
+              6,
+              0
+            ],
+            [
+              9,
+              7,
+              0
+            ],
+            [
+              9,
+              8,
+              0
+            ]
+          ],
+          "future_predictions": [
+            {
+              "channel": 0,
+              "entity": 0,
+              "previous_value_ieee754_bits": 4600429578085728256,
+              "time": 160,
+              "value_ieee754_bits": 4600429578085728256
+            },
+            {
+              "channel": 0,
+              "entity": 1,
+              "previous_value_ieee754_bits": 4626963932748185600,
+              "time": 160,
+              "value_ieee754_bits": 4626963932748185600
+            },
+            {
+              "channel": 0,
+              "entity": 2,
+              "previous_value_ieee754_bits": 4601239953588879360,
+              "time": 160,
+              "value_ieee754_bits": 4601239953588879360
+            },
+            {
+              "channel": 0,
+              "entity": 3,
+              "previous_value_ieee754_bits": 4612965372683878400,
+              "time": 160,
+              "value_ieee754_bits": 4612965372683878400
+            },
+            {
+              "channel": 0,
+              "entity": 4,
+              "previous_value_ieee754_bits": 13831195618036416512,
+              "time": 160,
+              "value_ieee754_bits": 13831195618036416512
+            },
+            {
+              "channel": 0,
+              "entity": 5,
+              "previous_value_ieee754_bits": 13834318305147486208,
+              "time": 160,
+              "value_ieee754_bits": 13834318305147486208
+            },
+            {
+              "channel": 0,
+              "entity": 6,
+              "previous_value_ieee754_bits": 13839572203886084096,
+              "time": 160,
+              "value_ieee754_bits": 13839572203886084096
+            },
+            {
+              "channel": 0,
+              "entity": 7,
+              "previous_value_ieee754_bits": 13836998395341832192,
+              "time": 160,
+              "value_ieee754_bits": 13836998395341832192
+            },
+            {
+              "channel": 0,
+              "entity": 8,
+              "previous_value_ieee754_bits": 13840466824635875328,
+              "time": 160,
+              "value_ieee754_bits": 13840466824635875328
+            },
+            {
+              "channel": 0,
+              "entity": 9,
+              "previous_value_ieee754_bits": 13819993105304125440,
+              "time": 160,
+              "value_ieee754_bits": 13819993105304125440
+            }
+          ]
+        },
+        {
+          "case_id": "R1A-4fecdd4aaa2207b5158295c0",
+          "edges": [
+            [
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              2,
+              0
+            ],
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              2,
+              0
+            ],
+            [
+              2,
+              0,
+              0
+            ],
+            [
+              2,
+              1,
+              0
+            ]
+          ],
+          "future_predictions": [
+            {
+              "channel": 0,
+              "entity": 0,
+              "previous_value_ieee754_bits": 13823994002631819264,
+              "time": 160,
+              "value_ieee754_bits": 13823994002631819264
+            },
+            {
+              "channel": 0,
+              "entity": 1,
+              "previous_value_ieee754_bits": 13807086796225380352,
+              "time": 160,
+              "value_ieee754_bits": 13807086796225380352
+            },
+            {
+              "channel": 0,
+              "entity": 2,
+              "previous_value_ieee754_bits": 4610139092540194816,
+              "time": 160,
+              "value_ieee754_bits": 4610139092540194816
+            }
+          ]
+        },
+        {
+          "case_id": "R1A-608c752dbc2a33d4026af54c",
+          "edges": [
+            [
+              0,
+              1,
+              0
+            ],
+            [
+              1,
+              0,
+              0
+            ]
+          ],
+          "future_predictions": [
+            {
+              "channel": 0,
+              "entity": 0,
+              "previous_value_ieee754_bits": 13822059167109611520,
+              "time": 160,
+              "value_ieee754_bits": 13822059167109611520
+            },
+            {
+              "channel": 0,
+              "entity": 1,
+              "previous_value_ieee754_bits": 4627150836840005632,
+              "time": 160,
+              "value_ieee754_bits": 4627150836840005632
+            }
+          ]
+        },
+        {
+          "case_id": "R1A-728ab9f143efe6933e6a4066",
+          "edges": [
+            [
+              0,
+              1,
+              0
+            ],
+            [
+              1,
+              0,
+              0
+            ]
+          ],
+          "future_predictions": [
+            {
+              "channel": 0,
+              "entity": 0,
+              "previous_value_ieee754_bits": 4606028385783644160,
+              "time": 160,
+              "value_ieee754_bits": 4606028385783644160
+            },
+            {
+              "channel": 0,
+              "entity": 1,
+              "previous_value_ieee754_bits": 4627438679105732608,
+              "time": 160,
+              "value_ieee754_bits": 4627438679105732608
+            }
+          ]
+        },
+        {
+          "case_id": "R1A-7e4017c8cd5857ababf031fa",
+          "edges": [
+            [
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              2,
+              0
+            ],
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              2,
+              0
+            ],
+            [
+              2,
+              0,
+              0
+            ],
+            [
+              2,
+              1,
+              0
+            ]
+          ],
+          "future_predictions": []
+        },
+        {
+          "case_id": "R1A-95171cf3bb42a37de9259c19",
+          "edges": [
+            [
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              2,
+              0
+            ],
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              2,
+              0
+            ],
+            [
+              2,
+              0,
+              0
+            ],
+            [
+              2,
+              1,
+              0
+            ]
+          ],
+          "future_predictions": []
+        },
+        {
+          "case_id": "R1A-9956cee4592be812071e33a1",
+          "edges": [
+            [
+              0,
+              1,
+              0
+            ],
+            [
+              1,
+              0,
+              0
+            ]
+          ],
+          "future_predictions": [
+            {
+              "channel": 0,
+              "entity": 0,
+              "previous_value_ieee754_bits": 13845116022043967488,
+              "time": 160,
+              "value_ieee754_bits": 13845116022043967488
+            },
+            {
+              "channel": 0,
+              "entity": 1,
+              "previous_value_ieee754_bits": 4634400213354676224,
+              "time": 160,
+              "value_ieee754_bits": 4634400213354676224
+            }
+          ]
+        },
+        {
+          "case_id": "R1A-f191cba7e7fba98f4ac4d762",
+          "edges": [
+            [
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              2,
+              0
+            ],
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              2,
+              0
+            ],
+            [
+              2,
+              0,
+              0
+            ],
+            [
+              2,
+              1,
+              0
+            ]
+          ],
+          "future_predictions": [
+            {
+              "channel": 0,
+              "entity": 0,
+              "previous_value_ieee754_bits": 13826581686604791808,
+              "time": 160,
+              "value_ieee754_bits": 13826581686604791808
+            },
+            {
+              "channel": 0,
+              "entity": 1,
+              "previous_value_ieee754_bits": 4598818940653666304,
+              "time": 160,
+              "value_ieee754_bits": 4598818940653666304
+            },
+            {
+              "channel": 0,
+              "entity": 2,
+              "previous_value_ieee754_bits": 4600775041095827456,
+              "time": 160,
+              "value_ieee754_bits": 4600775041095827456
+            }
+          ]
+        },
+        {
+          "case_id": "R1A-f92448983d1266b9b74077c1",
+          "edges": [
+            [
+              0,
+              1,
+              0
+            ],
+            [
+              1,
+              0,
+              0
+            ]
+          ],
+          "future_predictions": [
+            {
+              "channel": 0,
+              "entity": 0,
+              "previous_value_ieee754_bits": 4603506009472761856,
+              "time": 160,
+              "value_ieee754_bits": 4603506009472761856
+            },
+            {
+              "channel": 0,
+              "entity": 1,
+              "previous_value_ieee754_bits": 4608679382943268864,
+              "time": 160,
+              "value_ieee754_bits": 4608679382943268864
+            }
+          ]
+        }
+      ]
+    },
+    "naive_b": {
+      "case_receipts": [
+        {
+          "active_causal_mechanisms": 4,
+          "active_temporal_processes": 1,
+          "active_variables": 4,
+          "case_id": "R1B-04d3b2d827a96de5d311f3d3",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "NAIVE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 640,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 2,
+          "active_temporal_processes": 1,
+          "active_variables": 2,
+          "case_id": "R1B-226ea02e87a78b3dc693ca99",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "NAIVE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 320,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 4,
+          "active_temporal_processes": 1,
+          "active_variables": 4,
+          "case_id": "R1B-4cc9f9c4d2f023772a2ea82a",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "NAIVE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 640,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 3,
+          "active_temporal_processes": 1,
+          "active_variables": 3,
+          "case_id": "R1B-56c519e73b2916a153918fa7",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "NAIVE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 480,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 5,
+          "active_temporal_processes": 1,
+          "active_variables": 5,
+          "case_id": "R1B-76450470e56072c42f200879",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "NAIVE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 800,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 3,
+          "active_temporal_processes": 1,
+          "active_variables": 3,
+          "case_id": "R1B-7a91cea48526dba2e83ed7e1",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "NAIVE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 480,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 4,
+          "active_temporal_processes": 1,
+          "active_variables": 4,
+          "case_id": "R1B-83cbe826146afa62cc6851e4",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "NAIVE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 640,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 4,
+          "active_temporal_processes": 1,
+          "active_variables": 4,
+          "case_id": "R1B-a5854725b626816d7b9e083c",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "NAIVE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 640,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 4,
+          "active_temporal_processes": 1,
+          "active_variables": 4,
+          "case_id": "R1B-b0091197e400146f64ffcbfe",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "NAIVE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 640,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 10,
+          "active_temporal_processes": 1,
+          "active_variables": 10,
+          "case_id": "R1B-b7e22ed8f87246c210f42e04",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "NAIVE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 1600,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 3,
+          "active_temporal_processes": 1,
+          "active_variables": 3,
+          "case_id": "R1B-ba0d675b54fcb07be4d9ccbb",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "NAIVE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 480,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 3,
+          "active_temporal_processes": 1,
+          "active_variables": 3,
+          "case_id": "R1B-d635d1a87d3b176d4cf12169",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "NAIVE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 480,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 5,
+          "active_temporal_processes": 1,
+          "active_variables": 5,
+          "case_id": "R1B-e7414dd0dc6a4f25e1cfc3d7",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "NAIVE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 800,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 3,
+          "active_temporal_processes": 1,
+          "active_variables": 3,
+          "case_id": "R1B-ea5ed259ba63bbe0e00fc072",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "NAIVE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 480,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        }
+      ],
+      "lane": "B",
+      "method": "NAIVE_TRANSFER",
+      "mode": "FULL",
+      "prediction_commitment": "23bec911d88d86fa374a337788e09823b7cfa71e081a47d51fb9a6918256e792",
+      "predictions": [
+        {
+          "case_id": "R1B-04d3b2d827a96de5d311f3d3",
+          "negative_transfer_attempt": false,
+          "predicted_y_ieee754_bits": [
+            0
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-226ea02e87a78b3dc693ca99",
+          "negative_transfer_attempt": false,
+          "predicted_y_ieee754_bits": [
+            13817831461148950528
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-4cc9f9c4d2f023772a2ea82a",
+          "negative_transfer_attempt": false,
+          "predicted_y_ieee754_bits": [
+            4605074617965477888
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-56c519e73b2916a153918fa7",
+          "negative_transfer_attempt": false,
+          "predicted_y_ieee754_bits": [
+            4601757068188188672
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-76450470e56072c42f200879",
+          "negative_transfer_attempt": false,
+          "predicted_y_ieee754_bits": [
+            4587447143932887040
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-7a91cea48526dba2e83ed7e1",
+          "negative_transfer_attempt": false,
+          "predicted_y_ieee754_bits": [
+            4604946130260721664
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-83cbe826146afa62cc6851e4",
+          "negative_transfer_attempt": false,
+          "predicted_y_ieee754_bits": [
+            4603275441669668864
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-a5854725b626816d7b9e083c",
+          "negative_transfer_attempt": false,
+          "predicted_y_ieee754_bits": [
+            0
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-b0091197e400146f64ffcbfe",
+          "negative_transfer_attempt": false,
+          "predicted_y_ieee754_bits": [
+            4601704097819656192
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-b7e22ed8f87246c210f42e04",
+          "negative_transfer_attempt": false,
+          "predicted_y_ieee754_bits": [
+            4594199282956894208
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-ba0d675b54fcb07be4d9ccbb",
+          "negative_transfer_attempt": false,
+          "predicted_y_ieee754_bits": [
+            4606446581380546560
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-d635d1a87d3b176d4cf12169",
+          "negative_transfer_attempt": false,
+          "predicted_y_ieee754_bits": [
+            4599651166802935808
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-e7414dd0dc6a4f25e1cfc3d7",
+          "negative_transfer_attempt": false,
+          "predicted_y_ieee754_bits": [
+            13809286153414639616
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-ea5ed259ba63bbe0e00fc072",
+          "negative_transfer_attempt": false,
+          "predicted_y_ieee754_bits": [
+            13832908796202057728
+          ],
+          "promoted_transfer": false
+        }
+      ]
+    },
+    "no_change_a": {
+      "case_receipts": [
+        {
+          "active_causal_mechanisms": 0,
+          "active_temporal_processes": 1,
+          "active_variables": 3,
+          "case_id": "R1A-00e5ee199d3688ec370ae4db",
+          "future_predictions_frozen": 3,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 6,
+          "hypotheses_retained": 0,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "NO_CHANGE",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 480,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "PARTIALLY_IDENTIFIED"
+        },
+        {
+          "active_causal_mechanisms": 0,
+          "active_temporal_processes": 1,
+          "active_variables": 2,
+          "case_id": "R1A-08b93273a891b98871712630",
+          "future_predictions_frozen": 2,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 6,
+          "hypotheses_retained": 0,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "NO_CHANGE",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 320,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "PARTIALLY_IDENTIFIED"
+        },
+        {
+          "active_causal_mechanisms": 0,
+          "active_temporal_processes": 0,
+          "active_variables": 3,
+          "case_id": "R1A-178bb120f59584cdb2f7bfbd",
+          "future_predictions_frozen": 0,
+          "hypotheses_generated": 0,
+          "hypotheses_rejected": 0,
+          "hypotheses_retained": 0,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "NO_CHANGE",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 480,
+            "finite_cells": 0,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": false,
+          "termination": "INSUFFICIENT_EVIDENCE"
+        },
+        {
+          "active_causal_mechanisms": 0,
+          "active_temporal_processes": 0,
+          "active_variables": 3,
+          "case_id": "R1A-298f9439273155c290dcc2bf",
+          "future_predictions_frozen": 0,
+          "hypotheses_generated": 0,
+          "hypotheses_rejected": 0,
+          "hypotheses_retained": 0,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "NO_CHANGE",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 480,
+            "finite_cells": 0,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": false,
+          "termination": "INSUFFICIENT_EVIDENCE"
+        },
+        {
+          "active_causal_mechanisms": 0,
+          "active_temporal_processes": 1,
+          "active_variables": 10,
+          "case_id": "R1A-45fe329cece6a5fd8ab4279c",
+          "future_predictions_frozen": 10,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 6,
+          "hypotheses_retained": 0,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "NO_CHANGE",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 1600,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "PARTIALLY_IDENTIFIED"
+        },
+        {
+          "active_causal_mechanisms": 0,
+          "active_temporal_processes": 1,
+          "active_variables": 3,
+          "case_id": "R1A-4fecdd4aaa2207b5158295c0",
+          "future_predictions_frozen": 3,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 6,
+          "hypotheses_retained": 0,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "NO_CHANGE",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 480,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "PARTIALLY_IDENTIFIED"
+        },
+        {
+          "active_causal_mechanisms": 0,
+          "active_temporal_processes": 1,
+          "active_variables": 2,
+          "case_id": "R1A-608c752dbc2a33d4026af54c",
+          "future_predictions_frozen": 2,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 6,
+          "hypotheses_retained": 0,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "NO_CHANGE",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 320,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "PARTIALLY_IDENTIFIED"
+        },
+        {
+          "active_causal_mechanisms": 0,
+          "active_temporal_processes": 1,
+          "active_variables": 2,
+          "case_id": "R1A-728ab9f143efe6933e6a4066",
+          "future_predictions_frozen": 2,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 6,
+          "hypotheses_retained": 0,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "NO_CHANGE",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 320,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "PARTIALLY_IDENTIFIED"
+        },
+        {
+          "active_causal_mechanisms": 0,
+          "active_temporal_processes": 0,
+          "active_variables": 3,
+          "case_id": "R1A-7e4017c8cd5857ababf031fa",
+          "future_predictions_frozen": 0,
+          "hypotheses_generated": 0,
+          "hypotheses_rejected": 0,
+          "hypotheses_retained": 0,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "NO_CHANGE",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 480,
+            "finite_cells": 0,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": false,
+          "termination": "INSUFFICIENT_EVIDENCE"
+        },
+        {
+          "active_causal_mechanisms": 0,
+          "active_temporal_processes": 0,
+          "active_variables": 3,
+          "case_id": "R1A-95171cf3bb42a37de9259c19",
+          "future_predictions_frozen": 0,
+          "hypotheses_generated": 0,
+          "hypotheses_rejected": 0,
+          "hypotheses_retained": 0,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "NO_CHANGE",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 480,
+            "finite_cells": 0,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": false,
+          "termination": "INSUFFICIENT_EVIDENCE"
+        },
+        {
+          "active_causal_mechanisms": 0,
+          "active_temporal_processes": 1,
+          "active_variables": 2,
+          "case_id": "R1A-9956cee4592be812071e33a1",
+          "future_predictions_frozen": 2,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 6,
+          "hypotheses_retained": 0,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "NO_CHANGE",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 320,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "PARTIALLY_IDENTIFIED"
+        },
+        {
+          "active_causal_mechanisms": 0,
+          "active_temporal_processes": 1,
+          "active_variables": 3,
+          "case_id": "R1A-f191cba7e7fba98f4ac4d762",
+          "future_predictions_frozen": 3,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 6,
+          "hypotheses_retained": 0,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "NO_CHANGE",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 480,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "PARTIALLY_IDENTIFIED"
+        },
+        {
+          "active_causal_mechanisms": 0,
+          "active_temporal_processes": 1,
+          "active_variables": 2,
+          "case_id": "R1A-f92448983d1266b9b74077c1",
+          "future_predictions_frozen": 2,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 6,
+          "hypotheses_retained": 0,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "NO_CHANGE",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 320,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "PARTIALLY_IDENTIFIED"
+        }
+      ],
+      "lane": "A",
+      "method": "NO_CHANGE",
+      "mode": "FULL",
+      "prediction_commitment": "a90bae62f8095c7e40959000a32e31df740195984b072601312fc9bdaa1b2e21",
+      "predictions": [
+        {
+          "case_id": "R1A-00e5ee199d3688ec370ae4db",
+          "edges": [],
+          "future_predictions": [
+            {
+              "channel": 0,
+              "entity": 0,
+              "previous_value_ieee754_bits": 13827993541676105728,
+              "time": 160,
+              "value_ieee754_bits": 13827993541676105728
+            },
+            {
+              "channel": 0,
+              "entity": 1,
+              "previous_value_ieee754_bits": 4606865626844102656,
+              "time": 160,
+              "value_ieee754_bits": 4606865626844102656
+            },
+            {
+              "channel": 0,
+              "entity": 2,
+              "previous_value_ieee754_bits": 13817533095139606528,
+              "time": 160,
+              "value_ieee754_bits": 13817533095139606528
+            }
+          ]
+        },
+        {
+          "case_id": "R1A-08b93273a891b98871712630",
+          "edges": [],
+          "future_predictions": [
+            {
+              "channel": 0,
+              "entity": 0,
+              "previous_value_ieee754_bits": 4589392124167847936,
+              "time": 160,
+              "value_ieee754_bits": 4589392124167847936
+            },
+            {
+              "channel": 0,
+              "entity": 1,
+              "previous_value_ieee754_bits": 4600596392468021248,
+              "time": 160,
+              "value_ieee754_bits": 4600596392468021248
+            }
+          ]
+        },
+        {
+          "case_id": "R1A-178bb120f59584cdb2f7bfbd",
+          "edges": [],
+          "future_predictions": []
+        },
+        {
+          "case_id": "R1A-298f9439273155c290dcc2bf",
+          "edges": [],
+          "future_predictions": []
+        },
+        {
+          "case_id": "R1A-45fe329cece6a5fd8ab4279c",
+          "edges": [],
+          "future_predictions": [
+            {
+              "channel": 0,
+              "entity": 0,
+              "previous_value_ieee754_bits": 4600429578085728256,
+              "time": 160,
+              "value_ieee754_bits": 4600429578085728256
+            },
+            {
+              "channel": 0,
+              "entity": 1,
+              "previous_value_ieee754_bits": 4626963932748185600,
+              "time": 160,
+              "value_ieee754_bits": 4626963932748185600
+            },
+            {
+              "channel": 0,
+              "entity": 2,
+              "previous_value_ieee754_bits": 4601239953588879360,
+              "time": 160,
+              "value_ieee754_bits": 4601239953588879360
+            },
+            {
+              "channel": 0,
+              "entity": 3,
+              "previous_value_ieee754_bits": 4612965372683878400,
+              "time": 160,
+              "value_ieee754_bits": 4612965372683878400
+            },
+            {
+              "channel": 0,
+              "entity": 4,
+              "previous_value_ieee754_bits": 13831195618036416512,
+              "time": 160,
+              "value_ieee754_bits": 13831195618036416512
+            },
+            {
+              "channel": 0,
+              "entity": 5,
+              "previous_value_ieee754_bits": 13834318305147486208,
+              "time": 160,
+              "value_ieee754_bits": 13834318305147486208
+            },
+            {
+              "channel": 0,
+              "entity": 6,
+              "previous_value_ieee754_bits": 13839572203886084096,
+              "time": 160,
+              "value_ieee754_bits": 13839572203886084096
+            },
+            {
+              "channel": 0,
+              "entity": 7,
+              "previous_value_ieee754_bits": 13836998395341832192,
+              "time": 160,
+              "value_ieee754_bits": 13836998395341832192
+            },
+            {
+              "channel": 0,
+              "entity": 8,
+              "previous_value_ieee754_bits": 13840466824635875328,
+              "time": 160,
+              "value_ieee754_bits": 13840466824635875328
+            },
+            {
+              "channel": 0,
+              "entity": 9,
+              "previous_value_ieee754_bits": 13819993105304125440,
+              "time": 160,
+              "value_ieee754_bits": 13819993105304125440
+            }
+          ]
+        },
+        {
+          "case_id": "R1A-4fecdd4aaa2207b5158295c0",
+          "edges": [],
+          "future_predictions": [
+            {
+              "channel": 0,
+              "entity": 0,
+              "previous_value_ieee754_bits": 13823994002631819264,
+              "time": 160,
+              "value_ieee754_bits": 13823994002631819264
+            },
+            {
+              "channel": 0,
+              "entity": 1,
+              "previous_value_ieee754_bits": 13807086796225380352,
+              "time": 160,
+              "value_ieee754_bits": 13807086796225380352
+            },
+            {
+              "channel": 0,
+              "entity": 2,
+              "previous_value_ieee754_bits": 4610139092540194816,
+              "time": 160,
+              "value_ieee754_bits": 4610139092540194816
+            }
+          ]
+        },
+        {
+          "case_id": "R1A-608c752dbc2a33d4026af54c",
+          "edges": [],
+          "future_predictions": [
+            {
+              "channel": 0,
+              "entity": 0,
+              "previous_value_ieee754_bits": 13822059167109611520,
+              "time": 160,
+              "value_ieee754_bits": 13822059167109611520
+            },
+            {
+              "channel": 0,
+              "entity": 1,
+              "previous_value_ieee754_bits": 4627150836840005632,
+              "time": 160,
+              "value_ieee754_bits": 4627150836840005632
+            }
+          ]
+        },
+        {
+          "case_id": "R1A-728ab9f143efe6933e6a4066",
+          "edges": [],
+          "future_predictions": [
+            {
+              "channel": 0,
+              "entity": 0,
+              "previous_value_ieee754_bits": 4606028385783644160,
+              "time": 160,
+              "value_ieee754_bits": 4606028385783644160
+            },
+            {
+              "channel": 0,
+              "entity": 1,
+              "previous_value_ieee754_bits": 4627438679105732608,
+              "time": 160,
+              "value_ieee754_bits": 4627438679105732608
+            }
+          ]
+        },
+        {
+          "case_id": "R1A-7e4017c8cd5857ababf031fa",
+          "edges": [],
+          "future_predictions": []
+        },
+        {
+          "case_id": "R1A-95171cf3bb42a37de9259c19",
+          "edges": [],
+          "future_predictions": []
+        },
+        {
+          "case_id": "R1A-9956cee4592be812071e33a1",
+          "edges": [],
+          "future_predictions": [
+            {
+              "channel": 0,
+              "entity": 0,
+              "previous_value_ieee754_bits": 13845116022043967488,
+              "time": 160,
+              "value_ieee754_bits": 13845116022043967488
+            },
+            {
+              "channel": 0,
+              "entity": 1,
+              "previous_value_ieee754_bits": 4634400213354676224,
+              "time": 160,
+              "value_ieee754_bits": 4634400213354676224
+            }
+          ]
+        },
+        {
+          "case_id": "R1A-f191cba7e7fba98f4ac4d762",
+          "edges": [],
+          "future_predictions": [
+            {
+              "channel": 0,
+              "entity": 0,
+              "previous_value_ieee754_bits": 13826581686604791808,
+              "time": 160,
+              "value_ieee754_bits": 13826581686604791808
+            },
+            {
+              "channel": 0,
+              "entity": 1,
+              "previous_value_ieee754_bits": 4598818940653666304,
+              "time": 160,
+              "value_ieee754_bits": 4598818940653666304
+            },
+            {
+              "channel": 0,
+              "entity": 2,
+              "previous_value_ieee754_bits": 4600775041095827456,
+              "time": 160,
+              "value_ieee754_bits": 4600775041095827456
+            }
+          ]
+        },
+        {
+          "case_id": "R1A-f92448983d1266b9b74077c1",
+          "edges": [],
+          "future_predictions": [
+            {
+              "channel": 0,
+              "entity": 0,
+              "previous_value_ieee754_bits": 4603506009472761856,
+              "time": 160,
+              "value_ieee754_bits": 4603506009472761856
+            },
+            {
+              "channel": 0,
+              "entity": 1,
+              "previous_value_ieee754_bits": 4608679382943268864,
+              "time": 160,
+              "value_ieee754_bits": 4608679382943268864
+            }
+          ]
+        }
+      ]
+    },
+    "no_change_b": {
+      "case_receipts": [
+        {
+          "active_causal_mechanisms": 0,
+          "active_temporal_processes": 1,
+          "active_variables": 4,
+          "case_id": "R1B-04d3b2d827a96de5d311f3d3",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "NO_CHANGE",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 640,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 0,
+          "active_temporal_processes": 1,
+          "active_variables": 2,
+          "case_id": "R1B-226ea02e87a78b3dc693ca99",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "NO_CHANGE",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 320,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 0,
+          "active_temporal_processes": 1,
+          "active_variables": 4,
+          "case_id": "R1B-4cc9f9c4d2f023772a2ea82a",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "NO_CHANGE",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 640,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 0,
+          "active_temporal_processes": 1,
+          "active_variables": 3,
+          "case_id": "R1B-56c519e73b2916a153918fa7",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "NO_CHANGE",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 480,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 0,
+          "active_temporal_processes": 1,
+          "active_variables": 5,
+          "case_id": "R1B-76450470e56072c42f200879",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "NO_CHANGE",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 800,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 0,
+          "active_temporal_processes": 1,
+          "active_variables": 3,
+          "case_id": "R1B-7a91cea48526dba2e83ed7e1",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "NO_CHANGE",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 480,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 0,
+          "active_temporal_processes": 1,
+          "active_variables": 4,
+          "case_id": "R1B-83cbe826146afa62cc6851e4",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "NO_CHANGE",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 640,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 0,
+          "active_temporal_processes": 1,
+          "active_variables": 4,
+          "case_id": "R1B-a5854725b626816d7b9e083c",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "NO_CHANGE",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 640,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 0,
+          "active_temporal_processes": 1,
+          "active_variables": 4,
+          "case_id": "R1B-b0091197e400146f64ffcbfe",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "NO_CHANGE",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 640,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 0,
+          "active_temporal_processes": 1,
+          "active_variables": 10,
+          "case_id": "R1B-b7e22ed8f87246c210f42e04",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "NO_CHANGE",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 1600,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 0,
+          "active_temporal_processes": 1,
+          "active_variables": 3,
+          "case_id": "R1B-ba0d675b54fcb07be4d9ccbb",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "NO_CHANGE",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 480,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 0,
+          "active_temporal_processes": 1,
+          "active_variables": 3,
+          "case_id": "R1B-d635d1a87d3b176d4cf12169",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "NO_CHANGE",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 480,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 0,
+          "active_temporal_processes": 1,
+          "active_variables": 5,
+          "case_id": "R1B-e7414dd0dc6a4f25e1cfc3d7",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "NO_CHANGE",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 800,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 0,
+          "active_temporal_processes": 1,
+          "active_variables": 3,
+          "case_id": "R1B-ea5ed259ba63bbe0e00fc072",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "NO_CHANGE",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 480,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        }
+      ],
+      "lane": "B",
+      "method": "NO_CHANGE",
+      "mode": "FULL",
+      "prediction_commitment": "d6b8e49d77765169475736100569bbb7892fb105cdde68ef07776fb0491ee5fd",
+      "predictions": [
+        {
+          "case_id": "R1B-04d3b2d827a96de5d311f3d3",
+          "negative_transfer_attempt": false,
+          "predicted_y_ieee754_bits": [
+            4611838341590024192
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-226ea02e87a78b3dc693ca99",
+          "negative_transfer_attempt": false,
+          "predicted_y_ieee754_bits": [
+            13813503764054671360
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-4cc9f9c4d2f023772a2ea82a",
+          "negative_transfer_attempt": false,
+          "predicted_y_ieee754_bits": [
+            4604949819637628928
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-56c519e73b2916a153918fa7",
+          "negative_transfer_attempt": false,
+          "predicted_y_ieee754_bits": [
+            13806323018969907200
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-76450470e56072c42f200879",
+          "negative_transfer_attempt": false,
+          "predicted_y_ieee754_bits": [
+            4594578200004132864
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-7a91cea48526dba2e83ed7e1",
+          "negative_transfer_attempt": false,
+          "predicted_y_ieee754_bits": [
+            13808459481731825664
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-83cbe826146afa62cc6851e4",
+          "negative_transfer_attempt": false,
+          "predicted_y_ieee754_bits": [
+            4603266843682013184
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-a5854725b626816d7b9e083c",
+          "negative_transfer_attempt": false,
+          "predicted_y_ieee754_bits": [
+            4602004989806641152
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-b0091197e400146f64ffcbfe",
+          "negative_transfer_attempt": false,
+          "predicted_y_ieee754_bits": [
+            4605311855315910656
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-b7e22ed8f87246c210f42e04",
+          "negative_transfer_attempt": false,
+          "predicted_y_ieee754_bits": [
+            13804794911481921536
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-ba0d675b54fcb07be4d9ccbb",
+          "negative_transfer_attempt": false,
+          "predicted_y_ieee754_bits": [
+            13826089095195000832
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-d635d1a87d3b176d4cf12169",
+          "negative_transfer_attempt": false,
+          "predicted_y_ieee754_bits": [
+            4601903401482059776
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-e7414dd0dc6a4f25e1cfc3d7",
+          "negative_transfer_attempt": false,
+          "predicted_y_ieee754_bits": [
+            4577217046156148736
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-ea5ed259ba63bbe0e00fc072",
+          "negative_transfer_attempt": false,
+          "predicted_y_ieee754_bits": [
+            13828572317510270976
+          ],
+          "promoted_transfer": false
+        }
+      ]
+    },
+    "scratch_a": {
+      "case_receipts": [
+        {
+          "active_causal_mechanisms": 5,
+          "active_temporal_processes": 1,
+          "active_variables": 3,
+          "case_id": "R1A-00e5ee199d3688ec370ae4db",
+          "future_predictions_frozen": 3,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "SCRATCH",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 480,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 5,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 1,
+          "active_temporal_processes": 1,
+          "active_variables": 2,
+          "case_id": "R1A-08b93273a891b98871712630",
+          "future_predictions_frozen": 2,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "SCRATCH",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 320,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 1,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 0,
+          "active_temporal_processes": 0,
+          "active_variables": 3,
+          "case_id": "R1A-178bb120f59584cdb2f7bfbd",
+          "future_predictions_frozen": 0,
+          "hypotheses_generated": 0,
+          "hypotheses_rejected": 0,
+          "hypotheses_retained": 0,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "SCRATCH",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 480,
+            "finite_cells": 0,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": false,
+          "termination": "INSUFFICIENT_EVIDENCE"
+        },
+        {
+          "active_causal_mechanisms": 0,
+          "active_temporal_processes": 0,
+          "active_variables": 3,
+          "case_id": "R1A-298f9439273155c290dcc2bf",
+          "future_predictions_frozen": 0,
+          "hypotheses_generated": 0,
+          "hypotheses_rejected": 0,
+          "hypotheses_retained": 0,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "SCRATCH",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 480,
+            "finite_cells": 0,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": false,
+          "termination": "INSUFFICIENT_EVIDENCE"
+        },
+        {
+          "active_causal_mechanisms": 14,
+          "active_temporal_processes": 1,
+          "active_variables": 10,
+          "case_id": "R1A-45fe329cece6a5fd8ab4279c",
+          "future_predictions_frozen": 10,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "SCRATCH",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 1600,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 14,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 5,
+          "active_temporal_processes": 1,
+          "active_variables": 3,
+          "case_id": "R1A-4fecdd4aaa2207b5158295c0",
+          "future_predictions_frozen": 3,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "SCRATCH",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 480,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 5,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 1,
+          "active_temporal_processes": 1,
+          "active_variables": 2,
+          "case_id": "R1A-608c752dbc2a33d4026af54c",
+          "future_predictions_frozen": 2,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "SCRATCH",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 320,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 1,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 1,
+          "active_temporal_processes": 1,
+          "active_variables": 2,
+          "case_id": "R1A-728ab9f143efe6933e6a4066",
+          "future_predictions_frozen": 2,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "SCRATCH",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 320,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 1,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 0,
+          "active_temporal_processes": 0,
+          "active_variables": 3,
+          "case_id": "R1A-7e4017c8cd5857ababf031fa",
+          "future_predictions_frozen": 0,
+          "hypotheses_generated": 0,
+          "hypotheses_rejected": 0,
+          "hypotheses_retained": 0,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "SCRATCH",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 480,
+            "finite_cells": 0,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": false,
+          "termination": "INSUFFICIENT_EVIDENCE"
+        },
+        {
+          "active_causal_mechanisms": 0,
+          "active_temporal_processes": 0,
+          "active_variables": 3,
+          "case_id": "R1A-95171cf3bb42a37de9259c19",
+          "future_predictions_frozen": 0,
+          "hypotheses_generated": 0,
+          "hypotheses_rejected": 0,
+          "hypotheses_retained": 0,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "SCRATCH",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 480,
+            "finite_cells": 0,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": false,
+          "termination": "INSUFFICIENT_EVIDENCE"
+        },
+        {
+          "active_causal_mechanisms": 2,
+          "active_temporal_processes": 1,
+          "active_variables": 2,
+          "case_id": "R1A-9956cee4592be812071e33a1",
+          "future_predictions_frozen": 2,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "SCRATCH",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 320,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 2,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 6,
+          "active_temporal_processes": 1,
+          "active_variables": 3,
+          "case_id": "R1A-f191cba7e7fba98f4ac4d762",
+          "future_predictions_frozen": 3,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "SCRATCH",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 480,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 6,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 1,
+          "active_temporal_processes": 1,
+          "active_variables": 2,
+          "case_id": "R1A-f92448983d1266b9b74077c1",
+          "future_predictions_frozen": 2,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "SCRATCH",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 320,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 1,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        }
+      ],
+      "lane": "A",
+      "method": "SCRATCH",
+      "mode": "FULL",
+      "prediction_commitment": "20b0085412a28f1e2505a7cb7f4591046d0b5faa7ca8f638508705f470192c2a",
+      "predictions": [
+        {
+          "case_id": "R1A-00e5ee199d3688ec370ae4db",
+          "edges": [
+            [
+              0,
+              1,
+              0
+            ],
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              2,
+              0
+            ],
+            [
+              2,
+              0,
+              0
+            ],
+            [
+              2,
+              1,
+              0
+            ]
+          ],
+          "future_predictions": [
+            {
+              "channel": 0,
+              "entity": 0,
+              "previous_value_ieee754_bits": 13827993541676105728,
+              "time": 160,
+              "value_ieee754_bits": 13827153324663228007
+            },
+            {
+              "channel": 0,
+              "entity": 1,
+              "previous_value_ieee754_bits": 4606865626844102656,
+              "time": 160,
+              "value_ieee754_bits": 4607106005372637667
+            },
+            {
+              "channel": 0,
+              "entity": 2,
+              "previous_value_ieee754_bits": 13817533095139606528,
+              "time": 160,
+              "value_ieee754_bits": 13812201294472857368
+            }
+          ]
+        },
+        {
+          "case_id": "R1A-08b93273a891b98871712630",
+          "edges": [
+            [
+              0,
+              1,
+              0
+            ]
+          ],
+          "future_predictions": [
+            {
+              "channel": 0,
+              "entity": 0,
+              "previous_value_ieee754_bits": 4589392124167847936,
+              "time": 160,
+              "value_ieee754_bits": 4589266973795662518
+            },
+            {
+              "channel": 0,
+              "entity": 1,
+              "previous_value_ieee754_bits": 4600596392468021248,
+              "time": 160,
+              "value_ieee754_bits": 4600660291505418139
+            }
+          ]
+        },
+        {
+          "case_id": "R1A-178bb120f59584cdb2f7bfbd",
+          "edges": [],
+          "future_predictions": []
+        },
+        {
+          "case_id": "R1A-298f9439273155c290dcc2bf",
+          "edges": [],
+          "future_predictions": []
+        },
+        {
+          "case_id": "R1A-45fe329cece6a5fd8ab4279c",
+          "edges": [
+            [
+              0,
+              1,
+              0
+            ],
+            [
+              1,
+              8,
+              0
+            ],
+            [
+              2,
+              1,
+              0
+            ],
+            [
+              3,
+              1,
+              0
+            ],
+            [
+              3,
+              5,
+              0
+            ],
+            [
+              5,
+              3,
+              0
+            ],
+            [
+              5,
+              6,
+              0
+            ],
+            [
+              5,
+              8,
+              0
+            ],
+            [
+              5,
+              9,
+              0
+            ],
+            [
+              6,
+              4,
+              0
+            ],
+            [
+              7,
+              1,
+              0
+            ],
+            [
+              8,
+              4,
+              0
+            ],
+            [
+              9,
+              2,
+              0
+            ],
+            [
+              9,
+              8,
+              0
+            ]
+          ],
+          "future_predictions": [
+            {
+              "channel": 0,
+              "entity": 0,
+              "previous_value_ieee754_bits": 4600429578085728256,
+              "time": 160,
+              "value_ieee754_bits": 4599182658926562613
+            },
+            {
+              "channel": 0,
+              "entity": 1,
+              "previous_value_ieee754_bits": 4626963932748185600,
+              "time": 160,
+              "value_ieee754_bits": 4627093647936465852
+            },
+            {
+              "channel": 0,
+              "entity": 2,
+              "previous_value_ieee754_bits": 4601239953588879360,
+              "time": 160,
+              "value_ieee754_bits": 4602179001131123812
+            },
+            {
+              "channel": 0,
+              "entity": 3,
+              "previous_value_ieee754_bits": 4612965372683878400,
+              "time": 160,
+              "value_ieee754_bits": 4612888324438051084
+            },
+            {
+              "channel": 0,
+              "entity": 4,
+              "previous_value_ieee754_bits": 13831195618036416512,
+              "time": 160,
+              "value_ieee754_bits": 13831127061353618537
+            },
+            {
+              "channel": 0,
+              "entity": 5,
+              "previous_value_ieee754_bits": 13834318305147486208,
+              "time": 160,
+              "value_ieee754_bits": 13834678658906061610
+            },
+            {
+              "channel": 0,
+              "entity": 6,
+              "previous_value_ieee754_bits": 13839572203886084096,
+              "time": 160,
+              "value_ieee754_bits": 13839632605289518745
+            },
+            {
+              "channel": 0,
+              "entity": 7,
+              "previous_value_ieee754_bits": 13836998395341832192,
+              "time": 160,
+              "value_ieee754_bits": 13837136839552663555
+            },
+            {
+              "channel": 0,
+              "entity": 8,
+              "previous_value_ieee754_bits": 13840466824635875328,
+              "time": 160,
+              "value_ieee754_bits": 13840562338537087231
+            },
+            {
+              "channel": 0,
+              "entity": 9,
+              "previous_value_ieee754_bits": 13819993105304125440,
+              "time": 160,
+              "value_ieee754_bits": 13809323875853115932
+            }
+          ]
+        },
+        {
+          "case_id": "R1A-4fecdd4aaa2207b5158295c0",
+          "edges": [
+            [
+              0,
+              1,
+              0
+            ],
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              2,
+              0
+            ],
+            [
+              2,
+              0,
+              0
+            ],
+            [
+              2,
+              1,
+              0
+            ]
+          ],
+          "future_predictions": [
+            {
+              "channel": 0,
+              "entity": 0,
+              "previous_value_ieee754_bits": 13823994002631819264,
+              "time": 160,
+              "value_ieee754_bits": 13826268806669436164
+            },
+            {
+              "channel": 0,
+              "entity": 1,
+              "previous_value_ieee754_bits": 13807086796225380352,
+              "time": 160,
+              "value_ieee754_bits": 13808683049985831240
+            },
+            {
+              "channel": 0,
+              "entity": 2,
+              "previous_value_ieee754_bits": 4610139092540194816,
+              "time": 160,
+              "value_ieee754_bits": 4609899748316459066
+            }
+          ]
+        },
+        {
+          "case_id": "R1A-608c752dbc2a33d4026af54c",
+          "edges": [
+            [
+              1,
+              0,
+              0
+            ]
+          ],
+          "future_predictions": [
+            {
+              "channel": 0,
+              "entity": 0,
+              "previous_value_ieee754_bits": 13822059167109611520,
+              "time": 160,
+              "value_ieee754_bits": 13821880178755630632
+            },
+            {
+              "channel": 0,
+              "entity": 1,
+              "previous_value_ieee754_bits": 4627150836840005632,
+              "time": 160,
+              "value_ieee754_bits": 4627151188060706164
+            }
+          ]
+        },
+        {
+          "case_id": "R1A-728ab9f143efe6933e6a4066",
+          "edges": [
+            [
+              1,
+              0,
+              0
+            ]
+          ],
+          "future_predictions": [
+            {
+              "channel": 0,
+              "entity": 0,
+              "previous_value_ieee754_bits": 4606028385783644160,
+              "time": 160,
+              "value_ieee754_bits": 4606234854035058290
+            },
+            {
+              "channel": 0,
+              "entity": 1,
+              "previous_value_ieee754_bits": 4627438679105732608,
+              "time": 160,
+              "value_ieee754_bits": 4627229762435621283
+            }
+          ]
+        },
+        {
+          "case_id": "R1A-7e4017c8cd5857ababf031fa",
+          "edges": [],
+          "future_predictions": []
+        },
+        {
+          "case_id": "R1A-95171cf3bb42a37de9259c19",
+          "edges": [],
+          "future_predictions": []
+        },
+        {
+          "case_id": "R1A-9956cee4592be812071e33a1",
+          "edges": [
+            [
+              0,
+              1,
+              0
+            ],
+            [
+              1,
+              0,
+              0
+            ]
+          ],
+          "future_predictions": [
+            {
+              "channel": 0,
+              "entity": 0,
+              "previous_value_ieee754_bits": 13845116022043967488,
+              "time": 160,
+              "value_ieee754_bits": 13843809955628888714
+            },
+            {
+              "channel": 0,
+              "entity": 1,
+              "previous_value_ieee754_bits": 4634400213354676224,
+              "time": 160,
+              "value_ieee754_bits": 4634368629968773534
+            }
+          ]
+        },
+        {
+          "case_id": "R1A-f191cba7e7fba98f4ac4d762",
+          "edges": [
+            [
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              2,
+              0
+            ],
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              2,
+              0
+            ],
+            [
+              2,
+              0,
+              0
+            ],
+            [
+              2,
+              1,
+              0
+            ]
+          ],
+          "future_predictions": [
+            {
+              "channel": 0,
+              "entity": 0,
+              "previous_value_ieee754_bits": 13826581686604791808,
+              "time": 160,
+              "value_ieee754_bits": 13826403557990192124
+            },
+            {
+              "channel": 0,
+              "entity": 1,
+              "previous_value_ieee754_bits": 4598818940653666304,
+              "time": 160,
+              "value_ieee754_bits": 4599369959946574496
+            },
+            {
+              "channel": 0,
+              "entity": 2,
+              "previous_value_ieee754_bits": 4600775041095827456,
+              "time": 160,
+              "value_ieee754_bits": 4601652690712114941
+            }
+          ]
+        },
+        {
+          "case_id": "R1A-f92448983d1266b9b74077c1",
+          "edges": [
+            [
+              0,
+              1,
+              0
+            ]
+          ],
+          "future_predictions": [
+            {
+              "channel": 0,
+              "entity": 0,
+              "previous_value_ieee754_bits": 4603506009472761856,
+              "time": 160,
+              "value_ieee754_bits": 4603400886912194728
+            },
+            {
+              "channel": 0,
+              "entity": 1,
+              "previous_value_ieee754_bits": 4608679382943268864,
+              "time": 160,
+              "value_ieee754_bits": 4608922741819716080
+            }
+          ]
+        }
+      ]
+    },
+    "scratch_b": {
+      "case_receipts": [
+        {
+          "active_causal_mechanisms": 4,
+          "active_temporal_processes": 1,
+          "active_variables": 4,
+          "case_id": "R1B-04d3b2d827a96de5d311f3d3",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "SCRATCH",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 640,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 2,
+          "active_temporal_processes": 1,
+          "active_variables": 2,
+          "case_id": "R1B-226ea02e87a78b3dc693ca99",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "SCRATCH",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 320,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 4,
+          "active_temporal_processes": 1,
+          "active_variables": 4,
+          "case_id": "R1B-4cc9f9c4d2f023772a2ea82a",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "SCRATCH",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 640,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 3,
+          "active_temporal_processes": 1,
+          "active_variables": 3,
+          "case_id": "R1B-56c519e73b2916a153918fa7",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "SCRATCH",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 480,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 5,
+          "active_temporal_processes": 1,
+          "active_variables": 5,
+          "case_id": "R1B-76450470e56072c42f200879",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "SCRATCH",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 800,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 3,
+          "active_temporal_processes": 1,
+          "active_variables": 3,
+          "case_id": "R1B-7a91cea48526dba2e83ed7e1",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "SCRATCH",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 480,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 4,
+          "active_temporal_processes": 1,
+          "active_variables": 4,
+          "case_id": "R1B-83cbe826146afa62cc6851e4",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "SCRATCH",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 640,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 4,
+          "active_temporal_processes": 1,
+          "active_variables": 4,
+          "case_id": "R1B-a5854725b626816d7b9e083c",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "SCRATCH",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 640,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 4,
+          "active_temporal_processes": 1,
+          "active_variables": 4,
+          "case_id": "R1B-b0091197e400146f64ffcbfe",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "SCRATCH",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 640,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 10,
+          "active_temporal_processes": 1,
+          "active_variables": 10,
+          "case_id": "R1B-b7e22ed8f87246c210f42e04",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "SCRATCH",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 1600,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 3,
+          "active_temporal_processes": 1,
+          "active_variables": 3,
+          "case_id": "R1B-ba0d675b54fcb07be4d9ccbb",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "SCRATCH",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 480,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 3,
+          "active_temporal_processes": 1,
+          "active_variables": 3,
+          "case_id": "R1B-d635d1a87d3b176d4cf12169",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "SCRATCH",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 480,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 5,
+          "active_temporal_processes": 1,
+          "active_variables": 5,
+          "case_id": "R1B-e7414dd0dc6a4f25e1cfc3d7",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "SCRATCH",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 800,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 3,
+          "active_temporal_processes": 1,
+          "active_variables": 3,
+          "case_id": "R1B-ea5ed259ba63bbe0e00fc072",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "SCRATCH",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 480,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        }
+      ],
+      "lane": "B",
+      "method": "SCRATCH",
+      "mode": "FULL",
+      "prediction_commitment": "b85c7f632624a06454d556aa315295b930d80a6fb65e8a565260426cc1e1dedb",
+      "predictions": [
+        {
+          "case_id": "R1B-04d3b2d827a96de5d311f3d3",
+          "negative_transfer_attempt": false,
+          "predicted_y_ieee754_bits": [
+            4611609935073656675
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-226ea02e87a78b3dc693ca99",
+          "negative_transfer_attempt": false,
+          "predicted_y_ieee754_bits": [
+            13811711998077989462
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-4cc9f9c4d2f023772a2ea82a",
+          "negative_transfer_attempt": false,
+          "predicted_y_ieee754_bits": [
+            4603399768279777372
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-56c519e73b2916a153918fa7",
+          "negative_transfer_attempt": false,
+          "predicted_y_ieee754_bits": [
+            13810031755593029862
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-76450470e56072c42f200879",
+          "negative_transfer_attempt": false,
+          "predicted_y_ieee754_bits": [
+            4594578200004132864
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-7a91cea48526dba2e83ed7e1",
+          "negative_transfer_attempt": false,
+          "predicted_y_ieee754_bits": [
+            4599681563717745709
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-83cbe826146afa62cc6851e4",
+          "negative_transfer_attempt": false,
+          "predicted_y_ieee754_bits": [
+            4605202467634531350
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-a5854725b626816d7b9e083c",
+          "negative_transfer_attempt": false,
+          "predicted_y_ieee754_bits": [
+            4603860049075702318
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-b0091197e400146f64ffcbfe",
+          "negative_transfer_attempt": false,
+          "predicted_y_ieee754_bits": [
+            4579863243506514816
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-b7e22ed8f87246c210f42e04",
+          "negative_transfer_attempt": false,
+          "predicted_y_ieee754_bits": [
+            13836546500922134239
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-ba0d675b54fcb07be4d9ccbb",
+          "negative_transfer_attempt": false,
+          "predicted_y_ieee754_bits": [
+            13829759453512007357
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-d635d1a87d3b176d4cf12169",
+          "negative_transfer_attempt": false,
+          "predicted_y_ieee754_bits": [
+            4582900194173872848
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-e7414dd0dc6a4f25e1cfc3d7",
+          "negative_transfer_attempt": false,
+          "predicted_y_ieee754_bits": [
+            4573588644546194523
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-ea5ed259ba63bbe0e00fc072",
+          "negative_transfer_attempt": false,
+          "predicted_y_ieee754_bits": [
+            13832908796202057728
+          ],
+          "promoted_transfer": false
+        }
+      ]
+    },
+    "shift_aware_a": {
+      "case_receipts": [
+        {
+          "active_causal_mechanisms": 6,
+          "active_temporal_processes": 1,
+          "active_variables": 3,
+          "case_id": "R1A-00e5ee199d3688ec370ae4db",
+          "future_predictions_frozen": 3,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "SHIFT_AWARE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 480,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 6,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 2,
+          "active_temporal_processes": 1,
+          "active_variables": 2,
+          "case_id": "R1A-08b93273a891b98871712630",
+          "future_predictions_frozen": 2,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "SHIFT_AWARE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 320,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 2,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 6,
+          "active_temporal_processes": 0,
+          "active_variables": 3,
+          "case_id": "R1A-178bb120f59584cdb2f7bfbd",
+          "future_predictions_frozen": 0,
+          "hypotheses_generated": 0,
+          "hypotheses_rejected": 0,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "SHIFT_AWARE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 480,
+            "finite_cells": 0,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 6,
+          "self_detected_frontier": false,
+          "termination": "INSUFFICIENT_EVIDENCE"
+        },
+        {
+          "active_causal_mechanisms": 6,
+          "active_temporal_processes": 0,
+          "active_variables": 3,
+          "case_id": "R1A-298f9439273155c290dcc2bf",
+          "future_predictions_frozen": 0,
+          "hypotheses_generated": 0,
+          "hypotheses_rejected": 0,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "SHIFT_AWARE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 480,
+            "finite_cells": 0,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 6,
+          "self_detected_frontier": false,
+          "termination": "INSUFFICIENT_EVIDENCE"
+        },
+        {
+          "active_causal_mechanisms": 90,
+          "active_temporal_processes": 1,
+          "active_variables": 10,
+          "case_id": "R1A-45fe329cece6a5fd8ab4279c",
+          "future_predictions_frozen": 10,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "SHIFT_AWARE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 1600,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 90,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 6,
+          "active_temporal_processes": 1,
+          "active_variables": 3,
+          "case_id": "R1A-4fecdd4aaa2207b5158295c0",
+          "future_predictions_frozen": 3,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "SHIFT_AWARE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 480,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 6,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 2,
+          "active_temporal_processes": 1,
+          "active_variables": 2,
+          "case_id": "R1A-608c752dbc2a33d4026af54c",
+          "future_predictions_frozen": 2,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "SHIFT_AWARE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 320,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 2,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 2,
+          "active_temporal_processes": 1,
+          "active_variables": 2,
+          "case_id": "R1A-728ab9f143efe6933e6a4066",
+          "future_predictions_frozen": 2,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "SHIFT_AWARE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 320,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 2,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 6,
+          "active_temporal_processes": 0,
+          "active_variables": 3,
+          "case_id": "R1A-7e4017c8cd5857ababf031fa",
+          "future_predictions_frozen": 0,
+          "hypotheses_generated": 0,
+          "hypotheses_rejected": 0,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "SHIFT_AWARE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 480,
+            "finite_cells": 0,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 6,
+          "self_detected_frontier": false,
+          "termination": "INSUFFICIENT_EVIDENCE"
+        },
+        {
+          "active_causal_mechanisms": 6,
+          "active_temporal_processes": 0,
+          "active_variables": 3,
+          "case_id": "R1A-95171cf3bb42a37de9259c19",
+          "future_predictions_frozen": 0,
+          "hypotheses_generated": 0,
+          "hypotheses_rejected": 0,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "SHIFT_AWARE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 480,
+            "finite_cells": 0,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 6,
+          "self_detected_frontier": false,
+          "termination": "INSUFFICIENT_EVIDENCE"
+        },
+        {
+          "active_causal_mechanisms": 2,
+          "active_temporal_processes": 1,
+          "active_variables": 2,
+          "case_id": "R1A-9956cee4592be812071e33a1",
+          "future_predictions_frozen": 2,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "SHIFT_AWARE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 320,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 2,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 6,
+          "active_temporal_processes": 1,
+          "active_variables": 3,
+          "case_id": "R1A-f191cba7e7fba98f4ac4d762",
+          "future_predictions_frozen": 3,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "SHIFT_AWARE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 480,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 6,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 2,
+          "active_temporal_processes": 1,
+          "active_variables": 2,
+          "case_id": "R1A-f92448983d1266b9b74077c1",
+          "future_predictions_frozen": 2,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 0,
+          "lane": "A",
+          "method": "SHIFT_AWARE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 320,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 2,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        }
+      ],
+      "lane": "A",
+      "method": "SHIFT_AWARE_TRANSFER",
+      "mode": "FULL",
+      "prediction_commitment": "8c7ccbd1a4442440e7ce3215906b0ed313bf77e8fae76082982fb4c032c15136",
+      "predictions": [
+        {
+          "case_id": "R1A-00e5ee199d3688ec370ae4db",
+          "edges": [
+            [
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              2,
+              0
+            ],
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              2,
+              0
+            ],
+            [
+              2,
+              0,
+              0
+            ],
+            [
+              2,
+              1,
+              0
+            ]
+          ],
+          "future_predictions": [
+            {
+              "channel": 0,
+              "entity": 0,
+              "previous_value_ieee754_bits": 13827993541676105728,
+              "time": 160,
+              "value_ieee754_bits": 13827153324663228007
+            },
+            {
+              "channel": 0,
+              "entity": 1,
+              "previous_value_ieee754_bits": 4606865626844102656,
+              "time": 160,
+              "value_ieee754_bits": 4607106005372637667
+            },
+            {
+              "channel": 0,
+              "entity": 2,
+              "previous_value_ieee754_bits": 13817533095139606528,
+              "time": 160,
+              "value_ieee754_bits": 13812201294472857368
+            }
+          ]
+        },
+        {
+          "case_id": "R1A-08b93273a891b98871712630",
+          "edges": [
+            [
+              0,
+              1,
+              0
+            ],
+            [
+              1,
+              0,
+              0
+            ]
+          ],
+          "future_predictions": [
+            {
+              "channel": 0,
+              "entity": 0,
+              "previous_value_ieee754_bits": 4589392124167847936,
+              "time": 160,
+              "value_ieee754_bits": 4589266973795662518
+            },
+            {
+              "channel": 0,
+              "entity": 1,
+              "previous_value_ieee754_bits": 4600596392468021248,
+              "time": 160,
+              "value_ieee754_bits": 4600660291505418139
+            }
+          ]
+        },
+        {
+          "case_id": "R1A-178bb120f59584cdb2f7bfbd",
+          "edges": [
+            [
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              2,
+              0
+            ],
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              2,
+              0
+            ],
+            [
+              2,
+              0,
+              0
+            ],
+            [
+              2,
+              1,
+              0
+            ]
+          ],
+          "future_predictions": []
+        },
+        {
+          "case_id": "R1A-298f9439273155c290dcc2bf",
+          "edges": [
+            [
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              2,
+              0
+            ],
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              2,
+              0
+            ],
+            [
+              2,
+              0,
+              0
+            ],
+            [
+              2,
+              1,
+              0
+            ]
+          ],
+          "future_predictions": []
+        },
+        {
+          "case_id": "R1A-45fe329cece6a5fd8ab4279c",
+          "edges": [
+            [
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              2,
+              0
+            ],
+            [
+              0,
+              3,
+              0
+            ],
+            [
+              0,
+              4,
+              0
+            ],
+            [
+              0,
+              5,
+              0
+            ],
+            [
+              0,
+              6,
+              0
+            ],
+            [
+              0,
+              7,
+              0
+            ],
+            [
+              0,
+              8,
+              0
+            ],
+            [
+              0,
+              9,
+              0
+            ],
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              2,
+              0
+            ],
+            [
+              1,
+              3,
+              0
+            ],
+            [
+              1,
+              4,
+              0
+            ],
+            [
+              1,
+              5,
+              0
+            ],
+            [
+              1,
+              6,
+              0
+            ],
+            [
+              1,
+              7,
+              0
+            ],
+            [
+              1,
+              8,
+              0
+            ],
+            [
+              1,
+              9,
+              0
+            ],
+            [
+              2,
+              0,
+              0
+            ],
+            [
+              2,
+              1,
+              0
+            ],
+            [
+              2,
+              3,
+              0
+            ],
+            [
+              2,
+              4,
+              0
+            ],
+            [
+              2,
+              5,
+              0
+            ],
+            [
+              2,
+              6,
+              0
+            ],
+            [
+              2,
+              7,
+              0
+            ],
+            [
+              2,
+              8,
+              0
+            ],
+            [
+              2,
+              9,
+              0
+            ],
+            [
+              3,
+              0,
+              0
+            ],
+            [
+              3,
+              1,
+              0
+            ],
+            [
+              3,
+              2,
+              0
+            ],
+            [
+              3,
+              4,
+              0
+            ],
+            [
+              3,
+              5,
+              0
+            ],
+            [
+              3,
+              6,
+              0
+            ],
+            [
+              3,
+              7,
+              0
+            ],
+            [
+              3,
+              8,
+              0
+            ],
+            [
+              3,
+              9,
+              0
+            ],
+            [
+              4,
+              0,
+              0
+            ],
+            [
+              4,
+              1,
+              0
+            ],
+            [
+              4,
+              2,
+              0
+            ],
+            [
+              4,
+              3,
+              0
+            ],
+            [
+              4,
+              5,
+              0
+            ],
+            [
+              4,
+              6,
+              0
+            ],
+            [
+              4,
+              7,
+              0
+            ],
+            [
+              4,
+              8,
+              0
+            ],
+            [
+              4,
+              9,
+              0
+            ],
+            [
+              5,
+              0,
+              0
+            ],
+            [
+              5,
+              1,
+              0
+            ],
+            [
+              5,
+              2,
+              0
+            ],
+            [
+              5,
+              3,
+              0
+            ],
+            [
+              5,
+              4,
+              0
+            ],
+            [
+              5,
+              6,
+              0
+            ],
+            [
+              5,
+              7,
+              0
+            ],
+            [
+              5,
+              8,
+              0
+            ],
+            [
+              5,
+              9,
+              0
+            ],
+            [
+              6,
+              0,
+              0
+            ],
+            [
+              6,
+              1,
+              0
+            ],
+            [
+              6,
+              2,
+              0
+            ],
+            [
+              6,
+              3,
+              0
+            ],
+            [
+              6,
+              4,
+              0
+            ],
+            [
+              6,
+              5,
+              0
+            ],
+            [
+              6,
+              7,
+              0
+            ],
+            [
+              6,
+              8,
+              0
+            ],
+            [
+              6,
+              9,
+              0
+            ],
+            [
+              7,
+              0,
+              0
+            ],
+            [
+              7,
+              1,
+              0
+            ],
+            [
+              7,
+              2,
+              0
+            ],
+            [
+              7,
+              3,
+              0
+            ],
+            [
+              7,
+              4,
+              0
+            ],
+            [
+              7,
+              5,
+              0
+            ],
+            [
+              7,
+              6,
+              0
+            ],
+            [
+              7,
+              8,
+              0
+            ],
+            [
+              7,
+              9,
+              0
+            ],
+            [
+              8,
+              0,
+              0
+            ],
+            [
+              8,
+              1,
+              0
+            ],
+            [
+              8,
+              2,
+              0
+            ],
+            [
+              8,
+              3,
+              0
+            ],
+            [
+              8,
+              4,
+              0
+            ],
+            [
+              8,
+              5,
+              0
+            ],
+            [
+              8,
+              6,
+              0
+            ],
+            [
+              8,
+              7,
+              0
+            ],
+            [
+              8,
+              9,
+              0
+            ],
+            [
+              9,
+              0,
+              0
+            ],
+            [
+              9,
+              1,
+              0
+            ],
+            [
+              9,
+              2,
+              0
+            ],
+            [
+              9,
+              3,
+              0
+            ],
+            [
+              9,
+              4,
+              0
+            ],
+            [
+              9,
+              5,
+              0
+            ],
+            [
+              9,
+              6,
+              0
+            ],
+            [
+              9,
+              7,
+              0
+            ],
+            [
+              9,
+              8,
+              0
+            ]
+          ],
+          "future_predictions": [
+            {
+              "channel": 0,
+              "entity": 0,
+              "previous_value_ieee754_bits": 4600429578085728256,
+              "time": 160,
+              "value_ieee754_bits": 4599182658926562613
+            },
+            {
+              "channel": 0,
+              "entity": 1,
+              "previous_value_ieee754_bits": 4626963932748185600,
+              "time": 160,
+              "value_ieee754_bits": 4627093647936465852
+            },
+            {
+              "channel": 0,
+              "entity": 2,
+              "previous_value_ieee754_bits": 4601239953588879360,
+              "time": 160,
+              "value_ieee754_bits": 4602179001131123812
+            },
+            {
+              "channel": 0,
+              "entity": 3,
+              "previous_value_ieee754_bits": 4612965372683878400,
+              "time": 160,
+              "value_ieee754_bits": 4612888324438051084
+            },
+            {
+              "channel": 0,
+              "entity": 4,
+              "previous_value_ieee754_bits": 13831195618036416512,
+              "time": 160,
+              "value_ieee754_bits": 13831127061353618537
+            },
+            {
+              "channel": 0,
+              "entity": 5,
+              "previous_value_ieee754_bits": 13834318305147486208,
+              "time": 160,
+              "value_ieee754_bits": 13834678658906061610
+            },
+            {
+              "channel": 0,
+              "entity": 6,
+              "previous_value_ieee754_bits": 13839572203886084096,
+              "time": 160,
+              "value_ieee754_bits": 13839632605289518745
+            },
+            {
+              "channel": 0,
+              "entity": 7,
+              "previous_value_ieee754_bits": 13836998395341832192,
+              "time": 160,
+              "value_ieee754_bits": 13837136839552663555
+            },
+            {
+              "channel": 0,
+              "entity": 8,
+              "previous_value_ieee754_bits": 13840466824635875328,
+              "time": 160,
+              "value_ieee754_bits": 13840562338537087231
+            },
+            {
+              "channel": 0,
+              "entity": 9,
+              "previous_value_ieee754_bits": 13819993105304125440,
+              "time": 160,
+              "value_ieee754_bits": 13809323875853115932
+            }
+          ]
+        },
+        {
+          "case_id": "R1A-4fecdd4aaa2207b5158295c0",
+          "edges": [
+            [
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              2,
+              0
+            ],
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              2,
+              0
+            ],
+            [
+              2,
+              0,
+              0
+            ],
+            [
+              2,
+              1,
+              0
+            ]
+          ],
+          "future_predictions": [
+            {
+              "channel": 0,
+              "entity": 0,
+              "previous_value_ieee754_bits": 13823994002631819264,
+              "time": 160,
+              "value_ieee754_bits": 13826268806669436164
+            },
+            {
+              "channel": 0,
+              "entity": 1,
+              "previous_value_ieee754_bits": 13807086796225380352,
+              "time": 160,
+              "value_ieee754_bits": 13808683049985831240
+            },
+            {
+              "channel": 0,
+              "entity": 2,
+              "previous_value_ieee754_bits": 4610139092540194816,
+              "time": 160,
+              "value_ieee754_bits": 4609899748316459066
+            }
+          ]
+        },
+        {
+          "case_id": "R1A-608c752dbc2a33d4026af54c",
+          "edges": [
+            [
+              0,
+              1,
+              0
+            ],
+            [
+              1,
+              0,
+              0
+            ]
+          ],
+          "future_predictions": [
+            {
+              "channel": 0,
+              "entity": 0,
+              "previous_value_ieee754_bits": 13822059167109611520,
+              "time": 160,
+              "value_ieee754_bits": 13821880178755630632
+            },
+            {
+              "channel": 0,
+              "entity": 1,
+              "previous_value_ieee754_bits": 4627150836840005632,
+              "time": 160,
+              "value_ieee754_bits": 4627151188060706164
+            }
+          ]
+        },
+        {
+          "case_id": "R1A-728ab9f143efe6933e6a4066",
+          "edges": [
+            [
+              0,
+              1,
+              0
+            ],
+            [
+              1,
+              0,
+              0
+            ]
+          ],
+          "future_predictions": [
+            {
+              "channel": 0,
+              "entity": 0,
+              "previous_value_ieee754_bits": 4606028385783644160,
+              "time": 160,
+              "value_ieee754_bits": 4606234854035058290
+            },
+            {
+              "channel": 0,
+              "entity": 1,
+              "previous_value_ieee754_bits": 4627438679105732608,
+              "time": 160,
+              "value_ieee754_bits": 4627229762435621283
+            }
+          ]
+        },
+        {
+          "case_id": "R1A-7e4017c8cd5857ababf031fa",
+          "edges": [
+            [
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              2,
+              0
+            ],
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              2,
+              0
+            ],
+            [
+              2,
+              0,
+              0
+            ],
+            [
+              2,
+              1,
+              0
+            ]
+          ],
+          "future_predictions": []
+        },
+        {
+          "case_id": "R1A-95171cf3bb42a37de9259c19",
+          "edges": [
+            [
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              2,
+              0
+            ],
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              2,
+              0
+            ],
+            [
+              2,
+              0,
+              0
+            ],
+            [
+              2,
+              1,
+              0
+            ]
+          ],
+          "future_predictions": []
+        },
+        {
+          "case_id": "R1A-9956cee4592be812071e33a1",
+          "edges": [
+            [
+              0,
+              1,
+              0
+            ],
+            [
+              1,
+              0,
+              0
+            ]
+          ],
+          "future_predictions": [
+            {
+              "channel": 0,
+              "entity": 0,
+              "previous_value_ieee754_bits": 13845116022043967488,
+              "time": 160,
+              "value_ieee754_bits": 13843809955628888714
+            },
+            {
+              "channel": 0,
+              "entity": 1,
+              "previous_value_ieee754_bits": 4634400213354676224,
+              "time": 160,
+              "value_ieee754_bits": 4634368629968773534
+            }
+          ]
+        },
+        {
+          "case_id": "R1A-f191cba7e7fba98f4ac4d762",
+          "edges": [
+            [
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              2,
+              0
+            ],
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              2,
+              0
+            ],
+            [
+              2,
+              0,
+              0
+            ],
+            [
+              2,
+              1,
+              0
+            ]
+          ],
+          "future_predictions": [
+            {
+              "channel": 0,
+              "entity": 0,
+              "previous_value_ieee754_bits": 13826581686604791808,
+              "time": 160,
+              "value_ieee754_bits": 13826403557990192124
+            },
+            {
+              "channel": 0,
+              "entity": 1,
+              "previous_value_ieee754_bits": 4598818940653666304,
+              "time": 160,
+              "value_ieee754_bits": 4599369959946574496
+            },
+            {
+              "channel": 0,
+              "entity": 2,
+              "previous_value_ieee754_bits": 4600775041095827456,
+              "time": 160,
+              "value_ieee754_bits": 4601652690712114941
+            }
+          ]
+        },
+        {
+          "case_id": "R1A-f92448983d1266b9b74077c1",
+          "edges": [
+            [
+              0,
+              1,
+              0
+            ],
+            [
+              1,
+              0,
+              0
+            ]
+          ],
+          "future_predictions": [
+            {
+              "channel": 0,
+              "entity": 0,
+              "previous_value_ieee754_bits": 4603506009472761856,
+              "time": 160,
+              "value_ieee754_bits": 4603400886912194728
+            },
+            {
+              "channel": 0,
+              "entity": 1,
+              "previous_value_ieee754_bits": 4608679382943268864,
+              "time": 160,
+              "value_ieee754_bits": 4608922741819716080
+            }
+          ]
+        }
+      ]
+    },
+    "shift_aware_b": {
+      "case_receipts": [
+        {
+          "active_causal_mechanisms": 4,
+          "active_temporal_processes": 1,
+          "active_variables": 4,
+          "case_id": "R1B-04d3b2d827a96de5d311f3d3",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "SHIFT_AWARE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 640,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 2,
+          "active_temporal_processes": 1,
+          "active_variables": 2,
+          "case_id": "R1B-226ea02e87a78b3dc693ca99",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "SHIFT_AWARE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 320,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 4,
+          "active_temporal_processes": 1,
+          "active_variables": 4,
+          "case_id": "R1B-4cc9f9c4d2f023772a2ea82a",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "SHIFT_AWARE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 640,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 3,
+          "active_temporal_processes": 1,
+          "active_variables": 3,
+          "case_id": "R1B-56c519e73b2916a153918fa7",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "SHIFT_AWARE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 480,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 5,
+          "active_temporal_processes": 1,
+          "active_variables": 5,
+          "case_id": "R1B-76450470e56072c42f200879",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "SHIFT_AWARE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 800,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 3,
+          "active_temporal_processes": 1,
+          "active_variables": 3,
+          "case_id": "R1B-7a91cea48526dba2e83ed7e1",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "SHIFT_AWARE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 480,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 4,
+          "active_temporal_processes": 1,
+          "active_variables": 4,
+          "case_id": "R1B-83cbe826146afa62cc6851e4",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "SHIFT_AWARE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 640,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 4,
+          "active_temporal_processes": 1,
+          "active_variables": 4,
+          "case_id": "R1B-a5854725b626816d7b9e083c",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "SHIFT_AWARE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 640,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 4,
+          "active_temporal_processes": 1,
+          "active_variables": 4,
+          "case_id": "R1B-b0091197e400146f64ffcbfe",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "SHIFT_AWARE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 640,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 10,
+          "active_temporal_processes": 1,
+          "active_variables": 10,
+          "case_id": "R1B-b7e22ed8f87246c210f42e04",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "SHIFT_AWARE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 1600,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 3,
+          "active_temporal_processes": 1,
+          "active_variables": 3,
+          "case_id": "R1B-ba0d675b54fcb07be4d9ccbb",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "SHIFT_AWARE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 480,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 3,
+          "active_temporal_processes": 1,
+          "active_variables": 3,
+          "case_id": "R1B-d635d1a87d3b176d4cf12169",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "SHIFT_AWARE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 480,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 5,
+          "active_temporal_processes": 1,
+          "active_variables": 5,
+          "case_id": "R1B-e7414dd0dc6a4f25e1cfc3d7",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "SHIFT_AWARE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 800,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        },
+        {
+          "active_causal_mechanisms": 3,
+          "active_temporal_processes": 1,
+          "active_variables": 3,
+          "case_id": "R1B-ea5ed259ba63bbe0e00fc072",
+          "future_predictions_frozen": 1,
+          "hypotheses_generated": 6,
+          "hypotheses_rejected": 5,
+          "hypotheses_retained": 1,
+          "interventions_proposed": 1,
+          "lane": "B",
+          "method": "SHIFT_AWARE_TRANSFER",
+          "mode": "FULL",
+          "numeric_transport": {
+            "explicit_missing_cells": 0,
+            "finite_cells": 480,
+            "finite_ieee754_roundtrip_mismatches": 0,
+            "nonfinite_cells_with_numeric_authority": 0,
+            "numeric_value_as_new_primitive_events": 0
+          },
+          "predictions_frozen_before_intervention": true,
+          "proposed_edges": 0,
+          "self_detected_frontier": true,
+          "termination": "DISCOVERED"
+        }
+      ],
+      "lane": "B",
+      "method": "SHIFT_AWARE_TRANSFER",
+      "mode": "FULL",
+      "prediction_commitment": "ff146deb6a03f62910223053705e8caecfe3c4b79afd9da8414d4f16d315ae60",
+      "predictions": [
+        {
+          "case_id": "R1B-04d3b2d827a96de5d311f3d3",
+          "negative_transfer_attempt": true,
+          "predicted_y_ieee754_bits": [
+            4611838341590024192
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-226ea02e87a78b3dc693ca99",
+          "negative_transfer_attempt": false,
+          "predicted_y_ieee754_bits": [
+            13808750880964529375
+          ],
+          "promoted_transfer": true
+        },
+        {
+          "case_id": "R1B-4cc9f9c4d2f023772a2ea82a",
+          "negative_transfer_attempt": true,
+          "predicted_y_ieee754_bits": [
+            4604949819637628928
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-56c519e73b2916a153918fa7",
+          "negative_transfer_attempt": true,
+          "predicted_y_ieee754_bits": [
+            13806323018969907200
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-76450470e56072c42f200879",
+          "negative_transfer_attempt": true,
+          "predicted_y_ieee754_bits": [
+            4594578200004132864
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-7a91cea48526dba2e83ed7e1",
+          "negative_transfer_attempt": true,
+          "predicted_y_ieee754_bits": [
+            13808459481731825664
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-83cbe826146afa62cc6851e4",
+          "negative_transfer_attempt": true,
+          "predicted_y_ieee754_bits": [
+            4603266843682013184
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-a5854725b626816d7b9e083c",
+          "negative_transfer_attempt": true,
+          "predicted_y_ieee754_bits": [
+            4602004989806641152
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-b0091197e400146f64ffcbfe",
+          "negative_transfer_attempt": true,
+          "predicted_y_ieee754_bits": [
+            4605311855315910656
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-b7e22ed8f87246c210f42e04",
+          "negative_transfer_attempt": true,
+          "predicted_y_ieee754_bits": [
+            13804794911481921536
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-ba0d675b54fcb07be4d9ccbb",
+          "negative_transfer_attempt": true,
+          "predicted_y_ieee754_bits": [
+            13826089095195000832
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-d635d1a87d3b176d4cf12169",
+          "negative_transfer_attempt": true,
+          "predicted_y_ieee754_bits": [
+            4601903401482059776
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-e7414dd0dc6a4f25e1cfc3d7",
+          "negative_transfer_attempt": true,
+          "predicted_y_ieee754_bits": [
+            4577217046156148736
+          ],
+          "promoted_transfer": false
+        },
+        {
+          "case_id": "R1B-ea5ed259ba63bbe0e00fc072",
+          "negative_transfer_attempt": true,
+          "predicted_y_ieee754_bits": [
+            13828572317510270976
+          ],
+          "promoted_transfer": false
+        }
+      ]
+    }
+  },
+  "benchmark_specific_causal_hint_branches": 0,
+  "expected_external_result_lookups": 0,
+  "external_generator_source_reads_by_bcore": 0,
+  "external_ground_truth_equation_reads": 0,
+  "external_ground_truth_graph_reads": 0,
+  "final_outcome_reveal_events": 0,
+  "human_external_intervention_selection_events": 0,
+  "human_mechanism_transfer_selection_events": 0,
+  "human_shift_component_selection_events": 0,
+  "human_target_rebinding_selection_events": 0,
+  "lane_a_worlds": 13,
+  "lane_b_worlds": 14,
+  "network_reads_during_canonical": 0,
+  "network_writes_during_canonical": 0,
+  "raw_arm_matrix": {
+    "arm_results_exposed_to_adaptive_research": false,
+    "arms": {
+      "NAIVE_TRANSFER": {
+        "adaptation_work": 27,
+        "hypotheses_to_valid_model": 27,
+        "interventions_to_valid_model": 0,
+        "lane_a": {
+          "bcore_transfer_self_asserted_success_events": 0,
+          "deterministic_evaluator": true,
+          "expected_external_result_lookups": 0,
+          "external_generator_source_reads_by_bcore": 0,
+          "external_ground_truth_equation_reads": 0,
+          "external_ground_truth_graph_reads": 0,
+          "external_passive_novel_prediction_errors": 29,
+          "external_passive_novel_predictions": 29,
+          "external_passive_novel_predictions_unscorable": 0,
+          "external_passive_novel_predictions_verified": 0,
+          "future_prediction_sse_ieee754_bits": 4613291930524498527,
+          "ground_truth_graph_revealed_to_bcore": false,
+          "lane_a_causal_fn": 0,
+          "lane_a_causal_fp": 104,
+          "lane_a_causal_tp": 38,
+          "lane_a_direction_errors": 8,
+          "lane_a_lag_errors": 0,
+          "lane_a_precision_exact": {
+            "denominator": 142,
+            "numerator": 38
+          },
+          "lane_a_recall_exact": {
+            "denominator": 38,
+            "numerator": 38
+          },
+          "prediction_commitment": "73e263a3ca0d14af37511529fbd4abebc7a236c32c16c2d639526c2d33fdb45b",
+          "raw_field_acceptance_authority": true
+        },
+        "lane_b": {
+          "bcore_transfer_self_asserted_success_events": 0,
+          "deterministic_evaluator": true,
+          "expected_external_result_lookups": 0,
+          "external_counterfactual_errors": 10,
+          "external_counterfactual_predictions": 14,
+          "external_counterfactual_verified": 4,
+          "external_generator_source_reads_by_bcore": 0,
+          "external_ground_truth_equation_reads": 0,
+          "external_ground_truth_graph_reads": 0,
+          "external_interventional_prediction_errors": 10,
+          "external_interventional_predictions": 14,
+          "external_interventional_predictions_unscorable": 0,
+          "external_interventional_predictions_verified": 4,
+          "external_post_discovery_prediction_gain": true,
+          "no_change_baseline_sse_ieee754_bits": 4621991964383140585,
+          "outcomes_revealed_to_bcore": false,
+          "prediction_commitment": "23bec911d88d86fa374a337788e09823b7cfa71e081a47d51fb9a6918256e792",
+          "prediction_sse_ieee754_bits": 4621929680623612678,
+          "raw_field_acceptance_authority": true
+        },
+        "target_interventions": 0,
+        "target_observations": 27
+      },
+      "NO_CHANGE": {
+        "adaptation_work": 0,
+        "hypotheses_to_valid_model": 0,
+        "interventions_to_valid_model": 0,
+        "lane_a": {
+          "bcore_transfer_self_asserted_success_events": 0,
+          "deterministic_evaluator": true,
+          "expected_external_result_lookups": 0,
+          "external_generator_source_reads_by_bcore": 0,
+          "external_ground_truth_equation_reads": 0,
+          "external_ground_truth_graph_reads": 0,
+          "external_passive_novel_prediction_errors": 29,
+          "external_passive_novel_predictions": 29,
+          "external_passive_novel_predictions_unscorable": 0,
+          "external_passive_novel_predictions_verified": 0,
+          "future_prediction_sse_ieee754_bits": 4613291930524498527,
+          "ground_truth_graph_revealed_to_bcore": false,
+          "lane_a_causal_fn": 38,
+          "lane_a_causal_fp": 0,
+          "lane_a_causal_tp": 0,
+          "lane_a_direction_errors": 0,
+          "lane_a_lag_errors": 0,
+          "lane_a_precision_exact": {
+            "denominator": 0,
+            "numerator": 0
+          },
+          "lane_a_recall_exact": {
+            "denominator": 38,
+            "numerator": 0
+          },
+          "prediction_commitment": "a90bae62f8095c7e40959000a32e31df740195984b072601312fc9bdaa1b2e21",
+          "raw_field_acceptance_authority": true
+        },
+        "lane_b": {
+          "bcore_transfer_self_asserted_success_events": 0,
+          "deterministic_evaluator": true,
+          "expected_external_result_lookups": 0,
+          "external_counterfactual_errors": 5,
+          "external_counterfactual_predictions": 14,
+          "external_counterfactual_verified": 9,
+          "external_generator_source_reads_by_bcore": 0,
+          "external_ground_truth_equation_reads": 0,
+          "external_ground_truth_graph_reads": 0,
+          "external_interventional_prediction_errors": 5,
+          "external_interventional_predictions": 14,
+          "external_interventional_predictions_unscorable": 0,
+          "external_interventional_predictions_verified": 9,
+          "external_post_discovery_prediction_gain": true,
+          "no_change_baseline_sse_ieee754_bits": 4621991964383140585,
+          "outcomes_revealed_to_bcore": false,
+          "prediction_commitment": "d6b8e49d77765169475736100569bbb7892fb105cdde68ef07776fb0491ee5fd",
+          "prediction_sse_ieee754_bits": 4621049211425154277,
+          "raw_field_acceptance_authority": true
+        },
+        "target_interventions": 0,
+        "target_observations": 27
+      },
+      "SCRATCH": {
+        "adaptation_work": 364,
+        "hypotheses_to_valid_model": 364,
+        "interventions_to_valid_model": 0,
+        "lane_a": {
+          "bcore_transfer_self_asserted_success_events": 0,
+          "deterministic_evaluator": true,
+          "expected_external_result_lookups": 0,
+          "external_generator_source_reads_by_bcore": 0,
+          "external_ground_truth_equation_reads": 0,
+          "external_ground_truth_graph_reads": 0,
+          "external_passive_novel_prediction_errors": 11,
+          "external_passive_novel_predictions": 29,
+          "external_passive_novel_predictions_unscorable": 0,
+          "external_passive_novel_predictions_verified": 18,
+          "future_prediction_sse_ieee754_bits": 4623048316592835134,
+          "ground_truth_graph_revealed_to_bcore": false,
+          "lane_a_causal_fn": 21,
+          "lane_a_causal_fp": 19,
+          "lane_a_causal_tp": 17,
+          "lane_a_direction_errors": 5,
+          "lane_a_lag_errors": 0,
+          "lane_a_precision_exact": {
+            "denominator": 36,
+            "numerator": 17
+          },
+          "lane_a_recall_exact": {
+            "denominator": 38,
+            "numerator": 17
+          },
+          "prediction_commitment": "20b0085412a28f1e2505a7cb7f4591046d0b5faa7ca8f638508705f470192c2a",
+          "raw_field_acceptance_authority": true
+        },
+        "lane_b": {
+          "bcore_transfer_self_asserted_success_events": 0,
+          "deterministic_evaluator": true,
+          "expected_external_result_lookups": 0,
+          "external_counterfactual_errors": 7,
+          "external_counterfactual_predictions": 14,
+          "external_counterfactual_verified": 7,
+          "external_generator_source_reads_by_bcore": 0,
+          "external_ground_truth_equation_reads": 0,
+          "external_ground_truth_graph_reads": 0,
+          "external_interventional_prediction_errors": 7,
+          "external_interventional_predictions": 14,
+          "external_interventional_predictions_unscorable": 0,
+          "external_interventional_predictions_verified": 7,
+          "external_post_discovery_prediction_gain": false,
+          "no_change_baseline_sse_ieee754_bits": 4621991964383140585,
+          "outcomes_revealed_to_bcore": false,
+          "prediction_commitment": "b85c7f632624a06454d556aa315295b930d80a6fb65e8a565260426cc1e1dedb",
+          "prediction_sse_ieee754_bits": 4625966555621282524,
+          "raw_field_acceptance_authority": true
+        },
+        "target_interventions": 0,
+        "target_observations": 27
+      },
+      "SHIFT_AWARE_TRANSFER": {
+        "adaptation_work": 71,
+        "hypotheses_to_valid_model": 71,
+        "interventions_to_valid_model": 0,
+        "lane_a": {
+          "bcore_transfer_self_asserted_success_events": 0,
+          "deterministic_evaluator": true,
+          "expected_external_result_lookups": 0,
+          "external_generator_source_reads_by_bcore": 0,
+          "external_ground_truth_equation_reads": 0,
+          "external_ground_truth_graph_reads": 0,
+          "external_passive_novel_prediction_errors": 11,
+          "external_passive_novel_predictions": 29,
+          "external_passive_novel_predictions_unscorable": 0,
+          "external_passive_novel_predictions_verified": 18,
+          "future_prediction_sse_ieee754_bits": 4623048316592835134,
+          "ground_truth_graph_revealed_to_bcore": false,
+          "lane_a_causal_fn": 0,
+          "lane_a_causal_fp": 104,
+          "lane_a_causal_tp": 38,
+          "lane_a_direction_errors": 8,
+          "lane_a_lag_errors": 0,
+          "lane_a_precision_exact": {
+            "denominator": 142,
+            "numerator": 38
+          },
+          "lane_a_recall_exact": {
+            "denominator": 38,
+            "numerator": 38
+          },
+          "prediction_commitment": "8c7ccbd1a4442440e7ce3215906b0ed313bf77e8fae76082982fb4c032c15136",
+          "raw_field_acceptance_authority": true
+        },
+        "lane_b": {
+          "bcore_transfer_self_asserted_success_events": 0,
+          "deterministic_evaluator": true,
+          "expected_external_result_lookups": 0,
+          "external_counterfactual_errors": 5,
+          "external_counterfactual_predictions": 14,
+          "external_counterfactual_verified": 9,
+          "external_generator_source_reads_by_bcore": 0,
+          "external_ground_truth_equation_reads": 0,
+          "external_ground_truth_graph_reads": 0,
+          "external_interventional_prediction_errors": 5,
+          "external_interventional_predictions": 14,
+          "external_interventional_predictions_unscorable": 0,
+          "external_interventional_predictions_verified": 9,
+          "external_post_discovery_prediction_gain": true,
+          "no_change_baseline_sse_ieee754_bits": 4621991964383140585,
+          "outcomes_revealed_to_bcore": false,
+          "prediction_commitment": "ff146deb6a03f62910223053705e8caecfe3c4b79afd9da8414d4f16d315ae60",
+          "prediction_sse_ieee754_bits": 4621041965399048627,
+          "raw_field_acceptance_authority": true
+        },
+        "target_interventions": 0,
+        "target_observations": 27
+      }
+    },
+    "bcore_transfer_self_asserted_success_events": 0,
+    "deterministic_evaluator": true,
+    "expected_external_result_lookups": 0,
+    "external_generator_source_reads_by_bcore": 0,
+    "external_ground_truth_equation_reads": 0,
+    "external_ground_truth_graph_reads": 0,
+    "final_outcomes_revealed_to_bcore": false,
+    "negative_transfer_accepted": 0,
+    "negative_transfer_attempts": 13,
+    "negative_transfer_prevented": 13,
+    "promoted_target_transfer_worse_than_no_change_events": 0,
+    "raw_field_acceptance_authority": true
+  },
+  "schema_version": "SEM37_R1_FINAL_EXTERNAL_RAW_EVALUATION_1",
+  "scratch_adaptation_work": 364,
+  "scratch_arm_target_interventions": 0,
+  "scratch_arm_target_observations": 27,
+  "scratch_hypotheses_to_valid_model": 364,
+  "scratch_interventions_to_valid_model": 0,
+  "set": "R1_FINAL_C",
+  "task_specific_external_repair_branches": 0,
+  "transfer_adaptation_work": 71,
+  "transfer_arm_target_interventions": 0,
+  "transfer_arm_target_observations": 27,
+  "transfer_hypotheses_to_valid_model": 71,
+  "transfer_interventions_to_valid_model": 0,
+  "worlds": 27
+}
