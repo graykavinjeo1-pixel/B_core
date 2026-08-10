@@ -1,0 +1,32 @@
+{
+  "FINAL_FREEZE_COMPLETE": true,
+  "acceptance_changes_after_freeze_allowed": false,
+  "acceptance_sha256": "20b19c07848d379dcf61195b38bd3805c24b7b1d55dbaecc243516775e9030f8",
+  "authoritative_predecessor": "b33386e7a8793c5c27e2c2df3e19db0e6e04d0f4",
+  "budget": 4096,
+  "candidate_selection_receipt_sha256": "36c73872591c96b3e9514e1ad0d21a14bea398b9e45e0f21f8ec69582c96d6d8",
+  "causal_ontology_sha256": "25411dace76c1ca2902b231642f2b4f5055f5848ee7640105d3dc373e2d69231",
+  "external_evaluator_sha256": "39aa92655295881187730d6a6555b5396aa34cc76c8861b91f91a38aaeb9ea77",
+  "final_g_exposure_events": 0,
+  "final_holdout_selection_method": "SEM37_R4_HASH_ORDERED_FIRST_CONTRACT_SATISFYING_UNUSED_PARTITION_V1",
+  "historical_r2_commit": "73dab667e9f009025c969a4c025ca3c40519c1da",
+  "historical_r3_commit": "c7c399ef53829f21040722042b77ac3702019a92",
+  "historical_r3_final_freeze_commit": "3dc954a5bc9551548622a3d1d8171a5bda79fe9b",
+  "instruction_receipt_sha256": "46f655c98df20bbcc92ba262177d6c84443e1326aa0c0438fc94b80ac9a91b74",
+  "numeric_authority_manifest_sha256": "e05ca9a639c7e9efdb54410bc61779a7f3bf3cb2b1fc49955daa9d148e56c410",
+  "operator_instruction_sha256": "f2f1fe6fdd4bdf9c7c0663d1b364fd33c71ac3f408253488461628e5b411d236",
+  "promotion_policy_changes_after_freeze_allowed": false,
+  "r4_engine_sha256": "e098904ba47fad04f5f4332f39911bb5292c05eb694ee3b932daa55ad6f35237",
+  "routing_sha256": "b1bd283ea3fa0028547c8779db26940d3621ac51fbedec8ed0a94aaf76e5907d",
+  "schema_version": "SEM37_R4_FINAL_FREEZE_1",
+  "scientific_engine_changes_after_freeze_allowed": false,
+  "seed": 3704202608,
+  "selected_causal_method": "RESIDUAL512",
+  "selected_transfer_policy": {
+    "margin_basis_points": 0,
+    "maximum_uncertainty_millionths": 250000,
+    "method": "INDEPENDENT_LINEAR"
+  },
+  "verifier_changes_after_freeze_allowed": false,
+  "verifier_sha256": "469ef698bc885dfb493461a7055eafceb2def577cd9f1d3cd9ad65776b642579"
+}
