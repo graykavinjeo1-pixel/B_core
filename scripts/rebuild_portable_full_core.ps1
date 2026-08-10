@@ -43,6 +43,8 @@ $rustupHome = if ($env:RUSTUP_HOME) {
 
 $env:SOURCE_DATE_EPOCH = "1786132966"
 $env:CARGO_INCREMENTAL = "0"
+$env:CARGO_BUILD_JOBS = "1"
+$env:RUST_TEST_THREADS = "1"
 $env:CARGO_TARGET_DIR = $target
 $env:CARGO_NET_OFFLINE = "true"
 $env:CARGO_ENCODED_RUSTFLAGS = @(
@@ -58,12 +60,12 @@ Remove-Item Env:RUSTFLAGS -ErrorAction SilentlyContinue
 
 Push-Location $source
 try {
-    & cargo build --quiet --workspace --bins --release --target x86_64-pc-windows-msvc --locked --offline
+    & cargo build --quiet --jobs 1 --workspace --bins --release --target x86_64-pc-windows-msvc --locked --offline
     if ($LASTEXITCODE -ne 0) {
         throw "PORTABLE_RELEASE_BUILD_FAILED:$LASTEXITCODE"
     }
     if (-not $SkipTests) {
-        & cargo test --quiet --workspace --all-targets --all-features --target x86_64-pc-windows-msvc --locked --offline
+        & cargo test --quiet --jobs 1 --workspace --all-targets --all-features --target x86_64-pc-windows-msvc --locked --offline
         if ($LASTEXITCODE -ne 0) {
             throw "PORTABLE_TEST_FAILED:$LASTEXITCODE"
         }
