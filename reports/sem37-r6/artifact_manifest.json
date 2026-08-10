@@ -1,0 +1,111 @@
+{
+  "authoritative_state": "GIT_COMMIT_PLUS_SEALED_ARTIFACTS",
+  "entries": [
+    {
+      "bytes": 473,
+      "path": "reports/sem37-r6/SEM37_R6_REPORT.md",
+      "sha256": "046b243d30124305ba926c30f5886d08b8cd1eccad87d70c76549806bcf7b49e"
+    },
+    {
+      "bytes": 458,
+      "path": "reports/sem37-r6/authoritative_predecessor_integrity.json",
+      "sha256": "4980c3f0ee72d7a56d7c3835682d0c8cc0a20f3d34462f92f96d5933d37bf460"
+    },
+    {
+      "bytes": 209,
+      "path": "reports/sem37-r6/budget_contract.json",
+      "sha256": "417d9ebbad8ae3a79a0cd876f40edae89b576c80cca346c453515d9cf74d5d4a"
+    },
+    {
+      "bytes": 1167,
+      "path": "reports/sem37-r6/campaign_governance_freeze.json",
+      "sha256": "69c9870e42d793ce15925ee00cd8cee2d12864d1c5804a76e45f12abd8d4323a"
+    },
+    {
+      "bytes": 404546,
+      "path": "reports/sem37-r6/candidate_mixed_effect_models.json",
+      "sha256": "e13889179a3b9c87620201caf1c7514e8ef037d20c7df9e648d5c31952748988"
+    },
+    {
+      "bytes": 195,
+      "path": "reports/sem37-r6/candidate_selection_receipt.json",
+      "sha256": "cc722ae54e4a300202a9873fecac221a47d67d18a7fb869d4e72bfdd5a188e77"
+    },
+    {
+      "bytes": 651,
+      "path": "reports/sem37-r6/clean_reconstruction.json",
+      "sha256": "21ba8e891147df8c7ae6370b5e1e3a8033d8921464a559979f75f784e3e06a28"
+    },
+    {
+      "bytes": 14787,
+      "path": "reports/sem37-r6/dev_ablation_matrix.json",
+      "sha256": "c24dbb6b5113b4056191ffdc62de1974ef573235963d4086b5649f653f4521f5"
+    },
+    {
+      "bytes": 449598,
+      "path": "reports/sem37-r6/development_result.json",
+      "sha256": "75d87e5ce0b06c31ac24a6b4a3cb3d26f4c8a401239f79b44d76d7a48e1be133"
+    },
+    {
+      "bytes": 1240,
+      "path": "reports/sem37-r6/evaluator_and_partition_freeze.json",
+      "sha256": "9bdca71c5fb7b188f7db71f587d31e744f453bb16caa67e680cfda444a079b79"
+    },
+    {
+      "bytes": 486,
+      "path": "reports/sem37-r6/final_regression.json",
+      "sha256": "01b873e3a4c1253afc71a0451e25ec8559edf687fde53cd39a00de127382b391"
+    },
+    {
+      "bytes": 15526,
+      "path": "reports/sem37-r6/mixed_causal_effect_ir.json",
+      "sha256": "77abc440ad9f534c0271f9fde69b72314d7711761be88d8b26c764dc4808390a"
+    },
+    {
+      "bytes": 8680,
+      "path": "reports/sem37-r6/mixed_path_certificates.jsonl",
+      "sha256": "a0858d8610beedcc7d961217e505efbbfa110404b5a150cdf05a8d2405ab536f"
+    },
+    {
+      "bytes": 538,
+      "path": "reports/sem37-r6/p0_static_quality.json",
+      "sha256": "b05822e3a1d8563d361299d20d6e279d5616f06a679c556ab5d5d848750e441f"
+    },
+    {
+      "bytes": 325,
+      "path": "reports/sem37-r6/primary_acceptance.json",
+      "sha256": "56b6614fe5ec59f3ac46fe700c47f59f162a8748bfeb7f528f303efbec75c35e"
+    },
+    {
+      "bytes": 2769,
+      "path": "reports/sem37-r6/r5_paired_metrics.json",
+      "sha256": "dfe76951776956dc8c71aaee5a91a54bfd749bc105c4fcd9b368063c1b4354bd"
+    },
+    {
+      "bytes": 2070,
+      "path": "reports/sem37-r6/r6_dev_j_fixture_receipt.json",
+      "sha256": "edce6faf4d03b27fc35779f56accf08545f0881207558d784a940b656fc8aff7"
+    },
+    {
+      "bytes": 2149,
+      "path": "reports/sem37-r6/r6_final_k_freeze.json",
+      "sha256": "56085294b4b383ed2f9aa16f3b05e938b36f0dc9016adf37eca53d21851ffef8"
+    },
+    {
+      "bytes": 72787,
+      "path": "reports/sem37-r6/r6_final_k_raw.json",
+      "sha256": "86b5890bbe6cee0328101ad622f6a4e08b5389d1afdd03d42b84684d3287036f"
+    },
+    {
+      "bytes": 327,
+      "path": "reports/sem37-r6/secondary_acceptance.json",
+      "sha256": "b6b9d98ff7d35de41108a42dc3e5d35c43bbed619ca67cbfec05fcdfc7526699"
+    },
+    {
+      "bytes": 5761,
+      "path": "reports/sem37-r6/sem37_r6_required_output.json",
+      "sha256": "c7f0f6761356aeab3c51e338c296739be92fe02014d16555a5a5558104efa99a"
+    }
+  ],
+  "schema_version": "SEM37_R6_ARTIFACT_MANIFEST_1"
+}

@@ -1,0 +1,17 @@
+{
+  "acceptance_recomputation_identical": true,
+  "cold_build_offline": true,
+  "cold_release_binaries_built": [
+    "sem37-r6-run",
+    "sem37-r6-finalize",
+    "sem37-r6-verify"
+  ],
+  "primary_acceptance_sha256": "56b6614fe5ec59f3ac46fe700c47f59f162a8748bfeb7f528f303efbec75c35e",
+  "r6_unit_tests_failed": 0,
+  "r6_unit_tests_passed": 5,
+  "required_output_sha256": "c7f0f6761356aeab3c51e338c296739be92fe02014d16555a5a5558104efa99a",
+  "secondary_acceptance_sha256": "b6b9d98ff7d35de41108a42dc3e5d35c43bbed619ca67cbfec05fcdfc7526699",
+  "source_commit": "c8216e926a5db03ad16d185941e69f470bb5c7c4",
+  "status": "PASS",
+  "warm_cache_used": false
+}
