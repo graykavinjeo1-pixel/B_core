@@ -1,0 +1,24 @@
+{
+  "schema_version": "B_CORE_INTEGRATED_DEVELOPMENT_ARTIFACT_MANIFEST_1",
+  "campaign_id": "B_CORE-INTEGRATED-DEVELOPMENT-01",
+  "evidence_commit": "8d7cf6d8061d67e1bc716462f7a4442ca96c06fa",
+  "authoritative_research_state": "GIT_COMMIT_AND_SEALED_ARTIFACTS",
+  "artifacts": {
+    "INTEGRATION_REPORT.md": {
+      "bytes": 1251,
+      "sha256": "eaf2ad947eba18b9a9b93d4fb266f39dff29955173d6035ec2801e539a19800d"
+    },
+    "integration_receipt.json": {
+      "bytes": 3186,
+      "sha256": "e4c295839e8d572cd2dc42c803105586e4409bcf8a4248eb1f882cc7098cb660"
+    },
+    "cargo_test_workspace.log": {
+      "bytes": 99252,
+      "sha256": "d182c97c15c13b69f07d33409d5c16d960f9310bab81175799f14cf705f007d3"
+    },
+    "cargo_clippy_all_targets.log": {
+      "bytes": 20546,
+      "sha256": "248b0a57f95edcae58f9434de5d80c9899eccb825f5f4c154de03c8510780bbd"
+    }
+  }
+}
