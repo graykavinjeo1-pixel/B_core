@@ -1,0 +1,167 @@
+{
+  "artifacts": {
+    "B_CORE_RSI_CONTRACT_01_REPORT.md": {
+      "bytes": 1511,
+      "sha256": "06fee08b2fd49f94ad7198629c28da963d4acf060f2d1dde61fc0a4be7787e33"
+    },
+    "b_core_rsi_contract_01_required_output.json": {
+      "bytes": 4018,
+      "sha256": "518c38f78e1e3680c4ecb7765733669ae669d4030439df6ea5f647786af1477a"
+    },
+    "campaign_freeze.json": {
+      "bytes": 1576,
+      "sha256": "2f198a9b8086211931793a94db713b7c6aeca1b003ec945aa96c494eaff10841"
+    },
+    "coding_graft_self_repair_ablation.json": {
+      "bytes": 976,
+      "sha256": "0d8a2d3d31087358710f57ce4a5949821ff52873a73700ad367b72459c6d75ff"
+    },
+    "defect_contract_ablation.json": {
+      "bytes": 979,
+      "sha256": "54eb3757f8e3b7d345b211e6e844d5f131ac41f5fcae1100416d83cb7867cfd7"
+    },
+    "defect_contract_ir_schema.json": {
+      "bytes": 565,
+      "sha256": "0bbd9c63f325955c19a5656aee64cd570fb9216507a0a00ec662a918e8f2fff8"
+    },
+    "defect_contracts.jsonl": {
+      "bytes": 10638,
+      "sha256": "84d0d54547a89a4da663115509d187684a557ceca01aa56c6659c346c0b01ef2"
+    },
+    "dev_manifest.json": {
+      "bytes": 1932,
+      "sha256": "b0ac192ad546ee3600030a3c2c864ce4d159ab9c1efc9aa91870dffb73008229"
+    },
+    "diagnostic_experiments.jsonl": {
+      "bytes": 1225,
+      "sha256": "32a56bfe03961414b43bc09cbadb15c14e34b03ed62990537a36f9a8e82b7487"
+    },
+    "diagnostic_hypotheses.jsonl": {
+      "bytes": 1428,
+      "sha256": "d5fbe8812bac5b8dd57bf5ec3bb1c1a907a579ffd20d0c6a5e4648c2fe0dd287"
+    },
+    "final_exposure_guard.json": {
+      "bytes": 232,
+      "sha256": "6da0482546c48b10c685c20744ad65a933bb8002fdd2e6fcb7a0672d6d59b9db"
+    },
+    "final_freeze.json": {
+      "bytes": 2183,
+      "sha256": "864c4279bdd14b3920e81f4293f33d14078d3630a6f35542399836a014d45a40"
+    },
+    "final_manifest.json": {
+      "bytes": 1166,
+      "sha256": "6bd4f60b8ba4029b048a721696580551c8d7cc0a591aea722add5d5f91d111a5"
+    },
+    "final_raw_results.json": {
+      "bytes": 79418,
+      "sha256": "915f80758484e2e55b9549c01c0247ac14b60f02bb5e79ee454a794342183d40"
+    },
+    "independent_verifier_ablation.json": {
+      "bytes": 741,
+      "sha256": "d54b8e00f1021df8f06b111c4384ed2936099706f52d9d4ae2c1ab9a323f01e3"
+    },
+    "installation_receipt_schema.json": {
+      "bytes": 582,
+      "sha256": "088cd9f51b2a994fa95319e3dfdbeaeff612d75d1d191b56d1ca3393e819f3cd"
+    },
+    "installation_receipts.jsonl": {
+      "bytes": 4892,
+      "sha256": "273af30e5c0efc89339ad60be8c1e34b1d0f320baa51753a605341636d962fdf"
+    },
+    "installer_negative_audit.json": {
+      "bytes": 290,
+      "sha256": "1b15859c3ee83cb6b8e885283529ab8778cda80abb3a6ad4aaec0bd8de5f6965"
+    },
+    "level1_manifest.json": {
+      "bytes": 353,
+      "sha256": "604b01723427c49622d665e59cee3cdbc1d3aa419a18f6b40e4c754633e5bd00"
+    },
+    "level1_results.json": {
+      "bytes": 21782,
+      "sha256": "b0f5a0f7f5f37317868ba687e6c98b96d05698b3f4570d3ed6db68d8b4e67545"
+    },
+    "level2_manifest.json": {
+      "bytes": 353,
+      "sha256": "ddf85f298fa82e64c17f5e833f61065c9064be625ca9ee9254a05c3ec597d7cd"
+    },
+    "level2_results.json": {
+      "bytes": 25000,
+      "sha256": "6a87a6e4b1f477ece68f52831999a2b7d8db3f06eb9164ef3c3d8a6d23a22fa6"
+    },
+    "level3_manifest.json": {
+      "bytes": 426,
+      "sha256": "d16b934996b544f553ec3f6c36c642c2836080f7aba1816202bb785401047d69"
+    },
+    "level3_results.json": {
+      "bytes": 43071,
+      "sha256": "d64875b0007013034506c88e5af634a4e4ecb7acc7b794c210a3a991542c5f96"
+    },
+    "observation_ir_schema.json": {
+      "bytes": 478,
+      "sha256": "35c1beb189a6a01b3c39b269c4b892e02b45cd5ae713ce330abbdc6a58a410cd"
+    },
+    "patch_candidate_ir_schema.json": {
+      "bytes": 539,
+      "sha256": "50da2f95abf415afddf09a4d415739481e5a8ec5c55f938bcec614de62c1d817"
+    },
+    "patch_candidates.jsonl": {
+      "bytes": 10313,
+      "sha256": "02d4171dec6e9ac67ab42ae22036fd38706fcd6449682e5d2b9045ad2003fc0b"
+    },
+    "post_install_regression.json": {
+      "bytes": 3860,
+      "sha256": "c86679ac5cf6e8edf24540c56f9fe53b6fba2687dcfe592438069e2585175a78"
+    },
+    "predecessor_integrity.json": {
+      "bytes": 458,
+      "sha256": "4d8572cd520cb74f1a51d7f0ffc58c9ad755ca2c8204311eb26b252c7c51424c"
+    },
+    "primary_acceptance.json": {
+      "bytes": 577,
+      "sha256": "91347d09a23e752199227b6d6dad825338b4bd68cb1dd5c967940f6b3fac0d9b"
+    },
+    "quality_gate_receipt.json": {
+      "bytes": 2285,
+      "sha256": "eb35d063fbeb64d55a0706be60c4825a26a6f82421ae0a95be90960da955ce8f"
+    },
+    "repair_spec_ablation.json": {
+      "bytes": 975,
+      "sha256": "6df87d6162a95a7d874f2def4f0691b4912009d261b61a653bf09c03d9c911d4"
+    },
+    "repair_spec_ir_schema.json": {
+      "bytes": 537,
+      "sha256": "ae548b6c049ac33539273b1b30b8f057359e0c26cd467f58d833fe021731790e"
+    },
+    "repair_specs.jsonl": {
+      "bytes": 14398,
+      "sha256": "87163a4798a1acccedbbb533958101fe2dc5dccd41400e7ca8d6280bd0095507"
+    },
+    "rollback_receipts.jsonl": {
+      "bytes": 2664,
+      "sha256": "be81c59ff65ab0cd7b42d3aa742a52e6833e00800a0b98742cfdbe8efec656b4"
+    },
+    "secondary_acceptance.json": {
+      "bytes": 406,
+      "sha256": "61e0b8c0a3881f15ba80b452f847a7a46566ce9dc08627b177ab1df474c54bc5"
+    },
+    "self_repair_continuity_canary.json": {
+      "bytes": 17483,
+      "sha256": "d88a25a861f5063a293aafe07e6a40c85dc17e5bf2bc2c2ac1eb79805941b653"
+    },
+    "self_repair_contract_spec.json": {
+      "bytes": 719,
+      "sha256": "80e1b7064ac5298cace1a8237a2932a5226a212f19b23d630cd5d6354a75a34b"
+    },
+    "verification_receipt_schema.json": {
+      "bytes": 566,
+      "sha256": "17de4c5b388cd289d01c729b56e7c833e0692ae1b443f8d397505360bda2696a"
+    },
+    "verification_receipts.jsonl": {
+      "bytes": 23319,
+      "sha256": "a24409268901cc8896c05aa385496b3043e4e13420f5b33779d60859cdf2c7f8"
+    }
+  },
+  "authoritative_research_state": "GIT_COMMIT_AND_SEALED_ARTIFACTS",
+  "campaign_id": "B_CORE-RSI-CONTRACT-01",
+  "schema_version": "B_CORE_RSI_CONTRACT_ARTIFACT_MANIFEST_1"
+}
