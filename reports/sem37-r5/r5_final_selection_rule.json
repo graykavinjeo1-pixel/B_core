@@ -1,0 +1,17 @@
+{
+  "schema_version": "SEM37_R5_FINAL_SELECTION_RULE_1",
+  "partition_rule": "SEM37_R5_HASH_ORDERED_IDENTIFIABILITY_STRATIFIED_UNUSED_DOTIME_V1",
+  "reserved_final_selection_commitment": "6e6a2c71e38d13b5f505d0b49c11c7ed8d6c64dca23da6336fe3962690cedbb6",
+  "required_classes": {
+    "identifiable_pure_direct": 3,
+    "identifiable_pure_mediated": 3,
+    "identifiable_mixed": 3,
+    "confounded_or_common_cause": 3,
+    "partial_or_non_identifiable": 2,
+    "delayed_direct": 1
+  },
+  "invalid_partition_action": "ADVANCE_DETERMINISTICALLY_WITHOUT_SOLVER_EXPOSURE",
+  "final_holdout_model_dependent_selection_events": 0,
+  "final_solver_exposures_to_invalid_fixtures": 0,
+  "frozen_before_development": true
+}

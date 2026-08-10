@@ -1,0 +1,16 @@
+{
+  "schema_version": "SEM37_R5_LITERATURE_MECHANISM_RECEIPT_1",
+  "principles_only": true,
+  "principles": [
+    "TOTAL_EFFECT_IS_NOT_DIRECT_EFFECT",
+    "DIRECT_AND_INDIRECT_EFFECTS_REQUIRE_EXPLICIT_IDENTIFICATION_ASSUMPTIONS",
+    "PATH_SPECIFIC_CLAIMS_MUST_REPORT_UNAVAILABLE_COUNTERFACTUAL_INFORMATION",
+    "INTERVENTION_SEMANTICS_PRECEDE_PATH_CLASSIFICATION"
+  ],
+  "primary_sources": [
+    {"work": "Robins and Greenland (1992), Identifiability and exchangeability for direct and indirect effects", "doi": "10.1097/00001648-199203000-00013"},
+    {"work": "Pearl (2001), Direct and Indirect Effects", "venue": "UAI 2001"}
+  ],
+  "fixed_estimator_transplanted": false,
+  "whole_causal_mediation_algorithm_transplants": 0
+}
