@@ -17,15 +17,31 @@ pub enum CausalPrecisionMethod {
     ConditionalLinearMdl,
     ConditionalNonlinearMdl,
     StableConditionalMdl,
+    TransitiveReducedNonlinearMdl,
+    TransitiveReducedStableMdl,
+    GlobalSubsetMdl,
+    GlobalSubsetTransitiveMdl,
+    PairwiseForkAblationMdl,
+    PairwiseChainAblationMdl,
+    PairwiseTriadAblationMdl,
+    PairwiseTriadStableAblationMdl,
 }
 
 impl CausalPrecisionMethod {
-    pub const CANDIDATES: [Self; 5] = [
+    pub const CANDIDATES: [Self; 13] = [
         Self::R1DenseCandidate,
         Self::PairwiseMdl,
         Self::ConditionalLinearMdl,
         Self::ConditionalNonlinearMdl,
         Self::StableConditionalMdl,
+        Self::TransitiveReducedNonlinearMdl,
+        Self::TransitiveReducedStableMdl,
+        Self::GlobalSubsetMdl,
+        Self::GlobalSubsetTransitiveMdl,
+        Self::PairwiseForkAblationMdl,
+        Self::PairwiseChainAblationMdl,
+        Self::PairwiseTriadAblationMdl,
+        Self::PairwiseTriadStableAblationMdl,
     ];
 }
 
@@ -200,13 +216,43 @@ fn discover_direct_edges(
             })
             .collect();
     }
+    if matches!(
+        method,
+        CausalPrecisionMethod::GlobalSubsetMdl | CausalPrecisionMethod::GlobalSubsetTransitiveMdl
+    ) {
+        let mut edges = global_subset_edges(values);
+        if method == CausalPrecisionMethod::GlobalSubsetTransitiveMdl {
+            edges = remove_transitive_adjacencies(&edges, variables);
+        }
+        return edges;
+    }
+    if matches!(
+        method,
+        CausalPrecisionMethod::PairwiseForkAblationMdl
+            | CausalPrecisionMethod::PairwiseChainAblationMdl
+            | CausalPrecisionMethod::PairwiseTriadAblationMdl
+            | CausalPrecisionMethod::PairwiseTriadStableAblationMdl
+    ) {
+        return pairwise_triad_ablation_edges(values, method);
+    }
     let nonlinear = matches!(
         method,
         CausalPrecisionMethod::ConditionalNonlinearMdl
             | CausalPrecisionMethod::StableConditionalMdl
+            | CausalPrecisionMethod::TransitiveReducedNonlinearMdl
+            | CausalPrecisionMethod::TransitiveReducedStableMdl
     );
     let conditional = !matches!(method, CausalPrecisionMethod::PairwiseMdl);
-    let stable = matches!(method, CausalPrecisionMethod::StableConditionalMdl);
+    let stable = matches!(
+        method,
+        CausalPrecisionMethod::StableConditionalMdl
+            | CausalPrecisionMethod::TransitiveReducedStableMdl
+    );
+    let transitive_reduction = matches!(
+        method,
+        CausalPrecisionMethod::TransitiveReducedNonlinearMdl
+            | CausalPrecisionMethod::TransitiveReducedStableMdl
+    );
     let mut edges = Vec::new();
     for target in 0..variables {
         for source in 0..variables {
@@ -229,7 +275,169 @@ fn discover_direct_edges(
             }
         }
     }
+    if transitive_reduction {
+        remove_transitive_adjacencies(&edges, variables)
+    } else {
+        edges
+    }
+}
+
+fn pairwise_triad_ablation_edges(
+    values: &[Vec<f64>],
+    method: CausalPrecisionMethod,
+) -> Vec<(usize, usize)> {
+    let variables = values[0].len();
+    let pairwise: Vec<(usize, usize)> = (0..variables)
+        .flat_map(|source| {
+            (0..variables)
+                .filter(move |target| *target != source)
+                .filter(move |target| {
+                    mdl_evidence(values, source, *target, false, false, None) > 0.0
+                })
+                .map(move |target| (source, target))
+        })
+        .collect();
+    pairwise
+        .iter()
+        .copied()
+        .filter(|(source, target)| {
+            let fork = (0..variables).any(|common| {
+                common != *source
+                    && common != *target
+                    && pairwise.contains(&(common, *source))
+                    && pairwise.contains(&(common, *target))
+            });
+            let chain = (0..variables).any(|mediator| {
+                mediator != *source
+                    && mediator != *target
+                    && pairwise.contains(&(*source, mediator))
+                    && pairwise.contains(&(mediator, *target))
+            });
+            let requires_ablation = match method {
+                CausalPrecisionMethod::PairwiseForkAblationMdl => fork,
+                CausalPrecisionMethod::PairwiseChainAblationMdl => chain,
+                CausalPrecisionMethod::PairwiseTriadAblationMdl => fork || chain,
+                CausalPrecisionMethod::PairwiseTriadStableAblationMdl => fork || chain,
+                _ => false,
+            };
+            if !requires_ablation {
+                return true;
+            }
+            if method == CausalPrecisionMethod::PairwiseTriadStableAblationMdl {
+                let evidence: Vec<f64> = (0..3)
+                    .map(|fold| mdl_evidence(values, *source, *target, true, true, Some(fold)))
+                    .collect();
+                evidence.iter().filter(|score| **score > 0.0).count() >= 2
+                    && median(&evidence) > 0.0
+            } else {
+                mdl_evidence(values, *source, *target, true, true, None) > 0.0
+            }
+        })
+        .collect()
+}
+
+fn global_subset_edges(values: &[Vec<f64>]) -> Vec<(usize, usize)> {
+    let variables = values[0].len();
+    let mut edges = Vec::new();
+    for target in 0..variables {
+        let candidates: Vec<usize> = (0..variables).filter(|source| *source != target).collect();
+        if candidates.len() >= usize::BITS as usize {
+            continue;
+        }
+        let mut best_score = f64::INFINITY;
+        let mut best_sources = Vec::new();
+        for mask in 0..(1_usize << candidates.len()) {
+            let sources: Vec<usize> = candidates
+                .iter()
+                .enumerate()
+                .filter(|(bit, _)| mask & (1 << bit) != 0)
+                .map(|(_, source)| *source)
+                .collect();
+            let score = subset_description_length(values, target, &sources);
+            if score < best_score
+                || (score.total_cmp(&best_score).is_eq() && sources.len() < best_sources.len())
+            {
+                best_score = score;
+                best_sources = sources;
+            }
+        }
+        edges.extend(best_sources.into_iter().map(|source| (source, target)));
+    }
     edges
+}
+
+fn subset_description_length(values: &[Vec<f64>], target: usize, sources: &[usize]) -> f64 {
+    let mut features = Vec::new();
+    let mut outcomes = Vec::new();
+    for time in 1..values.len() {
+        features.push(subset_feature_row(&values[time - 1], target, sources));
+        outcomes.push(values[time][target] - values[time - 1][target]);
+    }
+    let rows = features.len();
+    let mut sse = 0.0;
+    for fold in 0..3 {
+        let start = rows * fold / 3;
+        let end = rows * (fold + 1) / 3;
+        let validation: Vec<bool> = (0..rows).map(|row| row >= start && row < end).collect();
+        sse += held_out_sse(&features, &outcomes, &validation);
+    }
+    let observations = rows.max(2) as f64;
+    let parameters = features.first().map_or(0, Vec::len).max(1) as f64;
+    observations * ((sse + 1.0e-18) / observations).ln() + parameters * observations.ln()
+}
+
+fn subset_feature_row(state: &[f64], target: usize, sources: &[usize]) -> Vec<f64> {
+    let mut variables = vec![target];
+    variables.extend_from_slice(sources);
+    variables.sort_unstable();
+    variables.dedup();
+    let mut row = vec![1.0];
+    for variable in &variables {
+        let value = state[*variable];
+        row.push(value);
+        row.push(value * value);
+        row.push(value * value * value);
+    }
+    for left in 0..variables.len() {
+        for right in (left + 1)..variables.len() {
+            row.push(state[variables[left]] * state[variables[right]]);
+        }
+    }
+    row
+}
+
+fn remove_transitive_adjacencies(
+    edges: &[(usize, usize)],
+    variables: usize,
+) -> Vec<(usize, usize)> {
+    edges
+        .iter()
+        .copied()
+        .filter(|edge| !has_alternate_directed_path(edges, *edge, variables))
+        .collect()
+}
+
+fn has_alternate_directed_path(
+    edges: &[(usize, usize)],
+    excluded: (usize, usize),
+    variables: usize,
+) -> bool {
+    let mut frontier = vec![excluded.0];
+    let mut visited = vec![false; variables];
+    visited[excluded.0] = true;
+    while let Some(node) = frontier.pop() {
+        for (source, target) in edges {
+            if (*source, *target) == excluded || *source != node || visited[*target] {
+                continue;
+            }
+            if *target == excluded.1 {
+                return true;
+            }
+            visited[*target] = true;
+            frontier.push(*target);
+        }
+    }
+    false
 }
 
 fn mdl_evidence(
@@ -447,7 +655,8 @@ mod tests {
                 0.57 * prior[2] + 0.63 * prior[1],
             ]);
         }
-        let edges = discover_direct_edges(&values, CausalPrecisionMethod::StableConditionalMdl);
+        let edges =
+            discover_direct_edges(&values, CausalPrecisionMethod::GlobalSubsetTransitiveMdl);
         assert!(
             !edges.contains(&(0, 2)),
             "transitive influence became direct adjacency"
@@ -465,7 +674,7 @@ mod tests {
                 0.44 * prior[2] - 0.67 * prior[0],
             ]);
         }
-        let edges = discover_direct_edges(&values, CausalPrecisionMethod::ConditionalLinearMdl);
+        let edges = discover_direct_edges(&values, CausalPrecisionMethod::GlobalSubsetMdl);
         assert!(!edges.contains(&(1, 2)) && !edges.contains(&(2, 1)));
     }
 }

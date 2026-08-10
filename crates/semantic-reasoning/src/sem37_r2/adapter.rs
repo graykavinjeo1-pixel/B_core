@@ -168,7 +168,12 @@ pub fn collect_cases(
         .cases
         .into_iter()
         .map(|descriptor| {
-            let observation = evaluator.observe(set, &descriptor.case_id, 160)?;
+            let reveal_until = if descriptor.lane == R1ExternalLane::A {
+                800
+            } else {
+                160
+            };
+            let observation = evaluator.observe(set, &descriptor.case_id, reveal_until)?;
             Ok((descriptor, observation))
         })
         .collect()
