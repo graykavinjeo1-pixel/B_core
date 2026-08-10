@@ -1,9 +1,9 @@
 {
     "schema":  "B_CORE_SELF_HEALING_AUDIT_1",
     "worktree":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01",
-    "git_commit":  "13c8b924dfdfd2414fab0fee82fb17e859badeb4",
-    "generated_at_utc":  "2026-08-10T16:16:47.8657713Z",
-    "compiled_surface_count":  82,
+    "git_commit":  "9f0bf636d23677f74db8cdab5bf1c6c53dafc282",
+    "generated_at_utc":  "2026-08-10T16:27:32.0846772Z",
+    "compiled_surface_count":  83,
     "quarantined_surface_count":  21,
     "inventory":  [
                       {
@@ -95,6 +95,13 @@
                           "target":  "b-core-self-heal",
                           "target_kind":  "bin",
                           "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\self_healing_main.rs",
+                          "authority":  "COMPILED"
+                      },
+                      {
+                          "package":  "semantic-reasoning",
+                          "target":  "b-core-self-heal-verify",
+                          "target_kind":  "bin",
+                          "source_path":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\crates\\semantic-reasoning\\src\\self_healing_verify_main.rs",
                           "authority":  "COMPILED"
                       },
                       {
@@ -735,9 +742,9 @@
                        "command_sha256":  "15b58628a438e7120741781318f7b1cf2fd342d477a01bea61586a3fd375dd65",
                        "status":  "PASS",
                        "exit_code":  0,
-                       "duration_ms":  151,
+                       "duration_ms":  64,
                        "timeout_ms":  120000,
-                       "output_sha256":  "d826af134a581342eab98ff80a1e30144925e6748932a431bfea788477092bae",
+                       "output_sha256":  "8d9e6b2c11ea8bccef4a15c851972b6881da239a473e52478ecb36a9b6672ca5",
                        "log":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\reports\\b-core-self-healing-pipeline-01\\module-audit\\cargo_metadata.log",
                        "independent_process_observed":  true
                    },
@@ -747,7 +754,7 @@
                        "command_sha256":  "194fabc0129ce4a90d69f396041f7dfad35653be552de104cfe6bc624f183b5f",
                        "status":  "PASS",
                        "exit_code":  0,
-                       "duration_ms":  1327,
+                       "duration_ms":  1034,
                        "timeout_ms":  120000,
                        "output_sha256":  "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
                        "log":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\reports\\b-core-self-healing-pipeline-01\\module-audit\\cargo_fmt.log",
@@ -759,7 +766,7 @@
                        "command_sha256":  "df57a1f4abc86594824e5911d0ddee26eb182b6d0cd7e4b2ef184a5b6e75cc79",
                        "status":  "PASS",
                        "exit_code":  0,
-                       "duration_ms":  210060,
+                       "duration_ms":  176951,
                        "timeout_ms":  600000,
                        "output_sha256":  "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
                        "log":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\reports\\b-core-self-healing-pipeline-01\\module-audit\\cargo_compile_all_targets_clean_canary.log",
@@ -771,9 +778,9 @@
                        "command_sha256":  "689e7fc87d3a8fccbcfa80fc74b43ac0027db3b530b2d38de48eff96cd90d63f",
                        "status":  "PASS",
                        "exit_code":  0,
-                       "duration_ms":  183559,
+                       "duration_ms":  152187,
                        "timeout_ms":  600000,
-                       "output_sha256":  "37f8accb40e2669ede9386e8c8d44e0239c3d06905ce87ee469d7ca6d41e9035",
+                       "output_sha256":  "d905aa50eb05f5fead1befdc598600a4fa8ef7def2ce79fd687b80b63dd2cdbd",
                        "log":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\reports\\b-core-self-healing-pipeline-01\\module-audit\\cargo_test_all_targets.log",
                        "independent_process_observed":  true
                    },
@@ -783,7 +790,7 @@
                        "command_sha256":  "283b128ff970a2a86f36199c8cbe5b7ad09887482c9ccb1ed995585be8c8593d",
                        "status":  "PASS",
                        "exit_code":  0,
-                       "duration_ms":  6775,
+                       "duration_ms":  6087,
                        "timeout_ms":  600000,
                        "output_sha256":  "bb837efa38efe971f804e638272c7731bfb27c03f3ab293e679e68c728293bed",
                        "log":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\reports\\b-core-self-healing-pipeline-01\\module-audit\\cargo_test_docs.log",
@@ -795,9 +802,9 @@
                        "command_sha256":  "f835224c850b7035081a0d43a5e7e89a10b25689b02cb7eb3716531f6ab68824",
                        "status":  "PASS",
                        "exit_code":  0,
-                       "duration_ms":  37909,
+                       "duration_ms":  292,
                        "timeout_ms":  600000,
-                       "output_sha256":  "30368d62055475a05d6ca6288a7e843629f218b0d8eddb56baadec2e9ede29a8",
+                       "output_sha256":  "22e0df986057b9ba5be07526ac5fb348862a3dedef42108383cc3e088acbb889",
                        "log":  "D:\\B_Core_CAMPAIGNS\\b-core-self-healing-pipeline-01\\reports\\b-core-self-healing-pipeline-01\\module-audit\\cargo_clippy_strict.log",
                        "independent_process_observed":  true
                    }

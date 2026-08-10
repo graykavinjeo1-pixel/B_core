@@ -3,12 +3,12 @@
 ## Outcome
 
 `PASS` for the compiled and registered project surface at code commit
-`13c8b924dfdfd2414fab0fee82fb17e859badeb4`.
+`9f0bf636d23677f74db8cdab5bf1c6c53dafc282`.
 
-- Compiled Cargo targets: 82
+- Compiled Cargo targets: 83
 - Quarantined source-only surfaces: 21
-- Test suites: 82
-- Tests passed: 314
+- Test suites: 83
+- Tests passed: 315
 - Tests failed in the final audit: 0
 - `cargo fmt --check`: PASS
 - clean compile canary (`incremental=0`, `jobs=1`): PASS
@@ -37,6 +37,15 @@ The verification attestation is rejected if any of those dependency counters
 is non-zero, if the verifier/command hashes are missing, or if the result was
 not derived only from frozen deterministic checks. The proposer still cannot
 approve its own candidate.
+
+The proposer and verifier are separate local executables:
+
+```text
+b-core-self-heal.exe
+b-core-self-heal-verify.exe
+```
+
+The verifier executable has no repair synthesis entry point.
 
 ## Implemented repair loop
 

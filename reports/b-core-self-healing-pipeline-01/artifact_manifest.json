@@ -1,26 +1,26 @@
 {
   "schema": "B_CORE_SELF_HEALING_ARTIFACT_MANIFEST_1",
-  "verified_code_commit": "13c8b924dfdfd2414fab0fee82fb17e859badeb4",
+  "verified_code_commit": "9f0bf636d23677f74db8cdab5bf1c6c53dafc282",
   "artifacts": [
     {
       "path": "SELF_HEALING_REPORT.md",
-      "sha256": "2367137659918389e6f02b9c0139043ae33d1a08246960029223ccaf9c592bb8",
-      "bytes": 4695
+      "sha256": "4593ab2b0aed27de55ac43e17b5606e02e67d89a6863cb922155835bb1265956",
+      "bytes": 4878
     },
     {
       "path": "learning_receipt.json",
-      "sha256": "07a30a105a8d45ddb0535317607412bf8b54549aa8a09834cbff664aa11862b0",
-      "bytes": 1405
+      "sha256": "4228f9026ce8676d855babc0d0ddd1a62df78c5edbb47325175f72b97bd2954c",
+      "bytes": 1547
     },
     {
       "path": "module-audit/audit_receipt.json",
-      "sha256": "5c2de7251d84b022f1667c9814cf642b25c400efa878648b5a912d44c23528e0",
-      "bytes": 49723
+      "sha256": "108e5ee0e3e7b7540b1ec5a30b8c8c80d572169e68afbfa911aae137c2439ce0",
+      "bytes": 50161
     },
     {
       "path": "module-audit/cargo_clippy_strict.log",
-      "sha256": "30368d62055475a05d6ca6288a7e843629f218b0d8eddb56baadec2e9ede29a8",
-      "bytes": 192
+      "sha256": "22e0df986057b9ba5be07526ac5fb348862a3dedef42108383cc3e088acbb889",
+      "bytes": 72
     },
     {
       "path": "module-audit/cargo_compile_all_targets_clean_canary.log",
@@ -34,13 +34,13 @@
     },
     {
       "path": "module-audit/cargo_metadata.log",
-      "sha256": "d826af134a581342eab98ff80a1e30144925e6748932a431bfea788477092bae",
-      "bytes": 27421
+      "sha256": "8d9e6b2c11ea8bccef4a15c851972b6881da239a473e52478ecb36a9b6672ca5",
+      "bytes": 27678
     },
     {
       "path": "module-audit/cargo_test_all_targets.log",
-      "sha256": "37f8accb40e2669ede9386e8c8d44e0239c3d06905ce87ee469d7ca6d41e9035",
-      "bytes": 9851
+      "sha256": "d905aa50eb05f5fead1befdc598600a4fa8ef7def2ce79fd687b80b63dd2cdbd",
+      "bytes": 9965
     },
     {
       "path": "module-audit/cargo_test_docs.log",
