@@ -1,0 +1,6 @@
+{
+  "autonomous_epochs": 208,
+  "human_model_selection_events": 0,
+  "selected_candidate": "EVIDENCE_GUARDED_COMPONENTS",
+  "selection_method": "FROZEN_LEXICOGRAPHIC_MULTI_OBJECTIVE_RAW_FIELDS"
+}
