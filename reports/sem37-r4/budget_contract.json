@@ -1,0 +1,8 @@
+{
+  "schema_version": "SEM37_R4_BUDGET_CONTRACT_1",
+  "requested_max_autonomous_research_epochs": 4096,
+  "configured_max_autonomous_research_epochs": 4096,
+  "containment_only": true,
+  "stop_early_on_complete_scientific_evidence": true,
+  "campaign_budget_contract_pass": true
+}

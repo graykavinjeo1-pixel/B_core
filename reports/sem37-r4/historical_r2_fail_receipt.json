@@ -1,0 +1,8 @@
+{
+  "schema_version": "SEM37_R4_HISTORICAL_R2_FAIL_RECEIPT_1",
+  "status": "FAIL",
+  "disposition": "EXTERNAL_DIRECT_CAUSAL_STRUCTURE_PRECISION_LIMIT",
+  "sealed_final_commit": "73dab667e9f009025c969a4c025ca3c40519c1da",
+  "role_in_r4": "IMMUTABLE_DIAGNOSTIC_COMPARATOR_ONLY",
+  "promoted_as_capability_predecessor": false
+}

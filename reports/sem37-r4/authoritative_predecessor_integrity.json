@@ -1,0 +1,18 @@
+{
+  "schema_version": "SEM37_R4_AUTHORITATIVE_PREDECESSOR_INTEGRITY_1",
+  "authoritative_predecessor_commit": "b33386e7a8793c5c27e2c2df3e19db0e6e04d0f4",
+  "authoritative_predecessor_tree": "a7cf631eef1a0129998f0eef53a9b7d5117e2338",
+  "source_tree_exact_at_p0": true,
+  "engine_sha256": "a14e5065c1ce830c78bf16937110aab5612f820344d87e3eca67b00db1ba6fcf",
+  "world_model_sha256": "4b63a95f5710a277181a0e4d4e201afa53274eb0b0c6bb7165e376410734517f",
+  "scientific_loop_sha256": "c0b7bc1b1003efbd3be8316cb5db1254fefd2f78856f5d398681f155a8d185b4",
+  "acceptance_sha256": "0a837a76ca3f63135e0eef8c8b8d1546f853a5522dc3c281db1db15c0d219309",
+  "numeric_transport_sha256": "e088414a2d3e59ca05cd4a3d2280d76239ea84870b3035e199993341916adda7",
+  "verifier_sha256": "b9cc44dbccb0c52e218eae17bf5dfff4a12c53ffd84973c00762c588342a6bca",
+  "cargo_lock_sha256": "a25438f5b5aa4a4f6732e95f885a68d6dd5e51a9bc1463eece6ace12c4d953a5",
+  "workspace_tests_passed": true,
+  "release_build_passed": true,
+  "discovered_test_count": 289,
+  "historical_r2_r3_merged_into_starting_core": false,
+  "authoritative_predecessor_integrity": "PASS"
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "SEM37_R4_TRANSPORT_ACCEPTANCE_PRECHECK_1",
+  "numeric_authority_manifest_present": true,
+  "numeric_authority_source_sha256": "e088414a2d3e59ca05cd4a3d2280d76239ea84870b3035e199993341916adda7",
+  "derived_ratio_float_is_acceptance_authority": false,
+  "global_float_epsilon_acceptance_rule": false,
+  "verifier_runner_numeric_transport_equivalence": true,
+  "deterministic_recomputation_diff": 0,
+  "raw_field_acceptance_authority": true,
+  "primary_secondary_acceptance_diff": 0,
+  "acceptance_false_pass_events": 0,
+  "precheck_pass": true
+}

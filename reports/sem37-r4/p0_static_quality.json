@@ -1,0 +1,15 @@
+{
+  "schema_version": "SEM37_R4_P0_STATIC_QUALITY_1",
+  "cargo_fmt_check_pass": true,
+  "workspace_tests_pass": true,
+  "release_build_pass": true,
+  "clippy_inventory_pass": true,
+  "historical_clippy_warning_signatures": 22,
+  "historical_warning_kind": "clippy::manual_is_multiple_of",
+  "new_baseline_clippy_warning_signatures": 0,
+  "p0_semantic_behavior_diff": 0,
+  "p0_causal_behavior_diff": 0,
+  "p0_scientific_loop_diff": 0,
+  "first_test_attempt_tool_timeout_not_scientific_failure": true,
+  "successful_full_test_rerun": true
+}
