@@ -1,0 +1,10 @@
+{
+  "authoritative_predecessor_commit": "b33386e7a8793c5c27e2c2df3e19db0e6e04d0f4",
+  "authoritative_predecessor_tree": "a7cf631eef1a0129998f0eef53a9b7d5117e2338",
+  "historical_r5_raw_commit_available": true,
+  "historical_r5_seal_commit": "e0be25a72dca621cf4e4017c15cb6703ceb1bdbe",
+  "historical_r5_seal_commit_available": true,
+  "r5_promoted": false,
+  "status": "PASS",
+  "worktree_head_before_r6_changes": "b33386e7a8793c5c27e2c2df3e19db0e6e04d0f4"
+}
