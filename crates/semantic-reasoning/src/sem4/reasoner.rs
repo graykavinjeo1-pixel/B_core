@@ -812,7 +812,7 @@ fn ratio(numerator: usize, denominator: usize) -> f64 {
 fn median(values: &[usize]) -> f64 {
     if values.is_empty() {
         0.0
-    } else if values.len() % 2 == 0 {
+    } else if values.len().is_multiple_of(2) {
         (values[values.len() / 2 - 1] + values[values.len() / 2]) as f64 / 2.0
     } else {
         values[values.len() / 2] as f64

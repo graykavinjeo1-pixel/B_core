@@ -506,7 +506,7 @@ fn median_usize(values: &[usize]) -> f64 {
     sorted.sort_unstable();
     if sorted.is_empty() {
         0.0
-    } else if sorted.len() % 2 == 0 {
+    } else if sorted.len().is_multiple_of(2) {
         (sorted[sorted.len() / 2 - 1] + sorted[sorted.len() / 2]) as f64 / 2.0
     } else {
         sorted[sorted.len() / 2] as f64
@@ -518,7 +518,7 @@ fn median_u128(values: &[u128]) -> f64 {
     sorted.sort_unstable();
     if sorted.is_empty() {
         0.0
-    } else if sorted.len() % 2 == 0 {
+    } else if sorted.len().is_multiple_of(2) {
         (sorted[sorted.len() / 2 - 1] + sorted[sorted.len() / 2]) as f64 / 2.0
     } else {
         sorted[sorted.len() / 2] as f64

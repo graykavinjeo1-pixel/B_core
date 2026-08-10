@@ -1013,6 +1013,47 @@ mod tests {
     }
 
     #[test]
+    fn full_synthesis_composition_invariant_holds_across_targets_and_seeds() {
+        let state = DirectorState::frozen_sem25();
+        for target in 0..PHASE_COUNT {
+            let phenotype = DesiredSelfPhenotype {
+                target_phase_code: target as u8,
+                required_property_mask: 1_u64 << target,
+                required_role_mask: 1_u64 << ((target % 3) + 16),
+                diagnosed_cause_mask: 1_u64 << (target % 3),
+                desired_reduction_ppm: 620_000,
+                max_added_bytes: 1_536,
+                preserve_invariant_mask: 0xFFFF,
+            };
+            for seed in 0..64_u64 {
+                let request = AutonomousEpochRequest {
+                    arm_code: 3,
+                    epoch: 1,
+                    seed,
+                    state: state.clone(),
+                    resource_ceiling_bytes: 2_000_000,
+                    scripted_predecessor_label_code: None,
+                    disable_autonomous_diagnosis: false,
+                    disable_autonomous_repair_synthesis: false,
+                    disable_research_memory: false,
+                    concrete_future_instance_visible: false,
+                };
+                let (first, _) = synthesize_repair(&request, &state, &phenotype, seed);
+                let (second, _) = synthesize_repair(&request, &state, &phenotype, seed);
+                assert_eq!(
+                    first, second,
+                    "nondeterministic target={target} seed={seed}"
+                );
+                let repair = first.expect("bounded synthesis should produce a repair");
+                assert!(
+                    repair.source_elements.len() >= 2,
+                    "under-composed target={target} seed={seed}"
+                );
+            }
+        }
+    }
+
+    #[test]
     fn only_one_bounded_descendant_is_applied_per_epoch() {
         let result = run_autonomous_epoch(request(3, 1, DirectorState::frozen_sem25()))
             .expect("autonomous epoch");

@@ -231,7 +231,7 @@ fn fixed_selection<'a>(
     sequence: usize,
 ) -> Option<&'a CandidateExperiment> {
     let family = (sequence / 2) % 6;
-    let value = if sequence % 2 == 0 { -1 } else { 0 };
+    let value = if sequence.is_multiple_of(2) { -1 } else { 0 };
     let target = format!("U{family:06}");
     available
         .iter()

@@ -253,7 +253,7 @@ fn make_collection_task(
 ) -> EvaluatorTask {
     let relation = RelationSpec::Collection {
         expression: scalar_rule(rng, 2),
-        include_when: (index % 3 != 0).then(|| predicate_rule(rng, 0)),
+        include_when: (!index.is_multiple_of(3)).then(|| predicate_rule(rng, 0)),
     };
     base_task(
         rng,
@@ -279,7 +279,7 @@ fn make_stateful_task(rng: &mut DeterministicRng, index: usize, split: DataSplit
     let relation = RelationSpec::Stateful {
         initial,
         update,
-        reset_when: (index % 4 == 0).then(|| predicate_rule(rng, 1)),
+        reset_when: index.is_multiple_of(4).then(|| predicate_rule(rng, 1)),
         emit_each: false,
     };
     base_task(
@@ -299,7 +299,7 @@ fn make_stateful_task(rng: &mut DeterministicRng, index: usize, split: DataSplit
 fn make_nested_task(rng: &mut DeterministicRng, index: usize, split: DataSplit) -> EvaluatorTask {
     let relation = RelationSpec::Nested {
         expression: scalar_rule(rng, 3),
-        include_when: (index % 2 == 0).then(|| predicate_rule(rng, 0)),
+        include_when: index.is_multiple_of(2).then(|| predicate_rule(rng, 0)),
     };
     base_task(
         rng,
@@ -318,11 +318,11 @@ fn make_nested_task(rng: &mut DeterministicRng, index: usize, split: DataSplit) 
 fn make_buffer_task(rng: &mut DeterministicRng, index: usize, split: DataSplit) -> EvaluatorTask {
     let relation = RelationSpec::Buffer {
         expression: binary(BinaryOperator::Add, arg(0), constant(rng.range(1, 8))),
-        write_output: index % 2 == 0,
+        write_output: index.is_multiple_of(2),
     };
     let mut effects = vec![Effect::Pure, Effect::LocalMutation, Effect::BufferMutation];
     effects.push(Effect::SandboxFileRead);
-    if index % 2 == 0 {
+    if index.is_multiple_of(2) {
         effects.push(Effect::SandboxFileWrite);
     }
     base_task(
@@ -342,7 +342,7 @@ fn make_buffer_task(rng: &mut DeterministicRng, index: usize, split: DataSplit) 
 fn make_image_task(rng: &mut DeterministicRng, index: usize, split: DataSplit) -> EvaluatorTask {
     let relation = RelationSpec::Image {
         expression: binary(BinaryOperator::Add, arg(0), constant(rng.range(-4, 5))),
-        apply_when: (index % 2 == 0).then(|| {
+        apply_when: index.is_multiple_of(2).then(|| {
             binary(
                 BinaryOperator::GreaterThan,
                 arg(0),
@@ -413,7 +413,7 @@ fn make_composition_task(
     let second = RelationSpec::Stateful {
         initial: rng.range(-3, 4),
         update: binary(BinaryOperator::Add, arg(0), arg(1)),
-        reset_when: (index % 3 == 0).then(|| predicate_rule(rng, 1)),
+        reset_when: index.is_multiple_of(3).then(|| predicate_rule(rng, 1)),
         emit_each: false,
     };
     base_task(
@@ -442,7 +442,7 @@ fn hidden_case(
         .map(|binding| {
             let value = match binding.value_type {
                 ProgramType::Int => Value::Int(rng.range(-20, 21)),
-                ProgramType::Bool => Value::Bool(rng.next_u64() % 2 == 0),
+                ProgramType::Bool => Value::Bool(rng.next_u64().is_multiple_of(2)),
                 ProgramType::SequenceInt => Value::Sequence(
                     (0..(3 + case_index % 5))
                         .map(|_| rng.range(-12, 13))

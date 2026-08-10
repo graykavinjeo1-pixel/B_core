@@ -246,14 +246,14 @@ fn build_task(index: usize, catalog: &[MechanismIR], rng: &mut Rng) -> TransferE
 fn target_domain(category: TransferTaskCategory, within: usize) -> Domain {
     match category {
         TransferTaskCategory::MathToProgramState => {
-            if within % 2 == 0 {
+            if within.is_multiple_of(2) {
                 Domain::Programming
             } else {
                 Domain::StatefulMachine
             }
         }
         TransferTaskCategory::ProgramToMathState => {
-            if within % 2 == 0 {
+            if within.is_multiple_of(2) {
                 Domain::Mathematics
             } else {
                 Domain::StatefulMachine
@@ -279,7 +279,7 @@ fn target_domain(category: TransferTaskCategory, within: usize) -> Domain {
 fn transforms_for(category: TransferTaskCategory, within: usize) -> Vec<MechanismTransform> {
     match category {
         TransferTaskCategory::MathToProgramState => {
-            if within % 2 == 0 {
+            if within.is_multiple_of(2) {
                 vec![MechanismTransform::StateEvolution]
             } else {
                 vec![MechanismTransform::ReversibleStateTransform]
@@ -329,7 +329,7 @@ fn behavior_for(transforms: &[MechanismTransform], within: usize) -> TargetBehav
     match transforms[0] {
         MechanismTransform::StateEvolution => TargetBehavior::StateDelta,
         MechanismTransform::ElementwiseTransform => {
-            if within % 2 == 0 {
+            if within.is_multiple_of(2) {
                 TargetBehavior::AddEach
             } else {
                 TargetBehavior::MultiplyEach

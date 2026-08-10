@@ -166,7 +166,7 @@ fn build_task(
             let concept_index = (branch + depth) % concept_target.max(1);
             let concept_id = concept_for(concept_index);
             let probe_enabled = matches!(class, TaskClass::Width | TaskClass::Mixed)
-                && (depth + branch + variant) % 2 == 0;
+                && (depth + branch + variant).is_multiple_of(2);
             let (candidates, correct_id, probe) = candidates_for_goal(
                 task_id,
                 &goal_id,

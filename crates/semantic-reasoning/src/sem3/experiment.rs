@@ -1019,7 +1019,7 @@ fn median(values: &[usize]) -> f64 {
     }
     let mut sorted = values.to_vec();
     sorted.sort_unstable();
-    if sorted.len() % 2 == 0 {
+    if sorted.len().is_multiple_of(2) {
         (sorted[sorted.len() / 2 - 1] + sorted[sorted.len() / 2]) as f64 / 2.0
     } else {
         sorted[sorted.len() / 2] as f64

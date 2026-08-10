@@ -7,6 +7,7 @@ pub mod experiment;
 pub mod integrated_development;
 pub mod mining;
 pub mod reporting;
+pub mod self_healing_pipeline;
 pub mod self_repair_contract;
 pub mod sem1;
 pub mod sem10fresh;

@@ -386,7 +386,7 @@ fn ambiguity_reference_task(language: Language, within: usize) -> TaskParts {
                     SemanticOperation::Sum,
                 )
             }
-        } else if within % 4 == 0 {
+        } else if within.is_multiple_of(4) {
             (
                 "차",
                 "수학 점화식",
