@@ -1,0 +1,95 @@
+[
+  {
+    "activation": {
+      "active_atom_count": 7,
+      "active_atom_ids": [
+        "FSK-BE-ERROR-MAP",
+        "FSK-BE-PROTOCOL-GATE",
+        "FSK-BE-TRANSACTION",
+        "FSK-FE-ASYNC-TRANSPORT",
+        "FSK-FE-EVENT-NORMALIZATION",
+        "FSK-FE-STATE-PROJECTION",
+        "FSK-OPS-REQUEST-TELEMETRY"
+      ],
+      "full_knowledge_scans": 0,
+      "max_active_atoms": 8,
+      "repository_identity_routing_events": 0,
+      "selected_recipe_ids": [
+        "FULLSTACK-REQUEST-TO-OBSERVABILITY-V1"
+      ],
+      "task_identity_routing_events": 0
+    },
+    "pass": true,
+    "query": {
+      "required_capabilities": [
+        "PROTOCOL_VALIDATION",
+        "TELEMETRY_CORRELATION"
+      ],
+      "required_layers": [
+        "FRONTEND",
+        "BACKEND",
+        "OPERATIONS"
+      ]
+    }
+  },
+  {
+    "activation": {
+      "active_atom_count": 4,
+      "active_atom_ids": [
+        "FSK-BE-ERROR-MAP",
+        "FSK-BE-TRANSACTION",
+        "FSK-FE-RESPONSE-RECONCILE",
+        "FSK-OPS-CLIENT-TELEMETRY"
+      ],
+      "full_knowledge_scans": 0,
+      "max_active_atoms": 8,
+      "repository_identity_routing_events": 0,
+      "selected_recipe_ids": [
+        "FULLSTACK-RESPONSE-CONSISTENCY-V1"
+      ],
+      "task_identity_routing_events": 0
+    },
+    "pass": true,
+    "query": {
+      "required_capabilities": [
+        "RESPONSE_RECONCILIATION"
+      ],
+      "required_layers": [
+        "FRONTEND",
+        "BACKEND",
+        "OPERATIONS"
+      ]
+    }
+  },
+  {
+    "activation": {
+      "active_atom_count": 5,
+      "active_atom_ids": [
+        "FSK-BE-RELEASE-CONTRACT",
+        "FSK-FE-RELEASE-CONTRACT",
+        "FSK-OPS-CANARY",
+        "FSK-OPS-HEALTH-GATE",
+        "FSK-OPS-ROLLBACK"
+      ],
+      "full_knowledge_scans": 0,
+      "max_active_atoms": 8,
+      "repository_identity_routing_events": 0,
+      "selected_recipe_ids": [
+        "FULLSTACK-SAFE-DELIVERY-V1"
+      ],
+      "task_identity_routing_events": 0
+    },
+    "pass": true,
+    "query": {
+      "required_capabilities": [
+        "CANARY_DEPLOYMENT",
+        "ROLLBACK"
+      ],
+      "required_layers": [
+        "FRONTEND",
+        "BACKEND",
+        "OPERATIONS"
+      ]
+    }
+  }
+]

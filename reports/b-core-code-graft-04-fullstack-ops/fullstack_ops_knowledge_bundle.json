@@ -1,0 +1,493 @@
+{
+  "schema": "b_core_fullstack_ops_knowledge_bundle_v1",
+  "campaign_id": "B_CORE-CODE-GRAFT-04",
+  "source_universe_sha256": "BF9F10C31F6504473050028280C1DCB22AC54CFD29DFC9215EC29DDD42BBE52C",
+  "source_predecessor_universe_sha256": "CBAF8D5548446D1D3165E4712A450F56A529AABB929AE757EAAC59596E51140C",
+  "source_manifest_projection_correction": true,
+  "source_semantics_mutated": false,
+  "source_family_receipts": [
+    {
+      "layer": "FRONTEND",
+      "classifier_version": "FULLSTACK_SOURCE_FAMILY_V1",
+      "source_count": 11,
+      "source_set_sha256": "9d5bc43e560cb4c9aa991a9acdc529df3308a6550f66b01f5dd5f59155261254",
+      "expected_source_count": 11,
+      "expected_source_set_sha256": "9D5BC43E560CB4C9AA991A9ACDC529DF3308A6550F66B01F5DD5F59155261254",
+      "matches_expected": true
+    },
+    {
+      "layer": "BACKEND",
+      "classifier_version": "FULLSTACK_SOURCE_FAMILY_V1",
+      "source_count": 26,
+      "source_set_sha256": "e24056eacd52ed3561c41ed4392148f97c0d476c05ae9ecad9b36ec28cba8cbd",
+      "expected_source_count": 26,
+      "expected_source_set_sha256": "E24056EACD52ED3561C41ED4392148F97C0D476C05AE9ECAD9B36EC28CBA8CBD",
+      "matches_expected": true
+    },
+    {
+      "layer": "OPERATIONS",
+      "classifier_version": "FULLSTACK_SOURCE_FAMILY_V1",
+      "source_count": 68,
+      "source_set_sha256": "362edc8bd51d8075c59bfdddaf7a343f82428c675ef7c60d6c14887ecacad84a",
+      "expected_source_count": 68,
+      "expected_source_set_sha256": "362EDC8BD51D8075C59BFDDDAF7A343F82428C675EF7C60D6C14887ECACAD84A",
+      "matches_expected": true
+    }
+  ],
+  "atoms": [
+    {
+      "atom_id": "FSK-FE-EVENT-NORMALIZATION",
+      "layer": "FRONTEND",
+      "capabilities": [
+        "USER_EVENT_NORMALIZATION"
+      ],
+      "mechanism_ids": [
+        "event_loop",
+        "pattern_matching"
+      ],
+      "elemental_operations": [
+        "READ",
+        "PARSE",
+        "BRANCH",
+        "TYPE_CHECK"
+      ],
+      "input_contract": "RAW_USER_EVENT",
+      "output_contract": "VALIDATED_INTERACTION",
+      "semantic_role": "boundary_validation",
+      "source_family_sha256": "9d5bc43e560cb4c9aa991a9acdc529df3308a6550f66b01f5dd5f59155261254",
+      "source_universe_sha256": "BF9F10C31F6504473050028280C1DCB22AC54CFD29DFC9215EC29DDD42BBE52C",
+      "exact_source_fragment_present": false,
+      "natural_language_is_authority": false
+    },
+    {
+      "atom_id": "FSK-FE-STATE-PROJECTION",
+      "layer": "FRONTEND",
+      "capabilities": [
+        "STATE_PROJECTION"
+      ],
+      "mechanism_ids": [
+        "algebraic_data_type",
+        "type_inference"
+      ],
+      "elemental_operations": [
+        "READ",
+        "BRANCH",
+        "TYPE_CHECK",
+        "SERIALIZE"
+      ],
+      "input_contract": "VALIDATED_INTERACTION",
+      "output_contract": "CLIENT_REQUEST",
+      "semantic_role": "state_projection",
+      "source_family_sha256": "9d5bc43e560cb4c9aa991a9acdc529df3308a6550f66b01f5dd5f59155261254",
+      "source_universe_sha256": "BF9F10C31F6504473050028280C1DCB22AC54CFD29DFC9215EC29DDD42BBE52C",
+      "exact_source_fragment_present": false,
+      "natural_language_is_authority": false
+    },
+    {
+      "atom_id": "FSK-FE-ASYNC-TRANSPORT",
+      "layer": "FRONTEND",
+      "capabilities": [
+        "ASYNC_TRANSPORT"
+      ],
+      "mechanism_ids": [
+        "async_await",
+        "result_value"
+      ],
+      "elemental_operations": [
+        "CALL",
+        "SUSPEND",
+        "RESUME",
+        "PROPAGATE_ERROR"
+      ],
+      "input_contract": "CLIENT_REQUEST",
+      "output_contract": "TRANSPORT_REQUEST",
+      "semantic_role": "async_failure_boundary",
+      "source_family_sha256": "9d5bc43e560cb4c9aa991a9acdc529df3308a6550f66b01f5dd5f59155261254",
+      "source_universe_sha256": "BF9F10C31F6504473050028280C1DCB22AC54CFD29DFC9215EC29DDD42BBE52C",
+      "exact_source_fragment_present": false,
+      "natural_language_is_authority": false
+    },
+    {
+      "atom_id": "FSK-BE-PROTOCOL-GATE",
+      "layer": "BACKEND",
+      "capabilities": [
+        "PROTOCOL_VALIDATION",
+        "AUTHORIZATION"
+      ],
+      "mechanism_ids": [
+        "interface_protocol",
+        "static_typing"
+      ],
+      "elemental_operations": [
+        "PARSE",
+        "TYPE_CHECK",
+        "VERIFY",
+        "BRANCH"
+      ],
+      "input_contract": "TRANSPORT_REQUEST",
+      "output_contract": "AUTHORIZED_COMMAND",
+      "semantic_role": "contract_enforcement",
+      "source_family_sha256": "e24056eacd52ed3561c41ed4392148f97c0d476c05ae9ecad9b36ec28cba8cbd",
+      "source_universe_sha256": "BF9F10C31F6504473050028280C1DCB22AC54CFD29DFC9215EC29DDD42BBE52C",
+      "exact_source_fragment_present": false,
+      "natural_language_is_authority": false
+    },
+    {
+      "atom_id": "FSK-BE-TRANSACTION",
+      "layer": "BACKEND",
+      "capabilities": [
+        "TRANSACTIONAL_EXECUTION"
+      ],
+      "mechanism_ids": [
+        "result_value",
+        "relational_query"
+      ],
+      "elemental_operations": [
+        "READ",
+        "WRITE",
+        "VERIFY",
+        "RECOVER"
+      ],
+      "input_contract": "AUTHORIZED_COMMAND",
+      "output_contract": "DOMAIN_RESULT",
+      "semantic_role": "transactional_execution",
+      "source_family_sha256": "e24056eacd52ed3561c41ed4392148f97c0d476c05ae9ecad9b36ec28cba8cbd",
+      "source_universe_sha256": "BF9F10C31F6504473050028280C1DCB22AC54CFD29DFC9215EC29DDD42BBE52C",
+      "exact_source_fragment_present": false,
+      "natural_language_is_authority": false
+    },
+    {
+      "atom_id": "FSK-BE-ERROR-MAP",
+      "layer": "BACKEND",
+      "capabilities": [
+        "ERROR_MAPPING"
+      ],
+      "mechanism_ids": [
+        "result_value",
+        "exception"
+      ],
+      "elemental_operations": [
+        "BRANCH",
+        "PROPAGATE_ERROR",
+        "RECOVER",
+        "SERIALIZE"
+      ],
+      "input_contract": "DOMAIN_RESULT",
+      "output_contract": "SERVICE_RESPONSE",
+      "semantic_role": "error_contract_mapping",
+      "source_family_sha256": "e24056eacd52ed3561c41ed4392148f97c0d476c05ae9ecad9b36ec28cba8cbd",
+      "source_universe_sha256": "BF9F10C31F6504473050028280C1DCB22AC54CFD29DFC9215EC29DDD42BBE52C",
+      "exact_source_fragment_present": false,
+      "natural_language_is_authority": false
+    },
+    {
+      "atom_id": "FSK-FE-RESPONSE-RECONCILE",
+      "layer": "FRONTEND",
+      "capabilities": [
+        "RESPONSE_RECONCILIATION"
+      ],
+      "mechanism_ids": [
+        "pattern_matching",
+        "algebraic_data_type"
+      ],
+      "elemental_operations": [
+        "PARSE",
+        "BRANCH",
+        "WRITE",
+        "VERIFY"
+      ],
+      "input_contract": "SERVICE_RESPONSE",
+      "output_contract": "STABLE_VIEW_STATE",
+      "semantic_role": "response_reconciliation",
+      "source_family_sha256": "9d5bc43e560cb4c9aa991a9acdc529df3308a6550f66b01f5dd5f59155261254",
+      "source_universe_sha256": "BF9F10C31F6504473050028280C1DCB22AC54CFD29DFC9215EC29DDD42BBE52C",
+      "exact_source_fragment_present": false,
+      "natural_language_is_authority": false
+    },
+    {
+      "atom_id": "FSK-OPS-REQUEST-TELEMETRY",
+      "layer": "OPERATIONS",
+      "capabilities": [
+        "TELEMETRY_CORRELATION"
+      ],
+      "mechanism_ids": [
+        "interface_protocol",
+        "message_passing"
+      ],
+      "elemental_operations": [
+        "SERIALIZE",
+        "DISPATCH",
+        "VERIFY",
+        "WRITE"
+      ],
+      "input_contract": "SERVICE_RESPONSE",
+      "output_contract": "OBSERVED_OUTCOME",
+      "semantic_role": "telemetry_correlation",
+      "source_family_sha256": "362edc8bd51d8075c59bfdddaf7a343f82428c675ef7c60d6c14887ecacad84a",
+      "source_universe_sha256": "BF9F10C31F6504473050028280C1DCB22AC54CFD29DFC9215EC29DDD42BBE52C",
+      "exact_source_fragment_present": false,
+      "natural_language_is_authority": false
+    },
+    {
+      "atom_id": "FSK-OPS-CLIENT-TELEMETRY",
+      "layer": "OPERATIONS",
+      "capabilities": [
+        "TELEMETRY_CORRELATION"
+      ],
+      "mechanism_ids": [
+        "event_loop",
+        "message_passing"
+      ],
+      "elemental_operations": [
+        "READ",
+        "SERIALIZE",
+        "DISPATCH",
+        "VERIFY"
+      ],
+      "input_contract": "STABLE_VIEW_STATE",
+      "output_contract": "OBSERVED_OUTCOME",
+      "semantic_role": "client_outcome_correlation",
+      "source_family_sha256": "362edc8bd51d8075c59bfdddaf7a343f82428c675ef7c60d6c14887ecacad84a",
+      "source_universe_sha256": "BF9F10C31F6504473050028280C1DCB22AC54CFD29DFC9215EC29DDD42BBE52C",
+      "exact_source_fragment_present": false,
+      "natural_language_is_authority": false
+    },
+    {
+      "atom_id": "FSK-FE-RELEASE-CONTRACT",
+      "layer": "FRONTEND",
+      "capabilities": [
+        "RELEASE_CONTRACT"
+      ],
+      "mechanism_ids": [
+        "build_tool",
+        "package_manager"
+      ],
+      "elemental_operations": [
+        "PARSE",
+        "COMPILE",
+        "LINK",
+        "VERIFY"
+      ],
+      "input_contract": "RELEASE_CANDIDATE",
+      "output_contract": "RELEASE_CANDIDATE",
+      "semantic_role": "frontend_release_contract",
+      "source_family_sha256": "9d5bc43e560cb4c9aa991a9acdc529df3308a6550f66b01f5dd5f59155261254",
+      "source_universe_sha256": "BF9F10C31F6504473050028280C1DCB22AC54CFD29DFC9215EC29DDD42BBE52C",
+      "exact_source_fragment_present": false,
+      "natural_language_is_authority": false
+    },
+    {
+      "atom_id": "FSK-BE-RELEASE-CONTRACT",
+      "layer": "BACKEND",
+      "capabilities": [
+        "RELEASE_CONTRACT"
+      ],
+      "mechanism_ids": [
+        "build_tool",
+        "interface_protocol"
+      ],
+      "elemental_operations": [
+        "PARSE",
+        "COMPILE",
+        "VERIFY",
+        "SERIALIZE"
+      ],
+      "input_contract": "RELEASE_CANDIDATE",
+      "output_contract": "RELEASE_CANDIDATE",
+      "semantic_role": "backend_release_contract",
+      "source_family_sha256": "e24056eacd52ed3561c41ed4392148f97c0d476c05ae9ecad9b36ec28cba8cbd",
+      "source_universe_sha256": "BF9F10C31F6504473050028280C1DCB22AC54CFD29DFC9215EC29DDD42BBE52C",
+      "exact_source_fragment_present": false,
+      "natural_language_is_authority": false
+    },
+    {
+      "atom_id": "FSK-OPS-CANARY",
+      "layer": "OPERATIONS",
+      "capabilities": [
+        "CANARY_DEPLOYMENT"
+      ],
+      "mechanism_ids": [
+        "package_manager",
+        "shell_pipeline"
+      ],
+      "elemental_operations": [
+        "VERIFY",
+        "DISPATCH",
+        "SYNCHRONIZE",
+        "READ"
+      ],
+      "input_contract": "RELEASE_CANDIDATE",
+      "output_contract": "CANARY_OBSERVATION",
+      "semantic_role": "bounded_canary",
+      "source_family_sha256": "362edc8bd51d8075c59bfdddaf7a343f82428c675ef7c60d6c14887ecacad84a",
+      "source_universe_sha256": "BF9F10C31F6504473050028280C1DCB22AC54CFD29DFC9215EC29DDD42BBE52C",
+      "exact_source_fragment_present": false,
+      "natural_language_is_authority": false
+    },
+    {
+      "atom_id": "FSK-OPS-HEALTH-GATE",
+      "layer": "OPERATIONS",
+      "capabilities": [
+        "HEALTH_GATING"
+      ],
+      "mechanism_ids": [
+        "result_value",
+        "debugger_tooling"
+      ],
+      "elemental_operations": [
+        "READ",
+        "VERIFY",
+        "BRANCH",
+        "PROPAGATE_ERROR"
+      ],
+      "input_contract": "CANARY_OBSERVATION",
+      "output_contract": "RELEASE_DECISION",
+      "semantic_role": "health_gate",
+      "source_family_sha256": "362edc8bd51d8075c59bfdddaf7a343f82428c675ef7c60d6c14887ecacad84a",
+      "source_universe_sha256": "BF9F10C31F6504473050028280C1DCB22AC54CFD29DFC9215EC29DDD42BBE52C",
+      "exact_source_fragment_present": false,
+      "natural_language_is_authority": false
+    },
+    {
+      "atom_id": "FSK-OPS-ROLLBACK",
+      "layer": "OPERATIONS",
+      "capabilities": [
+        "ROLLBACK"
+      ],
+      "mechanism_ids": [
+        "result_value",
+        "package_manager"
+      ],
+      "elemental_operations": [
+        "BRANCH",
+        "RECOVER",
+        "VERIFY",
+        "SYNCHRONIZE"
+      ],
+      "input_contract": "RELEASE_DECISION",
+      "output_contract": "STABLE_RELEASE",
+      "semantic_role": "rollback_guard",
+      "source_family_sha256": "362edc8bd51d8075c59bfdddaf7a343f82428c675ef7c60d6c14887ecacad84a",
+      "source_universe_sha256": "BF9F10C31F6504473050028280C1DCB22AC54CFD29DFC9215EC29DDD42BBE52C",
+      "exact_source_fragment_present": false,
+      "natural_language_is_authority": false
+    }
+  ],
+  "recipes": [
+    {
+      "recipe_id": "FULLSTACK-REQUEST-TO-OBSERVABILITY-V1",
+      "required_layers": [
+        "FRONTEND",
+        "BACKEND",
+        "OPERATIONS"
+      ],
+      "capabilities": [
+        "USER_EVENT_NORMALIZATION",
+        "STATE_PROJECTION",
+        "ASYNC_TRANSPORT",
+        "PROTOCOL_VALIDATION",
+        "AUTHORIZATION",
+        "TRANSACTIONAL_EXECUTION",
+        "ERROR_MAPPING",
+        "TELEMETRY_CORRELATION"
+      ],
+      "ordered_atom_ids": [
+        "FSK-FE-EVENT-NORMALIZATION",
+        "FSK-FE-STATE-PROJECTION",
+        "FSK-FE-ASYNC-TRANSPORT",
+        "FSK-BE-PROTOCOL-GATE",
+        "FSK-BE-TRANSACTION",
+        "FSK-BE-ERROR-MAP",
+        "FSK-OPS-REQUEST-TELEMETRY"
+      ],
+      "invariants": [
+        "validate before authority-bearing execution",
+        "preserve one typed error contract across the boundary",
+        "correlate outcome without making telemetry business authority"
+      ],
+      "abstain_when": [
+        "the public protocol contract is unavailable",
+        "authorization or data-ownership policy is unfrozen"
+      ],
+      "verification_obligations": [
+        "frontend state and protocol contract tests",
+        "backend transaction and error-mapping tests",
+        "trace-correlation and failure-path tests"
+      ]
+    },
+    {
+      "recipe_id": "FULLSTACK-RESPONSE-CONSISTENCY-V1",
+      "required_layers": [
+        "FRONTEND",
+        "BACKEND",
+        "OPERATIONS"
+      ],
+      "capabilities": [
+        "TRANSACTIONAL_EXECUTION",
+        "ERROR_MAPPING",
+        "RESPONSE_RECONCILIATION",
+        "TELEMETRY_CORRELATION"
+      ],
+      "ordered_atom_ids": [
+        "FSK-BE-TRANSACTION",
+        "FSK-BE-ERROR-MAP",
+        "FSK-FE-RESPONSE-RECONCILE",
+        "FSK-OPS-CLIENT-TELEMETRY"
+      ],
+      "invariants": [
+        "one service result maps to one explicit response variant",
+        "client reconciliation is deterministic and idempotent"
+      ],
+      "abstain_when": [
+        "response variant ownership is ambiguous"
+      ],
+      "verification_obligations": [
+        "fresh success and failure response variants",
+        "duplicate delivery reconciliation",
+        "client-visible outcome correlation"
+      ]
+    },
+    {
+      "recipe_id": "FULLSTACK-SAFE-DELIVERY-V1",
+      "required_layers": [
+        "FRONTEND",
+        "BACKEND",
+        "OPERATIONS"
+      ],
+      "capabilities": [
+        "RELEASE_CONTRACT",
+        "CANARY_DEPLOYMENT",
+        "HEALTH_GATING",
+        "ROLLBACK"
+      ],
+      "ordered_atom_ids": [
+        "FSK-FE-RELEASE-CONTRACT",
+        "FSK-BE-RELEASE-CONTRACT",
+        "FSK-OPS-CANARY",
+        "FSK-OPS-HEALTH-GATE",
+        "FSK-OPS-ROLLBACK"
+      ],
+      "invariants": [
+        "frontend and backend artifacts share one versioned release contract",
+        "promotion requires bounded canary evidence",
+        "rollback remains possible until health closure"
+      ],
+      "abstain_when": [
+        "schema migration reversibility is unknown",
+        "health signals are not causally tied to the release"
+      ],
+      "verification_obligations": [
+        "artifact and schema compatibility",
+        "canary health threshold replay",
+        "rollback restoration test"
+      ]
+    }
+  ],
+  "max_active_atoms": 8,
+  "sparse_activation_required": true,
+  "raw_source_copied": false,
+  "external_llm_calls": 0,
+  "codex_runtime_calls": 0,
+  "network_reads": 0,
+  "network_writes": 0
+}

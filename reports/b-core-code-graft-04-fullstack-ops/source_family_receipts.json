@@ -1,0 +1,29 @@
+[
+  {
+    "layer": "FRONTEND",
+    "classifier_version": "FULLSTACK_SOURCE_FAMILY_V1",
+    "source_count": 11,
+    "source_set_sha256": "9d5bc43e560cb4c9aa991a9acdc529df3308a6550f66b01f5dd5f59155261254",
+    "expected_source_count": 11,
+    "expected_source_set_sha256": "9D5BC43E560CB4C9AA991A9ACDC529DF3308A6550F66B01F5DD5F59155261254",
+    "matches_expected": true
+  },
+  {
+    "layer": "BACKEND",
+    "classifier_version": "FULLSTACK_SOURCE_FAMILY_V1",
+    "source_count": 26,
+    "source_set_sha256": "e24056eacd52ed3561c41ed4392148f97c0d476c05ae9ecad9b36ec28cba8cbd",
+    "expected_source_count": 26,
+    "expected_source_set_sha256": "E24056EACD52ED3561C41ED4392148F97C0D476C05AE9ECAD9B36EC28CBA8CBD",
+    "matches_expected": true
+  },
+  {
+    "layer": "OPERATIONS",
+    "classifier_version": "FULLSTACK_SOURCE_FAMILY_V1",
+    "source_count": 68,
+    "source_set_sha256": "362edc8bd51d8075c59bfdddaf7a343f82428c675ef7c60d6c14887ecacad84a",
+    "expected_source_count": 68,
+    "expected_source_set_sha256": "362EDC8BD51D8075C59BFDDDAF7A343F82428C675EF7C60D6C14887ECACAD84A",
+    "matches_expected": true
+  }
+]

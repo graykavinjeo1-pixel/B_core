@@ -1,0 +1,13 @@
+{
+  "canonical_node_count": 1000000,
+  "canonical_programming_mechanism_count": 61,
+  "canonical_relation_count": 1283732,
+  "manifest_projection_correction": 1,
+  "manifest_projection_semantics_mutated": 0,
+  "raw_knowledge_files_copied": 0,
+  "schema": "b_core_synapse_generation_receipt_v1",
+  "source_manifest_sha256": "FDE633C7BF219D34C29DCE5BA3C4D763840762BF36950D65692605F3ED2E5F2B",
+  "source_predecessor_universe_sha256": "CBAF8D5548446D1D3165E4712A450F56A529AABB929AE757EAAC59596E51140C",
+  "source_records_sha256": "6BDE8E5722B284181521959995F86FEA2B0EAEBAC9B011A896A52360FFDA15F8",
+  "source_universe_sha256": "BF9F10C31F6504473050028280C1DCB22AC54CFD29DFC9215EC29DDD42BBE52C"
+}

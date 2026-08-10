@@ -1,0 +1,23 @@
+{
+  "schema": "b_core_fullstack_ops_absorption_report_v1",
+  "campaign_id": "B_CORE-CODE-GRAFT-04",
+  "status": "PASS",
+  "source_universe_sha256": "BF9F10C31F6504473050028280C1DCB22AC54CFD29DFC9215EC29DDD42BBE52C",
+  "predecessor_universe_sha256": "CBAF8D5548446D1D3165E4712A450F56A529AABB929AE757EAAC59596E51140C",
+  "manifest_projection_correction_absorbed": true,
+  "source_semantics_changed": false,
+  "source_family_count": 3,
+  "frontend_source_count": 11,
+  "backend_source_count": 26,
+  "operations_source_count": 68,
+  "promoted_knowledge_atoms": 14,
+  "promoted_composition_recipes": 3,
+  "three_layer_recipe_count": 3,
+  "activation_canaries_passed": 3,
+  "raw_training_data_files_copied": 0,
+  "raw_source_fragments_promoted": 0,
+  "external_llm_calls": 0,
+  "codex_runtime_calls": 0,
+  "network_reads": 0,
+  "network_writes": 0
+}

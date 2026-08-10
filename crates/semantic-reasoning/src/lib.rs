@@ -4,6 +4,7 @@ pub mod code_graft;
 pub mod code_graft_acceptance;
 pub mod core_x0;
 pub mod experiment;
+pub mod fullstack_ops_knowledge;
 pub mod integrated_development;
 pub mod mining;
 pub mod reporting;
