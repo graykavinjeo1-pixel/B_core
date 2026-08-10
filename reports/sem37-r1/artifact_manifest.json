@@ -1,0 +1,38 @@
+{
+  "schema_version": "SEM37_R1_ARTIFACT_MANIFEST_1",
+  "campaign_id": "SEM37-R1-SHIFT-AWARE-EXTERNAL-MECHANISM-TRANSFER-0001",
+  "sealed_final_evidence_commit": "36c3b331b18571c65cd05095fb0302887a611306",
+  "verification_commit": "860d9976cd19bece99f40349f701260421a48047",
+  "source_hashes": {
+    "engine.rs": "4517378c0211eb307785c66a500fca0525dba64b00c7b4b3374cfa36049458bd",
+    "campaign.rs": "0162f5f6150cd4cc4b849f6b3d1b6eaa94cf6d9c0040a2cbb4cf96e4fdf88fef",
+    "acceptance.rs": "cb9bc13b40901afe24fba457b2dede3ebf0e04083a10ba194b064700ccff2bf4"
+  },
+  "artifact_hashes": {
+    "autonomous_shift_aware_development.json": "7ceae6c6f6b06a12471a0386986063c1720bd39d451a6c31fec7911762091eff",
+    "campaign_ready_receipt.json": "19d28f14c978c4bb53dd54d108de5ee14fba7b653962e1a53c9ca6aae0ffdc99",
+    "clean_reconstruction.json": "861d6964370e88fe9af4bb1041018df527b2940c78906a82ad9d6cdef272fe83",
+    "cleanup_receipt.json": "0cb5e53fe06135230ed6fae692572d0ef313f2d1c7835dd1deda330675cad315",
+    "final_external_freeze.json": "059bc3d04cb882690a3ea40869c322d24920ea5991d4caf0e45f0f2170f664df",
+    "final_external_raw_evaluation.json": "21100fa9f4c73191cfd119b3e8aa69564e572236150ffba51c00651c9bc308ad",
+    "final_regression.json": "3ee41d6b483d93a61cc5c1a62a28994077fd77dcc181ee2a35530d7ef545947b",
+    "historical_sem37_failure.json": "17aae90b4a7c195dfc9f1d10657ee2f8114fa9dc2f8654627d6c34390682b932",
+    "independent_verifier_receipt.json": "b5d369d2f72477be7911f48a8ba8c5848bf612e336864ee3d96046cf2e195210",
+    "internal_world_regression_control.json": "9156dd67b3c795b1339ab1310eed3553ec15a10f24c1b4a3b40325f96a2fb32f",
+    "lane_a_policy_search.json": "b5226dba2cbdbca7492e77d811d37fa5ede990ed501df9fe14866a11c5a714de",
+    "numeric_authority_manifest.json": "0200acf09e6210f9b59d2beef37a9b04d1c512e32f16ccad3a713f2f55ab6086",
+    "p0_infrastructure_freeze.json": "85be7698c14dd0cd15c3bafc8f8e2fa3a1e7035ef165eeede70b9eb75aeae7dc",
+    "primary_acceptance.json": "d61e92a496370e9f32262d128f540d6bfdc5c922651a3098e1b56e6b9a57f1e6",
+    "secondary_acceptance.json": "af3380b51ad5377ab9da8a39f24eed4759028e3390a277939f0ce3990284abcf",
+    "SEM37_R1_REPORT.md": "a34c30507fc783a56672276e803357350d8d38d63ec331e2831628511ce5f82b",
+    "sem37_r1_required_output.json": "2777ebd0677bff486ba89c2e5c739055e57cd7b5523a7e15f2d8e233075b10d6"
+  },
+  "external_authority_hashes": {
+    "evaluator": "690f5af83d35b4631db2d7363c5b856dcd86c4728ebc667518d12f1db5144e73",
+    "fixture_manifest": "1c83464305a22faf05a50ab29c7a42af4ae8503283700c4932850540fb541978",
+    "private_partition_manifest": "a8dcbca1740f4b4f4804937c4f23082c50d5f671878f9f2803fd55d5f310757f"
+  },
+  "warm_state_is_semantic_authority": false,
+  "warm_state_is_research_authority": false,
+  "status": "PASS"
+}

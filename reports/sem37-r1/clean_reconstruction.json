@@ -1,0 +1,16 @@
+{
+  "schema_version": "SEM37_R1_CLEAN_RECONSTRUCTION_1",
+  "commit": "860d9976cd19bece99f40349f701260421a48047",
+  "warm_cache_used": false,
+  "network_used": false,
+  "cargo_offline": true,
+  "isolated_worktree": "D:\\B_Core_CLEAN_CANARY\\sem37-r1-860d997",
+  "isolated_target": "D:\\B_Core_CLEAN_CANARY\\target-sem37-r1-860d997",
+  "semantic_reasoning_sem37_r1_tests_passed": 5,
+  "campaign_runner_build_pass": true,
+  "finalizer_build_pass": true,
+  "p0_runner_build_pass": true,
+  "temporary_worktree_removed": true,
+  "temporary_target_removed": true,
+  "status": "PASS"
+}

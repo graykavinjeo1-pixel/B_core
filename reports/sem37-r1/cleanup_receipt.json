@@ -1,0 +1,22 @@
+{
+  "schema_version": "SEM37_R1_CLEANUP_1",
+  "obsolete_worktrees_removed": [
+    "D:\\B_Core_CLEAN_CANARY\\sem37-r1-860d997"
+  ],
+  "temporary_diagnostic_targets_removed": [
+    "D:\\B_Core_CLEAN_CANARY\\target-sem37-r1-860d997"
+  ],
+  "authoritative_sealed_artifacts_preserved": true,
+  "canonical_sem37_r1_worktree_retained_for_operator_review": true,
+  "cache_policy": "CURRENT_ACTIVE_CACHE_PLUS_IMMEDIATE_PREDECESSOR_CACHE_ONLY",
+  "retained_cache_keys": [
+    "bcore-db4b3e0325b151ae43663199"
+  ],
+  "removed_cache_keys": [],
+  "retained_cache_bytes": 8484586357,
+  "cache_disk_budget_bytes": 12884901888,
+  "cache_within_budget": true,
+  "current_cache_deleted": false,
+  "recoverability": "SEALED_GIT_COMMITS_AND_ARTIFACTS",
+  "status": "PASS"
+}
