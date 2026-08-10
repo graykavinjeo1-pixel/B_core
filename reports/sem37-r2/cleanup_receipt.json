@@ -1,0 +1,13 @@
+{
+  "schema_version": "SEM37_R2_CLEANUP_RECEIPT_1",
+  "obsolete_worktrees_deleted": 0,
+  "authoritative_sealed_artifacts_preserved": true,
+  "reusable_current_cache_retained": true,
+  "immediate_predecessor_cache_retained_if_present": true,
+  "older_unvalidated_cache_generations_deleted": 0,
+  "temporary_diagnostic_junk_preserved": false,
+  "r1_exposed_development_artifacts_present_in_r2_branch": false,
+  "r2_external_evaluator_vault_preserved_for_audit": true,
+  "failed_candidate_promoted": false,
+  "status": "PASS"
+}

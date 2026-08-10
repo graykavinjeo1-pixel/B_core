@@ -1,0 +1,28 @@
+{
+  "schema_version": "SEM37_R2_FAILURE_DIAGNOSIS_1",
+  "campaign_status": "FAIL",
+  "disposition": "EXTERNAL_DIRECT_CAUSAL_STRUCTURE_PRECISION_LIMIT",
+  "positive_evidence": {
+    "exact_precision_strictly_improved_over_r1_dense": true,
+    "selected_precision": {"numerator": 12, "denominator": 16},
+    "r1_dense_precision": {"numerator": 41, "denominator": 60},
+    "false_positive_reduction": 15,
+    "common_cause_false_edge_accepts": 0,
+    "negative_transfer_attempts": 13,
+    "negative_transfer_prevented": 13,
+    "r1_shift_aware_semantic_diff": 0
+  },
+  "unresolved_evidence": {
+    "mediated_association_false_edge_accepts": 4,
+    "indirect_false_edge_accepts": 0,
+    "false_negatives": 29,
+    "negative_transfer_accepted": 1,
+    "lane_b_fresh_selected_sse": 58.2032056811657,
+    "lane_b_fresh_no_change_control_sse": 58.1004449145665
+  },
+  "interpretation": [
+    "CONDITIONAL_TRIAD_ABLATION_IMPROVED_PRECISION_BUT_DID_NOT_SEPARATE_ALL_MEDIATED_ASSOCIATIONS",
+    "FRESH_LANE_B_PROMOTION_DID_NOT_GENERALIZE_DESPITE_EXACT_PRE_FINAL_COMPONENT_RECOVERY",
+    "NO_POST_FINAL_REPAIR_OR_HISTORICAL_REINTERPRETATION"
+  ]
+}

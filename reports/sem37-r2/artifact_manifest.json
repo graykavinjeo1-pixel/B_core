@@ -1,0 +1,18 @@
+{
+  "schema_version": "SEM37_R2_ARTIFACT_MANIFEST_1",
+  "raw_evidence_commit": "aff0ffcc54c23435417c58d6e7a6534bfd575c00",
+  "verifier_source_commit": "d8a04560671fd1e43c9a00602ce8b14c38c37674",
+  "artifacts": {
+    "p0_infrastructure_freeze.json": "d1ad247435f6432f94413a91ec67efd0228c06175bf9a6ef91e26bc94da38200",
+    "autonomous_causal_precision_development.json": "56aa6cb6a847eeab92aa8de8cf563131bef8cdaded24b5009fac52b5ff37ad0d",
+    "final_external_freeze.json": "e5c041be642095e460c06ccfbfa0a386d488daba10431685f94a3c3db13b0eb6",
+    "final_external_raw_evaluation.json": "b8c8602d03435d76316d0d9004fc1583a4dd2cf7fdb5d1e92f0e1cc63dae8da8",
+    "primary_acceptance.json": "c390756426026299cf0a03e8b5e23a45337cd518876b971d193a53669ebf0210",
+    "secondary_acceptance.json": "e136b370ccdac5b00e15c03b1ae7c208e6777cb23a4a3a6b86fc34264f356d9c",
+    "sem37_r2_required_output.json": "ce978d54f955e28f760f44a2d8bb279612a821f954cd47e7b0a3d83faab29b8a",
+    "SEM37_R2_REPORT.md": "8f7524892bd680ad2b7cd20eacfe367393e23c07df4c6cb5d0855cf718d55315"
+  },
+  "external_evaluator_sha256": "3d344a26154812984af1890f85c86a92913639104090758f809561c3b9b9a8d5",
+  "private_partition_manifest_sha256": "92a0715044feeec69047d65410e2842c90c99233ee0f203cfee6c57f5d2cf738",
+  "status": "SEALED"
+}

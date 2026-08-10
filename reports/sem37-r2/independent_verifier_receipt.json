@@ -1,0 +1,13 @@
+{
+  "schema_version": "SEM37_R2_INDEPENDENT_VERIFIER_RECEIPT_1",
+  "verifier_source_commit": "d8a04560671fd1e43c9a00602ce8b14c38c37674",
+  "raw_evidence_commit": "aff0ffcc54c23435417c58d6e7a6534bfd575c00",
+  "raw_evidence_sha256": "b8c8602d03435d76316d0d9004fc1583a4dd2cf7fdb5d1e92f0e1cc63dae8da8",
+  "primary_status": "FAIL",
+  "secondary_status": "FAIL",
+  "primary_disposition": "EXTERNAL_DIRECT_CAUSAL_STRUCTURE_PRECISION_LIMIT",
+  "secondary_disposition": "EXTERNAL_DIRECT_CAUSAL_STRUCTURE_PRECISION_LIMIT",
+  "PRIMARY_SECONDARY_ACCEPTANCE_DIFF": 0,
+  "ACCEPTANCE_FALSE_PASS_EVENTS": 0,
+  "status": "PASS"
+}

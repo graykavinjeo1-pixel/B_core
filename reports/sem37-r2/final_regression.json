@@ -1,0 +1,18 @@
+{
+  "schema_version": "SEM37_R2_FINAL_REGRESSION_1",
+  "semantic_reasoning_library_tests_passed": 273,
+  "semantic_reasoning_library_tests_failed": 0,
+  "sem37_r2_targeted_tests_passed": 3,
+  "sem37_r2_targeted_tests_failed": 0,
+  "clippy_deny_warnings_pass": false,
+  "predecessor_clippy_warning_signatures": 22,
+  "new_sem37_r2_clippy_warning_signatures": 4,
+  "new_warning_classes": [
+    "UNNECESSARY_CAST",
+    "NEEDLESS_RANGE_LOOP"
+  ],
+  "post_final_lint_repairs_performed": 0,
+  "reason_not_repaired": "FROZEN_SCIENTIFIC_ENGINE_HASH_MUST_NOT_CHANGE_AFTER_FINAL_EXPOSURE",
+  "scientific_behavior_test_regressions": 0,
+  "status": "TEST_PASS_CLIPPY_FAIL"
+}

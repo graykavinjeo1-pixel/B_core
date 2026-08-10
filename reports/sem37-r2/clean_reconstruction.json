@@ -1,0 +1,11 @@
+{
+  "schema_version": "SEM37_R2_CLEAN_RECONSTRUCTION_1",
+  "failed_candidate_clean_reconstruction_required_for_promotion": false,
+  "failed_candidate_promoted": false,
+  "accepted_predecessor_clean_reconstruction_pass": true,
+  "accepted_predecessor_commit": "b33386e7a8793c5c27e2c2df3e19db0e6e04d0f4",
+  "r2_full_library_tests_pass": true,
+  "r2_frozen_runner_hash_verified_before_final": true,
+  "warm_cache_is_research_authority": false,
+  "status": "NOT_APPLICABLE_TO_FAILED_CANDIDATE"
+}
