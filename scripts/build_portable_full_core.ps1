@@ -143,53 +143,14 @@ Copy-Item -LiteralPath (Join-Path $repositoryRoot "scripts\install_growth_superv
 Copy-Item -LiteralPath (Join-Path $repositoryRoot "scripts\uninstall_growth_supervisor_autostart.ps1") -Destination (Join-Path $toolsRoot "uninstall-growth-autostart.ps1")
 Copy-Item -LiteralPath (Join-Path $repositoryRoot "scripts\record_growth_work_event.ps1") -Destination (Join-Path $toolsRoot "record-growth-work-event.ps1")
 
-$readme = @"
+$readmeTemplate = @'
 # B_Core Portable Full Core
 
-이 패키지는 B_Core commit `$sourceCommit`의 Windows x64 이식본입니다.
-
-## 바로 실행
-
-- `bin`에는 현재 workspace의 실행 진입점 79개가 모두 들어 있습니다.
-- `bin\core-x0-canary.exe`, `bin\generic-capability-canary.exe`, `bin\language-adapter-canary.exe`로 기본 동작을 확인할 수 있습니다.
-- 자기수리 파이프라인은 `bin\b-core-self-heal.exe`와 `bin\b-core-self-heal-verify.exe`입니다.
-- 통합 개발/코드 조합 파이프라인은 `bin\b-core-integrated-development.exe`입니다.
-- 최신 frontend/backend/operations 지식 흡수 도구는 `bin\b-core-fullstack-ops-absorb.exe`입니다.
-
-실행 파일은 MSVC C/C++ 런타임을 정적으로 링크했습니다. Windows x64에서는 Rust 도구체인 없이 실행할 수 있습니다.
-
-## 무결성 확인
-
-PowerShell에서 패키지 루트를 기준으로 실행합니다.
-
-```powershell
-powershell -ExecutionPolicy Bypass -File .\tools\verify-package.ps1 -PackageRoot . -RunSmokeTests
-```
-
-## 네트워크 없는 전체 재빌드
-
-Rust 1.96.0 x86_64-pc-windows-msvc와 Visual Studio C++ Build Tools가 설치된 PC에서:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File .\tools\rebuild-offline.ps1
-```
-
-Cargo.lock과 `source\vendor`가 모든 Rust 의존성을 고정합니다. 이 과정은 네트워크를 사용하지 않습니다.
-
-## 보존 범위
-
-전체 tracked source, 봉인 보고서/스키마, 79개 실행 파일, 자기수리 검증기, 코드 조합 및 full-stack/operations 지식 계층을 포함합니다. 대용량 원본 Synapse 지식 저장소와 학습 데이터는 포함하지 않습니다. 이미 흡수된 지식은 소스와 봉인 산출물에 포함되어 있습니다. 향후 Synapse 업데이트를 다시 흡수하려면 새 PC에서 그 외부 저장소 경로를 별도로 지정해야 합니다.
-
-Git commit과 봉인 산출물이 연구 권위입니다. 사전 빌드 실행 파일이나 재빌드 캐시는 연구 권위가 아닙니다.
-"@
-$readme = @"
-# B_Core Portable Full Core
-
-This package is the complete Windows x64 portable build of B_Core commit `$sourceCommit`.
+This package is the complete Windows x64 portable build of B_Core commit `{{SOURCE_COMMIT}}`.
 
 ## Included
 
-- All `$($expectedBinaries.Count)` current workspace executables and tracked source files.
+- All `{{BINARY_COUNT}}` current workspace executables and tracked source files.
 - Locked and vendored Rust dependency closure for network-free reconstruction.
 - Self-healing, independent verification, typed code composition, and full-stack/operations knowledge.
 - The bounded always-on growth supervisor and its separate deterministic verifier.
@@ -223,7 +184,8 @@ powershell -ExecutionPolicy Bypass -File .\tools\run-growth-supervisor.ps1 -Pack
 Autostart is opt-in. `tools\install-growth-autostart.ps1` registers a limited-privilege ONLOGON task. See `source\docs\b_core_growth_supervisor.md` for trust boundaries, learning-value rules, crash recovery, plateau waiting, and work-event integration.
 
 Git commits and sealed artifacts remain scientific authority. Portable binaries, runtime memory, and build caches do not replace that authority.
-"@
+'@
+$readme = $readmeTemplate.Replace("{{SOURCE_COMMIT}}", $sourceCommit).Replace("{{BINARY_COUNT}}", [string]$expectedBinaries.Count)
 Write-Utf8NoBom -Path (Join-Path $packageRoot "README.md") -Text $readme
 
 $rebuildReceiptPath = Join-Path $receiptRoot "clean_rebuild.json"
