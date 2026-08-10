@@ -1,0 +1,24 @@
+{
+  "external_package_causal_ablation_pass": true,
+  "rows": [
+    {
+      "causal_degradation": true,
+      "removed_package": "TYPE_CONTROL",
+      "solved_without_package": false,
+      "task": "dev-rust-type-itoa"
+    },
+    {
+      "causal_degradation": true,
+      "removed_package": "FAILURE_REPAIR",
+      "solved_without_package": false,
+      "task": "dev-python-failure-boltons"
+    },
+    {
+      "causal_degradation": true,
+      "removed_package": "FAILURE_REPAIR",
+      "solved_without_package": false,
+      "task": "dev-python-failure-more-itertools"
+    }
+  ],
+  "schema_version": "B_CORE_CODE_GRAFT_02_DEV_ABLATION_1"
+}

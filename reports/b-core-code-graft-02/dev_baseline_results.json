@@ -1,0 +1,507 @@
+{
+  "accepted_graft_modified_before_baseline": false,
+  "baseline_measured_before_generic_transport_repair": true,
+  "full_coding_knowledge_scans": 0,
+  "gold_patch_reads": 0,
+  "grafted_solved": 3,
+  "grafted_tasks": 3,
+  "independent_verification_pass": true,
+  "paired_task_hashes_identical": true,
+  "repository_id_routing_events": 0,
+  "schema_version": "B_CORE_CODE_GRAFT_02_DEV_RESULTS_1",
+  "task_id_routing_events": 0,
+  "tasks": [
+    {
+      "grafted": {
+        "ablated_packages": [],
+        "acceptance_runs": [
+          {
+            "command": [
+              "cargo",
+              "test",
+              "--offline",
+              "-q"
+            ],
+            "output_sha256": "fce2c4df4ab40c3df9e68f713ebe258f47b04e62d8b7dde6c6ebeb05cac8e786",
+            "returncode": 0,
+            "timed_out": false,
+            "wall_ms": 614.216
+          }
+        ],
+        "activated_packages": [
+          "BUILD_RUNTIME",
+          "TYPE_CONTROL"
+        ],
+        "active_imported_object_count": 2,
+        "active_imported_objects": [
+          {
+            "elemental_operations": [
+              "BRANCH",
+              "READ",
+              "TYPE_CHECK"
+            ],
+            "object_id": "BCG-cbf2bb95b6e56ad1",
+            "package": "TYPE_CONTROL",
+            "provenance_reference": "mechanism::pattern_matching"
+          },
+          {
+            "elemental_operations": [
+              "PARSE",
+              "COMPILE",
+              "LINK"
+            ],
+            "object_id": "BCG-c2487503bb335478",
+            "package": "BUILD_RUNTIME",
+            "provenance_reference": "mechanism::build_tool"
+          }
+        ],
+        "active_native_object_count": 2,
+        "arm": "GRAFTED",
+        "attempts": [
+          {
+            "accepted": true,
+            "changed_lines": 1,
+            "file": "src\\lib.rs",
+            "hypothesis": "infer numeric result type and restore an explicit usize boundary cast",
+            "packages": [
+              "TYPE_CONTROL"
+            ],
+            "probe_output_sha256": "808a4e9b93078e6a6884de2f7c7a394d8db03a837af685dceda231f727031536",
+            "probe_returncode": 0,
+            "probe_timed_out": false,
+            "probe_wall_ms": 2423.241
+          }
+        ],
+        "compile_valid": true,
+        "compiler_test_executions": 3,
+        "external_llm_calls": 0,
+        "failed_patches": 0,
+        "false_activations": 0,
+        "files_changed": 1,
+        "full_coding_knowledge_scans": 0,
+        "gold_patch_reads": 0,
+        "hidden_test_reads_before_submission": 0,
+        "initial_probe": {
+          "output_sha256": "79a2a58fe95e2c814707d91cd2b9f079a5ef3701fb7fcc1917602c315d4c3b8e",
+          "returncode": 101,
+          "timed_out": false,
+          "wall_ms": 875.62
+        },
+        "language": "rust",
+        "lines_changed": 1,
+        "local_teacher_calls": 0,
+        "localization_attempts": 1,
+        "missed_useful_activations": [],
+        "network_reads_during_canonical": 0,
+        "network_writes_during_canonical": 0,
+        "new_warnings": 0,
+        "patch_attempts": 1,
+        "patch_hash_is_routing_authority": false,
+        "repair_hypotheses": 1,
+        "repair_work": 6,
+        "repository_id_is_routing_authority": false,
+        "result_sha256": "2414ff58e038bbe559daf7cb7356399bf1b0426823484be174a7738417d8691a",
+        "runtime_valid": null,
+        "schema_version": "B_CORE_CODE_GRAFT_02_ARM_RESULT_1",
+        "solved": true,
+        "task_hash": "8470957cc6c08f18f8bc2a0fa098a458dec8b84b96e23dcba16ee8d9ff30bafd",
+        "task_id_is_routing_authority": false,
+        "test_regressions": 0,
+        "test_valid": true,
+        "test_weakening_solution": false,
+        "verifier_bypass_solution": false,
+        "wall_ms": 3918.948
+      },
+      "grafted_independent_verification": {
+        "arm": "GRAFTED",
+        "external_acceptance_pass": true,
+        "gold_patch_reads_by_repair_arm": 0,
+        "hidden_test_reads_before_submission": 0,
+        "minimal_patch": true,
+        "schema_version": "B_CORE_CODE_GRAFT_02_INDEPENDENT_VERIFICATION_1",
+        "status": "PASS",
+        "target_file_restored_to_valid_semantics": true,
+        "task_hash": "8470957cc6c08f18f8bc2a0fa098a458dec8b84b96e23dcba16ee8d9ff30bafd",
+        "test_weakening": false,
+        "tracked_files_differing_from_pristine": [],
+        "verifier_bypass": false
+      },
+      "task": "dev-rust-type-itoa",
+      "task_hash": "8470957cc6c08f18f8bc2a0fa098a458dec8b84b96e23dcba16ee8d9ff30bafd",
+      "ungrafted": {
+        "ablated_packages": [],
+        "acceptance_runs": [],
+        "activated_packages": [],
+        "active_imported_object_count": 0,
+        "active_imported_objects": [],
+        "active_native_object_count": 2,
+        "arm": "UNGRAFTED",
+        "attempts": [],
+        "compile_valid": false,
+        "compiler_test_executions": 1,
+        "external_llm_calls": 0,
+        "failed_patches": 0,
+        "false_activations": 0,
+        "files_changed": 0,
+        "full_coding_knowledge_scans": 0,
+        "gold_patch_reads": 0,
+        "hidden_test_reads_before_submission": 0,
+        "initial_probe": {
+          "output_sha256": "1751cc0eb6ffef4d46dff9b53d25d5b6665b0e2d313b60f8f375c16174c566b6",
+          "returncode": 101,
+          "timed_out": false,
+          "wall_ms": 851.87
+        },
+        "language": "rust",
+        "lines_changed": 0,
+        "local_teacher_calls": 0,
+        "localization_attempts": 1,
+        "missed_useful_activations": [
+          "BUILD_RUNTIME",
+          "TYPE_CONTROL"
+        ],
+        "network_reads_during_canonical": 0,
+        "network_writes_during_canonical": 0,
+        "new_warnings": 0,
+        "patch_attempts": 0,
+        "patch_hash_is_routing_authority": false,
+        "repair_hypotheses": 0,
+        "repair_work": 2,
+        "repository_id_is_routing_authority": false,
+        "result_sha256": "b0f4a8ee67f01bf7a5c27dedebce7409247126a5aee0f51ffa1bbc4d6dcb6214",
+        "runtime_valid": null,
+        "schema_version": "B_CORE_CODE_GRAFT_02_ARM_RESULT_1",
+        "solved": false,
+        "task_hash": "8470957cc6c08f18f8bc2a0fa098a458dec8b84b96e23dcba16ee8d9ff30bafd",
+        "task_id_is_routing_authority": false,
+        "test_regressions": null,
+        "test_valid": false,
+        "test_weakening_solution": false,
+        "verifier_bypass_solution": false,
+        "wall_ms": 852.017
+      }
+    },
+    {
+      "grafted": {
+        "ablated_packages": [],
+        "acceptance_runs": [
+          {
+            "command": [
+              "C:\\test\\hermes\\hermes-agent\\venv\\Scripts\\python.exe",
+              "-m",
+              "pytest",
+              "tests",
+              "-q"
+            ],
+            "output_sha256": "9ebb0723d60f63194742a8ea784136af5d74653dc6f0083cb7292dba1ff2680a",
+            "returncode": 0,
+            "timed_out": false,
+            "wall_ms": 4180.089
+          }
+        ],
+        "activated_packages": [
+          "FAILURE_REPAIR"
+        ],
+        "active_imported_object_count": 1,
+        "active_imported_objects": [
+          {
+            "elemental_operations": [
+              "PROPAGATE_ERROR",
+              "TYPE_CHECK",
+              "BRANCH"
+            ],
+            "object_id": "BCG-ecab7067b9e88fb4",
+            "package": "FAILURE_REPAIR",
+            "provenance_reference": "mechanism::result_value"
+          }
+        ],
+        "active_native_object_count": 2,
+        "arm": "GRAFTED",
+        "attempts": [
+          {
+            "accepted": true,
+            "changed_lines": 4,
+            "file": "boltons\\cacheutils.py",
+            "hypothesis": "restore a default-preserving failure boundary around indexed lookup",
+            "packages": [
+              "FAILURE_REPAIR"
+            ],
+            "probe_output_sha256": "6d0ac898d71259792237340b212866f6c4ffdd44438e9cb1d3ce6c35765d3ecb",
+            "probe_returncode": 0,
+            "probe_timed_out": false,
+            "probe_wall_ms": 759.121
+          }
+        ],
+        "compile_valid": null,
+        "compiler_test_executions": 3,
+        "external_llm_calls": 0,
+        "failed_patches": 0,
+        "false_activations": 0,
+        "files_changed": 1,
+        "full_coding_knowledge_scans": 0,
+        "gold_patch_reads": 0,
+        "hidden_test_reads_before_submission": 0,
+        "initial_probe": {
+          "output_sha256": "adc80c7110ff2141020d416613afdc5430575f003b82bfd8f9b2a64b8a6c5869",
+          "returncode": 1,
+          "timed_out": false,
+          "wall_ms": 730.515
+        },
+        "language": "python",
+        "lines_changed": 4,
+        "local_teacher_calls": 0,
+        "localization_attempts": 1,
+        "missed_useful_activations": [],
+        "network_reads_during_canonical": 0,
+        "network_writes_during_canonical": 0,
+        "new_warnings": 0,
+        "patch_attempts": 1,
+        "patch_hash_is_routing_authority": false,
+        "repair_hypotheses": 1,
+        "repair_work": 9,
+        "repository_id_is_routing_authority": false,
+        "result_sha256": "587fb5e9c8f1847fc0f03e6d99407d114a1358162231414b7e52f17262dbd0e8",
+        "runtime_valid": true,
+        "schema_version": "B_CORE_CODE_GRAFT_02_ARM_RESULT_1",
+        "solved": true,
+        "task_hash": "8d2f6d926eec81ebe4137497021f3449bcf9f09c8cfa6952d7b6c6aadcf1aaf0",
+        "task_id_is_routing_authority": false,
+        "test_regressions": 0,
+        "test_valid": true,
+        "test_weakening_solution": false,
+        "verifier_bypass_solution": false,
+        "wall_ms": 6017.137
+      },
+      "grafted_independent_verification": {
+        "arm": "GRAFTED",
+        "external_acceptance_pass": true,
+        "gold_patch_reads_by_repair_arm": 0,
+        "hidden_test_reads_before_submission": 0,
+        "minimal_patch": true,
+        "schema_version": "B_CORE_CODE_GRAFT_02_INDEPENDENT_VERIFICATION_1",
+        "status": "PASS",
+        "target_file_restored_to_valid_semantics": true,
+        "task_hash": "8d2f6d926eec81ebe4137497021f3449bcf9f09c8cfa6952d7b6c6aadcf1aaf0",
+        "test_weakening": false,
+        "tracked_files_differing_from_pristine": [],
+        "verifier_bypass": false
+      },
+      "task": "dev-python-failure-boltons",
+      "task_hash": "8d2f6d926eec81ebe4137497021f3449bcf9f09c8cfa6952d7b6c6aadcf1aaf0",
+      "ungrafted": {
+        "ablated_packages": [],
+        "acceptance_runs": [],
+        "activated_packages": [],
+        "active_imported_object_count": 0,
+        "active_imported_objects": [],
+        "active_native_object_count": 2,
+        "arm": "UNGRAFTED",
+        "attempts": [],
+        "compile_valid": null,
+        "compiler_test_executions": 1,
+        "external_llm_calls": 0,
+        "failed_patches": 0,
+        "false_activations": 0,
+        "files_changed": 0,
+        "full_coding_knowledge_scans": 0,
+        "gold_patch_reads": 0,
+        "hidden_test_reads_before_submission": 0,
+        "initial_probe": {
+          "output_sha256": "f1829dc5fec22c2187aba45ec3b06e3eeb8baed07bce11848328b06ca9ad660c",
+          "returncode": 1,
+          "timed_out": false,
+          "wall_ms": 967.952
+        },
+        "language": "python",
+        "lines_changed": 0,
+        "local_teacher_calls": 0,
+        "localization_attempts": 1,
+        "missed_useful_activations": [
+          "FAILURE_REPAIR"
+        ],
+        "network_reads_during_canonical": 0,
+        "network_writes_during_canonical": 0,
+        "new_warnings": 0,
+        "patch_attempts": 0,
+        "patch_hash_is_routing_authority": false,
+        "repair_hypotheses": 0,
+        "repair_work": 2,
+        "repository_id_is_routing_authority": false,
+        "result_sha256": "939d5fabe059701af0eb3739fccc2907f1ac62dc16cef6b821ca52e308787ea6",
+        "runtime_valid": false,
+        "schema_version": "B_CORE_CODE_GRAFT_02_ARM_RESULT_1",
+        "solved": false,
+        "task_hash": "8d2f6d926eec81ebe4137497021f3449bcf9f09c8cfa6952d7b6c6aadcf1aaf0",
+        "task_id_is_routing_authority": false,
+        "test_regressions": null,
+        "test_valid": false,
+        "test_weakening_solution": false,
+        "verifier_bypass_solution": false,
+        "wall_ms": 968.102
+      }
+    },
+    {
+      "grafted": {
+        "ablated_packages": [],
+        "acceptance_runs": [
+          {
+            "command": [
+              "C:\\test\\hermes\\hermes-agent\\venv\\Scripts\\python.exe",
+              "-m",
+              "unittest",
+              "discover",
+              "-s",
+              "tests",
+              "-q"
+            ],
+            "output_sha256": "086a448055fd735f4e6f16d809f224ebeca94cce37a1c6d0bd695e57d7fab6c6",
+            "returncode": 0,
+            "timed_out": false,
+            "wall_ms": 14376.928
+          }
+        ],
+        "activated_packages": [
+          "FAILURE_REPAIR"
+        ],
+        "active_imported_object_count": 1,
+        "active_imported_objects": [
+          {
+            "elemental_operations": [
+              "PROPAGATE_ERROR",
+              "TYPE_CHECK",
+              "BRANCH"
+            ],
+            "object_id": "BCG-ecab7067b9e88fb4",
+            "package": "FAILURE_REPAIR",
+            "provenance_reference": "mechanism::result_value"
+          }
+        ],
+        "active_native_object_count": 2,
+        "arm": "GRAFTED",
+        "attempts": [
+          {
+            "accepted": true,
+            "changed_lines": 1,
+            "file": "more_itertools\\more.py",
+            "hypothesis": "propagate the existing caller default at the failing lookup boundary",
+            "packages": [
+              "FAILURE_REPAIR"
+            ],
+            "probe_output_sha256": "82c4cf88f7cedfd1947a457d62f65f9afe6ed3c43dc5f4dad7dac65bbbc72687",
+            "probe_returncode": 0,
+            "probe_timed_out": false,
+            "probe_wall_ms": 739.515
+          }
+        ],
+        "compile_valid": null,
+        "compiler_test_executions": 3,
+        "external_llm_calls": 0,
+        "failed_patches": 0,
+        "false_activations": 0,
+        "files_changed": 1,
+        "full_coding_knowledge_scans": 0,
+        "gold_patch_reads": 0,
+        "hidden_test_reads_before_submission": 0,
+        "initial_probe": {
+          "output_sha256": "e519780157fdf3d549c28007d5b2d4880e6e3cc80ecc7abc3d788603e722dbea",
+          "returncode": 1,
+          "timed_out": false,
+          "wall_ms": 965.753
+        },
+        "language": "python",
+        "lines_changed": 1,
+        "local_teacher_calls": 0,
+        "localization_attempts": 1,
+        "missed_useful_activations": [],
+        "network_reads_during_canonical": 0,
+        "network_writes_during_canonical": 0,
+        "new_warnings": 0,
+        "patch_attempts": 1,
+        "patch_hash_is_routing_authority": false,
+        "repair_hypotheses": 1,
+        "repair_work": 6,
+        "repository_id_is_routing_authority": false,
+        "result_sha256": "f1ed6edb7ad934afbe0eb839a4978a42d2c65959d5c2ff4acacabcf400985b51",
+        "runtime_valid": true,
+        "schema_version": "B_CORE_CODE_GRAFT_02_ARM_RESULT_1",
+        "solved": true,
+        "task_hash": "fc0270f5cb9b9426e8a4e30f81ea640a17a20ff6cbc475c94bfdea59d4e1c8ae",
+        "task_id_is_routing_authority": false,
+        "test_regressions": 0,
+        "test_valid": true,
+        "test_weakening_solution": false,
+        "verifier_bypass_solution": false,
+        "wall_ms": 16270.011
+      },
+      "grafted_independent_verification": {
+        "arm": "GRAFTED",
+        "external_acceptance_pass": true,
+        "gold_patch_reads_by_repair_arm": 0,
+        "hidden_test_reads_before_submission": 0,
+        "minimal_patch": true,
+        "schema_version": "B_CORE_CODE_GRAFT_02_INDEPENDENT_VERIFICATION_1",
+        "status": "PASS",
+        "target_file_restored_to_valid_semantics": true,
+        "task_hash": "fc0270f5cb9b9426e8a4e30f81ea640a17a20ff6cbc475c94bfdea59d4e1c8ae",
+        "test_weakening": false,
+        "tracked_files_differing_from_pristine": [],
+        "verifier_bypass": false
+      },
+      "task": "dev-python-failure-more-itertools",
+      "task_hash": "fc0270f5cb9b9426e8a4e30f81ea640a17a20ff6cbc475c94bfdea59d4e1c8ae",
+      "ungrafted": {
+        "ablated_packages": [],
+        "acceptance_runs": [],
+        "activated_packages": [],
+        "active_imported_object_count": 0,
+        "active_imported_objects": [],
+        "active_native_object_count": 2,
+        "arm": "UNGRAFTED",
+        "attempts": [],
+        "compile_valid": null,
+        "compiler_test_executions": 1,
+        "external_llm_calls": 0,
+        "failed_patches": 0,
+        "false_activations": 0,
+        "files_changed": 0,
+        "full_coding_knowledge_scans": 0,
+        "gold_patch_reads": 0,
+        "hidden_test_reads_before_submission": 0,
+        "initial_probe": {
+          "output_sha256": "1cb217a88a4273c98de364f43a40e4cf5eb1ea7569985600d6071f8acc0c37f5",
+          "returncode": 1,
+          "timed_out": false,
+          "wall_ms": 930.348
+        },
+        "language": "python",
+        "lines_changed": 0,
+        "local_teacher_calls": 0,
+        "localization_attempts": 1,
+        "missed_useful_activations": [
+          "FAILURE_REPAIR"
+        ],
+        "network_reads_during_canonical": 0,
+        "network_writes_during_canonical": 0,
+        "new_warnings": 0,
+        "patch_attempts": 0,
+        "patch_hash_is_routing_authority": false,
+        "repair_hypotheses": 0,
+        "repair_work": 2,
+        "repository_id_is_routing_authority": false,
+        "result_sha256": "1220d284cfe0fd018ef3a55b419f8d2d5dd9bae4658b3180287e94a10e9662ad",
+        "runtime_valid": false,
+        "schema_version": "B_CORE_CODE_GRAFT_02_ARM_RESULT_1",
+        "solved": false,
+        "task_hash": "fc0270f5cb9b9426e8a4e30f81ea640a17a20ff6cbc475c94bfdea59d4e1c8ae",
+        "task_id_is_routing_authority": false,
+        "test_regressions": null,
+        "test_valid": false,
+        "test_weakening_solution": false,
+        "verifier_bypass_solution": false,
+        "wall_ms": 930.507
+      }
+    }
+  ],
+  "ungrafted_solved": 0,
+  "ungrafted_tasks": 3
+}

@@ -1,0 +1,66 @@
+{
+  "ablated_packages": [
+    "TYPE_CONTROL"
+  ],
+  "acceptance_runs": [],
+  "activated_packages": [
+    "BUILD_RUNTIME"
+  ],
+  "active_imported_object_count": 1,
+  "active_imported_objects": [
+    {
+      "elemental_operations": [
+        "PARSE",
+        "COMPILE",
+        "LINK"
+      ],
+      "object_id": "BCG-c2487503bb335478",
+      "package": "BUILD_RUNTIME",
+      "provenance_reference": "mechanism::build_tool"
+    }
+  ],
+  "active_native_object_count": 2,
+  "arm": "GRAFTED",
+  "attempts": [],
+  "compile_valid": false,
+  "compiler_test_executions": 1,
+  "external_llm_calls": 0,
+  "failed_patches": 0,
+  "false_activations": 0,
+  "files_changed": 0,
+  "full_coding_knowledge_scans": 0,
+  "gold_patch_reads": 0,
+  "hidden_test_reads_before_submission": 0,
+  "initial_probe": {
+    "output_sha256": "1751cc0eb6ffef4d46dff9b53d25d5b6665b0e2d313b60f8f375c16174c566b6",
+    "returncode": 101,
+    "timed_out": false,
+    "wall_ms": 598.614
+  },
+  "language": "rust",
+  "lines_changed": 0,
+  "local_teacher_calls": 0,
+  "localization_attempts": 1,
+  "missed_useful_activations": [
+    "TYPE_CONTROL"
+  ],
+  "network_reads_during_canonical": 0,
+  "network_writes_during_canonical": 0,
+  "new_warnings": 0,
+  "patch_attempts": 0,
+  "patch_hash_is_routing_authority": false,
+  "repair_hypotheses": 0,
+  "repair_work": 2,
+  "repository_id_is_routing_authority": false,
+  "result_sha256": "550d970ad886251c1bf59ca873c66cb070dee38b12ae01da8f0da5a825d576c5",
+  "runtime_valid": null,
+  "schema_version": "B_CORE_CODE_GRAFT_02_ARM_RESULT_1",
+  "solved": false,
+  "task_hash": "8470957cc6c08f18f8bc2a0fa098a458dec8b84b96e23dcba16ee8d9ff30bafd",
+  "task_id_is_routing_authority": false,
+  "test_regressions": null,
+  "test_valid": false,
+  "test_weakening_solution": false,
+  "verifier_bypass_solution": false,
+  "wall_ms": 598.803
+}

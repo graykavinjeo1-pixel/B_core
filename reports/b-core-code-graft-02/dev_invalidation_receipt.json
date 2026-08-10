@@ -1,0 +1,16 @@
+{
+  "canonical_dev_directory": "dev_canonical",
+  "canonical_dev_task_hashes": [
+    "8470957cc6c08f18f8bc2a0fa098a458dec8b84b96e23dcba16ee8d9ff30bafd",
+    "8d2f6d926eec81ebe4137497021f3449bcf9f09c8cfa6952d7b6c6aadcf1aaf0",
+    "fc0270f5cb9b9426e8a4e30f81ea640a17a20ff6cbc475c94bfdea59d4e1c8ae"
+  ],
+  "schema_version": "B_CORE_CODE_GRAFT_02_DEV_INVALIDATION_1",
+  "scientific_credit": false,
+  "superseded_attempts": [
+    "initial unpaired sandbox-path-derived task hashes",
+    "pytest compact traceback transport preflight",
+    "newline-normalization preflight"
+  ],
+  "superseded_temporary_artifacts_may_be_deleted": true
+}

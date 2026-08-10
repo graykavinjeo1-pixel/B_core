@@ -1,0 +1,21 @@
+{
+  "audit_authority": "INDEPENDENT_EVALUATOR_PRE_FINAL_EXPOSURE",
+  "exact_issue_identity_overlap_final": 0,
+  "exact_patch_memory_overlap_final": 0,
+  "exact_task_memory_overlap_final": 0,
+  "exact_task_prompt_overlap_final": 0,
+  "expected_output_overlap_final": 0,
+  "final_task_hashes": [
+    "6ef3b3661ef948af4fbd0403a50ad2ebf8ddf5500433356738be1f178f1fd692",
+    "a771496695500fb10532d66d4e0f06d0050ccdb597957d067b016305f8096e5d",
+    "7f3e3b4979d11b9aa24edddb962588705d82374cf73ec8688b0a6590e7d7f751"
+  ],
+  "final_tasks_rejected_for_contamination": 0,
+  "hidden_valid_patch_hashes": [
+    "961a0334b65f77e689784e3ed914626b32427bd0109e47420fce6c8111fb0e1b",
+    "7084ce2ad38cc1bdfe1b1d661f6c7566fe7097091b959b4adc712b599d3d06ed",
+    "8a0705b0fcbb232769a872d1bc39995015179a6ede85616d5ab52972ed39800d"
+  ],
+  "repair_arm_received_hidden_patch_hashes": false,
+  "schema_version": "B_CORE_CODE_GRAFT_02_CONTAMINATION_AUDIT_1"
+}

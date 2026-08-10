@@ -1,0 +1,226 @@
+{
+  "bcore_authored_final_repositories": 0,
+  "dev_final_repository_state_overlap": 0,
+  "dev_final_task_overlap": 0,
+  "gold_patch_reads": 0,
+  "schema_version": "B_CORE_CODE_GRAFT_02_FIXTURE_INVENTORY_1",
+  "tasks": [
+    {
+      "acceptance_commands": [
+        [
+          "cargo",
+          "test",
+          "--offline",
+          "-q"
+        ]
+      ],
+      "commit": "1577ed901354d0d7448ac162328f9dbf5183124c",
+      "cross_language": false,
+      "defect_family": "compile_type_boundary",
+      "git_tree": "c3e93dab92ba3628aa9b0140f01f0954c7a7db0f",
+      "language": "rust",
+      "novel_recombination": false,
+      "patch_budget": 8,
+      "probe_command": [
+        "cargo",
+        "test",
+        "--offline",
+        "-q"
+      ],
+      "repository": "itoa",
+      "split": "DEV_A",
+      "task_hash": "8470957cc6c08f18f8bc2a0fa098a458dec8b84b96e23dcba16ee8d9ff30bafd",
+      "task_name": "dev-rust-type-itoa",
+      "test_inventory": {
+        "build_system": "Cargo",
+        "tests": 11
+      },
+      "timeout_seconds": 40,
+      "tracked_source_sha256": "87801e8fdbcde75a69e0456a9762bcded78e041adb12588a3dbfb7725f443fbe",
+      "url": "https://github.com/dtolnay/itoa.git"
+    },
+    {
+      "acceptance_commands": [
+        [
+          "C:\\test\\hermes\\hermes-agent\\venv\\Scripts\\python.exe",
+          "-m",
+          "pytest",
+          "tests",
+          "-q"
+        ]
+      ],
+      "commit": "580a9c2d12755d472e534ca3e277e8f7e3ada49e",
+      "cross_language": true,
+      "defect_family": "runtime_default_recovery",
+      "git_tree": "14624b6304621d9f164cc91bd6e108b430a3492f",
+      "language": "python",
+      "novel_recombination": false,
+      "patch_budget": 8,
+      "probe_command": [
+        "C:\\test\\hermes\\hermes-agent\\venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "tests/test_cacheutils.py",
+        "-q",
+        "-k",
+        "threshold_counter"
+      ],
+      "repository": "boltons",
+      "split": "DEV_A",
+      "task_hash": "8d2f6d926eec81ebe4137497021f3449bcf9f09c8cfa6952d7b6c6aadcf1aaf0",
+      "task_name": "dev-python-failure-boltons",
+      "test_inventory": {
+        "build_system": "pytest",
+        "tests": 468
+      },
+      "timeout_seconds": 40,
+      "tracked_source_sha256": "b6fc39db758855e7953ea07cf090e8dabc00984f4ae3b44e6bd37a9fef29c918",
+      "url": "https://github.com/mahmoud/boltons.git"
+    },
+    {
+      "acceptance_commands": [
+        [
+          "cargo",
+          "test",
+          "--offline",
+          "-q"
+        ]
+      ],
+      "commit": "5a82625fae462e8ba64cec8146b24a372b4d75c6",
+      "cross_language": false,
+      "defect_family": "compile_return_type",
+      "git_tree": "ca23c82f457fbcabfce58058490f2d7cb640ac45",
+      "language": "rust",
+      "novel_recombination": false,
+      "patch_budget": 8,
+      "probe_command": [
+        "cargo",
+        "test",
+        "--offline",
+        "-q"
+      ],
+      "repository": "byteorder",
+      "split": "FINAL_B",
+      "task_hash": "6ef3b3661ef948af4fbd0403a50ad2ebf8ddf5500433356738be1f178f1fd692",
+      "task_name": "final-rust-type-byteorder",
+      "test_inventory": {
+        "build_system": "Cargo",
+        "tests": 802
+      },
+      "timeout_seconds": 50,
+      "tracked_source_sha256": "aeca68dbe478f6d9078fa68c39d415098d81f9fd32bd26ebc433d8244761149e",
+      "url": "https://github.com/BurntSushi/byteorder.git"
+    },
+    {
+      "acceptance_commands": [
+        [
+          "C:\\test\\hermes\\hermes-agent\\venv\\Scripts\\python.exe",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tests",
+          "-q"
+        ]
+      ],
+      "commit": "7ff676d95968fb0a85f2527056c575cba039303c",
+      "cross_language": true,
+      "defect_family": "runtime_default_propagation",
+      "git_tree": "4818056e624ede1a0482f9ca1886273ca1832b81",
+      "language": "python",
+      "novel_recombination": false,
+      "patch_budget": 8,
+      "probe_command": [
+        "C:\\test\\hermes\\hermes-agent\\venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "tests/test_more.py",
+        "-q",
+        "-k",
+        "FirstTests and (empty or default)"
+      ],
+      "repository": "more-itertools",
+      "split": "DEV_A",
+      "task_hash": "fc0270f5cb9b9426e8a4e30f81ea640a17a20ff6cbc475c94bfdea59d4e1c8ae",
+      "task_name": "dev-python-failure-more-itertools",
+      "test_inventory": {
+        "build_system": "unittest",
+        "tests": 897
+      },
+      "timeout_seconds": 50,
+      "tracked_source_sha256": "3d3c2696ca69095f94468dfdabad6770f34e376da27cd9edec1679b482cc8658",
+      "url": "https://github.com/more-itertools/more-itertools.git"
+    },
+    {
+      "acceptance_commands": [
+        [
+          "C:\\Program Files\\Go\\bin\\go.exe",
+          "test",
+          "./...",
+          "-count=1"
+        ]
+      ],
+      "commit": "b133f1f1932e48f466f597a3346ce6f5a49a0dc1",
+      "cross_language": true,
+      "defect_family": "relational_type_guard",
+      "git_tree": "6a1be19881e3fbd49171524bc0650bcdf07bf5f4",
+      "language": "go",
+      "novel_recombination": true,
+      "patch_budget": 8,
+      "probe_command": [
+        "C:\\Program Files\\Go\\bin\\go.exe",
+        "test",
+        "./cmp",
+        "-run",
+        "TestDiff",
+        "-count=1"
+      ],
+      "repository": "go-cmp",
+      "split": "FINAL_B",
+      "task_hash": "a771496695500fb10532d66d4e0f06d0050ccdb597957d067b016305f8096e5d",
+      "task_name": "final-go-branch-go-cmp",
+      "test_inventory": {
+        "build_system": "go test",
+        "tests": "repository Go package tests"
+      },
+      "timeout_seconds": 50,
+      "tracked_source_sha256": "492b4a4189f1270a51586cdd173741627b6f2847bff8411acf5796c41ba754fb",
+      "url": "https://github.com/google/go-cmp.git"
+    },
+    {
+      "acceptance_commands": [
+        [
+          "C:\\Program Files\\nodejs\\node.exe",
+          "node_modules/ava/entrypoints/cli.mjs"
+        ],
+        [
+          "C:\\Program Files\\nodejs\\node.exe",
+          "node_modules/tsd/dist/cli.js"
+        ]
+      ],
+      "commit": "df476048d023ff868cd45b35ee47f5fb0ca2b25a",
+      "cross_language": true,
+      "defect_family": "async_completion_release",
+      "git_tree": "21d1b1115ab955f499ca0de32b8819b936775dd9",
+      "language": "javascript",
+      "novel_recombination": true,
+      "patch_budget": 8,
+      "probe_command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "node_modules/ava/entrypoints/cli.mjs",
+        "--match=activeCount and pendingCount properties"
+      ],
+      "repository": "p-limit",
+      "split": "FINAL_B",
+      "task_hash": "7f3e3b4979d11b9aa24edddb962588705d82374cf73ec8688b0a6590e7d7f751",
+      "task_name": "final-javascript-concurrency-p-limit",
+      "test_inventory": {
+        "build_system": "AVA+TSD",
+        "tests": 22
+      },
+      "timeout_seconds": 20,
+      "tracked_source_sha256": "feae6ac393ab0400f26f5b8eb13efed0d05adf5b82e1df5f558e53c61e3f63de",
+      "url": "https://github.com/sindresorhus/p-limit.git"
+    }
+  ]
+}

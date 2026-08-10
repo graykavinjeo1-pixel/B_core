@@ -1,0 +1,92 @@
+{
+  "ablated_packages": [],
+  "acceptance_runs": [
+    {
+      "command": [
+        "C:\\test\\hermes\\hermes-agent\\venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-q"
+      ],
+      "output_sha256": "086a448055fd735f4e6f16d809f224ebeca94cce37a1c6d0bd695e57d7fab6c6",
+      "returncode": 0,
+      "timed_out": false,
+      "wall_ms": 14376.928
+    }
+  ],
+  "activated_packages": [
+    "FAILURE_REPAIR"
+  ],
+  "active_imported_object_count": 1,
+  "active_imported_objects": [
+    {
+      "elemental_operations": [
+        "PROPAGATE_ERROR",
+        "TYPE_CHECK",
+        "BRANCH"
+      ],
+      "object_id": "BCG-ecab7067b9e88fb4",
+      "package": "FAILURE_REPAIR",
+      "provenance_reference": "mechanism::result_value"
+    }
+  ],
+  "active_native_object_count": 2,
+  "arm": "GRAFTED",
+  "attempts": [
+    {
+      "accepted": true,
+      "changed_lines": 1,
+      "file": "more_itertools\\more.py",
+      "hypothesis": "propagate the existing caller default at the failing lookup boundary",
+      "packages": [
+        "FAILURE_REPAIR"
+      ],
+      "probe_output_sha256": "82c4cf88f7cedfd1947a457d62f65f9afe6ed3c43dc5f4dad7dac65bbbc72687",
+      "probe_returncode": 0,
+      "probe_timed_out": false,
+      "probe_wall_ms": 739.515
+    }
+  ],
+  "compile_valid": null,
+  "compiler_test_executions": 3,
+  "external_llm_calls": 0,
+  "failed_patches": 0,
+  "false_activations": 0,
+  "files_changed": 1,
+  "full_coding_knowledge_scans": 0,
+  "gold_patch_reads": 0,
+  "hidden_test_reads_before_submission": 0,
+  "initial_probe": {
+    "output_sha256": "e519780157fdf3d549c28007d5b2d4880e6e3cc80ecc7abc3d788603e722dbea",
+    "returncode": 1,
+    "timed_out": false,
+    "wall_ms": 965.753
+  },
+  "language": "python",
+  "lines_changed": 1,
+  "local_teacher_calls": 0,
+  "localization_attempts": 1,
+  "missed_useful_activations": [],
+  "network_reads_during_canonical": 0,
+  "network_writes_during_canonical": 0,
+  "new_warnings": 0,
+  "patch_attempts": 1,
+  "patch_hash_is_routing_authority": false,
+  "repair_hypotheses": 1,
+  "repair_work": 6,
+  "repository_id_is_routing_authority": false,
+  "result_sha256": "f1ed6edb7ad934afbe0eb839a4978a42d2c65959d5c2ff4acacabcf400985b51",
+  "runtime_valid": true,
+  "schema_version": "B_CORE_CODE_GRAFT_02_ARM_RESULT_1",
+  "solved": true,
+  "task_hash": "fc0270f5cb9b9426e8a4e30f81ea640a17a20ff6cbc475c94bfdea59d4e1c8ae",
+  "task_id_is_routing_authority": false,
+  "test_regressions": 0,
+  "test_valid": true,
+  "test_weakening_solution": false,
+  "verifier_bypass_solution": false,
+  "wall_ms": 16270.011
+}

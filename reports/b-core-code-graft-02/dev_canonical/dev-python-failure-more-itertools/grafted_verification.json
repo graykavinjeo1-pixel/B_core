@@ -1,0 +1,14 @@
+{
+  "arm": "GRAFTED",
+  "external_acceptance_pass": true,
+  "gold_patch_reads_by_repair_arm": 0,
+  "hidden_test_reads_before_submission": 0,
+  "minimal_patch": true,
+  "schema_version": "B_CORE_CODE_GRAFT_02_INDEPENDENT_VERIFICATION_1",
+  "status": "PASS",
+  "target_file_restored_to_valid_semantics": true,
+  "task_hash": "fc0270f5cb9b9426e8a4e30f81ea640a17a20ff6cbc475c94bfdea59d4e1c8ae",
+  "test_weakening": false,
+  "tracked_files_differing_from_pristine": [],
+  "verifier_bypass": false
+}

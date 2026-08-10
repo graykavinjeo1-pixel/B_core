@@ -1,0 +1,53 @@
+{
+  "ablated_packages": [
+    "FAILURE_REPAIR"
+  ],
+  "acceptance_runs": [],
+  "activated_packages": [],
+  "active_imported_object_count": 0,
+  "active_imported_objects": [],
+  "active_native_object_count": 2,
+  "arm": "GRAFTED",
+  "attempts": [],
+  "compile_valid": null,
+  "compiler_test_executions": 1,
+  "external_llm_calls": 0,
+  "failed_patches": 0,
+  "false_activations": 0,
+  "files_changed": 0,
+  "full_coding_knowledge_scans": 0,
+  "gold_patch_reads": 0,
+  "hidden_test_reads_before_submission": 0,
+  "initial_probe": {
+    "output_sha256": "5630592ae4e284089d25d4a96008a286a201ad72c918d49a8347365178877d49",
+    "returncode": 1,
+    "timed_out": false,
+    "wall_ms": 656.388
+  },
+  "language": "python",
+  "lines_changed": 0,
+  "local_teacher_calls": 0,
+  "localization_attempts": 1,
+  "missed_useful_activations": [
+    "FAILURE_REPAIR"
+  ],
+  "network_reads_during_canonical": 0,
+  "network_writes_during_canonical": 0,
+  "new_warnings": 0,
+  "patch_attempts": 0,
+  "patch_hash_is_routing_authority": false,
+  "repair_hypotheses": 0,
+  "repair_work": 2,
+  "repository_id_is_routing_authority": false,
+  "result_sha256": "eb94de406525fe25db9358f4bc2f9eb5932985c6b790b1e57d1229d4cbaf8dc9",
+  "runtime_valid": false,
+  "schema_version": "B_CORE_CODE_GRAFT_02_ARM_RESULT_1",
+  "solved": false,
+  "task_hash": "8d2f6d926eec81ebe4137497021f3449bcf9f09c8cfa6952d7b6c6aadcf1aaf0",
+  "task_id_is_routing_authority": false,
+  "test_regressions": null,
+  "test_valid": false,
+  "test_weakening_solution": false,
+  "verifier_bypass_solution": false,
+  "wall_ms": 656.559
+}

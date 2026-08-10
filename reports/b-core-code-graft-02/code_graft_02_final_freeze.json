@@ -1,0 +1,182 @@
+{
+  "accepted_graft_object_count": 27,
+  "accepted_graft_state_sha256": "a4e1f5dd554b10fc15089fe95df2318d1192899b2654123694e6182338d9af56",
+  "campaign_id": "B_CORE-CODE-GRAFT-02",
+  "campaign_seed": 13547393796522759651,
+  "contains_final_results": false,
+  "dev_ablation_sha256": "d97c8c4d403c6dcd10fd1a067caa39c359e94c42047c34b2c192dcca7af78761",
+  "dev_results_sha256": "67bf6524c56ddc90e9d8a98392c27ae1786296dcf95bffa38f898f3f0ef2dfed",
+  "external_fixture_inventory_sha256": "45b3de002ba3f29df757b282b99f6066f7b1199e47fe882bbfee16d22bec9cc9",
+  "external_llm_calls_allowed": 0,
+  "final_defect_families": [
+    "compile_return_type",
+    "relational_type_guard",
+    "async_completion_release"
+  ],
+  "final_freeze_complete": true,
+  "final_languages": [
+    "rust",
+    "go",
+    "javascript"
+  ],
+  "final_repositories": [
+    "byteorder",
+    "go-cmp",
+    "p-limit"
+  ],
+  "final_results_observed": false,
+  "final_task_count": 3,
+  "final_task_instances_materialized": false,
+  "final_tasks": [
+    {
+      "acceptance_commands": [
+        [
+          "cargo",
+          "test",
+          "--offline",
+          "-q"
+        ]
+      ],
+      "commit": "5a82625fae462e8ba64cec8146b24a372b4d75c6",
+      "cross_language": false,
+      "defect_family": "compile_return_type",
+      "git_tree": "ca23c82f457fbcabfce58058490f2d7cb640ac45",
+      "language": "rust",
+      "novel_recombination": false,
+      "patch_budget": 8,
+      "probe_command": [
+        "cargo",
+        "test",
+        "--offline",
+        "-q"
+      ],
+      "repository": "byteorder",
+      "split": "FINAL_B",
+      "task_hash": "6ef3b3661ef948af4fbd0403a50ad2ebf8ddf5500433356738be1f178f1fd692",
+      "task_name": "final-rust-type-byteorder",
+      "test_inventory": {
+        "build_system": "Cargo",
+        "tests": 802
+      },
+      "timeout_seconds": 50,
+      "tracked_source_sha256": "aeca68dbe478f6d9078fa68c39d415098d81f9fd32bd26ebc433d8244761149e",
+      "url": "https://github.com/BurntSushi/byteorder.git"
+    },
+    {
+      "acceptance_commands": [
+        [
+          "C:\\Program Files\\Go\\bin\\go.exe",
+          "test",
+          "./...",
+          "-count=1"
+        ]
+      ],
+      "commit": "b133f1f1932e48f466f597a3346ce6f5a49a0dc1",
+      "cross_language": true,
+      "defect_family": "relational_type_guard",
+      "git_tree": "6a1be19881e3fbd49171524bc0650bcdf07bf5f4",
+      "language": "go",
+      "novel_recombination": true,
+      "patch_budget": 8,
+      "probe_command": [
+        "C:\\Program Files\\Go\\bin\\go.exe",
+        "test",
+        "./cmp",
+        "-run",
+        "TestDiff",
+        "-count=1"
+      ],
+      "repository": "go-cmp",
+      "split": "FINAL_B",
+      "task_hash": "a771496695500fb10532d66d4e0f06d0050ccdb597957d067b016305f8096e5d",
+      "task_name": "final-go-branch-go-cmp",
+      "test_inventory": {
+        "build_system": "go test",
+        "tests": "repository Go package tests"
+      },
+      "timeout_seconds": 50,
+      "tracked_source_sha256": "492b4a4189f1270a51586cdd173741627b6f2847bff8411acf5796c41ba754fb",
+      "url": "https://github.com/google/go-cmp.git"
+    },
+    {
+      "acceptance_commands": [
+        [
+          "C:\\Program Files\\nodejs\\node.exe",
+          "node_modules/ava/entrypoints/cli.mjs"
+        ],
+        [
+          "C:\\Program Files\\nodejs\\node.exe",
+          "node_modules/tsd/dist/cli.js"
+        ]
+      ],
+      "commit": "df476048d023ff868cd45b35ee47f5fb0ca2b25a",
+      "cross_language": true,
+      "defect_family": "async_completion_release",
+      "git_tree": "21d1b1115ab955f499ca0de32b8819b936775dd9",
+      "language": "javascript",
+      "novel_recombination": true,
+      "patch_budget": 8,
+      "probe_command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "node_modules/ava/entrypoints/cli.mjs",
+        "--match=activeCount and pendingCount properties"
+      ],
+      "repository": "p-limit",
+      "split": "FINAL_B",
+      "task_hash": "7f3e3b4979d11b9aa24edddb962588705d82374cf73ec8688b0a6590e7d7f751",
+      "task_name": "final-javascript-concurrency-p-limit",
+      "test_inventory": {
+        "build_system": "AVA+TSD",
+        "tests": 22
+      },
+      "timeout_seconds": 20,
+      "tracked_source_sha256": "feae6ac393ab0400f26f5b8eb13efed0d05adf5b82e1df5f558e53c61e3f63de",
+      "url": "https://github.com/sindresorhus/p-limit.git"
+    }
+  ],
+  "freeze_sha256": "54341f2441d913448e775f6b6431dcb3719a8d5ac08bc1430fc7a2259fce701f",
+  "generic_transport_repair_sha256": "2b4578597b4dd6bddc54f6aa318d300d2bebdc400cc34798112db13c956cc53a",
+  "grafted_authority_commit": "09fe306e96711b6194eefa5b379ce775a1fe4079",
+  "independent_evaluator_sha256": "63c7ca5fb6295db3ad842a62a661f6dbd7fc24ad3aca93541dd94c4b31c94943",
+  "instruction_bytes": 15797,
+  "instruction_sha256": "c7e89706ae450dcab2cecd573f236e37a4b0bddcfde49531e56fb73494a2fdfc",
+  "local_teacher_calls_allowed": 0,
+  "max_autonomous_research_epochs": 4096,
+  "network_policy": "LOCAL_OFFLINE_AFTER_FREEZE",
+  "outcome_dependent_policy_modifications_allowed": false,
+  "patch_hash_routing_allowed": false,
+  "per_task_patch_budget": 8,
+  "post_final_acceptance_changes_allowed": false,
+  "post_final_knowledge_changes_allowed": false,
+  "post_final_routing_changes_allowed": false,
+  "predecessor_commit": "09fe306e96711b6194eefa5b379ce775a1fe4079",
+  "predeclared_final_ablations": [
+    {
+      "removed_package": "TYPE_CONTROL",
+      "task": "final-rust-type-byteorder"
+    },
+    {
+      "removed_package": "CONCURRENCY_PROTOCOL",
+      "task": "final-javascript-concurrency-p-limit"
+    },
+    {
+      "removed_package": "FAILURE_REPAIR",
+      "task": "final-javascript-concurrency-p-limit"
+    }
+  ],
+  "repair_adapter_sha256": "a63d7ffe88c2758861f8037ebed07abaa8ec88efcec5874da1546a280522cbf7",
+  "repository_id_routing_allowed": false,
+  "schema_version": "B_CORE_CODE_GRAFT_02_FINAL_FREEZE_1",
+  "source_contamination_audit_sha256": "d8b358d9b5a857c5ea8a0b926eaa067b476cd02e2965808b1d681f353522b0fe",
+  "task_id_routing_allowed": false,
+  "toolchains": {
+    "cargo": "cargo 1.96.0 (30a34c682 2026-05-25)",
+    "go": "go version go1.26.5 windows/amd64",
+    "node": "v24.14.1",
+    "pytest": "pytest 8.4.2",
+    "python": "Python 3.11.15",
+    "rustc": "rustc 1.96.0 (ac68faa20 2026-05-25)\nbinary: rustc\ncommit-hash: ac68faa20c58cbccd01ee7208bf3b6e93a7d7f96\ncommit-date: 2026-05-25\nhost: x86_64-pc-windows-msvc\nrelease: 1.96.0\nLLVM version: 22.1.2"
+  },
+  "ungrafted_authority_commit": "b33386e7a8793c5c27e2c2df3e19db0e6e04d0f4",
+  "worktree_head_before_freeze_commit": "09fe306e96711b6194eefa5b379ce775a1fe4079"
+}

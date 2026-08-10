@@ -1,0 +1,20 @@
+{
+  "accepted": true,
+  "causal_package_ablation_pass": true,
+  "independent_dev_repositories_validated": [
+    "boltons",
+    "more-itertools"
+  ],
+  "independent_dev_repository_count": 2,
+  "measured_failure": "PYTEST_COMPACT_TRACEBACK_LOCATION_NOT_TRANSPORTED",
+  "repair_scope": [
+    "generic pytest path.py:line diagnostic grammar",
+    "newline-preserving source transport",
+    "minimal default-boundary candidate generation"
+  ],
+  "repository_or_task_identity_encoded": false,
+  "routing_rules_added": 0,
+  "schema_version": "B_CORE_CODE_GRAFT_02_GENERIC_TRANSPORT_REPAIR_1",
+  "semantic_objects_added": 0,
+  "threshold_changes": 0
+}
