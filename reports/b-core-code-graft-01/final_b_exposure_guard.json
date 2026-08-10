@@ -1,0 +1,7 @@
+{
+  "exposure_attempts_started": 1,
+  "final_seed": 17411392375738990995,
+  "final_start_commit": "b553e5757a999d5dc9965da340399774a4f82e50",
+  "retry_allowed": false,
+  "schema": "b_core_code_graft_final_exposure_guard_v1"
+}
