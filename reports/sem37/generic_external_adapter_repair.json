@@ -1,0 +1,25 @@
+{
+  "accepted_generic_semantics": [
+    "EXPLICIT_MISSINGNESS_WITHOUT_NUMERIC_AUTHORITY",
+    "EXACT_IEEE754_FINITE_BINDING",
+    "EXECUTABLE_LOCAL_DYNAMICS",
+    "LEGAL_INTERVENTION_CONTRACT"
+  ],
+  "benchmark_instance_to_solution_authority": false,
+  "benchmark_specific_causal_hint_branches": 0,
+  "dataset_id_to_causal_law_authority": false,
+  "fixture_receipt": {
+    "b_core_authored_canonical_world_instances": 0,
+    "bcore_adaptive_exposure_events": 0,
+    "checked_fixture_files": 15,
+    "external_fixture_hashes_sealed": true,
+    "fixture_manifest_sha256": "ce7ca3b43b736ff500f87c2650965060cce8db98323882bb9f2bea8efd139a6b",
+    "status": "PASS"
+  },
+  "measured_failure_commit": "2cabf092f0a9a6345ffa765b1c750c23ac3705d5",
+  "numeric_value_as_new_primitive_events": 0,
+  "repair_started_after_measured_failure": true,
+  "schema_version": "SEM37_GENERIC_EXTERNAL_ADAPTER_REPAIR_1",
+  "task_specific_external_repair_branches": 0,
+  "trajectory_hash_to_model_authority": false
+}
