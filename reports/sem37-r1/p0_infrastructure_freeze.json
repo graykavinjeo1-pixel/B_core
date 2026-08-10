@@ -1,0 +1,94 @@
+{
+  "BRANCH": "codex/sem37-r1-shift-aware-transfer",
+  "CAMPAIGN_BUDGET_CONTRACT_PASS": true,
+  "CAMPAIGN_ID": "SEM37-R1-SHIFT-AWARE-EXTERNAL-MECHANISM-TRANSFER-0001",
+  "CONFIGURED_MAX_AUTONOMOUS_RESEARCH_EPOCHS": 4096,
+  "FAILED_SEM37_ADAPTIVE_STATE_IS_PREDECESSOR": false,
+  "GENERIC_EXTERNAL_DYNAMICAL_ADAPTER_PRESENT": true,
+  "HEAD_AT_P0_FREEZE": "4bb520e969f16b6eacd40b38a4c1438180aacd2d",
+  "HISTORICAL_SEM37_COMMIT": "4ab8fb474725b22fe0ef53dba60df2c53f5e6511",
+  "HISTORICAL_SEM37_DISPOSITION": "EXTERNAL_MECHANISM_TRANSFER_LIMIT",
+  "HISTORICAL_SEM37_STATUS": "FAIL",
+  "HISTORICAL_SET_C_FINAL_AUTHORITY": false,
+  "NETWORK_READS_DURING_CANONICAL": 0,
+  "NETWORK_WRITES_DURING_CANONICAL": 0,
+  "P0_BENCHMARK_SPECIFIC_CAUSAL_HINTS": 0,
+  "P0_SCIENTIFIC_ENGINE_DIFF_FROM_SEM36": 0,
+  "P0_SEM36_ACCEPTANCE_SHA256": "0a837a76ca3f63135e0eef8c8b8d1546f853a5522dc3c281db1db15c0d219309",
+  "P0_SEM36_ENGINE_SHA256": "a14e5065c1ce830c78bf16937110aab5612f820344d87e3eca67b00db1ba6fcf",
+  "PERCEPTION_GROUNDING_STARTED": false,
+  "PREDECESSOR_INTEGRITY": "PASS",
+  "PRESTART_FUTURE_INSTANCE_EXPOSURE_EVENTS": 0,
+  "PRE_P0_R1_ADAPTIVE_EXTERNAL_EXPOSURE_EVENTS": 0,
+  "QIS0_EXECUTED": false,
+  "QUANTUM_INSPIRED_CORE_CHANGES": 0,
+  "R1_EXTERNAL_EVALUATOR_SHA256": "690f5af83d35b4631db2d7363c5b856dcd86c4728ebc667518d12f1db5144e73",
+  "R1_FIXTURE_MANIFEST_SHA256": "1c83464305a22faf05a50ab29c7a42af4ae8503283700c4932850540fb541978",
+  "R1_PRIVATE_PARTITION_MANIFEST_SHA256": "a8dcbca1740f4b4f4804937c4f23082c50d5f671878f9f2803fd55d5f310757f",
+  "REQUESTED_MAX_AUTONOMOUS_RESEARCH_EPOCHS": 4096,
+  "SEALED_CAPABILITY_PREDECESSOR_COMMIT": "b33386e7a8793c5c27e2c2df3e19db0e6e04d0f4",
+  "fixture_receipt": {
+    "b_core_authored_canonical_world_instances": 0,
+    "bcore_adaptive_exposure_events": 0,
+    "checked_fixture_files": 15,
+    "external_fixture_hashes_sealed": true,
+    "failed_sem37_adaptive_state_is_predecessor": false,
+    "fixture_manifest_sha256": "ce7ca3b43b736ff500f87c2650965060cce8db98323882bb9f2bea8efd139a6b",
+    "historical_set_c_final_authority": false,
+    "r1_fixture_manifest_sha256": "1c83464305a22faf05a50ab29c7a42af4ae8503283700c4932850540fb541978",
+    "status": "PASS"
+  },
+  "partition_receipt": {
+    "b_core_authored_canonical_world_instances": 0,
+    "bcore_adaptive_exposure_events": 0,
+    "checked_fixture_files": 15,
+    "concrete_case_ids_exposed_to_bcore": 0,
+    "external_fixture_hashes_sealed": true,
+    "failed_sem37_adaptive_state_is_predecessor": false,
+    "final_structural_distance_dimensions": {
+      "dynamics": true,
+      "intervention_behavior": true,
+      "lag": true,
+      "noise": true,
+      "regime": true,
+      "topology": true
+    },
+    "fixture_manifest_sha256": "ce7ca3b43b736ff500f87c2650965060cce8db98323882bb9f2bea8efd139a6b",
+    "historical_sem37_set_c_overlap": 0,
+    "historical_set_c_final_authority": false,
+    "partition_rule": "SEM37_R1_SHA256_STRATIFIED_UNUSED_EXTERNAL_METADATA_V1",
+    "prestart_future_instance_exposure_events": 0,
+    "r1_dev_a_dev_b_overlap": 0,
+    "r1_dev_a_final_overlap": 0,
+    "r1_dev_b_final_overlap": 0,
+    "r1_dev_final_overlap": 0,
+    "r1_fixture_manifest_sha256": "1c83464305a22faf05a50ab29c7a42af4ae8503283700c4932850540fb541978",
+    "r1_private_partition_manifest_sha256": "a8dcbca1740f4b4f4804937c4f23082c50d5f671878f9f2803fd55d5f310757f",
+    "set_counts": {
+      "R1_DEV_A": {
+        "lane_a": 13,
+        "lane_b": 14
+      },
+      "R1_DEV_B": {
+        "lane_a": 13,
+        "lane_b": 14
+      },
+      "R1_FINAL_C": {
+        "lane_a": 13,
+        "lane_b": 14
+      }
+    },
+    "status": "PASS"
+  },
+  "schema_version": "SEM37_R1_P0_INFRASTRUCTURE_FREEZE_1",
+  "source_hashes": {
+    "crates/semantic-reasoning/src/sem36/acceptance.rs": "0a837a76ca3f63135e0eef8c8b8d1546f853a5522dc3c281db1db15c0d219309",
+    "crates/semantic-reasoning/src/sem36/engine.rs": "a14e5065c1ce830c78bf16937110aab5612f820344d87e3eca67b00db1ba6fcf",
+    "crates/semantic-reasoning/src/sem37_r1/adapter.rs": "81663056caf372ae16f3b04db1101efa98cfee423c24619e85bdd32759fd61c2",
+    "crates/semantic-reasoning/src/sem37_r1/config.rs": "c5759414ecdf49b39b5a3aef8a08e44d92d1e02f0b9a47a40b862d9d29705cf3",
+    "crates/semantic-reasoning/src/sem37_r1/mod.rs": "3a9c6fe33286575b052bc4f1001b15ba2de05341557df36504222836beffc738",
+    "crates/semantic-reasoning/src/sem37_r1_p0_main.rs": "c3eb4a228ca4fa67970db94fd1699af1c561dbc77fce8484e983d1fa726536f3",
+    "reports/sem37-r1/historical_sem37_failure.json": "17aae90b4a7c195dfc9f1d10657ee2f8114fa9dc2f8654627d6c34390682b932",
+    "research/sem37_r1/SEM37_R1_INSTRUCTION.md": "78cc534723ea532d1086376228e4e78e0bf0e9cfa4bcc2eb1295e41c5d07088e"
+  }
+}
