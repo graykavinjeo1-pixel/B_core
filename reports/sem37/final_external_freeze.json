@@ -1,0 +1,85 @@
+{
+  "AUTONOMOUS_EXTERNAL_RESEARCH_SHA256": "11b457451edcb17fffd6c998c635f41644334a99886a9060360bb04bdaa85eef",
+  "BRANCH": "codex/sem37-external-validity",
+  "CAMPAIGN_BUDGET_CONTRACT_PASS": true,
+  "CAMPAIGN_ID": "SEM37-THIRD-PARTY-DYNAMICAL-WORLD-EXTERNAL-VALIDITY-0001",
+  "CAMPAIGN_STATE": "CAMPAIGN_FROZEN",
+  "CONFIGURED_MAX_AUTONOMOUS_RESEARCH_EPOCHS": 4096,
+  "EXTERNAL_EVALUATOR_SHA256": "362308ed837dbe67e47be6c702eef825c66c15dd57f7fb7bbd2a09f5fde518a3",
+  "EXTERNAL_FIXTURE_MANIFEST_SHA256": "ce7ca3b43b736ff500f87c2650965060cce8db98323882bb9f2bea8efd139a6b",
+  "FINAL_EXTERNAL_HOLDOUT_DEVELOPMENT_OVERLAP": 0,
+  "FINAL_EXTERNAL_HOLDOUT_FRESH": true,
+  "FINAL_SET_C_EXPOSURE_EVENTS_BEFORE_FREEZE": 0,
+  "GENERIC_EXTERNAL_REPAIR_SHA256": "2a20f799dde07537236e20181086897b5dc130403f77f501a41894ed39812fd5",
+  "HEAD_AT_FREEZE": "d4ef7d43f79e18ed371f2d7d98591e9972aa51ca",
+  "NETWORK_READS_DURING_CANONICAL": 0,
+  "NETWORK_WRITES_DURING_CANONICAL": 0,
+  "NO_REPAIR_AFTER_SET_C_EXPOSURE": true,
+  "PERCEPTION_GROUNDING_STARTED": false,
+  "PREDECESSOR_INTEGRITY": "PASS",
+  "PRESTART_FUTURE_INSTANCE_EXPOSURE_EVENTS": 0,
+  "PRIVATE_PARTITION_MANIFEST_SHA256": "5438e40518e00c16b121def5279ca4d4d1481bb831cdb91caee8042c3bae8c16",
+  "QIS0_EXECUTED": false,
+  "QUANTUM_INSPIRED_CORE_CHANGES": 0,
+  "REQUESTED_MAX_AUTONOMOUS_RESEARCH_EPOCHS": 4096,
+  "SEALED_PREDECESSOR_COMMIT": "b33386e7a8793c5c27e2c2df3e19db0e6e04d0f4",
+  "SELECTED_BY_HUMAN": false,
+  "SELECTED_LANE_A_METHOD": "DENSE_COUPLED_LINEAR",
+  "SELECTED_LANE_B_METHOD": "PERSISTENCE",
+  "fixture_receipt": {
+    "b_core_authored_canonical_world_instances": 0,
+    "bcore_adaptive_exposure_events": 0,
+    "checked_fixture_files": 15,
+    "external_fixture_hashes_sealed": true,
+    "fixture_manifest_sha256": "ce7ca3b43b736ff500f87c2650965060cce8db98323882bb9f2bea8efd139a6b",
+    "status": "PASS"
+  },
+  "partition_receipt": {
+    "b_core_authored_canonical_world_instances": 0,
+    "bcore_adaptive_exposure_events": 0,
+    "checked_fixture_files": 15,
+    "concrete_case_ids_exposed_to_bcore": 0,
+    "external_fixture_hashes_sealed": true,
+    "final_external_holdout_development_overlap": 0,
+    "final_external_holdout_fresh": true,
+    "fixture_manifest_sha256": "ce7ca3b43b736ff500f87c2650965060cce8db98323882bb9f2bea8efd139a6b",
+    "fresh_set_a": true,
+    "fresh_set_b": true,
+    "fresh_set_c": true,
+    "partition_rule": "SHA256_STRATIFIED_EXTERNAL_METADATA_V1",
+    "private_partition_manifest_sha256": "5438e40518e00c16b121def5279ca4d4d1481bb831cdb91caee8042c3bae8c16",
+    "set_a_b_overlap": 0,
+    "set_a_c_overlap": 0,
+    "set_b_c_overlap": 0,
+    "set_counts": {
+      "A": {
+        "lane_a": 10,
+        "lane_b": 14
+      },
+      "B": {
+        "lane_a": 15,
+        "lane_b": 14
+      },
+      "C": {
+        "lane_a": 15,
+        "lane_b": 14
+      }
+    },
+    "status": "PASS"
+  },
+  "schema_version": "SEM37_FINAL_PRE_EXPOSURE_FREEZE_1",
+  "source_hashes": {
+    "crates/semantic-reasoning/Cargo.toml": "d2f046629c857f12328208fae1f163269ab8e52ae3f54fe389a41f34569ff897",
+    "crates/semantic-reasoning/src/lib.rs": "3773170df04ac1d4d2f34741501c1e613d408cd156bce6a149f6538e384a4194",
+    "crates/semantic-reasoning/src/sem37/acceptance.rs": "a27ae8509be1d3b376f8bf9496860fd40ced820305a5d31e650cfc794b1b668c",
+    "crates/semantic-reasoning/src/sem37/adapter.rs": "57bc0061305b97355aa56cdaa072f539fae4edbfddfd20a0d1d6ed00b7c67328",
+    "crates/semantic-reasoning/src/sem37/baseline.rs": "80cb250d79930e0f96b70d9bd593f50205cc24a41e52e123d06e7bc3ca986ddf",
+    "crates/semantic-reasoning/src/sem37/campaign.rs": "35f766fcfe3907657524c791b96b8adc5af4ffec47992d2199230eb2f27818dc",
+    "crates/semantic-reasoning/src/sem37/config.rs": "690591cb4bef99cac85734b5f3cbff953d1015500e890d0a28c7681c71f248c0",
+    "crates/semantic-reasoning/src/sem37/engine.rs": "cd13a67bbdfe1d190bf76b6fd73aa491c000c1feaa38daf27fa4639a88a01096",
+    "crates/semantic-reasoning/src/sem37/mod.rs": "16d9cc63d8f86dff1d773627bf7b50c24f81058bee9d94e4d3d7034c7aee516b",
+    "crates/semantic-reasoning/src/sem37_main.rs": "01b9d60c9438d21d100821cabaee9597a08370b4a21fa6e698ba30b18858ed6e",
+    "crates/semantic-reasoning/src/sem37_verify_main.rs": "f7e47317ff467872068ebbe6b4d6ff570f5beebd152ccf7da5b6d12c42d85583",
+    "research/sem37/SEM37_INSTRUCTION.md": "098b6e5e4dbcf6643c3a45a2c9c063f18adcef84731b1d1ab577379e2a4d5601"
+  }
+}
