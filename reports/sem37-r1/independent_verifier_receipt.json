@@ -1,0 +1,8 @@
+{
+  "acceptance_false_pass_events": 0,
+  "deterministic_recomputation_diff": 0,
+  "primary_secondary_acceptance_diff": 0,
+  "raw_field_acceptance_authority": true,
+  "schema_version": "SEM37_R1_INDEPENDENT_VERIFIER_1",
+  "status": "PASS"
+}

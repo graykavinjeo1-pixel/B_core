@@ -1,0 +1,10 @@
+{
+  "derived_ratio_float_is_acceptance_authority": false,
+  "deterministic_recomputation_diff": 0,
+  "global_float_epsilon_acceptance_rule": false,
+  "lane_a_ratio_authority": "EXACT_INTEGER_CROSS_MULTIPLICATION",
+  "numeric_authority_manifest_present": true,
+  "raw_sse_authority": "IEEE754_BITS",
+  "schema_version": "SEM37_R1_NUMERIC_AUTHORITY_1",
+  "verifier_runner_numeric_transport_equivalence": true
+}

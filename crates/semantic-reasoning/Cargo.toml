@@ -291,6 +291,10 @@ name = "sem37-r1-campaign"
 path = "src/sem37_r1_campaign_main.rs"
 
 [[bin]]
+name = "sem37-r1-finalize"
+path = "src/sem37_r1_finalize_main.rs"
+
+[[bin]]
 name = "core-x0-evaluate"
 path = "src/core_x0_main.rs"
 
