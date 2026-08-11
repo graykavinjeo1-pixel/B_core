@@ -43,6 +43,11 @@ const FULL_HASH_CANARY_INTERVAL: u64 = 64;
 const MAX_QUIET_IDLE_POLL_INTERVAL_MS: u64 = 60_000;
 const BASELINE_MAX_HASHED_FILES_PER_SCAN: usize = 1_024;
 const BASELINE_MAX_BYTES_PER_SCAN: u64 = 64 * 1024 * 1024;
+const MAX_CLASSIFIER_REFINEMENT_EVENTS: usize = 64;
+
+fn u64_is_zero(value: &u64) -> bool {
+    *value == 0
+}
 
 fn logical_path_canary_bucket(logical_path: &str) -> u64 {
     let digest = sha256(logical_path.as_bytes());
@@ -301,6 +306,10 @@ pub struct SupervisorState {
     pub redundant_observations_consumed: u64,
     #[serde(default)]
     pub measured_performance_promotions: u64,
+    #[serde(default)]
+    pub classifier_outcome_bound_refinements: u64,
+    #[serde(default)]
+    pub classifier_unsupported_refinements_suppressed: u64,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
@@ -462,6 +471,33 @@ pub struct ClassifierMemory {
     pub signal_weights: BTreeMap<String, i16>,
     pub accepted_campaigns: u64,
     pub rejected_campaigns: u64,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub refinement_events: Vec<ClassifierRefinementEvent>,
+    #[serde(default, skip_serializing_if = "u64_is_zero")]
+    pub outcome_bound_refinements: u64,
+    #[serde(default, skip_serializing_if = "u64_is_zero")]
+    pub unsupported_refinements_suppressed: u64,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ClassifierWeightDelta {
+    pub signal: String,
+    pub before: i16,
+    pub after: i16,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ClassifierRefinementEvent {
+    pub refinement_id: String,
+    pub generation: u64,
+    pub source_lesson_id: String,
+    pub evidence_observation_sha256: Vec<String>,
+    pub considered_signals: Vec<String>,
+    pub weight_deltas: Vec<ClassifierWeightDelta>,
+    pub behavioral_frontier_advance: bool,
+    pub measured_performance_gain: bool,
+    pub behavioral_verification_sha256: Option<String>,
+    pub applied: bool,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -750,6 +786,8 @@ pub struct StepReport {
     pub semantic_revalidation_events: u64,
     pub redundant_observations_consumed: u64,
     pub measured_performance_promotions: u64,
+    pub classifier_outcome_bound_refinements: u64,
+    pub classifier_unsupported_refinements_suppressed: u64,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -797,6 +835,8 @@ pub struct SelfCheck {
     pub behavioral_evidence_required_for_generative_self_application: bool,
     pub behavioral_composition_execution_enabled: bool,
     pub redundant_generative_verifier_search_disabled: bool,
+    pub classifier_refinement_requires_capability_evidence: bool,
+    pub classifier_refinement_delta_ledger_enabled: bool,
     pub mutual_recursive_growth_observed: bool,
 }
 
@@ -843,6 +883,9 @@ pub fn self_check() -> SelfCheck {
             "UNVERIFIED_GENERATIVE_FRONTIER_HISTORY_IS_QUARANTINED".to_string(),
             "GENERATION_FRONTIER_REQUIRES_CONTEXT_BOUND_BEHAVIORAL_EXECUTION_RECEIPT".to_string(),
             "MANDATORY_EVALUATOR_AUDIT_IS_NOT_A_SELECTABLE_GENERATIVE_SEARCH_ARM".to_string(),
+            "CLASSIFIER_REINFORCEMENT_REQUIRES_BEHAVIORAL_FRONTIER_OR_MEASURED_PERFORMANCE"
+                .to_string(),
+            "CLASSIFIER_REFINEMENTS_RECORD_EVIDENCE_BOUND_BEFORE_AFTER_DELTAS".to_string(),
         ],
         bounded_failure_retry_enabled: true,
         successful_solution_learning_enabled: true,
@@ -868,6 +911,8 @@ pub fn self_check() -> SelfCheck {
         behavioral_evidence_required_for_generative_self_application: true,
         behavioral_composition_execution_enabled: true,
         redundant_generative_verifier_search_disabled: true,
+        classifier_refinement_requires_capability_evidence: true,
+        classifier_refinement_delta_ledger_enabled: true,
         mutual_recursive_growth_observed: false,
     }
 }
@@ -2047,6 +2092,8 @@ pub fn initialize(config_path: &Path) -> Result<SupervisorState, String> {
         semantic_revalidation_events: 0,
         redundant_observations_consumed: 0,
         measured_performance_promotions: 0,
+        classifier_outcome_bound_refinements: 0,
+        classifier_unsupported_refinements_suppressed: 0,
     };
     save_transition(
         &config,
@@ -3025,6 +3072,82 @@ fn generative_input(lesson: &LearnedCompositionLesson) -> GenerativeInput {
     }
 }
 
+fn refine_classifier_from_capability_outcome(
+    classifier: &mut ClassifierMemory,
+    generation: u64,
+    lesson: &LearnedCompositionLesson,
+    applied_policy_signals: &[String],
+    behavioral_frontier_advance: bool,
+    behavioral_verification_sha256: Option<&String>,
+) {
+    let measured_performance_gain = lesson
+        .performance_metrics
+        .iter()
+        .any(PerformanceMetricEvidence::improved);
+    let verified_behavioral_frontier =
+        behavioral_frontier_advance && behavioral_verification_sha256.is_some();
+    let supported = verified_behavioral_frontier || measured_performance_gain;
+    let mut considered_signals = lesson
+        .diagnostic_signals
+        .iter()
+        .chain(applied_policy_signals)
+        .cloned()
+        .collect::<BTreeSet<_>>()
+        .into_iter()
+        .collect::<Vec<_>>();
+    considered_signals.sort();
+    let mut weight_deltas = Vec::with_capacity(considered_signals.len());
+    for signal in &considered_signals {
+        let before = classifier.signal_weights.get(signal).copied().unwrap_or(0);
+        let after = if supported {
+            before.saturating_add(1).min(5)
+        } else {
+            before
+        };
+        if supported {
+            classifier.signal_weights.insert(signal.clone(), after);
+        }
+        weight_deltas.push(ClassifierWeightDelta {
+            signal: signal.clone(),
+            before,
+            after,
+        });
+    }
+    if supported {
+        classifier.outcome_bound_refinements =
+            classifier.outcome_bound_refinements.saturating_add(1);
+    } else {
+        classifier.unsupported_refinements_suppressed = classifier
+            .unsupported_refinements_suppressed
+            .saturating_add(1);
+    }
+    let refinement_identity = format!(
+        "classifier:{generation}:{}:{}:{}:{}",
+        lesson.lesson_id,
+        considered_signals.join("|"),
+        verified_behavioral_frontier,
+        measured_performance_gain
+    );
+    let refinement_id = sha256(refinement_identity.as_bytes());
+    classifier
+        .refinement_events
+        .push(ClassifierRefinementEvent {
+            refinement_id,
+            generation,
+            source_lesson_id: lesson.lesson_id.clone(),
+            evidence_observation_sha256: lesson.evidence_observation_sha256.clone(),
+            considered_signals,
+            weight_deltas,
+            behavioral_frontier_advance: verified_behavioral_frontier,
+            measured_performance_gain,
+            behavioral_verification_sha256: behavioral_verification_sha256.cloned(),
+            applied: supported,
+        });
+    while classifier.refinement_events.len() > MAX_CLASSIFIER_REFINEMENT_EVENTS {
+        classifier.refinement_events.remove(0);
+    }
+}
+
 fn receipt_hash_input(receipt: &GrowthVerificationReceipt) -> Result<String, String> {
     let mut clone = receipt.clone();
     clone.receipt_sha256.clear();
@@ -3582,24 +3705,22 @@ fn promote_candidate(
     while memory.lessons.len() > config.resources.max_lessons {
         memory.lessons.remove(0);
     }
-    for signal in &candidate.lesson.diagnostic_signals {
-        let weight = memory
-            .classifier
-            .signal_weights
-            .entry(signal.clone())
-            .or_insert(0);
-        *weight = weight.saturating_add(1).min(5);
-    }
-    if candidate.generative_cycle.applied_to_self_improvement {
-        for signal in &candidate.generative_cycle.applied_policy_signals {
-            let weight = memory
-                .classifier
-                .signal_weights
-                .entry(signal.clone())
-                .or_insert(0);
-            *weight = weight.saturating_add(1).min(5);
-        }
-    }
+    let applied_policy_signals = if candidate.generative_cycle.applied_to_self_improvement {
+        candidate.generative_cycle.applied_policy_signals.as_slice()
+    } else {
+        &[]
+    };
+    refine_classifier_from_capability_outcome(
+        &mut memory.classifier,
+        freeze.generation,
+        &candidate.lesson,
+        applied_policy_signals,
+        candidate.generative_cycle.frontier_advance,
+        candidate
+            .generative_cycle
+            .behavioral_verification_sha256
+            .as_ref(),
+    );
     memory.classifier.accepted_campaigns = memory.classifier.accepted_campaigns.saturating_add(1);
     memory.evaluator = next_evaluator;
     memory.generative = promote_generative_cycle(
@@ -3676,6 +3797,9 @@ fn promote_candidate(
         .filter(|lesson| !lesson.performance_metrics.is_empty())
         .count()
         .min(u64::MAX as usize) as u64;
+    state.classifier_outcome_bound_refinements = memory.classifier.outcome_bound_refinements;
+    state.classifier_unsupported_refinements_suppressed =
+        memory.classifier.unsupported_refinements_suppressed;
     state.diagnostic_policy.resolve_frontier_outcome(
         freeze.generation.saturating_sub(1),
         candidate.generative_cycle.frontier_advance,
@@ -4124,6 +4248,9 @@ fn report_from_state(
         semantic_revalidation_events: state.semantic_revalidation_events,
         redundant_observations_consumed: state.redundant_observations_consumed,
         measured_performance_promotions: state.measured_performance_promotions,
+        classifier_outcome_bound_refinements: state.classifier_outcome_bound_refinements,
+        classifier_unsupported_refinements_suppressed: state
+            .classifier_unsupported_refinements_suppressed,
     }
 }
 
@@ -4343,6 +4470,9 @@ fn step_without_lease(
         .filter(|lesson| !lesson.performance_metrics.is_empty())
         .count()
         .min(u64::MAX as usize) as u64;
+    state.classifier_outcome_bound_refinements = memory.classifier.outcome_bound_refinements;
+    state.classifier_unsupported_refinements_suppressed =
+        memory.classifier.unsupported_refinements_suppressed;
     state.generative_predictions = memory.generative.prediction_records;
     state.valuable_combinations_learned = memory
         .generative
@@ -4859,6 +4989,8 @@ mod tests {
         assert!(check.frozen_observation_reconstruction_enabled);
         assert!(check.bound_pass_evidence_required);
         assert!(check.evaluator_mutation_self_audit_enabled);
+        assert!(check.classifier_refinement_requires_capability_evidence);
+        assert!(check.classifier_refinement_delta_ledger_enabled);
         assert!(check.evaluator_generation_evolution_enabled);
         assert!(check.prediction_before_composition_enabled);
         assert!(check.valuable_combination_memory_enabled);
@@ -4893,6 +5025,104 @@ mod tests {
         assert!(check.behavioral_composition_execution_enabled);
         assert!(check.redundant_generative_verifier_search_disabled);
         assert!(!check.mutual_recursive_growth_observed);
+    }
+
+    fn classifier_refinement_lesson(
+        performance_metrics: Vec<PerformanceMetricEvidence>,
+    ) -> LearnedCompositionLesson {
+        LearnedCompositionLesson {
+            lesson_id: "classifier-refinement-lesson".to_string(),
+            evidence_observation_sha256: vec!["a".repeat(64)],
+            work_kinds: vec![WorkKind::DefectRepair],
+            diagnostic_signals: vec!["VERIFIED_PASS".to_string(), "DEFECT_REPAIR".to_string()],
+            composition_recipe: vec!["IMPLEMENTATION_REPAIR".to_string()],
+            applicability: vec!["test".to_string()],
+            verification_obligations: vec!["regression".to_string()],
+            performance_metrics,
+            learning_score: 80,
+            exact_patch_data_present: false,
+            exact_source_fragment_present: false,
+            raw_source_bytes_present: false,
+        }
+    }
+
+    #[test]
+    fn classifier_suppresses_accepted_but_capability_neutral_reinforcement() {
+        let lesson = classifier_refinement_lesson(Vec::new());
+        let mut classifier = ClassifierMemory::default();
+
+        refine_classifier_from_capability_outcome(
+            &mut classifier,
+            7,
+            &lesson,
+            &["POLICY_SIGNAL".to_string()],
+            false,
+            None,
+        );
+
+        assert!(classifier.signal_weights.is_empty());
+        assert_eq!(classifier.outcome_bound_refinements, 0);
+        assert_eq!(classifier.unsupported_refinements_suppressed, 1);
+        let event = classifier.refinement_events.last().unwrap();
+        assert!(!event.applied);
+        assert!(!event.behavioral_frontier_advance);
+        assert!(!event.measured_performance_gain);
+        assert!(event
+            .weight_deltas
+            .iter()
+            .all(|delta| delta.before == delta.after));
+    }
+
+    #[test]
+    fn classifier_records_evidence_bound_behavioral_weight_deltas() {
+        let lesson = classifier_refinement_lesson(Vec::new());
+        let mut classifier = ClassifierMemory::default();
+        classifier
+            .signal_weights
+            .insert("DEFECT_REPAIR".to_string(), 2);
+        let receipt_sha256 = "b".repeat(64);
+
+        refine_classifier_from_capability_outcome(
+            &mut classifier,
+            8,
+            &lesson,
+            &["POLICY_SIGNAL".to_string()],
+            true,
+            Some(&receipt_sha256),
+        );
+
+        assert_eq!(classifier.signal_weights["DEFECT_REPAIR"], 3);
+        assert_eq!(classifier.signal_weights["POLICY_SIGNAL"], 1);
+        assert_eq!(classifier.outcome_bound_refinements, 1);
+        assert_eq!(classifier.unsupported_refinements_suppressed, 0);
+        let event = classifier.refinement_events.last().unwrap();
+        assert!(event.applied);
+        assert!(event.behavioral_frontier_advance);
+        assert_eq!(
+            event.behavioral_verification_sha256.as_deref(),
+            Some(receipt_sha256.as_str())
+        );
+        assert!(event.weight_deltas.iter().any(|delta| {
+            delta.signal == "DEFECT_REPAIR" && delta.before == 2 && delta.after == 3
+        }));
+    }
+
+    #[test]
+    fn classifier_accepts_bound_measured_performance_without_frontier_label() {
+        let lesson = classifier_refinement_lesson(vec![PerformanceMetricEvidence {
+            metric: "latency_ns".to_string(),
+            before: 100,
+            after: 80,
+            lower_is_better: true,
+            evidence_sha256: "c".repeat(64),
+        }]);
+        let mut classifier = ClassifierMemory::default();
+
+        refine_classifier_from_capability_outcome(&mut classifier, 9, &lesson, &[], false, None);
+
+        assert_eq!(classifier.outcome_bound_refinements, 1);
+        assert!(classifier.refinement_events[0].measured_performance_gain);
+        assert_eq!(classifier.signal_weights["VERIFIED_PASS"], 1);
     }
 
     #[test]

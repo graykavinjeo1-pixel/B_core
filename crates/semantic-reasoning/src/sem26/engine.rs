@@ -251,7 +251,8 @@ pub fn run_autonomous_epoch(
     let observation_time_ns = nanos(observation_started.elapsed().as_nanos());
 
     let diagnosis_started = Instant::now();
-    let hypotheses = generate_hypotheses(&request, &baseline, symptom_mask);
+    let hypotheses =
+        generate_hypotheses(&request, &baseline, &state.phase_work_units, symptom_mask);
     let selected_phase = hypotheses
         .first()
         .map(|hypothesis| hypothesis.phase_code)
@@ -573,6 +574,7 @@ fn derive_symptom_mask(times: &[u64; PHASE_COUNT], state: &DirectorState) -> u64
 fn generate_hypotheses(
     request: &AutonomousEpochRequest,
     times: &[u64; PHASE_COUNT],
+    work_units: &[u64; PHASE_COUNT],
     symptom_mask: u64,
 ) -> Vec<BottleneckHypothesis> {
     if request.arm_code == 0 {
@@ -593,16 +595,34 @@ fn generate_hypotheses(
             true,
         )];
     }
+    // Wall-clock samples are retained as evidence, but scheduler noise must not
+    // choose the research target.  The deterministic work ledger is the primary
+    // bottleneck authority; the symptom bit and time are only stable tie-breakers.
     let mut ranked = (0..PHASE_COUNT)
-        .filter(|index| symptom_mask & (1_u64 << index) != 0)
-        .map(|index| (times[index], index))
+        .map(|index| {
+            (
+                work_units[index],
+                symptom_mask & (1_u64 << index) != 0,
+                times[index],
+                index,
+            )
+        })
         .collect::<Vec<_>>();
-    ranked.sort_by_key(|(time, _)| Reverse(*time));
+    ranked.sort_by_key(|(work, symptomatic, time, index)| {
+        (
+            Reverse(*work),
+            Reverse(*symptomatic),
+            Reverse(*time),
+            *index,
+        )
+    });
     ranked
         .into_iter()
         .take(3)
         .enumerate()
-        .map(|(rank, (_, phase))| hypothesis(phase as u8, request.seed, times, rank as u8, false))
+        .map(|(rank, (_, _, _, phase))| {
+            hypothesis(phase as u8, request.seed, times, rank as u8, false)
+        })
         .collect()
 }
 
