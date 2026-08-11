@@ -77,6 +77,8 @@ pub struct GenerativeGrowthMemory {
     pub frontier_advance_events: u64,
     #[serde(default, skip_serializing_if = "is_zero")]
     pub redundant_selection_events: u64,
+    #[serde(default, skip_serializing_if = "is_zero")]
+    pub prediction_absolute_error_total: u64,
 }
 
 impl Default for GenerativeGrowthMemory {
@@ -94,6 +96,7 @@ impl Default for GenerativeGrowthMemory {
             productive_reuse_events: 0,
             frontier_advance_events: 0,
             redundant_selection_events: 0,
+            prediction_absolute_error_total: 0,
         }
     }
 }
@@ -113,6 +116,8 @@ pub struct GenerativeCycleResult {
     pub selected_from_precomposition_prediction: bool,
     pub prediction_recorded_before_composition: bool,
     pub predicted_value: u16,
+    #[serde(default)]
+    pub selection_score: u16,
     pub predicted_resource_units: u16,
     pub isolated_composition_executed: bool,
     pub composition_typecheck_pass: bool,
@@ -122,6 +127,8 @@ pub struct GenerativeCycleResult {
     pub accepted_for_memory: bool,
     pub reused_memory_composition_id: Option<String>,
     pub applied_to_self_improvement: bool,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub applied_policy_signals: Vec<String>,
     #[serde(default)]
     pub context_sha256: String,
     #[serde(default)]
@@ -316,9 +323,42 @@ fn domain_bonus(composition: &RepairCompositionLessonIR, input: &GenerativeInput
     bonus
 }
 
+fn applicable_policy_signals(
+    composition: &RepairCompositionLessonIR,
+    input: &GenerativeInput,
+) -> Vec<String> {
+    let ids = composition
+        .primitives
+        .iter()
+        .map(|value| value.primitive_id.as_str())
+        .collect::<BTreeSet<_>>();
+    let mut supported = BTreeSet::new();
+    if ids.contains("SEM25_MULTI_HORIZON_ROUTER") {
+        supported.extend(["MUTUAL_REVALIDATION_GAP", "CAPABILITY_SURFACE_ADDED"]);
+    }
+    if ids.contains("SELF_HEALING_CONTRACT_COMPOSER") {
+        supported.extend(["DEFECT_REPAIR", "ERROR_HANDLING_ADDED", "VALIDATION_ADDED"]);
+    }
+    if ids.contains("FULLSTACK_TYPED_RECIPE_COMPOSER") {
+        supported.extend(["FRONTEND_CONTRACT", "BACKEND_CONTRACT", "OPERATIONS_CHANGE"]);
+    }
+    if ids.contains("SEM5_PROGRAM_IR_COMPOSER") {
+        supported.extend(["CODE_CHANGE", "REFACTOR", "CAPABILITY_SURFACE_ADDED"]);
+    }
+    input
+        .diagnostic_signals
+        .iter()
+        .filter(|signal| supported.contains(signal.as_str()))
+        .cloned()
+        .collect::<BTreeSet<_>>()
+        .into_iter()
+        .collect()
+}
+
 #[derive(Debug, Clone)]
 struct CandidatePrediction {
-    score: u16,
+    predicted_value: u16,
+    selection_score: u16,
     reused_memory_composition_id: Option<String>,
     prior_composition_trials: u64,
     prior_context_trials: u64,
@@ -401,23 +441,50 @@ fn prediction_score(
         .unwrap_or(0);
     let failed_trials = prior_composition_trials.saturating_sub(successful_trials);
     let exploration = prior_composition_trials == 0;
-    let mut score = 46_i32 + i32::from(domain_bonus(composition, input));
+    // Keep the expected outcome independent from the exploration incentive.
+    // Otherwise a never-tried composition looks artificially certain and can
+    // be rejected only because its UCB-style exploration bonus inflated the
+    // recorded prediction.
+    let evidence_value = input.verification_evidence_count.min(4) as u16 * 2;
+    let role_value = input.observed_composition_roles.len().min(4) as u16;
+    let prior_free_prediction = 45_u16
+        .saturating_add(input.learning_score.min(100) / 4)
+        .saturating_add(domain_bonus(composition, input))
+        .saturating_add(evidence_value)
+        .saturating_add(role_value)
+        .saturating_add(if input.measured_performance_gain {
+            6
+        } else {
+            0
+        })
+        .min(100);
+    let predicted_value = if prior_composition_trials == 0 {
+        prior_free_prediction
+    } else {
+        u32::from(prior_free_prediction)
+            .saturating_add(u32::from(observed_average).saturating_mul(2))
+            .checked_div(3)
+            .unwrap_or(0)
+            .min(100) as u16
+    };
+    let mut selection_score = i32::from(predicted_value);
     if exploration {
         // Exhaust the bounded typed search surface before a successful early
         // choice can monopolize all later campaigns.
-        score += 40;
+        selection_score += 40;
     } else {
-        score += i32::from(observed_average.saturating_sub(60).min(30) / 3);
-        score += i32::try_from(overlap.min(4)).unwrap_or(4);
+        selection_score += i32::from(observed_average.saturating_sub(60).min(30) / 3);
+        selection_score += i32::try_from(overlap.min(4)).unwrap_or(4);
         if reusable.is_some() && prior_context_trials == 0 {
-            score += 4;
+            selection_score += 4;
         }
-        score -= i32::try_from(prior_composition_trials.min(12) * 2).unwrap_or(24);
-        score -= i32::try_from(failed_trials.min(4) * 6).unwrap_or(24);
-        score -= i32::try_from(prior_context_trials.min(3) * 8).unwrap_or(24);
+        selection_score -= i32::try_from(prior_composition_trials.min(12) * 2).unwrap_or(24);
+        selection_score -= i32::try_from(failed_trials.min(4) * 6).unwrap_or(24);
+        selection_score -= i32::try_from(prior_context_trials.min(3) * 8).unwrap_or(24);
     }
     CandidatePrediction {
-        score: score.clamp(0, 100) as u16,
+        predicted_value,
+        selection_score: selection_score.clamp(0, 160) as u16,
         reused_memory_composition_id: reusable
             .filter(|_| overlap > 0)
             .map(|candidate| candidate.composition.composition_id.clone()),
@@ -476,7 +543,7 @@ pub fn run_generative_cycle(
                 let composition = candidate_composition(predictor, composer, verifier);
                 let prediction = prediction_score(&composition, input, memory);
                 let tie = sha256(format!("{}:{}", seed, composition.composition_id).as_bytes());
-                candidates.push((prediction.score, tie, prediction, composition));
+                candidates.push((prediction.selection_score, tie, prediction, composition));
             }
         }
     }
@@ -485,7 +552,7 @@ pub fn run_generative_cycle(
         .first()
         .cloned()
         .ok_or_else(|| "NO_GENERATIVE_COMPOSITION_CANDIDATE".to_string())?;
-    let predicted_value = prediction.score;
+    let predicted_value = prediction.predicted_value;
     let typecheck_pass = validate_composition_lesson(&selected).is_ok();
     let observed_value = if typecheck_pass {
         input
@@ -516,6 +583,11 @@ pub fn run_generative_cycle(
         && prediction.reused_memory_composition_id.is_some()
         && prediction.prior_context_trials == 0;
     let frontier_advance = accepted_for_memory || productive_reuse;
+    let applied_policy_signals = if frontier_advance {
+        applicable_policy_signals(&selected, input)
+    } else {
+        Vec::new()
+    };
     Ok(GenerativeCycleResult {
         schema: GENERATIVE_GROWTH_SCHEMA.to_string(),
         source_lesson_id: input.source_lesson_id.clone(),
@@ -524,6 +596,7 @@ pub fn run_generative_cycle(
         selected_from_precomposition_prediction: true,
         prediction_recorded_before_composition: true,
         predicted_value,
+        selection_score: prediction.selection_score,
         predicted_resource_units: 12,
         isolated_composition_executed: true,
         composition_typecheck_pass: typecheck_pass,
@@ -532,7 +605,8 @@ pub fn run_generative_cycle(
         valuable,
         accepted_for_memory,
         reused_memory_composition_id: prediction.reused_memory_composition_id,
-        applied_to_self_improvement: frontier_advance,
+        applied_to_self_improvement: !applied_policy_signals.is_empty(),
+        applied_policy_signals,
         context_sha256: context_sha256(input),
         exploration_selected: prediction.exploration,
         prior_composition_trials: prediction.prior_composition_trials,
@@ -568,6 +642,9 @@ pub fn promote_generative_cycle(
     let mut next = current.clone();
     next.generation = next.generation.saturating_add(1);
     next.prediction_records = next.prediction_records.saturating_add(1);
+    next.prediction_absolute_error_total = next
+        .prediction_absolute_error_total
+        .saturating_add(u64::from(result.prediction_error));
     next.composition_trials.push(GenerativeCompositionTrial {
         composition_id: result.selected_composition.composition_id.clone(),
         context_sha256: result.context_sha256.clone(),
@@ -682,9 +759,12 @@ mod tests {
         assert!(result.selected_from_precomposition_prediction);
         assert!(result.isolated_composition_executed);
         assert!(result.composition_typecheck_pass);
+        assert!(result.selection_score > result.predicted_value);
+        assert!(result.prediction_error <= 30);
         assert!(result.valuable);
         assert!(result.accepted_for_memory);
         assert!(result.applied_to_self_improvement);
+        assert!(!result.applied_policy_signals.is_empty());
         assert_eq!(result.external_llm_calls, 0);
     }
 
@@ -705,6 +785,7 @@ mod tests {
         assert_eq!(memory.composition_trials.len(), 12);
         assert_eq!(memory.exploration_events, 12);
         assert_eq!(memory.accepted_compositions.len(), 12);
+        assert!(memory.prediction_absolute_error_total < 12 * 30);
 
         let mut repeated_context = input();
         repeated_context.source_lesson_id = "lesson-repeated-context".to_string();

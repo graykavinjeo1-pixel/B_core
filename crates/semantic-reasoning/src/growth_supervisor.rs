@@ -19,8 +19,8 @@ use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
 use serde::{Deserialize, Serialize};
 
 use crate::autonomous_self_inspection::{
-    inspect as inspect_self, AutonomousSelfInspectionReceipt, InternalBottleneckClass,
-    RepairDisposition, SelfInspectionInput,
+    inspect as inspect_self, AutonomousSelfInspectionReceipt, DiagnosticPolicyMemory,
+    InternalBottleneckClass, RepairDisposition, SelfInspectionInput,
 };
 use crate::autonomous_source_mutation::{
     discover_known_source_improvement, install_and_stage_source_patch, validate_policy,
@@ -234,6 +234,8 @@ pub struct SupervisorState {
     #[serde(default)]
     pub diagnostic_experiment_events: u64,
     #[serde(default)]
+    pub diagnostic_policy: DiagnosticPolicyMemory,
+    #[serde(default)]
     pub runtime_self_repairs_activated: u64,
     #[serde(default)]
     pub self_repair_capability_gaps: u64,
@@ -265,6 +267,8 @@ pub struct SupervisorState {
     pub generative_frontier_advance_events: u64,
     #[serde(default)]
     pub redundant_generative_selection_events: u64,
+    #[serde(default)]
+    pub generative_prediction_absolute_error_total: u64,
     #[serde(default)]
     pub autonomous_source_patch_attempts: u64,
     #[serde(default)]
@@ -698,6 +702,9 @@ pub struct StepReport {
     pub scan_timeout_events: u64,
     pub self_inspection_events: u64,
     pub diagnostic_experiment_events: u64,
+    pub diagnostic_policy_selections: u64,
+    pub diagnostic_policy_explorations: u64,
+    pub diagnostic_policy_causal_support_events: u64,
     pub runtime_self_repairs_activated: u64,
     pub self_repair_capability_gaps: u64,
     pub last_internal_bottleneck: Option<String>,
@@ -712,6 +719,7 @@ pub struct StepReport {
     pub productive_generative_reuse_events: u64,
     pub generative_frontier_advance_events: u64,
     pub redundant_generative_selection_events: u64,
+    pub generative_mean_prediction_error_millis: u64,
     pub autonomous_source_patch_attempts: u64,
     pub autonomous_source_patches_installed: u64,
     pub autonomous_source_patch_rollbacks: u64,
@@ -761,6 +769,9 @@ pub struct SelfCheck {
     pub measured_performance_evidence_supported: bool,
     pub contextual_generative_exploration_enabled: bool,
     pub redundant_reuse_excluded_from_growth: bool,
+    pub adaptive_diagnostic_policy_enabled: bool,
+    pub exploration_bonus_excluded_from_prediction: bool,
+    pub composition_scoped_policy_application: bool,
     pub mutual_recursive_growth_observed: bool,
 }
 
@@ -798,6 +809,9 @@ pub fn self_check() -> SelfCheck {
             "PERFORMANCE_GROWTH_REQUIRES_BOUND_BEFORE_AFTER_MEASUREMENT".to_string(),
             "EARLY_SUCCESS_MUST_NOT_MONOPOLIZE_BOUNDED_COMPOSITION_SEARCH".to_string(),
             "SAME_CONTEXT_REUSE_IS_REVALIDATION_NOT_FRONTIER_ADVANCE".to_string(),
+            "EXPLORATION_PRIORITY_IS_NOT_EXPECTED_OUTCOME_VALUE".to_string(),
+            "COMPOSITION_POLICY_EFFECTS_APPLY_ONLY_TO_SUPPORTED_SIGNALS".to_string(),
+            "DIAGNOSTIC_YIELD_AND_NOVELTY_ADAPT_NEXT_EXPERIMENT_SELECTION".to_string(),
         ],
         bounded_failure_retry_enabled: true,
         successful_solution_learning_enabled: true,
@@ -814,6 +828,9 @@ pub fn self_check() -> SelfCheck {
         measured_performance_evidence_supported: true,
         contextual_generative_exploration_enabled: true,
         redundant_reuse_excluded_from_growth: true,
+        adaptive_diagnostic_policy_enabled: true,
+        exploration_bonus_excluded_from_prediction: true,
+        composition_scoped_policy_application: true,
         mutual_recursive_growth_observed: false,
     }
 }
@@ -1930,6 +1947,7 @@ pub fn initialize(config_path: &Path) -> Result<SupervisorState, String> {
         scan_timeout_events: 0,
         self_inspection_events: 0,
         diagnostic_experiment_events: 0,
+        diagnostic_policy: DiagnosticPolicyMemory::default(),
         runtime_self_repairs_activated: 0,
         self_repair_capability_gaps: 0,
         last_internal_bottleneck: None,
@@ -1946,6 +1964,7 @@ pub fn initialize(config_path: &Path) -> Result<SupervisorState, String> {
         productive_generative_reuse_events: 0,
         generative_frontier_advance_events: 0,
         redundant_generative_selection_events: 0,
+        generative_prediction_absolute_error_total: 0,
         autonomous_source_patch_attempts: 0,
         autonomous_source_patches_installed: 0,
         autonomous_source_patch_rollbacks: 0,
@@ -3485,7 +3504,7 @@ fn promote_candidate(
         *weight = weight.saturating_add(1).min(5);
     }
     if candidate.generative_cycle.applied_to_self_improvement {
-        for signal in &candidate.lesson.diagnostic_signals {
+        for signal in &candidate.generative_cycle.applied_policy_signals {
             let weight = memory
                 .classifier
                 .signal_weights
@@ -3549,6 +3568,8 @@ fn promote_candidate(
     state.productive_generative_reuse_events = memory.generative.productive_reuse_events;
     state.generative_frontier_advance_events = memory.generative.frontier_advance_events;
     state.redundant_generative_selection_events = memory.generative.redundant_selection_events;
+    state.generative_prediction_absolute_error_total =
+        memory.generative.prediction_absolute_error_total;
     let (distinct_semantic_lessons, semantic_duplicate_lessons) = semantic_lesson_counts(&memory)?;
     state.distinct_semantic_lessons = distinct_semantic_lessons;
     state.semantic_duplicate_lessons = semantic_duplicate_lessons;
@@ -3888,6 +3909,7 @@ fn persist_self_inspection(
     let is_new = !path.exists();
     if is_new {
         write_immutable_json(&path, receipt)?;
+        state.diagnostic_policy.record(receipt);
         state.self_inspection_events = state.self_inspection_events.saturating_add(1);
         state.diagnostic_experiment_events = state
             .diagnostic_experiment_events
@@ -3947,6 +3969,9 @@ fn report_from_state(
         scan_timeout_events: state.scan_timeout_events,
         self_inspection_events: state.self_inspection_events,
         diagnostic_experiment_events: state.diagnostic_experiment_events,
+        diagnostic_policy_selections: state.diagnostic_policy.selections,
+        diagnostic_policy_explorations: state.diagnostic_policy.exploration_selections,
+        diagnostic_policy_causal_support_events: state.diagnostic_policy.causal_support_events,
         runtime_self_repairs_activated: state.runtime_self_repairs_activated,
         self_repair_capability_gaps: state.self_repair_capability_gaps,
         last_internal_bottleneck: state.last_internal_bottleneck.clone(),
@@ -3961,6 +3986,11 @@ fn report_from_state(
         productive_generative_reuse_events: state.productive_generative_reuse_events,
         generative_frontier_advance_events: state.generative_frontier_advance_events,
         redundant_generative_selection_events: state.redundant_generative_selection_events,
+        generative_mean_prediction_error_millis: state
+            .generative_prediction_absolute_error_total
+            .saturating_mul(1_000)
+            .checked_div(state.generative_predictions.max(1))
+            .unwrap_or(0),
         autonomous_source_patch_attempts: state.autonomous_source_patch_attempts,
         autonomous_source_patches_installed: state.autonomous_source_patches_installed,
         autonomous_source_patch_rollbacks: state.autonomous_source_patch_rollbacks,
@@ -4203,6 +4233,8 @@ fn step_without_lease(
     state.productive_generative_reuse_events = memory.generative.productive_reuse_events;
     state.generative_frontier_advance_events = memory.generative.frontier_advance_events;
     state.redundant_generative_selection_events = memory.generative.redundant_selection_events;
+    state.generative_prediction_absolute_error_total =
+        memory.generative.prediction_absolute_error_total;
     let evaluator_memory_sha256 = json_sha256(&memory.evaluator)?;
     if state.current_evaluator_memory_sha256.is_empty() {
         state.current_evaluator_memory_sha256 = evaluator_memory_sha256.clone();
@@ -4331,6 +4363,7 @@ fn step_without_lease(
         source_patch_consecutive_failures: state.source_patch_consecutive_failures,
         source_patch_validation_ms: state.autonomous_source_patch_validation_ms,
         active_runtime_ms: state.active_runtime_ms,
+        diagnostic_policy: state.diagnostic_policy.clone(),
     })?;
     persist_self_inspection(config, &mut state, &inspection)?;
     if config.autonomous_campaigns {
@@ -5184,6 +5217,7 @@ mod tests {
             source_patch_consecutive_failures: 0,
             source_patch_validation_ms: 0,
             active_runtime_ms: 0,
+            diagnostic_policy: DiagnosticPolicyMemory::default(),
         })
         .unwrap();
         let observation = mutual_bootstrap_observation(&receipt)

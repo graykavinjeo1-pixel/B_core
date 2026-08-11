@@ -6,6 +6,8 @@
 //! a repair route assembled from existing local capabilities.  It never reads
 //! source text, writes a patch, calls a model/network, or approves a repair.
 
+use std::collections::BTreeMap;
+
 use serde::{Deserialize, Serialize};
 
 use crate::self_healing_pipeline::{
@@ -14,6 +16,51 @@ use crate::self_healing_pipeline::{
 use crate::self_repair_contract::sha256;
 
 pub const SELF_INSPECTION_SCHEMA: &str = "B_CORE_AUTONOMOUS_SELF_INSPECTION_1";
+
+#[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub struct DiagnosticExperimentMemory {
+    pub trials: u64,
+    pub causal_support_events: u64,
+    pub consecutive_no_support: u32,
+}
+
+#[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub struct DiagnosticPolicyMemory {
+    pub experiment_records: BTreeMap<String, DiagnosticExperimentMemory>,
+    pub selections: u64,
+    pub exploration_selections: u64,
+    pub causal_support_events: u64,
+}
+
+impl DiagnosticPolicyMemory {
+    pub fn record(&mut self, receipt: &AutonomousSelfInspectionReceipt) {
+        let Some(experiment) = receipt.experiments.first() else {
+            return;
+        };
+        let record = self
+            .experiment_records
+            .entry(experiment.experiment_id.clone())
+            .or_default();
+        record.trials = record.trials.saturating_add(1);
+        if experiment.causal_support {
+            record.causal_support_events = record.causal_support_events.saturating_add(1);
+            record.consecutive_no_support = 0;
+            self.causal_support_events = self.causal_support_events.saturating_add(1);
+        } else {
+            record.consecutive_no_support = record.consecutive_no_support.saturating_add(1);
+        }
+        self.selections = self.selections.saturating_add(1);
+        if receipt
+            .hypotheses
+            .iter()
+            .find(|hypothesis| hypothesis.selected)
+            .map(|hypothesis| hypothesis.policy_exploration_selected)
+            .unwrap_or(false)
+        {
+            self.exploration_selections = self.exploration_selections.saturating_add(1);
+        }
+    }
+}
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
@@ -81,6 +128,8 @@ pub struct SelfInspectionInput {
     pub source_patch_consecutive_failures: u32,
     pub source_patch_validation_ms: u64,
     pub active_runtime_ms: u64,
+    #[serde(default)]
+    pub diagnostic_policy: DiagnosticPolicyMemory,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -89,6 +138,14 @@ pub struct InternalHypothesis {
     pub confidence_millis: u16,
     pub evidence: Vec<String>,
     pub selected: bool,
+    #[serde(default)]
+    pub policy_score_millis: u16,
+    #[serde(default)]
+    pub prior_policy_trials: u64,
+    #[serde(default)]
+    pub prior_causal_support_events: u64,
+    #[serde(default)]
+    pub policy_exploration_selected: bool,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -226,6 +283,10 @@ fn candidate_hypotheses(input: &SelfInspectionInput) -> Vec<InternalHypothesis> 
                     .to_string(),
             ],
             selected: false,
+            policy_score_millis: 0,
+            prior_policy_trials: 0,
+            prior_causal_support_events: 0,
+            policy_exploration_selected: false,
         });
     }
     if input.source_patch_attempts >= 8
@@ -245,6 +306,10 @@ fn candidate_hypotheses(input: &SelfInspectionInput) -> Vec<InternalHypothesis> 
                 "rollback ratio is too high for an efficient growth operator".to_string(),
             ],
             selected: false,
+            policy_score_millis: 0,
+            prior_policy_trials: 0,
+            prior_causal_support_events: 0,
+            policy_exploration_selected: false,
         });
     }
     if input.source_patch_validation_ms >= 10 * 60 * 1_000
@@ -264,6 +329,10 @@ fn candidate_hypotheses(input: &SelfInspectionInput) -> Vec<InternalHypothesis> 
                 "patch verification consumes at least half of active growth time".to_string(),
             ],
             selected: false,
+            policy_score_millis: 0,
+            prior_policy_trials: 0,
+            prior_causal_support_events: 0,
+            policy_exploration_selected: false,
         });
     }
     if input.pending_work_events > 0 && input.replayed_unchanged_work_events > 0 {
@@ -279,6 +348,10 @@ fn candidate_hypotheses(input: &SelfInspectionInput) -> Vec<InternalHypothesis> 
                 "changed-file-only control would lose post-scan verification evidence".to_string(),
             ],
             selected: false,
+            policy_score_millis: 0,
+            prior_policy_trials: 0,
+            prior_causal_support_events: 0,
+            policy_exploration_selected: false,
         });
     }
     if !input.naive_cohort_has_verification && input.evidence_aware_cohort_has_verification {
@@ -290,6 +363,10 @@ fn candidate_hypotheses(input: &SelfInspectionInput) -> Vec<InternalHypothesis> 
                 "bounded evidence-aware cohort contains verification evidence".to_string(),
             ],
             selected: false,
+            policy_score_millis: 0,
+            prior_policy_trials: 0,
+            prior_causal_support_events: 0,
+            policy_exploration_selected: false,
         });
     }
     if input.autonomous_campaigns_enabled
@@ -311,6 +388,10 @@ fn candidate_hypotheses(input: &SelfInspectionInput) -> Vec<InternalHypothesis> 
                     .to_string(),
             ],
             selected: false,
+            policy_score_millis: 0,
+            prior_policy_trials: 0,
+            prior_causal_support_events: 0,
+            policy_exploration_selected: false,
         });
     }
     let reuse_ratio_millis = input
@@ -332,6 +413,10 @@ fn candidate_hypotheses(input: &SelfInspectionInput) -> Vec<InternalHypothesis> 
                 "content hashing is too small to explain observed scan latency".to_string(),
             ],
             selected: false,
+            policy_score_millis: 0,
+            prior_policy_trials: 0,
+            prior_causal_support_events: 0,
+            policy_exploration_selected: false,
         });
     }
     if input.consecutive_failures >= 2 || input.source_patch_consecutive_failures >= 2 {
@@ -349,6 +434,10 @@ fn candidate_hypotheses(input: &SelfInspectionInput) -> Vec<InternalHypothesis> 
                 ),
             ],
             selected: false,
+            policy_score_millis: 0,
+            prior_policy_trials: 0,
+            prior_causal_support_events: 0,
+            policy_exploration_selected: false,
         });
     }
     if hypotheses.is_empty() {
@@ -360,9 +449,53 @@ fn candidate_hypotheses(input: &SelfInspectionInput) -> Vec<InternalHypothesis> 
                 "no contradictory operational evidence was observed".to_string(),
             ],
             selected: false,
+            policy_score_millis: 0,
+            prior_policy_trials: 0,
+            prior_causal_support_events: 0,
+            policy_exploration_selected: false,
         });
     }
-    hypotheses.sort_by_key(|hypothesis| std::cmp::Reverse(hypothesis.confidence_millis));
+    for hypothesis in &mut hypotheses {
+        let experiment = diagnostic_experiment(hypothesis.bottleneck, input);
+        let record = input
+            .diagnostic_policy
+            .experiment_records
+            .get(&experiment.experiment_id)
+            .cloned()
+            .unwrap_or_default();
+        let exploration_bonus = if record.trials == 0 { 120_u32 } else { 0 };
+        let support_bonus = record
+            .causal_support_events
+            .saturating_mul(80)
+            .checked_div(record.trials.max(1))
+            .unwrap_or(0)
+            .min(80) as u32;
+        let repetition_penalty = record.trials.min(8).saturating_mul(6) as u32;
+        let unsupported_penalty = record.consecutive_no_support.min(4) * 30;
+        hypothesis.policy_score_millis = u32::from(hypothesis.confidence_millis)
+            .saturating_add(exploration_bonus)
+            .saturating_add(support_bonus)
+            .saturating_sub(repetition_penalty)
+            .saturating_sub(unsupported_penalty)
+            .min(u32::from(u16::MAX)) as u16;
+        hypothesis.prior_policy_trials = record.trials;
+        hypothesis.prior_causal_support_events = record.causal_support_events;
+        hypothesis.policy_exploration_selected = record.trials == 0;
+        hypothesis.evidence.push(format!(
+            "adaptive_policy:experiment={};trials={};causal_support={};score={}",
+            experiment.experiment_id,
+            record.trials,
+            record.causal_support_events,
+            hypothesis.policy_score_millis
+        ));
+    }
+    hypotheses.sort_by_key(|hypothesis| {
+        (
+            std::cmp::Reverse(hypothesis.policy_score_millis),
+            std::cmp::Reverse(hypothesis.confidence_millis),
+            hypothesis.bottleneck.label(),
+        )
+    });
     if let Some(first) = hypotheses.first_mut() {
         first.selected = true;
     }
@@ -621,6 +754,7 @@ mod tests {
             source_patch_consecutive_failures: 0,
             source_patch_validation_ms: 0,
             active_runtime_ms: 0,
+            diagnostic_policy: DiagnosticPolicyMemory::default(),
         }
     }
 
@@ -757,5 +891,31 @@ mod tests {
             receipt.repair_disposition,
             RepairDisposition::RuntimeRepairActive
         );
+    }
+
+    #[test]
+    fn verified_diagnostic_history_changes_the_next_bottleneck_choice() {
+        let mut value = input();
+        value.unconsumed_high_observations = 16;
+        value.cohort_preflight_ready = false;
+        value.source_patch_attempts = 20;
+        value.source_patch_installations = 4;
+        value.source_patch_rollbacks = 16;
+
+        let first = inspect(value.clone()).expect("first inspection");
+        assert_eq!(
+            first.selected_bottleneck,
+            InternalBottleneckClass::CampaignCohortBlocked
+        );
+        assert!(first.hypotheses[0].policy_exploration_selected);
+
+        value.diagnostic_policy.record(&first);
+        let second = inspect(value).expect("second inspection");
+        assert_eq!(
+            second.selected_bottleneck,
+            InternalBottleneckClass::SourceRepairLowYield
+        );
+        assert!(second.hypotheses[0].policy_exploration_selected);
+        assert_eq!(second.hypotheses[0].prior_policy_trials, 0);
     }
 }
