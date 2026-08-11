@@ -32,6 +32,8 @@ High-value learning requires an explicit local PASS or a structural code-plus-re
 
 Before campaign freeze, the supervisor applies the same PASS/code-plus-test evidence gate as the independent verifier. An unverifiable cohort is retained for reconsideration when new evidence arrives, but it does not consume a campaign or consecutive-failure budget merely to reproduce a known verifier rejection.
 
+Evidence with the same work kinds, diagnostic signals, composition recipe, applicability, obligations, and before/after performance values is a semantic revalidation. It is consumed without starting a campaign or incrementing the generation. A measured performance frontier can still advance when a bound before/after value changes; merely attaching a different log to the same value cannot manufacture growth.
+
 ## Plateau behavior
 
 After the configured number of scans without high-value evidence, the state becomes `WAITING_PLATEAU`. The supervisor continues observing at the fixed polling interval. It does not create empty generations or raise difficulty. New high-value evidence returns it to the normal campaign cycle.
@@ -76,3 +78,5 @@ Use `tools\install-growth-autostart.ps1` to register a limited-privilege `ONLOGO
 `tools\record-growth-work-event.ps1` records bounded provenance for work performed by a user, Codex, or a local tool. It stores actor, kind, outcome, scoped paths, a short summary, and optional evidence hashes—not command transcripts, chats, or source text.
 
 An explicit `PASS` is evidence, not automatic authority. The independent verifier still decides whether the frozen structural lesson is promotable.
+
+For a `PERFORMANCE_OPTIMIZATION` event, `-PerformanceMetricsPath` may point to a JSON array. Each entry contains `metric`, integer `before`, integer `after`, `lower_is_better`, and `evidence_sha256`. The digest must be bound to one of the supplied evidence files. A non-improving measurement is retained as negative evidence and is not promoted as a performance gain.

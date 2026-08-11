@@ -163,6 +163,7 @@ This package is the complete Windows x64 portable build of B_Core commit `{{SOUR
 - Locked and vendored Rust dependency closure for network-free reconstruction.
 - Self-healing, independent verification, typed code composition, and full-stack/operations knowledge.
 - The bounded always-on growth supervisor and its separate deterministic verifier.
+- Semantic-deduplicated promotion and bound before/after performance learning.
 
 No raw training dataset or original Synapse knowledge store is included. Knowledge already absorbed into the core remains present in source and sealed artifacts.
 
@@ -265,7 +266,9 @@ if (-not $growthSelfCheck.pass -or
     -not $growthSelfCheck.generative_memory_self_application_enabled -or
     -not $growthSelfCheck.core_self_approval_enabled -or
     -not $growthSelfCheck.autonomous_source_patch_install_enabled -or
-    -not $growthSelfCheck.source_patch_rollback_enabled) {
+    -not $growthSelfCheck.source_patch_rollback_enabled -or
+    -not $growthSelfCheck.semantic_duplicate_promotion_blocked -or
+    -not $growthSelfCheck.measured_performance_evidence_supported) {
     throw "GROWTH_SUPERVISOR_BOUNDARY_CHECK_FAILED"
 }
 Write-Utf8NoBom -Path (Join-Path $receiptRoot "growth_supervisor_self_check.json") -Text ($growthSelfCheck | ConvertTo-Json -Depth 6)
@@ -353,6 +356,8 @@ $manifest = [ordered]@{
         codex_runtime_dependency = $false
         external_llm_runtime_dependency = $false
         network_runtime_dependency = $false
+        semantic_duplicate_promotion_blocked = $true
+        measured_performance_evidence_supported = $true
     }
     authority = [ordered]@{
         git_and_sealed_artifacts_authoritative = $true

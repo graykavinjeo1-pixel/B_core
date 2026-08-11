@@ -299,10 +299,10 @@ fn load_repair_learning(
         .map_err(|error| format!("SOURCE_REPAIR_LEARNING_PARSE:{error}"))
 }
 
-fn active_cycle_attempts<'a>(
-    record: &'a SourceRepairLearningRecord,
+fn active_cycle_attempts(
+    record: &SourceRepairLearningRecord,
     source_generation: u64,
-) -> &'a [SourceRepairAttempt] {
+) -> &[SourceRepairAttempt] {
     if (record.status == "ADMITTED_FAILURE"
         && record
             .eligible_after_generation

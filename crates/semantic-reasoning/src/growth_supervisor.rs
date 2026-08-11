@@ -269,6 +269,16 @@ pub struct SupervisorState {
     pub source_patch_consecutive_failures: u32,
     #[serde(default)]
     pub last_source_patch_receipt_sha256: Option<String>,
+    #[serde(default)]
+    pub distinct_semantic_lessons: u64,
+    #[serde(default)]
+    pub semantic_duplicate_lessons: u64,
+    #[serde(default)]
+    pub semantic_revalidation_events: u64,
+    #[serde(default)]
+    pub redundant_observations_consumed: u64,
+    #[serde(default)]
+    pub measured_performance_promotions: u64,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
@@ -286,6 +296,7 @@ pub enum WorkKind {
     CodeChange,
     DefectRepair,
     RegressionTest,
+    PerformanceOptimization,
     Refactor,
     FrontendChange,
     BackendChange,
@@ -313,7 +324,28 @@ pub struct WorkEvent {
     pub evidence_sha256: Vec<String>,
     #[serde(default)]
     pub evidence_artifacts: Vec<PathBuf>,
+    #[serde(default)]
+    pub performance_metrics: Vec<PerformanceMetricEvidence>,
     pub occurred_at_ms: u64,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+pub struct PerformanceMetricEvidence {
+    pub metric: String,
+    pub before: u64,
+    pub after: u64,
+    pub lower_is_better: bool,
+    pub evidence_sha256: String,
+}
+
+impl PerformanceMetricEvidence {
+    fn improved(&self) -> bool {
+        if self.lower_is_better {
+            self.after < self.before
+        } else {
+            self.after > self.before
+        }
+    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
@@ -328,6 +360,10 @@ pub struct StructuralFeatures {
     pub error_handling_tokens: u32,
     pub documentation_tokens: u32,
     pub todo_tokens: u32,
+    #[serde(default)]
+    pub benchmark_tokens: u32,
+    #[serde(default)]
+    pub performance_tokens: u32,
     pub max_line_bytes: u32,
 }
 
@@ -368,6 +404,8 @@ pub struct LearningObservation {
     pub reasons: Vec<String>,
     #[serde(default)]
     pub verification_evidence_sha256: Vec<String>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub performance_metrics: Vec<PerformanceMetricEvidence>,
     pub exact_source_fragments_stored: usize,
     pub raw_source_bytes_stored: usize,
     pub observed_at_ms: u64,
@@ -413,6 +451,8 @@ pub struct LearnedCompositionLesson {
     pub composition_recipe: Vec<String>,
     pub applicability: Vec<String>,
     pub verification_obligations: Vec<String>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub performance_metrics: Vec<PerformanceMetricEvidence>,
     pub learning_score: u16,
     pub exact_patch_data_present: bool,
     pub exact_source_fragment_present: bool,
@@ -666,6 +706,11 @@ pub struct StepReport {
     pub autonomous_source_patch_validation_ms: u64,
     pub source_patch_consecutive_failures: u32,
     pub last_source_patch_receipt_sha256: Option<String>,
+    pub distinct_semantic_lessons: u64,
+    pub semantic_duplicate_lessons: u64,
+    pub semantic_revalidation_events: u64,
+    pub redundant_observations_consumed: u64,
+    pub measured_performance_promotions: u64,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -700,6 +745,8 @@ pub struct SelfCheck {
     pub staged_source_validation: bool,
     pub adaptive_idle_polling: bool,
     pub mixed_production_file_role_detection: bool,
+    pub semantic_duplicate_promotion_blocked: bool,
+    pub measured_performance_evidence_supported: bool,
     pub mutual_recursive_growth_observed: bool,
 }
 
@@ -733,6 +780,8 @@ pub fn self_check() -> SelfCheck {
             "SOURCE_REPAIR_ROLLBACK_RATIO_IS_A_GROWTH_EFFICIENCY_SIGNAL".to_string(),
             "LOW_PREDICTED_VALUE_SOURCE_REWRITES_STOP_BEFORE_COMPILATION".to_string(),
             "COMPILE_CHECK_PRECEDES_FULL_REGRESSION_AND_RELEASE_VALIDATION".to_string(),
+            "SEMANTICALLY_DUPLICATE_EVIDENCE_REVALIDATES_WITHOUT_GENERATION_PROMOTION".to_string(),
+            "PERFORMANCE_GROWTH_REQUIRES_BOUND_BEFORE_AFTER_MEASUREMENT".to_string(),
         ],
         bounded_failure_retry_enabled: true,
         successful_solution_learning_enabled: true,
@@ -745,6 +794,8 @@ pub fn self_check() -> SelfCheck {
         staged_source_validation: true,
         adaptive_idle_polling: true,
         mixed_production_file_role_detection: true,
+        semantic_duplicate_promotion_blocked: true,
+        measured_performance_evidence_supported: true,
         mutual_recursive_growth_observed: false,
     }
 }
@@ -1068,6 +1119,27 @@ fn structural_features(text: &str) -> StructuralFeatures {
         ),
         documentation_tokens: count_any(&lower, &["///", "//!", "# ", "readme", "docstring"]),
         todo_tokens: count_any(&lower, &["todo", "fixme", "hack", "unimplemented"]),
+        benchmark_tokens: count_any(
+            &lower,
+            &[
+                "benchmark",
+                "criterion",
+                "bench_function",
+                "latency",
+                "throughput",
+            ],
+        ),
+        performance_tokens: count_any(
+            &lower,
+            &[
+                "allocation",
+                "elapsed",
+                "duration",
+                "memoiz",
+                "cache hit",
+                "cache miss",
+            ],
+        ),
         max_line_bytes: lines
             .iter()
             .map(|line| line.len().min(u32::MAX as usize) as u32)
@@ -1149,6 +1221,14 @@ fn classify_work_kind(
     let lower = path.to_string_lossy().to_ascii_lowercase();
     let prior = previous.cloned().unwrap_or_default();
     let test_delta = features.test_tokens.saturating_sub(prior.test_tokens);
+    let performance_delta = features
+        .benchmark_tokens
+        .saturating_sub(prior.benchmark_tokens)
+        .saturating_add(
+            features
+                .performance_tokens
+                .saturating_sub(prior.performance_tokens),
+        );
     let implementation_delta = features
         .public_symbols
         .saturating_sub(prior.public_symbols)
@@ -1165,6 +1245,8 @@ fn classify_work_kind(
         );
     if path_is_dedicated_test(path) || (test_delta > 0 && implementation_delta == 0) {
         WorkKind::RegressionTest
+    } else if performance_delta > 0 {
+        WorkKind::PerformanceOptimization
     } else if [".tsx", ".jsx", ".css", ".scss", ".html"]
         .iter()
         .any(|suffix| lower.ends_with(suffix))
@@ -1241,6 +1323,11 @@ fn classify_observation(
             score += 20;
             signals.insert("DEFECT_REPAIR".to_string());
             roles.insert("IMPLEMENTATION_REPAIR".to_string());
+        }
+        WorkKind::PerformanceOptimization => {
+            score += 20;
+            signals.insert("PERFORMANCE_OPTIMIZATION".to_string());
+            roles.insert("PERFORMANCE_IMPLEMENTATION".to_string());
         }
         WorkKind::FrontendChange => {
             score += 13;
@@ -1325,6 +1412,54 @@ fn classify_observation(
         score += 5;
         signals.insert("CAPABILITY_SURFACE_ADDED".to_string());
     }
+    if delta(current.features.benchmark_tokens, prior.benchmark_tokens) > 0 {
+        score += 12;
+        signals.insert("BENCHMARK_EVIDENCE".to_string());
+        roles.insert("PERFORMANCE_BENCHMARK".to_string());
+    }
+    if delta(
+        current.features.performance_tokens,
+        prior.performance_tokens,
+    ) > 0
+    {
+        score += 8;
+        signals.insert("EFFICIENCY_MECHANISM".to_string());
+        roles.insert("PERFORMANCE_IMPLEMENTATION".to_string());
+    }
+    if let Some(event) = event {
+        for metric in event
+            .performance_metrics
+            .iter()
+            .filter(|metric| metric.improved())
+        {
+            score += 25;
+            signals.insert("MEASURED_PERFORMANCE_GAIN".to_string());
+            signals.insert(format!(
+                "PERFORMANCE_METRIC:{}:{}",
+                metric.metric.to_ascii_uppercase(),
+                if metric.lower_is_better {
+                    "LOWER_IS_BETTER"
+                } else {
+                    "HIGHER_IS_BETTER"
+                }
+            ));
+            roles.insert("PERFORMANCE_BENCHMARK".to_string());
+            reasons.push(format!(
+                "bound metric {} improved from {} to {}",
+                metric.metric, metric.before, metric.after
+            ));
+        }
+        if !event.performance_metrics.is_empty()
+            && !event
+                .performance_metrics
+                .iter()
+                .any(|metric| metric.improved())
+        {
+            score -= 30;
+            signals.insert("PERFORMANCE_GAIN_NOT_OBSERVED".to_string());
+            reasons.push("bound before/after metrics did not improve".to_string());
+        }
+    }
     if current.features.todo_tokens > prior.todo_tokens {
         score -= 10;
         signals.insert("UNRESOLVED_MARKER_ADDED".to_string());
@@ -1383,6 +1518,9 @@ fn classify_observation(
         reasons,
         verification_evidence_sha256: event
             .map(|value| value.evidence_sha256.clone())
+            .unwrap_or_default(),
+        performance_metrics: event
+            .map(|value| value.performance_metrics.clone())
             .unwrap_or_default(),
         exact_source_fragments_stored: 0,
         raw_source_bytes_stored: 0,
@@ -1792,6 +1930,11 @@ pub fn initialize(config_path: &Path) -> Result<SupervisorState, String> {
         autonomous_source_patch_validation_ms: 0,
         source_patch_consecutive_failures: 0,
         last_source_patch_receipt_sha256: None,
+        distinct_semantic_lessons: 0,
+        semantic_duplicate_lessons: 0,
+        semantic_revalidation_events: 0,
+        redundant_observations_consumed: 0,
+        measured_performance_promotions: 0,
     };
     save_transition(
         &config,
@@ -1853,6 +1996,7 @@ fn validate_event(config: &GrowthSupervisorConfig, event: &mut WorkEvent) -> Res
     }
     if event.evidence_sha256.len() > 32
         || event.evidence_artifacts.len() > 32
+        || event.performance_metrics.len() > 16
         || event
             .evidence_sha256
             .iter()
@@ -1874,6 +2018,18 @@ fn validate_event(config: &GrowthSupervisorConfig, event: &mut WorkEvent) -> Res
         return Err("EVENT_EVIDENCE_ARTIFACT_HASH_MISMATCH".to_string());
     }
     event.evidence_sha256 = bound_evidence;
+    if event.performance_metrics.iter().any(|metric| {
+        metric.metric.is_empty()
+            || metric.metric.len() > 64
+            || !metric
+                .metric
+                .chars()
+                .all(|value| value.is_ascii_alphanumeric() || matches!(value, '_' | '-' | '.'))
+            || metric.evidence_sha256.len() != 64
+            || !event.evidence_sha256.contains(&metric.evidence_sha256)
+    }) {
+        return Err("PERFORMANCE_METRIC_EVIDENCE_INVALID_OR_UNBOUND".to_string());
+    }
     if event.outcome == WorkOutcome::Pass && event.evidence_sha256.is_empty() {
         return Err("PASS_EVENT_REQUIRES_BOUND_EVIDENCE_ARTIFACT".to_string());
     }
@@ -2237,6 +2393,8 @@ fn derive_composition_recipe(observations: &[LearningObservation]) -> Vec<String
                         | "DEFECT_REPAIR"
                         | "REFACTOR"
                         | "CODE_CHANGE"
+                        | "PERFORMANCE_OPTIMIZATION"
+                        | "EFFICIENCY_MECHANISM"
                 )
             })
     }) {
@@ -2251,6 +2409,8 @@ fn derive_composition_recipe(observations: &[LearningObservation]) -> Vec<String
         "ERROR_PROPAGATION",
         "FRONTEND_CONSUMER",
         "OPERATIONS_GUARD",
+        "PERFORMANCE_IMPLEMENTATION",
+        "PERFORMANCE_BENCHMARK",
         "INVARIANT_CHECK",
         "REGRESSION_TEST",
     ] {
@@ -2278,6 +2438,12 @@ fn build_lesson(observations: &[LearningObservation]) -> Result<LearnedCompositi
         .iter()
         .map(json_sha256)
         .collect::<Result<Vec<_>, _>>()?;
+    let performance_metrics = observations
+        .iter()
+        .flat_map(|observation| observation.performance_metrics.iter().cloned())
+        .collect::<BTreeSet<_>>()
+        .into_iter()
+        .collect::<Vec<_>>();
     let learning_score = observations
         .iter()
         .map(|observation| u32::from(observation.learning_score))
@@ -2310,11 +2476,74 @@ fn build_lesson(observations: &[LearningObservation]) -> Result<LearnedCompositi
             "regression evidence must accompany implementation learning".to_string(),
             "raw source and secret material must remain absent".to_string(),
         ],
+        performance_metrics,
         learning_score,
         exact_patch_data_present: false,
         exact_source_fragment_present: false,
         raw_source_bytes_present: false,
     })
+}
+
+#[derive(Serialize)]
+struct LessonSemanticIdentity<'a> {
+    work_kinds: &'a [WorkKind],
+    diagnostic_signals: &'a [String],
+    composition_recipe: &'a [String],
+    applicability: &'a [String],
+    verification_obligations: &'a [String],
+    performance_metrics: Vec<PerformanceMetricSemanticIdentity<'a>>,
+}
+
+#[derive(Serialize)]
+struct PerformanceMetricSemanticIdentity<'a> {
+    metric: &'a str,
+    before: u64,
+    after: u64,
+    lower_is_better: bool,
+}
+
+fn lesson_semantic_sha256(lesson: &LearnedCompositionLesson) -> Result<String, String> {
+    json_sha256(&LessonSemanticIdentity {
+        work_kinds: &lesson.work_kinds,
+        diagnostic_signals: &lesson.diagnostic_signals,
+        composition_recipe: &lesson.composition_recipe,
+        applicability: &lesson.applicability,
+        verification_obligations: &lesson.verification_obligations,
+        performance_metrics: lesson
+            .performance_metrics
+            .iter()
+            .map(|metric| PerformanceMetricSemanticIdentity {
+                metric: &metric.metric,
+                before: metric.before,
+                after: metric.after,
+                lower_is_better: metric.lower_is_better,
+            })
+            .collect(),
+    })
+}
+
+fn memory_contains_semantic_lesson(
+    memory: &GrowthMemory,
+    candidate: &LearnedCompositionLesson,
+) -> Result<bool, String> {
+    let candidate_sha256 = lesson_semantic_sha256(candidate)?;
+    for lesson in &memory.lessons {
+        if lesson_semantic_sha256(lesson)? == candidate_sha256 {
+            return Ok(true);
+        }
+    }
+    Ok(false)
+}
+
+fn semantic_lesson_counts(memory: &GrowthMemory) -> Result<(u64, u64), String> {
+    let identities = memory
+        .lessons
+        .iter()
+        .map(lesson_semantic_sha256)
+        .collect::<Result<BTreeSet<_>, _>>()?;
+    let distinct = identities.len().min(u64::MAX as usize) as u64;
+    let total = memory.lessons.len().min(u64::MAX as usize) as u64;
+    Ok((distinct, total.saturating_sub(distinct)))
 }
 
 fn derive_next_evaluator_memory(
@@ -2485,6 +2714,40 @@ fn campaign_preflight_ready(
         write_immutable_json(&path, &diagnostic)?;
     }
     Ok(false)
+}
+
+fn consume_semantic_revalidation(
+    config: &GrowthSupervisorConfig,
+    state: &mut SupervisorState,
+    index: &mut FileIndex,
+    memory: &GrowthMemory,
+    observations: &[LearningObservation],
+) -> Result<Option<usize>, String> {
+    let chosen = selected_campaign_observations(config, observations);
+    if chosen.is_empty() {
+        return Ok(None);
+    }
+    let lesson = build_lesson(&chosen)?;
+    if !lesson_has_verification_evidence(&lesson)
+        || !memory_contains_semantic_lesson(memory, &lesson)?
+    {
+        return Ok(None);
+    }
+    for observation in &chosen {
+        index
+            .consumed_observation_ids
+            .insert(observation.observation_id.clone());
+        if let Some(event_id) = &observation.work_event_id {
+            index.consumed_work_event_ids.insert(event_id.clone());
+        }
+    }
+    save_index(config, index)?;
+    state.semantic_revalidation_events = state.semantic_revalidation_events.saturating_add(1);
+    state.redundant_observations_consumed = state
+        .redundant_observations_consumed
+        .saturating_add(chosen.len().min(u64::MAX as usize) as u64);
+    state.plateau_scans = state.plateau_scans.saturating_add(1);
+    Ok(Some(chosen.len()))
 }
 
 fn campaign_dir(config: &GrowthSupervisorConfig, campaign_id: &str) -> PathBuf {
@@ -2985,6 +3248,9 @@ pub fn run_verifier_request(
                 .sum::<u32>();
             match build_lesson(&observations) {
                 Ok(expected_lesson) => {
+                    if memory_contains_semantic_lesson(&predecessor, &expected_lesson)? {
+                        reasons.push("DUPLICATE_SEMANTIC_LESSON".to_string());
+                    }
                     match derive_next_evaluator_memory(
                         &predecessor.evaluator,
                         &predecessor.lessons,
@@ -3150,6 +3416,9 @@ fn promote_candidate(
     {
         return Err("PREDECESSOR_MEMORY_MISMATCH".to_string());
     }
+    if memory_contains_semantic_lesson(&memory, &candidate.lesson)? {
+        return Err("DUPLICATE_SEMANTIC_LESSON_CANNOT_PROMOTE".to_string());
+    }
     let generative_input = generative_input(&candidate.lesson);
     let expected_generative_cycle =
         run_generative_cycle(&memory.generative, &generative_input, freeze.seed)?;
@@ -3248,6 +3517,15 @@ fn promote_candidate(
         .min(u64::MAX as usize) as u64;
     state.generative_memory_reuse_events = memory.generative.reuse_events;
     state.generative_self_application_events = memory.generative.self_application_events;
+    let (distinct_semantic_lessons, semantic_duplicate_lessons) = semantic_lesson_counts(&memory)?;
+    state.distinct_semantic_lessons = distinct_semantic_lessons;
+    state.semantic_duplicate_lessons = semantic_duplicate_lessons;
+    state.measured_performance_promotions = memory
+        .lessons
+        .iter()
+        .filter(|lesson| !lesson.performance_metrics.is_empty())
+        .count()
+        .min(u64::MAX as usize) as u64;
     state.campaigns_accepted = state.campaigns_accepted.saturating_add(1);
     state.consecutive_failures = 0;
     state.plateau_scans = 0;
@@ -3558,6 +3836,7 @@ fn mutual_bootstrap_observation(
                 .to_string(),
         ],
         verification_evidence_sha256: vec![receipt_sha256],
+        performance_metrics: Vec::new(),
         exact_source_fragments_stored: 0,
         raw_source_bytes_stored: 0,
         observed_at_ms: now_ms(),
@@ -3652,6 +3931,11 @@ fn report_from_state(
         autonomous_source_patch_validation_ms: state.autonomous_source_patch_validation_ms,
         source_patch_consecutive_failures: state.source_patch_consecutive_failures,
         last_source_patch_receipt_sha256: state.last_source_patch_receipt_sha256.clone(),
+        distinct_semantic_lessons: state.distinct_semantic_lessons,
+        semantic_duplicate_lessons: state.semantic_duplicate_lessons,
+        semantic_revalidation_events: state.semantic_revalidation_events,
+        redundant_observations_consumed: state.redundant_observations_consumed,
+        measured_performance_promotions: state.measured_performance_promotions,
     }
 }
 
@@ -3862,6 +4146,15 @@ fn step_without_lease(
     if json_sha256(&memory)? != state.current_memory_sha256 {
         return Err("CURRENT_MEMORY_HASH_MISMATCH".to_string());
     }
+    let (distinct_semantic_lessons, semantic_duplicate_lessons) = semantic_lesson_counts(&memory)?;
+    state.distinct_semantic_lessons = distinct_semantic_lessons;
+    state.semantic_duplicate_lessons = semantic_duplicate_lessons;
+    state.measured_performance_promotions = memory
+        .lessons
+        .iter()
+        .filter(|lesson| !lesson.performance_metrics.is_empty())
+        .count()
+        .min(u64::MAX as usize) as u64;
     let evaluator_memory_sha256 = json_sha256(&memory.evaluator)?;
     if state.current_evaluator_memory_sha256.is_empty() {
         state.current_evaluator_memory_sha256 = evaluator_memory_sha256.clone();
@@ -4105,6 +4398,20 @@ fn step_without_lease(
             SupervisorPhase::WaitingPlateau,
             "CAMPAIGN_DEFERRED_WAITING_FOR_PASS_OR_TEST_COHORT",
         )?;
+    } else if consume_semantic_revalidation(config, &mut state, &mut scan.index, &memory, &high)?
+        .is_some()
+    {
+        let phase = if state.plateau_scans >= config.resources.plateau_scans_before_wait {
+            SupervisorPhase::WaitingPlateau
+        } else {
+            SupervisorPhase::InfraReady
+        };
+        save_transition(
+            config,
+            &mut state,
+            phase,
+            "SEMANTIC_REVALIDATION_CONSUMED_WITHOUT_GENERATION_PROMOTION",
+        )?;
     } else {
         let freeze = freeze_new_campaign(config, &mut state, &high)?;
         campaign_id = Some(freeze.campaign_id.clone());
@@ -4234,6 +4541,7 @@ mod tests {
             learning_value: LearningValue::High,
             reasons: vec!["test fixture".to_string()],
             verification_evidence_sha256: vec!["a".repeat(64)],
+            performance_metrics: Vec::new(),
             exact_source_fragments_stored: 0,
             raw_source_bytes_stored: 0,
             observed_at_ms: 1,
@@ -4347,6 +4655,8 @@ mod tests {
         assert!(check.staged_source_validation);
         assert!(check.adaptive_idle_polling);
         assert!(check.mixed_production_file_role_detection);
+        assert!(check.semantic_duplicate_promotion_blocked);
+        assert!(check.measured_performance_evidence_supported);
         assert!(!check.mutual_recursive_growth_observed);
     }
 
@@ -4432,6 +4742,7 @@ mod tests {
                 summary: "deterministic regression passed".to_string(),
                 evidence_sha256: vec![],
                 evidence_artifacts: vec![evidence],
+                performance_metrics: Vec::new(),
                 occurred_at_ms: 1,
             },
         )
@@ -4465,6 +4776,7 @@ mod tests {
                 summary: "claimed pass".to_string(),
                 evidence_sha256: vec![],
                 evidence_artifacts: vec![],
+                performance_metrics: Vec::new(),
                 occurred_at_ms: 1,
             },
         )
@@ -4497,6 +4809,7 @@ mod tests {
             learning_value: LearningValue::High,
             reasons: Vec::new(),
             verification_evidence_sha256: Vec::new(),
+            performance_metrics: Vec::new(),
             exact_source_fragments_stored: 0,
             raw_source_bytes_stored: 0,
             observed_at_ms: 1,
@@ -4575,6 +4888,7 @@ mod tests {
                 summary: "verified bounded repair".to_string(),
                 evidence_sha256: vec![],
                 evidence_artifacts: vec![evidence],
+                performance_metrics: Vec::new(),
                 occurred_at_ms: 1,
             },
         )
@@ -4628,6 +4942,7 @@ mod tests {
             summary: String::new(),
             evidence_sha256: vec!["a".repeat(64)],
             evidence_artifacts: vec![],
+            performance_metrics: Vec::new(),
             occurred_at_ms: 1,
         };
         let observation = classify_observation(
@@ -4661,6 +4976,7 @@ mod tests {
             summary: String::new(),
             evidence_sha256: vec![],
             evidence_artifacts: vec![],
+            performance_metrics: Vec::new(),
             occurred_at_ms: 1,
         };
         let observation = classify_observation(
@@ -4695,6 +5011,7 @@ mod tests {
             learning_value: LearningValue::High,
             reasons: vec!["repair observed".to_string()],
             verification_evidence_sha256: Vec::new(),
+            performance_metrics: Vec::new(),
             exact_source_fragments_stored: 0,
             raw_source_bytes_stored: 0,
             observed_at_ms: 1,
@@ -4731,6 +5048,7 @@ mod tests {
             learning_value: LearningValue::High,
             reasons: vec!["mixed production change".to_string()],
             verification_evidence_sha256: Vec::new(),
+            performance_metrics: Vec::new(),
             exact_source_fragments_stored: 0,
             raw_source_bytes_stored: 0,
             observed_at_ms: 1,
@@ -4966,6 +5284,7 @@ mod tests {
             learning_value: LearningValue::High,
             reasons: vec!["test".to_string()],
             verification_evidence_sha256: vec!["a".repeat(64)],
+            performance_metrics: Vec::new(),
             exact_source_fragments_stored: 0,
             raw_source_bytes_stored: 0,
             observed_at_ms: 1,
@@ -5182,5 +5501,122 @@ mod tests {
         assert!(index.baseline_complete);
         assert_eq!(index.files.len(), 1);
         fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn semantic_revalidation_does_not_create_a_generation() {
+        let root = temp_root("semantic-revalidation");
+        let (config_path, config) = test_config(&root);
+        let mut state = initialize(&config_path).unwrap();
+        let (_, candidate, _) = accepted_candidate(&root);
+        let observation: LearningObservation =
+            read_json(&root.join("observation_observation.json")).unwrap();
+        let mut memory = load_memory(&config, 0).unwrap();
+        memory.lessons.push(candidate.lesson);
+        let mut index = FileIndex::default();
+
+        let consumed =
+            consume_semantic_revalidation(&config, &mut state, &mut index, &memory, &[observation])
+                .unwrap();
+
+        assert_eq!(consumed, Some(1));
+        assert_eq!(state.generation, 0);
+        assert_eq!(state.campaigns_started, 0);
+        assert_eq!(state.semantic_revalidation_events, 1);
+        assert_eq!(state.redundant_observations_consumed, 1);
+        assert_eq!(index.consumed_observation_ids.len(), 1);
+        assert_eq!(index.consumed_work_event_ids.len(), 1);
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn independent_verifier_rejects_a_semantically_duplicate_lesson() {
+        let root = temp_root("verifier-semantic-duplicate");
+        let (mut freeze, mut candidate, mut request) = accepted_candidate(&root);
+        let mut predecessor: GrowthMemory =
+            read_json(&root.join("predecessor_memory.json")).unwrap();
+        predecessor.lessons.push(candidate.lesson.clone());
+        freeze.predecessor_memory_sha256 = json_sha256(&predecessor).unwrap();
+        candidate.predecessor_memory_sha256 = freeze.predecessor_memory_sha256.clone();
+        candidate.freeze_sha256 = json_sha256(&freeze).unwrap();
+        request.expected_freeze_sha256 = candidate.freeze_sha256.clone();
+        request.expected_candidate_sha256 = json_sha256(&candidate).unwrap();
+
+        fs::remove_file(&request.freeze_path).unwrap();
+        fs::remove_file(&request.candidate_path).unwrap();
+        fs::remove_file(root.join("predecessor_memory.json")).unwrap();
+        write_immutable_json(&request.freeze_path, &freeze).unwrap();
+        write_immutable_json(&request.candidate_path, &candidate).unwrap();
+        write_immutable_json(&root.join("predecessor_memory.json"), &predecessor).unwrap();
+
+        let receipt = run_verifier_request(&request).unwrap();
+        assert_eq!(receipt.decision, GrowthDecision::Reject);
+        assert!(receipt
+            .reasons
+            .contains(&"DUPLICATE_SEMANTIC_LESSON".to_string()));
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn measured_performance_gain_is_bound_and_value_sensitive() {
+        let metric = PerformanceMetricEvidence {
+            metric: "scan_latency_ns".to_string(),
+            before: 100,
+            after: 80,
+            lower_is_better: true,
+            evidence_sha256: "a".repeat(64),
+        };
+        let current = FileFingerprint {
+            content_sha256: "b".repeat(64),
+            bytes: 100,
+            modified_ms: 1,
+            extension: "rs".to_string(),
+            features: StructuralFeatures {
+                benchmark_tokens: 1,
+                performance_tokens: 1,
+                ..StructuralFeatures::default()
+            },
+        };
+        let event = WorkEvent {
+            event_id: "performance-gain".to_string(),
+            actor: WorkActor::LocalTool,
+            kind: WorkKind::PerformanceOptimization,
+            paths: Vec::new(),
+            outcome: WorkOutcome::Pass,
+            summary: "bounded benchmark improved".to_string(),
+            evidence_sha256: vec!["a".repeat(64)],
+            evidence_artifacts: Vec::new(),
+            performance_metrics: vec![metric],
+            occurred_at_ms: 1,
+        };
+        let observation = classify_observation(
+            "ROOT_0/src/scanner.rs".to_string(),
+            &current,
+            None,
+            Some(&event),
+            &ClassifierMemory::default(),
+            45,
+        );
+        assert_eq!(observation.learning_value, LearningValue::High);
+        assert!(observation
+            .signals
+            .contains(&"MEASURED_PERFORMANCE_GAIN".to_string()));
+        let lesson = build_lesson(std::slice::from_ref(&observation)).unwrap();
+
+        let mut independently_remeasured = observation.clone();
+        independently_remeasured.performance_metrics[0].evidence_sha256 = "c".repeat(64);
+        let repeated = build_lesson(&[independently_remeasured]).unwrap();
+        assert_eq!(
+            lesson_semantic_sha256(&lesson).unwrap(),
+            lesson_semantic_sha256(&repeated).unwrap()
+        );
+
+        let mut better = observation;
+        better.performance_metrics[0].after = 60;
+        let better_lesson = build_lesson(&[better]).unwrap();
+        assert_ne!(
+            lesson_semantic_sha256(&lesson).unwrap(),
+            lesson_semantic_sha256(&better_lesson).unwrap()
+        );
     }
 }

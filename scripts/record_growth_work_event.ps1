@@ -11,7 +11,7 @@ param(
     [string]$Actor,
 
     [Parameter(Mandatory = $true)]
-    [ValidateSet("CODE_CHANGE", "DEFECT_REPAIR", "REGRESSION_TEST", "REFACTOR", "FRONTEND_CHANGE", "BACKEND_CHANGE", "OPERATIONS_CHANGE", "DOCUMENTATION", "VERIFICATION")]
+    [ValidateSet("CODE_CHANGE", "DEFECT_REPAIR", "REGRESSION_TEST", "PERFORMANCE_OPTIMIZATION", "REFACTOR", "FRONTEND_CHANGE", "BACKEND_CHANGE", "OPERATIONS_CHANGE", "DOCUMENTATION", "VERIFICATION")]
     [string]$Kind,
 
     [Parameter(Mandatory = $true)]
@@ -27,7 +27,9 @@ param(
 
     [string[]]$EvidenceSha256 = @(),
 
-    [string[]]$EvidencePaths = @()
+    [string[]]$EvidencePaths = @(),
+
+    [string]$PerformanceMetricsPath = ""
 )
 
 $ErrorActionPreference = "Stop"
@@ -44,6 +46,14 @@ $controlRoot = [IO.Path]::Combine($stateRoot, "control")
 $null = [IO.Directory]::CreateDirectory($controlRoot)
 $eventId = "{0}-{1}" -f $Actor.ToLowerInvariant(), ([guid]::NewGuid().ToString("N"))
 $eventPath = [IO.Path]::Combine($controlRoot, (".{0}.event.json" -f $eventId))
+$performanceMetrics = @()
+if (-not [string]::IsNullOrWhiteSpace($PerformanceMetricsPath)) {
+    $metricsPath = [IO.Path]::GetFullPath($PerformanceMetricsPath)
+    if (-not [IO.File]::Exists($metricsPath)) {
+        throw "PERFORMANCE_METRICS_FILE_MISSING:$metricsPath"
+    }
+    $performanceMetrics = @(Get-Content -Raw -LiteralPath $metricsPath -Encoding UTF8 | ConvertFrom-Json)
+}
 $event = [ordered]@{
     event_id = $eventId
     actor = $Actor
@@ -53,6 +63,7 @@ $event = [ordered]@{
     summary = $Summary
     evidence_sha256 = @($EvidenceSha256)
     evidence_artifacts = @($EvidencePaths | ForEach-Object { [IO.Path]::GetFullPath($_) })
+    performance_metrics = $performanceMetrics
     occurred_at_ms = 0
 }
 [IO.File]::WriteAllText(

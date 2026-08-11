@@ -109,7 +109,9 @@ if ($manifest.growth_supervisor.included -ne $true -or
     $manifest.growth_supervisor.raw_source_retention -ne $false -or
     $manifest.growth_supervisor.codex_runtime_dependency -ne $false -or
     $manifest.growth_supervisor.external_llm_runtime_dependency -ne $false -or
-    $manifest.growth_supervisor.network_runtime_dependency -ne $false) {
+    $manifest.growth_supervisor.network_runtime_dependency -ne $false -or
+    $manifest.growth_supervisor.semantic_duplicate_promotion_blocked -ne $true -or
+    $manifest.growth_supervisor.measured_performance_evidence_supported -ne $true) {
     throw "GROWTH_SUPERVISOR_MANIFEST_BOUNDARY_INVALID"
 }
 
@@ -145,7 +147,9 @@ if ($RunSmokeTests) {
         -not $growthCheck.plateau_difficulty_escalation_disabled -or
         -not $growthCheck.core_self_approval_enabled -or
         -not $growthCheck.autonomous_source_patch_install_enabled -or
-        -not $growthCheck.source_patch_rollback_enabled) {
+        -not $growthCheck.source_patch_rollback_enabled -or
+        -not $growthCheck.semantic_duplicate_promotion_blocked -or
+        -not $growthCheck.measured_performance_evidence_supported) {
         throw "GROWTH_SUPERVISOR_SELF_CHECK_BOUNDARY_INVALID"
     }
     $smokeResults += [ordered]@{
