@@ -7,7 +7,9 @@ param(
     [string]$BuildTargetDirectory,
 
     [Parameter(Mandatory = $true)]
-    [string]$ArchivePath
+    [string]$ArchivePath,
+
+    [switch]$ReuseBuildTarget
 )
 
 $ErrorActionPreference = "Stop"
@@ -50,7 +52,7 @@ $archive = [IO.Path]::GetFullPath($ArchivePath)
 if (Test-Path -LiteralPath $packageRoot) {
     throw "TARGET_ALREADY_EXISTS:$packageRoot"
 }
-if (Test-Path -LiteralPath $buildRoot) {
+if ((Test-Path -LiteralPath $buildRoot) -and -not $ReuseBuildTarget) {
     throw "BUILD_TARGET_ALREADY_EXISTS:$buildRoot"
 }
 if (Test-Path -LiteralPath $archive) {
