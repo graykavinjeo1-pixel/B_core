@@ -549,16 +549,19 @@ fn candidate_hypotheses(input: &SelfInspectionInput) -> Vec<InternalHypothesis> 
             .checked_div(record.trials.max(1))
             .unwrap_or(0)
             .min(40) as u32;
+        let verified_outcomes = record
+            .productive_outcome_events
+            .saturating_add(record.failed_outcome_events);
         let productive_bonus = record
             .productive_outcome_events
             .saturating_mul(40)
-            .checked_div(record.trials.max(1))
+            .checked_div(verified_outcomes.max(1))
             .unwrap_or(0)
             .min(40) as u32;
         let failed_outcome_penalty = record
             .failed_outcome_events
             .saturating_mul(100)
-            .checked_div(record.trials.max(1))
+            .checked_div(verified_outcomes.max(1))
             .unwrap_or(0)
             .min(100) as u32;
         let repetition_penalty = record.trials.min(8).saturating_mul(6) as u32;
@@ -584,10 +587,11 @@ fn candidate_hypotheses(input: &SelfInspectionInput) -> Vec<InternalHypothesis> 
         hypothesis.prior_causal_support_events = record.causal_support_events;
         hypothesis.policy_exploration_selected = record.trials == 0;
         hypothesis.evidence.push(format!(
-            "adaptive_policy:experiment={};trials={};causal_support={};productive={};failed={};active={};score={}",
+            "adaptive_policy:experiment={};trials={};causal_support={};verified_outcomes={};productive={};failed={};active={};score={}",
             experiment.experiment_id,
             record.trials,
             record.causal_support_events,
+            verified_outcomes,
             record.productive_outcome_events,
             record.failed_outcome_events,
             active_bonus > 0,
@@ -1033,5 +1037,32 @@ mod tests {
         );
         assert!(next_generation.hypotheses[0].policy_exploration_selected);
         assert_eq!(next_generation.hypotheses[0].prior_policy_trials, 0);
+    }
+
+    #[test]
+    fn legacy_unbound_trials_cannot_dilute_a_verified_failed_outcome() {
+        let mut value = input();
+        value.unconsumed_high_observations = 16;
+        value.cohort_preflight_ready = false;
+        value.source_patch_attempts = 20;
+        value.source_patch_installations = 4;
+        value.source_patch_rollbacks = 16;
+        value.diagnostic_policy.experiment_records.insert(
+            "MIXED_ROLE_COHORT_RECONSTRUCTION".to_string(),
+            DiagnosticExperimentMemory {
+                trials: 100,
+                causal_support_events: 100,
+                failed_outcome_events: 1,
+                ..DiagnosticExperimentMemory::default()
+            },
+        );
+
+        let receipt = inspect(value).expect("inspection after verified failure");
+
+        assert_eq!(
+            receipt.selected_bottleneck,
+            InternalBottleneckClass::SourceRepairLowYield
+        );
+        assert!(receipt.hypotheses[0].policy_exploration_selected);
     }
 }
