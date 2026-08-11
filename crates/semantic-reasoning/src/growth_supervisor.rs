@@ -12,6 +12,7 @@ use std::fs::{self, File, OpenOptions};
 use std::io::{Read, Write};
 use std::path::{Component, Path, PathBuf};
 use std::process::Command;
+use std::sync::mpsc::{self, RecvTimeoutError};
 use std::thread;
 use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
 
@@ -23,6 +24,9 @@ pub const SUPERVISOR_SCHEMA: &str = "B_CORE_BOUNDED_GROWTH_SUPERVISOR_1";
 pub const CONFIG_SCHEMA: &str = "B_CORE_BOUNDED_GROWTH_CONFIG_1";
 pub const VERIFIER_SCHEMA: &str = "B_CORE_BOUNDED_GROWTH_VERIFIER_1";
 const MAX_SUMMARY_BYTES: usize = 512;
+const SCAN_WATCHDOG_TICK_MS: u64 = 1_000;
+const MAX_SCAN_RUNTIME_MS: u64 = 60_000;
+const FULL_HASH_CANARY_INTERVAL: u64 = 64;
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct ResourceLimits {
@@ -190,6 +194,14 @@ pub struct SupervisorState {
     pub network_writes: u64,
     pub prestart_autonomous_research_events: u64,
     pub prestart_future_instance_exposure_events: u64,
+    #[serde(default)]
+    pub last_scan_duration_ms: u64,
+    #[serde(default)]
+    pub last_scan_files_reused: u64,
+    #[serde(default)]
+    pub last_scan_files_hashed: u64,
+    #[serde(default)]
+    pub scan_timeout_events: u64,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
@@ -458,6 +470,10 @@ pub struct StepReport {
     pub external_llm_calls: u64,
     pub network_reads: u64,
     pub network_writes: u64,
+    pub last_scan_duration_ms: u64,
+    pub last_scan_files_reused: u64,
+    pub last_scan_files_hashed: u64,
+    pub scan_timeout_events: u64,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -797,9 +813,20 @@ fn structural_features(text: &str) -> StructuralFeatures {
     }
 }
 
-fn fingerprint_file(path: &Path, max_bytes: u64) -> Result<Option<FileFingerprint>, String> {
-    let metadata =
-        fs::metadata(path).map_err(|error| format!("METADATA:{}:{error}", path.display()))?;
+fn modified_ms(metadata: &fs::Metadata) -> u64 {
+    metadata
+        .modified()
+        .ok()
+        .and_then(|value| value.duration_since(UNIX_EPOCH).ok())
+        .map(|value| value.as_millis().min(u128::from(u64::MAX)) as u64)
+        .unwrap_or(0)
+}
+
+fn fingerprint_file_with_metadata(
+    path: &Path,
+    metadata: &fs::Metadata,
+    max_bytes: u64,
+) -> Result<Option<FileFingerprint>, String> {
     if metadata.len() > max_bytes {
         return Ok(None);
     }
@@ -823,16 +850,10 @@ fn fingerprint_file(path: &Path, max_bytes: u64) -> Result<Option<FileFingerprin
     {
         return Ok(None);
     }
-    let modified_ms = metadata
-        .modified()
-        .ok()
-        .and_then(|value| value.duration_since(UNIX_EPOCH).ok())
-        .map(|value| value.as_millis().min(u128::from(u64::MAX)) as u64)
-        .unwrap_or(0);
     Ok(Some(FileFingerprint {
         content_sha256: sha256(&bytes),
         bytes: metadata.len(),
-        modified_ms,
+        modified_ms: modified_ms(metadata),
         extension: path
             .extension()
             .and_then(OsStr::to_str)
@@ -1069,6 +1090,8 @@ struct ScanResult {
     files_scanned: usize,
     bytes_observed: u64,
     observations: Vec<LearningObservation>,
+    files_reused: usize,
+    files_hashed: usize,
 }
 
 struct SupervisorLease {
@@ -1390,6 +1413,10 @@ pub fn initialize(config_path: &Path) -> Result<SupervisorState, String> {
         network_writes: 0,
         prestart_autonomous_research_events: 0,
         prestart_future_instance_exposure_events: 0,
+        last_scan_duration_ms: 0,
+        last_scan_files_reused: 0,
+        last_scan_files_hashed: 0,
+        scan_timeout_events: 0,
     };
     save_transition(
         &config,
@@ -1552,16 +1579,38 @@ fn scan_watched_roots(
     };
     let mut observations = Vec::new();
     let mut bytes_observed = 0_u64;
+    let mut files_reused = 0_usize;
+    let mut files_hashed = 0_usize;
+    let force_full_hash = baseline_created || old_index.sequence % FULL_HASH_CANARY_INTERVAL == 0;
     for path in &paths {
-        let Some(fingerprint) = fingerprint_file(path, config.resources.max_file_bytes)? else {
+        let metadata =
+            fs::metadata(path).map_err(|error| format!("METADATA:{}:{error}", path.display()))?;
+        if metadata.len() > config.resources.max_file_bytes {
             continue;
-        };
-        if bytes_observed.saturating_add(fingerprint.bytes) > config.resources.max_bytes_per_scan {
-            break;
         }
-        bytes_observed = bytes_observed.saturating_add(fingerprint.bytes);
         let logical = normalized_logical_path(path, &config.watched_roots)?;
         let previous = old_index.files.get(&logical);
+        if !force_full_hash
+            && previous.is_some_and(|value| {
+                value.bytes == metadata.len() && value.modified_ms == modified_ms(&metadata)
+            })
+        {
+            new_index
+                .files
+                .insert(logical, previous.expect("checked above").clone());
+            files_reused = files_reused.saturating_add(1);
+            continue;
+        }
+        if bytes_observed.saturating_add(metadata.len()) > config.resources.max_bytes_per_scan {
+            break;
+        }
+        let Some(fingerprint) =
+            fingerprint_file_with_metadata(path, &metadata, config.resources.max_file_bytes)?
+        else {
+            continue;
+        };
+        bytes_observed = bytes_observed.saturating_add(fingerprint.bytes);
+        files_hashed = files_hashed.saturating_add(1);
         if !baseline_created
             && previous.map(|value| value.content_sha256.as_str())
                 != Some(fingerprint.content_sha256.as_str())
@@ -1574,13 +1623,6 @@ fn scan_watched_roots(
                 &memory.classifier,
                 config.observation.minimum_learning_score,
             );
-            let path = config
-                .state_dir
-                .join("observations")
-                .join(format!("{}.json", observation.observation_id));
-            if !path.exists() {
-                write_immutable_json(&path, &observation)?;
-            }
             observations.push(observation);
         }
         new_index.files.insert(logical, fingerprint);
@@ -1591,7 +1633,62 @@ fn scan_watched_roots(
         files_scanned: paths.len(),
         bytes_observed,
         observations,
+        files_reused,
+        files_hashed,
     })
+}
+
+fn persist_scan_observations(
+    config: &GrowthSupervisorConfig,
+    observations: &[LearningObservation],
+) -> Result<(), String> {
+    for observation in observations {
+        let path = config
+            .state_dir
+            .join("observations")
+            .join(format!("{}.json", observation.observation_id));
+        if !path.exists() {
+            write_immutable_json(&path, observation)?;
+        }
+    }
+    Ok(())
+}
+
+fn scan_watched_roots_bounded(
+    config: &GrowthSupervisorConfig,
+    memory: &GrowthMemory,
+    lease: &SupervisorLease,
+) -> Result<ScanResult, String> {
+    if config.state_dir.join("control").join("STOP").exists() {
+        return Err("OPERATOR_STOP_REQUESTED_DURING_SCAN".to_string());
+    }
+    let worker_config = config.clone();
+    let worker_memory = memory.clone();
+    let (sender, receiver) = mpsc::sync_channel(1);
+    thread::Builder::new()
+        .name("b-core-bounded-scanner".to_string())
+        .spawn(move || {
+            let _ = sender.send(scan_watched_roots(&worker_config, &worker_memory));
+        })
+        .map_err(|error| format!("SCAN_WORKER_SPAWN:{error}"))?;
+    let started = Instant::now();
+    loop {
+        match receiver.recv_timeout(Duration::from_millis(SCAN_WATCHDOG_TICK_MS)) {
+            Ok(result) => return result,
+            Err(RecvTimeoutError::Disconnected) => {
+                return Err("SCAN_WORKER_DISCONNECTED".to_string())
+            }
+            Err(RecvTimeoutError::Timeout) => {
+                lease.heartbeat()?;
+                if config.state_dir.join("control").join("STOP").exists() {
+                    return Err("OPERATOR_STOP_REQUESTED_DURING_SCAN".to_string());
+                }
+                if started.elapsed() >= Duration::from_millis(MAX_SCAN_RUNTIME_MS) {
+                    return Err("SCAN_RUNTIME_BOUND_REACHED".to_string());
+                }
+            }
+        }
+    }
 }
 
 fn load_unconsumed_high_observations(
@@ -1711,6 +1808,84 @@ fn build_lesson(observations: &[LearningObservation]) -> Result<LearnedCompositi
     })
 }
 
+fn lesson_has_verification_evidence(lesson: &LearnedCompositionLesson) -> bool {
+    let signals = lesson
+        .diagnostic_signals
+        .iter()
+        .map(String::as_str)
+        .collect::<BTreeSet<_>>();
+    let recipe = lesson
+        .composition_recipe
+        .iter()
+        .map(String::as_str)
+        .collect::<BTreeSet<_>>();
+    signals.contains("VERIFIED_PASS")
+        || ((signals.contains("TEST_ADDED") || signals.contains("REGRESSION_EVIDENCE"))
+            && (recipe.contains("IMPLEMENTATION")
+                || recipe.contains("IMPLEMENTATION_REPAIR")
+                || recipe.contains("BACKEND_PROVIDER")
+                || recipe.contains("FRONTEND_CONSUMER")
+                || recipe.contains("OPERATIONS_GUARD")))
+}
+
+fn selected_campaign_observations(
+    config: &GrowthSupervisorConfig,
+    observations: &[LearningObservation],
+) -> Vec<LearningObservation> {
+    observations
+        .iter()
+        .take(config.resources.max_observations_per_campaign)
+        .cloned()
+        .collect()
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+struct CampaignPreflightDiagnostic {
+    schema: String,
+    cohort_sha256: String,
+    observation_ids: Vec<String>,
+    reason: String,
+    campaign_started: bool,
+    failure_budget_consumed: bool,
+    created_at_ms: u64,
+}
+
+fn campaign_preflight_ready(
+    config: &GrowthSupervisorConfig,
+    observations: &[LearningObservation],
+) -> Result<bool, String> {
+    let chosen = selected_campaign_observations(config, observations);
+    if chosen.is_empty() {
+        return Ok(false);
+    }
+    let lesson = build_lesson(&chosen)?;
+    if lesson_has_verification_evidence(&lesson) {
+        return Ok(true);
+    }
+    let observation_ids = chosen
+        .iter()
+        .map(|observation| observation.observation_id.clone())
+        .collect::<Vec<_>>();
+    let cohort_sha256 = json_sha256(&observation_ids)?;
+    let diagnostic = CampaignPreflightDiagnostic {
+        schema: SUPERVISOR_SCHEMA.to_string(),
+        cohort_sha256: cohort_sha256.clone(),
+        observation_ids,
+        reason: "NO_PASS_OR_CODE_TEST_COHORT_EVIDENCE".to_string(),
+        campaign_started: false,
+        failure_budget_consumed: false,
+        created_at_ms: now_ms(),
+    };
+    let path = config
+        .state_dir
+        .join("diagnostics")
+        .join(format!("preflight_{cohort_sha256}.json"));
+    if !path.exists() {
+        write_immutable_json(&path, &diagnostic)?;
+    }
+    Ok(false)
+}
+
 fn campaign_dir(config: &GrowthSupervisorConfig, campaign_id: &str) -> PathBuf {
     config.state_dir.join("campaigns").join(campaign_id)
 }
@@ -1720,11 +1895,7 @@ fn freeze_new_campaign(
     state: &mut SupervisorState,
     observations: &[LearningObservation],
 ) -> Result<CampaignFreeze, String> {
-    let chosen = observations
-        .iter()
-        .take(config.resources.max_observations_per_campaign)
-        .cloned()
-        .collect::<Vec<_>>();
+    let chosen = selected_campaign_observations(config, observations);
     if chosen.is_empty() {
         return Err("NO_OBSERVATIONS_TO_FREEZE".to_string());
     }
@@ -1928,27 +2099,7 @@ pub fn run_verifier_request(
     {
         reasons.push("INSUFFICIENT_LEARNING_VALUE_OR_COMPOSITION".to_string());
     }
-    let signals = candidate
-        .lesson
-        .diagnostic_signals
-        .iter()
-        .map(String::as_str)
-        .collect::<BTreeSet<_>>();
-    let recipe = candidate
-        .lesson
-        .composition_recipe
-        .iter()
-        .map(String::as_str)
-        .collect::<BTreeSet<_>>();
-    let explicitly_verified = signals.contains("VERIFIED_PASS");
-    let structurally_verified = (signals.contains("TEST_ADDED")
-        || signals.contains("REGRESSION_EVIDENCE"))
-        && (recipe.contains("IMPLEMENTATION")
-            || recipe.contains("IMPLEMENTATION_REPAIR")
-            || recipe.contains("BACKEND_PROVIDER")
-            || recipe.contains("FRONTEND_CONSUMER")
-            || recipe.contains("OPERATIONS_GUARD"));
-    if !explicitly_verified && !structurally_verified {
+    if !lesson_has_verification_evidence(&candidate.lesson) {
         reasons.push("NO_PASS_OR_CODE_TEST_COHORT_EVIDENCE".to_string());
     }
     let decision = if reasons.is_empty() {
@@ -2400,6 +2551,10 @@ fn report_from_state(
         external_llm_calls: state.external_llm_calls,
         network_reads: state.network_reads,
         network_writes: state.network_writes,
+        last_scan_duration_ms: state.last_scan_duration_ms,
+        last_scan_files_reused: state.last_scan_files_reused,
+        last_scan_files_hashed: state.last_scan_files_hashed,
+        scan_timeout_events: state.scan_timeout_events,
     }
 }
 
@@ -2420,7 +2575,10 @@ fn stop_if_requested(
     Ok(false)
 }
 
-fn step_without_lease(config: &GrowthSupervisorConfig) -> Result<StepReport, String> {
+fn step_without_lease(
+    config: &GrowthSupervisorConfig,
+    lease: &SupervisorLease,
+) -> Result<StepReport, String> {
     let started = Instant::now();
     let mut state = load_state(config)?;
     if stop_if_requested(config, &mut state)? {
@@ -2484,8 +2642,46 @@ fn step_without_lease(config: &GrowthSupervisorConfig) -> Result<StepReport, Str
         SupervisorPhase::Scanning,
         "BOUNDED_SCOPED_WORKSPACE_SCAN_STARTED",
     )?;
-    let mut scan = scan_watched_roots(config, &memory)?;
+    let scan_started = Instant::now();
+    let mut scan = match scan_watched_roots_bounded(config, &memory, lease) {
+        Ok(scan) => scan,
+        Err(error)
+            if error == "OPERATOR_STOP_REQUESTED_DURING_SCAN"
+                || error == "SCAN_RUNTIME_BOUND_REACHED" =>
+        {
+            let elapsed = scan_started.elapsed().as_millis().min(u128::from(u64::MAX)) as u64;
+            state.last_scan_duration_ms = elapsed;
+            state.last_scan_files_reused = 0;
+            state.last_scan_files_hashed = 0;
+            state.active_runtime_ms = state.active_runtime_ms.saturating_add(elapsed);
+            if error == "SCAN_RUNTIME_BOUND_REACHED" {
+                state.scan_timeout_events = state.scan_timeout_events.saturating_add(1);
+                state.stop_reason = Some("SCAN_RUNTIME_BOUND_REACHED".to_string());
+                save_transition(
+                    config,
+                    &mut state,
+                    SupervisorPhase::SafeStopped,
+                    "SCAN_WATCHDOG_STOPPED_UNRESPONSIVE_SCAN",
+                )?;
+            } else {
+                state.stop_reason = Some("OPERATOR_STOP_REQUESTED".to_string());
+                save_transition(
+                    config,
+                    &mut state,
+                    SupervisorPhase::SafeStopped,
+                    "OPERATOR_STOP_OBSERVED_DURING_SCAN",
+                )?;
+            }
+            return Ok(report_from_state(&state, false, 0, 0, 0, None, None));
+        }
+        Err(error) => return Err(error),
+    };
+    state.last_scan_duration_ms =
+        scan_started.elapsed().as_millis().min(u128::from(u64::MAX)) as u64;
+    state.last_scan_files_reused = scan.files_reused.min(u64::MAX as usize) as u64;
+    state.last_scan_files_hashed = scan.files_hashed.min(u64::MAX as usize) as u64;
     state.observed_bytes = state.observed_bytes.saturating_add(scan.bytes_observed);
+    persist_scan_observations(config, &scan.observations)?;
     save_index(config, &mut scan.index)?;
     let high = load_unconsumed_high_observations(config, &scan.index)?;
     let high_count = high.len();
@@ -2532,6 +2728,14 @@ fn step_without_lease(config: &GrowthSupervisorConfig) -> Result<StepReport, Str
             SupervisorPhase::SafeStopped,
             "RESOURCE_BOUND_BLOCKED_NEW_CAMPAIGN",
         )?;
+    } else if !campaign_preflight_ready(config, &high)? {
+        state.plateau_scans = state.plateau_scans.saturating_add(1);
+        save_transition(
+            config,
+            &mut state,
+            SupervisorPhase::WaitingPlateau,
+            "CAMPAIGN_DEFERRED_WAITING_FOR_PASS_OR_TEST_COHORT",
+        )?;
     } else {
         let freeze = freeze_new_campaign(config, &mut state, &high)?;
         campaign_id = Some(freeze.campaign_id.clone());
@@ -2570,7 +2774,7 @@ pub fn supervisor_step(config_path: &Path) -> Result<StepReport, String> {
     let _ = initialize(config_path)?;
     let lease = SupervisorLease::acquire(&config)?;
     lease.heartbeat()?;
-    step_without_lease(&config)
+    step_without_lease(&config, &lease)
 }
 
 pub fn run_daemon(config_path: &Path) -> Result<StepReport, String> {
@@ -2579,7 +2783,7 @@ pub fn run_daemon(config_path: &Path) -> Result<StepReport, String> {
     let lease = SupervisorLease::acquire(&config)?;
     loop {
         lease.heartbeat()?;
-        let report = step_without_lease(&config)?;
+        let report = step_without_lease(&config, &lease)?;
         if report.phase == SupervisorPhase::SafeStopped {
             return Ok(report);
         }
@@ -2732,6 +2936,42 @@ mod tests {
     }
 
     #[test]
+    fn unchanged_files_reuse_index_without_rehashing() {
+        let root = temp_root("incremental-scan");
+        let (config_path, config) = test_config(&root);
+        fs::write(
+            config.watched_roots[0].join("stable.rs"),
+            "pub fn stable() -> bool { true }\n",
+        )
+        .unwrap();
+        initialize(&config_path).unwrap();
+        let baseline = supervisor_step(&config_path).unwrap();
+        assert_eq!(baseline.last_scan_files_hashed, 1);
+        assert_eq!(baseline.last_scan_files_reused, 0);
+        let incremental = supervisor_step(&config_path).unwrap();
+        assert_eq!(incremental.last_scan_files_hashed, 0);
+        assert_eq!(incremental.last_scan_files_reused, 1);
+        assert_eq!(incremental.observations_created, 0);
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn scan_observes_operator_stop_before_work_starts() {
+        let root = temp_root("scan-stop");
+        let (config_path, config) = test_config(&root);
+        let state = initialize(&config_path).unwrap();
+        request_stop(&config_path).unwrap();
+        let lease = SupervisorLease::acquire(&config).unwrap();
+        let memory = load_memory(&config, state.generation).unwrap();
+        assert_eq!(
+            scan_watched_roots_bounded(&config, &memory, &lease).unwrap_err(),
+            "OPERATOR_STOP_REQUESTED_DURING_SCAN"
+        );
+        drop(lease);
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
     fn empty_baseline_does_not_hide_later_new_work() {
         let root = temp_root("empty-baseline");
         let (config_path, config) = test_config(&root);
@@ -2849,6 +3089,36 @@ mod tests {
             45,
         );
         assert_eq!(observation.learning_value, LearningValue::Rejected);
+    }
+
+    #[test]
+    fn unverifiable_cohort_is_deferred_without_failure_budget() {
+        let root = temp_root("preflight-defer");
+        let (_, config) = test_config(&root);
+        let observation = LearningObservation {
+            observation_id: "repair-without-test".to_string(),
+            work_event_id: None,
+            logical_path: "ROOT_0/src/lib.rs".to_string(),
+            content_sha256: "a".repeat(64),
+            predecessor_content_sha256: None,
+            actor: WorkActor::UnknownLocalWriter,
+            work_kind: WorkKind::DefectRepair,
+            work_outcome: WorkOutcome::Unknown,
+            features_before: None,
+            features_after: StructuralFeatures::default(),
+            signals: vec!["DEFECT_REPAIR".to_string()],
+            composition_roles: vec!["IMPLEMENTATION_REPAIR".to_string()],
+            learning_score: 60,
+            learning_value: LearningValue::High,
+            reasons: vec!["repair observed".to_string()],
+            exact_source_fragments_stored: 0,
+            raw_source_bytes_stored: 0,
+            observed_at_ms: 1,
+        };
+        assert!(!campaign_preflight_ready(&config, &[observation]).unwrap());
+        let diagnostics = config.state_dir.join("diagnostics");
+        assert_eq!(fs::read_dir(diagnostics).unwrap().count(), 1);
+        fs::remove_dir_all(root).unwrap();
     }
 
     #[test]

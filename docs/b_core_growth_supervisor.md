@@ -26,7 +26,11 @@ scoped observation
 
 The first scan only establishes a baseline. Existing files are not treated as newly learned work.
 
+Subsequent scans reuse the frozen file index when size and modification identity are unchanged, and periodically perform a full-hash canary. A scan runs behind a watchdog: the lease heartbeat and operator-stop check remain responsive while filesystem I/O is in progress, and a scan exceeding the fixed runtime bound produces an auditable safe stop instead of an indefinitely stale `SCANNING` state.
+
 High-value learning requires an explicit local PASS or a structural code-plus-regression cohort. Documentation-only edits, failed work, generated output, unverified test-only work, and large unexplained churn are not promoted.
+
+Before campaign freeze, the supervisor applies the same PASS/code-plus-test evidence gate as the independent verifier. An unverifiable cohort is retained for reconsideration when new evidence arrives, but it does not consume a campaign or consecutive-failure budget merely to reproduce a known verifier rejection.
 
 ## Plateau behavior
 
