@@ -681,6 +681,9 @@ pub struct SelfCheck {
     pub source_patch_rollback_enabled: bool,
     pub promoted_lessons_drive_executable_repairs: bool,
     pub operational_repair_knowledge: Vec<String>,
+    pub bounded_failure_retry_enabled: bool,
+    pub successful_solution_learning_enabled: bool,
+    pub admitted_failure_revisit_after_growth_enabled: bool,
     pub mutual_recursive_growth_observed: bool,
 }
 
@@ -708,6 +711,9 @@ pub fn self_check() -> SelfCheck {
             "WINPS51_EXTENDED_PATH_NORMALIZATION_BEFORE_PATH_CMDLETS".to_string(),
             "AUTONOMOUS_SOURCE_UPDATE_HANDOFF_IS_RESUMABLE_AFTER_BINARY_SWAP".to_string(),
         ],
+        bounded_failure_retry_enabled: true,
+        successful_solution_learning_enabled: true,
+        admitted_failure_revisit_after_growth_enabled: true,
         mutual_recursive_growth_observed: false,
     }
 }
@@ -4064,6 +4070,9 @@ mod tests {
         assert!(check.operational_repair_knowledge.contains(
             &"AUTONOMOUS_SOURCE_UPDATE_HANDOFF_IS_RESUMABLE_AFTER_BINARY_SWAP".to_string()
         ));
+        assert!(check.bounded_failure_retry_enabled);
+        assert!(check.successful_solution_learning_enabled);
+        assert!(check.admitted_failure_revisit_after_growth_enabled);
         assert!(!check.mutual_recursive_growth_observed);
     }
 

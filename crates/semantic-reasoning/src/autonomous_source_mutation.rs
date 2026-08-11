@@ -20,6 +20,21 @@ use crate::self_repair_contract::sha256;
 
 pub const AUTONOMOUS_SOURCE_MUTATION_SCHEMA: &str = "B_CORE_AUTONOMOUS_SOURCE_MUTATION_1";
 pub const SELF_UPDATE_HANDOFF_FILE: &str = "SELF_UPDATE_READY.json";
+pub const SOURCE_REPAIR_LEARNING_SCHEMA: &str = "B_CORE_SOURCE_REPAIR_LEARNING_1";
+const KNOWN_REMAINDER_STRATEGIES: [&str; 4] = [
+    "TYPED_IS_MULTIPLE_OF",
+    "PARENTHESIZED_IS_MULTIPLE_OF",
+    "CHECKED_REMAINDER_MATCH",
+    "EUCLIDEAN_REMAINDER_COMPARISON",
+];
+
+fn default_source_repair_attempts() -> u8 {
+    4
+}
+
+fn is_default_source_repair_attempts(value: &u8) -> bool {
+    *value == default_source_repair_attempts()
+}
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct AutonomousSourceMutationPolicy {
@@ -32,6 +47,11 @@ pub struct AutonomousSourceMutationPolicy {
     pub max_candidate_bytes: u64,
     pub max_installations: u64,
     pub validation_timeout_ms: u64,
+    #[serde(
+        default = "default_source_repair_attempts",
+        skip_serializing_if = "is_default_source_repair_attempts"
+    )]
+    pub max_attempts_per_problem: u8,
 }
 
 impl Default for AutonomousSourceMutationPolicy {
@@ -46,6 +66,7 @@ impl Default for AutonomousSourceMutationPolicy {
             max_candidate_bytes: 2 * 1024 * 1024,
             max_installations: 64,
             validation_timeout_ms: 15 * 60 * 1_000,
+            max_attempts_per_problem: default_source_repair_attempts(),
         }
     }
 }
@@ -70,6 +91,42 @@ pub struct AutonomousSourcePatchRequest {
     pub source_generation: u64,
     pub core_generated: bool,
     pub core_self_approved: bool,
+    #[serde(default)]
+    pub solution_strategy: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct SourceRepairAttempt {
+    pub attempt_number: u8,
+    pub source_generation: u64,
+    pub solution_strategy: String,
+    pub candidate_sha256: String,
+    pub succeeded: bool,
+    pub receipt_sha256: String,
+    pub diagnostic_sha256: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct LearnedSuccessfulRepair {
+    pub learned_at_generation: u64,
+    pub solution_strategy: String,
+    pub candidate_sha256: String,
+    pub validation_output_sha256: String,
+    pub release_build_output_sha256: String,
+    pub attempts_required: u8,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct SourceRepairLearningRecord {
+    pub schema: String,
+    pub problem_id: String,
+    pub relative_path: PathBuf,
+    pub transformation: String,
+    pub status: String,
+    pub cycle_started_generation: u64,
+    pub eligible_after_generation: Option<u64>,
+    pub attempts: Vec<SourceRepairAttempt>,
+    pub learned_success: Option<LearnedSuccessfulRepair>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -133,6 +190,7 @@ pub fn validate_policy(policy: &AutonomousSourceMutationPolicy) -> Result<(), St
     if policy.max_candidate_bytes == 0
         || policy.max_installations == 0
         || policy.validation_timeout_ms < 1_000
+        || !(3..=4).contains(&policy.max_attempts_per_problem)
     {
         return Err("SOURCE_MUTATION_BOUND_INVALID".to_string());
     }
@@ -159,6 +217,145 @@ fn write_immutable_json<T: Serialize>(path: &Path, value: &T) -> Result<(), Stri
     let bytes = serde_json::to_vec_pretty(value)
         .map_err(|error| format!("SOURCE_MUTATION_JSON:{error}"))?;
     write_new_file(path, &bytes)
+}
+
+fn write_mutable_json<T: Serialize>(path: &Path, value: &T) -> Result<(), String> {
+    let bytes = serde_json::to_vec_pretty(value)
+        .map_err(|error| format!("SOURCE_REPAIR_LEARNING_JSON:{error}"))?;
+    let parent = path
+        .parent()
+        .ok_or_else(|| "SOURCE_REPAIR_LEARNING_PARENT_MISSING".to_string())?;
+    fs::create_dir_all(parent).map_err(|error| format!("SOURCE_REPAIR_LEARNING_MKDIR:{error}"))?;
+    let mut file = OpenOptions::new()
+        .write(true)
+        .create(true)
+        .truncate(true)
+        .open(path)
+        .map_err(|error| format!("SOURCE_REPAIR_LEARNING_OPEN:{error}"))?;
+    file.write_all(&bytes)
+        .and_then(|_| file.sync_all())
+        .map_err(|error| format!("SOURCE_REPAIR_LEARNING_WRITE:{error}"))
+}
+
+fn repair_problem_id(request: &AutonomousSourcePatchRequest) -> String {
+    sha256(
+        format!(
+            "{}:{}",
+            request.relative_path.display(),
+            request.transformation
+        )
+        .as_bytes(),
+    )
+}
+
+fn repair_learning_path(state_dir: &Path, problem_id: &str) -> PathBuf {
+    state_dir
+        .join("source_repair_knowledge")
+        .join(format!("{problem_id}.json"))
+}
+
+fn load_repair_learning(
+    state_dir: &Path,
+    problem_id: &str,
+) -> Result<Option<SourceRepairLearningRecord>, String> {
+    let path = repair_learning_path(state_dir, problem_id);
+    if !path.exists() {
+        return Ok(None);
+    }
+    let bytes = fs::read(&path).map_err(|error| format!("SOURCE_REPAIR_LEARNING_READ:{error}"))?;
+    serde_json::from_slice(&bytes)
+        .map(Some)
+        .map_err(|error| format!("SOURCE_REPAIR_LEARNING_PARSE:{error}"))
+}
+
+fn active_cycle_attempts<'a>(
+    record: &'a SourceRepairLearningRecord,
+    source_generation: u64,
+) -> &'a [SourceRepairAttempt] {
+    if record.status == "ADMITTED_FAILURE"
+        && record
+            .eligible_after_generation
+            .is_some_and(|eligible| source_generation >= eligible)
+    {
+        &[]
+    } else {
+        &record.attempts
+    }
+}
+
+fn record_source_repair_outcome(
+    policy: &AutonomousSourceMutationPolicy,
+    state_dir: &Path,
+    request: &AutonomousSourcePatchRequest,
+    receipt: &AutonomousSourcePatchReceipt,
+) -> Result<SourceRepairLearningRecord, String> {
+    let problem_id = repair_problem_id(request);
+    let mut record = load_repair_learning(state_dir, &problem_id)?.unwrap_or_else(|| {
+        SourceRepairLearningRecord {
+            schema: SOURCE_REPAIR_LEARNING_SCHEMA.to_string(),
+            problem_id: problem_id.clone(),
+            relative_path: request.relative_path.clone(),
+            transformation: request.transformation.clone(),
+            status: "RETRYING".to_string(),
+            cycle_started_generation: request.source_generation,
+            eligible_after_generation: None,
+            attempts: Vec::new(),
+            learned_success: None,
+        }
+    });
+    if record.status == "ADMITTED_FAILURE"
+        && record
+            .eligible_after_generation
+            .is_some_and(|eligible| request.source_generation >= eligible)
+    {
+        record.status = "RETRYING".to_string();
+        record.cycle_started_generation = request.source_generation;
+        record.eligible_after_generation = None;
+        record.attempts.clear();
+    }
+    let attempt_number = record
+        .attempts
+        .len()
+        .saturating_add(1)
+        .min(u8::MAX as usize) as u8;
+    let solution_strategy = if request.solution_strategy.is_empty() {
+        request.transformation.clone()
+    } else {
+        request.solution_strategy.clone()
+    };
+    record.attempts.push(SourceRepairAttempt {
+        attempt_number,
+        source_generation: request.source_generation,
+        solution_strategy: solution_strategy.clone(),
+        candidate_sha256: request.candidate_sha256.clone(),
+        succeeded: receipt.installed,
+        receipt_sha256: receipt.receipt_sha256.clone(),
+        diagnostic_sha256: receipt.validation.output_sha256.clone(),
+    });
+    if receipt.installed {
+        record.status = "LEARNED_SUCCESS".to_string();
+        record.eligible_after_generation = None;
+        record.learned_success = Some(LearnedSuccessfulRepair {
+            learned_at_generation: request.source_generation,
+            solution_strategy,
+            candidate_sha256: request.candidate_sha256.clone(),
+            validation_output_sha256: receipt.validation.output_sha256.clone(),
+            release_build_output_sha256: receipt
+                .release_build
+                .as_ref()
+                .map(|build| build.output_sha256.clone())
+                .unwrap_or_default(),
+            attempts_required: attempt_number,
+        });
+    } else if attempt_number >= policy.max_attempts_per_problem {
+        record.status = "ADMITTED_FAILURE".to_string();
+        record.eligible_after_generation = Some(request.source_generation.saturating_add(1));
+        record.learned_success = None;
+    } else {
+        record.status = "RETRYING".to_string();
+    }
+    write_mutable_json(&repair_learning_path(state_dir, &problem_id), &record)?;
+    Ok(record)
 }
 
 fn normalized_target(root: &Path, relative: &Path) -> Result<PathBuf, String> {
@@ -379,6 +576,7 @@ pub fn install_and_stage_source_patch(
         };
         receipt.receipt_sha256 = receipt_hash(&receipt)?;
         write_immutable_json(&mutation_root.join("receipt.json"), &receipt)?;
+        record_source_repair_outcome(policy, state_dir, request, &receipt)?;
         return Ok(receipt);
     }
 
@@ -417,6 +615,7 @@ pub fn install_and_stage_source_patch(
         };
         receipt.receipt_sha256 = receipt_hash(&receipt)?;
         write_immutable_json(&mutation_root.join("receipt.json"), &receipt)?;
+        record_source_repair_outcome(policy, state_dir, request, &receipt)?;
         return Ok(receipt);
     }
 
@@ -464,6 +663,7 @@ pub fn install_and_stage_source_patch(
         };
         receipt.receipt_sha256 = receipt_hash(&receipt)?;
         write_immutable_json(&mutation_root.join("receipt.json"), &receipt)?;
+        record_source_repair_outcome(policy, state_dir, request, &receipt)?;
         return Ok(receipt);
     }
 
@@ -508,6 +708,7 @@ pub fn install_and_stage_source_patch(
     };
     receipt.receipt_sha256 = receipt_hash(&receipt)?;
     write_immutable_json(&receipt_path, &receipt)?;
+    record_source_repair_outcome(policy, state_dir, request, &receipt)?;
     fs::remove_file(&rollback_sibling)
         .map_err(|error| format!("SOURCE_MUTATION_ROLLBACK_SIBLING_CLEANUP:{error}"))?;
 
@@ -598,7 +799,7 @@ fn expression_start(prefix: &str) -> Option<usize> {
     (end > 0).then_some(0)
 }
 
-fn rewrite_remainder_predicate(line: &str) -> Option<String> {
+fn rewrite_remainder_predicate(line: &str, strategy_index: usize) -> Option<String> {
     let trimmed = line.trim_start();
     if trimmed.starts_with("//")
         || trimmed.starts_with("#")
@@ -635,10 +836,17 @@ fn rewrite_remainder_predicate(line: &str) -> Option<String> {
     if expression.is_empty() {
         return None;
     }
+    let positive = match strategy_index {
+        0 => format!("{expression}.is_multiple_of({divisor})"),
+        1 => format!("({expression}).is_multiple_of({divisor})"),
+        2 => format!("matches!(({expression}).checked_rem({divisor}), Some(0))"),
+        3 => format!("({expression}).rem_euclid({divisor}) == 0"),
+        _ => return None,
+    };
     let replacement = if negated {
-        format!("!{expression}.is_multiple_of({divisor})")
+        format!("!({positive})")
     } else {
-        format!("{expression}.is_multiple_of({divisor})")
+        positive
     };
     let mut result = String::with_capacity(line.len() + 16);
     result.push_str(&line[..left_start]);
@@ -647,7 +855,7 @@ fn rewrite_remainder_predicate(line: &str) -> Option<String> {
     Some(result)
 }
 
-fn rewrite_first_known_improvement(source: &str) -> Option<String> {
+fn rewrite_first_known_improvement(source: &str, strategy_index: usize) -> Option<String> {
     let mut output = String::with_capacity(source.len() + 32);
     let mut changed = false;
     let mut test_module_reached = false;
@@ -656,7 +864,7 @@ fn rewrite_first_known_improvement(source: &str) -> Option<String> {
             test_module_reached = true;
         }
         if !changed && !test_module_reached {
-            if let Some(rewritten) = rewrite_remainder_predicate(line) {
+            if let Some(rewritten) = rewrite_remainder_predicate(line, strategy_index) {
                 output.push_str(&rewritten);
                 changed = true;
                 continue;
@@ -685,53 +893,87 @@ pub fn discover_known_source_improvement(
         let Ok(source) = std::str::from_utf8(&bytes) else {
             continue;
         };
-        let Some(candidate_source) = rewrite_first_known_improvement(source) else {
-            continue;
-        };
         let relative_path = path
             .strip_prefix(&policy.source_root)
             .map_err(|_| "SOURCE_DISCOVERY_PATH_OUTSIDE_ROOT".to_string())?
             .to_path_buf();
         let predecessor_sha256 = sha256(&bytes);
-        let candidate_sha256 = sha256(candidate_source.as_bytes());
-        let patch_id = format!(
-            "SELF-{}",
-            &sha256(
-                format!(
-                    "{}:{}:{}",
-                    relative_path.display(),
-                    predecessor_sha256,
-                    candidate_sha256
-                )
-                .as_bytes()
-            )[..24]
-        );
-        if state_dir
-            .join("source_mutations")
-            .join(&patch_id)
-            .join("receipt.json")
-            .exists()
-        {
+        let transformation =
+            "MANUAL_REMAINDER_PREDICATE_TO_TYPED_DIVISIBILITY_PREDICATE".to_string();
+        let problem_id = sha256(format!("{}:{transformation}", relative_path.display()).as_bytes());
+        let record = load_repair_learning(state_dir, &problem_id)?;
+        if record.as_ref().is_some_and(|knowledge| {
+            knowledge.status == "LEARNED_SUCCESS"
+                || (knowledge.status == "ADMITTED_FAILURE"
+                    && knowledge
+                        .eligible_after_generation
+                        .is_some_and(|eligible| source_generation < eligible))
+        }) {
             continue;
         }
-        return Ok(Some(AutonomousSourcePatchRequest {
-            schema: AUTONOMOUS_SOURCE_MUTATION_SCHEMA.to_string(),
-            patch_id,
-            relative_path,
-            predecessor_sha256,
-            candidate_source,
-            candidate_sha256,
-            transformation: "MANUAL_REMAINDER_PREDICATE_TO_TYPED_IS_MULTIPLE_OF".to_string(),
-            consequence_predictions: vec![
-                "preserve parity/divisibility semantics".to_string(),
-                "replace manual remainder comparison with typed standard predicate".to_string(),
-                "all semantic-reasoning regressions remain green".to_string(),
-            ],
-            predicted_value: 78,
-            source_generation,
-            core_generated: true,
-            core_self_approved: true,
-        }));
+        let attempted = record
+            .as_ref()
+            .map(|knowledge| active_cycle_attempts(knowledge, source_generation))
+            .unwrap_or(&[]);
+        if attempted.len() >= usize::from(policy.max_attempts_per_problem) {
+            continue;
+        }
+        for (strategy_index, solution_strategy) in KNOWN_REMAINDER_STRATEGIES
+            .iter()
+            .enumerate()
+            .take(usize::from(policy.max_attempts_per_problem))
+        {
+            if attempted
+                .iter()
+                .any(|attempt| attempt.solution_strategy == *solution_strategy)
+            {
+                continue;
+            }
+            let Some(candidate_source) = rewrite_first_known_improvement(source, strategy_index)
+            else {
+                continue;
+            };
+            let candidate_sha256 = sha256(candidate_source.as_bytes());
+            let patch_id = format!(
+                "SELF-{}",
+                &sha256(
+                    format!(
+                        "{}:{}:{}:{}",
+                        problem_id, source_generation, solution_strategy, candidate_sha256
+                    )
+                    .as_bytes()
+                )[..24]
+            );
+            if state_dir
+                .join("source_mutations")
+                .join(&patch_id)
+                .join("receipt.json")
+                .exists()
+            {
+                continue;
+            }
+            return Ok(Some(AutonomousSourcePatchRequest {
+                schema: AUTONOMOUS_SOURCE_MUTATION_SCHEMA.to_string(),
+                patch_id,
+                relative_path: relative_path.clone(),
+                predecessor_sha256: predecessor_sha256.clone(),
+                candidate_source,
+                candidate_sha256,
+                transformation: transformation.clone(),
+                consequence_predictions: vec![
+                    "preserve parity/divisibility semantics".to_string(),
+                    "replace a manual predicate using a distinct bounded repair strategy"
+                        .to_string(),
+                    "retain only a method that passes format, regression, and release build gates"
+                        .to_string(),
+                ],
+                predicted_value: 78,
+                source_generation,
+                core_generated: true,
+                core_self_approved: true,
+                solution_strategy: (*solution_strategy).to_string(),
+            }));
+        }
     }
     Ok(None)
 }
@@ -739,6 +981,42 @@ pub fn discover_known_source_improvement(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    fn synthetic_receipt(
+        request: &AutonomousSourcePatchRequest,
+        installed: bool,
+    ) -> AutonomousSourcePatchReceipt {
+        let output: &[u8] = if installed { b"pass" } else { b"failure" };
+        let command = LocalCommandReceipt {
+            program: "cargo".to_string(),
+            args: vec!["test".to_string()],
+            exit_code: Some(if installed { 0 } else { 101 }),
+            success: installed,
+            timed_out: false,
+            duration_ms: 1,
+            output_sha256: sha256(output),
+            diagnostic_tail: String::from_utf8_lossy(output).to_string(),
+        };
+        let mut receipt = AutonomousSourcePatchReceipt {
+            schema: AUTONOMOUS_SOURCE_MUTATION_SCHEMA.to_string(),
+            patch_id: request.patch_id.clone(),
+            relative_path: request.relative_path.clone(),
+            predecessor_sha256: request.predecessor_sha256.clone(),
+            candidate_sha256: request.candidate_sha256.clone(),
+            core_generated: true,
+            core_self_approved: true,
+            installed,
+            rolled_back: !installed,
+            format_check: Some(command.clone()),
+            validation: command.clone(),
+            release_build: installed.then_some(command),
+            runtime_update_staged: installed,
+            rollback_source: PathBuf::from("predecessor.source"),
+            receipt_sha256: String::new(),
+        };
+        receipt.receipt_sha256 = receipt_hash(&receipt).unwrap();
+        receipt
+    }
 
     fn cargo_path() -> PathBuf {
         let candidate = std::env::var_os("CARGO")
@@ -792,6 +1070,7 @@ mod tests {
             max_candidate_bytes: 1024 * 1024,
             max_installations: 4,
             validation_timeout_ms: 120_000,
+            max_attempts_per_problem: 4,
         };
         (root, policy)
     }
@@ -799,12 +1078,12 @@ mod tests {
     #[test]
     fn known_improvement_is_predicted_without_touching_tests_or_strings() {
         let source = "pub fn even(value: u32) -> bool { value % 2 == 0 }\n#[cfg(test)]\nmod tests { const TEXT: &str = \"x % 2 == 0\"; }\n";
-        let rewritten = rewrite_first_known_improvement(source).expect("candidate");
+        let rewritten = rewrite_first_known_improvement(source, 0).expect("candidate");
         assert!(rewritten.contains("value.is_multiple_of(2)"));
         assert!(rewritten.contains("\"x % 2 == 0\""));
 
         let conditional = "let scope = if ordinal % 5 == 0 { 1 } else { 2 };\n";
-        let rewritten = rewrite_first_known_improvement(conditional).expect("conditional");
+        let rewritten = rewrite_first_known_improvement(conditional, 0).expect("conditional");
         assert!(rewritten.contains("= if ordinal.is_multiple_of(5)"));
     }
 
@@ -813,6 +1092,15 @@ mod tests {
         let root = std::env::temp_dir();
         assert!(normalized_target(&root, Path::new("..\\escape.rs")).is_err());
         assert!(normalized_target(&root, Path::new("C:\\escape.rs")).is_err());
+    }
+
+    #[test]
+    fn default_retry_bound_is_backward_compatible_with_frozen_configs() {
+        let policy = AutonomousSourceMutationPolicy::default();
+        let serialized = serde_json::to_value(&policy).unwrap();
+        assert!(serialized.get("max_attempts_per_problem").is_none());
+        let restored: AutonomousSourceMutationPolicy = serde_json::from_value(serialized).unwrap();
+        assert_eq!(restored.max_attempts_per_problem, 4);
     }
 
     #[test]
@@ -839,6 +1127,15 @@ mod tests {
             .join("control")
             .join(SELF_UPDATE_HANDOFF_FILE)
             .is_file());
+        let knowledge = load_repair_learning(&state, &repair_problem_id(&request))
+            .unwrap()
+            .expect("success knowledge");
+        assert_eq!(knowledge.status, "LEARNED_SUCCESS");
+        assert_eq!(knowledge.attempts.len(), 1);
+        assert_eq!(
+            knowledge.learned_success.unwrap().solution_strategy,
+            "TYPED_IS_MULTIPLE_OF"
+        );
         fs::remove_dir_all(root).unwrap();
     }
 
@@ -862,6 +1159,46 @@ mod tests {
             .join("control")
             .join(SELF_UPDATE_HANDOFF_FILE)
             .exists());
+        let knowledge = load_repair_learning(&state, &repair_problem_id(&request))
+            .unwrap()
+            .expect("retry knowledge");
+        assert_eq!(knowledge.status, "RETRYING");
+        assert_eq!(knowledge.attempts.len(), 1);
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn four_failed_solutions_are_admitted_then_reopened_after_growth() {
+        let (root, policy) = fixture("bounded-retry");
+        let state = root.join("state");
+        let mut problem_id = String::new();
+        for expected_attempts in 1..=4 {
+            let request = discover_known_source_improvement(&policy, &state, 7)
+                .unwrap()
+                .expect("bounded solution");
+            problem_id = repair_problem_id(&request);
+            let receipt = synthetic_receipt(&request, false);
+            let knowledge =
+                record_source_repair_outcome(&policy, &state, &request, &receipt).unwrap();
+            assert_eq!(knowledge.attempts.len(), expected_attempts);
+        }
+        let admitted = load_repair_learning(&state, &problem_id)
+            .unwrap()
+            .expect("admitted failure");
+        assert_eq!(admitted.status, "ADMITTED_FAILURE");
+        assert_eq!(admitted.eligible_after_generation, Some(8));
+        assert!(discover_known_source_improvement(&policy, &state, 7)
+            .unwrap()
+            .is_none());
+
+        let retry = discover_known_source_improvement(&policy, &state, 8)
+            .unwrap()
+            .expect("reopened after growth");
+        let success = synthetic_receipt(&retry, true);
+        let learned = record_source_repair_outcome(&policy, &state, &retry, &success).unwrap();
+        assert_eq!(learned.status, "LEARNED_SUCCESS");
+        assert_eq!(learned.attempts.len(), 1);
+        assert_eq!(learned.learned_success.unwrap().attempts_required, 1);
         fs::remove_dir_all(root).unwrap();
     }
 }
