@@ -31,6 +31,8 @@ const MAX_SUMMARY_BYTES: usize = 512;
 const SCAN_WATCHDOG_TICK_MS: u64 = 1_000;
 const MAX_SCAN_RUNTIME_MS: u64 = 60_000;
 const FULL_HASH_CANARY_INTERVAL: u64 = 64;
+const BASELINE_MAX_HASHED_FILES_PER_SCAN: usize = 1_024;
+const BASELINE_MAX_BYTES_PER_SCAN: u64 = 64 * 1024 * 1024;
 
 fn logical_path_canary_bucket(logical_path: &str) -> u64 {
     let digest = sha256(logical_path.as_bytes());
@@ -1757,16 +1759,24 @@ fn scan_watched_roots(
     let mut new_index = FileIndex {
         schema: SUPERVISOR_SCHEMA.to_string(),
         sequence: old_index.sequence,
-        baseline_complete: true,
-        files: BTreeMap::new(),
+        baseline_complete: old_index.baseline_complete,
+        files: old_index.files.clone(),
         consumed_observation_ids: old_index.consumed_observation_ids.clone(),
         consumed_work_event_ids: old_index.consumed_work_event_ids.clone(),
     };
+    let current_logical_paths = paths
+        .iter()
+        .map(|path| normalized_logical_path(path, &config.watched_roots))
+        .collect::<Result<BTreeSet<_>, _>>()?;
+    new_index
+        .files
+        .retain(|logical_path, _| current_logical_paths.contains(logical_path));
     let mut observations = Vec::new();
     let mut bytes_observed = 0_u64;
     let mut files_reused = 0_usize;
     let mut files_hashed = 0_usize;
     let mut replayed_unchanged_work_events = 0_usize;
+    let mut baseline_pending_files = false;
     let canary_bucket = old_index.sequence % FULL_HASH_CANARY_INTERVAL;
     for path in &paths {
         let metadata =
@@ -1780,8 +1790,7 @@ fn scan_watched_roots(
         let canary_rehash = !baseline_created
             && previous.is_some()
             && logical_path_canary_bucket(&logical) == canary_bucket;
-        if !baseline_created
-            && !canary_rehash
+        if (baseline_created || !canary_rehash)
             && previous.is_some_and(|value| {
                 value.bytes == metadata.len() && value.modified_ms == modified_ms(&metadata)
             })
@@ -1803,6 +1812,17 @@ fn scan_watched_roots(
             }
             new_index.files.insert(logical, indexed.clone());
             files_reused = files_reused.saturating_add(1);
+            continue;
+        }
+        if baseline_created
+            && (files_hashed >= BASELINE_MAX_HASHED_FILES_PER_SCAN
+                || bytes_observed.saturating_add(metadata.len())
+                    > config
+                        .resources
+                        .max_bytes_per_scan
+                        .min(BASELINE_MAX_BYTES_PER_SCAN))
+        {
+            baseline_pending_files = true;
             continue;
         }
         if bytes_observed.saturating_add(metadata.len()) > config.resources.max_bytes_per_scan {
@@ -1832,6 +1852,12 @@ fn scan_watched_roots(
             }
         }
         new_index.files.insert(logical, fingerprint);
+    }
+    if baseline_created {
+        new_index.baseline_complete = !baseline_pending_files
+            && current_logical_paths
+                .iter()
+                .all(|logical_path| new_index.files.contains_key(logical_path));
     }
     Ok(ScanResult {
         index: new_index,
@@ -4184,6 +4210,34 @@ mod tests {
         let scan = scan_watched_roots(&config, &memory).unwrap();
         assert!(scan.files_hashed < 128);
         assert_eq!(scan.files_hashed + scan.files_reused, 128);
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn fresh_baseline_is_accumulated_in_bounded_batches() {
+        let root = temp_root("batched-baseline");
+        let (config_path, config) = test_config(&root);
+        for index in 0..(BASELINE_MAX_HASHED_FILES_PER_SCAN + 17) {
+            fs::write(
+                config.watched_roots[0].join(format!("file_{index:04}.rs")),
+                format!("pub fn value_{index}() -> usize {{ {index} }}\n"),
+            )
+            .unwrap();
+        }
+        initialize(&config_path).unwrap();
+        let first = supervisor_step(&config_path).unwrap();
+        assert!(first.baseline_created);
+        assert_eq!(
+            first.last_scan_files_hashed as usize,
+            BASELINE_MAX_HASHED_FILES_PER_SCAN
+        );
+        assert!(!load_index(&config).unwrap().baseline_complete);
+
+        let second = supervisor_step(&config_path).unwrap();
+        assert!(second.baseline_created);
+        assert_eq!(second.last_scan_files_hashed, 17);
+        assert!(load_index(&config).unwrap().baseline_complete);
+        assert_eq!(second.observations_created, 0);
         fs::remove_dir_all(root).unwrap();
     }
 }
