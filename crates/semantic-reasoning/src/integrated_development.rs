@@ -132,6 +132,8 @@ pub struct BehavioralCompositionCanaryReceipt {
     #[serde(default)]
     pub installed_program_match: bool,
     #[serde(default)]
+    pub installed_source_schema_revision: u64,
+    #[serde(default)]
     pub installed_cases_executed: usize,
     #[serde(default)]
     pub installed_cases_passed: usize,
@@ -479,6 +481,8 @@ pub fn execute_behavioral_composition_canary(
             == candidate.program_ir.program_id
         && crate::generated_sem5_capability::GENERATED_PROGRAM_IR_SHA256
             == candidate.program_ir_sha256;
+    let installed_source_schema_revision =
+        crate::generated_sem5_capability::GENERATED_SOURCE_SCHEMA_REVISION;
     let mut installed_cases_executed = 0_usize;
     let mut installed_cases_passed = 0_usize;
     let mut installed_outputs = Vec::new();
@@ -512,13 +516,14 @@ pub fn execute_behavioral_composition_canary(
         .map(|bytes| sha256(&bytes));
     let receipt_sha256 = sha256(
         format!(
-            "{}:{}:{}:{}:{}:{}:{}:{}:{}",
+            "{}:{}:{}:{}:{}:{}:{}:{}:{}:{}",
             context_sha256,
             candidate.program_ir_sha256,
             cases.len(),
             passed,
             installed_capability_present,
             installed_program_match,
+            installed_source_schema_revision,
             installed_cases_executed,
             installed_cases_passed,
             installed_output_sha256.as_deref().unwrap_or("NONE")
@@ -534,6 +539,7 @@ pub fn execute_behavioral_composition_canary(
         cases_passed: passed,
         installed_capability_present,
         installed_program_match,
+        installed_source_schema_revision,
         installed_cases_executed,
         installed_cases_passed,
         installed_output_sha256,
@@ -721,9 +727,10 @@ mod tests {
         assert!(candidate
             .generated_rust_source
             .contains("GENERATED_CAPABILITY_ACTIVE: bool = true"));
-        assert!(candidate
-            .generated_rust_source
-            .contains("GENERATED_SOURCE_SCHEMA_REVISION: u64 = 2"));
+        assert!(candidate.generated_rust_source.contains(&format!(
+            "GENERATED_SOURCE_SCHEMA_REVISION: u64 = {}",
+            crate::sem5::emitter::CALLABLE_SOURCE_SCHEMA_REVISION
+        )));
         assert!(!candidate.generated_rust_source.contains("push((("));
         assert!(!candidate.generated_rust_source.contains("state = (state +"));
         assert!(!candidate.generated_rust_source.contains("            ();"));
@@ -771,11 +778,13 @@ mod tests {
         assert_eq!(first.cases_passed, 3);
         if first.installed_capability_present {
             assert!(first.installed_program_match);
+            assert!(first.installed_source_schema_revision > 0);
             assert_eq!(first.installed_cases_executed, first.cases_executed);
             assert_eq!(first.installed_cases_passed, first.cases_passed);
             assert!(first.installed_output_sha256.is_some());
         } else {
             assert!(!first.installed_program_match);
+            assert_eq!(first.installed_source_schema_revision, 0);
             assert_eq!(first.installed_cases_executed, 0);
             assert!(first.installed_output_sha256.is_none());
         }

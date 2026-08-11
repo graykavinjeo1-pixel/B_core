@@ -7,7 +7,7 @@ use super::model::{
     ProgramType, ScalarExpression, UnaryOperator, Value,
 };
 
-pub const CALLABLE_SOURCE_SCHEMA_REVISION: u64 = 2;
+pub const CALLABLE_SOURCE_SCHEMA_REVISION: u64 = 3;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct RustArtifact {
@@ -300,9 +300,13 @@ fn emit_statement(
             };
             output.push_str(&format!("{prefix}if {condition} {{\n"));
             emit_statement(then_node, indent + 1, context, output)?;
-            output.push_str(&format!("{prefix}}} else {{\n"));
-            emit_statement(else_node, indent + 1, context, output)?;
-            output.push_str(&format!("{prefix}}}\n"));
+            if context.lint_clean && statement_is_noop(else_node) {
+                output.push_str(&format!("{prefix}}}\n"));
+            } else {
+                output.push_str(&format!("{prefix}}} else {{\n"));
+                emit_statement(else_node, indent + 1, context, output)?;
+                output.push_str(&format!("{prefix}}}\n"));
+            }
         }
         NodeKind::Loop {
             source,
@@ -394,6 +398,14 @@ fn strip_one_outer_pair(expression: &str) -> String {
         .and_then(|inner| inner.strip_suffix(')'))
         .unwrap_or(expression)
         .to_string()
+}
+
+fn statement_is_noop(node: &ProgramNode) -> bool {
+    match &node.kind {
+        NodeKind::Literal { value: Value::Unit } => true,
+        NodeKind::Block { nodes } => nodes.iter().all(statement_is_noop),
+        _ => false,
+    }
 }
 
 fn literal_int(node: &ProgramNode) -> Option<i64> {
