@@ -2399,6 +2399,7 @@ pub fn request_resume(config_path: &Path) -> Result<serde_json::Value, String> {
             "OPERATOR_STOP_REQUESTED"
                 | "SCAN_RUNTIME_BOUND_REACHED"
                 | "AUTONOMOUS_SOURCE_UPDATE_STAGED"
+                | "AUTONOMOUS_COMPOSITE_CAPABILITY_STAGED"
         )
     );
     if state.phase == SupervisorPhase::SafeStopped && resumable_reason {
@@ -2414,6 +2415,9 @@ pub fn request_resume(config_path: &Path) -> Result<serde_json::Value, String> {
                 }
                 Some("AUTONOMOUS_SOURCE_UPDATE_STAGED") => {
                     "AUTONOMOUS_SOURCE_UPDATE_APPLIED_AND_RESUMED"
+                }
+                Some("AUTONOMOUS_COMPOSITE_CAPABILITY_STAGED") => {
+                    "AUTONOMOUS_COMPOSITE_CAPABILITY_APPLIED_AND_RESUMED"
                 }
                 _ => "OPERATOR_RESUME_REQUESTED",
             },
@@ -4761,6 +4765,8 @@ fn attempt_pending_composite_capability_install(
     if crate::generated_sem5_capability::GENERATED_CAPABILITY_ACTIVE
         && crate::generated_sem5_capability::GENERATED_PROGRAM_IR_SHA256
             == candidate.program_ir_sha256
+        && crate::generated_sem5_capability::GENERATED_SOURCE_SCHEMA_REVISION
+            == crate::sem5::emitter::CALLABLE_SOURCE_SCHEMA_REVISION
     {
         return Ok(CompositeInstallAttemptOutcome {
             attempted: false,
@@ -6536,6 +6542,28 @@ mod tests {
             &mut state,
             SupervisorPhase::SafeStopped,
             "TEST_SOURCE_UPDATE_STAGED",
+        )
+        .unwrap();
+        let response = request_resume(&config_path).unwrap();
+        assert_eq!(response["phase"], "INFRA_READY");
+        assert_eq!(response["hard_resource_stop_preserved"], false);
+        let resumed = status(&config_path).unwrap();
+        assert_eq!(resumed.phase, SupervisorPhase::InfraReady);
+        assert_eq!(resumed.stop_reason, None);
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn staged_composite_capability_can_resume_after_binary_swap() {
+        let root = temp_root("resume-composite-capability");
+        let (config_path, config) = test_config(&root);
+        let mut state = initialize(&config_path).unwrap();
+        state.stop_reason = Some("AUTONOMOUS_COMPOSITE_CAPABILITY_STAGED".to_string());
+        save_transition(
+            &config,
+            &mut state,
+            SupervisorPhase::SafeStopped,
+            "TEST_COMPOSITE_CAPABILITY_STAGED",
         )
         .unwrap();
         let response = request_resume(&config_path).unwrap();

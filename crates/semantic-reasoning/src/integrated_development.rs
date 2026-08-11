@@ -723,6 +723,12 @@ mod tests {
             .contains("GENERATED_CAPABILITY_ACTIVE: bool = true"));
         assert!(candidate
             .generated_rust_source
+            .contains("GENERATED_SOURCE_SCHEMA_REVISION: u64 = 2"));
+        assert!(!candidate.generated_rust_source.contains("push((("));
+        assert!(!candidate.generated_rust_source.contains("state = (state +"));
+        assert!(!candidate.generated_rust_source.contains("            ();"));
+        assert!(candidate
+            .generated_rust_source
             .contains(&candidate.program_ir_sha256));
         assert_ne!(
             candidate.patch_candidate.unified_diff_sha256,

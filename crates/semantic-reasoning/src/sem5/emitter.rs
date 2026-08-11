@@ -7,6 +7,8 @@ use super::model::{
     ProgramType, ScalarExpression, UnaryOperator, Value,
 };
 
+pub const CALLABLE_SOURCE_SCHEMA_REVISION: u64 = 2;
+
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct RustArtifact {
     pub program_id: String,
@@ -64,6 +66,7 @@ pub fn emit_rust(
             .collect(),
         next_loop: 0,
         result_declared: false,
+        lint_clean: false,
     };
     emit_statement(&ir.root, 1, &mut context, &mut output)?;
     if !context.result_declared {
@@ -115,6 +118,9 @@ pub fn emit_rust_callable(
     }
     output.push_str("pub const GENERATED_CAPABILITY_ACTIVE: bool = true;\n");
     output.push_str(&format!(
+        "pub const GENERATED_SOURCE_SCHEMA_REVISION: u64 = {CALLABLE_SOURCE_SCHEMA_REVISION};\n"
+    ));
+    output.push_str(&format!(
         "pub const GENERATED_PROGRAM_ID: &str = {:?};\n",
         ir.program_id
     ));
@@ -148,6 +154,7 @@ pub fn emit_rust_callable(
             .collect(),
         next_loop: 0,
         result_declared: false,
+        lint_clean: true,
     };
     emit_statement(&ir.root, 1, &mut context, &mut output)?;
     if !context.result_declared {
@@ -225,6 +232,7 @@ struct EmitContext {
     binding_types: BTreeMap<String, ProgramType>,
     next_loop: usize,
     result_declared: bool,
+    lint_clean: bool,
 }
 
 fn emit_statement(
@@ -236,7 +244,7 @@ fn emit_statement(
     let prefix = "    ".repeat(indent);
     match &node.kind {
         NodeKind::Store { name, value } => {
-            let expression = emit_expression(value)?;
+            let expression = emit_expression_mode(value, context.lint_clean)?;
             if context.declared.insert(name.clone()) {
                 context
                     .binding_types
@@ -245,6 +253,8 @@ fn emit_statement(
                     "{prefix}let mut {name}: {} = {expression};\n",
                     rust_type(&value.meta.output_type)
                 ));
+            } else if let Some(assignment) = compound_assignment(name, value, context.lint_clean)? {
+                output.push_str(&format!("{prefix}{assignment};\n"));
             } else {
                 output.push_str(&format!("{prefix}{name} = {expression};\n"));
             }
@@ -254,8 +264,8 @@ fn emit_statement(
             index,
             value,
         } => {
-            let index = emit_expression(index)?;
-            let value = emit_expression(value)?;
+            let index = emit_expression_mode(index, context.lint_clean)?;
+            let value = emit_expression_mode(value, context.lint_clean)?;
             match context.binding_types.get(binding) {
                 Some(ProgramType::Bytes) => output.push_str(&format!(
                     "{prefix}{binding}[({index}) as usize] = ({value}) as u8;\n"
@@ -269,17 +279,26 @@ fn emit_statement(
             }
         }
         NodeKind::SequenceAppend { binding, value } => {
-            output.push_str(&format!(
-                "{prefix}{binding}.push({});\n",
-                emit_expression(value)?
-            ));
+            let expression = emit_expression_mode(value, context.lint_clean)?;
+            let expression = if context.lint_clean {
+                strip_one_outer_pair(&expression)
+            } else {
+                expression
+            };
+            output.push_str(&format!("{prefix}{binding}.push({expression});\n"));
         }
         NodeKind::If {
             condition,
             then_node,
             else_node,
         } => {
-            output.push_str(&format!("{prefix}if {} {{\n", emit_expression(condition)?));
+            let condition = emit_expression_mode(condition, context.lint_clean)?;
+            let condition = if context.lint_clean {
+                strip_one_outer_pair(&condition)
+            } else {
+                condition
+            };
+            output.push_str(&format!("{prefix}if {condition} {{\n"));
             emit_statement(then_node, indent + 1, context, output)?;
             output.push_str(&format!("{prefix}}} else {{\n"));
             emit_statement(else_node, indent + 1, context, output)?;
@@ -293,11 +312,16 @@ fn emit_statement(
         } => {
             let loop_id = context.next_loop;
             context.next_loop += 1;
-            let source_expression = emit_expression(source)?;
+            let source_expression = emit_expression_mode(source, context.lint_clean)?;
             let raw_item = format!("raw_item_{loop_id}");
             let raw_index = format!("raw_index_{loop_id}");
             let iterator = if source.meta.output_type == ProgramType::Image {
                 format!("({source_expression}).pixels.clone().into_iter()")
+            } else if context.lint_clean {
+                format!(
+                    "{}.clone().into_iter()",
+                    strip_one_outer_pair(&source_expression)
+                )
             } else {
                 format!("({source_expression}).clone().into_iter()")
             };
@@ -338,7 +362,7 @@ fn emit_statement(
             output.push_str(&format!(
                 "{prefix}{keyword}sem5_result: {} = {};\n",
                 rust_type(&value.meta.output_type),
-                emit_expression(value)?
+                emit_expression_mode(value, context.lint_clean)?
             ));
             context.result_declared = true;
         }
@@ -350,16 +374,80 @@ fn emit_statement(
         NodeKind::Break => output.push_str(&format!("{prefix}break;\n")),
         NodeKind::Continue => output.push_str(&format!("{prefix}continue;\n")),
         NodeKind::Literal { value: Value::Unit } => {
-            output.push_str(&format!("{prefix}();\n"));
+            if !context.lint_clean {
+                output.push_str(&format!("{prefix}();\n"));
+            }
         }
         _ => {
-            output.push_str(&format!("{prefix}let _ = {};\n", emit_expression(node)?));
+            output.push_str(&format!(
+                "{prefix}let _ = {};\n",
+                emit_expression_mode(node, context.lint_clean)?
+            ));
         }
     }
     Ok(())
 }
 
-fn emit_expression(node: &ProgramNode) -> Result<String, String> {
+fn strip_one_outer_pair(expression: &str) -> String {
+    expression
+        .strip_prefix('(')
+        .and_then(|inner| inner.strip_suffix(')'))
+        .unwrap_or(expression)
+        .to_string()
+}
+
+fn literal_int(node: &ProgramNode) -> Option<i64> {
+    match &node.kind {
+        NodeKind::Literal {
+            value: Value::Int(value),
+        } => Some(*value),
+        _ => None,
+    }
+}
+
+fn compound_assignment(
+    binding: &str,
+    value: &ProgramNode,
+    lint_clean: bool,
+) -> Result<Option<String>, String> {
+    if !lint_clean {
+        return Ok(None);
+    }
+    let NodeKind::BinaryOp {
+        operator,
+        left,
+        right,
+    } = &value.kind
+    else {
+        return Ok(None);
+    };
+    let left_binding = match &left.kind {
+        NodeKind::Variable { name } | NodeKind::Load { name } => name,
+        _ => return Ok(None),
+    };
+    if left_binding != binding {
+        return Ok(None);
+    }
+    let token = match operator {
+        BinaryOperator::Add => "+=",
+        BinaryOperator::Subtract => "-=",
+        BinaryOperator::Multiply => "*=",
+        BinaryOperator::Divide => "/=",
+        BinaryOperator::Modulo => "%=",
+        BinaryOperator::And => "&=",
+        BinaryOperator::Or => "|=",
+        BinaryOperator::Equal | BinaryOperator::LessThan | BinaryOperator::GreaterThan => {
+            return Ok(None);
+        }
+    };
+    let right = emit_expression_mode(right, true)?;
+    Ok(Some(format!(
+        "{binding} {token} {}",
+        strip_one_outer_pair(&right)
+    )))
+}
+
+fn emit_expression_mode(node: &ProgramNode, lint_clean: bool) -> Result<String, String> {
     match &node.kind {
         NodeKind::Literal { value } => rust_literal(value),
         NodeKind::Variable { name } | NodeKind::Load { name } => Ok(name.clone()),
@@ -368,23 +456,45 @@ fn emit_expression(node: &ProgramNode) -> Result<String, String> {
                 UnaryOperator::Negate => "-",
                 UnaryOperator::Not => "!",
             };
-            Ok(format!("({operator}{})", emit_expression(input)?))
+            Ok(format!(
+                "({operator}{})",
+                emit_expression_mode(input, lint_clean)?
+            ))
         }
         NodeKind::BinaryOp {
             operator,
             left,
             right,
-        } => Ok(format!(
-            "({} {} {})",
-            emit_expression(left)?,
-            binary_token(*operator),
-            emit_expression(right)?
-        )),
+        } => {
+            if lint_clean {
+                match (operator, literal_int(left), literal_int(right)) {
+                    (BinaryOperator::Multiply, Some(1), _) => {
+                        return emit_expression_mode(right, true);
+                    }
+                    (BinaryOperator::Multiply, _, Some(1))
+                    | (BinaryOperator::Add, _, Some(0))
+                    | (BinaryOperator::Subtract, _, Some(0))
+                    | (BinaryOperator::Divide, _, Some(1)) => {
+                        return emit_expression_mode(left, true);
+                    }
+                    (BinaryOperator::Add, Some(0), _) => {
+                        return emit_expression_mode(right, true);
+                    }
+                    _ => {}
+                }
+            }
+            Ok(format!(
+                "({} {} {})",
+                emit_expression_mode(left, lint_clean)?,
+                binary_token(*operator),
+                emit_expression_mode(right, lint_clean)?
+            ))
+        }
         NodeKind::SequenceCreate { elements } => Ok(format!(
             "vec![{}]",
             elements
                 .iter()
-                .map(emit_expression)
+                .map(|element| emit_expression_mode(element, lint_clean))
                 .collect::<Result<Vec<_>, _>>()?
                 .join(", ")
         )),
@@ -392,14 +502,14 @@ fn emit_expression(node: &ProgramNode) -> Result<String, String> {
             let access = if sequence.meta.output_type == ProgramType::Image {
                 format!(
                     "({}).pixels[({}) as usize]",
-                    emit_expression(sequence)?,
-                    emit_expression(index)?
+                    emit_expression_mode(sequence, lint_clean)?,
+                    emit_expression_mode(index, lint_clean)?
                 )
             } else {
                 format!(
                     "({})[({}) as usize]",
-                    emit_expression(sequence)?,
-                    emit_expression(index)?
+                    emit_expression_mode(sequence, lint_clean)?,
+                    emit_expression_mode(index, lint_clean)?
                 )
             };
             Ok(if node.meta.output_type == ProgramType::SequenceInt {
@@ -414,7 +524,7 @@ fn emit_expression(node: &ProgramNode) -> Result<String, String> {
             "{}({})",
             api_token,
             args.iter()
-                .map(emit_expression)
+                .map(|argument| emit_expression_mode(argument, lint_clean))
                 .collect::<Result<Vec<_>, _>>()?
                 .join(", ")
         )),
@@ -424,15 +534,15 @@ fn emit_expression(node: &ProgramNode) -> Result<String, String> {
             else_node,
         } => Ok(format!(
             "if {} {{ {} }} else {{ {} }}",
-            emit_expression(condition)?,
-            emit_expression(then_node)?,
-            emit_expression(else_node)?
+            emit_expression_mode(condition, lint_clean)?,
+            emit_expression_mode(then_node, lint_clean)?,
+            emit_expression_mode(else_node, lint_clean)?
         )),
         NodeKind::Block { nodes } => Ok(format!(
             "{{ {} }}",
             nodes
                 .iter()
-                .map(emit_expression)
+                .map(|child| emit_expression_mode(child, lint_clean))
                 .collect::<Result<Vec<_>, _>>()?
                 .join("; ")
         )),
