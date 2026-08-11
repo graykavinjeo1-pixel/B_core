@@ -23,9 +23,10 @@ use crate::autonomous_self_inspection::{
     RepairDisposition, RuntimeRepairActionReceipt, RuntimeRepairMechanism, SelfInspectionInput,
 };
 use crate::autonomous_source_mutation::{
-    discover_known_source_improvement, discover_known_source_improvement_detailed,
-    install_and_stage_source_patch, validate_policy, AutonomousSourceMutationPolicy,
-    AutonomousSourcePatchReceipt, AutonomousSourcePatchRequest, SOURCE_REPAIR_ENGINE_REVISION,
+    command_receipt, discover_known_source_improvement, discover_known_source_improvement_detailed,
+    full_workspace_semantic_fingerprint, install_and_stage_source_patch, validate_policy,
+    AutonomousSourceMutationPolicy, AutonomousSourcePatchReceipt, AutonomousSourcePatchRequest,
+    LocalCommandReceipt, SOURCE_REPAIR_ENGINE_REVISION,
 };
 use crate::generative_growth::{
     promote_generative_cycle, run_generative_cycle, validate_behavioral_execution_receipt,
@@ -50,6 +51,7 @@ const BASELINE_MAX_BYTES_PER_SCAN: u64 = 64 * 1024 * 1024;
 const MAX_CLASSIFIER_REFINEMENT_EVENTS: usize = 64;
 const MAX_RECENT_SOURCE_PATCH_OUTCOMES: usize = 16;
 const RUNTIME_REPAIR_COUNTER_CONTRACT_REVISION: u64 = 2;
+const MAX_CORE_COHORT_VALIDATION_MS: u64 = 3 * 60 * 1_000;
 
 fn u64_is_zero(value: &u64) -> bool {
     *value == 0
@@ -2904,18 +2906,7 @@ fn lesson_has_verification_evidence(lesson: &LearnedCompositionLesson) -> bool {
         .iter()
         .map(String::as_str)
         .collect::<BTreeSet<_>>();
-    let recipe = lesson
-        .composition_recipe
-        .iter()
-        .map(String::as_str)
-        .collect::<BTreeSet<_>>();
     signals.contains("VERIFIED_PASS")
-        || ((signals.contains("TEST_ADDED") || signals.contains("REGRESSION_EVIDENCE"))
-            && (recipe.contains("IMPLEMENTATION")
-                || recipe.contains("IMPLEMENTATION_REPAIR")
-                || recipe.contains("BACKEND_PROVIDER")
-                || recipe.contains("FRONTEND_CONSUMER")
-                || recipe.contains("OPERATIONS_GUARD")))
 }
 
 fn selected_campaign_observations(
@@ -4220,7 +4211,164 @@ fn cohort_has_verification_evidence(observations: &[LearningObservation]) -> boo
             .unwrap_or(false)
 }
 
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+struct CoreCohortValidationReceipt {
+    schema: String,
+    validation_id: String,
+    originating_diagnostic_id: String,
+    generation: u64,
+    source_root_sha256: String,
+    input_observation_ids: Vec<String>,
+    source_fingerprint_before: String,
+    source_fingerprint_after: String,
+    workspace_stable_during_validation: bool,
+    command: LocalCommandReceipt,
+    success: bool,
+    authoritative_source_write_events: u64,
+    operator_selected: bool,
+    codex_calls: u64,
+    external_llm_calls: u64,
+    network_reads: u64,
+    network_writes: u64,
+}
+
+fn source_mutation_watch_prefix(config: &GrowthSupervisorConfig) -> Result<Option<String>, String> {
+    if !config.source_mutation.enabled {
+        return Ok(None);
+    }
+    let source_root = fs::canonicalize(&config.source_mutation.source_root)
+        .map_err(|error| format!("CORE_COHORT_SOURCE_ROOT_CANONICALIZE:{error}"))?;
+    for (index, watched_root) in config.watched_roots.iter().enumerate() {
+        let watched_root = fs::canonicalize(watched_root)
+            .map_err(|error| format!("CORE_COHORT_WATCH_ROOT_CANONICALIZE:{error}"))?;
+        if watched_root == source_root {
+            return Ok(Some(format!("ROOT_{index}/")));
+        }
+    }
+    Ok(None)
+}
+
+fn validate_blocked_core_cohort(
+    config: &GrowthSupervisorConfig,
+    diagnostic: &AutonomousSelfInspectionReceipt,
+    observations: &[LearningObservation],
+) -> Result<(bool, Vec<String>, Vec<String>), String> {
+    let Some(source_prefix) = source_mutation_watch_prefix(config)? else {
+        return Ok((false, Vec::new(), Vec::new()));
+    };
+    let mut input_observation_ids = observations
+        .iter()
+        .filter(|observation| observation.logical_path.starts_with(&source_prefix))
+        .map(|observation| observation.observation_id.clone())
+        .collect::<Vec<_>>();
+    input_observation_ids.sort();
+    input_observation_ids.dedup();
+    if input_observation_ids.is_empty() {
+        return Ok((false, Vec::new(), Vec::new()));
+    }
+
+    let source_fingerprint_before =
+        full_workspace_semantic_fingerprint(&config.source_mutation.source_root)?;
+    let validation_id = sha256(
+        format!(
+            "CORE_COHORT_VALIDATION:{}:{}:{}",
+            diagnostic.generation,
+            source_fingerprint_before,
+            input_observation_ids.join(":")
+        )
+        .as_bytes(),
+    );
+    let diagnostics = config.state_dir.join("diagnostics");
+    fs::create_dir_all(&diagnostics)
+        .map_err(|error| format!("CORE_COHORT_DIAGNOSTICS_CREATE:{error}"))?;
+    let receipt_path = diagnostics.join(format!("core_cohort_validation_{validation_id}.json"));
+    let receipt = if receipt_path.exists() {
+        let existing: CoreCohortValidationReceipt = read_json(&receipt_path)?;
+        if existing.schema != "B_CORE_COHORT_VALIDATION_1"
+            || existing.validation_id != validation_id
+            || existing.generation != diagnostic.generation
+            || existing.input_observation_ids != input_observation_ids
+            || existing.source_fingerprint_before != source_fingerprint_before
+        {
+            return Err("CORE_COHORT_VALIDATION_RECEIPT_MISMATCH".to_string());
+        }
+        existing
+    } else {
+        let log_path = diagnostics.join(format!("core_cohort_validation_{validation_id}.log"));
+        let command = command_receipt(
+            &config.source_mutation.cargo_executable,
+            &[
+                "test",
+                "-p",
+                "semantic-reasoning",
+                "--lib",
+                "--quiet",
+                "--locked",
+            ],
+            &config.source_mutation.source_root,
+            &config.source_mutation.build_target_dir,
+            config
+                .source_mutation
+                .validation_timeout_ms
+                .clamp(1, MAX_CORE_COHORT_VALIDATION_MS),
+            &log_path,
+        );
+        let _ = fs::remove_file(&log_path);
+        let command = command?;
+        let source_fingerprint_after =
+            full_workspace_semantic_fingerprint(&config.source_mutation.source_root)?;
+        let workspace_stable_during_validation =
+            source_fingerprint_before == source_fingerprint_after;
+        let receipt = CoreCohortValidationReceipt {
+            schema: "B_CORE_COHORT_VALIDATION_1".to_string(),
+            validation_id: validation_id.clone(),
+            originating_diagnostic_id: diagnostic.diagnostic_id.clone(),
+            generation: diagnostic.generation,
+            source_root_sha256: sha256(
+                config
+                    .source_mutation
+                    .source_root
+                    .to_string_lossy()
+                    .as_bytes(),
+            ),
+            input_observation_ids,
+            source_fingerprint_before,
+            source_fingerprint_after,
+            workspace_stable_during_validation,
+            success: command.success && workspace_stable_during_validation,
+            command,
+            authoritative_source_write_events: 0,
+            operator_selected: false,
+            codex_calls: 0,
+            external_llm_calls: 0,
+            network_reads: 0,
+            network_writes: 0,
+        };
+        write_immutable_json(&receipt_path, &receipt)?;
+        cleanup_recent_files(&diagnostics, "core_cohort_validation_", 64)?;
+        receipt
+    };
+    let receipt_sha256 = json_sha256(&receipt)?;
+    let output_observation_ids = if receipt.success {
+        vec![sha256(
+            format!(
+                "CORE_COHORT_VALIDATION_OBSERVATION:{}:{}",
+                receipt.validation_id, receipt_sha256
+            )
+            .as_bytes(),
+        )]
+    } else {
+        Vec::new()
+    };
+    Ok((
+        receipt.success,
+        vec![receipt_sha256],
+        output_observation_ids,
+    ))
+}
+
 fn runtime_repair_action(
+    config: &GrowthSupervisorConfig,
     receipt: &AutonomousSelfInspectionReceipt,
     scan_observations: &[LearningObservation],
     naive_cohort: &[LearningObservation],
@@ -4285,6 +4433,11 @@ fn runtime_repair_action(
                 );
                 (true, true, vec![inspection_sha256], vec![observation_id])
             }
+            RuntimeRepairMechanism::ValidateBlockedCoreCohort => {
+                let (success, evidence, outputs) =
+                    validate_blocked_core_cohort(config, receipt, evidence_aware_cohort)?;
+                (success, success, evidence, outputs)
+            }
         };
     let action_id = sha256(
         format!(
@@ -4345,6 +4498,46 @@ fn runtime_repair_action(
                     .to_string(),
             ],
             verification_evidence_sha256: vec![action_sha256],
+            performance_metrics: Vec::new(),
+            exact_source_fragments_stored: 0,
+            raw_source_bytes_stored: 0,
+            observed_at_ms: now_ms(),
+        })
+    } else if mechanism == RuntimeRepairMechanism::ValidateBlockedCoreCohort && action.executed {
+        let source_prefix = source_mutation_watch_prefix(config)?
+            .ok_or_else(|| "CORE_COHORT_SOURCE_ROOT_NOT_WATCHED".to_string())?;
+        let mut verification_evidence_sha256 = action.execution_evidence_sha256.clone();
+        verification_evidence_sha256.push(action_sha256.clone());
+        Some(LearningObservation {
+            observation_id: action.output_observation_ids[0].clone(),
+            work_event_id: None,
+            logical_path: format!(
+                "{source_prefix}.b_core_validation/{}",
+                action.output_observation_ids[0]
+            ),
+            content_sha256: action_sha256,
+            predecessor_content_sha256: None,
+            actor: WorkActor::LocalTool,
+            work_kind: WorkKind::Verification,
+            work_outcome: WorkOutcome::Pass,
+            features_before: None,
+            features_after: StructuralFeatures::default(),
+            signals: vec![
+                "AUTONOMOUS_RUNTIME_REPAIR".to_string(),
+                "CORE_COHORT_VALIDATION".to_string(),
+                "REGRESSION_EVIDENCE".to_string(),
+                "VERIFIED_PASS".to_string(),
+            ],
+            composition_roles: vec!["INVARIANT_CHECK".to_string(), "REGRESSION_TEST".to_string()],
+            learning_score: 85,
+            learning_value: LearningValue::High,
+            reasons: vec![
+                "high-value core implementation observations lacked executed regression evidence"
+                    .to_string(),
+                "bounded local core regression passed without source mutation or network access"
+                    .to_string(),
+            ],
+            verification_evidence_sha256,
             performance_metrics: Vec::new(),
             exact_source_fragments_stored: 0,
             raw_source_bytes_stored: 0,
@@ -5167,9 +5360,13 @@ fn step_without_lease(
         diagnostic_policy: state.diagnostic_policy.clone(),
     })?;
     persist_self_inspection(config, &mut state, &inspection)?;
-    if let Some((action, generated_observation)) =
-        runtime_repair_action(&inspection, &scan.observations, &naive, &evidence_aware)?
-    {
+    if let Some((action, generated_observation)) = runtime_repair_action(
+        config,
+        &inspection,
+        &scan.observations,
+        &naive,
+        &evidence_aware,
+    )? {
         let action_executed =
             persist_runtime_repair_action(config, &mut state, &inspection, &action)?;
         if config.autonomous_campaigns && action_executed {
@@ -6097,7 +6294,7 @@ mod tests {
     }
 
     #[test]
-    fn production_file_with_tests_supplies_both_implementation_and_verification_roles() {
+    fn production_file_with_tests_requires_executed_pass_before_verification_credit() {
         let observation = LearningObservation {
             observation_id: "mixed-production-change".to_string(),
             work_event_id: None,
@@ -6131,7 +6328,14 @@ mod tests {
         assert!(lesson
             .composition_recipe
             .contains(&"IMPLEMENTATION".to_string()));
-        assert!(lesson_has_verification_evidence(&lesson));
+        assert!(!lesson_has_verification_evidence(&lesson));
+
+        let mut verified = observation.clone();
+        verified.work_outcome = WorkOutcome::Pass;
+        verified.signals.push("VERIFIED_PASS".to_string());
+        verified.verification_evidence_sha256 = vec!["a".repeat(64)];
+        let verified_lesson = build_lesson(&[verified]).unwrap();
+        assert!(lesson_has_verification_evidence(&verified_lesson));
 
         let mut dedicated_test = observation;
         dedicated_test.logical_path = "ROOT_0/tests/engine_test.rs".to_string();
@@ -6181,6 +6385,153 @@ mod tests {
     }
 
     #[test]
+    fn blocked_core_cohort_runs_bounded_regression_and_emits_reusable_pass_evidence() {
+        let root = temp_root("blocked-core-cohort-validation");
+        let (_, mut config) = test_config(&root);
+        let source_root = config.watched_roots[0].clone();
+        fs::create_dir_all(source_root.join("src")).unwrap();
+        fs::create_dir_all(config.state_dir.join("diagnostics")).unwrap();
+        fs::write(
+            source_root.join("Cargo.toml"),
+            "[package]\nname = \"semantic-reasoning\"\nversion = \"0.1.0\"\nedition = \"2021\"\n",
+        )
+        .unwrap();
+        fs::write(
+            source_root.join("Cargo.lock"),
+            "# This file is automatically @generated by Cargo.\n# It is not intended for manual editing.\nversion = 4\n\n[[package]]\nname = \"semantic-reasoning\"\nversion = \"0.1.0\"\n",
+        )
+        .unwrap();
+        fs::write(
+            source_root.join("src/lib.rs"),
+            "pub fn repaired() -> bool { true }\n#[cfg(test)]\nmod tests { #[test] fn repaired_passes() { assert!(super::repaired()); } }\n",
+        )
+        .unwrap();
+        config.source_mutation = AutonomousSourceMutationPolicy {
+            enabled: true,
+            source_root: source_root.clone(),
+            cargo_executable: std::env::var_os("CARGO")
+                .map(PathBuf::from)
+                .unwrap_or_else(|| PathBuf::from("cargo")),
+            build_target_dir: root.join("target"),
+            runtime_bin_dir: root.join("runtime"),
+            validation_timeout_ms: 120_000,
+            ..AutonomousSourceMutationPolicy::default()
+        };
+        let implementation = LearningObservation {
+            observation_id: "core-implementation".to_string(),
+            work_event_id: None,
+            logical_path: "ROOT_0/src/lib.rs".to_string(),
+            content_sha256: "a".repeat(64),
+            predecessor_content_sha256: Some("b".repeat(64)),
+            actor: WorkActor::Codex,
+            work_kind: WorkKind::DefectRepair,
+            work_outcome: WorkOutcome::Unknown,
+            features_before: Some(StructuralFeatures::default()),
+            features_after: StructuralFeatures::default(),
+            signals: vec!["DEFECT_REPAIR".to_string(), "TEST_ADDED".to_string()],
+            composition_roles: vec!["IMPLEMENTATION_REPAIR".to_string()],
+            learning_score: 79,
+            learning_value: LearningValue::High,
+            reasons: vec!["unverified core repair".to_string()],
+            verification_evidence_sha256: Vec::new(),
+            performance_metrics: Vec::new(),
+            exact_source_fragments_stored: 0,
+            raw_source_bytes_stored: 0,
+            observed_at_ms: 1,
+        };
+        let diagnostic = inspect_self(SelfInspectionInput {
+            generation: 2,
+            supervisor_sequence: 9,
+            files_scanned: 1,
+            files_reused: 0,
+            files_hashed: 1,
+            scan_duration_ms: 1,
+            pending_work_events: 0,
+            replayed_unchanged_work_events: 0,
+            naive_cohort_has_verification: false,
+            evidence_aware_cohort_has_verification: false,
+            autonomous_campaigns_enabled: true,
+            campaigns_started: 1,
+            mutual_revalidation_events: 1,
+            evaluator_challenge_cases: EvaluatorMutationKind::ALL.len() as u64,
+            evaluator_required_challenge_cases: EvaluatorMutationKind::ALL.len() as u64,
+            consecutive_failures: 0,
+            plateau_scans: 0,
+            unconsumed_high_observations: 1,
+            cohort_preflight_ready: false,
+            source_patch_attempts: 0,
+            source_patch_installations: 0,
+            source_patch_rollbacks: 0,
+            source_patch_consecutive_failures: 0,
+            source_patch_validation_ms: 0,
+            source_discovery_no_candidate_streak: 0,
+            last_source_discovery_reason: None,
+            active_runtime_ms: 1,
+            diagnostic_policy: DiagnosticPolicyMemory::default(),
+        })
+        .unwrap();
+
+        let (first_action, first_observation) = runtime_repair_action(
+            &config,
+            &diagnostic,
+            &[],
+            std::slice::from_ref(&implementation),
+            std::slice::from_ref(&implementation),
+        )
+        .unwrap()
+        .expect("bounded validation action");
+        let first_observation = first_observation.expect("verified pass observation");
+        assert!(first_action.executed);
+        assert!(first_action.changed_runtime_decision);
+        assert_eq!(first_observation.work_outcome, WorkOutcome::Pass);
+        assert!(first_observation
+            .signals
+            .contains(&"VERIFIED_PASS".to_string()));
+        assert!(!first_observation.verification_evidence_sha256.is_empty());
+        let lesson = build_lesson(&[implementation.clone(), first_observation.clone()]).unwrap();
+        assert!(lesson_has_verification_evidence(&lesson));
+        assert!(lesson
+            .composition_recipe
+            .contains(&"IMPLEMENTATION_REPAIR".to_string()));
+
+        let (reused_action, reused_observation) = runtime_repair_action(
+            &config,
+            &diagnostic,
+            &[],
+            std::slice::from_ref(&implementation),
+            std::slice::from_ref(&implementation),
+        )
+        .unwrap()
+        .expect("reused validation action");
+        assert_eq!(
+            reused_action.output_observation_ids,
+            first_action.output_observation_ids
+        );
+        let reused_observation = reused_observation.expect("reused pass observation");
+        assert_eq!(
+            reused_observation.observation_id,
+            first_observation.observation_id
+        );
+        assert_eq!(
+            reused_observation.verification_evidence_sha256,
+            first_observation.verification_evidence_sha256
+        );
+        let receipt_count = fs::read_dir(config.state_dir.join("diagnostics"))
+            .unwrap()
+            .filter_map(Result::ok)
+            .filter(|entry| {
+                entry
+                    .file_name()
+                    .to_string_lossy()
+                    .starts_with("core_cohort_validation_")
+                    && entry.path().extension().and_then(OsStr::to_str) == Some("json")
+            })
+            .count();
+        assert_eq!(receipt_count, 1);
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
     fn autonomous_bootstrap_receipt_forms_a_verified_mutual_growth_cohort() {
         let receipt = inspect_self(SelfInspectionInput {
             generation: 0,
@@ -6213,12 +6564,12 @@ mod tests {
             diagnostic_policy: DiagnosticPolicyMemory::default(),
         })
         .unwrap();
-        let (_, observation) = runtime_repair_action(&receipt, &[], &[], &[])
+        let root = temp_root("mutual-bootstrap-cohort");
+        let (_, config) = test_config(&root);
+        let (_, observation) = runtime_repair_action(&config, &receipt, &[], &[], &[])
             .unwrap()
             .expect("actionable bootstrap action");
         let observation = observation.expect("actionable bootstrap observation");
-        let root = temp_root("mutual-bootstrap-cohort");
-        let (_, config) = test_config(&root);
         assert!(campaign_preflight_ready(&config, std::slice::from_ref(&observation)).unwrap());
         let lesson = build_lesson(&[observation]).unwrap();
         let next = derive_next_evaluator_memory(&EvaluatorMemory::default(), &[], &lesson).unwrap();

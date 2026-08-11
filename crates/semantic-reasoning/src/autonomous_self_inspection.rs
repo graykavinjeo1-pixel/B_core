@@ -192,6 +192,7 @@ impl DiagnosticPolicyMemory {
             self.active_experiment_id.as_deref() == Some(experiment.experiment_id.as_str())
         });
         if !action.executed
+            || !action.changed_runtime_decision
             || action.diagnostic_id != diagnostic.diagnostic_id
             || action.generation != diagnostic.generation
             || diagnostic.repair_disposition != RepairDisposition::RuntimeRepairActive
@@ -316,6 +317,7 @@ pub enum RuntimeRepairMechanism {
     ReplayVerifiedEventAgainstIndexedContent,
     EvidenceAwareBoundedCohortRouting,
     BootstrapFrozenCoreEvaluatorCanary,
+    ValidateBlockedCoreCohort,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -969,9 +971,11 @@ pub fn inspect(input: SelfInspectionInput) -> Result<AutonomousSelfInspectionRec
         InternalBottleneckClass::RepeatedVerificationFailure => {
             (RepairDisposition::CapabilityGap, None, true)
         }
-        InternalBottleneckClass::CampaignCohortBlocked => {
-            (RepairDisposition::CapabilityGap, None, true)
-        }
+        InternalBottleneckClass::CampaignCohortBlocked => (
+            RepairDisposition::RuntimeRepairActive,
+            Some(RuntimeRepairMechanism::ValidateBlockedCoreCohort),
+            true,
+        ),
         InternalBottleneckClass::SourceSynthesisCoverageGap => {
             (RepairDisposition::CapabilityGap, None, true)
         }
@@ -1188,7 +1192,14 @@ mod tests {
             receipt.selected_bottleneck,
             InternalBottleneckClass::CampaignCohortBlocked
         );
-        assert_eq!(receipt.repair_disposition, RepairDisposition::CapabilityGap);
+        assert_eq!(
+            receipt.repair_disposition,
+            RepairDisposition::RuntimeRepairActive
+        );
+        assert_eq!(
+            receipt.repair_mechanism,
+            Some(RuntimeRepairMechanism::ValidateBlockedCoreCohort)
+        );
         assert!(receipt.experiments[0].causal_support);
     }
 

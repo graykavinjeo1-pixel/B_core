@@ -688,10 +688,15 @@ fn structural_file_id(relative: &Path) -> String {
     relative.to_string_lossy().replace('\\', "/")
 }
 
-fn workspace_semantic_fingerprint(root: &Path, excluded_target: &Path) -> Result<String, String> {
+fn workspace_semantic_fingerprint_impl(
+    root: &Path,
+    excluded_target: Option<&Path>,
+) -> Result<String, String> {
     let canonical_root = fs::canonicalize(root)
         .map_err(|error| format!("SOURCE_MUTATION_FINGERPRINT_ROOT:{error}"))?;
-    let canonical_target = fs::canonicalize(excluded_target)
+    let canonical_target = excluded_target
+        .map(fs::canonicalize)
+        .transpose()
         .map_err(|error| format!("SOURCE_MUTATION_FINGERPRINT_TARGET:{error}"))?;
     let mut pending = vec![canonical_root.clone()];
     let mut entries = Vec::new();
@@ -721,7 +726,7 @@ fn workspace_semantic_fingerprint(root: &Path, excluded_target: &Path) -> Result
             let canonical = fs::canonicalize(&path)
                 .map_err(|error| format!("SOURCE_MUTATION_FINGERPRINT_CANONICAL:{error}"))?;
             let file_name = canonical.file_name().and_then(OsStr::to_str).unwrap_or("");
-            if canonical == canonical_target
+            if canonical_target.as_ref() == Some(&canonical)
                 || file_name.contains(".bcore-rollback")
                 || file_name.contains(".bcore-candidate")
             {
@@ -744,7 +749,15 @@ fn workspace_semantic_fingerprint(root: &Path, excluded_target: &Path) -> Result
     Ok(sha256(entries.join("\n").as_bytes()))
 }
 
-fn command_receipt(
+fn workspace_semantic_fingerprint(root: &Path, excluded_target: &Path) -> Result<String, String> {
+    workspace_semantic_fingerprint_impl(root, Some(excluded_target))
+}
+
+pub(crate) fn full_workspace_semantic_fingerprint(root: &Path) -> Result<String, String> {
+    workspace_semantic_fingerprint_impl(root, None)
+}
+
+pub(crate) fn command_receipt(
     program: &Path,
     args: &[&str],
     cwd: &Path,
