@@ -206,6 +206,7 @@ fn run_cargo_observation(
         .args(args)
         .current_dir(policy.source_root)
         .env("CARGO_TARGET_DIR", policy.build_target_dir)
+        .env("CARGO_INCREMENTAL", "0")
         .env("CARGO_NET_OFFLINE", "true")
         .stdin(Stdio::null())
         .stdout(Stdio::from(output))

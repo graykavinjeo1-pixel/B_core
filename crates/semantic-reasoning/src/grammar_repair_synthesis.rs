@@ -6,6 +6,7 @@
 //! calls, unary/binary relations, constructors, and conditionals), and leaves
 //! semantic selection to compile and public-test observations.
 
+use std::cmp::Reverse;
 use std::collections::BTreeSet;
 use std::ffi::OsStr;
 use std::fs;
@@ -13,9 +14,11 @@ use std::path::{Path, PathBuf};
 
 use quote::ToTokens;
 use serde::{Deserialize, Serialize};
+use syn::parse::Parser;
+use syn::punctuated::Punctuated;
 use syn::spanned::Spanned;
 use syn::visit::{self, Visit};
-use syn::{Block, FnArg, ImplItem, Item, Pat, ReturnType};
+use syn::{Block, Expr, FnArg, ImplItem, Item, Lit, Pat, ReturnType, Token, UnOp};
 
 use crate::self_repair_contract::sha256;
 use crate::structural_source_repair::{
@@ -36,6 +39,9 @@ pub struct GrammarRepairCandidate {
     pub predicted_value: u16,
     pub structural_repair_program: StructuralRepairProgram,
     pub grammar_expression: String,
+    pub public_examples_observed: usize,
+    pub public_examples_evaluated: usize,
+    pub public_examples_satisfied: usize,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -57,6 +63,25 @@ struct Hole {
     callable: CallableSignature,
     kind: String,
     range: ByteRange,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
+enum PublicValue {
+    Int(i128),
+    Bool(bool),
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
+struct PublicExample {
+    inputs: Vec<PublicValue>,
+    expected: PublicValue,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+struct PublicExampleScore {
+    observed: usize,
+    evaluated: usize,
+    satisfied: usize,
 }
 
 fn normalized_tokens<T: ToTokens>(value: &T) -> String {
@@ -216,6 +241,124 @@ impl<'ast> Visit<'ast> for HoleVisitor<'_> {
         }
         visit::visit_expr_macro(self, expression);
     }
+}
+
+fn public_literal(expression: &Expr) -> Option<PublicValue> {
+    match expression {
+        Expr::Lit(value) => match &value.lit {
+            Lit::Int(value) => value.base10_parse::<i128>().ok().map(PublicValue::Int),
+            Lit::Bool(value) => Some(PublicValue::Bool(value.value)),
+            _ => None,
+        },
+        Expr::Unary(value) if matches!(value.op, UnOp::Neg(_)) => {
+            match public_literal(value.expr.as_ref())? {
+                PublicValue::Int(number) => number.checked_neg().map(PublicValue::Int),
+                PublicValue::Bool(_) => None,
+            }
+        }
+        Expr::Paren(value) => public_literal(value.expr.as_ref()),
+        Expr::Group(value) => public_literal(value.expr.as_ref()),
+        _ => None,
+    }
+}
+
+fn called_short_name(expression: &Expr) -> Option<(&syn::Ident, &Punctuated<Expr, Token![,]>)> {
+    let Expr::Call(call) = expression else {
+        return None;
+    };
+    let Expr::Path(path) = call.func.as_ref() else {
+        return None;
+    };
+    Some((&path.path.segments.last()?.ident, &call.args))
+}
+
+fn assertion_example(macro_: &syn::Macro, callable: &CallableSignature) -> Option<PublicExample> {
+    if macro_.path.segments.last()?.ident != "assert_eq" {
+        return None;
+    }
+    let arguments = Punctuated::<Expr, Token![,]>::parse_terminated
+        .parse2(macro_.tokens.clone())
+        .ok()?
+        .into_iter()
+        .collect::<Vec<_>>();
+    if arguments.len() < 2 {
+        return None;
+    }
+    let from_call = |call_expression: &Expr, expected_expression: &Expr| {
+        let (name, arguments) = called_short_name(call_expression)?;
+        if name != callable.short_name.as_str() || arguments.len() != callable.inputs.len() {
+            return None;
+        }
+        let inputs = arguments
+            .iter()
+            .map(public_literal)
+            .collect::<Option<Vec<_>>>()?;
+        Some(PublicExample {
+            inputs,
+            expected: public_literal(expected_expression)?,
+        })
+    };
+    from_call(&arguments[0], &arguments[1]).or_else(|| from_call(&arguments[1], &arguments[0]))
+}
+
+struct PublicExampleVisitor<'a> {
+    callable: &'a CallableSignature,
+    examples: BTreeSet<PublicExample>,
+}
+
+impl<'ast> Visit<'ast> for PublicExampleVisitor<'_> {
+    fn visit_macro(&mut self, macro_: &'ast syn::Macro) {
+        if let Some(example) = assertion_example(macro_, self.callable) {
+            self.examples.insert(example);
+        }
+        visit::visit_macro(self, macro_);
+    }
+}
+
+fn collect_public_examples_from_items(
+    items: &[Item],
+    in_test_scope: bool,
+    callable: &CallableSignature,
+    output: &mut BTreeSet<PublicExample>,
+) {
+    for item in items {
+        match item {
+            Item::Mod(module) => {
+                let nested_test_scope =
+                    in_test_scope || module.ident == "tests" || attributes_mark_test(&module.attrs);
+                if let Some((_, nested)) = &module.content {
+                    collect_public_examples_from_items(nested, nested_test_scope, callable, output);
+                }
+            }
+            Item::Fn(function) if in_test_scope || attributes_mark_test(&function.attrs) => {
+                let mut visitor = PublicExampleVisitor {
+                    callable,
+                    examples: BTreeSet::new(),
+                };
+                visitor.visit_block(function.block.as_ref());
+                output.append(&mut visitor.examples);
+            }
+            Item::Impl(implementation) if in_test_scope => {
+                for member in &implementation.items {
+                    if let ImplItem::Fn(method) = member {
+                        let mut visitor = PublicExampleVisitor {
+                            callable,
+                            examples: BTreeSet::new(),
+                        };
+                        visitor.visit_block(&method.block);
+                        output.append(&mut visitor.examples);
+                    }
+                }
+            }
+            _ => {}
+        }
+    }
+}
+
+fn collect_public_examples(items: &[Item], callable: &CallableSignature) -> Vec<PublicExample> {
+    let mut examples = BTreeSet::new();
+    collect_public_examples_from_items(items, false, callable, &mut examples);
+    examples.into_iter().collect()
 }
 
 fn is_integer(value: &str) -> bool {
@@ -431,6 +574,161 @@ fn compose_expressions(
     output
 }
 
+fn numeric_inputs(callable: &CallableSignature, example: &PublicExample) -> Option<Vec<i128>> {
+    if callable.inputs.len() != example.inputs.len() {
+        return None;
+    }
+    callable
+        .inputs
+        .iter()
+        .zip(&example.inputs)
+        .filter(|(binding, _)| is_integer(&binding.type_name))
+        .map(|(_, value)| match value {
+            PublicValue::Int(value) => Some(*value),
+            PublicValue::Bool(_) => None,
+        })
+        .collect()
+}
+
+fn boolean_inputs(callable: &CallableSignature, example: &PublicExample) -> Option<Vec<bool>> {
+    if callable.inputs.len() != example.inputs.len() {
+        return None;
+    }
+    callable
+        .inputs
+        .iter()
+        .zip(&example.inputs)
+        .filter(|(binding, _)| binding.type_name == "bool")
+        .map(|(_, value)| match value {
+            PublicValue::Bool(value) => Some(*value),
+            PublicValue::Int(_) => None,
+        })
+        .collect()
+}
+
+fn bound_public_value(
+    callable: &CallableSignature,
+    example: &PublicExample,
+    expression: &str,
+) -> Option<PublicValue> {
+    let expression = expression.strip_prefix('!').unwrap_or(expression);
+    callable
+        .inputs
+        .iter()
+        .zip(&example.inputs)
+        .find_map(|(binding, value)| {
+            (expression == binding.name || expression == format!("{}.clone()", binding.name))
+                .then(|| value.clone())
+        })
+}
+
+fn first_two<T: Copy>(values: &[T]) -> Option<(T, T)> {
+    Some((*values.first()?, *values.get(1)?))
+}
+
+fn evaluate_public_expression(
+    family: &str,
+    expression: &str,
+    callable: &CallableSignature,
+    example: &PublicExample,
+) -> Option<PublicValue> {
+    let numeric = || first_two(&numeric_inputs(callable, example)?);
+    let boolean = || first_two(&boolean_inputs(callable, example)?);
+    match family {
+        "BINARY_ADD" => {
+            let (left, right) = numeric()?;
+            left.checked_add(right).map(PublicValue::Int)
+        }
+        "BINARY_SUBTRACT" => {
+            let (left, right) = numeric()?;
+            left.checked_sub(right).map(PublicValue::Int)
+        }
+        "BINARY_REVERSE_SUBTRACT" => {
+            let (left, right) = numeric()?;
+            right.checked_sub(left).map(PublicValue::Int)
+        }
+        "BINARY_MULTIPLY" => {
+            let (left, right) = numeric()?;
+            left.checked_mul(right).map(PublicValue::Int)
+        }
+        "CONDITIONAL_MIN" => {
+            let (left, right) = numeric()?;
+            Some(PublicValue::Int(left.min(right)))
+        }
+        "CONDITIONAL_MAX" => {
+            let (left, right) = numeric()?;
+            Some(PublicValue::Int(left.max(right)))
+        }
+        "RELATION_EQUAL" => {
+            let (left, right) = numeric()?;
+            Some(PublicValue::Bool(left == right))
+        }
+        "RELATION_LESS" => {
+            let (left, right) = numeric()?;
+            Some(PublicValue::Bool(left < right))
+        }
+        "RELATION_LESS_EQUAL" => {
+            let (left, right) = numeric()?;
+            Some(PublicValue::Bool(left <= right))
+        }
+        "RELATION_GREATER" => {
+            let (left, right) = numeric()?;
+            Some(PublicValue::Bool(left > right))
+        }
+        "RELATION_GREATER_EQUAL" => {
+            let (left, right) = numeric()?;
+            Some(PublicValue::Bool(left >= right))
+        }
+        "BOOLEAN_AND" => {
+            let (left, right) = boolean()?;
+            Some(PublicValue::Bool(left && right))
+        }
+        "BOOLEAN_OR" => {
+            let (left, right) = boolean()?;
+            Some(PublicValue::Bool(left || right))
+        }
+        "BOOLEAN_NOT" | "BOUND_VALUE" | "BOUND_VALUE_CLONE" => {
+            bound_public_value(callable, example, expression).map(|value| match family {
+                "BOOLEAN_NOT" => match value {
+                    PublicValue::Bool(value) => PublicValue::Bool(!value),
+                    other => other,
+                },
+                _ => value,
+            })
+        }
+        "BOOLEAN_TRUE" => Some(PublicValue::Bool(true)),
+        "BOOLEAN_FALSE" => Some(PublicValue::Bool(false)),
+        "INTEGER_ZERO" => Some(PublicValue::Int(0)),
+        "INTEGER_ONE" => Some(PublicValue::Int(1)),
+        "DEFAULT_CONSTRUCTOR" if callable.output == "bool" => Some(PublicValue::Bool(false)),
+        "DEFAULT_CONSTRUCTOR" if is_integer(&callable.output) => Some(PublicValue::Int(0)),
+        _ => None,
+    }
+}
+
+fn public_example_score(
+    family: &str,
+    expression: &str,
+    callable: &CallableSignature,
+    examples: &[PublicExample],
+) -> PublicExampleScore {
+    let mut evaluated = 0;
+    let mut satisfied = 0;
+    for example in examples {
+        if let Some(observed) = evaluate_public_expression(family, expression, callable, example) {
+            evaluated += 1;
+            if observed == example.expected {
+                satisfied += 1;
+            }
+        }
+    }
+    PublicExampleScore {
+        observed: examples.len(),
+        evaluated,
+        satisfied,
+    }
+}
+
 fn excluded_directory(path: &Path) -> bool {
     path.file_name()
         .and_then(OsStr::to_str)
@@ -525,10 +823,28 @@ fn candidates_for_file(
             .as_bytes(),
         );
         let transformation = format!("AST_GRAMMAR_HOLE:{}:{}", hole.kind, &hole_identity[..16]);
-        for (index, (family, expression)) in compose_expressions(&hole.callable, &catalog)
+        let public_examples = collect_public_examples(&parsed.items, &hole.callable);
+        let mut compositions = compose_expressions(&hole.callable, &catalog)
             .into_iter()
             .enumerate()
-        {
+            .map(|(index, (family, expression))| {
+                let score =
+                    public_example_score(&family, &expression, &hole.callable, &public_examples);
+                (index, family, expression, score)
+            })
+            .collect::<Vec<_>>();
+        compositions.sort_by_key(|(index, _, _, score)| {
+            let satisfies_every_observed_example = score.observed > 0
+                && score.evaluated == score.observed
+                && score.satisfied == score.observed;
+            (
+                Reverse(satisfies_every_observed_example),
+                Reverse(score.satisfied),
+                Reverse(score.evaluated),
+                *index,
+            )
+        });
+        for (index, family, expression, public_score) in compositions {
             let mut candidate_source = String::with_capacity(
                 source.len() - (hole.range.end - hole.range.start) + expression.len(),
             );
@@ -547,6 +863,18 @@ fn candidates_for_file(
                 "GRAMMAR_COMPOSITION:{family}:{index}:{}",
                 &sha256(expression.as_bytes())[..12]
             );
+            let mut consequence_predictions = vec![
+                format!("remove explicit {} implementation hole", hole.kind),
+                "compose only from AST-visible typed bindings, calls, operators, constructors, and conditionals"
+                    .to_string(),
+                "accept semantics only after compile and public regression observations".to_string(),
+            ];
+            if public_score.observed > 0 {
+                consequence_predictions.push(format!(
+                    "pre-falsify against repository-visible public examples: {}/{} satisfied, {} evaluable",
+                    public_score.satisfied, public_score.observed, public_score.evaluated
+                ));
+            }
             candidates.push(GrammarRepairCandidate {
                 relative_path: relative_path.clone(),
                 predecessor_sha256: predecessor_sha256.clone(),
@@ -554,16 +882,13 @@ fn candidates_for_file(
                 candidate_source,
                 transformation: transformation.clone(),
                 solution_strategy,
-                consequence_predictions: vec![
-                    format!("remove explicit {} implementation hole", hole.kind),
-                    "compose only from AST-visible typed bindings, calls, operators, constructors, and conditionals"
-                        .to_string(),
-                    "accept semantics only after compile and public regression observations"
-                        .to_string(),
-                ],
+                consequence_predictions,
                 predicted_value: if hole.kind == "TODO" { 100 } else { 95 },
                 structural_repair_program,
                 grammar_expression: expression,
+                public_examples_observed: public_score.observed,
+                public_examples_evaluated: public_score.evaluated,
+                public_examples_satisfied: public_score.satisfied,
             });
             if candidates.len() >= MAX_GRAMMAR_CANDIDATES {
                 return Ok(candidates);
@@ -619,6 +944,38 @@ mod tests {
             .postconditions
             .iter()
             .any(|_| true));
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn public_examples_pre_falsify_grammar_candidates_without_becoming_patch_targets() {
+        let root = std::env::temp_dir().join(format!(
+            "b-core-grammar-public-example-{}",
+            std::process::id()
+        ));
+        if root.exists() {
+            fs::remove_dir_all(&root).unwrap();
+        }
+        fs::create_dir_all(root.join("src")).unwrap();
+        fs::write(
+            root.join("src/lib.rs"),
+            "pub fn combine(left: i32, right: i32) -> i32 { todo!() }\n\n#[cfg(test)]\nmod tests {\n    #[test]\n    fn multiplies() {\n        assert_eq!(super::combine(3, 4), 12);\n        assert_eq!(super::combine(-2, 5), -10);\n    }\n}\n",
+        )
+        .unwrap();
+
+        let candidates = discover_grammar_repairs(&root, 4_096).unwrap();
+
+        assert!(!candidates.is_empty());
+        assert_eq!(candidates[0].grammar_expression, "left * right");
+        assert!(candidates[0]
+            .solution_strategy
+            .starts_with("GRAMMAR_COMPOSITION:BINARY_MULTIPLY"));
+        assert_eq!(candidates[0].public_examples_observed, 2);
+        assert_eq!(candidates[0].public_examples_evaluated, 2);
+        assert_eq!(candidates[0].public_examples_satisfied, 2);
+        assert!(candidates
+            .iter()
+            .all(|candidate| !candidate.relative_path.to_string_lossy().contains("tests")));
         fs::remove_dir_all(root).unwrap();
     }
 

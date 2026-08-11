@@ -766,6 +766,7 @@ fn command_receipt(
         .args(args)
         .current_dir(cwd)
         .env("CARGO_TARGET_DIR", target_dir)
+        .env("CARGO_INCREMENTAL", "0")
         .env("CARGO_NET_OFFLINE", "true")
         .stdin(Stdio::null())
         .stdout(Stdio::from(diagnostic))
@@ -2082,7 +2083,7 @@ mod tests {
         policy.max_attempts_per_problem = 4;
         fs::write(
             root.join("src/lib.rs"),
-            "pub fn combine(left: i32, right: i32) -> i32 {\n    todo!()\n}\n\n#[cfg(test)]\nmod tests {\n    #[test]\n    fn combine_works() {\n        assert_eq!(super::combine(3, 4), 12);\n    }\n}\n",
+            "pub fn combine(left: i32, right: i32) -> i32 {\n    todo!()\n}\n\n#[cfg(test)]\nmod tests {\n    #[test]\n    fn combine_works() {\n        let observed = super::combine(3, 4);\n        if observed != 12 {\n            panic!(\"assertion `left == right` failed\\n  left: {observed}\\n right: 12\");\n        }\n    }\n}\n",
         )
         .unwrap();
         let state = external_state(&root);
@@ -2102,7 +2103,7 @@ mod tests {
             assert!(receipt.rolled_back);
             assert_eq!(
                 fs::read_to_string(root.join("src/lib.rs")).unwrap(),
-                "pub fn combine(left: i32, right: i32) -> i32 {\n    todo!()\n}\n\n#[cfg(test)]\nmod tests {\n    #[test]\n    fn combine_works() {\n        assert_eq!(super::combine(3, 4), 12);\n    }\n}\n"
+                "pub fn combine(left: i32, right: i32) -> i32 {\n    todo!()\n}\n\n#[cfg(test)]\nmod tests {\n    #[test]\n    fn combine_works() {\n        let observed = super::combine(3, 4);\n        if observed != 12 {\n            panic!(\"assertion `left == right` failed\\n  left: {observed}\\n right: 12\");\n        }\n    }\n}\n"
             );
         }
 
@@ -2180,6 +2181,8 @@ mod tests {
         assert!(!learned.edit_atom_kinds.is_empty());
         assert!(learned.structural_postcondition_count > 0);
         assert!(learned.generalized_change_sha256.is_some());
+        let incremental = root.join("target/debug/incremental");
+        assert!(!incremental.exists() || fs::read_dir(&incremental).unwrap().next().is_none());
         fs::remove_dir_all(root).unwrap();
         fs::remove_dir_all(state).unwrap();
     }
