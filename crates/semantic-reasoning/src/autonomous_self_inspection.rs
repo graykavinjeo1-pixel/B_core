@@ -983,30 +983,9 @@ pub fn inspect(input: SelfInspectionInput) -> Result<AutonomousSelfInspectionRec
         }
         InternalBottleneckClass::QuietIdle => (RepairDisposition::SafeWait, None, false),
     };
-    let diagnostic_id = sha256(
-        format!(
-            "{}:{}:{}:{}:{}:{}:{}:{}:{}:{}:{}:{}:{}:{}:{}",
-            selected.label(),
-            input.files_scanned,
-            input.files_reused,
-            input.files_hashed,
-            input.pending_work_events,
-            input.replayed_unchanged_work_events,
-            input.consecutive_failures,
-            input.campaigns_started,
-            input.mutual_revalidation_events,
-            input.evaluator_challenge_cases,
-            input.unconsumed_high_observations,
-            input.source_patch_attempts,
-            input.source_patch_rollbacks,
-            input.source_patch_consecutive_failures,
-            input.source_patch_validation_ms
-        )
-        .as_bytes(),
-    );
-    Ok(AutonomousSelfInspectionReceipt {
+    let mut receipt = AutonomousSelfInspectionReceipt {
         schema: SELF_INSPECTION_SCHEMA.to_string(),
-        diagnostic_id,
+        diagnostic_id: String::new(),
         generation: input.generation,
         supervisor_sequence: input.supervisor_sequence,
         hypotheses,
@@ -1030,7 +1009,11 @@ pub fn inspect(input: SelfInspectionInput) -> Result<AutonomousSelfInspectionRec
         external_llm_calls: 0,
         network_reads: 0,
         network_writes: 0,
-    })
+    };
+    let identity_bytes = serde_json::to_vec(&receipt)
+        .map_err(|error| format!("SELF_INSPECTION_IDENTITY_JSON:{error}"))?;
+    receipt.diagnostic_id = sha256(&identity_bytes);
+    Ok(receipt)
 }
 
 #[cfg(test)]
@@ -1081,6 +1064,27 @@ mod tests {
         assert!(!receipt.actionable_defect);
         assert_eq!(receipt.external_llm_calls, 0);
         assert_eq!(receipt.authoritative_source_write_events, 0);
+    }
+
+    #[test]
+    fn diagnostic_identity_binds_the_complete_receipt_and_cannot_collide_by_sequence() {
+        let original_input = input();
+        let first = inspect(original_input.clone()).expect("first inspection");
+        let repeated = inspect(original_input.clone()).expect("repeat inspection");
+        assert_eq!(first.diagnostic_id, repeated.diagnostic_id);
+
+        let mut next_sequence_input = original_input;
+        next_sequence_input.supervisor_sequence += 1;
+        let next_sequence = inspect(next_sequence_input).expect("next sequence inspection");
+        assert_ne!(first.diagnostic_id, next_sequence.diagnostic_id);
+
+        let expected_id = first.diagnostic_id.clone();
+        let mut identity_payload = first;
+        identity_payload.diagnostic_id.clear();
+        assert_eq!(
+            expected_id,
+            sha256(&serde_json::to_vec(&identity_payload).unwrap())
+        );
     }
 
     #[test]
