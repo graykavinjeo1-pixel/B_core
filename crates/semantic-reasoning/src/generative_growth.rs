@@ -76,6 +76,12 @@ pub struct GenerativeGrowthMemory {
     #[serde(default, skip_serializing_if = "is_zero")]
     pub frontier_advance_events: u64,
     #[serde(default, skip_serializing_if = "is_zero")]
+    pub unverified_frontier_candidate_events: u64,
+    #[serde(default, skip_serializing_if = "is_zero")]
+    pub legacy_unverified_frontier_advance_events: u64,
+    #[serde(default, skip_serializing_if = "is_zero")]
+    pub behavioral_verification_events: u64,
+    #[serde(default, skip_serializing_if = "is_zero")]
     pub redundant_selection_events: u64,
     #[serde(default, skip_serializing_if = "is_zero")]
     pub prediction_absolute_error_total: u64,
@@ -99,6 +105,9 @@ impl Default for GenerativeGrowthMemory {
             exploration_events: 0,
             productive_reuse_events: 0,
             frontier_advance_events: 0,
+            unverified_frontier_candidate_events: 0,
+            legacy_unverified_frontier_advance_events: 0,
+            behavioral_verification_events: 0,
             redundant_selection_events: 0,
             prediction_absolute_error_total: 0,
             calibrated_prediction_records: 0,
@@ -127,6 +136,12 @@ pub struct GenerativeCycleResult {
     pub predicted_resource_units: u16,
     pub isolated_composition_executed: bool,
     pub composition_typecheck_pass: bool,
+    #[serde(default)]
+    pub behavioral_composition_executed: bool,
+    #[serde(default)]
+    pub behavioral_verification_sha256: Option<String>,
+    #[serde(default)]
+    pub observed_value_is_heuristic_proxy: bool,
     pub observed_value: u16,
     pub prediction_error: u16,
     pub valuable: bool,
@@ -145,6 +160,10 @@ pub struct GenerativeCycleResult {
     pub prior_context_trials: u64,
     #[serde(default)]
     pub productive_reuse: bool,
+    #[serde(default)]
+    pub novel_context_transfer_candidate: bool,
+    #[serde(default)]
+    pub unverified_frontier_candidate: bool,
     #[serde(default)]
     pub frontier_advance: bool,
     pub exact_source_fragments: usize,
@@ -327,38 +346,6 @@ fn domain_bonus(composition: &RepairCompositionLessonIR, input: &GenerativeInput
         bonus += 6;
     }
     bonus
-}
-
-fn applicable_policy_signals(
-    composition: &RepairCompositionLessonIR,
-    input: &GenerativeInput,
-) -> Vec<String> {
-    let ids = composition
-        .primitives
-        .iter()
-        .map(|value| value.primitive_id.as_str())
-        .collect::<BTreeSet<_>>();
-    let mut supported = BTreeSet::new();
-    if ids.contains("SEM25_MULTI_HORIZON_ROUTER") {
-        supported.extend(["MUTUAL_REVALIDATION_GAP", "CAPABILITY_SURFACE_ADDED"]);
-    }
-    if ids.contains("SELF_HEALING_CONTRACT_COMPOSER") {
-        supported.extend(["DEFECT_REPAIR", "ERROR_HANDLING_ADDED", "VALIDATION_ADDED"]);
-    }
-    if ids.contains("FULLSTACK_TYPED_RECIPE_COMPOSER") {
-        supported.extend(["FRONTEND_CONTRACT", "BACKEND_CONTRACT", "OPERATIONS_CHANGE"]);
-    }
-    if ids.contains("SEM5_PROGRAM_IR_COMPOSER") {
-        supported.extend(["CODE_CHANGE", "REFACTOR", "CAPABILITY_SURFACE_ADDED"]);
-    }
-    input
-        .diagnostic_signals
-        .iter()
-        .filter(|signal| supported.contains(signal.as_str()))
-        .cloned()
-        .collect::<BTreeSet<_>>()
-        .into_iter()
-        .collect()
 }
 
 #[derive(Debug, Clone)]
@@ -585,15 +572,19 @@ pub fn run_generative_cycle(
         && observed_value >= 72
         && prediction_error <= 30;
     let accepted_for_memory = valuable && prediction.exploration;
-    let productive_reuse = valuable
+    let novel_context_transfer_candidate = valuable
         && prediction.reused_memory_composition_id.is_some()
         && prediction.prior_context_trials == 0;
-    let frontier_advance = accepted_for_memory || productive_reuse;
-    let applied_policy_signals = if frontier_advance {
-        applicable_policy_signals(&selected, input)
-    } else {
-        Vec::new()
-    };
+    // Structural type checking is useful evidence for remembering a candidate,
+    // but it is not execution of a new behavior.  Keep the candidate available
+    // for later executable verification without promoting it as capability or
+    // feeding it back into the classifier as if it had already improved work.
+    let behavioral_composition_executed = false;
+    let behavioral_verification_sha256 = None;
+    let unverified_frontier_candidate = accepted_for_memory || novel_context_transfer_candidate;
+    let productive_reuse = false;
+    let frontier_advance = false;
+    let applied_policy_signals = Vec::new();
     Ok(GenerativeCycleResult {
         schema: GENERATIVE_GROWTH_SCHEMA.to_string(),
         source_lesson_id: input.source_lesson_id.clone(),
@@ -606,6 +597,9 @@ pub fn run_generative_cycle(
         predicted_resource_units: 12,
         isolated_composition_executed: true,
         composition_typecheck_pass: typecheck_pass,
+        behavioral_composition_executed,
+        behavioral_verification_sha256,
+        observed_value_is_heuristic_proxy: true,
         observed_value,
         prediction_error,
         valuable,
@@ -618,6 +612,8 @@ pub fn run_generative_cycle(
         prior_composition_trials: prediction.prior_composition_trials,
         prior_context_trials: prediction.prior_context_trials,
         productive_reuse,
+        novel_context_transfer_candidate,
+        unverified_frontier_candidate,
         frontier_advance,
         exact_source_fragments: 0,
         codex_calls: 0,
@@ -637,6 +633,15 @@ pub fn promote_generative_cycle(
         || result.source_lesson_id != input.source_lesson_id
         || !result.prediction_recorded_before_composition
         || !result.selected_from_precomposition_prediction
+        || !result.observed_value_is_heuristic_proxy
+        || (!result.behavioral_composition_executed
+            && (result.behavioral_verification_sha256.is_some()
+                || result.frontier_advance
+                || result.productive_reuse
+                || result.applied_to_self_improvement
+                || !result.applied_policy_signals.is_empty()))
+        || (result.behavioral_composition_executed
+            && result.behavioral_verification_sha256.is_none())
         || result.exact_source_fragments != 0
         || result.codex_calls != 0
         || result.external_llm_calls != 0
@@ -646,6 +651,13 @@ pub fn promote_generative_cycle(
         return Err("GENERATIVE_PROMOTION_BOUNDARY_FAILURE".to_string());
     }
     let mut next = current.clone();
+    if next.behavioral_verification_events == 0
+        && next.legacy_unverified_frontier_advance_events == 0
+        && next.frontier_advance_events > 0
+    {
+        next.legacy_unverified_frontier_advance_events = next.frontier_advance_events;
+        next.frontier_advance_events = 0;
+    }
     next.generation = next.generation.saturating_add(1);
     next.prediction_records = next.prediction_records.saturating_add(1);
     if next.calibrated_prediction_records == 0 && next.prediction_absolute_error_total > 0 {
@@ -674,7 +686,14 @@ pub fn promote_generative_cycle(
     if result.frontier_advance {
         next.frontier_advance_events = next.frontier_advance_events.saturating_add(1);
     }
-    if result.valuable && !result.frontier_advance {
+    if result.unverified_frontier_candidate {
+        next.unverified_frontier_candidate_events =
+            next.unverified_frontier_candidate_events.saturating_add(1);
+    }
+    if result.behavioral_composition_executed && result.behavioral_verification_sha256.is_some() {
+        next.behavioral_verification_events = next.behavioral_verification_events.saturating_add(1);
+    }
+    if result.valuable && !result.frontier_advance && !result.unverified_frontier_candidate {
         next.redundant_selection_events = next.redundant_selection_events.saturating_add(1);
     }
     if result.valuable {
@@ -772,12 +791,17 @@ mod tests {
         assert!(result.selected_from_precomposition_prediction);
         assert!(result.isolated_composition_executed);
         assert!(result.composition_typecheck_pass);
+        assert!(!result.behavioral_composition_executed);
+        assert!(result.behavioral_verification_sha256.is_none());
+        assert!(result.observed_value_is_heuristic_proxy);
         assert!(result.selection_score > result.predicted_value);
         assert!(result.prediction_error <= 30);
         assert!(result.valuable);
         assert!(result.accepted_for_memory);
-        assert!(result.applied_to_self_improvement);
-        assert!(!result.applied_policy_signals.is_empty());
+        assert!(result.unverified_frontier_candidate);
+        assert!(!result.frontier_advance);
+        assert!(!result.applied_to_self_improvement);
+        assert!(result.applied_policy_signals.is_empty());
         assert_eq!(result.external_llm_calls, 0);
     }
 
@@ -798,6 +822,9 @@ mod tests {
         assert_eq!(memory.composition_trials.len(), 12);
         assert_eq!(memory.exploration_events, 12);
         assert_eq!(memory.accepted_compositions.len(), 12);
+        assert_eq!(memory.frontier_advance_events, 0);
+        assert_eq!(memory.unverified_frontier_candidate_events, 12);
+        assert_eq!(memory.behavioral_verification_events, 0);
         assert!(memory.prediction_absolute_error_total < 12 * 30);
         assert_eq!(memory.calibrated_prediction_records, 12);
 
@@ -822,9 +849,29 @@ mod tests {
         let transferred = run_generative_cycle(&memory, &new_context, 101).unwrap();
         assert!(transferred.reused_memory_composition_id.is_some());
         assert_eq!(transferred.prior_context_trials, 0);
-        assert!(transferred.productive_reuse);
-        assert!(transferred.frontier_advance);
-        assert!(transferred.applied_to_self_improvement);
+        assert!(transferred.novel_context_transfer_candidate);
+        assert!(transferred.unverified_frontier_candidate);
+        assert!(!transferred.productive_reuse);
+        assert!(!transferred.frontier_advance);
+        assert!(!transferred.applied_to_self_improvement);
+        memory = promote_generative_cycle(&memory, &new_context, &transferred).unwrap();
+        assert_eq!(memory.unverified_frontier_candidate_events, 13);
+    }
+
+    #[test]
+    fn legacy_structural_frontier_claims_are_quarantined_before_new_promotion() {
+        let mut memory = GenerativeGrowthMemory {
+            frontier_advance_events: 6,
+            ..GenerativeGrowthMemory::default()
+        };
+        let current = input();
+        let result = run_generative_cycle(&memory, &current, 19).unwrap();
+
+        memory = promote_generative_cycle(&memory, &current, &result).unwrap();
+
+        assert_eq!(memory.frontier_advance_events, 0);
+        assert_eq!(memory.legacy_unverified_frontier_advance_events, 6);
+        assert_eq!(memory.behavioral_verification_events, 0);
     }
 
     #[test]

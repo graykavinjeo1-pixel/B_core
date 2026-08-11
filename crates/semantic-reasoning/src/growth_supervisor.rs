@@ -266,6 +266,12 @@ pub struct SupervisorState {
     #[serde(default)]
     pub generative_frontier_advance_events: u64,
     #[serde(default)]
+    pub unverified_generative_frontier_candidate_events: u64,
+    #[serde(default)]
+    pub legacy_unverified_generative_frontier_advance_events: u64,
+    #[serde(default)]
+    pub generative_behavioral_verification_events: u64,
+    #[serde(default)]
     pub redundant_generative_selection_events: u64,
     #[serde(default)]
     pub generative_prediction_absolute_error_total: u64,
@@ -726,6 +732,9 @@ pub struct StepReport {
     pub generative_exploration_events: u64,
     pub productive_generative_reuse_events: u64,
     pub generative_frontier_advance_events: u64,
+    pub unverified_generative_frontier_candidate_events: u64,
+    pub legacy_unverified_generative_frontier_advance_events: u64,
+    pub generative_behavioral_verification_events: u64,
     pub redundant_generative_selection_events: u64,
     pub generative_mean_prediction_error_millis: u64,
     pub generative_calibrated_prediction_records: u64,
@@ -784,6 +793,8 @@ pub struct SelfCheck {
     pub composition_scoped_policy_application: bool,
     pub diagnostic_reward_requires_later_frontier_outcome: bool,
     pub same_generation_diagnostic_reward_deduplicated: bool,
+    pub heuristic_composition_value_excluded_from_frontier: bool,
+    pub behavioral_evidence_required_for_generative_self_application: bool,
     pub mutual_recursive_growth_observed: bool,
 }
 
@@ -802,7 +813,7 @@ pub fn self_check() -> SelfCheck {
         evaluator_generation_evolution_enabled: true,
         prediction_before_composition_enabled: true,
         valuable_combination_memory_enabled: true,
-        generative_memory_self_application_enabled: true,
+        generative_memory_self_application_enabled: false,
         core_self_approval_enabled: true,
         autonomous_source_patch_install_enabled: true,
         source_patch_rollback_enabled: true,
@@ -826,6 +837,8 @@ pub fn self_check() -> SelfCheck {
             "DIAGNOSTIC_YIELD_AND_NOVELTY_ADAPT_NEXT_EXPERIMENT_SELECTION".to_string(),
             "DIAGNOSTIC_REWARD_REQUIRES_A_LATER_VERIFIED_FRONTIER_OUTCOME".to_string(),
             "SAME_GENERATION_DIAGNOSTIC_REPETITION_IS_NOT_NEW_REPAIR".to_string(),
+            "HEURISTIC_COMPOSITION_VALUE_IS_NOT_BEHAVIORAL_CAPABILITY_EVIDENCE".to_string(),
+            "UNVERIFIED_GENERATIVE_FRONTIER_HISTORY_IS_QUARANTINED".to_string(),
         ],
         bounded_failure_retry_enabled: true,
         successful_solution_learning_enabled: true,
@@ -847,6 +860,8 @@ pub fn self_check() -> SelfCheck {
         composition_scoped_policy_application: true,
         diagnostic_reward_requires_later_frontier_outcome: true,
         same_generation_diagnostic_reward_deduplicated: true,
+        heuristic_composition_value_excluded_from_frontier: true,
+        behavioral_evidence_required_for_generative_self_application: true,
         mutual_recursive_growth_observed: false,
     }
 }
@@ -2008,6 +2023,9 @@ pub fn initialize(config_path: &Path) -> Result<SupervisorState, String> {
         generative_exploration_events: 0,
         productive_generative_reuse_events: 0,
         generative_frontier_advance_events: 0,
+        unverified_generative_frontier_candidate_events: 0,
+        legacy_unverified_generative_frontier_advance_events: 0,
+        generative_behavioral_verification_events: 0,
         redundant_generative_selection_events: 0,
         generative_prediction_absolute_error_total: 0,
         generative_calibrated_prediction_records: 0,
@@ -3314,6 +3332,21 @@ pub fn run_verifier_request(
             .selected_from_precomposition_prediction
         || !candidate.generative_cycle.isolated_composition_executed
         || !candidate.generative_cycle.composition_typecheck_pass
+        || !candidate.generative_cycle.observed_value_is_heuristic_proxy
+        || (!candidate.generative_cycle.behavioral_composition_executed
+            && (candidate
+                .generative_cycle
+                .behavioral_verification_sha256
+                .is_some()
+                || candidate.generative_cycle.frontier_advance
+                || candidate.generative_cycle.productive_reuse
+                || candidate.generative_cycle.applied_to_self_improvement
+                || !candidate.generative_cycle.applied_policy_signals.is_empty()))
+        || (candidate.generative_cycle.behavioral_composition_executed
+            && candidate
+                .generative_cycle
+                .behavioral_verification_sha256
+                .is_none())
         || candidate.generative_cycle.exact_source_fragments != 0
         || candidate.generative_cycle.codex_calls != 0
         || candidate.generative_cycle.external_llm_calls != 0
@@ -3614,6 +3647,12 @@ fn promote_candidate(
     state.generative_exploration_events = memory.generative.exploration_events;
     state.productive_generative_reuse_events = memory.generative.productive_reuse_events;
     state.generative_frontier_advance_events = memory.generative.frontier_advance_events;
+    state.unverified_generative_frontier_candidate_events =
+        memory.generative.unverified_frontier_candidate_events;
+    state.legacy_unverified_generative_frontier_advance_events =
+        memory.generative.legacy_unverified_frontier_advance_events;
+    state.generative_behavioral_verification_events =
+        memory.generative.behavioral_verification_events;
     state.redundant_generative_selection_events = memory.generative.redundant_selection_events;
     state.generative_prediction_absolute_error_total =
         memory.generative.prediction_absolute_error_total;
@@ -4053,6 +4092,11 @@ fn report_from_state(
         generative_exploration_events: state.generative_exploration_events,
         productive_generative_reuse_events: state.productive_generative_reuse_events,
         generative_frontier_advance_events: state.generative_frontier_advance_events,
+        unverified_generative_frontier_candidate_events: state
+            .unverified_generative_frontier_candidate_events,
+        legacy_unverified_generative_frontier_advance_events: state
+            .legacy_unverified_generative_frontier_advance_events,
+        generative_behavioral_verification_events: state.generative_behavioral_verification_events,
         redundant_generative_selection_events: state.redundant_generative_selection_events,
         generative_mean_prediction_error_millis: state
             .generative_prediction_absolute_error_total
@@ -4303,6 +4347,12 @@ fn step_without_lease(
     state.generative_exploration_events = memory.generative.exploration_events;
     state.productive_generative_reuse_events = memory.generative.productive_reuse_events;
     state.generative_frontier_advance_events = memory.generative.frontier_advance_events;
+    state.unverified_generative_frontier_candidate_events =
+        memory.generative.unverified_frontier_candidate_events;
+    state.legacy_unverified_generative_frontier_advance_events =
+        memory.generative.legacy_unverified_frontier_advance_events;
+    state.generative_behavioral_verification_events =
+        memory.generative.behavioral_verification_events;
     state.redundant_generative_selection_events = memory.generative.redundant_selection_events;
     state.generative_prediction_absolute_error_total =
         memory.generative.prediction_absolute_error_total;
@@ -4805,7 +4855,7 @@ mod tests {
         assert!(check.evaluator_generation_evolution_enabled);
         assert!(check.prediction_before_composition_enabled);
         assert!(check.valuable_combination_memory_enabled);
-        assert!(check.generative_memory_self_application_enabled);
+        assert!(!check.generative_memory_self_application_enabled);
         assert!(check.core_self_approval_enabled);
         assert!(check.autonomous_source_patch_install_enabled);
         assert!(check.source_patch_rollback_enabled);
@@ -4831,6 +4881,8 @@ mod tests {
         assert!(check.measured_performance_evidence_supported);
         assert!(check.contextual_generative_exploration_enabled);
         assert!(check.redundant_reuse_excluded_from_growth);
+        assert!(check.heuristic_composition_value_excluded_from_frontier);
+        assert!(check.behavioral_evidence_required_for_generative_self_application);
         assert!(!check.mutual_recursive_growth_observed);
     }
 
@@ -5399,6 +5451,30 @@ mod tests {
     }
 
     #[test]
+    fn verifier_rejects_heuristic_only_frontier_claim() {
+        let root = temp_root("verify-heuristic-frontier");
+        let (_freeze, mut candidate, mut request) = accepted_candidate(&root);
+        assert!(!candidate.generative_cycle.behavioral_composition_executed);
+        candidate.generative_cycle.frontier_advance = true;
+        candidate.generative_cycle.applied_to_self_improvement = true;
+        candidate
+            .generative_cycle
+            .applied_policy_signals
+            .push("DEFECT_REPAIR".to_string());
+        fs::remove_file(&request.candidate_path).unwrap();
+        write_immutable_json(&request.candidate_path, &candidate).unwrap();
+        request.expected_candidate_sha256 = json_sha256(&candidate).unwrap();
+
+        let receipt = run_verifier_request(&request).unwrap();
+
+        assert_eq!(receipt.decision, GrowthDecision::Reject);
+        assert!(receipt
+            .reasons
+            .contains(&"GENERATIVE_COMPOSITION_BOUNDARY_FAILURE".to_string()));
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
     fn verifier_rejects_unbound_predecessor_evaluator_memory() {
         let root = temp_root("verify-evaluator-memory-binding");
         let (_freeze, _candidate, request) = accepted_candidate(&root);
@@ -5498,11 +5574,18 @@ mod tests {
         assert_eq!(first_state.evaluator_challenge_cases, 10);
         assert_eq!(first_state.generative_predictions, 1);
         assert_eq!(first_state.valuable_combinations_learned, 1);
-        assert_eq!(first_state.generative_self_application_events, 1);
+        assert_eq!(first_state.generative_self_application_events, 0);
+        assert_eq!(first_state.generative_frontier_advance_events, 0);
+        assert_eq!(
+            first_state.unverified_generative_frontier_candidate_events,
+            1
+        );
         assert_eq!(recovered_state.generative_predictions, 1);
         let promoted = load_memory(&config, 1).unwrap();
         assert_eq!(promoted.generative.accepted_compositions.len(), 1);
-        assert_eq!(promoted.generative.self_application_events, 1);
+        assert_eq!(promoted.generative.self_application_events, 0);
+        assert_eq!(promoted.generative.frontier_advance_events, 0);
+        assert_eq!(promoted.generative.unverified_frontier_candidate_events, 1);
         assert_eq!(
             first_state.current_evaluator_memory_sha256,
             recovered_state.current_evaluator_memory_sha256
