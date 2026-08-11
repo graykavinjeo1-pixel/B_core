@@ -17,6 +17,11 @@ use std::time::{Duration, Instant};
 use serde::{Deserialize, Serialize};
 
 use crate::compiler_guided_repair::{discover_compiler_guided_repairs, CompilerGuidedRepairPolicy};
+use crate::generalized_self_application::{
+    derive_dynamic_weakness, feedback_priority, synthesize_generalized_change,
+    validate_change_binding, validation_counterexample, GeneralizedChangeIR,
+    ValidationCounterexampleIR, ValidationPhase, WeaknessEvidenceKind,
+};
 use crate::grammar_repair_synthesis::discover_grammar_repairs;
 use crate::self_repair_contract::sha256;
 use crate::structural_source_repair::{
@@ -27,7 +32,7 @@ use crate::structural_source_repair::{
 pub const AUTONOMOUS_SOURCE_MUTATION_SCHEMA: &str = "B_CORE_AUTONOMOUS_SOURCE_MUTATION_1";
 pub const SELF_UPDATE_HANDOFF_FILE: &str = "SELF_UPDATE_READY.json";
 pub const SOURCE_REPAIR_LEARNING_SCHEMA: &str = "B_CORE_SOURCE_REPAIR_LEARNING_1";
-pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 3;
+pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 4;
 const KNOWN_REMAINDER_PREDICTED_VALUE: u16 = 35;
 const KNOWN_REMAINDER_STRATEGIES: [&str; 4] = [
     "TYPED_IS_MULTIPLE_OF",
@@ -137,6 +142,8 @@ pub struct AutonomousSourcePatchRequest {
     pub solution_strategy: String,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub structural_repair_program: Option<StructuralRepairProgram>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub generalized_change: Option<GeneralizedChangeIR>,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -182,6 +189,12 @@ pub struct SourceRepairAttempt {
     pub edit_atom_kinds: Vec<String>,
     #[serde(default)]
     pub structural_postcondition_count: usize,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub validation_counterexample: Option<ValidationCounterexampleIR>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub generalized_change_sha256: Option<String>,
+    #[serde(default)]
+    pub derived_from_counterexample_ids: Vec<String>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -198,6 +211,10 @@ pub struct LearnedSuccessfulRepair {
     pub edit_atom_kinds: Vec<String>,
     #[serde(default)]
     pub structural_postcondition_count: usize,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub generalized_change_sha256: Option<String>,
+    #[serde(default)]
+    pub derived_from_counterexample_ids: Vec<String>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -416,6 +433,129 @@ fn structural_program_learning_features(
     ))
 }
 
+fn generalized_change_learning_features(
+    request: &AutonomousSourcePatchRequest,
+) -> Result<(Option<String>, Vec<String>), String> {
+    let Some(change) = &request.generalized_change else {
+        return Ok((None, Vec::new()));
+    };
+    let encoded = serde_json::to_vec(change)
+        .map_err(|error| format!("GENERALIZED_CHANGE_SERIALIZE:{error}"))?;
+    Ok((
+        Some(sha256(&encoded)),
+        change.derived_from_counterexample_ids.clone(),
+    ))
+}
+
+fn counterexample_from_receipt(
+    request: &AutonomousSourcePatchRequest,
+    receipt: &AutonomousSourcePatchReceipt,
+) -> Option<ValidationCounterexampleIR> {
+    if receipt.installed {
+        return None;
+    }
+    let reason = receipt
+        .failure_reason
+        .as_deref()
+        .unwrap_or("UNKNOWN_FAILURE");
+    let (phase, command) = if reason == "FORMAT_CHECK_FAILED" {
+        (ValidationPhase::Format, receipt.format_check.as_ref())
+    } else if reason == "COMPILE_CHECK_FAILED" {
+        (ValidationPhase::Compile, receipt.compile_check.as_ref())
+    } else if reason == "REGRESSION_VALIDATION_FAILED" {
+        (
+            ValidationPhase::PublicObservation,
+            Some(&receipt.validation),
+        )
+    } else if reason == "RELEASE_BUILD_FAILED" {
+        (
+            ValidationPhase::ReleaseBuild,
+            receipt.release_build.as_ref(),
+        )
+    } else if reason.contains("WORKSPACE") || reason.contains("TARGET_CHANGED") {
+        (
+            ValidationPhase::WorkspaceIntegrity,
+            Some(&receipt.validation),
+        )
+    } else {
+        (ValidationPhase::Infrastructure, Some(&receipt.validation))
+    };
+    let diagnostic_sha256 = command
+        .map(|value| value.output_sha256.as_str())
+        .unwrap_or("");
+    let diagnostic_tail = command
+        .map(|value| value.diagnostic_tail.as_str())
+        .unwrap_or("");
+    Some(validation_counterexample(
+        request.source_generation,
+        phase,
+        reason,
+        diagnostic_sha256,
+        diagnostic_tail,
+        if request.solution_strategy.is_empty() {
+            &request.transformation
+        } else {
+            &request.solution_strategy
+        },
+        &request.candidate_sha256,
+    ))
+}
+
+fn prior_counterexamples(
+    state_dir: &Path,
+    relative_path: &Path,
+    transformation: &str,
+) -> Result<Vec<ValidationCounterexampleIR>, String> {
+    let problem_id = repair_problem_id_for(relative_path, transformation);
+    Ok(load_repair_learning(state_dir, &problem_id)?
+        .map(|record| {
+            record
+                .attempts
+                .into_iter()
+                .filter_map(|attempt| attempt.validation_counterexample)
+                .collect()
+        })
+        .unwrap_or_default())
+}
+
+#[allow(clippy::too_many_arguments)]
+fn generalized_change_for_candidate(
+    state_dir: &Path,
+    source_generation: u64,
+    relative_path: &Path,
+    transformation: &str,
+    solution_strategy: &str,
+    predecessor_sha256: &str,
+    candidate_sha256: &str,
+    evidence_kind: WeaknessEvidenceKind,
+    evidence_sha256: &str,
+    observed_mechanism: &str,
+    consequence_predictions: &[String],
+    program: &StructuralRepairProgram,
+) -> Result<GeneralizedChangeIR, String> {
+    let prior = prior_counterexamples(state_dir, relative_path, transformation)?;
+    let weakness = derive_dynamic_weakness(
+        source_generation,
+        relative_path,
+        transformation,
+        evidence_kind,
+        evidence_sha256,
+        observed_mechanism,
+        consequence_predictions.to_vec(),
+        prior
+            .iter()
+            .map(|counterexample| counterexample.counterexample_id.clone())
+            .collect(),
+    );
+    synthesize_generalized_change(
+        &weakness,
+        solution_strategy,
+        predecessor_sha256,
+        candidate_sha256,
+        program,
+    )
+}
+
 fn record_source_repair_outcome(
     policy: &AutonomousSourceMutationPolicy,
     state_dir: &Path,
@@ -462,6 +602,9 @@ fn record_source_repair_outcome(
     };
     let (structural_repair_program_sha256, edit_atom_kinds, structural_postcondition_count) =
         structural_program_learning_features(request)?;
+    let (generalized_change_sha256, derived_from_counterexample_ids) =
+        generalized_change_learning_features(request)?;
+    let validation_counterexample = counterexample_from_receipt(request, receipt);
     record.attempts.push(SourceRepairAttempt {
         attempt_number,
         source_generation: request.source_generation,
@@ -474,6 +617,9 @@ fn record_source_repair_outcome(
         structural_repair_program_sha256: structural_repair_program_sha256.clone(),
         edit_atom_kinds: edit_atom_kinds.clone(),
         structural_postcondition_count,
+        validation_counterexample,
+        generalized_change_sha256: generalized_change_sha256.clone(),
+        derived_from_counterexample_ids: derived_from_counterexample_ids.clone(),
     });
     if receipt.installed {
         record.status = "LEARNED_SUCCESS".to_string();
@@ -492,6 +638,8 @@ fn record_source_repair_outcome(
             structural_repair_program_sha256,
             edit_atom_kinds,
             structural_postcondition_count,
+            generalized_change_sha256,
+            derived_from_counterexample_ids,
         });
     } else if attempt_number >= policy.max_attempts_per_problem {
         record.status = "ADMITTED_FAILURE".to_string();
@@ -724,6 +872,25 @@ pub fn install_and_stage_source_patch(
         {
             return Err("STRUCTURAL_REPAIR_REPLAY_MISMATCH".to_string());
         }
+    }
+    if let Some(change) = &request.generalized_change {
+        let program = request
+            .structural_repair_program
+            .as_ref()
+            .ok_or_else(|| "GENERALIZED_CHANGE_STRUCTURAL_PROGRAM_MISSING".to_string())?;
+        validate_change_binding(
+            change,
+            &request.relative_path,
+            &request.transformation,
+            if request.solution_strategy.is_empty() {
+                &request.transformation
+            } else {
+                &request.solution_strategy
+            },
+            &request.predecessor_sha256,
+            &request.candidate_sha256,
+            program,
+        )?;
     }
     let workspace_fingerprint_before =
         workspace_semantic_fingerprint(&policy.source_root, &target)?;
@@ -1312,6 +1479,20 @@ fn compiler_guided_request(
         {
             continue;
         }
+        let generalized_change = generalized_change_for_candidate(
+            state_dir,
+            source_generation,
+            &candidate.relative_path,
+            &candidate.transformation,
+            &candidate.solution_strategy,
+            &candidate.predecessor_sha256,
+            &candidate.candidate_sha256,
+            WeaknessEvidenceKind::CompilerDiagnostic,
+            &candidate.public_observation_sha256,
+            "current compiler or clippy observation exposes a source-level weakness",
+            &candidate.consequence_predictions,
+            &candidate.structural_repair_program,
+        )?;
         return Ok(Some(AutonomousSourcePatchRequest {
             schema: AUTONOMOUS_SOURCE_MUTATION_SCHEMA.to_string(),
             patch_id,
@@ -1327,6 +1508,7 @@ fn compiler_guided_request(
             core_self_approved: true,
             solution_strategy: candidate.solution_strategy,
             structural_repair_program: Some(candidate.structural_repair_program),
+            generalized_change: Some(generalized_change),
         }));
     }
     Ok(None)
@@ -1340,7 +1522,26 @@ fn grammar_synthesized_request(
     if !policy.auto_synthesize_grammar_repairs {
         return Ok(None);
     }
+    let mut ranked = Vec::new();
     for candidate in discover_grammar_repairs(&policy.source_root, policy.max_candidate_bytes)? {
+        let counterexamples = prior_counterexamples(
+            state_dir,
+            &candidate.relative_path,
+            &candidate.transformation,
+        )?;
+        let priority = i32::from(candidate.predicted_value)
+            + feedback_priority(&candidate.solution_strategy, &counterexamples);
+        ranked.push((priority, candidate));
+    }
+    ranked.sort_by_key(|(priority, candidate)| {
+        (
+            std::cmp::Reverse(*priority),
+            candidate.relative_path.clone(),
+            candidate.transformation.clone(),
+            candidate.solution_strategy.clone(),
+        )
+    });
+    for (_, candidate) in ranked {
         if candidate.predicted_value < policy.minimum_predicted_value
             || !repair_strategy_is_available(
                 policy,
@@ -1375,6 +1576,29 @@ fn grammar_synthesized_request(
         {
             continue;
         }
+        let evidence_sha256 = sha256(
+            format!(
+                "{}:{}:{}",
+                candidate.relative_path.display(),
+                candidate.transformation,
+                candidate.predecessor_sha256
+            )
+            .as_bytes(),
+        );
+        let generalized_change = generalized_change_for_candidate(
+            state_dir,
+            source_generation,
+            &candidate.relative_path,
+            &candidate.transformation,
+            &candidate.solution_strategy,
+            &candidate.predecessor_sha256,
+            &candidate.candidate_sha256,
+            WeaknessEvidenceKind::ExplicitCodeHole,
+            &evidence_sha256,
+            "current Rust AST contains an executable todo or unimplemented hole",
+            &candidate.consequence_predictions,
+            &candidate.structural_repair_program,
+        )?;
         return Ok(Some(AutonomousSourcePatchRequest {
             schema: AUTONOMOUS_SOURCE_MUTATION_SCHEMA.to_string(),
             patch_id,
@@ -1390,6 +1614,7 @@ fn grammar_synthesized_request(
             core_self_approved: true,
             solution_strategy: candidate.solution_strategy,
             structural_repair_program: Some(candidate.structural_repair_program),
+            generalized_change: Some(generalized_change),
         }));
     }
     Ok(None)
@@ -1510,6 +1735,35 @@ pub fn discover_known_source_improvement_detailed(
             {
                 continue;
             }
+            let consequence_predictions = vec![
+                "preserve parity/divisibility semantics".to_string(),
+                "replace a manual predicate using a distinct bounded repair strategy".to_string(),
+                "retain only a method that passes format, regression, and release build gates"
+                    .to_string(),
+            ];
+            let evidence_sha256 = sha256(
+                format!(
+                    "{}:{}:{}",
+                    relative_path.display(),
+                    transformation,
+                    predecessor_sha256
+                )
+                .as_bytes(),
+            );
+            let generalized_change = generalized_change_for_candidate(
+                state_dir,
+                source_generation,
+                &relative_path,
+                &transformation,
+                solution_strategy,
+                &predecessor_sha256,
+                &candidate_sha256,
+                WeaknessEvidenceKind::StructuralSourceSmell,
+                &evidence_sha256,
+                "current source contains a mechanically recognized redundant predicate form",
+                &consequence_predictions,
+                &structural_repair_program,
+            )?;
             return Ok(SourceDiscoveryResult {
                 disposition: SourceDiscoveryDisposition::Candidate,
                 candidate: Some(AutonomousSourcePatchRequest {
@@ -1520,19 +1774,14 @@ pub fn discover_known_source_improvement_detailed(
                     candidate_source,
                     candidate_sha256,
                     transformation: transformation.clone(),
-                    consequence_predictions: vec![
-                    "preserve parity/divisibility semantics".to_string(),
-                    "replace a manual predicate using a distinct bounded repair strategy"
-                        .to_string(),
-                    "retain only a method that passes format, regression, and release build gates"
-                        .to_string(),
-                ],
+                    consequence_predictions,
                     predicted_value: KNOWN_REMAINDER_PREDICTED_VALUE,
                     source_generation,
                     core_generated: true,
                     core_self_approved: true,
                     solution_strategy: (*solution_strategy).to_string(),
                     structural_repair_program: Some(structural_repair_program),
+                    generalized_change: Some(generalized_change),
                 }),
             });
         }
@@ -1857,25 +2106,32 @@ mod tests {
             );
         }
 
-        let (request, receipt) = final_receipt.expect("fourth grammar composition succeeds");
+        let (request, receipt) =
+            final_receipt.expect("feedback-ranked grammar composition succeeds");
         assert!(receipt.validation.success);
-        assert_eq!(strategies.len(), 4);
+        assert_eq!(strategies.len(), 2);
         assert!(strategies[0].contains("BINARY_ADD"));
-        assert!(strategies[1].contains("BINARY_SUBTRACT"));
-        assert!(strategies[2].contains("BINARY_REVERSE_SUBTRACT"));
-        assert!(strategies[3].contains("BINARY_MULTIPLY"));
+        assert!(strategies[1].contains("BINARY_MULTIPLY"));
         let learned = load_repair_learning(&state, &repair_problem_id(&request))
             .unwrap()
             .expect("counterexample-guided learning record");
         let success = learned
             .learned_success
             .expect("learned successful composition");
-        assert_eq!(success.attempts_required, 4);
+        assert_eq!(success.attempts_required, 2);
         assert!(success.solution_strategy.contains("BINARY_MULTIPLY"));
-        assert_eq!(learned.attempts.len(), 4);
-        assert!(learned.attempts[..3]
-            .iter()
-            .all(|attempt| !attempt.succeeded && !attempt.diagnostic_sha256.is_empty()));
+        assert_eq!(learned.attempts.len(), 2);
+        let first_counterexample = learned.attempts[0]
+            .validation_counterexample
+            .as_ref()
+            .expect("public failure becomes a structured counterexample");
+        assert_eq!(
+            first_counterexample.numeric_relation,
+            Some(crate::generalized_self_application::NumericRelation::ExpectedGreaterThanObserved)
+        );
+        assert!(learned.attempts[1]
+            .derived_from_counterexample_ids
+            .contains(&first_counterexample.counterexample_id));
         fs::remove_dir_all(root).unwrap();
         fs::remove_dir_all(state).unwrap();
     }
@@ -1892,6 +2148,11 @@ mod tests {
             .structural_repair_program
             .as_ref()
             .is_some_and(|program| program.file_id == "src/lib.rs"));
+        assert!(request.generalized_change.as_ref().is_some_and(|change| {
+            !change.fixed_toggle_patch
+                && !change.one_generation_only
+                && change.source_generation == 3
+        }));
         let receipt = install_and_stage_source_patch(&policy, &state, &request).unwrap();
         assert!(receipt.installed);
         assert!(!receipt.rolled_back);
@@ -1918,6 +2179,7 @@ mod tests {
         assert!(learned.structural_repair_program_sha256.is_some());
         assert!(!learned.edit_atom_kinds.is_empty());
         assert!(learned.structural_postcondition_count > 0);
+        assert!(learned.generalized_change_sha256.is_some());
         fs::remove_dir_all(root).unwrap();
         fs::remove_dir_all(state).unwrap();
     }
@@ -1934,6 +2196,7 @@ mod tests {
         request.candidate_source = "pub fn broken( {\n".to_string();
         request.candidate_sha256 = sha256(request.candidate_source.as_bytes());
         request.structural_repair_program = None;
+        request.generalized_change = None;
         let receipt = install_and_stage_source_patch(&policy, &state, &request).unwrap();
         assert!(!receipt.installed);
         assert!(receipt.rolled_back);
@@ -1966,6 +2229,30 @@ mod tests {
         let error = install_and_stage_source_patch(&policy, &state, &request).unwrap_err();
 
         assert!(error.contains("STRUCTURAL_REPAIR_REPLAY_MISMATCH"));
+        assert_eq!(fs::read(root.join("src/lib.rs")).unwrap(), predecessor);
+        assert!(!state.join("source_mutations").exists());
+        fs::remove_dir_all(root).unwrap();
+        if state.exists() {
+            fs::remove_dir_all(state).unwrap();
+        }
+    }
+
+    #[test]
+    fn tampered_generalized_change_cannot_bypass_source_binding() {
+        let (root, policy) = fixture("generalized-change-tamper");
+        let state = external_state(&root);
+        let predecessor = fs::read(root.join("src/lib.rs")).unwrap();
+        let mut request = discover_known_source_improvement(&policy, &state, 11)
+            .unwrap()
+            .expect("generalized change");
+        request
+            .generalized_change
+            .as_mut()
+            .expect("change")
+            .solution_strategy = "FIXED_SEM9_TOGGLE_REPLAY".to_string();
+
+        let error = install_and_stage_source_patch(&policy, &state, &request).unwrap_err();
+        assert_eq!(error, "GENERALIZED_CHANGE_REQUEST_BINDING_FAILURE");
         assert_eq!(fs::read(root.join("src/lib.rs")).unwrap(), predecessor);
         assert!(!state.join("source_mutations").exists());
         fs::remove_dir_all(root).unwrap();

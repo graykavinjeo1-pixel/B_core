@@ -161,6 +161,11 @@ if ($RunSmokeTests) {
         -not $growthCheck.public_counterexample_guided_revision_enabled -or
         -not $growthCheck.successful_edit_composition_learning_enabled -or
         -not $growthCheck.bounded_compiler_diagnostic_cache_enabled -or
+        -not $growthCheck.dynamic_self_weakness_discovery_enabled -or
+        -not $growthCheck.generalized_change_ir_bound_to_source_edits -or
+        -not $growthCheck.validation_counterexamples_drive_candidate_ranking -or
+        -not $growthCheck.multi_generation_self_application_lineage_enabled -or
+        -not $growthCheck.fixed_sem9_toggle_replay_forbidden -or
         -not $growthCheck.core_self_approval_enabled -or
         -not $growthCheck.autonomous_source_patch_install_enabled -or
         -not $growthCheck.source_patch_rollback_enabled -or

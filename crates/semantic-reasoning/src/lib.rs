@@ -8,6 +8,7 @@ pub mod compiler_guided_repair;
 pub mod core_x0;
 pub mod experiment;
 pub mod fullstack_ops_knowledge;
+pub mod generalized_self_application;
 pub mod generative_growth;
 pub mod grammar_repair_synthesis;
 pub mod growth_supervisor;

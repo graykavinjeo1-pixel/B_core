@@ -287,6 +287,11 @@ if (-not $growthSelfCheck.pass -or
     -not $growthSelfCheck.public_counterexample_guided_revision_enabled -or
     -not $growthSelfCheck.successful_edit_composition_learning_enabled -or
     -not $growthSelfCheck.bounded_compiler_diagnostic_cache_enabled -or
+    -not $growthSelfCheck.dynamic_self_weakness_discovery_enabled -or
+    -not $growthSelfCheck.generalized_change_ir_bound_to_source_edits -or
+    -not $growthSelfCheck.validation_counterexamples_drive_candidate_ranking -or
+    -not $growthSelfCheck.multi_generation_self_application_lineage_enabled -or
+    -not $growthSelfCheck.fixed_sem9_toggle_replay_forbidden -or
     -not $growthSelfCheck.core_self_approval_enabled -or
     -not $growthSelfCheck.autonomous_source_patch_install_enabled -or
     -not $growthSelfCheck.source_patch_rollback_enabled -or

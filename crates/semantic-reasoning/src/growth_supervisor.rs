@@ -872,6 +872,11 @@ pub struct SelfCheck {
     pub public_counterexample_guided_revision_enabled: bool,
     pub successful_edit_composition_learning_enabled: bool,
     pub bounded_compiler_diagnostic_cache_enabled: bool,
+    pub dynamic_self_weakness_discovery_enabled: bool,
+    pub generalized_change_ir_bound_to_source_edits: bool,
+    pub validation_counterexamples_drive_candidate_ranking: bool,
+    pub multi_generation_self_application_lineage_enabled: bool,
+    pub fixed_sem9_toggle_replay_forbidden: bool,
     pub mutual_recursive_growth_observed: bool,
 }
 
@@ -934,6 +939,12 @@ pub fn self_check() -> SelfCheck {
             "FAILED_PUBLIC_OBSERVATIONS_SELECT_THE_NEXT_BOUNDED_GRAMMAR_COMPOSITION".to_string(),
             "SUCCESS_MEMORY_RETAINS_EDIT_ATOM_COMPOSITION_AND_STRUCTURAL_POSTCONDITIONS"
                 .to_string(),
+            "SEM9_SELF_APPLICATION_PRINCIPLES_GENERALIZE_FROM_CURRENT_OBSERVATIONS_NOT_FROZEN_WEAKNESS_FIXTURES"
+                .to_string(),
+            "GENERALIZED_CHANGE_IR_BINDS_DYNAMIC_WEAKNESS_TO_REPLAYABLE_SOURCE_EDIT_PROGRAM"
+                .to_string(),
+            "VALIDATION_COUNTEREXAMPLES_CHANGE_NEXT_CANDIDATE_SEARCH_ORDER".to_string(),
+            "SELF_APPLICATION_LINEAGE_CONTINUES_ACROSS_SOURCE_GENERATIONS".to_string(),
         ],
         bounded_failure_retry_enabled: true,
         successful_solution_learning_enabled: true,
@@ -973,6 +984,11 @@ pub fn self_check() -> SelfCheck {
         public_counterexample_guided_revision_enabled: true,
         successful_edit_composition_learning_enabled: true,
         bounded_compiler_diagnostic_cache_enabled: true,
+        dynamic_self_weakness_discovery_enabled: true,
+        generalized_change_ir_bound_to_source_edits: true,
+        validation_counterexamples_drive_candidate_ranking: true,
+        multi_generation_self_application_lineage_enabled: true,
+        fixed_sem9_toggle_replay_forbidden: true,
         mutual_recursive_growth_observed: false,
     }
 }
@@ -5168,7 +5184,12 @@ mod tests {
         assert!(check.bounded_failure_retry_enabled);
         assert!(check.successful_solution_learning_enabled);
         assert!(check.admitted_failure_revisit_after_growth_enabled);
-        assert_eq!(check.source_repair_engine_revision, 3);
+        assert_eq!(check.source_repair_engine_revision, 4);
+        assert!(check.dynamic_self_weakness_discovery_enabled);
+        assert!(check.generalized_change_ir_bound_to_source_edits);
+        assert!(check.validation_counterexamples_drive_candidate_ranking);
+        assert!(check.multi_generation_self_application_lineage_enabled);
+        assert!(check.fixed_sem9_toggle_replay_forbidden);
         assert!(check.operator_stop_survives_self_update);
         assert!(check.workspace_freeze_during_patch_validation);
         assert!(check.performance_aware_self_inspection);
