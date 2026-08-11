@@ -207,7 +207,12 @@ if ($fastPackaging) {
         throw "FAST_PACKAGE_REUSE_INPUT_INVALID"
     }
     Copy-Item -Path (Join-Path $baseBinRoot "*") -Destination $binRoot
-    $refreshed = @("b-core-growth-supervisor", "b-core-growth-verifier")
+    $refreshed = @(
+        "b-core-growth-supervisor",
+        "b-core-growth-verifier",
+        "sem26-run",
+        "sem26-probe"
+    )
     foreach ($name in $refreshed) {
         $binaryPath = Join-Path $refreshBinRoot ("$name.exe")
         if (-not (Test-Path -LiteralPath $binaryPath -PathType Leaf)) {
