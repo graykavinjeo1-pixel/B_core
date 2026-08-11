@@ -1727,6 +1727,31 @@ pub fn status(config_path: &Path) -> Result<SupervisorState, String> {
     load_state(&config)
 }
 
+pub fn preview_source_repair(config_path: &Path) -> Result<serde_json::Value, String> {
+    let config = load_config(config_path)?;
+    let state = load_state(&config)?;
+    let candidate = discover_known_source_improvement(
+        &config.source_mutation,
+        &config.state_dir,
+        state.generation,
+    )?;
+    Ok(match candidate {
+        Some(request) => serde_json::json!({
+            "candidate_available": true,
+            "patch_id": request.patch_id,
+            "relative_path": request.relative_path,
+            "transformation": request.transformation,
+            "solution_strategy": request.solution_strategy,
+            "source_generation": request.source_generation,
+            "candidate_sha256": request.candidate_sha256,
+        }),
+        None => serde_json::json!({
+            "candidate_available": false,
+            "source_generation": state.generation,
+        }),
+    })
+}
+
 fn validate_event(config: &GrowthSupervisorConfig, event: &mut WorkEvent) -> Result<(), String> {
     if event.event_id.is_empty() {
         event.event_id = json_sha256(event)?[..32].to_string();
@@ -3504,6 +3529,57 @@ fn report_from_state(
     }
 }
 
+fn attempt_discovered_source_repair(
+    config: &GrowthSupervisorConfig,
+    state: &mut SupervisorState,
+) -> Result<bool, String> {
+    if !config.source_mutation.enabled
+        || !config.source_mutation.auto_discover_known_transformations
+        || state.plateau_scans < config.resources.plateau_scans_before_wait
+        || state.autonomous_source_patches_installed >= config.source_mutation.max_installations
+    {
+        return Ok(false);
+    }
+    match discover_known_source_improvement(
+        &config.source_mutation,
+        &config.state_dir,
+        state.generation,
+    ) {
+        Ok(Some(request)) => {
+            state.autonomous_source_patch_attempts =
+                state.autonomous_source_patch_attempts.saturating_add(1);
+            match install_and_stage_source_patch(
+                &config.source_mutation,
+                &config.state_dir,
+                &request,
+            ) {
+                Ok(receipt) => {
+                    state.last_source_patch_receipt_sha256 = Some(receipt.receipt_sha256.clone());
+                    if receipt.installed && receipt.runtime_update_staged {
+                        state.autonomous_source_patches_installed =
+                            state.autonomous_source_patches_installed.saturating_add(1);
+                        state.stop_reason = Some("AUTONOMOUS_SOURCE_UPDATE_STAGED".to_string());
+                        return Ok(true);
+                    }
+                    if receipt.rolled_back {
+                        state.autonomous_source_patch_rollbacks =
+                            state.autonomous_source_patch_rollbacks.saturating_add(1);
+                    }
+                }
+                Err(_) => {
+                    state.autonomous_source_patch_rollbacks =
+                        state.autonomous_source_patch_rollbacks.saturating_add(1);
+                }
+            }
+        }
+        Ok(None) => {}
+        Err(_) => {
+            state.self_repair_capability_gaps = state.self_repair_capability_gaps.saturating_add(1);
+        }
+    }
+    Ok(false)
+}
+
 fn stop_if_requested(
     config: &GrowthSupervisorConfig,
     state: &mut SupervisorState,
@@ -3746,68 +3822,25 @@ fn step_without_lease(
         )?;
     } else if high.is_empty() {
         state.plateau_scans = state.plateau_scans.saturating_add(1);
-        if config.source_mutation.enabled
-            && config.source_mutation.auto_discover_known_transformations
-            && state.plateau_scans >= config.resources.plateau_scans_before_wait
-            && state.autonomous_source_patches_installed < config.source_mutation.max_installations
-        {
-            match discover_known_source_improvement(
-                &config.source_mutation,
-                &config.state_dir,
-                state.generation,
-            ) {
-                Ok(Some(request)) => {
-                    state.autonomous_source_patch_attempts =
-                        state.autonomous_source_patch_attempts.saturating_add(1);
-                    match install_and_stage_source_patch(
-                        &config.source_mutation,
-                        &config.state_dir,
-                        &request,
-                    ) {
-                        Ok(receipt) => {
-                            state.last_source_patch_receipt_sha256 =
-                                Some(receipt.receipt_sha256.clone());
-                            if receipt.installed && receipt.runtime_update_staged {
-                                state.autonomous_source_patches_installed =
-                                    state.autonomous_source_patches_installed.saturating_add(1);
-                                state.stop_reason =
-                                    Some("AUTONOMOUS_SOURCE_UPDATE_STAGED".to_string());
-                                state.active_runtime_ms = state.active_runtime_ms.saturating_add(
-                                    started.elapsed().as_millis().min(u128::from(u64::MAX)) as u64,
-                                );
-                                save_transition(
-                                    config,
-                                    &mut state,
-                                    SupervisorPhase::SafeStopped,
-                                    "CORE_AUTHORED_SOURCE_PATCH_VALIDATED_AND_STAGED_FOR_RESTART",
-                                )?;
-                                return Ok(report_from_state(
-                                    &state,
-                                    scan.baseline_created,
-                                    scan.files_scanned,
-                                    scan.observations.len(),
-                                    high_count,
-                                    None,
-                                    None,
-                                ));
-                            }
-                            if receipt.rolled_back {
-                                state.autonomous_source_patch_rollbacks =
-                                    state.autonomous_source_patch_rollbacks.saturating_add(1);
-                            }
-                        }
-                        Err(_) => {
-                            state.autonomous_source_patch_rollbacks =
-                                state.autonomous_source_patch_rollbacks.saturating_add(1);
-                        }
-                    }
-                }
-                Ok(None) => {}
-                Err(_) => {
-                    state.self_repair_capability_gaps =
-                        state.self_repair_capability_gaps.saturating_add(1);
-                }
-            }
+        if attempt_discovered_source_repair(config, &mut state)? {
+            state.active_runtime_ms = state
+                .active_runtime_ms
+                .saturating_add(started.elapsed().as_millis().min(u128::from(u64::MAX)) as u64);
+            save_transition(
+                config,
+                &mut state,
+                SupervisorPhase::SafeStopped,
+                "CORE_AUTHORED_SOURCE_PATCH_VALIDATED_AND_STAGED_FOR_RESTART",
+            )?;
+            return Ok(report_from_state(
+                &state,
+                scan.baseline_created,
+                scan.files_scanned,
+                scan.observations.len(),
+                high_count,
+                None,
+                None,
+            ));
         }
         let phase = if state.plateau_scans >= config.resources.plateau_scans_before_wait {
             SupervisorPhase::WaitingPlateau
@@ -3841,6 +3874,26 @@ fn step_without_lease(
         )?;
     } else if !campaign_preflight_ready(config, &high)? {
         state.plateau_scans = state.plateau_scans.saturating_add(1);
+        if attempt_discovered_source_repair(config, &mut state)? {
+            state.active_runtime_ms = state
+                .active_runtime_ms
+                .saturating_add(started.elapsed().as_millis().min(u128::from(u64::MAX)) as u64);
+            save_transition(
+                config,
+                &mut state,
+                SupervisorPhase::SafeStopped,
+                "DEFERRED_COHORT_TRIGGERED_SOURCE_REPAIR_STAGED_FOR_RESTART",
+            )?;
+            return Ok(report_from_state(
+                &state,
+                scan.baseline_created,
+                scan.files_scanned,
+                scan.observations.len(),
+                high_count,
+                None,
+                None,
+            ));
+        }
         save_transition(
             config,
             &mut state,

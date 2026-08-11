@@ -2,8 +2,8 @@ use std::env;
 use std::path::PathBuf;
 
 use semantic_reasoning::growth_supervisor::{
-    initialize, make_config, record_work_event, request_resume, request_stop, run_daemon,
-    self_check, status, supervisor_step, WorkEvent,
+    initialize, make_config, preview_source_repair, record_work_event, request_resume,
+    request_stop, run_daemon, self_check, status, supervisor_step, WorkEvent,
 };
 
 fn main() {
@@ -71,6 +71,15 @@ fn run() -> Result<(), String> {
                 serde_json::to_string_pretty(&status(&config)?).map_err(|e| e.to_string())?
             );
         }
+        "preview-source-repair" => {
+            let config = next_path(&mut args, "CONFIG_PATH_MISSING")?;
+            ensure_no_more(&mut args)?;
+            println!(
+                "{}",
+                serde_json::to_string_pretty(&preview_source_repair(&config)?)
+                    .map_err(|e| e.to_string())?
+            );
+        }
         "stop" => {
             let config = next_path(&mut args, "CONFIG_PATH_MISSING")?;
             ensure_no_more(&mut args)?;
@@ -125,5 +134,5 @@ fn ensure_no_more(args: &mut impl Iterator<Item = std::ffi::OsString>) -> Result
 }
 
 fn usage() -> String {
-    "USAGE:<self-check|make-config|init|step|run|status|stop|resume|record-event> ...".to_string()
+    "USAGE:<self-check|make-config|init|step|run|status|preview-source-repair|stop|resume|record-event> ...".to_string()
 }
