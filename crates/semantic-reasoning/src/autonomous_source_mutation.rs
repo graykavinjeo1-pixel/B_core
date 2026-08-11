@@ -22,6 +22,7 @@ pub const AUTONOMOUS_SOURCE_MUTATION_SCHEMA: &str = "B_CORE_AUTONOMOUS_SOURCE_MU
 pub const SELF_UPDATE_HANDOFF_FILE: &str = "SELF_UPDATE_READY.json";
 pub const SOURCE_REPAIR_LEARNING_SCHEMA: &str = "B_CORE_SOURCE_REPAIR_LEARNING_1";
 pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 2;
+const KNOWN_REMAINDER_PREDICTED_VALUE: u16 = 35;
 const KNOWN_REMAINDER_STRATEGIES: [&str; 4] = [
     "TYPED_IS_MULTIPLE_OF",
     "PARENTHESIZED_IS_MULTIPLE_OF",
@@ -35,6 +36,14 @@ fn default_source_repair_attempts() -> u8 {
 
 fn is_default_source_repair_attempts(value: &u8) -> bool {
     *value == default_source_repair_attempts()
+}
+
+fn default_minimum_predicted_value() -> u16 {
+    60
+}
+
+fn is_default_minimum_predicted_value(value: &u16) -> bool {
+    *value == default_minimum_predicted_value()
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -53,6 +62,11 @@ pub struct AutonomousSourceMutationPolicy {
         skip_serializing_if = "is_default_source_repair_attempts"
     )]
     pub max_attempts_per_problem: u8,
+    #[serde(
+        default = "default_minimum_predicted_value",
+        skip_serializing_if = "is_default_minimum_predicted_value"
+    )]
+    pub minimum_predicted_value: u16,
 }
 
 impl Default for AutonomousSourceMutationPolicy {
@@ -68,6 +82,7 @@ impl Default for AutonomousSourceMutationPolicy {
             max_installations: 64,
             validation_timeout_ms: 15 * 60 * 1_000,
             max_attempts_per_problem: default_source_repair_attempts(),
+            minimum_predicted_value: default_minimum_predicted_value(),
         }
     }
 }
@@ -174,6 +189,8 @@ pub struct AutonomousSourcePatchReceipt {
     pub failure_reason: Option<String>,
     #[serde(default)]
     pub format_check: Option<LocalCommandReceipt>,
+    #[serde(default)]
+    pub compile_check: Option<LocalCommandReceipt>,
     pub validation: LocalCommandReceipt,
     pub release_build: Option<LocalCommandReceipt>,
     pub runtime_update_staged: bool,
@@ -204,6 +221,7 @@ pub fn validate_policy(policy: &AutonomousSourceMutationPolicy) -> Result<(), St
         || policy.max_installations == 0
         || policy.validation_timeout_ms < 1_000
         || !(3..=4).contains(&policy.max_attempts_per_problem)
+        || policy.minimum_predicted_value > 100
     {
         return Err("SOURCE_MUTATION_BOUND_INVALID".to_string());
     }
@@ -563,6 +581,8 @@ pub fn install_and_stage_source_patch(
         || !request.core_generated
         || !request.core_self_approved
         || request.patch_id.is_empty()
+        || request.predicted_value < policy.minimum_predicted_value
+        || request.predicted_value > 100
         || request.candidate_source.len() as u64 > policy.max_candidate_bytes
         || sha256(request.candidate_source.as_bytes()) != request.candidate_sha256
     {
@@ -651,7 +671,56 @@ pub fn install_and_stage_source_patch(
             rolled_back: true,
             failure_reason: Some("FORMAT_CHECK_FAILED".to_string()),
             format_check: Some(format_check.clone()),
+            compile_check: None,
             validation: format_check,
+            release_build: None,
+            runtime_update_staged: false,
+            rollback_source,
+            workspace_fingerprint_before: workspace_fingerprint_before.clone(),
+            workspace_fingerprint_after,
+            workspace_stable_during_validation,
+            receipt_sha256: String::new(),
+        };
+        receipt.receipt_sha256 = receipt_hash(&receipt)?;
+        write_immutable_json(&mutation_root.join("receipt.json"), &receipt)?;
+        record_source_repair_outcome(policy, state_dir, request, &receipt)?;
+        return Ok(receipt);
+    }
+
+    let compile_check = match command_receipt(
+        &policy.cargo_executable,
+        &["check", "-p", "semantic-reasoning", "--lib", "--quiet"],
+        &policy.source_root,
+        &policy.build_target_dir,
+        policy.validation_timeout_ms,
+        &mutation_root.join("compile-check.log"),
+    ) {
+        Ok(receipt) => receipt,
+        Err(error) => {
+            restore_target(&target, &rollback_sibling)?;
+            return Err(error);
+        }
+    };
+    if !compile_check.success {
+        restore_target(&target, &rollback_sibling)?;
+        let workspace_fingerprint_after =
+            workspace_semantic_fingerprint(&policy.source_root, &target)?;
+        let workspace_stable_during_validation =
+            workspace_fingerprint_before == workspace_fingerprint_after;
+        let mut receipt = AutonomousSourcePatchReceipt {
+            schema: AUTONOMOUS_SOURCE_MUTATION_SCHEMA.to_string(),
+            patch_id: request.patch_id.clone(),
+            relative_path: request.relative_path.clone(),
+            predecessor_sha256: request.predecessor_sha256.clone(),
+            candidate_sha256: request.candidate_sha256.clone(),
+            core_generated: true,
+            core_self_approved: true,
+            installed: false,
+            rolled_back: true,
+            failure_reason: Some("COMPILE_CHECK_FAILED".to_string()),
+            format_check: Some(format_check),
+            compile_check: Some(compile_check.clone()),
+            validation: compile_check,
             release_build: None,
             runtime_update_staged: false,
             rollback_source,
@@ -698,6 +767,7 @@ pub fn install_and_stage_source_patch(
             rolled_back: true,
             failure_reason: Some("REGRESSION_VALIDATION_FAILED".to_string()),
             format_check: Some(format_check),
+            compile_check: Some(compile_check),
             validation,
             release_build: None,
             runtime_update_staged: false,
@@ -754,6 +824,7 @@ pub fn install_and_stage_source_patch(
             rolled_back: true,
             failure_reason: Some("RELEASE_BUILD_FAILED".to_string()),
             format_check: Some(format_check),
+            compile_check: Some(compile_check),
             validation,
             release_build: Some(release_build),
             runtime_update_staged: false,
@@ -793,6 +864,7 @@ pub fn install_and_stage_source_patch(
                 "TARGET_CHANGED_DURING_VALIDATION".to_string()
             }),
             format_check: Some(format_check),
+            compile_check: Some(compile_check),
             validation,
             release_build: Some(release_build),
             runtime_update_staged: false,
@@ -842,6 +914,7 @@ pub fn install_and_stage_source_patch(
         rolled_back: false,
         failure_reason: None,
         format_check: Some(format_check),
+        compile_check: Some(compile_check),
         validation,
         release_build: Some(release_build),
         runtime_update_staged: true,
@@ -1034,6 +1107,9 @@ pub fn discover_known_source_improvement(
     if !policy.enabled || !policy.auto_discover_known_transformations {
         return Ok(None);
     }
+    if KNOWN_REMAINDER_PREDICTED_VALUE < policy.minimum_predicted_value {
+        return Ok(None);
+    }
     for path in rust_source_files(&policy.source_root)? {
         let bytes = fs::read(&path)
             .map_err(|error| format!("SOURCE_DISCOVERY_READ:{}:{error}", path.display()))?;
@@ -1118,7 +1194,7 @@ pub fn discover_known_source_improvement(
                     "retain only a method that passes format, regression, and release build gates"
                         .to_string(),
                 ],
-                predicted_value: 78,
+                predicted_value: KNOWN_REMAINDER_PREDICTED_VALUE,
                 source_generation,
                 core_generated: true,
                 core_self_approved: true,
@@ -1160,6 +1236,7 @@ mod tests {
             rolled_back: !installed,
             failure_reason: (!installed).then(|| "SYNTHETIC_FAILURE".to_string()),
             format_check: Some(command.clone()),
+            compile_check: Some(command.clone()),
             validation: command.clone(),
             release_build: installed.then_some(command),
             runtime_update_staged: installed,
@@ -1231,6 +1308,7 @@ mod tests {
             max_installations: 4,
             validation_timeout_ms: 120_000,
             max_attempts_per_problem: 4,
+            minimum_predicted_value: 0,
         };
         (root, policy)
     }
@@ -1279,8 +1357,21 @@ mod tests {
         let policy = AutonomousSourceMutationPolicy::default();
         let serialized = serde_json::to_value(&policy).unwrap();
         assert!(serialized.get("max_attempts_per_problem").is_none());
+        assert!(serialized.get("minimum_predicted_value").is_none());
         let restored: AutonomousSourceMutationPolicy = serde_json::from_value(serialized).unwrap();
         assert_eq!(restored.max_attempts_per_problem, 4);
+        assert_eq!(restored.minimum_predicted_value, 60);
+    }
+
+    #[test]
+    fn low_value_cosmetic_discovery_is_skipped_before_validation() {
+        let (root, mut policy) = fixture("utility-gate");
+        policy.minimum_predicted_value = 60;
+        let state = external_state(&root);
+        assert!(discover_known_source_improvement(&policy, &state, 1)
+            .unwrap()
+            .is_none());
+        fs::remove_dir_all(root).unwrap();
     }
 
     #[test]

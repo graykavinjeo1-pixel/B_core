@@ -23,6 +23,9 @@ pub enum InternalBottleneckClass {
     MutualRecursiveBootstrapGap,
     ScanTraversalOverhead,
     RepeatedVerificationFailure,
+    CampaignCohortBlocked,
+    SourceRepairLowYield,
+    VerificationCostDominance,
     QuietIdle,
 }
 
@@ -34,6 +37,9 @@ impl InternalBottleneckClass {
             Self::MutualRecursiveBootstrapGap => "MUTUAL_RECURSIVE_BOOTSTRAP_GAP",
             Self::ScanTraversalOverhead => "SCAN_TRAVERSAL_OVERHEAD",
             Self::RepeatedVerificationFailure => "REPEATED_VERIFICATION_FAILURE",
+            Self::CampaignCohortBlocked => "CAMPAIGN_COHORT_BLOCKED",
+            Self::SourceRepairLowYield => "SOURCE_REPAIR_LOW_YIELD",
+            Self::VerificationCostDominance => "VERIFICATION_COST_DOMINANCE",
             Self::QuietIdle => "QUIET_IDLE_NOT_A_DEFECT",
         }
     }
@@ -67,6 +73,14 @@ pub struct SelfInspectionInput {
     pub evaluator_required_challenge_cases: u64,
     pub consecutive_failures: u32,
     pub plateau_scans: u32,
+    pub unconsumed_high_observations: usize,
+    pub cohort_preflight_ready: bool,
+    pub source_patch_attempts: u64,
+    pub source_patch_installations: u64,
+    pub source_patch_rollbacks: u64,
+    pub source_patch_consecutive_failures: u32,
+    pub source_patch_validation_ms: u64,
+    pub active_runtime_ms: u64,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -199,6 +213,59 @@ fn repair_composition() -> RepairCompositionLessonIR {
 
 fn candidate_hypotheses(input: &SelfInspectionInput) -> Vec<InternalHypothesis> {
     let mut hypotheses = Vec::new();
+    if input.unconsumed_high_observations > 0 && !input.cohort_preflight_ready {
+        hypotheses.push(InternalHypothesis {
+            bottleneck: InternalBottleneckClass::CampaignCohortBlocked,
+            confidence_millis: 995,
+            evidence: vec![
+                format!(
+                    "unconsumed_high_observations={}",
+                    input.unconsumed_high_observations
+                ),
+                "high-value evidence exists but cannot form an implementation-plus-verification cohort"
+                    .to_string(),
+            ],
+            selected: false,
+        });
+    }
+    if input.source_patch_attempts >= 8
+        && input.source_patch_rollbacks.saturating_mul(100)
+            >= input.source_patch_attempts.saturating_mul(60)
+    {
+        hypotheses.push(InternalHypothesis {
+            bottleneck: InternalBottleneckClass::SourceRepairLowYield,
+            confidence_millis: 990,
+            evidence: vec![
+                format!("source_patch_attempts={}", input.source_patch_attempts),
+                format!(
+                    "source_patch_installations={}",
+                    input.source_patch_installations
+                ),
+                format!("source_patch_rollbacks={}", input.source_patch_rollbacks),
+                "rollback ratio is too high for an efficient growth operator".to_string(),
+            ],
+            selected: false,
+        });
+    }
+    if input.source_patch_validation_ms >= 10 * 60 * 1_000
+        && input.active_runtime_ms > 0
+        && input.source_patch_validation_ms.saturating_mul(100)
+            >= input.active_runtime_ms.saturating_mul(50)
+    {
+        hypotheses.push(InternalHypothesis {
+            bottleneck: InternalBottleneckClass::VerificationCostDominance,
+            confidence_millis: 985,
+            evidence: vec![
+                format!(
+                    "source_patch_validation_ms={}",
+                    input.source_patch_validation_ms
+                ),
+                format!("active_runtime_ms={}", input.active_runtime_ms),
+                "patch verification consumes at least half of active growth time".to_string(),
+            ],
+            selected: false,
+        });
+    }
     if input.pending_work_events > 0 && input.replayed_unchanged_work_events > 0 {
         hypotheses.push(InternalHypothesis {
             bottleneck: InternalBottleneckClass::WorkEventAttributionGap,
@@ -267,14 +334,20 @@ fn candidate_hypotheses(input: &SelfInspectionInput) -> Vec<InternalHypothesis> 
             selected: false,
         });
     }
-    if input.consecutive_failures >= 2 {
+    if input.consecutive_failures >= 2 || input.source_patch_consecutive_failures >= 2 {
         hypotheses.push(InternalHypothesis {
             bottleneck: InternalBottleneckClass::RepeatedVerificationFailure,
             confidence_millis: 700,
-            evidence: vec![format!(
-                "consecutive_failures={}",
-                input.consecutive_failures
-            )],
+            evidence: vec![
+                format!(
+                    "campaign_consecutive_failures={}",
+                    input.consecutive_failures
+                ),
+                format!(
+                    "source_patch_consecutive_failures={}",
+                    input.source_patch_consecutive_failures
+                ),
+            ],
             selected: false,
         });
     }
@@ -365,6 +438,46 @@ fn diagnostic_experiment(
             causal_support: false,
             mutates_research_state: false,
         },
+        InternalBottleneckClass::CampaignCohortBlocked => InternalDiagnosticExperiment {
+            experiment_id: "MIXED_ROLE_COHORT_RECONSTRUCTION".to_string(),
+            hypothesis: selected,
+            control_observable: format!(
+                "unconsumed_high_observations={}; preflight_ready=false",
+                input.unconsumed_high_observations
+            ),
+            intervention_observable:
+                "recognize implementation evidence inside production files that also contain tests"
+                    .to_string(),
+            causal_support: input.unconsumed_high_observations > 0
+                && !input.cohort_preflight_ready,
+            mutates_research_state: false,
+        },
+        InternalBottleneckClass::SourceRepairLowYield => InternalDiagnosticExperiment {
+            experiment_id: "SOURCE_REPAIR_YIELD_ABLATION".to_string(),
+            hypothesis: selected,
+            control_observable: format!(
+                "attempts={}; rollbacks={}",
+                input.source_patch_attempts, input.source_patch_rollbacks
+            ),
+            intervention_observable:
+                "reject low-predicted-value maintenance rewrites before compilation".to_string(),
+            causal_support: input.source_patch_attempts >= 8
+                && input.source_patch_rollbacks.saturating_mul(100)
+                    >= input.source_patch_attempts.saturating_mul(60),
+            mutates_research_state: false,
+        },
+        InternalBottleneckClass::VerificationCostDominance => InternalDiagnosticExperiment {
+            experiment_id: "STAGED_PATCH_VALIDATION_COST_MODEL".to_string(),
+            hypothesis: selected,
+            control_observable: format!(
+                "validation_ms={}; active_runtime_ms={}",
+                input.source_patch_validation_ms, input.active_runtime_ms
+            ),
+            intervention_observable:
+                "compile-check before full regression and release validation".to_string(),
+            causal_support: input.source_patch_validation_ms >= 10 * 60 * 1_000,
+            mutates_research_state: false,
+        },
         InternalBottleneckClass::QuietIdle => InternalDiagnosticExperiment {
             experiment_id: "QUIET_IDLE_GUARD".to_string(),
             hypothesis: selected,
@@ -410,11 +523,26 @@ pub fn inspect(input: SelfInspectionInput) -> Result<AutonomousSelfInspectionRec
         InternalBottleneckClass::RepeatedVerificationFailure => {
             (RepairDisposition::CapabilityGap, None, true)
         }
+        InternalBottleneckClass::CampaignCohortBlocked => (
+            RepairDisposition::RuntimeRepairActive,
+            Some("MIXED_PRODUCTION_FILE_IMPLEMENTATION_EVIDENCE_ROUTING".to_string()),
+            true,
+        ),
+        InternalBottleneckClass::SourceRepairLowYield => (
+            RepairDisposition::RuntimeRepairActive,
+            Some("PREDICTED_UTILITY_GATE_BEFORE_SOURCE_VALIDATION".to_string()),
+            true,
+        ),
+        InternalBottleneckClass::VerificationCostDominance => (
+            RepairDisposition::RuntimeRepairActive,
+            Some("STAGED_COMPILE_CHECK_BEFORE_FULL_REGRESSION".to_string()),
+            true,
+        ),
         InternalBottleneckClass::QuietIdle => (RepairDisposition::SafeWait, None, false),
     };
     let diagnostic_id = sha256(
         format!(
-            "{}:{}:{}:{}:{}:{}:{}:{}:{}:{}",
+            "{}:{}:{}:{}:{}:{}:{}:{}:{}:{}:{}:{}:{}:{}:{}",
             selected.label(),
             input.files_scanned,
             input.files_reused,
@@ -424,7 +552,12 @@ pub fn inspect(input: SelfInspectionInput) -> Result<AutonomousSelfInspectionRec
             input.consecutive_failures,
             input.campaigns_started,
             input.mutual_revalidation_events,
-            input.evaluator_challenge_cases
+            input.evaluator_challenge_cases,
+            input.unconsumed_high_observations,
+            input.source_patch_attempts,
+            input.source_patch_rollbacks,
+            input.source_patch_consecutive_failures,
+            input.source_patch_validation_ms
         )
         .as_bytes(),
     );
@@ -480,6 +613,14 @@ mod tests {
             evaluator_required_challenge_cases: 10,
             consecutive_failures: 0,
             plateau_scans: 3,
+            unconsumed_high_observations: 0,
+            cohort_preflight_ready: false,
+            source_patch_attempts: 0,
+            source_patch_installations: 0,
+            source_patch_rollbacks: 0,
+            source_patch_consecutive_failures: 0,
+            source_patch_validation_ms: 0,
+            active_runtime_ms: 0,
         }
     }
 
@@ -566,6 +707,55 @@ mod tests {
         assert_eq!(
             receipt.repair_disposition,
             RepairDisposition::ProposalRequired
+        );
+    }
+
+    #[test]
+    fn blocked_high_value_cohort_is_not_called_quiet_idle() {
+        let mut value = input();
+        value.unconsumed_high_observations = 16;
+        value.cohort_preflight_ready = false;
+        let receipt = inspect(value).expect("inspect");
+        assert_eq!(
+            receipt.selected_bottleneck,
+            InternalBottleneckClass::CampaignCohortBlocked
+        );
+        assert_eq!(
+            receipt.repair_disposition,
+            RepairDisposition::RuntimeRepairActive
+        );
+        assert!(receipt.experiments[0].causal_support);
+    }
+
+    #[test]
+    fn high_source_rollback_ratio_is_visible_to_self_inspection() {
+        let mut value = input();
+        value.source_patch_attempts = 20;
+        value.source_patch_installations = 5;
+        value.source_patch_rollbacks = 15;
+        value.source_patch_consecutive_failures = 3;
+        let receipt = inspect(value).expect("inspect");
+        assert_eq!(
+            receipt.selected_bottleneck,
+            InternalBottleneckClass::SourceRepairLowYield
+        );
+        assert!(receipt.actionable_defect);
+        assert!(receipt.experiments[0].causal_support);
+    }
+
+    #[test]
+    fn verification_cost_dominance_is_measured_separately_from_correctness() {
+        let mut value = input();
+        value.source_patch_validation_ms = 40 * 60 * 1_000;
+        value.active_runtime_ms = 60 * 60 * 1_000;
+        let receipt = inspect(value).expect("inspect");
+        assert_eq!(
+            receipt.selected_bottleneck,
+            InternalBottleneckClass::VerificationCostDominance
+        );
+        assert_eq!(
+            receipt.repair_disposition,
+            RepairDisposition::RuntimeRepairActive
         );
     }
 }

@@ -24,7 +24,8 @@ use crate::autonomous_self_inspection::{
 };
 use crate::autonomous_source_mutation::{
     discover_known_source_improvement, install_and_stage_source_patch, validate_policy,
-    AutonomousSourceMutationPolicy, AutonomousSourcePatchRequest, SOURCE_REPAIR_ENGINE_REVISION,
+    AutonomousSourceMutationPolicy, AutonomousSourcePatchReceipt, AutonomousSourcePatchRequest,
+    SOURCE_REPAIR_ENGINE_REVISION,
 };
 use crate::generative_growth::{
     promote_generative_cycle, run_generative_cycle, GenerativeCycleResult, GenerativeGrowthMemory,
@@ -39,6 +40,7 @@ const MAX_SUMMARY_BYTES: usize = 512;
 const SCAN_WATCHDOG_TICK_MS: u64 = 1_000;
 const MAX_SCAN_RUNTIME_MS: u64 = 60_000;
 const FULL_HASH_CANARY_INTERVAL: u64 = 64;
+const MAX_QUIET_IDLE_POLL_INTERVAL_MS: u64 = 60_000;
 const BASELINE_MAX_HASHED_FILES_PER_SCAN: usize = 1_024;
 const BASELINE_MAX_BYTES_PER_SCAN: u64 = 64 * 1024 * 1024;
 
@@ -261,6 +263,10 @@ pub struct SupervisorState {
     pub autonomous_source_patches_installed: u64,
     #[serde(default)]
     pub autonomous_source_patch_rollbacks: u64,
+    #[serde(default)]
+    pub autonomous_source_patch_validation_ms: u64,
+    #[serde(default)]
+    pub source_patch_consecutive_failures: u32,
     #[serde(default)]
     pub last_source_patch_receipt_sha256: Option<String>,
 }
@@ -657,6 +663,8 @@ pub struct StepReport {
     pub autonomous_source_patch_attempts: u64,
     pub autonomous_source_patches_installed: u64,
     pub autonomous_source_patch_rollbacks: u64,
+    pub autonomous_source_patch_validation_ms: u64,
+    pub source_patch_consecutive_failures: u32,
     pub last_source_patch_receipt_sha256: Option<String>,
 }
 
@@ -687,6 +695,11 @@ pub struct SelfCheck {
     pub source_repair_engine_revision: u64,
     pub operator_stop_survives_self_update: bool,
     pub workspace_freeze_during_patch_validation: bool,
+    pub performance_aware_self_inspection: bool,
+    pub predicted_utility_source_gate: bool,
+    pub staged_source_validation: bool,
+    pub adaptive_idle_polling: bool,
+    pub mixed_production_file_role_detection: bool,
     pub mutual_recursive_growth_observed: bool,
 }
 
@@ -716,6 +729,10 @@ pub fn self_check() -> SelfCheck {
             "RUST_MATCH_FAT_ARROW_IS_NOT_ASSIGNMENT_BOUNDARY".to_string(),
             "OPERATOR_STOP_MUST_SURVIVE_AUTONOMOUS_BINARY_SWAP".to_string(),
             "PATCH_VALIDATION_REJECTS_CONCURRENT_NON_TARGET_SOURCE_CHANGES".to_string(),
+            "MIXED_PRODUCTION_FILES_CONTRIBUTE_IMPLEMENTATION_AND_TEST_EVIDENCE".to_string(),
+            "SOURCE_REPAIR_ROLLBACK_RATIO_IS_A_GROWTH_EFFICIENCY_SIGNAL".to_string(),
+            "LOW_PREDICTED_VALUE_SOURCE_REWRITES_STOP_BEFORE_COMPILATION".to_string(),
+            "COMPILE_CHECK_PRECEDES_FULL_REGRESSION_AND_RELEASE_VALIDATION".to_string(),
         ],
         bounded_failure_retry_enabled: true,
         successful_solution_learning_enabled: true,
@@ -723,6 +740,11 @@ pub fn self_check() -> SelfCheck {
         source_repair_engine_revision: SOURCE_REPAIR_ENGINE_REVISION,
         operator_stop_survives_self_update: true,
         workspace_freeze_during_patch_validation: true,
+        performance_aware_self_inspection: true,
+        predicted_utility_source_gate: true,
+        staged_source_validation: true,
+        adaptive_idle_polling: true,
+        mixed_production_file_role_detection: true,
         mutual_recursive_growth_observed: false,
     }
 }
@@ -1104,9 +1126,44 @@ fn fingerprint_file_with_metadata(
     }))
 }
 
-fn classify_work_kind(path: &Path, features: &StructuralFeatures) -> WorkKind {
+fn path_is_dedicated_test(path: &Path) -> bool {
     let lower = path.to_string_lossy().to_ascii_lowercase();
-    if lower.contains("test") || features.test_tokens > 0 {
+    let normalized = lower.replace('\\', "/");
+    let file_name = normalized.rsplit('/').next().unwrap_or("");
+    normalized.contains("/tests/")
+        || normalized.contains("/test/")
+        || file_name.starts_with("test_")
+        || file_name.ends_with("_test.rs")
+        || file_name.ends_with("_test.py")
+        || file_name.ends_with(".test.js")
+        || file_name.ends_with(".test.ts")
+        || file_name.ends_with(".spec.js")
+        || file_name.ends_with(".spec.ts")
+}
+
+fn classify_work_kind(
+    path: &Path,
+    features: &StructuralFeatures,
+    previous: Option<&StructuralFeatures>,
+) -> WorkKind {
+    let lower = path.to_string_lossy().to_ascii_lowercase();
+    let prior = previous.cloned().unwrap_or_default();
+    let test_delta = features.test_tokens.saturating_sub(prior.test_tokens);
+    let implementation_delta = features
+        .public_symbols
+        .saturating_sub(prior.public_symbols)
+        .saturating_add(features.branch_tokens.saturating_sub(prior.branch_tokens))
+        .saturating_add(
+            features
+                .validation_tokens
+                .saturating_sub(prior.validation_tokens),
+        )
+        .saturating_add(
+            features
+                .error_handling_tokens
+                .saturating_sub(prior.error_handling_tokens),
+        );
+    if path_is_dedicated_test(path) || (test_delta > 0 && implementation_delta == 0) {
         WorkKind::RegressionTest
     } else if [".tsx", ".jsx", ".css", ".scss", ".html"]
         .iter()
@@ -1122,7 +1179,15 @@ fn classify_work_kind(path: &Path, features: &StructuralFeatures) -> WorkKind {
         WorkKind::OperationsChange
     } else if lower.ends_with(".md") {
         WorkKind::Documentation
-    } else if features.error_handling_tokens > 0 && features.validation_tokens > 0 {
+    } else if features
+        .error_handling_tokens
+        .saturating_sub(prior.error_handling_tokens)
+        > 0
+        || features
+            .validation_tokens
+            .saturating_sub(prior.validation_tokens)
+            > 0
+    {
         WorkKind::DefectRepair
     } else {
         WorkKind::CodeChange
@@ -1152,9 +1217,13 @@ fn classify_observation(
     let mut signals = BTreeSet::new();
     let mut roles = BTreeSet::new();
     let mut reasons = Vec::new();
-    let kind = event
-        .map(|value| value.kind)
-        .unwrap_or_else(|| classify_work_kind(Path::new(&logical_path), &current.features));
+    let kind = event.map(|value| value.kind).unwrap_or_else(|| {
+        classify_work_kind(
+            Path::new(&logical_path),
+            &current.features,
+            previous.map(|value| &value.features),
+        )
+    });
     let actor = event
         .map(|value| value.actor)
         .unwrap_or(WorkActor::UnknownLocalWriter);
@@ -1720,6 +1789,8 @@ pub fn initialize(config_path: &Path) -> Result<SupervisorState, String> {
         autonomous_source_patch_attempts: 0,
         autonomous_source_patches_installed: 0,
         autonomous_source_patch_rollbacks: 0,
+        autonomous_source_patch_validation_ms: 0,
+        source_patch_consecutive_failures: 0,
         last_source_patch_receipt_sha256: None,
     };
     save_transition(
@@ -2147,10 +2218,30 @@ fn load_unconsumed_high_observations(
 }
 
 fn derive_composition_recipe(observations: &[LearningObservation]) -> Vec<String> {
-    let roles = observations
+    let mut roles = observations
         .iter()
         .flat_map(|observation| observation.composition_roles.iter().cloned())
         .collect::<BTreeSet<_>>();
+    // A production source file can contain both implementation and its local
+    // tests.  Treating the entire file as test-only starves the campaign of an
+    // implementation role even when capability, validation, or error-handling
+    // structure changed in the same observation.
+    if observations.iter().any(|observation| {
+        !path_is_dedicated_test(Path::new(&observation.logical_path))
+            && observation.signals.iter().any(|signal| {
+                matches!(
+                    signal.as_str(),
+                    "CAPABILITY_SURFACE_ADDED"
+                        | "VALIDATION_ADDED"
+                        | "ERROR_HANDLING_ADDED"
+                        | "DEFECT_REPAIR"
+                        | "REFACTOR"
+                        | "CODE_CHANGE"
+                )
+            })
+    }) {
+        roles.insert("IMPLEMENTATION".to_string());
+    }
     let mut recipe = Vec::new();
     for role in [
         "BACKEND_PROVIDER",
@@ -2293,6 +2384,30 @@ fn selected_campaign_observations(
     config: &GrowthSupervisorConfig,
     observations: &[LearningObservation],
 ) -> Vec<LearningObservation> {
+    const COHERENT_COHORT_WINDOW_MS: u64 = 30 * 60 * 1_000;
+    for anchor in observations {
+        let anchor_root = anchor.logical_path.split('/').next().unwrap_or("");
+        let mut seen_paths = BTreeSet::new();
+        let coherent = observations
+            .iter()
+            .filter(|observation| {
+                observation.logical_path.split('/').next().unwrap_or("") == anchor_root
+                    && observation.observed_at_ms.abs_diff(anchor.observed_at_ms)
+                        <= COHERENT_COHORT_WINDOW_MS
+                    && seen_paths.insert(observation.logical_path.clone())
+            })
+            .take(config.resources.max_observations_per_campaign)
+            .cloned()
+            .collect::<Vec<_>>();
+        if !coherent.is_empty()
+            && build_lesson(&coherent)
+                .map(|lesson| lesson_has_verification_evidence(&lesson))
+                .unwrap_or(false)
+        {
+            return coherent;
+        }
+    }
+
     let mut selected = observations
         .iter()
         .take(config.resources.max_observations_per_campaign)
@@ -3534,8 +3649,94 @@ fn report_from_state(
         autonomous_source_patch_attempts: state.autonomous_source_patch_attempts,
         autonomous_source_patches_installed: state.autonomous_source_patches_installed,
         autonomous_source_patch_rollbacks: state.autonomous_source_patch_rollbacks,
+        autonomous_source_patch_validation_ms: state.autonomous_source_patch_validation_ms,
+        source_patch_consecutive_failures: state.source_patch_consecutive_failures,
         last_source_patch_receipt_sha256: state.last_source_patch_receipt_sha256.clone(),
     }
+}
+
+fn source_patch_validation_duration(receipt: &AutonomousSourcePatchReceipt) -> u64 {
+    let mut seen = BTreeSet::new();
+    let mut total = 0_u64;
+    for command in receipt
+        .format_check
+        .iter()
+        .chain(receipt.compile_check.iter())
+        .chain(std::iter::once(&receipt.validation))
+        .chain(receipt.release_build.iter())
+    {
+        let identity = format!(
+            "{}:{}:{}:{}",
+            command.program,
+            command.args.join("\u{1f}"),
+            command.output_sha256,
+            command.duration_ms
+        );
+        if seen.insert(identity) {
+            total = total.saturating_add(command.duration_ms);
+        }
+    }
+    total
+}
+
+fn reconcile_source_patch_validation_cost(
+    config: &GrowthSupervisorConfig,
+    state: &mut SupervisorState,
+) -> Result<(), String> {
+    if state.autonomous_source_patch_validation_ms > 0
+        || state.autonomous_source_patch_attempts == 0
+    {
+        return Ok(());
+    }
+    let root = config.state_dir.join("source_mutations");
+    let mut total = 0_u64;
+    for entry in
+        fs::read_dir(&root).map_err(|error| format!("SOURCE_MUTATION_METRICS_DIR:{error}"))?
+    {
+        let entry = entry.map_err(|error| format!("SOURCE_MUTATION_METRICS_ENTRY:{error}"))?;
+        if !entry
+            .file_type()
+            .map_err(|error| format!("SOURCE_MUTATION_METRICS_TYPE:{error}"))?
+            .is_dir()
+        {
+            continue;
+        }
+        let path = entry.path().join("receipt.json");
+        if path.is_file() {
+            let receipt: AutonomousSourcePatchReceipt = read_json(&path)?;
+            total = total.saturating_add(source_patch_validation_duration(&receipt));
+        }
+    }
+    state.autonomous_source_patch_validation_ms = total;
+    Ok(())
+}
+
+fn account_source_patch_receipt(
+    state: &mut SupervisorState,
+    receipt: &AutonomousSourcePatchReceipt,
+) {
+    state.last_source_patch_receipt_sha256 = Some(receipt.receipt_sha256.clone());
+    let validation_ms = source_patch_validation_duration(receipt);
+    state.autonomous_source_patch_validation_ms = state
+        .autonomous_source_patch_validation_ms
+        .saturating_add(validation_ms);
+    if receipt.installed {
+        state.autonomous_source_patches_installed =
+            state.autonomous_source_patches_installed.saturating_add(1);
+        state.source_patch_consecutive_failures = 0;
+    } else if receipt.rolled_back {
+        state.autonomous_source_patch_rollbacks =
+            state.autonomous_source_patch_rollbacks.saturating_add(1);
+        state.source_patch_consecutive_failures =
+            state.source_patch_consecutive_failures.saturating_add(1);
+    }
+}
+
+fn account_source_patch_error(state: &mut SupervisorState) {
+    state.autonomous_source_patch_rollbacks =
+        state.autonomous_source_patch_rollbacks.saturating_add(1);
+    state.source_patch_consecutive_failures =
+        state.source_patch_consecutive_failures.saturating_add(1);
 }
 
 fn attempt_discovered_source_repair(
@@ -3563,21 +3764,14 @@ fn attempt_discovered_source_repair(
                 &request,
             ) {
                 Ok(receipt) => {
-                    state.last_source_patch_receipt_sha256 = Some(receipt.receipt_sha256.clone());
+                    account_source_patch_receipt(state, &receipt);
                     if receipt.installed && receipt.runtime_update_staged {
-                        state.autonomous_source_patches_installed =
-                            state.autonomous_source_patches_installed.saturating_add(1);
                         state.stop_reason = Some("AUTONOMOUS_SOURCE_UPDATE_STAGED".to_string());
                         return Ok(true);
                     }
-                    if receipt.rolled_back {
-                        state.autonomous_source_patch_rollbacks =
-                            state.autonomous_source_patch_rollbacks.saturating_add(1);
-                    }
                 }
                 Err(_) => {
-                    state.autonomous_source_patch_rollbacks =
-                        state.autonomous_source_patch_rollbacks.saturating_add(1);
+                    account_source_patch_error(state);
                 }
             }
         }
@@ -3618,6 +3812,7 @@ fn step_without_lease(
     if state.phase == SupervisorPhase::SafeStopped {
         return Ok(report_from_state(&state, false, 0, 0, 0, None, None));
     }
+    reconcile_source_patch_validation_cost(config, &mut state)?;
     if let Some(reason) = resource_stop_reason(config, &state)? {
         state.stop_reason = Some(reason);
         save_transition(
@@ -3682,12 +3877,10 @@ fn step_without_lease(
             state.autonomous_source_patch_attempts.saturating_add(1);
         match install_and_stage_source_patch(&config.source_mutation, &config.state_dir, &request) {
             Ok(receipt) => {
-                state.last_source_patch_receipt_sha256 = Some(receipt.receipt_sha256.clone());
+                account_source_patch_receipt(&mut state, &receipt);
                 fs::remove_file(&queued_path)
                     .map_err(|error| format!("SOURCE_PATCH_QUEUE_CONSUME:{error}"))?;
                 if receipt.installed && receipt.runtime_update_staged {
-                    state.autonomous_source_patches_installed =
-                        state.autonomous_source_patches_installed.saturating_add(1);
                     state.stop_reason = Some("AUTONOMOUS_SOURCE_UPDATE_STAGED".to_string());
                     state.active_runtime_ms = state.active_runtime_ms.saturating_add(
                         started.elapsed().as_millis().min(u128::from(u64::MAX)) as u64,
@@ -3700,14 +3893,9 @@ fn step_without_lease(
                     )?;
                     return Ok(report_from_state(&state, false, 0, 0, 0, None, None));
                 }
-                if receipt.rolled_back {
-                    state.autonomous_source_patch_rollbacks =
-                        state.autonomous_source_patch_rollbacks.saturating_add(1);
-                }
             }
             Err(_) => {
-                state.autonomous_source_patch_rollbacks =
-                    state.autonomous_source_patch_rollbacks.saturating_add(1);
+                account_source_patch_error(&mut state);
                 let rejected = config
                     .state_dir
                     .join("control")
@@ -3794,6 +3982,14 @@ fn step_without_lease(
         evaluator_required_challenge_cases: EvaluatorMutationKind::ALL.len() as u64,
         consecutive_failures: state.consecutive_failures,
         plateau_scans: state.plateau_scans,
+        unconsumed_high_observations: high.len(),
+        cohort_preflight_ready: cohort_has_verification_evidence(&evidence_aware),
+        source_patch_attempts: state.autonomous_source_patch_attempts,
+        source_patch_installations: state.autonomous_source_patches_installed,
+        source_patch_rollbacks: state.autonomous_source_patch_rollbacks,
+        source_patch_consecutive_failures: state.source_patch_consecutive_failures,
+        source_patch_validation_ms: state.autonomous_source_patch_validation_ms,
+        active_runtime_ms: state.active_runtime_ms,
     })?;
     persist_self_inspection(config, &mut state, &inspection)?;
     if config.autonomous_campaigns {
@@ -3960,7 +4156,15 @@ pub fn run_daemon(config_path: &Path) -> Result<StepReport, String> {
         if report.phase == SupervisorPhase::SafeStopped {
             return Ok(report);
         }
-        thread::sleep(Duration::from_millis(config.poll_interval_ms));
+        let poll_interval_ms = if report.waiting_on_plateau && report.high_value_observations == 0 {
+            config
+                .poll_interval_ms
+                .saturating_mul(6)
+                .min(MAX_QUIET_IDLE_POLL_INTERVAL_MS)
+        } else {
+            config.poll_interval_ms
+        };
+        thread::sleep(Duration::from_millis(poll_interval_ms));
     }
 }
 
@@ -4138,6 +4342,11 @@ mod tests {
         assert_eq!(check.source_repair_engine_revision, 2);
         assert!(check.operator_stop_survives_self_update);
         assert!(check.workspace_freeze_during_patch_validation);
+        assert!(check.performance_aware_self_inspection);
+        assert!(check.predicted_utility_source_gate);
+        assert!(check.staged_source_validation);
+        assert!(check.adaptive_idle_polling);
+        assert!(check.mixed_production_file_role_detection);
         assert!(!check.mutual_recursive_growth_observed);
     }
 
@@ -4497,6 +4706,89 @@ mod tests {
     }
 
     #[test]
+    fn production_file_with_tests_supplies_both_implementation_and_verification_roles() {
+        let observation = LearningObservation {
+            observation_id: "mixed-production-change".to_string(),
+            work_event_id: None,
+            logical_path: "ROOT_0/src/engine.rs".to_string(),
+            content_sha256: "a".repeat(64),
+            predecessor_content_sha256: Some("b".repeat(64)),
+            actor: WorkActor::UnknownLocalWriter,
+            work_kind: WorkKind::RegressionTest,
+            work_outcome: WorkOutcome::Unknown,
+            features_before: Some(StructuralFeatures::default()),
+            features_after: StructuralFeatures::default(),
+            signals: vec![
+                "REGRESSION_EVIDENCE".to_string(),
+                "TEST_ADDED".to_string(),
+                "VALIDATION_ADDED".to_string(),
+            ],
+            composition_roles: vec![
+                "REGRESSION_TEST".to_string(),
+                "INPUT_VALIDATION".to_string(),
+            ],
+            learning_score: 55,
+            learning_value: LearningValue::High,
+            reasons: vec!["mixed production change".to_string()],
+            verification_evidence_sha256: Vec::new(),
+            exact_source_fragments_stored: 0,
+            raw_source_bytes_stored: 0,
+            observed_at_ms: 1,
+        };
+        let lesson = build_lesson(std::slice::from_ref(&observation)).unwrap();
+        assert!(lesson
+            .composition_recipe
+            .contains(&"IMPLEMENTATION".to_string()));
+        assert!(lesson_has_verification_evidence(&lesson));
+
+        let mut dedicated_test = observation;
+        dedicated_test.logical_path = "ROOT_0/tests/engine_test.rs".to_string();
+        let test_only_lesson = build_lesson(&[dedicated_test]).unwrap();
+        assert!(!test_only_lesson
+            .composition_recipe
+            .contains(&"IMPLEMENTATION".to_string()));
+        assert!(!lesson_has_verification_evidence(&test_only_lesson));
+    }
+
+    #[test]
+    fn embedded_tests_do_not_hide_an_implementation_delta() {
+        let prior = FileFingerprint {
+            content_sha256: "a".repeat(64),
+            bytes: 10,
+            modified_ms: 1,
+            extension: "rs".to_string(),
+            features: StructuralFeatures {
+                test_tokens: 4,
+                validation_tokens: 2,
+                ..StructuralFeatures::default()
+            },
+        };
+        let current = FileFingerprint {
+            content_sha256: "b".repeat(64),
+            bytes: 11,
+            modified_ms: 2,
+            extension: "rs".to_string(),
+            features: StructuralFeatures {
+                test_tokens: 4,
+                validation_tokens: 3,
+                ..StructuralFeatures::default()
+            },
+        };
+        let observation = classify_observation(
+            "ROOT_0/src/engine.rs".to_string(),
+            &current,
+            Some(&prior),
+            None,
+            &ClassifierMemory::default(),
+            45,
+        );
+        assert_eq!(observation.work_kind, WorkKind::DefectRepair);
+        assert!(observation
+            .signals
+            .contains(&"VALIDATION_ADDED".to_string()));
+    }
+
+    #[test]
     fn autonomous_bootstrap_receipt_forms_a_verified_mutual_growth_cohort() {
         let receipt = inspect_self(SelfInspectionInput {
             generation: 0,
@@ -4516,6 +4808,14 @@ mod tests {
             evaluator_required_challenge_cases: EvaluatorMutationKind::ALL.len() as u64,
             consecutive_failures: 0,
             plateau_scans: 12,
+            unconsumed_high_observations: 0,
+            cohort_preflight_ready: false,
+            source_patch_attempts: 0,
+            source_patch_installations: 0,
+            source_patch_rollbacks: 0,
+            source_patch_consecutive_failures: 0,
+            source_patch_validation_ms: 0,
+            active_runtime_ms: 0,
         })
         .unwrap();
         let observation = mutual_bootstrap_observation(&receipt)
