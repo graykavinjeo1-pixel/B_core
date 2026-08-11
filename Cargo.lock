@@ -115,10 +115,13 @@ name = "semantic-reasoning"
 version = "0.1.0"
 dependencies = [
  "dockable-semantic-core",
+ "proc-macro2",
+ "quote",
  "semantic-core-adapters",
  "serde",
  "serde_json",
  "sha2",
+ "syn",
  "synapse-recursive-core",
 ]
 

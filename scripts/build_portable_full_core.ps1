@@ -277,6 +277,16 @@ if (-not $growthSelfCheck.pass -or
     -not $growthSelfCheck.classifier_refinement_delta_ledger_enabled -or
     -not $growthSelfCheck.source_patch_diagnostics_use_recent_engine_window -or
     -not $growthSelfCheck.source_synthesis_exhaustion_is_capability_gap -or
+    -not $growthSelfCheck.rust_source_ast_modeling_enabled -or
+    -not $growthSelfCheck.syntactic_call_and_data_flow_modeling_enabled -or
+    -not $growthSelfCheck.structural_postcondition_derivation_enabled -or
+    -not $growthSelfCheck.universal_source_edit_atoms_enabled -or
+    -not $growthSelfCheck.structural_repair_replay_gate_enabled -or
+    -not $growthSelfCheck.autonomous_compiler_diagnostic_discovery_enabled -or
+    -not $growthSelfCheck.typed_grammar_composition_enabled -or
+    -not $growthSelfCheck.public_counterexample_guided_revision_enabled -or
+    -not $growthSelfCheck.successful_edit_composition_learning_enabled -or
+    -not $growthSelfCheck.bounded_compiler_diagnostic_cache_enabled -or
     -not $growthSelfCheck.core_self_approval_enabled -or
     -not $growthSelfCheck.autonomous_source_patch_install_enabled -or
     -not $growthSelfCheck.source_patch_rollback_enabled -or

@@ -16,12 +16,18 @@ use std::time::{Duration, Instant};
 
 use serde::{Deserialize, Serialize};
 
+use crate::compiler_guided_repair::{discover_compiler_guided_repairs, CompilerGuidedRepairPolicy};
+use crate::grammar_repair_synthesis::discover_grammar_repairs;
 use crate::self_repair_contract::sha256;
+use crate::structural_source_repair::{
+    execute_structural_repair, synthesize_structural_repair, SourceEditAtom,
+    StructuralRepairProgram,
+};
 
 pub const AUTONOMOUS_SOURCE_MUTATION_SCHEMA: &str = "B_CORE_AUTONOMOUS_SOURCE_MUTATION_1";
 pub const SELF_UPDATE_HANDOFF_FILE: &str = "SELF_UPDATE_READY.json";
 pub const SOURCE_REPAIR_LEARNING_SCHEMA: &str = "B_CORE_SOURCE_REPAIR_LEARNING_1";
-pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 2;
+pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 3;
 const KNOWN_REMAINDER_PREDICTED_VALUE: u16 = 35;
 const KNOWN_REMAINDER_STRATEGIES: [&str; 4] = [
     "TYPED_IS_MULTIPLE_OF",
@@ -46,6 +52,14 @@ fn is_default_minimum_predicted_value(value: &u16) -> bool {
     *value == default_minimum_predicted_value()
 }
 
+fn default_compiler_repair_discovery() -> bool {
+    true
+}
+
+fn is_true(value: &bool) -> bool {
+    *value
+}
+
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct AutonomousSourceMutationPolicy {
     pub enabled: bool,
@@ -54,6 +68,16 @@ pub struct AutonomousSourceMutationPolicy {
     pub build_target_dir: PathBuf,
     pub runtime_bin_dir: PathBuf,
     pub auto_discover_known_transformations: bool,
+    #[serde(
+        default = "default_compiler_repair_discovery",
+        skip_serializing_if = "is_true"
+    )]
+    pub auto_discover_compiler_repairs: bool,
+    #[serde(
+        default = "default_compiler_repair_discovery",
+        skip_serializing_if = "is_true"
+    )]
+    pub auto_synthesize_grammar_repairs: bool,
     pub max_candidate_bytes: u64,
     pub max_installations: u64,
     pub validation_timeout_ms: u64,
@@ -78,6 +102,8 @@ impl Default for AutonomousSourceMutationPolicy {
             build_target_dir: PathBuf::new(),
             runtime_bin_dir: PathBuf::new(),
             auto_discover_known_transformations: false,
+            auto_discover_compiler_repairs: default_compiler_repair_discovery(),
+            auto_synthesize_grammar_repairs: default_compiler_repair_discovery(),
             max_candidate_bytes: 2 * 1024 * 1024,
             max_installations: 64,
             validation_timeout_ms: 15 * 60 * 1_000,
@@ -109,6 +135,8 @@ pub struct AutonomousSourcePatchRequest {
     pub core_self_approved: bool,
     #[serde(default)]
     pub solution_strategy: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub structural_repair_program: Option<StructuralRepairProgram>,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -148,6 +176,12 @@ pub struct SourceRepairAttempt {
     pub diagnostic_sha256: String,
     #[serde(default)]
     pub failure_reason: Option<String>,
+    #[serde(default)]
+    pub structural_repair_program_sha256: Option<String>,
+    #[serde(default)]
+    pub edit_atom_kinds: Vec<String>,
+    #[serde(default)]
+    pub structural_postcondition_count: usize,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -158,6 +192,12 @@ pub struct LearnedSuccessfulRepair {
     pub validation_output_sha256: String,
     pub release_build_output_sha256: String,
     pub attempts_required: u8,
+    #[serde(default)]
+    pub structural_repair_program_sha256: Option<String>,
+    #[serde(default)]
+    pub edit_atom_kinds: Vec<String>,
+    #[serde(default)]
+    pub structural_postcondition_count: usize,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -342,6 +382,40 @@ fn active_cycle_attempts(
     }
 }
 
+fn collect_edit_atom_kinds(edit: &SourceEditAtom, kinds: &mut Vec<String>) {
+    let kind = match edit {
+        SourceEditAtom::Replace { .. } => "REPLACE",
+        SourceEditAtom::Insert { .. } => "INSERT",
+        SourceEditAtom::Delete { .. } => "DELETE",
+        SourceEditAtom::Move { .. } => "MOVE",
+        SourceEditAtom::AtomicMultiEdit { edits } => {
+            kinds.push("ATOMIC_MULTI_EDIT".to_string());
+            for nested in edits {
+                collect_edit_atom_kinds(nested, kinds);
+            }
+            return;
+        }
+    };
+    kinds.push(kind.to_string());
+}
+
+fn structural_program_learning_features(
+    request: &AutonomousSourcePatchRequest,
+) -> Result<(Option<String>, Vec<String>, usize), String> {
+    let Some(program) = &request.structural_repair_program else {
+        return Ok((None, Vec::new(), 0));
+    };
+    let encoded = serde_json::to_vec(program)
+        .map_err(|error| format!("STRUCTURAL_REPAIR_PROGRAM_SERIALIZE:{error}"))?;
+    let mut edit_atom_kinds = Vec::new();
+    collect_edit_atom_kinds(&program.edit, &mut edit_atom_kinds);
+    Ok((
+        Some(sha256(&encoded)),
+        edit_atom_kinds,
+        program.postconditions.len(),
+    ))
+}
+
 fn record_source_repair_outcome(
     policy: &AutonomousSourceMutationPolicy,
     state_dir: &Path,
@@ -386,6 +460,8 @@ fn record_source_repair_outcome(
     } else {
         request.solution_strategy.clone()
     };
+    let (structural_repair_program_sha256, edit_atom_kinds, structural_postcondition_count) =
+        structural_program_learning_features(request)?;
     record.attempts.push(SourceRepairAttempt {
         attempt_number,
         source_generation: request.source_generation,
@@ -395,6 +471,9 @@ fn record_source_repair_outcome(
         receipt_sha256: receipt.receipt_sha256.clone(),
         diagnostic_sha256: receipt.validation.output_sha256.clone(),
         failure_reason: receipt.failure_reason.clone(),
+        structural_repair_program_sha256: structural_repair_program_sha256.clone(),
+        edit_atom_kinds: edit_atom_kinds.clone(),
+        structural_postcondition_count,
     });
     if receipt.installed {
         record.status = "LEARNED_SUCCESS".to_string();
@@ -410,6 +489,9 @@ fn record_source_repair_outcome(
                 .map(|build| build.output_sha256.clone())
                 .unwrap_or_default(),
             attempts_required: attempt_number,
+            structural_repair_program_sha256,
+            edit_atom_kinds,
+            structural_postcondition_count,
         });
     } else if attempt_number >= policy.max_attempts_per_problem {
         record.status = "ADMITTED_FAILURE".to_string();
@@ -452,6 +534,10 @@ fn normalized_target(root: &Path, relative: &Path) -> Result<PathBuf, String> {
         return Err("SOURCE_MUTATION_SYMLINK_FORBIDDEN".to_string());
     }
     Ok(canonical_target)
+}
+
+fn structural_file_id(relative: &Path) -> String {
+    relative.to_string_lossy().replace('\\', "/")
 }
 
 fn workspace_semantic_fingerprint(root: &Path, excluded_target: &Path) -> Result<String, String> {
@@ -623,6 +709,21 @@ pub fn install_and_stage_source_patch(
         fs::read(&target).map_err(|error| format!("SOURCE_MUTATION_PREDECESSOR_READ:{error}"))?;
     if sha256(&predecessor) != request.predecessor_sha256 {
         return Err("SOURCE_MUTATION_PREDECESSOR_MISMATCH".to_string());
+    }
+    if let Some(program) = &request.structural_repair_program {
+        let predecessor_source = std::str::from_utf8(&predecessor)
+            .map_err(|_| "STRUCTURAL_REPAIR_PREDECESSOR_NOT_UTF8".to_string())?;
+        if program.file_id != structural_file_id(&request.relative_path) {
+            return Err("STRUCTURAL_REPAIR_FILE_ID_MISMATCH".to_string());
+        }
+        let execution = execute_structural_repair(program, predecessor_source)
+            .map_err(|error| format!("STRUCTURAL_REPAIR_REPLAY:{error}"))?;
+        if !execution.structurally_verified
+            || execution.candidate_source != request.candidate_source
+            || execution.candidate_snapshot.source_sha256 != request.candidate_sha256
+        {
+            return Err("STRUCTURAL_REPAIR_REPLAY_MISMATCH".to_string());
+        }
     }
     let workspace_fingerprint_before =
         workspace_semantic_fingerprint(&policy.source_root, &target)?;
@@ -1124,15 +1225,207 @@ fn rewrite_first_known_improvement(source: &str, strategy_index: usize) -> Optio
     changed.then_some(output)
 }
 
+fn repair_problem_id_for(relative_path: &Path, transformation: &str) -> String {
+    sha256(format!("{}:{transformation}", relative_path.display()).as_bytes())
+}
+
+fn repair_strategy_is_available(
+    policy: &AutonomousSourceMutationPolicy,
+    state_dir: &Path,
+    relative_path: &Path,
+    transformation: &str,
+    solution_strategy: &str,
+    source_generation: u64,
+) -> Result<bool, String> {
+    let problem_id = repair_problem_id_for(relative_path, transformation);
+    let record = load_repair_learning(state_dir, &problem_id)?;
+    if record.as_ref().is_some_and(|knowledge| {
+        knowledge.status == "LEARNED_SUCCESS"
+            || (knowledge.status == "ADMITTED_FAILURE"
+                && knowledge
+                    .eligible_after_generation
+                    .is_some_and(|eligible| source_generation < eligible)
+                && knowledge.cycle_started_engine_revision >= SOURCE_REPAIR_ENGINE_REVISION)
+    }) {
+        return Ok(false);
+    }
+    let attempted = record
+        .as_ref()
+        .map(|knowledge| active_cycle_attempts(knowledge, source_generation))
+        .unwrap_or(&[]);
+    Ok(
+        attempted.len() < usize::from(policy.max_attempts_per_problem)
+            && !attempted
+                .iter()
+                .any(|attempt| attempt.solution_strategy == solution_strategy),
+    )
+}
+
+fn compiler_guided_request(
+    policy: &AutonomousSourceMutationPolicy,
+    state_dir: &Path,
+    source_generation: u64,
+) -> Result<Option<AutonomousSourcePatchRequest>, String> {
+    if !policy.auto_discover_compiler_repairs {
+        return Ok(None);
+    }
+    let diagnostic_policy = CompilerGuidedRepairPolicy {
+        source_root: &policy.source_root,
+        cargo_executable: &policy.cargo_executable,
+        build_target_dir: &policy.build_target_dir,
+        state_dir,
+        timeout_ms: policy.validation_timeout_ms,
+        max_candidate_bytes: policy.max_candidate_bytes,
+    };
+    for candidate in discover_compiler_guided_repairs(&diagnostic_policy)? {
+        if candidate.predicted_value < policy.minimum_predicted_value
+            || !repair_strategy_is_available(
+                policy,
+                state_dir,
+                &candidate.relative_path,
+                &candidate.transformation,
+                &candidate.solution_strategy,
+                source_generation,
+            )?
+        {
+            continue;
+        }
+        let problem_id = repair_problem_id_for(&candidate.relative_path, &candidate.transformation);
+        let patch_id = format!(
+            "SELF-{}",
+            &sha256(
+                format!(
+                    "{}:{}:{}:{}",
+                    problem_id,
+                    source_generation,
+                    candidate.solution_strategy,
+                    candidate.candidate_sha256
+                )
+                .as_bytes()
+            )[..24]
+        );
+        if state_dir
+            .join("source_mutations")
+            .join(&patch_id)
+            .join("receipt.json")
+            .exists()
+        {
+            continue;
+        }
+        return Ok(Some(AutonomousSourcePatchRequest {
+            schema: AUTONOMOUS_SOURCE_MUTATION_SCHEMA.to_string(),
+            patch_id,
+            relative_path: candidate.relative_path,
+            predecessor_sha256: candidate.predecessor_sha256,
+            candidate_source: candidate.candidate_source,
+            candidate_sha256: candidate.candidate_sha256,
+            transformation: candidate.transformation,
+            consequence_predictions: candidate.consequence_predictions,
+            predicted_value: candidate.predicted_value,
+            source_generation,
+            core_generated: true,
+            core_self_approved: true,
+            solution_strategy: candidate.solution_strategy,
+            structural_repair_program: Some(candidate.structural_repair_program),
+        }));
+    }
+    Ok(None)
+}
+
+fn grammar_synthesized_request(
+    policy: &AutonomousSourceMutationPolicy,
+    state_dir: &Path,
+    source_generation: u64,
+) -> Result<Option<AutonomousSourcePatchRequest>, String> {
+    if !policy.auto_synthesize_grammar_repairs {
+        return Ok(None);
+    }
+    for candidate in discover_grammar_repairs(&policy.source_root, policy.max_candidate_bytes)? {
+        if candidate.predicted_value < policy.minimum_predicted_value
+            || !repair_strategy_is_available(
+                policy,
+                state_dir,
+                &candidate.relative_path,
+                &candidate.transformation,
+                &candidate.solution_strategy,
+                source_generation,
+            )?
+        {
+            continue;
+        }
+        let problem_id = repair_problem_id_for(&candidate.relative_path, &candidate.transformation);
+        let patch_id = format!(
+            "SELF-{}",
+            &sha256(
+                format!(
+                    "{}:{}:{}:{}",
+                    problem_id,
+                    source_generation,
+                    candidate.solution_strategy,
+                    candidate.candidate_sha256
+                )
+                .as_bytes()
+            )[..24]
+        );
+        if state_dir
+            .join("source_mutations")
+            .join(&patch_id)
+            .join("receipt.json")
+            .exists()
+        {
+            continue;
+        }
+        return Ok(Some(AutonomousSourcePatchRequest {
+            schema: AUTONOMOUS_SOURCE_MUTATION_SCHEMA.to_string(),
+            patch_id,
+            relative_path: candidate.relative_path,
+            predecessor_sha256: candidate.predecessor_sha256,
+            candidate_source: candidate.candidate_source,
+            candidate_sha256: candidate.candidate_sha256,
+            transformation: candidate.transformation,
+            consequence_predictions: candidate.consequence_predictions,
+            predicted_value: candidate.predicted_value,
+            source_generation,
+            core_generated: true,
+            core_self_approved: true,
+            solution_strategy: candidate.solution_strategy,
+            structural_repair_program: Some(candidate.structural_repair_program),
+        }));
+    }
+    Ok(None)
+}
+
 pub fn discover_known_source_improvement_detailed(
     policy: &AutonomousSourceMutationPolicy,
     state_dir: &Path,
     source_generation: u64,
 ) -> Result<SourceDiscoveryResult, String> {
     validate_policy(policy)?;
-    if !policy.enabled || !policy.auto_discover_known_transformations {
+    if !policy.enabled
+        || (!policy.auto_discover_known_transformations
+            && !policy.auto_discover_compiler_repairs
+            && !policy.auto_synthesize_grammar_repairs)
+    {
         return Ok(SourceDiscoveryResult {
             disposition: SourceDiscoveryDisposition::Disabled,
+            candidate: None,
+        });
+    }
+    if let Some(candidate) = compiler_guided_request(policy, state_dir, source_generation)? {
+        return Ok(SourceDiscoveryResult {
+            disposition: SourceDiscoveryDisposition::Candidate,
+            candidate: Some(candidate),
+        });
+    }
+    if let Some(candidate) = grammar_synthesized_request(policy, state_dir, source_generation)? {
+        return Ok(SourceDiscoveryResult {
+            disposition: SourceDiscoveryDisposition::Candidate,
+            candidate: Some(candidate),
+        });
+    }
+    if !policy.auto_discover_known_transformations {
+        return Ok(SourceDiscoveryResult {
+            disposition: SourceDiscoveryDisposition::NoApplicableTransformation,
             candidate: None,
         });
     }
@@ -1158,18 +1451,8 @@ pub fn discover_known_source_improvement_detailed(
         let predecessor_sha256 = sha256(&bytes);
         let transformation =
             "MANUAL_REMAINDER_PREDICATE_TO_TYPED_DIVISIBILITY_PREDICATE".to_string();
-        let problem_id = sha256(format!("{}:{transformation}", relative_path.display()).as_bytes());
+        let problem_id = repair_problem_id_for(&relative_path, &transformation);
         let record = load_repair_learning(state_dir, &problem_id)?;
-        if record.as_ref().is_some_and(|knowledge| {
-            knowledge.status == "LEARNED_SUCCESS"
-                || (knowledge.status == "ADMITTED_FAILURE"
-                    && knowledge
-                        .eligible_after_generation
-                        .is_some_and(|eligible| source_generation < eligible)
-                    && knowledge.cycle_started_engine_revision >= SOURCE_REPAIR_ENGINE_REVISION)
-        }) {
-            continue;
-        }
         let attempted = record
             .as_ref()
             .map(|knowledge| active_cycle_attempts(knowledge, source_generation))
@@ -1185,12 +1468,28 @@ pub fn discover_known_source_improvement_detailed(
             if attempted
                 .iter()
                 .any(|attempt| attempt.solution_strategy == *solution_strategy)
+                || !repair_strategy_is_available(
+                    policy,
+                    state_dir,
+                    &relative_path,
+                    &transformation,
+                    solution_strategy,
+                    source_generation,
+                )?
             {
                 continue;
             }
             let Some(candidate_source) = rewrite_first_known_improvement(source, strategy_index)
             else {
                 continue;
+            };
+            let structural_repair_program = match synthesize_structural_repair(
+                &structural_file_id(&relative_path),
+                source,
+                &candidate_source,
+            ) {
+                Ok(program) => program,
+                Err(_) => continue,
             };
             let candidate_sha256 = sha256(candidate_source.as_bytes());
             let patch_id = format!(
@@ -1233,6 +1532,7 @@ pub fn discover_known_source_improvement_detailed(
                     core_generated: true,
                     core_self_approved: true,
                     solution_strategy: (*solution_strategy).to_string(),
+                    structural_repair_program: Some(structural_repair_program),
                 }),
             });
         }
@@ -1350,6 +1650,8 @@ mod tests {
             build_target_dir: root.join("target"),
             runtime_bin_dir: root.join("runtime"),
             auto_discover_known_transformations: true,
+            auto_discover_compiler_repairs: false,
+            auto_synthesize_grammar_repairs: false,
             max_candidate_bytes: 1024 * 1024,
             max_installations: 4,
             validation_timeout_ms: 120_000,
@@ -1404,9 +1706,13 @@ mod tests {
         let serialized = serde_json::to_value(&policy).unwrap();
         assert!(serialized.get("max_attempts_per_problem").is_none());
         assert!(serialized.get("minimum_predicted_value").is_none());
+        assert!(serialized.get("auto_discover_compiler_repairs").is_none());
+        assert!(serialized.get("auto_synthesize_grammar_repairs").is_none());
         let restored: AutonomousSourceMutationPolicy = serde_json::from_value(serialized).unwrap();
         assert_eq!(restored.max_attempts_per_problem, 4);
         assert_eq!(restored.minimum_predicted_value, 60);
+        assert!(restored.auto_discover_compiler_repairs);
+        assert!(restored.auto_synthesize_grammar_repairs);
     }
 
     #[test]
@@ -1435,6 +1741,146 @@ mod tests {
     }
 
     #[test]
+    fn compiler_observation_autonomously_finds_and_repairs_a_fresh_defect() {
+        let (root, mut policy) = fixture("compiler-guided-defect");
+        policy.auto_discover_known_transformations = false;
+        policy.auto_discover_compiler_repairs = true;
+        policy.minimum_predicted_value = 60;
+        fs::write(
+            root.join("src/lib.rs"),
+            "pub fn value() -> i32 {\n    1;\n}\n",
+        )
+        .unwrap();
+        let state = external_state(&root);
+
+        let request = discover_known_source_improvement(&policy, &state, 4)
+            .unwrap()
+            .expect("compiler-guided repair candidate");
+
+        assert!(request.transformation.starts_with("COMPILER_OBSERVATION:"));
+        assert!(request
+            .solution_strategy
+            .starts_with("COMPILER_SUGGESTION:"));
+        assert!(request.structural_repair_program.is_some());
+        assert_eq!(
+            request.candidate_source,
+            "pub fn value() -> i32 {\n    1\n}\n"
+        );
+        let receipt = install_and_stage_source_patch(&policy, &state, &request).unwrap();
+        assert!(receipt.installed);
+        assert!(receipt.validation.success);
+        assert_eq!(
+            fs::read_to_string(root.join("src/lib.rs")).unwrap(),
+            request.candidate_source
+        );
+        let learned = load_repair_learning(&state, &repair_problem_id(&request))
+            .unwrap()
+            .expect("learned compiler repair");
+        assert_eq!(learned.status, "LEARNED_SUCCESS");
+        assert!(learned
+            .learned_success
+            .as_ref()
+            .is_some_and(|success| !success.edit_atom_kinds.is_empty()));
+        fs::remove_dir_all(root).unwrap();
+        fs::remove_dir_all(state).unwrap();
+    }
+
+    #[test]
+    fn grammar_atoms_compose_and_validate_new_code_without_a_gold_patch() {
+        let (root, mut policy) = fixture("grammar-composition-defect");
+        policy.auto_discover_known_transformations = false;
+        policy.auto_discover_compiler_repairs = false;
+        policy.auto_synthesize_grammar_repairs = true;
+        policy.minimum_predicted_value = 60;
+        fs::write(
+            root.join("src/lib.rs"),
+            "pub fn add(left: i32, right: i32) -> i32 {\n    todo!()\n}\n\n#[cfg(test)]\nmod tests {\n    #[test]\n    fn add_works() {\n        assert_eq!(super::add(2, 3), 5);\n    }\n}\n",
+        )
+        .unwrap();
+        let state = external_state(&root);
+
+        let request = discover_known_source_improvement(&policy, &state, 5)
+            .unwrap()
+            .expect("grammar-composed repair candidate");
+
+        assert!(request.transformation.starts_with("AST_GRAMMAR_HOLE:TODO:"));
+        assert!(request
+            .solution_strategy
+            .starts_with("GRAMMAR_COMPOSITION:BINARY_ADD"));
+        assert!(request.candidate_source.contains("    left + right\n"));
+        let receipt = install_and_stage_source_patch(&policy, &state, &request).unwrap();
+        assert!(receipt.installed);
+        assert!(receipt.validation.success);
+        let learned = load_repair_learning(&state, &repair_problem_id(&request))
+            .unwrap()
+            .expect("learned grammar composition");
+        assert_eq!(learned.status, "LEARNED_SUCCESS");
+        assert!(learned
+            .learned_success
+            .as_ref()
+            .is_some_and(|success| success.solution_strategy.contains("BINARY_ADD")));
+        fs::remove_dir_all(root).unwrap();
+        fs::remove_dir_all(state).unwrap();
+    }
+
+    #[test]
+    fn public_counterexamples_drive_bounded_grammar_revision_until_success() {
+        let (root, mut policy) = fixture("grammar-counterexample-revision");
+        policy.auto_discover_known_transformations = false;
+        policy.auto_discover_compiler_repairs = false;
+        policy.auto_synthesize_grammar_repairs = true;
+        policy.minimum_predicted_value = 60;
+        policy.max_attempts_per_problem = 4;
+        fs::write(
+            root.join("src/lib.rs"),
+            "pub fn combine(left: i32, right: i32) -> i32 {\n    todo!()\n}\n\n#[cfg(test)]\nmod tests {\n    #[test]\n    fn combine_works() {\n        assert_eq!(super::combine(3, 4), 12);\n    }\n}\n",
+        )
+        .unwrap();
+        let state = external_state(&root);
+        let mut strategies = Vec::new();
+        let mut final_receipt = None;
+
+        for _ in 0..4 {
+            let request = discover_known_source_improvement(&policy, &state, 6)
+                .unwrap()
+                .expect("next grammar hypothesis");
+            strategies.push(request.solution_strategy.clone());
+            let receipt = install_and_stage_source_patch(&policy, &state, &request).unwrap();
+            if receipt.installed {
+                final_receipt = Some((request, receipt));
+                break;
+            }
+            assert!(receipt.rolled_back);
+            assert_eq!(
+                fs::read_to_string(root.join("src/lib.rs")).unwrap(),
+                "pub fn combine(left: i32, right: i32) -> i32 {\n    todo!()\n}\n\n#[cfg(test)]\nmod tests {\n    #[test]\n    fn combine_works() {\n        assert_eq!(super::combine(3, 4), 12);\n    }\n}\n"
+            );
+        }
+
+        let (request, receipt) = final_receipt.expect("fourth grammar composition succeeds");
+        assert!(receipt.validation.success);
+        assert_eq!(strategies.len(), 4);
+        assert!(strategies[0].contains("BINARY_ADD"));
+        assert!(strategies[1].contains("BINARY_SUBTRACT"));
+        assert!(strategies[2].contains("BINARY_REVERSE_SUBTRACT"));
+        assert!(strategies[3].contains("BINARY_MULTIPLY"));
+        let learned = load_repair_learning(&state, &repair_problem_id(&request))
+            .unwrap()
+            .expect("counterexample-guided learning record");
+        let success = learned
+            .learned_success
+            .expect("learned successful composition");
+        assert_eq!(success.attempts_required, 4);
+        assert!(success.solution_strategy.contains("BINARY_MULTIPLY"));
+        assert_eq!(learned.attempts.len(), 4);
+        assert!(learned.attempts[..3]
+            .iter()
+            .all(|attempt| !attempt.succeeded && !attempt.diagnostic_sha256.is_empty()));
+        fs::remove_dir_all(root).unwrap();
+        fs::remove_dir_all(state).unwrap();
+    }
+
+    #[test]
     fn core_can_install_validate_and_stage_its_own_source_patch() {
         let (root, policy) = fixture("install");
         let state = external_state(&root);
@@ -1442,6 +1888,10 @@ mod tests {
             .unwrap()
             .expect("discovered improvement");
         assert!(request.core_self_approved);
+        assert!(request
+            .structural_repair_program
+            .as_ref()
+            .is_some_and(|program| program.file_id == "src/lib.rs"));
         let receipt = install_and_stage_source_patch(&policy, &state, &request).unwrap();
         assert!(receipt.installed);
         assert!(!receipt.rolled_back);
@@ -1463,10 +1913,11 @@ mod tests {
             .expect("success knowledge");
         assert_eq!(knowledge.status, "LEARNED_SUCCESS");
         assert_eq!(knowledge.attempts.len(), 1);
-        assert_eq!(
-            knowledge.learned_success.unwrap().solution_strategy,
-            "TYPED_IS_MULTIPLE_OF"
-        );
+        let learned = knowledge.learned_success.unwrap();
+        assert_eq!(learned.solution_strategy, "TYPED_IS_MULTIPLE_OF");
+        assert!(learned.structural_repair_program_sha256.is_some());
+        assert!(!learned.edit_atom_kinds.is_empty());
+        assert!(learned.structural_postcondition_count > 0);
         fs::remove_dir_all(root).unwrap();
         fs::remove_dir_all(state).unwrap();
     }
@@ -1482,6 +1933,7 @@ mod tests {
         request.patch_id.push_str("-invalid");
         request.candidate_source = "pub fn broken( {\n".to_string();
         request.candidate_sha256 = sha256(request.candidate_source.as_bytes());
+        request.structural_repair_program = None;
         let receipt = install_and_stage_source_patch(&policy, &state, &request).unwrap();
         assert!(!receipt.installed);
         assert!(receipt.rolled_back);
@@ -1498,6 +1950,28 @@ mod tests {
         assert_eq!(knowledge.attempts.len(), 1);
         fs::remove_dir_all(root).unwrap();
         fs::remove_dir_all(state).unwrap();
+    }
+
+    #[test]
+    fn tampered_candidate_cannot_bypass_structural_program_replay() {
+        let (root, policy) = fixture("structural-replay");
+        let state = external_state(&root);
+        let predecessor = fs::read(root.join("src/lib.rs")).unwrap();
+        let mut request = discover_known_source_improvement(&policy, &state, 3)
+            .unwrap()
+            .expect("discovered improvement");
+        request.candidate_source = "pub fn even(_: u32) -> bool { false }\n".to_string();
+        request.candidate_sha256 = sha256(request.candidate_source.as_bytes());
+
+        let error = install_and_stage_source_patch(&policy, &state, &request).unwrap_err();
+
+        assert!(error.contains("STRUCTURAL_REPAIR_REPLAY_MISMATCH"));
+        assert_eq!(fs::read(root.join("src/lib.rs")).unwrap(), predecessor);
+        assert!(!state.join("source_mutations").exists());
+        fs::remove_dir_all(root).unwrap();
+        if state.exists() {
+            fs::remove_dir_all(state).unwrap();
+        }
     }
 
     #[test]

@@ -862,6 +862,16 @@ pub struct SelfCheck {
     pub classifier_refinement_delta_ledger_enabled: bool,
     pub source_patch_diagnostics_use_recent_engine_window: bool,
     pub source_synthesis_exhaustion_is_capability_gap: bool,
+    pub rust_source_ast_modeling_enabled: bool,
+    pub syntactic_call_and_data_flow_modeling_enabled: bool,
+    pub structural_postcondition_derivation_enabled: bool,
+    pub universal_source_edit_atoms_enabled: bool,
+    pub structural_repair_replay_gate_enabled: bool,
+    pub autonomous_compiler_diagnostic_discovery_enabled: bool,
+    pub typed_grammar_composition_enabled: bool,
+    pub public_counterexample_guided_revision_enabled: bool,
+    pub successful_edit_composition_learning_enabled: bool,
+    pub bounded_compiler_diagnostic_cache_enabled: bool,
     pub mutual_recursive_growth_observed: bool,
 }
 
@@ -915,6 +925,15 @@ pub fn self_check() -> SelfCheck {
                 .to_string(),
             "PLATEAU_WITHOUT_AN_ADMISSIBLE_SOURCE_CANDIDATE_IS_A_SYNTHESIS_CAPABILITY_GAP"
                 .to_string(),
+            "RUST_SOURCE_REPAIR_BINDS_AST_CALL_FLOW_POSTCONDITIONS_TO_REPLAYABLE_EDIT_ATOMS"
+                .to_string(),
+            "SOURCE_PATCH_INSTALLATION_REPLAYS_STRUCTURAL_PROGRAM_BEFORE_COMPILE_AND_PUBLIC_TESTS"
+                .to_string(),
+            "COMPILER_AND_CLIPPY_DIAGNOSTICS_ARE_AUTONOMOUS_PUBLIC_REPAIR_OBSERVATIONS".to_string(),
+            "TYPED_GRAMMAR_ATOMS_COMPOSE_NEW_EXPRESSIONS_WITHOUT_GOLD_PATCH_TEXT".to_string(),
+            "FAILED_PUBLIC_OBSERVATIONS_SELECT_THE_NEXT_BOUNDED_GRAMMAR_COMPOSITION".to_string(),
+            "SUCCESS_MEMORY_RETAINS_EDIT_ATOM_COMPOSITION_AND_STRUCTURAL_POSTCONDITIONS"
+                .to_string(),
         ],
         bounded_failure_retry_enabled: true,
         successful_solution_learning_enabled: true,
@@ -944,6 +963,16 @@ pub fn self_check() -> SelfCheck {
         classifier_refinement_delta_ledger_enabled: true,
         source_patch_diagnostics_use_recent_engine_window: true,
         source_synthesis_exhaustion_is_capability_gap: true,
+        rust_source_ast_modeling_enabled: true,
+        syntactic_call_and_data_flow_modeling_enabled: true,
+        structural_postcondition_derivation_enabled: true,
+        universal_source_edit_atoms_enabled: true,
+        structural_repair_replay_gate_enabled: true,
+        autonomous_compiler_diagnostic_discovery_enabled: true,
+        typed_grammar_composition_enabled: true,
+        public_counterexample_guided_revision_enabled: true,
+        successful_edit_composition_learning_enabled: true,
+        bounded_compiler_diagnostic_cache_enabled: true,
         mutual_recursive_growth_observed: false,
     }
 }
@@ -4441,7 +4470,9 @@ fn attempt_discovered_source_repair(
     state: &mut SupervisorState,
 ) -> Result<bool, String> {
     if !config.source_mutation.enabled
-        || !config.source_mutation.auto_discover_known_transformations
+        || (!config.source_mutation.auto_discover_known_transformations
+            && !config.source_mutation.auto_discover_compiler_repairs
+            && !config.source_mutation.auto_synthesize_grammar_repairs)
         || state.plateau_scans < config.resources.plateau_scans_before_wait
         || state.autonomous_source_patches_installed >= config.source_mutation.max_installations
     {
@@ -5110,6 +5141,16 @@ mod tests {
         assert!(check.classifier_refinement_delta_ledger_enabled);
         assert!(check.source_patch_diagnostics_use_recent_engine_window);
         assert!(check.source_synthesis_exhaustion_is_capability_gap);
+        assert!(check.rust_source_ast_modeling_enabled);
+        assert!(check.syntactic_call_and_data_flow_modeling_enabled);
+        assert!(check.structural_postcondition_derivation_enabled);
+        assert!(check.universal_source_edit_atoms_enabled);
+        assert!(check.structural_repair_replay_gate_enabled);
+        assert!(check.autonomous_compiler_diagnostic_discovery_enabled);
+        assert!(check.typed_grammar_composition_enabled);
+        assert!(check.public_counterexample_guided_revision_enabled);
+        assert!(check.successful_edit_composition_learning_enabled);
+        assert!(check.bounded_compiler_diagnostic_cache_enabled);
         assert!(check.evaluator_generation_evolution_enabled);
         assert!(check.prediction_before_composition_enabled);
         assert!(check.valuable_combination_memory_enabled);
@@ -5127,7 +5168,7 @@ mod tests {
         assert!(check.bounded_failure_retry_enabled);
         assert!(check.successful_solution_learning_enabled);
         assert!(check.admitted_failure_revisit_after_growth_enabled);
-        assert_eq!(check.source_repair_engine_revision, 2);
+        assert_eq!(check.source_repair_engine_revision, 3);
         assert!(check.operator_stop_survives_self_update);
         assert!(check.workspace_freeze_during_patch_validation);
         assert!(check.performance_aware_self_inspection);

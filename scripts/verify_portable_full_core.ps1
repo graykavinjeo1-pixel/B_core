@@ -151,6 +151,16 @@ if ($RunSmokeTests) {
         -not $growthCheck.classifier_refinement_delta_ledger_enabled -or
         -not $growthCheck.source_patch_diagnostics_use_recent_engine_window -or
         -not $growthCheck.source_synthesis_exhaustion_is_capability_gap -or
+        -not $growthCheck.rust_source_ast_modeling_enabled -or
+        -not $growthCheck.syntactic_call_and_data_flow_modeling_enabled -or
+        -not $growthCheck.structural_postcondition_derivation_enabled -or
+        -not $growthCheck.universal_source_edit_atoms_enabled -or
+        -not $growthCheck.structural_repair_replay_gate_enabled -or
+        -not $growthCheck.autonomous_compiler_diagnostic_discovery_enabled -or
+        -not $growthCheck.typed_grammar_composition_enabled -or
+        -not $growthCheck.public_counterexample_guided_revision_enabled -or
+        -not $growthCheck.successful_edit_composition_learning_enabled -or
+        -not $growthCheck.bounded_compiler_diagnostic_cache_enabled -or
         -not $growthCheck.core_self_approval_enabled -or
         -not $growthCheck.autonomous_source_patch_install_enabled -or
         -not $growthCheck.source_patch_rollback_enabled -or

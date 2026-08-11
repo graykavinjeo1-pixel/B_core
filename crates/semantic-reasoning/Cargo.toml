@@ -328,6 +328,9 @@ semantic-core-adapters = { path = "../semantic-core-adapters", version = "0.1.0"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 sha2 = "0.10"
+quote = "1.0"
+proc-macro2 = { version = "1.0", features = ["span-locations"] }
+syn = { version = "3.0", features = ["full", "parsing", "printing", "visit"] }
 synapse-recursive-core = { path = "../synapse-recursive-core", version = "0.1.0" }
 
 [lints]
