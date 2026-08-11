@@ -12,7 +12,7 @@ struct Sem5Image {
 }
 
 pub const GENERATED_CAPABILITY_ACTIVE: bool = true;
-pub const GENERATED_SOURCE_SCHEMA_REVISION: u64 = 2;
+pub const GENERATED_SOURCE_SCHEMA_REVISION: u64 = 3;
 pub const GENERATED_PROGRAM_ID: &str = "P-T-000-1c2a3cce-FirstPrinciplesD";
 pub const GENERATED_PROGRAM_IR_SHA256: &str =
     "dda8fe9adfe0e2c09c4a0e47496e5ea51dbf929863626df3e0d6cda87b449717";
