@@ -150,6 +150,7 @@ pub enum InternalBottleneckClass {
     ScanTraversalOverhead,
     RepeatedVerificationFailure,
     CampaignCohortBlocked,
+    SourceSynthesisCoverageGap,
     SourceRepairLowYield,
     VerificationCostDominance,
     QuietIdle,
@@ -164,6 +165,7 @@ impl InternalBottleneckClass {
             Self::ScanTraversalOverhead => "SCAN_TRAVERSAL_OVERHEAD",
             Self::RepeatedVerificationFailure => "REPEATED_VERIFICATION_FAILURE",
             Self::CampaignCohortBlocked => "CAMPAIGN_COHORT_BLOCKED",
+            Self::SourceSynthesisCoverageGap => "SOURCE_SYNTHESIS_COVERAGE_GAP",
             Self::SourceRepairLowYield => "SOURCE_REPAIR_LOW_YIELD",
             Self::VerificationCostDominance => "VERIFICATION_COST_DOMINANCE",
             Self::QuietIdle => "QUIET_IDLE_NOT_A_DEFECT",
@@ -206,6 +208,10 @@ pub struct SelfInspectionInput {
     pub source_patch_rollbacks: u64,
     pub source_patch_consecutive_failures: u32,
     pub source_patch_validation_ms: u64,
+    #[serde(default)]
+    pub source_discovery_no_candidate_streak: u32,
+    #[serde(default)]
+    pub last_source_discovery_reason: Option<String>,
     pub active_runtime_ms: u64,
     #[serde(default)]
     pub diagnostic_policy: DiagnosticPolicyMemory,
@@ -359,6 +365,36 @@ fn candidate_hypotheses(input: &SelfInspectionInput) -> Vec<InternalHypothesis> 
                     input.unconsumed_high_observations
                 ),
                 "high-value evidence exists but cannot form an implementation-plus-verification cohort"
+                    .to_string(),
+            ],
+            selected: false,
+            policy_score_millis: 0,
+            prior_policy_trials: 0,
+            prior_causal_support_events: 0,
+            policy_exploration_selected: false,
+        });
+    }
+    if input.plateau_scans > 0
+        && input.source_patch_attempts == 0
+        && input.source_discovery_no_candidate_streak >= 2
+        && input.last_source_discovery_reason.as_deref() != Some("DISABLED")
+    {
+        hypotheses.push(InternalHypothesis {
+            bottleneck: InternalBottleneckClass::SourceSynthesisCoverageGap,
+            confidence_millis: 997,
+            evidence: vec![
+                format!(
+                    "source_discovery_no_candidate_streak={}",
+                    input.source_discovery_no_candidate_streak
+                ),
+                format!(
+                    "last_source_discovery_reason={}",
+                    input
+                        .last_source_discovery_reason
+                        .as_deref()
+                        .unwrap_or("UNKNOWN")
+                ),
+                "plateau persists while the source synthesizer cannot produce an admissible candidate"
                     .to_string(),
             ],
             selected: false,
@@ -694,6 +730,23 @@ fn diagnostic_experiment(
                 && !input.cohort_preflight_ready,
             mutates_research_state: false,
         },
+        InternalBottleneckClass::SourceSynthesisCoverageGap => InternalDiagnosticExperiment {
+            experiment_id: "SOURCE_SYNTHESIS_ADMISSIBLE_CANDIDATE_PROBE".to_string(),
+            hypothesis: selected,
+            control_observable: format!(
+                "plateau_scans={}; candidate_streak={}",
+                input.plateau_scans, input.source_discovery_no_candidate_streak
+            ),
+            intervention_observable: format!(
+                "discovery_reason={}",
+                input
+                    .last_source_discovery_reason
+                    .as_deref()
+                    .unwrap_or("UNKNOWN")
+            ),
+            causal_support: input.source_discovery_no_candidate_streak >= 2,
+            mutates_research_state: false,
+        },
         InternalBottleneckClass::SourceRepairLowYield => InternalDiagnosticExperiment {
             experiment_id: "SOURCE_REPAIR_YIELD_ABLATION".to_string(),
             hypothesis: selected,
@@ -770,6 +823,9 @@ pub fn inspect(input: SelfInspectionInput) -> Result<AutonomousSelfInspectionRec
             Some("MIXED_PRODUCTION_FILE_IMPLEMENTATION_EVIDENCE_ROUTING".to_string()),
             true,
         ),
+        InternalBottleneckClass::SourceSynthesisCoverageGap => {
+            (RepairDisposition::CapabilityGap, None, true)
+        }
         InternalBottleneckClass::SourceRepairLowYield => (
             RepairDisposition::RuntimeRepairActive,
             Some("PREDICTED_UTILITY_GATE_BEFORE_SOURCE_VALIDATION".to_string()),
@@ -862,6 +918,8 @@ mod tests {
             source_patch_rollbacks: 0,
             source_patch_consecutive_failures: 0,
             source_patch_validation_ms: 0,
+            source_discovery_no_candidate_streak: 0,
+            last_source_discovery_reason: None,
             active_runtime_ms: 0,
             diagnostic_policy: DiagnosticPolicyMemory::default(),
         }
@@ -878,6 +936,24 @@ mod tests {
         assert!(!receipt.actionable_defect);
         assert_eq!(receipt.external_llm_calls, 0);
         assert_eq!(receipt.authoritative_source_write_events, 0);
+    }
+
+    #[test]
+    fn exhausted_source_synthesis_is_a_capability_gap_not_quiet_idle() {
+        let mut value = input();
+        value.plateau_scans = 12;
+        value.source_discovery_no_candidate_streak = 3;
+        value.last_source_discovery_reason = Some("BELOW_VALUE_THRESHOLD".to_string());
+
+        let receipt = inspect(value).expect("inspect synthesis coverage");
+
+        assert_eq!(
+            receipt.selected_bottleneck,
+            InternalBottleneckClass::SourceSynthesisCoverageGap
+        );
+        assert_eq!(receipt.repair_disposition, RepairDisposition::CapabilityGap);
+        assert!(receipt.experiments[0].causal_support);
+        assert!(receipt.actionable_defect);
     }
 
     #[test]

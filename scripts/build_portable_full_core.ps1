@@ -275,6 +275,8 @@ if (-not $growthSelfCheck.pass -or
     -not $growthSelfCheck.redundant_generative_verifier_search_disabled -or
     -not $growthSelfCheck.classifier_refinement_requires_capability_evidence -or
     -not $growthSelfCheck.classifier_refinement_delta_ledger_enabled -or
+    -not $growthSelfCheck.source_patch_diagnostics_use_recent_engine_window -or
+    -not $growthSelfCheck.source_synthesis_exhaustion_is_capability_gap -or
     -not $growthSelfCheck.core_self_approval_enabled -or
     -not $growthSelfCheck.autonomous_source_patch_install_enabled -or
     -not $growthSelfCheck.source_patch_rollback_enabled -or

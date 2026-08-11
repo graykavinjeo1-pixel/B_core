@@ -23,9 +23,9 @@ use crate::autonomous_self_inspection::{
     InternalBottleneckClass, RepairDisposition, SelfInspectionInput,
 };
 use crate::autonomous_source_mutation::{
-    discover_known_source_improvement, install_and_stage_source_patch, validate_policy,
-    AutonomousSourceMutationPolicy, AutonomousSourcePatchReceipt, AutonomousSourcePatchRequest,
-    SOURCE_REPAIR_ENGINE_REVISION,
+    discover_known_source_improvement, discover_known_source_improvement_detailed,
+    install_and_stage_source_patch, validate_policy, AutonomousSourceMutationPolicy,
+    AutonomousSourcePatchReceipt, AutonomousSourcePatchRequest, SOURCE_REPAIR_ENGINE_REVISION,
 };
 use crate::generative_growth::{
     promote_generative_cycle, run_generative_cycle, validate_behavioral_execution_receipt,
@@ -44,6 +44,7 @@ const MAX_QUIET_IDLE_POLL_INTERVAL_MS: u64 = 60_000;
 const BASELINE_MAX_HASHED_FILES_PER_SCAN: usize = 1_024;
 const BASELINE_MAX_BYTES_PER_SCAN: u64 = 64 * 1024 * 1024;
 const MAX_CLASSIFIER_REFINEMENT_EVENTS: usize = 64;
+const MAX_RECENT_SOURCE_PATCH_OUTCOMES: usize = 16;
 
 fn u64_is_zero(value: &u64) -> bool {
     *value == 0
@@ -200,6 +201,14 @@ pub enum SupervisorPhase {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct SourcePatchOutcomeSample {
+    pub engine_revision: u64,
+    pub installed: bool,
+    pub rolled_back: bool,
+    pub validation_ms: u64,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct SupervisorState {
     pub schema: String,
     pub sequence: u64,
@@ -292,6 +301,14 @@ pub struct SupervisorState {
     pub autonomous_source_patch_rollbacks: u64,
     #[serde(default)]
     pub autonomous_source_patch_validation_ms: u64,
+    #[serde(default)]
+    pub source_patch_recent_outcomes: Vec<SourcePatchOutcomeSample>,
+    #[serde(default)]
+    pub source_patch_telemetry_engine_revision: u64,
+    #[serde(default)]
+    pub source_discovery_no_candidate_streak: u32,
+    #[serde(default)]
+    pub last_source_discovery_reason: Option<String>,
     #[serde(default)]
     pub source_patch_consecutive_failures: u32,
     #[serde(default)]
@@ -779,6 +796,12 @@ pub struct StepReport {
     pub autonomous_source_patches_installed: u64,
     pub autonomous_source_patch_rollbacks: u64,
     pub autonomous_source_patch_validation_ms: u64,
+    pub source_patch_recent_attempts: u64,
+    pub source_patch_recent_installations: u64,
+    pub source_patch_recent_rollbacks: u64,
+    pub source_patch_recent_validation_ms: u64,
+    pub source_discovery_no_candidate_streak: u32,
+    pub last_source_discovery_reason: Option<String>,
     pub source_patch_consecutive_failures: u32,
     pub last_source_patch_receipt_sha256: Option<String>,
     pub distinct_semantic_lessons: u64,
@@ -837,6 +860,8 @@ pub struct SelfCheck {
     pub redundant_generative_verifier_search_disabled: bool,
     pub classifier_refinement_requires_capability_evidence: bool,
     pub classifier_refinement_delta_ledger_enabled: bool,
+    pub source_patch_diagnostics_use_recent_engine_window: bool,
+    pub source_synthesis_exhaustion_is_capability_gap: bool,
     pub mutual_recursive_growth_observed: bool,
 }
 
@@ -886,6 +911,10 @@ pub fn self_check() -> SelfCheck {
             "CLASSIFIER_REINFORCEMENT_REQUIRES_BEHAVIORAL_FRONTIER_OR_MEASURED_PERFORMANCE"
                 .to_string(),
             "CLASSIFIER_REFINEMENTS_RECORD_EVIDENCE_BOUND_BEFORE_AFTER_DELTAS".to_string(),
+            "SOURCE_PATCH_BOTTLENECKS_USE_CURRENT_ENGINE_RECENT_OUTCOMES_NOT_LIFETIME_TOTALS"
+                .to_string(),
+            "PLATEAU_WITHOUT_AN_ADMISSIBLE_SOURCE_CANDIDATE_IS_A_SYNTHESIS_CAPABILITY_GAP"
+                .to_string(),
         ],
         bounded_failure_retry_enabled: true,
         successful_solution_learning_enabled: true,
@@ -913,6 +942,8 @@ pub fn self_check() -> SelfCheck {
         redundant_generative_verifier_search_disabled: true,
         classifier_refinement_requires_capability_evidence: true,
         classifier_refinement_delta_ledger_enabled: true,
+        source_patch_diagnostics_use_recent_engine_window: true,
+        source_synthesis_exhaustion_is_capability_gap: true,
         mutual_recursive_growth_observed: false,
     }
 }
@@ -2085,6 +2116,10 @@ pub fn initialize(config_path: &Path) -> Result<SupervisorState, String> {
         autonomous_source_patches_installed: 0,
         autonomous_source_patch_rollbacks: 0,
         autonomous_source_patch_validation_ms: 0,
+        source_patch_recent_outcomes: Vec::new(),
+        source_patch_telemetry_engine_revision: SOURCE_REPAIR_ENGINE_REVISION,
+        source_discovery_no_candidate_streak: 0,
+        last_source_discovery_reason: None,
         source_patch_consecutive_failures: 0,
         last_source_patch_receipt_sha256: None,
         distinct_semantic_lessons: 0,
@@ -4175,6 +4210,12 @@ fn report_from_state(
     campaign_id: Option<String>,
     campaign_accepted: Option<bool>,
 ) -> StepReport {
+    let (
+        source_patch_recent_attempts,
+        source_patch_recent_installations,
+        source_patch_recent_rollbacks,
+        source_patch_recent_validation_ms,
+    ) = recent_source_patch_stats(state);
     StepReport {
         schema: SUPERVISOR_SCHEMA.to_string(),
         phase: state.phase,
@@ -4241,6 +4282,12 @@ fn report_from_state(
         autonomous_source_patches_installed: state.autonomous_source_patches_installed,
         autonomous_source_patch_rollbacks: state.autonomous_source_patch_rollbacks,
         autonomous_source_patch_validation_ms: state.autonomous_source_patch_validation_ms,
+        source_patch_recent_attempts,
+        source_patch_recent_installations,
+        source_patch_recent_rollbacks,
+        source_patch_recent_validation_ms,
+        source_discovery_no_candidate_streak: state.source_discovery_no_candidate_streak,
+        last_source_discovery_reason: state.last_source_discovery_reason.clone(),
         source_patch_consecutive_failures: state.source_patch_consecutive_failures,
         last_source_patch_receipt_sha256: state.last_source_patch_receipt_sha256.clone(),
         distinct_semantic_lessons: state.distinct_semantic_lessons,
@@ -4310,6 +4357,39 @@ fn reconcile_source_patch_validation_cost(
     Ok(())
 }
 
+fn ensure_source_patch_telemetry_epoch(state: &mut SupervisorState) {
+    if state.source_patch_telemetry_engine_revision != SOURCE_REPAIR_ENGINE_REVISION {
+        state.source_patch_recent_outcomes.clear();
+        state.source_patch_telemetry_engine_revision = SOURCE_REPAIR_ENGINE_REVISION;
+        state.source_patch_consecutive_failures = 0;
+        state.source_discovery_no_candidate_streak = 0;
+        state.last_source_discovery_reason = None;
+    }
+}
+
+fn push_source_patch_outcome(state: &mut SupervisorState, sample: SourcePatchOutcomeSample) {
+    ensure_source_patch_telemetry_epoch(state);
+    state.source_patch_recent_outcomes.push(sample);
+    while state.source_patch_recent_outcomes.len() > MAX_RECENT_SOURCE_PATCH_OUTCOMES {
+        state.source_patch_recent_outcomes.remove(0);
+    }
+}
+
+fn recent_source_patch_stats(state: &SupervisorState) -> (u64, u64, u64, u64) {
+    let current = state
+        .source_patch_recent_outcomes
+        .iter()
+        .filter(|sample| sample.engine_revision == SOURCE_REPAIR_ENGINE_REVISION)
+        .collect::<Vec<_>>();
+    let attempts = current.len().min(u64::MAX as usize) as u64;
+    let installations = current.iter().filter(|sample| sample.installed).count() as u64;
+    let rollbacks = current.iter().filter(|sample| sample.rolled_back).count() as u64;
+    let validation_ms = current.iter().fold(0_u64, |total, sample| {
+        total.saturating_add(sample.validation_ms)
+    });
+    (attempts, installations, rollbacks, validation_ms)
+}
+
 fn account_source_patch_receipt(
     state: &mut SupervisorState,
     receipt: &AutonomousSourcePatchReceipt,
@@ -4319,6 +4399,15 @@ fn account_source_patch_receipt(
     state.autonomous_source_patch_validation_ms = state
         .autonomous_source_patch_validation_ms
         .saturating_add(validation_ms);
+    push_source_patch_outcome(
+        state,
+        SourcePatchOutcomeSample {
+            engine_revision: SOURCE_REPAIR_ENGINE_REVISION,
+            installed: receipt.installed,
+            rolled_back: receipt.rolled_back,
+            validation_ms,
+        },
+    );
     if receipt.installed {
         state.autonomous_source_patches_installed =
             state.autonomous_source_patches_installed.saturating_add(1);
@@ -4332,6 +4421,15 @@ fn account_source_patch_receipt(
 }
 
 fn account_source_patch_error(state: &mut SupervisorState) {
+    push_source_patch_outcome(
+        state,
+        SourcePatchOutcomeSample {
+            engine_revision: SOURCE_REPAIR_ENGINE_REVISION,
+            installed: false,
+            rolled_back: true,
+            validation_ms: 0,
+        },
+    );
     state.autonomous_source_patch_rollbacks =
         state.autonomous_source_patch_rollbacks.saturating_add(1);
     state.source_patch_consecutive_failures =
@@ -4349,12 +4447,17 @@ fn attempt_discovered_source_repair(
     {
         return Ok(false);
     }
-    match discover_known_source_improvement(
+    match discover_known_source_improvement_detailed(
         &config.source_mutation,
         &config.state_dir,
         state.generation,
     ) {
-        Ok(Some(request)) => {
+        Ok(discovery) if discovery.candidate.is_some() => {
+            let Some(request) = discovery.candidate else {
+                return Ok(false);
+            };
+            state.source_discovery_no_candidate_streak = 0;
+            state.last_source_discovery_reason = Some(discovery.disposition.label().to_string());
             state.autonomous_source_patch_attempts =
                 state.autonomous_source_patch_attempts.saturating_add(1);
             match install_and_stage_source_patch(
@@ -4374,8 +4477,13 @@ fn attempt_discovered_source_repair(
                 }
             }
         }
-        Ok(None) => {}
+        Ok(discovery) => {
+            state.source_discovery_no_candidate_streak =
+                state.source_discovery_no_candidate_streak.saturating_add(1);
+            state.last_source_discovery_reason = Some(discovery.disposition.label().to_string());
+        }
         Err(_) => {
+            state.last_source_discovery_reason = Some("DISCOVERY_ERROR".to_string());
             state.self_repair_capability_gaps = state.self_repair_capability_gaps.saturating_add(1);
         }
     }
@@ -4405,6 +4513,7 @@ fn step_without_lease(
 ) -> Result<StepReport, String> {
     let started = Instant::now();
     let mut state = load_state(config)?;
+    ensure_source_patch_telemetry_epoch(&mut state);
     if stop_if_requested(config, &mut state)? {
         return Ok(report_from_state(&state, false, 0, 0, 0, None, None));
     }
@@ -4599,6 +4708,12 @@ fn step_without_lease(
         .cloned()
         .collect::<Vec<_>>();
     let evidence_aware = selected_campaign_observations(config, &high);
+    let (
+        recent_source_patch_attempts,
+        recent_source_patch_installations,
+        recent_source_patch_rollbacks,
+        recent_source_patch_validation_ms,
+    ) = recent_source_patch_stats(&state);
     let inspection = inspect_self(SelfInspectionInput {
         generation: state.generation,
         supervisor_sequence: state.sequence,
@@ -4619,11 +4734,13 @@ fn step_without_lease(
         plateau_scans: state.plateau_scans,
         unconsumed_high_observations: high.len(),
         cohort_preflight_ready: cohort_has_verification_evidence(&evidence_aware),
-        source_patch_attempts: state.autonomous_source_patch_attempts,
-        source_patch_installations: state.autonomous_source_patches_installed,
-        source_patch_rollbacks: state.autonomous_source_patch_rollbacks,
+        source_patch_attempts: recent_source_patch_attempts,
+        source_patch_installations: recent_source_patch_installations,
+        source_patch_rollbacks: recent_source_patch_rollbacks,
         source_patch_consecutive_failures: state.source_patch_consecutive_failures,
-        source_patch_validation_ms: state.autonomous_source_patch_validation_ms,
+        source_patch_validation_ms: recent_source_patch_validation_ms,
+        source_discovery_no_candidate_streak: state.source_discovery_no_candidate_streak,
+        last_source_discovery_reason: state.last_source_discovery_reason.clone(),
         active_runtime_ms: state.active_runtime_ms,
         diagnostic_policy: state.diagnostic_policy.clone(),
     })?;
@@ -4991,6 +5108,8 @@ mod tests {
         assert!(check.evaluator_mutation_self_audit_enabled);
         assert!(check.classifier_refinement_requires_capability_evidence);
         assert!(check.classifier_refinement_delta_ledger_enabled);
+        assert!(check.source_patch_diagnostics_use_recent_engine_window);
+        assert!(check.source_synthesis_exhaustion_is_capability_gap);
         assert!(check.evaluator_generation_evolution_enabled);
         assert!(check.prediction_before_composition_enabled);
         assert!(check.valuable_combination_memory_enabled);
@@ -5598,6 +5717,8 @@ mod tests {
             source_patch_rollbacks: 0,
             source_patch_consecutive_failures: 0,
             source_patch_validation_ms: 0,
+            source_discovery_no_candidate_streak: 0,
+            last_source_discovery_reason: None,
             active_runtime_ms: 0,
             diagnostic_policy: DiagnosticPolicyMemory::default(),
         })

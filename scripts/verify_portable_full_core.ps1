@@ -149,6 +149,8 @@ if ($RunSmokeTests) {
         -not $growthCheck.redundant_generative_verifier_search_disabled -or
         -not $growthCheck.classifier_refinement_requires_capability_evidence -or
         -not $growthCheck.classifier_refinement_delta_ledger_enabled -or
+        -not $growthCheck.source_patch_diagnostics_use_recent_engine_window -or
+        -not $growthCheck.source_synthesis_exhaustion_is_capability_gap -or
         -not $growthCheck.core_self_approval_enabled -or
         -not $growthCheck.autonomous_source_patch_install_enabled -or
         -not $growthCheck.source_patch_rollback_enabled -or

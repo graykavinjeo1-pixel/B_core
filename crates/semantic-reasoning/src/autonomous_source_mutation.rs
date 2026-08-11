@@ -111,6 +111,32 @@ pub struct AutonomousSourcePatchRequest {
     pub solution_strategy: String,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum SourceDiscoveryDisposition {
+    Candidate,
+    Disabled,
+    BelowValueThreshold,
+    NoApplicableTransformation,
+}
+
+impl SourceDiscoveryDisposition {
+    pub fn label(self) -> &'static str {
+        match self {
+            Self::Candidate => "CANDIDATE",
+            Self::Disabled => "DISABLED",
+            Self::BelowValueThreshold => "BELOW_VALUE_THRESHOLD",
+            Self::NoApplicableTransformation => "NO_APPLICABLE_TRANSFORMATION",
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct SourceDiscoveryResult {
+    pub disposition: SourceDiscoveryDisposition,
+    pub candidate: Option<AutonomousSourcePatchRequest>,
+}
+
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct SourceRepairAttempt {
     pub attempt_number: u8,
@@ -1098,17 +1124,23 @@ fn rewrite_first_known_improvement(source: &str, strategy_index: usize) -> Optio
     changed.then_some(output)
 }
 
-pub fn discover_known_source_improvement(
+pub fn discover_known_source_improvement_detailed(
     policy: &AutonomousSourceMutationPolicy,
     state_dir: &Path,
     source_generation: u64,
-) -> Result<Option<AutonomousSourcePatchRequest>, String> {
+) -> Result<SourceDiscoveryResult, String> {
     validate_policy(policy)?;
     if !policy.enabled || !policy.auto_discover_known_transformations {
-        return Ok(None);
+        return Ok(SourceDiscoveryResult {
+            disposition: SourceDiscoveryDisposition::Disabled,
+            candidate: None,
+        });
     }
     if KNOWN_REMAINDER_PREDICTED_VALUE < policy.minimum_predicted_value {
-        return Ok(None);
+        return Ok(SourceDiscoveryResult {
+            disposition: SourceDiscoveryDisposition::BelowValueThreshold,
+            candidate: None,
+        });
     }
     for path in rust_source_files(&policy.source_root)? {
         let bytes = fs::read(&path)
@@ -1179,30 +1211,44 @@ pub fn discover_known_source_improvement(
             {
                 continue;
             }
-            return Ok(Some(AutonomousSourcePatchRequest {
-                schema: AUTONOMOUS_SOURCE_MUTATION_SCHEMA.to_string(),
-                patch_id,
-                relative_path: relative_path.clone(),
-                predecessor_sha256: predecessor_sha256.clone(),
-                candidate_source,
-                candidate_sha256,
-                transformation: transformation.clone(),
-                consequence_predictions: vec![
+            return Ok(SourceDiscoveryResult {
+                disposition: SourceDiscoveryDisposition::Candidate,
+                candidate: Some(AutonomousSourcePatchRequest {
+                    schema: AUTONOMOUS_SOURCE_MUTATION_SCHEMA.to_string(),
+                    patch_id,
+                    relative_path: relative_path.clone(),
+                    predecessor_sha256: predecessor_sha256.clone(),
+                    candidate_source,
+                    candidate_sha256,
+                    transformation: transformation.clone(),
+                    consequence_predictions: vec![
                     "preserve parity/divisibility semantics".to_string(),
                     "replace a manual predicate using a distinct bounded repair strategy"
                         .to_string(),
                     "retain only a method that passes format, regression, and release build gates"
                         .to_string(),
                 ],
-                predicted_value: KNOWN_REMAINDER_PREDICTED_VALUE,
-                source_generation,
-                core_generated: true,
-                core_self_approved: true,
-                solution_strategy: (*solution_strategy).to_string(),
-            }));
+                    predicted_value: KNOWN_REMAINDER_PREDICTED_VALUE,
+                    source_generation,
+                    core_generated: true,
+                    core_self_approved: true,
+                    solution_strategy: (*solution_strategy).to_string(),
+                }),
+            });
         }
     }
-    Ok(None)
+    Ok(SourceDiscoveryResult {
+        disposition: SourceDiscoveryDisposition::NoApplicableTransformation,
+        candidate: None,
+    })
+}
+
+pub fn discover_known_source_improvement(
+    policy: &AutonomousSourceMutationPolicy,
+    state_dir: &Path,
+    source_generation: u64,
+) -> Result<Option<AutonomousSourcePatchRequest>, String> {
+    Ok(discover_known_source_improvement_detailed(policy, state_dir, source_generation)?.candidate)
 }
 
 #[cfg(test)]
@@ -1368,9 +1414,12 @@ mod tests {
         let (root, mut policy) = fixture("utility-gate");
         policy.minimum_predicted_value = 60;
         let state = external_state(&root);
-        assert!(discover_known_source_improvement(&policy, &state, 1)
-            .unwrap()
-            .is_none());
+        let discovery = discover_known_source_improvement_detailed(&policy, &state, 1).unwrap();
+        assert_eq!(
+            discovery.disposition,
+            SourceDiscoveryDisposition::BelowValueThreshold
+        );
+        assert!(discovery.candidate.is_none());
         fs::remove_dir_all(root).unwrap();
     }
 
