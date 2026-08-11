@@ -680,6 +680,7 @@ pub struct SelfCheck {
     pub autonomous_source_patch_install_enabled: bool,
     pub source_patch_rollback_enabled: bool,
     pub promoted_lessons_drive_executable_repairs: bool,
+    pub operational_repair_knowledge: Vec<String>,
     pub mutual_recursive_growth_observed: bool,
 }
 
@@ -703,6 +704,10 @@ pub fn self_check() -> SelfCheck {
         autonomous_source_patch_install_enabled: true,
         source_patch_rollback_enabled: true,
         promoted_lessons_drive_executable_repairs: true,
+        operational_repair_knowledge: vec![
+            "WINPS51_EXTENDED_PATH_NORMALIZATION_BEFORE_PATH_CMDLETS".to_string(),
+            "AUTONOMOUS_SOURCE_UPDATE_HANDOFF_IS_RESUMABLE_AFTER_BINARY_SWAP".to_string(),
+        ],
         mutual_recursive_growth_observed: false,
     }
 }
@@ -1818,20 +1823,27 @@ pub fn request_resume(config_path: &Path) -> Result<serde_json::Value, String> {
     }
     let resumable_reason = matches!(
         state.stop_reason.as_deref(),
-        Some("OPERATOR_STOP_REQUESTED" | "SCAN_RUNTIME_BOUND_REACHED")
+        Some(
+            "OPERATOR_STOP_REQUESTED"
+                | "SCAN_RUNTIME_BOUND_REACHED"
+                | "AUTONOMOUS_SOURCE_UPDATE_STAGED"
+        )
     );
     if state.phase == SupervisorPhase::SafeStopped && resumable_reason {
-        let recovered_scan_timeout =
-            state.stop_reason.as_deref() == Some("SCAN_RUNTIME_BOUND_REACHED");
+        let previous_reason = state.stop_reason.clone();
         state.stop_reason = None;
         save_transition(
             &config,
             &mut state,
             SupervisorPhase::InfraReady,
-            if recovered_scan_timeout {
-                "OPERATOR_RESUME_AFTER_TRANSIENT_SCAN_TIMEOUT"
-            } else {
-                "OPERATOR_RESUME_REQUESTED"
+            match previous_reason.as_deref() {
+                Some("SCAN_RUNTIME_BOUND_REACHED") => {
+                    "OPERATOR_RESUME_AFTER_TRANSIENT_SCAN_TIMEOUT"
+                }
+                Some("AUTONOMOUS_SOURCE_UPDATE_STAGED") => {
+                    "AUTONOMOUS_SOURCE_UPDATE_APPLIED_AND_RESUMED"
+                }
+                _ => "OPERATOR_RESUME_REQUESTED",
             },
         )?;
     }
@@ -4046,6 +4058,12 @@ mod tests {
         assert!(check.autonomous_source_patch_install_enabled);
         assert!(check.source_patch_rollback_enabled);
         assert!(check.promoted_lessons_drive_executable_repairs);
+        assert!(check
+            .operational_repair_knowledge
+            .contains(&"WINPS51_EXTENDED_PATH_NORMALIZATION_BEFORE_PATH_CMDLETS".to_string()));
+        assert!(check.operational_repair_knowledge.contains(
+            &"AUTONOMOUS_SOURCE_UPDATE_HANDOFF_IS_RESUMABLE_AFTER_BINARY_SWAP".to_string()
+        ));
         assert!(!check.mutual_recursive_growth_observed);
     }
 
@@ -4677,6 +4695,28 @@ mod tests {
             &mut state,
             SupervisorPhase::SafeStopped,
             "TEST_TRANSIENT_TIMEOUT",
+        )
+        .unwrap();
+        let response = request_resume(&config_path).unwrap();
+        assert_eq!(response["phase"], "INFRA_READY");
+        assert_eq!(response["hard_resource_stop_preserved"], false);
+        let resumed = status(&config_path).unwrap();
+        assert_eq!(resumed.phase, SupervisorPhase::InfraReady);
+        assert_eq!(resumed.stop_reason, None);
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn staged_autonomous_source_update_can_resume_after_binary_swap() {
+        let root = temp_root("resume-source-update");
+        let (config_path, config) = test_config(&root);
+        let mut state = initialize(&config_path).unwrap();
+        state.stop_reason = Some("AUTONOMOUS_SOURCE_UPDATE_STAGED".to_string());
+        save_transition(
+            &config,
+            &mut state,
+            SupervisorPhase::SafeStopped,
+            "TEST_SOURCE_UPDATE_STAGED",
         )
         .unwrap();
         let response = request_resume(&config_path).unwrap();

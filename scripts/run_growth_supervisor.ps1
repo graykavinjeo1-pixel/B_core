@@ -6,17 +6,32 @@ param(
     [Parameter(Mandatory = $true)]
     [string]$ConfigPath,
 
-    [switch]$Foreground
+    [switch]$Foreground,
+
+    [switch]$SelfCheck
 )
 
 $ErrorActionPreference = "Stop"
 
-$root = [IO.Path]::GetFullPath($PackageRoot)
-$config = [IO.Path]::GetFullPath($ConfigPath)
+function Resolve-BLocalPath {
+    param([Parameter(Mandatory = $true)][string]$Path)
+
+    # System.IO.Path on Windows PowerShell 5.1 can return $null for an already
+    # extended-length path (\\?\...).  Convert it to the ordinary absolute
+    # representation before using Join-Path, Split-Path, or Copy-Item.
+    $candidate = $Path
+    if ($candidate.StartsWith('\\?\', [StringComparison]::Ordinal)) {
+        $candidate = $candidate.Substring(4)
+    }
+    return [IO.Path]::GetFullPath($candidate)
+}
+
+$root = Resolve-BLocalPath $PackageRoot
+$config = Resolve-BLocalPath $ConfigPath
 $configObject = Get-Content -Raw -LiteralPath $config | ConvertFrom-Json
-$stateRoot = [IO.Path]::GetFullPath([string]$configObject.state_dir)
+$stateRoot = Resolve-BLocalPath ([string]$configObject.state_dir)
 $runtimeBin = if ($null -ne $configObject.source_mutation -and $configObject.source_mutation.enabled) {
-    [IO.Path]::GetFullPath([string]$configObject.source_mutation.runtime_bin_dir)
+    Resolve-BLocalPath ([string]$configObject.source_mutation.runtime_bin_dir)
 } else {
     Join-Path $root "bin"
 }
@@ -26,6 +41,20 @@ if (-not (Test-Path -LiteralPath $supervisor -PathType Leaf)) {
 }
 if (-not (Test-Path -LiteralPath $config -PathType Leaf)) {
     throw "GROWTH_CONFIG_MISSING:$config"
+}
+
+if ($SelfCheck) {
+    $canary = Resolve-BLocalPath '\\?\C:\b-core-path-canary'
+    if ($canary -ne 'C:\b-core-path-canary' -or [string]::IsNullOrWhiteSpace($stateRoot)) {
+        throw "EXTENDED_PATH_NORMALIZATION_SELF_CHECK_FAILED"
+    }
+    [ordered]@{
+        pass = $true
+        windows_powershell_extended_path_normalization = $true
+        state_root = $stateRoot
+        runtime_bin = $runtimeBin
+    } | ConvertTo-Json
+    exit 0
 }
 
 if ($Foreground) {
@@ -41,10 +70,10 @@ if ($Foreground) {
             throw "SELF_UPDATE_RESTART_BOUND_REACHED"
         }
         $handoff = Get-Content -Raw -LiteralPath $handoffPath | ConvertFrom-Json
-        $stagedSupervisor = [IO.Path]::GetFullPath([string]$handoff.staged_supervisor)
-        $stagedVerifier = [IO.Path]::GetFullPath([string]$handoff.staged_verifier)
-        $runtimeSupervisor = [IO.Path]::GetFullPath([string]$handoff.runtime_supervisor)
-        $runtimeVerifier = [IO.Path]::GetFullPath([string]$handoff.runtime_verifier)
+        $stagedSupervisor = Resolve-BLocalPath ([string]$handoff.staged_supervisor)
+        $stagedVerifier = Resolve-BLocalPath ([string]$handoff.staged_verifier)
+        $runtimeSupervisor = Resolve-BLocalPath ([string]$handoff.runtime_supervisor)
+        $runtimeVerifier = Resolve-BLocalPath ([string]$handoff.runtime_verifier)
         $runtimePrefix = $runtimeBin.TrimEnd('\') + '\'
         foreach ($destination in @($runtimeSupervisor, $runtimeVerifier)) {
             if (-not $destination.StartsWith($runtimePrefix, [StringComparison]::OrdinalIgnoreCase)) {
@@ -59,7 +88,8 @@ if ($Foreground) {
         $null = New-Item -ItemType Directory -Force -Path $runtimeBin
         Copy-Item -LiteralPath $stagedVerifier -Destination $runtimeVerifier -Force
         Copy-Item -LiteralPath $stagedSupervisor -Destination $runtimeSupervisor -Force
-        $appliedPath = Join-Path (Split-Path -Parent ([string]$handoff.source_receipt)) "runtime_update_applied.json"
+        $sourceReceipt = Resolve-BLocalPath ([string]$handoff.source_receipt)
+        $appliedPath = Join-Path (Split-Path -Parent $sourceReceipt) "runtime_update_applied.json"
         Move-Item -LiteralPath $handoffPath -Destination $appliedPath
         & $runtimeSupervisor resume $config | Out-Null
         if ($LASTEXITCODE -ne 0) {

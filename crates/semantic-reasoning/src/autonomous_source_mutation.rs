@@ -80,6 +80,10 @@ pub struct LocalCommandReceipt {
     pub success: bool,
     pub timed_out: bool,
     pub duration_ms: u64,
+    #[serde(default)]
+    pub output_sha256: String,
+    #[serde(default)]
+    pub diagnostic_tail: String,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -104,6 +108,8 @@ pub struct AutonomousSourcePatchReceipt {
     pub core_self_approved: bool,
     pub installed: bool,
     pub rolled_back: bool,
+    #[serde(default)]
+    pub format_check: Option<LocalCommandReceipt>,
     pub validation: LocalCommandReceipt,
     pub release_build: Option<LocalCommandReceipt>,
     pub runtime_update_staged: bool,
@@ -193,16 +199,26 @@ fn command_receipt(
     cwd: &Path,
     target_dir: &Path,
     timeout_ms: u64,
+    diagnostic_path: &Path,
 ) -> Result<LocalCommandReceipt, String> {
     let started = Instant::now();
+    let diagnostic = OpenOptions::new()
+        .write(true)
+        .create(true)
+        .truncate(true)
+        .open(diagnostic_path)
+        .map_err(|error| format!("SOURCE_MUTATION_DIAGNOSTIC_CREATE:{error}"))?;
+    let diagnostic_error = diagnostic
+        .try_clone()
+        .map_err(|error| format!("SOURCE_MUTATION_DIAGNOSTIC_CLONE:{error}"))?;
     let mut child = Command::new(program)
         .args(args)
         .current_dir(cwd)
         .env("CARGO_TARGET_DIR", target_dir)
         .env("CARGO_NET_OFFLINE", "true")
         .stdin(Stdio::null())
-        .stdout(Stdio::null())
-        .stderr(Stdio::null())
+        .stdout(Stdio::from(diagnostic))
+        .stderr(Stdio::from(diagnostic_error))
         .spawn()
         .map_err(|error| format!("SOURCE_MUTATION_COMMAND_SPAWN:{error}"))?;
     let timeout = Duration::from_millis(timeout_ms);
@@ -211,6 +227,9 @@ fn command_receipt(
             .try_wait()
             .map_err(|error| format!("SOURCE_MUTATION_COMMAND_WAIT:{error}"))?
         {
+            let output = fs::read(diagnostic_path)
+                .map_err(|error| format!("SOURCE_MUTATION_DIAGNOSTIC_READ:{error}"))?;
+            let tail_start = output.len().saturating_sub(4_096);
             return Ok(LocalCommandReceipt {
                 program: program.display().to_string(),
                 args: args.iter().map(|value| (*value).to_string()).collect(),
@@ -218,11 +237,16 @@ fn command_receipt(
                 success: status.success(),
                 timed_out: false,
                 duration_ms: started.elapsed().as_millis().min(u128::from(u64::MAX)) as u64,
+                output_sha256: sha256(&output),
+                diagnostic_tail: String::from_utf8_lossy(&output[tail_start..]).to_string(),
             });
         }
         if started.elapsed() >= timeout {
             let _ = child.kill();
             let status = child.wait().ok();
+            let output = fs::read(diagnostic_path)
+                .map_err(|error| format!("SOURCE_MUTATION_DIAGNOSTIC_READ:{error}"))?;
+            let tail_start = output.len().saturating_sub(4_096);
             return Ok(LocalCommandReceipt {
                 program: program.display().to_string(),
                 args: args.iter().map(|value| (*value).to_string()).collect(),
@@ -230,6 +254,8 @@ fn command_receipt(
                 success: false,
                 timed_out: true,
                 duration_ms: started.elapsed().as_millis().min(u128::from(u64::MAX)) as u64,
+                output_sha256: sha256(&output),
+                diagnostic_tail: String::from_utf8_lossy(&output[tail_start..]).to_string(),
             });
         }
         thread::sleep(Duration::from_millis(100));
@@ -318,13 +344,58 @@ pub fn install_and_stage_source_patch(
         return Err(format!("SOURCE_MUTATION_CANDIDATE_RENAME:{error}"));
     }
 
-    let validation = command_receipt(
+    let format_check = match command_receipt(
+        &policy.cargo_executable,
+        &["fmt", "-p", "semantic-reasoning", "--", "--check"],
+        &policy.source_root,
+        &policy.build_target_dir,
+        policy.validation_timeout_ms,
+        &mutation_root.join("format-check.log"),
+    ) {
+        Ok(receipt) => receipt,
+        Err(error) => {
+            restore_target(&target, &rollback_sibling)?;
+            return Err(error);
+        }
+    };
+    if !format_check.success {
+        restore_target(&target, &rollback_sibling)?;
+        let mut receipt = AutonomousSourcePatchReceipt {
+            schema: AUTONOMOUS_SOURCE_MUTATION_SCHEMA.to_string(),
+            patch_id: request.patch_id.clone(),
+            relative_path: request.relative_path.clone(),
+            predecessor_sha256: request.predecessor_sha256.clone(),
+            candidate_sha256: request.candidate_sha256.clone(),
+            core_generated: true,
+            core_self_approved: true,
+            installed: false,
+            rolled_back: true,
+            format_check: Some(format_check.clone()),
+            validation: format_check,
+            release_build: None,
+            runtime_update_staged: false,
+            rollback_source,
+            receipt_sha256: String::new(),
+        };
+        receipt.receipt_sha256 = receipt_hash(&receipt)?;
+        write_immutable_json(&mutation_root.join("receipt.json"), &receipt)?;
+        return Ok(receipt);
+    }
+
+    let validation = match command_receipt(
         &policy.cargo_executable,
         &["test", "-p", "semantic-reasoning", "--lib", "--quiet"],
         &policy.source_root,
         &policy.build_target_dir,
         policy.validation_timeout_ms,
-    )?;
+        &mutation_root.join("test.log"),
+    ) {
+        Ok(receipt) => receipt,
+        Err(error) => {
+            restore_target(&target, &rollback_sibling)?;
+            return Err(error);
+        }
+    };
     if !validation.success {
         restore_target(&target, &rollback_sibling)?;
         let mut receipt = AutonomousSourcePatchReceipt {
@@ -337,6 +408,7 @@ pub fn install_and_stage_source_patch(
             core_self_approved: true,
             installed: false,
             rolled_back: true,
+            format_check: Some(format_check),
             validation,
             release_build: None,
             runtime_update_staged: false,
@@ -348,7 +420,7 @@ pub fn install_and_stage_source_patch(
         return Ok(receipt);
     }
 
-    let release_build = command_receipt(
+    let release_build = match command_receipt(
         &policy.cargo_executable,
         &[
             "build",
@@ -363,7 +435,14 @@ pub fn install_and_stage_source_patch(
         &policy.source_root,
         &policy.build_target_dir,
         policy.validation_timeout_ms,
-    )?;
+        &mutation_root.join("release-build.log"),
+    ) {
+        Ok(receipt) => receipt,
+        Err(error) => {
+            restore_target(&target, &rollback_sibling)?;
+            return Err(error);
+        }
+    };
     if !release_build.success {
         restore_target(&target, &rollback_sibling)?;
         let mut receipt = AutonomousSourcePatchReceipt {
@@ -376,6 +455,7 @@ pub fn install_and_stage_source_patch(
             core_self_approved: true,
             installed: false,
             rolled_back: true,
+            format_check: Some(format_check),
             validation,
             release_build: Some(release_build),
             runtime_update_staged: false,
@@ -419,6 +499,7 @@ pub fn install_and_stage_source_patch(
         core_self_approved: true,
         installed: true,
         rolled_back: false,
+        format_check: Some(format_check),
         validation,
         release_build: Some(release_build),
         runtime_update_staged: true,
@@ -544,7 +625,12 @@ fn rewrite_remainder_predicate(line: &str) -> Option<String> {
     {
         return None;
     }
-    let left_start = expression_start(&line[..modulo])?;
+    let left_boundary = expression_start(&line[..modulo])?;
+    let leading_whitespace = line[left_boundary..modulo]
+        .bytes()
+        .take_while(u8::is_ascii_whitespace)
+        .count();
+    let left_start = left_boundary + leading_whitespace;
     let expression = line[left_start..modulo].trim();
     if expression.is_empty() {
         return None;
@@ -691,7 +777,7 @@ mod tests {
         .unwrap();
         fs::write(
             root.join("src/lib.rs"),
-            "pub fn even(value: u32) -> bool { value % 2 == 0 }\n#[cfg(test)]\nmod tests { #[test] fn even_works() { assert!(super::even(2)); } }\n",
+            "pub fn even(value: u32) -> bool {\n    value % 2 == 0\n}\n\n#[cfg(test)]\nmod tests {\n    #[test]\n    fn even_works() {\n        assert!(super::even(2));\n    }\n}\n",
         )
         .unwrap();
         fs::write(root.join("src/growth_supervisor_main.rs"), "fn main() {}\n").unwrap();
@@ -716,6 +802,10 @@ mod tests {
         let rewritten = rewrite_first_known_improvement(source).expect("candidate");
         assert!(rewritten.contains("value.is_multiple_of(2)"));
         assert!(rewritten.contains("\"x % 2 == 0\""));
+
+        let conditional = "let scope = if ordinal % 5 == 0 { 1 } else { 2 };\n";
+        let rewritten = rewrite_first_known_improvement(conditional).expect("conditional");
+        assert!(rewritten.contains("= if ordinal.is_multiple_of(5)"));
     }
 
     #[test]

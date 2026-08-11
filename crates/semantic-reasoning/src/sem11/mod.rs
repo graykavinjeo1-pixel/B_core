@@ -1357,7 +1357,7 @@ fn build_task(rng: &mut Rng, seed: u64, index: usize, pressure: Pressure, prefix
     };
     let mut candidates = Vec::with_capacity(candidate_count);
     for ordinal in 0..candidate_count {
-        let scope = if ordinal % 5 == 0 {
+        let scope = if ordinal.is_multiple_of(5) {
             required_scope
         } else {
             1 + rng.next() % 4
