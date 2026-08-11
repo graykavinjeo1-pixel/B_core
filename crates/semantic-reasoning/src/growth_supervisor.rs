@@ -1777,14 +1777,17 @@ fn scan_watched_roots(
     let mut files_hashed = 0_usize;
     let mut replayed_unchanged_work_events = 0_usize;
     let mut baseline_pending_files = false;
+    let mut eligible_logical_paths = BTreeSet::new();
     let canary_bucket = old_index.sequence % FULL_HASH_CANARY_INTERVAL;
     for path in &paths {
         let metadata =
             fs::metadata(path).map_err(|error| format!("METADATA:{}:{error}", path.display()))?;
+        let logical = normalized_logical_path(path, &config.watched_roots)?;
         if metadata.len() > config.resources.max_file_bytes {
+            new_index.files.remove(&logical);
             continue;
         }
-        let logical = normalized_logical_path(path, &config.watched_roots)?;
+        eligible_logical_paths.insert(logical.clone());
         let previous = old_index.files.get(&logical);
         let matching_event = event_for_path(path, &events);
         let canary_rehash = !baseline_created
@@ -1855,7 +1858,7 @@ fn scan_watched_roots(
     }
     if baseline_created {
         new_index.baseline_complete = !baseline_pending_files
-            && current_logical_paths
+            && eligible_logical_paths
                 .iter()
                 .all(|logical_path| new_index.files.contains_key(logical_path));
     }
@@ -4238,6 +4241,26 @@ mod tests {
         assert_eq!(second.last_scan_files_hashed, 17);
         assert!(load_index(&config).unwrap().baseline_complete);
         assert_eq!(second.observations_created, 0);
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn oversized_excluded_file_does_not_block_baseline_completion() {
+        let root = temp_root("baseline-oversized-exclusion");
+        let (config_path, config) = test_config(&root);
+        fs::write(
+            config.watched_roots[0].join("eligible.rs"),
+            "pub fn eligible() {}\n",
+        )
+        .unwrap();
+        let oversized = vec![b'x'; config.resources.max_file_bytes as usize + 1];
+        fs::write(config.watched_roots[0].join("oversized.rs"), oversized).unwrap();
+        initialize(&config_path).unwrap();
+        let report = supervisor_step(&config_path).unwrap();
+        assert!(report.baseline_created);
+        let index = load_index(&config).unwrap();
+        assert!(index.baseline_complete);
+        assert_eq!(index.files.len(), 1);
         fs::remove_dir_all(root).unwrap();
     }
 }
