@@ -266,6 +266,7 @@ if (-not $growthSelfCheck.pass -or
     $growthSelfCheck.generative_memory_self_application_enabled -or
     -not $growthSelfCheck.heuristic_composition_value_excluded_from_frontier -or
     -not $growthSelfCheck.behavioral_evidence_required_for_generative_self_application -or
+    -not $growthSelfCheck.behavioral_composition_execution_enabled -or
     -not $growthSelfCheck.core_self_approval_enabled -or
     -not $growthSelfCheck.autonomous_source_patch_install_enabled -or
     -not $growthSelfCheck.source_patch_rollback_enabled -or

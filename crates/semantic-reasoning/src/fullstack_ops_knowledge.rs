@@ -245,6 +245,25 @@ const SOURCE_FAMILY_SPECS: [SourceFamilySpec; 3] = [
     },
 ];
 
+/// Reconstructs the compact promoted bundle from sealed family receipts only.
+/// No source corpus or report directory is needed at runtime.
+pub fn promoted_bundle() -> FullStackKnowledgeBundle {
+    build_bundle(
+        SOURCE_FAMILY_SPECS
+            .iter()
+            .map(|spec| SourceFamilyReceipt {
+                layer: spec.layer,
+                classifier_version: SOURCE_FAMILY_CLASSIFIER_VERSION.to_string(),
+                source_count: spec.expected_count,
+                source_set_sha256: spec.expected_sha256.to_ascii_lowercase(),
+                expected_source_count: spec.expected_count,
+                expected_source_set_sha256: spec.expected_sha256.to_string(),
+                matches_expected: true,
+            })
+            .collect(),
+    )
+}
+
 fn source_family_hashes(source_records_path: &Path) -> Result<Vec<SourceFamilyReceipt>, String> {
     let actual_hash = file_sha256(source_records_path)?;
     if !actual_hash.eq_ignore_ascii_case(SOURCE_RECORDS_SHA256) {
@@ -709,7 +728,21 @@ pub fn validate_bundle(bundle: &FullStackKnowledgeBundle) -> Result<(), Knowledg
             .iter()
             .find(|receipt| receipt.layer == layer)
             .ok_or(KnowledgeValidationError::MissingLayer(layer))?;
-        if !receipt.matches_expected {
+        let specification = SOURCE_FAMILY_SPECS
+            .iter()
+            .find(|specification| specification.layer == layer)
+            .expect("all promoted layers have a sealed source-family specification");
+        if !receipt.matches_expected
+            || receipt.classifier_version != SOURCE_FAMILY_CLASSIFIER_VERSION
+            || receipt.source_count != specification.expected_count
+            || receipt.expected_source_count != specification.expected_count
+            || !receipt
+                .source_set_sha256
+                .eq_ignore_ascii_case(specification.expected_sha256)
+            || !receipt
+                .expected_source_set_sha256
+                .eq_ignore_ascii_case(specification.expected_sha256)
+        {
             return Err(KnowledgeValidationError::SourceFamilyMismatch(layer));
         }
     }
@@ -974,7 +1007,7 @@ mod tests {
 
     #[test]
     fn bundle_is_compact_local_and_three_layer_composable() {
-        let bundle = build_bundle(receipts());
+        let bundle = promoted_bundle();
         assert_eq!(validate_bundle(&bundle), Ok(()));
         assert_eq!(bundle.source_family_receipts.len(), 3);
         assert_eq!(bundle.recipes.len(), 3);
@@ -1028,6 +1061,19 @@ mod tests {
     fn invalid_source_family_receipt_blocks_promotion() {
         let mut invalid = receipts();
         invalid[0].matches_expected = false;
+        assert_eq!(
+            validate_bundle(&build_bundle(invalid)),
+            Err(KnowledgeValidationError::SourceFamilyMismatch(
+                CodingLayer::Frontend
+            ))
+        );
+    }
+
+    #[test]
+    fn matching_flag_cannot_hide_a_forged_source_hash() {
+        let mut invalid = receipts();
+        invalid[0].source_set_sha256 = "0".repeat(64);
+        invalid[0].matches_expected = true;
         assert_eq!(
             validate_bundle(&build_bundle(invalid)),
             Err(KnowledgeValidationError::SourceFamilyMismatch(

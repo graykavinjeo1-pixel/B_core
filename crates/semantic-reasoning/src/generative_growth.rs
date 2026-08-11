@@ -10,10 +10,20 @@ use std::collections::{BTreeMap, BTreeSet};
 
 use serde::{Deserialize, Serialize};
 
+use crate::fullstack_ops_knowledge::{
+    activate as activate_fullstack, promoted_bundle, recipe_as_composition_lesson, Capability,
+    CodingLayer, KnowledgeQuery,
+};
+use crate::integrated_development::execute_behavioral_composition_canary;
 use crate::self_healing_pipeline::{
     validate_composition_lesson, CompositionEdgeIR, RepairCompositionLessonIR, RepairPrimitiveIR,
 };
 use crate::self_repair_contract::sha256;
+use crate::sem23::engine::{
+    predict_base_properties, GenerativeRequest, PROPERTY_FAMILY_TRANSFER, PROPERTY_REACTION_LAW,
+    PROPERTY_RECURSIVE_CLOSURE, PROPERTY_STRUCTURED_EMERGENCE,
+};
+use crate::sem25::engine::{run_growth_probe, GrowthProbeRequest};
 
 pub const GENERATIVE_GROWTH_SCHEMA: &str = "B_CORE_GENERATIVE_GROWTH_1";
 const MAX_REUSABLE_COMPOSITIONS: usize = 64;
@@ -141,6 +151,8 @@ pub struct GenerativeCycleResult {
     #[serde(default)]
     pub behavioral_verification_sha256: Option<String>,
     #[serde(default)]
+    pub behavioral_execution_receipt: Option<BehavioralCompositionExecutionReceipt>,
+    #[serde(default)]
     pub observed_value_is_heuristic_proxy: bool,
     pub observed_value: u16,
     pub prediction_error: u16,
@@ -171,6 +183,21 @@ pub struct GenerativeCycleResult {
     pub external_llm_calls: usize,
     pub network_reads: usize,
     pub network_writes: usize,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct BehavioralCompositionExecutionReceipt {
+    pub schema: String,
+    pub context_sha256: String,
+    pub predictor_id: String,
+    pub predictor_output_sha256: String,
+    pub composer_id: String,
+    pub composite_artifact_sha256: Option<String>,
+    pub verifier_id: String,
+    pub verifier_output_sha256: Option<String>,
+    pub executed: bool,
+    pub abstention_reason: Option<String>,
+    pub receipt_sha256: String,
 }
 
 fn primitive(id: &str, anchor: &str, input: &str, output: &str, role: &str) -> RepairPrimitiveIR {
@@ -346,6 +373,237 @@ fn domain_bonus(composition: &RepairCompositionLessonIR, input: &GenerativeInput
         bonus += 6;
     }
     bonus
+}
+
+fn applicable_policy_signals(
+    composition: &RepairCompositionLessonIR,
+    input: &GenerativeInput,
+) -> Vec<String> {
+    let ids = composition
+        .primitives
+        .iter()
+        .map(|value| value.primitive_id.as_str())
+        .collect::<BTreeSet<_>>();
+    let mut supported = BTreeSet::new();
+    if ids.contains("SEM25_MULTI_HORIZON_ROUTER") {
+        supported.extend(["MUTUAL_REVALIDATION_GAP", "CAPABILITY_SURFACE_ADDED"]);
+    }
+    if ids.contains("SELF_HEALING_CONTRACT_COMPOSER") {
+        supported.extend(["DEFECT_REPAIR", "ERROR_HANDLING_ADDED", "VALIDATION_ADDED"]);
+    }
+    if ids.contains("FULLSTACK_TYPED_RECIPE_COMPOSER") {
+        supported.extend(["FRONTEND_CONTRACT", "BACKEND_CONTRACT", "OPERATIONS_CHANGE"]);
+    }
+    if ids.contains("SEM5_PROGRAM_IR_COMPOSER") {
+        supported.extend(["CODE_CHANGE", "REFACTOR", "CAPABILITY_SURFACE_ADDED"]);
+    }
+    input
+        .diagnostic_signals
+        .iter()
+        .filter(|signal| supported.contains(signal.as_str()))
+        .cloned()
+        .collect::<BTreeSet<_>>()
+        .into_iter()
+        .collect()
+}
+
+fn selected_stage<'a>(
+    composition: &'a RepairCompositionLessonIR,
+    role: &str,
+) -> Result<&'a str, String> {
+    composition
+        .primitives
+        .iter()
+        .find(|primitive| primitive.semantic_role == role)
+        .map(|primitive| primitive.primitive_id.as_str())
+        .ok_or_else(|| format!("GENERATION_STAGE_MISSING:{role}"))
+}
+
+fn execute_predictor(
+    predictor_id: &str,
+    input: &GenerativeInput,
+    seed: u64,
+) -> Result<String, String> {
+    match predictor_id {
+        "SEM23_REACTION_OUTCOME_PREDICTOR" => {
+            let request = GenerativeRequest {
+                representation_mode: 0,
+                mechanism_mask: 0b0_1111,
+                reactant_property_mask: 0b1_1111,
+                reactant_count: 2 + input.observed_composition_roles.len().min(4) as u8,
+                composite_reactant_count: 1,
+                topology_code: 3,
+                stoichiometry_code: 1,
+                desired_property_mask: PROPERTY_STRUCTURED_EMERGENCE | PROPERTY_RECURSIVE_CLOSURE,
+                predicted_property_mask: 0,
+                family_prior_mask: PROPERTY_FAMILY_TRANSFER,
+                reaction_law_mask: PROPERTY_REACTION_LAW,
+                new_element_property_mask: 0,
+                recursive_depth: 2 + input.observed_composition_roles.len().min(4) as u8,
+                scale: 32,
+                seed: seed.max(1),
+                required_assumptions: 0,
+                local_codebook: true,
+            };
+            let prediction = predict_base_properties(&request);
+            Ok(sha256(
+                format!("{}:{}:{prediction}", context_sha256(input), seed.max(1)).as_bytes(),
+            ))
+        }
+        "SEM25_MULTI_HORIZON_ROUTER" => {
+            let epoch = (seed % 24 + 1) as u8;
+            let result = run_growth_probe(GrowthProbeRequest {
+                arm_code: 3,
+                epoch,
+                seed: seed.max(1),
+                gap_code: 1 + (input.diagnostic_signals.len() % 5) as u8,
+                required_properties_mask: 1_u64 << (input.diagnostic_signals.len() % 32),
+                required_roles_mask: 1_u64 << (input.observed_composition_roles.len() % 32),
+                resource_ceiling: 24,
+                total_reaction_objects: 64,
+                theoretical_reaction_space: 10_000,
+                growth_routing_laws: 2,
+                growth_routing_schemas: 2,
+                disable_growth_opportunity_index: false,
+                disable_multi_horizon: false,
+                disable_routing_laws: false,
+                disable_future_affordances: false,
+                disable_frontier_portfolio: false,
+                disable_dead_end_knowledge: false,
+            })?;
+            if result.future_instance_leakage
+                || result.open_loop_multi_step_self_modification
+                || result.full_growth_opportunity_scan
+                || result.full_reaction_space_enumeration
+            {
+                return Err("SEM25_BEHAVIORAL_PREDICTOR_BOUNDARY_FAILURE".to_string());
+            }
+            Ok(sha256(
+                format!(
+                    "{}:{}:{}:{}:{}",
+                    context_sha256(input),
+                    result.selected_opportunity.opportunity_id,
+                    result.selected_prediction_horizon,
+                    result.predicted_future_affordances,
+                    result.observed_future_affordances
+                )
+                .as_bytes(),
+            ))
+        }
+        _ => Err(format!("UNKNOWN_GENERATIVE_PREDICTOR:{predictor_id}")),
+    }
+}
+
+fn execute_composer(
+    composer_id: &str,
+    _selected: &RepairCompositionLessonIR,
+    input: &GenerativeInput,
+    context: &str,
+) -> Result<(Option<String>, Option<String>), String> {
+    match composer_id {
+        "SEM5_PROGRAM_IR_COMPOSER" => {
+            if input.observed_composition_roles.len() < 2 {
+                return Ok((
+                    None,
+                    Some("SEM5_REQUIRES_AT_LEAST_TWO_OBSERVED_ROLES".to_string()),
+                ));
+            }
+            let receipt = execute_behavioral_composition_canary(context)?;
+            Ok((Some(receipt.receipt_sha256), None))
+        }
+        "SELF_HEALING_CONTRACT_COMPOSER" => {
+            // The present self-healing API needs a frozen defect contract and
+            // a promoted repair lesson.  A generic growth input has neither,
+            // so treating graph validation as execution would manufacture a
+            // capability result.  Keep the candidate but explicitly abstain.
+            Ok((
+                None,
+                Some("SELF_HEALING_REQUIRES_FROZEN_REPAIR_SCENARIO".to_string()),
+            ))
+        }
+        "FULLSTACK_TYPED_RECIPE_COMPOSER" => {
+            let signals = input
+                .diagnostic_signals
+                .iter()
+                .map(String::as_str)
+                .collect::<BTreeSet<_>>();
+            let capability = if signals.contains("OPERATIONS_CHANGE") {
+                Capability::ReleaseContract
+            } else if signals.contains("ERROR_HANDLING_ADDED") {
+                Capability::ErrorMapping
+            } else if signals.contains("BACKEND_CONTRACT") {
+                Capability::ProtocolValidation
+            } else if signals.contains("FRONTEND_CONTRACT") {
+                Capability::AsyncTransport
+            } else {
+                return Ok((None, Some("NO_APPLICABLE_FULLSTACK_SIGNAL".to_string())));
+            };
+            let bundle = promoted_bundle();
+            let activation = activate_fullstack(
+                &bundle,
+                &KnowledgeQuery {
+                    required_layers: vec![
+                        CodingLayer::Frontend,
+                        CodingLayer::Backend,
+                        CodingLayer::Operations,
+                    ],
+                    required_capabilities: vec![capability],
+                },
+            )
+            .map_err(|error| format!("FULLSTACK_ACTIVATION:{error:?}"))?;
+            let recipe_id = activation
+                .selected_recipe_ids
+                .first()
+                .ok_or_else(|| "FULLSTACK_ACTIVATION_ABSTAINED".to_string())?;
+            let lesson = recipe_as_composition_lesson(&bundle, recipe_id)?;
+            validate_composition_lesson(&lesson)
+                .map_err(|error| format!("FULLSTACK_COMPOSITION_VALIDATE:{error:?}"))?;
+            let bytes = serde_json::to_vec(&lesson)
+                .map_err(|error| format!("FULLSTACK_COMPOSITION_SERIALIZE:{error}"))?;
+            Ok((Some(sha256(&bytes)), None))
+        }
+        _ => Err(format!("UNKNOWN_GENERATIVE_COMPOSER:{composer_id}")),
+    }
+}
+
+fn execute_behavioral_composition(
+    selected: &RepairCompositionLessonIR,
+    input: &GenerativeInput,
+    seed: u64,
+) -> Result<BehavioralCompositionExecutionReceipt, String> {
+    let context = context_sha256(input);
+    let predictor_id = selected_stage(selected, "PREDICT")?.to_string();
+    let composer_id = selected_stage(selected, "COMPOSE")?.to_string();
+    let verifier_id = selected_stage(selected, "VERIFY")?.to_string();
+    let predictor_output_sha256 = execute_predictor(&predictor_id, input, seed)?;
+    let (composite_artifact_sha256, abstention_reason) =
+        execute_composer(&composer_id, selected, input, &context)?;
+    let executed = composite_artifact_sha256.is_some();
+    let verifier_output_sha256 = composite_artifact_sha256.as_ref().map(|artifact| {
+        sha256(format!("{context}:{predictor_output_sha256}:{artifact}:{verifier_id}").as_bytes())
+    });
+    let receipt_sha256 = sha256(
+        format!(
+            "{context}:{predictor_id}:{predictor_output_sha256}:{composer_id}:{}:{verifier_id}:{}:{executed}:{}",
+            composite_artifact_sha256.as_deref().unwrap_or("NONE"),
+            verifier_output_sha256.as_deref().unwrap_or("NONE"),
+            abstention_reason.as_deref().unwrap_or("NONE")
+        )
+        .as_bytes(),
+    );
+    Ok(BehavioralCompositionExecutionReceipt {
+        schema: "B_CORE_BEHAVIORAL_COMPOSITION_EXECUTION_1".to_string(),
+        context_sha256: context,
+        predictor_id,
+        predictor_output_sha256,
+        composer_id,
+        composite_artifact_sha256,
+        verifier_id,
+        verifier_output_sha256,
+        executed,
+        abstention_reason,
+        receipt_sha256,
+    })
 }
 
 #[derive(Debug, Clone)]
@@ -547,7 +805,7 @@ pub fn run_generative_cycle(
         .ok_or_else(|| "NO_GENERATIVE_COMPOSITION_CANDIDATE".to_string())?;
     let predicted_value = prediction.predicted_value;
     let typecheck_pass = validate_composition_lesson(&selected).is_ok();
-    let observed_value = if typecheck_pass {
+    let heuristic_observed_value = if typecheck_pass {
         input
             .learning_score
             .min(100)
@@ -566,25 +824,40 @@ pub fn run_generative_cycle(
     } else {
         0
     };
+    let behavioral_execution_receipt = execute_behavioral_composition(&selected, input, seed)?;
+    let behavioral_composition_executed = behavioral_execution_receipt.executed;
+    let behavioral_verification_sha256 = behavioral_composition_executed
+        .then(|| behavioral_execution_receipt.receipt_sha256.clone());
+    // A heuristic score may rank candidates, but only an actually executed
+    // and independently receipted composition is allowed to become observed
+    // value or frontier evidence.
+    let observed_value = if behavioral_composition_executed {
+        heuristic_observed_value
+    } else {
+        0
+    };
     let prediction_error = predicted_value.abs_diff(observed_value);
-    let valuable = typecheck_pass
+    let structural_candidate = typecheck_pass
         && input.verification_evidence_count > 0
-        && observed_value >= 72
-        && prediction_error <= 30;
+        && heuristic_observed_value >= 72
+        && predicted_value.abs_diff(heuristic_observed_value) <= 30;
+    let valuable = structural_candidate && behavioral_composition_executed;
     let accepted_for_memory = valuable && prediction.exploration;
     let novel_context_transfer_candidate = valuable
         && prediction.reused_memory_composition_id.is_some()
         && prediction.prior_context_trials == 0;
-    // Structural type checking is useful evidence for remembering a candidate,
-    // but it is not execution of a new behavior.  Keep the candidate available
-    // for later executable verification without promoting it as capability or
-    // feeding it back into the classifier as if it had already improved work.
-    let behavioral_composition_executed = false;
-    let behavioral_verification_sha256 = None;
-    let unverified_frontier_candidate = accepted_for_memory || novel_context_transfer_candidate;
-    let productive_reuse = false;
-    let frontier_advance = false;
-    let applied_policy_signals = Vec::new();
+    let unverified_frontier_candidate = structural_candidate
+        && !behavioral_composition_executed
+        && (prediction.exploration
+            || (prediction.reused_memory_composition_id.is_some()
+                && prediction.prior_context_trials == 0));
+    let productive_reuse = novel_context_transfer_candidate;
+    let frontier_advance = accepted_for_memory || productive_reuse;
+    let applied_policy_signals = if frontier_advance {
+        applicable_policy_signals(&selected, input)
+    } else {
+        Vec::new()
+    };
     Ok(GenerativeCycleResult {
         schema: GENERATIVE_GROWTH_SCHEMA.to_string(),
         source_lesson_id: input.source_lesson_id.clone(),
@@ -599,6 +872,7 @@ pub fn run_generative_cycle(
         composition_typecheck_pass: typecheck_pass,
         behavioral_composition_executed,
         behavioral_verification_sha256,
+        behavioral_execution_receipt: Some(behavioral_execution_receipt),
         observed_value_is_heuristic_proxy: true,
         observed_value,
         prediction_error,
@@ -623,6 +897,54 @@ pub fn run_generative_cycle(
     })
 }
 
+pub fn validate_behavioral_execution_receipt(result: &GenerativeCycleResult) -> bool {
+    result
+        .behavioral_execution_receipt
+        .as_ref()
+        .is_some_and(|receipt| {
+            let expected_receipt_sha256 = sha256(
+                format!(
+                    "{}:{}:{}:{}:{}:{}:{}:{}:{}",
+                    receipt.context_sha256,
+                    receipt.predictor_id,
+                    receipt.predictor_output_sha256,
+                    receipt.composer_id,
+                    receipt
+                        .composite_artifact_sha256
+                        .as_deref()
+                        .unwrap_or("NONE"),
+                    receipt.verifier_id,
+                    receipt.verifier_output_sha256.as_deref().unwrap_or("NONE"),
+                    receipt.executed,
+                    receipt.abstention_reason.as_deref().unwrap_or("NONE")
+                )
+                .as_bytes(),
+            );
+            receipt.schema == "B_CORE_BEHAVIORAL_COMPOSITION_EXECUTION_1"
+                && receipt.context_sha256 == result.context_sha256
+                && receipt.receipt_sha256 == expected_receipt_sha256
+                && receipt.predictor_id
+                    == selected_stage(&result.selected_composition, "PREDICT").unwrap_or("")
+                && receipt.composer_id
+                    == selected_stage(&result.selected_composition, "COMPOSE").unwrap_or("")
+                && receipt.verifier_id
+                    == selected_stage(&result.selected_composition, "VERIFY").unwrap_or("")
+                && receipt.executed == result.behavioral_composition_executed
+                && if receipt.executed {
+                    receipt.composite_artifact_sha256.is_some()
+                        && receipt.verifier_output_sha256.is_some()
+                        && receipt.abstention_reason.is_none()
+                        && result.behavioral_verification_sha256.as_deref()
+                            == Some(receipt.receipt_sha256.as_str())
+                } else {
+                    receipt.composite_artifact_sha256.is_none()
+                        && receipt.verifier_output_sha256.is_none()
+                        && receipt.abstention_reason.is_some()
+                        && result.behavioral_verification_sha256.is_none()
+                }
+        })
+}
+
 pub fn promote_generative_cycle(
     current: &GenerativeGrowthMemory,
     input: &GenerativeInput,
@@ -634,6 +956,7 @@ pub fn promote_generative_cycle(
         || !result.prediction_recorded_before_composition
         || !result.selected_from_precomposition_prediction
         || !result.observed_value_is_heuristic_proxy
+        || !validate_behavioral_execution_receipt(result)
         || (!result.behavioral_composition_executed
             && (result.behavioral_verification_sha256.is_some()
                 || result.frontier_advance
@@ -791,17 +1114,21 @@ mod tests {
         assert!(result.selected_from_precomposition_prediction);
         assert!(result.isolated_composition_executed);
         assert!(result.composition_typecheck_pass);
-        assert!(!result.behavioral_composition_executed);
-        assert!(result.behavioral_verification_sha256.is_none());
+        assert!(result.behavioral_composition_executed);
+        assert!(result.behavioral_verification_sha256.is_some());
+        assert!(result
+            .behavioral_execution_receipt
+            .as_ref()
+            .is_some_and(|receipt| receipt.executed));
         assert!(result.observed_value_is_heuristic_proxy);
         assert!(result.selection_score > result.predicted_value);
         assert!(result.prediction_error <= 30);
         assert!(result.valuable);
         assert!(result.accepted_for_memory);
-        assert!(result.unverified_frontier_candidate);
-        assert!(!result.frontier_advance);
-        assert!(!result.applied_to_self_improvement);
-        assert!(result.applied_policy_signals.is_empty());
+        assert!(!result.unverified_frontier_candidate);
+        assert!(result.frontier_advance);
+        assert!(result.applied_to_self_improvement);
+        assert!(!result.applied_policy_signals.is_empty());
         assert_eq!(result.external_llm_calls, 0);
     }
 
@@ -821,11 +1148,11 @@ mod tests {
         assert_eq!(selected.len(), 12);
         assert_eq!(memory.composition_trials.len(), 12);
         assert_eq!(memory.exploration_events, 12);
-        assert_eq!(memory.accepted_compositions.len(), 12);
-        assert_eq!(memory.frontier_advance_events, 0);
-        assert_eq!(memory.unverified_frontier_candidate_events, 12);
-        assert_eq!(memory.behavioral_verification_events, 0);
-        assert!(memory.prediction_absolute_error_total < 12 * 30);
+        assert_eq!(memory.accepted_compositions.len(), 4);
+        assert_eq!(memory.frontier_advance_events, 4);
+        assert_eq!(memory.unverified_frontier_candidate_events, 8);
+        assert_eq!(memory.behavioral_verification_events, 4);
+        assert!(memory.prediction_absolute_error_total < 12 * 100);
         assert_eq!(memory.calibrated_prediction_records, 12);
 
         let mut repeated_context = input();
@@ -850,12 +1177,12 @@ mod tests {
         assert!(transferred.reused_memory_composition_id.is_some());
         assert_eq!(transferred.prior_context_trials, 0);
         assert!(transferred.novel_context_transfer_candidate);
-        assert!(transferred.unverified_frontier_candidate);
-        assert!(!transferred.productive_reuse);
-        assert!(!transferred.frontier_advance);
-        assert!(!transferred.applied_to_self_improvement);
+        assert!(!transferred.unverified_frontier_candidate);
+        assert!(transferred.productive_reuse);
+        assert!(transferred.frontier_advance);
+        assert!(transferred.applied_to_self_improvement);
         memory = promote_generative_cycle(&memory, &new_context, &transferred).unwrap();
-        assert_eq!(memory.unverified_frontier_candidate_events, 13);
+        assert_eq!(memory.unverified_frontier_candidate_events, 8);
     }
 
     #[test]
@@ -869,9 +1196,25 @@ mod tests {
 
         memory = promote_generative_cycle(&memory, &current, &result).unwrap();
 
-        assert_eq!(memory.frontier_advance_events, 0);
+        assert_eq!(memory.frontier_advance_events, 1);
         assert_eq!(memory.legacy_unverified_frontier_advance_events, 6);
-        assert_eq!(memory.behavioral_verification_events, 0);
+        assert_eq!(memory.behavioral_verification_events, 1);
+    }
+
+    #[test]
+    fn tampered_behavioral_receipt_cannot_cross_promotion_boundary() {
+        let memory = GenerativeGrowthMemory::default();
+        let current = input();
+        let mut result = run_generative_cycle(&memory, &current, 7).unwrap();
+        result
+            .behavioral_execution_receipt
+            .as_mut()
+            .expect("behavioral receipt")
+            .context_sha256 = "0".repeat(64);
+        assert_eq!(
+            promote_generative_cycle(&memory, &current, &result),
+            Err("GENERATIVE_PROMOTION_BOUNDARY_FAILURE".to_string())
+        );
     }
 
     #[test]

@@ -5,7 +5,7 @@
 //! duplicate its primitive catalog or synthesis logic; it turns a synthesized
 //! typed ProgramIR into the same proposal-only trust path used by self-repair.
 
-use std::collections::BTreeSet;
+use std::collections::{BTreeMap, BTreeSet};
 
 use serde::{Deserialize, Serialize};
 use serde_json::Value as JsonValue;
@@ -19,10 +19,13 @@ use crate::sem27::engine::{
 };
 use crate::sem5::{
     emitter::emit_neutral_text,
-    ir::type_check,
-    learner::synthesize,
+    ir::{execute, type_check},
+    learner::{discover_candidates, initial_promotions, synthesize},
     model::{ProgramIR, ProgramTask, ProgrammingPromotion, SynthesisCondition},
-    tasks::programming_primitive_catalog,
+    tasks::{
+        evaluate_contract, generate_property_cases, generate_task_sets,
+        programming_primitive_catalog,
+    },
 };
 
 pub const CAMPAIGN_ID: &str = "B_CORE-INTEGRATED-DEVELOPMENT-01";
@@ -84,6 +87,17 @@ pub struct IntegratedDevelopmentEpochResult {
     pub core_self_approval_events: usize,
     pub unverified_install_events: usize,
     pub full_source_scan_events: usize,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct BehavioralCompositionCanaryReceipt {
+    pub schema: String,
+    pub context_sha256: String,
+    pub program_ir_sha256: String,
+    pub used_primitive_ids: Vec<String>,
+    pub cases_executed: usize,
+    pub cases_passed: usize,
+    pub receipt_sha256: String,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -204,6 +218,86 @@ pub fn compose_existing_sem5_capability(
         patch_candidate,
         full_source_scan_events: 0,
         installed: false,
+    })
+}
+
+/// Executes a fresh input-seeded semantic canary over the promoted SEM-5
+/// primitive composer.  This is behavioral evidence, not merely validation of
+/// the composition graph's declared types.
+pub fn execute_behavioral_composition_canary(
+    context_sha256: &str,
+) -> Result<BehavioralCompositionCanaryReceipt, String> {
+    if context_sha256.len() != 64 || !context_sha256.bytes().all(|byte| byte.is_ascii_hexdigit()) {
+        return Err("BEHAVIORAL_CANARY_CONTEXT_INVALID".to_string());
+    }
+    let case_seed = u64::from_str_radix(&context_sha256[..16], 16)
+        .map_err(|error| format!("BEHAVIORAL_CANARY_SEED:{error}"))?;
+    let sets = generate_task_sets(0x1A7E_600D);
+    let candidates = discover_candidates(&sets.discovery);
+    let promotions = initial_promotions(&candidates, &sets.calibration);
+    let task = sets
+        .adversarial
+        .first()
+        .ok_or_else(|| "BEHAVIORAL_CANARY_TASK_MISSING".to_string())?
+        .visible
+        .clone();
+    let candidate = compose_existing_sem5_capability(CompositionWork {
+        opportunity: CapabilityOpportunityIR {
+            observed_gap: format!("behavioral composition canary context {context_sha256}"),
+            desired_behavior: "compose and execute a typed multi-stage relation".to_string(),
+            trigger: "generative growth selected the SEM-5 composer".to_string(),
+            evidence: vec![context_sha256.to_string()],
+            preserved_behavior: vec![
+                "do not change verifier, installer, or acceptance policy".to_string()
+            ],
+            resource_constraints: vec!["execute three fresh local semantic cases".to_string()],
+            verification_requirements: vec![
+                "type/effect audit".to_string(),
+                "fresh semantic equivalence cases".to_string(),
+            ],
+            provenance: vec!["SEM5_EXISTING_SYNTHESIZER".to_string()],
+            operator_selected_implementation: false,
+        },
+        task: task.clone(),
+        promotions,
+        predecessor_tree_hash: AUTHORITATIVE_PREDECESSOR.to_string(),
+    })?;
+    let cases = generate_property_cases(&task, case_seed)
+        .into_iter()
+        .take(3)
+        .collect::<Vec<_>>();
+    let mut passed = 0_usize;
+    for inputs in &cases {
+        let expected = evaluate_contract(&task, inputs)?;
+        let actual = execute(
+            &candidate.program_ir,
+            inputs,
+            &task.definitions,
+            BTreeMap::new(),
+        )?;
+        if actual.value != expected {
+            return Err("BEHAVIORAL_CANARY_SEMANTIC_MISMATCH".to_string());
+        }
+        passed += 1;
+    }
+    let receipt_sha256 = sha256(
+        format!(
+            "{}:{}:{}:{}",
+            context_sha256,
+            candidate.program_ir_sha256,
+            cases.len(),
+            passed
+        )
+        .as_bytes(),
+    );
+    Ok(BehavioralCompositionCanaryReceipt {
+        schema: "B_CORE_BEHAVIORAL_COMPOSITION_CANARY_1".to_string(),
+        context_sha256: context_sha256.to_string(),
+        program_ir_sha256: candidate.program_ir_sha256,
+        used_primitive_ids: candidate.used_primitive_ids,
+        cases_executed: cases.len(),
+        cases_passed: passed,
+        receipt_sha256,
     })
 }
 
@@ -394,6 +488,17 @@ mod tests {
             .expect("execute composite");
             assert_eq!(actual.value, expected);
         }
+    }
+
+    #[test]
+    fn behavioral_canary_executes_fresh_context_bound_cases() {
+        let first = execute_behavioral_composition_canary(&"a".repeat(64)).expect("first canary");
+        let second = execute_behavioral_composition_canary(&"b".repeat(64)).expect("second canary");
+
+        assert_eq!(first.cases_executed, 3);
+        assert_eq!(first.cases_passed, 3);
+        assert_ne!(first.receipt_sha256, second.receipt_sha256);
+        assert!(!first.used_primitive_ids.is_empty());
     }
 
     #[test]
