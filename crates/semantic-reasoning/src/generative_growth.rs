@@ -81,6 +81,8 @@ pub struct GenerativeGrowthMemory {
     pub prediction_absolute_error_total: u64,
     #[serde(default, skip_serializing_if = "is_zero")]
     pub calibrated_prediction_records: u64,
+    #[serde(default, skip_serializing_if = "is_zero")]
+    pub legacy_uncalibrated_prediction_error_total: u64,
 }
 
 impl Default for GenerativeGrowthMemory {
@@ -100,6 +102,7 @@ impl Default for GenerativeGrowthMemory {
             redundant_selection_events: 0,
             prediction_absolute_error_total: 0,
             calibrated_prediction_records: 0,
+            legacy_uncalibrated_prediction_error_total: 0,
         }
     }
 }
@@ -645,6 +648,12 @@ pub fn promote_generative_cycle(
     let mut next = current.clone();
     next.generation = next.generation.saturating_add(1);
     next.prediction_records = next.prediction_records.saturating_add(1);
+    if next.calibrated_prediction_records == 0 && next.prediction_absolute_error_total > 0 {
+        next.legacy_uncalibrated_prediction_error_total = next
+            .legacy_uncalibrated_prediction_error_total
+            .saturating_add(next.prediction_absolute_error_total);
+        next.prediction_absolute_error_total = 0;
+    }
     next.prediction_absolute_error_total = next
         .prediction_absolute_error_total
         .saturating_add(u64::from(result.prediction_error));
@@ -816,5 +825,23 @@ mod tests {
         assert!(transferred.productive_reuse);
         assert!(transferred.frontier_advance);
         assert!(transferred.applied_to_self_improvement);
+    }
+
+    #[test]
+    fn unknown_legacy_error_sample_count_is_quarantined_not_guessed() {
+        let memory = GenerativeGrowthMemory {
+            prediction_records: 18,
+            prediction_absolute_error_total: 14,
+            ..GenerativeGrowthMemory::default()
+        };
+        let current = input();
+        let result = run_generative_cycle(&memory, &current, 77).unwrap();
+        let next = promote_generative_cycle(&memory, &current, &result).unwrap();
+        assert_eq!(next.legacy_uncalibrated_prediction_error_total, 14);
+        assert_eq!(next.calibrated_prediction_records, 1);
+        assert_eq!(
+            next.prediction_absolute_error_total,
+            u64::from(result.prediction_error)
+        );
     }
 }
