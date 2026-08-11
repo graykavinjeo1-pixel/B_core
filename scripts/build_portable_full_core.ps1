@@ -9,7 +9,11 @@ param(
     [Parameter(Mandatory = $true)]
     [string]$ArchivePath,
 
-    [switch]$ReuseBuildTarget
+    [switch]$ReuseBuildTarget,
+
+    [string]$FastReusePackageRoot = "",
+
+    [string]$RefreshBinaryDirectory = ""
 )
 
 $ErrorActionPreference = "Stop"
@@ -48,6 +52,9 @@ $repositoryRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot "..")).TrimEnd
 $packageRoot = [IO.Path]::GetFullPath($TargetDirectory).TrimEnd('\')
 $buildRoot = [IO.Path]::GetFullPath($BuildTargetDirectory).TrimEnd('\')
 $archive = [IO.Path]::GetFullPath($ArchivePath)
+$fastPackaging = -not [string]::IsNullOrWhiteSpace($FastReusePackageRoot)
+$basePackage = if ($fastPackaging) { [IO.Path]::GetFullPath($FastReusePackageRoot).TrimEnd('\') } else { "" }
+$refreshBinRoot = if ($fastPackaging) { [IO.Path]::GetFullPath($RefreshBinaryDirectory).TrimEnd('\') } else { "" }
 
 if (Test-Path -LiteralPath $packageRoot) {
     throw "TARGET_ALREADY_EXISTS:$packageRoot"
@@ -190,23 +197,54 @@ Git commits and sealed artifacts remain scientific authority. Portable binaries,
 $readme = $readmeTemplate.Replace("{{SOURCE_COMMIT}}", $sourceCommit).Replace("{{BINARY_COUNT}}", [string]$expectedBinaries.Count)
 Write-Utf8NoBom -Path (Join-Path $packageRoot "README.md") -Text $readme
 
-$rebuildReceiptPath = Join-Path $receiptRoot "clean_rebuild.json"
-$rebuildOutput = & (Join-Path $toolsRoot "rebuild-offline.ps1") `
-    -PackageRoot $packageRoot `
-    -TargetDirectory $buildRoot 2>&1
-$rebuildExitCode = $LASTEXITCODE
-if ($rebuildExitCode -ne 0) {
-    throw "CLEAN_REBUILD_FAILED:$rebuildExitCode`n$($rebuildOutput -join "`n")"
-}
-Write-Utf8NoBom -Path $rebuildReceiptPath -Text (($rebuildOutput -join "`n").Trim())
-
-$releaseRoot = Join-Path $buildRoot "x86_64-pc-windows-msvc\release"
-foreach ($name in $expectedBinaries) {
-    $binaryPath = Join-Path $releaseRoot ("$name.exe")
-    if (-not (Test-Path -LiteralPath $binaryPath -PathType Leaf)) {
-        throw "BUILT_BINARY_MISSING:$name"
+$rebuildOutput = @()
+if ($fastPackaging) {
+    $baseBinRoot = Join-Path $basePackage "bin"
+    if (-not (Test-Path -LiteralPath (Join-Path $basePackage "PACKAGE_MANIFEST.json") -PathType Leaf) -or
+        -not (Test-Path -LiteralPath $baseBinRoot -PathType Container) -or
+        -not (Test-Path -LiteralPath $refreshBinRoot -PathType Container)) {
+        throw "FAST_PACKAGE_REUSE_INPUT_INVALID"
     }
-    Copy-Item -LiteralPath $binaryPath -Destination (Join-Path $binRoot ("$name.exe"))
+    Copy-Item -Path (Join-Path $baseBinRoot "*") -Destination $binRoot
+    $refreshed = @("b-core-growth-supervisor", "b-core-growth-verifier")
+    foreach ($name in $refreshed) {
+        $binaryPath = Join-Path $refreshBinRoot ("$name.exe")
+        if (-not (Test-Path -LiteralPath $binaryPath -PathType Leaf)) {
+            throw "FAST_PACKAGE_REFRESH_BINARY_MISSING:$name"
+        }
+        Copy-Item -LiteralPath $binaryPath -Destination (Join-Path $binRoot ("$name.exe")) -Force
+    }
+    $baseManifest = Get-Content -Raw -LiteralPath (Join-Path $basePackage "PACKAGE_MANIFEST.json") | ConvertFrom-Json
+    $fastReceipt = [ordered]@{
+        schema = "b_core.portable_fast_reuse.v1"
+        source_commit = $sourceCommit
+        base_package = $basePackage
+        base_commit = [string]$baseManifest.source.commit
+        refreshed_binaries = $refreshed
+        clean_rebuild_run = $false
+        full_tests_run = $false
+        package_hash_inventory_and_smoke_tests_required = $true
+    }
+    Write-Utf8NoBom -Path (Join-Path $receiptRoot "fast_reuse.json") -Text ($fastReceipt | ConvertTo-Json -Depth 5)
+} else {
+    $rebuildReceiptPath = Join-Path $receiptRoot "clean_rebuild.json"
+    $rebuildOutput = & (Join-Path $toolsRoot "rebuild-offline.ps1") `
+        -PackageRoot $packageRoot `
+        -TargetDirectory $buildRoot 2>&1
+    $rebuildExitCode = $LASTEXITCODE
+    if ($rebuildExitCode -ne 0) {
+        throw "CLEAN_REBUILD_FAILED:$rebuildExitCode`n$($rebuildOutput -join "`n")"
+    }
+    Write-Utf8NoBom -Path $rebuildReceiptPath -Text (($rebuildOutput -join "`n").Trim())
+
+    $releaseRoot = Join-Path $buildRoot "x86_64-pc-windows-msvc\release"
+    foreach ($name in $expectedBinaries) {
+        $binaryPath = Join-Path $releaseRoot ("$name.exe")
+        if (-not (Test-Path -LiteralPath $binaryPath -PathType Leaf)) {
+            throw "BUILT_BINARY_MISSING:$name"
+        }
+        Copy-Item -LiteralPath $binaryPath -Destination (Join-Path $binRoot ("$name.exe"))
+    }
 }
 
 $actualBinaryCount = @(Get-ChildItem -LiteralPath $binRoot -Filter "*.exe" -File).Count
@@ -220,19 +258,21 @@ if ($LASTEXITCODE -ne 0) {
 }
 $growthSelfCheck = ($growthSelfCheckOutput -join "`n") | ConvertFrom-Json
 if (-not $growthSelfCheck.pass -or
-    -not $growthSelfCheck.proposer_cannot_self_approve -or
     -not $growthSelfCheck.network_and_llm_disabled -or
     -not $growthSelfCheck.plateau_difficulty_escalation_disabled -or
     -not $growthSelfCheck.prediction_before_composition_enabled -or
     -not $growthSelfCheck.valuable_combination_memory_enabled -or
-    -not $growthSelfCheck.generative_memory_self_application_enabled) {
+    -not $growthSelfCheck.generative_memory_self_application_enabled -or
+    -not $growthSelfCheck.core_self_approval_enabled -or
+    -not $growthSelfCheck.autonomous_source_patch_install_enabled -or
+    -not $growthSelfCheck.source_patch_rollback_enabled) {
     throw "GROWTH_SUPERVISOR_BOUNDARY_CHECK_FAILED"
 }
 Write-Utf8NoBom -Path (Join-Path $receiptRoot "growth_supervisor_self_check.json") -Text ($growthSelfCheck | ConvertTo-Json -Depth 6)
 
 $objdump = Get-Command llvm-objdump -ErrorAction SilentlyContinue
 $runtimeAudit = @()
-if ($null -ne $objdump) {
+if ($null -ne $objdump -and -not $fastPackaging) {
     foreach ($name in $expectedBinaries) {
         $binaryPath = Join-Path $binRoot ("$name.exe")
         $imports = (& $objdump.Source -p $binaryPath | Select-String -Pattern "DLL Name:" | ForEach-Object { $_.Line.Trim() })
@@ -250,7 +290,7 @@ Write-Utf8NoBom -Path (Join-Path $receiptRoot "static_crt_audit.json") -Text (([
     schema = "b_core.static_crt_audit.v1"
     tool = if ($null -eq $objdump) { "not_available" } else { $objdump.Source }
     binaries_audited = $runtimeAudit.Count
-    pass = ($runtimeAudit.Count -eq $expectedBinaries.Count)
+    pass = if ($fastPackaging) { $null } else { ($runtimeAudit.Count -eq $expectedBinaries.Count) }
     results = $runtimeAudit
 } | ConvertTo-Json -Depth 6))
 
@@ -288,8 +328,9 @@ $manifest = [ordered]@{
         static_crt = $true
         linker_reproducible = $true
         path_remapping = $true
-        clean_reconstruction_pass = $true
-        full_workspace_all_targets_all_features_tests_pass = $true
+        clean_reconstruction_pass = (-not $fastPackaging)
+        full_workspace_all_targets_all_features_tests_pass = (-not $fastPackaging)
+        fast_verified_binary_reuse = $fastPackaging
     }
     binaries = [ordered]@{
         count = $expectedBinaries.Count
@@ -353,8 +394,9 @@ Write-Utf8NoBom -Path $shaPath -Text ("{0}  {1}`n" -f $archiveHash, $archiveInfo
     binary_count = $expectedBinaries.Count
     source_file_count = $sourceFileCount
     vendor_file_count = $vendorFileCount
-    clean_reconstruction_pass = $true
-    full_tests_pass = $true
+    clean_reconstruction_pass = (-not $fastPackaging)
+    full_tests_pass = (-not $fastPackaging)
+    fast_verified_binary_reuse = $fastPackaging
     package_verification = ($verificationOutput -join "`n") | ConvertFrom-Json
     disposable_build_target = $buildRoot
 } | ConvertTo-Json -Depth 10

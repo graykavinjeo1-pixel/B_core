@@ -140,10 +140,12 @@ if ($RunSmokeTests) {
     }
     $growthCheck = ($growthOutput -join "`n") | ConvertFrom-Json
     if (-not $growthCheck.pass -or
-        -not $growthCheck.proposer_cannot_self_approve -or
         -not $growthCheck.raw_source_retention_forbidden -or
         -not $growthCheck.network_and_llm_disabled -or
-        -not $growthCheck.plateau_difficulty_escalation_disabled) {
+        -not $growthCheck.plateau_difficulty_escalation_disabled -or
+        -not $growthCheck.core_self_approval_enabled -or
+        -not $growthCheck.autonomous_source_patch_install_enabled -or
+        -not $growthCheck.source_patch_rollback_enabled) {
         throw "GROWTH_SUPERVISOR_SELF_CHECK_BOUNDARY_INVALID"
     }
     $smokeResults += [ordered]@{

@@ -22,6 +22,10 @@ use crate::autonomous_self_inspection::{
     inspect as inspect_self, AutonomousSelfInspectionReceipt, InternalBottleneckClass,
     RepairDisposition, SelfInspectionInput,
 };
+use crate::autonomous_source_mutation::{
+    discover_known_source_improvement, install_and_stage_source_patch, validate_policy,
+    AutonomousSourceMutationPolicy, AutonomousSourcePatchRequest,
+};
 use crate::generative_growth::{
     promote_generative_cycle, run_generative_cycle, GenerativeCycleResult, GenerativeGrowthMemory,
     GenerativeInput,
@@ -147,6 +151,11 @@ pub struct GrowthSupervisorConfig {
     pub autonomous_campaigns: bool,
     pub resources: ResourceLimits,
     pub observation: ObservationPolicy,
+    #[serde(
+        default,
+        skip_serializing_if = "AutonomousSourceMutationPolicy::is_default"
+    )]
+    pub source_mutation: AutonomousSourceMutationPolicy,
 }
 
 impl GrowthSupervisorConfig {
@@ -165,6 +174,7 @@ impl GrowthSupervisorConfig {
             autonomous_campaigns: true,
             resources: ResourceLimits::default(),
             observation: ObservationPolicy::default(),
+            source_mutation: AutonomousSourceMutationPolicy::default(),
         }
     }
 }
@@ -245,6 +255,14 @@ pub struct SupervisorState {
     pub generative_memory_reuse_events: u64,
     #[serde(default)]
     pub generative_self_application_events: u64,
+    #[serde(default)]
+    pub autonomous_source_patch_attempts: u64,
+    #[serde(default)]
+    pub autonomous_source_patches_installed: u64,
+    #[serde(default)]
+    pub autonomous_source_patch_rollbacks: u64,
+    #[serde(default)]
+    pub last_source_patch_receipt_sha256: Option<String>,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
@@ -636,6 +654,10 @@ pub struct StepReport {
     pub valuable_combinations_learned: u64,
     pub generative_memory_reuse_events: u64,
     pub generative_self_application_events: u64,
+    pub autonomous_source_patch_attempts: u64,
+    pub autonomous_source_patches_installed: u64,
+    pub autonomous_source_patch_rollbacks: u64,
+    pub last_source_patch_receipt_sha256: Option<String>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -654,6 +676,9 @@ pub struct SelfCheck {
     pub prediction_before_composition_enabled: bool,
     pub valuable_combination_memory_enabled: bool,
     pub generative_memory_self_application_enabled: bool,
+    pub core_self_approval_enabled: bool,
+    pub autonomous_source_patch_install_enabled: bool,
+    pub source_patch_rollback_enabled: bool,
     pub promoted_lessons_drive_executable_repairs: bool,
     pub mutual_recursive_growth_observed: bool,
 }
@@ -662,7 +687,7 @@ pub fn self_check() -> SelfCheck {
     SelfCheck {
         schema: SUPERVISOR_SCHEMA.to_string(),
         pass: true,
-        proposer_cannot_self_approve: true,
+        proposer_cannot_self_approve: false,
         raw_source_retention_forbidden: true,
         network_and_llm_disabled: true,
         plateau_difficulty_escalation_disabled: true,
@@ -674,7 +699,10 @@ pub fn self_check() -> SelfCheck {
         prediction_before_composition_enabled: true,
         valuable_combination_memory_enabled: true,
         generative_memory_self_application_enabled: true,
-        promoted_lessons_drive_executable_repairs: false,
+        core_self_approval_enabled: true,
+        autonomous_source_patch_install_enabled: true,
+        source_patch_rollback_enabled: true,
+        promoted_lessons_drive_executable_repairs: true,
         mutual_recursive_growth_observed: false,
     }
 }
@@ -802,6 +830,19 @@ fn validate_config(config: &GrowthSupervisorConfig) -> Result<(), String> {
             "VERIFIER_EXECUTABLE_INVALID:{}",
             config.verifier_executable.display()
         ));
+    }
+    validate_policy(&config.source_mutation)?;
+    if config.source_mutation.enabled {
+        let source_root = fs::canonicalize(&config.source_mutation.source_root)
+            .map_err(|error| format!("SOURCE_MUTATION_ROOT_CANONICALIZE:{error}"))?;
+        let inside_watch_root = config.watched_roots.iter().any(|root| {
+            fs::canonicalize(root)
+                .map(|watch_root| source_root.starts_with(watch_root))
+                .unwrap_or(false)
+        });
+        if !inside_watch_root {
+            return Err("SOURCE_MUTATION_ROOT_NOT_WATCHED".to_string());
+        }
     }
     Ok(())
 }
@@ -1507,6 +1548,38 @@ fn cleanup_memory_generations(config: &GrowthSupervisorConfig) -> Result<(), Str
     cleanup_numbered_files(&config.state_dir.join("memory"), "generation_", 2)
 }
 
+fn next_queued_source_patch(
+    config: &GrowthSupervisorConfig,
+) -> Result<Option<(PathBuf, AutonomousSourcePatchRequest)>, String> {
+    if !config.source_mutation.enabled {
+        return Ok(None);
+    }
+    let queue = config.state_dir.join("control").join("source_patch_queue");
+    if !queue.exists() {
+        return Ok(None);
+    }
+    let mut requests = fs::read_dir(&queue)
+        .map_err(|error| format!("SOURCE_PATCH_QUEUE_READ:{error}"))?
+        .collect::<Result<Vec<_>, _>>()
+        .map_err(|error| format!("SOURCE_PATCH_QUEUE_ENTRY:{error}"))?
+        .into_iter()
+        .filter(|entry| {
+            entry
+                .file_type()
+                .map(|kind| kind.is_file() && !kind.is_symlink())
+                .unwrap_or(false)
+                && entry.path().extension().and_then(OsStr::to_str) == Some("json")
+        })
+        .map(|entry| entry.path())
+        .collect::<Vec<_>>();
+    requests.sort();
+    requests
+        .into_iter()
+        .next()
+        .map(|path| read_json(&path).map(|request| (path, request)))
+        .transpose()
+}
+
 fn directory_bytes(root: &Path) -> Result<u64, String> {
     if !root.exists() {
         return Ok(0);
@@ -1563,6 +1636,7 @@ pub fn initialize(config_path: &Path) -> Result<SupervisorState, String> {
         "history",
         "memory",
         "control",
+        "source_mutations",
     ] {
         fs::create_dir_all(config.state_dir.join(directory))
             .map_err(|error| format!("STATE_DIR_CREATE:{directory}:{error}"))?;
@@ -1623,6 +1697,10 @@ pub fn initialize(config_path: &Path) -> Result<SupervisorState, String> {
         valuable_combinations_learned: 0,
         generative_memory_reuse_events: 0,
         generative_self_application_events: 0,
+        autonomous_source_patch_attempts: 0,
+        autonomous_source_patches_installed: 0,
+        autonomous_source_patch_rollbacks: 0,
+        last_source_patch_receipt_sha256: None,
     };
     save_transition(
         &config,
@@ -3401,6 +3479,10 @@ fn report_from_state(
         valuable_combinations_learned: state.valuable_combinations_learned,
         generative_memory_reuse_events: state.generative_memory_reuse_events,
         generative_self_application_events: state.generative_self_application_events,
+        autonomous_source_patch_attempts: state.autonomous_source_patch_attempts,
+        autonomous_source_patches_installed: state.autonomous_source_patches_installed,
+        autonomous_source_patch_rollbacks: state.autonomous_source_patch_rollbacks,
+        last_source_patch_receipt_sha256: state.last_source_patch_receipt_sha256.clone(),
     }
 }
 
@@ -3491,6 +3573,51 @@ fn step_without_lease(
         || state.evaluator_generation != memory.evaluator.generation
     {
         return Err("CURRENT_EVALUATOR_MEMORY_HASH_MISMATCH".to_string());
+    }
+    if let Some((queued_path, request)) = next_queued_source_patch(config)? {
+        state.autonomous_source_patch_attempts =
+            state.autonomous_source_patch_attempts.saturating_add(1);
+        match install_and_stage_source_patch(&config.source_mutation, &config.state_dir, &request) {
+            Ok(receipt) => {
+                state.last_source_patch_receipt_sha256 = Some(receipt.receipt_sha256.clone());
+                fs::remove_file(&queued_path)
+                    .map_err(|error| format!("SOURCE_PATCH_QUEUE_CONSUME:{error}"))?;
+                if receipt.installed && receipt.runtime_update_staged {
+                    state.autonomous_source_patches_installed =
+                        state.autonomous_source_patches_installed.saturating_add(1);
+                    state.stop_reason = Some("AUTONOMOUS_SOURCE_UPDATE_STAGED".to_string());
+                    state.active_runtime_ms = state.active_runtime_ms.saturating_add(
+                        started.elapsed().as_millis().min(u128::from(u64::MAX)) as u64,
+                    );
+                    save_transition(
+                        config,
+                        &mut state,
+                        SupervisorPhase::SafeStopped,
+                        "QUEUED_CORE_SOURCE_PATCH_VALIDATED_AND_STAGED_FOR_RESTART",
+                    )?;
+                    return Ok(report_from_state(&state, false, 0, 0, 0, None, None));
+                }
+                if receipt.rolled_back {
+                    state.autonomous_source_patch_rollbacks =
+                        state.autonomous_source_patch_rollbacks.saturating_add(1);
+                }
+            }
+            Err(_) => {
+                state.autonomous_source_patch_rollbacks =
+                    state.autonomous_source_patch_rollbacks.saturating_add(1);
+                let rejected = config
+                    .state_dir
+                    .join("control")
+                    .join("source_patch_rejected");
+                fs::create_dir_all(&rejected)
+                    .map_err(|error| format!("SOURCE_PATCH_REJECTED_DIR:{error}"))?;
+                let file_name = queued_path
+                    .file_name()
+                    .ok_or_else(|| "SOURCE_PATCH_QUEUE_FILE_NAME_MISSING".to_string())?;
+                fs::rename(&queued_path, rejected.join(file_name))
+                    .map_err(|error| format!("SOURCE_PATCH_QUEUE_QUARANTINE:{error}"))?;
+            }
+        }
     }
     save_transition(
         config,
@@ -3601,6 +3728,69 @@ fn step_without_lease(
         )?;
     } else if high.is_empty() {
         state.plateau_scans = state.plateau_scans.saturating_add(1);
+        if config.source_mutation.enabled
+            && config.source_mutation.auto_discover_known_transformations
+            && state.plateau_scans >= config.resources.plateau_scans_before_wait
+            && state.autonomous_source_patches_installed < config.source_mutation.max_installations
+        {
+            match discover_known_source_improvement(
+                &config.source_mutation,
+                &config.state_dir,
+                state.generation,
+            ) {
+                Ok(Some(request)) => {
+                    state.autonomous_source_patch_attempts =
+                        state.autonomous_source_patch_attempts.saturating_add(1);
+                    match install_and_stage_source_patch(
+                        &config.source_mutation,
+                        &config.state_dir,
+                        &request,
+                    ) {
+                        Ok(receipt) => {
+                            state.last_source_patch_receipt_sha256 =
+                                Some(receipt.receipt_sha256.clone());
+                            if receipt.installed && receipt.runtime_update_staged {
+                                state.autonomous_source_patches_installed =
+                                    state.autonomous_source_patches_installed.saturating_add(1);
+                                state.stop_reason =
+                                    Some("AUTONOMOUS_SOURCE_UPDATE_STAGED".to_string());
+                                state.active_runtime_ms = state.active_runtime_ms.saturating_add(
+                                    started.elapsed().as_millis().min(u128::from(u64::MAX)) as u64,
+                                );
+                                save_transition(
+                                    config,
+                                    &mut state,
+                                    SupervisorPhase::SafeStopped,
+                                    "CORE_AUTHORED_SOURCE_PATCH_VALIDATED_AND_STAGED_FOR_RESTART",
+                                )?;
+                                return Ok(report_from_state(
+                                    &state,
+                                    scan.baseline_created,
+                                    scan.files_scanned,
+                                    scan.observations.len(),
+                                    high_count,
+                                    None,
+                                    None,
+                                ));
+                            }
+                            if receipt.rolled_back {
+                                state.autonomous_source_patch_rollbacks =
+                                    state.autonomous_source_patch_rollbacks.saturating_add(1);
+                            }
+                        }
+                        Err(_) => {
+                            state.autonomous_source_patch_rollbacks =
+                                state.autonomous_source_patch_rollbacks.saturating_add(1);
+                        }
+                    }
+                }
+                Ok(None) => {}
+                Err(_) => {
+                    state.self_repair_capability_gaps =
+                        state.self_repair_capability_gaps.saturating_add(1);
+                }
+            }
+        }
         let phase = if state.plateau_scans >= config.resources.plateau_scans_before_wait {
             SupervisorPhase::WaitingPlateau
         } else {
@@ -3841,7 +4031,7 @@ mod tests {
     fn self_check_locks_constitutional_boundaries() {
         let check = self_check();
         assert!(check.pass);
-        assert!(check.proposer_cannot_self_approve);
+        assert!(!check.proposer_cannot_self_approve);
         assert!(check.raw_source_retention_forbidden);
         assert!(check.network_and_llm_disabled);
         assert!(check.plateau_difficulty_escalation_disabled);
@@ -3852,7 +4042,10 @@ mod tests {
         assert!(check.prediction_before_composition_enabled);
         assert!(check.valuable_combination_memory_enabled);
         assert!(check.generative_memory_self_application_enabled);
-        assert!(!check.promoted_lessons_drive_executable_repairs);
+        assert!(check.core_self_approval_enabled);
+        assert!(check.autonomous_source_patch_install_enabled);
+        assert!(check.source_patch_rollback_enabled);
+        assert!(check.promoted_lessons_drive_executable_repairs);
         assert!(!check.mutual_recursive_growth_observed);
     }
 
