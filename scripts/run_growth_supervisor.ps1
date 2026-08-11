@@ -51,6 +51,7 @@ if ($SelfCheck) {
     [ordered]@{
         pass = $true
         windows_powershell_extended_path_normalization = $true
+        operator_stop_preserved_across_self_update = $true
         state_root = $stateRoot
         runtime_bin = $runtimeBin
     } | ConvertTo-Json
@@ -70,6 +71,8 @@ if ($Foreground) {
             throw "SELF_UPDATE_RESTART_BOUND_REACHED"
         }
         $handoff = Get-Content -Raw -LiteralPath $handoffPath | ConvertFrom-Json
+        $operatorStopPath = Join-Path $stateRoot "control\STOP"
+        $preserveOperatorStop = Test-Path -LiteralPath $operatorStopPath -PathType Leaf
         $stagedSupervisor = Resolve-BLocalPath ([string]$handoff.staged_supervisor)
         $stagedVerifier = Resolve-BLocalPath ([string]$handoff.staged_verifier)
         $runtimeSupervisor = Resolve-BLocalPath ([string]$handoff.runtime_supervisor)
@@ -94,6 +97,12 @@ if ($Foreground) {
         & $runtimeSupervisor resume $config | Out-Null
         if ($LASTEXITCODE -ne 0) {
             throw "SELF_UPDATE_RESUME_FAILED:$LASTEXITCODE"
+        }
+        if ($preserveOperatorStop) {
+            & $runtimeSupervisor stop $config | Out-Null
+            if ($LASTEXITCODE -ne 0) {
+                throw "SELF_UPDATE_OPERATOR_STOP_RESTORE_FAILED:$LASTEXITCODE"
+            }
         }
         $supervisor = $runtimeSupervisor
         $updatesApplied += 1

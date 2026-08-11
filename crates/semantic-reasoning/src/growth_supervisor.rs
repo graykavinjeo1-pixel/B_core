@@ -24,7 +24,7 @@ use crate::autonomous_self_inspection::{
 };
 use crate::autonomous_source_mutation::{
     discover_known_source_improvement, install_and_stage_source_patch, validate_policy,
-    AutonomousSourceMutationPolicy, AutonomousSourcePatchRequest,
+    AutonomousSourceMutationPolicy, AutonomousSourcePatchRequest, SOURCE_REPAIR_ENGINE_REVISION,
 };
 use crate::generative_growth::{
     promote_generative_cycle, run_generative_cycle, GenerativeCycleResult, GenerativeGrowthMemory,
@@ -684,6 +684,9 @@ pub struct SelfCheck {
     pub bounded_failure_retry_enabled: bool,
     pub successful_solution_learning_enabled: bool,
     pub admitted_failure_revisit_after_growth_enabled: bool,
+    pub source_repair_engine_revision: u64,
+    pub operator_stop_survives_self_update: bool,
+    pub workspace_freeze_during_patch_validation: bool,
     pub mutual_recursive_growth_observed: bool,
 }
 
@@ -710,10 +713,16 @@ pub fn self_check() -> SelfCheck {
         operational_repair_knowledge: vec![
             "WINPS51_EXTENDED_PATH_NORMALIZATION_BEFORE_PATH_CMDLETS".to_string(),
             "AUTONOMOUS_SOURCE_UPDATE_HANDOFF_IS_RESUMABLE_AFTER_BINARY_SWAP".to_string(),
+            "RUST_MATCH_FAT_ARROW_IS_NOT_ASSIGNMENT_BOUNDARY".to_string(),
+            "OPERATOR_STOP_MUST_SURVIVE_AUTONOMOUS_BINARY_SWAP".to_string(),
+            "PATCH_VALIDATION_REJECTS_CONCURRENT_NON_TARGET_SOURCE_CHANGES".to_string(),
         ],
         bounded_failure_retry_enabled: true,
         successful_solution_learning_enabled: true,
         admitted_failure_revisit_after_growth_enabled: true,
+        source_repair_engine_revision: SOURCE_REPAIR_ENGINE_REVISION,
+        operator_stop_survives_self_update: true,
+        workspace_freeze_during_patch_validation: true,
         mutual_recursive_growth_observed: false,
     }
 }
@@ -4126,6 +4135,9 @@ mod tests {
         assert!(check.bounded_failure_retry_enabled);
         assert!(check.successful_solution_learning_enabled);
         assert!(check.admitted_failure_revisit_after_growth_enabled);
+        assert_eq!(check.source_repair_engine_revision, 2);
+        assert!(check.operator_stop_survives_self_update);
+        assert!(check.workspace_freeze_during_patch_validation);
         assert!(!check.mutual_recursive_growth_observed);
     }
 

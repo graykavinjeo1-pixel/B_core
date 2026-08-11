@@ -1363,7 +1363,7 @@ fn build_task(rng: &mut Rng, seed: u64, index: usize, pressure: Pressure, prefix
             1 + rng.next() % 4
         };
         let assumption = match pressure {
-            Pressure::Routing | Pressure::Mixed => ordinal % 3 != 0,
+            Pressure::Routing | Pressure::Mixed => !(ordinal.is_multiple_of(3)),
             _ => true,
         };
         candidates.push(CandidateInput {

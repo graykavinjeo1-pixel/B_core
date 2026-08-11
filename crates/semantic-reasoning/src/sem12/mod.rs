@@ -1490,7 +1490,7 @@ fn generate_task(seed: u64, index: usize, pressure: Pressure, prefix: &str, rng:
     for ordinal in 0..candidate_count {
         candidates.push(CandidateInput {
             id: ordinal as u64 + 1,
-            scope: if ordinal % 4 == 0 {
+            scope: if ordinal.is_multiple_of(4) {
                 required_scope
             } else {
                 200 + rng.next() % 71

@@ -609,7 +609,7 @@ fn generate_challenges(
     let mut rng = Rng(seed);
     (0..count)
         .map(|index| {
-            let actionable = index % 4 != 0;
+            let actionable = !(index.is_multiple_of(4));
             let mut evidence = match pressure {
                 Pressure::AmbiguousCausalEvidence => vec![120, 210, 310, 420, 490],
                 Pressure::ManyMechanismCombinations => vec![180, 260, 430],

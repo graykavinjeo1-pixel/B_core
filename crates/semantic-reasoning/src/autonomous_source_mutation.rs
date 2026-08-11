@@ -21,6 +21,7 @@ use crate::self_repair_contract::sha256;
 pub const AUTONOMOUS_SOURCE_MUTATION_SCHEMA: &str = "B_CORE_AUTONOMOUS_SOURCE_MUTATION_1";
 pub const SELF_UPDATE_HANDOFF_FILE: &str = "SELF_UPDATE_READY.json";
 pub const SOURCE_REPAIR_LEARNING_SCHEMA: &str = "B_CORE_SOURCE_REPAIR_LEARNING_1";
+pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 2;
 const KNOWN_REMAINDER_STRATEGIES: [&str; 4] = [
     "TYPED_IS_MULTIPLE_OF",
     "PARENTHESIZED_IS_MULTIPLE_OF",
@@ -104,6 +105,8 @@ pub struct SourceRepairAttempt {
     pub succeeded: bool,
     pub receipt_sha256: String,
     pub diagnostic_sha256: String,
+    #[serde(default)]
+    pub failure_reason: Option<String>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -124,6 +127,8 @@ pub struct SourceRepairLearningRecord {
     pub transformation: String,
     pub status: String,
     pub cycle_started_generation: u64,
+    #[serde(default)]
+    pub cycle_started_engine_revision: u64,
     pub eligible_after_generation: Option<u64>,
     pub attempts: Vec<SourceRepairAttempt>,
     pub learned_success: Option<LearnedSuccessfulRepair>,
@@ -166,11 +171,19 @@ pub struct AutonomousSourcePatchReceipt {
     pub installed: bool,
     pub rolled_back: bool,
     #[serde(default)]
+    pub failure_reason: Option<String>,
+    #[serde(default)]
     pub format_check: Option<LocalCommandReceipt>,
     pub validation: LocalCommandReceipt,
     pub release_build: Option<LocalCommandReceipt>,
     pub runtime_update_staged: bool,
     pub rollback_source: PathBuf,
+    #[serde(default)]
+    pub workspace_fingerprint_before: String,
+    #[serde(default)]
+    pub workspace_fingerprint_after: String,
+    #[serde(default)]
+    pub workspace_stable_during_validation: bool,
     pub receipt_sha256: String,
 }
 
@@ -272,10 +285,12 @@ fn active_cycle_attempts<'a>(
     record: &'a SourceRepairLearningRecord,
     source_generation: u64,
 ) -> &'a [SourceRepairAttempt] {
-    if record.status == "ADMITTED_FAILURE"
+    if (record.status == "ADMITTED_FAILURE"
         && record
             .eligible_after_generation
-            .is_some_and(|eligible| source_generation >= eligible)
+            .is_some_and(|eligible| source_generation >= eligible))
+        || (record.status != "LEARNED_SUCCESS"
+            && record.cycle_started_engine_revision < SOURCE_REPAIR_ENGINE_REVISION)
     {
         &[]
     } else {
@@ -298,18 +313,22 @@ fn record_source_repair_outcome(
             transformation: request.transformation.clone(),
             status: "RETRYING".to_string(),
             cycle_started_generation: request.source_generation,
+            cycle_started_engine_revision: SOURCE_REPAIR_ENGINE_REVISION,
             eligible_after_generation: None,
             attempts: Vec::new(),
             learned_success: None,
         }
     });
-    if record.status == "ADMITTED_FAILURE"
-        && record
-            .eligible_after_generation
-            .is_some_and(|eligible| request.source_generation >= eligible)
+    if record.status != "LEARNED_SUCCESS"
+        && ((record.status == "ADMITTED_FAILURE"
+            && record
+                .eligible_after_generation
+                .is_some_and(|eligible| request.source_generation >= eligible))
+            || record.cycle_started_engine_revision < SOURCE_REPAIR_ENGINE_REVISION)
     {
         record.status = "RETRYING".to_string();
         record.cycle_started_generation = request.source_generation;
+        record.cycle_started_engine_revision = SOURCE_REPAIR_ENGINE_REVISION;
         record.eligible_after_generation = None;
         record.attempts.clear();
     }
@@ -331,6 +350,7 @@ fn record_source_repair_outcome(
         succeeded: receipt.installed,
         receipt_sha256: receipt.receipt_sha256.clone(),
         diagnostic_sha256: receipt.validation.output_sha256.clone(),
+        failure_reason: receipt.failure_reason.clone(),
     });
     if receipt.installed {
         record.status = "LEARNED_SUCCESS".to_string();
@@ -388,6 +408,62 @@ fn normalized_target(root: &Path, relative: &Path) -> Result<PathBuf, String> {
         return Err("SOURCE_MUTATION_SYMLINK_FORBIDDEN".to_string());
     }
     Ok(canonical_target)
+}
+
+fn workspace_semantic_fingerprint(root: &Path, excluded_target: &Path) -> Result<String, String> {
+    let canonical_root = fs::canonicalize(root)
+        .map_err(|error| format!("SOURCE_MUTATION_FINGERPRINT_ROOT:{error}"))?;
+    let canonical_target = fs::canonicalize(excluded_target)
+        .map_err(|error| format!("SOURCE_MUTATION_FINGERPRINT_TARGET:{error}"))?;
+    let mut pending = vec![canonical_root.clone()];
+    let mut entries = Vec::new();
+    while let Some(directory) = pending.pop() {
+        let mut children = fs::read_dir(&directory)
+            .map_err(|error| format!("SOURCE_MUTATION_FINGERPRINT_READ_DIR:{error}"))?
+            .collect::<Result<Vec<_>, _>>()
+            .map_err(|error| format!("SOURCE_MUTATION_FINGERPRINT_ENTRY:{error}"))?;
+        children.sort_by_key(|entry| entry.file_name());
+        for child in children {
+            let file_type = child
+                .file_type()
+                .map_err(|error| format!("SOURCE_MUTATION_FINGERPRINT_TYPE:{error}"))?;
+            let path = child.path();
+            if file_type.is_symlink() {
+                continue;
+            }
+            if file_type.is_dir() {
+                if !excluded_directory(&path) {
+                    pending.push(path);
+                }
+                continue;
+            }
+            if !file_type.is_file() {
+                continue;
+            }
+            let canonical = fs::canonicalize(&path)
+                .map_err(|error| format!("SOURCE_MUTATION_FINGERPRINT_CANONICAL:{error}"))?;
+            let file_name = canonical.file_name().and_then(OsStr::to_str).unwrap_or("");
+            if canonical == canonical_target
+                || file_name.contains(".bcore-rollback")
+                || file_name.contains(".bcore-candidate")
+            {
+                continue;
+            }
+            let relative = canonical
+                .strip_prefix(&canonical_root)
+                .map_err(|_| "SOURCE_MUTATION_FINGERPRINT_OUTSIDE_ROOT".to_string())?;
+            let bytes = fs::read(&canonical)
+                .map_err(|error| format!("SOURCE_MUTATION_FINGERPRINT_READ:{error}"))?;
+            entries.push(format!(
+                "{}:{}:{}",
+                relative.display(),
+                bytes.len(),
+                sha256(&bytes)
+            ));
+        }
+    }
+    entries.sort();
+    Ok(sha256(entries.join("\n").as_bytes()))
 }
 
 fn command_receipt(
@@ -502,6 +578,8 @@ pub fn install_and_stage_source_patch(
     if sha256(&predecessor) != request.predecessor_sha256 {
         return Err("SOURCE_MUTATION_PREDECESSOR_MISMATCH".to_string());
     }
+    let workspace_fingerprint_before =
+        workspace_semantic_fingerprint(&policy.source_root, &target)?;
 
     let mutation_root = state_dir.join("source_mutations").join(&request.patch_id);
     fs::create_dir_all(&mutation_root)
@@ -557,6 +635,10 @@ pub fn install_and_stage_source_patch(
     };
     if !format_check.success {
         restore_target(&target, &rollback_sibling)?;
+        let workspace_fingerprint_after =
+            workspace_semantic_fingerprint(&policy.source_root, &target)?;
+        let workspace_stable_during_validation =
+            workspace_fingerprint_before == workspace_fingerprint_after;
         let mut receipt = AutonomousSourcePatchReceipt {
             schema: AUTONOMOUS_SOURCE_MUTATION_SCHEMA.to_string(),
             patch_id: request.patch_id.clone(),
@@ -567,11 +649,15 @@ pub fn install_and_stage_source_patch(
             core_self_approved: true,
             installed: false,
             rolled_back: true,
+            failure_reason: Some("FORMAT_CHECK_FAILED".to_string()),
             format_check: Some(format_check.clone()),
             validation: format_check,
             release_build: None,
             runtime_update_staged: false,
             rollback_source,
+            workspace_fingerprint_before: workspace_fingerprint_before.clone(),
+            workspace_fingerprint_after,
+            workspace_stable_during_validation,
             receipt_sha256: String::new(),
         };
         receipt.receipt_sha256 = receipt_hash(&receipt)?;
@@ -596,6 +682,10 @@ pub fn install_and_stage_source_patch(
     };
     if !validation.success {
         restore_target(&target, &rollback_sibling)?;
+        let workspace_fingerprint_after =
+            workspace_semantic_fingerprint(&policy.source_root, &target)?;
+        let workspace_stable_during_validation =
+            workspace_fingerprint_before == workspace_fingerprint_after;
         let mut receipt = AutonomousSourcePatchReceipt {
             schema: AUTONOMOUS_SOURCE_MUTATION_SCHEMA.to_string(),
             patch_id: request.patch_id.clone(),
@@ -606,11 +696,15 @@ pub fn install_and_stage_source_patch(
             core_self_approved: true,
             installed: false,
             rolled_back: true,
+            failure_reason: Some("REGRESSION_VALIDATION_FAILED".to_string()),
             format_check: Some(format_check),
             validation,
             release_build: None,
             runtime_update_staged: false,
             rollback_source,
+            workspace_fingerprint_before: workspace_fingerprint_before.clone(),
+            workspace_fingerprint_after,
+            workspace_stable_during_validation,
             receipt_sha256: String::new(),
         };
         receipt.receipt_sha256 = receipt_hash(&receipt)?;
@@ -644,6 +738,10 @@ pub fn install_and_stage_source_patch(
     };
     if !release_build.success {
         restore_target(&target, &rollback_sibling)?;
+        let workspace_fingerprint_after =
+            workspace_semantic_fingerprint(&policy.source_root, &target)?;
+        let workspace_stable_during_validation =
+            workspace_fingerprint_before == workspace_fingerprint_after;
         let mut receipt = AutonomousSourcePatchReceipt {
             schema: AUTONOMOUS_SOURCE_MUTATION_SCHEMA.to_string(),
             patch_id: request.patch_id.clone(),
@@ -654,11 +752,54 @@ pub fn install_and_stage_source_patch(
             core_self_approved: true,
             installed: false,
             rolled_back: true,
+            failure_reason: Some("RELEASE_BUILD_FAILED".to_string()),
             format_check: Some(format_check),
             validation,
             release_build: Some(release_build),
             runtime_update_staged: false,
             rollback_source,
+            workspace_fingerprint_before: workspace_fingerprint_before.clone(),
+            workspace_fingerprint_after,
+            workspace_stable_during_validation,
+            receipt_sha256: String::new(),
+        };
+        receipt.receipt_sha256 = receipt_hash(&receipt)?;
+        write_immutable_json(&mutation_root.join("receipt.json"), &receipt)?;
+        record_source_repair_outcome(policy, state_dir, request, &receipt)?;
+        return Ok(receipt);
+    }
+
+    let workspace_fingerprint_after = workspace_semantic_fingerprint(&policy.source_root, &target)?;
+    let target_still_exact_candidate = fs::read(&target)
+        .map(|bytes| sha256(&bytes) == request.candidate_sha256)
+        .unwrap_or(false);
+    let workspace_stable_during_validation =
+        workspace_fingerprint_before == workspace_fingerprint_after;
+    if !workspace_stable_during_validation || !target_still_exact_candidate {
+        restore_target(&target, &rollback_sibling)?;
+        let mut receipt = AutonomousSourcePatchReceipt {
+            schema: AUTONOMOUS_SOURCE_MUTATION_SCHEMA.to_string(),
+            patch_id: request.patch_id.clone(),
+            relative_path: request.relative_path.clone(),
+            predecessor_sha256: request.predecessor_sha256.clone(),
+            candidate_sha256: request.candidate_sha256.clone(),
+            core_generated: true,
+            core_self_approved: true,
+            installed: false,
+            rolled_back: true,
+            failure_reason: Some(if target_still_exact_candidate {
+                "CONCURRENT_WORKSPACE_CHANGE_DURING_VALIDATION".to_string()
+            } else {
+                "TARGET_CHANGED_DURING_VALIDATION".to_string()
+            }),
+            format_check: Some(format_check),
+            validation,
+            release_build: Some(release_build),
+            runtime_update_staged: false,
+            rollback_source,
+            workspace_fingerprint_before,
+            workspace_fingerprint_after,
+            workspace_stable_during_validation: false,
             receipt_sha256: String::new(),
         };
         receipt.receipt_sha256 = receipt_hash(&receipt)?;
@@ -699,11 +840,15 @@ pub fn install_and_stage_source_patch(
         core_self_approved: true,
         installed: true,
         rolled_back: false,
+        failure_reason: None,
         format_check: Some(format_check),
         validation,
         release_build: Some(release_build),
         runtime_update_staged: true,
         rollback_source,
+        workspace_fingerprint_before,
+        workspace_fingerprint_after,
+        workspace_stable_during_validation,
         receipt_sha256: String::new(),
     };
     receipt.receipt_sha256 = receipt_hash(&receipt)?;
@@ -790,9 +935,14 @@ fn expression_start(prefix: &str) -> Option<usize> {
                 }
             }
             b'(' if depth == 0 => return Some(index + 1),
-            b'=' | b';' | b',' | b'{' | b'[' | b'!' | b'&' | b'|' if depth == 0 => {
-                return Some(index + 1)
+            b'=' if depth == 0 => {
+                return Some(if bytes.get(index + 1) == Some(&b'>') {
+                    index + 2
+                } else {
+                    index + 1
+                })
             }
+            b';' | b',' | b'{' | b'[' | b'!' | b'&' | b'|' if depth == 0 => return Some(index + 1),
             _ => {}
         }
     }
@@ -907,7 +1057,8 @@ pub fn discover_known_source_improvement(
                 || (knowledge.status == "ADMITTED_FAILURE"
                     && knowledge
                         .eligible_after_generation
-                        .is_some_and(|eligible| source_generation < eligible))
+                        .is_some_and(|eligible| source_generation < eligible)
+                    && knowledge.cycle_started_engine_revision >= SOURCE_REPAIR_ENGINE_REVISION)
         }) {
             continue;
         }
@@ -1007,11 +1158,15 @@ mod tests {
             core_self_approved: true,
             installed,
             rolled_back: !installed,
+            failure_reason: (!installed).then(|| "SYNTHETIC_FAILURE".to_string()),
             format_check: Some(command.clone()),
             validation: command.clone(),
             release_build: installed.then_some(command),
             runtime_update_staged: installed,
             rollback_source: PathBuf::from("predecessor.source"),
+            workspace_fingerprint_before: "a".repeat(64),
+            workspace_fingerprint_after: "a".repeat(64),
+            workspace_stable_during_validation: true,
             receipt_sha256: String::new(),
         };
         receipt.receipt_sha256 = receipt_hash(&receipt).unwrap();
@@ -1054,6 +1209,11 @@ mod tests {
         )
         .unwrap();
         fs::write(
+            root.join("Cargo.lock"),
+            "# This file is automatically @generated by Cargo.\n# It is not intended for manual editing.\nversion = 4\n\n[[package]]\nname = \"semantic-reasoning\"\nversion = \"0.1.0\"\n",
+        )
+        .unwrap();
+        fs::write(
             root.join("src/lib.rs"),
             "pub fn even(value: u32) -> bool {\n    value % 2 == 0\n}\n\n#[cfg(test)]\nmod tests {\n    #[test]\n    fn even_works() {\n        assert!(super::even(2));\n    }\n}\n",
         )
@@ -1075,6 +1235,17 @@ mod tests {
         (root, policy)
     }
 
+    fn external_state(root: &Path) -> PathBuf {
+        let state = root.with_file_name(format!(
+            "{}-state",
+            root.file_name().and_then(OsStr::to_str).unwrap_or("b-core")
+        ));
+        if state.exists() {
+            fs::remove_dir_all(&state).unwrap();
+        }
+        state
+    }
+
     #[test]
     fn known_improvement_is_predicted_without_touching_tests_or_strings() {
         let source = "pub fn even(value: u32) -> bool { value % 2 == 0 }\n#[cfg(test)]\nmod tests { const TEXT: &str = \"x % 2 == 0\"; }\n";
@@ -1085,6 +1256,15 @@ mod tests {
         let conditional = "let scope = if ordinal % 5 == 0 { 1 } else { 2 };\n";
         let rewritten = rewrite_first_known_improvement(conditional, 0).expect("conditional");
         assert!(rewritten.contains("= if ordinal.is_multiple_of(5)"));
+
+        let match_arm = "            Self::Even => value % 2 == 0,\n";
+        for strategy in 0..KNOWN_REMAINDER_STRATEGIES.len() {
+            let rewritten =
+                rewrite_first_known_improvement(match_arm, strategy).expect("match arm");
+            assert!(rewritten.contains("Self::Even =>"));
+            assert!(!rewritten.contains("=(>"));
+            assert!(!rewritten.contains("=matches"));
+        }
     }
 
     #[test]
@@ -1104,9 +1284,20 @@ mod tests {
     }
 
     #[test]
+    fn workspace_fingerprint_detects_non_target_changes() {
+        let (root, _) = fixture("workspace-fingerprint");
+        let target = root.join("src/lib.rs");
+        let before = workspace_semantic_fingerprint(&root, &target).unwrap();
+        fs::write(root.join("src/concurrent.rs"), "pub fn changed() {}\n").unwrap();
+        let after = workspace_semantic_fingerprint(&root, &target).unwrap();
+        assert_ne!(before, after);
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
     fn core_can_install_validate_and_stage_its_own_source_patch() {
         let (root, policy) = fixture("install");
-        let state = root.join("state");
+        let state = external_state(&root);
         let request = discover_known_source_improvement(&policy, &state, 3)
             .unwrap()
             .expect("discovered improvement");
@@ -1137,12 +1328,13 @@ mod tests {
             "TYPED_IS_MULTIPLE_OF"
         );
         fs::remove_dir_all(root).unwrap();
+        fs::remove_dir_all(state).unwrap();
     }
 
     #[test]
     fn failed_self_patch_is_rolled_back_to_exact_predecessor() {
         let (root, policy) = fixture("rollback");
-        let state = root.join("state");
+        let state = external_state(&root);
         let predecessor = fs::read(root.join("src/lib.rs")).unwrap();
         let mut request = discover_known_source_improvement(&policy, &state, 3)
             .unwrap()
@@ -1165,12 +1357,13 @@ mod tests {
         assert_eq!(knowledge.status, "RETRYING");
         assert_eq!(knowledge.attempts.len(), 1);
         fs::remove_dir_all(root).unwrap();
+        fs::remove_dir_all(state).unwrap();
     }
 
     #[test]
     fn four_failed_solutions_are_admitted_then_reopened_after_growth() {
         let (root, policy) = fixture("bounded-retry");
-        let state = root.join("state");
+        let state = external_state(&root);
         let mut problem_id = String::new();
         for expected_attempts in 1..=4 {
             let request = discover_known_source_improvement(&policy, &state, 7)
@@ -1200,5 +1393,6 @@ mod tests {
         assert_eq!(learned.attempts.len(), 1);
         assert_eq!(learned.learned_success.unwrap().attempts_required, 1);
         fs::remove_dir_all(root).unwrap();
+        fs::remove_dir_all(state).unwrap();
     }
 }

@@ -148,7 +148,7 @@ impl Predicate {
         match self {
             Self::Positive => value > 0,
             Self::NonZero => value != 0,
-            Self::Even => value % 2 == 0,
+            Self::Even => matches!((value).checked_rem(2), Some(0)),
             Self::Negative => value < 0,
         }
     }
