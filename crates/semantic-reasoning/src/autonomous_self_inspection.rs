@@ -20,6 +20,7 @@ pub const SELF_INSPECTION_SCHEMA: &str = "B_CORE_AUTONOMOUS_SELF_INSPECTION_1";
 pub enum InternalBottleneckClass {
     WorkEventAttributionGap,
     EvidenceCohortStarvation,
+    MutualRecursiveBootstrapGap,
     ScanTraversalOverhead,
     RepeatedVerificationFailure,
     QuietIdle,
@@ -30,6 +31,7 @@ impl InternalBottleneckClass {
         match self {
             Self::WorkEventAttributionGap => "WORK_EVENT_ATTRIBUTION_GAP",
             Self::EvidenceCohortStarvation => "EVIDENCE_COHORT_STARVATION",
+            Self::MutualRecursiveBootstrapGap => "MUTUAL_RECURSIVE_BOOTSTRAP_GAP",
             Self::ScanTraversalOverhead => "SCAN_TRAVERSAL_OVERHEAD",
             Self::RepeatedVerificationFailure => "REPEATED_VERIFICATION_FAILURE",
             Self::QuietIdle => "QUIET_IDLE_NOT_A_DEFECT",
@@ -58,6 +60,11 @@ pub struct SelfInspectionInput {
     pub replayed_unchanged_work_events: usize,
     pub naive_cohort_has_verification: bool,
     pub evidence_aware_cohort_has_verification: bool,
+    pub autonomous_campaigns_enabled: bool,
+    pub campaigns_started: u64,
+    pub mutual_revalidation_events: u64,
+    pub evaluator_challenge_cases: u64,
+    pub evaluator_required_challenge_cases: u64,
     pub consecutive_failures: u32,
     pub plateau_scans: u32,
 }
@@ -218,6 +225,27 @@ fn candidate_hypotheses(input: &SelfInspectionInput) -> Vec<InternalHypothesis> 
             selected: false,
         });
     }
+    if input.autonomous_campaigns_enabled
+        && input.generation == 0
+        && input.campaigns_started == 0
+        && input.mutual_revalidation_events == 0
+        && input.evaluator_challenge_cases < input.evaluator_required_challenge_cases
+    {
+        hypotheses.push(InternalHypothesis {
+            bottleneck: InternalBottleneckClass::MutualRecursiveBootstrapGap,
+            confidence_millis: 960,
+            evidence: vec![
+                "core and evaluator have never completed a mutual revalidation".to_string(),
+                format!(
+                    "evaluator_challenge_cases={}/{}",
+                    input.evaluator_challenge_cases, input.evaluator_required_challenge_cases
+                ),
+                "an unexercised recursive loop cannot supply evidence of recursive growth"
+                    .to_string(),
+            ],
+            selected: false,
+        });
+    }
     let reuse_ratio_millis = input
         .files_reused
         .saturating_mul(1_000)
@@ -299,6 +327,24 @@ fn diagnostic_experiment(
                 && input.evidence_aware_cohort_has_verification,
             mutates_research_state: false,
         },
+        InternalBottleneckClass::MutualRecursiveBootstrapGap => InternalDiagnosticExperiment {
+            experiment_id: "FROZEN_MUTUAL_REVALIDATION_BOOTSTRAP_CANARY".to_string(),
+            hypothesis: selected,
+            control_observable: format!(
+                "generation={}; mutual_revalidation_events={}",
+                input.generation, input.mutual_revalidation_events
+            ),
+            intervention_observable: format!(
+                "independent verifier must reject every one of {} evaluator mutations before atomic promotion",
+                input.evaluator_required_challenge_cases
+            ),
+            causal_support: input.autonomous_campaigns_enabled
+                && input.generation == 0
+                && input.campaigns_started == 0
+                && input.mutual_revalidation_events == 0
+                && input.evaluator_challenge_cases < input.evaluator_required_challenge_cases,
+            mutates_research_state: false,
+        },
         InternalBottleneckClass::ScanTraversalOverhead => InternalDiagnosticExperiment {
             experiment_id: "HASH_WORK_ABLATION_FROM_REUSE_COUNTERS".to_string(),
             hypothesis: selected,
@@ -351,6 +397,11 @@ pub fn inspect(input: SelfInspectionInput) -> Result<AutonomousSelfInspectionRec
             Some("EVIDENCE_AWARE_BOUNDED_COHORT_ROUTING".to_string()),
             true,
         ),
+        InternalBottleneckClass::MutualRecursiveBootstrapGap => (
+            RepairDisposition::RuntimeRepairActive,
+            Some("BOOTSTRAP_FROZEN_CORE_EVALUATOR_CANARY".to_string()),
+            true,
+        ),
         InternalBottleneckClass::ScanTraversalOverhead => (
             RepairDisposition::ProposalRequired,
             Some("DIRECTORY_SNAPSHOT_OR_WATCHER_CANDIDATE_REQUIRES_CANARY".to_string()),
@@ -363,14 +414,17 @@ pub fn inspect(input: SelfInspectionInput) -> Result<AutonomousSelfInspectionRec
     };
     let diagnostic_id = sha256(
         format!(
-            "{}:{}:{}:{}:{}:{}:{}",
+            "{}:{}:{}:{}:{}:{}:{}:{}:{}:{}",
             selected.label(),
             input.files_scanned,
             input.files_reused,
             input.files_hashed,
             input.pending_work_events,
             input.replayed_unchanged_work_events,
-            input.consecutive_failures
+            input.consecutive_failures,
+            input.campaigns_started,
+            input.mutual_revalidation_events,
+            input.evaluator_challenge_cases
         )
         .as_bytes(),
     );
@@ -419,6 +473,11 @@ mod tests {
             replayed_unchanged_work_events: 0,
             naive_cohort_has_verification: false,
             evidence_aware_cohort_has_verification: false,
+            autonomous_campaigns_enabled: false,
+            campaigns_started: 1,
+            mutual_revalidation_events: 1,
+            evaluator_challenge_cases: 10,
+            evaluator_required_challenge_cases: 10,
             consecutive_failures: 0,
             plateau_scans: 3,
         }
@@ -453,6 +512,29 @@ mod tests {
         );
         assert!(receipt.experiments[0].causal_support);
         assert!(validate_composition_lesson(&receipt.repair_composition).is_ok());
+    }
+
+    #[test]
+    fn unexercised_core_evaluator_loop_is_not_misclassified_as_quiet_idle() {
+        let mut value = input();
+        value.generation = 0;
+        value.autonomous_campaigns_enabled = true;
+        value.campaigns_started = 0;
+        value.mutual_revalidation_events = 0;
+        value.evaluator_challenge_cases = 6;
+        value.evaluator_required_challenge_cases = 10;
+        let receipt = inspect(value).expect("inspect");
+        assert_eq!(
+            receipt.selected_bottleneck,
+            InternalBottleneckClass::MutualRecursiveBootstrapGap
+        );
+        assert_eq!(
+            receipt.repair_disposition,
+            RepairDisposition::RuntimeRepairActive
+        );
+        assert!(receipt.actionable_defect);
+        assert!(receipt.experiments[0].causal_support);
+        assert_eq!(receipt.core_self_approval_events, 0);
     }
 
     #[test]

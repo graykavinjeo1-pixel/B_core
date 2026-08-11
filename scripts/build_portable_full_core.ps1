@@ -222,7 +222,10 @@ $growthSelfCheck = ($growthSelfCheckOutput -join "`n") | ConvertFrom-Json
 if (-not $growthSelfCheck.pass -or
     -not $growthSelfCheck.proposer_cannot_self_approve -or
     -not $growthSelfCheck.network_and_llm_disabled -or
-    -not $growthSelfCheck.plateau_difficulty_escalation_disabled) {
+    -not $growthSelfCheck.plateau_difficulty_escalation_disabled -or
+    -not $growthSelfCheck.prediction_before_composition_enabled -or
+    -not $growthSelfCheck.valuable_combination_memory_enabled -or
+    -not $growthSelfCheck.generative_memory_self_application_enabled) {
     throw "GROWTH_SUPERVISOR_BOUNDARY_CHECK_FAILED"
 }
 Write-Utf8NoBom -Path (Join-Path $receiptRoot "growth_supervisor_self_check.json") -Text ($growthSelfCheck | ConvertTo-Json -Depth 6)

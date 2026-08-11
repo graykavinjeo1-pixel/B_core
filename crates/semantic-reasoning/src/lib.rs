@@ -6,6 +6,7 @@ pub mod code_graft_acceptance;
 pub mod core_x0;
 pub mod experiment;
 pub mod fullstack_ops_knowledge;
+pub mod generative_growth;
 pub mod growth_supervisor;
 pub mod integrated_development;
 pub mod mining;

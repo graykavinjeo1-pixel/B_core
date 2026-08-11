@@ -19,8 +19,12 @@ use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
 use serde::{Deserialize, Serialize};
 
 use crate::autonomous_self_inspection::{
-    inspect as inspect_self, AutonomousSelfInspectionReceipt, RepairDisposition,
-    SelfInspectionInput,
+    inspect as inspect_self, AutonomousSelfInspectionReceipt, InternalBottleneckClass,
+    RepairDisposition, SelfInspectionInput,
+};
+use crate::generative_growth::{
+    promote_generative_cycle, run_generative_cycle, GenerativeCycleResult, GenerativeGrowthMemory,
+    GenerativeInput,
 };
 use crate::self_repair_contract::sha256;
 
@@ -233,6 +237,14 @@ pub struct SupervisorState {
     pub evaluator_challenge_cases: u64,
     #[serde(default)]
     pub mutual_revalidation_events: u64,
+    #[serde(default)]
+    pub generative_predictions: u64,
+    #[serde(default)]
+    pub valuable_combinations_learned: u64,
+    #[serde(default)]
+    pub generative_memory_reuse_events: u64,
+    #[serde(default)]
+    pub generative_self_application_events: u64,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
@@ -392,6 +404,8 @@ pub struct GrowthMemory {
     pub classifier: ClassifierMemory,
     #[serde(default, skip_serializing_if = "EvaluatorMemory::is_default")]
     pub evaluator: EvaluatorMemory,
+    #[serde(default, skip_serializing_if = "GenerativeGrowthMemory::is_default")]
+    pub generative: GenerativeGrowthMemory,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -459,6 +473,7 @@ pub struct LearningCandidate {
     pub lesson: LearnedCompositionLesson,
     pub observation_ids: Vec<String>,
     pub total_learning_score: u32,
+    pub generative_cycle: GenerativeCycleResult,
     pub raw_source_bytes: usize,
     pub exact_source_fragments: usize,
     pub codex_calls: usize,
@@ -524,6 +539,21 @@ pub enum EvaluatorMutationKind {
     VerificationObligationMutation,
     RawSourceFlagInjection,
     EvidenceRemoval,
+}
+
+impl EvaluatorMutationKind {
+    const ALL: [Self; 10] = [
+        Self::EvidenceDigestSubstitution,
+        Self::AggregateScoreInflation,
+        Self::LessonScoreInflation,
+        Self::DiagnosticSignalInjection,
+        Self::CompositionRecipeMutation,
+        Self::WorkKindMutation,
+        Self::ApplicabilityMutation,
+        Self::VerificationObligationMutation,
+        Self::RawSourceFlagInjection,
+        Self::EvidenceRemoval,
+    ];
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -602,6 +632,10 @@ pub struct StepReport {
     pub evaluator_generation: u64,
     pub evaluator_challenge_cases: u64,
     pub mutual_revalidation_events: u64,
+    pub generative_predictions: u64,
+    pub valuable_combinations_learned: u64,
+    pub generative_memory_reuse_events: u64,
+    pub generative_self_application_events: u64,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -617,6 +651,9 @@ pub struct SelfCheck {
     pub bound_pass_evidence_required: bool,
     pub evaluator_mutation_self_audit_enabled: bool,
     pub evaluator_generation_evolution_enabled: bool,
+    pub prediction_before_composition_enabled: bool,
+    pub valuable_combination_memory_enabled: bool,
+    pub generative_memory_self_application_enabled: bool,
     pub promoted_lessons_drive_executable_repairs: bool,
     pub mutual_recursive_growth_observed: bool,
 }
@@ -634,6 +671,9 @@ pub fn self_check() -> SelfCheck {
         bound_pass_evidence_required: true,
         evaluator_mutation_self_audit_enabled: true,
         evaluator_generation_evolution_enabled: true,
+        prediction_before_composition_enabled: true,
+        valuable_combination_memory_enabled: true,
+        generative_memory_self_application_enabled: true,
         promoted_lessons_drive_executable_repairs: false,
         mutual_recursive_growth_observed: false,
     }
@@ -1535,6 +1575,7 @@ pub fn initialize(config_path: &Path) -> Result<SupervisorState, String> {
         lessons: Vec::new(),
         classifier: ClassifierMemory::default(),
         evaluator: EvaluatorMemory::default(),
+        generative: GenerativeGrowthMemory::default(),
     };
     let memory_hash = json_sha256(&memory)?;
     write_immutable_json(&memory_path(&config, 0), &memory)?;
@@ -1578,6 +1619,10 @@ pub fn initialize(config_path: &Path) -> Result<SupervisorState, String> {
         current_evaluator_memory_sha256: json_sha256(&EvaluatorMemory::default())?,
         evaluator_challenge_cases: EvaluatorMemory::default().challenge_suite.len() as u64,
         mutual_revalidation_events: 0,
+        generative_predictions: 0,
+        valuable_combinations_learned: 0,
+        generative_memory_reuse_events: 0,
+        generative_self_application_events: 0,
     };
     save_transition(
         &config,
@@ -2312,6 +2357,16 @@ fn build_candidate(
 ) -> Result<LearningCandidate, String> {
     let observations = load_campaign_observations(config, freeze)?;
     let lesson = build_lesson(&observations)?;
+    let predecessor: GrowthMemory =
+        read_json(&campaign_dir(config, &freeze.campaign_id).join("predecessor_memory.json"))?;
+    if json_sha256(&predecessor)? != freeze.predecessor_memory_sha256 {
+        return Err("CANDIDATE_PREDECESSOR_MEMORY_BINDING_FAILURE".to_string());
+    }
+    let generative_cycle = run_generative_cycle(
+        &predecessor.generative,
+        &generative_input(&lesson),
+        freeze.seed,
+    )?;
     Ok(LearningCandidate {
         schema: SUPERVISOR_SCHEMA.to_string(),
         campaign_id: freeze.campaign_id.clone(),
@@ -2324,6 +2379,7 @@ fn build_candidate(
             .sum(),
         observation_ids: freeze.observation_ids.clone(),
         lesson,
+        generative_cycle,
         raw_source_bytes: 0,
         exact_source_fragments: 0,
         codex_calls: 0,
@@ -2333,6 +2389,14 @@ fn build_candidate(
         self_approval_events: 0,
         difficulty_escalation_events: 0,
     })
+}
+
+fn generative_input(lesson: &LearnedCompositionLesson) -> GenerativeInput {
+    GenerativeInput {
+        source_lesson_id: lesson.lesson_id.clone(),
+        diagnostic_signals: lesson.diagnostic_signals.clone(),
+        observed_composition_roles: lesson.composition_recipe.clone(),
+    }
 }
 
 fn receipt_hash_input(receipt: &GrowthVerificationReceipt) -> Result<String, String> {
@@ -2396,8 +2460,11 @@ fn candidate_matches_frozen_derivation(
     candidate: &LearningCandidate,
     expected_lesson: &LearnedCompositionLesson,
     expected_total: u32,
+    expected_generative_cycle: &GenerativeCycleResult,
 ) -> bool {
-    candidate.lesson == *expected_lesson && candidate.total_learning_score == expected_total
+    candidate.lesson == *expected_lesson
+        && candidate.total_learning_score == expected_total
+        && candidate.generative_cycle == *expected_generative_cycle
 }
 
 fn evaluator_self_audit(
@@ -2406,9 +2473,24 @@ fn evaluator_self_audit(
     expected_total: u32,
     predecessor: &GrowthMemory,
     proposed_evaluator: &EvaluatorMemory,
+    seed: u64,
 ) -> EvaluatorSelfAudit {
-    let baseline_candidate_reconstructed =
-        candidate_matches_frozen_derivation(candidate, expected_lesson, expected_total);
+    let baseline_generative_cycle = run_generative_cycle(
+        &predecessor.generative,
+        &generative_input(expected_lesson),
+        seed,
+    );
+    let baseline_candidate_reconstructed = baseline_generative_cycle
+        .as_ref()
+        .map(|expected_cycle| {
+            candidate_matches_frozen_derivation(
+                candidate,
+                expected_lesson,
+                expected_total,
+                expected_cycle,
+            )
+        })
+        .unwrap_or(false);
     let mut challenge_lessons = predecessor.lessons.clone();
     if !challenge_lessons
         .iter()
@@ -2433,6 +2515,14 @@ fn evaluator_self_audit(
                     let mut mutant = candidate.clone();
                     mutant.lesson = challenge_lesson.clone();
                     mutant.total_learning_score = challenge_total;
+                    let expected_generative_cycle = run_generative_cycle(
+                        &predecessor.generative,
+                        &generative_input(challenge_lesson),
+                        seed,
+                    );
+                    if let Ok(expected_cycle) = &expected_generative_cycle {
+                        mutant.generative_cycle = expected_cycle.clone();
+                    }
                     match mutation {
                         EvaluatorMutationKind::EvidenceDigestSubstitution => {
                             mutant.lesson.evidence_observation_sha256 = vec!["0".repeat(64)];
@@ -2480,6 +2570,9 @@ fn evaluator_self_audit(
                         &mutant,
                         challenge_lesson,
                         challenge_total,
+                        expected_generative_cycle
+                            .as_ref()
+                            .unwrap_or(&candidate.generative_cycle),
                     );
                     EvaluatorMutationResult {
                         mutation,
@@ -2610,6 +2703,23 @@ pub fn run_verifier_request(
     {
         reasons.push("FORBIDDEN_DEPENDENCY_OR_SELF_APPROVAL".to_string());
     }
+    if candidate.generative_cycle.schema != crate::generative_growth::GENERATIVE_GROWTH_SCHEMA
+        || !candidate
+            .generative_cycle
+            .prediction_recorded_before_composition
+        || !candidate
+            .generative_cycle
+            .selected_from_precomposition_prediction
+        || !candidate.generative_cycle.isolated_composition_executed
+        || !candidate.generative_cycle.composition_typecheck_pass
+        || candidate.generative_cycle.exact_source_fragments != 0
+        || candidate.generative_cycle.codex_calls != 0
+        || candidate.generative_cycle.external_llm_calls != 0
+        || candidate.generative_cycle.network_reads != 0
+        || candidate.generative_cycle.network_writes != 0
+    {
+        reasons.push("GENERATIVE_COMPOSITION_BOUNDARY_FAILURE".to_string());
+    }
     if candidate.lesson.learning_score < request.minimum_learning_score
         || candidate.lesson.composition_recipe.len() < 2
         || candidate.lesson.evidence_observation_sha256.is_empty()
@@ -2642,6 +2752,7 @@ pub fn run_verifier_request(
                                 expected_total,
                                 &predecessor,
                                 &proposed_evaluator,
+                                freeze.seed,
                             );
                             if !audit.baseline_candidate_reconstructed {
                                 reasons.push(
@@ -2794,6 +2905,12 @@ fn promote_candidate(
     {
         return Err("PREDECESSOR_MEMORY_MISMATCH".to_string());
     }
+    let generative_input = generative_input(&candidate.lesson);
+    let expected_generative_cycle =
+        run_generative_cycle(&memory.generative, &generative_input, freeze.seed)?;
+    if candidate.generative_cycle != expected_generative_cycle {
+        return Err("GENERATIVE_CYCLE_PROMOTION_BINDING_FAILURE".to_string());
+    }
     let next_evaluator =
         derive_next_evaluator_memory(&memory.evaluator, &memory.lessons, &candidate.lesson)?;
     if !receipt.evaluator_self_audit.pass
@@ -2825,8 +2942,23 @@ fn promote_candidate(
             .or_insert(0);
         *weight = weight.saturating_add(1).min(5);
     }
+    if candidate.generative_cycle.applied_to_self_improvement {
+        for signal in &candidate.lesson.diagnostic_signals {
+            let weight = memory
+                .classifier
+                .signal_weights
+                .entry(signal.clone())
+                .or_insert(0);
+            *weight = weight.saturating_add(1).min(5);
+        }
+    }
     memory.classifier.accepted_campaigns = memory.classifier.accepted_campaigns.saturating_add(1);
     memory.evaluator = next_evaluator;
+    memory.generative = promote_generative_cycle(
+        &memory.generative,
+        &generative_input,
+        &candidate.generative_cycle,
+    )?;
     memory.predecessor_sha256 = Some(freeze.predecessor_memory_sha256.clone());
     memory.generation = freeze.generation;
     let memory_hash = json_sha256(&memory)?;
@@ -2863,6 +2995,14 @@ fn promote_candidate(
         .knowledge_challenge_cases
         .min(u64::MAX as usize) as u64;
     state.mutual_revalidation_events = state.mutual_revalidation_events.saturating_add(1);
+    state.generative_predictions = memory.generative.prediction_records;
+    state.valuable_combinations_learned = memory
+        .generative
+        .accepted_compositions
+        .len()
+        .min(u64::MAX as usize) as u64;
+    state.generative_memory_reuse_events = memory.generative.reuse_events;
+    state.generative_self_application_events = memory.generative.self_application_events;
     state.campaigns_accepted = state.campaigns_accepted.saturating_add(1);
     state.consecutive_failures = 0;
     state.plateau_scans = 0;
@@ -3123,6 +3263,62 @@ fn cohort_has_verification_evidence(observations: &[LearningObservation]) -> boo
             .unwrap_or(false)
 }
 
+fn mutual_bootstrap_observation(
+    receipt: &AutonomousSelfInspectionReceipt,
+) -> Result<Option<LearningObservation>, String> {
+    if receipt.selected_bottleneck != InternalBottleneckClass::MutualRecursiveBootstrapGap
+        || receipt.repair_disposition != RepairDisposition::RuntimeRepairActive
+        || !receipt.actionable_defect
+        || !receipt
+            .experiments
+            .iter()
+            .all(|experiment| experiment.causal_support)
+    {
+        return Ok(None);
+    }
+    let receipt_sha256 = json_sha256(receipt)?;
+    let observation_id = sha256(
+        format!(
+            "MUTUAL_RECURSIVE_BOOTSTRAP:{}:{}",
+            receipt.generation, receipt_sha256
+        )
+        .as_bytes(),
+    );
+    Ok(Some(LearningObservation {
+        observation_id,
+        work_event_id: None,
+        logical_path: "INTERNAL/MUTUAL_CORE_EVALUATOR_BOOTSTRAP".to_string(),
+        content_sha256: receipt_sha256.clone(),
+        predecessor_content_sha256: None,
+        actor: WorkActor::LocalTool,
+        work_kind: WorkKind::Verification,
+        work_outcome: WorkOutcome::Pass,
+        features_before: None,
+        features_after: StructuralFeatures::default(),
+        signals: vec![
+            "AUTONOMOUS_SELF_INSPECTION".to_string(),
+            "MUTUAL_REVALIDATION_GAP".to_string(),
+            "REGRESSION_EVIDENCE".to_string(),
+            "VERIFIED_PASS".to_string(),
+        ],
+        composition_roles: vec![
+            "INVARIANT_CHECK".to_string(),
+            "REGRESSION_TEST".to_string(),
+        ],
+        learning_score: 80,
+        learning_value: LearningValue::High,
+        reasons: vec![
+            "generation zero has no observed core/evaluator mutual revalidation".to_string(),
+            "the frozen independent verifier must reconstruct the candidate and reject the complete evaluator mutation suite"
+                .to_string(),
+        ],
+        verification_evidence_sha256: vec![receipt_sha256],
+        exact_source_fragments_stored: 0,
+        raw_source_bytes_stored: 0,
+        observed_at_ms: now_ms(),
+    }))
+}
+
 fn persist_self_inspection(
     config: &GrowthSupervisorConfig,
     state: &mut SupervisorState,
@@ -3201,6 +3397,10 @@ fn report_from_state(
         evaluator_generation: state.evaluator_generation,
         evaluator_challenge_cases: state.evaluator_challenge_cases,
         mutual_revalidation_events: state.mutual_revalidation_events,
+        generative_predictions: state.generative_predictions,
+        valuable_combinations_learned: state.valuable_combinations_learned,
+        generative_memory_reuse_events: state.generative_memory_reuse_events,
+        generative_self_application_events: state.generative_self_application_events,
     }
 }
 
@@ -3339,8 +3539,7 @@ fn step_without_lease(
     state.observed_bytes = state.observed_bytes.saturating_add(scan.bytes_observed);
     persist_scan_observations(config, &scan.observations)?;
     save_index(config, &mut scan.index)?;
-    let high = load_unconsumed_high_observations(config, &scan.index)?;
-    let high_count = high.len();
+    let mut high = load_unconsumed_high_observations(config, &scan.index)?;
     let naive = high
         .iter()
         .take(config.resources.max_observations_per_campaign)
@@ -3358,10 +3557,37 @@ fn step_without_lease(
         replayed_unchanged_work_events: scan.replayed_unchanged_work_events,
         naive_cohort_has_verification: cohort_has_verification_evidence(&naive),
         evidence_aware_cohort_has_verification: cohort_has_verification_evidence(&evidence_aware),
+        autonomous_campaigns_enabled: config.autonomous_campaigns,
+        campaigns_started: state.campaigns_started,
+        mutual_revalidation_events: state.mutual_revalidation_events,
+        evaluator_challenge_cases: state.evaluator_challenge_cases,
+        evaluator_required_challenge_cases: EvaluatorMutationKind::ALL.len() as u64,
         consecutive_failures: state.consecutive_failures,
         plateau_scans: state.plateau_scans,
     })?;
     persist_self_inspection(config, &mut state, &inspection)?;
+    if config.autonomous_campaigns {
+        if let Some(observation) = mutual_bootstrap_observation(&inspection)? {
+            persist_scan_observations(config, std::slice::from_ref(&observation))?;
+            if !scan
+                .index
+                .consumed_observation_ids
+                .contains(&observation.observation_id)
+                && !high
+                    .iter()
+                    .any(|existing| existing.observation_id == observation.observation_id)
+            {
+                high.push(observation);
+                high.sort_by_key(|observation| {
+                    (
+                        std::cmp::Reverse(observation.learning_score),
+                        observation.observation_id.clone(),
+                    )
+                });
+            }
+        }
+    }
+    let high_count = high.len();
     let mut campaign_id = None;
     let mut campaign_accepted = None;
 
@@ -3546,6 +3772,7 @@ mod tests {
             lessons: Vec::new(),
             classifier: ClassifierMemory::default(),
             evaluator: EvaluatorMemory::default(),
+            generative: GenerativeGrowthMemory::default(),
         };
         let freeze = CampaignFreeze {
             schema: SUPERVISOR_SCHEMA.to_string(),
@@ -3565,15 +3792,23 @@ mod tests {
             created_at_ms: 1,
         };
         let freeze_sha256 = json_sha256(&freeze).unwrap();
+        let lesson = build_lesson(std::slice::from_ref(&observation)).unwrap();
+        let generative_cycle = run_generative_cycle(
+            &predecessor_memory.generative,
+            &generative_input(&lesson),
+            freeze.seed,
+        )
+        .unwrap();
         let candidate = LearningCandidate {
             schema: SUPERVISOR_SCHEMA.to_string(),
             campaign_id: freeze.campaign_id.clone(),
             freeze_sha256: freeze_sha256.clone(),
             generation: 1,
             predecessor_memory_sha256: freeze.predecessor_memory_sha256.clone(),
-            lesson: build_lesson(std::slice::from_ref(&observation)).unwrap(),
+            lesson,
             observation_ids: freeze.observation_ids.clone(),
             total_learning_score: 70,
+            generative_cycle,
             raw_source_bytes: 0,
             exact_source_fragments: 0,
             codex_calls: 0,
@@ -3614,6 +3849,9 @@ mod tests {
         assert!(check.bound_pass_evidence_required);
         assert!(check.evaluator_mutation_self_audit_enabled);
         assert!(check.evaluator_generation_evolution_enabled);
+        assert!(check.prediction_before_composition_enabled);
+        assert!(check.valuable_combination_memory_enabled);
+        assert!(check.generative_memory_self_application_enabled);
         assert!(!check.promoted_lessons_drive_executable_repairs);
         assert!(!check.mutual_recursive_growth_observed);
     }
@@ -3635,6 +3873,7 @@ mod tests {
             lessons: Vec::new(),
             classifier: ClassifierMemory::default(),
             evaluator: EvaluatorMemory::default(),
+            generative: GenerativeGrowthMemory::default(),
         };
         let legacy = LegacyGrowthMemory {
             schema: SUPERVISOR_SCHEMA,
@@ -3973,6 +4212,43 @@ mod tests {
     }
 
     #[test]
+    fn autonomous_bootstrap_receipt_forms_a_verified_mutual_growth_cohort() {
+        let receipt = inspect_self(SelfInspectionInput {
+            generation: 0,
+            supervisor_sequence: 12,
+            files_scanned: 100,
+            files_reused: 100,
+            files_hashed: 0,
+            scan_duration_ms: 100,
+            pending_work_events: 0,
+            replayed_unchanged_work_events: 0,
+            naive_cohort_has_verification: false,
+            evidence_aware_cohort_has_verification: false,
+            autonomous_campaigns_enabled: true,
+            campaigns_started: 0,
+            mutual_revalidation_events: 0,
+            evaluator_challenge_cases: 6,
+            evaluator_required_challenge_cases: EvaluatorMutationKind::ALL.len() as u64,
+            consecutive_failures: 0,
+            plateau_scans: 12,
+        })
+        .unwrap();
+        let observation = mutual_bootstrap_observation(&receipt)
+            .unwrap()
+            .expect("actionable bootstrap observation");
+        let root = temp_root("mutual-bootstrap-cohort");
+        let (_, config) = test_config(&root);
+        assert!(campaign_preflight_ready(&config, std::slice::from_ref(&observation)).unwrap());
+        let lesson = build_lesson(&[observation]).unwrap();
+        let next = derive_next_evaluator_memory(&EvaluatorMemory::default(), &[], &lesson).unwrap();
+        assert_eq!(next.generation, 1);
+        assert_eq!(next.challenge_suite.len(), EvaluatorMutationKind::ALL.len());
+        assert!(lesson_has_verification_evidence(&lesson));
+        assert!(!lesson.raw_source_bytes_present);
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
     fn verifier_accepts_only_bound_independent_candidate() {
         let root = temp_root("verify-accept");
         let (freeze, candidate, request) = accepted_candidate(&root);
@@ -4028,6 +4304,23 @@ mod tests {
     }
 
     #[test]
+    fn verifier_rejects_generative_prediction_not_derived_before_composition() {
+        let root = temp_root("verify-generative-binding");
+        let (_freeze, mut candidate, mut request) = accepted_candidate(&root);
+        candidate.generative_cycle.predicted_value =
+            candidate.generative_cycle.predicted_value.saturating_add(1);
+        fs::remove_file(&request.candidate_path).unwrap();
+        write_immutable_json(&request.candidate_path, &candidate).unwrap();
+        request.expected_candidate_sha256 = json_sha256(&candidate).unwrap();
+        let receipt = run_verifier_request(&request).unwrap();
+        assert_eq!(receipt.decision, GrowthDecision::Reject);
+        assert!(receipt
+            .reasons
+            .contains(&"CANDIDATE_NOT_DERIVED_FROM_FROZEN_OBSERVATIONS".to_string()));
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
     fn verifier_rejects_unbound_predecessor_evaluator_memory() {
         let root = temp_root("verify-evaluator-memory-binding");
         let (_freeze, _candidate, request) = accepted_candidate(&root);
@@ -4040,6 +4333,7 @@ mod tests {
             lessons: Vec::new(),
             classifier: ClassifierMemory::default(),
             evaluator: EvaluatorMemory::default(),
+            generative: GenerativeGrowthMemory::default(),
         };
         memory.evaluator.generation = 9;
         write_immutable_json(&path, &memory).unwrap();
@@ -4123,6 +4417,13 @@ mod tests {
         assert_eq!(first_state.mutual_revalidation_events, 1);
         assert_eq!(recovered_state.mutual_revalidation_events, 1);
         assert_eq!(first_state.evaluator_challenge_cases, 10);
+        assert_eq!(first_state.generative_predictions, 1);
+        assert_eq!(first_state.valuable_combinations_learned, 1);
+        assert_eq!(first_state.generative_self_application_events, 1);
+        assert_eq!(recovered_state.generative_predictions, 1);
+        let promoted = load_memory(&config, 1).unwrap();
+        assert_eq!(promoted.generative.accepted_compositions.len(), 1);
+        assert_eq!(promoted.generative.self_application_events, 1);
         assert_eq!(
             first_state.current_evaluator_memory_sha256,
             recovered_state.current_evaluator_memory_sha256
