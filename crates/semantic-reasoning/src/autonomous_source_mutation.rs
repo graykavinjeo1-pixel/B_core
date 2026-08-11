@@ -22,7 +22,7 @@ use crate::generalized_self_application::{
     validate_change_binding, validation_counterexample, GeneralizedChangeIR,
     ValidationCounterexampleIR, ValidationPhase, WeaknessEvidenceKind,
 };
-use crate::grammar_repair_synthesis::discover_grammar_repairs;
+use crate::grammar_repair_synthesis::discover_grammar_repairs_for_generation;
 use crate::self_repair_contract::sha256;
 use crate::structural_source_repair::{
     execute_structural_repair, synthesize_structural_repair, SourceEditAtom,
@@ -1524,7 +1524,11 @@ fn grammar_synthesized_request(
         return Ok(None);
     }
     let mut ranked = Vec::new();
-    for candidate in discover_grammar_repairs(&policy.source_root, policy.max_candidate_bytes)? {
+    for candidate in discover_grammar_repairs_for_generation(
+        &policy.source_root,
+        policy.max_candidate_bytes,
+        source_generation,
+    )? {
         let counterexamples = prior_counterexamples(
             state_dir,
             &candidate.relative_path,

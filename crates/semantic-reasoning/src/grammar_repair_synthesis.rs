@@ -26,6 +26,9 @@ use crate::structural_source_repair::{
 };
 
 const MAX_GRAMMAR_CANDIDATES: usize = 64;
+const MAX_CANDIDATES_PER_HOLE: usize = 4;
+const MAX_GRAMMAR_HOLES_PER_GENERATION: usize = MAX_GRAMMAR_CANDIDATES / MAX_CANDIDATES_PER_HOLE;
+const MAX_GRAMMAR_HOLES_SCANNED_PER_GENERATION: usize = 256;
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct GrammarRepairCandidate {
@@ -63,6 +66,12 @@ struct Hole {
     callable: CallableSignature,
     kind: String,
     range: ByteRange,
+}
+
+#[derive(Debug)]
+struct FileCandidateBatch {
+    candidates: Vec<GrammarRepairCandidate>,
+    holes_scanned: usize,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
@@ -772,17 +781,27 @@ fn candidates_for_file(
     root: &Path,
     path: &Path,
     max_candidate_bytes: u64,
-) -> Result<Vec<GrammarRepairCandidate>, String> {
+    source_generation: u64,
+    max_holes_to_scan: usize,
+) -> Result<FileCandidateBatch, String> {
     let bytes = fs::read(path)
         .map_err(|error| format!("GRAMMAR_REPAIR_READ:{}:{error}", path.display()))?;
     if bytes.len() as u64 > max_candidate_bytes {
-        return Ok(Vec::new());
+        return Ok(FileCandidateBatch {
+            candidates: Vec::new(),
+            holes_scanned: 0,
+        });
     }
     let source =
         std::str::from_utf8(&bytes).map_err(|_| "GRAMMAR_REPAIR_SOURCE_NOT_UTF8".to_string())?;
     let parsed = match syn::parse_file(source) {
         Ok(parsed) => parsed,
-        Err(_) => return Ok(Vec::new()),
+        Err(_) => {
+            return Ok(FileCandidateBatch {
+                candidates: Vec::new(),
+                holes_scanned: 0,
+            });
+        }
     };
     let mut callables = Vec::new();
     collect_callables(&parsed.items, "", &mut callables);
@@ -803,6 +822,20 @@ fn candidates_for_file(
         holes.extend(visitor.holes);
     }
     holes.sort_by_key(|hole| (hole.range.start, hole.callable.callable.clone()));
+    if holes.is_empty() || max_holes_to_scan == 0 {
+        return Ok(FileCandidateBatch {
+            candidates: Vec::new(),
+            holes_scanned: 0,
+        });
+    }
+    let available_holes = holes.len();
+    holes.rotate_left(generation_offset(
+        source_generation,
+        MAX_GRAMMAR_HOLES_PER_GENERATION,
+        available_holes,
+    ));
+    holes.truncate(max_holes_to_scan.min(available_holes));
+    let holes_scanned = holes.len();
     let relative_path = path
         .strip_prefix(root)
         .map_err(|_| "GRAMMAR_REPAIR_PATH_OUTSIDE_ROOT".to_string())?
@@ -844,7 +877,9 @@ fn candidates_for_file(
                 *index,
             )
         });
-        for (index, family, expression, public_score) in compositions {
+        for (index, family, expression, public_score) in
+            compositions.into_iter().take(MAX_CANDIDATES_PER_HOLE)
+        {
             let mut candidate_source = String::with_capacity(
                 source.len() - (hole.range.end - hole.range.start) + expression.len(),
             );
@@ -890,27 +925,83 @@ fn candidates_for_file(
                 public_examples_evaluated: public_score.evaluated,
                 public_examples_satisfied: public_score.satisfied,
             });
-            if candidates.len() >= MAX_GRAMMAR_CANDIDATES {
-                return Ok(candidates);
-            }
         }
     }
-    Ok(candidates)
+    Ok(FileCandidateBatch {
+        candidates,
+        holes_scanned,
+    })
 }
 
 pub fn discover_grammar_repairs(
     root: &Path,
     max_candidate_bytes: u64,
 ) -> Result<Vec<GrammarRepairCandidate>, String> {
-    let mut candidates = Vec::new();
-    for path in rust_source_files(root)? {
-        candidates.extend(candidates_for_file(root, &path, max_candidate_bytes)?);
-        if candidates.len() >= MAX_GRAMMAR_CANDIDATES {
+    discover_grammar_repairs_for_generation(root, max_candidate_bytes, 0)
+}
+
+fn generation_offset(generation: u64, stride: usize, population: usize) -> usize {
+    if population == 0 {
+        return 0;
+    }
+    ((u128::from(generation) * stride as u128) % population as u128) as usize
+}
+
+pub fn discover_grammar_repairs_for_generation(
+    root: &Path,
+    max_candidate_bytes: u64,
+    source_generation: u64,
+) -> Result<Vec<GrammarRepairCandidate>, String> {
+    let mut files = rust_source_files(root)?;
+    if files.is_empty() {
+        return Ok(Vec::new());
+    }
+    let file_count = files.len();
+    files.rotate_left(generation_offset(
+        source_generation,
+        MAX_GRAMMAR_HOLES_PER_GENERATION,
+        file_count,
+    ));
+
+    let mut candidate_groups: Vec<Vec<GrammarRepairCandidate>> = Vec::new();
+    let mut holes_scanned = 0usize;
+    'files: for path in files {
+        let remaining_scan_budget =
+            MAX_GRAMMAR_HOLES_SCANNED_PER_GENERATION.saturating_sub(holes_scanned);
+        if remaining_scan_budget == 0 {
             break;
         }
+        let batch = candidates_for_file(
+            root,
+            &path,
+            max_candidate_bytes,
+            source_generation,
+            remaining_scan_budget,
+        )?;
+        holes_scanned += batch.holes_scanned;
+        for candidate in batch.candidates {
+            if candidate_groups.last().is_some_and(|group| {
+                group
+                    .first()
+                    .is_some_and(|existing| existing.transformation == candidate.transformation)
+            }) {
+                candidate_groups
+                    .last_mut()
+                    .expect("candidate group exists")
+                    .push(candidate);
+            } else if candidate_groups.len() < MAX_GRAMMAR_HOLES_PER_GENERATION {
+                candidate_groups.push(vec![candidate]);
+            } else {
+                break 'files;
+            }
+        }
     }
-    candidates.truncate(MAX_GRAMMAR_CANDIDATES);
-    Ok(candidates)
+
+    Ok(candidate_groups
+        .into_iter()
+        .flatten()
+        .take(MAX_GRAMMAR_CANDIDATES)
+        .collect())
 }
 
 #[cfg(test)]
@@ -1032,6 +1123,82 @@ mod tests {
         let candidates = discover_grammar_repairs(&root, 1_024).unwrap();
 
         assert!(candidates.is_empty());
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn bounded_generation_rotation_prevents_later_hole_starvation() {
+        let root =
+            std::env::temp_dir().join(format!("b-core-grammar-fairness-{}", std::process::id()));
+        if root.exists() {
+            fs::remove_dir_all(&root).unwrap();
+        }
+        fs::create_dir_all(root.join("src")).unwrap();
+        let source = (0..20)
+            .map(|index| {
+                format!("pub fn repair_{index}(left: i32, right: i32) -> i32 {{ todo!() }}\n")
+            })
+            .collect::<String>();
+        fs::write(root.join("src/lib.rs"), source).unwrap();
+
+        let generation_zero =
+            discover_grammar_repairs_for_generation(&root, 64 * 1_024, 0).unwrap();
+        let generation_one = discover_grammar_repairs_for_generation(&root, 64 * 1_024, 1).unwrap();
+        let zero_holes = generation_zero
+            .iter()
+            .map(|candidate| candidate.transformation.clone())
+            .collect::<BTreeSet<_>>();
+        let one_holes = generation_one
+            .iter()
+            .map(|candidate| candidate.transformation.clone())
+            .collect::<BTreeSet<_>>();
+        let all_holes = zero_holes.union(&one_holes).collect::<BTreeSet<_>>();
+
+        assert_eq!(generation_zero.len(), MAX_GRAMMAR_CANDIDATES);
+        assert_eq!(generation_one.len(), MAX_GRAMMAR_CANDIDATES);
+        assert_eq!(zero_holes.len(), MAX_GRAMMAR_HOLES_PER_GENERATION);
+        assert_eq!(one_holes.len(), MAX_GRAMMAR_HOLES_PER_GENERATION);
+        assert_eq!(all_holes.len(), 20);
+        for transformation in zero_holes.union(&one_holes) {
+            let candidates_for_hole = generation_zero
+                .iter()
+                .chain(&generation_one)
+                .filter(|candidate| candidate.transformation == transformation.as_str())
+                .count();
+            assert!(candidates_for_hole <= MAX_CANDIDATES_PER_HOLE * 2);
+        }
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn bounded_generation_rotation_prevents_later_file_starvation() {
+        let root = std::env::temp_dir().join(format!(
+            "b-core-grammar-file-fairness-{}",
+            std::process::id()
+        ));
+        if root.exists() {
+            fs::remove_dir_all(&root).unwrap();
+        }
+        fs::create_dir_all(root.join("src")).unwrap();
+        for index in 0..20 {
+            fs::write(
+                root.join(format!("src/repair_{index:02}.rs")),
+                format!("pub fn repair_{index}(left: i32, right: i32) -> i32 {{ todo!() }}\n"),
+            )
+            .unwrap();
+        }
+
+        let generation_zero = discover_grammar_repairs_for_generation(&root, 4 * 1_024, 0).unwrap();
+        let generation_one = discover_grammar_repairs_for_generation(&root, 4 * 1_024, 1).unwrap();
+        let observed_paths = generation_zero
+            .iter()
+            .chain(&generation_one)
+            .map(|candidate| candidate.relative_path.clone())
+            .collect::<BTreeSet<_>>();
+
+        assert_eq!(generation_zero.len(), MAX_GRAMMAR_CANDIDATES);
+        assert_eq!(generation_one.len(), MAX_GRAMMAR_CANDIDATES);
+        assert_eq!(observed_paths.len(), 20);
         fs::remove_dir_all(root).unwrap();
     }
 }
