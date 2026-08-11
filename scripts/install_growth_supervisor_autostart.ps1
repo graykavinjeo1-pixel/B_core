@@ -28,11 +28,25 @@ if ($LASTEXITCODE -ne 0) {
     throw "SUPERVISOR_INIT_FAILED:$LASTEXITCODE"
 }
 
-$taskCommand = 'powershell.exe -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "{0}" -PackageRoot "{1}" -ConfigPath "{2}" -Foreground' -f $runner, $root, $config
-& schtasks.exe /Create /TN $TaskName /SC ONLOGON /RL LIMITED /TR $taskCommand /F | Out-Null
-if ($LASTEXITCODE -ne 0) {
-    throw "AUTOSTART_TASK_CREATE_FAILED:$LASTEXITCODE"
-}
+$identity = [Security.Principal.WindowsIdentity]::GetCurrent().Name
+$powershell = Join-Path $PSHOME "powershell.exe"
+$taskArguments = '-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "{0}" -PackageRoot "{1}" -ConfigPath "{2}" -Foreground' -f $runner, $root, $config
+$action = New-ScheduledTaskAction -Execute $powershell -Argument $taskArguments
+$trigger = New-ScheduledTaskTrigger -AtLogOn -User $identity
+$principal = New-ScheduledTaskPrincipal -UserId $identity -LogonType Interactive -RunLevel Limited
+$settings = New-ScheduledTaskSettingsSet `
+    -AllowStartIfOnBatteries `
+    -DontStopIfGoingOnBatteries `
+    -ExecutionTimeLimit ([TimeSpan]::Zero) `
+    -RestartCount 3 `
+    -RestartInterval (New-TimeSpan -Minutes 1)
+$null = Register-ScheduledTask `
+    -TaskName $TaskName `
+    -Action $action `
+    -Trigger $trigger `
+    -Principal $principal `
+    -Settings $settings `
+    -Force
 
 $started = $false
 if ($StartNow) {
@@ -45,6 +59,8 @@ if ($StartNow) {
     task_name = $TaskName
     trigger = "ONLOGON"
     run_level = "LIMITED"
+    executable = $powershell
+    arguments = $taskArguments
     state_recovery = "IMMUTABLE_SNAPSHOT_AND_JOURNAL"
     started_now = $started
 } | ConvertTo-Json
