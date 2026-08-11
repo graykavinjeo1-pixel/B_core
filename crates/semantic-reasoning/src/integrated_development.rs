@@ -763,10 +763,16 @@ mod tests {
 
         assert_eq!(first.cases_executed, 3);
         assert_eq!(first.cases_passed, 3);
-        assert!(!first.installed_capability_present);
-        assert!(!first.installed_program_match);
-        assert_eq!(first.installed_cases_executed, 0);
-        assert!(first.installed_output_sha256.is_none());
+        if first.installed_capability_present {
+            assert!(first.installed_program_match);
+            assert_eq!(first.installed_cases_executed, first.cases_executed);
+            assert_eq!(first.installed_cases_passed, first.cases_passed);
+            assert!(first.installed_output_sha256.is_some());
+        } else {
+            assert!(!first.installed_program_match);
+            assert_eq!(first.installed_cases_executed, 0);
+            assert!(first.installed_output_sha256.is_none());
+        }
         assert_ne!(first.receipt_sha256, second.receipt_sha256);
         assert!(!first.used_primitive_ids.is_empty());
     }

@@ -105,7 +105,7 @@ pub fn emit_rust_callable(
         return Err("CALLABLE_PROGRAM_IR_SHA256_INVALID".to_string());
     }
     let mut output = String::new();
-    output.push_str("#![allow(dead_code)]\n\n");
+    output.push_str("#![allow(dead_code, unused_imports, unused_parens, unused_variables)]\n\n");
     output.push_str("use std::collections::BTreeMap;\n");
     output.push_str("use crate::sem5::model::{ImageValue, Value};\n\n");
     output.push_str("#[derive(Clone, Debug)]\nstruct Sem5Image { width: usize, height: usize, channels: usize, pixels: Vec<i64> }\n\n");
