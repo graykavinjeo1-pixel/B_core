@@ -79,6 +79,8 @@ pub struct GenerativeGrowthMemory {
     pub redundant_selection_events: u64,
     #[serde(default, skip_serializing_if = "is_zero")]
     pub prediction_absolute_error_total: u64,
+    #[serde(default, skip_serializing_if = "is_zero")]
+    pub calibrated_prediction_records: u64,
 }
 
 impl Default for GenerativeGrowthMemory {
@@ -97,6 +99,7 @@ impl Default for GenerativeGrowthMemory {
             frontier_advance_events: 0,
             redundant_selection_events: 0,
             prediction_absolute_error_total: 0,
+            calibrated_prediction_records: 0,
         }
     }
 }
@@ -645,6 +648,7 @@ pub fn promote_generative_cycle(
     next.prediction_absolute_error_total = next
         .prediction_absolute_error_total
         .saturating_add(u64::from(result.prediction_error));
+    next.calibrated_prediction_records = next.calibrated_prediction_records.saturating_add(1);
     next.composition_trials.push(GenerativeCompositionTrial {
         composition_id: result.selected_composition.composition_id.clone(),
         context_sha256: result.context_sha256.clone(),
@@ -786,6 +790,7 @@ mod tests {
         assert_eq!(memory.exploration_events, 12);
         assert_eq!(memory.accepted_compositions.len(), 12);
         assert!(memory.prediction_absolute_error_total < 12 * 30);
+        assert_eq!(memory.calibrated_prediction_records, 12);
 
         let mut repeated_context = input();
         repeated_context.source_lesson_id = "lesson-repeated-context".to_string();

@@ -270,6 +270,8 @@ pub struct SupervisorState {
     #[serde(default)]
     pub generative_prediction_absolute_error_total: u64,
     #[serde(default)]
+    pub generative_calibrated_prediction_records: u64,
+    #[serde(default)]
     pub autonomous_source_patch_attempts: u64,
     #[serde(default)]
     pub autonomous_source_patches_installed: u64,
@@ -720,6 +722,7 @@ pub struct StepReport {
     pub generative_frontier_advance_events: u64,
     pub redundant_generative_selection_events: u64,
     pub generative_mean_prediction_error_millis: u64,
+    pub generative_calibrated_prediction_records: u64,
     pub autonomous_source_patch_attempts: u64,
     pub autonomous_source_patches_installed: u64,
     pub autonomous_source_patch_rollbacks: u64,
@@ -1994,6 +1997,7 @@ pub fn initialize(config_path: &Path) -> Result<SupervisorState, String> {
         generative_frontier_advance_events: 0,
         redundant_generative_selection_events: 0,
         generative_prediction_absolute_error_total: 0,
+        generative_calibrated_prediction_records: 0,
         autonomous_source_patch_attempts: 0,
         autonomous_source_patches_installed: 0,
         autonomous_source_patch_rollbacks: 0,
@@ -3599,6 +3603,8 @@ fn promote_candidate(
     state.redundant_generative_selection_events = memory.generative.redundant_selection_events;
     state.generative_prediction_absolute_error_total =
         memory.generative.prediction_absolute_error_total;
+    state.generative_calibrated_prediction_records =
+        memory.generative.calibrated_prediction_records;
     let (distinct_semantic_lessons, semantic_duplicate_lessons) = semantic_lesson_counts(&memory)?;
     state.distinct_semantic_lessons = distinct_semantic_lessons;
     state.semantic_duplicate_lessons = semantic_duplicate_lessons;
@@ -4018,8 +4024,9 @@ fn report_from_state(
         generative_mean_prediction_error_millis: state
             .generative_prediction_absolute_error_total
             .saturating_mul(1_000)
-            .checked_div(state.generative_predictions.max(1))
+            .checked_div(state.generative_calibrated_prediction_records.max(1))
             .unwrap_or(0),
+        generative_calibrated_prediction_records: state.generative_calibrated_prediction_records,
         autonomous_source_patch_attempts: state.autonomous_source_patch_attempts,
         autonomous_source_patches_installed: state.autonomous_source_patches_installed,
         autonomous_source_patch_rollbacks: state.autonomous_source_patch_rollbacks,
@@ -4264,6 +4271,8 @@ fn step_without_lease(
     state.redundant_generative_selection_events = memory.generative.redundant_selection_events;
     state.generative_prediction_absolute_error_total =
         memory.generative.prediction_absolute_error_total;
+    state.generative_calibrated_prediction_records =
+        memory.generative.calibrated_prediction_records;
     let evaluator_memory_sha256 = json_sha256(&memory.evaluator)?;
     if state.current_evaluator_memory_sha256.is_empty() {
         state.current_evaluator_memory_sha256 = evaluator_memory_sha256.clone();
