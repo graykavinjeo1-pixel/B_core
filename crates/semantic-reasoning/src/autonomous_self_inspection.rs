@@ -30,7 +30,7 @@ pub struct DiagnosticExperimentMemory {
     pub failed_outcome_events: u64,
 }
 
-#[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct DiagnosticPolicyMemory {
     pub experiment_records: BTreeMap<String, DiagnosticExperimentMemory>,
     pub selections: u64,
@@ -52,10 +52,74 @@ pub struct DiagnosticPolicyMemory {
     pub active_observations: u32,
     #[serde(default)]
     pub active_causal_support: bool,
+    #[serde(default)]
+    pub active_action_id: Option<String>,
+    #[serde(default)]
+    pub active_action_receipt_sha256: Option<String>,
+    #[serde(default)]
+    pub active_output_observation_ids: Vec<String>,
+    #[serde(default)]
+    pub outcome_causal_contract_revision: u64,
+    #[serde(default)]
+    pub legacy_unbound_outcome_bound_selections: u64,
+    #[serde(default)]
+    pub legacy_unbound_productive_outcome_events: u64,
+    #[serde(default)]
+    pub legacy_unbound_failed_outcome_events: u64,
+}
+
+impl Default for DiagnosticPolicyMemory {
+    fn default() -> Self {
+        Self {
+            experiment_records: BTreeMap::new(),
+            selections: 0,
+            exploration_selections: 0,
+            causal_support_events: 0,
+            outcome_bound_selections: 0,
+            productive_outcome_events: 0,
+            failed_outcome_events: 0,
+            duplicate_selection_suppressed: 0,
+            active_experiment_id: None,
+            active_generation: None,
+            active_observations: 0,
+            active_causal_support: false,
+            active_action_id: None,
+            active_action_receipt_sha256: None,
+            active_output_observation_ids: Vec::new(),
+            outcome_causal_contract_revision: 2,
+            legacy_unbound_outcome_bound_selections: 0,
+            legacy_unbound_productive_outcome_events: 0,
+            legacy_unbound_failed_outcome_events: 0,
+        }
+    }
 }
 
 impl DiagnosticPolicyMemory {
     const MAX_ACTIVE_OBSERVATIONS_WITHOUT_OUTCOME: u32 = 8;
+
+    pub fn ensure_action_causal_contract(&mut self) {
+        if self.outcome_causal_contract_revision >= 2 {
+            return;
+        }
+        self.legacy_unbound_outcome_bound_selections = self
+            .legacy_unbound_outcome_bound_selections
+            .saturating_add(self.outcome_bound_selections);
+        self.legacy_unbound_productive_outcome_events = self
+            .legacy_unbound_productive_outcome_events
+            .saturating_add(self.productive_outcome_events);
+        self.legacy_unbound_failed_outcome_events = self
+            .legacy_unbound_failed_outcome_events
+            .saturating_add(self.failed_outcome_events);
+        self.outcome_bound_selections = 0;
+        self.productive_outcome_events = 0;
+        self.failed_outcome_events = 0;
+        for record in self.experiment_records.values_mut() {
+            record.productive_outcome_events = 0;
+            record.failed_outcome_events = 0;
+        }
+        self.clear_unbound_active();
+        self.outcome_causal_contract_revision = 2;
+    }
 
     fn resolve_active(&mut self, productive: bool) -> bool {
         let Some(experiment_id) = self.active_experiment_id.take() else {
@@ -65,6 +129,9 @@ impl DiagnosticPolicyMemory {
             self.active_generation = None;
             self.active_observations = 0;
             self.active_causal_support = false;
+            self.active_action_id = None;
+            self.active_action_receipt_sha256 = None;
+            self.active_output_observation_ids.clear();
             return false;
         };
         if productive && self.active_causal_support {
@@ -77,21 +144,72 @@ impl DiagnosticPolicyMemory {
         self.active_generation = None;
         self.active_observations = 0;
         self.active_causal_support = false;
+        self.active_action_id = None;
+        self.active_action_receipt_sha256 = None;
+        self.active_output_observation_ids.clear();
         true
+    }
+
+    fn clear_unbound_active(&mut self) {
+        self.active_experiment_id = None;
+        self.active_generation = None;
+        self.active_observations = 0;
+        self.active_causal_support = false;
+        self.active_action_id = None;
+        self.active_action_receipt_sha256 = None;
+        self.active_output_observation_ids.clear();
     }
 
     pub fn resolve_frontier_outcome(
         &mut self,
         source_generation: u64,
         frontier_advance: bool,
+        evidence_observation_ids: &[String],
     ) -> bool {
-        if self.active_generation != Some(source_generation) {
+        self.ensure_action_causal_contract();
+        if self.active_generation != Some(source_generation)
+            || self.active_action_id.is_none()
+            || self.active_action_receipt_sha256.is_none()
+            || !evidence_observation_ids.iter().any(|candidate| {
+                self.active_output_observation_ids
+                    .iter()
+                    .any(|output| output == candidate)
+            })
+        {
             return false;
         }
         self.resolve_active(frontier_advance)
     }
 
+    pub fn bind_executed_action(
+        &mut self,
+        diagnostic: &AutonomousSelfInspectionReceipt,
+        action: &RuntimeRepairActionReceipt,
+        action_receipt_sha256: String,
+    ) -> bool {
+        self.ensure_action_causal_contract();
+        let experiment_matches = diagnostic.experiments.first().is_some_and(|experiment| {
+            self.active_experiment_id.as_deref() == Some(experiment.experiment_id.as_str())
+        });
+        if !action.executed
+            || action.diagnostic_id != diagnostic.diagnostic_id
+            || action.generation != diagnostic.generation
+            || diagnostic.repair_disposition != RepairDisposition::RuntimeRepairActive
+            || diagnostic.repair_mechanism != Some(action.mechanism)
+            || self.active_generation != Some(diagnostic.generation)
+            || !experiment_matches
+        {
+            return false;
+        }
+        self.active_action_id = Some(action.action_id.clone());
+        self.active_action_receipt_sha256 = Some(action_receipt_sha256);
+        self.active_output_observation_ids = action.output_observation_ids.clone();
+        self.outcome_bound_selections = self.outcome_bound_selections.saturating_add(1);
+        true
+    }
+
     pub fn record(&mut self, receipt: &AutonomousSelfInspectionReceipt) -> bool {
+        self.ensure_action_causal_contract();
         let Some(experiment) = receipt.experiments.first() else {
             return false;
         };
@@ -102,12 +220,20 @@ impl DiagnosticPolicyMemory {
                 self.duplicate_selection_suppressed.saturating_add(1);
             self.active_observations = self.active_observations.saturating_add(1);
             if self.active_observations >= Self::MAX_ACTIVE_OBSERVATIONS_WITHOUT_OUTCOME {
-                self.resolve_active(false);
+                if self.active_action_id.is_some() {
+                    self.resolve_active(false);
+                } else {
+                    self.clear_unbound_active();
+                }
             }
             return false;
         }
         if self.active_experiment_id.is_some() {
-            self.resolve_active(false);
+            if self.active_action_id.is_some() {
+                self.resolve_active(false);
+            } else {
+                self.clear_unbound_active();
+            }
         }
         let record = self
             .experiment_records
@@ -123,7 +249,6 @@ impl DiagnosticPolicyMemory {
             record.consecutive_no_support = record.consecutive_no_support.saturating_add(1);
         }
         self.selections = self.selections.saturating_add(1);
-        self.outcome_bound_selections = self.outcome_bound_selections.saturating_add(1);
         if receipt
             .hypotheses
             .iter()
@@ -137,6 +262,9 @@ impl DiagnosticPolicyMemory {
         self.active_generation = Some(receipt.generation);
         self.active_observations = 1;
         self.active_causal_support = experiment.causal_support;
+        self.active_action_id = None;
+        self.active_action_receipt_sha256 = None;
+        self.active_output_observation_ids.clear();
         true
     }
 }
@@ -180,6 +308,31 @@ pub enum RepairDisposition {
     ProposalRequired,
     CapabilityGap,
     SafeWait,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum RuntimeRepairMechanism {
+    ReplayVerifiedEventAgainstIndexedContent,
+    EvidenceAwareBoundedCohortRouting,
+    BootstrapFrozenCoreEvaluatorCanary,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct RuntimeRepairActionReceipt {
+    pub schema: String,
+    pub action_id: String,
+    pub diagnostic_id: String,
+    pub generation: u64,
+    pub mechanism: RuntimeRepairMechanism,
+    pub executed: bool,
+    pub changed_runtime_decision: bool,
+    pub execution_evidence_sha256: Vec<String>,
+    pub output_observation_ids: Vec<String>,
+    pub authoritative_source_write_events: usize,
+    pub operator_selected: bool,
+    pub codex_calls: usize,
+    pub external_llm_calls: usize,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -253,7 +406,7 @@ pub struct AutonomousSelfInspectionReceipt {
     pub selected_bottleneck: InternalBottleneckClass,
     pub experiments: Vec<InternalDiagnosticExperiment>,
     pub repair_disposition: RepairDisposition,
-    pub repair_mechanism: Option<String>,
+    pub repair_mechanism: Option<RuntimeRepairMechanism>,
     pub activated_knowledge_sources: Vec<String>,
     pub repair_composition: RepairCompositionLessonIR,
     pub actionable_defect: bool,
@@ -797,45 +950,37 @@ pub fn inspect(input: SelfInspectionInput) -> Result<AutonomousSelfInspectionRec
     let (disposition, repair_mechanism, actionable_defect) = match selected {
         InternalBottleneckClass::WorkEventAttributionGap => (
             RepairDisposition::RuntimeRepairActive,
-            Some("REPLAY_VERIFIED_EVENT_AGAINST_INDEXED_CONTENT".to_string()),
+            Some(RuntimeRepairMechanism::ReplayVerifiedEventAgainstIndexedContent),
             true,
         ),
         InternalBottleneckClass::EvidenceCohortStarvation => (
             RepairDisposition::RuntimeRepairActive,
-            Some("EVIDENCE_AWARE_BOUNDED_COHORT_ROUTING".to_string()),
+            Some(RuntimeRepairMechanism::EvidenceAwareBoundedCohortRouting),
             true,
         ),
         InternalBottleneckClass::MutualRecursiveBootstrapGap => (
             RepairDisposition::RuntimeRepairActive,
-            Some("BOOTSTRAP_FROZEN_CORE_EVALUATOR_CANARY".to_string()),
+            Some(RuntimeRepairMechanism::BootstrapFrozenCoreEvaluatorCanary),
             true,
         ),
-        InternalBottleneckClass::ScanTraversalOverhead => (
-            RepairDisposition::ProposalRequired,
-            Some("DIRECTORY_SNAPSHOT_OR_WATCHER_CANDIDATE_REQUIRES_CANARY".to_string()),
-            true,
-        ),
+        InternalBottleneckClass::ScanTraversalOverhead => {
+            (RepairDisposition::ProposalRequired, None, true)
+        }
         InternalBottleneckClass::RepeatedVerificationFailure => {
             (RepairDisposition::CapabilityGap, None, true)
         }
-        InternalBottleneckClass::CampaignCohortBlocked => (
-            RepairDisposition::RuntimeRepairActive,
-            Some("MIXED_PRODUCTION_FILE_IMPLEMENTATION_EVIDENCE_ROUTING".to_string()),
-            true,
-        ),
+        InternalBottleneckClass::CampaignCohortBlocked => {
+            (RepairDisposition::CapabilityGap, None, true)
+        }
         InternalBottleneckClass::SourceSynthesisCoverageGap => {
             (RepairDisposition::CapabilityGap, None, true)
         }
-        InternalBottleneckClass::SourceRepairLowYield => (
-            RepairDisposition::RuntimeRepairActive,
-            Some("PREDICTED_UTILITY_GATE_BEFORE_SOURCE_VALIDATION".to_string()),
-            true,
-        ),
-        InternalBottleneckClass::VerificationCostDominance => (
-            RepairDisposition::RuntimeRepairActive,
-            Some("STAGED_COMPILE_CHECK_BEFORE_FULL_REGRESSION".to_string()),
-            true,
-        ),
+        InternalBottleneckClass::SourceRepairLowYield => {
+            (RepairDisposition::CapabilityGap, None, true)
+        }
+        InternalBottleneckClass::VerificationCostDominance => {
+            (RepairDisposition::CapabilityGap, None, true)
+        }
         InternalBottleneckClass::QuietIdle => (RepairDisposition::SafeWait, None, false),
     };
     let diagnostic_id = sha256(
@@ -1039,10 +1184,7 @@ mod tests {
             receipt.selected_bottleneck,
             InternalBottleneckClass::CampaignCohortBlocked
         );
-        assert_eq!(
-            receipt.repair_disposition,
-            RepairDisposition::RuntimeRepairActive
-        );
+        assert_eq!(receipt.repair_disposition, RepairDisposition::CapabilityGap);
         assert!(receipt.experiments[0].causal_support);
     }
 
@@ -1072,10 +1214,7 @@ mod tests {
             receipt.selected_bottleneck,
             InternalBottleneckClass::VerificationCostDominance
         );
-        assert_eq!(
-            receipt.repair_disposition,
-            RepairDisposition::RuntimeRepairActive
-        );
+        assert_eq!(receipt.repair_disposition, RepairDisposition::CapabilityGap);
     }
 
     #[test]
@@ -1101,10 +1240,14 @@ mod tests {
             InternalBottleneckClass::CampaignCohortBlocked
         );
         assert!(!value.diagnostic_policy.record(&repeated));
-        assert_eq!(value.diagnostic_policy.outcome_bound_selections, 1);
+        assert_eq!(value.diagnostic_policy.outcome_bound_selections, 0);
         assert_eq!(value.diagnostic_policy.duplicate_selection_suppressed, 1);
 
-        assert!(value.diagnostic_policy.resolve_frontier_outcome(2, true));
+        assert!(!value.diagnostic_policy.resolve_frontier_outcome(
+            2,
+            true,
+            &["unrelated-observation".to_string()]
+        ));
         value.generation = 3;
         let next_generation = inspect(value).expect("next-generation inspection");
         assert_eq!(
@@ -1113,6 +1256,46 @@ mod tests {
         );
         assert!(next_generation.hypotheses[0].policy_exploration_selected);
         assert_eq!(next_generation.hypotheses[0].prior_policy_trials, 0);
+    }
+
+    #[test]
+    fn only_an_executed_action_with_consumed_output_receives_frontier_credit() {
+        let mut value = input();
+        value.naive_cohort_has_verification = false;
+        value.evidence_aware_cohort_has_verification = true;
+        let receipt = inspect(value.clone()).expect("inspect evidence routing");
+        assert!(value.diagnostic_policy.record(&receipt));
+        let action = RuntimeRepairActionReceipt {
+            schema: "B_CORE_RUNTIME_REPAIR_ACTION_1".to_string(),
+            action_id: "action-1".to_string(),
+            diagnostic_id: receipt.diagnostic_id.clone(),
+            generation: receipt.generation,
+            mechanism: RuntimeRepairMechanism::EvidenceAwareBoundedCohortRouting,
+            executed: true,
+            changed_runtime_decision: true,
+            execution_evidence_sha256: vec!["evidence".to_string()],
+            output_observation_ids: vec!["observation-1".to_string()],
+            authoritative_source_write_events: 0,
+            operator_selected: false,
+            codex_calls: 0,
+            external_llm_calls: 0,
+        };
+        assert!(value.diagnostic_policy.bind_executed_action(
+            &receipt,
+            &action,
+            "receipt-sha".to_string()
+        ));
+        assert_eq!(value.diagnostic_policy.outcome_bound_selections, 1);
+        assert!(!value.diagnostic_policy.resolve_frontier_outcome(
+            2,
+            true,
+            &["unrelated-observation".to_string()]
+        ));
+        assert!(value.diagnostic_policy.resolve_frontier_outcome(
+            2,
+            true,
+            &["observation-1".to_string()]
+        ));
     }
 
     #[test]

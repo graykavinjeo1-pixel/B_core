@@ -3,11 +3,13 @@ use std::fs::{self, OpenOptions};
 use std::io::Write;
 use std::path::{Path, PathBuf};
 
+use semantic_reasoning::self_healing_execution::{
+    run_closed_self_healing, ClosedSelfHealingRequest,
+};
 use semantic_reasoning::self_healing_pipeline::{
     begin_operator_teaching, ingest_operator_teaching, ingest_provisional_teaching,
-    run_provisional_transfer_request, run_self_healing_request, BeginOperatorTeachingRequest,
-    ProvisionalPromotionRequest, ProvisionalTransferRunnerRequest, RepairLearningPromotionRequest,
-    SelfHealingRunnerRequest,
+    run_provisional_transfer_request, BeginOperatorTeachingRequest, ProvisionalPromotionRequest,
+    ProvisionalTransferRunnerRequest, RepairLearningPromotionRequest,
 };
 
 fn main() {
@@ -23,7 +25,7 @@ fn run() -> Result<(), String> {
         .next()
         .and_then(|value| value.into_string().ok())
         .ok_or_else(|| {
-            "USAGE:<--attempt|--begin-teaching|--attempt-transfer|--promote-provisional|--promote> <request.json> <immutable-result.json>".to_string()
+            "USAGE:<--execute|--begin-teaching|--attempt-transfer|--promote-provisional|--promote> <request.json> <immutable-result.json>".to_string()
         })?;
     let request_path = args
         .next()
@@ -46,10 +48,10 @@ fn run() -> Result<(), String> {
     let request_bytes = fs::read(&request_path)
         .map_err(|error| format!("REQUEST_READ:{}:{error}", request_path.display()))?;
     let result_bytes = match operation.as_str() {
-        "--attempt" => {
-            let request: SelfHealingRunnerRequest = serde_json::from_slice(&request_bytes)
+        "--execute" => {
+            let request: ClosedSelfHealingRequest = serde_json::from_slice(&request_bytes)
                 .map_err(|error| format!("REQUEST_JSON:{error}"))?;
-            serde_json::to_vec_pretty(&run_self_healing_request(request)?)
+            serde_json::to_vec_pretty(&run_closed_self_healing(request)?)
                 .map_err(|error| format!("RESULT_JSON:{error}"))?
         }
         "--begin-teaching" => {

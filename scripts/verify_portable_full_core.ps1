@@ -162,6 +162,11 @@ if ($RunSmokeTests) {
         -not $growthCheck.successful_edit_composition_learning_enabled -or
         -not $growthCheck.bounded_compiler_diagnostic_cache_enabled -or
         -not $growthCheck.dynamic_self_weakness_discovery_enabled -or
+        -not $growthCheck.runtime_repair_counter_requires_executed_action -or
+        -not $growthCheck.diagnostic_outcome_requires_action_output_consumption -or
+        -not $growthCheck.self_healing_candidates_route_to_atomic_installer -or
+        -not $growthCheck.integrated_program_ir_lowers_to_compiled_rust -or
+        -not $growthCheck.active_binaries_forbid_proposal_only_exit -or
         -not $growthCheck.generalized_change_ir_bound_to_source_edits -or
         -not $growthCheck.validation_counterexamples_drive_candidate_ranking -or
         -not $growthCheck.multi_generation_self_application_lineage_enabled -or

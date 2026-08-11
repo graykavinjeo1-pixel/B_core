@@ -2,14 +2,23 @@
 //! composition, and the independently verified RSI installation gate.
 //!
 //! SEM-5 remains the authoritative program synthesizer.  This module does not
-//! duplicate its primitive catalog or synthesis logic; it turns a synthesized
-//! typed ProgramIR into the same proposal-only trust path used by self-repair.
+//! duplicate its primitive catalog or synthesis logic; it lowers synthesized
+//! typed ProgramIR to Rust and, when an installation context is supplied,
+//! routes it through the same atomic validation/rollback path as self-repair.
 
 use std::collections::{BTreeMap, BTreeSet};
+use std::path::PathBuf;
 
 use serde::{Deserialize, Serialize};
 use serde_json::Value as JsonValue;
 
+use crate::autonomous_source_mutation::{
+    install_and_stage_source_patch, AutonomousSourceMutationPolicy, AutonomousSourcePatchReceipt,
+    AutonomousSourcePatchRequest, AUTONOMOUS_SOURCE_MUTATION_SCHEMA,
+};
+use crate::generalized_self_application::{
+    derive_dynamic_weakness, synthesize_generalized_change, WeaknessEvidenceKind,
+};
 use crate::self_repair_contract::{
     sha256, validate_installation_authority, DefectContractIR, Frozen, InstallationGateError,
     ObservationIR, PatchCandidateIR, RepairSpecIR, VerificationReceipt,
@@ -18,7 +27,7 @@ use crate::sem27::engine::{
     run_post_scaffold_epoch, PostScaffoldEpochRequest, PostScaffoldEpochResult,
 };
 use crate::sem5::{
-    emitter::emit_neutral_text,
+    emitter::{emit_neutral_text, emit_rust},
     ir::{execute, type_check},
     learner::{discover_candidates, initial_promotions, synthesize},
     model::{ProgramIR, ProgramTask, ProgrammingPromotion, SynthesisCondition},
@@ -27,6 +36,7 @@ use crate::sem5::{
         programming_primitive_catalog,
     },
 };
+use crate::structural_source_repair::synthesize_structural_repair;
 
 pub const CAMPAIGN_ID: &str = "B_CORE-INTEGRATED-DEVELOPMENT-01";
 pub const AUTHORITATIVE_PREDECESSOR: &str = "8092ea4aba69fd23c9f4e9d56132d488a58e0382";
@@ -68,6 +78,9 @@ pub struct CompositeProgramCandidateIR {
     pub recombinations: usize,
     pub type_effect_audit_pass: bool,
     pub neutral_program_sha256: String,
+    pub generated_rust_source: String,
+    pub generated_rust_sha256: String,
+    pub source_relative_path: PathBuf,
     pub patch_candidate: PatchCandidateIR,
     pub full_source_scan_events: usize,
     pub installed: bool,
@@ -77,6 +90,15 @@ pub struct CompositeProgramCandidateIR {
 pub struct IntegratedDevelopmentEpochRequest {
     pub recursive_epoch: PostScaffoldEpochRequest,
     pub composition_work: Option<CompositionWork>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub installation: Option<IntegratedDevelopmentInstallationRequest>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct IntegratedDevelopmentInstallationRequest {
+    pub mutation_policy: AutonomousSourceMutationPolicy,
+    pub state_dir: PathBuf,
+    pub source_generation: u64,
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -87,6 +109,10 @@ pub struct IntegratedDevelopmentEpochResult {
     pub core_self_approval_events: usize,
     pub unverified_install_events: usize,
     pub full_source_scan_events: usize,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub source_mutation_receipt: Option<AutonomousSourcePatchReceipt>,
+    pub actual_source_write_attempted: bool,
+    pub proposal_only: bool,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -111,10 +137,26 @@ pub fn run_integrated_development_epoch(
 ) -> Result<IntegratedDevelopmentEpochResult, String> {
     let recursive_epoch = run_post_scaffold_epoch(request.recursive_epoch)?;
     let composition_attempted = request.composition_work.is_some();
-    let composite_candidate = request
+    let mut composite_candidate = request
         .composition_work
         .map(compose_existing_sem5_capability)
         .transpose()?;
+    let source_mutation_receipt = match (&composite_candidate, request.installation) {
+        (Some(candidate), Some(installation)) => Some(install_composite_candidate(
+            candidate,
+            &installation.mutation_policy,
+            &installation.state_dir,
+            installation.source_generation,
+        )?),
+        _ => None,
+    };
+    if let (Some(candidate), Some(receipt)) = (
+        composite_candidate.as_mut(),
+        source_mutation_receipt.as_ref(),
+    ) {
+        candidate.installed = receipt.installed;
+    }
+    let actual_source_write_attempted = source_mutation_receipt.is_some();
     Ok(IntegratedDevelopmentEpochResult {
         recursive_epoch,
         composite_candidate,
@@ -122,11 +164,14 @@ pub fn run_integrated_development_epoch(
         core_self_approval_events: 0,
         unverified_install_events: 0,
         full_source_scan_events: 0,
+        source_mutation_receipt,
+        actual_source_write_attempted,
+        proposal_only: !actual_source_write_attempted,
     })
 }
 
-/// Reuses the already established SEM-5 typed synthesizer.  The resulting
-/// artifact is a proposal only and cannot authorize its own installation.
+/// Reuses the already established SEM-5 typed synthesizer and Rust emitter.
+/// Installation authority remains in the source-mutation validation boundary.
 pub fn compose_existing_sem5_capability(
     work: CompositionWork,
 ) -> Result<CompositeProgramCandidateIR, String> {
@@ -184,12 +229,46 @@ pub fn compose_existing_sem5_capability(
         .collect::<Vec<_>>();
     let neutral_program = emit_neutral_text(&program_ir);
     let neutral_program_sha256 = sha256(neutral_program.as_bytes());
-    let artifact_path = format!("generated/{}.program_ir.json", program_ir.program_id);
+    let emitter_inputs = if let Some(first_demonstration) = work.task.demonstrations.first() {
+        if first_demonstration.len() != work.task.inputs.len() {
+            return Err("COMPOSITE_RUST_EMITTER_INPUT_ARITY".to_string());
+        }
+        work.task
+            .inputs
+            .iter()
+            .zip(first_demonstration)
+            .map(|(binding, value)| (binding.name.clone(), value.clone()))
+            .collect::<BTreeMap<_, _>>()
+    } else {
+        let seed = u64::from_str_radix(&program_ir_sha256[..16], 16)
+            .map_err(|error| format!("COMPOSITE_RUST_EMITTER_SEED:{error}"))?;
+        generate_property_cases(&work.task, seed)
+            .into_iter()
+            .next()
+            .ok_or_else(|| "COMPOSITE_RUST_EMITTER_INPUT_CASE_MISSING".to_string())?
+    };
+    let rust_artifact = emit_rust(&program_ir, &work.task.definitions, &emitter_inputs)?;
+    let generated_rust_source =
+        rust_artifact
+            .source
+            .replacen("fn main() {", "pub fn run_generated_capability() {", 1);
+    let generated_rust_sha256 = sha256(generated_rust_source.as_bytes());
+    let source_relative_path =
+        PathBuf::from("crates/semantic-reasoning/src/generated_sem5_capability.rs");
+    let normalized_path = source_relative_path.to_string_lossy().replace('\\', "/");
+    let actual_diff = format!(
+        "--- /dev/null\n+++ b/{normalized_path}\n@@ -0,0 +1,{} @@\n{}",
+        generated_rust_source.lines().count(),
+        generated_rust_source
+            .lines()
+            .map(|line| format!("+{line}\n"))
+            .collect::<String>()
+    );
     let patch_candidate = PatchCandidateIR {
         predecessor_tree_hash: work.predecessor_tree_hash,
-        changed_files: vec![artifact_path],
+        changed_files: vec![normalized_path],
         changed_symbols: vec![program_ir.program_id.clone()],
-        unified_diff_sha256: program_ir_sha256.clone(),
+        unified_diff_sha256: sha256(actual_diff.as_bytes()),
         repair_spec_sha256: repair_spec.sha256.clone(),
         consequence_predictions: vec![
             work.opportunity.desired_behavior.clone(),
@@ -215,10 +294,91 @@ pub fn compose_existing_sem5_capability(
         promoted_concept_ids,
         type_effect_audit_pass: true,
         neutral_program_sha256,
+        generated_rust_source,
+        generated_rust_sha256,
+        source_relative_path,
         patch_candidate,
         full_source_scan_events: 0,
         installed: false,
     })
+}
+
+pub fn install_composite_candidate(
+    candidate: &CompositeProgramCandidateIR,
+    policy: &AutonomousSourceMutationPolicy,
+    state_dir: &std::path::Path,
+    source_generation: u64,
+) -> Result<AutonomousSourcePatchReceipt, String> {
+    if candidate.installed
+        || !candidate.type_effect_audit_pass
+        || candidate.generated_rust_source.is_empty()
+        || sha256(candidate.generated_rust_source.as_bytes()) != candidate.generated_rust_sha256
+    {
+        return Err("COMPOSITE_SOURCE_INSTALLATION_INPUT_INVALID".to_string());
+    }
+    let target = policy.source_root.join(&candidate.source_relative_path);
+    let predecessor_source = std::fs::read_to_string(&target).map_err(|error| {
+        format!(
+            "COMPOSITE_SOURCE_PREDECESSOR_READ:{}:{error}",
+            target.display()
+        )
+    })?;
+    let predecessor_sha256 = sha256(predecessor_source.as_bytes());
+    let file_id = candidate
+        .source_relative_path
+        .to_string_lossy()
+        .replace('\\', "/");
+    let structural_repair_program = synthesize_structural_repair(
+        &file_id,
+        &predecessor_source,
+        &candidate.generated_rust_source,
+    )?;
+    let transformation = "SEM5_PROGRAM_IR_TO_COMPILED_RUST_CAPABILITY".to_string();
+    let consequences = candidate.patch_candidate.consequence_predictions.clone();
+    let weakness = derive_dynamic_weakness(
+        source_generation,
+        &candidate.source_relative_path,
+        &transformation,
+        WeaknessEvidenceKind::StructuralSourceSmell,
+        &candidate.opportunity.sha256,
+        "a typed executable composition has no repository-native Rust implementation",
+        consequences.clone(),
+        Vec::new(),
+    );
+    let generalized_change = synthesize_generalized_change(
+        &weakness,
+        "EMIT_TYPED_RUST_AND_INSERT_NEW_BINARY",
+        &predecessor_sha256,
+        &candidate.generated_rust_sha256,
+        &structural_repair_program,
+    )?;
+    let request = AutonomousSourcePatchRequest {
+        schema: AUTONOMOUS_SOURCE_MUTATION_SCHEMA.to_string(),
+        patch_id: format!(
+            "COMPOSE-{}",
+            &sha256(
+                format!(
+                    "{}:{}:{}",
+                    candidate.program_ir_sha256, source_generation, candidate.generated_rust_sha256
+                )
+                .as_bytes()
+            )[..24]
+        ),
+        relative_path: candidate.source_relative_path.clone(),
+        predecessor_sha256,
+        candidate_source: candidate.generated_rust_source.clone(),
+        candidate_sha256: candidate.generated_rust_sha256.clone(),
+        transformation,
+        consequence_predictions: consequences,
+        predicted_value: policy.minimum_predicted_value.clamp(85, 100),
+        source_generation,
+        core_generated: true,
+        core_self_approved: true,
+        solution_strategy: "EMIT_TYPED_RUST_AND_INSERT_NEW_BINARY".to_string(),
+        structural_repair_program: Some(structural_repair_program),
+        generalized_change: Some(generalized_change),
+    };
+    install_and_stage_source_patch(policy, state_dir, &request)
 }
 
 /// Executes a fresh input-seeded semantic canary over the promoted SEM-5
@@ -475,6 +635,13 @@ mod tests {
             .contains(&"C000010".to_string()));
         assert!(!candidate.patch_candidate.core_self_approved);
         assert!(!candidate.installed);
+        assert!(candidate
+            .generated_rust_source
+            .contains("pub fn run_generated_capability()"));
+        assert_ne!(
+            candidate.patch_candidate.unified_diff_sha256,
+            candidate.program_ir_sha256
+        );
         assert_eq!(candidate.full_source_scan_events, 0);
 
         for inputs in generate_property_cases(&task, 0xC05E).into_iter().take(3) {
@@ -506,6 +673,7 @@ mod tests {
         let result = run_integrated_development_epoch(IntegratedDevelopmentEpochRequest {
             recursive_epoch: recursive_request(),
             composition_work: Some(composition_work()),
+            installation: None,
         })
         .expect("integrated epoch");
         assert_eq!(result.recursive_epoch.epoch, 1);
@@ -514,6 +682,8 @@ mod tests {
         assert_eq!(result.core_self_approval_events, 0);
         assert_eq!(result.unverified_install_events, 0);
         assert_eq!(result.full_source_scan_events, 0);
+        assert!(result.proposal_only);
+        assert!(!result.actual_source_write_attempted);
     }
 
     #[test]

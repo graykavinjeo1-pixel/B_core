@@ -34,6 +34,9 @@ fn run() -> Result<(), String> {
         .map_err(|error| format!("REQUEST_READ:{}:{error}", request_path.display()))?;
     let request: IntegratedDevelopmentEpochRequest =
         serde_json::from_slice(&request_bytes).map_err(|error| format!("REQUEST_JSON:{error}"))?;
+    if request.installation.is_none() {
+        return Err("INSTALLATION_CONTEXT_REQUIRED_FOR_ACTIVE_BINARY".to_string());
+    }
     let result = run_integrated_development_epoch(request)?;
     let result_bytes =
         serde_json::to_vec_pretty(&result).map_err(|error| format!("RESULT_JSON:{error}"))?;

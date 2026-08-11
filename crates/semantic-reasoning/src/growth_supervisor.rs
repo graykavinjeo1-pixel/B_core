@@ -20,7 +20,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::autonomous_self_inspection::{
     inspect as inspect_self, AutonomousSelfInspectionReceipt, DiagnosticPolicyMemory,
-    InternalBottleneckClass, RepairDisposition, SelfInspectionInput,
+    RepairDisposition, RuntimeRepairActionReceipt, RuntimeRepairMechanism, SelfInspectionInput,
 };
 use crate::autonomous_source_mutation::{
     discover_known_source_improvement, discover_known_source_improvement_detailed,
@@ -45,6 +45,7 @@ const BASELINE_MAX_HASHED_FILES_PER_SCAN: usize = 1_024;
 const BASELINE_MAX_BYTES_PER_SCAN: u64 = 64 * 1024 * 1024;
 const MAX_CLASSIFIER_REFINEMENT_EVENTS: usize = 64;
 const MAX_RECENT_SOURCE_PATCH_OUTCOMES: usize = 16;
+const RUNTIME_REPAIR_COUNTER_CONTRACT_REVISION: u64 = 2;
 
 fn u64_is_zero(value: &u64) -> bool {
     *value == 0
@@ -251,6 +252,10 @@ pub struct SupervisorState {
     pub diagnostic_policy: DiagnosticPolicyMemory,
     #[serde(default)]
     pub runtime_self_repairs_activated: u64,
+    #[serde(default)]
+    pub runtime_self_repair_counter_contract_revision: u64,
+    #[serde(default)]
+    pub legacy_unbound_runtime_self_repair_activations: u64,
     #[serde(default)]
     pub self_repair_capability_gaps: u64,
     #[serde(default)]
@@ -773,6 +778,8 @@ pub struct StepReport {
     pub diagnostic_policy_failed_outcomes: u64,
     pub diagnostic_policy_duplicate_selections_suppressed: u64,
     pub runtime_self_repairs_activated: u64,
+    pub runtime_self_repair_counter_contract_revision: u64,
+    pub legacy_unbound_runtime_self_repair_activations: u64,
     pub self_repair_capability_gaps: u64,
     pub last_internal_bottleneck: Option<String>,
     pub evaluator_generation: u64,
@@ -877,6 +884,11 @@ pub struct SelfCheck {
     pub validation_counterexamples_drive_candidate_ranking: bool,
     pub multi_generation_self_application_lineage_enabled: bool,
     pub fixed_sem9_toggle_replay_forbidden: bool,
+    pub runtime_repair_counter_requires_executed_action: bool,
+    pub diagnostic_outcome_requires_action_output_consumption: bool,
+    pub self_healing_candidates_route_to_atomic_installer: bool,
+    pub integrated_program_ir_lowers_to_compiled_rust: bool,
+    pub active_binaries_forbid_proposal_only_exit: bool,
     pub mutual_recursive_growth_observed: bool,
 }
 
@@ -945,6 +957,11 @@ pub fn self_check() -> SelfCheck {
                 .to_string(),
             "VALIDATION_COUNTEREXAMPLES_CHANGE_NEXT_CANDIDATE_SEARCH_ORDER".to_string(),
             "SELF_APPLICATION_LINEAGE_CONTINUES_ACROSS_SOURCE_GENERATIONS".to_string(),
+            "RUNTIME_REPAIR_COUNTER_REQUIRES_AN_IMMUTABLE_EXECUTED_ACTION_RECEIPT".to_string(),
+            "DIAGNOSTIC_REWARD_REQUIRES_CONSUMPTION_OF_THE_ACTION_OUTPUT_OBSERVATION".to_string(),
+            "LEARNED_SELF_HEALING_CANDIDATES_ROUTE_THROUGH_ATOMIC_INSTALL_VALIDATE_ROLLBACK"
+                .to_string(),
+            "SEM5_PROGRAM_IR_LOWERS_TO_REPOSITORY_NATIVE_RUST_BEFORE_INSTALLATION".to_string(),
         ],
         bounded_failure_retry_enabled: true,
         successful_solution_learning_enabled: true,
@@ -989,6 +1006,11 @@ pub fn self_check() -> SelfCheck {
         validation_counterexamples_drive_candidate_ranking: true,
         multi_generation_self_application_lineage_enabled: true,
         fixed_sem9_toggle_replay_forbidden: true,
+        runtime_repair_counter_requires_executed_action: true,
+        diagnostic_outcome_requires_action_output_consumption: true,
+        self_healing_candidates_route_to_atomic_installer: true,
+        integrated_program_ir_lowers_to_compiled_rust: true,
+        active_binaries_forbid_proposal_only_exit: true,
         mutual_recursive_growth_observed: false,
     }
 }
@@ -2136,6 +2158,8 @@ pub fn initialize(config_path: &Path) -> Result<SupervisorState, String> {
         diagnostic_experiment_events: 0,
         diagnostic_policy: DiagnosticPolicyMemory::default(),
         runtime_self_repairs_activated: 0,
+        runtime_self_repair_counter_contract_revision: RUNTIME_REPAIR_COUNTER_CONTRACT_REVISION,
+        legacy_unbound_runtime_self_repair_activations: 0,
         self_repair_capability_gaps: 0,
         last_internal_bottleneck: None,
         last_self_inspection_sha256: None,
@@ -3883,6 +3907,7 @@ fn promote_candidate(
     state.diagnostic_policy.resolve_frontier_outcome(
         freeze.generation.saturating_sub(1),
         candidate.generative_cycle.frontier_advance,
+        &candidate.observation_ids,
     );
     state.campaigns_accepted = state.campaigns_accepted.saturating_add(1);
     state.consecutive_failures = 0;
@@ -3934,9 +3959,11 @@ fn complete_campaign(
         )?)
     } else {
         consume_failed_observations(config, index, freeze, candidate)?;
-        state
-            .diagnostic_policy
-            .resolve_frontier_outcome(freeze.generation.saturating_sub(1), false);
+        state.diagnostic_policy.resolve_frontier_outcome(
+            freeze.generation.saturating_sub(1),
+            false,
+            &candidate.observation_ids,
+        );
         state.campaigns_failed = state.campaigns_failed.saturating_add(1);
         state.consecutive_failures = state.consecutive_failures.saturating_add(1);
         state.pending_campaign_id = None;
@@ -4147,11 +4174,16 @@ fn cohort_has_verification_evidence(observations: &[LearningObservation]) -> boo
             .unwrap_or(false)
 }
 
-fn mutual_bootstrap_observation(
+fn runtime_repair_action(
     receipt: &AutonomousSelfInspectionReceipt,
-) -> Result<Option<LearningObservation>, String> {
-    if receipt.selected_bottleneck != InternalBottleneckClass::MutualRecursiveBootstrapGap
-        || receipt.repair_disposition != RepairDisposition::RuntimeRepairActive
+    scan_observations: &[LearningObservation],
+    naive_cohort: &[LearningObservation],
+    evidence_aware_cohort: &[LearningObservation],
+) -> Result<Option<(RuntimeRepairActionReceipt, Option<LearningObservation>)>, String> {
+    let Some(mechanism) = receipt.repair_mechanism else {
+        return Ok(None);
+    };
+    if receipt.repair_disposition != RepairDisposition::RuntimeRepairActive
         || !receipt.actionable_defect
         || !receipt
             .experiments
@@ -4160,48 +4192,122 @@ fn mutual_bootstrap_observation(
     {
         return Ok(None);
     }
-    let receipt_sha256 = json_sha256(receipt)?;
-    let observation_id = sha256(
+    let (executed, changed_runtime_decision, execution_evidence_sha256, output_observation_ids) =
+        match mechanism {
+            RuntimeRepairMechanism::ReplayVerifiedEventAgainstIndexedContent => {
+                let outputs = scan_observations
+                    .iter()
+                    .filter(|observation| observation.work_event_id.is_some())
+                    .map(|observation| observation.observation_id.clone())
+                    .collect::<Vec<_>>();
+                let evidence = scan_observations
+                    .iter()
+                    .filter(|observation| observation.work_event_id.is_some())
+                    .map(json_sha256)
+                    .collect::<Result<Vec<_>, _>>()?;
+                (!outputs.is_empty(), !outputs.is_empty(), evidence, outputs)
+            }
+            RuntimeRepairMechanism::EvidenceAwareBoundedCohortRouting => {
+                let outputs = evidence_aware_cohort
+                    .iter()
+                    .map(|observation| observation.observation_id.clone())
+                    .collect::<Vec<_>>();
+                let evidence = evidence_aware_cohort
+                    .iter()
+                    .map(json_sha256)
+                    .collect::<Result<Vec<_>, _>>()?;
+                let changed = outputs
+                    != naive_cohort
+                        .iter()
+                        .map(|observation| observation.observation_id.clone())
+                        .collect::<Vec<_>>();
+                (
+                    changed && cohort_has_verification_evidence(evidence_aware_cohort),
+                    changed,
+                    evidence,
+                    outputs,
+                )
+            }
+            RuntimeRepairMechanism::BootstrapFrozenCoreEvaluatorCanary => {
+                let inspection_sha256 = json_sha256(receipt)?;
+                let observation_id = sha256(
+                    format!(
+                        "MUTUAL_RECURSIVE_BOOTSTRAP:{}:{}",
+                        receipt.generation, inspection_sha256
+                    )
+                    .as_bytes(),
+                );
+                (true, true, vec![inspection_sha256], vec![observation_id])
+            }
+        };
+    let action_id = sha256(
         format!(
-            "MUTUAL_RECURSIVE_BOOTSTRAP:{}:{}",
-            receipt.generation, receipt_sha256
+            "{}:{:?}:{}:{}:{}",
+            receipt.diagnostic_id,
+            mechanism,
+            executed,
+            changed_runtime_decision,
+            output_observation_ids.join(":")
         )
         .as_bytes(),
     );
-    Ok(Some(LearningObservation {
-        observation_id,
-        work_event_id: None,
-        logical_path: "INTERNAL/MUTUAL_CORE_EVALUATOR_BOOTSTRAP".to_string(),
-        content_sha256: receipt_sha256.clone(),
-        predecessor_content_sha256: None,
-        actor: WorkActor::LocalTool,
-        work_kind: WorkKind::Verification,
-        work_outcome: WorkOutcome::Pass,
-        features_before: None,
-        features_after: StructuralFeatures::default(),
-        signals: vec![
-            "AUTONOMOUS_SELF_INSPECTION".to_string(),
-            "MUTUAL_REVALIDATION_GAP".to_string(),
-            "REGRESSION_EVIDENCE".to_string(),
-            "VERIFIED_PASS".to_string(),
-        ],
-        composition_roles: vec![
-            "INVARIANT_CHECK".to_string(),
-            "REGRESSION_TEST".to_string(),
-        ],
-        learning_score: 80,
-        learning_value: LearningValue::High,
-        reasons: vec![
-            "generation zero has no observed core/evaluator mutual revalidation".to_string(),
-            "the frozen independent verifier must reconstruct the candidate and reject the complete evaluator mutation suite"
-                .to_string(),
-        ],
-        verification_evidence_sha256: vec![receipt_sha256],
-        performance_metrics: Vec::new(),
-        exact_source_fragments_stored: 0,
-        raw_source_bytes_stored: 0,
-        observed_at_ms: now_ms(),
-    }))
+    let action = RuntimeRepairActionReceipt {
+        schema: "B_CORE_RUNTIME_REPAIR_ACTION_1".to_string(),
+        action_id,
+        diagnostic_id: receipt.diagnostic_id.clone(),
+        generation: receipt.generation,
+        mechanism,
+        executed,
+        changed_runtime_decision,
+        execution_evidence_sha256,
+        output_observation_ids,
+        authoritative_source_write_events: 0,
+        operator_selected: false,
+        codex_calls: 0,
+        external_llm_calls: 0,
+    };
+    let action_sha256 = json_sha256(&action)?;
+    let observation = if mechanism == RuntimeRepairMechanism::BootstrapFrozenCoreEvaluatorCanary
+        && action.executed
+    {
+        Some(LearningObservation {
+            observation_id: action.output_observation_ids[0].clone(),
+            work_event_id: None,
+            logical_path: "INTERNAL/MUTUAL_CORE_EVALUATOR_BOOTSTRAP".to_string(),
+            content_sha256: action_sha256.clone(),
+            predecessor_content_sha256: None,
+            actor: WorkActor::LocalTool,
+            work_kind: WorkKind::Verification,
+            work_outcome: WorkOutcome::Pass,
+            features_before: None,
+            features_after: StructuralFeatures::default(),
+            signals: vec![
+                "AUTONOMOUS_SELF_INSPECTION".to_string(),
+                "MUTUAL_REVALIDATION_GAP".to_string(),
+                "REGRESSION_EVIDENCE".to_string(),
+                "VERIFIED_PASS".to_string(),
+            ],
+            composition_roles: vec![
+                "INVARIANT_CHECK".to_string(),
+                "REGRESSION_TEST".to_string(),
+            ],
+            learning_score: 80,
+            learning_value: LearningValue::High,
+            reasons: vec![
+                "generation zero has no observed core/evaluator mutual revalidation".to_string(),
+                "the frozen independent verifier must reconstruct the candidate and reject the complete evaluator mutation suite"
+                    .to_string(),
+            ],
+            verification_evidence_sha256: vec![action_sha256],
+            performance_metrics: Vec::new(),
+            exact_source_fragments_stored: 0,
+            raw_source_bytes_stored: 0,
+            observed_at_ms: now_ms(),
+        })
+    } else {
+        None
+    };
+    Ok(Some((action, observation)))
 }
 
 fn persist_self_inspection(
@@ -4224,10 +4330,7 @@ fn persist_self_inspection(
             .saturating_add(receipt.experiments.len() as u64);
         if new_policy_selection {
             match receipt.repair_disposition {
-                RepairDisposition::RuntimeRepairActive => {
-                    state.runtime_self_repairs_activated =
-                        state.runtime_self_repairs_activated.saturating_add(1);
-                }
+                RepairDisposition::RuntimeRepairActive => {}
                 RepairDisposition::CapabilityGap => {
                     state.self_repair_capability_gaps =
                         state.self_repair_capability_gaps.saturating_add(1);
@@ -4244,6 +4347,53 @@ fn persist_self_inspection(
     state.last_internal_bottleneck = Some(receipt.selected_bottleneck.label().to_string());
     state.last_self_inspection_sha256 = Some(receipt_sha256);
     Ok(())
+}
+
+fn persist_runtime_repair_action(
+    config: &GrowthSupervisorConfig,
+    state: &mut SupervisorState,
+    diagnostic: &AutonomousSelfInspectionReceipt,
+    action: &RuntimeRepairActionReceipt,
+) -> Result<bool, String> {
+    let action_sha256 = json_sha256(action)?;
+    let path = config
+        .state_dir
+        .join("diagnostics")
+        .join(format!("runtime_repair_action_{}.json", action.action_id));
+    if path.exists() {
+        return Ok(false);
+    }
+    write_immutable_json(&path, action)?;
+    if action.executed
+        && state
+            .diagnostic_policy
+            .bind_executed_action(diagnostic, action, action_sha256)
+    {
+        state.runtime_self_repairs_activated =
+            state.runtime_self_repairs_activated.saturating_add(1);
+        cleanup_recent_files(
+            &config.state_dir.join("diagnostics"),
+            "runtime_repair_action_",
+            64,
+        )?;
+        return Ok(true);
+    }
+    state.self_repair_capability_gaps = state.self_repair_capability_gaps.saturating_add(1);
+    Ok(false)
+}
+
+fn ensure_runtime_repair_counter_contract(state: &mut SupervisorState) {
+    state.diagnostic_policy.ensure_action_causal_contract();
+    if state.runtime_self_repair_counter_contract_revision
+        < RUNTIME_REPAIR_COUNTER_CONTRACT_REVISION
+    {
+        state.legacy_unbound_runtime_self_repair_activations = state
+            .legacy_unbound_runtime_self_repair_activations
+            .saturating_add(state.runtime_self_repairs_activated);
+        state.runtime_self_repairs_activated = 0;
+        state.runtime_self_repair_counter_contract_revision =
+            RUNTIME_REPAIR_COUNTER_CONTRACT_REVISION;
+    }
 }
 
 fn report_from_state(
@@ -4297,6 +4447,10 @@ fn report_from_state(
             .diagnostic_policy
             .duplicate_selection_suppressed,
         runtime_self_repairs_activated: state.runtime_self_repairs_activated,
+        runtime_self_repair_counter_contract_revision: state
+            .runtime_self_repair_counter_contract_revision,
+        legacy_unbound_runtime_self_repair_activations: state
+            .legacy_unbound_runtime_self_repair_activations,
         self_repair_capability_gaps: state.self_repair_capability_gaps,
         last_internal_bottleneck: state.last_internal_bottleneck.clone(),
         evaluator_generation: state.evaluator_generation,
@@ -4560,6 +4714,7 @@ fn step_without_lease(
 ) -> Result<StepReport, String> {
     let started = Instant::now();
     let mut state = load_state(config)?;
+    ensure_runtime_repair_counter_contract(&mut state);
     ensure_source_patch_telemetry_epoch(&mut state);
     if stop_if_requested(config, &mut state)? {
         return Ok(report_from_state(&state, false, 0, 0, 0, None, None));
@@ -4792,24 +4947,30 @@ fn step_without_lease(
         diagnostic_policy: state.diagnostic_policy.clone(),
     })?;
     persist_self_inspection(config, &mut state, &inspection)?;
-    if config.autonomous_campaigns {
-        if let Some(observation) = mutual_bootstrap_observation(&inspection)? {
-            persist_scan_observations(config, std::slice::from_ref(&observation))?;
-            if !scan
-                .index
-                .consumed_observation_ids
-                .contains(&observation.observation_id)
-                && !high
-                    .iter()
-                    .any(|existing| existing.observation_id == observation.observation_id)
-            {
-                high.push(observation);
-                high.sort_by_key(|observation| {
-                    (
-                        std::cmp::Reverse(observation.learning_score),
-                        observation.observation_id.clone(),
-                    )
-                });
+    if let Some((action, generated_observation)) =
+        runtime_repair_action(&inspection, &scan.observations, &naive, &evidence_aware)?
+    {
+        let action_executed =
+            persist_runtime_repair_action(config, &mut state, &inspection, &action)?;
+        if config.autonomous_campaigns && action_executed {
+            if let Some(observation) = generated_observation {
+                persist_scan_observations(config, std::slice::from_ref(&observation))?;
+                if !scan
+                    .index
+                    .consumed_observation_ids
+                    .contains(&observation.observation_id)
+                    && !high
+                        .iter()
+                        .any(|existing| existing.observation_id == observation.observation_id)
+                {
+                    high.push(observation);
+                    high.sort_by_key(|observation| {
+                        (
+                            std::cmp::Reverse(observation.learning_score),
+                            observation.observation_id.clone(),
+                        )
+                    });
+                }
             }
         }
     }
@@ -5190,6 +5351,11 @@ mod tests {
         assert!(check.validation_counterexamples_drive_candidate_ranking);
         assert!(check.multi_generation_self_application_lineage_enabled);
         assert!(check.fixed_sem9_toggle_replay_forbidden);
+        assert!(check.runtime_repair_counter_requires_executed_action);
+        assert!(check.diagnostic_outcome_requires_action_output_consumption);
+        assert!(check.self_healing_candidates_route_to_atomic_installer);
+        assert!(check.integrated_program_ir_lowers_to_compiled_rust);
+        assert!(check.active_binaries_forbid_proposal_only_exit);
         assert!(check.operator_stop_survives_self_update);
         assert!(check.workspace_freeze_during_patch_validation);
         assert!(check.performance_aware_self_inspection);
@@ -5364,6 +5530,46 @@ mod tests {
         assert!(report.baseline_created);
         assert_eq!(report.observations_created, 0);
         assert_eq!(report.generation, 0);
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn legacy_policy_selection_counts_are_quarantined_from_executed_repairs() {
+        let root = temp_root("runtime-repair-counter-migration");
+        let (config_path, _) = test_config(&root);
+        let mut state = initialize(&config_path).unwrap();
+        state.runtime_self_repair_counter_contract_revision = 0;
+        state.runtime_self_repairs_activated = 340;
+        state.diagnostic_policy.outcome_causal_contract_revision = 0;
+        state.diagnostic_policy.outcome_bound_selections = 87;
+        state.diagnostic_policy.productive_outcome_events = 13;
+        state.diagnostic_policy.failed_outcome_events = 73;
+
+        ensure_runtime_repair_counter_contract(&mut state);
+
+        assert_eq!(state.runtime_self_repairs_activated, 0);
+        assert_eq!(state.legacy_unbound_runtime_self_repair_activations, 340);
+        assert_eq!(state.diagnostic_policy.outcome_bound_selections, 0);
+        assert_eq!(
+            state
+                .diagnostic_policy
+                .legacy_unbound_outcome_bound_selections,
+            87
+        );
+        assert_eq!(
+            state
+                .diagnostic_policy
+                .legacy_unbound_productive_outcome_events,
+            13
+        );
+        assert_eq!(
+            state.diagnostic_policy.legacy_unbound_failed_outcome_events,
+            73
+        );
+        assert_eq!(
+            state.runtime_self_repair_counter_contract_revision,
+            RUNTIME_REPAIR_COUNTER_CONTRACT_REVISION
+        );
         fs::remove_dir_all(root).unwrap();
     }
 
@@ -5785,9 +5991,10 @@ mod tests {
             diagnostic_policy: DiagnosticPolicyMemory::default(),
         })
         .unwrap();
-        let observation = mutual_bootstrap_observation(&receipt)
+        let (_, observation) = runtime_repair_action(&receipt, &[], &[], &[])
             .unwrap()
-            .expect("actionable bootstrap observation");
+            .expect("actionable bootstrap action");
+        let observation = observation.expect("actionable bootstrap observation");
         let root = temp_root("mutual-bootstrap-cohort");
         let (_, config) = test_config(&root);
         assert!(campaign_preflight_ready(&config, std::slice::from_ref(&observation)).unwrap());

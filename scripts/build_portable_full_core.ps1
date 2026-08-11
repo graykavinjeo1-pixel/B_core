@@ -292,6 +292,11 @@ if (-not $growthSelfCheck.pass -or
     -not $growthSelfCheck.validation_counterexamples_drive_candidate_ranking -or
     -not $growthSelfCheck.multi_generation_self_application_lineage_enabled -or
     -not $growthSelfCheck.fixed_sem9_toggle_replay_forbidden -or
+    -not $growthSelfCheck.runtime_repair_counter_requires_executed_action -or
+    -not $growthSelfCheck.diagnostic_outcome_requires_action_output_consumption -or
+    -not $growthSelfCheck.self_healing_candidates_route_to_atomic_installer -or
+    -not $growthSelfCheck.integrated_program_ir_lowers_to_compiled_rust -or
+    -not $growthSelfCheck.active_binaries_forbid_proposal_only_exit -or
     -not $growthSelfCheck.core_self_approval_enabled -or
     -not $growthSelfCheck.autonomous_source_patch_install_enabled -or
     -not $growthSelfCheck.source_patch_rollback_enabled -or
