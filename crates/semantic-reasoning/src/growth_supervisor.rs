@@ -1727,6 +1727,35 @@ fn cleanup_numbered_files(directory: &Path, prefix: &str, keep: usize) -> Result
     Ok(())
 }
 
+fn cleanup_recent_files(directory: &Path, prefix: &str, keep: usize) -> Result<(), String> {
+    if !directory.exists() {
+        return Ok(());
+    }
+    let mut candidates = fs::read_dir(directory)
+        .map_err(|error| format!("READ_DIR:{}:{error}", directory.display()))?
+        .collect::<Result<Vec<_>, _>>()
+        .map_err(|error| error.to_string())?
+        .into_iter()
+        .filter_map(|entry| {
+            let name = entry.file_name().to_string_lossy().to_string();
+            if !entry.file_type().ok()?.is_file()
+                || !name.starts_with(prefix)
+                || !name.ends_with(".json")
+            {
+                return None;
+            }
+            let modified = entry.metadata().ok()?.modified().ok()?;
+            Some((modified, entry.path()))
+        })
+        .collect::<Vec<_>>();
+    candidates.sort_by(|left, right| left.0.cmp(&right.0).then_with(|| left.1.cmp(&right.1)));
+    let remove_count = candidates.len().saturating_sub(keep);
+    for (_, path) in candidates.into_iter().take(remove_count) {
+        fs::remove_file(&path).map_err(|error| format!("CLEANUP:{}:{error}", path.display()))?;
+    }
+    Ok(())
+}
+
 fn load_state(config: &GrowthSupervisorConfig) -> Result<SupervisorState, String> {
     let path = latest_numbered_file(&config.state_dir.join("state"), "state_")?
         .ok_or_else(|| "SUPERVISOR_NOT_INITIALIZED".to_string())?;
@@ -3925,7 +3954,7 @@ fn persist_self_inspection(
             }
             RepairDisposition::ProposalRequired | RepairDisposition::SafeWait => {}
         }
-        cleanup_numbered_files(
+        cleanup_recent_files(
             &config.state_dir.join("diagnostics"),
             "self_inspection_",
             64,
@@ -4588,6 +4617,22 @@ mod tests {
         let config_path = root.join("config.json");
         write_immutable_json(&config_path, &config).unwrap();
         (config_path, config)
+    }
+
+    #[test]
+    fn hashed_diagnostic_cleanup_keeps_the_newest_receipt_not_largest_name() {
+        let root = temp_root("diagnostic-retention");
+        let old = root.join("self_inspection_ffff.json");
+        let newest = root.join("self_inspection_0000.json");
+        fs::write(&old, b"old").unwrap();
+        thread::sleep(Duration::from_millis(20));
+        fs::write(&newest, b"newest").unwrap();
+
+        cleanup_recent_files(&root, "self_inspection_", 1).unwrap();
+
+        assert!(!old.exists());
+        assert!(newest.exists());
+        fs::remove_dir_all(root).unwrap();
     }
 
     fn accepted_candidate(root: &Path) -> (CampaignFreeze, LearningCandidate, VerifierRequest) {
