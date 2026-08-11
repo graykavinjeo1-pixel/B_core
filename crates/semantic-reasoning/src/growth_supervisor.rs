@@ -258,6 +258,14 @@ pub struct SupervisorState {
     #[serde(default)]
     pub generative_self_application_events: u64,
     #[serde(default)]
+    pub generative_exploration_events: u64,
+    #[serde(default)]
+    pub productive_generative_reuse_events: u64,
+    #[serde(default)]
+    pub generative_frontier_advance_events: u64,
+    #[serde(default)]
+    pub redundant_generative_selection_events: u64,
+    #[serde(default)]
     pub autonomous_source_patch_attempts: u64,
     #[serde(default)]
     pub autonomous_source_patches_installed: u64,
@@ -700,6 +708,10 @@ pub struct StepReport {
     pub valuable_combinations_learned: u64,
     pub generative_memory_reuse_events: u64,
     pub generative_self_application_events: u64,
+    pub generative_exploration_events: u64,
+    pub productive_generative_reuse_events: u64,
+    pub generative_frontier_advance_events: u64,
+    pub redundant_generative_selection_events: u64,
     pub autonomous_source_patch_attempts: u64,
     pub autonomous_source_patches_installed: u64,
     pub autonomous_source_patch_rollbacks: u64,
@@ -747,6 +759,8 @@ pub struct SelfCheck {
     pub mixed_production_file_role_detection: bool,
     pub semantic_duplicate_promotion_blocked: bool,
     pub measured_performance_evidence_supported: bool,
+    pub contextual_generative_exploration_enabled: bool,
+    pub redundant_reuse_excluded_from_growth: bool,
     pub mutual_recursive_growth_observed: bool,
 }
 
@@ -782,6 +796,8 @@ pub fn self_check() -> SelfCheck {
             "COMPILE_CHECK_PRECEDES_FULL_REGRESSION_AND_RELEASE_VALIDATION".to_string(),
             "SEMANTICALLY_DUPLICATE_EVIDENCE_REVALIDATES_WITHOUT_GENERATION_PROMOTION".to_string(),
             "PERFORMANCE_GROWTH_REQUIRES_BOUND_BEFORE_AFTER_MEASUREMENT".to_string(),
+            "EARLY_SUCCESS_MUST_NOT_MONOPOLIZE_BOUNDED_COMPOSITION_SEARCH".to_string(),
+            "SAME_CONTEXT_REUSE_IS_REVALIDATION_NOT_FRONTIER_ADVANCE".to_string(),
         ],
         bounded_failure_retry_enabled: true,
         successful_solution_learning_enabled: true,
@@ -796,6 +812,8 @@ pub fn self_check() -> SelfCheck {
         mixed_production_file_role_detection: true,
         semantic_duplicate_promotion_blocked: true,
         measured_performance_evidence_supported: true,
+        contextual_generative_exploration_enabled: true,
+        redundant_reuse_excluded_from_growth: true,
         mutual_recursive_growth_observed: false,
     }
 }
@@ -1924,6 +1942,10 @@ pub fn initialize(config_path: &Path) -> Result<SupervisorState, String> {
         valuable_combinations_learned: 0,
         generative_memory_reuse_events: 0,
         generative_self_application_events: 0,
+        generative_exploration_events: 0,
+        productive_generative_reuse_events: 0,
+        generative_frontier_advance_events: 0,
+        redundant_generative_selection_events: 0,
         autonomous_source_patch_attempts: 0,
         autonomous_source_patches_installed: 0,
         autonomous_source_patch_rollbacks: 0,
@@ -2904,6 +2926,12 @@ fn generative_input(lesson: &LearnedCompositionLesson) -> GenerativeInput {
         source_lesson_id: lesson.lesson_id.clone(),
         diagnostic_signals: lesson.diagnostic_signals.clone(),
         observed_composition_roles: lesson.composition_recipe.clone(),
+        learning_score: lesson.learning_score,
+        verification_evidence_count: lesson.evidence_observation_sha256.len(),
+        measured_performance_gain: lesson
+            .performance_metrics
+            .iter()
+            .any(PerformanceMetricEvidence::improved),
     }
 }
 
@@ -3517,6 +3545,10 @@ fn promote_candidate(
         .min(u64::MAX as usize) as u64;
     state.generative_memory_reuse_events = memory.generative.reuse_events;
     state.generative_self_application_events = memory.generative.self_application_events;
+    state.generative_exploration_events = memory.generative.exploration_events;
+    state.productive_generative_reuse_events = memory.generative.productive_reuse_events;
+    state.generative_frontier_advance_events = memory.generative.frontier_advance_events;
+    state.redundant_generative_selection_events = memory.generative.redundant_selection_events;
     let (distinct_semantic_lessons, semantic_duplicate_lessons) = semantic_lesson_counts(&memory)?;
     state.distinct_semantic_lessons = distinct_semantic_lessons;
     state.semantic_duplicate_lessons = semantic_duplicate_lessons;
@@ -3925,6 +3957,10 @@ fn report_from_state(
         valuable_combinations_learned: state.valuable_combinations_learned,
         generative_memory_reuse_events: state.generative_memory_reuse_events,
         generative_self_application_events: state.generative_self_application_events,
+        generative_exploration_events: state.generative_exploration_events,
+        productive_generative_reuse_events: state.productive_generative_reuse_events,
+        generative_frontier_advance_events: state.generative_frontier_advance_events,
+        redundant_generative_selection_events: state.redundant_generative_selection_events,
         autonomous_source_patch_attempts: state.autonomous_source_patch_attempts,
         autonomous_source_patches_installed: state.autonomous_source_patches_installed,
         autonomous_source_patch_rollbacks: state.autonomous_source_patch_rollbacks,
@@ -4155,6 +4191,18 @@ fn step_without_lease(
         .filter(|lesson| !lesson.performance_metrics.is_empty())
         .count()
         .min(u64::MAX as usize) as u64;
+    state.generative_predictions = memory.generative.prediction_records;
+    state.valuable_combinations_learned = memory
+        .generative
+        .accepted_compositions
+        .len()
+        .min(u64::MAX as usize) as u64;
+    state.generative_memory_reuse_events = memory.generative.reuse_events;
+    state.generative_self_application_events = memory.generative.self_application_events;
+    state.generative_exploration_events = memory.generative.exploration_events;
+    state.productive_generative_reuse_events = memory.generative.productive_reuse_events;
+    state.generative_frontier_advance_events = memory.generative.frontier_advance_events;
+    state.redundant_generative_selection_events = memory.generative.redundant_selection_events;
     let evaluator_memory_sha256 = json_sha256(&memory.evaluator)?;
     if state.current_evaluator_memory_sha256.is_empty() {
         state.current_evaluator_memory_sha256 = evaluator_memory_sha256.clone();
@@ -4657,6 +4705,8 @@ mod tests {
         assert!(check.mixed_production_file_role_detection);
         assert!(check.semantic_duplicate_promotion_blocked);
         assert!(check.measured_performance_evidence_supported);
+        assert!(check.contextual_generative_exploration_enabled);
+        assert!(check.redundant_reuse_excluded_from_growth);
         assert!(!check.mutual_recursive_growth_observed);
     }
 

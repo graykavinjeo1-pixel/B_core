@@ -6,7 +6,7 @@
 //! It stores capability identities and typed transport only: no source text,
 //! exact patch, network result, or model output enters this memory.
 
-use std::collections::BTreeSet;
+use std::collections::{BTreeMap, BTreeSet};
 
 use serde::{Deserialize, Serialize};
 
@@ -17,12 +17,20 @@ use crate::self_repair_contract::sha256;
 
 pub const GENERATIVE_GROWTH_SCHEMA: &str = "B_CORE_GENERATIVE_GROWTH_1";
 const MAX_REUSABLE_COMPOSITIONS: usize = 64;
+const MAX_COMPOSITION_TRIALS: usize = 256;
+
+fn is_zero(value: &u64) -> bool {
+    *value == 0
+}
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct GenerativeInput {
     pub source_lesson_id: String,
     pub diagnostic_signals: Vec<String>,
     pub observed_composition_roles: Vec<String>,
+    pub learning_score: u16,
+    pub verification_evidence_count: usize,
+    pub measured_performance_gain: bool,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -33,6 +41,21 @@ pub struct ReusableCompositionMemory {
     pub predicted_value: u16,
     pub observed_value: u16,
     pub reuse_count: u64,
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub context_use_counts: BTreeMap<String, u64>,
+    #[serde(default, skip_serializing_if = "is_zero")]
+    pub successful_uses: u64,
+    #[serde(default, skip_serializing_if = "is_zero")]
+    pub observed_value_total: u64,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct GenerativeCompositionTrial {
+    pub composition_id: String,
+    pub context_sha256: String,
+    pub predicted_value: u16,
+    pub observed_value: u16,
+    pub valuable: bool,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -44,6 +67,16 @@ pub struct GenerativeGrowthMemory {
     pub prediction_records: u64,
     pub reuse_events: u64,
     pub self_application_events: u64,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub composition_trials: Vec<GenerativeCompositionTrial>,
+    #[serde(default, skip_serializing_if = "is_zero")]
+    pub exploration_events: u64,
+    #[serde(default, skip_serializing_if = "is_zero")]
+    pub productive_reuse_events: u64,
+    #[serde(default, skip_serializing_if = "is_zero")]
+    pub frontier_advance_events: u64,
+    #[serde(default, skip_serializing_if = "is_zero")]
+    pub redundant_selection_events: u64,
 }
 
 impl Default for GenerativeGrowthMemory {
@@ -56,6 +89,11 @@ impl Default for GenerativeGrowthMemory {
             prediction_records: 0,
             reuse_events: 0,
             self_application_events: 0,
+            composition_trials: Vec::new(),
+            exploration_events: 0,
+            productive_reuse_events: 0,
+            frontier_advance_events: 0,
+            redundant_selection_events: 0,
         }
     }
 }
@@ -84,6 +122,18 @@ pub struct GenerativeCycleResult {
     pub accepted_for_memory: bool,
     pub reused_memory_composition_id: Option<String>,
     pub applied_to_self_improvement: bool,
+    #[serde(default)]
+    pub context_sha256: String,
+    #[serde(default)]
+    pub exploration_selected: bool,
+    #[serde(default)]
+    pub prior_composition_trials: u64,
+    #[serde(default)]
+    pub prior_context_trials: u64,
+    #[serde(default)]
+    pub productive_reuse: bool,
+    #[serde(default)]
+    pub frontier_advance: bool,
     pub exact_source_fragments: usize,
     pub codex_calls: usize,
     pub external_llm_calls: usize,
@@ -196,6 +246,32 @@ fn overlap_count(left: &[String], right: &[String]) -> usize {
         .count()
 }
 
+fn context_sha256(input: &GenerativeInput) -> String {
+    let signals = input
+        .diagnostic_signals
+        .iter()
+        .map(String::as_str)
+        .collect::<BTreeSet<_>>()
+        .into_iter()
+        .collect::<Vec<_>>()
+        .join(":");
+    let roles = input
+        .observed_composition_roles
+        .iter()
+        .map(String::as_str)
+        .collect::<BTreeSet<_>>()
+        .into_iter()
+        .collect::<Vec<_>>()
+        .join(":");
+    sha256(
+        format!(
+            "signals={signals}|roles={roles}|measured_gain={}",
+            input.measured_performance_gain
+        )
+        .as_bytes(),
+    )
+}
+
 fn domain_bonus(composition: &RepairCompositionLessonIR, input: &GenerativeInput) -> u16 {
     let ids = composition
         .primitives
@@ -240,38 +316,115 @@ fn domain_bonus(composition: &RepairCompositionLessonIR, input: &GenerativeInput
     bonus
 }
 
+#[derive(Debug, Clone)]
+struct CandidatePrediction {
+    score: u16,
+    reused_memory_composition_id: Option<String>,
+    prior_composition_trials: u64,
+    prior_context_trials: u64,
+    exploration: bool,
+}
+
 fn prediction_score(
     composition: &RepairCompositionLessonIR,
     input: &GenerativeInput,
     memory: &GenerativeGrowthMemory,
-) -> (u16, Option<String>) {
-    let reused = memory
+) -> CandidatePrediction {
+    let context = context_sha256(input);
+    let reusable = memory
         .accepted_compositions
         .iter()
-        .filter_map(|candidate| {
-            if candidate.composition.composition_id != composition.composition_id {
-                return None;
-            }
-            let overlap = overlap_count(&input.diagnostic_signals, &candidate.trigger_signals);
-            (overlap > 0).then_some((overlap, candidate.composition.composition_id.clone()))
-        })
-        .max_by_key(|(overlap, id)| (*overlap, id.clone()));
-    let novelty = !memory
-        .accepted_compositions
+        .find(|candidate| candidate.composition.composition_id == composition.composition_id);
+    let trials = memory
+        .composition_trials
         .iter()
-        .any(|candidate| candidate.composition.composition_id == composition.composition_id);
-    let score = 62_u16
-        .saturating_add(domain_bonus(composition, input))
-        .saturating_add(if novelty { 10 } else { 0 })
-        .saturating_add(
-            reused
-                .as_ref()
-                .map(|(count, _)| 12_u16.saturating_add((*count).min(5) as u16))
-                .unwrap_or(0),
-        )
-        .saturating_sub(composition.primitives.len() as u16)
-        .min(100);
-    (score, reused.map(|(_, id)| id))
+        .filter(|trial| trial.composition_id == composition.composition_id)
+        .collect::<Vec<_>>();
+    let failed_trials = trials
+        .iter()
+        .filter(|trial| !trial.valuable)
+        .collect::<Vec<_>>();
+    let (prior_composition_trials, prior_context_trials, successful_trials, observed_total) =
+        if let Some(candidate) = reusable {
+            let successful = candidate
+                .successful_uses
+                .max(candidate.reuse_count.saturating_add(1));
+            let failed = failed_trials.len() as u64;
+            let observed = candidate
+                .observed_value_total
+                .max(u64::from(candidate.observed_value).saturating_mul(successful))
+                .saturating_add(
+                    failed_trials
+                        .iter()
+                        .map(|trial| u64::from(trial.observed_value))
+                        .sum::<u64>(),
+                );
+            let same_context_successes = candidate
+                .context_use_counts
+                .get(&context)
+                .copied()
+                .unwrap_or(0);
+            let same_context_failures = failed_trials
+                .iter()
+                .filter(|trial| trial.context_sha256 == context)
+                .count() as u64;
+            (
+                successful.saturating_add(failed),
+                same_context_successes.saturating_add(same_context_failures),
+                successful,
+                observed,
+            )
+        } else {
+            (
+                trials.len() as u64,
+                trials
+                    .iter()
+                    .filter(|trial| trial.context_sha256 == context)
+                    .count() as u64,
+                trials.iter().filter(|trial| trial.valuable).count() as u64,
+                trials
+                    .iter()
+                    .map(|trial| u64::from(trial.observed_value))
+                    .sum::<u64>(),
+            )
+        };
+    let observed_average = if prior_composition_trials == 0 {
+        0
+    } else {
+        observed_total
+            .checked_div(prior_composition_trials)
+            .unwrap_or(0)
+            .min(100) as u16
+    };
+    let overlap = reusable
+        .map(|candidate| overlap_count(&input.diagnostic_signals, &candidate.trigger_signals))
+        .unwrap_or(0);
+    let failed_trials = prior_composition_trials.saturating_sub(successful_trials);
+    let exploration = prior_composition_trials == 0;
+    let mut score = 46_i32 + i32::from(domain_bonus(composition, input));
+    if exploration {
+        // Exhaust the bounded typed search surface before a successful early
+        // choice can monopolize all later campaigns.
+        score += 40;
+    } else {
+        score += i32::from(observed_average.saturating_sub(60).min(30) / 3);
+        score += i32::try_from(overlap.min(4)).unwrap_or(4);
+        if reusable.is_some() && prior_context_trials == 0 {
+            score += 4;
+        }
+        score -= i32::try_from(prior_composition_trials.min(12) * 2).unwrap_or(24);
+        score -= i32::try_from(failed_trials.min(4) * 6).unwrap_or(24);
+        score -= i32::try_from(prior_context_trials.min(3) * 8).unwrap_or(24);
+    }
+    CandidatePrediction {
+        score: score.clamp(0, 100) as u16,
+        reused_memory_composition_id: reusable
+            .filter(|_| overlap > 0)
+            .map(|candidate| candidate.composition.composition_id.clone()),
+        prior_composition_trials,
+        prior_context_trials,
+        exploration,
+    }
 }
 
 pub fn run_generative_cycle(
@@ -321,35 +474,48 @@ pub fn run_generative_cycle(
         for composer in composers {
             for verifier in verifiers {
                 let composition = candidate_composition(predictor, composer, verifier);
-                let (predicted, reused) = prediction_score(&composition, input, memory);
+                let prediction = prediction_score(&composition, input, memory);
                 let tie = sha256(format!("{}:{}", seed, composition.composition_id).as_bytes());
-                candidates.push((predicted, tie, reused, composition));
+                candidates.push((prediction.score, tie, prediction, composition));
             }
         }
     }
     candidates.sort_by(|left, right| right.0.cmp(&left.0).then_with(|| left.1.cmp(&right.1)));
-    let (_, _, reused_memory_composition_id, selected) = candidates
+    let (_, _, prediction, selected) = candidates
         .first()
         .cloned()
         .ok_or_else(|| "NO_GENERATIVE_COMPOSITION_CANDIDATE".to_string())?;
-    let (predicted_value, _) = prediction_score(&selected, input, memory);
+    let predicted_value = prediction.score;
     let typecheck_pass = validate_composition_lesson(&selected).is_ok();
-    let novelty = !memory
-        .accepted_compositions
-        .iter()
-        .any(|candidate| candidate.composition.composition_id == selected.composition_id);
     let observed_value = if typecheck_pass {
-        68_u16
+        input
+            .learning_score
+            .min(100)
+            .saturating_mul(3)
+            .checked_div(4)
+            .unwrap_or(0)
             .saturating_add(domain_bonus(&selected, input))
-            .saturating_add(input.observed_composition_roles.len().min(6) as u16 * 2)
-            .saturating_add(if novelty { 8 } else { 0 })
+            .saturating_add(input.verification_evidence_count.min(4) as u16 * 3)
+            .saturating_add(input.observed_composition_roles.len().min(4) as u16 * 2)
+            .saturating_add(if input.measured_performance_gain {
+                8
+            } else {
+                0
+            })
             .min(100)
     } else {
         0
     };
     let prediction_error = predicted_value.abs_diff(observed_value);
-    let valuable = typecheck_pass && observed_value >= 72 && prediction_error <= 30;
-    let accepted_for_memory = valuable && novelty;
+    let valuable = typecheck_pass
+        && input.verification_evidence_count > 0
+        && observed_value >= 72
+        && prediction_error <= 30;
+    let accepted_for_memory = valuable && prediction.exploration;
+    let productive_reuse = valuable
+        && prediction.reused_memory_composition_id.is_some()
+        && prediction.prior_context_trials == 0;
+    let frontier_advance = accepted_for_memory || productive_reuse;
     Ok(GenerativeCycleResult {
         schema: GENERATIVE_GROWTH_SCHEMA.to_string(),
         source_lesson_id: input.source_lesson_id.clone(),
@@ -365,8 +531,14 @@ pub fn run_generative_cycle(
         prediction_error,
         valuable,
         accepted_for_memory,
-        reused_memory_composition_id,
-        applied_to_self_improvement: valuable,
+        reused_memory_composition_id: prediction.reused_memory_composition_id,
+        applied_to_self_improvement: frontier_advance,
+        context_sha256: context_sha256(input),
+        exploration_selected: prediction.exploration,
+        prior_composition_trials: prediction.prior_composition_trials,
+        prior_context_trials: prediction.prior_context_trials,
+        productive_reuse,
+        frontier_advance,
         exact_source_fragments: 0,
         codex_calls: 0,
         external_llm_calls: 0,
@@ -396,6 +568,25 @@ pub fn promote_generative_cycle(
     let mut next = current.clone();
     next.generation = next.generation.saturating_add(1);
     next.prediction_records = next.prediction_records.saturating_add(1);
+    next.composition_trials.push(GenerativeCompositionTrial {
+        composition_id: result.selected_composition.composition_id.clone(),
+        context_sha256: result.context_sha256.clone(),
+        predicted_value: result.predicted_value,
+        observed_value: result.observed_value,
+        valuable: result.valuable,
+    });
+    if result.exploration_selected {
+        next.exploration_events = next.exploration_events.saturating_add(1);
+    }
+    if result.productive_reuse {
+        next.productive_reuse_events = next.productive_reuse_events.saturating_add(1);
+    }
+    if result.frontier_advance {
+        next.frontier_advance_events = next.frontier_advance_events.saturating_add(1);
+    }
+    if result.valuable && !result.frontier_advance {
+        next.redundant_selection_events = next.redundant_selection_events.saturating_add(1);
+    }
     if result.valuable {
         if let Some(existing) = next.accepted_compositions.iter_mut().find(|candidate| {
             candidate.composition.composition_id == result.selected_composition.composition_id
@@ -411,7 +602,27 @@ pub fn promote_generative_cycle(
                     existing.trigger_signals.push(signal.clone());
                 }
             }
+            *existing
+                .context_use_counts
+                .entry(result.context_sha256.clone())
+                .or_insert(0) += 1;
+            if existing.successful_uses == 0 {
+                existing.successful_uses = existing.reuse_count;
+                existing.observed_value_total =
+                    u64::from(existing.observed_value).saturating_mul(existing.successful_uses);
+            }
+            existing.successful_uses = existing.successful_uses.saturating_add(1);
+            existing.observed_value_total = existing
+                .observed_value_total
+                .saturating_add(u64::from(result.observed_value));
+            existing.observed_value = existing
+                .observed_value_total
+                .checked_div(existing.successful_uses)
+                .unwrap_or(0)
+                .min(100) as u16;
         } else if result.accepted_for_memory {
+            let mut context_use_counts = BTreeMap::new();
+            context_use_counts.insert(result.context_sha256.clone(), 1);
             next.accepted_compositions.push(ReusableCompositionMemory {
                 composition: result.selected_composition.clone(),
                 trigger_signals: input.diagnostic_signals.clone(),
@@ -419,6 +630,9 @@ pub fn promote_generative_cycle(
                 predicted_value: result.predicted_value,
                 observed_value: result.observed_value,
                 reuse_count: 0,
+                context_use_counts,
+                successful_uses: 1,
+                observed_value_total: u64::from(result.observed_value),
             });
         }
         if result.reused_memory_composition_id.is_some() {
@@ -432,6 +646,9 @@ pub fn promote_generative_cycle(
     }
     while next.accepted_compositions.len() > MAX_REUSABLE_COMPOSITIONS {
         next.accepted_compositions.remove(0);
+    }
+    while next.composition_trials.len() > MAX_COMPOSITION_TRIALS {
+        next.composition_trials.remove(0);
     }
     Ok(next)
 }
@@ -451,6 +668,9 @@ mod tests {
                 "INVARIANT_CHECK".to_string(),
                 "REGRESSION_TEST".to_string(),
             ],
+            learning_score: 80,
+            verification_evidence_count: 1,
+            measured_performance_gain: false,
         }
     }
 
@@ -469,18 +689,46 @@ mod tests {
     }
 
     #[test]
-    fn valuable_composition_is_remembered_and_reused() {
-        let first = run_generative_cycle(&GenerativeGrowthMemory::default(), &input(), 7).unwrap();
-        let memory =
-            promote_generative_cycle(&GenerativeGrowthMemory::default(), &input(), &first).unwrap();
-        assert_eq!(memory.accepted_compositions.len(), 1);
-        assert_eq!(memory.self_application_events, 1);
-        let mut next_input = input();
-        next_input.source_lesson_id = "lesson-2".to_string();
-        let second = run_generative_cycle(&memory, &next_input, 9).unwrap();
-        assert!(second.reused_memory_composition_id.is_some());
-        let memory = promote_generative_cycle(&memory, &next_input, &second).unwrap();
+    fn bounded_exploration_prevents_early_success_from_monopolizing_search() {
+        let mut memory = GenerativeGrowthMemory::default();
+        let mut selected = BTreeSet::new();
+        for ordinal in 0..12 {
+            let mut current = input();
+            current.source_lesson_id = format!("lesson-{ordinal}");
+            let result = run_generative_cycle(&memory, &current, ordinal).unwrap();
+            assert!(result.exploration_selected);
+            assert_eq!(result.prior_composition_trials, 0);
+            selected.insert(result.selected_composition.composition_id.clone());
+            memory = promote_generative_cycle(&memory, &current, &result).unwrap();
+        }
+        assert_eq!(selected.len(), 12);
+        assert_eq!(memory.composition_trials.len(), 12);
+        assert_eq!(memory.exploration_events, 12);
+        assert_eq!(memory.accepted_compositions.len(), 12);
+
+        let mut repeated_context = input();
+        repeated_context.source_lesson_id = "lesson-repeated-context".to_string();
+        let repeated = run_generative_cycle(&memory, &repeated_context, 99).unwrap();
+        assert!(!repeated.exploration_selected);
+        assert!(repeated.reused_memory_composition_id.is_some());
+        assert!(repeated.prior_context_trials > 0);
+        assert!(!repeated.productive_reuse);
+        assert!(!repeated.frontier_advance);
+        assert!(!repeated.applied_to_self_improvement);
+        memory = promote_generative_cycle(&memory, &repeated_context, &repeated).unwrap();
         assert_eq!(memory.reuse_events, 1);
-        assert_eq!(memory.self_application_events, 2);
+        assert_eq!(memory.redundant_selection_events, 1);
+
+        let mut new_context = input();
+        new_context.source_lesson_id = "lesson-new-context".to_string();
+        new_context
+            .diagnostic_signals
+            .push("DEFECT_REPAIR".to_string());
+        let transferred = run_generative_cycle(&memory, &new_context, 101).unwrap();
+        assert!(transferred.reused_memory_composition_id.is_some());
+        assert_eq!(transferred.prior_context_trials, 0);
+        assert!(transferred.productive_reuse);
+        assert!(transferred.frontier_advance);
+        assert!(transferred.applied_to_self_improvement);
     }
 }
