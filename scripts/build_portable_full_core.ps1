@@ -263,7 +263,9 @@ if (-not $growthSelfCheck.pass -or
     -not $growthSelfCheck.plateau_difficulty_escalation_disabled -or
     -not $growthSelfCheck.prediction_before_composition_enabled -or
     -not $growthSelfCheck.valuable_combination_memory_enabled -or
-    -not $growthSelfCheck.generative_memory_self_application_enabled -or
+    $growthSelfCheck.generative_memory_self_application_enabled -or
+    -not $growthSelfCheck.heuristic_composition_value_excluded_from_frontier -or
+    -not $growthSelfCheck.behavioral_evidence_required_for_generative_self_application -or
     -not $growthSelfCheck.core_self_approval_enabled -or
     -not $growthSelfCheck.autonomous_source_patch_install_enabled -or
     -not $growthSelfCheck.source_patch_rollback_enabled -or
