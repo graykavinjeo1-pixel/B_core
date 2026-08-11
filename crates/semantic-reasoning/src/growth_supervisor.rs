@@ -31,6 +31,10 @@ use crate::generative_growth::{
     promote_generative_cycle, run_generative_cycle, validate_behavioral_execution_receipt,
     GenerativeCycleResult, GenerativeGrowthMemory, GenerativeInput,
 };
+use crate::integrated_development::{
+    compose_behavioral_canary_candidate, execute_behavioral_composition_canary,
+    install_composite_candidate,
+};
 use crate::self_repair_contract::sha256;
 
 pub const SUPERVISOR_SCHEMA: &str = "B_CORE_BOUNDED_GROWTH_SUPERVISOR_1";
@@ -318,6 +322,22 @@ pub struct SupervisorState {
     pub source_patch_consecutive_failures: u32,
     #[serde(default)]
     pub last_source_patch_receipt_sha256: Option<String>,
+    #[serde(default)]
+    pub composite_capability_install_attempts: u64,
+    #[serde(default)]
+    pub composite_capabilities_installed: u64,
+    #[serde(default)]
+    pub composite_capability_install_rollbacks: u64,
+    #[serde(default)]
+    pub composite_capability_consecutive_failures: u32,
+    #[serde(default)]
+    pub last_composite_candidate_sha256: Option<String>,
+    #[serde(default)]
+    pub installed_composite_capability_execution_events: u64,
+    #[serde(default)]
+    pub installed_composite_capability_execution_failures: u64,
+    #[serde(default)]
+    pub last_installed_composite_execution_sha256: Option<String>,
     #[serde(default)]
     pub distinct_semantic_lessons: u64,
     #[serde(default)]
@@ -811,6 +831,14 @@ pub struct StepReport {
     pub last_source_discovery_reason: Option<String>,
     pub source_patch_consecutive_failures: u32,
     pub last_source_patch_receipt_sha256: Option<String>,
+    pub composite_capability_install_attempts: u64,
+    pub composite_capabilities_installed: u64,
+    pub composite_capability_install_rollbacks: u64,
+    pub composite_capability_consecutive_failures: u32,
+    pub last_composite_candidate_sha256: Option<String>,
+    pub installed_composite_capability_execution_events: u64,
+    pub installed_composite_capability_execution_failures: u64,
+    pub last_installed_composite_execution_sha256: Option<String>,
     pub distinct_semantic_lessons: u64,
     pub semantic_duplicate_lessons: u64,
     pub semantic_revalidation_events: u64,
@@ -888,6 +916,8 @@ pub struct SelfCheck {
     pub diagnostic_outcome_requires_action_output_consumption: bool,
     pub self_healing_candidates_route_to_atomic_installer: bool,
     pub integrated_program_ir_lowers_to_compiled_rust: bool,
+    pub installed_compositions_are_runtime_callable: bool,
+    pub accepted_sem5_compositions_route_to_installer: bool,
     pub active_binaries_forbid_proposal_only_exit: bool,
     pub mutual_recursive_growth_observed: bool,
 }
@@ -907,7 +937,7 @@ pub fn self_check() -> SelfCheck {
         evaluator_generation_evolution_enabled: true,
         prediction_before_composition_enabled: true,
         valuable_combination_memory_enabled: true,
-        generative_memory_self_application_enabled: false,
+        generative_memory_self_application_enabled: true,
         core_self_approval_enabled: true,
         autonomous_source_patch_install_enabled: true,
         source_patch_rollback_enabled: true,
@@ -962,6 +992,8 @@ pub fn self_check() -> SelfCheck {
             "LEARNED_SELF_HEALING_CANDIDATES_ROUTE_THROUGH_ATOMIC_INSTALL_VALIDATE_ROLLBACK"
                 .to_string(),
             "SEM5_PROGRAM_IR_LOWERS_TO_REPOSITORY_NATIVE_RUST_BEFORE_INSTALLATION".to_string(),
+            "VERIFIED_SEM5_COMPOSITIONS_INSTALL_AS_TYPED_RUNTIME_CALLABLES".to_string(),
+            "INSTALLED_COMPOSITIONS_REQUIRE_FRESH_INPUT_BEHAVIORAL_REVALIDATION".to_string(),
         ],
         bounded_failure_retry_enabled: true,
         successful_solution_learning_enabled: true,
@@ -1010,6 +1042,8 @@ pub fn self_check() -> SelfCheck {
         diagnostic_outcome_requires_action_output_consumption: true,
         self_healing_candidates_route_to_atomic_installer: true,
         integrated_program_ir_lowers_to_compiled_rust: true,
+        installed_compositions_are_runtime_callable: true,
+        accepted_sem5_compositions_route_to_installer: true,
         active_binaries_forbid_proposal_only_exit: true,
         mutual_recursive_growth_observed: false,
     }
@@ -2191,6 +2225,14 @@ pub fn initialize(config_path: &Path) -> Result<SupervisorState, String> {
         last_source_discovery_reason: None,
         source_patch_consecutive_failures: 0,
         last_source_patch_receipt_sha256: None,
+        composite_capability_install_attempts: 0,
+        composite_capabilities_installed: 0,
+        composite_capability_install_rollbacks: 0,
+        composite_capability_consecutive_failures: 0,
+        last_composite_candidate_sha256: None,
+        installed_composite_capability_execution_events: 0,
+        installed_composite_capability_execution_failures: 0,
+        last_installed_composite_execution_sha256: None,
         distinct_semantic_lessons: 0,
         semantic_duplicate_lessons: 0,
         semantic_revalidation_events: 0,
@@ -4489,6 +4531,18 @@ fn report_from_state(
         last_source_discovery_reason: state.last_source_discovery_reason.clone(),
         source_patch_consecutive_failures: state.source_patch_consecutive_failures,
         last_source_patch_receipt_sha256: state.last_source_patch_receipt_sha256.clone(),
+        composite_capability_install_attempts: state.composite_capability_install_attempts,
+        composite_capabilities_installed: state.composite_capabilities_installed,
+        composite_capability_install_rollbacks: state.composite_capability_install_rollbacks,
+        composite_capability_consecutive_failures: state.composite_capability_consecutive_failures,
+        last_composite_candidate_sha256: state.last_composite_candidate_sha256.clone(),
+        installed_composite_capability_execution_events: state
+            .installed_composite_capability_execution_events,
+        installed_composite_capability_execution_failures: state
+            .installed_composite_capability_execution_failures,
+        last_installed_composite_execution_sha256: state
+            .last_installed_composite_execution_sha256
+            .clone(),
         distinct_semantic_lessons: state.distinct_semantic_lessons,
         semantic_duplicate_lessons: state.semantic_duplicate_lessons,
         semantic_revalidation_events: state.semantic_revalidation_events,
@@ -4635,16 +4689,175 @@ fn account_source_patch_error(state: &mut SupervisorState) {
         state.source_patch_consecutive_failures.saturating_add(1);
 }
 
+fn accepted_sem5_composition_context(memory: &GrowthMemory) -> Option<String> {
+    memory
+        .generative
+        .accepted_compositions
+        .iter()
+        .rev()
+        .find(|accepted| {
+            accepted.successful_uses > 0
+                && accepted
+                    .composition
+                    .primitives
+                    .iter()
+                    .any(|primitive| primitive.primitive_id == "SEM5_PROGRAM_IR_COMPOSER")
+        })
+        .and_then(|accepted| accepted.context_use_counts.keys().next_back().cloned())
+}
+
+fn revalidate_installed_composite_capability(state: &mut SupervisorState, memory: &GrowthMemory) {
+    if !crate::generated_sem5_capability::GENERATED_CAPABILITY_ACTIVE {
+        return;
+    }
+    let Some(context) = accepted_sem5_composition_context(memory) else {
+        return;
+    };
+    let outcome = execute_behavioral_composition_canary(&context);
+    let (event_sha256, pass) = match outcome {
+        Ok(receipt) => {
+            let pass = receipt.installed_capability_present
+                && receipt.installed_program_match
+                && receipt.installed_cases_executed == receipt.cases_executed
+                && receipt.installed_cases_passed == receipt.cases_passed
+                && receipt.installed_output_sha256.is_some();
+            (receipt.receipt_sha256, pass)
+        }
+        Err(error) => (sha256(error.as_bytes()), false),
+    };
+    if state.last_installed_composite_execution_sha256.as_deref() == Some(&event_sha256) {
+        return;
+    }
+    state.last_installed_composite_execution_sha256 = Some(event_sha256);
+    state.installed_composite_capability_execution_events = state
+        .installed_composite_capability_execution_events
+        .saturating_add(1);
+    if !pass {
+        state.installed_composite_capability_execution_failures = state
+            .installed_composite_capability_execution_failures
+            .saturating_add(1);
+        state.self_repair_capability_gaps = state.self_repair_capability_gaps.saturating_add(1);
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+struct CompositeInstallAttemptOutcome {
+    attempted: bool,
+    staged: bool,
+}
+
+fn attempt_pending_composite_capability_install(
+    config: &GrowthSupervisorConfig,
+    state: &mut SupervisorState,
+    memory: &GrowthMemory,
+) -> Result<CompositeInstallAttemptOutcome, String> {
+    let Some(context) = accepted_sem5_composition_context(memory) else {
+        return Ok(CompositeInstallAttemptOutcome {
+            attempted: false,
+            staged: false,
+        });
+    };
+    let (candidate, _) = compose_behavioral_canary_candidate(&context)?;
+    if crate::generated_sem5_capability::GENERATED_CAPABILITY_ACTIVE
+        && crate::generated_sem5_capability::GENERATED_PROGRAM_IR_SHA256
+            == candidate.program_ir_sha256
+    {
+        return Ok(CompositeInstallAttemptOutcome {
+            attempted: false,
+            staged: false,
+        });
+    }
+    if state.last_composite_candidate_sha256.as_deref()
+        != Some(candidate.generated_rust_sha256.as_str())
+    {
+        state.last_composite_candidate_sha256 = Some(candidate.generated_rust_sha256.clone());
+        state.composite_capability_consecutive_failures = 0;
+    }
+    if state.composite_capability_consecutive_failures
+        >= u32::from(config.source_mutation.max_attempts_per_problem)
+    {
+        return Ok(CompositeInstallAttemptOutcome {
+            attempted: false,
+            staged: false,
+        });
+    }
+    state.composite_capability_install_attempts = state
+        .composite_capability_install_attempts
+        .saturating_add(1);
+    state.last_source_discovery_reason =
+        Some("VERIFIED_COMPOSITE_CAPABILITY_PENDING_INSTALL".to_string());
+    state.autonomous_source_patch_attempts =
+        state.autonomous_source_patch_attempts.saturating_add(1);
+    let receipt = match install_composite_candidate(
+        &candidate,
+        &config.source_mutation,
+        &config.state_dir,
+        state.generation,
+        state.composite_capability_install_attempts,
+    ) {
+        Ok(receipt) => receipt,
+        Err(_) => {
+            state.last_source_discovery_reason =
+                Some("COMPOSITE_CAPABILITY_INSTALL_ERROR".to_string());
+            account_source_patch_error(state);
+            state.composite_capability_install_rollbacks = state
+                .composite_capability_install_rollbacks
+                .saturating_add(1);
+            state.composite_capability_consecutive_failures = state
+                .composite_capability_consecutive_failures
+                .saturating_add(1);
+            return Ok(CompositeInstallAttemptOutcome {
+                attempted: true,
+                staged: false,
+            });
+        }
+    };
+    account_source_patch_receipt(state, &receipt);
+    if receipt.installed {
+        state.last_source_discovery_reason =
+            Some("COMPOSITE_CAPABILITY_INSTALLED_AND_STAGED".to_string());
+        state.composite_capabilities_installed =
+            state.composite_capabilities_installed.saturating_add(1);
+        state.composite_capability_consecutive_failures = 0;
+    } else if receipt.rolled_back {
+        state.last_source_discovery_reason = Some(format!(
+            "COMPOSITE_CAPABILITY_ROLLED_BACK:{}",
+            receipt.failure_reason.as_deref().unwrap_or("UNKNOWN")
+        ));
+        state.composite_capability_install_rollbacks = state
+            .composite_capability_install_rollbacks
+            .saturating_add(1);
+        state.composite_capability_consecutive_failures = state
+            .composite_capability_consecutive_failures
+            .saturating_add(1);
+    }
+    Ok(CompositeInstallAttemptOutcome {
+        attempted: true,
+        staged: receipt.installed && receipt.runtime_update_staged,
+    })
+}
+
 fn attempt_discovered_source_repair(
     config: &GrowthSupervisorConfig,
     state: &mut SupervisorState,
+    memory: &GrowthMemory,
 ) -> Result<bool, String> {
     if !config.source_mutation.enabled
-        || (!config.source_mutation.auto_discover_known_transformations
-            && !config.source_mutation.auto_discover_compiler_repairs
-            && !config.source_mutation.auto_synthesize_grammar_repairs)
         || state.plateau_scans < config.resources.plateau_scans_before_wait
         || state.autonomous_source_patches_installed >= config.source_mutation.max_installations
+    {
+        return Ok(false);
+    }
+    let composite = attempt_pending_composite_capability_install(config, state, memory)?;
+    if composite.attempted {
+        if composite.staged {
+            state.stop_reason = Some("AUTONOMOUS_COMPOSITE_CAPABILITY_STAGED".to_string());
+        }
+        return Ok(composite.staged);
+    }
+    if !config.source_mutation.auto_discover_known_transformations
+        && !config.source_mutation.auto_discover_compiler_repairs
+        && !config.source_mutation.auto_synthesize_grammar_repairs
     {
         return Ok(false);
     }
@@ -4772,6 +4985,7 @@ fn step_without_lease(
     if json_sha256(&memory)? != state.current_memory_sha256 {
         return Err("CURRENT_MEMORY_HASH_MISMATCH".to_string());
     }
+    revalidate_installed_composite_capability(&mut state, &memory);
     let (distinct_semantic_lessons, semantic_duplicate_lessons) = semantic_lesson_counts(&memory)?;
     state.distinct_semantic_lessons = distinct_semantic_lessons;
     state.semantic_duplicate_lessons = semantic_duplicate_lessons;
@@ -4988,7 +5202,7 @@ fn step_without_lease(
         )?;
     } else if high.is_empty() {
         state.plateau_scans = state.plateau_scans.saturating_add(1);
-        if attempt_discovered_source_repair(config, &mut state)? {
+        if attempt_discovered_source_repair(config, &mut state, &memory)? {
             state.active_runtime_ms = state
                 .active_runtime_ms
                 .saturating_add(started.elapsed().as_millis().min(u128::from(u64::MAX)) as u64);
@@ -5040,7 +5254,7 @@ fn step_without_lease(
         )?;
     } else if !campaign_preflight_ready(config, &high)? {
         state.plateau_scans = state.plateau_scans.saturating_add(1);
-        if attempt_discovered_source_repair(config, &mut state)? {
+        if attempt_discovered_source_repair(config, &mut state, &memory)? {
             state.active_runtime_ms = state
                 .active_runtime_ms
                 .saturating_add(started.elapsed().as_millis().min(u128::from(u64::MAX)) as u64);
@@ -5331,7 +5545,7 @@ mod tests {
         assert!(check.evaluator_generation_evolution_enabled);
         assert!(check.prediction_before_composition_enabled);
         assert!(check.valuable_combination_memory_enabled);
-        assert!(!check.generative_memory_self_application_enabled);
+        assert!(check.generative_memory_self_application_enabled);
         assert!(check.core_self_approval_enabled);
         assert!(check.autonomous_source_patch_install_enabled);
         assert!(check.source_patch_rollback_enabled);
@@ -5355,6 +5569,8 @@ mod tests {
         assert!(check.diagnostic_outcome_requires_action_output_consumption);
         assert!(check.self_healing_candidates_route_to_atomic_installer);
         assert!(check.integrated_program_ir_lowers_to_compiled_rust);
+        assert!(check.installed_compositions_are_runtime_callable);
+        assert!(check.accepted_sem5_compositions_route_to_installer);
         assert!(check.active_binaries_forbid_proposal_only_exit);
         assert!(check.operator_stop_survives_self_update);
         assert!(check.workspace_freeze_during_patch_validation);

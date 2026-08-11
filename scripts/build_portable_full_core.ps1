@@ -296,6 +296,8 @@ if (-not $growthSelfCheck.pass -or
     -not $growthSelfCheck.diagnostic_outcome_requires_action_output_consumption -or
     -not $growthSelfCheck.self_healing_candidates_route_to_atomic_installer -or
     -not $growthSelfCheck.integrated_program_ir_lowers_to_compiled_rust -or
+    -not $growthSelfCheck.installed_compositions_are_runtime_callable -or
+    -not $growthSelfCheck.accepted_sem5_compositions_route_to_installer -or
     -not $growthSelfCheck.active_binaries_forbid_proposal_only_exit -or
     -not $growthSelfCheck.core_self_approval_enabled -or
     -not $growthSelfCheck.autonomous_source_patch_install_enabled -or

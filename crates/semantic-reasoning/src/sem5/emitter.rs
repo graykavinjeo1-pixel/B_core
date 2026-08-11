@@ -88,6 +88,117 @@ pub fn emit_rust(
     })
 }
 
+/// Emits a repository-native callable instead of a demonstration-bound
+/// `main`.  The generated function accepts the same typed value transport as
+/// the interpreter, so a successfully installed composition can participate
+/// in later reasoning rather than merely compiling as unreachable code.
+pub fn emit_rust_callable(
+    ir: &ProgramIR,
+    apis: &[ApiDefinition],
+    program_ir_sha256: &str,
+) -> Result<RustArtifact, String> {
+    if program_ir_sha256.len() != 64
+        || !program_ir_sha256
+            .bytes()
+            .all(|byte| byte.is_ascii_hexdigit())
+    {
+        return Err("CALLABLE_PROGRAM_IR_SHA256_INVALID".to_string());
+    }
+    let mut output = String::new();
+    output.push_str("#![allow(dead_code)]\n\n");
+    output.push_str("use std::collections::BTreeMap;\n");
+    output.push_str("use crate::sem5::model::{ImageValue, Value};\n\n");
+    output.push_str("#[derive(Clone, Debug)]\nstruct Sem5Image { width: usize, height: usize, channels: usize, pixels: Vec<i64> }\n\n");
+    for api in apis {
+        output.push_str(&emit_api(api)?);
+        output.push('\n');
+    }
+    output.push_str("pub const GENERATED_CAPABILITY_ACTIVE: bool = true;\n");
+    output.push_str(&format!(
+        "pub const GENERATED_PROGRAM_ID: &str = {:?};\n",
+        ir.program_id
+    ));
+    output.push_str(&format!(
+        "pub const GENERATED_PROGRAM_IR_SHA256: &str = {:?};\n\n",
+        program_ir_sha256
+    ));
+    output.push_str(
+        "pub fn run_generated_capability(inputs: &BTreeMap<String, Value>) -> Result<Value, String> {\n",
+    );
+    for binding in &ir.inputs {
+        let initializer = callable_input_initializer(&binding.name, &binding.value_type);
+        output.push_str(&format!(
+            "    let {}{}: {} = {};\n",
+            if binding.mutable { "mut " } else { "" },
+            binding.name,
+            rust_type(&binding.value_type),
+            initializer
+        ));
+    }
+    let mut context = EmitContext {
+        declared: ir
+            .inputs
+            .iter()
+            .map(|binding| binding.name.clone())
+            .collect(),
+        binding_types: ir
+            .inputs
+            .iter()
+            .map(|binding| (binding.name.clone(), binding.value_type.clone()))
+            .collect(),
+        next_loop: 0,
+        result_declared: false,
+    };
+    emit_statement(&ir.root, 1, &mut context, &mut output)?;
+    if !context.result_declared {
+        return Err("EMITTER_NO_RETURN".to_string());
+    }
+    output.push_str(&callable_output(&ir.output_type));
+    output.push_str("}\n");
+    let source_sha256 = hex_sha256(output.as_bytes());
+    Ok(RustArtifact {
+        program_id: ir.program_id.clone(),
+        source: output,
+        source_sha256,
+        reads_input_file: false,
+        writes_output_file: false,
+    })
+}
+
+fn callable_input_initializer(name: &str, value_type: &ProgramType) -> String {
+    let access = format!("inputs.get({name:?})");
+    let expected = match value_type {
+        ProgramType::Int => "Some(Value::Int(value)) => *value".to_string(),
+        ProgramType::Bool => "Some(Value::Bool(value)) => *value".to_string(),
+        ProgramType::SequenceInt => {
+            "Some(Value::Sequence(value)) => value.clone()".to_string()
+        }
+        ProgramType::NestedSequenceInt => {
+            "Some(Value::NestedSequence(value)) => value.clone()".to_string()
+        }
+        ProgramType::Bytes => "Some(Value::Bytes(value)) => value.clone()".to_string(),
+        ProgramType::Image => "Some(Value::Image(value)) => Sem5Image { width: value.width, height: value.height, channels: value.channels, pixels: value.pixels.clone() }".to_string(),
+        ProgramType::Unit => "Some(Value::Unit) => ()".to_string(),
+    };
+    format!(
+        "match {access} {{ {expected}, _ => return Err({:?}.to_string()) }}",
+        format!("GENERATED_CAPABILITY_INPUT_TYPE:{name}")
+    )
+}
+
+fn callable_output(output_type: &ProgramType) -> String {
+    let expression = match output_type {
+        ProgramType::Int => "Value::Int(sem5_result)",
+        ProgramType::Bool => "Value::Bool(sem5_result)",
+        ProgramType::SequenceInt => "Value::Sequence(sem5_result)",
+        ProgramType::NestedSequenceInt => "Value::NestedSequence(sem5_result)",
+        ProgramType::Bytes => "Value::Bytes(sem5_result)",
+        ProgramType::Image => "Value::Image(ImageValue { width: sem5_result.width, height: sem5_result.height, channels: sem5_result.channels, pixels: sem5_result.pixels })",
+        ProgramType::Unit => "Value::Unit",
+    };
+    format!("    Ok({expression})\n")
+}
+
 fn emit_api(api: &ApiDefinition) -> Result<String, String> {
     if api.inputs.iter().any(|input| input != &ProgramType::Int)
         || api.output != ProgramType::Int
@@ -544,6 +655,20 @@ mod tests {
         let second = emit_rust(&ir, &task.visible.definitions, inputs).expect("emit");
         assert_eq!(first, second);
         assert!(first.source.contains("fn main()"));
+        let ir_sha256 = hex_sha256(&serde_json::to_vec(&ir).expect("program ir"));
+        let callable =
+            emit_rust_callable(&ir, &task.visible.definitions, &ir_sha256).expect("callable Rust");
+        assert!(callable
+            .source
+            .contains("pub const GENERATED_CAPABILITY_ACTIVE: bool = true"));
+        assert!(callable
+            .source
+            .contains("pub fn run_generated_capability(inputs:"));
+        assert!(callable.source.contains("Result<Value, String>"));
+        assert!(callable.source.contains(&ir_sha256));
+        assert!(!callable.source.contains("fn main()"));
+        assert!(!callable.reads_input_file);
+        assert!(!callable.writes_output_file);
         assert!(emit_neutral_text(&ir).contains("program"));
     }
 }

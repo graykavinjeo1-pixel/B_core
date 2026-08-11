@@ -7,7 +7,9 @@
 //! routes it through the same atomic validation/rollback path as self-repair.
 
 use std::collections::{BTreeMap, BTreeSet};
+use std::io::Write;
 use std::path::PathBuf;
+use std::process::{Command, Stdio};
 
 use serde::{Deserialize, Serialize};
 use serde_json::Value as JsonValue;
@@ -27,7 +29,7 @@ use crate::sem27::engine::{
     run_post_scaffold_epoch, PostScaffoldEpochRequest, PostScaffoldEpochResult,
 };
 use crate::sem5::{
-    emitter::{emit_neutral_text, emit_rust},
+    emitter::{emit_neutral_text, emit_rust_callable},
     ir::{execute, type_check},
     learner::{discover_candidates, initial_promotions, synthesize},
     model::{ProgramIR, ProgramTask, ProgrammingPromotion, SynthesisCondition},
@@ -99,6 +101,8 @@ pub struct IntegratedDevelopmentInstallationRequest {
     pub mutation_policy: AutonomousSourceMutationPolicy,
     pub state_dir: PathBuf,
     pub source_generation: u64,
+    #[serde(default)]
+    pub attempt_nonce: u64,
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -123,6 +127,16 @@ pub struct BehavioralCompositionCanaryReceipt {
     pub used_primitive_ids: Vec<String>,
     pub cases_executed: usize,
     pub cases_passed: usize,
+    #[serde(default)]
+    pub installed_capability_present: bool,
+    #[serde(default)]
+    pub installed_program_match: bool,
+    #[serde(default)]
+    pub installed_cases_executed: usize,
+    #[serde(default)]
+    pub installed_cases_passed: usize,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub installed_output_sha256: Option<String>,
     pub receipt_sha256: String,
 }
 
@@ -135,6 +149,9 @@ pub enum IntegratedInstallationGateError {
 pub fn run_integrated_development_epoch(
     request: IntegratedDevelopmentEpochRequest,
 ) -> Result<IntegratedDevelopmentEpochResult, String> {
+    if request.composition_work.is_some() && request.installation.is_none() {
+        return Err("COMPOSITION_INSTALLATION_CONTEXT_REQUIRED".to_string());
+    }
     let recursive_epoch = run_post_scaffold_epoch(request.recursive_epoch)?;
     let composition_attempted = request.composition_work.is_some();
     let mut composite_candidate = request
@@ -147,6 +164,7 @@ pub fn run_integrated_development_epoch(
             &installation.mutation_policy,
             &installation.state_dir,
             installation.source_generation,
+            installation.attempt_nonce,
         )?),
         _ => None,
     };
@@ -166,7 +184,7 @@ pub fn run_integrated_development_epoch(
         full_source_scan_events: 0,
         source_mutation_receipt,
         actual_source_write_attempted,
-        proposal_only: !actual_source_write_attempted,
+        proposal_only: composition_attempted && !actual_source_write_attempted,
     })
 }
 
@@ -229,35 +247,15 @@ pub fn compose_existing_sem5_capability(
         .collect::<Vec<_>>();
     let neutral_program = emit_neutral_text(&program_ir);
     let neutral_program_sha256 = sha256(neutral_program.as_bytes());
-    let emitter_inputs = if let Some(first_demonstration) = work.task.demonstrations.first() {
-        if first_demonstration.len() != work.task.inputs.len() {
-            return Err("COMPOSITE_RUST_EMITTER_INPUT_ARITY".to_string());
-        }
-        work.task
-            .inputs
-            .iter()
-            .zip(first_demonstration)
-            .map(|(binding, value)| (binding.name.clone(), value.clone()))
-            .collect::<BTreeMap<_, _>>()
-    } else {
-        let seed = u64::from_str_radix(&program_ir_sha256[..16], 16)
-            .map_err(|error| format!("COMPOSITE_RUST_EMITTER_SEED:{error}"))?;
-        generate_property_cases(&work.task, seed)
-            .into_iter()
-            .next()
-            .ok_or_else(|| "COMPOSITE_RUST_EMITTER_INPUT_CASE_MISSING".to_string())?
-    };
-    let rust_artifact = emit_rust(&program_ir, &work.task.definitions, &emitter_inputs)?;
-    let generated_rust_source =
-        rust_artifact
-            .source
-            .replacen("fn main() {", "pub fn run_generated_capability() {", 1);
+    let rust_artifact =
+        emit_rust_callable(&program_ir, &work.task.definitions, &program_ir_sha256)?;
+    let generated_rust_source = rust_artifact.source;
     let generated_rust_sha256 = sha256(generated_rust_source.as_bytes());
     let source_relative_path =
         PathBuf::from("crates/semantic-reasoning/src/generated_sem5_capability.rs");
     let normalized_path = source_relative_path.to_string_lossy().replace('\\', "/");
     let actual_diff = format!(
-        "--- /dev/null\n+++ b/{normalized_path}\n@@ -0,0 +1,{} @@\n{}",
+        "--- a/{normalized_path}\n+++ b/{normalized_path}\n@@ generated-capability-replacement +1,{} @@\n{}",
         generated_rust_source.lines().count(),
         generated_rust_source
             .lines()
@@ -303,11 +301,52 @@ pub fn compose_existing_sem5_capability(
     })
 }
 
+fn rustfmt_generated_source(
+    policy: &AutonomousSourceMutationPolicy,
+    source: &str,
+) -> Result<String, String> {
+    let rustfmt = policy.cargo_executable.with_file_name(if cfg!(windows) {
+        "rustfmt.exe"
+    } else {
+        "rustfmt"
+    });
+    if !rustfmt.is_file() {
+        return Err(format!("COMPOSITE_RUSTFMT_MISSING:{}", rustfmt.display()));
+    }
+    let mut child = Command::new(&rustfmt)
+        .args(["--emit", "stdout", "--edition", "2021"])
+        .stdin(Stdio::piped())
+        .stdout(Stdio::piped())
+        .stderr(Stdio::piped())
+        .spawn()
+        .map_err(|error| format!("COMPOSITE_RUSTFMT_SPAWN:{error}"))?;
+    child
+        .stdin
+        .take()
+        .ok_or_else(|| "COMPOSITE_RUSTFMT_STDIN_MISSING".to_string())?
+        .write_all(source.as_bytes())
+        .map_err(|error| format!("COMPOSITE_RUSTFMT_STDIN:{error}"))?;
+    let output = child
+        .wait_with_output()
+        .map_err(|error| format!("COMPOSITE_RUSTFMT_WAIT:{error}"))?;
+    if !output.status.success() {
+        return Err(format!(
+            "COMPOSITE_RUSTFMT_FAILED:{}",
+            String::from_utf8_lossy(&output.stderr)
+                .chars()
+                .take(2_048)
+                .collect::<String>()
+        ));
+    }
+    String::from_utf8(output.stdout).map_err(|error| format!("COMPOSITE_RUSTFMT_UTF8:{error}"))
+}
+
 pub fn install_composite_candidate(
     candidate: &CompositeProgramCandidateIR,
     policy: &AutonomousSourceMutationPolicy,
     state_dir: &std::path::Path,
     source_generation: u64,
+    attempt_nonce: u64,
 ) -> Result<AutonomousSourcePatchReceipt, String> {
     if candidate.installed
         || !candidate.type_effect_audit_pass
@@ -316,6 +355,8 @@ pub fn install_composite_candidate(
     {
         return Err("COMPOSITE_SOURCE_INSTALLATION_INPUT_INVALID".to_string());
     }
+    let candidate_source = rustfmt_generated_source(policy, &candidate.generated_rust_source)?;
+    let candidate_sha256 = sha256(candidate_source.as_bytes());
     let target = policy.source_root.join(&candidate.source_relative_path);
     let predecessor_source = std::fs::read_to_string(&target).map_err(|error| {
         format!(
@@ -328,12 +369,9 @@ pub fn install_composite_candidate(
         .source_relative_path
         .to_string_lossy()
         .replace('\\', "/");
-    let structural_repair_program = synthesize_structural_repair(
-        &file_id,
-        &predecessor_source,
-        &candidate.generated_rust_source,
-    )?;
-    let transformation = "SEM5_PROGRAM_IR_TO_COMPILED_RUST_CAPABILITY".to_string();
+    let structural_repair_program =
+        synthesize_structural_repair(&file_id, &predecessor_source, &candidate_source)?;
+    let transformation = "SEM5_PROGRAM_IR_TO_ACTIVE_RUNTIME_CALLABLE".to_string();
     let consequences = candidate.patch_candidate.consequence_predictions.clone();
     let weakness = derive_dynamic_weakness(
         source_generation,
@@ -347,9 +385,9 @@ pub fn install_composite_candidate(
     );
     let generalized_change = synthesize_generalized_change(
         &weakness,
-        "EMIT_TYPED_RUST_AND_INSERT_NEW_BINARY",
+        "EMIT_TYPED_RUST_AND_ACTIVATE_CALLABLE",
         &predecessor_sha256,
-        &candidate.generated_rust_sha256,
+        &candidate_sha256,
         &structural_repair_program,
     )?;
     let request = AutonomousSourcePatchRequest {
@@ -358,23 +396,23 @@ pub fn install_composite_candidate(
             "COMPOSE-{}",
             &sha256(
                 format!(
-                    "{}:{}:{}",
-                    candidate.program_ir_sha256, source_generation, candidate.generated_rust_sha256
+                    "{}:{}:{}:{}",
+                    candidate.program_ir_sha256, source_generation, attempt_nonce, candidate_sha256
                 )
                 .as_bytes()
             )[..24]
         ),
         relative_path: candidate.source_relative_path.clone(),
         predecessor_sha256,
-        candidate_source: candidate.generated_rust_source.clone(),
-        candidate_sha256: candidate.generated_rust_sha256.clone(),
+        candidate_source,
+        candidate_sha256,
         transformation,
         consequence_predictions: consequences,
         predicted_value: policy.minimum_predicted_value.clamp(85, 100),
         source_generation,
         core_generated: true,
         core_self_approved: true,
-        solution_strategy: "EMIT_TYPED_RUST_AND_INSERT_NEW_BINARY".to_string(),
+        solution_strategy: "EMIT_TYPED_RUST_AND_ACTIVATE_CALLABLE".to_string(),
         structural_repair_program: Some(structural_repair_program),
         generalized_change: Some(generalized_change),
     };
@@ -384,14 +422,12 @@ pub fn install_composite_candidate(
 /// Executes a fresh input-seeded semantic canary over the promoted SEM-5
 /// primitive composer.  This is behavioral evidence, not merely validation of
 /// the composition graph's declared types.
-pub fn execute_behavioral_composition_canary(
+pub fn compose_behavioral_canary_candidate(
     context_sha256: &str,
-) -> Result<BehavioralCompositionCanaryReceipt, String> {
+) -> Result<(CompositeProgramCandidateIR, ProgramTask), String> {
     if context_sha256.len() != 64 || !context_sha256.bytes().all(|byte| byte.is_ascii_hexdigit()) {
         return Err("BEHAVIORAL_CANARY_CONTEXT_INVALID".to_string());
     }
-    let case_seed = u64::from_str_radix(&context_sha256[..16], 16)
-        .map_err(|error| format!("BEHAVIORAL_CANARY_SEED:{error}"))?;
     let sets = generate_task_sets(0x1A7E_600D);
     let candidates = discover_candidates(&sets.discovery);
     let promotions = initial_promotions(&candidates, &sets.calibration);
@@ -422,11 +458,30 @@ pub fn execute_behavioral_composition_canary(
         promotions,
         predecessor_tree_hash: AUTHORITATIVE_PREDECESSOR.to_string(),
     })?;
+    Ok((candidate, task))
+}
+
+pub fn execute_behavioral_composition_canary(
+    context_sha256: &str,
+) -> Result<BehavioralCompositionCanaryReceipt, String> {
+    let case_seed = u64::from_str_radix(&context_sha256[..16], 16)
+        .map_err(|error| format!("BEHAVIORAL_CANARY_SEED:{error}"))?;
+    let (candidate, task) = compose_behavioral_canary_candidate(context_sha256)?;
     let cases = generate_property_cases(&task, case_seed)
         .into_iter()
         .take(3)
         .collect::<Vec<_>>();
     let mut passed = 0_usize;
+    let installed_capability_present =
+        crate::generated_sem5_capability::GENERATED_CAPABILITY_ACTIVE;
+    let installed_program_match = installed_capability_present
+        && crate::generated_sem5_capability::GENERATED_PROGRAM_ID
+            == candidate.program_ir.program_id
+        && crate::generated_sem5_capability::GENERATED_PROGRAM_IR_SHA256
+            == candidate.program_ir_sha256;
+    let mut installed_cases_executed = 0_usize;
+    let mut installed_cases_passed = 0_usize;
+    let mut installed_outputs = Vec::new();
     for inputs in &cases {
         let expected = evaluate_contract(&task, inputs)?;
         let actual = execute(
@@ -439,14 +494,34 @@ pub fn execute_behavioral_composition_canary(
             return Err("BEHAVIORAL_CANARY_SEMANTIC_MISMATCH".to_string());
         }
         passed += 1;
+        if installed_program_match {
+            installed_cases_executed += 1;
+            let installed = crate::generated_sem5_capability::run_generated_capability(inputs)
+                .map_err(|error| format!("INSTALLED_CAPABILITY_EXECUTION:{error}"))?;
+            if installed != expected {
+                return Err("INSTALLED_CAPABILITY_SEMANTIC_MISMATCH".to_string());
+            }
+            installed_cases_passed += 1;
+            installed_outputs.push(installed);
+        }
     }
+    let installed_output_sha256 = installed_program_match
+        .then(|| serde_json::to_vec(&installed_outputs))
+        .transpose()
+        .map_err(|error| format!("INSTALLED_CAPABILITY_OUTPUT_SERIALIZE:{error}"))?
+        .map(|bytes| sha256(&bytes));
     let receipt_sha256 = sha256(
         format!(
-            "{}:{}:{}:{}",
+            "{}:{}:{}:{}:{}:{}:{}:{}:{}",
             context_sha256,
             candidate.program_ir_sha256,
             cases.len(),
-            passed
+            passed,
+            installed_capability_present,
+            installed_program_match,
+            installed_cases_executed,
+            installed_cases_passed,
+            installed_output_sha256.as_deref().unwrap_or("NONE")
         )
         .as_bytes(),
     );
@@ -457,6 +532,11 @@ pub fn execute_behavioral_composition_canary(
         used_primitive_ids: candidate.used_primitive_ids,
         cases_executed: cases.len(),
         cases_passed: passed,
+        installed_capability_present,
+        installed_program_match,
+        installed_cases_executed,
+        installed_cases_passed,
+        installed_output_sha256,
         receipt_sha256,
     })
 }
@@ -637,10 +717,29 @@ mod tests {
         assert!(!candidate.installed);
         assert!(candidate
             .generated_rust_source
-            .contains("pub fn run_generated_capability()"));
+            .contains("pub fn run_generated_capability(inputs:"));
+        assert!(candidate
+            .generated_rust_source
+            .contains("GENERATED_CAPABILITY_ACTIVE: bool = true"));
+        assert!(candidate
+            .generated_rust_source
+            .contains(&candidate.program_ir_sha256));
         assert_ne!(
             candidate.patch_candidate.unified_diff_sha256,
             candidate.program_ir_sha256
+        );
+        let formatting_policy = AutonomousSourceMutationPolicy {
+            cargo_executable: PathBuf::from(env!("CARGO")),
+            ..AutonomousSourceMutationPolicy::default()
+        };
+        let formatted =
+            rustfmt_generated_source(&formatting_policy, &candidate.generated_rust_source)
+                .expect("format generated callable");
+        assert!(syn::parse_file(&formatted).is_ok());
+        assert_eq!(
+            rustfmt_generated_source(&formatting_policy, &formatted)
+                .expect("formatting is idempotent"),
+            formatted
         );
         assert_eq!(candidate.full_source_scan_events, 0);
 
@@ -664,26 +763,23 @@ mod tests {
 
         assert_eq!(first.cases_executed, 3);
         assert_eq!(first.cases_passed, 3);
+        assert!(!first.installed_capability_present);
+        assert!(!first.installed_program_match);
+        assert_eq!(first.installed_cases_executed, 0);
+        assert!(first.installed_output_sha256.is_none());
         assert_ne!(first.receipt_sha256, second.receipt_sha256);
         assert!(!first.used_primitive_ids.is_empty());
     }
 
     #[test]
-    fn recursive_epoch_and_composition_share_one_bounded_result() {
-        let result = run_integrated_development_epoch(IntegratedDevelopmentEpochRequest {
+    fn integrated_composition_cannot_exit_as_proposal_only() {
+        let error = run_integrated_development_epoch(IntegratedDevelopmentEpochRequest {
             recursive_epoch: recursive_request(),
             composition_work: Some(composition_work()),
             installation: None,
         })
-        .expect("integrated epoch");
-        assert_eq!(result.recursive_epoch.epoch, 1);
-        assert!(result.composition_attempted);
-        assert!(result.composite_candidate.is_some());
-        assert_eq!(result.core_self_approval_events, 0);
-        assert_eq!(result.unverified_install_events, 0);
-        assert_eq!(result.full_source_scan_events, 0);
-        assert!(result.proposal_only);
-        assert!(!result.actual_source_write_attempted);
+        .unwrap_err();
+        assert_eq!(error, "COMPOSITION_INSTALLATION_CONTEXT_REQUIRED");
     }
 
     #[test]

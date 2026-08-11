@@ -166,6 +166,8 @@ if ($RunSmokeTests) {
         -not $growthCheck.diagnostic_outcome_requires_action_output_consumption -or
         -not $growthCheck.self_healing_candidates_route_to_atomic_installer -or
         -not $growthCheck.integrated_program_ir_lowers_to_compiled_rust -or
+        -not $growthCheck.installed_compositions_are_runtime_callable -or
+        -not $growthCheck.accepted_sem5_compositions_route_to_installer -or
         -not $growthCheck.active_binaries_forbid_proposal_only_exit -or
         -not $growthCheck.generalized_change_ir_bound_to_source_edits -or
         -not $growthCheck.validation_counterexamples_drive_candidate_ranking -or
