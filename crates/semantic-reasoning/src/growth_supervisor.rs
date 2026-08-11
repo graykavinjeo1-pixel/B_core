@@ -709,6 +709,10 @@ pub struct StepReport {
     pub diagnostic_policy_selections: u64,
     pub diagnostic_policy_explorations: u64,
     pub diagnostic_policy_causal_support_events: u64,
+    pub diagnostic_policy_outcome_bound_selections: u64,
+    pub diagnostic_policy_productive_outcomes: u64,
+    pub diagnostic_policy_failed_outcomes: u64,
+    pub diagnostic_policy_duplicate_selections_suppressed: u64,
     pub runtime_self_repairs_activated: u64,
     pub self_repair_capability_gaps: u64,
     pub last_internal_bottleneck: Option<String>,
@@ -778,6 +782,8 @@ pub struct SelfCheck {
     pub adaptive_diagnostic_policy_enabled: bool,
     pub exploration_bonus_excluded_from_prediction: bool,
     pub composition_scoped_policy_application: bool,
+    pub diagnostic_reward_requires_later_frontier_outcome: bool,
+    pub same_generation_diagnostic_reward_deduplicated: bool,
     pub mutual_recursive_growth_observed: bool,
 }
 
@@ -818,6 +824,8 @@ pub fn self_check() -> SelfCheck {
             "EXPLORATION_PRIORITY_IS_NOT_EXPECTED_OUTCOME_VALUE".to_string(),
             "COMPOSITION_POLICY_EFFECTS_APPLY_ONLY_TO_SUPPORTED_SIGNALS".to_string(),
             "DIAGNOSTIC_YIELD_AND_NOVELTY_ADAPT_NEXT_EXPERIMENT_SELECTION".to_string(),
+            "DIAGNOSTIC_REWARD_REQUIRES_A_LATER_VERIFIED_FRONTIER_OUTCOME".to_string(),
+            "SAME_GENERATION_DIAGNOSTIC_REPETITION_IS_NOT_NEW_REPAIR".to_string(),
         ],
         bounded_failure_retry_enabled: true,
         successful_solution_learning_enabled: true,
@@ -837,6 +845,8 @@ pub fn self_check() -> SelfCheck {
         adaptive_diagnostic_policy_enabled: true,
         exploration_bonus_excluded_from_prediction: true,
         composition_scoped_policy_application: true,
+        diagnostic_reward_requires_later_frontier_outcome: true,
+        same_generation_diagnostic_reward_deduplicated: true,
         mutual_recursive_growth_observed: false,
     }
 }
@@ -3620,6 +3630,10 @@ fn promote_candidate(
         .filter(|lesson| !lesson.performance_metrics.is_empty())
         .count()
         .min(u64::MAX as usize) as u64;
+    state.diagnostic_policy.resolve_frontier_outcome(
+        freeze.generation.saturating_sub(1),
+        candidate.generative_cycle.frontier_advance,
+    );
     state.campaigns_accepted = state.campaigns_accepted.saturating_add(1);
     state.consecutive_failures = 0;
     state.plateau_scans = 0;
@@ -3670,6 +3684,9 @@ fn complete_campaign(
         )?)
     } else {
         consume_failed_observations(config, index, freeze, candidate)?;
+        state
+            .diagnostic_policy
+            .resolve_frontier_outcome(freeze.generation.saturating_sub(1), false);
         state.campaigns_failed = state.campaigns_failed.saturating_add(1);
         state.consecutive_failures = state.consecutive_failures.saturating_add(1);
         state.pending_campaign_id = None;
@@ -3950,21 +3967,23 @@ fn persist_self_inspection(
     let is_new = !path.exists();
     if is_new {
         write_immutable_json(&path, receipt)?;
-        state.diagnostic_policy.record(receipt);
+        let new_policy_selection = state.diagnostic_policy.record(receipt);
         state.self_inspection_events = state.self_inspection_events.saturating_add(1);
         state.diagnostic_experiment_events = state
             .diagnostic_experiment_events
             .saturating_add(receipt.experiments.len() as u64);
-        match receipt.repair_disposition {
-            RepairDisposition::RuntimeRepairActive => {
-                state.runtime_self_repairs_activated =
-                    state.runtime_self_repairs_activated.saturating_add(1);
+        if new_policy_selection {
+            match receipt.repair_disposition {
+                RepairDisposition::RuntimeRepairActive => {
+                    state.runtime_self_repairs_activated =
+                        state.runtime_self_repairs_activated.saturating_add(1);
+                }
+                RepairDisposition::CapabilityGap => {
+                    state.self_repair_capability_gaps =
+                        state.self_repair_capability_gaps.saturating_add(1);
+                }
+                RepairDisposition::ProposalRequired | RepairDisposition::SafeWait => {}
             }
-            RepairDisposition::CapabilityGap => {
-                state.self_repair_capability_gaps =
-                    state.self_repair_capability_gaps.saturating_add(1);
-            }
-            RepairDisposition::ProposalRequired | RepairDisposition::SafeWait => {}
         }
         cleanup_recent_files(
             &config.state_dir.join("diagnostics"),
@@ -4013,6 +4032,14 @@ fn report_from_state(
         diagnostic_policy_selections: state.diagnostic_policy.selections,
         diagnostic_policy_explorations: state.diagnostic_policy.exploration_selections,
         diagnostic_policy_causal_support_events: state.diagnostic_policy.causal_support_events,
+        diagnostic_policy_outcome_bound_selections: state
+            .diagnostic_policy
+            .outcome_bound_selections,
+        diagnostic_policy_productive_outcomes: state.diagnostic_policy.productive_outcome_events,
+        diagnostic_policy_failed_outcomes: state.diagnostic_policy.failed_outcome_events,
+        diagnostic_policy_duplicate_selections_suppressed: state
+            .diagnostic_policy
+            .duplicate_selection_suppressed,
         runtime_self_repairs_activated: state.runtime_self_repairs_activated,
         self_repair_capability_gaps: state.self_repair_capability_gaps,
         last_internal_bottleneck: state.last_internal_bottleneck.clone(),

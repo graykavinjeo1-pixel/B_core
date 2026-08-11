@@ -22,6 +22,12 @@ pub struct DiagnosticExperimentMemory {
     pub trials: u64,
     pub causal_support_events: u64,
     pub consecutive_no_support: u32,
+    #[serde(default)]
+    pub last_selected_generation: Option<u64>,
+    #[serde(default)]
+    pub productive_outcome_events: u64,
+    #[serde(default)]
+    pub failed_outcome_events: u64,
 }
 
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
@@ -30,18 +36,85 @@ pub struct DiagnosticPolicyMemory {
     pub selections: u64,
     pub exploration_selections: u64,
     pub causal_support_events: u64,
+    #[serde(default)]
+    pub outcome_bound_selections: u64,
+    #[serde(default)]
+    pub productive_outcome_events: u64,
+    #[serde(default)]
+    pub failed_outcome_events: u64,
+    #[serde(default)]
+    pub duplicate_selection_suppressed: u64,
+    #[serde(default)]
+    pub active_experiment_id: Option<String>,
+    #[serde(default)]
+    pub active_generation: Option<u64>,
+    #[serde(default)]
+    pub active_observations: u32,
+    #[serde(default)]
+    pub active_causal_support: bool,
 }
 
 impl DiagnosticPolicyMemory {
-    pub fn record(&mut self, receipt: &AutonomousSelfInspectionReceipt) {
-        let Some(experiment) = receipt.experiments.first() else {
-            return;
+    const MAX_ACTIVE_OBSERVATIONS_WITHOUT_OUTCOME: u32 = 8;
+
+    fn resolve_active(&mut self, productive: bool) -> bool {
+        let Some(experiment_id) = self.active_experiment_id.take() else {
+            return false;
         };
+        let Some(record) = self.experiment_records.get_mut(&experiment_id) else {
+            self.active_generation = None;
+            self.active_observations = 0;
+            self.active_causal_support = false;
+            return false;
+        };
+        if productive && self.active_causal_support {
+            record.productive_outcome_events = record.productive_outcome_events.saturating_add(1);
+            self.productive_outcome_events = self.productive_outcome_events.saturating_add(1);
+        } else {
+            record.failed_outcome_events = record.failed_outcome_events.saturating_add(1);
+            self.failed_outcome_events = self.failed_outcome_events.saturating_add(1);
+        }
+        self.active_generation = None;
+        self.active_observations = 0;
+        self.active_causal_support = false;
+        true
+    }
+
+    pub fn resolve_frontier_outcome(
+        &mut self,
+        source_generation: u64,
+        frontier_advance: bool,
+    ) -> bool {
+        if self.active_generation != Some(source_generation) {
+            return false;
+        }
+        self.resolve_active(frontier_advance)
+    }
+
+    pub fn record(&mut self, receipt: &AutonomousSelfInspectionReceipt) -> bool {
+        let Some(experiment) = receipt.experiments.first() else {
+            return false;
+        };
+        if self.active_generation == Some(receipt.generation)
+            && self.active_experiment_id.as_deref() == Some(experiment.experiment_id.as_str())
+        {
+            self.duplicate_selection_suppressed =
+                self.duplicate_selection_suppressed.saturating_add(1);
+            self.active_observations = self.active_observations.saturating_add(1);
+            if self.active_observations >= Self::MAX_ACTIVE_OBSERVATIONS_WITHOUT_OUTCOME {
+                self.resolve_active(false);
+            }
+            return false;
+        }
+        if self.active_experiment_id.is_some() {
+            self.resolve_active(false);
+        }
         let record = self
             .experiment_records
             .entry(experiment.experiment_id.clone())
             .or_default();
         record.trials = record.trials.saturating_add(1);
+        record.last_selected_generation = Some(receipt.generation);
         if experiment.causal_support {
             record.causal_support_events = record.causal_support_events.saturating_add(1);
             record.consecutive_no_support = 0;
@@ -50,6 +123,7 @@ impl DiagnosticPolicyMemory {
             record.consecutive_no_support = record.consecutive_no_support.saturating_add(1);
         }
         self.selections = self.selections.saturating_add(1);
+        self.outcome_bound_selections = self.outcome_bound_selections.saturating_add(1);
         if receipt
             .hypotheses
             .iter()
@@ -59,6 +133,11 @@ impl DiagnosticPolicyMemory {
         {
             self.exploration_selections = self.exploration_selections.saturating_add(1);
         }
+        self.active_experiment_id = Some(experiment.experiment_id.clone());
+        self.active_generation = Some(receipt.generation);
+        self.active_observations = 1;
+        self.active_causal_support = experiment.causal_support;
+        true
     }
 }
 
@@ -466,26 +545,52 @@ fn candidate_hypotheses(input: &SelfInspectionInput) -> Vec<InternalHypothesis> 
         let exploration_bonus = if record.trials == 0 { 120_u32 } else { 0 };
         let support_bonus = record
             .causal_support_events
-            .saturating_mul(80)
+            .saturating_mul(40)
             .checked_div(record.trials.max(1))
             .unwrap_or(0)
-            .min(80) as u32;
+            .min(40) as u32;
+        let productive_bonus = record
+            .productive_outcome_events
+            .saturating_mul(40)
+            .checked_div(record.trials.max(1))
+            .unwrap_or(0)
+            .min(40) as u32;
+        let failed_outcome_penalty = record
+            .failed_outcome_events
+            .saturating_mul(100)
+            .checked_div(record.trials.max(1))
+            .unwrap_or(0)
+            .min(100) as u32;
         let repetition_penalty = record.trials.min(8).saturating_mul(6) as u32;
         let unsupported_penalty = record.consecutive_no_support.min(4) * 30;
+        let active_bonus = if input.diagnostic_policy.active_generation == Some(input.generation)
+            && input.diagnostic_policy.active_experiment_id.as_deref()
+                == Some(experiment.experiment_id.as_str())
+        {
+            1_000_u32
+        } else {
+            0
+        };
         hypothesis.policy_score_millis = u32::from(hypothesis.confidence_millis)
             .saturating_add(exploration_bonus)
             .saturating_add(support_bonus)
+            .saturating_add(productive_bonus)
+            .saturating_add(active_bonus)
             .saturating_sub(repetition_penalty)
             .saturating_sub(unsupported_penalty)
+            .saturating_sub(failed_outcome_penalty)
             .min(u32::from(u16::MAX)) as u16;
         hypothesis.prior_policy_trials = record.trials;
         hypothesis.prior_causal_support_events = record.causal_support_events;
         hypothesis.policy_exploration_selected = record.trials == 0;
         hypothesis.evidence.push(format!(
-            "adaptive_policy:experiment={};trials={};causal_support={};score={}",
+            "adaptive_policy:experiment={};trials={};causal_support={};productive={};failed={};active={};score={}",
             experiment.experiment_id,
             record.trials,
             record.causal_support_events,
+            record.productive_outcome_events,
+            record.failed_outcome_events,
+            active_bonus > 0,
             hypothesis.policy_score_millis
         ));
     }
@@ -909,13 +1014,24 @@ mod tests {
         );
         assert!(first.hypotheses[0].policy_exploration_selected);
 
-        value.diagnostic_policy.record(&first);
-        let second = inspect(value).expect("second inspection");
+        assert!(value.diagnostic_policy.record(&first));
+        let repeated = inspect(value.clone()).expect("same-generation inspection");
         assert_eq!(
-            second.selected_bottleneck,
+            repeated.selected_bottleneck,
+            InternalBottleneckClass::CampaignCohortBlocked
+        );
+        assert!(!value.diagnostic_policy.record(&repeated));
+        assert_eq!(value.diagnostic_policy.outcome_bound_selections, 1);
+        assert_eq!(value.diagnostic_policy.duplicate_selection_suppressed, 1);
+
+        assert!(value.diagnostic_policy.resolve_frontier_outcome(2, true));
+        value.generation = 3;
+        let next_generation = inspect(value).expect("next-generation inspection");
+        assert_eq!(
+            next_generation.selected_bottleneck,
             InternalBottleneckClass::SourceRepairLowYield
         );
-        assert!(second.hypotheses[0].policy_exploration_selected);
-        assert_eq!(second.hypotheses[0].prior_policy_trials, 0);
+        assert!(next_generation.hypotheses[0].policy_exploration_selected);
+        assert_eq!(next_generation.hypotheses[0].prior_policy_trials, 0);
     }
 }
