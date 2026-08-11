@@ -1064,7 +1064,7 @@ fn applicable(case: &TransitionCase) -> bool {
         return false;
     };
     let material_ok = match &target.material {
-        SemanticTerm::Primitive { atom } => atom.value_code % 2 == 0,
+        SemanticTerm::Primitive { atom } => atom.value_code.is_multiple_of(2),
         SemanticTerm::Composition { components } => components
             .first()
             .map(|a| a.value_code % 2 == 0)

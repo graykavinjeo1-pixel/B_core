@@ -442,7 +442,7 @@ pub fn generate_tasks(set: TemporalSet, seed: u64, count: usize) -> Vec<Temporal
                     familiar[(index + ordinal) % familiar.len()]
                 };
                 let duration = durations[(index * 3 + ordinal * 5) % durations.len()];
-                let interrupt_at = if (index + ordinal) % 9 == 0 && duration > 5 {
+                let interrupt_at = if (index + ordinal).is_multiple_of(9) && duration > 5 {
                     Some(duration / 2)
                 } else {
                     None

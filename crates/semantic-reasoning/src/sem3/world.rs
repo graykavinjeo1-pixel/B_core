@@ -250,7 +250,7 @@ pub fn generate_external_blind(
             (
                 index % 12,
                 [-3, -1, 0, 1, 3][(index * 7 + 3) % 5],
-                index % 5 == 0,
+                index.is_multiple_of(5),
                 false,
             )
         } else {

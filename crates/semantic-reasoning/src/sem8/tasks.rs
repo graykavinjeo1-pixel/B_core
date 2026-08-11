@@ -220,7 +220,7 @@ fn build_task(index: usize, catalog: &[MechanismIR], rng: &mut Rng) -> TransferE
         transfer_family_included: false,
         frozen: true,
     };
-    let target_only_expansions_required = if within % 4 == 0 {
+    let target_only_expansions_required = if within.is_multiple_of(4) {
         48 + visible.roles.len()
     } else {
         92 + visible.roles.len() * 7 + within

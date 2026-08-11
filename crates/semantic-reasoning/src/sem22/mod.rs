@@ -421,7 +421,7 @@ pub fn run_campaign(root: &Path) -> Result<String, String> {
             let failure_id = format!("FC22-{epoch:02}-{rejection}");
             let reason = if rejection == 0 {
                 "ROLE_MISMATCH"
-            } else if epoch % 2 == 0 {
+            } else if epoch.is_multiple_of(2) {
                 "RESOURCE_CONFLICT"
             } else {
                 "ORDERING_CONFLICT"
