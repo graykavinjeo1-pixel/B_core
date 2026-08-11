@@ -796,6 +796,7 @@ pub struct SelfCheck {
     pub heuristic_composition_value_excluded_from_frontier: bool,
     pub behavioral_evidence_required_for_generative_self_application: bool,
     pub behavioral_composition_execution_enabled: bool,
+    pub redundant_generative_verifier_search_disabled: bool,
     pub mutual_recursive_growth_observed: bool,
 }
 
@@ -841,6 +842,7 @@ pub fn self_check() -> SelfCheck {
             "HEURISTIC_COMPOSITION_VALUE_IS_NOT_BEHAVIORAL_CAPABILITY_EVIDENCE".to_string(),
             "UNVERIFIED_GENERATIVE_FRONTIER_HISTORY_IS_QUARANTINED".to_string(),
             "GENERATION_FRONTIER_REQUIRES_CONTEXT_BOUND_BEHAVIORAL_EXECUTION_RECEIPT".to_string(),
+            "MANDATORY_EVALUATOR_AUDIT_IS_NOT_A_SELECTABLE_GENERATIVE_SEARCH_ARM".to_string(),
         ],
         bounded_failure_retry_enabled: true,
         successful_solution_learning_enabled: true,
@@ -865,6 +867,7 @@ pub fn self_check() -> SelfCheck {
         heuristic_composition_value_excluded_from_frontier: true,
         behavioral_evidence_required_for_generative_self_application: true,
         behavioral_composition_execution_enabled: true,
+        redundant_generative_verifier_search_disabled: true,
         mutual_recursive_growth_observed: false,
     }
 }
@@ -4888,6 +4891,7 @@ mod tests {
         assert!(check.heuristic_composition_value_excluded_from_frontier);
         assert!(check.behavioral_evidence_required_for_generative_self_application);
         assert!(check.behavioral_composition_execution_enabled);
+        assert!(check.redundant_generative_verifier_search_disabled);
         assert!(!check.mutual_recursive_growth_observed);
     }
 

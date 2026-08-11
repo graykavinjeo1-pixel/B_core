@@ -146,6 +146,7 @@ if ($RunSmokeTests) {
         -not $growthCheck.network_and_llm_disabled -or
         -not $growthCheck.plateau_difficulty_escalation_disabled -or
         -not $growthCheck.behavioral_composition_execution_enabled -or
+        -not $growthCheck.redundant_generative_verifier_search_disabled -or
         -not $growthCheck.core_self_approval_enabled -or
         -not $growthCheck.autonomous_source_patch_install_enabled -or
         -not $growthCheck.source_patch_rollback_enabled -or

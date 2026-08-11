@@ -777,16 +777,14 @@ pub fn run_generative_cycle(
             "fullstack_ops_knowledge::recipe_as_composition_lesson",
         ),
     ];
-    let verifiers = [
-        (
-            "INDEPENDENT_GROWTH_VERIFIER",
-            "growth_supervisor::run_verifier_request",
-        ),
-        (
-            "EVALUATOR_MUTATION_AUDITOR",
-            "growth_supervisor::evaluator_self_audit",
-        ),
-    ];
+    // Verification is not an optimization arm. Every candidate must pass the
+    // same independent verifier and the evaluator mutation audit is already a
+    // mandatory check inside that boundary. Treating both as selectable
+    // alternatives doubled the search space without changing behavior.
+    let verifiers = [(
+        "INDEPENDENT_GROWTH_VERIFIER",
+        "growth_supervisor::run_verifier_request",
+    )];
     let mut candidates = Vec::new();
     for predictor in predictors {
         for composer in composers {
@@ -1109,7 +1107,7 @@ mod tests {
     #[test]
     fn prediction_precedes_isolated_typed_composition() {
         let result = run_generative_cycle(&GenerativeGrowthMemory::default(), &input(), 7).unwrap();
-        assert_eq!(result.candidates_considered, 12);
+        assert_eq!(result.candidates_considered, 6);
         assert!(result.prediction_recorded_before_composition);
         assert!(result.selected_from_precomposition_prediction);
         assert!(result.isolated_composition_executed);
@@ -1136,7 +1134,7 @@ mod tests {
     fn bounded_exploration_prevents_early_success_from_monopolizing_search() {
         let mut memory = GenerativeGrowthMemory::default();
         let mut selected = BTreeSet::new();
-        for ordinal in 0..12 {
+        for ordinal in 0..6 {
             let mut current = input();
             current.source_lesson_id = format!("lesson-{ordinal}");
             let result = run_generative_cycle(&memory, &current, ordinal).unwrap();
@@ -1145,15 +1143,15 @@ mod tests {
             selected.insert(result.selected_composition.composition_id.clone());
             memory = promote_generative_cycle(&memory, &current, &result).unwrap();
         }
-        assert_eq!(selected.len(), 12);
-        assert_eq!(memory.composition_trials.len(), 12);
-        assert_eq!(memory.exploration_events, 12);
-        assert_eq!(memory.accepted_compositions.len(), 4);
-        assert_eq!(memory.frontier_advance_events, 4);
-        assert_eq!(memory.unverified_frontier_candidate_events, 8);
-        assert_eq!(memory.behavioral_verification_events, 4);
-        assert!(memory.prediction_absolute_error_total < 12 * 100);
-        assert_eq!(memory.calibrated_prediction_records, 12);
+        assert_eq!(selected.len(), 6);
+        assert_eq!(memory.composition_trials.len(), 6);
+        assert_eq!(memory.exploration_events, 6);
+        assert_eq!(memory.accepted_compositions.len(), 2);
+        assert_eq!(memory.frontier_advance_events, 2);
+        assert_eq!(memory.unverified_frontier_candidate_events, 4);
+        assert_eq!(memory.behavioral_verification_events, 2);
+        assert!(memory.prediction_absolute_error_total < 6 * 100);
+        assert_eq!(memory.calibrated_prediction_records, 6);
 
         let mut repeated_context = input();
         repeated_context.source_lesson_id = "lesson-repeated-context".to_string();
@@ -1182,7 +1180,7 @@ mod tests {
         assert!(transferred.frontier_advance);
         assert!(transferred.applied_to_self_improvement);
         memory = promote_generative_cycle(&memory, &new_context, &transferred).unwrap();
-        assert_eq!(memory.unverified_frontier_candidate_events, 8);
+        assert_eq!(memory.unverified_frontier_candidate_events, 4);
     }
 
     #[test]
