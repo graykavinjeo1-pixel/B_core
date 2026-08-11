@@ -1834,6 +1834,8 @@ fn scan_watched_roots(
         let Some(fingerprint) =
             fingerprint_file_with_metadata(path, &metadata, config.resources.max_file_bytes)?
         else {
+            eligible_logical_paths.remove(&logical);
+            new_index.files.remove(&logical);
             continue;
         };
         bytes_observed = bytes_observed.saturating_add(fingerprint.bytes);
@@ -4245,8 +4247,8 @@ mod tests {
     }
 
     #[test]
-    fn oversized_excluded_file_does_not_block_baseline_completion() {
-        let root = temp_root("baseline-oversized-exclusion");
+    fn excluded_files_do_not_block_baseline_completion() {
+        let root = temp_root("baseline-file-exclusions");
         let (config_path, config) = test_config(&root);
         fs::write(
             config.watched_roots[0].join("eligible.rs"),
@@ -4255,6 +4257,16 @@ mod tests {
         .unwrap();
         let oversized = vec![b'x'; config.resources.max_file_bytes as usize + 1];
         fs::write(config.watched_roots[0].join("oversized.rs"), oversized).unwrap();
+        fs::write(
+            config.watched_roots[0].join("generated.rs"),
+            "// automatically generated\npub fn generated() {}\n",
+        )
+        .unwrap();
+        fs::write(
+            config.watched_roots[0].join("non_utf8.rs"),
+            [0xff, 0xfe, 0xfd],
+        )
+        .unwrap();
         initialize(&config_path).unwrap();
         let report = supervisor_step(&config_path).unwrap();
         assert!(report.baseline_created);
