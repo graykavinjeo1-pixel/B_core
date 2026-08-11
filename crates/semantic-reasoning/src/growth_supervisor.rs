@@ -18,6 +18,10 @@ use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
 
 use serde::{Deserialize, Serialize};
 
+use crate::autonomous_self_inspection::{
+    inspect as inspect_self, AutonomousSelfInspectionReceipt, RepairDisposition,
+    SelfInspectionInput,
+};
 use crate::self_repair_contract::sha256;
 
 pub const SUPERVISOR_SCHEMA: &str = "B_CORE_BOUNDED_GROWTH_SUPERVISOR_1";
@@ -27,6 +31,11 @@ const MAX_SUMMARY_BYTES: usize = 512;
 const SCAN_WATCHDOG_TICK_MS: u64 = 1_000;
 const MAX_SCAN_RUNTIME_MS: u64 = 60_000;
 const FULL_HASH_CANARY_INTERVAL: u64 = 64;
+
+fn logical_path_canary_bucket(logical_path: &str) -> u64 {
+    let digest = sha256(logical_path.as_bytes());
+    u64::from_str_radix(&digest[..16], 16).unwrap_or(0) % FULL_HASH_CANARY_INTERVAL
+}
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct ResourceLimits {
@@ -202,6 +211,26 @@ pub struct SupervisorState {
     pub last_scan_files_hashed: u64,
     #[serde(default)]
     pub scan_timeout_events: u64,
+    #[serde(default)]
+    pub self_inspection_events: u64,
+    #[serde(default)]
+    pub diagnostic_experiment_events: u64,
+    #[serde(default)]
+    pub runtime_self_repairs_activated: u64,
+    #[serde(default)]
+    pub self_repair_capability_gaps: u64,
+    #[serde(default)]
+    pub last_internal_bottleneck: Option<String>,
+    #[serde(default)]
+    pub last_self_inspection_sha256: Option<String>,
+    #[serde(default)]
+    pub evaluator_generation: u64,
+    #[serde(default)]
+    pub current_evaluator_memory_sha256: String,
+    #[serde(default)]
+    pub evaluator_challenge_cases: u64,
+    #[serde(default)]
+    pub mutual_revalidation_events: u64,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
@@ -244,6 +273,8 @@ pub struct WorkEvent {
     pub outcome: WorkOutcome,
     pub summary: String,
     pub evidence_sha256: Vec<String>,
+    #[serde(default)]
+    pub evidence_artifacts: Vec<PathBuf>,
     pub occurred_at_ms: u64,
 }
 
@@ -297,6 +328,8 @@ pub struct LearningObservation {
     pub learning_score: u16,
     pub learning_value: LearningValue,
     pub reasons: Vec<String>,
+    #[serde(default)]
+    pub verification_evidence_sha256: Vec<String>,
     pub exact_source_fragments_stored: usize,
     pub raw_source_bytes_stored: usize,
     pub observed_at_ms: u64,
@@ -355,6 +388,44 @@ pub struct GrowthMemory {
     pub predecessor_sha256: Option<String>,
     pub lessons: Vec<LearnedCompositionLesson>,
     pub classifier: ClassifierMemory,
+    #[serde(default, skip_serializing_if = "EvaluatorMemory::is_default")]
+    pub evaluator: EvaluatorMemory,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct EvaluatorMemory {
+    pub schema: String,
+    pub generation: u64,
+    pub predecessor_sha256: Option<String>,
+    pub challenge_suite: Vec<EvaluatorMutationKind>,
+    pub source_lesson_ids: Vec<String>,
+    pub accepted_expansions: u64,
+}
+
+impl Default for EvaluatorMemory {
+    fn default() -> Self {
+        Self {
+            schema: "B_CORE_GROWTH_EVALUATOR_MEMORY_1".to_string(),
+            generation: 0,
+            predecessor_sha256: None,
+            challenge_suite: vec![
+                EvaluatorMutationKind::EvidenceDigestSubstitution,
+                EvaluatorMutationKind::AggregateScoreInflation,
+                EvaluatorMutationKind::LessonScoreInflation,
+                EvaluatorMutationKind::DiagnosticSignalInjection,
+                EvaluatorMutationKind::CompositionRecipeMutation,
+                EvaluatorMutationKind::WorkKindMutation,
+            ],
+            source_lesson_ids: Vec::new(),
+            accepted_expansions: 0,
+        }
+    }
+}
+
+impl EvaluatorMemory {
+    fn is_default(&self) -> bool {
+        self == &Self::default()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -433,8 +504,55 @@ pub struct GrowthVerificationReceipt {
     pub network_reads: usize,
     pub network_writes: usize,
     pub human_verification_decisions: usize,
+    pub evaluator_self_audit: EvaluatorSelfAudit,
     pub receipt_sha256: String,
     pub authority_seal: String,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum EvaluatorMutationKind {
+    EvidenceDigestSubstitution,
+    AggregateScoreInflation,
+    LessonScoreInflation,
+    DiagnosticSignalInjection,
+    CompositionRecipeMutation,
+    WorkKindMutation,
+    ApplicabilityMutation,
+    VerificationObligationMutation,
+    RawSourceFlagInjection,
+    EvidenceRemoval,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct EvaluatorMutationResult {
+    pub mutation: EvaluatorMutationKind,
+    pub expected_reject: bool,
+    pub rejected: bool,
+    pub survived: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct EvaluatorSelfAudit {
+    pub schema: String,
+    pub challenger_identity: String,
+    pub evaluator_identity: String,
+    pub baseline_candidate_reconstructed: bool,
+    pub mutation_results: Vec<EvaluatorMutationResult>,
+    pub mutation_cases: usize,
+    pub mutation_survivors: usize,
+    pub pass: bool,
+    pub active_evaluator_generation: u64,
+    pub proposed_evaluator_generation: u64,
+    pub proposed_evaluator_memory_sha256: String,
+    pub knowledge_challenge_cases: usize,
+    pub challenge_suite_expanded: bool,
+    pub post_challenge_core_revalidated: bool,
+    pub evaluator_self_approval_events: usize,
+    pub codex_calls: usize,
+    pub external_llm_calls: usize,
+    pub network_reads: usize,
+    pub network_writes: usize,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -474,6 +592,14 @@ pub struct StepReport {
     pub last_scan_files_reused: u64,
     pub last_scan_files_hashed: u64,
     pub scan_timeout_events: u64,
+    pub self_inspection_events: u64,
+    pub diagnostic_experiment_events: u64,
+    pub runtime_self_repairs_activated: u64,
+    pub self_repair_capability_gaps: u64,
+    pub last_internal_bottleneck: Option<String>,
+    pub evaluator_generation: u64,
+    pub evaluator_challenge_cases: u64,
+    pub mutual_revalidation_events: u64,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -485,6 +611,12 @@ pub struct SelfCheck {
     pub network_and_llm_disabled: bool,
     pub plateau_difficulty_escalation_disabled: bool,
     pub current_and_predecessor_memory_only: bool,
+    pub frozen_observation_reconstruction_enabled: bool,
+    pub bound_pass_evidence_required: bool,
+    pub evaluator_mutation_self_audit_enabled: bool,
+    pub evaluator_generation_evolution_enabled: bool,
+    pub promoted_lessons_drive_executable_repairs: bool,
+    pub mutual_recursive_growth_observed: bool,
 }
 
 pub fn self_check() -> SelfCheck {
@@ -496,6 +628,12 @@ pub fn self_check() -> SelfCheck {
         network_and_llm_disabled: true,
         plateau_difficulty_escalation_disabled: true,
         current_and_predecessor_memory_only: true,
+        frozen_observation_reconstruction_enabled: true,
+        bound_pass_evidence_required: true,
+        evaluator_mutation_self_audit_enabled: true,
+        evaluator_generation_evolution_enabled: true,
+        promoted_lessons_drive_executable_repairs: false,
+        mutual_recursive_growth_observed: false,
     }
 }
 
@@ -964,10 +1102,15 @@ fn classify_observation(
         }
     }
 
-    if outcome == WorkOutcome::Pass {
+    let pass_evidence_bound = event.is_some_and(|value| !value.evidence_sha256.is_empty());
+    if outcome == WorkOutcome::Pass && pass_evidence_bound {
         score += 25;
         signals.insert("VERIFIED_PASS".to_string());
-        reasons.push("explicit local outcome is PASS".to_string());
+        reasons.push("explicit local PASS is bound to hashed evidence artifacts".to_string());
+    } else if outcome == WorkOutcome::Pass {
+        score -= 35;
+        signals.insert("UNBOUND_PASS_REJECTED".to_string());
+        reasons.push("PASS without a bound evidence artifact is not verification".to_string());
     } else if outcome == WorkOutcome::Fail {
         score -= 35;
         signals.insert("OBSERVED_FAILURE".to_string());
@@ -1066,6 +1209,9 @@ fn classify_observation(
         learning_score,
         learning_value,
         reasons,
+        verification_evidence_sha256: event
+            .map(|value| value.evidence_sha256.clone())
+            .unwrap_or_default(),
         exact_source_fragments_stored: 0,
         raw_source_bytes_stored: 0,
         observed_at_ms: now_ms(),
@@ -1092,6 +1238,8 @@ struct ScanResult {
     observations: Vec<LearningObservation>,
     files_reused: usize,
     files_hashed: usize,
+    pending_work_events: usize,
+    replayed_unchanged_work_events: usize,
 }
 
 struct SupervisorLease {
@@ -1384,6 +1532,7 @@ pub fn initialize(config_path: &Path) -> Result<SupervisorState, String> {
         predecessor_sha256: None,
         lessons: Vec::new(),
         classifier: ClassifierMemory::default(),
+        evaluator: EvaluatorMemory::default(),
     };
     let memory_hash = json_sha256(&memory)?;
     write_immutable_json(&memory_path(&config, 0), &memory)?;
@@ -1417,6 +1566,16 @@ pub fn initialize(config_path: &Path) -> Result<SupervisorState, String> {
         last_scan_files_reused: 0,
         last_scan_files_hashed: 0,
         scan_timeout_events: 0,
+        self_inspection_events: 0,
+        diagnostic_experiment_events: 0,
+        runtime_self_repairs_activated: 0,
+        self_repair_capability_gaps: 0,
+        last_internal_bottleneck: None,
+        last_self_inspection_sha256: None,
+        evaluator_generation: 0,
+        current_evaluator_memory_sha256: json_sha256(&EvaluatorMemory::default())?,
+        evaluator_challenge_cases: EvaluatorMemory::default().challenge_suite.len() as u64,
+        mutual_revalidation_events: 0,
     };
     save_transition(
         &config,
@@ -1452,12 +1611,30 @@ fn validate_event(config: &GrowthSupervisorConfig, event: &mut WorkEvent) -> Res
         return Err("EVENT_SUMMARY_TOO_LARGE".to_string());
     }
     if event.evidence_sha256.len() > 32
+        || event.evidence_artifacts.len() > 32
         || event
             .evidence_sha256
             .iter()
             .any(|hash| hash.len() != 64 || !hash.chars().all(|value| value.is_ascii_hexdigit()))
     {
         return Err("EVENT_EVIDENCE_HASH_INVALID".to_string());
+    }
+    let mut bound_evidence = Vec::with_capacity(event.evidence_artifacts.len());
+    for path in &mut event.evidence_artifacts {
+        let canonical = fs::canonicalize(&*path)
+            .map_err(|error| format!("EVIDENCE_PATH_CANONICALIZE:{}:{error}", path.display()))?;
+        if !canonical.is_file() || path_is_secret(&canonical, &config.observation) {
+            return Err(format!("EVIDENCE_PATH_FORBIDDEN:{}", canonical.display()));
+        }
+        bound_evidence.push(file_sha256(&canonical, 16 * 1024 * 1024)?);
+        *path = canonical;
+    }
+    if !event.evidence_sha256.is_empty() && event.evidence_sha256 != bound_evidence {
+        return Err("EVENT_EVIDENCE_ARTIFACT_HASH_MISMATCH".to_string());
+    }
+    event.evidence_sha256 = bound_evidence;
+    if event.outcome == WorkOutcome::Pass && event.evidence_sha256.is_empty() {
+        return Err("PASS_EVENT_REQUIRES_BOUND_EVIDENCE_ARTIFACT".to_string());
     }
     for path in &mut event.paths {
         let canonical = fs::canonicalize(&*path)
@@ -1514,15 +1691,23 @@ pub fn request_resume(config_path: &Path) -> Result<serde_json::Value, String> {
     if path.exists() {
         fs::remove_file(&path).map_err(|error| format!("STOP_REMOVE:{error}"))?;
     }
-    if state.phase == SupervisorPhase::SafeStopped
-        && state.stop_reason.as_deref() == Some("OPERATOR_STOP_REQUESTED")
-    {
+    let resumable_reason = matches!(
+        state.stop_reason.as_deref(),
+        Some("OPERATOR_STOP_REQUESTED" | "SCAN_RUNTIME_BOUND_REACHED")
+    );
+    if state.phase == SupervisorPhase::SafeStopped && resumable_reason {
+        let recovered_scan_timeout =
+            state.stop_reason.as_deref() == Some("SCAN_RUNTIME_BOUND_REACHED");
         state.stop_reason = None;
         save_transition(
             &config,
             &mut state,
             SupervisorPhase::InfraReady,
-            "OPERATOR_RESUME_REQUESTED",
+            if recovered_scan_timeout {
+                "OPERATOR_RESUME_AFTER_TRANSIENT_SCAN_TIMEOUT"
+            } else {
+                "OPERATOR_RESUME_REQUESTED"
+            },
         )?;
     }
     Ok(serde_json::json!({
@@ -1581,7 +1766,8 @@ fn scan_watched_roots(
     let mut bytes_observed = 0_u64;
     let mut files_reused = 0_usize;
     let mut files_hashed = 0_usize;
-    let force_full_hash = baseline_created || old_index.sequence % FULL_HASH_CANARY_INTERVAL == 0;
+    let mut replayed_unchanged_work_events = 0_usize;
+    let canary_bucket = old_index.sequence % FULL_HASH_CANARY_INTERVAL;
     for path in &paths {
         let metadata =
             fs::metadata(path).map_err(|error| format!("METADATA:{}:{error}", path.display()))?;
@@ -1590,14 +1776,32 @@ fn scan_watched_roots(
         }
         let logical = normalized_logical_path(path, &config.watched_roots)?;
         let previous = old_index.files.get(&logical);
-        if !force_full_hash
+        let matching_event = event_for_path(path, &events);
+        let canary_rehash = !baseline_created
+            && previous.is_some()
+            && logical_path_canary_bucket(&logical) == canary_bucket;
+        if !baseline_created
+            && !canary_rehash
             && previous.is_some_and(|value| {
                 value.bytes == metadata.len() && value.modified_ms == modified_ms(&metadata)
             })
         {
-            new_index
-                .files
-                .insert(logical, previous.expect("checked above").clone());
+            let indexed = previous.expect("checked above");
+            if !baseline_created {
+                if let Some(event) = matching_event {
+                    observations.push(classify_observation(
+                        logical.clone(),
+                        indexed,
+                        Some(indexed),
+                        Some(event),
+                        &memory.classifier,
+                        config.observation.minimum_learning_score,
+                    ));
+                    replayed_unchanged_work_events =
+                        replayed_unchanged_work_events.saturating_add(1);
+                }
+            }
+            new_index.files.insert(logical, indexed.clone());
             files_reused = files_reused.saturating_add(1);
             continue;
         }
@@ -1611,19 +1815,21 @@ fn scan_watched_roots(
         };
         bytes_observed = bytes_observed.saturating_add(fingerprint.bytes);
         files_hashed = files_hashed.saturating_add(1);
-        if !baseline_created
-            && previous.map(|value| value.content_sha256.as_str())
-                != Some(fingerprint.content_sha256.as_str())
-        {
+        let content_changed = previous.map(|value| value.content_sha256.as_str())
+            != Some(fingerprint.content_sha256.as_str());
+        if !baseline_created && (content_changed || matching_event.is_some()) {
             let observation = classify_observation(
                 logical.clone(),
                 &fingerprint,
                 previous,
-                event_for_path(path, &events),
+                matching_event,
                 &memory.classifier,
                 config.observation.minimum_learning_score,
             );
             observations.push(observation);
+            if !content_changed && matching_event.is_some() {
+                replayed_unchanged_work_events = replayed_unchanged_work_events.saturating_add(1);
+            }
         }
         new_index.files.insert(logical, fingerprint);
     }
@@ -1635,6 +1841,8 @@ fn scan_watched_roots(
         observations,
         files_reused,
         files_hashed,
+        pending_work_events: events.len(),
+        replayed_unchanged_work_events,
     })
 }
 
@@ -1712,6 +1920,10 @@ fn load_unconsumed_high_observations(
             && !index
                 .consumed_observation_ids
                 .contains(&observation.observation_id)
+            && !observation
+                .work_event_id
+                .as_ref()
+                .is_some_and(|event_id| index.consumed_work_event_ids.contains(event_id))
         {
             observations.push(observation);
         }
@@ -1808,6 +2020,49 @@ fn build_lesson(observations: &[LearningObservation]) -> Result<LearnedCompositi
     })
 }
 
+fn derive_next_evaluator_memory(
+    current: &EvaluatorMemory,
+    prior_lessons: &[LearnedCompositionLesson],
+    lesson: &LearnedCompositionLesson,
+) -> Result<EvaluatorMemory, String> {
+    if current.schema != "B_CORE_GROWTH_EVALUATOR_MEMORY_1" {
+        return Err("EVALUATOR_MEMORY_SCHEMA_INVALID".to_string());
+    }
+    let mut challenge_suite = current
+        .challenge_suite
+        .iter()
+        .copied()
+        .collect::<BTreeSet<_>>();
+    if !lesson.applicability.is_empty() {
+        challenge_suite.insert(EvaluatorMutationKind::ApplicabilityMutation);
+    }
+    if !lesson.verification_obligations.is_empty() {
+        challenge_suite.insert(EvaluatorMutationKind::VerificationObligationMutation);
+    }
+    if !lesson.evidence_observation_sha256.is_empty() {
+        challenge_suite.insert(EvaluatorMutationKind::EvidenceRemoval);
+    }
+    challenge_suite.insert(EvaluatorMutationKind::RawSourceFlagInjection);
+
+    let mut source_lesson_ids = current.source_lesson_ids.clone();
+    for prior_lesson in prior_lessons {
+        if !source_lesson_ids.contains(&prior_lesson.lesson_id) {
+            source_lesson_ids.push(prior_lesson.lesson_id.clone());
+        }
+    }
+    if !source_lesson_ids.contains(&lesson.lesson_id) {
+        source_lesson_ids.push(lesson.lesson_id.clone());
+    }
+    Ok(EvaluatorMemory {
+        schema: current.schema.clone(),
+        generation: current.generation.saturating_add(1),
+        predecessor_sha256: Some(json_sha256(current)?),
+        challenge_suite: challenge_suite.into_iter().collect(),
+        source_lesson_ids,
+        accepted_expansions: current.accepted_expansions.saturating_add(1),
+    })
+}
+
 fn lesson_has_verification_evidence(lesson: &LearnedCompositionLesson) -> bool {
     let signals = lesson
         .diagnostic_signals
@@ -1832,11 +2087,36 @@ fn selected_campaign_observations(
     config: &GrowthSupervisorConfig,
     observations: &[LearningObservation],
 ) -> Vec<LearningObservation> {
-    observations
+    let mut selected = observations
         .iter()
         .take(config.resources.max_observations_per_campaign)
         .cloned()
-        .collect()
+        .collect::<Vec<_>>();
+    if selected.is_empty()
+        || build_lesson(&selected)
+            .map(|lesson| lesson_has_verification_evidence(&lesson))
+            .unwrap_or(false)
+    {
+        return selected;
+    }
+
+    // A score-only prefix can indefinitely hide a slightly lower-scored PASS
+    // or regression observation. Try one bounded substitution and retain the
+    // first evidence-complete cohort. This changes no score or acceptance rule.
+    for evidence in observations.iter().skip(selected.len()) {
+        for replace_index in (0..selected.len()).rev() {
+            let mut trial = selected.clone();
+            trial[replace_index] = evidence.clone();
+            if build_lesson(&trial)
+                .map(|lesson| lesson_has_verification_evidence(&lesson))
+                .unwrap_or(false)
+            {
+                selected = trial;
+                return selected;
+            }
+        }
+    }
+    selected
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -1948,6 +2228,14 @@ fn freeze_new_campaign(
     };
     let directory = campaign_dir(config, &campaign_id);
     fs::create_dir_all(&directory).map_err(|error| format!("CAMPAIGN_DIR:{error}"))?;
+    let predecessor_memory = load_memory(config, state.generation)?;
+    if json_sha256(&predecessor_memory)? != state.current_memory_sha256 {
+        return Err("PREDECESSOR_MEMORY_CHANGED_DURING_FREEZE".to_string());
+    }
+    write_immutable_json(
+        &directory.join("predecessor_memory.json"),
+        &predecessor_memory,
+    )?;
     write_immutable_json(&directory.join("freeze.json"), &freeze)?;
     for observation in &chosen {
         write_immutable_json(
@@ -2029,6 +2317,204 @@ fn authority_seal_input(receipt: &GrowthVerificationReceipt) -> Result<String, S
     json_sha256(&clone)
 }
 
+fn load_verifier_observations(
+    freeze_path: &Path,
+    freeze: &CampaignFreeze,
+) -> Result<Vec<LearningObservation>, String> {
+    let directory = freeze_path
+        .parent()
+        .ok_or_else(|| "VERIFIER_FREEZE_PARENT_MISSING".to_string())?;
+    let mut observations = Vec::with_capacity(freeze.observation_ids.len());
+    for (index, observation_id) in freeze.observation_ids.iter().enumerate() {
+        let path = directory.join(format!("observation_{observation_id}.json"));
+        let observation: LearningObservation = read_json(&path)?;
+        if observation.observation_id != *observation_id
+            || freeze.observation_sha256.get(index) != Some(&json_sha256(&observation)?)
+            || observation.learning_value != LearningValue::High
+            || (observation.work_outcome == WorkOutcome::Pass
+                && observation.verification_evidence_sha256.is_empty())
+            || observation.exact_source_fragments_stored != 0
+            || observation.raw_source_bytes_stored != 0
+        {
+            return Err("VERIFIER_FROZEN_OBSERVATION_INTEGRITY_FAILURE".to_string());
+        }
+        observations.push(observation);
+    }
+    Ok(observations)
+}
+
+fn load_verifier_predecessor_memory(
+    freeze_path: &Path,
+    freeze: &CampaignFreeze,
+) -> Result<GrowthMemory, String> {
+    let directory = freeze_path
+        .parent()
+        .ok_or_else(|| "VERIFIER_FREEZE_PARENT_MISSING".to_string())?;
+    let memory: GrowthMemory = read_json(&directory.join("predecessor_memory.json"))?;
+    if memory.schema != SUPERVISOR_SCHEMA
+        || memory.generation.saturating_add(1) != freeze.generation
+        || json_sha256(&memory)? != freeze.predecessor_memory_sha256
+        || memory.evaluator.schema != "B_CORE_GROWTH_EVALUATOR_MEMORY_1"
+    {
+        return Err("VERIFIER_PREDECESSOR_MEMORY_INTEGRITY_FAILURE".to_string());
+    }
+    Ok(memory)
+}
+
+fn candidate_matches_frozen_derivation(
+    candidate: &LearningCandidate,
+    expected_lesson: &LearnedCompositionLesson,
+    expected_total: u32,
+) -> bool {
+    candidate.lesson == *expected_lesson && candidate.total_learning_score == expected_total
+}
+
+fn evaluator_self_audit(
+    candidate: &LearningCandidate,
+    expected_lesson: &LearnedCompositionLesson,
+    expected_total: u32,
+    predecessor: &GrowthMemory,
+    proposed_evaluator: &EvaluatorMemory,
+) -> EvaluatorSelfAudit {
+    let baseline_candidate_reconstructed =
+        candidate_matches_frozen_derivation(candidate, expected_lesson, expected_total);
+    let mut challenge_lessons = predecessor.lessons.clone();
+    if !challenge_lessons
+        .iter()
+        .any(|lesson| lesson.lesson_id == expected_lesson.lesson_id)
+    {
+        challenge_lessons.push(expected_lesson.clone());
+    }
+    let mutation_results = challenge_lessons
+        .iter()
+        .flat_map(|challenge_lesson| {
+            proposed_evaluator
+                .challenge_suite
+                .iter()
+                .copied()
+                .map(move |mutation| {
+                    let challenge_total = if challenge_lesson.lesson_id == expected_lesson.lesson_id
+                    {
+                        expected_total
+                    } else {
+                        u32::from(challenge_lesson.learning_score)
+                    };
+                    let mut mutant = candidate.clone();
+                    mutant.lesson = challenge_lesson.clone();
+                    mutant.total_learning_score = challenge_total;
+                    match mutation {
+                        EvaluatorMutationKind::EvidenceDigestSubstitution => {
+                            mutant.lesson.evidence_observation_sha256 = vec!["0".repeat(64)];
+                        }
+                        EvaluatorMutationKind::AggregateScoreInflation => {
+                            mutant.total_learning_score =
+                                mutant.total_learning_score.saturating_add(1);
+                        }
+                        EvaluatorMutationKind::LessonScoreInflation => {
+                            mutant.lesson.learning_score =
+                                mutant.lesson.learning_score.saturating_add(1);
+                        }
+                        EvaluatorMutationKind::DiagnosticSignalInjection => {
+                            mutant
+                                .lesson
+                                .diagnostic_signals
+                                .push("UNSUPPORTED_AUTHORITY_SIGNAL".to_string());
+                        }
+                        EvaluatorMutationKind::CompositionRecipeMutation => {
+                            mutant
+                                .lesson
+                                .composition_recipe
+                                .push("UNSUPPORTED_ROLE".to_string());
+                        }
+                        EvaluatorMutationKind::WorkKindMutation => {
+                            mutant.lesson.work_kinds.clear();
+                        }
+                        EvaluatorMutationKind::ApplicabilityMutation => {
+                            mutant
+                                .lesson
+                                .applicability
+                                .push("unfrozen scope".to_string());
+                        }
+                        EvaluatorMutationKind::VerificationObligationMutation => {
+                            mutant.lesson.verification_obligations.clear();
+                        }
+                        EvaluatorMutationKind::RawSourceFlagInjection => {
+                            mutant.lesson.raw_source_bytes_present = true;
+                        }
+                        EvaluatorMutationKind::EvidenceRemoval => {
+                            mutant.lesson.evidence_observation_sha256.clear();
+                        }
+                    }
+                    let survived = candidate_matches_frozen_derivation(
+                        &mutant,
+                        challenge_lesson,
+                        challenge_total,
+                    );
+                    EvaluatorMutationResult {
+                        mutation,
+                        expected_reject: true,
+                        rejected: !survived,
+                        survived,
+                    }
+                })
+        })
+        .collect::<Vec<_>>();
+    let mutation_survivors = mutation_results
+        .iter()
+        .filter(|result| result.survived)
+        .count();
+    let post_challenge_core_revalidated = baseline_candidate_reconstructed
+        && mutation_survivors == 0
+        && proposed_evaluator.generation == predecessor.evaluator.generation.saturating_add(1)
+        && proposed_evaluator.predecessor_sha256 == json_sha256(&predecessor.evaluator).ok();
+    EvaluatorSelfAudit {
+        schema: "B_CORE_GROWTH_EVALUATOR_SELF_AUDIT_1".to_string(),
+        challenger_identity: "CORE_SCHEMA_DERIVED_MUTATION_CHALLENGER".to_string(),
+        evaluator_identity: "INDEPENDENT_LOCAL_GROWTH_VERIFIER".to_string(),
+        baseline_candidate_reconstructed,
+        mutation_cases: mutation_results.len(),
+        mutation_survivors,
+        pass: post_challenge_core_revalidated,
+        active_evaluator_generation: predecessor.evaluator.generation,
+        proposed_evaluator_generation: proposed_evaluator.generation,
+        proposed_evaluator_memory_sha256: json_sha256(proposed_evaluator).unwrap_or_default(),
+        knowledge_challenge_cases: mutation_results.len(),
+        challenge_suite_expanded: proposed_evaluator.challenge_suite.len()
+            > predecessor.evaluator.challenge_suite.len(),
+        post_challenge_core_revalidated,
+        mutation_results,
+        evaluator_self_approval_events: 0,
+        codex_calls: 0,
+        external_llm_calls: 0,
+        network_reads: 0,
+        network_writes: 0,
+    }
+}
+
+fn failed_evaluator_self_audit() -> EvaluatorSelfAudit {
+    EvaluatorSelfAudit {
+        schema: "B_CORE_GROWTH_EVALUATOR_SELF_AUDIT_1".to_string(),
+        challenger_identity: "CORE_SCHEMA_DERIVED_MUTATION_CHALLENGER".to_string(),
+        evaluator_identity: "INDEPENDENT_LOCAL_GROWTH_VERIFIER".to_string(),
+        baseline_candidate_reconstructed: false,
+        mutation_results: Vec::new(),
+        mutation_cases: 0,
+        mutation_survivors: 0,
+        pass: false,
+        active_evaluator_generation: 0,
+        proposed_evaluator_generation: 0,
+        proposed_evaluator_memory_sha256: String::new(),
+        knowledge_challenge_cases: 0,
+        challenge_suite_expanded: false,
+        post_challenge_core_revalidated: false,
+        evaluator_self_approval_events: 0,
+        codex_calls: 0,
+        external_llm_calls: 0,
+        network_reads: 0,
+        network_writes: 0,
+    }
+}
+
 pub fn run_verifier_request(
     request: &VerifierRequest,
 ) -> Result<GrowthVerificationReceipt, String> {
@@ -2102,6 +2588,57 @@ pub fn run_verifier_request(
     if !lesson_has_verification_evidence(&candidate.lesson) {
         reasons.push("NO_PASS_OR_CODE_TEST_COHORT_EVIDENCE".to_string());
     }
+    let evaluator_self_audit = match (
+        load_verifier_observations(&request.freeze_path, &freeze),
+        load_verifier_predecessor_memory(&request.freeze_path, &freeze),
+    ) {
+        (Ok(observations), Ok(predecessor)) => {
+            let expected_total = observations
+                .iter()
+                .map(|observation| u32::from(observation.learning_score))
+                .sum::<u32>();
+            match build_lesson(&observations) {
+                Ok(expected_lesson) => {
+                    match derive_next_evaluator_memory(
+                        &predecessor.evaluator,
+                        &predecessor.lessons,
+                        &expected_lesson,
+                    ) {
+                        Ok(proposed_evaluator) => {
+                            let audit = evaluator_self_audit(
+                                &candidate,
+                                &expected_lesson,
+                                expected_total,
+                                &predecessor,
+                                &proposed_evaluator,
+                            );
+                            if !audit.baseline_candidate_reconstructed {
+                                reasons.push(
+                                    "CANDIDATE_NOT_DERIVED_FROM_FROZEN_OBSERVATIONS".to_string(),
+                                );
+                            }
+                            if !audit.pass {
+                                reasons.push("EVALUATOR_SELF_AUDIT_FAILED".to_string());
+                            }
+                            audit
+                        }
+                        Err(_) => {
+                            reasons.push("EVALUATOR_MEMORY_EVOLUTION_FAILED".to_string());
+                            failed_evaluator_self_audit()
+                        }
+                    }
+                }
+                Err(_) => {
+                    reasons.push("FROZEN_OBSERVATION_LESSON_REBUILD_FAILED".to_string());
+                    failed_evaluator_self_audit()
+                }
+            }
+        }
+        _ => {
+            reasons.push("FROZEN_OBSERVATION_OR_MEMORY_BINDING_FAILURE".to_string());
+            failed_evaluator_self_audit()
+        }
+    };
     let decision = if reasons.is_empty() {
         GrowthDecision::Accept
     } else {
@@ -2124,6 +2661,7 @@ pub fn run_verifier_request(
         network_reads: 0,
         network_writes: 0,
         human_verification_decisions: 0,
+        evaluator_self_audit,
         receipt_sha256: String::new(),
         authority_seal: String::new(),
     };
@@ -2225,6 +2763,19 @@ fn promote_candidate(
     {
         return Err("PREDECESSOR_MEMORY_MISMATCH".to_string());
     }
+    let next_evaluator =
+        derive_next_evaluator_memory(&memory.evaluator, &memory.lessons, &candidate.lesson)?;
+    if !receipt.evaluator_self_audit.pass
+        || !receipt.evaluator_self_audit.post_challenge_core_revalidated
+        || receipt.evaluator_self_audit.active_evaluator_generation != memory.evaluator.generation
+        || receipt.evaluator_self_audit.proposed_evaluator_generation != next_evaluator.generation
+        || receipt
+            .evaluator_self_audit
+            .proposed_evaluator_memory_sha256
+            != json_sha256(&next_evaluator)?
+    {
+        return Err("EVALUATOR_PROMOTION_BINDING_FAILURE".to_string());
+    }
     if !memory
         .lessons
         .iter()
@@ -2244,6 +2795,7 @@ fn promote_candidate(
         *weight = weight.saturating_add(1).min(5);
     }
     memory.classifier.accepted_campaigns = memory.classifier.accepted_campaigns.saturating_add(1);
+    memory.evaluator = next_evaluator;
     memory.predecessor_sha256 = Some(freeze.predecessor_memory_sha256.clone());
     memory.generation = freeze.generation;
     let memory_hash = json_sha256(&memory)?;
@@ -2273,6 +2825,13 @@ fn promote_candidate(
     state.predecessor_memory_sha256 = Some(state.current_memory_sha256.clone());
     state.current_memory_sha256 = memory_hash.clone();
     state.generation = memory.generation;
+    state.evaluator_generation = memory.evaluator.generation;
+    state.current_evaluator_memory_sha256 = json_sha256(&memory.evaluator)?;
+    state.evaluator_challenge_cases = receipt
+        .evaluator_self_audit
+        .knowledge_challenge_cases
+        .min(u64::MAX as usize) as u64;
+    state.mutual_revalidation_events = state.mutual_revalidation_events.saturating_add(1);
     state.campaigns_accepted = state.campaigns_accepted.saturating_add(1);
     state.consecutive_failures = 0;
     state.plateau_scans = 0;
@@ -2429,6 +2988,8 @@ fn recover_pending_campaign(
             state.predecessor_memory_sha256 = Some(history.predecessor_memory_sha256.clone());
             state.generation = history.generation_attempted;
             state.current_memory_sha256 = expected_hash;
+            state.evaluator_generation = recovered_memory.evaluator.generation;
+            state.current_evaluator_memory_sha256 = json_sha256(&recovered_memory.evaluator)?;
         }
         save_transition(
             config,
@@ -2524,6 +3085,52 @@ fn resource_stop_reason(
     Ok(reason.map(str::to_string))
 }
 
+fn cohort_has_verification_evidence(observations: &[LearningObservation]) -> bool {
+    !observations.is_empty()
+        && build_lesson(observations)
+            .map(|lesson| lesson_has_verification_evidence(&lesson))
+            .unwrap_or(false)
+}
+
+fn persist_self_inspection(
+    config: &GrowthSupervisorConfig,
+    state: &mut SupervisorState,
+    receipt: &AutonomousSelfInspectionReceipt,
+) -> Result<(), String> {
+    let receipt_sha256 = json_sha256(receipt)?;
+    let path = config
+        .state_dir
+        .join("diagnostics")
+        .join(format!("self_inspection_{}.json", receipt.diagnostic_id));
+    let is_new = !path.exists();
+    if is_new {
+        write_immutable_json(&path, receipt)?;
+        state.self_inspection_events = state.self_inspection_events.saturating_add(1);
+        state.diagnostic_experiment_events = state
+            .diagnostic_experiment_events
+            .saturating_add(receipt.experiments.len() as u64);
+        match receipt.repair_disposition {
+            RepairDisposition::RuntimeRepairActive => {
+                state.runtime_self_repairs_activated =
+                    state.runtime_self_repairs_activated.saturating_add(1);
+            }
+            RepairDisposition::CapabilityGap => {
+                state.self_repair_capability_gaps =
+                    state.self_repair_capability_gaps.saturating_add(1);
+            }
+            RepairDisposition::ProposalRequired | RepairDisposition::SafeWait => {}
+        }
+        cleanup_numbered_files(
+            &config.state_dir.join("diagnostics"),
+            "self_inspection_",
+            64,
+        )?;
+    }
+    state.last_internal_bottleneck = Some(receipt.selected_bottleneck.label().to_string());
+    state.last_self_inspection_sha256 = Some(receipt_sha256);
+    Ok(())
+}
+
 fn report_from_state(
     state: &SupervisorState,
     baseline_created: bool,
@@ -2555,6 +3162,14 @@ fn report_from_state(
         last_scan_files_reused: state.last_scan_files_reused,
         last_scan_files_hashed: state.last_scan_files_hashed,
         scan_timeout_events: state.scan_timeout_events,
+        self_inspection_events: state.self_inspection_events,
+        diagnostic_experiment_events: state.diagnostic_experiment_events,
+        runtime_self_repairs_activated: state.runtime_self_repairs_activated,
+        self_repair_capability_gaps: state.self_repair_capability_gaps,
+        last_internal_bottleneck: state.last_internal_bottleneck.clone(),
+        evaluator_generation: state.evaluator_generation,
+        evaluator_challenge_cases: state.evaluator_challenge_cases,
+        mutual_revalidation_events: state.mutual_revalidation_events,
     }
 }
 
@@ -2636,6 +3251,16 @@ fn step_without_lease(
     if json_sha256(&memory)? != state.current_memory_sha256 {
         return Err("CURRENT_MEMORY_HASH_MISMATCH".to_string());
     }
+    let evaluator_memory_sha256 = json_sha256(&memory.evaluator)?;
+    if state.current_evaluator_memory_sha256.is_empty() {
+        state.current_evaluator_memory_sha256 = evaluator_memory_sha256.clone();
+        state.evaluator_generation = memory.evaluator.generation;
+        state.evaluator_challenge_cases = memory.evaluator.challenge_suite.len() as u64;
+    } else if state.current_evaluator_memory_sha256 != evaluator_memory_sha256
+        || state.evaluator_generation != memory.evaluator.generation
+    {
+        return Err("CURRENT_EVALUATOR_MEMORY_HASH_MISMATCH".to_string());
+    }
     save_transition(
         config,
         &mut state,
@@ -2685,6 +3310,27 @@ fn step_without_lease(
     save_index(config, &mut scan.index)?;
     let high = load_unconsumed_high_observations(config, &scan.index)?;
     let high_count = high.len();
+    let naive = high
+        .iter()
+        .take(config.resources.max_observations_per_campaign)
+        .cloned()
+        .collect::<Vec<_>>();
+    let evidence_aware = selected_campaign_observations(config, &high);
+    let inspection = inspect_self(SelfInspectionInput {
+        generation: state.generation,
+        supervisor_sequence: state.sequence,
+        files_scanned: scan.files_scanned,
+        files_reused: scan.files_reused,
+        files_hashed: scan.files_hashed,
+        scan_duration_ms: state.last_scan_duration_ms,
+        pending_work_events: scan.pending_work_events,
+        replayed_unchanged_work_events: scan.replayed_unchanged_work_events,
+        naive_cohort_has_verification: cohort_has_verification_evidence(&naive),
+        evidence_aware_cohort_has_verification: cohort_has_verification_evidence(&evidence_aware),
+        consecutive_failures: state.consecutive_failures,
+        plateau_scans: state.plateau_scans,
+    })?;
+    persist_self_inspection(config, &mut state, &inspection)?;
     let mut campaign_id = None;
     let mut campaign_accepted = None;
 
@@ -2828,14 +3474,56 @@ mod tests {
     fn accepted_candidate(root: &Path) -> (CampaignFreeze, LearningCandidate, VerifierRequest) {
         let verifier = std::env::current_exe().unwrap();
         let verifier_sha256 = file_sha256(&verifier, 512 * 1024 * 1024).unwrap();
+        let observation = LearningObservation {
+            observation_id: "observation".to_string(),
+            work_event_id: Some("event".to_string()),
+            logical_path: "ROOT_0/src/lib.rs".to_string(),
+            content_sha256: "f".repeat(64),
+            predecessor_content_sha256: Some("0".repeat(64)),
+            actor: WorkActor::LocalTool,
+            work_kind: WorkKind::DefectRepair,
+            work_outcome: WorkOutcome::Pass,
+            features_before: Some(StructuralFeatures::default()),
+            features_after: StructuralFeatures {
+                assertion_tokens: 1,
+                validation_tokens: 1,
+                error_handling_tokens: 1,
+                ..StructuralFeatures::default()
+            },
+            signals: vec![
+                "DEFECT_REPAIR".to_string(),
+                "VERIFIED_PASS".to_string(),
+                "REGRESSION_EVIDENCE".to_string(),
+            ],
+            composition_roles: vec![
+                "IMPLEMENTATION_REPAIR".to_string(),
+                "REGRESSION_TEST".to_string(),
+            ],
+            learning_score: 70,
+            learning_value: LearningValue::High,
+            reasons: vec!["test fixture".to_string()],
+            verification_evidence_sha256: vec!["a".repeat(64)],
+            exact_source_fragments_stored: 0,
+            raw_source_bytes_stored: 0,
+            observed_at_ms: 1,
+        };
+        let observation_sha256 = json_sha256(&observation).unwrap();
+        let predecessor_memory = GrowthMemory {
+            schema: SUPERVISOR_SCHEMA.to_string(),
+            generation: 0,
+            predecessor_sha256: None,
+            lessons: Vec::new(),
+            classifier: ClassifierMemory::default(),
+            evaluator: EvaluatorMemory::default(),
+        };
         let freeze = CampaignFreeze {
             schema: SUPERVISOR_SCHEMA.to_string(),
             campaign_id: "G0001-test".to_string(),
             generation: 1,
-            predecessor_memory_sha256: "a".repeat(64),
+            predecessor_memory_sha256: json_sha256(&predecessor_memory).unwrap(),
             config_sha256: "b".repeat(64),
             observation_ids: vec!["observation".to_string()],
-            observation_sha256: vec!["c".repeat(64)],
+            observation_sha256: vec![observation_sha256],
             proposer_executable_sha256: "d".repeat(64),
             verifier_executable_sha256: verifier_sha256.clone(),
             seed: 7,
@@ -2852,22 +3540,7 @@ mod tests {
             freeze_sha256: freeze_sha256.clone(),
             generation: 1,
             predecessor_memory_sha256: freeze.predecessor_memory_sha256.clone(),
-            lesson: LearnedCompositionLesson {
-                lesson_id: "lesson".to_string(),
-                evidence_observation_sha256: vec!["e".repeat(64)],
-                work_kinds: vec![WorkKind::DefectRepair],
-                diagnostic_signals: vec!["DEFECT_REPAIR".to_string(), "VERIFIED_PASS".to_string()],
-                composition_recipe: vec![
-                    "IMPLEMENTATION_REPAIR".to_string(),
-                    "REGRESSION_TEST".to_string(),
-                ],
-                applicability: vec!["same signals".to_string()],
-                verification_obligations: vec!["regression".to_string()],
-                learning_score: 70,
-                exact_patch_data_present: false,
-                exact_source_fragment_present: false,
-                raw_source_bytes_present: false,
-            },
+            lesson: build_lesson(std::slice::from_ref(&observation)).unwrap(),
             observation_ids: freeze.observation_ids.clone(),
             total_learning_score: 70,
             raw_source_bytes: 0,
@@ -2882,6 +3555,8 @@ mod tests {
         let freeze_path = root.join("freeze.json");
         let candidate_path = root.join("candidate.json");
         write_immutable_json(&freeze_path, &freeze).unwrap();
+        write_immutable_json(&root.join("predecessor_memory.json"), &predecessor_memory).unwrap();
+        write_immutable_json(&root.join("observation_observation.json"), &observation).unwrap();
         write_immutable_json(&candidate_path, &candidate).unwrap();
         let request = VerifierRequest {
             schema: VERIFIER_SCHEMA.to_string(),
@@ -2904,6 +3579,43 @@ mod tests {
         assert!(check.raw_source_retention_forbidden);
         assert!(check.network_and_llm_disabled);
         assert!(check.plateau_difficulty_escalation_disabled);
+        assert!(check.frozen_observation_reconstruction_enabled);
+        assert!(check.bound_pass_evidence_required);
+        assert!(check.evaluator_mutation_self_audit_enabled);
+        assert!(check.evaluator_generation_evolution_enabled);
+        assert!(!check.promoted_lessons_drive_executable_repairs);
+        assert!(!check.mutual_recursive_growth_observed);
+    }
+
+    #[test]
+    fn default_evaluator_memory_preserves_legacy_growth_memory_hash() {
+        #[derive(Serialize)]
+        struct LegacyGrowthMemory<'a> {
+            schema: &'a str,
+            generation: u64,
+            predecessor_sha256: Option<String>,
+            lessons: Vec<LearnedCompositionLesson>,
+            classifier: ClassifierMemory,
+        }
+        let current = GrowthMemory {
+            schema: SUPERVISOR_SCHEMA.to_string(),
+            generation: 0,
+            predecessor_sha256: None,
+            lessons: Vec::new(),
+            classifier: ClassifierMemory::default(),
+            evaluator: EvaluatorMemory::default(),
+        };
+        let legacy = LegacyGrowthMemory {
+            schema: SUPERVISOR_SCHEMA,
+            generation: 0,
+            predecessor_sha256: None,
+            lessons: Vec::new(),
+            classifier: ClassifierMemory::default(),
+        };
+        assert_eq!(
+            json_sha256(&current).unwrap(),
+            json_sha256(&legacy).unwrap()
+        );
     }
 
     #[test]
@@ -2932,6 +3644,108 @@ mod tests {
         assert!(report.baseline_created);
         assert_eq!(report.observations_created, 0);
         assert_eq!(report.generation, 0);
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn pass_event_recorded_after_scan_replays_against_unchanged_indexed_content() {
+        let root = temp_root("event-replay");
+        let (config_path, config) = test_config(&root);
+        let source = config.watched_roots[0].join("lib.rs");
+        fs::write(&source, "pub fn value() -> u8 { 1 }\n").unwrap();
+        supervisor_step(&config_path).expect("baseline");
+        let evidence = root.join("verification.log");
+        fs::write(&evidence, "test result: ok\n").unwrap();
+
+        record_work_event(
+            &config_path,
+            WorkEvent {
+                event_id: "verified-after-scan".to_string(),
+                actor: WorkActor::LocalTool,
+                kind: WorkKind::DefectRepair,
+                paths: vec![source],
+                outcome: WorkOutcome::Pass,
+                summary: "deterministic regression passed".to_string(),
+                evidence_sha256: vec![],
+                evidence_artifacts: vec![evidence],
+                occurred_at_ms: 1,
+            },
+        )
+        .expect("event");
+        let report = supervisor_step(&config_path).expect("replay");
+        assert_eq!(report.observations_created, 1);
+        assert_eq!(report.high_value_observations, 1);
+        assert_eq!(
+            report.last_internal_bottleneck.as_deref(),
+            Some("WORK_EVENT_ATTRIBUTION_GAP")
+        );
+        assert_eq!(report.runtime_self_repairs_activated, 1);
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn pass_event_without_a_real_evidence_artifact_is_rejected() {
+        let root = temp_root("unbound-pass");
+        let (config_path, config) = test_config(&root);
+        let source = config.watched_roots[0].join("lib.rs");
+        fs::write(&source, "pub fn value() -> u8 { 1 }\n").unwrap();
+        initialize(&config_path).unwrap();
+        let error = record_work_event(
+            &config_path,
+            WorkEvent {
+                event_id: "unbound-pass".to_string(),
+                actor: WorkActor::LocalTool,
+                kind: WorkKind::Verification,
+                paths: vec![source],
+                outcome: WorkOutcome::Pass,
+                summary: "claimed pass".to_string(),
+                evidence_sha256: vec![],
+                evidence_artifacts: vec![],
+                occurred_at_ms: 1,
+            },
+        )
+        .unwrap_err();
+        assert_eq!(error, "PASS_EVENT_REQUIRES_BOUND_EVIDENCE_ARTIFACT");
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn evidence_aware_selection_prevents_score_prefix_starvation() {
+        let root = temp_root("evidence-aware-selection");
+        let (_config_path, mut config) = test_config(&root);
+        config.resources.max_observations_per_campaign = 1;
+        let mut implementation = accepted_candidate(&root).1.lesson;
+        implementation.diagnostic_signals = vec!["DEFECT_REPAIR".to_string()];
+        let high_without_evidence = LearningObservation {
+            observation_id: "high".to_string(),
+            work_event_id: None,
+            logical_path: "ROOT_0/src/high.rs".to_string(),
+            content_sha256: "1".repeat(64),
+            predecessor_content_sha256: None,
+            actor: WorkActor::UnknownLocalWriter,
+            work_kind: WorkKind::DefectRepair,
+            work_outcome: WorkOutcome::Unknown,
+            features_before: None,
+            features_after: StructuralFeatures::default(),
+            signals: implementation.diagnostic_signals,
+            composition_roles: vec!["IMPLEMENTATION_REPAIR".to_string()],
+            learning_score: 90,
+            learning_value: LearningValue::High,
+            reasons: Vec::new(),
+            verification_evidence_sha256: Vec::new(),
+            exact_source_fragments_stored: 0,
+            raw_source_bytes_stored: 0,
+            observed_at_ms: 1,
+        };
+        let mut verified = high_without_evidence.clone();
+        verified.observation_id = "verified".to_string();
+        verified.learning_score = 80;
+        verified.work_outcome = WorkOutcome::Pass;
+        verified.signals.push("VERIFIED_PASS".to_string());
+        verified.verification_evidence_sha256 = vec!["a".repeat(64)];
+        let selected =
+            selected_campaign_observations(&config, &[high_without_evidence, verified.clone()]);
+        assert_eq!(selected, vec![verified]);
         fs::remove_dir_all(root).unwrap();
     }
 
@@ -2984,6 +3798,8 @@ mod tests {
             "pub fn checked(value: i32) -> Result<i32, String> {\n    if value < 0 { return Err(\"negative\".to_string()); }\n    Ok(value)\n}\n",
         )
         .unwrap();
+        let evidence = root.join("verification.log");
+        fs::write(&evidence, "test result: ok\n").unwrap();
         record_work_event(
             &config_path,
             WorkEvent {
@@ -2994,6 +3810,7 @@ mod tests {
                 outcome: WorkOutcome::Pass,
                 summary: "verified bounded repair".to_string(),
                 evidence_sha256: vec![],
+                evidence_artifacts: vec![evidence],
                 occurred_at_ms: 1,
             },
         )
@@ -3045,7 +3862,8 @@ mod tests {
             paths: vec![],
             outcome: WorkOutcome::Pass,
             summary: String::new(),
-            evidence_sha256: vec![],
+            evidence_sha256: vec!["a".repeat(64)],
+            evidence_artifacts: vec![],
             occurred_at_ms: 1,
         };
         let observation = classify_observation(
@@ -3078,6 +3896,7 @@ mod tests {
             outcome: WorkOutcome::Fail,
             summary: String::new(),
             evidence_sha256: vec![],
+            evidence_artifacts: vec![],
             occurred_at_ms: 1,
         };
         let observation = classify_observation(
@@ -3111,6 +3930,7 @@ mod tests {
             learning_score: 60,
             learning_value: LearningValue::High,
             reasons: vec!["repair observed".to_string()],
+            verification_evidence_sha256: Vec::new(),
             exact_source_fragments_stored: 0,
             raw_source_bytes_stored: 0,
             observed_at_ms: 1,
@@ -3130,6 +3950,15 @@ mod tests {
         validate_receipt(&freeze, &candidate, &receipt).unwrap();
         assert!(!receipt.verifier_is_proposer);
         assert_eq!(receipt.network_reads, 0);
+        assert!(receipt.evaluator_self_audit.pass);
+        assert_eq!(receipt.evaluator_self_audit.mutation_cases, 10);
+        assert_eq!(receipt.evaluator_self_audit.mutation_survivors, 0);
+        assert_eq!(receipt.evaluator_self_audit.active_evaluator_generation, 0);
+        assert_eq!(
+            receipt.evaluator_self_audit.proposed_evaluator_generation,
+            1
+        );
+        assert!(receipt.evaluator_self_audit.post_challenge_core_revalidated);
         fs::remove_dir_all(root).unwrap();
     }
 
@@ -3148,6 +3977,46 @@ mod tests {
         assert!(receipt
             .reasons
             .contains(&"RAW_OR_EXACT_SOLUTION_DATA_PRESENT".to_string()));
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn verifier_rejects_candidate_evidence_not_derived_from_frozen_observations() {
+        let root = temp_root("verify-evidence-binding");
+        let (_freeze, mut candidate, mut request) = accepted_candidate(&root);
+        candidate.lesson.evidence_observation_sha256 = vec!["9".repeat(64)];
+        fs::remove_file(&request.candidate_path).unwrap();
+        write_immutable_json(&request.candidate_path, &candidate).unwrap();
+        request.expected_candidate_sha256 = json_sha256(&candidate).unwrap();
+        let receipt = run_verifier_request(&request).unwrap();
+        assert_eq!(receipt.decision, GrowthDecision::Reject);
+        assert!(receipt
+            .reasons
+            .contains(&"CANDIDATE_NOT_DERIVED_FROM_FROZEN_OBSERVATIONS".to_string()));
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn verifier_rejects_unbound_predecessor_evaluator_memory() {
+        let root = temp_root("verify-evaluator-memory-binding");
+        let (_freeze, _candidate, request) = accepted_candidate(&root);
+        let path = root.join("predecessor_memory.json");
+        fs::remove_file(&path).unwrap();
+        let mut memory = GrowthMemory {
+            schema: SUPERVISOR_SCHEMA.to_string(),
+            generation: 0,
+            predecessor_sha256: None,
+            lessons: Vec::new(),
+            classifier: ClassifierMemory::default(),
+            evaluator: EvaluatorMemory::default(),
+        };
+        memory.evaluator.generation = 9;
+        write_immutable_json(&path, &memory).unwrap();
+        let receipt = run_verifier_request(&request).unwrap();
+        assert_eq!(receipt.decision, GrowthDecision::Reject);
+        assert!(receipt
+            .reasons
+            .contains(&"FROZEN_OBSERVATION_OR_MEMORY_BINDING_FAILURE".to_string()));
         fs::remove_dir_all(root).unwrap();
     }
 
@@ -3186,6 +4055,7 @@ mod tests {
             learning_score: 70,
             learning_value: LearningValue::High,
             reasons: vec!["test".to_string()],
+            verification_evidence_sha256: vec!["a".repeat(64)],
             exact_source_fragments_stored: 0,
             raw_source_bytes_stored: 0,
             observed_at_ms: 1,
@@ -3217,6 +4087,15 @@ mod tests {
         .unwrap();
         assert_eq!(first_hash, recovered_hash);
         assert_eq!(recovered_state.generation, 1);
+        assert_eq!(first_state.evaluator_generation, 1);
+        assert_eq!(recovered_state.evaluator_generation, 1);
+        assert_eq!(first_state.mutual_revalidation_events, 1);
+        assert_eq!(recovered_state.mutual_revalidation_events, 1);
+        assert_eq!(first_state.evaluator_challenge_cases, 10);
+        assert_eq!(
+            first_state.current_evaluator_memory_sha256,
+            recovered_state.current_evaluator_memory_sha256
+        );
         assert_eq!(
             fs::read_dir(config.state_dir.join("memory"))
                 .unwrap()
@@ -3259,6 +4138,52 @@ mod tests {
             report.stop_reason.as_deref(),
             Some("OPERATOR_STOP_REQUESTED")
         );
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn transient_scan_timeout_can_be_resumed_after_repair() {
+        let root = temp_root("resume-scan-timeout");
+        let (config_path, config) = test_config(&root);
+        let mut state = initialize(&config_path).unwrap();
+        state.stop_reason = Some("SCAN_RUNTIME_BOUND_REACHED".to_string());
+        save_transition(
+            &config,
+            &mut state,
+            SupervisorPhase::SafeStopped,
+            "TEST_TRANSIENT_TIMEOUT",
+        )
+        .unwrap();
+        let response = request_resume(&config_path).unwrap();
+        assert_eq!(response["phase"], "INFRA_READY");
+        assert_eq!(response["hard_resource_stop_preserved"], false);
+        let resumed = status(&config_path).unwrap();
+        assert_eq!(resumed.phase, SupervisorPhase::InfraReady);
+        assert_eq!(resumed.stop_reason, None);
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn full_hash_canary_is_distributed_instead_of_rehashing_every_file() {
+        let root = temp_root("distributed-canary");
+        let (config_path, config) = test_config(&root);
+        for index in 0..128 {
+            fs::write(
+                config.watched_roots[0].join(format!("file_{index:03}.rs")),
+                format!("pub fn value_{index}() -> usize {{ {index} }}\n"),
+            )
+            .unwrap();
+        }
+        let state = initialize(&config_path).unwrap();
+        let baseline = supervisor_step(&config_path).unwrap();
+        assert_eq!(baseline.last_scan_files_hashed, 128);
+        let mut index = load_index(&config).unwrap();
+        index.sequence = FULL_HASH_CANARY_INTERVAL - 1;
+        save_index(&config, &mut index).unwrap();
+        let memory = load_memory(&config, state.generation).unwrap();
+        let scan = scan_watched_roots(&config, &memory).unwrap();
+        assert!(scan.files_hashed < 128);
+        assert_eq!(scan.files_hashed + scan.files_reused, 128);
         fs::remove_dir_all(root).unwrap();
     }
 }

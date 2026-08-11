@@ -1,5 +1,6 @@
 #![recursion_limit = "512"]
 
+pub mod autonomous_self_inspection;
 pub mod code_graft;
 pub mod code_graft_acceptance;
 pub mod core_x0;

@@ -25,7 +25,9 @@ param(
     [ValidateLength(1, 512)]
     [string]$Summary,
 
-    [string[]]$EvidenceSha256 = @()
+    [string[]]$EvidenceSha256 = @(),
+
+    [string[]]$EvidencePaths = @()
 )
 
 $ErrorActionPreference = "Stop"
@@ -50,6 +52,7 @@ $event = [ordered]@{
     outcome = $Outcome
     summary = $Summary
     evidence_sha256 = @($EvidenceSha256)
+    evidence_artifacts = @($EvidencePaths | ForEach-Object { [IO.Path]::GetFullPath($_) })
     occurred_at_ms = 0
 }
 [IO.File]::WriteAllText(
