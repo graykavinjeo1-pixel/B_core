@@ -1149,6 +1149,7 @@ pub fn self_check() -> SelfCheck {
             "FRONTIER_CONTINUATION_REQUIRES_A_REMAINING_EXECUTABLE_SUCCESSOR_SUBSTRATE"
                 .to_string(),
             "CAMPAIGN_FREEZE_DEFERS_AT_EXECUTABLE_GENERATIVE_SUBSTRATE_CLOSURE".to_string(),
+            "CAMPAIGN_RETRY_ID_BINDS_PROPOSER_BINARY_AND_PERSISTENT_SCAN_SEQUENCE".to_string(),
             "EXACT_CONTEXT_REUSE_REVALIDATES_A_CANONICAL_ARTIFACT_WITHOUT_FRONTIER_PROMOTION"
                 .to_string(),
             "SATURATED_SUBSTRATE_ROUTES_TO_A_FRESH_EXECUTABLE_SUBSTRATE_WITHOUT_DIFFICULTY_ESCALATION"
@@ -3824,17 +3825,25 @@ fn freeze_new_campaign(
         .map(json_sha256)
         .collect::<Result<Vec<_>, _>>()?;
     let generation = state.generation.saturating_add(1);
-    let campaign_id = format!(
-        "G{:020}-{}",
-        generation,
-        &sha256(observation_sha256.join(":").as_bytes())[..16]
-    );
     let proposer = std::env::current_exe().map_err(|error| format!("CURRENT_EXE:{error}"))?;
     let proposer_executable_sha256 = file_sha256(&proposer, 512 * 1024 * 1024)?;
     let verifier_executable_sha256 = file_sha256(&config.verifier_executable, 512 * 1024 * 1024)?;
     if proposer_executable_sha256 == verifier_executable_sha256 {
         return Err("PROPOSER_VERIFIER_BINARY_COLLISION".to_string());
     }
+    let campaign_id = format!(
+        "G{:020}-{}",
+        generation,
+        &sha256(
+            format!(
+                "{}:{}:{}",
+                observation_sha256.join(":"),
+                proposer_executable_sha256,
+                state.sequence
+            )
+            .as_bytes()
+        )[..16]
+    );
     let seed_hash = sha256(
         format!(
             "{}:{}:{}",
