@@ -34,7 +34,12 @@ pub const AUTONOMOUS_SOURCE_MUTATION_SCHEMA: &str = "B_CORE_AUTONOMOUS_SOURCE_MU
 pub const SELF_UPDATE_HANDOFF_FILE: &str = "SELF_UPDATE_READY.json";
 pub const SOURCE_REPAIR_LEARNING_SCHEMA: &str = "B_CORE_SOURCE_REPAIR_LEARNING_1";
 pub const IMPROVEMENT_OPERATOR_MEMORY_SCHEMA: &str = "B_CORE_IMPROVEMENT_OPERATOR_MEMORY_1";
-pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 12;
+// Revision 13 adds role-aware compiler lowering: removing a redundant clone
+// from `field: field.clone()` now produces the canonical shorthand `field` in
+// the same atomic program. Reopen failed revision-12 compiler families so the
+// corrected generator, rather than a one-member fallback, receives the public
+// counterexample and can retry the whole family.
+pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 13;
 const KNOWN_REMAINDER_PREDICTED_VALUE: u16 = 35;
 const MAX_REPOSITORY_REPAIR_FAMILY_FILES: usize = 16;
 const KNOWN_REMAINDER_STRATEGIES: [&str; 4] = [

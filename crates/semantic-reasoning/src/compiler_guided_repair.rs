@@ -28,6 +28,7 @@ const CACHE_SCHEMA: &str = "B_CORE_COMPILER_DIAGNOSTIC_CACHE_3";
 const MAX_DIAGNOSTIC_BYTES: u64 = 16 * 1024 * 1024;
 const MAX_CACHED_SOURCE_STATES: usize = 2;
 const MAX_SUGGESTIONS: usize = 128;
+const MAX_EAGER_FAMILY_FALLBACKS: usize = 2;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct CompilerGuidedRepairPolicy<'a> {
@@ -586,6 +587,88 @@ fn trim_touched_line_trailing_whitespace(
     normalized
 }
 
+fn compiler_suggestion_edit_atom(
+    source: &str,
+    suggestion: &CompilerSuggestion,
+) -> Option<SourceEditAtom> {
+    if suggestion.byte_start > suggestion.byte_end
+        || suggestion.byte_end > source.len()
+        || !source.is_char_boundary(suggestion.byte_start)
+        || !source.is_char_boundary(suggestion.byte_end)
+    {
+        return None;
+    }
+
+    // Removing an ownership-only clone from a struct initializer can expose a
+    // second, purely grammatical lint:
+    //
+    //     field: field.clone()  ->  field: field  ->  field
+    //
+    // Treat that sequence as one typed lowering rule.  The rule is independent
+    // of the field name and fires only when both identifier roles are exactly
+    // equal and the compiler-selected span is precisely `.clone()`.
+    if suggestion.diagnostic_code == "clippy::redundant_clone"
+        && suggestion.replacement.is_empty()
+        && &source[suggestion.byte_start..suggestion.byte_end] == ".clone()"
+    {
+        let line_start = source[..suggestion.byte_start]
+            .rfind('\n')
+            .map_or(0, |offset| offset + 1);
+        let line_end = source[suggestion.byte_end..]
+            .find('\n')
+            .map_or(source.len(), |offset| suggestion.byte_end + offset);
+        let prefix = &source[line_start..suggestion.byte_start];
+        let suffix = &source[suggestion.byte_end..line_end];
+        let indentation_bytes = prefix.len() - prefix.trim_start().len();
+        let initializer = prefix.trim();
+        if let Some((field, value)) = initializer.split_once(':') {
+            let field = field.trim();
+            let value = value.trim();
+            let identifier_is_typed = syn::parse_str::<syn::Ident>(field).is_ok();
+            let suffix_is_field_terminator = suffix.trim_start().starts_with(',');
+            if identifier_is_typed
+                && value == field
+                && !initializer[field.len() + 1..].contains(':')
+                && suffix_is_field_terminator
+            {
+                let range = ByteRange {
+                    start: line_start + indentation_bytes,
+                    end: suggestion.byte_end,
+                };
+                return Some(SourceEditAtom::Replace {
+                    range,
+                    expected_sha256: sha256(&source.as_bytes()[range.start..range.end]),
+                    replacement: field.to_string(),
+                });
+            }
+        }
+    }
+
+    let range = ByteRange {
+        start: suggestion.byte_start,
+        end: suggestion.byte_end,
+    };
+    match (
+        suggestion.byte_start == suggestion.byte_end,
+        suggestion.replacement.is_empty(),
+    ) {
+        (true, false) => Some(SourceEditAtom::Insert {
+            offset: suggestion.byte_start,
+            content: suggestion.replacement.clone(),
+        }),
+        (false, true) => Some(SourceEditAtom::Delete {
+            range,
+            expected_sha256: sha256(&source.as_bytes()[range.start..range.end]),
+        }),
+        (false, false) => Some(SourceEditAtom::Replace {
+            range,
+            expected_sha256: sha256(&source.as_bytes()[range.start..range.end]),
+            replacement: suggestion.replacement.clone(),
+        }),
+        (true, true) => None,
+    }
+}
+
 fn candidate_from_suggestion(
     policy: &CompilerGuidedRepairPolicy<'_>,
     suggestion: &CompilerSuggestion,
@@ -613,12 +696,12 @@ fn candidate_from_suggestion(
     if !suggestion_is_executable(suggestion, replaced_source, source) {
         return Ok(None);
     }
-    let mut candidate_source = String::with_capacity(
-        source.len() - (suggestion.byte_end - suggestion.byte_start) + suggestion.replacement.len(),
-    );
-    candidate_source.push_str(&source[..suggestion.byte_start]);
-    candidate_source.push_str(&suggestion.replacement);
-    candidate_source.push_str(&source[suggestion.byte_end..]);
+    let Some(edit) = compiler_suggestion_edit_atom(source, suggestion) else {
+        return Ok(None);
+    };
+    let Ok(mut candidate_source) = apply_edit_atom(source, &edit) else {
+        return Ok(None);
+    };
     // Deletion suggestions such as `needless_else` can leave one space before
     // a newline.  Sending that mechanically correct candidate through an
     // expensive compile/test cycle only for `cargo fmt --check` to reject the
@@ -681,60 +764,52 @@ fn family_candidate_from_suggestions(
     ) {
         return Ok(None);
     }
-    let mut candidates = Vec::new();
-    for suggestion in suggestions {
-        let Some(candidate) = candidate_from_suggestion(policy, suggestion)? else {
-            return Ok(None);
-        };
-        candidates.push(candidate);
+    // Validate the family directly from compiler spans. Calling
+    // `candidate_from_suggestion` here used to parse the entire Rust file once
+    // per member, and discovery parsed every member a second time when it made
+    // fallback candidates. A 62-member family therefore paid for more than a
+    // hundred identical predecessor AST analyses before selecting one patch.
+    let Some(first_relative_path) =
+        relative_source_path(policy.source_root, &suggestions[0].file_name)
+    else {
+        return Ok(None);
+    };
+    if suggestions.iter().any(|suggestion| {
+        relative_source_path(policy.source_root, &suggestion.file_name).as_ref()
+            != Some(&first_relative_path)
+    }) {
+        return Ok(None);
     }
-    let first = &candidates[0];
-    if candidates
-        .iter()
-        .any(|candidate| candidate.relative_path != first.relative_path)
+    let path = policy.source_root.join(&first_relative_path);
+    let source = fs::read_to_string(&path)
+        .map_err(|error| format!("COMPILER_REPAIR_FAMILY_READ:{}:{error}", path.display()))?;
+    if source.len() as u64 > policy.max_candidate_bytes
+        || suggestions.iter().any(|suggestion| {
+            suggestion.byte_start > suggestion.byte_end
+                || suggestion.byte_end > source.len()
+                || !source.is_char_boundary(suggestion.byte_start)
+                || !source.is_char_boundary(suggestion.byte_end)
+                || !suggestion_is_executable(
+                    suggestion,
+                    &source[suggestion.byte_start..suggestion.byte_end],
+                    &source,
+                )
+        })
     {
         return Ok(None);
     }
-    let path = policy.source_root.join(&first.relative_path);
-    let source = fs::read_to_string(&path)
-        .map_err(|error| format!("COMPILER_REPAIR_FAMILY_READ:{}:{error}", path.display()))?;
     // Use compiler spans as the independent member preconditions. Individual
     // structural programs are line-oriented and two valid edits on one line
     // can therefore overlap when naively combined. Exact diagnostic spans keep
     // the family algebra minimal and still derive one AST/data-flow target for
     // the combined postimage below.
-    let edits = suggestions
+    let Some(edits) = suggestions
         .iter()
-        .map(|suggestion| {
-            let range = ByteRange {
-                start: suggestion.byte_start,
-                end: suggestion.byte_end,
-            };
-            match (
-                suggestion.byte_start == suggestion.byte_end,
-                suggestion.replacement.is_empty(),
-            ) {
-                (true, false) => SourceEditAtom::Insert {
-                    offset: suggestion.byte_start,
-                    content: suggestion.replacement.clone(),
-                },
-                (false, true) => SourceEditAtom::Delete {
-                    range,
-                    expected_sha256: sha256(
-                        &source.as_bytes()[suggestion.byte_start..suggestion.byte_end],
-                    ),
-                },
-                (false, false) => SourceEditAtom::Replace {
-                    range,
-                    expected_sha256: sha256(
-                        &source.as_bytes()[suggestion.byte_start..suggestion.byte_end],
-                    ),
-                    replacement: suggestion.replacement.clone(),
-                },
-                (true, true) => SourceEditAtom::AtomicMultiEdit { edits: Vec::new() },
-            }
-        })
-        .collect::<Vec<_>>();
+        .map(|suggestion| compiler_suggestion_edit_atom(&source, suggestion))
+        .collect::<Option<Vec<_>>>()
+    else {
+        return Ok(None);
+    };
     let atomic_edit = SourceEditAtom::AtomicMultiEdit { edits };
     let Ok(candidate_source) = apply_edit_atom(&source, &atomic_edit) else {
         return Ok(None);
@@ -742,7 +817,7 @@ fn family_candidate_from_suggestions(
     if candidate_source == source || candidate_source.len() as u64 > policy.max_candidate_bytes {
         return Ok(None);
     }
-    let file_id = first.relative_path.to_string_lossy().replace('\\', "/");
+    let file_id = first_relative_path.to_string_lossy().replace('\\', "/");
     let Ok(mut structural_repair_program) =
         synthesize_structural_repair(&file_id, &source, &candidate_source)
     else {
@@ -759,9 +834,9 @@ fn family_candidate_from_suggestions(
     );
     let diagnostic_code = &suggestions[0].diagnostic_code;
     let applicability = &suggestions[0].applicability;
-    let family_size = candidates.len();
+    let family_size = suggestions.len();
     Ok(Some(CompilerGuidedRepairCandidate {
-        relative_path: first.relative_path.clone(),
+        relative_path: first_relative_path,
         predecessor_sha256: sha256(source.as_bytes()),
         candidate_sha256: sha256(candidate_source.as_bytes()),
         candidate_source,
@@ -781,8 +856,7 @@ fn family_candidate_from_suggestions(
             "source compile and public regression observations must pass once for the family"
                 .to_string(),
         ],
-        predicted_value: first
-            .predicted_value
+        predicted_value: predicted_value(suggestions[0])
             .saturating_add(family_size.min(25) as u16)
             .min(100),
         structural_repair_program,
@@ -811,12 +885,29 @@ pub fn discover_compiler_guided_repairs(
                 .push(suggestion);
         }
     }
+    let mut eager_fallback_ids = BTreeSet::new();
+    let mut family_member_ids = BTreeSet::new();
     for suggestions in families.values() {
         if let Some(candidate) = family_candidate_from_suggestions(policy, suggestions)? {
             candidates.push(candidate);
+            for suggestion in suggestions {
+                family_member_ids.insert(suggestion.observation_sha256.clone());
+            }
+            // Preserve a bounded counterexample-isolation path without eagerly
+            // compiling an individual structural program for every family
+            // member. After a fallback changes the source, the next compiler
+            // observation reconstructs the remaining family on the new state.
+            for suggestion in suggestions.iter().take(MAX_EAGER_FAMILY_FALLBACKS) {
+                eager_fallback_ids.insert(suggestion.observation_sha256.clone());
+            }
         }
     }
     for suggestion in &cache.suggestions {
+        if family_member_ids.contains(&suggestion.observation_sha256)
+            && !eager_fallback_ids.contains(&suggestion.observation_sha256)
+        {
+            continue;
+        }
         if let Some(candidate) = candidate_from_suggestion(policy, suggestion)? {
             candidates.push(candidate);
         }
@@ -1102,6 +1193,75 @@ mod tests {
             SourceEditAtom::AtomicMultiEdit { ref edits } if edits.len() == 2
         ));
         assert_eq!(candidate.predicted_value, 77);
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn redundant_clone_family_lowers_matching_struct_field_roles_atomically() {
+        let root = std::env::temp_dir().join(format!(
+            "b-core-compiler-guided-field-lowering-{}",
+            std::process::id()
+        ));
+        if root.exists() {
+            fs::remove_dir_all(&root).unwrap();
+        }
+        fs::create_dir_all(root.join("src")).unwrap();
+        let source = "pub struct Pair { pub left: String, pub right: String }\n\
+pub fn pair(left: String, right: String) -> Pair {\n\
+    Pair {\n\
+        left: left.clone(),\n\
+        right: right.clone(),\n\
+    }\n\
+}\n";
+        fs::write(root.join("src/lib.rs"), source).unwrap();
+        let mut suggestions = Vec::new();
+        for (index, needle) in ["left.clone()", "right.clone()"].iter().enumerate() {
+            let expression_start = source.find(needle).unwrap();
+            let clone_start = expression_start + needle.find(".clone()").unwrap();
+            suggestions.push(CompilerSuggestion {
+                level: "warning".to_string(),
+                diagnostic_code: "clippy::redundant_clone".to_string(),
+                message: "redundant clone".to_string(),
+                file_name: "src/lib.rs".to_string(),
+                byte_start: clone_start,
+                byte_end: clone_start + ".clone()".len(),
+                replacement: String::new(),
+                applicability: "MachineApplicable".to_string(),
+                primary: true,
+                observation_sha256: sha256(format!("field-clone-{index}").as_bytes()),
+            });
+        }
+        let cargo = PathBuf::from("cargo");
+        let target = root.join("target");
+        let state = root.join("state");
+        let policy = CompilerGuidedRepairPolicy {
+            source_root: &root,
+            cargo_executable: &cargo,
+            build_target_dir: &target,
+            state_dir: &state,
+            timeout_ms: 1_000,
+            max_candidate_bytes: 4_096,
+        };
+        let refs = suggestions.iter().collect::<Vec<_>>();
+
+        let candidate = family_candidate_from_suggestions(&policy, &refs)
+            .unwrap()
+            .expect("field-role family candidate");
+
+        assert_eq!(
+            candidate.candidate_source,
+            "pub struct Pair { pub left: String, pub right: String }\n\
+pub fn pair(left: String, right: String) -> Pair {\n\
+    Pair {\n\
+        left,\n\
+        right,\n\
+    }\n\
+}\n"
+        );
+        assert!(matches!(
+            candidate.structural_repair_program.edit,
+            SourceEditAtom::AtomicMultiEdit { ref edits } if edits.len() == 2
+        ));
         fs::remove_dir_all(root).unwrap();
     }
 }

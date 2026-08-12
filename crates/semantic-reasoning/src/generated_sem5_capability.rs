@@ -37,7 +37,7 @@ mod capability_dda8fe9adfe0e2c0 {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 5i64) == 4i64 {
@@ -87,7 +87,7 @@ mod capability_a05aacf33f4962b9 {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 3i64) == 2i64 {
@@ -133,7 +133,7 @@ mod capability_e637fb422e290736 {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 3i64) == 2i64 {
@@ -183,7 +183,7 @@ mod capability_1b4313ac8f9356bc {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 3i64) == 1i64 {
@@ -229,7 +229,7 @@ mod capability_3eb34270273d5a51 {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 3i64) == 0i64 {
@@ -275,7 +275,7 @@ mod capability_962f67422edea849 {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 5i64) == 3i64 {
@@ -321,7 +321,7 @@ mod capability_4b7e0f9e0e467c0d {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 2i64) == 1i64 {
@@ -367,7 +367,7 @@ mod capability_03bdbdbe80842c73 {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 3i64) == 0i64 {
@@ -413,7 +413,7 @@ mod capability_c91c850c5c09e847 {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 2i64) == 1i64 {
@@ -463,7 +463,7 @@ mod capability_574e473e88991d9d {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 5i64) == 2i64 {
@@ -513,7 +513,7 @@ mod capability_497dd951bbb5547f {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 4i64) == 1i64 {
@@ -559,7 +559,7 @@ mod capability_0429b1c961137134 {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 2i64) == 1i64 {
@@ -605,7 +605,7 @@ mod capability_caef2fe075601913 {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 5i64) == 4i64 {
@@ -651,7 +651,7 @@ mod capability_4d0caf0c14bd98fc {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 3i64) == 1i64 {
@@ -697,7 +697,7 @@ mod capability_2a976596fabdc1eb {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 5i64) == 0i64 {
@@ -747,7 +747,7 @@ mod capability_230304807723f2a9 {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 2i64) == 1i64 {
@@ -793,7 +793,7 @@ mod capability_76b9557413417232 {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 4i64) == 1i64 {
@@ -843,7 +843,7 @@ mod capability_75f1b3f69dbadbcd {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 5i64) == 4i64 {
@@ -889,7 +889,7 @@ mod capability_33bea1d499b1c416 {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 4i64) == 1i64 {
@@ -935,7 +935,7 @@ mod capability_247990c6555d7ee1 {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 2i64) == 1i64 {
@@ -981,7 +981,7 @@ mod capability_f700111f88ac5f3a {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 3i64) == 2i64 {
@@ -1027,7 +1027,7 @@ mod capability_c0b52aa436f3ff9c {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 2i64) == 1i64 {
@@ -1073,7 +1073,7 @@ mod capability_5788e14dfcf4302a {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 3i64) == 1i64 {
@@ -1119,7 +1119,7 @@ mod capability_0e40e0f291f7734c {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 4i64) == 1i64 {
@@ -1169,7 +1169,7 @@ mod capability_e28232536dfc2703 {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 5i64) == 2i64 {
@@ -1215,7 +1215,7 @@ mod capability_860c4dcb6487e203 {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 2i64) == 1i64 {
@@ -1261,7 +1261,7 @@ mod capability_3dd9a903b24d8315 {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 4i64) == 1i64 {
@@ -1307,7 +1307,7 @@ mod capability_23f340838e55bc36 {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 2i64) == 1i64 {
@@ -1357,7 +1357,7 @@ mod capability_77d080a6932df8eb {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 5i64) == 0i64 {
@@ -1403,7 +1403,7 @@ mod capability_52458df072c8c2e2 {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 4i64) == 1i64 {
@@ -1449,7 +1449,7 @@ mod capability_2716441b4b3e09ea {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 4i64) == 1i64 {
@@ -1495,7 +1495,7 @@ mod capability_f88d40529aa1b99d {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 2i64) == 1i64 {
@@ -1545,7 +1545,7 @@ mod capability_d4cc8460340393f7 {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 4i64) == 1i64 {
@@ -1595,7 +1595,7 @@ mod capability_d37af674767b2c8c {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 5i64) == 4i64 {
@@ -1641,7 +1641,7 @@ mod capability_cab5fb604edaace5 {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 3i64) == 1i64 {
@@ -1691,7 +1691,7 @@ mod capability_c7212054c7106572 {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 2i64) == 1i64 {
@@ -1737,7 +1737,7 @@ mod capability_c70ea137395090da {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 3i64) == 0i64 {
@@ -1783,7 +1783,7 @@ mod capability_c0fbd6eb0d0b4aa1 {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 4i64) == 1i64 {
@@ -1829,7 +1829,7 @@ mod capability_b7a36f53b68a9b5a {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 5i64) == 0i64 {
@@ -1875,7 +1875,7 @@ mod capability_b1bf12dd7d3f2d66 {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 4i64) == 1i64 {
@@ -1921,7 +1921,7 @@ mod capability_a50825e3d1d6b253 {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 5i64) == 1i64 {
@@ -1967,7 +1967,7 @@ mod capability_a4a33a1229d25e69 {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 4i64) == 1i64 {
@@ -2017,7 +2017,7 @@ mod capability_9f9b80ecc166241b {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 2i64) == 1i64 {
@@ -2067,7 +2067,7 @@ mod capability_918974a8e9ff052a {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 4i64) == 1i64 {
@@ -2117,7 +2117,7 @@ mod capability_85165963f057b60b {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 5i64) == 3i64 {
@@ -2163,7 +2163,7 @@ mod capability_83c4dd95a9068864 {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 4i64) == 1i64 {
@@ -2209,7 +2209,7 @@ mod capability_7eea9036056de0ff {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 5i64) == 0i64 {
@@ -2255,7 +2255,7 @@ mod capability_7eaccc8f70286c7c {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 5i64) == 1i64 {
@@ -2301,7 +2301,7 @@ mod capability_6c53c25f3b616806 {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 3i64) == 0i64 {
@@ -2347,7 +2347,7 @@ mod capability_6bf380ba0f258057 {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 5i64) == 4i64 {
@@ -2393,7 +2393,7 @@ mod capability_649811db59332d06 {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 4i64) == 1i64 {
@@ -2439,7 +2439,7 @@ mod capability_6348d06ec871a16b {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 5i64) == 2i64 {
@@ -2485,7 +2485,7 @@ mod capability_5c7ac75d21acf6f4 {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 5i64) == 3i64 {
@@ -2531,7 +2531,7 @@ mod capability_3b5c3862443c3fdb {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 2i64) == 1i64 {
@@ -2581,7 +2581,7 @@ mod capability_31456763f513deaf {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 3i64) == 2i64 {
@@ -2631,7 +2631,7 @@ mod capability_2b27fd7fc14fd06d {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 2i64) == 1i64 {
@@ -2677,7 +2677,7 @@ mod capability_262ad8574b3d2781 {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 5i64) == 4i64 {
@@ -2723,7 +2723,7 @@ mod capability_23fc7ccccbfb1d24 {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 2i64) == 1i64 {
@@ -2769,7 +2769,7 @@ mod capability_22cbe17dc4ba11f8 {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 4i64) == 1i64 {
@@ -2815,7 +2815,7 @@ mod capability_13813b318fdb898d {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 2i64) == 1i64 {
@@ -2861,7 +2861,7 @@ mod capability_0d85347ab8f6d5a8 {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 5i64) == 2i64 {
@@ -2911,7 +2911,7 @@ mod capability_0815a71cd0f718ca {
             _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
         };
         let mut stage_value: Vec<i64> = vec![];
-        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+        for (raw_index_0, raw_item_0) in v0.into_iter().enumerate() {
             let item: i64 = raw_item_0;
             let position: i64 = raw_index_0 as i64;
             if (item % 4i64) == 1i64 {
