@@ -1015,6 +1015,10 @@ pub struct SelfCheck {
     pub successful_operators_are_content_addressed: bool,
     pub cross_family_operator_transfer_changes_candidate_priority: bool,
     pub repository_guided_outcomes_are_causally_tracked: bool,
+    pub typed_improvement_operator_execution_required: bool,
+    pub operator_repository_requires_executed_receipt: bool,
+    pub generative_substrate_capacity_isolated: bool,
+    pub saturated_substrate_routes_without_difficulty_escalation: bool,
     pub evaluator_expansion_requires_new_challenge_capability: bool,
     pub mutual_recursive_growth_observed: bool,
 }
@@ -1121,6 +1125,11 @@ pub fn self_check() -> SelfCheck {
             "IMPROVEMENT_OPERATOR_INVOCATIONS_CAUSALLY_BIND_SELECTION_TO_VALIDATED_OUTCOME"
                 .to_string(),
             "CROSS_FAMILY_SUCCESS_CHANGES_FUTURE_CANDIDATE_PRIORITY".to_string(),
+            "TYPED_IMPROVEMENT_OPERATOR_EXECUTION_PRECEDES_SOURCE_INSTALLATION".to_string(),
+            "OPERATOR_REPOSITORY_AUTHORITY_REQUIRES_A_CAUSAL_EXECUTION_RECEIPT".to_string(),
+            "VERIFIED_ARTIFACT_CAPACITY_IS_BOUNDED_PER_EXECUTABLE_SUBSTRATE".to_string(),
+            "SATURATED_SUBSTRATE_ROUTES_TO_A_FRESH_EXECUTABLE_SUBSTRATE_WITHOUT_DIFFICULTY_ESCALATION"
+                .to_string(),
             "EVALUATOR_CAPABILITY_EXPANDS_ONLY_WHEN_THE_CHALLENGE_SUITE_EXPANDS".to_string(),
         ],
         bounded_failure_retry_enabled: true,
@@ -1197,6 +1206,10 @@ pub fn self_check() -> SelfCheck {
         successful_operators_are_content_addressed: true,
         cross_family_operator_transfer_changes_candidate_priority: true,
         repository_guided_outcomes_are_causally_tracked: true,
+        typed_improvement_operator_execution_required: true,
+        operator_repository_requires_executed_receipt: true,
+        generative_substrate_capacity_isolated: true,
+        saturated_substrate_routes_without_difficulty_escalation: true,
         evaluator_expansion_requires_new_challenge_capability: true,
         mutual_recursive_growth_observed: false,
     }
@@ -8082,6 +8095,10 @@ mod tests {
         assert!(check.active_binaries_forbid_proposal_only_exit);
         assert!(check.executable_improvement_operator_repository_enabled);
         assert!(check.successful_operators_are_content_addressed);
+        assert!(check.typed_improvement_operator_execution_required);
+        assert!(check.operator_repository_requires_executed_receipt);
+        assert!(check.generative_substrate_capacity_isolated);
+        assert!(check.saturated_substrate_routes_without_difficulty_escalation);
         assert!(check.cross_family_operator_transfer_changes_candidate_priority);
         assert!(check.repository_guided_outcomes_are_causally_tracked);
         assert!(check.evaluator_expansion_requires_new_challenge_capability);
