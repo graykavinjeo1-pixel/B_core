@@ -38,7 +38,7 @@ use crate::generative_growth::{
 };
 use crate::integrated_development::{
     compose_behavioral_canary_candidate, execute_behavioral_composition_canary,
-    install_composite_candidate,
+    install_composite_candidate_family, MAX_INSTALLED_TYPED_CAPABILITIES,
 };
 use crate::self_repair_contract::sha256;
 
@@ -59,6 +59,7 @@ const INSTALLED_EXECUTION_COUNTER_CONTRACT_REVISION: u64 = 2;
 const MAX_CORE_COHORT_VALIDATION_MS: u64 = 3 * 60 * 1_000;
 const FULL_CORE_REGRESSION_CANARY_INTERVAL: u64 = 8;
 const MAX_REPOSITORY_TEST_PATHS: usize = 8;
+const MAX_COMPOSITE_INSTALL_FAMILY: usize = 4;
 
 fn u64_is_zero(value: &u64) -> bool {
     *value == 0
@@ -6405,11 +6406,19 @@ fn accepted_sem5_artifact_contexts(memory: &GrowthMemory) -> Vec<(String, String
     artifacts
 }
 
-fn pending_sem5_composition_context(memory: &GrowthMemory) -> Result<Option<String>, String> {
+fn pending_sem5_composition_candidates(
+    memory: &GrowthMemory,
+) -> Result<Vec<crate::integrated_development::CompositeProgramCandidateIR>, String> {
     let installed = crate::generated_sem5_capability::generated_capability_hashes()
         .iter()
         .copied()
         .collect::<BTreeSet<_>>();
+    let remaining_capacity = MAX_INSTALLED_TYPED_CAPABILITIES.saturating_sub(installed.len());
+    let family_limit = remaining_capacity.min(MAX_COMPOSITE_INSTALL_FAMILY);
+    if family_limit == 0 {
+        return Ok(Vec::new());
+    }
+    let mut candidates = Vec::new();
     for (expected_artifact, context) in accepted_sem5_artifact_contexts(memory) {
         if installed.contains(expected_artifact.as_str()) {
             continue;
@@ -6418,9 +6427,12 @@ fn pending_sem5_composition_context(memory: &GrowthMemory) -> Result<Option<Stri
         if candidate.program_ir_sha256 != expected_artifact {
             return Err("VERIFIED_ARTIFACT_CONTEXT_BINDING_FAILURE".to_string());
         }
-        return Ok(Some(context));
+        candidates.push(candidate);
+        if candidates.len() >= family_limit {
+            break;
+        }
     }
-    Ok(None)
+    Ok(candidates)
 }
 
 fn latest_installed_sem5_composition_context(memory: &GrowthMemory) -> Option<String> {
@@ -6490,28 +6502,23 @@ fn attempt_pending_composite_capability_install(
     state: &mut SupervisorState,
     memory: &GrowthMemory,
 ) -> Result<CompositeInstallAttemptOutcome, String> {
-    let Some(context) = pending_sem5_composition_context(memory)? else {
-        return Ok(CompositeInstallAttemptOutcome {
-            attempted: false,
-            staged: false,
-        });
-    };
-    let (candidate, _) = compose_behavioral_canary_candidate(&context)?;
-    if crate::generated_sem5_capability::GENERATED_CAPABILITY_ACTIVE
-        && crate::generated_sem5_capability::generated_capability_hashes()
-            .contains(&candidate.program_ir_sha256.as_str())
-        && crate::generated_sem5_capability::GENERATED_SOURCE_SCHEMA_REVISION
-            >= crate::sem5::emitter::CALLABLE_SOURCE_SCHEMA_REVISION
-    {
+    let candidates = pending_sem5_composition_candidates(memory)?;
+    if candidates.is_empty() {
         return Ok(CompositeInstallAttemptOutcome {
             attempted: false,
             staged: false,
         });
     }
-    if state.last_composite_candidate_sha256.as_deref()
-        != Some(candidate.generated_rust_sha256.as_str())
-    {
-        state.last_composite_candidate_sha256 = Some(candidate.generated_rust_sha256.clone());
+    let family_identity = sha256(
+        candidates
+            .iter()
+            .map(|candidate| candidate.generated_rust_sha256.as_str())
+            .collect::<Vec<_>>()
+            .join(":")
+            .as_bytes(),
+    );
+    if state.last_composite_candidate_sha256.as_deref() != Some(family_identity.as_str()) {
+        state.last_composite_candidate_sha256 = Some(family_identity);
         state.composite_capability_consecutive_failures = 0;
     }
     if state.composite_capability_consecutive_failures
@@ -6525,12 +6532,14 @@ fn attempt_pending_composite_capability_install(
     state.composite_capability_install_attempts = state
         .composite_capability_install_attempts
         .saturating_add(1);
-    state.last_source_discovery_reason =
-        Some("VERIFIED_COMPOSITE_CAPABILITY_PENDING_INSTALL".to_string());
+    state.last_source_discovery_reason = Some(format!(
+        "VERIFIED_COMPOSITE_CAPABILITY_FAMILY_PENDING_INSTALL:{}",
+        candidates.len()
+    ));
     state.autonomous_source_patch_attempts =
         state.autonomous_source_patch_attempts.saturating_add(1);
-    let receipt = match install_composite_candidate(
-        &candidate,
+    let receipt = match install_composite_candidate_family(
+        &candidates,
         &config.source_mutation,
         &config.state_dir,
         state.generation,
@@ -6569,10 +6578,13 @@ fn attempt_pending_composite_capability_install(
         });
     }
     if receipt.installed {
-        state.last_source_discovery_reason =
-            Some("COMPOSITE_CAPABILITY_INSTALLED_AND_STAGED".to_string());
-        state.composite_capabilities_installed =
-            state.composite_capabilities_installed.saturating_add(1);
+        state.last_source_discovery_reason = Some(format!(
+            "COMPOSITE_CAPABILITY_FAMILY_INSTALLED_AND_STAGED:{}",
+            candidates.len()
+        ));
+        state.composite_capabilities_installed = state
+            .composite_capabilities_installed
+            .saturating_add(candidates.len() as u64);
         state.composite_capability_consecutive_failures = 0;
     } else if receipt.rolled_back {
         state.last_source_discovery_reason = Some(format!(
@@ -8108,11 +8120,17 @@ mod tests {
             promote_generative_cycle(&GenerativeGrowthMemory::default(), &input, &result)
                 .expect("promote pending capability");
 
-        let pending_context = pending_sem5_composition_context(&memory)
+        let pending_candidate = pending_sem5_composition_candidates(&memory)
             .expect("pending lookup")
+            .into_iter()
+            .next()
+            .expect("pending artifact candidate");
+        let pending_context = accepted_sem5_artifact_contexts(&memory)
+            .into_iter()
+            .find_map(|(artifact, context)| {
+                (artifact == pending_candidate.program_ir_sha256).then_some(context)
+            })
             .expect("pending artifact context");
-        let (pending_candidate, _) = compose_behavioral_canary_candidate(&pending_context)
-            .expect("context reproduces candidate");
         assert!(!installed.contains(&pending_candidate.program_ir_sha256.as_str()));
         assert!(memory
             .generative

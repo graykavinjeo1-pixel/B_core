@@ -45,7 +45,7 @@ use crate::structural_source_repair::synthesize_structural_repair;
 pub const CAMPAIGN_ID: &str = "B_CORE-INTEGRATED-DEVELOPMENT-01";
 pub const AUTHORITATIVE_PREDECESSOR: &str = "8092ea4aba69fd23c9f4e9d56132d488a58e0382";
 const CAPABILITY_REGISTRY_SCHEMA_REVISION: u64 = 4;
-const MAX_INSTALLED_TYPED_CAPABILITIES: usize = 64;
+pub const MAX_INSTALLED_TYPED_CAPABILITIES: usize = 64;
 const CAPABILITY_BEGIN_PREFIX: &str = "// B_CORE_CAPABILITY_BEGIN:";
 const CAPABILITY_END_PREFIX: &str = "// B_CORE_CAPABILITY_END:";
 const MAX_CONTEXTUAL_TYPED_TASK_ATTEMPTS: usize = 32;
@@ -506,6 +506,22 @@ fn merge_typed_capability_registry(
     Ok(output)
 }
 
+fn merge_typed_capability_family_registry(
+    predecessor_source: &str,
+    candidates: &[CompositeProgramCandidateIR],
+) -> Result<String, String> {
+    let mut registry_source = predecessor_source.to_string();
+    for candidate in candidates {
+        registry_source = merge_typed_capability_registry(
+            &registry_source,
+            &candidate.generated_rust_source,
+            &candidate.program_ir.program_id,
+            &candidate.program_ir_sha256,
+        )?;
+    }
+    Ok(registry_source)
+}
+
 pub fn install_composite_candidate(
     candidate: &CompositeProgramCandidateIR,
     policy: &AutonomousSourceMutationPolicy,
@@ -513,44 +529,87 @@ pub fn install_composite_candidate(
     source_generation: u64,
     attempt_nonce: u64,
 ) -> Result<AutonomousSourcePatchReceipt, String> {
-    if candidate.installed
-        || !candidate.type_effect_audit_pass
-        || candidate.generated_rust_source.is_empty()
-        || sha256(candidate.generated_rust_source.as_bytes()) != candidate.generated_rust_sha256
-    {
-        return Err("COMPOSITE_SOURCE_INSTALLATION_INPUT_INVALID".to_string());
+    install_composite_candidate_family(
+        std::slice::from_ref(candidate),
+        policy,
+        state_dir,
+        source_generation,
+        attempt_nonce,
+    )
+}
+
+/// Installs a bounded family of independently verified ProgramIR lowerings as
+/// one atomic registry rewrite. The expensive compile/test/release boundary is
+/// paid once for the family instead of once per callable.
+pub fn install_composite_candidate_family(
+    candidates: &[CompositeProgramCandidateIR],
+    policy: &AutonomousSourceMutationPolicy,
+    state_dir: &std::path::Path,
+    source_generation: u64,
+    attempt_nonce: u64,
+) -> Result<AutonomousSourcePatchReceipt, String> {
+    let Some(current_candidate) = candidates.last() else {
+        return Err("COMPOSITE_SOURCE_INSTALLATION_FAMILY_EMPTY".to_string());
+    };
+    let target_path = &current_candidate.source_relative_path;
+    let mut family_hashes = BTreeSet::new();
+    for candidate in candidates {
+        if candidate.installed
+            || !candidate.type_effect_audit_pass
+            || candidate.generated_rust_source.is_empty()
+            || sha256(candidate.generated_rust_source.as_bytes()) != candidate.generated_rust_sha256
+            || &candidate.source_relative_path != target_path
+            || !family_hashes.insert(candidate.program_ir_sha256.clone())
+        {
+            return Err("COMPOSITE_SOURCE_INSTALLATION_INPUT_INVALID".to_string());
+        }
     }
-    let target = policy.source_root.join(&candidate.source_relative_path);
+    let target = policy.source_root.join(target_path);
     let predecessor_source = std::fs::read_to_string(&target).map_err(|error| {
         format!(
             "COMPOSITE_SOURCE_PREDECESSOR_READ:{}:{error}",
             target.display()
         )
     })?;
-    let registry_source = merge_typed_capability_registry(
-        &predecessor_source,
-        &candidate.generated_rust_source,
-        &candidate.program_ir.program_id,
-        &candidate.program_ir_sha256,
-    )?;
+    let registry_source = merge_typed_capability_family_registry(&predecessor_source, candidates)?;
     let candidate_source = rustfmt_generated_source(policy, &registry_source)?;
     let candidate_sha256 = sha256(candidate_source.as_bytes());
     let predecessor_sha256 = sha256(predecessor_source.as_bytes());
-    let file_id = candidate
-        .source_relative_path
-        .to_string_lossy()
-        .replace('\\', "/");
+    let file_id = target_path.to_string_lossy().replace('\\', "/");
     let structural_repair_program =
         synthesize_structural_repair(&file_id, &predecessor_source, &candidate_source)?;
     let transformation = "SEM5_PROGRAM_IR_TO_ACTIVE_RUNTIME_CALLABLE".to_string();
-    let consequences = candidate.patch_candidate.consequence_predictions.clone();
+    let mut consequences = candidates
+        .iter()
+        .flat_map(|candidate| {
+            candidate
+                .patch_candidate
+                .consequence_predictions
+                .iter()
+                .cloned()
+        })
+        .collect::<Vec<_>>();
+    consequences.sort();
+    consequences.dedup();
+    consequences.push(format!(
+        "{} independently verified typed callables enter one atomic validation boundary",
+        candidates.len()
+    ));
+    let family_evidence_sha256 = sha256(
+        family_hashes
+            .iter()
+            .cloned()
+            .collect::<Vec<_>>()
+            .join(":")
+            .as_bytes(),
+    );
     let weakness = derive_dynamic_weakness(
         source_generation,
-        &candidate.source_relative_path,
+        target_path,
         &transformation,
         WeaknessEvidenceKind::StructuralSourceSmell,
-        &candidate.opportunity.sha256,
-        "a typed executable composition has no repository-native Rust implementation",
+        &family_evidence_sha256,
+        "a verified typed executable composition family has no repository-native Rust implementation",
         consequences.clone(),
         Vec::new(),
     );
@@ -579,12 +638,15 @@ pub fn install_composite_candidate(
             &sha256(
                 format!(
                     "{}:{}:{}:{}",
-                    candidate.program_ir_sha256, source_generation, attempt_nonce, candidate_sha256
+                    family_hashes.iter().cloned().collect::<Vec<_>>().join(":"),
+                    source_generation,
+                    attempt_nonce,
+                    candidate_sha256
                 )
                 .as_bytes()
             )[..24]
         ),
-        relative_path: candidate.source_relative_path.clone(),
+        relative_path: target_path.clone(),
         predecessor_sha256,
         candidate_source,
         candidate_sha256,
@@ -1057,6 +1119,51 @@ mod tests {
             ),
             Err("CAPABILITY_REGISTRY_MODULE_PREFIX_COLLISION".to_string())
         );
+    }
+
+    #[test]
+    fn typed_lowering_family_enters_one_registry_postimage() {
+        let base = compose_existing_sem5_capability(composition_work()).expect("typed candidate");
+        let predecessor = include_str!("generated_sem5_capability.rs");
+        let predecessor_count = existing_capability_sections(predecessor)
+            .expect("valid predecessor registry")
+            .len()
+            .max(1);
+        let candidates = ["8", "9", "f"]
+            .into_iter()
+            .enumerate()
+            .map(|(ordinal, digit)| {
+                let mut candidate = base.clone();
+                let hash = digit.repeat(64);
+                let program_id = format!("REGISTRY-FAMILY-{ordinal}");
+                candidate.generated_rust_source = candidate
+                    .generated_rust_source
+                    .replace(&base.program_ir_sha256, &hash)
+                    .replace(&base.program_ir.program_id, &program_id);
+                candidate.generated_rust_sha256 =
+                    sha256(candidate.generated_rust_source.as_bytes());
+                candidate.program_ir_sha256 = hash;
+                candidate.program_ir.program_id = program_id;
+                candidate
+            })
+            .collect::<Vec<_>>();
+
+        let registry = merge_typed_capability_family_registry(predecessor, &candidates)
+            .expect("atomic family registry postimage");
+
+        assert_eq!(
+            registry.matches(CAPABILITY_BEGIN_PREFIX).count(),
+            predecessor_count + candidates.len()
+        );
+        for candidate in &candidates {
+            assert!(registry.contains(&candidate.program_ir_sha256));
+        }
+        let current = candidates.last().expect("current family member");
+        assert!(registry.contains(&format!(
+            "pub const GENERATED_PROGRAM_IR_SHA256: &str = {:?}",
+            current.program_ir_sha256
+        )));
+        assert!(syn::parse_file(&registry).is_ok());
     }
 
     #[test]
