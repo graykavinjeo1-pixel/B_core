@@ -1682,12 +1682,7 @@ fn materialize_python_synthesis(
         .iter()
         .filter(|cut| cut.branch == CausalCutBranch::Unconditional)
         .collect::<Vec<_>>();
-    if !unconditional.is_empty() {
-        if unconditional.len() != template.cuts.len() {
-            return Err(CausalFrontendFailure::unsupported(
-                "MIXED_CONDITIONAL_AND_UNCONDITIONAL_CUTS",
-            ));
-        }
+    if unconditional.len() == template.cuts.len() {
         let replacement = match (&condition, &otherwise) {
             (Some(condition), Some(otherwise)) => {
                 format!("({postimage} if {condition} else {otherwise})")
@@ -1718,16 +1713,23 @@ fn materialize_python_synthesis(
             .iter()
             .filter_map(|cut| cut.condition_range)
             .collect::<BTreeSet<_>>();
-        if condition_ranges.len() != 1
-            || !template
-                .cuts
-                .iter()
-                .any(|cut| cut.branch == CausalCutBranch::Then)
-            || !template
-                .cuts
-                .iter()
-                .any(|cut| cut.branch == CausalCutBranch::Else)
-        {
+        let then_cuts = template
+            .cuts
+            .iter()
+            .filter(|cut| cut.branch == CausalCutBranch::Then)
+            .collect::<Vec<_>>();
+        let else_cuts = template
+            .cuts
+            .iter()
+            .filter(|cut| cut.branch == CausalCutBranch::Else)
+            .collect::<Vec<_>>();
+        let explicit_topology =
+            unconditional.is_empty() && !then_cuts.is_empty() && !else_cuts.is_empty();
+        let fallthrough_topology = unconditional.len() == 1
+            && then_cuts.len() == 1
+            && else_cuts.is_empty()
+            && then_cuts[0].postimage_range.end <= unconditional[0].postimage_range.start;
+        if condition_ranges.len() != 1 || (!explicit_topology && !fallthrough_topology) {
             return Err(CausalFrontendFailure::unsupported(
                 "CONDITIONAL_CUT_TOPOLOGY_UNSUPPORTED",
             ));
@@ -1741,7 +1743,12 @@ fn materialize_python_synthesis(
             let replacement = match cut.branch {
                 CausalCutBranch::Then => postimage.clone(),
                 CausalCutBranch::Else => otherwise.clone(),
-                CausalCutBranch::Unconditional => unreachable!("checked above"),
+                CausalCutBranch::Unconditional if fallthrough_topology => otherwise.clone(),
+                CausalCutBranch::Unconditional => {
+                    return Err(CausalFrontendFailure::unsupported(
+                        "CONDITIONAL_CUT_TOPOLOGY_UNSUPPORTED",
+                    ))
+                }
             };
             edits.push(replacement_edit(source, cut.postimage_range, replacement)?);
         }
@@ -3408,6 +3415,89 @@ def helper(first: int, second: int) -> int:
         assert!(replay_source_bound_patch(source, patch)
             .unwrap()
             .starts_with("# 한글 byte span canary\r\n"));
+    }
+
+    #[test]
+    fn conditional_fallthrough_return_reaches_the_atomic_lowering_path() {
+        let Some(python_executable) = python() else {
+            return;
+        };
+        let source = "# boundary byte span canary\r\ndef distance(left: int, right: int) -> int:\r\n    if left == right:\r\n        return 1\r\n    return 2\r\n";
+        let request = SourceBoundCausalRequestIR {
+            schema: SOURCE_BOUND_CAUSAL_REQUEST_SCHEMA.to_string(),
+            source_relative_path: PathBuf::from("fallthrough.py"),
+            source: source.to_string(),
+            python_executable,
+            alternatives: vec![SourceBoundCausalAlternativeIR {
+                alternative_id: "fallthrough-distance".to_string(),
+                public_symbol: "distance".to_string(),
+                public_observations: observations(&[
+                    (9, 4, 5),
+                    (3, 8, 5),
+                    (-2, -9, 7),
+                    (-8, -3, 5),
+                ]),
+                allowed_effects: vec![Effect::Pure],
+                require_conditional: true,
+                max_expression_depth: 2,
+                max_candidates: 1_024,
+            }],
+        };
+        let receipt = analyze_and_synthesize_source_bound(&request).unwrap();
+        let alternative = &receipt.alternatives[0];
+        assert_eq!(
+            alternative
+                .function_template
+                .cuts
+                .iter()
+                .map(|cut| cut.branch)
+                .collect::<Vec<_>>(),
+            [CausalCutBranch::Then, CausalCutBranch::Unconditional]
+        );
+        let SourceEditAtom::AtomicMultiEdit { edits } = &alternative.replayable_patch.edit else {
+            panic!("atomic path required")
+        };
+        assert_eq!(edits.len(), 3);
+        let candidate = replay_source_bound_patch(source, &alternative.replayable_patch).unwrap();
+        assert!(candidate.starts_with("# boundary byte span canary\r\n"));
+    }
+
+    #[test]
+    fn ambiguous_mixed_conditional_topology_remains_fail_closed() {
+        let Some(python_executable) = python() else {
+            return;
+        };
+        let source = r#"def classify(left: int, right: int) -> int:
+    if left > right:
+        return left - right
+    if left == right:
+        return 0
+    return right - left
+"#;
+        let request = SourceBoundCausalRequestIR {
+            schema: SOURCE_BOUND_CAUSAL_REQUEST_SCHEMA.to_string(),
+            source_relative_path: PathBuf::from("mixed.py"),
+            source: source.to_string(),
+            python_executable,
+            alternatives: vec![SourceBoundCausalAlternativeIR {
+                alternative_id: "mixed-conditional".to_string(),
+                public_symbol: "classify".to_string(),
+                public_observations: observations(&[
+                    (9, 4, 5),
+                    (3, 8, 5),
+                    (-2, -9, 7),
+                    (-8, -3, 5),
+                ]),
+                allowed_effects: vec![Effect::Pure],
+                require_conditional: true,
+                max_expression_depth: 2,
+                max_candidates: 1_024,
+            }],
+        };
+        assert_eq!(
+            analyze_and_synthesize_source_bound(&request).unwrap_err(),
+            CausalFrontendFailure::unsupported("CONDITIONAL_CUT_TOPOLOGY_UNSUPPORTED")
+        );
     }
 
     #[test]
