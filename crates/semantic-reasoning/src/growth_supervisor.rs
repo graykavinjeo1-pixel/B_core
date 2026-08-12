@@ -3983,6 +3983,58 @@ fn generative_input(lesson: &LearnedCompositionLesson) -> GenerativeInput {
     }
 }
 
+fn plateau_generative_input(memory: &GrowthMemory) -> Option<GenerativeInput> {
+    let mut lessons = memory.lessons.iter().rev().take(2).collect::<Vec<_>>();
+    if lessons.len() < 2 || lessons[0].lesson_id == lessons[1].lesson_id {
+        return None;
+    }
+    lessons.reverse();
+    let mut diagnostic_signals = lessons
+        .iter()
+        .flat_map(|lesson| lesson.diagnostic_signals.iter().cloned())
+        .collect::<BTreeSet<_>>()
+        .into_iter()
+        .take(12)
+        .collect::<Vec<_>>();
+    diagnostic_signals.push("AUTONOMOUS_PLATEAU_CROSS_LESSON_PROBE".to_string());
+    let observed_composition_roles = lessons
+        .iter()
+        .flat_map(|lesson| lesson.composition_recipe.iter().cloned())
+        .collect::<BTreeSet<_>>()
+        .into_iter()
+        .take(12)
+        .collect::<Vec<_>>();
+    let lesson_identity = lessons
+        .iter()
+        .map(|lesson| lesson.lesson_id.as_str())
+        .collect::<Vec<_>>()
+        .join(":");
+    Some(GenerativeInput {
+        source_lesson_id: format!(
+            "PLATEAU-CROSS-LESSON-{}",
+            &sha256(lesson_identity.as_bytes())[..24]
+        ),
+        diagnostic_signals,
+        observed_composition_roles,
+        learning_score: lessons
+            .iter()
+            .map(|lesson| lesson.learning_score)
+            .max()
+            .unwrap_or(0),
+        verification_evidence_count: lessons
+            .iter()
+            .map(|lesson| lesson.evidence_observation_sha256.len())
+            .sum::<usize>()
+            .min(16),
+        measured_performance_gain: lessons.iter().any(|lesson| {
+            lesson
+                .performance_metrics
+                .iter()
+                .any(PerformanceMetricEvidence::improved)
+        }),
+    })
+}
+
 fn refine_classifier_from_capability_outcome(
     classifier: &mut ClassifierMemory,
     generation: u64,
@@ -4546,6 +4598,144 @@ fn run_independent_verifier(
     let receipt: GrowthVerificationReceipt = read_json(&receipt_path)?;
     validate_receipt(freeze, candidate, &receipt)?;
     Ok(receipt)
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+struct PlateauGenerativeProbeReceipt {
+    schema: String,
+    probe_id: String,
+    predecessor_memory_sha256: String,
+    input: GenerativeInput,
+    seed: u64,
+    cycle: GenerativeCycleResult,
+    observation: Option<LearningObservation>,
+    receipt_sha256: String,
+}
+
+fn plateau_generative_probe_observation(
+    config: &GrowthSupervisorConfig,
+    state: &SupervisorState,
+    memory: &GrowthMemory,
+) -> Result<Option<LearningObservation>, String> {
+    let Some(input) = plateau_generative_input(memory) else {
+        return Ok(None);
+    };
+    if !executable_generative_substrate_available(&memory.generative) {
+        return Ok(None);
+    }
+    let probe_id = sha256(
+        format!(
+            "PLATEAU_GENERATIVE_PROBE_1:{}:{}:{}",
+            state.current_memory_sha256, state.generation, input.source_lesson_id
+        )
+        .as_bytes(),
+    );
+    let probe_root = config.state_dir.join("generative_plateau_probes");
+    let receipt_path = probe_root.join(format!("{probe_id}.json"));
+    if receipt_path.is_file() {
+        let existing: PlateauGenerativeProbeReceipt = read_json(&receipt_path)?;
+        if existing.probe_id != probe_id
+            || existing.predecessor_memory_sha256 != state.current_memory_sha256
+        {
+            return Err("PLATEAU_GENERATIVE_PROBE_RECEIPT_DIVERGED".to_string());
+        }
+        return Ok(existing.observation);
+    }
+    let seed = u64::from_str_radix(&probe_id[..16], 16)
+        .map_err(|error| format!("PLATEAU_GENERATIVE_PROBE_SEED:{error}"))?;
+    let cycle = run_generative_cycle(&memory.generative, &input, seed)?;
+    let observation = if cycle.frontier_advance {
+        let behavioral_receipt = cycle
+            .behavioral_execution_receipt
+            .as_ref()
+            .filter(|receipt| receipt.executed)
+            .ok_or_else(|| "PLATEAU_GENERATIVE_BEHAVIORAL_RECEIPT_MISSING".to_string())?;
+        let behavioral_sha256 = cycle
+            .behavioral_verification_sha256
+            .as_ref()
+            .filter(|hash| **hash == behavioral_receipt.receipt_sha256)
+            .ok_or_else(|| "PLATEAU_GENERATIVE_BEHAVIORAL_BINDING_FAILURE".to_string())?;
+        let frontier_before = memory.generative.distinct_verified_artifact_count();
+        let frontier_after = frontier_before.saturating_add(cycle.frontier_advance_units);
+        let artifact_sha256s = behavioral_receipt
+            .verified_artifacts
+            .iter()
+            .map(|artifact| artifact.artifact_sha256.clone())
+            .collect::<Vec<_>>();
+        let content_sha256 = json_sha256(&(
+            "B_CORE_PLATEAU_GENERATIVE_PROBE_1",
+            &probe_id,
+            &state.current_memory_sha256,
+            &input,
+            seed,
+            behavioral_sha256,
+            &artifact_sha256s,
+        ))?;
+        let observation_id =
+            sha256(format!("PLATEAU_GENERATIVE_OBSERVATION:{content_sha256}").as_bytes());
+        let mut evidence = vec![behavioral_sha256.clone()];
+        evidence.extend(artifact_sha256s);
+        evidence.sort();
+        evidence.dedup();
+        Some(LearningObservation {
+            observation_id: observation_id.clone(),
+            work_event_id: None,
+            logical_path: format!("INTERNAL/.b_plateau_generative/{observation_id}"),
+            content_sha256: content_sha256.clone(),
+            predecessor_content_sha256: Some(state.current_memory_sha256.clone()),
+            actor: WorkActor::LocalTool,
+            work_kind: WorkKind::CapabilitySynthesis,
+            work_outcome: WorkOutcome::Pass,
+            features_before: None,
+            features_after: StructuralFeatures::default(),
+            signals: vec![
+                "AUTONOMOUS_PLATEAU_CROSS_LESSON_PROBE".to_string(),
+                "BEHAVIORALLY_VERIFIED_NOVEL_ARTIFACT".to_string(),
+                "VERIFIED_PASS".to_string(),
+            ],
+            composition_roles: vec![
+                "CROSS_LESSON_PREDICTION".to_string(),
+                "PROGRAM_COMPOSITION".to_string(),
+                "BEHAVIORAL_FALSIFICATION".to_string(),
+            ],
+            learning_score: 95,
+            learning_value: LearningValue::High,
+            reasons: vec![
+                "idle plateau exploration combined two sealed lessons before executing a bounded behavioral canary"
+                    .to_string(),
+                "only a novel behaviorally verified artifact entered the normal campaign boundary"
+                    .to_string(),
+            ],
+            verification_evidence_sha256: evidence,
+            performance_metrics: vec![PerformanceMetricEvidence {
+                metric: "GENERATIVE_VERIFIED_ARTIFACT_COUNT".to_string(),
+                before: frontier_before,
+                after: frontier_after,
+                lower_is_better: false,
+                evidence_sha256: content_sha256,
+            }],
+            exact_source_fragments_stored: 0,
+            raw_source_bytes_stored: 0,
+            observed_at_ms: state.generation,
+        })
+    } else {
+        None
+    };
+    let mut receipt = PlateauGenerativeProbeReceipt {
+        schema: "B_CORE_PLATEAU_GENERATIVE_PROBE_1".to_string(),
+        probe_id,
+        predecessor_memory_sha256: state.current_memory_sha256.clone(),
+        input,
+        seed,
+        cycle,
+        observation: observation.clone(),
+        receipt_sha256: String::new(),
+    };
+    receipt.receipt_sha256 = json_sha256(&receipt)?;
+    fs::create_dir_all(&probe_root)
+        .map_err(|error| format!("PLATEAU_GENERATIVE_PROBE_DIR:{error}"))?;
+    write_immutable_json(&receipt_path, &receipt)?;
+    Ok(observation)
 }
 
 #[allow(clippy::too_many_arguments)]
@@ -7522,6 +7712,21 @@ fn step_without_lease(
             }
         }
     }
+    if high.is_empty()
+        && config.autonomous_campaigns
+        && state.plateau_scans >= config.resources.plateau_scans_before_wait
+    {
+        if let Some(observation) = plateau_generative_probe_observation(config, &state, &memory)? {
+            persist_scan_observations(config, std::slice::from_ref(&observation))?;
+            if !scan
+                .index
+                .consumed_observation_ids
+                .contains(&observation.observation_id)
+            {
+                high.push(observation);
+            }
+        }
+    }
     let high_count = high.len();
     let mut campaign_id = None;
     let mut campaign_accepted = None;
@@ -7866,6 +8071,55 @@ mod tests {
         )
         .unwrap()
         .is_none());
+    }
+
+    #[test]
+    fn plateau_cross_lesson_probe_is_bounded_verified_and_idempotent() {
+        let root = temp_root("plateau-cross-lesson-probe");
+        let (config_path, config) = test_config(&root);
+        let state = initialize(&config_path).unwrap();
+        let mut memory = load_memory(&config, 0).unwrap();
+        let lesson = |id: &str, signal: &str, role: &str| LearnedCompositionLesson {
+            lesson_id: id.to_string(),
+            evidence_observation_sha256: vec![sha256(format!("evidence-{id}").as_bytes())],
+            work_kinds: vec![WorkKind::CapabilitySynthesis],
+            diagnostic_signals: vec![signal.to_string(), "VERIFIED_PASS".to_string()],
+            composition_recipe: vec![role.to_string(), "REGRESSION_TEST".to_string()],
+            applicability: vec!["BOUND_CONTEXT".to_string()],
+            verification_obligations: vec!["BEHAVIORAL_CANARY".to_string()],
+            performance_metrics: Vec::new(),
+            learning_score: 90,
+            exact_patch_data_present: false,
+            exact_source_fragment_present: false,
+            raw_source_bytes_present: false,
+        };
+        memory.lessons = vec![
+            lesson("LESSON-A", "AST_ROLE_BINDING", "PREDICT"),
+            lesson("LESSON-B", "COUNTEREXAMPLE_REVISION", "COMPOSE"),
+        ];
+
+        let first = plateau_generative_probe_observation(&config, &state, &memory)
+            .unwrap()
+            .expect("novel verified plateau artifact");
+        let second = plateau_generative_probe_observation(&config, &state, &memory)
+            .unwrap()
+            .expect("sealed probe replay");
+
+        assert_eq!(first, second);
+        assert_eq!(first.work_kind, WorkKind::CapabilitySynthesis);
+        assert_eq!(first.work_outcome, WorkOutcome::Pass);
+        assert!(first
+            .signals
+            .contains(&"AUTONOMOUS_PLATEAU_CROSS_LESSON_PROBE".to_string()));
+        assert!(!first.verification_evidence_sha256.is_empty());
+        assert!(campaign_preflight_ready(&config, std::slice::from_ref(&first)).unwrap());
+        assert_eq!(
+            fs::read_dir(config.state_dir.join("generative_plateau_probes"))
+                .unwrap()
+                .count(),
+            1
+        );
+        fs::remove_dir_all(root).unwrap();
     }
 
     #[test]
