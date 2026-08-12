@@ -93,6 +93,9 @@ enum PublicValue {
     Int(i128),
     Bool(bool),
     String(String),
+    Option(Option<Box<PublicValue>>),
+    ResultOk(Box<PublicValue>),
+    ResultErr(Box<PublicValue>),
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
@@ -287,10 +290,28 @@ fn public_literal(expression: &Expr) -> Option<PublicValue> {
             Lit::Str(value) => Some(PublicValue::String(value.value())),
             _ => None,
         },
+        Expr::Path(path) if path.path.is_ident("None") => Some(PublicValue::Option(None)),
+        Expr::Call(call) if call.args.len() == 1 => {
+            let Expr::Path(path) = call.func.as_ref() else {
+                return None;
+            };
+            let constructor = path.path.segments.last()?.ident.to_string();
+            let value = Box::new(public_literal(call.args.first()?)?);
+            match constructor.as_str() {
+                "Some" => Some(PublicValue::Option(Some(value))),
+                "Ok" => Some(PublicValue::ResultOk(value)),
+                "Err" => Some(PublicValue::ResultErr(value)),
+                _ => None,
+            }
+        }
         Expr::Unary(value) if matches!(value.op, UnOp::Neg(_)) => {
             match public_literal(value.expr.as_ref())? {
                 PublicValue::Int(number) => number.checked_neg().map(PublicValue::Int),
-                PublicValue::Bool(_) | PublicValue::String(_) => None,
+                PublicValue::Bool(_)
+                | PublicValue::String(_)
+                | PublicValue::Option(_)
+                | PublicValue::ResultOk(_)
+                | PublicValue::ResultErr(_) => None,
             }
         }
         Expr::Paren(value) => public_literal(value.expr.as_ref()),
@@ -304,6 +325,10 @@ fn contradicted_stub_family(expression: &Expr) -> Option<(&'static str, String)>
         Some(PublicValue::Int(_)) => Some(("INTEGER_LITERAL", normalized_tokens(expression))),
         Some(PublicValue::Bool(_)) => Some(("BOOLEAN_LITERAL", normalized_tokens(expression))),
         Some(PublicValue::String(_)) => Some(("STRING_LITERAL", normalized_tokens(expression))),
+        Some(PublicValue::Option(None)) => Some(("OPTION_NONE", normalized_tokens(expression))),
+        Some(PublicValue::Option(Some(_))) => Some(("OPTION_SOME", normalized_tokens(expression))),
+        Some(PublicValue::ResultOk(_)) => Some(("RESULT_OK", normalized_tokens(expression))),
+        Some(PublicValue::ResultErr(_)) => Some(("RESULT_ERR", normalized_tokens(expression))),
         None if normalized_tokens(expression) == "Default::default()" => {
             Some(("DEFAULT_CONSTRUCTOR", "Default::default()".to_string()))
         }
@@ -870,7 +895,11 @@ fn numeric_inputs(callable: &CallableSignature, example: &PublicExample) -> Opti
         .filter(|(binding, _)| is_integer(&binding.type_name))
         .map(|(_, value)| match value {
             PublicValue::Int(value) => Some(*value),
-            PublicValue::Bool(_) | PublicValue::String(_) => None,
+            PublicValue::Bool(_)
+            | PublicValue::String(_)
+            | PublicValue::Option(_)
+            | PublicValue::ResultOk(_)
+            | PublicValue::ResultErr(_) => None,
         })
         .collect()
 }
@@ -886,7 +915,11 @@ fn boolean_inputs(callable: &CallableSignature, example: &PublicExample) -> Opti
         .filter(|(binding, _)| binding.type_name == "bool")
         .map(|(_, value)| match value {
             PublicValue::Bool(value) => Some(*value),
-            PublicValue::Int(_) | PublicValue::String(_) => None,
+            PublicValue::Int(_)
+            | PublicValue::String(_)
+            | PublicValue::Option(_)
+            | PublicValue::ResultOk(_)
+            | PublicValue::ResultErr(_) => None,
         })
         .collect()
 }
@@ -902,7 +935,11 @@ fn string_inputs(callable: &CallableSignature, example: &PublicExample) -> Optio
         .filter(|(binding, _)| is_string_like(&binding.type_name))
         .map(|(_, value)| match value {
             PublicValue::String(value) => Some(value.clone()),
-            PublicValue::Int(_) | PublicValue::Bool(_) => None,
+            PublicValue::Int(_)
+            | PublicValue::Bool(_)
+            | PublicValue::Option(_)
+            | PublicValue::ResultOk(_)
+            | PublicValue::ResultErr(_) => None,
         })
         .collect()
 }
@@ -923,6 +960,19 @@ fn bound_public_value(
                 || expression == format!("{}.to_string()", binding.name))
             .then(|| value.clone())
         })
+}
+
+fn constructed_bound_value(
+    callable: &CallableSignature,
+    example: &PublicExample,
+    expression: &str,
+    constructor: &str,
+) -> Option<PublicValue> {
+    let inner = expression
+        .strip_prefix(constructor)?
+        .strip_prefix('(')?
+        .strip_suffix(')')?;
+    bound_public_value(callable, example, inner)
 }
 
 fn first_two<T: Copy>(values: &[T]) -> Option<(T, T)> {
@@ -998,6 +1048,13 @@ fn evaluate_public_expression(
             let (left, right) = string()?;
             Some(PublicValue::String(format!("{left}{right}")))
         }
+        "OPTION_NONE" => Some(PublicValue::Option(None)),
+        "OPTION_SOME" => constructed_bound_value(callable, example, expression, "Some")
+            .map(|value| PublicValue::Option(Some(Box::new(value)))),
+        "RESULT_OK" => constructed_bound_value(callable, example, expression, "Ok")
+            .map(|value| PublicValue::ResultOk(Box::new(value))),
+        "RESULT_ERR" => constructed_bound_value(callable, example, expression, "Err")
+            .map(|value| PublicValue::ResultErr(Box::new(value))),
         "BOOLEAN_NOT" | "BOUND_VALUE" | "BOUND_VALUE_CLONE" | "STRING_TO_OWNED" => {
             bound_public_value(callable, example, expression).map(|value| match family {
                 "BOOLEAN_NOT" => match value {
@@ -1021,6 +1078,9 @@ fn evaluate_public_expression(
         "DEFAULT_CONSTRUCTOR" if is_integer(&callable.output) => Some(PublicValue::Int(0)),
         "DEFAULT_CONSTRUCTOR" if callable.output == "String" => {
             Some(PublicValue::String(String::new()))
+        }
+        "DEFAULT_CONSTRUCTOR" if callable.output.starts_with("Option<") => {
+            Some(PublicValue::Option(None))
         }
         _ => None,
     }
@@ -1537,6 +1597,40 @@ mod tests {
         assert_eq!(candidates[0].public_examples_observed, 2);
         assert_eq!(candidates[0].public_examples_evaluated, 2);
         assert_eq!(candidates[0].public_examples_satisfied, 2);
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn option_examples_select_some_constructor_and_falsify_none() {
+        let root =
+            std::env::temp_dir().join(format!("b-core-grammar-option-some-{}", std::process::id()));
+        if root.exists() {
+            fs::remove_dir_all(&root).unwrap();
+        }
+        fs::create_dir_all(root.join("src")).unwrap();
+        fs::write(
+            root.join("src/lib.rs"),
+            "pub fn keep(value: i32) -> Option<i32> { todo!() }\n\n#[cfg(test)]\nmod tests {\n    #[test]\n    fn keeps() {\n        assert_eq!(super::keep(3), Some(3));\n        assert_eq!(super::keep(-2), Some(-2));\n    }\n}\n",
+        )
+        .unwrap();
+
+        let candidates = discover_grammar_repairs(&root, 4_096).unwrap();
+
+        assert!(!candidates.is_empty());
+        assert_eq!(candidates[0].grammar_expression, "Some(value)");
+        assert!(candidates[0]
+            .solution_strategy
+            .starts_with("GRAMMAR_COMPOSITION:OPTION_SOME"));
+        assert_eq!(candidates[0].public_examples_observed, 2);
+        assert_eq!(candidates[0].public_examples_evaluated, 2);
+        assert_eq!(candidates[0].public_examples_satisfied, 2);
+        assert!(candidates.iter().all(|candidate| {
+            candidate.public_examples_evaluated == 0
+                || candidate.public_examples_satisfied == candidate.public_examples_evaluated
+        }));
+        assert!(!candidates
+            .iter()
+            .any(|candidate| candidate.grammar_expression == "None"));
         fs::remove_dir_all(root).unwrap();
     }
 
