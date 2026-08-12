@@ -4,13 +4,21 @@
 //! restores input order, so parallel execution cannot change scientific or
 //! source-candidate selection semantics.
 
+use std::cell::Cell;
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::Mutex;
 use std::thread;
 
+thread_local! {
+    static PARALLEL_WORKER_DEPTH: Cell<usize> = const { Cell::new(0) };
+}
+
 pub(crate) fn worker_count_for(item_count: usize, minimum_items_per_worker: usize) -> usize {
     if item_count == 0 {
         return 0;
+    }
+    if PARALLEL_WORKER_DEPTH.with(|depth| depth.get() > 0) {
+        return 1;
     }
     let minimum_items_per_worker = minimum_items_per_worker.max(1);
     let useful_workers = item_count.div_ceil(minimum_items_per_worker);
@@ -42,6 +50,25 @@ where
     R: Send,
     F: Fn(&T) -> Result<R, String> + Sync,
 {
+    map_ordered_batched_by(items, lane, minimum_items_per_worker, operation, |error| {
+        error
+    })
+}
+
+pub(crate) fn map_ordered_batched_by<T, R, E, F, G>(
+    items: &[T],
+    lane: &str,
+    minimum_items_per_worker: usize,
+    operation: F,
+    error_from_string: G,
+) -> Result<Vec<R>, E>
+where
+    T: Sync,
+    R: Send,
+    E: Send,
+    F: Fn(&T) -> Result<R, E> + Sync,
+    G: Fn(String) -> E + Sync,
+{
     if items.is_empty() {
         return Ok(Vec::new());
     }
@@ -51,10 +78,11 @@ where
     }
     let next = AtomicUsize::new(0);
     let results = Mutex::new(Vec::with_capacity(items.len()));
-    thread::scope(|scope| -> Result<(), String> {
+    thread::scope(|scope| -> Result<(), E> {
         let mut handles = Vec::with_capacity(worker_count);
         for _ in 0..worker_count {
-            handles.push(scope.spawn(|| -> Result<(), String> {
+            handles.push(scope.spawn(|| -> Result<(), E> {
+                PARALLEL_WORKER_DEPTH.with(|depth| depth.set(depth.get().saturating_add(1)));
                 loop {
                     let index = next.fetch_add(1, Ordering::Relaxed);
                     let Some(item) = items.get(index) else {
@@ -63,7 +91,7 @@ where
                     let result = operation(item);
                     results
                         .lock()
-                        .map_err(|_| format!("{lane}_RESULT_LOCK_POISONED"))?
+                        .map_err(|_| error_from_string(format!("{lane}_RESULT_LOCK_POISONED")))?
                         .push((index, result));
                 }
                 Ok(())
@@ -72,13 +100,13 @@ where
         for handle in handles {
             handle
                 .join()
-                .map_err(|_| format!("{lane}_WORKER_PANICKED"))??;
+                .map_err(|_| error_from_string(format!("{lane}_WORKER_PANICKED")))??;
         }
         Ok(())
     })?;
     let mut ordered = results
         .into_inner()
-        .map_err(|_| format!("{lane}_RESULT_LOCK_POISONED"))?;
+        .map_err(|_| error_from_string(format!("{lane}_RESULT_LOCK_POISONED")))?;
     ordered.sort_by_key(|(index, _)| *index);
     ordered.into_iter().map(|(_, result)| result).collect()
 }
@@ -101,14 +129,16 @@ mod tests {
         assert_eq!(observed, expected);
 
         let error = map_ordered(&inputs, "PARALLEL_CANARY", |value| {
-            if *value == 17 {
-                Err("BOUND_COUNTEREXAMPLE".to_string())
+            if *value == 7 {
+                Err("FIRST_BOUND_COUNTEREXAMPLE".to_string())
+            } else if *value == 17 {
+                Err("LATER_BOUND_COUNTEREXAMPLE".to_string())
             } else {
                 Ok(*value)
             }
         })
         .unwrap_err();
-        assert_eq!(error, "BOUND_COUNTEREXAMPLE");
+        assert_eq!(error, "FIRST_BOUND_COUNTEREXAMPLE");
     }
 
     #[test]
@@ -130,5 +160,25 @@ mod tests {
             .unwrap()
             .into_iter()
             .all(|worker| worker == caller));
+    }
+
+    #[test]
+    fn nested_parallel_graph_keeps_fanout_at_the_coarse_level() {
+        let nested_worker_counts = Mutex::new(Vec::new());
+        let inputs = (0_u64..64).collect::<Vec<_>>();
+        let observed = map_ordered(&inputs, "OUTER_GRAPH_CANARY", |value| {
+            nested_worker_counts
+                .lock()
+                .unwrap()
+                .push(worker_count_for(256, 1));
+            Ok(value.saturating_add(1))
+        })
+        .unwrap();
+        assert_eq!(observed.len(), inputs.len());
+        assert!(nested_worker_counts
+            .into_inner()
+            .unwrap()
+            .into_iter()
+            .all(|workers| workers == 1));
     }
 }

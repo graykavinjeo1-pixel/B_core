@@ -18,6 +18,9 @@ use std::time::{Duration, Instant};
 
 use serde::{Deserialize, Serialize};
 
+use crate::bounded_parallel::{
+    map_ordered_batched_by as parallel_map_ordered_batched_by, worker_count_for,
+};
 use crate::self_repair_contract::sha256;
 use crate::sem5::model::{BinaryOperator, DataSplit, Effect, ProgramType, UnaryOperator};
 use crate::sem5::typed_mechanism::{
@@ -37,6 +40,7 @@ const MAX_TEST_SOURCES: usize = 64;
 const MAX_TEST_SOURCE_BYTES: usize = 16 * 1024 * 1024;
 const MAX_CAUSAL_ALTERNATIVES: usize = 32;
 const MAX_DEPENDENCY_CLOSURE: usize = 64;
+const CAUSAL_ALTERNATIVE_ITEMS_PER_WORKER: usize = 4;
 const PYTHON_HOST_TIMEOUT: Duration = Duration::from_secs(10);
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -234,6 +238,8 @@ pub struct SourceBoundCausalReceiptIR {
     pub language_backend: SourceLanguageBackend,
     pub predecessor_sha256: String,
     pub alternatives: Vec<SourceBoundAlternativeReceiptIR>,
+    #[serde(default)]
+    pub alternative_worker_count: usize,
     pub public_symbol_owner_preserved: bool,
     pub execution_dependency_closure_preserved: bool,
     pub single_and_multi_edit_share_atomic_path: bool,
@@ -1390,106 +1396,118 @@ pub fn analyze_and_synthesize_source_bound_with_operators(
             .or_default()
             .push(operator.clone());
     }
-    let mut receipts = Vec::with_capacity(request.alternatives.len());
-    for alternative in &request.alternatives {
-        let definition = definitions.get(&alternative.public_symbol).ok_or_else(|| {
-            CausalFrontendFailure::public(format!(
-                "EXACT_PUBLIC_SYMBOL_NOT_RETURNED:{}",
-                alternative.public_symbol
+    let alternative_worker_count = worker_count_for(
+        request.alternatives.len(),
+        CAUSAL_ALTERNATIVE_ITEMS_PER_WORKER,
+    );
+    let receipts = parallel_map_ordered_batched_by(
+        &request.alternatives,
+        "SOURCE_BOUND_CAUSAL_ALTERNATIVE",
+        CAUSAL_ALTERNATIVE_ITEMS_PER_WORKER,
+        |alternative| {
+            let definition = definitions.get(&alternative.public_symbol).ok_or_else(|| {
+                CausalFrontendFailure::public(format!(
+                    "EXACT_PUBLIC_SYMBOL_NOT_RETURNED:{}",
+                    alternative.public_symbol
+                ))
+            })?;
+            let function_template =
+                convert_python_definition(definition.clone(), &alternative.public_observations)?;
+            if function_template.qualified_symbol != alternative.public_symbol
+                || function_template.execution_dependency_closure.first()
+                    != Some(&alternative.public_symbol)
+            {
+                return Err(CausalFrontendFailure::public(
+                    "PUBLIC_SYMBOL_OR_CLOSURE_IDENTITY_LOST",
+                ));
+            }
+            let synthesis_request = TypedMechanismSynthesisGoalIR {
+                schema: TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA.to_string(),
+                goal_id: alternative.alternative_id.clone(),
+                split: DataSplit::FreshBlind,
+                operands: function_template.operands.clone(),
+                output_type: function_template.output_type.clone(),
+                definitions: Vec::new(),
+                allowed_effects: if alternative.allowed_effects.is_empty() {
+                    vec![Effect::Pure]
+                } else {
+                    alternative.allowed_effects.clone()
+                },
+                preconditions: vec![format!(
+                    "exact public symbol {} is source bound",
+                    alternative.public_symbol
+                )],
+                postconditions: vec!["satisfy all public postimage observations".to_string()],
+                invariants: vec![
+                    "preserve exact public symbol owner".to_string(),
+                    "preserve same-file execution dependency closure".to_string(),
+                ],
+                public_observations: alternative.public_observations.clone(),
+                require_conditional: alternative.require_conditional,
+                max_expression_depth: alternative.max_expression_depth,
+                max_candidates: alternative.max_candidates,
+                provenance: vec![
+                    "PYTHON_AST_SOURCE_BOUND_CAUSAL_CUT".to_string(),
+                    format!(
+                        "SOURCE_TEMPLATE_SHA256:{}",
+                        function_template.source_template_sha256
+                    ),
+                ],
+            };
+            let type_key = serde_json::to_string(&(
+                function_template
+                    .operands
+                    .iter()
+                    .map(|operand| operand.value_type.clone())
+                    .collect::<Vec<_>>(),
+                &function_template.output_type,
             ))
-        })?;
-        let function_template =
-            convert_python_definition(definition.clone(), &alternative.public_observations)?;
-        if function_template.qualified_symbol != alternative.public_symbol
-            || function_template.execution_dependency_closure.first()
-                != Some(&alternative.public_symbol)
-        {
-            return Err(CausalFrontendFailure::public(
-                "PUBLIC_SYMBOL_OR_CLOSURE_IDENTITY_LOST",
-            ));
-        }
-        let synthesis_request = TypedMechanismSynthesisGoalIR {
-            schema: TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA.to_string(),
-            goal_id: alternative.alternative_id.clone(),
-            split: DataSplit::FreshBlind,
-            operands: function_template.operands.clone(),
-            output_type: function_template.output_type.clone(),
-            definitions: Vec::new(),
-            allowed_effects: if alternative.allowed_effects.is_empty() {
-                vec![Effect::Pure]
-            } else {
-                alternative.allowed_effects.clone()
-            },
-            preconditions: vec![format!(
-                "exact public symbol {} is source bound",
-                alternative.public_symbol
-            )],
-            postconditions: vec!["satisfy all public postimage observations".to_string()],
-            invariants: vec![
-                "preserve exact public symbol owner".to_string(),
-                "preserve same-file execution dependency closure".to_string(),
-            ],
-            public_observations: alternative.public_observations.clone(),
-            require_conditional: alternative.require_conditional,
-            max_expression_depth: alternative.max_expression_depth,
-            max_candidates: alternative.max_candidates,
-            provenance: vec![
-                "PYTHON_AST_SOURCE_BOUND_CAUSAL_CUT".to_string(),
-                format!(
-                    "SOURCE_TEMPLATE_SHA256:{}",
-                    function_template.source_template_sha256
-                ),
-            ],
-        };
-        let type_key = serde_json::to_string(&(
-            function_template
-                .operands
-                .iter()
-                .map(|operand| operand.value_type.clone())
-                .collect::<Vec<_>>(),
-            &function_template.output_type,
-        ))
-        .map_err(|error| CausalFrontendFailure::public(format!("SOURCE_TYPE_INDEX:{error}")))?;
-        let applicable_operators = operator_type_index
-            .get(&type_key)
-            .map(Vec::as_slice)
-            .unwrap_or(&[]);
-        let synthesis =
-            synthesize_typed_mechanism_goal_with_priors(&synthesis_request, applicable_operators)
-                .map_err(|error| {
+            .map_err(|error| CausalFrontendFailure::public(format!("SOURCE_TYPE_INDEX:{error}")))?;
+            let applicable_operators = operator_type_index
+                .get(&type_key)
+                .map(Vec::as_slice)
+                .unwrap_or(&[]);
+            let synthesis = synthesize_typed_mechanism_goal_with_priors(
+                &synthesis_request,
+                applicable_operators,
+            )
+            .map_err(|error| {
                 CausalFrontendFailure::unsupported(format!("BOUNDED_COMPOSITION:{error}"))
             })?;
-        let materialized_patch =
-            materialize_python_synthesis(&request.source, &function_template, &synthesis)?;
-        let candidate_response = run_python_host(
-            &request.python_executable,
-            &materialized_patch.candidate_source,
-            std::slice::from_ref(&alternative.public_symbol),
-        )?;
-        if let Some(failure) = host_failure(&candidate_response) {
-            return Err(failure);
-        }
-        if candidate_response.definitions.len() != 1
-            || candidate_response.definitions[0].qualified_symbol != alternative.public_symbol
-        {
-            return Err(CausalFrontendFailure::public(
-                "MATERIALIZED_PUBLIC_SYMBOL_IDENTITY_LOST",
-            ));
-        }
-        receipts.push(SourceBoundAlternativeReceiptIR {
-            alternative_id: alternative.alternative_id.clone(),
-            requested_public_symbol: alternative.public_symbol.clone(),
-            function_template,
-            synthesis,
-            materialized_patch,
-        });
-    }
+            let materialized_patch =
+                materialize_python_synthesis(&request.source, &function_template, &synthesis)?;
+            let candidate_response = run_python_host(
+                &request.python_executable,
+                &materialized_patch.candidate_source,
+                std::slice::from_ref(&alternative.public_symbol),
+            )?;
+            if let Some(failure) = host_failure(&candidate_response) {
+                return Err(failure);
+            }
+            if candidate_response.definitions.len() != 1
+                || candidate_response.definitions[0].qualified_symbol != alternative.public_symbol
+            {
+                return Err(CausalFrontendFailure::public(
+                    "MATERIALIZED_PUBLIC_SYMBOL_IDENTITY_LOST",
+                ));
+            }
+            Ok(SourceBoundAlternativeReceiptIR {
+                alternative_id: alternative.alternative_id.clone(),
+                requested_public_symbol: alternative.public_symbol.clone(),
+                function_template,
+                synthesis,
+                materialized_patch,
+            })
+        },
+        |detail| CausalFrontendFailure::unsupported(format!("PARALLEL_EXECUTOR:{detail}")),
+    )?;
     let mut receipt = SourceBoundCausalReceiptIR {
         schema: SOURCE_BOUND_CAUSAL_RECEIPT_SCHEMA.to_string(),
         source_relative_path: request.source_relative_path.clone(),
         language_backend: backend,
         predecessor_sha256: sha256(request.source.as_bytes()),
         alternatives: receipts,
+        alternative_worker_count,
         public_symbol_owner_preserved: true,
         execution_dependency_closure_preserved: true,
         single_and_multi_edit_share_atomic_path: true,
@@ -1531,6 +1549,67 @@ mod tests {
                 expected_postimage: Value::Int(*expected),
             })
             .collect()
+    }
+
+    #[test]
+    fn independent_causal_alternatives_run_as_a_bounded_ordered_graph() {
+        let Some(python_executable) = python() else {
+            return;
+        };
+        let source = (0..5)
+            .map(|ordinal| {
+                format!("def repair_{ordinal}(left: int, right: int) -> int:\n    return 0\n")
+            })
+            .collect::<Vec<_>>()
+            .join("\n");
+        let alternatives = (0..5)
+            .map(|ordinal| SourceBoundCausalAlternativeIR {
+                alternative_id: format!("alternative-{ordinal}"),
+                public_symbol: format!("repair_{ordinal}"),
+                public_observations: observations(&[(2, 3, 5), (-4, 9, 5)]),
+                allowed_effects: vec![Effect::Pure],
+                require_conditional: false,
+                max_expression_depth: 2,
+                max_candidates: 1_024,
+            })
+            .collect::<Vec<_>>();
+        let receipt = analyze_and_synthesize_source_bound(&SourceBoundCausalRequestIR {
+            schema: SOURCE_BOUND_CAUSAL_REQUEST_SCHEMA.to_string(),
+            source_relative_path: PathBuf::from("repairs.py"),
+            source,
+            python_executable,
+            alternatives,
+        })
+        .unwrap();
+        assert_eq!(
+            receipt.alternative_worker_count,
+            worker_count_for(5, CAUSAL_ALTERNATIVE_ITEMS_PER_WORKER)
+        );
+        assert_eq!(
+            receipt
+                .alternatives
+                .iter()
+                .map(|alternative| alternative.alternative_id.as_str())
+                .collect::<Vec<_>>(),
+            [
+                "alternative-0",
+                "alternative-1",
+                "alternative-2",
+                "alternative-3",
+                "alternative-4"
+            ]
+        );
+        assert!(receipt.alternatives.iter().all(|alternative| {
+            matches!(
+                alternative.synthesis.winning_goal.postimage,
+                TypedSyntaxExpressionIR::Binary {
+                    operator: BinaryOperator::Add,
+                    ..
+                }
+            ) && alternative
+                .materialized_patch
+                .candidate_materialization_is_one_to_one
+        }));
     }
 
     #[test]
