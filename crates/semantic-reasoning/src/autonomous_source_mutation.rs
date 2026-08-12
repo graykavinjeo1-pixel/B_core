@@ -814,22 +814,35 @@ fn improvement_operator_ir_for_program(
 }
 
 fn receipt_validation_duration_ms(receipt: &AutonomousSourcePatchReceipt) -> Result<u64, String> {
-    let mut seen = BTreeSet::new();
-    let mut duration_ms = 0_u64;
-    for command in receipt
-        .format_check
-        .iter()
-        .chain(receipt.compile_check.iter())
-        .chain(std::iter::once(&receipt.validation))
-        .chain(receipt.release_build.iter())
-    {
-        let encoded = serde_json::to_vec(command)
-            .map_err(|error| format!("SOURCE_VALIDATION_RECEIPT_SERIALIZE:{error}"))?;
-        if seen.insert(sha256(&encoded)) {
-            duration_ms = duration_ms.saturating_add(command.duration_ms);
+    fn distinct_duration<'a>(
+        commands: impl IntoIterator<Item = &'a LocalCommandReceipt>,
+    ) -> Result<u64, String> {
+        let mut seen = BTreeSet::new();
+        let mut duration_ms = 0_u64;
+        for command in commands {
+            let encoded = serde_json::to_vec(command)
+                .map_err(|error| format!("SOURCE_VALIDATION_RECEIPT_SERIALIZE:{error}"))?;
+            if seen.insert(sha256(&encoded)) {
+                duration_ms = duration_ms.saturating_add(command.duration_ms);
+            }
         }
+        Ok(duration_ms)
     }
-    Ok(duration_ms)
+
+    let format_duration_ms = distinct_duration(receipt.format_check.iter())?;
+    let target_lane_duration_ms = distinct_duration(
+        receipt
+            .compile_check
+            .iter()
+            .chain(std::iter::once(&receipt.validation)),
+    )?;
+    let release_lane_duration_ms = distinct_duration(receipt.release_build.iter())?;
+
+    // Formatting is the cheap mutation gate. After it passes, the target
+    // package checks and runtime artifact build execute concurrently in
+    // separate Cargo target directories, so wall time is the slower lane,
+    // not the sum of both lanes.
+    Ok(format_duration_ms.saturating_add(target_lane_duration_ms.max(release_lane_duration_ms)))
 }
 
 pub fn derive_improvement_operator_memory(
@@ -2090,6 +2103,15 @@ pub(crate) fn command_receipt_with_incremental(
     }
 }
 
+fn join_command_lane(
+    handle: thread::JoinHandle<Result<LocalCommandReceipt, String>>,
+    lane: &str,
+) -> Result<LocalCommandReceipt, String> {
+    handle
+        .join()
+        .map_err(|_| format!("SOURCE_MUTATION_{lane}_LANE_PANICKED"))?
+}
+
 fn restore_target(target: &Path, rollback_sibling: &Path) -> Result<(), String> {
     if target.exists() {
         fs::remove_file(target)
@@ -2518,6 +2540,37 @@ fn install_primary_and_stage_source_patch(
         return Ok(receipt);
     }
 
+    // Once the cheap formatting gate has passed, validation is a two-lane
+    // DAG. The target package lane performs Clippy then behavioral tests; the
+    // runtime lane independently builds the supervisor/verifier artifacts.
+    // A fixed separate target directory removes Cargo's global build-directory
+    // lock without creating per-attempt caches or unbounded folders.
+    let release_target_dir = policy.build_target_dir.join("bcore-runtime-release-lane");
+    let release_program = policy.cargo_executable.clone();
+    let release_source_root = policy.source_root.clone();
+    let release_timeout_ms = policy.validation_timeout_ms;
+    let release_log = mutation_root.join("release-build.log");
+    let release_lane_target = release_target_dir.clone();
+    let mut release_args = vec!["build", "-p", "semantic-reasoning"];
+    append_runtime_core_feature_args(&policy.source_root, true, &mut release_args);
+    release_args.extend([
+        "--release",
+        "--bin",
+        "b-core-growth-supervisor",
+        "--bin",
+        "b-core-growth-verifier",
+    ]);
+    let release_handle = thread::spawn(move || {
+        command_receipt(
+            &release_program,
+            &release_args,
+            &release_source_root,
+            &release_lane_target,
+            release_timeout_ms,
+            &release_log,
+        )
+    });
+
     // Clippy includes the compiler check and closes the gap that previously
     // allowed generated code with a known lint defect (for example an empty
     // else branch) to be installed and rediscovered as a new repair later.
@@ -2540,11 +2593,13 @@ fn install_primary_and_stage_source_patch(
     ) {
         Ok(receipt) => receipt,
         Err(error) => {
+            let _ = join_command_lane(release_handle, "RUNTIME_RELEASE");
             restore_target(&target, &rollback_sibling)?;
             return Err(error);
         }
     };
     if !compile_check.success {
+        let release_build = join_command_lane(release_handle, "RUNTIME_RELEASE").ok();
         restore_target(&target, &rollback_sibling)?;
         let workspace_fingerprint_after =
             workspace_semantic_fingerprint(&policy.source_root, &target)?;
@@ -2566,7 +2621,7 @@ fn install_primary_and_stage_source_patch(
             format_check: Some(format_check),
             compile_check: Some(compile_check.clone()),
             validation: compile_check,
-            release_build: None,
+            release_build,
             runtime_update_staged: false,
             rollback_source,
             workspace_fingerprint_before,
@@ -2599,11 +2654,13 @@ fn install_primary_and_stage_source_patch(
     ) {
         Ok(receipt) => receipt,
         Err(error) => {
+            let _ = join_command_lane(release_handle, "RUNTIME_RELEASE");
             restore_target(&target, &rollback_sibling)?;
             return Err(error);
         }
     };
     if !validation.success {
+        let release_build = join_command_lane(release_handle, "RUNTIME_RELEASE").ok();
         restore_target(&target, &rollback_sibling)?;
         let workspace_fingerprint_after =
             workspace_semantic_fingerprint(&policy.source_root, &target)?;
@@ -2625,7 +2682,7 @@ fn install_primary_and_stage_source_patch(
             format_check: Some(format_check),
             compile_check: Some(compile_check),
             validation,
-            release_build: None,
+            release_build,
             runtime_update_staged: false,
             rollback_source,
             workspace_fingerprint_before,
@@ -2639,27 +2696,7 @@ fn install_primary_and_stage_source_patch(
         return Ok(receipt);
     }
 
-    let mut release_args = vec!["build", "-p", "semantic-reasoning"];
-    // These artifacts are the always-on supervisor/verifier, whose compiled
-    // surface is `runtime-core` regardless of which dependency package was
-    // improved. Building historical SEM campaigns here previously turned one
-    // cross-crate numeric edit into minutes of unrelated optimized codegen.
-    append_runtime_core_feature_args(&policy.source_root, true, &mut release_args);
-    release_args.extend([
-        "--release",
-        "--bin",
-        "b-core-growth-supervisor",
-        "--bin",
-        "b-core-growth-verifier",
-    ]);
-    let release_build = match command_receipt(
-        &policy.cargo_executable,
-        &release_args,
-        &policy.source_root,
-        &policy.build_target_dir,
-        policy.validation_timeout_ms,
-        &mutation_root.join("release-build.log"),
-    ) {
+    let release_build = match join_command_lane(release_handle, "RUNTIME_RELEASE") {
         Ok(receipt) => receipt,
         Err(error) => {
             restore_target(&target, &rollback_sibling)?;
@@ -2744,12 +2781,10 @@ fn install_primary_and_stage_source_patch(
         return Ok(receipt);
     }
 
-    let built_supervisor = policy
-        .build_target_dir
+    let built_supervisor = release_target_dir
         .join("release")
         .join("b-core-growth-supervisor.exe");
-    let built_verifier = policy
-        .build_target_dir
+    let built_verifier = release_target_dir
         .join("release")
         .join("b-core-growth-verifier.exe");
     if !built_supervisor.is_file() || !built_verifier.is_file() {
@@ -3899,6 +3934,47 @@ mod tests {
         .unwrap();
         request.improvement_operator_invocation = Some(invocation);
         request.improvement_operator_execution = Some(execution);
+    }
+
+    #[test]
+    fn parallel_validation_duration_tracks_the_critical_path() {
+        let command = |program: &str, duration_ms: u64| LocalCommandReceipt {
+            program: program.to_string(),
+            args: Vec::new(),
+            cargo_incremental: true,
+            exit_code: Some(0),
+            success: true,
+            timed_out: false,
+            duration_ms,
+            output_sha256: program.to_string(),
+            diagnostic_tail: String::new(),
+        };
+        let receipt = AutonomousSourcePatchReceipt {
+            schema: AUTONOMOUS_SOURCE_MUTATION_SCHEMA.to_string(),
+            patch_id: "parallel-duration".to_string(),
+            relative_path: PathBuf::from("src/lib.rs"),
+            predecessor_sha256: "predecessor".to_string(),
+            candidate_sha256: "candidate".to_string(),
+            core_generated: true,
+            core_self_approved: true,
+            opportunity_kind: ChangeOpportunityKind::EfficiencyOpportunity,
+            opportunity_family_id: "family".to_string(),
+            installed: true,
+            rolled_back: false,
+            failure_reason: None,
+            format_check: Some(command("fmt", 10)),
+            compile_check: Some(command("clippy", 100)),
+            validation: command("test", 200),
+            release_build: Some(command("release", 500)),
+            runtime_update_staged: true,
+            rollback_source: PathBuf::from("rollback.rs"),
+            workspace_fingerprint_before: "stable".to_string(),
+            workspace_fingerprint_after: "stable".to_string(),
+            workspace_stable_during_validation: true,
+            receipt_sha256: "receipt".to_string(),
+        };
+
+        assert_eq!(receipt_validation_duration_ms(&receipt).unwrap(), 510);
     }
 
     #[test]
