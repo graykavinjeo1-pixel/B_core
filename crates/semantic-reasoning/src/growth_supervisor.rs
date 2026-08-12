@@ -6150,9 +6150,6 @@ fn try_synthesize_failed_python_cohort(
                     ) {
                         typed_candidates_enumerated = typed_candidates_enumerated
                             .saturating_add(synthesis.candidates_enumerated);
-                        if let Some(operator_id) = &synthesis.selected_operator_id {
-                            selected_improvement_operator_ids.push(operator_id.clone());
-                        }
                         attempted_improvement_operator_ids
                             .extend(synthesis.attempted_operator_ids.iter().cloned());
                         rejected_improvement_operator_ids
@@ -6274,6 +6271,11 @@ fn try_synthesize_failed_python_cohort(
             failure_code =
                 Some("CONFLICTING_SOURCE_BOUND_EDITS:AUTHORITATIVE_SCOPE_CHANGED".to_string());
         }
+        selected_improvement_operator_ids.extend(
+            successful_syntheses
+                .iter()
+                .filter_map(|synthesis| synthesis.selected_operator_id.clone()),
+        );
         selected_improvement_operator_ids.sort();
         selected_improvement_operator_ids.dedup();
         attempted_improvement_operator_ids.sort();

@@ -24,8 +24,8 @@ use crate::bounded_parallel::{
 use crate::self_repair_contract::sha256;
 use crate::sem5::model::{BinaryOperator, DataSplit, Effect, ProgramType, UnaryOperator};
 use crate::sem5::typed_mechanism::{
-    synthesize_typed_mechanism_goal_with_priors, SourceOperandIR,
-    TypedMechanismImprovementOperatorIR, TypedMechanismObservationIR,
+    synthesize_typed_mechanism_goal_with_priors, typed_mechanism_improvement_operator_from_receipt,
+    SourceOperandIR, TypedMechanismImprovementOperatorIR, TypedMechanismObservationIR,
     TypedMechanismSynthesisGoalIR, TypedMechanismSynthesisReceiptIR, TypedSyntaxExpressionIR,
     TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA,
 };
@@ -1955,6 +1955,39 @@ pub fn analyze_and_synthesize_source_bound_with_operators(
                 alternative.public_observations.clone(),
                 &operator_type_index,
             )?;
+            // The owner solution has already been falsified against the exact
+            // public observations. Reuse its name-independent typed recipe as
+            // an ephemeral prior for this request's dependency templates. It
+            // still has to replay against every remapped observation and gains
+            // no persistent authority until repository validation succeeds.
+            let owner_operator = typed_mechanism_improvement_operator_from_receipt(
+                &synthesis,
+                synthesis.receipt_sha256.clone(),
+            )
+            .map_err(|error| {
+                CausalFrontendFailure::public(format!("OWNER_EPHEMERAL_OPERATOR:{error}"))
+            })?;
+            let owner_type_key = serde_json::to_string(&(
+                function_template
+                    .operands
+                    .iter()
+                    .map(|operand| operand.value_type.clone())
+                    .collect::<Vec<_>>(),
+                &function_template.output_type,
+            ))
+            .map_err(|error| {
+                CausalFrontendFailure::public(format!("OWNER_EPHEMERAL_TYPE_KEY:{error}"))
+            })?;
+            let mut closure_operator_type_index = operator_type_index.clone();
+            let owner_type_operators = closure_operator_type_index
+                .entry(owner_type_key)
+                .or_default();
+            if !owner_type_operators
+                .iter()
+                .any(|operator| operator.operator_id == owner_operator.operator_id)
+            {
+                owner_type_operators.insert(0, owner_operator);
+            }
             let candidate_response = run_python_host(
                 &request.python_executable,
                 &materialized_patch.candidate_source,
@@ -2019,7 +2052,7 @@ pub fn analyze_and_synthesize_source_bound_with_operators(
                     format!("{}:CLOSURE:{}", alternative.alternative_id, closure_ordinal),
                     &closure_template,
                     remapped_observations,
-                    &operator_type_index,
+                    &closure_operator_type_index,
                 );
                 let (closure_synthesis, closure_patch) = match closure_result {
                     Ok(result) => result,
@@ -2412,6 +2445,35 @@ def transformer_visitor(value: int, baseline: int) -> int:
             ]
         );
         assert_eq!(alternative.closure_candidates.len(), 3);
+        let owner_operator = typed_mechanism_improvement_operator_from_receipt(
+            &alternative.synthesis,
+            alternative.synthesis.receipt_sha256.clone(),
+        )
+        .unwrap();
+        assert!(alternative.synthesis.candidates_enumerated > 1);
+        let closure_search_metrics = alternative
+            .closure_candidates
+            .iter()
+            .map(|candidate| {
+                (
+                    candidate.function_template.qualified_symbol.clone(),
+                    candidate.synthesis.candidates_enumerated,
+                    candidate.synthesis.preferred_operator_attempts,
+                    candidate.synthesis.selected_operator_id.clone(),
+                )
+            })
+            .collect::<Vec<_>>();
+        assert!(
+            alternative.closure_candidates.iter().all(|candidate| {
+                candidate.synthesis.candidates_enumerated
+                    < alternative.synthesis.candidates_enumerated
+                    && candidate.synthesis.preferred_operator_attempts == 1
+                    && candidate.synthesis.selected_operator_id.as_deref()
+                        == Some(owner_operator.operator_id.as_str())
+            }),
+            "owner={} metrics={closure_search_metrics:?}",
+            owner_operator.operator_id
+        );
         assert_eq!(
             alternative
                 .closure_candidates
