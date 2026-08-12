@@ -3639,7 +3639,7 @@ pub fn run_verifier_request(
             .selected_from_precomposition_prediction
         || !candidate.generative_cycle.isolated_composition_executed
         || !candidate.generative_cycle.composition_typecheck_pass
-        || !candidate.generative_cycle.observed_value_is_heuristic_proxy
+        || candidate.generative_cycle.observed_value_is_heuristic_proxy
         || !validate_behavioral_execution_receipt(&candidate.generative_cycle)
         || (!candidate.generative_cycle.behavioral_composition_executed
             && (candidate

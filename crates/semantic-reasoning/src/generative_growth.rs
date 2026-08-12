@@ -28,6 +28,7 @@ use crate::sem25::engine::{run_growth_probe, GrowthProbeRequest};
 pub const GENERATIVE_GROWTH_SCHEMA: &str = "B_CORE_GENERATIVE_GROWTH_1";
 const MAX_REUSABLE_COMPOSITIONS: usize = 64;
 const MAX_COMPOSITION_TRIALS: usize = 256;
+const BEHAVIORAL_VALUE_CONTRACT_REVISION: u64 = 2;
 
 fn is_zero(value: &u64) -> bool {
     *value == 0
@@ -99,6 +100,8 @@ pub struct GenerativeGrowthMemory {
     pub calibrated_prediction_records: u64,
     #[serde(default, skip_serializing_if = "is_zero")]
     pub legacy_uncalibrated_prediction_error_total: u64,
+    #[serde(default, skip_serializing_if = "is_zero")]
+    pub behavioral_value_contract_revision: u64,
 }
 
 impl Default for GenerativeGrowthMemory {
@@ -122,6 +125,7 @@ impl Default for GenerativeGrowthMemory {
             prediction_absolute_error_total: 0,
             calibrated_prediction_records: 0,
             legacy_uncalibrated_prediction_error_total: 0,
+            behavioral_value_contract_revision: BEHAVIORAL_VALUE_CONTRACT_REVISION,
         }
     }
 }
@@ -195,6 +199,10 @@ pub struct BehavioralCompositionExecutionReceipt {
     pub composite_artifact_sha256: Option<String>,
     pub verifier_id: String,
     pub verifier_output_sha256: Option<String>,
+    #[serde(default)]
+    pub cases_executed: usize,
+    #[serde(default)]
+    pub cases_passed: usize,
     pub executed: bool,
     pub abstention_reason: Option<String>,
     pub receipt_sha256: String,
@@ -499,17 +507,27 @@ fn execute_composer(
     _selected: &RepairCompositionLessonIR,
     input: &GenerativeInput,
     context: &str,
-) -> Result<(Option<String>, Option<String>), String> {
+) -> Result<(Option<String>, Option<String>, usize, usize), String> {
     match composer_id {
         "SEM5_PROGRAM_IR_COMPOSER" => {
             if input.observed_composition_roles.len() < 2 {
                 return Ok((
                     None,
                     Some("SEM5_REQUIRES_AT_LEAST_TWO_OBSERVED_ROLES".to_string()),
+                    0,
+                    0,
                 ));
             }
             let receipt = execute_behavioral_composition_canary(context)?;
-            Ok((Some(receipt.receipt_sha256), None))
+            if receipt.cases_executed == 0 || receipt.cases_passed != receipt.cases_executed {
+                return Err("SEM5_BEHAVIORAL_CANARY_INCOMPLETE".to_string());
+            }
+            Ok((
+                Some(receipt.receipt_sha256),
+                None,
+                receipt.cases_executed,
+                receipt.cases_passed,
+            ))
         }
         "SELF_HEALING_CONTRACT_COMPOSER" => {
             // The present self-healing API needs a frozen defect contract and
@@ -519,6 +537,8 @@ fn execute_composer(
             Ok((
                 None,
                 Some("SELF_HEALING_REQUIRES_FROZEN_REPAIR_SCENARIO".to_string()),
+                0,
+                0,
             ))
         }
         "FULLSTACK_TYPED_RECIPE_COMPOSER" => {
@@ -536,7 +556,12 @@ fn execute_composer(
             } else if signals.contains("FRONTEND_CONTRACT") {
                 Capability::AsyncTransport
             } else {
-                return Ok((None, Some("NO_APPLICABLE_FULLSTACK_SIGNAL".to_string())));
+                return Ok((
+                    None,
+                    Some("NO_APPLICABLE_FULLSTACK_SIGNAL".to_string()),
+                    0,
+                    0,
+                ));
             };
             let bundle = promoted_bundle();
             let activation = activate_fullstack(
@@ -560,7 +585,15 @@ fn execute_composer(
                 .map_err(|error| format!("FULLSTACK_COMPOSITION_VALIDATE:{error:?}"))?;
             let bytes = serde_json::to_vec(&lesson)
                 .map_err(|error| format!("FULLSTACK_COMPOSITION_SERIALIZE:{error}"))?;
-            Ok((Some(sha256(&bytes)), None))
+            Ok((
+                None,
+                Some(format!(
+                    "FULLSTACK_TYPECHECK_ONLY_NO_BEHAVIORAL_OBSERVATION:{}",
+                    sha256(&bytes)
+                )),
+                0,
+                0,
+            ))
         }
         _ => Err(format!("UNKNOWN_GENERATIVE_COMPOSER:{composer_id}")),
     }
@@ -576,15 +609,16 @@ fn execute_behavioral_composition(
     let composer_id = selected_stage(selected, "COMPOSE")?.to_string();
     let verifier_id = selected_stage(selected, "VERIFY")?.to_string();
     let predictor_output_sha256 = execute_predictor(&predictor_id, input, seed)?;
-    let (composite_artifact_sha256, abstention_reason) =
+    let (composite_artifact_sha256, abstention_reason, cases_executed, cases_passed) =
         execute_composer(&composer_id, selected, input, &context)?;
-    let executed = composite_artifact_sha256.is_some();
+    let executed =
+        composite_artifact_sha256.is_some() && cases_executed > 0 && cases_passed == cases_executed;
     let verifier_output_sha256 = composite_artifact_sha256.as_ref().map(|artifact| {
         sha256(format!("{context}:{predictor_output_sha256}:{artifact}:{verifier_id}").as_bytes())
     });
     let receipt_sha256 = sha256(
         format!(
-            "{context}:{predictor_id}:{predictor_output_sha256}:{composer_id}:{}:{verifier_id}:{}:{executed}:{}",
+            "{context}:{predictor_id}:{predictor_output_sha256}:{composer_id}:{}:{verifier_id}:{}:{cases_executed}:{cases_passed}:{executed}:{}",
             composite_artifact_sha256.as_deref().unwrap_or("NONE"),
             verifier_output_sha256.as_deref().unwrap_or("NONE"),
             abstention_reason.as_deref().unwrap_or("NONE")
@@ -600,6 +634,8 @@ fn execute_behavioral_composition(
         composite_artifact_sha256,
         verifier_id,
         verifier_output_sha256,
+        cases_executed,
+        cases_passed,
         executed,
         abstention_reason,
         receipt_sha256,
@@ -803,43 +839,31 @@ pub fn run_generative_cycle(
         .ok_or_else(|| "NO_GENERATIVE_COMPOSITION_CANDIDATE".to_string())?;
     let predicted_value = prediction.predicted_value;
     let typecheck_pass = validate_composition_lesson(&selected).is_ok();
-    let heuristic_observed_value = if typecheck_pass {
-        input
-            .learning_score
-            .min(100)
-            .saturating_mul(3)
-            .checked_div(4)
-            .unwrap_or(0)
-            .saturating_add(domain_bonus(&selected, input))
-            .saturating_add(input.verification_evidence_count.min(4) as u16 * 3)
-            .saturating_add(input.observed_composition_roles.len().min(4) as u16 * 2)
-            .saturating_add(if input.measured_performance_gain {
-                8
-            } else {
-                0
-            })
-            .min(100)
-    } else {
-        0
-    };
     let behavioral_execution_receipt = execute_behavioral_composition(&selected, input, seed)?;
     let behavioral_composition_executed = behavioral_execution_receipt.executed;
     let behavioral_verification_sha256 = behavioral_composition_executed
         .then(|| behavioral_execution_receipt.receipt_sha256.clone());
-    // A heuristic score may rank candidates, but only an actually executed
-    // and independently receipted composition is allowed to become observed
-    // value or frontier evidence.
-    let observed_value = if behavioral_composition_executed {
-        heuristic_observed_value
-    } else {
-        0
-    };
+    // Predictions may rank candidates, but observed value is the public
+    // behavioral pass rate. Type-check-only artifacts are explicit
+    // abstentions and cannot become capability or frontier evidence.
+    let observed_value =
+        if behavioral_composition_executed && behavioral_execution_receipt.cases_executed > 0 {
+            behavioral_execution_receipt
+                .cases_passed
+                .saturating_mul(100)
+                .checked_div(behavioral_execution_receipt.cases_executed)
+                .unwrap_or(0)
+                .min(100) as u16
+        } else {
+            0
+        };
     let prediction_error = predicted_value.abs_diff(observed_value);
-    let structural_candidate = typecheck_pass
-        && input.verification_evidence_count > 0
-        && heuristic_observed_value >= 72
-        && predicted_value.abs_diff(heuristic_observed_value) <= 30;
-    let valuable = structural_candidate && behavioral_composition_executed;
+    let structural_candidate =
+        typecheck_pass && input.verification_evidence_count > 0 && predicted_value >= 72;
+    let valuable = structural_candidate
+        && behavioral_composition_executed
+        && observed_value >= 72
+        && prediction_error <= 30;
     let accepted_for_memory = valuable && prediction.exploration;
     let novel_context_transfer_candidate = valuable
         && prediction.reused_memory_composition_id.is_some()
@@ -871,7 +895,7 @@ pub fn run_generative_cycle(
         behavioral_composition_executed,
         behavioral_verification_sha256,
         behavioral_execution_receipt: Some(behavioral_execution_receipt),
-        observed_value_is_heuristic_proxy: true,
+        observed_value_is_heuristic_proxy: false,
         observed_value,
         prediction_error,
         valuable,
@@ -902,7 +926,7 @@ pub fn validate_behavioral_execution_receipt(result: &GenerativeCycleResult) -> 
         .is_some_and(|receipt| {
             let expected_receipt_sha256 = sha256(
                 format!(
-                    "{}:{}:{}:{}:{}:{}:{}:{}:{}",
+                    "{}:{}:{}:{}:{}:{}:{}:{}:{}:{}:{}",
                     receipt.context_sha256,
                     receipt.predictor_id,
                     receipt.predictor_output_sha256,
@@ -913,6 +937,8 @@ pub fn validate_behavioral_execution_receipt(result: &GenerativeCycleResult) -> 
                         .unwrap_or("NONE"),
                     receipt.verifier_id,
                     receipt.verifier_output_sha256.as_deref().unwrap_or("NONE"),
+                    receipt.cases_executed,
+                    receipt.cases_passed,
                     receipt.executed,
                     receipt.abstention_reason.as_deref().unwrap_or("NONE")
                 )
@@ -931,12 +957,24 @@ pub fn validate_behavioral_execution_receipt(result: &GenerativeCycleResult) -> 
                 && if receipt.executed {
                     receipt.composite_artifact_sha256.is_some()
                         && receipt.verifier_output_sha256.is_some()
+                        && receipt.cases_executed > 0
+                        && receipt.cases_passed == receipt.cases_executed
+                        && result.observed_value
+                            == receipt
+                                .cases_passed
+                                .saturating_mul(100)
+                                .checked_div(receipt.cases_executed)
+                                .unwrap_or(0)
+                                .min(100) as u16
                         && receipt.abstention_reason.is_none()
                         && result.behavioral_verification_sha256.as_deref()
                             == Some(receipt.receipt_sha256.as_str())
                 } else {
                     receipt.composite_artifact_sha256.is_none()
                         && receipt.verifier_output_sha256.is_none()
+                        && receipt.cases_executed == 0
+                        && receipt.cases_passed == 0
+                        && result.observed_value == 0
                         && receipt.abstention_reason.is_some()
                         && result.behavioral_verification_sha256.is_none()
                 }
@@ -953,7 +991,7 @@ pub fn promote_generative_cycle(
         || result.source_lesson_id != input.source_lesson_id
         || !result.prediction_recorded_before_composition
         || !result.selected_from_precomposition_prediction
-        || !result.observed_value_is_heuristic_proxy
+        || result.observed_value_is_heuristic_proxy
         || !validate_behavioral_execution_receipt(result)
         || (!result.behavioral_composition_executed
             && (result.behavioral_verification_sha256.is_some()
@@ -972,12 +1010,12 @@ pub fn promote_generative_cycle(
         return Err("GENERATIVE_PROMOTION_BOUNDARY_FAILURE".to_string());
     }
     let mut next = current.clone();
-    if next.behavioral_verification_events == 0
-        && next.legacy_unverified_frontier_advance_events == 0
-        && next.frontier_advance_events > 0
-    {
-        next.legacy_unverified_frontier_advance_events = next.frontier_advance_events;
+    if next.behavioral_value_contract_revision < BEHAVIORAL_VALUE_CONTRACT_REVISION {
+        next.legacy_unverified_frontier_advance_events = next
+            .legacy_unverified_frontier_advance_events
+            .saturating_add(next.frontier_advance_events);
         next.frontier_advance_events = 0;
+        next.behavioral_value_contract_revision = BEHAVIORAL_VALUE_CONTRACT_REVISION;
     }
     next.generation = next.generation.saturating_add(1);
     next.prediction_records = next.prediction_records.saturating_add(1);
@@ -1117,8 +1155,13 @@ mod tests {
         assert!(result
             .behavioral_execution_receipt
             .as_ref()
-            .is_some_and(|receipt| receipt.executed));
-        assert!(result.observed_value_is_heuristic_proxy);
+            .is_some_and(|receipt| {
+                receipt.executed
+                    && receipt.cases_executed == 3
+                    && receipt.cases_passed == receipt.cases_executed
+            }));
+        assert!(!result.observed_value_is_heuristic_proxy);
+        assert_eq!(result.observed_value, 100);
         assert!(result.selection_score > result.predicted_value);
         assert!(result.prediction_error <= 30);
         assert!(result.valuable);
@@ -1178,7 +1221,8 @@ mod tests {
         assert!(!transferred.unverified_frontier_candidate);
         assert!(transferred.productive_reuse);
         assert!(transferred.frontier_advance);
-        assert!(transferred.applied_to_self_improvement);
+        assert!(!transferred.applied_to_self_improvement);
+        assert!(transferred.applied_policy_signals.is_empty());
         memory = promote_generative_cycle(&memory, &new_context, &transferred).unwrap();
         assert_eq!(memory.unverified_frontier_candidate_events, 4);
     }
@@ -1187,6 +1231,8 @@ mod tests {
     fn legacy_structural_frontier_claims_are_quarantined_before_new_promotion() {
         let mut memory = GenerativeGrowthMemory {
             frontier_advance_events: 6,
+            behavioral_verification_events: 1,
+            behavioral_value_contract_revision: 0,
             ..GenerativeGrowthMemory::default()
         };
         let current = input();
@@ -1196,7 +1242,11 @@ mod tests {
 
         assert_eq!(memory.frontier_advance_events, 1);
         assert_eq!(memory.legacy_unverified_frontier_advance_events, 6);
-        assert_eq!(memory.behavioral_verification_events, 1);
+        assert_eq!(memory.behavioral_verification_events, 2);
+        assert_eq!(
+            memory.behavioral_value_contract_revision,
+            BEHAVIORAL_VALUE_CONTRACT_REVISION
+        );
     }
 
     #[test]
