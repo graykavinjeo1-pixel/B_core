@@ -26,11 +26,12 @@ use crate::generalized_self_application::{
 use crate::grammar_repair_synthesis::discover_grammar_repairs_for_generation_with_priors;
 use crate::self_repair_contract::sha256;
 use crate::sem5::typed_mechanism::{
-    load_authorized_typed_mechanism_operators, typed_mechanism_operator_authority_directory,
-    typed_mechanism_operator_directory, validate_typed_mechanism_improvement_operator,
-    validate_typed_mechanism_operator_authority, TypedMechanismImprovementOperatorIR,
-    TypedMechanismOperatorAuthorityReceiptIR, INSTALLED_TYPED_OPERATOR_AUTHORITY_SCHEMA,
-    MAX_ACTIVE_TYPED_MECHANISM_OPERATORS,
+    load_authorized_typed_mechanism_operators, typed_mechanism_improvement_operator_from_receipt,
+    typed_mechanism_operator_authority_directory, typed_mechanism_operator_directory,
+    validate_typed_mechanism_improvement_operator, validate_typed_mechanism_operator_authority,
+    validate_typed_mechanism_synthesis_receipt, TypedMechanismImprovementOperatorIR,
+    TypedMechanismOperatorAuthorityReceiptIR, TypedMechanismSynthesisReceiptIR,
+    INSTALLED_TYPED_OPERATOR_AUTHORITY_SCHEMA, MAX_ACTIVE_TYPED_MECHANISM_OPERATORS,
 };
 use crate::structural_source_repair::{
     execute_structural_repair, synthesize_structural_repair, SourceEditAtom,
@@ -43,10 +44,10 @@ pub const SOURCE_REPAIR_LEARNING_SCHEMA: &str = "B_CORE_SOURCE_REPAIR_LEARNING_1
 pub const IMPROVEMENT_OPERATOR_MEMORY_SCHEMA: &str = "B_CORE_IMPROVEMENT_OPERATOR_MEMORY_1";
 pub const MAX_IMPROVEMENT_OPERATOR_GRAPH_NODES: usize = 8;
 const MAX_TYPED_OPERATOR_RECONCILIATION_RECEIPTS: usize = 64;
-// Revision 28 validates every owner and closure typed synthesis receipt before
-// source rematerialization, preserving the complete request-to-edit evidence
-// chain at the supervisor consumption boundary.
-pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 28;
+// Revision 29 carries the complete Rust typed-synthesis receipt and the exact
+// source-bound edit into installation, then replays that edit against the
+// predecessor before the generic structural and repository validation gates.
+pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 29;
 const KNOWN_REMAINDER_PREDICTED_VALUE: u16 = 35;
 const MAX_REPOSITORY_REPAIR_FAMILY_FILES: usize = 16;
 const KNOWN_REMAINDER_STRATEGIES: [&str; 4] = [
@@ -188,22 +189,53 @@ fn validate_typed_mechanism_recipe_binding(
 ) -> Result<(), String> {
     match (
         &request.typed_mechanism_operator_recipe,
+        &request.typed_mechanism_synthesis_receipt,
         &request.typed_mechanism_materialized_syntax_sha256,
         &request.typed_mechanism_materialized_syntax_source,
+        &request.typed_mechanism_materialized_edit,
     ) {
-        (None, None, None) => Ok(()),
-        (Some(recipe), Some(syntax_sha256), Some(syntax_source)) => {
+        (None, None, None, None, None) => {
+            if request.typed_mechanism_selected_operator_id.is_some()
+                || request.typed_mechanism_candidates_enumerated != 0
+                || request.typed_mechanism_preferred_operator_attempts != 0
+            {
+                return Err("TYPED_MECHANISM_RECIPE_ORPHAN_ACCOUNTING".to_string());
+            }
+            Ok(())
+        }
+        (
+            Some(recipe),
+            Some(synthesis),
+            Some(syntax_sha256),
+            Some(syntax_source),
+            Some(materialized_edit),
+        ) => {
+            validate_typed_mechanism_synthesis_receipt(synthesis)?;
             validate_typed_mechanism_improvement_operator(recipe)?;
+            let expected_recipe = typed_mechanism_improvement_operator_from_receipt(
+                synthesis,
+                synthesis.receipt_sha256.clone(),
+            )?;
             let synthesis_receipt_sha256 = request
                 .solution_strategy
                 .split(':')
                 .nth(2)
                 .filter(|hash| hash.len() == 64)
                 .ok_or_else(|| "TYPED_MECHANISM_RECIPE_STRATEGY_BINDING".to_string())?;
-            if recipe.evidence_sha256 != synthesis_receipt_sha256
+            let exact_replace = matches!(
+                materialized_edit,
+                SourceEditAtom::Replace { replacement, .. } if replacement == syntax_source
+            );
+            if expected_recipe != *recipe
+                || synthesis.receipt_sha256 != synthesis_receipt_sha256
+                || synthesis.template.complete_expression_source != *syntax_source
+                || request.typed_mechanism_selected_operator_id != synthesis.selected_operator_id
+                || request.typed_mechanism_candidates_enumerated != synthesis.candidates_enumerated
+                || request.typed_mechanism_preferred_operator_attempts
+                    != synthesis.preferred_operator_attempts
                 || syntax_sha256.len() != 64
                 || sha256(syntax_source.as_bytes()) != *syntax_sha256
-                || !request.candidate_source.contains(syntax_source)
+                || !exact_replace
                 || request.structural_repair_program.is_none()
             {
                 return Err("TYPED_MECHANISM_RECIPE_BINDING_MISMATCH".to_string());
@@ -212,6 +244,23 @@ fn validate_typed_mechanism_recipe_binding(
         }
         _ => Err("TYPED_MECHANISM_RECIPE_PARTIAL_BINDING".to_string()),
     }
+}
+
+fn validate_typed_mechanism_source_materialization(
+    request: &AutonomousSourcePatchRequest,
+    predecessor_source: &str,
+) -> Result<(), String> {
+    let Some(edit) = &request.typed_mechanism_materialized_edit else {
+        return Ok(());
+    };
+    let materialized = crate::structural_source_repair::apply_edit_atom(predecessor_source, edit)
+        .map_err(|error| format!("TYPED_MECHANISM_SOURCE_EDIT_REPLAY:{error}"))?;
+    if materialized != request.candidate_source
+        || sha256(materialized.as_bytes()) != request.candidate_sha256
+    {
+        return Err("TYPED_MECHANISM_SOURCE_MATERIALIZATION_MISMATCH".to_string());
+    }
+    Ok(())
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -250,9 +299,13 @@ pub struct AutonomousSourcePatchRequest {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub typed_mechanism_operator_recipe: Option<TypedMechanismImprovementOperatorIR>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub typed_mechanism_synthesis_receipt: Option<TypedMechanismSynthesisReceiptIR>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub typed_mechanism_materialized_syntax_sha256: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub typed_mechanism_materialized_syntax_source: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub typed_mechanism_materialized_edit: Option<SourceEditAtom>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub typed_mechanism_selected_operator_id: Option<String>,
     #[serde(default)]
@@ -793,6 +846,13 @@ fn reconcile_installed_typed_mechanism_operators(state_dir: &Path) -> Result<usi
         let request: AutonomousSourcePatchRequest = serde_json::from_slice(&request_bytes)
             .map_err(|error| format!("TYPED_OPERATOR_RECONCILE_REQUEST_PARSE:{error}"))?;
         if request.typed_mechanism_operator_recipe.is_none() {
+            continue;
+        }
+        if request.typed_mechanism_synthesis_receipt.is_none()
+            || request.typed_mechanism_materialized_edit.is_none()
+        {
+            // Historical proposal-only bindings remain readable evidence but
+            // cannot cross the stronger revision-29 authority boundary.
             continue;
         }
         let receipt_bytes = fs::read(&receipt_path)
@@ -2972,9 +3032,10 @@ fn install_primary_and_stage_source_patch(
     if sha256(&predecessor) != request.predecessor_sha256 {
         return Err("SOURCE_MUTATION_PREDECESSOR_MISMATCH".to_string());
     }
+    let predecessor_source = std::str::from_utf8(&predecessor)
+        .map_err(|_| "TYPED_MECHANISM_PREDECESSOR_NOT_UTF8".to_string())?;
+    validate_typed_mechanism_source_materialization(request, predecessor_source)?;
     if let Some(program) = &request.structural_repair_program {
-        let predecessor_source = std::str::from_utf8(&predecessor)
-            .map_err(|_| "STRUCTURAL_REPAIR_PREDECESSOR_NOT_UTF8".to_string())?;
         if program.file_id != structural_file_id(&request.relative_path) {
             return Err("STRUCTURAL_REPAIR_FILE_ID_MISMATCH".to_string());
         }
@@ -2987,8 +3048,6 @@ fn install_primary_and_stage_source_patch(
             return Err("STRUCTURAL_REPAIR_REPLAY_MISMATCH".to_string());
         }
     }
-    let predecessor_source = std::str::from_utf8(&predecessor)
-        .map_err(|_| "IMPROVEMENT_OPERATOR_PREDECESSOR_NOT_UTF8".to_string())?;
     validate_improvement_operator_execution_binding(request, predecessor_source)?;
     if let Some(change) = &request.generalized_change {
         let program = request
@@ -3865,8 +3924,10 @@ fn compiler_guided_request(
             improvement_operator_invocation: Some(invocation),
             improvement_operator_execution: Some(operator_execution),
             typed_mechanism_operator_recipe: None,
+            typed_mechanism_synthesis_receipt: None,
             typed_mechanism_materialized_syntax_sha256: None,
             typed_mechanism_materialized_syntax_source: None,
+            typed_mechanism_materialized_edit: None,
             typed_mechanism_selected_operator_id: None,
             typed_mechanism_candidates_enumerated: 0,
             typed_mechanism_preferred_operator_attempts: 0,
@@ -4095,8 +4156,10 @@ fn grammar_synthesized_request(
             improvement_operator_invocation: Some(invocation),
             improvement_operator_execution: Some(operator_execution),
             typed_mechanism_operator_recipe: candidate.typed_mechanism_operator_recipe,
+            typed_mechanism_synthesis_receipt: candidate.typed_mechanism_synthesis_receipt,
             typed_mechanism_materialized_syntax_sha256: candidate.materialized_syntax_sha256,
             typed_mechanism_materialized_syntax_source: candidate.materialized_syntax_source,
+            typed_mechanism_materialized_edit: candidate.typed_mechanism_materialized_edit,
             typed_mechanism_selected_operator_id: candidate.typed_mechanism_selected_operator_id,
             typed_mechanism_candidates_enumerated: candidate.typed_mechanism_candidates_enumerated,
             typed_mechanism_preferred_operator_attempts: candidate
@@ -4323,8 +4386,10 @@ fn discover_source_improvement_lane(
                     improvement_operator_invocation: Some(invocation),
                     improvement_operator_execution: Some(operator_execution),
                     typed_mechanism_operator_recipe: None,
+                    typed_mechanism_synthesis_receipt: None,
                     typed_mechanism_materialized_syntax_sha256: None,
                     typed_mechanism_materialized_syntax_source: None,
+                    typed_mechanism_materialized_edit: None,
                     typed_mechanism_selected_operator_id: None,
                     typed_mechanism_candidates_enumerated: 0,
                     typed_mechanism_preferred_operator_attempts: 0,
@@ -5059,11 +5124,39 @@ mod tests {
         assert_eq!(first.typed_mechanism_selected_operator_id, None);
         assert!(first.typed_mechanism_candidates_enumerated > 1);
         let first_enumerated = first.typed_mechanism_candidates_enumerated;
+        let predecessor_source = fs::read_to_string(root.join("src/lib.rs")).unwrap();
+        validate_typed_mechanism_recipe_binding(&first).unwrap();
+        validate_typed_mechanism_source_materialization(&first, &predecessor_source).unwrap();
         let mut tampered_binding = first.clone();
         tampered_binding.typed_mechanism_materialized_syntax_source = Some("0i64".to_string());
         assert_eq!(
             validate_typed_mechanism_recipe_binding(&tampered_binding),
             Err("TYPED_MECHANISM_RECIPE_BINDING_MISMATCH".to_string())
+        );
+        let mut forged_receipt = first.clone();
+        forged_receipt
+            .typed_mechanism_synthesis_receipt
+            .as_mut()
+            .unwrap()
+            .candidates_falsified += 1;
+        assert!(validate_typed_mechanism_recipe_binding(&forged_receipt)
+            .unwrap_err()
+            .starts_with("TYPED_MECHANISM_"));
+        let mut shifted_edit = first.clone();
+        let SourceEditAtom::Replace { range, .. } = shifted_edit
+            .typed_mechanism_materialized_edit
+            .as_mut()
+            .unwrap()
+        else {
+            panic!("typed materialization must be one exact replacement")
+        };
+        range.start += 1;
+        validate_typed_mechanism_recipe_binding(&shifted_edit).unwrap();
+        assert_eq!(
+            validate_typed_mechanism_source_materialization(&shifted_edit, &predecessor_source),
+            Err(
+                "TYPED_MECHANISM_SOURCE_EDIT_REPLAY:REPLACE_PRECONDITION_HASH_MISMATCH".to_string()
+            )
         );
         let receipt = install_and_stage_source_patch(&policy, &state, &first).unwrap();
         assert!(receipt.installed);

@@ -26,7 +26,8 @@ use crate::sem5::model::{DataSplit, Effect, ProgramType, Value};
 use crate::sem5::typed_mechanism::{
     synthesize_typed_mechanism_goal_with_priors, SourceOperandIR,
     TypedMechanismImprovementOperatorIR, TypedMechanismObservationIR,
-    TypedMechanismSynthesisGoalIR, TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA,
+    TypedMechanismSynthesisGoalIR, TypedMechanismSynthesisReceiptIR,
+    TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA,
 };
 use crate::structural_source_repair::{
     apply_edit_atom, synthesize_structural_repair, ByteRange, SourceEditAtom,
@@ -77,6 +78,8 @@ pub struct GrammarRepairCandidate {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub typed_mechanism_receipt_sha256: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub typed_mechanism_synthesis_receipt: Option<TypedMechanismSynthesisReceiptIR>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub materialized_syntax_sha256: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub materialized_syntax_source: Option<String>,
@@ -90,6 +93,8 @@ pub struct GrammarRepairCandidate {
     /// the materialized Rust patch passes the complete installation cascade.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub typed_mechanism_operator_recipe: Option<TypedMechanismImprovementOperatorIR>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub typed_mechanism_materialized_edit: Option<SourceEditAtom>,
     #[serde(default)]
     pub repair_family: String,
     #[serde(default = "one_family_member")]
@@ -249,12 +254,14 @@ fn synthesize_evidence_bound_family_candidates(
             public_examples_evaluated,
             public_examples_satisfied,
             typed_mechanism_receipt_sha256: None,
+            typed_mechanism_synthesis_receipt: None,
             materialized_syntax_sha256: None,
             materialized_syntax_source: None,
             typed_mechanism_selected_operator_id: None,
             typed_mechanism_candidates_enumerated: 0,
             typed_mechanism_preferred_operator_attempts: 0,
             typed_mechanism_operator_recipe: None,
+            typed_mechanism_materialized_edit: None,
             repair_family,
             family_member_count,
             additional_family_files: Vec::new(),
@@ -302,6 +309,7 @@ struct TypedHoleSynthesis {
     candidates_enumerated: usize,
     preferred_operator_attempts: usize,
     operator_recipe: TypedMechanismImprovementOperatorIR,
+    synthesis_receipt: TypedMechanismSynthesisReceiptIR,
 }
 
 fn sem5_transport_type(type_name: &str) -> Option<ProgramType> {
@@ -441,16 +449,17 @@ fn synthesize_typed_hole_expression(
         .ok()?;
     Some(TypedHoleSynthesis {
         family,
-        expression: receipt.template.complete_expression_source,
+        expression: receipt.template.complete_expression_source.clone(),
         score: PublicExampleScore {
             observed: examples.len(),
             evaluated: examples.len(),
             satisfied: examples.len(),
         },
-        selected_operator_id: receipt.selected_operator_id,
+        selected_operator_id: receipt.selected_operator_id.clone(),
         candidates_enumerated: receipt.candidates_enumerated,
         preferred_operator_attempts: receipt.preferred_operator_attempts,
         operator_recipe,
+        synthesis_receipt: receipt,
     })
 }
 
@@ -2098,13 +2107,14 @@ fn candidates_for_file(
                     0,
                     0,
                     None,
+                    None,
                 )
             })
             // A candidate that disagrees with any example it can evaluate is
             // already falsified and must not consume a compile/test attempt.
             // Unevaluable typed calls remain hypotheses for the authoritative
             // source-validation gate.
-            .filter(|(_, _, _, score, _, _, _, _)| {
+            .filter(|(_, _, _, score, _, _, _, _, _)| {
                 score.evaluated == 0 || score.satisfied == score.evaluated
             })
             .collect::<Vec<_>>();
@@ -2122,10 +2132,11 @@ fn candidates_for_file(
                     typed.candidates_enumerated,
                     typed.preferred_operator_attempts,
                     Some(typed.operator_recipe),
+                    Some(typed.synthesis_receipt),
                 ));
             }
         }
-        compositions.sort_by_key(|(index, _, _, score, _, _, _, _)| {
+        compositions.sort_by_key(|(index, _, _, score, _, _, _, _, _)| {
             let satisfies_every_observed_example = score.observed > 0
                 && score.evaluated == score.observed
                 && score.satisfied == score.observed;
@@ -2145,6 +2156,7 @@ fn candidates_for_file(
             candidates_enumerated,
             preferred_operator_attempts,
             operator_recipe,
+            synthesis_receipt,
         ) in compositions.into_iter().take(MAX_CANDIDATES_PER_HOLE)
         {
             let mut candidate_source = String::with_capacity(
@@ -2182,6 +2194,12 @@ fn candidates_for_file(
                     public_score.satisfied, public_score.observed, public_score.evaluated
                 ));
             }
+            let typed_mechanism_materialized_edit =
+                synthesis_receipt.as_ref().map(|_| SourceEditAtom::Replace {
+                    range: hole.range,
+                    expected_sha256: sha256(original.as_bytes()),
+                    replacement: expression.clone(),
+                });
             candidates.push(GrammarRepairCandidate {
                 relative_path: relative_path.clone(),
                 predecessor_sha256: predecessor_sha256.clone(),
@@ -2204,6 +2222,7 @@ fn candidates_for_file(
                 typed_mechanism_receipt_sha256: family
                     .strip_prefix("TYPED_MECHANISM_SYNTHESIS:")
                     .map(str::to_string),
+                typed_mechanism_synthesis_receipt: synthesis_receipt,
                 materialized_syntax_sha256: family
                     .starts_with("TYPED_MECHANISM_SYNTHESIS:")
                     .then(|| sha256(expression.as_bytes())),
@@ -2214,6 +2233,7 @@ fn candidates_for_file(
                 typed_mechanism_candidates_enumerated: candidates_enumerated,
                 typed_mechanism_preferred_operator_attempts: preferred_operator_attempts,
                 typed_mechanism_operator_recipe: operator_recipe,
+                typed_mechanism_materialized_edit,
                 repair_family: format!("{}:{family}", hole.kind),
                 family_member_count: 1,
                 additional_family_files: Vec::new(),
@@ -2463,12 +2483,14 @@ fn synthesize_repository_family_candidates(
             public_examples_evaluated,
             public_examples_satisfied,
             typed_mechanism_receipt_sha256: None,
+            typed_mechanism_synthesis_receipt: None,
             materialized_syntax_sha256: None,
             materialized_syntax_source: None,
             typed_mechanism_selected_operator_id: None,
             typed_mechanism_candidates_enumerated: 0,
             typed_mechanism_preferred_operator_attempts: 0,
             typed_mechanism_operator_recipe: None,
+            typed_mechanism_materialized_edit: None,
             repair_family,
             family_member_count,
             additional_family_files,
@@ -2716,6 +2738,27 @@ mod tests {
         assert_eq!(
             typed.materialized_syntax_sha256.as_deref(),
             Some(expected_syntax_sha256.as_str())
+        );
+        let synthesis_receipt = typed
+            .typed_mechanism_synthesis_receipt
+            .as_ref()
+            .expect("complete typed synthesis receipt");
+        crate::sem5::typed_mechanism::validate_typed_mechanism_synthesis_receipt(synthesis_receipt)
+            .unwrap();
+        assert_eq!(
+            synthesis_receipt.template.complete_expression_source,
+            typed.grammar_expression
+        );
+        assert_eq!(
+            apply_edit_atom(
+                source,
+                typed
+                    .typed_mechanism_materialized_edit
+                    .as_ref()
+                    .expect("exact source-bound typed edit")
+            )
+            .as_deref(),
+            Ok(typed.candidate_source.as_str())
         );
         assert_eq!(
             apply_edit_atom(source, &typed.structural_repair_program.edit).as_deref(),
