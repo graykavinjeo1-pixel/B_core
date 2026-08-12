@@ -12,7 +12,8 @@ use serde::{Deserialize, Serialize};
 
 use crate::autonomous_source_mutation::{
     execute_improvement_operator_behavioral_canary,
-    execute_improvement_operator_graph_behavioral_canary, improvement_operator_graph_id,
+    execute_improvement_operator_graph_family_behavioral_canary,
+    improvement_operator_graph_id_for_nodes, MAX_IMPROVEMENT_OPERATOR_GRAPH_NODES,
 };
 use crate::fullstack_ops_knowledge::{execute_fullstack_recipe_behavioral_canary, promoted_bundle};
 use crate::integrated_development::execute_behavioral_composition_canary;
@@ -37,12 +38,14 @@ const MAX_IMPROVEMENT_OPERATOR_SELECTORS: usize = 25;
 // identities because normalized edit/postcondition contracts intentionally
 // merge five scenario aliases.
 const MAX_IMPROVEMENT_OPERATOR_VERIFIED_ARTIFACTS: u64 = 20;
+const MAX_IMPROVEMENT_OPERATOR_GRAPH_VERIFIED_ARTIFACTS: u64 = 4_096;
 const MAX_FULLSTACK_VERIFIED_ARTIFACTS: u64 = 3;
 const MAX_SELF_HEALING_VERIFIED_ARTIFACTS: u64 = 1;
 const MAX_ARTIFACT_CONTEXT_ATTEMPTS: usize = MAX_VERIFIED_ARTIFACTS_PER_CYCLE * 4;
 const FRONTIER_EVIDENCE_CONTRACT_REVISION: u64 = 2;
 const BEHAVIORAL_HEURISTIC_EXCLUSION_CONTRACT_REVISION: u64 = 4;
 const BEHAVIORAL_VALUE_CONTRACT_REVISION: u64 = 5;
+const IMPROVEMENT_OPERATOR_GRAPH_CONTRACT_REVISION: u64 = 2;
 const GENERATIVE_PREDICTORS: [(&str, &str); 2] = [
     (
         "SEM23_REACTION_OUTCOME_PREDICTOR",
@@ -379,11 +382,16 @@ fn candidate_composition(
             transported_type: pair[0].output_type.clone(),
         })
         .collect::<Vec<_>>();
-    let signature = primitives
+    let mut signature = primitives
         .iter()
         .map(|value| value.primitive_id.as_str())
         .collect::<Vec<_>>()
         .join(":");
+    if composer.0 == "IMPROVEMENT_OPERATOR_GRAPH_COMPOSER" {
+        signature.push_str(&format!(
+            ":CONTRACT_REVISION_{IMPROVEMENT_OPERATOR_GRAPH_CONTRACT_REVISION}"
+        ));
+    }
     RepairCompositionLessonIR {
         composition_id: format!("GENERATIVE-{}", &sha256(signature.as_bytes())[..20]),
         execution_order: primitives
@@ -567,7 +575,11 @@ fn selected_stage<'a>(
 /// Executes independent, pure behavioral probes as a bounded worker graph and
 /// restores deterministic input order at the join. This keeps verification
 /// reproducible while avoiding an accidental serial critical path.
-fn parallel_execute_ordered<T, R, F>(items: Vec<T>, worker: F) -> Result<Vec<R>, String>
+fn parallel_execute_ordered<T, R, F>(
+    items: Vec<T>,
+    parallel_cost_per_item: usize,
+    worker: F,
+) -> Result<Vec<R>, String>
 where
     T: Sync,
     R: Send,
@@ -576,9 +588,13 @@ where
     if items.is_empty() {
         return Ok(Vec::new());
     }
-    let worker_count = std::thread::available_parallelism()
+    let available_workers = std::thread::available_parallelism()
         .map(usize::from)
+        .unwrap_or(1);
+    let worker_count = available_workers
+        .checked_div(parallel_cost_per_item.max(1))
         .unwrap_or(1)
+        .max(1)
         .min(items.len())
         .max(1);
     let next = std::sync::atomic::AtomicUsize::new(0);
@@ -690,6 +706,73 @@ fn execute_predictor(
         }
         _ => Err(format!("UNKNOWN_GENERATIVE_PREDICTOR:{predictor_id}")),
     }
+}
+
+fn bounded_binomial(n: usize, k: usize) -> u64 {
+    if k > n {
+        return 0;
+    }
+    let k = k.min(n - k);
+    let mut value = 1_u64;
+    for step in 0..k {
+        value = value
+            .saturating_mul((n - step).min(u64::MAX as usize) as u64)
+            .checked_div((step + 1).min(u64::MAX as usize) as u64)
+            .unwrap_or(u64::MAX);
+    }
+    value
+}
+
+fn improvement_operator_graph_capacity(operator_count: usize) -> u64 {
+    (2..=MAX_IMPROVEMENT_OPERATOR_GRAPH_NODES.min(operator_count))
+        .map(|arity| bounded_binomial(operator_count, arity))
+        .fold(0_u64, u64::saturating_add)
+        .min(MAX_IMPROVEMENT_OPERATOR_GRAPH_VERIFIED_ARTIFACTS)
+}
+
+fn operator_combination_for_ordinal(
+    operator_ids: &[String],
+    arity: usize,
+    mut ordinal: u64,
+) -> Option<Vec<String>> {
+    if !(2..=operator_ids.len()).contains(&arity)
+        || ordinal >= bounded_binomial(operator_ids.len(), arity)
+    {
+        return None;
+    }
+    let mut combination = Vec::with_capacity(arity);
+    let mut start = 0_usize;
+    for position in 0..arity {
+        let remaining = arity - position - 1;
+        let last_candidate = operator_ids.len().checked_sub(remaining + 1)?;
+        let mut selected = None;
+        for candidate in start..=last_candidate {
+            let suffix_count = bounded_binomial(operator_ids.len() - candidate - 1, remaining);
+            if ordinal < suffix_count {
+                selected = Some(candidate);
+                break;
+            }
+            ordinal = ordinal.saturating_sub(suffix_count);
+        }
+        let selected = selected?;
+        combination.push(operator_ids[selected].clone());
+        start = selected + 1;
+    }
+    Some(combination)
+}
+
+fn improvement_operator_graph_for_global_ordinal(
+    operator_ids: &[String],
+    mut ordinal: u64,
+) -> Option<Vec<String>> {
+    for arity in 2..=MAX_IMPROVEMENT_OPERATOR_GRAPH_NODES.min(operator_ids.len()) {
+        let width = bounded_binomial(operator_ids.len(), arity);
+        if ordinal < width {
+            return operator_combination_for_ordinal(operator_ids, arity, ordinal);
+        }
+        ordinal = ordinal.saturating_sub(width);
+    }
+    None
 }
 
 fn execute_composer(
@@ -908,28 +991,32 @@ fn execute_composer(
             }
             let target_width = artifact_family_width.clamp(1, MAX_VERIFIED_ARTIFACTS_PER_CYCLE);
             let operator_ids = verified_operator_ids.iter().cloned().collect::<Vec<_>>();
+            let graph_capacity = improvement_operator_graph_capacity(operator_ids.len());
+            let mut ordinal = if previously_verified.is_empty() {
+                0
+            } else {
+                previously_verified.len().min(u64::MAX as usize) as u64
+            };
             let mut tasks = Vec::new();
-            'pairs: for left_index in 0..operator_ids.len() {
-                for right_index in (left_index + 1)..operator_ids.len() {
-                    let left_operator_id = operator_ids[left_index].clone();
-                    let right_operator_id = operator_ids[right_index].clone();
-                    let graph_id =
-                        improvement_operator_graph_id(&left_operator_id, &right_operator_id)?;
-                    if previously_verified.contains(&graph_id) {
-                        continue;
-                    }
-                    let artifact_context = sha256(
-                        format!(
-                            "{context}:{}:{graph_id}:IMPROVEMENT_OPERATOR_PARALLEL_GRAPH",
-                            selected.composition_id
-                        )
-                        .as_bytes(),
-                    );
-                    tasks.push((left_operator_id, right_operator_id, artifact_context));
-                    if tasks.len() >= target_width {
-                        break 'pairs;
-                    }
+            while ordinal < graph_capacity && tasks.len() < target_width {
+                let Some(graph_operator_ids) =
+                    improvement_operator_graph_for_global_ordinal(&operator_ids, ordinal)
+                else {
+                    break;
+                };
+                ordinal = ordinal.saturating_add(1);
+                let graph_id = improvement_operator_graph_id_for_nodes(&graph_operator_ids)?;
+                if previously_verified.contains(&graph_id) {
+                    continue;
                 }
+                let artifact_context = sha256(
+                    format!(
+                        "{context}:{}:{graph_id}:IMPROVEMENT_OPERATOR_PARALLEL_GRAPH",
+                        selected.composition_id
+                    )
+                    .as_bytes(),
+                );
+                tasks.push((graph_operator_ids, artifact_context));
             }
             if tasks.is_empty() {
                 return Ok((
@@ -937,8 +1024,9 @@ fn execute_composer(
                     Some("IMPROVEMENT_OPERATOR_GRAPH_UNIVERSE_SATURATED".to_string()),
                 ));
             }
-            let receipts = parallel_execute_ordered(tasks, |task| {
-                execute_improvement_operator_graph_behavioral_canary(&task.0, &task.1, &task.2)
+            let parallel_cost = tasks.iter().map(|task| task.0.len()).max().unwrap_or(1);
+            let receipts = parallel_execute_ordered(tasks, parallel_cost, |task| {
+                execute_improvement_operator_graph_family_behavioral_canary(&task.0, &task.1)
             })?;
             let mut artifacts = Vec::with_capacity(receipts.len());
             for receipt in receipts {
@@ -1012,7 +1100,7 @@ fn verified_artifact_capacity(memory: &GenerativeGrowthMemory, composer_id: &str
                 memory,
                 "IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER",
             );
-            operators.saturating_mul(operators.saturating_sub(1)) / 2
+            improvement_operator_graph_capacity(operators.min(usize::MAX as u64) as usize)
         }
         "FULLSTACK_TYPED_RECIPE_COMPOSER" => MAX_FULLSTACK_VERIFIED_ARTIFACTS,
         "SELF_HEALING_CONTRACT_COMPOSER" => MAX_SELF_HEALING_VERIFIED_ARTIFACTS,
@@ -1830,19 +1918,13 @@ mod tests {
     }
 
     fn all_operator_graph_ids(operator_ids: &[String]) -> Vec<String> {
-        let mut graph_ids = Vec::new();
-        for left_index in 0..operator_ids.len() {
-            for right_index in (left_index + 1)..operator_ids.len() {
-                graph_ids.push(
-                    improvement_operator_graph_id(
-                        &operator_ids[left_index],
-                        &operator_ids[right_index],
-                    )
-                    .unwrap(),
-                );
-            }
-        }
-        graph_ids
+        (0..improvement_operator_graph_capacity(operator_ids.len()))
+            .map(|ordinal| {
+                let graph =
+                    improvement_operator_graph_for_global_ordinal(operator_ids, ordinal).unwrap();
+                improvement_operator_graph_id_for_nodes(&graph).unwrap()
+            })
+            .collect()
     }
 
     fn input() -> GenerativeInput {
@@ -1860,6 +1942,25 @@ mod tests {
             verification_evidence_count: 1,
             measured_performance_gain: false,
         }
+    }
+
+    #[test]
+    fn operator_graph_ordinal_expands_arity_without_new_stage_code() {
+        let operator_ids = verified_operator_canary_ids();
+        let pair_count = bounded_binomial(operator_ids.len(), 2);
+        let last_pair = improvement_operator_graph_for_global_ordinal(
+            &operator_ids,
+            pair_count.saturating_sub(1),
+        )
+        .unwrap();
+        let first_triple =
+            improvement_operator_graph_for_global_ordinal(&operator_ids, pair_count).unwrap();
+        assert_eq!(last_pair.len(), 2);
+        assert_eq!(first_triple.len(), 3);
+        assert_eq!(
+            improvement_operator_graph_capacity(operator_ids.len()),
+            MAX_IMPROVEMENT_OPERATOR_GRAPH_VERIFIED_ARTIFACTS
+        );
     }
 
     #[test]

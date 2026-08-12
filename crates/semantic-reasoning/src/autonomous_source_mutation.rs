@@ -34,6 +34,7 @@ pub const AUTONOMOUS_SOURCE_MUTATION_SCHEMA: &str = "B_CORE_AUTONOMOUS_SOURCE_MU
 pub const SELF_UPDATE_HANDOFF_FILE: &str = "SELF_UPDATE_READY.json";
 pub const SOURCE_REPAIR_LEARNING_SCHEMA: &str = "B_CORE_SOURCE_REPAIR_LEARNING_1";
 pub const IMPROVEMENT_OPERATOR_MEMORY_SCHEMA: &str = "B_CORE_IMPROVEMENT_OPERATOR_MEMORY_1";
+pub const MAX_IMPROVEMENT_OPERATOR_GRAPH_NODES: usize = 8;
 // Revision 15 canonicalizes compiler-family postimages before structural
 // lowering. Reopen older families so formatting failures from mechanically
 // valid but noncanonical fused/nested expressions become one replayable,
@@ -437,6 +438,13 @@ pub struct ImprovementOperatorGraphIR {
     pub operator_ids: Vec<String>,
     pub transported_type: String,
     pub join_postconditions: Vec<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ImprovementOperatorGraphNodeProgram {
+    pub operator: ImprovementOperatorIR,
+    pub predecessor_source: String,
+    pub structural_repair_program: StructuralRepairProgram,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -1368,115 +1376,186 @@ fn improvement_operator_canary_case_for_id(
     Err("IMPROVEMENT_OPERATOR_GRAPH_NODE_NOT_EXECUTABLE".to_string())
 }
 
-pub fn improvement_operator_graph_id(
-    left_operator_id: &str,
-    right_operator_id: &str,
-) -> Result<String, String> {
-    if left_operator_id == right_operator_id
-        || [left_operator_id, right_operator_id]
-            .iter()
-            .any(|operator_id| {
-                operator_id.len() != 64 || !operator_id.bytes().all(|byte| byte.is_ascii_hexdigit())
-            })
+pub fn improvement_operator_graph_id_for_nodes(operator_ids: &[String]) -> Result<String, String> {
+    if !(2..=MAX_IMPROVEMENT_OPERATOR_GRAPH_NODES).contains(&operator_ids.len())
+        || operator_ids.iter().any(|operator_id| {
+            operator_id.len() != 64 || !operator_id.bytes().all(|byte| byte.is_ascii_hexdigit())
+        })
     {
         return Err("IMPROVEMENT_OPERATOR_GRAPH_NODE_IDS_INVALID".to_string());
     }
-    let mut operator_ids = [left_operator_id.to_string(), right_operator_id.to_string()];
-    operator_ids.sort();
+    let mut canonical_ids = operator_ids.to_vec();
+    canonical_ids.sort();
+    canonical_ids.dedup();
+    if canonical_ids.len() != operator_ids.len() {
+        return Err("IMPROVEMENT_OPERATOR_GRAPH_NODE_IDS_INVALID".to_string());
+    }
     Ok(sha256(
         format!(
             "B_CORE_IMPROVEMENT_OPERATOR_GRAPH_1:{}:RUST_SOURCE_SHARD:PARALLEL_JOIN:STRUCTURAL_REPLAY",
-            operator_ids.join(":")
+            canonical_ids.join(":")
         )
         .as_bytes(),
     ))
 }
 
-/// Executes two independently applicable, behaviorally verified source
-/// operators as a bounded graph. The nodes run concurrently over disjoint
-/// source shards; the join is content-addressed by both operator identities
-/// and accepts only when both typed postconditions and negative controls pass.
-pub fn execute_improvement_operator_graph_behavioral_canary(
+pub fn improvement_operator_graph_id(
     left_operator_id: &str,
     right_operator_id: &str,
-    context_sha256: &str,
-) -> Result<ImprovementOperatorGraphCanaryReceipt, String> {
-    if context_sha256.len() != 64 || !context_sha256.bytes().all(|byte| byte.is_ascii_hexdigit()) {
-        return Err("IMPROVEMENT_OPERATOR_GRAPH_CONTEXT_INVALID".to_string());
-    }
-    let graph_id = improvement_operator_graph_id(left_operator_id, right_operator_id)?;
-    let left = improvement_operator_canary_case_for_id(left_operator_id, context_sha256)?;
-    let right = improvement_operator_canary_case_for_id(right_operator_id, context_sha256)?;
-    if left.receipt.operator.validation_contract != right.receipt.operator.validation_contract
-        || !left
-            .receipt
-            .operator
-            .validation_contract
-            .iter()
-            .any(|obligation| obligation == "STRUCTURAL_REPLAY")
-    {
+) -> Result<String, String> {
+    improvement_operator_graph_id_for_nodes(&[
+        left_operator_id.to_string(),
+        right_operator_id.to_string(),
+    ])
+}
+
+pub fn compose_improvement_operator_graph(
+    operators: &[ImprovementOperatorIR],
+) -> Result<ImprovementOperatorGraphIR, String> {
+    let operator_ids = operators
+        .iter()
+        .map(|operator| {
+            validate_improvement_operator_id(operator)?;
+            Ok(operator.operator_id.clone())
+        })
+        .collect::<Result<Vec<_>, String>>()?;
+    let Some(first) = operators.first() else {
+        return Err("IMPROVEMENT_OPERATOR_GRAPH_NODE_IDS_INVALID".to_string());
+    };
+    if operators.iter().any(|operator| {
+        operator.validation_contract != first.validation_contract
+            || !operator
+                .validation_contract
+                .iter()
+                .any(|obligation| obligation == "STRUCTURAL_REPLAY")
+    }) {
         return Err("IMPROVEMENT_OPERATOR_GRAPH_POSTCONDITION_INCOMPATIBLE".to_string());
     }
-
-    let (left_execution, right_execution) = std::thread::scope(|scope| {
-        let left_handle = scope.spawn(|| {
-            execute_improvement_operator_program_on_source(
-                &left.receipt.operator,
-                &left.predecessor,
-                &left.program,
-            )
-        });
-        let right_handle = scope.spawn(|| {
-            execute_improvement_operator_program_on_source(
-                &right.receipt.operator,
-                &right.predecessor,
-                &right.program,
-            )
-        });
-        let left_result = left_handle
-            .join()
-            .map_err(|_| "IMPROVEMENT_OPERATOR_GRAPH_LEFT_NODE_PANICKED".to_string())?;
-        let right_result = right_handle
-            .join()
-            .map_err(|_| "IMPROVEMENT_OPERATOR_GRAPH_RIGHT_NODE_PANICKED".to_string())?;
-        Ok::<_, String>((left_result?, right_result?))
-    })?;
-
-    let exact_postimages_observed = left_execution.applicable
-        && right_execution.applicable
-        && left_execution.candidate_source.as_deref() == Some(left.target.as_str())
-        && right_execution.candidate_source.as_deref() == Some(right.target.as_str());
-    let negative_controls_rejected = left.receipt.wrong_predecessor_rejected
-        && right.receipt.wrong_predecessor_rejected
-        && left.receipt.tampered_target_rejected
-        && right.receipt.tampered_target_rejected;
-    let mut operator_ids = vec![left_operator_id.to_string(), right_operator_id.to_string()];
-    operator_ids.sort();
-    let graph = ImprovementOperatorGraphIR {
+    let mut canonical_ids = operator_ids;
+    canonical_ids.sort();
+    let graph_id = improvement_operator_graph_id_for_nodes(&canonical_ids)?;
+    Ok(ImprovementOperatorGraphIR {
         schema: "B_CORE_IMPROVEMENT_OPERATOR_GRAPH_1".to_string(),
         graph_id,
-        operator_ids,
+        operator_ids: canonical_ids,
         transported_type: "RUST_SOURCE_SHARD".to_string(),
         join_postconditions: vec![
             "ALL_NODE_POSTIMAGES_EXACT".to_string(),
             "ALL_NEGATIVE_CONTROLS_REJECTED".to_string(),
             "CANONICAL_CONTENT_ADDRESSED_JOIN".to_string(),
         ],
-    };
+    })
+}
+
+/// Executes a graph of typed operators over independent source shards. This
+/// is the callable repository path used by the canary and by real repair
+/// families; graph nodes are not proposal strings.
+pub fn execute_improvement_operator_graph_on_sources(
+    graph: &ImprovementOperatorGraphIR,
+    nodes: &[ImprovementOperatorGraphNodeProgram],
+) -> Result<Vec<ImprovementOperatorExecution>, String> {
+    let operators = nodes
+        .iter()
+        .map(|node| node.operator.clone())
+        .collect::<Vec<_>>();
+    if compose_improvement_operator_graph(&operators)? != *graph {
+        return Err("IMPROVEMENT_OPERATOR_GRAPH_BINDING_MISMATCH".to_string());
+    }
+    let mut ordered_nodes = nodes.iter().collect::<Vec<_>>();
+    ordered_nodes.sort_by(|left, right| left.operator.operator_id.cmp(&right.operator.operator_id));
+    thread::scope(|scope| {
+        let handles = ordered_nodes
+            .iter()
+            .map(|node| {
+                scope.spawn(|| {
+                    execute_improvement_operator_program_on_source(
+                        &node.operator,
+                        &node.predecessor_source,
+                        &node.structural_repair_program,
+                    )
+                })
+            })
+            .collect::<Vec<_>>();
+        handles
+            .into_iter()
+            .map(|handle| {
+                handle
+                    .join()
+                    .map_err(|_| "IMPROVEMENT_OPERATOR_GRAPH_NODE_PANICKED".to_string())?
+            })
+            .collect::<Result<Vec<_>, String>>()
+    })
+}
+
+/// Executes 2..=8 independently applicable, behaviorally verified source
+/// operators as one bounded graph. Nodes run concurrently over disjoint source
+/// shards; the join is content-addressed and accepts only exact postimages.
+pub fn execute_improvement_operator_graph_family_behavioral_canary(
+    operator_ids: &[String],
+    context_sha256: &str,
+) -> Result<ImprovementOperatorGraphCanaryReceipt, String> {
+    if context_sha256.len() != 64 || !context_sha256.bytes().all(|byte| byte.is_ascii_hexdigit()) {
+        return Err("IMPROVEMENT_OPERATOR_GRAPH_CONTEXT_INVALID".to_string());
+    }
+    improvement_operator_graph_id_for_nodes(operator_ids)?;
+    let mut cases = operator_ids
+        .iter()
+        .map(|operator_id| improvement_operator_canary_case_for_id(operator_id, context_sha256))
+        .collect::<Result<Vec<_>, _>>()?;
+    cases.sort_by(|left, right| {
+        left.receipt
+            .operator
+            .operator_id
+            .cmp(&right.receipt.operator.operator_id)
+    });
+    let nodes = cases
+        .iter()
+        .map(|case| ImprovementOperatorGraphNodeProgram {
+            operator: case.receipt.operator.clone(),
+            predecessor_source: case.predecessor.clone(),
+            structural_repair_program: case.program.clone(),
+        })
+        .collect::<Vec<_>>();
+    let operators = nodes
+        .iter()
+        .map(|node| node.operator.clone())
+        .collect::<Vec<_>>();
+    let graph = compose_improvement_operator_graph(&operators)?;
+    let executions = execute_improvement_operator_graph_on_sources(&graph, &nodes)?;
+    if executions.len() != cases.len() {
+        return Err("IMPROVEMENT_OPERATOR_GRAPH_EXECUTION_COUNT_MISMATCH".to_string());
+    }
+    let exact_postimages_observed = cases.iter().zip(&executions).all(|(case, execution)| {
+        execution.applicable
+            && execution.candidate_source.as_deref() == Some(case.target.as_str())
+            && execution.operator_id == case.receipt.operator.operator_id
+    });
+    let negative_controls_rejected = cases.iter().all(|case| {
+        case.receipt.wrong_predecessor_rejected && case.receipt.tampered_target_rejected
+    });
+    let mut reversed_ids = graph.operator_ids.clone();
+    reversed_ids.reverse();
     let canonical_join_observed =
-        improvement_operator_graph_id(&graph.operator_ids[1], &graph.operator_ids[0])?
-            == graph.graph_id;
+        improvement_operator_graph_id_for_nodes(&reversed_ids)? == graph.graph_id;
     let cases_executed = 4;
     let cases_passed = [
         exact_postimages_observed,
         negative_controls_rejected,
         canonical_join_observed,
-        left_execution.operator_id != right_execution.operator_id,
+        executions
+            .iter()
+            .map(|execution| execution.operator_id.as_str())
+            .collect::<BTreeSet<_>>()
+            .len()
+            == executions.len(),
     ]
     .into_iter()
     .filter(|passed| *passed)
     .count();
-    let mut node_receipt_sha256s = vec![left.receipt.receipt_sha256, right.receipt.receipt_sha256];
+    let mut node_receipt_sha256s = cases
+        .into_iter()
+        .map(|case| case.receipt.receipt_sha256)
+        .collect::<Vec<_>>();
     node_receipt_sha256s.sort();
     let mut receipt = ImprovementOperatorGraphCanaryReceipt {
         schema: "B_CORE_IMPROVEMENT_OPERATOR_GRAPH_CANARY_1".to_string(),
@@ -1496,6 +1575,17 @@ pub fn execute_improvement_operator_graph_behavioral_canary(
             .map_err(|error| format!("IMPROVEMENT_OPERATOR_GRAPH_RECEIPT_JSON:{error}"))?,
     );
     Ok(receipt)
+}
+
+pub fn execute_improvement_operator_graph_behavioral_canary(
+    left_operator_id: &str,
+    right_operator_id: &str,
+    context_sha256: &str,
+) -> Result<ImprovementOperatorGraphCanaryReceipt, String> {
+    execute_improvement_operator_graph_family_behavioral_canary(
+        &[left_operator_id.to_string(), right_operator_id.to_string()],
+        context_sha256,
+    )
 }
 
 fn improvement_operator_transfer_priority(
@@ -4274,6 +4364,22 @@ mod tests {
                 .unwrap(),
             receipt.graph.graph_id
         );
+
+        let third =
+            execute_improvement_operator_behavioral_canary(&format!("{:08x}{}", 2, "0".repeat(56)))
+                .unwrap();
+        let family = execute_improvement_operator_graph_family_behavioral_canary(
+            &[
+                left.operator.operator_id,
+                right.operator.operator_id,
+                third.operator.operator_id,
+            ],
+            &context,
+        )
+        .unwrap();
+        assert_eq!(family.graph.operator_ids.len(), 3);
+        assert_eq!(family.cases_passed, family.cases_executed);
+        assert!(family.parallel_nodes_executed);
     }
 
     #[test]
