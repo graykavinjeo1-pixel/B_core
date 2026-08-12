@@ -55,6 +55,7 @@ const BASELINE_MAX_BYTES_PER_SCAN: u64 = 64 * 1024 * 1024;
 const MAX_CLASSIFIER_REFINEMENT_EVENTS: usize = 64;
 const MAX_RECENT_SOURCE_PATCH_OUTCOMES: usize = 16;
 const RUNTIME_REPAIR_COUNTER_CONTRACT_REVISION: u64 = 2;
+const INSTALLED_EXECUTION_COUNTER_CONTRACT_REVISION: u64 = 2;
 const MAX_CORE_COHORT_VALIDATION_MS: u64 = 3 * 60 * 1_000;
 const FULL_CORE_REGRESSION_CANARY_INTERVAL: u64 = 8;
 const MAX_REPOSITORY_TEST_PATHS: usize = 8;
@@ -354,6 +355,12 @@ pub struct SupervisorState {
     pub installed_composite_capability_execution_failures: u64,
     #[serde(default)]
     pub last_installed_composite_execution_sha256: Option<String>,
+    #[serde(default)]
+    pub installed_execution_counter_contract_revision: u64,
+    #[serde(default)]
+    pub legacy_unbound_installed_composite_execution_events: u64,
+    #[serde(default)]
+    pub legacy_unbound_installed_composite_execution_failures: u64,
     #[serde(default)]
     pub distinct_semantic_lessons: u64,
     #[serde(default)]
@@ -885,6 +892,9 @@ pub struct StepReport {
     pub installed_composite_capability_execution_events: u64,
     pub installed_composite_capability_execution_failures: u64,
     pub last_installed_composite_execution_sha256: Option<String>,
+    pub installed_execution_counter_contract_revision: u64,
+    pub legacy_unbound_installed_composite_execution_events: u64,
+    pub legacy_unbound_installed_composite_execution_failures: u64,
     pub distinct_semantic_lessons: u64,
     pub semantic_duplicate_lessons: u64,
     pub semantic_revalidation_events: u64,
@@ -2693,6 +2703,10 @@ pub fn initialize(config_path: &Path) -> Result<SupervisorState, String> {
         installed_composite_capability_execution_events: 0,
         installed_composite_capability_execution_failures: 0,
         last_installed_composite_execution_sha256: None,
+        installed_execution_counter_contract_revision:
+            INSTALLED_EXECUTION_COUNTER_CONTRACT_REVISION,
+        legacy_unbound_installed_composite_execution_events: 0,
+        legacy_unbound_installed_composite_execution_failures: 0,
         distinct_semantic_lessons: 0,
         semantic_duplicate_lessons: 0,
         semantic_revalidation_events: 0,
@@ -5992,6 +6006,24 @@ fn ensure_runtime_repair_counter_contract(state: &mut SupervisorState) {
     }
 }
 
+fn ensure_installed_execution_counter_contract(state: &mut SupervisorState) {
+    if state.installed_execution_counter_contract_revision
+        < INSTALLED_EXECUTION_COUNTER_CONTRACT_REVISION
+    {
+        state.legacy_unbound_installed_composite_execution_events = state
+            .legacy_unbound_installed_composite_execution_events
+            .saturating_add(state.installed_composite_capability_execution_events);
+        state.legacy_unbound_installed_composite_execution_failures = state
+            .legacy_unbound_installed_composite_execution_failures
+            .saturating_add(state.installed_composite_capability_execution_failures);
+        state.installed_composite_capability_execution_events = 0;
+        state.installed_composite_capability_execution_failures = 0;
+        state.last_installed_composite_execution_sha256 = None;
+        state.installed_execution_counter_contract_revision =
+            INSTALLED_EXECUTION_COUNTER_CONTRACT_REVISION;
+    }
+}
+
 fn report_from_state(
     state: &SupervisorState,
     baseline_created: bool,
@@ -6109,6 +6141,12 @@ fn report_from_state(
         last_installed_composite_execution_sha256: state
             .last_installed_composite_execution_sha256
             .clone(),
+        installed_execution_counter_contract_revision: state
+            .installed_execution_counter_contract_revision,
+        legacy_unbound_installed_composite_execution_events: state
+            .legacy_unbound_installed_composite_execution_events,
+        legacy_unbound_installed_composite_execution_failures: state
+            .legacy_unbound_installed_composite_execution_failures,
         distinct_semantic_lessons: state.distinct_semantic_lessons,
         semantic_duplicate_lessons: state.semantic_duplicate_lessons,
         semantic_revalidation_events: state.semantic_revalidation_events,
@@ -6335,6 +6373,16 @@ fn revalidate_installed_composite_capability(state: &mut SupervisorState, memory
     let Some(context) = accepted_sem5_composition_context(memory) else {
         return;
     };
+    let Ok((candidate, _)) = compose_behavioral_canary_candidate(&context) else {
+        return;
+    };
+    if !crate::generated_sem5_capability::generated_capability_hashes()
+        .contains(&candidate.program_ir_sha256.as_str())
+    {
+        // Accepted capability is queued for installation. Absence is not an
+        // execution attempt and must not poison the repair-failure signal.
+        return;
+    }
     let outcome = execute_behavioral_composition_canary(&context);
     let (event_sha256, pass) = match outcome {
         Ok(receipt) => {
@@ -6596,6 +6644,7 @@ fn step_without_lease(
     let started = Instant::now();
     let mut state = load_state(config)?;
     ensure_runtime_repair_counter_contract(&mut state);
+    ensure_installed_execution_counter_contract(&mut state);
     ensure_source_patch_telemetry_epoch(&mut state);
     recover_verification_only_generation_tip(config, &mut state)?;
     if stop_if_requested(config, &mut state)? {
@@ -7852,6 +7901,81 @@ mod tests {
             RUNTIME_REPAIR_COUNTER_CONTRACT_REVISION
         );
         assert_eq!(state.diagnostic_policy.outcome_causal_contract_revision, 4);
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn legacy_preinstallation_events_are_quarantined_from_execution_failures() {
+        let root = temp_root("installed-execution-counter-migration");
+        let (config_path, _) = test_config(&root);
+        let mut state = initialize(&config_path).unwrap();
+        state.installed_execution_counter_contract_revision = 0;
+        state.installed_composite_capability_execution_events = 11;
+        state.installed_composite_capability_execution_failures = 2;
+        state.last_installed_composite_execution_sha256 = Some("a".repeat(64));
+
+        ensure_installed_execution_counter_contract(&mut state);
+
+        assert_eq!(state.installed_composite_capability_execution_events, 0);
+        assert_eq!(state.installed_composite_capability_execution_failures, 0);
+        assert_eq!(
+            state.legacy_unbound_installed_composite_execution_events,
+            11
+        );
+        assert_eq!(
+            state.legacy_unbound_installed_composite_execution_failures,
+            2
+        );
+        assert!(state.last_installed_composite_execution_sha256.is_none());
+        assert_eq!(
+            state.installed_execution_counter_contract_revision,
+            INSTALLED_EXECUTION_COUNTER_CONTRACT_REVISION
+        );
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn accepted_but_not_yet_installed_capability_is_not_an_execution_failure() {
+        let root = temp_root("pending-capability-not-execution-failure");
+        let (config_path, config) = test_config(&root);
+        let mut state = initialize(&config_path).unwrap();
+        let mut memory = load_memory(&config, 0).unwrap();
+        let installed = crate::generated_sem5_capability::generated_capability_hashes();
+        let mut selected = None;
+        for ordinal in 0..128_u64 {
+            let input = GenerativeInput {
+                source_lesson_id: format!("pending-install-{ordinal}"),
+                diagnostic_signals: vec![format!("PENDING_INSTALL_CONTEXT_{ordinal}")],
+                observed_composition_roles: vec![
+                    "INVARIANT_CHECK".to_string(),
+                    "REGRESSION_TEST".to_string(),
+                ],
+                learning_score: 80,
+                verification_evidence_count: 1,
+                measured_performance_gain: false,
+            };
+            let result = run_generative_cycle(&GenerativeGrowthMemory::default(), &input, ordinal)
+                .expect("behavioral composition");
+            let artifact = result
+                .behavioral_execution_receipt
+                .as_ref()
+                .and_then(|receipt| receipt.composite_artifact_sha256.as_deref())
+                .expect("verified artifact");
+            if !installed.contains(&artifact) {
+                selected = Some((input, result));
+                break;
+            }
+        }
+        let (input, result) = selected.expect("context outside installed registry");
+        memory.generative =
+            promote_generative_cycle(&GenerativeGrowthMemory::default(), &input, &result)
+                .expect("promote pending capability");
+
+        revalidate_installed_composite_capability(&mut state, &memory);
+
+        assert_eq!(state.installed_composite_capability_execution_events, 0);
+        assert_eq!(state.installed_composite_capability_execution_failures, 0);
+        assert_eq!(state.self_repair_capability_gaps, 0);
         fs::remove_dir_all(root).unwrap();
     }
 
