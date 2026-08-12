@@ -3427,96 +3427,75 @@ fn evaluator_self_audit(
             )
         })
         .unwrap_or(false);
-    let mut challenge_lessons = predecessor.lessons.clone();
-    if !challenge_lessons
+    // Every predecessor lesson was already challenged before it entered the hash-chained,
+    // immutable predecessor memory. Replaying the same field mutations for the entire history
+    // made verification O(generation) without adding a new counterexample. Challenge the newly
+    // proposed lesson against the complete current suite and preserve prior assurance through the
+    // predecessor/evaluator hashes instead.
+    let mutation_results = proposed_evaluator
+        .challenge_suite
         .iter()
-        .any(|lesson| lesson.lesson_id == expected_lesson.lesson_id)
-    {
-        challenge_lessons.push(expected_lesson.clone());
-    }
-    let mutation_results = challenge_lessons
-        .iter()
-        .flat_map(|challenge_lesson| {
-            proposed_evaluator
-                .challenge_suite
-                .iter()
-                .copied()
-                .map(move |mutation| {
-                    let challenge_total = if challenge_lesson.lesson_id == expected_lesson.lesson_id
-                    {
-                        expected_total
-                    } else {
-                        u32::from(challenge_lesson.learning_score)
-                    };
-                    let mut mutant = candidate.clone();
-                    mutant.lesson = challenge_lesson.clone();
-                    mutant.total_learning_score = challenge_total;
-                    let expected_generative_cycle = run_generative_cycle(
-                        &predecessor.generative,
-                        &generative_input(challenge_lesson),
-                        seed,
-                    );
-                    if let Ok(expected_cycle) = &expected_generative_cycle {
-                        mutant.generative_cycle = expected_cycle.clone();
-                    }
-                    match mutation {
-                        EvaluatorMutationKind::EvidenceDigestSubstitution => {
-                            mutant.lesson.evidence_observation_sha256 = vec!["0".repeat(64)];
-                        }
-                        EvaluatorMutationKind::AggregateScoreInflation => {
-                            mutant.total_learning_score =
-                                mutant.total_learning_score.saturating_add(1);
-                        }
-                        EvaluatorMutationKind::LessonScoreInflation => {
-                            mutant.lesson.learning_score =
-                                mutant.lesson.learning_score.saturating_add(1);
-                        }
-                        EvaluatorMutationKind::DiagnosticSignalInjection => {
-                            mutant
-                                .lesson
-                                .diagnostic_signals
-                                .push("UNSUPPORTED_AUTHORITY_SIGNAL".to_string());
-                        }
-                        EvaluatorMutationKind::CompositionRecipeMutation => {
-                            mutant
-                                .lesson
-                                .composition_recipe
-                                .push("UNSUPPORTED_ROLE".to_string());
-                        }
-                        EvaluatorMutationKind::WorkKindMutation => {
-                            mutant.lesson.work_kinds.clear();
-                        }
-                        EvaluatorMutationKind::ApplicabilityMutation => {
-                            mutant
-                                .lesson
-                                .applicability
-                                .push("unfrozen scope".to_string());
-                        }
-                        EvaluatorMutationKind::VerificationObligationMutation => {
-                            mutant.lesson.verification_obligations.clear();
-                        }
-                        EvaluatorMutationKind::RawSourceFlagInjection => {
-                            mutant.lesson.raw_source_bytes_present = true;
-                        }
-                        EvaluatorMutationKind::EvidenceRemoval => {
-                            mutant.lesson.evidence_observation_sha256.clear();
-                        }
-                    }
-                    let survived = candidate_matches_frozen_derivation(
-                        &mutant,
-                        challenge_lesson,
-                        challenge_total,
-                        expected_generative_cycle
-                            .as_ref()
-                            .unwrap_or(&candidate.generative_cycle),
-                    );
-                    EvaluatorMutationResult {
-                        mutation,
-                        expected_reject: true,
-                        rejected: !survived,
-                        survived,
-                    }
-                })
+        .copied()
+        .map(|mutation| {
+            let mut mutant = candidate.clone();
+            if let Ok(expected_cycle) = &baseline_generative_cycle {
+                mutant.generative_cycle = expected_cycle.clone();
+            }
+            match mutation {
+                EvaluatorMutationKind::EvidenceDigestSubstitution => {
+                    mutant.lesson.evidence_observation_sha256 = vec!["0".repeat(64)];
+                }
+                EvaluatorMutationKind::AggregateScoreInflation => {
+                    mutant.total_learning_score = mutant.total_learning_score.saturating_add(1);
+                }
+                EvaluatorMutationKind::LessonScoreInflation => {
+                    mutant.lesson.learning_score = mutant.lesson.learning_score.saturating_add(1);
+                }
+                EvaluatorMutationKind::DiagnosticSignalInjection => {
+                    mutant
+                        .lesson
+                        .diagnostic_signals
+                        .push("UNSUPPORTED_AUTHORITY_SIGNAL".to_string());
+                }
+                EvaluatorMutationKind::CompositionRecipeMutation => {
+                    mutant
+                        .lesson
+                        .composition_recipe
+                        .push("UNSUPPORTED_ROLE".to_string());
+                }
+                EvaluatorMutationKind::WorkKindMutation => {
+                    mutant.lesson.work_kinds.clear();
+                }
+                EvaluatorMutationKind::ApplicabilityMutation => {
+                    mutant
+                        .lesson
+                        .applicability
+                        .push("unfrozen scope".to_string());
+                }
+                EvaluatorMutationKind::VerificationObligationMutation => {
+                    mutant.lesson.verification_obligations.clear();
+                }
+                EvaluatorMutationKind::RawSourceFlagInjection => {
+                    mutant.lesson.raw_source_bytes_present = true;
+                }
+                EvaluatorMutationKind::EvidenceRemoval => {
+                    mutant.lesson.evidence_observation_sha256.clear();
+                }
+            }
+            let survived = candidate_matches_frozen_derivation(
+                &mutant,
+                expected_lesson,
+                expected_total,
+                baseline_generative_cycle
+                    .as_ref()
+                    .unwrap_or(&candidate.generative_cycle),
+            );
+            EvaluatorMutationResult {
+                mutation,
+                expected_reject: true,
+                rejected: !survived,
+                survived,
+            }
         })
         .collect::<Vec<_>>();
     let mutation_survivors = mutation_results
@@ -7545,6 +7524,50 @@ mod tests {
             1
         );
         assert!(receipt.evaluator_self_audit.post_challenge_core_revalidated);
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn evaluator_audit_challenges_only_new_lesson_after_sealed_predecessor() {
+        let root = temp_root("incremental-evaluator-audit");
+        let (_, candidate, _) = accepted_candidate(&root);
+        let expected_lesson = candidate.lesson.clone();
+        let mut prior_lesson = expected_lesson.clone();
+        prior_lesson.lesson_id = "sealed-prior-lesson".to_string();
+        prior_lesson.evidence_observation_sha256 = vec!["b".repeat(64)];
+        let prior_evaluator =
+            derive_next_evaluator_memory(&EvaluatorMemory::default(), &[], &prior_lesson).unwrap();
+        let predecessor = GrowthMemory {
+            schema: SUPERVISOR_SCHEMA.to_string(),
+            generation: 1,
+            predecessor_sha256: None,
+            lessons: vec![prior_lesson],
+            classifier: ClassifierMemory::default(),
+            evaluator: prior_evaluator,
+            generative: GenerativeGrowthMemory::default(),
+        };
+        let proposed_evaluator = derive_next_evaluator_memory(
+            &predecessor.evaluator,
+            &predecessor.lessons,
+            &expected_lesson,
+        )
+        .unwrap();
+
+        let audit = evaluator_self_audit(
+            &candidate,
+            &expected_lesson,
+            candidate.total_learning_score,
+            &predecessor,
+            &proposed_evaluator,
+            7,
+        );
+
+        assert!(audit.pass);
+        assert_eq!(audit.mutation_cases, EvaluatorMutationKind::ALL.len());
+        assert_eq!(audit.knowledge_challenge_cases, audit.mutation_cases);
+        assert_eq!(audit.mutation_survivors, 0);
+        assert_eq!(audit.active_evaluator_generation, 1);
+        assert_eq!(audit.proposed_evaluator_generation, 2);
         fs::remove_dir_all(root).unwrap();
     }
 
