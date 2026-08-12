@@ -539,6 +539,14 @@ fn emit_expression_mode(node: &ProgramNode, lint_clean: bool) -> Result<String, 
                 access
             })
         }
+        NodeKind::SequenceLength { sequence } => {
+            let source = emit_expression_mode(sequence, lint_clean)?;
+            if sequence.meta.output_type == ProgramType::Image {
+                Ok(format!("({source}).pixels.len() as i64"))
+            } else {
+                Ok(format!("({source}).len() as i64"))
+            }
+        }
         NodeKind::Call { api_token, args } => Ok(format!(
             "{}({})",
             api_token,
@@ -592,6 +600,9 @@ fn emit_scalar_expression(expression: &ScalarExpression) -> Result<String, Strin
             binary_token(*operator),
             emit_scalar_expression(right)?
         )),
+        ScalarExpression::Length { .. } | ScalarExpression::Index { .. } => {
+            Err("SCALAR_COLLECTION_EXPRESSION_REQUIRES_TYPED_PROGRAM_LOWERING".to_string())
+        }
         ScalarExpression::OpaqueCall { api_token, args } => Ok(format!(
             "{}({})",
             api_token,
@@ -733,6 +744,7 @@ fn super_children(kind: &NodeKind) -> Vec<&ProgramNode> {
     match kind {
         NodeKind::Store { value, .. }
         | NodeKind::UnaryOp { input: value, .. }
+        | NodeKind::SequenceLength { sequence: value }
         | NodeKind::Return { value } => vec![value],
         NodeKind::BinaryOp { left, right, .. } => vec![left, right],
         NodeKind::SequenceCreate { elements } | NodeKind::Call { args: elements, .. } => {

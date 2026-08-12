@@ -1206,6 +1206,14 @@ fn python_expression(
             },
             python_expression(right, sources)?
         )),
+        TypedSyntaxExpressionIR::Length { input } => {
+            Ok(format!("len({})", python_expression(input, sources)?))
+        }
+        TypedSyntaxExpressionIR::Index { collection, index } => Ok(format!(
+            "({})[{}]",
+            python_expression(collection, sources)?,
+            python_expression(index, sources)?
+        )),
         TypedSyntaxExpressionIR::Call {
             api_token,
             arguments,
@@ -1724,6 +1732,91 @@ def keep_bytes(values: bytes) -> bytes:
                     .candidate_materialization_is_one_to_one
             );
         }
+    }
+
+    #[test]
+    fn repository_collections_synthesize_length_and_index_primitives() {
+        let Some(python_executable) = python() else {
+            return;
+        };
+        let source = r#"def count(values: list[int]) -> int:
+    return 0
+
+def first(values: list[int]) -> int:
+    return 0
+
+def byte_at(values: bytes, position: int) -> int:
+    return 0
+
+def row_at(values: list[list[int]], position: int) -> list[int]:
+    return []
+"#;
+        let tests = r#"def test_collection_primitives():
+    assert count([1, 2]) == 2
+    assert count([7]) == 1
+    assert first([4, 9]) == 4
+    assert first([2, 3]) == 2
+    assert byte_at(b"ab", 1) == 98
+    assert byte_at(b"xyz", 1) == 121
+    assert row_at([[1], [2, 3]], 1) == [2, 3]
+    assert row_at([[4, 5], [6]], 0) == [4, 5]
+"#;
+        let receipt =
+            discover_and_synthesize_python_repository(&SourceBoundRepositoryDiscoveryRequestIR {
+                schema: SOURCE_BOUND_REPOSITORY_DISCOVERY_SCHEMA.to_string(),
+                source_relative_path: PathBuf::from("collection_primitives.py"),
+                source: source.to_string(),
+                test_sources: vec![RepositoryTestSourceIR {
+                    relative_path: PathBuf::from("tests/test_collection_primitives.py"),
+                    source: tests.to_string(),
+                }],
+                python_executable,
+                target_symbols: ["count", "first", "byte_at", "row_at"]
+                    .into_iter()
+                    .map(str::to_string)
+                    .collect(),
+                allowed_effects: vec![Effect::Pure],
+                max_expression_depth: 2,
+                max_candidates: 1_024,
+            })
+            .unwrap();
+        let by_symbol = receipt
+            .alternatives
+            .iter()
+            .map(|alternative| (alternative.requested_public_symbol.as_str(), alternative))
+            .collect::<BTreeMap<_, _>>();
+        assert!(matches!(
+            by_symbol["count"].synthesis.winning_goal.postimage,
+            TypedSyntaxExpressionIR::Length { .. }
+        ));
+        assert!(by_symbol["count"]
+            .materialized_patch
+            .candidate_source
+            .contains("len("));
+        for symbol in ["first", "byte_at", "row_at"] {
+            let alternative = by_symbol[symbol];
+            assert!(matches!(
+                alternative.synthesis.winning_goal.postimage,
+                TypedSyntaxExpressionIR::Index { .. }
+            ));
+            assert_eq!(
+                alternative.synthesis.template.public_observations_passed,
+                alternative.synthesis.winning_goal.public_observations.len()
+            );
+            assert!(alternative
+                .materialized_patch
+                .candidate_source
+                .contains('['));
+            assert!(
+                alternative
+                    .materialized_patch
+                    .candidate_materialization_is_one_to_one
+            );
+        }
+        assert_eq!(
+            by_symbol["row_at"].function_template.output_type,
+            ProgramType::SequenceInt
+        );
     }
 
     #[test]

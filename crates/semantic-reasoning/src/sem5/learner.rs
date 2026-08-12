@@ -930,6 +930,35 @@ impl NodeBuilder {
                     },
                 ))
             }
+            ScalarExpression::Length { input } => {
+                let sequence = self.scalar(input, bindings, definitions)?;
+                Ok(self.node(
+                    ProgramType::Int,
+                    vec![Effect::Pure],
+                    NodeKind::SequenceLength {
+                        sequence: Box::new(sequence),
+                    },
+                ))
+            }
+            ScalarExpression::Index { collection, index } => {
+                let sequence = self.scalar(collection, bindings, definitions)?;
+                let index = self.scalar(index, bindings, definitions)?;
+                let output_type = match sequence.meta.output_type {
+                    ProgramType::SequenceInt | ProgramType::Bytes | ProgramType::Image => {
+                        ProgramType::Int
+                    }
+                    ProgramType::NestedSequenceInt => ProgramType::SequenceInt,
+                    _ => return Err("LOWERING_INDEX_SOURCE_TYPE".to_string()),
+                };
+                Ok(self.node(
+                    output_type,
+                    vec![Effect::Pure],
+                    NodeKind::SequenceRead {
+                        sequence: Box::new(sequence),
+                        index: Box::new(index),
+                    },
+                ))
+            }
             ScalarExpression::OpaqueCall { api_token, args } => {
                 let args = args
                     .iter()
@@ -1019,6 +1048,7 @@ fn child_nodes(kind: &NodeKind) -> Vec<&ProgramNode> {
     match kind {
         NodeKind::Store { value, .. }
         | NodeKind::UnaryOp { input: value, .. }
+        | NodeKind::SequenceLength { sequence: value }
         | NodeKind::Return { value } => vec![value],
         NodeKind::BinaryOp { left, right, .. } => vec![left, right],
         NodeKind::SequenceCreate { elements } | NodeKind::Call { args: elements, .. } => {

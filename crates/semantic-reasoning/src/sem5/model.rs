@@ -135,6 +135,9 @@ pub enum NodeKind {
         sequence: Box<ProgramNode>,
         index: Box<ProgramNode>,
     },
+    SequenceLength {
+        sequence: Box<ProgramNode>,
+    },
     SequenceWrite {
         binding: String,
         index: Box<ProgramNode>,
@@ -215,6 +218,13 @@ pub enum ScalarExpression {
         operator: BinaryOperator,
         left: Box<ScalarExpression>,
         right: Box<ScalarExpression>,
+    },
+    Length {
+        input: Box<ScalarExpression>,
+    },
+    Index {
+        collection: Box<ScalarExpression>,
+        index: Box<ScalarExpression>,
     },
     OpaqueCall {
         api_token: String,

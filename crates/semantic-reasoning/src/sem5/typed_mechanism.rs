@@ -60,6 +60,13 @@ pub enum TypedSyntaxExpressionIR {
         left: Box<TypedSyntaxExpressionIR>,
         right: Box<TypedSyntaxExpressionIR>,
     },
+    Length {
+        input: Box<TypedSyntaxExpressionIR>,
+    },
+    Index {
+        collection: Box<TypedSyntaxExpressionIR>,
+        index: Box<TypedSyntaxExpressionIR>,
+    },
     Call {
         api_token: String,
         arguments: Vec<TypedSyntaxExpressionIR>,
@@ -261,13 +268,18 @@ pub fn lower_typed_mechanism_goal(
     let condition_source = goal
         .condition
         .as_ref()
-        .map(|condition| emit_expression(condition, &operand_sources))
+        .map(|condition| emit_expression(condition, &operand_sources, &operand_types, &definitions))
         .transpose()?;
-    let postimage_source = emit_expression(&goal.postimage, &operand_sources)?;
+    let postimage_source = emit_expression(
+        &goal.postimage,
+        &operand_sources,
+        &operand_types,
+        &definitions,
+    )?;
     let otherwise_source = goal
         .otherwise
         .as_ref()
-        .map(|otherwise| emit_expression(otherwise, &operand_sources))
+        .map(|otherwise| emit_expression(otherwise, &operand_sources, &operand_types, &definitions))
         .transpose()?;
     let complete_expression_source = complete_expression(
         condition_source.as_deref(),
@@ -285,13 +297,22 @@ pub fn lower_typed_mechanism_goal(
     let canonical_condition = goal
         .condition
         .as_ref()
-        .map(|condition| emit_expression(condition, &canonical_sources))
+        .map(|condition| {
+            emit_expression(condition, &canonical_sources, &operand_types, &definitions)
+        })
         .transpose()?;
-    let canonical_postimage = emit_expression(&goal.postimage, &canonical_sources)?;
+    let canonical_postimage = emit_expression(
+        &goal.postimage,
+        &canonical_sources,
+        &operand_types,
+        &definitions,
+    )?;
     let canonical_otherwise = goal
         .otherwise
         .as_ref()
-        .map(|otherwise| emit_expression(otherwise, &canonical_sources))
+        .map(|otherwise| {
+            emit_expression(otherwise, &canonical_sources, &operand_types, &definitions)
+        })
         .transpose()?;
     let canonical_expression = complete_expression(
         canonical_condition.as_deref(),
@@ -459,6 +480,13 @@ fn remap_expression_roles(
             operator: *operator,
             left: Box::new(remap_expression_roles(left, role_map)?),
             right: Box::new(remap_expression_roles(right, role_map)?),
+        },
+        TypedSyntaxExpressionIR::Length { input } => TypedSyntaxExpressionIR::Length {
+            input: Box::new(remap_expression_roles(input, role_map)?),
+        },
+        TypedSyntaxExpressionIR::Index { collection, index } => TypedSyntaxExpressionIR::Index {
+            collection: Box::new(remap_expression_roles(collection, role_map)?),
+            index: Box::new(remap_expression_roles(index, role_map)?),
         },
         TypedSyntaxExpressionIR::Call {
             api_token,
@@ -997,6 +1025,57 @@ pub fn synthesize_typed_mechanism_goal_with_priors(
                 )?;
             }
         }
+        for collection in prior.iter().filter(|candidate| {
+            matches!(
+                candidate.value_type,
+                ProgramType::SequenceInt | ProgramType::NestedSequenceInt | ProgramType::Bytes
+            )
+        }) {
+            if expressions.len() >= max_candidates {
+                break;
+            }
+            add_enumerated_expression(
+                TypedSyntaxExpressionIR::Length {
+                    input: Box::new(collection.expression.clone()),
+                },
+                &operand_types,
+                &operand_indices,
+                &definitions,
+                &api_map,
+                &observation_arguments,
+                &request.allowed_effects,
+                max_candidates,
+                &mut enumerated,
+                &mut evaluation_failures,
+                &mut seen,
+                &mut expressions,
+            )?;
+            for index in prior
+                .iter()
+                .filter(|candidate| candidate.value_type == ProgramType::Int)
+            {
+                if expressions.len() >= max_candidates {
+                    break;
+                }
+                add_enumerated_expression(
+                    TypedSyntaxExpressionIR::Index {
+                        collection: Box::new(collection.expression.clone()),
+                        index: Box::new(index.expression.clone()),
+                    },
+                    &operand_types,
+                    &operand_indices,
+                    &definitions,
+                    &api_map,
+                    &observation_arguments,
+                    &request.allowed_effects,
+                    max_candidates,
+                    &mut enumerated,
+                    &mut evaluation_failures,
+                    &mut seen,
+                    &mut expressions,
+                )?;
+            }
+        }
         let operators = [
             BinaryOperator::Equal,
             BinaryOperator::LessThan,
@@ -1436,6 +1515,30 @@ fn infer_expression_type(
                 _ => Err("TYPED_MECHANISM_BINARY_TYPE".to_string()),
             }
         }
+        TypedSyntaxExpressionIR::Length { input } => {
+            let input_type = infer_expression_type(input, operands, definitions, effects)?;
+            if matches!(
+                input_type,
+                ProgramType::SequenceInt | ProgramType::NestedSequenceInt | ProgramType::Bytes
+            ) {
+                Ok(ProgramType::Int)
+            } else {
+                Err("TYPED_MECHANISM_LENGTH_SOURCE_TYPE".to_string())
+            }
+        }
+        TypedSyntaxExpressionIR::Index { collection, index } => {
+            let collection_type =
+                infer_expression_type(collection, operands, definitions, effects)?;
+            let index_type = infer_expression_type(index, operands, definitions, effects)?;
+            if index_type != ProgramType::Int {
+                return Err("TYPED_MECHANISM_INDEX_NOT_INT".to_string());
+            }
+            match collection_type {
+                ProgramType::SequenceInt | ProgramType::Bytes => Ok(ProgramType::Int),
+                ProgramType::NestedSequenceInt => Ok(ProgramType::SequenceInt),
+                _ => Err("TYPED_MECHANISM_INDEX_SOURCE_TYPE".to_string()),
+            }
+        }
         TypedSyntaxExpressionIR::Call {
             api_token,
             arguments,
@@ -1461,6 +1564,8 @@ fn infer_expression_type(
 fn emit_expression(
     expression: &TypedSyntaxExpressionIR,
     sources: &BTreeMap<String, String>,
+    operands: &BTreeMap<String, ProgramType>,
+    definitions: &BTreeMap<String, &ApiDefinition>,
 ) -> Result<String, String> {
     match expression {
         TypedSyntaxExpressionIR::Operand { role } => sources
@@ -1475,7 +1580,7 @@ fn emit_expression(
                 UnaryOperator::Negate => "-",
                 UnaryOperator::Not => "!",
             },
-            emit_expression(input, sources)?
+            emit_expression(input, sources, operands, definitions)?
         )),
         TypedSyntaxExpressionIR::Binary {
             operator,
@@ -1483,10 +1588,30 @@ fn emit_expression(
             right,
         } => Ok(format!(
             "({} {} {})",
-            emit_expression(left, sources)?,
+            emit_expression(left, sources, operands, definitions)?,
             binary_token(*operator),
-            emit_expression(right, sources)?
+            emit_expression(right, sources, operands, definitions)?
         )),
+        TypedSyntaxExpressionIR::Length { input } => Ok(format!(
+            "({}).len() as i64",
+            emit_expression(input, sources, operands, definitions)?
+        )),
+        TypedSyntaxExpressionIR::Index { collection, index } => {
+            let mut effects = BTreeSet::new();
+            let collection_type =
+                infer_expression_type(collection, operands, definitions, &mut effects)?;
+            let access = format!(
+                "({})[({}) as usize]",
+                emit_expression(collection, sources, operands, definitions)?,
+                emit_expression(index, sources, operands, definitions)?
+            );
+            match collection_type {
+                ProgramType::SequenceInt => Ok(access),
+                ProgramType::NestedSequenceInt => Ok(format!("{access}.clone()")),
+                ProgramType::Bytes => Ok(format!("i64::from({access})")),
+                _ => Err("TYPED_MECHANISM_INDEX_SOURCE_TYPE".to_string()),
+            }
+        }
         TypedSyntaxExpressionIR::Call {
             api_token,
             arguments,
@@ -1494,7 +1619,7 @@ fn emit_expression(
             "{api_token}({})",
             arguments
                 .iter()
-                .map(|argument| emit_expression(argument, sources))
+                .map(|argument| emit_expression(argument, sources, operands, definitions))
                 .collect::<Result<Vec<_>, _>>()?
                 .join(", ")
         )),
@@ -1529,6 +1654,13 @@ fn lower_expression(
             operator: *operator,
             left: Box::new(lower_expression(left, indices)?),
             right: Box::new(lower_expression(right, indices)?),
+        }),
+        TypedSyntaxExpressionIR::Length { input } => Ok(ScalarExpression::Length {
+            input: Box::new(lower_expression(input, indices)?),
+        }),
+        TypedSyntaxExpressionIR::Index { collection, index } => Ok(ScalarExpression::Index {
+            collection: Box::new(lower_expression(collection, indices)?),
+            index: Box::new(lower_expression(index, indices)?),
         }),
         TypedSyntaxExpressionIR::Call {
             api_token,
@@ -1587,6 +1719,10 @@ fn expression_nodes(expression: &TypedSyntaxExpressionIR) -> usize {
         TypedSyntaxExpressionIR::Unary { input, .. } => 1 + expression_nodes(input),
         TypedSyntaxExpressionIR::Binary { left, right, .. } => {
             1 + expression_nodes(left) + expression_nodes(right)
+        }
+        TypedSyntaxExpressionIR::Length { input } => 1 + expression_nodes(input),
+        TypedSyntaxExpressionIR::Index { collection, index } => {
+            1 + expression_nodes(collection) + expression_nodes(index)
         }
         TypedSyntaxExpressionIR::Call { arguments, .. } => {
             1 + arguments.iter().map(expression_nodes).sum::<usize>()
@@ -1730,6 +1866,51 @@ mod tests {
         assert_eq!(
             lower_typed_mechanism_goal(&goal),
             Err("TYPED_MECHANISM_UNARY_TYPE".to_string())
+        );
+    }
+
+    #[test]
+    fn collection_index_fails_closed_on_non_integer_and_out_of_bounds_indices() {
+        let base_goal = TypedMechanismGoalIR {
+            schema: TYPED_MECHANISM_GOAL_SCHEMA.to_string(),
+            goal_id: "collection_index_contract".to_string(),
+            split: DataSplit::FreshBlind,
+            operands: vec![
+                operand("items", "state.items", ProgramType::SequenceInt),
+                operand("position", "request.position", ProgramType::Bool),
+            ],
+            output_type: ProgramType::Int,
+            condition: None,
+            postimage: TypedSyntaxExpressionIR::Index {
+                collection: Box::new(role("items")),
+                index: Box::new(role("position")),
+            },
+            otherwise: None,
+            definitions: Vec::new(),
+            allowed_effects: vec![Effect::Pure],
+            preconditions: Vec::new(),
+            postconditions: Vec::new(),
+            invariants: Vec::new(),
+            public_observations: Vec::new(),
+            provenance: Vec::new(),
+        };
+        assert_eq!(
+            lower_typed_mechanism_goal(&base_goal),
+            Err("TYPED_MECHANISM_INDEX_NOT_INT".to_string())
+        );
+
+        let mut out_of_bounds_goal = base_goal;
+        out_of_bounds_goal.operands[1].value_type = ProgramType::Int;
+        out_of_bounds_goal.public_observations = vec![TypedMechanismObservationIR {
+            operands: BTreeMap::from([
+                ("items".to_string(), Value::Sequence(Vec::new())),
+                ("position".to_string(), Value::Int(0)),
+            ]),
+            expected_postimage: Value::Int(0),
+        }];
+        assert_eq!(
+            lower_typed_mechanism_goal(&out_of_bounds_goal),
+            Err("TYPED_MECHANISM_OBSERVATION_EXECUTE:0:INDEX_OUT_OF_BOUNDS".to_string())
         );
     }
 

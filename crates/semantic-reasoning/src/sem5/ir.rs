@@ -206,6 +206,27 @@ fn check_node(
                 _ => return Err("SEQUENCE_READ_SOURCE_TYPE".to_string()),
             }
         }
+        NodeKind::SequenceLength { sequence } => {
+            let sequence_type = check_node(
+                sequence,
+                environment,
+                mutable_inputs,
+                apis,
+                effects,
+                visited,
+                in_loop,
+            )?;
+            if !matches!(
+                sequence_type,
+                ProgramType::SequenceInt
+                    | ProgramType::NestedSequenceInt
+                    | ProgramType::Bytes
+                    | ProgramType::Image
+            ) {
+                return Err("SEQUENCE_LENGTH_SOURCE_TYPE".to_string());
+            }
+            ProgramType::Int
+        }
         NodeKind::SequenceWrite {
             binding,
             index,
@@ -540,6 +561,17 @@ fn eval_node(
             )?)?)?;
             Signal::Value(read_index(sequence, index)?)
         }
+        NodeKind::SequenceLength { sequence } => {
+            let sequence = signal_value(eval_node(
+                sequence,
+                environment,
+                apis,
+                effects,
+                steps,
+                files,
+            )?)?;
+            Signal::Value(Value::Int(sequence_length(&sequence)?))
+        }
         NodeKind::SequenceWrite {
             binding,
             index,
@@ -684,6 +716,14 @@ pub fn eval_scalar(
             eval_scalar(left, arguments, apis)?,
             eval_scalar(right, arguments, apis)?,
         ),
+        ScalarExpression::Length { input } => Ok(Value::Int(sequence_length(&eval_scalar(
+            input, arguments, apis,
+        )?)?)),
+        ScalarExpression::Index { collection, index } => {
+            let collection = eval_scalar(collection, arguments, apis)?;
+            let index = as_index(eval_scalar(index, arguments, apis)?)?;
+            read_index(collection, index)
+        }
         ScalarExpression::OpaqueCall { api_token, args } => {
             let api = apis
                 .get(api_token)
@@ -777,6 +817,17 @@ fn read_index(value: Value, index: usize) -> Result<Value, String> {
             .ok_or_else(|| "INDEX_OUT_OF_BOUNDS".to_string()),
         _ => Err("NOT_INDEXABLE".to_string()),
     }
+}
+
+fn sequence_length(value: &Value) -> Result<i64, String> {
+    let length = match value {
+        Value::Sequence(values) => values.len(),
+        Value::NestedSequence(values) => values.len(),
+        Value::Bytes(values) => values.len(),
+        Value::Image(image) => image.pixels.len(),
+        _ => return Err("SEQUENCE_LENGTH_SOURCE_TYPE".to_string()),
+    };
+    i64::try_from(length).map_err(|_| "SEQUENCE_LENGTH_OVERFLOW".to_string())
 }
 
 fn write_index(
