@@ -417,6 +417,7 @@ pub fn install_composite_candidate(
         solution_strategy: "EMIT_TYPED_RUST_AND_ACTIVATE_CALLABLE".to_string(),
         structural_repair_program: Some(structural_repair_program),
         generalized_change: Some(generalized_change),
+        additional_family_members: Vec::new(),
     };
     install_and_stage_source_patch(policy, state_dir, &request)
 }

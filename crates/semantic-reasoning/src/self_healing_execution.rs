@@ -151,6 +151,7 @@ pub fn lower_self_healing_attempt_to_source_patch(
         solution_strategy,
         structural_repair_program: Some(structural_repair_program),
         generalized_change: Some(generalized_change),
+        additional_family_members: Vec::new(),
     })
 }
 

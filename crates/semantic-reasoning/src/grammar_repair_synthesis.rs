@@ -53,6 +53,20 @@ pub struct GrammarRepairCandidate {
     pub repair_family: String,
     #[serde(default = "one_family_member")]
     pub family_member_count: usize,
+    #[serde(default)]
+    pub additional_family_files: Vec<GrammarRepairFileMember>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct GrammarRepairFileMember {
+    pub relative_path: PathBuf,
+    pub predecessor_sha256: String,
+    pub candidate_source: String,
+    pub candidate_sha256: String,
+    pub structural_repair_program: StructuralRepairProgram,
+    pub public_examples_observed: usize,
+    pub public_examples_evaluated: usize,
+    pub public_examples_satisfied: usize,
 }
 
 fn one_family_member() -> usize {
@@ -194,6 +208,7 @@ fn synthesize_evidence_bound_family_candidates(
             public_examples_satisfied,
             repair_family,
             family_member_count,
+            additional_family_files: Vec::new(),
         });
     }
     family_candidates
@@ -1513,6 +1528,7 @@ fn candidates_for_file(
                 public_examples_satisfied: public_score.satisfied,
                 repair_family: format!("{}:{family}", hole.kind),
                 family_member_count: 1,
+                additional_family_files: Vec::new(),
             });
         }
     }
@@ -1595,11 +1611,125 @@ pub fn discover_grammar_repairs_for_generation(
         }
     }
 
-    Ok(candidate_groups
+    let candidates = candidate_groups
         .into_iter()
         .flatten()
         .take(MAX_GRAMMAR_CANDIDATES)
-        .collect())
+        .collect::<Vec<_>>();
+    let mut repository_families = synthesize_repository_family_candidates(&candidates);
+    repository_families.extend(candidates);
+    repository_families.truncate(MAX_GRAMMAR_CANDIDATES);
+    Ok(repository_families)
+}
+
+fn synthesize_repository_family_candidates(
+    candidates: &[GrammarRepairCandidate],
+) -> Vec<GrammarRepairCandidate> {
+    let mut families = BTreeMap::<String, BTreeMap<PathBuf, &GrammarRepairCandidate>>::new();
+    for candidate in candidates.iter().filter(|candidate| {
+        candidate.public_examples_observed > 0
+            && candidate.public_examples_evaluated == candidate.public_examples_observed
+            && candidate.public_examples_satisfied == candidate.public_examples_observed
+    }) {
+        let by_path = families.entry(candidate.repair_family.clone()).or_default();
+        match by_path.get(&candidate.relative_path) {
+            Some(existing) if existing.family_member_count >= candidate.family_member_count => {}
+            _ => {
+                by_path.insert(candidate.relative_path.clone(), candidate);
+            }
+        }
+    }
+
+    let mut output = Vec::new();
+    for (repair_family, by_path) in families {
+        if by_path.len() < 2 {
+            continue;
+        }
+        let mut selected = by_path.into_values();
+        let Some(primary) = selected.next() else {
+            continue;
+        };
+        let additional = selected.collect::<Vec<_>>();
+        let family_evidence_sha256 = sha256(
+            std::iter::once(primary)
+                .chain(additional.iter().copied())
+                .map(|candidate| {
+                    format!(
+                        "{}:{}:{}",
+                        candidate.relative_path.display(),
+                        candidate.transformation,
+                        candidate.candidate_sha256
+                    )
+                })
+                .collect::<Vec<_>>()
+                .join("\n")
+                .as_bytes(),
+        );
+        let family_member_count = std::iter::once(primary)
+            .chain(additional.iter().copied())
+            .map(|candidate| candidate.family_member_count)
+            .sum();
+        let public_examples_observed = std::iter::once(primary)
+            .chain(additional.iter().copied())
+            .map(|candidate| candidate.public_examples_observed)
+            .sum();
+        let public_examples_evaluated = std::iter::once(primary)
+            .chain(additional.iter().copied())
+            .map(|candidate| candidate.public_examples_evaluated)
+            .sum();
+        let public_examples_satisfied = std::iter::once(primary)
+            .chain(additional.iter().copied())
+            .map(|candidate| candidate.public_examples_satisfied)
+            .sum();
+        let additional_family_files = additional
+            .into_iter()
+            .map(|candidate| GrammarRepairFileMember {
+                relative_path: candidate.relative_path.clone(),
+                predecessor_sha256: candidate.predecessor_sha256.clone(),
+                candidate_source: candidate.candidate_source.clone(),
+                candidate_sha256: candidate.candidate_sha256.clone(),
+                structural_repair_program: candidate.structural_repair_program.clone(),
+                public_examples_observed: candidate.public_examples_observed,
+                public_examples_evaluated: candidate.public_examples_evaluated,
+                public_examples_satisfied: candidate.public_examples_satisfied,
+            })
+            .collect::<Vec<_>>();
+        output.push(GrammarRepairCandidate {
+            relative_path: primary.relative_path.clone(),
+            predecessor_sha256: primary.predecessor_sha256.clone(),
+            candidate_source: primary.candidate_source.clone(),
+            candidate_sha256: primary.candidate_sha256.clone(),
+            transformation: format!(
+                "AST_GRAMMAR_REPOSITORY_FAMILY:{}:{}",
+                repair_family,
+                &family_evidence_sha256[..16]
+            ),
+            solution_strategy: format!(
+                "GRAMMAR_REPOSITORY_FAMILY_COMPOSITION:{}:{}",
+                repair_family,
+                &family_evidence_sha256[..12]
+            ),
+            consequence_predictions: vec![
+                format!(
+                    "repair {family_member_count} independently contradicted members of one semantic family across {} files",
+                    additional_family_files.len() + 1
+                ),
+                "install every family member as one bounded repository transaction".to_string(),
+                "accept or roll back the entire family after one shared validation cascade"
+                    .to_string(),
+            ],
+            predicted_value: primary.predicted_value,
+            structural_repair_program: primary.structural_repair_program.clone(),
+            grammar_expression: repair_family.clone(),
+            public_examples_observed,
+            public_examples_evaluated,
+            public_examples_satisfied,
+            repair_family,
+            family_member_count,
+            additional_family_files,
+        });
+    }
+    output
 }
 
 #[cfg(test)]
@@ -1683,6 +1813,62 @@ mod tests {
             apply_edit_atom(source, &family.structural_repair_program.edit).unwrap(),
             family.candidate_source
         );
+
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn same_repair_family_across_files_is_one_repository_candidate() {
+        let root = std::env::temp_dir().join(format!(
+            "b-core-grammar-repository-family-{}",
+            std::process::id()
+        ));
+        if root.exists() {
+            fs::remove_dir_all(&root).unwrap();
+        }
+        fs::create_dir_all(root.join("src")).unwrap();
+        fs::write(
+            root.join("src/lib.rs"),
+            r#"
+pub fn add_pair(left: i32, right: i32) -> i32 { left - right }
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn example() { assert_eq!(super::add_pair(2, 3), 5); }
+}
+"#,
+        )
+        .unwrap();
+        fs::write(
+            root.join("src/other.rs"),
+            r#"
+pub fn add_more(left: i32, right: i32) -> i32 { left - right }
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn example() { assert_eq!(super::add_more(4, 6), 10); }
+}
+"#,
+        )
+        .unwrap();
+
+        let candidates = discover_grammar_repairs(&root, 16 * 1_024).unwrap();
+        let repository_family = candidates
+            .iter()
+            .find(|candidate| !candidate.additional_family_files.is_empty())
+            .expect("repository family candidate");
+
+        assert!(repository_family
+            .transformation
+            .starts_with("AST_GRAMMAR_REPOSITORY_FAMILY:"));
+        assert_eq!(repository_family.family_member_count, 2);
+        assert_eq!(repository_family.additional_family_files.len(), 1);
+        assert_eq!(repository_family.public_examples_observed, 2);
+        assert_eq!(repository_family.public_examples_satisfied, 2);
+        assert!(repository_family.candidate_source.contains("left + right"));
+        assert!(repository_family.additional_family_files[0]
+            .candidate_source
+            .contains("left + right"));
 
         fs::remove_dir_all(root).unwrap();
     }

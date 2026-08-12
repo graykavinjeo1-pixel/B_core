@@ -6857,7 +6857,10 @@ mod tests {
         assert!(check.bounded_failure_retry_enabled);
         assert!(check.successful_solution_learning_enabled);
         assert!(check.admitted_failure_revisit_after_growth_enabled);
-        assert_eq!(check.source_repair_engine_revision, 4);
+        assert_eq!(
+            check.source_repair_engine_revision,
+            SOURCE_REPAIR_ENGINE_REVISION
+        );
         assert!(check.dynamic_self_weakness_discovery_enabled);
         assert!(check.generalized_change_ir_bound_to_source_edits);
         assert!(check.validation_counterexamples_drive_candidate_ranking);

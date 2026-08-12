@@ -6,6 +6,7 @@
 //! failure. Successful builds are staged for the persistent launcher to swap
 //! after the running supervisor exits.
 
+use std::collections::BTreeSet;
 use std::ffi::OsStr;
 use std::fs::{self, OpenOptions};
 use std::io::Write;
@@ -32,8 +33,9 @@ use crate::structural_source_repair::{
 pub const AUTONOMOUS_SOURCE_MUTATION_SCHEMA: &str = "B_CORE_AUTONOMOUS_SOURCE_MUTATION_1";
 pub const SELF_UPDATE_HANDOFF_FILE: &str = "SELF_UPDATE_READY.json";
 pub const SOURCE_REPAIR_LEARNING_SCHEMA: &str = "B_CORE_SOURCE_REPAIR_LEARNING_1";
-pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 4;
+pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 5;
 const KNOWN_REMAINDER_PREDICTED_VALUE: u16 = 35;
+const MAX_REPOSITORY_REPAIR_FAMILY_FILES: usize = 16;
 const KNOWN_REMAINDER_STRATEGIES: [&str; 4] = [
     "TYPED_IS_MULTIPLE_OF",
     "PARENTHESIZED_IS_MULTIPLE_OF",
@@ -125,6 +127,18 @@ impl AutonomousSourceMutationPolicy {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct SourcePatchFamilyMember {
+    pub relative_path: PathBuf,
+    pub predecessor_sha256: String,
+    pub candidate_source: String,
+    pub candidate_sha256: String,
+    pub structural_repair_program: StructuralRepairProgram,
+    pub public_examples_observed: usize,
+    pub public_examples_evaluated: usize,
+    pub public_examples_satisfied: usize,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct AutonomousSourcePatchRequest {
     pub schema: String,
     pub patch_id: String,
@@ -144,6 +158,8 @@ pub struct AutonomousSourcePatchRequest {
     pub structural_repair_program: Option<StructuralRepairProgram>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub generalized_change: Option<GeneralizedChangeIR>,
+    #[serde(default)]
+    pub additional_family_members: Vec<SourcePatchFamilyMember>,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -195,6 +211,10 @@ pub struct SourceRepairAttempt {
     pub generalized_change_sha256: Option<String>,
     #[serde(default)]
     pub derived_from_counterexample_ids: Vec<String>,
+    #[serde(default = "one_family_member")]
+    pub family_member_count: usize,
+    #[serde(default)]
+    pub family_structural_repair_program_sha256: Vec<String>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -215,6 +235,14 @@ pub struct LearnedSuccessfulRepair {
     pub generalized_change_sha256: Option<String>,
     #[serde(default)]
     pub derived_from_counterexample_ids: Vec<String>,
+    #[serde(default = "one_family_member")]
+    pub family_member_count: usize,
+    #[serde(default)]
+    pub family_structural_repair_program_sha256: Vec<String>,
+}
+
+fn one_family_member() -> usize {
+    1
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -462,7 +490,7 @@ fn counterexample_from_receipt(
         .unwrap_or("UNKNOWN_FAILURE");
     let (phase, command) = if reason == "FORMAT_CHECK_FAILED" {
         (ValidationPhase::Format, receipt.format_check.as_ref())
-    } else if reason == "COMPILE_CHECK_FAILED" {
+    } else if matches!(reason, "COMPILE_CHECK_FAILED" | "CLIPPY_CHECK_FAILED") {
         (ValidationPhase::Compile, receipt.compile_check.as_ref())
     } else if reason == "REGRESSION_VALIDATION_FAILED" {
         (
@@ -606,6 +634,16 @@ fn record_source_repair_outcome(
         structural_program_learning_features(request)?;
     let (generalized_change_sha256, derived_from_counterexample_ids) =
         generalized_change_learning_features(request)?;
+    let family_structural_repair_program_sha256 = request
+        .additional_family_members
+        .iter()
+        .map(|member| {
+            serde_json::to_vec(&member.structural_repair_program)
+                .map(|bytes| sha256(&bytes))
+                .map_err(|error| format!("SOURCE_REPAIR_FAMILY_PROGRAM_JSON:{error}"))
+        })
+        .collect::<Result<Vec<_>, _>>()?;
+    let family_member_count = request.additional_family_members.len() + 1;
     let validation_counterexample = counterexample_from_receipt(request, receipt);
     record.attempts.push(SourceRepairAttempt {
         attempt_number,
@@ -622,6 +660,8 @@ fn record_source_repair_outcome(
         validation_counterexample,
         generalized_change_sha256: generalized_change_sha256.clone(),
         derived_from_counterexample_ids: derived_from_counterexample_ids.clone(),
+        family_member_count,
+        family_structural_repair_program_sha256: family_structural_repair_program_sha256.clone(),
     });
     if receipt.installed {
         record.status = "LEARNED_SUCCESS".to_string();
@@ -642,6 +682,8 @@ fn record_source_repair_outcome(
             structural_postcondition_count,
             generalized_change_sha256,
             derived_from_counterexample_ids,
+            family_member_count,
+            family_structural_repair_program_sha256,
         });
     } else if attempt_number >= policy.max_attempts_per_problem {
         record.status = "ADMITTED_FAILURE".to_string();
@@ -866,6 +908,171 @@ fn restore_target(target: &Path, rollback_sibling: &Path) -> Result<(), String> 
         .map_err(|error| format!("SOURCE_MUTATION_ROLLBACK_RENAME:{error}"))
 }
 
+struct PreparedFamilyMember {
+    target: PathBuf,
+    rollback_sibling: PathBuf,
+    candidate_sibling: PathBuf,
+    predecessor: Vec<u8>,
+}
+
+fn prepare_family_members(
+    policy: &AutonomousSourceMutationPolicy,
+    state_dir: &Path,
+    request: &AutonomousSourcePatchRequest,
+) -> Result<Vec<PreparedFamilyMember>, String> {
+    if request.additional_family_members.is_empty() {
+        return Ok(Vec::new());
+    }
+    validate_policy(policy)?;
+    if !policy.enabled
+        || request.schema != AUTONOMOUS_SOURCE_MUTATION_SCHEMA
+        || !request.core_generated
+        || !request.core_self_approved
+        || request.patch_id.is_empty()
+        || request.predicted_value < policy.minimum_predicted_value
+        || request.predicted_value > 100
+        || sha256(request.candidate_source.as_bytes()) != request.candidate_sha256
+    {
+        return Err("SOURCE_MUTATION_REQUEST_INVALID".to_string());
+    }
+    if request.additional_family_members.len() + 1 > MAX_REPOSITORY_REPAIR_FAMILY_FILES {
+        return Err("SOURCE_MUTATION_FAMILY_TOO_LARGE".to_string());
+    }
+    let total_candidate_bytes = request
+        .additional_family_members
+        .iter()
+        .try_fold(request.candidate_source.len() as u64, |total, member| {
+            total.checked_add(member.candidate_source.len() as u64)
+        })
+        .ok_or_else(|| "SOURCE_MUTATION_FAMILY_BYTES_OVERFLOW".to_string())?;
+    if total_candidate_bytes > policy.max_candidate_bytes {
+        return Err("SOURCE_MUTATION_FAMILY_BYTES_EXCEEDED".to_string());
+    }
+
+    let primary_target = normalized_target(&policy.source_root, &request.relative_path)?;
+    let mut unique_targets = BTreeSet::from([primary_target]);
+    let mut prepared = Vec::new();
+    for (index, member) in request.additional_family_members.iter().enumerate() {
+        if member.public_examples_observed == 0
+            || member.public_examples_evaluated != member.public_examples_observed
+            || member.public_examples_satisfied != member.public_examples_observed
+            || sha256(member.candidate_source.as_bytes()) != member.candidate_sha256
+        {
+            return Err("SOURCE_MUTATION_FAMILY_MEMBER_EVIDENCE_INVALID".to_string());
+        }
+        let target = normalized_target(&policy.source_root, &member.relative_path)?;
+        if !unique_targets.insert(target.clone()) {
+            return Err("SOURCE_MUTATION_FAMILY_DUPLICATE_TARGET".to_string());
+        }
+        let predecessor = fs::read(&target)
+            .map_err(|error| format!("SOURCE_MUTATION_FAMILY_PREDECESSOR_READ:{error}"))?;
+        if sha256(&predecessor) != member.predecessor_sha256 {
+            return Err("SOURCE_MUTATION_FAMILY_PREDECESSOR_MISMATCH".to_string());
+        }
+        let predecessor_source = std::str::from_utf8(&predecessor)
+            .map_err(|_| "SOURCE_MUTATION_FAMILY_PREDECESSOR_NOT_UTF8".to_string())?;
+        if member.structural_repair_program.file_id != structural_file_id(&member.relative_path) {
+            return Err("SOURCE_MUTATION_FAMILY_FILE_ID_MISMATCH".to_string());
+        }
+        let execution =
+            execute_structural_repair(&member.structural_repair_program, predecessor_source)
+                .map_err(|error| format!("SOURCE_MUTATION_FAMILY_STRUCTURAL_REPLAY:{error}"))?;
+        if !execution.structurally_verified
+            || execution.candidate_source != member.candidate_source
+            || execution.candidate_snapshot.source_sha256 != member.candidate_sha256
+        {
+            return Err("SOURCE_MUTATION_FAMILY_STRUCTURAL_REPLAY_MISMATCH".to_string());
+        }
+        let file_name = target
+            .file_name()
+            .and_then(OsStr::to_str)
+            .unwrap_or("source");
+        let rollback_sibling = target.with_file_name(format!(
+            ".{file_name}.{}.family-{index}.bcore-rollback",
+            request.patch_id
+        ));
+        let candidate_sibling = target.with_file_name(format!(
+            ".{file_name}.{}.family-{index}.bcore-candidate",
+            request.patch_id
+        ));
+        if rollback_sibling.exists() || candidate_sibling.exists() {
+            return Err("SOURCE_MUTATION_FAMILY_SIBLING_COLLISION".to_string());
+        }
+        prepared.push(PreparedFamilyMember {
+            target,
+            rollback_sibling,
+            candidate_sibling,
+            predecessor,
+        });
+    }
+    let mutation_root = state_dir.join("source_mutations").join(&request.patch_id);
+    fs::create_dir_all(&mutation_root)
+        .map_err(|error| format!("SOURCE_MUTATION_RECEIPT_DIR:{error}"))?;
+    for (index, (prepared_member, request_member)) in prepared
+        .iter()
+        .zip(&request.additional_family_members)
+        .enumerate()
+    {
+        let rollback_source = mutation_root.join(format!("family-{index}.predecessor.source"));
+        if !rollback_source.exists() {
+            write_new_file(&rollback_source, &prepared_member.predecessor)?;
+        }
+        if let Err(error) = write_new_file(
+            &prepared_member.candidate_sibling,
+            request_member.candidate_source.as_bytes(),
+        ) {
+            for prior in &prepared {
+                if prior.candidate_sibling.exists() {
+                    let _ = fs::remove_file(&prior.candidate_sibling);
+                }
+            }
+            return Err(error);
+        }
+    }
+    Ok(prepared)
+}
+
+fn restore_family_members(members: &[PreparedFamilyMember]) -> Result<(), String> {
+    let mut failures = Vec::new();
+    for member in members {
+        if member.rollback_sibling.exists() {
+            if let Err(error) = restore_target(&member.target, &member.rollback_sibling) {
+                failures.push(error);
+            }
+        }
+        if member.candidate_sibling.exists() {
+            if let Err(error) = fs::remove_file(&member.candidate_sibling) {
+                failures.push(format!("SOURCE_MUTATION_FAMILY_CANDIDATE_CLEANUP:{error}"));
+            }
+        }
+    }
+    if failures.is_empty() {
+        Ok(())
+    } else {
+        Err(failures.join(";"))
+    }
+}
+
+fn activate_family_members(members: &[PreparedFamilyMember]) -> Result<(), String> {
+    for member in members {
+        if let Err(error) = fs::rename(&member.target, &member.rollback_sibling) {
+            let restore = restore_family_members(members);
+            return Err(format!(
+                "SOURCE_MUTATION_FAMILY_PREDECESSOR_RENAME:{error}:RESTORE:{restore:?}"
+            ));
+        }
+    }
+    for member in members {
+        if let Err(error) = fs::rename(&member.candidate_sibling, &member.target) {
+            let restore = restore_family_members(members);
+            return Err(format!(
+                "SOURCE_MUTATION_FAMILY_CANDIDATE_RENAME:{error}:RESTORE:{restore:?}"
+            ));
+        }
+    }
+    Ok(())
+}
+
 fn receipt_hash(receipt: &AutonomousSourcePatchReceipt) -> Result<String, String> {
     let mut clone = receipt.clone();
     clone.receipt_sha256.clear();
@@ -874,7 +1081,7 @@ fn receipt_hash(receipt: &AutonomousSourcePatchReceipt) -> Result<String, String
         .map_err(|error| format!("SOURCE_MUTATION_RECEIPT_JSON:{error}"))
 }
 
-pub fn install_and_stage_source_patch(
+fn install_primary_and_stage_source_patch(
     policy: &AutonomousSourceMutationPolicy,
     state_dir: &Path,
     request: &AutonomousSourcePatchRequest,
@@ -1025,9 +1232,22 @@ pub fn install_and_stage_source_patch(
         return Ok(receipt);
     }
 
+    // Clippy includes the compiler check and closes the gap that previously
+    // allowed generated code with a known lint defect (for example an empty
+    // else branch) to be installed and rediscovered as a new repair later.
     let compile_check = match command_receipt(
         &policy.cargo_executable,
-        &["check", "-p", "semantic-reasoning", "--lib", "--quiet"],
+        &[
+            "clippy",
+            "-p",
+            "semantic-reasoning",
+            "--lib",
+            "--quiet",
+            "--locked",
+            "--",
+            "-D",
+            "warnings",
+        ],
         &policy.source_root,
         &policy.build_target_dir,
         policy.validation_timeout_ms,
@@ -1055,7 +1275,7 @@ pub fn install_and_stage_source_patch(
             core_self_approved: true,
             installed: false,
             rolled_back: true,
-            failure_reason: Some("COMPILE_CHECK_FAILED".to_string()),
+            failure_reason: Some("CLIPPY_CHECK_FAILED".to_string()),
             format_check: Some(format_check),
             compile_check: Some(compile_check.clone()),
             validation: compile_check,
@@ -1281,6 +1501,43 @@ pub fn install_and_stage_source_patch(
     };
     write_immutable_json(&handoff_path, &handoff)?;
     Ok(receipt)
+}
+
+pub fn install_and_stage_source_patch(
+    policy: &AutonomousSourceMutationPolicy,
+    state_dir: &Path,
+    request: &AutonomousSourcePatchRequest,
+) -> Result<AutonomousSourcePatchReceipt, String> {
+    if state_dir
+        .join("control")
+        .join(SELF_UPDATE_HANDOFF_FILE)
+        .exists()
+    {
+        return Err("SOURCE_UPDATE_ALREADY_STAGED".to_string());
+    }
+    let family_members = prepare_family_members(policy, state_dir, request)?;
+    if family_members.is_empty() {
+        return install_primary_and_stage_source_patch(policy, state_dir, request);
+    }
+    activate_family_members(&family_members)?;
+    match install_primary_and_stage_source_patch(policy, state_dir, request) {
+        Ok(receipt) if receipt.installed => {
+            for member in &family_members {
+                fs::remove_file(&member.rollback_sibling)
+                    .map_err(|error| format!("SOURCE_MUTATION_FAMILY_ROLLBACK_CLEANUP:{error}"))?;
+            }
+            Ok(receipt)
+        }
+        Ok(receipt) => {
+            restore_family_members(&family_members)?;
+            Ok(receipt)
+        }
+        Err(error) => {
+            restore_family_members(&family_members)
+                .map_err(|restore| format!("{error}:SOURCE_MUTATION_FAMILY_RESTORE:{restore}"))?;
+            Err(error)
+        }
+    }
 }
 
 fn excluded_directory(path: &Path) -> bool {
@@ -1553,6 +1810,7 @@ fn compiler_guided_request(
             solution_strategy: candidate.solution_strategy,
             structural_repair_program: Some(candidate.structural_repair_program),
             generalized_change: Some(generalized_change),
+            additional_family_members: Vec::new(),
         }));
     }
     Ok(None)
@@ -1688,6 +1946,20 @@ fn grammar_synthesized_request(
             &candidate.consequence_predictions,
             &candidate.structural_repair_program,
         )?;
+        let additional_family_members = candidate
+            .additional_family_files
+            .iter()
+            .map(|member| SourcePatchFamilyMember {
+                relative_path: member.relative_path.clone(),
+                predecessor_sha256: member.predecessor_sha256.clone(),
+                candidate_source: member.candidate_source.clone(),
+                candidate_sha256: member.candidate_sha256.clone(),
+                structural_repair_program: member.structural_repair_program.clone(),
+                public_examples_observed: member.public_examples_observed,
+                public_examples_evaluated: member.public_examples_evaluated,
+                public_examples_satisfied: member.public_examples_satisfied,
+            })
+            .collect();
         return Ok(Some(AutonomousSourcePatchRequest {
             schema: AUTONOMOUS_SOURCE_MUTATION_SCHEMA.to_string(),
             patch_id,
@@ -1704,6 +1976,7 @@ fn grammar_synthesized_request(
             solution_strategy: candidate.solution_strategy,
             structural_repair_program: Some(candidate.structural_repair_program),
             generalized_change: Some(generalized_change),
+            additional_family_members,
         }));
     }
     Ok(None)
@@ -1875,6 +2148,7 @@ pub fn discover_known_source_improvement_detailed(
                     solution_strategy: (*solution_strategy).to_string(),
                     structural_repair_program: Some(structural_repair_program),
                     generalized_change: Some(generalized_change),
+                    additional_family_members: Vec::new(),
                 }),
             });
         }
@@ -2113,6 +2387,14 @@ mod tests {
         assert!(receipt.installed);
         assert!(receipt.validation.success);
         assert_eq!(
+            receipt
+                .compile_check
+                .as_ref()
+                .and_then(|check| check.args.first())
+                .map(String::as_str),
+            Some("clippy")
+        );
+        assert_eq!(
             fs::read_to_string(root.join("src/lib.rs")).unwrap(),
             request.candidate_source
         );
@@ -2349,6 +2631,175 @@ mod tests {
         assert!(learned.attempts[1]
             .derived_from_counterexample_ids
             .contains(&first_counterexample.counterexample_id));
+        fs::remove_dir_all(root).unwrap();
+        fs::remove_dir_all(state).unwrap();
+    }
+
+    #[test]
+    fn repository_repair_family_installs_and_validates_as_one_transaction() {
+        let (root, mut policy) = fixture("repository-family-install");
+        policy.auto_discover_known_transformations = false;
+        policy.auto_discover_compiler_repairs = false;
+        policy.auto_synthesize_grammar_repairs = true;
+        policy.minimum_predicted_value = 60;
+        fs::write(
+            root.join("src/lib.rs"),
+            r#"pub mod other;
+pub fn add_pair(left: i32, right: i32) -> i32 {
+    left - right
+}
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn example() {
+        assert_eq!(super::add_pair(2, 3), 5);
+    }
+}
+"#,
+        )
+        .unwrap();
+        fs::write(
+            root.join("src/other.rs"),
+            r#"pub fn add_more(left: i32, right: i32) -> i32 {
+    left - right
+}
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn example() {
+        assert_eq!(super::add_more(4, 6), 10);
+    }
+}
+"#,
+        )
+        .unwrap();
+        let state = external_state(&root);
+
+        let request = discover_known_source_improvement(&policy, &state, 9)
+            .unwrap()
+            .expect("repository family repair");
+        assert!(request
+            .transformation
+            .starts_with("AST_GRAMMAR_REPOSITORY_FAMILY:"));
+        assert_eq!(request.additional_family_members.len(), 1);
+
+        let receipt = install_and_stage_source_patch(&policy, &state, &request).unwrap();
+
+        assert!(receipt.installed);
+        assert!(receipt.validation.success);
+        assert!(fs::read_to_string(root.join("src/lib.rs"))
+            .unwrap()
+            .contains("left + right"));
+        assert!(fs::read_to_string(root.join("src/other.rs"))
+            .unwrap()
+            .contains("left + right"));
+        assert!(fs::read_dir(root.join("src")).unwrap().all(|entry| !entry
+            .unwrap()
+            .file_name()
+            .to_string_lossy()
+            .contains("bcore-")));
+        let learned = load_repair_learning(&state, &repair_problem_id(&request))
+            .unwrap()
+            .and_then(|record| record.learned_success)
+            .expect("repository family success is learned");
+        assert_eq!(learned.family_member_count, 2);
+        assert_eq!(learned.family_structural_repair_program_sha256.len(), 1);
+
+        fs::remove_dir_all(root).unwrap();
+        fs::remove_dir_all(state).unwrap();
+    }
+
+    #[test]
+    fn failed_repository_family_restores_every_member() {
+        let (root, mut policy) = fixture("repository-family-rollback");
+        policy.auto_discover_known_transformations = false;
+        policy.auto_discover_compiler_repairs = false;
+        policy.auto_synthesize_grammar_repairs = true;
+        policy.minimum_predicted_value = 60;
+        let primary_source = "pub mod other;\npub fn add_pair(left: i32, right: i32) -> i32 {\n    left - right\n}\n#[cfg(test)]\nmod tests {\n    #[test]\n    fn example() {\n        assert_eq!(super::add_pair(2, 3), 5);\n    }\n}\n";
+        let additional_source = "pub fn add_more(left: i32, right: i32) -> i32 {\n    left - right\n}\n#[cfg(test)]\nmod tests {\n    #[test]\n    fn example() {\n        assert_eq!(super::add_more(4, 6), 10);\n    }\n}\n";
+        fs::write(root.join("src/lib.rs"), primary_source).unwrap();
+        fs::write(root.join("src/other.rs"), additional_source).unwrap();
+        let state = external_state(&root);
+        let mut request = discover_known_source_improvement(&policy, &state, 10)
+            .unwrap()
+            .expect("repository family repair");
+        assert_eq!(request.additional_family_members.len(), 1);
+        request.patch_id.push_str("-invalid");
+        request.candidate_source = "pub fn broken( {\n".to_string();
+        request.candidate_sha256 = sha256(request.candidate_source.as_bytes());
+        request.structural_repair_program = None;
+        request.generalized_change = None;
+
+        let receipt = install_and_stage_source_patch(&policy, &state, &request).unwrap();
+
+        assert!(!receipt.installed);
+        assert!(receipt.rolled_back);
+        assert_eq!(
+            fs::read_to_string(root.join("src/lib.rs")).unwrap(),
+            primary_source
+        );
+        assert_eq!(
+            fs::read_to_string(root.join("src/other.rs")).unwrap(),
+            additional_source
+        );
+        assert!(fs::read_dir(root.join("src")).unwrap().all(|entry| !entry
+            .unwrap()
+            .file_name()
+            .to_string_lossy()
+            .contains("bcore-")));
+
+        fs::remove_dir_all(root).unwrap();
+        fs::remove_dir_all(state).unwrap();
+    }
+
+    #[test]
+    fn generated_lint_defect_is_rejected_before_installation() {
+        let (root, policy) = fixture("generated-lint-gate");
+        let state = external_state(&root);
+        let predecessor = fs::read_to_string(root.join("src/lib.rs")).unwrap();
+        let mut request = discover_known_source_improvement(&policy, &state, 12)
+            .unwrap()
+            .expect("base request");
+        request.patch_id.push_str("-lint");
+        request.candidate_source = r#"pub fn even(value: u32) -> bool {
+    let mut observed = false;
+    if value.is_multiple_of(2) {
+        observed = true;
+    } else {
+    }
+    observed
+}
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn even_works() {
+        assert!(super::even(2));
+    }
+}
+"#
+        .to_string();
+        request.candidate_sha256 = sha256(request.candidate_source.as_bytes());
+        request.structural_repair_program = Some(
+            synthesize_structural_repair("src/lib.rs", &predecessor, &request.candidate_source)
+                .unwrap(),
+        );
+        request.generalized_change = None;
+
+        let receipt = install_and_stage_source_patch(&policy, &state, &request).unwrap();
+
+        assert!(!receipt.installed);
+        assert!(receipt.rolled_back);
+        assert_eq!(
+            receipt.failure_reason.as_deref(),
+            Some("CLIPPY_CHECK_FAILED")
+        );
+        assert_eq!(
+            fs::read_to_string(root.join("src/lib.rs")).unwrap(),
+            predecessor
+        );
+
         fs::remove_dir_all(root).unwrap();
         fs::remove_dir_all(state).unwrap();
     }
