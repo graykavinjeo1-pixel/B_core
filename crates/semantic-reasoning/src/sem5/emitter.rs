@@ -4,10 +4,10 @@ use sha2::{Digest, Sha256};
 
 use super::model::{
     ApiDefinition, BinaryOperator, Effect, ImageValue, NodeKind, ProgramIR, ProgramNode,
-    ProgramType, ScalarExpression, UnaryOperator, Value,
+    ProgramType, ScalarExpression, StringTransformOperator, UnaryOperator, Value,
 };
 
-pub const CALLABLE_SOURCE_SCHEMA_REVISION: u64 = 3;
+pub const CALLABLE_SOURCE_SCHEMA_REVISION: u64 = 4;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct RustArtifact {
@@ -485,6 +485,14 @@ fn emit_expression_mode(node: &ProgramNode, lint_clean: bool) -> Result<String, 
                 emit_expression_mode(input, lint_clean)?
             ))
         }
+        NodeKind::StringTransform { operator, input } => {
+            let receiver = emit_postfix_receiver(input, lint_clean)?;
+            Ok(match operator {
+                StringTransformOperator::Trim => format!("{receiver}.trim().to_string()"),
+                StringTransformOperator::Lowercase => format!("{receiver}.to_lowercase()"),
+                StringTransformOperator::Uppercase => format!("{receiver}.to_uppercase()"),
+            })
+        }
         NodeKind::BinaryOp {
             operator,
             left,
@@ -625,6 +633,14 @@ fn emit_scalar_expression(expression: &ScalarExpression) -> Result<String, Strin
             },
             emit_scalar_expression(input)?
         )),
+        ScalarExpression::StringTransform { operator, input } => {
+            let receiver = emit_scalar_expression(input)?;
+            Ok(match operator {
+                StringTransformOperator::Trim => format!("({receiver}).trim().to_string()"),
+                StringTransformOperator::Lowercase => format!("({receiver}).to_lowercase()"),
+                StringTransformOperator::Uppercase => format!("({receiver}).to_uppercase()"),
+            })
+        }
         ScalarExpression::Binary {
             operator,
             left,
@@ -782,6 +798,7 @@ fn super_children(kind: &NodeKind) -> Vec<&ProgramNode> {
     match kind {
         NodeKind::Store { value, .. }
         | NodeKind::UnaryOp { input: value, .. }
+        | NodeKind::StringTransform { input: value, .. }
         | NodeKind::SequenceLength { sequence: value }
         | NodeKind::Return { value } => vec![value],
         NodeKind::BinaryOp { left, right, .. } => vec![left, right],

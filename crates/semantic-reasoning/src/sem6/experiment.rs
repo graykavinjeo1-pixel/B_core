@@ -867,7 +867,9 @@ fn scalar_to_rust(expression: &ScalarExpression, args: &[Value]) -> Result<Strin
             binary_token(*operator),
             scalar_to_rust(right, args)?
         ),
-        ScalarExpression::Length { .. } | ScalarExpression::Index { .. } => {
+        ScalarExpression::StringTransform { .. }
+        | ScalarExpression::Length { .. }
+        | ScalarExpression::Index { .. } => {
             return Err("COLLECTION_EXPRESSION_NOT_ALLOWED_IN_SEM6_SCALAR_BATCH".to_string())
         }
         ScalarExpression::OpaqueCall { .. } => {
@@ -989,7 +991,9 @@ fn contains_divide(expression: &ScalarExpression) -> bool {
             left,
             right,
         } => *operator == BinaryOperator::Divide || contains_divide(left) || contains_divide(right),
-        ScalarExpression::Unary { input, .. } => contains_divide(input),
+        ScalarExpression::Unary { input, .. } | ScalarExpression::StringTransform { input, .. } => {
+            contains_divide(input)
+        }
         ScalarExpression::Length { input } => contains_divide(input),
         ScalarExpression::Index { collection, index } => {
             contains_divide(collection) || contains_divide(index)

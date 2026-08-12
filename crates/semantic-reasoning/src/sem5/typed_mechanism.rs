@@ -19,7 +19,7 @@ use crate::self_repair_contract::sha256;
 use super::ir::eval_scalar;
 use super::model::{
     ApiDefinition, BinaryOperator, BindingSpec, DataSplit, Effect, ProgramTask, ProgramType,
-    RelationSpec, ScalarExpression, UnaryOperator, Value,
+    RelationSpec, ScalarExpression, StringTransformOperator, UnaryOperator, Value,
 };
 use super::tasks::evaluate_contract;
 
@@ -60,6 +60,10 @@ pub enum TypedSyntaxExpressionIR {
     },
     Unary {
         operator: UnaryOperator,
+        input: Box<TypedSyntaxExpressionIR>,
+    },
+    StringTransform {
+        operator: StringTransformOperator,
         input: Box<TypedSyntaxExpressionIR>,
     },
     Binary {
@@ -695,6 +699,12 @@ fn remap_expression_roles(
             operator: *operator,
             input: Box::new(remap_expression_roles(input, role_map)?),
         },
+        TypedSyntaxExpressionIR::StringTransform { operator, input } => {
+            TypedSyntaxExpressionIR::StringTransform {
+                operator: *operator,
+                input: Box::new(remap_expression_roles(input, role_map)?),
+            }
+        }
         TypedSyntaxExpressionIR::Binary {
             operator,
             left,
@@ -1248,6 +1258,37 @@ pub fn synthesize_typed_mechanism_goal_with_priors(
                 )?;
             }
         }
+        for candidate in prior
+            .iter()
+            .filter(|candidate| candidate.value_type == ProgramType::String)
+        {
+            for operator in [
+                StringTransformOperator::Trim,
+                StringTransformOperator::Lowercase,
+                StringTransformOperator::Uppercase,
+            ] {
+                if expressions.len() >= max_candidates {
+                    break;
+                }
+                add_enumerated_expression(
+                    TypedSyntaxExpressionIR::StringTransform {
+                        operator,
+                        input: Box::new(candidate.expression.clone()),
+                    },
+                    &operand_types,
+                    &operand_indices,
+                    &definitions,
+                    &api_map,
+                    &observation_arguments,
+                    &request.allowed_effects,
+                    max_candidates,
+                    &mut enumerated,
+                    &mut evaluation_failures,
+                    &mut seen,
+                    &mut expressions,
+                )?;
+            }
+        }
         for collection in prior.iter().filter(|candidate| {
             matches!(
                 candidate.value_type,
@@ -1715,6 +1756,14 @@ fn infer_expression_type(
                 _ => Err("TYPED_MECHANISM_UNARY_TYPE".to_string()),
             }
         }
+        TypedSyntaxExpressionIR::StringTransform { input, .. } => {
+            let input_type = infer_expression_type(input, operands, definitions, effects)?;
+            if input_type == ProgramType::String {
+                Ok(ProgramType::String)
+            } else {
+                Err("TYPED_MECHANISM_STRING_TRANSFORM_TYPE".to_string())
+            }
+        }
         TypedSyntaxExpressionIR::Binary {
             operator,
             left,
@@ -1817,6 +1866,14 @@ fn emit_expression(
             },
             emit_expression(input, sources, operands, definitions)?
         )),
+        TypedSyntaxExpressionIR::StringTransform { operator, input } => {
+            let receiver = emit_postfix_receiver(input, sources, operands, definitions)?;
+            Ok(match operator {
+                StringTransformOperator::Trim => format!("{receiver}.trim().to_string()"),
+                StringTransformOperator::Lowercase => format!("{receiver}.to_lowercase()"),
+                StringTransformOperator::Uppercase => format!("{receiver}.to_uppercase()"),
+            })
+        }
         TypedSyntaxExpressionIR::Binary {
             operator,
             left,
@@ -1921,6 +1978,12 @@ fn lower_expression(
             operator: *operator,
             input: Box::new(lower_expression(input, indices)?),
         }),
+        TypedSyntaxExpressionIR::StringTransform { operator, input } => {
+            Ok(ScalarExpression::StringTransform {
+                operator: *operator,
+                input: Box::new(lower_expression(input, indices)?),
+            })
+        }
         TypedSyntaxExpressionIR::Binary {
             operator,
             left,
@@ -1992,6 +2055,7 @@ fn expression_nodes(expression: &TypedSyntaxExpressionIR) -> usize {
         | TypedSyntaxExpressionIR::IntLiteral { .. }
         | TypedSyntaxExpressionIR::BoolLiteral { .. } => 1,
         TypedSyntaxExpressionIR::Unary { input, .. } => 1 + expression_nodes(input),
+        TypedSyntaxExpressionIR::StringTransform { input, .. } => 1 + expression_nodes(input),
         TypedSyntaxExpressionIR::Binary { left, right, .. } => {
             1 + expression_nodes(left) + expression_nodes(right)
         }
@@ -2197,6 +2261,129 @@ mod tests {
     }
 
     #[test]
+    fn string_transform_ir_compiles_and_executes_across_all_lowerings() {
+        let cases = [
+            (
+                "string_trim",
+                StringTransformOperator::Trim,
+                "  Alpha  ",
+                "Alpha",
+            ),
+            (
+                "string_lowercase",
+                StringTransformOperator::Lowercase,
+                "MiXeD",
+                "mixed",
+            ),
+            (
+                "string_uppercase",
+                StringTransformOperator::Uppercase,
+                "Alpha",
+                "ALPHA",
+            ),
+        ];
+        for (goal_id, operator, input, expected) in cases {
+            let goal = TypedMechanismGoalIR {
+                schema: TYPED_MECHANISM_GOAL_SCHEMA.to_string(),
+                goal_id: goal_id.to_string(),
+                split: DataSplit::FreshBlind,
+                operands: vec![operand("value", "value", ProgramType::String)],
+                output_type: ProgramType::String,
+                condition: None,
+                postimage: TypedSyntaxExpressionIR::StringTransform {
+                    operator,
+                    input: Box::new(role("value")),
+                },
+                otherwise: None,
+                definitions: Vec::new(),
+                allowed_effects: vec![Effect::Pure],
+                preconditions: Vec::new(),
+                postconditions: Vec::new(),
+                invariants: Vec::new(),
+                public_observations: vec![TypedMechanismObservationIR {
+                    operands: BTreeMap::from([(
+                        "value".to_string(),
+                        Value::String(input.to_string()),
+                    )]),
+                    expected_postimage: Value::String(expected.to_string()),
+                }],
+                provenance: vec!["STRING_TRANSFORM_CROSS_LOWERING_CANARY".to_string()],
+            };
+            let template = lower_typed_mechanism_goal(&goal).unwrap();
+            assert_eq!(template.public_observations_passed, 1);
+            assert_template_compiles_and_runs(&template, &format!("{input:?}.to_string()"));
+            let program = crate::sem5::learner::synthesize(
+                &template.program_task,
+                crate::sem5::model::SynthesisCondition::PrimitiveA,
+                &[],
+            )
+            .unwrap();
+            let artifact = crate::sem5::emitter::emit_rust(
+                &program,
+                &goal.definitions,
+                &goal.public_observations[0].operands,
+            )
+            .unwrap();
+            assert_rust_source_compiles_and_runs(&format!("{goal_id}-program-ir"), artifact.source);
+        }
+    }
+
+    #[test]
+    fn verified_string_transform_operator_transfers_to_renamed_role() {
+        let request = |goal_id: &str, value_role: &str| TypedMechanismSynthesisGoalIR {
+            schema: TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA.to_string(),
+            goal_id: goal_id.to_string(),
+            split: DataSplit::FreshBlind,
+            operands: vec![operand(value_role, value_role, ProgramType::String)],
+            output_type: ProgramType::String,
+            definitions: Vec::new(),
+            allowed_effects: vec![Effect::Pure],
+            preconditions: Vec::new(),
+            postconditions: Vec::new(),
+            invariants: Vec::new(),
+            public_observations: vec![
+                TypedMechanismObservationIR {
+                    operands: BTreeMap::from([(
+                        value_role.to_string(),
+                        Value::String("  Alpha ".to_string()),
+                    )]),
+                    expected_postimage: Value::String("Alpha".to_string()),
+                },
+                TypedMechanismObservationIR {
+                    operands: BTreeMap::from([(
+                        value_role.to_string(),
+                        Value::String("\tBeta\n".to_string()),
+                    )]),
+                    expected_postimage: Value::String("Beta".to_string()),
+                },
+            ],
+            require_conditional: false,
+            max_expression_depth: 1,
+            max_candidates: 64,
+            provenance: vec!["STRING_TRANSFORM_OPERATOR_TRANSFER_CANARY".to_string()],
+        };
+        let learned = synthesize_typed_mechanism_goal(&request("learn_trim", "raw")).unwrap();
+        assert!(matches!(
+            learned.winning_goal.postimage,
+            TypedSyntaxExpressionIR::StringTransform {
+                operator: StringTransformOperator::Trim,
+                ..
+            }
+        ));
+        let operator =
+            typed_mechanism_improvement_operator_from_receipt(&learned, "b".repeat(64)).unwrap();
+        let renamed = synthesize_typed_mechanism_goal_with_priors(
+            &request("reuse_trim", "payload"),
+            std::slice::from_ref(&operator),
+        )
+        .unwrap();
+        assert!(renamed.preferred_operator_selected);
+        assert_eq!(renamed.preferred_operator_attempts, 1);
+        assert_eq!(renamed.candidates_enumerated, 1);
+        assert_eq!(renamed.selected_operator_id, Some(operator.operator_id));
+    }
+
+    #[test]
     fn verified_string_operator_transfers_to_renamed_roles_before_enumeration() {
         let request = |goal_id: &str, left: &str, right: &str| TypedMechanismSynthesisGoalIR {
             schema: TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA.to_string(),
@@ -2342,6 +2529,31 @@ mod tests {
         assert_eq!(
             lower_typed_mechanism_goal(&goal),
             Err("TYPED_MECHANISM_UNARY_TYPE".to_string())
+        );
+
+        let string_transform_goal = TypedMechanismGoalIR {
+            schema: TYPED_MECHANISM_GOAL_SCHEMA.to_string(),
+            goal_id: "invalid_string_transform_type".to_string(),
+            split: DataSplit::FreshBlind,
+            operands: vec![operand("count", "state.count", ProgramType::Int)],
+            output_type: ProgramType::String,
+            condition: None,
+            postimage: TypedSyntaxExpressionIR::StringTransform {
+                operator: StringTransformOperator::Trim,
+                input: Box::new(role("count")),
+            },
+            otherwise: None,
+            definitions: Vec::new(),
+            allowed_effects: vec![Effect::Pure],
+            preconditions: Vec::new(),
+            postconditions: Vec::new(),
+            invariants: Vec::new(),
+            public_observations: Vec::new(),
+            provenance: Vec::new(),
+        };
+        assert_eq!(
+            lower_typed_mechanism_goal(&string_transform_goal),
+            Err("TYPED_MECHANISM_STRING_TRANSFORM_TYPE".to_string())
         );
     }
 

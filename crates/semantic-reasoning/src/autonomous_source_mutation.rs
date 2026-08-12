@@ -47,7 +47,7 @@ const MAX_TYPED_OPERATOR_RECONCILIATION_RECEIPTS: usize = 64;
 // same authority-bound operator repository used by source-bound synthesis.
 // Reopen older exhausted families because a learned expression can now reduce
 // their search rather than merely adjust a post-hoc candidate score.
-pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 17;
+pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 18;
 const KNOWN_REMAINDER_PREDICTED_VALUE: u16 = 35;
 const MAX_REPOSITORY_REPAIR_FAMILY_FILES: usize = 16;
 const KNOWN_REMAINDER_STRATEGIES: [&str; 4] = [

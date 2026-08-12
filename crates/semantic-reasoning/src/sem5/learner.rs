@@ -905,6 +905,20 @@ impl NodeBuilder {
                     },
                 ))
             }
+            ScalarExpression::StringTransform { operator, input } => {
+                let input = self.scalar(input, bindings, definitions)?;
+                if input.meta.output_type != ProgramType::String {
+                    return Err("LOWERING_STRING_TRANSFORM_SOURCE_TYPE".to_string());
+                }
+                Ok(self.node(
+                    ProgramType::String,
+                    vec![Effect::Pure],
+                    NodeKind::StringTransform {
+                        operator: *operator,
+                        input: Box::new(input),
+                    },
+                ))
+            }
             ScalarExpression::Binary {
                 operator,
                 left,
@@ -1055,6 +1069,7 @@ fn child_nodes(kind: &NodeKind) -> Vec<&ProgramNode> {
     match kind {
         NodeKind::Store { value, .. }
         | NodeKind::UnaryOp { input: value, .. }
+        | NodeKind::StringTransform { input: value, .. }
         | NodeKind::SequenceLength { sequence: value }
         | NodeKind::Return { value } => vec![value],
         NodeKind::BinaryOp { left, right, .. } => vec![left, right],

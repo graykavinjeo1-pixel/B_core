@@ -74,6 +74,14 @@ pub enum UnaryOperator {
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum StringTransformOperator {
+    Trim,
+    Lowercase,
+    Uppercase,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum BinaryOperator {
     Add,
     Subtract,
@@ -124,6 +132,10 @@ pub enum NodeKind {
     },
     UnaryOp {
         operator: UnaryOperator,
+        input: Box<ProgramNode>,
+    },
+    StringTransform {
+        operator: StringTransformOperator,
         input: Box<ProgramNode>,
     },
     BinaryOp {
@@ -215,6 +227,10 @@ pub enum ScalarExpression {
     },
     Unary {
         operator: UnaryOperator,
+        input: Box<ScalarExpression>,
+    },
+    StringTransform {
+        operator: StringTransformOperator,
         input: Box<ScalarExpression>,
     },
     Binary {

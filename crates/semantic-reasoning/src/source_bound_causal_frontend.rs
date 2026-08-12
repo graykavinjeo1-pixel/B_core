@@ -22,7 +22,9 @@ use crate::bounded_parallel::{
     map_ordered_batched_by as parallel_map_ordered_batched_by, worker_count_for,
 };
 use crate::self_repair_contract::sha256;
-use crate::sem5::model::{BinaryOperator, DataSplit, Effect, ProgramType, UnaryOperator};
+use crate::sem5::model::{
+    BinaryOperator, DataSplit, Effect, ProgramType, StringTransformOperator, UnaryOperator,
+};
 use crate::sem5::typed_mechanism::{
     synthesize_typed_mechanism_goal_with_priors, typed_mechanism_improvement_operator_from_receipt,
     SourceOperandIR, TypedMechanismImprovementOperatorIR, TypedMechanismObservationIR,
@@ -882,6 +884,13 @@ def safe_eval(node, environment):
         values = [safe_eval(element, environment) for element in node.elts]
         return values if all(value is not UNKNOWN for value in values) else UNKNOWN
     if isinstance(node, ast.Name): return environment.get(node.id, UNKNOWN)
+    if isinstance(node, ast.Call) and not node.args and not node.keywords and isinstance(node.func, ast.Attribute):
+        value = safe_eval(node.func.value, environment)
+        if not isinstance(value, str): return UNKNOWN
+        if node.func.attr == "strip": return value.strip()
+        if node.func.attr == "lower": return value.lower()
+        if node.func.attr == "upper": return value.upper()
+        return UNKNOWN
     if isinstance(node, ast.UnaryOp):
         value = safe_eval(node.operand, environment)
         if value is UNKNOWN: return UNKNOWN
@@ -1570,6 +1579,15 @@ fn python_expression(
                 UnaryOperator::Not => "not ",
             },
             python_expression(input, sources)?
+        )),
+        TypedSyntaxExpressionIR::StringTransform { operator, input } => Ok(format!(
+            "({}).{}()",
+            python_expression(input, sources)?,
+            match operator {
+                StringTransformOperator::Trim => "strip",
+                StringTransformOperator::Lowercase => "lower",
+                StringTransformOperator::Uppercase => "upper",
+            }
         )),
         TypedSyntaxExpressionIR::Binary {
             operator,
@@ -2724,6 +2742,122 @@ def first(value: str) -> str:
             execution.status.success(),
             "{}",
             String::from_utf8_lossy(&execution.stderr)
+        );
+    }
+
+    #[test]
+    fn repository_string_normalization_reaches_source_bound_executable_templates() {
+        let Some(python_executable) = python() else {
+            return;
+        };
+        let source = r#"def clean(value: str) -> str:
+    return value
+
+def lowercase(value: str) -> str:
+    return value
+
+def uppercase(value: str) -> str:
+    return value
+"#;
+        let tests = r#"def test_normalization():
+    assert clean("  Alpha ") == "Alpha"
+    assert clean("\tBeta\n") == "Beta"
+    assert lowercase("Alpha") == "alpha"
+    assert lowercase("MiXeD") == "mixed"
+    assert uppercase("Alpha") == "ALPHA"
+    assert uppercase("mixed") == "MIXED"
+"#;
+        let receipt =
+            discover_and_synthesize_python_repository(&SourceBoundRepositoryDiscoveryRequestIR {
+                schema: SOURCE_BOUND_REPOSITORY_DISCOVERY_SCHEMA.to_string(),
+                source_relative_path: PathBuf::from("normalization.py"),
+                source: source.to_string(),
+                test_sources: vec![RepositoryTestSourceIR {
+                    relative_path: PathBuf::from("tests/test_normalization.py"),
+                    source: tests.to_string(),
+                }],
+                python_executable: python_executable.clone(),
+                target_symbols: ["clean", "lowercase", "uppercase"]
+                    .into_iter()
+                    .map(str::to_string)
+                    .collect(),
+                allowed_effects: vec![Effect::Pure],
+                max_expression_depth: 1,
+                max_candidates: 64,
+            })
+            .unwrap();
+        let by_symbol = receipt
+            .alternatives
+            .iter()
+            .map(|alternative| (alternative.requested_public_symbol.as_str(), alternative))
+            .collect::<BTreeMap<_, _>>();
+        for (symbol, expected_operator, source_token) in [
+            ("clean", StringTransformOperator::Trim, ".strip()"),
+            ("lowercase", StringTransformOperator::Lowercase, ".lower()"),
+            ("uppercase", StringTransformOperator::Uppercase, ".upper()"),
+        ] {
+            assert!(matches!(
+                by_symbol[symbol].synthesis.winning_goal.postimage,
+                TypedSyntaxExpressionIR::StringTransform { operator, .. }
+                    if operator == expected_operator
+            ));
+            assert!(
+                replay_source_bound_patch(source, &by_symbol[symbol].replayable_patch)
+                    .unwrap()
+                    .contains(source_token)
+            );
+        }
+        let combined =
+            replay_source_bound_patch(source, &receipt.patch_variants[0].replayable_patch).unwrap();
+        let execution = Command::new(python_executable)
+            .args(["-X", "utf8", "-c"])
+            .arg(format!("{combined}\n{tests}\ntest_normalization()\n"))
+            .output()
+            .unwrap();
+        assert!(
+            execution.status.success(),
+            "{}",
+            String::from_utf8_lossy(&execution.stderr)
+        );
+    }
+
+    #[test]
+    fn correct_string_normalization_is_observed_without_inventing_a_repair() {
+        let Some(python_executable) = python() else {
+            return;
+        };
+        let request = SourceBoundRepositoryDiscoveryRequestIR {
+            schema: SOURCE_BOUND_REPOSITORY_DISCOVERY_SCHEMA.to_string(),
+            source_relative_path: PathBuf::from("normalization.py"),
+            source: r#"def clean(value: str) -> str:
+    return value.strip()
+
+def lowercase(value: str) -> str:
+    return value.lower()
+
+def uppercase(value: str) -> str:
+    return value.upper()
+"#
+            .to_string(),
+            test_sources: vec![RepositoryTestSourceIR {
+                relative_path: PathBuf::from("tests/test_normalization.py"),
+                source: r#"def test_normalization():
+    assert clean("  Alpha ") == "Alpha"
+    assert lowercase("MiXeD") == "mixed"
+    assert uppercase("Alpha") == "ALPHA"
+"#
+                .to_string(),
+            }],
+            python_executable,
+            target_symbols: Vec::new(),
+            allowed_effects: vec![Effect::Pure],
+            max_expression_depth: 1,
+            max_candidates: 64,
+        };
+        let error = discover_and_synthesize_python_repository(&request).unwrap_err();
+        assert_eq!(
+            error,
+            CausalFrontendFailure::public("NO_EVIDENCE_BOUND_REPAIR_ALTERNATIVE")
         );
     }
 

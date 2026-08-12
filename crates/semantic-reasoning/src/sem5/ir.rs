@@ -2,7 +2,7 @@ use std::collections::{BTreeMap, BTreeSet};
 
 use super::model::{
     ApiDefinition, BinaryOperator, Effect, NodeKind, ProgramIR, ProgramNode, ProgramType,
-    ScalarExpression, UnaryOperator, Value,
+    ScalarExpression, StringTransformOperator, UnaryOperator, Value,
 };
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -134,6 +134,21 @@ fn check_node(
                 _ => return Err("UNARY_TYPE_MISMATCH".to_string()),
             }
         }
+        NodeKind::StringTransform { input, .. } => {
+            if check_node(
+                input,
+                environment,
+                mutable_inputs,
+                apis,
+                effects,
+                visited,
+                in_loop,
+            )? != ProgramType::String
+            {
+                return Err("STRING_TRANSFORM_SOURCE_TYPE".to_string());
+            }
+            ProgramType::String
+        }
         NodeKind::BinaryOp {
             operator,
             left,
@@ -203,6 +218,7 @@ fn check_node(
                     ProgramType::Int
                 }
                 ProgramType::NestedSequenceInt => ProgramType::SequenceInt,
+                ProgramType::String => ProgramType::String,
                 _ => return Err("SEQUENCE_READ_SOURCE_TYPE".to_string()),
             }
         }
@@ -222,6 +238,7 @@ fn check_node(
                     | ProgramType::NestedSequenceInt
                     | ProgramType::Bytes
                     | ProgramType::Image
+                    | ProgramType::String
             ) {
                 return Err("SEQUENCE_LENGTH_SOURCE_TYPE".to_string());
             }
@@ -439,6 +456,8 @@ fn infer_binary(
         }
         (Op::Equal | Op::LessThan | Op::GreaterThan, Ty::Int, Ty::Int) => Ok(Ty::Bool),
         (Op::Equal, Ty::Bool, Ty::Bool) => Ok(Ty::Bool),
+        (Op::Add, Ty::String, Ty::String) => Ok(Ty::String),
+        (Op::Equal, Ty::String, Ty::String) => Ok(Ty::Bool),
         (Op::And | Op::Or, Ty::Bool, Ty::Bool) => Ok(Ty::Bool),
         _ => Err("BINARY_TYPE_MISMATCH".to_string()),
     }
@@ -518,6 +537,10 @@ fn eval_node(
         NodeKind::UnaryOp { operator, input } => {
             let input = signal_value(eval_node(input, environment, apis, effects, steps, files)?)?;
             Signal::Value(eval_unary(*operator, input)?)
+        }
+        NodeKind::StringTransform { operator, input } => {
+            let input = signal_value(eval_node(input, environment, apis, effects, steps, files)?)?;
+            Signal::Value(eval_string_transform(*operator, input)?)
         }
         NodeKind::BinaryOp {
             operator,
@@ -707,6 +730,9 @@ pub fn eval_scalar(
         ScalarExpression::Unary { operator, input } => {
             eval_unary(*operator, eval_scalar(input, arguments, apis)?)
         }
+        ScalarExpression::StringTransform { operator, input } => {
+            eval_string_transform(*operator, eval_scalar(input, arguments, apis)?)
+        }
         ScalarExpression::Binary {
             operator,
             left,
@@ -743,6 +769,17 @@ fn eval_unary(operator: UnaryOperator, value: Value) -> Result<Value, String> {
         (UnaryOperator::Not, Value::Bool(value)) => Ok(Value::Bool(!value)),
         _ => Err("UNARY_VALUE_TYPE".to_string()),
     }
+}
+
+fn eval_string_transform(operator: StringTransformOperator, value: Value) -> Result<Value, String> {
+    let Value::String(value) = value else {
+        return Err("STRING_TRANSFORM_VALUE_TYPE".to_string());
+    };
+    Ok(Value::String(match operator {
+        StringTransformOperator::Trim => value.trim().to_string(),
+        StringTransformOperator::Lowercase => value.to_lowercase(),
+        StringTransformOperator::Uppercase => value.to_uppercase(),
+    }))
 }
 
 fn eval_binary(operator: BinaryOperator, left: Value, right: Value) -> Result<Value, String> {
