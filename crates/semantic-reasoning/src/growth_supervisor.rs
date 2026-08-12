@@ -4248,21 +4248,29 @@ fn source_mutation_watch_prefix(config: &GrowthSupervisorConfig) -> Result<Optio
     Ok(None)
 }
 
+fn core_cohort_observation_ids(
+    config: &GrowthSupervisorConfig,
+    observations: &[LearningObservation],
+) -> Result<Vec<String>, String> {
+    let Some(source_prefix) = source_mutation_watch_prefix(config)? else {
+        return Ok(Vec::new());
+    };
+    let mut observation_ids = observations
+        .iter()
+        .filter(|observation| observation.logical_path.starts_with(&source_prefix))
+        .map(|observation| observation.observation_id.clone())
+        .collect::<Vec<_>>();
+    observation_ids.sort();
+    observation_ids.dedup();
+    Ok(observation_ids)
+}
+
 fn validate_blocked_core_cohort(
     config: &GrowthSupervisorConfig,
     diagnostic: &AutonomousSelfInspectionReceipt,
     observations: &[LearningObservation],
 ) -> Result<(bool, Vec<String>, Vec<String>), String> {
-    let Some(source_prefix) = source_mutation_watch_prefix(config)? else {
-        return Ok((false, Vec::new(), Vec::new()));
-    };
-    let mut input_observation_ids = observations
-        .iter()
-        .filter(|observation| observation.logical_path.starts_with(&source_prefix))
-        .map(|observation| observation.observation_id.clone())
-        .collect::<Vec<_>>();
-    input_observation_ids.sort();
-    input_observation_ids.dedup();
+    let input_observation_ids = core_cohort_observation_ids(config, observations)?;
     if input_observation_ids.is_empty() {
         return Ok((false, Vec::new(), Vec::new()));
     }
@@ -5349,6 +5357,8 @@ fn step_without_lease(
         plateau_scans: state.plateau_scans,
         unconsumed_high_observations: high.len(),
         cohort_preflight_ready: cohort_has_verification_evidence(&evidence_aware),
+        core_cohort_validation_applicable: !core_cohort_observation_ids(config, &evidence_aware)?
+            .is_empty(),
         source_patch_attempts: recent_source_patch_attempts,
         source_patch_installations: recent_source_patch_installations,
         source_patch_rollbacks: recent_source_patch_rollbacks,
@@ -6459,6 +6469,7 @@ mod tests {
             plateau_scans: 0,
             unconsumed_high_observations: 1,
             cohort_preflight_ready: false,
+            core_cohort_validation_applicable: true,
             source_patch_attempts: 0,
             source_patch_installations: 0,
             source_patch_rollbacks: 0,
@@ -6553,6 +6564,7 @@ mod tests {
             plateau_scans: 12,
             unconsumed_high_observations: 0,
             cohort_preflight_ready: false,
+            core_cohort_validation_applicable: false,
             source_patch_attempts: 0,
             source_patch_installations: 0,
             source_patch_rollbacks: 0,

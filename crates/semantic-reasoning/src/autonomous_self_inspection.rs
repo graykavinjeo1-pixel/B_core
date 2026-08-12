@@ -358,6 +358,8 @@ pub struct SelfInspectionInput {
     pub plateau_scans: u32,
     pub unconsumed_high_observations: usize,
     pub cohort_preflight_ready: bool,
+    #[serde(default)]
+    pub core_cohort_validation_applicable: bool,
     pub source_patch_attempts: u64,
     pub source_patch_installations: u64,
     pub source_patch_rollbacks: u64,
@@ -878,9 +880,10 @@ fn diagnostic_experiment(
                 "unconsumed_high_observations={}; preflight_ready=false",
                 input.unconsumed_high_observations
             ),
-            intervention_observable:
-                "recognize implementation evidence inside production files that also contain tests"
-                    .to_string(),
+            intervention_observable: format!(
+                "recognize implementation evidence and run bounded core validation when applicable={}",
+                input.core_cohort_validation_applicable
+            ),
             causal_support: input.unconsumed_high_observations > 0
                 && !input.cohort_preflight_ready,
             mutates_research_state: false,
@@ -971,11 +974,18 @@ pub fn inspect(input: SelfInspectionInput) -> Result<AutonomousSelfInspectionRec
         InternalBottleneckClass::RepeatedVerificationFailure => {
             (RepairDisposition::CapabilityGap, None, true)
         }
-        InternalBottleneckClass::CampaignCohortBlocked => (
-            RepairDisposition::RuntimeRepairActive,
-            Some(RuntimeRepairMechanism::ValidateBlockedCoreCohort),
-            true,
-        ),
+        InternalBottleneckClass::CampaignCohortBlocked
+            if input.core_cohort_validation_applicable =>
+        {
+            (
+                RepairDisposition::RuntimeRepairActive,
+                Some(RuntimeRepairMechanism::ValidateBlockedCoreCohort),
+                true,
+            )
+        }
+        InternalBottleneckClass::CampaignCohortBlocked => {
+            (RepairDisposition::CapabilityGap, None, true)
+        }
         InternalBottleneckClass::SourceSynthesisCoverageGap => {
             (RepairDisposition::CapabilityGap, None, true)
         }
@@ -1045,6 +1055,7 @@ mod tests {
             plateau_scans: 3,
             unconsumed_high_observations: 0,
             cohort_preflight_ready: false,
+            core_cohort_validation_applicable: false,
             source_patch_attempts: 0,
             source_patch_installations: 0,
             source_patch_rollbacks: 0,
@@ -1187,6 +1198,7 @@ mod tests {
         let mut value = input();
         value.unconsumed_high_observations = 16;
         value.cohort_preflight_ready = false;
+        value.core_cohort_validation_applicable = true;
         let receipt = inspect(value).expect("inspect");
         assert_eq!(
             receipt.selected_bottleneck,
@@ -1201,6 +1213,23 @@ mod tests {
             Some(RuntimeRepairMechanism::ValidateBlockedCoreCohort)
         );
         assert!(receipt.experiments[0].causal_support);
+    }
+
+    #[test]
+    fn blocked_non_core_cohort_does_not_dispatch_an_inapplicable_core_validator() {
+        let mut value = input();
+        value.unconsumed_high_observations = 2;
+        value.cohort_preflight_ready = false;
+        value.core_cohort_validation_applicable = false;
+
+        let receipt = inspect(value).expect("inspect non-core cohort");
+
+        assert_eq!(
+            receipt.selected_bottleneck,
+            InternalBottleneckClass::CampaignCohortBlocked
+        );
+        assert_eq!(receipt.repair_disposition, RepairDisposition::CapabilityGap);
+        assert_eq!(receipt.repair_mechanism, None);
     }
 
     #[test]
