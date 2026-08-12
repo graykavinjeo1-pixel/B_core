@@ -777,7 +777,15 @@ fn execute_composer(
                 }
             }
             if artifacts.is_empty() {
-                return Err("IMPROVEMENT_OPERATOR_ARTIFACT_FAMILY_EMPTY".to_string());
+                // Every bounded selector executed and verified, but all of
+                // their generalized operator identities were already in
+                // memory. The nominal selector-product upper bound may
+                // contain identity aliases after normalization; that is safe
+                // finite-substrate exhaustion, not a campaign failure.
+                return Ok((
+                    Vec::new(),
+                    Some("IMPROVEMENT_OPERATOR_EXECUTABLE_UNIVERSE_SATURATED".to_string()),
+                ));
             }
             Ok((artifacts, None))
         }

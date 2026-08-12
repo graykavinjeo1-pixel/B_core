@@ -1058,6 +1058,8 @@ pub fn self_check() -> SelfCheck {
                 .to_string(),
             "COMPLETE_HISTORICAL_COMPATIBILITY_RUNS_AS_A_SEPARATE_PERIODIC_CANARY".to_string(),
             "CARGO_INCREMENTAL_CACHE_IS_REUSED_ACROSS_SOURCE_VALIDATION_STAGES".to_string(),
+            "SOURCE_IDENTICAL_MODULE_VALIDATION_REUSES_AN_IMMUTABLE_COMMAND_RECEIPT"
+                .to_string(),
             "SEMANTICALLY_DUPLICATE_EVIDENCE_REVALIDATES_WITHOUT_GENERATION_PROMOTION".to_string(),
             "PERFORMANCE_GROWTH_REQUIRES_BOUND_BEFORE_AFTER_MEASUREMENT".to_string(),
             "EARLY_SUCCESS_MUST_NOT_MONOPOLIZE_BOUNDED_COMPOSITION_SEARCH".to_string(),
@@ -1132,6 +1134,8 @@ pub fn self_check() -> SelfCheck {
             "NEW_FRONTIER_CONTEXTS_EXCLUDE_ALREADY_VERIFIED_ARTIFACTS_FROM_SYNTHESIS"
                 .to_string(),
             "FINITE_TYPED_OPERATOR_FAMILIES_ENUMERATE_SELECTORS_INSTEAD_OF_RELYING_ON_HASH_LUCK"
+                .to_string(),
+            "NORMALIZED_OPERATOR_IDENTITY_ALIASES_CLOSE_AS_SAFE_SUBSTRATE_SATURATION"
                 .to_string(),
             "EXACT_CONTEXT_REUSE_REVALIDATES_A_CANONICAL_ARTIFACT_WITHOUT_FRONTIER_PROMOTION"
                 .to_string(),
@@ -5070,6 +5074,8 @@ struct CoreCohortValidationReceipt {
     targeted_test_filter: Option<String>,
     #[serde(default)]
     full_regression_canary: bool,
+    #[serde(default)]
+    reused_validation_receipt_sha256: Option<String>,
     command: LocalCommandReceipt,
     success: bool,
     authoritative_source_write_events: u64,
@@ -5086,6 +5092,61 @@ struct CoreValidationPlan {
     validation_scope: String,
     targeted_test_filter: Option<String>,
     full_regression_canary: bool,
+}
+
+fn reusable_core_validation_receipt(
+    config: &GrowthSupervisorConfig,
+    source_fingerprint: &str,
+    plan: &CoreValidationPlan,
+) -> Result<Option<(CoreCohortValidationReceipt, String)>, String> {
+    // Periodic and historically triggered full canaries must execute afresh.
+    // Ordinary module-scoped validation may reuse an immutable successful
+    // receipt when source state and the exact validation command are equal.
+    if plan.full_regression_canary {
+        return Ok(None);
+    }
+    let diagnostics = config.state_dir.join("diagnostics");
+    let Ok(entries) = fs::read_dir(&diagnostics) else {
+        return Ok(None);
+    };
+    let mut receipts = entries
+        .filter_map(Result::ok)
+        .filter(|entry| {
+            entry
+                .file_name()
+                .to_string_lossy()
+                .starts_with("core_cohort_validation_")
+                && entry.path().extension().and_then(OsStr::to_str) == Some("json")
+        })
+        .filter_map(|entry| {
+            let modified = entry
+                .metadata()
+                .ok()?
+                .modified()
+                .unwrap_or(SystemTime::UNIX_EPOCH);
+            Some((modified, entry.path()))
+        })
+        .collect::<Vec<_>>();
+    receipts.sort_by_key(|entry| std::cmp::Reverse(entry.0));
+    for (_, path) in receipts {
+        let Ok(receipt) = read_json::<CoreCohortValidationReceipt>(&path) else {
+            continue;
+        };
+        if receipt.success
+            && receipt.workspace_stable_during_validation
+            && receipt.source_fingerprint_before == source_fingerprint
+            && receipt.source_fingerprint_after == source_fingerprint
+            && receipt.validation_scope == plan.validation_scope
+            && receipt.targeted_test_filter == plan.targeted_test_filter
+            && !receipt.full_regression_canary
+            && receipt.reused_validation_receipt_sha256.is_none()
+            && receipt.command.args == plan.args
+        {
+            let receipt_sha256 = json_sha256(&receipt)?;
+            return Ok(Some((receipt, receipt_sha256)));
+        }
+    }
+    Ok(None)
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -5723,6 +5784,54 @@ fn validate_blocked_core_cohort(
             return Err("CORE_COHORT_VALIDATION_RECEIPT_MISMATCH".to_string());
         }
         existing
+    } else if let Some((reused, reused_receipt_sha256)) =
+        reusable_core_validation_receipt(config, &source_fingerprint_before, &validation_plan)?
+    {
+        let command = LocalCommandReceipt {
+            program: reused.command.program,
+            args: validation_plan.args.clone(),
+            cargo_incremental: reused.command.cargo_incremental,
+            exit_code: Some(0),
+            success: true,
+            timed_out: false,
+            duration_ms: 0,
+            output_sha256: reused.command.output_sha256,
+            diagnostic_tail: format!(
+                "REUSED_SOURCE_IDENTICAL_CORE_VALIDATION_RECEIPT:{reused_receipt_sha256}"
+            ),
+        };
+        let receipt = CoreCohortValidationReceipt {
+            schema: "B_CORE_COHORT_VALIDATION_1".to_string(),
+            validation_id: validation_id.clone(),
+            originating_diagnostic_id: diagnostic.diagnostic_id.clone(),
+            generation: diagnostic.generation,
+            source_root_sha256: sha256(
+                config
+                    .source_mutation
+                    .source_root
+                    .to_string_lossy()
+                    .as_bytes(),
+            ),
+            input_observation_ids,
+            source_fingerprint_before: source_fingerprint_before.clone(),
+            source_fingerprint_after: source_fingerprint_before,
+            workspace_stable_during_validation: true,
+            validation_scope: validation_plan.validation_scope.clone(),
+            targeted_test_filter: validation_plan.targeted_test_filter.clone(),
+            full_regression_canary: false,
+            reused_validation_receipt_sha256: Some(reused_receipt_sha256),
+            command,
+            success: true,
+            authoritative_source_write_events: 0,
+            operator_selected: false,
+            codex_calls: 0,
+            external_llm_calls: 0,
+            network_reads: 0,
+            network_writes: 0,
+        };
+        write_immutable_json(&receipt_path, &receipt)?;
+        cleanup_recent_files(&diagnostics, "core_cohort_validation_", 64)?;
+        receipt
     } else {
         let log_path = diagnostics.join(format!("core_cohort_validation_{validation_id}.log"));
         let arg_refs = validation_plan
@@ -5769,6 +5878,7 @@ fn validate_blocked_core_cohort(
             validation_scope: validation_plan.validation_scope.clone(),
             targeted_test_filter: validation_plan.targeted_test_filter.clone(),
             full_regression_canary: validation_plan.full_regression_canary,
+            reused_validation_receipt_sha256: None,
             success: command.success
                 && workspace_stable_during_validation
                 && targeted_tests_executed,
@@ -9298,6 +9408,43 @@ mod tests {
             .expect("core validation receipt");
         let validation: CoreCohortValidationReceipt = read_json(&receipt_path).unwrap();
         assert!(validation.command.cargo_incremental);
+
+        let mut rebound_implementation = implementation.clone();
+        rebound_implementation.observation_id = "core-implementation-rebound".to_string();
+        let (rebound_action, rebound_observation) = runtime_repair_action(
+            &config,
+            &diagnostic,
+            &[],
+            std::slice::from_ref(&rebound_implementation),
+            std::slice::from_ref(&rebound_implementation),
+        )
+        .unwrap()
+        .expect("source-identical validation reuse action");
+        assert!(rebound_action.executed);
+        assert!(rebound_observation.is_some());
+        let receipts = fs::read_dir(config.state_dir.join("diagnostics"))
+            .unwrap()
+            .filter_map(Result::ok)
+            .filter(|entry| {
+                entry
+                    .file_name()
+                    .to_string_lossy()
+                    .starts_with("core_cohort_validation_")
+                    && entry.path().extension().and_then(OsStr::to_str) == Some("json")
+            })
+            .map(|entry| read_json::<CoreCohortValidationReceipt>(&entry.path()).unwrap())
+            .collect::<Vec<_>>();
+        assert_eq!(receipts.len(), 2);
+        let rebound_receipt = receipts
+            .iter()
+            .find(|receipt| receipt.input_observation_ids == ["core-implementation-rebound"])
+            .expect("rebound receipt");
+        assert!(rebound_receipt.reused_validation_receipt_sha256.is_some());
+        assert_eq!(rebound_receipt.command.duration_ms, 0);
+        assert!(rebound_receipt
+            .command
+            .diagnostic_tail
+            .starts_with("REUSED_SOURCE_IDENTICAL_CORE_VALIDATION_RECEIPT:"));
         fs::remove_dir_all(root).unwrap();
     }
 
