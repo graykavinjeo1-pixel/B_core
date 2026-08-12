@@ -41,6 +41,8 @@ const MAX_TEST_SOURCE_BYTES: usize = 16 * 1024 * 1024;
 const MAX_CAUSAL_ALTERNATIVES: usize = 32;
 const MAX_DEPENDENCY_CLOSURE: usize = 64;
 const MAX_SOURCE_BOUND_PATCH_VARIANTS: usize = 64;
+const MAX_CANDIDATE_VALIDATION_BATCH_ITEMS: usize = 16;
+const MAX_CANDIDATE_VALIDATION_BATCH_BYTES: usize = 16 * 1024 * 1024;
 const CAUSAL_ALTERNATIVE_ITEMS_PER_WORKER: usize = 4;
 const PYTHON_HOST_TIMEOUT: Duration = Duration::from_secs(10);
 
@@ -236,6 +238,8 @@ pub struct SourceBoundAlternativeReceiptIR {
     pub closure_candidates: Vec<SourceBoundClosureCandidateReceiptIR>,
     #[serde(default)]
     pub closure_candidate_rejections: Vec<SourceBoundClosureCandidateRejectionIR>,
+    #[serde(default)]
+    pub candidate_validation_processes: usize,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -302,6 +306,26 @@ struct PythonObservationDiscoveryResponse {
     detail: Option<String>,
     #[serde(default)]
     alternatives: Vec<PythonDiscoveredAlternative>,
+}
+
+#[derive(Debug, Deserialize)]
+struct PythonCandidateBatchResponse {
+    ok: bool,
+    #[serde(default)]
+    failure: Option<String>,
+    #[serde(default)]
+    detail: Option<String>,
+    #[serde(default)]
+    results: Vec<PythonCandidateValidationResult>,
+}
+
+#[derive(Debug, Deserialize)]
+struct PythonCandidateValidationResult {
+    ok: bool,
+    #[serde(default)]
+    failure: Option<String>,
+    #[serde(default)]
+    detail: Option<String>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -667,6 +691,53 @@ for requested in symbols:
     })
 
 json.dump({"ok": True, "definitions": selected}, sys.stdout, ensure_ascii=False)
+"#;
+
+const PYTHON_CANDIDATE_BATCH_HOST: &str = r#"
+import ast, json, sys
+
+def fail(kind, detail):
+    json.dump({"ok": False, "failure": kind, "detail": detail}, sys.stdout, ensure_ascii=False)
+    raise SystemExit(0)
+
+request = json.load(sys.stdin)
+candidates = request.get("candidates")
+if not isinstance(candidates, list) or not candidates:
+    fail("PUBLIC_INFORMATION_INSUFFICIENT", "CANDIDATE_BATCH_INPUT")
+
+def qualified_functions(tree):
+    found = set()
+    def collect(items, prefix):
+        for item in items:
+            if isinstance(item, ast.ClassDef):
+                collect(item.body, prefix + [item.name])
+            elif isinstance(item, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                qualified = ".".join(prefix + [item.name])
+                found.add(qualified)
+                nested = [child for child in item.body if isinstance(child, (ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef))]
+                collect(nested, prefix + [item.name])
+    collect(tree.body, [])
+    return found
+
+results = []
+for ordinal, candidate in enumerate(candidates):
+    source = candidate.get("source") if isinstance(candidate, dict) else None
+    public_symbol = candidate.get("public_symbol") if isinstance(candidate, dict) else None
+    if not isinstance(source, str) or not isinstance(public_symbol, str) or not public_symbol:
+        results.append({"ok": False, "failure": "PUBLIC_INFORMATION_INSUFFICIENT", "detail": "CANDIDATE_INPUT:" + str(ordinal)})
+        continue
+    try:
+        tree = ast.parse(source, filename="<b-core-candidate-" + str(ordinal) + ">", type_comments=True)
+        compile(tree, "<b-core-candidate-" + str(ordinal) + ">", "exec")
+    except (SyntaxError, ValueError, TypeError) as error:
+        results.append({"ok": False, "failure": "UNSUPPORTED_LANGUAGE_SYNTAX", "detail": "CANDIDATE_PARSE:" + str(error)})
+        continue
+    if public_symbol not in qualified_functions(tree):
+        results.append({"ok": False, "failure": "PUBLIC_INFORMATION_INSUFFICIENT", "detail": "MATERIALIZED_PUBLIC_SYMBOL_IDENTITY_LOST:" + public_symbol})
+        continue
+    results.append({"ok": True})
+
+json.dump({"ok": True, "results": results}, sys.stdout, ensure_ascii=False)
 "#;
 
 const PYTHON_PUBLIC_OBSERVATION_HOST: &str = r#"
@@ -1073,6 +1144,69 @@ fn run_python_json_host(
         )));
     }
     Ok(stdout)
+}
+
+fn validate_python_candidate_batch(
+    executable: &Path,
+    candidates: &[(&str, &str)],
+) -> Result<(Vec<Result<(), CausalFrontendFailure>>, usize), CausalFrontendFailure> {
+    if candidates.is_empty() {
+        return Ok((Vec::new(), 0));
+    }
+    let mut outcomes = Vec::with_capacity(candidates.len());
+    let mut batch_processes = 0_usize;
+    let mut start = 0_usize;
+    while start < candidates.len() {
+        let mut end = start;
+        let mut bytes = 0_usize;
+        while end < candidates.len() && end - start < MAX_CANDIDATE_VALIDATION_BATCH_ITEMS {
+            let next_bytes = candidates[end].0.len();
+            if end > start
+                && bytes.saturating_add(next_bytes) > MAX_CANDIDATE_VALIDATION_BATCH_BYTES
+            {
+                break;
+            }
+            bytes = bytes.saturating_add(next_bytes);
+            end += 1;
+        }
+        let input = serde_json::to_vec(&serde_json::json!({
+            "candidates": candidates[start..end]
+                .iter()
+                .map(|(source, public_symbol)| serde_json::json!({
+                    "source": source,
+                    "public_symbol": public_symbol,
+                }))
+                .collect::<Vec<_>>(),
+        }))
+        .map_err(|error| CausalFrontendFailure::public(format!("CANDIDATE_BATCH_INPUT:{error}")))?;
+        let stdout = run_python_json_host(executable, PYTHON_CANDIDATE_BATCH_HOST, &input)?;
+        batch_processes = batch_processes.saturating_add(1);
+        let response: PythonCandidateBatchResponse =
+            serde_json::from_slice(&stdout).map_err(|error| {
+                CausalFrontendFailure::unsupported(format!("CANDIDATE_BATCH_OUTPUT:{error}"))
+            })?;
+        if !response.ok {
+            return Err(classified_host_failure(
+                response.failure.as_deref(),
+                response.detail.as_deref(),
+            ));
+        }
+        if response.results.len() != end - start {
+            return Err(CausalFrontendFailure::public("CANDIDATE_BATCH_CARDINALITY"));
+        }
+        outcomes.extend(response.results.into_iter().map(|result| {
+            if result.ok {
+                Ok(())
+            } else {
+                Err(classified_host_failure(
+                    result.failure.as_deref(),
+                    result.detail.as_deref(),
+                ))
+            }
+        }));
+        start = end;
+    }
+    Ok((outcomes, batch_processes))
 }
 
 fn host_failure(response: &PythonHostResponse) -> Option<CausalFrontendFailure> {
@@ -1988,21 +2122,6 @@ pub fn analyze_and_synthesize_source_bound_with_operators(
             {
                 owner_type_operators.insert(0, owner_operator);
             }
-            let candidate_response = run_python_host(
-                &request.python_executable,
-                &materialized_patch.candidate_source,
-                std::slice::from_ref(&alternative.public_symbol),
-            )?;
-            if let Some(failure) = host_failure(&candidate_response) {
-                return Err(failure);
-            }
-            if candidate_response.definitions.len() != 1
-                || candidate_response.definitions[0].qualified_symbol != alternative.public_symbol
-            {
-                return Err(CausalFrontendFailure::public(
-                    "MATERIALIZED_PUBLIC_SYMBOL_IDENTITY_LOST",
-                ));
-            }
             let mut closure_candidates = Vec::new();
             for closure_definition in closure_definitions {
                 let closure_symbol = closure_definition.qualified_symbol.clone();
@@ -2066,32 +2185,6 @@ pub fn analyze_and_synthesize_source_bound_with_operators(
                         continue;
                     }
                 };
-                let closure_candidate_response = run_python_host(
-                    &request.python_executable,
-                    &closure_patch.candidate_source,
-                    std::slice::from_ref(&alternative.public_symbol),
-                )?;
-                if let Some(failure) = host_failure(&closure_candidate_response) {
-                    closure_candidate_rejections.push(SourceBoundClosureCandidateRejectionIR {
-                        closure_ordinal,
-                        qualified_symbol: closure_template.qualified_symbol.clone(),
-                        failure_kind: failure.kind,
-                        detail: failure.detail,
-                    });
-                    continue;
-                }
-                if closure_candidate_response.definitions.len() != 1
-                    || closure_candidate_response.definitions[0].qualified_symbol
-                        != alternative.public_symbol
-                {
-                    closure_candidate_rejections.push(SourceBoundClosureCandidateRejectionIR {
-                        closure_ordinal,
-                        qualified_symbol: closure_template.qualified_symbol.clone(),
-                        failure_kind: CausalFrontendFailureKind::PublicInformationInsufficient,
-                        detail: "CLOSURE_MATERIALIZATION_PUBLIC_SYMBOL_IDENTITY_LOST".to_string(),
-                    });
-                    continue;
-                }
                 closure_candidates.push(SourceBoundClosureCandidateReceiptIR {
                     closure_ordinal,
                     public_operand_bindings: bindings,
@@ -2100,6 +2193,44 @@ pub fn analyze_and_synthesize_source_bound_with_operators(
                     materialized_patch: closure_patch,
                 });
             }
+            // Every materialization still has to parse, compile, and preserve
+            // the exact public symbol.  Validate the owner and closure-local
+            // alternatives in bounded batches so one source-bound cut does
+            // not spawn one identical Python frontend process per candidate.
+            let mut validation_inputs = Vec::with_capacity(1 + closure_candidates.len());
+            validation_inputs.push((
+                materialized_patch.candidate_source.as_str(),
+                alternative.public_symbol.as_str(),
+            ));
+            validation_inputs.extend(closure_candidates.iter().map(|candidate| {
+                (
+                    candidate.materialized_patch.candidate_source.as_str(),
+                    alternative.public_symbol.as_str(),
+                )
+            }));
+            let (validation_outcomes, candidate_validation_processes) =
+                validate_python_candidate_batch(&request.python_executable, &validation_inputs)?;
+            drop(validation_inputs);
+            let mut validation_outcomes = validation_outcomes.into_iter();
+            validation_outcomes.next().ok_or_else(|| {
+                CausalFrontendFailure::public("CANDIDATE_BATCH_OWNER_OUTCOME_MISSING")
+            })??;
+            closure_candidates = closure_candidates
+                .into_iter()
+                .zip(validation_outcomes)
+                .filter_map(|(candidate, outcome)| match outcome {
+                    Ok(()) => Some(candidate),
+                    Err(error) => {
+                        closure_candidate_rejections.push(SourceBoundClosureCandidateRejectionIR {
+                            closure_ordinal: candidate.closure_ordinal,
+                            qualified_symbol: candidate.function_template.qualified_symbol.clone(),
+                            failure_kind: error.kind,
+                            detail: error.detail,
+                        });
+                        None
+                    }
+                })
+                .collect();
             closure_candidates.sort_by_key(|candidate| candidate.closure_ordinal);
             closure_candidate_rejections.sort_by(|left, right| {
                 left.closure_ordinal
@@ -2114,6 +2245,7 @@ pub fn analyze_and_synthesize_source_bound_with_operators(
                 materialized_patch,
                 closure_candidates,
                 closure_candidate_rejections,
+                candidate_validation_processes,
             })
         },
         |detail| CausalFrontendFailure::unsupported(format!("PARALLEL_EXECUTOR:{detail}")),
@@ -2168,6 +2300,28 @@ mod tests {
                 expected_postimage: Value::Int(*expected),
             })
             .collect()
+    }
+
+    #[test]
+    fn candidate_batch_reports_item_failures_without_reparsing_valid_siblings() {
+        let Some(python_executable) = python() else {
+            return;
+        };
+        let valid = "def target() -> int:\n    return 1\n";
+        let invalid = "def target(:\n    return 1\n";
+        let (outcomes, processes) = validate_python_candidate_batch(
+            &python_executable,
+            &[(valid, "target"), (invalid, "target")],
+        )
+        .unwrap();
+        assert_eq!(processes, 1);
+        assert!(outcomes[0].is_ok());
+        let failure = outcomes[1].as_ref().unwrap_err();
+        assert_eq!(
+            failure.kind,
+            CausalFrontendFailureKind::UnsupportedLanguageSyntax
+        );
+        assert!(failure.detail.starts_with("CANDIDATE_PARSE:"));
     }
 
     #[test]
@@ -2445,6 +2599,7 @@ def transformer_visitor(value: int, baseline: int) -> int:
             ]
         );
         assert_eq!(alternative.closure_candidates.len(), 3);
+        assert_eq!(alternative.candidate_validation_processes, 1);
         let owner_operator = typed_mechanism_improvement_operator_from_receipt(
             &alternative.synthesis,
             alternative.synthesis.receipt_sha256.clone(),
