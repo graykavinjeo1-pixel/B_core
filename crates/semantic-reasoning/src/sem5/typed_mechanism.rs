@@ -672,6 +672,8 @@ struct EnumeratedExpression {
     canonical_key: String,
 }
 
+type ConditionalBranchIndex = BTreeMap<Vec<bool>, (Vec<usize>, Vec<usize>)>;
+
 #[derive(Debug, Clone)]
 struct TransportedImprovementOperator {
     operator_id: String,
@@ -1770,6 +1772,7 @@ fn synthesize_conditional(
     ),
     String,
 > {
+    let mut branch_index = ConditionalBranchIndex::new();
     let mut best: Option<(
         usize,
         String,
@@ -1792,19 +1795,17 @@ fn synthesize_conditional(
         if mask.iter().all(|value| *value) || mask.iter().all(|value| !*value) {
             continue;
         }
-        let true_target = masked_signature(expected, &mask, true)?;
-        let false_target = masked_signature(expected, &mask, false)?;
-        let true_branch = output_candidates.iter().find(|candidate| {
-            masked_signature(&candidate.outputs, &mask, true)
-                .is_ok_and(|signature| signature == true_target)
-        });
-        let false_branch = output_candidates.iter().find(|candidate| {
-            masked_signature(&candidate.outputs, &mask, false)
-                .is_ok_and(|signature| signature == false_target)
-        });
-        let (Some(true_branch), Some(false_branch)) = (true_branch, false_branch) else {
+        let (true_indices, false_indices) = branch_index
+            .entry(mask.clone())
+            .or_insert_with(|| conditional_branch_indices(expected, &mask, output_candidates));
+        let (Some(true_index), Some(false_index)) = (
+            true_indices.first().copied(),
+            false_indices.first().copied(),
+        ) else {
             continue;
         };
+        let true_branch = &output_candidates[true_index];
+        let false_branch = &output_candidates[false_index];
         let nodes = condition
             .nodes
             .saturating_add(true_branch.nodes)
@@ -1833,11 +1834,11 @@ fn synthesize_conditional(
         request,
         expressions,
         output_candidates,
-        expected,
         best_nodes,
         observation_arguments,
         operand_indices,
         api_map,
+        &branch_index,
     )?;
     Ok((Some(condition), postimage, Some(otherwise)))
 }
@@ -1847,11 +1848,11 @@ fn ensure_minimal_conditional_hypotheses_identifiable(
     request: &TypedMechanismSynthesisGoalIR,
     expressions: &[EnumeratedExpression],
     output_candidates: &[EnumeratedExpression],
-    expected: &[Value],
     best_nodes: usize,
     observation_arguments: &[Vec<Value>],
     operand_indices: &BTreeMap<String, usize>,
     api_map: &BTreeMap<String, &ApiDefinition>,
+    branch_index: &ConditionalBranchIndex,
 ) -> Result<(), String> {
     let probes = bounded_identifiability_arguments(request, observation_arguments);
     let mut semantic_classes = BTreeSet::new();
@@ -1871,18 +1872,22 @@ fn ensure_minimal_conditional_hypotheses_identifiable(
         if mask.iter().all(|value| *value) || mask.iter().all(|value| !*value) {
             continue;
         }
-        let true_target = masked_signature(expected, &mask, true)?;
-        let false_target = masked_signature(expected, &mask, false)?;
-        let true_branches = output_candidates.iter().filter(|candidate| {
-            masked_signature(&candidate.outputs, &mask, true)
-                .is_ok_and(|signature| signature == true_target)
-        });
-        for true_branch in true_branches {
-            let false_branches = output_candidates.iter().filter(|candidate| {
-                masked_signature(&candidate.outputs, &mask, false)
-                    .is_ok_and(|signature| signature == false_target)
-            });
-            for false_branch in false_branches {
+        let Some((true_indices, false_indices)) = branch_index.get(&mask) else {
+            return Err("TYPED_MECHANISM_CONDITIONAL_BRANCH_INDEX_MISSING".to_string());
+        };
+        for true_index in true_indices {
+            let true_branch = &output_candidates[*true_index];
+            let Some(required_false_nodes) = best_nodes
+                .checked_sub(condition.nodes)
+                .and_then(|remaining| remaining.checked_sub(true_branch.nodes))
+            else {
+                continue;
+            };
+            for false_index in false_indices {
+                let false_branch = &output_candidates[*false_index];
+                if false_branch.nodes != required_false_nodes {
+                    continue;
+                }
                 if condition
                     .nodes
                     .saturating_add(true_branch.nodes)
@@ -1952,15 +1957,38 @@ fn conditional_probe_signature(
         .map_err(|error| format!("TYPED_MECHANISM_PROBE_SIGNATURE:{error}"))
 }
 
-fn masked_signature(values: &[Value], mask: &[bool], selected: bool) -> Result<String, String> {
-    let selected_values = values
-        .iter()
-        .zip(mask)
-        .filter(|(_, value)| **value == selected)
-        .map(|(value, _)| value)
-        .collect::<Vec<_>>();
-    serde_json::to_string(&selected_values)
-        .map_err(|error| format!("TYPED_MECHANISM_SIGNATURE_SERIALIZE:{error}"))
+fn conditional_branch_indices(
+    expected: &[Value],
+    mask: &[bool],
+    output_candidates: &[EnumeratedExpression],
+) -> (Vec<usize>, Vec<usize>) {
+    let mut true_indices = Vec::new();
+    let mut false_indices = Vec::new();
+    for (index, candidate) in output_candidates.iter().enumerate() {
+        if masked_values_match(&candidate.outputs, expected, mask, true) {
+            true_indices.push(index);
+        }
+        if masked_values_match(&candidate.outputs, expected, mask, false) {
+            false_indices.push(index);
+        }
+    }
+    (true_indices, false_indices)
+}
+
+fn masked_values_match(
+    values: &[Value],
+    expected: &[Value],
+    mask: &[bool],
+    selected: bool,
+) -> bool {
+    values.len() == expected.len()
+        && values.len() == mask.len()
+        && values
+            .iter()
+            .zip(expected)
+            .zip(mask)
+            .filter(|(_, include)| **include == selected)
+            .all(|((value, expected), _)| value == expected)
 }
 
 fn validate_synthesis_envelope(request: &TypedMechanismSynthesisGoalIR) -> Result<(), String> {
