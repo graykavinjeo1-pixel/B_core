@@ -555,6 +555,10 @@ def resolve(call):
 def literal(node):
     if isinstance(node, ast.Constant) and isinstance(node.value, bool): return node.value
     if isinstance(node, ast.Constant) and isinstance(node.value, int): return node.value
+    if isinstance(node, ast.Constant) and isinstance(node.value, bytes): return node.value
+    if isinstance(node, ast.List):
+        values = [literal(element) for element in node.elts]
+        return values if all(value is not None for value in values) else None
     if isinstance(node, ast.UnaryOp) and isinstance(node.op, ast.USub):
         value = literal(node.operand)
         return -value if isinstance(value, int) and not isinstance(value, bool) else None
@@ -563,6 +567,12 @@ def literal(node):
 def encoded(value):
     if isinstance(value, bool): return {"value_kind": "BOOL", "value": value}
     if isinstance(value, int): return {"value_kind": "INT", "value": value}
+    if isinstance(value, bytes): return {"value_kind": "BYTES", "value": list(value)}
+    if isinstance(value, list):
+        if all(isinstance(item, int) and not isinstance(item, bool) for item in value):
+            return {"value_kind": "SEQUENCE", "value": value}
+        if all(isinstance(row, list) and all(isinstance(item, int) and not isinstance(item, bool) for item in row) for row in value):
+            return {"value_kind": "NESTED_SEQUENCE", "value": value}
     return None
 
 def call_observation(call, expected):
@@ -608,12 +618,15 @@ for test in tests:
                 observation = call_observation(test_node.operand, False)
         if observation is not None:
             qualified, values, expected = observation
-            key = json.dumps([values, expected], sort_keys=True, ensure_ascii=False)
+            key = json.dumps([{role: encoded(value) for role, value in values.items()}, encoded(expected)], sort_keys=True, ensure_ascii=False)
             observations.setdefault(qualified, {})[key] = {"values": values, "expected": expected}
 
 UNKNOWN = object()
 def safe_eval(node, environment):
-    if isinstance(node, ast.Constant) and isinstance(node.value, (bool, int)): return node.value
+    if isinstance(node, ast.Constant) and isinstance(node.value, (bool, int, bytes)): return node.value
+    if isinstance(node, ast.List):
+        values = [safe_eval(element, environment) for element in node.elts]
+        return values if all(value is not UNKNOWN for value in values) else UNKNOWN
     if isinstance(node, ast.Name): return environment.get(node.id, UNKNOWN)
     if isinstance(node, ast.UnaryOp):
         value = safe_eval(node.operand, environment)
@@ -702,7 +715,32 @@ json.dump({"ok": True, "alternatives": alternatives}, sys.stdout, ensure_ascii=F
 "#;
 
 fn map_python_type(annotation: &str) -> Option<ProgramType> {
-    match annotation.trim() {
+    let normalized = annotation
+        .chars()
+        .filter(|character| !character.is_whitespace())
+        .collect::<String>();
+    map_normalized_python_type(&normalized)
+}
+
+fn map_normalized_python_type(annotation: &str) -> Option<ProgramType> {
+    let sequence_inner = [
+        "list[",
+        "builtins.list[",
+        "List[",
+        "typing.List[",
+        "Sequence[",
+        "typing.Sequence[",
+    ]
+    .into_iter()
+    .find_map(|prefix| annotation.strip_prefix(prefix)?.strip_suffix(']'));
+    if let Some(inner) = sequence_inner {
+        return match map_normalized_python_type(inner)? {
+            ProgramType::Int => Some(ProgramType::SequenceInt),
+            ProgramType::SequenceInt => Some(ProgramType::NestedSequenceInt),
+            _ => None,
+        };
+    }
+    match annotation {
         "int" | "builtins.int" => Some(ProgramType::Int),
         "bool" | "builtins.bool" => Some(ProgramType::Bool),
         "bytes" | "builtins.bytes" => Some(ProgramType::Bytes),
@@ -1610,6 +1648,82 @@ mod tests {
                 .materialized_patch
                 .candidate_materialization_is_one_to_one
         }));
+    }
+
+    #[test]
+    fn repository_collection_literals_reach_typed_operand_repair() {
+        assert_eq!(
+            map_python_type("typing.List[ List[int] ]"),
+            Some(ProgramType::NestedSequenceInt)
+        );
+        assert_eq!(
+            map_python_type("list[typing.Sequence[int]]"),
+            Some(ProgramType::NestedSequenceInt)
+        );
+        assert_eq!(map_python_type("list[list[list[int]]]"), None);
+        assert_eq!(map_python_type("list[str]"), None);
+        let Some(python_executable) = python() else {
+            return;
+        };
+        let source = r#"def keep_flat(values: list[int]) -> list[int]:
+    return []
+
+def keep_nested(values: list[list[int]]) -> list[list[int]]:
+    return []
+
+def keep_bytes(values: bytes) -> bytes:
+    return b""
+"#;
+        let tests = r#"def test_collections():
+    assert keep_flat([1, 2]) == [1, 2]
+    assert keep_flat([-3, 4]) == [-3, 4]
+    assert keep_nested([[1], [2, 3]]) == [[1], [2, 3]]
+    assert keep_nested([[4, 5]]) == [[4, 5]]
+    assert keep_bytes(b"ab") == b"ab"
+    assert keep_bytes(b"xyz") == b"xyz"
+"#;
+        let receipt =
+            discover_and_synthesize_python_repository(&SourceBoundRepositoryDiscoveryRequestIR {
+                schema: SOURCE_BOUND_REPOSITORY_DISCOVERY_SCHEMA.to_string(),
+                source_relative_path: PathBuf::from("collections.py"),
+                source: source.to_string(),
+                test_sources: vec![RepositoryTestSourceIR {
+                    relative_path: PathBuf::from("tests/test_collections.py"),
+                    source: tests.to_string(),
+                }],
+                python_executable,
+                target_symbols: Vec::new(),
+                allowed_effects: vec![Effect::Pure],
+                max_expression_depth: 2,
+                max_candidates: 1_024,
+            })
+            .unwrap();
+        let by_symbol = receipt
+            .alternatives
+            .iter()
+            .map(|alternative| (alternative.requested_public_symbol.as_str(), alternative))
+            .collect::<BTreeMap<_, _>>();
+        for (symbol, expected_type) in [
+            ("keep_flat", ProgramType::SequenceInt),
+            ("keep_nested", ProgramType::NestedSequenceInt),
+            ("keep_bytes", ProgramType::Bytes),
+        ] {
+            let alternative = by_symbol.get(symbol).expect("collection alternative");
+            assert_eq!(
+                alternative.function_template.operands[0].value_type,
+                expected_type
+            );
+            assert_eq!(alternative.function_template.output_type, expected_type);
+            assert!(matches!(
+                alternative.synthesis.winning_goal.postimage,
+                TypedSyntaxExpressionIR::Operand { .. }
+            ));
+            assert!(
+                alternative
+                    .materialized_patch
+                    .candidate_materialization_is_one_to_one
+            );
+        }
     }
 
     #[test]
