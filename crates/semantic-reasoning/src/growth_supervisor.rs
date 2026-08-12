@@ -7,6 +7,7 @@
 //! must accept every candidate before a new memory generation is promoted.
 
 use std::collections::{BTreeMap, BTreeSet};
+use std::env;
 use std::ffi::OsStr;
 use std::fs::{self, File, OpenOptions};
 use std::io::{Read, Write};
@@ -52,6 +53,7 @@ const MAX_CLASSIFIER_REFINEMENT_EVENTS: usize = 64;
 const MAX_RECENT_SOURCE_PATCH_OUTCOMES: usize = 16;
 const RUNTIME_REPAIR_COUNTER_CONTRACT_REVISION: u64 = 2;
 const MAX_CORE_COHORT_VALIDATION_MS: u64 = 3 * 60 * 1_000;
+const MAX_REPOSITORY_TEST_PATHS: usize = 8;
 
 fn u64_is_zero(value: &u64) -> bool {
     *value == 0
@@ -4232,6 +4234,226 @@ struct CoreCohortValidationReceipt {
     network_writes: u64,
 }
 
+#[derive(Debug, Clone, PartialEq, Eq)]
+struct RepositoryValidationPlan {
+    root_index: usize,
+    root: PathBuf,
+    input_observation_ids: Vec<String>,
+    scope_paths: Vec<PathBuf>,
+    test_paths: Vec<PathBuf>,
+    program: PathBuf,
+    args: Vec<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+struct RepositoryCohortValidationReceipt {
+    schema: String,
+    validation_id: String,
+    originating_diagnostic_id: String,
+    generation: u64,
+    root_index: usize,
+    root_sha256: String,
+    input_observation_ids: Vec<String>,
+    test_paths: Vec<PathBuf>,
+    scope_fingerprint_before: String,
+    scope_fingerprint_after: String,
+    scope_stable_during_validation: bool,
+    program_sha256: String,
+    command: LocalCommandReceipt,
+    success: bool,
+    authoritative_source_write_events: u64,
+    operator_selected: bool,
+    codex_calls: u64,
+    external_llm_calls: u64,
+    network_reads: u64,
+    network_writes: u64,
+}
+
+fn logical_root_relative(logical_path: &str) -> Option<(usize, PathBuf)> {
+    let (root, relative) = logical_path.split_once('/')?;
+    let root_index = root.strip_prefix("ROOT_")?.parse::<usize>().ok()?;
+    let relative = PathBuf::from(relative);
+    if relative.as_os_str().is_empty()
+        || relative.is_absolute()
+        || relative.components().any(|component| {
+            matches!(
+                component,
+                Component::ParentDir
+                    | Component::CurDir
+                    | Component::RootDir
+                    | Component::Prefix(_)
+            )
+        })
+    {
+        return None;
+    }
+    Some((root_index, relative))
+}
+
+fn resolve_local_program(name: &str) -> Result<PathBuf, String> {
+    let requested = Path::new(name);
+    if requested.is_absolute() && requested.is_file() {
+        return fs::canonicalize(requested)
+            .map_err(|error| format!("REPOSITORY_VALIDATOR_PROGRAM_CANONICALIZE:{error}"));
+    }
+    let path =
+        env::var_os("PATH").ok_or_else(|| "REPOSITORY_VALIDATOR_PATH_MISSING".to_string())?;
+    let suffixes: &[&str] = if cfg!(windows) {
+        &[".exe", ".cmd", ".bat", ""]
+    } else {
+        &[""]
+    };
+    for directory in env::split_paths(&path) {
+        for suffix in suffixes {
+            let candidate = directory.join(format!("{name}{suffix}"));
+            if candidate.is_file() {
+                return fs::canonicalize(&candidate)
+                    .map_err(|error| format!("REPOSITORY_VALIDATOR_PROGRAM_CANONICALIZE:{error}"));
+            }
+        }
+    }
+    Err(format!("REPOSITORY_VALIDATOR_PROGRAM_NOT_FOUND:{name}"))
+}
+
+fn validated_repository_file(root: &Path, relative: &Path) -> Result<PathBuf, String> {
+    let canonical_root = fs::canonicalize(root)
+        .map_err(|error| format!("REPOSITORY_VALIDATOR_ROOT_CANONICALIZE:{error}"))?;
+    let joined = root.join(relative);
+    if fs::symlink_metadata(&joined)
+        .map_err(|error| format!("REPOSITORY_VALIDATOR_FILE_METADATA:{error}"))?
+        .file_type()
+        .is_symlink()
+    {
+        return Err("REPOSITORY_VALIDATOR_SYMLINK_FORBIDDEN".to_string());
+    }
+    let canonical = fs::canonicalize(&joined)
+        .map_err(|error| format!("REPOSITORY_VALIDATOR_FILE_CANONICALIZE:{error}"))?;
+    if !canonical.starts_with(&canonical_root) || !canonical.is_file() {
+        return Err("REPOSITORY_VALIDATOR_FILE_OUTSIDE_ROOT".to_string());
+    }
+    Ok(canonical)
+}
+
+fn repository_validation_scope_fingerprint(
+    root: &Path,
+    relative_paths: &[PathBuf],
+    max_file_bytes: u64,
+) -> Result<String, String> {
+    let mut entries = Vec::with_capacity(relative_paths.len());
+    for relative in relative_paths {
+        let path = validated_repository_file(root, relative)?;
+        let metadata = fs::metadata(&path)
+            .map_err(|error| format!("REPOSITORY_VALIDATOR_FILE_METADATA:{error}"))?;
+        if metadata.len() > max_file_bytes {
+            return Err("REPOSITORY_VALIDATOR_SCOPE_FILE_TOO_LARGE".to_string());
+        }
+        let bytes =
+            fs::read(&path).map_err(|error| format!("REPOSITORY_VALIDATOR_SCOPE_READ:{error}"))?;
+        entries.push(format!(
+            "{}:{}:{}",
+            relative.to_string_lossy().replace('\\', "/"),
+            bytes.len(),
+            sha256(&bytes)
+        ));
+    }
+    entries.sort();
+    Ok(sha256(entries.join("\n").as_bytes()))
+}
+
+fn repository_validation_plan(
+    config: &GrowthSupervisorConfig,
+    observations: &[LearningObservation],
+) -> Result<Option<RepositoryValidationPlan>, String> {
+    let mut by_root: BTreeMap<usize, Vec<(&LearningObservation, PathBuf)>> = BTreeMap::new();
+    for observation in observations {
+        if let Some((root_index, relative)) = logical_root_relative(&observation.logical_path) {
+            if root_index < config.watched_roots.len() {
+                by_root
+                    .entry(root_index)
+                    .or_default()
+                    .push((observation, relative));
+            }
+        }
+    }
+    for (root_index, entries) in by_root {
+        let root = config.watched_roots[root_index].clone();
+        if !root.join("pyproject.toml").is_file() {
+            continue;
+        }
+        let implementation_present = entries.iter().any(|(_, relative)| {
+            relative.extension().and_then(OsStr::to_str) == Some("py")
+                && !path_is_dedicated_test(relative)
+        });
+        if !implementation_present {
+            continue;
+        }
+        let mut test_paths = entries
+            .iter()
+            .filter(|(_, relative)| {
+                let is_python = relative.extension().and_then(OsStr::to_str) == Some("py");
+                let is_test = path_is_dedicated_test(relative)
+                    && relative
+                        .file_name()
+                        .and_then(OsStr::to_str)
+                        .is_some_and(|name| name.starts_with("test_"));
+                is_python && is_test
+            })
+            .map(|(_, relative)| relative.clone())
+            .collect::<Vec<_>>();
+        test_paths.sort();
+        test_paths.dedup();
+        test_paths.truncate(MAX_REPOSITORY_TEST_PATHS);
+        if test_paths.is_empty() {
+            continue;
+        }
+        for relative in &test_paths {
+            validated_repository_file(&root, relative)?;
+        }
+        let mut scope_paths = entries
+            .iter()
+            .filter(|(_, relative)| relative.extension().and_then(OsStr::to_str) == Some("py"))
+            .map(|(_, relative)| relative.clone())
+            .collect::<Vec<_>>();
+        scope_paths.extend(test_paths.iter().cloned());
+        scope_paths.push(PathBuf::from("pyproject.toml"));
+        scope_paths.sort();
+        scope_paths.dedup();
+        let mut input_observation_ids = entries
+            .iter()
+            .map(|(observation, _)| observation.observation_id.clone())
+            .collect::<Vec<_>>();
+        input_observation_ids.sort();
+        input_observation_ids.dedup();
+        let Ok(program) = resolve_local_program("python") else {
+            continue;
+        };
+        let mut args = vec![
+            "-m".to_string(),
+            "pytest".to_string(),
+            "-q".to_string(),
+            "--disable-warnings".to_string(),
+            "--maxfail=1".to_string(),
+            "-p".to_string(),
+            "no:cacheprovider".to_string(),
+        ];
+        args.extend(
+            test_paths
+                .iter()
+                .map(|path| path.to_string_lossy().replace('\\', "/")),
+        );
+        return Ok(Some(RepositoryValidationPlan {
+            root_index,
+            root,
+            input_observation_ids,
+            scope_paths,
+            test_paths,
+            program,
+            args,
+        }));
+    }
+    Ok(None)
+}
+
 fn source_mutation_watch_prefix(config: &GrowthSupervisorConfig) -> Result<Option<String>, String> {
     if !config.source_mutation.enabled {
         return Ok(None);
@@ -4375,6 +4597,115 @@ fn validate_blocked_core_cohort(
     ))
 }
 
+fn validate_blocked_repository_cohort(
+    config: &GrowthSupervisorConfig,
+    diagnostic: &AutonomousSelfInspectionReceipt,
+    observations: &[LearningObservation],
+) -> Result<(bool, Vec<String>, Vec<String>), String> {
+    let Some(plan) = repository_validation_plan(config, observations)? else {
+        return Ok((false, Vec::new(), Vec::new()));
+    };
+    let scope_fingerprint_before = repository_validation_scope_fingerprint(
+        &plan.root,
+        &plan.scope_paths,
+        config.resources.max_file_bytes,
+    )?;
+    let program_sha256 = file_sha256(&plan.program, 512 * 1024 * 1024)?;
+    let validation_id = sha256(
+        format!(
+            "REPOSITORY_COHORT_VALIDATION:{}:{}:{}:{}:{}",
+            diagnostic.generation,
+            plan.root_index,
+            scope_fingerprint_before,
+            program_sha256,
+            plan.input_observation_ids.join(":")
+        )
+        .as_bytes(),
+    );
+    let diagnostics = config.state_dir.join("diagnostics");
+    fs::create_dir_all(&diagnostics)
+        .map_err(|error| format!("REPOSITORY_COHORT_DIAGNOSTICS_CREATE:{error}"))?;
+    let receipt_path =
+        diagnostics.join(format!("repository_cohort_validation_{validation_id}.json"));
+    let receipt = if receipt_path.exists() {
+        let existing: RepositoryCohortValidationReceipt = read_json(&receipt_path)?;
+        if existing.schema != "B_REPOSITORY_COHORT_VALIDATION_1"
+            || existing.validation_id != validation_id
+            || existing.generation != diagnostic.generation
+            || existing.root_index != plan.root_index
+            || existing.input_observation_ids != plan.input_observation_ids
+            || existing.test_paths != plan.test_paths
+            || existing.scope_fingerprint_before != scope_fingerprint_before
+            || existing.program_sha256 != program_sha256
+        {
+            return Err("REPOSITORY_COHORT_VALIDATION_RECEIPT_MISMATCH".to_string());
+        }
+        existing
+    } else {
+        let log_path =
+            diagnostics.join(format!("repository_cohort_validation_{validation_id}.log"));
+        let arg_refs = plan.args.iter().map(String::as_str).collect::<Vec<_>>();
+        let command = command_receipt(
+            &plan.program,
+            &arg_refs,
+            &plan.root,
+            &config.state_dir.join("repository_validation_target"),
+            MAX_CORE_COHORT_VALIDATION_MS,
+            &log_path,
+        );
+        let _ = fs::remove_file(&log_path);
+        let command = command?;
+        let scope_fingerprint_after = repository_validation_scope_fingerprint(
+            &plan.root,
+            &plan.scope_paths,
+            config.resources.max_file_bytes,
+        )?;
+        let scope_stable_during_validation = scope_fingerprint_before == scope_fingerprint_after;
+        let receipt = RepositoryCohortValidationReceipt {
+            schema: "B_REPOSITORY_COHORT_VALIDATION_1".to_string(),
+            validation_id: validation_id.clone(),
+            originating_diagnostic_id: diagnostic.diagnostic_id.clone(),
+            generation: diagnostic.generation,
+            root_index: plan.root_index,
+            root_sha256: sha256(plan.root.to_string_lossy().as_bytes()),
+            input_observation_ids: plan.input_observation_ids,
+            test_paths: plan.test_paths,
+            scope_fingerprint_before,
+            scope_fingerprint_after,
+            scope_stable_during_validation,
+            success: command.success && scope_stable_during_validation,
+            program_sha256,
+            command,
+            authoritative_source_write_events: 0,
+            operator_selected: false,
+            codex_calls: 0,
+            external_llm_calls: 0,
+            network_reads: 0,
+            network_writes: 0,
+        };
+        write_immutable_json(&receipt_path, &receipt)?;
+        cleanup_recent_files(&diagnostics, "repository_cohort_validation_", 64)?;
+        receipt
+    };
+    let receipt_sha256 = json_sha256(&receipt)?;
+    let output_observation_ids = if receipt.success {
+        vec![sha256(
+            format!(
+                "REPOSITORY_COHORT_VALIDATION_OBSERVATION:{}:{}",
+                receipt.validation_id, receipt_sha256
+            )
+            .as_bytes(),
+        )]
+    } else {
+        Vec::new()
+    };
+    Ok((
+        receipt.success,
+        vec![receipt_sha256],
+        output_observation_ids,
+    ))
+}
+
 fn runtime_repair_action(
     config: &GrowthSupervisorConfig,
     receipt: &AutonomousSelfInspectionReceipt,
@@ -4444,6 +4775,11 @@ fn runtime_repair_action(
             RuntimeRepairMechanism::ValidateBlockedCoreCohort => {
                 let (success, evidence, outputs) =
                     validate_blocked_core_cohort(config, receipt, evidence_aware_cohort)?;
+                (success, success, evidence, outputs)
+            }
+            RuntimeRepairMechanism::ValidateBlockedRepositoryCohort => {
+                let (success, evidence, outputs) =
+                    validate_blocked_repository_cohort(config, receipt, evidence_aware_cohort)?;
                 (success, success, evidence, outputs)
             }
         };
@@ -4544,6 +4880,47 @@ fn runtime_repair_action(
                     .to_string(),
                 "bounded local core regression passed without source mutation or network access"
                     .to_string(),
+            ],
+            verification_evidence_sha256,
+            performance_metrics: Vec::new(),
+            exact_source_fragments_stored: 0,
+            raw_source_bytes_stored: 0,
+            observed_at_ms: now_ms(),
+        })
+    } else if mechanism == RuntimeRepairMechanism::ValidateBlockedRepositoryCohort
+        && action.executed
+    {
+        let plan = repository_validation_plan(config, evidence_aware_cohort)?
+            .ok_or_else(|| "REPOSITORY_COHORT_VALIDATION_PLAN_LOST".to_string())?;
+        let mut verification_evidence_sha256 = action.execution_evidence_sha256.clone();
+        verification_evidence_sha256.push(action_sha256.clone());
+        Some(LearningObservation {
+            observation_id: action.output_observation_ids[0].clone(),
+            work_event_id: None,
+            logical_path: format!(
+                "ROOT_{}/.b_repository_validation/{}",
+                plan.root_index, action.output_observation_ids[0]
+            ),
+            content_sha256: action_sha256,
+            predecessor_content_sha256: None,
+            actor: WorkActor::LocalTool,
+            work_kind: WorkKind::Verification,
+            work_outcome: WorkOutcome::Pass,
+            features_before: None,
+            features_after: StructuralFeatures::default(),
+            signals: vec![
+                "AUTONOMOUS_RUNTIME_REPAIR".to_string(),
+                "REPOSITORY_COHORT_VALIDATION".to_string(),
+                "REGRESSION_EVIDENCE".to_string(),
+                "VERIFIED_PASS".to_string(),
+            ],
+            composition_roles: vec!["INVARIANT_CHECK".to_string(), "REGRESSION_TEST".to_string()],
+            learning_score: 85,
+            learning_value: LearningValue::High,
+            reasons: vec![
+                "repository implementation and tests were observed without executed pass evidence"
+                    .to_string(),
+                "bounded repository-native tests passed with a stable validation scope".to_string(),
             ],
             verification_evidence_sha256,
             performance_metrics: Vec::new(),
@@ -5359,6 +5736,11 @@ fn step_without_lease(
         cohort_preflight_ready: cohort_has_verification_evidence(&evidence_aware),
         core_cohort_validation_applicable: !core_cohort_observation_ids(config, &evidence_aware)?
             .is_empty(),
+        repository_cohort_validation_applicable: repository_validation_plan(
+            config,
+            &evidence_aware,
+        )?
+        .is_some(),
         source_patch_attempts: recent_source_patch_attempts,
         source_patch_installations: recent_source_patch_installations,
         source_patch_rollbacks: recent_source_patch_rollbacks,
@@ -6470,6 +6852,7 @@ mod tests {
             unconsumed_high_observations: 1,
             cohort_preflight_ready: false,
             core_cohort_validation_applicable: true,
+            repository_cohort_validation_applicable: false,
             source_patch_attempts: 0,
             source_patch_installations: 0,
             source_patch_rollbacks: 0,
@@ -6543,6 +6926,146 @@ mod tests {
     }
 
     #[test]
+    fn blocked_python_repository_cohort_executes_observed_native_tests() {
+        let Ok(python) = resolve_local_program("python") else {
+            return;
+        };
+        if !Command::new(&python)
+            .args(["-c", "import pytest"])
+            .status()
+            .is_ok_and(|status| status.success())
+        {
+            return;
+        }
+        let root = temp_root("blocked-python-repository-validation");
+        let (_, config) = test_config(&root);
+        let repository = config.watched_roots[0].clone();
+        fs::create_dir_all(repository.join("tests")).unwrap();
+        fs::create_dir_all(config.state_dir.join("diagnostics")).unwrap();
+        fs::write(
+            repository.join("pyproject.toml"),
+            "[build-system]\nrequires = []\nbuild-backend = \"\"\n\n[tool.pytest.ini_options]\ntestpaths = [\"tests\"]\n",
+        )
+        .unwrap();
+        fs::write(
+            repository.join("core_module.py"),
+            "def repaired():\n    return True\n",
+        )
+        .unwrap();
+        fs::write(
+            repository.join("tests/test_core_module.py"),
+            "from core_module import repaired\n\ndef test_repaired():\n    assert repaired()\n",
+        )
+        .unwrap();
+        let implementation = LearningObservation {
+            observation_id: "python-implementation".to_string(),
+            work_event_id: None,
+            logical_path: "ROOT_0/core_module.py".to_string(),
+            content_sha256: "c".repeat(64),
+            predecessor_content_sha256: Some("d".repeat(64)),
+            actor: WorkActor::Codex,
+            work_kind: WorkKind::DefectRepair,
+            work_outcome: WorkOutcome::Unknown,
+            features_before: Some(StructuralFeatures::default()),
+            features_after: StructuralFeatures::default(),
+            signals: vec!["DEFECT_REPAIR".to_string()],
+            composition_roles: vec!["IMPLEMENTATION_REPAIR".to_string()],
+            learning_score: 70,
+            learning_value: LearningValue::High,
+            reasons: vec!["python repair".to_string()],
+            verification_evidence_sha256: Vec::new(),
+            performance_metrics: Vec::new(),
+            exact_source_fragments_stored: 0,
+            raw_source_bytes_stored: 0,
+            observed_at_ms: 1,
+        };
+        let test_observation = LearningObservation {
+            observation_id: "python-test".to_string(),
+            logical_path: "ROOT_0/tests/test_core_module.py".to_string(),
+            work_kind: WorkKind::RegressionTest,
+            signals: vec!["REGRESSION_EVIDENCE".to_string(), "TEST_ADDED".to_string()],
+            composition_roles: vec!["REGRESSION_TEST".to_string()],
+            learning_score: 60,
+            reasons: vec!["python regression".to_string()],
+            ..implementation.clone()
+        };
+        let cohort = vec![implementation.clone(), test_observation];
+        let diagnostic = inspect_self(SelfInspectionInput {
+            generation: 3,
+            supervisor_sequence: 10,
+            files_scanned: 2,
+            files_reused: 0,
+            files_hashed: 2,
+            scan_duration_ms: 1,
+            pending_work_events: 0,
+            replayed_unchanged_work_events: 0,
+            naive_cohort_has_verification: false,
+            evidence_aware_cohort_has_verification: false,
+            autonomous_campaigns_enabled: true,
+            campaigns_started: 2,
+            mutual_revalidation_events: 2,
+            evaluator_challenge_cases: EvaluatorMutationKind::ALL.len() as u64,
+            evaluator_required_challenge_cases: EvaluatorMutationKind::ALL.len() as u64,
+            consecutive_failures: 0,
+            plateau_scans: 0,
+            unconsumed_high_observations: 2,
+            cohort_preflight_ready: false,
+            core_cohort_validation_applicable: false,
+            repository_cohort_validation_applicable: true,
+            source_patch_attempts: 0,
+            source_patch_installations: 0,
+            source_patch_rollbacks: 0,
+            source_patch_consecutive_failures: 0,
+            source_patch_validation_ms: 0,
+            source_discovery_no_candidate_streak: 0,
+            last_source_discovery_reason: None,
+            active_runtime_ms: 1,
+            diagnostic_policy: DiagnosticPolicyMemory::default(),
+        })
+        .unwrap();
+
+        let (action, verification) =
+            runtime_repair_action(&config, &diagnostic, &[], &cohort, &cohort)
+                .unwrap()
+                .expect("repository validation action");
+        let verification = verification.expect("repository pass observation");
+
+        assert!(action.executed);
+        assert!(action.changed_runtime_decision);
+        assert_eq!(verification.work_outcome, WorkOutcome::Pass);
+        assert!(verification
+            .logical_path
+            .starts_with("ROOT_0/.b_repository_validation/"));
+        assert!(verification
+            .signals
+            .contains(&"REPOSITORY_COHORT_VALIDATION".to_string()));
+        let lesson = build_lesson(&[implementation, verification]).unwrap();
+        assert!(lesson_has_verification_evidence(&lesson));
+        assert!(lesson
+            .composition_recipe
+            .contains(&"IMPLEMENTATION_REPAIR".to_string()));
+        let receipt = fs::read_dir(config.state_dir.join("diagnostics"))
+            .unwrap()
+            .filter_map(Result::ok)
+            .find(|entry| {
+                entry
+                    .file_name()
+                    .to_string_lossy()
+                    .starts_with("repository_cohort_validation_")
+                    && entry.path().extension().and_then(OsStr::to_str) == Some("json")
+            })
+            .expect("repository validation receipt");
+        let receipt: RepositoryCohortValidationReceipt = read_json(&receipt.path()).unwrap();
+        assert!(receipt.success);
+        assert_eq!(
+            receipt.test_paths,
+            vec![PathBuf::from("tests/test_core_module.py")]
+        );
+        assert!(receipt.scope_stable_during_validation);
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
     fn autonomous_bootstrap_receipt_forms_a_verified_mutual_growth_cohort() {
         let receipt = inspect_self(SelfInspectionInput {
             generation: 0,
@@ -6565,6 +7088,7 @@ mod tests {
             unconsumed_high_observations: 0,
             cohort_preflight_ready: false,
             core_cohort_validation_applicable: false,
+            repository_cohort_validation_applicable: false,
             source_patch_attempts: 0,
             source_patch_installations: 0,
             source_patch_rollbacks: 0,

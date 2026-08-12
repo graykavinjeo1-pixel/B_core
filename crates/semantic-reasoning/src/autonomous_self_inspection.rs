@@ -318,6 +318,7 @@ pub enum RuntimeRepairMechanism {
     EvidenceAwareBoundedCohortRouting,
     BootstrapFrozenCoreEvaluatorCanary,
     ValidateBlockedCoreCohort,
+    ValidateBlockedRepositoryCohort,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -360,6 +361,8 @@ pub struct SelfInspectionInput {
     pub cohort_preflight_ready: bool,
     #[serde(default)]
     pub core_cohort_validation_applicable: bool,
+    #[serde(default)]
+    pub repository_cohort_validation_applicable: bool,
     pub source_patch_attempts: u64,
     pub source_patch_installations: u64,
     pub source_patch_rollbacks: u64,
@@ -881,8 +884,9 @@ fn diagnostic_experiment(
                 input.unconsumed_high_observations
             ),
             intervention_observable: format!(
-                "recognize implementation evidence and run bounded core validation when applicable={}",
-                input.core_cohort_validation_applicable
+                "recognize implementation evidence and run bounded validation when core_applicable={};repository_applicable={}",
+                input.core_cohort_validation_applicable,
+                input.repository_cohort_validation_applicable
             ),
             causal_support: input.unconsumed_high_observations > 0
                 && !input.cohort_preflight_ready,
@@ -983,6 +987,15 @@ pub fn inspect(input: SelfInspectionInput) -> Result<AutonomousSelfInspectionRec
                 true,
             )
         }
+        InternalBottleneckClass::CampaignCohortBlocked
+            if input.repository_cohort_validation_applicable =>
+        {
+            (
+                RepairDisposition::RuntimeRepairActive,
+                Some(RuntimeRepairMechanism::ValidateBlockedRepositoryCohort),
+                true,
+            )
+        }
         InternalBottleneckClass::CampaignCohortBlocked => {
             (RepairDisposition::CapabilityGap, None, true)
         }
@@ -1056,6 +1069,7 @@ mod tests {
             unconsumed_high_observations: 0,
             cohort_preflight_ready: false,
             core_cohort_validation_applicable: false,
+            repository_cohort_validation_applicable: false,
             source_patch_attempts: 0,
             source_patch_installations: 0,
             source_patch_rollbacks: 0,
@@ -1199,6 +1213,7 @@ mod tests {
         value.unconsumed_high_observations = 16;
         value.cohort_preflight_ready = false;
         value.core_cohort_validation_applicable = true;
+        value.repository_cohort_validation_applicable = false;
         let receipt = inspect(value).expect("inspect");
         assert_eq!(
             receipt.selected_bottleneck,
@@ -1221,6 +1236,7 @@ mod tests {
         value.unconsumed_high_observations = 2;
         value.cohort_preflight_ready = false;
         value.core_cohort_validation_applicable = false;
+        value.repository_cohort_validation_applicable = false;
 
         let receipt = inspect(value).expect("inspect non-core cohort");
 
@@ -1230,6 +1246,26 @@ mod tests {
         );
         assert_eq!(receipt.repair_disposition, RepairDisposition::CapabilityGap);
         assert_eq!(receipt.repair_mechanism, None);
+    }
+
+    #[test]
+    fn blocked_repository_cohort_routes_to_bounded_native_validation() {
+        let mut value = input();
+        value.unconsumed_high_observations = 2;
+        value.cohort_preflight_ready = false;
+        value.core_cohort_validation_applicable = false;
+        value.repository_cohort_validation_applicable = true;
+
+        let receipt = inspect(value).expect("inspect repository cohort");
+
+        assert_eq!(
+            receipt.repair_disposition,
+            RepairDisposition::RuntimeRepairActive
+        );
+        assert_eq!(
+            receipt.repair_mechanism,
+            Some(RuntimeRepairMechanism::ValidateBlockedRepositoryCohort)
+        );
     }
 
     #[test]
