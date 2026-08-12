@@ -1973,6 +1973,127 @@ pub fn replay_source_bound_patch(
     Ok(candidate_source)
 }
 
+fn source_bound_receipt_patches(
+    receipt: &SourceBoundCausalReceiptIR,
+) -> Vec<&ReplayableSourceBoundPatchIR> {
+    let mut patches = Vec::new();
+    for alternative in &receipt.alternatives {
+        patches.push(&alternative.replayable_patch);
+        patches.extend(
+            alternative
+                .closure_candidates
+                .iter()
+                .map(|candidate| &candidate.replayable_patch),
+        );
+    }
+    patches.extend(
+        receipt
+            .patch_variants
+            .iter()
+            .map(|variant| &variant.replayable_patch),
+    );
+    patches
+}
+
+fn qualified_symbol_owner(symbol: &str) -> &str {
+    symbol.rsplit_once('.').map_or("", |(owner, _)| owner)
+}
+
+fn template_closure_is_preserved(template: &SourceBoundFunctionTemplateIR) -> bool {
+    template.execution_dependency_closure.first() == Some(&template.qualified_symbol)
+        && template
+            .execution_dependency_closure
+            .iter()
+            .collect::<BTreeSet<_>>()
+            .len()
+            == template.execution_dependency_closure.len()
+        && template
+            .direct_dependencies
+            .iter()
+            .all(|dependency| template.execution_dependency_closure.contains(dependency))
+}
+
+fn source_bound_receipt_claims(receipt: &SourceBoundCausalReceiptIR) -> (bool, bool, bool) {
+    let owner_preserved = receipt.alternatives.iter().all(|alternative| {
+        alternative.requested_public_symbol == alternative.function_template.qualified_symbol
+            && alternative.function_template.owner
+                == qualified_symbol_owner(&alternative.function_template.qualified_symbol)
+            && alternative.closure_candidates.iter().all(|candidate| {
+                candidate.function_template.owner
+                    == qualified_symbol_owner(&candidate.function_template.qualified_symbol)
+            })
+    });
+    let closure_preserved = receipt.alternatives.iter().all(|alternative| {
+        let closure = &alternative.function_template.execution_dependency_closure;
+        template_closure_is_preserved(&alternative.function_template)
+            && alternative.closure_candidates.iter().all(|candidate| {
+                closure.get(candidate.closure_ordinal)
+                    == Some(&candidate.function_template.qualified_symbol)
+                    && template_closure_is_preserved(&candidate.function_template)
+            })
+            && alternative
+                .closure_candidate_rejections
+                .iter()
+                .all(|rejection| {
+                    closure.get(rejection.closure_ordinal) == Some(&rejection.qualified_symbol)
+                })
+    });
+    let atomic_path = source_bound_receipt_patches(receipt)
+        .into_iter()
+        .all(|patch| {
+            patch.predecessor_sha256 == receipt.predecessor_sha256
+                && patch.candidate_materialization_is_one_to_one
+                && matches!(patch.edit, SourceEditAtom::AtomicMultiEdit { .. })
+        });
+    (owner_preserved, closure_preserved, atomic_path)
+}
+
+fn source_bound_receipt_hash(
+    receipt: &SourceBoundCausalReceiptIR,
+) -> Result<String, CausalFrontendFailure> {
+    let mut canonical = receipt.clone();
+    canonical.receipt_sha256.clear();
+    serde_json::to_vec(&canonical)
+        .map(|bytes| sha256(&bytes))
+        .map_err(|error| CausalFrontendFailure::public(format!("RECEIPT_HASH:{error}")))
+}
+
+pub fn validate_source_bound_causal_receipt(
+    receipt: &SourceBoundCausalReceiptIR,
+    source: &str,
+) -> Result<(), CausalFrontendFailure> {
+    if receipt.schema != SOURCE_BOUND_CAUSAL_RECEIPT_SCHEMA
+        || receipt.predecessor_sha256 != sha256(source.as_bytes())
+    {
+        return Err(CausalFrontendFailure::conflict(
+            "SOURCE_BOUND_RECEIPT_PREDECESSOR",
+        ));
+    }
+    let (owner, closure, atomic) = source_bound_receipt_claims(receipt);
+    if !owner || receipt.public_symbol_owner_preserved != owner {
+        return Err(CausalFrontendFailure::conflict(
+            "SOURCE_BOUND_RECEIPT_OWNER_CLAIM",
+        ));
+    }
+    if !closure || receipt.execution_dependency_closure_preserved != closure {
+        return Err(CausalFrontendFailure::conflict(
+            "SOURCE_BOUND_RECEIPT_CLOSURE_CLAIM",
+        ));
+    }
+    if !atomic || receipt.single_and_multi_edit_share_atomic_path != atomic {
+        return Err(CausalFrontendFailure::conflict(
+            "SOURCE_BOUND_RECEIPT_ATOMIC_PATH_CLAIM",
+        ));
+    }
+    for patch in source_bound_receipt_patches(receipt) {
+        replay_source_bound_patch(source, patch)?;
+    }
+    if receipt.receipt_sha256 != source_bound_receipt_hash(receipt)? {
+        return Err(CausalFrontendFailure::conflict("SOURCE_BOUND_RECEIPT_HASH"));
+    }
+    Ok(())
+}
+
 fn build_source_bound_patch_variants(
     source: &str,
     alternatives: &[SourceBoundAlternativeReceiptIR],
@@ -2390,16 +2511,17 @@ pub fn analyze_and_synthesize_source_bound_with_operators(
         alternatives: receipts,
         patch_variants,
         alternative_worker_count,
-        public_symbol_owner_preserved: true,
-        execution_dependency_closure_preserved: true,
-        single_and_multi_edit_share_atomic_path: true,
+        public_symbol_owner_preserved: false,
+        execution_dependency_closure_preserved: false,
+        single_and_multi_edit_share_atomic_path: false,
         receipt_sha256: String::new(),
     };
-    receipt.receipt_sha256 = sha256(
-        serde_json::to_vec(&receipt)
-            .map_err(|error| CausalFrontendFailure::public(format!("RECEIPT_HASH:{error}")))?
-            .as_slice(),
-    );
+    let (owner, closure, atomic) = source_bound_receipt_claims(&receipt);
+    receipt.public_symbol_owner_preserved = owner;
+    receipt.execution_dependency_closure_preserved = closure;
+    receipt.single_and_multi_edit_share_atomic_path = atomic;
+    receipt.receipt_sha256 = source_bound_receipt_hash(&receipt)?;
+    validate_source_bound_causal_receipt(&receipt, &request.source)?;
     Ok(receipt)
 }
 
@@ -3153,6 +3275,45 @@ def transformer_visitor(value: int, baseline: int) -> int:
             }],
         };
         let receipt = analyze_and_synthesize_source_bound(&request).unwrap();
+        validate_source_bound_causal_receipt(&receipt, source).unwrap();
+        assert!(receipt.public_symbol_owner_preserved);
+        assert!(receipt.execution_dependency_closure_preserved);
+        assert!(receipt.single_and_multi_edit_share_atomic_path);
+        let mut forged_owner = receipt.clone();
+        forged_owner.alternatives[0].function_template.owner = "Shadow".to_string();
+        forged_owner.receipt_sha256 = source_bound_receipt_hash(&forged_owner).unwrap();
+        assert_eq!(
+            validate_source_bound_causal_receipt(&forged_owner, source).unwrap_err(),
+            CausalFrontendFailure::conflict("SOURCE_BOUND_RECEIPT_OWNER_CLAIM")
+        );
+        let mut forged_closure = receipt.clone();
+        forged_closure.alternatives[0]
+            .function_template
+            .execution_dependency_closure
+            .clear();
+        forged_closure.receipt_sha256 = source_bound_receipt_hash(&forged_closure).unwrap();
+        assert_eq!(
+            validate_source_bound_causal_receipt(&forged_closure, source).unwrap_err(),
+            CausalFrontendFailure::conflict("SOURCE_BOUND_RECEIPT_CLOSURE_CLAIM")
+        );
+        let mut forged_atomic = receipt.clone();
+        let SourceEditAtom::AtomicMultiEdit { edits } =
+            &forged_atomic.patch_variants[0].replayable_patch.edit
+        else {
+            panic!("atomic path required")
+        };
+        forged_atomic.patch_variants[0].replayable_patch.edit = edits[0].clone();
+        forged_atomic.receipt_sha256 = source_bound_receipt_hash(&forged_atomic).unwrap();
+        assert_eq!(
+            validate_source_bound_causal_receipt(&forged_atomic, source).unwrap_err(),
+            CausalFrontendFailure::conflict("SOURCE_BOUND_RECEIPT_ATOMIC_PATH_CLAIM")
+        );
+        let mut forged_hash = receipt.clone();
+        forged_hash.receipt_sha256 = "0".repeat(64);
+        assert_eq!(
+            validate_source_bound_causal_receipt(&forged_hash, source).unwrap_err(),
+            CausalFrontendFailure::conflict("SOURCE_BOUND_RECEIPT_HASH")
+        );
         let alternative = &receipt.alternatives[0];
         assert_eq!(alternative.function_template.owner, "Rational");
         assert_eq!(

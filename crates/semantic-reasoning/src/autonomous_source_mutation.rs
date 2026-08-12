@@ -43,10 +43,10 @@ pub const SOURCE_REPAIR_LEARNING_SCHEMA: &str = "B_CORE_SOURCE_REPAIR_LEARNING_1
 pub const IMPROVEMENT_OPERATOR_MEMORY_SCHEMA: &str = "B_CORE_IMPROVEMENT_OPERATOR_MEMORY_1";
 pub const MAX_IMPROVEMENT_OPERATOR_GRAPH_NODES: usize = 8;
 const MAX_TYPED_OPERATOR_RECONCILIATION_RECEIPTS: usize = 64;
-// Revision 24 lets a simpler unconditional typed postimage repair every return
-// in a proved one-condition source topology without inventing or rewriting a
-// condition. Conditional and unconditional solutions share atomic validation.
-pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 24;
+// Revision 25 replaces source-bound receipt self-assertions with mechanically
+// recomputed owner, dependency-closure, atomic-path, hash, and replay checks.
+// The supervisor validates that receipt again before consuming a candidate.
+pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 25;
 const KNOWN_REMAINDER_PREDICTED_VALUE: u16 = 35;
 const MAX_REPOSITORY_REPAIR_FAMILY_FILES: usize = 16;
 const KNOWN_REMAINDER_STRATEGIES: [&str; 4] = [
