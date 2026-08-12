@@ -4673,6 +4673,18 @@ fn source_mutation_watch_prefix(config: &GrowthSupervisorConfig) -> Result<Optio
     Ok(None)
 }
 
+// Runtime validation executes while developers or the autonomous mutator may compile the same
+// workspace. Keep one persistent warm cache beside the deployed binaries so Windows never has to
+// relink a test executable that another process is currently holding open.
+fn runtime_validation_target_dir(config: &GrowthSupervisorConfig) -> PathBuf {
+    config
+        .source_mutation
+        .runtime_bin_dir
+        .parent()
+        .unwrap_or(&config.source_mutation.runtime_bin_dir)
+        .join("validation-target")
+}
+
 fn core_cohort_observation_ids(
     config: &GrowthSupervisorConfig,
     observations: &[LearningObservation],
@@ -4739,7 +4751,7 @@ fn validate_blocked_core_cohort(
                 "--locked",
             ],
             &config.source_mutation.source_root,
-            &config.source_mutation.build_target_dir,
+            &runtime_validation_target_dir(config),
             config
                 .source_mutation
                 .validation_timeout_ms
@@ -4862,7 +4874,7 @@ fn validate_blocked_repository_cohort(
             &plan.program,
             &arg_refs,
             &plan.root,
-            &config.state_dir.join("repository_validation_target"),
+            &runtime_validation_target_dir(config),
             MAX_CORE_COHORT_VALIDATION_MS,
             &log_path,
         );
@@ -6221,6 +6233,23 @@ mod tests {
 
         assert!(!old.exists());
         assert!(newest.exists());
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn runtime_validation_cache_isolated_from_source_state_and_developer_target() {
+        let root = temp_root("runtime-validation-target-isolation");
+        let (_, mut config) = test_config(&root);
+        config.source_mutation.source_root = config.watched_roots[0].clone();
+        config.source_mutation.build_target_dir = root.join("developer-target");
+        config.source_mutation.runtime_bin_dir = root.join("runtime/bin");
+
+        let validation_target = runtime_validation_target_dir(&config);
+
+        assert_eq!(validation_target, root.join("runtime/validation-target"));
+        assert!(!validation_target.starts_with(&config.source_mutation.source_root));
+        assert!(!validation_target.starts_with(&config.state_dir));
+        assert_ne!(validation_target, config.source_mutation.build_target_dir);
         fs::remove_dir_all(root).unwrap();
     }
 
