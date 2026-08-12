@@ -154,7 +154,7 @@ impl NodeModulation {
         let emotion = dot(&self.emotion_relevance, &state.emotions);
         let desire = dot(&self.desire_relevance, &state.desires);
         let goal = dot(&self.goal_relevance, &state.goals);
-        (1.0 + 0.25 * emotion + 0.20 * desire + 0.30 * goal).clamp(0.25, 2.0)
+        0.30f32.mul_add(goal, 1.0 + 0.25 * emotion + 0.20 * desire).clamp(0.25, 2.0)
     }
 
     fn goal_fit(&self, state: &CognitiveState) -> f32 {
@@ -1026,10 +1026,8 @@ impl SynapseCore {
         for id in 0..self.meta.len() {
             let access = self.access_count[id] as f32 / total_access;
             let retention = clamp(
-                0.45 * self.importance[id]
-                    + 0.30 * self.average_activation[id]
-                    + 0.20 * access
-                    + 0.05 * self.plasticity[id],
+                0.05f32.mul_add(self.plasticity[id], 0.45 * self.importance[id]
+                    + 0.30 * self.average_activation[id] + 0.20 * access),
             );
             let idle_pressure = (self.node_idle_cycles[id] as f32 / 64.0).min(1.0);
             let consolidation =
@@ -1051,7 +1049,7 @@ impl SynapseCore {
             let idle_pressure = (self.edge_idle_cycles[edge] as f32 / 64.0).min(1.0);
             let before = self.strengths[edge];
             self.strengths[edge] =
-                clamp(self.strengths[edge] * (1.0 - self.synapse_forgetting_rate * idle_pressure));
+                clamp(self.strengths[edge] * self.synapse_forgetting_rate.mul_add(-idle_pressure, 1.0));
             if self.strengths[edge] < before {
                 weakened_synapses += 1;
             }
@@ -1184,7 +1182,7 @@ impl SynapseCore {
             let candidates = vec![cue.cue.clone()];
             let similarity = crate::similarity::lexical_similarity(stimulus, &candidates);
             if similarity > 0.05 {
-                matched_weight += cue.weight * similarity.max(0.35);
+                matched_weight = cue.weight.mul_add(similarity.max(0.35), matched_weight);
                 bindings.push(ContextBinding {
                     cue: cue.cue.clone(),
                     role: cue.role.clone(),
@@ -1219,11 +1217,9 @@ impl SynapseCore {
                 .len() as f32;
             matched_roles / total_roles
         };
-        let mut score = 0.45 * cue_overlap
+        let mut score = 0.10f32.mul_add(schema.reflex_bonus, 0.45 * cue_overlap
             + 0.20 * definition_match
-            + 0.15 * schema.importance
-            + 0.10 * schema.abstraction_level
-            + 0.10 * schema.reflex_bonus;
+            + 0.15 * schema.importance + 0.10 * schema.abstraction_level);
         score = clamp(score + self.correction_bias(stimulus, schema));
 
         if score <= 0.08 {
@@ -1297,7 +1293,7 @@ impl SynapseCore {
             / nodes.len().max(1) as f32;
         let contradiction = self.contradiction_pressure(&nodes);
         let score =
-            activation_sum + relation_strength + importance_bonus + 0.35 * goal_fit - contradiction;
+            0.35f32.mul_add(goal_fit, activation_sum + relation_strength + importance_bonus) - contradiction;
 
         ClusterHypothesis {
             root_id: root,
@@ -1545,7 +1541,7 @@ impl SynapseCore {
     fn update_memory_traces(&mut self) {
         for id in 0..self.activation.len() {
             self.average_activation[id] =
-                0.95 * self.average_activation[id] + 0.05 * self.activation[id];
+                0.05f32.mul_add(self.activation[id], 0.95 * self.average_activation[id]);
             if self.activation[id] > self.activation_floor {
                 self.node_idle_cycles[id] = 0;
             } else {
@@ -1565,8 +1561,7 @@ impl SynapseCore {
             for edge in self.edge_range(*source) {
                 let target = self.targets[edge];
                 if in_cluster[target] && self.relations[edge] == RelationType::Contradiction {
-                    pressure +=
-                        self.activation[*source] * self.activation[target] * self.strengths[edge];
+                    pressure = (self.activation[*source] * self.activation[target]).mul_add(self.strengths[edge], pressure);
                 }
             }
         }
