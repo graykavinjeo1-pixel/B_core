@@ -7645,6 +7645,30 @@ fn step_without_lease(
         )?;
     } else if !executable_generative_substrate_available(&memory.generative) {
         state.plateau_scans = state.plateau_scans.saturating_add(1);
+        // Closing the finite generative campaign catalog is not the same as
+        // exhausting source-level improvement. High-value observations can
+        // remain permanently unconsumed at this boundary; route them into the
+        // typed source synthesizer before entering passive plateau wait.
+        if attempt_discovered_source_repair(config, &mut state, &memory, &scan.index)? {
+            state.active_runtime_ms = state
+                .active_runtime_ms
+                .saturating_add(started.elapsed().as_millis().min(u128::from(u64::MAX)) as u64);
+            save_transition(
+                config,
+                &mut state,
+                SupervisorPhase::SafeStopped,
+                "GENERATIVE_SUBSTRATE_CLOSURE_TRIGGERED_SOURCE_REPAIR_STAGED",
+            )?;
+            return Ok(report_from_state(
+                &state,
+                scan.baseline_created,
+                scan.files_scanned,
+                scan.observations.len(),
+                high_count,
+                None,
+                None,
+            ));
+        }
         save_transition(
             config,
             &mut state,
