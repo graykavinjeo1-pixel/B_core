@@ -1702,12 +1702,6 @@ fn materialize_python_synthesis(
             )?);
         }
     } else {
-        let condition = condition.ok_or_else(|| {
-            CausalFrontendFailure::unsupported("CONDITIONAL_SOURCE_CUT_REQUIRES_CONDITION")
-        })?;
-        let otherwise = otherwise.ok_or_else(|| {
-            CausalFrontendFailure::unsupported("CONDITIONAL_SOURCE_CUT_REQUIRES_OTHERWISE")
-        })?;
         let condition_ranges = template
             .cuts
             .iter()
@@ -1734,23 +1728,41 @@ fn materialize_python_synthesis(
                 "CONDITIONAL_CUT_TOPOLOGY_UNSUPPORTED",
             ));
         }
-        edits.push(replacement_edit(
-            source,
-            *condition_ranges.iter().next().expect("one range"),
-            condition,
-        )?);
-        for cut in &template.cuts {
-            let replacement = match cut.branch {
-                CausalCutBranch::Then => postimage.clone(),
-                CausalCutBranch::Else => otherwise.clone(),
-                CausalCutBranch::Unconditional if fallthrough_topology => otherwise.clone(),
-                CausalCutBranch::Unconditional => {
-                    return Err(CausalFrontendFailure::unsupported(
-                        "CONDITIONAL_CUT_TOPOLOGY_UNSUPPORTED",
-                    ))
+        match (condition, otherwise) {
+            (None, None) => {
+                for cut in &template.cuts {
+                    edits.push(replacement_edit(
+                        source,
+                        cut.postimage_range,
+                        postimage.clone(),
+                    )?);
                 }
-            };
-            edits.push(replacement_edit(source, cut.postimage_range, replacement)?);
+            }
+            (Some(condition), Some(otherwise)) => {
+                edits.push(replacement_edit(
+                    source,
+                    *condition_ranges.iter().next().expect("one range"),
+                    condition,
+                )?);
+                for cut in &template.cuts {
+                    let replacement = match cut.branch {
+                        CausalCutBranch::Then => postimage.clone(),
+                        CausalCutBranch::Else => otherwise.clone(),
+                        CausalCutBranch::Unconditional if fallthrough_topology => otherwise.clone(),
+                        CausalCutBranch::Unconditional => {
+                            return Err(CausalFrontendFailure::unsupported(
+                                "CONDITIONAL_CUT_TOPOLOGY_UNSUPPORTED",
+                            ))
+                        }
+                    };
+                    edits.push(replacement_edit(source, cut.postimage_range, replacement)?);
+                }
+            }
+            _ => {
+                return Err(CausalFrontendFailure::unsupported(
+                    "INCOMPLETE_CONDITIONAL_LOWERING",
+                ))
+            }
         }
     }
     let edit = SourceEditAtom::AtomicMultiEdit { edits };
@@ -3415,6 +3427,44 @@ def helper(first: int, second: int) -> int:
         assert!(replay_source_bound_patch(source, patch)
             .unwrap()
             .starts_with("# 한글 byte span canary\r\n"));
+    }
+
+    #[test]
+    fn conditional_source_accepts_a_simpler_unconditional_postimage() {
+        let Some(python_executable) = python() else {
+            return;
+        };
+        let source = r#"def combine(left: int, right: int) -> int:
+    if left > right:
+        return 0
+    else:
+        return 1
+"#;
+        let request = SourceBoundCausalRequestIR {
+            schema: SOURCE_BOUND_CAUSAL_REQUEST_SCHEMA.to_string(),
+            source_relative_path: PathBuf::from("conditional_combine.py"),
+            source: source.to_string(),
+            python_executable,
+            alternatives: vec![SourceBoundCausalAlternativeIR {
+                alternative_id: "simpler-combine".to_string(),
+                public_symbol: "combine".to_string(),
+                public_observations: observations(&[(2, 3, 5), (4, 7, 11), (-3, 8, 5)]),
+                allowed_effects: vec![Effect::Pure],
+                require_conditional: false,
+                max_expression_depth: 1,
+                max_candidates: 1_024,
+            }],
+        };
+        let receipt = analyze_and_synthesize_source_bound(&request).unwrap();
+        let alternative = &receipt.alternatives[0];
+        assert!(!alternative.synthesis.conditional_synthesized);
+        let SourceEditAtom::AtomicMultiEdit { edits } = &alternative.replayable_patch.edit else {
+            panic!("atomic path required")
+        };
+        assert_eq!(edits.len(), 2);
+        let candidate = replay_source_bound_patch(source, &alternative.replayable_patch).unwrap();
+        assert!(candidate.contains("return ((left) + (right))"));
+        assert!(candidate.contains("if left > right:"));
     }
 
     #[test]
