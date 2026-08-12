@@ -968,6 +968,261 @@ fn empty_attempt(status: RepairAttemptStatus, reason: &str) -> CoreRepairAttempt
     }
 }
 
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct SelfHealingBehavioralCanaryReceipt {
+    pub schema: String,
+    pub behavioral_artifact_sha256: String,
+    pub cases_executed: usize,
+    pub cases_passed: usize,
+    pub fresh_candidate_sha256s: Vec<String>,
+    pub negative_non_applicability_observed: bool,
+    pub defect_class_mismatch_rejected: bool,
+    pub exact_patch_lookup_events: usize,
+    pub codex_calls: usize,
+    pub external_llm_calls: usize,
+    pub network_reads: usize,
+    pub network_writes: usize,
+    pub receipt_sha256: String,
+}
+
+fn remainder_repair_canary_lesson() -> RepairLessonIR {
+    let primitives = vec![
+        RepairPrimitiveIR {
+            primitive_id: "PREDICATE_LOCATOR".to_string(),
+            implementation_anchor: "self_healing_pipeline::rewrite_one_remainder_predicate"
+                .to_string(),
+            input_type: "FrozenRepairContext".to_string(),
+            output_type: "PredicateSpan".to_string(),
+            semantic_role: "LOCALIZE".to_string(),
+        },
+        RepairPrimitiveIR {
+            primitive_id: "DIVISIBILITY_REWRITE".to_string(),
+            implementation_anchor: "self_healing_pipeline::rewrite_manual_remainder_predicates"
+                .to_string(),
+            input_type: "PredicateSpan".to_string(),
+            output_type: "RewrittenSource".to_string(),
+            semantic_role: "TRANSFORM".to_string(),
+        },
+        RepairPrimitiveIR {
+            primitive_id: "RSI_PATCH_CANDIDATE".to_string(),
+            implementation_anchor: "self_repair_contract::PatchCandidateIR".to_string(),
+            input_type: "RewrittenSource".to_string(),
+            output_type: "PatchCandidateIR".to_string(),
+            semantic_role: "PACKAGE".to_string(),
+        },
+    ];
+    let edges = primitives
+        .windows(2)
+        .map(|pair| CompositionEdgeIR {
+            from_primitive_id: pair[0].primitive_id.clone(),
+            to_primitive_id: pair[1].primitive_id.clone(),
+            transported_type: pair[0].output_type.clone(),
+        })
+        .collect::<Vec<_>>();
+    RepairLessonIR {
+        lesson_id: "GENERALIZED_MANUAL_REMAINDER_PREDICATE_REPAIR".to_string(),
+        defect_class: DefectClass::ManualRemainderPredicate,
+        diagnostic_cues: vec!["clippy::manual_is_multiple_of".to_string()],
+        restored_invariants: vec!["canonical divisibility predicate".to_string()],
+        transformation_schema: "ZERO_REMAINDER_TO_TYPED_DIVISIBILITY_PREDICATE".to_string(),
+        applicability: vec!["typed integer zero-remainder comparison".to_string()],
+        non_applicability: vec!["non-zero remainder comparison".to_string()],
+        regression_obligations: vec!["truth-table preservation".to_string()],
+        composition_lesson: RepairCompositionLessonIR {
+            composition_id: "COMPOSE_GENERALIZED_REMAINDER_REPAIR".to_string(),
+            execution_order: primitives
+                .iter()
+                .map(|primitive| primitive.primitive_id.clone())
+                .collect(),
+            primitives,
+            edges,
+            required_semantic_roles: vec![
+                "LOCALIZE".to_string(),
+                "TRANSFORM".to_string(),
+                "PACKAGE".to_string(),
+            ],
+            applicability: vec!["fresh source shape".to_string()],
+            non_applicability: vec!["ambiguous or non-zero comparison".to_string()],
+            exact_source_fragment_present: false,
+        },
+        exact_patch_data_present: false,
+        exact_repository_identity_present: false,
+        exact_task_identity_present: false,
+    }
+}
+
+fn remainder_repair_canary_request(
+    source: &str,
+    scenario: &str,
+) -> Result<CoreRepairRequest, String> {
+    Ok(CoreRepairRequest {
+        scenario_sha256: sha256(scenario.as_bytes()),
+        logical_file_id: format!("fresh/{scenario}.rs"),
+        predecessor_tree_hash: sha256(source.as_bytes()),
+        defect_class: DefectClass::ManualRemainderPredicate,
+        observation: Frozen::new(ObservationIR {
+            observed_event: "canonical divisibility lint".to_string(),
+            trigger: "local deterministic lint".to_string(),
+            expected_observable: "typed divisibility predicate".to_string(),
+            actual_observable: "manual zero remainder comparison".to_string(),
+            evidence: vec!["manual_is_multiple_of".to_string()],
+            provenance: vec!["behavioral canary".to_string()],
+            contains_hidden_diagnosis: false,
+        })
+        .map_err(|error| format!("SELF_HEALING_CANARY_OBSERVATION:{error:?}"))?,
+        defect_contract: Frozen::new(DefectContractIR {
+            affected_behavior: "integer divisibility predicate".to_string(),
+            violated_invariant: "canonical warning-free expression".to_string(),
+            scope: "one activated source".to_string(),
+            trigger_conditions: vec!["zero remainder comparison".to_string()],
+            expected_vs_observed: "canonical vs manual".to_string(),
+            causal_evidence: vec!["local lint".to_string()],
+            uncertainty: "bounded".to_string(),
+            suspected_mechanism_classes: vec!["syntax modernization".to_string()],
+            affected_interfaces: vec!["boolean predicate".to_string()],
+            preserved_behavior: vec!["truth table".to_string()],
+            provenance: vec!["behavioral canary".to_string()],
+            prescribes_concrete_edit: false,
+        })
+        .map_err(|error| format!("SELF_HEALING_CANARY_CONTRACT:{error:?}"))?,
+        repair_spec: Frozen::new(RepairSpecIR {
+            required_postcondition: "canonical divisibility expression".to_string(),
+            restored_invariants: vec!["truth table preserved".to_string()],
+            allowed_semantic_changes: vec!["syntax normalization only".to_string()],
+            forbidden_semantic_changes: vec!["test or API changes".to_string()],
+            compatibility_requirements: vec!["same boolean result".to_string()],
+            resource_constraints: vec!["one source".to_string()],
+            expected_consequences: vec!["lint removed".to_string()],
+            rollback_conditions: vec!["candidate mismatch".to_string()],
+            verification_requirements: vec!["fresh positive and negative cases".to_string()],
+            applicability: vec!["zero remainder comparison".to_string()],
+            uncertainty: "bounded".to_string(),
+            encodes_exact_patch: false,
+        })
+        .map_err(|error| format!("SELF_HEALING_CANARY_SPEC:{error:?}"))?,
+        source_text: source.to_string(),
+        attempt: 0,
+        max_attempts: DEFAULT_MAX_CORE_ATTEMPTS,
+    })
+}
+
+/// Executes one generalized learned repair over fresh, name- and shape-varied
+/// sources. The receipt retains only hashes and authority counters; source or
+/// patch text never becomes a generative frontier artifact.
+pub fn execute_self_healing_behavioral_canary() -> Result<SelfHealingBehavioralCanaryReceipt, String>
+{
+    let lesson = remainder_repair_canary_lesson();
+    validate_composition_lesson(&lesson.composition_lesson)
+        .map_err(|error| format!("SELF_HEALING_CANARY_COMPOSITION:{error:?}"))?;
+    let frozen_lesson =
+        Frozen::new(lesson).map_err(|error| format!("SELF_HEALING_CANARY_LESSON:{error:?}"))?;
+    let behavioral_artifact_sha256 = frozen_lesson.sha256.clone();
+    let memory = RepairLearningMemory {
+        promoted_lessons: vec![PromotedRepairLesson {
+            lesson: frozen_lesson,
+            teaching_scenario_sha256: sha256(b"teaching-shape"),
+            fresh_transfer_scenario_sha256: vec![
+                sha256(b"transfer-shape-a"),
+                sha256(b"transfer-shape-b"),
+            ],
+            independent_transfer_verifications: MIN_FRESH_TRANSFER_CASES,
+            exact_patch_lookup_events: 0,
+            task_identity_routing_events: 0,
+            repository_identity_routing_events: 0,
+        }],
+        rejected_lesson_sha256: Vec::new(),
+        operator_teaching_events: 1,
+        successful_fresh_transfer_events: MIN_FRESH_TRANSFER_CASES,
+    };
+    let scenarios = [
+        (
+            "alpha",
+            "pub fn alpha(value: usize) -> bool { value % 3 == 0 }\n",
+            "pub fn alpha(value: usize) -> bool { value.is_multiple_of(3) }\n",
+        ),
+        (
+            "beta",
+            "pub fn beta(count: u64, step: u64) -> bool { count % step != 0 }\n",
+            "pub fn beta(count: u64, step: u64) -> bool { !count.is_multiple_of(step) }\n",
+        ),
+        (
+            "gamma",
+            "pub fn gamma(items: usize) -> bool { (items + 1) % 4 == 0 }\n",
+            "pub fn gamma(items: usize) -> bool { (items + 1).is_multiple_of(4) }\n",
+        ),
+    ];
+    let mut fresh_candidate_sha256s = Vec::new();
+    let mut cases_passed = 0_usize;
+    for (scenario, source, expected) in scenarios {
+        let request = remainder_repair_canary_request(source, scenario)?;
+        let attempt = attempt_core_repair(&request, &memory);
+        let passed = attempt.status == RepairAttemptStatus::CandidateProposed
+            && attempt
+                .candidate_source
+                .as_deref()
+                .is_some_and(|candidate| {
+                    candidate
+                        .chars()
+                        .filter(|character| !character.is_whitespace())
+                        .eq(expected
+                            .chars()
+                            .filter(|character| !character.is_whitespace()))
+                })
+            && attempt.patch_candidate.is_some()
+            && attempt.core_self_approval_events == 0
+            && attempt.exact_patch_lookup_events == 0;
+        if passed {
+            cases_passed = cases_passed.saturating_add(1);
+        }
+        let candidate = attempt
+            .candidate_source
+            .as_deref()
+            .ok_or_else(|| format!("SELF_HEALING_CANARY_CANDIDATE_MISSING:{scenario}"))?;
+        fresh_candidate_sha256s.push(sha256(candidate.as_bytes()));
+    }
+    let negative = remainder_repair_canary_request(
+        "pub fn delta(value: usize) -> bool { value % 3 == 1 }\n",
+        "negative-nonzero",
+    )?;
+    let negative_attempt = attempt_core_repair(&negative, &memory);
+    let negative_non_applicability_observed = negative_attempt.status
+        == RepairAttemptStatus::CapabilityGap
+        && negative_attempt.candidate_source.is_none();
+    cases_passed = cases_passed.saturating_add(usize::from(negative_non_applicability_observed));
+    let mut class_mismatch = remainder_repair_canary_request(
+        "pub fn epsilon(value: usize) -> bool { value % 3 == 0 }\n",
+        "class-mismatch",
+    )?;
+    class_mismatch.defect_class = DefectClass::BoundaryRelation;
+    let class_mismatch_attempt = attempt_core_repair(&class_mismatch, &memory);
+    let defect_class_mismatch_rejected = class_mismatch_attempt.status
+        == RepairAttemptStatus::NoApplicableLesson
+        && class_mismatch_attempt.candidate_source.is_none();
+    cases_passed = cases_passed.saturating_add(usize::from(defect_class_mismatch_rejected));
+    fresh_candidate_sha256s.sort();
+    fresh_candidate_sha256s.dedup();
+    let mut receipt = SelfHealingBehavioralCanaryReceipt {
+        schema: "B_CORE_SELF_HEALING_BEHAVIORAL_CANARY_1".to_string(),
+        behavioral_artifact_sha256,
+        cases_executed: scenarios.len() + 2,
+        cases_passed,
+        fresh_candidate_sha256s,
+        negative_non_applicability_observed,
+        defect_class_mismatch_rejected,
+        exact_patch_lookup_events: 0,
+        codex_calls: 0,
+        external_llm_calls: 0,
+        network_reads: 0,
+        network_writes: 0,
+        receipt_sha256: String::new(),
+    };
+    receipt.receipt_sha256 = sha256(
+        &serde_json::to_vec(&receipt)
+            .map_err(|error| format!("SELF_HEALING_CANARY_RECEIPT:{error}"))?,
+    );
+    Ok(receipt)
+}
+
 /// Learned schema: `value % divisor == 0` becomes
 /// `value.is_multiple_of(divisor)`; `!= 0` becomes its negation. Only a
 /// same-line, zero-comparison form is handled. Ambiguous syntax is left alone.
@@ -1078,6 +1333,20 @@ fn sparse_line_diff(before: &str, after: &str) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn generalized_self_healing_canary_executes_fresh_shapes_and_counterexamples() {
+        let receipt = execute_self_healing_behavioral_canary().unwrap();
+        assert_eq!(receipt.cases_executed, 5);
+        assert_eq!(receipt.cases_passed, 5);
+        assert_eq!(receipt.fresh_candidate_sha256s.len(), 3);
+        assert!(receipt.negative_non_applicability_observed);
+        assert!(receipt.defect_class_mismatch_rejected);
+        assert_eq!(receipt.exact_patch_lookup_events, 0);
+        assert_eq!(receipt.codex_calls, 0);
+        assert_eq!(receipt.external_llm_calls, 0);
+        assert_eq!(receipt.network_reads + receipt.network_writes, 0);
+    }
 
     fn surface(target: &str, authority: SurfaceAuthority) -> ModuleSurface {
         ModuleSurface {

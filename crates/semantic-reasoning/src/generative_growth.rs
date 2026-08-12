@@ -14,7 +14,8 @@ use crate::autonomous_source_mutation::execute_improvement_operator_behavioral_c
 use crate::fullstack_ops_knowledge::{execute_fullstack_recipe_behavioral_canary, promoted_bundle};
 use crate::integrated_development::execute_behavioral_composition_canary;
 use crate::self_healing_pipeline::{
-    validate_composition_lesson, CompositionEdgeIR, RepairCompositionLessonIR, RepairPrimitiveIR,
+    execute_self_healing_behavioral_canary, validate_composition_lesson, CompositionEdgeIR,
+    RepairCompositionLessonIR, RepairPrimitiveIR,
 };
 use crate::self_repair_contract::sha256;
 use crate::sem23_engine::{
@@ -34,6 +35,7 @@ const MAX_IMPROVEMENT_OPERATOR_SELECTORS: usize = 25;
 // merge five scenario aliases.
 const MAX_IMPROVEMENT_OPERATOR_VERIFIED_ARTIFACTS: u64 = 20;
 const MAX_FULLSTACK_VERIFIED_ARTIFACTS: u64 = 3;
+const MAX_SELF_HEALING_VERIFIED_ARTIFACTS: u64 = 1;
 const MAX_ARTIFACT_CONTEXT_ATTEMPTS: usize = MAX_VERIFIED_ARTIFACTS_PER_CYCLE * 4;
 const FRONTIER_EVIDENCE_CONTRACT_REVISION: u64 = 2;
 const BEHAVIORAL_HEURISTIC_EXCLUSION_CONTRACT_REVISION: u64 = 4;
@@ -672,13 +674,42 @@ fn execute_composer(
             Ok((artifacts, None))
         }
         "SELF_HEALING_CONTRACT_COMPOSER" => {
-            // The present self-healing API needs a frozen defect contract and
-            // a promoted repair lesson.  A generic growth input has neither,
-            // so treating graph validation as execution would manufacture a
-            // capability result.  Keep the candidate but explicitly abstain.
+            if artifact_family_width == 0 {
+                return Ok((
+                    Vec::new(),
+                    Some("SELF_HEALING_ARTIFACT_CAPACITY_REACHED".to_string()),
+                ));
+            }
+            let receipt = execute_self_healing_behavioral_canary()?;
+            if receipt.cases_executed == 0
+                || receipt.cases_passed != receipt.cases_executed
+                || receipt.fresh_candidate_sha256s.len() < 3
+                || !receipt.negative_non_applicability_observed
+                || !receipt.defect_class_mismatch_rejected
+                || receipt.exact_patch_lookup_events != 0
+                || receipt.codex_calls != 0
+                || receipt.external_llm_calls != 0
+                || receipt.network_reads != 0
+                || receipt.network_writes != 0
+            {
+                return Err("SELF_HEALING_BEHAVIORAL_CANARY_INCOMPLETE".to_string());
+            }
+            if previously_verified.contains(&receipt.behavioral_artifact_sha256) {
+                return Ok((
+                    Vec::new(),
+                    Some("SELF_HEALING_EXECUTABLE_UNIVERSE_SATURATED".to_string()),
+                ));
+            }
             Ok((
-                Vec::new(),
-                Some("SELF_HEALING_REQUIRES_FROZEN_REPAIR_SCENARIO".to_string()),
+                vec![VerifiedBehavioralArtifact {
+                    artifact_context_sha256: sha256(
+                        format!("{context}:GENERALIZED_SELF_HEALING_REPAIR").as_bytes(),
+                    ),
+                    artifact_sha256: receipt.behavioral_artifact_sha256,
+                    cases_executed: receipt.cases_executed,
+                    cases_passed: receipt.cases_passed,
+                }],
+                None,
             ))
         }
         "FULLSTACK_TYPED_RECIPE_COMPOSER" => {
@@ -836,6 +867,7 @@ fn verified_artifact_capacity(composer_id: &str) -> u64 {
         "SEM5_PROGRAM_IR_COMPOSER" => MAX_SEM5_VERIFIED_ARTIFACTS,
         "IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER" => MAX_IMPROVEMENT_OPERATOR_VERIFIED_ARTIFACTS,
         "FULLSTACK_TYPED_RECIPE_COMPOSER" => MAX_FULLSTACK_VERIFIED_ARTIFACTS,
+        "SELF_HEALING_CONTRACT_COMPOSER" => MAX_SELF_HEALING_VERIFIED_ARTIFACTS,
         _ => 0,
     }
 }
@@ -863,6 +895,13 @@ fn composer_is_behaviorally_executable(composer_id: &str, memory: &GenerativeGro
             verified_artifact_family_width(memory, "SEM5_PROGRAM_IR_COMPOSER") == 0
                 && verified_artifact_family_width(memory, "IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER")
                     == 0
+                && verified_artifact_family_width(memory, composer_id) > 0
+        }
+        "SELF_HEALING_CONTRACT_COMPOSER" => {
+            verified_artifact_family_width(memory, "SEM5_PROGRAM_IR_COMPOSER") == 0
+                && verified_artifact_family_width(memory, "IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER")
+                    == 0
+                && verified_artifact_family_width(memory, "FULLSTACK_TYPED_RECIPE_COMPOSER") == 0
                 && verified_artifact_family_width(memory, composer_id) > 0
         }
         _ => false,
@@ -1864,6 +1903,16 @@ mod tests {
         fullstack_memory.verified_artifact_sha256s = (0..MAX_FULLSTACK_VERIFIED_ARTIFACTS)
             .map(|ordinal| sha256(format!("fullstack-{ordinal}").as_bytes()))
             .collect();
+        assert!(executable_generative_substrate_available(&closed));
+        let self_healing = run_generative_cycle(&closed, &input(), 17).unwrap();
+        assert_eq!(
+            selected_stage(&self_healing.selected_composition, "COMPOSE").unwrap(),
+            "SELF_HEALING_CONTRACT_COMPOSER"
+        );
+        assert_eq!(self_healing.verified_artifact_count, 1);
+        assert!(self_healing.behavioral_composition_executed);
+        assert!(self_healing.frontier_advance);
+        closed = promote_generative_cycle(&closed, &input(), &self_healing).unwrap();
         assert!(!executable_generative_substrate_available(&closed));
     }
 

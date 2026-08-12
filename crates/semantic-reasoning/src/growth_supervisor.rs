@@ -1142,6 +1142,10 @@ pub fn self_check() -> SelfCheck {
                 .to_string(),
             "FULLSTACK_RECIPE_CANARIES_REJECT_WRONG_INPUT_CONTRACT_AND_ATOM_ORDER"
                 .to_string(),
+            "GENERALIZED_SELF_HEALING_LESSONS_EXECUTE_ON_FRESH_NAME_AND_SHAPE_VARIANTS"
+                .to_string(),
+            "SELF_HEALING_CANARIES_REJECT_NON_APPLICABLE_AND_DEFECT_CLASS_COUNTEREXAMPLES"
+                .to_string(),
             "FRONTIER_CONTINUATION_REQUIRES_A_REMAINING_EXECUTABLE_SUCCESSOR_SUBSTRATE"
                 .to_string(),
             "CAMPAIGN_FREEZE_DEFERS_AT_EXECUTABLE_GENERATIVE_SUBSTRATE_CLOSURE".to_string(),
