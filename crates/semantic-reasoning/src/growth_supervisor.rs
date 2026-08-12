@@ -977,6 +977,9 @@ pub struct SelfCheck {
     pub installed_compositions_are_runtime_callable: bool,
     pub typed_lowering_preserves_installed_capability_registry: bool,
     pub generated_capabilities_dispatch_by_program_hash: bool,
+    pub contextual_typed_task_generation_enabled: bool,
+    pub verified_program_artifact_frontier_tracked: bool,
+    pub wrapper_composition_count_excluded_from_capability_count: bool,
     pub canonical_grammar_role_operations_enabled: bool,
     pub same_type_call_role_permutations_bounded: bool,
     pub symmetric_state_transform_compilation_enabled: bool,
@@ -1078,6 +1081,11 @@ pub fn self_check() -> SelfCheck {
             "TYPED_LOWERING_EXTENDS_A_CONTENT_ADDRESSED_CAPABILITY_REGISTRY_INSTEAD_OF_OVERWRITING_PRIOR_CALLABLES"
                 .to_string(),
             "INSTALLED_TYPED_CAPABILITIES_DISPATCH_BY_PROGRAM_IR_HASH".to_string(),
+            "GENERATIVE_CONTEXT_SELECTS_A_BOUNDED_TYPED_TASK_BEFORE_SEM5_PROGRAM_SYNTHESIS"
+                .to_string(),
+            "VERIFIED_PROGRAM_IR_HASHES_ARE_THE_GENERATIVE_CAPABILITY_FRONTIER_UNIT".to_string(),
+            "PREDICTOR_COMPOSER_WRAPPER_COUNT_IS_NOT_REPORTED_AS_LEARNED_CAPABILITY_COUNT"
+                .to_string(),
             "CALL_ARGUMENT_ROLES_COMPILE_FROM_NAME_INDEPENDENT_TYPED_GRAMMAR_OPERATIONS"
                 .to_string(),
             "SAME_TYPE_CALL_ARGUMENTS_GENERATE_BOUNDED_INJECTIVE_ROLE_ASSIGNMENTS".to_string(),
@@ -1151,6 +1159,9 @@ pub fn self_check() -> SelfCheck {
         installed_compositions_are_runtime_callable: true,
         typed_lowering_preserves_installed_capability_registry: true,
         generated_capabilities_dispatch_by_program_hash: true,
+        contextual_typed_task_generation_enabled: true,
+        verified_program_artifact_frontier_tracked: true,
+        wrapper_composition_count_excluded_from_capability_count: true,
         canonical_grammar_role_operations_enabled: true,
         same_type_call_role_permutations_bounded: true,
         symmetric_state_transform_compilation_enabled: true,
@@ -2346,11 +2357,7 @@ fn restore_memory_projection(
         .len()
         .min(u64::MAX as usize) as u64;
     state.generative_predictions = memory.generative.prediction_records;
-    state.valuable_combinations_learned = memory
-        .generative
-        .accepted_compositions
-        .len()
-        .min(u64::MAX as usize) as u64;
+    state.valuable_combinations_learned = memory.generative.distinct_verified_artifact_count();
     state.generative_memory_reuse_events = memory.generative.reuse_events;
     state.generative_self_application_events = memory.generative.self_application_events;
     state.generative_exploration_events = memory.generative.exploration_events;
@@ -4536,11 +4543,7 @@ fn promote_candidate(
         .min(u64::MAX as usize) as u64;
     state.mutual_revalidation_events = state.mutual_revalidation_events.saturating_add(1);
     state.generative_predictions = memory.generative.prediction_records;
-    state.valuable_combinations_learned = memory
-        .generative
-        .accepted_compositions
-        .len()
-        .min(u64::MAX as usize) as u64;
+    state.valuable_combinations_learned = memory.generative.distinct_verified_artifact_count();
     state.generative_memory_reuse_events = memory.generative.reuse_events;
     state.generative_self_application_events = memory.generative.self_application_events;
     state.generative_exploration_events = memory.generative.exploration_events;
@@ -6316,11 +6319,11 @@ fn accepted_sem5_composition_context(memory: &GrowthMemory) -> Option<String> {
         .rev()
         .find(|accepted| {
             accepted.successful_uses > 0
-                && accepted
-                    .composition
-                    .primitives
-                    .iter()
-                    .any(|primitive| primitive.primitive_id == "SEM5_PROGRAM_IR_COMPOSER")
+                && accepted.composition.primitives.iter().any(|primitive| {
+                    primitive
+                        .primitive_id
+                        .starts_with("SEM5_PROGRAM_IR_COMPOSER")
+                })
         })
         .and_then(|accepted| accepted.context_use_counts.keys().next_back().cloned())
 }
@@ -6665,11 +6668,7 @@ fn step_without_lease(
     state.classifier_unsupported_refinements_suppressed =
         memory.classifier.unsupported_refinements_suppressed;
     state.generative_predictions = memory.generative.prediction_records;
-    state.valuable_combinations_learned = memory
-        .generative
-        .accepted_compositions
-        .len()
-        .min(u64::MAX as usize) as u64;
+    state.valuable_combinations_learned = memory.generative.distinct_verified_artifact_count();
     state.generative_memory_reuse_events = memory.generative.reuse_events;
     state.generative_self_application_events = memory.generative.self_application_events;
     state.generative_exploration_events = memory.generative.exploration_events;
@@ -7622,6 +7621,9 @@ mod tests {
         assert!(check.installed_compositions_are_runtime_callable);
         assert!(check.typed_lowering_preserves_installed_capability_registry);
         assert!(check.generated_capabilities_dispatch_by_program_hash);
+        assert!(check.contextual_typed_task_generation_enabled);
+        assert!(check.verified_program_artifact_frontier_tracked);
+        assert!(check.wrapper_composition_count_excluded_from_capability_count);
         assert!(check.canonical_grammar_role_operations_enabled);
         assert!(check.same_type_call_role_permutations_bounded);
         assert!(check.symmetric_state_transform_compilation_enabled);

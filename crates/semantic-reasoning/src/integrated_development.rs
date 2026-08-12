@@ -48,6 +48,7 @@ const CAPABILITY_REGISTRY_SCHEMA_REVISION: u64 = 4;
 const MAX_INSTALLED_TYPED_CAPABILITIES: usize = 64;
 const CAPABILITY_BEGIN_PREFIX: &str = "// B_CORE_CAPABILITY_BEGIN:";
 const CAPABILITY_END_PREFIX: &str = "// B_CORE_CAPABILITY_END:";
+const MAX_CONTEXTUAL_TYPED_TASK_ATTEMPTS: usize = 32;
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct CapabilityOpportunityIR {
@@ -613,37 +614,71 @@ pub fn compose_behavioral_canary_candidate(
     if context_sha256.len() != 64 || !context_sha256.bytes().all(|byte| byte.is_ascii_hexdigit()) {
         return Err("BEHAVIORAL_CANARY_CONTEXT_INVALID".to_string());
     }
-    let sets = generate_task_sets(0x1A7E_600D);
+    let context_seed = u64::from_str_radix(&context_sha256[..16], 16)
+        .map_err(|error| format!("BEHAVIORAL_CANARY_SEED:{error}"))?
+        ^ 0x1A7E_600D;
+    let sets = generate_task_sets(context_seed.max(1));
     let candidates = discover_candidates(&sets.discovery);
     let promotions = initial_promotions(&candidates, &sets.calibration);
-    let task = sets
+    if sets.adversarial.is_empty() {
+        return Err("BEHAVIORAL_CANARY_TASK_MISSING".to_string());
+    }
+    let selection_bits = u64::from_str_radix(&context_sha256[16..32], 16)
+        .map_err(|error| format!("BEHAVIORAL_CANARY_SELECTION:{error}"))?;
+    let start = (selection_bits as usize) % sets.adversarial.len();
+    let attempts = sets
         .adversarial
-        .first()
-        .ok_or_else(|| "BEHAVIORAL_CANARY_TASK_MISSING".to_string())?
-        .visible
-        .clone();
-    let candidate = compose_existing_sem5_capability(CompositionWork {
-        opportunity: CapabilityOpportunityIR {
-            observed_gap: format!("behavioral composition canary context {context_sha256}"),
-            desired_behavior: "compose and execute a typed multi-stage relation".to_string(),
-            trigger: "generative growth selected the SEM-5 composer".to_string(),
-            evidence: vec![context_sha256.to_string()],
-            preserved_behavior: vec![
-                "do not change verifier, installer, or acceptance policy".to_string()
-            ],
-            resource_constraints: vec!["execute three fresh local semantic cases".to_string()],
-            verification_requirements: vec![
-                "type/effect audit".to_string(),
-                "fresh semantic equivalence cases".to_string(),
-            ],
-            provenance: vec!["SEM5_EXISTING_SYNTHESIZER".to_string()],
-            operator_selected_implementation: false,
-        },
-        task: task.clone(),
-        promotions,
-        predecessor_tree_hash: AUTHORITATIVE_PREDECESSOR.to_string(),
-    })?;
-    Ok((candidate, task))
+        .len()
+        .min(MAX_CONTEXTUAL_TYPED_TASK_ATTEMPTS);
+    let mut failure_classes = BTreeSet::new();
+    for offset in 0..attempts {
+        let task = sets.adversarial[(start + offset) % sets.adversarial.len()]
+            .visible
+            .clone();
+        let result = compose_existing_sem5_capability(CompositionWork {
+            opportunity: CapabilityOpportunityIR {
+                observed_gap: format!(
+                    "behavioral composition context {context_sha256} task {}",
+                    task.task_id
+                ),
+                desired_behavior: format!(
+                    "compose and execute typed relation with output {:?}",
+                    task.output_type
+                ),
+                trigger: "generative growth selected the SEM-5 typed composer".to_string(),
+                evidence: vec![context_sha256.to_string(), task.task_id.clone()],
+                preserved_behavior: vec![
+                    "do not change verifier, installer, or acceptance policy".to_string()
+                ],
+                resource_constraints: vec![format!(
+                    "bounded typed synthesis attempts <= {MAX_CONTEXTUAL_TYPED_TASK_ATTEMPTS}"
+                )],
+                verification_requirements: vec![
+                    "type/effect audit".to_string(),
+                    "fresh semantic equivalence cases".to_string(),
+                ],
+                provenance: vec![
+                    "SEM5_EXISTING_SYNTHESIZER".to_string(),
+                    "CONTEXT_DERIVED_TYPED_TASK".to_string(),
+                ],
+                operator_selected_implementation: false,
+            },
+            task: task.clone(),
+            promotions: promotions.clone(),
+            predecessor_tree_hash: AUTHORITATIVE_PREDECESSOR.to_string(),
+        });
+        match result {
+            Ok(candidate) => return Ok((candidate, task)),
+            Err(error) => {
+                failure_classes.insert(error.split(':').next().unwrap_or("UNKNOWN").to_string());
+            }
+        }
+    }
+    Err(format!(
+        "CONTEXTUAL_TYPED_TASK_EXHAUSTED:{}:{}",
+        attempts,
+        failure_classes.into_iter().collect::<Vec<_>>().join(",")
+    ))
 }
 
 pub fn execute_behavioral_composition_canary(
@@ -1021,22 +1056,34 @@ mod tests {
 
         assert_eq!(first.cases_executed, 3);
         assert_eq!(first.cases_passed, 3);
-        if first.installed_capability_present {
-            assert!(first.installed_program_match);
+        if first.installed_program_match {
+            assert!(first.installed_capability_present);
             assert!(first.installed_source_schema_revision > 0);
             assert!(first.installed_registry_capability_count > 0);
             assert_eq!(first.installed_cases_executed, first.cases_executed);
             assert_eq!(first.installed_cases_passed, first.cases_passed);
             assert!(first.installed_output_sha256.is_some());
         } else {
-            assert!(!first.installed_program_match);
-            assert_eq!(first.installed_source_schema_revision, 0);
-            assert_eq!(first.installed_registry_capability_count, 0);
             assert_eq!(first.installed_cases_executed, 0);
+            assert_eq!(first.installed_cases_passed, 0);
             assert!(first.installed_output_sha256.is_none());
         }
         assert_ne!(first.receipt_sha256, second.receipt_sha256);
+        assert_ne!(first.program_ir_sha256, second.program_ir_sha256);
         assert!(!first.used_primitive_ids.is_empty());
+    }
+
+    #[test]
+    fn contextual_typed_task_generation_expands_program_ir_frontier() {
+        let mut program_hashes = BTreeSet::new();
+        for index in 1_u64..=8 {
+            let context = sha256(format!("context-{index}").as_bytes());
+            let (candidate, task) =
+                compose_behavioral_canary_candidate(&context).expect("contextual candidate");
+            program_hashes.insert(candidate.program_ir_sha256);
+            assert!(!task.postconditions.is_empty());
+        }
+        assert!(program_hashes.len() >= 6, "{program_hashes:?}");
     }
 
     #[test]
