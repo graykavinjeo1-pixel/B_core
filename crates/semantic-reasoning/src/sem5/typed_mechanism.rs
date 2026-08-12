@@ -137,6 +137,8 @@ pub struct TypedMechanismSynthesisGoalIR {
 pub struct TypedMechanismSynthesisReceiptIR {
     pub schema: String,
     pub goal_id: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub synthesis_request: Option<TypedMechanismSynthesisGoalIR>,
     pub candidates_enumerated: usize,
     pub candidates_falsified: usize,
     pub counterexample_guided_selection: bool,
@@ -771,6 +773,7 @@ pub fn typed_mechanism_improvement_operator_from_receipt(
     receipt: &TypedMechanismSynthesisReceiptIR,
     evidence_sha256: String,
 ) -> Result<TypedMechanismImprovementOperatorIR, String> {
+    validate_typed_mechanism_synthesis_receipt(receipt)?;
     if evidence_sha256.len() != 64 || receipt.winning_goal.operands.is_empty() {
         return Err("TYPED_MECHANISM_PRIOR_EVIDENCE".to_string());
     }
@@ -1002,29 +1005,25 @@ fn build_synthesis_receipt(
             .collect(),
     };
     let template = lower_typed_mechanism_goal(&winning_goal)?;
-    let receipt_sha256 = sha256(
-        serde_json::to_vec(&(
-            TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA,
-            request,
-            &winning_goal,
-            &template.syntax_sha256,
-            enumerated,
-            candidates_falsified,
-            preferred_operator_attempts,
-            &selected_operator_id,
-            &attempted_operator_ids,
-            &rejected_operator_ids,
-            parallel_operator_evaluation,
-        ))
-        .map_err(|error| format!("TYPED_MECHANISM_RECEIPT_SERIALIZE:{error}"))?
-        .as_slice(),
-    );
+    let receipt_sha256 = typed_mechanism_synthesis_receipt_hash(
+        request,
+        &winning_goal,
+        &template,
+        enumerated,
+        candidates_falsified,
+        preferred_operator_attempts,
+        &selected_operator_id,
+        &attempted_operator_ids,
+        &rejected_operator_ids,
+        parallel_operator_evaluation,
+    )?;
     Ok(TypedMechanismSynthesisReceiptIR {
         schema: "B_CORE_TYPED_MECHANISM_SYNTHESIS_RECEIPT_1".to_string(),
         goal_id: request.goal_id.clone(),
+        synthesis_request: Some(request.clone()),
         candidates_enumerated: enumerated,
         candidates_falsified,
-        counterexample_guided_selection: true,
+        counterexample_guided_selection: candidates_falsified > 0,
         conditional_synthesized,
         winning_expression_nodes: template.expression_nodes,
         preferred_operator_attempts,
@@ -1037,6 +1036,121 @@ fn build_synthesis_receipt(
         template,
         receipt_sha256,
     })
+}
+
+#[allow(clippy::too_many_arguments)]
+fn typed_mechanism_synthesis_receipt_hash(
+    request: &TypedMechanismSynthesisGoalIR,
+    winning_goal: &TypedMechanismGoalIR,
+    template: &ConcreteSyntaxTemplateIR,
+    enumerated: usize,
+    candidates_falsified: usize,
+    preferred_operator_attempts: usize,
+    selected_operator_id: &Option<String>,
+    attempted_operator_ids: &[String],
+    rejected_operator_ids: &[String],
+    parallel_operator_evaluation: bool,
+) -> Result<String, String> {
+    Ok(sha256(
+        serde_json::to_vec(&(
+            TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA,
+            request,
+            winning_goal,
+            &template.syntax_sha256,
+            enumerated,
+            candidates_falsified,
+            preferred_operator_attempts,
+            selected_operator_id,
+            attempted_operator_ids,
+            rejected_operator_ids,
+            parallel_operator_evaluation,
+        ))
+        .map_err(|error| format!("TYPED_MECHANISM_RECEIPT_SERIALIZE:{error}"))?
+        .as_slice(),
+    ))
+}
+
+pub fn validate_typed_mechanism_synthesis_receipt(
+    receipt: &TypedMechanismSynthesisReceiptIR,
+) -> Result<(), String> {
+    let request = receipt
+        .synthesis_request
+        .as_ref()
+        .ok_or_else(|| "TYPED_MECHANISM_RECEIPT_REQUEST_MISSING".to_string())?;
+    validate_synthesis_envelope(request)?;
+    let goal = &receipt.winning_goal;
+    let selected = receipt.selected_operator_id.is_some();
+    let expected_provenance = request
+        .provenance
+        .iter()
+        .cloned()
+        .chain([if selected {
+            "CONTENT_ADDRESSED_OPERATOR_REUSE".to_string()
+        } else {
+            "BOUNDED_TYPED_GRAMMAR_SYNTHESIS".to_string()
+        }])
+        .collect::<Vec<_>>();
+    if receipt.schema != "B_CORE_TYPED_MECHANISM_SYNTHESIS_RECEIPT_1"
+        || receipt.goal_id != request.goal_id
+        || goal.schema != TYPED_MECHANISM_GOAL_SCHEMA
+        || goal.goal_id != request.goal_id
+        || goal.split != request.split
+        || goal.operands != request.operands
+        || goal.output_type != request.output_type
+        || goal.definitions != request.definitions
+        || goal.allowed_effects != request.allowed_effects
+        || goal.preconditions != request.preconditions
+        || goal.postconditions != request.postconditions
+        || goal.invariants != request.invariants
+        || goal.public_observations != request.public_observations
+        || goal.provenance != expected_provenance
+    {
+        return Err("TYPED_MECHANISM_RECEIPT_GOAL_BINDING".to_string());
+    }
+    let rebuilt_template = lower_typed_mechanism_goal(goal)?;
+    if rebuilt_template != receipt.template
+        || receipt.winning_expression_nodes != rebuilt_template.expression_nodes
+        || receipt.conditional_synthesized != goal.condition.is_some()
+        || goal.condition.is_some() != goal.otherwise.is_some()
+    {
+        return Err("TYPED_MECHANISM_RECEIPT_TEMPLATE_BINDING".to_string());
+    }
+    let expected_workers = worker_count_for(
+        receipt.attempted_operator_ids.len(),
+        TYPED_OPERATOR_REPLAY_ITEMS_PER_WORKER,
+    );
+    if receipt.candidates_enumerated == 0
+        || receipt.counterexample_guided_selection != (receipt.candidates_falsified > 0)
+        || receipt.preferred_operator_attempts != receipt.attempted_operator_ids.len()
+        || receipt.preferred_operator_selected != selected
+        || receipt.parallel_operator_evaluation != (expected_workers > 1)
+        || receipt
+            .selected_operator_id
+            .as_ref()
+            .is_some_and(|operator| !receipt.attempted_operator_ids.contains(operator))
+        || receipt.rejected_operator_ids.iter().any(|operator| {
+            !receipt.attempted_operator_ids.contains(operator)
+                || receipt.selected_operator_id.as_ref() == Some(operator)
+        })
+    {
+        return Err("TYPED_MECHANISM_RECEIPT_ACCOUNTING".to_string());
+    }
+    let expected_hash = typed_mechanism_synthesis_receipt_hash(
+        request,
+        goal,
+        &rebuilt_template,
+        receipt.candidates_enumerated,
+        receipt.candidates_falsified,
+        receipt.preferred_operator_attempts,
+        &receipt.selected_operator_id,
+        &receipt.attempted_operator_ids,
+        &receipt.rejected_operator_ids,
+        receipt.parallel_operator_evaluation,
+    )?;
+    if receipt.receipt_sha256 != expected_hash {
+        return Err("TYPED_MECHANISM_RECEIPT_HASH".to_string());
+    }
+    Ok(())
 }
 
 /// Enumerate a bounded, typed expression grammar and use public
@@ -3471,6 +3585,32 @@ mod tests {
             provenance: Vec::new(),
         };
         let learned = synthesize_typed_mechanism_goal(&request).unwrap();
+        validate_typed_mechanism_synthesis_receipt(&learned).unwrap();
+        let mut missing_request = learned.clone();
+        missing_request.synthesis_request = None;
+        assert_eq!(
+            typed_mechanism_improvement_operator_from_receipt(&missing_request, "a".repeat(64)),
+            Err("TYPED_MECHANISM_RECEIPT_REQUEST_MISSING".to_string())
+        );
+        let mut forged_goal = learned.clone();
+        forged_goal.winning_goal.postimage = TypedSyntaxExpressionIR::IntLiteral { value: 0 };
+        assert_eq!(
+            validate_typed_mechanism_synthesis_receipt(&forged_goal),
+            Err("TYPED_MECHANISM_COUNTEREXAMPLE:0".to_string())
+        );
+        let mut forged_accounting = learned.clone();
+        forged_accounting.counterexample_guided_selection =
+            !forged_accounting.counterexample_guided_selection;
+        assert_eq!(
+            validate_typed_mechanism_synthesis_receipt(&forged_accounting),
+            Err("TYPED_MECHANISM_RECEIPT_ACCOUNTING".to_string())
+        );
+        let mut forged_hash = learned.clone();
+        forged_hash.receipt_sha256 = "0".repeat(64);
+        assert_eq!(
+            validate_typed_mechanism_synthesis_receipt(&forged_hash),
+            Err("TYPED_MECHANISM_RECEIPT_HASH".to_string())
+        );
         let operator =
             typed_mechanism_improvement_operator_from_receipt(&learned, "a".repeat(64)).unwrap();
         let renamed = TypedMechanismSynthesisGoalIR {
