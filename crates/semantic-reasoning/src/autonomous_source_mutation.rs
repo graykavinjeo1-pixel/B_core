@@ -1635,7 +1635,7 @@ fn grammar_synthesized_request(
         );
         let public_behavior_contradiction = candidate
             .transformation
-            .contains("PUBLIC_EXAMPLE_CONTRADICTED_STUB");
+            .contains("PUBLIC_EXAMPLE_CONTRADICTED_");
         let generalized_change = generalized_change_for_candidate(
             state_dir,
             source_generation,
@@ -1651,7 +1651,7 @@ fn grammar_synthesized_request(
             },
             &evidence_sha256,
             if public_behavior_contradiction {
-                "repository-visible public examples contradict the current typed stub behavior"
+                "repository-visible public examples contradict the current typed implementation behavior"
             } else {
                 "current Rust AST contains an executable todo or unimplemented hole"
             },
@@ -1695,13 +1695,17 @@ pub fn discover_known_source_improvement_detailed(
             candidate: None,
         });
     }
-    if let Some(candidate) = compiler_guided_request(policy, state_dir, source_generation)? {
+    // Search the bounded AST/public-example grammar before launching a Cargo
+    // observation for a new source fingerprint. Grammar candidates need no
+    // compiler process and still pass the exact same structural replay and
+    // compile/public-regression installation gate.
+    if let Some(candidate) = grammar_synthesized_request(policy, state_dir, source_generation)? {
         return Ok(SourceDiscoveryResult {
             disposition: SourceDiscoveryDisposition::Candidate,
             candidate: Some(candidate),
         });
     }
-    if let Some(candidate) = grammar_synthesized_request(policy, state_dir, source_generation)? {
+    if let Some(candidate) = compiler_guided_request(policy, state_dir, source_generation)? {
         return Ok(SourceDiscoveryResult {
             disposition: SourceDiscoveryDisposition::Candidate,
             candidate: Some(candidate),

@@ -20,7 +20,7 @@ use serde_json::Value as JsonValue;
 use crate::self_repair_contract::sha256;
 use crate::structural_source_repair::{synthesize_structural_repair, StructuralRepairProgram};
 
-const CACHE_SCHEMA: &str = "B_CORE_COMPILER_DIAGNOSTIC_CACHE_1";
+const CACHE_SCHEMA: &str = "B_CORE_COMPILER_DIAGNOSTIC_CACHE_2";
 const MAX_DIAGNOSTIC_BYTES: u64 = 16 * 1024 * 1024;
 const MAX_CACHED_SOURCE_STATES: usize = 2;
 const MAX_SUGGESTIONS: usize = 64;
@@ -372,7 +372,10 @@ fn load_or_observe(
 ) -> Result<DiagnosticCache, String> {
     let root = cache_root(policy.state_dir);
     fs::create_dir_all(&root).map_err(|error| format!("COMPILER_REPAIR_CACHE_DIR:{error}"))?;
-    let cache_path = root.join(format!("{fingerprint}.json"));
+    // Include the observation contract in the immutable cache key. Otherwise
+    // an old-schema file at the same source fingerprint cannot be replaced by
+    // `write_new_cache` and every lookup repeats the expensive observation.
+    let cache_path = root.join(format!("{CACHE_SCHEMA}-{fingerprint}.json"));
     if cache_path.exists() {
         let bytes =
             fs::read(&cache_path).map_err(|error| format!("COMPILER_REPAIR_CACHE_READ:{error}"))?;
@@ -383,40 +386,31 @@ fn load_or_observe(
         }
     }
 
-    let check_log = cache_path.with_extension("check.log");
-    let (check_success, check_output) = run_cargo_observation(
+    // `cargo clippy` performs the same type-checking pass as `cargo check` and
+    // emits rustc errors as compiler-message records before it emits lint
+    // suggestions. Running both commands made every fresh source fingerprint
+    // pay for two nearly identical workspace observations. One clippy pass
+    // preserves both classes of evidence while keeping the cache and the
+    // downstream compile/test/install gate authoritative.
+    let clippy_log = cache_path.with_extension("clippy.log");
+    let (check_success, clippy_output) = run_cargo_observation(
         policy,
         &[
-            "check",
+            "clippy",
             "-p",
             "semantic-reasoning",
             "--lib",
             "--message-format=json",
+            "--",
+            "-W",
+            "clippy::all",
         ],
-        &check_log,
+        &clippy_log,
     )?;
-    let mut suggestions = parse_suggestions(&check_output);
-    if check_success {
-        let clippy_log = cache_path.with_extension("clippy.log");
-        let (_, clippy_output) = run_cargo_observation(
-            policy,
-            &[
-                "clippy",
-                "-p",
-                "semantic-reasoning",
-                "--lib",
-                "--message-format=json",
-                "--",
-                "-W",
-                "clippy::all",
-            ],
-            &clippy_log,
-        )?;
-        suggestions.extend(parse_suggestions(&clippy_output));
-        suggestions.sort();
-        suggestions.dedup();
-        suggestions.truncate(MAX_SUGGESTIONS);
-    }
+    let mut suggestions = parse_suggestions(&clippy_output);
+    suggestions.sort();
+    suggestions.dedup();
+    suggestions.truncate(MAX_SUGGESTIONS);
     let cache = DiagnosticCache {
         schema: CACHE_SCHEMA.to_string(),
         source_fingerprint: fingerprint.to_string(),

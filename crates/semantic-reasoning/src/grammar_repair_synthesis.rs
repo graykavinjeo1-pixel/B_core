@@ -294,20 +294,40 @@ fn contradicted_stub_family(expression: &Expr) -> Option<(&'static str, String)>
     }
 }
 
-fn contradicted_stub_hole(
+fn expression_grammar_family(
+    expression: &Expr,
+    callable: &CallableSignature,
+    catalog: &[CallableSignature],
+) -> Option<(String, String, bool)> {
+    if let Some((family, normalized)) = contradicted_stub_family(expression) {
+        return Some((family.to_string(), normalized, true));
+    }
+    let normalized = normalized_tokens(expression);
+    compose_expressions(callable, catalog)
+        .into_iter()
+        .find_map(|(family, candidate)| {
+            let candidate = syn::parse_str::<Expr>(&candidate).ok()?;
+            (normalized_tokens(&candidate) == normalized)
+                .then(|| (family, normalized.clone(), false))
+        })
+}
+
+fn contradicted_behavior_hole(
     source: &str,
     starts: &[usize],
     items: &[Item],
     context: &RepositoryGrammarContext,
     callable: &CallableSignature,
     block: &Block,
+    catalog: &[CallableSignature],
 ) -> Option<Hole> {
     let [Stmt::Expr(expression, None)] = block.stmts.as_slice() else {
         return None;
     };
-    let (family, normalized_expression) = contradicted_stub_family(expression)?;
+    let (family, normalized_expression, is_stub) =
+        expression_grammar_family(expression, callable, catalog)?;
     let examples = collect_repository_public_examples(items, callable, context);
-    let current_score = public_example_score(family, &normalized_expression, callable, &examples);
+    let current_score = public_example_score(&family, &normalized_expression, callable, &examples);
     if current_score.observed == 0
         || current_score.evaluated != current_score.observed
         || current_score.satisfied == current_score.observed
@@ -319,9 +339,14 @@ fn contradicted_stub_hole(
     let end = line_column_offset(source, starts, span.end())?;
     (start < end).then(|| Hole {
         callable: callable.clone(),
-        kind: "PUBLIC_EXAMPLE_CONTRADICTED_STUB".to_string(),
+        kind: if is_stub {
+            "PUBLIC_EXAMPLE_CONTRADICTED_STUB"
+        } else {
+            "PUBLIC_EXAMPLE_CONTRADICTED_EXPRESSION"
+        }
+        .to_string(),
         range: ByteRange { start, end },
-        current_expression_family: Some(family.to_string()),
+        current_expression_family: Some(family),
         current_expression: Some(normalized_expression),
     })
 }
@@ -946,9 +971,15 @@ fn candidates_for_file(
         };
         visitor.visit_block(block);
         holes.extend(visitor.holes);
-        if let Some(stub) =
-            contradicted_stub_hole(source, &starts, &parsed.items, context, callable, block)
-        {
+        if let Some(stub) = contradicted_behavior_hole(
+            source,
+            &starts,
+            &parsed.items,
+            context,
+            callable,
+            block,
+            &catalog,
+        ) {
             holes.push(stub);
         }
     }
@@ -1009,7 +1040,10 @@ fn candidates_for_file(
         let mut compositions = compose_expressions(&hole.callable, &catalog)
             .into_iter()
             .filter(|(_, expression)| {
-                hole.current_expression.as_deref() != Some(expression.as_str())
+                let normalized = syn::parse_str::<Expr>(expression)
+                    .map(|expression| normalized_tokens(&expression))
+                    .unwrap_or_else(|_| expression.clone());
+                hole.current_expression.as_deref() != Some(normalized.as_str())
             })
             .enumerate()
             .map(|(index, (family, expression))| {
@@ -1051,8 +1085,8 @@ fn candidates_for_file(
                 &sha256(expression.as_bytes())[..12]
             );
             let mut consequence_predictions = vec![
-                if hole.kind == "PUBLIC_EXAMPLE_CONTRADICTED_STUB" {
-                    "replace a typed stub only after repository-visible examples contradict its current behavior"
+                if hole.kind.starts_with("PUBLIC_EXAMPLE_CONTRADICTED_") {
+                    "replace a typed implementation expression only after repository-visible examples contradict its current behavior"
                         .to_string()
                 } else {
                     format!("remove explicit {} implementation hole", hole.kind)
@@ -1077,6 +1111,7 @@ fn candidates_for_file(
                 consequence_predictions,
                 predicted_value: match hole.kind.as_str() {
                     "TODO" => 100,
+                    "PUBLIC_EXAMPLE_CONTRADICTED_EXPRESSION" => 99,
                     "PUBLIC_EXAMPLE_CONTRADICTED_STUB" => 98,
                     _ => 95,
                 },
@@ -1259,6 +1294,36 @@ mod tests {
         assert_eq!(candidates[0].public_examples_satisfied, 2);
         assert!(candidates.len() > 4);
         assert!(candidates.len() <= MAX_CANDIDATES_PER_HOLE);
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn public_examples_repair_a_wrong_non_stub_expression() {
+        let root = std::env::temp_dir().join(format!(
+            "b-core-grammar-contradicted-expression-{}",
+            std::process::id()
+        ));
+        if root.exists() {
+            fs::remove_dir_all(&root).unwrap();
+        }
+        fs::create_dir_all(root.join("src")).unwrap();
+        fs::write(
+            root.join("src/lib.rs"),
+            "pub fn combine(left: i32, right: i32) -> i32 { left - right }\n\n#[cfg(test)]\nmod tests {\n    #[test]\n    fn combines() {\n        assert_eq!(super::combine(3, 4), 7);\n        assert_eq!(super::combine(-2, 5), 3);\n    }\n}\n",
+        )
+        .unwrap();
+
+        let candidates = discover_grammar_repairs(&root, 4_096).unwrap();
+
+        assert!(!candidates.is_empty());
+        assert_eq!(candidates[0].grammar_expression, "left + right");
+        assert!(candidates[0]
+            .transformation
+            .starts_with("AST_GRAMMAR_HOLE:PUBLIC_EXAMPLE_CONTRADICTED_EXPRESSION:"));
+        assert_eq!(candidates[0].public_examples_satisfied, 2);
+        assert!(candidates
+            .iter()
+            .all(|candidate| candidate.grammar_expression != "left - right"));
         fs::remove_dir_all(root).unwrap();
     }
 
