@@ -53,6 +53,7 @@ const MAX_CLASSIFIER_REFINEMENT_EVENTS: usize = 64;
 const MAX_RECENT_SOURCE_PATCH_OUTCOMES: usize = 16;
 const RUNTIME_REPAIR_COUNTER_CONTRACT_REVISION: u64 = 2;
 const MAX_CORE_COHORT_VALIDATION_MS: u64 = 3 * 60 * 1_000;
+const FULL_CORE_REGRESSION_CANARY_INTERVAL: u64 = 8;
 const MAX_REPOSITORY_TEST_PATHS: usize = 8;
 
 fn u64_is_zero(value: &u64) -> bool {
@@ -4247,6 +4248,12 @@ struct CoreCohortValidationReceipt {
     source_fingerprint_before: String,
     source_fingerprint_after: String,
     workspace_stable_during_validation: bool,
+    #[serde(default)]
+    validation_scope: String,
+    #[serde(default)]
+    targeted_test_filter: Option<String>,
+    #[serde(default)]
+    full_regression_canary: bool,
     command: LocalCommandReceipt,
     success: bool,
     authoritative_source_write_events: u64,
@@ -4255,6 +4262,14 @@ struct CoreCohortValidationReceipt {
     external_llm_calls: u64,
     network_reads: u64,
     network_writes: u64,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+struct CoreValidationPlan {
+    args: Vec<String>,
+    validation_scope: String,
+    targeted_test_filter: Option<String>,
+    full_regression_canary: bool,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -4681,6 +4696,80 @@ fn core_cohort_observation_ids(
     Ok(observation_ids)
 }
 
+fn core_validation_plan(
+    config: &GrowthSupervisorConfig,
+    generation: u64,
+    observations: &[LearningObservation],
+) -> Result<CoreValidationPlan, String> {
+    let full_args = || {
+        vec![
+            "test".to_string(),
+            "-p".to_string(),
+            "semantic-reasoning".to_string(),
+            "--lib".to_string(),
+            "--quiet".to_string(),
+            "--locked".to_string(),
+        ]
+    };
+    let full_regression_canary = generation.is_multiple_of(FULL_CORE_REGRESSION_CANARY_INTERVAL);
+    let Some(source_prefix) = source_mutation_watch_prefix(config)? else {
+        return Ok(CoreValidationPlan {
+            args: full_args(),
+            validation_scope: "FULL_CORE_REGRESSION".to_string(),
+            targeted_test_filter: None,
+            full_regression_canary,
+        });
+    };
+    let mut modules = BTreeSet::new();
+    let mut core_paths = 0_usize;
+    for observation in observations
+        .iter()
+        .filter(|observation| observation.logical_path.starts_with(&source_prefix))
+    {
+        core_paths = core_paths.saturating_add(1);
+        let relative = observation
+            .logical_path
+            .strip_prefix(&source_prefix)
+            .unwrap_or_default();
+        let parts = relative.split('/').collect::<Vec<_>>();
+        let module = if parts.len() == 4
+            && parts[0] == "crates"
+            && parts[1] == "semantic-reasoning"
+            && parts[2] == "src"
+            && parts[3].ends_with(".rs")
+        {
+            parts[3].strip_suffix(".rs").unwrap_or_default()
+        } else {
+            ""
+        };
+        if module.is_empty() || module == "lib" || module == "main" || module.ends_with("_main") {
+            modules.insert(String::new());
+        } else {
+            modules.insert(module.to_string());
+        }
+    }
+    if !full_regression_canary && core_paths > 0 && modules.len() == 1 {
+        let module = modules.into_iter().next().unwrap_or_default();
+        if !module.is_empty() {
+            let filter = format!("{module}::tests::");
+            let mut args = full_args();
+            args.push(filter.clone());
+            return Ok(CoreValidationPlan {
+                args,
+                validation_scope: "CHANGED_RUST_MODULE".to_string(),
+                targeted_test_filter: Some(filter),
+                full_regression_canary: false,
+            });
+        }
+    }
+    Ok(CoreValidationPlan {
+        args: full_args(),
+        validation_scope: "FULL_CORE_REGRESSION".to_string(),
+        targeted_test_filter: None,
+        full_regression_canary,
+    })
+}
+
 fn validate_blocked_core_cohort(
     config: &GrowthSupervisorConfig,
     diagnostic: &AutonomousSelfInspectionReceipt,
@@ -4690,15 +4779,17 @@ fn validate_blocked_core_cohort(
     if input_observation_ids.is_empty() {
         return Ok((false, Vec::new(), Vec::new()));
     }
+    let validation_plan = core_validation_plan(config, diagnostic.generation, observations)?;
 
     let source_fingerprint_before =
         full_workspace_semantic_fingerprint(&config.source_mutation.source_root)?;
     let validation_id = sha256(
         format!(
-            "CORE_COHORT_VALIDATION:{}:{}:{}",
+            "CORE_COHORT_VALIDATION:{}:{}:{}:{}",
             diagnostic.generation,
             source_fingerprint_before,
-            input_observation_ids.join(":")
+            input_observation_ids.join(":"),
+            validation_plan.args.join("\u{1f}")
         )
         .as_bytes(),
     );
@@ -4713,22 +4804,23 @@ fn validate_blocked_core_cohort(
             || existing.generation != diagnostic.generation
             || existing.input_observation_ids != input_observation_ids
             || existing.source_fingerprint_before != source_fingerprint_before
+            || existing.validation_scope != validation_plan.validation_scope
+            || existing.targeted_test_filter != validation_plan.targeted_test_filter
+            || existing.full_regression_canary != validation_plan.full_regression_canary
         {
             return Err("CORE_COHORT_VALIDATION_RECEIPT_MISMATCH".to_string());
         }
         existing
     } else {
         let log_path = diagnostics.join(format!("core_cohort_validation_{validation_id}.log"));
+        let arg_refs = validation_plan
+            .args
+            .iter()
+            .map(String::as_str)
+            .collect::<Vec<_>>();
         let command = command_receipt(
             &config.source_mutation.cargo_executable,
-            &[
-                "test",
-                "-p",
-                "semantic-reasoning",
-                "--lib",
-                "--quiet",
-                "--locked",
-            ],
+            &arg_refs,
             &config.source_mutation.source_root,
             &runtime_validation_target_dir(config),
             config
@@ -4739,6 +4831,9 @@ fn validate_blocked_core_cohort(
         );
         let _ = fs::remove_file(&log_path);
         let command = command?;
+        let targeted_tests_executed = validation_plan.targeted_test_filter.is_none()
+            || (!command.diagnostic_tail.contains("running 0 tests")
+                && !command.diagnostic_tail.contains("0 passed; 0 failed"));
         let source_fingerprint_after =
             full_workspace_semantic_fingerprint(&config.source_mutation.source_root)?;
         let workspace_stable_during_validation =
@@ -4759,7 +4854,12 @@ fn validate_blocked_core_cohort(
             source_fingerprint_before,
             source_fingerprint_after,
             workspace_stable_during_validation,
-            success: command.success && workspace_stable_during_validation,
+            validation_scope: validation_plan.validation_scope.clone(),
+            targeted_test_filter: validation_plan.targeted_test_filter.clone(),
+            full_regression_canary: validation_plan.full_regression_canary,
+            success: command.success
+                && workspace_stable_during_validation
+                && targeted_tests_executed,
             command,
             authoritative_source_write_events: 0,
             operator_selected: false,
@@ -6229,6 +6329,60 @@ mod tests {
         assert!(!validation_target.starts_with(&config.source_mutation.source_root));
         assert!(!validation_target.starts_with(&config.state_dir));
         assert_ne!(validation_target, config.source_mutation.build_target_dir);
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn core_validation_targets_changed_top_level_rust_module_between_canaries() {
+        let root = temp_root("targeted-core-validation");
+        let (_, mut config) = test_config(&root);
+        config.source_mutation.enabled = true;
+        config.source_mutation.source_root = config.watched_roots[0].clone();
+        let observation = LearningObservation {
+            observation_id: "growth-supervisor-change".to_string(),
+            work_event_id: None,
+            logical_path: "ROOT_0/crates/semantic-reasoning/src/growth_supervisor.rs".to_string(),
+            content_sha256: "a".repeat(64),
+            predecessor_content_sha256: Some("b".repeat(64)),
+            actor: WorkActor::LocalTool,
+            work_kind: WorkKind::DefectRepair,
+            work_outcome: WorkOutcome::Unknown,
+            features_before: None,
+            features_after: StructuralFeatures::default(),
+            signals: vec!["DEFECT_REPAIR".to_string()],
+            composition_roles: vec!["IMPLEMENTATION_REPAIR".to_string()],
+            learning_score: 80,
+            learning_value: LearningValue::High,
+            reasons: vec!["fixture".to_string()],
+            verification_evidence_sha256: Vec::new(),
+            performance_metrics: Vec::new(),
+            exact_source_fragments_stored: 0,
+            raw_source_bytes_stored: 0,
+            observed_at_ms: 1,
+        };
+
+        let targeted =
+            core_validation_plan(&config, 2, std::slice::from_ref(&observation)).unwrap();
+        assert_eq!(targeted.validation_scope, "CHANGED_RUST_MODULE");
+        assert_eq!(
+            targeted.targeted_test_filter.as_deref(),
+            Some("growth_supervisor::tests::")
+        );
+        assert_eq!(
+            targeted.args.last().map(String::as_str),
+            Some("growth_supervisor::tests::")
+        );
+        assert!(!targeted.full_regression_canary);
+
+        let canary = core_validation_plan(
+            &config,
+            FULL_CORE_REGRESSION_CANARY_INTERVAL,
+            &[observation],
+        )
+        .unwrap();
+        assert_eq!(canary.validation_scope, "FULL_CORE_REGRESSION");
+        assert!(canary.targeted_test_filter.is_none());
+        assert!(canary.full_regression_canary);
         fs::remove_dir_all(root).unwrap();
     }
 
