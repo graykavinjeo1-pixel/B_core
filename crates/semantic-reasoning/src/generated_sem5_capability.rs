@@ -5,10 +5,10 @@ use std::collections::BTreeMap;
 
 pub const GENERATED_CAPABILITY_ACTIVE: bool = true;
 pub const GENERATED_SOURCE_SCHEMA_REVISION: u64 = 4;
-pub const GENERATED_PROGRAM_ID: &str = "P-T-004-8acd6199-FirstPrinciplesD";
+pub const GENERATED_PROGRAM_ID: &str = "P-T-010-9dffdefb-FirstPrinciplesD";
 pub const GENERATED_PROGRAM_IR_SHA256: &str =
-    "247990c6555d7ee136f4a12e507d38e177bbc549e33ca8258159d9678623dc6e";
-pub const GENERATED_CAPABILITY_COUNT: usize = 20;
+    "2716441b4b3e09ea5e3f03ffddde10a71c132bd82d00618e9b9532d918142953";
+pub const GENERATED_CAPABILITY_COUNT: usize = 31;
 
 // B_CORE_CAPABILITY_BEGIN:dda8fe9adfe0e2c09c4a0e47496e5ea51dbf929863626df3e0d6cda87b449717
 mod capability_dda8fe9adfe0e2c0 {
@@ -954,6 +954,520 @@ mod capability_247990c6555d7ee1 {
 }
 // B_CORE_CAPABILITY_END:247990c6555d7ee136f4a12e507d38e177bbc549e33ca8258159d9678623dc6e
 
+// B_CORE_CAPABILITY_BEGIN:f700111f88ac5f3aa1f47280d8aef76f66fb8e81f8e147d828e56ff1f5b0adc8
+mod capability_f700111f88ac5f3a {
+    #![allow(dead_code, unused_imports, unused_parens, unused_variables)]
+
+    use crate::sem5::model::{ImageValue, Value};
+    use std::collections::BTreeMap;
+
+    #[derive(Clone, Debug)]
+    struct Sem5Image {
+        width: usize,
+        height: usize,
+        channels: usize,
+        pixels: Vec<i64>,
+    }
+
+    pub const GENERATED_CAPABILITY_ACTIVE: bool = true;
+    pub const GENERATED_SOURCE_SCHEMA_REVISION: u64 = 3;
+    pub const GENERATED_PROGRAM_ID: &str = "P-T-016-861ea23e-FirstPrinciplesD";
+    pub const GENERATED_PROGRAM_IR_SHA256: &str =
+        "f700111f88ac5f3aa1f47280d8aef76f66fb8e81f8e147d828e56ff1f5b0adc8";
+
+    pub fn run_generated_capability(inputs: &BTreeMap<String, Value>) -> Result<Value, String> {
+        let v0: Vec<i64> = match inputs.get("v0") {
+            Some(Value::Sequence(value)) => value.clone(),
+            _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
+        };
+        let mut stage_value: Vec<i64> = vec![];
+        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+            let item: i64 = raw_item_0;
+            let position: i64 = raw_index_0 as i64;
+            if (item % 3i64) == 2i64 {
+                stage_value.push((item * 3i64) + 5i64);
+            }
+        }
+        let mut state: i64 = 3i64;
+        for (raw_index_1, raw_item_1) in stage_value.clone().into_iter().enumerate() {
+            let item: i64 = raw_item_1;
+            let position: i64 = raw_index_1 as i64;
+            state += item;
+        }
+        let sem5_result: i64 = state;
+        Ok(Value::Int(sem5_result))
+    }
+}
+// B_CORE_CAPABILITY_END:f700111f88ac5f3aa1f47280d8aef76f66fb8e81f8e147d828e56ff1f5b0adc8
+
+// B_CORE_CAPABILITY_BEGIN:c0b52aa436f3ff9cfc2fa574ce08ab2b8095627dc8adb225644ef34b7a1dedcf
+mod capability_c0b52aa436f3ff9c {
+    #![allow(dead_code, unused_imports, unused_parens, unused_variables)]
+
+    use crate::sem5::model::{ImageValue, Value};
+    use std::collections::BTreeMap;
+
+    #[derive(Clone, Debug)]
+    struct Sem5Image {
+        width: usize,
+        height: usize,
+        channels: usize,
+        pixels: Vec<i64>,
+    }
+
+    pub const GENERATED_CAPABILITY_ACTIVE: bool = true;
+    pub const GENERATED_SOURCE_SCHEMA_REVISION: u64 = 3;
+    pub const GENERATED_PROGRAM_ID: &str = "P-T-011-e4225a31-FirstPrinciplesD";
+    pub const GENERATED_PROGRAM_IR_SHA256: &str =
+        "c0b52aa436f3ff9cfc2fa574ce08ab2b8095627dc8adb225644ef34b7a1dedcf";
+
+    pub fn run_generated_capability(inputs: &BTreeMap<String, Value>) -> Result<Value, String> {
+        let v0: Vec<i64> = match inputs.get("v0") {
+            Some(Value::Sequence(value)) => value.clone(),
+            _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
+        };
+        let mut stage_value: Vec<i64> = vec![];
+        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+            let item: i64 = raw_item_0;
+            let position: i64 = raw_index_0 as i64;
+            if (item % 2i64) == 1i64 {
+                stage_value.push((position * 2i64) + 4i64);
+            }
+        }
+        let mut state: i64 = 3i64;
+        for (raw_index_1, raw_item_1) in stage_value.clone().into_iter().enumerate() {
+            let item: i64 = raw_item_1;
+            let position: i64 = raw_index_1 as i64;
+            state += item;
+        }
+        let sem5_result: i64 = state;
+        Ok(Value::Int(sem5_result))
+    }
+}
+// B_CORE_CAPABILITY_END:c0b52aa436f3ff9cfc2fa574ce08ab2b8095627dc8adb225644ef34b7a1dedcf
+
+// B_CORE_CAPABILITY_BEGIN:5788e14dfcf4302ae6cd55d7e123e4b5beff84a36f06e3a6f9d75d466be90760
+mod capability_5788e14dfcf4302a {
+    #![allow(dead_code, unused_imports, unused_parens, unused_variables)]
+
+    use crate::sem5::model::{ImageValue, Value};
+    use std::collections::BTreeMap;
+
+    #[derive(Clone, Debug)]
+    struct Sem5Image {
+        width: usize,
+        height: usize,
+        channels: usize,
+        pixels: Vec<i64>,
+    }
+
+    pub const GENERATED_CAPABILITY_ACTIVE: bool = true;
+    pub const GENERATED_SOURCE_SCHEMA_REVISION: u64 = 3;
+    pub const GENERATED_PROGRAM_ID: &str = "P-T-004-33bf9862-FirstPrinciplesD";
+    pub const GENERATED_PROGRAM_IR_SHA256: &str =
+        "5788e14dfcf4302ae6cd55d7e123e4b5beff84a36f06e3a6f9d75d466be90760";
+
+    pub fn run_generated_capability(inputs: &BTreeMap<String, Value>) -> Result<Value, String> {
+        let v0: Vec<i64> = match inputs.get("v0") {
+            Some(Value::Sequence(value)) => value.clone(),
+            _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
+        };
+        let mut stage_value: Vec<i64> = vec![];
+        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+            let item: i64 = raw_item_0;
+            let position: i64 = raw_index_0 as i64;
+            if (item % 3i64) == 1i64 {
+                stage_value.push((item * 3i64) + 6i64);
+            }
+        }
+        let mut state: i64 = -1i64;
+        for (raw_index_1, raw_item_1) in stage_value.clone().into_iter().enumerate() {
+            let item: i64 = raw_item_1;
+            let position: i64 = raw_index_1 as i64;
+            state += item;
+        }
+        let sem5_result: i64 = state;
+        Ok(Value::Int(sem5_result))
+    }
+}
+// B_CORE_CAPABILITY_END:5788e14dfcf4302ae6cd55d7e123e4b5beff84a36f06e3a6f9d75d466be90760
+
+// B_CORE_CAPABILITY_BEGIN:0e40e0f291f7734c31a4c32fe5b9fc8f57aa574e6f79ed7038903cbe4afb61a3
+mod capability_0e40e0f291f7734c {
+    #![allow(dead_code, unused_imports, unused_parens, unused_variables)]
+
+    use crate::sem5::model::{ImageValue, Value};
+    use std::collections::BTreeMap;
+
+    #[derive(Clone, Debug)]
+    struct Sem5Image {
+        width: usize,
+        height: usize,
+        channels: usize,
+        pixels: Vec<i64>,
+    }
+
+    pub const GENERATED_CAPABILITY_ACTIVE: bool = true;
+    pub const GENERATED_SOURCE_SCHEMA_REVISION: u64 = 3;
+    pub const GENERATED_PROGRAM_ID: &str = "P-T-018-129faa19-FirstPrinciplesD";
+    pub const GENERATED_PROGRAM_IR_SHA256: &str =
+        "0e40e0f291f7734c31a4c32fe5b9fc8f57aa574e6f79ed7038903cbe4afb61a3";
+
+    pub fn run_generated_capability(inputs: &BTreeMap<String, Value>) -> Result<Value, String> {
+        let v0: Vec<i64> = match inputs.get("v0") {
+            Some(Value::Sequence(value)) => value.clone(),
+            _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
+        };
+        let mut stage_value: Vec<i64> = vec![];
+        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+            let item: i64 = raw_item_0;
+            let position: i64 = raw_index_0 as i64;
+            if (item % 4i64) == 1i64 {
+                stage_value.push((position * 4i64) + -4i64);
+            }
+        }
+        let mut state: i64 = -3i64;
+        for (raw_index_1, raw_item_1) in stage_value.clone().into_iter().enumerate() {
+            let item: i64 = raw_item_1;
+            let position: i64 = raw_index_1 as i64;
+            if (item % 5i64) == 4i64 {
+                state = -3i64;
+            } else {
+                state += item;
+            }
+        }
+        let sem5_result: i64 = state;
+        Ok(Value::Int(sem5_result))
+    }
+}
+// B_CORE_CAPABILITY_END:0e40e0f291f7734c31a4c32fe5b9fc8f57aa574e6f79ed7038903cbe4afb61a3
+
+// B_CORE_CAPABILITY_BEGIN:e28232536dfc2703b4388d25ce119a8150807c720e28409cc0cf88a8ea940c22
+mod capability_e28232536dfc2703 {
+    #![allow(dead_code, unused_imports, unused_parens, unused_variables)]
+
+    use crate::sem5::model::{ImageValue, Value};
+    use std::collections::BTreeMap;
+
+    #[derive(Clone, Debug)]
+    struct Sem5Image {
+        width: usize,
+        height: usize,
+        channels: usize,
+        pixels: Vec<i64>,
+    }
+
+    pub const GENERATED_CAPABILITY_ACTIVE: bool = true;
+    pub const GENERATED_SOURCE_SCHEMA_REVISION: u64 = 3;
+    pub const GENERATED_PROGRAM_ID: &str = "P-T-011-083c1ef4-FirstPrinciplesD";
+    pub const GENERATED_PROGRAM_IR_SHA256: &str =
+        "e28232536dfc2703b4388d25ce119a8150807c720e28409cc0cf88a8ea940c22";
+
+    pub fn run_generated_capability(inputs: &BTreeMap<String, Value>) -> Result<Value, String> {
+        let v0: Vec<i64> = match inputs.get("v0") {
+            Some(Value::Sequence(value)) => value.clone(),
+            _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
+        };
+        let mut stage_value: Vec<i64> = vec![];
+        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+            let item: i64 = raw_item_0;
+            let position: i64 = raw_index_0 as i64;
+            if (item % 5i64) == 2i64 {
+                stage_value.push(item + 3i64);
+            }
+        }
+        let mut state: i64 = 3i64;
+        for (raw_index_1, raw_item_1) in stage_value.clone().into_iter().enumerate() {
+            let item: i64 = raw_item_1;
+            let position: i64 = raw_index_1 as i64;
+            state += item;
+        }
+        let sem5_result: i64 = state;
+        Ok(Value::Int(sem5_result))
+    }
+}
+// B_CORE_CAPABILITY_END:e28232536dfc2703b4388d25ce119a8150807c720e28409cc0cf88a8ea940c22
+
+// B_CORE_CAPABILITY_BEGIN:860c4dcb6487e20380db62a122470eab2e246fd485e6edb5c728aa2b2baa5f90
+mod capability_860c4dcb6487e203 {
+    #![allow(dead_code, unused_imports, unused_parens, unused_variables)]
+
+    use crate::sem5::model::{ImageValue, Value};
+    use std::collections::BTreeMap;
+
+    #[derive(Clone, Debug)]
+    struct Sem5Image {
+        width: usize,
+        height: usize,
+        channels: usize,
+        pixels: Vec<i64>,
+    }
+
+    pub const GENERATED_CAPABILITY_ACTIVE: bool = true;
+    pub const GENERATED_SOURCE_SCHEMA_REVISION: u64 = 3;
+    pub const GENERATED_PROGRAM_ID: &str = "P-T-007-c3978829-FirstPrinciplesD";
+    pub const GENERATED_PROGRAM_IR_SHA256: &str =
+        "860c4dcb6487e20380db62a122470eab2e246fd485e6edb5c728aa2b2baa5f90";
+
+    pub fn run_generated_capability(inputs: &BTreeMap<String, Value>) -> Result<Value, String> {
+        let v0: Vec<i64> = match inputs.get("v0") {
+            Some(Value::Sequence(value)) => value.clone(),
+            _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
+        };
+        let mut stage_value: Vec<i64> = vec![];
+        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+            let item: i64 = raw_item_0;
+            let position: i64 = raw_index_0 as i64;
+            if (item % 2i64) == 1i64 {
+                stage_value.push((position * 2i64) + -1i64);
+            }
+        }
+        let mut state: i64 = 3i64;
+        for (raw_index_1, raw_item_1) in stage_value.clone().into_iter().enumerate() {
+            let item: i64 = raw_item_1;
+            let position: i64 = raw_index_1 as i64;
+            state += item;
+        }
+        let sem5_result: i64 = state;
+        Ok(Value::Int(sem5_result))
+    }
+}
+// B_CORE_CAPABILITY_END:860c4dcb6487e20380db62a122470eab2e246fd485e6edb5c728aa2b2baa5f90
+
+// B_CORE_CAPABILITY_BEGIN:3dd9a903b24d8315cd3eeb97b85c47f4f7ee3fb0987d5e35844104ff0622456e
+mod capability_3dd9a903b24d8315 {
+    #![allow(dead_code, unused_imports, unused_parens, unused_variables)]
+
+    use crate::sem5::model::{ImageValue, Value};
+    use std::collections::BTreeMap;
+
+    #[derive(Clone, Debug)]
+    struct Sem5Image {
+        width: usize,
+        height: usize,
+        channels: usize,
+        pixels: Vec<i64>,
+    }
+
+    pub const GENERATED_CAPABILITY_ACTIVE: bool = true;
+    pub const GENERATED_SOURCE_SCHEMA_REVISION: u64 = 3;
+    pub const GENERATED_PROGRAM_ID: &str = "P-T-010-ae71e723-FirstPrinciplesD";
+    pub const GENERATED_PROGRAM_IR_SHA256: &str =
+        "3dd9a903b24d8315cd3eeb97b85c47f4f7ee3fb0987d5e35844104ff0622456e";
+
+    pub fn run_generated_capability(inputs: &BTreeMap<String, Value>) -> Result<Value, String> {
+        let v0: Vec<i64> = match inputs.get("v0") {
+            Some(Value::Sequence(value)) => value.clone(),
+            _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
+        };
+        let mut stage_value: Vec<i64> = vec![];
+        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+            let item: i64 = raw_item_0;
+            let position: i64 = raw_index_0 as i64;
+            if (item % 4i64) == 1i64 {
+                stage_value.push(position * 4i64);
+            }
+        }
+        let mut state: i64 = -2i64;
+        for (raw_index_1, raw_item_1) in stage_value.clone().into_iter().enumerate() {
+            let item: i64 = raw_item_1;
+            let position: i64 = raw_index_1 as i64;
+            state += item;
+        }
+        let sem5_result: i64 = state;
+        Ok(Value::Int(sem5_result))
+    }
+}
+// B_CORE_CAPABILITY_END:3dd9a903b24d8315cd3eeb97b85c47f4f7ee3fb0987d5e35844104ff0622456e
+
+// B_CORE_CAPABILITY_BEGIN:23f340838e55bc36356521bb94d5e184a3a775ecbdf06935e210215b3bb64721
+mod capability_23f340838e55bc36 {
+    #![allow(dead_code, unused_imports, unused_parens, unused_variables)]
+
+    use crate::sem5::model::{ImageValue, Value};
+    use std::collections::BTreeMap;
+
+    #[derive(Clone, Debug)]
+    struct Sem5Image {
+        width: usize,
+        height: usize,
+        channels: usize,
+        pixels: Vec<i64>,
+    }
+
+    pub const GENERATED_CAPABILITY_ACTIVE: bool = true;
+    pub const GENERATED_SOURCE_SCHEMA_REVISION: u64 = 3;
+    pub const GENERATED_PROGRAM_ID: &str = "P-T-012-577ae237-FirstPrinciplesD";
+    pub const GENERATED_PROGRAM_IR_SHA256: &str =
+        "23f340838e55bc36356521bb94d5e184a3a775ecbdf06935e210215b3bb64721";
+
+    pub fn run_generated_capability(inputs: &BTreeMap<String, Value>) -> Result<Value, String> {
+        let v0: Vec<i64> = match inputs.get("v0") {
+            Some(Value::Sequence(value)) => value.clone(),
+            _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
+        };
+        let mut stage_value: Vec<i64> = vec![];
+        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+            let item: i64 = raw_item_0;
+            let position: i64 = raw_index_0 as i64;
+            if (item % 2i64) == 1i64 {
+                stage_value.push((position * 2i64) + -3i64);
+            }
+        }
+        let mut state: i64 = 1i64;
+        for (raw_index_1, raw_item_1) in stage_value.clone().into_iter().enumerate() {
+            let item: i64 = raw_item_1;
+            let position: i64 = raw_index_1 as i64;
+            if (item % 3i64) == 0i64 {
+                state = 1i64;
+            } else {
+                state += item;
+            }
+        }
+        let sem5_result: i64 = state;
+        Ok(Value::Int(sem5_result))
+    }
+}
+// B_CORE_CAPABILITY_END:23f340838e55bc36356521bb94d5e184a3a775ecbdf06935e210215b3bb64721
+
+// B_CORE_CAPABILITY_BEGIN:77d080a6932df8eb2afd3ac8b570852a5c9496097162d799036732f9e7437937
+mod capability_77d080a6932df8eb {
+    #![allow(dead_code, unused_imports, unused_parens, unused_variables)]
+
+    use crate::sem5::model::{ImageValue, Value};
+    use std::collections::BTreeMap;
+
+    #[derive(Clone, Debug)]
+    struct Sem5Image {
+        width: usize,
+        height: usize,
+        channels: usize,
+        pixels: Vec<i64>,
+    }
+
+    pub const GENERATED_CAPABILITY_ACTIVE: bool = true;
+    pub const GENERATED_SOURCE_SCHEMA_REVISION: u64 = 3;
+    pub const GENERATED_PROGRAM_ID: &str = "P-T-019-24dec2ec-FirstPrinciplesD";
+    pub const GENERATED_PROGRAM_IR_SHA256: &str =
+        "77d080a6932df8eb2afd3ac8b570852a5c9496097162d799036732f9e7437937";
+
+    pub fn run_generated_capability(inputs: &BTreeMap<String, Value>) -> Result<Value, String> {
+        let v0: Vec<i64> = match inputs.get("v0") {
+            Some(Value::Sequence(value)) => value.clone(),
+            _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
+        };
+        let mut stage_value: Vec<i64> = vec![];
+        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+            let item: i64 = raw_item_0;
+            let position: i64 = raw_index_0 as i64;
+            if (item % 5i64) == 0i64 {
+                stage_value.push(item);
+            }
+        }
+        let mut state: i64 = -3i64;
+        for (raw_index_1, raw_item_1) in stage_value.clone().into_iter().enumerate() {
+            let item: i64 = raw_item_1;
+            let position: i64 = raw_index_1 as i64;
+            state += item;
+        }
+        let sem5_result: i64 = state;
+        Ok(Value::Int(sem5_result))
+    }
+}
+// B_CORE_CAPABILITY_END:77d080a6932df8eb2afd3ac8b570852a5c9496097162d799036732f9e7437937
+
+// B_CORE_CAPABILITY_BEGIN:52458df072c8c2e2f4c217407db98dc7293adc7a2663d132ff17bb4ef1899c06
+mod capability_52458df072c8c2e2 {
+    #![allow(dead_code, unused_imports, unused_parens, unused_variables)]
+
+    use crate::sem5::model::{ImageValue, Value};
+    use std::collections::BTreeMap;
+
+    #[derive(Clone, Debug)]
+    struct Sem5Image {
+        width: usize,
+        height: usize,
+        channels: usize,
+        pixels: Vec<i64>,
+    }
+
+    pub const GENERATED_CAPABILITY_ACTIVE: bool = true;
+    pub const GENERATED_SOURCE_SCHEMA_REVISION: u64 = 3;
+    pub const GENERATED_PROGRAM_ID: &str = "P-T-005-36c35103-FirstPrinciplesD";
+    pub const GENERATED_PROGRAM_IR_SHA256: &str =
+        "52458df072c8c2e2f4c217407db98dc7293adc7a2663d132ff17bb4ef1899c06";
+
+    pub fn run_generated_capability(inputs: &BTreeMap<String, Value>) -> Result<Value, String> {
+        let v0: Vec<i64> = match inputs.get("v0") {
+            Some(Value::Sequence(value)) => value.clone(),
+            _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
+        };
+        let mut stage_value: Vec<i64> = vec![];
+        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+            let item: i64 = raw_item_0;
+            let position: i64 = raw_index_0 as i64;
+            if (item % 4i64) == 1i64 {
+                stage_value.push((position * 4i64) + -5i64);
+            }
+        }
+        let mut state: i64 = 0i64;
+        for (raw_index_1, raw_item_1) in stage_value.clone().into_iter().enumerate() {
+            let item: i64 = raw_item_1;
+            let position: i64 = raw_index_1 as i64;
+            state += item;
+        }
+        let sem5_result: i64 = state;
+        Ok(Value::Int(sem5_result))
+    }
+}
+// B_CORE_CAPABILITY_END:52458df072c8c2e2f4c217407db98dc7293adc7a2663d132ff17bb4ef1899c06
+
+// B_CORE_CAPABILITY_BEGIN:2716441b4b3e09ea5e3f03ffddde10a71c132bd82d00618e9b9532d918142953
+mod capability_2716441b4b3e09ea {
+    #![allow(dead_code, unused_imports, unused_parens, unused_variables)]
+
+    use crate::sem5::model::{ImageValue, Value};
+    use std::collections::BTreeMap;
+
+    #[derive(Clone, Debug)]
+    struct Sem5Image {
+        width: usize,
+        height: usize,
+        channels: usize,
+        pixels: Vec<i64>,
+    }
+
+    pub const GENERATED_CAPABILITY_ACTIVE: bool = true;
+    pub const GENERATED_SOURCE_SCHEMA_REVISION: u64 = 3;
+    pub const GENERATED_PROGRAM_ID: &str = "P-T-010-9dffdefb-FirstPrinciplesD";
+    pub const GENERATED_PROGRAM_IR_SHA256: &str =
+        "2716441b4b3e09ea5e3f03ffddde10a71c132bd82d00618e9b9532d918142953";
+
+    pub fn run_generated_capability(inputs: &BTreeMap<String, Value>) -> Result<Value, String> {
+        let v0: Vec<i64> = match inputs.get("v0") {
+            Some(Value::Sequence(value)) => value.clone(),
+            _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:v0".to_string()),
+        };
+        let mut stage_value: Vec<i64> = vec![];
+        for (raw_index_0, raw_item_0) in v0.clone().into_iter().enumerate() {
+            let item: i64 = raw_item_0;
+            let position: i64 = raw_index_0 as i64;
+            if (item % 4i64) == 1i64 {
+                stage_value.push((position * 4i64) + 7i64);
+            }
+        }
+        let mut state: i64 = 3i64;
+        for (raw_index_1, raw_item_1) in stage_value.clone().into_iter().enumerate() {
+            let item: i64 = raw_item_1;
+            let position: i64 = raw_index_1 as i64;
+            state += item;
+        }
+        let sem5_result: i64 = state;
+        Ok(Value::Int(sem5_result))
+    }
+}
+// B_CORE_CAPABILITY_END:2716441b4b3e09ea5e3f03ffddde10a71c132bd82d00618e9b9532d918142953
+
 pub fn generated_capability_hashes() -> &'static [&'static str] {
     &[
         "dda8fe9adfe0e2c09c4a0e47496e5ea51dbf929863626df3e0d6cda87b449717",
@@ -976,11 +1490,22 @@ pub fn generated_capability_hashes() -> &'static [&'static str] {
         "75f1b3f69dbadbcdd0e63a116efff9ab0f68d388824b9baed0a401535efee58c",
         "33bea1d499b1c41631142977959333b1def70035840d3c86db8817cab0ad5280",
         "247990c6555d7ee136f4a12e507d38e177bbc549e33ca8258159d9678623dc6e",
+        "f700111f88ac5f3aa1f47280d8aef76f66fb8e81f8e147d828e56ff1f5b0adc8",
+        "c0b52aa436f3ff9cfc2fa574ce08ab2b8095627dc8adb225644ef34b7a1dedcf",
+        "5788e14dfcf4302ae6cd55d7e123e4b5beff84a36f06e3a6f9d75d466be90760",
+        "0e40e0f291f7734c31a4c32fe5b9fc8f57aa574e6f79ed7038903cbe4afb61a3",
+        "e28232536dfc2703b4388d25ce119a8150807c720e28409cc0cf88a8ea940c22",
+        "860c4dcb6487e20380db62a122470eab2e246fd485e6edb5c728aa2b2baa5f90",
+        "3dd9a903b24d8315cd3eeb97b85c47f4f7ee3fb0987d5e35844104ff0622456e",
+        "23f340838e55bc36356521bb94d5e184a3a775ecbdf06935e210215b3bb64721",
+        "77d080a6932df8eb2afd3ac8b570852a5c9496097162d799036732f9e7437937",
+        "52458df072c8c2e2f4c217407db98dc7293adc7a2663d132ff17bb4ef1899c06",
+        "2716441b4b3e09ea5e3f03ffddde10a71c132bd82d00618e9b9532d918142953",
     ]
 }
 
 pub fn run_generated_capability(inputs: &BTreeMap<String, Value>) -> Result<Value, String> {
-    capability_247990c6555d7ee1::run_generated_capability(inputs)
+    capability_2716441b4b3e09ea::run_generated_capability(inputs)
 }
 
 pub fn run_generated_capability_by_sha256(
@@ -1047,6 +1572,39 @@ pub fn run_generated_capability_by_sha256(
         }
         "247990c6555d7ee136f4a12e507d38e177bbc549e33ca8258159d9678623dc6e" => {
             capability_247990c6555d7ee1::run_generated_capability(inputs)
+        }
+        "f700111f88ac5f3aa1f47280d8aef76f66fb8e81f8e147d828e56ff1f5b0adc8" => {
+            capability_f700111f88ac5f3a::run_generated_capability(inputs)
+        }
+        "c0b52aa436f3ff9cfc2fa574ce08ab2b8095627dc8adb225644ef34b7a1dedcf" => {
+            capability_c0b52aa436f3ff9c::run_generated_capability(inputs)
+        }
+        "5788e14dfcf4302ae6cd55d7e123e4b5beff84a36f06e3a6f9d75d466be90760" => {
+            capability_5788e14dfcf4302a::run_generated_capability(inputs)
+        }
+        "0e40e0f291f7734c31a4c32fe5b9fc8f57aa574e6f79ed7038903cbe4afb61a3" => {
+            capability_0e40e0f291f7734c::run_generated_capability(inputs)
+        }
+        "e28232536dfc2703b4388d25ce119a8150807c720e28409cc0cf88a8ea940c22" => {
+            capability_e28232536dfc2703::run_generated_capability(inputs)
+        }
+        "860c4dcb6487e20380db62a122470eab2e246fd485e6edb5c728aa2b2baa5f90" => {
+            capability_860c4dcb6487e203::run_generated_capability(inputs)
+        }
+        "3dd9a903b24d8315cd3eeb97b85c47f4f7ee3fb0987d5e35844104ff0622456e" => {
+            capability_3dd9a903b24d8315::run_generated_capability(inputs)
+        }
+        "23f340838e55bc36356521bb94d5e184a3a775ecbdf06935e210215b3bb64721" => {
+            capability_23f340838e55bc36::run_generated_capability(inputs)
+        }
+        "77d080a6932df8eb2afd3ac8b570852a5c9496097162d799036732f9e7437937" => {
+            capability_77d080a6932df8eb::run_generated_capability(inputs)
+        }
+        "52458df072c8c2e2f4c217407db98dc7293adc7a2663d132ff17bb4ef1899c06" => {
+            capability_52458df072c8c2e2::run_generated_capability(inputs)
+        }
+        "2716441b4b3e09ea5e3f03ffddde10a71c132bd82d00618e9b9532d918142953" => {
+            capability_2716441b4b3e09ea::run_generated_capability(inputs)
         }
         _ => Err("GENERATED_CAPABILITY_NOT_FOUND".to_string()),
     }
