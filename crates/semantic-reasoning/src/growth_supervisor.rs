@@ -935,6 +935,9 @@ pub struct SelfCheck {
     pub fixed_sem9_toggle_replay_forbidden: bool,
     pub runtime_repair_counter_requires_executed_action: bool,
     pub diagnostic_outcome_requires_action_output_consumption: bool,
+    pub diagnostic_productivity_requires_current_executable_intervention: bool,
+    pub unbound_capability_gap_state_deduplicated: bool,
+    pub test_only_evaluator_cohort_validation_enabled: bool,
     pub self_healing_candidates_route_to_atomic_installer: bool,
     pub integrated_program_ir_lowers_to_compiled_rust: bool,
     pub installed_compositions_are_runtime_callable: bool,
@@ -1010,6 +1013,9 @@ pub fn self_check() -> SelfCheck {
             "SELF_APPLICATION_LINEAGE_CONTINUES_ACROSS_SOURCE_GENERATIONS".to_string(),
             "RUNTIME_REPAIR_COUNTER_REQUIRES_AN_IMMUTABLE_EXECUTED_ACTION_RECEIPT".to_string(),
             "DIAGNOSTIC_REWARD_REQUIRES_CONSUMPTION_OF_THE_ACTION_OUTPUT_OBSERVATION".to_string(),
+            "DIAGNOSTIC_PRODUCTIVITY_REQUIRES_A_CURRENT_EXECUTABLE_INTERVENTION".to_string(),
+            "REPEATED_UNBOUND_CAPABILITY_GAP_STATE_IS_ONE_OBSERVATION".to_string(),
+            "OBSERVED_TEST_ONLY_COHORTS_RUN_BOUNDED_NATIVE_VALIDATION".to_string(),
             "LEARNED_SELF_HEALING_CANDIDATES_ROUTE_THROUGH_ATOMIC_INSTALL_VALIDATE_ROLLBACK"
                 .to_string(),
             "SEM5_PROGRAM_IR_LOWERS_TO_REPOSITORY_NATIVE_RUST_BEFORE_INSTALLATION".to_string(),
@@ -1061,6 +1067,9 @@ pub fn self_check() -> SelfCheck {
         fixed_sem9_toggle_replay_forbidden: true,
         runtime_repair_counter_requires_executed_action: true,
         diagnostic_outcome_requires_action_output_consumption: true,
+        diagnostic_productivity_requires_current_executable_intervention: true,
+        unbound_capability_gap_state_deduplicated: true,
+        test_only_evaluator_cohort_validation_enabled: true,
         self_healing_candidates_route_to_atomic_installer: true,
         integrated_program_ir_lowers_to_compiled_rust: true,
         installed_compositions_are_runtime_callable: true,
@@ -4758,7 +4767,7 @@ fn repository_validation_plan(
             .iter()
             .any(|(_, relative)| !path_is_dedicated_test(relative));
         'python_plan: {
-            if root.join("pyproject.toml").is_file() && python_implementation_present {
+            if root.join("pyproject.toml").is_file() {
                 let mut test_paths = python_entries
                     .iter()
                     .filter(|(_, relative)| {
@@ -4773,6 +4782,9 @@ fn repository_validation_plan(
                 test_paths.sort();
                 test_paths.dedup();
                 test_paths.truncate(MAX_REPOSITORY_TEST_PATHS);
+                if !python_implementation_present && test_paths.is_empty() {
+                    break 'python_plan;
+                }
                 let (test_selection_source, reused_validation_receipt_sha256) =
                     if test_paths.is_empty() {
                         let Some((reused, receipt_sha256)) =
@@ -5508,13 +5520,19 @@ fn persist_self_inspection(
         .join("diagnostics")
         .join(format!("self_inspection_{}.json", receipt.diagnostic_id));
     let is_new = !path.exists();
+    let mut persisted = false;
     if is_new {
-        write_immutable_json(&path, receipt)?;
         let new_policy_selection = state.diagnostic_policy.record(receipt);
-        state.self_inspection_events = state.self_inspection_events.saturating_add(1);
-        state.diagnostic_experiment_events = state
-            .diagnostic_experiment_events
-            .saturating_add(receipt.experiments.len() as u64);
+        let should_persist = new_policy_selection
+            || receipt.repair_disposition == RepairDisposition::RuntimeRepairActive;
+        if should_persist {
+            write_immutable_json(&path, receipt)?;
+            persisted = true;
+            state.self_inspection_events = state.self_inspection_events.saturating_add(1);
+            state.diagnostic_experiment_events = state
+                .diagnostic_experiment_events
+                .saturating_add(receipt.experiments.len() as u64);
+        }
         if new_policy_selection {
             match receipt.repair_disposition {
                 RepairDisposition::RuntimeRepairActive => {}
@@ -5525,14 +5543,18 @@ fn persist_self_inspection(
                 RepairDisposition::ProposalRequired | RepairDisposition::SafeWait => {}
             }
         }
-        cleanup_recent_files(
-            &config.state_dir.join("diagnostics"),
-            "self_inspection_",
-            64,
-        )?;
+        if should_persist {
+            cleanup_recent_files(
+                &config.state_dir.join("diagnostics"),
+                "self_inspection_",
+                64,
+            )?;
+        }
     }
     state.last_internal_bottleneck = Some(receipt.selected_bottleneck.label().to_string());
-    state.last_self_inspection_sha256 = Some(receipt_sha256);
+    if persisted || !is_new {
+        state.last_self_inspection_sha256 = Some(receipt_sha256);
+    }
     Ok(())
 }
 
@@ -6671,6 +6693,70 @@ mod tests {
     }
 
     #[test]
+    fn repeated_unbound_gap_does_not_emit_diagnostic_report_spam() {
+        let root = temp_root("unbound-gap-report-dedup");
+        let (config_path, config) = test_config(&root);
+        let mut state = initialize(&config_path).unwrap();
+        let generation = state.generation;
+        let inspection_input = |sequence, streak, policy| SelfInspectionInput {
+            generation,
+            supervisor_sequence: sequence,
+            files_scanned: 10,
+            files_reused: 10,
+            files_hashed: 0,
+            scan_duration_ms: 10,
+            pending_work_events: 0,
+            replayed_unchanged_work_events: 0,
+            naive_cohort_has_verification: false,
+            evidence_aware_cohort_has_verification: false,
+            autonomous_campaigns_enabled: true,
+            campaigns_started: 1,
+            mutual_revalidation_events: 1,
+            evaluator_challenge_cases: EvaluatorMutationKind::ALL.len() as u64,
+            evaluator_required_challenge_cases: EvaluatorMutationKind::ALL.len() as u64,
+            consecutive_failures: 0,
+            plateau_scans: 12,
+            unconsumed_high_observations: 0,
+            cohort_preflight_ready: false,
+            core_cohort_validation_applicable: false,
+            repository_cohort_validation_applicable: false,
+            source_patch_attempts: 0,
+            source_patch_installations: 0,
+            source_patch_rollbacks: 0,
+            source_patch_consecutive_failures: 0,
+            source_patch_validation_ms: 0,
+            source_discovery_no_candidate_streak: streak,
+            last_source_discovery_reason: Some("BELOW_VALUE_THRESHOLD".to_string()),
+            active_runtime_ms: 100,
+            diagnostic_policy: policy,
+        };
+        let first = inspect_self(inspection_input(1, 4, state.diagnostic_policy.clone())).unwrap();
+        persist_self_inspection(&config, &mut state, &first).unwrap();
+        let first_sha = state.last_self_inspection_sha256.clone();
+
+        let repeated =
+            inspect_self(inspection_input(2, 5, state.diagnostic_policy.clone())).unwrap();
+        persist_self_inspection(&config, &mut state, &repeated).unwrap();
+
+        assert_eq!(state.self_inspection_events, 1);
+        assert_eq!(state.diagnostic_experiment_events, 1);
+        assert_eq!(state.last_self_inspection_sha256, first_sha);
+        assert_eq!(state.diagnostic_policy.duplicate_selection_suppressed, 1);
+        assert_eq!(
+            fs::read_dir(config.state_dir.join("diagnostics"))
+                .unwrap()
+                .filter_map(Result::ok)
+                .filter(|entry| entry
+                    .file_name()
+                    .to_string_lossy()
+                    .starts_with("self_inspection_"))
+                .count(),
+            1
+        );
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
     fn hashed_diagnostic_cleanup_keeps_the_newest_receipt_not_largest_name() {
         let root = temp_root("diagnostic-retention");
         let old = root.join("self_inspection_ffff.json");
@@ -7001,6 +7087,9 @@ mod tests {
         assert!(check.fixed_sem9_toggle_replay_forbidden);
         assert!(check.runtime_repair_counter_requires_executed_action);
         assert!(check.diagnostic_outcome_requires_action_output_consumption);
+        assert!(check.diagnostic_productivity_requires_current_executable_intervention);
+        assert!(check.unbound_capability_gap_state_deduplicated);
+        assert!(check.test_only_evaluator_cohort_validation_enabled);
         assert!(check.self_healing_candidates_route_to_atomic_installer);
         assert!(check.integrated_program_ir_lowers_to_compiled_rust);
         assert!(check.installed_compositions_are_runtime_callable);
@@ -7220,7 +7309,7 @@ mod tests {
             state.runtime_self_repair_counter_contract_revision,
             RUNTIME_REPAIR_COUNTER_CONTRACT_REVISION
         );
-        assert_eq!(state.diagnostic_policy.outcome_causal_contract_revision, 3);
+        assert_eq!(state.diagnostic_policy.outcome_causal_contract_revision, 4);
         fs::remove_dir_all(root).unwrap();
     }
 
@@ -7842,6 +7931,22 @@ mod tests {
             reasons: vec!["python regression".to_string()],
             ..implementation.clone()
         };
+        let test_only_plan =
+            repository_validation_plan(&config, std::slice::from_ref(&test_observation))
+                .unwrap()
+                .expect("test-only Python evaluator change is independently verifiable");
+        assert_eq!(
+            test_only_plan.validator_kind,
+            RepositoryValidatorKind::PythonPytest
+        );
+        assert_eq!(
+            test_only_plan.test_paths,
+            vec![PathBuf::from("tests/test_core_module.py")]
+        );
+        assert_eq!(
+            test_only_plan.input_observation_ids,
+            vec!["python-test".to_string()]
+        );
         let cohort = vec![implementation.clone(), test_observation];
         let diagnostic = inspect_self(SelfInspectionInput {
             generation: 3,

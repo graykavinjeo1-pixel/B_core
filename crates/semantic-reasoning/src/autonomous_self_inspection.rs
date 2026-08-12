@@ -28,6 +28,10 @@ pub struct DiagnosticExperimentMemory {
     pub productive_outcome_events: u64,
     #[serde(default)]
     pub failed_outcome_events: u64,
+    #[serde(default)]
+    pub last_unbound_state_sha256: Option<String>,
+    #[serde(default)]
+    pub duplicate_unbound_state_observations: u64,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -92,7 +96,7 @@ impl Default for DiagnosticPolicyMemory {
             active_action_id: None,
             active_action_receipt_sha256: None,
             active_output_observation_ids: Vec::new(),
-            outcome_causal_contract_revision: 3,
+            outcome_causal_contract_revision: 4,
             legacy_unbound_outcome_bound_selections: 0,
             legacy_unbound_productive_outcome_events: 0,
             legacy_unbound_failed_outcome_events: 0,
@@ -146,6 +150,16 @@ impl DiagnosticPolicyMemory {
             }
             self.clear_unbound_active();
             self.outcome_causal_contract_revision = 3;
+        }
+        if self.outcome_causal_contract_revision < 4 {
+            // Revision 4 separates an executable intervention from a
+            // causally supported diagnosis. Historical outcome credit remains
+            // valid, but an unbound active diagnosis may not monopolize the
+            // next selection merely because it has no action to execute.
+            if self.active_action_id.is_none() {
+                self.clear_unbound_active();
+            }
+            self.outcome_causal_contract_revision = 4;
         }
     }
 
@@ -277,10 +291,38 @@ impl DiagnosticPolicyMemory {
                 self.clear_unbound_active();
             }
         }
+        let intervention_executable = receipt.repair_disposition
+            == RepairDisposition::RuntimeRepairActive
+            && receipt.repair_mechanism.is_some();
+        let unbound_state_sha256 = sha256(
+            format!(
+                "{}:{:?}:{:?}:{:?}:{}:{}",
+                experiment.experiment_id,
+                receipt.selected_bottleneck,
+                receipt.repair_disposition,
+                receipt.repair_mechanism,
+                experiment.causal_support,
+                experiment.intervention_observable
+            )
+            .as_bytes(),
+        );
         let record = self
             .experiment_records
             .entry(experiment.experiment_id.clone())
             .or_default();
+        if !intervention_executable
+            && record.last_unbound_state_sha256.as_deref() == Some(&unbound_state_sha256)
+        {
+            record.duplicate_unbound_state_observations = record
+                .duplicate_unbound_state_observations
+                .saturating_add(1);
+            self.duplicate_selection_suppressed =
+                self.duplicate_selection_suppressed.saturating_add(1);
+            return false;
+        }
+        if !intervention_executable {
+            record.last_unbound_state_sha256 = Some(unbound_state_sha256);
+        }
         record.trials = record.trials.saturating_add(1);
         record.last_selected_generation = Some(receipt.generation);
         if experiment.causal_support {
@@ -300,13 +342,17 @@ impl DiagnosticPolicyMemory {
         {
             self.exploration_selections = self.exploration_selections.saturating_add(1);
         }
-        self.active_experiment_id = Some(experiment.experiment_id.clone());
-        self.active_generation = Some(receipt.generation);
-        self.active_observations = 1;
-        self.active_causal_support = experiment.causal_support;
-        self.active_action_id = None;
-        self.active_action_receipt_sha256 = None;
-        self.active_output_observation_ids.clear();
+        if intervention_executable {
+            self.active_experiment_id = Some(experiment.experiment_id.clone());
+            self.active_generation = Some(receipt.generation);
+            self.active_observations = 1;
+            self.active_causal_support = experiment.causal_support;
+            self.active_action_id = None;
+            self.active_action_receipt_sha256 = None;
+            self.active_output_observation_ids.clear();
+        } else {
+            self.clear_unbound_active();
+        }
         true
     }
 }
@@ -803,7 +849,16 @@ fn candidate_hypotheses(input: &SelfInspectionInput) -> Vec<InternalHypothesis> 
             .min(100) as u32;
         let repetition_penalty = record.trials.min(8).saturating_mul(6) as u32;
         let unsupported_penalty = record.consecutive_no_support.min(4) * 30;
-        let active_bonus = if input.diagnostic_policy.active_generation == Some(input.generation)
+        let intervention_executable =
+            diagnostic_intervention_executable(hypothesis.bottleneck, input);
+        let executable_productive_bonus = if intervention_executable {
+            productive_bonus
+        } else {
+            0
+        };
+        let active_bonus = if intervention_executable
+            && input.diagnostic_policy.active_action_id.is_some()
+            && input.diagnostic_policy.active_generation == Some(input.generation)
             && input.diagnostic_policy.active_experiment_id.as_deref()
                 == Some(experiment.experiment_id.as_str())
         {
@@ -814,7 +869,7 @@ fn candidate_hypotheses(input: &SelfInspectionInput) -> Vec<InternalHypothesis> 
         hypothesis.policy_score_millis = u32::from(hypothesis.confidence_millis)
             .saturating_add(exploration_bonus)
             .saturating_add(support_bonus)
-            .saturating_add(productive_bonus)
+            .saturating_add(executable_productive_bonus)
             .saturating_add(active_bonus)
             .saturating_sub(repetition_penalty)
             .saturating_sub(unsupported_penalty)
@@ -824,13 +879,14 @@ fn candidate_hypotheses(input: &SelfInspectionInput) -> Vec<InternalHypothesis> 
         hypothesis.prior_causal_support_events = record.causal_support_events;
         hypothesis.policy_exploration_selected = record.trials == 0;
         hypothesis.evidence.push(format!(
-            "adaptive_policy:experiment={};trials={};causal_support={};verified_outcomes={};productive={};failed={};active={};score={}",
+            "adaptive_policy:experiment={};trials={};causal_support={};verified_outcomes={};productive={};failed={};intervention_executable={};active_bound_action={};score={}",
             experiment.experiment_id,
             record.trials,
             record.causal_support_events,
             verified_outcomes,
             record.productive_outcome_events,
             record.failed_outcome_events,
+            intervention_executable,
             active_bonus > 0,
             hypothesis.policy_score_millis
         ));
@@ -846,6 +902,26 @@ fn candidate_hypotheses(input: &SelfInspectionInput) -> Vec<InternalHypothesis> 
         first.selected = true;
     }
     hypotheses
+}
+
+fn diagnostic_intervention_executable(
+    bottleneck: InternalBottleneckClass,
+    input: &SelfInspectionInput,
+) -> bool {
+    match bottleneck {
+        InternalBottleneckClass::WorkEventAttributionGap
+        | InternalBottleneckClass::EvidenceCohortStarvation
+        | InternalBottleneckClass::MutualRecursiveBootstrapGap => true,
+        InternalBottleneckClass::CampaignCohortBlocked => {
+            input.core_cohort_validation_applicable || input.repository_cohort_validation_applicable
+        }
+        InternalBottleneckClass::ScanTraversalOverhead
+        | InternalBottleneckClass::RepeatedVerificationFailure
+        | InternalBottleneckClass::SourceSynthesisCoverageGap
+        | InternalBottleneckClass::SourceRepairLowYield
+        | InternalBottleneckClass::VerificationCostDominance
+        | InternalBottleneckClass::QuietIdle => false,
+    }
 }
 
 fn diagnostic_experiment(
@@ -1339,7 +1415,7 @@ mod tests {
     }
 
     #[test]
-    fn verified_diagnostic_history_changes_the_next_bottleneck_choice() {
+    fn unbound_diagnostic_rotates_before_same_state_is_reconsidered() {
         let mut value = input();
         value.unconsumed_high_observations = 16;
         value.cohort_preflight_ready = false;
@@ -1355,28 +1431,28 @@ mod tests {
         assert!(first.hypotheses[0].policy_exploration_selected);
 
         assert!(value.diagnostic_policy.record(&first));
-        let repeated = inspect(value.clone()).expect("same-generation inspection");
+        let alternate = inspect(value.clone()).expect("same-generation alternate inspection");
         assert_eq!(
-            repeated.selected_bottleneck,
-            InternalBottleneckClass::CampaignCohortBlocked
+            alternate.selected_bottleneck,
+            InternalBottleneckClass::SourceRepairLowYield
         );
-        assert!(!value.diagnostic_policy.record(&repeated));
+        assert!(alternate.hypotheses[0].policy_exploration_selected);
+        assert!(value.diagnostic_policy.record(&alternate));
         assert_eq!(value.diagnostic_policy.outcome_bound_selections, 0);
-        assert_eq!(value.diagnostic_policy.duplicate_selection_suppressed, 1);
 
         assert!(!value.diagnostic_policy.resolve_frontier_outcome(
             2,
             true,
             &["unrelated-observation".to_string()]
         ));
-        value.generation = 3;
-        let next_generation = inspect(value).expect("next-generation inspection");
+
+        let reconsidered = inspect(value.clone()).expect("bounded reconsideration");
         assert_eq!(
-            next_generation.selected_bottleneck,
-            InternalBottleneckClass::SourceRepairLowYield
+            reconsidered.selected_bottleneck,
+            InternalBottleneckClass::CampaignCohortBlocked
         );
-        assert!(next_generation.hypotheses[0].policy_exploration_selected);
-        assert_eq!(next_generation.hypotheses[0].prior_policy_trials, 0);
+        assert!(!value.diagnostic_policy.record(&reconsidered));
+        assert_eq!(value.diagnostic_policy.duplicate_selection_suppressed, 1);
     }
 
     #[test]
@@ -1431,7 +1507,7 @@ mod tests {
 
         policy.ensure_action_causal_contract();
 
-        assert_eq!(policy.outcome_causal_contract_revision, 3);
+        assert_eq!(policy.outcome_causal_contract_revision, 4);
         assert_eq!(policy.outcome_bound_selections, 0);
         assert_eq!(policy.productive_outcome_events, 0);
         assert_eq!(policy.failed_outcome_events, 0);
@@ -1465,5 +1541,81 @@ mod tests {
             InternalBottleneckClass::SourceRepairLowYield
         );
         assert!(receipt.hypotheses[0].policy_exploration_selected);
+    }
+
+    #[test]
+    fn non_executable_productive_history_cannot_starve_a_synthesis_gap() {
+        let mut value = input();
+        value.unconsumed_high_observations = 5;
+        value.cohort_preflight_ready = false;
+        value.core_cohort_validation_applicable = false;
+        value.repository_cohort_validation_applicable = false;
+        value.plateau_scans = 84;
+        value.source_patch_attempts = 0;
+        value.source_discovery_no_candidate_streak = 9;
+        value.last_source_discovery_reason = Some("BELOW_VALUE_THRESHOLD".to_string());
+        value.diagnostic_policy.experiment_records.insert(
+            "MIXED_ROLE_COHORT_RECONSTRUCTION".to_string(),
+            DiagnosticExperimentMemory {
+                trials: 108,
+                causal_support_events: 108,
+                productive_outcome_events: 19,
+                ..DiagnosticExperimentMemory::default()
+            },
+        );
+        value.diagnostic_policy.experiment_records.insert(
+            "SOURCE_SYNTHESIS_ADMISSIBLE_CANDIDATE_PROBE".to_string(),
+            DiagnosticExperimentMemory {
+                trials: 19,
+                causal_support_events: 19,
+                ..DiagnosticExperimentMemory::default()
+            },
+        );
+        value.diagnostic_policy.active_experiment_id =
+            Some("MIXED_ROLE_COHORT_RECONSTRUCTION".to_string());
+        value.diagnostic_policy.active_generation = Some(value.generation);
+        value.diagnostic_policy.active_action_id = None;
+
+        let receipt = inspect(value).expect("runtime-like inspection");
+
+        assert_eq!(
+            receipt.selected_bottleneck,
+            InternalBottleneckClass::SourceSynthesisCoverageGap
+        );
+        assert!(receipt.hypotheses[0]
+            .evidence
+            .iter()
+            .any(|item| item.contains("intervention_executable=false")));
+    }
+
+    #[test]
+    fn repeated_unbound_capability_gap_is_counted_once_per_state() {
+        let mut value = input();
+        value.plateau_scans = 4;
+        value.source_discovery_no_candidate_streak = 4;
+        value.last_source_discovery_reason = Some("BELOW_VALUE_THRESHOLD".to_string());
+
+        let first = inspect(value.clone()).expect("first capability gap");
+        assert_eq!(first.repair_disposition, RepairDisposition::CapabilityGap);
+        assert!(value.diagnostic_policy.record(&first));
+        let trials_after_first = value
+            .diagnostic_policy
+            .experiment_records
+            .get("SOURCE_SYNTHESIS_ADMISSIBLE_CANDIDATE_PROBE")
+            .expect("source synthesis record")
+            .trials;
+
+        value.supervisor_sequence = value.supervisor_sequence.saturating_add(1);
+        value.source_discovery_no_candidate_streak = 5;
+        let repeated = inspect(value.clone()).expect("repeated capability gap");
+        assert!(!value.diagnostic_policy.record(&repeated));
+        let record = value
+            .diagnostic_policy
+            .experiment_records
+            .get("SOURCE_SYNTHESIS_ADMISSIBLE_CANDIDATE_PROBE")
+            .expect("source synthesis record");
+        assert_eq!(record.trials, trials_after_first);
+        assert_eq!(record.duplicate_unbound_state_observations, 1);
+        assert_eq!(value.diagnostic_policy.duplicate_selection_suppressed, 1);
     }
 }
