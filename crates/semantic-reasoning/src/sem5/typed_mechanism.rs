@@ -5,6 +5,9 @@
 //! resulting Rust syntax, and falsifies it against public observations.
 
 use std::collections::{BTreeMap, BTreeSet};
+use std::ffi::OsStr;
+use std::fs;
+use std::path::{Path, PathBuf};
 
 use serde::{Deserialize, Serialize};
 
@@ -23,6 +26,8 @@ use super::tasks::evaluate_contract;
 pub const TYPED_MECHANISM_GOAL_SCHEMA: &str = "B_CORE_TYPED_MECHANISM_GOAL_1";
 pub const TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA: &str = "B_CORE_TYPED_MECHANISM_SYNTHESIS_GOAL_1";
 pub const CONCRETE_SYNTAX_TEMPLATE_SCHEMA: &str = "B_CORE_CONCRETE_SYNTAX_TEMPLATE_1";
+pub const SOURCE_BOUND_OPERATOR_AUTHORITY_SCHEMA: &str = "B_CORE_SOURCE_BOUND_OPERATOR_AUTHORITY_1";
+pub const MAX_ACTIVE_TYPED_MECHANISM_OPERATORS: usize = 256;
 const MAX_MECHANISM_OPERANDS: usize = 32;
 const MAX_MECHANISM_EXPRESSION_NODES: usize = 256;
 const MAX_MECHANISM_OBSERVATIONS: usize = 64;
@@ -161,6 +166,209 @@ pub struct TypedMechanismImprovementOperatorIR {
     pub otherwise: Option<TypedSyntaxExpressionIR>,
     pub validation_contract: Vec<String>,
     pub evidence_sha256: String,
+}
+
+/// Independent verification authority for a reusable typed expression
+/// operator.  The historical directory/schema names remain stable, but the
+/// operator itself is language-neutral and may be consumed by both Python and
+/// Rust source frontends after this receipt is validated.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct TypedMechanismOperatorAuthorityReceiptIR {
+    pub schema: String,
+    pub authority_id: String,
+    pub operator_id: String,
+    pub operator_sha256: String,
+    pub repair_id: String,
+    pub repair_receipt_sha256: String,
+    pub sandbox_output_sha256: String,
+    pub candidate_sha256: String,
+    pub sandbox_verified: bool,
+    pub sandbox_cleaned: bool,
+    pub authoritative_scope_stable: bool,
+    pub candidate_installed: bool,
+    pub authoritative_source_write_events: u64,
+    pub codex_calls: u64,
+    pub external_llm_calls: u64,
+    pub network_reads: u64,
+    pub network_writes: u64,
+    #[serde(default, skip_serializing_if = "u64_is_zero")]
+    pub promotion_generation: u64,
+    pub receipt_sha256: String,
+}
+
+fn u64_is_zero(value: &u64) -> bool {
+    *value == 0
+}
+
+fn json_sha256<T: Serialize>(value: &T) -> Result<String, String> {
+    serde_json::to_vec(value)
+        .map(|bytes| sha256(&bytes))
+        .map_err(|error| format!("TYPED_OPERATOR_JSON:{error}"))
+}
+
+pub fn typed_mechanism_operator_directory(state_dir: &Path) -> PathBuf {
+    state_dir
+        .join("improvement_operator_repository")
+        .join("source_bound_operators")
+}
+
+pub fn typed_mechanism_operator_authority_directory(state_dir: &Path) -> PathBuf {
+    state_dir
+        .join("improvement_operator_repository")
+        .join("source_bound_authority")
+}
+
+pub fn validate_typed_mechanism_operator_authority(
+    authority: &TypedMechanismOperatorAuthorityReceiptIR,
+) -> Result<(), String> {
+    if authority.schema != SOURCE_BOUND_OPERATOR_AUTHORITY_SCHEMA
+        || authority.authority_id.len() != 64
+        || authority.operator_id.len() != 64
+        || authority.operator_sha256.len() != 64
+        || authority.repair_id.len() != 64
+        || authority.repair_receipt_sha256.len() != 64
+        || authority.sandbox_output_sha256.len() != 64
+        || authority.candidate_sha256.len() != 64
+        || !authority.sandbox_verified
+        || !authority.sandbox_cleaned
+        || !authority.authoritative_scope_stable
+        || authority.candidate_installed
+        || authority.authoritative_source_write_events != 0
+        || authority.codex_calls != 0
+        || authority.external_llm_calls != 0
+        || authority.network_reads != 0
+        || authority.network_writes != 0
+    {
+        return Err("SOURCE_BOUND_OPERATOR_AUTHORITY_ENVELOPE".to_string());
+    }
+    let expected_authority_id = sha256(
+        format!(
+            "SOURCE_BOUND_OPERATOR_AUTHORITY_1:{}:{}:{}:{}",
+            authority.operator_id,
+            authority.repair_id,
+            authority.repair_receipt_sha256,
+            authority.sandbox_output_sha256
+        )
+        .as_bytes(),
+    );
+    if authority.authority_id != expected_authority_id {
+        return Err("SOURCE_BOUND_OPERATOR_AUTHORITY_ID_MISMATCH".to_string());
+    }
+    let mut identity = authority.clone();
+    identity.receipt_sha256.clear();
+    if json_sha256(&identity)? != authority.receipt_sha256 {
+        return Err("SOURCE_BOUND_OPERATOR_AUTHORITY_HASH_MISMATCH".to_string());
+    }
+    Ok(())
+}
+
+pub fn select_bounded_typed_mechanism_operator_ids(
+    operator_ids: impl IntoIterator<Item = String>,
+    latest_verified_generation: &BTreeMap<String, u64>,
+    limit: usize,
+) -> Vec<String> {
+    let mut selected = operator_ids.into_iter().collect::<Vec<_>>();
+    selected.sort();
+    selected.dedup();
+    selected.sort_by(|left, right| {
+        latest_verified_generation
+            .get(right)
+            .copied()
+            .unwrap_or_default()
+            .cmp(
+                &latest_verified_generation
+                    .get(left)
+                    .copied()
+                    .unwrap_or_default(),
+            )
+            .then_with(|| left.cmp(right))
+    });
+    selected.truncate(limit);
+    selected
+}
+
+/// Load only operators backed by an immutable, independently verified
+/// authority receipt. Missing repositories are an empty snapshot; malformed
+/// authority is a hard failure rather than an untrusted fallback.
+pub fn load_authorized_typed_mechanism_operators(
+    state_dir: &Path,
+    limit: usize,
+) -> Result<Vec<TypedMechanismImprovementOperatorIR>, String> {
+    let directory = typed_mechanism_operator_directory(state_dir);
+    let authority_directory = typed_mechanism_operator_authority_directory(state_dir);
+    if !directory.is_dir() || !authority_directory.is_dir() || limit == 0 {
+        return Ok(Vec::new());
+    }
+    let mut authority_paths = fs::read_dir(&authority_directory)
+        .map_err(|error| format!("SOURCE_BOUND_OPERATOR_AUTHORITY_READ_DIR:{error}"))?
+        .collect::<Result<Vec<_>, _>>()
+        .map_err(|error| format!("SOURCE_BOUND_OPERATOR_AUTHORITY_ENTRY:{error}"))?
+        .into_iter()
+        .map(|entry| entry.path())
+        .filter(|path| path.extension().and_then(OsStr::to_str) == Some("json"))
+        .collect::<Vec<_>>();
+    authority_paths.sort();
+    let mut authorized_operator_evidence = BTreeSet::new();
+    let mut latest_verified_generation = BTreeMap::<String, u64>::new();
+    for path in authority_paths {
+        let bytes = fs::read(&path)
+            .map_err(|error| format!("SOURCE_BOUND_OPERATOR_AUTHORITY_READ:{error}"))?;
+        let authority: TypedMechanismOperatorAuthorityReceiptIR = serde_json::from_slice(&bytes)
+            .map_err(|error| format!("SOURCE_BOUND_OPERATOR_AUTHORITY_JSON:{error}"))?;
+        validate_typed_mechanism_operator_authority(&authority)?;
+        if path.file_stem().and_then(OsStr::to_str) != Some(authority.authority_id.as_str()) {
+            return Err("SOURCE_BOUND_OPERATOR_AUTHORITY_PATH_ID_MISMATCH".to_string());
+        }
+        latest_verified_generation
+            .entry(authority.operator_id.clone())
+            .and_modify(|generation| {
+                *generation = (*generation).max(authority.promotion_generation)
+            })
+            .or_insert(authority.promotion_generation);
+        authorized_operator_evidence.insert((
+            authority.operator_id,
+            authority.operator_sha256,
+            authority.sandbox_output_sha256,
+        ));
+    }
+
+    let mut paths = fs::read_dir(&directory)
+        .map_err(|error| format!("SOURCE_BOUND_OPERATOR_REPOSITORY_READ_DIR:{error}"))?
+        .collect::<Result<Vec<_>, _>>()
+        .map_err(|error| format!("SOURCE_BOUND_OPERATOR_REPOSITORY_ENTRY:{error}"))?
+        .into_iter()
+        .map(|entry| entry.path())
+        .filter(|path| path.extension().and_then(OsStr::to_str) == Some("json"))
+        .collect::<Vec<_>>();
+    paths.sort();
+    let mut operators = BTreeMap::new();
+    for path in paths {
+        let bytes = fs::read(&path)
+            .map_err(|error| format!("SOURCE_BOUND_OPERATOR_REPOSITORY_READ:{error}"))?;
+        let operator: TypedMechanismImprovementOperatorIR = serde_json::from_slice(&bytes)
+            .map_err(|error| format!("SOURCE_BOUND_OPERATOR_REPOSITORY_JSON:{error}"))?;
+        validate_typed_mechanism_improvement_operator(&operator)?;
+        if path.file_stem().and_then(OsStr::to_str) != Some(operator.operator_id.as_str()) {
+            return Err("SOURCE_BOUND_OPERATOR_REPOSITORY_PATH_ID_MISMATCH".to_string());
+        }
+        let operator_sha256 = json_sha256(&operator)?;
+        if authorized_operator_evidence.contains(&(
+            operator.operator_id.clone(),
+            operator_sha256,
+            operator.evidence_sha256.clone(),
+        )) {
+            operators.insert(operator.operator_id.clone(), operator);
+        }
+    }
+    let selected_ids = select_bounded_typed_mechanism_operator_ids(
+        operators.keys().cloned(),
+        &latest_verified_generation,
+        limit.min(MAX_ACTIVE_TYPED_MECHANISM_OPERATORS),
+    );
+    Ok(selected_ids
+        .into_iter()
+        .filter_map(|operator_id| operators.remove(&operator_id))
+        .collect())
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -1912,6 +2120,106 @@ mod tests {
             lower_typed_mechanism_goal(&out_of_bounds_goal),
             Err("TYPED_MECHANISM_OBSERVATION_EXECUTE:0:INDEX_OUT_OF_BOUNDS".to_string())
         );
+    }
+
+    #[test]
+    fn authorized_operator_snapshot_is_shared_without_weakening_authority() {
+        let request = TypedMechanismSynthesisGoalIR {
+            schema: TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA.to_string(),
+            goal_id: "length_operator_seed".to_string(),
+            split: DataSplit::FreshBlind,
+            operands: vec![operand("values", "values", ProgramType::SequenceInt)],
+            output_type: ProgramType::Int,
+            definitions: Vec::new(),
+            allowed_effects: vec![Effect::Pure],
+            preconditions: Vec::new(),
+            postconditions: Vec::new(),
+            invariants: Vec::new(),
+            public_observations: vec![
+                TypedMechanismObservationIR {
+                    operands: BTreeMap::from([("values".to_string(), Value::Sequence(vec![1, 2]))]),
+                    expected_postimage: Value::Int(2),
+                },
+                TypedMechanismObservationIR {
+                    operands: BTreeMap::from([("values".to_string(), Value::Sequence(vec![7]))]),
+                    expected_postimage: Value::Int(1),
+                },
+            ],
+            require_conditional: false,
+            max_expression_depth: 2,
+            max_candidates: 1_024,
+            provenance: Vec::new(),
+        };
+        let synthesis = synthesize_typed_mechanism_goal(&request).unwrap();
+        let evidence_sha256 = "a".repeat(64);
+        let operator =
+            typed_mechanism_improvement_operator_from_receipt(&synthesis, evidence_sha256.clone())
+                .unwrap();
+        let state_dir = std::env::temp_dir().join(format!(
+            "b-core-authorized-typed-operators-{}",
+            std::process::id()
+        ));
+        if state_dir.exists() {
+            std::fs::remove_dir_all(&state_dir).unwrap();
+        }
+        let operator_directory = typed_mechanism_operator_directory(&state_dir);
+        let authority_directory = typed_mechanism_operator_authority_directory(&state_dir);
+        std::fs::create_dir_all(&operator_directory).unwrap();
+        std::fs::create_dir_all(&authority_directory).unwrap();
+        std::fs::write(
+            operator_directory.join(format!("{}.json", operator.operator_id)),
+            serde_json::to_vec_pretty(&operator).unwrap(),
+        )
+        .unwrap();
+
+        let repair_id = "b".repeat(64);
+        let repair_receipt_sha256 = "c".repeat(64);
+        let authority_id = sha256(
+            format!(
+                "SOURCE_BOUND_OPERATOR_AUTHORITY_1:{}:{}:{}:{}",
+                operator.operator_id, repair_id, repair_receipt_sha256, evidence_sha256
+            )
+            .as_bytes(),
+        );
+        let mut authority = TypedMechanismOperatorAuthorityReceiptIR {
+            schema: SOURCE_BOUND_OPERATOR_AUTHORITY_SCHEMA.to_string(),
+            authority_id: authority_id.clone(),
+            operator_id: operator.operator_id.clone(),
+            operator_sha256: json_sha256(&operator).unwrap(),
+            repair_id,
+            repair_receipt_sha256,
+            sandbox_output_sha256: evidence_sha256,
+            candidate_sha256: "d".repeat(64),
+            sandbox_verified: true,
+            sandbox_cleaned: true,
+            authoritative_scope_stable: true,
+            candidate_installed: false,
+            authoritative_source_write_events: 0,
+            codex_calls: 0,
+            external_llm_calls: 0,
+            network_reads: 0,
+            network_writes: 0,
+            promotion_generation: 7,
+            receipt_sha256: String::new(),
+        };
+        authority.receipt_sha256 = json_sha256(&authority).unwrap();
+        std::fs::write(
+            authority_directory.join(format!("{authority_id}.json")),
+            serde_json::to_vec_pretty(&authority).unwrap(),
+        )
+        .unwrap();
+
+        assert_eq!(
+            load_authorized_typed_mechanism_operators(&state_dir, 256).unwrap(),
+            vec![operator]
+        );
+        let mut tampered = authority;
+        tampered.promotion_generation += 1;
+        assert_eq!(
+            validate_typed_mechanism_operator_authority(&tampered),
+            Err("SOURCE_BOUND_OPERATOR_AUTHORITY_HASH_MISMATCH".to_string())
+        );
+        std::fs::remove_dir_all(state_dir).unwrap();
     }
 
     #[test]

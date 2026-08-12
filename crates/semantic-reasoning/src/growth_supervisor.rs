@@ -43,9 +43,14 @@ use crate::integrated_development::{
     install_composite_candidate_family, MAX_INSTALLED_TYPED_CAPABILITIES,
 };
 use crate::self_repair_contract::sha256;
+#[cfg(test)]
+use crate::sem5::typed_mechanism::select_bounded_typed_mechanism_operator_ids;
 use crate::sem5::typed_mechanism::{
-    typed_mechanism_improvement_operator_from_receipt,
-    validate_typed_mechanism_improvement_operator, TypedMechanismImprovementOperatorIR,
+    load_authorized_typed_mechanism_operators, typed_mechanism_improvement_operator_from_receipt,
+    typed_mechanism_operator_authority_directory, typed_mechanism_operator_directory,
+    validate_typed_mechanism_improvement_operator, validate_typed_mechanism_operator_authority,
+    TypedMechanismImprovementOperatorIR, TypedMechanismOperatorAuthorityReceiptIR,
+    MAX_ACTIVE_TYPED_MECHANISM_OPERATORS, SOURCE_BOUND_OPERATOR_AUTHORITY_SCHEMA,
 };
 use crate::source_bound_causal_frontend::{
     discover_and_synthesize_python_repository_with_operators, RepositoryTestSourceIR,
@@ -74,7 +79,7 @@ const MAX_REPOSITORY_TEST_PATHS: usize = 8;
 const MAX_REPOSITORY_REPAIR_SOURCE_PATHS: usize = 8;
 const MAX_REPOSITORY_REPAIR_SANDBOX_FILES: usize = 4_096;
 const MAX_REPOSITORY_REPAIR_SANDBOX_BYTES: u64 = 128 * 1024 * 1024;
-const MAX_ACTIVE_SOURCE_BOUND_IMPROVEMENT_OPERATORS: usize = 256;
+const MAX_ACTIVE_SOURCE_BOUND_IMPROVEMENT_OPERATORS: usize = MAX_ACTIVE_TYPED_MECHANISM_OPERATORS;
 const MAX_COMPOSITE_INSTALL_FAMILY: usize = 32;
 
 fn u64_is_zero(value: &u64) -> bool {
@@ -5623,29 +5628,7 @@ struct RepositoryRepairSynthesisReceipt {
     raw_source_bytes_stored: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-struct SourceBoundImprovementOperatorAuthorityReceipt {
-    schema: String,
-    authority_id: String,
-    operator_id: String,
-    operator_sha256: String,
-    repair_id: String,
-    repair_receipt_sha256: String,
-    sandbox_output_sha256: String,
-    candidate_sha256: String,
-    sandbox_verified: bool,
-    sandbox_cleaned: bool,
-    authoritative_scope_stable: bool,
-    candidate_installed: bool,
-    authoritative_source_write_events: u64,
-    codex_calls: u64,
-    external_llm_calls: u64,
-    network_reads: u64,
-    network_writes: u64,
-    #[serde(default, skip_serializing_if = "u64_is_zero")]
-    promotion_generation: u64,
-    receipt_sha256: String,
-}
+type SourceBoundImprovementOperatorAuthorityReceipt = TypedMechanismOperatorAuthorityReceiptIR;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 struct RepositoryCohortValidationOutcome {
@@ -5874,165 +5857,28 @@ fn repository_repair_observation_id(
 }
 
 fn source_bound_improvement_operator_directory(config: &GrowthSupervisorConfig) -> PathBuf {
-    config
-        .state_dir
-        .join("improvement_operator_repository")
-        .join("source_bound_operators")
+    typed_mechanism_operator_directory(&config.state_dir)
 }
 
 fn source_bound_improvement_operator_authority_directory(
     config: &GrowthSupervisorConfig,
 ) -> PathBuf {
-    config
-        .state_dir
-        .join("improvement_operator_repository")
-        .join("source_bound_authority")
+    typed_mechanism_operator_authority_directory(&config.state_dir)
 }
 
 fn validate_source_bound_operator_authority(
     authority: &SourceBoundImprovementOperatorAuthorityReceipt,
 ) -> Result<(), String> {
-    if authority.schema != "B_CORE_SOURCE_BOUND_OPERATOR_AUTHORITY_1"
-        || authority.authority_id.len() != 64
-        || authority.operator_id.len() != 64
-        || authority.operator_sha256.len() != 64
-        || authority.repair_id.len() != 64
-        || authority.repair_receipt_sha256.len() != 64
-        || authority.sandbox_output_sha256.len() != 64
-        || authority.candidate_sha256.len() != 64
-        || !authority.sandbox_verified
-        || !authority.sandbox_cleaned
-        || !authority.authoritative_scope_stable
-        || authority.candidate_installed
-        || authority.authoritative_source_write_events != 0
-        || authority.codex_calls != 0
-        || authority.external_llm_calls != 0
-        || authority.network_reads != 0
-        || authority.network_writes != 0
-    {
-        return Err("SOURCE_BOUND_OPERATOR_AUTHORITY_ENVELOPE".to_string());
-    }
-    let expected_authority_id = sha256(
-        format!(
-            "SOURCE_BOUND_OPERATOR_AUTHORITY_1:{}:{}:{}:{}",
-            authority.operator_id,
-            authority.repair_id,
-            authority.repair_receipt_sha256,
-            authority.sandbox_output_sha256
-        )
-        .as_bytes(),
-    );
-    if authority.authority_id != expected_authority_id {
-        return Err("SOURCE_BOUND_OPERATOR_AUTHORITY_ID_MISMATCH".to_string());
-    }
-    let mut identity = authority.clone();
-    identity.receipt_sha256.clear();
-    if json_sha256(&identity)? != authority.receipt_sha256 {
-        return Err("SOURCE_BOUND_OPERATOR_AUTHORITY_HASH_MISMATCH".to_string());
-    }
-    Ok(())
-}
-
-fn select_bounded_source_bound_operator_ids(
-    operator_ids: impl IntoIterator<Item = String>,
-    latest_verified_generation: &BTreeMap<String, u64>,
-    limit: usize,
-) -> Vec<String> {
-    let mut selected = operator_ids.into_iter().collect::<Vec<_>>();
-    selected.sort();
-    selected.dedup();
-    selected.sort_by(|left, right| {
-        latest_verified_generation
-            .get(right)
-            .copied()
-            .unwrap_or_default()
-            .cmp(
-                &latest_verified_generation
-                    .get(left)
-                    .copied()
-                    .unwrap_or_default(),
-            )
-            .then_with(|| left.cmp(right))
-    });
-    selected.truncate(limit);
-    selected
+    validate_typed_mechanism_operator_authority(authority)
 }
 
 fn load_source_bound_improvement_operators(
     config: &GrowthSupervisorConfig,
 ) -> Result<Vec<TypedMechanismImprovementOperatorIR>, String> {
-    let directory = source_bound_improvement_operator_directory(config);
-    if !directory.is_dir() {
-        return Ok(Vec::new());
-    }
-    let authority_directory = source_bound_improvement_operator_authority_directory(config);
-    if !authority_directory.is_dir() {
-        return Ok(Vec::new());
-    }
-    let mut authorized_operator_evidence = BTreeSet::new();
-    let mut latest_verified_generation = BTreeMap::<String, u64>::new();
-    let mut authority_paths = fs::read_dir(&authority_directory)
-        .map_err(|error| format!("SOURCE_BOUND_OPERATOR_AUTHORITY_READ_DIR:{error}"))?
-        .collect::<Result<Vec<_>, _>>()
-        .map_err(|error| format!("SOURCE_BOUND_OPERATOR_AUTHORITY_ENTRY:{error}"))?
-        .into_iter()
-        .map(|entry| entry.path())
-        .filter(|path| path.extension().and_then(OsStr::to_str) == Some("json"))
-        .collect::<Vec<_>>();
-    authority_paths.sort();
-    for path in authority_paths {
-        let authority: SourceBoundImprovementOperatorAuthorityReceipt = read_json(&path)?;
-        validate_source_bound_operator_authority(&authority)?;
-        if path.file_stem().and_then(OsStr::to_str) != Some(authority.authority_id.as_str()) {
-            return Err("SOURCE_BOUND_OPERATOR_AUTHORITY_PATH_ID_MISMATCH".to_string());
-        }
-        latest_verified_generation
-            .entry(authority.operator_id.clone())
-            .and_modify(|generation| {
-                *generation = (*generation).max(authority.promotion_generation)
-            })
-            .or_insert(authority.promotion_generation);
-        authorized_operator_evidence.insert((
-            authority.operator_id,
-            authority.operator_sha256,
-            authority.sandbox_output_sha256,
-        ));
-    }
-    let mut paths = fs::read_dir(&directory)
-        .map_err(|error| format!("SOURCE_BOUND_OPERATOR_REPOSITORY_READ_DIR:{error}"))?
-        .collect::<Result<Vec<_>, _>>()
-        .map_err(|error| format!("SOURCE_BOUND_OPERATOR_REPOSITORY_ENTRY:{error}"))?
-        .into_iter()
-        .map(|entry| entry.path())
-        .filter(|path| path.extension().and_then(OsStr::to_str) == Some("json"))
-        .collect::<Vec<_>>();
-    paths.sort();
-    let mut operators = BTreeMap::new();
-    for path in paths {
-        let operator: TypedMechanismImprovementOperatorIR = read_json(&path)?;
-        validate_typed_mechanism_improvement_operator(&operator)?;
-        if path.file_stem().and_then(OsStr::to_str) != Some(operator.operator_id.as_str()) {
-            return Err("SOURCE_BOUND_OPERATOR_REPOSITORY_PATH_ID_MISMATCH".to_string());
-        }
-        let operator_sha256 = json_sha256(&operator)?;
-        if !authorized_operator_evidence.contains(&(
-            operator.operator_id.clone(),
-            operator_sha256,
-            operator.evidence_sha256.clone(),
-        )) {
-            continue;
-        }
-        operators.insert(operator.operator_id.clone(), operator);
-    }
-    let selected_ids = select_bounded_source_bound_operator_ids(
-        operators.keys().cloned(),
-        &latest_verified_generation,
+    load_authorized_typed_mechanism_operators(
+        &config.state_dir,
         MAX_ACTIVE_SOURCE_BOUND_IMPROVEMENT_OPERATORS,
-    );
-    Ok(selected_ids
-        .into_iter()
-        .filter_map(|operator_id| operators.remove(&operator_id))
-        .collect())
+    )
 }
 
 fn persist_source_bound_improvement_operator(
@@ -6086,7 +5932,7 @@ fn persist_source_bound_improvement_operator(
         .as_bytes(),
     );
     let mut authority = SourceBoundImprovementOperatorAuthorityReceipt {
-        schema: "B_CORE_SOURCE_BOUND_OPERATOR_AUTHORITY_1".to_string(),
+        schema: SOURCE_BOUND_OPERATOR_AUTHORITY_SCHEMA.to_string(),
         authority_id: authority_id.clone(),
         operator_id: operator.operator_id.clone(),
         operator_sha256,
@@ -11377,7 +11223,7 @@ mod tests {
             ("fff-latest-hash".to_string(), 9),
             ("aaa-same-generation".to_string(), 9),
         ]);
-        let selected = select_bounded_source_bound_operator_ids(
+        let selected = select_bounded_typed_mechanism_operator_ids(
             [
                 "000-old-hash".to_string(),
                 "fff-latest-hash".to_string(),

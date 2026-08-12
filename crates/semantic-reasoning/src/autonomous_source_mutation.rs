@@ -23,8 +23,11 @@ use crate::generalized_self_application::{
     validate_change_binding, validation_counterexample, GeneralizedChangeIR,
     ValidationCounterexampleIR, ValidationPhase, WeaknessEvidenceKind,
 };
-use crate::grammar_repair_synthesis::discover_grammar_repairs_for_generation;
+use crate::grammar_repair_synthesis::discover_grammar_repairs_for_generation_with_priors;
 use crate::self_repair_contract::sha256;
+use crate::sem5::typed_mechanism::{
+    load_authorized_typed_mechanism_operators, MAX_ACTIVE_TYPED_MECHANISM_OPERATORS,
+};
 use crate::structural_source_repair::{
     execute_structural_repair, synthesize_structural_repair, SourceEditAtom,
     StructuralRepairProgram,
@@ -3674,11 +3677,14 @@ fn grammar_synthesized_request(
     if !policy.auto_synthesize_grammar_repairs {
         return Ok(None);
     }
+    let typed_operator_priors =
+        load_authorized_typed_mechanism_operators(state_dir, MAX_ACTIVE_TYPED_MECHANISM_OPERATORS)?;
     let mut ranked = Vec::new();
-    for candidate in discover_grammar_repairs_for_generation(
+    for candidate in discover_grammar_repairs_for_generation_with_priors(
         &policy.source_root,
         policy.max_candidate_bytes,
         source_generation,
+        &typed_operator_priors,
     )? {
         let public_behavior_contradiction = candidate
             .transformation

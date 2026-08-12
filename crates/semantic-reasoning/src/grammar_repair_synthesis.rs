@@ -24,7 +24,8 @@ use crate::bounded_parallel::map_ordered as parallel_map_ordered;
 use crate::self_repair_contract::sha256;
 use crate::sem5::model::{DataSplit, Effect, ProgramType, Value};
 use crate::sem5::typed_mechanism::{
-    synthesize_typed_mechanism_goal, SourceOperandIR, TypedMechanismObservationIR,
+    synthesize_typed_mechanism_goal_with_priors, SourceOperandIR,
+    TypedMechanismImprovementOperatorIR, TypedMechanismObservationIR,
     TypedMechanismSynthesisGoalIR, TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA,
 };
 use crate::structural_source_repair::{
@@ -77,6 +78,12 @@ pub struct GrammarRepairCandidate {
     pub typed_mechanism_receipt_sha256: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub materialized_syntax_sha256: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub typed_mechanism_selected_operator_id: Option<String>,
+    #[serde(default)]
+    pub typed_mechanism_candidates_enumerated: usize,
+    #[serde(default)]
+    pub typed_mechanism_preferred_operator_attempts: usize,
     #[serde(default)]
     pub repair_family: String,
     #[serde(default = "one_family_member")]
@@ -237,6 +244,9 @@ fn synthesize_evidence_bound_family_candidates(
             public_examples_satisfied,
             typed_mechanism_receipt_sha256: None,
             materialized_syntax_sha256: None,
+            typed_mechanism_selected_operator_id: None,
+            typed_mechanism_candidates_enumerated: 0,
+            typed_mechanism_preferred_operator_attempts: 0,
             repair_family,
             family_member_count,
             additional_family_files: Vec::new(),
@@ -274,6 +284,15 @@ struct PublicExampleScore {
     observed: usize,
     evaluated: usize,
     satisfied: usize,
+}
+
+struct TypedHoleSynthesis {
+    family: String,
+    expression: String,
+    score: PublicExampleScore,
+    selected_operator_id: Option<String>,
+    candidates_enumerated: usize,
+    preferred_operator_attempts: usize,
 }
 
 fn sem5_transport_type(type_name: &str) -> Option<ProgramType> {
@@ -344,7 +363,8 @@ fn sem5_public_value(value: &PublicValue, expected_type: &ProgramType) -> Option
 fn synthesize_typed_hole_expression(
     callable: &CallableSignature,
     examples: &[PublicExample],
-) -> Option<(String, String, PublicExampleScore)> {
+    priors: &[TypedMechanismImprovementOperatorIR],
+) -> Option<TypedHoleSynthesis> {
     if examples.len() < 2 || callable.inputs.is_empty() {
         return None;
     }
@@ -402,17 +422,20 @@ fn synthesize_typed_hole_expression(
         max_candidates: 1_024,
         provenance: vec!["REPOSITORY_AST_PUBLIC_EXAMPLES".to_string()],
     };
-    let receipt = synthesize_typed_mechanism_goal(&request).ok()?;
+    let receipt = synthesize_typed_mechanism_goal_with_priors(&request, priors).ok()?;
     let family = format!("TYPED_MECHANISM_SYNTHESIS:{}", receipt.receipt_sha256);
-    Some((
+    Some(TypedHoleSynthesis {
         family,
-        receipt.template.complete_expression_source,
-        PublicExampleScore {
+        expression: receipt.template.complete_expression_source,
+        score: PublicExampleScore {
             observed: examples.len(),
             evaluated: examples.len(),
             satisfied: examples.len(),
         },
-    ))
+        selected_operator_id: receipt.selected_operator_id,
+        candidates_enumerated: receipt.candidates_enumerated,
+        preferred_operator_attempts: receipt.preferred_operator_attempts,
+    })
 }
 
 fn normalized_tokens<T: ToTokens>(value: &T) -> String {
@@ -1931,6 +1954,7 @@ fn candidates_for_file(
     source_generation: u64,
     max_holes_to_scan: usize,
     context: &RepositoryGrammarContext,
+    priors: &[TypedMechanismImprovementOperatorIR],
 ) -> Result<FileCandidateBatch, String> {
     let bytes = fs::read(path)
         .map_err(|error| format!("GRAMMAR_REPAIR_READ:{}:{error}", path.display()))?;
@@ -2034,7 +2058,8 @@ fn candidates_for_file(
                 continue;
             }
         }
-        let typed_synthesis = synthesize_typed_hole_expression(&hole.callable, &public_examples);
+        let typed_synthesis =
+            synthesize_typed_hole_expression(&hole.callable, &public_examples, priors);
         let typed_offset = usize::from(typed_synthesis.is_some());
         let mut compositions = compose_expressions(&hole.callable, &catalog)
             .into_iter()
@@ -2048,23 +2073,33 @@ fn candidates_for_file(
             .map(|(index, (family, expression))| {
                 let score =
                     public_example_score(&family, &expression, &hole.callable, &public_examples);
-                (index + typed_offset, family, expression, score)
+                (index + typed_offset, family, expression, score, None, 0, 0)
             })
             // A candidate that disagrees with any example it can evaluate is
             // already falsified and must not consume a compile/test attempt.
             // Unevaluable typed calls remain hypotheses for the authoritative
             // source-validation gate.
-            .filter(|(_, _, _, score)| score.evaluated == 0 || score.satisfied == score.evaluated)
+            .filter(|(_, _, _, score, _, _, _)| {
+                score.evaluated == 0 || score.satisfied == score.evaluated
+            })
             .collect::<Vec<_>>();
-        if let Some((family, expression, score)) = typed_synthesis {
-            let normalized = syn::parse_str::<Expr>(&expression)
+        if let Some(typed) = typed_synthesis {
+            let normalized = syn::parse_str::<Expr>(&typed.expression)
                 .map(|expression| normalized_tokens(&expression))
-                .unwrap_or_else(|_| expression.clone());
+                .unwrap_or_else(|_| typed.expression.clone());
             if hole.current_expression.as_deref() != Some(normalized.as_str()) {
-                compositions.push((0, family, expression, score));
+                compositions.push((
+                    0,
+                    typed.family,
+                    typed.expression,
+                    typed.score,
+                    typed.selected_operator_id,
+                    typed.candidates_enumerated,
+                    typed.preferred_operator_attempts,
+                ));
             }
         }
-        compositions.sort_by_key(|(index, _, _, score)| {
+        compositions.sort_by_key(|(index, _, _, score, _, _, _)| {
             let satisfies_every_observed_example = score.observed > 0
                 && score.evaluated == score.observed
                 && score.satisfied == score.observed;
@@ -2075,8 +2110,15 @@ fn candidates_for_file(
                 *index,
             )
         });
-        for (index, family, expression, public_score) in
-            compositions.into_iter().take(MAX_CANDIDATES_PER_HOLE)
+        for (
+            index,
+            family,
+            expression,
+            public_score,
+            selected_operator_id,
+            candidates_enumerated,
+            preferred_operator_attempts,
+        ) in compositions.into_iter().take(MAX_CANDIDATES_PER_HOLE)
         {
             let mut candidate_source = String::with_capacity(
                 source.len() - (hole.range.end - hole.range.start) + expression.len(),
@@ -2138,6 +2180,9 @@ fn candidates_for_file(
                 materialized_syntax_sha256: family
                     .starts_with("TYPED_MECHANISM_SYNTHESIS:")
                     .then(|| sha256(expression.as_bytes())),
+                typed_mechanism_selected_operator_id: selected_operator_id,
+                typed_mechanism_candidates_enumerated: candidates_enumerated,
+                typed_mechanism_preferred_operator_attempts: preferred_operator_attempts,
                 repair_family: format!("{}:{family}", hole.kind),
                 family_member_count: 1,
                 additional_family_files: Vec::new(),
@@ -2176,6 +2221,20 @@ pub fn discover_grammar_repairs_for_generation(
     max_candidate_bytes: u64,
     source_generation: u64,
 ) -> Result<Vec<GrammarRepairCandidate>, String> {
+    discover_grammar_repairs_for_generation_with_priors(
+        root,
+        max_candidate_bytes,
+        source_generation,
+        &[],
+    )
+}
+
+pub fn discover_grammar_repairs_for_generation_with_priors(
+    root: &Path,
+    max_candidate_bytes: u64,
+    source_generation: u64,
+    priors: &[TypedMechanismImprovementOperatorIR],
+) -> Result<Vec<GrammarRepairCandidate>, String> {
     let mut files = rust_source_files(root)?;
     if files.is_empty() {
         return Ok(Vec::new());
@@ -2212,6 +2271,7 @@ pub fn discover_grammar_repairs_for_generation(
                 source_generation,
                 remaining_at_batch_start,
                 &context,
+                priors,
             )
         })?;
         cursor = end;
@@ -2233,6 +2293,7 @@ pub fn discover_grammar_repairs_for_generation(
                     source_generation,
                     remaining_scan_budget,
                     &context,
+                    priors,
                 )?
             } else {
                 speculative_batch
@@ -2372,6 +2433,9 @@ fn synthesize_repository_family_candidates(
             public_examples_satisfied,
             typed_mechanism_receipt_sha256: None,
             materialized_syntax_sha256: None,
+            typed_mechanism_selected_operator_id: None,
+            typed_mechanism_candidates_enumerated: 0,
+            typed_mechanism_preferred_operator_attempts: 0,
             repair_family,
             family_member_count,
             additional_family_files,
@@ -2689,6 +2753,138 @@ mod tests {
                 && syn::parse_file(&candidate.candidate_source).is_ok()
         }));
 
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn verified_typed_operator_short_circuits_fresh_renamed_rust_synthesis() {
+        let seed_request = TypedMechanismSynthesisGoalIR {
+            schema: TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA.to_string(),
+            goal_id: "seed_sequence_length".to_string(),
+            split: DataSplit::FreshBlind,
+            operands: vec![SourceOperandIR {
+                role: "seed_values".to_string(),
+                source: "seed_values".to_string(),
+                value_type: ProgramType::SequenceInt,
+            }],
+            output_type: ProgramType::Int,
+            definitions: Vec::new(),
+            allowed_effects: vec![Effect::Pure],
+            preconditions: Vec::new(),
+            postconditions: Vec::new(),
+            invariants: Vec::new(),
+            public_observations: vec![
+                TypedMechanismObservationIR {
+                    operands: BTreeMap::from([(
+                        "seed_values".to_string(),
+                        Value::Sequence(vec![1, 2]),
+                    )]),
+                    expected_postimage: Value::Int(2),
+                },
+                TypedMechanismObservationIR {
+                    operands: BTreeMap::from([(
+                        "seed_values".to_string(),
+                        Value::Sequence(vec![9]),
+                    )]),
+                    expected_postimage: Value::Int(1),
+                },
+            ],
+            require_conditional: false,
+            max_expression_depth: 2,
+            max_candidates: 1_024,
+            provenance: Vec::new(),
+        };
+        let seed =
+            crate::sem5::typed_mechanism::synthesize_typed_mechanism_goal(&seed_request).unwrap();
+        let operator =
+            crate::sem5::typed_mechanism::typed_mechanism_improvement_operator_from_receipt(
+                &seed,
+                "a".repeat(64),
+            )
+            .unwrap();
+        let root = std::env::temp_dir().join(format!(
+            "b-core-renamed-typed-operator-{}",
+            std::process::id()
+        ));
+        if root.exists() {
+            fs::remove_dir_all(&root).unwrap();
+        }
+        fs::create_dir_all(root.join("src")).unwrap();
+        fs::write(
+            root.join("src/lib.rs"),
+            "pub fn amount(payload: &[i64]) -> i64 { todo!() }\n\n#[cfg(test)]\nmod tests {\n    #[test]\n    fn amount_examples() {\n        assert_eq!(super::amount(&[4, 5, 6]), 3);\n        assert_eq!(super::amount(&[8]), 1);\n    }\n}\n",
+        )
+        .unwrap();
+
+        let cold =
+            discover_grammar_repairs_for_generation_with_priors(&root, 8_192, 0, &[]).unwrap();
+        let warm = discover_grammar_repairs_for_generation_with_priors(
+            &root,
+            8_192,
+            0,
+            std::slice::from_ref(&operator),
+        )
+        .unwrap();
+        let cold_typed = cold
+            .iter()
+            .find(|candidate| candidate.typed_mechanism_receipt_sha256.is_some())
+            .unwrap();
+        let warm_typed = warm
+            .iter()
+            .find(|candidate| candidate.typed_mechanism_receipt_sha256.is_some())
+            .unwrap();
+        assert_eq!(
+            warm_typed.typed_mechanism_selected_operator_id.as_deref(),
+            Some(operator.operator_id.as_str())
+        );
+        assert_eq!(warm_typed.typed_mechanism_preferred_operator_attempts, 1);
+        assert!(
+            warm_typed.typed_mechanism_candidates_enumerated
+                < cold_typed.typed_mechanism_candidates_enumerated
+        );
+        assert!(warm_typed.grammar_expression.contains("payload"));
+        assert!(warm_typed.grammar_expression.contains(".len() as i64"));
+        assert_eq!(
+            apply_edit_atom(
+                &fs::read_to_string(root.join("src/lib.rs")).unwrap(),
+                &warm_typed.structural_repair_program.edit,
+            )
+            .as_deref(),
+            Ok(warm_typed.candidate_source.as_str())
+        );
+
+        let mut wrong_operator = operator.clone();
+        wrong_operator.postimage =
+            crate::sem5::typed_mechanism::TypedSyntaxExpressionIR::IntLiteral { value: 0 };
+        wrong_operator.operator_id.clear();
+        let mut wrong_identity = wrong_operator.clone();
+        wrong_identity.evidence_sha256.clear();
+        wrong_operator.operator_id = sha256(&serde_json::to_vec(&wrong_identity).unwrap());
+        crate::sem5::typed_mechanism::validate_typed_mechanism_improvement_operator(
+            &wrong_operator,
+        )
+        .unwrap();
+        let recovered = discover_grammar_repairs_for_generation_with_priors(
+            &root,
+            8_192,
+            0,
+            std::slice::from_ref(&wrong_operator),
+        )
+        .unwrap();
+        let recovered_typed = recovered
+            .iter()
+            .find(|candidate| candidate.typed_mechanism_receipt_sha256.is_some())
+            .unwrap();
+        assert_eq!(recovered_typed.typed_mechanism_selected_operator_id, None);
+        assert_eq!(
+            recovered_typed.typed_mechanism_preferred_operator_attempts,
+            1
+        );
+        assert!(recovered_typed.grammar_expression.contains(".len() as i64"));
+        assert!(
+            recovered_typed.typed_mechanism_candidates_enumerated
+                > warm_typed.typed_mechanism_candidates_enumerated
+        );
         fs::remove_dir_all(root).unwrap();
     }
 
