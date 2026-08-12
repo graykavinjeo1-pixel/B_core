@@ -1222,8 +1222,7 @@ impl SynapseCore {
         };
         let mut score = 0.10f32.mul_add(
             schema.reflex_bonus,
-            0.45 * cue_overlap
-                + 0.20 * definition_match
+            0.20f32.mul_add(definition_match, 0.45 * cue_overlap)
                 + 0.15 * schema.importance
                 + 0.10 * schema.abstraction_level,
         );
