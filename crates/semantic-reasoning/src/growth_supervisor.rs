@@ -598,6 +598,10 @@ pub struct EvaluatorMemory {
     pub challenge_suite: Vec<EvaluatorMutationKind>,
     pub source_lesson_ids: Vec<String>,
     pub accepted_expansions: u64,
+    #[serde(default, skip_serializing_if = "u64_is_zero")]
+    pub capability_expansion_contract_revision: u64,
+    #[serde(default, skip_serializing_if = "u64_is_zero")]
+    pub legacy_unbound_accepted_expansions: u64,
 }
 
 impl Default for EvaluatorMemory {
@@ -616,6 +620,8 @@ impl Default for EvaluatorMemory {
             ],
             source_lesson_ids: Vec::new(),
             accepted_expansions: 0,
+            capability_expansion_contract_revision: 0,
+            legacy_unbound_accepted_expansions: 0,
         }
     }
 }
@@ -3380,6 +3386,7 @@ fn derive_next_evaluator_memory(
         .iter()
         .copied()
         .collect::<BTreeSet<_>>();
+    let predecessor_challenge_count = challenge_suite.len();
     if !lesson.applicability.is_empty() {
         challenge_suite.insert(EvaluatorMutationKind::ApplicabilityMutation);
     }
@@ -3400,13 +3407,36 @@ fn derive_next_evaluator_memory(
     if !source_lesson_ids.contains(&lesson.lesson_id) {
         source_lesson_ids.push(lesson.lesson_id.clone());
     }
+    let challenge_suite_expanded = challenge_suite.len() > predecessor_challenge_count;
+    let (accepted_expansions, legacy_unbound_accepted_expansions) =
+        if current.capability_expansion_contract_revision < 2 {
+            let evidence_bound_historical_expansions = u64::from(
+                current.challenge_suite.len() > EvaluatorMemory::default().challenge_suite.len(),
+            );
+            (
+                evidence_bound_historical_expansions,
+                current.legacy_unbound_accepted_expansions.saturating_add(
+                    current
+                        .accepted_expansions
+                        .saturating_sub(evidence_bound_historical_expansions),
+                ),
+            )
+        } else {
+            (
+                current.accepted_expansions,
+                current.legacy_unbound_accepted_expansions,
+            )
+        };
     Ok(EvaluatorMemory {
         schema: current.schema.clone(),
         generation: current.generation.saturating_add(1),
         predecessor_sha256: Some(json_sha256(current)?),
         challenge_suite: challenge_suite.into_iter().collect(),
         source_lesson_ids,
-        accepted_expansions: current.accepted_expansions.saturating_add(1),
+        accepted_expansions: accepted_expansions
+            .saturating_add(u64::from(challenge_suite_expanded)),
+        capability_expansion_contract_revision: 2,
+        legacy_unbound_accepted_expansions,
     })
 }
 
@@ -8689,6 +8719,17 @@ mod tests {
         let next = derive_next_evaluator_memory(&EvaluatorMemory::default(), &[], &lesson).unwrap();
         assert_eq!(next.generation, 1);
         assert_eq!(next.challenge_suite.len(), EvaluatorMutationKind::ALL.len());
+        assert_eq!(next.accepted_expansions, 1);
+        assert_eq!(next.capability_expansion_contract_revision, 2);
+        let saturated = derive_next_evaluator_memory(&next, &[], &lesson).unwrap();
+        assert_eq!(saturated.challenge_suite.len(), next.challenge_suite.len());
+        assert_eq!(saturated.accepted_expansions, 1);
+        let mut legacy = next.clone();
+        legacy.capability_expansion_contract_revision = 0;
+        legacy.accepted_expansions = 75;
+        let migrated = derive_next_evaluator_memory(&legacy, &[], &lesson).unwrap();
+        assert_eq!(migrated.accepted_expansions, 1);
+        assert_eq!(migrated.legacy_unbound_accepted_expansions, 74);
         assert!(lesson_has_verification_evidence(&lesson));
         assert!(!lesson.raw_source_bytes_present);
         fs::remove_dir_all(root).unwrap();

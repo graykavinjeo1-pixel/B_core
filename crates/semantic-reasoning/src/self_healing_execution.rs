@@ -10,9 +10,10 @@ use std::path::{Component, Path, PathBuf};
 use serde::{Deserialize, Serialize};
 
 use crate::autonomous_source_mutation::{
-    install_and_stage_source_patch, source_opportunity_family_id, AutonomousSourceMutationPolicy,
-    AutonomousSourcePatchReceipt, AutonomousSourcePatchRequest, ChangeOpportunityKind,
-    AUTONOMOUS_SOURCE_MUTATION_SCHEMA,
+    install_and_stage_source_patch, invoke_improvement_operator_repository,
+    refresh_improvement_operator_repository, source_opportunity_family_id,
+    AutonomousSourceMutationPolicy, AutonomousSourcePatchReceipt, AutonomousSourcePatchRequest,
+    ChangeOpportunityKind, AUTONOMOUS_SOURCE_MUTATION_SCHEMA,
 };
 use crate::generalized_self_application::{
     derive_dynamic_weakness, synthesize_generalized_change, WeaknessEvidenceKind,
@@ -158,6 +159,7 @@ pub fn lower_self_healing_attempt_to_source_patch(
             ChangeOpportunityKind::Defect,
             &transformation,
         ),
+        improvement_operator_invocation: None,
     })
 }
 
@@ -180,12 +182,25 @@ pub fn run_closed_self_healing(
             proposal_only: false,
         });
     }
-    let mutation_request = lower_self_healing_attempt_to_source_patch(
+    let mut mutation_request = lower_self_healing_attempt_to_source_patch(
         &request.proposal.request,
         &proposal.attempt,
         &request.mutation_policy,
         request.source_generation,
     )?;
+    let operator_memory = refresh_improvement_operator_repository(&request.state_dir)?;
+    let structural_program = mutation_request
+        .structural_repair_program
+        .as_ref()
+        .ok_or_else(|| "SELF_HEALING_STRUCTURAL_PROGRAM_MISSING".to_string())?;
+    mutation_request.improvement_operator_invocation =
+        Some(invoke_improvement_operator_repository(
+            &operator_memory,
+            WeaknessEvidenceKind::StructuralSourceSmell,
+            &mutation_request.solution_strategy,
+            structural_program,
+            &mutation_request.opportunity_family_id,
+        )?);
     let receipt = install_and_stage_source_patch(
         &request.mutation_policy,
         Path::new(&request.state_dir),

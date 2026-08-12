@@ -15,9 +15,10 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value as JsonValue;
 
 use crate::autonomous_source_mutation::{
-    install_and_stage_source_patch, source_opportunity_family_id, AutonomousSourceMutationPolicy,
-    AutonomousSourcePatchReceipt, AutonomousSourcePatchRequest, ChangeOpportunityKind,
-    AUTONOMOUS_SOURCE_MUTATION_SCHEMA,
+    install_and_stage_source_patch, invoke_improvement_operator_repository,
+    refresh_improvement_operator_repository, source_opportunity_family_id,
+    AutonomousSourceMutationPolicy, AutonomousSourcePatchReceipt, AutonomousSourcePatchRequest,
+    ChangeOpportunityKind, AUTONOMOUS_SOURCE_MUTATION_SCHEMA,
 };
 use crate::generalized_self_application::{
     derive_dynamic_weakness, synthesize_generalized_change, WeaknessEvidenceKind,
@@ -393,6 +394,16 @@ pub fn install_composite_candidate(
         &candidate_sha256,
         &structural_repair_program,
     )?;
+    let opportunity_family_id =
+        source_opportunity_family_id(ChangeOpportunityKind::CapabilityGap, &transformation);
+    let operator_memory = refresh_improvement_operator_repository(state_dir)?;
+    let improvement_operator_invocation = invoke_improvement_operator_repository(
+        &operator_memory,
+        WeaknessEvidenceKind::StructuralSourceSmell,
+        "EMIT_TYPED_RUST_AND_ACTIVATE_CALLABLE",
+        &structural_repair_program,
+        &opportunity_family_id,
+    )?;
     let request = AutonomousSourcePatchRequest {
         schema: AUTONOMOUS_SOURCE_MUTATION_SCHEMA.to_string(),
         patch_id: format!(
@@ -420,10 +431,8 @@ pub fn install_composite_candidate(
         generalized_change: Some(generalized_change),
         additional_family_members: Vec::new(),
         opportunity_kind: ChangeOpportunityKind::CapabilityGap,
-        opportunity_family_id: source_opportunity_family_id(
-            ChangeOpportunityKind::CapabilityGap,
-            &transformation,
-        ),
+        opportunity_family_id,
+        improvement_operator_invocation: Some(improvement_operator_invocation),
     };
     install_and_stage_source_patch(policy, state_dir, &request)
 }

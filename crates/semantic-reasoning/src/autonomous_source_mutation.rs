@@ -6,7 +6,7 @@
 //! failure. Successful builds are staged for the persistent launcher to swap
 //! after the running supervisor exits.
 
-use std::collections::BTreeSet;
+use std::collections::{BTreeMap, BTreeSet};
 use std::ffi::OsStr;
 use std::fs::{self, OpenOptions};
 use std::io::Write;
@@ -33,6 +33,7 @@ use crate::structural_source_repair::{
 pub const AUTONOMOUS_SOURCE_MUTATION_SCHEMA: &str = "B_CORE_AUTONOMOUS_SOURCE_MUTATION_1";
 pub const SELF_UPDATE_HANDOFF_FILE: &str = "SELF_UPDATE_READY.json";
 pub const SOURCE_REPAIR_LEARNING_SCHEMA: &str = "B_CORE_SOURCE_REPAIR_LEARNING_1";
+pub const IMPROVEMENT_OPERATOR_MEMORY_SCHEMA: &str = "B_CORE_IMPROVEMENT_OPERATOR_MEMORY_1";
 pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 6;
 const KNOWN_REMAINDER_PREDICTED_VALUE: u16 = 35;
 const MAX_REPOSITORY_REPAIR_FAMILY_FILES: usize = 16;
@@ -196,6 +197,8 @@ pub struct AutonomousSourcePatchRequest {
     pub opportunity_kind: ChangeOpportunityKind,
     #[serde(default)]
     pub opportunity_family_id: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub improvement_operator_invocation: Option<ImprovementOperatorInvocation>,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -255,6 +258,16 @@ pub struct SourceRepairAttempt {
     pub opportunity_kind: ChangeOpportunityKind,
     #[serde(default)]
     pub opportunity_family_id: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub weakness_evidence_kind: Option<WeaknessEvidenceKind>,
+    #[serde(default)]
+    pub validation_duration_ms: u64,
+    #[serde(default)]
+    pub invoked_operator_ids: Vec<String>,
+    #[serde(default)]
+    pub operator_priority_adjustment: i32,
+    #[serde(default)]
+    pub operator_cross_family_successes: usize,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -283,6 +296,10 @@ pub struct LearnedSuccessfulRepair {
     pub opportunity_kind: ChangeOpportunityKind,
     #[serde(default)]
     pub opportunity_family_id: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub weakness_evidence_kind: Option<WeaknessEvidenceKind>,
+    #[serde(default)]
+    pub validation_duration_ms: u64,
 }
 
 fn one_family_member() -> usize {
@@ -306,6 +323,52 @@ pub struct SourceRepairLearningRecord {
     pub opportunity_kind: ChangeOpportunityKind,
     #[serde(default)]
     pub opportunity_family_id: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ImprovementOperatorIR {
+    pub schema: String,
+    pub operator_id: String,
+    pub weakness_evidence_kind: WeaknessEvidenceKind,
+    pub solution_strategy_family: String,
+    pub edit_atom_kinds: Vec<String>,
+    pub structural_postcondition_class: String,
+    pub validation_contract: Vec<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ImprovementOperatorProfile {
+    pub operator: ImprovementOperatorIR,
+    pub attempts: u64,
+    pub successful_uses: u64,
+    pub rollbacks: u64,
+    pub repository_guided_attempts: u64,
+    pub repository_guided_successful_uses: u64,
+    pub cumulative_validation_duration_ms: u64,
+    pub attempted_opportunity_kinds: BTreeSet<ChangeOpportunityKind>,
+    pub attempted_family_ids: BTreeSet<String>,
+    pub successful_family_ids: BTreeSet<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ImprovementOperatorMemory {
+    pub schema: String,
+    pub profiles: Vec<ImprovementOperatorProfile>,
+    pub total_attempts: u64,
+    pub total_successful_uses: u64,
+    pub repository_guided_attempts: u64,
+    pub repository_guided_successful_uses: u64,
+    pub productive_cross_family_transfers: u64,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ImprovementOperatorInvocation {
+    pub schema: String,
+    pub matched_operator_ids: Vec<String>,
+    pub priority_adjustment: i32,
+    pub prior_attempts: u64,
+    pub prior_successful_uses: u64,
+    pub cross_family_successes: usize,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -529,6 +592,363 @@ fn generalized_change_learning_features(
     ))
 }
 
+fn normalized_solution_strategy_family(solution_strategy: &str) -> String {
+    solution_strategy
+        .rsplit_once(':')
+        .filter(|(_, suffix)| {
+            suffix.len() >= 12 && suffix.bytes().all(|byte| byte.is_ascii_hexdigit())
+        })
+        .map(|(family, _)| family)
+        .unwrap_or(solution_strategy)
+        .to_string()
+}
+
+fn structural_postcondition_class(count: usize) -> &'static str {
+    match count {
+        0 => "NONE",
+        1 => "ONE",
+        2..=3 => "FEW",
+        _ => "MANY",
+    }
+}
+
+fn inferred_weakness_evidence_kind(transformation: &str) -> WeaknessEvidenceKind {
+    if transformation.contains("PUBLIC_EXAMPLE_CONTRADICTED") {
+        WeaknessEvidenceKind::PublicBehaviorContradiction
+    } else if transformation.contains("AST_GRAMMAR_HOLE") {
+        WeaknessEvidenceKind::ExplicitCodeHole
+    } else if transformation.starts_with("COMPILER_") || transformation.contains(":clippy::") {
+        WeaknessEvidenceKind::CompilerDiagnostic
+    } else {
+        WeaknessEvidenceKind::StructuralSourceSmell
+    }
+}
+
+fn improvement_operator_ir_from_features(
+    weakness_evidence_kind: WeaknessEvidenceKind,
+    solution_strategy: &str,
+    edit_atom_kinds: &[String],
+    structural_postcondition_count: usize,
+) -> Result<ImprovementOperatorIR, String> {
+    let mut normalized_edit_atom_kinds = edit_atom_kinds.to_vec();
+    normalized_edit_atom_kinds.sort();
+    normalized_edit_atom_kinds.dedup();
+    let mut operator = ImprovementOperatorIR {
+        schema: IMPROVEMENT_OPERATOR_MEMORY_SCHEMA.to_string(),
+        operator_id: String::new(),
+        weakness_evidence_kind,
+        solution_strategy_family: normalized_solution_strategy_family(solution_strategy),
+        edit_atom_kinds: normalized_edit_atom_kinds,
+        structural_postcondition_class: structural_postcondition_class(
+            structural_postcondition_count,
+        )
+        .to_string(),
+        validation_contract: vec![
+            "STRUCTURAL_REPLAY".to_string(),
+            "FORMAT".to_string(),
+            "COMPILE_CLIPPY".to_string(),
+            "PUBLIC_REGRESSION".to_string(),
+            "RELEASE_BUILD".to_string(),
+            "WORKSPACE_INTEGRITY".to_string(),
+        ],
+    };
+    let encoded = serde_json::to_vec(&operator)
+        .map_err(|error| format!("IMPROVEMENT_OPERATOR_SERIALIZE:{error}"))?;
+    operator.operator_id = sha256(&encoded);
+    Ok(operator)
+}
+
+fn improvement_operator_ir_for_program(
+    weakness_evidence_kind: WeaknessEvidenceKind,
+    solution_strategy: &str,
+    program: &StructuralRepairProgram,
+) -> Result<ImprovementOperatorIR, String> {
+    let mut edit_atom_kinds = Vec::new();
+    collect_edit_atom_kinds(&program.edit, &mut edit_atom_kinds);
+    improvement_operator_ir_from_features(
+        weakness_evidence_kind,
+        solution_strategy,
+        &edit_atom_kinds,
+        program.postconditions.len(),
+    )
+}
+
+fn receipt_validation_duration_ms(receipt: &AutonomousSourcePatchReceipt) -> Result<u64, String> {
+    let mut seen = BTreeSet::new();
+    let mut duration_ms = 0_u64;
+    for command in receipt
+        .format_check
+        .iter()
+        .chain(receipt.compile_check.iter())
+        .chain(std::iter::once(&receipt.validation))
+        .chain(receipt.release_build.iter())
+    {
+        let encoded = serde_json::to_vec(command)
+            .map_err(|error| format!("SOURCE_VALIDATION_RECEIPT_SERIALIZE:{error}"))?;
+        if seen.insert(sha256(&encoded)) {
+            duration_ms = duration_ms.saturating_add(command.duration_ms);
+        }
+    }
+    Ok(duration_ms)
+}
+
+pub fn derive_improvement_operator_memory(
+    state_dir: &Path,
+) -> Result<ImprovementOperatorMemory, String> {
+    let knowledge_dir = state_dir.join("source_repair_knowledge");
+    if !knowledge_dir.is_dir() {
+        return Ok(ImprovementOperatorMemory {
+            schema: IMPROVEMENT_OPERATOR_MEMORY_SCHEMA.to_string(),
+            profiles: Vec::new(),
+            total_attempts: 0,
+            total_successful_uses: 0,
+            repository_guided_attempts: 0,
+            repository_guided_successful_uses: 0,
+            productive_cross_family_transfers: 0,
+        });
+    }
+    let mut paths = fs::read_dir(&knowledge_dir)
+        .map_err(|error| format!("IMPROVEMENT_OPERATOR_MEMORY_READ_DIR:{error}"))?
+        .collect::<Result<Vec<_>, _>>()
+        .map_err(|error| format!("IMPROVEMENT_OPERATOR_MEMORY_ENTRY:{error}"))?
+        .into_iter()
+        .map(|entry| entry.path())
+        .filter(|path| path.extension().and_then(OsStr::to_str) == Some("json"))
+        .collect::<Vec<_>>();
+    paths.sort();
+    let mut profiles = BTreeMap::<String, ImprovementOperatorProfile>::new();
+    for path in paths {
+        let bytes =
+            fs::read(&path).map_err(|error| format!("IMPROVEMENT_OPERATOR_MEMORY_READ:{error}"))?;
+        let record: SourceRepairLearningRecord = serde_json::from_slice(&bytes)
+            .map_err(|error| format!("IMPROVEMENT_OPERATOR_MEMORY_PARSE:{error}"))?;
+        for attempt in &record.attempts {
+            if attempt.structural_repair_program_sha256.is_none()
+                || attempt.edit_atom_kinds.is_empty()
+            {
+                continue;
+            }
+            let evidence_kind = attempt
+                .weakness_evidence_kind
+                .unwrap_or_else(|| inferred_weakness_evidence_kind(&record.transformation));
+            let operator = improvement_operator_ir_from_features(
+                evidence_kind,
+                &attempt.solution_strategy,
+                &attempt.edit_atom_kinds,
+                attempt.structural_postcondition_count,
+            )?;
+            let operator_id = operator.operator_id.clone();
+            let profile =
+                profiles
+                    .entry(operator_id.clone())
+                    .or_insert_with(|| ImprovementOperatorProfile {
+                        operator,
+                        attempts: 0,
+                        successful_uses: 0,
+                        rollbacks: 0,
+                        repository_guided_attempts: 0,
+                        repository_guided_successful_uses: 0,
+                        cumulative_validation_duration_ms: 0,
+                        attempted_opportunity_kinds: BTreeSet::new(),
+                        attempted_family_ids: BTreeSet::new(),
+                        successful_family_ids: BTreeSet::new(),
+                    });
+            profile.attempts = profile.attempts.saturating_add(1);
+            let repository_guided = attempt
+                .invoked_operator_ids
+                .iter()
+                .any(|invoked| invoked == &operator_id);
+            if repository_guided {
+                profile.repository_guided_attempts =
+                    profile.repository_guided_attempts.saturating_add(1);
+            }
+            profile.cumulative_validation_duration_ms = profile
+                .cumulative_validation_duration_ms
+                .saturating_add(attempt.validation_duration_ms);
+            profile
+                .attempted_opportunity_kinds
+                .insert(attempt.opportunity_kind);
+            if !attempt.opportunity_family_id.is_empty() {
+                profile
+                    .attempted_family_ids
+                    .insert(attempt.opportunity_family_id.clone());
+            }
+            if attempt.succeeded {
+                profile.successful_uses = profile.successful_uses.saturating_add(1);
+                if repository_guided {
+                    profile.repository_guided_successful_uses =
+                        profile.repository_guided_successful_uses.saturating_add(1);
+                }
+                if !attempt.opportunity_family_id.is_empty() {
+                    profile
+                        .successful_family_ids
+                        .insert(attempt.opportunity_family_id.clone());
+                }
+            } else {
+                profile.rollbacks = profile.rollbacks.saturating_add(1);
+            }
+        }
+    }
+    let profiles = profiles.into_values().collect::<Vec<_>>();
+    Ok(ImprovementOperatorMemory {
+        schema: IMPROVEMENT_OPERATOR_MEMORY_SCHEMA.to_string(),
+        total_attempts: profiles.iter().map(|profile| profile.attempts).sum(),
+        total_successful_uses: profiles.iter().map(|profile| profile.successful_uses).sum(),
+        repository_guided_attempts: profiles
+            .iter()
+            .map(|profile| profile.repository_guided_attempts)
+            .sum(),
+        repository_guided_successful_uses: profiles
+            .iter()
+            .map(|profile| profile.repository_guided_successful_uses)
+            .sum(),
+        productive_cross_family_transfers: profiles
+            .iter()
+            .map(|profile| {
+                profile
+                    .successful_family_ids
+                    .len()
+                    .saturating_sub(1)
+                    .min(u64::MAX as usize) as u64
+            })
+            .sum(),
+        profiles,
+    })
+}
+
+fn improvement_operator_repository_path(state_dir: &Path, operator_id: &str) -> PathBuf {
+    state_dir
+        .join("improvement_operator_repository")
+        .join("operators")
+        .join(format!("{operator_id}.json"))
+}
+
+fn validate_improvement_operator_id(operator: &ImprovementOperatorIR) -> Result<(), String> {
+    let mut identity = operator.clone();
+    identity.operator_id.clear();
+    let encoded = serde_json::to_vec(&identity)
+        .map_err(|error| format!("IMPROVEMENT_OPERATOR_ID_SERIALIZE:{error}"))?;
+    if sha256(&encoded) != operator.operator_id {
+        return Err("IMPROVEMENT_OPERATOR_ID_MISMATCH".to_string());
+    }
+    Ok(())
+}
+
+pub fn refresh_improvement_operator_repository(
+    state_dir: &Path,
+) -> Result<ImprovementOperatorMemory, String> {
+    let memory = derive_improvement_operator_memory(state_dir)?;
+    for profile in &memory.profiles {
+        if profile.successful_uses == 0 {
+            continue;
+        }
+        validate_improvement_operator_id(&profile.operator)?;
+        let path = improvement_operator_repository_path(state_dir, &profile.operator.operator_id);
+        if path.exists() {
+            let bytes = fs::read(&path)
+                .map_err(|error| format!("IMPROVEMENT_OPERATOR_REPOSITORY_READ:{error}"))?;
+            let stored: ImprovementOperatorIR = serde_json::from_slice(&bytes)
+                .map_err(|error| format!("IMPROVEMENT_OPERATOR_REPOSITORY_PARSE:{error}"))?;
+            validate_improvement_operator_id(&stored)?;
+            if stored != profile.operator {
+                return Err("IMPROVEMENT_OPERATOR_REPOSITORY_COLLISION".to_string());
+            }
+        } else {
+            write_immutable_json(&path, &profile.operator)?;
+        }
+    }
+    Ok(memory)
+}
+
+fn improvement_operator_transfer_priority(
+    memory: &ImprovementOperatorMemory,
+    operator: &ImprovementOperatorIR,
+    opportunity_family_id: &str,
+) -> i32 {
+    let Some(profile) = memory
+        .profiles
+        .iter()
+        .find(|profile| profile.operator.operator_id == operator.operator_id)
+    else {
+        return 0;
+    };
+    let attempts = profile.attempts.max(1);
+    let successes = profile.successful_uses;
+    let success_signal = successes
+        .saturating_mul(60)
+        .checked_div(attempts)
+        .unwrap_or(0)
+        .min(i32::MAX as u64) as i32
+        - 30;
+    let rollback_penalty = profile.rollbacks.saturating_mul(4).min(20) as i32;
+    let transferred_successes = profile
+        .successful_family_ids
+        .iter()
+        .filter(|family| family.as_str() != opportunity_family_id)
+        .count();
+    let transfer_signal = if transferred_successes == 0 {
+        0
+    } else {
+        20 + i32::try_from(transferred_successes.saturating_sub(1))
+            .unwrap_or(i32::MAX)
+            .saturating_mul(5)
+            .min(15)
+    };
+    let validation_cost_penalty = if profile.successful_uses == 0
+        && profile.cumulative_validation_duration_ms > 600_000
+    {
+        10
+    } else if profile.successful_uses == 0 && profile.cumulative_validation_duration_ms > 300_000 {
+        5
+    } else {
+        0
+    };
+    success_signal
+        .saturating_add(transfer_signal)
+        .saturating_sub(rollback_penalty)
+        .saturating_sub(validation_cost_penalty)
+}
+
+pub fn invoke_improvement_operator_repository(
+    memory: &ImprovementOperatorMemory,
+    weakness_evidence_kind: WeaknessEvidenceKind,
+    solution_strategy: &str,
+    program: &StructuralRepairProgram,
+    opportunity_family_id: &str,
+) -> Result<ImprovementOperatorInvocation, String> {
+    let requested =
+        improvement_operator_ir_for_program(weakness_evidence_kind, solution_strategy, program)?;
+    let matching = memory
+        .profiles
+        .iter()
+        .filter(|profile| profile.operator.operator_id == requested.operator_id)
+        .collect::<Vec<_>>();
+    let prior_attempts = matching.iter().map(|profile| profile.attempts).sum();
+    let prior_successful_uses = matching.iter().map(|profile| profile.successful_uses).sum();
+    let cross_family_successes = matching
+        .iter()
+        .flat_map(|profile| profile.successful_family_ids.iter())
+        .filter(|family| family.as_str() != opportunity_family_id)
+        .collect::<BTreeSet<_>>()
+        .len();
+    let priority_adjustment = matching
+        .iter()
+        .map(|_| improvement_operator_transfer_priority(memory, &requested, opportunity_family_id))
+        .max()
+        .unwrap_or(0);
+    Ok(ImprovementOperatorInvocation {
+        schema: IMPROVEMENT_OPERATOR_MEMORY_SCHEMA.to_string(),
+        matched_operator_ids: matching
+            .iter()
+            .map(|profile| profile.operator.operator_id.clone())
+            .collect(),
+        priority_adjustment,
+        prior_attempts,
+        prior_successful_uses,
+        cross_family_successes,
+    })
+}
+
 fn counterexample_from_receipt(
     request: &AutonomousSourcePatchRequest,
     receipt: &AutonomousSourcePatchReceipt,
@@ -713,6 +1133,11 @@ fn record_source_repair_outcome(
         .collect::<Result<Vec<_>, _>>()?;
     let family_member_count = request.additional_family_members.len() + 1;
     let validation_counterexample = counterexample_from_receipt(request, receipt);
+    let weakness_evidence_kind = request
+        .generalized_change
+        .as_ref()
+        .map(|change| change.weakness_evidence_kind);
+    let validation_duration_ms = receipt_validation_duration_ms(receipt)?;
     record.attempts.push(SourceRepairAttempt {
         attempt_number,
         source_generation: request.source_generation,
@@ -732,6 +1157,23 @@ fn record_source_repair_outcome(
         family_structural_repair_program_sha256: family_structural_repair_program_sha256.clone(),
         opportunity_kind: request.opportunity_kind,
         opportunity_family_id: request.opportunity_family_id.clone(),
+        weakness_evidence_kind,
+        validation_duration_ms,
+        invoked_operator_ids: request
+            .improvement_operator_invocation
+            .as_ref()
+            .map(|invocation| invocation.matched_operator_ids.clone())
+            .unwrap_or_default(),
+        operator_priority_adjustment: request
+            .improvement_operator_invocation
+            .as_ref()
+            .map(|invocation| invocation.priority_adjustment)
+            .unwrap_or_default(),
+        operator_cross_family_successes: request
+            .improvement_operator_invocation
+            .as_ref()
+            .map(|invocation| invocation.cross_family_successes)
+            .unwrap_or_default(),
     });
     if receipt.installed {
         record.status = "LEARNED_SUCCESS".to_string();
@@ -756,6 +1198,8 @@ fn record_source_repair_outcome(
             family_structural_repair_program_sha256,
             opportunity_kind: request.opportunity_kind,
             opportunity_family_id: request.opportunity_family_id.clone(),
+            weakness_evidence_kind,
+            validation_duration_ms,
         });
     } else if attempt_number >= policy.max_attempts_per_problem {
         record.status = "ADMITTED_FAILURE".to_string();
@@ -1867,6 +2311,7 @@ fn compiler_guided_request(
     policy: &AutonomousSourceMutationPolicy,
     state_dir: &Path,
     source_generation: u64,
+    operator_memory: &ImprovementOperatorMemory,
 ) -> Result<Option<AutonomousSourcePatchRequest>, String> {
     if !policy.auto_discover_compiler_repairs {
         return Ok(None);
@@ -1879,7 +2324,27 @@ fn compiler_guided_request(
         timeout_ms: policy.validation_timeout_ms,
         max_candidate_bytes: policy.max_candidate_bytes,
     };
+    let mut ranked = Vec::new();
     for candidate in discover_compiler_guided_repairs(&diagnostic_policy)? {
+        let (_, opportunity_family_id) = compiler_opportunity_metadata(&candidate.transformation);
+        let invocation = invoke_improvement_operator_repository(
+            operator_memory,
+            WeaknessEvidenceKind::CompilerDiagnostic,
+            &candidate.solution_strategy,
+            &candidate.structural_repair_program,
+            &opportunity_family_id,
+        )?;
+        ranked.push((invocation.priority_adjustment, invocation, candidate));
+    }
+    ranked.sort_by_key(|(priority, _, candidate)| {
+        (
+            std::cmp::Reverse(*priority),
+            candidate.relative_path.clone(),
+            candidate.transformation.clone(),
+            candidate.solution_strategy.clone(),
+        )
+    });
+    for (_, invocation, candidate) in ranked {
         if candidate.predicted_value < policy.minimum_predicted_value
             || !repair_strategy_is_available(
                 policy,
@@ -1949,6 +2414,7 @@ fn compiler_guided_request(
             additional_family_members: Vec::new(),
             opportunity_kind,
             opportunity_family_id,
+            improvement_operator_invocation: Some(invocation),
         }));
     }
     Ok(None)
@@ -1980,6 +2446,7 @@ fn grammar_synthesized_request(
     policy: &AutonomousSourceMutationPolicy,
     state_dir: &Path,
     source_generation: u64,
+    operator_memory: &ImprovementOperatorMemory,
 ) -> Result<Option<AutonomousSourcePatchRequest>, String> {
     if !policy.auto_synthesize_grammar_repairs {
         return Ok(None);
@@ -1990,6 +2457,23 @@ fn grammar_synthesized_request(
         policy.max_candidate_bytes,
         source_generation,
     )? {
+        let public_behavior_contradiction = candidate
+            .transformation
+            .contains("PUBLIC_EXAMPLE_CONTRADICTED_");
+        let evidence_kind = if public_behavior_contradiction {
+            WeaknessEvidenceKind::PublicBehaviorContradiction
+        } else {
+            WeaknessEvidenceKind::ExplicitCodeHole
+        };
+        let (_, opportunity_family_id) =
+            grammar_opportunity_metadata(&candidate.transformation, &candidate.repair_family);
+        let invocation = invoke_improvement_operator_repository(
+            operator_memory,
+            evidence_kind,
+            &candidate.solution_strategy,
+            &candidate.structural_repair_program,
+            &opportunity_family_id,
+        )?;
         let counterexamples = prior_counterexamples(
             state_dir,
             &candidate.relative_path,
@@ -2004,10 +2488,11 @@ fn grammar_synthesized_request(
                 candidate.public_examples_observed,
                 candidate.public_examples_evaluated,
                 candidate.public_examples_satisfied,
-            );
-        ranked.push((priority, candidate));
+            )
+            + invocation.priority_adjustment;
+        ranked.push((priority, invocation, candidate));
     }
-    ranked.sort_by_key(|(priority, candidate)| {
+    ranked.sort_by_key(|(priority, _, candidate)| {
         (
             std::cmp::Reverse(*priority),
             candidate.relative_path.clone(),
@@ -2015,7 +2500,7 @@ fn grammar_synthesized_request(
             candidate.solution_strategy.clone(),
         )
     });
-    for (_, candidate) in ranked {
+    for (_, invocation, candidate) in ranked {
         if candidate.predicted_value < policy.minimum_predicted_value
             || !repair_strategy_is_available(
                 policy,
@@ -2119,6 +2604,7 @@ fn grammar_synthesized_request(
             additional_family_members,
             opportunity_kind,
             opportunity_family_id,
+            improvement_operator_invocation: Some(invocation),
         }));
     }
     Ok(None)
@@ -2144,13 +2630,18 @@ pub fn discover_known_source_improvement_detailed(
     // observation for a new source fingerprint. Grammar candidates need no
     // compiler process and still pass the exact same structural replay and
     // compile/public-regression installation gate.
-    if let Some(candidate) = grammar_synthesized_request(policy, state_dir, source_generation)? {
+    let operator_memory = refresh_improvement_operator_repository(state_dir)?;
+    if let Some(candidate) =
+        grammar_synthesized_request(policy, state_dir, source_generation, &operator_memory)?
+    {
         return Ok(SourceDiscoveryResult {
             disposition: SourceDiscoveryDisposition::Candidate,
             candidate: Some(candidate),
         });
     }
-    if let Some(candidate) = compiler_guided_request(policy, state_dir, source_generation)? {
+    if let Some(candidate) =
+        compiler_guided_request(policy, state_dir, source_generation, &operator_memory)?
+    {
         return Ok(SourceDiscoveryResult {
             disposition: SourceDiscoveryDisposition::Candidate,
             candidate: Some(candidate),
@@ -2187,6 +2678,11 @@ pub fn discover_known_source_improvement_detailed(
         if attempted.len() >= usize::from(policy.max_attempts_per_problem) {
             continue;
         }
+        let opportunity_family_id = source_opportunity_family_id(
+            ChangeOpportunityKind::EfficiencyOpportunity,
+            &transformation,
+        );
+        let mut ranked_known_candidates = Vec::new();
         for (strategy_index, solution_strategy) in KNOWN_REMAINDER_STRATEGIES
             .iter()
             .enumerate()
@@ -2247,6 +2743,38 @@ pub fn discover_known_source_improvement_detailed(
             {
                 continue;
             }
+            let invocation = invoke_improvement_operator_repository(
+                &operator_memory,
+                WeaknessEvidenceKind::StructuralSourceSmell,
+                solution_strategy,
+                &structural_repair_program,
+                &opportunity_family_id,
+            )?;
+            ranked_known_candidates.push((
+                invocation.priority_adjustment,
+                strategy_index,
+                (*solution_strategy).to_string(),
+                candidate_source,
+                structural_repair_program,
+                candidate_sha256,
+                patch_id,
+                invocation,
+            ));
+        }
+        ranked_known_candidates.sort_by_key(|(priority, strategy_index, ..)| {
+            (std::cmp::Reverse(*priority), *strategy_index)
+        });
+        if let Some((
+            _,
+            _,
+            solution_strategy,
+            candidate_source,
+            structural_repair_program,
+            candidate_sha256,
+            patch_id,
+            invocation,
+        )) = ranked_known_candidates.into_iter().next()
+        {
             let consequence_predictions = vec![
                 "preserve parity/divisibility semantics".to_string(),
                 "replace a manual predicate using a distinct bounded repair strategy".to_string(),
@@ -2267,7 +2795,7 @@ pub fn discover_known_source_improvement_detailed(
                 source_generation,
                 &relative_path,
                 &transformation,
-                solution_strategy,
+                &solution_strategy,
                 &predecessor_sha256,
                 &candidate_sha256,
                 WeaknessEvidenceKind::StructuralSourceSmell,
@@ -2291,15 +2819,13 @@ pub fn discover_known_source_improvement_detailed(
                     source_generation,
                     core_generated: true,
                     core_self_approved: true,
-                    solution_strategy: (*solution_strategy).to_string(),
+                    solution_strategy,
                     structural_repair_program: Some(structural_repair_program),
                     generalized_change: Some(generalized_change),
                     additional_family_members: Vec::new(),
                     opportunity_kind: ChangeOpportunityKind::EfficiencyOpportunity,
-                    opportunity_family_id: source_opportunity_family_id(
-                        ChangeOpportunityKind::EfficiencyOpportunity,
-                        &transformation,
-                    ),
+                    opportunity_family_id,
+                    improvement_operator_invocation: Some(invocation),
                 }),
             });
         }
@@ -3185,6 +3711,97 @@ mod tests {
         assert_eq!(learned.status, "LEARNED_SUCCESS");
         assert_eq!(learned.attempts.len(), 1);
         assert_eq!(learned.learned_success.unwrap().attempts_required, 1);
+        fs::remove_dir_all(root).unwrap();
+        fs::remove_dir_all(state).unwrap();
+    }
+
+    #[test]
+    fn successful_structural_operator_is_stored_invoked_and_strengthened_by_transfer() {
+        let (root, policy) = fixture("callable-improvement-operator");
+        let state = external_state(&root);
+        let first = discover_known_source_improvement(&policy, &state, 12)
+            .unwrap()
+            .expect("first structural candidate");
+        let first_receipt = synthetic_receipt(&first, true);
+        record_source_repair_outcome(&policy, &state, &first, &first_receipt).unwrap();
+
+        let mut second = first.clone();
+        second.patch_id.push_str("-second-family");
+        second.transformation.push_str(":SECOND_FAMILY");
+        second.opportunity_family_id = source_opportunity_family_id(
+            ChangeOpportunityKind::EfficiencyOpportunity,
+            &second.transformation,
+        );
+        let second_receipt = synthetic_receipt(&second, true);
+        record_source_repair_outcome(&policy, &state, &second, &second_receipt).unwrap();
+
+        let memory = refresh_improvement_operator_repository(&state).unwrap();
+        assert_eq!(memory.total_successful_uses, 2);
+        assert_eq!(memory.productive_cross_family_transfers, 1);
+        let profile = memory
+            .profiles
+            .iter()
+            .find(|profile| profile.successful_uses == 2)
+            .expect("cross-family operator profile");
+        assert_eq!(profile.successful_family_ids.len(), 2);
+        let stored = improvement_operator_repository_path(&state, &profile.operator.operator_id);
+        assert!(stored.is_file());
+
+        let new_family = source_opportunity_family_id(
+            ChangeOpportunityKind::EfficiencyOpportunity,
+            "THIRD_FAMILY",
+        );
+        let invocation = invoke_improvement_operator_repository(
+            &memory,
+            first
+                .generalized_change
+                .as_ref()
+                .expect("generalized change")
+                .weakness_evidence_kind,
+            &first.solution_strategy,
+            first
+                .structural_repair_program
+                .as_ref()
+                .expect("structural program"),
+            &new_family,
+        )
+        .unwrap();
+        assert_eq!(invocation.matched_operator_ids.len(), 1);
+        assert_eq!(invocation.prior_successful_uses, 2);
+        assert_eq!(invocation.cross_family_successes, 2);
+        assert!(invocation.priority_adjustment > 0);
+
+        fs::write(
+            root.join("src/other.rs"),
+            "pub fn other_even(value: u32) -> bool { value % 2 == 0 }\n",
+        )
+        .unwrap();
+        let transferred = discover_known_source_improvement(&policy, &state, 13)
+            .unwrap()
+            .expect("repository-guided candidate on a fresh family");
+        let bound_invocation = transferred
+            .improvement_operator_invocation
+            .as_ref()
+            .expect("candidate is causally bound to repository invocation");
+        assert_eq!(transferred.relative_path, PathBuf::from("src/other.rs"));
+        assert_eq!(transferred.solution_strategy, first.solution_strategy);
+        assert_eq!(bound_invocation.matched_operator_ids.len(), 1);
+        assert_eq!(bound_invocation.prior_successful_uses, 2);
+        assert!(bound_invocation.priority_adjustment > 0);
+        let mut transferred_outcome = transferred.clone();
+        transferred_outcome.transformation.push_str(":THIRD_FAMILY");
+        transferred_outcome.opportunity_family_id = source_opportunity_family_id(
+            ChangeOpportunityKind::EfficiencyOpportunity,
+            &transferred_outcome.transformation,
+        );
+        let transferred_receipt = synthetic_receipt(&transferred_outcome, true);
+        record_source_repair_outcome(&policy, &state, &transferred_outcome, &transferred_receipt)
+            .unwrap();
+        let causally_updated = refresh_improvement_operator_repository(&state).unwrap();
+        assert_eq!(causally_updated.repository_guided_attempts, 1);
+        assert_eq!(causally_updated.repository_guided_successful_uses, 1);
+        assert_eq!(causally_updated.productive_cross_family_transfers, 2);
+
         fs::remove_dir_all(root).unwrap();
         fs::remove_dir_all(state).unwrap();
     }
