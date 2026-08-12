@@ -53,8 +53,9 @@ use crate::sem5::typed_mechanism::{
     MAX_ACTIVE_TYPED_MECHANISM_OPERATORS, SOURCE_BOUND_OPERATOR_AUTHORITY_SCHEMA,
 };
 use crate::source_bound_causal_frontend::{
-    discover_and_synthesize_python_repository_with_operators, RepositoryTestSourceIR,
-    SourceBoundRepositoryDiscoveryRequestIR, SOURCE_BOUND_REPOSITORY_DISCOVERY_SCHEMA,
+    discover_and_synthesize_python_repository_with_operators, replay_source_bound_patch,
+    RepositoryTestSourceIR, SourceBoundRepositoryDiscoveryRequestIR,
+    SOURCE_BOUND_REPOSITORY_DISCOVERY_SCHEMA,
 };
 use crate::structural_source_repair::SourceEditAtom;
 
@@ -6181,7 +6182,7 @@ fn try_synthesize_failed_python_cohort(
                     candidate_variants.push((
                         variant.variant_id.clone(),
                         variant.selected_template_symbols.clone(),
-                        variant.materialized_patch.clone(),
+                        variant.replayable_patch.clone(),
                         syntheses,
                     ));
                 }
@@ -6201,6 +6202,8 @@ fn try_synthesize_failed_python_cohort(
             materialization_is_one_to_one = patch.candidate_materialization_is_one_to_one;
             edit_atom_kinds.clear();
             source_edit_atom_kinds(&patch.edit, &mut edit_atom_kinds);
+            let candidate_source = replay_source_bound_patch(&source, &patch)
+                .map_err(|error| format!("{}:{}", error.kind.as_code(), error.detail))?;
             let sandbox_parent = config.state_dir.join("repository_repair_sandboxes");
             fs::create_dir_all(&sandbox_parent)
                 .map_err(|error| format!("REPOSITORY_REPAIR_SANDBOX_PARENT:{error}"))?;
@@ -6213,7 +6216,7 @@ fn try_synthesize_failed_python_cohort(
                 copy_repository_to_repair_sandbox(config, &plan.root, &sandbox)?;
                 let destination = sandbox.join(&relative);
                 ensure_repository_repair_file_writable(&destination)?;
-                fs::write(&destination, &patch.candidate_source)
+                fs::write(&destination, &candidate_source)
                     .map_err(|error| format!("REPOSITORY_REPAIR_CANDIDATE_WRITE:{error}"))?;
                 let arg_refs = plan.args.iter().map(String::as_str).collect::<Vec<_>>();
                 command_receipt_with_incremental(

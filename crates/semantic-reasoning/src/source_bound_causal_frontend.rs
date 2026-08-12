@@ -227,6 +227,20 @@ pub struct MaterializedSourceBoundPatchIR {
     pub candidate_materialization_is_one_to_one: bool,
 }
 
+/// A predecessor-bound edit program for a patch variant.  Variant search may
+/// create dozens of combinations for the same source file, so retaining the
+/// entire postimage in every combination would make memory scale with
+/// `source_bytes * variants`.  The authoritative postimage is reconstructed
+/// from this program and accepted only when both frozen hashes replay.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ReplayableSourceBoundPatchIR {
+    pub predecessor_sha256: String,
+    pub edit: SourceEditAtom,
+    pub candidate_sha256: String,
+    pub candidate_replay_sha256: String,
+    pub candidate_materialization_is_one_to_one: bool,
+}
+
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct SourceBoundAlternativeReceiptIR {
     pub alternative_id: String,
@@ -266,7 +280,7 @@ pub struct SourceBoundPatchVariantIR {
     /// N-1 for the corresponding causal alternative.
     pub selected_candidate_indices: Vec<usize>,
     pub selected_template_symbols: Vec<String>,
-    pub materialized_patch: MaterializedSourceBoundPatchIR,
+    pub replayable_patch: ReplayableSourceBoundPatchIR,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -1855,6 +1869,40 @@ fn combine_source_bound_patches(
     })
 }
 
+pub fn replay_source_bound_patch(
+    source: &str,
+    patch: &ReplayableSourceBoundPatchIR,
+) -> Result<String, CausalFrontendFailure> {
+    if sha256(source.as_bytes()) != patch.predecessor_sha256 {
+        return Err(CausalFrontendFailure::conflict(
+            "PATCH_VARIANT_PREDECESSOR_DIVERGED",
+        ));
+    }
+    if !patch.candidate_materialization_is_one_to_one
+        || patch.candidate_sha256 != patch.candidate_replay_sha256
+    {
+        return Err(CausalFrontendFailure::conflict(
+            "PATCH_VARIANT_REPLAY_AUTHORITY_INVALID",
+        ));
+    }
+    let candidate_source = apply_edit_atom(source, &patch.edit).map_err(|error| {
+        if error.contains("OVERLAPPING")
+            || error.contains("INSIDE_CONSUMED")
+            || error.contains("DUPLICATE")
+        {
+            CausalFrontendFailure::conflict(error)
+        } else {
+            CausalFrontendFailure::unsupported(error)
+        }
+    })?;
+    if candidate_source == source || sha256(candidate_source.as_bytes()) != patch.candidate_sha256 {
+        return Err(CausalFrontendFailure::conflict(
+            "PATCH_VARIANT_REPLAY_DIVERGED",
+        ));
+    }
+    Ok(candidate_source)
+}
+
 fn build_source_bound_patch_variants(
     source: &str,
     alternatives: &[SourceBoundAlternativeReceiptIR],
@@ -1949,7 +1997,14 @@ fn build_source_bound_patch_variants(
             variant_id,
             selected_candidate_indices: selection,
             selected_template_symbols: symbols,
-            materialized_patch,
+            replayable_patch: ReplayableSourceBoundPatchIR {
+                predecessor_sha256: materialized_patch.predecessor_sha256,
+                edit: materialized_patch.edit,
+                candidate_sha256: materialized_patch.candidate_sha256,
+                candidate_replay_sha256: materialized_patch.candidate_replay_sha256,
+                candidate_materialization_is_one_to_one: materialized_patch
+                    .candidate_materialization_is_one_to_one,
+            },
         });
     }
     if variants.is_empty() {
@@ -2648,14 +2703,21 @@ def transformer_visitor(value: int, baseline: int) -> int:
             receipt.patch_variants[0].selected_template_symbols,
             ["transformer_visitor"]
         );
-        assert!(receipt.patch_variants[0]
-            .materialized_patch
-            .candidate_source
-            .contains("parsed = parse_expr(left, right)"));
-        assert!(receipt.patch_variants[0]
-            .materialized_patch
-            .candidate_source
-            .contains("return evaluateFalse(first, second)"));
+        let first_variant_source =
+            replay_source_bound_patch(source, &receipt.patch_variants[0].replayable_patch).unwrap();
+        assert!(first_variant_source.contains("parsed = parse_expr(left, right)"));
+        assert!(first_variant_source.contains("return evaluateFalse(first, second)"));
+        assert!(!serde_json::to_string(&receipt.patch_variants)
+            .unwrap()
+            .contains("candidate_source"));
+        let mut tampered_variant = receipt.patch_variants[0].replayable_patch.clone();
+        tampered_variant.candidate_sha256 = "0".repeat(64);
+        assert_eq!(
+            replay_source_bound_patch(source, &tampered_variant)
+                .unwrap_err()
+                .kind,
+            CausalFrontendFailureKind::ConflictingSourceBoundEdits
+        );
         assert!(alternative
             .materialized_patch
             .candidate_source
