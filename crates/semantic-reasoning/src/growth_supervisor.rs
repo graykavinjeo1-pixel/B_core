@@ -4271,6 +4271,9 @@ struct CoreCohortValidationReceipt {
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 struct RepositoryValidationPlan {
+    validator_kind: RepositoryValidatorKind,
+    test_selection_source: String,
+    reused_validation_receipt_sha256: Option<String>,
     root_index: usize,
     root: PathBuf,
     input_observation_ids: Vec<String>,
@@ -4278,6 +4281,14 @@ struct RepositoryValidationPlan {
     test_paths: Vec<PathBuf>,
     program: PathBuf,
     args: Vec<String>,
+}
+
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+enum RepositoryValidatorKind {
+    #[default]
+    PythonPytest,
+    RustCargo,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -4288,6 +4299,12 @@ struct RepositoryCohortValidationReceipt {
     generation: u64,
     root_index: usize,
     root_sha256: String,
+    #[serde(default)]
+    validator_kind: RepositoryValidatorKind,
+    #[serde(default)]
+    test_selection_source: String,
+    #[serde(default)]
+    reused_validation_receipt_sha256: Option<String>,
     input_observation_ids: Vec<String>,
     test_paths: Vec<PathBuf>,
     scope_fingerprint_before: String,
@@ -4395,6 +4412,79 @@ fn repository_validation_scope_fingerprint(
     Ok(sha256(entries.join("\n").as_bytes()))
 }
 
+fn reusable_python_test_paths(
+    config: &GrowthSupervisorConfig,
+    root_index: usize,
+    root: &Path,
+) -> Result<Option<(Vec<PathBuf>, String)>, String> {
+    let diagnostics = config.state_dir.join("diagnostics");
+    let Ok(entries) = fs::read_dir(&diagnostics) else {
+        return Ok(None);
+    };
+    let mut receipts = entries
+        .filter_map(Result::ok)
+        .filter(|entry| {
+            entry
+                .file_name()
+                .to_string_lossy()
+                .starts_with("repository_cohort_validation_")
+                && entry.path().extension().and_then(OsStr::to_str) == Some("json")
+        })
+        .filter_map(|entry| {
+            let modified = entry
+                .metadata()
+                .ok()?
+                .modified()
+                .unwrap_or(SystemTime::UNIX_EPOCH);
+            Some((modified, entry.path()))
+        })
+        .collect::<Vec<_>>();
+    receipts.sort_by_key(|entry| std::cmp::Reverse(entry.0));
+    for (_, path) in receipts {
+        let Ok(receipt) = read_json::<RepositoryCohortValidationReceipt>(&path) else {
+            continue;
+        };
+        if !receipt.success
+            || receipt.root_index != root_index
+            || receipt.validator_kind != RepositoryValidatorKind::PythonPytest
+            || (!receipt.test_selection_source.is_empty()
+                && receipt.test_selection_source != "OBSERVED_TEST_COHORT")
+            || receipt.test_paths.is_empty()
+            || receipt
+                .test_paths
+                .iter()
+                .any(|test| test.extension().and_then(OsStr::to_str) != Some("py"))
+            || receipt
+                .test_paths
+                .iter()
+                .any(|test| validated_repository_file(root, test).is_err())
+        {
+            continue;
+        }
+        let receipt_sha256 = json_sha256(&receipt)?;
+        let mut tests = receipt.test_paths;
+        tests.sort();
+        tests.dedup();
+        tests.truncate(MAX_REPOSITORY_TEST_PATHS);
+        return Ok(Some((tests, receipt_sha256)));
+    }
+    Ok(None)
+}
+
+fn nearest_cargo_manifest(root: &Path, relative: &Path) -> Option<PathBuf> {
+    let mut directory = relative.parent()?.to_path_buf();
+    loop {
+        let candidate = directory.join("Cargo.toml");
+        if root.join(&candidate).is_file() && validated_repository_file(root, &candidate).is_ok() {
+            return Some(candidate);
+        }
+        if !directory.pop() {
+            break;
+        }
+    }
+    None
+}
+
 fn repository_validation_plan(
     config: &GrowthSupervisorConfig,
     observations: &[LearningObservation],
@@ -4412,79 +4502,148 @@ fn repository_validation_plan(
     }
     for (root_index, entries) in by_root {
         let root = config.watched_roots[root_index].clone();
-        if !root.join("pyproject.toml").is_file() {
-            continue;
-        }
-        let implementation_present = entries.iter().any(|(_, relative)| {
-            relative.extension().and_then(OsStr::to_str) == Some("py")
-                && !path_is_dedicated_test(relative)
-        });
-        if !implementation_present {
-            continue;
-        }
-        let mut test_paths = entries
-            .iter()
-            .filter(|(_, relative)| {
-                let is_python = relative.extension().and_then(OsStr::to_str) == Some("py");
-                let is_test = path_is_dedicated_test(relative)
-                    && relative
-                        .file_name()
-                        .and_then(OsStr::to_str)
-                        .is_some_and(|name| name.starts_with("test_"));
-                is_python && is_test
-            })
-            .map(|(_, relative)| relative.clone())
-            .collect::<Vec<_>>();
-        test_paths.sort();
-        test_paths.dedup();
-        test_paths.truncate(MAX_REPOSITORY_TEST_PATHS);
-        if test_paths.is_empty() {
-            continue;
-        }
-        for relative in &test_paths {
-            validated_repository_file(&root, relative)?;
-        }
-        let mut scope_paths = entries
+        let python_entries = entries
             .iter()
             .filter(|(_, relative)| relative.extension().and_then(OsStr::to_str) == Some("py"))
-            .map(|(_, relative)| relative.clone())
+            .cloned()
             .collect::<Vec<_>>();
-        scope_paths.extend(test_paths.iter().cloned());
-        scope_paths.push(PathBuf::from("pyproject.toml"));
-        scope_paths.sort();
-        scope_paths.dedup();
-        let mut input_observation_ids = entries
+        let python_implementation_present = python_entries
             .iter()
-            .map(|(observation, _)| observation.observation_id.clone())
-            .collect::<Vec<_>>();
-        input_observation_ids.sort();
-        input_observation_ids.dedup();
-        let Ok(program) = resolve_local_program("python") else {
-            continue;
-        };
-        let mut args = vec![
-            "-m".to_string(),
-            "pytest".to_string(),
-            "-q".to_string(),
-            "--disable-warnings".to_string(),
-            "--maxfail=1".to_string(),
-            "-p".to_string(),
-            "no:cacheprovider".to_string(),
-        ];
-        args.extend(
-            test_paths
+            .any(|(_, relative)| !path_is_dedicated_test(relative));
+        'python_plan: {
+            if root.join("pyproject.toml").is_file() && python_implementation_present {
+                let mut test_paths = python_entries
+                    .iter()
+                    .filter(|(_, relative)| {
+                        path_is_dedicated_test(relative)
+                            && relative
+                                .file_name()
+                                .and_then(OsStr::to_str)
+                                .is_some_and(|name| name.starts_with("test_"))
+                    })
+                    .map(|(_, relative)| relative.clone())
+                    .collect::<Vec<_>>();
+                test_paths.sort();
+                test_paths.dedup();
+                test_paths.truncate(MAX_REPOSITORY_TEST_PATHS);
+                let (test_selection_source, reused_validation_receipt_sha256) =
+                    if test_paths.is_empty() {
+                        let Some((reused, receipt_sha256)) =
+                            reusable_python_test_paths(config, root_index, &root)?
+                        else {
+                            break 'python_plan;
+                        };
+                        test_paths = reused;
+                        ("VERIFIED_RECEIPT_REUSE".to_string(), Some(receipt_sha256))
+                    } else {
+                        ("OBSERVED_TEST_COHORT".to_string(), None)
+                    };
+                for relative in &test_paths {
+                    validated_repository_file(&root, relative)?;
+                }
+                let mut scope_paths = python_entries
+                    .iter()
+                    .map(|(_, relative)| relative.clone())
+                    .collect::<Vec<_>>();
+                scope_paths.extend(test_paths.iter().cloned());
+                scope_paths.push(PathBuf::from("pyproject.toml"));
+                scope_paths.sort();
+                scope_paths.dedup();
+                let mut input_observation_ids = python_entries
+                    .iter()
+                    .map(|(observation, _)| observation.observation_id.clone())
+                    .collect::<Vec<_>>();
+                input_observation_ids.sort();
+                input_observation_ids.dedup();
+                let Ok(program) = resolve_local_program("python") else {
+                    break 'python_plan;
+                };
+                let mut args = vec![
+                    "-m".to_string(),
+                    "pytest".to_string(),
+                    "-q".to_string(),
+                    "--disable-warnings".to_string(),
+                    "--maxfail=1".to_string(),
+                    "-p".to_string(),
+                    "no:cacheprovider".to_string(),
+                ];
+                args.extend(
+                    test_paths
+                        .iter()
+                        .map(|path| path.to_string_lossy().replace('\\', "/")),
+                );
+                return Ok(Some(RepositoryValidationPlan {
+                    validator_kind: RepositoryValidatorKind::PythonPytest,
+                    test_selection_source,
+                    reused_validation_receipt_sha256,
+                    root_index,
+                    root,
+                    input_observation_ids,
+                    scope_paths,
+                    test_paths,
+                    program,
+                    args,
+                }));
+            }
+        }
+
+        let mut rust_by_manifest: BTreeMap<PathBuf, Vec<(&LearningObservation, PathBuf)>> =
+            BTreeMap::new();
+        for (observation, relative) in &entries {
+            if relative.extension().and_then(OsStr::to_str) == Some("rs") {
+                if let Some(manifest) = nearest_cargo_manifest(&root, relative) {
+                    rust_by_manifest
+                        .entry(manifest)
+                        .or_default()
+                        .push((observation, relative.clone()));
+                }
+            }
+        }
+        if let Some((manifest, rust_entries)) = rust_by_manifest.into_iter().next() {
+            let cargo_name = config.source_mutation.cargo_executable.to_string_lossy();
+            let Ok(program) = resolve_local_program(&cargo_name) else {
+                continue;
+            };
+            let mut input_observation_ids = rust_entries
                 .iter()
-                .map(|path| path.to_string_lossy().replace('\\', "/")),
-        );
-        return Ok(Some(RepositoryValidationPlan {
-            root_index,
-            root,
-            input_observation_ids,
-            scope_paths,
-            test_paths,
-            program,
-            args,
-        }));
+                .map(|(observation, _)| observation.observation_id.clone())
+                .collect::<Vec<_>>();
+            input_observation_ids.sort();
+            input_observation_ids.dedup();
+            let mut scope_paths = rust_entries
+                .iter()
+                .map(|(_, relative)| relative.clone())
+                .collect::<Vec<_>>();
+            scope_paths.push(manifest.clone());
+            for workspace_file in ["Cargo.toml", "Cargo.lock"] {
+                let relative = PathBuf::from(workspace_file);
+                if root.join(&relative).is_file() {
+                    scope_paths.push(relative);
+                }
+            }
+            scope_paths.sort();
+            scope_paths.dedup();
+            let manifest_argument = manifest.to_string_lossy().replace('\\', "/");
+            return Ok(Some(RepositoryValidationPlan {
+                validator_kind: RepositoryValidatorKind::RustCargo,
+                test_selection_source: "CRATE_LOCAL_LIB_TESTS".to_string(),
+                reused_validation_receipt_sha256: None,
+                root_index,
+                root,
+                input_observation_ids,
+                scope_paths,
+                test_paths: vec![manifest],
+                program,
+                args: vec![
+                    "test".to_string(),
+                    "--manifest-path".to_string(),
+                    manifest_argument,
+                    "--lib".to_string(),
+                    "--quiet".to_string(),
+                    "--locked".to_string(),
+                ],
+            }));
+        }
     }
     Ok(None)
 }
@@ -4648,12 +4807,18 @@ fn validate_blocked_repository_cohort(
     let program_sha256 = file_sha256(&plan.program, 512 * 1024 * 1024)?;
     let validation_id = sha256(
         format!(
-            "REPOSITORY_COHORT_VALIDATION:{}:{}:{}:{}:{}",
+            "REPOSITORY_COHORT_VALIDATION:{}:{}:{:?}:{}:{}:{}:{}:{}:{}",
             diagnostic.generation,
             plan.root_index,
+            plan.validator_kind,
+            plan.test_selection_source,
+            plan.reused_validation_receipt_sha256
+                .as_deref()
+                .unwrap_or("OBSERVED"),
             scope_fingerprint_before,
             program_sha256,
-            plan.input_observation_ids.join(":")
+            plan.input_observation_ids.join(":"),
+            plan.args.join("\u{1f}")
         )
         .as_bytes(),
     );
@@ -4668,6 +4833,10 @@ fn validate_blocked_repository_cohort(
             || existing.validation_id != validation_id
             || existing.generation != diagnostic.generation
             || existing.root_index != plan.root_index
+            || existing.validator_kind != plan.validator_kind
+            || existing.test_selection_source != plan.test_selection_source
+            || existing.reused_validation_receipt_sha256.as_ref()
+                != plan.reused_validation_receipt_sha256.as_ref()
             || existing.input_observation_ids != plan.input_observation_ids
             || existing.test_paths != plan.test_paths
             || existing.scope_fingerprint_before != scope_fingerprint_before
@@ -4703,6 +4872,9 @@ fn validate_blocked_repository_cohort(
             generation: diagnostic.generation,
             root_index: plan.root_index,
             root_sha256: sha256(plan.root.to_string_lossy().as_bytes()),
+            validator_kind: plan.validator_kind,
+            test_selection_source: plan.test_selection_source,
+            reused_validation_receipt_sha256: plan.reused_validation_receipt_sha256,
             input_observation_ids: plan.input_observation_ids,
             test_paths: plan.test_paths,
             scope_fingerprint_before,
@@ -4927,6 +5099,10 @@ fn runtime_repair_action(
     {
         let plan = repository_validation_plan(config, evidence_aware_cohort)?
             .ok_or_else(|| "REPOSITORY_COHORT_VALIDATION_PLAN_LOST".to_string())?;
+        let validator_signal = match plan.validator_kind {
+            RepositoryValidatorKind::PythonPytest => "PYTHON_PYTEST_VALIDATION",
+            RepositoryValidatorKind::RustCargo => "RUST_CARGO_VALIDATION",
+        };
         let mut verification_evidence_sha256 = action.execution_evidence_sha256.clone();
         verification_evidence_sha256.push(action_sha256.clone());
         Some(LearningObservation {
@@ -4946,6 +5122,7 @@ fn runtime_repair_action(
             signals: vec![
                 "AUTONOMOUS_RUNTIME_REPAIR".to_string(),
                 "REPOSITORY_COHORT_VALIDATION".to_string(),
+                validator_signal.to_string(),
                 "REGRESSION_EVIDENCE".to_string(),
                 "VERIFIED_PASS".to_string(),
             ],
@@ -4953,9 +5130,9 @@ fn runtime_repair_action(
             learning_score: 85,
             learning_value: LearningValue::High,
             reasons: vec![
-                "repository implementation and tests were observed without executed pass evidence"
-                    .to_string(),
+                "repository implementation lacked applicable executed pass evidence".to_string(),
                 "bounded repository-native tests passed with a stable validation scope".to_string(),
+                format!("test selection source={}", plan.test_selection_source),
             ],
             verification_evidence_sha256,
             performance_metrics: Vec::new(),
@@ -7146,7 +7323,7 @@ mod tests {
         assert!(verification
             .signals
             .contains(&"REPOSITORY_COHORT_VALIDATION".to_string()));
-        let lesson = build_lesson(&[implementation, verification]).unwrap();
+        let lesson = build_lesson(&[implementation.clone(), verification]).unwrap();
         assert!(lesson_has_verification_evidence(&lesson));
         assert!(lesson
             .composition_recipe
@@ -7165,10 +7342,98 @@ mod tests {
         let receipt: RepositoryCohortValidationReceipt = read_json(&receipt.path()).unwrap();
         assert!(receipt.success);
         assert_eq!(
+            receipt.validator_kind,
+            RepositoryValidatorKind::PythonPytest
+        );
+        assert_eq!(receipt.test_selection_source, "OBSERVED_TEST_COHORT");
+        assert_eq!(
             receipt.test_paths,
             vec![PathBuf::from("tests/test_core_module.py")]
         );
         assert!(receipt.scope_stable_during_validation);
+        let reused = repository_validation_plan(&config, &[implementation])
+            .unwrap()
+            .expect("reuse prior verified tests");
+        assert_eq!(reused.validator_kind, RepositoryValidatorKind::PythonPytest);
+        assert_eq!(reused.test_selection_source, "VERIFIED_RECEIPT_REUSE");
+        assert!(reused.reused_validation_receipt_sha256.is_some());
+        assert_eq!(
+            reused.test_paths,
+            vec![PathBuf::from("tests/test_core_module.py")]
+        );
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn blocked_rust_repository_cohort_selects_crate_local_lib_tests() {
+        let Ok(cargo) = resolve_local_program("cargo") else {
+            return;
+        };
+        let root = temp_root("blocked-rust-repository-validation");
+        let (_, mut config) = test_config(&root);
+        config.source_mutation.cargo_executable = cargo;
+        let repository = config.watched_roots[0].clone();
+        fs::create_dir_all(repository.join("crates/example/src")).unwrap();
+        fs::write(
+            repository.join("Cargo.toml"),
+            "[workspace]\nmembers = [\"crates/example\"]\nresolver = \"2\"\n",
+        )
+        .unwrap();
+        fs::write(
+            repository.join("Cargo.lock"),
+            "# This file is automatically @generated by Cargo.\nversion = 4\n",
+        )
+        .unwrap();
+        fs::write(
+            repository.join("crates/example/Cargo.toml"),
+            "[package]\nname = \"example\"\nversion = \"0.1.0\"\nedition = \"2021\"\n",
+        )
+        .unwrap();
+        fs::write(
+            repository.join("crates/example/src/lib.rs"),
+            "pub fn repaired() -> bool { true }\n#[cfg(test)] mod tests { #[test] fn pass() { assert!(super::repaired()); } }\n",
+        )
+        .unwrap();
+        let implementation = LearningObservation {
+            observation_id: "rust-implementation".to_string(),
+            work_event_id: None,
+            logical_path: "ROOT_0/crates/example/src/lib.rs".to_string(),
+            content_sha256: "e".repeat(64),
+            predecessor_content_sha256: Some("d".repeat(64)),
+            actor: WorkActor::Codex,
+            work_kind: WorkKind::DefectRepair,
+            work_outcome: WorkOutcome::Unknown,
+            features_before: Some(StructuralFeatures::default()),
+            features_after: StructuralFeatures::default(),
+            signals: vec!["DEFECT_REPAIR".to_string(), "TEST_ADDED".to_string()],
+            composition_roles: vec!["IMPLEMENTATION_REPAIR".to_string()],
+            learning_score: 75,
+            learning_value: LearningValue::High,
+            reasons: vec!["rust repair".to_string()],
+            verification_evidence_sha256: Vec::new(),
+            performance_metrics: Vec::new(),
+            exact_source_fragments_stored: 0,
+            raw_source_bytes_stored: 0,
+            observed_at_ms: 1,
+        };
+
+        let plan = repository_validation_plan(&config, &[implementation])
+            .unwrap()
+            .expect("rust cargo validation plan");
+
+        assert_eq!(plan.validator_kind, RepositoryValidatorKind::RustCargo);
+        assert_eq!(plan.test_selection_source, "CRATE_LOCAL_LIB_TESTS");
+        assert_eq!(
+            plan.test_paths,
+            vec![PathBuf::from("crates/example/Cargo.toml")]
+        );
+        assert_eq!(plan.input_observation_ids, vec!["rust-implementation"]);
+        assert!(plan.args.windows(2).any(|pair| {
+            pair == [
+                "--manifest-path".to_string(),
+                "crates/example/Cargo.toml".to_string(),
+            ]
+        }));
         fs::remove_dir_all(root).unwrap();
     }
 
