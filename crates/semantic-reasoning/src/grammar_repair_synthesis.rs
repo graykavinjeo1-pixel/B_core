@@ -90,6 +90,7 @@ struct RepositoryGrammarContext {
 enum PublicValue {
     Int(i128),
     Bool(bool),
+    String(String),
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
@@ -273,12 +274,13 @@ fn public_literal(expression: &Expr) -> Option<PublicValue> {
         Expr::Lit(value) => match &value.lit {
             Lit::Int(value) => value.base10_parse::<i128>().ok().map(PublicValue::Int),
             Lit::Bool(value) => Some(PublicValue::Bool(value.value)),
+            Lit::Str(value) => Some(PublicValue::String(value.value())),
             _ => None,
         },
         Expr::Unary(value) if matches!(value.op, UnOp::Neg(_)) => {
             match public_literal(value.expr.as_ref())? {
                 PublicValue::Int(number) => number.checked_neg().map(PublicValue::Int),
-                PublicValue::Bool(_) => None,
+                PublicValue::Bool(_) | PublicValue::String(_) => None,
             }
         }
         Expr::Paren(value) => public_literal(value.expr.as_ref()),
@@ -291,6 +293,7 @@ fn contradicted_stub_family(expression: &Expr) -> Option<(&'static str, String)>
     match public_literal(expression) {
         Some(PublicValue::Int(_)) => Some(("INTEGER_LITERAL", normalized_tokens(expression))),
         Some(PublicValue::Bool(_)) => Some(("BOOLEAN_LITERAL", normalized_tokens(expression))),
+        Some(PublicValue::String(_)) => Some(("STRING_LITERAL", normalized_tokens(expression))),
         None if normalized_tokens(expression) == "Default::default()" => {
             Some(("DEFAULT_CONSTRUCTOR", "Default::default()".to_string()))
         }
@@ -512,6 +515,10 @@ fn is_integer(value: &str) -> bool {
     )
 }
 
+fn is_string_like(value: &str) -> bool {
+    matches!(value, "String" | "&str")
+}
+
 fn push_expression(
     output: &mut Vec<(String, String)>,
     seen: &mut BTreeSet<String>,
@@ -579,6 +586,11 @@ fn compose_expressions(
         .iter()
         .filter(|binding| binding.type_name == "bool")
         .collect::<Vec<_>>();
+    let string_inputs = callable
+        .inputs
+        .iter()
+        .filter(|binding| is_string_like(&binding.type_name))
+        .collect::<Vec<_>>();
 
     if is_integer(&callable.output) && numeric_inputs.len() >= 2 {
         let left = &numeric_inputs[0].name;
@@ -630,6 +642,29 @@ fn compose_expressions(
             "BOOLEAN_OR",
             format!("{left} || {right}"),
         );
+    }
+
+    if callable.output == "String" {
+        if string_inputs.len() >= 2 {
+            let left = &string_inputs[0].name;
+            let right = &string_inputs[1].name;
+            push_expression(
+                &mut output,
+                &mut seen,
+                "STRING_CONCAT",
+                format!("format!(\"{{}}{{}}\", {left}, {right})"),
+            );
+        }
+        for binding in &string_inputs {
+            if binding.type_name == "&str" {
+                push_expression(
+                    &mut output,
+                    &mut seen,
+                    "STRING_TO_OWNED",
+                    format!("{}.to_string()", binding.name),
+                );
+            }
+        }
     }
 
     for candidate in catalog {
@@ -803,7 +838,7 @@ fn numeric_inputs(callable: &CallableSignature, example: &PublicExample) -> Opti
         .filter(|(binding, _)| is_integer(&binding.type_name))
         .map(|(_, value)| match value {
             PublicValue::Int(value) => Some(*value),
-            PublicValue::Bool(_) => None,
+            PublicValue::Bool(_) | PublicValue::String(_) => None,
         })
         .collect()
 }
@@ -819,7 +854,23 @@ fn boolean_inputs(callable: &CallableSignature, example: &PublicExample) -> Opti
         .filter(|(binding, _)| binding.type_name == "bool")
         .map(|(_, value)| match value {
             PublicValue::Bool(value) => Some(*value),
-            PublicValue::Int(_) => None,
+            PublicValue::Int(_) | PublicValue::String(_) => None,
+        })
+        .collect()
+}
+
+fn string_inputs(callable: &CallableSignature, example: &PublicExample) -> Option<Vec<String>> {
+    if callable.inputs.len() != example.inputs.len() {
+        return None;
+    }
+    callable
+        .inputs
+        .iter()
+        .zip(&example.inputs)
+        .filter(|(binding, _)| is_string_like(&binding.type_name))
+        .map(|(_, value)| match value {
+            PublicValue::String(value) => Some(value.clone()),
+            PublicValue::Int(_) | PublicValue::Bool(_) => None,
         })
         .collect()
 }
@@ -835,8 +886,10 @@ fn bound_public_value(
         .iter()
         .zip(&example.inputs)
         .find_map(|(binding, value)| {
-            (expression == binding.name || expression == format!("{}.clone()", binding.name))
-                .then(|| value.clone())
+            (expression == binding.name
+                || expression == format!("{}.clone()", binding.name)
+                || expression == format!("{}.to_string()", binding.name))
+            .then(|| value.clone())
         })
 }
 
@@ -852,6 +905,10 @@ fn evaluate_public_expression(
 ) -> Option<PublicValue> {
     let numeric = || first_two(&numeric_inputs(callable, example)?);
     let boolean = || first_two(&boolean_inputs(callable, example)?);
+    let string = || {
+        let values = string_inputs(callable, example)?;
+        Some((values.first()?.clone(), values.get(1)?.clone()))
+    };
     match family {
         "BINARY_ADD" => {
             let (left, right) = numeric()?;
@@ -905,7 +962,11 @@ fn evaluate_public_expression(
             let (left, right) = boolean()?;
             Some(PublicValue::Bool(left || right))
         }
-        "BOOLEAN_NOT" | "BOUND_VALUE" | "BOUND_VALUE_CLONE" => {
+        "STRING_CONCAT" => {
+            let (left, right) = string()?;
+            Some(PublicValue::String(format!("{left}{right}")))
+        }
+        "BOOLEAN_NOT" | "BOUND_VALUE" | "BOUND_VALUE_CLONE" | "STRING_TO_OWNED" => {
             bound_public_value(callable, example, expression).map(|value| match family {
                 "BOOLEAN_NOT" => match value {
                     PublicValue::Bool(value) => PublicValue::Bool(!value),
@@ -920,8 +981,15 @@ fn evaluate_public_expression(
         "INTEGER_ONE" => Some(PublicValue::Int(1)),
         "INTEGER_LITERAL" => expression.parse::<i128>().ok().map(PublicValue::Int),
         "BOOLEAN_LITERAL" => expression.parse::<bool>().ok().map(PublicValue::Bool),
+        "STRING_LITERAL" => syn::parse_str::<Expr>(expression)
+            .ok()
+            .and_then(|expression| public_literal(&expression)),
+        "STRING_EMPTY" => Some(PublicValue::String(String::new())),
         "DEFAULT_CONSTRUCTOR" if callable.output == "bool" => Some(PublicValue::Bool(false)),
         "DEFAULT_CONSTRUCTOR" if is_integer(&callable.output) => Some(PublicValue::Int(0)),
+        "DEFAULT_CONSTRUCTOR" if callable.output == "String" => {
+            Some(PublicValue::String(String::new()))
+        }
         _ => None,
     }
 }
@@ -1405,6 +1473,38 @@ mod tests {
         assert_eq!(candidates[0].public_examples_observed, 3);
         assert_eq!(candidates[0].public_examples_evaluated, 3);
         assert_eq!(candidates[0].public_examples_satisfied, 3);
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn string_examples_select_typed_concatenation() {
+        let root = std::env::temp_dir().join(format!(
+            "b-core-grammar-string-concat-{}",
+            std::process::id()
+        ));
+        if root.exists() {
+            fs::remove_dir_all(&root).unwrap();
+        }
+        fs::create_dir_all(root.join("src")).unwrap();
+        fs::write(
+            root.join("src/lib.rs"),
+            "pub fn join(left: &str, right: &str) -> String { todo!() }\n\n#[cfg(test)]\nmod tests {\n    #[test]\n    fn joins() {\n        assert_eq!(super::join(\"a\", \"b\"), \"ab\");\n        assert_eq!(super::join(\"left\", \"right\"), \"leftright\");\n    }\n}\n",
+        )
+        .unwrap();
+
+        let candidates = discover_grammar_repairs(&root, 4_096).unwrap();
+
+        assert!(!candidates.is_empty());
+        assert_eq!(
+            candidates[0].grammar_expression,
+            "format!(\"{}{}\", left, right)"
+        );
+        assert!(candidates[0]
+            .solution_strategy
+            .starts_with("GRAMMAR_COMPOSITION:STRING_CONCAT"));
+        assert_eq!(candidates[0].public_examples_observed, 2);
+        assert_eq!(candidates[0].public_examples_evaluated, 2);
+        assert_eq!(candidates[0].public_examples_satisfied, 2);
         fs::remove_dir_all(root).unwrap();
     }
 
