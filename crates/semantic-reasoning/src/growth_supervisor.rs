@@ -780,6 +780,18 @@ pub struct CampaignHistory {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+struct InvalidGenerationRecoveryReceipt {
+    schema: String,
+    invalid_generation: u64,
+    invalid_memory_sha256: String,
+    invalid_lesson_id: String,
+    restored_generation: u64,
+    restored_memory_sha256: String,
+    reason: String,
+    recovered_at_ms: u64,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct StepReport {
     pub schema: String,
     pub phase: SupervisorPhase,
@@ -938,6 +950,9 @@ pub struct SelfCheck {
     pub diagnostic_productivity_requires_current_executable_intervention: bool,
     pub unbound_capability_gap_state_deduplicated: bool,
     pub test_only_evaluator_cohort_validation_enabled: bool,
+    pub validation_receipt_identity_excludes_generation: bool,
+    pub verification_only_generation_promotion_forbidden: bool,
+    pub verification_only_false_tip_auto_recovery: bool,
     pub self_healing_candidates_route_to_atomic_installer: bool,
     pub integrated_program_ir_lowers_to_compiled_rust: bool,
     pub installed_compositions_are_runtime_callable: bool,
@@ -1016,6 +1031,9 @@ pub fn self_check() -> SelfCheck {
             "DIAGNOSTIC_PRODUCTIVITY_REQUIRES_A_CURRENT_EXECUTABLE_INTERVENTION".to_string(),
             "REPEATED_UNBOUND_CAPABILITY_GAP_STATE_IS_ONE_OBSERVATION".to_string(),
             "OBSERVED_TEST_ONLY_COHORTS_RUN_BOUNDED_NATIVE_VALIDATION".to_string(),
+            "VALIDATION_RECEIPT_IDENTITY_BINDS_INPUT_AND_SCOPE_NOT_GENERATION".to_string(),
+            "VERIFICATION_RECEIPT_WITHOUT_A_GROWTH_SUBJECT_CANNOT_PROMOTE".to_string(),
+            "FALSE_VERIFICATION_ONLY_TIP_IS_QUARANTINED_AND_PREDECESSOR_RESTORED".to_string(),
             "LEARNED_SELF_HEALING_CANDIDATES_ROUTE_THROUGH_ATOMIC_INSTALL_VALIDATE_ROLLBACK"
                 .to_string(),
             "SEM5_PROGRAM_IR_LOWERS_TO_REPOSITORY_NATIVE_RUST_BEFORE_INSTALLATION".to_string(),
@@ -1070,6 +1088,9 @@ pub fn self_check() -> SelfCheck {
         diagnostic_productivity_requires_current_executable_intervention: true,
         unbound_capability_gap_state_deduplicated: true,
         test_only_evaluator_cohort_validation_enabled: true,
+        validation_receipt_identity_excludes_generation: true,
+        verification_only_generation_promotion_forbidden: true,
+        verification_only_false_tip_auto_recovery: true,
         self_healing_candidates_route_to_atomic_installer: true,
         integrated_program_ir_lowers_to_compiled_rust: true,
         installed_compositions_are_runtime_callable: true,
@@ -2238,6 +2259,185 @@ fn cleanup_memory_generations(config: &GrowthSupervisorConfig) -> Result<(), Str
     cleanup_numbered_files(&config.state_dir.join("memory"), "generation_", 2)
 }
 
+fn invalidated_generation_dir(config: &GrowthSupervisorConfig, generation: u64) -> PathBuf {
+    config
+        .state_dir
+        .join("invalidated_generations")
+        .join(format!("generation_{generation:020}"))
+}
+
+fn restore_memory_projection(
+    state: &mut SupervisorState,
+    memory: &GrowthMemory,
+) -> Result<(), String> {
+    state.generation = memory.generation;
+    state.current_memory_sha256 = json_sha256(memory)?;
+    state.predecessor_memory_sha256 = memory.predecessor_sha256.clone();
+    state.evaluator_generation = memory.evaluator.generation;
+    state.current_evaluator_memory_sha256 = json_sha256(&memory.evaluator)?;
+    state.evaluator_challenge_cases = memory
+        .evaluator
+        .challenge_suite
+        .len()
+        .min(u64::MAX as usize) as u64;
+    state.generative_predictions = memory.generative.prediction_records;
+    state.valuable_combinations_learned = memory
+        .generative
+        .accepted_compositions
+        .len()
+        .min(u64::MAX as usize) as u64;
+    state.generative_memory_reuse_events = memory.generative.reuse_events;
+    state.generative_self_application_events = memory.generative.self_application_events;
+    state.generative_exploration_events = memory.generative.exploration_events;
+    state.productive_generative_reuse_events = memory.generative.productive_reuse_events;
+    state.generative_frontier_advance_events = memory.generative.frontier_advance_events;
+    state.unverified_generative_frontier_candidate_events =
+        memory.generative.unverified_frontier_candidate_events;
+    state.legacy_unverified_generative_frontier_advance_events =
+        memory.generative.legacy_unverified_frontier_advance_events;
+    state.generative_behavioral_verification_events =
+        memory.generative.behavioral_verification_events;
+    state.redundant_generative_selection_events = memory.generative.redundant_selection_events;
+    state.generative_prediction_absolute_error_total =
+        memory.generative.prediction_absolute_error_total;
+    state.generative_calibrated_prediction_records =
+        memory.generative.calibrated_prediction_records;
+    state.generative_legacy_uncalibrated_prediction_error_total =
+        memory.generative.legacy_uncalibrated_prediction_error_total;
+    let (distinct_semantic_lessons, semantic_duplicate_lessons) = semantic_lesson_counts(memory)?;
+    state.distinct_semantic_lessons = distinct_semantic_lessons;
+    state.semantic_duplicate_lessons = semantic_duplicate_lessons;
+    state.measured_performance_promotions = memory
+        .lessons
+        .iter()
+        .filter(|lesson| !lesson.performance_metrics.is_empty())
+        .count()
+        .min(u64::MAX as usize) as u64;
+    state.classifier_outcome_bound_refinements = memory.classifier.outcome_bound_refinements;
+    state.classifier_unsupported_refinements_suppressed =
+        memory.classifier.unsupported_refinements_suppressed;
+    Ok(())
+}
+
+fn cleanup_recovered_invalid_successor(
+    config: &GrowthSupervisorConfig,
+    state: &SupervisorState,
+) -> Result<(), String> {
+    let invalid_generation = state.generation.saturating_add(1);
+    let directory = invalidated_generation_dir(config, invalid_generation);
+    let receipt_path = directory.join("recovery_receipt.json");
+    let canonical_path = memory_path(config, invalid_generation);
+    if !receipt_path.exists() || !canonical_path.exists() {
+        return Ok(());
+    }
+    let receipt: InvalidGenerationRecoveryReceipt = read_json(&receipt_path)?;
+    if receipt.invalid_generation != invalid_generation
+        || receipt.restored_generation != state.generation
+        || receipt.restored_memory_sha256 != state.current_memory_sha256
+        || file_sha256(&canonical_path, 64 * 1024 * 1024)?
+            != file_sha256(&directory.join("memory.json"), 64 * 1024 * 1024)?
+    {
+        return Err("INVALIDATED_SUCCESSOR_CLEANUP_BINDING_FAILURE".to_string());
+    }
+    fs::remove_file(&canonical_path).map_err(|error| {
+        format!(
+            "INVALIDATED_MEMORY_DELETE:{}:{error}",
+            canonical_path.display()
+        )
+    })
+}
+
+fn recover_verification_only_generation_tip(
+    config: &GrowthSupervisorConfig,
+    state: &mut SupervisorState,
+) -> Result<bool, String> {
+    cleanup_recovered_invalid_successor(config, state)?;
+    if state.generation == 0 || state.pending_campaign_id.is_some() {
+        return Ok(false);
+    }
+    let invalid_memory = load_memory(config, state.generation)?;
+    let invalid_memory_sha256 = json_sha256(&invalid_memory)?;
+    if invalid_memory_sha256 != state.current_memory_sha256 {
+        return Err("CURRENT_MEMORY_HASH_MISMATCH_DURING_TIP_RECOVERY".to_string());
+    }
+    let Some(invalid_lesson) = invalid_memory.lessons.last() else {
+        return Ok(false);
+    };
+    if lesson_has_growth_subject(invalid_lesson) {
+        return Ok(false);
+    }
+    let restored_memory = load_memory(config, state.generation.saturating_sub(1))?;
+    let restored_memory_sha256 = json_sha256(&restored_memory)?;
+    if invalid_memory.predecessor_sha256.as_deref() != Some(restored_memory_sha256.as_str())
+        || invalid_memory.generation != restored_memory.generation.saturating_add(1)
+    {
+        return Err("VERIFICATION_ONLY_TIP_PREDECESSOR_BINDING_FAILURE".to_string());
+    }
+
+    let directory = invalidated_generation_dir(config, invalid_memory.generation);
+    let quarantined_memory_path = directory.join("memory.json");
+    if quarantined_memory_path.exists() {
+        let existing: GrowthMemory = read_json(&quarantined_memory_path)?;
+        if json_sha256(&existing)? != invalid_memory_sha256 {
+            return Err("INVALIDATED_MEMORY_QUARANTINE_DIVERGENCE".to_string());
+        }
+    } else {
+        write_immutable_json(&quarantined_memory_path, &invalid_memory)?;
+    }
+    let receipt_path = directory.join("recovery_receipt.json");
+    let receipt = InvalidGenerationRecoveryReceipt {
+        schema: SUPERVISOR_SCHEMA.to_string(),
+        invalid_generation: invalid_memory.generation,
+        invalid_memory_sha256,
+        invalid_lesson_id: invalid_lesson.lesson_id.clone(),
+        restored_generation: restored_memory.generation,
+        restored_memory_sha256: restored_memory_sha256.clone(),
+        reason: "VERIFICATION_RECEIPT_WITHOUT_GROWTH_SUBJECT_WAS_FALSELY_PROMOTED".to_string(),
+        recovered_at_ms: now_ms(),
+    };
+    if receipt_path.exists() {
+        let existing: InvalidGenerationRecoveryReceipt = read_json(&receipt_path)?;
+        if existing.invalid_generation != receipt.invalid_generation
+            || existing.invalid_memory_sha256 != receipt.invalid_memory_sha256
+            || existing.restored_generation != receipt.restored_generation
+            || existing.restored_memory_sha256 != receipt.restored_memory_sha256
+        {
+            return Err("INVALIDATED_GENERATION_RECEIPT_DIVERGENCE".to_string());
+        }
+    } else {
+        write_immutable_json(&receipt_path, &receipt)?;
+    }
+
+    restore_memory_projection(state, &restored_memory)?;
+    state.campaigns_accepted = state.campaigns_accepted.saturating_sub(1);
+    state.campaigns_failed = state.campaigns_failed.saturating_add(1);
+    state.mutual_revalidation_events = state.mutual_revalidation_events.saturating_sub(1);
+    state.consecutive_failures = 0;
+    state.plateau_scans = 0;
+    state.pending_campaign_id = None;
+    if state.diagnostic_policy.active_generation == Some(invalid_memory.generation) {
+        state.diagnostic_policy.active_experiment_id = None;
+        state.diagnostic_policy.active_generation = None;
+        state.diagnostic_policy.active_observations = 0;
+        state.diagnostic_policy.active_causal_support = false;
+        state.diagnostic_policy.active_action_id = None;
+        state.diagnostic_policy.active_action_receipt_sha256 = None;
+        state
+            .diagnostic_policy
+            .active_output_observation_ids
+            .clear();
+    }
+    let preserved_phase = state.phase;
+    save_transition(
+        config,
+        state,
+        preserved_phase,
+        "VERIFICATION_ONLY_FALSE_GENERATION_ROLLED_BACK",
+    )?;
+    cleanup_recovered_invalid_successor(config, state)?;
+    Ok(true)
+}
+
 fn next_queued_source_patch(
     config: &GrowthSupervisorConfig,
 ) -> Result<Option<(PathBuf, AutonomousSourcePatchRequest)>, String> {
@@ -2325,6 +2525,7 @@ pub fn initialize(config_path: &Path) -> Result<SupervisorState, String> {
         "campaigns",
         "history",
         "memory",
+        "invalidated_generations",
         "control",
         "source_mutations",
     ] {
@@ -2576,6 +2777,7 @@ pub fn request_stop(config_path: &Path) -> Result<serde_json::Value, String> {
 pub fn request_resume(config_path: &Path) -> Result<serde_json::Value, String> {
     let config = load_config(config_path)?;
     let mut state = load_state(&config)?;
+    let invalid_tip_recovered = recover_verification_only_generation_tip(&config, &mut state)?;
     let path = config.state_dir.join("control").join("STOP");
     if path.exists() {
         fs::remove_file(&path).map_err(|error| format!("STOP_REMOVE:{error}"))?;
@@ -2613,6 +2815,7 @@ pub fn request_resume(config_path: &Path) -> Result<serde_json::Value, String> {
     Ok(serde_json::json!({
         "resume_requested": true,
         "phase": state.phase,
+        "invalid_verification_only_tip_recovered": invalid_tip_recovered,
         "hard_resource_stop_preserved": state.stop_reason.is_some()
     }))
 }
@@ -3200,6 +3403,26 @@ fn lesson_has_verification_evidence(lesson: &LearnedCompositionLesson) -> bool {
     signals.contains("VERIFIED_PASS")
 }
 
+fn lesson_has_growth_subject(lesson: &LearnedCompositionLesson) -> bool {
+    lesson
+        .work_kinds
+        .iter()
+        .any(|kind| *kind != WorkKind::Verification)
+        || lesson
+            .diagnostic_signals
+            .iter()
+            .any(|signal| signal == "MUTUAL_REVALIDATION_GAP")
+}
+
+fn cohort_has_promotable_growth_subject(
+    observations: &[LearningObservation],
+    lesson: &LearnedCompositionLesson,
+) -> bool {
+    lesson_has_verification_evidence(lesson)
+        && lesson_has_growth_subject(lesson)
+        && !observations.is_empty()
+}
+
 fn selected_campaign_observations(
     config: &GrowthSupervisorConfig,
     observations: &[LearningObservation],
@@ -3221,7 +3444,7 @@ fn selected_campaign_observations(
             .collect::<Vec<_>>();
         if !coherent.is_empty()
             && build_lesson(&coherent)
-                .map(|lesson| lesson_has_verification_evidence(&lesson))
+                .map(|lesson| cohort_has_promotable_growth_subject(&coherent, &lesson))
                 .unwrap_or(false)
         {
             return coherent;
@@ -3235,7 +3458,7 @@ fn selected_campaign_observations(
         .collect::<Vec<_>>();
     if selected.is_empty()
         || build_lesson(&selected)
-            .map(|lesson| lesson_has_verification_evidence(&lesson))
+            .map(|lesson| cohort_has_promotable_growth_subject(&selected, &lesson))
             .unwrap_or(false)
     {
         return selected;
@@ -3249,7 +3472,7 @@ fn selected_campaign_observations(
             let mut trial = selected.clone();
             trial[replace_index] = evidence.clone();
             if build_lesson(&trial)
-                .map(|lesson| lesson_has_verification_evidence(&lesson))
+                .map(|lesson| cohort_has_promotable_growth_subject(&trial, &lesson))
                 .unwrap_or(false)
             {
                 selected = trial;
@@ -3280,7 +3503,7 @@ fn campaign_preflight_ready(
         return Ok(false);
     }
     let lesson = build_lesson(&chosen)?;
-    if lesson_has_verification_evidence(&lesson) {
+    if cohort_has_promotable_growth_subject(&chosen, &lesson) {
         return Ok(true);
     }
     let observation_ids = chosen
@@ -3319,7 +3542,7 @@ fn consume_semantic_revalidation(
         return Ok(None);
     }
     let lesson = build_lesson(&chosen)?;
-    if !lesson_has_verification_evidence(&lesson)
+    if !cohort_has_promotable_growth_subject(&chosen, &lesson)
         || !memory_contains_semantic_lesson(memory, &lesson)?
     {
         return Ok(None);
@@ -3914,6 +4137,9 @@ pub fn run_verifier_request(
     if !lesson_has_verification_evidence(&candidate.lesson) {
         reasons.push("NO_PASS_OR_CODE_TEST_COHORT_EVIDENCE".to_string());
     }
+    if !lesson_has_growth_subject(&candidate.lesson) {
+        reasons.push("VERIFICATION_ONLY_COHORT_HAS_NO_GROWTH_SUBJECT".to_string());
+    }
     let evaluator_self_audit = match (
         load_verifier_observations(&request.freeze_path, &freeze),
         load_verifier_predecessor_memory(&request.freeze_path, &freeze),
@@ -4087,6 +4313,9 @@ fn promote_candidate(
         return Err("REJECTED_CANDIDATE_CANNOT_PROMOTE".to_string());
     }
     validate_receipt(freeze, candidate, receipt)?;
+    if !lesson_has_growth_subject(&candidate.lesson) {
+        return Err("VERIFICATION_ONLY_CANDIDATE_CANNOT_PROMOTE".to_string());
+    }
     let mut memory = load_memory(config, state.generation)?;
     if json_sha256(&memory)? != freeze.predecessor_memory_sha256
         || candidate.predecessor_memory_sha256 != freeze.predecessor_memory_sha256
@@ -5047,8 +5276,7 @@ fn validate_blocked_core_cohort(
         full_workspace_semantic_fingerprint(&config.source_mutation.source_root)?;
     let validation_id = sha256(
         format!(
-            "CORE_COHORT_VALIDATION:{}:{}:{}:{}",
-            diagnostic.generation,
+            "CORE_COHORT_VALIDATION_2:{}:{}:{}",
             source_fingerprint_before,
             input_observation_ids.join(":"),
             validation_plan.args.join("\u{1f}")
@@ -5063,7 +5291,6 @@ fn validate_blocked_core_cohort(
         let existing: CoreCohortValidationReceipt = read_json(&receipt_path)?;
         if existing.schema != "B_CORE_COHORT_VALIDATION_1"
             || existing.validation_id != validation_id
-            || existing.generation != diagnostic.generation
             || existing.input_observation_ids != input_observation_ids
             || existing.source_fingerprint_before != source_fingerprint_before
             || existing.validation_scope != validation_plan.validation_scope
@@ -5169,8 +5396,7 @@ fn validate_blocked_repository_cohort(
     let program_sha256 = file_sha256(&plan.program, 512 * 1024 * 1024)?;
     let validation_id = sha256(
         format!(
-            "REPOSITORY_COHORT_VALIDATION:{}:{}:{:?}:{}:{}:{}:{}:{}:{}",
-            diagnostic.generation,
+            "REPOSITORY_COHORT_VALIDATION_2:{}:{:?}:{}:{}:{}:{}:{}:{}",
             plan.root_index,
             plan.validator_kind,
             plan.test_selection_source,
@@ -5193,7 +5419,6 @@ fn validate_blocked_repository_cohort(
         let existing: RepositoryCohortValidationReceipt = read_json(&receipt_path)?;
         if existing.schema != "B_REPOSITORY_COHORT_VALIDATION_1"
             || existing.validation_id != validation_id
-            || existing.generation != diagnostic.generation
             || existing.root_index != plan.root_index
             || existing.validator_kind != plan.validator_kind
             || existing.test_selection_source != plan.test_selection_source
@@ -6173,6 +6398,7 @@ fn step_without_lease(
     let mut state = load_state(config)?;
     ensure_runtime_repair_counter_contract(&mut state);
     ensure_source_patch_telemetry_epoch(&mut state);
+    recover_verification_only_generation_tip(config, &mut state)?;
     if stop_if_requested(config, &mut state)? {
         return Ok(report_from_state(&state, false, 0, 0, 0, None, None));
     }
@@ -7090,6 +7316,9 @@ mod tests {
         assert!(check.diagnostic_productivity_requires_current_executable_intervention);
         assert!(check.unbound_capability_gap_state_deduplicated);
         assert!(check.test_only_evaluator_cohort_validation_enabled);
+        assert!(check.validation_receipt_identity_excludes_generation);
+        assert!(check.verification_only_generation_promotion_forbidden);
+        assert!(check.verification_only_false_tip_auto_recovery);
         assert!(check.self_healing_candidates_route_to_atomic_installer);
         assert!(check.integrated_program_ir_lowers_to_compiled_rust);
         assert!(check.installed_compositions_are_runtime_callable);
@@ -7615,6 +7844,141 @@ mod tests {
     }
 
     #[test]
+    fn verification_receipt_alone_cannot_be_promoted_as_growth() {
+        let root = temp_root("verification-only-not-growth");
+        let (_, config) = test_config(&root);
+        let verification = LearningObservation {
+            observation_id: "validation-receipt".to_string(),
+            work_event_id: None,
+            logical_path: "ROOT_0/.b_repository_validation/receipt".to_string(),
+            content_sha256: "a".repeat(64),
+            predecessor_content_sha256: None,
+            actor: WorkActor::LocalTool,
+            work_kind: WorkKind::Verification,
+            work_outcome: WorkOutcome::Pass,
+            features_before: None,
+            features_after: StructuralFeatures::default(),
+            signals: vec![
+                "REPOSITORY_COHORT_VALIDATION".to_string(),
+                "VERIFIED_PASS".to_string(),
+            ],
+            composition_roles: vec!["REGRESSION_TEST".to_string()],
+            learning_score: 85,
+            learning_value: LearningValue::High,
+            reasons: vec!["same test cohort passed again".to_string()],
+            verification_evidence_sha256: vec!["b".repeat(64)],
+            performance_metrics: Vec::new(),
+            exact_source_fragments_stored: 0,
+            raw_source_bytes_stored: 0,
+            observed_at_ms: 40 * 60 * 1_000,
+        };
+        assert!(!campaign_preflight_ready(&config, std::slice::from_ref(&verification)).unwrap());
+
+        let mut evaluator_change = verification.clone();
+        evaluator_change.observation_id = "evaluator-change".to_string();
+        evaluator_change.logical_path = "ROOT_0/tests/test_policy.py".to_string();
+        evaluator_change.work_kind = WorkKind::RegressionTest;
+        evaluator_change.work_outcome = WorkOutcome::Unknown;
+        evaluator_change.signals = vec!["TEST_ADDED".to_string()];
+        evaluator_change.verification_evidence_sha256.clear();
+        evaluator_change.learning_score = 60;
+        evaluator_change.observed_at_ms = 1;
+        let selected = selected_campaign_observations(
+            &config,
+            &[verification.clone(), evaluator_change.clone()],
+        );
+        assert_eq!(selected.len(), 2);
+        assert!(selected.contains(&verification));
+        assert!(selected.contains(&evaluator_change));
+        assert!(campaign_preflight_ready(&config, &selected).unwrap());
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn verification_only_false_tip_is_quarantined_and_predecessor_restored() {
+        let root = temp_root("recover-verification-only-tip");
+        let (config_path, config) = test_config(&root);
+        let mut state = initialize(&config_path).unwrap();
+        let restored = load_memory(&config, 0).unwrap();
+        let restored_hash = json_sha256(&restored).unwrap();
+        let mut invalid = restored.clone();
+        invalid.generation = 1;
+        invalid.predecessor_sha256 = Some(restored_hash.clone());
+        invalid.lessons.push(LearnedCompositionLesson {
+            lesson_id: "verification-receipt-only".to_string(),
+            evidence_observation_sha256: vec!["a".repeat(64)],
+            work_kinds: vec![WorkKind::Verification],
+            diagnostic_signals: vec!["VERIFIED_PASS".to_string()],
+            composition_recipe: vec!["REUSE_REGRESSION_EVIDENCE".to_string()],
+            applicability: vec!["ROOT_0".to_string()],
+            verification_obligations: vec!["REPOSITORY_VALIDATION_PASS".to_string()],
+            performance_metrics: Vec::new(),
+            learning_score: 90,
+            exact_patch_data_present: false,
+            exact_source_fragment_present: false,
+            raw_source_bytes_present: false,
+        });
+        let invalid_hash = json_sha256(&invalid).unwrap();
+        write_immutable_json(&memory_path(&config, 1), &invalid).unwrap();
+        state.generation = 1;
+        state.current_memory_sha256 = invalid_hash.clone();
+        state.predecessor_memory_sha256 = Some(restored_hash.clone());
+        state.campaigns_started = 1;
+        state.campaigns_accepted = 1;
+        state.mutual_revalidation_events = 1;
+
+        assert!(recover_verification_only_generation_tip(&config, &mut state).unwrap());
+        assert_eq!(state.generation, 0);
+        assert_eq!(state.current_memory_sha256, restored_hash);
+        assert_eq!(state.campaigns_accepted, 0);
+        assert_eq!(state.campaigns_failed, 1);
+        assert_eq!(state.mutual_revalidation_events, 0);
+        assert!(!memory_path(&config, 1).exists());
+        let directory = invalidated_generation_dir(&config, 1);
+        let quarantined: GrowthMemory = read_json(&directory.join("memory.json")).unwrap();
+        assert_eq!(json_sha256(&quarantined).unwrap(), invalid_hash);
+        let receipt: InvalidGenerationRecoveryReceipt =
+            read_json(&directory.join("recovery_receipt.json")).unwrap();
+        assert_eq!(receipt.invalid_generation, 1);
+        assert_eq!(receipt.restored_generation, 0);
+        assert!(!recover_verification_only_generation_tip(&config, &mut state).unwrap());
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn real_growth_tip_is_never_recovered_as_verification_only() {
+        let root = temp_root("preserve-real-growth-tip");
+        let (config_path, config) = test_config(&root);
+        let mut state = initialize(&config_path).unwrap();
+        let mut current = load_memory(&config, 0).unwrap();
+        current.generation = 1;
+        current.predecessor_sha256 = Some(state.current_memory_sha256.clone());
+        current.lessons.push(LearnedCompositionLesson {
+            lesson_id: "source-change-with-verification".to_string(),
+            evidence_observation_sha256: vec!["b".repeat(64)],
+            work_kinds: vec![WorkKind::CodeChange, WorkKind::Verification],
+            diagnostic_signals: vec!["VERIFIED_PASS".to_string()],
+            composition_recipe: vec!["SOURCE_CHANGE_THEN_VERIFY".to_string()],
+            applicability: vec!["ROOT_0".to_string()],
+            verification_obligations: vec!["REGRESSION_PASS".to_string()],
+            performance_metrics: Vec::new(),
+            learning_score: 90,
+            exact_patch_data_present: false,
+            exact_source_fragment_present: false,
+            raw_source_bytes_present: false,
+        });
+        state.generation = 1;
+        state.predecessor_memory_sha256 = current.predecessor_sha256.clone();
+        state.current_memory_sha256 = json_sha256(&current).unwrap();
+        write_immutable_json(&memory_path(&config, 1), &current).unwrap();
+
+        assert!(!recover_verification_only_generation_tip(&config, &mut state).unwrap());
+        assert_eq!(state.generation, 1);
+        assert!(memory_path(&config, 1).exists());
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
     fn production_file_with_tests_requires_executed_pass_before_verification_credit() {
         let observation = LearningObservation {
             observation_id: "mixed-production-change".to_string(),
@@ -8025,6 +8389,26 @@ mod tests {
             vec![PathBuf::from("tests/test_core_module.py")]
         );
         assert!(receipt.scope_stable_during_validation);
+        let mut next_generation_diagnostic = diagnostic.clone();
+        next_generation_diagnostic.generation = diagnostic.generation.saturating_add(1);
+        next_generation_diagnostic.diagnostic_id = "next-generation-diagnostic".to_string();
+        let (reused_success, reused_evidence, reused_outputs) =
+            validate_blocked_repository_cohort(&config, &next_generation_diagnostic, &cohort)
+                .unwrap();
+        assert!(reused_success);
+        assert_eq!(reused_outputs, action.output_observation_ids);
+        assert_eq!(reused_evidence, action.execution_evidence_sha256);
+        assert_eq!(
+            fs::read_dir(config.state_dir.join("diagnostics"))
+                .unwrap()
+                .filter_map(Result::ok)
+                .filter(|entry| entry
+                    .file_name()
+                    .to_string_lossy()
+                    .starts_with("repository_cohort_validation_"))
+                .count(),
+            1
+        );
         let reused = repository_validation_plan(&config, &[implementation])
             .unwrap()
             .expect("reuse prior verified tests");
@@ -8258,6 +8642,28 @@ mod tests {
         assert!(receipt
             .reasons
             .contains(&"CANDIDATE_NOT_DERIVED_FROM_FROZEN_OBSERVATIONS".to_string()));
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn verifier_rejects_verification_only_generation_claim() {
+        let root = temp_root("verify-verification-only");
+        let (_freeze, mut candidate, mut request) = accepted_candidate(&root);
+        candidate.lesson.work_kinds = vec![WorkKind::Verification];
+        candidate
+            .lesson
+            .diagnostic_signals
+            .retain(|signal| signal != "MUTUAL_REVALIDATION_GAP");
+        fs::remove_file(&request.candidate_path).unwrap();
+        write_immutable_json(&request.candidate_path, &candidate).unwrap();
+        request.expected_candidate_sha256 = json_sha256(&candidate).unwrap();
+
+        let receipt = run_verifier_request(&request).unwrap();
+
+        assert_eq!(receipt.decision, GrowthDecision::Reject);
+        assert!(receipt
+            .reasons
+            .contains(&"VERIFICATION_ONLY_COHORT_HAS_NO_GROWTH_SUBJECT".to_string()));
         fs::remove_dir_all(root).unwrap();
     }
 
