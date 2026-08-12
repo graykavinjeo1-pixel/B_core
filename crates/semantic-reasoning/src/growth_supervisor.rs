@@ -6715,12 +6715,16 @@ fn attempt_pending_composite_capability_install(
         });
     }
     let family_identity = sha256(
-        candidates
-            .iter()
-            .map(|candidate| candidate.generated_rust_sha256.as_str())
-            .collect::<Vec<_>>()
-            .join(":")
-            .as_bytes(),
+        format!(
+            "COMPOSITE_INSTALL_FAMILY_2:{}:{}",
+            SOURCE_REPAIR_ENGINE_REVISION,
+            candidates
+                .iter()
+                .map(|candidate| candidate.generated_rust_sha256.as_str())
+                .collect::<Vec<_>>()
+                .join(":")
+        )
+        .as_bytes(),
     );
     if state.last_composite_candidate_sha256.as_deref() != Some(family_identity.as_str()) {
         state.last_composite_candidate_sha256 = Some(family_identity);

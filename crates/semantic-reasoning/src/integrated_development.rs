@@ -1068,7 +1068,10 @@ mod tests {
             .generated_rust_source
             .replace(&candidate.program_ir_sha256, &second_hash)
             .replace(&candidate.program_ir.program_id, "REGISTRY-SECOND");
-        let legacy = include_str!("generated_sem5_capability.rs");
+        // The registry contract must be independent of the current production
+        // inventory size.  Using the live generated registry here made this
+        // test consume its own remaining capacity as the core grew.
+        let legacy = candidate.generated_rust_source.as_str();
         let predecessor_capability_count = existing_capability_sections(legacy)
             .expect("valid predecessor registry")
             .len()
@@ -1124,7 +1127,9 @@ mod tests {
     #[test]
     fn typed_lowering_family_enters_one_registry_postimage() {
         let base = compose_existing_sem5_capability(composition_work()).expect("typed candidate");
-        let predecessor = include_str!("generated_sem5_capability.rs");
+        // Start from a canonical one-capability predecessor so the family
+        // merge contract remains testable even when production is saturated.
+        let predecessor = base.generated_rust_source.as_str();
         let predecessor_count = existing_capability_sections(predecessor)
             .expect("valid predecessor registry")
             .len()
