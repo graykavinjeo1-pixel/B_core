@@ -1867,6 +1867,9 @@ fn event_path_key(path: &Path) -> String {
 }
 
 fn work_event_path_index(events: &[WorkEvent]) -> BTreeMap<String, usize> {
+    // Canonicalize only the small pending-event side once. Watched paths are
+    // already absolute, non-symlink directory entries and use their normalized
+    // in-memory keys during every scan.
     let mut index = BTreeMap::new();
     for (event_index, event) in events.iter().enumerate() {
         for path in &event.paths {
@@ -1877,20 +1880,6 @@ fn work_event_path_index(events: &[WorkEvent]) -> BTreeMap<String, usize> {
         }
     }
     index
-}
-
-fn event_for_path<'a>(
-    path: &Path,
-    events: &'a [WorkEvent],
-    event_paths: &BTreeMap<String, usize>,
-) -> Option<&'a WorkEvent> {
-    // The ordinary steady state has no pending attributed work. Avoid an OS
-    // canonicalization syscall for every watched file in that state. When
-    // events do exist, their paths were canonicalized once while building the
-    // index and lookup is a deterministic in-memory operation.
-    event_paths
-        .get(&event_path_key(path))
-        .and_then(|index| events.get(*index))
 }
 
 fn classify_observation(
@@ -3080,6 +3069,62 @@ fn load_pending_events(
     Ok(events)
 }
 
+struct ScanFingerprintTask {
+    ordinal: usize,
+    path: PathBuf,
+    metadata: fs::Metadata,
+    logical_path: String,
+    previous: Option<FileFingerprint>,
+    work_event_index: Option<usize>,
+}
+
+fn fingerprint_scan_batch(
+    tasks: &[ScanFingerprintTask],
+    max_file_bytes: u64,
+) -> Result<Vec<Option<FileFingerprint>>, String> {
+    if tasks.is_empty() {
+        return Ok(Vec::new());
+    }
+    let worker_count = thread::available_parallelism()
+        .map(usize::from)
+        .unwrap_or(1)
+        .min(tasks.len())
+        .max(1);
+    let next = std::sync::atomic::AtomicUsize::new(0);
+    let results = std::sync::Mutex::new(Vec::with_capacity(tasks.len()));
+    thread::scope(|scope| -> Result<(), String> {
+        let mut handles = Vec::with_capacity(worker_count);
+        for _ in 0..worker_count {
+            handles.push(scope.spawn(|| -> Result<(), String> {
+                loop {
+                    let index = next.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+                    let Some(task) = tasks.get(index) else {
+                        break;
+                    };
+                    let result =
+                        fingerprint_file_with_metadata(&task.path, &task.metadata, max_file_bytes);
+                    results
+                        .lock()
+                        .map_err(|_| "SCAN_FINGERPRINT_RESULT_LOCK_POISONED".to_string())?
+                        .push((index, result));
+                }
+                Ok(())
+            }));
+        }
+        for handle in handles {
+            handle
+                .join()
+                .map_err(|_| "SCAN_FINGERPRINT_WORKER_PANICKED".to_string())??;
+        }
+        Ok(())
+    })?;
+    let mut ordered = results
+        .into_inner()
+        .map_err(|_| "SCAN_FINGERPRINT_RESULT_LOCK_POISONED".to_string())?;
+    ordered.sort_by_key(|(index, _)| *index);
+    ordered.into_iter().map(|(_, result)| result).collect()
+}
+
 fn scan_watched_roots(
     config: &GrowthSupervisorConfig,
     memory: &GrowthMemory,
@@ -3108,7 +3153,7 @@ fn scan_watched_roots(
     new_index
         .files
         .retain(|logical_path, _| current_logical_paths.contains(logical_path));
-    let mut observations = Vec::new();
+    let mut ordered_observations = Vec::new();
     let mut bytes_observed = 0_u64;
     let mut files_reused = 0_usize;
     let mut files_hashed = 0_usize;
@@ -3116,7 +3161,8 @@ fn scan_watched_roots(
     let mut baseline_pending_files = false;
     let mut eligible_logical_paths = BTreeSet::new();
     let canary_bucket = old_index.sequence % FULL_HASH_CANARY_INTERVAL;
-    for path in &paths {
+    let mut fingerprint_tasks = Vec::new();
+    for (ordinal, path) in paths.iter().enumerate() {
         let metadata =
             fs::metadata(path).map_err(|error| format!("METADATA:{}:{error}", path.display()))?;
         let logical = normalized_logical_path(path, &config.watched_roots)?;
@@ -3126,7 +3172,8 @@ fn scan_watched_roots(
         }
         eligible_logical_paths.insert(logical.clone());
         let previous = old_index.files.get(&logical);
-        let matching_event = event_for_path(path, &events, &event_paths);
+        let matching_event_index = event_paths.get(&event_path_key(path)).copied();
+        let matching_event = matching_event_index.and_then(|index| events.get(index));
         let canary_rehash = !baseline_created
             && previous.is_some()
             && logical_path_canary_bucket(&logical) == canary_bucket;
@@ -3138,13 +3185,16 @@ fn scan_watched_roots(
             let indexed = previous.expect("checked above");
             if !baseline_created {
                 if let Some(event) = matching_event {
-                    observations.push(classify_observation(
-                        logical.clone(),
-                        indexed,
-                        Some(indexed),
-                        Some(event),
-                        &memory.classifier,
-                        config.observation.minimum_learning_score,
+                    ordered_observations.push((
+                        ordinal,
+                        classify_observation(
+                            logical.clone(),
+                            indexed,
+                            Some(indexed),
+                            Some(event),
+                            &memory.classifier,
+                            config.observation.minimum_learning_score,
+                        ),
                     ));
                     replayed_unchanged_work_events =
                         replayed_unchanged_work_events.saturating_add(1);
@@ -3154,47 +3204,109 @@ fn scan_watched_roots(
             files_reused = files_reused.saturating_add(1);
             continue;
         }
-        if baseline_created
-            && (files_hashed >= BASELINE_MAX_HASHED_FILES_PER_SCAN
-                || bytes_observed.saturating_add(metadata.len())
-                    > config
-                        .resources
-                        .max_bytes_per_scan
-                        .min(BASELINE_MAX_BYTES_PER_SCAN))
-        {
+        fingerprint_tasks.push(ScanFingerprintTask {
+            ordinal,
+            path: path.clone(),
+            metadata,
+            logical_path: logical,
+            previous: previous.cloned(),
+            work_event_index: matching_event_index,
+        });
+    }
+
+    let scan_byte_limit = if baseline_created {
+        config
+            .resources
+            .max_bytes_per_scan
+            .min(BASELINE_MAX_BYTES_PER_SCAN)
+    } else {
+        config.resources.max_bytes_per_scan
+    };
+    let parallel_width = thread::available_parallelism()
+        .map(usize::from)
+        .unwrap_or(1)
+        .saturating_mul(2)
+        .max(1);
+    let mut cursor = 0_usize;
+    'scan_batches: while cursor < fingerprint_tasks.len() {
+        if baseline_created && files_hashed >= BASELINE_MAX_HASHED_FILES_PER_SCAN {
             baseline_pending_files = true;
-            continue;
-        }
-        if bytes_observed.saturating_add(metadata.len()) > config.resources.max_bytes_per_scan {
             break;
         }
-        let Some(fingerprint) =
-            fingerprint_file_with_metadata(path, &metadata, config.resources.max_file_bytes)?
-        else {
-            eligible_logical_paths.remove(&logical);
-            new_index.files.remove(&logical);
-            continue;
+        let remaining_file_budget = if baseline_created {
+            BASELINE_MAX_HASHED_FILES_PER_SCAN.saturating_sub(files_hashed)
+        } else {
+            usize::MAX
         };
-        bytes_observed = bytes_observed.saturating_add(fingerprint.bytes);
-        files_hashed = files_hashed.saturating_add(1);
-        let content_changed = previous.map(|value| value.content_sha256.as_str())
-            != Some(fingerprint.content_sha256.as_str());
-        if !baseline_created && (content_changed || matching_event.is_some()) {
-            let observation = classify_observation(
-                logical.clone(),
-                &fingerprint,
-                previous,
-                matching_event,
-                &memory.classifier,
-                config.observation.minimum_learning_score,
-            );
-            observations.push(observation);
-            if !content_changed && matching_event.is_some() {
-                replayed_unchanged_work_events = replayed_unchanged_work_events.saturating_add(1);
+        let batch_limit = parallel_width.min(remaining_file_budget).max(1);
+        let batch_start = cursor;
+        let mut reserved_bytes = 0_u64;
+        while cursor < fingerprint_tasks.len() && cursor - batch_start < batch_limit {
+            let task = &fingerprint_tasks[cursor];
+            if bytes_observed
+                .saturating_add(reserved_bytes)
+                .saturating_add(task.metadata.len())
+                > scan_byte_limit
+            {
+                if baseline_created {
+                    baseline_pending_files = true;
+                    if cursor == batch_start {
+                        cursor = cursor.saturating_add(1);
+                        continue 'scan_batches;
+                    }
+                    break;
+                }
+                break 'scan_batches;
             }
+            reserved_bytes = reserved_bytes.saturating_add(task.metadata.len());
+            cursor = cursor.saturating_add(1);
         }
-        new_index.files.insert(logical, fingerprint);
+        if batch_start == cursor {
+            continue;
+        }
+        let batch = &fingerprint_tasks[batch_start..cursor];
+        let fingerprints = fingerprint_scan_batch(batch, config.resources.max_file_bytes)?;
+        for (task, fingerprint) in batch.iter().zip(fingerprints) {
+            let Some(fingerprint) = fingerprint else {
+                eligible_logical_paths.remove(&task.logical_path);
+                new_index.files.remove(&task.logical_path);
+                continue;
+            };
+            bytes_observed = bytes_observed.saturating_add(fingerprint.bytes);
+            files_hashed = files_hashed.saturating_add(1);
+            let matching_event = task.work_event_index.and_then(|index| events.get(index));
+            let content_changed = task
+                .previous
+                .as_ref()
+                .map(|value| value.content_sha256.as_str())
+                != Some(fingerprint.content_sha256.as_str());
+            if !baseline_created && (content_changed || matching_event.is_some()) {
+                ordered_observations.push((
+                    task.ordinal,
+                    classify_observation(
+                        task.logical_path.clone(),
+                        &fingerprint,
+                        task.previous.as_ref(),
+                        matching_event,
+                        &memory.classifier,
+                        config.observation.minimum_learning_score,
+                    ),
+                ));
+                if !content_changed && matching_event.is_some() {
+                    replayed_unchanged_work_events =
+                        replayed_unchanged_work_events.saturating_add(1);
+                }
+            }
+            new_index
+                .files
+                .insert(task.logical_path.clone(), fingerprint);
+        }
     }
+    ordered_observations.sort_by_key(|(ordinal, _)| *ordinal);
+    let observations = ordered_observations
+        .into_iter()
+        .map(|(_, observation)| observation)
+        .collect::<Vec<_>>();
     if baseline_created {
         new_index.baseline_complete = !baseline_pending_files
             && eligible_logical_paths
