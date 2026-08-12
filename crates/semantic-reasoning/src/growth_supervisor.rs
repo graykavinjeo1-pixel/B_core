@@ -33,8 +33,9 @@ use crate::autonomous_source_mutation::{
     ImprovementOperatorGeneratorKind, LocalCommandReceipt, SOURCE_REPAIR_ENGINE_REVISION,
 };
 use crate::generative_growth::{
-    promote_generative_cycle, run_generative_cycle, validate_behavioral_execution_receipt,
-    GenerativeCycleResult, GenerativeGrowthMemory, GenerativeInput,
+    executable_generative_substrate_available, promote_generative_cycle, run_generative_cycle,
+    validate_behavioral_execution_receipt, GenerativeCycleResult, GenerativeGrowthMemory,
+    GenerativeInput,
 };
 use crate::integrated_development::{
     compose_behavioral_canary_candidate, execute_behavioral_composition_canary,
@@ -1140,6 +1141,8 @@ pub fn self_check() -> SelfCheck {
             "FULLSTACK_TYPED_RECIPES_EXECUTE_CROSS_LAYER_DATAFLOW_BEFORE_FRONTIER_PROMOTION"
                 .to_string(),
             "FULLSTACK_RECIPE_CANARIES_REJECT_WRONG_INPUT_CONTRACT_AND_ATOM_ORDER"
+                .to_string(),
+            "FRONTIER_CONTINUATION_REQUIRES_A_REMAINING_EXECUTABLE_SUCCESSOR_SUBSTRATE"
                 .to_string(),
             "EXACT_CONTEXT_REUSE_REVALIDATES_A_CANONICAL_ARTIFACT_WITHOUT_FRONTIER_PROMOTION"
                 .to_string(),
@@ -4536,8 +4539,12 @@ fn generative_frontier_continuation_observation(
     frontier_after: u64,
     generative_cycle: &GenerativeCycleResult,
     verifier_receipt_sha256: &str,
+    successor_substrate_available: bool,
 ) -> Result<Option<LearningObservation>, String> {
-    if !generative_cycle.frontier_advance || frontier_after <= frontier_before {
+    if !generative_cycle.frontier_advance
+        || frontier_after <= frontier_before
+        || !successor_substrate_available
+    {
         return Ok(None);
     }
     let behavioral_receipt = generative_cycle
@@ -4719,6 +4726,7 @@ fn promote_candidate(
         memory.generative.distinct_verified_artifact_count(),
         &candidate.generative_cycle,
         &receipt.receipt_sha256,
+        executable_generative_substrate_available(&memory.generative),
     )?;
     let next_memory_path = memory_path(config, memory.generation);
     if next_memory_path.exists() {
@@ -7771,6 +7779,7 @@ mod tests {
             result.frontier_advance_units,
             &result,
             &"c".repeat(64),
+            true,
         )
         .unwrap()
         .expect("strict frontier increase creates one continuation");
@@ -7795,6 +7804,20 @@ mod tests {
             result.frontier_advance_units,
             &result,
             &"e".repeat(64),
+            true,
+        )
+        .unwrap()
+        .is_none());
+        assert!(generative_frontier_continuation_observation(
+            "G-CONTINUATION",
+            2,
+            &"b".repeat(64),
+            &"d".repeat(64),
+            result.frontier_advance_units,
+            result.frontier_advance_units * 2,
+            &result,
+            &"e".repeat(64),
+            false,
         )
         .unwrap()
         .is_none());

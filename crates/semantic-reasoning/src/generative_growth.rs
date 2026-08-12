@@ -852,11 +852,7 @@ fn verified_artifact_family_width(memory: &GenerativeGrowthMemory, composer_id: 
     .unwrap_or(MAX_VERIFIED_ARTIFACTS_PER_CYCLE)
 }
 
-fn composer_is_behaviorally_executable(
-    composer_id: &str,
-    _input: &GenerativeInput,
-    memory: &GenerativeGrowthMemory,
-) -> bool {
+fn composer_is_behaviorally_executable(composer_id: &str, memory: &GenerativeGrowthMemory) -> bool {
     match composer_id {
         "SEM5_PROGRAM_IR_COMPOSER" => verified_artifact_family_width(memory, composer_id) > 0,
         "IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER" => {
@@ -871,6 +867,12 @@ fn composer_is_behaviorally_executable(
         }
         _ => false,
     }
+}
+
+pub fn executable_generative_substrate_available(memory: &GenerativeGrowthMemory) -> bool {
+    GENERATIVE_COMPOSERS
+        .iter()
+        .any(|composer| composer_is_behaviorally_executable(composer.0, memory))
 }
 
 fn behavioral_execution_receipt_sha256(
@@ -1119,7 +1121,7 @@ pub fn run_generative_cycle(
     for predictor in GENERATIVE_PREDICTORS {
         for composer in GENERATIVE_COMPOSERS {
             for verifier in GENERATIVE_VERIFIERS {
-                if !composer_is_behaviorally_executable(composer.0, input, memory) {
+                if !composer_is_behaviorally_executable(composer.0, memory) {
                     behaviorally_inapplicable_candidates_screened =
                         behaviorally_inapplicable_candidates_screened.saturating_add(1);
                     continue;
@@ -1406,7 +1408,6 @@ pub fn promote_generative_cycle(
             != STATIC_GENERATIVE_CANDIDATE_COUNT
         || !composer_is_behaviorally_executable(
             selected_stage(&result.selected_composition, "COMPOSE").unwrap_or(""),
-            input,
             current,
         )
         || !result.prediction_recorded_before_composition
