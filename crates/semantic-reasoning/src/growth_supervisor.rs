@@ -24,11 +24,12 @@ use crate::autonomous_self_inspection::{
     RepairDisposition, RuntimeRepairActionReceipt, RuntimeRepairMechanism, SelfInspectionInput,
 };
 use crate::autonomous_source_mutation::{
-    command_receipt_with_incremental, discover_known_source_improvement,
-    discover_known_source_improvement_detailed, full_workspace_semantic_fingerprint,
-    install_and_stage_source_patch, source_opportunity_family_id, validate_policy,
-    AutonomousSourceMutationPolicy, AutonomousSourcePatchReceipt, AutonomousSourcePatchRequest,
-    ChangeOpportunityKind, LocalCommandReceipt, SOURCE_REPAIR_ENGINE_REVISION,
+    command_receipt_with_incremental, derive_improvement_operator_memory,
+    discover_known_source_improvement, discover_known_source_improvement_detailed,
+    full_workspace_semantic_fingerprint, install_and_stage_source_patch,
+    source_opportunity_family_id, validate_policy, AutonomousSourceMutationPolicy,
+    AutonomousSourcePatchReceipt, AutonomousSourcePatchRequest, ChangeOpportunityKind,
+    ImprovementOperatorGeneratorKind, LocalCommandReceipt, SOURCE_REPAIR_ENGINE_REVISION,
 };
 use crate::generative_growth::{
     promote_generative_cycle, run_generative_cycle, validate_behavioral_execution_receipt,
@@ -2687,6 +2688,34 @@ pub fn preview_source_repair(config_path: &Path) -> Result<serde_json::Value, St
         &config.state_dir,
         state.generation,
     )?;
+    let operator_memory = derive_improvement_operator_memory(&config.state_dir)?;
+    let direct_source_operator_profiles = operator_memory
+        .profiles
+        .iter()
+        .filter(|profile| {
+            profile.successful_uses > 0
+                && profile.operator.generator_kind
+                    == ImprovementOperatorGeneratorKind::KnownStructuralRewrite
+        })
+        .count();
+    let specialized_typed_operator_profiles = operator_memory
+        .profiles
+        .iter()
+        .filter(|profile| {
+            profile.successful_uses > 0
+                && profile.operator.generator_kind
+                    != ImprovementOperatorGeneratorKind::KnownStructuralRewrite
+        })
+        .count();
+    let operator_metrics = serde_json::json!({
+        "profiles": operator_memory.profiles.len(),
+        "successful_uses": operator_memory.total_successful_uses,
+        "direct_source_operator_profiles": direct_source_operator_profiles,
+        "specialized_typed_operator_profiles": specialized_typed_operator_profiles,
+        "productive_cross_family_transfers": operator_memory.productive_cross_family_transfers,
+        "repository_guided_attempts": operator_memory.repository_guided_attempts,
+        "repository_guided_successful_uses": operator_memory.repository_guided_successful_uses,
+    });
     Ok(match candidate {
         Some(request) => serde_json::json!({
             "candidate_available": true,
@@ -2698,10 +2727,13 @@ pub fn preview_source_repair(config_path: &Path) -> Result<serde_json::Value, St
             "opportunity_family_id": request.opportunity_family_id,
             "source_generation": request.source_generation,
             "candidate_sha256": request.candidate_sha256,
+            "improvement_operator_invocation": request.improvement_operator_invocation,
+            "operator_metrics": operator_metrics,
         }),
         None => serde_json::json!({
             "candidate_available": false,
             "source_generation": state.generation,
+            "operator_metrics": operator_metrics,
         }),
     })
 }
