@@ -2085,6 +2085,36 @@ pub fn validate_source_bound_causal_receipt(
             "SOURCE_BOUND_RECEIPT_ATOMIC_PATH_CLAIM",
         ));
     }
+    for alternative in &receipt.alternatives {
+        let expected_owner = materialize_python_synthesis(
+            source,
+            &alternative.function_template,
+            &alternative.synthesis,
+        )?;
+        if into_replayable_source_bound_patch(expected_owner) != alternative.replayable_patch {
+            return Err(CausalFrontendFailure::conflict(
+                "SOURCE_BOUND_RECEIPT_OWNER_MATERIALIZATION",
+            ));
+        }
+        for candidate in &alternative.closure_candidates {
+            let expected_candidate = materialize_python_synthesis(
+                source,
+                &candidate.function_template,
+                &candidate.synthesis,
+            )?;
+            if into_replayable_source_bound_patch(expected_candidate) != candidate.replayable_patch
+            {
+                return Err(CausalFrontendFailure::conflict(
+                    "SOURCE_BOUND_RECEIPT_CLOSURE_MATERIALIZATION",
+                ));
+            }
+        }
+    }
+    if build_source_bound_patch_variants(source, &receipt.alternatives)? != receipt.patch_variants {
+        return Err(CausalFrontendFailure::conflict(
+            "SOURCE_BOUND_RECEIPT_VARIANT_MATERIALIZATION",
+        ));
+    }
     for patch in source_bound_receipt_patches(receipt) {
         replay_source_bound_patch(source, patch)?;
     }
@@ -3313,6 +3343,16 @@ def transformer_visitor(value: int, baseline: int) -> int:
         assert_eq!(
             validate_source_bound_causal_receipt(&forged_hash, source).unwrap_err(),
             CausalFrontendFailure::conflict("SOURCE_BOUND_RECEIPT_HASH")
+        );
+        let mut forged_synthesis = receipt.clone();
+        forged_synthesis.alternatives[0]
+            .synthesis
+            .winning_goal
+            .postimage = TypedSyntaxExpressionIR::IntLiteral { value: 0 };
+        forged_synthesis.receipt_sha256 = source_bound_receipt_hash(&forged_synthesis).unwrap();
+        assert_eq!(
+            validate_source_bound_causal_receipt(&forged_synthesis, source).unwrap_err(),
+            CausalFrontendFailure::conflict("SOURCE_BOUND_RECEIPT_OWNER_MATERIALIZATION")
         );
         let alternative = &receipt.alternatives[0];
         assert_eq!(alternative.function_template.owner, "Rational");
