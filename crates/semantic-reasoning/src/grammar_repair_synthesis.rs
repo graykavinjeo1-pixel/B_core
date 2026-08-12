@@ -7,7 +7,7 @@
 //! semantic selection to compile and public-test observations.
 
 use std::cmp::Reverse;
-use std::collections::BTreeSet;
+use std::collections::{BTreeMap, BTreeSet};
 use std::ffi::OsStr;
 use std::fs;
 use std::path::{Path, PathBuf};
@@ -18,17 +18,19 @@ use syn::parse::Parser;
 use syn::punctuated::Punctuated;
 use syn::spanned::Spanned;
 use syn::visit::{self, Visit};
-use syn::{Block, Expr, FnArg, ImplItem, Item, Lit, Pat, ReturnType, Token, UnOp};
+use syn::{Block, Expr, FnArg, ImplItem, Item, Lit, Pat, ReturnType, Stmt, Token, UnOp};
 
 use crate::self_repair_contract::sha256;
 use crate::structural_source_repair::{
     synthesize_structural_repair, ByteRange, StructuralRepairProgram,
 };
 
-const MAX_GRAMMAR_CANDIDATES: usize = 64;
-const MAX_CANDIDATES_PER_HOLE: usize = 4;
+const MAX_GRAMMAR_CANDIDATES: usize = 128;
+const MAX_CANDIDATES_PER_HOLE: usize = 8;
 const MAX_GRAMMAR_HOLES_PER_GENERATION: usize = MAX_GRAMMAR_CANDIDATES / MAX_CANDIDATES_PER_HOLE;
 const MAX_GRAMMAR_HOLES_SCANNED_PER_GENERATION: usize = 256;
+const MAX_REPOSITORY_CONTEXT_FILES: usize = 512;
+const MAX_REPOSITORY_CONTEXT_BYTES: u64 = 64 * 1024 * 1024;
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct GrammarRepairCandidate {
@@ -66,12 +68,20 @@ struct Hole {
     callable: CallableSignature,
     kind: String,
     range: ByteRange,
+    current_expression_family: Option<String>,
+    current_expression: Option<String>,
 }
 
 #[derive(Debug)]
 struct FileCandidateBatch {
     candidates: Vec<GrammarRepairCandidate>,
     holes_scanned: usize,
+}
+
+struct RepositoryGrammarContext {
+    parsed_files: Vec<syn::File>,
+    globally_unique_short_names: BTreeSet<String>,
+    external_examples_enabled: bool,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
@@ -244,6 +254,8 @@ impl<'ast> Visit<'ast> for HoleVisitor<'_> {
                         callable: self.callable.clone(),
                         kind: kind.to_string(),
                         range: ByteRange { start, end },
+                        current_expression_family: None,
+                        current_expression: None,
                     });
                 }
             }
@@ -269,6 +281,49 @@ fn public_literal(expression: &Expr) -> Option<PublicValue> {
         Expr::Group(value) => public_literal(value.expr.as_ref()),
         _ => None,
     }
+}
+
+fn contradicted_stub_family(expression: &Expr) -> Option<(&'static str, String)> {
+    match public_literal(expression) {
+        Some(PublicValue::Int(_)) => Some(("INTEGER_LITERAL", normalized_tokens(expression))),
+        Some(PublicValue::Bool(_)) => Some(("BOOLEAN_LITERAL", normalized_tokens(expression))),
+        None if normalized_tokens(expression) == "Default::default()" => {
+            Some(("DEFAULT_CONSTRUCTOR", "Default::default()".to_string()))
+        }
+        None => None,
+    }
+}
+
+fn contradicted_stub_hole(
+    source: &str,
+    starts: &[usize],
+    items: &[Item],
+    context: &RepositoryGrammarContext,
+    callable: &CallableSignature,
+    block: &Block,
+) -> Option<Hole> {
+    let [Stmt::Expr(expression, None)] = block.stmts.as_slice() else {
+        return None;
+    };
+    let (family, normalized_expression) = contradicted_stub_family(expression)?;
+    let examples = collect_repository_public_examples(items, callable, context);
+    let current_score = public_example_score(family, &normalized_expression, callable, &examples);
+    if current_score.observed == 0
+        || current_score.evaluated != current_score.observed
+        || current_score.satisfied == current_score.observed
+    {
+        return None;
+    }
+    let span = expression.span();
+    let start = line_column_offset(source, starts, span.start())?;
+    let end = line_column_offset(source, starts, span.end())?;
+    (start < end).then(|| Hole {
+        callable: callable.clone(),
+        kind: "PUBLIC_EXAMPLE_CONTRADICTED_STUB".to_string(),
+        range: ByteRange { start, end },
+        current_expression_family: Some(family.to_string()),
+        current_expression: Some(normalized_expression),
+    })
 }
 
 fn called_short_name(expression: &Expr) -> Option<(&syn::Ident, &Punctuated<Expr, Token![,]>)> {
@@ -367,6 +422,26 @@ fn collect_public_examples_from_items(
 fn collect_public_examples(items: &[Item], callable: &CallableSignature) -> Vec<PublicExample> {
     let mut examples = BTreeSet::new();
     collect_public_examples_from_items(items, false, callable, &mut examples);
+    examples.into_iter().collect()
+}
+
+fn collect_repository_public_examples(
+    local_items: &[Item],
+    callable: &CallableSignature,
+    context: &RepositoryGrammarContext,
+) -> Vec<PublicExample> {
+    let mut examples = collect_public_examples(local_items, callable)
+        .into_iter()
+        .collect::<BTreeSet<_>>();
+    if context.external_examples_enabled
+        && context
+            .globally_unique_short_names
+            .contains(&callable.short_name)
+    {
+        for parsed in &context.parsed_files {
+            collect_public_examples_from_items(&parsed.items, false, callable, &mut examples);
+        }
+    }
     examples.into_iter().collect()
 }
 
@@ -709,6 +784,8 @@ fn evaluate_public_expression(
         "BOOLEAN_FALSE" => Some(PublicValue::Bool(false)),
         "INTEGER_ZERO" => Some(PublicValue::Int(0)),
         "INTEGER_ONE" => Some(PublicValue::Int(1)),
+        "INTEGER_LITERAL" => expression.parse::<i128>().ok().map(PublicValue::Int),
+        "BOOLEAN_LITERAL" => expression.parse::<bool>().ok().map(PublicValue::Bool),
         "DEFAULT_CONSTRUCTOR" if callable.output == "bool" => Some(PublicValue::Bool(false)),
         "DEFAULT_CONSTRUCTOR" if is_integer(&callable.output) => Some(PublicValue::Int(0)),
         _ => None,
@@ -777,12 +854,61 @@ fn rust_source_files(root: &Path) -> Result<Vec<PathBuf>, String> {
     Ok(files)
 }
 
+fn repository_grammar_context(
+    files: &[PathBuf],
+    max_candidate_bytes: u64,
+) -> Result<RepositoryGrammarContext, String> {
+    let mut parsed_files = Vec::new();
+    let mut short_name_counts = BTreeMap::<String, usize>::new();
+    let mut bytes_seen = 0_u64;
+    let mut complete = files.len() <= MAX_REPOSITORY_CONTEXT_FILES;
+    for path in files.iter().take(MAX_REPOSITORY_CONTEXT_FILES) {
+        let bytes = fs::read(path)
+            .map_err(|error| format!("GRAMMAR_CONTEXT_READ:{}:{error}", path.display()))?;
+        if bytes.len() as u64 > max_candidate_bytes
+            || bytes_seen.saturating_add(bytes.len() as u64) > MAX_REPOSITORY_CONTEXT_BYTES
+        {
+            complete = false;
+            continue;
+        }
+        bytes_seen = bytes_seen.saturating_add(bytes.len() as u64);
+        let Ok(source) = std::str::from_utf8(&bytes) else {
+            complete = false;
+            continue;
+        };
+        let Ok(parsed) = syn::parse_file(source) else {
+            complete = false;
+            continue;
+        };
+        let mut callables = Vec::new();
+        collect_callables(&parsed.items, "", &mut callables);
+        for (callable, _) in callables {
+            *short_name_counts.entry(callable.short_name).or_default() += 1;
+        }
+        parsed_files.push(parsed);
+    }
+    let globally_unique_short_names = if complete {
+        short_name_counts
+            .into_iter()
+            .filter_map(|(name, count)| (count == 1).then_some(name))
+            .collect()
+    } else {
+        BTreeSet::new()
+    };
+    Ok(RepositoryGrammarContext {
+        parsed_files,
+        globally_unique_short_names,
+        external_examples_enabled: complete,
+    })
+}
+
 fn candidates_for_file(
     root: &Path,
     path: &Path,
     max_candidate_bytes: u64,
     source_generation: u64,
     max_holes_to_scan: usize,
+    context: &RepositoryGrammarContext,
 ) -> Result<FileCandidateBatch, String> {
     let bytes = fs::read(path)
         .map_err(|error| format!("GRAMMAR_REPAIR_READ:{}:{error}", path.display()))?;
@@ -820,6 +946,11 @@ fn candidates_for_file(
         };
         visitor.visit_block(block);
         holes.extend(visitor.holes);
+        if let Some(stub) =
+            contradicted_stub_hole(source, &starts, &parsed.items, context, callable, block)
+        {
+            holes.push(stub);
+        }
     }
     holes.sort_by_key(|hole| (hole.range.start, hole.callable.callable.clone()));
     if holes.is_empty() || max_holes_to_scan == 0 {
@@ -856,9 +987,30 @@ fn candidates_for_file(
             .as_bytes(),
         );
         let transformation = format!("AST_GRAMMAR_HOLE:{}:{}", hole.kind, &hole_identity[..16]);
-        let public_examples = collect_public_examples(&parsed.items, &hole.callable);
+        let public_examples =
+            collect_repository_public_examples(&parsed.items, &hole.callable, context);
+        if let (Some(current_family), Some(current_expression)) = (
+            hole.current_expression_family.as_deref(),
+            hole.current_expression.as_deref(),
+        ) {
+            let current_score = public_example_score(
+                current_family,
+                current_expression,
+                &hole.callable,
+                &public_examples,
+            );
+            if current_score.observed == 0
+                || current_score.evaluated != current_score.observed
+                || current_score.satisfied == current_score.observed
+            {
+                continue;
+            }
+        }
         let mut compositions = compose_expressions(&hole.callable, &catalog)
             .into_iter()
+            .filter(|(_, expression)| {
+                hole.current_expression.as_deref() != Some(expression.as_str())
+            })
             .enumerate()
             .map(|(index, (family, expression))| {
                 let score =
@@ -899,7 +1051,12 @@ fn candidates_for_file(
                 &sha256(expression.as_bytes())[..12]
             );
             let mut consequence_predictions = vec![
-                format!("remove explicit {} implementation hole", hole.kind),
+                if hole.kind == "PUBLIC_EXAMPLE_CONTRADICTED_STUB" {
+                    "replace a typed stub only after repository-visible examples contradict its current behavior"
+                        .to_string()
+                } else {
+                    format!("remove explicit {} implementation hole", hole.kind)
+                },
                 "compose only from AST-visible typed bindings, calls, operators, constructors, and conditionals"
                     .to_string(),
                 "accept semantics only after compile and public regression observations".to_string(),
@@ -918,7 +1075,11 @@ fn candidates_for_file(
                 transformation: transformation.clone(),
                 solution_strategy,
                 consequence_predictions,
-                predicted_value: if hole.kind == "TODO" { 100 } else { 95 },
+                predicted_value: match hole.kind.as_str() {
+                    "TODO" => 100,
+                    "PUBLIC_EXAMPLE_CONTRADICTED_STUB" => 98,
+                    _ => 95,
+                },
                 structural_repair_program,
                 grammar_expression: expression,
                 public_examples_observed: public_score.observed,
@@ -956,6 +1117,7 @@ pub fn discover_grammar_repairs_for_generation(
     if files.is_empty() {
         return Ok(Vec::new());
     }
+    let context = repository_grammar_context(&files, max_candidate_bytes)?;
     let file_count = files.len();
     files.rotate_left(generation_offset(
         source_generation,
@@ -977,6 +1139,7 @@ pub fn discover_grammar_repairs_for_generation(
             max_candidate_bytes,
             source_generation,
             remaining_scan_budget,
+            &context,
         )?;
         holes_scanned += batch.holes_scanned;
         for candidate in batch.candidates {
@@ -1067,6 +1230,121 @@ mod tests {
         assert!(candidates
             .iter()
             .all(|candidate| !candidate.relative_path.to_string_lossy().contains("tests")));
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn public_examples_turn_contradicted_literal_stub_into_bounded_search_frontier() {
+        let root = std::env::temp_dir().join(format!(
+            "b-core-grammar-contradicted-stub-{}",
+            std::process::id()
+        ));
+        if root.exists() {
+            fs::remove_dir_all(&root).unwrap();
+        }
+        fs::create_dir_all(root.join("src")).unwrap();
+        fs::write(
+            root.join("src/lib.rs"),
+            "pub fn combine(left: i32, right: i32) -> i32 { 0 }\n\n#[cfg(test)]\nmod tests {\n    #[test]\n    fn combines() {\n        assert_eq!(super::combine(3, 4), 7);\n        assert_eq!(super::combine(-2, 5), 3);\n    }\n}\n",
+        )
+        .unwrap();
+
+        let candidates = discover_grammar_repairs(&root, 4_096).unwrap();
+
+        assert!(!candidates.is_empty());
+        assert_eq!(candidates[0].grammar_expression, "left + right");
+        assert!(candidates[0]
+            .transformation
+            .starts_with("AST_GRAMMAR_HOLE:PUBLIC_EXAMPLE_CONTRADICTED_STUB:"));
+        assert_eq!(candidates[0].public_examples_satisfied, 2);
+        assert!(candidates.len() > 4);
+        assert!(candidates.len() <= MAX_CANDIDATES_PER_HOLE);
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn public_examples_preserve_literal_behavior_when_the_stub_hypothesis_is_false() {
+        let root = std::env::temp_dir().join(format!(
+            "b-core-grammar-valid-literal-{}",
+            std::process::id()
+        ));
+        if root.exists() {
+            fs::remove_dir_all(&root).unwrap();
+        }
+        fs::create_dir_all(root.join("src")).unwrap();
+        fs::write(
+            root.join("src/lib.rs"),
+            "pub fn constant() -> i32 { 0 }\n\n#[cfg(test)]\nmod tests {\n    #[test]\n    fn remains_constant() { assert_eq!(super::constant(), 0); }\n}\n",
+        )
+        .unwrap();
+
+        let candidates = discover_grammar_repairs(&root, 4_096).unwrap();
+
+        assert!(candidates.is_empty());
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn unique_callable_uses_repository_external_public_examples() {
+        let root = std::env::temp_dir().join(format!(
+            "b-core-grammar-external-example-{}",
+            std::process::id()
+        ));
+        if root.exists() {
+            fs::remove_dir_all(&root).unwrap();
+        }
+        fs::create_dir_all(root.join("src")).unwrap();
+        fs::create_dir_all(root.join("tests")).unwrap();
+        fs::write(
+            root.join("src/lib.rs"),
+            "pub fn combine(left: i32, right: i32) -> i32 { 0 }\n",
+        )
+        .unwrap();
+        fs::write(
+            root.join("tests/combine.rs"),
+            "#[test]\nfn combines() {\n    assert_eq!(semantic_reasoning::combine(3, 4), 7);\n    assert_eq!(semantic_reasoning::combine(-2, 5), 3);\n}\n",
+        )
+        .unwrap();
+
+        let candidates = discover_grammar_repairs(&root, 4_096).unwrap();
+
+        assert!(!candidates.is_empty());
+        assert_eq!(candidates[0].grammar_expression, "left + right");
+        assert_eq!(candidates[0].public_examples_observed, 2);
+        assert_eq!(candidates[0].public_examples_satisfied, 2);
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn ambiguous_callable_name_does_not_borrow_external_examples() {
+        let root = std::env::temp_dir().join(format!(
+            "b-core-grammar-ambiguous-external-example-{}",
+            std::process::id()
+        ));
+        if root.exists() {
+            fs::remove_dir_all(&root).unwrap();
+        }
+        fs::create_dir_all(root.join("src")).unwrap();
+        fs::create_dir_all(root.join("tests")).unwrap();
+        fs::write(
+            root.join("src/a.rs"),
+            "pub fn combine(left: i32, right: i32) -> i32 { 0 }\n",
+        )
+        .unwrap();
+        fs::write(
+            root.join("src/b.rs"),
+            "pub fn combine(left: i32, right: i32) -> i32 { 0 }\n",
+        )
+        .unwrap();
+        fs::write(
+            root.join("tests/combine.rs"),
+            "#[test]\nfn combines() { assert_eq!(crate::combine(3, 4), 7); }\n",
+        )
+        .unwrap();
+
+        let candidates = discover_grammar_repairs(&root, 4_096).unwrap();
+
+        assert!(candidates.is_empty());
         fs::remove_dir_all(root).unwrap();
     }
 

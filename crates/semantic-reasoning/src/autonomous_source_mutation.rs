@@ -1531,6 +1531,28 @@ fn compiler_guided_request(
     Ok(None)
 }
 
+fn public_example_priority(observed: usize, evaluated: usize, satisfied: usize) -> i32 {
+    if observed == 0 {
+        return 0;
+    }
+    if evaluated == 0 {
+        return -25;
+    }
+    if evaluated == observed && satisfied == observed {
+        return 200;
+    }
+    let supported = satisfied
+        .saturating_mul(100)
+        .checked_div(evaluated)
+        .unwrap_or(0)
+        .min(i32::MAX as usize) as i32;
+    let unevaluated_penalty = observed
+        .saturating_sub(evaluated)
+        .saturating_mul(20)
+        .min(i32::MAX as usize) as i32;
+    supported.saturating_sub(unevaluated_penalty)
+}
+
 fn grammar_synthesized_request(
     policy: &AutonomousSourceMutationPolicy,
     state_dir: &Path,
@@ -1551,7 +1573,12 @@ fn grammar_synthesized_request(
             &candidate.transformation,
         )?;
         let priority = i32::from(candidate.predicted_value)
-            + feedback_priority(&candidate.solution_strategy, &counterexamples);
+            + feedback_priority(&candidate.solution_strategy, &counterexamples)
+            + public_example_priority(
+                candidate.public_examples_observed,
+                candidate.public_examples_evaluated,
+                candidate.public_examples_satisfied,
+            );
         ranked.push((priority, candidate));
     }
     ranked.sort_by_key(|(priority, candidate)| {
@@ -1606,6 +1633,9 @@ fn grammar_synthesized_request(
             )
             .as_bytes(),
         );
+        let public_behavior_contradiction = candidate
+            .transformation
+            .contains("PUBLIC_EXAMPLE_CONTRADICTED_STUB");
         let generalized_change = generalized_change_for_candidate(
             state_dir,
             source_generation,
@@ -1614,9 +1644,17 @@ fn grammar_synthesized_request(
             &candidate.solution_strategy,
             &candidate.predecessor_sha256,
             &candidate.candidate_sha256,
-            WeaknessEvidenceKind::ExplicitCodeHole,
+            if public_behavior_contradiction {
+                WeaknessEvidenceKind::PublicBehaviorContradiction
+            } else {
+                WeaknessEvidenceKind::ExplicitCodeHole
+            },
             &evidence_sha256,
-            "current Rust AST contains an executable todo or unimplemented hole",
+            if public_behavior_contradiction {
+                "repository-visible public examples contradict the current typed stub behavior"
+            } else {
+                "current Rust AST contains an executable todo or unimplemented hole"
+            },
             &candidate.consequence_predictions,
             &candidate.structural_repair_program,
         )?;
@@ -2089,6 +2127,51 @@ mod tests {
             .learned_success
             .as_ref()
             .is_some_and(|success| success.solution_strategy.contains("BINARY_ADD")));
+        fs::remove_dir_all(root).unwrap();
+        fs::remove_dir_all(state).unwrap();
+    }
+
+    #[test]
+    fn contradicted_stub_is_repaired_from_external_public_examples() {
+        let (root, mut policy) = fixture("grammar-external-stub-repair");
+        policy.auto_discover_known_transformations = false;
+        policy.auto_discover_compiler_repairs = false;
+        policy.auto_synthesize_grammar_repairs = true;
+        policy.minimum_predicted_value = 60;
+        fs::create_dir_all(root.join("tests")).unwrap();
+        fs::write(
+            root.join("src/lib.rs"),
+            "pub fn add(left: i32, right: i32) -> i32 {\n    0\n}\n",
+        )
+        .unwrap();
+        fs::write(
+            root.join("tests/add.rs"),
+            "#[test]\nfn add_works() {\n    assert_eq!(semantic_reasoning::add(2, 3), 5);\n    assert_eq!(semantic_reasoning::add(-2, 3), 1);\n}\n",
+        )
+        .unwrap();
+        let state = external_state(&root);
+
+        let request = discover_known_source_improvement(&policy, &state, 5)
+            .unwrap()
+            .expect("public-behavior repair candidate");
+
+        assert!(request
+            .transformation
+            .starts_with("AST_GRAMMAR_HOLE:PUBLIC_EXAMPLE_CONTRADICTED_STUB:"));
+        assert!(request
+            .solution_strategy
+            .starts_with("GRAMMAR_COMPOSITION:BINARY_ADD"));
+        assert!(request
+            .generalized_change
+            .as_ref()
+            .is_some_and(|change| change.weakness_evidence_kind
+                == WeaknessEvidenceKind::PublicBehaviorContradiction));
+        let receipt = install_and_stage_source_patch(&policy, &state, &request).unwrap();
+        assert!(receipt.installed);
+        assert!(receipt.validation.success);
+        assert!(fs::read_to_string(root.join("src/lib.rs"))
+            .unwrap()
+            .contains("left + right"));
         fs::remove_dir_all(root).unwrap();
         fs::remove_dir_all(state).unwrap();
     }

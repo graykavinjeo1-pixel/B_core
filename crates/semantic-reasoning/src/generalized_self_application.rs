@@ -21,6 +21,7 @@ pub const GENERALIZED_SELF_APPLICATION_SCHEMA: &str = "B_CORE_GENERALIZED_SELF_A
 pub enum WeaknessEvidenceKind {
     CompilerDiagnostic,
     ExplicitCodeHole,
+    PublicBehaviorContradiction,
     StructuralSourceSmell,
     ValidationCounterexample,
 }
