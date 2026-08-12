@@ -455,6 +455,119 @@ fn predicted_value(suggestion: &CompilerSuggestion) -> u16 {
     }
 }
 
+fn matching_closing_parenthesis(fragment: &str, open: usize) -> Option<usize> {
+    let mut depth = 0usize;
+    for (offset, character) in fragment[open..].char_indices() {
+        match character {
+            '(' => depth = depth.saturating_add(1),
+            ')' => {
+                depth = depth.checked_sub(1)?;
+                if depth == 0 {
+                    return Some(open + offset);
+                }
+            }
+            _ => {}
+        }
+    }
+    None
+}
+
+/// Clippy marks `manual_clamp` suggestions as `MaybeIncorrect` because `clamp`
+/// panics when its bounds are reversed while the original method chain does
+/// not.  We promote only the typed literal-bound subset whose ordering can be
+/// proved before execution.  Identifiers and literal values may vary; no
+/// repository-specific source template is selected.
+fn is_typed_manual_clamp_lowering(
+    suggestion: &CompilerSuggestion,
+    replaced_source: &str,
+    source: &str,
+) -> bool {
+    if suggestion.diagnostic_code != "clippy::manual_clamp"
+        || suggestion.applicability != "MaybeIncorrect"
+        || !replaced_source.starts_with("max(")
+    {
+        return false;
+    }
+    let Some(close) = matching_closing_parenthesis(replaced_source, 3) else {
+        return false;
+    };
+    if &replaced_source[close + 1..] != ".min(" {
+        return false;
+    }
+    let lower_bound = &replaced_source[4..close];
+    let Some(lower) = syn::parse_str::<syn::LitInt>(lower_bound.trim())
+        .ok()
+        .and_then(|literal| literal.base10_parse::<u128>().ok())
+    else {
+        return false;
+    };
+    let suffix = &source[suggestion.byte_end..];
+    let Some(upper_close) = matching_closing_parenthesis(&format!("({suffix}"), 0) else {
+        return false;
+    };
+    let upper_bound = &suffix[..upper_close.saturating_sub(1)];
+    let Some(upper) = syn::parse_str::<syn::LitInt>(upper_bound.trim())
+        .ok()
+        .and_then(|literal| literal.base10_parse::<u128>().ok())
+    else {
+        return false;
+    };
+    lower <= upper && suggestion.replacement == format!("clamp({lower_bound}, ")
+}
+
+fn has_unresolved_placeholder(replacement: &str) -> bool {
+    replacement.contains("/*")
+        || replacement.contains("*/")
+        || replacement.contains("<placeholder>")
+        || replacement.contains("...")
+}
+
+fn suggestion_is_executable(
+    suggestion: &CompilerSuggestion,
+    replaced_source: &str,
+    source: &str,
+) -> bool {
+    if has_unresolved_placeholder(&suggestion.replacement) {
+        return false;
+    }
+    match suggestion.applicability.as_str() {
+        "MachineApplicable" => {
+            // An empty replacement is a valid deletion only when the
+            // diagnostic selected an actual source range.
+            !suggestion.replacement.is_empty() || suggestion.byte_start < suggestion.byte_end
+        }
+        "MaybeIncorrect" => is_typed_manual_clamp_lowering(suggestion, replaced_source, source),
+        _ => false,
+    }
+}
+
+fn trim_touched_line_trailing_whitespace(
+    candidate: &str,
+    edit_start: usize,
+    replacement_len: usize,
+) -> String {
+    let bounded_start = edit_start.min(candidate.len());
+    let line_start = candidate[..bounded_start]
+        .rfind('\n')
+        .map_or(0, |offset| offset + 1);
+    let touched_end = bounded_start
+        .saturating_add(replacement_len)
+        .min(candidate.len());
+    let line_end = candidate[touched_end..]
+        .find('\n')
+        .map_or(candidate.len(), |offset| touched_end + offset);
+    let body = &candidate[line_start..line_end];
+    let trimmed = body.trim_end_matches([' ', '\t']);
+    if trimmed.len() == body.len() {
+        return candidate.to_string();
+    }
+    let mut normalized = String::with_capacity(candidate.len() - (body.len() - trimmed.len()));
+    normalized.push_str(&candidate[..line_start]);
+    normalized.push_str(trimmed);
+    normalized.push_str(&candidate[line_end..]);
+    normalized
+}
+
 fn candidate_from_suggestion(
     policy: &CompilerGuidedRepairPolicy<'_>,
     suggestion: &CompilerSuggestion,
@@ -478,12 +591,25 @@ fn candidate_from_suggestion(
     {
         return Ok(None);
     }
+    let replaced_source = &source[suggestion.byte_start..suggestion.byte_end];
+    if !suggestion_is_executable(suggestion, replaced_source, source) {
+        return Ok(None);
+    }
     let mut candidate_source = String::with_capacity(
         source.len() - (suggestion.byte_end - suggestion.byte_start) + suggestion.replacement.len(),
     );
     candidate_source.push_str(&source[..suggestion.byte_start]);
     candidate_source.push_str(&suggestion.replacement);
     candidate_source.push_str(&source[suggestion.byte_end..]);
+    // Deletion suggestions such as `needless_else` can leave one space before
+    // a newline.  Sending that mechanically correct candidate through an
+    // expensive compile/test cycle only for `cargo fmt --check` to reject the
+    // whitespace is avoidable static work.
+    candidate_source = trim_touched_line_trailing_whitespace(
+        &candidate_source,
+        suggestion.byte_start,
+        suggestion.replacement.len(),
+    );
     if candidate_source == source || candidate_source.len() as u64 > policy.max_candidate_bytes {
         return Ok(None);
     }
@@ -619,5 +745,144 @@ mod tests {
         assert_eq!(candidate.predicted_value, 100);
         assert_eq!(candidate.structural_repair_program.file_id, "src/lib.rs");
         fs::remove_dir_all(root).unwrap();
+    }
+
+    fn candidate_fixture(
+        name: &str,
+        source: &str,
+        suggestion: CompilerSuggestion,
+    ) -> Option<CompilerGuidedRepairCandidate> {
+        let root = std::env::temp_dir().join(format!(
+            "b-core-compiler-guided-{name}-{}",
+            std::process::id()
+        ));
+        if root.exists() {
+            fs::remove_dir_all(&root).unwrap();
+        }
+        fs::create_dir_all(root.join("src")).unwrap();
+        fs::write(root.join("src/lib.rs"), source).unwrap();
+        let cargo = PathBuf::from("cargo");
+        let target = root.join("target");
+        let state = root.join("state");
+        let policy = CompilerGuidedRepairPolicy {
+            source_root: &root,
+            cargo_executable: &cargo,
+            build_target_dir: &target,
+            state_dir: &state,
+            timeout_ms: 1_000,
+            max_candidate_bytes: 4_096,
+        };
+        let result = candidate_from_suggestion(&policy, &suggestion).unwrap();
+        fs::remove_dir_all(root).unwrap();
+        result
+    }
+
+    #[test]
+    fn typed_manual_clamp_lowering_accepts_fresh_identifiers_and_ordered_literal_bounds() {
+        let source = "pub fn bound(reading: i64) -> i64 { reading.max(7).min(41) }\n";
+        let start = source.find("max(7)").unwrap();
+        let old = "max(7).min(";
+        let suggestion = CompilerSuggestion {
+            level: "warning".to_string(),
+            diagnostic_code: "clippy::manual_clamp".to_string(),
+            message: "clamp-like pattern without panicking".to_string(),
+            file_name: "src/lib.rs".to_string(),
+            byte_start: start,
+            byte_end: start + old.len(),
+            replacement: "clamp(7, ".to_string(),
+            applicability: "MaybeIncorrect".to_string(),
+            primary: true,
+            observation_sha256: sha256(b"typed-clamp"),
+        };
+        let candidate = candidate_fixture("typed-clamp", source, suggestion).expect("candidate");
+        assert_eq!(
+            candidate.candidate_source,
+            "pub fn bound(reading: i64) -> i64 { reading.clamp(7, 41) }\n"
+        );
+        assert!(candidate
+            .solution_strategy
+            .starts_with("COMPILER_SUGGESTION:MaybeIncorrect"));
+    }
+
+    #[test]
+    fn typed_manual_clamp_lowering_rejects_unproved_or_reversed_bounds() {
+        for (name, source, old, replacement) in [
+            (
+                "dynamic-bound",
+                "pub fn bound(v: i64, floor: i64) -> i64 { v.max(floor).min(41) }\n",
+                "max(floor).min(",
+                "clamp(floor, ",
+            ),
+            (
+                "reversed-bound",
+                "pub fn bound(v: i64) -> i64 { v.max(41).min(7) }\n",
+                "max(41).min(",
+                "clamp(41, ",
+            ),
+        ] {
+            let start = source.find(old).unwrap();
+            let suggestion = CompilerSuggestion {
+                level: "warning".to_string(),
+                diagnostic_code: "clippy::manual_clamp".to_string(),
+                message: "clamp-like pattern".to_string(),
+                file_name: "src/lib.rs".to_string(),
+                byte_start: start,
+                byte_end: start + old.len(),
+                replacement: replacement.to_string(),
+                applicability: "MaybeIncorrect".to_string(),
+                primary: true,
+                observation_sha256: sha256(name.as_bytes()),
+            };
+            assert!(candidate_fixture(name, source, suggestion).is_none());
+        }
+    }
+
+    #[test]
+    fn untyped_maybe_incorrect_and_placeholder_suggestions_are_observations_only() {
+        let source = "pub fn invoke() { target(); }\n";
+        let target = source.find("target()").unwrap();
+        for (name, applicability, replacement) in [
+            ("untyped", "MaybeIncorrect", "other()"),
+            ("placeholder", "HasPlaceholders", "target(/* usize */)"),
+        ] {
+            let suggestion = CompilerSuggestion {
+                level: "error".to_string(),
+                diagnostic_code: "E0061".to_string(),
+                message: "missing argument".to_string(),
+                file_name: "src/lib.rs".to_string(),
+                byte_start: target,
+                byte_end: target + "target()".len(),
+                replacement: replacement.to_string(),
+                applicability: applicability.to_string(),
+                primary: true,
+                observation_sha256: sha256(name.as_bytes()),
+            };
+            assert!(candidate_fixture(name, source, suggestion).is_none());
+        }
+    }
+
+    #[test]
+    fn machine_applicable_deletion_canonicalizes_touched_line_only() {
+        let source =
+            "pub fn choose(flag: bool) {\n    if flag {\n        return;\n    } else {\n    }\n}\n";
+        let start = source.find("else {").unwrap();
+        let deleted = "else {\n    }";
+        let suggestion = CompilerSuggestion {
+            level: "warning".to_string(),
+            diagnostic_code: "clippy::needless_else".to_string(),
+            message: "unneeded else block".to_string(),
+            file_name: "src/lib.rs".to_string(),
+            byte_start: start,
+            byte_end: start + deleted.len(),
+            replacement: String::new(),
+            applicability: "MachineApplicable".to_string(),
+            primary: true,
+            observation_sha256: sha256(b"deletion"),
+        };
+        let candidate = candidate_fixture("deletion", source, suggestion).expect("candidate");
+        assert_eq!(
+            candidate.candidate_source,
+            "pub fn choose(flag: bool) {\n    if flag {\n        return;\n    }\n}\n"
+        );
     }
 }
