@@ -10,6 +10,7 @@ use std::collections::BTreeMap;
 
 use serde::{Deserialize, Serialize};
 
+use crate::autonomous_source_mutation::ChangeOpportunityKind;
 use crate::self_healing_pipeline::{
     validate_composition_lesson, CompositionEdgeIR, RepairCompositionLessonIR, RepairPrimitiveIR,
 };
@@ -501,6 +502,8 @@ pub struct AutonomousSelfInspectionReceipt {
     pub experiments: Vec<InternalDiagnosticExperiment>,
     pub repair_disposition: RepairDisposition,
     pub repair_mechanism: Option<RuntimeRepairMechanism>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub opportunity_kind: Option<ChangeOpportunityKind>,
     pub activated_knowledge_sources: Vec<String>,
     pub repair_composition: RepairCompositionLessonIR,
     pub actionable_defect: bool,
@@ -624,7 +627,7 @@ fn candidate_hypotheses(input: &SelfInspectionInput) -> Vec<InternalHypothesis> 
     if input.plateau_scans > 0
         && input.source_patch_attempts == 0
         && input.source_discovery_no_candidate_streak >= 2
-        && input.last_source_discovery_reason.as_deref() != Some("DISABLED")
+        && input.last_source_discovery_reason.as_deref() == Some("BELOW_VALUE_THRESHOLD")
     {
         hypotheses.push(InternalHypothesis {
             bottleneck: InternalBottleneckClass::SourceSynthesisCoverageGap,
@@ -1073,35 +1076,39 @@ pub fn inspect(input: SelfInspectionInput) -> Result<AutonomousSelfInspectionRec
         .map(|hypothesis| hypothesis.bottleneck)
         .unwrap_or(InternalBottleneckClass::QuietIdle);
     let experiment = diagnostic_experiment(selected, &input);
-    let (disposition, repair_mechanism, actionable_defect) = match selected {
+    let (disposition, repair_mechanism, opportunity_kind) = match selected {
         InternalBottleneckClass::WorkEventAttributionGap => (
             RepairDisposition::RuntimeRepairActive,
             Some(RuntimeRepairMechanism::ReplayVerifiedEventAgainstIndexedContent),
-            true,
+            Some(ChangeOpportunityKind::Defect),
         ),
         InternalBottleneckClass::EvidenceCohortStarvation => (
             RepairDisposition::RuntimeRepairActive,
             Some(RuntimeRepairMechanism::EvidenceAwareBoundedCohortRouting),
-            true,
+            Some(ChangeOpportunityKind::Defect),
         ),
         InternalBottleneckClass::MutualRecursiveBootstrapGap => (
             RepairDisposition::RuntimeRepairActive,
             Some(RuntimeRepairMechanism::BootstrapFrozenCoreEvaluatorCanary),
-            true,
+            Some(ChangeOpportunityKind::CapabilityGap),
         ),
-        InternalBottleneckClass::ScanTraversalOverhead => {
-            (RepairDisposition::ProposalRequired, None, true)
-        }
-        InternalBottleneckClass::RepeatedVerificationFailure => {
-            (RepairDisposition::CapabilityGap, None, true)
-        }
+        InternalBottleneckClass::ScanTraversalOverhead => (
+            RepairDisposition::ProposalRequired,
+            None,
+            Some(ChangeOpportunityKind::EfficiencyOpportunity),
+        ),
+        InternalBottleneckClass::RepeatedVerificationFailure => (
+            RepairDisposition::CapabilityGap,
+            None,
+            Some(ChangeOpportunityKind::Defect),
+        ),
         InternalBottleneckClass::CampaignCohortBlocked
             if input.core_cohort_validation_applicable =>
         {
             (
                 RepairDisposition::RuntimeRepairActive,
                 Some(RuntimeRepairMechanism::ValidateBlockedCoreCohort),
-                true,
+                Some(ChangeOpportunityKind::CapabilityGap),
             )
         }
         InternalBottleneckClass::CampaignCohortBlocked
@@ -1110,23 +1117,32 @@ pub fn inspect(input: SelfInspectionInput) -> Result<AutonomousSelfInspectionRec
             (
                 RepairDisposition::RuntimeRepairActive,
                 Some(RuntimeRepairMechanism::ValidateBlockedRepositoryCohort),
-                true,
+                Some(ChangeOpportunityKind::CapabilityGap),
             )
         }
-        InternalBottleneckClass::CampaignCohortBlocked => {
-            (RepairDisposition::CapabilityGap, None, true)
-        }
-        InternalBottleneckClass::SourceSynthesisCoverageGap => {
-            (RepairDisposition::CapabilityGap, None, true)
-        }
-        InternalBottleneckClass::SourceRepairLowYield => {
-            (RepairDisposition::CapabilityGap, None, true)
-        }
-        InternalBottleneckClass::VerificationCostDominance => {
-            (RepairDisposition::CapabilityGap, None, true)
-        }
-        InternalBottleneckClass::QuietIdle => (RepairDisposition::SafeWait, None, false),
+        InternalBottleneckClass::CampaignCohortBlocked => (
+            RepairDisposition::CapabilityGap,
+            None,
+            Some(ChangeOpportunityKind::CapabilityGap),
+        ),
+        InternalBottleneckClass::SourceSynthesisCoverageGap => (
+            RepairDisposition::CapabilityGap,
+            None,
+            Some(ChangeOpportunityKind::CapabilityGap),
+        ),
+        InternalBottleneckClass::SourceRepairLowYield => (
+            RepairDisposition::CapabilityGap,
+            None,
+            Some(ChangeOpportunityKind::EfficiencyOpportunity),
+        ),
+        InternalBottleneckClass::VerificationCostDominance => (
+            RepairDisposition::CapabilityGap,
+            None,
+            Some(ChangeOpportunityKind::EfficiencyOpportunity),
+        ),
+        InternalBottleneckClass::QuietIdle => (RepairDisposition::SafeWait, None, None),
     };
+    let actionable_defect = opportunity_kind == Some(ChangeOpportunityKind::Defect);
     let mut receipt = AutonomousSelfInspectionReceipt {
         schema: SELF_INSPECTION_SCHEMA.to_string(),
         diagnostic_id: String::new(),
@@ -1137,6 +1153,7 @@ pub fn inspect(input: SelfInspectionInput) -> Result<AutonomousSelfInspectionRec
         experiments: vec![experiment],
         repair_disposition: disposition,
         repair_mechanism,
+        opportunity_kind,
         activated_knowledge_sources: vec![
             "B_CORE_SELF_HEALING_PIPELINE_1".to_string(),
             "B_CORE-CODE-GRAFT-04".to_string(),
@@ -1207,6 +1224,7 @@ mod tests {
             InternalBottleneckClass::QuietIdle
         );
         assert_eq!(receipt.repair_disposition, RepairDisposition::SafeWait);
+        assert_eq!(receipt.opportunity_kind, None);
         assert!(!receipt.actionable_defect);
         assert_eq!(receipt.external_llm_calls, 0);
         assert_eq!(receipt.authoritative_source_write_events, 0);
@@ -1247,8 +1265,30 @@ mod tests {
             InternalBottleneckClass::SourceSynthesisCoverageGap
         );
         assert_eq!(receipt.repair_disposition, RepairDisposition::CapabilityGap);
+        assert_eq!(
+            receipt.opportunity_kind,
+            Some(ChangeOpportunityKind::CapabilityGap)
+        );
         assert!(receipt.experiments[0].causal_support);
-        assert!(receipt.actionable_defect);
+        assert!(!receipt.actionable_defect);
+    }
+
+    #[test]
+    fn absence_of_an_applicable_transformation_is_not_invented_as_a_synthesis_defect() {
+        let mut value = input();
+        value.plateau_scans = 12;
+        value.source_discovery_no_candidate_streak = 30;
+        value.last_source_discovery_reason = Some("NO_APPLICABLE_TRANSFORMATION".to_string());
+
+        let receipt = inspect(value).expect("inspect exhausted search state");
+
+        assert_eq!(
+            receipt.selected_bottleneck,
+            InternalBottleneckClass::QuietIdle
+        );
+        assert_eq!(receipt.repair_disposition, RepairDisposition::SafeWait);
+        assert_eq!(receipt.opportunity_kind, None);
+        assert!(!receipt.actionable_defect);
     }
 
     #[test]
@@ -1287,7 +1327,11 @@ mod tests {
             receipt.repair_disposition,
             RepairDisposition::RuntimeRepairActive
         );
-        assert!(receipt.actionable_defect);
+        assert_eq!(
+            receipt.opportunity_kind,
+            Some(ChangeOpportunityKind::CapabilityGap)
+        );
+        assert!(!receipt.actionable_defect);
         assert!(receipt.experiments[0].causal_support);
         assert_eq!(receipt.core_self_approval_events, 0);
     }
@@ -1321,6 +1365,10 @@ mod tests {
         assert_eq!(
             receipt.repair_disposition,
             RepairDisposition::ProposalRequired
+        );
+        assert_eq!(
+            receipt.opportunity_kind,
+            Some(ChangeOpportunityKind::EfficiencyOpportunity)
         );
     }
 
@@ -1397,7 +1445,11 @@ mod tests {
             receipt.selected_bottleneck,
             InternalBottleneckClass::SourceRepairLowYield
         );
-        assert!(receipt.actionable_defect);
+        assert_eq!(
+            receipt.opportunity_kind,
+            Some(ChangeOpportunityKind::EfficiencyOpportunity)
+        );
+        assert!(!receipt.actionable_defect);
         assert!(receipt.experiments[0].causal_support);
     }
 

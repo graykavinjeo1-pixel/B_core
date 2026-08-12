@@ -329,6 +329,10 @@ pub struct SupervisorState {
     #[serde(default)]
     pub last_source_discovery_reason: Option<String>,
     #[serde(default)]
+    pub last_source_discovery_state_sha256: Option<String>,
+    #[serde(default)]
+    pub source_discovery_duplicate_states_suppressed: u64,
+    #[serde(default)]
     pub source_patch_consecutive_failures: u32,
     #[serde(default)]
     pub last_source_patch_receipt_sha256: Option<String>,
@@ -862,6 +866,7 @@ pub struct StepReport {
     pub source_patch_recent_verified_improvements: u64,
     pub source_discovery_no_candidate_streak: u32,
     pub last_source_discovery_reason: Option<String>,
+    pub source_discovery_duplicate_states_suppressed: u64,
     pub source_patch_consecutive_failures: u32,
     pub last_source_patch_receipt_sha256: Option<String>,
     pub composite_capability_install_attempts: u64,
@@ -953,6 +958,9 @@ pub struct SelfCheck {
     pub validation_receipt_identity_excludes_generation: bool,
     pub verification_only_generation_promotion_forbidden: bool,
     pub verification_only_false_tip_auto_recovery: bool,
+    pub source_discovery_applicability_precedes_value_gate: bool,
+    pub identical_source_discovery_state_deduplicated: bool,
+    pub diagnostic_opportunity_kind_separated_from_executability: bool,
     pub self_healing_candidates_route_to_atomic_installer: bool,
     pub integrated_program_ir_lowers_to_compiled_rust: bool,
     pub installed_compositions_are_runtime_callable: bool,
@@ -1034,6 +1042,9 @@ pub fn self_check() -> SelfCheck {
             "VALIDATION_RECEIPT_IDENTITY_BINDS_INPUT_AND_SCOPE_NOT_GENERATION".to_string(),
             "VERIFICATION_RECEIPT_WITHOUT_A_GROWTH_SUBJECT_CANNOT_PROMOTE".to_string(),
             "FALSE_VERIFICATION_ONLY_TIP_IS_QUARANTINED_AND_PREDECESSOR_RESTORED".to_string(),
+            "SOURCE_DISCOVERY_PROVES_APPLICABILITY_BEFORE_APPLYING_VALUE_GATE".to_string(),
+            "UNCHANGED_SOURCE_DISCOVERY_STATE_IS_NOT_REEVALUATED".to_string(),
+            "DIAGNOSTIC_OPPORTUNITY_KIND_DOES_NOT_CONTROL_EXECUTION_DISPATCH".to_string(),
             "LEARNED_SELF_HEALING_CANDIDATES_ROUTE_THROUGH_ATOMIC_INSTALL_VALIDATE_ROLLBACK"
                 .to_string(),
             "SEM5_PROGRAM_IR_LOWERS_TO_REPOSITORY_NATIVE_RUST_BEFORE_INSTALLATION".to_string(),
@@ -1091,6 +1102,9 @@ pub fn self_check() -> SelfCheck {
         validation_receipt_identity_excludes_generation: true,
         verification_only_generation_promotion_forbidden: true,
         verification_only_false_tip_auto_recovery: true,
+        source_discovery_applicability_precedes_value_gate: true,
+        identical_source_discovery_state_deduplicated: true,
+        diagnostic_opportunity_kind_separated_from_executability: true,
         self_healing_candidates_route_to_atomic_installer: true,
         integrated_program_ir_lowers_to_compiled_rust: true,
         installed_compositions_are_runtime_callable: true,
@@ -2609,6 +2623,8 @@ pub fn initialize(config_path: &Path) -> Result<SupervisorState, String> {
         source_patch_telemetry_engine_revision: SOURCE_REPAIR_ENGINE_REVISION,
         source_discovery_no_candidate_streak: 0,
         last_source_discovery_reason: None,
+        last_source_discovery_state_sha256: None,
+        source_discovery_duplicate_states_suppressed: 0,
         source_patch_consecutive_failures: 0,
         last_source_patch_receipt_sha256: None,
         composite_capability_install_attempts: 0,
@@ -5145,8 +5161,20 @@ fn source_mutation_watch_prefix(config: &GrowthSupervisorConfig) -> Result<Optio
     for (index, watched_root) in config.watched_roots.iter().enumerate() {
         let watched_root = fs::canonicalize(watched_root)
             .map_err(|error| format!("CORE_COHORT_WATCH_ROOT_CANONICALIZE:{error}"))?;
-        if watched_root == source_root {
-            return Ok(Some(format!("ROOT_{index}/")));
+        if source_root.starts_with(&watched_root) {
+            let relative = source_root
+                .strip_prefix(&watched_root)
+                .map_err(|_| "CORE_COHORT_SOURCE_PREFIX_STRIP".to_string())?;
+            let suffix = relative
+                .components()
+                .map(|component| component.as_os_str().to_string_lossy().to_string())
+                .collect::<Vec<_>>()
+                .join("/");
+            return Ok(Some(if suffix.is_empty() {
+                format!("ROOT_{index}/")
+            } else {
+                format!("ROOT_{index}/{suffix}/")
+            }));
         }
     }
     Ok(None)
@@ -5512,7 +5540,6 @@ fn runtime_repair_action(
         return Ok(None);
     };
     if receipt.repair_disposition != RepairDisposition::RuntimeRepairActive
-        || !receipt.actionable_defect
         || !receipt
             .experiments
             .iter()
@@ -5931,6 +5958,8 @@ fn report_from_state(
         source_patch_recent_verified_improvements: opportunity_stats.verified_improvements,
         source_discovery_no_candidate_streak: state.source_discovery_no_candidate_streak,
         last_source_discovery_reason: state.last_source_discovery_reason.clone(),
+        source_discovery_duplicate_states_suppressed: state
+            .source_discovery_duplicate_states_suppressed,
         source_patch_consecutive_failures: state.source_patch_consecutive_failures,
         last_source_patch_receipt_sha256: state.last_source_patch_receipt_sha256.clone(),
         composite_capability_install_attempts: state.composite_capability_install_attempts,
@@ -6304,10 +6333,34 @@ fn attempt_pending_composite_capability_install(
     })
 }
 
+fn source_discovery_state_sha256(
+    config: &GrowthSupervisorConfig,
+    state: &SupervisorState,
+    index: &FileIndex,
+) -> Result<String, String> {
+    let prefix = source_mutation_watch_prefix(config)?
+        .ok_or_else(|| "SOURCE_DISCOVERY_ROOT_NOT_DIRECTLY_WATCHED".to_string())?;
+    let content_identity = index
+        .files
+        .iter()
+        .filter(|(logical_path, _)| logical_path.starts_with(&prefix))
+        .map(|(logical_path, fingerprint)| {
+            (logical_path.clone(), fingerprint.content_sha256.clone())
+        })
+        .collect::<BTreeMap<_, _>>();
+    json_sha256(&(
+        SOURCE_REPAIR_ENGINE_REVISION,
+        state.generation,
+        &config.source_mutation,
+        content_identity,
+    ))
+}
+
 fn attempt_discovered_source_repair(
     config: &GrowthSupervisorConfig,
     state: &mut SupervisorState,
     memory: &GrowthMemory,
+    index: &FileIndex,
 ) -> Result<bool, String> {
     if !config.source_mutation.enabled
         || state.plateau_scans < config.resources.plateau_scans_before_wait
@@ -6328,6 +6381,14 @@ fn attempt_discovered_source_repair(
     {
         return Ok(false);
     }
+    let discovery_state_sha256 = source_discovery_state_sha256(config, state, index)?;
+    if state.last_source_discovery_state_sha256.as_deref() == Some(discovery_state_sha256.as_str())
+    {
+        state.source_discovery_duplicate_states_suppressed = state
+            .source_discovery_duplicate_states_suppressed
+            .saturating_add(1);
+        return Ok(false);
+    }
     match discover_known_source_improvement_detailed(
         &config.source_mutation,
         &config.state_dir,
@@ -6339,6 +6400,7 @@ fn attempt_discovered_source_repair(
             };
             let opportunity_kind = request.opportunity_kind;
             let opportunity_family_id = request.opportunity_family_id.clone();
+            state.last_source_discovery_state_sha256 = None;
             state.source_discovery_no_candidate_streak = 0;
             state.last_source_discovery_reason = Some(discovery.disposition.label().to_string());
             state.autonomous_source_patch_attempts =
@@ -6361,11 +6423,13 @@ fn attempt_discovered_source_repair(
             }
         }
         Ok(discovery) => {
+            state.last_source_discovery_state_sha256 = Some(discovery_state_sha256);
             state.source_discovery_no_candidate_streak =
                 state.source_discovery_no_candidate_streak.saturating_add(1);
             state.last_source_discovery_reason = Some(discovery.disposition.label().to_string());
         }
         Err(_) => {
+            state.last_source_discovery_state_sha256 = None;
             state.last_source_discovery_reason = Some("DISCOVERY_ERROR".to_string());
             state.self_repair_capability_gaps = state.self_repair_capability_gaps.saturating_add(1);
         }
@@ -6686,7 +6750,7 @@ fn step_without_lease(
         )?;
     } else if high.is_empty() {
         state.plateau_scans = state.plateau_scans.saturating_add(1);
-        if attempt_discovered_source_repair(config, &mut state, &memory)? {
+        if attempt_discovered_source_repair(config, &mut state, &memory, &scan.index)? {
             state.active_runtime_ms = state
                 .active_runtime_ms
                 .saturating_add(started.elapsed().as_millis().min(u128::from(u64::MAX)) as u64);
@@ -6738,7 +6802,7 @@ fn step_without_lease(
         )?;
     } else if !campaign_preflight_ready(config, &high)? {
         state.plateau_scans = state.plateau_scans.saturating_add(1);
-        if attempt_discovered_source_repair(config, &mut state, &memory)? {
+        if attempt_discovered_source_repair(config, &mut state, &memory, &scan.index)? {
             state.active_runtime_ms = state
                 .active_runtime_ms
                 .saturating_add(started.elapsed().as_millis().min(u128::from(u64::MAX)) as u64);
@@ -6915,6 +6979,87 @@ mod tests {
         assert_eq!(stats.efficiency_opportunities, 1);
         assert_eq!(stats.verified_improvements, 2);
         assert_eq!(recent_source_patch_stats(&state), (4, 2, 2, 40));
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn source_discovery_identity_changes_only_with_relevant_source_or_generation() {
+        let root = temp_root("source-discovery-identity");
+        let (config_path, mut config) = test_config(&root);
+        let mut state = initialize(&config_path).unwrap();
+        config.source_mutation.enabled = true;
+        config.source_mutation.source_root = config.watched_roots[0].clone();
+        let mut index = FileIndex::default();
+        index.files.insert(
+            "ROOT_0/src/lib.rs".to_string(),
+            FileFingerprint {
+                content_sha256: "a".repeat(64),
+                bytes: 10,
+                modified_ms: 1,
+                extension: "rs".to_string(),
+                features: StructuralFeatures::default(),
+            },
+        );
+        let first = source_discovery_state_sha256(&config, &state, &index).unwrap();
+        index
+            .files
+            .get_mut("ROOT_0/src/lib.rs")
+            .unwrap()
+            .modified_ms = 2;
+        assert_eq!(
+            source_discovery_state_sha256(&config, &state, &index).unwrap(),
+            first
+        );
+
+        index
+            .files
+            .get_mut("ROOT_0/src/lib.rs")
+            .unwrap()
+            .content_sha256 = "b".repeat(64);
+        let changed_source = source_discovery_state_sha256(&config, &state, &index).unwrap();
+        assert_ne!(changed_source, first);
+
+        state.generation = state.generation.saturating_add(1);
+        assert_ne!(
+            source_discovery_state_sha256(&config, &state, &index).unwrap(),
+            changed_source
+        );
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn unchanged_source_discovery_state_is_suppressed_before_rediscovery() {
+        let root = temp_root("source-discovery-dedup");
+        let (config_path, mut config) = test_config(&root);
+        let mut state = initialize(&config_path).unwrap();
+        let memory = load_memory(&config, 0).unwrap();
+        config.source_mutation.enabled = true;
+        config.source_mutation.source_root = config.watched_roots[0].clone();
+        config.source_mutation.auto_discover_known_transformations = true;
+        let mut index = FileIndex::default();
+        index.files.insert(
+            "ROOT_0/src/lib.rs".to_string(),
+            FileFingerprint {
+                content_sha256: "c".repeat(64),
+                bytes: 10,
+                modified_ms: 1,
+                extension: "rs".to_string(),
+                features: StructuralFeatures::default(),
+            },
+        );
+        state.plateau_scans = config.resources.plateau_scans_before_wait;
+        state.source_discovery_no_candidate_streak = 1;
+        state.last_source_discovery_reason = Some("NO_APPLICABLE_TRANSFORMATION".to_string());
+        state.last_source_discovery_state_sha256 =
+            Some(source_discovery_state_sha256(&config, &state, &index).unwrap());
+
+        assert!(!attempt_discovered_source_repair(&config, &mut state, &memory, &index).unwrap());
+        assert_eq!(state.source_discovery_no_candidate_streak, 1);
+        assert_eq!(state.source_discovery_duplicate_states_suppressed, 1);
+        assert_eq!(
+            state.last_source_discovery_reason.as_deref(),
+            Some("NO_APPLICABLE_TRANSFORMATION")
+        );
         fs::remove_dir_all(root).unwrap();
     }
 
@@ -7319,6 +7464,9 @@ mod tests {
         assert!(check.validation_receipt_identity_excludes_generation);
         assert!(check.verification_only_generation_promotion_forbidden);
         assert!(check.verification_only_false_tip_auto_recovery);
+        assert!(check.source_discovery_applicability_precedes_value_gate);
+        assert!(check.identical_source_discovery_state_deduplicated);
+        assert!(check.diagnostic_opportunity_kind_separated_from_executability);
         assert!(check.self_healing_candidates_route_to_atomic_installer);
         assert!(check.integrated_program_ir_lowers_to_compiled_rust);
         assert!(check.installed_compositions_are_runtime_callable);

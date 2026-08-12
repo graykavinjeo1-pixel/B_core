@@ -2162,12 +2162,6 @@ pub fn discover_known_source_improvement_detailed(
             candidate: None,
         });
     }
-    if KNOWN_REMAINDER_PREDICTED_VALUE < policy.minimum_predicted_value {
-        return Ok(SourceDiscoveryResult {
-            disposition: SourceDiscoveryDisposition::BelowValueThreshold,
-            candidate: None,
-        });
-    }
     for path in rust_source_files(&policy.source_root)? {
         let bytes = fs::read(&path)
             .map_err(|error| format!("SOURCE_DISCOVERY_READ:{}:{error}", path.display()))?;
@@ -2216,6 +2210,16 @@ pub fn discover_known_source_improvement_detailed(
             else {
                 continue;
             };
+            // A value gate is evidence about an applicable candidate, not a
+            // substitute for applicability discovery. Returning early before
+            // this point falsely reported a blocked improvement in every
+            // repository, including those with no matching predicate.
+            if KNOWN_REMAINDER_PREDICTED_VALUE < policy.minimum_predicted_value {
+                return Ok(SourceDiscoveryResult {
+                    disposition: SourceDiscoveryDisposition::BelowValueThreshold,
+                    candidate: None,
+                });
+            }
             let structural_repair_program = match synthesize_structural_repair(
                 &structural_file_id(&relative_path),
                 source,
@@ -2523,6 +2527,29 @@ mod tests {
         assert_eq!(
             discovery.disposition,
             SourceDiscoveryDisposition::BelowValueThreshold
+        );
+        assert!(discovery.candidate.is_none());
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn value_gate_does_not_invent_an_inapplicable_source_opportunity() {
+        let (root, mut policy) = fixture("utility-gate-applicability");
+        policy.auto_discover_compiler_repairs = false;
+        policy.auto_synthesize_grammar_repairs = false;
+        policy.minimum_predicted_value = 60;
+        fs::write(
+            root.join("src/lib.rs"),
+            "pub fn stable() -> bool { true }\n",
+        )
+        .unwrap();
+        let state = external_state(&root);
+
+        let discovery = discover_known_source_improvement_detailed(&policy, &state, 1).unwrap();
+
+        assert_eq!(
+            discovery.disposition,
+            SourceDiscoveryDisposition::NoApplicableTransformation
         );
         assert!(discovery.candidate.is_none());
         fs::remove_dir_all(root).unwrap();
