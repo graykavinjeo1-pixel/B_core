@@ -15,7 +15,7 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value as JsonValue;
 
 use crate::autonomous_source_mutation::{
-    install_and_stage_source_patch, invoke_improvement_operator_repository,
+    install_and_stage_source_patch, invoke_and_execute_improvement_operator,
     refresh_improvement_operator_repository, source_opportunity_family_id,
     AutonomousSourceMutationPolicy, AutonomousSourcePatchReceipt, AutonomousSourcePatchRequest,
     ChangeOpportunityKind, AUTONOMOUS_SOURCE_MUTATION_SCHEMA,
@@ -623,14 +623,22 @@ pub fn install_composite_candidate_family(
     let opportunity_family_id =
         source_opportunity_family_id(ChangeOpportunityKind::CapabilityGap, &transformation);
     let operator_memory = refresh_improvement_operator_repository(state_dir)?;
-    let improvement_operator_invocation = invoke_improvement_operator_repository(
-        &operator_memory,
-        WeaknessEvidenceKind::StructuralSourceSmell,
-        &transformation,
-        "EMIT_TYPED_RUST_AND_ACTIVATE_CALLABLE",
-        &structural_repair_program,
-        &opportunity_family_id,
-    )?;
+    let (improvement_operator_invocation, improvement_operator_execution) =
+        invoke_and_execute_improvement_operator(
+            &operator_memory,
+            WeaknessEvidenceKind::StructuralSourceSmell,
+            &transformation,
+            "EMIT_TYPED_RUST_AND_ACTIVATE_CALLABLE",
+            &structural_repair_program,
+            &opportunity_family_id,
+            &predecessor_source,
+        )?;
+    if !improvement_operator_execution.applicable
+        || improvement_operator_execution.candidate_source.as_deref()
+            != Some(candidate_source.as_str())
+    {
+        return Err("COMPOSITE_IMPROVEMENT_OPERATOR_EXECUTION_DIVERGED".to_string());
+    }
     let request = AutonomousSourcePatchRequest {
         schema: AUTONOMOUS_SOURCE_MUTATION_SCHEMA.to_string(),
         patch_id: format!(
@@ -663,6 +671,7 @@ pub fn install_composite_candidate_family(
         opportunity_kind: ChangeOpportunityKind::CapabilityGap,
         opportunity_family_id,
         improvement_operator_invocation: Some(improvement_operator_invocation),
+        improvement_operator_execution: Some(improvement_operator_execution),
     };
     install_and_stage_source_patch(policy, state_dir, &request)
 }

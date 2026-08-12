@@ -2544,7 +2544,7 @@ mod tests {
             "combine(beta, alpha)"
         );
 
-        let expressions = compose_expressions(&caller, &[helper.clone()]);
+        let expressions = compose_expressions(&caller, std::slice::from_ref(&helper));
         assert!(expressions.iter().any(|(family, expression)| {
             family == "EXISTING_CALL_ROLE_PERMUTATION"
                 && expression == "combine(expected, observed)"

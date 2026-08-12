@@ -34,7 +34,7 @@ pub const AUTONOMOUS_SOURCE_MUTATION_SCHEMA: &str = "B_CORE_AUTONOMOUS_SOURCE_MU
 pub const SELF_UPDATE_HANDOFF_FILE: &str = "SELF_UPDATE_READY.json";
 pub const SOURCE_REPAIR_LEARNING_SCHEMA: &str = "B_CORE_SOURCE_REPAIR_LEARNING_1";
 pub const IMPROVEMENT_OPERATOR_MEMORY_SCHEMA: &str = "B_CORE_IMPROVEMENT_OPERATOR_MEMORY_1";
-pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 10;
+pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 11;
 const KNOWN_REMAINDER_PREDICTED_VALUE: u16 = 35;
 const MAX_REPOSITORY_REPAIR_FAMILY_FILES: usize = 16;
 const KNOWN_REMAINDER_STRATEGIES: [&str; 4] = [
@@ -199,6 +199,8 @@ pub struct AutonomousSourcePatchRequest {
     pub opportunity_family_id: String,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub improvement_operator_invocation: Option<ImprovementOperatorInvocation>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub improvement_operator_execution: Option<ImprovementOperatorExecution>,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -264,6 +266,10 @@ pub struct SourceRepairAttempt {
     pub validation_duration_ms: u64,
     #[serde(default)]
     pub invoked_operator_ids: Vec<String>,
+    #[serde(default)]
+    pub executed_operator_id: Option<String>,
+    #[serde(default)]
+    pub improvement_operator_execution_sha256: Option<String>,
     #[serde(default)]
     pub operator_priority_adjustment: i32,
     #[serde(default)]
@@ -797,6 +803,8 @@ pub fn derive_improvement_operator_memory(
             if !source_repair_attempt_is_causal(attempt)
                 || attempt.structural_repair_program_sha256.is_none()
                 || attempt.edit_atom_kinds.is_empty()
+                || attempt.executed_operator_id.is_none()
+                || attempt.improvement_operator_execution_sha256.is_none()
             {
                 continue;
             }
@@ -810,6 +818,9 @@ pub fn derive_improvement_operator_memory(
                 &attempt.edit_atom_kinds,
                 attempt.structural_postcondition_count,
             )?;
+            if attempt.executed_operator_id.as_deref() != Some(operator.operator_id.as_str()) {
+                continue;
+            }
             let operator_id = operator.operator_id.clone();
             let profile =
                 profiles
@@ -996,6 +1007,97 @@ pub fn execute_improvement_operator_on_source(
             })
         }
     }
+}
+
+/// Executes a typed structural repair program through an ImprovementOperatorIR.
+///
+/// The source-only entry point above remains useful for operators that own a
+/// complete repository-independent rewrite. Compiler, grammar, ProgramIR, and
+/// learned self-healing operators instead consume a typed repair program. This
+/// entry point binds that program's edit algebra and postcondition class to the
+/// operator identity before replaying it against the exact predecessor.
+pub fn execute_improvement_operator_program_on_source(
+    operator: &ImprovementOperatorIR,
+    source: &str,
+    program: &StructuralRepairProgram,
+) -> Result<ImprovementOperatorExecution, String> {
+    validate_improvement_operator_id(operator)?;
+    let mut observed_edit_atom_kinds = Vec::new();
+    collect_edit_atom_kinds(&program.edit, &mut observed_edit_atom_kinds);
+    observed_edit_atom_kinds.sort();
+    observed_edit_atom_kinds.dedup();
+    if observed_edit_atom_kinds != operator.edit_atom_kinds {
+        return Err("IMPROVEMENT_OPERATOR_EDIT_ALGEBRA_MISMATCH".to_string());
+    }
+    if structural_postcondition_class(program.postconditions.len())
+        != operator.structural_postcondition_class
+    {
+        return Err("IMPROVEMENT_OPERATOR_POSTCONDITION_CLASS_MISMATCH".to_string());
+    }
+    if !operator
+        .validation_contract
+        .iter()
+        .any(|obligation| obligation == "STRUCTURAL_REPLAY")
+    {
+        return Err("IMPROVEMENT_OPERATOR_STRUCTURAL_REPLAY_NOT_REQUIRED".to_string());
+    }
+    let replay = execute_structural_repair(program, source)
+        .map_err(|error| format!("IMPROVEMENT_OPERATOR_STRUCTURAL_REPLAY:{error}"))?;
+    let applicable = replay.structurally_verified && replay.exact_target_observed;
+    Ok(ImprovementOperatorExecution {
+        schema: IMPROVEMENT_OPERATOR_MEMORY_SCHEMA.to_string(),
+        operator_id: operator.operator_id.clone(),
+        generator_kind: operator.generator_kind,
+        applicable,
+        candidate_source: applicable.then_some(replay.candidate_source),
+        execution_reason: if applicable {
+            "EXECUTED_TYPED_STRUCTURAL_PROGRAM".to_string()
+        } else {
+            "TYPED_STRUCTURAL_PROGRAM_SELF_FALSIFIED".to_string()
+        },
+    })
+}
+
+/// Selects a previously successful operator when one exactly matches, or uses
+/// the freshly derived operator as the bootstrap executable. In both cases the
+/// returned invocation and execution are causally bound to the same typed
+/// program and predecessor source.
+pub fn invoke_and_execute_improvement_operator(
+    memory: &ImprovementOperatorMemory,
+    weakness_evidence_kind: WeaknessEvidenceKind,
+    transformation: &str,
+    solution_strategy: &str,
+    program: &StructuralRepairProgram,
+    opportunity_family_id: &str,
+    predecessor_source: &str,
+) -> Result<(ImprovementOperatorInvocation, ImprovementOperatorExecution), String> {
+    let requested = improvement_operator_ir_for_program(
+        weakness_evidence_kind,
+        transformation,
+        solution_strategy,
+        program,
+    )?;
+    let invocation = invoke_improvement_operator_repository(
+        memory,
+        weakness_evidence_kind,
+        transformation,
+        solution_strategy,
+        program,
+        opportunity_family_id,
+    )?;
+    let operator = if let Some(operator_id) = invocation.matched_operator_ids.first() {
+        memory
+            .profiles
+            .iter()
+            .find(|profile| &profile.operator.operator_id == operator_id)
+            .map(|profile| &profile.operator)
+            .ok_or_else(|| "IMPROVEMENT_OPERATOR_PROFILE_MISSING".to_string())?
+    } else {
+        &requested
+    };
+    let execution =
+        execute_improvement_operator_program_on_source(operator, predecessor_source, program)?;
+    Ok((invocation, execution))
 }
 
 fn improvement_operator_transfer_priority(
@@ -1293,6 +1395,15 @@ fn record_source_repair_outcome(
         .as_ref()
         .map(|change| change.weakness_evidence_kind);
     let validation_duration_ms = receipt_validation_duration_ms(receipt)?;
+    let improvement_operator_execution_sha256 = request
+        .improvement_operator_execution
+        .as_ref()
+        .map(|execution| {
+            serde_json::to_vec(execution)
+                .map(|bytes| sha256(&bytes))
+                .map_err(|error| format!("IMPROVEMENT_OPERATOR_EXECUTION_JSON:{error}"))
+        })
+        .transpose()?;
     record.attempts.push(SourceRepairAttempt {
         attempt_number,
         source_generation: request.source_generation,
@@ -1319,6 +1430,11 @@ fn record_source_repair_outcome(
             .as_ref()
             .map(|invocation| invocation.matched_operator_ids.clone())
             .unwrap_or_default(),
+        executed_operator_id: request
+            .improvement_operator_execution
+            .as_ref()
+            .map(|execution| execution.operator_id.clone()),
+        improvement_operator_execution_sha256,
         operator_priority_adjustment: request
             .improvement_operator_invocation
             .as_ref()
@@ -1671,6 +1787,68 @@ struct PreparedFamilyMember {
     predecessor: Vec<u8>,
 }
 
+fn request_weakness_evidence_kind(request: &AutonomousSourcePatchRequest) -> WeaknessEvidenceKind {
+    request
+        .generalized_change
+        .as_ref()
+        .map(|change| change.weakness_evidence_kind)
+        .unwrap_or_else(|| inferred_weakness_evidence_kind(&request.transformation))
+}
+
+fn validate_improvement_operator_execution_binding(
+    request: &AutonomousSourcePatchRequest,
+    predecessor_source: &str,
+) -> Result<(), String> {
+    let Some(program) = &request.structural_repair_program else {
+        if request.improvement_operator_invocation.is_some()
+            || request.improvement_operator_execution.is_some()
+        {
+            return Err("IMPROVEMENT_OPERATOR_PROGRAM_MISSING".to_string());
+        }
+        return Ok(());
+    };
+    let invocation = request
+        .improvement_operator_invocation
+        .as_ref()
+        .ok_or_else(|| "IMPROVEMENT_OPERATOR_INVOCATION_MISSING".to_string())?;
+    let execution = request
+        .improvement_operator_execution
+        .as_ref()
+        .ok_or_else(|| "IMPROVEMENT_OPERATOR_EXECUTION_MISSING".to_string())?;
+    let strategy = if request.solution_strategy.is_empty() {
+        request.transformation.as_str()
+    } else {
+        request.solution_strategy.as_str()
+    };
+    let expected = improvement_operator_ir_for_program(
+        request_weakness_evidence_kind(request),
+        &request.transformation,
+        strategy,
+        program,
+    )?;
+    if invocation.schema != IMPROVEMENT_OPERATOR_MEMORY_SCHEMA
+        || invocation.applicability_satisfied == invocation.matched_operator_ids.is_empty()
+        || invocation
+            .matched_operator_ids
+            .iter()
+            .any(|operator_id| operator_id != &expected.operator_id)
+        || (invocation.applicability_satisfied
+            && invocation.executable_generator_kind != Some(expected.generator_kind))
+    {
+        return Err("IMPROVEMENT_OPERATOR_INVOCATION_BINDING_MISMATCH".to_string());
+    }
+    let observed =
+        execute_improvement_operator_program_on_source(&expected, predecessor_source, program)?;
+    if execution != &observed
+        || !execution.applicable
+        || execution.candidate_source.as_deref() != Some(request.candidate_source.as_str())
+        || execution.operator_id != expected.operator_id
+    {
+        return Err("IMPROVEMENT_OPERATOR_EXECUTION_BINDING_MISMATCH".to_string());
+    }
+    Ok(())
+}
+
 fn prepare_family_members(
     policy: &AutonomousSourceMutationPolicy,
     state_dir: &Path,
@@ -1739,6 +1917,28 @@ fn prepare_family_members(
             || execution.candidate_snapshot.source_sha256 != member.candidate_sha256
         {
             return Err("SOURCE_MUTATION_FAMILY_STRUCTURAL_REPLAY_MISMATCH".to_string());
+        }
+        let strategy = if request.solution_strategy.is_empty() {
+            request.transformation.as_str()
+        } else {
+            request.solution_strategy.as_str()
+        };
+        let operator = improvement_operator_ir_for_program(
+            request_weakness_evidence_kind(request),
+            &request.transformation,
+            strategy,
+            &member.structural_repair_program,
+        )?;
+        let operator_execution = execute_improvement_operator_program_on_source(
+            &operator,
+            predecessor_source,
+            &member.structural_repair_program,
+        )?;
+        if !operator_execution.applicable
+            || operator_execution.candidate_source.as_deref()
+                != Some(member.candidate_source.as_str())
+        {
+            return Err("SOURCE_MUTATION_FAMILY_OPERATOR_EXECUTION_MISMATCH".to_string());
         }
         let file_name = target
             .file_name()
@@ -1882,6 +2082,9 @@ fn install_primary_and_stage_source_patch(
             return Err("STRUCTURAL_REPAIR_REPLAY_MISMATCH".to_string());
         }
     }
+    let predecessor_source = std::str::from_utf8(&predecessor)
+        .map_err(|_| "IMPROVEMENT_OPERATOR_PREDECESSOR_NOT_UTF8".to_string())?;
+    validate_improvement_operator_execution_binding(request, predecessor_source)?;
     if let Some(change) = &request.generalized_change {
         let program = request
             .structural_repair_program
@@ -2644,6 +2847,28 @@ fn compiler_guided_request(
         )?;
         let (opportunity_kind, opportunity_family_id) =
             compiler_opportunity_metadata(&candidate.transformation);
+        let predecessor_source =
+            fs::read_to_string(policy.source_root.join(&candidate.relative_path))
+                .map_err(|error| format!("COMPILER_REPAIR_PREDECESSOR_READ:{error}"))?;
+        if sha256(predecessor_source.as_bytes()) != candidate.predecessor_sha256 {
+            return Err("COMPILER_REPAIR_PREDECESSOR_DIVERGED".to_string());
+        }
+        let (bound_invocation, operator_execution) = invoke_and_execute_improvement_operator(
+            operator_memory,
+            WeaknessEvidenceKind::CompilerDiagnostic,
+            &candidate.transformation,
+            &candidate.solution_strategy,
+            &candidate.structural_repair_program,
+            &opportunity_family_id,
+            &predecessor_source,
+        )?;
+        if bound_invocation != invocation
+            || !operator_execution.applicable
+            || operator_execution.candidate_source.as_deref()
+                != Some(candidate.candidate_source.as_str())
+        {
+            return Err("COMPILER_REPAIR_OPERATOR_EXECUTION_DIVERGED".to_string());
+        }
         return Ok(Some(AutonomousSourcePatchRequest {
             schema: AUTONOMOUS_SOURCE_MUTATION_SCHEMA.to_string(),
             patch_id,
@@ -2664,6 +2889,7 @@ fn compiler_guided_request(
             opportunity_kind,
             opportunity_family_id,
             improvement_operator_invocation: Some(invocation),
+            improvement_operator_execution: Some(operator_execution),
         }));
     }
     Ok(None)
@@ -2835,6 +3061,33 @@ fn grammar_synthesized_request(
             .collect();
         let (opportunity_kind, opportunity_family_id) =
             grammar_opportunity_metadata(&candidate.transformation, &candidate.repair_family);
+        let evidence_kind = if public_behavior_contradiction {
+            WeaknessEvidenceKind::PublicBehaviorContradiction
+        } else {
+            WeaknessEvidenceKind::ExplicitCodeHole
+        };
+        let predecessor_source =
+            fs::read_to_string(policy.source_root.join(&candidate.relative_path))
+                .map_err(|error| format!("GRAMMAR_REPAIR_PREDECESSOR_READ:{error}"))?;
+        if sha256(predecessor_source.as_bytes()) != candidate.predecessor_sha256 {
+            return Err("GRAMMAR_REPAIR_PREDECESSOR_DIVERGED".to_string());
+        }
+        let (bound_invocation, operator_execution) = invoke_and_execute_improvement_operator(
+            operator_memory,
+            evidence_kind,
+            &candidate.transformation,
+            &candidate.solution_strategy,
+            &candidate.structural_repair_program,
+            &opportunity_family_id,
+            &predecessor_source,
+        )?;
+        if bound_invocation != invocation
+            || !operator_execution.applicable
+            || operator_execution.candidate_source.as_deref()
+                != Some(candidate.candidate_source.as_str())
+        {
+            return Err("GRAMMAR_REPAIR_OPERATOR_EXECUTION_DIVERGED".to_string());
+        }
         return Ok(Some(AutonomousSourcePatchRequest {
             schema: AUTONOMOUS_SOURCE_MUTATION_SCHEMA.to_string(),
             patch_id,
@@ -2855,6 +3108,7 @@ fn grammar_synthesized_request(
             opportunity_kind,
             opportunity_family_id,
             improvement_operator_invocation: Some(invocation),
+            improvement_operator_execution: Some(operator_execution),
         }));
     }
     Ok(None)
@@ -2993,27 +3247,19 @@ pub fn discover_known_source_improvement_detailed(
             {
                 continue;
             }
-            let invocation = invoke_improvement_operator_repository(
+            let (invocation, operator_execution) = invoke_and_execute_improvement_operator(
                 &operator_memory,
                 WeaknessEvidenceKind::StructuralSourceSmell,
                 &transformation,
                 solution_strategy,
                 &structural_repair_program,
                 &opportunity_family_id,
+                source,
             )?;
-            if let Some(operator_id) = invocation.matched_operator_ids.first() {
-                let operator = operator_memory
-                    .profiles
-                    .iter()
-                    .find(|profile| &profile.operator.operator_id == operator_id)
-                    .map(|profile| &profile.operator)
-                    .ok_or_else(|| "IMPROVEMENT_OPERATOR_PROFILE_MISSING".to_string())?;
-                let execution = execute_improvement_operator_on_source(operator, source)?;
-                if execution.applicable
-                    && execution.candidate_source.as_deref() != Some(candidate_source.as_str())
-                {
-                    return Err("IMPROVEMENT_OPERATOR_EXECUTION_DIVERGED".to_string());
-                }
+            if !operator_execution.applicable
+                || operator_execution.candidate_source.as_deref() != Some(candidate_source.as_str())
+            {
+                return Err("IMPROVEMENT_OPERATOR_EXECUTION_DIVERGED".to_string());
             }
             ranked_known_candidates.push((
                 invocation.priority_adjustment,
@@ -3024,6 +3270,7 @@ pub fn discover_known_source_improvement_detailed(
                 candidate_sha256,
                 patch_id,
                 invocation,
+                operator_execution,
             ));
         }
         ranked_known_candidates.sort_by_key(|(priority, strategy_index, ..)| {
@@ -3038,6 +3285,7 @@ pub fn discover_known_source_improvement_detailed(
             candidate_sha256,
             patch_id,
             invocation,
+            operator_execution,
         )) = ranked_known_candidates.into_iter().next()
         {
             let consequence_predictions = vec![
@@ -3091,6 +3339,7 @@ pub fn discover_known_source_improvement_detailed(
                     opportunity_kind: ChangeOpportunityKind::EfficiencyOpportunity,
                     opportunity_family_id,
                     improvement_operator_invocation: Some(invocation),
+                    improvement_operator_execution: Some(operator_execution),
                 }),
             });
         }
@@ -3251,6 +3500,30 @@ mod tests {
             fs::remove_dir_all(&state).unwrap();
         }
         state
+    }
+
+    fn rebind_request_operator_execution(
+        request: &mut AutonomousSourcePatchRequest,
+        state: &Path,
+        predecessor_source: &str,
+    ) {
+        let program = request
+            .structural_repair_program
+            .as_ref()
+            .expect("typed structural program");
+        let memory = refresh_improvement_operator_repository(state).unwrap();
+        let (invocation, execution) = invoke_and_execute_improvement_operator(
+            &memory,
+            request_weakness_evidence_kind(request),
+            &request.transformation,
+            &request.solution_strategy,
+            program,
+            &request.opportunity_family_id,
+            predecessor_source,
+        )
+        .unwrap();
+        request.improvement_operator_invocation = Some(invocation);
+        request.improvement_operator_execution = Some(execution);
     }
 
     #[test]
@@ -3766,10 +4039,14 @@ mod tests {
             .expect("repository family repair");
         assert_eq!(request.additional_family_members.len(), 1);
         request.patch_id.push_str("-invalid");
-        request.candidate_source = "pub fn broken( {\n".to_string();
+        request.candidate_source = primary_source.replace("left - right", "left * right");
         request.candidate_sha256 = sha256(request.candidate_source.as_bytes());
-        request.structural_repair_program = None;
+        request.structural_repair_program = Some(
+            synthesize_structural_repair("src/lib.rs", primary_source, &request.candidate_source)
+                .unwrap(),
+        );
         request.generalized_change = None;
+        rebind_request_operator_execution(&mut request, &state, primary_source);
 
         let receipt = install_and_stage_source_patch(&policy, &state, &request).unwrap();
 
@@ -3826,6 +4103,7 @@ mod tests {
                 .unwrap(),
         );
         request.generalized_change = None;
+        rebind_request_operator_execution(&mut request, &state, &predecessor);
 
         let receipt = install_and_stage_source_patch(&policy, &state, &request).unwrap();
 
@@ -3905,7 +4183,7 @@ mod tests {
     }
 
     #[test]
-    fn failed_self_patch_is_rolled_back_to_exact_predecessor() {
+    fn malformed_patch_without_typed_program_is_rejected_before_write() {
         let (root, policy) = fixture("rollback");
         let state = external_state(&root);
         let predecessor = fs::read(root.join("src/lib.rs")).unwrap();
@@ -3917,22 +4195,20 @@ mod tests {
         request.candidate_sha256 = sha256(request.candidate_source.as_bytes());
         request.structural_repair_program = None;
         request.generalized_change = None;
-        let receipt = install_and_stage_source_patch(&policy, &state, &request).unwrap();
-        assert!(!receipt.installed);
-        assert!(receipt.rolled_back);
-        assert!(!receipt.validation.success);
+        let error = install_and_stage_source_patch(&policy, &state, &request).unwrap_err();
+        assert!(error.contains("IMPROVEMENT_OPERATOR_PROGRAM_MISSING"));
         assert_eq!(fs::read(root.join("src/lib.rs")).unwrap(), predecessor);
         assert!(!state
             .join("control")
             .join(SELF_UPDATE_HANDOFF_FILE)
             .exists());
-        let knowledge = load_repair_learning(&state, &repair_problem_id(&request))
+        assert!(load_repair_learning(&state, &repair_problem_id(&request))
             .unwrap()
-            .expect("retry knowledge");
-        assert_eq!(knowledge.status, "RETRYING");
-        assert_eq!(knowledge.attempts.len(), 1);
+            .is_none());
         fs::remove_dir_all(root).unwrap();
-        fs::remove_dir_all(state).unwrap();
+        if state.exists() {
+            fs::remove_dir_all(state).unwrap();
+        }
     }
 
     #[test]

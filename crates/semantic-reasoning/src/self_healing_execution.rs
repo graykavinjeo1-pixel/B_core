@@ -10,7 +10,7 @@ use std::path::{Component, Path, PathBuf};
 use serde::{Deserialize, Serialize};
 
 use crate::autonomous_source_mutation::{
-    install_and_stage_source_patch, invoke_improvement_operator_repository,
+    install_and_stage_source_patch, invoke_and_execute_improvement_operator,
     refresh_improvement_operator_repository, source_opportunity_family_id,
     AutonomousSourceMutationPolicy, AutonomousSourcePatchReceipt, AutonomousSourcePatchRequest,
     ChangeOpportunityKind, AUTONOMOUS_SOURCE_MUTATION_SCHEMA,
@@ -160,6 +160,7 @@ pub fn lower_self_healing_attempt_to_source_patch(
             &transformation,
         ),
         improvement_operator_invocation: None,
+        improvement_operator_execution: None,
     })
 }
 
@@ -193,15 +194,24 @@ pub fn run_closed_self_healing(
         .structural_repair_program
         .as_ref()
         .ok_or_else(|| "SELF_HEALING_STRUCTURAL_PROGRAM_MISSING".to_string())?;
-    mutation_request.improvement_operator_invocation =
-        Some(invoke_improvement_operator_repository(
-            &operator_memory,
-            WeaknessEvidenceKind::StructuralSourceSmell,
-            &mutation_request.transformation,
-            &mutation_request.solution_strategy,
-            structural_program,
-            &mutation_request.opportunity_family_id,
-        )?);
+    let predecessor_source = std::fs::read_to_string(
+        request
+            .mutation_policy
+            .source_root
+            .join(&mutation_request.relative_path),
+    )
+    .map_err(|error| format!("SELF_HEALING_OPERATOR_PREDECESSOR_READ:{error}"))?;
+    let (operator_invocation, operator_execution) = invoke_and_execute_improvement_operator(
+        &operator_memory,
+        WeaknessEvidenceKind::StructuralSourceSmell,
+        &mutation_request.transformation,
+        &mutation_request.solution_strategy,
+        structural_program,
+        &mutation_request.opportunity_family_id,
+        &predecessor_source,
+    )?;
+    mutation_request.improvement_operator_invocation = Some(operator_invocation);
+    mutation_request.improvement_operator_execution = Some(operator_execution);
     let receipt = install_and_stage_source_patch(
         &request.mutation_policy,
         Path::new(&request.state_dir),
