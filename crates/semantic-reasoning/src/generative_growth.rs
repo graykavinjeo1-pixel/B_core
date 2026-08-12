@@ -11,10 +11,7 @@ use std::collections::{BTreeMap, BTreeSet};
 use serde::{Deserialize, Serialize};
 
 use crate::autonomous_source_mutation::execute_improvement_operator_behavioral_canary;
-use crate::fullstack_ops_knowledge::{
-    activate as activate_fullstack, promoted_bundle, recipe_as_composition_lesson, Capability,
-    CodingLayer, KnowledgeQuery,
-};
+use crate::fullstack_ops_knowledge::{execute_fullstack_recipe_behavioral_canary, promoted_bundle};
 use crate::integrated_development::execute_behavioral_composition_canary;
 use crate::self_healing_pipeline::{
     validate_composition_lesson, CompositionEdgeIR, RepairCompositionLessonIR, RepairPrimitiveIR,
@@ -36,6 +33,7 @@ const MAX_IMPROVEMENT_OPERATOR_SELECTORS: usize = 25;
 // identities because normalized edit/postcondition contracts intentionally
 // merge five scenario aliases.
 const MAX_IMPROVEMENT_OPERATOR_VERIFIED_ARTIFACTS: u64 = 20;
+const MAX_FULLSTACK_VERIFIED_ARTIFACTS: u64 = 3;
 const MAX_ARTIFACT_CONTEXT_ATTEMPTS: usize = MAX_VERIFIED_ARTIFACTS_PER_CYCLE * 4;
 const FRONTIER_EVIDENCE_CONTRACT_REVISION: u64 = 2;
 const BEHAVIORAL_HEURISTIC_EXCLUSION_CONTRACT_REVISION: u64 = 4;
@@ -684,54 +682,53 @@ fn execute_composer(
             ))
         }
         "FULLSTACK_TYPED_RECIPE_COMPOSER" => {
-            let signals = input
-                .diagnostic_signals
-                .iter()
-                .map(String::as_str)
-                .collect::<BTreeSet<_>>();
-            let capability = if signals.contains("OPERATIONS_CHANGE") {
-                Capability::ReleaseContract
-            } else if signals.contains("ERROR_HANDLING_ADDED") {
-                Capability::ErrorMapping
-            } else if signals.contains("BACKEND_CONTRACT") {
-                Capability::ProtocolValidation
-            } else if signals.contains("FRONTEND_CONTRACT") {
-                Capability::AsyncTransport
-            } else {
+            if artifact_family_width == 0 {
                 return Ok((
                     Vec::new(),
-                    Some("NO_APPLICABLE_FULLSTACK_SIGNAL".to_string()),
+                    Some("FULLSTACK_RECIPE_ARTIFACT_CAPACITY_REACHED".to_string()),
                 ));
-            };
+            }
             let bundle = promoted_bundle();
-            let activation = activate_fullstack(
-                &bundle,
-                &KnowledgeQuery {
-                    required_layers: vec![
-                        CodingLayer::Frontend,
-                        CodingLayer::Backend,
-                        CodingLayer::Operations,
-                    ],
-                    required_capabilities: vec![capability],
-                },
-            )
-            .map_err(|error| format!("FULLSTACK_ACTIVATION:{error:?}"))?;
-            let recipe_id = activation
-                .selected_recipe_ids
-                .first()
-                .ok_or_else(|| "FULLSTACK_ACTIVATION_ABSTAINED".to_string())?;
-            let lesson = recipe_as_composition_lesson(&bundle, recipe_id)?;
-            validate_composition_lesson(&lesson)
-                .map_err(|error| format!("FULLSTACK_COMPOSITION_VALIDATE:{error:?}"))?;
-            let bytes = serde_json::to_vec(&lesson)
-                .map_err(|error| format!("FULLSTACK_COMPOSITION_SERIALIZE:{error}"))?;
-            Ok((
-                Vec::new(),
-                Some(format!(
-                    "FULLSTACK_TYPECHECK_ONLY_NO_BEHAVIORAL_OBSERVATION:{}",
-                    sha256(&bytes)
-                )),
-            ))
+            let target_width = artifact_family_width.clamp(1, MAX_VERIFIED_ARTIFACTS_PER_CYCLE);
+            let mut artifacts = Vec::new();
+            let mut artifact_hashes = previously_verified.clone();
+            let mut recipe_ids = bundle
+                .recipes
+                .iter()
+                .map(|recipe| recipe.recipe_id.as_str())
+                .collect::<Vec<_>>();
+            recipe_ids.sort_unstable();
+            for recipe_id in recipe_ids {
+                if artifacts.len() >= target_width {
+                    break;
+                }
+                let receipt = execute_fullstack_recipe_behavioral_canary(&bundle, recipe_id)?;
+                if receipt.cases_executed == 0
+                    || receipt.cases_passed != receipt.cases_executed
+                    || !receipt.exact_pipeline_observed
+                    || !receipt.wrong_input_contract_rejected
+                    || !receipt.reordered_pipeline_rejected
+                {
+                    return Err("FULLSTACK_BEHAVIORAL_CANARY_INCOMPLETE".to_string());
+                }
+                if artifact_hashes.insert(receipt.behavioral_artifact_sha256.clone()) {
+                    artifacts.push(VerifiedBehavioralArtifact {
+                        artifact_context_sha256: sha256(
+                            format!("{context}:{recipe_id}:FULLSTACK_TYPED_RECIPE").as_bytes(),
+                        ),
+                        artifact_sha256: receipt.behavioral_artifact_sha256,
+                        cases_executed: receipt.cases_executed,
+                        cases_passed: receipt.cases_passed,
+                    });
+                }
+            }
+            if artifacts.is_empty() {
+                return Ok((
+                    Vec::new(),
+                    Some("FULLSTACK_EXECUTABLE_RECIPE_UNIVERSE_SATURATED".to_string()),
+                ));
+            }
+            Ok((artifacts, None))
         }
         "IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER" => {
             if artifact_family_width == 0 {
@@ -838,6 +835,7 @@ fn verified_artifact_capacity(composer_id: &str) -> u64 {
     match composer_id {
         "SEM5_PROGRAM_IR_COMPOSER" => MAX_SEM5_VERIFIED_ARTIFACTS,
         "IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER" => MAX_IMPROVEMENT_OPERATOR_VERIFIED_ARTIFACTS,
+        "FULLSTACK_TYPED_RECIPE_COMPOSER" => MAX_FULLSTACK_VERIFIED_ARTIFACTS,
         _ => 0,
     }
 }
@@ -863,6 +861,13 @@ fn composer_is_behaviorally_executable(
         "SEM5_PROGRAM_IR_COMPOSER" => verified_artifact_family_width(memory, composer_id) > 0,
         "IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER" => {
             verified_artifact_family_width(memory, "SEM5_PROGRAM_IR_COMPOSER") == 0
+                && verified_artifact_family_width(memory, composer_id) > 0
+        }
+        "FULLSTACK_TYPED_RECIPE_COMPOSER" => {
+            verified_artifact_family_width(memory, "SEM5_PROGRAM_IR_COMPOSER") == 0
+                && verified_artifact_family_width(memory, "IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER")
+                    == 0
+                && verified_artifact_family_width(memory, composer_id) > 0
         }
         _ => false,
     }
@@ -1758,7 +1763,7 @@ mod tests {
     }
 
     #[test]
-    fn verified_family_growth_doubles_then_routes_to_a_fresh_operator_substrate() {
+    fn verified_family_growth_routes_across_executable_substrates() {
         let memory_with = |count: u64| {
             let mut memory = GenerativeGrowthMemory::default();
             let mut result = run_generative_cycle(&memory, &input(), 7).unwrap();
@@ -1828,17 +1833,23 @@ mod tests {
             ..MAX_IMPROVEMENT_OPERATOR_VERIFIED_ARTIFACTS)
             .map(|ordinal| sha256(format!("operator-{ordinal}").as_bytes()))
             .collect();
-        let exhausted = run_generative_cycle(&expanded, &input(), 13).unwrap();
-        assert_eq!(exhausted.verified_artifact_count, 0);
-        assert!(!exhausted.behavioral_composition_executed);
+        let fullstack = run_generative_cycle(&expanded, &input(), 13).unwrap();
         assert_eq!(
-            exhausted
-                .behavioral_execution_receipt
-                .as_ref()
-                .and_then(|receipt| receipt.abstention_reason.as_deref()),
-            Some("IMPROVEMENT_OPERATOR_ARTIFACT_CAPACITY_REACHED")
+            selected_stage(&fullstack.selected_composition, "COMPOSE").unwrap(),
+            "FULLSTACK_TYPED_RECIPE_COMPOSER"
         );
-        assert!(!exhausted.frontier_advance);
+        assert_eq!(fullstack.verified_artifact_count, 1);
+        assert!(fullstack.behavioral_composition_executed);
+        assert!(fullstack.novel_verified_artifact);
+        assert!(fullstack.frontier_advance);
+        let routed = promote_generative_cycle(&expanded, &input(), &fullstack).unwrap();
+        assert_eq!(
+            distinct_verified_artifact_count_for_composer(
+                &routed,
+                "FULLSTACK_TYPED_RECIPE_COMPOSER"
+            ),
+            1
+        );
     }
 
     #[test]

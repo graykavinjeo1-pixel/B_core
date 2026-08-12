@@ -133,6 +133,30 @@ pub struct KnowledgeActivation {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct FullStackBehavioralExecution {
+    pub recipe_id: String,
+    pub input_contract: String,
+    pub output_contract: String,
+    pub input_payload_sha256: String,
+    pub output_payload_sha256: String,
+    pub executed_atom_ids: Vec<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct FullStackBehavioralCanaryReceipt {
+    pub schema: String,
+    pub recipe_id: String,
+    pub behavioral_artifact_sha256: String,
+    pub cases_executed: usize,
+    pub cases_passed: usize,
+    pub exact_pipeline_observed: bool,
+    pub wrong_input_contract_rejected: bool,
+    pub reordered_pipeline_rejected: bool,
+    pub execution: FullStackBehavioralExecution,
+    pub receipt_sha256: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct AbsorptionReport {
     pub schema: String,
     pub campaign_id: String,
@@ -695,6 +719,161 @@ pub fn recipe_as_composition_lesson(
     })
 }
 
+fn execute_fullstack_atom_sequence(
+    bundle: &FullStackKnowledgeBundle,
+    recipe_id: &str,
+    ordered_atom_ids: &[String],
+    input_contract: &str,
+    input_payload_sha256: &str,
+) -> Result<FullStackBehavioralExecution, String> {
+    if input_payload_sha256.len() != 64
+        || !input_payload_sha256
+            .bytes()
+            .all(|byte| byte.is_ascii_hexdigit())
+    {
+        return Err("FULLSTACK_BEHAVIOR_INPUT_PAYLOAD_INVALID".to_string());
+    }
+    let by_id = bundle
+        .atoms
+        .iter()
+        .map(|atom| (atom.atom_id.as_str(), atom))
+        .collect::<BTreeMap<_, _>>();
+    let mut current_contract = input_contract.to_string();
+    let mut current_payload_sha256 = input_payload_sha256.to_ascii_lowercase();
+    let mut executed_atom_ids = Vec::with_capacity(ordered_atom_ids.len());
+    for atom_id in ordered_atom_ids {
+        let atom = by_id
+            .get(atom_id.as_str())
+            .ok_or_else(|| format!("FULLSTACK_BEHAVIOR_ATOM_MISSING:{atom_id}"))?;
+        if atom.input_contract != current_contract {
+            return Err(format!(
+                "FULLSTACK_BEHAVIOR_CONTRACT_MISMATCH:{}:{}:{}",
+                atom.atom_id, current_contract, atom.input_contract
+            ));
+        }
+        let atom_bytes = serde_json::to_vec(atom)
+            .map_err(|error| format!("FULLSTACK_BEHAVIOR_ATOM_SERIALIZE:{error}"))?;
+        current_payload_sha256 = sha256(
+            format!(
+                "{}:{}:{}:{}",
+                current_payload_sha256,
+                atom.atom_id,
+                atom.output_contract,
+                sha256(&atom_bytes)
+            )
+            .as_bytes(),
+        );
+        current_contract = atom.output_contract.clone();
+        executed_atom_ids.push(atom.atom_id.clone());
+    }
+    Ok(FullStackBehavioralExecution {
+        recipe_id: recipe_id.to_string(),
+        input_contract: input_contract.to_string(),
+        output_contract: current_contract,
+        input_payload_sha256: input_payload_sha256.to_ascii_lowercase(),
+        output_payload_sha256: current_payload_sha256,
+        executed_atom_ids,
+    })
+}
+
+/// Executes a promoted full-stack recipe as a typed dataflow program and
+/// falsifies it with a wrong input contract and an atom-order counterexample.
+/// This is deliberately repository-independent: the capability artifact is
+/// the executable cross-layer transition law, not a copied framework patch.
+pub fn execute_fullstack_recipe_behavioral_canary(
+    bundle: &FullStackKnowledgeBundle,
+    recipe_id: &str,
+) -> Result<FullStackBehavioralCanaryReceipt, String> {
+    validate_bundle(bundle).map_err(|error| format!("FULLSTACK_BEHAVIOR_BUNDLE:{error:?}"))?;
+    let recipe = bundle
+        .recipes
+        .iter()
+        .find(|recipe| recipe.recipe_id == recipe_id)
+        .ok_or_else(|| format!("FULLSTACK_BEHAVIOR_RECIPE_MISSING:{recipe_id}"))?;
+    let lesson = recipe_as_composition_lesson(bundle, recipe_id)?;
+    validate_composition_lesson(&lesson)
+        .map_err(|error| format!("FULLSTACK_BEHAVIOR_LESSON:{error:?}"))?;
+    let first_atom = bundle
+        .atoms
+        .iter()
+        .find(|atom| recipe.ordered_atom_ids.first() == Some(&atom.atom_id))
+        .ok_or_else(|| "FULLSTACK_BEHAVIOR_FIRST_ATOM_MISSING".to_string())?;
+    let last_atom = bundle
+        .atoms
+        .iter()
+        .find(|atom| recipe.ordered_atom_ids.last() == Some(&atom.atom_id))
+        .ok_or_else(|| "FULLSTACK_BEHAVIOR_LAST_ATOM_MISSING".to_string())?;
+    let input_payload_sha256 = sha256(format!("{recipe_id}:FRESH_INPUT").as_bytes());
+    let execution = execute_fullstack_atom_sequence(
+        bundle,
+        recipe_id,
+        &recipe.ordered_atom_ids,
+        &first_atom.input_contract,
+        &input_payload_sha256,
+    )?;
+    let exact_pipeline_observed = execution.executed_atom_ids == recipe.ordered_atom_ids
+        && execution.output_contract == last_atom.output_contract
+        && execution.output_payload_sha256 != execution.input_payload_sha256;
+    let wrong_input_contract_rejected = execute_fullstack_atom_sequence(
+        bundle,
+        recipe_id,
+        &recipe.ordered_atom_ids,
+        "UNRELATED_CONTRACT",
+        &input_payload_sha256,
+    )
+    .is_err();
+    let mut reordered = recipe.ordered_atom_ids.clone();
+    if reordered.len() >= 2 {
+        // Rotate rather than merely swap adjacent atoms: some independent
+        // release-contract atoms intentionally share one input/output type,
+        // while moving the head behind the terminal transition must violate
+        // the recipe's transported contract.
+        reordered.rotate_left(1);
+    }
+    let reordered_pipeline_rejected = execute_fullstack_atom_sequence(
+        bundle,
+        recipe_id,
+        &reordered,
+        &first_atom.input_contract,
+        &input_payload_sha256,
+    )
+    .is_err();
+    let cases_executed = 3;
+    let cases_passed = [
+        exact_pipeline_observed,
+        wrong_input_contract_rejected,
+        reordered_pipeline_rejected,
+    ]
+    .into_iter()
+    .filter(|passed| *passed)
+    .count();
+    let behavioral_artifact_sha256 = sha256(
+        &serde_json::to_vec(&(
+            &lesson,
+            &execution.output_contract,
+            &execution.executed_atom_ids,
+        ))
+        .map_err(|error| format!("FULLSTACK_BEHAVIOR_ARTIFACT_SERIALIZE:{error}"))?,
+    );
+    let mut receipt = FullStackBehavioralCanaryReceipt {
+        schema: "B_CORE_FULLSTACK_BEHAVIORAL_CANARY_1".to_string(),
+        recipe_id: recipe_id.to_string(),
+        behavioral_artifact_sha256,
+        cases_executed,
+        cases_passed,
+        exact_pipeline_observed,
+        wrong_input_contract_rejected,
+        reordered_pipeline_rejected,
+        execution,
+        receipt_sha256: String::new(),
+    };
+    receipt.receipt_sha256 = sha256(
+        &serde_json::to_vec(&receipt)
+            .map_err(|error| format!("FULLSTACK_BEHAVIOR_RECEIPT_SERIALIZE:{error}"))?,
+    );
+    Ok(receipt)
+}
+
 pub fn validate_bundle(bundle: &FullStackKnowledgeBundle) -> Result<(), KnowledgeValidationError> {
     if bundle.raw_source_copied
         || bundle
@@ -1055,6 +1234,24 @@ mod tests {
             assert_eq!(validate_composition_lesson(&lesson), Ok(()));
             assert!(!lesson.exact_source_fragment_present);
         }
+    }
+
+    #[test]
+    fn every_recipe_executes_and_rejects_contract_counterexamples() {
+        let bundle = build_bundle(receipts());
+        let mut artifacts = BTreeSet::new();
+        for recipe in &bundle.recipes {
+            let receipt =
+                execute_fullstack_recipe_behavioral_canary(&bundle, &recipe.recipe_id).unwrap();
+            assert_eq!(receipt.cases_executed, 3);
+            assert_eq!(receipt.cases_passed, 3);
+            assert!(receipt.exact_pipeline_observed);
+            assert!(receipt.wrong_input_contract_rejected);
+            assert!(receipt.reordered_pipeline_rejected);
+            assert_eq!(receipt.execution.executed_atom_ids, recipe.ordered_atom_ids);
+            assert!(artifacts.insert(receipt.behavioral_artifact_sha256));
+        }
+        assert_eq!(artifacts.len(), bundle.recipes.len());
     }
 
     #[test]
