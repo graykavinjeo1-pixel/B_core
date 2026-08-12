@@ -236,6 +236,8 @@ pub struct SourceRepairLearningRecord {
 pub struct LocalCommandReceipt {
     pub program: String,
     pub args: Vec<String>,
+    #[serde(default)]
+    pub cargo_incremental: bool,
     pub exit_code: Option<i32>,
     pub success: bool,
     pub timed_out: bool,
@@ -765,6 +767,26 @@ pub(crate) fn command_receipt(
     timeout_ms: u64,
     diagnostic_path: &Path,
 ) -> Result<LocalCommandReceipt, String> {
+    command_receipt_with_incremental(
+        program,
+        args,
+        cwd,
+        target_dir,
+        timeout_ms,
+        diagnostic_path,
+        false,
+    )
+}
+
+pub(crate) fn command_receipt_with_incremental(
+    program: &Path,
+    args: &[&str],
+    cwd: &Path,
+    target_dir: &Path,
+    timeout_ms: u64,
+    diagnostic_path: &Path,
+    cargo_incremental: bool,
+) -> Result<LocalCommandReceipt, String> {
     let started = Instant::now();
     let diagnostic = OpenOptions::new()
         .write(true)
@@ -779,7 +801,10 @@ pub(crate) fn command_receipt(
         .args(args)
         .current_dir(cwd)
         .env("CARGO_TARGET_DIR", target_dir)
-        .env("CARGO_INCREMENTAL", "0")
+        .env(
+            "CARGO_INCREMENTAL",
+            if cargo_incremental { "1" } else { "0" },
+        )
         .env("CARGO_NET_OFFLINE", "true")
         .env("PYTHONDONTWRITEBYTECODE", "1")
         .env("PIP_NO_INDEX", "1")
@@ -801,6 +826,7 @@ pub(crate) fn command_receipt(
             return Ok(LocalCommandReceipt {
                 program: program.display().to_string(),
                 args: args.iter().map(|value| (*value).to_string()).collect(),
+                cargo_incremental,
                 exit_code: status.code(),
                 success: status.success(),
                 timed_out: false,
@@ -818,6 +844,7 @@ pub(crate) fn command_receipt(
             return Ok(LocalCommandReceipt {
                 program: program.display().to_string(),
                 args: args.iter().map(|value| (*value).to_string()).collect(),
+                cargo_incremental,
                 exit_code: status.and_then(|value| value.code()),
                 success: false,
                 timed_out: true,
@@ -1875,6 +1902,7 @@ mod tests {
         let command = LocalCommandReceipt {
             program: "cargo".to_string(),
             args: vec!["test".to_string()],
+            cargo_incremental: false,
             exit_code: Some(if installed { 0 } else { 101 }),
             success: installed,
             timed_out: false,

@@ -24,10 +24,11 @@ use crate::autonomous_self_inspection::{
     RepairDisposition, RuntimeRepairActionReceipt, RuntimeRepairMechanism, SelfInspectionInput,
 };
 use crate::autonomous_source_mutation::{
-    command_receipt, discover_known_source_improvement, discover_known_source_improvement_detailed,
-    full_workspace_semantic_fingerprint, install_and_stage_source_patch, validate_policy,
-    AutonomousSourceMutationPolicy, AutonomousSourcePatchReceipt, AutonomousSourcePatchRequest,
-    LocalCommandReceipt, SOURCE_REPAIR_ENGINE_REVISION,
+    command_receipt_with_incremental, discover_known_source_improvement,
+    discover_known_source_improvement_detailed, full_workspace_semantic_fingerprint,
+    install_and_stage_source_patch, validate_policy, AutonomousSourceMutationPolicy,
+    AutonomousSourcePatchReceipt, AutonomousSourcePatchRequest, LocalCommandReceipt,
+    SOURCE_REPAIR_ENGINE_REVISION,
 };
 use crate::generative_growth::{
     promote_generative_cycle, run_generative_cycle, validate_behavioral_execution_receipt,
@@ -4879,7 +4880,7 @@ fn validate_blocked_core_cohort(
             .iter()
             .map(String::as_str)
             .collect::<Vec<_>>();
-        let command = command_receipt(
+        let command = command_receipt_with_incremental(
             &config.source_mutation.cargo_executable,
             &arg_refs,
             &config.source_mutation.source_root,
@@ -4889,6 +4890,7 @@ fn validate_blocked_core_cohort(
                 .validation_timeout_ms
                 .clamp(1, MAX_CORE_COHORT_VALIDATION_MS),
             &log_path,
+            true,
         );
         let _ = fs::remove_file(&log_path);
         let command = command?;
@@ -5010,13 +5012,14 @@ fn validate_blocked_repository_cohort(
         let log_path =
             diagnostics.join(format!("repository_cohort_validation_{validation_id}.log"));
         let arg_refs = plan.args.iter().map(String::as_str).collect::<Vec<_>>();
-        let command = command_receipt(
+        let command = command_receipt_with_incremental(
             &plan.program,
             &arg_refs,
             &plan.root,
             &runtime_validation_target_dir(config),
             MAX_CORE_COHORT_VALIDATION_MS,
             &log_path,
+            true,
         );
         let _ = fs::remove_file(&log_path);
         let command = command?;
@@ -7439,6 +7442,19 @@ mod tests {
             })
             .count();
         assert_eq!(receipt_count, 1);
+        let receipt_path = fs::read_dir(config.state_dir.join("diagnostics"))
+            .unwrap()
+            .filter_map(Result::ok)
+            .map(|entry| entry.path())
+            .find(|path| {
+                path.file_name()
+                    .and_then(OsStr::to_str)
+                    .is_some_and(|name| name.starts_with("core_cohort_validation_"))
+                    && path.extension().and_then(OsStr::to_str) == Some("json")
+            })
+            .expect("core validation receipt");
+        let validation: CoreCohortValidationReceipt = read_json(&receipt_path).unwrap();
+        assert!(validation.command.cargo_incremental);
         fs::remove_dir_all(root).unwrap();
     }
 
