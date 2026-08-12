@@ -28,9 +28,10 @@ use crate::autonomous_source_mutation::{
     discover_known_source_improvement, discover_known_source_improvement_detailed,
     full_workspace_semantic_fingerprint, install_and_stage_source_patch,
     runtime_core_feature_available, runtime_core_relative_path, source_opportunity_family_id,
-    source_patch_failure_is_transient, validate_policy, AutonomousSourceMutationPolicy,
-    AutonomousSourcePatchReceipt, AutonomousSourcePatchRequest, ChangeOpportunityKind,
-    ImprovementOperatorGeneratorKind, LocalCommandReceipt, SOURCE_REPAIR_ENGINE_REVISION,
+    source_patch_failure_is_transient, source_patch_validation_critical_path_ms, validate_policy,
+    AutonomousSourceMutationPolicy, AutonomousSourcePatchReceipt, AutonomousSourcePatchRequest,
+    ChangeOpportunityKind, ImprovementOperatorGeneratorKind, LocalCommandReceipt,
+    SOURCE_REPAIR_ENGINE_REVISION,
 };
 use crate::generative_growth::{
     executable_generative_substrate_available, promote_generative_cycle, run_generative_cycle,
@@ -47,6 +48,7 @@ pub const SUPERVISOR_SCHEMA: &str = "B_CORE_BOUNDED_GROWTH_SUPERVISOR_1";
 pub const CONFIG_SCHEMA: &str = "B_CORE_BOUNDED_GROWTH_CONFIG_1";
 pub const VERIFIER_SCHEMA: &str = "B_CORE_BOUNDED_GROWTH_VERIFIER_1";
 const MAX_SUMMARY_BYTES: usize = 512;
+const SOURCE_PATCH_VALIDATION_CONTRACT_REVISION: u64 = 2;
 const SCAN_WATCHDOG_TICK_MS: u64 = 1_000;
 const MAX_SCAN_RUNTIME_MS: u64 = 60_000;
 const FULL_HASH_CANARY_INTERVAL: u64 = 64;
@@ -333,6 +335,8 @@ pub struct SupervisorState {
     pub source_patch_recent_outcomes: Vec<SourcePatchOutcomeSample>,
     #[serde(default)]
     pub source_patch_telemetry_engine_revision: u64,
+    #[serde(default)]
+    pub source_patch_validation_contract_revision: u64,
     #[serde(default)]
     pub source_discovery_no_candidate_streak: u32,
     #[serde(default)]
@@ -2752,6 +2756,7 @@ pub fn initialize(config_path: &Path) -> Result<SupervisorState, String> {
         autonomous_source_patch_validation_ms: 0,
         source_patch_recent_outcomes: Vec::new(),
         source_patch_telemetry_engine_revision: SOURCE_REPAIR_ENGINE_REVISION,
+        source_patch_validation_contract_revision: SOURCE_PATCH_VALIDATION_CONTRACT_REVISION,
         source_discovery_no_candidate_streak: 0,
         last_source_discovery_reason: None,
         last_source_discovery_state_sha256: None,
@@ -6564,30 +6569,6 @@ fn report_from_state(
     }
 }
 
-fn source_patch_validation_duration(receipt: &AutonomousSourcePatchReceipt) -> u64 {
-    let mut seen = BTreeSet::new();
-    let mut total = 0_u64;
-    for command in receipt
-        .format_check
-        .iter()
-        .chain(receipt.compile_check.iter())
-        .chain(std::iter::once(&receipt.validation))
-        .chain(receipt.release_build.iter())
-    {
-        let identity = format!(
-            "{}:{}:{}:{}",
-            command.program,
-            command.args.join("\u{1f}"),
-            command.output_sha256,
-            command.duration_ms
-        );
-        if seen.insert(identity) {
-            total = total.saturating_add(command.duration_ms);
-        }
-    }
-    total
-}
-
 fn reconcile_source_patch_validation_cost(
     config: &GrowthSupervisorConfig,
     state: &mut SupervisorState,
@@ -6613,7 +6594,7 @@ fn reconcile_source_patch_validation_cost(
         let path = entry.path().join("receipt.json");
         if path.is_file() {
             let receipt: AutonomousSourcePatchReceipt = read_json(&path)?;
-            total = total.saturating_add(source_patch_validation_duration(&receipt));
+            total = total.saturating_add(source_patch_validation_critical_path_ms(&receipt));
         }
     }
     state.autonomous_source_patch_validation_ms = total;
@@ -6621,9 +6602,13 @@ fn reconcile_source_patch_validation_cost(
 }
 
 fn ensure_source_patch_telemetry_epoch(state: &mut SupervisorState) {
-    if state.source_patch_telemetry_engine_revision != SOURCE_REPAIR_ENGINE_REVISION {
+    if state.source_patch_telemetry_engine_revision != SOURCE_REPAIR_ENGINE_REVISION
+        || state.source_patch_validation_contract_revision
+            != SOURCE_PATCH_VALIDATION_CONTRACT_REVISION
+    {
         state.source_patch_recent_outcomes.clear();
         state.source_patch_telemetry_engine_revision = SOURCE_REPAIR_ENGINE_REVISION;
+        state.source_patch_validation_contract_revision = SOURCE_PATCH_VALIDATION_CONTRACT_REVISION;
         state.source_patch_consecutive_failures = 0;
         state.source_discovery_no_candidate_streak = 0;
         state.last_source_discovery_reason = None;
@@ -6706,7 +6691,7 @@ fn account_source_patch_receipt(
     receipt: &AutonomousSourcePatchReceipt,
 ) {
     state.last_source_patch_receipt_sha256 = Some(receipt.receipt_sha256.clone());
-    let validation_ms = source_patch_validation_duration(receipt);
+    let validation_ms = source_patch_validation_critical_path_ms(receipt);
     state.autonomous_source_patch_validation_ms = state
         .autonomous_source_patch_validation_ms
         .saturating_add(validation_ms);
@@ -7934,6 +7919,56 @@ mod tests {
             state.last_source_discovery_reason.as_deref(),
             Some("TRANSIENT_WORKSPACE_CONTENTION_DEFERRED")
         );
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn evaluator_accounts_parallel_source_validation_by_critical_path() {
+        let root = temp_root("parallel-source-validation-telemetry");
+        let (config_path, _) = test_config(&root);
+        let mut state = initialize(&config_path).unwrap();
+        let command = |program: &str, duration_ms: u64| LocalCommandReceipt {
+            program: program.to_string(),
+            args: Vec::new(),
+            cargo_incremental: true,
+            exit_code: Some(0),
+            success: true,
+            timed_out: false,
+            duration_ms,
+            output_sha256: program.to_string(),
+            diagnostic_tail: String::new(),
+        };
+        let receipt = AutonomousSourcePatchReceipt {
+            schema: "B_CORE_AUTONOMOUS_SOURCE_MUTATION_1".to_string(),
+            patch_id: "parallel-evaluator".to_string(),
+            relative_path: PathBuf::from("src/lib.rs"),
+            predecessor_sha256: "a".repeat(64),
+            candidate_sha256: "b".repeat(64),
+            core_generated: true,
+            core_self_approved: true,
+            opportunity_kind: ChangeOpportunityKind::EfficiencyOpportunity,
+            opportunity_family_id: "parallel-family".to_string(),
+            installed: true,
+            rolled_back: false,
+            failure_reason: None,
+            format_check: Some(command("fmt", 10)),
+            compile_check: Some(command("clippy", 100)),
+            validation: command("test", 200),
+            release_build: Some(command("release", 500)),
+            runtime_update_staged: true,
+            rollback_source: PathBuf::from("predecessor.source"),
+            workspace_fingerprint_before: "c".repeat(64),
+            workspace_fingerprint_after: "c".repeat(64),
+            workspace_stable_during_validation: true,
+            receipt_sha256: "d".repeat(64),
+        };
+
+        account_source_patch_receipt(&mut state, &receipt);
+
+        assert_eq!(state.autonomous_source_patch_validation_ms, 510);
+        assert_eq!(state.source_patch_recent_outcomes.len(), 1);
+        assert_eq!(state.source_patch_recent_outcomes[0].validation_ms, 510);
+        assert_eq!(recent_source_patch_stats(&state), (1, 1, 0, 510));
         fs::remove_dir_all(root).unwrap();
     }
 

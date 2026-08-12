@@ -812,36 +812,41 @@ fn improvement_operator_ir_for_program(
     )
 }
 
-fn receipt_validation_duration_ms(receipt: &AutonomousSourcePatchReceipt) -> Result<u64, String> {
-    fn distinct_duration<'a>(
-        commands: impl IntoIterator<Item = &'a LocalCommandReceipt>,
-    ) -> Result<u64, String> {
+pub(crate) fn source_patch_validation_critical_path_ms(
+    receipt: &AutonomousSourcePatchReceipt,
+) -> u64 {
+    fn distinct_duration<'a>(commands: impl IntoIterator<Item = &'a LocalCommandReceipt>) -> u64 {
         let mut seen = BTreeSet::new();
         let mut duration_ms = 0_u64;
         for command in commands {
-            let encoded = serde_json::to_vec(command)
-                .map_err(|error| format!("SOURCE_VALIDATION_RECEIPT_SERIALIZE:{error}"))?;
-            if seen.insert(sha256(&encoded)) {
+            let identity = format!(
+                "{}:{}:{}:{}",
+                command.program,
+                command.args.join("\u{1f}"),
+                command.output_sha256,
+                command.duration_ms
+            );
+            if seen.insert(identity) {
                 duration_ms = duration_ms.saturating_add(command.duration_ms);
             }
         }
-        Ok(duration_ms)
+        duration_ms
     }
 
-    let format_duration_ms = distinct_duration(receipt.format_check.iter())?;
+    let format_duration_ms = distinct_duration(receipt.format_check.iter());
     let target_lane_duration_ms = distinct_duration(
         receipt
             .compile_check
             .iter()
             .chain(std::iter::once(&receipt.validation)),
-    )?;
-    let release_lane_duration_ms = distinct_duration(receipt.release_build.iter())?;
+    );
+    let release_lane_duration_ms = distinct_duration(receipt.release_build.iter());
 
     // Formatting is the cheap mutation gate. After it passes, the target
     // package checks and runtime artifact build execute concurrently in
     // separate Cargo target directories, so wall time is the slower lane,
     // not the sum of both lanes.
-    Ok(format_duration_ms.saturating_add(target_lane_duration_ms.max(release_lane_duration_ms)))
+    format_duration_ms.saturating_add(target_lane_duration_ms.max(release_lane_duration_ms))
 }
 
 pub fn derive_improvement_operator_memory(
@@ -1635,7 +1640,7 @@ fn record_source_repair_outcome(
         .generalized_change
         .as_ref()
         .map(|change| change.weakness_evidence_kind);
-    let validation_duration_ms = receipt_validation_duration_ms(receipt)?;
+    let validation_duration_ms = source_patch_validation_critical_path_ms(receipt);
     let improvement_operator_execution_sha256 = request
         .improvement_operator_execution
         .as_ref()
@@ -3973,7 +3978,7 @@ mod tests {
             receipt_sha256: "receipt".to_string(),
         };
 
-        assert_eq!(receipt_validation_duration_ms(&receipt).unwrap(), 510);
+        assert_eq!(source_patch_validation_critical_path_ms(&receipt), 510);
     }
 
     #[test]
