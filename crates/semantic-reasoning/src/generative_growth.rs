@@ -28,7 +28,8 @@ use crate::sem25_engine::{run_growth_probe, GrowthProbeRequest};
 pub const GENERATIVE_GROWTH_SCHEMA: &str = "B_CORE_GENERATIVE_GROWTH_1";
 const MAX_REUSABLE_COMPOSITIONS: usize = 64;
 const MAX_COMPOSITION_TRIALS: usize = 256;
-const MAX_VERIFIED_ARTIFACTS_PER_CYCLE: usize = 4;
+const MAX_VERIFIED_ARTIFACTS_PER_CYCLE: usize = 32;
+const MAX_VERIFIED_ARTIFACTS_TOTAL: u64 = 64;
 const MAX_ARTIFACT_CONTEXT_ATTEMPTS: usize = MAX_VERIFIED_ARTIFACTS_PER_CYCLE * 4;
 const FRONTIER_EVIDENCE_CONTRACT_REVISION: u64 = 2;
 const BEHAVIORAL_HEURISTIC_EXCLUSION_CONTRACT_REVISION: u64 = 4;
@@ -603,6 +604,12 @@ fn execute_composer(
                     Some("SEM5_REQUIRES_AT_LEAST_TWO_OBSERVED_ROLES".to_string()),
                 ));
             }
+            if artifact_family_width == 0 {
+                return Ok((
+                    Vec::new(),
+                    Some("VERIFIED_ARTIFACT_CAPACITY_REACHED".to_string()),
+                ));
+            }
             let target_width = artifact_family_width.clamp(1, MAX_VERIFIED_ARTIFACTS_PER_CYCLE);
             let mut artifacts = Vec::new();
             let mut artifact_hashes = BTreeSet::new();
@@ -714,16 +721,14 @@ fn composer_is_behaviorally_executable(composer_id: &str, _input: &GenerativeInp
 
 fn verified_artifact_family_width(memory: &GenerativeGrowthMemory) -> usize {
     let verified = memory.distinct_verified_artifact_count();
-    let evidence_levels = if verified == 0 {
-        0
-    } else {
-        u64::from(verified.ilog2())
-    };
-    1_usize.saturating_add(
-        usize::try_from(evidence_levels)
-            .unwrap_or(usize::MAX)
-            .min(MAX_VERIFIED_ARTIFACTS_PER_CYCLE.saturating_sub(1)),
+    let remaining = MAX_VERIFIED_ARTIFACTS_TOTAL.saturating_sub(verified);
+    usize::try_from(
+        verified
+            .max(1)
+            .min(remaining)
+            .min(MAX_VERIFIED_ARTIFACTS_PER_CYCLE as u64),
     )
+    .unwrap_or(MAX_VERIFIED_ARTIFACTS_PER_CYCLE)
 }
 
 fn behavioral_execution_receipt_sha256(
@@ -1580,13 +1585,50 @@ mod tests {
             .push("CAPABILITY_SURFACE_ADDED".to_string());
         let result = run_generative_cycle(&memory, &next_input, 19).unwrap();
 
-        assert_eq!(verified_artifact_family_width(&memory), 3);
-        assert_eq!(result.verified_artifact_count, 3);
-        assert_eq!(result.novel_verified_artifact_count, 3);
-        assert_eq!(result.frontier_advance_units, 3);
+        assert_eq!(verified_artifact_family_width(&memory), 5);
+        assert_eq!(result.verified_artifact_count, 5);
+        assert_eq!(result.novel_verified_artifact_count, 5);
+        assert_eq!(result.frontier_advance_units, 5);
         let next = promote_generative_cycle(&memory, &next_input, &result).unwrap();
-        assert_eq!(next.frontier_capability_units, 8);
-        assert_eq!(next.distinct_verified_artifact_count(), 8);
+        assert_eq!(next.frontier_capability_units, 10);
+        assert_eq!(next.distinct_verified_artifact_count(), 10);
+    }
+
+    #[test]
+    fn verified_family_growth_doubles_until_the_total_safety_bound() {
+        let memory_with = |count: u64| {
+            let mut memory = GenerativeGrowthMemory::default();
+            let mut result = run_generative_cycle(&memory, &input(), 7).unwrap();
+            result
+                .behavioral_execution_receipt
+                .as_mut()
+                .unwrap()
+                .verified_artifacts
+                .truncate(1);
+            memory = promote_generative_cycle(&memory, &input(), &result).unwrap();
+            let accepted = memory.accepted_compositions.first_mut().unwrap();
+            accepted.verified_artifact_sha256s = (0..count)
+                .map(|ordinal| sha256(format!("bounded-{ordinal}").as_bytes()))
+                .collect();
+            memory
+        };
+
+        assert_eq!(verified_artifact_family_width(&memory_with(0)), 1);
+        assert_eq!(verified_artifact_family_width(&memory_with(1)), 1);
+        assert_eq!(verified_artifact_family_width(&memory_with(8)), 8);
+        assert_eq!(verified_artifact_family_width(&memory_with(33)), 31);
+        let saturated = memory_with(64);
+        assert_eq!(verified_artifact_family_width(&saturated), 0);
+        let saturated_result = run_generative_cycle(&saturated, &input(), 11).unwrap();
+        assert_eq!(saturated_result.verified_artifact_count, 0);
+        assert!(!saturated_result.behavioral_composition_executed);
+        assert_eq!(
+            saturated_result
+                .behavioral_execution_receipt
+                .as_ref()
+                .and_then(|receipt| receipt.abstention_reason.as_deref()),
+            Some("VERIFIED_ARTIFACT_CAPACITY_REACHED")
+        );
     }
 
     #[test]
