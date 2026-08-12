@@ -22,278 +22,347 @@ path = "src/lib.rs"
 [[bin]]
 name = "sem0-run"
 path = "src/main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem1-run"
 path = "src/sem1_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem2-run"
 path = "src/sem2_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem3-run"
 path = "src/sem3_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem4-run"
 path = "src/sem4_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem5-run"
 path = "src/sem5_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem6-run"
 path = "src/sem6_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem6-freeze"
 path = "src/sem6_freeze_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem7-run"
 path = "src/sem7_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem7-freeze"
 path = "src/sem7_freeze_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem8-run"
 path = "src/sem8_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem8-freeze"
 path = "src/sem8_freeze_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem9-run"
 path = "src/sem9_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem9-freeze"
 path = "src/sem9_freeze_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem9-r1-run"
 path = "src/sem9_r1_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem9-r1-freeze"
 path = "src/sem9_r1_freeze_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem10-fresh"
 path = "src/sem10_fresh_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem11-run"
 path = "src/sem11_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem12-run"
 path = "src/sem12_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem13-run"
 path = "src/sem13_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem14-run"
 path = "src/sem14_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem15-run"
 path = "src/sem15_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem16-run"
 path = "src/sem16_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem17-run"
 path = "src/sem17_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem18-run"
 path = "src/sem18_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem19-run"
 path = "src/sem19_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem20-run"
 path = "src/sem20_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem20-probe"
 path = "src/sem20_probe_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem21-run"
 path = "src/sem21_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem21-probe"
 path = "src/sem21_probe_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem22-run"
 path = "src/sem22_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem22-probe"
 path = "src/sem22_probe_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem23-run"
 path = "src/sem23_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem23-probe"
 path = "src/sem23_probe_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem24-run"
 path = "src/sem24_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem24-probe"
 path = "src/sem24_probe_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem25-run"
 path = "src/sem25_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem25-probe"
 path = "src/sem25_probe_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem26-run"
 path = "src/sem26_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem26-probe"
 path = "src/sem26_probe_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem27-run"
 path = "src/sem27_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem27-probe"
 path = "src/sem27_probe_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem27-continuation-run"
 path = "src/sem27_continuation_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem27-r1-run"
 path = "src/sem27_r1_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem28-run"
 path = "src/sem28_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem28-verify"
 path = "src/sem28_verify_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem29-run"
 path = "src/sem29_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem29-verify"
 path = "src/sem29_verify_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem30-run"
 path = "src/sem30_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem30-verify"
 path = "src/sem30_verify_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem31-run"
 path = "src/sem31_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem31-verify"
 path = "src/sem31_verify_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem32-run"
 path = "src/sem32_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem32-verify"
 path = "src/sem32_verify_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem32-r1-p0"
 path = "src/sem32_r1_p0_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem32-r1-run"
 path = "src/sem32_r1_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem32-r1-verify"
 path = "src/sem32_r1_verify_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem33-r1-run"
 path = "src/sem33_r1_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem33-r1-verify"
 path = "src/sem33_r1_verify_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem34-run"
 path = "src/sem34_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem34-verify"
 path = "src/sem34_verify_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem35-run"
 path = "src/sem35_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem35-verify"
 path = "src/sem35_verify_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem35-r1-run"
 path = "src/sem35_r1_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem35-r1-verify"
 path = "src/sem35_r1_verify_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem36-p0"
 path = "src/sem36_p0_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem36-verify"
 path = "src/sem36_verify_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "sem36-run"
 path = "src/sem36_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "core-x0-evaluate"
 path = "src/core_x0_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "b-core-code-graft-dev"
@@ -306,6 +375,7 @@ path = "src/code_graft_final_main.rs"
 [[bin]]
 name = "b-core-code-graft-verify"
 path = "src/code_graft_verify_main.rs"
+required-features = ["historical-campaigns"]
 
 [[bin]]
 name = "b-core-integrated-development"

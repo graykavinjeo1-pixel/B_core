@@ -28,9 +28,9 @@ use crate::autonomous_source_mutation::{
     discover_known_source_improvement, discover_known_source_improvement_detailed,
     full_workspace_semantic_fingerprint, install_and_stage_source_patch,
     runtime_core_feature_available, runtime_core_relative_path, source_opportunity_family_id,
-    validate_policy, AutonomousSourceMutationPolicy, AutonomousSourcePatchReceipt,
-    AutonomousSourcePatchRequest, ChangeOpportunityKind, ImprovementOperatorGeneratorKind,
-    LocalCommandReceipt, SOURCE_REPAIR_ENGINE_REVISION,
+    source_patch_failure_is_transient, validate_policy, AutonomousSourceMutationPolicy,
+    AutonomousSourcePatchReceipt, AutonomousSourcePatchRequest, ChangeOpportunityKind,
+    ImprovementOperatorGeneratorKind, LocalCommandReceipt, SOURCE_REPAIR_ENGINE_REVISION,
 };
 use crate::generative_growth::{
     promote_generative_cycle, run_generative_cycle, validate_behavioral_execution_receipt,
@@ -6304,6 +6304,11 @@ fn account_source_patch_receipt(
     state.autonomous_source_patch_validation_ms = state
         .autonomous_source_patch_validation_ms
         .saturating_add(validation_ms);
+    if source_patch_failure_is_transient(receipt.failure_reason.as_deref()) {
+        state.last_source_discovery_reason =
+            Some("TRANSIENT_WORKSPACE_CONTENTION_DEFERRED".to_string());
+        return;
+    }
     push_source_patch_outcome(
         state,
         SourcePatchOutcomeSample {
@@ -6491,7 +6496,14 @@ fn attempt_pending_composite_capability_install(
             });
         }
     };
+    let transient = source_patch_failure_is_transient(receipt.failure_reason.as_deref());
     account_source_patch_receipt(state, &receipt);
+    if transient {
+        return Ok(CompositeInstallAttemptOutcome {
+            attempted: true,
+            staged: false,
+        });
+    }
     if receipt.installed {
         state.last_source_discovery_reason =
             Some("COMPOSITE_CAPABILITY_INSTALLED_AND_STAGED".to_string());
@@ -6754,8 +6766,12 @@ fn step_without_lease(
         match install_and_stage_source_patch(&config.source_mutation, &config.state_dir, &request) {
             Ok(receipt) => {
                 account_source_patch_receipt(&mut state, &receipt);
-                fs::remove_file(&queued_path)
-                    .map_err(|error| format!("SOURCE_PATCH_QUEUE_CONSUME:{error}"))?;
+                let transient =
+                    source_patch_failure_is_transient(receipt.failure_reason.as_deref());
+                if !transient {
+                    fs::remove_file(&queued_path)
+                        .map_err(|error| format!("SOURCE_PATCH_QUEUE_CONSUME:{error}"))?;
+                }
                 if receipt.installed && receipt.runtime_update_staged {
                     state.stop_reason = Some("AUTONOMOUS_SOURCE_UPDATE_STAGED".to_string());
                     state.active_runtime_ms = state.active_runtime_ms.saturating_add(
@@ -7159,6 +7175,60 @@ mod tests {
         assert_eq!(stats.efficiency_opportunities, 1);
         assert_eq!(stats.verified_improvements, 2);
         assert_eq!(recent_source_patch_stats(&state), (4, 2, 2, 40));
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn workspace_contention_does_not_poison_source_repair_telemetry() {
+        let root = temp_root("workspace-contention-telemetry");
+        let (config_path, _) = test_config(&root);
+        let mut state = initialize(&config_path).unwrap();
+        let command = LocalCommandReceipt {
+            program: "cargo".to_string(),
+            args: vec!["test".to_string()],
+            cargo_incremental: true,
+            exit_code: Some(0),
+            success: true,
+            timed_out: false,
+            duration_ms: 17,
+            output_sha256: "a".repeat(64),
+            diagnostic_tail: String::new(),
+        };
+        let receipt = AutonomousSourcePatchReceipt {
+            schema: "B_CORE_AUTONOMOUS_SOURCE_MUTATION_1".to_string(),
+            patch_id: "contention".to_string(),
+            relative_path: PathBuf::from("src/lib.rs"),
+            predecessor_sha256: "b".repeat(64),
+            candidate_sha256: "c".repeat(64),
+            core_generated: true,
+            core_self_approved: true,
+            opportunity_kind: ChangeOpportunityKind::Defect,
+            opportunity_family_id: "family".to_string(),
+            installed: false,
+            rolled_back: true,
+            failure_reason: Some("CONCURRENT_WORKSPACE_CHANGE_DURING_VALIDATION".to_string()),
+            format_check: None,
+            compile_check: None,
+            validation: command,
+            release_build: None,
+            runtime_update_staged: false,
+            rollback_source: PathBuf::from("predecessor.source"),
+            workspace_fingerprint_before: "d".repeat(64),
+            workspace_fingerprint_after: "e".repeat(64),
+            workspace_stable_during_validation: false,
+            receipt_sha256: "f".repeat(64),
+        };
+
+        account_source_patch_receipt(&mut state, &receipt);
+
+        assert_eq!(state.autonomous_source_patch_validation_ms, 17);
+        assert_eq!(state.autonomous_source_patch_rollbacks, 0);
+        assert_eq!(state.source_patch_consecutive_failures, 0);
+        assert!(state.source_patch_recent_outcomes.is_empty());
+        assert_eq!(
+            state.last_source_discovery_reason.as_deref(),
+            Some("TRANSIENT_WORKSPACE_CONTENTION_DEFERRED")
+        );
         fs::remove_dir_all(root).unwrap();
     }
 

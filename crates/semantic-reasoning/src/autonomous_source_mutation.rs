@@ -34,7 +34,7 @@ pub const AUTONOMOUS_SOURCE_MUTATION_SCHEMA: &str = "B_CORE_AUTONOMOUS_SOURCE_MU
 pub const SELF_UPDATE_HANDOFF_FILE: &str = "SELF_UPDATE_READY.json";
 pub const SOURCE_REPAIR_LEARNING_SCHEMA: &str = "B_CORE_SOURCE_REPAIR_LEARNING_1";
 pub const IMPROVEMENT_OPERATOR_MEMORY_SCHEMA: &str = "B_CORE_IMPROVEMENT_OPERATOR_MEMORY_1";
-pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 7;
+pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 8;
 const KNOWN_REMAINDER_PREDICTED_VALUE: u16 = 35;
 const MAX_REPOSITORY_REPAIR_FAMILY_FILES: usize = 16;
 const KNOWN_REMAINDER_STRATEGIES: [&str; 4] = [
@@ -550,10 +550,21 @@ fn load_repair_learning(
         .map_err(|error| format!("SOURCE_REPAIR_LEARNING_PARSE:{error}"))
 }
 
+pub fn source_patch_failure_is_transient(reason: Option<&str>) -> bool {
+    matches!(
+        reason,
+        Some("CONCURRENT_WORKSPACE_CHANGE_DURING_VALIDATION" | "TARGET_CHANGED_DURING_VALIDATION")
+    )
+}
+
+fn source_repair_attempt_is_causal(attempt: &SourceRepairAttempt) -> bool {
+    !source_patch_failure_is_transient(attempt.failure_reason.as_deref())
+}
+
 fn active_cycle_attempts(
     record: &SourceRepairLearningRecord,
     source_generation: u64,
-) -> &[SourceRepairAttempt] {
+) -> Vec<&SourceRepairAttempt> {
     if (record.status == "ADMITTED_FAILURE"
         && record
             .eligible_after_generation
@@ -561,9 +572,13 @@ fn active_cycle_attempts(
         || (record.status != "LEARNED_SUCCESS"
             && record.cycle_started_engine_revision < SOURCE_REPAIR_ENGINE_REVISION)
     {
-        &[]
+        Vec::new()
     } else {
-        &record.attempts
+        record
+            .attempts
+            .iter()
+            .filter(|attempt| source_repair_attempt_is_causal(attempt))
+            .collect()
     }
 }
 
@@ -769,7 +784,8 @@ pub fn derive_improvement_operator_memory(
         let record: SourceRepairLearningRecord = serde_json::from_slice(&bytes)
             .map_err(|error| format!("IMPROVEMENT_OPERATOR_MEMORY_PARSE:{error}"))?;
         for attempt in &record.attempts {
-            if attempt.structural_repair_program_sha256.is_none()
+            if !source_repair_attempt_is_causal(attempt)
+                || attempt.structural_repair_program_sha256.is_none()
                 || attempt.edit_atom_kinds.is_empty()
             {
                 continue;
@@ -1083,6 +1099,9 @@ fn counterexample_from_receipt(
         .failure_reason
         .as_deref()
         .unwrap_or("UNKNOWN_FAILURE");
+    if source_patch_failure_is_transient(Some(reason)) {
+        return None;
+    }
     let (phase, command) = if reason == "FORMAT_CHECK_FAILED" {
         (ValidationPhase::Format, receipt.format_check.as_ref())
     } else if matches!(reason, "COMPILE_CHECK_FAILED" | "CLIPPY_CHECK_FAILED") {
@@ -1096,11 +1115,6 @@ fn counterexample_from_receipt(
         (
             ValidationPhase::ReleaseBuild,
             receipt.release_build.as_ref(),
-        )
-    } else if reason.contains("WORKSPACE") || reason.contains("TARGET_CHANGED") {
-        (
-            ValidationPhase::WorkspaceIntegrity,
-            Some(&receipt.validation),
         )
     } else {
         (ValidationPhase::Infrastructure, Some(&receipt.validation))
@@ -1137,6 +1151,7 @@ fn prior_counterexamples(
             record
                 .attempts
                 .into_iter()
+                .filter(source_repair_attempt_is_causal)
                 .filter_map(|attempt| attempt.validation_counterexample)
                 .collect()
         })
@@ -1231,11 +1246,11 @@ fn record_source_repair_outcome(
         record.eligible_after_generation = None;
         record.attempts.clear();
     }
-    let attempt_number = record
-        .attempts
+    let attempt_number = active_cycle_attempts(&record, request.source_generation)
         .len()
         .saturating_add(1)
         .min(u8::MAX as usize) as u8;
+    let transient_failure = source_patch_failure_is_transient(receipt.failure_reason.as_deref());
     let solution_strategy = if request.solution_strategy.is_empty() {
         request.transformation.clone()
     } else {
@@ -1324,6 +1339,12 @@ fn record_source_repair_outcome(
             weakness_evidence_kind,
             validation_duration_ms,
         });
+    } else if transient_failure {
+        // The candidate has not been falsified. Preserve the receipt for audit,
+        // but do not consume a repair strategy or the bounded causal-attempt
+        // budget merely because another process changed the worktree.
+        record.status = "RETRYING".to_string();
+        record.eligible_after_generation = None;
     } else if attempt_number >= policy.max_attempts_per_problem {
         record.status = "ADMITTED_FAILURE".to_string();
         record.eligible_after_generation = Some(request.source_generation.saturating_add(1));
@@ -2464,7 +2485,7 @@ fn repair_strategy_is_available(
     let attempted = record
         .as_ref()
         .map(|knowledge| active_cycle_attempts(knowledge, source_generation))
-        .unwrap_or(&[]);
+        .unwrap_or_default();
     Ok(
         attempted.len() < usize::from(policy.max_attempts_per_problem)
             && !attempted
@@ -2886,7 +2907,7 @@ pub fn discover_known_source_improvement_detailed(
         let attempted = record
             .as_ref()
             .map(|knowledge| active_cycle_attempts(knowledge, source_generation))
-            .unwrap_or(&[]);
+            .unwrap_or_default();
         if attempted.len() >= usize::from(policy.max_attempts_per_problem) {
             continue;
         }
@@ -3968,6 +3989,45 @@ mod tests {
         assert_eq!(learned.status, "LEARNED_SUCCESS");
         assert_eq!(learned.attempts.len(), 1);
         assert_eq!(learned.learned_success.unwrap().attempts_required, 1);
+        fs::remove_dir_all(root).unwrap();
+        fs::remove_dir_all(state).unwrap();
+    }
+
+    #[test]
+    fn workspace_contention_is_a_deferred_attempt_not_a_learned_counterexample() {
+        let (root, policy) = fixture("transient-workspace-contention");
+        let state = external_state(&root);
+        let mut problem_id = String::new();
+
+        for physical_attempt in 1..=6 {
+            let request = discover_known_source_improvement(&policy, &state, 7)
+                .unwrap()
+                .expect("same strategy remains retryable after workspace contention");
+            problem_id = repair_problem_id(&request);
+            let mut receipt = synthetic_receipt(&request, false);
+            receipt.failure_reason =
+                Some("CONCURRENT_WORKSPACE_CHANGE_DURING_VALIDATION".to_string());
+            receipt.receipt_sha256 = receipt_hash(&receipt).unwrap();
+
+            assert!(counterexample_from_receipt(&request, &receipt).is_none());
+            let knowledge =
+                record_source_repair_outcome(&policy, &state, &request, &receipt).unwrap();
+            assert_eq!(knowledge.status, "RETRYING");
+            assert_eq!(knowledge.attempts.len(), physical_attempt);
+            assert!(active_cycle_attempts(&knowledge, 7).is_empty());
+        }
+
+        let knowledge = load_repair_learning(&state, &problem_id)
+            .unwrap()
+            .expect("deferred attempts remain auditable");
+        assert!(knowledge
+            .attempts
+            .iter()
+            .all(|attempt| attempt.validation_counterexample.is_none()));
+        let memory = derive_improvement_operator_memory(&state).unwrap();
+        assert_eq!(memory.total_attempts, 0);
+        assert_eq!(memory.total_successful_uses, 0);
+
         fs::remove_dir_all(root).unwrap();
         fs::remove_dir_all(state).unwrap();
     }
