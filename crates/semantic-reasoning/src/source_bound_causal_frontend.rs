@@ -29,7 +29,11 @@ use crate::structural_source_repair::{apply_edit_atom, ByteRange, SourceEditAtom
 
 pub const SOURCE_BOUND_CAUSAL_REQUEST_SCHEMA: &str = "B_CORE_SOURCE_BOUND_CAUSAL_REQUEST_1";
 pub const SOURCE_BOUND_CAUSAL_RECEIPT_SCHEMA: &str = "B_CORE_SOURCE_BOUND_CAUSAL_RECEIPT_1";
+pub const SOURCE_BOUND_REPOSITORY_DISCOVERY_SCHEMA: &str =
+    "B_CORE_SOURCE_BOUND_REPOSITORY_DISCOVERY_1";
 const MAX_SOURCE_BYTES: usize = 2 * 1024 * 1024;
+const MAX_TEST_SOURCES: usize = 64;
+const MAX_TEST_SOURCE_BYTES: usize = 16 * 1024 * 1024;
 const MAX_CAUSAL_ALTERNATIVES: usize = 32;
 const MAX_DEPENDENCY_CLOSURE: usize = 64;
 const PYTHON_HOST_TIMEOUT: Duration = Duration::from_secs(10);
@@ -142,6 +146,34 @@ pub struct SourceBoundCausalRequestIR {
     pub alternatives: Vec<SourceBoundCausalAlternativeIR>,
 }
 
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct RepositoryTestSourceIR {
+    pub relative_path: PathBuf,
+    pub source: String,
+}
+
+/// Product entry point for deriving causal alternatives from repository
+/// source and public tests. `target_symbols` is normally populated from a
+/// failing test diagnostic; when empty, only statically contradicted or
+/// explicit-hole functions are eligible, preventing speculative rewrites of
+/// already-correct code.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct SourceBoundRepositoryDiscoveryRequestIR {
+    pub schema: String,
+    pub source_relative_path: PathBuf,
+    pub source: String,
+    pub test_sources: Vec<RepositoryTestSourceIR>,
+    pub python_executable: PathBuf,
+    #[serde(default)]
+    pub target_symbols: Vec<String>,
+    #[serde(default)]
+    pub allowed_effects: Vec<Effect>,
+    #[serde(default = "default_expression_depth")]
+    pub max_expression_depth: usize,
+    #[serde(default = "default_candidate_budget")]
+    pub max_candidates: usize,
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum CausalCutBranch {
@@ -166,6 +198,8 @@ pub struct SourceBoundFunctionTemplateIR {
     pub is_async: bool,
     pub operands: Vec<SourceOperandIR>,
     pub output_type: ProgramType,
+    pub operand_type_evidence: BTreeMap<String, String>,
+    pub output_type_evidence: String,
     pub effects: Vec<String>,
     pub direct_dependencies: Vec<String>,
     pub execution_dependency_closure: Vec<String>,
@@ -217,6 +251,24 @@ struct PythonHostResponse {
 }
 
 #[derive(Debug, Deserialize)]
+struct PythonObservationDiscoveryResponse {
+    ok: bool,
+    #[serde(default)]
+    failure: Option<String>,
+    #[serde(default)]
+    detail: Option<String>,
+    #[serde(default)]
+    alternatives: Vec<PythonDiscoveredAlternative>,
+}
+
+#[derive(Debug, Deserialize)]
+struct PythonDiscoveredAlternative {
+    qualified_symbol: String,
+    reason: String,
+    observations: Vec<TypedMechanismObservationIR>,
+}
+
+#[derive(Debug, Clone, Deserialize)]
 struct PythonFunctionDefinition {
     qualified_symbol: String,
     owner: String,
@@ -229,13 +281,13 @@ struct PythonFunctionDefinition {
     cuts: Vec<PythonCut>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 struct PythonOperand {
     name: String,
     annotation: String,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 struct PythonCut {
     branch: String,
     condition_source: Option<String>,
@@ -261,7 +313,9 @@ if not isinstance(source, str) or not isinstance(symbols, list) or not symbols:
     emit_failure("PUBLIC_INFORMATION_INSUFFICIENT", "PYTHON_HOST_INPUT")
 try:
     tree = ast.parse(source, filename="<b-core-source-bound>", type_comments=True)
-    compile(tree, "<b-core-source-bound>", "exec", ast.PyCF_ONLY_AST)
+    # Compile the AST to bytecode without executing it.  `ast.parse` alone
+    # does not exercise every context validation performed by the compiler.
+    compile(tree, "<b-core-source-bound>", "exec")
 except (SyntaxError, ValueError, TypeError) as error:
     emit_failure("UNSUPPORTED_LANGUAGE_SYNTAX", "PYTHON_PARSE:" + str(error))
 
@@ -303,13 +357,14 @@ def register_function(node, prefix):
         if argument.arg in ("self", "cls"):
             continue
         parameters.append({"name": argument.arg, "annotation": annotation(argument.annotation)})
+    unsupported_reasons = []
     if node.args.vararg is not None or node.args.kwarg is not None:
-        emit_failure("UNSUPPORTED_LANGUAGE_SYNTAX", "PYTHON_VARIADIC_PUBLIC_SYMBOL:" + qualified)
+        unsupported_reasons.append("PYTHON_VARIADIC_PUBLIC_SYMBOL:" + qualified)
     unsupported = (ast.Yield, ast.YieldFrom, ast.NamedExpr)
-    if any(isinstance(item, unsupported) for item in ast.walk(node)):
-        emit_failure("UNSUPPORTED_LANGUAGE_SYNTAX", "PYTHON_UNSUPPORTED_NODE:" + qualified)
+    if any(isinstance(item, unsupported) for item in owned_walk(node)):
+        unsupported_reasons.append("PYTHON_UNSUPPORTED_NODE:" + qualified)
     effects = set()
-    for item in ast.walk(node):
+    for item in owned_walk(node):
         if isinstance(item, ast.Await): effects.add("AWAIT")
         if isinstance(item, ast.Raise): effects.add("RAISE")
         if isinstance(item, (ast.Assign, ast.AnnAssign, ast.AugAssign, ast.Delete)): effects.add("LOCAL_MUTATION")
@@ -320,8 +375,21 @@ def register_function(node, prefix):
     definitions[qualified] = {
         "node": node, "qualified_symbol": qualified, "owner": owner,
         "is_async": isinstance(node, ast.AsyncFunctionDef), "operands": parameters,
-        "return_annotation": annotation(node.returns), "effects": sorted(effects)
+        "return_annotation": annotation(node.returns), "effects": sorted(effects),
+        "unsupported_reasons": unsupported_reasons,
     }
+
+def owned_walk(node):
+    # Calls/effects inside a nested definition belong to that definition, not
+    # to its lexical parent.  `ast.walk(function)` silently merges the two and
+    # invents dependency edges that never execute when the parent is called.
+    pending = list(ast.iter_child_nodes(node))
+    while pending:
+        current = pending.pop()
+        if isinstance(current, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef, ast.Lambda)):
+            continue
+        yield current
+        pending.extend(ast.iter_child_nodes(current))
 
 def collect(items, prefix):
     for item in items:
@@ -360,7 +428,7 @@ def resolve_call(caller, call):
 
 for qualified, definition in definitions.items():
     dependencies = set()
-    for item in ast.walk(definition["node"]):
+    for item in owned_walk(definition["node"]):
         if isinstance(item, ast.Call):
             resolved = resolve_call(qualified, item)
             if resolved and resolved != qualified: dependencies.add(resolved)
@@ -408,6 +476,9 @@ for requested in symbols:
         seen.add(current); closure.append(current)
         if len(closure) > max_closure:
             emit_failure("PUBLIC_INFORMATION_INSUFFICIENT", "DEPENDENCY_CLOSURE_BUDGET:" + requested)
+        unsupported_reasons = definitions[current]["unsupported_reasons"]
+        if unsupported_reasons:
+            emit_failure("UNSUPPORTED_LANGUAGE_SYNTAX", unsupported_reasons[0])
         pending.extend(dependency for dependency in definitions[current]["direct_dependencies"] if dependency not in seen)
     definition = definitions[requested]
     cuts = cuts_for(definition)
@@ -424,6 +495,205 @@ for requested in symbols:
 json.dump({"ok": True, "definitions": selected}, sys.stdout, ensure_ascii=False)
 "#;
 
+const PYTHON_PUBLIC_OBSERVATION_HOST: &str = r#"
+import ast, json, sys
+
+def fail(kind, detail):
+    json.dump({"ok": False, "failure": kind, "detail": detail}, sys.stdout, ensure_ascii=False)
+    raise SystemExit(0)
+
+request = json.load(sys.stdin)
+source = request.get("source")
+tests = request.get("tests")
+targets = set(request.get("target_symbols") or [])
+if not isinstance(source, str) or not isinstance(tests, list) or not tests:
+    fail("PUBLIC_INFORMATION_INSUFFICIENT", "REPOSITORY_DISCOVERY_INPUT")
+try:
+    source_tree = ast.parse(source, filename="<b-core-implementation>", type_comments=True)
+    compile(source_tree, "<b-core-implementation>", "exec")
+except (SyntaxError, ValueError, TypeError) as error:
+    fail("UNSUPPORTED_LANGUAGE_SYNTAX", "IMPLEMENTATION_PARSE:" + str(error))
+
+definitions = {}
+def collect(items, prefix):
+    for item in items:
+        if isinstance(item, ast.ClassDef):
+            collect(item.body, prefix + [item.name])
+        elif isinstance(item, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            qualified = ".".join(prefix + [item.name])
+            positional = list(item.args.posonlyargs) + list(item.args.args)
+            roles = [argument.arg for argument in positional if argument.arg not in ("self", "cls")]
+            if item.args.vararg is None and item.args.kwarg is None and len(roles) == len(set(roles)):
+                definitions[qualified] = {"node": item, "roles": roles}
+collect(source_tree.body, [])
+
+short_index = {}
+for qualified in definitions:
+    short_index.setdefault(qualified.rsplit(".", 1)[-1], []).append(qualified)
+
+def dotted(node):
+    if isinstance(node, ast.Name): return node.id
+    if isinstance(node, ast.Attribute):
+        base = dotted(node.value)
+        return (base + "." if base else "") + node.attr
+    return ""
+
+def resolve(call):
+    raw = dotted(call.func)
+    exact = [qualified for qualified in definitions if raw == qualified or raw.endswith("." + qualified)]
+    if len(exact) == 1: return exact[0]
+    matches = short_index.get(raw.rsplit(".", 1)[-1], [])
+    return matches[0] if len(matches) == 1 else None
+
+def literal(node):
+    if isinstance(node, ast.Constant) and isinstance(node.value, bool): return node.value
+    if isinstance(node, ast.Constant) and isinstance(node.value, int): return node.value
+    if isinstance(node, ast.UnaryOp) and isinstance(node.op, ast.USub):
+        value = literal(node.operand)
+        return -value if isinstance(value, int) and not isinstance(value, bool) else None
+    return None
+
+def encoded(value):
+    if isinstance(value, bool): return {"value_kind": "BOOL", "value": value}
+    if isinstance(value, int): return {"value_kind": "INT", "value": value}
+    return None
+
+def call_observation(call, expected):
+    qualified = resolve(call)
+    if qualified is None: return None
+    definition = definitions[qualified]
+    roles = definition["roles"]
+    if len(call.args) > len(roles) or any(keyword.arg is None for keyword in call.keywords): return None
+    values = {}
+    for role, argument in zip(roles, call.args):
+        value = literal(argument)
+        if encoded(value) is None: return None
+        values[role] = value
+    for keyword in call.keywords:
+        if keyword.arg not in roles or keyword.arg in values: return None
+        value = literal(keyword.value)
+        if encoded(value) is None: return None
+        values[keyword.arg] = value
+    if set(values) != set(roles) or encoded(expected) is None: return None
+    return qualified, values, expected
+
+observations = {}
+for test in tests:
+    path, test_source = test.get("relative_path", "<test>"), test.get("source")
+    if not isinstance(test_source, str):
+        fail("PUBLIC_INFORMATION_INSUFFICIENT", "TEST_SOURCE_MISSING:" + str(path))
+    try:
+        tree = ast.parse(test_source, filename=str(path), type_comments=True)
+        compile(tree, str(path), "exec")
+    except (SyntaxError, ValueError, TypeError) as error:
+        fail("UNSUPPORTED_LANGUAGE_SYNTAX", "TEST_PARSE:" + str(path) + ":" + str(error))
+    for node in ast.walk(tree):
+        observation = None
+        if isinstance(node, ast.Assert):
+            test_node = node.test
+            if isinstance(test_node, ast.Compare) and len(test_node.ops) == 1 and isinstance(test_node.ops[0], ast.Eq) and len(test_node.comparators) == 1:
+                left, right = test_node.left, test_node.comparators[0]
+                if isinstance(left, ast.Call): observation = call_observation(left, literal(right))
+                elif isinstance(right, ast.Call): observation = call_observation(right, literal(left))
+            elif isinstance(test_node, ast.Call):
+                observation = call_observation(test_node, True)
+            elif isinstance(test_node, ast.UnaryOp) and isinstance(test_node.op, ast.Not) and isinstance(test_node.operand, ast.Call):
+                observation = call_observation(test_node.operand, False)
+        if observation is not None:
+            qualified, values, expected = observation
+            key = json.dumps([values, expected], sort_keys=True, ensure_ascii=False)
+            observations.setdefault(qualified, {})[key] = {"values": values, "expected": expected}
+
+UNKNOWN = object()
+def safe_eval(node, environment):
+    if isinstance(node, ast.Constant) and isinstance(node.value, (bool, int)): return node.value
+    if isinstance(node, ast.Name): return environment.get(node.id, UNKNOWN)
+    if isinstance(node, ast.UnaryOp):
+        value = safe_eval(node.operand, environment)
+        if value is UNKNOWN: return UNKNOWN
+        if isinstance(node.op, ast.USub) and isinstance(value, int): return -value
+        if isinstance(node.op, ast.Not): return not value
+        return UNKNOWN
+    if isinstance(node, ast.BinOp):
+        left, right = safe_eval(node.left, environment), safe_eval(node.right, environment)
+        if left is UNKNOWN or right is UNKNOWN: return UNKNOWN
+        try:
+            if isinstance(node.op, ast.Add): return left + right
+            if isinstance(node.op, ast.Sub): return left - right
+            if isinstance(node.op, ast.Mult): return left * right
+            if isinstance(node.op, ast.FloorDiv) and right != 0: return left // right
+            if isinstance(node.op, ast.Mod) and right != 0: return left % right
+        except (ArithmeticError, TypeError): return UNKNOWN
+        return UNKNOWN
+    if isinstance(node, ast.Compare) and len(node.ops) == 1 and len(node.comparators) == 1:
+        left, right = safe_eval(node.left, environment), safe_eval(node.comparators[0], environment)
+        if left is UNKNOWN or right is UNKNOWN: return UNKNOWN
+        operator = node.ops[0]
+        if isinstance(operator, ast.Eq): return left == right
+        if isinstance(operator, ast.Lt): return left < right
+        if isinstance(operator, ast.Gt): return left > right
+        if isinstance(operator, ast.LtE): return left <= right
+        if isinstance(operator, ast.GtE): return left >= right
+        return UNKNOWN
+    if isinstance(node, ast.BoolOp):
+        values = [safe_eval(value, environment) for value in node.values]
+        if any(value is UNKNOWN for value in values): return UNKNOWN
+        if isinstance(node.op, ast.And): return all(values)
+        if isinstance(node.op, ast.Or): return any(values)
+    if isinstance(node, ast.IfExp):
+        condition = safe_eval(node.test, environment)
+        if condition is UNKNOWN: return UNKNOWN
+        return safe_eval(node.body if condition else node.orelse, environment)
+    return UNKNOWN
+
+def safe_statements(statements, environment):
+    for statement in statements:
+        if isinstance(statement, ast.Return) and statement.value is not None:
+            return safe_eval(statement.value, environment)
+        if isinstance(statement, ast.If):
+            condition = safe_eval(statement.test, environment)
+            if condition is UNKNOWN: return UNKNOWN
+            return safe_statements(statement.body if condition else statement.orelse, environment)
+        if isinstance(statement, ast.Pass): return UNKNOWN
+        return UNKNOWN
+    return UNKNOWN
+
+def explicit_hole(node):
+    for statement in node.body:
+        if isinstance(statement, ast.Pass): return True
+        if isinstance(statement, ast.Raise):
+            name = dotted(statement.exc.func) if isinstance(statement.exc, ast.Call) else dotted(statement.exc)
+            if name.endswith("NotImplementedError"): return True
+    return False
+
+alternatives = []
+for qualified in sorted(observations):
+    cases = list(observations[qualified].values())
+    if len(cases) < 2: continue
+    definition = definitions[qualified]
+    contradicted = False
+    evaluable = 0
+    for case in cases:
+        actual = safe_statements(definition["node"].body, case["values"])
+        if actual is not UNKNOWN:
+            evaluable += 1
+            if actual != case["expected"]: contradicted = True
+    targeted = qualified in targets
+    if not (targeted or explicit_hole(definition["node"]) or (evaluable == len(cases) and contradicted)):
+        continue
+    alternatives.append({
+        "qualified_symbol": qualified,
+        "reason": "FAILED_DIAGNOSTIC_TARGET" if targeted else ("EXPLICIT_SOURCE_HOLE" if explicit_hole(definition["node"]) else "STATIC_PUBLIC_CONTRADICTION"),
+        "observations": [
+            {"operands": {role: encoded(value) for role, value in case["values"].items()}, "expected_postimage": encoded(case["expected"])}
+            for case in cases
+        ],
+    })
+if not alternatives:
+    fail("PUBLIC_INFORMATION_INSUFFICIENT", "NO_EVIDENCE_BOUND_REPAIR_ALTERNATIVE")
+json.dump({"ok": True, "alternatives": alternatives}, sys.stdout, ensure_ascii=False)
+"#;
+
 fn map_python_type(annotation: &str) -> Option<ProgramType> {
     match annotation.trim() {
         "int" | "builtins.int" => Some(ProgramType::Int),
@@ -434,29 +704,101 @@ fn map_python_type(annotation: &str) -> Option<ProgramType> {
     }
 }
 
+fn uniform_public_operand_type(
+    observations: &[TypedMechanismObservationIR],
+    roles: &BTreeSet<String>,
+    role: &str,
+) -> Result<ProgramType, CausalFrontendFailure> {
+    let mut observed = None;
+    for observation in observations {
+        if observation
+            .operands
+            .keys()
+            .cloned()
+            .collect::<BTreeSet<_>>()
+            != *roles
+        {
+            return Err(CausalFrontendFailure::public(format!(
+                "PUBLIC_OPERAND_ROLE_SET_MISMATCH:{role}"
+            )));
+        }
+        let value_type = observation
+            .operands
+            .get(role)
+            .ok_or_else(|| CausalFrontendFailure::public(format!("PUBLIC_OPERAND_MISSING:{role}")))?
+            .program_type();
+        if observed.as_ref().is_some_and(|prior| prior != &value_type) {
+            return Err(CausalFrontendFailure::public(format!(
+                "PUBLIC_OPERAND_TYPE_CONFLICT:{role}"
+            )));
+        }
+        observed = Some(value_type);
+    }
+    observed
+        .ok_or_else(|| CausalFrontendFailure::public(format!("PUBLIC_OPERAND_TYPE_MISSING:{role}")))
+}
+
+fn uniform_public_output_type(
+    observations: &[TypedMechanismObservationIR],
+) -> Result<ProgramType, CausalFrontendFailure> {
+    let mut observed = None;
+    for observation in observations {
+        let value_type = observation.expected_postimage.program_type();
+        if observed.as_ref().is_some_and(|prior| prior != &value_type) {
+            return Err(CausalFrontendFailure::public("PUBLIC_OUTPUT_TYPE_CONFLICT"));
+        }
+        observed = Some(value_type);
+    }
+    observed.ok_or_else(|| CausalFrontendFailure::public("PUBLIC_OUTPUT_TYPE_MISSING"))
+}
+
+fn bind_declared_or_observed_type(
+    annotation: &str,
+    observed: ProgramType,
+    label: &str,
+) -> Result<(ProgramType, String), CausalFrontendFailure> {
+    match map_python_type(annotation) {
+        Some(declared) if declared != observed => Err(CausalFrontendFailure::public(format!(
+            "DECLARED_PUBLIC_TYPE_CONFLICT:{label}:{declared:?}:{observed:?}"
+        ))),
+        Some(declared) => Ok((declared, "DECLARATION_AND_PUBLIC_OBSERVATION".to_string())),
+        None => Ok((observed, "PUBLIC_OBSERVATION".to_string())),
+    }
+}
+
 fn run_python_host(
     executable: &Path,
     source: &str,
     symbols: &[String],
 ) -> Result<PythonHostResponse, CausalFrontendFailure> {
-    if !executable.is_file() {
-        return Err(CausalFrontendFailure::public(format!(
-            "PYTHON_EXECUTABLE_MISSING:{}",
-            executable.display()
-        )));
-    }
     let input = serde_json::to_vec(&serde_json::json!({
         "source": source,
         "symbols": symbols,
         "max_closure": MAX_DEPENDENCY_CLOSURE,
     }))
     .map_err(|error| CausalFrontendFailure::public(format!("PYTHON_HOST_INPUT:{error}")))?;
+    let stdout = run_python_json_host(executable, PYTHON_AST_HOST, &input)?;
+    serde_json::from_slice(&stdout)
+        .map_err(|error| CausalFrontendFailure::unsupported(format!("PYTHON_HOST_OUTPUT:{error}")))
+}
+
+fn run_python_json_host(
+    executable: &Path,
+    script: &str,
+    input: &[u8],
+) -> Result<Vec<u8>, CausalFrontendFailure> {
+    if !executable.is_file() {
+        return Err(CausalFrontendFailure::public(format!(
+            "PYTHON_EXECUTABLE_MISSING:{}",
+            executable.display()
+        )));
+    }
     let mut child = Command::new(executable)
         // `-X utf8` is required on Windows hosts whose redirected stdio
         // inherits a legacy code page.  Without it a valid Korean identifier
         // can enter Python as surrogate-escaped bytes and invalidate the AST
         // byte spans even though the Rust request is valid UTF-8.
-        .args(["-X", "utf8", "-I", "-S", "-c", PYTHON_AST_HOST])
+        .args(["-X", "utf8", "-I", "-S", "-c", script])
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
@@ -466,7 +808,7 @@ fn run_python_host(
         .stdin
         .take()
         .ok_or_else(|| CausalFrontendFailure::public("PYTHON_HOST_STDIN_MISSING"))?
-        .write_all(&input)
+        .write_all(input)
         .map_err(|error| CausalFrontendFailure::public(format!("PYTHON_HOST_STDIN:{error}")))?;
     let stdout = child
         .stdout
@@ -518,8 +860,7 @@ fn run_python_host(
                 .collect::<String>()
         )));
     }
-    serde_json::from_slice(&stdout)
-        .map_err(|error| CausalFrontendFailure::unsupported(format!("PYTHON_HOST_OUTPUT:{error}")))
+    Ok(stdout)
 }
 
 fn host_failure(response: &PythonHostResponse) -> Option<CausalFrontendFailure> {
@@ -537,19 +878,157 @@ fn host_failure(response: &PythonHostResponse) -> Option<CausalFrontendFailure> 
     })
 }
 
+fn classified_host_failure(failure: Option<&str>, detail: Option<&str>) -> CausalFrontendFailure {
+    let detail = detail.unwrap_or("PYTHON_HOST_UNCLASSIFIED").to_string();
+    match failure {
+        Some("PUBLIC_INFORMATION_INSUFFICIENT") => CausalFrontendFailure::public(detail),
+        Some("CONFLICTING_SOURCE_BOUND_EDITS") => CausalFrontendFailure::conflict(detail),
+        _ => CausalFrontendFailure::unsupported(detail),
+    }
+}
+
+/// Discover public literal observations from Python tests, retain only an
+/// explicit hole, a statically contradicted implementation, or a symbol bound
+/// by a failing diagnostic, then run the exact same source-bound synthesis and
+/// atomic materialization path as an explicit causal request.
+pub fn discover_and_synthesize_python_repository(
+    request: &SourceBoundRepositoryDiscoveryRequestIR,
+) -> Result<SourceBoundCausalReceiptIR, CausalFrontendFailure> {
+    if request.schema != SOURCE_BOUND_REPOSITORY_DISCOVERY_SCHEMA
+        || request.source.is_empty()
+        || request.source.len() > MAX_SOURCE_BYTES
+        || request.test_sources.is_empty()
+        || request.test_sources.len() > MAX_TEST_SOURCES
+        || request
+            .test_sources
+            .iter()
+            .map(|test| test.source.len())
+            .try_fold(0_usize, usize::checked_add)
+            .is_none_or(|bytes| bytes > MAX_TEST_SOURCE_BYTES)
+        || request
+            .test_sources
+            .iter()
+            .any(|test| test.source.is_empty())
+    {
+        return Err(CausalFrontendFailure::public(
+            "REPOSITORY_DISCOVERY_ENVELOPE",
+        ));
+    }
+    if language_backend_for_path(&request.source_relative_path)? != SourceLanguageBackend::PythonAst
+        || request.test_sources.iter().any(|test| {
+            language_backend_for_path(&test.relative_path) != Ok(SourceLanguageBackend::PythonAst)
+        })
+    {
+        return Err(CausalFrontendFailure::unsupported(
+            "REPOSITORY_DISCOVERY_REQUIRES_PYTHON_SOURCE_AND_TESTS",
+        ));
+    }
+    let mut target_symbols = request.target_symbols.clone();
+    target_symbols.sort();
+    target_symbols.dedup();
+    let tests = request
+        .test_sources
+        .iter()
+        .map(|test| {
+            serde_json::json!({
+                "relative_path": test.relative_path.to_string_lossy().replace('\\', "/"),
+                "source": test.source,
+            })
+        })
+        .collect::<Vec<_>>();
+    let input = serde_json::to_vec(&serde_json::json!({
+        "source": request.source,
+        "tests": tests,
+        "target_symbols": target_symbols,
+    }))
+    .map_err(|error| CausalFrontendFailure::public(format!("DISCOVERY_HOST_INPUT:{error}")))?;
+    let stdout = run_python_json_host(
+        &request.python_executable,
+        PYTHON_PUBLIC_OBSERVATION_HOST,
+        &input,
+    )?;
+    let response: PythonObservationDiscoveryResponse =
+        serde_json::from_slice(&stdout).map_err(|error| {
+            CausalFrontendFailure::unsupported(format!("DISCOVERY_HOST_OUTPUT:{error}"))
+        })?;
+    if !response.ok {
+        return Err(classified_host_failure(
+            response.failure.as_deref(),
+            response.detail.as_deref(),
+        ));
+    }
+    let alternatives = response
+        .alternatives
+        .into_iter()
+        .map(|alternative| {
+            let evidence_sha256 = sha256(
+                serde_json::to_vec(&alternative.observations)
+                    .map_err(|error| {
+                        CausalFrontendFailure::public(format!("DISCOVERY_EVIDENCE_HASH:{error}"))
+                    })?
+                    .as_slice(),
+            );
+            Ok(SourceBoundCausalAlternativeIR {
+                alternative_id: format!(
+                    "AUTO:{}:{}:{}",
+                    alternative.reason,
+                    alternative.qualified_symbol,
+                    &evidence_sha256[..16]
+                ),
+                public_symbol: alternative.qualified_symbol,
+                public_observations: alternative.observations,
+                allowed_effects: if request.allowed_effects.is_empty() {
+                    vec![Effect::Pure]
+                } else {
+                    request.allowed_effects.clone()
+                },
+                require_conditional: false,
+                max_expression_depth: request.max_expression_depth,
+                max_candidates: request.max_candidates,
+            })
+        })
+        .collect::<Result<Vec<_>, CausalFrontendFailure>>()?;
+    if alternatives.is_empty() {
+        return Err(CausalFrontendFailure::public(
+            "NO_EVIDENCE_BOUND_REPAIR_ALTERNATIVE",
+        ));
+    }
+    analyze_and_synthesize_source_bound(&SourceBoundCausalRequestIR {
+        schema: SOURCE_BOUND_CAUSAL_REQUEST_SCHEMA.to_string(),
+        source_relative_path: request.source_relative_path.clone(),
+        source: request.source.clone(),
+        python_executable: request.python_executable.clone(),
+        alternatives,
+    })
+}
+
 fn convert_python_definition(
     definition: PythonFunctionDefinition,
+    observations: &[TypedMechanismObservationIR],
 ) -> Result<SourceBoundFunctionTemplateIR, CausalFrontendFailure> {
+    let roles = definition
+        .operands
+        .iter()
+        .map(|operand| operand.name.clone())
+        .collect::<BTreeSet<_>>();
+    if roles.is_empty() || roles.len() != definition.operands.len() {
+        return Err(CausalFrontendFailure::public(format!(
+            "PUBLIC_OPERANDS_MISSING_OR_DUPLICATED:{}",
+            definition.qualified_symbol
+        )));
+    }
+    let mut operand_type_evidence = BTreeMap::new();
     let operands = definition
         .operands
         .into_iter()
         .map(|operand| {
-            let value_type = map_python_type(&operand.annotation).ok_or_else(|| {
-                CausalFrontendFailure::public(format!(
-                    "PUBLIC_OPERAND_TYPE_MISSING:{}:{}",
-                    definition.qualified_symbol, operand.name
-                ))
-            })?;
+            let observed = uniform_public_operand_type(observations, &roles, &operand.name)?;
+            let (value_type, evidence) = bind_declared_or_observed_type(
+                &operand.annotation,
+                observed,
+                &format!("{}:{}", definition.qualified_symbol, operand.name),
+            )?;
+            operand_type_evidence.insert(operand.name.clone(), evidence);
             Ok(SourceOperandIR {
                 role: operand.name.clone(),
                 source: operand.name,
@@ -557,18 +1036,12 @@ fn convert_python_definition(
             })
         })
         .collect::<Result<Vec<_>, CausalFrontendFailure>>()?;
-    if operands.is_empty() {
-        return Err(CausalFrontendFailure::public(format!(
-            "PUBLIC_OPERANDS_MISSING:{}",
-            definition.qualified_symbol
-        )));
-    }
-    let output_type = map_python_type(&definition.return_annotation).ok_or_else(|| {
-        CausalFrontendFailure::public(format!(
-            "PUBLIC_OUTPUT_TYPE_MISSING:{}",
-            definition.qualified_symbol
-        ))
-    })?;
+    let observed_output = uniform_public_output_type(observations)?;
+    let (output_type, output_type_evidence) = bind_declared_or_observed_type(
+        &definition.return_annotation,
+        observed_output,
+        &format!("{}:RETURN", definition.qualified_symbol),
+    )?;
     let cuts = definition
         .cuts
         .into_iter()
@@ -626,6 +1099,8 @@ fn convert_python_definition(
         is_async: definition.is_async,
         operands,
         output_type,
+        operand_type_evidence,
+        output_type_evidence,
         effects: definition.effects,
         direct_dependencies: definition.direct_dependencies,
         execution_dependency_closure: definition.execution_dependency_closure,
@@ -893,36 +1368,8 @@ pub fn analyze_and_synthesize_source_bound(
                 alternative.public_symbol
             ))
         })?;
-        let function_template = convert_python_definition(PythonFunctionDefinition {
-            qualified_symbol: definition.qualified_symbol.clone(),
-            owner: definition.owner.clone(),
-            is_async: definition.is_async,
-            operands: definition
-                .operands
-                .iter()
-                .map(|operand| PythonOperand {
-                    name: operand.name.clone(),
-                    annotation: operand.annotation.clone(),
-                })
-                .collect(),
-            return_annotation: definition.return_annotation.clone(),
-            effects: definition.effects.clone(),
-            direct_dependencies: definition.direct_dependencies.clone(),
-            execution_dependency_closure: definition.execution_dependency_closure.clone(),
-            cuts: definition
-                .cuts
-                .iter()
-                .map(|cut| PythonCut {
-                    branch: cut.branch.clone(),
-                    condition_source: cut.condition_source.clone(),
-                    condition_start: cut.condition_start,
-                    condition_end: cut.condition_end,
-                    postimage_source: cut.postimage_source.clone(),
-                    postimage_start: cut.postimage_start,
-                    postimage_end: cut.postimage_end,
-                })
-                .collect(),
-        })?;
+        let function_template =
+            convert_python_definition(definition.clone(), &alternative.public_observations)?;
         if function_template.qualified_symbol != alternative.public_symbol
             || function_template.execution_dependency_closure.first()
                 != Some(&alternative.public_symbol)
@@ -1142,6 +1589,198 @@ def transformer_visitor(left: int, right: int) -> int:
         assert!(patch
             .candidate_source
             .starts_with("# 한글 byte span canary\r\n"));
+    }
+
+    #[test]
+    fn unselected_unsupported_functions_do_not_poison_observation_typed_target() {
+        let Some(python_executable) = python() else {
+            return;
+        };
+        let source = r#"def unrelated(*args):
+    yield from args
+
+def noisy(left, right):
+    return left * right
+
+def add(left, right):
+    def nested():
+        return noisy(left, right)
+    return 0
+"#;
+        let request = SourceBoundCausalRequestIR {
+            schema: SOURCE_BOUND_CAUSAL_REQUEST_SCHEMA.to_string(),
+            source_relative_path: PathBuf::from("ordinary_python.py"),
+            source: source.to_string(),
+            python_executable,
+            alternatives: vec![SourceBoundCausalAlternativeIR {
+                alternative_id: "unannotated-add".to_string(),
+                public_symbol: "add".to_string(),
+                public_observations: observations(&[(2, 3, 5), (4, 7, 11)]),
+                allowed_effects: vec![Effect::Pure],
+                require_conditional: false,
+                max_expression_depth: 2,
+                max_candidates: 1_024,
+            }],
+        };
+        let receipt = analyze_and_synthesize_source_bound(&request).unwrap();
+        let alternative = &receipt.alternatives[0];
+        assert_eq!(
+            alternative.function_template.execution_dependency_closure,
+            ["add"]
+        );
+        assert_eq!(
+            alternative.function_template.output_type_evidence,
+            "PUBLIC_OBSERVATION"
+        );
+        assert!(alternative
+            .function_template
+            .operand_type_evidence
+            .values()
+            .all(|evidence| evidence == "PUBLIC_OBSERVATION"));
+        assert!(alternative
+            .materialized_patch
+            .candidate_source
+            .contains("return ((left) + (right))"));
+    }
+
+    #[test]
+    fn selected_unsupported_closure_and_conflicting_declaration_fail_precisely() {
+        let Some(python_executable) = python() else {
+            return;
+        };
+        let unsupported = SourceBoundCausalRequestIR {
+            schema: SOURCE_BOUND_CAUSAL_REQUEST_SCHEMA.to_string(),
+            source_relative_path: PathBuf::from("engine.py"),
+            source: "def gather(*args):\n    yield from args\n".to_string(),
+            python_executable: python_executable.clone(),
+            alternatives: vec![SourceBoundCausalAlternativeIR {
+                alternative_id: "gather".to_string(),
+                public_symbol: "gather".to_string(),
+                public_observations: vec![TypedMechanismObservationIR {
+                    operands: BTreeMap::from([("args".to_string(), Value::Int(1))]),
+                    expected_postimage: Value::Int(1),
+                }],
+                allowed_effects: vec![Effect::Pure],
+                require_conditional: false,
+                max_expression_depth: 1,
+                max_candidates: 16,
+            }],
+        };
+        assert_eq!(
+            analyze_and_synthesize_source_bound(&unsupported)
+                .unwrap_err()
+                .kind,
+            CausalFrontendFailureKind::UnsupportedLanguageSyntax
+        );
+
+        let conflicting = SourceBoundCausalRequestIR {
+            schema: SOURCE_BOUND_CAUSAL_REQUEST_SCHEMA.to_string(),
+            source_relative_path: PathBuf::from("engine.py"),
+            source: "def add(left: bool, right: bool) -> bool:\n    return False\n".to_string(),
+            python_executable,
+            alternatives: vec![SourceBoundCausalAlternativeIR {
+                alternative_id: "conflicting-add".to_string(),
+                public_symbol: "add".to_string(),
+                public_observations: observations(&[(2, 3, 5), (4, 7, 11)]),
+                allowed_effects: vec![Effect::Pure],
+                require_conditional: false,
+                max_expression_depth: 2,
+                max_candidates: 1_024,
+            }],
+        };
+        let error = analyze_and_synthesize_source_bound(&conflicting).unwrap_err();
+        assert_eq!(
+            error.kind,
+            CausalFrontendFailureKind::PublicInformationInsufficient
+        );
+        assert!(error.detail.starts_with("DECLARED_PUBLIC_TYPE_CONFLICT:"));
+    }
+
+    #[test]
+    fn repository_tests_autonomously_derive_a_contradicted_source_bound_goal() {
+        let Some(python_executable) = python() else {
+            return;
+        };
+        let request = SourceBoundRepositoryDiscoveryRequestIR {
+            schema: SOURCE_BOUND_REPOSITORY_DISCOVERY_SCHEMA.to_string(),
+            source_relative_path: PathBuf::from("calculator.py"),
+            source: "def add(left, right):\n    return 0\n".to_string(),
+            test_sources: vec![RepositoryTestSourceIR {
+                relative_path: PathBuf::from("test_calculator.py"),
+                source: "def test_add():\n    assert add(2, 3) == 5\n    assert add(left=4, right=7) == 11\n"
+                    .to_string(),
+            }],
+            python_executable,
+            target_symbols: Vec::new(),
+            allowed_effects: vec![Effect::Pure],
+            max_expression_depth: 2,
+            max_candidates: 1_024,
+        };
+        let receipt = discover_and_synthesize_python_repository(&request).unwrap();
+        assert_eq!(receipt.alternatives.len(), 1);
+        assert!(receipt.alternatives[0]
+            .alternative_id
+            .starts_with("AUTO:STATIC_PUBLIC_CONTRADICTION:add:"));
+        assert!(receipt.alternatives[0]
+            .materialized_patch
+            .candidate_source
+            .contains("return ((left) + (right))"));
+    }
+
+    #[test]
+    fn discovery_abstains_on_correct_or_ambiguous_code_but_accepts_diagnostic_target() {
+        let Some(python_executable) = python() else {
+            return;
+        };
+        let tests = vec![RepositoryTestSourceIR {
+            relative_path: PathBuf::from("test_engine.py"),
+            source: "def test_distance():\n    assert Rational.distance(9, 4) == 5\n    assert Rational.distance(2, 7) == 5\n"
+                .to_string(),
+        }];
+        let source = r#"class Shadow:
+    @staticmethod
+    def distance(left, right):
+        return left - right
+
+class Rational:
+    @staticmethod
+    def distance(left, right):
+        return parse_expr(left, right)
+
+def parse_expr(left, right):
+    return left + right
+"#;
+        let base = SourceBoundRepositoryDiscoveryRequestIR {
+            schema: SOURCE_BOUND_REPOSITORY_DISCOVERY_SCHEMA.to_string(),
+            source_relative_path: PathBuf::from("engine.py"),
+            source: source.to_string(),
+            test_sources: tests,
+            python_executable,
+            target_symbols: Vec::new(),
+            allowed_effects: vec![Effect::Pure],
+            max_expression_depth: 2,
+            max_candidates: 1_024,
+        };
+        assert_eq!(
+            discover_and_synthesize_python_repository(&base)
+                .unwrap_err()
+                .kind,
+            CausalFrontendFailureKind::PublicInformationInsufficient
+        );
+        let targeted = SourceBoundRepositoryDiscoveryRequestIR {
+            target_symbols: vec!["Rational.distance".to_string()],
+            ..base
+        };
+        let receipt = discover_and_synthesize_python_repository(&targeted).unwrap();
+        assert_eq!(
+            receipt.alternatives[0]
+                .function_template
+                .execution_dependency_closure,
+            ["Rational.distance", "parse_expr"]
+        );
+        assert!(receipt.alternatives[0]
+            .alternative_id
+            .starts_with("AUTO:FAILED_DIAGNOSTIC_TARGET:Rational.distance:"));
     }
 
     #[test]
