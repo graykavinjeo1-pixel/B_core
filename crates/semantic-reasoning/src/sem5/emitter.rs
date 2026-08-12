@@ -518,16 +518,17 @@ fn emit_expression_mode(node: &ProgramNode, lint_clean: bool) -> Result<String, 
                 .join(", ")
         )),
         NodeKind::SequenceRead { sequence, index } => {
+            let sequence_source = emit_postfix_receiver(sequence, lint_clean)?;
             let access = if sequence.meta.output_type == ProgramType::Image {
                 format!(
-                    "({}).pixels[({}) as usize]",
-                    emit_expression_mode(sequence, lint_clean)?,
+                    "{}.pixels[{} as usize]",
+                    sequence_source,
                     emit_expression_mode(index, lint_clean)?
                 )
             } else {
                 format!(
-                    "({})[({}) as usize]",
-                    emit_expression_mode(sequence, lint_clean)?,
+                    "{}[{} as usize]",
+                    sequence_source,
                     emit_expression_mode(index, lint_clean)?
                 )
             };
@@ -540,11 +541,11 @@ fn emit_expression_mode(node: &ProgramNode, lint_clean: bool) -> Result<String, 
             })
         }
         NodeKind::SequenceLength { sequence } => {
-            let source = emit_expression_mode(sequence, lint_clean)?;
+            let source = emit_postfix_receiver(sequence, lint_clean)?;
             if sequence.meta.output_type == ProgramType::Image {
-                Ok(format!("({source}).pixels.len() as i64"))
+                Ok(format!("{source}.pixels.len() as i64"))
             } else {
-                Ok(format!("({source}).len() as i64"))
+                Ok(format!("{source}.len() as i64"))
             }
         }
         NodeKind::Call { api_token, args } => Ok(format!(
@@ -575,6 +576,18 @@ fn emit_expression_mode(node: &ProgramNode, lint_clean: bool) -> Result<String, 
         )),
         _ => Err(format!("NODE_NOT_EXPRESSION:{}", node.meta.node_id)),
     }
+}
+
+fn emit_postfix_receiver(node: &ProgramNode, lint_clean: bool) -> Result<String, String> {
+    let emitted = emit_expression_mode(node, lint_clean)?;
+    Ok(match &node.kind {
+        NodeKind::Variable { .. }
+        | NodeKind::Load { .. }
+        | NodeKind::SequenceCreate { .. }
+        | NodeKind::SequenceRead { .. }
+        | NodeKind::Call { .. } => emitted,
+        _ => format!("({emitted})"),
+    })
 }
 
 fn emit_scalar_expression(expression: &ScalarExpression) -> Result<String, String> {
@@ -778,6 +791,94 @@ mod tests {
     use super::*;
     use crate::sem5::model::SynthesisCondition;
     use crate::sem5::{learner, tasks};
+
+    fn test_node(node_id: &str, output_type: ProgramType, kind: NodeKind) -> ProgramNode {
+        ProgramNode {
+            meta: crate::sem5::model::NodeMeta {
+                node_id: node_id.to_string(),
+                input_types: Vec::new(),
+                output_type,
+                preconditions: Vec::new(),
+                effects: Vec::new(),
+                data_dependencies: Vec::new(),
+                control_dependencies: Vec::new(),
+                provenance: vec!["POSTFIX_PRECEDENCE_TEST".to_string()],
+                primitive_cost: 1,
+            },
+            kind,
+        }
+    }
+
+    #[test]
+    fn postfix_lowering_omits_redundant_operand_parens_but_groups_branches() {
+        let direct = test_node(
+            "direct-length",
+            ProgramType::Int,
+            NodeKind::SequenceLength {
+                sequence: Box::new(test_node(
+                    "values",
+                    ProgramType::SequenceInt,
+                    NodeKind::Variable {
+                        name: "values".to_string(),
+                    },
+                )),
+            },
+        );
+        assert_eq!(
+            emit_expression_mode(&direct, true).unwrap(),
+            "values.len() as i64"
+        );
+
+        let branch = test_node(
+            "branch-length",
+            ProgramType::Int,
+            NodeKind::SequenceLength {
+                sequence: Box::new(test_node(
+                    "branch",
+                    ProgramType::SequenceInt,
+                    NodeKind::If {
+                        condition: Box::new(test_node(
+                            "flag",
+                            ProgramType::Bool,
+                            NodeKind::Variable {
+                                name: "flag".to_string(),
+                            },
+                        )),
+                        then_node: Box::new(test_node(
+                            "left",
+                            ProgramType::SequenceInt,
+                            NodeKind::SequenceCreate {
+                                elements: vec![test_node(
+                                    "one",
+                                    ProgramType::Int,
+                                    NodeKind::Literal {
+                                        value: Value::Int(1),
+                                    },
+                                )],
+                            },
+                        )),
+                        else_node: Box::new(test_node(
+                            "right",
+                            ProgramType::SequenceInt,
+                            NodeKind::SequenceCreate {
+                                elements: vec![test_node(
+                                    "two",
+                                    ProgramType::Int,
+                                    NodeKind::Literal {
+                                        value: Value::Int(2),
+                                    },
+                                )],
+                            },
+                        )),
+                    },
+                )),
+            },
+        );
+        assert_eq!(
+            emit_expression_mode(&branch, true).unwrap(),
+            "(if flag { vec![1i64] } else { vec![2i64] }).len() as i64"
+        );
+    }
 
     #[test]
     fn rust_emission_is_deterministic_and_language_separated() {

@@ -714,6 +714,12 @@ pub fn install_composite_candidate_family(
         opportunity_family_id,
         improvement_operator_invocation: Some(improvement_operator_invocation),
         improvement_operator_execution: Some(improvement_operator_execution),
+        typed_mechanism_operator_recipe: None,
+        typed_mechanism_materialized_syntax_sha256: None,
+        typed_mechanism_materialized_syntax_source: None,
+        typed_mechanism_selected_operator_id: None,
+        typed_mechanism_candidates_enumerated: 0,
+        typed_mechanism_preferred_operator_attempts: 0,
     };
     install_and_stage_source_patch(policy, state_dir, &request)
 }

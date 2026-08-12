@@ -26,7 +26,11 @@ use crate::generalized_self_application::{
 use crate::grammar_repair_synthesis::discover_grammar_repairs_for_generation_with_priors;
 use crate::self_repair_contract::sha256;
 use crate::sem5::typed_mechanism::{
-    load_authorized_typed_mechanism_operators, MAX_ACTIVE_TYPED_MECHANISM_OPERATORS,
+    load_authorized_typed_mechanism_operators, typed_mechanism_operator_authority_directory,
+    typed_mechanism_operator_directory, validate_typed_mechanism_improvement_operator,
+    validate_typed_mechanism_operator_authority, TypedMechanismImprovementOperatorIR,
+    TypedMechanismOperatorAuthorityReceiptIR, INSTALLED_TYPED_OPERATOR_AUTHORITY_SCHEMA,
+    MAX_ACTIVE_TYPED_MECHANISM_OPERATORS,
 };
 use crate::structural_source_repair::{
     execute_structural_repair, synthesize_structural_repair, SourceEditAtom,
@@ -38,11 +42,12 @@ pub const SELF_UPDATE_HANDOFF_FILE: &str = "SELF_UPDATE_READY.json";
 pub const SOURCE_REPAIR_LEARNING_SCHEMA: &str = "B_CORE_SOURCE_REPAIR_LEARNING_1";
 pub const IMPROVEMENT_OPERATOR_MEMORY_SCHEMA: &str = "B_CORE_IMPROVEMENT_OPERATOR_MEMORY_1";
 pub const MAX_IMPROVEMENT_OPERATOR_GRAPH_NODES: usize = 8;
-// Revision 15 canonicalizes compiler-family postimages before structural
-// lowering. Reopen older families so formatting failures from mechanically
-// valid but noncanonical fused/nested expressions become one replayable,
-// formatter-clean repair instead of repeated single-member fallbacks.
-pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 15;
+const MAX_TYPED_OPERATOR_RECONCILIATION_RECEIPTS: usize = 64;
+// Revision 16 promotes successfully installed typed Rust expressions into the
+// same authority-bound operator repository used by source-bound synthesis.
+// Reopen older exhausted families because a learned expression can now reduce
+// their search rather than merely adjust a post-hoc candidate score.
+pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 16;
 const KNOWN_REMAINDER_PREDICTED_VALUE: u16 = 35;
 const MAX_REPOSITORY_REPAIR_FAMILY_FILES: usize = 16;
 const KNOWN_REMAINDER_STRATEGIES: [&str; 4] = [
@@ -179,6 +184,37 @@ fn opportunity_binding_valid(request: &AutonomousSourcePatchRequest) -> bool {
             .all(|byte| byte.is_ascii_hexdigit())
 }
 
+fn validate_typed_mechanism_recipe_binding(
+    request: &AutonomousSourcePatchRequest,
+) -> Result<(), String> {
+    match (
+        &request.typed_mechanism_operator_recipe,
+        &request.typed_mechanism_materialized_syntax_sha256,
+        &request.typed_mechanism_materialized_syntax_source,
+    ) {
+        (None, None, None) => Ok(()),
+        (Some(recipe), Some(syntax_sha256), Some(syntax_source)) => {
+            validate_typed_mechanism_improvement_operator(recipe)?;
+            let synthesis_receipt_sha256 = request
+                .solution_strategy
+                .split(':')
+                .nth(2)
+                .filter(|hash| hash.len() == 64)
+                .ok_or_else(|| "TYPED_MECHANISM_RECIPE_STRATEGY_BINDING".to_string())?;
+            if recipe.evidence_sha256 != synthesis_receipt_sha256
+                || syntax_sha256.len() != 64
+                || sha256(syntax_source.as_bytes()) != *syntax_sha256
+                || !request.candidate_source.contains(syntax_source)
+                || request.structural_repair_program.is_none()
+            {
+                return Err("TYPED_MECHANISM_RECIPE_BINDING_MISMATCH".to_string());
+            }
+            Ok(())
+        }
+        _ => Err("TYPED_MECHANISM_RECIPE_PARTIAL_BINDING".to_string()),
+    }
+}
+
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct AutonomousSourcePatchRequest {
     pub schema: String,
@@ -209,6 +245,21 @@ pub struct AutonomousSourcePatchRequest {
     pub improvement_operator_invocation: Option<ImprovementOperatorInvocation>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub improvement_operator_execution: Option<ImprovementOperatorExecution>,
+    /// Canonical typed expression recipe. This has no reuse authority until
+    /// the installed patch passes format, Clippy, public tests, release build,
+    /// exact-postimage, and workspace-stability gates.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub typed_mechanism_operator_recipe: Option<TypedMechanismImprovementOperatorIR>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub typed_mechanism_materialized_syntax_sha256: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub typed_mechanism_materialized_syntax_source: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub typed_mechanism_selected_operator_id: Option<String>,
+    #[serde(default)]
+    pub typed_mechanism_candidates_enumerated: usize,
+    #[serde(default)]
+    pub typed_mechanism_preferred_operator_attempts: usize,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -588,6 +639,173 @@ fn write_mutable_json<T: Serialize>(path: &Path, value: &T) -> Result<(), String
     file.write_all(&bytes)
         .and_then(|_| file.sync_all())
         .map_err(|error| format!("SOURCE_REPAIR_LEARNING_WRITE:{error}"))
+}
+
+fn typed_operator_json_sha256<T: Serialize>(value: &T) -> Result<String, String> {
+    serde_json::to_vec(value)
+        .map(|bytes| sha256(&bytes))
+        .map_err(|error| format!("INSTALLED_TYPED_OPERATOR_JSON:{error}"))
+}
+
+fn persist_installed_typed_mechanism_operator(
+    state_dir: &Path,
+    request: &AutonomousSourcePatchRequest,
+    receipt: &AutonomousSourcePatchReceipt,
+) -> Result<(), String> {
+    let Some(recipe) = &request.typed_mechanism_operator_recipe else {
+        return Ok(());
+    };
+    validate_typed_mechanism_recipe_binding(request)?;
+    if !receipt.installed
+        || receipt.rolled_back
+        || receipt.failure_reason.is_some()
+        || !receipt
+            .format_check
+            .as_ref()
+            .is_some_and(|check| check.success)
+        || !receipt
+            .compile_check
+            .as_ref()
+            .is_some_and(|check| check.success)
+        || !receipt.validation.success
+        || !receipt
+            .release_build
+            .as_ref()
+            .is_some_and(|build| build.success)
+        || !receipt.workspace_stable_during_validation
+        || receipt.receipt_sha256.len() != 64
+        || receipt.candidate_sha256 != request.candidate_sha256
+    {
+        return Err("INSTALLED_TYPED_OPERATOR_WITHOUT_COMPLETE_VALIDATION".to_string());
+    }
+
+    let mut operator = recipe.clone();
+    operator.evidence_sha256 = receipt.validation.output_sha256.clone();
+    validate_typed_mechanism_improvement_operator(&operator)?;
+    let operator_directory = typed_mechanism_operator_directory(state_dir);
+    let authority_directory = typed_mechanism_operator_authority_directory(state_dir);
+    fs::create_dir_all(&operator_directory)
+        .map_err(|error| format!("INSTALLED_TYPED_OPERATOR_DIRECTORY:{error}"))?;
+    fs::create_dir_all(&authority_directory)
+        .map_err(|error| format!("INSTALLED_TYPED_OPERATOR_AUTHORITY_DIRECTORY:{error}"))?;
+    let operator_path = operator_directory.join(format!("{}.json", operator.operator_id));
+    if operator_path.exists() {
+        let bytes = fs::read(&operator_path)
+            .map_err(|error| format!("INSTALLED_TYPED_OPERATOR_READ:{error}"))?;
+        let stored: TypedMechanismImprovementOperatorIR = serde_json::from_slice(&bytes)
+            .map_err(|error| format!("INSTALLED_TYPED_OPERATOR_PARSE:{error}"))?;
+        validate_typed_mechanism_improvement_operator(&stored)?;
+        let mut stored_identity = stored.clone();
+        stored_identity.evidence_sha256.clear();
+        let mut requested_identity = operator.clone();
+        requested_identity.evidence_sha256.clear();
+        if stored_identity != requested_identity {
+            return Err("INSTALLED_TYPED_OPERATOR_REPOSITORY_COLLISION".to_string());
+        }
+        // Preserve immutable first evidence. A new authority receipt below
+        // records the latest verified generation without rewriting history.
+        operator = stored;
+    } else {
+        write_immutable_json(&operator_path, &operator)?;
+    }
+
+    let repair_id = sha256(
+        format!(
+            "INSTALLED_TYPED_SOURCE_REPAIR_1:{}:{}:{}",
+            request.patch_id, request.predecessor_sha256, request.candidate_sha256
+        )
+        .as_bytes(),
+    );
+    let authority_id = sha256(
+        format!(
+            "INSTALLED_TYPED_OPERATOR_AUTHORITY_1:{}:{}:{}:{}",
+            operator.operator_id, repair_id, receipt.receipt_sha256, operator.evidence_sha256
+        )
+        .as_bytes(),
+    );
+    let mut authority = TypedMechanismOperatorAuthorityReceiptIR {
+        schema: INSTALLED_TYPED_OPERATOR_AUTHORITY_SCHEMA.to_string(),
+        authority_id: authority_id.clone(),
+        operator_id: operator.operator_id.clone(),
+        operator_sha256: typed_operator_json_sha256(&operator)?,
+        repair_id,
+        repair_receipt_sha256: receipt.receipt_sha256.clone(),
+        sandbox_output_sha256: operator.evidence_sha256.clone(),
+        candidate_sha256: request.candidate_sha256.clone(),
+        sandbox_verified: true,
+        sandbox_cleaned: true,
+        authoritative_scope_stable: true,
+        candidate_installed: true,
+        authoritative_source_write_events: 1,
+        codex_calls: 0,
+        external_llm_calls: 0,
+        network_reads: 0,
+        network_writes: 0,
+        promotion_generation: request.source_generation,
+        receipt_sha256: String::new(),
+    };
+    authority.receipt_sha256 = typed_operator_json_sha256(&authority)?;
+    validate_typed_mechanism_operator_authority(&authority)?;
+    let authority_path = authority_directory.join(format!("{authority_id}.json"));
+    if authority_path.exists() {
+        let bytes = fs::read(&authority_path)
+            .map_err(|error| format!("INSTALLED_TYPED_OPERATOR_AUTHORITY_READ:{error}"))?;
+        let stored: TypedMechanismOperatorAuthorityReceiptIR = serde_json::from_slice(&bytes)
+            .map_err(|error| format!("INSTALLED_TYPED_OPERATOR_AUTHORITY_PARSE:{error}"))?;
+        if stored != authority {
+            return Err("INSTALLED_TYPED_OPERATOR_AUTHORITY_COLLISION".to_string());
+        }
+    } else {
+        write_immutable_json(&authority_path, &authority)?;
+    }
+    Ok(())
+}
+
+fn reconcile_installed_typed_mechanism_operators(state_dir: &Path) -> Result<usize, String> {
+    let mutation_directory = state_dir.join("source_mutations");
+    if !mutation_directory.is_dir() {
+        return Ok(0);
+    }
+    let mut mutations = fs::read_dir(&mutation_directory)
+        .map_err(|error| format!("TYPED_OPERATOR_RECONCILE_READ_DIR:{error}"))?
+        .collect::<Result<Vec<_>, _>>()
+        .map_err(|error| format!("TYPED_OPERATOR_RECONCILE_ENTRY:{error}"))?
+        .into_iter()
+        .filter(|entry| entry.path().is_dir())
+        .map(|entry| {
+            let modified = entry
+                .metadata()
+                .and_then(|metadata| metadata.modified())
+                .unwrap_or(std::time::SystemTime::UNIX_EPOCH);
+            (modified, entry.path())
+        })
+        .collect::<Vec<_>>();
+    mutations.sort_by(|left, right| right.0.cmp(&left.0).then_with(|| left.1.cmp(&right.1)));
+    mutations.truncate(MAX_TYPED_OPERATOR_RECONCILIATION_RECEIPTS);
+    let mut reconciled = 0_usize;
+    for (_, mutation) in mutations {
+        let request_path = mutation.join("request.json");
+        let receipt_path = mutation.join("receipt.json");
+        if !request_path.is_file() || !receipt_path.is_file() {
+            continue;
+        }
+        let request_bytes = fs::read(&request_path)
+            .map_err(|error| format!("TYPED_OPERATOR_RECONCILE_REQUEST_READ:{error}"))?;
+        let request: AutonomousSourcePatchRequest = serde_json::from_slice(&request_bytes)
+            .map_err(|error| format!("TYPED_OPERATOR_RECONCILE_REQUEST_PARSE:{error}"))?;
+        if request.typed_mechanism_operator_recipe.is_none() {
+            continue;
+        }
+        let receipt_bytes = fs::read(&receipt_path)
+            .map_err(|error| format!("TYPED_OPERATOR_RECONCILE_RECEIPT_READ:{error}"))?;
+        let receipt: AutonomousSourcePatchReceipt = serde_json::from_slice(&receipt_bytes)
+            .map_err(|error| format!("TYPED_OPERATOR_RECONCILE_RECEIPT_PARSE:{error}"))?;
+        if receipt.installed {
+            persist_installed_typed_mechanism_operator(state_dir, &request, &receipt)?;
+            reconciled = reconciled.saturating_add(1);
+        }
+    }
+    Ok(reconciled)
 }
 
 fn repair_problem_id(request: &AutonomousSourcePatchRequest) -> String {
@@ -2743,6 +2961,7 @@ fn install_primary_and_stage_source_patch(
     {
         return Err("SOURCE_MUTATION_REQUEST_INVALID".to_string());
     }
+    validate_typed_mechanism_recipe_binding(request)?;
     let handoff_path = state_dir.join("control").join(SELF_UPDATE_HANDOFF_FILE);
     if handoff_path.exists() {
         return Err("SOURCE_UPDATE_ALREADY_STAGED".to_string());
@@ -3212,6 +3431,11 @@ fn install_primary_and_stage_source_patch(
         source_receipt: receipt_path,
     };
     write_immutable_json(&handoff_path, &handoff)?;
+    // Promotion is deliberately after the durable source receipt and runtime
+    // handoff. If a filesystem interruption occurs here, the installed repair
+    // remains recoverable and the immutable request/receipt pair can be
+    // reconciled on the next discovery cycle.
+    persist_installed_typed_mechanism_operator(state_dir, request, &receipt)?;
     Ok(receipt)
 }
 
@@ -3641,6 +3865,12 @@ fn compiler_guided_request(
             opportunity_family_id,
             improvement_operator_invocation: Some(invocation),
             improvement_operator_execution: Some(operator_execution),
+            typed_mechanism_operator_recipe: None,
+            typed_mechanism_materialized_syntax_sha256: None,
+            typed_mechanism_materialized_syntax_source: None,
+            typed_mechanism_selected_operator_id: None,
+            typed_mechanism_candidates_enumerated: 0,
+            typed_mechanism_preferred_operator_attempts: 0,
         }));
     }
     Ok(None)
@@ -3677,6 +3907,7 @@ fn grammar_synthesized_request(
     if !policy.auto_synthesize_grammar_repairs {
         return Ok(None);
     }
+    reconcile_installed_typed_mechanism_operators(state_dir)?;
     let typed_operator_priors =
         load_authorized_typed_mechanism_operators(state_dir, MAX_ACTIVE_TYPED_MECHANISM_OPERATORS)?;
     let mut ranked = Vec::new();
@@ -3864,6 +4095,13 @@ fn grammar_synthesized_request(
             opportunity_family_id,
             improvement_operator_invocation: Some(invocation),
             improvement_operator_execution: Some(operator_execution),
+            typed_mechanism_operator_recipe: candidate.typed_mechanism_operator_recipe,
+            typed_mechanism_materialized_syntax_sha256: candidate.materialized_syntax_sha256,
+            typed_mechanism_materialized_syntax_source: candidate.materialized_syntax_source,
+            typed_mechanism_selected_operator_id: candidate.typed_mechanism_selected_operator_id,
+            typed_mechanism_candidates_enumerated: candidate.typed_mechanism_candidates_enumerated,
+            typed_mechanism_preferred_operator_attempts: candidate
+                .typed_mechanism_preferred_operator_attempts,
         }));
     }
     Ok(None)
@@ -4085,6 +4323,12 @@ fn discover_source_improvement_lane(
                     opportunity_family_id,
                     improvement_operator_invocation: Some(invocation),
                     improvement_operator_execution: Some(operator_execution),
+                    typed_mechanism_operator_recipe: None,
+                    typed_mechanism_materialized_syntax_sha256: None,
+                    typed_mechanism_materialized_syntax_source: None,
+                    typed_mechanism_selected_operator_id: None,
+                    typed_mechanism_candidates_enumerated: 0,
+                    typed_mechanism_preferred_operator_attempts: 0,
                 }),
             });
         }
@@ -4787,6 +5031,68 @@ mod tests {
             .learned_success
             .as_ref()
             .is_some_and(|success| success.solution_strategy.contains("BINARY_ADD")));
+        fs::remove_dir_all(root).unwrap();
+        fs::remove_dir_all(state).unwrap();
+    }
+
+    #[test]
+    fn installed_rust_typed_repair_promotes_and_accelerates_the_next_repository() {
+        let (root, mut policy) = fixture("installed-rust-typed-operator");
+        policy.auto_discover_known_transformations = false;
+        policy.auto_discover_compiler_repairs = false;
+        policy.auto_synthesize_grammar_repairs = true;
+        policy.minimum_predicted_value = 60;
+        fs::write(
+            root.join("src/lib.rs"),
+            "pub fn count(values: &[i64]) -> i64 {\n    todo!()\n}\n\n#[cfg(test)]\nmod tests {\n    #[test]\n    fn count_examples() {\n        assert_eq!(super::count(&[1, 2]), 2);\n        assert_eq!(super::count(&[7]), 1);\n    }\n}\n",
+        )
+        .unwrap();
+        let state = external_state(&root);
+
+        let first = discover_known_source_improvement(&policy, &state, 20)
+            .unwrap()
+            .expect("cold typed Rust repair");
+        let operator_id = first
+            .typed_mechanism_operator_recipe
+            .as_ref()
+            .map(|operator| operator.operator_id.clone())
+            .expect("canonical typed recipe");
+        assert_eq!(first.typed_mechanism_selected_operator_id, None);
+        assert!(first.typed_mechanism_candidates_enumerated > 1);
+        let first_enumerated = first.typed_mechanism_candidates_enumerated;
+        let mut tampered_binding = first.clone();
+        tampered_binding.typed_mechanism_materialized_syntax_source = Some("0i64".to_string());
+        assert_eq!(
+            validate_typed_mechanism_recipe_binding(&tampered_binding),
+            Err("TYPED_MECHANISM_RECIPE_BINDING_MISMATCH".to_string())
+        );
+        let receipt = install_and_stage_source_patch(&policy, &state, &first).unwrap();
+        assert!(receipt.installed);
+        assert!(receipt.validation.success);
+        let authorized =
+            load_authorized_typed_mechanism_operators(&state, MAX_ACTIVE_TYPED_MECHANISM_OPERATORS)
+                .unwrap();
+        assert!(authorized
+            .iter()
+            .any(|operator| operator.operator_id == operator_id));
+
+        fs::write(
+            root.join("src/lib.rs"),
+            "pub fn count(values: &[i64]) -> i64 {\n    values.len() as i64\n}\n\npub fn amount(payload: &[i64]) -> i64 {\n    todo!()\n}\n\n#[cfg(test)]\nmod tests {\n    #[test]\n    fn amount_examples() {\n        assert_eq!(super::amount(&[4, 5, 6]), 3);\n        assert_eq!(super::amount(&[8]), 1);\n    }\n}\n",
+        )
+        .unwrap();
+        let second = discover_known_source_improvement(&policy, &state, 21)
+            .unwrap()
+            .expect("warm renamed typed Rust repair");
+        assert_eq!(
+            second.typed_mechanism_selected_operator_id.as_deref(),
+            Some(operator_id.as_str())
+        );
+        assert_eq!(second.typed_mechanism_preferred_operator_attempts, 1);
+        assert!(second.typed_mechanism_candidates_enumerated < first_enumerated);
+        assert!(second.candidate_source.contains("payload"));
+        assert!(second.candidate_source.contains(".len() as i64"));
+
         fs::remove_dir_all(root).unwrap();
         fs::remove_dir_all(state).unwrap();
     }

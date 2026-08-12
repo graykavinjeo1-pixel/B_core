@@ -79,11 +79,17 @@ pub struct GrammarRepairCandidate {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub materialized_syntax_sha256: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub materialized_syntax_source: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub typed_mechanism_selected_operator_id: Option<String>,
     #[serde(default)]
     pub typed_mechanism_candidates_enumerated: usize,
     #[serde(default)]
     pub typed_mechanism_preferred_operator_attempts: usize,
+    /// Canonical expression recipe only. It is not reusable authority until
+    /// the materialized Rust patch passes the complete installation cascade.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub typed_mechanism_operator_recipe: Option<TypedMechanismImprovementOperatorIR>,
     #[serde(default)]
     pub repair_family: String,
     #[serde(default = "one_family_member")]
@@ -244,9 +250,11 @@ fn synthesize_evidence_bound_family_candidates(
             public_examples_satisfied,
             typed_mechanism_receipt_sha256: None,
             materialized_syntax_sha256: None,
+            materialized_syntax_source: None,
             typed_mechanism_selected_operator_id: None,
             typed_mechanism_candidates_enumerated: 0,
             typed_mechanism_preferred_operator_attempts: 0,
+            typed_mechanism_operator_recipe: None,
             repair_family,
             family_member_count,
             additional_family_files: Vec::new(),
@@ -293,6 +301,7 @@ struct TypedHoleSynthesis {
     selected_operator_id: Option<String>,
     candidates_enumerated: usize,
     preferred_operator_attempts: usize,
+    operator_recipe: TypedMechanismImprovementOperatorIR,
 }
 
 fn sem5_transport_type(type_name: &str) -> Option<ProgramType> {
@@ -424,6 +433,12 @@ fn synthesize_typed_hole_expression(
     };
     let receipt = synthesize_typed_mechanism_goal_with_priors(&request, priors).ok()?;
     let family = format!("TYPED_MECHANISM_SYNTHESIS:{}", receipt.receipt_sha256);
+    let operator_recipe =
+        crate::sem5::typed_mechanism::typed_mechanism_improvement_operator_from_receipt(
+            &receipt,
+            receipt.receipt_sha256.clone(),
+        )
+        .ok()?;
     Some(TypedHoleSynthesis {
         family,
         expression: receipt.template.complete_expression_source,
@@ -435,6 +450,7 @@ fn synthesize_typed_hole_expression(
         selected_operator_id: receipt.selected_operator_id,
         candidates_enumerated: receipt.candidates_enumerated,
         preferred_operator_attempts: receipt.preferred_operator_attempts,
+        operator_recipe,
     })
 }
 
@@ -2073,13 +2089,22 @@ fn candidates_for_file(
             .map(|(index, (family, expression))| {
                 let score =
                     public_example_score(&family, &expression, &hole.callable, &public_examples);
-                (index + typed_offset, family, expression, score, None, 0, 0)
+                (
+                    index + typed_offset,
+                    family,
+                    expression,
+                    score,
+                    None,
+                    0,
+                    0,
+                    None,
+                )
             })
             // A candidate that disagrees with any example it can evaluate is
             // already falsified and must not consume a compile/test attempt.
             // Unevaluable typed calls remain hypotheses for the authoritative
             // source-validation gate.
-            .filter(|(_, _, _, score, _, _, _)| {
+            .filter(|(_, _, _, score, _, _, _, _)| {
                 score.evaluated == 0 || score.satisfied == score.evaluated
             })
             .collect::<Vec<_>>();
@@ -2096,10 +2121,11 @@ fn candidates_for_file(
                     typed.selected_operator_id,
                     typed.candidates_enumerated,
                     typed.preferred_operator_attempts,
+                    Some(typed.operator_recipe),
                 ));
             }
         }
-        compositions.sort_by_key(|(index, _, _, score, _, _, _)| {
+        compositions.sort_by_key(|(index, _, _, score, _, _, _, _)| {
             let satisfies_every_observed_example = score.observed > 0
                 && score.evaluated == score.observed
                 && score.satisfied == score.observed;
@@ -2118,6 +2144,7 @@ fn candidates_for_file(
             selected_operator_id,
             candidates_enumerated,
             preferred_operator_attempts,
+            operator_recipe,
         ) in compositions.into_iter().take(MAX_CANDIDATES_PER_HOLE)
         {
             let mut candidate_source = String::with_capacity(
@@ -2180,9 +2207,13 @@ fn candidates_for_file(
                 materialized_syntax_sha256: family
                     .starts_with("TYPED_MECHANISM_SYNTHESIS:")
                     .then(|| sha256(expression.as_bytes())),
+                materialized_syntax_source: family
+                    .starts_with("TYPED_MECHANISM_SYNTHESIS:")
+                    .then(|| expression.clone()),
                 typed_mechanism_selected_operator_id: selected_operator_id,
                 typed_mechanism_candidates_enumerated: candidates_enumerated,
                 typed_mechanism_preferred_operator_attempts: preferred_operator_attempts,
+                typed_mechanism_operator_recipe: operator_recipe,
                 repair_family: format!("{}:{family}", hole.kind),
                 family_member_count: 1,
                 additional_family_files: Vec::new(),
@@ -2433,9 +2464,11 @@ fn synthesize_repository_family_candidates(
             public_examples_satisfied,
             typed_mechanism_receipt_sha256: None,
             materialized_syntax_sha256: None,
+            materialized_syntax_source: None,
             typed_mechanism_selected_operator_id: None,
             typed_mechanism_candidates_enumerated: 0,
             typed_mechanism_preferred_operator_attempts: 0,
+            typed_mechanism_operator_recipe: None,
             repair_family,
             family_member_count,
             additional_family_files,

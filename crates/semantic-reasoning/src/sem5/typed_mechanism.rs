@@ -27,6 +27,8 @@ pub const TYPED_MECHANISM_GOAL_SCHEMA: &str = "B_CORE_TYPED_MECHANISM_GOAL_1";
 pub const TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA: &str = "B_CORE_TYPED_MECHANISM_SYNTHESIS_GOAL_1";
 pub const CONCRETE_SYNTAX_TEMPLATE_SCHEMA: &str = "B_CORE_CONCRETE_SYNTAX_TEMPLATE_1";
 pub const SOURCE_BOUND_OPERATOR_AUTHORITY_SCHEMA: &str = "B_CORE_SOURCE_BOUND_OPERATOR_AUTHORITY_1";
+pub const INSTALLED_TYPED_OPERATOR_AUTHORITY_SCHEMA: &str =
+    "B_CORE_INSTALLED_TYPED_OPERATOR_AUTHORITY_1";
 pub const MAX_ACTIVE_TYPED_MECHANISM_OPERATORS: usize = 256;
 const MAX_MECHANISM_OPERANDS: usize = 32;
 const MAX_MECHANISM_EXPRESSION_NODES: usize = 256;
@@ -152,7 +154,7 @@ pub struct TypedMechanismSynthesisReceiptIR {
 }
 
 /// A name-independent, content-addressed expression recipe retained from a
-/// previously falsified and externally verified typed repair. Operand roles
+/// previously falsified and execution-verified typed repair. Operand roles
 /// are canonical ARG_0..ARG_N positions so the recipe can be transported to a
 /// fresh repository without retaining source identifiers or patch text.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -168,10 +170,11 @@ pub struct TypedMechanismImprovementOperatorIR {
     pub evidence_sha256: String,
 }
 
-/// Independent verification authority for a reusable typed expression
-/// operator.  The historical directory/schema names remain stable, but the
-/// operator itself is language-neutral and may be consumed by both Python and
-/// Rust source frontends after this receipt is validated.
+/// Immutable execution authority for a reusable typed expression operator.
+/// The historical directory names remain stable, but the operator itself is
+/// language-neutral and may be consumed by both Python and Rust source
+/// frontends after an isolated-sandbox or installed-repair receipt is
+/// validated.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct TypedMechanismOperatorAuthorityReceiptIR {
     pub schema: String,
@@ -221,8 +224,22 @@ pub fn typed_mechanism_operator_authority_directory(state_dir: &Path) -> PathBuf
 pub fn validate_typed_mechanism_operator_authority(
     authority: &TypedMechanismOperatorAuthorityReceiptIR,
 ) -> Result<(), String> {
-    if authority.schema != SOURCE_BOUND_OPERATOR_AUTHORITY_SCHEMA
-        || authority.authority_id.len() != 64
+    let authority_prefix = match authority.schema.as_str() {
+        SOURCE_BOUND_OPERATOR_AUTHORITY_SCHEMA
+            if !authority.candidate_installed
+                && authority.authoritative_source_write_events == 0 =>
+        {
+            "SOURCE_BOUND_OPERATOR_AUTHORITY_1"
+        }
+        INSTALLED_TYPED_OPERATOR_AUTHORITY_SCHEMA
+            if authority.candidate_installed
+                && authority.authoritative_source_write_events == 1 =>
+        {
+            "INSTALLED_TYPED_OPERATOR_AUTHORITY_1"
+        }
+        _ => return Err("SOURCE_BOUND_OPERATOR_AUTHORITY_ENVELOPE".to_string()),
+    };
+    if authority.authority_id.len() != 64
         || authority.operator_id.len() != 64
         || authority.operator_sha256.len() != 64
         || authority.repair_id.len() != 64
@@ -232,8 +249,6 @@ pub fn validate_typed_mechanism_operator_authority(
         || !authority.sandbox_verified
         || !authority.sandbox_cleaned
         || !authority.authoritative_scope_stable
-        || authority.candidate_installed
-        || authority.authoritative_source_write_events != 0
         || authority.codex_calls != 0
         || authority.external_llm_calls != 0
         || authority.network_reads != 0
@@ -243,7 +258,7 @@ pub fn validate_typed_mechanism_operator_authority(
     }
     let expected_authority_id = sha256(
         format!(
-            "SOURCE_BOUND_OPERATOR_AUTHORITY_1:{}:{}:{}:{}",
+            "{authority_prefix}:{}:{}:{}:{}",
             authority.operator_id,
             authority.repair_id,
             authority.repair_receipt_sha256,
@@ -287,9 +302,9 @@ pub fn select_bounded_typed_mechanism_operator_ids(
     selected
 }
 
-/// Load only operators backed by an immutable, independently verified
-/// authority receipt. Missing repositories are an empty snapshot; malformed
-/// authority is a hard failure rather than an untrusted fallback.
+/// Load only operators backed by an immutable execution-authority receipt.
+/// Missing repositories are an empty snapshot; malformed authority is a hard
+/// failure rather than an untrusted fallback.
 pub fn load_authorized_typed_mechanism_operators(
     state_dir: &Path,
     limit: usize,
@@ -1778,7 +1793,7 @@ fn emit_expression(
     match expression {
         TypedSyntaxExpressionIR::Operand { role } => sources
             .get(role)
-            .map(|source| format!("({source})"))
+            .cloned()
             .ok_or_else(|| format!("TYPED_MECHANISM_UNKNOWN_ROLE:{role}")),
         TypedSyntaxExpressionIR::IntLiteral { value } => Ok(format!("{value}i64")),
         TypedSyntaxExpressionIR::BoolLiteral { value } => Ok(value.to_string()),
@@ -1801,16 +1816,16 @@ fn emit_expression(
             emit_expression(right, sources, operands, definitions)?
         )),
         TypedSyntaxExpressionIR::Length { input } => Ok(format!(
-            "({}).len() as i64",
-            emit_expression(input, sources, operands, definitions)?
+            "{}.len() as i64",
+            emit_postfix_receiver(input, sources, operands, definitions)?
         )),
         TypedSyntaxExpressionIR::Index { collection, index } => {
             let mut effects = BTreeSet::new();
             let collection_type =
                 infer_expression_type(collection, operands, definitions, &mut effects)?;
             let access = format!(
-                "({})[({}) as usize]",
-                emit_expression(collection, sources, operands, definitions)?,
+                "{}[{} as usize]",
+                emit_postfix_receiver(collection, sources, operands, definitions)?,
                 emit_expression(index, sources, operands, definitions)?
             );
             match collection_type {
@@ -1832,6 +1847,21 @@ fn emit_expression(
                 .join(", ")
         )),
     }
+}
+
+fn emit_postfix_receiver(
+    expression: &TypedSyntaxExpressionIR,
+    sources: &BTreeMap<String, String>,
+    operands: &BTreeMap<String, ProgramType>,
+    definitions: &BTreeMap<String, &ApiDefinition>,
+) -> Result<String, String> {
+    let emitted = emit_expression(expression, sources, operands, definitions)?;
+    Ok(match expression {
+        TypedSyntaxExpressionIR::Operand { .. }
+        | TypedSyntaxExpressionIR::Call { .. }
+        | TypedSyntaxExpressionIR::Index { .. } => emitted,
+        _ => format!("({emitted})"),
+    })
 }
 
 fn lower_expression(
