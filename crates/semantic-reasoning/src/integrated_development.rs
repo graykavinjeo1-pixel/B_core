@@ -27,7 +27,7 @@ use crate::self_repair_contract::{
     sha256, validate_installation_authority, DefectContractIR, Frozen, InstallationGateError,
     ObservationIR, PatchCandidateIR, RepairSpecIR, VerificationReceipt,
 };
-use crate::sem27::engine::{
+use crate::sem27_engine::{
     run_post_scaffold_epoch, PostScaffoldEpochRequest, PostScaffoldEpochResult,
 };
 use crate::sem5::{
@@ -44,6 +44,10 @@ use crate::structural_source_repair::synthesize_structural_repair;
 
 pub const CAMPAIGN_ID: &str = "B_CORE-INTEGRATED-DEVELOPMENT-01";
 pub const AUTHORITATIVE_PREDECESSOR: &str = "8092ea4aba69fd23c9f4e9d56132d488a58e0382";
+const CAPABILITY_REGISTRY_SCHEMA_REVISION: u64 = 4;
+const MAX_INSTALLED_TYPED_CAPABILITIES: usize = 64;
+const CAPABILITY_BEGIN_PREFIX: &str = "// B_CORE_CAPABILITY_BEGIN:";
+const CAPABILITY_END_PREFIX: &str = "// B_CORE_CAPABILITY_END:";
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct CapabilityOpportunityIR {
@@ -135,6 +139,8 @@ pub struct BehavioralCompositionCanaryReceipt {
     pub installed_program_match: bool,
     #[serde(default)]
     pub installed_source_schema_revision: u64,
+    #[serde(default)]
+    pub installed_registry_capability_count: usize,
     #[serde(default)]
     pub installed_cases_executed: usize,
     #[serde(default)]
@@ -345,6 +351,160 @@ fn rustfmt_generated_source(
     String::from_utf8(output.stdout).map_err(|error| format!("COMPOSITE_RUSTFMT_UTF8:{error}"))
 }
 
+fn extract_generated_const_str(source: &str, name: &str) -> Option<String> {
+    let marker = format!("pub const {name}: &str");
+    let start = source.find(&marker)?;
+    let declaration = &source[start..];
+    let equals = declaration.find('=')?;
+    let value = declaration[equals + 1..].trim_start();
+    let value = value.strip_prefix('"')?;
+    let end = value.find('"')?;
+    Some(value[..end].to_string())
+}
+
+fn capability_module_name(program_ir_sha256: &str) -> Result<String, String> {
+    if program_ir_sha256.len() != 64
+        || !program_ir_sha256
+            .bytes()
+            .all(|byte| byte.is_ascii_hexdigit())
+    {
+        return Err("CAPABILITY_REGISTRY_PROGRAM_HASH_INVALID".to_string());
+    }
+    Ok(format!("capability_{}", &program_ir_sha256[..16]))
+}
+
+fn wrap_capability_module(
+    program_ir_sha256: &str,
+    callable_source: &str,
+) -> Result<String, String> {
+    let module = capability_module_name(program_ir_sha256)?;
+    let mut output = format!("{CAPABILITY_BEGIN_PREFIX}{program_ir_sha256}\nmod {module} {{\n");
+    for line in callable_source.lines() {
+        output.push_str("    ");
+        output.push_str(line);
+        output.push('\n');
+    }
+    output.push_str("}\n");
+    output.push_str(&format!("{CAPABILITY_END_PREFIX}{program_ir_sha256}\n"));
+    Ok(output)
+}
+
+fn existing_capability_sections(source: &str) -> Result<Vec<(String, String)>, String> {
+    let mut sections = Vec::new();
+    let mut remaining = source;
+    while let Some(begin_offset) = remaining.find(CAPABILITY_BEGIN_PREFIX) {
+        let from_begin = &remaining[begin_offset..];
+        let begin_line_end = from_begin
+            .find('\n')
+            .ok_or_else(|| "CAPABILITY_REGISTRY_BEGIN_TRUNCATED".to_string())?;
+        let hash = from_begin[CAPABILITY_BEGIN_PREFIX.len()..begin_line_end]
+            .trim()
+            .to_string();
+        capability_module_name(&hash)?;
+        let end_marker = format!("{CAPABILITY_END_PREFIX}{hash}");
+        let end_offset = from_begin
+            .find(&end_marker)
+            .ok_or_else(|| "CAPABILITY_REGISTRY_END_MISSING".to_string())?;
+        let after_marker = end_offset + end_marker.len();
+        let section_end = from_begin[after_marker..]
+            .find('\n')
+            .map(|offset| after_marker + offset + 1)
+            .unwrap_or(from_begin.len());
+        sections.push((hash, from_begin[..section_end].to_string()));
+        remaining = &from_begin[section_end..];
+    }
+    Ok(sections)
+}
+
+fn merge_typed_capability_registry(
+    predecessor_source: &str,
+    new_callable_source: &str,
+    current_program_id: &str,
+    current_program_ir_sha256: &str,
+) -> Result<String, String> {
+    if extract_generated_const_str(new_callable_source, "GENERATED_PROGRAM_IR_SHA256").as_deref()
+        != Some(current_program_ir_sha256)
+        || extract_generated_const_str(new_callable_source, "GENERATED_PROGRAM_ID").as_deref()
+            != Some(current_program_id)
+    {
+        return Err("CAPABILITY_REGISTRY_CALLABLE_IDENTITY_MISMATCH".to_string());
+    }
+    let mut sections = existing_capability_sections(predecessor_source)?;
+    if sections.is_empty() {
+        let predecessor_hash =
+            extract_generated_const_str(predecessor_source, "GENERATED_PROGRAM_IR_SHA256")
+                .ok_or_else(|| "CAPABILITY_REGISTRY_PREDECESSOR_HASH_MISSING".to_string())?;
+        sections.push((
+            predecessor_hash.clone(),
+            wrap_capability_module(&predecessor_hash, predecessor_source)?,
+        ));
+    }
+    if !sections
+        .iter()
+        .any(|(program_ir_sha256, _)| program_ir_sha256 == current_program_ir_sha256)
+    {
+        if sections.len() >= MAX_INSTALLED_TYPED_CAPABILITIES {
+            return Err("CAPABILITY_REGISTRY_CAPACITY_REACHED".to_string());
+        }
+        sections.push((
+            current_program_ir_sha256.to_string(),
+            wrap_capability_module(current_program_ir_sha256, new_callable_source)?,
+        ));
+    }
+    let mut module_names = BTreeSet::new();
+    for (program_ir_sha256, _) in &sections {
+        if !module_names.insert(capability_module_name(program_ir_sha256)?) {
+            return Err("CAPABILITY_REGISTRY_MODULE_PREFIX_COLLISION".to_string());
+        }
+    }
+    let current_module = capability_module_name(current_program_ir_sha256)?;
+    let mut output = String::new();
+    output.push_str("#![allow(dead_code, unused_imports, unused_parens, unused_variables)]\n\n");
+    output.push_str("use std::collections::BTreeMap;\n");
+    output.push_str("use crate::sem5::model::Value;\n\n");
+    output.push_str("pub const GENERATED_CAPABILITY_ACTIVE: bool = true;\n");
+    output.push_str(&format!(
+        "pub const GENERATED_SOURCE_SCHEMA_REVISION: u64 = {CAPABILITY_REGISTRY_SCHEMA_REVISION};\n"
+    ));
+    output.push_str(&format!(
+        "pub const GENERATED_PROGRAM_ID: &str = {current_program_id:?};\n"
+    ));
+    output.push_str(&format!(
+        "pub const GENERATED_PROGRAM_IR_SHA256: &str = {current_program_ir_sha256:?};\n"
+    ));
+    output.push_str(&format!(
+        "pub const GENERATED_CAPABILITY_COUNT: usize = {};\n\n",
+        sections.len()
+    ));
+    for (_, section) in &sections {
+        output.push_str(section);
+        output.push('\n');
+    }
+    output.push_str("pub fn generated_capability_hashes() -> &'static [&'static str] {\n    &[\n");
+    for (hash, _) in &sections {
+        output.push_str(&format!("        {hash:?},\n"));
+    }
+    output.push_str("    ]\n}\n\n");
+    output.push_str(
+        "pub fn run_generated_capability(inputs: &BTreeMap<String, Value>) -> Result<Value, String> {\n",
+    );
+    output.push_str(&format!(
+        "    {current_module}::run_generated_capability(inputs)\n}}\n\n"
+    ));
+    output.push_str(
+        "pub fn run_generated_capability_by_sha256(program_ir_sha256: &str, inputs: &BTreeMap<String, Value>) -> Result<Value, String> {\n    match program_ir_sha256 {\n",
+    );
+    for (hash, _) in &sections {
+        let module = capability_module_name(hash)?;
+        output.push_str(&format!(
+            "        {hash:?} => {module}::run_generated_capability(inputs),\n"
+        ));
+    }
+    output
+        .push_str("        _ => Err(\"GENERATED_CAPABILITY_NOT_FOUND\".to_string()),\n    }\n}\n");
+    Ok(output)
+}
+
 pub fn install_composite_candidate(
     candidate: &CompositeProgramCandidateIR,
     policy: &AutonomousSourceMutationPolicy,
@@ -359,8 +519,6 @@ pub fn install_composite_candidate(
     {
         return Err("COMPOSITE_SOURCE_INSTALLATION_INPUT_INVALID".to_string());
     }
-    let candidate_source = rustfmt_generated_source(policy, &candidate.generated_rust_source)?;
-    let candidate_sha256 = sha256(candidate_source.as_bytes());
     let target = policy.source_root.join(&candidate.source_relative_path);
     let predecessor_source = std::fs::read_to_string(&target).map_err(|error| {
         format!(
@@ -368,6 +526,14 @@ pub fn install_composite_candidate(
             target.display()
         )
     })?;
+    let registry_source = merge_typed_capability_registry(
+        &predecessor_source,
+        &candidate.generated_rust_source,
+        &candidate.program_ir.program_id,
+        &candidate.program_ir_sha256,
+    )?;
+    let candidate_source = rustfmt_generated_source(policy, &registry_source)?;
+    let candidate_sha256 = sha256(candidate_source.as_bytes());
     let predecessor_sha256 = sha256(predecessor_source.as_bytes());
     let file_id = candidate
         .source_relative_path
@@ -493,11 +659,11 @@ pub fn execute_behavioral_composition_canary(
     let mut passed = 0_usize;
     let installed_capability_present =
         crate::generated_sem5_capability::GENERATED_CAPABILITY_ACTIVE;
+    let installed_registry_capability_count =
+        crate::generated_sem5_capability::GENERATED_CAPABILITY_COUNT;
     let installed_program_match = installed_capability_present
-        && crate::generated_sem5_capability::GENERATED_PROGRAM_ID
-            == candidate.program_ir.program_id
-        && crate::generated_sem5_capability::GENERATED_PROGRAM_IR_SHA256
-            == candidate.program_ir_sha256;
+        && crate::generated_sem5_capability::generated_capability_hashes()
+            .contains(&candidate.program_ir_sha256.as_str());
     let installed_source_schema_revision =
         crate::generated_sem5_capability::GENERATED_SOURCE_SCHEMA_REVISION;
     let mut installed_cases_executed = 0_usize;
@@ -517,8 +683,11 @@ pub fn execute_behavioral_composition_canary(
         passed += 1;
         if installed_program_match {
             installed_cases_executed += 1;
-            let installed = crate::generated_sem5_capability::run_generated_capability(inputs)
-                .map_err(|error| format!("INSTALLED_CAPABILITY_EXECUTION:{error}"))?;
+            let installed = crate::generated_sem5_capability::run_generated_capability_by_sha256(
+                &candidate.program_ir_sha256,
+                inputs,
+            )
+            .map_err(|error| format!("INSTALLED_CAPABILITY_EXECUTION:{error}"))?;
             if installed != expected {
                 return Err("INSTALLED_CAPABILITY_SEMANTIC_MISMATCH".to_string());
             }
@@ -533,7 +702,7 @@ pub fn execute_behavioral_composition_canary(
         .map(|bytes| sha256(&bytes));
     let receipt_sha256 = sha256(
         format!(
-            "{}:{}:{}:{}:{}:{}:{}:{}:{}:{}",
+            "{}:{}:{}:{}:{}:{}:{}:{}:{}:{}:{}",
             context_sha256,
             candidate.program_ir_sha256,
             cases.len(),
@@ -541,6 +710,7 @@ pub fn execute_behavioral_composition_canary(
             installed_capability_present,
             installed_program_match,
             installed_source_schema_revision,
+            installed_registry_capability_count,
             installed_cases_executed,
             installed_cases_passed,
             installed_output_sha256.as_deref().unwrap_or("NONE")
@@ -557,6 +727,7 @@ pub fn execute_behavioral_composition_canary(
         installed_capability_present,
         installed_program_match,
         installed_source_schema_revision,
+        installed_registry_capability_count,
         installed_cases_executed,
         installed_cases_passed,
         installed_output_sha256,
@@ -669,8 +840,8 @@ mod tests {
 
     use super::*;
     use crate::self_repair_contract::{VerificationDecision, VerificationReceipt};
-    use crate::sem26::engine::DirectorState;
-    use crate::sem27::engine::PostScaffoldState;
+    use crate::sem26_engine::DirectorState;
+    use crate::sem27_engine::PostScaffoldState;
     use crate::sem5::{
         ir::execute,
         learner::{discover_candidates, initial_promotions},
@@ -787,6 +958,63 @@ mod tests {
     }
 
     #[test]
+    fn typed_lowering_registry_preserves_prior_callables_and_dispatches_by_hash() {
+        let candidate =
+            compose_existing_sem5_capability(composition_work()).expect("typed candidate");
+        let first_hash = "a".repeat(64);
+        let second_hash = "b".repeat(64);
+        let first_callable = candidate
+            .generated_rust_source
+            .replace(&candidate.program_ir_sha256, &first_hash)
+            .replace(&candidate.program_ir.program_id, "REGISTRY-FIRST");
+        let second_callable = candidate
+            .generated_rust_source
+            .replace(&candidate.program_ir_sha256, &second_hash)
+            .replace(&candidate.program_ir.program_id, "REGISTRY-SECOND");
+        let legacy = include_str!("generated_sem5_capability.rs");
+
+        let first_registry =
+            merge_typed_capability_registry(legacy, &first_callable, "REGISTRY-FIRST", &first_hash)
+                .expect("first registry migration");
+        let second_registry = merge_typed_capability_registry(
+            &first_registry,
+            &second_callable,
+            "REGISTRY-SECOND",
+            &second_hash,
+        )
+        .expect("second registry extension");
+
+        assert_eq!(second_registry.matches(CAPABILITY_BEGIN_PREFIX).count(), 3);
+        assert!(second_registry.contains("GENERATED_CAPABILITY_COUNT: usize = 3"));
+        assert!(second_registry.contains("run_generated_capability_by_sha256"));
+        assert!(second_registry.contains(&format!(
+            "{first_hash:?} => capability_{}::run_generated_capability(inputs)",
+            &first_hash[..16]
+        )));
+        assert!(second_registry.contains(&format!(
+            "{second_hash:?} => capability_{}::run_generated_capability(inputs)",
+            &second_hash[..16]
+        )));
+        assert!(second_registry
+            .contains("capability_bbbbbbbbbbbbbbbb::run_generated_capability(inputs)\n}"));
+        assert!(syn::parse_file(&second_registry).is_ok());
+
+        let colliding_hash = format!("{}{}", "a".repeat(16), "c".repeat(48));
+        let colliding_callable = second_callable
+            .replace(&second_hash, &colliding_hash)
+            .replace("REGISTRY-SECOND", "REGISTRY-COLLISION");
+        assert_eq!(
+            merge_typed_capability_registry(
+                &second_registry,
+                &colliding_callable,
+                "REGISTRY-COLLISION",
+                &colliding_hash,
+            ),
+            Err("CAPABILITY_REGISTRY_MODULE_PREFIX_COLLISION".to_string())
+        );
+    }
+
+    #[test]
     fn behavioral_canary_executes_fresh_context_bound_cases() {
         let first = execute_behavioral_composition_canary(&"a".repeat(64)).expect("first canary");
         let second = execute_behavioral_composition_canary(&"b".repeat(64)).expect("second canary");
@@ -796,12 +1024,14 @@ mod tests {
         if first.installed_capability_present {
             assert!(first.installed_program_match);
             assert!(first.installed_source_schema_revision > 0);
+            assert!(first.installed_registry_capability_count > 0);
             assert_eq!(first.installed_cases_executed, first.cases_executed);
             assert_eq!(first.installed_cases_passed, first.cases_passed);
             assert!(first.installed_output_sha256.is_some());
         } else {
             assert!(!first.installed_program_match);
             assert_eq!(first.installed_source_schema_revision, 0);
+            assert_eq!(first.installed_registry_capability_count, 0);
             assert_eq!(first.installed_cases_executed, 0);
             assert!(first.installed_output_sha256.is_none());
         }

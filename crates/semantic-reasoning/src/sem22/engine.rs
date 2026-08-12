@@ -2,7 +2,7 @@ use std::time::Instant;
 
 use serde::{Deserialize, Serialize};
 
-use crate::sem21::engine::{
+use crate::sem21_engine::{
     run_probe as run_sem21_probe, FrontierProbeResult, ProbeRequest as Sem21Request,
 };
 

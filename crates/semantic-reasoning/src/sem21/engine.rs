@@ -2,9 +2,7 @@ use std::time::Instant;
 
 use serde::{Deserialize, Serialize};
 
-use crate::sem20::engine::{
-    run_probe as run_sem20_probe, ProbeRequest as BaseRequest, ProbeResult,
-};
+use crate::sem20_engine::{run_probe as run_sem20_probe, ProbeRequest as BaseRequest, ProbeResult};
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize)]
 pub struct ProbeRequest {

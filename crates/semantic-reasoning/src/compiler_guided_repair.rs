@@ -17,6 +17,7 @@ use std::time::{Duration, Instant, SystemTime};
 use serde::{Deserialize, Serialize};
 use serde_json::Value as JsonValue;
 
+use crate::autonomous_source_mutation::runtime_core_feature_available;
 use crate::self_repair_contract::sha256;
 use crate::structural_source_repair::{synthesize_structural_repair, StructuralRepairProgram};
 
@@ -206,7 +207,7 @@ fn run_cargo_observation(
         .args(args)
         .current_dir(policy.source_root)
         .env("CARGO_TARGET_DIR", policy.build_target_dir)
-        .env("CARGO_INCREMENTAL", "0")
+        .env("CARGO_INCREMENTAL", "1")
         .env("CARGO_NET_OFFLINE", "true")
         .stdin(Stdio::null())
         .stdout(Stdio::from(output))
@@ -393,20 +394,12 @@ fn load_or_observe(
     // preserves both classes of evidence while keeping the cache and the
     // downstream compile/test/install gate authoritative.
     let clippy_log = cache_path.with_extension("clippy.log");
-    let (check_success, clippy_output) = run_cargo_observation(
-        policy,
-        &[
-            "clippy",
-            "-p",
-            "semantic-reasoning",
-            "--lib",
-            "--message-format=json",
-            "--",
-            "-W",
-            "clippy::all",
-        ],
-        &clippy_log,
-    )?;
+    let mut clippy_args = vec!["clippy", "-p", "semantic-reasoning", "--lib"];
+    if runtime_core_feature_available(policy.source_root) {
+        clippy_args.extend(["--no-default-features", "--features", "runtime-core"]);
+    }
+    clippy_args.extend(["--message-format=json", "--", "-W", "clippy::all"]);
+    let (check_success, clippy_output) = run_cargo_observation(policy, &clippy_args, &clippy_log)?;
     let mut suggestions = parse_suggestions(&clippy_output);
     suggestions.sort();
     suggestions.dedup();

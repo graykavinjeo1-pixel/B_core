@@ -1440,6 +1440,27 @@ pub(crate) fn full_workspace_semantic_fingerprint(root: &Path) -> Result<String,
     workspace_semantic_fingerprint_impl(root, None)
 }
 
+pub(crate) fn runtime_core_feature_available(source_root: &Path) -> bool {
+    [
+        source_root.join("crates/semantic-reasoning/Cargo.toml"),
+        source_root.join("Cargo.toml"),
+    ]
+    .into_iter()
+    .filter_map(|path| fs::read_to_string(path).ok())
+    .any(|manifest| {
+        manifest.lines().any(|line| {
+            let line = line.trim();
+            line.starts_with("runtime-core") && line.contains('=')
+        })
+    })
+}
+
+fn append_runtime_core_feature_args(source_root: &Path, args: &mut Vec<&'static str>) {
+    if runtime_core_feature_available(source_root) {
+        args.extend(["--no-default-features", "--features", "runtime-core"]);
+    }
+}
+
 pub(crate) fn command_receipt(
     program: &Path,
     args: &[&str],
@@ -1455,7 +1476,7 @@ pub(crate) fn command_receipt(
         target_dir,
         timeout_ms,
         diagnostic_path,
-        false,
+        true,
     )
 }
 
@@ -1878,19 +1899,12 @@ fn install_primary_and_stage_source_patch(
     // Clippy includes the compiler check and closes the gap that previously
     // allowed generated code with a known lint defect (for example an empty
     // else branch) to be installed and rediscovered as a new repair later.
+    let mut compile_args = vec!["clippy", "-p", "semantic-reasoning", "--lib"];
+    append_runtime_core_feature_args(&policy.source_root, &mut compile_args);
+    compile_args.extend(["--quiet", "--locked", "--", "-D", "warnings"]);
     let compile_check = match command_receipt(
         &policy.cargo_executable,
-        &[
-            "clippy",
-            "-p",
-            "semantic-reasoning",
-            "--lib",
-            "--quiet",
-            "--locked",
-            "--",
-            "-D",
-            "warnings",
-        ],
+        &compile_args,
         &policy.source_root,
         &policy.build_target_dir,
         policy.validation_timeout_ms,
@@ -1938,9 +1952,12 @@ fn install_primary_and_stage_source_patch(
         return Ok(receipt);
     }
 
+    let mut validation_args = vec!["test", "-p", "semantic-reasoning", "--lib"];
+    append_runtime_core_feature_args(&policy.source_root, &mut validation_args);
+    validation_args.push("--quiet");
     let validation = match command_receipt(
         &policy.cargo_executable,
-        &["test", "-p", "semantic-reasoning", "--lib", "--quiet"],
+        &validation_args,
         &policy.source_root,
         &policy.build_target_dir,
         policy.validation_timeout_ms,
@@ -1988,18 +2005,18 @@ fn install_primary_and_stage_source_patch(
         return Ok(receipt);
     }
 
+    let mut release_args = vec!["build", "-p", "semantic-reasoning"];
+    append_runtime_core_feature_args(&policy.source_root, &mut release_args);
+    release_args.extend([
+        "--release",
+        "--bin",
+        "b-core-growth-supervisor",
+        "--bin",
+        "b-core-growth-verifier",
+    ]);
     let release_build = match command_receipt(
         &policy.cargo_executable,
-        &[
-            "build",
-            "-p",
-            "semantic-reasoning",
-            "--release",
-            "--bin",
-            "b-core-growth-supervisor",
-            "--bin",
-            "b-core-growth-verifier",
-        ],
+        &release_args,
         &policy.source_root,
         &policy.build_target_dir,
         policy.validation_timeout_ms,
@@ -3737,7 +3754,17 @@ mod tests {
         assert!(learned.structural_postcondition_count > 0);
         assert!(learned.generalized_change_sha256.is_some());
         let incremental = root.join("target/debug/incremental");
-        assert!(!incremental.exists() || fs::read_dir(&incremental).unwrap().next().is_none());
+        assert!(incremental.is_dir());
+        assert!(fs::read_dir(&incremental).unwrap().next().is_some());
+        assert!(receipt
+            .compile_check
+            .as_ref()
+            .is_some_and(|command| command.cargo_incremental));
+        assert!(receipt.validation.cargo_incremental);
+        assert!(receipt
+            .release_build
+            .as_ref()
+            .is_some_and(|command| command.cargo_incremental));
         fs::remove_dir_all(root).unwrap();
         fs::remove_dir_all(state).unwrap();
     }

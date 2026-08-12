@@ -1,9 +1,13 @@
 pub mod emitter;
+#[cfg(feature = "historical-campaigns")]
 pub mod experiment;
+#[cfg(feature = "historical-campaigns")]
 pub mod integrity;
 pub mod ir;
 pub mod learner;
 pub mod model;
+#[cfg(feature = "historical-campaigns")]
 pub mod reporting;
+#[cfg(feature = "historical-campaigns")]
 pub mod sandbox;
 pub mod tasks;

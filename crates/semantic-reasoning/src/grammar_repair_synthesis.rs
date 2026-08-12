@@ -33,6 +33,24 @@ const MAX_GRAMMAR_HOLES_SCANNED_PER_GENERATION: usize = 256;
 const MAX_REPOSITORY_CONTEXT_FILES: usize = 512;
 const MAX_REPOSITORY_CONTEXT_BYTES: u64 = 64 * 1024 * 1024;
 const MAX_CALL_COMPOSITION_CATALOG: usize = 64;
+const MAX_CALL_ROLE_ASSIGNMENTS: usize = 16;
+pub const CANONICAL_GRAMMAR_OPERATION_SCHEMA: &str = "B_CORE_CANONICAL_GRAMMAR_OPERATION_1";
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum CanonicalGrammarOperationKind {
+    CallArgumentRoleAssignment,
+    SymmetricStateTransform,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct CanonicalGrammarOperationIR {
+    pub schema: String,
+    pub kind: CanonicalGrammarOperationKind,
+    pub input_role_indices: Vec<usize>,
+    pub required_input_types: Vec<String>,
+    pub output_type: String,
+}
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct GrammarRepairCandidate {
@@ -720,16 +738,187 @@ fn matching_argument_indices(
     Some(arguments)
 }
 
-fn matching_arguments<'a>(
-    available: &'a [TypedBinding],
+fn matching_argument_role_assignments(
+    available: &[TypedBinding],
     required: &[TypedBinding],
-) -> Option<Vec<&'a str>> {
-    matching_argument_indices(available, required).map(|indices| {
-        indices
-            .into_iter()
-            .map(|index| available[index].name.as_str())
-            .collect()
-    })
+) -> Vec<Vec<usize>> {
+    fn extend(
+        available: &[TypedBinding],
+        required: &[TypedBinding],
+        required_index: usize,
+        used: &mut BTreeSet<usize>,
+        assignment: &mut Vec<usize>,
+        output: &mut Vec<Vec<usize>>,
+    ) {
+        if output.len() >= MAX_CALL_ROLE_ASSIGNMENTS {
+            return;
+        }
+        if required_index == required.len() {
+            output.push(assignment.clone());
+            return;
+        }
+        for (available_index, binding) in available.iter().enumerate() {
+            if !used.contains(&available_index)
+                && binding.type_name == required[required_index].type_name
+            {
+                used.insert(available_index);
+                assignment.push(available_index);
+                extend(
+                    available,
+                    required,
+                    required_index + 1,
+                    used,
+                    assignment,
+                    output,
+                );
+                assignment.pop();
+                used.remove(&available_index);
+            }
+        }
+    }
+
+    let mut output = Vec::new();
+    extend(
+        available,
+        required,
+        0,
+        &mut BTreeSet::new(),
+        &mut Vec::new(),
+        &mut output,
+    );
+    output
+}
+
+fn call_role_operation(
+    candidate: &CallableSignature,
+    input_role_indices: Vec<usize>,
+) -> CanonicalGrammarOperationIR {
+    CanonicalGrammarOperationIR {
+        schema: CANONICAL_GRAMMAR_OPERATION_SCHEMA.to_string(),
+        kind: CanonicalGrammarOperationKind::CallArgumentRoleAssignment,
+        input_role_indices,
+        required_input_types: candidate
+            .inputs
+            .iter()
+            .map(|input| input.type_name.clone())
+            .collect(),
+        output_type: candidate.output.clone(),
+    }
+}
+
+fn compile_call_role_operation(
+    caller: &CallableSignature,
+    candidate: &CallableSignature,
+    operation: &CanonicalGrammarOperationIR,
+) -> Result<String, String> {
+    if operation.schema != CANONICAL_GRAMMAR_OPERATION_SCHEMA
+        || operation.kind != CanonicalGrammarOperationKind::CallArgumentRoleAssignment
+        || operation.output_type != candidate.output
+        || operation.output_type != caller.output
+        || operation.required_input_types
+            != candidate
+                .inputs
+                .iter()
+                .map(|input| input.type_name.clone())
+                .collect::<Vec<_>>()
+        || operation.input_role_indices.len() != candidate.inputs.len()
+    {
+        return Err("CANONICAL_CALL_ROLE_CONTRACT_MISMATCH".to_string());
+    }
+    let candidate_name = callable_expression_name(caller, candidate)
+        .ok_or_else(|| "CANONICAL_CALL_ROLE_SCOPE_MISMATCH".to_string())?;
+    let mut used = BTreeSet::new();
+    let mut arguments = Vec::with_capacity(operation.input_role_indices.len());
+    for (required, available_index) in candidate.inputs.iter().zip(&operation.input_role_indices) {
+        let available = caller
+            .inputs
+            .get(*available_index)
+            .ok_or_else(|| "CANONICAL_CALL_ROLE_INDEX_INVALID".to_string())?;
+        if !used.insert(*available_index) || available.type_name != required.type_name {
+            return Err("CANONICAL_CALL_ROLE_TYPE_OR_ALIAS_MISMATCH".to_string());
+        }
+        arguments.push(available.name.clone());
+    }
+    Ok(format!("{}({})", candidate_name, arguments.join(", ")))
+}
+
+fn symmetric_pair_element_type(output: &str) -> Option<String> {
+    let parsed = syn::parse_str::<syn::Type>(output).ok()?;
+    let syn::Type::Tuple(tuple) = parsed else {
+        return None;
+    };
+    if tuple.elems.len() != 2 {
+        return None;
+    }
+    let first = normalized_tokens(tuple.elems.first()?);
+    let second = normalized_tokens(tuple.elems.iter().nth(1)?);
+    (first == second).then_some(first)
+}
+
+fn symmetric_state_operations(callable: &CallableSignature) -> Vec<CanonicalGrammarOperationIR> {
+    let Some(element_type) = symmetric_pair_element_type(&callable.output) else {
+        return Vec::new();
+    };
+    let roles = callable
+        .inputs
+        .iter()
+        .enumerate()
+        .filter_map(|(index, input)| (input.type_name == element_type).then_some(index))
+        .take(2)
+        .collect::<Vec<_>>();
+    if roles.len() != 2 {
+        return Vec::new();
+    }
+    vec![
+        CanonicalGrammarOperationIR {
+            schema: CANONICAL_GRAMMAR_OPERATION_SCHEMA.to_string(),
+            kind: CanonicalGrammarOperationKind::SymmetricStateTransform,
+            input_role_indices: roles.clone(),
+            required_input_types: vec![element_type.clone(), element_type.clone()],
+            output_type: callable.output.clone(),
+        },
+        CanonicalGrammarOperationIR {
+            schema: CANONICAL_GRAMMAR_OPERATION_SCHEMA.to_string(),
+            kind: CanonicalGrammarOperationKind::SymmetricStateTransform,
+            input_role_indices: vec![roles[1], roles[0]],
+            required_input_types: vec![element_type.clone(), element_type],
+            output_type: callable.output.clone(),
+        },
+    ]
+}
+
+fn compile_symmetric_state_operation(
+    callable: &CallableSignature,
+    operation: &CanonicalGrammarOperationIR,
+) -> Result<String, String> {
+    if operation.schema != CANONICAL_GRAMMAR_OPERATION_SCHEMA
+        || operation.kind != CanonicalGrammarOperationKind::SymmetricStateTransform
+        || operation.output_type != callable.output
+        || operation.input_role_indices.len() != 2
+        || operation.required_input_types.len() != 2
+        || operation.required_input_types[0] != operation.required_input_types[1]
+        || symmetric_pair_element_type(&callable.output).as_deref()
+            != Some(operation.required_input_types[0].as_str())
+        || operation.input_role_indices[0] == operation.input_role_indices[1]
+    {
+        return Err("CANONICAL_SYMMETRIC_STATE_CONTRACT_MISMATCH".to_string());
+    }
+    let mut bindings = Vec::new();
+    for (required_type, role_index) in operation
+        .required_input_types
+        .iter()
+        .zip(&operation.input_role_indices)
+    {
+        let binding = callable
+            .inputs
+            .get(*role_index)
+            .ok_or_else(|| "CANONICAL_SYMMETRIC_STATE_ROLE_INVALID".to_string())?;
+        if &binding.type_name != required_type {
+            return Err("CANONICAL_SYMMETRIC_STATE_TYPE_MISMATCH".to_string());
+        }
+        bindings.push(binding.name.clone());
+    }
+    Ok(format!("({}, {})", bindings[0], bindings[1]))
 }
 
 fn callable_expression_name(
@@ -848,6 +1037,25 @@ fn compose_expressions(
         }
     }
 
+    // Lower name-independent state roles only after the callable's type
+    // contract is known. The operation IR is reusable across repositories;
+    // binding names enter only in this final compiler step.
+    for (operation_index, operation) in symmetric_state_operations(callable).into_iter().enumerate()
+    {
+        if let Ok(expression) = compile_symmetric_state_operation(callable, &operation) {
+            push_expression(
+                &mut output,
+                &mut seen,
+                if operation_index == 0 {
+                    "ROLE_PRESERVING_PAIR_STATE"
+                } else {
+                    "SYMMETRIC_PAIR_STATE_TRANSFORM"
+                },
+                expression,
+            );
+        }
+    }
+
     for candidate in catalog {
         if candidate.callable == callable.callable
             || candidate.output != callable.output
@@ -855,17 +1063,24 @@ fn compose_expressions(
         {
             continue;
         }
-        let Some(candidate_name) = callable_expression_name(callable, candidate) else {
-            continue;
-        };
-        let arguments = matching_arguments(&callable.inputs, &candidate.inputs);
-        if let Some(arguments) = arguments {
-            push_expression(
-                &mut output,
-                &mut seen,
-                "EXISTING_CALL",
-                format!("{}({})", candidate_name, arguments.join(", ")),
-            );
+        for (assignment_index, input_roles) in
+            matching_argument_role_assignments(&callable.inputs, &candidate.inputs)
+                .into_iter()
+                .enumerate()
+        {
+            let operation = call_role_operation(candidate, input_roles);
+            if let Ok(expression) = compile_call_role_operation(callable, candidate, &operation) {
+                push_expression(
+                    &mut output,
+                    &mut seen,
+                    if assignment_index == 0 {
+                        "EXISTING_CALL"
+                    } else {
+                        "EXISTING_CALL_ROLE_PERMUTATION"
+                    },
+                    expression,
+                );
+            }
         }
     }
 
@@ -2243,6 +2458,165 @@ mod tests {
             .iter()
             .any(|(_, expression)| expression.contains("combine_method")
                 || expression.contains("foreign")));
+    }
+
+    #[test]
+    fn canonical_call_roles_generate_bounded_name_independent_permutations() {
+        let caller = CallableSignature {
+            callable: "repair".to_string(),
+            short_name: "repair".to_string(),
+            lexical_scope: String::new(),
+            impl_owner: None,
+            inputs: vec![
+                TypedBinding {
+                    name: "observed".to_string(),
+                    type_name: "i32".to_string(),
+                },
+                TypedBinding {
+                    name: "expected".to_string(),
+                    type_name: "i32".to_string(),
+                },
+            ],
+            output: "i32".to_string(),
+            has_receiver: false,
+        };
+        let renamed_caller = CallableSignature {
+            callable: "rewrite".to_string(),
+            short_name: "rewrite".to_string(),
+            lexical_scope: String::new(),
+            impl_owner: None,
+            inputs: vec![
+                TypedBinding {
+                    name: "alpha".to_string(),
+                    type_name: "i32".to_string(),
+                },
+                TypedBinding {
+                    name: "beta".to_string(),
+                    type_name: "i32".to_string(),
+                },
+            ],
+            output: "i32".to_string(),
+            has_receiver: false,
+        };
+        let helper = CallableSignature {
+            callable: "combine".to_string(),
+            short_name: "combine".to_string(),
+            lexical_scope: String::new(),
+            impl_owner: None,
+            inputs: vec![
+                TypedBinding {
+                    name: "first".to_string(),
+                    type_name: "i32".to_string(),
+                },
+                TypedBinding {
+                    name: "second".to_string(),
+                    type_name: "i32".to_string(),
+                },
+            ],
+            output: "i32".to_string(),
+            has_receiver: false,
+        };
+
+        let assignments = matching_argument_role_assignments(&caller.inputs, &helper.inputs);
+        let renamed_assignments =
+            matching_argument_role_assignments(&renamed_caller.inputs, &helper.inputs);
+        assert_eq!(assignments, vec![vec![0, 1], vec![1, 0]]);
+        assert_eq!(renamed_assignments, assignments);
+        let operations = assignments
+            .into_iter()
+            .map(|roles| call_role_operation(&helper, roles))
+            .collect::<Vec<_>>();
+        let renamed_operations = renamed_assignments
+            .into_iter()
+            .map(|roles| call_role_operation(&helper, roles))
+            .collect::<Vec<_>>();
+        assert_eq!(renamed_operations, operations);
+        assert_eq!(
+            compile_call_role_operation(&caller, &helper, &operations[0]).unwrap(),
+            "combine(observed, expected)"
+        );
+        assert_eq!(
+            compile_call_role_operation(&caller, &helper, &operations[1]).unwrap(),
+            "combine(expected, observed)"
+        );
+        assert_eq!(
+            compile_call_role_operation(&renamed_caller, &helper, &operations[1]).unwrap(),
+            "combine(beta, alpha)"
+        );
+
+        let expressions = compose_expressions(&caller, &[helper.clone()]);
+        assert!(expressions.iter().any(|(family, expression)| {
+            family == "EXISTING_CALL_ROLE_PERMUTATION"
+                && expression == "combine(expected, observed)"
+        }));
+
+        let mut foreign_helper = helper;
+        foreign_helper.lexical_scope = "foreign".to_string();
+        assert_eq!(
+            compile_call_role_operation(&caller, &foreign_helper, &operations[0]),
+            Err("CANONICAL_CALL_ROLE_SCOPE_MISMATCH".to_string())
+        );
+    }
+
+    #[test]
+    fn canonical_symmetric_state_transform_is_name_independent() {
+        let callable = CallableSignature {
+            callable: "transition".to_string(),
+            short_name: "transition".to_string(),
+            lexical_scope: String::new(),
+            impl_owner: None,
+            inputs: vec![
+                TypedBinding {
+                    name: "before".to_string(),
+                    type_name: "Phase".to_string(),
+                },
+                TypedBinding {
+                    name: "after".to_string(),
+                    type_name: "Phase".to_string(),
+                },
+            ],
+            output: "(Phase,Phase)".to_string(),
+            has_receiver: false,
+        };
+        let renamed = CallableSignature {
+            callable: "rotate".to_string(),
+            short_name: "rotate".to_string(),
+            lexical_scope: String::new(),
+            impl_owner: None,
+            inputs: vec![
+                TypedBinding {
+                    name: "source".to_string(),
+                    type_name: "Phase".to_string(),
+                },
+                TypedBinding {
+                    name: "target".to_string(),
+                    type_name: "Phase".to_string(),
+                },
+            ],
+            output: "(Phase,Phase)".to_string(),
+            has_receiver: false,
+        };
+
+        let operations = symmetric_state_operations(&callable);
+        assert_eq!(operations, symmetric_state_operations(&renamed));
+        assert_eq!(operations.len(), 2);
+        assert_eq!(
+            compile_symmetric_state_operation(&callable, &operations[0]).unwrap(),
+            "(before, after)"
+        );
+        assert_eq!(
+            compile_symmetric_state_operation(&callable, &operations[1]).unwrap(),
+            "(after, before)"
+        );
+        assert_eq!(
+            compile_symmetric_state_operation(&renamed, &operations[1]).unwrap(),
+            "(target, source)"
+        );
+
+        let expressions = compose_expressions(&callable, &[]);
+        assert!(expressions.iter().any(|(family, expression)| {
+            family == "SYMMETRIC_PAIR_STATE_TRANSFORM" && expression == "(after, before)"
+        }));
     }
 
     #[test]

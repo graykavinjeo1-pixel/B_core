@@ -2,7 +2,7 @@ use std::{cmp::Reverse, hint::black_box, mem::size_of, time::Instant};
 
 use serde::{Deserialize, Serialize};
 
-use crate::sem26::engine::{
+use crate::sem26_engine::{
     run_autonomous_epoch, AutonomousEpochRequest, AutonomousEpochResult, DirectorState,
     NO_BOTTLENECK, PHASE_COUNT, PHASE_NAMES,
 };

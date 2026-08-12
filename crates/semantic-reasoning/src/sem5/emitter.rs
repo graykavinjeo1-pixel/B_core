@@ -207,23 +207,30 @@ fn callable_output(output_type: &ProgramType) -> String {
 }
 
 fn emit_api(api: &ApiDefinition) -> Result<String, String> {
-    if api.inputs.iter().any(|input| input != &ProgramType::Int)
-        || api.output != ProgramType::Int
+    if api
+        .inputs
+        .iter()
+        .any(|input| !matches!(input, ProgramType::Int | ProgramType::Bool))
+        || !matches!(api.output, ProgramType::Int | ProgramType::Bool)
         || api.effect != Effect::Pure
     {
-        return Err(format!("RUST_MIN_API_SIGNATURE:{}", api.api_token));
+        return Err(format!(
+            "RUST_SCALAR_API_SIGNATURE_UNSUPPORTED:{}",
+            api.api_token
+        ));
     }
     let parameters = api
         .inputs
         .iter()
         .enumerate()
-        .map(|(index, _)| format!("a{index}: i64"))
+        .map(|(index, input)| format!("a{index}: {}", rust_type(input)))
         .collect::<Vec<_>>()
         .join(", ");
     let body = emit_scalar_expression(&api.formal_body)?;
     Ok(format!(
-        "fn {}({parameters}) -> i64 {{ {body} }}\n",
-        api.api_token
+        "fn {}({parameters}) -> {} {{ {body} }}\n",
+        api.api_token,
+        rust_type(&api.output)
     ))
 }
 
@@ -792,5 +799,49 @@ mod tests {
         assert!(!callable.reads_input_file);
         assert!(!callable.writes_output_file);
         assert!(emit_neutral_text(&ir).contains("program"));
+    }
+
+    #[test]
+    fn scalar_api_lowering_preserves_mixed_int_bool_types() {
+        let predicate = ApiDefinition {
+            api_token: "is_positive".to_string(),
+            inputs: vec![ProgramType::Int],
+            output: ProgramType::Bool,
+            effect: Effect::Pure,
+            preconditions: Vec::new(),
+            postconditions: vec!["returns whether the input is positive".to_string()],
+            formal_body: ScalarExpression::Binary {
+                operator: BinaryOperator::GreaterThan,
+                left: Box::new(ScalarExpression::Argument { index: 0 }),
+                right: Box::new(ScalarExpression::Constant { value: 0 }),
+            },
+            examples: Vec::new(),
+            randomized_symbol: false,
+            provenance: vec!["TYPED_LOWERING_TEST".to_string()],
+        };
+        let negation = ApiDefinition {
+            api_token: "invert".to_string(),
+            inputs: vec![ProgramType::Bool],
+            output: ProgramType::Bool,
+            effect: Effect::Pure,
+            preconditions: Vec::new(),
+            postconditions: vec!["negates the input".to_string()],
+            formal_body: ScalarExpression::Unary {
+                operator: UnaryOperator::Not,
+                input: Box::new(ScalarExpression::Argument { index: 0 }),
+            },
+            examples: Vec::new(),
+            randomized_symbol: false,
+            provenance: vec!["TYPED_LOWERING_TEST".to_string()],
+        };
+
+        assert_eq!(
+            emit_api(&predicate).unwrap(),
+            "fn is_positive(a0: i64) -> bool { (a0 > 0i64) }\n"
+        );
+        assert_eq!(
+            emit_api(&negation).unwrap(),
+            "fn invert(a0: bool) -> bool { (!a0) }\n"
+        );
     }
 }

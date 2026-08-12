@@ -2,7 +2,7 @@ use std::time::Instant;
 
 use serde::{Deserialize, Serialize};
 
-use crate::sem22::engine::{run_probe as run_sem22_probe, ReactionRequest, ReactionResult};
+use crate::sem22_engine::{run_probe as run_sem22_probe, ReactionRequest, ReactionResult};
 
 pub const PROPERTY_MASK_LIMIT: u16 = 0x1FFF;
 pub const PROPERTY_STRUCTURED_EMERGENCE: u16 = 1 << 5;

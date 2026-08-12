@@ -27,9 +27,10 @@ use crate::autonomous_source_mutation::{
     command_receipt_with_incremental, derive_improvement_operator_memory,
     discover_known_source_improvement, discover_known_source_improvement_detailed,
     full_workspace_semantic_fingerprint, install_and_stage_source_patch,
-    source_opportunity_family_id, validate_policy, AutonomousSourceMutationPolicy,
-    AutonomousSourcePatchReceipt, AutonomousSourcePatchRequest, ChangeOpportunityKind,
-    ImprovementOperatorGeneratorKind, LocalCommandReceipt, SOURCE_REPAIR_ENGINE_REVISION,
+    runtime_core_feature_available, source_opportunity_family_id, validate_policy,
+    AutonomousSourceMutationPolicy, AutonomousSourcePatchReceipt, AutonomousSourcePatchRequest,
+    ChangeOpportunityKind, ImprovementOperatorGeneratorKind, LocalCommandReceipt,
+    SOURCE_REPAIR_ENGINE_REVISION,
 };
 use crate::generative_growth::{
     promote_generative_cycle, run_generative_cycle, validate_behavioral_execution_receipt,
@@ -923,6 +924,9 @@ pub struct SelfCheck {
     pub performance_aware_self_inspection: bool,
     pub predicted_utility_source_gate: bool,
     pub staged_source_validation: bool,
+    pub runtime_core_static_validation_surface_enabled: bool,
+    pub historical_regression_canary_separated: bool,
+    pub warm_incremental_validation_cache_enabled: bool,
     pub adaptive_idle_polling: bool,
     pub mixed_production_file_role_detection: bool,
     pub semantic_duplicate_promotion_blocked: bool,
@@ -971,6 +975,11 @@ pub struct SelfCheck {
     pub self_healing_candidates_route_to_atomic_installer: bool,
     pub integrated_program_ir_lowers_to_compiled_rust: bool,
     pub installed_compositions_are_runtime_callable: bool,
+    pub typed_lowering_preserves_installed_capability_registry: bool,
+    pub generated_capabilities_dispatch_by_program_hash: bool,
+    pub canonical_grammar_role_operations_enabled: bool,
+    pub same_type_call_role_permutations_bounded: bool,
+    pub symmetric_state_transform_compilation_enabled: bool,
     pub accepted_sem5_compositions_route_to_installer: bool,
     pub active_binaries_forbid_proposal_only_exit: bool,
     pub executable_improvement_operator_repository_enabled: bool,
@@ -1011,6 +1020,10 @@ pub fn self_check() -> SelfCheck {
             "SOURCE_REPAIR_ROLLBACK_RATIO_IS_A_GROWTH_EFFICIENCY_SIGNAL".to_string(),
             "LOW_PREDICTED_VALUE_SOURCE_REWRITES_STOP_BEFORE_COMPILATION".to_string(),
             "COMPILE_CHECK_PRECEDES_FULL_REGRESSION_AND_RELEASE_VALIDATION".to_string(),
+            "ACTIVE_RUNTIME_STATIC_VALIDATION_EXCLUDES_IMMUTABLE_HISTORICAL_CAMPAIGN_IMPLEMENTATIONS"
+                .to_string(),
+            "COMPLETE_HISTORICAL_COMPATIBILITY_RUNS_AS_A_SEPARATE_PERIODIC_CANARY".to_string(),
+            "CARGO_INCREMENTAL_CACHE_IS_REUSED_ACROSS_SOURCE_VALIDATION_STAGES".to_string(),
             "SEMANTICALLY_DUPLICATE_EVIDENCE_REVALIDATES_WITHOUT_GENERATION_PROMOTION".to_string(),
             "PERFORMANCE_GROWTH_REQUIRES_BOUND_BEFORE_AFTER_MEASUREMENT".to_string(),
             "EARLY_SUCCESS_MUST_NOT_MONOPOLIZE_BOUNDED_COMPOSITION_SEARCH".to_string(),
@@ -1062,6 +1075,13 @@ pub fn self_check() -> SelfCheck {
             "SEM5_PROGRAM_IR_LOWERS_TO_REPOSITORY_NATIVE_RUST_BEFORE_INSTALLATION".to_string(),
             "VERIFIED_SEM5_COMPOSITIONS_INSTALL_AS_TYPED_RUNTIME_CALLABLES".to_string(),
             "INSTALLED_COMPOSITIONS_REQUIRE_FRESH_INPUT_BEHAVIORAL_REVALIDATION".to_string(),
+            "TYPED_LOWERING_EXTENDS_A_CONTENT_ADDRESSED_CAPABILITY_REGISTRY_INSTEAD_OF_OVERWRITING_PRIOR_CALLABLES"
+                .to_string(),
+            "INSTALLED_TYPED_CAPABILITIES_DISPATCH_BY_PROGRAM_IR_HASH".to_string(),
+            "CALL_ARGUMENT_ROLES_COMPILE_FROM_NAME_INDEPENDENT_TYPED_GRAMMAR_OPERATIONS"
+                .to_string(),
+            "SAME_TYPE_CALL_ARGUMENTS_GENERATE_BOUNDED_INJECTIVE_ROLE_ASSIGNMENTS".to_string(),
+            "SYMMETRIC_STATE_TRANSFORMS_LOWER_FROM_ROLE_INDICES_NOT_VARIABLE_NAMES".to_string(),
             "SUCCESSFUL_STRUCTURAL_REPAIRS_PROMOTE_CONTENT_ADDRESSED_IMPROVEMENT_OPERATORS"
                 .to_string(),
             "IMPROVEMENT_OPERATOR_INVOCATIONS_CAUSALLY_BIND_SELECTION_TO_VALIDATED_OUTCOME"
@@ -1078,6 +1098,9 @@ pub fn self_check() -> SelfCheck {
         performance_aware_self_inspection: true,
         predicted_utility_source_gate: true,
         staged_source_validation: true,
+        runtime_core_static_validation_surface_enabled: true,
+        historical_regression_canary_separated: true,
+        warm_incremental_validation_cache_enabled: true,
         adaptive_idle_polling: true,
         mixed_production_file_role_detection: true,
         semantic_duplicate_promotion_blocked: true,
@@ -1126,6 +1149,11 @@ pub fn self_check() -> SelfCheck {
         self_healing_candidates_route_to_atomic_installer: true,
         integrated_program_ir_lowers_to_compiled_rust: true,
         installed_compositions_are_runtime_callable: true,
+        typed_lowering_preserves_installed_capability_registry: true,
+        generated_capabilities_dispatch_by_program_hash: true,
+        canonical_grammar_role_operations_enabled: true,
+        same_type_call_role_permutations_bounded: true,
+        symmetric_state_transform_compilation_enabled: true,
         accepted_sem5_compositions_route_to_installer: true,
         active_binaries_forbid_proposal_only_exit: true,
         executable_improvement_operator_repository_enabled: true,
@@ -5292,21 +5320,34 @@ fn core_validation_plan(
     generation: u64,
     observations: &[LearningObservation],
 ) -> Result<CoreValidationPlan, String> {
-    let full_args = || {
-        vec![
+    let full_regression_canary = generation.is_multiple_of(FULL_CORE_REGRESSION_CANARY_INTERVAL);
+    let validation_args = || {
+        let mut args = vec![
             "test".to_string(),
             "-p".to_string(),
             "semantic-reasoning".to_string(),
             "--lib".to_string(),
-            "--quiet".to_string(),
-            "--locked".to_string(),
-        ]
+        ];
+        if !full_regression_canary
+            && runtime_core_feature_available(&config.source_mutation.source_root)
+        {
+            args.extend([
+                "--no-default-features".to_string(),
+                "--features".to_string(),
+                "runtime-core".to_string(),
+            ]);
+        }
+        args.extend(["--quiet".to_string(), "--locked".to_string()]);
+        args
     };
-    let full_regression_canary = generation.is_multiple_of(FULL_CORE_REGRESSION_CANARY_INTERVAL);
     let Some(source_prefix) = source_mutation_watch_prefix(config)? else {
         return Ok(CoreValidationPlan {
-            args: full_args(),
-            validation_scope: "FULL_CORE_REGRESSION".to_string(),
+            args: validation_args(),
+            validation_scope: if full_regression_canary {
+                "FULL_HISTORICAL_REGRESSION_CANARY".to_string()
+            } else {
+                "RUNTIME_CORE_REGRESSION".to_string()
+            },
             targeted_test_filter: None,
             full_regression_canary,
         });
@@ -5343,7 +5384,7 @@ fn core_validation_plan(
         let module = modules.into_iter().next().unwrap_or_default();
         if !module.is_empty() {
             let filter = format!("{module}::tests::");
-            let mut args = full_args();
+            let mut args = validation_args();
             args.push(filter.clone());
             return Ok(CoreValidationPlan {
                 args,
@@ -5354,8 +5395,12 @@ fn core_validation_plan(
         }
     }
     Ok(CoreValidationPlan {
-        args: full_args(),
-        validation_scope: "FULL_CORE_REGRESSION".to_string(),
+        args: validation_args(),
+        validation_scope: if full_regression_canary {
+            "FULL_HISTORICAL_REGRESSION_CANARY".to_string()
+        } else {
+            "RUNTIME_CORE_REGRESSION".to_string()
+        },
         targeted_test_filter: None,
         full_regression_canary,
     })
@@ -6324,10 +6369,10 @@ fn attempt_pending_composite_capability_install(
     };
     let (candidate, _) = compose_behavioral_canary_candidate(&context)?;
     if crate::generated_sem5_capability::GENERATED_CAPABILITY_ACTIVE
-        && crate::generated_sem5_capability::GENERATED_PROGRAM_IR_SHA256
-            == candidate.program_ir_sha256
+        && crate::generated_sem5_capability::generated_capability_hashes()
+            .contains(&candidate.program_ir_sha256.as_str())
         && crate::generated_sem5_capability::GENERATED_SOURCE_SCHEMA_REVISION
-            == crate::sem5::emitter::CALLABLE_SOURCE_SCHEMA_REVISION
+            >= crate::sem5::emitter::CALLABLE_SOURCE_SCHEMA_REVISION
     {
         return Ok(CompositeInstallAttemptOutcome {
             attempted: false,
@@ -7244,6 +7289,11 @@ mod tests {
         let (_, mut config) = test_config(&root);
         config.source_mutation.enabled = true;
         config.source_mutation.source_root = config.watched_roots[0].clone();
+        fs::write(
+            config.source_mutation.source_root.join("Cargo.toml"),
+            "[features]\nruntime-core = []\n",
+        )
+        .unwrap();
         let observation = LearningObservation {
             observation_id: "growth-supervisor-change".to_string(),
             work_event_id: None,
@@ -7286,9 +7336,11 @@ mod tests {
             &[observation],
         )
         .unwrap();
-        assert_eq!(canary.validation_scope, "FULL_CORE_REGRESSION");
+        assert_eq!(canary.validation_scope, "FULL_HISTORICAL_REGRESSION_CANARY");
         assert!(canary.targeted_test_filter.is_none());
         assert!(canary.full_regression_canary);
+        assert!(!canary.args.contains(&"runtime-core".to_string()));
+        assert!(targeted.args.contains(&"runtime-core".to_string()));
         fs::remove_dir_all(root).unwrap();
     }
 
@@ -7548,6 +7600,11 @@ mod tests {
         assert!(check.self_healing_candidates_route_to_atomic_installer);
         assert!(check.integrated_program_ir_lowers_to_compiled_rust);
         assert!(check.installed_compositions_are_runtime_callable);
+        assert!(check.typed_lowering_preserves_installed_capability_registry);
+        assert!(check.generated_capabilities_dispatch_by_program_hash);
+        assert!(check.canonical_grammar_role_operations_enabled);
+        assert!(check.same_type_call_role_permutations_bounded);
+        assert!(check.symmetric_state_transform_compilation_enabled);
         assert!(check.accepted_sem5_compositions_route_to_installer);
         assert!(check.active_binaries_forbid_proposal_only_exit);
         assert!(check.executable_improvement_operator_repository_enabled);
@@ -7560,6 +7617,9 @@ mod tests {
         assert!(check.performance_aware_self_inspection);
         assert!(check.predicted_utility_source_gate);
         assert!(check.staged_source_validation);
+        assert!(check.runtime_core_static_validation_surface_enabled);
+        assert!(check.historical_regression_canary_separated);
+        assert!(check.warm_incremental_validation_cache_enabled);
         assert!(check.adaptive_idle_polling);
         assert!(check.mixed_production_file_role_detection);
         assert!(check.semantic_duplicate_promotion_blocked);

@@ -19,11 +19,11 @@ use crate::self_healing_pipeline::{
     validate_composition_lesson, CompositionEdgeIR, RepairCompositionLessonIR, RepairPrimitiveIR,
 };
 use crate::self_repair_contract::sha256;
-use crate::sem23::engine::{
+use crate::sem23_engine::{
     predict_base_properties, GenerativeRequest, PROPERTY_FAMILY_TRANSFER, PROPERTY_REACTION_LAW,
     PROPERTY_RECURSIVE_CLOSURE, PROPERTY_STRUCTURED_EMERGENCE,
 };
-use crate::sem25::engine::{run_growth_probe, GrowthProbeRequest};
+use crate::sem25_engine::{run_growth_probe, GrowthProbeRequest};
 
 pub const GENERATIVE_GROWTH_SCHEMA: &str = "B_CORE_GENERATIVE_GROWTH_1";
 const MAX_REUSABLE_COMPOSITIONS: usize = 64;

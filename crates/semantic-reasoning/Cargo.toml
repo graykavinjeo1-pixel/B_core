@@ -6,6 +6,15 @@ license.workspace = true
 description = "Closed-world SEM-0 executable semantic emergence experiment."
 publish = false
 
+[features]
+# Preserve the complete sealed research surface for explicit historical
+# canaries. Runtime self-improvement validation opts into the much smaller
+# `runtime-core` surface so an edit to the active core does not relint every
+# immutable SEM campaign implementation.
+default = ["historical-campaigns"]
+historical-campaigns = []
+runtime-core = []
+
 [lib]
 name = "semantic_reasoning"
 path = "src/lib.rs"
