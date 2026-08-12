@@ -1129,6 +1129,12 @@ pub fn self_check() -> SelfCheck {
             "TYPED_IMPROVEMENT_OPERATOR_EXECUTION_PRECEDES_SOURCE_INSTALLATION".to_string(),
             "OPERATOR_REPOSITORY_AUTHORITY_REQUIRES_A_CAUSAL_EXECUTION_RECEIPT".to_string(),
             "VERIFIED_ARTIFACT_CAPACITY_IS_BOUNDED_PER_EXECUTABLE_SUBSTRATE".to_string(),
+            "NEW_FRONTIER_CONTEXTS_EXCLUDE_ALREADY_VERIFIED_ARTIFACTS_FROM_SYNTHESIS"
+                .to_string(),
+            "FINITE_TYPED_OPERATOR_FAMILIES_ENUMERATE_SELECTORS_INSTEAD_OF_RELYING_ON_HASH_LUCK"
+                .to_string(),
+            "EXACT_CONTEXT_REUSE_REVALIDATES_A_CANONICAL_ARTIFACT_WITHOUT_FRONTIER_PROMOTION"
+                .to_string(),
             "SATURATED_SUBSTRATE_ROUTES_TO_A_FRESH_EXECUTABLE_SUBSTRATE_WITHOUT_DIFFICULTY_ESCALATION"
                 .to_string(),
             "EVALUATOR_CAPABILITY_EXPANDS_ONLY_WHEN_THE_CHALLENGE_SUITE_EXPANDS".to_string(),
@@ -4584,6 +4590,7 @@ fn generative_frontier_continuation_observation(
         signals: vec![
             "BEHAVIORAL_FRONTIER_ADVANCE".to_string(),
             "GENERATIVE_FRONTIER_CONTINUATION".to_string(),
+            format!("GENERATIVE_FRONTIER_RANGE:{frontier_before}:{frontier_after}"),
             "VERIFIED_PASS".to_string(),
         ],
         composition_roles: vec![

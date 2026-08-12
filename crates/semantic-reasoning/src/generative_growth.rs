@@ -30,7 +30,8 @@ pub const GENERATIVE_GROWTH_SCHEMA: &str = "B_CORE_GENERATIVE_GROWTH_1";
 const MAX_REUSABLE_COMPOSITIONS: usize = 64;
 const MAX_COMPOSITION_TRIALS: usize = 256;
 const MAX_VERIFIED_ARTIFACTS_PER_CYCLE: usize = 32;
-const MAX_VERIFIED_ARTIFACTS_PER_COMPOSER: u64 = 64;
+const MAX_SEM5_VERIFIED_ARTIFACTS: u64 = 64;
+const MAX_IMPROVEMENT_OPERATOR_ARTIFACTS: u64 = 25;
 const MAX_ARTIFACT_CONTEXT_ATTEMPTS: usize = MAX_VERIFIED_ARTIFACTS_PER_CYCLE * 4;
 const FRONTIER_EVIDENCE_CONTRACT_REVISION: u64 = 2;
 const BEHAVIORAL_HEURISTIC_EXCLUSION_CONTRACT_REVISION: u64 = 4;
@@ -616,6 +617,7 @@ fn execute_composer(
     input: &GenerativeInput,
     context: &str,
     artifact_family_width: usize,
+    previously_verified: &BTreeSet<String>,
 ) -> Result<(Vec<VerifiedBehavioralArtifact>, Option<String>), String> {
     match composer_id {
         "SEM5_PROGRAM_IR_COMPOSER" => {
@@ -633,7 +635,7 @@ fn execute_composer(
             }
             let target_width = artifact_family_width.clamp(1, MAX_VERIFIED_ARTIFACTS_PER_CYCLE);
             let mut artifacts = Vec::new();
-            let mut artifact_hashes = BTreeSet::new();
+            let mut artifact_hashes = previously_verified.clone();
             for ordinal in 0..MAX_ARTIFACT_CONTEXT_ATTEMPTS {
                 if artifacts.len() >= target_width {
                     break;
@@ -736,22 +738,26 @@ fn execute_composer(
             }
             let target_width = artifact_family_width.clamp(1, MAX_VERIFIED_ARTIFACTS_PER_CYCLE);
             let mut artifacts = Vec::new();
-            let mut artifact_hashes = BTreeSet::new();
+            let mut artifact_hashes = previously_verified.clone();
             for ordinal in 0..MAX_ARTIFACT_CONTEXT_ATTEMPTS {
                 if artifacts.len() >= target_width {
                     break;
                 }
-                let artifact_context = if ordinal == 0 {
-                    context.to_string()
-                } else {
-                    sha256(
-                        format!(
-                            "{context}:{}:{ordinal}:IMPROVEMENT_OPERATOR_FAMILY",
-                            selected.composition_id
-                        )
-                        .as_bytes(),
+                // The canary maps the first eight context nibbles onto the
+                // finite 5 x 5 operator algebra. Enumerate that selector
+                // directly so a bounded family pass is guaranteed to visit
+                // every operator instead of depending on hash luck. Keep the
+                // remainder content-derived so receipts still bind the exact
+                // frontier context and composition.
+                let context_tail = sha256(
+                    format!(
+                        "{context}:{}:{ordinal}:IMPROVEMENT_OPERATOR_FAMILY",
+                        selected.composition_id
                     )
-                };
+                    .as_bytes(),
+                );
+                let operator_selector = ordinal % MAX_IMPROVEMENT_OPERATOR_ARTIFACTS as usize;
+                let artifact_context = format!("{operator_selector:08x}{}", &context_tail[8..]);
                 let receipt = execute_improvement_operator_behavioral_canary(&artifact_context)?;
                 if receipt.cases_executed == 0
                     || receipt.cases_passed != receipt.cases_executed
@@ -804,9 +810,29 @@ fn distinct_verified_artifact_count_for_composer(
         .min(u64::MAX as usize) as u64
 }
 
+fn verified_artifacts_for_composer(
+    memory: &GenerativeGrowthMemory,
+    composer_id: &str,
+) -> BTreeSet<String> {
+    memory
+        .accepted_compositions
+        .iter()
+        .filter(|composition| composition_uses_composer(composition, composer_id))
+        .flat_map(|composition| composition.verified_artifact_sha256s.iter().cloned())
+        .collect()
+}
+
+fn verified_artifact_capacity(composer_id: &str) -> u64 {
+    match composer_id {
+        "SEM5_PROGRAM_IR_COMPOSER" => MAX_SEM5_VERIFIED_ARTIFACTS,
+        "IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER" => MAX_IMPROVEMENT_OPERATOR_ARTIFACTS,
+        _ => 0,
+    }
+}
+
 fn verified_artifact_family_width(memory: &GenerativeGrowthMemory, composer_id: &str) -> usize {
     let verified = distinct_verified_artifact_count_for_composer(memory, composer_id);
-    let remaining = MAX_VERIFIED_ARTIFACTS_PER_COMPOSER.saturating_sub(verified);
+    let remaining = verified_artifact_capacity(composer_id).saturating_sub(verified);
     usize::try_from(
         verified
             .max(1)
@@ -825,7 +851,6 @@ fn composer_is_behaviorally_executable(
         "SEM5_PROGRAM_IR_COMPOSER" => verified_artifact_family_width(memory, composer_id) > 0,
         "IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER" => {
             verified_artifact_family_width(memory, "SEM5_PROGRAM_IR_COMPOSER") == 0
-                && verified_artifact_family_width(memory, composer_id) > 0
         }
         _ => false,
     }
@@ -846,6 +871,7 @@ fn execute_behavioral_composition(
     input: &GenerativeInput,
     seed: u64,
     artifact_family_width: usize,
+    previously_verified: &BTreeSet<String>,
 ) -> Result<BehavioralCompositionExecutionReceipt, String> {
     let context = context_sha256(input);
     let predictor_id = selected_stage(selected, "PREDICT")?.to_string();
@@ -858,6 +884,7 @@ fn execute_behavioral_composition(
         input,
         &context,
         artifact_family_width,
+        previously_verified,
     )?;
     let cases_executed = verified_artifacts
         .iter()
@@ -1095,9 +1122,28 @@ pub fn run_generative_cycle(
     let predicted_value = prediction.predicted_value;
     let typecheck_pass = validate_composition_lesson(&selected).is_ok();
     let selected_composer = selected_stage(&selected, "COMPOSE")?;
-    let artifact_family_width = verified_artifact_family_width(memory, selected_composer);
-    let behavioral_execution_receipt =
-        execute_behavioral_composition(&selected, input, seed, artifact_family_width)?;
+    let available_family_width = verified_artifact_family_width(memory, selected_composer);
+    // Replaying an already-seen composition context revalidates its canonical
+    // first artifact. Only a genuinely new frontier context may spend the
+    // geometric family budget searching past previously verified artifacts.
+    let artifact_family_width = if prediction.prior_context_trials > 0 && available_family_width > 0
+    {
+        1
+    } else {
+        available_family_width
+    };
+    let previously_verified = if prediction.prior_context_trials > 0 {
+        BTreeSet::new()
+    } else {
+        verified_artifacts_for_composer(memory, selected_composer)
+    };
+    let behavioral_execution_receipt = execute_behavioral_composition(
+        &selected,
+        input,
+        seed,
+        artifact_family_width,
+        &previously_verified,
+    )?;
     let behavioral_composition_executed = behavioral_execution_receipt.executed;
     let behavioral_verification_sha256 = behavioral_composition_executed
         .then(|| behavioral_execution_receipt.receipt_sha256.clone());
@@ -1618,11 +1664,11 @@ mod tests {
         assert_eq!(memory.composition_trials.len(), 2);
         assert_eq!(memory.exploration_events, 2);
         assert_eq!(memory.accepted_compositions.len(), 2);
-        assert_eq!(memory.distinct_verified_artifact_count(), 1);
-        // The second predictor wrapper produced the same executable artifact;
-        // wrapper novelty is not capability novelty.
-        assert_eq!(memory.frontier_advance_events, 1);
-        assert_eq!(memory.frontier_capability_units, 1);
+        assert_eq!(memory.distinct_verified_artifact_count(), 2);
+        // The second predictor is allowed to search past the already verified
+        // artifact because this is its first bounded composition context.
+        assert_eq!(memory.frontier_advance_events, 2);
+        assert_eq!(memory.frontier_capability_units, 2);
         assert_eq!(memory.unverified_frontier_candidate_events, 0);
         assert_eq!(memory.behavioral_verification_events, 2);
         assert!(memory.prediction_absolute_error_total < 2 * 100);
@@ -1640,7 +1686,7 @@ mod tests {
         assert!(!repeated.applied_to_self_improvement);
         memory = promote_generative_cycle(&memory, &repeated_context, &repeated).unwrap();
         assert_eq!(memory.reuse_events, 1);
-        assert_eq!(memory.redundant_selection_events, 2);
+        assert_eq!(memory.redundant_selection_events, 1);
 
         let mut new_context = input();
         new_context.source_lesson_id = "lesson-new-context".to_string();
@@ -1659,8 +1705,8 @@ mod tests {
         assert!(transferred.applied_policy_signals.is_empty());
         memory = promote_generative_cycle(&memory, &new_context, &transferred).unwrap();
         assert_eq!(memory.unverified_frontier_candidate_events, 0);
-        assert_eq!(memory.distinct_verified_artifact_count(), 2);
-        assert_eq!(memory.frontier_capability_units, 2);
+        assert_eq!(memory.distinct_verified_artifact_count(), 4);
+        assert_eq!(memory.frontier_capability_units, 4);
     }
 
     #[test]
@@ -1748,7 +1794,8 @@ mod tests {
         assert!(saturated_result.behavioral_composition_executed);
         assert!(saturated_result.novel_verified_artifact);
         assert!(saturated_result.frontier_advance);
-        let expanded = promote_generative_cycle(&saturated, &input(), &saturated_result).unwrap();
+        let mut expanded =
+            promote_generative_cycle(&saturated, &input(), &saturated_result).unwrap();
         assert_eq!(
             distinct_verified_artifact_count_for_composer(
                 &expanded,
@@ -1757,6 +1804,28 @@ mod tests {
             1
         );
         assert_eq!(expanded.distinct_verified_artifact_count(), 65);
+
+        let operator_memory = expanded
+            .accepted_compositions
+            .iter_mut()
+            .find(|composition| {
+                composition_uses_composer(composition, "IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER")
+            })
+            .unwrap();
+        operator_memory.verified_artifact_sha256s = (0..MAX_IMPROVEMENT_OPERATOR_ARTIFACTS)
+            .map(|ordinal| sha256(format!("operator-{ordinal}").as_bytes()))
+            .collect();
+        let exhausted = run_generative_cycle(&expanded, &input(), 13).unwrap();
+        assert_eq!(exhausted.verified_artifact_count, 0);
+        assert!(!exhausted.behavioral_composition_executed);
+        assert_eq!(
+            exhausted
+                .behavioral_execution_receipt
+                .as_ref()
+                .and_then(|receipt| receipt.abstention_reason.as_deref()),
+            Some("IMPROVEMENT_OPERATOR_ARTIFACT_CAPACITY_REACHED")
+        );
+        assert!(!exhausted.frontier_advance);
     }
 
     #[test]
@@ -1815,15 +1884,17 @@ mod tests {
         memory.frontier_advance_events = 7;
         memory.frontier_capability_units = 0;
 
-        let mut repeated = input();
-        repeated.source_lesson_id = "wrapper-event-migration".to_string();
+        // The planner may route the same input through a not-yet-tried typed
+        // composition. That is a genuine capability event and must remain
+        // separate from the seven legacy wrapper counters being migrated.
+        let repeated = first_input.clone();
         let result = run_generative_cycle(&memory, &repeated, 9).unwrap();
-        assert!(!result.frontier_advance);
+        assert!(result.frontier_advance);
         let next = promote_generative_cycle(&memory, &repeated, &result).unwrap();
 
         assert_eq!(next.legacy_wrapper_frontier_advance_events, 7);
-        assert_eq!(next.frontier_advance_events, 0);
-        assert_eq!(next.frontier_capability_units, 1);
+        assert_eq!(next.frontier_advance_events, 1);
+        assert_eq!(next.frontier_capability_units, 2);
     }
 
     #[test]
