@@ -8,7 +8,35 @@ use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::Mutex;
 use std::thread;
 
+pub(crate) fn worker_count_for(item_count: usize, minimum_items_per_worker: usize) -> usize {
+    if item_count == 0 {
+        return 0;
+    }
+    let minimum_items_per_worker = minimum_items_per_worker.max(1);
+    let useful_workers = item_count.div_ceil(minimum_items_per_worker);
+    thread::available_parallelism()
+        .map(usize::from)
+        .unwrap_or(1)
+        .min(useful_workers)
+        .min(item_count)
+        .max(1)
+}
+
 pub(crate) fn map_ordered<T, R, F>(items: &[T], lane: &str, operation: F) -> Result<Vec<R>, String>
+where
+    T: Sync,
+    R: Send,
+    F: Fn(&T) -> Result<R, String> + Sync,
+{
+    map_ordered_batched(items, lane, 1, operation)
+}
+
+pub(crate) fn map_ordered_batched<T, R, F>(
+    items: &[T],
+    lane: &str,
+    minimum_items_per_worker: usize,
+    operation: F,
+) -> Result<Vec<R>, String>
 where
     T: Sync,
     R: Send,
@@ -17,11 +45,7 @@ where
     if items.is_empty() {
         return Ok(Vec::new());
     }
-    let worker_count = thread::available_parallelism()
-        .map(usize::from)
-        .unwrap_or(1)
-        .min(items.len())
-        .max(1);
+    let worker_count = worker_count_for(items.len(), minimum_items_per_worker);
     if worker_count == 1 {
         return items.iter().map(operation).collect();
     }
@@ -85,5 +109,26 @@ mod tests {
         })
         .unwrap_err();
         assert_eq!(error, "BOUND_COUNTEREXAMPLE");
+    }
+
+    #[test]
+    fn batching_avoids_tiny_fanout_and_bounds_lightweight_workers() {
+        assert_eq!(worker_count_for(0, 16), 0);
+        assert_eq!(worker_count_for(2, 16), 1);
+        assert!(worker_count_for(256, 16) <= 16);
+
+        let caller = thread::current().id();
+        let worker_ids = Mutex::new(Vec::new());
+        let observed = map_ordered_batched(&[3_u64, 5], "LIGHT_CANARY", 16, |value| {
+            worker_ids.lock().unwrap().push(thread::current().id());
+            Ok(value.saturating_mul(2))
+        })
+        .unwrap();
+        assert_eq!(observed, [6, 10]);
+        assert!(worker_ids
+            .into_inner()
+            .unwrap()
+            .into_iter()
+            .all(|worker| worker == caller));
     }
 }

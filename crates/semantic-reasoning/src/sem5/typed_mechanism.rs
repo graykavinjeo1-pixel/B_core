@@ -8,7 +8,9 @@ use std::collections::{BTreeMap, BTreeSet};
 
 use serde::{Deserialize, Serialize};
 
-use crate::bounded_parallel::map_ordered as parallel_map_ordered;
+use crate::bounded_parallel::{
+    map_ordered_batched as parallel_map_ordered_batched, worker_count_for,
+};
 use crate::self_repair_contract::sha256;
 
 use super::ir::eval_scalar;
@@ -26,6 +28,7 @@ const MAX_MECHANISM_EXPRESSION_NODES: usize = 256;
 const MAX_MECHANISM_OBSERVATIONS: usize = 64;
 const MAX_SYNTHESIS_CANDIDATES: usize = 1_024;
 const MAX_SYNTHESIS_DEPTH: usize = 3;
+const TYPED_OPERATOR_REPLAY_ITEMS_PER_WORKER: usize = 16;
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct SourceOperandIR {
@@ -703,6 +706,7 @@ fn build_synthesis_receipt(
     attempted_operator_ids: Vec<String>,
     rejected_operator_ids: Vec<String>,
     selected_operator_id: Option<String>,
+    parallel_operator_evaluation: bool,
 ) -> Result<TypedMechanismSynthesisReceiptIR, String> {
     let preferred_operator_attempts = attempted_operator_ids.len();
     let conditional_synthesized = condition.is_some();
@@ -745,6 +749,7 @@ fn build_synthesis_receipt(
             &selected_operator_id,
             &attempted_operator_ids,
             &rejected_operator_ids,
+            parallel_operator_evaluation,
         ))
         .map_err(|error| format!("TYPED_MECHANISM_RECEIPT_SERIALIZE:{error}"))?
         .as_slice(),
@@ -762,7 +767,7 @@ fn build_synthesis_receipt(
         selected_operator_id,
         attempted_operator_ids,
         rejected_operator_ids,
-        parallel_operator_evaluation: preferred_operator_attempts > 1,
+        parallel_operator_evaluation,
         winning_goal,
         template,
         receipt_sha256,
@@ -845,9 +850,14 @@ pub fn synthesize_typed_mechanism_goal_with_priors(
             otherwise: transported.2,
         });
     }
-    let operator_matches = parallel_map_ordered(
+    let operator_worker_count = worker_count_for(
+        applicable_operators.len(),
+        TYPED_OPERATOR_REPLAY_ITEMS_PER_WORKER,
+    );
+    let operator_matches = parallel_map_ordered_batched(
         &applicable_operators,
         "TYPED_OPERATOR_PUBLIC_REPLAY",
+        TYPED_OPERATOR_REPLAY_ITEMS_PER_WORKER,
         |operator| {
             Ok(prior_matches_public_observations(
                 request,
@@ -892,6 +902,7 @@ pub fn synthesize_typed_mechanism_goal_with_priors(
             attempted_operator_ids,
             rejected_operator_ids,
             Some(winner.operator_id.clone()),
+            operator_worker_count > 1,
         );
     }
     let rejected_operator_ids = attempted_operator_ids.clone();
@@ -1097,6 +1108,7 @@ pub fn synthesize_typed_mechanism_goal_with_priors(
         attempted_operator_ids,
         rejected_operator_ids,
         None,
+        operator_worker_count > 1,
     )
 }
 
@@ -1894,7 +1906,7 @@ mod tests {
             &[multiplication_operator.clone(), operator.clone()],
         )
         .unwrap();
-        assert!(collision.parallel_operator_evaluation);
+        assert!(!collision.parallel_operator_evaluation);
         assert_eq!(collision.preferred_operator_attempts, 2);
         assert_eq!(
             collision.selected_operator_id.as_deref(),
