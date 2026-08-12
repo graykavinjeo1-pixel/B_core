@@ -5663,6 +5663,12 @@ fn core_validation_plan(
     generation: u64,
     observations: &[LearningObservation],
 ) -> Result<CoreValidationPlan, String> {
+    // A periodic canary protects the complete deployed runtime surface.  It
+    // must not implicitly enable every sealed historical campaign: at a
+    // plateau the generation remains divisible by the interval, so each new
+    // runtime-core source fingerprint otherwise pays the multi-minute archive
+    // suite again. Historical modules still trigger their own exact regression
+    // surface when one of them actually changes.
     let full_regression_canary = generation.is_multiple_of(FULL_CORE_REGRESSION_CANARY_INTERVAL);
     let source_prefix = source_mutation_watch_prefix(config)?;
     let historical_path_observed = source_prefix.as_ref().is_some_and(|prefix| {
@@ -5672,7 +5678,7 @@ fn core_validation_plan(
             .map(Path::new)
             .any(|relative| !runtime_core_relative_path(relative))
     });
-    let historical_regression_required = full_regression_canary || historical_path_observed;
+    let historical_regression_required = historical_path_observed;
     let validation_args = || {
         let mut args = vec![
             "test".to_string(),
@@ -5697,6 +5703,8 @@ fn core_validation_plan(
             args: validation_args(),
             validation_scope: if historical_regression_required {
                 "FULL_HISTORICAL_REGRESSION_CANARY".to_string()
+            } else if full_regression_canary {
+                "FULL_RUNTIME_CORE_REGRESSION_CANARY".to_string()
             } else {
                 "RUNTIME_CORE_REGRESSION".to_string()
             },
@@ -5733,7 +5741,11 @@ fn core_validation_plan(
         }
     }
     let mut targetable_module_missing_tests = false;
-    if !historical_regression_required && core_paths > 0 && modules.len() == 1 {
+    if !historical_regression_required
+        && !full_regression_canary
+        && core_paths > 0
+        && modules.len() == 1
+    {
         let module = modules.into_iter().next().unwrap_or_default();
         if !module.is_empty()
             && module_has_targetable_test_filter(&config.source_mutation.source_root, &module)
@@ -5755,6 +5767,8 @@ fn core_validation_plan(
         args: validation_args(),
         validation_scope: if historical_regression_required {
             "FULL_HISTORICAL_REGRESSION_CANARY".to_string()
+        } else if full_regression_canary {
+            "FULL_RUNTIME_CORE_REGRESSION_CANARY".to_string()
         } else if targetable_module_missing_tests {
             "RUNTIME_CORE_REGRESSION_NO_TARGETABLE_MODULE_TESTS".to_string()
         } else {
@@ -8140,10 +8154,13 @@ mod tests {
             std::slice::from_ref(&observation),
         )
         .unwrap();
-        assert_eq!(canary.validation_scope, "FULL_HISTORICAL_REGRESSION_CANARY");
+        assert_eq!(
+            canary.validation_scope,
+            "FULL_RUNTIME_CORE_REGRESSION_CANARY"
+        );
         assert!(canary.targeted_test_filter.is_none());
         assert!(canary.full_regression_canary);
-        assert!(!canary.args.contains(&"runtime-core".to_string()));
+        assert!(canary.args.contains(&"runtime-core".to_string()));
         assert!(targeted.args.contains(&"runtime-core".to_string()));
 
         let mut generated_observation = observation.clone();
