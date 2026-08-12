@@ -1144,6 +1144,7 @@ pub fn self_check() -> SelfCheck {
                 .to_string(),
             "FRONTIER_CONTINUATION_REQUIRES_A_REMAINING_EXECUTABLE_SUCCESSOR_SUBSTRATE"
                 .to_string(),
+            "CAMPAIGN_FREEZE_DEFERS_AT_EXECUTABLE_GENERATIVE_SUBSTRATE_CLOSURE".to_string(),
             "EXACT_CONTEXT_REUSE_REVALIDATES_A_CANONICAL_ARTIFACT_WITHOUT_FRONTIER_PROMOTION"
                 .to_string(),
             "SATURATED_SUBSTRATE_ROUTES_TO_A_FRESH_EXECUTABLE_SUBSTRATE_WITHOUT_DIFFICULTY_ESCALATION"
@@ -7614,6 +7615,14 @@ fn step_without_lease(
             &mut state,
             phase,
             "SEMANTIC_REVALIDATION_CONSUMED_WITHOUT_GENERATION_PROMOTION",
+        )?;
+    } else if !executable_generative_substrate_available(&memory.generative) {
+        state.plateau_scans = state.plateau_scans.saturating_add(1);
+        save_transition(
+            config,
+            &mut state,
+            SupervisorPhase::WaitingPlateau,
+            "CAMPAIGN_DEFERRED_NO_EXECUTABLE_GENERATIVE_SUBSTRATE",
         )?;
     } else {
         let freeze = freeze_new_campaign(config, &mut state, &high)?;

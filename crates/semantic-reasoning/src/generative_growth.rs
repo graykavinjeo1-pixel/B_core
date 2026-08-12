@@ -1786,6 +1786,7 @@ mod tests {
             verified_artifact_family_width(&memory_with(0), "SEM5_PROGRAM_IR_COMPOSER"),
             1
         );
+        assert!(executable_generative_substrate_available(&memory_with(0)));
         assert_eq!(
             verified_artifact_family_width(&memory_with(1), "SEM5_PROGRAM_IR_COMPOSER"),
             1
@@ -1799,6 +1800,7 @@ mod tests {
             31
         );
         let saturated = memory_with(64);
+        assert!(executable_generative_substrate_available(&saturated));
         assert_eq!(
             verified_artifact_family_width(&saturated, "SEM5_PROGRAM_IR_COMPOSER"),
             0
@@ -1851,6 +1853,18 @@ mod tests {
             ),
             1
         );
+        let mut closed = routed;
+        let fullstack_memory = closed
+            .accepted_compositions
+            .iter_mut()
+            .find(|composition| {
+                composition_uses_composer(composition, "FULLSTACK_TYPED_RECIPE_COMPOSER")
+            })
+            .unwrap();
+        fullstack_memory.verified_artifact_sha256s = (0..MAX_FULLSTACK_VERIFIED_ARTIFACTS)
+            .map(|ordinal| sha256(format!("fullstack-{ordinal}").as_bytes()))
+            .collect();
+        assert!(!executable_generative_substrate_available(&closed));
     }
 
     #[test]
