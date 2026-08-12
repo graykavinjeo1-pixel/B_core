@@ -247,7 +247,7 @@ pub struct SourceBoundAlternativeReceiptIR {
     pub requested_public_symbol: String,
     pub function_template: SourceBoundFunctionTemplateIR,
     pub synthesis: TypedMechanismSynthesisReceiptIR,
-    pub materialized_patch: MaterializedSourceBoundPatchIR,
+    pub replayable_patch: ReplayableSourceBoundPatchIR,
     #[serde(default)]
     pub closure_candidates: Vec<SourceBoundClosureCandidateReceiptIR>,
     #[serde(default)]
@@ -262,7 +262,7 @@ pub struct SourceBoundClosureCandidateReceiptIR {
     pub public_operand_bindings: BTreeMap<String, String>,
     pub function_template: SourceBoundFunctionTemplateIR,
     pub synthesis: TypedMechanismSynthesisReceiptIR,
-    pub materialized_patch: MaterializedSourceBoundPatchIR,
+    pub replayable_patch: ReplayableSourceBoundPatchIR,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -1824,7 +1824,7 @@ fn synthesize_source_bound_template(
 
 fn combine_source_bound_patches(
     source: &str,
-    patches: &[&MaterializedSourceBoundPatchIR],
+    patches: &[&ReplayableSourceBoundPatchIR],
 ) -> Result<MaterializedSourceBoundPatchIR, CausalFrontendFailure> {
     let mut edits = Vec::new();
     for patch in patches {
@@ -1867,6 +1867,27 @@ fn combine_source_bound_patches(
         candidate_replay_sha256,
         candidate_materialization_is_one_to_one: true,
     })
+}
+
+fn split_materialized_source_bound_patch(
+    patch: MaterializedSourceBoundPatchIR,
+) -> (ReplayableSourceBoundPatchIR, String) {
+    (
+        ReplayableSourceBoundPatchIR {
+            predecessor_sha256: patch.predecessor_sha256,
+            edit: patch.edit,
+            candidate_sha256: patch.candidate_sha256,
+            candidate_replay_sha256: patch.candidate_replay_sha256,
+            candidate_materialization_is_one_to_one: patch.candidate_materialization_is_one_to_one,
+        },
+        patch.candidate_source,
+    )
+}
+
+fn into_replayable_source_bound_patch(
+    patch: MaterializedSourceBoundPatchIR,
+) -> ReplayableSourceBoundPatchIR {
+    split_materialized_source_bound_patch(patch).0
 }
 
 pub fn replay_source_bound_patch(
@@ -1962,7 +1983,7 @@ fn build_source_bound_patch_variants(
         let mut symbols = Vec::new();
         for (alternative, selected) in alternatives.iter().zip(&selection) {
             if *selected == 0 {
-                patches.push(&alternative.materialized_patch);
+                patches.push(&alternative.replayable_patch);
                 symbols.push(alternative.function_template.qualified_symbol.clone());
             } else {
                 let candidate = alternative
@@ -1971,7 +1992,7 @@ fn build_source_bound_patch_variants(
                     .ok_or_else(|| {
                         CausalFrontendFailure::public("PATCH_VARIANT_CANDIDATE_INDEX")
                     })?;
-                patches.push(&candidate.materialized_patch);
+                patches.push(&candidate.replayable_patch);
                 symbols.push(candidate.function_template.qualified_symbol.clone());
             }
         }
@@ -1997,14 +2018,7 @@ fn build_source_bound_patch_variants(
             variant_id,
             selected_candidate_indices: selection,
             selected_template_symbols: symbols,
-            replayable_patch: ReplayableSourceBoundPatchIR {
-                predecessor_sha256: materialized_patch.predecessor_sha256,
-                edit: materialized_patch.edit,
-                candidate_sha256: materialized_patch.candidate_sha256,
-                candidate_replay_sha256: materialized_patch.candidate_replay_sha256,
-                candidate_materialization_is_one_to_one: materialized_patch
-                    .candidate_materialization_is_one_to_one,
-            },
+            replayable_patch: into_replayable_source_bound_patch(materialized_patch),
         });
     }
     if variants.is_empty() {
@@ -2177,7 +2191,7 @@ pub fn analyze_and_synthesize_source_bound_with_operators(
             {
                 owner_type_operators.insert(0, owner_operator);
             }
-            let mut closure_candidates = Vec::new();
+            let mut pending_closure_candidates = Vec::new();
             for closure_definition in closure_definitions {
                 let closure_symbol = closure_definition.qualified_symbol.clone();
                 let bindings = closure_definition.public_operand_bindings.clone();
@@ -2240,29 +2254,36 @@ pub fn analyze_and_synthesize_source_bound_with_operators(
                         continue;
                     }
                 };
-                closure_candidates.push(SourceBoundClosureCandidateReceiptIR {
-                    closure_ordinal,
-                    public_operand_bindings: bindings,
-                    function_template: closure_template,
-                    synthesis: closure_synthesis,
-                    materialized_patch: closure_patch,
-                });
+                let (replayable_patch, candidate_source) =
+                    split_materialized_source_bound_patch(closure_patch);
+                pending_closure_candidates.push((
+                    SourceBoundClosureCandidateReceiptIR {
+                        closure_ordinal,
+                        public_operand_bindings: bindings,
+                        function_template: closure_template,
+                        synthesis: closure_synthesis,
+                        replayable_patch,
+                    },
+                    candidate_source,
+                ));
             }
             // Every materialization still has to parse, compile, and preserve
             // the exact public symbol.  Validate the owner and closure-local
             // alternatives in bounded batches so one source-bound cut does
             // not spawn one identical Python frontend process per candidate.
-            let mut validation_inputs = Vec::with_capacity(1 + closure_candidates.len());
+            let mut validation_inputs = Vec::with_capacity(1 + pending_closure_candidates.len());
             validation_inputs.push((
                 materialized_patch.candidate_source.as_str(),
                 alternative.public_symbol.as_str(),
             ));
-            validation_inputs.extend(closure_candidates.iter().map(|candidate| {
-                (
-                    candidate.materialized_patch.candidate_source.as_str(),
-                    alternative.public_symbol.as_str(),
-                )
-            }));
+            validation_inputs.extend(pending_closure_candidates.iter().map(
+                |(_, candidate_source)| {
+                    (
+                        candidate_source.as_str(),
+                        alternative.public_symbol.as_str(),
+                    )
+                },
+            ));
             let (validation_outcomes, candidate_validation_processes) =
                 validate_python_candidate_batch(&request.python_executable, &validation_inputs)?;
             drop(validation_inputs);
@@ -2270,22 +2291,28 @@ pub fn analyze_and_synthesize_source_bound_with_operators(
             validation_outcomes.next().ok_or_else(|| {
                 CausalFrontendFailure::public("CANDIDATE_BATCH_OWNER_OUTCOME_MISSING")
             })??;
-            closure_candidates = closure_candidates
-                .into_iter()
-                .zip(validation_outcomes)
-                .filter_map(|(candidate, outcome)| match outcome {
-                    Ok(()) => Some(candidate),
-                    Err(error) => {
-                        closure_candidate_rejections.push(SourceBoundClosureCandidateRejectionIR {
-                            closure_ordinal: candidate.closure_ordinal,
-                            qualified_symbol: candidate.function_template.qualified_symbol.clone(),
-                            failure_kind: error.kind,
-                            detail: error.detail,
-                        });
-                        None
-                    }
-                })
-                .collect();
+            let mut closure_candidates: Vec<SourceBoundClosureCandidateReceiptIR> =
+                pending_closure_candidates
+                    .into_iter()
+                    .zip(validation_outcomes)
+                    .filter_map(|((candidate, _candidate_source), outcome)| match outcome {
+                        Ok(()) => Some(candidate),
+                        Err(error) => {
+                            closure_candidate_rejections.push(
+                                SourceBoundClosureCandidateRejectionIR {
+                                    closure_ordinal: candidate.closure_ordinal,
+                                    qualified_symbol: candidate
+                                        .function_template
+                                        .qualified_symbol
+                                        .clone(),
+                                    failure_kind: error.kind,
+                                    detail: error.detail,
+                                },
+                            );
+                            None
+                        }
+                    })
+                    .collect();
             closure_candidates.sort_by_key(|candidate| candidate.closure_ordinal);
             closure_candidate_rejections.sort_by(|left, right| {
                 left.closure_ordinal
@@ -2297,7 +2324,7 @@ pub fn analyze_and_synthesize_source_bound_with_operators(
                 requested_public_symbol: alternative.public_symbol.clone(),
                 function_template,
                 synthesis,
-                materialized_patch,
+                replayable_patch: into_replayable_source_bound_patch(materialized_patch),
                 closure_candidates,
                 closure_candidate_rejections,
                 candidate_validation_processes,
@@ -2435,7 +2462,7 @@ mod tests {
                     ..
                 }
             ) && alternative
-                .materialized_patch
+                .replayable_patch
                 .candidate_materialization_is_one_to_one
         }));
     }
@@ -2510,7 +2537,7 @@ def keep_bytes(values: bytes) -> bytes:
             ));
             assert!(
                 alternative
-                    .materialized_patch
+                    .replayable_patch
                     .candidate_materialization_is_one_to_one
             );
         }
@@ -2571,10 +2598,11 @@ def row_at(values: list[list[int]], position: int) -> list[int]:
             by_symbol["count"].synthesis.winning_goal.postimage,
             TypedSyntaxExpressionIR::Length { .. }
         ));
-        assert!(by_symbol["count"]
-            .materialized_patch
-            .candidate_source
-            .contains("len("));
+        assert!(
+            replay_source_bound_patch(source, &by_symbol["count"].replayable_patch)
+                .unwrap()
+                .contains("len(")
+        );
         for symbol in ["first", "byte_at", "row_at"] {
             let alternative = by_symbol[symbol];
             assert!(matches!(
@@ -2585,13 +2613,14 @@ def row_at(values: list[list[int]], position: int) -> list[int]:
                 alternative.synthesis.template.public_observations_passed,
                 alternative.synthesis.winning_goal.public_observations.len()
             );
-            assert!(alternative
-                .materialized_patch
-                .candidate_source
-                .contains('['));
+            assert!(
+                replay_source_bound_patch(source, &alternative.replayable_patch)
+                    .unwrap()
+                    .contains('[')
+            );
             assert!(
                 alternative
-                    .materialized_patch
+                    .replayable_patch
                     .candidate_materialization_is_one_to_one
             );
         }
@@ -2707,7 +2736,7 @@ def transformer_visitor(value: int, baseline: int) -> int:
             replay_source_bound_patch(source, &receipt.patch_variants[0].replayable_patch).unwrap();
         assert!(first_variant_source.contains("parsed = parse_expr(left, right)"));
         assert!(first_variant_source.contains("return evaluateFalse(first, second)"));
-        assert!(!serde_json::to_string(&receipt.patch_variants)
+        assert!(!serde_json::to_string(&receipt)
             .unwrap()
             .contains("candidate_source"));
         let mut tampered_variant = receipt.patch_variants[0].replayable_patch.clone();
@@ -2718,17 +2747,18 @@ def transformer_visitor(value: int, baseline: int) -> int:
                 .kind,
             CausalFrontendFailureKind::ConflictingSourceBoundEdits
         );
-        assert!(alternative
-            .materialized_patch
-            .candidate_source
-            .contains(" if "));
+        assert!(
+            replay_source_bound_patch(source, &alternative.replayable_patch)
+                .unwrap()
+                .contains(" if ")
+        );
         assert!(matches!(
-            alternative.materialized_patch.edit,
+            alternative.replayable_patch.edit,
             SourceEditAtom::AtomicMultiEdit { .. }
         ));
         assert!(
             alternative
-                .materialized_patch
+                .replayable_patch
                 .candidate_materialization_is_one_to_one
         );
         let mut saturated = alternative.clone();
@@ -2888,17 +2918,17 @@ def helper(first: int, second: int) -> int:
             }],
         };
         let receipt = analyze_and_synthesize_source_bound(&request).unwrap();
-        let patch = &receipt.alternatives[0].materialized_patch;
+        let patch = &receipt.alternatives[0].replayable_patch;
         let SourceEditAtom::AtomicMultiEdit { edits } = &patch.edit else {
             panic!("atomic path required")
         };
         assert_eq!(edits.len(), 3);
         assert_eq!(
             apply_edit_atom(source, &patch.edit).unwrap(),
-            patch.candidate_source
+            replay_source_bound_patch(source, patch).unwrap()
         );
-        assert!(patch
-            .candidate_source
+        assert!(replay_source_bound_patch(source, patch)
+            .unwrap()
             .starts_with("# 한글 byte span canary\r\n"));
     }
 
@@ -2948,10 +2978,11 @@ def add(left, right):
             .operand_type_evidence
             .values()
             .all(|evidence| evidence == "PUBLIC_OBSERVATION"));
-        assert!(alternative
-            .materialized_patch
-            .candidate_source
-            .contains("return ((left) + (right))"));
+        assert!(
+            replay_source_bound_patch(source, &alternative.replayable_patch)
+                .unwrap()
+                .contains("return ((left) + (right))")
+        );
     }
 
     #[test]
@@ -3012,10 +3043,11 @@ def add(left, right):
         let Some(python_executable) = python() else {
             return;
         };
+        let source = "def add(left, right):\n    return 0\n";
         let request = SourceBoundRepositoryDiscoveryRequestIR {
             schema: SOURCE_BOUND_REPOSITORY_DISCOVERY_SCHEMA.to_string(),
             source_relative_path: PathBuf::from("calculator.py"),
-            source: "def add(left, right):\n    return 0\n".to_string(),
+            source: source.to_string(),
             test_sources: vec![RepositoryTestSourceIR {
                 relative_path: PathBuf::from("test_calculator.py"),
                 source: "def test_add():\n    assert add(2, 3) == 5\n    assert add(left=4, right=7) == 11\n"
@@ -3032,10 +3064,11 @@ def add(left, right):
         assert!(receipt.alternatives[0]
             .alternative_id
             .starts_with("AUTO:STATIC_PUBLIC_CONTRADICTION:add:"));
-        assert!(receipt.alternatives[0]
-            .materialized_patch
-            .candidate_source
-            .contains("return ((left) + (right))"));
+        assert!(
+            replay_source_bound_patch(source, &receipt.alternatives[0].replayable_patch)
+                .unwrap()
+                .contains("return ((left) + (right))")
+        );
     }
 
     #[test]
