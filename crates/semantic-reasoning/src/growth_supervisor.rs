@@ -401,6 +401,7 @@ pub enum WorkActor {
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum WorkKind {
     CodeChange,
+    CapabilitySynthesis,
     DefectRepair,
     RegressionTest,
     PerformanceOptimization,
@@ -1906,6 +1907,11 @@ fn classify_observation(
             signals.insert("CODE_CHANGE".to_string());
             roles.insert("IMPLEMENTATION".to_string());
         }
+        WorkKind::CapabilitySynthesis => {
+            score += 22;
+            signals.insert("BEHAVIORAL_FRONTIER_ADVANCE".to_string());
+            roles.insert("PROGRAM_COMPOSITION".to_string());
+        }
         WorkKind::Documentation => {
             score += 2;
             signals.insert("DOCUMENTATION_ONLY".to_string());
@@ -3164,6 +3170,11 @@ fn persist_scan_observations(
             .join(format!("{}.json", observation.observation_id));
         if !path.exists() {
             write_immutable_json(&path, observation)?;
+        } else {
+            let existing: LearningObservation = read_json(&path)?;
+            if existing != *observation {
+                return Err("OBSERVATION_ID_COLLISION".to_string());
+            }
         }
     }
     Ok(())
@@ -3320,6 +3331,7 @@ fn derive_composition_recipe(observations: &[LearningObservation]) -> Vec<String
         "OPERATIONS_GUARD",
         "PERFORMANCE_IMPLEMENTATION",
         "PERFORMANCE_BENCHMARK",
+        "PROGRAM_COMPOSITION",
         "INVARIANT_CHECK",
         "REGRESSION_TEST",
     ] {
@@ -4500,6 +4512,109 @@ fn run_independent_verifier(
     Ok(receipt)
 }
 
+#[allow(clippy::too_many_arguments)]
+fn generative_frontier_continuation_observation(
+    campaign_id: &str,
+    generation: u64,
+    predecessor_memory_sha256: &str,
+    resulting_memory_sha256: &str,
+    frontier_before: u64,
+    frontier_after: u64,
+    generative_cycle: &GenerativeCycleResult,
+    verifier_receipt_sha256: &str,
+) -> Result<Option<LearningObservation>, String> {
+    if !generative_cycle.frontier_advance || frontier_after <= frontier_before {
+        return Ok(None);
+    }
+    let behavioral_receipt = generative_cycle
+        .behavioral_execution_receipt
+        .as_ref()
+        .filter(|receipt| receipt.executed)
+        .ok_or_else(|| "GENERATIVE_CONTINUATION_BEHAVIORAL_RECEIPT_MISSING".to_string())?;
+    let behavioral_verification_sha256 = generative_cycle
+        .behavioral_verification_sha256
+        .as_ref()
+        .filter(|hash| hash.len() == 64 && hash.bytes().all(|byte| byte.is_ascii_hexdigit()))
+        .ok_or_else(|| "GENERATIVE_CONTINUATION_VERIFICATION_HASH_MISSING".to_string())?;
+    if behavioral_receipt.receipt_sha256 != *behavioral_verification_sha256
+        || generative_cycle.frontier_advance_units != frontier_after - frontier_before
+        || verifier_receipt_sha256.len() != 64
+        || resulting_memory_sha256.len() != 64
+    {
+        return Err("GENERATIVE_CONTINUATION_BINDING_FAILURE".to_string());
+    }
+    let artifact_sha256 = behavioral_receipt
+        .verified_artifacts
+        .iter()
+        .map(|artifact| artifact.artifact_sha256.clone())
+        .collect::<Vec<_>>();
+    let content_sha256 = json_sha256(&(
+        "B_CORE_GENERATIVE_FRONTIER_CONTINUATION_1",
+        campaign_id,
+        generation,
+        predecessor_memory_sha256,
+        resulting_memory_sha256,
+        frontier_before,
+        frontier_after,
+        behavioral_verification_sha256,
+        verifier_receipt_sha256,
+        &artifact_sha256,
+    ))?;
+    let observation_id =
+        sha256(format!("GENERATIVE_FRONTIER_CONTINUATION:{content_sha256}").as_bytes());
+    let mut evidence = vec![
+        behavioral_verification_sha256.clone(),
+        verifier_receipt_sha256.to_string(),
+        resulting_memory_sha256.to_string(),
+    ];
+    evidence.extend(artifact_sha256);
+    evidence.sort();
+    evidence.dedup();
+    Ok(Some(LearningObservation {
+        observation_id: observation_id.clone(),
+        work_event_id: None,
+        logical_path: format!("INTERNAL/.b_generative_frontier/{observation_id}"),
+        content_sha256: content_sha256.clone(),
+        predecessor_content_sha256: Some(predecessor_memory_sha256.to_string()),
+        actor: WorkActor::LocalTool,
+        work_kind: WorkKind::CapabilitySynthesis,
+        work_outcome: WorkOutcome::Pass,
+        features_before: None,
+        features_after: StructuralFeatures::default(),
+        signals: vec![
+            "BEHAVIORAL_FRONTIER_ADVANCE".to_string(),
+            "GENERATIVE_FRONTIER_CONTINUATION".to_string(),
+            "VERIFIED_PASS".to_string(),
+        ],
+        composition_roles: vec![
+            "PROGRAM_COMPOSITION".to_string(),
+            "INVARIANT_CHECK".to_string(),
+            "REGRESSION_TEST".to_string(),
+        ],
+        learning_score: 95,
+        learning_value: LearningValue::High,
+        reasons: vec![
+            "the independent verifier accepted a larger behaviorally executed artifact frontier"
+                .to_string(),
+            "only a strict frontier increase may seed one bounded successor composition cycle"
+                .to_string(),
+        ],
+        verification_evidence_sha256: evidence,
+        performance_metrics: vec![PerformanceMetricEvidence {
+            metric: "GENERATIVE_VERIFIED_ARTIFACT_COUNT".to_string(),
+            before: frontier_before,
+            after: frontier_after,
+            lower_is_better: false,
+            evidence_sha256: content_sha256,
+        }],
+        exact_source_fragments_stored: 0,
+        raw_source_bytes_stored: 0,
+        // Generation is part of the immutable campaign freeze and therefore
+        // remains identical when promotion is replayed after a crash.
+        observed_at_ms: generation,
+    }))
+}
+
 fn promote_candidate(
     config: &GrowthSupervisorConfig,
     state: &mut SupervisorState,
@@ -4524,6 +4639,7 @@ fn promote_candidate(
     if memory_contains_semantic_lesson(&memory, &candidate.lesson)? {
         return Err("DUPLICATE_SEMANTIC_LESSON_CANNOT_PROMOTE".to_string());
     }
+    let generative_frontier_before = memory.generative.distinct_verified_artifact_count();
     let generative_input = generative_input(&candidate.lesson);
     let expected_generative_cycle =
         run_generative_cycle(&memory.generative, &generative_input, freeze.seed)?;
@@ -4579,6 +4695,16 @@ fn promote_candidate(
     memory.predecessor_sha256 = Some(freeze.predecessor_memory_sha256.clone());
     memory.generation = freeze.generation;
     let memory_hash = json_sha256(&memory)?;
+    let generative_continuation = generative_frontier_continuation_observation(
+        &freeze.campaign_id,
+        freeze.generation,
+        &freeze.predecessor_memory_sha256,
+        &memory_hash,
+        generative_frontier_before,
+        memory.generative.distinct_verified_artifact_count(),
+        &candidate.generative_cycle,
+        &receipt.receipt_sha256,
+    )?;
     let next_memory_path = memory_path(config, memory.generation);
     if next_memory_path.exists() {
         let existing: GrowthMemory = read_json(&next_memory_path)?;
@@ -4589,6 +4715,9 @@ fn promote_candidate(
         write_immutable_json(&next_memory_path, &memory)?;
     }
     cleanup_memory_generations(config)?;
+    if let Some(observation) = generative_continuation {
+        persist_scan_observations(config, std::slice::from_ref(&observation))?;
+    }
     for observation_id in &candidate.observation_ids {
         index
             .consumed_observation_ids
@@ -7495,6 +7624,59 @@ mod tests {
         assert_eq!(stats.verified_improvements, 2);
         assert_eq!(recent_source_patch_stats(&state), (4, 2, 2, 40));
         fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn verified_generative_frontier_increase_seeds_exactly_one_successor_observation() {
+        let input = GenerativeInput {
+            source_lesson_id: "frontier-continuation-source".to_string(),
+            diagnostic_signals: vec!["CAPABILITY_SURFACE_ADDED".to_string()],
+            observed_composition_roles: vec![
+                "IMPLEMENTATION".to_string(),
+                "REGRESSION_TEST".to_string(),
+            ],
+            learning_score: 90,
+            verification_evidence_count: 1,
+            measured_performance_gain: false,
+        };
+        let result = run_generative_cycle(&GenerativeGrowthMemory::default(), &input, 17).unwrap();
+        assert!(result.frontier_advance);
+        let observation = generative_frontier_continuation_observation(
+            "G-CONTINUATION",
+            1,
+            &"a".repeat(64),
+            &"b".repeat(64),
+            0,
+            result.frontier_advance_units,
+            &result,
+            &"c".repeat(64),
+        )
+        .unwrap()
+        .expect("strict frontier increase creates one continuation");
+        assert_eq!(observation.work_kind, WorkKind::CapabilitySynthesis);
+        assert_eq!(observation.work_outcome, WorkOutcome::Pass);
+        assert!(observation
+            .signals
+            .contains(&"GENERATIVE_FRONTIER_CONTINUATION".to_string()));
+        assert_eq!(observation.performance_metrics[0].before, 0);
+        assert_eq!(
+            observation.performance_metrics[0].after,
+            result.frontier_advance_units
+        );
+        assert_eq!(observation.exact_source_fragments_stored, 0);
+        assert_eq!(observation.raw_source_bytes_stored, 0);
+        assert!(generative_frontier_continuation_observation(
+            "G-CONTINUATION",
+            2,
+            &"b".repeat(64),
+            &"d".repeat(64),
+            result.frontier_advance_units,
+            result.frontier_advance_units,
+            &result,
+            &"e".repeat(64),
+        )
+        .unwrap()
+        .is_none());
     }
 
     #[test]
