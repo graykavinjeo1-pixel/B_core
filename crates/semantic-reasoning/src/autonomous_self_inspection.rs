@@ -66,6 +66,12 @@ pub struct DiagnosticPolicyMemory {
     pub legacy_unbound_productive_outcome_events: u64,
     #[serde(default)]
     pub legacy_unbound_failed_outcome_events: u64,
+    #[serde(default)]
+    pub legacy_frontier_only_outcome_bound_selections: u64,
+    #[serde(default)]
+    pub legacy_frontier_only_productive_outcome_events: u64,
+    #[serde(default)]
+    pub legacy_frontier_only_failed_outcome_events: u64,
 }
 
 impl Default for DiagnosticPolicyMemory {
@@ -86,10 +92,13 @@ impl Default for DiagnosticPolicyMemory {
             active_action_id: None,
             active_action_receipt_sha256: None,
             active_output_observation_ids: Vec::new(),
-            outcome_causal_contract_revision: 2,
+            outcome_causal_contract_revision: 3,
             legacy_unbound_outcome_bound_selections: 0,
             legacy_unbound_productive_outcome_events: 0,
             legacy_unbound_failed_outcome_events: 0,
+            legacy_frontier_only_outcome_bound_selections: 0,
+            legacy_frontier_only_productive_outcome_events: 0,
+            legacy_frontier_only_failed_outcome_events: 0,
         }
     }
 }
@@ -98,27 +107,46 @@ impl DiagnosticPolicyMemory {
     const MAX_ACTIVE_OBSERVATIONS_WITHOUT_OUTCOME: u32 = 8;
 
     pub fn ensure_action_causal_contract(&mut self) {
-        if self.outcome_causal_contract_revision >= 2 {
-            return;
+        if self.outcome_causal_contract_revision < 2 {
+            self.legacy_unbound_outcome_bound_selections = self
+                .legacy_unbound_outcome_bound_selections
+                .saturating_add(self.outcome_bound_selections);
+            self.legacy_unbound_productive_outcome_events = self
+                .legacy_unbound_productive_outcome_events
+                .saturating_add(self.productive_outcome_events);
+            self.legacy_unbound_failed_outcome_events = self
+                .legacy_unbound_failed_outcome_events
+                .saturating_add(self.failed_outcome_events);
+            self.outcome_bound_selections = 0;
+            self.productive_outcome_events = 0;
+            self.failed_outcome_events = 0;
+            for record in self.experiment_records.values_mut() {
+                record.productive_outcome_events = 0;
+                record.failed_outcome_events = 0;
+            }
+            self.clear_unbound_active();
+            self.outcome_causal_contract_revision = 2;
         }
-        self.legacy_unbound_outcome_bound_selections = self
-            .legacy_unbound_outcome_bound_selections
-            .saturating_add(self.outcome_bound_selections);
-        self.legacy_unbound_productive_outcome_events = self
-            .legacy_unbound_productive_outcome_events
-            .saturating_add(self.productive_outcome_events);
-        self.legacy_unbound_failed_outcome_events = self
-            .legacy_unbound_failed_outcome_events
-            .saturating_add(self.failed_outcome_events);
-        self.outcome_bound_selections = 0;
-        self.productive_outcome_events = 0;
-        self.failed_outcome_events = 0;
-        for record in self.experiment_records.values_mut() {
-            record.productive_outcome_events = 0;
-            record.failed_outcome_events = 0;
+        if self.outcome_causal_contract_revision < 3 {
+            self.legacy_frontier_only_outcome_bound_selections = self
+                .legacy_frontier_only_outcome_bound_selections
+                .saturating_add(self.outcome_bound_selections);
+            self.legacy_frontier_only_productive_outcome_events = self
+                .legacy_frontier_only_productive_outcome_events
+                .saturating_add(self.productive_outcome_events);
+            self.legacy_frontier_only_failed_outcome_events = self
+                .legacy_frontier_only_failed_outcome_events
+                .saturating_add(self.failed_outcome_events);
+            self.outcome_bound_selections = 0;
+            self.productive_outcome_events = 0;
+            self.failed_outcome_events = 0;
+            for record in self.experiment_records.values_mut() {
+                record.productive_outcome_events = 0;
+                record.failed_outcome_events = 0;
+            }
+            self.clear_unbound_active();
+            self.outcome_causal_contract_revision = 3;
         }
-        self.clear_unbound_active();
-        self.outcome_causal_contract_revision = 2;
     }
 
     fn resolve_active(&mut self, productive: bool) -> bool {
@@ -166,6 +194,19 @@ impl DiagnosticPolicyMemory {
         frontier_advance: bool,
         evidence_observation_ids: &[String],
     ) -> bool {
+        self.resolve_consumed_action_outcome(
+            source_generation,
+            frontier_advance,
+            evidence_observation_ids,
+        )
+    }
+
+    pub fn resolve_consumed_action_outcome(
+        &mut self,
+        source_generation: u64,
+        action_goal_satisfied: bool,
+        evidence_observation_ids: &[String],
+    ) -> bool {
         self.ensure_action_causal_contract();
         if self.active_generation != Some(source_generation)
             || self.active_action_id.is_none()
@@ -178,7 +219,7 @@ impl DiagnosticPolicyMemory {
         {
             return false;
         }
-        self.resolve_active(frontier_advance)
+        self.resolve_active(action_goal_satisfied)
     }
 
     pub fn bind_executed_action(
@@ -1339,7 +1380,7 @@ mod tests {
     }
 
     #[test]
-    fn only_an_executed_action_with_consumed_output_receives_frontier_credit() {
+    fn only_an_executed_action_with_consumed_output_receives_success_credit() {
         let mut value = input();
         value.naive_cohort_has_verification = false;
         value.evidence_aware_cohort_has_verification = true;
@@ -1371,11 +1412,32 @@ mod tests {
             true,
             &["unrelated-observation".to_string()]
         ));
-        assert!(value.diagnostic_policy.resolve_frontier_outcome(
+        assert!(value.diagnostic_policy.resolve_consumed_action_outcome(
             2,
             true,
             &["observation-1".to_string()]
         ));
+    }
+
+    #[test]
+    fn frontier_only_outcome_history_is_quarantined_from_action_goal_success() {
+        let mut policy = DiagnosticPolicyMemory {
+            outcome_causal_contract_revision: 2,
+            outcome_bound_selections: 9,
+            productive_outcome_events: 8,
+            failed_outcome_events: 1,
+            ..DiagnosticPolicyMemory::default()
+        };
+
+        policy.ensure_action_causal_contract();
+
+        assert_eq!(policy.outcome_causal_contract_revision, 3);
+        assert_eq!(policy.outcome_bound_selections, 0);
+        assert_eq!(policy.productive_outcome_events, 0);
+        assert_eq!(policy.failed_outcome_events, 0);
+        assert_eq!(policy.legacy_frontier_only_outcome_bound_selections, 9);
+        assert_eq!(policy.legacy_frontier_only_productive_outcome_events, 8);
+        assert_eq!(policy.legacy_frontier_only_failed_outcome_events, 1);
     }
 
     #[test]

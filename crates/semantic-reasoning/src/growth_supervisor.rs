@@ -3070,6 +3070,10 @@ fn consume_semantic_revalidation(
     {
         return Ok(None);
     }
+    let consumed_observation_ids = chosen
+        .iter()
+        .map(|observation| observation.observation_id.clone())
+        .collect::<Vec<_>>();
     for observation in &chosen {
         index
             .consumed_observation_ids
@@ -3083,6 +3087,11 @@ fn consume_semantic_revalidation(
     state.redundant_observations_consumed = state
         .redundant_observations_consumed
         .saturating_add(chosen.len().min(u64::MAX as usize) as u64);
+    state.diagnostic_policy.resolve_consumed_action_outcome(
+        state.generation,
+        true,
+        &consumed_observation_ids,
+    );
     state.plateau_scans = state.plateau_scans.saturating_add(1);
     Ok(Some(chosen.len()))
 }
@@ -3978,9 +3987,9 @@ fn promote_candidate(
     state.classifier_outcome_bound_refinements = memory.classifier.outcome_bound_refinements;
     state.classifier_unsupported_refinements_suppressed =
         memory.classifier.unsupported_refinements_suppressed;
-    state.diagnostic_policy.resolve_frontier_outcome(
+    state.diagnostic_policy.resolve_consumed_action_outcome(
         freeze.generation.saturating_sub(1),
-        candidate.generative_cycle.frontier_advance,
+        true,
         &candidate.observation_ids,
     );
     state.campaigns_accepted = state.campaigns_accepted.saturating_add(1);
@@ -4033,7 +4042,7 @@ fn complete_campaign(
         )?)
     } else {
         consume_failed_observations(config, index, freeze, candidate)?;
-        state.diagnostic_policy.resolve_frontier_outcome(
+        state.diagnostic_policy.resolve_consumed_action_outcome(
             freeze.generation.saturating_sub(1),
             false,
             &candidate.observation_ids,
@@ -6665,6 +6674,7 @@ mod tests {
             state.runtime_self_repair_counter_contract_revision,
             RUNTIME_REPAIR_COUNTER_CONTRACT_REVISION
         );
+        assert_eq!(state.diagnostic_policy.outcome_causal_contract_revision, 3);
         fs::remove_dir_all(root).unwrap();
     }
 
@@ -7927,6 +7937,23 @@ mod tests {
         let mut memory = load_memory(&config, 0).unwrap();
         memory.lessons.push(candidate.lesson);
         let mut index = FileIndex::default();
+        state.diagnostic_policy.experiment_records.insert(
+            "MIXED_ROLE_COHORT_RECONSTRUCTION".to_string(),
+            crate::autonomous_self_inspection::DiagnosticExperimentMemory {
+                trials: 1,
+                causal_support_events: 1,
+                ..crate::autonomous_self_inspection::DiagnosticExperimentMemory::default()
+            },
+        );
+        state.diagnostic_policy.active_experiment_id =
+            Some("MIXED_ROLE_COHORT_RECONSTRUCTION".to_string());
+        state.diagnostic_policy.active_generation = Some(0);
+        state.diagnostic_policy.active_causal_support = true;
+        state.diagnostic_policy.active_action_id = Some("validation-action".to_string());
+        state.diagnostic_policy.active_action_receipt_sha256 = Some("receipt".to_string());
+        state.diagnostic_policy.active_output_observation_ids =
+            vec![observation.observation_id.clone()];
+        state.diagnostic_policy.outcome_bound_selections = 1;
 
         let consumed =
             consume_semantic_revalidation(&config, &mut state, &mut index, &memory, &[observation])
@@ -7939,6 +7966,9 @@ mod tests {
         assert_eq!(state.redundant_observations_consumed, 1);
         assert_eq!(index.consumed_observation_ids.len(), 1);
         assert_eq!(index.consumed_work_event_ids.len(), 1);
+        assert_eq!(state.diagnostic_policy.productive_outcome_events, 1);
+        assert_eq!(state.diagnostic_policy.failed_outcome_events, 0);
+        assert!(state.diagnostic_policy.active_action_id.is_none());
         fs::remove_dir_all(root).unwrap();
     }
 
