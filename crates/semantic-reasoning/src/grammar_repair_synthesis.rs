@@ -365,33 +365,54 @@ fn called_short_name(expression: &Expr) -> Option<(&syn::Ident, &Punctuated<Expr
     Some((&path.path.segments.last()?.ident, &call.args))
 }
 
-fn assertion_example(macro_: &syn::Macro, callable: &CallableSignature) -> Option<PublicExample> {
-    if macro_.path.segments.last()?.ident != "assert_eq" {
+fn public_example_from_call(
+    call_expression: &Expr,
+    expected: PublicValue,
+    callable: &CallableSignature,
+) -> Option<PublicExample> {
+    let (name, arguments) = called_short_name(call_expression)?;
+    if name != callable.short_name.as_str() || arguments.len() != callable.inputs.len() {
         return None;
     }
+    let inputs = arguments
+        .iter()
+        .map(public_literal)
+        .collect::<Option<Vec<_>>>()?;
+    Some(PublicExample { inputs, expected })
+}
+
+fn assertion_example(macro_: &syn::Macro, callable: &CallableSignature) -> Option<PublicExample> {
+    let assertion = macro_.path.segments.last()?.ident.to_string();
     let arguments = Punctuated::<Expr, Token![,]>::parse_terminated
         .parse2(macro_.tokens.clone())
         .ok()?
         .into_iter()
         .collect::<Vec<_>>();
-    if arguments.len() < 2 {
-        return None;
-    }
-    let from_call = |call_expression: &Expr, expected_expression: &Expr| {
-        let (name, arguments) = called_short_name(call_expression)?;
-        if name != callable.short_name.as_str() || arguments.len() != callable.inputs.len() {
-            return None;
+    match assertion.as_str() {
+        "assert_eq" if arguments.len() >= 2 => {
+            public_example_from_call(&arguments[0], public_literal(&arguments[1])?, callable)
+                .or_else(|| {
+                    public_example_from_call(
+                        &arguments[1],
+                        public_literal(&arguments[0])?,
+                        callable,
+                    )
+                })
         }
-        let inputs = arguments
-            .iter()
-            .map(public_literal)
-            .collect::<Option<Vec<_>>>()?;
-        Some(PublicExample {
-            inputs,
-            expected: public_literal(expected_expression)?,
-        })
-    };
-    from_call(&arguments[0], &arguments[1]).or_else(|| from_call(&arguments[1], &arguments[0]))
+        "assert" if !arguments.is_empty() && callable.output == "bool" => {
+            if let Expr::Unary(unary) = &arguments[0] {
+                if matches!(unary.op, UnOp::Not(_)) {
+                    return public_example_from_call(
+                        unary.expr.as_ref(),
+                        PublicValue::Bool(false),
+                        callable,
+                    );
+                }
+            }
+            public_example_from_call(&arguments[0], PublicValue::Bool(true), callable)
+        }
+        _ => None,
+    }
 }
 
 struct PublicExampleVisitor<'a> {
@@ -1358,6 +1379,32 @@ mod tests {
         assert!(candidates
             .iter()
             .all(|candidate| !candidate.relative_path.to_string_lossy().contains("tests")));
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn boolean_assertions_become_positive_and_negative_public_examples() {
+        let root = std::env::temp_dir().join(format!(
+            "b-core-grammar-boolean-assertions-{}",
+            std::process::id()
+        ));
+        if root.exists() {
+            fs::remove_dir_all(&root).unwrap();
+        }
+        fs::create_dir_all(root.join("src")).unwrap();
+        fs::write(
+            root.join("src/lib.rs"),
+            "pub fn greater(left: i32, right: i32) -> bool { todo!() }\n\n#[cfg(test)]\nmod tests {\n    #[test]\n    fn orders() {\n        assert!(super::greater(4, 3));\n        assert!(!super::greater(2, 3));\n        assert!(!super::greater(3, 3), \"equality is not greater\");\n    }\n}\n",
+        )
+        .unwrap();
+
+        let candidates = discover_grammar_repairs(&root, 4_096).unwrap();
+
+        assert!(!candidates.is_empty());
+        assert_eq!(candidates[0].grammar_expression, "left > right");
+        assert_eq!(candidates[0].public_examples_observed, 3);
+        assert_eq!(candidates[0].public_examples_evaluated, 3);
+        assert_eq!(candidates[0].public_examples_satisfied, 3);
         fs::remove_dir_all(root).unwrap();
     }
 
