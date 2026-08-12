@@ -443,6 +443,10 @@ pub struct StructuralFeatures {
     pub benchmark_tokens: u32,
     #[serde(default)]
     pub performance_tokens: u32,
+    #[serde(default)]
+    pub algebraic_constructor_tokens: u32,
+    #[serde(default)]
+    pub data_composition_tokens: u32,
     pub max_line_bytes: u32,
 }
 
@@ -1395,6 +1399,21 @@ fn structural_features(text: &str) -> StructuralFeatures {
                 "cache miss",
             ],
         ),
+        algebraic_constructor_tokens: count_any(
+            &lower,
+            &["some(", "none", "ok(", "err(", "option<", "result<"],
+        ),
+        data_composition_tokens: count_any(
+            &lower,
+            &[
+                "format!(",
+                ".to_string()",
+                ".collect(",
+                ".map(",
+                ".and_then(",
+                ".chain(",
+            ],
+        ),
         max_line_bytes: lines
             .iter()
             .map(|line| line.len().min(u32::MAX as usize) as u32)
@@ -1680,6 +1699,24 @@ fn classify_observation(
         score += 8;
         signals.insert("EFFICIENCY_MECHANISM".to_string());
         roles.insert("PERFORMANCE_IMPLEMENTATION".to_string());
+    }
+    if delta(
+        current.features.algebraic_constructor_tokens,
+        prior.algebraic_constructor_tokens,
+    ) > 0
+    {
+        score += 6;
+        signals.insert("ALGEBRAIC_CONSTRUCTOR_MECHANISM".to_string());
+        roles.insert("IMPLEMENTATION".to_string());
+    }
+    if delta(
+        current.features.data_composition_tokens,
+        prior.data_composition_tokens,
+    ) > 0
+    {
+        score += 6;
+        signals.insert("DATA_COMPOSITION_MECHANISM".to_string());
+        roles.insert("IMPLEMENTATION".to_string());
     }
     if let Some(event) = event {
         for metric in event
@@ -2816,6 +2853,16 @@ fn append_structural_delta_signals(
             "PERFORMANCE",
             before.performance_tokens,
             after.performance_tokens,
+        ),
+        (
+            "ALGEBRAIC_CONSTRUCTOR",
+            before.algebraic_constructor_tokens,
+            after.algebraic_constructor_tokens,
+        ),
+        (
+            "DATA_COMPOSITION",
+            before.data_composition_tokens,
+            after.data_composition_tokens,
         ),
     ] {
         if prior == current {
@@ -8401,5 +8448,51 @@ mod tests {
             lesson_semantic_sha256(&first).unwrap(),
             lesson_semantic_sha256(&distinct).unwrap()
         );
+    }
+
+    #[test]
+    fn semantic_feature_vector_observes_constructors_and_data_composition() {
+        let features = structural_features(
+            "fn compose(value: i32) -> Option<String> { Some(format!(\"{}\", value)) }",
+        );
+
+        assert!(features.algebraic_constructor_tokens >= 2);
+        assert!(features.data_composition_tokens >= 1);
+
+        let observation = classify_observation(
+            "ROOT_0/src/composition.rs".to_string(),
+            &FileFingerprint {
+                content_sha256: "a".repeat(64),
+                bytes: 1,
+                modified_ms: 1,
+                extension: "rs".to_string(),
+                features,
+            },
+            Some(&FileFingerprint {
+                content_sha256: "b".repeat(64),
+                bytes: 1,
+                modified_ms: 0,
+                extension: "rs".to_string(),
+                features: StructuralFeatures::default(),
+            }),
+            None,
+            &ClassifierMemory::default(),
+            45,
+        );
+        assert!(observation
+            .signals
+            .contains(&"ALGEBRAIC_CONSTRUCTOR_MECHANISM".to_string()));
+        assert!(observation
+            .signals
+            .contains(&"DATA_COMPOSITION_MECHANISM".to_string()));
+        let lesson = build_lesson(&[observation]).unwrap();
+        assert!(lesson
+            .diagnostic_signals
+            .iter()
+            .any(|signal| signal.starts_with("STRUCTURAL_DELTA:ALGEBRAIC_CONSTRUCTOR:")));
+        assert!(lesson
+            .diagnostic_signals
+            .iter()
+            .any(|signal| signal.starts_with("STRUCTURAL_DELTA:DATA_COMPOSITION:")));
     }
 }
