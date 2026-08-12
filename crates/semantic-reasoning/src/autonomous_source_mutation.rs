@@ -724,7 +724,7 @@ fn improvement_operator_generator_kind(
 ) -> ImprovementOperatorGeneratorKind {
     if solution_strategy == "EMIT_TYPED_RUST_AND_ACTIVATE_CALLABLE" {
         ImprovementOperatorGeneratorKind::ProgramIrLowering
-    } else if solution_strategy.starts_with("COMPILER_SUGGESTION:") {
+    } else if solution_strategy.starts_with("COMPILER_SUGGESTION") {
         ImprovementOperatorGeneratorKind::CompilerSuggestedEdit
     } else if solution_strategy.starts_with("GRAMMAR_COMPOSITION:") {
         ImprovementOperatorGeneratorKind::TypedGrammarComposition
@@ -2974,6 +2974,7 @@ fn compiler_guided_request(
     ranked.sort_by_key(|(priority, _, candidate)| {
         (
             std::cmp::Reverse(*priority),
+            std::cmp::Reverse(candidate.predicted_value),
             candidate.relative_path.clone(),
             candidate.transformation.clone(),
             candidate.solution_strategy.clone(),
@@ -3910,6 +3911,40 @@ mod tests {
             .learned_success
             .as_ref()
             .is_some_and(|success| !success.edit_atom_kinds.is_empty()));
+        fs::remove_dir_all(root).unwrap();
+        fs::remove_dir_all(state).unwrap();
+    }
+
+    #[test]
+    fn compiler_family_utility_survives_operator_reranking() {
+        let (root, mut policy) = fixture("compiler-family-ranking");
+        policy.auto_discover_known_transformations = false;
+        policy.auto_discover_compiler_repairs = true;
+        policy.auto_synthesize_grammar_repairs = false;
+        policy.minimum_predicted_value = 60;
+        fs::write(
+            root.join("src/lib.rs"),
+            "pub fn merge(left: String, right: String) -> String {\n    let first = left.clone();\n    let second = right.clone();\n    first + &second\n}\n",
+        )
+        .unwrap();
+        let state = external_state(&root);
+
+        let request = discover_known_source_improvement(&policy, &state, 4)
+            .unwrap()
+            .expect("one atomic performance family");
+
+        assert!(request
+            .transformation
+            .starts_with("COMPILER_OBSERVATION_FAMILY:clippy::redundant_clone:"));
+        assert!(request
+            .solution_strategy
+            .starts_with("COMPILER_SUGGESTION_FAMILY:MachineApplicable:2:"));
+        assert!(matches!(
+            request.structural_repair_program.as_ref().map(|program| &program.edit),
+            Some(SourceEditAtom::AtomicMultiEdit { edits }) if edits.len() == 2
+        ));
+        assert!(!request.candidate_source.contains(".clone()"));
+
         fs::remove_dir_all(root).unwrap();
         fs::remove_dir_all(state).unwrap();
     }

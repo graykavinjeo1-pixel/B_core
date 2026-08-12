@@ -19,12 +19,15 @@ use serde_json::Value as JsonValue;
 
 use crate::autonomous_source_mutation::runtime_core_feature_available;
 use crate::self_repair_contract::sha256;
-use crate::structural_source_repair::{synthesize_structural_repair, StructuralRepairProgram};
+use crate::structural_source_repair::{
+    apply_edit_atom, synthesize_structural_repair, ByteRange, SourceEditAtom,
+    StructuralRepairProgram,
+};
 
-const CACHE_SCHEMA: &str = "B_CORE_COMPILER_DIAGNOSTIC_CACHE_2";
+const CACHE_SCHEMA: &str = "B_CORE_COMPILER_DIAGNOSTIC_CACHE_3";
 const MAX_DIAGNOSTIC_BYTES: u64 = 16 * 1024 * 1024;
 const MAX_CACHED_SOURCE_STATES: usize = 2;
-const MAX_SUGGESTIONS: usize = 64;
+const MAX_SUGGESTIONS: usize = 128;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct CompilerGuidedRepairPolicy<'a> {
@@ -398,7 +401,22 @@ fn load_or_observe(
     if runtime_core_feature_available(policy.source_root) {
         clippy_args.extend(["--no-default-features", "--features", "runtime-core"]);
     }
-    clippy_args.extend(["--message-format=json", "--", "-W", "clippy::all"]);
+    clippy_args.extend([
+        "--message-format=json",
+        "--",
+        "-W",
+        "clippy::all",
+        // These performance-oriented lints are deliberately selected instead
+        // of enabling the broad pedantic/nursery surfaces. They expose
+        // executable allocation/numeric/collection improvements without
+        // turning documentation or naming preferences into growth events.
+        "-W",
+        "clippy::redundant_clone",
+        "-W",
+        "clippy::suboptimal_flops",
+        "-W",
+        "clippy::needless_collect",
+    ]);
     let (check_success, clippy_output) = run_cargo_observation(policy, &clippy_args, &clippy_log)?;
     let mut suggestions = parse_suggestions(&clippy_output);
     suggestions.sort();
@@ -650,12 +668,154 @@ fn candidate_from_suggestion(
     }))
 }
 
+fn family_candidate_from_suggestions(
+    policy: &CompilerGuidedRepairPolicy<'_>,
+    suggestions: &[&CompilerSuggestion],
+) -> Result<Option<CompilerGuidedRepairCandidate>, String> {
+    if suggestions.len() < 2 {
+        return Ok(None);
+    }
+    if !matches!(
+        suggestions[0].diagnostic_code.as_str(),
+        "clippy::redundant_clone" | "clippy::suboptimal_flops" | "clippy::needless_collect"
+    ) {
+        return Ok(None);
+    }
+    let mut candidates = Vec::new();
+    for suggestion in suggestions {
+        let Some(candidate) = candidate_from_suggestion(policy, suggestion)? else {
+            return Ok(None);
+        };
+        candidates.push(candidate);
+    }
+    let first = &candidates[0];
+    if candidates
+        .iter()
+        .any(|candidate| candidate.relative_path != first.relative_path)
+    {
+        return Ok(None);
+    }
+    let path = policy.source_root.join(&first.relative_path);
+    let source = fs::read_to_string(&path)
+        .map_err(|error| format!("COMPILER_REPAIR_FAMILY_READ:{}:{error}", path.display()))?;
+    // Use compiler spans as the independent member preconditions. Individual
+    // structural programs are line-oriented and two valid edits on one line
+    // can therefore overlap when naively combined. Exact diagnostic spans keep
+    // the family algebra minimal and still derive one AST/data-flow target for
+    // the combined postimage below.
+    let edits = suggestions
+        .iter()
+        .map(|suggestion| {
+            let range = ByteRange {
+                start: suggestion.byte_start,
+                end: suggestion.byte_end,
+            };
+            match (
+                suggestion.byte_start == suggestion.byte_end,
+                suggestion.replacement.is_empty(),
+            ) {
+                (true, false) => SourceEditAtom::Insert {
+                    offset: suggestion.byte_start,
+                    content: suggestion.replacement.clone(),
+                },
+                (false, true) => SourceEditAtom::Delete {
+                    range,
+                    expected_sha256: sha256(
+                        &source.as_bytes()[suggestion.byte_start..suggestion.byte_end],
+                    ),
+                },
+                (false, false) => SourceEditAtom::Replace {
+                    range,
+                    expected_sha256: sha256(
+                        &source.as_bytes()[suggestion.byte_start..suggestion.byte_end],
+                    ),
+                    replacement: suggestion.replacement.clone(),
+                },
+                (true, true) => SourceEditAtom::AtomicMultiEdit { edits: Vec::new() },
+            }
+        })
+        .collect::<Vec<_>>();
+    let atomic_edit = SourceEditAtom::AtomicMultiEdit { edits };
+    let Ok(candidate_source) = apply_edit_atom(&source, &atomic_edit) else {
+        return Ok(None);
+    };
+    if candidate_source == source || candidate_source.len() as u64 > policy.max_candidate_bytes {
+        return Ok(None);
+    }
+    let file_id = first.relative_path.to_string_lossy().replace('\\', "/");
+    let Ok(mut structural_repair_program) =
+        synthesize_structural_repair(&file_id, &source, &candidate_source)
+    else {
+        return Ok(None);
+    };
+    structural_repair_program.edit = atomic_edit;
+    let family_sha256 = sha256(
+        suggestions
+            .iter()
+            .map(|suggestion| suggestion.observation_sha256.as_str())
+            .collect::<Vec<_>>()
+            .join(":")
+            .as_bytes(),
+    );
+    let diagnostic_code = &suggestions[0].diagnostic_code;
+    let applicability = &suggestions[0].applicability;
+    let family_size = candidates.len();
+    Ok(Some(CompilerGuidedRepairCandidate {
+        relative_path: first.relative_path.clone(),
+        predecessor_sha256: sha256(source.as_bytes()),
+        candidate_sha256: sha256(candidate_source.as_bytes()),
+        candidate_source,
+        transformation: format!(
+            "COMPILER_OBSERVATION_FAMILY:{diagnostic_code}:{}",
+            &family_sha256[..16]
+        ),
+        solution_strategy: format!(
+            "COMPILER_SUGGESTION_FAMILY:{applicability}:{family_size}:{}",
+            &family_sha256[..12]
+        ),
+        consequence_predictions: vec![
+            format!(
+                "all {family_size} independent {diagnostic_code} observations must disappear atomically"
+            ),
+            "each member edit must retain its exact predecessor precondition".to_string(),
+            "source compile and public regression observations must pass once for the family"
+                .to_string(),
+        ],
+        predicted_value: first
+            .predicted_value
+            .saturating_add(family_size.min(25) as u16)
+            .min(100),
+        structural_repair_program,
+        public_observation_sha256: family_sha256,
+    }))
+}
+
 pub fn discover_compiler_guided_repairs(
     policy: &CompilerGuidedRepairPolicy<'_>,
 ) -> Result<Vec<CompilerGuidedRepairCandidate>, String> {
     let fingerprint = source_fingerprint(policy.source_root)?;
     let cache = load_or_observe(policy, &fingerprint)?;
     let mut candidates = Vec::new();
+    let mut families =
+        std::collections::BTreeMap::<(String, String, String), Vec<&CompilerSuggestion>>::new();
+    for suggestion in &cache.suggestions {
+        if let Some(relative_path) = relative_source_path(policy.source_root, &suggestion.file_name)
+        {
+            families
+                .entry((
+                    relative_path.to_string_lossy().replace('\\', "/"),
+                    suggestion.diagnostic_code.clone(),
+                    suggestion.applicability.clone(),
+                ))
+                .or_default()
+                .push(suggestion);
+        }
+    }
+    for suggestions in families.values() {
+        if let Some(candidate) = family_candidate_from_suggestions(policy, suggestions)? {
+            candidates.push(candidate);
+        }
+    }
     for suggestion in &cache.suggestions {
         if let Some(candidate) = candidate_from_suggestion(policy, suggestion)? {
             candidates.push(candidate);
@@ -884,5 +1044,64 @@ mod tests {
             candidate.candidate_source,
             "pub fn choose(flag: bool) {\n    if flag {\n        return;\n    }\n}\n"
         );
+    }
+
+    #[test]
+    fn same_compiler_family_becomes_one_atomic_multi_edit() {
+        let root = std::env::temp_dir().join(format!(
+            "b-core-compiler-guided-family-{}",
+            std::process::id()
+        ));
+        if root.exists() {
+            fs::remove_dir_all(&root).unwrap();
+        }
+        fs::create_dir_all(root.join("src")).unwrap();
+        let source = "pub fn merge(left: String, right: String) -> String {\n    let first = left.clone();\n    let second = right.clone();\n    first + &second\n}\n";
+        fs::write(root.join("src/lib.rs"), source).unwrap();
+        let mut suggestions = Vec::new();
+        for (index, needle) in ["left.clone()", "right.clone()"].iter().enumerate() {
+            let expression_start = source.find(needle).unwrap();
+            let clone_start = expression_start + needle.find(".clone()").unwrap();
+            suggestions.push(CompilerSuggestion {
+                level: "warning".to_string(),
+                diagnostic_code: "clippy::redundant_clone".to_string(),
+                message: "redundant clone".to_string(),
+                file_name: "src/lib.rs".to_string(),
+                byte_start: clone_start,
+                byte_end: clone_start + ".clone()".len(),
+                replacement: String::new(),
+                applicability: "MachineApplicable".to_string(),
+                primary: true,
+                observation_sha256: sha256(format!("clone-{index}").as_bytes()),
+            });
+        }
+        let cargo = PathBuf::from("cargo");
+        let target = root.join("target");
+        let state = root.join("state");
+        let policy = CompilerGuidedRepairPolicy {
+            source_root: &root,
+            cargo_executable: &cargo,
+            build_target_dir: &target,
+            state_dir: &state,
+            timeout_ms: 1_000,
+            max_candidate_bytes: 4_096,
+        };
+        let refs = suggestions.iter().collect::<Vec<_>>();
+        let candidate = family_candidate_from_suggestions(&policy, &refs)
+            .unwrap()
+            .expect("family candidate");
+        assert_eq!(
+            candidate.candidate_source,
+            "pub fn merge(left: String, right: String) -> String {\n    let first = left;\n    let second = right;\n    first + &second\n}\n"
+        );
+        assert!(candidate
+            .transformation
+            .starts_with("COMPILER_OBSERVATION_FAMILY:clippy::redundant_clone:"));
+        assert!(matches!(
+            candidate.structural_repair_program.edit,
+            SourceEditAtom::AtomicMultiEdit { ref edits } if edits.len() == 2
+        ));
+        assert_eq!(candidate.predicted_value, 77);
+        fs::remove_dir_all(root).unwrap();
     }
 }
