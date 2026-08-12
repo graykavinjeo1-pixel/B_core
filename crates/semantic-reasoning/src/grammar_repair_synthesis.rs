@@ -60,9 +60,11 @@ struct TypedBinding {
 struct CallableSignature {
     callable: String,
     short_name: String,
+    lexical_scope: String,
+    impl_owner: Option<String>,
     inputs: Vec<TypedBinding>,
     output: String,
-    callable_as_free_function: bool,
+    has_receiver: bool,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -157,9 +159,11 @@ fn collect_callables(items: &[Item], prefix: &str, output: &mut Vec<(CallableSig
                     CallableSignature {
                         callable: qualified(prefix, &function.sig.ident.to_string()),
                         short_name: function.sig.ident.to_string(),
+                        lexical_scope: prefix.to_string(),
+                        impl_owner: None,
                         inputs: typed_inputs(&function.sig.inputs),
                         output: return_type(&function.sig.output),
-                        callable_as_free_function: true,
+                        has_receiver: false,
                     },
                     (*function.block).clone(),
                 ));
@@ -184,9 +188,15 @@ fn collect_callables(items: &[Item], prefix: &str, output: &mut Vec<(CallableSig
                                 CallableSignature {
                                     callable: qualified(&owner, &method.sig.ident.to_string()),
                                     short_name: method.sig.ident.to_string(),
+                                    lexical_scope: prefix.to_string(),
+                                    impl_owner: Some(owner.clone()),
                                     inputs: typed_inputs(&method.sig.inputs),
                                     output: return_type(&method.sig.output),
-                                    callable_as_free_function: false,
+                                    has_receiver: method
+                                        .sig
+                                        .inputs
+                                        .iter()
+                                        .any(|input| matches!(input, FnArg::Receiver(_))),
                                 },
                                 method.block.clone(),
                             ));
@@ -565,6 +575,20 @@ fn matching_arguments<'a>(
     })
 }
 
+fn callable_expression_name(
+    caller: &CallableSignature,
+    candidate: &CallableSignature,
+) -> Option<String> {
+    if candidate.has_receiver {
+        return None;
+    }
+    if let Some(owner) = &candidate.impl_owner {
+        return (caller.impl_owner.as_ref() == Some(owner))
+            .then(|| format!("Self::{}", candidate.short_name));
+    }
+    (caller.lexical_scope == candidate.lexical_scope).then(|| candidate.short_name.clone())
+}
+
 fn compose_expressions(
     callable: &CallableSignature,
     catalog: &[CallableSignature],
@@ -669,19 +693,21 @@ fn compose_expressions(
 
     for candidate in catalog {
         if candidate.callable == callable.callable
-            || !candidate.callable_as_free_function
             || candidate.output != callable.output
             || candidate.inputs.is_empty()
         {
             continue;
         }
+        let Some(candidate_name) = callable_expression_name(callable, candidate) else {
+            continue;
+        };
         let arguments = matching_arguments(&callable.inputs, &candidate.inputs);
         if let Some(arguments) = arguments {
             push_expression(
                 &mut output,
                 &mut seen,
                 "EXISTING_CALL",
-                format!("{}({})", candidate.short_name, arguments.join(", ")),
+                format!("{}({})", candidate_name, arguments.join(", ")),
             );
         }
     }
@@ -694,8 +720,8 @@ fn compose_expressions(
         .iter()
         .filter(|candidate| {
             candidate.callable != callable.callable
-                && candidate.callable_as_free_function
                 && !candidate.inputs.is_empty()
+                && callable_expression_name(callable, candidate).is_some()
         })
         .take(MAX_CALL_COMPOSITION_CATALOG)
         .collect::<Vec<_>>();
@@ -707,11 +733,17 @@ fn compose_expressions(
             .iter()
             .map(|index| callable.inputs[*index].name.as_str())
             .collect::<Vec<_>>();
-        let inner_expression = format!("{}({})", inner.short_name, inner_arguments.join(", "));
+        let Some(inner_name) = callable_expression_name(callable, inner) else {
+            continue;
+        };
+        let inner_expression = format!("{}({})", inner_name, inner_arguments.join(", "));
         for outer in &call_catalog {
             if inner.callable == outer.callable || outer.output != callable.output {
                 continue;
             }
+            let Some(outer_name) = callable_expression_name(callable, outer) else {
+                continue;
+            };
             for inner_slot in outer
                 .inputs
                 .iter()
@@ -747,7 +779,7 @@ fn compose_expressions(
                         &mut output,
                         &mut seen,
                         "EXISTING_CALL_CHAIN",
-                        format!("{}({})", outer.short_name, arguments.join(", ")),
+                        format!("{}({})", outer_name, arguments.join(", ")),
                     );
                     if output.len() >= MAX_GRAMMAR_CANDIDATES {
                         break 'chains;
@@ -1696,6 +1728,8 @@ mod tests {
         let current = CallableSignature {
             callable: "select".to_string(),
             short_name: "select".to_string(),
+            lexical_scope: String::new(),
+            impl_owner: None,
             inputs: vec![
                 TypedBinding {
                     name: "left".to_string(),
@@ -1707,24 +1741,39 @@ mod tests {
                 },
             ],
             output: "i32".to_string(),
-            callable_as_free_function: true,
+            has_receiver: false,
         };
         let helper = CallableSignature {
             callable: "combine".to_string(),
             short_name: "combine".to_string(),
+            lexical_scope: String::new(),
+            impl_owner: None,
             inputs: current.inputs.clone(),
             output: "i32".to_string(),
-            callable_as_free_function: true,
+            has_receiver: false,
         };
         let receiver_method = CallableSignature {
             callable: "Accumulator::combine_method".to_string(),
             short_name: "combine_method".to_string(),
+            lexical_scope: String::new(),
+            impl_owner: Some("Accumulator".to_string()),
             inputs: current.inputs.clone(),
             output: "i32".to_string(),
-            callable_as_free_function: false,
+            has_receiver: true,
         };
-        let expressions =
-            compose_expressions(&current, &[current.clone(), helper, receiver_method]);
+        let foreign_helper = CallableSignature {
+            callable: "nested::foreign".to_string(),
+            short_name: "foreign".to_string(),
+            lexical_scope: "nested".to_string(),
+            impl_owner: None,
+            inputs: current.inputs.clone(),
+            output: "i32".to_string(),
+            has_receiver: false,
+        };
+        let expressions = compose_expressions(
+            &current,
+            &[current.clone(), helper, receiver_method, foreign_helper],
+        );
         assert!(expressions.iter().any(|(family, _)| family == "BINARY_ADD"));
         assert!(expressions
             .iter()
@@ -1735,7 +1784,8 @@ mod tests {
                 && expression == "combine(left, right)"));
         assert!(!expressions
             .iter()
-            .any(|(_, expression)| expression.contains("combine_method")));
+            .any(|(_, expression)| expression.contains("combine_method")
+                || expression.contains("foreign")));
     }
 
     #[test]
@@ -1743,6 +1793,8 @@ mod tests {
         let current = CallableSignature {
             callable: "decide".to_string(),
             short_name: "decide".to_string(),
+            lexical_scope: String::new(),
+            impl_owner: None,
             inputs: vec![
                 TypedBinding {
                     name: "raw".to_string(),
@@ -1754,21 +1806,25 @@ mod tests {
                 },
             ],
             output: "bool".to_string(),
-            callable_as_free_function: true,
+            has_receiver: false,
         };
         let widen = CallableSignature {
             callable: "widen".to_string(),
             short_name: "widen".to_string(),
+            lexical_scope: String::new(),
+            impl_owner: None,
             inputs: vec![TypedBinding {
                 name: "value".to_string(),
                 type_name: "i32".to_string(),
             }],
             output: "i64".to_string(),
-            callable_as_free_function: true,
+            has_receiver: false,
         };
         let compare = CallableSignature {
             callable: "compare".to_string(),
             short_name: "compare".to_string(),
+            lexical_scope: String::new(),
+            impl_owner: None,
             inputs: vec![
                 TypedBinding {
                     name: "wide".to_string(),
@@ -1780,7 +1836,7 @@ mod tests {
                 },
             ],
             output: "bool".to_string(),
-            callable_as_free_function: true,
+            has_receiver: false,
         };
 
         let expressions = compose_expressions(&current, &[current.clone(), widen, compare]);
@@ -1791,6 +1847,53 @@ mod tests {
         assert!(!expressions.iter().any(|(_, expression)| {
             expression == "compare(widen(raw), raw)" || expression == "compare(widen(limit), limit)"
         }));
+    }
+
+    #[test]
+    fn associated_calls_are_only_composed_inside_the_same_impl_owner() {
+        let caller = CallableSignature {
+            callable: "Accumulator::select".to_string(),
+            short_name: "select".to_string(),
+            lexical_scope: String::new(),
+            impl_owner: Some("Accumulator".to_string()),
+            inputs: vec![TypedBinding {
+                name: "value".to_string(),
+                type_name: "i32".to_string(),
+            }],
+            output: "i32".to_string(),
+            has_receiver: true,
+        };
+        let same_owner = CallableSignature {
+            callable: "Accumulator::normalize".to_string(),
+            short_name: "normalize".to_string(),
+            lexical_scope: String::new(),
+            impl_owner: Some("Accumulator".to_string()),
+            inputs: caller.inputs.clone(),
+            output: "i32".to_string(),
+            has_receiver: false,
+        };
+        let other_owner = CallableSignature {
+            callable: "Other::normalize".to_string(),
+            short_name: "normalize".to_string(),
+            lexical_scope: String::new(),
+            impl_owner: Some("Other".to_string()),
+            inputs: caller.inputs.clone(),
+            output: "i32".to_string(),
+            has_receiver: false,
+        };
+
+        let expressions = compose_expressions(&caller, &[same_owner, other_owner]);
+
+        assert!(expressions.iter().any(|(family, expression)| {
+            family == "EXISTING_CALL" && expression == "Self::normalize(value)"
+        }));
+        assert_eq!(
+            expressions
+                .iter()
+                .filter(|(_, expression)| expression.contains("normalize"))
+                .count(),
+            1
+        );
     }
 
     #[test]
