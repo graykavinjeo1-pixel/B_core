@@ -56,7 +56,7 @@ use crate::source_bound_causal_frontend::{
     discover_and_synthesize_python_repository_with_operators, RepositoryTestSourceIR,
     SourceBoundRepositoryDiscoveryRequestIR, SOURCE_BOUND_REPOSITORY_DISCOVERY_SCHEMA,
 };
-use crate::structural_source_repair::{apply_edit_atom, SourceEditAtom};
+use crate::structural_source_repair::SourceEditAtom;
 
 pub const SUPERVISOR_SCHEMA: &str = "B_CORE_BOUNDED_GROWTH_SUPERVISOR_1";
 pub const CONFIG_SCHEMA: &str = "B_CORE_BOUNDED_GROWTH_CONFIG_1";
@@ -5593,6 +5593,12 @@ struct RepositoryRepairSynthesisReceipt {
     candidate_sha256: Option<String>,
     source_bound_receipt_sha256: Option<String>,
     source_bound_alternative_sha256: Vec<String>,
+    #[serde(default)]
+    source_bound_patch_variant_ids_attempted: Vec<String>,
+    #[serde(default)]
+    selected_source_bound_patch_variant_id: Option<String>,
+    #[serde(default)]
+    selected_source_bound_template_symbols: Vec<String>,
     operator_family: String,
     edit_atom_kinds: Vec<String>,
     #[serde(default)]
@@ -6101,13 +6107,16 @@ fn try_synthesize_failed_python_cohort(
         let mut candidate_sha256 = None;
         let mut source_bound_receipt_sha256 = None;
         let mut source_bound_alternative_sha256 = Vec::new();
+        let mut source_bound_patch_variant_ids_attempted = Vec::new();
+        let mut selected_source_bound_patch_variant_id = None;
+        let mut selected_source_bound_template_symbols = Vec::new();
         let mut edit_atom_kinds = BTreeSet::new();
         let mut materialization_is_one_to_one = false;
         let mut failure_code = None;
         let mut sandbox_command = None;
         let mut sandbox_verified = false;
         let mut sandbox_cleaned = true;
-        let mut candidate_source = None;
+        let mut candidate_variants = Vec::new();
         let mut selected_improvement_operator_ids = Vec::new();
         let mut attempted_improvement_operator_ids = Vec::new();
         let mut rejected_improvement_operator_ids = Vec::new();
@@ -6131,53 +6140,53 @@ fn try_synthesize_failed_python_cohort(
         ) {
             Ok(source_bound) => {
                 source_bound_receipt_sha256 = Some(json_sha256(&source_bound)?);
-                let mut edits = Vec::new();
                 for alternative in &source_bound.alternatives {
                     source_bound_alternative_sha256.push(json_sha256(alternative)?);
-                    typed_candidates_enumerated = typed_candidates_enumerated
-                        .saturating_add(alternative.synthesis.candidates_enumerated);
-                    if let Some(operator_id) = &alternative.synthesis.selected_operator_id {
-                        selected_improvement_operator_ids.push(operator_id.clone());
-                    }
-                    attempted_improvement_operator_ids
-                        .extend(alternative.synthesis.attempted_operator_ids.iter().cloned());
-                    rejected_improvement_operator_ids
-                        .extend(alternative.synthesis.rejected_operator_ids.iter().cloned());
-                    successful_syntheses.push(alternative.synthesis.clone());
-                    match &alternative.materialized_patch.edit {
-                        SourceEditAtom::AtomicMultiEdit { edits: nested } => {
-                            edits.extend(nested.iter().cloned());
+                    for synthesis in std::iter::once(&alternative.synthesis).chain(
+                        alternative
+                            .closure_candidates
+                            .iter()
+                            .map(|candidate| &candidate.synthesis),
+                    ) {
+                        typed_candidates_enumerated = typed_candidates_enumerated
+                            .saturating_add(synthesis.candidates_enumerated);
+                        if let Some(operator_id) = &synthesis.selected_operator_id {
+                            selected_improvement_operator_ids.push(operator_id.clone());
                         }
-                        edit => edits.push(edit.clone()),
+                        attempted_improvement_operator_ids
+                            .extend(synthesis.attempted_operator_ids.iter().cloned());
+                        rejected_improvement_operator_ids
+                            .extend(synthesis.rejected_operator_ids.iter().cloned());
                     }
                 }
-                let edit = SourceEditAtom::AtomicMultiEdit { edits };
-                source_edit_atom_kinds(&edit, &mut edit_atom_kinds);
-                match apply_edit_atom(&source, &edit) {
-                    Ok(candidate) if candidate != source => {
-                        let replay = apply_edit_atom(&source, &edit);
-                        materialization_is_one_to_one = replay.as_deref() == Ok(candidate.as_str());
-                        if materialization_is_one_to_one {
-                            candidate_sha256 = Some(sha256(candidate.as_bytes()));
-                            candidate_source = Some(candidate);
-                        } else {
-                            failure_code = Some(
-                                "CONFLICTING_SOURCE_BOUND_EDITS:CANDIDATE_REPLAY_DIVERGED"
-                                    .to_string(),
-                            );
-                        }
+                for variant in &source_bound.patch_variants {
+                    if variant.selected_candidate_indices.len() != source_bound.alternatives.len() {
+                        return Err("SOURCE_BOUND_PATCH_VARIANT_CARDINALITY".to_string());
                     }
-                    Ok(_) => {
-                        failure_code = Some(
-                            "UNSUPPORTED_LANGUAGE_SYNTAX:NO_OP_SOURCE_BOUND_PATCH".to_string(),
-                        );
-                    }
-                    Err(error) => {
-                        failure_code = Some(format!(
-                            "CONFLICTING_SOURCE_BOUND_EDITS:{}",
-                            sha256(error.as_bytes())
-                        ));
-                    }
+                    let syntheses = source_bound
+                        .alternatives
+                        .iter()
+                        .zip(&variant.selected_candidate_indices)
+                        .map(|(alternative, selected)| {
+                            if *selected == 0 {
+                                Ok(alternative.synthesis.clone())
+                            } else {
+                                alternative
+                                    .closure_candidates
+                                    .get(selected - 1)
+                                    .map(|candidate| candidate.synthesis.clone())
+                                    .ok_or_else(|| {
+                                        "SOURCE_BOUND_PATCH_VARIANT_CANDIDATE_INDEX".to_string()
+                                    })
+                            }
+                        })
+                        .collect::<Result<Vec<_>, String>>()?;
+                    candidate_variants.push((
+                        variant.variant_id.clone(),
+                        variant.selected_template_symbols.clone(),
+                        variant.materialized_patch.clone(),
+                        syntheses,
+                    ));
                 }
             }
             Err(error) => {
@@ -6189,7 +6198,12 @@ fn try_synthesize_failed_python_cohort(
             }
         }
 
-        if let Some(candidate) = candidate_source {
+        for (variant_id, template_symbols, patch, variant_syntheses) in candidate_variants {
+            source_bound_patch_variant_ids_attempted.push(variant_id.clone());
+            candidate_sha256 = Some(patch.candidate_sha256.clone());
+            materialization_is_one_to_one = patch.candidate_materialization_is_one_to_one;
+            edit_atom_kinds.clear();
+            source_edit_atom_kinds(&patch.edit, &mut edit_atom_kinds);
             let sandbox_parent = config.state_dir.join("repository_repair_sandboxes");
             fs::create_dir_all(&sandbox_parent)
                 .map_err(|error| format!("REPOSITORY_REPAIR_SANDBOX_PARENT:{error}"))?;
@@ -6202,7 +6216,7 @@ fn try_synthesize_failed_python_cohort(
                 copy_repository_to_repair_sandbox(config, &plan.root, &sandbox)?;
                 let destination = sandbox.join(&relative);
                 ensure_repository_repair_file_writable(&destination)?;
-                fs::write(&destination, candidate)
+                fs::write(&destination, &patch.candidate_source)
                     .map_err(|error| format!("REPOSITORY_REPAIR_CANDIDATE_WRITE:{error}"))?;
                 let arg_refs = plan.args.iter().map(String::as_str).collect::<Vec<_>>();
                 command_receipt_with_incremental(
@@ -6224,7 +6238,13 @@ fn try_synthesize_failed_python_cohort(
                     command.diagnostic_tail =
                         format!("SANDBOX_VALIDATION_OUTPUT_SHA256:{}", command.output_sha256);
                     sandbox_command = Some(command);
-                    if !sandbox_verified {
+                    if sandbox_verified {
+                        selected_source_bound_patch_variant_id = Some(variant_id);
+                        selected_source_bound_template_symbols = template_symbols;
+                        successful_syntheses = variant_syntheses;
+                        failure_code = None;
+                        break;
+                    } else {
                         failure_code = Some(if sandbox_cleaned {
                             "PUBLIC_INFORMATION_INSUFFICIENT:CANDIDATE_FAILED_PUBLIC_TESTS"
                                 .to_string()
@@ -6295,6 +6315,9 @@ fn try_synthesize_failed_python_cohort(
             candidate_sha256,
             source_bound_receipt_sha256,
             source_bound_alternative_sha256,
+            source_bound_patch_variant_ids_attempted,
+            selected_source_bound_patch_variant_id,
+            selected_source_bound_template_symbols,
             operator_family: "PUBLIC_SYMBOL_EXECUTION_CLOSURE_TO_TYPED_ATOMIC_SOURCE_PATCH"
                 .to_string(),
             edit_atom_kinds: edit_atom_kinds.into_iter().collect(),
@@ -10961,11 +10984,11 @@ mod tests {
             "[build-system]\nrequires = []\nbuild-backend = \"\"\n\n[tool.pytest.ini_options]\ntestpaths = [\"tests\"]\n",
         )
         .unwrap();
-        let predecessor = "def add(left, right):\n    return 0\n";
+        let predecessor = "def add(left, right):\n    return add_impl(left, right)\n\ndef stable_zero(left, right):\n    return add_impl(left, right)\n\ndef add_impl(first, second):\n    return 0\n";
         fs::write(repository.join("core_module.py"), predecessor).unwrap();
         fs::write(
             repository.join("tests/test_core_module.py"),
-            "from core_module import add\n\ndef test_add():\n    assert add(2, 3) == 5\n    assert add(4, 7) == 11\n",
+            "from core_module import add, stable_zero\n\ndef test_add():\n    assert add(2, 3) == 5\n    assert add(4, 7) == 11\n\n\ndef test_stable_zero():\n    assert stable_zero(2, 3) == 0\n    assert stable_zero(4, 7) == 0\n",
         )
         .unwrap();
         let implementation = LearningObservation {
@@ -11080,6 +11103,15 @@ mod tests {
         assert_eq!(repair.raw_source_bytes_stored, 0);
         assert!(repair.candidate_materialization_is_one_to_one);
         assert!(repair.failure_code.is_none());
+        assert_eq!(repair.source_bound_patch_variant_ids_attempted.len(), 2);
+        assert_eq!(
+            repair.selected_source_bound_patch_variant_id,
+            repair
+                .source_bound_patch_variant_ids_attempted
+                .last()
+                .cloned()
+        );
+        assert_eq!(repair.selected_source_bound_template_symbols, ["add"]);
         assert_eq!(repair.promoted_improvement_operator_ids.len(), 1);
         assert!(repair.selected_improvement_operator_ids.is_empty());
         assert_eq!(repair.improvement_operators.len(), 1);

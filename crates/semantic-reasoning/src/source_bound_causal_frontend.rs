@@ -40,6 +40,7 @@ const MAX_TEST_SOURCES: usize = 64;
 const MAX_TEST_SOURCE_BYTES: usize = 16 * 1024 * 1024;
 const MAX_CAUSAL_ALTERNATIVES: usize = 32;
 const MAX_DEPENDENCY_CLOSURE: usize = 64;
+const MAX_SOURCE_BOUND_PATCH_VARIANTS: usize = 64;
 const CAUSAL_ALTERNATIVE_ITEMS_PER_WORKER: usize = 4;
 const PYTHON_HOST_TIMEOUT: Duration = Duration::from_secs(10);
 
@@ -229,6 +230,37 @@ pub struct SourceBoundAlternativeReceiptIR {
     pub function_template: SourceBoundFunctionTemplateIR,
     pub synthesis: TypedMechanismSynthesisReceiptIR,
     pub materialized_patch: MaterializedSourceBoundPatchIR,
+    #[serde(default)]
+    pub closure_candidates: Vec<SourceBoundClosureCandidateReceiptIR>,
+    #[serde(default)]
+    pub closure_candidate_rejections: Vec<SourceBoundClosureCandidateRejectionIR>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct SourceBoundClosureCandidateReceiptIR {
+    pub closure_ordinal: usize,
+    pub public_operand_bindings: BTreeMap<String, String>,
+    pub function_template: SourceBoundFunctionTemplateIR,
+    pub synthesis: TypedMechanismSynthesisReceiptIR,
+    pub materialized_patch: MaterializedSourceBoundPatchIR,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct SourceBoundClosureCandidateRejectionIR {
+    pub closure_ordinal: usize,
+    pub qualified_symbol: String,
+    pub failure_kind: CausalFrontendFailureKind,
+    pub detail: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct SourceBoundPatchVariantIR {
+    pub variant_id: String,
+    /// Zero selects the public-symbol template; N selects closure candidate
+    /// N-1 for the corresponding causal alternative.
+    pub selected_candidate_indices: Vec<usize>,
+    pub selected_template_symbols: Vec<String>,
+    pub materialized_patch: MaterializedSourceBoundPatchIR,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -238,6 +270,8 @@ pub struct SourceBoundCausalReceiptIR {
     pub language_backend: SourceLanguageBackend,
     pub predecessor_sha256: String,
     pub alternatives: Vec<SourceBoundAlternativeReceiptIR>,
+    #[serde(default)]
+    pub patch_variants: Vec<SourceBoundPatchVariantIR>,
     #[serde(default)]
     pub alternative_worker_count: usize,
     pub public_symbol_owner_preserved: bool,
@@ -286,6 +320,31 @@ struct PythonFunctionDefinition {
     direct_dependencies: Vec<String>,
     execution_dependency_closure: Vec<String>,
     cuts: Vec<PythonCut>,
+    #[serde(default)]
+    closure_templates: Vec<PythonClosureTemplateDefinition>,
+    #[serde(default)]
+    closure_rejections: Vec<PythonClosureTemplateRejection>,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+struct PythonClosureTemplateDefinition {
+    qualified_symbol: String,
+    owner: String,
+    is_async: bool,
+    operands: Vec<PythonOperand>,
+    return_annotation: String,
+    effects: Vec<String>,
+    direct_dependencies: Vec<String>,
+    execution_dependency_closure: Vec<String>,
+    cuts: Vec<PythonCut>,
+    public_operand_bindings: BTreeMap<String, String>,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+struct PythonClosureTemplateRejection {
+    qualified_symbol: String,
+    failure: String,
+    detail: String,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -435,11 +494,41 @@ def resolve_call(caller, call):
 
 for qualified, definition in definitions.items():
     dependencies = set()
+    dependency_bindings = {}
+    ambiguous_bindings = set()
+    caller_operands = {operand["name"] for operand in definition["operands"]}
     for item in owned_walk(definition["node"]):
         if isinstance(item, ast.Call):
             resolved = resolve_call(qualified, item)
-            if resolved and resolved != qualified: dependencies.add(resolved)
+            if resolved and resolved != qualified:
+                dependencies.add(resolved)
+                callee_operands = [operand["name"] for operand in definitions[resolved]["operands"]]
+                bound = {}
+                valid = not any(isinstance(argument, ast.Starred) for argument in item.args)
+                if valid and len(item.args) <= len(callee_operands):
+                    for operand, argument in zip(callee_operands, item.args):
+                        if isinstance(argument, ast.Name) and argument.id in caller_operands:
+                            bound[operand] = argument.id
+                        else:
+                            valid = False
+                    for keyword in item.keywords:
+                        if (keyword.arg not in callee_operands or keyword.arg in bound
+                                or not isinstance(keyword.value, ast.Name)
+                                or keyword.value.id not in caller_operands):
+                            valid = False
+                            break
+                        bound[keyword.arg] = keyword.value.id
+                else:
+                    valid = False
+                if not valid or set(bound) != set(callee_operands):
+                    ambiguous_bindings.add(resolved)
+                elif resolved in dependency_bindings and dependency_bindings[resolved] != bound:
+                    ambiguous_bindings.add(resolved)
+                else:
+                    dependency_bindings[resolved] = bound
     definition["direct_dependencies"] = sorted(dependencies)
+    definition["dependency_bindings"] = dependency_bindings
+    definition["ambiguous_bindings"] = ambiguous_bindings
 
 def cuts_for(definition):
     cuts = []
@@ -471,12 +560,8 @@ def cuts_for(definition):
     visit_statements(definition["node"].body)
     return cuts
 
-selected = []
-for requested in symbols:
-    if requested not in definitions:
-        emit_failure("PUBLIC_INFORMATION_INSUFFICIENT", "EXACT_PUBLIC_SYMBOL_NOT_FOUND:" + str(requested))
-    closure, pending = [], [requested]
-    seen = set()
+def dependency_closure(start, requested):
+    closure, pending, seen = [], [start], set()
     while pending:
         current = pending.pop(0)
         if current in seen: continue
@@ -487,16 +572,86 @@ for requested in symbols:
         if unsupported_reasons:
             emit_failure("UNSUPPORTED_LANGUAGE_SYNTAX", unsupported_reasons[0])
         pending.extend(dependency for dependency in definitions[current]["direct_dependencies"] if dependency not in seen)
+    return closure
+
+selected = []
+for requested in symbols:
+    if requested not in definitions:
+        emit_failure("PUBLIC_INFORMATION_INSUFFICIENT", "EXACT_PUBLIC_SYMBOL_NOT_FOUND:" + str(requested))
+    closure = dependency_closure(requested, requested)
     definition = definitions[requested]
     cuts = cuts_for(definition)
     if not cuts:
         emit_failure("PUBLIC_INFORMATION_INSUFFICIENT", "PUBLIC_SYMBOL_POSTIMAGE_MISSING:" + requested)
+    initial_bindings = {operand["name"]: operand["name"] for operand in definition["operands"]}
+    binding_states = {requested: {tuple(sorted(initial_bindings.items()))}}
+    binding_pending = [(requested, initial_bindings)]
+    while binding_pending:
+        current, current_bindings = binding_pending.pop(0)
+        for dependency in definitions[current]["direct_dependencies"]:
+            if dependency in definitions[current]["ambiguous_bindings"]:
+                continue
+            local_bindings = definitions[current]["dependency_bindings"].get(dependency)
+            if local_bindings is None:
+                continue
+            propagated = {}
+            valid = True
+            for dependency_operand, current_operand in local_bindings.items():
+                public_operand = current_bindings.get(current_operand)
+                if public_operand is None:
+                    valid = False
+                    break
+                propagated[dependency_operand] = public_operand
+            if not valid:
+                continue
+            signature = tuple(sorted(propagated.items()))
+            states = binding_states.setdefault(dependency, set())
+            if signature not in states:
+                states.add(signature)
+                if sum(len(values) for values in binding_states.values()) > max_closure * max_closure:
+                    emit_failure("PUBLIC_INFORMATION_INSUFFICIENT", "DEPENDENCY_BINDING_STATE_BUDGET:" + requested)
+                binding_pending.append((dependency, propagated))
+    public_bindings = {
+        symbol: dict(next(iter(states)))
+        for symbol, states in binding_states.items()
+        if len(states) == 1
+    }
+    closure_templates = []
+    closure_rejections = []
+    for closure_ordinal, closure_symbol in enumerate(closure[1:], start=1):
+        closure_definition = definitions[closure_symbol]
+        closure_bindings = public_bindings.get(closure_symbol)
+        closure_cuts = cuts_for(closure_definition)
+        if closure_bindings is None:
+            closure_rejections.append({
+                "qualified_symbol": closure_symbol,
+                "failure": "PUBLIC_INFORMATION_INSUFFICIENT",
+                "detail": "DEPENDENCY_OPERAND_BINDING_AMBIGUOUS:" + closure_symbol,
+            })
+            continue
+        if not closure_cuts:
+            closure_rejections.append({
+                "qualified_symbol": closure_symbol,
+                "failure": "PUBLIC_INFORMATION_INSUFFICIENT",
+                "detail": "DEPENDENCY_POSTIMAGE_MISSING:" + closure_symbol,
+            })
+            continue
+        closure_templates.append({
+            "qualified_symbol": closure_symbol, "owner": closure_definition["owner"],
+            "is_async": closure_definition["is_async"], "operands": closure_definition["operands"],
+            "return_annotation": closure_definition["return_annotation"], "effects": closure_definition["effects"],
+            "direct_dependencies": closure_definition["direct_dependencies"],
+            "execution_dependency_closure": dependency_closure(closure_symbol, requested), "cuts": closure_cuts,
+            "public_operand_bindings": closure_bindings,
+        })
     selected.append({
         "qualified_symbol": requested, "owner": definition["owner"],
         "is_async": definition["is_async"], "operands": definition["operands"],
         "return_annotation": definition["return_annotation"], "effects": definition["effects"],
         "direct_dependencies": definition["direct_dependencies"],
         "execution_dependency_closure": closure, "cuts": cuts,
+        "closure_templates": closure_templates,
+        "closure_rejections": closure_rejections,
     })
 
 json.dump({"ok": True, "definitions": selected}, sys.stdout, ensure_ascii=False)
@@ -932,6 +1087,14 @@ fn classified_host_failure(failure: Option<&str>, detail: Option<&str>) -> Causa
     }
 }
 
+fn failure_kind_from_code(code: &str) -> CausalFrontendFailureKind {
+    match code {
+        "CONFLICTING_SOURCE_BOUND_EDITS" => CausalFrontendFailureKind::ConflictingSourceBoundEdits,
+        "UNSUPPORTED_LANGUAGE_SYNTAX" => CausalFrontendFailureKind::UnsupportedLanguageSyntax,
+        _ => CausalFrontendFailureKind::PublicInformationInsufficient,
+    }
+}
+
 /// Discover public literal observations from Python tests, retain only an
 /// explicit hole, a statically contradicted implementation, or a symbol bound
 /// by a failing diagnostic, then run the exact same source-bound synthesis and
@@ -1164,6 +1327,63 @@ fn convert_python_definition(
     })
 }
 
+fn remap_public_observations_for_closure(
+    observations: &[TypedMechanismObservationIR],
+    bindings: &BTreeMap<String, String>,
+) -> Result<Vec<TypedMechanismObservationIR>, CausalFrontendFailure> {
+    if bindings.is_empty() || bindings.values().collect::<BTreeSet<_>>().len() != bindings.len() {
+        return Err(CausalFrontendFailure::public(
+            "DEPENDENCY_OPERAND_BINDING_AMBIGUOUS",
+        ));
+    }
+    observations
+        .iter()
+        .map(|observation| {
+            let operands = bindings
+                .iter()
+                .map(|(closure_operand, public_operand)| {
+                    observation
+                        .operands
+                        .get(public_operand)
+                        .cloned()
+                        .map(|value| (closure_operand.clone(), value))
+                        .ok_or_else(|| {
+                            CausalFrontendFailure::public(format!(
+                                "DEPENDENCY_PUBLIC_OPERAND_MISSING:{public_operand}"
+                            ))
+                        })
+                })
+                .collect::<Result<BTreeMap<_, _>, _>>()?;
+            Ok(TypedMechanismObservationIR {
+                operands,
+                expected_postimage: observation.expected_postimage.clone(),
+            })
+        })
+        .collect()
+}
+
+fn convert_python_closure_definition(
+    definition: PythonClosureTemplateDefinition,
+    observations: &[TypedMechanismObservationIR],
+) -> Result<SourceBoundFunctionTemplateIR, CausalFrontendFailure> {
+    convert_python_definition(
+        PythonFunctionDefinition {
+            qualified_symbol: definition.qualified_symbol,
+            owner: definition.owner,
+            is_async: definition.is_async,
+            operands: definition.operands,
+            return_annotation: definition.return_annotation,
+            effects: definition.effects,
+            direct_dependencies: definition.direct_dependencies,
+            execution_dependency_closure: definition.execution_dependency_closure,
+            cuts: definition.cuts,
+            closure_templates: Vec::new(),
+            closure_rejections: Vec::new(),
+        },
+        observations,
+    )
+}
+
 fn python_expression(
     expression: &TypedSyntaxExpressionIR,
     sources: &BTreeMap<String, String>,
@@ -1367,6 +1587,216 @@ fn materialize_python_synthesis(
     })
 }
 
+fn synthesize_source_bound_template(
+    source: &str,
+    alternative: &SourceBoundCausalAlternativeIR,
+    goal_id: String,
+    template: &SourceBoundFunctionTemplateIR,
+    observations: Vec<TypedMechanismObservationIR>,
+    operator_type_index: &BTreeMap<String, Vec<TypedMechanismImprovementOperatorIR>>,
+) -> Result<
+    (
+        TypedMechanismSynthesisReceiptIR,
+        MaterializedSourceBoundPatchIR,
+    ),
+    CausalFrontendFailure,
+> {
+    let synthesis_request = TypedMechanismSynthesisGoalIR {
+        schema: TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA.to_string(),
+        goal_id,
+        split: DataSplit::FreshBlind,
+        operands: template.operands.clone(),
+        output_type: template.output_type.clone(),
+        definitions: Vec::new(),
+        allowed_effects: if alternative.allowed_effects.is_empty() {
+            vec![Effect::Pure]
+        } else {
+            alternative.allowed_effects.clone()
+        },
+        preconditions: vec![
+            format!(
+                "exact public symbol {} is source bound",
+                alternative.public_symbol
+            ),
+            format!(
+                "closure template {} is execution bound",
+                template.qualified_symbol
+            ),
+        ],
+        postconditions: vec!["satisfy all public postimage observations".to_string()],
+        invariants: vec![
+            "preserve exact public symbol owner".to_string(),
+            "preserve same-file execution dependency closure".to_string(),
+        ],
+        public_observations: observations,
+        require_conditional: alternative.require_conditional,
+        max_expression_depth: alternative.max_expression_depth,
+        max_candidates: alternative.max_candidates,
+        provenance: vec![
+            "PYTHON_AST_SOURCE_BOUND_CAUSAL_CUT".to_string(),
+            format!("SOURCE_TEMPLATE_SHA256:{}", template.source_template_sha256),
+        ],
+    };
+    let type_key = serde_json::to_string(&(
+        template
+            .operands
+            .iter()
+            .map(|operand| operand.value_type.clone())
+            .collect::<Vec<_>>(),
+        &template.output_type,
+    ))
+    .map_err(|error| CausalFrontendFailure::public(format!("SOURCE_TYPE_INDEX:{error}")))?;
+    let applicable_operators = operator_type_index
+        .get(&type_key)
+        .map(Vec::as_slice)
+        .unwrap_or(&[]);
+    let synthesis =
+        synthesize_typed_mechanism_goal_with_priors(&synthesis_request, applicable_operators)
+            .map_err(|error| {
+                CausalFrontendFailure::unsupported(format!("BOUNDED_COMPOSITION:{error}"))
+            })?;
+    let materialized_patch = materialize_python_synthesis(source, template, &synthesis)?;
+    Ok((synthesis, materialized_patch))
+}
+
+fn combine_source_bound_patches(
+    source: &str,
+    patches: &[&MaterializedSourceBoundPatchIR],
+) -> Result<MaterializedSourceBoundPatchIR, CausalFrontendFailure> {
+    let mut edits = Vec::new();
+    for patch in patches {
+        match &patch.edit {
+            SourceEditAtom::AtomicMultiEdit { edits: nested } => {
+                edits.extend(nested.iter().cloned())
+            }
+            edit => edits.push(edit.clone()),
+        }
+    }
+    let edit = SourceEditAtom::AtomicMultiEdit { edits };
+    let candidate_source = apply_edit_atom(source, &edit).map_err(|error| {
+        if error.contains("OVERLAPPING")
+            || error.contains("INSIDE_CONSUMED")
+            || error.contains("DUPLICATE")
+        {
+            CausalFrontendFailure::conflict(error)
+        } else {
+            CausalFrontendFailure::unsupported(error)
+        }
+    })?;
+    if candidate_source == source {
+        return Err(CausalFrontendFailure::unsupported(
+            "COMBINED_SOURCE_BOUND_PATCH_NO_OP",
+        ));
+    }
+    let replay = apply_edit_atom(source, &edit).map_err(CausalFrontendFailure::conflict)?;
+    let candidate_sha256 = sha256(candidate_source.as_bytes());
+    let candidate_replay_sha256 = sha256(replay.as_bytes());
+    if replay != candidate_source || candidate_replay_sha256 != candidate_sha256 {
+        return Err(CausalFrontendFailure::conflict(
+            "COMBINED_CANDIDATE_MATERIALIZATION_DIVERGED",
+        ));
+    }
+    Ok(MaterializedSourceBoundPatchIR {
+        predecessor_sha256: sha256(source.as_bytes()),
+        edit,
+        candidate_source,
+        candidate_sha256,
+        candidate_replay_sha256,
+        candidate_materialization_is_one_to_one: true,
+    })
+}
+
+fn build_source_bound_patch_variants(
+    source: &str,
+    alternatives: &[SourceBoundAlternativeReceiptIR],
+) -> Result<Vec<SourceBoundPatchVariantIR>, CausalFrontendFailure> {
+    let mut selections = vec![Vec::<usize>::new()];
+    for alternative in alternatives {
+        let mut choices = (1..=alternative.closure_candidates.len()).collect::<Vec<_>>();
+        // Prefer the deepest safely transported dependency, but retain every
+        // shallower dependency and the public owner as bounded fallbacks.
+        choices.reverse();
+        choices.push(0);
+        let mut expanded = Vec::new();
+        for prefix in &selections {
+            for choice in &choices {
+                let mut selection = prefix.clone();
+                selection.push(*choice);
+                expanded.push(selection);
+                if expanded.len() >= MAX_SOURCE_BOUND_PATCH_VARIANTS {
+                    break;
+                }
+            }
+            if expanded.len() >= MAX_SOURCE_BOUND_PATCH_VARIANTS {
+                break;
+            }
+        }
+        selections = expanded;
+    }
+    let public_owner_fallback = vec![0; alternatives.len()];
+    if !selections.contains(&public_owner_fallback) {
+        if selections.len() >= MAX_SOURCE_BOUND_PATCH_VARIANTS {
+            selections.pop();
+        }
+        selections.push(public_owner_fallback);
+    }
+
+    let mut variants = Vec::new();
+    let mut candidate_hashes = BTreeSet::new();
+    let mut saw_conflict = false;
+    for selection in selections {
+        let mut patches = Vec::new();
+        let mut symbols = Vec::new();
+        for (alternative, selected) in alternatives.iter().zip(&selection) {
+            if *selected == 0 {
+                patches.push(&alternative.materialized_patch);
+                symbols.push(alternative.function_template.qualified_symbol.clone());
+            } else {
+                let candidate = alternative
+                    .closure_candidates
+                    .get(selected - 1)
+                    .ok_or_else(|| {
+                        CausalFrontendFailure::public("PATCH_VARIANT_CANDIDATE_INDEX")
+                    })?;
+                patches.push(&candidate.materialized_patch);
+                symbols.push(candidate.function_template.qualified_symbol.clone());
+            }
+        }
+        let materialized_patch = match combine_source_bound_patches(source, &patches) {
+            Ok(patch) => patch,
+            Err(error) if error.kind == CausalFrontendFailureKind::ConflictingSourceBoundEdits => {
+                saw_conflict = true;
+                continue;
+            }
+            Err(error) => return Err(error),
+        };
+        if !candidate_hashes.insert(materialized_patch.candidate_sha256.clone()) {
+            continue;
+        }
+        let variant_id = sha256(
+            serde_json::to_vec(&(&selection, &symbols, &materialized_patch.candidate_sha256))
+                .map_err(|error| {
+                    CausalFrontendFailure::public(format!("PATCH_VARIANT_HASH:{error}"))
+                })?
+                .as_slice(),
+        );
+        variants.push(SourceBoundPatchVariantIR {
+            variant_id,
+            selected_candidate_indices: selection,
+            selected_template_symbols: symbols,
+            materialized_patch,
+        });
+    }
+    if variants.is_empty() {
+        return Err(if saw_conflict {
+            CausalFrontendFailure::conflict("ALL_SOURCE_BOUND_PATCH_VARIANTS_CONFLICT")
+        } else {
+            CausalFrontendFailure::public("NO_SOURCE_BOUND_PATCH_VARIANTS")
+        });
+    }
+    Ok(variants)
+}
+
 fn validate_request(
     request: &SourceBoundCausalRequestIR,
 ) -> Result<SourceLanguageBackend, CausalFrontendFailure> {
@@ -1457,6 +1887,25 @@ pub fn analyze_and_synthesize_source_bound_with_operators(
                     alternative.public_symbol
                 ))
             })?;
+            let closure_definitions = definition.closure_templates.clone();
+            let mut closure_candidate_rejections = Vec::new();
+            for rejection in &definition.closure_rejections {
+                let closure_ordinal = definition
+                    .execution_dependency_closure
+                    .iter()
+                    .position(|symbol| symbol == &rejection.qualified_symbol)
+                    .ok_or_else(|| {
+                        CausalFrontendFailure::public(
+                            "CLOSURE_REJECTION_OUTSIDE_EXECUTION_DEPENDENCY_CLOSURE",
+                        )
+                    })?;
+                closure_candidate_rejections.push(SourceBoundClosureCandidateRejectionIR {
+                    closure_ordinal,
+                    qualified_symbol: rejection.qualified_symbol.clone(),
+                    failure_kind: failure_kind_from_code(&rejection.failure),
+                    detail: rejection.detail.clone(),
+                });
+            }
             let function_template =
                 convert_python_definition(definition.clone(), &alternative.public_observations)?;
             if function_template.qualified_symbol != alternative.public_symbol
@@ -1467,61 +1916,14 @@ pub fn analyze_and_synthesize_source_bound_with_operators(
                     "PUBLIC_SYMBOL_OR_CLOSURE_IDENTITY_LOST",
                 ));
             }
-            let synthesis_request = TypedMechanismSynthesisGoalIR {
-                schema: TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA.to_string(),
-                goal_id: alternative.alternative_id.clone(),
-                split: DataSplit::FreshBlind,
-                operands: function_template.operands.clone(),
-                output_type: function_template.output_type.clone(),
-                definitions: Vec::new(),
-                allowed_effects: if alternative.allowed_effects.is_empty() {
-                    vec![Effect::Pure]
-                } else {
-                    alternative.allowed_effects.clone()
-                },
-                preconditions: vec![format!(
-                    "exact public symbol {} is source bound",
-                    alternative.public_symbol
-                )],
-                postconditions: vec!["satisfy all public postimage observations".to_string()],
-                invariants: vec![
-                    "preserve exact public symbol owner".to_string(),
-                    "preserve same-file execution dependency closure".to_string(),
-                ],
-                public_observations: alternative.public_observations.clone(),
-                require_conditional: alternative.require_conditional,
-                max_expression_depth: alternative.max_expression_depth,
-                max_candidates: alternative.max_candidates,
-                provenance: vec![
-                    "PYTHON_AST_SOURCE_BOUND_CAUSAL_CUT".to_string(),
-                    format!(
-                        "SOURCE_TEMPLATE_SHA256:{}",
-                        function_template.source_template_sha256
-                    ),
-                ],
-            };
-            let type_key = serde_json::to_string(&(
-                function_template
-                    .operands
-                    .iter()
-                    .map(|operand| operand.value_type.clone())
-                    .collect::<Vec<_>>(),
-                &function_template.output_type,
-            ))
-            .map_err(|error| CausalFrontendFailure::public(format!("SOURCE_TYPE_INDEX:{error}")))?;
-            let applicable_operators = operator_type_index
-                .get(&type_key)
-                .map(Vec::as_slice)
-                .unwrap_or(&[]);
-            let synthesis = synthesize_typed_mechanism_goal_with_priors(
-                &synthesis_request,
-                applicable_operators,
-            )
-            .map_err(|error| {
-                CausalFrontendFailure::unsupported(format!("BOUNDED_COMPOSITION:{error}"))
-            })?;
-            let materialized_patch =
-                materialize_python_synthesis(&request.source, &function_template, &synthesis)?;
+            let (synthesis, materialized_patch) = synthesize_source_bound_template(
+                &request.source,
+                alternative,
+                alternative.alternative_id.clone(),
+                &function_template,
+                alternative.public_observations.clone(),
+                &operator_type_index,
+            )?;
             let candidate_response = run_python_host(
                 &request.python_executable,
                 &materialized_patch.candidate_source,
@@ -1537,22 +1939,129 @@ pub fn analyze_and_synthesize_source_bound_with_operators(
                     "MATERIALIZED_PUBLIC_SYMBOL_IDENTITY_LOST",
                 ));
             }
+            let mut closure_candidates = Vec::new();
+            for closure_definition in closure_definitions {
+                let closure_symbol = closure_definition.qualified_symbol.clone();
+                let bindings = closure_definition.public_operand_bindings.clone();
+                let closure_ordinal = function_template
+                    .execution_dependency_closure
+                    .iter()
+                    .position(|symbol| symbol == &closure_symbol)
+                    .ok_or_else(|| {
+                        CausalFrontendFailure::public(
+                            "CLOSURE_TEMPLATE_OUTSIDE_EXECUTION_DEPENDENCY_CLOSURE",
+                        )
+                    })?;
+                let remapped_observations = match remap_public_observations_for_closure(
+                    &alternative.public_observations,
+                    &bindings,
+                ) {
+                    Ok(observations) => observations,
+                    Err(error) => {
+                        closure_candidate_rejections.push(SourceBoundClosureCandidateRejectionIR {
+                            closure_ordinal,
+                            qualified_symbol: closure_symbol,
+                            failure_kind: error.kind,
+                            detail: error.detail,
+                        });
+                        continue;
+                    }
+                };
+                let closure_template = match convert_python_closure_definition(
+                    closure_definition,
+                    &remapped_observations,
+                ) {
+                    Ok(template) => template,
+                    Err(error) => {
+                        closure_candidate_rejections.push(SourceBoundClosureCandidateRejectionIR {
+                            closure_ordinal,
+                            qualified_symbol: closure_symbol,
+                            failure_kind: error.kind,
+                            detail: error.detail,
+                        });
+                        continue;
+                    }
+                };
+                let closure_result = synthesize_source_bound_template(
+                    &request.source,
+                    alternative,
+                    format!("{}:CLOSURE:{}", alternative.alternative_id, closure_ordinal),
+                    &closure_template,
+                    remapped_observations,
+                    &operator_type_index,
+                );
+                let (closure_synthesis, closure_patch) = match closure_result {
+                    Ok(result) => result,
+                    Err(error) => {
+                        closure_candidate_rejections.push(SourceBoundClosureCandidateRejectionIR {
+                            closure_ordinal,
+                            qualified_symbol: closure_template.qualified_symbol.clone(),
+                            failure_kind: error.kind,
+                            detail: error.detail,
+                        });
+                        continue;
+                    }
+                };
+                let closure_candidate_response = run_python_host(
+                    &request.python_executable,
+                    &closure_patch.candidate_source,
+                    std::slice::from_ref(&alternative.public_symbol),
+                )?;
+                if let Some(failure) = host_failure(&closure_candidate_response) {
+                    closure_candidate_rejections.push(SourceBoundClosureCandidateRejectionIR {
+                        closure_ordinal,
+                        qualified_symbol: closure_template.qualified_symbol.clone(),
+                        failure_kind: failure.kind,
+                        detail: failure.detail,
+                    });
+                    continue;
+                }
+                if closure_candidate_response.definitions.len() != 1
+                    || closure_candidate_response.definitions[0].qualified_symbol
+                        != alternative.public_symbol
+                {
+                    closure_candidate_rejections.push(SourceBoundClosureCandidateRejectionIR {
+                        closure_ordinal,
+                        qualified_symbol: closure_template.qualified_symbol.clone(),
+                        failure_kind: CausalFrontendFailureKind::PublicInformationInsufficient,
+                        detail: "CLOSURE_MATERIALIZATION_PUBLIC_SYMBOL_IDENTITY_LOST".to_string(),
+                    });
+                    continue;
+                }
+                closure_candidates.push(SourceBoundClosureCandidateReceiptIR {
+                    closure_ordinal,
+                    public_operand_bindings: bindings,
+                    function_template: closure_template,
+                    synthesis: closure_synthesis,
+                    materialized_patch: closure_patch,
+                });
+            }
+            closure_candidates.sort_by_key(|candidate| candidate.closure_ordinal);
+            closure_candidate_rejections.sort_by(|left, right| {
+                left.closure_ordinal
+                    .cmp(&right.closure_ordinal)
+                    .then_with(|| left.qualified_symbol.cmp(&right.qualified_symbol))
+            });
             Ok(SourceBoundAlternativeReceiptIR {
                 alternative_id: alternative.alternative_id.clone(),
                 requested_public_symbol: alternative.public_symbol.clone(),
                 function_template,
                 synthesis,
                 materialized_patch,
+                closure_candidates,
+                closure_candidate_rejections,
             })
         },
         |detail| CausalFrontendFailure::unsupported(format!("PARALLEL_EXECUTOR:{detail}")),
     )?;
+    let patch_variants = build_source_bound_patch_variants(&request.source, &receipts)?;
     let mut receipt = SourceBoundCausalReceiptIR {
         schema: SOURCE_BOUND_CAUSAL_RECEIPT_SCHEMA.to_string(),
         source_relative_path: request.source_relative_path.clone(),
         language_backend: backend,
         predecessor_sha256: sha256(request.source.as_bytes()),
         alternatives: receipts,
+        patch_variants,
         alternative_worker_count,
         public_symbol_owner_preserved: true,
         execution_dependency_closure_preserved: true,
@@ -1835,14 +2344,14 @@ class Rational:
         parsed = parse_expr(left, right)
         return parsed
 
-def parse_expr(left: int, right: int) -> int:
-    return evaluateFalse(left, right)
+def parse_expr(first: int, second: int) -> int:
+    return evaluateFalse(first, second)
 
-def evaluateFalse(left: int, right: int) -> int:
-    return transformer_visitor(left, right)
+def evaluateFalse(primary: int, secondary: int) -> int:
+    return transformer_visitor(primary, secondary)
 
-def transformer_visitor(left: int, right: int) -> int:
-    return left + right
+def transformer_visitor(value: int, baseline: int) -> int:
+    return value + baseline
 "#;
         let request = SourceBoundCausalRequestIR {
             schema: SOURCE_BOUND_CAUSAL_REQUEST_SCHEMA.to_string(),
@@ -1871,6 +2380,34 @@ def transformer_visitor(left: int, right: int) -> int:
                 "transformer_visitor"
             ]
         );
+        assert_eq!(alternative.closure_candidates.len(), 3);
+        assert_eq!(
+            alternative
+                .closure_candidates
+                .iter()
+                .map(|candidate| candidate.function_template.qualified_symbol.as_str())
+                .collect::<Vec<_>>(),
+            ["parse_expr", "evaluateFalse", "transformer_visitor"]
+        );
+        assert_eq!(
+            alternative.closure_candidates[2].public_operand_bindings,
+            BTreeMap::from([
+                ("baseline".to_string(), "right".to_string()),
+                ("value".to_string(), "left".to_string())
+            ])
+        );
+        assert_eq!(
+            receipt.patch_variants[0].selected_template_symbols,
+            ["transformer_visitor"]
+        );
+        assert!(receipt.patch_variants[0]
+            .materialized_patch
+            .candidate_source
+            .contains("parsed = parse_expr(left, right)"));
+        assert!(receipt.patch_variants[0]
+            .materialized_patch
+            .candidate_source
+            .contains("return evaluateFalse(first, second)"));
         assert!(alternative
             .materialized_patch
             .candidate_source
@@ -1884,6 +2421,139 @@ def transformer_visitor(left: int, right: int) -> int:
                 .materialized_patch
                 .candidate_materialization_is_one_to_one
         );
+        let mut saturated = alternative.clone();
+        let repeated = saturated
+            .closure_candidates
+            .last()
+            .expect("deep closure candidate")
+            .clone();
+        while saturated.closure_candidates.len() <= MAX_SOURCE_BOUND_PATCH_VARIANTS {
+            saturated.closure_candidates.push(repeated.clone());
+        }
+        let bounded = build_source_bound_patch_variants(source, &[saturated]).unwrap();
+        assert!(bounded.len() <= MAX_SOURCE_BOUND_PATCH_VARIANTS);
+        assert!(bounded
+            .iter()
+            .any(|variant| variant.selected_candidate_indices == [0]));
+    }
+
+    #[test]
+    fn conflicting_dependency_operand_transport_fails_closed_to_the_public_owner() {
+        let Some(python_executable) = python() else {
+            return;
+        };
+        let source = r#"def distance(left: int, right: int) -> int:
+    if left > right:
+        return helper(left, right)
+    else:
+        return helper(right, left)
+
+def helper(first: int, second: int) -> int:
+    return 0
+"#;
+        let receipt = analyze_and_synthesize_source_bound(&SourceBoundCausalRequestIR {
+            schema: SOURCE_BOUND_CAUSAL_REQUEST_SCHEMA.to_string(),
+            source_relative_path: PathBuf::from("engine.py"),
+            source: source.to_string(),
+            python_executable,
+            alternatives: vec![SourceBoundCausalAlternativeIR {
+                alternative_id: "ambiguous-helper-transport".to_string(),
+                public_symbol: "distance".to_string(),
+                public_observations: observations(&[(9, 4, 5), (2, 7, 5), (8, 8, 0)]),
+                allowed_effects: vec![Effect::Pure],
+                require_conditional: true,
+                max_expression_depth: 2,
+                max_candidates: 1_024,
+            }],
+        })
+        .unwrap();
+        assert_eq!(
+            receipt.alternatives[0]
+                .function_template
+                .execution_dependency_closure,
+            ["distance", "helper"]
+        );
+        assert!(receipt.alternatives[0].closure_candidates.is_empty());
+        assert_eq!(
+            receipt.alternatives[0].closure_candidate_rejections.len(),
+            1
+        );
+        assert_eq!(
+            receipt.alternatives[0].closure_candidate_rejections[0].failure_kind,
+            CausalFrontendFailureKind::PublicInformationInsufficient
+        );
+        assert!(receipt.alternatives[0].closure_candidate_rejections[0]
+            .detail
+            .starts_with("DEPENDENCY_OPERAND_BINDING_AMBIGUOUS:"));
+        assert_eq!(receipt.patch_variants.len(), 1);
+        assert_eq!(
+            receipt.patch_variants[0].selected_template_symbols,
+            ["distance"]
+        );
+    }
+
+    #[test]
+    fn diamond_dependency_transport_does_not_leak_the_first_path_mapping() {
+        let Some(python_executable) = python() else {
+            return;
+        };
+        let source = r#"def distance(left: int, right: int) -> int:
+    if left > right:
+        return forward(left, right)
+    else:
+        return reverse(left, right)
+
+def forward(left: int, right: int) -> int:
+    return helper(left, right)
+
+def reverse(left: int, right: int) -> int:
+    return helper(right, left)
+
+def helper(first: int, second: int) -> int:
+    return 0
+"#;
+        let receipt = analyze_and_synthesize_source_bound(&SourceBoundCausalRequestIR {
+            schema: SOURCE_BOUND_CAUSAL_REQUEST_SCHEMA.to_string(),
+            source_relative_path: PathBuf::from("diamond.py"),
+            source: source.to_string(),
+            python_executable,
+            alternatives: vec![SourceBoundCausalAlternativeIR {
+                alternative_id: "diamond-transport".to_string(),
+                public_symbol: "distance".to_string(),
+                public_observations: observations(&[(9, 4, 5), (2, 7, 5), (8, 8, 0)]),
+                allowed_effects: vec![Effect::Pure],
+                require_conditional: true,
+                max_expression_depth: 2,
+                max_candidates: 1_024,
+            }],
+        })
+        .unwrap();
+        let alternative = &receipt.alternatives[0];
+        assert_eq!(
+            alternative
+                .closure_candidates
+                .iter()
+                .map(|candidate| candidate.function_template.qualified_symbol.as_str())
+                .collect::<Vec<_>>(),
+            ["forward", "reverse"]
+        );
+        assert!(alternative
+            .closure_candidate_rejections
+            .iter()
+            .any(|rejection| {
+                rejection.qualified_symbol == "helper"
+                    && rejection.failure_kind
+                        == CausalFrontendFailureKind::PublicInformationInsufficient
+                    && rejection
+                        .detail
+                        .starts_with("DEPENDENCY_OPERAND_BINDING_AMBIGUOUS:")
+            }));
+        assert!(receipt.patch_variants.iter().all(|variant| {
+            !variant
+                .selected_template_symbols
+                .iter()
+                .any(|symbol| symbol == "helper")
+        }));
     }
 
     #[test]
