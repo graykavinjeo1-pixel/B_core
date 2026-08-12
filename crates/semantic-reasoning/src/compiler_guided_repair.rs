@@ -587,6 +587,109 @@ fn trim_touched_line_trailing_whitespace(
     normalized
 }
 
+fn rustfmt_candidate_source(
+    policy: &CompilerGuidedRepairPolicy<'_>,
+    candidate: &str,
+) -> Result<String, String> {
+    let format_root = policy.state_dir.join("compiler_candidate_format");
+    fs::create_dir_all(&format_root)
+        .map_err(|error| format!("COMPILER_REPAIR_FORMAT_DIR:{error}"))?;
+    let nonce = SystemTime::now()
+        .duration_since(SystemTime::UNIX_EPOCH)
+        .map_err(|error| format!("COMPILER_REPAIR_FORMAT_CLOCK:{error}"))?
+        .as_nanos();
+    let candidate_path = format_root.join(format!(
+        "{}-{}-{nonce}.rs",
+        &sha256(candidate.as_bytes())[..16],
+        std::process::id()
+    ));
+    let mut candidate_file = OpenOptions::new()
+        .create_new(true)
+        .write(true)
+        .open(&candidate_path)
+        .map_err(|error| format!("COMPILER_REPAIR_FORMAT_CREATE:{error}"))?;
+    candidate_file
+        .write_all(candidate.as_bytes())
+        .map_err(|error| format!("COMPILER_REPAIR_FORMAT_WRITE:{error}"))?;
+    candidate_file
+        .sync_all()
+        .map_err(|error| format!("COMPILER_REPAIR_FORMAT_SYNC:{error}"))?;
+    drop(candidate_file);
+
+    let sibling_name = if cfg!(windows) {
+        "rustfmt.exe"
+    } else {
+        "rustfmt"
+    };
+    let sibling = policy
+        .cargo_executable
+        .parent()
+        .map(|parent| parent.join(sibling_name));
+    let rustfmt = sibling
+        .filter(|path| path.is_file())
+        .unwrap_or_else(|| PathBuf::from(sibling_name));
+    let mut child = match Command::new(&rustfmt)
+        .args(["--edition", "2021"])
+        .arg(&candidate_path)
+        .stdin(Stdio::null())
+        .stdout(Stdio::null())
+        .stderr(Stdio::null())
+        .spawn()
+    {
+        Ok(child) => child,
+        Err(error) => {
+            let _ = fs::remove_file(&candidate_path);
+            let _ = fs::remove_dir(&format_root);
+            return Err(format!("COMPILER_REPAIR_RUSTFMT_SPAWN:{error}"));
+        }
+    };
+    let timeout = Duration::from_millis(policy.timeout_ms);
+    let started = Instant::now();
+    let status = loop {
+        if let Some(status) = child
+            .try_wait()
+            .map_err(|error| format!("COMPILER_REPAIR_RUSTFMT_WAIT:{error}"))?
+        {
+            break status;
+        }
+        if started.elapsed() >= timeout {
+            let _ = child.kill();
+            let _ = child.wait();
+            let _ = fs::remove_file(&candidate_path);
+            let _ = fs::remove_dir(&format_root);
+            return Err("COMPILER_REPAIR_RUSTFMT_TIMEOUT".to_string());
+        }
+        thread::sleep(Duration::from_millis(10));
+    };
+    if !status.success() {
+        let _ = fs::remove_file(&candidate_path);
+        let _ = fs::remove_dir(&format_root);
+        return Err(format!(
+            "COMPILER_REPAIR_RUSTFMT_FAILED:{}",
+            status.code().unwrap_or(-1)
+        ));
+    }
+    let formatted = fs::read_to_string(&candidate_path);
+    let _ = fs::remove_file(&candidate_path);
+    let _ = fs::remove_dir(&format_root);
+    formatted.map_err(|error| format!("COMPILER_REPAIR_FORMAT_READ:{error}"))
+}
+
+fn canonicalize_rust_candidate(
+    policy: &CompilerGuidedRepairPolicy<'_>,
+    predecessor: &str,
+    candidate: &str,
+) -> Result<String, String> {
+    // Do not smuggle unrelated formatting cleanup into a compiler repair when
+    // the predecessor was already noncanonical. Canonical production sources
+    // receive the formatted postimage; synthetic or externally edited sources
+    // keep only the compiler-selected semantic delta.
+    if rustfmt_candidate_source(policy, predecessor)? != predecessor {
+        return Ok(candidate.to_string());
+    }
+    rustfmt_candidate_source(policy, candidate)
+}
+
 fn compiler_suggestion_edit_atom(
     source: &str,
     suggestion: &CompilerSuggestion,
@@ -711,6 +814,7 @@ fn candidate_from_suggestion(
         suggestion.byte_start,
         suggestion.replacement.len(),
     );
+    candidate_source = canonicalize_rust_candidate(policy, source, &candidate_source)?;
     if candidate_source == source || candidate_source.len() as u64 > policy.max_candidate_bytes {
         return Ok(None);
     }
@@ -811,9 +915,10 @@ fn family_candidate_from_suggestions(
         return Ok(None);
     };
     let atomic_edit = SourceEditAtom::AtomicMultiEdit { edits };
-    let Ok(candidate_source) = apply_edit_atom(&source, &atomic_edit) else {
+    let Ok(raw_candidate_source) = apply_edit_atom(&source, &atomic_edit) else {
         return Ok(None);
     };
+    let candidate_source = canonicalize_rust_candidate(policy, &source, &raw_candidate_source)?;
     if candidate_source == source || candidate_source.len() as u64 > policy.max_candidate_bytes {
         return Ok(None);
     }
@@ -823,7 +928,9 @@ fn family_candidate_from_suggestions(
     else {
         return Ok(None);
     };
-    structural_repair_program.edit = atomic_edit;
+    if candidate_source == raw_candidate_source {
+        structural_repair_program.edit = atomic_edit;
+    }
     let family_sha256 = sha256(
         suggestions
             .iter()
@@ -1240,6 +1347,86 @@ mod tests {
             SourceEditAtom::AtomicMultiEdit { ref edits } if edits.len() == 2
         ));
         assert_eq!(candidate.predicted_value, 77);
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn numeric_family_is_canonicalized_before_structural_lowering() {
+        let root = std::env::temp_dir().join(format!(
+            "b-core-compiler-guided-formatted-family-{}",
+            std::process::id()
+        ));
+        if root.exists() {
+            fs::remove_dir_all(&root).unwrap();
+        }
+        fs::create_dir_all(root.join("src")).unwrap();
+        let cargo = PathBuf::from("cargo");
+        let target = root.join("target");
+        let state = root.join("state");
+        let policy = CompilerGuidedRepairPolicy {
+            source_root: &root,
+            cargo_executable: &cargo,
+            build_target_dir: &target,
+            state_dir: &state,
+            timeout_ms: 1_000,
+            max_candidate_bytes: 16_384,
+        };
+        let raw_source = "pub fn retention(plasticity: f32, access: f32, importance: f32, average_activation: f32) -> f32 {\n    0.05 * plasticity + 0.20 * access + 0.45 * importance + 0.30 * average_activation\n}\n\npub fn score(reflex_bonus: f32, abstraction_level: f32, cue_overlap: f32, definition_match: f32) -> f32 {\n    0.10 * reflex_bonus + 0.10 * abstraction_level + 0.45 * cue_overlap + 0.20 * definition_match\n}\n";
+        let source = rustfmt_candidate_source(&policy, raw_source).unwrap();
+        fs::write(root.join("src/lib.rs"), &source).unwrap();
+        let replacements = [
+            (
+                "0.05 * plasticity + 0.20 * access + 0.45 * importance + 0.30 * average_activation",
+                "0.05f32.mul_add(plasticity, 0.20f32.mul_add(access, 0.45 * importance + 0.30 * average_activation))",
+            ),
+            (
+                "0.10 * reflex_bonus + 0.10 * abstraction_level + 0.45 * cue_overlap + 0.20 * definition_match",
+                "0.10f32.mul_add(reflex_bonus, 0.10f32.mul_add(abstraction_level, 0.45 * cue_overlap + 0.20 * definition_match))",
+            ),
+        ];
+        let suggestions = replacements
+            .iter()
+            .enumerate()
+            .map(|(index, (needle, replacement))| {
+                let byte_start = source.find(needle).unwrap();
+                CompilerSuggestion {
+                    level: "warning".to_string(),
+                    diagnostic_code: "clippy::suboptimal_flops".to_string(),
+                    message: "consider using fused multiply-add".to_string(),
+                    file_name: "src/lib.rs".to_string(),
+                    byte_start,
+                    byte_end: byte_start + needle.len(),
+                    replacement: (*replacement).to_string(),
+                    applicability: "MachineApplicable".to_string(),
+                    primary: true,
+                    observation_sha256: sha256(format!("numeric-{index}").as_bytes()),
+                }
+            })
+            .collect::<Vec<_>>();
+        let refs = suggestions.iter().collect::<Vec<_>>();
+        let raw_edits = refs
+            .iter()
+            .map(|suggestion| compiler_suggestion_edit_atom(&source, suggestion).unwrap())
+            .collect();
+        let raw_candidate = apply_edit_atom(
+            &source,
+            &SourceEditAtom::AtomicMultiEdit { edits: raw_edits },
+        )
+        .unwrap();
+        let candidate = family_candidate_from_suggestions(&policy, &refs)
+            .unwrap()
+            .expect("formatted family candidate");
+
+        assert_ne!(candidate.candidate_source, raw_candidate);
+        assert_eq!(
+            rustfmt_candidate_source(&policy, &candidate.candidate_source).unwrap(),
+            candidate.candidate_source
+        );
+        assert_eq!(
+            apply_edit_atom(&source, &candidate.structural_repair_program.edit).unwrap(),
+            candidate.candidate_source
+        );
+        assert!(!state.join("compiler_candidate_format").exists());
         fs::remove_dir_all(root).unwrap();
     }
 

@@ -34,12 +34,11 @@ pub const AUTONOMOUS_SOURCE_MUTATION_SCHEMA: &str = "B_CORE_AUTONOMOUS_SOURCE_MU
 pub const SELF_UPDATE_HANDOFF_FILE: &str = "SELF_UPDATE_READY.json";
 pub const SOURCE_REPAIR_LEARNING_SCHEMA: &str = "B_CORE_SOURCE_REPAIR_LEARNING_1";
 pub const IMPROVEMENT_OPERATOR_MEMORY_SCHEMA: &str = "B_CORE_IMPROVEMENT_OPERATOR_MEMORY_1";
-// Revision 14 adds role-aware compiler lowering: removing a redundant clone
-// from `field: field.clone()` now produces the canonical shorthand `field` in
-// the same atomic program, and binds changing diagnostic hashes to one stable
-// typed-family problem identity. Reopen older compiler families so the
-// corrected generator receives their public counterexamples.
-pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 14;
+// Revision 15 canonicalizes compiler-family postimages before structural
+// lowering. Reopen older families so formatting failures from mechanically
+// valid but noncanonical fused/nested expressions become one replayable,
+// formatter-clean repair instead of repeated single-member fallbacks.
+pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 15;
 const KNOWN_REMAINDER_PREDICTED_VALUE: u16 = 35;
 const MAX_REPOSITORY_REPAIR_FAMILY_FILES: usize = 16;
 const KNOWN_REMAINDER_STRATEGIES: [&str; 4] = [
