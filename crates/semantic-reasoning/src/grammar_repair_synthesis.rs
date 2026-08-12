@@ -256,6 +256,8 @@ enum PublicValue {
     Int(i128),
     Bool(bool),
     String(String),
+    Sequence(Vec<PublicValue>),
+    Bytes(Vec<u8>),
     Option(Option<Box<PublicValue>>),
     ResultOk(Box<PublicValue>),
     ResultErr(Box<PublicValue>),
@@ -274,22 +276,64 @@ struct PublicExampleScore {
     satisfied: usize,
 }
 
-fn sem5_scalar_type(type_name: &str) -> Option<ProgramType> {
+fn sem5_transport_type(type_name: &str) -> Option<ProgramType> {
+    let type_name = type_name
+        .strip_prefix("&mut")
+        .or_else(|| type_name.strip_prefix('&'))
+        .unwrap_or(type_name);
     match type_name {
         "i64" => Some(ProgramType::Int),
         "bool" => Some(ProgramType::Bool),
+        "Vec<i64>" | "std::vec::Vec<i64>" | "alloc::vec::Vec<i64>" | "[i64]" => {
+            Some(ProgramType::SequenceInt)
+        }
+        "Vec<Vec<i64>>"
+        | "std::vec::Vec<Vec<i64>>"
+        | "alloc::vec::Vec<Vec<i64>>"
+        | "[Vec<i64>]" => Some(ProgramType::NestedSequenceInt),
+        "Vec<u8>" | "std::vec::Vec<u8>" | "alloc::vec::Vec<u8>" | "[u8]" => {
+            Some(ProgramType::Bytes)
+        }
         _ => None,
     }
 }
 
-fn sem5_public_value(value: &PublicValue) -> Option<Value> {
-    match value {
-        PublicValue::Int(value) => i64::try_from(*value).ok().map(Value::Int),
-        PublicValue::Bool(value) => Some(Value::Bool(*value)),
-        PublicValue::String(_)
-        | PublicValue::Option(_)
-        | PublicValue::ResultOk(_)
-        | PublicValue::ResultErr(_) => None,
+fn sem5_public_value(value: &PublicValue, expected_type: &ProgramType) -> Option<Value> {
+    match (value, expected_type) {
+        (PublicValue::Int(value), ProgramType::Int) => i64::try_from(*value).ok().map(Value::Int),
+        (PublicValue::Bool(value), ProgramType::Bool) => Some(Value::Bool(*value)),
+        (PublicValue::Sequence(values), ProgramType::SequenceInt) => values
+            .iter()
+            .map(|value| match value {
+                PublicValue::Int(value) => i64::try_from(*value).ok(),
+                _ => None,
+            })
+            .collect::<Option<Vec<_>>>()
+            .map(Value::Sequence),
+        (PublicValue::Sequence(rows), ProgramType::NestedSequenceInt) => rows
+            .iter()
+            .map(|row| match row {
+                PublicValue::Sequence(values) => values
+                    .iter()
+                    .map(|value| match value {
+                        PublicValue::Int(value) => i64::try_from(*value).ok(),
+                        _ => None,
+                    })
+                    .collect::<Option<Vec<_>>>(),
+                _ => None,
+            })
+            .collect::<Option<Vec<_>>>()
+            .map(Value::NestedSequence),
+        (PublicValue::Bytes(values), ProgramType::Bytes) => Some(Value::Bytes(values.clone())),
+        (PublicValue::Sequence(values), ProgramType::Bytes) => values
+            .iter()
+            .map(|value| match value {
+                PublicValue::Int(value) => u8::try_from(*value).ok(),
+                _ => None,
+            })
+            .collect::<Option<Vec<_>>>()
+            .map(Value::Bytes),
+        _ => None,
     }
 }
 
@@ -304,7 +348,7 @@ fn synthesize_typed_hole_expression(
     if examples.len() < 2 || callable.inputs.is_empty() {
         return None;
     }
-    let output_type = sem5_scalar_type(&callable.output)?;
+    let output_type = sem5_transport_type(&callable.output)?;
     let operands = callable
         .inputs
         .iter()
@@ -312,7 +356,7 @@ fn synthesize_typed_hole_expression(
             Some(SourceOperandIR {
                 role: binding.name.clone(),
                 source: binding.name.clone(),
-                value_type: sem5_scalar_type(&binding.type_name)?,
+                value_type: sem5_transport_type(&binding.type_name)?,
             })
         })
         .collect::<Option<Vec<_>>>()?;
@@ -322,15 +366,19 @@ fn synthesize_typed_hole_expression(
             if example.inputs.len() != callable.inputs.len() {
                 return None;
             }
-            let operands = callable
-                .inputs
+            let operands = operands
                 .iter()
                 .zip(&example.inputs)
-                .map(|(binding, value)| Some((binding.name.clone(), sem5_public_value(value)?)))
+                .map(|(operand, value)| {
+                    Some((
+                        operand.role.clone(),
+                        sem5_public_value(value, &operand.value_type)?,
+                    ))
+                })
                 .collect::<Option<BTreeMap<_, _>>>()?;
             Some(TypedMechanismObservationIR {
                 operands,
-                expected_postimage: sem5_public_value(&example.expected)?,
+                expected_postimage: sem5_public_value(&example.expected, &output_type)?,
             })
         })
         .collect::<Option<Vec<_>>>()?;
@@ -546,8 +594,31 @@ fn public_literal(expression: &Expr) -> Option<PublicValue> {
             Lit::Int(value) => value.base10_parse::<i128>().ok().map(PublicValue::Int),
             Lit::Bool(value) => Some(PublicValue::Bool(value.value)),
             Lit::Str(value) => Some(PublicValue::String(value.value())),
+            Lit::ByteStr(value) => Some(PublicValue::Bytes(value.value())),
             _ => None,
         },
+        Expr::Array(array) => array
+            .elems
+            .iter()
+            .map(public_literal)
+            .collect::<Option<Vec<_>>>()
+            .map(PublicValue::Sequence),
+        Expr::Macro(expression)
+            if expression
+                .mac
+                .path
+                .segments
+                .last()
+                .is_some_and(|segment| segment.ident == "vec") =>
+        {
+            Punctuated::<Expr, Token![,]>::parse_terminated
+                .parse2(expression.mac.tokens.clone())
+                .ok()?
+                .iter()
+                .map(public_literal)
+                .collect::<Option<Vec<_>>>()
+                .map(PublicValue::Sequence)
+        }
         Expr::Path(path) if path.path.is_ident("None") => Some(PublicValue::Option(None)),
         Expr::Call(call) if call.args.len() == 1 => {
             let Expr::Path(path) = call.func.as_ref() else {
@@ -567,11 +638,14 @@ fn public_literal(expression: &Expr) -> Option<PublicValue> {
                 PublicValue::Int(number) => number.checked_neg().map(PublicValue::Int),
                 PublicValue::Bool(_)
                 | PublicValue::String(_)
+                | PublicValue::Sequence(_)
+                | PublicValue::Bytes(_)
                 | PublicValue::Option(_)
                 | PublicValue::ResultOk(_)
                 | PublicValue::ResultErr(_) => None,
             }
         }
+        Expr::Reference(value) => public_literal(value.expr.as_ref()),
         Expr::Paren(value) => public_literal(value.expr.as_ref()),
         Expr::Group(value) => public_literal(value.expr.as_ref()),
         _ => None,
@@ -583,6 +657,7 @@ fn contradicted_stub_family(expression: &Expr) -> Option<(&'static str, String)>
         Some(PublicValue::Int(_)) => Some(("INTEGER_LITERAL", normalized_tokens(expression))),
         Some(PublicValue::Bool(_)) => Some(("BOOLEAN_LITERAL", normalized_tokens(expression))),
         Some(PublicValue::String(_)) => Some(("STRING_LITERAL", normalized_tokens(expression))),
+        Some(PublicValue::Sequence(_)) | Some(PublicValue::Bytes(_)) => None,
         Some(PublicValue::Option(None)) => Some(("OPTION_NONE", normalized_tokens(expression))),
         Some(PublicValue::Option(Some(_))) => Some(("OPTION_SOME", normalized_tokens(expression))),
         Some(PublicValue::ResultOk(_)) => Some(("RESULT_OK", normalized_tokens(expression))),
@@ -1516,6 +1591,8 @@ fn numeric_inputs(callable: &CallableSignature, example: &PublicExample) -> Opti
             PublicValue::Int(value) => Some(*value),
             PublicValue::Bool(_)
             | PublicValue::String(_)
+            | PublicValue::Sequence(_)
+            | PublicValue::Bytes(_)
             | PublicValue::Option(_)
             | PublicValue::ResultOk(_)
             | PublicValue::ResultErr(_) => None,
@@ -1536,6 +1613,8 @@ fn boolean_inputs(callable: &CallableSignature, example: &PublicExample) -> Opti
             PublicValue::Bool(value) => Some(*value),
             PublicValue::Int(_)
             | PublicValue::String(_)
+            | PublicValue::Sequence(_)
+            | PublicValue::Bytes(_)
             | PublicValue::Option(_)
             | PublicValue::ResultOk(_)
             | PublicValue::ResultErr(_) => None,
@@ -1556,6 +1635,8 @@ fn string_inputs(callable: &CallableSignature, example: &PublicExample) -> Optio
             PublicValue::String(value) => Some(value.clone()),
             PublicValue::Int(_)
             | PublicValue::Bool(_)
+            | PublicValue::Sequence(_)
+            | PublicValue::Bytes(_)
             | PublicValue::Option(_)
             | PublicValue::ResultOk(_)
             | PublicValue::ResultErr(_) => None,
@@ -2544,6 +2625,69 @@ mod tests {
             Ok(typed.candidate_source.as_str())
         );
         assert!(syn::parse_file(&typed.candidate_source).is_ok());
+
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn rust_collection_observations_reach_the_common_typed_composition_kernel() {
+        let root = std::env::temp_dir().join(format!(
+            "b-core-typed-collection-grammar-{}",
+            std::process::id()
+        ));
+        if root.exists() {
+            fs::remove_dir_all(&root).unwrap();
+        }
+        fs::create_dir_all(root.join("src")).unwrap();
+        let source = r#"pub fn count(values: &[i64]) -> i64 { todo!() }
+pub fn first(values: &[i64]) -> i64 { todo!() }
+pub fn byte_at(values: &[u8], position: i64) -> i64 { todo!() }
+pub fn row_at(values: &[Vec<i64>], position: i64) -> Vec<i64> { todo!() }
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn collection_examples() {
+        assert_eq!(super::count(&[1, 2]), 2);
+        assert_eq!(super::count(&[7]), 1);
+        assert_eq!(super::first(&[4, 9]), 4);
+        assert_eq!(super::first(&[2, 3]), 2);
+        assert_eq!(super::byte_at(b"ab", 1), 98);
+        assert_eq!(super::byte_at(b"xyz", 1), 121);
+        assert_eq!(super::row_at(&[vec![1], vec![2, 3]], 1), vec![2, 3]);
+        assert_eq!(super::row_at(&[vec![4, 5], vec![6]], 0), vec![4, 5]);
+    }
+}
+"#;
+        fs::write(root.join("src/lib.rs"), source).unwrap();
+
+        let candidates = discover_grammar_repairs(&root, 32_768).unwrap();
+        let typed = candidates
+            .iter()
+            .filter(|candidate| {
+                candidate
+                    .solution_strategy
+                    .starts_with("GRAMMAR_COMPOSITION:TYPED_MECHANISM_SYNTHESIS:")
+            })
+            .collect::<Vec<_>>();
+        assert_eq!(typed.len(), 4);
+        assert!(typed
+            .iter()
+            .any(|candidate| candidate.grammar_expression.contains(".len() as i64")));
+        assert!(typed
+            .iter()
+            .any(|candidate| candidate.grammar_expression.contains("i64::from")));
+        assert!(typed
+            .iter()
+            .any(|candidate| candidate.grammar_expression.ends_with(".clone()")));
+        assert!(typed.iter().all(|candidate| {
+            candidate.public_examples_observed == 2
+                && candidate.public_examples_evaluated == 2
+                && candidate.public_examples_satisfied == 2
+                && apply_edit_atom(source, &candidate.structural_repair_program.edit).as_deref()
+                    == Ok(candidate.candidate_source.as_str())
+                && syn::parse_file(&candidate.candidate_source).is_ok()
+        }));
 
         fs::remove_dir_all(root).unwrap();
     }
