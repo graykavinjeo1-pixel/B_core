@@ -2136,6 +2136,45 @@ mod tests {
     }
 
     #[test]
+    fn typed_call_chain_is_installed_after_public_examples_falsify_primitives() {
+        let (root, mut policy) = fixture("grammar-call-chain-repair");
+        policy.auto_discover_known_transformations = false;
+        policy.auto_discover_compiler_repairs = false;
+        policy.auto_synthesize_grammar_repairs = true;
+        policy.minimum_predicted_value = 60;
+        fs::write(
+            root.join("src/lib.rs"),
+            "pub fn widen(value: i32) -> i64 {\n    i64::from(value) * i64::from(value)\n}\n\npub fn compare(wide: i64, limit: i32) -> bool {\n    wide > i64::from(limit)\n}\n\npub fn decide(raw: i32, limit: i32) -> bool {\n    todo!()\n}\n\n#[cfg(test)]\nmod tests {\n    #[test]\n    fn decides_after_widening() {\n        assert_eq!(super::decide(3, 5), true);\n        assert_eq!(super::decide(2, 5), false);\n        assert_eq!(super::decide(-3, 5), true);\n    }\n}\n",
+        )
+        .unwrap();
+        let state = external_state(&root);
+
+        let request = discover_known_source_improvement(&policy, &state, 6)
+            .unwrap()
+            .expect("typed call-chain candidate");
+
+        assert!(request
+            .solution_strategy
+            .starts_with("GRAMMAR_COMPOSITION:EXISTING_CALL_CHAIN"));
+        assert!(request
+            .candidate_source
+            .contains("    compare(widen(raw), limit)\n"));
+        let receipt = install_and_stage_source_patch(&policy, &state, &request).unwrap();
+        assert!(receipt.installed);
+        assert!(receipt.validation.success);
+        let learned = load_repair_learning(&state, &repair_problem_id(&request))
+            .unwrap()
+            .expect("learned typed call-chain composition");
+        assert_eq!(learned.status, "LEARNED_SUCCESS");
+        assert!(learned
+            .learned_success
+            .as_ref()
+            .is_some_and(|success| success.solution_strategy.contains("EXISTING_CALL_CHAIN")));
+        fs::remove_dir_all(root).unwrap();
+        fs::remove_dir_all(state).unwrap();
+    }
+
+    #[test]
     fn contradicted_stub_is_repaired_from_external_public_examples() {
         let (root, mut policy) = fixture("grammar-external-stub-repair");
         policy.auto_discover_known_transformations = false;

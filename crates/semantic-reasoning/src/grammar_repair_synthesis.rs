@@ -31,6 +31,7 @@ const MAX_GRAMMAR_HOLES_PER_GENERATION: usize = MAX_GRAMMAR_CANDIDATES / MAX_CAN
 const MAX_GRAMMAR_HOLES_SCANNED_PER_GENERATION: usize = 256;
 const MAX_REPOSITORY_CONTEXT_FILES: usize = 512;
 const MAX_REPOSITORY_CONTEXT_BYTES: u64 = 64 * 1024 * 1024;
+const MAX_CALL_COMPOSITION_CATALOG: usize = 64;
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct GrammarRepairCandidate {
@@ -61,6 +62,7 @@ struct CallableSignature {
     short_name: String,
     inputs: Vec<TypedBinding>,
     output: String,
+    callable_as_free_function: bool,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -156,6 +158,7 @@ fn collect_callables(items: &[Item], prefix: &str, output: &mut Vec<(CallableSig
                         short_name: function.sig.ident.to_string(),
                         inputs: typed_inputs(&function.sig.inputs),
                         output: return_type(&function.sig.output),
+                        callable_as_free_function: true,
                     },
                     (*function.block).clone(),
                 ));
@@ -182,6 +185,7 @@ fn collect_callables(items: &[Item], prefix: &str, output: &mut Vec<(CallableSig
                                     short_name: method.sig.ident.to_string(),
                                     inputs: typed_inputs(&method.sig.inputs),
                                     output: return_type(&method.sig.output),
+                                    callable_as_free_function: false,
                                 },
                                 method.block.clone(),
                             ));
@@ -505,20 +509,32 @@ fn matching_binding<'a>(inputs: &'a [TypedBinding], type_name: &str) -> Option<&
         .map(|binding| binding.name.as_str())
 }
 
+fn matching_argument_indices(
+    available: &[TypedBinding],
+    required: &[TypedBinding],
+) -> Option<Vec<usize>> {
+    let mut used = BTreeSet::new();
+    let mut arguments = Vec::with_capacity(required.len());
+    for input in required {
+        let (index, _) = available.iter().enumerate().find(|(index, binding)| {
+            !used.contains(index) && binding.type_name == input.type_name
+        })?;
+        used.insert(index);
+        arguments.push(index);
+    }
+    Some(arguments)
+}
+
 fn matching_arguments<'a>(
     available: &'a [TypedBinding],
     required: &[TypedBinding],
 ) -> Option<Vec<&'a str>> {
-    let mut used = BTreeSet::new();
-    let mut arguments = Vec::with_capacity(required.len());
-    for input in required {
-        let (index, binding) = available.iter().enumerate().find(|(index, binding)| {
-            !used.contains(index) && binding.type_name == input.type_name
-        })?;
-        used.insert(index);
-        arguments.push(binding.name.as_str());
-    }
-    Some(arguments)
+    matching_argument_indices(available, required).map(|indices| {
+        indices
+            .into_iter()
+            .map(|index| available[index].name.as_str())
+            .collect()
+    })
 }
 
 fn compose_expressions(
@@ -597,6 +613,7 @@ fn compose_expressions(
 
     for candidate in catalog {
         if candidate.callable == callable.callable
+            || !candidate.callable_as_free_function
             || candidate.output != callable.output
             || candidate.inputs.is_empty()
         {
@@ -610,6 +627,77 @@ fn compose_expressions(
                 "EXISTING_CALL",
                 format!("{}({})", candidate.short_name, arguments.join(", ")),
             );
+        }
+    }
+
+    // Compose a bounded two-hop typed call graph. Input bindings consumed by
+    // the inner call are reserved, so a non-Copy value is not blindly moved a
+    // second time into the outer call. The normal compiler/test gate remains
+    // the final authority for ownership and semantic behavior.
+    let call_catalog = catalog
+        .iter()
+        .filter(|candidate| {
+            candidate.callable != callable.callable
+                && candidate.callable_as_free_function
+                && !candidate.inputs.is_empty()
+        })
+        .take(MAX_CALL_COMPOSITION_CATALOG)
+        .collect::<Vec<_>>();
+    'chains: for inner in &call_catalog {
+        let Some(inner_indices) = matching_argument_indices(&callable.inputs, &inner.inputs) else {
+            continue;
+        };
+        let inner_arguments = inner_indices
+            .iter()
+            .map(|index| callable.inputs[*index].name.as_str())
+            .collect::<Vec<_>>();
+        let inner_expression = format!("{}({})", inner.short_name, inner_arguments.join(", "));
+        for outer in &call_catalog {
+            if inner.callable == outer.callable || outer.output != callable.output {
+                continue;
+            }
+            for inner_slot in outer
+                .inputs
+                .iter()
+                .enumerate()
+                .filter_map(|(index, input)| (input.type_name == inner.output).then_some(index))
+            {
+                let mut used = inner_indices.iter().copied().collect::<BTreeSet<_>>();
+                let mut arguments = Vec::with_capacity(outer.inputs.len());
+                let mut complete = true;
+                for (index, required) in outer.inputs.iter().enumerate() {
+                    if index == inner_slot {
+                        arguments.push(inner_expression.clone());
+                        continue;
+                    }
+                    let Some((binding_index, binding)) =
+                        callable
+                            .inputs
+                            .iter()
+                            .enumerate()
+                            .find(|(binding_index, binding)| {
+                                !used.contains(binding_index)
+                                    && binding.type_name == required.type_name
+                            })
+                    else {
+                        complete = false;
+                        break;
+                    };
+                    used.insert(binding_index);
+                    arguments.push(binding.name.clone());
+                }
+                if complete {
+                    push_expression(
+                        &mut output,
+                        &mut seen,
+                        "EXISTING_CALL_CHAIN",
+                        format!("{}({})", outer.short_name, arguments.join(", ")),
+                    );
+                    if output.len() >= MAX_GRAMMAR_CANDIDATES {
+                        break 'chains;
+                    }
+                }
+            }
         }
     }
 
@@ -1051,6 +1139,11 @@ fn candidates_for_file(
                     public_example_score(&family, &expression, &hole.callable, &public_examples);
                 (index, family, expression, score)
             })
+            // A candidate that disagrees with any example it can evaluate is
+            // already falsified and must not consume a compile/test attempt.
+            // Unevaluable typed calls remain hypotheses for the authoritative
+            // source-validation gate.
+            .filter(|(_, _, _, score)| score.evaluated == 0 || score.satisfied == score.evaluated)
             .collect::<Vec<_>>();
         compositions.sort_by_key(|(index, _, _, score)| {
             let satisfies_every_observed_example = score.observed > 0
@@ -1292,8 +1385,46 @@ mod tests {
             .transformation
             .starts_with("AST_GRAMMAR_HOLE:PUBLIC_EXAMPLE_CONTRADICTED_STUB:"));
         assert_eq!(candidates[0].public_examples_satisfied, 2);
-        assert!(candidates.len() > 4);
         assert!(candidates.len() <= MAX_CANDIDATES_PER_HOLE);
+        assert!(candidates.iter().all(|candidate| {
+            candidate.public_examples_evaluated == 0
+                || candidate.public_examples_satisfied == candidate.public_examples_evaluated
+        }));
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn falsified_primitives_do_not_starve_a_typed_call_chain() {
+        let root = std::env::temp_dir().join(format!(
+            "b-core-grammar-call-chain-frontier-{}",
+            std::process::id()
+        ));
+        if root.exists() {
+            fs::remove_dir_all(&root).unwrap();
+        }
+        fs::create_dir_all(root.join("src")).unwrap();
+        fs::write(
+            root.join("src/lib.rs"),
+            "pub fn widen(value: i32) -> i64 { i64::from(value) * i64::from(value) }\npub fn compare(wide: i64, limit: i32) -> bool { wide > i64::from(limit) }\npub fn decide(raw: i32, limit: i32) -> bool { todo!() }\n\n#[cfg(test)]\nmod tests {\n    #[test]\n    fn decides_after_widening() {\n        assert_eq!(super::decide(3, 5), true);\n        assert_eq!(super::decide(2, 5), false);\n        assert_eq!(super::decide(-3, 5), true);\n    }\n}\n",
+        )
+        .unwrap();
+
+        let candidates = discover_grammar_repairs(&root, 4_096).unwrap();
+
+        assert!(!candidates.is_empty());
+        assert_eq!(
+            candidates[0].grammar_expression,
+            "compare(widen(raw), limit)"
+        );
+        assert!(candidates[0]
+            .solution_strategy
+            .starts_with("GRAMMAR_COMPOSITION:EXISTING_CALL_CHAIN"));
+        assert_eq!(candidates[0].public_examples_observed, 3);
+        assert_eq!(candidates[0].public_examples_evaluated, 0);
+        assert!(candidates.iter().all(|candidate| {
+            candidate.public_examples_evaluated == 0
+                || candidate.public_examples_satisfied == candidate.public_examples_evaluated
+        }));
         fs::remove_dir_all(root).unwrap();
     }
 
@@ -1429,14 +1560,24 @@ mod tests {
                 },
             ],
             output: "i32".to_string(),
+            callable_as_free_function: true,
         };
         let helper = CallableSignature {
             callable: "combine".to_string(),
             short_name: "combine".to_string(),
             inputs: current.inputs.clone(),
             output: "i32".to_string(),
+            callable_as_free_function: true,
         };
-        let expressions = compose_expressions(&current, &[current.clone(), helper]);
+        let receiver_method = CallableSignature {
+            callable: "Accumulator::combine_method".to_string(),
+            short_name: "combine_method".to_string(),
+            inputs: current.inputs.clone(),
+            output: "i32".to_string(),
+            callable_as_free_function: false,
+        };
+        let expressions =
+            compose_expressions(&current, &[current.clone(), helper, receiver_method]);
         assert!(expressions.iter().any(|(family, _)| family == "BINARY_ADD"));
         assert!(expressions
             .iter()
@@ -1445,6 +1586,64 @@ mod tests {
             .iter()
             .any(|(family, expression)| family == "EXISTING_CALL"
                 && expression == "combine(left, right)"));
+        assert!(!expressions
+            .iter()
+            .any(|(_, expression)| expression.contains("combine_method")));
+    }
+
+    #[test]
+    fn grammar_basis_composes_a_typed_two_hop_call_chain_without_reusing_inputs() {
+        let current = CallableSignature {
+            callable: "decide".to_string(),
+            short_name: "decide".to_string(),
+            inputs: vec![
+                TypedBinding {
+                    name: "raw".to_string(),
+                    type_name: "i32".to_string(),
+                },
+                TypedBinding {
+                    name: "limit".to_string(),
+                    type_name: "i32".to_string(),
+                },
+            ],
+            output: "bool".to_string(),
+            callable_as_free_function: true,
+        };
+        let widen = CallableSignature {
+            callable: "widen".to_string(),
+            short_name: "widen".to_string(),
+            inputs: vec![TypedBinding {
+                name: "value".to_string(),
+                type_name: "i32".to_string(),
+            }],
+            output: "i64".to_string(),
+            callable_as_free_function: true,
+        };
+        let compare = CallableSignature {
+            callable: "compare".to_string(),
+            short_name: "compare".to_string(),
+            inputs: vec![
+                TypedBinding {
+                    name: "wide".to_string(),
+                    type_name: "i64".to_string(),
+                },
+                TypedBinding {
+                    name: "limit".to_string(),
+                    type_name: "i32".to_string(),
+                },
+            ],
+            output: "bool".to_string(),
+            callable_as_free_function: true,
+        };
+
+        let expressions = compose_expressions(&current, &[current.clone(), widen, compare]);
+
+        assert!(expressions.iter().any(|(family, expression)| {
+            family == "EXISTING_CALL_CHAIN" && expression == "compare(widen(raw), limit)"
+        }));
+        assert!(!expressions.iter().any(|(_, expression)| {
+            expression == "compare(widen(raw), raw)" || expression == "compare(widen(limit), limit)"
+        }));
     }
 
     #[test]
