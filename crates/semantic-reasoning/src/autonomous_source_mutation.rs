@@ -34,7 +34,7 @@ pub const AUTONOMOUS_SOURCE_MUTATION_SCHEMA: &str = "B_CORE_AUTONOMOUS_SOURCE_MU
 pub const SELF_UPDATE_HANDOFF_FILE: &str = "SELF_UPDATE_READY.json";
 pub const SOURCE_REPAIR_LEARNING_SCHEMA: &str = "B_CORE_SOURCE_REPAIR_LEARNING_1";
 pub const IMPROVEMENT_OPERATOR_MEMORY_SCHEMA: &str = "B_CORE_IMPROVEMENT_OPERATOR_MEMORY_1";
-pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 11;
+pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 12;
 const KNOWN_REMAINDER_PREDICTED_VALUE: u16 = 35;
 const MAX_REPOSITORY_REPAIR_FAMILY_FILES: usize = 16;
 const KNOWN_REMAINDER_STRATEGIES: [&str; 4] = [
@@ -233,6 +233,10 @@ pub struct SourceDiscoveryResult {
 pub struct SourceRepairAttempt {
     pub attempt_number: u8,
     pub source_generation: u64,
+    /// Zero denotes an attempt written before per-attempt engine identity was
+    /// part of the learning contract.
+    #[serde(default)]
+    pub source_engine_revision: u64,
     pub solution_strategy: String,
     pub candidate_sha256: String,
     pub succeeded: bool,
@@ -591,6 +595,39 @@ fn source_repair_attempt_is_causal(attempt: &SourceRepairAttempt) -> bool {
     !source_patch_failure_is_transient(attempt.failure_reason.as_deref())
 }
 
+fn is_sha256_hex(value: &str) -> bool {
+    value.len() == 64 && value.bytes().all(|byte| byte.is_ascii_hexdigit())
+}
+
+/// Operator dispatch was introduced after structurally replayed source repairs
+/// were already being installed and rolled back. Those older attempts contain
+/// the exact program hash, edit algebra, postcondition count, candidate hash,
+/// and immutable validation receipt, but cannot contain a dispatcher-generated
+/// operator id. Treat that bounded pre-revision shape as executable bootstrap
+/// evidence instead of leaving the callable operator repository permanently
+/// empty. New-revision attempts must carry the full causal dispatcher binding.
+fn legacy_attempt_has_executable_operator_evidence(attempt: &SourceRepairAttempt) -> bool {
+    attempt.source_engine_revision == 0
+        && attempt.executed_operator_id.is_none()
+        && attempt.improvement_operator_execution_sha256.is_none()
+        && attempt
+            .structural_repair_program_sha256
+            .as_deref()
+            .is_some_and(is_sha256_hex)
+        && is_sha256_hex(&attempt.candidate_sha256)
+        && is_sha256_hex(&attempt.receipt_sha256)
+        && is_sha256_hex(&attempt.diagnostic_sha256)
+        && !attempt.edit_atom_kinds.is_empty()
+        && attempt.edit_atom_kinds.iter().all(|kind| {
+            matches!(
+                kind.as_str(),
+                "REPLACE" | "INSERT" | "DELETE" | "MOVE" | "ATOMIC_MULTI_EDIT"
+            )
+        })
+        && attempt.structural_postcondition_count > 0
+        && attempt.family_member_count > 0
+}
+
 fn active_cycle_attempts(
     record: &SourceRepairLearningRecord,
     source_generation: u64,
@@ -818,9 +855,14 @@ pub fn derive_improvement_operator_memory(
             if !source_repair_attempt_is_causal(attempt)
                 || attempt.structural_repair_program_sha256.is_none()
                 || attempt.edit_atom_kinds.is_empty()
-                || attempt.executed_operator_id.is_none()
-                || attempt.improvement_operator_execution_sha256.is_none()
             {
+                continue;
+            }
+            let dispatcher_bound = attempt.executed_operator_id.is_some()
+                && attempt.improvement_operator_execution_sha256.is_some();
+            let legacy_executable_evidence =
+                legacy_attempt_has_executable_operator_evidence(attempt);
+            if !dispatcher_bound && !legacy_executable_evidence {
                 continue;
             }
             let evidence_kind = attempt
@@ -833,7 +875,9 @@ pub fn derive_improvement_operator_memory(
                 &attempt.edit_atom_kinds,
                 attempt.structural_postcondition_count,
             )?;
-            if attempt.executed_operator_id.as_deref() != Some(operator.operator_id.as_str()) {
+            if dispatcher_bound
+                && attempt.executed_operator_id.as_deref() != Some(operator.operator_id.as_str())
+            {
                 continue;
             }
             let operator_id = operator.operator_id.clone();
@@ -1545,6 +1589,7 @@ fn record_source_repair_outcome(
     record.attempts.push(SourceRepairAttempt {
         attempt_number,
         source_generation: request.source_generation,
+        source_engine_revision: SOURCE_REPAIR_ENGINE_REVISION,
         solution_strategy: solution_strategy.clone(),
         candidate_sha256: request.candidate_sha256.clone(),
         succeeded: receipt.installed,
@@ -4626,6 +4671,54 @@ mod tests {
         assert_eq!(causally_updated.repository_guided_attempts, 1);
         assert_eq!(causally_updated.repository_guided_successful_uses, 1);
         assert_eq!(causally_updated.productive_cross_family_transfers, 2);
+
+        fs::remove_dir_all(root).unwrap();
+        fs::remove_dir_all(state).unwrap();
+    }
+
+    #[test]
+    fn pre_dispatch_verified_program_bootstraps_operator_repository_once() {
+        let (root, policy) = fixture("legacy-operator-bootstrap");
+        let state = external_state(&root);
+        let request = discover_known_source_improvement(&policy, &state, 12)
+            .unwrap()
+            .expect("structural candidate");
+        let receipt = synthetic_receipt(&request, true);
+        let mut record = record_source_repair_outcome(&policy, &state, &request, &receipt).unwrap();
+        assert!(record.attempts[0].executed_operator_id.is_some());
+
+        record.cycle_started_engine_revision = SOURCE_REPAIR_ENGINE_REVISION - 1;
+        record.attempts[0].source_engine_revision = 0;
+        record.attempts[0].executed_operator_id = None;
+        record.attempts[0].improvement_operator_execution_sha256 = None;
+        record.attempts[0].invoked_operator_ids.clear();
+        write_mutable_json(&repair_learning_path(&state, &record.problem_id), &record).unwrap();
+
+        let bootstrapped = refresh_improvement_operator_repository(&state).unwrap();
+        assert_eq!(bootstrapped.total_attempts, 1);
+        assert_eq!(bootstrapped.total_successful_uses, 1);
+        assert_eq!(bootstrapped.repository_guided_attempts, 0);
+        let profile = &bootstrapped.profiles[0];
+        assert!(
+            improvement_operator_repository_path(&state, &profile.operator.operator_id).is_file()
+        );
+        let execution = execute_improvement_operator_on_source(
+            &profile.operator,
+            "pub fn renamed(value: u32) -> bool { value % 2 == 0 }\n",
+        )
+        .unwrap();
+        assert!(execution.applicable);
+        assert!(execution
+            .candidate_source
+            .as_deref()
+            .is_some_and(|source| source.contains("value.is_multiple_of(2)")));
+
+        // Absence of dispatcher binding is accepted only for bounded records
+        // that provably predate the dispatcher contract.
+        record.attempts[0].source_engine_revision = SOURCE_REPAIR_ENGINE_REVISION;
+        write_mutable_json(&repair_learning_path(&state, &record.problem_id), &record).unwrap();
+        let current_revision = derive_improvement_operator_memory(&state).unwrap();
+        assert_eq!(current_revision.total_attempts, 0);
 
         fs::remove_dir_all(root).unwrap();
         fs::remove_dir_all(state).unwrap();
