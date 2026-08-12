@@ -558,7 +558,11 @@ fn load_repair_learning(
 pub fn source_patch_failure_is_transient(reason: Option<&str>) -> bool {
     matches!(
         reason,
-        Some("CONCURRENT_WORKSPACE_CHANGE_DURING_VALIDATION" | "TARGET_CHANGED_DURING_VALIDATION")
+        Some(
+            "CONCURRENT_WORKSPACE_CHANGE_DURING_VALIDATION"
+                | "TARGET_CHANGED_DURING_VALIDATION"
+                | "SOURCE_UPDATE_ALREADY_STAGED"
+        )
     )
 }
 
@@ -3323,6 +3327,13 @@ mod tests {
         assert_eq!(restored.minimum_predicted_value, 60);
         assert!(restored.auto_discover_compiler_repairs);
         assert!(restored.auto_synthesize_grammar_repairs);
+    }
+
+    #[test]
+    fn pending_runtime_handoff_is_not_a_repair_counterexample() {
+        assert!(source_patch_failure_is_transient(Some(
+            "SOURCE_UPDATE_ALREADY_STAGED"
+        )));
     }
 
     #[test]

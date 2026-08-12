@@ -2909,6 +2909,24 @@ pub fn request_resume(config_path: &Path) -> Result<serde_json::Value, String> {
     let config = load_config(config_path)?;
     let mut state = load_state(&config)?;
     let invalid_tip_recovered = recover_verification_only_generation_tip(&config, &mut state)?;
+    let pending_self_update = config
+        .state_dir
+        .join("control")
+        .join(crate::autonomous_source_mutation::SELF_UPDATE_HANDOFF_FILE)
+        .is_file();
+    let staged_stop = matches!(
+        state.stop_reason.as_deref(),
+        Some("AUTONOMOUS_SOURCE_UPDATE_STAGED" | "AUTONOMOUS_COMPOSITE_CAPABILITY_STAGED")
+    );
+    if state.phase == SupervisorPhase::SafeStopped && staged_stop && pending_self_update {
+        return Ok(serde_json::json!({
+            "resume_requested": false,
+            "phase": state.phase,
+            "invalid_verification_only_tip_recovered": invalid_tip_recovered,
+            "hard_resource_stop_preserved": false,
+            "pending_self_update": true
+        }));
+    }
     let path = config.state_dir.join("control").join("STOP");
     if path.exists() {
         fs::remove_file(&path).map_err(|error| format!("STOP_REMOVE:{error}"))?;
@@ -2947,7 +2965,8 @@ pub fn request_resume(config_path: &Path) -> Result<serde_json::Value, String> {
         "resume_requested": true,
         "phase": state.phase,
         "invalid_verification_only_tip_recovered": invalid_tip_recovered,
-        "hard_resource_stop_preserved": state.stop_reason.is_some()
+        "hard_resource_stop_preserved": state.stop_reason.is_some(),
+        "pending_self_update": false
     }))
 }
 
@@ -6597,9 +6616,16 @@ fn attempt_pending_composite_capability_install(
         state.composite_capability_install_attempts,
     ) {
         Ok(receipt) => receipt,
-        Err(_) => {
+        Err(error) => {
+            let error_class = error.split(':').next().unwrap_or("UNKNOWN");
             state.last_source_discovery_reason =
-                Some("COMPOSITE_CAPABILITY_INSTALL_ERROR".to_string());
+                Some(format!("COMPOSITE_CAPABILITY_INSTALL_ERROR:{error_class}"));
+            if source_patch_failure_is_transient(Some(error_class)) {
+                return Ok(CompositeInstallAttemptOutcome {
+                    attempted: true,
+                    staged: false,
+                });
+            }
             account_source_patch_error(
                 state,
                 ChangeOpportunityKind::CapabilityGap,
@@ -9655,6 +9681,42 @@ mod tests {
         let resumed = status(&config_path).unwrap();
         assert_eq!(resumed.phase, SupervisorPhase::InfraReady);
         assert_eq!(resumed.stop_reason, None);
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn staged_update_cannot_resume_before_wrapper_consumes_handoff() {
+        let root = temp_root("resume-before-handoff-application");
+        let (config_path, config) = test_config(&root);
+        let mut state = initialize(&config_path).unwrap();
+        state.stop_reason = Some("AUTONOMOUS_COMPOSITE_CAPABILITY_STAGED".to_string());
+        save_transition(
+            &config,
+            &mut state,
+            SupervisorPhase::SafeStopped,
+            "TEST_COMPOSITE_CAPABILITY_STAGED",
+        )
+        .unwrap();
+        fs::write(
+            config
+                .state_dir
+                .join("control")
+                .join(crate::autonomous_source_mutation::SELF_UPDATE_HANDOFF_FILE),
+            b"pending wrapper application",
+        )
+        .unwrap();
+
+        let response = request_resume(&config_path).unwrap();
+
+        assert_eq!(response["resume_requested"], false);
+        assert_eq!(response["pending_self_update"], true);
+        assert_eq!(response["phase"], "SAFE_STOPPED");
+        let preserved = status(&config_path).unwrap();
+        assert_eq!(preserved.phase, SupervisorPhase::SafeStopped);
+        assert_eq!(
+            preserved.stop_reason.as_deref(),
+            Some("AUTONOMOUS_COMPOSITE_CAPABILITY_STAGED")
+        );
         fs::remove_dir_all(root).unwrap();
     }
 
