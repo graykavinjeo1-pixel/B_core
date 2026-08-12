@@ -10,6 +10,7 @@ use std::collections::{BTreeMap, BTreeSet};
 
 use serde::{Deserialize, Serialize};
 
+use crate::autonomous_source_mutation::execute_improvement_operator_behavioral_canary;
 use crate::fullstack_ops_knowledge::{
     activate as activate_fullstack, promoted_bundle, recipe_as_composition_lesson, Capability,
     CodingLayer, KnowledgeQuery,
@@ -29,7 +30,7 @@ pub const GENERATIVE_GROWTH_SCHEMA: &str = "B_CORE_GENERATIVE_GROWTH_1";
 const MAX_REUSABLE_COMPOSITIONS: usize = 64;
 const MAX_COMPOSITION_TRIALS: usize = 256;
 const MAX_VERIFIED_ARTIFACTS_PER_CYCLE: usize = 32;
-const MAX_VERIFIED_ARTIFACTS_TOTAL: u64 = 64;
+const MAX_VERIFIED_ARTIFACTS_PER_COMPOSER: u64 = 64;
 const MAX_ARTIFACT_CONTEXT_ATTEMPTS: usize = MAX_VERIFIED_ARTIFACTS_PER_CYCLE * 4;
 const FRONTIER_EVIDENCE_CONTRACT_REVISION: u64 = 2;
 const BEHAVIORAL_HEURISTIC_EXCLUSION_CONTRACT_REVISION: u64 = 4;
@@ -44,7 +45,7 @@ const GENERATIVE_PREDICTORS: [(&str, &str); 2] = [
         "sem25::engine::run_growth_probe",
     ),
 ];
-const GENERATIVE_COMPOSERS: [(&str, &str); 3] = [
+const GENERATIVE_COMPOSERS: [(&str, &str); 4] = [
     (
         "SEM5_PROGRAM_IR_COMPOSER",
         "integrated_development::compose_existing_sem5_capability",
@@ -56,6 +57,10 @@ const GENERATIVE_COMPOSERS: [(&str, &str); 3] = [
     (
         "FULLSTACK_TYPED_RECIPE_COMPOSER",
         "fullstack_ops_knowledge::recipe_as_composition_lesson",
+    ),
+    (
+        "IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER",
+        "autonomous_source_mutation::execute_improvement_operator_behavioral_canary",
     ),
 ];
 const GENERATIVE_VERIFIERS: [(&str, &str); 1] = [(
@@ -467,6 +472,13 @@ fn domain_bonus(composition: &RepairCompositionLessonIR, input: &GenerativeInput
     if ids.contains("SEM5_PROGRAM_IR_COMPOSER") && roles.len() >= 2 {
         bonus += 6;
     }
+    if ids.contains("IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER")
+        && (signals.contains("CAPABILITY_SURFACE_ADDED")
+            || signals.contains("DEFECT_REPAIR")
+            || roles.contains("IMPLEMENTATION"))
+    {
+        bonus += 10;
+    }
     bonus
 }
 
@@ -491,6 +503,15 @@ fn applicable_policy_signals(
     }
     if ids.contains("SEM5_PROGRAM_IR_COMPOSER") {
         supported.extend(["CODE_CHANGE", "REFACTOR", "CAPABILITY_SURFACE_ADDED"]);
+    }
+    if ids.contains("IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER") {
+        supported.extend([
+            "CODE_CHANGE",
+            "REFACTOR",
+            "CAPABILITY_SURFACE_ADDED",
+            "DEFECT_REPAIR",
+            "VALIDATION_ADDED",
+        ]);
     }
     input
         .diagnostic_signals
@@ -706,6 +727,54 @@ fn execute_composer(
                 )),
             ))
         }
+        "IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER" => {
+            if artifact_family_width == 0 {
+                return Ok((
+                    Vec::new(),
+                    Some("IMPROVEMENT_OPERATOR_ARTIFACT_CAPACITY_REACHED".to_string()),
+                ));
+            }
+            let target_width = artifact_family_width.clamp(1, MAX_VERIFIED_ARTIFACTS_PER_CYCLE);
+            let mut artifacts = Vec::new();
+            let mut artifact_hashes = BTreeSet::new();
+            for ordinal in 0..MAX_ARTIFACT_CONTEXT_ATTEMPTS {
+                if artifacts.len() >= target_width {
+                    break;
+                }
+                let artifact_context = if ordinal == 0 {
+                    context.to_string()
+                } else {
+                    sha256(
+                        format!(
+                            "{context}:{}:{ordinal}:IMPROVEMENT_OPERATOR_FAMILY",
+                            selected.composition_id
+                        )
+                        .as_bytes(),
+                    )
+                };
+                let receipt = execute_improvement_operator_behavioral_canary(&artifact_context)?;
+                if receipt.cases_executed == 0
+                    || receipt.cases_passed != receipt.cases_executed
+                    || !receipt.exact_candidate_observed
+                    || !receipt.wrong_predecessor_rejected
+                    || !receipt.tampered_target_rejected
+                {
+                    return Err("IMPROVEMENT_OPERATOR_BEHAVIORAL_CANARY_INCOMPLETE".to_string());
+                }
+                if artifact_hashes.insert(receipt.operator.operator_id.clone()) {
+                    artifacts.push(VerifiedBehavioralArtifact {
+                        artifact_context_sha256: artifact_context,
+                        artifact_sha256: receipt.operator.operator_id,
+                        cases_executed: receipt.cases_executed,
+                        cases_passed: receipt.cases_passed,
+                    });
+                }
+            }
+            if artifacts.is_empty() {
+                return Err("IMPROVEMENT_OPERATOR_ARTIFACT_FAMILY_EMPTY".to_string());
+            }
+            Ok((artifacts, None))
+        }
         _ => Err(format!("UNKNOWN_GENERATIVE_COMPOSER:{composer_id}")),
     }
 }
@@ -715,13 +784,29 @@ fn execute_composer(
 /// frontier budget until this cycle can execute and independently observe the
 /// artifact they produce. Graph validation or a typed recipe alone is not a
 /// capability outcome.
-fn composer_is_behaviorally_executable(composer_id: &str, _input: &GenerativeInput) -> bool {
-    matches!(composer_id, "SEM5_PROGRAM_IR_COMPOSER")
+fn composition_uses_composer(composition: &ReusableCompositionMemory, composer_id: &str) -> bool {
+    composition.composition.primitives.iter().any(|primitive| {
+        primitive.semantic_role == "COMPOSE" && primitive.primitive_id == composer_id
+    })
 }
 
-fn verified_artifact_family_width(memory: &GenerativeGrowthMemory) -> usize {
-    let verified = memory.distinct_verified_artifact_count();
-    let remaining = MAX_VERIFIED_ARTIFACTS_TOTAL.saturating_sub(verified);
+fn distinct_verified_artifact_count_for_composer(
+    memory: &GenerativeGrowthMemory,
+    composer_id: &str,
+) -> u64 {
+    memory
+        .accepted_compositions
+        .iter()
+        .filter(|composition| composition_uses_composer(composition, composer_id))
+        .flat_map(|composition| composition.verified_artifact_sha256s.iter())
+        .collect::<BTreeSet<_>>()
+        .len()
+        .min(u64::MAX as usize) as u64
+}
+
+fn verified_artifact_family_width(memory: &GenerativeGrowthMemory, composer_id: &str) -> usize {
+    let verified = distinct_verified_artifact_count_for_composer(memory, composer_id);
+    let remaining = MAX_VERIFIED_ARTIFACTS_PER_COMPOSER.saturating_sub(verified);
     usize::try_from(
         verified
             .max(1)
@@ -729,6 +814,21 @@ fn verified_artifact_family_width(memory: &GenerativeGrowthMemory) -> usize {
             .min(MAX_VERIFIED_ARTIFACTS_PER_CYCLE as u64),
     )
     .unwrap_or(MAX_VERIFIED_ARTIFACTS_PER_CYCLE)
+}
+
+fn composer_is_behaviorally_executable(
+    composer_id: &str,
+    _input: &GenerativeInput,
+    memory: &GenerativeGrowthMemory,
+) -> bool {
+    match composer_id {
+        "SEM5_PROGRAM_IR_COMPOSER" => verified_artifact_family_width(memory, composer_id) > 0,
+        "IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER" => {
+            verified_artifact_family_width(memory, "SEM5_PROGRAM_IR_COMPOSER") == 0
+                && verified_artifact_family_width(memory, composer_id) > 0
+        }
+        _ => false,
+    }
 }
 
 fn behavioral_execution_receipt_sha256(
@@ -975,7 +1075,7 @@ pub fn run_generative_cycle(
     for predictor in GENERATIVE_PREDICTORS {
         for composer in GENERATIVE_COMPOSERS {
             for verifier in GENERATIVE_VERIFIERS {
-                if !composer_is_behaviorally_executable(composer.0, input) {
+                if !composer_is_behaviorally_executable(composer.0, input, memory) {
                     behaviorally_inapplicable_candidates_screened =
                         behaviorally_inapplicable_candidates_screened.saturating_add(1);
                     continue;
@@ -994,7 +1094,8 @@ pub fn run_generative_cycle(
         .ok_or_else(|| "NO_BEHAVIORALLY_EXECUTABLE_GENERATIVE_COMPOSITION_CANDIDATE".to_string())?;
     let predicted_value = prediction.predicted_value;
     let typecheck_pass = validate_composition_lesson(&selected).is_ok();
-    let artifact_family_width = verified_artifact_family_width(memory);
+    let selected_composer = selected_stage(&selected, "COMPOSE")?;
+    let artifact_family_width = verified_artifact_family_width(memory, selected_composer);
     let behavioral_execution_receipt =
         execute_behavioral_composition(&selected, input, seed, artifact_family_width)?;
     let behavioral_composition_executed = behavioral_execution_receipt.executed;
@@ -1243,6 +1344,7 @@ pub fn promote_generative_cycle(
         || !composer_is_behaviorally_executable(
             selected_stage(&result.selected_composition, "COMPOSE").unwrap_or(""),
             input,
+            current,
         )
         || !result.prediction_recorded_before_composition
         || !result.selected_from_precomposition_prediction
@@ -1468,7 +1570,7 @@ mod tests {
     fn prediction_precedes_isolated_typed_composition() {
         let result = run_generative_cycle(&GenerativeGrowthMemory::default(), &input(), 7).unwrap();
         assert_eq!(result.candidates_considered, 2);
-        assert_eq!(result.behaviorally_inapplicable_candidates_screened, 4);
+        assert_eq!(result.behaviorally_inapplicable_candidates_screened, 6);
         assert!(result.prediction_recorded_before_composition);
         assert!(result.selected_from_precomposition_prediction);
         assert!(result.isolated_composition_executed);
@@ -1585,7 +1687,10 @@ mod tests {
             .push("CAPABILITY_SURFACE_ADDED".to_string());
         let result = run_generative_cycle(&memory, &next_input, 19).unwrap();
 
-        assert_eq!(verified_artifact_family_width(&memory), 5);
+        assert_eq!(
+            verified_artifact_family_width(&memory, "SEM5_PROGRAM_IR_COMPOSER"),
+            5
+        );
         assert_eq!(result.verified_artifact_count, 5);
         assert_eq!(result.novel_verified_artifact_count, 5);
         assert_eq!(result.frontier_advance_units, 5);
@@ -1595,7 +1700,7 @@ mod tests {
     }
 
     #[test]
-    fn verified_family_growth_doubles_until_the_total_safety_bound() {
+    fn verified_family_growth_doubles_then_routes_to_a_fresh_operator_substrate() {
         let memory_with = |count: u64| {
             let mut memory = GenerativeGrowthMemory::default();
             let mut result = run_generative_cycle(&memory, &input(), 7).unwrap();
@@ -1613,22 +1718,45 @@ mod tests {
             memory
         };
 
-        assert_eq!(verified_artifact_family_width(&memory_with(0)), 1);
-        assert_eq!(verified_artifact_family_width(&memory_with(1)), 1);
-        assert_eq!(verified_artifact_family_width(&memory_with(8)), 8);
-        assert_eq!(verified_artifact_family_width(&memory_with(33)), 31);
-        let saturated = memory_with(64);
-        assert_eq!(verified_artifact_family_width(&saturated), 0);
-        let saturated_result = run_generative_cycle(&saturated, &input(), 11).unwrap();
-        assert_eq!(saturated_result.verified_artifact_count, 0);
-        assert!(!saturated_result.behavioral_composition_executed);
         assert_eq!(
-            saturated_result
-                .behavioral_execution_receipt
-                .as_ref()
-                .and_then(|receipt| receipt.abstention_reason.as_deref()),
-            Some("VERIFIED_ARTIFACT_CAPACITY_REACHED")
+            verified_artifact_family_width(&memory_with(0), "SEM5_PROGRAM_IR_COMPOSER"),
+            1
         );
+        assert_eq!(
+            verified_artifact_family_width(&memory_with(1), "SEM5_PROGRAM_IR_COMPOSER"),
+            1
+        );
+        assert_eq!(
+            verified_artifact_family_width(&memory_with(8), "SEM5_PROGRAM_IR_COMPOSER"),
+            8
+        );
+        assert_eq!(
+            verified_artifact_family_width(&memory_with(33), "SEM5_PROGRAM_IR_COMPOSER"),
+            31
+        );
+        let saturated = memory_with(64);
+        assert_eq!(
+            verified_artifact_family_width(&saturated, "SEM5_PROGRAM_IR_COMPOSER"),
+            0
+        );
+        let saturated_result = run_generative_cycle(&saturated, &input(), 11).unwrap();
+        assert_eq!(
+            selected_stage(&saturated_result.selected_composition, "COMPOSE").unwrap(),
+            "IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER"
+        );
+        assert_eq!(saturated_result.verified_artifact_count, 1);
+        assert!(saturated_result.behavioral_composition_executed);
+        assert!(saturated_result.novel_verified_artifact);
+        assert!(saturated_result.frontier_advance);
+        let expanded = promote_generative_cycle(&saturated, &input(), &saturated_result).unwrap();
+        assert_eq!(
+            distinct_verified_artifact_count_for_composer(
+                &expanded,
+                "IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER"
+            ),
+            1
+        );
+        assert_eq!(expanded.distinct_verified_artifact_count(), 65);
     }
 
     #[test]

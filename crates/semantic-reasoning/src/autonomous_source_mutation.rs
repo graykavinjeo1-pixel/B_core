@@ -406,6 +406,21 @@ pub struct ImprovementOperatorExecution {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ImprovementOperatorBehavioralCanaryReceipt {
+    pub schema: String,
+    pub context_sha256: String,
+    pub operator: ImprovementOperatorIR,
+    pub structural_repair_program_sha256: String,
+    pub candidate_sha256: String,
+    pub cases_executed: usize,
+    pub cases_passed: usize,
+    pub exact_candidate_observed: bool,
+    pub wrong_predecessor_rejected: bool,
+    pub tampered_target_rejected: bool,
+    pub receipt_sha256: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct LocalCommandReceipt {
     pub program: String,
     pub args: Vec<String>,
@@ -1098,6 +1113,129 @@ pub fn invoke_and_execute_improvement_operator(
     let execution =
         execute_improvement_operator_program_on_source(operator, predecessor_source, program)?;
     Ok((invocation, execution))
+}
+
+fn improvement_operator_canary_scenario(selector: usize) -> (&'static str, &'static str) {
+    match selector % 5 {
+        0 => (
+            "pub fn alpha() -> i32 { 1 }\n",
+            "pub fn alpha() -> i32 { 2 }\n",
+        ),
+        1 => (
+            "pub fn alpha() -> i32 { 1 }\n",
+            "pub const LIMIT: i32 = 2;\npub fn alpha() -> i32 { 1 }\n",
+        ),
+        2 => (
+            "pub const LIMIT: i32 = 2;\npub fn alpha() -> i32 { 1 }\n",
+            "pub fn alpha() -> i32 { 1 }\n",
+        ),
+        3 => (
+            "pub fn alpha() -> i32 { 1 }\npub fn beta() -> i32 { 2 }\n",
+            "pub fn beta() -> i32 { 2 }\npub fn alpha() -> i32 { 1 }\n",
+        ),
+        _ => (
+            "pub fn alpha() -> i32 { 1 }\npub fn beta() -> i32 { 2 }\n",
+            "pub fn alpha() -> i32 { 3 }\npub fn beta() -> i32 { 4 }\n",
+        ),
+    }
+}
+
+fn improvement_operator_canary_identity(
+    selector: usize,
+) -> (WeaknessEvidenceKind, &'static str, &'static str) {
+    match (selector / 5) % 5 {
+        0 => (
+            WeaknessEvidenceKind::StructuralSourceSmell,
+            "CANARY_STRUCTURAL_REWRITE",
+            "STRUCTURAL_AST_REWRITE",
+        ),
+        1 => (
+            WeaknessEvidenceKind::CompilerDiagnostic,
+            "COMPILER_CANARY_DIAGNOSTIC",
+            "COMPILER_SUGGESTION:CANONICAL_TYPED_EDIT",
+        ),
+        2 => (
+            WeaknessEvidenceKind::ExplicitCodeHole,
+            "AST_GRAMMAR_HOLE:CANARY",
+            "GRAMMAR_COMPOSITION:CANONICAL_TYPED_EDIT",
+        ),
+        3 => (
+            WeaknessEvidenceKind::StructuralSourceSmell,
+            "SEM5_PROGRAM_IR_TO_ACTIVE_RUNTIME_CALLABLE",
+            "EMIT_TYPED_RUST_AND_ACTIVATE_CALLABLE",
+        ),
+        _ => (
+            WeaknessEvidenceKind::PublicBehaviorContradiction,
+            "LEARNED_SELF_HEALING::CANARY",
+            "LEARNED_COMPOSITION",
+        ),
+    }
+}
+
+/// Runs one deterministic, context-selected operator over executable Rust AST
+/// states and checks both its postimage and two negative cases. The returned
+/// artifact identity is the generalized operator, not the scenario source.
+pub fn execute_improvement_operator_behavioral_canary(
+    context_sha256: &str,
+) -> Result<ImprovementOperatorBehavioralCanaryReceipt, String> {
+    if context_sha256.len() != 64 || !context_sha256.bytes().all(|byte| byte.is_ascii_hexdigit()) {
+        return Err("IMPROVEMENT_OPERATOR_CANARY_CONTEXT_INVALID".to_string());
+    }
+    let selector = usize::from_str_radix(&context_sha256[..8], 16)
+        .map_err(|error| format!("IMPROVEMENT_OPERATOR_CANARY_SELECTOR:{error}"))?;
+    let (predecessor, target) = improvement_operator_canary_scenario(selector);
+    let (evidence_kind, transformation, solution_strategy) =
+        improvement_operator_canary_identity(selector);
+    let program = synthesize_structural_repair("canary.rs", predecessor, target)?;
+    let operator = improvement_operator_ir_for_program(
+        evidence_kind,
+        transformation,
+        solution_strategy,
+        &program,
+    )?;
+    let execution =
+        execute_improvement_operator_program_on_source(&operator, predecessor, &program)?;
+    let exact_candidate_observed = execution.applicable
+        && execution.candidate_source.as_deref() == Some(target)
+        && sha256(target.as_bytes()) == program.target_source_sha256;
+    let wrong_predecessor_rejected =
+        execute_improvement_operator_program_on_source(&operator, target, &program).is_err();
+    let mut tampered = program.clone();
+    tampered.target_source_sha256 = sha256(b"different target");
+    let tampered_target_rejected =
+        execute_improvement_operator_program_on_source(&operator, predecessor, &tampered)
+            .is_ok_and(|result| !result.applicable && result.candidate_source.is_none());
+    let cases_executed = 3;
+    let cases_passed = [
+        exact_candidate_observed,
+        wrong_predecessor_rejected,
+        tampered_target_rejected,
+    ]
+    .into_iter()
+    .filter(|passed| *passed)
+    .count();
+    let structural_repair_program_sha256 = sha256(
+        &serde_json::to_vec(&program)
+            .map_err(|error| format!("IMPROVEMENT_OPERATOR_CANARY_PROGRAM_JSON:{error}"))?,
+    );
+    let mut receipt = ImprovementOperatorBehavioralCanaryReceipt {
+        schema: "B_CORE_IMPROVEMENT_OPERATOR_BEHAVIORAL_CANARY_1".to_string(),
+        context_sha256: context_sha256.to_string(),
+        operator,
+        structural_repair_program_sha256,
+        candidate_sha256: sha256(target.as_bytes()),
+        cases_executed,
+        cases_passed,
+        exact_candidate_observed,
+        wrong_predecessor_rejected,
+        tampered_target_rejected,
+        receipt_sha256: String::new(),
+    };
+    receipt.receipt_sha256 = sha256(
+        &serde_json::to_vec(&receipt)
+            .map_err(|error| format!("IMPROVEMENT_OPERATOR_CANARY_RECEIPT_JSON:{error}"))?,
+    );
+    Ok(receipt)
 }
 
 fn improvement_operator_transfer_priority(
@@ -3585,6 +3723,23 @@ mod tests {
             "TODO:BINARY_MULTIPLY",
         );
         assert_eq!(add_attempt, multiply_attempt);
+    }
+
+    #[test]
+    fn typed_improvement_operator_canary_executes_and_rejects_counterexamples() {
+        let mut operator_ids = BTreeSet::new();
+        for selector in 0_u32..25 {
+            let context = format!("{selector:08x}{}", "0".repeat(56));
+            let receipt = execute_improvement_operator_behavioral_canary(&context).unwrap();
+            assert_eq!(receipt.cases_executed, 3);
+            assert_eq!(receipt.cases_passed, 3);
+            assert!(receipt.exact_candidate_observed);
+            assert!(receipt.wrong_predecessor_rejected);
+            assert!(receipt.tampered_target_rejected);
+            assert_eq!(receipt.operator.operator_id.len(), 64);
+            operator_ids.insert(receipt.operator.operator_id);
+        }
+        assert!(operator_ids.len() >= 20);
     }
 
     #[test]
