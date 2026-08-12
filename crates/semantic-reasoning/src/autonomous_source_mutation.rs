@@ -431,6 +431,30 @@ pub struct ImprovementOperatorBehavioralCanaryReceipt {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ImprovementOperatorGraphIR {
+    pub schema: String,
+    pub graph_id: String,
+    pub operator_ids: Vec<String>,
+    pub transported_type: String,
+    pub join_postconditions: Vec<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ImprovementOperatorGraphCanaryReceipt {
+    pub schema: String,
+    pub context_sha256: String,
+    pub graph: ImprovementOperatorGraphIR,
+    pub node_receipt_sha256s: Vec<String>,
+    pub cases_executed: usize,
+    pub cases_passed: usize,
+    pub parallel_nodes_executed: bool,
+    pub exact_postimages_observed: bool,
+    pub negative_controls_rejected: bool,
+    pub canonical_join_observed: bool,
+    pub receipt_sha256: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct LocalCommandReceipt {
     pub program: String,
     pub args: Vec<String>,
@@ -1244,17 +1268,18 @@ fn improvement_operator_canary_identity(
     }
 }
 
-/// Runs one deterministic, context-selected operator over executable Rust AST
-/// states and checks both its postimage and two negative cases. The returned
-/// artifact identity is the generalized operator, not the scenario source.
-pub fn execute_improvement_operator_behavioral_canary(
+#[derive(Debug, Clone)]
+struct ImprovementOperatorCanaryCase {
+    receipt: ImprovementOperatorBehavioralCanaryReceipt,
+    program: StructuralRepairProgram,
+    predecessor: String,
+    target: String,
+}
+
+fn improvement_operator_canary_case(
+    selector: usize,
     context_sha256: &str,
-) -> Result<ImprovementOperatorBehavioralCanaryReceipt, String> {
-    if context_sha256.len() != 64 || !context_sha256.bytes().all(|byte| byte.is_ascii_hexdigit()) {
-        return Err("IMPROVEMENT_OPERATOR_CANARY_CONTEXT_INVALID".to_string());
-    }
-    let selector = usize::from_str_radix(&context_sha256[..8], 16)
-        .map_err(|error| format!("IMPROVEMENT_OPERATOR_CANARY_SELECTOR:{error}"))?;
+) -> Result<ImprovementOperatorCanaryCase, String> {
     let (predecessor, target) = improvement_operator_canary_scenario(selector);
     let (evidence_kind, transformation, solution_strategy) =
         improvement_operator_canary_identity(selector);
@@ -1306,6 +1331,169 @@ pub fn execute_improvement_operator_behavioral_canary(
     receipt.receipt_sha256 = sha256(
         &serde_json::to_vec(&receipt)
             .map_err(|error| format!("IMPROVEMENT_OPERATOR_CANARY_RECEIPT_JSON:{error}"))?,
+    );
+    Ok(ImprovementOperatorCanaryCase {
+        receipt,
+        program,
+        predecessor: predecessor.to_string(),
+        target: target.to_string(),
+    })
+}
+
+/// Runs one deterministic, context-selected operator over executable Rust AST
+/// states and checks both its postimage and two negative cases. The returned
+/// artifact identity is the generalized operator, not the scenario source.
+pub fn execute_improvement_operator_behavioral_canary(
+    context_sha256: &str,
+) -> Result<ImprovementOperatorBehavioralCanaryReceipt, String> {
+    if context_sha256.len() != 64 || !context_sha256.bytes().all(|byte| byte.is_ascii_hexdigit()) {
+        return Err("IMPROVEMENT_OPERATOR_CANARY_CONTEXT_INVALID".to_string());
+    }
+    let selector = usize::from_str_radix(&context_sha256[..8], 16)
+        .map_err(|error| format!("IMPROVEMENT_OPERATOR_CANARY_SELECTOR:{error}"))?;
+    Ok(improvement_operator_canary_case(selector, context_sha256)?.receipt)
+}
+
+fn improvement_operator_canary_case_for_id(
+    operator_id: &str,
+    context_sha256: &str,
+) -> Result<ImprovementOperatorCanaryCase, String> {
+    for selector in 0..25 {
+        let selector_context = format!("{selector:08x}{}", &context_sha256[8..]);
+        let candidate = improvement_operator_canary_case(selector, &selector_context)?;
+        if candidate.receipt.operator.operator_id == operator_id {
+            return Ok(candidate);
+        }
+    }
+    Err("IMPROVEMENT_OPERATOR_GRAPH_NODE_NOT_EXECUTABLE".to_string())
+}
+
+pub fn improvement_operator_graph_id(
+    left_operator_id: &str,
+    right_operator_id: &str,
+) -> Result<String, String> {
+    if left_operator_id == right_operator_id
+        || [left_operator_id, right_operator_id]
+            .iter()
+            .any(|operator_id| {
+                operator_id.len() != 64 || !operator_id.bytes().all(|byte| byte.is_ascii_hexdigit())
+            })
+    {
+        return Err("IMPROVEMENT_OPERATOR_GRAPH_NODE_IDS_INVALID".to_string());
+    }
+    let mut operator_ids = [left_operator_id.to_string(), right_operator_id.to_string()];
+    operator_ids.sort();
+    Ok(sha256(
+        format!(
+            "B_CORE_IMPROVEMENT_OPERATOR_GRAPH_1:{}:RUST_SOURCE_SHARD:PARALLEL_JOIN:STRUCTURAL_REPLAY",
+            operator_ids.join(":")
+        )
+        .as_bytes(),
+    ))
+}
+
+/// Executes two independently applicable, behaviorally verified source
+/// operators as a bounded graph. The nodes run concurrently over disjoint
+/// source shards; the join is content-addressed by both operator identities
+/// and accepts only when both typed postconditions and negative controls pass.
+pub fn execute_improvement_operator_graph_behavioral_canary(
+    left_operator_id: &str,
+    right_operator_id: &str,
+    context_sha256: &str,
+) -> Result<ImprovementOperatorGraphCanaryReceipt, String> {
+    if context_sha256.len() != 64 || !context_sha256.bytes().all(|byte| byte.is_ascii_hexdigit()) {
+        return Err("IMPROVEMENT_OPERATOR_GRAPH_CONTEXT_INVALID".to_string());
+    }
+    let graph_id = improvement_operator_graph_id(left_operator_id, right_operator_id)?;
+    let left = improvement_operator_canary_case_for_id(left_operator_id, context_sha256)?;
+    let right = improvement_operator_canary_case_for_id(right_operator_id, context_sha256)?;
+    if left.receipt.operator.validation_contract != right.receipt.operator.validation_contract
+        || !left
+            .receipt
+            .operator
+            .validation_contract
+            .iter()
+            .any(|obligation| obligation == "STRUCTURAL_REPLAY")
+    {
+        return Err("IMPROVEMENT_OPERATOR_GRAPH_POSTCONDITION_INCOMPATIBLE".to_string());
+    }
+
+    let (left_execution, right_execution) = std::thread::scope(|scope| {
+        let left_handle = scope.spawn(|| {
+            execute_improvement_operator_program_on_source(
+                &left.receipt.operator,
+                &left.predecessor,
+                &left.program,
+            )
+        });
+        let right_handle = scope.spawn(|| {
+            execute_improvement_operator_program_on_source(
+                &right.receipt.operator,
+                &right.predecessor,
+                &right.program,
+            )
+        });
+        let left_result = left_handle
+            .join()
+            .map_err(|_| "IMPROVEMENT_OPERATOR_GRAPH_LEFT_NODE_PANICKED".to_string())?;
+        let right_result = right_handle
+            .join()
+            .map_err(|_| "IMPROVEMENT_OPERATOR_GRAPH_RIGHT_NODE_PANICKED".to_string())?;
+        Ok::<_, String>((left_result?, right_result?))
+    })?;
+
+    let exact_postimages_observed = left_execution.applicable
+        && right_execution.applicable
+        && left_execution.candidate_source.as_deref() == Some(left.target.as_str())
+        && right_execution.candidate_source.as_deref() == Some(right.target.as_str());
+    let negative_controls_rejected = left.receipt.wrong_predecessor_rejected
+        && right.receipt.wrong_predecessor_rejected
+        && left.receipt.tampered_target_rejected
+        && right.receipt.tampered_target_rejected;
+    let mut operator_ids = vec![left_operator_id.to_string(), right_operator_id.to_string()];
+    operator_ids.sort();
+    let graph = ImprovementOperatorGraphIR {
+        schema: "B_CORE_IMPROVEMENT_OPERATOR_GRAPH_1".to_string(),
+        graph_id,
+        operator_ids,
+        transported_type: "RUST_SOURCE_SHARD".to_string(),
+        join_postconditions: vec![
+            "ALL_NODE_POSTIMAGES_EXACT".to_string(),
+            "ALL_NEGATIVE_CONTROLS_REJECTED".to_string(),
+            "CANONICAL_CONTENT_ADDRESSED_JOIN".to_string(),
+        ],
+    };
+    let canonical_join_observed =
+        improvement_operator_graph_id(&graph.operator_ids[1], &graph.operator_ids[0])?
+            == graph.graph_id;
+    let cases_executed = 4;
+    let cases_passed = [
+        exact_postimages_observed,
+        negative_controls_rejected,
+        canonical_join_observed,
+        left_execution.operator_id != right_execution.operator_id,
+    ]
+    .into_iter()
+    .filter(|passed| *passed)
+    .count();
+    let mut node_receipt_sha256s = vec![left.receipt.receipt_sha256, right.receipt.receipt_sha256];
+    node_receipt_sha256s.sort();
+    let mut receipt = ImprovementOperatorGraphCanaryReceipt {
+        schema: "B_CORE_IMPROVEMENT_OPERATOR_GRAPH_CANARY_1".to_string(),
+        context_sha256: context_sha256.to_string(),
+        graph,
+        node_receipt_sha256s,
+        cases_executed,
+        cases_passed,
+        parallel_nodes_executed: true,
+        exact_postimages_observed,
+        negative_controls_rejected,
+        canonical_join_observed,
+        receipt_sha256: String::new(),
+    };
+    receipt.receipt_sha256 = sha256(
+        &serde_json::to_vec(&receipt)
+            .map_err(|error| format!("IMPROVEMENT_OPERATOR_GRAPH_RECEIPT_JSON:{error}"))?,
     );
     Ok(receipt)
 }
@@ -4057,6 +4245,35 @@ mod tests {
             operator_ids.insert(receipt.operator.operator_id);
         }
         assert_eq!(operator_ids.len(), 20);
+    }
+
+    #[test]
+    fn compatible_improvement_operators_execute_as_parallel_graph() {
+        let context = "a".repeat(64);
+        let left =
+            execute_improvement_operator_behavioral_canary(&format!("{:08x}{}", 0, "0".repeat(56)))
+                .unwrap();
+        let right =
+            execute_improvement_operator_behavioral_canary(&format!("{:08x}{}", 1, "0".repeat(56)))
+                .unwrap();
+        let receipt = execute_improvement_operator_graph_behavioral_canary(
+            &left.operator.operator_id,
+            &right.operator.operator_id,
+            &context,
+        )
+        .unwrap();
+        assert_eq!(receipt.cases_executed, 4);
+        assert_eq!(receipt.cases_passed, 4);
+        assert!(receipt.parallel_nodes_executed);
+        assert!(receipt.exact_postimages_observed);
+        assert!(receipt.negative_controls_rejected);
+        assert!(receipt.canonical_join_observed);
+        assert_eq!(receipt.graph.operator_ids.len(), 2);
+        assert_eq!(
+            improvement_operator_graph_id(&right.operator.operator_id, &left.operator.operator_id)
+                .unwrap(),
+            receipt.graph.graph_id
+        );
     }
 
     #[test]

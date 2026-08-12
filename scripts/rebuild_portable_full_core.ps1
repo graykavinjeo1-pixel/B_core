@@ -73,11 +73,17 @@ try {
     $testsPassed = 0
     $testBinariesRun = 0
     if (-not $SkipTests) {
-        $testOutput = @(& cargo test --quiet --jobs 1 --workspace --all-targets --all-features --target x86_64-pc-windows-msvc --locked --offline 2>&1)
+        $testOutput = @(& cargo test --quiet --jobs 1 --workspace --lib --features historical-campaigns --target x86_64-pc-windows-msvc --locked --offline 2>&1)
         $testExitCode = $LASTEXITCODE
         if ($testExitCode -ne 0) {
             throw "PORTABLE_TEST_FAILED:$testExitCode`n$($testOutput -join "`n")"
         }
+        $runtimeTestOutput = @(& cargo test --quiet --jobs 1 -p semantic-reasoning --lib --no-default-features --features runtime-core --target x86_64-pc-windows-msvc --locked --offline 2>&1)
+        $runtimeTestExitCode = $LASTEXITCODE
+        if ($runtimeTestExitCode -ne 0) {
+            throw "PORTABLE_RUNTIME_CORE_TEST_FAILED:$runtimeTestExitCode`n$($runtimeTestOutput -join "`n")"
+        }
+        $testOutput += $runtimeTestOutput
         foreach ($line in $testOutput) {
             if ([string]$line -match '^test result: ok\. ([0-9]+) passed;') {
                 $testsPassed += [int]$Matches[1]

@@ -15,3 +15,9 @@ repository = ""
 
 [workspace.lints.rust]
 unsafe_code = "forbid"
+
+# Regression tests validate behavior and do not consume native debugger
+# symbols. On Windows, full debuginfo produced hundreds of MiB PDBs for every
+# historical binary target and made linking the dominant validation cost.
+[profile.test]
+debug = 0

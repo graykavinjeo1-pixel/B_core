@@ -10,7 +10,10 @@ use std::collections::{BTreeMap, BTreeSet};
 
 use serde::{Deserialize, Serialize};
 
-use crate::autonomous_source_mutation::execute_improvement_operator_behavioral_canary;
+use crate::autonomous_source_mutation::{
+    execute_improvement_operator_behavioral_canary,
+    execute_improvement_operator_graph_behavioral_canary, improvement_operator_graph_id,
+};
 use crate::fullstack_ops_knowledge::{execute_fullstack_recipe_behavioral_canary, promoted_bundle};
 use crate::integrated_development::execute_behavioral_composition_canary;
 use crate::self_healing_pipeline::{
@@ -50,7 +53,7 @@ const GENERATIVE_PREDICTORS: [(&str, &str); 2] = [
         "sem25::engine::run_growth_probe",
     ),
 ];
-const GENERATIVE_COMPOSERS: [(&str, &str); 4] = [
+const GENERATIVE_COMPOSERS: [(&str, &str); 5] = [
     (
         "SEM5_PROGRAM_IR_COMPOSER",
         "integrated_development::compose_existing_sem5_capability",
@@ -66,6 +69,10 @@ const GENERATIVE_COMPOSERS: [(&str, &str); 4] = [
     (
         "IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER",
         "autonomous_source_mutation::execute_improvement_operator_behavioral_canary",
+    ),
+    (
+        "IMPROVEMENT_OPERATOR_GRAPH_COMPOSER",
+        "autonomous_source_mutation::execute_improvement_operator_graph_behavioral_canary",
     ),
 ];
 const GENERATIVE_VERIFIERS: [(&str, &str); 1] = [(
@@ -484,6 +491,13 @@ fn domain_bonus(composition: &RepairCompositionLessonIR, input: &GenerativeInput
     {
         bonus += 10;
     }
+    if ids.contains("IMPROVEMENT_OPERATOR_GRAPH_COMPOSER")
+        && (signals.contains("CAPABILITY_SURFACE_ADDED")
+            || signals.contains("DEFECT_REPAIR")
+            || roles.len() >= 2)
+    {
+        bonus += 14;
+    }
     bonus
 }
 
@@ -518,6 +532,16 @@ fn applicable_policy_signals(
             "VALIDATION_ADDED",
         ]);
     }
+    if ids.contains("IMPROVEMENT_OPERATOR_GRAPH_COMPOSER") {
+        supported.extend([
+            "CODE_CHANGE",
+            "REFACTOR",
+            "CAPABILITY_SURFACE_ADDED",
+            "DEFECT_REPAIR",
+            "VALIDATION_ADDED",
+            "COMPOSITIONAL_REPAIR",
+        ]);
+    }
     input
         .diagnostic_signals
         .iter()
@@ -538,6 +562,59 @@ fn selected_stage<'a>(
         .find(|primitive| primitive.semantic_role == role)
         .map(|primitive| primitive.primitive_id.as_str())
         .ok_or_else(|| format!("GENERATION_STAGE_MISSING:{role}"))
+}
+
+/// Executes independent, pure behavioral probes as a bounded worker graph and
+/// restores deterministic input order at the join. This keeps verification
+/// reproducible while avoiding an accidental serial critical path.
+fn parallel_execute_ordered<T, R, F>(items: Vec<T>, worker: F) -> Result<Vec<R>, String>
+where
+    T: Sync,
+    R: Send,
+    F: Fn(&T) -> Result<R, String> + Sync,
+{
+    if items.is_empty() {
+        return Ok(Vec::new());
+    }
+    let worker_count = std::thread::available_parallelism()
+        .map(usize::from)
+        .unwrap_or(1)
+        .min(items.len())
+        .max(1);
+    let next = std::sync::atomic::AtomicUsize::new(0);
+    let results = std::sync::Mutex::new(Vec::<(usize, Result<R, String>)>::with_capacity(
+        items.len(),
+    ));
+    std::thread::scope(|scope| -> Result<(), String> {
+        let mut handles = Vec::with_capacity(worker_count);
+        for _ in 0..worker_count {
+            handles.push(scope.spawn(|| -> Result<(), String> {
+                loop {
+                    let index = next.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+                    let Some(item) = items.get(index) else {
+                        break;
+                    };
+                    let result = worker(item);
+                    results
+                        .lock()
+                        .map_err(|_| "GENERATIVE_PARALLEL_RESULT_LOCK_POISONED".to_string())?
+                        .push((index, result));
+                }
+                Ok(())
+            }));
+        }
+        for handle in handles {
+            handle
+                .join()
+                .map_err(|_| "GENERATIVE_PARALLEL_WORKER_PANICKED".to_string())??;
+        }
+        Ok(())
+    })?;
+    let mut ordered = results
+        .into_inner()
+        .map_err(|_| "GENERATIVE_PARALLEL_RESULT_LOCK_POISONED".to_string())?;
+    ordered.sort_by_key(|(index, _)| *index);
+    ordered.into_iter().map(|(_, result)| result).collect()
 }
 
 fn execute_predictor(
@@ -622,6 +699,7 @@ fn execute_composer(
     context: &str,
     artifact_family_width: usize,
     previously_verified: &BTreeSet<String>,
+    verified_operator_ids: &BTreeSet<String>,
 ) -> Result<(Vec<VerifiedBehavioralArtifact>, Option<String>), String> {
     match composer_id {
         "SEM5_PROGRAM_IR_COMPOSER" => {
@@ -821,6 +899,69 @@ fn execute_composer(
             }
             Ok((artifacts, None))
         }
+        "IMPROVEMENT_OPERATOR_GRAPH_COMPOSER" => {
+            if artifact_family_width == 0 {
+                return Ok((
+                    Vec::new(),
+                    Some("IMPROVEMENT_OPERATOR_GRAPH_CAPACITY_REACHED".to_string()),
+                ));
+            }
+            let target_width = artifact_family_width.clamp(1, MAX_VERIFIED_ARTIFACTS_PER_CYCLE);
+            let operator_ids = verified_operator_ids.iter().cloned().collect::<Vec<_>>();
+            let mut tasks = Vec::new();
+            'pairs: for left_index in 0..operator_ids.len() {
+                for right_index in (left_index + 1)..operator_ids.len() {
+                    let left_operator_id = operator_ids[left_index].clone();
+                    let right_operator_id = operator_ids[right_index].clone();
+                    let graph_id =
+                        improvement_operator_graph_id(&left_operator_id, &right_operator_id)?;
+                    if previously_verified.contains(&graph_id) {
+                        continue;
+                    }
+                    let artifact_context = sha256(
+                        format!(
+                            "{context}:{}:{graph_id}:IMPROVEMENT_OPERATOR_PARALLEL_GRAPH",
+                            selected.composition_id
+                        )
+                        .as_bytes(),
+                    );
+                    tasks.push((left_operator_id, right_operator_id, artifact_context));
+                    if tasks.len() >= target_width {
+                        break 'pairs;
+                    }
+                }
+            }
+            if tasks.is_empty() {
+                return Ok((
+                    Vec::new(),
+                    Some("IMPROVEMENT_OPERATOR_GRAPH_UNIVERSE_SATURATED".to_string()),
+                ));
+            }
+            let receipts = parallel_execute_ordered(tasks, |task| {
+                execute_improvement_operator_graph_behavioral_canary(&task.0, &task.1, &task.2)
+            })?;
+            let mut artifacts = Vec::with_capacity(receipts.len());
+            for receipt in receipts {
+                if receipt.cases_executed == 0
+                    || receipt.cases_passed != receipt.cases_executed
+                    || !receipt.parallel_nodes_executed
+                    || !receipt.exact_postimages_observed
+                    || !receipt.negative_controls_rejected
+                    || !receipt.canonical_join_observed
+                {
+                    return Err(
+                        "IMPROVEMENT_OPERATOR_GRAPH_BEHAVIORAL_CANARY_INCOMPLETE".to_string()
+                    );
+                }
+                artifacts.push(VerifiedBehavioralArtifact {
+                    artifact_context_sha256: receipt.context_sha256,
+                    artifact_sha256: receipt.graph.graph_id,
+                    cases_executed: receipt.cases_executed,
+                    cases_passed: receipt.cases_passed,
+                });
+            }
+            Ok((artifacts, None))
+        }
         _ => Err(format!("UNKNOWN_GENERATIVE_COMPOSER:{composer_id}")),
     }
 }
@@ -862,10 +1003,17 @@ fn verified_artifacts_for_composer(
         .collect()
 }
 
-fn verified_artifact_capacity(composer_id: &str) -> u64 {
+fn verified_artifact_capacity(memory: &GenerativeGrowthMemory, composer_id: &str) -> u64 {
     match composer_id {
         "SEM5_PROGRAM_IR_COMPOSER" => MAX_SEM5_VERIFIED_ARTIFACTS,
         "IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER" => MAX_IMPROVEMENT_OPERATOR_VERIFIED_ARTIFACTS,
+        "IMPROVEMENT_OPERATOR_GRAPH_COMPOSER" => {
+            let operators = distinct_verified_artifact_count_for_composer(
+                memory,
+                "IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER",
+            );
+            operators.saturating_mul(operators.saturating_sub(1)) / 2
+        }
         "FULLSTACK_TYPED_RECIPE_COMPOSER" => MAX_FULLSTACK_VERIFIED_ARTIFACTS,
         "SELF_HEALING_CONTRACT_COMPOSER" => MAX_SELF_HEALING_VERIFIED_ARTIFACTS,
         _ => 0,
@@ -874,7 +1022,7 @@ fn verified_artifact_capacity(composer_id: &str) -> u64 {
 
 fn verified_artifact_family_width(memory: &GenerativeGrowthMemory, composer_id: &str) -> usize {
     let verified = distinct_verified_artifact_count_for_composer(memory, composer_id);
-    let remaining = verified_artifact_capacity(composer_id).saturating_sub(verified);
+    let remaining = verified_artifact_capacity(memory, composer_id).saturating_sub(verified);
     usize::try_from(
         verified
             .max(1)
@@ -891,15 +1039,25 @@ fn composer_is_behaviorally_executable(composer_id: &str, memory: &GenerativeGro
             verified_artifact_family_width(memory, "SEM5_PROGRAM_IR_COMPOSER") == 0
                 && verified_artifact_family_width(memory, composer_id) > 0
         }
+        "IMPROVEMENT_OPERATOR_GRAPH_COMPOSER" => {
+            verified_artifact_family_width(memory, "SEM5_PROGRAM_IR_COMPOSER") == 0
+                && verified_artifact_family_width(memory, "IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER")
+                    == 0
+                && verified_artifact_family_width(memory, composer_id) > 0
+        }
         "FULLSTACK_TYPED_RECIPE_COMPOSER" => {
             verified_artifact_family_width(memory, "SEM5_PROGRAM_IR_COMPOSER") == 0
                 && verified_artifact_family_width(memory, "IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER")
+                    == 0
+                && verified_artifact_family_width(memory, "IMPROVEMENT_OPERATOR_GRAPH_COMPOSER")
                     == 0
                 && verified_artifact_family_width(memory, composer_id) > 0
         }
         "SELF_HEALING_CONTRACT_COMPOSER" => {
             verified_artifact_family_width(memory, "SEM5_PROGRAM_IR_COMPOSER") == 0
                 && verified_artifact_family_width(memory, "IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER")
+                    == 0
+                && verified_artifact_family_width(memory, "IMPROVEMENT_OPERATOR_GRAPH_COMPOSER")
                     == 0
                 && verified_artifact_family_width(memory, "FULLSTACK_TYPED_RECIPE_COMPOSER") == 0
                 && verified_artifact_family_width(memory, composer_id) > 0
@@ -930,6 +1088,7 @@ fn execute_behavioral_composition(
     seed: u64,
     artifact_family_width: usize,
     previously_verified: &BTreeSet<String>,
+    verified_operator_ids: &BTreeSet<String>,
 ) -> Result<BehavioralCompositionExecutionReceipt, String> {
     let context = context_sha256(input);
     let predictor_id = selected_stage(selected, "PREDICT")?.to_string();
@@ -943,6 +1102,7 @@ fn execute_behavioral_composition(
         &context,
         artifact_family_width,
         previously_verified,
+        verified_operator_ids,
     )?;
     let cases_executed = verified_artifacts
         .iter()
@@ -1195,12 +1355,15 @@ pub fn run_generative_cycle(
     } else {
         verified_artifacts_for_composer(memory, selected_composer)
     };
+    let verified_operator_ids =
+        verified_artifacts_for_composer(memory, "IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER");
     let behavioral_execution_receipt = execute_behavioral_composition(
         &selected,
         input,
         seed,
         artifact_family_width,
         &previously_verified,
+        &verified_operator_ids,
     )?;
     let behavioral_composition_executed = behavioral_execution_receipt.executed;
     let behavioral_verification_sha256 = behavioral_composition_executed
@@ -1652,6 +1815,36 @@ pub fn promote_generative_cycle(
 mod tests {
     use super::*;
 
+    fn verified_operator_canary_ids() -> Vec<String> {
+        (0..MAX_IMPROVEMENT_OPERATOR_SELECTORS)
+            .map(|selector| {
+                let context = format!("{selector:08x}{}", "0".repeat(56));
+                execute_improvement_operator_behavioral_canary(&context)
+                    .unwrap()
+                    .operator
+                    .operator_id
+            })
+            .collect::<BTreeSet<_>>()
+            .into_iter()
+            .collect()
+    }
+
+    fn all_operator_graph_ids(operator_ids: &[String]) -> Vec<String> {
+        let mut graph_ids = Vec::new();
+        for left_index in 0..operator_ids.len() {
+            for right_index in (left_index + 1)..operator_ids.len() {
+                graph_ids.push(
+                    improvement_operator_graph_id(
+                        &operator_ids[left_index],
+                        &operator_ids[right_index],
+                    )
+                    .unwrap(),
+                );
+            }
+        }
+        graph_ids
+    }
+
     fn input() -> GenerativeInput {
         GenerativeInput {
             source_lesson_id: "lesson-1".to_string(),
@@ -1673,7 +1866,7 @@ mod tests {
     fn prediction_precedes_isolated_typed_composition() {
         let result = run_generative_cycle(&GenerativeGrowthMemory::default(), &input(), 7).unwrap();
         assert_eq!(result.candidates_considered, 2);
-        assert_eq!(result.behaviorally_inapplicable_candidates_screened, 6);
+        assert_eq!(result.behaviorally_inapplicable_candidates_screened, 8);
         assert!(result.prediction_recorded_before_composition);
         assert!(result.selected_from_precomposition_prediction);
         assert!(result.isolated_composition_executed);
@@ -1871,10 +2064,37 @@ mod tests {
                 composition_uses_composer(composition, "IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER")
             })
             .unwrap();
-        operator_memory.verified_artifact_sha256s = (0
-            ..MAX_IMPROVEMENT_OPERATOR_VERIFIED_ARTIFACTS)
-            .map(|ordinal| sha256(format!("operator-{ordinal}").as_bytes()))
-            .collect();
+        let operator_ids = verified_operator_canary_ids();
+        assert_eq!(
+            operator_ids.len() as u64,
+            MAX_IMPROVEMENT_OPERATOR_VERIFIED_ARTIFACTS
+        );
+        operator_memory.verified_artifact_sha256s = operator_ids.clone();
+        let graph = run_generative_cycle(&expanded, &input(), 13).unwrap();
+        assert_eq!(
+            selected_stage(&graph.selected_composition, "COMPOSE").unwrap(),
+            "IMPROVEMENT_OPERATOR_GRAPH_COMPOSER"
+        );
+        assert_eq!(graph.verified_artifact_count, 1);
+        assert!(graph.behavioral_composition_executed);
+        assert!(graph.novel_verified_artifact);
+        assert!(graph.frontier_advance);
+        expanded = promote_generative_cycle(&expanded, &input(), &graph).unwrap();
+
+        let graph_capacity =
+            verified_artifact_capacity(&expanded, "IMPROVEMENT_OPERATOR_GRAPH_COMPOSER");
+        let graph_memory = expanded
+            .accepted_compositions
+            .iter_mut()
+            .find(|composition| {
+                composition_uses_composer(composition, "IMPROVEMENT_OPERATOR_GRAPH_COMPOSER")
+            })
+            .unwrap();
+        graph_memory.verified_artifact_sha256s = all_operator_graph_ids(&operator_ids);
+        assert_eq!(
+            graph_memory.verified_artifact_sha256s.len() as u64,
+            graph_capacity
+        );
         let fullstack = run_generative_cycle(&expanded, &input(), 13).unwrap();
         assert_eq!(
             selected_stage(&fullstack.selected_composition, "COMPOSE").unwrap(),

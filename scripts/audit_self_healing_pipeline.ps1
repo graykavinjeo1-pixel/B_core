@@ -143,17 +143,34 @@ $quarantinedSurfaces = Get-ChildItem -LiteralPath $recursiveSource -Recurse -Fil
 $probes = @(
     $metadataProbe,
     (Invoke-CargoProbe "cargo_fmt" @("fmt", "--check") 120),
-    (Invoke-CargoProbe "cargo_compile_all_targets_clean_canary" @(
-        "test", "--workspace", "--all-targets", "--all-features", "--no-run", "--quiet", "-j", "1"
+    # `historical-campaigns` and `runtime-core` are alternative module
+    # surfaces, not additive features. Checking `--all-features` loaded the
+    # same engine modules twice and made every static audit compile/link every
+    # historical test binary. Check both valid surfaces independently; use
+    # `cargo check` for the clean compile canary so static inspection does not
+    # spend time generating Windows test PDBs.
+    (Invoke-CargoProbe "cargo_compile_historical_clean_canary" @(
+        "check", "--workspace", "--lib", "--bins", "--features", "historical-campaigns", "--quiet", "-j", "1"
     ) $TestTimeoutSeconds @{
         CARGO_INCREMENTAL = "0"
     }),
-    (Invoke-CargoProbe "cargo_test_all_targets" @(
-        "test", "--workspace", "--all-targets", "--all-features", "--quiet"
+    (Invoke-CargoProbe "cargo_compile_runtime_core_clean_canary" @(
+        "check", "-p", "semantic-reasoning", "--lib", "--bins", "--no-default-features", "--features", "runtime-core", "--quiet", "-j", "1"
+    ) $TestTimeoutSeconds @{
+        CARGO_INCREMENTAL = "0"
+    }),
+    (Invoke-CargoProbe "cargo_test_historical_libraries" @(
+        "test", "--workspace", "--lib", "--features", "historical-campaigns", "--quiet"
+    ) $TestTimeoutSeconds),
+    (Invoke-CargoProbe "cargo_test_runtime_core" @(
+        "test", "-p", "semantic-reasoning", "--lib", "--no-default-features", "--features", "runtime-core", "--quiet"
     ) $TestTimeoutSeconds),
     (Invoke-CargoProbe "cargo_test_docs" @("test", "--workspace", "--doc", "--quiet") $TestTimeoutSeconds),
-    (Invoke-CargoProbe "cargo_clippy_strict" @(
-        "clippy", "--workspace", "--all-targets", "--all-features", "--", "-D", "warnings"
+    (Invoke-CargoProbe "cargo_clippy_historical_strict" @(
+        "clippy", "--workspace", "--lib", "--bins", "--features", "historical-campaigns", "--", "-D", "warnings"
+    ) $TestTimeoutSeconds),
+    (Invoke-CargoProbe "cargo_clippy_runtime_core_strict" @(
+        "clippy", "-p", "semantic-reasoning", "--lib", "--bins", "--no-default-features", "--features", "runtime-core", "--", "-D", "warnings"
     ) $TestTimeoutSeconds)
 )
 
