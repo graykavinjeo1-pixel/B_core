@@ -5347,6 +5347,50 @@ fn core_cohort_observation_ids(
     Ok(observation_ids)
 }
 
+fn syn_items_contain_test(items: &[syn::Item]) -> bool {
+    items.iter().any(|item| match item {
+        syn::Item::Fn(function) => function
+            .attrs
+            .iter()
+            .any(|attr| attr.path().is_ident("test")),
+        syn::Item::Mod(module) => module
+            .content
+            .as_ref()
+            .is_some_and(|(_, nested)| syn_items_contain_test(nested)),
+        _ => false,
+    })
+}
+
+fn module_has_targetable_test_filter(source_root: &Path, module: &str) -> bool {
+    let source_dir = source_root.join("crates/semantic-reasoning/src");
+    let module_path = source_dir.join(format!("{module}.rs"));
+    let Ok(source) = fs::read_to_string(&module_path) else {
+        return false;
+    };
+    let Ok(file) = syn::parse_file(&source) else {
+        return false;
+    };
+    file.items.iter().any(|item| {
+        let syn::Item::Mod(test_module) = item else {
+            return false;
+        };
+        if test_module.ident != "tests" {
+            return false;
+        }
+        if let Some((_, items)) = &test_module.content {
+            return syn_items_contain_test(items);
+        }
+        [
+            source_dir.join(module).join("tests.rs"),
+            source_dir.join(module).join("tests/mod.rs"),
+        ]
+        .iter()
+        .filter_map(|path| fs::read_to_string(path).ok())
+        .filter_map(|source| syn::parse_file(&source).ok())
+        .any(|file| syn_items_contain_test(&file.items))
+    })
+}
+
 fn core_validation_plan(
     config: &GrowthSupervisorConfig,
     generation: u64,
@@ -5421,9 +5465,12 @@ fn core_validation_plan(
             modules.insert(module.to_string());
         }
     }
+    let mut targetable_module_missing_tests = false;
     if !historical_regression_required && core_paths > 0 && modules.len() == 1 {
         let module = modules.into_iter().next().unwrap_or_default();
-        if !module.is_empty() {
+        if !module.is_empty()
+            && module_has_targetable_test_filter(&config.source_mutation.source_root, &module)
+        {
             let filter = format!("{module}::tests::");
             let mut args = validation_args();
             args.push(filter.clone());
@@ -5433,12 +5480,16 @@ fn core_validation_plan(
                 targeted_test_filter: Some(filter),
                 full_regression_canary: false,
             });
+        } else if !module.is_empty() {
+            targetable_module_missing_tests = true;
         }
     }
     Ok(CoreValidationPlan {
         args: validation_args(),
         validation_scope: if historical_regression_required {
             "FULL_HISTORICAL_REGRESSION_CANARY".to_string()
+        } else if targetable_module_missing_tests {
+            "RUNTIME_CORE_REGRESSION_NO_TARGETABLE_MODULE_TESTS".to_string()
         } else {
             "RUNTIME_CORE_REGRESSION".to_string()
         },
@@ -7500,6 +7551,16 @@ mod tests {
             "[features]\nruntime-core = []\n",
         )
         .unwrap();
+        let source_dir = config
+            .source_mutation
+            .source_root
+            .join("crates/semantic-reasoning/src");
+        fs::create_dir_all(&source_dir).unwrap();
+        fs::write(
+            source_dir.join("growth_supervisor.rs"),
+            "#[cfg(test)]\nmod tests {\n    #[test]\n    fn exercises_module() {}\n}\n",
+        )
+        .unwrap();
         let observation = LearningObservation {
             observation_id: "growth-supervisor-change".to_string(),
             work_event_id: None,
@@ -7547,6 +7608,22 @@ mod tests {
         assert!(canary.full_regression_canary);
         assert!(!canary.args.contains(&"runtime-core".to_string()));
         assert!(targeted.args.contains(&"runtime-core".to_string()));
+
+        let mut generated_observation = observation.clone();
+        generated_observation.logical_path =
+            "ROOT_0/crates/semantic-reasoning/src/generated_sem5_capability.rs".to_string();
+        fs::write(
+            source_dir.join("generated_sem5_capability.rs"),
+            "pub fn generated_capability() {}\n",
+        )
+        .unwrap();
+        let generated = core_validation_plan(&config, 2, &[generated_observation]).unwrap();
+        assert_eq!(
+            generated.validation_scope,
+            "RUNTIME_CORE_REGRESSION_NO_TARGETABLE_MODULE_TESTS"
+        );
+        assert!(generated.targeted_test_filter.is_none());
+        assert_eq!(generated.args.last().map(String::as_str), Some("--locked"));
 
         let mut historical_observation = observation.clone();
         historical_observation.logical_path =
