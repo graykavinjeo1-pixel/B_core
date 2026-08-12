@@ -34,12 +34,12 @@ pub const AUTONOMOUS_SOURCE_MUTATION_SCHEMA: &str = "B_CORE_AUTONOMOUS_SOURCE_MU
 pub const SELF_UPDATE_HANDOFF_FILE: &str = "SELF_UPDATE_READY.json";
 pub const SOURCE_REPAIR_LEARNING_SCHEMA: &str = "B_CORE_SOURCE_REPAIR_LEARNING_1";
 pub const IMPROVEMENT_OPERATOR_MEMORY_SCHEMA: &str = "B_CORE_IMPROVEMENT_OPERATOR_MEMORY_1";
-// Revision 13 adds role-aware compiler lowering: removing a redundant clone
+// Revision 14 adds role-aware compiler lowering: removing a redundant clone
 // from `field: field.clone()` now produces the canonical shorthand `field` in
-// the same atomic program. Reopen failed revision-12 compiler families so the
-// corrected generator, rather than a one-member fallback, receives the public
-// counterexample and can retry the whole family.
-pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 13;
+// the same atomic program, and binds changing diagnostic hashes to one stable
+// typed-family problem identity. Reopen older compiler families so the
+// corrected generator receives their public counterexamples.
+pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 14;
 const KNOWN_REMAINDER_PREDICTED_VALUE: u16 = 35;
 const MAX_REPOSITORY_REPAIR_FAMILY_FILES: usize = 16;
 const KNOWN_REMAINDER_STRATEGIES: [&str; 4] = [
@@ -289,6 +289,8 @@ pub struct SourceRepairAttempt {
 pub struct LearnedSuccessfulRepair {
     pub learned_at_generation: u64,
     pub solution_strategy: String,
+    #[serde(default)]
+    pub predecessor_sha256: String,
     pub candidate_sha256: String,
     pub validation_output_sha256: String,
     pub release_build_output_sha256: String,
@@ -555,14 +557,7 @@ fn write_mutable_json<T: Serialize>(path: &Path, value: &T) -> Result<(), String
 }
 
 fn repair_problem_id(request: &AutonomousSourcePatchRequest) -> String {
-    sha256(
-        format!(
-            "{}:{}",
-            request.relative_path.display(),
-            request.transformation
-        )
-        .as_bytes(),
-    )
+    repair_problem_id_for(&request.relative_path, &request.transformation)
 }
 
 fn repair_learning_path(state_dir: &Path, problem_id: &str) -> PathBuf {
@@ -704,14 +699,25 @@ fn generalized_change_learning_features(
 }
 
 fn normalized_solution_strategy_family(solution_strategy: &str) -> String {
-    solution_strategy
+    normalized_hash_suffixed_family(solution_strategy).to_string()
+}
+
+fn normalized_hash_suffixed_family(value: &str) -> &str {
+    value
         .rsplit_once(':')
         .filter(|(_, suffix)| {
             suffix.len() >= 12 && suffix.bytes().all(|byte| byte.is_ascii_hexdigit())
         })
         .map(|(family, _)| family)
-        .unwrap_or(solution_strategy)
-        .to_string()
+        .unwrap_or(value)
+}
+
+fn normalized_repair_transformation(value: &str) -> &str {
+    if value.starts_with("COMPILER_OBSERVATION") {
+        normalized_hash_suffixed_family(value)
+    } else {
+        value
+    }
 }
 
 fn structural_postcondition_class(count: usize) -> &'static str {
@@ -1444,17 +1450,52 @@ fn prior_counterexamples(
     relative_path: &Path,
     transformation: &str,
 ) -> Result<Vec<ValidationCounterexampleIR>, String> {
-    let problem_id = repair_problem_id_for(relative_path, transformation);
-    Ok(load_repair_learning(state_dir, &problem_id)?
-        .map(|record| {
-            record
-                .attempts
-                .into_iter()
-                .filter(source_repair_attempt_is_causal)
-                .filter_map(|attempt| attempt.validation_counterexample)
-                .collect()
-        })
-        .unwrap_or_default())
+    if !transformation.starts_with("COMPILER_OBSERVATION") {
+        let problem_id = repair_problem_id_for(relative_path, transformation);
+        return Ok(load_repair_learning(state_dir, &problem_id)?
+            .map(|record| {
+                record
+                    .attempts
+                    .into_iter()
+                    .filter(source_repair_attempt_is_causal)
+                    .filter_map(|attempt| attempt.validation_counterexample)
+                    .collect()
+            })
+            .unwrap_or_default());
+    }
+    let knowledge_root = state_dir.join("source_repair_knowledge");
+    if !knowledge_root.exists() {
+        return Ok(Vec::new());
+    }
+    let family = normalized_repair_transformation(transformation);
+    let mut counterexamples = BTreeMap::new();
+    let entries = fs::read_dir(&knowledge_root)
+        .map_err(|error| format!("SOURCE_REPAIR_LEARNING_LIST:{error}"))?
+        .collect::<Result<Vec<_>, _>>()
+        .map_err(|error| format!("SOURCE_REPAIR_LEARNING_ENTRY:{error}"))?;
+    for entry in entries {
+        if entry.path().extension().and_then(OsStr::to_str) != Some("json") {
+            continue;
+        }
+        let bytes = fs::read(entry.path())
+            .map_err(|error| format!("SOURCE_REPAIR_LEARNING_READ:{error}"))?;
+        let record: SourceRepairLearningRecord = serde_json::from_slice(&bytes)
+            .map_err(|error| format!("SOURCE_REPAIR_LEARNING_PARSE:{error}"))?;
+        if record.relative_path != relative_path
+            || normalized_repair_transformation(&record.transformation) != family
+        {
+            continue;
+        }
+        for counterexample in record
+            .attempts
+            .into_iter()
+            .filter(source_repair_attempt_is_causal)
+            .filter_map(|attempt| attempt.validation_counterexample)
+        {
+            counterexamples.insert(counterexample.counterexample_id.clone(), counterexample);
+        }
+    }
+    Ok(counterexamples.into_values().collect())
 }
 
 #[allow(clippy::too_many_arguments)]
@@ -1534,10 +1575,11 @@ fn record_source_repair_outcome(
         return Err("SOURCE_REPAIR_OPPORTUNITY_BINDING_MISMATCH".to_string());
     }
     let starts_new_successor_cycle = record.status == "LEARNED_SUCCESS"
-        && record
-            .learned_success
-            .as_ref()
-            .is_none_or(|learned| learned.candidate_sha256 != request.candidate_sha256);
+        && (record.cycle_started_engine_revision < SOURCE_REPAIR_ENGINE_REVISION
+            || record.learned_success.as_ref().is_none_or(|learned| {
+                learned.predecessor_sha256 != request.predecessor_sha256
+                    || learned.candidate_sha256 != request.candidate_sha256
+            }));
     let reopens_failed_or_old_cycle = record.status != "LEARNED_SUCCESS"
         && ((record.status == "ADMITTED_FAILURE"
             && record
@@ -1640,6 +1682,7 @@ fn record_source_repair_outcome(
         record.learned_success = Some(LearnedSuccessfulRepair {
             learned_at_generation: request.source_generation,
             solution_strategy,
+            predecessor_sha256: request.predecessor_sha256.clone(),
             candidate_sha256: request.candidate_sha256.clone(),
             validation_output_sha256: receipt.validation.output_sha256.clone(),
             release_build_output_sha256: receipt
@@ -2867,7 +2910,14 @@ fn rewrite_first_known_improvement(source: &str, strategy_index: usize) -> Optio
 }
 
 fn repair_problem_id_for(relative_path: &Path, transformation: &str) -> String {
-    sha256(format!("{}:{transformation}", relative_path.display()).as_bytes())
+    sha256(
+        format!(
+            "{}:{}",
+            relative_path.to_string_lossy().replace('\\', "/"),
+            normalized_repair_transformation(transformation)
+        )
+        .as_bytes(),
+    )
 }
 
 fn repair_strategy_is_available(
@@ -2876,12 +2926,19 @@ fn repair_strategy_is_available(
     relative_path: &Path,
     transformation: &str,
     solution_strategy: &str,
+    source_artifact: (&str, &str),
     source_generation: u64,
 ) -> Result<bool, String> {
+    let (predecessor_sha256, candidate_sha256) = source_artifact;
     let problem_id = repair_problem_id_for(relative_path, transformation);
     let record = load_repair_learning(state_dir, &problem_id)?;
     if record.as_ref().is_some_and(|knowledge| {
-        knowledge.status == "LEARNED_SUCCESS"
+        (knowledge.status == "LEARNED_SUCCESS"
+            && knowledge.cycle_started_engine_revision >= SOURCE_REPAIR_ENGINE_REVISION
+            && knowledge.learned_success.as_ref().is_some_and(|success| {
+                success.predecessor_sha256 == predecessor_sha256
+                    || success.candidate_sha256 == candidate_sha256
+            }))
             || (knowledge.status == "ADMITTED_FAILURE"
                 && knowledge
                     .eligible_after_generation
@@ -2890,10 +2947,22 @@ fn repair_strategy_is_available(
     }) {
         return Ok(false);
     }
-    let attempted = record
-        .as_ref()
-        .map(|knowledge| active_cycle_attempts(knowledge, source_generation))
-        .unwrap_or_default();
+    let successor_candidate = record.as_ref().is_some_and(|knowledge| {
+        knowledge.status == "LEARNED_SUCCESS"
+            && (knowledge.cycle_started_engine_revision < SOURCE_REPAIR_ENGINE_REVISION
+                || knowledge.learned_success.as_ref().is_some_and(|success| {
+                    success.predecessor_sha256 != predecessor_sha256
+                        && success.candidate_sha256 != candidate_sha256
+                }))
+    });
+    let attempted = if successor_candidate {
+        Vec::new()
+    } else {
+        record
+            .as_ref()
+            .map(|knowledge| active_cycle_attempts(knowledge, source_generation))
+            .unwrap_or_default()
+    };
     Ok(
         attempted.len() < usize::from(policy.max_attempts_per_problem)
             && !attempted
@@ -2903,13 +2972,7 @@ fn repair_strategy_is_available(
 }
 
 fn compiler_opportunity_metadata(transformation: &str) -> (ChangeOpportunityKind, String) {
-    let stable_family_basis = transformation
-        .rsplit_once(':')
-        .filter(|(_, suffix)| {
-            suffix.len() >= 12 && suffix.bytes().all(|byte| byte.is_ascii_hexdigit())
-        })
-        .map(|(basis, _)| basis)
-        .unwrap_or(transformation);
+    let stable_family_basis = normalized_hash_suffixed_family(transformation);
     let kind = if stable_family_basis.contains(":clippy::") {
         ChangeOpportunityKind::RobustnessOpportunity
     } else {
@@ -2993,6 +3056,7 @@ fn compiler_guided_request(
                 &candidate.relative_path,
                 &candidate.transformation,
                 &candidate.solution_strategy,
+                (&candidate.predecessor_sha256, &candidate.candidate_sha256),
                 source_generation,
             )?
         {
@@ -3173,6 +3237,7 @@ fn grammar_synthesized_request(
                 &candidate.relative_path,
                 &candidate.transformation,
                 &candidate.solution_strategy,
+                (&candidate.predecessor_sha256, &candidate.candidate_sha256),
                 source_generation,
             )?
         {
@@ -3381,6 +3446,11 @@ pub fn discover_known_source_improvement_detailed(
             .enumerate()
             .take(usize::from(policy.max_attempts_per_problem))
         {
+            let Some(candidate_source) = rewrite_first_known_improvement(source, strategy_index)
+            else {
+                continue;
+            };
+            let candidate_sha256 = sha256(candidate_source.as_bytes());
             if attempted
                 .iter()
                 .any(|attempt| attempt.solution_strategy == *solution_strategy)
@@ -3390,15 +3460,12 @@ pub fn discover_known_source_improvement_detailed(
                     &relative_path,
                     &transformation,
                     solution_strategy,
+                    (&predecessor_sha256, &candidate_sha256),
                     source_generation,
                 )?
             {
                 continue;
             }
-            let Some(candidate_source) = rewrite_first_known_improvement(source, strategy_index)
-            else {
-                continue;
-            };
             // A value gate is evidence about an applicable candidate, not a
             // substitute for applicability discovery. Returning early before
             // this point falsely reported a blocked improvement in every
@@ -3417,7 +3484,6 @@ pub fn discover_known_source_improvement_detailed(
                 Ok(program) => program,
                 Err(_) => continue,
             };
-            let candidate_sha256 = sha256(candidate_source.as_bytes());
             let patch_id = format!(
                 "SELF-{}",
                 &sha256(
@@ -4759,6 +4825,65 @@ mod tests {
         write_mutable_json(&repair_learning_path(&state, &record.problem_id), &record).unwrap();
         let current_revision = derive_improvement_operator_memory(&state).unwrap();
         assert_eq!(current_revision.total_attempts, 0);
+
+        fs::remove_dir_all(root).unwrap();
+        fs::remove_dir_all(state).unwrap();
+    }
+
+    #[test]
+    fn changing_compiler_hash_keeps_counterexample_and_allows_a_new_postimage() {
+        let (root, policy) = fixture("stable-compiler-family-identity");
+        let state = external_state(&root);
+        let mut failed = discover_known_source_improvement(&policy, &state, 12)
+            .unwrap()
+            .expect("structural candidate");
+        failed.transformation =
+            "COMPILER_OBSERVATION_FAMILY:clippy::redundant_clone:aaaaaaaaaaaa".to_string();
+        failed.solution_strategy =
+            "COMPILER_SUGGESTION_FAMILY:MachineApplicable:7:aaaaaaaaaaaa".to_string();
+        failed.opportunity_kind = ChangeOpportunityKind::RobustnessOpportunity;
+        failed.opportunity_family_id = source_opportunity_family_id(
+            failed.opportunity_kind,
+            normalized_hash_suffixed_family(&failed.transformation),
+        );
+        let failed_receipt = synthetic_receipt(&failed, false);
+        record_source_repair_outcome(&policy, &state, &failed, &failed_receipt).unwrap();
+
+        let successor_transformation =
+            "COMPILER_OBSERVATION_FAMILY:clippy::redundant_clone:bbbbbbbbbbbb";
+        assert_eq!(
+            repair_problem_id_for(&failed.relative_path, &failed.transformation),
+            repair_problem_id_for(&failed.relative_path, successor_transformation)
+        );
+        let inherited =
+            prior_counterexamples(&state, &failed.relative_path, successor_transformation).unwrap();
+        assert_eq!(inherited.len(), 1);
+
+        let mut succeeded = failed.clone();
+        succeeded.transformation = successor_transformation.to_string();
+        succeeded.patch_id.push_str("-success");
+        let success_receipt = synthetic_receipt(&succeeded, true);
+        record_source_repair_outcome(&policy, &state, &succeeded, &success_receipt).unwrap();
+        assert!(!repair_strategy_is_available(
+            &policy,
+            &state,
+            &succeeded.relative_path,
+            "COMPILER_OBSERVATION_FAMILY:clippy::redundant_clone:cccccccccccc",
+            &succeeded.solution_strategy,
+            (&succeeded.predecessor_sha256, &succeeded.candidate_sha256),
+            13,
+        )
+        .unwrap());
+        assert!(repair_strategy_is_available(
+            &policy,
+            &state,
+            &succeeded.relative_path,
+            "COMPILER_OBSERVATION_FAMILY:clippy::redundant_clone:dddddddddddd",
+            &succeeded.solution_strategy,
+            (&"e".repeat(64), &"f".repeat(64)),
+            13,
+        )
+        .unwrap());
 
         fs::remove_dir_all(root).unwrap();
         fs::remove_dir_all(state).unwrap();
