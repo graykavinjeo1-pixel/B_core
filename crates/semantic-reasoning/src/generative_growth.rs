@@ -28,7 +28,8 @@ use crate::sem25::engine::{run_growth_probe, GrowthProbeRequest};
 pub const GENERATIVE_GROWTH_SCHEMA: &str = "B_CORE_GENERATIVE_GROWTH_1";
 const MAX_REUSABLE_COMPOSITIONS: usize = 64;
 const MAX_COMPOSITION_TRIALS: usize = 256;
-const BEHAVIORAL_VALUE_CONTRACT_REVISION: u64 = 2;
+const FRONTIER_EVIDENCE_CONTRACT_REVISION: u64 = 2;
+const BEHAVIORAL_VALUE_CONTRACT_REVISION: u64 = 3;
 
 fn is_zero(value: &u64) -> bool {
     *value == 0
@@ -102,6 +103,10 @@ pub struct GenerativeGrowthMemory {
     pub legacy_uncalibrated_prediction_error_total: u64,
     #[serde(default, skip_serializing_if = "is_zero")]
     pub behavioral_value_contract_revision: u64,
+    #[serde(default, skip_serializing_if = "is_zero")]
+    pub legacy_heuristic_composition_trials: u64,
+    #[serde(default, skip_serializing_if = "is_zero")]
+    pub legacy_heuristic_accepted_compositions: u64,
 }
 
 impl Default for GenerativeGrowthMemory {
@@ -126,6 +131,8 @@ impl Default for GenerativeGrowthMemory {
             calibrated_prediction_records: 0,
             legacy_uncalibrated_prediction_error_total: 0,
             behavioral_value_contract_revision: BEHAVIORAL_VALUE_CONTRACT_REVISION,
+            legacy_heuristic_composition_trials: 0,
+            legacy_heuristic_accepted_compositions: 0,
         }
     }
 }
@@ -658,15 +665,24 @@ fn prediction_score(
     memory: &GenerativeGrowthMemory,
 ) -> CandidatePrediction {
     let context = context_sha256(input);
-    let reusable = memory
-        .accepted_compositions
-        .iter()
-        .find(|candidate| candidate.composition.composition_id == composition.composition_id);
-    let trials = memory
-        .composition_trials
-        .iter()
-        .filter(|trial| trial.composition_id == composition.composition_id)
-        .collect::<Vec<_>>();
+    let compatible_behavioral_values =
+        memory.behavioral_value_contract_revision >= BEHAVIORAL_VALUE_CONTRACT_REVISION;
+    let reusable = compatible_behavioral_values.then(|| {
+        memory
+            .accepted_compositions
+            .iter()
+            .find(|candidate| candidate.composition.composition_id == composition.composition_id)
+    });
+    let reusable = reusable.flatten();
+    let trials = if compatible_behavioral_values {
+        memory
+            .composition_trials
+            .iter()
+            .filter(|trial| trial.composition_id == composition.composition_id)
+            .collect::<Vec<_>>()
+    } else {
+        Vec::new()
+    };
     let failed_trials = trials
         .iter()
         .filter(|trial| !trial.valuable)
@@ -1010,11 +1026,26 @@ pub fn promote_generative_cycle(
         return Err("GENERATIVE_PROMOTION_BOUNDARY_FAILURE".to_string());
     }
     let mut next = current.clone();
-    if next.behavioral_value_contract_revision < BEHAVIORAL_VALUE_CONTRACT_REVISION {
+    if next.behavioral_value_contract_revision < FRONTIER_EVIDENCE_CONTRACT_REVISION {
         next.legacy_unverified_frontier_advance_events = next
             .legacy_unverified_frontier_advance_events
             .saturating_add(next.frontier_advance_events);
         next.frontier_advance_events = 0;
+    }
+    if next.behavioral_value_contract_revision < BEHAVIORAL_VALUE_CONTRACT_REVISION {
+        next.legacy_heuristic_composition_trials = next
+            .legacy_heuristic_composition_trials
+            .saturating_add(next.composition_trials.len().min(u64::MAX as usize) as u64);
+        next.legacy_heuristic_accepted_compositions = next
+            .legacy_heuristic_accepted_compositions
+            .saturating_add(next.accepted_compositions.len().min(u64::MAX as usize) as u64);
+        next.composition_trials.clear();
+        next.accepted_compositions.clear();
+        next.legacy_uncalibrated_prediction_error_total = next
+            .legacy_uncalibrated_prediction_error_total
+            .saturating_add(next.prediction_absolute_error_total);
+        next.prediction_absolute_error_total = 0;
+        next.calibrated_prediction_records = 0;
         next.behavioral_value_contract_revision = BEHAVIORAL_VALUE_CONTRACT_REVISION;
     }
     next.generation = next.generation.saturating_add(1);
@@ -1247,6 +1278,43 @@ mod tests {
             memory.behavioral_value_contract_revision,
             BEHAVIORAL_VALUE_CONTRACT_REVISION
         );
+    }
+
+    #[test]
+    fn legacy_heuristic_value_memory_is_not_reused_as_behavioral_evidence() {
+        let first_input = input();
+        let first_result =
+            run_generative_cycle(&GenerativeGrowthMemory::default(), &first_input, 7).unwrap();
+        let mut legacy = promote_generative_cycle(
+            &GenerativeGrowthMemory::default(),
+            &first_input,
+            &first_result,
+        )
+        .unwrap();
+        assert_eq!(legacy.accepted_compositions.len(), 1);
+        assert_eq!(legacy.composition_trials.len(), 1);
+        legacy.behavioral_value_contract_revision = FRONTIER_EVIDENCE_CONTRACT_REVISION;
+        legacy.prediction_absolute_error_total = 55;
+        legacy.calibrated_prediction_records = 2;
+
+        let mut next_input = input();
+        next_input.source_lesson_id = "lesson-after-value-contract-migration".to_string();
+        let result = run_generative_cycle(&legacy, &next_input, 7).unwrap();
+        assert!(result.exploration_selected);
+        assert_eq!(result.prior_composition_trials, 0);
+        let next = promote_generative_cycle(&legacy, &next_input, &result).unwrap();
+
+        assert_eq!(next.behavioral_value_contract_revision, 3);
+        assert_eq!(next.legacy_heuristic_composition_trials, 1);
+        assert_eq!(next.legacy_heuristic_accepted_compositions, 1);
+        assert_eq!(next.composition_trials.len(), 1);
+        assert_eq!(next.accepted_compositions.len(), 1);
+        assert_eq!(next.legacy_uncalibrated_prediction_error_total, 55);
+        assert_eq!(
+            next.prediction_absolute_error_total,
+            u64::from(result.prediction_error)
+        );
+        assert_eq!(next.calibrated_prediction_records, 1);
     }
 
     #[test]
