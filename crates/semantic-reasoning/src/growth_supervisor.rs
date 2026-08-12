@@ -74,6 +74,7 @@ const MAX_REPOSITORY_TEST_PATHS: usize = 8;
 const MAX_REPOSITORY_REPAIR_SOURCE_PATHS: usize = 8;
 const MAX_REPOSITORY_REPAIR_SANDBOX_FILES: usize = 4_096;
 const MAX_REPOSITORY_REPAIR_SANDBOX_BYTES: u64 = 128 * 1024 * 1024;
+const MAX_ACTIVE_SOURCE_BOUND_IMPROVEMENT_OPERATORS: usize = 256;
 const MAX_COMPOSITE_INSTALL_FAMILY: usize = 32;
 
 fn u64_is_zero(value: &u64) -> bool {
@@ -5641,6 +5642,8 @@ struct SourceBoundImprovementOperatorAuthorityReceipt {
     external_llm_calls: u64,
     network_reads: u64,
     network_writes: u64,
+    #[serde(default, skip_serializing_if = "u64_is_zero")]
+    promotion_generation: u64,
     receipt_sha256: String,
 }
 
@@ -5930,6 +5933,31 @@ fn validate_source_bound_operator_authority(
     Ok(())
 }
 
+fn select_bounded_source_bound_operator_ids(
+    operator_ids: impl IntoIterator<Item = String>,
+    latest_verified_generation: &BTreeMap<String, u64>,
+    limit: usize,
+) -> Vec<String> {
+    let mut selected = operator_ids.into_iter().collect::<Vec<_>>();
+    selected.sort();
+    selected.dedup();
+    selected.sort_by(|left, right| {
+        latest_verified_generation
+            .get(right)
+            .copied()
+            .unwrap_or_default()
+            .cmp(
+                &latest_verified_generation
+                    .get(left)
+                    .copied()
+                    .unwrap_or_default(),
+            )
+            .then_with(|| left.cmp(right))
+    });
+    selected.truncate(limit);
+    selected
+}
+
 fn load_source_bound_improvement_operators(
     config: &GrowthSupervisorConfig,
 ) -> Result<Vec<TypedMechanismImprovementOperatorIR>, String> {
@@ -5942,6 +5970,7 @@ fn load_source_bound_improvement_operators(
         return Ok(Vec::new());
     }
     let mut authorized_operator_evidence = BTreeSet::new();
+    let mut latest_verified_generation = BTreeMap::<String, u64>::new();
     let mut authority_paths = fs::read_dir(&authority_directory)
         .map_err(|error| format!("SOURCE_BOUND_OPERATOR_AUTHORITY_READ_DIR:{error}"))?
         .collect::<Result<Vec<_>, _>>()
@@ -5951,13 +5980,18 @@ fn load_source_bound_improvement_operators(
         .filter(|path| path.extension().and_then(OsStr::to_str) == Some("json"))
         .collect::<Vec<_>>();
     authority_paths.sort();
-    authority_paths.truncate(1_024);
     for path in authority_paths {
         let authority: SourceBoundImprovementOperatorAuthorityReceipt = read_json(&path)?;
         validate_source_bound_operator_authority(&authority)?;
         if path.file_stem().and_then(OsStr::to_str) != Some(authority.authority_id.as_str()) {
             return Err("SOURCE_BOUND_OPERATOR_AUTHORITY_PATH_ID_MISMATCH".to_string());
         }
+        latest_verified_generation
+            .entry(authority.operator_id.clone())
+            .and_modify(|generation| {
+                *generation = (*generation).max(authority.promotion_generation)
+            })
+            .or_insert(authority.promotion_generation);
         authorized_operator_evidence.insert((
             authority.operator_id,
             authority.operator_sha256,
@@ -5973,8 +6007,7 @@ fn load_source_bound_improvement_operators(
         .filter(|path| path.extension().and_then(OsStr::to_str) == Some("json"))
         .collect::<Vec<_>>();
     paths.sort();
-    paths.truncate(256);
-    let mut operators = Vec::with_capacity(paths.len());
+    let mut operators = BTreeMap::new();
     for path in paths {
         let operator: TypedMechanismImprovementOperatorIR = read_json(&path)?;
         validate_typed_mechanism_improvement_operator(&operator)?;
@@ -5989,11 +6022,17 @@ fn load_source_bound_improvement_operators(
         )) {
             continue;
         }
-        operators.push(operator);
+        operators.insert(operator.operator_id.clone(), operator);
     }
-    operators.sort_by(|left, right| left.operator_id.cmp(&right.operator_id));
-    operators.dedup_by(|left, right| left.operator_id == right.operator_id);
-    Ok(operators)
+    let selected_ids = select_bounded_source_bound_operator_ids(
+        operators.keys().cloned(),
+        &latest_verified_generation,
+        MAX_ACTIVE_SOURCE_BOUND_IMPROVEMENT_OPERATORS,
+    );
+    Ok(selected_ids
+        .into_iter()
+        .filter_map(|operator_id| operators.remove(&operator_id))
+        .collect())
 }
 
 fn persist_source_bound_improvement_operator(
@@ -6067,6 +6106,7 @@ fn persist_source_bound_improvement_operator(
         external_llm_calls: repair.external_llm_calls,
         network_reads: repair.network_reads,
         network_writes: repair.network_writes,
+        promotion_generation: repair.generation,
         receipt_sha256: String::new(),
     };
     authority.receipt_sha256 = json_sha256(&authority)?;
@@ -11220,10 +11260,17 @@ mod tests {
         let authority: SourceBoundImprovementOperatorAuthorityReceipt =
             serde_json::from_slice(&authority_bytes).unwrap();
         validate_source_bound_operator_authority(&authority).unwrap();
-        let mut tampered_authority = authority;
+        assert_eq!(authority.promotion_generation, 4);
+        let mut tampered_authority = authority.clone();
         tampered_authority.candidate_sha256 = "0".repeat(64);
         assert_eq!(
             validate_source_bound_operator_authority(&tampered_authority),
+            Err("SOURCE_BOUND_OPERATOR_AUTHORITY_HASH_MISMATCH".to_string())
+        );
+        let mut tampered_generation = authority;
+        tampered_generation.promotion_generation = 400;
+        assert_eq!(
+            validate_source_bound_operator_authority(&tampered_generation),
             Err("SOURCE_BOUND_OPERATOR_AUTHORITY_HASH_MISMATCH".to_string())
         );
         fs::remove_file(&authority_path).unwrap();
@@ -11321,6 +11368,27 @@ mod tests {
              FAILED tests/test_engine.py::test_distance",
         );
         assert_eq!(targets, ["Rational.distance"]);
+    }
+
+    #[test]
+    fn source_bound_operator_capacity_prefers_latest_verified_not_hash_prefix() {
+        let latest_verified_generation = BTreeMap::from([
+            ("000-old-hash".to_string(), 2),
+            ("fff-latest-hash".to_string(), 9),
+            ("aaa-same-generation".to_string(), 9),
+        ]);
+        let selected = select_bounded_source_bound_operator_ids(
+            [
+                "000-old-hash".to_string(),
+                "fff-latest-hash".to_string(),
+                "aaa-same-generation".to_string(),
+                "fff-latest-hash".to_string(),
+            ],
+            &latest_verified_generation,
+            2,
+        );
+        assert_eq!(selected, ["aaa-same-generation", "fff-latest-hash"]);
+        assert!(!selected.contains(&"000-old-hash".to_string()));
     }
 
     #[test]
