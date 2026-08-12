@@ -9009,10 +9009,12 @@ mod tests {
     }
 
     #[test]
-    fn verifier_rejects_heuristic_only_frontier_claim() {
-        let root = temp_root("verify-heuristic-frontier");
+    fn verifier_rejects_unearned_frontier_claim() {
+        let root = temp_root("verify-unearned-frontier");
         let (_freeze, mut candidate, mut request) = accepted_candidate(&root);
-        assert!(!candidate.generative_cycle.behavioral_composition_executed);
+        assert!(candidate.generative_cycle.behavioral_composition_executed);
+        assert!(candidate.generative_cycle.accepted_for_memory);
+        candidate.generative_cycle.accepted_for_memory = false;
         candidate.generative_cycle.frontier_advance = true;
         candidate.generative_cycle.applied_to_self_improvement = true;
         candidate
@@ -9028,7 +9030,7 @@ mod tests {
         assert_eq!(receipt.decision, GrowthDecision::Reject);
         assert!(receipt
             .reasons
-            .contains(&"GENERATIVE_COMPOSITION_BOUNDARY_FAILURE".to_string()));
+            .contains(&"CANDIDATE_NOT_DERIVED_FROM_FROZEN_OBSERVATIONS".to_string()));
         fs::remove_dir_all(root).unwrap();
     }
 
@@ -9154,19 +9156,20 @@ mod tests {
         assert_eq!(recovered_state.mutual_revalidation_events, 1);
         assert_eq!(first_state.evaluator_challenge_cases, 10);
         assert_eq!(first_state.generative_predictions, 1);
-        assert_eq!(first_state.valuable_combinations_learned, 0);
+        assert_eq!(first_state.valuable_combinations_learned, 1);
         assert_eq!(first_state.generative_self_application_events, 0);
-        assert_eq!(first_state.generative_frontier_advance_events, 0);
+        assert_eq!(first_state.generative_frontier_advance_events, 1);
         assert_eq!(
             first_state.unverified_generative_frontier_candidate_events,
-            1
+            0
         );
         assert_eq!(recovered_state.generative_predictions, 1);
         let promoted = load_memory(&config, 1).unwrap();
-        assert_eq!(promoted.generative.accepted_compositions.len(), 0);
+        assert_eq!(promoted.generative.accepted_compositions.len(), 1);
+        assert_eq!(promoted.generative.distinct_verified_artifact_count(), 1);
         assert_eq!(promoted.generative.self_application_events, 0);
-        assert_eq!(promoted.generative.frontier_advance_events, 0);
-        assert_eq!(promoted.generative.unverified_frontier_candidate_events, 1);
+        assert_eq!(promoted.generative.frontier_advance_events, 1);
+        assert_eq!(promoted.generative.unverified_frontier_candidate_events, 0);
         assert_eq!(
             first_state.current_evaluator_memory_sha256,
             recovered_state.current_evaluator_memory_sha256

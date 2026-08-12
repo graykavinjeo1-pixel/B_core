@@ -30,6 +30,36 @@ const MAX_REUSABLE_COMPOSITIONS: usize = 64;
 const MAX_COMPOSITION_TRIALS: usize = 256;
 const FRONTIER_EVIDENCE_CONTRACT_REVISION: u64 = 2;
 const BEHAVIORAL_VALUE_CONTRACT_REVISION: u64 = 4;
+const GENERATIVE_PREDICTORS: [(&str, &str); 2] = [
+    (
+        "SEM23_REACTION_OUTCOME_PREDICTOR",
+        "sem23::engine::predict_base_properties",
+    ),
+    (
+        "SEM25_MULTI_HORIZON_ROUTER",
+        "sem25::engine::run_growth_probe",
+    ),
+];
+const GENERATIVE_COMPOSERS: [(&str, &str); 3] = [
+    (
+        "SEM5_PROGRAM_IR_COMPOSER",
+        "integrated_development::compose_existing_sem5_capability",
+    ),
+    (
+        "SELF_HEALING_CONTRACT_COMPOSER",
+        "self_healing_pipeline::validate_composition_lesson",
+    ),
+    (
+        "FULLSTACK_TYPED_RECIPE_COMPOSER",
+        "fullstack_ops_knowledge::recipe_as_composition_lesson",
+    ),
+];
+const GENERATIVE_VERIFIERS: [(&str, &str); 1] = [(
+    "INDEPENDENT_GROWTH_VERIFIER",
+    "growth_supervisor::run_verifier_request",
+)];
+const STATIC_GENERATIVE_CANDIDATE_COUNT: usize =
+    GENERATIVE_PREDICTORS.len() * GENERATIVE_COMPOSERS.len() * GENERATIVE_VERIFIERS.len();
 
 fn is_zero(value: &u64) -> bool {
     *value == 0
@@ -159,6 +189,12 @@ pub struct GenerativeCycleResult {
     pub schema: String,
     pub source_lesson_id: String,
     pub candidates_considered: usize,
+    /// Static catalog entries rejected before prediction because their
+    /// composer cannot produce a behaviorally testable artifact for this
+    /// input. These entries are not exploration arms and spend no campaign
+    /// execution budget.
+    #[serde(default)]
+    pub behaviorally_inapplicable_candidates_screened: usize,
     pub selected_composition: RepairCompositionLessonIR,
     pub selected_from_precomposition_prediction: bool,
     pub prediction_recorded_before_composition: bool,
@@ -619,6 +655,15 @@ fn execute_composer(
     }
 }
 
+/// The catalog also contains knowledge-only composers used by direct repair
+/// workflows. They remain callable there, but must not compete for generative
+/// frontier budget until this cycle can execute and independently observe the
+/// artifact they produce. Graph validation or a typed recipe alone is not a
+/// capability outcome.
+fn composer_is_behaviorally_executable(composer_id: &str, _input: &GenerativeInput) -> bool {
+    matches!(composer_id, "SEM5_PROGRAM_IR_COMPOSER")
+}
+
 fn execute_behavioral_composition(
     selected: &RepairCompositionLessonIR,
     input: &GenerativeInput,
@@ -818,42 +863,20 @@ pub fn run_generative_cycle(
     if memory.schema != GENERATIVE_GROWTH_SCHEMA || input.source_lesson_id.is_empty() {
         return Err("GENERATIVE_INPUT_OR_MEMORY_INVALID".to_string());
     }
-    let predictors = [
-        (
-            "SEM23_REACTION_OUTCOME_PREDICTOR",
-            "sem23::engine::predict_base_properties",
-        ),
-        (
-            "SEM25_MULTI_HORIZON_ROUTER",
-            "sem25::engine::run_growth_probe",
-        ),
-    ];
-    let composers = [
-        (
-            "SEM5_PROGRAM_IR_COMPOSER",
-            "integrated_development::compose_existing_sem5_capability",
-        ),
-        (
-            "SELF_HEALING_CONTRACT_COMPOSER",
-            "self_healing_pipeline::validate_composition_lesson",
-        ),
-        (
-            "FULLSTACK_TYPED_RECIPE_COMPOSER",
-            "fullstack_ops_knowledge::recipe_as_composition_lesson",
-        ),
-    ];
     // Verification is not an optimization arm. Every candidate must pass the
     // same independent verifier and the evaluator mutation audit is already a
     // mandatory check inside that boundary. Treating both as selectable
     // alternatives doubled the search space without changing behavior.
-    let verifiers = [(
-        "INDEPENDENT_GROWTH_VERIFIER",
-        "growth_supervisor::run_verifier_request",
-    )];
     let mut candidates = Vec::new();
-    for predictor in predictors {
-        for composer in composers {
-            for verifier in verifiers {
+    let mut behaviorally_inapplicable_candidates_screened = 0_usize;
+    for predictor in GENERATIVE_PREDICTORS {
+        for composer in GENERATIVE_COMPOSERS {
+            for verifier in GENERATIVE_VERIFIERS {
+                if !composer_is_behaviorally_executable(composer.0, input) {
+                    behaviorally_inapplicable_candidates_screened =
+                        behaviorally_inapplicable_candidates_screened.saturating_add(1);
+                    continue;
+                }
                 let composition = candidate_composition(predictor, composer, verifier);
                 let prediction = prediction_score(&composition, input, memory);
                 let tie = sha256(format!("{}:{}", seed, composition.composition_id).as_bytes());
@@ -865,7 +888,7 @@ pub fn run_generative_cycle(
     let (_, _, prediction, selected) = candidates
         .first()
         .cloned()
-        .ok_or_else(|| "NO_GENERATIVE_COMPOSITION_CANDIDATE".to_string())?;
+        .ok_or_else(|| "NO_BEHAVIORALLY_EXECUTABLE_GENERATIVE_COMPOSITION_CANDIDATE".to_string())?;
     let predicted_value = prediction.predicted_value;
     let typecheck_pass = validate_composition_lesson(&selected).is_ok();
     let behavioral_execution_receipt = execute_behavioral_composition(&selected, input, seed)?;
@@ -927,6 +950,7 @@ pub fn run_generative_cycle(
         schema: GENERATIVE_GROWTH_SCHEMA.to_string(),
         source_lesson_id: input.source_lesson_id.clone(),
         candidates_considered: candidates.len(),
+        behaviorally_inapplicable_candidates_screened,
         selected_composition: selected,
         selected_from_precomposition_prediction: true,
         prediction_recorded_before_composition: true,
@@ -1060,6 +1084,15 @@ pub fn promote_generative_cycle(
     if current.schema != GENERATIVE_GROWTH_SCHEMA
         || result.schema != GENERATIVE_GROWTH_SCHEMA
         || result.source_lesson_id != input.source_lesson_id
+        || result.candidates_considered == 0
+        || result
+            .candidates_considered
+            .saturating_add(result.behaviorally_inapplicable_candidates_screened)
+            != STATIC_GENERATIVE_CANDIDATE_COUNT
+        || !composer_is_behaviorally_executable(
+            selected_stage(&result.selected_composition, "COMPOSE").unwrap_or(""),
+            input,
+        )
         || !result.prediction_recorded_before_composition
         || !result.selected_from_precomposition_prediction
         || result.observed_value_is_heuristic_proxy
@@ -1251,7 +1284,8 @@ mod tests {
     #[test]
     fn prediction_precedes_isolated_typed_composition() {
         let result = run_generative_cycle(&GenerativeGrowthMemory::default(), &input(), 7).unwrap();
-        assert_eq!(result.candidates_considered, 6);
+        assert_eq!(result.candidates_considered, 2);
+        assert_eq!(result.behaviorally_inapplicable_candidates_screened, 4);
         assert!(result.prediction_recorded_before_composition);
         assert!(result.selected_from_precomposition_prediction);
         assert!(result.isolated_composition_executed);
@@ -1280,10 +1314,10 @@ mod tests {
     }
 
     #[test]
-    fn bounded_exploration_prevents_early_success_from_monopolizing_search() {
+    fn bounded_exploration_spends_budget_only_on_behaviorally_executable_candidates() {
         let mut memory = GenerativeGrowthMemory::default();
         let mut selected = BTreeSet::new();
-        for ordinal in 0..6 {
+        for ordinal in 0..2 {
             let mut current = input();
             current.source_lesson_id = format!("lesson-{ordinal}");
             let result = run_generative_cycle(&memory, &current, ordinal).unwrap();
@@ -1292,16 +1326,16 @@ mod tests {
             selected.insert(result.selected_composition.composition_id.clone());
             memory = promote_generative_cycle(&memory, &current, &result).unwrap();
         }
-        assert_eq!(selected.len(), 6);
-        assert_eq!(memory.composition_trials.len(), 6);
-        assert_eq!(memory.exploration_events, 6);
+        assert_eq!(selected.len(), 2);
+        assert_eq!(memory.composition_trials.len(), 2);
+        assert_eq!(memory.exploration_events, 2);
         assert_eq!(memory.accepted_compositions.len(), 2);
         assert_eq!(memory.distinct_verified_artifact_count(), 1);
         assert_eq!(memory.frontier_advance_events, 2);
-        assert_eq!(memory.unverified_frontier_candidate_events, 4);
+        assert_eq!(memory.unverified_frontier_candidate_events, 0);
         assert_eq!(memory.behavioral_verification_events, 2);
-        assert!(memory.prediction_absolute_error_total < 6 * 100);
-        assert_eq!(memory.calibrated_prediction_records, 6);
+        assert!(memory.prediction_absolute_error_total < 2 * 100);
+        assert_eq!(memory.calibrated_prediction_records, 2);
 
         let mut repeated_context = input();
         repeated_context.source_lesson_id = "lesson-repeated-context".to_string();
@@ -1333,8 +1367,26 @@ mod tests {
         assert!(!transferred.applied_to_self_improvement);
         assert!(transferred.applied_policy_signals.is_empty());
         memory = promote_generative_cycle(&memory, &new_context, &transferred).unwrap();
-        assert_eq!(memory.unverified_frontier_candidate_events, 4);
+        assert_eq!(memory.unverified_frontier_candidate_events, 0);
         assert_eq!(memory.distinct_verified_artifact_count(), 2);
+    }
+
+    #[test]
+    fn promotion_rejects_a_structural_only_composer_disguised_as_growth() {
+        let memory = GenerativeGrowthMemory::default();
+        let current = input();
+        let mut result = run_generative_cycle(&memory, &current, 7).unwrap();
+        let composer = result
+            .selected_composition
+            .primitives
+            .iter_mut()
+            .find(|primitive| primitive.semantic_role == "COMPOSE")
+            .expect("composer primitive");
+        composer.primitive_id = "FULLSTACK_TYPED_RECIPE_COMPOSER".to_string();
+        assert_eq!(
+            promote_generative_cycle(&memory, &current, &result),
+            Err("GENERATIVE_PROMOTION_BOUNDARY_FAILURE".to_string())
+        );
     }
 
     #[test]
