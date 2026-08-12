@@ -52,7 +52,14 @@ if (-not [string]::IsNullOrWhiteSpace($PerformanceMetricsPath)) {
     if (-not [IO.File]::Exists($metricsPath)) {
         throw "PERFORMANCE_METRICS_FILE_MISSING:$metricsPath"
     }
-    $performanceMetrics = @(Get-Content -Raw -LiteralPath $metricsPath -Encoding UTF8 | ConvertFrom-Json)
+    $decodedMetrics = Get-Content -Raw -LiteralPath $metricsPath -Encoding UTF8 | ConvertFrom-Json
+    # Windows PowerShell preserves a top-level JSON array as one pipeline
+    # object. Enumerate it explicitly so both a single metric object and a
+    # metric array serialize to the WorkEvent's flat Vec contract.
+    $performanceMetrics = @()
+    foreach ($metric in $decodedMetrics) {
+        $performanceMetrics += $metric
+    }
 }
 $event = [ordered]@{
     event_id = $eventId
