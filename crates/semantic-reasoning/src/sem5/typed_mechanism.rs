@@ -118,9 +118,32 @@ pub struct TypedMechanismSynthesisReceiptIR {
     pub counterexample_guided_selection: bool,
     pub conditional_synthesized: bool,
     pub winning_expression_nodes: usize,
+    #[serde(default)]
+    pub preferred_operator_attempts: usize,
+    #[serde(default)]
+    pub preferred_operator_selected: bool,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub selected_operator_id: Option<String>,
     pub winning_goal: TypedMechanismGoalIR,
     pub template: ConcreteSyntaxTemplateIR,
     pub receipt_sha256: String,
+}
+
+/// A name-independent, content-addressed expression recipe retained from a
+/// previously falsified and externally verified typed repair. Operand roles
+/// are canonical ARG_0..ARG_N positions so the recipe can be transported to a
+/// fresh repository without retaining source identifiers or patch text.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct TypedMechanismImprovementOperatorIR {
+    pub schema: String,
+    pub operator_id: String,
+    pub operand_types: Vec<ProgramType>,
+    pub output_type: ProgramType,
+    pub condition: Option<TypedSyntaxExpressionIR>,
+    pub postimage: TypedSyntaxExpressionIR,
+    pub otherwise: Option<TypedSyntaxExpressionIR>,
+    pub validation_contract: Vec<String>,
+    pub evidence_sha256: String,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -389,11 +412,353 @@ struct EnumeratedExpression {
     canonical_key: String,
 }
 
+fn remap_expression_roles(
+    expression: &TypedSyntaxExpressionIR,
+    role_map: &BTreeMap<String, String>,
+) -> Result<TypedSyntaxExpressionIR, String> {
+    Ok(match expression {
+        TypedSyntaxExpressionIR::Operand { role } => TypedSyntaxExpressionIR::Operand {
+            role: role_map
+                .get(role)
+                .cloned()
+                .ok_or_else(|| format!("TYPED_MECHANISM_PRIOR_ROLE_MISSING:{role}"))?,
+        },
+        TypedSyntaxExpressionIR::IntLiteral { value } => {
+            TypedSyntaxExpressionIR::IntLiteral { value: *value }
+        }
+        TypedSyntaxExpressionIR::BoolLiteral { value } => {
+            TypedSyntaxExpressionIR::BoolLiteral { value: *value }
+        }
+        TypedSyntaxExpressionIR::Unary { operator, input } => TypedSyntaxExpressionIR::Unary {
+            operator: *operator,
+            input: Box::new(remap_expression_roles(input, role_map)?),
+        },
+        TypedSyntaxExpressionIR::Binary {
+            operator,
+            left,
+            right,
+        } => TypedSyntaxExpressionIR::Binary {
+            operator: *operator,
+            left: Box::new(remap_expression_roles(left, role_map)?),
+            right: Box::new(remap_expression_roles(right, role_map)?),
+        },
+        TypedSyntaxExpressionIR::Call {
+            api_token,
+            arguments,
+        } => TypedSyntaxExpressionIR::Call {
+            api_token: api_token.clone(),
+            arguments: arguments
+                .iter()
+                .map(|argument| remap_expression_roles(argument, role_map))
+                .collect::<Result<Vec<_>, _>>()?,
+        },
+    })
+}
+
+pub fn validate_typed_mechanism_improvement_operator(
+    prior: &TypedMechanismImprovementOperatorIR,
+) -> Result<(), String> {
+    if prior.schema != "B_CORE_TYPED_MECHANISM_IMPROVEMENT_OPERATOR_1"
+        || prior.operator_id.is_empty()
+        || prior.operand_types.is_empty()
+        || prior.evidence_sha256.len() != 64
+        || prior.validation_contract
+            != [
+                "PUBLIC_OBSERVATION_REPLAY",
+                "TYPE_EFFECT_CHECK",
+                "SOURCE_BOUND_ATOMIC_MATERIALIZATION",
+                "SANDBOX_PUBLIC_REGRESSION",
+                "AUTHORITATIVE_SCOPE_STABLE",
+            ]
+    {
+        return Err("TYPED_MECHANISM_IMPROVEMENT_OPERATOR_ENVELOPE".to_string());
+    }
+    let mut identity = prior.clone();
+    identity.operator_id.clear();
+    identity.evidence_sha256.clear();
+    let encoded = serde_json::to_vec(&identity)
+        .map_err(|error| format!("TYPED_MECHANISM_PRIOR_SERIALIZE:{error}"))?;
+    if sha256(&encoded) != prior.operator_id {
+        return Err("TYPED_MECHANISM_IMPROVEMENT_OPERATOR_ID_MISMATCH".to_string());
+    }
+    Ok(())
+}
+
+pub fn typed_mechanism_improvement_operator_from_receipt(
+    receipt: &TypedMechanismSynthesisReceiptIR,
+    evidence_sha256: String,
+) -> Result<TypedMechanismImprovementOperatorIR, String> {
+    if evidence_sha256.len() != 64 || receipt.winning_goal.operands.is_empty() {
+        return Err("TYPED_MECHANISM_PRIOR_EVIDENCE".to_string());
+    }
+    let role_map = receipt
+        .winning_goal
+        .operands
+        .iter()
+        .enumerate()
+        .map(|(index, operand)| (operand.role.clone(), format!("ARG_{index}")))
+        .collect::<BTreeMap<_, _>>();
+    if role_map.len() != receipt.winning_goal.operands.len() {
+        return Err("TYPED_MECHANISM_PRIOR_DUPLICATE_ROLE".to_string());
+    }
+    let mut prior = TypedMechanismImprovementOperatorIR {
+        schema: "B_CORE_TYPED_MECHANISM_IMPROVEMENT_OPERATOR_1".to_string(),
+        operator_id: String::new(),
+        operand_types: receipt
+            .winning_goal
+            .operands
+            .iter()
+            .map(|operand| operand.value_type.clone())
+            .collect(),
+        output_type: receipt.winning_goal.output_type.clone(),
+        condition: receipt
+            .winning_goal
+            .condition
+            .as_ref()
+            .map(|condition| remap_expression_roles(condition, &role_map))
+            .transpose()?,
+        postimage: remap_expression_roles(&receipt.winning_goal.postimage, &role_map)?,
+        otherwise: receipt
+            .winning_goal
+            .otherwise
+            .as_ref()
+            .map(|otherwise| remap_expression_roles(otherwise, &role_map))
+            .transpose()?,
+        validation_contract: vec![
+            "PUBLIC_OBSERVATION_REPLAY".to_string(),
+            "TYPE_EFFECT_CHECK".to_string(),
+            "SOURCE_BOUND_ATOMIC_MATERIALIZATION".to_string(),
+            "SANDBOX_PUBLIC_REGRESSION".to_string(),
+            "AUTHORITATIVE_SCOPE_STABLE".to_string(),
+        ],
+        evidence_sha256,
+    };
+    let mut identity = prior.clone();
+    identity.evidence_sha256.clear();
+    let encoded = serde_json::to_vec(&identity)
+        .map_err(|error| format!("TYPED_MECHANISM_PRIOR_SERIALIZE:{error}"))?;
+    prior.operator_id = sha256(&encoded);
+    validate_typed_mechanism_improvement_operator(&prior)?;
+    Ok(prior)
+}
+
+fn transport_prior_to_request(
+    prior: &TypedMechanismImprovementOperatorIR,
+    request: &TypedMechanismSynthesisGoalIR,
+) -> Result<
+    (
+        Option<TypedSyntaxExpressionIR>,
+        TypedSyntaxExpressionIR,
+        Option<TypedSyntaxExpressionIR>,
+    ),
+    String,
+> {
+    validate_typed_mechanism_improvement_operator(prior)?;
+    let request_types = request
+        .operands
+        .iter()
+        .map(|operand| operand.value_type.clone())
+        .collect::<Vec<_>>();
+    if prior.operand_types != request_types || prior.output_type != request.output_type {
+        return Err("TYPED_MECHANISM_PRIOR_TYPE_SHAPE_MISMATCH".to_string());
+    }
+    let role_map = request
+        .operands
+        .iter()
+        .enumerate()
+        .map(|(index, operand)| (format!("ARG_{index}"), operand.role.clone()))
+        .collect::<BTreeMap<_, _>>();
+    Ok((
+        prior
+            .condition
+            .as_ref()
+            .map(|condition| remap_expression_roles(condition, &role_map))
+            .transpose()?,
+        remap_expression_roles(&prior.postimage, &role_map)?,
+        prior
+            .otherwise
+            .as_ref()
+            .map(|otherwise| remap_expression_roles(otherwise, &role_map))
+            .transpose()?,
+    ))
+}
+
+#[allow(clippy::too_many_arguments)]
+fn evaluate_prior_expression(
+    expression: &TypedSyntaxExpressionIR,
+    operand_types: &BTreeMap<String, ProgramType>,
+    operand_indices: &BTreeMap<String, usize>,
+    definitions: &BTreeMap<String, &ApiDefinition>,
+    api_map: &BTreeMap<String, &ApiDefinition>,
+    observation_arguments: &[Vec<Value>],
+    allowed_effects: &[Effect],
+) -> Result<(ProgramType, Vec<Value>), String> {
+    let mut effects = BTreeSet::new();
+    let value_type = infer_expression_type(expression, operand_types, definitions, &mut effects)?;
+    if !effects
+        .iter()
+        .all(|effect| allowed_effects.contains(effect))
+    {
+        return Err("TYPED_MECHANISM_PRIOR_EFFECT_FORBIDDEN".to_string());
+    }
+    let scalar = lower_expression(expression, operand_indices)?;
+    let outputs = observation_arguments
+        .iter()
+        .map(|arguments| eval_scalar(&scalar, arguments, api_map))
+        .collect::<Result<Vec<_>, _>>()?;
+    Ok((value_type, outputs))
+}
+
+#[allow(clippy::too_many_arguments)]
+fn prior_matches_public_observations(
+    request: &TypedMechanismSynthesisGoalIR,
+    condition: &Option<TypedSyntaxExpressionIR>,
+    postimage: &TypedSyntaxExpressionIR,
+    otherwise: &Option<TypedSyntaxExpressionIR>,
+    operand_types: &BTreeMap<String, ProgramType>,
+    operand_indices: &BTreeMap<String, usize>,
+    definitions: &BTreeMap<String, &ApiDefinition>,
+    api_map: &BTreeMap<String, &ApiDefinition>,
+    observation_arguments: &[Vec<Value>],
+) -> Result<bool, String> {
+    let (postimage_type, postimage_outputs) = evaluate_prior_expression(
+        postimage,
+        operand_types,
+        operand_indices,
+        definitions,
+        api_map,
+        observation_arguments,
+        &request.allowed_effects,
+    )?;
+    if postimage_type != request.output_type {
+        return Ok(false);
+    }
+    let expected = request
+        .public_observations
+        .iter()
+        .map(|observation| observation.expected_postimage.clone())
+        .collect::<Vec<_>>();
+    match (condition, otherwise) {
+        (None, None) => Ok(!request.require_conditional && postimage_outputs == expected),
+        (Some(condition), Some(otherwise)) => {
+            let (condition_type, condition_outputs) = evaluate_prior_expression(
+                condition,
+                operand_types,
+                operand_indices,
+                definitions,
+                api_map,
+                observation_arguments,
+                &request.allowed_effects,
+            )?;
+            let (otherwise_type, otherwise_outputs) = evaluate_prior_expression(
+                otherwise,
+                operand_types,
+                operand_indices,
+                definitions,
+                api_map,
+                observation_arguments,
+                &request.allowed_effects,
+            )?;
+            if condition_type != ProgramType::Bool || otherwise_type != request.output_type {
+                return Ok(false);
+            }
+            let outputs = condition_outputs
+                .iter()
+                .zip(postimage_outputs.iter().zip(&otherwise_outputs))
+                .map(|(condition, (then_value, else_value))| match condition {
+                    Value::Bool(true) => Ok(then_value.clone()),
+                    Value::Bool(false) => Ok(else_value.clone()),
+                    _ => Err("TYPED_MECHANISM_PRIOR_CONDITION_NOT_BOOL".to_string()),
+                })
+                .collect::<Result<Vec<_>, _>>()?;
+            Ok(outputs == expected)
+        }
+        _ => Ok(false),
+    }
+}
+
+#[allow(clippy::too_many_arguments)]
+fn build_synthesis_receipt(
+    request: &TypedMechanismSynthesisGoalIR,
+    condition: Option<TypedSyntaxExpressionIR>,
+    postimage: TypedSyntaxExpressionIR,
+    otherwise: Option<TypedSyntaxExpressionIR>,
+    enumerated: usize,
+    candidates_falsified: usize,
+    preferred_operator_attempts: usize,
+    selected_operator_id: Option<String>,
+) -> Result<TypedMechanismSynthesisReceiptIR, String> {
+    let conditional_synthesized = condition.is_some();
+    let winning_goal = TypedMechanismGoalIR {
+        schema: TYPED_MECHANISM_GOAL_SCHEMA.to_string(),
+        goal_id: request.goal_id.clone(),
+        split: request.split,
+        operands: request.operands.clone(),
+        output_type: request.output_type.clone(),
+        condition,
+        postimage,
+        otherwise,
+        definitions: request.definitions.clone(),
+        allowed_effects: request.allowed_effects.clone(),
+        preconditions: request.preconditions.clone(),
+        postconditions: request.postconditions.clone(),
+        invariants: request.invariants.clone(),
+        public_observations: request.public_observations.clone(),
+        provenance: request
+            .provenance
+            .iter()
+            .cloned()
+            .chain([if selected_operator_id.is_some() {
+                "CONTENT_ADDRESSED_OPERATOR_REUSE".to_string()
+            } else {
+                "BOUNDED_TYPED_GRAMMAR_SYNTHESIS".to_string()
+            }])
+            .collect(),
+    };
+    let template = lower_typed_mechanism_goal(&winning_goal)?;
+    let receipt_sha256 = sha256(
+        serde_json::to_vec(&(
+            TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA,
+            request,
+            &winning_goal,
+            &template.syntax_sha256,
+            enumerated,
+            candidates_falsified,
+            preferred_operator_attempts,
+            &selected_operator_id,
+        ))
+        .map_err(|error| format!("TYPED_MECHANISM_RECEIPT_SERIALIZE:{error}"))?
+        .as_slice(),
+    );
+    Ok(TypedMechanismSynthesisReceiptIR {
+        schema: "B_CORE_TYPED_MECHANISM_SYNTHESIS_RECEIPT_1".to_string(),
+        goal_id: request.goal_id.clone(),
+        candidates_enumerated: enumerated,
+        candidates_falsified,
+        counterexample_guided_selection: true,
+        conditional_synthesized,
+        winning_expression_nodes: template.expression_nodes,
+        preferred_operator_attempts,
+        preferred_operator_selected: selected_operator_id.is_some(),
+        selected_operator_id,
+        winning_goal,
+        template,
+        receipt_sha256,
+    })
+}
+
 /// Enumerate a bounded, typed expression grammar and use public
 /// counterexamples to select either one postimage or a guarded pair of
 /// postimages.  Search order is deterministic and independent of goal names.
 pub fn synthesize_typed_mechanism_goal(
     request: &TypedMechanismSynthesisGoalIR,
+) -> Result<TypedMechanismSynthesisReceiptIR, String> {
+    synthesize_typed_mechanism_goal_with_priors(request, &[])
+}
+
+pub fn synthesize_typed_mechanism_goal_with_priors(
+    request: &TypedMechanismSynthesisGoalIR,
+    priors: &[TypedMechanismImprovementOperatorIR],
 ) -> Result<TypedMechanismSynthesisReceiptIR, String> {
     validate_synthesis_envelope(request)?;
     let max_depth = request.max_expression_depth.clamp(1, MAX_SYNTHESIS_DEPTH);
@@ -438,6 +803,46 @@ pub fn synthesize_typed_mechanism_goal(
                 .collect::<Result<Vec<_>, _>>()
         })
         .collect::<Result<Vec<_>, _>>()?;
+
+    let mut preferred_operator_attempts = 0_usize;
+    let mut ordered_priors = priors.to_vec();
+    ordered_priors.sort_by(|left, right| left.operator_id.cmp(&right.operator_id));
+    ordered_priors.dedup_by(|left, right| left.operator_id == right.operator_id);
+    for prior in &ordered_priors {
+        validate_typed_mechanism_improvement_operator(prior)?;
+        let transported = match transport_prior_to_request(prior, request) {
+            Ok(transported) => transported,
+            Err(error) if error == "TYPED_MECHANISM_PRIOR_TYPE_SHAPE_MISMATCH" => continue,
+            Err(error) => return Err(error),
+        };
+        preferred_operator_attempts = preferred_operator_attempts.saturating_add(1);
+        let prior_matches = prior_matches_public_observations(
+            request,
+            &transported.0,
+            &transported.1,
+            &transported.2,
+            &operand_types,
+            &operand_indices,
+            &definitions,
+            &api_map,
+            &observation_arguments,
+        )
+        .unwrap_or(false);
+        if prior_matches {
+            let enumerated =
+                1 + usize::from(transported.0.is_some()) + usize::from(transported.2.is_some());
+            return build_synthesis_receipt(
+                request,
+                transported.0,
+                transported.1,
+                transported.2,
+                enumerated,
+                preferred_operator_attempts.saturating_sub(1),
+                preferred_operator_attempts,
+                Some(prior.operator_id.clone()),
+            );
+        }
+    }
 
     let mut expressions = Vec::<EnumeratedExpression>::new();
     let mut seen = BTreeSet::new();
@@ -615,71 +1020,31 @@ pub fn synthesize_typed_mechanism_goal(
         .iter()
         .find(|candidate| candidate.outputs == expected)
         .cloned();
-    let mut conditional_synthesized = false;
     let (condition, postimage, otherwise) = if !request.require_conditional {
         if let Some(exact) = exact {
             (None, exact.expression, None)
         } else {
-            conditional_synthesized = true;
             synthesize_conditional(&expressions, &output_candidates, &expected)?
         }
     } else {
-        conditional_synthesized = true;
         synthesize_conditional(&expressions, &output_candidates, &expected)?
     };
-
-    let winning_goal = TypedMechanismGoalIR {
-        schema: TYPED_MECHANISM_GOAL_SCHEMA.to_string(),
-        goal_id: request.goal_id.clone(),
-        split: request.split,
-        operands: request.operands.clone(),
-        output_type: request.output_type.clone(),
-        condition,
-        postimage,
-        otherwise,
-        definitions: request.definitions.clone(),
-        allowed_effects: request.allowed_effects.clone(),
-        preconditions: request.preconditions.clone(),
-        postconditions: request.postconditions.clone(),
-        invariants: request.invariants.clone(),
-        public_observations: request.public_observations.clone(),
-        provenance: request
-            .provenance
-            .iter()
-            .cloned()
-            .chain(["BOUNDED_TYPED_GRAMMAR_SYNTHESIS".to_string()])
-            .collect(),
-    };
-    let template = lower_typed_mechanism_goal(&winning_goal)?;
     let candidates_falsified = output_candidates
         .iter()
         .filter(|candidate| candidate.outputs != expected)
         .count()
-        .saturating_add(evaluation_failures);
-    let receipt_sha256 = sha256(
-        serde_json::to_vec(&(
-            TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA,
-            request,
-            &winning_goal,
-            &template.syntax_sha256,
-            enumerated,
-            candidates_falsified,
-        ))
-        .map_err(|error| format!("TYPED_MECHANISM_RECEIPT_SERIALIZE:{error}"))?
-        .as_slice(),
-    );
-    Ok(TypedMechanismSynthesisReceiptIR {
-        schema: "B_CORE_TYPED_MECHANISM_SYNTHESIS_RECEIPT_1".to_string(),
-        goal_id: request.goal_id.clone(),
-        candidates_enumerated: enumerated,
+        .saturating_add(evaluation_failures)
+        .saturating_add(preferred_operator_attempts);
+    build_synthesis_receipt(
+        request,
+        condition,
+        postimage,
+        otherwise,
+        enumerated,
         candidates_falsified,
-        counterexample_guided_selection: true,
-        conditional_synthesized,
-        winning_expression_nodes: template.expression_nodes,
-        winning_goal,
-        template,
-        receipt_sha256,
-    })
+        preferred_operator_attempts,
+        None,
+    )
 }
 
 #[allow(clippy::too_many_arguments)]
@@ -1378,6 +1743,108 @@ mod tests {
             .postimage_source
             .contains("graph.nodes[source].weight"));
         assert_eq!(receipt.template.public_observations_passed, 3);
+    }
+
+    #[test]
+    fn successful_expression_operator_transfers_by_typed_role_and_short_circuits_search() {
+        let request = TypedMechanismSynthesisGoalIR {
+            schema: TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA.to_string(),
+            goal_id: "first_repository".to_string(),
+            split: DataSplit::FreshBlind,
+            operands: vec![
+                operand("left", "left", ProgramType::Int),
+                operand("right", "right", ProgramType::Int),
+            ],
+            output_type: ProgramType::Int,
+            definitions: Vec::new(),
+            allowed_effects: vec![Effect::Pure],
+            preconditions: Vec::new(),
+            postconditions: Vec::new(),
+            invariants: Vec::new(),
+            public_observations: [(2, 3, 5), (4, 7, 11)]
+                .into_iter()
+                .map(|(left, right, expected)| TypedMechanismObservationIR {
+                    operands: BTreeMap::from([
+                        ("left".to_string(), Value::Int(left)),
+                        ("right".to_string(), Value::Int(right)),
+                    ]),
+                    expected_postimage: Value::Int(expected),
+                })
+                .collect(),
+            require_conditional: false,
+            max_expression_depth: 2,
+            max_candidates: 1_024,
+            provenance: Vec::new(),
+        };
+        let learned = synthesize_typed_mechanism_goal(&request).unwrap();
+        let operator =
+            typed_mechanism_improvement_operator_from_receipt(&learned, "a".repeat(64)).unwrap();
+        let renamed = TypedMechanismSynthesisGoalIR {
+            goal_id: "renamed_repository".to_string(),
+            operands: vec![
+                operand("alpha", "payload.alpha", ProgramType::Int),
+                operand("beta", "payload.beta", ProgramType::Int),
+            ],
+            public_observations: [(8, 5, 13), (-4, 9, 5)]
+                .into_iter()
+                .map(|(alpha, beta, expected)| TypedMechanismObservationIR {
+                    operands: BTreeMap::from([
+                        ("alpha".to_string(), Value::Int(alpha)),
+                        ("beta".to_string(), Value::Int(beta)),
+                    ]),
+                    expected_postimage: Value::Int(expected),
+                })
+                .collect(),
+            ..request
+        };
+        let transferred =
+            synthesize_typed_mechanism_goal_with_priors(&renamed, std::slice::from_ref(&operator))
+                .unwrap();
+        assert!(transferred.preferred_operator_selected);
+        assert_eq!(
+            transferred.selected_operator_id.as_deref(),
+            Some(operator.operator_id.as_str())
+        );
+        assert_eq!(transferred.candidates_enumerated, 1);
+        assert!(transferred.candidates_enumerated < learned.candidates_enumerated);
+        assert!(transferred
+            .template
+            .postimage_source
+            .contains("payload.alpha"));
+        assert!(transferred
+            .template
+            .postimage_source
+            .contains("payload.beta"));
+
+        let counterexample = TypedMechanismSynthesisGoalIR {
+            goal_id: "operator_counterexample".to_string(),
+            public_observations: [(3, 4, 12), (-2, 5, -10)]
+                .into_iter()
+                .map(|(alpha, beta, expected)| TypedMechanismObservationIR {
+                    operands: BTreeMap::from([
+                        ("alpha".to_string(), Value::Int(alpha)),
+                        ("beta".to_string(), Value::Int(beta)),
+                    ]),
+                    expected_postimage: Value::Int(expected),
+                })
+                .collect(),
+            ..renamed
+        };
+        let revised = synthesize_typed_mechanism_goal_with_priors(
+            &counterexample,
+            std::slice::from_ref(&operator),
+        )
+        .unwrap();
+        assert!(!revised.preferred_operator_selected);
+        assert_eq!(revised.preferred_operator_attempts, 1);
+        assert!(revised.template.postimage_source.contains('*'));
+
+        let mut tampered = operator;
+        tampered.postimage = TypedSyntaxExpressionIR::IntLiteral { value: 0 };
+        assert_eq!(
+            validate_typed_mechanism_improvement_operator(&tampered),
+            Err("TYPED_MECHANISM_IMPROVEMENT_OPERATOR_ID_MISMATCH".to_string())
+        );
     }
 
     #[test]

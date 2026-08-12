@@ -21,7 +21,8 @@ use serde::{Deserialize, Serialize};
 use crate::self_repair_contract::sha256;
 use crate::sem5::model::{BinaryOperator, DataSplit, Effect, ProgramType, UnaryOperator};
 use crate::sem5::typed_mechanism::{
-    synthesize_typed_mechanism_goal, SourceOperandIR, TypedMechanismObservationIR,
+    synthesize_typed_mechanism_goal_with_priors, SourceOperandIR,
+    TypedMechanismImprovementOperatorIR, TypedMechanismObservationIR,
     TypedMechanismSynthesisGoalIR, TypedMechanismSynthesisReceiptIR, TypedSyntaxExpressionIR,
     TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA,
 };
@@ -894,6 +895,13 @@ fn classified_host_failure(failure: Option<&str>, detail: Option<&str>) -> Causa
 pub fn discover_and_synthesize_python_repository(
     request: &SourceBoundRepositoryDiscoveryRequestIR,
 ) -> Result<SourceBoundCausalReceiptIR, CausalFrontendFailure> {
+    discover_and_synthesize_python_repository_with_operators(request, &[])
+}
+
+pub fn discover_and_synthesize_python_repository_with_operators(
+    request: &SourceBoundRepositoryDiscoveryRequestIR,
+    operators: &[TypedMechanismImprovementOperatorIR],
+) -> Result<SourceBoundCausalReceiptIR, CausalFrontendFailure> {
     if request.schema != SOURCE_BOUND_REPOSITORY_DISCOVERY_SCHEMA
         || request.source.is_empty()
         || request.source.len() > MAX_SOURCE_BYTES
@@ -993,13 +1001,16 @@ pub fn discover_and_synthesize_python_repository(
             "NO_EVIDENCE_BOUND_REPAIR_ALTERNATIVE",
         ));
     }
-    analyze_and_synthesize_source_bound(&SourceBoundCausalRequestIR {
-        schema: SOURCE_BOUND_CAUSAL_REQUEST_SCHEMA.to_string(),
-        source_relative_path: request.source_relative_path.clone(),
-        source: request.source.clone(),
-        python_executable: request.python_executable.clone(),
-        alternatives,
-    })
+    analyze_and_synthesize_source_bound_with_operators(
+        &SourceBoundCausalRequestIR {
+            schema: SOURCE_BOUND_CAUSAL_REQUEST_SCHEMA.to_string(),
+            source_relative_path: request.source_relative_path.clone(),
+            source: request.source.clone(),
+            python_executable: request.python_executable.clone(),
+            alternatives,
+        },
+        operators,
+    )
 }
 
 fn convert_python_definition(
@@ -1335,6 +1346,13 @@ fn validate_request(
 pub fn analyze_and_synthesize_source_bound(
     request: &SourceBoundCausalRequestIR,
 ) -> Result<SourceBoundCausalReceiptIR, CausalFrontendFailure> {
+    analyze_and_synthesize_source_bound_with_operators(request, &[])
+}
+
+pub fn analyze_and_synthesize_source_bound_with_operators(
+    request: &SourceBoundCausalRequestIR,
+    operators: &[TypedMechanismImprovementOperatorIR],
+) -> Result<SourceBoundCausalReceiptIR, CausalFrontendFailure> {
     let backend = validate_request(request)?;
     if backend == SourceLanguageBackend::RustSyn {
         return Err(CausalFrontendFailure::unsupported(
@@ -1411,9 +1429,10 @@ pub fn analyze_and_synthesize_source_bound(
                 ),
             ],
         };
-        let synthesis = synthesize_typed_mechanism_goal(&synthesis_request).map_err(|error| {
-            CausalFrontendFailure::unsupported(format!("BOUNDED_COMPOSITION:{error}"))
-        })?;
+        let synthesis = synthesize_typed_mechanism_goal_with_priors(&synthesis_request, operators)
+            .map_err(|error| {
+                CausalFrontendFailure::unsupported(format!("BOUNDED_COMPOSITION:{error}"))
+            })?;
         let materialized_patch =
             materialize_python_synthesis(&request.source, &function_template, &synthesis)?;
         let candidate_response = run_python_host(

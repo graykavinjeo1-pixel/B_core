@@ -43,8 +43,12 @@ use crate::integrated_development::{
     install_composite_candidate_family, MAX_INSTALLED_TYPED_CAPABILITIES,
 };
 use crate::self_repair_contract::sha256;
+use crate::sem5::typed_mechanism::{
+    typed_mechanism_improvement_operator_from_receipt,
+    validate_typed_mechanism_improvement_operator, TypedMechanismImprovementOperatorIR,
+};
 use crate::source_bound_causal_frontend::{
-    discover_and_synthesize_python_repository, RepositoryTestSourceIR,
+    discover_and_synthesize_python_repository_with_operators, RepositoryTestSourceIR,
     SourceBoundRepositoryDiscoveryRequestIR, SOURCE_BOUND_REPOSITORY_DISCOVERY_SCHEMA,
 };
 use crate::structural_source_repair::{apply_edit_atom, SourceEditAtom};
@@ -5585,6 +5589,16 @@ struct RepositoryRepairSynthesisReceipt {
     source_bound_alternative_sha256: Vec<String>,
     operator_family: String,
     edit_atom_kinds: Vec<String>,
+    #[serde(default)]
+    available_improvement_operator_ids: Vec<String>,
+    #[serde(default)]
+    selected_improvement_operator_ids: Vec<String>,
+    #[serde(default)]
+    promoted_improvement_operator_ids: Vec<String>,
+    #[serde(default)]
+    improvement_operators: Vec<TypedMechanismImprovementOperatorIR>,
+    #[serde(default)]
+    typed_candidates_enumerated: usize,
     candidate_materialization_is_one_to_one: bool,
     failure_code: Option<String>,
     scope_fingerprint_before: String,
@@ -5602,6 +5616,28 @@ struct RepositoryRepairSynthesisReceipt {
     network_writes: u64,
     exact_source_fragments_stored: u64,
     raw_source_bytes_stored: u64,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+struct SourceBoundImprovementOperatorAuthorityReceipt {
+    schema: String,
+    authority_id: String,
+    operator_id: String,
+    operator_sha256: String,
+    repair_id: String,
+    repair_receipt_sha256: String,
+    sandbox_output_sha256: String,
+    candidate_sha256: String,
+    sandbox_verified: bool,
+    sandbox_cleaned: bool,
+    authoritative_scope_stable: bool,
+    candidate_installed: bool,
+    authoritative_source_write_events: u64,
+    codex_calls: u64,
+    external_llm_calls: u64,
+    network_reads: u64,
+    network_writes: u64,
+    receipt_sha256: String,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -5830,6 +5866,216 @@ fn repository_repair_observation_id(
     )
 }
 
+fn source_bound_improvement_operator_directory(config: &GrowthSupervisorConfig) -> PathBuf {
+    config
+        .state_dir
+        .join("improvement_operator_repository")
+        .join("source_bound_operators")
+}
+
+fn source_bound_improvement_operator_authority_directory(
+    config: &GrowthSupervisorConfig,
+) -> PathBuf {
+    config
+        .state_dir
+        .join("improvement_operator_repository")
+        .join("source_bound_authority")
+}
+
+fn validate_source_bound_operator_authority(
+    authority: &SourceBoundImprovementOperatorAuthorityReceipt,
+) -> Result<(), String> {
+    if authority.schema != "B_CORE_SOURCE_BOUND_OPERATOR_AUTHORITY_1"
+        || authority.authority_id.len() != 64
+        || authority.operator_id.len() != 64
+        || authority.operator_sha256.len() != 64
+        || authority.repair_id.len() != 64
+        || authority.repair_receipt_sha256.len() != 64
+        || authority.sandbox_output_sha256.len() != 64
+        || authority.candidate_sha256.len() != 64
+        || !authority.sandbox_verified
+        || !authority.sandbox_cleaned
+        || !authority.authoritative_scope_stable
+        || authority.candidate_installed
+        || authority.authoritative_source_write_events != 0
+        || authority.codex_calls != 0
+        || authority.external_llm_calls != 0
+        || authority.network_reads != 0
+        || authority.network_writes != 0
+    {
+        return Err("SOURCE_BOUND_OPERATOR_AUTHORITY_ENVELOPE".to_string());
+    }
+    let expected_authority_id = sha256(
+        format!(
+            "SOURCE_BOUND_OPERATOR_AUTHORITY_1:{}:{}:{}:{}",
+            authority.operator_id,
+            authority.repair_id,
+            authority.repair_receipt_sha256,
+            authority.sandbox_output_sha256
+        )
+        .as_bytes(),
+    );
+    if authority.authority_id != expected_authority_id {
+        return Err("SOURCE_BOUND_OPERATOR_AUTHORITY_ID_MISMATCH".to_string());
+    }
+    let mut identity = authority.clone();
+    identity.receipt_sha256.clear();
+    if json_sha256(&identity)? != authority.receipt_sha256 {
+        return Err("SOURCE_BOUND_OPERATOR_AUTHORITY_HASH_MISMATCH".to_string());
+    }
+    Ok(())
+}
+
+fn load_source_bound_improvement_operators(
+    config: &GrowthSupervisorConfig,
+) -> Result<Vec<TypedMechanismImprovementOperatorIR>, String> {
+    let directory = source_bound_improvement_operator_directory(config);
+    if !directory.is_dir() {
+        return Ok(Vec::new());
+    }
+    let authority_directory = source_bound_improvement_operator_authority_directory(config);
+    if !authority_directory.is_dir() {
+        return Ok(Vec::new());
+    }
+    let mut authorized_operator_evidence = BTreeSet::new();
+    let mut authority_paths = fs::read_dir(&authority_directory)
+        .map_err(|error| format!("SOURCE_BOUND_OPERATOR_AUTHORITY_READ_DIR:{error}"))?
+        .collect::<Result<Vec<_>, _>>()
+        .map_err(|error| format!("SOURCE_BOUND_OPERATOR_AUTHORITY_ENTRY:{error}"))?
+        .into_iter()
+        .map(|entry| entry.path())
+        .filter(|path| path.extension().and_then(OsStr::to_str) == Some("json"))
+        .collect::<Vec<_>>();
+    authority_paths.sort();
+    authority_paths.truncate(1_024);
+    for path in authority_paths {
+        let authority: SourceBoundImprovementOperatorAuthorityReceipt = read_json(&path)?;
+        validate_source_bound_operator_authority(&authority)?;
+        if path.file_stem().and_then(OsStr::to_str) != Some(authority.authority_id.as_str()) {
+            return Err("SOURCE_BOUND_OPERATOR_AUTHORITY_PATH_ID_MISMATCH".to_string());
+        }
+        authorized_operator_evidence.insert((
+            authority.operator_id,
+            authority.operator_sha256,
+            authority.sandbox_output_sha256,
+        ));
+    }
+    let mut paths = fs::read_dir(&directory)
+        .map_err(|error| format!("SOURCE_BOUND_OPERATOR_REPOSITORY_READ_DIR:{error}"))?
+        .collect::<Result<Vec<_>, _>>()
+        .map_err(|error| format!("SOURCE_BOUND_OPERATOR_REPOSITORY_ENTRY:{error}"))?
+        .into_iter()
+        .map(|entry| entry.path())
+        .filter(|path| path.extension().and_then(OsStr::to_str) == Some("json"))
+        .collect::<Vec<_>>();
+    paths.sort();
+    paths.truncate(256);
+    let mut operators = Vec::with_capacity(paths.len());
+    for path in paths {
+        let operator: TypedMechanismImprovementOperatorIR = read_json(&path)?;
+        validate_typed_mechanism_improvement_operator(&operator)?;
+        if path.file_stem().and_then(OsStr::to_str) != Some(operator.operator_id.as_str()) {
+            return Err("SOURCE_BOUND_OPERATOR_REPOSITORY_PATH_ID_MISMATCH".to_string());
+        }
+        let operator_sha256 = json_sha256(&operator)?;
+        if !authorized_operator_evidence.contains(&(
+            operator.operator_id.clone(),
+            operator_sha256,
+            operator.evidence_sha256.clone(),
+        )) {
+            continue;
+        }
+        operators.push(operator);
+    }
+    operators.sort_by(|left, right| left.operator_id.cmp(&right.operator_id));
+    operators.dedup_by(|left, right| left.operator_id == right.operator_id);
+    Ok(operators)
+}
+
+fn persist_source_bound_improvement_operator(
+    config: &GrowthSupervisorConfig,
+    operator: &TypedMechanismImprovementOperatorIR,
+    repair: &RepositoryRepairSynthesisReceipt,
+    repair_receipt_sha256: &str,
+) -> Result<(), String> {
+    validate_typed_mechanism_improvement_operator(operator)?;
+    if !repair.sandbox_verified
+        || !repair.sandbox_cleaned
+        || !repair.authoritative_scope_stable
+        || repair.candidate_installed
+        || repair.authoritative_source_write_events != 0
+        || repair_receipt_sha256.len() != 64
+    {
+        return Err("SOURCE_BOUND_OPERATOR_PROMOTION_WITHOUT_AUTHORITY".to_string());
+    }
+    let sandbox_output_sha256 = repair
+        .sandbox_command
+        .as_ref()
+        .filter(|command| command.success)
+        .map(|command| command.output_sha256.clone())
+        .ok_or_else(|| "SOURCE_BOUND_OPERATOR_SANDBOX_EVIDENCE_MISSING".to_string())?;
+    if operator.evidence_sha256 != sandbox_output_sha256 {
+        return Err("SOURCE_BOUND_OPERATOR_EVIDENCE_MISMATCH".to_string());
+    }
+    let directory = source_bound_improvement_operator_directory(config);
+    fs::create_dir_all(&directory)
+        .map_err(|error| format!("SOURCE_BOUND_OPERATOR_REPOSITORY_CREATE:{error}"))?;
+    let path = directory.join(format!("{}.json", operator.operator_id));
+    if path.exists() {
+        let stored: TypedMechanismImprovementOperatorIR = read_json(&path)?;
+        validate_typed_mechanism_improvement_operator(&stored)?;
+        let mut stored_identity = stored;
+        stored_identity.evidence_sha256.clear();
+        let mut requested_identity = operator.clone();
+        requested_identity.evidence_sha256.clear();
+        if stored_identity != requested_identity {
+            return Err("SOURCE_BOUND_OPERATOR_REPOSITORY_COLLISION".to_string());
+        }
+    } else {
+        write_immutable_json(&path, operator)?;
+    }
+    let operator_sha256 = json_sha256(operator)?;
+    let authority_id = sha256(
+        format!(
+            "SOURCE_BOUND_OPERATOR_AUTHORITY_1:{}:{}:{}:{}",
+            operator.operator_id, repair.repair_id, repair_receipt_sha256, sandbox_output_sha256
+        )
+        .as_bytes(),
+    );
+    let mut authority = SourceBoundImprovementOperatorAuthorityReceipt {
+        schema: "B_CORE_SOURCE_BOUND_OPERATOR_AUTHORITY_1".to_string(),
+        authority_id: authority_id.clone(),
+        operator_id: operator.operator_id.clone(),
+        operator_sha256,
+        repair_id: repair.repair_id.clone(),
+        repair_receipt_sha256: repair_receipt_sha256.to_string(),
+        sandbox_output_sha256,
+        candidate_sha256: repair
+            .candidate_sha256
+            .clone()
+            .ok_or_else(|| "SOURCE_BOUND_OPERATOR_CANDIDATE_EVIDENCE_MISSING".to_string())?,
+        sandbox_verified: repair.sandbox_verified,
+        sandbox_cleaned: repair.sandbox_cleaned,
+        authoritative_scope_stable: repair.authoritative_scope_stable,
+        candidate_installed: repair.candidate_installed,
+        authoritative_source_write_events: repair.authoritative_source_write_events,
+        codex_calls: repair.codex_calls,
+        external_llm_calls: repair.external_llm_calls,
+        network_reads: repair.network_reads,
+        network_writes: repair.network_writes,
+        receipt_sha256: String::new(),
+    };
+    authority.receipt_sha256 = json_sha256(&authority)?;
+    validate_source_bound_operator_authority(&authority)?;
+    let authority_directory = source_bound_improvement_operator_authority_directory(config);
+    fs::create_dir_all(&authority_directory)
+        .map_err(|error| format!("SOURCE_BOUND_OPERATOR_AUTHORITY_CREATE:{error}"))?;
+    write_immutable_json(
+        &authority_directory.join(format!("{authority_id}.json")),
+        &authority,
+    )
+}
+
 fn python_pytest_target_symbols(diagnostic_tail: &str) -> Vec<String> {
     fn is_symbol_byte(byte: u8) -> bool {
         byte.is_ascii_alphanumeric() || byte == b'_' || byte == b'.'
@@ -5911,6 +6157,11 @@ fn try_synthesize_failed_python_cohort(
     let diagnostics = config.state_dir.join("diagnostics");
     fs::create_dir_all(&diagnostics)
         .map_err(|error| format!("REPOSITORY_REPAIR_DIAGNOSTICS_CREATE:{error}"))?;
+    let available_operators = load_source_bound_improvement_operators(config)?;
+    let available_operator_ids = available_operators
+        .iter()
+        .map(|operator| operator.operator_id.clone())
+        .collect::<BTreeSet<_>>();
     for relative in implementation_paths {
         let source_path = validated_repository_file(&plan.root, &relative)?;
         let source = fs::read_to_string(&source_path)
@@ -5943,6 +6194,14 @@ fn try_synthesize_failed_python_cohort(
                 && !existing.candidate_installed
             {
                 let receipt_sha256 = json_sha256(&existing)?;
+                for operator in &existing.improvement_operators {
+                    persist_source_bound_improvement_operator(
+                        config,
+                        operator,
+                        &existing,
+                        &receipt_sha256,
+                    )?;
+                }
                 let observation_id = repository_repair_observation_id(&existing, &receipt_sha256);
                 return Ok(Some((receipt_sha256, observation_id)));
             }
@@ -5959,6 +6218,9 @@ fn try_synthesize_failed_python_cohort(
         let mut sandbox_verified = false;
         let mut sandbox_cleaned = true;
         let mut candidate_source = None;
+        let mut selected_improvement_operator_ids = Vec::new();
+        let mut typed_candidates_enumerated = 0_usize;
+        let mut successful_syntheses = Vec::new();
 
         let request = SourceBoundRepositoryDiscoveryRequestIR {
             schema: SOURCE_BOUND_REPOSITORY_DISCOVERY_SCHEMA.to_string(),
@@ -5971,12 +6233,21 @@ fn try_synthesize_failed_python_cohort(
             max_expression_depth: 3,
             max_candidates: 2_048,
         };
-        match discover_and_synthesize_python_repository(&request) {
+        match discover_and_synthesize_python_repository_with_operators(
+            &request,
+            &available_operators,
+        ) {
             Ok(source_bound) => {
                 source_bound_receipt_sha256 = Some(json_sha256(&source_bound)?);
                 let mut edits = Vec::new();
                 for alternative in &source_bound.alternatives {
                     source_bound_alternative_sha256.push(json_sha256(alternative)?);
+                    typed_candidates_enumerated = typed_candidates_enumerated
+                        .saturating_add(alternative.synthesis.candidates_enumerated);
+                    if let Some(operator_id) = &alternative.synthesis.selected_operator_id {
+                        selected_improvement_operator_ids.push(operator_id.clone());
+                    }
+                    successful_syntheses.push(alternative.synthesis.clone());
                     match &alternative.materialized_patch.edit {
                         SourceEditAtom::AtomicMultiEdit { edits: nested } => {
                             edits.extend(nested.iter().cloned());
@@ -6087,6 +6358,30 @@ fn try_synthesize_failed_python_cohort(
             failure_code =
                 Some("CONFLICTING_SOURCE_BOUND_EDITS:AUTHORITATIVE_SCOPE_CHANGED".to_string());
         }
+        selected_improvement_operator_ids.sort();
+        selected_improvement_operator_ids.dedup();
+        let mut improvement_operators = Vec::new();
+        let mut promoted_improvement_operator_ids = Vec::new();
+        if sandbox_verified {
+            let evidence_sha256 = sandbox_command
+                .as_ref()
+                .map(|command| command.output_sha256.clone())
+                .ok_or_else(|| "REPOSITORY_REPAIR_SANDBOX_EVIDENCE_MISSING".to_string())?;
+            for synthesis in &successful_syntheses {
+                let operator = typed_mechanism_improvement_operator_from_receipt(
+                    synthesis,
+                    evidence_sha256.clone(),
+                )?;
+                if !available_operator_ids.contains(&operator.operator_id) {
+                    promoted_improvement_operator_ids.push(operator.operator_id.clone());
+                }
+                improvement_operators.push(operator);
+            }
+            improvement_operators.sort_by(|left, right| left.operator_id.cmp(&right.operator_id));
+            improvement_operators.dedup_by(|left, right| left.operator_id == right.operator_id);
+            promoted_improvement_operator_ids.sort();
+            promoted_improvement_operator_ids.dedup();
+        }
         let receipt = RepositoryRepairSynthesisReceipt {
             schema: "B_REPOSITORY_REPAIR_SYNTHESIS_1".to_string(),
             repair_id,
@@ -6103,6 +6398,11 @@ fn try_synthesize_failed_python_cohort(
             operator_family: "PUBLIC_SYMBOL_EXECUTION_CLOSURE_TO_TYPED_ATOMIC_SOURCE_PATCH"
                 .to_string(),
             edit_atom_kinds: edit_atom_kinds.into_iter().collect(),
+            available_improvement_operator_ids: available_operator_ids.iter().cloned().collect(),
+            selected_improvement_operator_ids,
+            promoted_improvement_operator_ids,
+            improvement_operators,
+            typed_candidates_enumerated,
             candidate_materialization_is_one_to_one: materialization_is_one_to_one,
             failure_code,
             scope_fingerprint_before: validation.scope_fingerprint_before.clone(),
@@ -6122,9 +6422,12 @@ fn try_synthesize_failed_python_cohort(
             raw_source_bytes_stored: 0,
         };
         write_immutable_json(&receipt_path, &receipt)?;
+        let receipt_sha256 = json_sha256(&receipt)?;
+        for operator in &receipt.improvement_operators {
+            persist_source_bound_improvement_operator(config, operator, &receipt, &receipt_sha256)?;
+        }
         cleanup_recent_files(&diagnostics, "repository_repair_synthesis_", 64)?;
         if receipt.sandbox_verified && receipt.sandbox_cleaned {
-            let receipt_sha256 = json_sha256(&receipt)?;
             let observation_id = repository_repair_observation_id(&receipt, &receipt_sha256);
             return Ok(Some((receipt_sha256, observation_id)));
         }
@@ -10747,7 +11050,7 @@ mod tests {
             return;
         }
         let root = temp_root("failed-python-source-bound-repair");
-        let (_, config) = test_config(&root);
+        let (_, mut config) = test_config(&root);
         let repository = config.watched_roots[0].clone();
         fs::create_dir_all(repository.join("tests")).unwrap();
         fs::create_dir_all(config.state_dir.join("diagnostics")).unwrap();
@@ -10875,14 +11178,121 @@ mod tests {
         assert_eq!(repair.raw_source_bytes_stored, 0);
         assert!(repair.candidate_materialization_is_one_to_one);
         assert!(repair.failure_code.is_none());
+        assert_eq!(repair.promoted_improvement_operator_ids.len(), 1);
+        assert!(repair.selected_improvement_operator_ids.is_empty());
+        assert_eq!(repair.improvement_operators.len(), 1);
+        assert!(repair.typed_candidates_enumerated > 1);
         assert!(repair.sandbox_command.as_ref().is_some_and(|command| {
             command.success
                 && command
                     .diagnostic_tail
                     .starts_with("SANDBOX_VALIDATION_OUTPUT_SHA256:")
         }));
+        let promoted_operator_id = repair.promoted_improvement_operator_ids[0].clone();
+        assert!(source_bound_improvement_operator_directory(&config)
+            .join(format!("{promoted_operator_id}.json"))
+            .is_file());
+        let authority_path = fs::read_dir(source_bound_improvement_operator_authority_directory(
+            &config,
+        ))
+        .unwrap()
+        .filter_map(Result::ok)
+        .map(|entry| entry.path())
+        .next()
+        .expect("operator authority receipt");
+        let authority_bytes = fs::read(&authority_path).unwrap();
+        let authority: SourceBoundImprovementOperatorAuthorityReceipt =
+            serde_json::from_slice(&authority_bytes).unwrap();
+        validate_source_bound_operator_authority(&authority).unwrap();
+        let mut tampered_authority = authority;
+        tampered_authority.candidate_sha256 = "0".repeat(64);
+        assert_eq!(
+            validate_source_bound_operator_authority(&tampered_authority),
+            Err("SOURCE_BOUND_OPERATOR_AUTHORITY_HASH_MISMATCH".to_string())
+        );
+        fs::remove_file(&authority_path).unwrap();
+        assert!(load_source_bound_improvement_operators(&config)
+            .unwrap()
+            .is_empty());
+        fs::write(&authority_path, authority_bytes).unwrap();
+        assert_eq!(
+            load_source_bound_improvement_operators(&config)
+                .unwrap()
+                .len(),
+            1
+        );
         let lesson = build_lesson(&[implementation, candidate_observation]).unwrap();
         assert!(!lesson_has_verification_evidence(&lesson));
+
+        let renamed_repository = root.join("renamed-repository");
+        fs::create_dir_all(renamed_repository.join("tests")).unwrap();
+        fs::write(
+            renamed_repository.join("pyproject.toml"),
+            "[build-system]\nrequires = []\nbuild-backend = \"\"\n\n[tool.pytest.ini_options]\ntestpaths = [\"tests\"]\n",
+        )
+        .unwrap();
+        let renamed_predecessor = "def combine(alpha, beta):\n    return 0\n";
+        fs::write(renamed_repository.join("solver.py"), renamed_predecessor).unwrap();
+        fs::write(
+            renamed_repository.join("tests/test_solver.py"),
+            "from solver import combine\n\ndef test_combine():\n    assert combine(8, 5) == 13\n    assert combine(-4, 9) == 5\n",
+        )
+        .unwrap();
+        config.watched_roots.push(renamed_repository.clone());
+        let renamed_implementation = LearningObservation {
+            observation_id: "renamed-python-implementation".to_string(),
+            logical_path: "ROOT_1/solver.py".to_string(),
+            content_sha256: sha256(renamed_predecessor.as_bytes()),
+            predecessor_content_sha256: Some("f".repeat(64)),
+            reasons: vec!["renamed public behavior contradiction".to_string()],
+            ..cohort[0].clone()
+        };
+        let renamed_test = LearningObservation {
+            observation_id: "renamed-python-test".to_string(),
+            logical_path: "ROOT_1/tests/test_solver.py".to_string(),
+            work_kind: WorkKind::RegressionTest,
+            signals: vec!["REGRESSION_EVIDENCE".to_string(), "TEST_ADDED".to_string()],
+            composition_roles: vec!["REGRESSION_TEST".to_string()],
+            ..renamed_implementation.clone()
+        };
+        let renamed_cohort = vec![renamed_implementation, renamed_test];
+        let mut renamed_diagnostic = diagnostic;
+        renamed_diagnostic.generation = renamed_diagnostic.generation.saturating_add(1);
+        renamed_diagnostic.diagnostic_id = "renamed-repository-diagnostic".to_string();
+        let (renamed_action, renamed_candidate) = runtime_repair_action(
+            &config,
+            &renamed_diagnostic,
+            &[],
+            &renamed_cohort,
+            &renamed_cohort,
+        )
+        .unwrap()
+        .expect("renamed repository repair action");
+        assert!(renamed_action.executed);
+        assert!(renamed_candidate.is_some());
+        assert_eq!(
+            fs::read_to_string(renamed_repository.join("solver.py")).unwrap(),
+            renamed_predecessor
+        );
+        let renamed_repair = fs::read_dir(config.state_dir.join("diagnostics"))
+            .unwrap()
+            .filter_map(Result::ok)
+            .map(|entry| entry.path())
+            .filter(|path| {
+                path.file_name()
+                    .and_then(OsStr::to_str)
+                    .is_some_and(|name| name.starts_with("repository_repair_synthesis_"))
+                    && path.extension().and_then(OsStr::to_str) == Some("json")
+            })
+            .map(|path| read_json::<RepositoryRepairSynthesisReceipt>(&path).unwrap())
+            .find(|receipt| receipt.source_relative_path == Path::new("solver.py"))
+            .expect("renamed repair receipt");
+        assert_eq!(
+            renamed_repair.selected_improvement_operator_ids,
+            [promoted_operator_id]
+        );
+        assert!(renamed_repair.promoted_improvement_operator_ids.is_empty());
+        assert_eq!(renamed_repair.typed_candidates_enumerated, 1);
         fs::remove_dir_all(root).unwrap();
     }
 
