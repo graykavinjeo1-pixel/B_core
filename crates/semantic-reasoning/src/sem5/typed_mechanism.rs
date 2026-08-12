@@ -35,6 +35,7 @@ const MAX_MECHANISM_EXPRESSION_NODES: usize = 256;
 const MAX_MECHANISM_OBSERVATIONS: usize = 64;
 const MAX_SYNTHESIS_CANDIDATES: usize = 1_024;
 const MAX_SYNTHESIS_DEPTH: usize = 3;
+const MAX_IDENTIFIABILITY_PROBES: usize = 64;
 const TYPED_OPERATOR_REPLAY_ITEMS_PER_WORKER: usize = 16;
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -1428,6 +1429,16 @@ pub fn synthesize_typed_mechanism_goal_with_priors(
     output_candidates.sort_by(|left, right| {
         (left.nodes, &left.canonical_key).cmp(&(right.nodes, &right.canonical_key))
     });
+    if !request.require_conditional {
+        ensure_minimal_exact_hypotheses_identifiable(
+            request,
+            &output_candidates,
+            &expected,
+            &observation_arguments,
+            &operand_indices,
+            &api_map,
+        )?;
+    }
     let exact = output_candidates
         .iter()
         .find(|candidate| candidate.outputs == expected)
@@ -1459,6 +1470,171 @@ pub fn synthesize_typed_mechanism_goal_with_priors(
         None,
         operator_worker_count > 1,
     )
+}
+
+fn ensure_minimal_exact_hypotheses_identifiable(
+    request: &TypedMechanismSynthesisGoalIR,
+    output_candidates: &[EnumeratedExpression],
+    expected: &[Value],
+    observation_arguments: &[Vec<Value>],
+    operand_indices: &BTreeMap<String, usize>,
+    api_map: &BTreeMap<String, &ApiDefinition>,
+) -> Result<(), String> {
+    let Some(minimum_nodes) = output_candidates
+        .iter()
+        .filter(|candidate| candidate.outputs == expected)
+        .map(|candidate| candidate.nodes)
+        .min()
+    else {
+        return Ok(());
+    };
+    let minimal = output_candidates
+        .iter()
+        .filter(|candidate| candidate.nodes == minimum_nodes && candidate.outputs == expected)
+        .collect::<Vec<_>>();
+    if minimal.len() <= 1 {
+        return Ok(());
+    }
+    let probes = bounded_identifiability_arguments(request, observation_arguments);
+    let mut semantic_classes = BTreeSet::new();
+    for candidate in &minimal {
+        let scalar = lower_expression(&candidate.expression, operand_indices)?;
+        let signature = probes
+            .iter()
+            .map(|arguments| match eval_scalar(&scalar, arguments, api_map) {
+                Ok(value) => serde_json::to_string(&("OK", value))
+                    .map_err(|error| format!("TYPED_MECHANISM_PROBE_SERIALIZE:{error}")),
+                Err(error) => Ok(format!("[\"ERROR\",{error:?}]")),
+            })
+            .collect::<Result<Vec<_>, String>>()?;
+        semantic_classes.insert(
+            serde_json::to_string(&signature)
+                .map_err(|error| format!("TYPED_MECHANISM_PROBE_SIGNATURE:{error}"))?,
+        );
+    }
+    if semantic_classes.len() > 1 {
+        return Err(format!(
+            "TYPED_MECHANISM_PUBLIC_INFORMATION_INSUFFICIENT:MINIMAL_HYPOTHESES:{}:SEMANTIC_CLASSES:{}:PROBES:{}",
+            minimal.len(),
+            semantic_classes.len(),
+            probes.len()
+        ));
+    }
+    Ok(())
+}
+
+fn bounded_identifiability_arguments(
+    request: &TypedMechanismSynthesisGoalIR,
+    observation_arguments: &[Vec<Value>],
+) -> Vec<Vec<Value>> {
+    fn push_unique<T: PartialEq>(values: &mut Vec<T>, value: T, limit: usize) {
+        if values.len() < limit && !values.contains(&value) {
+            values.push(value);
+        }
+    }
+
+    fn domain(value_type: &ProgramType, observed: impl Iterator<Item = Value>) -> Vec<Value> {
+        let mut values = Vec::new();
+        for value in observed {
+            push_unique(&mut values, value, 12);
+        }
+        match value_type {
+            ProgramType::Int => {
+                let observed_ints = values
+                    .iter()
+                    .filter_map(|value| match value {
+                        Value::Int(value) => Some(*value),
+                        _ => None,
+                    })
+                    .collect::<Vec<_>>();
+                for value in [-2_i64, -1, 0, 1, 2] {
+                    push_unique(&mut values, Value::Int(value), 12);
+                }
+                for value in observed_ints {
+                    push_unique(&mut values, Value::Int(value.saturating_sub(1)), 12);
+                    push_unique(&mut values, Value::Int(value.saturating_add(1)), 12);
+                }
+            }
+            ProgramType::Bool => {
+                push_unique(&mut values, Value::Bool(false), 12);
+                push_unique(&mut values, Value::Bool(true), 12);
+            }
+            ProgramType::String => {
+                for value in ["", "a", "b", "A", "  a  "] {
+                    push_unique(&mut values, Value::String(value.to_string()), 12);
+                }
+            }
+            ProgramType::SequenceInt => {
+                for value in [vec![], vec![0], vec![1], vec![-1], vec![0, 1]] {
+                    push_unique(&mut values, Value::Sequence(value), 12);
+                }
+            }
+            ProgramType::NestedSequenceInt => {
+                for value in [vec![], vec![vec![]], vec![vec![0]], vec![vec![0], vec![1]]] {
+                    push_unique(&mut values, Value::NestedSequence(value), 12);
+                }
+            }
+            ProgramType::Bytes => {
+                for value in [vec![], vec![0], vec![1], vec![0, 1]] {
+                    push_unique(&mut values, Value::Bytes(value), 12);
+                }
+            }
+            ProgramType::Image | ProgramType::Unit => {}
+        }
+        values
+    }
+
+    let mut probes = Vec::new();
+    for arguments in observation_arguments {
+        push_unique(&mut probes, arguments.clone(), MAX_IDENTIFIABILITY_PROBES);
+    }
+    let base = observation_arguments[0].clone();
+    let domains = request
+        .operands
+        .iter()
+        .enumerate()
+        .map(|(index, operand)| {
+            domain(
+                &operand.value_type,
+                observation_arguments
+                    .iter()
+                    .filter_map(move |arguments| arguments.get(index).cloned()),
+            )
+        })
+        .collect::<Vec<_>>();
+    for (index, values) in domains.iter().enumerate() {
+        for value in values {
+            let mut arguments = base.clone();
+            arguments[index] = value.clone();
+            push_unique(&mut probes, arguments, MAX_IDENTIFIABILITY_PROBES);
+        }
+    }
+    let diagonal_steps = domains.iter().map(Vec::len).max().unwrap_or(0);
+    for step in 0..diagonal_steps {
+        let mut arguments = base.clone();
+        for (index, values) in domains.iter().enumerate() {
+            if !values.is_empty() {
+                arguments[index] = values[(step + index) % values.len()].clone();
+            }
+        }
+        push_unique(&mut probes, arguments, MAX_IDENTIFIABILITY_PROBES);
+    }
+    'pairs: for left in 0..domains.len() {
+        for right in (left + 1)..domains.len() {
+            for left_value in domains[left].iter().take(4) {
+                for right_value in domains[right].iter().take(4) {
+                    let mut arguments = base.clone();
+                    arguments[left] = left_value.clone();
+                    arguments[right] = right_value.clone();
+                    push_unique(&mut probes, arguments, MAX_IDENTIFIABILITY_PROBES);
+                    if probes.len() >= MAX_IDENTIFIABILITY_PROBES {
+                        break 'pairs;
+                    }
+                }
+            }
+        }
+    }
+    probes
 }
 
 #[allow(clippy::too_many_arguments)]
@@ -2584,6 +2760,47 @@ mod tests {
         assert_eq!(renamed.preferred_operator_attempts, 1);
         assert_eq!(renamed.candidates_enumerated, 1);
         assert_eq!(renamed.selected_operator_id, Some(operator.operator_id));
+    }
+
+    #[test]
+    fn observationally_ambiguous_minimal_hypotheses_fail_closed() {
+        let request = TypedMechanismSynthesisGoalIR {
+            schema: TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA.to_string(),
+            goal_id: "sparse_at_least".to_string(),
+            split: DataSplit::FreshBlind,
+            operands: vec![
+                operand("value", "value", ProgramType::Int),
+                operand("floor", "floor", ProgramType::Int),
+            ],
+            output_type: ProgramType::Bool,
+            definitions: Vec::new(),
+            allowed_effects: vec![Effect::Pure],
+            preconditions: Vec::new(),
+            postconditions: Vec::new(),
+            invariants: Vec::new(),
+            public_observations: [(2, 1, true), (2, 2, true), (1, 2, false)]
+                .into_iter()
+                .map(|(value, floor, expected)| TypedMechanismObservationIR {
+                    operands: BTreeMap::from([
+                        ("value".to_string(), Value::Int(value)),
+                        ("floor".to_string(), Value::Int(floor)),
+                    ]),
+                    expected_postimage: Value::Bool(expected),
+                })
+                .collect(),
+            require_conditional: false,
+            max_expression_depth: 1,
+            max_candidates: 1_024,
+            provenance: vec!["IDENTIFIABILITY_NEGATIVE_CANARY".to_string()],
+        };
+        let error = synthesize_typed_mechanism_goal(&request).unwrap_err();
+        assert!(
+            error
+                .starts_with("TYPED_MECHANISM_PUBLIC_INFORMATION_INSUFFICIENT:MINIMAL_HYPOTHESES:"),
+            "{error}"
+        );
+        assert!(error.contains(":SEMANTIC_CLASSES:"));
+        assert!(error.contains(":PROBES:"));
     }
 
     #[test]

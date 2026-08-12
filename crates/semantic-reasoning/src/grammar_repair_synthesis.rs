@@ -2751,6 +2751,8 @@ mod tests {
         assert_eq!(super::first(&[2, 3]), 2);
         assert_eq!(super::byte_at(b"ab", 1), 98);
         assert_eq!(super::byte_at(b"xyz", 1), 121);
+        assert_eq!(super::byte_at(b"ab", 0), 97);
+        assert_eq!(super::byte_at(b"xyz", 2), 122);
         assert_eq!(super::row_at(&[vec![1], vec![2, 3]], 1), vec![2, 3]);
         assert_eq!(super::row_at(&[vec![4, 5], vec![6]], 0), vec![4, 5]);
     }
@@ -2778,9 +2780,9 @@ mod tests {
             .iter()
             .any(|candidate| candidate.grammar_expression.ends_with(".clone()")));
         assert!(typed.iter().all(|candidate| {
-            candidate.public_examples_observed == 2
-                && candidate.public_examples_evaluated == 2
-                && candidate.public_examples_satisfied == 2
+            candidate.public_examples_observed >= 2
+                && candidate.public_examples_evaluated == candidate.public_examples_observed
+                && candidate.public_examples_satisfied == candidate.public_examples_observed
                 && apply_edit_atom(source, &candidate.structural_repair_program.edit).as_deref()
                     == Ok(candidate.candidate_source.as_str())
                 && syn::parse_file(&candidate.candidate_source).is_ok()

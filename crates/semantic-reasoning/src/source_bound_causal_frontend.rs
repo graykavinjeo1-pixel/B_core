@@ -1841,7 +1841,12 @@ fn synthesize_source_bound_template(
     let synthesis =
         synthesize_typed_mechanism_goal_with_priors(&synthesis_request, applicable_operators)
             .map_err(|error| {
-                CausalFrontendFailure::unsupported(format!("BOUNDED_COMPOSITION:{error}"))
+                let detail = format!("BOUNDED_COMPOSITION:{error}");
+                if error.starts_with("TYPED_MECHANISM_PUBLIC_INFORMATION_INSUFFICIENT:") {
+                    CausalFrontendFailure::public(detail)
+                } else {
+                    CausalFrontendFailure::unsupported(detail)
+                }
             })?;
     let materialized_patch = materialize_python_synthesis(source, template, &synthesis)?;
     Ok((synthesis, materialized_patch))
@@ -2592,6 +2597,8 @@ def row_at(values: list[list[int]], position: int) -> list[int]:
     assert first([2, 3]) == 2
     assert byte_at(b"ab", 1) == 98
     assert byte_at(b"xyz", 1) == 121
+    assert byte_at(b"ab", 0) == 97
+    assert byte_at(b"xyz", 2) == 122
     assert row_at([[1], [2, 3]], 1) == [2, 3]
     assert row_at([[4, 5], [6]], 0) == [4, 5]
 "#;
@@ -3005,6 +3012,45 @@ def lexical_within(value: str, limit: str) -> bool:
         assert_eq!(
             discover_and_synthesize_python_repository(&request).unwrap_err(),
             CausalFrontendFailure::public("NO_EVIDENCE_BOUND_REPAIR_ALTERNATIVE")
+        );
+    }
+
+    #[test]
+    fn sparse_boundary_evidence_is_classified_as_public_information_insufficient() {
+        let Some(python_executable) = python() else {
+            return;
+        };
+        let request = SourceBoundRepositoryDiscoveryRequestIR {
+            schema: SOURCE_BOUND_REPOSITORY_DISCOVERY_SCHEMA.to_string(),
+            source_relative_path: PathBuf::from("sparse_relation.py"),
+            source: "def at_least(value: int, floor: int) -> bool:\n    return value > floor\n"
+                .to_string(),
+            test_sources: vec![RepositoryTestSourceIR {
+                relative_path: PathBuf::from("tests/test_sparse_relation.py"),
+                source: r#"def test_sparse_relation():
+    assert at_least(2, 1)
+    assert at_least(2, 2)
+    assert not at_least(1, 2)
+"#
+                .to_string(),
+            }],
+            python_executable,
+            target_symbols: Vec::new(),
+            allowed_effects: vec![Effect::Pure],
+            max_expression_depth: 1,
+            max_candidates: 1_024,
+        };
+        let error = discover_and_synthesize_python_repository(&request).unwrap_err();
+        assert_eq!(
+            error.kind,
+            CausalFrontendFailureKind::PublicInformationInsufficient
+        );
+        assert!(
+            error.detail.starts_with(
+                "BOUNDED_COMPOSITION:TYPED_MECHANISM_PUBLIC_INFORMATION_INSUFFICIENT:MINIMAL_HYPOTHESES:"
+            ),
+            "{}",
+            error.detail
         );
     }
 
