@@ -361,6 +361,12 @@ pub struct SupervisorState {
     #[serde(default)]
     pub last_installed_composite_execution_sha256: Option<String>,
     #[serde(default)]
+    pub installed_context_bound_capabilities_validated: u64,
+    #[serde(default)]
+    pub last_installed_capability_inventory_sha256: Option<String>,
+    #[serde(default)]
+    pub installed_capability_continuation_observations: u64,
+    #[serde(default)]
     pub installed_execution_counter_contract_revision: u64,
     #[serde(default)]
     pub legacy_unbound_installed_composite_execution_events: u64,
@@ -899,6 +905,9 @@ pub struct StepReport {
     pub installed_composite_capability_execution_events: u64,
     pub installed_composite_capability_execution_failures: u64,
     pub last_installed_composite_execution_sha256: Option<String>,
+    pub installed_context_bound_capabilities_validated: u64,
+    pub last_installed_capability_inventory_sha256: Option<String>,
+    pub installed_capability_continuation_observations: u64,
     pub installed_execution_counter_contract_revision: u64,
     pub legacy_unbound_installed_composite_execution_events: u64,
     pub legacy_unbound_installed_composite_execution_failures: u64,
@@ -2715,6 +2724,9 @@ pub fn initialize(config_path: &Path) -> Result<SupervisorState, String> {
         installed_composite_capability_execution_events: 0,
         installed_composite_capability_execution_failures: 0,
         last_installed_composite_execution_sha256: None,
+        installed_context_bound_capabilities_validated: 0,
+        last_installed_capability_inventory_sha256: None,
+        installed_capability_continuation_observations: 0,
         installed_execution_counter_contract_revision:
             INSTALLED_EXECUTION_COUNTER_CONTRACT_REVISION,
         legacy_unbound_installed_composite_execution_events: 0,
@@ -6229,6 +6241,13 @@ fn report_from_state(
         last_installed_composite_execution_sha256: state
             .last_installed_composite_execution_sha256
             .clone(),
+        installed_context_bound_capabilities_validated: state
+            .installed_context_bound_capabilities_validated,
+        last_installed_capability_inventory_sha256: state
+            .last_installed_capability_inventory_sha256
+            .clone(),
+        installed_capability_continuation_observations: state
+            .installed_capability_continuation_observations,
         installed_execution_counter_contract_revision: state
             .installed_execution_counter_contract_revision,
         legacy_unbound_installed_composite_execution_events: state
@@ -6451,16 +6470,6 @@ fn is_sem5_composition(accepted: &crate::generative_growth::ReusableCompositionM
         })
 }
 
-fn legacy_accepted_sem5_composition_context(memory: &GrowthMemory) -> Option<String> {
-    memory
-        .generative
-        .accepted_compositions
-        .iter()
-        .rev()
-        .find(|accepted| is_sem5_composition(accepted))
-        .and_then(|accepted| accepted.context_use_counts.keys().next_back().cloned())
-}
-
 fn accepted_sem5_artifact_contexts(memory: &GrowthMemory) -> Vec<(String, String)> {
     let mut artifacts = memory
         .generative
@@ -6505,51 +6514,115 @@ fn pending_sem5_composition_candidates(
     Ok(candidates)
 }
 
-fn latest_installed_sem5_composition_context(memory: &GrowthMemory) -> Option<String> {
-    let installed = crate::generated_sem5_capability::generated_capability_hashes()
-        .iter()
-        .copied()
-        .collect::<BTreeSet<_>>();
-    accepted_sem5_artifact_contexts(memory)
-        .into_iter()
-        .find(|(artifact, _)| installed.contains(artifact.as_str()))
-        .map(|(_, context)| context)
-        .or_else(|| legacy_accepted_sem5_composition_context(memory))
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+struct InstalledCapabilityInventoryExecutionReceipt {
+    schema: String,
+    installed_registry_capability_count: usize,
+    context_bound_capability_count: usize,
+    inventory_sha256: String,
+    artifact_sha256: Vec<String>,
+    canary_receipt_sha256: Vec<String>,
+    failure_classes: Vec<String>,
+    pass: bool,
+    receipt_sha256: String,
 }
 
-fn revalidate_installed_composite_capability(state: &mut SupervisorState, memory: &GrowthMemory) {
+fn revalidate_installed_composite_capability(
+    config: &GrowthSupervisorConfig,
+    state: &mut SupervisorState,
+    memory: &GrowthMemory,
+) -> Result<Option<LearningObservation>, String> {
     if !crate::generated_sem5_capability::GENERATED_CAPABILITY_ACTIVE {
-        return;
+        return Ok(None);
     }
-    let Some(context) = latest_installed_sem5_composition_context(memory) else {
-        return;
-    };
-    let Ok((candidate, _)) = compose_behavioral_canary_candidate(&context) else {
-        return;
-    };
-    if !crate::generated_sem5_capability::generated_capability_hashes()
-        .contains(&candidate.program_ir_sha256.as_str())
-    {
-        // Accepted capability is queued for installation. Absence is not an
-        // execution attempt and must not poison the repair-failure signal.
-        return;
+    let installed = crate::generated_sem5_capability::generated_capability_hashes()
+        .iter()
+        .map(|hash| (*hash).to_string())
+        .collect::<BTreeSet<_>>();
+    let mut context_bound = accepted_sem5_artifact_contexts(memory)
+        .into_iter()
+        .filter(|(artifact, _)| installed.contains(artifact))
+        .collect::<Vec<_>>();
+    context_bound.sort();
+    if context_bound.is_empty() {
+        return Ok(None);
     }
-    let outcome = execute_behavioral_composition_canary(&context);
-    let (event_sha256, pass) = match outcome {
-        Ok(receipt) => {
-            let pass = receipt.installed_capability_present
-                && receipt.installed_program_match
-                && receipt.installed_cases_executed == receipt.cases_executed
-                && receipt.installed_cases_passed == receipt.cases_passed
-                && receipt.installed_output_sha256.is_some();
-            (receipt.receipt_sha256, pass)
+
+    let installed_hashes = installed.iter().cloned().collect::<Vec<_>>();
+    let inventory_sha256 = json_sha256(&(
+        "INSTALLED_CONTEXT_BOUND_CAPABILITY_INVENTORY_1",
+        crate::generated_sem5_capability::GENERATED_SOURCE_SCHEMA_REVISION,
+        &installed_hashes,
+        &context_bound,
+    ))?;
+    let mut canary_receipt_sha256 = Vec::new();
+    let mut failure_classes = Vec::new();
+    for (artifact, context) in &context_bound {
+        match execute_behavioral_composition_canary(context) {
+            Ok(receipt) => {
+                let pass = receipt.context_sha256 == *context
+                    && receipt.program_ir_sha256 == *artifact
+                    && receipt.installed_capability_present
+                    && receipt.installed_program_match
+                    && receipt.installed_cases_executed == receipt.cases_executed
+                    && receipt.installed_cases_passed == receipt.cases_passed
+                    && receipt.installed_output_sha256.is_some();
+                canary_receipt_sha256.push(receipt.receipt_sha256);
+                if !pass {
+                    failure_classes.push(format!("INSTALLED_CANARY_MISMATCH:{artifact}"));
+                }
+            }
+            Err(error) => {
+                failure_classes.push(format!(
+                    "INSTALLED_CANARY_ERROR:{artifact}:{}",
+                    error.split(':').next().unwrap_or("UNKNOWN")
+                ));
+            }
         }
-        Err(error) => (sha256(error.as_bytes()), false),
-    };
-    if state.last_installed_composite_execution_sha256.as_deref() == Some(&event_sha256) {
-        return;
     }
-    state.last_installed_composite_execution_sha256 = Some(event_sha256);
+    let pass = failure_classes.is_empty() && canary_receipt_sha256.len() == context_bound.len();
+    let receipt_sha256 = json_sha256(&(
+        "B_CORE_INSTALLED_CAPABILITY_INVENTORY_EXECUTION_1",
+        crate::generated_sem5_capability::GENERATED_CAPABILITY_COUNT,
+        context_bound.len(),
+        &inventory_sha256,
+        &installed_hashes,
+        &canary_receipt_sha256,
+        &failure_classes,
+        pass,
+    ))?;
+    let receipt = InstalledCapabilityInventoryExecutionReceipt {
+        schema: "B_CORE_INSTALLED_CAPABILITY_INVENTORY_EXECUTION_1".to_string(),
+        installed_registry_capability_count:
+            crate::generated_sem5_capability::GENERATED_CAPABILITY_COUNT,
+        context_bound_capability_count: context_bound.len(),
+        inventory_sha256: inventory_sha256.clone(),
+        artifact_sha256: context_bound
+            .iter()
+            .map(|(artifact, _)| artifact.clone())
+            .collect(),
+        canary_receipt_sha256,
+        failure_classes,
+        pass,
+        receipt_sha256: receipt_sha256.clone(),
+    };
+    if state.last_installed_composite_execution_sha256.as_deref() == Some(receipt_sha256.as_str()) {
+        return Ok(None);
+    }
+    let diagnostics = config.state_dir.join("diagnostics");
+    fs::create_dir_all(&diagnostics)
+        .map_err(|error| format!("INSTALLED_CAPABILITY_DIAGNOSTICS_CREATE:{error}"))?;
+    write_immutable_json(
+        &diagnostics.join(format!(
+            "installed_capability_inventory_{receipt_sha256}.json"
+        )),
+        &receipt,
+    )?;
+    cleanup_recent_files(&diagnostics, "installed_capability_inventory_", 8)?;
+
+    let previous_validated = state.installed_context_bound_capabilities_validated;
+    state.last_installed_capability_inventory_sha256 = Some(inventory_sha256.clone());
+    state.last_installed_composite_execution_sha256 = Some(receipt_sha256.clone());
     state.installed_composite_capability_execution_events = state
         .installed_composite_capability_execution_events
         .saturating_add(1);
@@ -6558,7 +6631,69 @@ fn revalidate_installed_composite_capability(state: &mut SupervisorState, memory
             .installed_composite_capability_execution_failures
             .saturating_add(1);
         state.self_repair_capability_gaps = state.self_repair_capability_gaps.saturating_add(1);
+        return Ok(None);
     }
+    let validated = context_bound.len().min(u64::MAX as usize) as u64;
+    state.installed_context_bound_capabilities_validated = validated;
+    if validated <= previous_validated {
+        return Ok(None);
+    }
+    state.installed_capability_continuation_observations = state
+        .installed_capability_continuation_observations
+        .saturating_add(1);
+    let observation_id = sha256(
+        format!(
+            "INSTALLED_CAPABILITY_CONTINUATION:{}:{}:{}",
+            previous_validated, validated, receipt_sha256
+        )
+        .as_bytes(),
+    );
+    let source_prefix = source_mutation_watch_prefix(config)?
+        .ok_or_else(|| "INSTALLED_CAPABILITY_SOURCE_ROOT_NOT_WATCHED".to_string())?;
+    Ok(Some(LearningObservation {
+        observation_id: observation_id.clone(),
+        work_event_id: None,
+        logical_path: format!(
+            "{source_prefix}.b_installed_capability_inventory/{observation_id}"
+        ),
+        content_sha256: receipt_sha256.clone(),
+        predecessor_content_sha256: None,
+        actor: WorkActor::LocalTool,
+        work_kind: WorkKind::CodeChange,
+        work_outcome: WorkOutcome::Pass,
+        features_before: None,
+        features_after: StructuralFeatures::default(),
+        signals: vec![
+            "BEHAVIORAL_FRONTIER_ADVANCE".to_string(),
+            "INSTALLED_COMPOSITE_CAPABILITY_INVENTORY_EXECUTION".to_string(),
+            "VERIFIED_PASS".to_string(),
+        ],
+        composition_roles: vec![
+            "IMPLEMENTATION".to_string(),
+            "INVARIANT_CHECK".to_string(),
+            "PROGRAM_COMPOSITION".to_string(),
+            "REGRESSION_TEST".to_string(),
+        ],
+        learning_score: 95,
+        learning_value: LearningValue::High,
+        reasons: vec![
+            "every context-bound installed callable passed fresh deterministic property cases"
+                .to_string(),
+            "a larger executable capability inventory is a measured growth subject, not a repeated source-shape lesson"
+                .to_string(),
+        ],
+        verification_evidence_sha256: vec![receipt_sha256.clone(), inventory_sha256],
+        performance_metrics: vec![PerformanceMetricEvidence {
+            metric: "INSTALLED_CONTEXT_BOUND_CAPABILITY_COUNT".to_string(),
+            before: previous_validated,
+            after: validated,
+            lower_is_better: false,
+            evidence_sha256: receipt_sha256,
+        }],
+        exact_source_fragments_stored: 0,
+        raw_source_bytes_stored: 0,
+        observed_at_ms: state.last_transition_ms.saturating_add(1),
+    }))
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -6875,7 +7010,8 @@ fn step_without_lease(
     if json_sha256(&memory)? != state.current_memory_sha256 {
         return Err("CURRENT_MEMORY_HASH_MISMATCH".to_string());
     }
-    revalidate_installed_composite_capability(&mut state, &memory);
+    let installed_capability_observation =
+        revalidate_installed_composite_capability(config, &mut state, &memory)?;
     let (distinct_semantic_lessons, semantic_duplicate_lessons) = semantic_lesson_counts(&memory)?;
     state.distinct_semantic_lessons = distinct_semantic_lessons;
     state.semantic_duplicate_lessons = semantic_duplicate_lessons;
@@ -7011,6 +7147,9 @@ fn step_without_lease(
     state.last_scan_files_hashed = scan.files_hashed.min(u64::MAX as usize) as u64;
     state.observed_bytes = state.observed_bytes.saturating_add(scan.bytes_observed);
     persist_scan_observations(config, &scan.observations)?;
+    if let Some(observation) = installed_capability_observation.as_ref() {
+        persist_scan_observations(config, std::slice::from_ref(observation))?;
+    }
     save_index(config, &mut scan.index)?;
     let mut high = load_unconsumed_high_observations(config, &scan.index)?;
     consume_superseded_high_observations(config, &mut state, &mut scan.index, &mut high)?;
@@ -8253,8 +8392,10 @@ mod tests {
                     == Some(&pending_context)
             }));
 
-        revalidate_installed_composite_capability(&mut state, &memory);
+        let observation =
+            revalidate_installed_composite_capability(&config, &mut state, &memory).unwrap();
 
+        assert!(observation.is_none());
         assert_eq!(state.installed_composite_capability_execution_events, 0);
         assert_eq!(state.installed_composite_capability_execution_failures, 0);
         assert_eq!(state.self_repair_capability_gaps, 0);
