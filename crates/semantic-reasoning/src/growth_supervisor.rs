@@ -2774,11 +2774,72 @@ fn derive_composition_recipe(observations: &[LearningObservation]) -> Vec<String
     recipe
 }
 
+fn structural_delta_bucket(magnitude: u32) -> &'static str {
+    match magnitude {
+        0 => "NONE",
+        1 => "ONE",
+        2..=4 => "SMALL",
+        5..=16 => "MEDIUM",
+        _ => "LARGE",
+    }
+}
+
+fn append_structural_delta_signals(
+    signals: &mut BTreeSet<String>,
+    observation: &LearningObservation,
+) {
+    let (Some(before), after) = (
+        observation.features_before.as_ref(),
+        &observation.features_after,
+    ) else {
+        return;
+    };
+    for (field, prior, current) in [
+        ("PUBLIC_SYMBOL", before.public_symbols, after.public_symbols),
+        ("BRANCH", before.branch_tokens, after.branch_tokens),
+        ("ASSERTION", before.assertion_tokens, after.assertion_tokens),
+        ("TEST", before.test_tokens, after.test_tokens),
+        (
+            "VALIDATION",
+            before.validation_tokens,
+            after.validation_tokens,
+        ),
+        (
+            "ERROR_HANDLING",
+            before.error_handling_tokens,
+            after.error_handling_tokens,
+        ),
+        ("TODO", before.todo_tokens, after.todo_tokens),
+        ("BENCHMARK", before.benchmark_tokens, after.benchmark_tokens),
+        (
+            "PERFORMANCE",
+            before.performance_tokens,
+            after.performance_tokens,
+        ),
+    ] {
+        if prior == current {
+            continue;
+        }
+        signals.insert(format!(
+            "STRUCTURAL_DELTA:{field}:{}:{}",
+            if current > prior {
+                "INCREASE"
+            } else {
+                "DECREASE"
+            },
+            structural_delta_bucket(current.abs_diff(prior))
+        ));
+    }
+}
+
 fn build_lesson(observations: &[LearningObservation]) -> Result<LearnedCompositionLesson, String> {
-    let signals = observations
+    let mut signals = observations
         .iter()
         .flat_map(|observation| observation.signals.iter().cloned())
         .collect::<BTreeSet<_>>();
+    for observation in observations {
+        append_structural_delta_signals(&mut signals, observation);
+    }
     let kinds = observations
         .iter()
         .map(|observation| observation.work_kind)
@@ -8266,6 +8327,63 @@ mod tests {
         assert_ne!(
             lesson_semantic_sha256(&lesson).unwrap(),
             lesson_semantic_sha256(&better_lesson).unwrap()
+        );
+    }
+
+    #[test]
+    fn structural_delta_profile_distinguishes_capabilities_without_exact_source_identity() {
+        let base = LearningObservation {
+            observation_id: "first-shape".to_string(),
+            work_event_id: None,
+            logical_path: "ROOT_0/src/first.rs".to_string(),
+            content_sha256: "a".repeat(64),
+            predecessor_content_sha256: Some("b".repeat(64)),
+            actor: WorkActor::UnknownLocalWriter,
+            work_kind: WorkKind::CodeChange,
+            work_outcome: WorkOutcome::Pass,
+            features_before: Some(StructuralFeatures::default()),
+            features_after: StructuralFeatures {
+                public_symbols: 1,
+                branch_tokens: 3,
+                ..StructuralFeatures::default()
+            },
+            signals: vec!["CODE_CHANGE".to_string(), "VERIFIED_PASS".to_string()],
+            composition_roles: vec!["IMPLEMENTATION".to_string(), "REGRESSION_TEST".to_string()],
+            learning_score: 80,
+            learning_value: LearningValue::High,
+            reasons: vec!["bounded verified change".to_string()],
+            verification_evidence_sha256: vec!["c".repeat(64)],
+            performance_metrics: Vec::new(),
+            exact_source_fragments_stored: 0,
+            raw_source_bytes_stored: 0,
+            observed_at_ms: 1,
+        };
+        let first = build_lesson(std::slice::from_ref(&base)).unwrap();
+        assert!(first
+            .diagnostic_signals
+            .contains(&"STRUCTURAL_DELTA:PUBLIC_SYMBOL:INCREASE:ONE".to_string()));
+        assert!(first
+            .diagnostic_signals
+            .contains(&"STRUCTURAL_DELTA:BRANCH:INCREASE:SMALL".to_string()));
+
+        let mut same_shape = base.clone();
+        same_shape.observation_id = "renamed-shape".to_string();
+        same_shape.logical_path = "ROOT_0/src/renamed.rs".to_string();
+        same_shape.content_sha256 = "d".repeat(64);
+        same_shape.predecessor_content_sha256 = Some("e".repeat(64));
+        let repeated = build_lesson(&[same_shape]).unwrap();
+        assert_eq!(
+            lesson_semantic_sha256(&first).unwrap(),
+            lesson_semantic_sha256(&repeated).unwrap()
+        );
+
+        let mut different_shape = base;
+        different_shape.features_after.branch_tokens = 0;
+        different_shape.features_after.assertion_tokens = 3;
+        let distinct = build_lesson(&[different_shape]).unwrap();
+        assert_ne!(
+            lesson_semantic_sha256(&first).unwrap(),
+            lesson_semantic_sha256(&distinct).unwrap()
         );
     }
 }
