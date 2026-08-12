@@ -26,9 +26,9 @@ use crate::autonomous_self_inspection::{
 use crate::autonomous_source_mutation::{
     command_receipt_with_incremental, discover_known_source_improvement,
     discover_known_source_improvement_detailed, full_workspace_semantic_fingerprint,
-    install_and_stage_source_patch, validate_policy, AutonomousSourceMutationPolicy,
-    AutonomousSourcePatchReceipt, AutonomousSourcePatchRequest, LocalCommandReceipt,
-    SOURCE_REPAIR_ENGINE_REVISION,
+    install_and_stage_source_patch, source_opportunity_family_id, validate_policy,
+    AutonomousSourceMutationPolicy, AutonomousSourcePatchReceipt, AutonomousSourcePatchRequest,
+    ChangeOpportunityKind, LocalCommandReceipt, SOURCE_REPAIR_ENGINE_REVISION,
 };
 use crate::generative_growth::{
     promote_generative_cycle, run_generative_cycle, validate_behavioral_execution_receipt,
@@ -217,6 +217,10 @@ pub struct SourcePatchOutcomeSample {
     pub installed: bool,
     pub rolled_back: bool,
     pub validation_ms: u64,
+    #[serde(default)]
+    pub opportunity_kind: ChangeOpportunityKind,
+    #[serde(default)]
+    pub opportunity_family_id: String,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -837,6 +841,13 @@ pub struct StepReport {
     pub source_patch_recent_installations: u64,
     pub source_patch_recent_rollbacks: u64,
     pub source_patch_recent_validation_ms: u64,
+    pub source_patch_recent_distinct_opportunity_families: u64,
+    pub source_patch_recent_defect_families: u64,
+    pub source_patch_recent_capability_gap_families: u64,
+    pub source_patch_recent_efficiency_opportunity_families: u64,
+    pub source_patch_recent_robustness_opportunity_families: u64,
+    pub source_patch_recent_research_hypothesis_families: u64,
+    pub source_patch_recent_verified_improvements: u64,
     pub source_discovery_no_candidate_streak: u32,
     pub last_source_discovery_reason: Option<String>,
     pub source_patch_consecutive_failures: u32,
@@ -2435,6 +2446,8 @@ pub fn preview_source_repair(config_path: &Path) -> Result<serde_json::Value, St
             "relative_path": request.relative_path,
             "transformation": request.transformation,
             "solution_strategy": request.solution_strategy,
+            "opportunity_kind": request.opportunity_kind,
+            "opportunity_family_id": request.opportunity_family_id,
             "source_generation": request.source_generation,
             "candidate_sha256": request.candidate_sha256,
         }),
@@ -5585,6 +5598,7 @@ fn report_from_state(
         source_patch_recent_rollbacks,
         source_patch_recent_validation_ms,
     ) = recent_source_patch_stats(state);
+    let opportunity_stats = recent_source_opportunity_stats(state);
     StepReport {
         schema: SUPERVISOR_SCHEMA.to_string(),
         phase: state.phase,
@@ -5659,6 +5673,15 @@ fn report_from_state(
         source_patch_recent_installations,
         source_patch_recent_rollbacks,
         source_patch_recent_validation_ms,
+        source_patch_recent_distinct_opportunity_families: opportunity_stats.distinct_total,
+        source_patch_recent_defect_families: opportunity_stats.defects,
+        source_patch_recent_capability_gap_families: opportunity_stats.capability_gaps,
+        source_patch_recent_efficiency_opportunity_families: opportunity_stats
+            .efficiency_opportunities,
+        source_patch_recent_robustness_opportunity_families: opportunity_stats
+            .robustness_opportunities,
+        source_patch_recent_research_hypothesis_families: opportunity_stats.research_hypotheses,
+        source_patch_recent_verified_improvements: opportunity_stats.verified_improvements,
         source_discovery_no_candidate_streak: state.source_discovery_no_candidate_streak,
         last_source_discovery_reason: state.last_source_discovery_reason.clone(),
         source_patch_consecutive_failures: state.source_patch_consecutive_failures,
@@ -5775,6 +5798,54 @@ fn recent_source_patch_stats(state: &SupervisorState) -> (u64, u64, u64, u64) {
     (attempts, installations, rollbacks, validation_ms)
 }
 
+#[derive(Debug, Default, PartialEq, Eq)]
+struct RecentSourceOpportunityStats {
+    distinct_total: u64,
+    defects: u64,
+    capability_gaps: u64,
+    efficiency_opportunities: u64,
+    robustness_opportunities: u64,
+    research_hypotheses: u64,
+    verified_improvements: u64,
+}
+
+fn recent_source_opportunity_stats(state: &SupervisorState) -> RecentSourceOpportunityStats {
+    let mut all = BTreeSet::new();
+    let mut by_kind: BTreeMap<ChangeOpportunityKind, BTreeSet<String>> = BTreeMap::new();
+    let mut verified = BTreeSet::new();
+    for sample in state
+        .source_patch_recent_outcomes
+        .iter()
+        .filter(|sample| sample.engine_revision == SOURCE_REPAIR_ENGINE_REVISION)
+    {
+        if sample.opportunity_family_id.is_empty() {
+            continue;
+        }
+        all.insert(sample.opportunity_family_id.clone());
+        by_kind
+            .entry(sample.opportunity_kind)
+            .or_default()
+            .insert(sample.opportunity_family_id.clone());
+        if sample.installed {
+            verified.insert(sample.opportunity_family_id.clone());
+        }
+    }
+    let count = |kind| {
+        by_kind
+            .get(&kind)
+            .map_or(0, |families| families.len().min(u64::MAX as usize) as u64)
+    };
+    RecentSourceOpportunityStats {
+        distinct_total: all.len().min(u64::MAX as usize) as u64,
+        defects: count(ChangeOpportunityKind::Defect),
+        capability_gaps: count(ChangeOpportunityKind::CapabilityGap),
+        efficiency_opportunities: count(ChangeOpportunityKind::EfficiencyOpportunity),
+        robustness_opportunities: count(ChangeOpportunityKind::RobustnessOpportunity),
+        research_hypotheses: count(ChangeOpportunityKind::ResearchHypothesis),
+        verified_improvements: verified.len().min(u64::MAX as usize) as u64,
+    }
+}
+
 fn account_source_patch_receipt(
     state: &mut SupervisorState,
     receipt: &AutonomousSourcePatchReceipt,
@@ -5791,6 +5862,8 @@ fn account_source_patch_receipt(
             installed: receipt.installed,
             rolled_back: receipt.rolled_back,
             validation_ms,
+            opportunity_kind: receipt.opportunity_kind,
+            opportunity_family_id: receipt.opportunity_family_id.clone(),
         },
     );
     if receipt.installed {
@@ -5805,7 +5878,11 @@ fn account_source_patch_receipt(
     }
 }
 
-fn account_source_patch_error(state: &mut SupervisorState) {
+fn account_source_patch_error(
+    state: &mut SupervisorState,
+    opportunity_kind: ChangeOpportunityKind,
+    opportunity_family_id: String,
+) {
     push_source_patch_outcome(
         state,
         SourcePatchOutcomeSample {
@@ -5813,6 +5890,8 @@ fn account_source_patch_error(state: &mut SupervisorState) {
             installed: false,
             rolled_back: true,
             validation_ms: 0,
+            opportunity_kind,
+            opportunity_family_id,
         },
     );
     state.autonomous_source_patch_rollbacks =
@@ -5933,7 +6012,14 @@ fn attempt_pending_composite_capability_install(
         Err(_) => {
             state.last_source_discovery_reason =
                 Some("COMPOSITE_CAPABILITY_INSTALL_ERROR".to_string());
-            account_source_patch_error(state);
+            account_source_patch_error(
+                state,
+                ChangeOpportunityKind::CapabilityGap,
+                source_opportunity_family_id(
+                    ChangeOpportunityKind::CapabilityGap,
+                    "SEM5_PROGRAM_IR_TO_ACTIVE_RUNTIME_CALLABLE",
+                ),
+            );
             state.composite_capability_install_rollbacks = state
                 .composite_capability_install_rollbacks
                 .saturating_add(1);
@@ -6004,6 +6090,8 @@ fn attempt_discovered_source_repair(
             let Some(request) = discovery.candidate else {
                 return Ok(false);
             };
+            let opportunity_kind = request.opportunity_kind;
+            let opportunity_family_id = request.opportunity_family_id.clone();
             state.source_discovery_no_candidate_streak = 0;
             state.last_source_discovery_reason = Some(discovery.disposition.label().to_string());
             state.autonomous_source_patch_attempts =
@@ -6021,7 +6109,7 @@ fn attempt_discovered_source_repair(
                     }
                 }
                 Err(_) => {
-                    account_source_patch_error(state);
+                    account_source_patch_error(state, opportunity_kind, opportunity_family_id);
                 }
             }
         }
@@ -6167,6 +6255,8 @@ fn step_without_lease(
         return Err("CURRENT_EVALUATOR_MEMORY_HASH_MISMATCH".to_string());
     }
     if let Some((queued_path, request)) = next_queued_source_patch(config)? {
+        let opportunity_kind = request.opportunity_kind;
+        let opportunity_family_id = request.opportunity_family_id.clone();
         state.autonomous_source_patch_attempts =
             state.autonomous_source_patch_attempts.saturating_add(1);
         match install_and_stage_source_patch(&config.source_mutation, &config.state_dir, &request) {
@@ -6189,7 +6279,7 @@ fn step_without_lease(
                 }
             }
             Err(_) => {
-                account_source_patch_error(&mut state);
+                account_source_patch_error(&mut state, opportunity_kind, opportunity_family_id);
                 let rejected = config
                     .state_dir
                     .join("control")
@@ -6535,6 +6625,49 @@ mod tests {
         let config_path = root.join("config.json");
         write_immutable_json(&config_path, &config).unwrap();
         (config_path, config)
+    }
+
+    #[test]
+    fn opportunity_metrics_count_unique_families_not_repeated_attempts() {
+        let root = temp_root("opportunity-family-metrics");
+        let (config_path, _) = test_config(&root);
+        let mut state = initialize(&config_path).unwrap();
+        let defect_family =
+            source_opportunity_family_id(ChangeOpportunityKind::Defect, "GENERAL_PARSE_REPAIR");
+        let efficiency_family = source_opportunity_family_id(
+            ChangeOpportunityKind::EfficiencyOpportunity,
+            "GENERAL_SCAN_CACHE_REUSE",
+        );
+        for installed in [false, false, true] {
+            state
+                .source_patch_recent_outcomes
+                .push(SourcePatchOutcomeSample {
+                    engine_revision: SOURCE_REPAIR_ENGINE_REVISION,
+                    installed,
+                    rolled_back: !installed,
+                    validation_ms: 11,
+                    opportunity_kind: ChangeOpportunityKind::Defect,
+                    opportunity_family_id: defect_family.clone(),
+                });
+        }
+        state
+            .source_patch_recent_outcomes
+            .push(SourcePatchOutcomeSample {
+                engine_revision: SOURCE_REPAIR_ENGINE_REVISION,
+                installed: true,
+                rolled_back: false,
+                validation_ms: 7,
+                opportunity_kind: ChangeOpportunityKind::EfficiencyOpportunity,
+                opportunity_family_id: efficiency_family,
+            });
+
+        let stats = recent_source_opportunity_stats(&state);
+        assert_eq!(stats.distinct_total, 2);
+        assert_eq!(stats.defects, 1);
+        assert_eq!(stats.efficiency_opportunities, 1);
+        assert_eq!(stats.verified_improvements, 2);
+        assert_eq!(recent_source_patch_stats(&state), (4, 2, 2, 40));
+        fs::remove_dir_all(root).unwrap();
     }
 
     #[test]

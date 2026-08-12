@@ -15,8 +15,9 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value as JsonValue;
 
 use crate::autonomous_source_mutation::{
-    install_and_stage_source_patch, AutonomousSourceMutationPolicy, AutonomousSourcePatchReceipt,
-    AutonomousSourcePatchRequest, AUTONOMOUS_SOURCE_MUTATION_SCHEMA,
+    install_and_stage_source_patch, source_opportunity_family_id, AutonomousSourceMutationPolicy,
+    AutonomousSourcePatchReceipt, AutonomousSourcePatchRequest, ChangeOpportunityKind,
+    AUTONOMOUS_SOURCE_MUTATION_SCHEMA,
 };
 use crate::generalized_self_application::{
     derive_dynamic_weakness, synthesize_generalized_change, WeaknessEvidenceKind,
@@ -408,7 +409,7 @@ pub fn install_composite_candidate(
         predecessor_sha256,
         candidate_source,
         candidate_sha256,
-        transformation,
+        transformation: transformation.clone(),
         consequence_predictions: consequences,
         predicted_value: policy.minimum_predicted_value.clamp(85, 100),
         source_generation,
@@ -418,6 +419,11 @@ pub fn install_composite_candidate(
         structural_repair_program: Some(structural_repair_program),
         generalized_change: Some(generalized_change),
         additional_family_members: Vec::new(),
+        opportunity_kind: ChangeOpportunityKind::CapabilityGap,
+        opportunity_family_id: source_opportunity_family_id(
+            ChangeOpportunityKind::CapabilityGap,
+            &transformation,
+        ),
     };
     install_and_stage_source_patch(policy, state_dir, &request)
 }

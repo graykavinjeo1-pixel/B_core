@@ -33,7 +33,7 @@ use crate::structural_source_repair::{
 pub const AUTONOMOUS_SOURCE_MUTATION_SCHEMA: &str = "B_CORE_AUTONOMOUS_SOURCE_MUTATION_1";
 pub const SELF_UPDATE_HANDOFF_FILE: &str = "SELF_UPDATE_READY.json";
 pub const SOURCE_REPAIR_LEARNING_SCHEMA: &str = "B_CORE_SOURCE_REPAIR_LEARNING_1";
-pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 5;
+pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 6;
 const KNOWN_REMAINDER_PREDICTED_VALUE: u16 = 35;
 const MAX_REPOSITORY_REPAIR_FAMILY_FILES: usize = 16;
 const KNOWN_REMAINDER_STRATEGIES: [&str; 4] = [
@@ -138,6 +138,38 @@ pub struct SourcePatchFamilyMember {
     pub public_examples_satisfied: usize,
 }
 
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum ChangeOpportunityKind {
+    Defect,
+    CapabilityGap,
+    EfficiencyOpportunity,
+    RobustnessOpportunity,
+    #[default]
+    ResearchHypothesis,
+}
+
+pub fn source_opportunity_family_id(
+    kind: ChangeOpportunityKind,
+    stable_family_basis: &str,
+) -> String {
+    sha256(
+        format!(
+            "B_CORE_CHANGE_OPPORTUNITY_FAMILY_1:{kind:?}:{}",
+            stable_family_basis.trim().to_ascii_uppercase()
+        )
+        .as_bytes(),
+    )
+}
+
+fn opportunity_binding_valid(request: &AutonomousSourcePatchRequest) -> bool {
+    request.opportunity_family_id.len() == 64
+        && request
+            .opportunity_family_id
+            .bytes()
+            .all(|byte| byte.is_ascii_hexdigit())
+}
+
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct AutonomousSourcePatchRequest {
     pub schema: String,
@@ -160,6 +192,10 @@ pub struct AutonomousSourcePatchRequest {
     pub generalized_change: Option<GeneralizedChangeIR>,
     #[serde(default)]
     pub additional_family_members: Vec<SourcePatchFamilyMember>,
+    #[serde(default)]
+    pub opportunity_kind: ChangeOpportunityKind,
+    #[serde(default)]
+    pub opportunity_family_id: String,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -215,6 +251,10 @@ pub struct SourceRepairAttempt {
     pub family_member_count: usize,
     #[serde(default)]
     pub family_structural_repair_program_sha256: Vec<String>,
+    #[serde(default)]
+    pub opportunity_kind: ChangeOpportunityKind,
+    #[serde(default)]
+    pub opportunity_family_id: String,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -239,6 +279,10 @@ pub struct LearnedSuccessfulRepair {
     pub family_member_count: usize,
     #[serde(default)]
     pub family_structural_repair_program_sha256: Vec<String>,
+    #[serde(default)]
+    pub opportunity_kind: ChangeOpportunityKind,
+    #[serde(default)]
+    pub opportunity_family_id: String,
 }
 
 fn one_family_member() -> usize {
@@ -258,6 +302,10 @@ pub struct SourceRepairLearningRecord {
     pub eligible_after_generation: Option<u64>,
     pub attempts: Vec<SourceRepairAttempt>,
     pub learned_success: Option<LearnedSuccessfulRepair>,
+    #[serde(default)]
+    pub opportunity_kind: ChangeOpportunityKind,
+    #[serde(default)]
+    pub opportunity_family_id: String,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -296,6 +344,10 @@ pub struct AutonomousSourcePatchReceipt {
     pub candidate_sha256: String,
     pub core_generated: bool,
     pub core_self_approved: bool,
+    #[serde(default)]
+    pub opportunity_kind: ChangeOpportunityKind,
+    #[serde(default)]
+    pub opportunity_family_id: String,
     pub installed: bool,
     pub rolled_back: bool,
     #[serde(default)]
@@ -592,6 +644,11 @@ fn record_source_repair_outcome(
     request: &AutonomousSourcePatchRequest,
     receipt: &AutonomousSourcePatchReceipt,
 ) -> Result<SourceRepairLearningRecord, String> {
+    if receipt.opportunity_kind != request.opportunity_kind
+        || receipt.opportunity_family_id != request.opportunity_family_id
+    {
+        return Err("SOURCE_REPAIR_RECEIPT_OPPORTUNITY_BINDING_MISMATCH".to_string());
+    }
     let problem_id = repair_problem_id(request);
     let mut record = load_repair_learning(state_dir, &problem_id)?.unwrap_or_else(|| {
         SourceRepairLearningRecord {
@@ -605,8 +662,19 @@ fn record_source_repair_outcome(
             eligible_after_generation: None,
             attempts: Vec::new(),
             learned_success: None,
+            opportunity_kind: request.opportunity_kind,
+            opportunity_family_id: request.opportunity_family_id.clone(),
         }
     });
+    if record.opportunity_family_id.is_empty() {
+        record.opportunity_kind = request.opportunity_kind;
+        record.opportunity_family_id = request.opportunity_family_id.clone();
+    }
+    if record.opportunity_kind != request.opportunity_kind
+        || record.opportunity_family_id != request.opportunity_family_id
+    {
+        return Err("SOURCE_REPAIR_OPPORTUNITY_BINDING_MISMATCH".to_string());
+    }
     if record.status != "LEARNED_SUCCESS"
         && ((record.status == "ADMITTED_FAILURE"
             && record
@@ -662,6 +730,8 @@ fn record_source_repair_outcome(
         derived_from_counterexample_ids: derived_from_counterexample_ids.clone(),
         family_member_count,
         family_structural_repair_program_sha256: family_structural_repair_program_sha256.clone(),
+        opportunity_kind: request.opportunity_kind,
+        opportunity_family_id: request.opportunity_family_id.clone(),
     });
     if receipt.installed {
         record.status = "LEARNED_SUCCESS".to_string();
@@ -684,6 +754,8 @@ fn record_source_repair_outcome(
             derived_from_counterexample_ids,
             family_member_count,
             family_structural_repair_program_sha256,
+            opportunity_kind: request.opportunity_kind,
+            opportunity_family_id: request.opportunity_family_id.clone(),
         });
     } else if attempt_number >= policy.max_attempts_per_problem {
         record.status = "ADMITTED_FAILURE".to_string();
@@ -932,6 +1004,7 @@ fn prepare_family_members(
         || request.predicted_value < policy.minimum_predicted_value
         || request.predicted_value > 100
         || sha256(request.candidate_source.as_bytes()) != request.candidate_sha256
+        || !opportunity_binding_valid(request)
     {
         return Err("SOURCE_MUTATION_REQUEST_INVALID".to_string());
     }
@@ -1096,6 +1169,7 @@ fn install_primary_and_stage_source_patch(
         || request.predicted_value > 100
         || request.candidate_source.len() as u64 > policy.max_candidate_bytes
         || sha256(request.candidate_source.as_bytes()) != request.candidate_sha256
+        || !opportunity_binding_valid(request)
     {
         return Err("SOURCE_MUTATION_REQUEST_INVALID".to_string());
     }
@@ -1212,6 +1286,8 @@ fn install_primary_and_stage_source_patch(
             candidate_sha256: request.candidate_sha256.clone(),
             core_generated: true,
             core_self_approved: true,
+            opportunity_kind: request.opportunity_kind,
+            opportunity_family_id: request.opportunity_family_id.clone(),
             installed: false,
             rolled_back: true,
             failure_reason: Some("FORMAT_CHECK_FAILED".to_string()),
@@ -1273,6 +1349,8 @@ fn install_primary_and_stage_source_patch(
             candidate_sha256: request.candidate_sha256.clone(),
             core_generated: true,
             core_self_approved: true,
+            opportunity_kind: request.opportunity_kind,
+            opportunity_family_id: request.opportunity_family_id.clone(),
             installed: false,
             rolled_back: true,
             failure_reason: Some("CLIPPY_CHECK_FAILED".to_string()),
@@ -1321,6 +1399,8 @@ fn install_primary_and_stage_source_patch(
             candidate_sha256: request.candidate_sha256.clone(),
             core_generated: true,
             core_self_approved: true,
+            opportunity_kind: request.opportunity_kind,
+            opportunity_family_id: request.opportunity_family_id.clone(),
             installed: false,
             rolled_back: true,
             failure_reason: Some("REGRESSION_VALIDATION_FAILED".to_string()),
@@ -1378,6 +1458,8 @@ fn install_primary_and_stage_source_patch(
             candidate_sha256: request.candidate_sha256.clone(),
             core_generated: true,
             core_self_approved: true,
+            opportunity_kind: request.opportunity_kind,
+            opportunity_family_id: request.opportunity_family_id.clone(),
             installed: false,
             rolled_back: true,
             failure_reason: Some("RELEASE_BUILD_FAILED".to_string()),
@@ -1414,6 +1496,8 @@ fn install_primary_and_stage_source_patch(
             candidate_sha256: request.candidate_sha256.clone(),
             core_generated: true,
             core_self_approved: true,
+            opportunity_kind: request.opportunity_kind,
+            opportunity_family_id: request.opportunity_family_id.clone(),
             installed: false,
             rolled_back: true,
             failure_reason: Some(if target_still_exact_candidate {
@@ -1468,6 +1552,8 @@ fn install_primary_and_stage_source_patch(
         candidate_sha256: request.candidate_sha256.clone(),
         core_generated: true,
         core_self_approved: true,
+        opportunity_kind: request.opportunity_kind,
+        opportunity_family_id: request.opportunity_family_id.clone(),
         installed: true,
         rolled_back: false,
         failure_reason: None,
@@ -1485,8 +1571,10 @@ fn install_primary_and_stage_source_patch(
     receipt.receipt_sha256 = receipt_hash(&receipt)?;
     write_immutable_json(&receipt_path, &receipt)?;
     record_source_repair_outcome(policy, state_dir, request, &receipt)?;
-    fs::remove_file(&rollback_sibling)
-        .map_err(|error| format!("SOURCE_MUTATION_ROLLBACK_SIBLING_CLEANUP:{error}"))?;
+    // Validation and installation are already committed at this point. A
+    // transient cleanup failure must not be reclassified as a failed repair;
+    // the authoritative predecessor copy remains in `rollback_source`.
+    let _ = fs::remove_file(&rollback_sibling);
 
     fs::create_dir_all(&policy.runtime_bin_dir)
         .map_err(|error| format!("SOURCE_MUTATION_RUNTIME_DIR:{error}"))?;
@@ -1523,8 +1611,10 @@ pub fn install_and_stage_source_patch(
     match install_primary_and_stage_source_patch(policy, state_dir, request) {
         Ok(receipt) if receipt.installed => {
             for member in &family_members {
-                fs::remove_file(&member.rollback_sibling)
-                    .map_err(|error| format!("SOURCE_MUTATION_FAMILY_ROLLBACK_CLEANUP:{error}"))?;
+                // Cleanup is outside the repair transaction's semantic commit
+                // boundary. The durable predecessor copies in the mutation
+                // root make any undeleted sibling redundant and recoverable.
+                let _ = fs::remove_file(&member.rollback_sibling);
             }
             Ok(receipt)
         }
@@ -1729,6 +1819,50 @@ fn repair_strategy_is_available(
     )
 }
 
+fn compiler_opportunity_metadata(transformation: &str) -> (ChangeOpportunityKind, String) {
+    let stable_family_basis = transformation
+        .rsplit_once(':')
+        .filter(|(_, suffix)| {
+            suffix.len() >= 12 && suffix.bytes().all(|byte| byte.is_ascii_hexdigit())
+        })
+        .map(|(basis, _)| basis)
+        .unwrap_or(transformation);
+    let kind = if stable_family_basis.contains(":clippy::") {
+        ChangeOpportunityKind::RobustnessOpportunity
+    } else {
+        ChangeOpportunityKind::Defect
+    };
+    (
+        kind,
+        source_opportunity_family_id(kind, stable_family_basis),
+    )
+}
+
+fn grammar_opportunity_metadata(
+    transformation: &str,
+    _repair_family: &str,
+) -> (ChangeOpportunityKind, String) {
+    let kind = if transformation.contains("PUBLIC_EXAMPLE_CONTRADICTED") {
+        ChangeOpportunityKind::Defect
+    } else {
+        ChangeOpportunityKind::CapabilityGap
+    };
+    // Bind the family to the observed opportunity, not the current candidate
+    // expression. Counterexample-guided revision may change the latter while
+    // it is still solving the same hole or contradiction.
+    let stable_family_basis = transformation
+        .rsplit_once(':')
+        .filter(|(_, suffix)| {
+            suffix.len() >= 12 && suffix.bytes().all(|byte| byte.is_ascii_hexdigit())
+        })
+        .map(|(basis, _)| basis)
+        .unwrap_or(transformation);
+    (
+        kind,
+        source_opportunity_family_id(kind, stable_family_basis),
+    )
+}
+
 fn compiler_guided_request(
     policy: &AutonomousSourceMutationPolicy,
     state_dir: &Path,
@@ -1794,6 +1928,8 @@ fn compiler_guided_request(
             &candidate.consequence_predictions,
             &candidate.structural_repair_program,
         )?;
+        let (opportunity_kind, opportunity_family_id) =
+            compiler_opportunity_metadata(&candidate.transformation);
         return Ok(Some(AutonomousSourcePatchRequest {
             schema: AUTONOMOUS_SOURCE_MUTATION_SCHEMA.to_string(),
             patch_id,
@@ -1811,6 +1947,8 @@ fn compiler_guided_request(
             structural_repair_program: Some(candidate.structural_repair_program),
             generalized_change: Some(generalized_change),
             additional_family_members: Vec::new(),
+            opportunity_kind,
+            opportunity_family_id,
         }));
     }
     Ok(None)
@@ -1960,6 +2098,8 @@ fn grammar_synthesized_request(
                 public_examples_satisfied: member.public_examples_satisfied,
             })
             .collect();
+        let (opportunity_kind, opportunity_family_id) =
+            grammar_opportunity_metadata(&candidate.transformation, &candidate.repair_family);
         return Ok(Some(AutonomousSourcePatchRequest {
             schema: AUTONOMOUS_SOURCE_MUTATION_SCHEMA.to_string(),
             patch_id,
@@ -1977,6 +2117,8 @@ fn grammar_synthesized_request(
             structural_repair_program: Some(candidate.structural_repair_program),
             generalized_change: Some(generalized_change),
             additional_family_members,
+            opportunity_kind,
+            opportunity_family_id,
         }));
     }
     Ok(None)
@@ -2149,6 +2291,11 @@ pub fn discover_known_source_improvement_detailed(
                     structural_repair_program: Some(structural_repair_program),
                     generalized_change: Some(generalized_change),
                     additional_family_members: Vec::new(),
+                    opportunity_kind: ChangeOpportunityKind::EfficiencyOpportunity,
+                    opportunity_family_id: source_opportunity_family_id(
+                        ChangeOpportunityKind::EfficiencyOpportunity,
+                        &transformation,
+                    ),
                 }),
             });
         }
@@ -2195,6 +2342,8 @@ mod tests {
             candidate_sha256: request.candidate_sha256.clone(),
             core_generated: true,
             core_self_approved: true,
+            opportunity_kind: request.opportunity_kind,
+            opportunity_family_id: request.opportunity_family_id.clone(),
             installed,
             rolled_back: !installed,
             failure_reason: (!installed).then(|| "SYNTHETIC_FAILURE".to_string()),
@@ -2318,6 +2467,39 @@ mod tests {
     }
 
     #[test]
+    fn opportunity_family_identity_is_stable_across_candidate_attempts() {
+        let (first_kind, first_family) = compiler_opportunity_metadata(
+            "COMPILER_OBSERVATION:clippy::needless_else:aaaaaaaaaaaa",
+        );
+        let (second_kind, second_family) = compiler_opportunity_metadata(
+            "COMPILER_OBSERVATION:clippy::needless_else:bbbbbbbbbbbb",
+        );
+        assert_eq!(first_kind, ChangeOpportunityKind::RobustnessOpportunity);
+        assert_eq!(first_kind, second_kind);
+        assert_eq!(first_family, second_family);
+
+        let (hole_kind, hole_family) =
+            grammar_opportunity_metadata("AST_GRAMMAR_HOLE:TODO:1", "TYPED_I32_EXPRESSION");
+        let (defect_kind, defect_family) = grammar_opportunity_metadata(
+            "AST_GRAMMAR_HOLE:PUBLIC_EXAMPLE_CONTRADICTED_STUB:1",
+            "TYPED_I32_EXPRESSION",
+        );
+        assert_eq!(hole_kind, ChangeOpportunityKind::CapabilityGap);
+        assert_eq!(defect_kind, ChangeOpportunityKind::Defect);
+        assert_ne!(hole_family, defect_family);
+
+        let (_, add_attempt) = grammar_opportunity_metadata(
+            "AST_GRAMMAR_HOLE:TODO:1234567890abcdef",
+            "TODO:BINARY_ADD",
+        );
+        let (_, multiply_attempt) = grammar_opportunity_metadata(
+            "AST_GRAMMAR_HOLE:TODO:1234567890abcdef",
+            "TODO:BINARY_MULTIPLY",
+        );
+        assert_eq!(add_attempt, multiply_attempt);
+    }
+
+    #[test]
     fn default_retry_bound_is_backward_compatible_with_frozen_configs() {
         let policy = AutonomousSourceMutationPolicy::default();
         let serialized = serde_json::to_value(&policy).unwrap();
@@ -2375,6 +2557,8 @@ mod tests {
             .expect("compiler-guided repair candidate");
 
         assert!(request.transformation.starts_with("COMPILER_OBSERVATION:"));
+        assert_eq!(request.opportunity_kind, ChangeOpportunityKind::Defect);
+        assert_eq!(request.opportunity_family_id.len(), 64);
         assert!(request
             .solution_strategy
             .starts_with("COMPILER_SUGGESTION:"));
@@ -2402,6 +2586,8 @@ mod tests {
             .unwrap()
             .expect("learned compiler repair");
         assert_eq!(learned.status, "LEARNED_SUCCESS");
+        assert_eq!(learned.opportunity_kind, ChangeOpportunityKind::Defect);
+        assert_eq!(learned.opportunity_family_id, request.opportunity_family_id);
         assert!(learned
             .learned_success
             .as_ref()
@@ -2429,6 +2615,10 @@ mod tests {
             .expect("grammar-composed repair candidate");
 
         assert!(request.transformation.starts_with("AST_GRAMMAR_HOLE:TODO:"));
+        assert_eq!(
+            request.opportunity_kind,
+            ChangeOpportunityKind::CapabilityGap
+        );
         assert!(request
             .solution_strategy
             .starts_with("GRAMMAR_COMPOSITION:BINARY_ADD"));
@@ -2440,6 +2630,10 @@ mod tests {
             .unwrap()
             .expect("learned grammar composition");
         assert_eq!(learned.status, "LEARNED_SUCCESS");
+        assert_eq!(
+            learned.opportunity_kind,
+            ChangeOpportunityKind::CapabilityGap
+        );
         assert!(learned
             .learned_success
             .as_ref()
@@ -2553,6 +2747,7 @@ mod tests {
         assert!(request
             .transformation
             .starts_with("AST_GRAMMAR_HOLE:PUBLIC_EXAMPLE_CONTRADICTED_STUB:"));
+        assert_eq!(request.opportunity_kind, ChangeOpportunityKind::Defect);
         assert!(request
             .solution_strategy
             .starts_with("GRAMMAR_COMPOSITION:BINARY_ADD"));
