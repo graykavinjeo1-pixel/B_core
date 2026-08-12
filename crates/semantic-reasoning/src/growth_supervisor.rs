@@ -27,10 +27,10 @@ use crate::autonomous_source_mutation::{
     command_receipt_with_incremental, derive_improvement_operator_memory,
     discover_known_source_improvement, discover_known_source_improvement_detailed,
     full_workspace_semantic_fingerprint, install_and_stage_source_patch,
-    runtime_core_feature_available, source_opportunity_family_id, validate_policy,
-    AutonomousSourceMutationPolicy, AutonomousSourcePatchReceipt, AutonomousSourcePatchRequest,
-    ChangeOpportunityKind, ImprovementOperatorGeneratorKind, LocalCommandReceipt,
-    SOURCE_REPAIR_ENGINE_REVISION,
+    runtime_core_feature_available, runtime_core_relative_path, source_opportunity_family_id,
+    validate_policy, AutonomousSourceMutationPolicy, AutonomousSourcePatchReceipt,
+    AutonomousSourcePatchRequest, ChangeOpportunityKind, ImprovementOperatorGeneratorKind,
+    LocalCommandReceipt, SOURCE_REPAIR_ENGINE_REVISION,
 };
 use crate::generative_growth::{
     promote_generative_cycle, run_generative_cycle, validate_behavioral_execution_receipt,
@@ -5321,6 +5321,15 @@ fn core_validation_plan(
     observations: &[LearningObservation],
 ) -> Result<CoreValidationPlan, String> {
     let full_regression_canary = generation.is_multiple_of(FULL_CORE_REGRESSION_CANARY_INTERVAL);
+    let source_prefix = source_mutation_watch_prefix(config)?;
+    let historical_path_observed = source_prefix.as_ref().is_some_and(|prefix| {
+        observations
+            .iter()
+            .filter_map(|observation| observation.logical_path.strip_prefix(prefix))
+            .map(Path::new)
+            .any(|relative| !runtime_core_relative_path(relative))
+    });
+    let historical_regression_required = full_regression_canary || historical_path_observed;
     let validation_args = || {
         let mut args = vec![
             "test".to_string(),
@@ -5328,7 +5337,7 @@ fn core_validation_plan(
             "semantic-reasoning".to_string(),
             "--lib".to_string(),
         ];
-        if !full_regression_canary
+        if !historical_regression_required
             && runtime_core_feature_available(&config.source_mutation.source_root)
         {
             args.extend([
@@ -5340,10 +5349,10 @@ fn core_validation_plan(
         args.extend(["--quiet".to_string(), "--locked".to_string()]);
         args
     };
-    let Some(source_prefix) = source_mutation_watch_prefix(config)? else {
+    let Some(source_prefix) = source_prefix else {
         return Ok(CoreValidationPlan {
             args: validation_args(),
-            validation_scope: if full_regression_canary {
+            validation_scope: if historical_regression_required {
                 "FULL_HISTORICAL_REGRESSION_CANARY".to_string()
             } else {
                 "RUNTIME_CORE_REGRESSION".to_string()
@@ -5380,7 +5389,7 @@ fn core_validation_plan(
             modules.insert(module.to_string());
         }
     }
-    if !full_regression_canary && core_paths > 0 && modules.len() == 1 {
+    if !historical_regression_required && core_paths > 0 && modules.len() == 1 {
         let module = modules.into_iter().next().unwrap_or_default();
         if !module.is_empty() {
             let filter = format!("{module}::tests::");
@@ -5396,7 +5405,7 @@ fn core_validation_plan(
     }
     Ok(CoreValidationPlan {
         args: validation_args(),
-        validation_scope: if full_regression_canary {
+        validation_scope: if historical_regression_required {
             "FULL_HISTORICAL_REGRESSION_CANARY".to_string()
         } else {
             "RUNTIME_CORE_REGRESSION".to_string()
@@ -7333,7 +7342,7 @@ mod tests {
         let canary = core_validation_plan(
             &config,
             FULL_CORE_REGRESSION_CANARY_INTERVAL,
-            &[observation],
+            std::slice::from_ref(&observation),
         )
         .unwrap();
         assert_eq!(canary.validation_scope, "FULL_HISTORICAL_REGRESSION_CANARY");
@@ -7341,6 +7350,17 @@ mod tests {
         assert!(canary.full_regression_canary);
         assert!(!canary.args.contains(&"runtime-core".to_string()));
         assert!(targeted.args.contains(&"runtime-core".to_string()));
+
+        let mut historical_observation = observation.clone();
+        historical_observation.logical_path =
+            "ROOT_0/crates/semantic-reasoning/src/sem12/mod.rs".to_string();
+        let historical = core_validation_plan(&config, 2, &[historical_observation]).unwrap();
+        assert_eq!(
+            historical.validation_scope,
+            "FULL_HISTORICAL_REGRESSION_CANARY"
+        );
+        assert!(!historical.full_regression_canary);
+        assert!(!historical.args.contains(&"runtime-core".to_string()));
         fs::remove_dir_all(root).unwrap();
     }
 

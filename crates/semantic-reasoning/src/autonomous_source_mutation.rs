@@ -1455,8 +1455,66 @@ pub(crate) fn runtime_core_feature_available(source_root: &Path) -> bool {
     })
 }
 
-fn append_runtime_core_feature_args(source_root: &Path, args: &mut Vec<&'static str>) {
-    if runtime_core_feature_available(source_root) {
+pub(crate) fn runtime_core_relative_path(relative_path: &Path) -> bool {
+    let path = relative_path.to_string_lossy().replace('\\', "/");
+    let Some(source_path) = path.strip_prefix("crates/semantic-reasoning/src/") else {
+        return false;
+    };
+    if source_path == "lib.rs"
+        || matches!(
+            source_path,
+            "autonomous_self_inspection.rs"
+                | "autonomous_source_mutation.rs"
+                | "code_graft.rs"
+                | "compiler_guided_repair.rs"
+                | "fullstack_ops_knowledge.rs"
+                | "generalized_self_application.rs"
+                | "generated_sem5_capability.rs"
+                | "generative_growth.rs"
+                | "grammar_repair_synthesis.rs"
+                | "growth_supervisor.rs"
+                | "integrated_development.rs"
+                | "self_healing_execution.rs"
+                | "self_healing_pipeline.rs"
+                | "self_repair_contract.rs"
+                | "structural_source_repair.rs"
+        )
+    {
+        return true;
+    }
+    matches!(
+        source_path,
+        "sem5/mod.rs"
+            | "sem5/emitter.rs"
+            | "sem5/ir.rs"
+            | "sem5/learner.rs"
+            | "sem5/model.rs"
+            | "sem5/tasks.rs"
+            | "sem20/engine.rs"
+            | "sem21/engine.rs"
+            | "sem22/engine.rs"
+            | "sem23/engine.rs"
+            | "sem24/engine.rs"
+            | "sem25/engine.rs"
+            | "sem26/engine.rs"
+            | "sem27/engine.rs"
+    )
+}
+
+fn request_targets_runtime_core(request: &AutonomousSourcePatchRequest) -> bool {
+    runtime_core_relative_path(&request.relative_path)
+        && request
+            .additional_family_members
+            .iter()
+            .all(|member| runtime_core_relative_path(&member.relative_path))
+}
+
+fn append_runtime_core_feature_args(
+    source_root: &Path,
+    targets_runtime_core: bool,
+    args: &mut Vec<&'static str>,
+) {
+    if targets_runtime_core && runtime_core_feature_available(source_root) {
         args.extend(["--no-default-features", "--features", "runtime-core"]);
     }
 }
@@ -1900,7 +1958,11 @@ fn install_primary_and_stage_source_patch(
     // allowed generated code with a known lint defect (for example an empty
     // else branch) to be installed and rediscovered as a new repair later.
     let mut compile_args = vec!["clippy", "-p", "semantic-reasoning", "--lib"];
-    append_runtime_core_feature_args(&policy.source_root, &mut compile_args);
+    append_runtime_core_feature_args(
+        &policy.source_root,
+        request_targets_runtime_core(request),
+        &mut compile_args,
+    );
     compile_args.extend(["--quiet", "--locked", "--", "-D", "warnings"]);
     let compile_check = match command_receipt(
         &policy.cargo_executable,
@@ -1953,7 +2015,11 @@ fn install_primary_and_stage_source_patch(
     }
 
     let mut validation_args = vec!["test", "-p", "semantic-reasoning", "--lib"];
-    append_runtime_core_feature_args(&policy.source_root, &mut validation_args);
+    append_runtime_core_feature_args(
+        &policy.source_root,
+        request_targets_runtime_core(request),
+        &mut validation_args,
+    );
     validation_args.push("--quiet");
     let validation = match command_receipt(
         &policy.cargo_executable,
@@ -2006,7 +2072,11 @@ fn install_primary_and_stage_source_patch(
     }
 
     let mut release_args = vec!["build", "-p", "semantic-reasoning"];
-    append_runtime_core_feature_args(&policy.source_root, &mut release_args);
+    append_runtime_core_feature_args(
+        &policy.source_root,
+        request_targets_runtime_core(request),
+        &mut release_args,
+    );
     release_args.extend([
         "--release",
         "--bin",
@@ -3004,6 +3074,26 @@ pub fn discover_known_source_improvement(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn runtime_core_path_classifier_never_fast_validates_historical_campaign_code() {
+        for path in [
+            "crates/semantic-reasoning/src/growth_supervisor.rs",
+            "crates/semantic-reasoning/src/grammar_repair_synthesis.rs",
+            "crates/semantic-reasoning/src/sem5/emitter.rs",
+            "crates/semantic-reasoning/src/sem27/engine.rs",
+        ] {
+            assert!(runtime_core_relative_path(Path::new(path)), "{path}");
+        }
+        for path in [
+            "crates/semantic-reasoning/src/sem12/mod.rs",
+            "crates/semantic-reasoning/src/sem5/experiment.rs",
+            "crates/semantic-reasoning/src/sem36/engine.rs",
+            "research/sem27/frozen.json",
+        ] {
+            assert!(!runtime_core_relative_path(Path::new(path)), "{path}");
+        }
+    }
 
     fn synthetic_receipt(
         request: &AutonomousSourcePatchRequest,
