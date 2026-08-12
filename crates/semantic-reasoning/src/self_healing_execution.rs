@@ -197,6 +197,7 @@ pub fn run_closed_self_healing(
         Some(invoke_improvement_operator_repository(
             &operator_memory,
             WeaknessEvidenceKind::StructuralSourceSmell,
+            &mutation_request.transformation,
             &mutation_request.solution_strategy,
             structural_program,
             &mutation_request.opportunity_family_id,

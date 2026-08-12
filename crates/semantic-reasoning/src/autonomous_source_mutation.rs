@@ -34,7 +34,7 @@ pub const AUTONOMOUS_SOURCE_MUTATION_SCHEMA: &str = "B_CORE_AUTONOMOUS_SOURCE_MU
 pub const SELF_UPDATE_HANDOFF_FILE: &str = "SELF_UPDATE_READY.json";
 pub const SOURCE_REPAIR_LEARNING_SCHEMA: &str = "B_CORE_SOURCE_REPAIR_LEARNING_1";
 pub const IMPROVEMENT_OPERATOR_MEMORY_SCHEMA: &str = "B_CORE_IMPROVEMENT_OPERATOR_MEMORY_1";
-pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 6;
+pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 7;
 const KNOWN_REMAINDER_PREDICTED_VALUE: u16 = 35;
 const MAX_REPOSITORY_REPAIR_FAMILY_FILES: usize = 16;
 const KNOWN_REMAINDER_STRATEGIES: [&str; 4] = [
@@ -330,10 +330,21 @@ pub struct ImprovementOperatorIR {
     pub schema: String,
     pub operator_id: String,
     pub weakness_evidence_kind: WeaknessEvidenceKind,
+    pub generator_kind: ImprovementOperatorGeneratorKind,
     pub solution_strategy_family: String,
     pub edit_atom_kinds: Vec<String>,
     pub structural_postcondition_class: String,
     pub validation_contract: Vec<String>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum ImprovementOperatorGeneratorKind {
+    KnownStructuralRewrite,
+    CompilerSuggestedEdit,
+    TypedGrammarComposition,
+    ProgramIrLowering,
+    LearnedSelfHealingLowering,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -369,6 +380,18 @@ pub struct ImprovementOperatorInvocation {
     pub prior_attempts: u64,
     pub prior_successful_uses: u64,
     pub cross_family_successes: usize,
+    pub executable_generator_kind: Option<ImprovementOperatorGeneratorKind>,
+    pub applicability_satisfied: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ImprovementOperatorExecution {
+    pub schema: String,
+    pub operator_id: String,
+    pub generator_kind: ImprovementOperatorGeneratorKind,
+    pub applicable: bool,
+    pub candidate_source: Option<String>,
+    pub execution_reason: String,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -612,6 +635,25 @@ fn structural_postcondition_class(count: usize) -> &'static str {
     }
 }
 
+fn improvement_operator_generator_kind(
+    transformation: &str,
+    solution_strategy: &str,
+) -> ImprovementOperatorGeneratorKind {
+    if solution_strategy == "EMIT_TYPED_RUST_AND_ACTIVATE_CALLABLE" {
+        ImprovementOperatorGeneratorKind::ProgramIrLowering
+    } else if solution_strategy.starts_with("COMPILER_SUGGESTION:") {
+        ImprovementOperatorGeneratorKind::CompilerSuggestedEdit
+    } else if solution_strategy.starts_with("GRAMMAR_COMPOSITION:") {
+        ImprovementOperatorGeneratorKind::TypedGrammarComposition
+    } else if KNOWN_REMAINDER_STRATEGIES.contains(&solution_strategy) {
+        ImprovementOperatorGeneratorKind::KnownStructuralRewrite
+    } else if transformation.starts_with("LEARNED_SELF_HEALING::") {
+        ImprovementOperatorGeneratorKind::LearnedSelfHealingLowering
+    } else {
+        ImprovementOperatorGeneratorKind::KnownStructuralRewrite
+    }
+}
+
 fn inferred_weakness_evidence_kind(transformation: &str) -> WeaknessEvidenceKind {
     if transformation.contains("PUBLIC_EXAMPLE_CONTRADICTED") {
         WeaknessEvidenceKind::PublicBehaviorContradiction
@@ -626,6 +668,7 @@ fn inferred_weakness_evidence_kind(transformation: &str) -> WeaknessEvidenceKind
 
 fn improvement_operator_ir_from_features(
     weakness_evidence_kind: WeaknessEvidenceKind,
+    transformation: &str,
     solution_strategy: &str,
     edit_atom_kinds: &[String],
     structural_postcondition_count: usize,
@@ -637,6 +680,7 @@ fn improvement_operator_ir_from_features(
         schema: IMPROVEMENT_OPERATOR_MEMORY_SCHEMA.to_string(),
         operator_id: String::new(),
         weakness_evidence_kind,
+        generator_kind: improvement_operator_generator_kind(transformation, solution_strategy),
         solution_strategy_family: normalized_solution_strategy_family(solution_strategy),
         edit_atom_kinds: normalized_edit_atom_kinds,
         structural_postcondition_class: structural_postcondition_class(
@@ -660,6 +704,7 @@ fn improvement_operator_ir_from_features(
 
 fn improvement_operator_ir_for_program(
     weakness_evidence_kind: WeaknessEvidenceKind,
+    transformation: &str,
     solution_strategy: &str,
     program: &StructuralRepairProgram,
 ) -> Result<ImprovementOperatorIR, String> {
@@ -667,6 +712,7 @@ fn improvement_operator_ir_for_program(
     collect_edit_atom_kinds(&program.edit, &mut edit_atom_kinds);
     improvement_operator_ir_from_features(
         weakness_evidence_kind,
+        transformation,
         solution_strategy,
         &edit_atom_kinds,
         program.postconditions.len(),
@@ -733,6 +779,7 @@ pub fn derive_improvement_operator_memory(
                 .unwrap_or_else(|| inferred_weakness_evidence_kind(&record.transformation));
             let operator = improvement_operator_ir_from_features(
                 evidence_kind,
+                &record.transformation,
                 &attempt.solution_strategy,
                 &attempt.edit_atom_kinds,
                 attempt.structural_postcondition_count,
@@ -838,10 +885,12 @@ pub fn refresh_improvement_operator_repository(
     state_dir: &Path,
 ) -> Result<ImprovementOperatorMemory, String> {
     let memory = derive_improvement_operator_memory(state_dir)?;
+    let mut active_operator_ids = BTreeSet::new();
     for profile in &memory.profiles {
         if profile.successful_uses == 0 {
             continue;
         }
+        active_operator_ids.insert(profile.operator.operator_id.clone());
         validate_improvement_operator_id(&profile.operator)?;
         let path = improvement_operator_repository_path(state_dir, &profile.operator.operator_id);
         if path.exists() {
@@ -857,7 +906,70 @@ pub fn refresh_improvement_operator_repository(
             write_immutable_json(&path, &profile.operator)?;
         }
     }
+    let operator_dir = state_dir
+        .join("improvement_operator_repository")
+        .join("operators");
+    if operator_dir.is_dir() {
+        for entry in fs::read_dir(&operator_dir)
+            .map_err(|error| format!("IMPROVEMENT_OPERATOR_REPOSITORY_READ_DIR:{error}"))?
+        {
+            let path = entry
+                .map_err(|error| format!("IMPROVEMENT_OPERATOR_REPOSITORY_ENTRY:{error}"))?
+                .path();
+            let Some(operator_id) = path.file_stem().and_then(OsStr::to_str) else {
+                continue;
+            };
+            if path.extension().and_then(OsStr::to_str) == Some("json")
+                && !active_operator_ids.contains(operator_id)
+            {
+                fs::remove_file(&path).map_err(|error| {
+                    format!("IMPROVEMENT_OPERATOR_REPOSITORY_STALE_REMOVE:{error}")
+                })?;
+            }
+        }
+    }
     Ok(memory)
+}
+
+pub fn execute_improvement_operator_on_source(
+    operator: &ImprovementOperatorIR,
+    source: &str,
+) -> Result<ImprovementOperatorExecution, String> {
+    validate_improvement_operator_id(operator)?;
+    match operator.generator_kind {
+        ImprovementOperatorGeneratorKind::KnownStructuralRewrite => {
+            let strategy_index = KNOWN_REMAINDER_STRATEGIES
+                .iter()
+                .position(|strategy| *strategy == operator.solution_strategy_family);
+            let candidate_source = strategy_index
+                .and_then(|strategy_index| rewrite_first_known_improvement(source, strategy_index));
+            Ok(ImprovementOperatorExecution {
+                schema: IMPROVEMENT_OPERATOR_MEMORY_SCHEMA.to_string(),
+                operator_id: operator.operator_id.clone(),
+                generator_kind: operator.generator_kind,
+                applicable: candidate_source.is_some(),
+                candidate_source,
+                execution_reason: if strategy_index.is_some() {
+                    "EXECUTED_BOUND_STRUCTURAL_REWRITE".to_string()
+                } else {
+                    "STRUCTURAL_REWRITE_STRATEGY_NOT_EXECUTABLE".to_string()
+                },
+            })
+        }
+        ImprovementOperatorGeneratorKind::CompilerSuggestedEdit
+        | ImprovementOperatorGeneratorKind::TypedGrammarComposition
+        | ImprovementOperatorGeneratorKind::ProgramIrLowering
+        | ImprovementOperatorGeneratorKind::LearnedSelfHealingLowering => {
+            Ok(ImprovementOperatorExecution {
+                schema: IMPROVEMENT_OPERATOR_MEMORY_SCHEMA.to_string(),
+                operator_id: operator.operator_id.clone(),
+                generator_kind: operator.generator_kind,
+                applicable: false,
+                candidate_source: None,
+                execution_reason: "SPECIALIZED_TYPED_INPUT_REQUIRED".to_string(),
+            })
+        }
+    }
 }
 
 fn improvement_operator_transfer_priority(
@@ -912,16 +1024,23 @@ fn improvement_operator_transfer_priority(
 pub fn invoke_improvement_operator_repository(
     memory: &ImprovementOperatorMemory,
     weakness_evidence_kind: WeaknessEvidenceKind,
+    transformation: &str,
     solution_strategy: &str,
     program: &StructuralRepairProgram,
     opportunity_family_id: &str,
 ) -> Result<ImprovementOperatorInvocation, String> {
-    let requested =
-        improvement_operator_ir_for_program(weakness_evidence_kind, solution_strategy, program)?;
+    let requested = improvement_operator_ir_for_program(
+        weakness_evidence_kind,
+        transformation,
+        solution_strategy,
+        program,
+    )?;
     let matching = memory
         .profiles
         .iter()
-        .filter(|profile| profile.operator.operator_id == requested.operator_id)
+        .filter(|profile| {
+            profile.successful_uses > 0 && profile.operator.operator_id == requested.operator_id
+        })
         .collect::<Vec<_>>();
     let prior_attempts = matching.iter().map(|profile| profile.attempts).sum();
     let prior_successful_uses = matching.iter().map(|profile| profile.successful_uses).sum();
@@ -946,6 +1065,10 @@ pub fn invoke_improvement_operator_repository(
         prior_attempts,
         prior_successful_uses,
         cross_family_successes,
+        executable_generator_kind: matching
+            .first()
+            .map(|profile| profile.operator.generator_kind),
+        applicability_satisfied: !matching.is_empty(),
     })
 }
 
@@ -2330,6 +2453,7 @@ fn compiler_guided_request(
         let invocation = invoke_improvement_operator_repository(
             operator_memory,
             WeaknessEvidenceKind::CompilerDiagnostic,
+            &candidate.transformation,
             &candidate.solution_strategy,
             &candidate.structural_repair_program,
             &opportunity_family_id,
@@ -2470,6 +2594,7 @@ fn grammar_synthesized_request(
         let invocation = invoke_improvement_operator_repository(
             operator_memory,
             evidence_kind,
+            &candidate.transformation,
             &candidate.solution_strategy,
             &candidate.structural_repair_program,
             &opportunity_family_id,
@@ -2746,10 +2871,25 @@ pub fn discover_known_source_improvement_detailed(
             let invocation = invoke_improvement_operator_repository(
                 &operator_memory,
                 WeaknessEvidenceKind::StructuralSourceSmell,
+                &transformation,
                 solution_strategy,
                 &structural_repair_program,
                 &opportunity_family_id,
             )?;
+            if let Some(operator_id) = invocation.matched_operator_ids.first() {
+                let operator = operator_memory
+                    .profiles
+                    .iter()
+                    .find(|profile| &profile.operator.operator_id == operator_id)
+                    .map(|profile| &profile.operator)
+                    .ok_or_else(|| "IMPROVEMENT_OPERATOR_PROFILE_MISSING".to_string())?;
+                let execution = execute_improvement_operator_on_source(operator, source)?;
+                if execution.applicable
+                    && execution.candidate_source.as_deref() != Some(candidate_source.as_str())
+                {
+                    return Err("IMPROVEMENT_OPERATOR_EXECUTION_DIVERGED".to_string());
+                }
+            }
             ranked_known_candidates.push((
                 invocation.priority_adjustment,
                 strategy_index,
@@ -3746,6 +3886,20 @@ mod tests {
         assert_eq!(profile.successful_family_ids.len(), 2);
         let stored = improvement_operator_repository_path(&state, &profile.operator.operator_id);
         assert!(stored.is_file());
+        assert_eq!(
+            profile.operator.generator_kind,
+            ImprovementOperatorGeneratorKind::KnownStructuralRewrite
+        );
+        let executable = execute_improvement_operator_on_source(
+            &profile.operator,
+            "pub fn even(value: u32) -> bool { value % 2 == 0 }\n",
+        )
+        .unwrap();
+        assert!(executable.applicable);
+        assert!(executable
+            .candidate_source
+            .as_deref()
+            .is_some_and(|source| source.contains("value.is_multiple_of(2)")));
 
         let new_family = source_opportunity_family_id(
             ChangeOpportunityKind::EfficiencyOpportunity,
@@ -3758,6 +3912,7 @@ mod tests {
                 .as_ref()
                 .expect("generalized change")
                 .weakness_evidence_kind,
+            &first.transformation,
             &first.solution_strategy,
             first
                 .structural_repair_program

@@ -400,6 +400,7 @@ pub fn install_composite_candidate(
     let improvement_operator_invocation = invoke_improvement_operator_repository(
         &operator_memory,
         WeaknessEvidenceKind::StructuralSourceSmell,
+        &transformation,
         "EMIT_TYPED_RUST_AND_ACTIVATE_CALLABLE",
         &structural_repair_program,
         &opportunity_family_id,
