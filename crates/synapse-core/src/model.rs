@@ -155,7 +155,7 @@ impl NodeModulation {
         let desire = dot(&self.desire_relevance, &state.desires);
         let goal = dot(&self.goal_relevance, &state.goals);
         0.30f32
-            .mul_add(goal, 0.25f32.mul_add(emotion, 1.0) + 0.20 * desire)
+            .mul_add(goal, 0.20f32.mul_add(desire, 0.25f32.mul_add(emotion, 1.0)))
             .clamp(0.25, 2.0)
     }
 
@@ -1029,7 +1029,10 @@ impl SynapseCore {
             let access = self.access_count[id] as f32 / total_access;
             let retention = clamp(0.05f32.mul_add(
                 self.plasticity[id],
-                0.45 * self.importance[id] + 0.30 * self.average_activation[id] + 0.20 * access,
+                0.20f32.mul_add(
+                    access,
+                    0.30f32.mul_add(self.average_activation[id], 0.45 * self.importance[id]),
+                ),
             ));
             let idle_pressure = (self.node_idle_cycles[id] as f32 / 64.0).min(1.0);
             let consolidation =
@@ -1222,9 +1225,13 @@ impl SynapseCore {
         };
         let mut score = 0.10f32.mul_add(
             schema.reflex_bonus,
-            0.20f32.mul_add(definition_match, 0.45 * cue_overlap)
-                + 0.15 * schema.importance
-                + 0.10 * schema.abstraction_level,
+            0.10f32.mul_add(
+                schema.abstraction_level,
+                0.15f32.mul_add(
+                    schema.importance,
+                    0.20f32.mul_add(definition_match, 0.45 * cue_overlap),
+                ),
+            ),
         );
         score = clamp(score + self.correction_bias(stimulus, schema));
 
