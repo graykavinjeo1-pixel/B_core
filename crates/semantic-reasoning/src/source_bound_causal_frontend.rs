@@ -209,6 +209,8 @@ pub struct SourceBoundFunctionTemplateIR {
     pub effects: Vec<String>,
     pub direct_dependencies: Vec<String>,
     pub execution_dependency_closure: Vec<String>,
+    #[serde(default)]
+    pub external_callers: Vec<String>,
     pub cuts: Vec<SourceBoundCausalCutIR>,
     pub source_template_sha256: String,
 }
@@ -319,6 +321,8 @@ struct PythonFunctionDefinition {
     effects: Vec<String>,
     direct_dependencies: Vec<String>,
     execution_dependency_closure: Vec<String>,
+    #[serde(default)]
+    external_callers: Vec<String>,
     cuts: Vec<PythonCut>,
     #[serde(default)]
     closure_templates: Vec<PythonClosureTemplateDefinition>,
@@ -336,6 +340,7 @@ struct PythonClosureTemplateDefinition {
     effects: Vec<String>,
     direct_dependencies: Vec<String>,
     execution_dependency_closure: Vec<String>,
+    external_callers: Vec<String>,
     cuts: Vec<PythonCut>,
     public_operand_bindings: BTreeMap<String, String>,
 }
@@ -530,6 +535,11 @@ for qualified, definition in definitions.items():
     definition["dependency_bindings"] = dependency_bindings
     definition["ambiguous_bindings"] = ambiguous_bindings
 
+reverse_callers = {qualified: set() for qualified in definitions}
+for caller, definition in definitions.items():
+    for dependency in definition["direct_dependencies"]:
+        reverse_callers[dependency].add(caller)
+
 def cuts_for(definition):
     cuts = []
     def visit_statements(statements, guard=None, branch="UNCONDITIONAL"):
@@ -642,6 +652,7 @@ for requested in symbols:
             "return_annotation": closure_definition["return_annotation"], "effects": closure_definition["effects"],
             "direct_dependencies": closure_definition["direct_dependencies"],
             "execution_dependency_closure": dependency_closure(closure_symbol, requested), "cuts": closure_cuts,
+            "external_callers": sorted(reverse_callers[closure_symbol] - set(closure)),
             "public_operand_bindings": closure_bindings,
         })
     selected.append({
@@ -650,6 +661,7 @@ for requested in symbols:
         "return_annotation": definition["return_annotation"], "effects": definition["effects"],
         "direct_dependencies": definition["direct_dependencies"],
         "execution_dependency_closure": closure, "cuts": cuts,
+        "external_callers": sorted(reverse_callers[requested] - set(closure)),
         "closure_templates": closure_templates,
         "closure_rejections": closure_rejections,
     })
@@ -1306,6 +1318,7 @@ fn convert_python_definition(
             &operands,
             &output_type,
             &definition.execution_dependency_closure,
+            &definition.external_callers,
             &cuts,
         ))
         .map_err(|error| CausalFrontendFailure::public(format!("TEMPLATE_HASH:{error}")))?
@@ -1322,6 +1335,7 @@ fn convert_python_definition(
         effects: definition.effects,
         direct_dependencies: definition.direct_dependencies,
         execution_dependency_closure: definition.execution_dependency_closure,
+        external_callers: definition.external_callers,
         cuts,
         source_template_sha256,
     })
@@ -1376,6 +1390,7 @@ fn convert_python_closure_definition(
             effects: definition.effects,
             direct_dependencies: definition.direct_dependencies,
             execution_dependency_closure: definition.execution_dependency_closure,
+            external_callers: definition.external_callers,
             cuts: definition.cuts,
             closure_templates: Vec::new(),
             closure_rejections: Vec::new(),
@@ -1712,11 +1727,27 @@ fn build_source_bound_patch_variants(
 ) -> Result<Vec<SourceBoundPatchVariantIR>, CausalFrontendFailure> {
     let mut selections = vec![Vec::<usize>::new()];
     for alternative in alternatives {
-        let mut choices = (1..=alternative.closure_candidates.len()).collect::<Vec<_>>();
-        // Prefer the deepest safely transported dependency, but retain every
-        // shallower dependency and the public owner as bounded fallbacks.
-        choices.reverse();
+        // Prefer deep dependencies used exclusively by this public closure.
+        // The public owner comes before shared helpers so an unrelated caller
+        // does not force a predictably failing whole-repository validation.
+        let mut choices = alternative
+            .closure_candidates
+            .iter()
+            .enumerate()
+            .rev()
+            .filter(|(_, candidate)| candidate.function_template.external_callers.is_empty())
+            .map(|(index, _)| index + 1)
+            .collect::<Vec<_>>();
         choices.push(0);
+        choices.extend(
+            alternative
+                .closure_candidates
+                .iter()
+                .enumerate()
+                .rev()
+                .filter(|(_, candidate)| !candidate.function_template.external_callers.is_empty())
+                .map(|(index, _)| index + 1),
+        );
         let mut expanded = Vec::new();
         for prefix in &selections {
             for choice in &choices {

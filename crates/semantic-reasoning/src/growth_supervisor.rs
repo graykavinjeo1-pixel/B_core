@@ -11103,12 +11103,12 @@ mod tests {
         assert_eq!(repair.raw_source_bytes_stored, 0);
         assert!(repair.candidate_materialization_is_one_to_one);
         assert!(repair.failure_code.is_none());
-        assert_eq!(repair.source_bound_patch_variant_ids_attempted.len(), 2);
+        assert_eq!(repair.source_bound_patch_variant_ids_attempted.len(), 1);
         assert_eq!(
             repair.selected_source_bound_patch_variant_id,
             repair
                 .source_bound_patch_variant_ids_attempted
-                .last()
+                .first()
                 .cloned()
         );
         assert_eq!(repair.selected_source_bound_template_symbols, ["add"]);
