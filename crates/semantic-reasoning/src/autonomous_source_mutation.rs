@@ -1894,10 +1894,98 @@ fn request_targets_runtime_core(request: &AutonomousSourcePatchRequest) -> bool 
             .all(|member| runtime_core_relative_path(&member.relative_path))
 }
 
+fn package_name_from_manifest(manifest: &Path) -> Result<String, String> {
+    let source = fs::read_to_string(manifest).map_err(|error| {
+        format!(
+            "SOURCE_MUTATION_MANIFEST_READ:{}:{error}",
+            manifest.display()
+        )
+    })?;
+    let mut in_package = false;
+    for line in source.lines() {
+        let line = line.trim();
+        if line.starts_with('[') {
+            in_package = line == "[package]";
+            continue;
+        }
+        if !in_package || line.starts_with('#') {
+            continue;
+        }
+        let Some((key, value)) = line.split_once('=') else {
+            continue;
+        };
+        if key.trim() == "name" {
+            let name = value.trim().trim_matches(['\'', '"']);
+            if !name.is_empty() {
+                return Ok(name.to_string());
+            }
+        }
+    }
+    Err(format!(
+        "SOURCE_MUTATION_PACKAGE_NAME_MISSING:{}",
+        manifest.display()
+    ))
+}
+
+fn workspace_package_for_relative_path(
+    source_root: &Path,
+    relative_path: &Path,
+) -> Result<String, String> {
+    let canonical_root = fs::canonicalize(source_root)
+        .map_err(|error| format!("SOURCE_MUTATION_PACKAGE_ROOT:{error}"))?;
+    let target = normalized_target(source_root, relative_path)?;
+    let mut directory = target
+        .parent()
+        .ok_or_else(|| "SOURCE_MUTATION_PACKAGE_PARENT_MISSING".to_string())?;
+    loop {
+        let manifest = directory.join("Cargo.toml");
+        if manifest.is_file() {
+            return package_name_from_manifest(&manifest);
+        }
+        if directory == canonical_root {
+            break;
+        }
+        directory = directory
+            .parent()
+            .ok_or_else(|| "SOURCE_MUTATION_PACKAGE_OUTSIDE_ROOT".to_string())?;
+        if !directory.starts_with(&canonical_root) {
+            break;
+        }
+    }
+    Err(format!(
+        "SOURCE_MUTATION_PACKAGE_NOT_FOUND:{}",
+        relative_path.display()
+    ))
+}
+
+fn request_workspace_packages(
+    source_root: &Path,
+    request: &AutonomousSourcePatchRequest,
+) -> Result<Vec<String>, String> {
+    let mut packages = BTreeSet::new();
+    packages.insert(workspace_package_for_relative_path(
+        source_root,
+        &request.relative_path,
+    )?);
+    for member in &request.additional_family_members {
+        packages.insert(workspace_package_for_relative_path(
+            source_root,
+            &member.relative_path,
+        )?);
+    }
+    Ok(packages.into_iter().collect())
+}
+
+fn append_package_selection<'a>(args: &mut Vec<&'a str>, packages: &'a [String]) {
+    for package in packages {
+        args.extend(["-p", package.as_str()]);
+    }
+}
+
 fn append_runtime_core_feature_args(
     source_root: &Path,
     targets_runtime_core: bool,
-    args: &mut Vec<&'static str>,
+    args: &mut Vec<&str>,
 ) {
     if targets_runtime_core && runtime_core_feature_available(source_root) {
         args.extend(["--no-default-features", "--features", "runtime-core"]);
@@ -2293,6 +2381,7 @@ fn install_primary_and_stage_source_patch(
         return Err("SOURCE_UPDATE_ALREADY_STAGED".to_string());
     }
     let target = normalized_target(&policy.source_root, &request.relative_path)?;
+    let target_packages = request_workspace_packages(&policy.source_root, request)?;
     let predecessor =
         fs::read(&target).map_err(|error| format!("SOURCE_MUTATION_PREDECESSOR_READ:{error}"))?;
     if sha256(&predecessor) != request.predecessor_sha256 {
@@ -2376,9 +2465,12 @@ fn install_primary_and_stage_source_patch(
         return Err(format!("SOURCE_MUTATION_CANDIDATE_RENAME:{error}"));
     }
 
+    let mut format_args = vec!["fmt"];
+    append_package_selection(&mut format_args, &target_packages);
+    format_args.extend(["--", "--check"]);
     let format_check = match command_receipt(
         &policy.cargo_executable,
-        &["fmt", "-p", "semantic-reasoning", "--", "--check"],
+        &format_args,
         &policy.source_root,
         &policy.build_target_dir,
         policy.validation_timeout_ms,
@@ -2429,7 +2521,9 @@ fn install_primary_and_stage_source_patch(
     // Clippy includes the compiler check and closes the gap that previously
     // allowed generated code with a known lint defect (for example an empty
     // else branch) to be installed and rediscovered as a new repair later.
-    let mut compile_args = vec!["clippy", "-p", "semantic-reasoning", "--lib"];
+    let mut compile_args = vec!["clippy"];
+    append_package_selection(&mut compile_args, &target_packages);
+    compile_args.push("--lib");
     append_runtime_core_feature_args(
         &policy.source_root,
         request_targets_runtime_core(request),
@@ -2486,7 +2580,9 @@ fn install_primary_and_stage_source_patch(
         return Ok(receipt);
     }
 
-    let mut validation_args = vec!["test", "-p", "semantic-reasoning", "--lib"];
+    let mut validation_args = vec!["test"];
+    append_package_selection(&mut validation_args, &target_packages);
+    validation_args.push("--lib");
     append_runtime_core_feature_args(
         &policy.source_root,
         request_targets_runtime_core(request),
@@ -2544,11 +2640,11 @@ fn install_primary_and_stage_source_patch(
     }
 
     let mut release_args = vec!["build", "-p", "semantic-reasoning"];
-    append_runtime_core_feature_args(
-        &policy.source_root,
-        request_targets_runtime_core(request),
-        &mut release_args,
-    );
+    // These artifacts are the always-on supervisor/verifier, whose compiled
+    // surface is `runtime-core` regardless of which dependency package was
+    // improved. Building historical SEM campaigns here previously turned one
+    // cross-crate numeric edit into minutes of unrelated optimized codegen.
+    append_runtime_core_feature_args(&policy.source_root, true, &mut release_args);
     release_args.extend([
         "--release",
         "--bin",
@@ -3635,6 +3731,30 @@ mod tests {
         ] {
             assert!(!runtime_core_relative_path(Path::new(path)), "{path}");
         }
+    }
+
+    #[test]
+    fn validation_package_is_resolved_from_the_changed_source_manifest() {
+        let (root, _) = fixture("target-package-resolution");
+        let nested = root.join("crates/worker");
+        fs::create_dir_all(nested.join("src")).unwrap();
+        fs::write(
+            nested.join("Cargo.toml"),
+            "[package]\nname = \"worker-core\"\nversion = \"0.1.0\"\nedition = \"2021\"\n",
+        )
+        .unwrap();
+        fs::write(nested.join("src/lib.rs"), "pub fn work() {}\n").unwrap();
+
+        assert_eq!(
+            workspace_package_for_relative_path(&root, Path::new("src/lib.rs")).unwrap(),
+            "semantic-reasoning"
+        );
+        assert_eq!(
+            workspace_package_for_relative_path(&root, Path::new("crates/worker/src/lib.rs"))
+                .unwrap(),
+            "worker-core"
+        );
+        fs::remove_dir_all(root).unwrap();
     }
 
     fn synthetic_receipt(
