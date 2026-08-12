@@ -972,6 +972,11 @@ pub struct SelfCheck {
     pub installed_compositions_are_runtime_callable: bool,
     pub accepted_sem5_compositions_route_to_installer: bool,
     pub active_binaries_forbid_proposal_only_exit: bool,
+    pub executable_improvement_operator_repository_enabled: bool,
+    pub successful_operators_are_content_addressed: bool,
+    pub cross_family_operator_transfer_changes_candidate_priority: bool,
+    pub repository_guided_outcomes_are_causally_tracked: bool,
+    pub evaluator_expansion_requires_new_challenge_capability: bool,
     pub mutual_recursive_growth_observed: bool,
 }
 
@@ -1056,6 +1061,12 @@ pub fn self_check() -> SelfCheck {
             "SEM5_PROGRAM_IR_LOWERS_TO_REPOSITORY_NATIVE_RUST_BEFORE_INSTALLATION".to_string(),
             "VERIFIED_SEM5_COMPOSITIONS_INSTALL_AS_TYPED_RUNTIME_CALLABLES".to_string(),
             "INSTALLED_COMPOSITIONS_REQUIRE_FRESH_INPUT_BEHAVIORAL_REVALIDATION".to_string(),
+            "SUCCESSFUL_STRUCTURAL_REPAIRS_PROMOTE_CONTENT_ADDRESSED_IMPROVEMENT_OPERATORS"
+                .to_string(),
+            "IMPROVEMENT_OPERATOR_INVOCATIONS_CAUSALLY_BIND_SELECTION_TO_VALIDATED_OUTCOME"
+                .to_string(),
+            "CROSS_FAMILY_SUCCESS_CHANGES_FUTURE_CANDIDATE_PRIORITY".to_string(),
+            "EVALUATOR_CAPABILITY_EXPANDS_ONLY_WHEN_THE_CHALLENGE_SUITE_EXPANDS".to_string(),
         ],
         bounded_failure_retry_enabled: true,
         successful_solution_learning_enabled: true,
@@ -1116,6 +1127,11 @@ pub fn self_check() -> SelfCheck {
         installed_compositions_are_runtime_callable: true,
         accepted_sem5_compositions_route_to_installer: true,
         active_binaries_forbid_proposal_only_exit: true,
+        executable_improvement_operator_repository_enabled: true,
+        successful_operators_are_content_addressed: true,
+        cross_family_operator_transfer_changes_candidate_priority: true,
+        repository_guided_outcomes_are_causally_tracked: true,
+        evaluator_expansion_requires_new_challenge_capability: true,
         mutual_recursive_growth_observed: false,
     }
 }
@@ -7502,6 +7518,11 @@ mod tests {
         assert!(check.installed_compositions_are_runtime_callable);
         assert!(check.accepted_sem5_compositions_route_to_installer);
         assert!(check.active_binaries_forbid_proposal_only_exit);
+        assert!(check.executable_improvement_operator_repository_enabled);
+        assert!(check.successful_operators_are_content_addressed);
+        assert!(check.cross_family_operator_transfer_changes_candidate_priority);
+        assert!(check.repository_guided_outcomes_are_causally_tracked);
+        assert!(check.evaluator_expansion_requires_new_challenge_capability);
         assert!(check.operator_stop_survives_self_update);
         assert!(check.workspace_freeze_during_patch_validation);
         assert!(check.performance_aware_self_inspection);
