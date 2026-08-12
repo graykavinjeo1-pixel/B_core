@@ -1856,15 +1856,41 @@ fn classify_work_kind(
     }
 }
 
-fn event_for_path<'a>(path: &Path, events: &'a [WorkEvent]) -> Option<&'a WorkEvent> {
-    let canonical_path = fs::canonicalize(path).ok()?;
-    events.iter().rev().find(|event| {
-        event.paths.iter().any(|candidate| {
-            fs::canonicalize(candidate)
-                .map(|canonical| canonical == canonical_path)
-                .unwrap_or(false)
-        })
-    })
+fn event_path_key(path: &Path) -> String {
+    let text = path.to_string_lossy().replace('/', "\\");
+    let ordinary = text.strip_prefix("\\\\?\\").unwrap_or(&text);
+    if cfg!(windows) {
+        ordinary.to_ascii_lowercase()
+    } else {
+        ordinary.to_string()
+    }
+}
+
+fn work_event_path_index(events: &[WorkEvent]) -> BTreeMap<String, usize> {
+    let mut index = BTreeMap::new();
+    for (event_index, event) in events.iter().enumerate() {
+        for path in &event.paths {
+            index.insert(event_path_key(path), event_index);
+            if let Ok(canonical) = fs::canonicalize(path) {
+                index.insert(event_path_key(&canonical), event_index);
+            }
+        }
+    }
+    index
+}
+
+fn event_for_path<'a>(
+    path: &Path,
+    events: &'a [WorkEvent],
+    event_paths: &BTreeMap<String, usize>,
+) -> Option<&'a WorkEvent> {
+    // The ordinary steady state has no pending attributed work. Avoid an OS
+    // canonicalization syscall for every watched file in that state. When
+    // events do exist, their paths were canonicalized once while building the
+    // index and lookup is a deterministic in-memory operation.
+    event_paths
+        .get(&event_path_key(path))
+        .and_then(|index| events.get(*index))
 }
 
 fn classify_observation(
@@ -3061,6 +3087,7 @@ fn scan_watched_roots(
     let old_index = load_index(config)?;
     let baseline_created = !old_index.baseline_complete;
     let events = load_pending_events(config, &old_index)?;
+    let event_paths = work_event_path_index(&events);
     let paths = collect_files(
         &config.watched_roots,
         &config.observation,
@@ -3099,7 +3126,7 @@ fn scan_watched_roots(
         }
         eligible_logical_paths.insert(logical.clone());
         let previous = old_index.files.get(&logical);
-        let matching_event = event_for_path(path, &events);
+        let matching_event = event_for_path(path, &events, &event_paths);
         let canary_rehash = !baseline_created
             && previous.is_some()
             && logical_path_canary_bucket(&logical) == canary_bucket;
