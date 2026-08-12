@@ -864,6 +864,52 @@ fn family_candidate_from_suggestions(
     }))
 }
 
+fn maximal_non_overlapping_family<'a>(
+    suggestions: &[&'a CompilerSuggestion],
+) -> Vec<&'a CompilerSuggestion> {
+    let mut ordered = suggestions.to_vec();
+    ordered.sort_by_key(|suggestion| {
+        (
+            suggestion.byte_start,
+            suggestion.byte_end,
+            suggestion.observation_sha256.clone(),
+        )
+    });
+    let mut selected = Vec::new();
+    let mut component = Vec::new();
+    let mut component_end = 0usize;
+    for suggestion in ordered {
+        if component.is_empty() || suggestion.byte_start < component_end {
+            component_end = component_end.max(suggestion.byte_end);
+            component.push(suggestion);
+            continue;
+        }
+        component.sort_by_key(|member| {
+            (
+                std::cmp::Reverse(member.byte_end.saturating_sub(member.byte_start)),
+                member.byte_start,
+                member.observation_sha256.clone(),
+            )
+        });
+        selected.push(component[0]);
+        component.clear();
+        component_end = suggestion.byte_end;
+        component.push(suggestion);
+    }
+    if !component.is_empty() {
+        component.sort_by_key(|member| {
+            (
+                std::cmp::Reverse(member.byte_end.saturating_sub(member.byte_start)),
+                member.byte_start,
+                member.observation_sha256.clone(),
+            )
+        });
+        selected.push(component[0]);
+    }
+    selected.sort_by_key(|suggestion| suggestion.byte_start);
+    selected
+}
+
 pub fn discover_compiler_guided_repairs(
     policy: &CompilerGuidedRepairPolicy<'_>,
 ) -> Result<Vec<CompilerGuidedRepairCandidate>, String> {
@@ -888,16 +934,17 @@ pub fn discover_compiler_guided_repairs(
     let mut eager_fallback_ids = BTreeSet::new();
     let mut family_member_ids = BTreeSet::new();
     for suggestions in families.values() {
-        if let Some(candidate) = family_candidate_from_suggestions(policy, suggestions)? {
+        let independent = maximal_non_overlapping_family(suggestions);
+        if let Some(candidate) = family_candidate_from_suggestions(policy, &independent)? {
             candidates.push(candidate);
-            for suggestion in suggestions {
+            for suggestion in &independent {
                 family_member_ids.insert(suggestion.observation_sha256.clone());
             }
             // Preserve a bounded counterexample-isolation path without eagerly
             // compiling an individual structural program for every family
             // member. After a fallback changes the source, the next compiler
             // observation reconstructs the remaining family on the new state.
-            for suggestion in suggestions.iter().take(MAX_EAGER_FAMILY_FALLBACKS) {
+            for suggestion in independent.iter().take(MAX_EAGER_FAMILY_FALLBACKS) {
                 eager_fallback_ids.insert(suggestion.observation_sha256.clone());
             }
         }
@@ -1263,5 +1310,41 @@ pub fn pair(left: String, right: String) -> Pair {\n\
             SourceEditAtom::AtomicMultiEdit { ref edits } if edits.len() == 2
         ));
         fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn nested_numeric_alternatives_lower_to_one_outer_edit_per_independent_expression() {
+        let make = |start: usize, end: usize, id: &str| CompilerSuggestion {
+            level: "warning".to_string(),
+            diagnostic_code: "clippy::suboptimal_flops".to_string(),
+            message: "consider using fused multiply-add".to_string(),
+            file_name: "src/lib.rs".to_string(),
+            byte_start: start,
+            byte_end: end,
+            replacement: format!("fused_{id}()"),
+            applicability: "MachineApplicable".to_string(),
+            primary: true,
+            observation_sha256: sha256(id.as_bytes()),
+        };
+        let suggestions = [
+            make(10, 62, "outer-a"),
+            make(11, 31, "inner-a1"),
+            make(11, 47, "inner-a2"),
+            make(90, 173, "inner-b"),
+            make(90, 258, "outer-b"),
+            make(300, 351, "independent-c"),
+        ];
+        let refs = suggestions.iter().collect::<Vec<_>>();
+
+        let selected = maximal_non_overlapping_family(&refs);
+
+        assert_eq!(selected.len(), 3);
+        assert_eq!(
+            selected
+                .iter()
+                .map(|suggestion| (suggestion.byte_start, suggestion.byte_end))
+                .collect::<Vec<_>>(),
+            vec![(10, 62), (90, 258), (300, 351)]
+        );
     }
 }
