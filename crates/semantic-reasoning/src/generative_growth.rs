@@ -28,8 +28,11 @@ use crate::sem25_engine::{run_growth_probe, GrowthProbeRequest};
 pub const GENERATIVE_GROWTH_SCHEMA: &str = "B_CORE_GENERATIVE_GROWTH_1";
 const MAX_REUSABLE_COMPOSITIONS: usize = 64;
 const MAX_COMPOSITION_TRIALS: usize = 256;
+const MAX_VERIFIED_ARTIFACTS_PER_CYCLE: usize = 4;
+const MAX_ARTIFACT_CONTEXT_ATTEMPTS: usize = MAX_VERIFIED_ARTIFACTS_PER_CYCLE * 4;
 const FRONTIER_EVIDENCE_CONTRACT_REVISION: u64 = 2;
-const BEHAVIORAL_VALUE_CONTRACT_REVISION: u64 = 4;
+const BEHAVIORAL_HEURISTIC_EXCLUSION_CONTRACT_REVISION: u64 = 4;
+const BEHAVIORAL_VALUE_CONTRACT_REVISION: u64 = 5;
 const GENERATIVE_PREDICTORS: [(&str, &str); 2] = [
     (
         "SEM23_REACTION_OUTCOME_PREDICTOR",
@@ -91,6 +94,8 @@ pub struct ReusableCompositionMemory {
     pub observed_value_total: u64,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub verified_artifact_sha256s: Vec<String>,
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub verified_artifact_contexts: BTreeMap<String, String>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -119,10 +124,17 @@ pub struct GenerativeGrowthMemory {
     pub productive_reuse_events: u64,
     #[serde(default, skip_serializing_if = "is_zero")]
     pub frontier_advance_events: u64,
+    /// Number of distinct behaviorally verified capability artifacts, kept
+    /// separate from composition-selection events. One campaign can now
+    /// validate a bounded family instead of being hard-capped at +1 unit.
+    #[serde(default, skip_serializing_if = "is_zero")]
+    pub frontier_capability_units: u64,
     #[serde(default, skip_serializing_if = "is_zero")]
     pub unverified_frontier_candidate_events: u64,
     #[serde(default, skip_serializing_if = "is_zero")]
     pub legacy_unverified_frontier_advance_events: u64,
+    #[serde(default, skip_serializing_if = "is_zero")]
+    pub legacy_wrapper_frontier_advance_events: u64,
     #[serde(default, skip_serializing_if = "is_zero")]
     pub behavioral_verification_events: u64,
     #[serde(default, skip_serializing_if = "is_zero")]
@@ -155,8 +167,10 @@ impl Default for GenerativeGrowthMemory {
             exploration_events: 0,
             productive_reuse_events: 0,
             frontier_advance_events: 0,
+            frontier_capability_units: 0,
             unverified_frontier_candidate_events: 0,
             legacy_unverified_frontier_advance_events: 0,
+            legacy_wrapper_frontier_advance_events: 0,
             behavioral_verification_events: 0,
             redundant_selection_events: 0,
             prediction_absolute_error_total: 0,
@@ -235,9 +249,15 @@ pub struct GenerativeCycleResult {
     #[serde(default)]
     pub novel_verified_artifact: bool,
     #[serde(default)]
+    pub verified_artifact_count: usize,
+    #[serde(default)]
+    pub novel_verified_artifact_count: usize,
+    #[serde(default)]
     pub unverified_frontier_candidate: bool,
     #[serde(default)]
     pub frontier_advance: bool,
+    #[serde(default)]
+    pub frontier_advance_units: u64,
     pub exact_source_fragments: usize,
     pub codex_calls: usize,
     pub external_llm_calls: usize,
@@ -255,6 +275,8 @@ pub struct BehavioralCompositionExecutionReceipt {
     pub composite_artifact_sha256: Option<String>,
     pub verifier_id: String,
     pub verifier_output_sha256: Option<String>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub verified_artifacts: Vec<VerifiedBehavioralArtifact>,
     #[serde(default)]
     pub cases_executed: usize,
     #[serde(default)]
@@ -262,6 +284,14 @@ pub struct BehavioralCompositionExecutionReceipt {
     pub executed: bool,
     pub abstention_reason: Option<String>,
     pub receipt_sha256: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct VerifiedBehavioralArtifact {
+    pub artifact_context_sha256: String,
+    pub artifact_sha256: String,
+    pub cases_executed: usize,
+    pub cases_passed: usize,
 }
 
 fn primitive(id: &str, anchor: &str, input: &str, output: &str, role: &str) -> RepairPrimitiveIR {
@@ -560,30 +590,54 @@ fn execute_predictor(
 
 fn execute_composer(
     composer_id: &str,
-    _selected: &RepairCompositionLessonIR,
+    selected: &RepairCompositionLessonIR,
     input: &GenerativeInput,
     context: &str,
-) -> Result<(Option<String>, Option<String>, usize, usize), String> {
+    artifact_family_width: usize,
+) -> Result<(Vec<VerifiedBehavioralArtifact>, Option<String>), String> {
     match composer_id {
         "SEM5_PROGRAM_IR_COMPOSER" => {
             if input.observed_composition_roles.len() < 2 {
                 return Ok((
-                    None,
+                    Vec::new(),
                     Some("SEM5_REQUIRES_AT_LEAST_TWO_OBSERVED_ROLES".to_string()),
-                    0,
-                    0,
                 ));
             }
-            let receipt = execute_behavioral_composition_canary(context)?;
-            if receipt.cases_executed == 0 || receipt.cases_passed != receipt.cases_executed {
-                return Err("SEM5_BEHAVIORAL_CANARY_INCOMPLETE".to_string());
+            let target_width = artifact_family_width.clamp(1, MAX_VERIFIED_ARTIFACTS_PER_CYCLE);
+            let mut artifacts = Vec::new();
+            let mut artifact_hashes = BTreeSet::new();
+            for ordinal in 0..MAX_ARTIFACT_CONTEXT_ATTEMPTS {
+                if artifacts.len() >= target_width {
+                    break;
+                }
+                let artifact_context = if ordinal == 0 {
+                    context.to_string()
+                } else {
+                    sha256(
+                        format!(
+                            "{context}:{}:{ordinal}:BOUND_ARTIFACT_FAMILY",
+                            selected.composition_id
+                        )
+                        .as_bytes(),
+                    )
+                };
+                let receipt = execute_behavioral_composition_canary(&artifact_context)?;
+                if receipt.cases_executed == 0 || receipt.cases_passed != receipt.cases_executed {
+                    return Err("SEM5_BEHAVIORAL_CANARY_INCOMPLETE".to_string());
+                }
+                if artifact_hashes.insert(receipt.program_ir_sha256.clone()) {
+                    artifacts.push(VerifiedBehavioralArtifact {
+                        artifact_context_sha256: artifact_context,
+                        artifact_sha256: receipt.program_ir_sha256,
+                        cases_executed: receipt.cases_executed,
+                        cases_passed: receipt.cases_passed,
+                    });
+                }
             }
-            Ok((
-                Some(receipt.program_ir_sha256),
-                None,
-                receipt.cases_executed,
-                receipt.cases_passed,
-            ))
+            if artifacts.is_empty() {
+                return Err("SEM5_BEHAVIORAL_ARTIFACT_FAMILY_EMPTY".to_string());
+            }
+            Ok((artifacts, None))
         }
         "SELF_HEALING_CONTRACT_COMPOSER" => {
             // The present self-healing API needs a frozen defect contract and
@@ -591,10 +645,8 @@ fn execute_composer(
             // so treating graph validation as execution would manufacture a
             // capability result.  Keep the candidate but explicitly abstain.
             Ok((
-                None,
+                Vec::new(),
                 Some("SELF_HEALING_REQUIRES_FROZEN_REPAIR_SCENARIO".to_string()),
-                0,
-                0,
             ))
         }
         "FULLSTACK_TYPED_RECIPE_COMPOSER" => {
@@ -613,10 +665,8 @@ fn execute_composer(
                 Capability::AsyncTransport
             } else {
                 return Ok((
-                    None,
+                    Vec::new(),
                     Some("NO_APPLICABLE_FULLSTACK_SIGNAL".to_string()),
-                    0,
-                    0,
                 ));
             };
             let bundle = promoted_bundle();
@@ -642,13 +692,11 @@ fn execute_composer(
             let bytes = serde_json::to_vec(&lesson)
                 .map_err(|error| format!("FULLSTACK_COMPOSITION_SERIALIZE:{error}"))?;
             Ok((
-                None,
+                Vec::new(),
                 Some(format!(
                     "FULLSTACK_TYPECHECK_ONLY_NO_BEHAVIORAL_OBSERVATION:{}",
                     sha256(&bytes)
                 )),
-                0,
-                0,
             ))
         }
         _ => Err(format!("UNKNOWN_GENERATIVE_COMPOSER:{composer_id}")),
@@ -664,34 +712,81 @@ fn composer_is_behaviorally_executable(composer_id: &str, _input: &GenerativeInp
     matches!(composer_id, "SEM5_PROGRAM_IR_COMPOSER")
 }
 
+fn verified_artifact_family_width(memory: &GenerativeGrowthMemory) -> usize {
+    let verified = memory.distinct_verified_artifact_count();
+    let evidence_levels = if verified == 0 {
+        0
+    } else {
+        u64::from(verified.ilog2())
+    };
+    1_usize.saturating_add(
+        usize::try_from(evidence_levels)
+            .unwrap_or(usize::MAX)
+            .min(MAX_VERIFIED_ARTIFACTS_PER_CYCLE.saturating_sub(1)),
+    )
+}
+
+fn behavioral_execution_receipt_sha256(
+    receipt: &BehavioralCompositionExecutionReceipt,
+) -> Result<String, String> {
+    let mut identity = receipt.clone();
+    identity.receipt_sha256.clear();
+    let bytes = serde_json::to_vec(&identity)
+        .map_err(|error| format!("BEHAVIORAL_EXECUTION_RECEIPT_SERIALIZE:{error}"))?;
+    Ok(sha256(&bytes))
+}
+
 fn execute_behavioral_composition(
     selected: &RepairCompositionLessonIR,
     input: &GenerativeInput,
     seed: u64,
+    artifact_family_width: usize,
 ) -> Result<BehavioralCompositionExecutionReceipt, String> {
     let context = context_sha256(input);
     let predictor_id = selected_stage(selected, "PREDICT")?.to_string();
     let composer_id = selected_stage(selected, "COMPOSE")?.to_string();
     let verifier_id = selected_stage(selected, "VERIFY")?.to_string();
     let predictor_output_sha256 = execute_predictor(&predictor_id, input, seed)?;
-    let (composite_artifact_sha256, abstention_reason, cases_executed, cases_passed) =
-        execute_composer(&composer_id, selected, input, &context)?;
-    let executed =
-        composite_artifact_sha256.is_some() && cases_executed > 0 && cases_passed == cases_executed;
-    let verifier_output_sha256 = composite_artifact_sha256.as_ref().map(|artifact| {
-        sha256(format!("{context}:{predictor_output_sha256}:{artifact}:{verifier_id}").as_bytes())
+    let (verified_artifacts, abstention_reason) = execute_composer(
+        &composer_id,
+        selected,
+        input,
+        &context,
+        artifact_family_width,
+    )?;
+    let cases_executed = verified_artifacts
+        .iter()
+        .map(|artifact| artifact.cases_executed)
+        .sum::<usize>();
+    let cases_passed = verified_artifacts
+        .iter()
+        .map(|artifact| artifact.cases_passed)
+        .sum::<usize>();
+    let composite_artifact_sha256 = verified_artifacts
+        .first()
+        .map(|artifact| artifact.artifact_sha256.clone());
+    let executed = !verified_artifacts.is_empty()
+        && cases_executed > 0
+        && cases_passed == cases_executed
+        && abstention_reason.is_none();
+    let verifier_output_sha256 = executed.then(|| {
+        let family = verified_artifacts
+            .iter()
+            .map(|artifact| {
+                format!(
+                    "{}:{}:{}:{}",
+                    artifact.artifact_context_sha256,
+                    artifact.artifact_sha256,
+                    artifact.cases_executed,
+                    artifact.cases_passed
+                )
+            })
+            .collect::<Vec<_>>()
+            .join(":");
+        sha256(format!("{context}:{predictor_output_sha256}:{family}:{verifier_id}").as_bytes())
     });
-    let receipt_sha256 = sha256(
-        format!(
-            "{context}:{predictor_id}:{predictor_output_sha256}:{composer_id}:{}:{verifier_id}:{}:{cases_executed}:{cases_passed}:{executed}:{}",
-            composite_artifact_sha256.as_deref().unwrap_or("NONE"),
-            verifier_output_sha256.as_deref().unwrap_or("NONE"),
-            abstention_reason.as_deref().unwrap_or("NONE")
-        )
-        .as_bytes(),
-    );
-    Ok(BehavioralCompositionExecutionReceipt {
-        schema: "B_CORE_BEHAVIORAL_COMPOSITION_EXECUTION_1".to_string(),
+    let mut receipt = BehavioralCompositionExecutionReceipt {
+        schema: "B_CORE_BEHAVIORAL_COMPOSITION_EXECUTION_2".to_string(),
         context_sha256: context,
         predictor_id,
         predictor_output_sha256,
@@ -699,12 +794,15 @@ fn execute_behavioral_composition(
         composite_artifact_sha256,
         verifier_id,
         verifier_output_sha256,
+        verified_artifacts,
         cases_executed,
         cases_passed,
         executed,
         abstention_reason,
-        receipt_sha256,
-    })
+        receipt_sha256: String::new(),
+    };
+    receipt.receipt_sha256 = behavioral_execution_receipt_sha256(&receipt)?;
+    Ok(receipt)
 }
 
 #[derive(Debug, Clone)]
@@ -723,8 +821,8 @@ fn prediction_score(
     memory: &GenerativeGrowthMemory,
 ) -> CandidatePrediction {
     let context = context_sha256(input);
-    let compatible_behavioral_values =
-        memory.behavioral_value_contract_revision >= BEHAVIORAL_VALUE_CONTRACT_REVISION;
+    let compatible_behavioral_values = memory.behavioral_value_contract_revision
+        >= BEHAVIORAL_HEURISTIC_EXCLUSION_CONTRACT_REVISION;
     let reusable = compatible_behavioral_values.then(|| {
         memory
             .accepted_compositions
@@ -891,7 +989,9 @@ pub fn run_generative_cycle(
         .ok_or_else(|| "NO_BEHAVIORALLY_EXECUTABLE_GENERATIVE_COMPOSITION_CANDIDATE".to_string())?;
     let predicted_value = prediction.predicted_value;
     let typecheck_pass = validate_composition_lesson(&selected).is_ok();
-    let behavioral_execution_receipt = execute_behavioral_composition(&selected, input, seed)?;
+    let artifact_family_width = verified_artifact_family_width(memory);
+    let behavioral_execution_receipt =
+        execute_behavioral_composition(&selected, input, seed, artifact_family_width)?;
     let behavioral_composition_executed = behavioral_execution_receipt.executed;
     let behavioral_verification_sha256 = behavioral_composition_executed
         .then(|| behavioral_execution_receipt.receipt_sha256.clone());
@@ -917,19 +1017,23 @@ pub fn run_generative_cycle(
         && observed_value >= 72
         && prediction_error <= 30;
     let accepted_for_memory = valuable && prediction.exploration;
-    let artifact_sha256 = behavioral_execution_receipt
-        .composite_artifact_sha256
-        .as_deref();
-    let artifact_previously_verified = artifact_sha256.is_some_and(|artifact| {
-        memory.accepted_compositions.iter().any(|candidate| {
-            candidate
-                .verified_artifact_sha256s
-                .iter()
-                .any(|known| known == artifact)
-        })
-    });
-    let novel_verified_artifact =
-        valuable && artifact_sha256.is_some() && !artifact_previously_verified;
+    let previously_verified = memory
+        .accepted_compositions
+        .iter()
+        .flat_map(|candidate| candidate.verified_artifact_sha256s.iter())
+        .map(String::as_str)
+        .collect::<BTreeSet<_>>();
+    let verified_artifact_count = behavioral_execution_receipt.verified_artifacts.len();
+    let novel_verified_artifact_count = if valuable {
+        behavioral_execution_receipt
+            .verified_artifacts
+            .iter()
+            .filter(|artifact| !previously_verified.contains(artifact.artifact_sha256.as_str()))
+            .count()
+    } else {
+        0
+    };
+    let novel_verified_artifact = novel_verified_artifact_count > 0;
     let novel_context_transfer_candidate = valuable
         && prediction.reused_memory_composition_id.is_some()
         && prediction.prior_context_trials == 0;
@@ -940,7 +1044,14 @@ pub fn run_generative_cycle(
                 && prediction.prior_context_trials == 0));
     let productive_reuse =
         prediction.reused_memory_composition_id.is_some() && novel_verified_artifact;
-    let frontier_advance = accepted_for_memory || productive_reuse;
+    // A newly selected wrapper over an already-known artifact is not a
+    // capability advance. Frontier units are the distinct verified artifacts.
+    let frontier_advance = novel_verified_artifact && (accepted_for_memory || productive_reuse);
+    let frontier_advance_units = if frontier_advance {
+        novel_verified_artifact_count.min(u64::MAX as usize) as u64
+    } else {
+        0
+    };
     let applied_policy_signals = if frontier_advance {
         applicable_policy_signals(&selected, input)
     } else {
@@ -956,7 +1067,8 @@ pub fn run_generative_cycle(
         prediction_recorded_before_composition: true,
         predicted_value,
         selection_score: prediction.selection_score,
-        predicted_resource_units: 12,
+        predicted_resource_units: u16::try_from(12_usize.saturating_mul(artifact_family_width))
+            .unwrap_or(u16::MAX),
         isolated_composition_executed: true,
         composition_typecheck_pass: typecheck_pass,
         behavioral_composition_executed,
@@ -977,8 +1089,11 @@ pub fn run_generative_cycle(
         productive_reuse,
         novel_context_transfer_candidate,
         novel_verified_artifact,
+        verified_artifact_count,
+        novel_verified_artifact_count,
         unverified_frontier_candidate,
         frontier_advance,
+        frontier_advance_units,
         exact_source_fragments: 0,
         codex_calls: 0,
         external_llm_calls: 0,
@@ -992,29 +1107,29 @@ pub fn validate_behavioral_execution_receipt(result: &GenerativeCycleResult) -> 
         .behavioral_execution_receipt
         .as_ref()
         .is_some_and(|receipt| {
-            let expected_receipt_sha256 = sha256(
-                format!(
-                    "{}:{}:{}:{}:{}:{}:{}:{}:{}:{}:{}",
-                    receipt.context_sha256,
-                    receipt.predictor_id,
-                    receipt.predictor_output_sha256,
-                    receipt.composer_id,
-                    receipt
-                        .composite_artifact_sha256
-                        .as_deref()
-                        .unwrap_or("NONE"),
-                    receipt.verifier_id,
-                    receipt.verifier_output_sha256.as_deref().unwrap_or("NONE"),
-                    receipt.cases_executed,
-                    receipt.cases_passed,
-                    receipt.executed,
-                    receipt.abstention_reason.as_deref().unwrap_or("NONE")
-                )
-                .as_bytes(),
+            let expected_receipt_sha256 = behavioral_execution_receipt_sha256(receipt).ok();
+            let artifact_hashes = receipt
+                .verified_artifacts
+                .iter()
+                .map(|artifact| artifact.artifact_sha256.as_str())
+                .collect::<BTreeSet<_>>();
+            let artifact_contexts = receipt
+                .verified_artifacts
+                .iter()
+                .map(|artifact| artifact.artifact_context_sha256.as_str())
+                .collect::<BTreeSet<_>>();
+            let aggregate_cases = receipt.verified_artifacts.iter().fold(
+                (0_usize, 0_usize),
+                |(executed, passed), artifact| {
+                    (
+                        executed.saturating_add(artifact.cases_executed),
+                        passed.saturating_add(artifact.cases_passed),
+                    )
+                },
             );
-            receipt.schema == "B_CORE_BEHAVIORAL_COMPOSITION_EXECUTION_1"
+            receipt.schema == "B_CORE_BEHAVIORAL_COMPOSITION_EXECUTION_2"
                 && receipt.context_sha256 == result.context_sha256
-                && receipt.receipt_sha256 == expected_receipt_sha256
+                && expected_receipt_sha256.as_deref() == Some(receipt.receipt_sha256.as_str())
                 && receipt.predictor_id
                     == selected_stage(&result.selected_composition, "PREDICT").unwrap_or("")
                 && receipt.composer_id
@@ -1022,16 +1137,34 @@ pub fn validate_behavioral_execution_receipt(result: &GenerativeCycleResult) -> 
                 && receipt.verifier_id
                     == selected_stage(&result.selected_composition, "VERIFY").unwrap_or("")
                 && receipt.executed == result.behavioral_composition_executed
+                && result.verified_artifact_count == receipt.verified_artifacts.len()
                 && if receipt.executed {
-                    receipt
-                        .composite_artifact_sha256
-                        .as_ref()
-                        .is_some_and(|artifact| {
-                            artifact.len() == 64
-                                && artifact.bytes().all(|byte| byte.is_ascii_hexdigit())
+                    !receipt.verified_artifacts.is_empty()
+                        && receipt.verified_artifacts.len() <= MAX_VERIFIED_ARTIFACTS_PER_CYCLE
+                        && artifact_hashes.len() == receipt.verified_artifacts.len()
+                        && artifact_contexts.len() == receipt.verified_artifacts.len()
+                        && receipt.verified_artifacts.iter().all(|artifact| {
+                            artifact.artifact_sha256.len() == 64
+                                && artifact
+                                    .artifact_sha256
+                                    .bytes()
+                                    .all(|byte| byte.is_ascii_hexdigit())
+                                && artifact.artifact_context_sha256.len() == 64
+                                && artifact
+                                    .artifact_context_sha256
+                                    .bytes()
+                                    .all(|byte| byte.is_ascii_hexdigit())
+                                && artifact.cases_executed > 0
+                                && artifact.cases_passed == artifact.cases_executed
                         })
+                        && receipt.composite_artifact_sha256.as_deref()
+                            == receipt
+                                .verified_artifacts
+                                .first()
+                                .map(|artifact| artifact.artifact_sha256.as_str())
                         && receipt.verifier_output_sha256.is_some()
-                        && receipt.cases_executed > 0
+                        && receipt.cases_executed == aggregate_cases.0
+                        && receipt.cases_passed == aggregate_cases.1
                         && receipt.cases_passed == receipt.cases_executed
                         && result.observed_value
                             == receipt
@@ -1046,6 +1179,7 @@ pub fn validate_behavioral_execution_receipt(result: &GenerativeCycleResult) -> 
                 } else {
                     receipt.composite_artifact_sha256.is_none()
                         && receipt.verifier_output_sha256.is_none()
+                        && receipt.verified_artifacts.is_empty()
                         && receipt.cases_executed == 0
                         && receipt.cases_passed == 0
                         && result.observed_value == 0
@@ -1060,27 +1194,39 @@ pub fn promote_generative_cycle(
     input: &GenerativeInput,
     result: &GenerativeCycleResult,
 ) -> Result<GenerativeGrowthMemory, String> {
-    let result_artifact_sha256 = result
+    let result_artifacts = result
         .behavioral_execution_receipt
         .as_ref()
-        .and_then(|receipt| receipt.composite_artifact_sha256.as_deref());
-    let artifact_previously_verified = result_artifact_sha256.is_some_and(|artifact| {
-        current.accepted_compositions.iter().any(|candidate| {
-            candidate
-                .verified_artifact_sha256s
-                .iter()
-                .any(|known| known == artifact)
-        })
-    });
-    let expected_novel_verified_artifact =
-        result.valuable && result_artifact_sha256.is_some() && !artifact_previously_verified;
+        .map(|receipt| receipt.verified_artifacts.as_slice())
+        .unwrap_or_default();
+    let previously_verified = current
+        .accepted_compositions
+        .iter()
+        .flat_map(|candidate| candidate.verified_artifact_sha256s.iter())
+        .map(String::as_str)
+        .collect::<BTreeSet<_>>();
+    let expected_novel_verified_artifact_count = if result.valuable {
+        result_artifacts
+            .iter()
+            .filter(|artifact| !previously_verified.contains(artifact.artifact_sha256.as_str()))
+            .count()
+    } else {
+        0
+    };
+    let expected_novel_verified_artifact = expected_novel_verified_artifact_count > 0;
     let expected_accepted_for_memory = result.valuable && result.exploration_selected;
     let expected_novel_context_transfer = result.valuable
         && result.reused_memory_composition_id.is_some()
         && result.prior_context_trials == 0;
     let expected_productive_reuse =
         result.reused_memory_composition_id.is_some() && expected_novel_verified_artifact;
-    let expected_frontier_advance = expected_accepted_for_memory || expected_productive_reuse;
+    let expected_frontier_advance = expected_novel_verified_artifact
+        && (expected_accepted_for_memory || expected_productive_reuse);
+    let expected_frontier_advance_units = if expected_frontier_advance {
+        expected_novel_verified_artifact_count.min(u64::MAX as usize) as u64
+    } else {
+        0
+    };
     if current.schema != GENERATIVE_GROWTH_SCHEMA
         || result.schema != GENERATIVE_GROWTH_SCHEMA
         || result.source_lesson_id != input.source_lesson_id
@@ -1110,11 +1256,14 @@ pub fn promote_generative_cycle(
         || result.external_llm_calls != 0
         || result.network_reads != 0
         || result.network_writes != 0
+        || result.verified_artifact_count != result_artifacts.len()
+        || result.novel_verified_artifact_count != expected_novel_verified_artifact_count
         || result.novel_verified_artifact != expected_novel_verified_artifact
         || result.accepted_for_memory != expected_accepted_for_memory
         || result.novel_context_transfer_candidate != expected_novel_context_transfer
         || result.productive_reuse != expected_productive_reuse
         || result.frontier_advance != expected_frontier_advance
+        || result.frontier_advance_units != expected_frontier_advance_units
     {
         return Err("GENERATIVE_PROMOTION_BOUNDARY_FAILURE".to_string());
     }
@@ -1125,7 +1274,7 @@ pub fn promote_generative_cycle(
             .saturating_add(next.frontier_advance_events);
         next.frontier_advance_events = 0;
     }
-    if next.behavioral_value_contract_revision < BEHAVIORAL_VALUE_CONTRACT_REVISION {
+    if next.behavioral_value_contract_revision < BEHAVIORAL_HEURISTIC_EXCLUSION_CONTRACT_REVISION {
         next.legacy_heuristic_composition_trials = next
             .legacy_heuristic_composition_trials
             .saturating_add(next.composition_trials.len().min(u64::MAX as usize) as u64);
@@ -1139,6 +1288,14 @@ pub fn promote_generative_cycle(
             .saturating_add(next.prediction_absolute_error_total);
         next.prediction_absolute_error_total = 0;
         next.calibrated_prediction_records = 0;
+        next.behavioral_value_contract_revision = BEHAVIORAL_HEURISTIC_EXCLUSION_CONTRACT_REVISION;
+    }
+    if next.behavioral_value_contract_revision < BEHAVIORAL_VALUE_CONTRACT_REVISION {
+        next.legacy_wrapper_frontier_advance_events = next
+            .legacy_wrapper_frontier_advance_events
+            .saturating_add(next.frontier_advance_events);
+        next.frontier_advance_events = 0;
+        next.frontier_capability_units = next.distinct_verified_artifact_count();
         next.behavioral_value_contract_revision = BEHAVIORAL_VALUE_CONTRACT_REVISION;
     }
     next.generation = next.generation.saturating_add(1);
@@ -1168,6 +1325,9 @@ pub fn promote_generative_cycle(
     }
     if result.frontier_advance {
         next.frontier_advance_events = next.frontier_advance_events.saturating_add(1);
+        next.frontier_capability_units = next
+            .frontier_capability_units
+            .saturating_add(result.frontier_advance_units);
     }
     if result.unverified_frontier_candidate {
         next.unverified_frontier_candidate_events =
@@ -1180,11 +1340,9 @@ pub fn promote_generative_cycle(
         next.redundant_selection_events = next.redundant_selection_events.saturating_add(1);
     }
     if result.valuable {
-        let verified_artifact_sha256 = result
-            .behavioral_execution_receipt
-            .as_ref()
-            .and_then(|receipt| receipt.composite_artifact_sha256.clone())
-            .ok_or_else(|| "VALUABLE_COMPOSITION_ARTIFACT_MISSING".to_string())?;
+        if result_artifacts.is_empty() {
+            return Err("VALUABLE_COMPOSITION_ARTIFACT_MISSING".to_string());
+        }
         if let Some(existing) = next.accepted_compositions.iter_mut().find(|candidate| {
             candidate.composition.composition_id == result.selected_composition.composition_id
         }) {
@@ -1217,18 +1375,37 @@ pub fn promote_generative_cycle(
                 .checked_div(existing.successful_uses)
                 .unwrap_or(0)
                 .min(100) as u16;
-            if !existing
-                .verified_artifact_sha256s
-                .contains(&verified_artifact_sha256)
-            {
-                existing
+            for artifact in result_artifacts {
+                if !existing
                     .verified_artifact_sha256s
-                    .push(verified_artifact_sha256);
-                existing.verified_artifact_sha256s.sort();
+                    .contains(&artifact.artifact_sha256)
+                {
+                    existing
+                        .verified_artifact_sha256s
+                        .push(artifact.artifact_sha256.clone());
+                }
+                existing.verified_artifact_contexts.insert(
+                    artifact.artifact_sha256.clone(),
+                    artifact.artifact_context_sha256.clone(),
+                );
             }
+            existing.verified_artifact_sha256s.sort();
         } else if result.accepted_for_memory {
             let mut context_use_counts = BTreeMap::new();
             context_use_counts.insert(result.context_sha256.clone(), 1);
+            let verified_artifact_sha256s = result_artifacts
+                .iter()
+                .map(|artifact| artifact.artifact_sha256.clone())
+                .collect::<Vec<_>>();
+            let verified_artifact_contexts = result_artifacts
+                .iter()
+                .map(|artifact| {
+                    (
+                        artifact.artifact_sha256.clone(),
+                        artifact.artifact_context_sha256.clone(),
+                    )
+                })
+                .collect::<BTreeMap<_, _>>();
             next.accepted_compositions.push(ReusableCompositionMemory {
                 composition: result.selected_composition.clone(),
                 trigger_signals: input.diagnostic_signals.clone(),
@@ -1239,7 +1416,8 @@ pub fn promote_generative_cycle(
                 context_use_counts,
                 successful_uses: 1,
                 observed_value_total: u64::from(result.observed_value),
-                verified_artifact_sha256s: vec![verified_artifact_sha256],
+                verified_artifact_sha256s,
+                verified_artifact_contexts,
             });
         }
         if result.reused_memory_composition_id.is_some() {
@@ -1306,6 +1484,9 @@ mod tests {
         assert!(result.prediction_error <= 30);
         assert!(result.valuable);
         assert!(result.accepted_for_memory);
+        assert_eq!(result.verified_artifact_count, 1);
+        assert_eq!(result.novel_verified_artifact_count, 1);
+        assert_eq!(result.frontier_advance_units, 1);
         assert!(!result.unverified_frontier_candidate);
         assert!(result.frontier_advance);
         assert!(result.applied_to_self_improvement);
@@ -1331,7 +1512,10 @@ mod tests {
         assert_eq!(memory.exploration_events, 2);
         assert_eq!(memory.accepted_compositions.len(), 2);
         assert_eq!(memory.distinct_verified_artifact_count(), 1);
-        assert_eq!(memory.frontier_advance_events, 2);
+        // The second predictor wrapper produced the same executable artifact;
+        // wrapper novelty is not capability novelty.
+        assert_eq!(memory.frontier_advance_events, 1);
+        assert_eq!(memory.frontier_capability_units, 1);
         assert_eq!(memory.unverified_frontier_candidate_events, 0);
         assert_eq!(memory.behavioral_verification_events, 2);
         assert!(memory.prediction_absolute_error_total < 2 * 100);
@@ -1349,7 +1533,7 @@ mod tests {
         assert!(!repeated.applied_to_self_improvement);
         memory = promote_generative_cycle(&memory, &repeated_context, &repeated).unwrap();
         assert_eq!(memory.reuse_events, 1);
-        assert_eq!(memory.redundant_selection_events, 1);
+        assert_eq!(memory.redundant_selection_events, 2);
 
         let mut new_context = input();
         new_context.source_lesson_id = "lesson-new-context".to_string();
@@ -1369,6 +1553,40 @@ mod tests {
         memory = promote_generative_cycle(&memory, &new_context, &transferred).unwrap();
         assert_eq!(memory.unverified_frontier_candidate_events, 0);
         assert_eq!(memory.distinct_verified_artifact_count(), 2);
+        assert_eq!(memory.frontier_capability_units, 2);
+    }
+
+    #[test]
+    fn verified_success_expands_the_next_bounded_artifact_family() {
+        let first_input = input();
+        let first_result =
+            run_generative_cycle(&GenerativeGrowthMemory::default(), &first_input, 7).unwrap();
+        let mut memory = promote_generative_cycle(
+            &GenerativeGrowthMemory::default(),
+            &first_input,
+            &first_result,
+        )
+        .unwrap();
+        let accepted = memory.accepted_compositions.first_mut().unwrap();
+        accepted.verified_artifact_sha256s = (0..5)
+            .map(|ordinal| sha256(format!("verified-{ordinal}").as_bytes()))
+            .collect();
+        memory.frontier_capability_units = 5;
+
+        let mut next_input = input();
+        next_input.source_lesson_id = "bounded-family-after-success".to_string();
+        next_input
+            .diagnostic_signals
+            .push("CAPABILITY_SURFACE_ADDED".to_string());
+        let result = run_generative_cycle(&memory, &next_input, 19).unwrap();
+
+        assert_eq!(verified_artifact_family_width(&memory), 3);
+        assert_eq!(result.verified_artifact_count, 3);
+        assert_eq!(result.novel_verified_artifact_count, 3);
+        assert_eq!(result.frontier_advance_units, 3);
+        let next = promote_generative_cycle(&memory, &next_input, &result).unwrap();
+        assert_eq!(next.frontier_capability_units, 8);
+        assert_eq!(next.distinct_verified_artifact_count(), 8);
     }
 
     #[test]
@@ -1409,6 +1627,33 @@ mod tests {
             memory.behavioral_value_contract_revision,
             BEHAVIORAL_VALUE_CONTRACT_REVISION
         );
+    }
+
+    #[test]
+    fn legacy_wrapper_events_are_separated_from_capability_units() {
+        let first_input = input();
+        let first_result =
+            run_generative_cycle(&GenerativeGrowthMemory::default(), &first_input, 7).unwrap();
+        let mut memory = promote_generative_cycle(
+            &GenerativeGrowthMemory::default(),
+            &first_input,
+            &first_result,
+        )
+        .unwrap();
+        memory.behavioral_value_contract_revision =
+            BEHAVIORAL_HEURISTIC_EXCLUSION_CONTRACT_REVISION;
+        memory.frontier_advance_events = 7;
+        memory.frontier_capability_units = 0;
+
+        let mut repeated = input();
+        repeated.source_lesson_id = "wrapper-event-migration".to_string();
+        let result = run_generative_cycle(&memory, &repeated, 9).unwrap();
+        assert!(!result.frontier_advance);
+        let next = promote_generative_cycle(&memory, &repeated, &result).unwrap();
+
+        assert_eq!(next.legacy_wrapper_frontier_advance_events, 7);
+        assert_eq!(next.frontier_advance_events, 0);
+        assert_eq!(next.frontier_capability_units, 1);
     }
 
     #[test]

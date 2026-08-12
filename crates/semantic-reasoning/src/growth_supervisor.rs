@@ -302,9 +302,13 @@ pub struct SupervisorState {
     #[serde(default)]
     pub generative_frontier_advance_events: u64,
     #[serde(default)]
+    pub generative_frontier_capability_units: u64,
+    #[serde(default)]
     pub unverified_generative_frontier_candidate_events: u64,
     #[serde(default)]
     pub legacy_unverified_generative_frontier_advance_events: u64,
+    #[serde(default)]
+    pub legacy_wrapper_generative_frontier_advance_events: u64,
     #[serde(default)]
     pub generative_behavioral_verification_events: u64,
     #[serde(default)]
@@ -857,8 +861,10 @@ pub struct StepReport {
     pub generative_exploration_events: u64,
     pub productive_generative_reuse_events: u64,
     pub generative_frontier_advance_events: u64,
+    pub generative_frontier_capability_units: u64,
     pub unverified_generative_frontier_candidate_events: u64,
     pub legacy_unverified_generative_frontier_advance_events: u64,
+    pub legacy_wrapper_generative_frontier_advance_events: u64,
     pub generative_behavioral_verification_events: u64,
     pub redundant_generative_selection_events: u64,
     pub generative_mean_prediction_error_millis: u64,
@@ -2373,10 +2379,13 @@ fn restore_memory_projection(
     state.generative_exploration_events = memory.generative.exploration_events;
     state.productive_generative_reuse_events = memory.generative.productive_reuse_events;
     state.generative_frontier_advance_events = memory.generative.frontier_advance_events;
+    state.generative_frontier_capability_units = memory.generative.frontier_capability_units;
     state.unverified_generative_frontier_candidate_events =
         memory.generative.unverified_frontier_candidate_events;
     state.legacy_unverified_generative_frontier_advance_events =
         memory.generative.legacy_unverified_frontier_advance_events;
+    state.legacy_wrapper_generative_frontier_advance_events =
+        memory.generative.legacy_wrapper_frontier_advance_events;
     state.generative_behavioral_verification_events =
         memory.generative.behavioral_verification_events;
     state.redundant_generative_selection_events = memory.generative.redundant_selection_events;
@@ -2676,8 +2685,10 @@ pub fn initialize(config_path: &Path) -> Result<SupervisorState, String> {
         generative_exploration_events: 0,
         productive_generative_reuse_events: 0,
         generative_frontier_advance_events: 0,
+        generative_frontier_capability_units: 0,
         unverified_generative_frontier_candidate_events: 0,
         legacy_unverified_generative_frontier_advance_events: 0,
+        legacy_wrapper_generative_frontier_advance_events: 0,
         generative_behavioral_verification_events: 0,
         redundant_generative_selection_events: 0,
         generative_prediction_absolute_error_total: 0,
@@ -4563,10 +4574,13 @@ fn promote_candidate(
     state.generative_exploration_events = memory.generative.exploration_events;
     state.productive_generative_reuse_events = memory.generative.productive_reuse_events;
     state.generative_frontier_advance_events = memory.generative.frontier_advance_events;
+    state.generative_frontier_capability_units = memory.generative.frontier_capability_units;
     state.unverified_generative_frontier_candidate_events =
         memory.generative.unverified_frontier_candidate_events;
     state.legacy_unverified_generative_frontier_advance_events =
         memory.generative.legacy_unverified_frontier_advance_events;
+    state.legacy_wrapper_generative_frontier_advance_events =
+        memory.generative.legacy_wrapper_frontier_advance_events;
     state.generative_behavioral_verification_events =
         memory.generative.behavioral_verification_events;
     state.redundant_generative_selection_events = memory.generative.redundant_selection_events;
@@ -6092,10 +6106,13 @@ fn report_from_state(
         generative_exploration_events: state.generative_exploration_events,
         productive_generative_reuse_events: state.productive_generative_reuse_events,
         generative_frontier_advance_events: state.generative_frontier_advance_events,
+        generative_frontier_capability_units: state.generative_frontier_capability_units,
         unverified_generative_frontier_candidate_events: state
             .unverified_generative_frontier_candidate_events,
         legacy_unverified_generative_frontier_advance_events: state
             .legacy_unverified_generative_frontier_advance_events,
+        legacy_wrapper_generative_frontier_advance_events: state
+            .legacy_wrapper_generative_frontier_advance_events,
         generative_behavioral_verification_events: state.generative_behavioral_verification_events,
         redundant_generative_selection_events: state.redundant_generative_selection_events,
         generative_mean_prediction_error_millis: state
@@ -6354,28 +6371,75 @@ fn account_source_patch_error(
         state.source_patch_consecutive_failures.saturating_add(1);
 }
 
-fn accepted_sem5_composition_context(memory: &GrowthMemory) -> Option<String> {
+fn is_sem5_composition(accepted: &crate::generative_growth::ReusableCompositionMemory) -> bool {
+    accepted.successful_uses > 0
+        && accepted.composition.primitives.iter().any(|primitive| {
+            primitive
+                .primitive_id
+                .starts_with("SEM5_PROGRAM_IR_COMPOSER")
+        })
+}
+
+fn legacy_accepted_sem5_composition_context(memory: &GrowthMemory) -> Option<String> {
     memory
         .generative
         .accepted_compositions
         .iter()
         .rev()
-        .find(|accepted| {
-            accepted.successful_uses > 0
-                && accepted.composition.primitives.iter().any(|primitive| {
-                    primitive
-                        .primitive_id
-                        .starts_with("SEM5_PROGRAM_IR_COMPOSER")
-                })
-        })
+        .find(|accepted| is_sem5_composition(accepted))
         .and_then(|accepted| accepted.context_use_counts.keys().next_back().cloned())
+}
+
+fn accepted_sem5_artifact_contexts(memory: &GrowthMemory) -> Vec<(String, String)> {
+    let mut artifacts = memory
+        .generative
+        .accepted_compositions
+        .iter()
+        .rev()
+        .filter(|accepted| is_sem5_composition(accepted))
+        .flat_map(|accepted| accepted.verified_artifact_contexts.iter().rev())
+        .map(|(artifact, context)| (artifact.clone(), context.clone()))
+        .collect::<Vec<_>>();
+    let mut seen = BTreeSet::new();
+    artifacts.retain(|(artifact, _)| seen.insert(artifact.clone()));
+    artifacts
+}
+
+fn pending_sem5_composition_context(memory: &GrowthMemory) -> Result<Option<String>, String> {
+    let installed = crate::generated_sem5_capability::generated_capability_hashes()
+        .iter()
+        .copied()
+        .collect::<BTreeSet<_>>();
+    for (expected_artifact, context) in accepted_sem5_artifact_contexts(memory) {
+        if installed.contains(expected_artifact.as_str()) {
+            continue;
+        }
+        let (candidate, _) = compose_behavioral_canary_candidate(&context)?;
+        if candidate.program_ir_sha256 != expected_artifact {
+            return Err("VERIFIED_ARTIFACT_CONTEXT_BINDING_FAILURE".to_string());
+        }
+        return Ok(Some(context));
+    }
+    Ok(None)
+}
+
+fn latest_installed_sem5_composition_context(memory: &GrowthMemory) -> Option<String> {
+    let installed = crate::generated_sem5_capability::generated_capability_hashes()
+        .iter()
+        .copied()
+        .collect::<BTreeSet<_>>();
+    accepted_sem5_artifact_contexts(memory)
+        .into_iter()
+        .find(|(artifact, _)| installed.contains(artifact.as_str()))
+        .map(|(_, context)| context)
+        .or_else(|| legacy_accepted_sem5_composition_context(memory))
 }
 
 fn revalidate_installed_composite_capability(state: &mut SupervisorState, memory: &GrowthMemory) {
     if !crate::generated_sem5_capability::GENERATED_CAPABILITY_ACTIVE {
         return;
     }
-    let Some(context) = accepted_sem5_composition_context(memory) else {
+    let Some(context) = latest_installed_sem5_composition_context(memory) else {
         return;
     };
     let Ok((candidate, _)) = compose_behavioral_canary_candidate(&context) else {
@@ -6426,7 +6490,7 @@ fn attempt_pending_composite_capability_install(
     state: &mut SupervisorState,
     memory: &GrowthMemory,
 ) -> Result<CompositeInstallAttemptOutcome, String> {
-    let Some(context) = accepted_sem5_composition_context(memory) else {
+    let Some(context) = pending_sem5_composition_context(memory)? else {
         return Ok(CompositeInstallAttemptOutcome {
             attempted: false,
             staged: false,
@@ -6735,10 +6799,13 @@ fn step_without_lease(
     state.generative_exploration_events = memory.generative.exploration_events;
     state.productive_generative_reuse_events = memory.generative.productive_reuse_events;
     state.generative_frontier_advance_events = memory.generative.frontier_advance_events;
+    state.generative_frontier_capability_units = memory.generative.frontier_capability_units;
     state.unverified_generative_frontier_candidate_events =
         memory.generative.unverified_frontier_candidate_events;
     state.legacy_unverified_generative_frontier_advance_events =
         memory.generative.legacy_unverified_frontier_advance_events;
+    state.legacy_wrapper_generative_frontier_advance_events =
+        memory.generative.legacy_wrapper_frontier_advance_events;
     state.generative_behavioral_verification_events =
         memory.generative.behavioral_verification_events;
     state.redundant_generative_selection_events = memory.generative.redundant_selection_events;
@@ -8040,6 +8107,23 @@ mod tests {
         memory.generative =
             promote_generative_cycle(&GenerativeGrowthMemory::default(), &input, &result)
                 .expect("promote pending capability");
+
+        let pending_context = pending_sem5_composition_context(&memory)
+            .expect("pending lookup")
+            .expect("pending artifact context");
+        let (pending_candidate, _) = compose_behavioral_canary_candidate(&pending_context)
+            .expect("context reproduces candidate");
+        assert!(!installed.contains(&pending_candidate.program_ir_sha256.as_str()));
+        assert!(memory
+            .generative
+            .accepted_compositions
+            .iter()
+            .any(|accepted| {
+                accepted
+                    .verified_artifact_contexts
+                    .get(&pending_candidate.program_ir_sha256)
+                    == Some(&pending_context)
+            }));
 
         revalidate_installed_composite_capability(&mut state, &memory);
 
