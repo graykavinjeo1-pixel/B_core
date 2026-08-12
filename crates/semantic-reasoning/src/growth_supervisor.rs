@@ -43,6 +43,11 @@ use crate::integrated_development::{
     install_composite_candidate_family, MAX_INSTALLED_TYPED_CAPABILITIES,
 };
 use crate::self_repair_contract::sha256;
+use crate::source_bound_causal_frontend::{
+    discover_and_synthesize_python_repository, RepositoryTestSourceIR,
+    SourceBoundRepositoryDiscoveryRequestIR, SOURCE_BOUND_REPOSITORY_DISCOVERY_SCHEMA,
+};
+use crate::structural_source_repair::{apply_edit_atom, SourceEditAtom};
 
 pub const SUPERVISOR_SCHEMA: &str = "B_CORE_BOUNDED_GROWTH_SUPERVISOR_1";
 pub const CONFIG_SCHEMA: &str = "B_CORE_BOUNDED_GROWTH_CONFIG_1";
@@ -62,6 +67,9 @@ const INSTALLED_EXECUTION_COUNTER_CONTRACT_REVISION: u64 = 2;
 const MAX_CORE_COHORT_VALIDATION_MS: u64 = 3 * 60 * 1_000;
 const FULL_CORE_REGRESSION_CANARY_INTERVAL: u64 = 8;
 const MAX_REPOSITORY_TEST_PATHS: usize = 8;
+const MAX_REPOSITORY_REPAIR_SOURCE_PATHS: usize = 8;
+const MAX_REPOSITORY_REPAIR_SANDBOX_FILES: usize = 4_096;
+const MAX_REPOSITORY_REPAIR_SANDBOX_BYTES: u64 = 128 * 1024 * 1024;
 const MAX_COMPOSITE_INSTALL_FAMILY: usize = 32;
 
 fn u64_is_zero(value: &u64) -> bool {
@@ -5561,6 +5569,49 @@ struct RepositoryCohortValidationReceipt {
     network_writes: u64,
 }
 
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+struct RepositoryRepairSynthesisReceipt {
+    schema: String,
+    repair_id: String,
+    originating_validation_id: String,
+    originating_diagnostic_id: String,
+    generation: u64,
+    root_index: usize,
+    root_sha256: String,
+    source_relative_path: PathBuf,
+    predecessor_sha256: String,
+    candidate_sha256: Option<String>,
+    source_bound_receipt_sha256: Option<String>,
+    source_bound_alternative_sha256: Vec<String>,
+    operator_family: String,
+    edit_atom_kinds: Vec<String>,
+    candidate_materialization_is_one_to_one: bool,
+    failure_code: Option<String>,
+    scope_fingerprint_before: String,
+    scope_fingerprint_after: String,
+    authoritative_scope_stable: bool,
+    sandbox_command: Option<LocalCommandReceipt>,
+    sandbox_verified: bool,
+    sandbox_cleaned: bool,
+    candidate_installed: bool,
+    authoritative_source_write_events: u64,
+    operator_selected: bool,
+    codex_calls: u64,
+    external_llm_calls: u64,
+    network_reads: u64,
+    network_writes: u64,
+    exact_source_fragments_stored: u64,
+    raw_source_bytes_stored: u64,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+struct RepositoryCohortValidationOutcome {
+    executed: bool,
+    sandbox_repair_verified: bool,
+    evidence_sha256: Vec<String>,
+    output_observation_ids: Vec<String>,
+}
+
 fn logical_root_relative(logical_path: &str) -> Option<(usize, PathBuf)> {
     let (root, relative) = logical_path.split_once('/')?;
     let root_index = root.strip_prefix("ROOT_")?.parse::<usize>().ok()?;
@@ -5650,6 +5701,435 @@ fn repository_validation_scope_fingerprint(
     }
     entries.sort();
     Ok(sha256(entries.join("\n").as_bytes()))
+}
+
+fn source_edit_atom_kinds(edit: &SourceEditAtom, kinds: &mut BTreeSet<String>) {
+    match edit {
+        SourceEditAtom::Replace { .. } => {
+            kinds.insert("REPLACE".to_string());
+        }
+        SourceEditAtom::Insert { .. } => {
+            kinds.insert("INSERT".to_string());
+        }
+        SourceEditAtom::Delete { .. } => {
+            kinds.insert("DELETE".to_string());
+        }
+        SourceEditAtom::Move { .. } => {
+            kinds.insert("MOVE".to_string());
+        }
+        SourceEditAtom::AtomicMultiEdit { edits } => {
+            kinds.insert("ATOMIC_MULTI_EDIT".to_string());
+            for nested in edits {
+                source_edit_atom_kinds(nested, kinds);
+            }
+        }
+    }
+}
+
+#[cfg(windows)]
+#[allow(clippy::permissions_set_readonly_false)]
+fn ensure_repository_repair_file_writable(path: &Path) -> Result<(), String> {
+    let mut permissions = fs::metadata(path)
+        .map_err(|error| format!("REPOSITORY_REPAIR_FILE_METADATA:{error}"))?
+        .permissions();
+    if permissions.readonly() {
+        // On Windows this clears the FILE_ATTRIBUTE_READONLY bit; it does not
+        // broaden an ACL or make the file world-writable.
+        permissions.set_readonly(false);
+        fs::set_permissions(path, permissions)
+            .map_err(|error| format!("REPOSITORY_REPAIR_FILE_PERMISSIONS:{error}"))?;
+    }
+    Ok(())
+}
+
+#[cfg(unix)]
+fn ensure_repository_repair_file_writable(path: &Path) -> Result<(), String> {
+    use std::os::unix::fs::PermissionsExt;
+
+    let mut permissions = fs::metadata(path)
+        .map_err(|error| format!("REPOSITORY_REPAIR_FILE_METADATA:{error}"))?
+        .permissions();
+    let owner_writable = permissions.mode() | 0o200;
+    permissions.set_mode(owner_writable);
+    fs::set_permissions(path, permissions)
+        .map_err(|error| format!("REPOSITORY_REPAIR_FILE_PERMISSIONS:{error}"))
+}
+
+fn copy_repository_to_repair_sandbox(
+    config: &GrowthSupervisorConfig,
+    root: &Path,
+    sandbox: &Path,
+) -> Result<(), String> {
+    let canonical_root = fs::canonicalize(root)
+        .map_err(|error| format!("REPOSITORY_REPAIR_ROOT_CANONICALIZE:{error}"))?;
+    let files = collect_files(
+        std::slice::from_ref(&canonical_root),
+        &config.observation,
+        config
+            .resources
+            .max_files_per_scan
+            .min(MAX_REPOSITORY_REPAIR_SANDBOX_FILES),
+    )?;
+    let byte_budget = config
+        .resources
+        .max_bytes_per_scan
+        .min(MAX_REPOSITORY_REPAIR_SANDBOX_BYTES);
+    let mut copied_bytes = 0_u64;
+    fs::create_dir_all(sandbox)
+        .map_err(|error| format!("REPOSITORY_REPAIR_SANDBOX_CREATE:{error}"))?;
+    for source in files {
+        let metadata = fs::metadata(&source)
+            .map_err(|error| format!("REPOSITORY_REPAIR_SOURCE_METADATA:{error}"))?;
+        if metadata.len() > config.resources.max_file_bytes {
+            return Err("PUBLIC_INFORMATION_INSUFFICIENT:SANDBOX_FILE_TOO_LARGE".to_string());
+        }
+        copied_bytes = copied_bytes.saturating_add(metadata.len());
+        if copied_bytes > byte_budget {
+            return Err("PUBLIC_INFORMATION_INSUFFICIENT:SANDBOX_BYTE_BUDGET".to_string());
+        }
+        let relative = source
+            .strip_prefix(&canonical_root)
+            .map_err(|_| "REPOSITORY_REPAIR_SANDBOX_PREFIX".to_string())?;
+        let destination = sandbox.join(relative);
+        if let Some(parent) = destination.parent() {
+            fs::create_dir_all(parent)
+                .map_err(|error| format!("REPOSITORY_REPAIR_SANDBOX_PARENT:{error}"))?;
+        }
+        fs::copy(&source, &destination)
+            .map_err(|error| format!("REPOSITORY_REPAIR_SANDBOX_COPY:{error}"))?;
+        ensure_repository_repair_file_writable(&destination)?;
+    }
+    Ok(())
+}
+
+fn remove_repository_repair_sandbox(
+    config: &GrowthSupervisorConfig,
+    sandbox: &Path,
+) -> Result<(), String> {
+    let parent = config.state_dir.join("repository_repair_sandboxes");
+    if sandbox.parent() != Some(parent.as_path()) || sandbox == parent {
+        return Err("REPOSITORY_REPAIR_SANDBOX_DELETE_SCOPE".to_string());
+    }
+    if sandbox.exists() {
+        fs::remove_dir_all(sandbox)
+            .map_err(|error| format!("REPOSITORY_REPAIR_SANDBOX_DELETE:{error}"))?;
+    }
+    Ok(())
+}
+
+fn repository_repair_observation_id(
+    receipt: &RepositoryRepairSynthesisReceipt,
+    receipt_sha256: &str,
+) -> String {
+    sha256(
+        format!(
+            "REPOSITORY_SANDBOX_REPAIR_OBSERVATION:{}:{}",
+            receipt.repair_id, receipt_sha256
+        )
+        .as_bytes(),
+    )
+}
+
+fn python_pytest_target_symbols(diagnostic_tail: &str) -> Vec<String> {
+    fn is_symbol_byte(byte: u8) -> bool {
+        byte.is_ascii_alphanumeric() || byte == b'_' || byte == b'.'
+    }
+
+    let mut symbols = BTreeSet::new();
+    for line in diagnostic_tail.lines() {
+        let assertion_line = line.contains("assert ") || line.contains("<function ");
+        if !assertion_line {
+            continue;
+        }
+        let bytes = line.as_bytes();
+        for (index, byte) in bytes.iter().enumerate() {
+            if *byte != b'(' {
+                continue;
+            }
+            let mut start = index;
+            while start > 0 && is_symbol_byte(bytes[start - 1]) {
+                start -= 1;
+            }
+            let symbol = &line[start..index];
+            if !symbol.is_empty()
+                && !symbol.starts_with("test_")
+                && symbol
+                    .split('.')
+                    .all(|part| !part.is_empty() && !part.chars().next().unwrap().is_ascii_digit())
+            {
+                symbols.insert(symbol.to_string());
+            }
+        }
+        if let Some(rest) = line.split_once("<function ").map(|(_, rest)| rest) {
+            let symbol = rest
+                .split(|character: char| character.is_whitespace() || character == '>')
+                .next()
+                .unwrap_or("");
+            if !symbol.is_empty() && !symbol.starts_with("test_") {
+                symbols.insert(symbol.to_string());
+            }
+        }
+    }
+    symbols.into_iter().collect()
+}
+
+fn try_synthesize_failed_python_cohort(
+    config: &GrowthSupervisorConfig,
+    diagnostic: &AutonomousSelfInspectionReceipt,
+    plan: &RepositoryValidationPlan,
+    validation: &RepositoryCohortValidationReceipt,
+) -> Result<Option<(String, String)>, String> {
+    if plan.validator_kind != RepositoryValidatorKind::PythonPytest || validation.success {
+        return Ok(None);
+    }
+    let test_sources = plan
+        .test_paths
+        .iter()
+        .map(|relative| {
+            let path = validated_repository_file(&plan.root, relative)?;
+            let source = fs::read_to_string(&path)
+                .map_err(|error| format!("REPOSITORY_REPAIR_TEST_READ:{error}"))?;
+            Ok(RepositoryTestSourceIR {
+                relative_path: relative.clone(),
+                source,
+            })
+        })
+        .collect::<Result<Vec<_>, String>>()?;
+    let mut implementation_paths = plan
+        .scope_paths
+        .iter()
+        .filter(|relative| {
+            relative.extension().and_then(OsStr::to_str) == Some("py")
+                && !path_is_dedicated_test(relative)
+        })
+        .cloned()
+        .collect::<Vec<_>>();
+    implementation_paths.sort();
+    implementation_paths.dedup();
+    implementation_paths.truncate(MAX_REPOSITORY_REPAIR_SOURCE_PATHS);
+
+    let diagnostics = config.state_dir.join("diagnostics");
+    fs::create_dir_all(&diagnostics)
+        .map_err(|error| format!("REPOSITORY_REPAIR_DIAGNOSTICS_CREATE:{error}"))?;
+    for relative in implementation_paths {
+        let source_path = validated_repository_file(&plan.root, &relative)?;
+        let source = fs::read_to_string(&source_path)
+            .map_err(|error| format!("REPOSITORY_REPAIR_SOURCE_READ:{error}"))?;
+        let predecessor_sha256 = sha256(source.as_bytes());
+        let repair_id = sha256(
+            format!(
+                "REPOSITORY_SOURCE_BOUND_REPAIR_1:{}:{}:{}",
+                validation.validation_id,
+                relative.to_string_lossy().replace('\\', "/"),
+                predecessor_sha256
+            )
+            .as_bytes(),
+        );
+        let receipt_path =
+            diagnostics.join(format!("repository_repair_synthesis_{repair_id}.json"));
+        if receipt_path.exists() {
+            let existing: RepositoryRepairSynthesisReceipt = read_json(&receipt_path)?;
+            if existing.schema != "B_REPOSITORY_REPAIR_SYNTHESIS_1"
+                || existing.repair_id != repair_id
+                || existing.originating_validation_id != validation.validation_id
+                || existing.source_relative_path != relative
+                || existing.predecessor_sha256 != predecessor_sha256
+            {
+                return Err("REPOSITORY_REPAIR_SYNTHESIS_RECEIPT_MISMATCH".to_string());
+            }
+            if existing.sandbox_verified
+                && existing.sandbox_cleaned
+                && existing.authoritative_scope_stable
+                && !existing.candidate_installed
+            {
+                let receipt_sha256 = json_sha256(&existing)?;
+                let observation_id = repository_repair_observation_id(&existing, &receipt_sha256);
+                return Ok(Some((receipt_sha256, observation_id)));
+            }
+            continue;
+        }
+
+        let mut candidate_sha256 = None;
+        let mut source_bound_receipt_sha256 = None;
+        let mut source_bound_alternative_sha256 = Vec::new();
+        let mut edit_atom_kinds = BTreeSet::new();
+        let mut materialization_is_one_to_one = false;
+        let mut failure_code = None;
+        let mut sandbox_command = None;
+        let mut sandbox_verified = false;
+        let mut sandbox_cleaned = true;
+        let mut candidate_source = None;
+
+        let request = SourceBoundRepositoryDiscoveryRequestIR {
+            schema: SOURCE_BOUND_REPOSITORY_DISCOVERY_SCHEMA.to_string(),
+            source_relative_path: relative.clone(),
+            source: source.clone(),
+            test_sources: test_sources.clone(),
+            python_executable: plan.program.clone(),
+            target_symbols: python_pytest_target_symbols(&validation.command.diagnostic_tail),
+            allowed_effects: Vec::new(),
+            max_expression_depth: 3,
+            max_candidates: 2_048,
+        };
+        match discover_and_synthesize_python_repository(&request) {
+            Ok(source_bound) => {
+                source_bound_receipt_sha256 = Some(json_sha256(&source_bound)?);
+                let mut edits = Vec::new();
+                for alternative in &source_bound.alternatives {
+                    source_bound_alternative_sha256.push(json_sha256(alternative)?);
+                    match &alternative.materialized_patch.edit {
+                        SourceEditAtom::AtomicMultiEdit { edits: nested } => {
+                            edits.extend(nested.iter().cloned());
+                        }
+                        edit => edits.push(edit.clone()),
+                    }
+                }
+                let edit = SourceEditAtom::AtomicMultiEdit { edits };
+                source_edit_atom_kinds(&edit, &mut edit_atom_kinds);
+                match apply_edit_atom(&source, &edit) {
+                    Ok(candidate) if candidate != source => {
+                        let replay = apply_edit_atom(&source, &edit);
+                        materialization_is_one_to_one = replay.as_deref() == Ok(candidate.as_str());
+                        if materialization_is_one_to_one {
+                            candidate_sha256 = Some(sha256(candidate.as_bytes()));
+                            candidate_source = Some(candidate);
+                        } else {
+                            failure_code = Some(
+                                "CONFLICTING_SOURCE_BOUND_EDITS:CANDIDATE_REPLAY_DIVERGED"
+                                    .to_string(),
+                            );
+                        }
+                    }
+                    Ok(_) => {
+                        failure_code = Some(
+                            "UNSUPPORTED_LANGUAGE_SYNTAX:NO_OP_SOURCE_BOUND_PATCH".to_string(),
+                        );
+                    }
+                    Err(error) => {
+                        failure_code = Some(format!(
+                            "CONFLICTING_SOURCE_BOUND_EDITS:{}",
+                            sha256(error.as_bytes())
+                        ));
+                    }
+                }
+            }
+            Err(error) => {
+                failure_code = Some(format!(
+                    "{}:{}",
+                    error.kind.as_code(),
+                    sha256(error.detail.as_bytes())
+                ));
+            }
+        }
+
+        if let Some(candidate) = candidate_source {
+            let sandbox_parent = config.state_dir.join("repository_repair_sandboxes");
+            fs::create_dir_all(&sandbox_parent)
+                .map_err(|error| format!("REPOSITORY_REPAIR_SANDBOX_PARENT:{error}"))?;
+            let sandbox = sandbox_parent.join(&repair_id);
+            if sandbox.exists() {
+                remove_repository_repair_sandbox(config, &sandbox)?;
+            }
+            let log_path = diagnostics.join(format!("repository_repair_synthesis_{repair_id}.log"));
+            let verification = (|| -> Result<LocalCommandReceipt, String> {
+                copy_repository_to_repair_sandbox(config, &plan.root, &sandbox)?;
+                let destination = sandbox.join(&relative);
+                ensure_repository_repair_file_writable(&destination)?;
+                fs::write(&destination, candidate)
+                    .map_err(|error| format!("REPOSITORY_REPAIR_CANDIDATE_WRITE:{error}"))?;
+                let arg_refs = plan.args.iter().map(String::as_str).collect::<Vec<_>>();
+                command_receipt_with_incremental(
+                    &plan.program,
+                    &arg_refs,
+                    &sandbox,
+                    &runtime_validation_target_dir(config),
+                    MAX_CORE_COHORT_VALIDATION_MS,
+                    &log_path,
+                    true,
+                )
+            })();
+            let cleanup = remove_repository_repair_sandbox(config, &sandbox);
+            sandbox_cleaned = cleanup.is_ok() && !sandbox.exists();
+            let _ = fs::remove_file(&log_path);
+            match verification {
+                Ok(mut command) => {
+                    sandbox_verified = command.success && sandbox_cleaned;
+                    command.diagnostic_tail =
+                        format!("SANDBOX_VALIDATION_OUTPUT_SHA256:{}", command.output_sha256);
+                    sandbox_command = Some(command);
+                    if !sandbox_verified {
+                        failure_code = Some(if sandbox_cleaned {
+                            "PUBLIC_INFORMATION_INSUFFICIENT:CANDIDATE_FAILED_PUBLIC_TESTS"
+                                .to_string()
+                        } else {
+                            "PUBLIC_INFORMATION_INSUFFICIENT:SANDBOX_CLEANUP_FAILED".to_string()
+                        });
+                    }
+                }
+                Err(error) => {
+                    failure_code = Some(format!(
+                        "PUBLIC_INFORMATION_INSUFFICIENT:{}",
+                        sha256(error.as_bytes())
+                    ));
+                }
+            }
+        }
+
+        let scope_fingerprint_after = repository_validation_scope_fingerprint(
+            &plan.root,
+            &plan.scope_paths,
+            config.resources.max_file_bytes,
+        )?;
+        let authoritative_scope_stable =
+            validation.scope_fingerprint_before == scope_fingerprint_after;
+        sandbox_verified &= authoritative_scope_stable;
+        if !authoritative_scope_stable {
+            failure_code =
+                Some("CONFLICTING_SOURCE_BOUND_EDITS:AUTHORITATIVE_SCOPE_CHANGED".to_string());
+        }
+        let receipt = RepositoryRepairSynthesisReceipt {
+            schema: "B_REPOSITORY_REPAIR_SYNTHESIS_1".to_string(),
+            repair_id,
+            originating_validation_id: validation.validation_id.clone(),
+            originating_diagnostic_id: diagnostic.diagnostic_id.clone(),
+            generation: diagnostic.generation,
+            root_index: plan.root_index,
+            root_sha256: sha256(plan.root.to_string_lossy().as_bytes()),
+            source_relative_path: relative,
+            predecessor_sha256,
+            candidate_sha256,
+            source_bound_receipt_sha256,
+            source_bound_alternative_sha256,
+            operator_family: "PUBLIC_SYMBOL_EXECUTION_CLOSURE_TO_TYPED_ATOMIC_SOURCE_PATCH"
+                .to_string(),
+            edit_atom_kinds: edit_atom_kinds.into_iter().collect(),
+            candidate_materialization_is_one_to_one: materialization_is_one_to_one,
+            failure_code,
+            scope_fingerprint_before: validation.scope_fingerprint_before.clone(),
+            scope_fingerprint_after,
+            authoritative_scope_stable,
+            sandbox_command,
+            sandbox_verified,
+            sandbox_cleaned,
+            candidate_installed: false,
+            authoritative_source_write_events: 0,
+            operator_selected: false,
+            codex_calls: 0,
+            external_llm_calls: 0,
+            network_reads: 0,
+            network_writes: 0,
+            exact_source_fragments_stored: 0,
+            raw_source_bytes_stored: 0,
+        };
+        write_immutable_json(&receipt_path, &receipt)?;
+        cleanup_recent_files(&diagnostics, "repository_repair_synthesis_", 64)?;
+        if receipt.sandbox_verified && receipt.sandbox_cleaned {
+            let receipt_sha256 = json_sha256(&receipt)?;
+            let observation_id = repository_repair_observation_id(&receipt, &receipt_sha256);
+            return Ok(Some((receipt_sha256, observation_id)));
+        }
+    }
+    Ok(None)
 }
 
 fn reusable_python_test_paths(
@@ -6291,9 +6771,14 @@ fn validate_blocked_repository_cohort(
     config: &GrowthSupervisorConfig,
     diagnostic: &AutonomousSelfInspectionReceipt,
     observations: &[LearningObservation],
-) -> Result<(bool, Vec<String>, Vec<String>), String> {
+) -> Result<RepositoryCohortValidationOutcome, String> {
     let Some(plan) = repository_validation_plan(config, observations)? else {
-        return Ok((false, Vec::new(), Vec::new()));
+        return Ok(RepositoryCohortValidationOutcome {
+            executed: false,
+            sandbox_repair_verified: false,
+            evidence_sha256: Vec::new(),
+            output_observation_ids: Vec::new(),
+        });
     };
     let scope_fingerprint_before = repository_validation_scope_fingerprint(
         &plan.root,
@@ -6368,10 +6853,10 @@ fn validate_blocked_repository_cohort(
             root_index: plan.root_index,
             root_sha256: sha256(plan.root.to_string_lossy().as_bytes()),
             validator_kind: plan.validator_kind,
-            test_selection_source: plan.test_selection_source,
-            reused_validation_receipt_sha256: plan.reused_validation_receipt_sha256,
-            input_observation_ids: plan.input_observation_ids,
-            test_paths: plan.test_paths,
+            test_selection_source: plan.test_selection_source.clone(),
+            reused_validation_receipt_sha256: plan.reused_validation_receipt_sha256.clone(),
+            input_observation_ids: plan.input_observation_ids.clone(),
+            test_paths: plan.test_paths.clone(),
             scope_fingerprint_before,
             scope_fingerprint_after,
             scope_stable_during_validation,
@@ -6390,22 +6875,37 @@ fn validate_blocked_repository_cohort(
         receipt
     };
     let receipt_sha256 = json_sha256(&receipt)?;
-    let output_observation_ids = if receipt.success {
-        vec![sha256(
+    if receipt.success {
+        let output_observation_ids = vec![sha256(
             format!(
                 "REPOSITORY_COHORT_VALIDATION_OBSERVATION:{}:{}",
                 receipt.validation_id, receipt_sha256
             )
             .as_bytes(),
-        )]
-    } else {
-        Vec::new()
-    };
-    Ok((
-        receipt.success,
-        vec![receipt_sha256],
-        output_observation_ids,
-    ))
+        )];
+        return Ok(RepositoryCohortValidationOutcome {
+            executed: true,
+            sandbox_repair_verified: false,
+            evidence_sha256: vec![receipt_sha256],
+            output_observation_ids,
+        });
+    }
+    if let Some((repair_receipt_sha256, observation_id)) =
+        try_synthesize_failed_python_cohort(config, diagnostic, &plan, &receipt)?
+    {
+        return Ok(RepositoryCohortValidationOutcome {
+            executed: true,
+            sandbox_repair_verified: true,
+            evidence_sha256: vec![receipt_sha256, repair_receipt_sha256],
+            output_observation_ids: vec![observation_id],
+        });
+    }
+    Ok(RepositoryCohortValidationOutcome {
+        executed: false,
+        sandbox_repair_verified: false,
+        evidence_sha256: vec![receipt_sha256],
+        output_observation_ids: Vec::new(),
+    })
 }
 
 fn runtime_repair_action(
@@ -6426,64 +6926,88 @@ fn runtime_repair_action(
     {
         return Ok(None);
     }
-    let (executed, changed_runtime_decision, execution_evidence_sha256, output_observation_ids) =
-        match mechanism {
-            RuntimeRepairMechanism::ReplayVerifiedEventAgainstIndexedContent => {
-                let outputs = scan_observations
+    let (
+        executed,
+        changed_runtime_decision,
+        execution_evidence_sha256,
+        output_observation_ids,
+        repository_sandbox_repair_verified,
+    ) = match mechanism {
+        RuntimeRepairMechanism::ReplayVerifiedEventAgainstIndexedContent => {
+            let outputs = scan_observations
+                .iter()
+                .filter(|observation| observation.work_event_id.is_some())
+                .map(|observation| observation.observation_id.clone())
+                .collect::<Vec<_>>();
+            let evidence = scan_observations
+                .iter()
+                .filter(|observation| observation.work_event_id.is_some())
+                .map(json_sha256)
+                .collect::<Result<Vec<_>, _>>()?;
+            (
+                !outputs.is_empty(),
+                !outputs.is_empty(),
+                evidence,
+                outputs,
+                false,
+            )
+        }
+        RuntimeRepairMechanism::EvidenceAwareBoundedCohortRouting => {
+            let outputs = evidence_aware_cohort
+                .iter()
+                .map(|observation| observation.observation_id.clone())
+                .collect::<Vec<_>>();
+            let evidence = evidence_aware_cohort
+                .iter()
+                .map(json_sha256)
+                .collect::<Result<Vec<_>, _>>()?;
+            let changed = outputs
+                != naive_cohort
                     .iter()
-                    .filter(|observation| observation.work_event_id.is_some())
                     .map(|observation| observation.observation_id.clone())
                     .collect::<Vec<_>>();
-                let evidence = scan_observations
-                    .iter()
-                    .filter(|observation| observation.work_event_id.is_some())
-                    .map(json_sha256)
-                    .collect::<Result<Vec<_>, _>>()?;
-                (!outputs.is_empty(), !outputs.is_empty(), evidence, outputs)
-            }
-            RuntimeRepairMechanism::EvidenceAwareBoundedCohortRouting => {
-                let outputs = evidence_aware_cohort
-                    .iter()
-                    .map(|observation| observation.observation_id.clone())
-                    .collect::<Vec<_>>();
-                let evidence = evidence_aware_cohort
-                    .iter()
-                    .map(json_sha256)
-                    .collect::<Result<Vec<_>, _>>()?;
-                let changed = outputs
-                    != naive_cohort
-                        .iter()
-                        .map(|observation| observation.observation_id.clone())
-                        .collect::<Vec<_>>();
-                (
-                    changed && cohort_has_verification_evidence(evidence_aware_cohort),
-                    changed,
-                    evidence,
-                    outputs,
+            (
+                changed && cohort_has_verification_evidence(evidence_aware_cohort),
+                changed,
+                evidence,
+                outputs,
+                false,
+            )
+        }
+        RuntimeRepairMechanism::BootstrapFrozenCoreEvaluatorCanary => {
+            let inspection_sha256 = json_sha256(receipt)?;
+            let observation_id = sha256(
+                format!(
+                    "MUTUAL_RECURSIVE_BOOTSTRAP:{}:{}",
+                    receipt.generation, inspection_sha256
                 )
-            }
-            RuntimeRepairMechanism::BootstrapFrozenCoreEvaluatorCanary => {
-                let inspection_sha256 = json_sha256(receipt)?;
-                let observation_id = sha256(
-                    format!(
-                        "MUTUAL_RECURSIVE_BOOTSTRAP:{}:{}",
-                        receipt.generation, inspection_sha256
-                    )
-                    .as_bytes(),
-                );
-                (true, true, vec![inspection_sha256], vec![observation_id])
-            }
-            RuntimeRepairMechanism::ValidateBlockedCoreCohort => {
-                let (success, evidence, outputs) =
-                    validate_blocked_core_cohort(config, receipt, evidence_aware_cohort)?;
-                (success, success, evidence, outputs)
-            }
-            RuntimeRepairMechanism::ValidateBlockedRepositoryCohort => {
-                let (success, evidence, outputs) =
-                    validate_blocked_repository_cohort(config, receipt, evidence_aware_cohort)?;
-                (success, success, evidence, outputs)
-            }
-        };
+                .as_bytes(),
+            );
+            (
+                true,
+                true,
+                vec![inspection_sha256],
+                vec![observation_id],
+                false,
+            )
+        }
+        RuntimeRepairMechanism::ValidateBlockedCoreCohort => {
+            let (success, evidence, outputs) =
+                validate_blocked_core_cohort(config, receipt, evidence_aware_cohort)?;
+            (success, success, evidence, outputs, false)
+        }
+        RuntimeRepairMechanism::ValidateBlockedRepositoryCohort => {
+            let outcome =
+                validate_blocked_repository_cohort(config, receipt, evidence_aware_cohort)?;
+            (
+                outcome.executed,
+                outcome.executed,
+                outcome.evidence_sha256,
+                outcome.output_observation_ids,
+                outcome.sandbox_repair_verified,
+            )
+        }
+    };
     let action_id = sha256(
         format!(
             "{}:{:?}:{}:{}:{}",
@@ -6590,6 +7114,7 @@ fn runtime_repair_action(
         })
     } else if mechanism == RuntimeRepairMechanism::ValidateBlockedRepositoryCohort
         && action.executed
+        && !repository_sandbox_repair_verified
     {
         let plan = repository_validation_plan(config, evidence_aware_cohort)?
             .ok_or_else(|| "REPOSITORY_COHORT_VALIDATION_PLAN_LOST".to_string())?;
@@ -6627,6 +7152,57 @@ fn runtime_repair_action(
                 "repository implementation lacked applicable executed pass evidence".to_string(),
                 "bounded repository-native tests passed with a stable validation scope".to_string(),
                 format!("test selection source={}", plan.test_selection_source),
+            ],
+            verification_evidence_sha256,
+            performance_metrics: Vec::new(),
+            exact_source_fragments_stored: 0,
+            raw_source_bytes_stored: 0,
+            observed_at_ms: now_ms(),
+        })
+    } else if mechanism == RuntimeRepairMechanism::ValidateBlockedRepositoryCohort
+        && action.executed
+        && repository_sandbox_repair_verified
+    {
+        let plan = repository_validation_plan(config, evidence_aware_cohort)?
+            .ok_or_else(|| "REPOSITORY_COHORT_VALIDATION_PLAN_LOST".to_string())?;
+        let mut verification_evidence_sha256 = action.execution_evidence_sha256.clone();
+        verification_evidence_sha256.push(action_sha256.clone());
+        Some(LearningObservation {
+            observation_id: action.output_observation_ids[0].clone(),
+            work_event_id: None,
+            logical_path: format!(
+                "ROOT_{}/.b_repository_repair_candidate/{}",
+                plan.root_index, action.output_observation_ids[0]
+            ),
+            content_sha256: action_sha256,
+            predecessor_content_sha256: None,
+            actor: WorkActor::LocalTool,
+            work_kind: WorkKind::DefectRepair,
+            work_outcome: WorkOutcome::Unknown,
+            features_before: None,
+            features_after: StructuralFeatures::default(),
+            signals: vec![
+                "AUTONOMOUS_RUNTIME_REPAIR".to_string(),
+                "SOURCE_BOUND_TYPED_SYNTHESIS".to_string(),
+                "PUBLIC_SYMBOL_OWNER_PRESERVED".to_string(),
+                "EXECUTION_DEPENDENCY_CLOSURE_PRESERVED".to_string(),
+                "SANDBOX_VERIFIED_REPAIR_CANDIDATE".to_string(),
+                "CANDIDATE_NOT_INSTALLED".to_string(),
+            ],
+            composition_roles: vec![
+                "PUBLIC_OBSERVATION".to_string(),
+                "TYPED_COMPOSITION".to_string(),
+                "ATOMIC_SOURCE_PATCH".to_string(),
+                "SANDBOX_FALSIFICATION".to_string(),
+            ],
+            learning_score: 82,
+            learning_value: LearningValue::High,
+            reasons: vec![
+                "repository-native tests rejected the authoritative implementation".to_string(),
+                "a source-bound typed repair passed only in a disposable local sandbox"
+                    .to_string(),
+                "the candidate is retained as generalized repair evidence but cannot verify or mutate the authoritative repository"
+                    .to_string(),
             ],
             verification_evidence_sha256,
             performance_metrics: Vec::new(),
@@ -10127,12 +10703,13 @@ mod tests {
         let mut next_generation_diagnostic = diagnostic.clone();
         next_generation_diagnostic.generation = diagnostic.generation.saturating_add(1);
         next_generation_diagnostic.diagnostic_id = "next-generation-diagnostic".to_string();
-        let (reused_success, reused_evidence, reused_outputs) =
+        let reused =
             validate_blocked_repository_cohort(&config, &next_generation_diagnostic, &cohort)
                 .unwrap();
-        assert!(reused_success);
-        assert_eq!(reused_outputs, action.output_observation_ids);
-        assert_eq!(reused_evidence, action.execution_evidence_sha256);
+        assert!(reused.executed);
+        assert!(!reused.sandbox_repair_verified);
+        assert_eq!(reused.output_observation_ids, action.output_observation_ids);
+        assert_eq!(reused.evidence_sha256, action.execution_evidence_sha256);
         assert_eq!(
             fs::read_dir(config.state_dir.join("diagnostics"))
                 .unwrap()
@@ -10155,6 +10732,169 @@ mod tests {
             vec![PathBuf::from("tests/test_core_module.py")]
         );
         fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn failed_python_cohort_synthesizes_and_falsifies_candidate_without_false_installation() {
+        let Ok(python) = resolve_local_program("python") else {
+            return;
+        };
+        if !Command::new(&python)
+            .args(["-c", "import pytest"])
+            .status()
+            .is_ok_and(|status| status.success())
+        {
+            return;
+        }
+        let root = temp_root("failed-python-source-bound-repair");
+        let (_, config) = test_config(&root);
+        let repository = config.watched_roots[0].clone();
+        fs::create_dir_all(repository.join("tests")).unwrap();
+        fs::create_dir_all(config.state_dir.join("diagnostics")).unwrap();
+        fs::write(
+            repository.join("pyproject.toml"),
+            "[build-system]\nrequires = []\nbuild-backend = \"\"\n\n[tool.pytest.ini_options]\ntestpaths = [\"tests\"]\n",
+        )
+        .unwrap();
+        let predecessor = "def add(left, right):\n    return 0\n";
+        fs::write(repository.join("core_module.py"), predecessor).unwrap();
+        fs::write(
+            repository.join("tests/test_core_module.py"),
+            "from core_module import add\n\ndef test_add():\n    assert add(2, 3) == 5\n    assert add(4, 7) == 11\n",
+        )
+        .unwrap();
+        let implementation = LearningObservation {
+            observation_id: "failed-python-implementation".to_string(),
+            work_event_id: None,
+            logical_path: "ROOT_0/core_module.py".to_string(),
+            content_sha256: sha256(predecessor.as_bytes()),
+            predecessor_content_sha256: Some("e".repeat(64)),
+            actor: WorkActor::LocalTool,
+            work_kind: WorkKind::DefectRepair,
+            work_outcome: WorkOutcome::Unknown,
+            features_before: Some(StructuralFeatures::default()),
+            features_after: StructuralFeatures::default(),
+            signals: vec!["DEFECT_REPAIR".to_string()],
+            composition_roles: vec!["IMPLEMENTATION_REPAIR".to_string()],
+            learning_score: 75,
+            learning_value: LearningValue::High,
+            reasons: vec!["failing public behavior".to_string()],
+            verification_evidence_sha256: Vec::new(),
+            performance_metrics: Vec::new(),
+            exact_source_fragments_stored: 0,
+            raw_source_bytes_stored: 0,
+            observed_at_ms: 1,
+        };
+        let test_observation = LearningObservation {
+            observation_id: "failed-python-test".to_string(),
+            logical_path: "ROOT_0/tests/test_core_module.py".to_string(),
+            work_kind: WorkKind::RegressionTest,
+            signals: vec!["REGRESSION_EVIDENCE".to_string(), "TEST_ADDED".to_string()],
+            composition_roles: vec!["REGRESSION_TEST".to_string()],
+            learning_score: 65,
+            reasons: vec!["public arithmetic observations".to_string()],
+            ..implementation.clone()
+        };
+        let cohort = vec![implementation.clone(), test_observation];
+        let diagnostic = inspect_self(SelfInspectionInput {
+            generation: 4,
+            supervisor_sequence: 11,
+            files_scanned: 2,
+            files_reused: 0,
+            files_hashed: 2,
+            scan_duration_ms: 1,
+            pending_work_events: 0,
+            replayed_unchanged_work_events: 0,
+            naive_cohort_has_verification: false,
+            evidence_aware_cohort_has_verification: false,
+            autonomous_campaigns_enabled: true,
+            campaigns_started: 2,
+            mutual_revalidation_events: 2,
+            evaluator_challenge_cases: EvaluatorMutationKind::ALL.len() as u64,
+            evaluator_required_challenge_cases: EvaluatorMutationKind::ALL.len() as u64,
+            consecutive_failures: 0,
+            plateau_scans: 0,
+            unconsumed_high_observations: 2,
+            cohort_preflight_ready: false,
+            core_cohort_validation_applicable: false,
+            repository_cohort_validation_applicable: true,
+            source_patch_attempts: 0,
+            source_patch_installations: 0,
+            source_patch_rollbacks: 0,
+            source_patch_consecutive_failures: 0,
+            source_patch_validation_ms: 0,
+            source_discovery_no_candidate_streak: 0,
+            last_source_discovery_reason: None,
+            active_runtime_ms: 1,
+            diagnostic_policy: DiagnosticPolicyMemory::default(),
+        })
+        .unwrap();
+
+        let (action, candidate_observation) =
+            runtime_repair_action(&config, &diagnostic, &[], &cohort, &cohort)
+                .unwrap()
+                .expect("source-bound repair action");
+        let candidate_observation = candidate_observation.expect("sandbox repair observation");
+        assert!(action.executed);
+        assert_eq!(action.execution_evidence_sha256.len(), 2);
+        assert!(candidate_observation
+            .signals
+            .contains(&"SANDBOX_VERIFIED_REPAIR_CANDIDATE".to_string()));
+        assert!(candidate_observation
+            .signals
+            .contains(&"CANDIDATE_NOT_INSTALLED".to_string()));
+        assert!(!candidate_observation
+            .signals
+            .contains(&"VERIFIED_PASS".to_string()));
+        assert_eq!(candidate_observation.work_outcome, WorkOutcome::Unknown);
+        assert_eq!(
+            fs::read_to_string(repository.join("core_module.py")).unwrap(),
+            predecessor
+        );
+        let sandbox_parent = config.state_dir.join("repository_repair_sandboxes");
+        assert!(
+            !sandbox_parent.exists() || fs::read_dir(&sandbox_parent).unwrap().next().is_none()
+        );
+        let repair_path = fs::read_dir(config.state_dir.join("diagnostics"))
+            .unwrap()
+            .filter_map(Result::ok)
+            .map(|entry| entry.path())
+            .find(|path| {
+                path.file_name()
+                    .and_then(OsStr::to_str)
+                    .is_some_and(|name| name.starts_with("repository_repair_synthesis_"))
+                    && path.extension().and_then(OsStr::to_str) == Some("json")
+            })
+            .expect("repair synthesis receipt");
+        let repair: RepositoryRepairSynthesisReceipt = read_json(&repair_path).unwrap();
+        assert!(repair.sandbox_verified);
+        assert!(repair.sandbox_cleaned);
+        assert!(repair.authoritative_scope_stable);
+        assert!(!repair.candidate_installed);
+        assert_eq!(repair.authoritative_source_write_events, 0);
+        assert_eq!(repair.raw_source_bytes_stored, 0);
+        assert!(repair.candidate_materialization_is_one_to_one);
+        assert!(repair.failure_code.is_none());
+        assert!(repair.sandbox_command.as_ref().is_some_and(|command| {
+            command.success
+                && command
+                    .diagnostic_tail
+                    .starts_with("SANDBOX_VALIDATION_OUTPUT_SHA256:")
+        }));
+        let lesson = build_lesson(&[implementation, candidate_observation]).unwrap();
+        assert!(!lesson_has_verification_evidence(&lesson));
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn pytest_failure_targets_preserve_qualified_public_owner() {
+        let targets = python_pytest_target_symbols(
+            ">       assert Rational.distance(9, 4) == 5\n\
+             E       assert 13 == 5\n\
+             E        +  where 13 = <function Rational.distance at 0x1>(9, 4)\n\
+             FAILED tests/test_engine.py::test_distance",
+        );
+        assert_eq!(targets, ["Rational.distance"]);
     }
 
     #[test]
