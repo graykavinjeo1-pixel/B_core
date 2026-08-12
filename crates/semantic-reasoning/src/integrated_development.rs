@@ -39,6 +39,10 @@ use crate::sem5::{
         evaluate_contract, generate_property_cases, generate_task_sets,
         programming_primitive_catalog,
     },
+    typed_mechanism::{
+        lower_typed_mechanism_goal, synthesize_typed_mechanism_goal, ConcreteSyntaxTemplateIR,
+        TypedMechanismGoalIR, TypedMechanismSynthesisGoalIR, TypedMechanismSynthesisReceiptIR,
+    },
 };
 use crate::structural_source_repair::synthesize_structural_repair;
 
@@ -67,6 +71,13 @@ pub struct CapabilityOpportunityIR {
 pub struct CompositionWork {
     pub opportunity: CapabilityOpportunityIR,
     pub task: ProgramTask,
+    /// When present, this typed mechanism is compiled into the authoritative
+    /// ProgramTask. `task` remains as the backwards-compatible transport for
+    /// sealed predecessors and non-mechanism SEM-5 relations.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub typed_mechanism_goal: Option<TypedMechanismGoalIR>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub typed_mechanism_synthesis_goal: Option<TypedMechanismSynthesisGoalIR>,
     pub promotions: Vec<ProgrammingPromotion>,
     pub predecessor_tree_hash: String,
 }
@@ -77,6 +88,10 @@ pub struct CompositeProgramCandidateIR {
     pub observation: Frozen<ObservationIR>,
     pub defect_contract: Frozen<DefectContractIR>,
     pub repair_spec: Frozen<RepairSpecIR>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub typed_syntax_template: Option<ConcreteSyntaxTemplateIR>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub typed_mechanism_synthesis_receipt: Option<TypedMechanismSynthesisReceiptIR>,
     pub program_ir: ProgramIR,
     pub program_ir_sha256: String,
     pub primitive_catalog_sha256: String,
@@ -220,12 +235,38 @@ pub fn compose_existing_sem5_capability(
     let repair_spec = Frozen::new(repair_spec_from_opportunity(&work.opportunity))
         .map_err(|error| format!("REPAIR_SPEC_FREEZE:{error}"))?;
 
-    let program_ir = synthesize(
-        &work.task,
+    if work.typed_mechanism_goal.is_some() && work.typed_mechanism_synthesis_goal.is_some() {
+        return Err("AMBIGUOUS_TYPED_MECHANISM_INPUT".to_string());
+    }
+    let typed_mechanism_synthesis_receipt = work
+        .typed_mechanism_synthesis_goal
+        .as_ref()
+        .map(synthesize_typed_mechanism_goal)
+        .transpose()?;
+    let typed_syntax_template = if let Some(receipt) = &typed_mechanism_synthesis_receipt {
+        Some(receipt.template.clone())
+    } else {
+        work.typed_mechanism_goal
+            .as_ref()
+            .map(lower_typed_mechanism_goal)
+            .transpose()?
+    };
+    let task = typed_syntax_template
+        .as_ref()
+        .map(|template| template.program_task.clone())
+        .unwrap_or_else(|| work.task.clone());
+    let mut program_ir = synthesize(
+        &task,
         SynthesisCondition::FirstPrinciplesD,
         &work.promotions,
     )?;
-    type_check(&program_ir, &work.task.definitions)?;
+    if let Some(template) = &typed_syntax_template {
+        program_ir.provenance.extend([
+            "TYPED_MECHANISM_GOAL_LOWERED_TO_SOURCE_SYNTAX".to_string(),
+            format!("CONCRETE_SYNTAX_TEMPLATE_SHA256:{}", template.syntax_sha256),
+        ]);
+    }
+    type_check(&program_ir, &task.definitions)?;
     if program_ir.recombinations == 0 {
         return Err("COMPOSITE_PROGRAM_REQUIRED".to_string());
     }
@@ -258,8 +299,7 @@ pub fn compose_existing_sem5_capability(
         .collect::<Vec<_>>();
     let neutral_program = emit_neutral_text(&program_ir);
     let neutral_program_sha256 = sha256(neutral_program.as_bytes());
-    let rust_artifact =
-        emit_rust_callable(&program_ir, &work.task.definitions, &program_ir_sha256)?;
+    let rust_artifact = emit_rust_callable(&program_ir, &task.definitions, &program_ir_sha256)?;
     let generated_rust_source = rust_artifact.source;
     let generated_rust_sha256 = sha256(generated_rust_source.as_bytes());
     let source_relative_path =
@@ -293,6 +333,8 @@ pub fn compose_existing_sem5_capability(
         observation,
         defect_contract,
         repair_spec,
+        typed_syntax_template,
+        typed_mechanism_synthesis_receipt,
         primitive_expanded_nodes: program_ir.primitive_expanded_nodes,
         operational_nodes: program_ir.operational_nodes,
         recombinations: program_ir.recombinations,
@@ -735,6 +777,8 @@ pub fn compose_behavioral_canary_candidate(
                 operator_selected_implementation: false,
             },
             task: task.clone(),
+            typed_mechanism_goal: None,
+            typed_mechanism_synthesis_goal: None,
             promotions: promotions.clone(),
             predecessor_tree_hash: AUTHORITATIVE_PREDECESSOR.to_string(),
         });
@@ -951,7 +995,13 @@ mod tests {
     use crate::sem5::{
         ir::execute,
         learner::{discover_candidates, initial_promotions},
+        model::{BinaryOperator, DataSplit, Effect, ProgramType, Value},
         tasks::{evaluate_contract, generate_property_cases, generate_task_sets},
+        typed_mechanism::{
+            SourceOperandIR, TypedMechanismGoalIR, TypedMechanismObservationIR,
+            TypedMechanismSynthesisGoalIR, TypedSyntaxExpressionIR, TYPED_MECHANISM_GOAL_SCHEMA,
+            TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA,
+        },
     };
 
     fn composition_work() -> CompositionWork {
@@ -983,6 +1033,8 @@ mod tests {
                 operator_selected_implementation: false,
             },
             task: sets.adversarial[0].visible.clone(),
+            typed_mechanism_goal: None,
+            typed_mechanism_synthesis_goal: None,
             promotions,
             predecessor_tree_hash: AUTHORITATIVE_PREDECESSOR.to_string(),
         }
@@ -1061,6 +1113,139 @@ mod tests {
             .expect("execute composite");
             assert_eq!(actual.value, expected);
         }
+    }
+
+    #[test]
+    fn typed_mechanism_goal_enters_real_source_validation_path() {
+        let mut work = composition_work();
+        let role = |name: &str| TypedSyntaxExpressionIR::Operand {
+            role: name.to_string(),
+        };
+        work.typed_mechanism_goal = Some(TypedMechanismGoalIR {
+            schema: TYPED_MECHANISM_GOAL_SCHEMA.to_string(),
+            goal_id: "repository_guarded_postimage".to_string(),
+            split: DataSplit::FreshBlind,
+            operands: vec![
+                SourceOperandIR {
+                    role: "observed".to_string(),
+                    source: "self.frontier.observed_units".to_string(),
+                    value_type: ProgramType::Int,
+                },
+                SourceOperandIR {
+                    role: "baseline".to_string(),
+                    source: "receipt.previous_units".to_string(),
+                    value_type: ProgramType::Int,
+                },
+            ],
+            output_type: ProgramType::Int,
+            condition: Some(TypedSyntaxExpressionIR::Binary {
+                operator: BinaryOperator::GreaterThan,
+                left: Box::new(role("observed")),
+                right: Box::new(role("baseline")),
+            }),
+            postimage: TypedSyntaxExpressionIR::Binary {
+                operator: BinaryOperator::Subtract,
+                left: Box::new(role("observed")),
+                right: Box::new(role("baseline")),
+            },
+            otherwise: Some(TypedSyntaxExpressionIR::IntLiteral { value: 0 }),
+            definitions: Vec::new(),
+            allowed_effects: vec![Effect::Pure],
+            preconditions: vec!["both measurements share one unit".to_string()],
+            postconditions: vec!["result is the non-negative observed gain".to_string()],
+            invariants: vec!["baseline is not mutated".to_string()],
+            public_observations: vec![
+                TypedMechanismObservationIR {
+                    operands: BTreeMap::from([
+                        ("observed".to_string(), Value::Int(13)),
+                        ("baseline".to_string(), Value::Int(8)),
+                    ]),
+                    expected_postimage: Value::Int(5),
+                },
+                TypedMechanismObservationIR {
+                    operands: BTreeMap::from([
+                        ("observed".to_string(), Value::Int(3)),
+                        ("baseline".to_string(), Value::Int(8)),
+                    ]),
+                    expected_postimage: Value::Int(0),
+                },
+            ],
+            provenance: vec!["AST_ROLE_BOUND_GOAL".to_string()],
+        });
+
+        let candidate = compose_existing_sem5_capability(work).expect("typed mechanism candidate");
+        let template = candidate
+            .typed_syntax_template
+            .as_ref()
+            .expect("concrete syntax evidence");
+        assert!(template
+            .complete_expression_source
+            .contains("self.frontier.observed_units"));
+        assert_eq!(template.public_observations_passed, 2);
+        assert!(candidate
+            .program_ir
+            .provenance
+            .iter()
+            .any(|value| value == "TYPED_MECHANISM_GOAL_LOWERED_TO_SOURCE_SYNTAX"));
+        assert!(candidate
+            .generated_rust_source
+            .contains("if (observed > baseline)"));
+        assert!(candidate.type_effect_audit_pass);
+        assert!(!candidate.installed);
+    }
+
+    #[test]
+    fn observation_only_mechanism_synthesis_enters_installable_candidate_path() {
+        let mut work = composition_work();
+        work.typed_mechanism_synthesis_goal = Some(TypedMechanismSynthesisGoalIR {
+            schema: TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA.to_string(),
+            goal_id: "repository_native_delta".to_string(),
+            split: DataSplit::FreshBlind,
+            operands: vec![
+                SourceOperandIR {
+                    role: "base".to_string(),
+                    source: "node.baseline".to_string(),
+                    value_type: ProgramType::Int,
+                },
+                SourceOperandIR {
+                    role: "gain".to_string(),
+                    source: "observation.gain".to_string(),
+                    value_type: ProgramType::Int,
+                },
+            ],
+            output_type: ProgramType::Int,
+            definitions: Vec::new(),
+            allowed_effects: vec![Effect::Pure],
+            preconditions: Vec::new(),
+            postconditions: vec!["postimage matches public observations".to_string()],
+            invariants: Vec::new(),
+            public_observations: [(4, 3, 7), (-2, 8, 6), (10, -3, 7)]
+                .into_iter()
+                .map(|(base, gain, expected)| TypedMechanismObservationIR {
+                    operands: BTreeMap::from([
+                        ("base".to_string(), Value::Int(base)),
+                        ("gain".to_string(), Value::Int(gain)),
+                    ]),
+                    expected_postimage: Value::Int(expected),
+                })
+                .collect(),
+            require_conditional: false,
+            max_expression_depth: 2,
+            max_candidates: 1_024,
+            provenance: vec!["AST_OPERANDS_PLUS_PUBLIC_OBSERVATIONS".to_string()],
+        });
+
+        let candidate = compose_existing_sem5_capability(work).expect("synthesized candidate");
+        let receipt = candidate
+            .typed_mechanism_synthesis_receipt
+            .as_ref()
+            .expect("synthesis receipt");
+        assert!(receipt.candidates_enumerated > 1);
+        assert!(receipt.candidates_falsified > 0);
+        assert!(receipt.template.postimage_source.contains('+'));
+        assert!(candidate.generated_rust_source.contains("base + gain"));
+        assert!(candidate.type_effect_audit_pass);
+        assert!(!candidate.installed);
     }
 
     #[test]

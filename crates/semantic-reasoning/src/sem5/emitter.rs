@@ -573,6 +573,7 @@ fn emit_scalar_expression(expression: &ScalarExpression) -> Result<String, Strin
     match expression {
         ScalarExpression::Argument { index } => Ok(format!("a{index}")),
         ScalarExpression::Constant { value } => Ok(format!("{value}i64")),
+        ScalarExpression::BoolConstant { value } => Ok(value.to_string()),
         ScalarExpression::Unary { operator, input } => Ok(format!(
             "({}{})",
             match operator {

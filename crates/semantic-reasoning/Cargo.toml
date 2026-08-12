@@ -401,6 +401,10 @@ path = "src/growth_supervisor_main.rs"
 name = "b-core-growth-verifier"
 path = "src/growth_verifier_main.rs"
 
+[[bin]]
+name = "b-core-source-bound-frontend"
+path = "src/source_bound_causal_main.rs"
+
 [dependencies]
 dockable-semantic-core = { path = "../dockable-semantic-core", version = "0.1.0" }
 semantic-core-adapters = { path = "../semantic-core-adapters", version = "0.1.0" }

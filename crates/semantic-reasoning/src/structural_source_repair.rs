@@ -70,6 +70,26 @@ pub struct SyntacticDataFlowEdge {
     pub kind: DataFlowKind,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum RustSyntaxFeatureKind {
+    AsyncBlock,
+    Await,
+    TryPropagation,
+    Reference,
+    Dereference,
+    CratePath,
+    Branch,
+    Loop,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+pub struct RustSyntaxFeatureEvidence {
+    pub callable: String,
+    pub kind: RustSyntaxFeatureKind,
+    pub syntax_sha256: String,
+}
+
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct RustSourceSnapshot {
     pub source_sha256: String,
@@ -77,6 +97,7 @@ pub struct RustSourceSnapshot {
     pub symbols: Vec<SyntaxSymbol>,
     pub call_edges: Vec<SyntacticCallEdge>,
     pub data_flow_edges: Vec<SyntacticDataFlowEdge>,
+    pub syntax_features: Vec<RustSyntaxFeatureEvidence>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
@@ -250,6 +271,7 @@ struct CallableVisitor<'a> {
     caller: &'a str,
     calls: BTreeSet<SyntacticCallEdge>,
     flows: BTreeSet<SyntacticDataFlowEdge>,
+    features: BTreeSet<RustSyntaxFeatureEvidence>,
 }
 
 impl<'a> CallableVisitor<'a> {
@@ -258,6 +280,7 @@ impl<'a> CallableVisitor<'a> {
             caller,
             calls: BTreeSet::new(),
             flows: BTreeSet::new(),
+            features: BTreeSet::new(),
         }
     }
 
@@ -278,9 +301,81 @@ impl<'a> CallableVisitor<'a> {
             }
         }
     }
+
+    fn add_feature(&mut self, kind: RustSyntaxFeatureKind, syntax: &impl ToTokens) {
+        self.features.insert(RustSyntaxFeatureEvidence {
+            callable: self.caller.to_string(),
+            kind,
+            syntax_sha256: sha256(normalized_tokens(syntax).as_bytes()),
+        });
+    }
 }
 
 impl<'ast> Visit<'ast> for CallableVisitor<'_> {
+    fn visit_expr_async(&mut self, expression: &'ast syn::ExprAsync) {
+        self.add_feature(RustSyntaxFeatureKind::AsyncBlock, expression);
+        visit::visit_expr_async(self, expression);
+    }
+
+    fn visit_expr_await(&mut self, expression: &'ast syn::ExprAwait) {
+        self.add_feature(RustSyntaxFeatureKind::Await, expression);
+        visit::visit_expr_await(self, expression);
+    }
+
+    fn visit_expr_try(&mut self, expression: &'ast syn::ExprTry) {
+        self.add_feature(RustSyntaxFeatureKind::TryPropagation, expression);
+        visit::visit_expr_try(self, expression);
+    }
+
+    fn visit_expr_reference(&mut self, expression: &'ast syn::ExprReference) {
+        self.add_feature(RustSyntaxFeatureKind::Reference, expression);
+        visit::visit_expr_reference(self, expression);
+    }
+
+    fn visit_expr_unary(&mut self, expression: &'ast syn::ExprUnary) {
+        if matches!(expression.op, syn::UnOp::Deref(_)) {
+            self.add_feature(RustSyntaxFeatureKind::Dereference, expression);
+        }
+        visit::visit_expr_unary(self, expression);
+    }
+
+    fn visit_expr_path(&mut self, expression: &'ast syn::ExprPath) {
+        if expression
+            .path
+            .segments
+            .first()
+            .is_some_and(|segment| segment.ident == "crate")
+        {
+            self.add_feature(RustSyntaxFeatureKind::CratePath, expression);
+        }
+        visit::visit_expr_path(self, expression);
+    }
+
+    fn visit_expr_if(&mut self, expression: &'ast syn::ExprIf) {
+        self.add_feature(RustSyntaxFeatureKind::Branch, expression);
+        visit::visit_expr_if(self, expression);
+    }
+
+    fn visit_expr_match(&mut self, expression: &'ast syn::ExprMatch) {
+        self.add_feature(RustSyntaxFeatureKind::Branch, expression);
+        visit::visit_expr_match(self, expression);
+    }
+
+    fn visit_expr_for_loop(&mut self, expression: &'ast syn::ExprForLoop) {
+        self.add_feature(RustSyntaxFeatureKind::Loop, expression);
+        visit::visit_expr_for_loop(self, expression);
+    }
+
+    fn visit_expr_while(&mut self, expression: &'ast syn::ExprWhile) {
+        self.add_feature(RustSyntaxFeatureKind::Loop, expression);
+        visit::visit_expr_while(self, expression);
+    }
+
+    fn visit_expr_loop(&mut self, expression: &'ast syn::ExprLoop) {
+        self.add_feature(RustSyntaxFeatureKind::Loop, expression);
+        visit::visit_expr_loop(self, expression);
+    }
+
     fn visit_expr_call(&mut self, expression: &'ast ExprCall) {
         let callee = match expression.func.as_ref() {
             Expr::Path(path) => normalized_tokens(&path.path).replace(' ', ""),
@@ -333,16 +428,22 @@ impl<'ast> Visit<'ast> for CallableVisitor<'_> {
     }
 }
 
+#[derive(Default)]
+struct SnapshotParts {
+    symbols: BTreeSet<SyntaxSymbol>,
+    calls: BTreeSet<SyntacticCallEdge>,
+    flows: BTreeSet<SyntacticDataFlowEdge>,
+    features: BTreeSet<RustSyntaxFeatureEvidence>,
+}
+
 fn analyze_callable(
     callable: &str,
     signature: &impl ToTokens,
     block: &Block,
     kind: SyntaxSymbolKind,
-    symbols: &mut BTreeSet<SyntaxSymbol>,
-    calls: &mut BTreeSet<SyntacticCallEdge>,
-    flows: &mut BTreeSet<SyntacticDataFlowEdge>,
+    output: &mut SnapshotParts,
 ) {
-    symbols.insert(SyntaxSymbol {
+    output.symbols.insert(SyntaxSymbol {
         symbol_id: callable.to_string(),
         kind,
         signature_sha256: sha256(normalized_tokens(signature).as_bytes()),
@@ -357,8 +458,9 @@ fn analyze_callable(
             DataFlowKind::Return,
         );
     }
-    calls.extend(visitor.calls);
-    flows.extend(visitor.flows);
+    output.calls.extend(visitor.calls);
+    output.flows.extend(visitor.flows);
+    output.features.extend(visitor.features);
 }
 
 fn plain_symbol(
@@ -375,25 +477,19 @@ fn plain_symbol(
     }
 }
 
-fn collect_items(
-    items: &[Item],
-    prefix: &str,
-    symbols: &mut BTreeSet<SyntaxSymbol>,
-    calls: &mut BTreeSet<SyntacticCallEdge>,
-    flows: &mut BTreeSet<SyntacticDataFlowEdge>,
-) {
+fn collect_items(items: &[Item], prefix: &str, output: &mut SnapshotParts) {
     for item in items {
         match item {
             Item::Mod(module) => {
                 let module_id = qualified(prefix, &module.ident.to_string());
-                symbols.insert(plain_symbol(
+                output.symbols.insert(plain_symbol(
                     module_id.clone(),
                     SyntaxSymbolKind::Module,
                     &module.ident,
                     module,
                 ));
                 if let Some((_, nested)) = &module.content {
-                    collect_items(nested, &module_id, symbols, calls, flows);
+                    collect_items(nested, &module_id, output);
                 }
             }
             Item::Fn(function) => {
@@ -403,9 +499,7 @@ fn collect_items(
                     &function.sig,
                     &function.block,
                     SyntaxSymbolKind::Function,
-                    symbols,
-                    calls,
-                    flows,
+                    output,
                 );
             }
             Item::Impl(implementation) => {
@@ -419,16 +513,14 @@ fn collect_items(
                             &method.sig,
                             &method.block,
                             SyntaxSymbolKind::Method,
-                            symbols,
-                            calls,
-                            flows,
+                            output,
                         );
                     }
                 }
             }
             Item::Trait(item_trait) => {
                 let trait_id = qualified(prefix, &item_trait.ident.to_string());
-                symbols.insert(plain_symbol(
+                output.symbols.insert(plain_symbol(
                     trait_id.clone(),
                     SyntaxSymbolKind::Trait,
                     &item_trait.generics,
@@ -443,12 +535,10 @@ fn collect_items(
                                 &method.sig,
                                 default,
                                 SyntaxSymbolKind::TraitMethod,
-                                symbols,
-                                calls,
-                                flows,
+                                output,
                             );
                         } else {
-                            symbols.insert(plain_symbol(
+                            output.symbols.insert(plain_symbol(
                                 callable,
                                 SyntaxSymbolKind::TraitMethod,
                                 &method.sig,
@@ -459,7 +549,7 @@ fn collect_items(
                 }
             }
             Item::Struct(item_struct) => {
-                symbols.insert(plain_symbol(
+                output.symbols.insert(plain_symbol(
                     qualified(prefix, &item_struct.ident.to_string()),
                     SyntaxSymbolKind::Struct,
                     &item_struct.generics,
@@ -467,7 +557,7 @@ fn collect_items(
                 ));
             }
             Item::Enum(item_enum) => {
-                symbols.insert(plain_symbol(
+                output.symbols.insert(plain_symbol(
                     qualified(prefix, &item_enum.ident.to_string()),
                     SyntaxSymbolKind::Enum,
                     &item_enum.generics,
@@ -475,7 +565,7 @@ fn collect_items(
                 ));
             }
             Item::Type(item_type) => {
-                symbols.insert(plain_symbol(
+                output.symbols.insert(plain_symbol(
                     qualified(prefix, &item_type.ident.to_string()),
                     SyntaxSymbolKind::TypeAlias,
                     &item_type.generics,
@@ -483,7 +573,7 @@ fn collect_items(
                 ));
             }
             Item::Const(item_const) => {
-                symbols.insert(plain_symbol(
+                output.symbols.insert(plain_symbol(
                     qualified(prefix, &item_const.ident.to_string()),
                     SyntaxSymbolKind::Constant,
                     &item_const.ty,
@@ -491,7 +581,7 @@ fn collect_items(
                 ));
             }
             Item::Static(item_static) => {
-                symbols.insert(plain_symbol(
+                output.symbols.insert(plain_symbol(
                     qualified(prefix, &item_static.ident.to_string()),
                     SyntaxSymbolKind::Static,
                     &item_static.ty,
@@ -505,17 +595,96 @@ fn collect_items(
 
 pub fn analyze_rust_source(source: &str) -> Result<RustSourceSnapshot, String> {
     let parsed = syn::parse_file(source).map_err(|error| format!("RUST_AST_PARSE:{error}"))?;
-    let mut symbols = BTreeSet::new();
-    let mut calls = BTreeSet::new();
-    let mut flows = BTreeSet::new();
-    collect_items(&parsed.items, "", &mut symbols, &mut calls, &mut flows);
+    let mut parts = SnapshotParts::default();
+    collect_items(&parsed.items, "", &mut parts);
     Ok(RustSourceSnapshot {
         source_sha256: sha256(source.as_bytes()),
         ast_sha256: sha256(normalized_tokens(&parsed).as_bytes()),
-        symbols: symbols.into_iter().collect(),
-        call_edges: calls.into_iter().collect(),
-        data_flow_edges: flows.into_iter().collect(),
+        symbols: parts.symbols.into_iter().collect(),
+        call_edges: parts.calls.into_iter().collect(),
+        data_flow_edges: parts.flows.into_iter().collect(),
+        syntax_features: parts.features.into_iter().collect(),
     })
+}
+
+fn attributes_mark_test(attributes: &[syn::Attribute]) -> bool {
+    attributes.iter().any(|attribute| {
+        attribute.path().is_ident("test")
+            || (attribute.path().is_ident("cfg")
+                && normalized_tokens(&attribute.meta).contains("test"))
+    })
+}
+
+fn collect_test_surface(items: &[Item], prefix: &str, output: &mut Vec<String>) {
+    for item in items {
+        match item {
+            Item::Mod(module) => {
+                let id = qualified(prefix, &module.ident.to_string());
+                let protected = module.ident == "tests" || attributes_mark_test(&module.attrs);
+                if protected {
+                    output.push(format!("{id}:{}", normalized_tokens(module)));
+                } else if let Some((_, nested)) = &module.content {
+                    collect_test_surface(nested, &id, output);
+                }
+            }
+            Item::Fn(function) if attributes_mark_test(&function.attrs) => output.push(format!(
+                "{}:{}",
+                qualified(prefix, &function.sig.ident.to_string()),
+                normalized_tokens(function)
+            )),
+            Item::Impl(implementation) => {
+                let owner = qualified(
+                    prefix,
+                    &normalized_tokens(implementation.self_ty.as_ref()).replace(' ', ""),
+                );
+                if attributes_mark_test(&implementation.attrs) {
+                    output.push(format!("{owner}:{}", normalized_tokens(implementation)));
+                } else {
+                    for member in &implementation.items {
+                        if let ImplItem::Fn(method) = member {
+                            if attributes_mark_test(&method.attrs) {
+                                output.push(format!(
+                                    "{}:{}",
+                                    qualified(&owner, &method.sig.ident.to_string()),
+                                    normalized_tokens(method)
+                                ));
+                            }
+                        }
+                    }
+                }
+            }
+            Item::Trait(item_trait) => {
+                let id = qualified(prefix, &item_trait.ident.to_string());
+                if attributes_mark_test(&item_trait.attrs) {
+                    output.push(format!("{id}:{}", normalized_tokens(item_trait)));
+                } else {
+                    for member in &item_trait.items {
+                        if let TraitItem::Fn(method) = member {
+                            if attributes_mark_test(&method.attrs) {
+                                output.push(format!(
+                                    "{}:{}",
+                                    qualified(&id, &method.sig.ident.to_string()),
+                                    normalized_tokens(method)
+                                ));
+                            }
+                        }
+                    }
+                }
+            }
+            _ => {}
+        }
+    }
+}
+
+/// Hash the exact AST surface that autonomous source repair is forbidden to
+/// modify. Span movement and LF/CRLF differences do not change this hash;
+/// changing test syntax does.
+pub fn test_only_surface_sha256(source: &str) -> Result<String, String> {
+    let parsed = syn::parse_file(source).map_err(|error| format!("RUST_AST_PARSE:{error}"))?;
+    let mut surface = Vec::new();
+    collect_test_surface(&parsed.items, "", &mut surface);
+    surface.sort();
+    Ok(sha256(surface.join("\n").as_bytes()))
 }
 
 pub fn derive_structural_postconditions(
@@ -788,6 +957,9 @@ pub fn apply_edit_atom(source: &str, edit: &SourceEditAtom) -> Result<String, St
     let mut insertions = Vec::new();
     let mut order = 0;
     flatten_edit(edit, source, &mut consumptions, &mut insertions, &mut order)?;
+    if consumptions.is_empty() && insertions.is_empty() {
+        return Err("EDIT_PROGRAM_NO_OP".to_string());
+    }
     consumptions.sort_by_key(|item| (item.range.start, item.range.end));
     for pair in consumptions.windows(2) {
         if pair[0].range.end > pair[1].range.start {
@@ -802,6 +974,12 @@ pub fn apply_edit_atom(source: &str, edit: &SourceEditAtom) -> Result<String, St
         }
     }
     insertions.sort_by_key(|item| (item.offset, item.order));
+    if insertions
+        .windows(2)
+        .any(|pair| pair[0].offset == pair[1].offset)
+    {
+        return Err("ATOMIC_EDIT_DUPLICATE_INSERTION_OFFSET".to_string());
+    }
 
     let mut output = String::with_capacity(
         source.len()
@@ -1057,6 +1235,12 @@ pub fn synthesize_structural_repair(
     predecessor_source: &str,
     target_source: &str,
 ) -> Result<StructuralRepairProgram, String> {
+    if predecessor_source == target_source {
+        return Err("STRUCTURAL_REPAIR_NO_OP".to_string());
+    }
+    if test_only_surface_sha256(predecessor_source)? != test_only_surface_sha256(target_source)? {
+        return Err("STRUCTURAL_REPAIR_TEST_SURFACE_MODIFICATION_FORBIDDEN".to_string());
+    }
     let current = analyze_rust_source(predecessor_source)?;
     let target = analyze_rust_source(target_source)?;
     let program = StructuralRepairProgram {
@@ -1278,5 +1462,65 @@ fn run(value: i32) -> i32 {
         let execution = execute_structural_repair(&tampered, before).unwrap();
         assert!(!execution.structurally_verified);
         assert!(!execution.counterexamples.is_empty());
+    }
+
+    #[test]
+    fn rust_frontend_extracts_async_error_reference_and_control_features() {
+        let source = r#"
+async fn run(value: &i64) -> Result<i64, crate::Error> {
+    let loaded = crate::load(*value).await?;
+    if loaded > 0 {
+        for item in 0..loaded { let _ = &item; }
+    }
+    Ok(loaded)
+}
+"#;
+        let snapshot = analyze_rust_source(source).expect("analyze Rust feature surface");
+        let kinds = snapshot
+            .syntax_features
+            .iter()
+            .map(|feature| feature.kind)
+            .collect::<BTreeSet<_>>();
+        for expected in [
+            RustSyntaxFeatureKind::Await,
+            RustSyntaxFeatureKind::TryPropagation,
+            RustSyntaxFeatureKind::Reference,
+            RustSyntaxFeatureKind::Dereference,
+            RustSyntaxFeatureKind::CratePath,
+            RustSyntaxFeatureKind::Branch,
+            RustSyntaxFeatureKind::Loop,
+        ] {
+            assert!(kinds.contains(&expected), "missing {expected:?}");
+        }
+    }
+
+    #[test]
+    fn no_op_overlap_and_test_surface_edits_fail_closed() {
+        let source = "fn value() -> i32 { 1 }\n#[cfg(test)]\nmod tests { #[test] fn value() { assert_eq!(super::value(), 1); } }\n";
+        assert_eq!(
+            synthesize_structural_repair("src/lib.rs", source, source),
+            Err("STRUCTURAL_REPAIR_NO_OP".to_string())
+        );
+        let changed_test = source.replace("assert_eq!(super::value(), 1)", "assert!(true)");
+        assert_eq!(
+            synthesize_structural_repair("src/lib.rs", source, &changed_test),
+            Err("STRUCTURAL_REPAIR_TEST_SURFACE_MODIFICATION_FORBIDDEN".to_string())
+        );
+        let duplicate_insert = SourceEditAtom::AtomicMultiEdit {
+            edits: vec![
+                SourceEditAtom::Insert {
+                    offset: 0,
+                    content: "a".to_string(),
+                },
+                SourceEditAtom::Insert {
+                    offset: 0,
+                    content: "b".to_string(),
+                },
+            ],
+        };
+        assert_eq!(
+            apply_edit_atom(source, &duplicate_insert),
+            Err("ATOMIC_EDIT_DUPLICATE_INSERTION_OFFSET".to_string())
+        );
     }
 }

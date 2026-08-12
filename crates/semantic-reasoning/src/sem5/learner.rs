@@ -1,9 +1,9 @@
 use std::collections::BTreeMap;
 
 use super::model::{
-    BinaryOperator, Effect, NodeKind, NodeMeta, ProgramConcept, ProgramIR, ProgramNode,
-    ProgramTask, ProgramType, ProgrammingPromotion, RelationSpec, ScalarExpression,
-    SynthesisCondition, Value,
+    ApiDefinition, BinaryOperator, BindingSpec, Effect, NodeKind, NodeMeta, ProgramConcept,
+    ProgramIR, ProgramNode, ProgramTask, ProgramType, ProgrammingPromotion, RelationSpec,
+    ScalarExpression, SynthesisCondition, Value,
 };
 
 const PREDECESSOR_SEQUENCE_CONCEPT: &str = "C000002";
@@ -190,7 +190,10 @@ pub fn compatible_concept(relation: &RelationSpec, concept_id: &str) -> bool {
             relation,
             RelationSpec::Stateful { .. } | RelationSpec::Composition { .. }
         ),
-        "C000010" => matches!(relation, RelationSpec::Composition { .. }),
+        "C000010" => matches!(
+            relation,
+            RelationSpec::Composition { .. } | RelationSpec::Mechanism { .. }
+        ),
         _ => false,
     }
 }
@@ -198,6 +201,7 @@ pub fn compatible_concept(relation: &RelationSpec, concept_id: &str) -> bool {
 fn relation_signature(relation: &RelationSpec) -> &'static str {
     match relation {
         RelationSpec::Scalar { .. } | RelationSpec::OpaqueUse { .. } => "SCALAR_EXPRESSION",
+        RelationSpec::Mechanism { .. } => "TYPED_MECHANISM",
         RelationSpec::Collection { .. } => "COLLECTION_VISIT",
         RelationSpec::Stateful { .. } => "STATE_TRANSITION",
         RelationSpec::Nested { .. } => "NESTED_VISIT",
@@ -226,6 +230,7 @@ pub fn synthesize_with_disabled(
         &task.relation,
         &task.inputs,
         &task.output_type,
+        &task.definitions,
     )?;
     let primitive_nodes = count_nodes(&root);
     let available = promotions
@@ -249,7 +254,10 @@ pub fn synthesize_with_disabled(
     };
     let operational_nodes = operational_size(primitive_nodes, &concept_ids, condition);
     let depth = node_depth(&root);
-    let composition = matches!(task.relation, RelationSpec::Composition { .. });
+    let composition = matches!(
+        task.relation,
+        RelationSpec::Composition { .. } | RelationSpec::Mechanism { .. }
+    );
     Ok(ProgramIR {
         program_id: format!("P-{}-{condition:?}", task.task_id),
         inputs: task.inputs.clone(),
@@ -283,7 +291,9 @@ fn predecessor_reuse(relation: &RelationSpec, disabled: &[&str]) -> Vec<String> 
             PREDECESSOR_SEQUENCE_CONCEPT.to_string(),
             PREDECESSOR_STATE_CONCEPT.to_string(),
         ],
-        RelationSpec::Scalar { .. } | RelationSpec::OpaqueUse { .. } => Vec::new(),
+        RelationSpec::Scalar { .. }
+        | RelationSpec::Mechanism { .. }
+        | RelationSpec::OpaqueUse { .. } => Vec::new(),
     };
     ids.into_iter()
         .filter(|id| !disabled.contains(&id.as_str()))
@@ -310,33 +320,64 @@ fn operational_size(
 fn build_relation(
     builder: &mut NodeBuilder,
     relation: &RelationSpec,
-    inputs: &[super::model::BindingSpec],
+    inputs: &[BindingSpec],
     output_type: &ProgramType,
+    definitions: &[ApiDefinition],
 ) -> Result<ProgramNode, String> {
     match relation {
         RelationSpec::Scalar { expression } => {
-            let names = inputs
-                .iter()
-                .map(|input| input.name.clone())
-                .collect::<Vec<_>>();
-            let value = builder.scalar(expression, &names)?;
+            let value = builder.scalar(expression, inputs, definitions)?;
+            Ok(builder.return_node(value))
+        }
+        RelationSpec::Mechanism {
+            condition,
+            postimage,
+            otherwise,
+        } => {
+            let postimage = builder.scalar(postimage, inputs, definitions)?;
+            let value = match (condition, otherwise) {
+                (Some(condition), Some(otherwise)) => {
+                    let condition = builder.scalar(condition, inputs, definitions)?;
+                    if condition.meta.output_type != ProgramType::Bool {
+                        return Err("MECHANISM_CONDITION_NOT_BOOL".to_string());
+                    }
+                    let otherwise = builder.scalar(otherwise, inputs, definitions)?;
+                    if postimage.meta.output_type != otherwise.meta.output_type {
+                        return Err("MECHANISM_POSTIMAGE_TYPE_MISMATCH".to_string());
+                    }
+                    builder.node(
+                        postimage.meta.output_type.clone(),
+                        vec![Effect::Pure],
+                        NodeKind::If {
+                            condition: Box::new(condition),
+                            then_node: Box::new(postimage),
+                            else_node: Box::new(otherwise),
+                        },
+                    )
+                }
+                (None, None) => postimage,
+                _ => return Err("MECHANISM_CONDITION_POSTIMAGE_SHAPE".to_string()),
+            };
+            if &value.meta.output_type != output_type {
+                return Err("MECHANISM_OUTPUT_TYPE_MISMATCH".to_string());
+            }
             Ok(builder.return_node(value))
         }
         RelationSpec::OpaqueUse {
             api_token,
             arguments,
         } => {
-            let names = inputs
-                .iter()
-                .map(|input| input.name.clone())
-                .collect::<Vec<_>>();
             let args = arguments
                 .iter()
-                .map(|argument| builder.scalar(argument, &names))
+                .map(|argument| builder.scalar(argument, inputs, definitions))
                 .collect::<Result<Vec<_>, _>>()?;
+            let definition = definitions
+                .iter()
+                .find(|definition| definition.api_token == *api_token)
+                .ok_or_else(|| format!("LOWERING_UNKNOWN_API:{api_token}"))?;
             let call = builder.node(
-                ProgramType::Int,
-                vec![Effect::Pure],
+                definition.output.clone(),
+                vec![definition.effect.clone()],
                 NodeKind::Call {
                     api_token: api_token.clone(),
                     args,
@@ -347,19 +388,35 @@ fn build_relation(
         RelationSpec::Collection {
             expression,
             include_when,
-        } => build_collection(builder, "v0", "result", expression, include_when, true),
+        } => build_collection(
+            builder,
+            "v0",
+            "result",
+            expression,
+            include_when,
+            true,
+            definitions,
+        ),
         RelationSpec::Stateful {
             initial,
             update,
             reset_when,
             emit_each,
         } => build_stateful(
-            builder, "v0", "state", *initial, update, reset_when, *emit_each, true,
+            builder,
+            "v0",
+            "state",
+            *initial,
+            update,
+            reset_when,
+            *emit_each,
+            true,
+            definitions,
         ),
         RelationSpec::Nested {
             expression,
             include_when,
-        } => build_nested(builder, expression, include_when),
+        } => build_nested(builder, expression, include_when, definitions),
         RelationSpec::Buffer {
             expression,
             write_output,
@@ -370,6 +427,7 @@ fn build_relation(
             expression,
             &None,
             *write_output,
+            definitions,
         ),
         RelationSpec::Image {
             expression,
@@ -381,6 +439,7 @@ fn build_relation(
             expression,
             apply_when,
             false,
+            definitions,
         ),
         RelationSpec::Composition { stages } => {
             if let [RelationSpec::Collection {
@@ -399,6 +458,7 @@ fn build_relation(
                     "stage_value",
                     expression,
                     include_when,
+                    definitions,
                 )?;
                 nodes.extend(build_stateful_statements(
                     builder,
@@ -408,6 +468,7 @@ fn build_relation(
                     update,
                     reset_when,
                     *emit_each,
+                    definitions,
                 )?);
                 let returned = builder.load(
                     if *emit_each { "state_values" } else { "state" },
@@ -433,8 +494,16 @@ fn build_collection(
     expression: &ScalarExpression,
     include_when: &Option<ScalarExpression>,
     with_return: bool,
+    definitions: &[ApiDefinition],
 ) -> Result<ProgramNode, String> {
-    let mut nodes = build_collection_statements(builder, source, target, expression, include_when)?;
+    let mut nodes = build_collection_statements(
+        builder,
+        source,
+        target,
+        expression,
+        include_when,
+        definitions,
+    )?;
     if with_return {
         let loaded = builder.load(target, ProgramType::SequenceInt);
         nodes.push(builder.return_node(loaded));
@@ -455,6 +524,7 @@ fn build_collection_statements(
     target: &str,
     expression: &ScalarExpression,
     include_when: &Option<ScalarExpression>,
+    definitions: &[ApiDefinition],
 ) -> Result<Vec<ProgramNode>, String> {
     let empty = builder.node(
         ProgramType::SequenceInt,
@@ -464,8 +534,8 @@ fn build_collection_statements(
         },
     );
     let initialize = builder.store(target, empty);
-    let names = vec!["item".to_string(), "position".to_string()];
-    let value = builder.scalar(expression, &names)?;
+    let bindings = int_bindings(&["item", "position"]);
+    let value = builder.scalar(expression, &bindings, definitions)?;
     let append = builder.node(
         ProgramType::Unit,
         vec![Effect::BufferMutation],
@@ -475,7 +545,7 @@ fn build_collection_statements(
         },
     );
     let body = if let Some(condition) = include_when {
-        let condition = builder.scalar(condition, &names)?;
+        let condition = builder.scalar(condition, &bindings, definitions)?;
         let unit = builder.unit();
         builder.node(
             ProgramType::Unit,
@@ -513,9 +583,17 @@ fn build_stateful(
     reset_when: &Option<ScalarExpression>,
     emit_each: bool,
     with_return: bool,
+    definitions: &[ApiDefinition],
 ) -> Result<ProgramNode, String> {
     let mut nodes = build_stateful_statements(
-        builder, source, state, initial, update, reset_when, emit_each,
+        builder,
+        source,
+        state,
+        initial,
+        update,
+        reset_when,
+        emit_each,
+        definitions,
     )?;
     if with_return {
         let result_name = if emit_each { "state_values" } else { state };
@@ -541,6 +619,7 @@ fn build_stateful_statements(
     update: &ScalarExpression,
     reset_when: &Option<ScalarExpression>,
     emit_each: bool,
+    definitions: &[ApiDefinition],
 ) -> Result<Vec<ProgramNode>, String> {
     let initial_node = builder.int(initial);
     let mut nodes = vec![builder.store(state, initial_node)];
@@ -554,15 +633,11 @@ fn build_stateful_statements(
         );
         nodes.push(builder.store("state_values", empty));
     }
-    let names = vec![
-        state.to_string(),
-        "item".to_string(),
-        "position".to_string(),
-    ];
-    let next = builder.scalar(update, &names)?;
+    let bindings = int_bindings(&[state, "item", "position"]);
+    let next = builder.scalar(update, &bindings, definitions)?;
     let update_store = builder.store(state, next);
     let transition = if let Some(condition) = reset_when {
-        let condition = builder.scalar(condition, &names)?;
+        let condition = builder.scalar(condition, &bindings, definitions)?;
         let reset_value = builder.int(initial);
         let reset = builder.store(state, reset_value);
         builder.node(
@@ -609,6 +684,7 @@ fn build_nested(
     builder: &mut NodeBuilder,
     expression: &ScalarExpression,
     include_when: &Option<ScalarExpression>,
+    definitions: &[ApiDefinition],
 ) -> Result<ProgramNode, String> {
     let empty = builder.node(
         ProgramType::SequenceInt,
@@ -618,12 +694,8 @@ fn build_nested(
         },
     );
     let initialize = builder.store("result", empty);
-    let names = vec![
-        "item".to_string(),
-        "inner_position".to_string(),
-        "outer_position".to_string(),
-    ];
-    let value = builder.scalar(expression, &names)?;
+    let bindings = int_bindings(&["item", "inner_position", "outer_position"]);
+    let value = builder.scalar(expression, &bindings, definitions)?;
     let append = builder.node(
         ProgramType::Unit,
         vec![Effect::BufferMutation],
@@ -633,7 +705,7 @@ fn build_nested(
         },
     );
     let inner_body = if let Some(predicate) = include_when {
-        let condition = builder.scalar(predicate, &names)?;
+        let condition = builder.scalar(predicate, &bindings, definitions)?;
         let unit = builder.unit();
         builder.node(
             ProgramType::Unit,
@@ -681,9 +753,10 @@ fn build_buffer(
     expression: &ScalarExpression,
     apply_when: &Option<ScalarExpression>,
     writes_sandbox_file: bool,
+    definitions: &[ApiDefinition],
 ) -> Result<ProgramNode, String> {
-    let names = vec!["item".to_string(), "position".to_string()];
-    let value = builder.scalar(expression, &names)?;
+    let bindings = int_bindings(&["item", "position"]);
+    let value = builder.scalar(expression, &bindings, definitions)?;
     let index = builder.load("position", ProgramType::Int);
     let write = builder.node(
         ProgramType::Unit,
@@ -695,7 +768,7 @@ fn build_buffer(
         },
     );
     let body = if let Some(predicate) = apply_when {
-        let condition = builder.scalar(predicate, &names)?;
+        let condition = builder.scalar(predicate, &bindings, definitions)?;
         let unit = builder.unit();
         builder.node(
             ProgramType::Unit,
@@ -730,6 +803,17 @@ fn build_buffer(
         }
     }
     Ok(builder.block_with_effects(vec![visit, returned], source_type, effects))
+}
+
+fn int_bindings(names: &[&str]) -> Vec<BindingSpec> {
+    names
+        .iter()
+        .map(|name| BindingSpec {
+            name: (*name).to_string(),
+            value_type: ProgramType::Int,
+            mutable: false,
+        })
+        .collect()
 }
 
 struct NodeBuilder {
@@ -788,18 +872,26 @@ impl NodeBuilder {
     fn scalar(
         &mut self,
         expression: &ScalarExpression,
-        names: &[String],
+        bindings: &[BindingSpec],
+        definitions: &[ApiDefinition],
     ) -> Result<ProgramNode, String> {
         match expression {
             ScalarExpression::Argument { index } => {
-                let name = names
+                let binding = bindings
                     .get(*index)
                     .ok_or_else(|| format!("LOWERING_ARGUMENT:{index}"))?;
-                Ok(self.load(name, ProgramType::Int))
+                Ok(self.load(&binding.name, binding.value_type.clone()))
             }
             ScalarExpression::Constant { value } => Ok(self.int(*value)),
+            ScalarExpression::BoolConstant { value } => Ok(self.node(
+                ProgramType::Bool,
+                vec![Effect::Pure],
+                NodeKind::Literal {
+                    value: Value::Bool(*value),
+                },
+            )),
             ScalarExpression::Unary { operator, input } => {
-                let input = self.scalar(input, names)?;
+                let input = self.scalar(input, bindings, definitions)?;
                 let output_type = match operator {
                     super::model::UnaryOperator::Negate => ProgramType::Int,
                     super::model::UnaryOperator::Not => ProgramType::Bool,
@@ -818,8 +910,8 @@ impl NodeBuilder {
                 left,
                 right,
             } => {
-                let left = self.scalar(left, names)?;
-                let right = self.scalar(right, names)?;
+                let left = self.scalar(left, bindings, definitions)?;
+                let right = self.scalar(right, bindings, definitions)?;
                 let output_type = match operator {
                     BinaryOperator::Equal
                     | BinaryOperator::LessThan
@@ -841,11 +933,15 @@ impl NodeBuilder {
             ScalarExpression::OpaqueCall { api_token, args } => {
                 let args = args
                     .iter()
-                    .map(|argument| self.scalar(argument, names))
+                    .map(|argument| self.scalar(argument, bindings, definitions))
                     .collect::<Result<Vec<_>, _>>()?;
+                let definition = definitions
+                    .iter()
+                    .find(|definition| definition.api_token == *api_token)
+                    .ok_or_else(|| format!("LOWERING_UNKNOWN_API:{api_token}"))?;
                 Ok(self.node(
-                    ProgramType::Int,
-                    vec![Effect::Pure],
+                    definition.output.clone(),
+                    vec![definition.effect.clone()],
                     NodeKind::Call {
                         api_token: api_token.clone(),
                         args,

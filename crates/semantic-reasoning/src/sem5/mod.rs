@@ -11,3 +11,4 @@ pub mod reporting;
 #[cfg(feature = "historical-campaigns")]
 pub mod sandbox;
 pub mod tasks;
+pub mod typed_mechanism;

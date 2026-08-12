@@ -866,19 +866,18 @@ pub(crate) fn source_patch_validation_critical_path_ms(
     }
 
     let format_duration_ms = distinct_duration(receipt.format_check.iter());
-    let target_lane_duration_ms = distinct_duration(
-        receipt
-            .compile_check
-            .iter()
-            .chain(std::iter::once(&receipt.validation)),
-    );
+    let compile_lane_duration_ms = distinct_duration(receipt.compile_check.iter());
+    let test_lane_duration_ms = distinct_duration(std::iter::once(&receipt.validation));
     let release_lane_duration_ms = distinct_duration(receipt.release_build.iter());
 
-    // Formatting is the cheap mutation gate. After it passes, the target
-    // package checks and runtime artifact build execute concurrently in
-    // separate Cargo target directories, so wall time is the slower lane,
-    // not the sum of both lanes.
-    format_duration_ms.saturating_add(target_lane_duration_ms.max(release_lane_duration_ms))
+    // Formatting is the cheap mutation gate. After it passes, Clippy, tests,
+    // and the runtime artifact build execute concurrently in separate Cargo
+    // target directories, so wall time is the slowest lane, not their sum.
+    format_duration_ms.saturating_add(
+        compile_lane_duration_ms
+            .max(test_lane_duration_ms)
+            .max(release_lane_duration_ms),
+    )
 }
 
 pub fn derive_improvement_operator_memory(
@@ -2157,6 +2156,8 @@ pub(crate) fn runtime_core_relative_path(relative_path: &Path) -> bool {
                 | "self_healing_execution.rs"
                 | "self_healing_pipeline.rs"
                 | "self_repair_contract.rs"
+                | "source_bound_causal_frontend.rs"
+                | "source_bound_causal_main.rs"
                 | "structural_source_repair.rs"
         )
     {
@@ -2295,7 +2296,7 @@ pub(crate) fn command_receipt(
     timeout_ms: u64,
     diagnostic_path: &Path,
 ) -> Result<LocalCommandReceipt, String> {
-    command_receipt_with_incremental(
+    command_receipt_with_incremental_and_jobs(
         program,
         args,
         cwd,
@@ -2303,6 +2304,7 @@ pub(crate) fn command_receipt(
         timeout_ms,
         diagnostic_path,
         true,
+        None,
     )
 }
 
@@ -2315,6 +2317,50 @@ pub(crate) fn command_receipt_with_incremental(
     diagnostic_path: &Path,
     cargo_incremental: bool,
 ) -> Result<LocalCommandReceipt, String> {
+    command_receipt_with_incremental_and_jobs(
+        program,
+        args,
+        cwd,
+        target_dir,
+        timeout_ms,
+        diagnostic_path,
+        cargo_incremental,
+        None,
+    )
+}
+
+fn command_receipt_with_cargo_jobs(
+    program: &Path,
+    args: &[&str],
+    cwd: &Path,
+    target_dir: &Path,
+    timeout_ms: u64,
+    diagnostic_path: &Path,
+    cargo_build_jobs: usize,
+) -> Result<LocalCommandReceipt, String> {
+    command_receipt_with_incremental_and_jobs(
+        program,
+        args,
+        cwd,
+        target_dir,
+        timeout_ms,
+        diagnostic_path,
+        true,
+        Some(cargo_build_jobs.max(1)),
+    )
+}
+
+#[allow(clippy::too_many_arguments)]
+fn command_receipt_with_incremental_and_jobs(
+    program: &Path,
+    args: &[&str],
+    cwd: &Path,
+    target_dir: &Path,
+    timeout_ms: u64,
+    diagnostic_path: &Path,
+    cargo_incremental: bool,
+    cargo_build_jobs: Option<usize>,
+) -> Result<LocalCommandReceipt, String> {
     let started = Instant::now();
     let diagnostic = OpenOptions::new()
         .write(true)
@@ -2325,7 +2371,8 @@ pub(crate) fn command_receipt_with_incremental(
     let diagnostic_error = diagnostic
         .try_clone()
         .map_err(|error| format!("SOURCE_MUTATION_DIAGNOSTIC_CLONE:{error}"))?;
-    let mut child = Command::new(program)
+    let mut command = Command::new(program);
+    command
         .args(args)
         .current_dir(cwd)
         .env("CARGO_TARGET_DIR", target_dir)
@@ -2339,7 +2386,11 @@ pub(crate) fn command_receipt_with_incremental(
         .env("UV_OFFLINE", "1")
         .stdin(Stdio::null())
         .stdout(Stdio::from(diagnostic))
-        .stderr(Stdio::from(diagnostic_error))
+        .stderr(Stdio::from(diagnostic_error));
+    if let Some(cargo_build_jobs) = cargo_build_jobs {
+        command.env("CARGO_BUILD_JOBS", cargo_build_jobs.to_string());
+    }
+    let mut child = command
         .spawn()
         .map_err(|error| format!("SOURCE_MUTATION_COMMAND_SPAWN:{error}"))?;
     let timeout = Duration::from_millis(timeout_ms);
@@ -2392,6 +2443,15 @@ fn join_command_lane(
     handle
         .join()
         .map_err(|_| format!("SOURCE_MUTATION_{lane}_LANE_PANICKED"))?
+}
+
+fn cargo_jobs_per_lane(active_lanes: usize) -> usize {
+    thread::available_parallelism()
+        .map(usize::from)
+        .unwrap_or(1)
+        .checked_div(active_lanes.max(1))
+        .unwrap_or(1)
+        .max(1)
 }
 
 fn restore_target(target: &Path, rollback_sibling: &Path) -> Result<(), String> {
@@ -2822,17 +2882,20 @@ fn install_primary_and_stage_source_patch(
         return Ok(receipt);
     }
 
-    // Once the cheap formatting gate has passed, validation is a two-lane
-    // DAG. The target package lane performs Clippy then behavioral tests; the
-    // runtime lane independently builds the supervisor/verifier artifacts.
-    // A fixed separate target directory removes Cargo's global build-directory
-    // lock without creating per-attempt caches or unbounded folders.
+    // Once the cheap formatting gate has passed, validation is a three-lane
+    // DAG. Clippy, behavioral tests, and the runtime artifact build have no
+    // semantic dependency on one another. Fixed lane target directories avoid
+    // Cargo's global build-directory lock without creating per-attempt caches
+    // or unbounded folders. Results are joined in a fixed order below; source
+    // installation and rollback remain a single serial transaction.
+    let validation_lane_jobs = cargo_jobs_per_lane(3);
     let release_target_dir = policy.build_target_dir.join("bcore-runtime-release-lane");
     let release_program = policy.cargo_executable.clone();
     let release_source_root = policy.source_root.clone();
     let release_timeout_ms = policy.validation_timeout_ms;
     let release_log = mutation_root.join("release-build.log");
     let release_lane_target = release_target_dir.clone();
+    let release_lane_jobs = validation_lane_jobs;
     let mut release_args = vec!["build", "-p", "semantic-reasoning"];
     append_runtime_core_feature_args(&policy.source_root, true, &mut release_args);
     release_args.extend([
@@ -2843,13 +2906,44 @@ fn install_primary_and_stage_source_patch(
         "b-core-growth-verifier",
     ]);
     let release_handle = thread::spawn(move || {
-        command_receipt(
+        command_receipt_with_cargo_jobs(
             &release_program,
             &release_args,
             &release_source_root,
             &release_lane_target,
             release_timeout_ms,
             &release_log,
+            release_lane_jobs,
+        )
+    });
+
+    let test_target_dir = policy.build_target_dir.join("bcore-source-test-lane");
+    let test_program = policy.cargo_executable.clone();
+    let test_source_root = policy.source_root.clone();
+    let test_timeout_ms = policy.validation_timeout_ms;
+    let test_log = mutation_root.join("test.log");
+    let test_lane_target = test_target_dir.clone();
+    let test_target_packages = target_packages.clone();
+    let test_targets_runtime_core = request_targets_runtime_core(request);
+    let test_lane_jobs = validation_lane_jobs;
+    let validation_handle = thread::spawn(move || {
+        let mut validation_args = vec!["test"];
+        append_package_selection(&mut validation_args, &test_target_packages);
+        validation_args.push("--lib");
+        append_runtime_core_feature_args(
+            &test_source_root,
+            test_targets_runtime_core,
+            &mut validation_args,
+        );
+        validation_args.push("--quiet");
+        command_receipt_with_cargo_jobs(
+            &test_program,
+            &validation_args,
+            &test_source_root,
+            &test_lane_target,
+            test_timeout_ms,
+            &test_log,
+            test_lane_jobs,
         )
     });
 
@@ -2865,22 +2959,26 @@ fn install_primary_and_stage_source_patch(
         &mut compile_args,
     );
     compile_args.extend(["--quiet", "--locked", "--", "-D", "warnings"]);
-    let compile_check = match command_receipt(
+    let compile_check = match command_receipt_with_cargo_jobs(
         &policy.cargo_executable,
         &compile_args,
         &policy.source_root,
         &policy.build_target_dir,
         policy.validation_timeout_ms,
         &mutation_root.join("compile-check.log"),
+        validation_lane_jobs,
     ) {
         Ok(receipt) => receipt,
         Err(error) => {
+            let _ = join_command_lane(validation_handle, "REGRESSION_VALIDATION");
             let _ = join_command_lane(release_handle, "RUNTIME_RELEASE");
             restore_target(&target, &rollback_sibling)?;
             return Err(error);
         }
     };
     if !compile_check.success {
+        let validation = join_command_lane(validation_handle, "REGRESSION_VALIDATION")
+            .unwrap_or_else(|_| compile_check.clone());
         let release_build = join_command_lane(release_handle, "RUNTIME_RELEASE").ok();
         restore_target(&target, &rollback_sibling)?;
         let workspace_fingerprint_after =
@@ -2902,7 +3000,7 @@ fn install_primary_and_stage_source_patch(
             failure_reason: Some("CLIPPY_CHECK_FAILED".to_string()),
             format_check: Some(format_check),
             compile_check: Some(compile_check.clone()),
-            validation: compile_check,
+            validation,
             release_build,
             runtime_update_staged: false,
             rollback_source,
@@ -2917,23 +3015,7 @@ fn install_primary_and_stage_source_patch(
         return Ok(receipt);
     }
 
-    let mut validation_args = vec!["test"];
-    append_package_selection(&mut validation_args, &target_packages);
-    validation_args.push("--lib");
-    append_runtime_core_feature_args(
-        &policy.source_root,
-        request_targets_runtime_core(request),
-        &mut validation_args,
-    );
-    validation_args.push("--quiet");
-    let validation = match command_receipt(
-        &policy.cargo_executable,
-        &validation_args,
-        &policy.source_root,
-        &policy.build_target_dir,
-        policy.validation_timeout_ms,
-        &mutation_root.join("test.log"),
-    ) {
+    let validation = match join_command_lane(validation_handle, "REGRESSION_VALIDATION") {
         Ok(receipt) => receipt,
         Err(error) => {
             let _ = join_command_lane(release_handle, "RUNTIME_RELEASE");
@@ -3781,29 +3863,18 @@ fn grammar_synthesized_request(
     Ok(None)
 }
 
-pub fn discover_known_source_improvement_detailed(
+fn discover_source_improvement_lane(
     policy: &AutonomousSourceMutationPolicy,
     state_dir: &Path,
     source_generation: u64,
+    operator_memory: &ImprovementOperatorMemory,
 ) -> Result<SourceDiscoveryResult, String> {
-    validate_policy(policy)?;
-    if !policy.enabled
-        || (!policy.auto_discover_known_transformations
-            && !policy.auto_discover_compiler_repairs
-            && !policy.auto_synthesize_grammar_repairs)
-    {
-        return Ok(SourceDiscoveryResult {
-            disposition: SourceDiscoveryDisposition::Disabled,
-            candidate: None,
-        });
-    }
     // Search the bounded AST/public-example grammar before launching a Cargo
     // observation for a new source fingerprint. Grammar candidates need no
     // compiler process and still pass the exact same structural replay and
     // compile/public-regression installation gate.
-    let operator_memory = refresh_improvement_operator_repository(state_dir)?;
     if let Some(candidate) =
-        grammar_synthesized_request(policy, state_dir, source_generation, &operator_memory)?
+        grammar_synthesized_request(policy, state_dir, source_generation, operator_memory)?
     {
         return Ok(SourceDiscoveryResult {
             disposition: SourceDiscoveryDisposition::Candidate,
@@ -3811,7 +3882,7 @@ pub fn discover_known_source_improvement_detailed(
         });
     }
     if let Some(candidate) =
-        compiler_guided_request(policy, state_dir, source_generation, &operator_memory)?
+        compiler_guided_request(policy, state_dir, source_generation, operator_memory)?
     {
         return Ok(SourceDiscoveryResult {
             disposition: SourceDiscoveryDisposition::Candidate,
@@ -3916,7 +3987,7 @@ pub fn discover_known_source_improvement_detailed(
                 continue;
             }
             let (invocation, operator_execution) = invoke_and_execute_improvement_operator(
-                &operator_memory,
+                operator_memory,
                 WeaknessEvidenceKind::StructuralSourceSmell,
                 &transformation,
                 solution_strategy,
@@ -4018,6 +4089,120 @@ pub fn discover_known_source_improvement_detailed(
     })
 }
 
+fn source_discovery_lane_policy(
+    policy: &AutonomousSourceMutationPolicy,
+    known_transformations: bool,
+    compiler_repairs: bool,
+    grammar_repairs: bool,
+) -> AutonomousSourceMutationPolicy {
+    let mut lane = policy.clone();
+    lane.auto_discover_known_transformations = known_transformations;
+    lane.auto_discover_compiler_repairs = compiler_repairs;
+    lane.auto_synthesize_grammar_repairs = grammar_repairs;
+    lane
+}
+
+pub fn discover_known_source_improvement_detailed(
+    policy: &AutonomousSourceMutationPolicy,
+    state_dir: &Path,
+    source_generation: u64,
+) -> Result<SourceDiscoveryResult, String> {
+    validate_policy(policy)?;
+    if !policy.enabled
+        || (!policy.auto_discover_known_transformations
+            && !policy.auto_discover_compiler_repairs
+            && !policy.auto_synthesize_grammar_repairs)
+    {
+        return Ok(SourceDiscoveryResult {
+            disposition: SourceDiscoveryDisposition::Disabled,
+            candidate: None,
+        });
+    }
+
+    // Materialize the read-only operator snapshot before fan-out. Each lane
+    // may then inspect the same repository without racing to create operator
+    // files. Grammar synthesis, compiler observation, and known-transform
+    // scanning have no result dependency and therefore form a bounded DAG.
+    let operator_memory = refresh_improvement_operator_repository(state_dir)?;
+    let grammar_policy =
+        source_discovery_lane_policy(policy, false, false, policy.auto_synthesize_grammar_repairs);
+    let compiler_policy =
+        source_discovery_lane_policy(policy, false, policy.auto_discover_compiler_repairs, false);
+    let known_policy = source_discovery_lane_policy(
+        policy,
+        policy.auto_discover_known_transformations,
+        false,
+        false,
+    );
+
+    let (grammar, compiler, known) = thread::scope(|scope| {
+        let grammar_handle = policy.auto_synthesize_grammar_repairs.then(|| {
+            scope.spawn(|| {
+                discover_source_improvement_lane(
+                    &grammar_policy,
+                    state_dir,
+                    source_generation,
+                    &operator_memory,
+                )
+            })
+        });
+        let compiler_handle = policy.auto_discover_compiler_repairs.then(|| {
+            scope.spawn(|| {
+                discover_source_improvement_lane(
+                    &compiler_policy,
+                    state_dir,
+                    source_generation,
+                    &operator_memory,
+                )
+            })
+        });
+        let known_handle = policy.auto_discover_known_transformations.then(|| {
+            scope.spawn(|| {
+                discover_source_improvement_lane(
+                    &known_policy,
+                    state_dir,
+                    source_generation,
+                    &operator_memory,
+                )
+            })
+        });
+        let join = |handle: Option<
+            thread::ScopedJoinHandle<'_, Result<SourceDiscoveryResult, String>>,
+        >,
+                    lane: &str|
+         -> Result<Option<SourceDiscoveryResult>, String> {
+            handle
+                .map(|handle| {
+                    handle
+                        .join()
+                        .map_err(|_| format!("SOURCE_DISCOVERY_{lane}_LANE_PANICKED"))?
+                })
+                .transpose()
+        };
+        Ok::<_, String>((
+            join(grammar_handle, "GRAMMAR")?,
+            join(compiler_handle, "COMPILER")?,
+            join(known_handle, "KNOWN_TRANSFORMATION")?,
+        ))
+    })?;
+
+    // Preserve the historical deterministic choice order while paying only
+    // the slowest lane's wall time. All workers are joined before selection;
+    // only the selected candidate may enter the serial install transaction.
+    for result in [grammar, compiler, known].into_iter().flatten() {
+        if result.candidate.is_some() {
+            return Ok(result);
+        }
+        if result.disposition == SourceDiscoveryDisposition::BelowValueThreshold {
+            return Ok(result);
+        }
+    }
+    Ok(SourceDiscoveryResult {
+        disposition: SourceDiscoveryDisposition::NoApplicableTransformation,
+        candidate: None,
+    })
+}
+
 pub fn discover_known_source_improvement(
     policy: &AutonomousSourceMutationPolicy,
     state_dir: &Path,
@@ -4035,6 +4220,7 @@ mod tests {
         for path in [
             "crates/semantic-reasoning/src/growth_supervisor.rs",
             "crates/semantic-reasoning/src/grammar_repair_synthesis.rs",
+            "crates/semantic-reasoning/src/source_bound_causal_frontend.rs",
             "crates/semantic-reasoning/src/sem5/emitter.rs",
             "crates/semantic-reasoning/src/sem27/engine.rs",
         ] {
@@ -4072,6 +4258,16 @@ mod tests {
             "worker-core"
         );
         fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn cargo_validation_lanes_share_the_available_parallel_budget() {
+        let available = thread::available_parallelism()
+            .map(usize::from)
+            .unwrap_or(1);
+        let per_lane = cargo_jobs_per_lane(3);
+        assert!(per_lane >= 1);
+        assert!(per_lane.saturating_mul(3) <= available.max(3));
     }
 
     fn synthetic_receipt(

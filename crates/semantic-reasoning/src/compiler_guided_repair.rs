@@ -18,6 +18,7 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value as JsonValue;
 
 use crate::autonomous_source_mutation::runtime_core_feature_available;
+use crate::bounded_parallel::map_ordered as parallel_map_ordered;
 use crate::self_repair_contract::sha256;
 use crate::structural_source_repair::{
     apply_edit_atom, synthesize_structural_repair, ByteRange, SourceEditAtom,
@@ -121,20 +122,20 @@ fn source_inputs(root: &Path) -> Result<Vec<PathBuf>, String> {
 fn source_fingerprint(root: &Path) -> Result<String, String> {
     let canonical_root = fs::canonicalize(root)
         .map_err(|error| format!("COMPILER_REPAIR_ROOT_CANONICALIZE:{error}"))?;
-    let mut records = Vec::new();
-    for path in source_inputs(&canonical_root)? {
+    let files = source_inputs(&canonical_root)?;
+    let records = parallel_map_ordered(&files, "COMPILER_REPAIR_FINGERPRINT", |path| {
         let relative = path
             .strip_prefix(&canonical_root)
             .map_err(|_| "COMPILER_REPAIR_SOURCE_OUTSIDE_ROOT".to_string())?;
-        let bytes = fs::read(&path)
+        let bytes = fs::read(path)
             .map_err(|error| format!("COMPILER_REPAIR_SOURCE_READ:{}:{error}", path.display()))?;
-        records.push(format!(
+        Ok(format!(
             "{}:{}:{}",
             relative.to_string_lossy().replace('\\', "/"),
             bytes.len(),
             sha256(&bytes)
-        ));
-    }
+        ))
+    })?;
     Ok(sha256(records.join("\n").as_bytes()))
 }
 
@@ -1038,33 +1039,55 @@ pub fn discover_compiler_guided_repairs(
                 .push(suggestion);
         }
     }
+    let family_tasks = families.values().cloned().collect::<Vec<_>>();
+    let family_results = parallel_map_ordered(
+        &family_tasks,
+        "COMPILER_REPAIR_FAMILY_SYNTHESIS",
+        |suggestions| {
+            let independent = maximal_non_overlapping_family(suggestions);
+            let candidate = family_candidate_from_suggestions(policy, &independent)?;
+            let member_ids = independent
+                .iter()
+                .map(|suggestion| suggestion.observation_sha256.clone())
+                .collect::<Vec<_>>();
+            let eager_ids = independent
+                .iter()
+                .take(MAX_EAGER_FAMILY_FALLBACKS)
+                .map(|suggestion| suggestion.observation_sha256.clone())
+                .collect::<Vec<_>>();
+            Ok((candidate, member_ids, eager_ids))
+        },
+    )?;
     let mut eager_fallback_ids = BTreeSet::new();
     let mut family_member_ids = BTreeSet::new();
-    for suggestions in families.values() {
-        let independent = maximal_non_overlapping_family(suggestions);
-        if let Some(candidate) = family_candidate_from_suggestions(policy, &independent)? {
+    for (candidate, member_ids, eager_ids) in family_results {
+        if let Some(candidate) = candidate {
             candidates.push(candidate);
-            for suggestion in &independent {
-                family_member_ids.insert(suggestion.observation_sha256.clone());
-            }
+            family_member_ids.extend(member_ids);
             // Preserve a bounded counterexample-isolation path without eagerly
             // compiling an individual structural program for every family
             // member. After a fallback changes the source, the next compiler
             // observation reconstructs the remaining family on the new state.
-            for suggestion in independent.iter().take(MAX_EAGER_FAMILY_FALLBACKS) {
-                eager_fallback_ids.insert(suggestion.observation_sha256.clone());
-            }
+            eager_fallback_ids.extend(eager_ids);
         }
     }
-    for suggestion in &cache.suggestions {
-        if family_member_ids.contains(&suggestion.observation_sha256)
-            && !eager_fallback_ids.contains(&suggestion.observation_sha256)
-        {
-            continue;
-        }
-        if let Some(candidate) = candidate_from_suggestion(policy, suggestion)? {
-            candidates.push(candidate);
-        }
+    let individual_tasks = cache
+        .suggestions
+        .iter()
+        .filter(|suggestion| {
+            !family_member_ids.contains(&suggestion.observation_sha256)
+                || eager_fallback_ids.contains(&suggestion.observation_sha256)
+        })
+        .collect::<Vec<_>>();
+    for candidate in parallel_map_ordered(
+        &individual_tasks,
+        "COMPILER_REPAIR_INDIVIDUAL_SYNTHESIS",
+        |suggestion| candidate_from_suggestion(policy, suggestion),
+    )?
+    .into_iter()
+    .flatten()
+    {
+        candidates.push(candidate);
     }
     candidates.sort_by_key(|candidate| {
         (

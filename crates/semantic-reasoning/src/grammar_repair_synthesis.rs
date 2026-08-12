@@ -20,7 +20,13 @@ use syn::spanned::Spanned;
 use syn::visit::{self, Visit};
 use syn::{Block, Expr, FnArg, ImplItem, Item, Lit, Pat, ReturnType, Stmt, Token, UnOp};
 
+use crate::bounded_parallel::map_ordered as parallel_map_ordered;
 use crate::self_repair_contract::sha256;
+use crate::sem5::model::{DataSplit, Effect, ProgramType, Value};
+use crate::sem5::typed_mechanism::{
+    synthesize_typed_mechanism_goal, SourceOperandIR, TypedMechanismObservationIR,
+    TypedMechanismSynthesisGoalIR, TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA,
+};
 use crate::structural_source_repair::{
     apply_edit_atom, synthesize_structural_repair, ByteRange, SourceEditAtom,
     StructuralRepairProgram,
@@ -67,6 +73,10 @@ pub struct GrammarRepairCandidate {
     pub public_examples_observed: usize,
     pub public_examples_evaluated: usize,
     pub public_examples_satisfied: usize,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub typed_mechanism_receipt_sha256: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub materialized_syntax_sha256: Option<String>,
     #[serde(default)]
     pub repair_family: String,
     #[serde(default = "one_family_member")]
@@ -106,6 +116,7 @@ struct CallableSignature {
     inputs: Vec<TypedBinding>,
     output: String,
     has_receiver: bool,
+    is_async: bool,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -224,6 +235,8 @@ fn synthesize_evidence_bound_family_candidates(
             public_examples_observed,
             public_examples_evaluated,
             public_examples_satisfied,
+            typed_mechanism_receipt_sha256: None,
+            materialized_syntax_sha256: None,
             repair_family,
             family_member_count,
             additional_family_files: Vec::new(),
@@ -233,7 +246,7 @@ fn synthesize_evidence_bound_family_candidates(
 }
 
 struct RepositoryGrammarContext {
-    parsed_files: Vec<syn::File>,
+    public_examples_by_short_name: BTreeMap<String, BTreeSet<PublicExample>>,
     globally_unique_short_names: BTreeSet<String>,
     external_examples_enabled: bool,
 }
@@ -259,6 +272,99 @@ struct PublicExampleScore {
     observed: usize,
     evaluated: usize,
     satisfied: usize,
+}
+
+fn sem5_scalar_type(type_name: &str) -> Option<ProgramType> {
+    match type_name {
+        "i64" => Some(ProgramType::Int),
+        "bool" => Some(ProgramType::Bool),
+        _ => None,
+    }
+}
+
+fn sem5_public_value(value: &PublicValue) -> Option<Value> {
+    match value {
+        PublicValue::Int(value) => i64::try_from(*value).ok().map(Value::Int),
+        PublicValue::Bool(value) => Some(Value::Bool(*value)),
+        PublicValue::String(_)
+        | PublicValue::Option(_)
+        | PublicValue::ResultOk(_)
+        | PublicValue::ResultErr(_) => None,
+    }
+}
+
+/// Bridge repository-native AST bindings and public examples into the generic
+/// typed mechanism synthesizer.  Only representations with exact SEM-5/Rust
+/// transport equivalence enter this lane; all other Rust types remain in the
+/// broader grammar/compiler lane and the normal source gate stays authoritative.
+fn synthesize_typed_hole_expression(
+    callable: &CallableSignature,
+    examples: &[PublicExample],
+) -> Option<(String, String, PublicExampleScore)> {
+    if examples.len() < 2 || callable.inputs.is_empty() {
+        return None;
+    }
+    let output_type = sem5_scalar_type(&callable.output)?;
+    let operands = callable
+        .inputs
+        .iter()
+        .map(|binding| {
+            Some(SourceOperandIR {
+                role: binding.name.clone(),
+                source: binding.name.clone(),
+                value_type: sem5_scalar_type(&binding.type_name)?,
+            })
+        })
+        .collect::<Option<Vec<_>>>()?;
+    let public_observations = examples
+        .iter()
+        .map(|example| {
+            if example.inputs.len() != callable.inputs.len() {
+                return None;
+            }
+            let operands = callable
+                .inputs
+                .iter()
+                .zip(&example.inputs)
+                .map(|(binding, value)| Some((binding.name.clone(), sem5_public_value(value)?)))
+                .collect::<Option<BTreeMap<_, _>>>()?;
+            Some(TypedMechanismObservationIR {
+                operands,
+                expected_postimage: sem5_public_value(&example.expected)?,
+            })
+        })
+        .collect::<Option<Vec<_>>>()?;
+    let request = TypedMechanismSynthesisGoalIR {
+        schema: TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA.to_string(),
+        goal_id: format!(
+            "grammar_hole_{}",
+            &sha256(callable.callable.as_bytes())[..16]
+        ),
+        split: DataSplit::FreshBlind,
+        operands,
+        output_type,
+        definitions: Vec::new(),
+        allowed_effects: vec![Effect::Pure],
+        preconditions: Vec::new(),
+        postconditions: vec!["satisfy every repository-visible public postimage".to_string()],
+        invariants: vec!["do not mutate source operands".to_string()],
+        public_observations,
+        require_conditional: false,
+        max_expression_depth: 2,
+        max_candidates: 1_024,
+        provenance: vec!["REPOSITORY_AST_PUBLIC_EXAMPLES".to_string()],
+    };
+    let receipt = synthesize_typed_mechanism_goal(&request).ok()?;
+    let family = format!("TYPED_MECHANISM_SYNTHESIS:{}", receipt.receipt_sha256);
+    Some((
+        family,
+        receipt.template.complete_expression_source,
+        PublicExampleScore {
+            observed: examples.len(),
+            evaluated: examples.len(),
+            satisfied: examples.len(),
+        },
+    ))
 }
 
 fn normalized_tokens<T: ToTokens>(value: &T) -> String {
@@ -317,6 +423,7 @@ fn collect_callables(items: &[Item], prefix: &str, output: &mut Vec<(CallableSig
                         inputs: typed_inputs(&function.sig.inputs),
                         output: return_type(&function.sig.output),
                         has_receiver: false,
+                        is_async: function.sig.asyncness.is_some(),
                     },
                     (*function.block).clone(),
                 ));
@@ -350,6 +457,7 @@ fn collect_callables(items: &[Item], prefix: &str, output: &mut Vec<(CallableSig
                                         .inputs
                                         .iter()
                                         .any(|input| matches!(input, FnArg::Receiver(_))),
+                                    is_async: method.sig.asyncness.is_some(),
                                 },
                                 method.block.clone(),
                             ));
@@ -383,14 +491,14 @@ fn line_column_offset(
         .map(|offset| line_start + offset)
         .unwrap_or(source.len());
     let line = &source[line_start..line_end];
-    let byte_column = if location.column == 0 {
-        0
-    } else {
-        line.char_indices()
-            .nth(location.column)
-            .map(|(offset, _)| offset)
-            .unwrap_or(line.len())
-    };
+    // proc_macro2 reports a UTF-8 byte column. Treating it as a character
+    // ordinal shifts every span following non-ASCII source and can patch the
+    // wrong bytes. CRLF is harmless here because the column is resolved before
+    // the line-ending bytes.
+    let byte_column = location.column;
+    if byte_column > line.len() || !line.is_char_boundary(byte_column) {
+        return None;
+    }
     let result = line_start + byte_column;
     (result <= source.len() && source.is_char_boundary(result)).then_some(result)
 }
@@ -617,6 +725,97 @@ impl<'ast> Visit<'ast> for PublicExampleVisitor<'_> {
     }
 }
 
+fn repository_example_from_call(
+    call_expression: &Expr,
+    expected: PublicValue,
+) -> Option<(String, PublicExample)> {
+    let (name, arguments) = called_short_name(call_expression)?;
+    let inputs = arguments
+        .iter()
+        .map(public_literal)
+        .collect::<Option<Vec<_>>>()?;
+    Some((name.to_string(), PublicExample { inputs, expected }))
+}
+
+fn repository_assertion_example(macro_: &syn::Macro) -> Option<(String, PublicExample)> {
+    let assertion = macro_.path.segments.last()?.ident.to_string();
+    let arguments = Punctuated::<Expr, Token![,]>::parse_terminated
+        .parse2(macro_.tokens.clone())
+        .ok()?
+        .into_iter()
+        .collect::<Vec<_>>();
+    match assertion.as_str() {
+        "assert_eq" if arguments.len() >= 2 => {
+            repository_example_from_call(&arguments[0], public_literal(&arguments[1])?).or_else(
+                || repository_example_from_call(&arguments[1], public_literal(&arguments[0])?),
+            )
+        }
+        "assert" if !arguments.is_empty() => {
+            if let Expr::Unary(unary) = &arguments[0] {
+                if matches!(unary.op, UnOp::Not(_)) {
+                    return repository_example_from_call(
+                        unary.expr.as_ref(),
+                        PublicValue::Bool(false),
+                    );
+                }
+            }
+            repository_example_from_call(&arguments[0], PublicValue::Bool(true))
+        }
+        _ => None,
+    }
+}
+
+#[derive(Default)]
+struct RepositoryExampleVisitor {
+    examples: BTreeMap<String, BTreeSet<PublicExample>>,
+}
+
+impl<'ast> Visit<'ast> for RepositoryExampleVisitor {
+    fn visit_macro(&mut self, macro_: &'ast syn::Macro) {
+        if let Some((short_name, example)) = repository_assertion_example(macro_) {
+            self.examples.entry(short_name).or_default().insert(example);
+        }
+        visit::visit_macro(self, macro_);
+    }
+}
+
+fn collect_repository_examples_from_items(
+    items: &[Item],
+    in_test_scope: bool,
+    output: &mut BTreeMap<String, BTreeSet<PublicExample>>,
+) {
+    for item in items {
+        match item {
+            Item::Mod(module) => {
+                let nested_test_scope =
+                    in_test_scope || module.ident == "tests" || attributes_mark_test(&module.attrs);
+                if let Some((_, nested)) = &module.content {
+                    collect_repository_examples_from_items(nested, nested_test_scope, output);
+                }
+            }
+            Item::Fn(function) if in_test_scope || attributes_mark_test(&function.attrs) => {
+                let mut visitor = RepositoryExampleVisitor::default();
+                visitor.visit_block(function.block.as_ref());
+                for (short_name, examples) in visitor.examples {
+                    output.entry(short_name).or_default().extend(examples);
+                }
+            }
+            Item::Impl(implementation) if in_test_scope => {
+                for member in &implementation.items {
+                    if let ImplItem::Fn(method) = member {
+                        let mut visitor = RepositoryExampleVisitor::default();
+                        visitor.visit_block(&method.block);
+                        for (short_name, examples) in visitor.examples {
+                            output.entry(short_name).or_default().extend(examples);
+                        }
+                    }
+                }
+            }
+            _ => {}
+        }
+    }
+}
+
 fn collect_public_examples_from_items(
     items: &[Item],
     in_test_scope: bool,
@@ -676,8 +875,16 @@ fn collect_repository_public_examples(
             .globally_unique_short_names
             .contains(&callable.short_name)
     {
-        for parsed in &context.parsed_files {
-            collect_public_examples_from_items(&parsed.items, false, callable, &mut examples);
+        if let Some(repository_examples) = context
+            .public_examples_by_short_name
+            .get(&callable.short_name)
+        {
+            examples.extend(
+                repository_examples
+                    .iter()
+                    .filter(|example| example.inputs.len() == callable.inputs.len())
+                    .cloned(),
+            );
         }
     }
     examples.into_iter().collect()
@@ -722,6 +929,29 @@ fn matching_binding<'a>(inputs: &'a [TypedBinding], type_name: &str) -> Option<&
         .map(|binding| binding.name.as_str())
 }
 
+fn adapt_argument_source(name: &str, available_type: &str, required_type: &str) -> Option<String> {
+    if available_type == required_type {
+        return Some(name.to_string());
+    }
+    if required_type
+        .strip_prefix('&')
+        .is_some_and(|inner| inner == available_type)
+    {
+        return Some(format!("&{name}"));
+    }
+    if available_type
+        .strip_prefix('&')
+        .is_some_and(|inner| inner == required_type)
+    {
+        return Some(format!("*{name}"));
+    }
+    None
+}
+
+fn argument_type_compatible(available_type: &str, required_type: &str) -> bool {
+    adapt_argument_source("value", available_type, required_type).is_some()
+}
+
 fn matching_argument_indices(
     available: &[TypedBinding],
     required: &[TypedBinding],
@@ -730,7 +960,7 @@ fn matching_argument_indices(
     let mut arguments = Vec::with_capacity(required.len());
     for input in required {
         let (index, _) = available.iter().enumerate().find(|(index, binding)| {
-            !used.contains(index) && binding.type_name == input.type_name
+            !used.contains(index) && argument_type_compatible(&binding.type_name, &input.type_name)
         })?;
         used.insert(index);
         arguments.push(index);
@@ -759,7 +989,7 @@ fn matching_argument_role_assignments(
         }
         for (available_index, binding) in available.iter().enumerate() {
             if !used.contains(&available_index)
-                && binding.type_name == required[required_index].type_name
+                && argument_type_compatible(&binding.type_name, &required[required_index].type_name)
             {
                 used.insert(available_index);
                 assignment.push(available_index);
@@ -834,12 +1064,15 @@ fn compile_call_role_operation(
             .inputs
             .get(*available_index)
             .ok_or_else(|| "CANONICAL_CALL_ROLE_INDEX_INVALID".to_string())?;
-        if !used.insert(*available_index) || available.type_name != required.type_name {
+        if !used.insert(*available_index) {
             return Err("CANONICAL_CALL_ROLE_TYPE_OR_ALIAS_MISMATCH".to_string());
         }
-        arguments.push(available.name.clone());
+        arguments.push(
+            adapt_argument_source(&available.name, &available.type_name, &required.type_name)
+                .ok_or_else(|| "CANONICAL_CALL_ROLE_TYPE_OR_ALIAS_MISMATCH".to_string())?,
+        );
     }
-    Ok(format!("{}({})", candidate_name, arguments.join(", ")))
+    compile_call_expression(caller, candidate, &candidate_name, &arguments)
 }
 
 fn symmetric_pair_element_type(output: &str) -> Option<String> {
@@ -932,7 +1165,25 @@ fn callable_expression_name(
         return (caller.impl_owner.as_ref() == Some(owner))
             .then(|| format!("Self::{}", candidate.short_name));
     }
-    (caller.lexical_scope == candidate.lexical_scope).then(|| candidate.short_name.clone())
+    if caller.lexical_scope == candidate.lexical_scope {
+        Some(candidate.short_name.clone())
+    } else {
+        Some(format!("crate::{}", candidate.callable))
+    }
+}
+
+fn compile_call_expression(
+    caller: &CallableSignature,
+    candidate: &CallableSignature,
+    callable: &str,
+    arguments: &[String],
+) -> Result<String, String> {
+    let call = format!("{callable}({})", arguments.join(", "));
+    match (caller.is_async, candidate.is_async) {
+        (true, true) => Ok(format!("{call}.await")),
+        (false, true) => Err("ASYNC_CALLEE_REQUIRES_ASYNC_CALLER".to_string()),
+        (_, false) => Ok(call),
+    }
 }
 
 fn compose_expressions(
@@ -1103,12 +1354,23 @@ fn compose_expressions(
         };
         let inner_arguments = inner_indices
             .iter()
-            .map(|index| callable.inputs[*index].name.as_str())
-            .collect::<Vec<_>>();
+            .zip(&inner.inputs)
+            .map(|(index, required)| {
+                let available = &callable.inputs[*index];
+                adapt_argument_source(&available.name, &available.type_name, &required.type_name)
+            })
+            .collect::<Option<Vec<_>>>();
+        let Some(inner_arguments) = inner_arguments else {
+            continue;
+        };
         let Some(inner_name) = callable_expression_name(callable, inner) else {
             continue;
         };
-        let inner_expression = format!("{}({})", inner_name, inner_arguments.join(", "));
+        let Ok(inner_expression) =
+            compile_call_expression(callable, inner, &inner_name, &inner_arguments)
+        else {
+            continue;
+        };
         for outer in &call_catalog {
             if inner.callable == outer.callable || outer.output != callable.output {
                 continue;
@@ -1137,22 +1399,32 @@ fn compose_expressions(
                             .enumerate()
                             .find(|(binding_index, binding)| {
                                 !used.contains(binding_index)
-                                    && binding.type_name == required.type_name
+                                    && argument_type_compatible(
+                                        &binding.type_name,
+                                        &required.type_name,
+                                    )
                             })
                     else {
                         complete = false;
                         break;
                     };
                     used.insert(binding_index);
-                    arguments.push(binding.name.clone());
+                    let Some(argument) = adapt_argument_source(
+                        &binding.name,
+                        &binding.type_name,
+                        &required.type_name,
+                    ) else {
+                        complete = false;
+                        break;
+                    };
+                    arguments.push(argument);
                 }
                 if complete {
-                    push_expression(
-                        &mut output,
-                        &mut seen,
-                        "EXISTING_CALL_CHAIN",
-                        format!("{}({})", outer_name, arguments.join(", ")),
-                    );
+                    if let Ok(expression) =
+                        compile_call_expression(callable, outer, &outer_name, &arguments)
+                    {
+                        push_expression(&mut output, &mut seen, "EXISTING_CALL_CHAIN", expression);
+                    }
                     if output.len() >= MAX_GRAMMAR_CANDIDATES {
                         break 'chains;
                     }
@@ -1499,13 +1771,20 @@ fn repository_grammar_context(
     files: &[PathBuf],
     max_candidate_bytes: u64,
 ) -> Result<RepositoryGrammarContext, String> {
-    let mut parsed_files = Vec::new();
     let mut short_name_counts = BTreeMap::<String, usize>::new();
+    let mut public_examples_by_short_name = BTreeMap::<String, BTreeSet<PublicExample>>::new();
     let mut bytes_seen = 0_u64;
     let mut complete = files.len() <= MAX_REPOSITORY_CONTEXT_FILES;
-    for path in files.iter().take(MAX_REPOSITORY_CONTEXT_FILES) {
-        let bytes = fs::read(path)
-            .map_err(|error| format!("GRAMMAR_CONTEXT_READ:{}:{error}", path.display()))?;
+    let context_paths = files
+        .iter()
+        .take(MAX_REPOSITORY_CONTEXT_FILES)
+        .cloned()
+        .collect::<Vec<_>>();
+    let loaded = parallel_map_ordered(&context_paths, "GRAMMAR_CONTEXT_READ", |path| {
+        fs::read(path).map_err(|error| format!("GRAMMAR_CONTEXT_READ:{}:{error}", path.display()))
+    })?;
+    let mut selected = Vec::new();
+    for bytes in loaded {
         if bytes.len() as u64 > max_candidate_bytes
             || bytes_seen.saturating_add(bytes.len() as u64) > MAX_REPOSITORY_CONTEXT_BYTES
         {
@@ -1513,20 +1792,41 @@ fn repository_grammar_context(
             continue;
         }
         bytes_seen = bytes_seen.saturating_add(bytes.len() as u64);
-        let Ok(source) = std::str::from_utf8(&bytes) else {
-            complete = false;
-            continue;
+        selected.push(bytes);
+    }
+    let parsed = parallel_map_ordered(&selected, "GRAMMAR_CONTEXT_PARSE", |bytes| {
+        let Ok(source) = std::str::from_utf8(bytes) else {
+            return Ok(None);
         };
         let Ok(parsed) = syn::parse_file(source) else {
-            complete = false;
-            continue;
+            return Ok(None);
         };
         let mut callables = Vec::new();
         collect_callables(&parsed.items, "", &mut callables);
-        for (callable, _) in callables {
-            *short_name_counts.entry(callable.short_name).or_default() += 1;
+        let mut public_examples = BTreeMap::new();
+        collect_repository_examples_from_items(&parsed.items, false, &mut public_examples);
+        Ok(Some((
+            callables
+                .into_iter()
+                .map(|(callable, _)| callable.short_name)
+                .collect::<Vec<_>>(),
+            public_examples,
+        )))
+    })?;
+    for result in parsed {
+        let Some((short_names, public_examples)) = result else {
+            complete = false;
+            continue;
+        };
+        for short_name in short_names {
+            *short_name_counts.entry(short_name).or_default() += 1;
         }
-        parsed_files.push(parsed);
+        for (short_name, examples) in public_examples {
+            public_examples_by_short_name
+                .entry(short_name)
+                .or_default()
+                .extend(examples);
+        }
     }
     let globally_unique_short_names = if complete {
         short_name_counts
@@ -1537,7 +1837,7 @@ fn repository_grammar_context(
         BTreeSet::new()
     };
     Ok(RepositoryGrammarContext {
-        parsed_files,
+        public_examples_by_short_name,
         globally_unique_short_names,
         external_examples_enabled: complete,
     })
@@ -1653,6 +1953,8 @@ fn candidates_for_file(
                 continue;
             }
         }
+        let typed_synthesis = synthesize_typed_hole_expression(&hole.callable, &public_examples);
+        let typed_offset = usize::from(typed_synthesis.is_some());
         let mut compositions = compose_expressions(&hole.callable, &catalog)
             .into_iter()
             .filter(|(_, expression)| {
@@ -1665,7 +1967,7 @@ fn candidates_for_file(
             .map(|(index, (family, expression))| {
                 let score =
                     public_example_score(&family, &expression, &hole.callable, &public_examples);
-                (index, family, expression, score)
+                (index + typed_offset, family, expression, score)
             })
             // A candidate that disagrees with any example it can evaluate is
             // already falsified and must not consume a compile/test attempt.
@@ -1673,6 +1975,14 @@ fn candidates_for_file(
             // source-validation gate.
             .filter(|(_, _, _, score)| score.evaluated == 0 || score.satisfied == score.evaluated)
             .collect::<Vec<_>>();
+        if let Some((family, expression, score)) = typed_synthesis {
+            let normalized = syn::parse_str::<Expr>(&expression)
+                .map(|expression| normalized_tokens(&expression))
+                .unwrap_or_else(|_| expression.clone());
+            if hole.current_expression.as_deref() != Some(normalized.as_str()) {
+                compositions.push((0, family, expression, score));
+            }
+        }
         compositions.sort_by_key(|(index, _, _, score)| {
             let satisfies_every_observed_example = score.observed > 0
                 && score.evaluated == score.observed
@@ -1737,10 +2047,16 @@ fn candidates_for_file(
                     _ => 95,
                 },
                 structural_repair_program,
-                grammar_expression: expression,
+                grammar_expression: expression.clone(),
                 public_examples_observed: public_score.observed,
                 public_examples_evaluated: public_score.evaluated,
                 public_examples_satisfied: public_score.satisfied,
+                typed_mechanism_receipt_sha256: family
+                    .strip_prefix("TYPED_MECHANISM_SYNTHESIS:")
+                    .map(str::to_string),
+                materialized_syntax_sha256: family
+                    .starts_with("TYPED_MECHANISM_SYNTHESIS:")
+                    .then(|| sha256(expression.as_bytes())),
                 repair_family: format!("{}:{family}", hole.kind),
                 family_member_count: 1,
                 additional_family_files: Vec::new(),
@@ -1793,35 +2109,69 @@ pub fn discover_grammar_repairs_for_generation(
 
     let mut candidate_groups: Vec<Vec<GrammarRepairCandidate>> = Vec::new();
     let mut holes_scanned = 0usize;
-    'files: for path in files {
-        let remaining_scan_budget =
+    let file_batch_width = std::thread::available_parallelism()
+        .map(usize::from)
+        .unwrap_or(1)
+        .saturating_mul(2)
+        .max(1);
+    let mut cursor = 0usize;
+    'files: while cursor < files.len() {
+        let remaining_at_batch_start =
             MAX_GRAMMAR_HOLES_SCANNED_PER_GENERATION.saturating_sub(holes_scanned);
-        if remaining_scan_budget == 0 {
+        if remaining_at_batch_start == 0 {
             break;
         }
-        let batch = candidates_for_file(
-            root,
-            &path,
-            max_candidate_bytes,
-            source_generation,
-            remaining_scan_budget,
-            &context,
-        )?;
-        holes_scanned += batch.holes_scanned;
-        for candidate in batch.candidates {
-            if candidate_groups.last().is_some_and(|group| {
-                group
-                    .first()
-                    .is_some_and(|existing| existing.transformation == candidate.transformation)
-            }) {
-                candidate_groups
-                    .last_mut()
-                    .expect("candidate group exists")
-                    .push(candidate);
-            } else if candidate_groups.len() < MAX_GRAMMAR_HOLES_PER_GENERATION {
-                candidate_groups.push(vec![candidate]);
-            } else {
+        let end = cursor.saturating_add(file_batch_width).min(files.len());
+        let paths = &files[cursor..end];
+        let batches = parallel_map_ordered(paths, "GRAMMAR_CANDIDATE_FILE", |path| {
+            candidates_for_file(
+                root,
+                path,
+                max_candidate_bytes,
+                source_generation,
+                remaining_at_batch_start,
+                &context,
+            )
+        })?;
+        cursor = end;
+        for (path, speculative_batch) in paths.iter().zip(batches) {
+            let remaining_scan_budget =
+                MAX_GRAMMAR_HOLES_SCANNED_PER_GENERATION.saturating_sub(holes_scanned);
+            if remaining_scan_budget == 0 {
                 break 'files;
+            }
+            // At most one boundary file in a batch can cross the global hole
+            // budget. Recompute only that file with the exact residual budget;
+            // all prior speculative results are identical to the old serial
+            // traversal, and later results are discarded.
+            let batch = if speculative_batch.holes_scanned > remaining_scan_budget {
+                candidates_for_file(
+                    root,
+                    path,
+                    max_candidate_bytes,
+                    source_generation,
+                    remaining_scan_budget,
+                    &context,
+                )?
+            } else {
+                speculative_batch
+            };
+            holes_scanned = holes_scanned.saturating_add(batch.holes_scanned);
+            for candidate in batch.candidates {
+                if candidate_groups.last().is_some_and(|group| {
+                    group
+                        .first()
+                        .is_some_and(|existing| existing.transformation == candidate.transformation)
+                }) {
+                    candidate_groups
+                        .last_mut()
+                        .expect("candidate group exists")
+                        .push(candidate);
+                } else if candidate_groups.len() < MAX_GRAMMAR_HOLES_PER_GENERATION {
+                    candidate_groups.push(vec![candidate]);
+                } else {
+                    break 'files;
+                }
             }
         }
     }
@@ -1939,6 +2289,8 @@ fn synthesize_repository_family_candidates(
             public_examples_observed,
             public_examples_evaluated,
             public_examples_satisfied,
+            typed_mechanism_receipt_sha256: None,
+            materialized_syntax_sha256: None,
             repair_family,
             family_member_count,
             additional_family_files,
@@ -1978,6 +2330,33 @@ mod tests {
             .postconditions
             .iter()
             .any(|_| true));
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn utf8_and_crlf_spans_replace_only_the_ast_hole_bytes() {
+        let root =
+            std::env::temp_dir().join(format!("b-core-grammar-utf8-crlf-{}", std::process::id()));
+        if root.exists() {
+            fs::remove_dir_all(&root).unwrap();
+        }
+        fs::create_dir_all(root.join("src")).unwrap();
+        let source =
+            "// 한글 경계 보존\r\npub fn add(left: i32, right: i32) -> i32 { todo!() }\r\n";
+        fs::write(root.join("src/lib.rs"), source.as_bytes()).unwrap();
+
+        let candidates = discover_grammar_repairs(&root, 4_096).unwrap();
+
+        assert!(!candidates.is_empty());
+        assert!(candidates[0]
+            .candidate_source
+            .starts_with("// 한글 경계 보존\r\n"));
+        assert!(candidates[0]
+            .candidate_source
+            .contains("{ left + right }\r\n"));
+        assert_eq!(candidates[0].candidate_source.matches("todo!").count(), 0);
+        assert!(syn::parse_file(&candidates[0].candidate_source).is_ok());
+
         fs::remove_dir_all(root).unwrap();
     }
 
@@ -2117,6 +2496,55 @@ mod tests {
         assert!(candidates
             .iter()
             .all(|candidate| !candidate.relative_path.to_string_lossy().contains("tests")));
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn active_grammar_lane_synthesizes_guard_and_postimages_from_i64_observations() {
+        let root = std::env::temp_dir().join(format!(
+            "b-core-typed-mechanism-grammar-{}",
+            std::process::id()
+        ));
+        if root.exists() {
+            fs::remove_dir_all(&root).unwrap();
+        }
+        fs::create_dir_all(root.join("src")).unwrap();
+        let source = "pub fn distance(current: i64, previous: i64) -> i64 { todo!() }\n\n#[cfg(test)]\nmod tests {\n    #[test]\n    fn distance_examples() {\n        assert_eq!(super::distance(9, 4), 5);\n        assert_eq!(super::distance(3, 8), 5);\n        assert_eq!(super::distance(-2, -9), 7);\n        assert_eq!(super::distance(-8, -3), 5);\n    }\n}\n";
+        fs::write(root.join("src/lib.rs"), source).unwrap();
+
+        let candidates = discover_grammar_repairs(&root, 8_192).unwrap();
+        let typed = candidates
+            .iter()
+            .find(|candidate| {
+                candidate
+                    .solution_strategy
+                    .starts_with("GRAMMAR_COMPOSITION:TYPED_MECHANISM_SYNTHESIS:")
+            })
+            .expect("typed mechanism candidate");
+        assert!(typed.grammar_expression.starts_with("if "));
+        assert!(typed.grammar_expression.contains("current"));
+        assert!(typed.grammar_expression.contains("previous"));
+        assert_eq!(typed.public_examples_observed, 4);
+        assert_eq!(typed.public_examples_evaluated, 4);
+        assert_eq!(typed.public_examples_satisfied, 4);
+        assert_eq!(
+            typed
+                .typed_mechanism_receipt_sha256
+                .as_deref()
+                .map(str::len),
+            Some(64)
+        );
+        let expected_syntax_sha256 = sha256(typed.grammar_expression.as_bytes());
+        assert_eq!(
+            typed.materialized_syntax_sha256.as_deref(),
+            Some(expected_syntax_sha256.as_str())
+        );
+        assert_eq!(
+            apply_edit_atom(source, &typed.structural_repair_program.edit).as_deref(),
+            Ok(typed.candidate_source.as_str())
+        );
+        assert!(syn::parse_file(&typed.candidate_source).is_ok());
+
         fs::remove_dir_all(root).unwrap();
     }
 
@@ -2414,6 +2842,7 @@ mod tests {
             ],
             output: "i32".to_string(),
             has_receiver: false,
+            is_async: false,
         };
         let helper = CallableSignature {
             callable: "combine".to_string(),
@@ -2423,6 +2852,7 @@ mod tests {
             inputs: current.inputs.clone(),
             output: "i32".to_string(),
             has_receiver: false,
+            is_async: false,
         };
         let receiver_method = CallableSignature {
             callable: "Accumulator::combine_method".to_string(),
@@ -2432,6 +2862,7 @@ mod tests {
             inputs: current.inputs.clone(),
             output: "i32".to_string(),
             has_receiver: true,
+            is_async: false,
         };
         let foreign_helper = CallableSignature {
             callable: "nested::foreign".to_string(),
@@ -2441,6 +2872,7 @@ mod tests {
             inputs: current.inputs.clone(),
             output: "i32".to_string(),
             has_receiver: false,
+            is_async: false,
         };
         let expressions = compose_expressions(
             &current,
@@ -2456,8 +2888,10 @@ mod tests {
                 && expression == "combine(left, right)"));
         assert!(!expressions
             .iter()
-            .any(|(_, expression)| expression.contains("combine_method")
-                || expression.contains("foreign")));
+            .any(|(_, expression)| expression.contains("combine_method")));
+        assert!(expressions.iter().any(|(family, expression)| {
+            family == "EXISTING_CALL" && expression == "crate::nested::foreign(left, right)"
+        }));
     }
 
     #[test]
@@ -2479,6 +2913,7 @@ mod tests {
             ],
             output: "i32".to_string(),
             has_receiver: false,
+            is_async: false,
         };
         let renamed_caller = CallableSignature {
             callable: "rewrite".to_string(),
@@ -2497,6 +2932,7 @@ mod tests {
             ],
             output: "i32".to_string(),
             has_receiver: false,
+            is_async: false,
         };
         let helper = CallableSignature {
             callable: "combine".to_string(),
@@ -2515,6 +2951,7 @@ mod tests {
             ],
             output: "i32".to_string(),
             has_receiver: false,
+            is_async: false,
         };
 
         let assignments = matching_argument_role_assignments(&caller.inputs, &helper.inputs);
@@ -2552,9 +2989,102 @@ mod tests {
 
         let mut foreign_helper = helper;
         foreign_helper.lexical_scope = "foreign".to_string();
+        foreign_helper.callable = "foreign::combine".to_string();
         assert_eq!(
             compile_call_role_operation(&caller, &foreign_helper, &operations[0]),
-            Err("CANONICAL_CALL_ROLE_SCOPE_MISMATCH".to_string())
+            Ok("crate::foreign::combine(observed, expected)".to_string())
+        );
+    }
+
+    #[test]
+    fn call_lowering_preserves_borrow_deref_crate_path_and_await() {
+        let caller = CallableSignature {
+            callable: "worker::run".to_string(),
+            short_name: "run".to_string(),
+            lexical_scope: "worker".to_string(),
+            impl_owner: None,
+            inputs: vec![TypedBinding {
+                name: "value".to_string(),
+                type_name: "i64".to_string(),
+            }],
+            output: "i64".to_string(),
+            has_receiver: false,
+            is_async: true,
+        };
+        let borrowed = CallableSignature {
+            callable: "helpers::borrowed".to_string(),
+            short_name: "borrowed".to_string(),
+            lexical_scope: "helpers".to_string(),
+            impl_owner: None,
+            inputs: vec![TypedBinding {
+                name: "input".to_string(),
+                type_name: "&i64".to_string(),
+            }],
+            output: "i64".to_string(),
+            has_receiver: false,
+            is_async: false,
+        };
+        let asynchronous = CallableSignature {
+            callable: "helpers::asynchronous".to_string(),
+            short_name: "asynchronous".to_string(),
+            lexical_scope: "helpers".to_string(),
+            impl_owner: None,
+            inputs: vec![TypedBinding {
+                name: "input".to_string(),
+                type_name: "i64".to_string(),
+            }],
+            output: "i64".to_string(),
+            has_receiver: false,
+            is_async: true,
+        };
+        let borrow_operation = call_role_operation(&borrowed, vec![0]);
+        assert_eq!(
+            compile_call_role_operation(&caller, &borrowed, &borrow_operation).unwrap(),
+            "crate::helpers::borrowed(&value)"
+        );
+        let async_operation = call_role_operation(&asynchronous, vec![0]);
+        assert_eq!(
+            compile_call_role_operation(&caller, &asynchronous, &async_operation).unwrap(),
+            "crate::helpers::asynchronous(value).await"
+        );
+
+        let referenced_caller = CallableSignature {
+            inputs: vec![TypedBinding {
+                name: "value_ref".to_string(),
+                type_name: "&i64".to_string(),
+            }],
+            is_async: false,
+            ..caller.clone()
+        };
+        let owned = CallableSignature {
+            callable: "worker::owned".to_string(),
+            short_name: "owned".to_string(),
+            lexical_scope: "worker".to_string(),
+            impl_owner: None,
+            inputs: vec![TypedBinding {
+                name: "input".to_string(),
+                type_name: "i64".to_string(),
+            }],
+            output: "i64".to_string(),
+            has_receiver: false,
+            is_async: false,
+        };
+        assert_eq!(
+            compile_call_role_operation(
+                &referenced_caller,
+                &owned,
+                &call_role_operation(&owned, vec![0])
+            )
+            .unwrap(),
+            "owned(*value_ref)"
+        );
+        let synchronous_caller = CallableSignature {
+            is_async: false,
+            ..caller
+        };
+        assert_eq!(
+            compile_call_role_operation(&synchronous_caller, &asynchronous, &async_operation),
+            Err("ASYNC_CALLEE_REQUIRES_ASYNC_CALLER".to_string())
         );
     }
 
@@ -2577,6 +3107,7 @@ mod tests {
             ],
             output: "(Phase,Phase)".to_string(),
             has_receiver: false,
+            is_async: false,
         };
         let renamed = CallableSignature {
             callable: "rotate".to_string(),
@@ -2595,6 +3126,7 @@ mod tests {
             ],
             output: "(Phase,Phase)".to_string(),
             has_receiver: false,
+            is_async: false,
         };
 
         let operations = symmetric_state_operations(&callable);
@@ -2638,6 +3170,7 @@ mod tests {
             ],
             output: "bool".to_string(),
             has_receiver: false,
+            is_async: false,
         };
         let widen = CallableSignature {
             callable: "widen".to_string(),
@@ -2650,6 +3183,7 @@ mod tests {
             }],
             output: "i64".to_string(),
             has_receiver: false,
+            is_async: false,
         };
         let compare = CallableSignature {
             callable: "compare".to_string(),
@@ -2668,6 +3202,7 @@ mod tests {
             ],
             output: "bool".to_string(),
             has_receiver: false,
+            is_async: false,
         };
 
         let expressions = compose_expressions(&current, &[current.clone(), widen, compare]);
@@ -2693,6 +3228,7 @@ mod tests {
             }],
             output: "i32".to_string(),
             has_receiver: true,
+            is_async: false,
         };
         let same_owner = CallableSignature {
             callable: "Accumulator::normalize".to_string(),
@@ -2702,6 +3238,7 @@ mod tests {
             inputs: caller.inputs.clone(),
             output: "i32".to_string(),
             has_receiver: false,
+            is_async: false,
         };
         let other_owner = CallableSignature {
             callable: "Other::normalize".to_string(),
@@ -2711,6 +3248,7 @@ mod tests {
             inputs: caller.inputs.clone(),
             output: "i32".to_string(),
             has_receiver: false,
+            is_async: false,
         };
 
         let expressions = compose_expressions(&caller, &[same_owner, other_owner]);

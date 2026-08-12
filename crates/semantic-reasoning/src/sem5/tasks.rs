@@ -511,6 +511,21 @@ fn evaluate_relation(
 ) -> Result<Value, String> {
     match relation {
         RelationSpec::Scalar { expression } => eval_scalar(expression, &inputs, apis),
+        RelationSpec::Mechanism {
+            condition,
+            postimage,
+            otherwise,
+        } => match (condition, otherwise) {
+            (Some(condition), Some(otherwise)) => {
+                if expect_bool_owned(eval_scalar(condition, &inputs, apis)?)? {
+                    eval_scalar(postimage, &inputs, apis)
+                } else {
+                    eval_scalar(otherwise, &inputs, apis)
+                }
+            }
+            (None, None) => eval_scalar(postimage, &inputs, apis),
+            _ => Err("MECHANISM_CONDITION_POSTIMAGE_SHAPE".to_string()),
+        },
         RelationSpec::Collection {
             expression,
             include_when,

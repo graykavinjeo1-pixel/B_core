@@ -848,6 +848,7 @@ fn scalar_to_rust(expression: &ScalarExpression, args: &[Value]) -> Result<Strin
             value_to_rust(args.get(*index).ok_or("MISSING_ARGUMENT")?)
         }
         ScalarExpression::Constant { value } => format!("{value}i64"),
+        ScalarExpression::BoolConstant { value } => value.to_string(),
         ScalarExpression::Unary { operator, input } => format!(
             "({}{})",
             match operator {

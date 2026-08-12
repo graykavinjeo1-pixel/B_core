@@ -204,6 +204,9 @@ pub enum ScalarExpression {
     Constant {
         value: i64,
     },
+    BoolConstant {
+        value: bool,
+    },
     Unary {
         operator: UnaryOperator,
         input: Box<ScalarExpression>,
@@ -238,6 +241,15 @@ pub struct ApiDefinition {
 pub enum RelationSpec {
     Scalar {
         expression: ScalarExpression,
+    },
+    /// A name-independent typed mechanism lowered from concrete source
+    /// operands.  The condition and both postimages remain explicit so the
+    /// generated syntax can be falsified without selecting a task-specific
+    /// answer template.
+    Mechanism {
+        condition: Option<ScalarExpression>,
+        postimage: ScalarExpression,
+        otherwise: Option<ScalarExpression>,
     },
     Collection {
         expression: ScalarExpression,
