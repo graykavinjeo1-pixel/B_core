@@ -155,7 +155,7 @@ impl NodeModulation {
         let desire = dot(&self.desire_relevance, &state.desires);
         let goal = dot(&self.goal_relevance, &state.goals);
         0.30f32
-            .mul_add(goal, 1.0 + 0.25 * emotion + 0.20 * desire)
+            .mul_add(goal, 0.25f32.mul_add(emotion, 1.0) + 0.20 * desire)
             .clamp(0.25, 2.0)
     }
 
