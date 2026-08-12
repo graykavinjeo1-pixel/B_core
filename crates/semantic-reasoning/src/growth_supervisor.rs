@@ -2534,7 +2534,7 @@ fn recover_verification_only_generation_tip(
         invalid_memory_sha256,
         invalid_lesson_id: invalid_lesson.lesson_id.clone(),
         restored_generation: restored_memory.generation,
-        restored_memory_sha256: restored_memory_sha256.clone(),
+        restored_memory_sha256,
         reason: "VERIFICATION_RECEIPT_WITHOUT_GROWTH_SUBJECT_WAS_FALSELY_PROMOTED".to_string(),
         recovered_at_ms: now_ms(),
     };
@@ -5842,7 +5842,7 @@ fn validate_blocked_core_cohort(
         };
         let receipt = CoreCohortValidationReceipt {
             schema: "B_CORE_COHORT_VALIDATION_1".to_string(),
-            validation_id: validation_id.clone(),
+            validation_id,
             originating_diagnostic_id: diagnostic.diagnostic_id.clone(),
             generation: diagnostic.generation,
             source_root_sha256: sha256(
@@ -5901,7 +5901,7 @@ fn validate_blocked_core_cohort(
             source_fingerprint_before == source_fingerprint_after;
         let receipt = CoreCohortValidationReceipt {
             schema: "B_CORE_COHORT_VALIDATION_1".to_string(),
-            validation_id: validation_id.clone(),
+            validation_id,
             originating_diagnostic_id: diagnostic.diagnostic_id.clone(),
             generation: diagnostic.generation,
             source_root_sha256: sha256(
@@ -6028,7 +6028,7 @@ fn validate_blocked_repository_cohort(
         let scope_stable_during_validation = scope_fingerprint_before == scope_fingerprint_after;
         let receipt = RepositoryCohortValidationReceipt {
             schema: "B_REPOSITORY_COHORT_VALIDATION_1".to_string(),
-            validation_id: validation_id.clone(),
+            validation_id,
             originating_diagnostic_id: diagnostic.diagnostic_id.clone(),
             generation: diagnostic.generation,
             root_index: plan.root_index,
@@ -7352,7 +7352,7 @@ fn step_without_lease(
         memory.generative.legacy_uncalibrated_prediction_error_total;
     let evaluator_memory_sha256 = json_sha256(&memory.evaluator)?;
     if state.current_evaluator_memory_sha256.is_empty() {
-        state.current_evaluator_memory_sha256 = evaluator_memory_sha256.clone();
+        state.current_evaluator_memory_sha256 = evaluator_memory_sha256;
         state.evaluator_generation = memory.evaluator.generation;
         state.evaluator_challenge_cases = memory.evaluator.challenge_suite.len() as u64;
     } else if state.current_evaluator_memory_sha256 != evaluator_memory_sha256
