@@ -730,7 +730,7 @@ fn bottleneck_confidence(
     let separation = times[index].saturating_sub(sorted.get(1).copied().unwrap_or(0)) as f64
         / times[index].max(1) as f64;
     let causal = f64::from(experiment.observed_reduction_ppm) / 1_000_000.0;
-    (0.35 + separation.max(0.0) * 0.30 + causal * 0.70).min(1.0)
+    (separation.max(0.0).mul_add(0.30, 0.35) + causal * 0.70).min(1.0)
 }
 
 fn synthesize_repair(

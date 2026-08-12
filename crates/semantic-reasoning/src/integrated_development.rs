@@ -280,7 +280,7 @@ pub fn compose_existing_sem5_capability(
         unified_diff_sha256: sha256(actual_diff.as_bytes()),
         repair_spec_sha256: repair_spec.sha256.clone(),
         consequence_predictions: vec![
-            work.opportunity.desired_behavior.clone(),
+            work.opportunity.desired_behavior,
             "typed effect constraints remain enforced by ProgramIR".to_string(),
             "installation remains blocked until independent verification".to_string(),
         ],
@@ -658,7 +658,7 @@ pub fn install_composite_candidate_family(
         predecessor_sha256,
         candidate_source,
         candidate_sha256,
-        transformation: transformation.clone(),
+        transformation,
         consequence_predictions: consequences,
         predicted_value: policy.minimum_predicted_value.clamp(85, 100),
         source_generation,
