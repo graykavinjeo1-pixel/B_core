@@ -4879,6 +4879,12 @@ fn core_validation_plan(
     })
 }
 
+fn targeted_test_filter_executed(diagnostic_tail: &str) -> bool {
+    !diagnostic_tail
+        .lines()
+        .any(|line| line.trim().starts_with("running 0 tests"))
+}
+
 fn validate_blocked_core_cohort(
     config: &GrowthSupervisorConfig,
     diagnostic: &AutonomousSelfInspectionReceipt,
@@ -4942,8 +4948,7 @@ fn validate_blocked_core_cohort(
         let _ = fs::remove_file(&log_path);
         let command = command?;
         let targeted_tests_executed = validation_plan.targeted_test_filter.is_none()
-            || (!command.diagnostic_tail.contains("running 0 tests")
-                && !command.diagnostic_tail.contains("0 passed; 0 failed"));
+            || targeted_test_filter_executed(&command.diagnostic_tail);
         let source_fingerprint_after =
             full_workspace_semantic_fingerprint(&config.source_mutation.source_root)?;
         let workspace_stable_during_validation =
@@ -6495,6 +6500,16 @@ mod tests {
         assert!(canary.targeted_test_filter.is_none());
         assert!(canary.full_regression_canary);
         fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn targeted_validation_does_not_misread_fifty_passes_as_zero_tests() {
+        assert!(targeted_test_filter_executed(
+            "\nrunning 50 tests\n..................................................\ntest result: ok. 50 passed; 0 failed; 0 ignored; 0 measured\n"
+        ));
+        assert!(!targeted_test_filter_executed(
+            "\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured\n"
+        ));
     }
 
     #[test]
