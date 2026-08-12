@@ -27,7 +27,8 @@ use crate::sem5::model::{
 };
 use crate::sem5::typed_mechanism::{
     synthesize_typed_mechanism_goal_with_priors, typed_mechanism_improvement_operator_from_receipt,
-    SourceOperandIR, TypedMechanismImprovementOperatorIR, TypedMechanismObservationIR,
+    validate_typed_mechanism_synthesis_receipt, SourceOperandIR,
+    TypedMechanismImprovementOperatorIR, TypedMechanismObservationIR,
     TypedMechanismSynthesisGoalIR, TypedMechanismSynthesisReceiptIR, TypedSyntaxExpressionIR,
     TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA,
 };
@@ -2086,6 +2087,9 @@ pub fn validate_source_bound_causal_receipt(
         ));
     }
     for alternative in &receipt.alternatives {
+        validate_typed_mechanism_synthesis_receipt(&alternative.synthesis).map_err(|error| {
+            CausalFrontendFailure::conflict(format!("SOURCE_BOUND_RECEIPT_OWNER_SYNTHESIS:{error}"))
+        })?;
         let expected_owner = materialize_python_synthesis(
             source,
             &alternative.function_template,
@@ -2097,6 +2101,12 @@ pub fn validate_source_bound_causal_receipt(
             ));
         }
         for candidate in &alternative.closure_candidates {
+            validate_typed_mechanism_synthesis_receipt(&candidate.synthesis).map_err(|error| {
+                CausalFrontendFailure::conflict(format!(
+                    "SOURCE_BOUND_RECEIPT_CLOSURE_SYNTHESIS:{}:{error}",
+                    candidate.closure_ordinal
+                ))
+            })?;
             let expected_candidate = materialize_python_synthesis(
                 source,
                 &candidate.function_template,
@@ -3352,7 +3362,9 @@ def transformer_visitor(value: int, baseline: int) -> int:
         forged_synthesis.receipt_sha256 = source_bound_receipt_hash(&forged_synthesis).unwrap();
         assert_eq!(
             validate_source_bound_causal_receipt(&forged_synthesis, source).unwrap_err(),
-            CausalFrontendFailure::conflict("SOURCE_BOUND_RECEIPT_OWNER_MATERIALIZATION")
+            CausalFrontendFailure::conflict(
+                "SOURCE_BOUND_RECEIPT_OWNER_SYNTHESIS:TYPED_MECHANISM_COUNTEREXAMPLE:0"
+            )
         );
         let alternative = &receipt.alternatives[0];
         assert_eq!(alternative.function_template.owner, "Rational");
