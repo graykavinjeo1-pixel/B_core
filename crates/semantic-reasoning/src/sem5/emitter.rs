@@ -177,6 +177,7 @@ fn callable_input_initializer(name: &str, value_type: &ProgramType) -> String {
     let expected = match value_type {
         ProgramType::Int => "Some(Value::Int(value)) => *value".to_string(),
         ProgramType::Bool => "Some(Value::Bool(value)) => *value".to_string(),
+        ProgramType::String => "Some(Value::String(value)) => value.clone()".to_string(),
         ProgramType::SequenceInt => {
             "Some(Value::Sequence(value)) => value.clone()".to_string()
         }
@@ -197,6 +198,7 @@ fn callable_output(output_type: &ProgramType) -> String {
     let expression = match output_type {
         ProgramType::Int => "Value::Int(sem5_result)",
         ProgramType::Bool => "Value::Bool(sem5_result)",
+        ProgramType::String => "Value::String(sem5_result)",
         ProgramType::SequenceInt => "Value::Sequence(sem5_result)",
         ProgramType::NestedSequenceInt => "Value::NestedSequence(sem5_result)",
         ProgramType::Bytes => "Value::Bytes(sem5_result)",
@@ -432,6 +434,9 @@ fn compound_assignment(
     if !lint_clean {
         return Ok(None);
     }
+    if value.meta.output_type == ProgramType::String {
+        return Ok(None);
+    }
     let NodeKind::BinaryOp {
         operator,
         left,
@@ -502,12 +507,21 @@ fn emit_expression_mode(node: &ProgramNode, lint_clean: bool) -> Result<String, 
                     _ => {}
                 }
             }
-            Ok(format!(
-                "({} {} {})",
-                emit_expression_mode(left, lint_clean)?,
-                binary_token(*operator),
-                emit_expression_mode(right, lint_clean)?
-            ))
+            let left_source = emit_expression_mode(left, lint_clean)?;
+            let right_source = emit_expression_mode(right, lint_clean)?;
+            if *operator == BinaryOperator::Add
+                && left.meta.output_type == ProgramType::String
+                && right.meta.output_type == ProgramType::String
+            {
+                Ok(format!(
+                    "format!(\"{{}}{{}}\", {left_source}, {right_source})"
+                ))
+            } else {
+                Ok(format!(
+                    "({left_source} {} {right_source})",
+                    binary_token(*operator)
+                ))
+            }
         }
         NodeKind::SequenceCreate { elements } => Ok(format!(
             "vec![{}]",
@@ -519,6 +533,12 @@ fn emit_expression_mode(node: &ProgramNode, lint_clean: bool) -> Result<String, 
         )),
         NodeKind::SequenceRead { sequence, index } => {
             let sequence_source = emit_postfix_receiver(sequence, lint_clean)?;
+            if sequence.meta.output_type == ProgramType::String {
+                return Ok(format!(
+                    "{sequence_source}.chars().nth({} as usize).expect(\"typed string index\").to_string()",
+                    emit_expression_mode(index, lint_clean)?
+                ));
+            }
             let access = if sequence.meta.output_type == ProgramType::Image {
                 format!(
                     "{}.pixels[{} as usize]",
@@ -544,6 +564,8 @@ fn emit_expression_mode(node: &ProgramNode, lint_clean: bool) -> Result<String, 
             let source = emit_postfix_receiver(sequence, lint_clean)?;
             if sequence.meta.output_type == ProgramType::Image {
                 Ok(format!("{source}.pixels.len() as i64"))
+            } else if sequence.meta.output_type == ProgramType::String {
+                Ok(format!("{source}.chars().count() as i64"))
             } else {
                 Ok(format!("{source}.len() as i64"))
             }
@@ -646,6 +668,7 @@ fn rust_type(value_type: &ProgramType) -> &'static str {
     match value_type {
         ProgramType::Int => "i64",
         ProgramType::Bool => "bool",
+        ProgramType::String => "String",
         ProgramType::SequenceInt => "Vec<i64>",
         ProgramType::NestedSequenceInt => "Vec<Vec<i64>>",
         ProgramType::Bytes => "Vec<u8>",
@@ -658,6 +681,7 @@ fn rust_literal(value: &Value) -> Result<String, String> {
     match value {
         Value::Int(value) => Ok(format!("{value}i64")),
         Value::Bool(value) => Ok(value.to_string()),
+        Value::String(value) => Ok(format!("{value:?}.to_string()")),
         Value::Sequence(values) => Ok(format!(
             "vec![{}]",
             values
@@ -706,7 +730,7 @@ fn rust_literal(value: &Value) -> Result<String, String> {
 
 fn format_output(output_type: &ProgramType) -> String {
     match output_type {
-        ProgramType::Int | ProgramType::Bool => {
+        ProgramType::Int | ProgramType::Bool | ProgramType::String => {
             "    println!(\"{}\", sem5_result);\n".to_string()
         }
         ProgramType::SequenceInt | ProgramType::Bytes => {
@@ -724,6 +748,7 @@ pub fn render_value(value: &Value) -> String {
     match value {
         Value::Int(value) => value.to_string(),
         Value::Bool(value) => value.to_string(),
+        Value::String(value) => value.clone(),
         Value::Sequence(values) => format!("{values:?}"),
         Value::NestedSequence(values) => format!("{values:?}"),
         Value::Bytes(values) => format!("{values:?}"),

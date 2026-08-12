@@ -918,6 +918,12 @@ impl NodeBuilder {
                     | BinaryOperator::GreaterThan
                     | BinaryOperator::And
                     | BinaryOperator::Or => ProgramType::Bool,
+                    BinaryOperator::Add
+                        if left.meta.output_type == ProgramType::String
+                            && right.meta.output_type == ProgramType::String =>
+                    {
+                        ProgramType::String
+                    }
                     _ => ProgramType::Int,
                 };
                 Ok(self.node(
@@ -948,6 +954,7 @@ impl NodeBuilder {
                         ProgramType::Int
                     }
                     ProgramType::NestedSequenceInt => ProgramType::SequenceInt,
+                    ProgramType::String => ProgramType::String,
                     _ => return Err("LOWERING_INDEX_SOURCE_TYPE".to_string()),
                 };
                 Ok(self.node(

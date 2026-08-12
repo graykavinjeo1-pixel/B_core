@@ -7,6 +7,7 @@ use serde::{Deserialize, Serialize};
 pub enum ProgramType {
     Int,
     Bool,
+    String,
     SequenceInt,
     NestedSequenceInt,
     Bytes,
@@ -33,6 +34,7 @@ pub enum Effect {
 pub enum Value {
     Int(i64),
     Bool(bool),
+    String(String),
     Sequence(Vec<i64>),
     NestedSequence(Vec<Vec<i64>>),
     Bytes(Vec<u8>),
@@ -45,6 +47,7 @@ impl Value {
         match self {
             Self::Int(_) => ProgramType::Int,
             Self::Bool(_) => ProgramType::Bool,
+            Self::String(_) => ProgramType::String,
             Self::Sequence(_) => ProgramType::SequenceInt,
             Self::NestedSequence(_) => ProgramType::NestedSequenceInt,
             Self::Bytes(_) => ProgramType::Bytes,

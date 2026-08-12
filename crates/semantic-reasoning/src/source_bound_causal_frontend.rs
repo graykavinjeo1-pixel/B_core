@@ -807,6 +807,7 @@ def resolve(call):
 def literal(node):
     if isinstance(node, ast.Constant) and isinstance(node.value, bool): return node.value
     if isinstance(node, ast.Constant) and isinstance(node.value, int): return node.value
+    if isinstance(node, ast.Constant) and isinstance(node.value, str): return node.value
     if isinstance(node, ast.Constant) and isinstance(node.value, bytes): return node.value
     if isinstance(node, ast.List):
         values = [literal(element) for element in node.elts]
@@ -819,6 +820,7 @@ def literal(node):
 def encoded(value):
     if isinstance(value, bool): return {"value_kind": "BOOL", "value": value}
     if isinstance(value, int): return {"value_kind": "INT", "value": value}
+    if isinstance(value, str): return {"value_kind": "STRING", "value": value}
     if isinstance(value, bytes): return {"value_kind": "BYTES", "value": list(value)}
     if isinstance(value, list):
         if all(isinstance(item, int) and not isinstance(item, bool) for item in value):
@@ -875,7 +877,7 @@ for test in tests:
 
 UNKNOWN = object()
 def safe_eval(node, environment):
-    if isinstance(node, ast.Constant) and isinstance(node.value, (bool, int, bytes)): return node.value
+    if isinstance(node, ast.Constant) and isinstance(node.value, (bool, int, str, bytes)): return node.value
     if isinstance(node, ast.List):
         values = [safe_eval(element, environment) for element in node.elts]
         return values if all(value is not UNKNOWN for value in values) else UNKNOWN
@@ -995,6 +997,7 @@ fn map_normalized_python_type(annotation: &str) -> Option<ProgramType> {
     match annotation {
         "int" | "builtins.int" => Some(ProgramType::Int),
         "bool" | "builtins.bool" => Some(ProgramType::Bool),
+        "str" | "builtins.str" => Some(ProgramType::String),
         "bytes" | "builtins.bytes" => Some(ProgramType::Bytes),
         "None" | "NoneType" => Some(ProgramType::Unit),
         _ => None,
@@ -2627,6 +2630,100 @@ def row_at(values: list[list[int]], position: int) -> list[int]:
         assert_eq!(
             by_symbol["row_at"].function_template.output_type,
             ProgramType::SequenceInt
+        );
+    }
+
+    #[test]
+    fn repository_strings_reach_language_neutral_concat_length_and_unicode_index() {
+        let Some(python_executable) = python() else {
+            return;
+        };
+        let source = r#"def combine(left: str, right: str) -> str:
+    return right + left
+
+def width(value: str) -> int:
+    return 0
+
+def first(value: str) -> str:
+    return ""
+"#;
+        let tests = r#"def test_strings():
+    assert combine("ab", "cd") == "abcd"
+    assert combine("x", "yz") == "xyz"
+    assert width("hello") == 5
+    assert width("한글") == 2
+    assert first("alpha") == "a"
+    assert first("βeta") == "β"
+"#;
+        let receipt =
+            discover_and_synthesize_python_repository(&SourceBoundRepositoryDiscoveryRequestIR {
+                schema: SOURCE_BOUND_REPOSITORY_DISCOVERY_SCHEMA.to_string(),
+                source_relative_path: PathBuf::from("strings.py"),
+                source: source.to_string(),
+                test_sources: vec![RepositoryTestSourceIR {
+                    relative_path: PathBuf::from("tests/test_strings.py"),
+                    source: tests.to_string(),
+                }],
+                python_executable: python_executable.clone(),
+                target_symbols: ["combine", "width", "first"]
+                    .into_iter()
+                    .map(str::to_string)
+                    .collect(),
+                allowed_effects: vec![Effect::Pure],
+                max_expression_depth: 2,
+                max_candidates: 1_024,
+            })
+            .unwrap();
+        let by_symbol = receipt
+            .alternatives
+            .iter()
+            .map(|alternative| (alternative.requested_public_symbol.as_str(), alternative))
+            .collect::<BTreeMap<_, _>>();
+        assert_eq!(
+            by_symbol["combine"].function_template.output_type,
+            ProgramType::String
+        );
+        assert!(matches!(
+            by_symbol["combine"].synthesis.winning_goal.postimage,
+            TypedSyntaxExpressionIR::Binary {
+                operator: BinaryOperator::Add,
+                ..
+            }
+        ));
+        assert!(matches!(
+            by_symbol["width"].synthesis.winning_goal.postimage,
+            TypedSyntaxExpressionIR::Length { .. }
+        ));
+        assert!(matches!(
+            by_symbol["first"].synthesis.winning_goal.postimage,
+            TypedSyntaxExpressionIR::Index { .. }
+        ));
+        assert!(
+            replay_source_bound_patch(source, &by_symbol["combine"].replayable_patch)
+                .unwrap()
+                .contains("(left) + (right)")
+        );
+        assert!(
+            replay_source_bound_patch(source, &by_symbol["width"].replayable_patch)
+                .unwrap()
+                .contains("len((value))")
+        );
+        assert!(
+            replay_source_bound_patch(source, &by_symbol["first"].replayable_patch)
+                .unwrap()
+                .contains("[0]")
+        );
+        let combined =
+            replay_source_bound_patch(source, &receipt.patch_variants[0].replayable_patch).unwrap();
+        let execution = Command::new(python_executable)
+            .args(["-X", "utf8", "-c"])
+            .arg(format!("{combined}\n{tests}\ntest_strings()\n"))
+            .output()
+            .unwrap();
+        assert!(
+            execution.status.success(),
+            "{}",
+            String::from_utf8_lossy(&execution.stderr)
         );
     }
 

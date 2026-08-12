@@ -749,6 +749,10 @@ fn eval_binary(operator: BinaryOperator, left: Value, right: Value) -> Result<Va
     use BinaryOperator as Op;
     match (operator, left, right) {
         (Op::Add, Value::Int(a), Value::Int(b)) => Ok(Value::Int(a.saturating_add(b))),
+        (Op::Add, Value::String(mut a), Value::String(b)) => {
+            a.push_str(&b);
+            Ok(Value::String(a))
+        }
         (Op::Subtract, Value::Int(a), Value::Int(b)) => Ok(Value::Int(a.saturating_sub(b))),
         (Op::Multiply, Value::Int(a), Value::Int(b)) => Ok(Value::Int(a.saturating_mul(b))),
         (Op::Divide, Value::Int(_), Value::Int(0)) => Err("DIVISION_BY_ZERO".to_string()),
@@ -757,6 +761,7 @@ fn eval_binary(operator: BinaryOperator, left: Value, right: Value) -> Result<Va
         (Op::Modulo, Value::Int(a), Value::Int(b)) => Ok(Value::Int(a % b)),
         (Op::Equal, Value::Int(a), Value::Int(b)) => Ok(Value::Bool(a == b)),
         (Op::Equal, Value::Bool(a), Value::Bool(b)) => Ok(Value::Bool(a == b)),
+        (Op::Equal, Value::String(a), Value::String(b)) => Ok(Value::Bool(a == b)),
         (Op::LessThan, Value::Int(a), Value::Int(b)) => Ok(Value::Bool(a < b)),
         (Op::GreaterThan, Value::Int(a), Value::Int(b)) => Ok(Value::Bool(a > b)),
         (Op::And, Value::Bool(a), Value::Bool(b)) => Ok(Value::Bool(a && b)),
@@ -809,6 +814,11 @@ fn read_index(value: Value, index: usize) -> Result<Value, String> {
             .copied()
             .map(|value| Value::Int(i64::from(value)))
             .ok_or_else(|| "INDEX_OUT_OF_BOUNDS".to_string()),
+        Value::String(value) => value
+            .chars()
+            .nth(index)
+            .map(|character| Value::String(character.to_string()))
+            .ok_or_else(|| "INDEX_OUT_OF_BOUNDS".to_string()),
         Value::Image(image) => image
             .pixels
             .get(index)
@@ -824,6 +834,7 @@ fn sequence_length(value: &Value) -> Result<i64, String> {
         Value::Sequence(values) => values.len(),
         Value::NestedSequence(values) => values.len(),
         Value::Bytes(values) => values.len(),
+        Value::String(value) => value.chars().count(),
         Value::Image(image) => image.pixels.len(),
         _ => return Err("SEQUENCE_LENGTH_SOURCE_TYPE".to_string()),
     };
@@ -866,6 +877,10 @@ fn iterable_values(value: Value) -> Result<Vec<Value>, String> {
         Value::Bytes(values) => Ok(values
             .into_iter()
             .map(|value| Value::Int(i64::from(value)))
+            .collect()),
+        Value::String(value) => Ok(value
+            .chars()
+            .map(|character| Value::String(character.to_string()))
             .collect()),
         Value::Image(image) => Ok(image.pixels.into_iter().map(Value::Int).collect()),
         _ => Err("NOT_ITERABLE".to_string()),

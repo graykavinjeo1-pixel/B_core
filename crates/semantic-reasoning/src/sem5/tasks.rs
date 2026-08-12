@@ -443,6 +443,9 @@ fn hidden_case(
             let value = match binding.value_type {
                 ProgramType::Int => Value::Int(rng.range(-20, 21)),
                 ProgramType::Bool => Value::Bool(rng.next_u64().is_multiple_of(2)),
+                ProgramType::String => {
+                    Value::String(format!("s{}_{}", case_index, rng.range(0, 10_000)))
+                }
                 ProgramType::SequenceInt => Value::Sequence(
                     (0..(3 + case_index % 5))
                         .map(|_| rng.range(-12, 13))

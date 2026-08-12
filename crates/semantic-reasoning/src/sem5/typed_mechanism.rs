@@ -1251,7 +1251,10 @@ pub fn synthesize_typed_mechanism_goal_with_priors(
         for collection in prior.iter().filter(|candidate| {
             matches!(
                 candidate.value_type,
-                ProgramType::SequenceInt | ProgramType::NestedSequenceInt | ProgramType::Bytes
+                ProgramType::String
+                    | ProgramType::SequenceInt
+                    | ProgramType::NestedSequenceInt
+                    | ProgramType::Bytes
             )
         }) {
             if expressions.len() >= max_candidates {
@@ -1726,11 +1729,16 @@ fn infer_expression_type(
                     ProgramType::Int,
                     ProgramType::Int,
                 ) => Ok(ProgramType::Int),
+                (Op::Add, ProgramType::String, ProgramType::String) => Ok(ProgramType::String),
                 (Op::LessThan | Op::GreaterThan, ProgramType::Int, ProgramType::Int) => {
                     Ok(ProgramType::Bool)
                 }
                 (Op::Equal, left, right)
-                    if left == right && matches!(left, ProgramType::Int | ProgramType::Bool) =>
+                    if left == right
+                        && matches!(
+                            left,
+                            ProgramType::Int | ProgramType::Bool | ProgramType::String
+                        ) =>
                 {
                     Ok(ProgramType::Bool)
                 }
@@ -1742,7 +1750,10 @@ fn infer_expression_type(
             let input_type = infer_expression_type(input, operands, definitions, effects)?;
             if matches!(
                 input_type,
-                ProgramType::SequenceInt | ProgramType::NestedSequenceInt | ProgramType::Bytes
+                ProgramType::String
+                    | ProgramType::SequenceInt
+                    | ProgramType::NestedSequenceInt
+                    | ProgramType::Bytes
             ) {
                 Ok(ProgramType::Int)
             } else {
@@ -1759,6 +1770,7 @@ fn infer_expression_type(
             match collection_type {
                 ProgramType::SequenceInt | ProgramType::Bytes => Ok(ProgramType::Int),
                 ProgramType::NestedSequenceInt => Ok(ProgramType::SequenceInt),
+                ProgramType::String => Ok(ProgramType::String),
                 _ => Err("TYPED_MECHANISM_INDEX_SOURCE_TYPE".to_string()),
             }
         }
@@ -1809,16 +1821,36 @@ fn emit_expression(
             operator,
             left,
             right,
-        } => Ok(format!(
-            "({} {} {})",
-            emit_expression(left, sources, operands, definitions)?,
-            binary_token(*operator),
-            emit_expression(right, sources, operands, definitions)?
-        )),
-        TypedSyntaxExpressionIR::Length { input } => Ok(format!(
-            "{}.len() as i64",
-            emit_postfix_receiver(input, sources, operands, definitions)?
-        )),
+        } => {
+            let left_expression = emit_expression(left, sources, operands, definitions)?;
+            let right_expression = emit_expression(right, sources, operands, definitions)?;
+            let mut effects = BTreeSet::new();
+            let left_type = infer_expression_type(left, operands, definitions, &mut effects)?;
+            let right_type = infer_expression_type(right, operands, definitions, &mut effects)?;
+            if *operator == BinaryOperator::Add
+                && left_type == ProgramType::String
+                && right_type == ProgramType::String
+            {
+                Ok(format!(
+                    "format!(\"{{}}{{}}\", {left_expression}, {right_expression})"
+                ))
+            } else {
+                Ok(format!(
+                    "({left_expression} {} {right_expression})",
+                    binary_token(*operator)
+                ))
+            }
+        }
+        TypedSyntaxExpressionIR::Length { input } => {
+            let mut effects = BTreeSet::new();
+            let input_type = infer_expression_type(input, operands, definitions, &mut effects)?;
+            let receiver = emit_postfix_receiver(input, sources, operands, definitions)?;
+            if input_type == ProgramType::String {
+                Ok(format!("{receiver}.chars().count() as i64"))
+            } else {
+                Ok(format!("{receiver}.len() as i64"))
+            }
+        }
         TypedSyntaxExpressionIR::Index { collection, index } => {
             let mut effects = BTreeSet::new();
             let collection_type =
@@ -1832,6 +1864,11 @@ fn emit_expression(
                 ProgramType::SequenceInt => Ok(access),
                 ProgramType::NestedSequenceInt => Ok(format!("{access}.clone()")),
                 ProgramType::Bytes => Ok(format!("i64::from({access})")),
+                ProgramType::String => Ok(format!(
+                    "{}.chars().nth({} as usize).expect(\"typed string index\").to_string()",
+                    emit_postfix_receiver(collection, sources, operands, definitions)?,
+                    emit_expression(index, sources, operands, definitions)?
+                )),
                 _ => Err("TYPED_MECHANISM_INDEX_SOURCE_TYPE".to_string()),
             }
         }
@@ -1987,6 +2024,7 @@ fn rust_type(value_type: &ProgramType) -> &'static str {
     match value_type {
         ProgramType::Int => "i64",
         ProgramType::Bool => "bool",
+        ProgramType::String => "String",
         ProgramType::SequenceInt => "Vec<i64>",
         ProgramType::NestedSequenceInt => "Vec<Vec<i64>>",
         ProgramType::Bytes => "Vec<u8>",
@@ -2011,6 +2049,206 @@ mod tests {
         TypedSyntaxExpressionIR::Operand {
             role: name.to_string(),
         }
+    }
+
+    fn assert_rust_source_compiles_and_runs(goal_id: &str, source: String) {
+        let workspace = std::env::temp_dir().join(format!(
+            "b-core-string-template-{}-{}",
+            std::process::id(),
+            goal_id
+        ));
+        if workspace.exists() {
+            std::fs::remove_dir_all(&workspace).unwrap();
+        }
+        std::fs::create_dir(&workspace).unwrap();
+        let source_path = workspace.join("program.rs");
+        let executable = workspace.join(if cfg!(windows) {
+            "program.exe"
+        } else {
+            "program"
+        });
+        std::fs::write(&source_path, source).unwrap();
+        let compile = std::process::Command::new("rustc")
+            .current_dir(&workspace)
+            .args(["--edition=2021", "-C", "opt-level=0", "-C", "debuginfo=0"])
+            .arg(&source_path)
+            .arg("-o")
+            .arg(&executable)
+            .output()
+            .unwrap();
+        let runtime = compile
+            .status
+            .success()
+            .then(|| std::process::Command::new(&executable).output().unwrap());
+        let compile_stderr = String::from_utf8_lossy(&compile.stderr).into_owned();
+        let compiled = compile.status.success();
+        let runtime_valid = runtime
+            .as_ref()
+            .is_some_and(|output| output.status.success());
+        std::fs::remove_dir_all(&workspace).unwrap();
+        assert!(
+            compiled && runtime_valid && !workspace.exists(),
+            "compile={compiled} runtime={runtime_valid} cleanup={} stderr={compile_stderr}",
+            !workspace.exists()
+        );
+    }
+
+    fn assert_template_compiles_and_runs(template: &ConcreteSyntaxTemplateIR, invocation: &str) {
+        let source = format!(
+            "{}\nfn main() {{ let _value = __b_core_typed_mechanism({invocation}); }}\n",
+            template.canonical_compilable_source
+        );
+        assert_rust_source_compiles_and_runs(&template.goal_id, source);
+    }
+
+    #[test]
+    fn string_ir_compiles_for_concat_unicode_length_and_unicode_index() {
+        let cases = [
+            (
+                "string_concat",
+                vec![
+                    operand("left", "left", ProgramType::String),
+                    operand("right", "right", ProgramType::String),
+                ],
+                ProgramType::String,
+                TypedSyntaxExpressionIR::Binary {
+                    operator: BinaryOperator::Add,
+                    left: Box::new(role("left")),
+                    right: Box::new(role("right")),
+                },
+                BTreeMap::from([
+                    ("left".to_string(), Value::String("한".to_string())),
+                    ("right".to_string(), Value::String("글".to_string())),
+                ]),
+                Value::String("한글".to_string()),
+                "\"한\".to_string(), \"글\".to_string()",
+            ),
+            (
+                "string_unicode_length",
+                vec![operand("value", "value", ProgramType::String)],
+                ProgramType::Int,
+                TypedSyntaxExpressionIR::Length {
+                    input: Box::new(role("value")),
+                },
+                BTreeMap::from([("value".to_string(), Value::String("한글".to_string()))]),
+                Value::Int(2),
+                "\"한글\".to_string()",
+            ),
+            (
+                "string_unicode_index",
+                vec![
+                    operand("value", "value", ProgramType::String),
+                    operand("position", "position", ProgramType::Int),
+                ],
+                ProgramType::String,
+                TypedSyntaxExpressionIR::Index {
+                    collection: Box::new(role("value")),
+                    index: Box::new(role("position")),
+                },
+                BTreeMap::from([
+                    ("value".to_string(), Value::String("한글".to_string())),
+                    ("position".to_string(), Value::Int(1)),
+                ]),
+                Value::String("글".to_string()),
+                "\"한글\".to_string(), 1i64",
+            ),
+        ];
+        for (goal_id, operands, output_type, postimage, values, expected, invocation) in cases {
+            let goal = TypedMechanismGoalIR {
+                schema: TYPED_MECHANISM_GOAL_SCHEMA.to_string(),
+                goal_id: goal_id.to_string(),
+                split: DataSplit::FreshBlind,
+                operands,
+                output_type,
+                condition: None,
+                postimage,
+                otherwise: None,
+                definitions: Vec::new(),
+                allowed_effects: vec![Effect::Pure],
+                preconditions: Vec::new(),
+                postconditions: Vec::new(),
+                invariants: Vec::new(),
+                public_observations: vec![TypedMechanismObservationIR {
+                    operands: values,
+                    expected_postimage: expected,
+                }],
+                provenance: vec!["CROSS_LANGUAGE_STRING_CANARY".to_string()],
+            };
+            let template = lower_typed_mechanism_goal(&goal).unwrap();
+            assert_eq!(template.public_observations_passed, 1);
+            assert_template_compiles_and_runs(&template, invocation);
+            let program = crate::sem5::learner::synthesize(
+                &template.program_task,
+                crate::sem5::model::SynthesisCondition::PrimitiveA,
+                &[],
+            )
+            .unwrap();
+            let artifact = crate::sem5::emitter::emit_rust(
+                &program,
+                &goal.definitions,
+                &goal.public_observations[0].operands,
+            )
+            .unwrap();
+            assert_rust_source_compiles_and_runs(
+                &format!("{}-program-ir", goal.goal_id),
+                artifact.source,
+            );
+        }
+    }
+
+    #[test]
+    fn verified_string_operator_transfers_to_renamed_roles_before_enumeration() {
+        let request = |goal_id: &str, left: &str, right: &str| TypedMechanismSynthesisGoalIR {
+            schema: TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA.to_string(),
+            goal_id: goal_id.to_string(),
+            split: DataSplit::FreshBlind,
+            operands: vec![
+                operand(left, left, ProgramType::String),
+                operand(right, right, ProgramType::String),
+            ],
+            output_type: ProgramType::String,
+            definitions: Vec::new(),
+            allowed_effects: vec![Effect::Pure],
+            preconditions: Vec::new(),
+            postconditions: Vec::new(),
+            invariants: Vec::new(),
+            public_observations: vec![
+                TypedMechanismObservationIR {
+                    operands: BTreeMap::from([
+                        (left.to_string(), Value::String("ab".to_string())),
+                        (right.to_string(), Value::String("cd".to_string())),
+                    ]),
+                    expected_postimage: Value::String("abcd".to_string()),
+                },
+                TypedMechanismObservationIR {
+                    operands: BTreeMap::from([
+                        (left.to_string(), Value::String("x".to_string())),
+                        (right.to_string(), Value::String("yz".to_string())),
+                    ]),
+                    expected_postimage: Value::String("xyz".to_string()),
+                },
+            ],
+            require_conditional: false,
+            max_expression_depth: 2,
+            max_candidates: 1_024,
+            provenance: vec!["STRING_OPERATOR_TRANSFER_CANARY".to_string()],
+        };
+        let learned = synthesize_typed_mechanism_goal(&request("learn", "left", "right")).unwrap();
+        let operator =
+            typed_mechanism_improvement_operator_from_receipt(&learned, "a".repeat(64)).unwrap();
+        let renamed = synthesize_typed_mechanism_goal_with_priors(
+            &request("reuse", "prefix", "suffix"),
+            std::slice::from_ref(&operator),
+        )
+        .unwrap();
+        assert!(renamed.preferred_operator_selected);
+        assert_eq!(renamed.preferred_operator_attempts, 1);
+        assert_eq!(renamed.selected_operator_id, Some(operator.operator_id));
+        assert_eq!(renamed.candidates_enumerated, 1);
+        assert!(renamed
+            .template
+            .canonical_compilable_source
+            .contains("format!"));
     }
 
     #[test]
