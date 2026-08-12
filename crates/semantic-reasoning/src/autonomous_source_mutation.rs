@@ -3739,7 +3739,7 @@ mod tests {
             assert_eq!(receipt.operator.operator_id.len(), 64);
             operator_ids.insert(receipt.operator.operator_id);
         }
-        assert!(operator_ids.len() >= 20);
+        assert_eq!(operator_ids.len(), 20);
     }
 
     #[test]

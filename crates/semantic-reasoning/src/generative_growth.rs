@@ -31,7 +31,11 @@ const MAX_REUSABLE_COMPOSITIONS: usize = 64;
 const MAX_COMPOSITION_TRIALS: usize = 256;
 const MAX_VERIFIED_ARTIFACTS_PER_CYCLE: usize = 32;
 const MAX_SEM5_VERIFIED_ARTIFACTS: u64 = 64;
-const MAX_IMPROVEMENT_OPERATOR_ARTIFACTS: u64 = 25;
+const MAX_IMPROVEMENT_OPERATOR_SELECTORS: usize = 25;
+// The 5 x 5 canary product lowers to 20 distinct generalized operator
+// identities because normalized edit/postcondition contracts intentionally
+// merge five scenario aliases.
+const MAX_IMPROVEMENT_OPERATOR_VERIFIED_ARTIFACTS: u64 = 20;
 const MAX_ARTIFACT_CONTEXT_ATTEMPTS: usize = MAX_VERIFIED_ARTIFACTS_PER_CYCLE * 4;
 const FRONTIER_EVIDENCE_CONTRACT_REVISION: u64 = 2;
 const BEHAVIORAL_HEURISTIC_EXCLUSION_CONTRACT_REVISION: u64 = 4;
@@ -756,7 +760,7 @@ fn execute_composer(
                     )
                     .as_bytes(),
                 );
-                let operator_selector = ordinal % MAX_IMPROVEMENT_OPERATOR_ARTIFACTS as usize;
+                let operator_selector = ordinal % MAX_IMPROVEMENT_OPERATOR_SELECTORS;
                 let artifact_context = format!("{operator_selector:08x}{}", &context_tail[8..]);
                 let receipt = execute_improvement_operator_behavioral_canary(&artifact_context)?;
                 if receipt.cases_executed == 0
@@ -833,7 +837,7 @@ fn verified_artifacts_for_composer(
 fn verified_artifact_capacity(composer_id: &str) -> u64 {
     match composer_id {
         "SEM5_PROGRAM_IR_COMPOSER" => MAX_SEM5_VERIFIED_ARTIFACTS,
-        "IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER" => MAX_IMPROVEMENT_OPERATOR_ARTIFACTS,
+        "IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER" => MAX_IMPROVEMENT_OPERATOR_VERIFIED_ARTIFACTS,
         _ => 0,
     }
 }
@@ -1820,7 +1824,8 @@ mod tests {
                 composition_uses_composer(composition, "IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER")
             })
             .unwrap();
-        operator_memory.verified_artifact_sha256s = (0..MAX_IMPROVEMENT_OPERATOR_ARTIFACTS)
+        operator_memory.verified_artifact_sha256s = (0
+            ..MAX_IMPROVEMENT_OPERATOR_VERIFIED_ARTIFACTS)
             .map(|ordinal| sha256(format!("operator-{ordinal}").as_bytes()))
             .collect();
         let exhausted = run_generative_cycle(&expanded, &input(), 13).unwrap();
