@@ -1007,6 +1007,10 @@ mod tests {
             .replace(&candidate.program_ir_sha256, &second_hash)
             .replace(&candidate.program_ir.program_id, "REGISTRY-SECOND");
         let legacy = include_str!("generated_sem5_capability.rs");
+        let predecessor_capability_count = existing_capability_sections(legacy)
+            .expect("valid predecessor registry")
+            .len()
+            .max(1);
 
         let first_registry =
             merge_typed_capability_registry(legacy, &first_callable, "REGISTRY-FIRST", &first_hash)
@@ -1019,8 +1023,14 @@ mod tests {
         )
         .expect("second registry extension");
 
-        assert_eq!(second_registry.matches(CAPABILITY_BEGIN_PREFIX).count(), 3);
-        assert!(second_registry.contains("GENERATED_CAPABILITY_COUNT: usize = 3"));
+        let expected_capability_count = predecessor_capability_count + 2;
+        assert_eq!(
+            second_registry.matches(CAPABILITY_BEGIN_PREFIX).count(),
+            expected_capability_count
+        );
+        assert!(second_registry.contains(&format!(
+            "GENERATED_CAPABILITY_COUNT: usize = {expected_capability_count}"
+        )));
         assert!(second_registry.contains("run_generated_capability_by_sha256"));
         assert!(second_registry.contains(&format!(
             "{first_hash:?} => capability_{}::run_generated_capability(inputs)",
