@@ -7,7 +7,7 @@ use super::model::{
     ProgramType, ScalarExpression, StringTransformOperator, UnaryOperator, Value,
 };
 
-pub const CALLABLE_SOURCE_SCHEMA_REVISION: u64 = 4;
+pub const CALLABLE_SOURCE_SCHEMA_REVISION: u64 = 5;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct RustArtifact {
@@ -460,7 +460,12 @@ fn compound_assignment(
         BinaryOperator::Modulo => "%=",
         BinaryOperator::And => "&=",
         BinaryOperator::Or => "|=",
-        BinaryOperator::Equal | BinaryOperator::LessThan | BinaryOperator::GreaterThan => {
+        BinaryOperator::Equal
+        | BinaryOperator::NotEqual
+        | BinaryOperator::LessThan
+        | BinaryOperator::LessThanOrEqual
+        | BinaryOperator::GreaterThan
+        | BinaryOperator::GreaterThanOrEqual => {
             return Ok(None);
         }
     };
@@ -673,8 +678,11 @@ fn binary_token(operator: BinaryOperator) -> &'static str {
         BinaryOperator::Divide => "/",
         BinaryOperator::Modulo => "%",
         BinaryOperator::Equal => "==",
+        BinaryOperator::NotEqual => "!=",
         BinaryOperator::LessThan => "<",
+        BinaryOperator::LessThanOrEqual => "<=",
         BinaryOperator::GreaterThan => ">",
+        BinaryOperator::GreaterThanOrEqual => ">=",
         BinaryOperator::And => "&&",
         BinaryOperator::Or => "||",
     }

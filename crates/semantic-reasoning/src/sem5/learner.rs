@@ -928,8 +928,11 @@ impl NodeBuilder {
                 let right = self.scalar(right, bindings, definitions)?;
                 let output_type = match operator {
                     BinaryOperator::Equal
+                    | BinaryOperator::NotEqual
                     | BinaryOperator::LessThan
+                    | BinaryOperator::LessThanOrEqual
                     | BinaryOperator::GreaterThan
+                    | BinaryOperator::GreaterThanOrEqual
                     | BinaryOperator::And
                     | BinaryOperator::Or => ProgramType::Bool,
                     BinaryOperator::Add

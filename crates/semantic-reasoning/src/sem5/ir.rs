@@ -454,10 +454,28 @@ fn infer_binary(
         (Op::Add | Op::Subtract | Op::Multiply | Op::Divide | Op::Modulo, Ty::Int, Ty::Int) => {
             Ok(Ty::Int)
         }
-        (Op::Equal | Op::LessThan | Op::GreaterThan, Ty::Int, Ty::Int) => Ok(Ty::Bool),
-        (Op::Equal, Ty::Bool, Ty::Bool) => Ok(Ty::Bool),
+        (
+            Op::Equal
+            | Op::NotEqual
+            | Op::LessThan
+            | Op::LessThanOrEqual
+            | Op::GreaterThan
+            | Op::GreaterThanOrEqual,
+            Ty::Int,
+            Ty::Int,
+        ) => Ok(Ty::Bool),
+        (Op::Equal | Op::NotEqual, Ty::Bool, Ty::Bool) => Ok(Ty::Bool),
         (Op::Add, Ty::String, Ty::String) => Ok(Ty::String),
-        (Op::Equal, Ty::String, Ty::String) => Ok(Ty::Bool),
+        (
+            Op::Equal
+            | Op::NotEqual
+            | Op::LessThan
+            | Op::LessThanOrEqual
+            | Op::GreaterThan
+            | Op::GreaterThanOrEqual,
+            Ty::String,
+            Ty::String,
+        ) => Ok(Ty::Bool),
         (Op::And | Op::Or, Ty::Bool, Ty::Bool) => Ok(Ty::Bool),
         _ => Err("BINARY_TYPE_MISMATCH".to_string()),
     }
@@ -799,8 +817,17 @@ fn eval_binary(operator: BinaryOperator, left: Value, right: Value) -> Result<Va
         (Op::Equal, Value::Int(a), Value::Int(b)) => Ok(Value::Bool(a == b)),
         (Op::Equal, Value::Bool(a), Value::Bool(b)) => Ok(Value::Bool(a == b)),
         (Op::Equal, Value::String(a), Value::String(b)) => Ok(Value::Bool(a == b)),
+        (Op::NotEqual, Value::Int(a), Value::Int(b)) => Ok(Value::Bool(a != b)),
+        (Op::NotEqual, Value::Bool(a), Value::Bool(b)) => Ok(Value::Bool(a != b)),
+        (Op::NotEqual, Value::String(a), Value::String(b)) => Ok(Value::Bool(a != b)),
         (Op::LessThan, Value::Int(a), Value::Int(b)) => Ok(Value::Bool(a < b)),
+        (Op::LessThan, Value::String(a), Value::String(b)) => Ok(Value::Bool(a < b)),
+        (Op::LessThanOrEqual, Value::Int(a), Value::Int(b)) => Ok(Value::Bool(a <= b)),
+        (Op::LessThanOrEqual, Value::String(a), Value::String(b)) => Ok(Value::Bool(a <= b)),
         (Op::GreaterThan, Value::Int(a), Value::Int(b)) => Ok(Value::Bool(a > b)),
+        (Op::GreaterThan, Value::String(a), Value::String(b)) => Ok(Value::Bool(a > b)),
+        (Op::GreaterThanOrEqual, Value::Int(a), Value::Int(b)) => Ok(Value::Bool(a >= b)),
+        (Op::GreaterThanOrEqual, Value::String(a), Value::String(b)) => Ok(Value::Bool(a >= b)),
         (Op::And, Value::Bool(a), Value::Bool(b)) => Ok(Value::Bool(a && b)),
         (Op::Or, Value::Bool(a), Value::Bool(b)) => Ok(Value::Bool(a || b)),
         _ => Err("BINARY_VALUE_TYPE".to_string()),

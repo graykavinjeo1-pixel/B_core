@@ -913,6 +913,7 @@ def safe_eval(node, environment):
         if left is UNKNOWN or right is UNKNOWN: return UNKNOWN
         operator = node.ops[0]
         if isinstance(operator, ast.Eq): return left == right
+        if isinstance(operator, ast.NotEq): return left != right
         if isinstance(operator, ast.Lt): return left < right
         if isinstance(operator, ast.Gt): return left > right
         if isinstance(operator, ast.LtE): return left <= right
@@ -1603,8 +1604,11 @@ fn python_expression(
                 BinaryOperator::Divide => "//",
                 BinaryOperator::Modulo => "%",
                 BinaryOperator::Equal => "==",
+                BinaryOperator::NotEqual => "!=",
                 BinaryOperator::LessThan => "<",
+                BinaryOperator::LessThanOrEqual => "<=",
                 BinaryOperator::GreaterThan => ">",
+                BinaryOperator::GreaterThanOrEqual => ">=",
                 BinaryOperator::And => "and",
                 BinaryOperator::Or => "or",
             },
@@ -2857,6 +2861,149 @@ def uppercase(value: str) -> str:
         let error = discover_and_synthesize_python_repository(&request).unwrap_err();
         assert_eq!(
             error,
+            CausalFrontendFailure::public("NO_EVIDENCE_BOUND_REPAIR_ALTERNATIVE")
+        );
+    }
+
+    #[test]
+    fn repository_boundary_relations_reach_atomic_executable_templates() {
+        let Some(python_executable) = python() else {
+            return;
+        };
+        let source = r#"def different(left: int, right: int) -> bool:
+    return False
+
+def within(value: int, limit: int) -> bool:
+    return value < limit
+
+def at_least(value: int, floor: int) -> bool:
+    return value > floor
+
+def lexical_within(value: str, limit: str) -> bool:
+    return value < limit
+"#;
+        let tests = r#"def test_relations():
+    assert different(1, 2)
+    assert different(2, 1)
+    assert not different(2, 2)
+    assert not different(7, 7)
+    assert different(5, 9)
+    assert within(1, 2)
+    assert within(5, 5)
+    assert not within(7, 3)
+    assert within(-2, -1)
+    assert not within(4, 2)
+    assert at_least(2, 1)
+    assert at_least(5, 5)
+    assert not at_least(3, 7)
+    assert at_least(-1, -2)
+    assert not at_least(2, 4)
+    assert lexical_within("alpha", "beta")
+    assert lexical_within("beta", "beta")
+    assert not lexical_within("gamma", "beta")
+"#;
+        let receipt =
+            discover_and_synthesize_python_repository(&SourceBoundRepositoryDiscoveryRequestIR {
+                schema: SOURCE_BOUND_REPOSITORY_DISCOVERY_SCHEMA.to_string(),
+                source_relative_path: PathBuf::from("relations.py"),
+                source: source.to_string(),
+                test_sources: vec![RepositoryTestSourceIR {
+                    relative_path: PathBuf::from("tests/test_relations.py"),
+                    source: tests.to_string(),
+                }],
+                python_executable: python_executable.clone(),
+                target_symbols: Vec::new(),
+                allowed_effects: vec![Effect::Pure],
+                max_expression_depth: 1,
+                max_candidates: 1_024,
+            })
+            .unwrap();
+        let by_symbol = receipt
+            .alternatives
+            .iter()
+            .map(|alternative| (alternative.requested_public_symbol.as_str(), alternative))
+            .collect::<BTreeMap<_, _>>();
+        for symbol in ["different", "within", "at_least", "lexical_within"] {
+            let selected = &by_symbol[symbol].synthesis.winning_goal.postimage;
+            assert!(
+                matches!(
+                    selected,
+                    TypedSyntaxExpressionIR::Binary {
+                        operator: BinaryOperator::NotEqual
+                            | BinaryOperator::LessThanOrEqual
+                            | BinaryOperator::GreaterThanOrEqual,
+                        ..
+                    }
+                ),
+                "symbol={symbol} selected={selected:?}"
+            );
+            let replayed =
+                replay_source_bound_patch(source, &by_symbol[symbol].replayable_patch).unwrap();
+            assert!(
+                replayed.contains(" != ") || replayed.contains(" <= ") || replayed.contains(" >= ")
+            );
+        }
+        let combined =
+            replay_source_bound_patch(source, &receipt.patch_variants[0].replayable_patch).unwrap();
+        let execution = Command::new(python_executable)
+            .args(["-X", "utf8", "-c"])
+            .arg(format!("{combined}\n{tests}\ntest_relations()\n"))
+            .output()
+            .unwrap();
+        assert!(
+            execution.status.success(),
+            "{}",
+            String::from_utf8_lossy(&execution.stderr)
+        );
+    }
+
+    #[test]
+    fn correct_boundary_relations_do_not_generate_repairs() {
+        let Some(python_executable) = python() else {
+            return;
+        };
+        let request = SourceBoundRepositoryDiscoveryRequestIR {
+            schema: SOURCE_BOUND_REPOSITORY_DISCOVERY_SCHEMA.to_string(),
+            source_relative_path: PathBuf::from("relations.py"),
+            source: r#"def different(left: int, right: int) -> bool:
+    return left != right
+
+def within(value: int, limit: int) -> bool:
+    return value <= limit
+
+def at_least(value: int, floor: int) -> bool:
+    return value >= floor
+
+def lexical_within(value: str, limit: str) -> bool:
+    return value <= limit
+"#
+            .to_string(),
+            test_sources: vec![RepositoryTestSourceIR {
+                relative_path: PathBuf::from("tests/test_relations.py"),
+                source: r#"def test_relations():
+    assert different(1, 2)
+    assert not different(2, 2)
+    assert not different(7, 7)
+    assert within(5, 5)
+    assert not within(7, 3)
+    assert within(-2, -1)
+    assert at_least(5, 5)
+    assert not at_least(3, 7)
+    assert at_least(-1, -2)
+    assert lexical_within("alpha", "beta")
+    assert lexical_within("beta", "beta")
+    assert not lexical_within("gamma", "beta")
+"#
+                .to_string(),
+            }],
+            python_executable,
+            target_symbols: Vec::new(),
+            allowed_effects: vec![Effect::Pure],
+            max_expression_depth: 1,
+            max_candidates: 1_024,
+        };
+        assert_eq!(
+            discover_and_synthesize_python_repository(&request).unwrap_err(),
             CausalFrontendFailure::public("NO_EVIDENCE_BOUND_REPAIR_ALTERNATIVE")
         );
     }

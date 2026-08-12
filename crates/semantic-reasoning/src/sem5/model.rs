@@ -89,8 +89,11 @@ pub enum BinaryOperator {
     Divide,
     Modulo,
     Equal,
+    NotEqual,
     LessThan,
+    LessThanOrEqual,
     GreaterThan,
+    GreaterThanOrEqual,
     And,
     Or,
 }

@@ -1345,8 +1345,11 @@ pub fn synthesize_typed_mechanism_goal_with_priors(
         }
         let operators = [
             BinaryOperator::Equal,
+            BinaryOperator::NotEqual,
             BinaryOperator::LessThan,
+            BinaryOperator::LessThanOrEqual,
             BinaryOperator::GreaterThan,
+            BinaryOperator::GreaterThanOrEqual,
             BinaryOperator::Add,
             BinaryOperator::Subtract,
             BinaryOperator::Multiply,
@@ -1779,10 +1782,14 @@ fn infer_expression_type(
                     ProgramType::Int,
                 ) => Ok(ProgramType::Int),
                 (Op::Add, ProgramType::String, ProgramType::String) => Ok(ProgramType::String),
-                (Op::LessThan | Op::GreaterThan, ProgramType::Int, ProgramType::Int) => {
+                (
+                    Op::LessThan | Op::LessThanOrEqual | Op::GreaterThan | Op::GreaterThanOrEqual,
+                    left,
+                    right,
+                ) if left == right && matches!(left, ProgramType::Int | ProgramType::String) => {
                     Ok(ProgramType::Bool)
                 }
-                (Op::Equal, left, right)
+                (Op::Equal | Op::NotEqual, left, right)
                     if left == right
                         && matches!(
                             left,
@@ -2077,8 +2084,11 @@ fn binary_token(operator: BinaryOperator) -> &'static str {
         BinaryOperator::Divide => "/",
         BinaryOperator::Modulo => "%",
         BinaryOperator::Equal => "==",
+        BinaryOperator::NotEqual => "!=",
         BinaryOperator::LessThan => "<",
+        BinaryOperator::LessThanOrEqual => "<=",
         BinaryOperator::GreaterThan => ">",
+        BinaryOperator::GreaterThanOrEqual => ">=",
         BinaryOperator::And => "&&",
         BinaryOperator::Or => "||",
     }
@@ -2384,6 +2394,199 @@ mod tests {
     }
 
     #[test]
+    fn bounded_relational_family_synthesizes_compiles_and_transfers() {
+        let observations_for = |operator: BinaryOperator,
+                                left_role: &str,
+                                right_role: &str|
+         -> Vec<TypedMechanismObservationIR> {
+            let cases = match operator {
+                BinaryOperator::NotEqual => [
+                    (1, 2, true),
+                    (2, 1, true),
+                    (2, 2, false),
+                    (7, 7, false),
+                    (5, 9, true),
+                ],
+                BinaryOperator::LessThanOrEqual => [
+                    (1, 2, true),
+                    (5, 5, true),
+                    (7, 3, false),
+                    (-2, -1, true),
+                    (4, 2, false),
+                ],
+                BinaryOperator::GreaterThanOrEqual => [
+                    (2, 1, true),
+                    (5, 5, true),
+                    (3, 7, false),
+                    (-1, -2, true),
+                    (2, 4, false),
+                ],
+                _ => unreachable!(),
+            };
+            cases
+                .into_iter()
+                .map(|(left, right, expected)| TypedMechanismObservationIR {
+                    operands: BTreeMap::from([
+                        (left_role.to_string(), Value::Int(left)),
+                        (right_role.to_string(), Value::Int(right)),
+                    ]),
+                    expected_postimage: Value::Bool(expected),
+                })
+                .collect()
+        };
+        let request = |goal_id: &str,
+                       operator: BinaryOperator,
+                       left_role: &str,
+                       right_role: &str| TypedMechanismSynthesisGoalIR {
+            schema: TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA.to_string(),
+            goal_id: goal_id.to_string(),
+            split: DataSplit::FreshBlind,
+            operands: vec![
+                operand(left_role, left_role, ProgramType::Int),
+                operand(right_role, right_role, ProgramType::Int),
+            ],
+            output_type: ProgramType::Bool,
+            definitions: Vec::new(),
+            allowed_effects: vec![Effect::Pure],
+            preconditions: Vec::new(),
+            postconditions: Vec::new(),
+            invariants: Vec::new(),
+            public_observations: observations_for(operator, left_role, right_role),
+            require_conditional: false,
+            max_expression_depth: 1,
+            max_candidates: 1_024,
+            provenance: vec!["RELATIONAL_OPERATOR_FAMILY_CANARY".to_string()],
+        };
+
+        let mut learned_less_or_equal = None;
+        for (goal_id, operator) in [
+            ("not_equal", BinaryOperator::NotEqual),
+            ("less_than_or_equal", BinaryOperator::LessThanOrEqual),
+            ("greater_than_or_equal", BinaryOperator::GreaterThanOrEqual),
+        ] {
+            let receipt =
+                synthesize_typed_mechanism_goal(&request(goal_id, operator, "value", "boundary"))
+                    .unwrap();
+            let relation_matches = match (&receipt.winning_goal.postimage, operator) {
+                (
+                    TypedSyntaxExpressionIR::Binary {
+                        operator: BinaryOperator::NotEqual,
+                        ..
+                    },
+                    BinaryOperator::NotEqual,
+                ) => true,
+                (
+                    TypedSyntaxExpressionIR::Binary {
+                        operator: selected,
+                        left,
+                        right,
+                    },
+                    expected,
+                ) if matches!(
+                    (selected, expected),
+                    (
+                        BinaryOperator::LessThanOrEqual,
+                        BinaryOperator::LessThanOrEqual
+                    ) | (
+                        BinaryOperator::GreaterThanOrEqual,
+                        BinaryOperator::GreaterThanOrEqual
+                    )
+                ) =>
+                {
+                    matches!(
+                        (left.as_ref(), right.as_ref()),
+                        (
+                            TypedSyntaxExpressionIR::Operand { role: left },
+                            TypedSyntaxExpressionIR::Operand { role: right }
+                        ) if left == "value" && right == "boundary"
+                    )
+                }
+                (
+                    TypedSyntaxExpressionIR::Binary {
+                        operator: selected,
+                        left,
+                        right,
+                    },
+                    expected,
+                ) if matches!(
+                    (selected, expected),
+                    (
+                        BinaryOperator::GreaterThanOrEqual,
+                        BinaryOperator::LessThanOrEqual
+                    ) | (
+                        BinaryOperator::LessThanOrEqual,
+                        BinaryOperator::GreaterThanOrEqual
+                    )
+                ) =>
+                {
+                    matches!(
+                        (left.as_ref(), right.as_ref()),
+                        (
+                            TypedSyntaxExpressionIR::Operand { role: left },
+                            TypedSyntaxExpressionIR::Operand { role: right }
+                        ) if left == "boundary" && right == "value"
+                    )
+                }
+                _ => false,
+            };
+            assert!(
+                relation_matches,
+                "expected={operator:?} selected={:?}",
+                receipt.winning_goal.postimage
+            );
+            assert!(
+                receipt
+                    .template
+                    .canonical_compilable_source
+                    .contains(" != ")
+                    || receipt
+                        .template
+                        .canonical_compilable_source
+                        .contains(" <= ")
+                    || receipt
+                        .template
+                        .canonical_compilable_source
+                        .contains(" >= ")
+            );
+            assert_template_compiles_and_runs(&receipt.template, "1i64, 2i64");
+            let program = crate::sem5::learner::synthesize(
+                &receipt.template.program_task,
+                crate::sem5::model::SynthesisCondition::PrimitiveA,
+                &[],
+            )
+            .unwrap();
+            let artifact = crate::sem5::emitter::emit_rust(
+                &program,
+                &[],
+                &receipt.winning_goal.public_observations[0].operands,
+            )
+            .unwrap();
+            assert_rust_source_compiles_and_runs(&format!("{goal_id}-program-ir"), artifact.source);
+            if operator == BinaryOperator::LessThanOrEqual {
+                learned_less_or_equal = Some(receipt);
+            }
+        }
+
+        let learned = learned_less_or_equal.unwrap();
+        let operator =
+            typed_mechanism_improvement_operator_from_receipt(&learned, "c".repeat(64)).unwrap();
+        let renamed = synthesize_typed_mechanism_goal_with_priors(
+            &request(
+                "renamed_less_than_or_equal",
+                BinaryOperator::LessThanOrEqual,
+                "candidate",
+                "ceiling",
+            ),
+            std::slice::from_ref(&operator),
+        )
+        .unwrap();
+        assert!(renamed.preferred_operator_selected);
+        assert_eq!(renamed.preferred_operator_attempts, 1);
+        assert_eq!(renamed.candidates_enumerated, 1);
+        assert_eq!(renamed.selected_operator_id, Some(operator.operator_id));
+    }
+
+    #[test]
     fn verified_string_operator_transfers_to_renamed_roles_before_enumeration() {
         let request = |goal_id: &str, left: &str, right: &str| TypedMechanismSynthesisGoalIR {
             schema: TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA.to_string(),
@@ -2554,6 +2757,35 @@ mod tests {
         assert_eq!(
             lower_typed_mechanism_goal(&string_transform_goal),
             Err("TYPED_MECHANISM_STRING_TRANSFORM_TYPE".to_string())
+        );
+
+        let invalid_ordered_comparison = TypedMechanismGoalIR {
+            schema: TYPED_MECHANISM_GOAL_SCHEMA.to_string(),
+            goal_id: "invalid_ordered_bool_comparison".to_string(),
+            split: DataSplit::FreshBlind,
+            operands: vec![
+                operand("left", "left", ProgramType::Bool),
+                operand("right", "right", ProgramType::Bool),
+            ],
+            output_type: ProgramType::Bool,
+            condition: None,
+            postimage: TypedSyntaxExpressionIR::Binary {
+                operator: BinaryOperator::LessThanOrEqual,
+                left: Box::new(role("left")),
+                right: Box::new(role("right")),
+            },
+            otherwise: None,
+            definitions: Vec::new(),
+            allowed_effects: vec![Effect::Pure],
+            preconditions: Vec::new(),
+            postconditions: Vec::new(),
+            invariants: Vec::new(),
+            public_observations: Vec::new(),
+            provenance: Vec::new(),
+        };
+        assert_eq!(
+            lower_typed_mechanism_goal(&invalid_ordered_comparison),
+            Err("TYPED_MECHANISM_BINARY_TYPE".to_string())
         );
     }
 

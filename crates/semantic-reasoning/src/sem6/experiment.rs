@@ -886,8 +886,11 @@ fn binary_token(operator: BinaryOperator) -> &'static str {
         BinaryOperator::Divide => "/",
         BinaryOperator::Modulo => "%",
         BinaryOperator::Equal => "==",
+        BinaryOperator::NotEqual => "!=",
         BinaryOperator::LessThan => "<",
+        BinaryOperator::LessThanOrEqual => "<=",
         BinaryOperator::GreaterThan => ">",
+        BinaryOperator::GreaterThanOrEqual => ">=",
         BinaryOperator::And => "&&",
         BinaryOperator::Or => "||",
     }
