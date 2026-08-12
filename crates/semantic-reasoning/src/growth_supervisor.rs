@@ -6711,17 +6711,24 @@ fn attempt_discovered_source_repair(
     index: &FileIndex,
 ) -> Result<bool, String> {
     if !config.source_mutation.enabled
-        || state.plateau_scans < config.resources.plateau_scans_before_wait
         || state.autonomous_source_patches_installed >= config.source_mutation.max_installations
     {
         return Ok(false);
     }
+    // A verified composition family is already a concrete repair action, not a
+    // new discovery hypothesis.  Requiring another full plateau window here
+    // made every successful self-application idle for N scans before it could
+    // become executable source.  Install the already verified work at the next
+    // safe cycle; retain the plateau gate only for fresh source discovery.
     let composite = attempt_pending_composite_capability_install(config, state, memory)?;
     if composite.attempted {
         if composite.staged {
             state.stop_reason = Some("AUTONOMOUS_COMPOSITE_CAPABILITY_STAGED".to_string());
         }
         return Ok(composite.staged);
+    }
+    if state.plateau_scans < config.resources.plateau_scans_before_wait {
+        return Ok(false);
     }
     if !config.source_mutation.auto_discover_known_transformations
         && !config.source_mutation.auto_discover_compiler_repairs
