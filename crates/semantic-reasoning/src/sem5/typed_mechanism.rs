@@ -8,6 +8,7 @@ use std::collections::{BTreeMap, BTreeSet};
 
 use serde::{Deserialize, Serialize};
 
+use crate::bounded_parallel::map_ordered as parallel_map_ordered;
 use crate::self_repair_contract::sha256;
 
 use super::ir::eval_scalar;
@@ -124,6 +125,12 @@ pub struct TypedMechanismSynthesisReceiptIR {
     pub preferred_operator_selected: bool,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub selected_operator_id: Option<String>,
+    #[serde(default)]
+    pub attempted_operator_ids: Vec<String>,
+    #[serde(default)]
+    pub rejected_operator_ids: Vec<String>,
+    #[serde(default)]
+    pub parallel_operator_evaluation: bool,
     pub winning_goal: TypedMechanismGoalIR,
     pub template: ConcreteSyntaxTemplateIR,
     pub receipt_sha256: String,
@@ -412,6 +419,14 @@ struct EnumeratedExpression {
     canonical_key: String,
 }
 
+#[derive(Debug, Clone)]
+struct TransportedImprovementOperator {
+    operator_id: String,
+    condition: Option<TypedSyntaxExpressionIR>,
+    postimage: TypedSyntaxExpressionIR,
+    otherwise: Option<TypedSyntaxExpressionIR>,
+}
+
 fn remap_expression_roles(
     expression: &TypedSyntaxExpressionIR,
     role_map: &BTreeMap<String, String>,
@@ -685,9 +700,11 @@ fn build_synthesis_receipt(
     otherwise: Option<TypedSyntaxExpressionIR>,
     enumerated: usize,
     candidates_falsified: usize,
-    preferred_operator_attempts: usize,
+    attempted_operator_ids: Vec<String>,
+    rejected_operator_ids: Vec<String>,
     selected_operator_id: Option<String>,
 ) -> Result<TypedMechanismSynthesisReceiptIR, String> {
+    let preferred_operator_attempts = attempted_operator_ids.len();
     let conditional_synthesized = condition.is_some();
     let winning_goal = TypedMechanismGoalIR {
         schema: TYPED_MECHANISM_GOAL_SCHEMA.to_string(),
@@ -726,6 +743,8 @@ fn build_synthesis_receipt(
             candidates_falsified,
             preferred_operator_attempts,
             &selected_operator_id,
+            &attempted_operator_ids,
+            &rejected_operator_ids,
         ))
         .map_err(|error| format!("TYPED_MECHANISM_RECEIPT_SERIALIZE:{error}"))?
         .as_slice(),
@@ -741,6 +760,9 @@ fn build_synthesis_receipt(
         preferred_operator_attempts,
         preferred_operator_selected: selected_operator_id.is_some(),
         selected_operator_id,
+        attempted_operator_ids,
+        rejected_operator_ids,
+        parallel_operator_evaluation: preferred_operator_attempts > 1,
         winning_goal,
         template,
         receipt_sha256,
@@ -804,45 +826,75 @@ pub fn synthesize_typed_mechanism_goal_with_priors(
         })
         .collect::<Result<Vec<_>, _>>()?;
 
-    let mut preferred_operator_attempts = 0_usize;
-    let mut ordered_priors = priors.to_vec();
-    ordered_priors.sort_by(|left, right| left.operator_id.cmp(&right.operator_id));
-    ordered_priors.dedup_by(|left, right| left.operator_id == right.operator_id);
-    for prior in &ordered_priors {
+    let mut applicable_operators = Vec::new();
+    let mut seen_operator_ids = BTreeSet::new();
+    for prior in priors
+        .iter()
+        .filter(|prior| seen_operator_ids.insert(prior.operator_id.clone()))
+    {
         validate_typed_mechanism_improvement_operator(prior)?;
         let transported = match transport_prior_to_request(prior, request) {
             Ok(transported) => transported,
             Err(error) if error == "TYPED_MECHANISM_PRIOR_TYPE_SHAPE_MISMATCH" => continue,
             Err(error) => return Err(error),
         };
-        preferred_operator_attempts = preferred_operator_attempts.saturating_add(1);
-        let prior_matches = prior_matches_public_observations(
-            request,
-            &transported.0,
-            &transported.1,
-            &transported.2,
-            &operand_types,
-            &operand_indices,
-            &definitions,
-            &api_map,
-            &observation_arguments,
-        )
-        .unwrap_or(false);
-        if prior_matches {
-            let enumerated =
-                1 + usize::from(transported.0.is_some()) + usize::from(transported.2.is_some());
-            return build_synthesis_receipt(
-                request,
-                transported.0,
-                transported.1,
-                transported.2,
-                enumerated,
-                preferred_operator_attempts.saturating_sub(1),
-                preferred_operator_attempts,
-                Some(prior.operator_id.clone()),
-            );
-        }
+        applicable_operators.push(TransportedImprovementOperator {
+            operator_id: prior.operator_id.clone(),
+            condition: transported.0,
+            postimage: transported.1,
+            otherwise: transported.2,
+        });
     }
+    let operator_matches = parallel_map_ordered(
+        &applicable_operators,
+        "TYPED_OPERATOR_PUBLIC_REPLAY",
+        |operator| {
+            Ok(prior_matches_public_observations(
+                request,
+                &operator.condition,
+                &operator.postimage,
+                &operator.otherwise,
+                &operand_types,
+                &operand_indices,
+                &definitions,
+                &api_map,
+                &observation_arguments,
+            )
+            .unwrap_or(false))
+        },
+    )?;
+    let attempted_operator_ids = applicable_operators
+        .iter()
+        .map(|operator| operator.operator_id.clone())
+        .collect::<Vec<_>>();
+    if let Some(winner_index) = operator_matches.iter().position(|matches| *matches) {
+        let winner = &applicable_operators[winner_index];
+        let rejected_operator_ids = applicable_operators
+            .iter()
+            .zip(&operator_matches)
+            .filter(|(_, matches)| !**matches)
+            .map(|(operator, _)| operator.operator_id.clone())
+            .collect::<Vec<_>>();
+        let enumerated = applicable_operators
+            .iter()
+            .map(|operator| {
+                1 + usize::from(operator.condition.is_some())
+                    + usize::from(operator.otherwise.is_some())
+            })
+            .sum();
+        return build_synthesis_receipt(
+            request,
+            winner.condition.clone(),
+            winner.postimage.clone(),
+            winner.otherwise.clone(),
+            enumerated,
+            rejected_operator_ids.len(),
+            attempted_operator_ids,
+            rejected_operator_ids,
+            Some(winner.operator_id.clone()),
+        );
+    }
+    let rejected_operator_ids = attempted_operator_ids.clone();
 
     let mut expressions = Vec::<EnumeratedExpression>::new();
     let mut seen = BTreeSet::new();
@@ -1034,7 +1086,7 @@ pub fn synthesize_typed_mechanism_goal_with_priors(
         .filter(|candidate| candidate.outputs != expected)
         .count()
         .saturating_add(evaluation_failures)
-        .saturating_add(preferred_operator_attempts);
+        .saturating_add(rejected_operator_ids.len());
     build_synthesis_receipt(
         request,
         condition,
@@ -1042,7 +1094,8 @@ pub fn synthesize_typed_mechanism_goal_with_priors(
         otherwise,
         enumerated,
         candidates_falsified,
-        preferred_operator_attempts,
+        attempted_operator_ids,
+        rejected_operator_ids,
         None,
     )
 }
@@ -1815,6 +1868,42 @@ mod tests {
             .template
             .postimage_source
             .contains("payload.beta"));
+
+        let multiplication_seed = TypedMechanismSynthesisGoalIR {
+            goal_id: "multiplication_seed".to_string(),
+            public_observations: [(3, 4, 12), (-2, 5, -10)]
+                .into_iter()
+                .map(|(alpha, beta, expected)| TypedMechanismObservationIR {
+                    operands: BTreeMap::from([
+                        ("alpha".to_string(), Value::Int(alpha)),
+                        ("beta".to_string(), Value::Int(beta)),
+                    ]),
+                    expected_postimage: Value::Int(expected),
+                })
+                .collect(),
+            ..renamed.clone()
+        };
+        let multiplication_receipt = synthesize_typed_mechanism_goal(&multiplication_seed).unwrap();
+        let multiplication_operator = typed_mechanism_improvement_operator_from_receipt(
+            &multiplication_receipt,
+            "b".repeat(64),
+        )
+        .unwrap();
+        let collision = synthesize_typed_mechanism_goal_with_priors(
+            &renamed,
+            &[multiplication_operator.clone(), operator.clone()],
+        )
+        .unwrap();
+        assert!(collision.parallel_operator_evaluation);
+        assert_eq!(collision.preferred_operator_attempts, 2);
+        assert_eq!(
+            collision.selected_operator_id.as_deref(),
+            Some(operator.operator_id.as_str())
+        );
+        assert_eq!(
+            collision.rejected_operator_ids,
+            [multiplication_operator.operator_id]
+        );
 
         let counterexample = TypedMechanismSynthesisGoalIR {
             goal_id: "operator_counterexample".to_string(),

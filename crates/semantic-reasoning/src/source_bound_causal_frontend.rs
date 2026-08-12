@@ -1378,6 +1378,18 @@ pub fn analyze_and_synthesize_source_bound_with_operators(
         .into_iter()
         .map(|definition| (definition.qualified_symbol.clone(), definition))
         .collect::<BTreeMap<_, _>>();
+    let mut operator_type_index =
+        BTreeMap::<String, Vec<TypedMechanismImprovementOperatorIR>>::new();
+    for operator in operators {
+        let key = serde_json::to_string(&(&operator.operand_types, &operator.output_type))
+            .map_err(|error| {
+                CausalFrontendFailure::public(format!("OPERATOR_TYPE_INDEX:{error}"))
+            })?;
+        operator_type_index
+            .entry(key)
+            .or_default()
+            .push(operator.clone());
+    }
     let mut receipts = Vec::with_capacity(request.alternatives.len());
     for alternative in &request.alternatives {
         let definition = definitions.get(&alternative.public_symbol).ok_or_else(|| {
@@ -1429,8 +1441,22 @@ pub fn analyze_and_synthesize_source_bound_with_operators(
                 ),
             ],
         };
-        let synthesis = synthesize_typed_mechanism_goal_with_priors(&synthesis_request, operators)
-            .map_err(|error| {
+        let type_key = serde_json::to_string(&(
+            function_template
+                .operands
+                .iter()
+                .map(|operand| operand.value_type.clone())
+                .collect::<Vec<_>>(),
+            &function_template.output_type,
+        ))
+        .map_err(|error| CausalFrontendFailure::public(format!("SOURCE_TYPE_INDEX:{error}")))?;
+        let applicable_operators = operator_type_index
+            .get(&type_key)
+            .map(Vec::as_slice)
+            .unwrap_or(&[]);
+        let synthesis =
+            synthesize_typed_mechanism_goal_with_priors(&synthesis_request, applicable_operators)
+                .map_err(|error| {
                 CausalFrontendFailure::unsupported(format!("BOUNDED_COMPOSITION:{error}"))
             })?;
         let materialized_patch =

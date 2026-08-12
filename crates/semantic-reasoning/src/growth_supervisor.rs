@@ -5592,6 +5592,10 @@ struct RepositoryRepairSynthesisReceipt {
     #[serde(default)]
     available_improvement_operator_ids: Vec<String>,
     #[serde(default)]
+    attempted_improvement_operator_ids: Vec<String>,
+    #[serde(default)]
+    rejected_improvement_operator_ids: Vec<String>,
+    #[serde(default)]
     selected_improvement_operator_ids: Vec<String>,
     #[serde(default)]
     promoted_improvement_operator_ids: Vec<String>,
@@ -6219,6 +6223,8 @@ fn try_synthesize_failed_python_cohort(
         let mut sandbox_cleaned = true;
         let mut candidate_source = None;
         let mut selected_improvement_operator_ids = Vec::new();
+        let mut attempted_improvement_operator_ids = Vec::new();
+        let mut rejected_improvement_operator_ids = Vec::new();
         let mut typed_candidates_enumerated = 0_usize;
         let mut successful_syntheses = Vec::new();
 
@@ -6247,6 +6253,10 @@ fn try_synthesize_failed_python_cohort(
                     if let Some(operator_id) = &alternative.synthesis.selected_operator_id {
                         selected_improvement_operator_ids.push(operator_id.clone());
                     }
+                    attempted_improvement_operator_ids
+                        .extend(alternative.synthesis.attempted_operator_ids.iter().cloned());
+                    rejected_improvement_operator_ids
+                        .extend(alternative.synthesis.rejected_operator_ids.iter().cloned());
                     successful_syntheses.push(alternative.synthesis.clone());
                     match &alternative.materialized_patch.edit {
                         SourceEditAtom::AtomicMultiEdit { edits: nested } => {
@@ -6360,6 +6370,10 @@ fn try_synthesize_failed_python_cohort(
         }
         selected_improvement_operator_ids.sort();
         selected_improvement_operator_ids.dedup();
+        attempted_improvement_operator_ids.sort();
+        attempted_improvement_operator_ids.dedup();
+        rejected_improvement_operator_ids.sort();
+        rejected_improvement_operator_ids.dedup();
         let mut improvement_operators = Vec::new();
         let mut promoted_improvement_operator_ids = Vec::new();
         if sandbox_verified {
@@ -6399,6 +6413,8 @@ fn try_synthesize_failed_python_cohort(
                 .to_string(),
             edit_atom_kinds: edit_atom_kinds.into_iter().collect(),
             available_improvement_operator_ids: available_operator_ids.iter().cloned().collect(),
+            attempted_improvement_operator_ids,
+            rejected_improvement_operator_ids,
             selected_improvement_operator_ids,
             promoted_improvement_operator_ids,
             improvement_operators,
