@@ -1317,7 +1317,128 @@ fn count_any(text: &str, needles: &[&str]) -> u32 {
         .sum()
 }
 
-fn structural_features(text: &str) -> StructuralFeatures {
+fn collect_rust_identifiers(stream: proc_macro2::TokenStream, identifiers: &mut Vec<String>) {
+    for token in stream {
+        match token {
+            proc_macro2::TokenTree::Ident(ident) => {
+                identifiers.push(
+                    ident
+                        .to_string()
+                        .trim_start_matches("r#")
+                        .to_ascii_lowercase(),
+                );
+            }
+            proc_macro2::TokenTree::Group(group) => {
+                collect_rust_identifiers(group.stream(), identifiers);
+            }
+            // Literal contents and comments are deliberately absent from the
+            // semantic surface. Test fixtures that quote source code must not
+            // masquerade as executable branches, repairs, or assertions.
+            proc_macro2::TokenTree::Literal(_) | proc_macro2::TokenTree::Punct(_) => {}
+        }
+    }
+}
+
+fn rust_semantic_identifiers(text: &str) -> Option<Vec<String>> {
+    let stream = text.parse::<proc_macro2::TokenStream>().ok()?;
+    let mut identifiers = Vec::new();
+    collect_rust_identifiers(stream, &mut identifiers);
+    Some(identifiers)
+}
+
+fn count_identifiers(identifiers: &[String], predicate: impl Fn(&str) -> bool) -> u32 {
+    identifiers
+        .iter()
+        .filter(|identifier| predicate(identifier))
+        .count()
+        .min(u32::MAX as usize) as u32
+}
+
+fn rust_structural_features(text: &str, identifiers: &[String]) -> StructuralFeatures {
+    let lines = text.lines().collect::<Vec<_>>();
+    let public_symbols = identifiers
+        .windows(2)
+        .filter(|pair| {
+            pair[0] == "pub"
+                && matches!(
+                    pair[1].as_str(),
+                    "fn" | "struct" | "enum" | "trait" | "type" | "const" | "static" | "mod"
+                )
+        })
+        .count()
+        .min(u32::MAX as usize) as u32;
+    StructuralFeatures {
+        lines: lines.len().min(u32::MAX as usize) as u32,
+        non_empty_lines: lines.iter().filter(|line| !line.trim().is_empty()).count() as u32,
+        public_symbols,
+        branch_tokens: count_identifiers(identifiers, |value| {
+            matches!(value, "if" | "match" | "else")
+        }),
+        assertion_tokens: count_identifiers(identifiers, |value| {
+            value.starts_with("assert")
+                || matches!(
+                    value,
+                    "expect" | "should" | "toequal" | "pytest" | "unittest"
+                )
+        }),
+        test_tokens: count_identifiers(identifiers, |value| matches!(value, "test" | "tests")),
+        validation_tokens: count_identifiers(identifiers, |value| {
+            [
+                "validate",
+                "invalid",
+                "guard",
+                "sanitize",
+                "constraint",
+                "schema",
+            ]
+            .iter()
+            .any(|marker| value.contains(marker))
+        }),
+        error_handling_tokens: count_identifiers(identifiers, |value| {
+            matches!(
+                value,
+                "result" | "error" | "exception" | "catch" | "map_err" | "rollback" | "retry"
+            ) || value.ends_with("error")
+        }),
+        documentation_tokens: count_identifiers(identifiers, |value| {
+            matches!(value, "doc" | "readme" | "docstring")
+        }),
+        todo_tokens: count_identifiers(identifiers, |value| {
+            matches!(value, "todo" | "fixme" | "hack" | "unimplemented")
+        }),
+        benchmark_tokens: count_identifiers(identifiers, |value| {
+            ["benchmark", "criterion", "bench", "latency", "throughput"]
+                .iter()
+                .any(|marker| value.contains(marker))
+        }),
+        performance_tokens: count_identifiers(identifiers, |value| {
+            ["allocation", "elapsed", "duration", "memoiz", "cache"]
+                .iter()
+                .any(|marker| value.contains(marker))
+        }),
+        algebraic_constructor_tokens: count_identifiers(identifiers, |value| {
+            matches!(value, "some" | "none" | "ok" | "err" | "option" | "result")
+        }),
+        data_composition_tokens: count_identifiers(identifiers, |value| {
+            matches!(
+                value,
+                "format" | "to_string" | "collect" | "map" | "and_then" | "chain"
+            )
+        }),
+        max_line_bytes: lines
+            .iter()
+            .map(|line| line.len().min(u32::MAX as usize) as u32)
+            .max()
+            .unwrap_or(0),
+    }
+}
+
+fn structural_features(text: &str, extension: &str) -> StructuralFeatures {
+    if extension.eq_ignore_ascii_case("rs") {
+        if let Some(identifiers) = rust_semantic_identifiers(text) {
+            return rust_structural_features(text, &identifiers);
+        }
+    }
     let lower = text.to_ascii_lowercase();
     let lines = text.lines().collect::<Vec<_>>();
     StructuralFeatures {
@@ -1451,7 +1572,12 @@ fn fingerprint_file_with_metadata(
         .take(512)
         .collect::<String>()
         .to_ascii_lowercase();
-    let features = structural_features(text);
+    let extension = path
+        .extension()
+        .and_then(OsStr::to_str)
+        .unwrap_or("")
+        .to_ascii_lowercase();
+    let features = structural_features(text, &extension);
     if lower_head.contains("do not edit")
         || lower_head.contains("auto-generated")
         || lower_head.contains("automatically generated")
@@ -1463,11 +1589,7 @@ fn fingerprint_file_with_metadata(
         content_sha256: sha256(&bytes),
         bytes: metadata.len(),
         modified_ms: modified_ms(metadata),
-        extension: path
-            .extension()
-            .and_then(OsStr::to_str)
-            .unwrap_or("")
-            .to_ascii_lowercase(),
+        extension,
         features,
     }))
 }
@@ -8469,6 +8591,7 @@ mod tests {
     fn semantic_feature_vector_observes_constructors_and_data_composition() {
         let features = structural_features(
             "fn compose(value: i32) -> Option<String> { Some(format!(\"{}\", value)) }",
+            "rs",
         );
 
         assert!(features.algebraic_constructor_tokens >= 2);
@@ -8509,5 +8632,40 @@ mod tests {
             .diagnostic_signals
             .iter()
             .any(|signal| signal.starts_with("STRUCTURAL_DELTA:DATA_COMPOSITION:")));
+    }
+
+    #[test]
+    fn rust_feature_family_ignores_quoted_source_fixtures() {
+        let features = structural_features(
+            r###"
+const QUOTED_SOURCE: &str = r#"
+pub fn fake() -> Option<i32> {
+    todo!();
+    assert!(true);
+    Some(1)
+}
+"#;
+
+pub fn real(value: i32) -> Result<i32, String> {
+    if value > 0 { Ok(value) } else { Err("invalid".to_string()) }
+}
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn accepts_positive_value() {
+        assert!(real(1).is_ok());
+    }
+}
+"###,
+            "rs",
+        );
+
+        assert_eq!(features.public_symbols, 1);
+        assert_eq!(features.todo_tokens, 0);
+        assert_eq!(features.assertion_tokens, 1);
+        assert!(features.branch_tokens >= 2);
+        assert!(features.algebraic_constructor_tokens >= 3);
+        assert!(features.data_composition_tokens >= 1);
     }
 }

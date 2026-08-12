@@ -1601,6 +1601,9 @@ fn grammar_synthesized_request(
         )?;
         let priority = i32::from(candidate.predicted_value)
             + feedback_priority(&candidate.solution_strategy, &counterexamples)
+            + i32::try_from(candidate.family_member_count.saturating_sub(1))
+                .unwrap_or(i32::MAX)
+                .saturating_mul(25)
             + public_example_priority(
                 candidate.public_examples_observed,
                 candidate.public_examples_evaluated,

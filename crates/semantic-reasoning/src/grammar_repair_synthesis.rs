@@ -22,7 +22,8 @@ use syn::{Block, Expr, FnArg, ImplItem, Item, Lit, Pat, ReturnType, Stmt, Token,
 
 use crate::self_repair_contract::sha256;
 use crate::structural_source_repair::{
-    synthesize_structural_repair, ByteRange, StructuralRepairProgram,
+    apply_edit_atom, synthesize_structural_repair, ByteRange, SourceEditAtom,
+    StructuralRepairProgram,
 };
 
 const MAX_GRAMMAR_CANDIDATES: usize = 128;
@@ -48,6 +49,14 @@ pub struct GrammarRepairCandidate {
     pub public_examples_observed: usize,
     pub public_examples_evaluated: usize,
     pub public_examples_satisfied: usize,
+    #[serde(default)]
+    pub repair_family: String,
+    #[serde(default = "one_family_member")]
+    pub family_member_count: usize,
+}
+
+fn one_family_member() -> usize {
+    1
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -80,6 +89,114 @@ struct Hole {
 struct FileCandidateBatch {
     candidates: Vec<GrammarRepairCandidate>,
     holes_scanned: usize,
+}
+
+fn synthesize_evidence_bound_family_candidates(
+    source: &str,
+    file_id: &str,
+    max_candidate_bytes: u64,
+    candidates: &[GrammarRepairCandidate],
+) -> Vec<GrammarRepairCandidate> {
+    let mut grouped = BTreeMap::<String, Vec<&GrammarRepairCandidate>>::new();
+    for candidate in candidates.iter().filter(|candidate| {
+        candidate.public_examples_observed > 0
+            && candidate.public_examples_evaluated == candidate.public_examples_observed
+            && candidate.public_examples_satisfied == candidate.public_examples_observed
+    }) {
+        grouped
+            .entry(candidate.repair_family.clone())
+            .or_default()
+            .push(candidate);
+    }
+
+    let mut family_candidates = Vec::new();
+    for (repair_family, members) in grouped {
+        let mut selected = BTreeMap::<String, &GrammarRepairCandidate>::new();
+        for member in members {
+            selected
+                .entry(member.transformation.clone())
+                .or_insert(member);
+        }
+        if selected.len() < 2 {
+            continue;
+        }
+        let edits = selected
+            .values()
+            .map(|candidate| candidate.structural_repair_program.edit.clone())
+            .collect::<Vec<_>>();
+        let atomic_edit = SourceEditAtom::AtomicMultiEdit { edits };
+        let Ok(candidate_source) = apply_edit_atom(source, &atomic_edit) else {
+            continue;
+        };
+        if candidate_source.len() as u64 > max_candidate_bytes {
+            continue;
+        }
+        let Ok(mut structural_repair_program) =
+            synthesize_structural_repair(file_id, source, &candidate_source)
+        else {
+            continue;
+        };
+        // Preserve the member-level precondition hashes and atomicity instead
+        // of allowing the generic line diff to collapse a family repair into
+        // one opaque wide replacement.
+        structural_repair_program.edit = atomic_edit;
+        let family_evidence_sha256 = sha256(
+            selected
+                .keys()
+                .cloned()
+                .collect::<Vec<_>>()
+                .join("\n")
+                .as_bytes(),
+        );
+        let first = *selected.values().next().expect("family has members");
+        let family_member_count = selected.len();
+        let public_examples_observed = selected
+            .values()
+            .map(|candidate| candidate.public_examples_observed)
+            .sum();
+        let public_examples_evaluated = selected
+            .values()
+            .map(|candidate| candidate.public_examples_evaluated)
+            .sum();
+        let public_examples_satisfied = selected
+            .values()
+            .map(|candidate| candidate.public_examples_satisfied)
+            .sum();
+        family_candidates.push(GrammarRepairCandidate {
+            relative_path: first.relative_path.clone(),
+            predecessor_sha256: first.predecessor_sha256.clone(),
+            candidate_sha256: sha256(candidate_source.as_bytes()),
+            candidate_source,
+            transformation: format!(
+                "AST_GRAMMAR_FAMILY:{}:{}",
+                repair_family,
+                &family_evidence_sha256[..16]
+            ),
+            solution_strategy: format!(
+                "GRAMMAR_FAMILY_COMPOSITION:{}:{}",
+                repair_family,
+                &family_evidence_sha256[..12]
+            ),
+            consequence_predictions: vec![
+                format!(
+                    "repair {family_member_count} independently contradicted members of one semantic family atomically"
+                ),
+                "require every family member to satisfy all of its repository-visible public examples before validation"
+                    .to_string(),
+                "accept the family repair only after structural replay, compile, public regression, and release gates"
+                    .to_string(),
+            ],
+            predicted_value: first.predicted_value,
+            structural_repair_program,
+            grammar_expression: repair_family.clone(),
+            public_examples_observed,
+            public_examples_evaluated,
+            public_examples_satisfied,
+            repair_family,
+            family_member_count,
+        });
+    }
+    family_candidates
 }
 
 struct RepositoryGrammarContext {
@@ -1394,11 +1511,20 @@ fn candidates_for_file(
                 public_examples_observed: public_score.observed,
                 public_examples_evaluated: public_score.evaluated,
                 public_examples_satisfied: public_score.satisfied,
+                repair_family: format!("{}:{family}", hole.kind),
+                family_member_count: 1,
             });
         }
     }
+    let mut family_candidates = synthesize_evidence_bound_family_candidates(
+        source,
+        &file_id,
+        max_candidate_bytes,
+        &candidates,
+    );
+    family_candidates.extend(candidates);
     Ok(FileCandidateBatch {
-        candidates,
+        candidates: family_candidates,
         holes_scanned,
     })
 }
@@ -1507,6 +1633,57 @@ mod tests {
             .postconditions
             .iter()
             .any(|_| true));
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn same_evidence_bound_repair_family_is_synthesized_as_one_atomic_edit() {
+        let root = std::env::temp_dir().join(format!(
+            "b-core-grammar-family-repair-{}",
+            std::process::id()
+        ));
+        if root.exists() {
+            fs::remove_dir_all(&root).unwrap();
+        }
+        fs::create_dir_all(root.join("src")).unwrap();
+        let source = r#"
+pub fn add_pair(left: i32, right: i32) -> i32 { left - right }
+pub fn add_more(left: i32, right: i32) -> i32 { left - right }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn public_examples() {
+        assert_eq!(add_pair(2, 3), 5);
+        assert_eq!(add_pair(8, 4), 12);
+        assert_eq!(add_more(1, 6), 7);
+        assert_eq!(add_more(7, 2), 9);
+    }
+}
+"#;
+        fs::write(root.join("src/lib.rs"), source).unwrap();
+
+        let candidates = discover_grammar_repairs(&root, 16 * 1_024).unwrap();
+        let family = candidates
+            .iter()
+            .find(|candidate| candidate.family_member_count == 2)
+            .expect("one family candidate");
+
+        assert!(family.transformation.starts_with("AST_GRAMMAR_FAMILY:"));
+        assert_eq!(family.public_examples_observed, 4);
+        assert_eq!(family.public_examples_satisfied, 4);
+        assert_eq!(family.candidate_source.matches("left + right").count(), 2);
+        assert!(matches!(
+            family.structural_repair_program.edit,
+            SourceEditAtom::AtomicMultiEdit { .. }
+        ));
+        assert_eq!(
+            apply_edit_atom(source, &family.structural_repair_program.edit).unwrap(),
+            family.candidate_source
+        );
+
         fs::remove_dir_all(root).unwrap();
     }
 
