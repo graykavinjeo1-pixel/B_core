@@ -34,7 +34,7 @@ pub const AUTONOMOUS_SOURCE_MUTATION_SCHEMA: &str = "B_CORE_AUTONOMOUS_SOURCE_MU
 pub const SELF_UPDATE_HANDOFF_FILE: &str = "SELF_UPDATE_READY.json";
 pub const SOURCE_REPAIR_LEARNING_SCHEMA: &str = "B_CORE_SOURCE_REPAIR_LEARNING_1";
 pub const IMPROVEMENT_OPERATOR_MEMORY_SCHEMA: &str = "B_CORE_IMPROVEMENT_OPERATOR_MEMORY_1";
-pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 8;
+pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 9;
 const KNOWN_REMAINDER_PREDICTED_VALUE: u16 = 35;
 const MAX_REPOSITORY_REPAIR_FAMILY_FILES: usize = 16;
 const KNOWN_REMAINDER_STRATEGIES: [&str; 4] = [
@@ -316,6 +316,11 @@ pub struct SourceRepairLearningRecord {
     pub cycle_started_generation: u64,
     #[serde(default)]
     pub cycle_started_engine_revision: u64,
+    /// Index of the first physical receipt belonging to the current causal
+    /// candidate cycle. Older receipts remain available for operator learning
+    /// without being misreported as retries of a newly synthesized artifact.
+    #[serde(default)]
+    pub cycle_attempt_start_index: usize,
     pub eligible_after_generation: Option<u64>,
     pub attempts: Vec<SourceRepairAttempt>,
     pub learned_success: Option<LearnedSuccessfulRepair>,
@@ -577,6 +582,7 @@ fn active_cycle_attempts(
         record
             .attempts
             .iter()
+            .skip(record.cycle_attempt_start_index.min(record.attempts.len()))
             .filter(|attempt| source_repair_attempt_is_causal(attempt))
             .collect()
     }
@@ -1217,6 +1223,7 @@ fn record_source_repair_outcome(
             status: "RETRYING".to_string(),
             cycle_started_generation: request.source_generation,
             cycle_started_engine_revision: SOURCE_REPAIR_ENGINE_REVISION,
+            cycle_attempt_start_index: 0,
             eligible_after_generation: None,
             attempts: Vec::new(),
             learned_success: None,
@@ -1233,18 +1240,24 @@ fn record_source_repair_outcome(
     {
         return Err("SOURCE_REPAIR_OPPORTUNITY_BINDING_MISMATCH".to_string());
     }
-    if record.status != "LEARNED_SUCCESS"
+    let starts_new_successor_cycle = record.status == "LEARNED_SUCCESS"
+        && record
+            .learned_success
+            .as_ref()
+            .is_none_or(|learned| learned.candidate_sha256 != request.candidate_sha256);
+    let reopens_failed_or_old_cycle = record.status != "LEARNED_SUCCESS"
         && ((record.status == "ADMITTED_FAILURE"
             && record
                 .eligible_after_generation
                 .is_some_and(|eligible| request.source_generation >= eligible))
-            || record.cycle_started_engine_revision < SOURCE_REPAIR_ENGINE_REVISION)
-    {
+            || record.cycle_started_engine_revision < SOURCE_REPAIR_ENGINE_REVISION);
+    if starts_new_successor_cycle || reopens_failed_or_old_cycle {
         record.status = "RETRYING".to_string();
         record.cycle_started_generation = request.source_generation;
         record.cycle_started_engine_revision = SOURCE_REPAIR_ENGINE_REVISION;
+        record.cycle_attempt_start_index = record.attempts.len();
         record.eligible_after_generation = None;
-        record.attempts.clear();
+        record.learned_success = None;
     }
     let attempt_number = active_cycle_attempts(&record, request.source_generation)
         .len()
@@ -3987,7 +4000,8 @@ mod tests {
         let success = synthetic_receipt(&retry, true);
         let learned = record_source_repair_outcome(&policy, &state, &retry, &success).unwrap();
         assert_eq!(learned.status, "LEARNED_SUCCESS");
-        assert_eq!(learned.attempts.len(), 1);
+        assert_eq!(learned.attempts.len(), 5);
+        assert_eq!(learned.cycle_attempt_start_index, 4);
         assert_eq!(learned.learned_success.unwrap().attempts_required, 1);
         fs::remove_dir_all(root).unwrap();
         fs::remove_dir_all(state).unwrap();
@@ -4027,6 +4041,43 @@ mod tests {
         let memory = derive_improvement_operator_memory(&state).unwrap();
         assert_eq!(memory.total_attempts, 0);
         assert_eq!(memory.total_successful_uses, 0);
+
+        fs::remove_dir_all(root).unwrap();
+        fs::remove_dir_all(state).unwrap();
+    }
+
+    #[test]
+    fn distinct_successor_artifact_starts_a_fresh_cycle_without_erasing_operator_history() {
+        let (root, policy) = fixture("successor-artifact-cycle");
+        let state = external_state(&root);
+        let first = discover_known_source_improvement(&policy, &state, 12)
+            .unwrap()
+            .expect("first candidate");
+        let first_receipt = synthetic_receipt(&first, true);
+        let first_record =
+            record_source_repair_outcome(&policy, &state, &first, &first_receipt).unwrap();
+        assert_eq!(first_record.cycle_attempt_start_index, 0);
+        assert_eq!(first_record.learned_success.unwrap().attempts_required, 1);
+
+        let mut successor = first.clone();
+        successor.source_generation = 13;
+        successor.patch_id.push_str("-successor");
+        successor.candidate_sha256 = "9".repeat(64);
+        let successor_receipt = synthetic_receipt(&successor, true);
+        let successor_record =
+            record_source_repair_outcome(&policy, &state, &successor, &successor_receipt).unwrap();
+
+        assert_eq!(successor_record.status, "LEARNED_SUCCESS");
+        assert_eq!(successor_record.attempts.len(), 2);
+        assert_eq!(successor_record.cycle_attempt_start_index, 1);
+        assert_eq!(active_cycle_attempts(&successor_record, 13).len(), 1);
+        assert_eq!(
+            successor_record.learned_success.unwrap().attempts_required,
+            1
+        );
+        let memory = derive_improvement_operator_memory(&state).unwrap();
+        assert_eq!(memory.total_attempts, 2);
+        assert_eq!(memory.total_successful_uses, 2);
 
         fs::remove_dir_all(root).unwrap();
         fs::remove_dir_all(state).unwrap();
