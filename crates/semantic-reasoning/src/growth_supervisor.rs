@@ -2686,6 +2686,41 @@ fn load_unconsumed_high_observations(
     Ok(observations)
 }
 
+fn consume_superseded_high_observations(
+    config: &GrowthSupervisorConfig,
+    state: &mut SupervisorState,
+    index: &mut FileIndex,
+    observations: &mut Vec<LearningObservation>,
+) -> Result<usize, String> {
+    let mut retained = Vec::with_capacity(observations.len());
+    let mut consumed = 0usize;
+    for observation in observations.drain(..) {
+        let superseded = index
+            .files
+            .get(&observation.logical_path)
+            .is_some_and(|current| current.content_sha256 != observation.content_sha256);
+        if superseded {
+            index
+                .consumed_observation_ids
+                .insert(observation.observation_id.clone());
+            if let Some(event_id) = observation.work_event_id {
+                index.consumed_work_event_ids.insert(event_id);
+            }
+            consumed = consumed.saturating_add(1);
+        } else {
+            retained.push(observation);
+        }
+    }
+    *observations = retained;
+    if consumed > 0 {
+        save_index(config, index)?;
+        state.redundant_observations_consumed = state
+            .redundant_observations_consumed
+            .saturating_add(consumed.min(u64::MAX as usize) as u64);
+    }
+    Ok(consumed)
+}
+
 fn derive_composition_recipe(observations: &[LearningObservation]) -> Vec<String> {
     let mut roles = observations
         .iter()
@@ -5702,6 +5737,7 @@ fn step_without_lease(
     persist_scan_observations(config, &scan.observations)?;
     save_index(config, &mut scan.index)?;
     let mut high = load_unconsumed_high_observations(config, &scan.index)?;
+    consume_superseded_high_observations(config, &mut state, &mut scan.index, &mut high)?;
     let naive = high
         .iter()
         .take(config.resources.max_observations_per_campaign)
@@ -5999,6 +6035,77 @@ mod tests {
 
         assert!(!old.exists());
         assert!(newest.exists());
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn superseded_high_observations_are_consumed_before_repository_validation() {
+        let root = temp_root("superseded-high-observation");
+        let (config_path, config) = test_config(&root);
+        let mut state = initialize(&config_path).unwrap();
+        let mut index = load_index(&config).unwrap();
+        let logical_path = "ROOT_0/src/module.py".to_string();
+        index.files.insert(
+            logical_path.clone(),
+            FileFingerprint {
+                content_sha256: "b".repeat(64),
+                bytes: 1,
+                modified_ms: 2,
+                extension: "py".to_string(),
+                features: StructuralFeatures::default(),
+            },
+        );
+        let current = LearningObservation {
+            observation_id: "current".to_string(),
+            work_event_id: Some("current-event".to_string()),
+            logical_path: logical_path.clone(),
+            content_sha256: "b".repeat(64),
+            predecessor_content_sha256: Some("a".repeat(64)),
+            actor: WorkActor::LocalTool,
+            work_kind: WorkKind::DefectRepair,
+            work_outcome: WorkOutcome::Unknown,
+            features_before: None,
+            features_after: StructuralFeatures::default(),
+            signals: vec!["DEFECT_REPAIR".to_string()],
+            composition_roles: vec!["IMPLEMENTATION_REPAIR".to_string()],
+            learning_score: 80,
+            learning_value: LearningValue::High,
+            reasons: vec!["current fixture".to_string()],
+            verification_evidence_sha256: Vec::new(),
+            performance_metrics: Vec::new(),
+            exact_source_fragments_stored: 0,
+            raw_source_bytes_stored: 0,
+            observed_at_ms: 2,
+        };
+        let mut superseded = current.clone();
+        superseded.observation_id = "superseded".to_string();
+        superseded.work_event_id = Some("superseded-event".to_string());
+        superseded.content_sha256 = "a".repeat(64);
+        superseded.observed_at_ms = 1;
+        let mut synthetic = current.clone();
+        synthetic.observation_id = "synthetic".to_string();
+        synthetic.work_event_id = None;
+        synthetic.logical_path = "ROOT_0/.b_repository_validation/pass".to_string();
+        synthetic.content_sha256 = "c".repeat(64);
+        let mut observations = vec![superseded, current, synthetic];
+
+        let consumed = consume_superseded_high_observations(
+            &config,
+            &mut state,
+            &mut index,
+            &mut observations,
+        )
+        .unwrap();
+
+        assert_eq!(consumed, 1);
+        assert_eq!(observations.len(), 2);
+        assert!(observations
+            .iter()
+            .all(|observation| observation.observation_id != "superseded"));
+        assert!(index.consumed_observation_ids.contains("superseded"));
+        assert!(index.consumed_work_event_ids.contains("superseded-event"));
+        assert!(!index.consumed_observation_ids.contains("current"));
+        assert_eq!(state.redundant_observations_consumed, 1);
         fs::remove_dir_all(root).unwrap();
     }
 
