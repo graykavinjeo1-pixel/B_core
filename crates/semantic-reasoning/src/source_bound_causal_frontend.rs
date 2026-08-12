@@ -3055,6 +3055,40 @@ def lexical_within(value: str, limit: str) -> bool:
     }
 
     #[test]
+    fn sparse_conditional_evidence_preserves_public_information_failure() {
+        let Some(python_executable) = python() else {
+            return;
+        };
+        let request = SourceBoundCausalRequestIR {
+            schema: SOURCE_BOUND_CAUSAL_REQUEST_SCHEMA.to_string(),
+            source_relative_path: PathBuf::from("sparse_conditional.py"),
+            source: "def classify(left: int, right: int) -> int:\n    return 0\n".to_string(),
+            python_executable,
+            alternatives: vec![SourceBoundCausalAlternativeIR {
+                alternative_id: "sparse-conditional".to_string(),
+                public_symbol: "classify".to_string(),
+                public_observations: observations(&[(2, 1, 1), (2, 2, 1), (1, 2, -1)]),
+                allowed_effects: vec![Effect::Pure],
+                require_conditional: true,
+                max_expression_depth: 1,
+                max_candidates: 1_024,
+            }],
+        };
+        let error = analyze_and_synthesize_source_bound(&request).unwrap_err();
+        assert_eq!(
+            error.kind,
+            CausalFrontendFailureKind::PublicInformationInsufficient
+        );
+        assert!(
+            error.detail.starts_with(
+                "BOUNDED_COMPOSITION:TYPED_MECHANISM_PUBLIC_INFORMATION_INSUFFICIENT:MINIMAL_CONDITIONAL_HYPOTHESES:"
+            ),
+            "{}",
+            error.detail
+        );
+    }
+
+    #[test]
     fn exact_owner_and_dependency_closure_reach_atomic_materialization() {
         let Some(python_executable) = python() else {
             return;
@@ -3087,7 +3121,12 @@ def transformer_visitor(value: int, baseline: int) -> int:
             alternatives: vec![SourceBoundCausalAlternativeIR {
                 alternative_id: "rational-distance".to_string(),
                 public_symbol: "Rational.distance".to_string(),
-                public_observations: observations(&[(9, 4, 5), (2, 7, 5), (8, 8, 0)]),
+                public_observations: observations(&[
+                    (9, 4, 5),
+                    (3, 8, 5),
+                    (-2, -9, 7),
+                    (-8, -3, 5),
+                ]),
                 allowed_effects: vec![Effect::Pure],
                 require_conditional: true,
                 max_expression_depth: 2,
@@ -3223,7 +3262,12 @@ def helper(first: int, second: int) -> int:
             alternatives: vec![SourceBoundCausalAlternativeIR {
                 alternative_id: "ambiguous-helper-transport".to_string(),
                 public_symbol: "distance".to_string(),
-                public_observations: observations(&[(9, 4, 5), (2, 7, 5), (8, 8, 0)]),
+                public_observations: observations(&[
+                    (9, 4, 5),
+                    (3, 8, 5),
+                    (-2, -9, 7),
+                    (-8, -3, 5),
+                ]),
                 allowed_effects: vec![Effect::Pure],
                 require_conditional: true,
                 max_expression_depth: 2,
@@ -3284,7 +3328,12 @@ def helper(first: int, second: int) -> int:
             alternatives: vec![SourceBoundCausalAlternativeIR {
                 alternative_id: "diamond-transport".to_string(),
                 public_symbol: "distance".to_string(),
-                public_observations: observations(&[(9, 4, 5), (2, 7, 5), (8, 8, 0)]),
+                public_observations: observations(&[
+                    (9, 4, 5),
+                    (3, 8, 5),
+                    (-2, -9, 7),
+                    (-8, -3, 5),
+                ]),
                 allowed_effects: vec![Effect::Pure],
                 require_conditional: true,
                 max_expression_depth: 2,
@@ -3334,7 +3383,12 @@ def helper(first: int, second: int) -> int:
             alternatives: vec![SourceBoundCausalAlternativeIR {
                 alternative_id: "distance".to_string(),
                 public_symbol: "distance".to_string(),
-                public_observations: observations(&[(7, 3, 4), (2, 8, 6), (5, 5, 0)]),
+                public_observations: observations(&[
+                    (9, 4, 5),
+                    (3, 8, 5),
+                    (-2, -9, 7),
+                    (-8, -3, 5),
+                ]),
                 allowed_effects: vec![Effect::Pure],
                 require_conditional: true,
                 max_expression_depth: 2,
@@ -3496,7 +3550,7 @@ def add(left, right):
     }
 
     #[test]
-    fn discovery_abstains_on_correct_or_ambiguous_code_but_accepts_diagnostic_target() {
+    fn diagnostic_target_does_not_override_insufficient_public_evidence() {
         let Some(python_executable) = python() else {
             return;
         };
@@ -3537,9 +3591,24 @@ def parse_expr(left, right):
         );
         let targeted = SourceBoundRepositoryDiscoveryRequestIR {
             target_symbols: vec!["Rational.distance".to_string()],
+            ..base.clone()
+        };
+        assert_eq!(
+            discover_and_synthesize_python_repository(&targeted)
+                .unwrap_err()
+                .kind,
+            CausalFrontendFailureKind::PublicInformationInsufficient
+        );
+        let sufficient = SourceBoundRepositoryDiscoveryRequestIR {
+            test_sources: vec![RepositoryTestSourceIR {
+                relative_path: PathBuf::from("test_engine.py"),
+                source: "def test_distance():\n    assert Rational.distance(9, 4) == 5\n    assert Rational.distance(3, 8) == 5\n    assert Rational.distance(-2, -9) == 7\n    assert Rational.distance(-8, -3) == 5\n"
+                    .to_string(),
+            }],
+            target_symbols: vec!["Rational.distance".to_string()],
             ..base
         };
-        let receipt = discover_and_synthesize_python_repository(&targeted).unwrap();
+        let receipt = discover_and_synthesize_python_repository(&sufficient).unwrap();
         assert_eq!(
             receipt.alternatives[0]
                 .function_template

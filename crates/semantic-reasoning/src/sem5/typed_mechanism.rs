@@ -36,6 +36,7 @@ const MAX_MECHANISM_OBSERVATIONS: usize = 64;
 const MAX_SYNTHESIS_CANDIDATES: usize = 1_024;
 const MAX_SYNTHESIS_DEPTH: usize = 3;
 const MAX_IDENTIFIABILITY_PROBES: usize = 64;
+const MAX_IDENTIFIABILITY_HYPOTHESES: usize = 64;
 const TYPED_OPERATOR_REPLAY_ITEMS_PER_WORKER: usize = 16;
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -1447,10 +1448,26 @@ pub fn synthesize_typed_mechanism_goal_with_priors(
         if let Some(exact) = exact {
             (None, exact.expression, None)
         } else {
-            synthesize_conditional(&expressions, &output_candidates, &expected)?
+            synthesize_conditional(
+                request,
+                &expressions,
+                &output_candidates,
+                &expected,
+                &observation_arguments,
+                &operand_indices,
+                &api_map,
+            )?
         }
     } else {
-        synthesize_conditional(&expressions, &output_candidates, &expected)?
+        synthesize_conditional(
+            request,
+            &expressions,
+            &output_candidates,
+            &expected,
+            &observation_arguments,
+            &operand_indices,
+            &api_map,
+        )?
     };
     let candidates_falsified = output_candidates
         .iter()
@@ -1738,9 +1755,13 @@ fn enumerate_api_arguments(
 }
 
 fn synthesize_conditional(
+    request: &TypedMechanismSynthesisGoalIR,
     expressions: &[EnumeratedExpression],
     output_candidates: &[EnumeratedExpression],
     expected: &[Value],
+    observation_arguments: &[Vec<Value>],
+    operand_indices: &BTreeMap<String, usize>,
+    api_map: &BTreeMap<String, &ApiDefinition>,
 ) -> Result<
     (
         Option<TypedSyntaxExpressionIR>,
@@ -1805,10 +1826,130 @@ fn synthesize_conditional(
             ));
         }
     }
-    best.map(|(_, _, condition, postimage, otherwise)| {
-        (Some(condition), postimage, Some(otherwise))
-    })
-    .ok_or_else(|| "TYPED_MECHANISM_SYNTHESIS_EXHAUSTED".to_string())
+    let Some((best_nodes, _, condition, postimage, otherwise)) = best else {
+        return Err("TYPED_MECHANISM_SYNTHESIS_EXHAUSTED".to_string());
+    };
+    ensure_minimal_conditional_hypotheses_identifiable(
+        request,
+        expressions,
+        output_candidates,
+        expected,
+        best_nodes,
+        observation_arguments,
+        operand_indices,
+        api_map,
+    )?;
+    Ok((Some(condition), postimage, Some(otherwise)))
+}
+
+#[allow(clippy::too_many_arguments)]
+fn ensure_minimal_conditional_hypotheses_identifiable(
+    request: &TypedMechanismSynthesisGoalIR,
+    expressions: &[EnumeratedExpression],
+    output_candidates: &[EnumeratedExpression],
+    expected: &[Value],
+    best_nodes: usize,
+    observation_arguments: &[Vec<Value>],
+    operand_indices: &BTreeMap<String, usize>,
+    api_map: &BTreeMap<String, &ApiDefinition>,
+) -> Result<(), String> {
+    let probes = bounded_identifiability_arguments(request, observation_arguments);
+    let mut semantic_classes = BTreeSet::new();
+    let mut hypotheses = 0_usize;
+    for condition in expressions
+        .iter()
+        .filter(|candidate| candidate.value_type == ProgramType::Bool)
+    {
+        let mask = condition
+            .outputs
+            .iter()
+            .map(|value| match value {
+                Value::Bool(value) => Ok(*value),
+                _ => Err("TYPED_MECHANISM_CONDITION_EVALUATION_TYPE".to_string()),
+            })
+            .collect::<Result<Vec<_>, _>>()?;
+        if mask.iter().all(|value| *value) || mask.iter().all(|value| !*value) {
+            continue;
+        }
+        let true_target = masked_signature(expected, &mask, true)?;
+        let false_target = masked_signature(expected, &mask, false)?;
+        let true_branches = output_candidates.iter().filter(|candidate| {
+            masked_signature(&candidate.outputs, &mask, true)
+                .is_ok_and(|signature| signature == true_target)
+        });
+        for true_branch in true_branches {
+            let false_branches = output_candidates.iter().filter(|candidate| {
+                masked_signature(&candidate.outputs, &mask, false)
+                    .is_ok_and(|signature| signature == false_target)
+            });
+            for false_branch in false_branches {
+                if condition
+                    .nodes
+                    .saturating_add(true_branch.nodes)
+                    .saturating_add(false_branch.nodes)
+                    != best_nodes
+                {
+                    continue;
+                }
+                hypotheses = hypotheses.saturating_add(1);
+                if hypotheses > MAX_IDENTIFIABILITY_HYPOTHESES {
+                    return Err(format!(
+                        "TYPED_MECHANISM_PUBLIC_INFORMATION_INSUFFICIENT:MINIMAL_CONDITIONAL_HYPOTHESIS_BUDGET:{}:PROBES:{}",
+                        hypotheses,
+                        probes.len()
+                    ));
+                }
+                semantic_classes.insert(conditional_probe_signature(
+                    condition,
+                    true_branch,
+                    false_branch,
+                    &probes,
+                    operand_indices,
+                    api_map,
+                )?);
+                if semantic_classes.len() > 1 {
+                    return Err(format!(
+                        "TYPED_MECHANISM_PUBLIC_INFORMATION_INSUFFICIENT:MINIMAL_CONDITIONAL_HYPOTHESES:{}:SEMANTIC_CLASSES:{}:PROBES:{}",
+                        hypotheses,
+                        semantic_classes.len(),
+                        probes.len()
+                    ));
+                }
+            }
+        }
+    }
+    Ok(())
+}
+
+fn conditional_probe_signature(
+    condition: &EnumeratedExpression,
+    true_branch: &EnumeratedExpression,
+    false_branch: &EnumeratedExpression,
+    probes: &[Vec<Value>],
+    operand_indices: &BTreeMap<String, usize>,
+    api_map: &BTreeMap<String, &ApiDefinition>,
+) -> Result<String, String> {
+    let condition = lower_expression(&condition.expression, operand_indices)?;
+    let true_branch = lower_expression(&true_branch.expression, operand_indices)?;
+    let false_branch = lower_expression(&false_branch.expression, operand_indices)?;
+    let signature = probes
+        .iter()
+        .map(|arguments| {
+            let outcome = match eval_scalar(&condition, arguments, api_map) {
+                Ok(Value::Bool(true)) => eval_scalar(&true_branch, arguments, api_map),
+                Ok(Value::Bool(false)) => eval_scalar(&false_branch, arguments, api_map),
+                Ok(_) => Err("TYPED_MECHANISM_CONDITION_EVALUATION_TYPE".to_string()),
+                Err(error) => Err(error),
+            };
+            match outcome {
+                Ok(value) => serde_json::to_string(&("OK", value))
+                    .map_err(|error| format!("TYPED_MECHANISM_PROBE_SERIALIZE:{error}")),
+                Err(error) => Ok(format!("[\"ERROR\",{error:?}]")),
+            }
+        })
+        .collect::<Result<Vec<_>, String>>()?;
+    serde_json::to_string(&signature)
+        .map_err(|error| format!("TYPED_MECHANISM_PROBE_SIGNATURE:{error}"))
 }
 
 fn masked_signature(values: &[Value], mask: &[bool], selected: bool) -> Result<String, String> {
@@ -2797,6 +2938,48 @@ mod tests {
         assert!(
             error
                 .starts_with("TYPED_MECHANISM_PUBLIC_INFORMATION_INSUFFICIENT:MINIMAL_HYPOTHESES:"),
+            "{error}"
+        );
+        assert!(error.contains(":SEMANTIC_CLASSES:"));
+        assert!(error.contains(":PROBES:"));
+    }
+
+    #[test]
+    fn observationally_ambiguous_conditional_hypotheses_fail_closed() {
+        let request = TypedMechanismSynthesisGoalIR {
+            schema: TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA.to_string(),
+            goal_id: "sparse_conditional_boundary".to_string(),
+            split: DataSplit::FreshBlind,
+            operands: vec![
+                operand("value", "value", ProgramType::Int),
+                operand("floor", "floor", ProgramType::Int),
+            ],
+            output_type: ProgramType::Int,
+            definitions: Vec::new(),
+            allowed_effects: vec![Effect::Pure],
+            preconditions: Vec::new(),
+            postconditions: Vec::new(),
+            invariants: Vec::new(),
+            public_observations: [(2, 1, 1), (2, 2, 1), (1, 2, -1)]
+                .into_iter()
+                .map(|(value, floor, expected)| TypedMechanismObservationIR {
+                    operands: BTreeMap::from([
+                        ("value".to_string(), Value::Int(value)),
+                        ("floor".to_string(), Value::Int(floor)),
+                    ]),
+                    expected_postimage: Value::Int(expected),
+                })
+                .collect(),
+            require_conditional: true,
+            max_expression_depth: 1,
+            max_candidates: 1_024,
+            provenance: vec!["CONDITIONAL_IDENTIFIABILITY_NEGATIVE_CANARY".to_string()],
+        };
+        let error = synthesize_typed_mechanism_goal(&request).unwrap_err();
+        assert!(
+            error.starts_with(
+                "TYPED_MECHANISM_PUBLIC_INFORMATION_INSUFFICIENT:MINIMAL_CONDITIONAL_HYPOTHESES:"
+            ),
             "{error}"
         );
         assert!(error.contains(":SEMANTIC_CLASSES:"));

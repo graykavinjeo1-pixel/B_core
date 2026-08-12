@@ -43,11 +43,11 @@ pub const SOURCE_REPAIR_LEARNING_SCHEMA: &str = "B_CORE_SOURCE_REPAIR_LEARNING_1
 pub const IMPROVEMENT_OPERATOR_MEMORY_SCHEMA: &str = "B_CORE_IMPROVEMENT_OPERATOR_MEMORY_1";
 pub const MAX_IMPROVEMENT_OPERATOR_GRAPH_NODES: usize = 8;
 const MAX_TYPED_OPERATOR_RECONCILIATION_RECEIPTS: usize = 64;
-// Revision 16 promotes successfully installed typed Rust expressions into the
-// same authority-bound operator repository used by source-bound synthesis.
-// Reopen older exhausted families because a learned expression can now reduce
-// their search rather than merely adjust a post-hoc candidate score.
-pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 20;
+// Revision 21 reopens older exhausted families under the source-bound
+// conditional identifiability gate. A previously selected first-fit branch is
+// now either proved equivalent across bounded semantic probes or rejected as
+// insufficient public information before source installation.
+pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 21;
 const KNOWN_REMAINDER_PREDICTED_VALUE: u16 = 35;
 const MAX_REPOSITORY_REPAIR_FAMILY_FILES: usize = 16;
 const KNOWN_REMAINDER_STRATEGIES: [&str; 4] = [
