@@ -11,6 +11,7 @@ use std::fs::{self, OpenOptions};
 use std::io::Write;
 use std::path::{Component, Path, PathBuf};
 use std::process::{Command, Stdio};
+use std::sync::{Condvar, Mutex, OnceLock};
 use std::thread;
 use std::time::{Duration, Instant, SystemTime};
 
@@ -30,6 +31,45 @@ const MAX_DIAGNOSTIC_BYTES: u64 = 16 * 1024 * 1024;
 const MAX_CACHED_SOURCE_STATES: usize = 2;
 const MAX_SUGGESTIONS: usize = 128;
 const MAX_EAGER_FAMILY_FALLBACKS: usize = 2;
+const MAX_CONCURRENT_RUSTFMT: usize = 4;
+const MIN_RUSTFMT_TIMEOUT_MS: u64 = 5_000;
+static RUSTFMT_GATE: OnceLock<(usize, Mutex<usize>, Condvar)> = OnceLock::new();
+
+struct RustfmtPermit;
+
+fn acquire_rustfmt_permit() -> Result<RustfmtPermit, String> {
+    let gate = RUSTFMT_GATE.get_or_init(|| {
+        let capacity = thread::available_parallelism()
+            .map(usize::from)
+            .unwrap_or(1)
+            .clamp(1, MAX_CONCURRENT_RUSTFMT);
+        (capacity, Mutex::new(0), Condvar::new())
+    });
+    let mut active = gate
+        .1
+        .lock()
+        .map_err(|_| "COMPILER_REPAIR_RUSTFMT_GATE_POISONED".to_string())?;
+    while *active >= gate.0 {
+        active = gate
+            .2
+            .wait(active)
+            .map_err(|_| "COMPILER_REPAIR_RUSTFMT_GATE_POISONED".to_string())?;
+    }
+    *active += 1;
+    Ok(RustfmtPermit)
+}
+
+impl Drop for RustfmtPermit {
+    fn drop(&mut self) {
+        let Some(gate) = RUSTFMT_GATE.get() else {
+            return;
+        };
+        if let Ok(mut active) = gate.1.lock() {
+            *active = active.saturating_sub(1);
+            gate.2.notify_one();
+        }
+    }
+}
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct CompilerGuidedRepairPolicy<'a> {
@@ -592,6 +632,11 @@ fn rustfmt_candidate_source(
     policy: &CompilerGuidedRepairPolicy<'_>,
     candidate: &str,
 ) -> Result<String, String> {
+    // Formatting is independent across candidates, but unbounded external
+    // process fan-out competes with rustc/test workers and turns scheduler
+    // delay into false formatter timeouts. Keep a small graph lane for the
+    // child processes; time spent waiting for a lane is not formatter runtime.
+    let _permit = acquire_rustfmt_permit()?;
     let format_root = policy.state_dir.join("compiler_candidate_format");
     fs::create_dir_all(&format_root)
         .map_err(|error| format!("COMPILER_REPAIR_FORMAT_DIR:{error}"))?;
@@ -644,7 +689,10 @@ fn rustfmt_candidate_source(
             return Err(format!("COMPILER_REPAIR_RUSTFMT_SPAWN:{error}"));
         }
     };
-    let timeout = Duration::from_millis(policy.timeout_ms);
+    // Compiler observation budgets may intentionally be tiny. A formatter
+    // startup under a busy local build needs a separate bounded floor so a
+    // valid candidate is not misclassified as a semantic repair failure.
+    let timeout = Duration::from_millis(policy.timeout_ms.max(MIN_RUSTFMT_TIMEOUT_MS));
     let started = Instant::now();
     let status = loop {
         if let Some(status) = child

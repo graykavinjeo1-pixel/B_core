@@ -44,10 +44,10 @@ pub const SOURCE_REPAIR_LEARNING_SCHEMA: &str = "B_CORE_SOURCE_REPAIR_LEARNING_1
 pub const IMPROVEMENT_OPERATOR_MEMORY_SCHEMA: &str = "B_CORE_IMPROVEMENT_OPERATOR_MEMORY_1";
 pub const MAX_IMPROVEMENT_OPERATOR_GRAPH_NODES: usize = 8;
 const MAX_TYPED_OPERATOR_RECONCILIATION_RECEIPTS: usize = 64;
-// Revision 37 requires accepted and rejected closure evidence to form an
-// exact, duplicate-free partition of every source-derived execution
-// dependency closure.
-pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 37;
+// Revision 38 also gives rustfmt its own bounded external-process lane and
+// startup budget so parallel compiler-repair synthesis cannot convert host
+// scheduling contention into false semantic failures.
+pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 38;
 const KNOWN_REMAINDER_PREDICTED_VALUE: u16 = 35;
 const MAX_REPOSITORY_REPAIR_FAMILY_FILES: usize = 16;
 const KNOWN_REMAINDER_STRATEGIES: [&str; 4] = [
