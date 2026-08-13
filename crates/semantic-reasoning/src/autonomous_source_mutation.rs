@@ -45,10 +45,9 @@ pub const IMPROVEMENT_OPERATOR_MEMORY_SCHEMA: &str = "B_CORE_IMPROVEMENT_OPERATO
 pub const MAX_IMPROVEMENT_OPERATOR_GRAPH_NODES: usize = 8;
 const MAX_COMPETING_SOURCE_PROPOSALS: usize = 3;
 const MAX_TYPED_OPERATOR_RECONCILIATION_RECEIPTS: usize = 64;
-// Revision 41 removes generator-order authority through one bounded proposal
-// selection/composition kernel and adds source-bound Python class declaration
-// insert/replace lowering with exact product-owner evidence.
-pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 41;
+// Revision 42 additionally binds declaration validation to its exact typed
+// postimage and preserves the predecessor's LF/CRLF convention during edits.
+pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 42;
 const KNOWN_REMAINDER_PREDICTED_VALUE: u16 = 35;
 const MAX_REPOSITORY_REPAIR_FAMILY_FILES: usize = 16;
 const KNOWN_REMAINDER_STRATEGIES: [&str; 4] = [

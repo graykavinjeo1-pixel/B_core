@@ -1002,7 +1002,7 @@ def qualified_functions(tree):
     return found
 
 def qualified_class_attributes(tree):
-    found = set()
+    found = {}
     def collect(items, prefix):
         for item in items:
             if not isinstance(item, ast.ClassDef):
@@ -1010,9 +1010,10 @@ def qualified_class_attributes(tree):
             qualified = ".".join(prefix + [item.name])
             for statement in item.body:
                 if isinstance(statement, ast.Assign):
-                    found.update((qualified, target.id) for target in statement.targets if isinstance(target, ast.Name))
-                elif isinstance(statement, ast.AnnAssign) and isinstance(statement.target, ast.Name):
-                    found.add((qualified, statement.target.id))
+                    for target in statement.targets:
+                        if isinstance(target, ast.Name): found[(qualified, target.id)] = statement.value
+                elif isinstance(statement, ast.AnnAssign) and isinstance(statement.target, ast.Name) and statement.value is not None:
+                    found[(qualified, statement.target.id)] = statement.value
             collect(item.body, prefix + [item.name])
     collect(tree.body, [])
     return found
@@ -1023,8 +1024,9 @@ for ordinal, candidate in enumerate(candidates):
     public_symbol = candidate.get("public_symbol") if isinstance(candidate, dict) else None
     declaration_owner = candidate.get("declaration_owner") if isinstance(candidate, dict) else None
     declaration_attribute = candidate.get("declaration_attribute") if isinstance(candidate, dict) else None
+    declaration_value_source = candidate.get("declaration_value_source") if isinstance(candidate, dict) else None
     function_binding = isinstance(public_symbol, str) and bool(public_symbol)
-    declaration_binding = isinstance(declaration_owner, str) and bool(declaration_owner) and isinstance(declaration_attribute, str) and bool(declaration_attribute)
+    declaration_binding = isinstance(declaration_owner, str) and bool(declaration_owner) and isinstance(declaration_attribute, str) and bool(declaration_attribute) and isinstance(declaration_value_source, str) and bool(declaration_value_source)
     if not isinstance(source, str) or function_binding == declaration_binding:
         results.append({"ok": False, "failure": "PUBLIC_INFORMATION_INSUFFICIENT", "detail": "CANDIDATE_INPUT:" + str(ordinal)})
         continue
@@ -1037,9 +1039,21 @@ for ordinal, candidate in enumerate(candidates):
     if function_binding and public_symbol not in qualified_functions(tree):
         results.append({"ok": False, "failure": "PUBLIC_INFORMATION_INSUFFICIENT", "detail": "MATERIALIZED_PUBLIC_SYMBOL_IDENTITY_LOST:" + public_symbol})
         continue
-    if declaration_binding and (declaration_owner, declaration_attribute) not in qualified_class_attributes(tree):
-        results.append({"ok": False, "failure": "PUBLIC_INFORMATION_INSUFFICIENT", "detail": "MATERIALIZED_CLASS_DECLARATION_IDENTITY_LOST:" + declaration_owner + "." + declaration_attribute})
-        continue
+    if declaration_binding:
+        declarations = qualified_class_attributes(tree)
+        key = (declaration_owner, declaration_attribute)
+        if key not in declarations:
+            results.append({"ok": False, "failure": "PUBLIC_INFORMATION_INSUFFICIENT", "detail": "MATERIALIZED_CLASS_DECLARATION_IDENTITY_LOST:" + declaration_owner + "." + declaration_attribute})
+            continue
+        try:
+            observed = ast.literal_eval(declarations[key])
+            expected = ast.literal_eval(declaration_value_source)
+        except (ValueError, TypeError, SyntaxError) as error:
+            results.append({"ok": False, "failure": "UNSUPPORTED_LANGUAGE_SYNTAX", "detail": "MATERIALIZED_CLASS_DECLARATION_LITERAL:" + str(error)})
+            continue
+        if type(observed) is not type(expected) or observed != expected:
+            results.append({"ok": False, "failure": "PUBLIC_INFORMATION_INSUFFICIENT", "detail": "MATERIALIZED_CLASS_DECLARATION_POSTIMAGE_MISMATCH:" + declaration_owner + "." + declaration_attribute})
+            continue
     results.append({"ok": True})
 
 json.dump({"ok": True, "results": results}, sys.stdout, ensure_ascii=False)
@@ -1068,6 +1082,7 @@ line_starts = [0]
 for line in source.splitlines(keepends=True):
     line_starts.append(line_starts[-1] + len(line.encode("utf-8")))
 source_bytes = source.encode("utf-8")
+newline = "\r\n" if "\r\n" in source else "\n"
 def byte_offset(node, end=False):
     line = getattr(node, "end_lineno" if end else "lineno", None)
     column = getattr(node, "end_col_offset" if end else "col_offset", None)
@@ -1329,13 +1344,13 @@ def declaration_insertion(owner, attribute, expected):
         indent = source_bytes[anchor_start:byte_offset(anchor)].decode("utf-8")
         if not indent.isspace(): indent = prefix
         offset = anchor_start
-        insertion = indent + attribute + " = " + repr(expected) + "\n"
+        insertion = indent + attribute + " = " + repr(expected) + newline
     elif is_docstring:
         offset = byte_offset(first, True)
-        insertion = "\n" + prefix + attribute + " = " + repr(expected)
+        insertion = newline + prefix + attribute + " = " + repr(expected)
     else:
         offset = line_start
-        insertion = prefix + attribute + " = " + repr(expected) + "\n"
+        insertion = prefix + attribute + " = " + repr(expected) + newline
     return offset, insertion
 
 declarations = []
@@ -1582,6 +1597,7 @@ enum PythonCandidateBinding<'a> {
         source: &'a str,
         qualified_owner: &'a str,
         attribute: &'a str,
+        value_source: &'a str,
     },
 }
 
@@ -1605,10 +1621,12 @@ impl PythonCandidateBinding<'_> {
                 source,
                 qualified_owner,
                 attribute,
+                value_source,
             } => serde_json::json!({
                 "source": source,
                 "declaration_owner": qualified_owner,
                 "declaration_attribute": attribute,
+                "declaration_value_source": value_source,
             }),
         }
     }
@@ -1692,17 +1710,18 @@ fn validate_python_candidate_batch(
 
 fn validate_python_declaration_candidate_batch(
     executable: &Path,
-    candidates: &[(&str, &str, &str)],
+    candidates: &[(&str, &str, &str, &str)],
 ) -> Result<(Vec<Result<(), CausalFrontendFailure>>, usize), CausalFrontendFailure> {
     let bindings = candidates
         .iter()
-        .map(
-            |(source, qualified_owner, attribute)| PythonCandidateBinding::ClassDeclaration {
+        .map(|(source, qualified_owner, attribute, value_source)| {
+            PythonCandidateBinding::ClassDeclaration {
                 source,
                 qualified_owner,
                 attribute,
-            },
-        )
+                value_source,
+            }
+        })
         .collect::<Vec<_>>();
     validate_python_candidate_bindings(executable, &bindings)
 }
@@ -1928,6 +1947,7 @@ pub fn discover_and_synthesize_python_repository_with_operators(
                 materialized.candidate_source.as_str(),
                 declaration.declaration_template.qualified_owner.as_str(),
                 declaration.declaration_template.attribute.as_str(),
+                declaration.declaration_template.value_source.as_str(),
             )
         })
         .collect::<Vec<_>>();
@@ -3149,12 +3169,15 @@ pub fn validate_source_bound_causal_receipt_with_python(
                 replay_source_bound_patch(source, &declaration.replayable_patch)?,
                 declaration.declaration_template.qualified_owner.as_str(),
                 declaration.declaration_template.attribute.as_str(),
+                declaration.declaration_template.value_source.as_str(),
             ))
         })
         .collect::<Result<Vec<_>, CausalFrontendFailure>>()?;
     let declaration_inputs = declaration_candidates
         .iter()
-        .map(|(candidate, owner, attribute)| (candidate.as_str(), *owner, *attribute))
+        .map(|(candidate, owner, attribute, value_source)| {
+            (candidate.as_str(), *owner, *attribute, *value_source)
+        })
         .collect::<Vec<_>>();
     let (declaration_outcomes, _) =
         validate_python_declaration_candidate_batch(python_executable, &declaration_inputs)?;
@@ -3737,6 +3760,31 @@ mod tests {
             CausalFrontendFailureKind::UnsupportedLanguageSyntax
         );
         assert!(failure.detail.starts_with("CANDIDATE_PARSE:"));
+    }
+
+    #[test]
+    fn declaration_candidate_batch_requires_the_exact_public_postimage() {
+        let Some(python_executable) = python() else {
+            return;
+        };
+        let correct = "class Policy:\n    marker = 'ready'\n";
+        let wrong = "class Policy:\n    marker = 'blocked'\n";
+        let (outcomes, processes) = validate_python_declaration_candidate_batch(
+            &python_executable,
+            &[
+                (correct, "Policy", "marker", "'ready'"),
+                (wrong, "Policy", "marker", "'ready'"),
+            ],
+        )
+        .unwrap();
+        assert_eq!(processes, 1);
+        assert!(outcomes[0].is_ok());
+        assert_eq!(
+            outcomes[1].as_ref().unwrap_err(),
+            &CausalFrontendFailure::public(
+                "MATERIALIZED_CLASS_DECLARATION_POSTIMAGE_MISMATCH:Policy.marker"
+            )
+        );
     }
 
     #[test]
@@ -5419,6 +5467,7 @@ def parse_expr(left, right):
         assert!(candidate.contains("limit = 3"));
         assert!(candidate.contains("marker = '준비'"));
         assert!(candidate.contains("\"\"\"한글 설명\"\"\""));
+        assert!(!candidate.replace("\r\n", "").contains('\n'));
         let execution = Command::new(&python_executable)
             .args(["-X", "utf8", "-c"])
             .arg(format!("{candidate}\n{tests}\ntest_policy_contract()\n"))
