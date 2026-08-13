@@ -5,13 +5,17 @@ use std::{
     path::{Path, PathBuf},
 };
 
+use dockable_semantic_core::DockableCore;
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 
+use crate::document_swarm::{
+    deliberate_document, DocumentDeliberationContext, DocumentDeliberationIR,
+};
 use crate::language_knowledge::LanguageCodeIR;
 
 pub const KNOWLEDGE_WORK_REQUEST_SCHEMA: &str = "B_CORE_KNOWLEDGE_WORK_REQUEST_IR_1";
-pub const KNOWLEDGE_WORK_RESPONSE_SCHEMA: &str = "B_CORE_KNOWLEDGE_WORK_RESPONSE_IR_1";
+pub const KNOWLEDGE_WORK_RESPONSE_SCHEMA: &str = "B_CORE_KNOWLEDGE_WORK_RESPONSE_IR_2";
 pub const PAPER_SCHEMA: &str = "B_CORE_PAPER_IR_1";
 pub const TABLE_SCHEMA: &str = "B_CORE_TABLE_IR_1";
 pub const CHART_SCHEMA: &str = "B_CORE_CHART_IR_1";
@@ -515,6 +519,7 @@ pub struct KnowledgeWorkProductIR {
     pub design: DocumentDesignIR,
     pub document: KnowledgeDocumentIR,
     pub findings: Vec<KnowledgeFindingIR>,
+    pub deliberation: DocumentDeliberationIR,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub text_output: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -537,6 +542,8 @@ pub enum KnowledgeWorkError {
     FileWrite,
     RevisionNotGrounded,
     NumericOverflow,
+    DeliberationRejected,
+    DeliberationFailure,
     Json,
 }
 
@@ -768,6 +775,16 @@ pub fn execute_document_work_as(
     operation: KnowledgeWorkOperationIR,
     inferred_kind: Option<DocumentKindIR>,
 ) -> Result<KnowledgeWorkProductIR, KnowledgeWorkError> {
+    execute_document_work_as_with_reasoning(request, operation, inferred_kind, None, None)
+}
+
+pub(crate) fn execute_document_work_as_with_reasoning(
+    request: &KnowledgeWorkRequestIR,
+    operation: KnowledgeWorkOperationIR,
+    inferred_kind: Option<DocumentKindIR>,
+    core: Option<&DockableCore>,
+    parent_reasoning_sha256: Option<&str>,
+) -> Result<KnowledgeWorkProductIR, KnowledgeWorkError> {
     validate_request(request)?;
     let (source_document, source_text) = load_source(request.source.as_ref(), &request.request_id)?;
     let output_language = request
@@ -803,6 +820,22 @@ pub fn execute_document_work_as(
         }
     }
     let findings = analyze_document_in_language(&document, output_language);
+    let deliberation = deliberate_document(
+        core,
+        DocumentDeliberationContext {
+            request,
+            operation,
+            kind,
+            design: &design,
+            document: &document,
+            findings: &findings,
+            parent_reasoning_sha256,
+        },
+    )
+    .map_err(|_| KnowledgeWorkError::DeliberationFailure)?;
+    if !deliberation.render_authorized {
+        return Err(KnowledgeWorkError::DeliberationRejected);
+    }
     let rendered = render_result(
         &document,
         &findings,
@@ -837,6 +870,7 @@ pub fn execute_document_work_as(
         design,
         document,
         findings,
+        deliberation,
         text_output,
         file_output,
         content_sha256,

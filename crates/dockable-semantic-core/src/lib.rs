@@ -11,6 +11,7 @@ pub mod reasoning;
 pub mod runtime;
 pub mod state;
 pub mod substrate;
+pub mod swarm;
 pub mod task;
 
 pub use experience::{
@@ -27,3 +28,9 @@ pub use planning::{
     PLAN_SCHEMA,
 };
 pub use runtime::{CoreError, DockableCore};
+pub use swarm::{
+    AssessmentVerdictIR, CriterionDecisionIR, DeliberationFactIR, ExpertContributionIR,
+    ExpertWorkerIR, ExpertWorkerRoleIR, PeerMessageIR, PeerReviewDispositionIR, QualityCriterionIR,
+    SwarmCore, SwarmDeliberationIR, SwarmDeliberationRequestIR, SwarmError,
+    SWARM_DELIBERATION_REQUEST_SCHEMA, SWARM_DELIBERATION_SCHEMA,
+};

@@ -5,7 +5,7 @@ use dockable_semantic_core::{
 use serde::{Deserialize, Serialize};
 
 use crate::knowledge_work::{
-    execute_document_work_as, infer_operation, DocumentKindIR, KnowledgeWorkError,
+    execute_document_work_as_with_reasoning, infer_operation, DocumentKindIR, KnowledgeWorkError,
     KnowledgeWorkOperationIR, KnowledgeWorkProductIR, KnowledgeWorkRequestIR,
     KNOWLEDGE_WORK_RESPONSE_SCHEMA,
 };
@@ -311,13 +311,23 @@ impl CognitiveApi {
                         .to_string(),
                     "every analytical finding remains bound to an observable source location"
                         .to_string(),
+                    "only the expert roles required by observed quality criteria are spawned"
+                        .to_string(),
+                    "rendering occurs only after independent assessment and peer review"
+                        .to_string(),
                 ],
                 context_tags: understanding.semantic_tags.clone(),
                 max_steps: request.max_plan_steps,
             })
             .map_err(map_planning_error)?;
-        let product = execute_document_work_as(request, operation, document_kind)
-            .map_err(map_knowledge_work_error)?;
+        let product = execute_document_work_as_with_reasoning(
+            request,
+            operation,
+            document_kind,
+            Some(&self.core),
+            Some(&plan.plan_sha256),
+        )
+        .map_err(map_knowledge_work_error)?;
         Ok(KnowledgeWorkResponseIR {
             schema: KNOWLEDGE_WORK_RESPONSE_SCHEMA.to_string(),
             request_id: request.request_id.clone(),
@@ -1064,6 +1074,13 @@ mod tests {
             })
             .unwrap();
         assert_eq!(response.product.document.kind(), DocumentKindIR::UserGuide);
+        assert_eq!(
+            response.product.deliberation.swarm.parent_reasoning_sha256,
+            response.plan.plan_sha256
+        );
+        assert!(response.product.deliberation.causally_gated);
+        assert!(response.product.deliberation.render_authorized);
+        assert_eq!(response.product.deliberation.swarm.external_model_calls, 0);
         assert!(response
             .lexical_activations
             .iter()
@@ -1072,5 +1089,43 @@ mod tests {
             .lexical_activations
             .iter()
             .any(|activation| activation.lexeme_id == "KO.TABLE"));
+    }
+
+    #[test]
+    fn professional_a4_manual_remains_an_authored_guide_and_binds_swarm_to_plan() {
+        let mut api = CognitiveApi::new_embedded().unwrap();
+        let command =
+            "GPT 사용 설명서를 전문 A4 문서로 작성해. 확인되지 않은 기능은 확인 필요라고 표시해.";
+        let activations = api.lexical_memory.activate(
+            command,
+            &["manual".to_string(), "professional_document".to_string()],
+        );
+        assert_eq!(
+            lexical_knowledge_operation(infer_operation(command), &activations),
+            KnowledgeWorkOperationIR::Write
+        );
+        let response = api
+            .process_knowledge_work(&KnowledgeWorkRequestIR {
+                schema: KNOWLEDGE_WORK_REQUEST_SCHEMA.to_string(),
+                request_id: "KW-GUIDE-A4".to_string(),
+                command: command.to_string(),
+                source: None,
+                document_kind: Some(DocumentKindIR::UserGuide),
+                output_language: Some(LanguageCodeIR::Korean),
+                design: None,
+                output: OutputDirectiveIR {
+                    mode: OutputModeIR::Text,
+                    format: OutputFormatIR::Html,
+                    path: None,
+                    overwrite: false,
+                },
+                context_tags: vec!["manual".to_string(), "professional_document".to_string()],
+                max_plan_steps: 16,
+            })
+            .expect("reasoned professional guide");
+        assert_eq!(
+            response.product.deliberation.swarm.parent_reasoning_sha256,
+            response.plan.plan_sha256
+        );
     }
 }

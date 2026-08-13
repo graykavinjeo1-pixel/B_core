@@ -2,6 +2,7 @@
 
 pub mod cognitive;
 mod document_design;
+pub mod document_swarm;
 pub mod generic;
 pub mod knowledge_work;
 pub mod language;
@@ -14,6 +15,7 @@ pub use cognitive::{
     NaturalLanguageRequestIR, NaturalLanguageResponseIR, NATURAL_LANGUAGE_REQUEST_SCHEMA,
     NATURAL_LANGUAGE_RESPONSE_SCHEMA,
 };
+pub use document_swarm::{DocumentDeliberationIR, DOCUMENT_DELIBERATION_SCHEMA};
 pub use generic::DeterministicOffsetCapability;
 pub use knowledge_work::{
     analyze_document, analyze_document_in_language, execute_document_work,

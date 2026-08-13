@@ -13,6 +13,7 @@ use crate::{
     planning::{PlanGoalIR, PlanIR, Planner, PlanningError},
     reasoning::{AdaptiveReasoner, ResourceBudget},
     state::{SemanticState, SparseIndex},
+    swarm::{SwarmCore, SwarmDeliberationIR, SwarmDeliberationRequestIR, SwarmError},
     task::{Split, VisibleTask},
 };
 
@@ -37,6 +38,7 @@ pub struct DockableCore {
     reasoner: AdaptiveReasoner,
     experience_memory: ExperienceMemory,
     planner: Planner,
+    swarm: SwarmCore,
 }
 
 impl DockableCore {
@@ -55,6 +57,7 @@ impl DockableCore {
             reasoner: AdaptiveReasoner::default(),
             experience_memory: ExperienceMemory::default(),
             planner: Planner,
+            swarm: SwarmCore,
         })
     }
 
@@ -160,6 +163,15 @@ impl DockableCore {
 
     pub fn generate_plan(&self, goal: &PlanGoalIR) -> Result<PlanIR, PlanningError> {
         self.planner.generate(goal, &self.experience_memory)
+    }
+
+    /// Runs a bounded internal panel. Worker roles are selected from typed
+    /// quality criteria and never delegate authority to an external model.
+    pub fn deliberate(
+        &self,
+        request: &SwarmDeliberationRequestIR,
+    ) -> Result<SwarmDeliberationIR, SwarmError> {
+        self.swarm.deliberate(request)
     }
 
     pub fn retained_experience_count(&self) -> usize {
