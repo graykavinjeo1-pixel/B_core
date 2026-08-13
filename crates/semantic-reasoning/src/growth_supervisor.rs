@@ -1106,6 +1106,8 @@ pub struct SelfCheck {
     pub executable_improvement_operator_repository_enabled: bool,
     pub improvement_operator_repository_requires_source_synthesis_payload: bool,
     pub program_execution_profile_is_not_synthesis_knowledge: bool,
+    pub fullstack_knowledge_uses_typed_executable_transitions: bool,
+    pub fullstack_text_contracts_are_metadata_only: bool,
     pub successful_operators_are_content_addressed: bool,
     pub cross_family_operator_transfer_changes_candidate_priority: bool,
     pub repository_guided_outcomes_are_causally_tracked: bool,
@@ -1216,6 +1218,8 @@ pub fn self_check() -> SelfCheck {
         executable_improvement_operator_repository_enabled: true,
         improvement_operator_repository_requires_source_synthesis_payload: true,
         program_execution_profile_is_not_synthesis_knowledge: true,
+        fullstack_knowledge_uses_typed_executable_transitions: true,
+        fullstack_text_contracts_are_metadata_only: true,
         successful_operators_are_content_addressed: true,
         cross_family_operator_transfer_changes_candidate_priority: true,
         repository_guided_outcomes_are_causally_tracked: true,
@@ -11161,6 +11165,8 @@ mod tests {
         assert!(check.executable_improvement_operator_repository_enabled);
         assert!(check.improvement_operator_repository_requires_source_synthesis_payload);
         assert!(check.program_execution_profile_is_not_synthesis_knowledge);
+        assert!(check.fullstack_knowledge_uses_typed_executable_transitions);
+        assert!(check.fullstack_text_contracts_are_metadata_only);
         assert!(check.successful_operators_are_content_addressed);
         assert!(check.typed_improvement_operator_execution_required);
         assert!(check.operator_repository_requires_executed_receipt);

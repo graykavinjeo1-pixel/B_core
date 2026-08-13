@@ -30,6 +30,7 @@ pub const SOURCE_RECORDS_SHA256: &str =
     "6BDE8E5722B284181521959995F86FEA2B0EAEBAC9B011A896A52360FFDA15F8";
 pub const MAX_ACTIVE_ATOMS: usize = 8;
 pub const SOURCE_FAMILY_CLASSIFIER_VERSION: &str = "FULLSTACK_SOURCE_FAMILY_V1";
+pub const FULLSTACK_KNOWLEDGE_SCHEMA: &str = "b_core_fullstack_ops_knowledge_bundle_v2";
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
@@ -57,6 +58,137 @@ pub enum Capability {
     TelemetryCorrelation,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum FullStackContractIR {
+    RawUserEvent,
+    ValidatedInteraction,
+    ClientRequest,
+    TransportRequest,
+    AuthorizedCommand,
+    DomainResult,
+    ServiceResponse,
+    StableViewState,
+    ObservedOutcome,
+    ReleaseCandidate,
+    CanaryObservation,
+    ReleaseDecision,
+    StableRelease,
+    UnrelatedContract,
+}
+
+impl FullStackContractIR {
+    fn label(self) -> &'static str {
+        match self {
+            Self::RawUserEvent => "RAW_USER_EVENT",
+            Self::ValidatedInteraction => "VALIDATED_INTERACTION",
+            Self::ClientRequest => "CLIENT_REQUEST",
+            Self::TransportRequest => "TRANSPORT_REQUEST",
+            Self::AuthorizedCommand => "AUTHORIZED_COMMAND",
+            Self::DomainResult => "DOMAIN_RESULT",
+            Self::ServiceResponse => "SERVICE_RESPONSE",
+            Self::StableViewState => "STABLE_VIEW_STATE",
+            Self::ObservedOutcome => "OBSERVED_OUTCOME",
+            Self::ReleaseCandidate => "RELEASE_CANDIDATE",
+            Self::CanaryObservation => "CANARY_OBSERVATION",
+            Self::ReleaseDecision => "RELEASE_DECISION",
+            Self::StableRelease => "STABLE_RELEASE",
+            Self::UnrelatedContract => "UNRELATED_CONTRACT",
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum FullStackMechanismIR {
+    EventLoop,
+    PatternMatching,
+    AlgebraicDataType,
+    TypeInference,
+    AsyncAwait,
+    ResultValue,
+    InterfaceProtocol,
+    StaticTyping,
+    RelationalQuery,
+    Exception,
+    MessagePassing,
+    BuildTool,
+    PackageManager,
+    ShellPipeline,
+    DebuggerTooling,
+}
+
+impl FullStackMechanismIR {
+    fn label(self) -> &'static str {
+        match self {
+            Self::EventLoop => "event_loop",
+            Self::PatternMatching => "pattern_matching",
+            Self::AlgebraicDataType => "algebraic_data_type",
+            Self::TypeInference => "type_inference",
+            Self::AsyncAwait => "async_await",
+            Self::ResultValue => "result_value",
+            Self::InterfaceProtocol => "interface_protocol",
+            Self::StaticTyping => "static_typing",
+            Self::RelationalQuery => "relational_query",
+            Self::Exception => "exception",
+            Self::MessagePassing => "message_passing",
+            Self::BuildTool => "build_tool",
+            Self::PackageManager => "package_manager",
+            Self::ShellPipeline => "shell_pipeline",
+            Self::DebuggerTooling => "debugger_tooling",
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum FullStackSemanticRoleIR {
+    BoundaryValidation,
+    StateProjection,
+    AsyncFailureBoundary,
+    ContractEnforcement,
+    TransactionalExecution,
+    ErrorContractMapping,
+    ResponseReconciliation,
+    TelemetryCorrelation,
+    ClientOutcomeCorrelation,
+    FrontendReleaseContract,
+    BackendReleaseContract,
+    BoundedCanary,
+    HealthGate,
+    RollbackGuard,
+}
+
+impl FullStackSemanticRoleIR {
+    fn label(self) -> &'static str {
+        match self {
+            Self::BoundaryValidation => "boundary_validation",
+            Self::StateProjection => "state_projection",
+            Self::AsyncFailureBoundary => "async_failure_boundary",
+            Self::ContractEnforcement => "contract_enforcement",
+            Self::TransactionalExecution => "transactional_execution",
+            Self::ErrorContractMapping => "error_contract_mapping",
+            Self::ResponseReconciliation => "response_reconciliation",
+            Self::TelemetryCorrelation => "telemetry_correlation",
+            Self::ClientOutcomeCorrelation => "client_outcome_correlation",
+            Self::FrontendReleaseContract => "frontend_release_contract",
+            Self::BackendReleaseContract => "backend_release_contract",
+            Self::BoundedCanary => "bounded_canary",
+            Self::HealthGate => "health_gate",
+            Self::RollbackGuard => "rollback_guard",
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct FullStackExecutableTransitionIR {
+    pub mechanisms: Vec<FullStackMechanismIR>,
+    pub operations: Vec<Element>,
+    pub input_contract: FullStackContractIR,
+    pub output_contract: FullStackContractIR,
+    pub semantic_role: FullStackSemanticRoleIR,
+}
+
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct SourceFamilyReceipt {
     pub layer: CodingLayer,
@@ -75,6 +207,8 @@ pub struct KnowledgeAtom {
     pub capabilities: Vec<Capability>,
     pub mechanism_ids: Vec<String>,
     pub elemental_operations: Vec<Element>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub executable_transition: Option<FullStackExecutableTransitionIR>,
     pub input_contract: String,
     pub output_contract: String,
     pub semantic_role: String,
@@ -183,11 +317,14 @@ pub struct AbsorptionReport {
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum KnowledgeValidationError {
+    InvalidSchema,
     SourceFamilyMismatch(CodingLayer),
     MissingLayer(CodingLayer),
     DuplicateAtom,
     EmptyMechanismSet,
     EmptyElementalOperations,
+    MissingExecutableTransition,
+    ExecutableTransitionMismatch,
     UnknownRecipeAtom,
     DuplicateRecipe,
     LayerDeclarationMismatch,
@@ -357,24 +494,31 @@ fn atom(
     atom_id: &str,
     layer: CodingLayer,
     capabilities: &[Capability],
-    mechanism_ids: &[&str],
+    mechanisms: &[FullStackMechanismIR],
     operations: &[Element],
-    input_contract: &str,
-    output_contract: &str,
-    semantic_role: &str,
+    input_contract: FullStackContractIR,
+    output_contract: FullStackContractIR,
+    semantic_role: FullStackSemanticRoleIR,
 ) -> KnowledgeAtom {
     KnowledgeAtom {
         atom_id: atom_id.to_string(),
         layer,
         capabilities: capabilities.to_vec(),
-        mechanism_ids: mechanism_ids
+        mechanism_ids: mechanisms
             .iter()
-            .map(|value| (*value).to_string())
+            .map(|mechanism| mechanism.label().to_string())
             .collect(),
         elemental_operations: operations.to_vec(),
-        input_contract: input_contract.to_string(),
-        output_contract: output_contract.to_string(),
-        semantic_role: semantic_role.to_string(),
+        executable_transition: Some(FullStackExecutableTransitionIR {
+            mechanisms: mechanisms.to_vec(),
+            operations: operations.to_vec(),
+            input_contract,
+            output_contract,
+            semantic_role,
+        }),
+        input_contract: input_contract.label().to_string(),
+        output_contract: output_contract.label().to_string(),
+        semantic_role: semantic_role.label().to_string(),
         source_family_sha256: source_family(receipts, layer),
         source_universe_sha256: SOURCE_UNIVERSE_SHA256.to_string(),
         exact_source_fragment_present: false,
@@ -386,6 +530,9 @@ pub fn build_bundle(receipts: Vec<SourceFamilyReceipt>) -> FullStackKnowledgeBun
     use Capability::*;
     use CodingLayer::*;
     use Element::*;
+    use FullStackContractIR as C;
+    use FullStackMechanismIR as M;
+    use FullStackSemanticRoleIR as R;
 
     let atoms = vec![
         atom(
@@ -393,154 +540,154 @@ pub fn build_bundle(receipts: Vec<SourceFamilyReceipt>) -> FullStackKnowledgeBun
             "FSK-FE-EVENT-NORMALIZATION",
             Frontend,
             &[UserEventNormalization],
-            &["event_loop", "pattern_matching"],
+            &[M::EventLoop, M::PatternMatching],
             &[Read, Parse, Branch, TypeCheck],
-            "RAW_USER_EVENT",
-            "VALIDATED_INTERACTION",
-            "boundary_validation",
+            C::RawUserEvent,
+            C::ValidatedInteraction,
+            R::BoundaryValidation,
         ),
         atom(
             &receipts,
             "FSK-FE-STATE-PROJECTION",
             Frontend,
             &[StateProjection],
-            &["algebraic_data_type", "type_inference"],
+            &[M::AlgebraicDataType, M::TypeInference],
             &[Read, Branch, TypeCheck, Serialize],
-            "VALIDATED_INTERACTION",
-            "CLIENT_REQUEST",
-            "state_projection",
+            C::ValidatedInteraction,
+            C::ClientRequest,
+            R::StateProjection,
         ),
         atom(
             &receipts,
             "FSK-FE-ASYNC-TRANSPORT",
             Frontend,
             &[AsyncTransport],
-            &["async_await", "result_value"],
+            &[M::AsyncAwait, M::ResultValue],
             &[Call, Suspend, Resume, PropagateError],
-            "CLIENT_REQUEST",
-            "TRANSPORT_REQUEST",
-            "async_failure_boundary",
+            C::ClientRequest,
+            C::TransportRequest,
+            R::AsyncFailureBoundary,
         ),
         atom(
             &receipts,
             "FSK-BE-PROTOCOL-GATE",
             Backend,
             &[ProtocolValidation, Authorization],
-            &["interface_protocol", "static_typing"],
+            &[M::InterfaceProtocol, M::StaticTyping],
             &[Parse, TypeCheck, Verify, Branch],
-            "TRANSPORT_REQUEST",
-            "AUTHORIZED_COMMAND",
-            "contract_enforcement",
+            C::TransportRequest,
+            C::AuthorizedCommand,
+            R::ContractEnforcement,
         ),
         atom(
             &receipts,
             "FSK-BE-TRANSACTION",
             Backend,
             &[TransactionalExecution],
-            &["result_value", "relational_query"],
+            &[M::ResultValue, M::RelationalQuery],
             &[Read, Write, Verify, Recover],
-            "AUTHORIZED_COMMAND",
-            "DOMAIN_RESULT",
-            "transactional_execution",
+            C::AuthorizedCommand,
+            C::DomainResult,
+            R::TransactionalExecution,
         ),
         atom(
             &receipts,
             "FSK-BE-ERROR-MAP",
             Backend,
             &[ErrorMapping],
-            &["result_value", "exception"],
+            &[M::ResultValue, M::Exception],
             &[Branch, PropagateError, Recover, Serialize],
-            "DOMAIN_RESULT",
-            "SERVICE_RESPONSE",
-            "error_contract_mapping",
+            C::DomainResult,
+            C::ServiceResponse,
+            R::ErrorContractMapping,
         ),
         atom(
             &receipts,
             "FSK-FE-RESPONSE-RECONCILE",
             Frontend,
             &[ResponseReconciliation],
-            &["pattern_matching", "algebraic_data_type"],
+            &[M::PatternMatching, M::AlgebraicDataType],
             &[Parse, Branch, Write, Verify],
-            "SERVICE_RESPONSE",
-            "STABLE_VIEW_STATE",
-            "response_reconciliation",
+            C::ServiceResponse,
+            C::StableViewState,
+            R::ResponseReconciliation,
         ),
         atom(
             &receipts,
             "FSK-OPS-REQUEST-TELEMETRY",
             Operations,
             &[TelemetryCorrelation],
-            &["interface_protocol", "message_passing"],
+            &[M::InterfaceProtocol, M::MessagePassing],
             &[Serialize, Dispatch, Verify, Write],
-            "SERVICE_RESPONSE",
-            "OBSERVED_OUTCOME",
-            "telemetry_correlation",
+            C::ServiceResponse,
+            C::ObservedOutcome,
+            R::TelemetryCorrelation,
         ),
         atom(
             &receipts,
             "FSK-OPS-CLIENT-TELEMETRY",
             Operations,
             &[TelemetryCorrelation],
-            &["event_loop", "message_passing"],
+            &[M::EventLoop, M::MessagePassing],
             &[Read, Serialize, Dispatch, Verify],
-            "STABLE_VIEW_STATE",
-            "OBSERVED_OUTCOME",
-            "client_outcome_correlation",
+            C::StableViewState,
+            C::ObservedOutcome,
+            R::ClientOutcomeCorrelation,
         ),
         atom(
             &receipts,
             "FSK-FE-RELEASE-CONTRACT",
             Frontend,
             &[ReleaseContract],
-            &["build_tool", "package_manager"],
+            &[M::BuildTool, M::PackageManager],
             &[Parse, Compile, Link, Verify],
-            "RELEASE_CANDIDATE",
-            "RELEASE_CANDIDATE",
-            "frontend_release_contract",
+            C::ReleaseCandidate,
+            C::ReleaseCandidate,
+            R::FrontendReleaseContract,
         ),
         atom(
             &receipts,
             "FSK-BE-RELEASE-CONTRACT",
             Backend,
             &[ReleaseContract],
-            &["build_tool", "interface_protocol"],
+            &[M::BuildTool, M::InterfaceProtocol],
             &[Parse, Compile, Verify, Serialize],
-            "RELEASE_CANDIDATE",
-            "RELEASE_CANDIDATE",
-            "backend_release_contract",
+            C::ReleaseCandidate,
+            C::ReleaseCandidate,
+            R::BackendReleaseContract,
         ),
         atom(
             &receipts,
             "FSK-OPS-CANARY",
             Operations,
             &[CanaryDeployment],
-            &["package_manager", "shell_pipeline"],
+            &[M::PackageManager, M::ShellPipeline],
             &[Verify, Dispatch, Synchronize, Read],
-            "RELEASE_CANDIDATE",
-            "CANARY_OBSERVATION",
-            "bounded_canary",
+            C::ReleaseCandidate,
+            C::CanaryObservation,
+            R::BoundedCanary,
         ),
         atom(
             &receipts,
             "FSK-OPS-HEALTH-GATE",
             Operations,
             &[HealthGating],
-            &["result_value", "debugger_tooling"],
+            &[M::ResultValue, M::DebuggerTooling],
             &[Read, Verify, Branch, PropagateError],
-            "CANARY_OBSERVATION",
-            "RELEASE_DECISION",
-            "health_gate",
+            C::CanaryObservation,
+            C::ReleaseDecision,
+            R::HealthGate,
         ),
         atom(
             &receipts,
             "FSK-OPS-ROLLBACK",
             Operations,
             &[Rollback],
-            &["result_value", "package_manager"],
+            &[M::ResultValue, M::PackageManager],
             &[Branch, Recover, Verify, Synchronize],
-            "RELEASE_DECISION",
-            "STABLE_RELEASE",
-            "rollback_guard",
+            C::ReleaseDecision,
+            C::StableRelease,
+            R::RollbackGuard,
         ),
     ];
 
@@ -646,7 +793,7 @@ pub fn build_bundle(receipts: Vec<SourceFamilyReceipt>) -> FullStackKnowledgeBun
     ];
 
     FullStackKnowledgeBundle {
-        schema: "b_core_fullstack_ops_knowledge_bundle_v1".to_string(),
+        schema: FULLSTACK_KNOWLEDGE_SCHEMA.to_string(),
         campaign_id: CAMPAIGN_ID.to_string(),
         source_universe_sha256: SOURCE_UNIVERSE_SHA256.to_string(),
         source_predecessor_universe_sha256: SOURCE_PREDECESSOR_UNIVERSE_SHA256.to_string(),
@@ -684,12 +831,16 @@ pub fn recipe_as_composition_lesson(
         let atom = by_id
             .get(atom_id.as_str())
             .ok_or_else(|| format!("RECIPE_ATOM_NOT_FOUND:{atom_id}"))?;
+        let transition = atom
+            .executable_transition
+            .as_ref()
+            .ok_or_else(|| format!("RECIPE_ATOM_EXECUTABLE_TRANSITION_MISSING:{atom_id}"))?;
         primitives.push(RepairPrimitiveIR {
             primitive_id: atom.atom_id.clone(),
             implementation_anchor: format!("bcore://fullstack-knowledge/{}", atom.atom_id),
-            input_type: atom.input_contract.clone(),
-            output_type: atom.output_contract.clone(),
-            semantic_role: atom.semantic_role.clone(),
+            input_type: transition.input_contract.label().to_string(),
+            output_type: transition.output_contract.label().to_string(),
+            semantic_role: transition.semantic_role.label().to_string(),
         });
     }
     let edges = primitives
@@ -723,7 +874,7 @@ fn execute_fullstack_atom_sequence(
     bundle: &FullStackKnowledgeBundle,
     recipe_id: &str,
     ordered_atom_ids: &[String],
-    input_contract: &str,
+    input_contract: FullStackContractIR,
     input_payload_sha256: &str,
 ) -> Result<FullStackBehavioralExecution, String> {
     if input_payload_sha256.len() != 64
@@ -738,38 +889,44 @@ fn execute_fullstack_atom_sequence(
         .iter()
         .map(|atom| (atom.atom_id.as_str(), atom))
         .collect::<BTreeMap<_, _>>();
-    let mut current_contract = input_contract.to_string();
+    let mut current_contract = input_contract;
     let mut current_payload_sha256 = input_payload_sha256.to_ascii_lowercase();
     let mut executed_atom_ids = Vec::with_capacity(ordered_atom_ids.len());
     for atom_id in ordered_atom_ids {
         let atom = by_id
             .get(atom_id.as_str())
             .ok_or_else(|| format!("FULLSTACK_BEHAVIOR_ATOM_MISSING:{atom_id}"))?;
-        if atom.input_contract != current_contract {
+        let transition = atom
+            .executable_transition
+            .as_ref()
+            .ok_or_else(|| format!("FULLSTACK_BEHAVIOR_TRANSITION_MISSING:{atom_id}"))?;
+        if transition.input_contract != current_contract {
             return Err(format!(
                 "FULLSTACK_BEHAVIOR_CONTRACT_MISMATCH:{}:{}:{}",
-                atom.atom_id, current_contract, atom.input_contract
+                atom.atom_id,
+                current_contract.label(),
+                transition.input_contract.label()
             ));
         }
-        let atom_bytes = serde_json::to_vec(atom)
-            .map_err(|error| format!("FULLSTACK_BEHAVIOR_ATOM_SERIALIZE:{error}"))?;
+        let transition_bytes = serde_json::to_vec(transition)
+            .map_err(|error| format!("FULLSTACK_BEHAVIOR_TRANSITION_SERIALIZE:{error}"))?;
         current_payload_sha256 = sha256(
             format!(
                 "{}:{}:{}:{}",
                 current_payload_sha256,
                 atom.atom_id,
-                atom.output_contract,
-                sha256(&atom_bytes)
+                transition.output_contract.label(),
+                sha256(&transition_bytes)
             )
             .as_bytes(),
         );
-        current_contract = atom.output_contract.clone();
+        current_contract = transition.output_contract;
         executed_atom_ids.push(atom.atom_id.clone());
     }
     Ok(FullStackBehavioralExecution {
         recipe_id: recipe_id.to_string(),
-        input_contract: input_contract.to_string(),
-        output_contract: current_contract,
+        input_contract: input_contract.label().to_string(),
+        output_contract: current_contract.label().to_string(),
         input_payload_sha256: input_payload_sha256.to_ascii_lowercase(),
         output_payload_sha256: current_payload_sha256,
         executed_atom_ids,
@@ -803,22 +960,30 @@ pub fn execute_fullstack_recipe_behavioral_canary(
         .iter()
         .find(|atom| recipe.ordered_atom_ids.last() == Some(&atom.atom_id))
         .ok_or_else(|| "FULLSTACK_BEHAVIOR_LAST_ATOM_MISSING".to_string())?;
+    let first_transition = first_atom
+        .executable_transition
+        .as_ref()
+        .ok_or_else(|| "FULLSTACK_BEHAVIOR_FIRST_TRANSITION_MISSING".to_string())?;
+    let last_transition = last_atom
+        .executable_transition
+        .as_ref()
+        .ok_or_else(|| "FULLSTACK_BEHAVIOR_LAST_TRANSITION_MISSING".to_string())?;
     let input_payload_sha256 = sha256(format!("{recipe_id}:FRESH_INPUT").as_bytes());
     let execution = execute_fullstack_atom_sequence(
         bundle,
         recipe_id,
         &recipe.ordered_atom_ids,
-        &first_atom.input_contract,
+        first_transition.input_contract,
         &input_payload_sha256,
     )?;
     let exact_pipeline_observed = execution.executed_atom_ids == recipe.ordered_atom_ids
-        && execution.output_contract == last_atom.output_contract
+        && execution.output_contract == last_transition.output_contract.label()
         && execution.output_payload_sha256 != execution.input_payload_sha256;
     let wrong_input_contract_rejected = execute_fullstack_atom_sequence(
         bundle,
         recipe_id,
         &recipe.ordered_atom_ids,
-        "UNRELATED_CONTRACT",
+        FullStackContractIR::UnrelatedContract,
         &input_payload_sha256,
     )
     .is_err();
@@ -834,7 +999,7 @@ pub fn execute_fullstack_recipe_behavioral_canary(
         bundle,
         recipe_id,
         &reordered,
-        &first_atom.input_contract,
+        first_transition.input_contract,
         &input_payload_sha256,
     )
     .is_err();
@@ -875,6 +1040,9 @@ pub fn execute_fullstack_recipe_behavioral_canary(
 }
 
 pub fn validate_bundle(bundle: &FullStackKnowledgeBundle) -> Result<(), KnowledgeValidationError> {
+    if bundle.schema != FULLSTACK_KNOWLEDGE_SCHEMA {
+        return Err(KnowledgeValidationError::InvalidSchema);
+    }
     if bundle.raw_source_copied
         || bundle
             .atoms
@@ -935,6 +1103,24 @@ pub fn validate_bundle(bundle: &FullStackKnowledgeBundle) -> Result<(), Knowledg
         }
         if atom.elemental_operations.is_empty() {
             return Err(KnowledgeValidationError::EmptyElementalOperations);
+        }
+        let transition = atom
+            .executable_transition
+            .as_ref()
+            .ok_or(KnowledgeValidationError::MissingExecutableTransition)?;
+        let mechanism_ids = transition
+            .mechanisms
+            .iter()
+            .map(|mechanism| mechanism.label().to_string())
+            .collect::<Vec<_>>();
+        if transition.mechanisms.is_empty()
+            || transition.operations != atom.elemental_operations
+            || mechanism_ids != atom.mechanism_ids
+            || transition.input_contract.label() != atom.input_contract
+            || transition.output_contract.label() != atom.output_contract
+            || transition.semantic_role.label() != atom.semantic_role
+        {
+            return Err(KnowledgeValidationError::ExecutableTransitionMismatch);
         }
     }
     let mut recipe_ids = BTreeSet::new();
@@ -1276,6 +1462,30 @@ mod tests {
             Err(KnowledgeValidationError::SourceFamilyMismatch(
                 CodingLayer::Frontend
             ))
+        );
+    }
+
+    #[test]
+    fn text_contract_metadata_cannot_replace_executable_transition_knowledge() {
+        let mut legacy = build_bundle(receipts());
+        legacy.schema = "b_core_fullstack_ops_knowledge_bundle_v1".to_string();
+        assert_eq!(
+            validate_bundle(&legacy),
+            Err(KnowledgeValidationError::InvalidSchema)
+        );
+
+        let mut missing = build_bundle(receipts());
+        missing.atoms[0].executable_transition = None;
+        assert_eq!(
+            validate_bundle(&missing),
+            Err(KnowledgeValidationError::MissingExecutableTransition)
+        );
+
+        let mut mismatched = build_bundle(receipts());
+        mismatched.atoms[0].input_contract = "ARBITRARY_TEXT".to_string();
+        assert_eq!(
+            validate_bundle(&mismatched),
+            Err(KnowledgeValidationError::ExecutableTransitionMismatch)
         );
     }
 
