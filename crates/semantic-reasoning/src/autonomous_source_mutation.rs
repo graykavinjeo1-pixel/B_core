@@ -35,7 +35,7 @@ use crate::sem5::typed_mechanism::{
 };
 use crate::structural_source_repair::{
     execute_structural_repair, synthesize_structural_repair, SourceEditAtom,
-    StructuralRepairProgram,
+    StructuralRepairProgram, VerificationObligation,
 };
 
 pub const AUTONOMOUS_SOURCE_MUTATION_SCHEMA: &str = "B_CORE_AUTONOMOUS_SOURCE_MUTATION_1";
@@ -43,11 +43,12 @@ pub const SELF_UPDATE_HANDOFF_FILE: &str = "SELF_UPDATE_READY.json";
 pub const SOURCE_REPAIR_LEARNING_SCHEMA: &str = "B_CORE_SOURCE_REPAIR_LEARNING_1";
 pub const IMPROVEMENT_OPERATOR_MEMORY_SCHEMA: &str = "B_CORE_IMPROVEMENT_OPERATOR_MEMORY_1";
 pub const MAX_IMPROVEMENT_OPERATOR_GRAPH_NODES: usize = 8;
+const MAX_COMPETING_SOURCE_PROPOSALS: usize = 3;
 const MAX_TYPED_OPERATOR_RECONCILIATION_RECEIPTS: usize = 64;
-// Revision 40 preserves explicit observed-to-expected public contract deltas
-// as typed behavior goals from work ingestion through SEM-5 synthesis and
-// behavioral falsification instead of reducing them to structural counts.
-pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 40;
+// Revision 41 removes generator-order authority through one bounded proposal
+// selection/composition kernel and adds source-bound Python class declaration
+// insert/replace lowering with exact product-owner evidence.
+pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 41;
 const KNOWN_REMAINDER_PREDICTED_VALUE: u16 = 35;
 const MAX_REPOSITORY_REPAIR_FAMILY_FILES: usize = 16;
 const KNOWN_REMAINDER_STRATEGIES: [&str; 4] = [
@@ -4416,6 +4417,352 @@ fn source_discovery_lane_policy(
     lane
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+enum SourceProposalOrigin {
+    Grammar,
+    Compiler,
+    KnownTransformation,
+}
+
+impl SourceProposalOrigin {
+    fn label(self) -> &'static str {
+        match self {
+            Self::Grammar => "GRAMMAR",
+            Self::Compiler => "COMPILER",
+            Self::KnownTransformation => "KNOWN_TRANSFORMATION",
+        }
+    }
+}
+
+#[derive(Debug)]
+struct RankedSourceProposal {
+    origin: SourceProposalOrigin,
+    request: AutonomousSourcePatchRequest,
+}
+
+fn source_proposal_score(proposal: &RankedSourceProposal) -> i32 {
+    i32::from(proposal.request.predicted_value)
+        .saturating_add(
+            proposal
+                .request
+                .improvement_operator_invocation
+                .as_ref()
+                .map_or(0, |invocation| invocation.priority_adjustment),
+        )
+        .saturating_add(
+            i32::try_from(proposal.request.additional_family_members.len().min(8))
+                .unwrap_or(0)
+                .saturating_mul(2),
+        )
+}
+
+fn validate_source_proposal_kernel_input(
+    policy: &AutonomousSourceMutationPolicy,
+    request: &AutonomousSourcePatchRequest,
+) -> Result<String, String> {
+    if request.schema != AUTONOMOUS_SOURCE_MUTATION_SCHEMA
+        || !request.core_generated
+        || !request.core_self_approved
+        || request.patch_id.is_empty()
+        || request.predicted_value > 100
+        || request.candidate_source.len() as u64 > policy.max_candidate_bytes
+        || sha256(request.candidate_source.as_bytes()) != request.candidate_sha256
+        || !opportunity_binding_valid(request)
+    {
+        return Err("SOURCE_PROPOSAL_ENVELOPE_INVALID".to_string());
+    }
+    let target = normalized_target(&policy.source_root, &request.relative_path)?;
+    let predecessor = fs::read_to_string(&target)
+        .map_err(|error| format!("SOURCE_PROPOSAL_PREDECESSOR_READ:{error}"))?;
+    if sha256(predecessor.as_bytes()) != request.predecessor_sha256 {
+        return Err("SOURCE_PROPOSAL_PREDECESSOR_MISMATCH".to_string());
+    }
+    let program = request
+        .structural_repair_program
+        .as_ref()
+        .ok_or_else(|| "SOURCE_PROPOSAL_STRUCTURAL_PROGRAM_MISSING".to_string())?;
+    if program.file_id != structural_file_id(&request.relative_path)
+        || ![
+            VerificationObligation::StructuralPostconditions,
+            VerificationObligation::SourceCompile,
+            VerificationObligation::PublicObservation,
+        ]
+        .iter()
+        .all(|obligation| program.verification_obligations.contains(obligation))
+    {
+        return Err("SOURCE_PROPOSAL_OPERATION_CLOSURE_INCOMPLETE".to_string());
+    }
+    let replay = execute_structural_repair(program, &predecessor)
+        .map_err(|error| format!("SOURCE_PROPOSAL_STRUCTURAL_REPLAY:{error}"))?;
+    if !replay.structurally_verified
+        || !replay.exact_target_observed
+        || replay.candidate_source != request.candidate_source
+        || replay.candidate_snapshot.source_sha256 != request.candidate_sha256
+        || syn::parse_file(&request.candidate_source).is_err()
+    {
+        return Err("SOURCE_PROPOSAL_MATERIALIZATION_INVALID".to_string());
+    }
+    validate_typed_mechanism_recipe_binding(request)?;
+    validate_typed_mechanism_source_materialization(request, &predecessor)?;
+    validate_improvement_operator_execution_binding(request, &predecessor)?;
+    if let Some(change) = &request.generalized_change {
+        validate_change_binding(
+            change,
+            &request.relative_path,
+            &request.transformation,
+            if request.solution_strategy.is_empty() {
+                &request.transformation
+            } else {
+                &request.solution_strategy
+            },
+            &request.predecessor_sha256,
+            &request.candidate_sha256,
+            program,
+        )?;
+    }
+    Ok(predecessor)
+}
+
+fn proposal_is_atomic_composition_compatible(
+    primary: &AutonomousSourcePatchRequest,
+    candidate: &AutonomousSourcePatchRequest,
+) -> bool {
+    primary.relative_path == candidate.relative_path
+        && primary.predecessor_sha256 == candidate.predecessor_sha256
+        && primary.source_generation == candidate.source_generation
+        && primary.opportunity_kind == candidate.opportunity_kind
+        && primary.opportunity_family_id == candidate.opportunity_family_id
+        && primary.additional_family_members.is_empty()
+        && candidate.additional_family_members.is_empty()
+        && primary.typed_mechanism_operator_recipe.is_none()
+        && candidate.typed_mechanism_operator_recipe.is_none()
+        && primary.typed_mechanism_synthesis_receipt.is_none()
+        && candidate.typed_mechanism_synthesis_receipt.is_none()
+        && primary.typed_mechanism_materialized_edit.is_none()
+        && candidate.typed_mechanism_materialized_edit.is_none()
+}
+
+fn compose_ranked_source_proposals(
+    policy: &AutonomousSourceMutationPolicy,
+    state_dir: &Path,
+    source_generation: u64,
+    operator_memory: &ImprovementOperatorMemory,
+    ranked: &[RankedSourceProposal],
+) -> Result<Option<AutonomousSourcePatchRequest>, String> {
+    let Some(primary) = ranked.first() else {
+        return Ok(None);
+    };
+    let predecessor = validate_source_proposal_kernel_input(policy, &primary.request)?;
+    let primary_program = primary
+        .request
+        .structural_repair_program
+        .as_ref()
+        .ok_or_else(|| "SOURCE_PROPOSAL_STRUCTURAL_PROGRAM_MISSING".to_string())?;
+    let mut selected = vec![&primary.request];
+    let mut edits = vec![primary_program.edit.clone()];
+    let mut combined_source = primary.request.candidate_source.clone();
+    for proposal in ranked.iter().skip(1) {
+        if !proposal_is_atomic_composition_compatible(&primary.request, &proposal.request) {
+            continue;
+        }
+        let Some(program) = &proposal.request.structural_repair_program else {
+            continue;
+        };
+        let mut trial_edits = edits.clone();
+        trial_edits.push(program.edit.clone());
+        let trial = SourceEditAtom::AtomicMultiEdit {
+            edits: trial_edits.clone(),
+        };
+        let Ok(materialized) =
+            crate::structural_source_repair::apply_edit_atom(&predecessor, &trial)
+        else {
+            continue;
+        };
+        if syn::parse_file(&materialized).is_err() {
+            continue;
+        }
+        edits = trial_edits;
+        combined_source = materialized;
+        selected.push(&proposal.request);
+    }
+    if selected.len() < 2 {
+        return Ok(None);
+    }
+    let selected_identity = selected
+        .iter()
+        .map(|request| request.patch_id.as_str())
+        .collect::<Vec<_>>()
+        .join(":");
+    let identity_sha256 = sha256(selected_identity.as_bytes());
+    let transformation = format!("COMPOSED_SOURCE_PROPOSAL_KERNEL:{}", &identity_sha256[..24]);
+    let solution_strategy = format!("BOUND_ATOMIC_MULTI_EDIT:{}", &identity_sha256[..24]);
+    let candidate_sha256 = sha256(combined_source.as_bytes());
+    let mut structural_repair_program = synthesize_structural_repair(
+        &structural_file_id(&primary.request.relative_path),
+        &predecessor,
+        &combined_source,
+    )?;
+    // Preserve the proposal-level atomic decomposition even if a generic text
+    // differ would represent the same postimage as one broad Replace. The
+    // target-derived postconditions remain authoritative and the combined edit
+    // is replayed immediately against the exact predecessor.
+    structural_repair_program.edit = SourceEditAtom::AtomicMultiEdit { edits };
+    let composite_replay = execute_structural_repair(&structural_repair_program, &predecessor)?;
+    if !composite_replay.structurally_verified
+        || !composite_replay.exact_target_observed
+        || composite_replay.candidate_source != combined_source
+    {
+        return Err("SOURCE_PROPOSAL_COMPOSITE_SELF_FALSIFIED".to_string());
+    }
+    let (invocation, operator_execution) = invoke_and_execute_improvement_operator(
+        operator_memory,
+        request_weakness_evidence_kind(&primary.request),
+        &transformation,
+        &solution_strategy,
+        &structural_repair_program,
+        &primary.request.opportunity_family_id,
+        &predecessor,
+    )?;
+    if !operator_execution.applicable
+        || operator_execution.candidate_source.as_deref() != Some(combined_source.as_str())
+    {
+        return Err("SOURCE_PROPOSAL_COMPOSITE_OPERATOR_DIVERGED".to_string());
+    }
+    let evidence_sha256 = sha256(
+        format!(
+            "{}:{}:{}",
+            primary.request.relative_path.display(),
+            primary.request.predecessor_sha256,
+            identity_sha256
+        )
+        .as_bytes(),
+    );
+    let mut consequence_predictions = selected
+        .iter()
+        .flat_map(|request| request.consequence_predictions.iter().cloned())
+        .collect::<BTreeSet<_>>();
+    consequence_predictions
+        .insert("non-conflicting source proposals install as one atomic transaction".to_string());
+    let consequence_predictions = consequence_predictions.into_iter().collect::<Vec<_>>();
+    let generalized_change = generalized_change_for_candidate(
+        state_dir,
+        source_generation,
+        &primary.request.relative_path,
+        &transformation,
+        &solution_strategy,
+        &primary.request.predecessor_sha256,
+        &candidate_sha256,
+        request_weakness_evidence_kind(&primary.request),
+        &evidence_sha256,
+        "multiple independently generated proposals bind to disjoint source operations",
+        &consequence_predictions,
+        &structural_repair_program,
+    )?;
+    let patch_id = format!(
+        "SELF-COMPOSED-{}",
+        &sha256(format!("{identity_sha256}:{source_generation}:{candidate_sha256}").as_bytes())
+            [..24]
+    );
+    Ok(Some(AutonomousSourcePatchRequest {
+        schema: AUTONOMOUS_SOURCE_MUTATION_SCHEMA.to_string(),
+        patch_id,
+        relative_path: primary.request.relative_path.clone(),
+        predecessor_sha256: primary.request.predecessor_sha256.clone(),
+        candidate_source: combined_source,
+        candidate_sha256,
+        transformation,
+        consequence_predictions,
+        predicted_value: selected
+            .iter()
+            .map(|request| request.predicted_value)
+            .max()
+            .unwrap_or(0)
+            .saturating_add(u16::try_from(selected.len().saturating_sub(1) * 5).unwrap_or(0))
+            .min(100),
+        source_generation,
+        core_generated: true,
+        core_self_approved: true,
+        solution_strategy,
+        structural_repair_program: Some(structural_repair_program),
+        generalized_change: Some(generalized_change),
+        additional_family_members: Vec::new(),
+        opportunity_kind: primary.request.opportunity_kind,
+        opportunity_family_id: primary.request.opportunity_family_id.clone(),
+        improvement_operator_invocation: Some(invocation),
+        improvement_operator_execution: Some(operator_execution),
+        typed_mechanism_operator_recipe: None,
+        typed_mechanism_synthesis_receipt: None,
+        typed_mechanism_materialized_syntax_sha256: None,
+        typed_mechanism_materialized_syntax_source: None,
+        typed_mechanism_materialized_edit: None,
+        typed_mechanism_selected_operator_id: None,
+        typed_mechanism_candidates_enumerated: 0,
+        typed_mechanism_preferred_operator_attempts: 0,
+    }))
+}
+
+fn select_source_discovery_proposals(
+    policy: &AutonomousSourceMutationPolicy,
+    state_dir: &Path,
+    source_generation: u64,
+    operator_memory: &ImprovementOperatorMemory,
+    results: Vec<(SourceProposalOrigin, SourceDiscoveryResult)>,
+) -> Result<SourceDiscoveryResult, String> {
+    let below_value_threshold = results
+        .iter()
+        .any(|(_, result)| result.disposition == SourceDiscoveryDisposition::BelowValueThreshold);
+    let mut ranked = Vec::new();
+    let mut rejected = Vec::new();
+    for (origin, result) in results {
+        let Some(request) = result.candidate else {
+            continue;
+        };
+        match validate_source_proposal_kernel_input(policy, &request) {
+            Ok(_) => ranked.push(RankedSourceProposal { origin, request }),
+            Err(error) => rejected.push(format!("{}:{error}", origin.label())),
+        }
+    }
+    ranked.sort_by_key(|proposal| {
+        (
+            std::cmp::Reverse(source_proposal_score(proposal)),
+            std::cmp::Reverse(proposal.request.predicted_value),
+            proposal.request.relative_path.clone(),
+            proposal.request.transformation.clone(),
+            proposal.origin,
+            proposal.request.patch_id.clone(),
+        )
+    });
+    ranked.truncate(MAX_COMPETING_SOURCE_PROPOSALS);
+    if ranked.is_empty() {
+        if !rejected.is_empty() {
+            return Err(format!(
+                "SOURCE_PROPOSAL_KERNEL_ALL_REJECTED:{}",
+                sha256(rejected.join(":").as_bytes())
+            ));
+        }
+        return Ok(SourceDiscoveryResult {
+            disposition: if below_value_threshold {
+                SourceDiscoveryDisposition::BelowValueThreshold
+            } else {
+                SourceDiscoveryDisposition::NoApplicableTransformation
+            },
+            candidate: None,
+        });
+    }
+    let candidate = compose_ranked_source_proposals(
+        policy,
+        state_dir,
+        source_generation,
+        operator_memory,
+        &ranked,
+    )?
+    .or_else(|| ranked.into_iter().next().map(|proposal| proposal.request));
+    Ok(SourceDiscoveryResult {
+        disposition: SourceDiscoveryDisposition::Candidate,
+        candidate,
+    })
+}
+
 pub fn discover_known_source_improvement_detailed(
     policy: &AutonomousSourceMutationPolicy,
     state_dir: &Path,
@@ -4500,21 +4847,25 @@ pub fn discover_known_source_improvement_detailed(
         ))
     })?;
 
-    // Preserve the historical deterministic choice order while paying only
-    // the slowest lane's wall time. All workers are joined before selection;
-    // only the selected candidate may enter the serial install transaction.
-    for result in [grammar, compiler, known].into_iter().flatten() {
-        if result.candidate.is_some() {
-            return Ok(result);
-        }
-        if result.disposition == SourceDiscoveryDisposition::BelowValueThreshold {
-            return Ok(result);
-        }
-    }
-    Ok(SourceDiscoveryResult {
-        disposition: SourceDiscoveryDisposition::NoApplicableTransformation,
-        candidate: None,
-    })
+    // Every generator is proposal-only. A single typed kernel validates exact
+    // source binding, operation closure, syntax, and structural replay before
+    // it ranks at most three competitors. Disjoint edits for the same observed
+    // opportunity may become one AtomicMultiEdit; installation and behavioral
+    // authority remain in the unchanged verifier path.
+    select_source_discovery_proposals(
+        policy,
+        state_dir,
+        source_generation,
+        &operator_memory,
+        [
+            grammar.map(|result| (SourceProposalOrigin::Grammar, result)),
+            compiler.map(|result| (SourceProposalOrigin::Compiler, result)),
+            known.map(|result| (SourceProposalOrigin::KnownTransformation, result)),
+        ]
+        .into_iter()
+        .flatten()
+        .collect(),
+    )
 }
 
 pub fn discover_known_source_improvement(
@@ -4704,6 +5055,85 @@ mod tests {
         state
     }
 
+    fn proposal_request_fixture(
+        policy: &AutonomousSourceMutationPolicy,
+        state_dir: &Path,
+        operator_memory: &ImprovementOperatorMemory,
+        patch_id: &str,
+        candidate_source: &str,
+        predicted_value: u16,
+        opportunity_family_id: &str,
+    ) -> AutonomousSourcePatchRequest {
+        let relative_path = PathBuf::from("src/lib.rs");
+        let predecessor = fs::read_to_string(policy.source_root.join(&relative_path)).unwrap();
+        let predecessor_sha256 = sha256(predecessor.as_bytes());
+        let candidate_sha256 = sha256(candidate_source.as_bytes());
+        let transformation = format!("PROPOSAL_FIXTURE_TRANSFORMATION:{patch_id}");
+        let solution_strategy = format!("PROPOSAL_FIXTURE_STRATEGY:{patch_id}");
+        let structural_repair_program = synthesize_structural_repair(
+            &structural_file_id(&relative_path),
+            &predecessor,
+            candidate_source,
+        )
+        .unwrap();
+        let (invocation, operator_execution) = invoke_and_execute_improvement_operator(
+            operator_memory,
+            WeaknessEvidenceKind::PublicBehaviorContradiction,
+            &transformation,
+            &solution_strategy,
+            &structural_repair_program,
+            opportunity_family_id,
+            &predecessor,
+        )
+        .unwrap();
+        let consequence_predictions = vec!["preserve unrelated public functions".to_string()];
+        let generalized_change = generalized_change_for_candidate(
+            state_dir,
+            7,
+            &relative_path,
+            &transformation,
+            &solution_strategy,
+            &predecessor_sha256,
+            &candidate_sha256,
+            WeaknessEvidenceKind::PublicBehaviorContradiction,
+            &sha256(format!("evidence:{patch_id}").as_bytes()),
+            "a public observation contradicts the current expression",
+            &consequence_predictions,
+            &structural_repair_program,
+        )
+        .unwrap();
+        AutonomousSourcePatchRequest {
+            schema: AUTONOMOUS_SOURCE_MUTATION_SCHEMA.to_string(),
+            patch_id: patch_id.to_string(),
+            relative_path,
+            predecessor_sha256,
+            candidate_source: candidate_source.to_string(),
+            candidate_sha256,
+            transformation,
+            consequence_predictions,
+            predicted_value,
+            source_generation: 7,
+            core_generated: true,
+            core_self_approved: true,
+            solution_strategy,
+            structural_repair_program: Some(structural_repair_program),
+            generalized_change: Some(generalized_change),
+            additional_family_members: Vec::new(),
+            opportunity_kind: ChangeOpportunityKind::Defect,
+            opportunity_family_id: opportunity_family_id.to_string(),
+            improvement_operator_invocation: Some(invocation),
+            improvement_operator_execution: Some(operator_execution),
+            typed_mechanism_operator_recipe: None,
+            typed_mechanism_synthesis_receipt: None,
+            typed_mechanism_materialized_syntax_sha256: None,
+            typed_mechanism_materialized_syntax_source: None,
+            typed_mechanism_materialized_edit: None,
+            typed_mechanism_selected_operator_id: None,
+            typed_mechanism_candidates_enumerated: 0,
+            typed_mechanism_preferred_operator_attempts: 0,
+        }
+    }
+
     fn rebind_request_operator_execution(
         request: &mut AutonomousSourcePatchRequest,
         state: &Path,
@@ -4726,6 +5156,163 @@ mod tests {
         .unwrap();
         request.improvement_operator_invocation = Some(invocation);
         request.improvement_operator_execution = Some(execution);
+    }
+
+    #[test]
+    fn source_proposal_kernel_composes_disjoint_generator_edits_atomically() {
+        let (root, policy) = fixture("proposal-kernel-compose");
+        let predecessor = "pub fn left() -> i32 { 1 }\npub fn right() -> i32 { 10 }\n";
+        fs::write(root.join("src/lib.rs"), predecessor).unwrap();
+        let state = root.join("state");
+        fs::create_dir_all(&state).unwrap();
+        let operator_memory = refresh_improvement_operator_repository(&state).unwrap();
+        let family = source_opportunity_family_id(ChangeOpportunityKind::Defect, "PAIR_CONTRACT");
+        let grammar = proposal_request_fixture(
+            &policy,
+            &state,
+            &operator_memory,
+            "GRAMMAR-LEFT",
+            "pub fn left() -> i32 { 2 }\npub fn right() -> i32 { 10 }\n",
+            90,
+            &family,
+        );
+        let compiler = proposal_request_fixture(
+            &policy,
+            &state,
+            &operator_memory,
+            "COMPILER-RIGHT",
+            "pub fn left() -> i32 { 1 }\npub fn right() -> i32 { 20 }\n",
+            85,
+            &family,
+        );
+        let conflicting = proposal_request_fixture(
+            &policy,
+            &state,
+            &operator_memory,
+            "KNOWN-CONFLICT",
+            "pub fn left() -> i32 { 3 }\npub fn right() -> i32 { 10 }\n",
+            80,
+            &family,
+        );
+
+        let selected = select_source_discovery_proposals(
+            &policy,
+            &state,
+            7,
+            &operator_memory,
+            vec![
+                (
+                    SourceProposalOrigin::Grammar,
+                    SourceDiscoveryResult {
+                        disposition: SourceDiscoveryDisposition::Candidate,
+                        candidate: Some(grammar),
+                    },
+                ),
+                (
+                    SourceProposalOrigin::Compiler,
+                    SourceDiscoveryResult {
+                        disposition: SourceDiscoveryDisposition::Candidate,
+                        candidate: Some(compiler),
+                    },
+                ),
+                (
+                    SourceProposalOrigin::KnownTransformation,
+                    SourceDiscoveryResult {
+                        disposition: SourceDiscoveryDisposition::Candidate,
+                        candidate: Some(conflicting),
+                    },
+                ),
+            ],
+        )
+        .unwrap()
+        .candidate
+        .expect("composed proposal");
+
+        assert!(selected
+            .transformation
+            .starts_with("COMPOSED_SOURCE_PROPOSAL_KERNEL:"));
+        assert_eq!(
+            selected.candidate_source,
+            "pub fn left() -> i32 { 2 }\npub fn right() -> i32 { 20 }\n"
+        );
+        assert!(matches!(
+            selected
+                .structural_repair_program
+                .as_ref()
+                .expect("composite structural program")
+                .edit,
+            SourceEditAtom::AtomicMultiEdit { ref edits } if edits.len() == 2
+        ));
+        validate_source_proposal_kernel_input(&policy, &selected).unwrap();
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn source_proposal_kernel_bounds_competitors_and_rejects_conflicting_composition() {
+        let (root, policy) = fixture("proposal-kernel-bound");
+        let predecessor = "pub fn first() -> i32 { 1 }\npub fn second() -> i32 { 2 }\n";
+        fs::write(root.join("src/lib.rs"), predecessor).unwrap();
+        let state = root.join("state");
+        fs::create_dir_all(&state).unwrap();
+        let operator_memory = refresh_improvement_operator_repository(&state).unwrap();
+        let family = source_opportunity_family_id(ChangeOpportunityKind::Defect, "BOUND_CONTRACT");
+        let candidates = [("TOP", 4, 95), ("CONFLICT-A", 5, 90), ("CONFLICT-B", 6, 85)]
+            .into_iter()
+            .map(|(id, value, score)| {
+                proposal_request_fixture(
+                    &policy,
+                    &state,
+                    &operator_memory,
+                    id,
+                    &format!(
+                        "pub fn first() -> i32 {{ {value} }}\npub fn second() -> i32 {{ 2 }}\n"
+                    ),
+                    score,
+                    &family,
+                )
+            })
+            .collect::<Vec<_>>();
+        let fourth_disjoint = proposal_request_fixture(
+            &policy,
+            &state,
+            &operator_memory,
+            "FOURTH-DISJOINT",
+            "pub fn first() -> i32 { 1 }\npub fn second() -> i32 { 9 }\n",
+            10,
+            &family,
+        );
+        let mut results = candidates
+            .into_iter()
+            .map(|candidate| {
+                (
+                    SourceProposalOrigin::Grammar,
+                    SourceDiscoveryResult {
+                        disposition: SourceDiscoveryDisposition::Candidate,
+                        candidate: Some(candidate),
+                    },
+                )
+            })
+            .collect::<Vec<_>>();
+        results.push((
+            SourceProposalOrigin::Compiler,
+            SourceDiscoveryResult {
+                disposition: SourceDiscoveryDisposition::Candidate,
+                candidate: Some(fourth_disjoint),
+            },
+        ));
+
+        let selected =
+            select_source_discovery_proposals(&policy, &state, 7, &operator_memory, results)
+                .unwrap()
+                .candidate
+                .expect("highest-ranked proposal");
+
+        assert_eq!(selected.patch_id, "TOP");
+        assert_eq!(
+            selected.candidate_source,
+            "pub fn first() -> i32 { 4 }\npub fn second() -> i32 { 2 }\n"
+        );
+        fs::remove_dir_all(root).unwrap();
     }
 
     #[test]

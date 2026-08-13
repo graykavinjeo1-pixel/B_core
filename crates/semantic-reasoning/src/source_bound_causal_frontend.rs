@@ -342,6 +342,95 @@ pub struct SourceBoundAlternativeReceiptIR {
     pub candidate_validation_processes: usize,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum SourceBoundDeclarationOperation {
+    Insert,
+    Replace,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct SourceBoundDeclarationTemplateIR {
+    pub qualified_owner: String,
+    pub attribute: String,
+    pub value_source: String,
+    pub operation: SourceBoundDeclarationOperation,
+    pub edit_range: ByteRange,
+    pub edit_source: String,
+    pub public_evidence_sha256: String,
+    pub source_template_sha256: String,
+}
+
+fn source_bound_declaration_template_hash(
+    source: &str,
+    template: &SourceBoundDeclarationTemplateIR,
+) -> Result<String, CausalFrontendFailure> {
+    serde_json::to_vec(&(
+        sha256(source.as_bytes()),
+        &template.qualified_owner,
+        &template.attribute,
+        &template.value_source,
+        &template.operation,
+        template.edit_range,
+        &template.edit_source,
+        &template.public_evidence_sha256,
+    ))
+    .map(|bytes| sha256(&bytes))
+    .map_err(|error| CausalFrontendFailure::public(format!("DECLARATION_TEMPLATE_HASH:{error}")))
+}
+
+fn validate_source_bound_declaration_template(
+    source: &str,
+    template: &SourceBoundDeclarationTemplateIR,
+) -> Result<(), CausalFrontendFailure> {
+    let mut attribute_characters = template.attribute.chars();
+    let attribute_is_identifier = attribute_characters
+        .next()
+        .is_some_and(|character| character == '_' || character.is_alphabetic())
+        && attribute_characters.all(|character| character == '_' || character.is_alphanumeric());
+    let expected_statement = format!("{} = {}", template.attribute, template.value_source);
+    let edit_binding_valid = match template.operation {
+        SourceBoundDeclarationOperation::Insert => {
+            template.edit_range.start == template.edit_range.end
+                && template.edit_source.trim() == expected_statement
+        }
+        SourceBoundDeclarationOperation::Replace => {
+            template.edit_range.start < template.edit_range.end
+                && template.edit_source == template.value_source
+        }
+    };
+    if template.qualified_owner.is_empty()
+        || template.qualified_owner.split('.').any(str::is_empty)
+        || !attribute_is_identifier
+        || template.value_source.is_empty()
+        || !edit_binding_valid
+        || template.edit_range.end > source.len()
+        || !source.is_char_boundary(template.edit_range.start)
+        || !source.is_char_boundary(template.edit_range.end)
+        || template.public_evidence_sha256.len() != 64
+    {
+        return Err(CausalFrontendFailure::conflict(
+            "DECLARATION_TEMPLATE_STRUCTURAL_BINDING",
+        ));
+    }
+    if template.source_template_sha256 != source_bound_declaration_template_hash(source, template)?
+    {
+        return Err(CausalFrontendFailure::conflict(
+            "DECLARATION_TEMPLATE_HASH_BINDING",
+        ));
+    }
+    Ok(())
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct SourceBoundDeclarationAlternativeReceiptIR {
+    pub alternative_id: String,
+    pub requested_public_symbol: String,
+    pub declaration_template: SourceBoundDeclarationTemplateIR,
+    pub replayable_patch: ReplayableSourceBoundPatchIR,
+    pub candidate_validation_processes: usize,
+}
+
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct SourceBoundClosureCandidateReceiptIR {
     pub closure_ordinal: usize,
@@ -376,6 +465,8 @@ pub struct SourceBoundCausalReceiptIR {
     pub language_backend: SourceLanguageBackend,
     pub predecessor_sha256: String,
     pub alternatives: Vec<SourceBoundAlternativeReceiptIR>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub declaration_alternatives: Vec<SourceBoundDeclarationAlternativeReceiptIR>,
     #[serde(default)]
     pub patch_variants: Vec<SourceBoundPatchVariantIR>,
     #[serde(default)]
@@ -406,6 +497,21 @@ struct PythonObservationDiscoveryResponse {
     detail: Option<String>,
     #[serde(default)]
     alternatives: Vec<PythonDiscoveredAlternative>,
+    #[serde(default)]
+    declarations: Vec<PythonDiscoveredDeclaration>,
+}
+
+#[derive(Debug, Deserialize)]
+struct PythonDiscoveredDeclaration {
+    qualified_owner: String,
+    attribute: String,
+    value_source: String,
+    operation: SourceBoundDeclarationOperation,
+    edit_start: usize,
+    edit_end: usize,
+    edit_source: String,
+    evidence: Vec<String>,
+    reason: String,
 }
 
 #[derive(Debug, Deserialize)]
@@ -895,11 +1001,31 @@ def qualified_functions(tree):
     collect(tree.body, [])
     return found
 
+def qualified_class_attributes(tree):
+    found = set()
+    def collect(items, prefix):
+        for item in items:
+            if not isinstance(item, ast.ClassDef):
+                continue
+            qualified = ".".join(prefix + [item.name])
+            for statement in item.body:
+                if isinstance(statement, ast.Assign):
+                    found.update((qualified, target.id) for target in statement.targets if isinstance(target, ast.Name))
+                elif isinstance(statement, ast.AnnAssign) and isinstance(statement.target, ast.Name):
+                    found.add((qualified, statement.target.id))
+            collect(item.body, prefix + [item.name])
+    collect(tree.body, [])
+    return found
+
 results = []
 for ordinal, candidate in enumerate(candidates):
     source = candidate.get("source") if isinstance(candidate, dict) else None
     public_symbol = candidate.get("public_symbol") if isinstance(candidate, dict) else None
-    if not isinstance(source, str) or not isinstance(public_symbol, str) or not public_symbol:
+    declaration_owner = candidate.get("declaration_owner") if isinstance(candidate, dict) else None
+    declaration_attribute = candidate.get("declaration_attribute") if isinstance(candidate, dict) else None
+    function_binding = isinstance(public_symbol, str) and bool(public_symbol)
+    declaration_binding = isinstance(declaration_owner, str) and bool(declaration_owner) and isinstance(declaration_attribute, str) and bool(declaration_attribute)
+    if not isinstance(source, str) or function_binding == declaration_binding:
         results.append({"ok": False, "failure": "PUBLIC_INFORMATION_INSUFFICIENT", "detail": "CANDIDATE_INPUT:" + str(ordinal)})
         continue
     try:
@@ -908,8 +1034,11 @@ for ordinal, candidate in enumerate(candidates):
     except (SyntaxError, ValueError, TypeError) as error:
         results.append({"ok": False, "failure": "UNSUPPORTED_LANGUAGE_SYNTAX", "detail": "CANDIDATE_PARSE:" + str(error)})
         continue
-    if public_symbol not in qualified_functions(tree):
+    if function_binding and public_symbol not in qualified_functions(tree):
         results.append({"ok": False, "failure": "PUBLIC_INFORMATION_INSUFFICIENT", "detail": "MATERIALIZED_PUBLIC_SYMBOL_IDENTITY_LOST:" + public_symbol})
+        continue
+    if declaration_binding and (declaration_owner, declaration_attribute) not in qualified_class_attributes(tree):
+        results.append({"ok": False, "failure": "PUBLIC_INFORMATION_INSUFFICIENT", "detail": "MATERIALIZED_CLASS_DECLARATION_IDENTITY_LOST:" + declaration_owner + "." + declaration_attribute})
         continue
     results.append({"ok": True})
 
@@ -935,10 +1064,31 @@ try:
 except (SyntaxError, ValueError, TypeError) as error:
     fail("UNSUPPORTED_LANGUAGE_SYNTAX", "IMPLEMENTATION_PARSE:" + str(error))
 
+line_starts = [0]
+for line in source.splitlines(keepends=True):
+    line_starts.append(line_starts[-1] + len(line.encode("utf-8")))
+source_bytes = source.encode("utf-8")
+def byte_offset(node, end=False):
+    line = getattr(node, "end_lineno" if end else "lineno", None)
+    column = getattr(node, "end_col_offset" if end else "col_offset", None)
+    if line is None or column is None or line < 1 or line >= len(line_starts):
+        fail("UNSUPPORTED_LANGUAGE_SYNTAX", "DECLARATION_AST_SPAN_MISSING")
+    return line_starts[line - 1] + column
+
 definitions = {}
+classes = {}
 def collect(items, prefix):
     for item in items:
         if isinstance(item, ast.ClassDef):
+            qualified = ".".join(prefix + [item.name])
+            attributes = {}
+            for statement in item.body:
+                if isinstance(statement, ast.Assign):
+                    for target in statement.targets:
+                        if isinstance(target, ast.Name): attributes[target.id] = statement.value
+                elif isinstance(statement, ast.AnnAssign) and isinstance(statement.target, ast.Name):
+                    attributes[statement.target.id] = statement.value
+            classes[qualified] = {"node": item, "attributes": attributes}
             collect(item.body, prefix + [item.name])
         elif isinstance(item, (ast.FunctionDef, ast.AsyncFunctionDef)):
             qualified = ".".join(prefix + [item.name])
@@ -951,6 +1101,9 @@ collect(source_tree.body, [])
 short_index = {}
 for qualified in definitions:
     short_index.setdefault(qualified.rsplit(".", 1)[-1], []).append(qualified)
+class_short_index = {}
+for qualified in classes:
+    class_short_index.setdefault(qualified.rsplit(".", 1)[-1], []).append(qualified)
 
 def dotted(node):
     if isinstance(node, ast.Name): return node.id
@@ -964,6 +1117,12 @@ def resolve(call):
     exact = [qualified for qualified in definitions if raw == qualified or raw.endswith("." + qualified)]
     if len(exact) == 1: return exact[0]
     matches = short_index.get(raw.rsplit(".", 1)[-1], [])
+    return matches[0] if len(matches) == 1 else None
+
+def resolve_class(raw):
+    exact = [qualified for qualified in classes if raw == qualified or raw.endswith("." + qualified)]
+    if len(exact) == 1: return exact[0]
+    matches = class_short_index.get(raw.rsplit(".", 1)[-1], [])
     return matches[0] if len(matches) == 1 else None
 
 def literal(node):
@@ -1010,7 +1169,16 @@ def call_observation(call, expected):
     if set(values) != set(roles) or encoded(expected) is None: return None
     return qualified, values, expected
 
+def declaration_observation(node, expected, test_local_classes):
+    if not isinstance(node, ast.Attribute) or encoded(expected) is None: return None
+    raw_owner = dotted(node.value)
+    if raw_owner in test_local_classes or raw_owner.rsplit(".", 1)[-1] in test_local_classes: return None
+    owner = resolve_class(raw_owner)
+    if owner is None or not node.attr.isidentifier(): return None
+    return owner, node.attr, expected
+
 observations = {}
+declaration_observations = {}
 for test in tests:
     path, test_source = test.get("relative_path", "<test>"), test.get("source")
     if not isinstance(test_source, str):
@@ -1020,22 +1188,34 @@ for test in tests:
         compile(tree, str(path), "exec")
     except (SyntaxError, ValueError, TypeError) as error:
         fail("UNSUPPORTED_LANGUAGE_SYNTAX", "TEST_PARSE:" + str(path) + ":" + str(error))
+    test_local_classes = {node.name for node in ast.walk(tree) if isinstance(node, ast.ClassDef)}
     for node in ast.walk(tree):
         observation = None
+        declaration = None
         if isinstance(node, ast.Assert):
             test_node = node.test
             if isinstance(test_node, ast.Compare) and len(test_node.ops) == 1 and isinstance(test_node.ops[0], ast.Eq) and len(test_node.comparators) == 1:
                 left, right = test_node.left, test_node.comparators[0]
                 if isinstance(left, ast.Call): observation = call_observation(left, literal(right))
                 elif isinstance(right, ast.Call): observation = call_observation(right, literal(left))
+                if observation is None:
+                    declaration = declaration_observation(left, literal(right), test_local_classes)
+                    if declaration is None: declaration = declaration_observation(right, literal(left), test_local_classes)
             elif isinstance(test_node, ast.Call):
                 observation = call_observation(test_node, True)
             elif isinstance(test_node, ast.UnaryOp) and isinstance(test_node.op, ast.Not) and isinstance(test_node.operand, ast.Call):
                 observation = call_observation(test_node.operand, False)
+        elif isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute) and node.func.attr in ("assertEqual", "assertEquals") and len(node.args) == 2 and not node.keywords:
+            declaration = declaration_observation(node.args[0], literal(node.args[1]), test_local_classes)
+            if declaration is None: declaration = declaration_observation(node.args[1], literal(node.args[0]), test_local_classes)
         if observation is not None:
             qualified, values, expected = observation
             key = json.dumps([{role: encoded(value) for role, value in values.items()}, encoded(expected)], sort_keys=True, ensure_ascii=False)
             observations.setdefault(qualified, {})[key] = {"values": values, "expected": expected}
+        if declaration is not None:
+            owner, attribute, expected = declaration
+            evidence = str(path) + ":" + str(getattr(node, "lineno", 0)) + ":" + repr(expected)
+            declaration_observations.setdefault((owner, attribute), {}).setdefault(repr(expected), {"value": expected, "evidence": []})["evidence"].append(evidence)
 
 UNKNOWN = object()
 def safe_eval(node, environment):
@@ -1133,9 +1313,69 @@ for qualified in sorted(observations):
             for case in cases
         ],
     })
-if not alternatives:
+
+def declaration_insertion(owner, attribute, expected):
+    class_node = classes[owner]["node"]
+    body = list(class_node.body)
+    if not body: return None
+    first = body[0]
+    line_start = line_starts[first.lineno - 1]
+    prefix = source_bytes[line_start:byte_offset(first)].decode("utf-8")
+    if not prefix.isspace(): prefix = " " * (class_node.col_offset + 4)
+    is_docstring = isinstance(first, ast.Expr) and isinstance(first.value, ast.Constant) and isinstance(first.value.value, str)
+    if is_docstring and len(body) > 1:
+        anchor = body[1]
+        anchor_start = line_starts[anchor.lineno - 1]
+        indent = source_bytes[anchor_start:byte_offset(anchor)].decode("utf-8")
+        if not indent.isspace(): indent = prefix
+        offset = anchor_start
+        insertion = indent + attribute + " = " + repr(expected) + "\n"
+    elif is_docstring:
+        offset = byte_offset(first, True)
+        insertion = "\n" + prefix + attribute + " = " + repr(expected)
+    else:
+        offset = line_start
+        insertion = prefix + attribute + " = " + repr(expected) + "\n"
+    return offset, insertion
+
+declarations = []
+for (owner, attribute), values in sorted(declaration_observations.items()):
+    if len(values) != 1:
+        fail("CONFLICTING_SOURCE_BOUND_EDITS", "CONFLICTING_PUBLIC_DECLARATION_POSTIMAGES:" + owner + "." + attribute)
+    expected = next(iter(values.values()))
+    existing_value = classes[owner]["attributes"].get(attribute)
+    if attribute in classes[owner]["attributes"] and existing_value is not None:
+        current_value = literal(existing_value)
+        if encoded(current_value) is None:
+            fail("PUBLIC_INFORMATION_INSUFFICIENT", "DYNAMIC_PRODUCT_CLASS_DECLARATION:" + owner + "." + attribute)
+        if current_value == expected["value"]: continue
+        operation = "REPLACE"
+        edit_start = byte_offset(existing_value)
+        edit_end = byte_offset(existing_value, True)
+        edit_source = repr(expected["value"])
+        reason = "INCORRECT_PRODUCT_CLASS_DECLARATION"
+    else:
+        insertion = declaration_insertion(owner, attribute, expected["value"])
+        if insertion is None: continue
+        edit_start, edit_source = insertion
+        edit_end = edit_start
+        operation = "INSERT"
+        reason = "MISSING_PRODUCT_CLASS_DECLARATION"
+    declarations.append({
+        "qualified_owner": owner,
+        "attribute": attribute,
+        "value_source": repr(expected["value"]),
+        "operation": operation,
+        "edit_start": edit_start,
+        "edit_end": edit_end,
+        "edit_source": edit_source,
+        "evidence": sorted(set(expected["evidence"])),
+        "reason": reason,
+    })
+
+if not alternatives and not declarations:
     fail("PUBLIC_INFORMATION_INSUFFICIENT", "NO_EVIDENCE_BOUND_REPAIR_ALTERNATIVE")
-json.dump({"ok": True, "alternatives": alternatives}, sys.stdout, ensure_ascii=False)
+json.dump({"ok": True, "alternatives": alternatives, "declarations": declarations}, sys.stdout, ensure_ascii=False)
 "#;
 
 fn map_python_type(annotation: &str) -> Option<ProgramType> {
@@ -1333,9 +1573,50 @@ fn run_python_json_host(
     Ok(stdout)
 }
 
-fn validate_python_candidate_batch(
+enum PythonCandidateBinding<'a> {
+    PublicFunction {
+        source: &'a str,
+        public_symbol: &'a str,
+    },
+    ClassDeclaration {
+        source: &'a str,
+        qualified_owner: &'a str,
+        attribute: &'a str,
+    },
+}
+
+impl PythonCandidateBinding<'_> {
+    fn source(&self) -> &str {
+        match self {
+            Self::PublicFunction { source, .. } | Self::ClassDeclaration { source, .. } => source,
+        }
+    }
+
+    fn json(&self) -> serde_json::Value {
+        match self {
+            Self::PublicFunction {
+                source,
+                public_symbol,
+            } => serde_json::json!({
+                "source": source,
+                "public_symbol": public_symbol,
+            }),
+            Self::ClassDeclaration {
+                source,
+                qualified_owner,
+                attribute,
+            } => serde_json::json!({
+                "source": source,
+                "declaration_owner": qualified_owner,
+                "declaration_attribute": attribute,
+            }),
+        }
+    }
+}
+
+fn validate_python_candidate_bindings(
     executable: &Path,
-    candidates: &[(&str, &str)],
+    candidates: &[PythonCandidateBinding<'_>],
 ) -> Result<(Vec<Result<(), CausalFrontendFailure>>, usize), CausalFrontendFailure> {
     if candidates.is_empty() {
         return Ok((Vec::new(), 0));
@@ -1347,7 +1628,7 @@ fn validate_python_candidate_batch(
         let mut end = start;
         let mut bytes = 0_usize;
         while end < candidates.len() && end - start < MAX_CANDIDATE_VALIDATION_BATCH_ITEMS {
-            let next_bytes = candidates[end].0.len();
+            let next_bytes = candidates[end].source().len();
             if end > start
                 && bytes.saturating_add(next_bytes) > MAX_CANDIDATE_VALIDATION_BATCH_BYTES
             {
@@ -1359,10 +1640,7 @@ fn validate_python_candidate_batch(
         let input = serde_json::to_vec(&serde_json::json!({
             "candidates": candidates[start..end]
                 .iter()
-                .map(|(source, public_symbol)| serde_json::json!({
-                    "source": source,
-                    "public_symbol": public_symbol,
-                }))
+                .map(PythonCandidateBinding::json)
                 .collect::<Vec<_>>(),
         }))
         .map_err(|error| CausalFrontendFailure::public(format!("CANDIDATE_BATCH_INPUT:{error}")))?;
@@ -1394,6 +1672,39 @@ fn validate_python_candidate_batch(
         start = end;
     }
     Ok((outcomes, batch_processes))
+}
+
+fn validate_python_candidate_batch(
+    executable: &Path,
+    candidates: &[(&str, &str)],
+) -> Result<(Vec<Result<(), CausalFrontendFailure>>, usize), CausalFrontendFailure> {
+    let bindings = candidates
+        .iter()
+        .map(
+            |(source, public_symbol)| PythonCandidateBinding::PublicFunction {
+                source,
+                public_symbol,
+            },
+        )
+        .collect::<Vec<_>>();
+    validate_python_candidate_bindings(executable, &bindings)
+}
+
+fn validate_python_declaration_candidate_batch(
+    executable: &Path,
+    candidates: &[(&str, &str, &str)],
+) -> Result<(Vec<Result<(), CausalFrontendFailure>>, usize), CausalFrontendFailure> {
+    let bindings = candidates
+        .iter()
+        .map(
+            |(source, qualified_owner, attribute)| PythonCandidateBinding::ClassDeclaration {
+                source,
+                qualified_owner,
+                attribute,
+            },
+        )
+        .collect::<Vec<_>>();
+    validate_python_candidate_bindings(executable, &bindings)
 }
 
 fn host_failure(response: &PythonHostResponse) -> Option<CausalFrontendFailure> {
@@ -1536,21 +1847,154 @@ pub fn discover_and_synthesize_python_repository_with_operators(
             })
         })
         .collect::<Result<Vec<_>, CausalFrontendFailure>>()?;
-    if alternatives.is_empty() {
+    if alternatives
+        .len()
+        .saturating_add(response.declarations.len())
+        > MAX_CAUSAL_ALTERNATIVES
+    {
+        return Err(CausalFrontendFailure::public(
+            "REPOSITORY_DISCOVERY_ALTERNATIVE_BUDGET",
+        ));
+    }
+    let mut declaration_ids = BTreeSet::new();
+    let pending_declarations = response
+        .declarations
+        .into_iter()
+        .map(|declaration| {
+            let requested_public_symbol =
+                format!("{}.{}", declaration.qualified_owner, declaration.attribute);
+            if !matches!(
+                declaration.reason.as_str(),
+                "MISSING_PRODUCT_CLASS_DECLARATION" | "INCORRECT_PRODUCT_CLASS_DECLARATION"
+            ) || declaration.evidence.is_empty()
+                || !declaration_ids.insert(requested_public_symbol.clone())
+            {
+                return Err(CausalFrontendFailure::public(
+                    "DECLARATION_DISCOVERY_PUBLIC_INFORMATION",
+                ));
+            }
+            let public_evidence_sha256 = sha256(
+                serde_json::to_vec(&declaration.evidence)
+                    .map_err(|error| {
+                        CausalFrontendFailure::public(format!("DECLARATION_EVIDENCE_HASH:{error}"))
+                    })?
+                    .as_slice(),
+            );
+            let mut declaration_template = SourceBoundDeclarationTemplateIR {
+                qualified_owner: declaration.qualified_owner,
+                attribute: declaration.attribute,
+                value_source: declaration.value_source,
+                operation: declaration.operation,
+                edit_range: ByteRange {
+                    start: declaration.edit_start,
+                    end: declaration.edit_end,
+                },
+                edit_source: declaration.edit_source,
+                public_evidence_sha256: public_evidence_sha256.clone(),
+                source_template_sha256: String::new(),
+            };
+            declaration_template.source_template_sha256 =
+                source_bound_declaration_template_hash(&request.source, &declaration_template)?;
+            let materialized =
+                materialize_python_declaration(&request.source, &declaration_template)?;
+            let alternative_id = format!(
+                "AUTO:{}:{}:{}",
+                declaration.reason,
+                requested_public_symbol,
+                &public_evidence_sha256[..16]
+            );
+            Ok((
+                SourceBoundDeclarationAlternativeReceiptIR {
+                    alternative_id,
+                    requested_public_symbol,
+                    declaration_template,
+                    replayable_patch: ReplayableSourceBoundPatchIR {
+                        predecessor_sha256: String::new(),
+                        edit: SourceEditAtom::AtomicMultiEdit { edits: Vec::new() },
+                        candidate_sha256: String::new(),
+                        candidate_replay_sha256: String::new(),
+                        candidate_materialization_is_one_to_one: false,
+                    },
+                    candidate_validation_processes: 0,
+                },
+                materialized,
+            ))
+        })
+        .collect::<Result<Vec<_>, CausalFrontendFailure>>()?;
+    let declaration_validation_inputs = pending_declarations
+        .iter()
+        .map(|(declaration, materialized)| {
+            (
+                materialized.candidate_source.as_str(),
+                declaration.declaration_template.qualified_owner.as_str(),
+                declaration.declaration_template.attribute.as_str(),
+            )
+        })
+        .collect::<Vec<_>>();
+    let (declaration_validation_outcomes, declaration_validation_processes) =
+        validate_python_declaration_candidate_batch(
+            &request.python_executable,
+            &declaration_validation_inputs,
+        )?;
+    for outcome in declaration_validation_outcomes {
+        outcome?;
+    }
+    drop(declaration_validation_inputs);
+    let declaration_alternatives = pending_declarations
+        .into_iter()
+        .map(|(mut declaration, materialized)| {
+            declaration.replayable_patch = into_replayable_source_bound_patch(materialized);
+            declaration.candidate_validation_processes = declaration_validation_processes;
+            declaration
+        })
+        .collect::<Vec<_>>();
+    if alternatives.is_empty() && declaration_alternatives.is_empty() {
         return Err(CausalFrontendFailure::public(
             "NO_EVIDENCE_BOUND_REPAIR_ALTERNATIVE",
         ));
     }
-    analyze_and_synthesize_source_bound_with_operators(
-        &SourceBoundCausalRequestIR {
-            schema: SOURCE_BOUND_CAUSAL_REQUEST_SCHEMA.to_string(),
+    let causal_request = SourceBoundCausalRequestIR {
+        schema: SOURCE_BOUND_CAUSAL_REQUEST_SCHEMA.to_string(),
+        source_relative_path: request.source_relative_path.clone(),
+        source: request.source.clone(),
+        python_executable: request.python_executable.clone(),
+        alternatives,
+    };
+    let mut receipt = if causal_request.alternatives.is_empty() {
+        SourceBoundCausalReceiptIR {
+            schema: SOURCE_BOUND_CAUSAL_RECEIPT_SCHEMA.to_string(),
             source_relative_path: request.source_relative_path.clone(),
-            source: request.source.clone(),
-            python_executable: request.python_executable.clone(),
-            alternatives,
-        },
-        operators,
-    )
+            language_backend: SourceLanguageBackend::PythonAst,
+            predecessor_sha256: sha256(request.source.as_bytes()),
+            alternatives: Vec::new(),
+            declaration_alternatives: Vec::new(),
+            patch_variants: Vec::new(),
+            alternative_worker_count: 0,
+            public_symbol_owner_preserved: false,
+            execution_dependency_closure_preserved: false,
+            single_and_multi_edit_share_atomic_path: false,
+            receipt_sha256: String::new(),
+        }
+    } else {
+        analyze_and_synthesize_source_bound_with_operators(&causal_request, operators)?
+    };
+    receipt.declaration_alternatives = declaration_alternatives;
+    receipt.patch_variants = build_source_bound_patch_variants_with_declarations(
+        &request.source,
+        &receipt.alternatives,
+        &receipt.declaration_alternatives,
+    )?;
+    let (owner, closure, atomic) = source_bound_receipt_claims(&receipt);
+    receipt.public_symbol_owner_preserved = owner;
+    receipt.execution_dependency_closure_preserved = closure;
+    receipt.single_and_multi_edit_share_atomic_path = atomic;
+    receipt.receipt_sha256 = source_bound_receipt_hash(&receipt)?;
+    validate_source_bound_causal_receipt_with_python(
+        &receipt,
+        &request.source,
+        &request.python_executable,
+    )?;
+    Ok(receipt)
 }
 
 fn convert_python_definition(
@@ -2043,6 +2487,63 @@ fn materialize_python_synthesis(
     })
 }
 
+fn materialize_python_declaration(
+    source: &str,
+    template: &SourceBoundDeclarationTemplateIR,
+) -> Result<MaterializedSourceBoundPatchIR, CausalFrontendFailure> {
+    validate_source_bound_declaration_template(source, template)?;
+    let declaration_edit = match template.operation {
+        SourceBoundDeclarationOperation::Insert => SourceEditAtom::Insert {
+            offset: template.edit_range.start,
+            content: template.edit_source.clone(),
+        },
+        SourceBoundDeclarationOperation::Replace => {
+            let observed = source
+                .get(template.edit_range.start..template.edit_range.end)
+                .ok_or_else(|| CausalFrontendFailure::conflict("DECLARATION_REPLACEMENT_RANGE"))?;
+            SourceEditAtom::Replace {
+                range: template.edit_range,
+                expected_sha256: sha256(observed.as_bytes()),
+                replacement: template.edit_source.clone(),
+            }
+        }
+    };
+    let edit = SourceEditAtom::AtomicMultiEdit {
+        edits: vec![declaration_edit],
+    };
+    let candidate_source = apply_edit_atom(source, &edit).map_err(|error| {
+        if error.contains("OVERLAPPING")
+            || error.contains("INSIDE_CONSUMED")
+            || error.contains("DUPLICATE")
+        {
+            CausalFrontendFailure::conflict(error)
+        } else {
+            CausalFrontendFailure::unsupported(error)
+        }
+    })?;
+    if candidate_source == source {
+        return Err(CausalFrontendFailure::public(
+            "DECLARATION_MATERIALIZATION_NO_OP",
+        ));
+    }
+    let replay = apply_edit_atom(source, &edit).map_err(CausalFrontendFailure::conflict)?;
+    let candidate_sha256 = sha256(candidate_source.as_bytes());
+    let candidate_replay_sha256 = sha256(replay.as_bytes());
+    if replay != candidate_source || candidate_replay_sha256 != candidate_sha256 {
+        return Err(CausalFrontendFailure::conflict(
+            "DECLARATION_MATERIALIZATION_DIVERGED",
+        ));
+    }
+    Ok(MaterializedSourceBoundPatchIR {
+        predecessor_sha256: sha256(source.as_bytes()),
+        edit,
+        candidate_source,
+        candidate_sha256,
+        candidate_replay_sha256,
+        candidate_materialization_is_one_to_one: true,
+    })
+}
+
 fn push_source_seed_expression(
     expression: &TypedSyntaxExpressionIR,
     seen: &mut BTreeSet<String>,
@@ -2226,12 +2727,35 @@ fn combine_source_bound_patches(
     patches: &[&ReplayableSourceBoundPatchIR],
 ) -> Result<MaterializedSourceBoundPatchIR, CausalFrontendFailure> {
     let mut edits = Vec::new();
-    for patch in patches {
-        match &patch.edit {
-            SourceEditAtom::AtomicMultiEdit { edits: nested } => {
-                edits.extend(nested.iter().cloned())
+    let mut insertion_by_offset = BTreeMap::<usize, usize>::new();
+    {
+        let mut push_edit = |edit: SourceEditAtom| {
+            if let SourceEditAtom::Insert { offset, content } = edit {
+                if let Some(index) = insertion_by_offset.get(&offset).copied() {
+                    let SourceEditAtom::Insert {
+                        content: existing, ..
+                    } = &mut edits[index]
+                    else {
+                        unreachable!("insertion index only records inserts")
+                    };
+                    existing.push_str(&content);
+                } else {
+                    insertion_by_offset.insert(offset, edits.len());
+                    edits.push(SourceEditAtom::Insert { offset, content });
+                }
+            } else {
+                edits.push(edit);
             }
-            edit => edits.push(edit.clone()),
+        };
+        for patch in patches {
+            match &patch.edit {
+                SourceEditAtom::AtomicMultiEdit { edits: nested } => {
+                    for edit in nested.iter().cloned() {
+                        push_edit(edit);
+                    }
+                }
+                edit => push_edit(edit.clone()),
+            }
         }
     }
     let edit = SourceEditAtom::AtomicMultiEdit { edits };
@@ -2338,6 +2862,12 @@ fn source_bound_receipt_patches(
     }
     patches.extend(
         receipt
+            .declaration_alternatives
+            .iter()
+            .map(|alternative| &alternative.replayable_patch),
+    );
+    patches.extend(
+        receipt
             .patch_variants
             .iter()
             .map(|variant| &variant.replayable_patch),
@@ -2395,6 +2925,13 @@ fn source_bound_receipt_claims(receipt: &SourceBoundCausalReceiptIR) -> (bool, b
                 candidate.function_template.owner
                     == qualified_symbol_owner(&candidate.function_template.qualified_symbol)
             })
+    }) && receipt.declaration_alternatives.iter().all(|alternative| {
+        alternative.requested_public_symbol
+            == format!(
+                "{}.{}",
+                alternative.declaration_template.qualified_owner,
+                alternative.declaration_template.attribute
+            )
     });
     let closure_preserved = receipt.alternatives.iter().all(|alternative| {
         template_closure_is_preserved(&alternative.function_template)
@@ -2430,6 +2967,16 @@ pub fn validate_source_bound_causal_receipt(
 ) -> Result<(), CausalFrontendFailure> {
     if receipt.schema != SOURCE_BOUND_CAUSAL_RECEIPT_SCHEMA
         || receipt.predecessor_sha256 != sha256(source.as_bytes())
+        || receipt
+            .alternatives
+            .len()
+            .saturating_add(receipt.declaration_alternatives.len())
+            == 0
+        || receipt
+            .alternatives
+            .len()
+            .saturating_add(receipt.declaration_alternatives.len())
+            > MAX_CAUSAL_ALTERNATIVES
     {
         return Err(CausalFrontendFailure::conflict(
             "SOURCE_BOUND_RECEIPT_PREDECESSOR",
@@ -2495,7 +3042,21 @@ pub fn validate_source_bound_causal_receipt(
             }
         }
     }
-    if build_source_bound_patch_variants(source, &receipt.alternatives)? != receipt.patch_variants {
+    for declaration in &receipt.declaration_alternatives {
+        validate_source_bound_declaration_template(source, &declaration.declaration_template)?;
+        let expected = materialize_python_declaration(source, &declaration.declaration_template)?;
+        if into_replayable_source_bound_patch(expected) != declaration.replayable_patch {
+            return Err(CausalFrontendFailure::conflict(
+                "SOURCE_BOUND_RECEIPT_DECLARATION_MATERIALIZATION",
+            ));
+        }
+    }
+    if build_source_bound_patch_variants_with_declarations(
+        source,
+        &receipt.alternatives,
+        &receipt.declaration_alternatives,
+    )? != receipt.patch_variants
+    {
         return Err(CausalFrontendFailure::conflict(
             "SOURCE_BOUND_RECEIPT_VARIANT_MATERIALIZATION",
         ));
@@ -2523,65 +3084,87 @@ pub fn validate_source_bound_causal_receipt_with_python(
         .iter()
         .map(|alternative| alternative.requested_public_symbol.clone())
         .collect::<Vec<_>>();
-    if requested_symbols.is_empty() {
+    if requested_symbols.is_empty() && receipt.declaration_alternatives.is_empty() {
         return Err(CausalFrontendFailure::public(
             "SOURCE_BOUND_RECEIPT_ALTERNATIVES_EMPTY",
         ));
     }
-    let response = run_python_host(python_executable, source, &requested_symbols)?;
-    if let Some(error) = host_failure(&response) {
-        return Err(error);
-    }
-    if response.definitions.len() != receipt.alternatives.len() {
-        return Err(CausalFrontendFailure::conflict(
-            "SOURCE_BOUND_RECEIPT_PYTHON_AST_CARDINALITY",
-        ));
-    }
-    for (alternative, definition) in receipt.alternatives.iter().zip(&response.definitions) {
-        let owner_request = alternative
-            .synthesis
-            .synthesis_request
-            .as_ref()
-            .ok_or_else(|| {
-                CausalFrontendFailure::conflict("SOURCE_BOUND_RECEIPT_OWNER_REQUEST_MISSING")
-            })?;
-        let derived_owner =
-            convert_python_definition(definition.clone(), &owner_request.public_observations)?;
-        if derived_owner != alternative.function_template {
+    if !requested_symbols.is_empty() {
+        let response = run_python_host(python_executable, source, &requested_symbols)?;
+        if let Some(error) = host_failure(&response) {
+            return Err(error);
+        }
+        if response.definitions.len() != receipt.alternatives.len() {
             return Err(CausalFrontendFailure::conflict(
-                "SOURCE_BOUND_RECEIPT_PYTHON_AST_DERIVATION",
+                "SOURCE_BOUND_RECEIPT_PYTHON_AST_CARDINALITY",
             ));
         }
-        for candidate in &alternative.closure_candidates {
-            let Some(derived) = definition.closure_templates.iter().find(|derived| {
-                derived.qualified_symbol == candidate.function_template.qualified_symbol
-            }) else {
+        for (alternative, definition) in receipt.alternatives.iter().zip(&response.definitions) {
+            let owner_request = alternative
+                .synthesis
+                .synthesis_request
+                .as_ref()
+                .ok_or_else(|| {
+                    CausalFrontendFailure::conflict("SOURCE_BOUND_RECEIPT_OWNER_REQUEST_MISSING")
+                })?;
+            let derived_owner =
+                convert_python_definition(definition.clone(), &owner_request.public_observations)?;
+            if derived_owner != alternative.function_template {
                 return Err(CausalFrontendFailure::conflict(
-                    "SOURCE_BOUND_RECEIPT_PYTHON_CLOSURE_DERIVATION",
-                ));
-            };
-            if derived.public_operand_bindings != candidate.public_operand_bindings {
-                return Err(CausalFrontendFailure::conflict(
-                    "SOURCE_BOUND_RECEIPT_PYTHON_CLOSURE_DERIVATION",
+                    "SOURCE_BOUND_RECEIPT_PYTHON_AST_DERIVATION",
                 ));
             }
-            let closure_observations = remap_public_observations_for_closure(
-                &owner_request.public_observations,
-                &derived.public_operand_bindings,
-            )?;
-            let derived_closure =
-                convert_python_closure_definition(derived.clone(), &closure_observations)?;
-            if derived_closure != candidate.function_template {
-                return Err(CausalFrontendFailure::conflict(
-                    "SOURCE_BOUND_RECEIPT_PYTHON_CLOSURE_DERIVATION",
-                ));
+            for candidate in &alternative.closure_candidates {
+                let Some(derived) = definition.closure_templates.iter().find(|derived| {
+                    derived.qualified_symbol == candidate.function_template.qualified_symbol
+                }) else {
+                    return Err(CausalFrontendFailure::conflict(
+                        "SOURCE_BOUND_RECEIPT_PYTHON_CLOSURE_DERIVATION",
+                    ));
+                };
+                if derived.public_operand_bindings != candidate.public_operand_bindings {
+                    return Err(CausalFrontendFailure::conflict(
+                        "SOURCE_BOUND_RECEIPT_PYTHON_CLOSURE_DERIVATION",
+                    ));
+                }
+                let closure_observations = remap_public_observations_for_closure(
+                    &owner_request.public_observations,
+                    &derived.public_operand_bindings,
+                )?;
+                let derived_closure =
+                    convert_python_closure_definition(derived.clone(), &closure_observations)?;
+                if derived_closure != candidate.function_template {
+                    return Err(CausalFrontendFailure::conflict(
+                        "SOURCE_BOUND_RECEIPT_PYTHON_CLOSURE_DERIVATION",
+                    ));
+                }
             }
         }
+    }
+    let declaration_candidates = receipt
+        .declaration_alternatives
+        .iter()
+        .map(|declaration| {
+            Ok((
+                replay_source_bound_patch(source, &declaration.replayable_patch)?,
+                declaration.declaration_template.qualified_owner.as_str(),
+                declaration.declaration_template.attribute.as_str(),
+            ))
+        })
+        .collect::<Result<Vec<_>, CausalFrontendFailure>>()?;
+    let declaration_inputs = declaration_candidates
+        .iter()
+        .map(|(candidate, owner, attribute)| (candidate.as_str(), *owner, *attribute))
+        .collect::<Vec<_>>();
+    let (declaration_outcomes, _) =
+        validate_python_declaration_candidate_batch(python_executable, &declaration_inputs)?;
+    for outcome in declaration_outcomes {
+        outcome?;
     }
     validate_source_bound_causal_receipt(receipt, source)
 }
 
-fn build_source_bound_patch_variants(
+fn build_source_bound_function_patch_variants(
     source: &str,
     alternatives: &[SourceBoundAlternativeReceiptIR],
 ) -> Result<Vec<SourceBoundPatchVariantIR>, CausalFrontendFailure> {
@@ -2684,6 +3267,93 @@ fn build_source_bound_patch_variants(
         } else {
             CausalFrontendFailure::public("NO_SOURCE_BOUND_PATCH_VARIANTS")
         });
+    }
+    Ok(variants)
+}
+
+fn build_source_bound_patch_variants(
+    source: &str,
+    alternatives: &[SourceBoundAlternativeReceiptIR],
+) -> Result<Vec<SourceBoundPatchVariantIR>, CausalFrontendFailure> {
+    build_source_bound_patch_variants_with_declarations(source, alternatives, &[])
+}
+
+fn build_source_bound_patch_variants_with_declarations(
+    source: &str,
+    alternatives: &[SourceBoundAlternativeReceiptIR],
+    declarations: &[SourceBoundDeclarationAlternativeReceiptIR],
+) -> Result<Vec<SourceBoundPatchVariantIR>, CausalFrontendFailure> {
+    if declarations.is_empty() {
+        return build_source_bound_function_patch_variants(source, alternatives);
+    }
+    let declaration_patches = declarations
+        .iter()
+        .map(|declaration| &declaration.replayable_patch)
+        .collect::<Vec<_>>();
+    let declaration_symbols = declarations
+        .iter()
+        .map(|declaration| declaration.requested_public_symbol.clone())
+        .collect::<Vec<_>>();
+    let function_variants = if alternatives.is_empty() {
+        Vec::new()
+    } else {
+        build_source_bound_function_patch_variants(source, alternatives)?
+    };
+    let mut variants = Vec::new();
+    let mut candidate_hashes = BTreeSet::new();
+    if function_variants.is_empty() {
+        let materialized = combine_source_bound_patches(source, &declaration_patches)?;
+        let variant_id = sha256(
+            serde_json::to_vec(&(
+                Vec::<usize>::new(),
+                &declaration_symbols,
+                &materialized.candidate_sha256,
+            ))
+            .map_err(|error| {
+                CausalFrontendFailure::public(format!("DECLARATION_VARIANT_HASH:{error}"))
+            })?
+            .as_slice(),
+        );
+        variants.push(SourceBoundPatchVariantIR {
+            variant_id,
+            selected_candidate_indices: Vec::new(),
+            selected_template_symbols: declaration_symbols,
+            replayable_patch: into_replayable_source_bound_patch(materialized),
+        });
+        return Ok(variants);
+    }
+    for function_variant in function_variants {
+        let mut patches = Vec::with_capacity(1 + declaration_patches.len());
+        patches.push(&function_variant.replayable_patch);
+        patches.extend(declaration_patches.iter().copied());
+        let materialized = combine_source_bound_patches(source, &patches)?;
+        if !candidate_hashes.insert(materialized.candidate_sha256.clone()) {
+            continue;
+        }
+        let mut symbols = function_variant.selected_template_symbols;
+        symbols.extend(declaration_symbols.iter().cloned());
+        let variant_id = sha256(
+            serde_json::to_vec(&(
+                &function_variant.selected_candidate_indices,
+                &symbols,
+                &materialized.candidate_sha256,
+            ))
+            .map_err(|error| {
+                CausalFrontendFailure::public(format!("DECLARATION_VARIANT_HASH:{error}"))
+            })?
+            .as_slice(),
+        );
+        variants.push(SourceBoundPatchVariantIR {
+            variant_id,
+            selected_candidate_indices: function_variant.selected_candidate_indices,
+            selected_template_symbols: symbols,
+            replayable_patch: into_replayable_source_bound_patch(materialized),
+        });
+    }
+    if variants.is_empty() {
+        return Err(CausalFrontendFailure::public(
+            "NO_SOURCE_BOUND_PATCH_VARIANTS",
+        ));
     }
     Ok(variants)
 }
@@ -2996,6 +3666,7 @@ pub fn analyze_and_synthesize_source_bound_with_operators(
         language_backend: backend,
         predecessor_sha256: sha256(request.source.as_bytes()),
         alternatives: receipts,
+        declaration_alternatives: Vec::new(),
         patch_variants,
         alternative_worker_count,
         public_symbol_owner_preserved: false,
@@ -4703,6 +5374,203 @@ def parse_expr(left, right):
                 .kind,
             CausalFrontendFailureKind::UnsupportedLanguageSyntax
         );
+    }
+
+    #[test]
+    fn missing_product_class_declarations_reach_one_atomic_verified_variant() {
+        let Some(python_executable) = python() else {
+            return;
+        };
+        let source = "class Shadow:\r\n    pass\r\n\r\nclass RenamedPolicy:\r\n    \"\"\"한글 설명\"\"\"\r\n    pass\r\n";
+        let tests = r#"def test_policy_contract():
+    assert RenamedPolicy.marker == "준비"
+    assert RenamedPolicy.limit == 3
+"#;
+        let request = SourceBoundRepositoryDiscoveryRequestIR {
+            schema: SOURCE_BOUND_REPOSITORY_DISCOVERY_SCHEMA.to_string(),
+            source_relative_path: PathBuf::from("policy.py"),
+            source: source.to_string(),
+            test_sources: vec![RepositoryTestSourceIR {
+                relative_path: PathBuf::from("tests/test_policy.py"),
+                source: tests.to_string(),
+            }],
+            python_executable: python_executable.clone(),
+            target_symbols: vec!["RenamedPolicy.marker".to_string()],
+            allowed_effects: vec![Effect::Pure],
+            max_expression_depth: 1,
+            max_candidates: 64,
+        };
+        let receipt = discover_and_synthesize_python_repository(&request).unwrap();
+        assert!(receipt.alternatives.is_empty());
+        assert_eq!(receipt.declaration_alternatives.len(), 2);
+        assert_eq!(receipt.patch_variants.len(), 1);
+        assert!(receipt.public_symbol_owner_preserved);
+        assert!(receipt.execution_dependency_closure_preserved);
+        assert!(receipt.single_and_multi_edit_share_atomic_path);
+        assert!(receipt.declaration_alternatives.iter().all(|declaration| {
+            declaration
+                .requested_public_symbol
+                .starts_with("RenamedPolicy.")
+                && declaration.declaration_template.qualified_owner == "RenamedPolicy"
+                && declaration.candidate_validation_processes == 1
+        }));
+        let candidate =
+            replay_source_bound_patch(source, &receipt.patch_variants[0].replayable_patch).unwrap();
+        assert!(candidate.contains("limit = 3"));
+        assert!(candidate.contains("marker = '준비'"));
+        assert!(candidate.contains("\"\"\"한글 설명\"\"\""));
+        let execution = Command::new(&python_executable)
+            .args(["-X", "utf8", "-c"])
+            .arg(format!("{candidate}\n{tests}\ntest_policy_contract()\n"))
+            .output()
+            .unwrap();
+        assert!(
+            execution.status.success(),
+            "{}",
+            String::from_utf8_lossy(&execution.stderr)
+        );
+        validate_source_bound_causal_receipt_with_python(&receipt, source, &python_executable)
+            .unwrap();
+    }
+
+    #[test]
+    fn declaration_owner_evidence_ignores_test_fixture_classes() {
+        let Some(python_executable) = python() else {
+            return;
+        };
+        let request = SourceBoundRepositoryDiscoveryRequestIR {
+            schema: SOURCE_BOUND_REPOSITORY_DISCOVERY_SCHEMA.to_string(),
+            source_relative_path: PathBuf::from("catalog.py"),
+            source: "class Catalog:\n    pass\n".to_string(),
+            test_sources: vec![RepositoryTestSourceIR {
+                relative_path: PathBuf::from("tests/test_catalog.py"),
+                source: r#"class Catalog:
+    label = "fixture"
+
+def test_fixture_is_not_product_evidence():
+    assert Catalog.label == "ready"
+"#
+                .to_string(),
+            }],
+            python_executable,
+            target_symbols: Vec::new(),
+            allowed_effects: vec![Effect::Pure],
+            max_expression_depth: 1,
+            max_candidates: 64,
+        };
+        assert_eq!(
+            discover_and_synthesize_python_repository(&request).unwrap_err(),
+            CausalFrontendFailure::public("NO_EVIDENCE_BOUND_REPAIR_ALTERNATIVE")
+        );
+    }
+
+    #[test]
+    fn existing_or_conflicting_class_declaration_evidence_fails_closed() {
+        let Some(python_executable) = python() else {
+            return;
+        };
+        let base = SourceBoundRepositoryDiscoveryRequestIR {
+            schema: SOURCE_BOUND_REPOSITORY_DISCOVERY_SCHEMA.to_string(),
+            source_relative_path: PathBuf::from("catalog.py"),
+            source: "class Catalog:\n    label = 'ready'\n".to_string(),
+            test_sources: vec![RepositoryTestSourceIR {
+                relative_path: PathBuf::from("tests/test_catalog.py"),
+                source: "def test_catalog():\n    assert Catalog.label == 'ready'\n".to_string(),
+            }],
+            python_executable: python_executable.clone(),
+            target_symbols: Vec::new(),
+            allowed_effects: vec![Effect::Pure],
+            max_expression_depth: 1,
+            max_candidates: 64,
+        };
+        assert_eq!(
+            discover_and_synthesize_python_repository(&base).unwrap_err(),
+            CausalFrontendFailure::public("NO_EVIDENCE_BOUND_REPAIR_ALTERNATIVE")
+        );
+        let incorrect = SourceBoundRepositoryDiscoveryRequestIR {
+            source: "class Catalog:\n    label = 'blocked'\n".to_string(),
+            ..base.clone()
+        };
+        let incorrect_receipt = discover_and_synthesize_python_repository(&incorrect).unwrap();
+        assert_eq!(incorrect_receipt.declaration_alternatives.len(), 1);
+        assert_eq!(
+            incorrect_receipt.declaration_alternatives[0]
+                .declaration_template
+                .operation,
+            SourceBoundDeclarationOperation::Replace
+        );
+        let repaired = replay_source_bound_patch(
+            &incorrect.source,
+            &incorrect_receipt.patch_variants[0].replayable_patch,
+        )
+        .unwrap();
+        assert!(repaired.contains("label = 'ready'"));
+        let conflicting = SourceBoundRepositoryDiscoveryRequestIR {
+            source: "class Catalog:\n    pass\n".to_string(),
+            test_sources: vec![RepositoryTestSourceIR {
+                relative_path: PathBuf::from("tests/test_catalog.py"),
+                source: "def test_catalog():\n    assert Catalog.label == 'ready'\n    assert Catalog.label == 'blocked'\n".to_string(),
+            }],
+            ..base
+        };
+        let error = discover_and_synthesize_python_repository(&conflicting).unwrap_err();
+        assert_eq!(
+            error.kind,
+            CausalFrontendFailureKind::ConflictingSourceBoundEdits
+        );
+        assert!(error
+            .detail
+            .starts_with("CONFLICTING_PUBLIC_DECLARATION_POSTIMAGES:Catalog.label"));
+    }
+
+    #[test]
+    fn irrelevant_typed_operator_memory_cannot_suppress_exact_declaration_template() {
+        let Some(python_executable) = python() else {
+            return;
+        };
+        let prior_source = "def add(left: int, right: int) -> int:\n    return 0\n";
+        let prior_receipt = analyze_and_synthesize_source_bound(&SourceBoundCausalRequestIR {
+            schema: SOURCE_BOUND_CAUSAL_REQUEST_SCHEMA.to_string(),
+            source_relative_path: PathBuf::from("prior.py"),
+            source: prior_source.to_string(),
+            python_executable: python_executable.clone(),
+            alternatives: vec![SourceBoundCausalAlternativeIR {
+                alternative_id: "prior-add".to_string(),
+                public_symbol: "add".to_string(),
+                public_observations: observations(&[(2, 3, 5), (4, 7, 11)]),
+                allowed_effects: vec![Effect::Pure],
+                require_conditional: false,
+                max_expression_depth: 2,
+                max_candidates: 1_024,
+            }],
+        })
+        .unwrap();
+        let irrelevant_operator = typed_mechanism_improvement_operator_from_receipt(
+            &prior_receipt.alternatives[0].synthesis,
+            "a".repeat(64),
+        )
+        .unwrap();
+        let request = SourceBoundRepositoryDiscoveryRequestIR {
+            schema: SOURCE_BOUND_REPOSITORY_DISCOVERY_SCHEMA.to_string(),
+            source_relative_path: PathBuf::from("policy.py"),
+            source: "class Policy:\n    pass\n".to_string(),
+            test_sources: vec![RepositoryTestSourceIR {
+                relative_path: PathBuf::from("tests/test_policy.py"),
+                source: "def test_policy():\n    assert Policy.marker == 'ready'\n".to_string(),
+            }],
+            python_executable,
+            target_symbols: Vec::new(),
+            allowed_effects: vec![Effect::Pure],
+            max_expression_depth: 1,
+            max_candidates: 64,
+        };
+        let without_memory = discover_and_synthesize_python_repository(&request).unwrap();
+        let with_memory = discover_and_synthesize_python_repository_with_operators(
+            &request,
+            &[irrelevant_operator],
+        )
+        .unwrap();
+        assert_eq!(with_memory, without_memory);
     }
 
     #[test]
