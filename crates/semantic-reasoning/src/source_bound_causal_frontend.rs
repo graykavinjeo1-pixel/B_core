@@ -2363,6 +2363,29 @@ fn template_closure_is_preserved(template: &SourceBoundFunctionTemplateIR) -> bo
             .all(|dependency| template.execution_dependency_closure.contains(dependency))
 }
 
+fn closure_evidence_is_an_exact_partition(alternative: &SourceBoundAlternativeReceiptIR) -> bool {
+    let closure = &alternative.function_template.execution_dependency_closure;
+    if closure.is_empty() {
+        return false;
+    }
+    let mut covered_ordinals = BTreeSet::from([0_usize]);
+    let candidates_are_exact = alternative.closure_candidates.iter().all(|candidate| {
+        candidate.closure_ordinal > 0
+            && closure.get(candidate.closure_ordinal)
+                == Some(&candidate.function_template.qualified_symbol)
+            && covered_ordinals.insert(candidate.closure_ordinal)
+    });
+    let rejections_are_exact = alternative
+        .closure_candidate_rejections
+        .iter()
+        .all(|rejection| {
+            rejection.closure_ordinal > 0
+                && closure.get(rejection.closure_ordinal) == Some(&rejection.qualified_symbol)
+                && covered_ordinals.insert(rejection.closure_ordinal)
+        });
+    candidates_are_exact && rejections_are_exact && covered_ordinals.len() == closure.len()
+}
+
 fn source_bound_receipt_claims(receipt: &SourceBoundCausalReceiptIR) -> (bool, bool, bool) {
     let owner_preserved = receipt.alternatives.iter().all(|alternative| {
         alternative.requested_public_symbol == alternative.function_template.qualified_symbol
@@ -2374,19 +2397,12 @@ fn source_bound_receipt_claims(receipt: &SourceBoundCausalReceiptIR) -> (bool, b
             })
     });
     let closure_preserved = receipt.alternatives.iter().all(|alternative| {
-        let closure = &alternative.function_template.execution_dependency_closure;
         template_closure_is_preserved(&alternative.function_template)
-            && alternative.closure_candidates.iter().all(|candidate| {
-                closure.get(candidate.closure_ordinal)
-                    == Some(&candidate.function_template.qualified_symbol)
-                    && template_closure_is_preserved(&candidate.function_template)
-            })
+            && closure_evidence_is_an_exact_partition(alternative)
             && alternative
-                .closure_candidate_rejections
+                .closure_candidates
                 .iter()
-                .all(|rejection| {
-                    closure.get(rejection.closure_ordinal) == Some(&rejection.qualified_symbol)
-                })
+                .all(|candidate| template_closure_is_preserved(&candidate.function_template))
     });
     let atomic_path = source_bound_receipt_patches(receipt)
         .into_iter()
@@ -4039,6 +4055,26 @@ def transformer_visitor(value: int, baseline: int) -> int:
             ]
         );
         assert_eq!(alternative.closure_candidates.len(), 3);
+        let mut forged_missing_closure_evidence = receipt.clone();
+        forged_missing_closure_evidence.alternatives[0]
+            .closure_candidates
+            .remove(1);
+        assert_eq!(
+            validate_source_bound_causal_receipt(&forged_missing_closure_evidence, source)
+                .unwrap_err(),
+            CausalFrontendFailure::conflict("SOURCE_BOUND_RECEIPT_CLOSURE_CLAIM")
+        );
+        let mut forged_duplicate_closure_evidence = receipt.clone();
+        let duplicate =
+            forged_duplicate_closure_evidence.alternatives[0].closure_candidates[0].clone();
+        forged_duplicate_closure_evidence.alternatives[0]
+            .closure_candidates
+            .push(duplicate);
+        assert_eq!(
+            validate_source_bound_causal_receipt(&forged_duplicate_closure_evidence, source)
+                .unwrap_err(),
+            CausalFrontendFailure::conflict("SOURCE_BOUND_RECEIPT_CLOSURE_CLAIM")
+        );
         assert_eq!(alternative.candidate_validation_processes, 1);
         let owner_operator = typed_mechanism_improvement_operator_from_receipt(
             &alternative.synthesis,
