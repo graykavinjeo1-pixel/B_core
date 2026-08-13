@@ -11,6 +11,7 @@ use std::fs::{self, OpenOptions};
 use std::io::Write;
 use std::path::{Component, Path, PathBuf};
 use std::process::{Command, Stdio};
+use std::sync::atomic::{AtomicU64, Ordering};
 use std::sync::{Condvar, Mutex, OnceLock};
 use std::thread;
 use std::time::{Duration, Instant, SystemTime};
@@ -34,6 +35,7 @@ const MAX_EAGER_FAMILY_FALLBACKS: usize = 2;
 const MAX_CONCURRENT_RUSTFMT: usize = 4;
 const MIN_RUSTFMT_TIMEOUT_MS: u64 = 5_000;
 static RUSTFMT_GATE: OnceLock<(usize, Mutex<usize>, Condvar)> = OnceLock::new();
+static RUSTFMT_JOB_SEQUENCE: AtomicU64 = AtomicU64::new(0);
 
 struct RustfmtPermit;
 
@@ -68,6 +70,18 @@ impl Drop for RustfmtPermit {
             *active = active.saturating_sub(1);
             gate.2.notify_one();
         }
+    }
+}
+
+struct RustfmtJob {
+    candidate_path: PathBuf,
+    job_root: PathBuf,
+}
+
+impl Drop for RustfmtJob {
+    fn drop(&mut self) {
+        let _ = fs::remove_file(&self.candidate_path);
+        let _ = fs::remove_dir(&self.job_root);
     }
 }
 
@@ -644,11 +658,18 @@ fn rustfmt_candidate_source(
         .duration_since(SystemTime::UNIX_EPOCH)
         .map_err(|error| format!("COMPILER_REPAIR_FORMAT_CLOCK:{error}"))?
         .as_nanos();
-    let candidate_path = format_root.join(format!(
-        "{}-{}-{nonce}.rs",
+    let sequence = RUSTFMT_JOB_SEQUENCE.fetch_add(1, Ordering::Relaxed);
+    let job_root = format_root.join(format!(
+        "{}-{}-{nonce}-{sequence}",
         &sha256(candidate.as_bytes())[..16],
-        std::process::id()
+        std::process::id(),
     ));
+    fs::create_dir(&job_root).map_err(|error| format!("COMPILER_REPAIR_FORMAT_JOB_DIR:{error}"))?;
+    let candidate_path = job_root.join("candidate.rs");
+    let _job = RustfmtJob {
+        candidate_path: candidate_path.clone(),
+        job_root: job_root.clone(),
+    };
     let mut candidate_file = OpenOptions::new()
         .create_new(true)
         .write(true)
@@ -684,8 +705,6 @@ fn rustfmt_candidate_source(
     {
         Ok(child) => child,
         Err(error) => {
-            let _ = fs::remove_file(&candidate_path);
-            let _ = fs::remove_dir(&format_root);
             return Err(format!("COMPILER_REPAIR_RUSTFMT_SPAWN:{error}"));
         }
     };
@@ -704,23 +723,17 @@ fn rustfmt_candidate_source(
         if started.elapsed() >= timeout {
             let _ = child.kill();
             let _ = child.wait();
-            let _ = fs::remove_file(&candidate_path);
-            let _ = fs::remove_dir(&format_root);
             return Err("COMPILER_REPAIR_RUSTFMT_TIMEOUT".to_string());
         }
         thread::sleep(Duration::from_millis(10));
     };
     if !status.success() {
-        let _ = fs::remove_file(&candidate_path);
-        let _ = fs::remove_dir(&format_root);
         return Err(format!(
             "COMPILER_REPAIR_RUSTFMT_FAILED:{}",
             status.code().unwrap_or(-1)
         ));
     }
     let formatted = fs::read_to_string(&candidate_path);
-    let _ = fs::remove_file(&candidate_path);
-    let _ = fs::remove_dir(&format_root);
     formatted.map_err(|error| format!("COMPILER_REPAIR_FORMAT_READ:{error}"))
 }
 
@@ -1497,7 +1510,52 @@ mod tests {
             apply_edit_atom(&source, &candidate.structural_repair_program.edit).unwrap(),
             candidate.candidate_source
         );
-        assert!(!state.join("compiler_candidate_format").exists());
+        let format_root = state.join("compiler_candidate_format");
+        assert!(format_root.is_dir());
+        assert_eq!(fs::read_dir(format_root).unwrap().count(), 0);
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn parallel_rustfmt_jobs_are_isolated_and_cleanup_success_and_failure() {
+        let root = std::env::temp_dir().join(format!(
+            "b-core-compiler-guided-rustfmt-isolation-{}",
+            std::process::id()
+        ));
+        if root.exists() {
+            fs::remove_dir_all(&root).unwrap();
+        }
+        fs::create_dir_all(&root).unwrap();
+        let cargo = PathBuf::from("cargo");
+        let target = root.join("target");
+        let state = root.join("state");
+        let policy = CompilerGuidedRepairPolicy {
+            source_root: &root,
+            cargo_executable: &cargo,
+            build_target_dir: &target,
+            state_dir: &state,
+            timeout_ms: 1_000,
+            max_candidate_bytes: 16_384,
+        };
+        let sources = (0..32)
+            .map(|index| format!("pub fn value_{index}()->i64{{{index}}}\n"))
+            .collect::<Vec<_>>();
+        let formatted = parallel_map_ordered(&sources, "RUSTFMT_ISOLATION_CANARY", |source| {
+            rustfmt_candidate_source(&policy, source)
+        })
+        .unwrap();
+        assert_eq!(formatted.len(), sources.len());
+        assert!(formatted
+            .iter()
+            .enumerate()
+            .all(|(index, source)| source.contains(&format!("value_{index}"))));
+
+        assert!(rustfmt_candidate_source(&policy, "pub fn broken(")
+            .unwrap_err()
+            .starts_with("COMPILER_REPAIR_RUSTFMT_FAILED:"));
+        let format_root = state.join("compiler_candidate_format");
+        assert!(format_root.is_dir());
+        assert_eq!(fs::read_dir(format_root).unwrap().count(), 0);
         fs::remove_dir_all(root).unwrap();
     }
 
