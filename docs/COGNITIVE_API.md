@@ -1,81 +1,141 @@
 # B_Core Cognitive API
 
-`b-core-cognitive-api` is a local JSON Lines API that keeps one bounded
-experience-memory session alive on standard input/output. It does not use the
-network or an external language model.
+`b-core-cognitive-api` is a persistent local JSON Lines API. It combines
+bounded experience recall, context-sensitive lexical memory, natural-language
+planning, and typed knowledge-document work without a network or external LLM.
 
-The executable accepts UTF-8, UTF-8 BOM, UTF-16LE, and UTF-16BE input streams,
-including the native pipeline encoding used by Windows PowerShell.
-
-Windows PowerShell 5.1 can replace non-ASCII pipeline text before the process
-receives it. Set UTF-8 before sending Korean input:
+The executable accepts UTF-8, UTF-8 BOM, UTF-16LE, and UTF-16BE input streams.
+Windows PowerShell 5.1 must be told to preserve non-ASCII pipeline text:
 
 ```powershell
 $OutputEncoding = [System.Text.UTF8Encoding]::new($false)
 ```
 
-## Product path
+## Runtime path
 
 ```text
-Korean or English text
-→ typed LanguageUnderstandingIR
-→ typed PlanGoalIR
+Korean or English command
+→ surface/discourse interpretation
+→ LexemeIR surface matching
+→ context-weighted SenseIR activation
 → core-owned dependency-ordered PlanIR
-→ Korean or English output grounded in the PlanIR
+→ PaperIR | TableIR | ChartIR | FinancialStatementIR | PlanProposalIR
+→ evidence-bound findings
+→ Markdown | JSON | CSV | SVG
+→ text, file, or both
 ```
 
-The language adapter owns surface-form interpretation. The dockable semantic
-core owns experience recall and plan structure. Natural-language text never
-becomes executable semantic authority by itself.
+Lexical frequency is only a prior. Context selectors, domain, collocation,
+confidence, verified successful use, ambiguity, and rejected activations also
+affect the score. A successful outcome credits the selected `SenseIR`, not every
+meaning of the same spelling.
 
 ## Commands
 
-Each input line is one `CognitiveApiCommandIR` JSON object. Each output line is
-one `CognitiveApiResponseIR`.
-
-Supported operations:
+Each input line is one `CognitiveApiCommandIR` object. Each output line is one
+`CognitiveApiResponseIR` object.
 
 - `INJECT_EXPERIENCE`
 - `EXPORT_EXPERIENCE_SNAPSHOT`
 - `IMPORT_EXPERIENCE_SNAPSHOT`
-- `INJECT_LANGUAGE_KNOWLEDGE`
+- `INJECT_LANGUAGE_KNOWLEDGE` (legacy discourse/surface knowledge)
+- `INJECT_LEXEME`
+- `EXPORT_LEXEME_SNAPSHOT`
+- `IMPORT_LEXEME_SNAPSHOT`
+- `RECORD_LEXICAL_OUTCOME`
 - `PROCESS_NATURAL_LANGUAGE`
+- `PROCESS_KNOWLEDGE_WORK`
 - `LANGUAGE_KNOWLEDGE_STATISTICS`
+- `LEXICAL_MEMORY_STATISTICS`
 
-Example natural-language request:
+## Lexeme and sense memory
+
+`LexemeIR` contains:
+
+- language, lemma, inflected forms, part of speech, and grammatical roles;
+- one or more `SenseIR` values;
+- synonym, antonym, hypernym, hyponym, entailment, and related-sense edges;
+- collocations, domains, source, confidence, and frequency prior.
+
+Each sense contains its canonical concept, gloss, semantic tags, context
+selectors, relations, optional plan-intent hint, and confidence. Dynamic
+lexemes and their usage weights are preserved through explicit snapshot
+export/import. Reusing an identity with different content fails closed.
+
+Only a verified outcome with evidence changes success/rejection weights:
 
 ```json
-{"operation":"PROCESS_NATURAL_LANGUAGE","request":{"schema":"B_CORE_NATURAL_LANGUAGE_REQUEST_1","request_id":"REQ-1","text":"경로 결함을 점검하고 수리 계획 세워줘. ㄱㄱ","output_language":"KOREAN","context_tags":["path"],"max_plan_steps":12}}
+{"operation":"RECORD_LEXICAL_OUTCOME","outcome":{"activation_keys":["KO.TABLE/KO.TABLE.S1"],"verified_success":true,"evidence":["human-confirmed table interpretation"]}}
 ```
 
-Example successful-experience injection:
+## Knowledge work
+
+The natural-language command determines `INTERPRET`, `ANALYZE`, `WRITE`,
+`PLAN`, or `REVISE`. Activated lexical concepts can introduce new command words
+without adding another hard-coded command branch. The optional explicit
+`document_kind` is authoritative when the operator needs to disambiguate the
+artifact. Optional `output_language` accepts `KOREAN` or `ENGLISH`; otherwise
+the command language is used. Generated paper/plan structures, analysis
+findings, and Markdown labels follow that resolved language.
+
+Supported document IR:
+
+- `PaperIR`: title, authors, abstract, hierarchical sections, claims,
+  evidence locations, references, tables, and charts;
+- `TableIR`: typed cells, exact decimal values, missing values, row/column
+  structure, and provenance locations;
+- `ChartIR`: chart type, axes, series, exact numeric points, and source
+  locations;
+- `FinancialStatementIR`: entity, statement type, periods, currency, unit,
+  classified line items, and exact period values;
+- `PlanProposalIR`: objective, dependency-bearing tasks, completion
+  conditions, risks, and assumptions.
+
+Text sources accept plain text, Markdown, CSV, TSV, and a serialized structured
+IR in JSON. File sources are bounded to 16 MiB. JSON files reconstruct the
+typed document rather than being treated as prose.
+
+### Analyze a financial statement as text
 
 ```json
-{"operation":"INJECT_EXPERIENCE","experience":{"schema":"B_CORE_EXPERIENCE_IR_1","experience_id":"EXP-PATH-1","situation":"PowerShell 경로 처리 실패","action":"정확한 LiteralPath를 사용","outcome":"SUCCESSFUL","outcome_description":"빌드와 경로 검증 통과","semantic_tags":["path","powershell","repair"],"evidence":["exit_code=0"],"confidence_millis":950,"source_language":"ko"}}
+{"operation":"PROCESS_KNOWLEDGE_WORK","request":{"schema":"B_CORE_KNOWLEDGE_WORK_REQUEST_IR_1","request_id":"FIN-1","command":"이 재무제표를 분석하고 회계 등식을 확인해","source":{"type":"TEXT","text":"항목,2025,2026\n총자산,100,120\n총부채,40,50\n총자본,60,70","format":"CSV"},"output":{"mode":"TEXT","format":"MARKDOWN","overwrite":false},"context_tags":["finance"],"max_plan_steps":12}}
 ```
 
-## Experience contract
+The response includes lexical activations, the validated `PlanIR`, the parsed
+`FinancialStatementIR`, evidence-bound findings, and rendered Markdown. Balance
+sheet analysis checks `assets = liabilities + equity` with scale-aligned exact
+decimal arithmetic when the three totals are present.
 
-Experience identity is content-addressed and bounded. Reusing an identity with
-different content fails closed. Snapshot import validates every entry and the
-aggregate hash before changing memory. Snapshot import/export is the explicit
-persistence mechanism; episodic memory does not mutate the sealed semantic
-state.
+### Write a chart to an SVG file
 
-All outcomes may be recalled for diagnosis. Only `SUCCESSFUL` experiences are
-attached to candidate-generation and consequence-prediction steps as reusable
-solution evidence.
+```json
+{"operation":"PROCESS_KNOWLEDGE_WORK","request":{"schema":"B_CORE_KNOWLEDGE_WORK_REQUEST_IR_1","request_id":"CHART-1","command":"이 데이터로 선형 차트를 작성해","source":{"type":"TEXT","text":"period,value\nQ1,10\nQ2,15\nQ3,25","format":"CSV"},"document_kind":"CHART","output":{"mode":"FILE","format":"SVG","path":"D:\\B_Core_Output\\trend.svg","overwrite":true},"context_tags":["data"],"max_plan_steps":12}}
+```
 
-## Language knowledge
+File output uses a staged write, validates the extension against the requested
+format, and returns byte count plus SHA-256. `TEXT`, `FILE`, and `BOTH` are
+distinct modes. Existing files are not replaced unless `overwrite=true`.
 
-The built-in typed knowledge base contains representative Korean and English:
+### Revise a structured plan through a new word
 
-- grammar and discourse markers;
-- task and intent words;
-- idioms;
-- informal slang;
-- internet language and current colloquial expressions.
+Inject a lexeme whose selected sense has canonical concept `revise`, then use
+that word in `command`. Grounded revision markers currently include:
 
-Additional knowledge can be injected as `LanguageKnowledgeEntryIR`. Entries
-carry language, category, register, canonical concept, semantic tags, optional
-intent hints, and pragmatic function. They are not stored as untyped prose.
+- `제목:` / `title:`;
+- `초록:` / `abstract:`;
+- `섹션 추가:` / `add section:`;
+- `행 추가:` / `add row:`;
+- `작업 추가:` / `add task:`;
+- `위험 추가:` / `add risk:`;
+- `통화:` / `currency:` and `단위:` / `unit:`.
+
+If no requested edit can be grounded in the target IR, revision fails closed
+with `REVISION_NOT_GROUNDED` rather than silently rewriting unrelated content.
+
+## Boundaries
+
+This API performs deterministic structure extraction, exact numeric parsing,
+bounded analysis, plan generation, and grounded rendering. It does not claim
+general PDF/OCR/image understanding or unrestricted scholarly authorship.
+Unknown facts are not invented: a paper created without source material is a
+structured draft whose factual content still requires evidence injection.

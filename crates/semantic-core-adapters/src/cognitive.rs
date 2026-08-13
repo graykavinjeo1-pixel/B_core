@@ -4,9 +4,18 @@ use dockable_semantic_core::{
 };
 use serde::{Deserialize, Serialize};
 
+use crate::knowledge_work::{
+    execute_document_work_as, infer_operation, DocumentKindIR, KnowledgeWorkError,
+    KnowledgeWorkOperationIR, KnowledgeWorkProductIR, KnowledgeWorkRequestIR,
+    KNOWLEDGE_WORK_RESPONSE_SCHEMA,
+};
 use crate::language_knowledge::{
     LanguageCodeIR, LanguageKnowledgeBase, LanguageKnowledgeEntryIR, LanguageKnowledgeError,
     LanguageKnowledgeStatisticsIR, LanguageUnderstandingIR,
+};
+use crate::lexical_memory::{
+    ActivatedSenseIR, LexemeIR, LexemeSnapshotIR, LexicalMemory, LexicalMemoryError,
+    LexicalMemoryStatisticsIR, LexicalOutcomeIR,
 };
 
 pub const NATURAL_LANGUAGE_REQUEST_SCHEMA: &str = "B_CORE_NATURAL_LANGUAGE_REQUEST_1";
@@ -37,8 +46,19 @@ pub struct NaturalLanguageResponseIR {
     pub schema: String,
     pub request_id: String,
     pub understanding: LanguageUnderstandingIR,
+    pub lexical_activations: Vec<ActivatedSenseIR>,
     pub plan: PlanIR,
     pub output: NaturalLanguageOutputIR,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct KnowledgeWorkResponseIR {
+    pub schema: String,
+    pub request_id: String,
+    pub understanding: LanguageUnderstandingIR,
+    pub lexical_activations: Vec<ActivatedSenseIR>,
+    pub plan: PlanIR,
+    pub product: KnowledgeWorkProductIR,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -48,8 +68,14 @@ pub enum CognitiveApiCommandIR {
     ExportExperienceSnapshot,
     ImportExperienceSnapshot { snapshot: ExperienceSnapshotIR },
     InjectLanguageKnowledge { entry: LanguageKnowledgeEntryIR },
+    InjectLexeme { lexeme: LexemeIR },
+    ExportLexemeSnapshot,
+    ImportLexemeSnapshot { snapshot: LexemeSnapshotIR },
+    RecordLexicalOutcome { outcome: LexicalOutcomeIR },
     ProcessNaturalLanguage { request: NaturalLanguageRequestIR },
+    ProcessKnowledgeWork { request: KnowledgeWorkRequestIR },
     LanguageKnowledgeStatistics,
+    LexicalMemoryStatistics,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -59,8 +85,14 @@ pub enum CognitiveApiPayloadIR {
     ExperienceInjectionReceipts(Vec<ExperienceInjectionReceiptIR>),
     ExperienceSnapshot(ExperienceSnapshotIR),
     LanguageKnowledgeInserted(bool),
+    LexemeInserted(bool),
+    LexemeSnapshot(LexemeSnapshotIR),
+    LexemeSnapshotImported,
+    LexicalOutcomeRecorded,
     NaturalLanguageResponse(Box<NaturalLanguageResponseIR>),
+    KnowledgeWorkResponse(Box<KnowledgeWorkResponseIR>),
     LanguageKnowledgeStatistics(LanguageKnowledgeStatisticsIR),
+    LexicalMemoryStatistics(LexicalMemoryStatisticsIR),
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -78,6 +110,8 @@ pub enum CognitiveApiError {
     CoreLoad,
     InvalidRequest,
     LanguageKnowledge,
+    LexicalMemory,
+    KnowledgeWork,
     Experience,
     Planning,
     JsonInput,
@@ -91,6 +125,7 @@ pub enum CognitiveApiError {
 pub struct CognitiveApi {
     core: DockableCore,
     language_knowledge: LanguageKnowledgeBase,
+    lexical_memory: LexicalMemory,
 }
 
 impl CognitiveApi {
@@ -98,6 +133,7 @@ impl CognitiveApi {
         Ok(Self {
             core: DockableCore::load_embedded().map_err(|_| CognitiveApiError::CoreLoad)?,
             language_knowledge: LanguageKnowledgeBase::default(),
+            lexical_memory: LexicalMemory::default(),
         })
     }
 
@@ -147,7 +183,7 @@ impl CognitiveApi {
     }
 
     pub fn process(
-        &self,
+        &mut self,
         request: &NaturalLanguageRequestIR,
     ) -> Result<NaturalLanguageResponseIR, CognitiveApiError> {
         validate_request(request)?;
@@ -155,6 +191,10 @@ impl CognitiveApi {
             .language_knowledge
             .understand(&request.text)
             .map_err(map_language_error)?;
+        let lexical_activations = self
+            .lexical_memory
+            .activate(&request.text, &request.context_tags);
+        merge_lexical_activations(&mut understanding, &lexical_activations);
         understanding
             .semantic_tags
             .extend(request.context_tags.iter().cloned());
@@ -185,12 +225,13 @@ impl CognitiveApi {
             schema: NATURAL_LANGUAGE_RESPONSE_SCHEMA.to_string(),
             request_id: request.request_id.clone(),
             understanding,
+            lexical_activations,
             plan,
             output,
         })
     }
 
-    pub fn process_json(&self, json: &str) -> Result<String, CognitiveApiError> {
+    pub fn process_json(&mut self, json: &str) -> Result<String, CognitiveApiError> {
         let request = serde_json::from_str::<NaturalLanguageRequestIR>(json)
             .map_err(|_| CognitiveApiError::JsonInput)?;
         serde_json::to_string(&self.process(&request)?).map_err(|_| CognitiveApiError::JsonOutput)
@@ -198,6 +239,93 @@ impl CognitiveApi {
 
     pub fn language_knowledge_statistics(&self) -> LanguageKnowledgeStatisticsIR {
         self.language_knowledge.statistics()
+    }
+
+    pub fn inject_lexeme(&mut self, lexeme: LexemeIR) -> Result<bool, CognitiveApiError> {
+        self.lexical_memory
+            .inject(lexeme)
+            .map_err(map_lexical_error)
+    }
+
+    pub fn export_lexeme_snapshot(&self) -> LexemeSnapshotIR {
+        self.lexical_memory.snapshot()
+    }
+
+    pub fn import_lexeme_snapshot(
+        &mut self,
+        snapshot: &LexemeSnapshotIR,
+    ) -> Result<(), CognitiveApiError> {
+        self.lexical_memory
+            .import_snapshot(snapshot)
+            .map_err(map_lexical_error)
+    }
+
+    pub fn record_lexical_outcome(
+        &mut self,
+        outcome: &LexicalOutcomeIR,
+    ) -> Result<(), CognitiveApiError> {
+        self.lexical_memory
+            .record_outcome(outcome)
+            .map_err(map_lexical_error)
+    }
+
+    pub fn lexical_memory_statistics(&self) -> LexicalMemoryStatisticsIR {
+        self.lexical_memory.statistics()
+    }
+
+    pub fn process_knowledge_work(
+        &mut self,
+        request: &KnowledgeWorkRequestIR,
+    ) -> Result<KnowledgeWorkResponseIR, CognitiveApiError> {
+        crate::knowledge_work::validate_request(request).map_err(map_knowledge_work_error)?;
+        let mut understanding = self
+            .language_knowledge
+            .understand(&request.command)
+            .map_err(map_language_error)?;
+        let lexical_activations = self
+            .lexical_memory
+            .activate(&request.command, &request.context_tags);
+        merge_lexical_activations(&mut understanding, &lexical_activations);
+        let operation =
+            lexical_knowledge_operation(infer_operation(&request.command), &lexical_activations);
+        let document_kind = lexical_document_kind(&lexical_activations);
+        understanding.intent = intent_for_knowledge_operation(operation);
+        understanding
+            .semantic_tags
+            .extend(request.context_tags.iter().cloned());
+        understanding
+            .semantic_tags
+            .push("knowledge_work".to_string());
+        understanding.semantic_tags.sort();
+        understanding.semantic_tags.dedup();
+        let plan = self
+            .core
+            .generate_plan(&PlanGoalIR {
+                schema: PLAN_GOAL_SCHEMA.to_string(),
+                goal_id: request.request_id.clone(),
+                intent: understanding.intent,
+                subject: understanding.subject.clone(),
+                constraints: understanding.constraints.clone(),
+                desired_outcomes: vec![
+                    "the requested document operation produces a structurally validated artifact"
+                        .to_string(),
+                    "every analytical finding remains bound to an observable source location"
+                        .to_string(),
+                ],
+                context_tags: understanding.semantic_tags.clone(),
+                max_steps: request.max_plan_steps,
+            })
+            .map_err(map_planning_error)?;
+        let product = execute_document_work_as(request, operation, document_kind)
+            .map_err(map_knowledge_work_error)?;
+        Ok(KnowledgeWorkResponseIR {
+            schema: KNOWLEDGE_WORK_RESPONSE_SCHEMA.to_string(),
+            request_id: request.request_id.clone(),
+            understanding,
+            lexical_activations,
+            plan,
+            product,
+        })
     }
 
     pub fn retained_experience_count(&self) -> usize {
@@ -220,14 +348,32 @@ impl CognitiveApi {
             CognitiveApiCommandIR::InjectLanguageKnowledge { entry } => self
                 .inject_language_knowledge(entry)
                 .map(CognitiveApiPayloadIR::LanguageKnowledgeInserted),
+            CognitiveApiCommandIR::InjectLexeme { lexeme } => self
+                .inject_lexeme(lexeme)
+                .map(CognitiveApiPayloadIR::LexemeInserted),
+            CognitiveApiCommandIR::ExportLexemeSnapshot => Ok(
+                CognitiveApiPayloadIR::LexemeSnapshot(self.export_lexeme_snapshot()),
+            ),
+            CognitiveApiCommandIR::ImportLexemeSnapshot { snapshot } => self
+                .import_lexeme_snapshot(&snapshot)
+                .map(|()| CognitiveApiPayloadIR::LexemeSnapshotImported),
+            CognitiveApiCommandIR::RecordLexicalOutcome { outcome } => self
+                .record_lexical_outcome(&outcome)
+                .map(|()| CognitiveApiPayloadIR::LexicalOutcomeRecorded),
             CognitiveApiCommandIR::ProcessNaturalLanguage { request } => self
                 .process(&request)
                 .map(|response| CognitiveApiPayloadIR::NaturalLanguageResponse(Box::new(response))),
+            CognitiveApiCommandIR::ProcessKnowledgeWork { request } => self
+                .process_knowledge_work(&request)
+                .map(|response| CognitiveApiPayloadIR::KnowledgeWorkResponse(Box::new(response))),
             CognitiveApiCommandIR::LanguageKnowledgeStatistics => {
                 Ok(CognitiveApiPayloadIR::LanguageKnowledgeStatistics(
                     self.language_knowledge_statistics(),
                 ))
             }
+            CognitiveApiCommandIR::LexicalMemoryStatistics => Ok(
+                CognitiveApiPayloadIR::LexicalMemoryStatistics(self.lexical_memory_statistics()),
+            ),
         };
         match result {
             Ok(payload) => CognitiveApiResponseIR {
@@ -277,8 +423,108 @@ fn map_language_error(_: LanguageKnowledgeError) -> CognitiveApiError {
     CognitiveApiError::LanguageKnowledge
 }
 
+fn map_lexical_error(_: LexicalMemoryError) -> CognitiveApiError {
+    CognitiveApiError::LexicalMemory
+}
+
+fn map_knowledge_work_error(_: KnowledgeWorkError) -> CognitiveApiError {
+    CognitiveApiError::KnowledgeWork
+}
+
 fn map_planning_error(_: PlanningError) -> CognitiveApiError {
     CognitiveApiError::Planning
+}
+
+fn merge_lexical_activations(
+    understanding: &mut LanguageUnderstandingIR,
+    activations: &[ActivatedSenseIR],
+) {
+    let had_legacy_match = !understanding.matched_knowledge_ids.is_empty();
+    let mut observed_lexemes = std::collections::BTreeSet::new();
+    let mut strongest_intent = None::<(dockable_semantic_core::PlanIntentIR, u32)>;
+    for activation in activations {
+        if !observed_lexemes.insert(activation.lexeme_id.as_str()) {
+            continue;
+        }
+        understanding
+            .matched_knowledge_ids
+            .push(format!("{}/{}", activation.lexeme_id, activation.sense_id));
+        understanding
+            .semantic_tags
+            .push(activation.canonical_concept.clone());
+        understanding
+            .semantic_tags
+            .extend(activation.semantic_tags.iter().cloned());
+        if let Some(intent) = activation.intent_hint {
+            if strongest_intent
+                .as_ref()
+                .is_none_or(|(_, score)| activation.activation_millis > *score)
+            {
+                strongest_intent = Some((intent, activation.activation_millis));
+            }
+        }
+    }
+    if !had_legacy_match {
+        if let Some((intent, _)) = strongest_intent {
+            understanding.intent = intent;
+        }
+    }
+    understanding.matched_knowledge_ids.sort();
+    understanding.matched_knowledge_ids.dedup();
+    understanding.semantic_tags.sort();
+    understanding.semantic_tags.dedup();
+}
+
+fn intent_for_knowledge_operation(
+    operation: KnowledgeWorkOperationIR,
+) -> dockable_semantic_core::PlanIntentIR {
+    match operation {
+        KnowledgeWorkOperationIR::Interpret | KnowledgeWorkOperationIR::Analyze => {
+            dockable_semantic_core::PlanIntentIR::Investigate
+        }
+        KnowledgeWorkOperationIR::Write | KnowledgeWorkOperationIR::Revise => {
+            dockable_semantic_core::PlanIntentIR::Create
+        }
+        KnowledgeWorkOperationIR::Plan => dockable_semantic_core::PlanIntentIR::Plan,
+    }
+}
+
+fn lexical_knowledge_operation(
+    fallback: KnowledgeWorkOperationIR,
+    activations: &[ActivatedSenseIR],
+) -> KnowledgeWorkOperationIR {
+    activations
+        .iter()
+        .filter_map(|activation| {
+            let operation = match activation.canonical_concept.as_str() {
+                "revise" => KnowledgeWorkOperationIR::Revise,
+                "author" => KnowledgeWorkOperationIR::Write,
+                "plan" => KnowledgeWorkOperationIR::Plan,
+                "analyze" => KnowledgeWorkOperationIR::Analyze,
+                _ => return None,
+            };
+            Some((operation, activation.activation_millis))
+        })
+        .max_by_key(|(_, score)| *score)
+        .map(|(operation, _)| operation)
+        .unwrap_or(fallback)
+}
+
+fn lexical_document_kind(activations: &[ActivatedSenseIR]) -> Option<DocumentKindIR> {
+    activations
+        .iter()
+        .filter_map(|activation| {
+            let kind = match activation.canonical_concept.as_str() {
+                "academic_paper" => DocumentKindIR::Paper,
+                "data_table" => DocumentKindIR::Table,
+                "data_chart" => DocumentKindIR::Chart,
+                "financial_statement" => DocumentKindIR::FinancialStatement,
+                _ => return None,
+            };
+            Some((kind, activation.activation_millis))
+        })
+        .max_by_key(|(_, score)| *score)
+        .map(|(kind, _)| kind)
 }
 
 fn render_plan(
@@ -419,6 +665,12 @@ mod tests {
     use dockable_semantic_core::{ExperienceOutcomeIR, EXPERIENCE_SCHEMA};
 
     use super::*;
+    use crate::knowledge_work::{
+        DocumentKindIR, KnowledgeDocumentIR, KnowledgeSourceIR, OutputDirectiveIR, OutputFormatIR,
+        OutputModeIR, PlanProposalIR, SourceTextFormatIR, KNOWLEDGE_WORK_REQUEST_SCHEMA,
+        PLAN_PROPOSAL_SCHEMA,
+    };
+    use crate::lexical_memory::{PartOfSpeechIR, SenseIR, LEXEME_SCHEMA};
 
     fn experience() -> ExperienceIR {
         ExperienceIR {
@@ -465,7 +717,7 @@ mod tests {
 
     #[test]
     fn json_api_supports_english_input_and_output() {
-        let api = CognitiveApi::new_embedded().unwrap();
+        let mut api = CognitiveApi::new_embedded().unwrap();
         let request = serde_json::to_string(&NaturalLanguageRequestIR {
             schema: NATURAL_LANGUAGE_REQUEST_SCHEMA.to_string(),
             request_id: "REQ-EN-1".to_string(),
@@ -524,7 +776,7 @@ mod tests {
 
     #[test]
     fn public_api_rejects_unbounded_context_before_planning() {
-        let api = CognitiveApi::new_embedded().unwrap();
+        let mut api = CognitiveApi::new_embedded().unwrap();
         let error = api
             .process(&NaturalLanguageRequestIR {
                 schema: NATURAL_LANGUAGE_REQUEST_SCHEMA.to_string(),
@@ -536,5 +788,183 @@ mod tests {
             })
             .unwrap_err();
         assert_eq!(error, CognitiveApiError::InvalidRequest);
+    }
+
+    #[test]
+    fn natural_language_knowledge_work_closes_lexeme_plan_analysis_and_text_output() {
+        let mut api = CognitiveApi::new_embedded().unwrap();
+        let response = api
+            .process_knowledge_work(&KnowledgeWorkRequestIR {
+                schema: KNOWLEDGE_WORK_REQUEST_SCHEMA.to_string(),
+                request_id: "KW-FINANCE-1".to_string(),
+                command: "이 재무제표를 분석하고 회계 등식도 확인해".to_string(),
+                source: Some(KnowledgeSourceIR::Text {
+                    text: "항목,2025,2026\n총자산,100,120\n총부채,40,50\n총자본,60,70".to_string(),
+                    format: Some(SourceTextFormatIR::Csv),
+                }),
+                document_kind: None,
+                output_language: Some(LanguageCodeIR::Korean),
+                output: OutputDirectiveIR {
+                    mode: OutputModeIR::Text,
+                    format: OutputFormatIR::Markdown,
+                    path: None,
+                    overwrite: false,
+                },
+                context_tags: vec!["finance".to_string()],
+                max_plan_steps: 12,
+            })
+            .unwrap();
+        assert_eq!(
+            response.product.document.kind(),
+            DocumentKindIR::FinancialStatement
+        );
+        assert!(response
+            .lexical_activations
+            .iter()
+            .any(|activation| activation.canonical_concept == "financial_statement"));
+        assert!(response
+            .product
+            .findings
+            .iter()
+            .any(|finding| finding.statement.contains("자산 = 부채 + 자본")));
+        assert!(response
+            .product
+            .text_output
+            .as_deref()
+            .is_some_and(|text| text.contains("분석 결과")));
+        assert!(response.plan.structurally_validated);
+    }
+
+    #[test]
+    fn command_api_persists_verified_sense_weight_separately_from_encounters() {
+        let mut api = CognitiveApi::new_embedded().unwrap();
+        let first = api
+            .process(&NaturalLanguageRequestIR {
+                schema: NATURAL_LANGUAGE_REQUEST_SCHEMA.to_string(),
+                request_id: "LEX-1".to_string(),
+                text: "표를 분석해".to_string(),
+                output_language: Some(LanguageCodeIR::Korean),
+                context_tags: vec!["data".to_string()],
+                max_plan_steps: 12,
+            })
+            .unwrap();
+        let activation = first
+            .lexical_activations
+            .iter()
+            .find(|activation| activation.lexeme_id == "KO.TABLE")
+            .unwrap();
+        api.record_lexical_outcome(&LexicalOutcomeIR {
+            activation_keys: vec![format!("{}/{}", activation.lexeme_id, activation.sense_id)],
+            verified_success: true,
+            evidence: vec!["human-confirmed table interpretation".to_string()],
+        })
+        .unwrap();
+        assert_eq!(api.lexical_memory_statistics().verified_successes, 1);
+        let snapshot = api.export_lexeme_snapshot();
+        assert!(snapshot.entries.iter().any(|entry| {
+            entry
+                .usage
+                .sense_usage
+                .values()
+                .any(|usage| usage.verified_success_count == 1)
+        }));
+    }
+
+    #[test]
+    fn injected_lexeme_can_drive_a_new_natural_language_revision_command() {
+        let mut api = CognitiveApi::new_embedded().unwrap();
+        api.inject_lexeme(LexemeIR {
+            schema: LEXEME_SCHEMA.to_string(),
+            lexeme_id: "KO.CUSTOM.REFINE".to_string(),
+            language: LanguageCodeIR::Korean,
+            lemma: "정련해".to_string(),
+            inflected_forms: vec!["정련".to_string()],
+            part_of_speech: PartOfSpeechIR::Verb,
+            grammatical_roles: Vec::new(),
+            senses: vec![SenseIR {
+                sense_id: "KO.CUSTOM.REFINE.S1".to_string(),
+                canonical_concept: "revise".to_string(),
+                gloss: "지정된 문서 구조를 다듬다".to_string(),
+                semantic_tags: vec!["revision".to_string()],
+                context_selectors: Vec::new(),
+                relations: Vec::new(),
+                intent_hint: Some(dockable_semantic_core::PlanIntentIR::Create),
+                confidence_millis: 1_000,
+            }],
+            collocations: Vec::new(),
+            domains: vec!["document".to_string()],
+            source: "operator supplied terminology".to_string(),
+            confidence_millis: 1_000,
+            frequency_prior: 1,
+        })
+        .unwrap();
+        let response = api
+            .process_knowledge_work(&KnowledgeWorkRequestIR {
+                schema: KNOWLEDGE_WORK_REQUEST_SCHEMA.to_string(),
+                request_id: "KW-CUSTOM-1".to_string(),
+                command: "정련해\n제목: 검증 가능한 실행안".to_string(),
+                source: Some(KnowledgeSourceIR::Structured {
+                    document: Box::new(KnowledgeDocumentIR::PlanProposal(PlanProposalIR {
+                        schema: PLAN_PROPOSAL_SCHEMA.to_string(),
+                        document_id: "PLAN-1".to_string(),
+                        title: "이전 계획".to_string(),
+                        objective: "목표".to_string(),
+                        tasks: Vec::new(),
+                        risks: Vec::new(),
+                        assumptions: Vec::new(),
+                    })),
+                }),
+                document_kind: None,
+                output_language: Some(LanguageCodeIR::Korean),
+                output: OutputDirectiveIR {
+                    mode: OutputModeIR::Text,
+                    format: OutputFormatIR::Markdown,
+                    path: None,
+                    overwrite: false,
+                },
+                context_tags: vec!["document".to_string()],
+                max_plan_steps: 12,
+            })
+            .unwrap();
+        assert_eq!(response.product.operation, KnowledgeWorkOperationIR::Revise);
+        let KnowledgeDocumentIR::PlanProposal(plan) = response.product.document else {
+            panic!("plan proposal")
+        };
+        assert_eq!(plan.title, "검증 가능한 실행안");
+    }
+
+    #[test]
+    fn chart_command_writes_a_real_svg_file_and_returns_a_receipt() {
+        let root =
+            std::env::temp_dir().join(format!("b-core-cognitive-chart-{}", std::process::id()));
+        let path = root.join("trend.svg");
+        let mut api = CognitiveApi::new_embedded().unwrap();
+        let response = api
+            .process_knowledge_work(&KnowledgeWorkRequestIR {
+                schema: KNOWLEDGE_WORK_REQUEST_SCHEMA.to_string(),
+                request_id: "KW-CHART-1".to_string(),
+                command: "이 데이터로 선형 차트를 작성해".to_string(),
+                source: Some(KnowledgeSourceIR::Text {
+                    text: "period,value\nQ1,10\nQ2,15\nQ3,25".to_string(),
+                    format: Some(SourceTextFormatIR::Csv),
+                }),
+                document_kind: Some(DocumentKindIR::Chart),
+                output_language: Some(LanguageCodeIR::Korean),
+                output: OutputDirectiveIR {
+                    mode: OutputModeIR::File,
+                    format: OutputFormatIR::Svg,
+                    path: Some(path.to_string_lossy().to_string()),
+                    overwrite: true,
+                },
+                context_tags: vec!["data".to_string()],
+                max_plan_steps: 12,
+            })
+            .unwrap();
+        assert!(response.product.text_output.is_none());
+        assert!(response.product.file_output.is_some());
+        let svg = std::fs::read_to_string(&path).unwrap();
+        assert!(svg.starts_with("<svg"));
+        assert!(svg.contains("polyline"));
+        std::fs::remove_dir_all(root).unwrap();
     }
 }

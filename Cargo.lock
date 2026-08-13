@@ -108,6 +108,7 @@ dependencies = [
  "dockable-semantic-core",
  "serde",
  "serde_json",
+ "sha2",
 ]
 
 [[package]]
