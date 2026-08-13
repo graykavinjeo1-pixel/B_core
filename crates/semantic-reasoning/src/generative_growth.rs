@@ -13,7 +13,8 @@ use serde::{Deserialize, Serialize};
 use crate::autonomous_source_mutation::{
     execute_improvement_operator_behavioral_canary,
     execute_improvement_operator_graph_family_behavioral_canary,
-    improvement_operator_graph_id_for_nodes, MAX_IMPROVEMENT_OPERATOR_GRAPH_NODES,
+    execute_improvement_operator_on_source, improvement_operator_graph_id_for_nodes,
+    ImprovementOperatorIR, MAX_IMPROVEMENT_OPERATOR_GRAPH_NODES,
 };
 use crate::fullstack_ops_knowledge::{execute_fullstack_recipe_behavioral_canary, promoted_bundle};
 use crate::integrated_development::{
@@ -102,6 +103,8 @@ pub struct GenerativeInput {
     pub measured_performance_gain: bool,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub typed_behavior_goals: Vec<TypedMechanismSynthesisGoalIR>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub executable_performance_operators: Vec<ImprovementOperatorIR>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -461,9 +464,17 @@ fn context_sha256(input: &GenerativeInput) -> String {
         .map(|bytes| sha256(&bytes))
         .collect::<Vec<_>>()
         .join(":");
+    let performance_operator_ids = input
+        .executable_performance_operators
+        .iter()
+        .map(|operator| operator.operator_id.as_str())
+        .collect::<BTreeSet<_>>()
+        .into_iter()
+        .collect::<Vec<_>>()
+        .join(":");
     sha256(
         format!(
-            "signals={signals}|roles={roles}|goals={goal_hashes}|measured_gain={}",
+            "signals={signals}|roles={roles}|goals={goal_hashes}|performance_operators={performance_operator_ids}|measured_gain={}",
             input.measured_performance_gain,
         )
         .as_bytes(),
@@ -516,7 +527,8 @@ fn domain_bonus(composition: &RepairCompositionLessonIR, input: &GenerativeInput
     if ids.contains("IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER")
         && (signals.contains("CAPABILITY_SURFACE_ADDED")
             || signals.contains("DEFECT_REPAIR")
-            || roles.contains("IMPLEMENTATION"))
+            || roles.contains("IMPLEMENTATION")
+            || !input.executable_performance_operators.is_empty())
     {
         bonus += 10;
     }
@@ -993,6 +1005,49 @@ fn execute_composer(
             let target_width = artifact_family_width.clamp(1, MAX_VERIFIED_ARTIFACTS_PER_CYCLE);
             let mut artifacts = Vec::new();
             let mut artifact_hashes = previously_verified.clone();
+            if !input.executable_performance_operators.is_empty() {
+                let applicable_source = "pub fn measured(value: u32) -> bool { value % 2 == 0 }\n";
+                let negative_source = "pub fn measured(value: u32) -> bool { value > 0 }\n";
+                for operator in input
+                    .executable_performance_operators
+                    .iter()
+                    .take(target_width)
+                {
+                    let positive =
+                        execute_improvement_operator_on_source(operator, applicable_source)?;
+                    let negative =
+                        execute_improvement_operator_on_source(operator, negative_source)?;
+                    if !positive.applicable
+                        || positive.candidate_source.is_none()
+                        || negative.applicable
+                        || negative.candidate_source.is_some()
+                    {
+                        return Err("PERFORMANCE_OPERATOR_BEHAVIORAL_CANARY_INCOMPLETE".to_string());
+                    }
+                    if artifact_hashes.insert(operator.operator_id.clone()) {
+                        artifacts.push(VerifiedBehavioralArtifact {
+                            artifact_context_sha256: sha256(
+                                format!(
+                                    "{context}:{}:EXECUTABLE_PERFORMANCE_OPERATOR",
+                                    operator.operator_id
+                                )
+                                .as_bytes(),
+                            ),
+                            artifact_sha256: operator.operator_id.clone(),
+                            cases_executed: 2,
+                            cases_passed: 2,
+                            typed_behavior_goal: None,
+                        });
+                    }
+                }
+                if artifacts.is_empty() {
+                    return Ok((
+                        Vec::new(),
+                        Some("PERFORMANCE_OPERATOR_ALREADY_VERIFIED".to_string()),
+                    ));
+                }
+                return Ok((artifacts, None));
+            }
             for ordinal in 0..MAX_ARTIFACT_CONTEXT_ATTEMPTS {
                 if artifacts.len() >= target_width {
                     break;
@@ -2062,6 +2117,7 @@ mod tests {
             verification_evidence_count: 1,
             measured_performance_gain: false,
             typed_behavior_goals: vec![executable_goal()],
+            executable_performance_operators: Vec::new(),
         }
     }
 

@@ -45,6 +45,9 @@ pub const IMPROVEMENT_OPERATOR_MEMORY_SCHEMA: &str = "B_CORE_IMPROVEMENT_OPERATO
 pub const MAX_IMPROVEMENT_OPERATOR_GRAPH_NODES: usize = 8;
 const MAX_COMPETING_SOURCE_PROPOSALS: usize = 3;
 const MAX_TYPED_OPERATOR_RECONCILIATION_RECEIPTS: usize = 64;
+// Revision 52 allows an evidence-bound performance lesson to submit its
+// executable operator to the same Rust proposal/composition kernel used by
+// native discovery. Metric text alone still has no source-mutation authority.
 // Revision 51 publishes only operators that own a machine-executable source
 // synthesis payload; typed-program execution profiles remain useful ranking
 // evidence but cannot masquerade as callable repair knowledge.
@@ -57,7 +60,7 @@ const MAX_TYPED_OPERATOR_RECONCILIATION_RECEIPTS: usize = 64;
 // Revision 47 separates exact authority existence from the bounded active
 // operator window and deduplicates repeated authority receipts.
 // Generator identity remains diagnostic evidence only.
-pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 51;
+pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 52;
 pub const MAX_RETAINED_CONSUMED_RUNTIME_STAGING_GENERATIONS: usize = 2;
 const KNOWN_REMAINDER_PREDICTED_VALUE: u16 = 35;
 const MAX_REPOSITORY_REPAIR_FAMILY_FILES: usize = 16;
@@ -1404,6 +1407,18 @@ fn validate_improvement_operator_id(operator: &ImprovementOperatorIR) -> Result<
         .map_err(|error| format!("IMPROVEMENT_OPERATOR_ID_SERIALIZE:{error}"))?;
     if sha256(&encoded) != operator.operator_id {
         return Err("IMPROVEMENT_OPERATOR_ID_MISMATCH".to_string());
+    }
+    Ok(())
+}
+
+/// Public fail-closed validator for operator payloads transported by another
+/// subsystem (for example, measured performance knowledge). Keeping identity
+/// validation here prevents the supervisor from becoming a second operator
+/// authority.
+pub fn validate_improvement_operator(operator: &ImprovementOperatorIR) -> Result<(), String> {
+    validate_improvement_operator_id(operator)?;
+    if !operator.can_synthesize_from_source() {
+        return Err("IMPROVEMENT_OPERATOR_SOURCE_SYNTHESIS_PAYLOAD_MISSING".to_string());
     }
     Ok(())
 }
@@ -4752,6 +4767,7 @@ enum SourceProposalOrigin {
     Grammar,
     Compiler,
     KnownTransformation,
+    LearnedPerformance,
 }
 
 impl SourceProposalOrigin {
@@ -4760,6 +4776,7 @@ impl SourceProposalOrigin {
             Self::Grammar => "GRAMMAR",
             Self::Compiler => "COMPILER",
             Self::KnownTransformation => "KNOWN_TRANSFORMATION",
+            Self::LearnedPerformance => "LEARNED_PERFORMANCE",
         }
     }
 }
@@ -5088,6 +5105,232 @@ fn select_source_discovery_proposals(
         disposition: SourceDiscoveryDisposition::Candidate,
         candidate,
     })
+}
+
+/// Applies only machine-executable operators carried by verified performance
+/// knowledge. Every matching postimage is still a proposal: this function
+/// binds it to the current source, derives an exact StructuralRepairProgram,
+/// and submits it to the same Rust ranking/composition kernel as grammar,
+/// compiler and built-in discovery. It does not install or approve a patch.
+pub fn discover_executable_performance_improvement(
+    policy: &AutonomousSourceMutationPolicy,
+    state_dir: &Path,
+    source_generation: u64,
+    operators: &[ImprovementOperatorIR],
+) -> Result<SourceDiscoveryResult, String> {
+    validate_policy(policy)?;
+    if !policy.enabled || operators.is_empty() {
+        return Ok(SourceDiscoveryResult {
+            disposition: SourceDiscoveryDisposition::NoApplicableTransformation,
+            candidate: None,
+        });
+    }
+    let mut operator_index = BTreeMap::new();
+    for operator in operators {
+        validate_improvement_operator(operator)?;
+        operator_index
+            .entry(operator.operator_id.clone())
+            .or_insert_with(|| operator.clone());
+    }
+    let profiles = operator_index
+        .values()
+        .cloned()
+        .map(|operator| ImprovementOperatorProfile {
+            operator,
+            attempts: 1,
+            successful_uses: 1,
+            rollbacks: 0,
+            repository_guided_attempts: 1,
+            repository_guided_successful_uses: 1,
+            cumulative_validation_duration_ms: 0,
+            attempted_opportunity_kinds: BTreeSet::from([
+                ChangeOpportunityKind::EfficiencyOpportunity,
+            ]),
+            attempted_family_ids: BTreeSet::new(),
+            successful_family_ids: BTreeSet::new(),
+        })
+        .collect::<Vec<_>>();
+    let operator_memory = ImprovementOperatorMemory {
+        schema: IMPROVEMENT_OPERATOR_MEMORY_SCHEMA.to_string(),
+        total_attempts: profiles.len().min(u64::MAX as usize) as u64,
+        total_successful_uses: profiles.len().min(u64::MAX as usize) as u64,
+        repository_guided_attempts: profiles.len().min(u64::MAX as usize) as u64,
+        repository_guided_successful_uses: profiles.len().min(u64::MAX as usize) as u64,
+        productive_cross_family_transfers: 0,
+        profiles,
+    };
+    let mut proposals = Vec::new();
+    'files: for path in rust_source_files(&policy.source_root)? {
+        let bytes = fs::read(&path).map_err(|error| {
+            format!(
+                "PERFORMANCE_OPERATOR_SOURCE_READ:{}:{error}",
+                path.display()
+            )
+        })?;
+        if bytes.len() as u64 > policy.max_candidate_bytes {
+            continue;
+        }
+        let Ok(source) = std::str::from_utf8(&bytes) else {
+            continue;
+        };
+        let relative_path = path
+            .strip_prefix(&policy.source_root)
+            .map_err(|_| "PERFORMANCE_OPERATOR_PATH_OUTSIDE_ROOT".to_string())?
+            .to_path_buf();
+        let predecessor_sha256 = sha256(&bytes);
+        for operator in operator_index.values() {
+            let execution = execute_improvement_operator_on_source(operator, source)?;
+            let Some(candidate_source) = execution.candidate_source.clone() else {
+                continue;
+            };
+            if !execution.applicable || candidate_source == source {
+                continue;
+            }
+            let candidate_sha256 = sha256(candidate_source.as_bytes());
+            let transformation =
+                format!("EXECUTABLE_PERFORMANCE_OPERATOR:{}", operator.operator_id);
+            let solution_strategy = operator.solution_strategy_family.clone();
+            let program = match synthesize_structural_repair(
+                &structural_file_id(&relative_path),
+                source,
+                &candidate_source,
+            ) {
+                Ok(program) => program,
+                Err(_) => continue,
+            };
+            let rebound = improvement_operator_ir_for_program(
+                operator.weakness_evidence_kind,
+                &transformation,
+                &solution_strategy,
+                &program,
+            )?;
+            if rebound != *operator {
+                continue;
+            }
+            let opportunity_family_id = source_opportunity_family_id(
+                ChangeOpportunityKind::EfficiencyOpportunity,
+                &operator.operator_id,
+            );
+            if !repair_strategy_is_available(
+                policy,
+                state_dir,
+                &relative_path,
+                &transformation,
+                &solution_strategy,
+                (&predecessor_sha256, &candidate_sha256),
+                source_generation,
+            )? {
+                continue;
+            }
+            let (invocation, operator_execution) = invoke_and_execute_improvement_operator(
+                &operator_memory,
+                operator.weakness_evidence_kind,
+                &transformation,
+                &solution_strategy,
+                &program,
+                &opportunity_family_id,
+                source,
+            )?;
+            if operator_execution.operator_id != execution.operator_id
+                || operator_execution.applicable != execution.applicable
+                || operator_execution.candidate_source != execution.candidate_source
+            {
+                return Err("PERFORMANCE_OPERATOR_EXECUTION_DIVERGED".to_string());
+            }
+            let evidence_sha256 = sha256(
+                format!(
+                    "{}:{}:{}",
+                    relative_path.display(),
+                    predecessor_sha256,
+                    operator.operator_id
+                )
+                .as_bytes(),
+            );
+            let consequence_predictions = vec![
+                "replay an evidence-bound measured optimization operator".to_string(),
+                "retain verifier authority over source installation".to_string(),
+            ];
+            let generalized_change = generalized_change_for_candidate(
+                state_dir,
+                source_generation,
+                &relative_path,
+                &transformation,
+                &solution_strategy,
+                &predecessor_sha256,
+                &candidate_sha256,
+                operator.weakness_evidence_kind,
+                &evidence_sha256,
+                "a verified performance lesson supplied a source-executable operator",
+                &consequence_predictions,
+                &program,
+            )?;
+            let problem_id = repair_problem_id_for(&relative_path, &transformation);
+            let patch_id = format!(
+                "SELF-PERF-{}",
+                &sha256(
+                    format!(
+                        "{problem_id}:{source_generation}:{}:{candidate_sha256}",
+                        operator.operator_id
+                    )
+                    .as_bytes()
+                )[..24]
+            );
+            if state_dir
+                .join("source_mutations")
+                .join(&patch_id)
+                .join("receipt.json")
+                .exists()
+            {
+                continue;
+            }
+            proposals.push((
+                SourceProposalOrigin::LearnedPerformance,
+                SourceDiscoveryResult {
+                    disposition: SourceDiscoveryDisposition::Candidate,
+                    candidate: Some(AutonomousSourcePatchRequest {
+                        schema: AUTONOMOUS_SOURCE_MUTATION_SCHEMA.to_string(),
+                        patch_id,
+                        relative_path: relative_path.clone(),
+                        predecessor_sha256: predecessor_sha256.clone(),
+                        candidate_source,
+                        candidate_sha256,
+                        transformation,
+                        consequence_predictions,
+                        predicted_value: 80,
+                        source_generation,
+                        core_generated: true,
+                        core_self_approved: true,
+                        solution_strategy,
+                        structural_repair_program: Some(program),
+                        generalized_change: Some(generalized_change),
+                        additional_family_members: Vec::new(),
+                        opportunity_kind: ChangeOpportunityKind::EfficiencyOpportunity,
+                        opportunity_family_id,
+                        improvement_operator_invocation: Some(invocation),
+                        improvement_operator_execution: Some(operator_execution),
+                        typed_mechanism_operator_recipe: None,
+                        typed_mechanism_synthesis_receipt: None,
+                        typed_mechanism_materialized_syntax_sha256: None,
+                        typed_mechanism_materialized_syntax_source: None,
+                        typed_mechanism_materialized_edit: None,
+                        typed_mechanism_selected_operator_id: None,
+                        typed_mechanism_candidates_enumerated: 0,
+                        typed_mechanism_preferred_operator_attempts: 0,
+                    }),
+                },
+            ));
+            if proposals.len() >= MAX_COMPETING_SOURCE_PROPOSALS.saturating_mul(8) {
+                break 'files;
+            }
+        }
+    }
+    select_source_discovery_proposals(
+        policy,
+        state_dir,
+        source_generation,
+        &operator_memory,
+        proposals,
+    )
 }
 
 pub fn discover_known_source_improvement_detailed(
@@ -6980,6 +7223,27 @@ mod tests {
             .candidate_source
             .as_deref()
             .is_some_and(|source| source.contains("value.is_multiple_of(2)")));
+        let learned_performance = discover_executable_performance_improvement(
+            &policy,
+            &state,
+            13,
+            std::slice::from_ref(&profile.operator),
+        )
+        .unwrap();
+        let learned_request = learned_performance
+            .candidate
+            .expect("executable performance knowledge enters the shared proposal kernel");
+        assert!(learned_request
+            .transformation
+            .starts_with("EXECUTABLE_PERFORMANCE_OPERATOR:"));
+        assert_eq!(
+            learned_request
+                .improvement_operator_invocation
+                .as_ref()
+                .expect("operator invocation")
+                .matched_operator_ids,
+            vec![profile.operator.operator_id.clone()]
+        );
 
         let new_family = source_opportunity_family_id(
             ChangeOpportunityKind::EfficiencyOpportunity,

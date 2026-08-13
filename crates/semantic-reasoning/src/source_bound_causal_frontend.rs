@@ -44,6 +44,7 @@ const MAX_TEST_SOURCE_BYTES: usize = 16 * 1024 * 1024;
 const MAX_CAUSAL_ALTERNATIVES: usize = 32;
 const MAX_DEPENDENCY_CLOSURE: usize = 64;
 const MAX_SOURCE_BOUND_PATCH_VARIANTS: usize = 64;
+const MAX_COMPETING_SOURCE_BOUND_PROPOSALS: usize = 3;
 const MAX_CANDIDATE_VALIDATION_BATCH_ITEMS: usize = 16;
 const MAX_CANDIDATE_VALIDATION_BATCH_BYTES: usize = 16 * 1024 * 1024;
 const CAUSAL_ALTERNATIVE_ITEMS_PER_WORKER: usize = 4;
@@ -1999,11 +2000,14 @@ pub fn discover_and_synthesize_python_repository_with_operators(
         analyze_and_synthesize_source_bound_with_operators(&causal_request, operators)?
     };
     receipt.declaration_alternatives = declaration_alternatives;
-    receipt.patch_variants = build_source_bound_patch_variants_with_declarations(
-        &request.source,
+    receipt.patch_variants = select_source_bound_patch_proposals(
         &receipt.alternatives,
-        &receipt.declaration_alternatives,
-    )?;
+        build_source_bound_patch_variants_with_declarations(
+            &request.source,
+            &receipt.alternatives,
+            &receipt.declaration_alternatives,
+        )?,
+    );
     let (owner, closure, atomic) = source_bound_receipt_claims(&receipt);
     receipt.public_symbol_owner_preserved = owner;
     receipt.execution_dependency_closure_preserved = closure;
@@ -3071,11 +3075,14 @@ pub fn validate_source_bound_causal_receipt(
             ));
         }
     }
-    if build_source_bound_patch_variants_with_declarations(
-        source,
+    if select_source_bound_patch_proposals(
         &receipt.alternatives,
-        &receipt.declaration_alternatives,
-    )? != receipt.patch_variants
+        build_source_bound_patch_variants_with_declarations(
+            source,
+            &receipt.alternatives,
+            &receipt.declaration_alternatives,
+        )?,
+    ) != receipt.patch_variants
     {
         return Err(CausalFrontendFailure::conflict(
             "SOURCE_BOUND_RECEIPT_VARIANT_MATERIALIZATION",
@@ -3381,6 +3388,61 @@ fn build_source_bound_patch_variants_with_declarations(
     Ok(variants)
 }
 
+fn source_bound_variant_score(
+    alternatives: &[SourceBoundAlternativeReceiptIR],
+    variant: &SourceBoundPatchVariantIR,
+) -> i32 {
+    alternatives
+        .iter()
+        .zip(&variant.selected_candidate_indices)
+        .map(|(alternative, selected)| {
+            if *selected == 0 {
+                // The public owner is always a valid fail-safe proposal.
+                10
+            } else {
+                alternative
+                    .closure_candidates
+                    .get(selected - 1)
+                    .map(|candidate| {
+                        // Prefer a source-local causal cut that has no callers
+                        // outside the observed execution closure. This is a
+                        // typed graph fact extracted by the frontend, not a
+                        // Python-side candidate decision.
+                        if candidate.function_template.external_callers.is_empty() {
+                            30_i32.saturating_add(
+                                i32::try_from(candidate.closure_ordinal.min(16)).unwrap_or(16),
+                            )
+                        } else {
+                            0
+                        }
+                    })
+                    .unwrap_or(i32::MIN / 4)
+            }
+        })
+        .sum()
+}
+
+fn select_source_bound_patch_proposals(
+    alternatives: &[SourceBoundAlternativeReceiptIR],
+    variants: Vec<SourceBoundPatchVariantIR>,
+) -> Vec<SourceBoundPatchVariantIR> {
+    let mut by_postimage = BTreeMap::new();
+    for variant in variants {
+        by_postimage
+            .entry(variant.replayable_patch.candidate_sha256.clone())
+            .or_insert(variant);
+    }
+    let mut ranked = by_postimage.into_values().collect::<Vec<_>>();
+    ranked.sort_by_key(|variant| {
+        (
+            std::cmp::Reverse(source_bound_variant_score(alternatives, variant)),
+            variant.variant_id.clone(),
+        )
+    });
+    ranked.truncate(MAX_COMPETING_SOURCE_BOUND_PROPOSALS);
+    ranked
+}
+
 fn validate_request(
     request: &SourceBoundCausalRequestIR,
 ) -> Result<SourceLanguageBackend, CausalFrontendFailure> {
@@ -3682,7 +3744,10 @@ pub fn analyze_and_synthesize_source_bound_with_operators(
         },
         |detail| CausalFrontendFailure::unsupported(format!("PARALLEL_EXECUTOR:{detail}")),
     )?;
-    let patch_variants = build_source_bound_patch_variants(&request.source, &receipts)?;
+    let patch_variants = select_source_bound_patch_proposals(
+        &receipts,
+        build_source_bound_patch_variants(&request.source, &receipts)?,
+    );
     let mut receipt = SourceBoundCausalReceiptIR {
         schema: SOURCE_BOUND_CAUSAL_RECEIPT_SCHEMA.to_string(),
         source_relative_path: request.source_relative_path.clone(),
@@ -4881,11 +4946,21 @@ def transformer_visitor(value: int, baseline: int) -> int:
         while saturated.closure_candidates.len() <= MAX_SOURCE_BOUND_PATCH_VARIANTS {
             saturated.closure_candidates.push(repeated.clone());
         }
-        let bounded = build_source_bound_patch_variants(source, &[saturated]).unwrap();
+        let bounded = build_source_bound_patch_variants(source, &[saturated.clone()]).unwrap();
         assert!(bounded.len() <= MAX_SOURCE_BOUND_PATCH_VARIANTS);
         assert!(bounded
             .iter()
             .any(|variant| variant.selected_candidate_indices == [0]));
+        let selected =
+            select_source_bound_patch_proposals(std::slice::from_ref(&saturated), bounded);
+        assert!(selected.len() <= MAX_COMPETING_SOURCE_BOUND_PROPOSALS);
+        assert_eq!(
+            selected,
+            select_source_bound_patch_proposals(
+                std::slice::from_ref(&saturated),
+                build_source_bound_patch_variants(source, &[saturated.clone()]).unwrap(),
+            )
+        );
     }
 
     #[test]

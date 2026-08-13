@@ -25,14 +25,15 @@ use crate::autonomous_self_inspection::{
 };
 use crate::autonomous_source_mutation::{
     cleanup_consumed_source_mutation_staging, command_receipt_with_incremental,
-    derive_improvement_operator_memory, discover_known_source_improvement,
-    discover_known_source_improvement_detailed, full_workspace_semantic_fingerprint,
-    install_and_stage_source_patch, runtime_core_feature_available, runtime_core_relative_path,
-    source_opportunity_family_id, source_patch_failure_is_transient,
-    source_patch_validation_critical_path_ms, validate_policy, AutonomousSourceMutationPolicy,
+    derive_improvement_operator_memory, discover_executable_performance_improvement,
+    discover_known_source_improvement, discover_known_source_improvement_detailed,
+    full_workspace_semantic_fingerprint, install_and_stage_source_patch,
+    runtime_core_feature_available, runtime_core_relative_path, source_opportunity_family_id,
+    source_patch_failure_is_transient, source_patch_validation_critical_path_ms,
+    validate_improvement_operator, validate_policy, AutonomousSourceMutationPolicy,
     AutonomousSourcePatchReceipt, AutonomousSourcePatchRequest, ChangeOpportunityKind,
-    ImprovementOperatorGeneratorKind, LocalCommandReceipt, SourceMutationStagingCleanup,
-    SOURCE_REPAIR_ENGINE_REVISION,
+    ImprovementOperatorGeneratorKind, ImprovementOperatorIR, LocalCommandReceipt,
+    SourceMutationStagingCleanup, SOURCE_REPAIR_ENGINE_REVISION,
 };
 use crate::generative_growth::{
     executable_generative_substrate_available, promote_generative_cycle, run_generative_cycle,
@@ -516,13 +517,30 @@ pub struct PublicContractDeltaIR {
     pub provenance: Vec<String>,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct PerformanceMetricEvidence {
     pub metric: String,
     pub before: u64,
     pub after: u64,
     pub lower_is_better: bool,
     pub evidence_sha256: String,
+    /// Optional executable optimization knowledge. The metric remains useful
+    /// evidence without this payload, but it cannot seed another source patch.
+    /// Both hashes bind the operator to the exact observed source transition;
+    /// prose and a benchmark delta alone never acquire mutation authority.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub executable_knowledge: Option<ExecutablePerformanceKnowledgeIR>,
+}
+
+pub const EXECUTABLE_PERFORMANCE_KNOWLEDGE_SCHEMA: &str =
+    "B_CORE_EXECUTABLE_PERFORMANCE_KNOWLEDGE_1";
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ExecutablePerformanceKnowledgeIR {
+    pub schema: String,
+    pub predecessor_content_sha256: String,
+    pub candidate_content_sha256: String,
+    pub improvement_operator: ImprovementOperatorIR,
 }
 
 impl PerformanceMetricEvidence {
@@ -532,6 +550,25 @@ impl PerformanceMetricEvidence {
         } else {
             self.after > self.before
         }
+    }
+
+    fn executable_for_transition(&self, predecessor: Option<&str>, candidate: &str) -> bool {
+        let Some(knowledge) = &self.executable_knowledge else {
+            return false;
+        };
+        self.improved()
+            && knowledge.schema == EXECUTABLE_PERFORMANCE_KNOWLEDGE_SCHEMA
+            && predecessor == Some(knowledge.predecessor_content_sha256.as_str())
+            && candidate == knowledge.candidate_content_sha256
+            && validate_improvement_operator(&knowledge.improvement_operator).is_ok()
+    }
+
+    fn has_executable_knowledge(&self) -> bool {
+        self.improved()
+            && self.executable_knowledge.as_ref().is_some_and(|knowledge| {
+                knowledge.schema == EXECUTABLE_PERFORMANCE_KNOWLEDGE_SCHEMA
+                    && validate_improvement_operator(&knowledge.improvement_operator).is_ok()
+            })
     }
 }
 
@@ -1046,6 +1083,8 @@ pub struct SelfCheck {
     pub mixed_production_file_role_detection: bool,
     pub semantic_duplicate_promotion_blocked: bool,
     pub measured_performance_evidence_supported: bool,
+    pub metric_only_performance_is_not_growth_authority: bool,
+    pub executable_performance_operator_reuse_enabled: bool,
     pub contextual_generative_exploration_enabled: bool,
     pub redundant_reuse_excluded_from_growth: bool,
     pub adaptive_diagnostic_policy_enabled: bool,
@@ -1106,6 +1145,8 @@ pub struct SelfCheck {
     pub executable_improvement_operator_repository_enabled: bool,
     pub improvement_operator_repository_requires_source_synthesis_payload: bool,
     pub program_execution_profile_is_not_synthesis_knowledge: bool,
+    pub source_proposal_composition_and_ranking_owned_by_rust_kernel: bool,
+    pub source_proposal_competitors_bounded_to_three: bool,
     pub fullstack_knowledge_uses_typed_executable_transitions: bool,
     pub fullstack_text_contracts_are_metadata_only: bool,
     pub successful_operators_are_content_addressed: bool,
@@ -1158,6 +1199,8 @@ pub fn self_check() -> SelfCheck {
         mixed_production_file_role_detection: true,
         semantic_duplicate_promotion_blocked: true,
         measured_performance_evidence_supported: true,
+        metric_only_performance_is_not_growth_authority: true,
+        executable_performance_operator_reuse_enabled: true,
         contextual_generative_exploration_enabled: true,
         redundant_reuse_excluded_from_growth: true,
         adaptive_diagnostic_policy_enabled: true,
@@ -1218,6 +1261,8 @@ pub fn self_check() -> SelfCheck {
         executable_improvement_operator_repository_enabled: true,
         improvement_operator_repository_requires_source_synthesis_payload: true,
         program_execution_profile_is_not_synthesis_knowledge: true,
+        source_proposal_composition_and_ranking_owned_by_rust_kernel: true,
+        source_proposal_competitors_bounded_to_three: true,
         fullstack_knowledge_uses_typed_executable_transitions: true,
         fullstack_text_contracts_are_metadata_only: true,
         successful_operators_are_content_addressed: true,
@@ -1899,6 +1944,17 @@ fn classify_observation(
     let outcome = event
         .map(|value| value.outcome)
         .unwrap_or(WorkOutcome::Unknown);
+    let mut performance_metrics = event
+        .map(|value| value.performance_metrics.clone())
+        .unwrap_or_default();
+    for metric in &mut performance_metrics {
+        if !metric.executable_for_transition(
+            previous.map(|value| value.content_sha256.as_str()),
+            &current.content_sha256,
+        ) {
+            metric.executable_knowledge = None;
+        }
+    }
 
     match kind {
         WorkKind::RegressionTest | WorkKind::Verification => {
@@ -2036,9 +2092,8 @@ fn classify_observation(
         signals.insert("DATA_COMPOSITION_MECHANISM".to_string());
         roles.insert("IMPLEMENTATION".to_string());
     }
-    if let Some(event) = event {
-        for metric in event
-            .performance_metrics
+    if event.is_some() {
+        for metric in performance_metrics
             .iter()
             .filter(|metric| metric.improved())
         {
@@ -2059,11 +2114,8 @@ fn classify_observation(
                 metric.metric, metric.before, metric.after
             ));
         }
-        if !event.performance_metrics.is_empty()
-            && !event
-                .performance_metrics
-                .iter()
-                .any(|metric| metric.improved())
+        if !performance_metrics.is_empty()
+            && !performance_metrics.iter().any(|metric| metric.improved())
         {
             score -= 30;
             signals.insert("PERFORMANCE_GAIN_NOT_OBSERVED".to_string());
@@ -2129,9 +2181,7 @@ fn classify_observation(
         verification_evidence_sha256: event
             .map(|value| value.evidence_sha256.clone())
             .unwrap_or_default(),
-        performance_metrics: event
-            .map(|value| value.performance_metrics.clone())
-            .unwrap_or_default(),
+        performance_metrics,
         public_contract_deltas: event
             .map(|value| value.public_contract_deltas.clone())
             .unwrap_or_default(),
@@ -2464,12 +2514,7 @@ fn restore_memory_projection(
     let (distinct_semantic_lessons, semantic_duplicate_lessons) = semantic_lesson_counts(memory)?;
     state.distinct_semantic_lessons = distinct_semantic_lessons;
     state.semantic_duplicate_lessons = semantic_duplicate_lessons;
-    state.measured_performance_promotions = memory
-        .lessons
-        .iter()
-        .filter(|lesson| !lesson.performance_metrics.is_empty())
-        .count()
-        .min(u64::MAX as usize) as u64;
+    state.measured_performance_promotions = executable_performance_promotion_count(memory);
     state.classifier_outcome_bound_refinements = memory.classifier.outcome_bound_refinements;
     state.classifier_unsupported_refinements_suppressed =
         memory.classifier.unsupported_refinements_suppressed;
@@ -2997,6 +3042,27 @@ fn validate_event(config: &GrowthSupervisorConfig, event: &mut WorkEvent) -> Res
             || !event.evidence_sha256.contains(&metric.evidence_sha256)
     }) {
         return Err("PERFORMANCE_METRIC_EVIDENCE_INVALID_OR_UNBOUND".to_string());
+    }
+    for metric in &event.performance_metrics {
+        let Some(knowledge) = &metric.executable_knowledge else {
+            continue;
+        };
+        if !metric.improved()
+            || knowledge.schema != EXECUTABLE_PERFORMANCE_KNOWLEDGE_SCHEMA
+            || knowledge.predecessor_content_sha256.len() != 64
+            || knowledge.candidate_content_sha256.len() != 64
+            || !knowledge
+                .predecessor_content_sha256
+                .bytes()
+                .all(|byte| byte.is_ascii_hexdigit())
+            || !knowledge
+                .candidate_content_sha256
+                .bytes()
+                .all(|byte| byte.is_ascii_hexdigit())
+        {
+            return Err("EXECUTABLE_PERFORMANCE_KNOWLEDGE_BINDING_INVALID".to_string());
+        }
+        validate_improvement_operator(&knowledge.improvement_operator)?;
     }
     if event.outcome == WorkOutcome::Pass && event.evidence_sha256.is_empty() {
         return Err("PASS_EVENT_REQUIRES_BOUND_EVIDENCE_ARTIFACT".to_string());
@@ -3671,12 +3737,16 @@ fn build_lesson(observations: &[LearningObservation]) -> Result<LearnedCompositi
         .iter()
         .map(json_sha256)
         .collect::<Result<Vec<_>, _>>()?;
-    let performance_metrics = observations
+    let mut performance_metric_index = BTreeMap::new();
+    for metric in observations
         .iter()
-        .flat_map(|observation| observation.performance_metrics.iter().cloned())
-        .collect::<BTreeSet<_>>()
-        .into_iter()
-        .collect::<Vec<_>>();
+        .flat_map(|observation| &observation.performance_metrics)
+    {
+        performance_metric_index
+            .entry(json_sha256(metric)?)
+            .or_insert_with(|| metric.clone());
+    }
+    let performance_metrics = performance_metric_index.into_values().collect::<Vec<_>>();
     let mut public_contract_delta_index = BTreeMap::new();
     for delta in observations
         .iter()
@@ -3755,7 +3825,16 @@ fn lesson_semantic_sha256(lesson: &LearnedCompositionLesson) -> Result<String, S
         .collect::<Result<Vec<_>, _>>()?;
     executable_goal_hashes.sort();
     executable_goal_hashes.dedup();
-    json_sha256(&executable_goal_hashes)
+    let mut executable_performance_operator_ids = lesson
+        .performance_metrics
+        .iter()
+        .filter(|metric| metric.has_executable_knowledge())
+        .filter_map(|metric| metric.executable_knowledge.as_ref())
+        .map(|knowledge| knowledge.improvement_operator.operator_id.clone())
+        .collect::<Vec<_>>();
+    executable_performance_operator_ids.sort();
+    executable_performance_operator_ids.dedup();
+    json_sha256(&(executable_goal_hashes, executable_performance_operator_ids))
 }
 
 fn memory_contains_semantic_lesson(
@@ -3875,6 +3954,33 @@ fn lesson_has_growth_subject(lesson: &LearnedCompositionLesson) -> bool {
             .any(|signal| signal == "MUTUAL_REVALIDATION_GAP")
 }
 
+fn executable_performance_operators(
+    lesson: &LearnedCompositionLesson,
+) -> Vec<ImprovementOperatorIR> {
+    let mut operators = BTreeMap::new();
+    for metric in &lesson.performance_metrics {
+        if !metric.has_executable_knowledge() {
+            continue;
+        }
+        let Some(knowledge) = &metric.executable_knowledge else {
+            continue;
+        };
+        operators
+            .entry(knowledge.improvement_operator.operator_id.clone())
+            .or_insert_with(|| knowledge.improvement_operator.clone());
+    }
+    operators.into_values().collect()
+}
+
+fn executable_performance_promotion_count(memory: &GrowthMemory) -> u64 {
+    memory
+        .lessons
+        .iter()
+        .filter(|lesson| !executable_performance_operators(lesson).is_empty())
+        .count()
+        .min(u64::MAX as usize) as u64
+}
+
 /// Returns true only when a lesson contains a machine-consumable payload.
 /// Structural labels, natural-language summaries, applicability prose and a
 /// PASS token remain useful forensic evidence, but cannot synthesize a patch
@@ -3888,7 +3994,7 @@ fn lesson_has_executable_knowledge(lesson: &LearnedCompositionLesson) -> bool {
             .flat_map(|delta| &delta.typed_behavior_goals)
             .next()
             .is_some();
-    typed_goal_bound
+    typed_goal_bound || !executable_performance_operators(lesson).is_empty()
 }
 
 fn cohort_has_promotable_growth_subject(
@@ -4218,13 +4324,14 @@ fn generative_input(lesson: &LearnedCompositionLesson) -> GenerativeInput {
         measured_performance_gain: lesson
             .performance_metrics
             .iter()
-            .any(PerformanceMetricEvidence::improved),
+            .any(PerformanceMetricEvidence::has_executable_knowledge),
         typed_behavior_goals: lesson
             .public_contract_deltas
             .iter()
             .flat_map(|delta| delta.typed_behavior_goals.iter().cloned())
             .take(MAX_TYPED_BEHAVIOR_GOALS_PER_GENERATIVE_INPUT)
             .collect(),
+        executable_performance_operators: executable_performance_operators(lesson),
     }
 }
 
@@ -4281,7 +4388,7 @@ fn plateau_generative_input(memory: &GrowthMemory) -> Option<GenerativeInput> {
             lesson
                 .performance_metrics
                 .iter()
-                .any(PerformanceMetricEvidence::improved)
+                .any(PerformanceMetricEvidence::has_executable_knowledge)
         }),
         typed_behavior_goals: lessons
             .iter()
@@ -4289,6 +4396,18 @@ fn plateau_generative_input(memory: &GrowthMemory) -> Option<GenerativeInput> {
             .flat_map(|delta| delta.typed_behavior_goals.iter().cloned())
             .take(MAX_TYPED_BEHAVIOR_GOALS_PER_GENERATIVE_INPUT)
             .collect(),
+        executable_performance_operators: {
+            let mut operators = BTreeMap::new();
+            for operator in lessons
+                .iter()
+                .flat_map(|lesson| executable_performance_operators(lesson))
+            {
+                operators
+                    .entry(operator.operator_id.clone())
+                    .or_insert(operator);
+            }
+            operators.into_values().collect()
+        },
     })
 }
 
@@ -4303,7 +4422,7 @@ fn refine_classifier_from_capability_outcome(
     let measured_performance_gain = lesson
         .performance_metrics
         .iter()
-        .any(PerformanceMetricEvidence::improved);
+        .any(PerformanceMetricEvidence::has_executable_knowledge);
     let verified_behavioral_frontier =
         behavioral_frontier_advance && behavioral_verification_sha256.is_some();
     let supported = verified_behavioral_frontier || measured_performance_gain;
@@ -4973,6 +5092,7 @@ fn plateau_generative_probe_observation(
                 after: frontier_after,
                 lower_is_better: false,
                 evidence_sha256: content_sha256,
+                executable_knowledge: None,
             }],
             public_contract_deltas: Vec::new(),
             exact_source_fragments_stored: 0,
@@ -5098,6 +5218,7 @@ fn generative_frontier_continuation_observation(
             after: frontier_after,
             lower_is_better: false,
             evidence_sha256: content_sha256,
+            executable_knowledge: None,
         }],
         public_contract_deltas: Vec::new(),
         exact_source_fragments_stored: 0,
@@ -5264,12 +5385,7 @@ fn promote_candidate(
     let (distinct_semantic_lessons, semantic_duplicate_lessons) = semantic_lesson_counts(&memory)?;
     state.distinct_semantic_lessons = distinct_semantic_lessons;
     state.semantic_duplicate_lessons = semantic_duplicate_lessons;
-    state.measured_performance_promotions = memory
-        .lessons
-        .iter()
-        .filter(|lesson| !lesson.performance_metrics.is_empty())
-        .count()
-        .min(u64::MAX as usize) as u64;
+    state.measured_performance_promotions = executable_performance_promotion_count(&memory);
     state.classifier_outcome_bound_refinements = memory.classifier.outcome_bound_refinements;
     state.classifier_unsupported_refinements_suppressed =
         memory.classifier.unsupported_refinements_suppressed;
@@ -9471,6 +9587,7 @@ fn revalidate_installed_composite_capability(
             after: validated,
             lower_is_better: false,
             evidence_sha256: receipt_sha256,
+            executable_knowledge: None,
         }],
         public_contract_deltas: Vec::new(),
         exact_source_fragments_stored: 0,
@@ -9666,11 +9783,41 @@ fn attempt_discovered_source_repair(
             .saturating_add(1);
         return Ok(false);
     }
-    match discover_known_source_improvement_detailed(
-        &config.source_mutation,
-        &config.state_dir,
-        state.generation,
-    ) {
+    let executable_performance_knowledge = memory
+        .lessons
+        .iter()
+        .flat_map(executable_performance_operators)
+        .fold(BTreeMap::new(), |mut operators, operator| {
+            operators
+                .entry(operator.operator_id.clone())
+                .or_insert(operator);
+            operators
+        })
+        .into_values()
+        .collect::<Vec<_>>();
+    let discovery = if executable_performance_knowledge.is_empty() {
+        discover_known_source_improvement_detailed(
+            &config.source_mutation,
+            &config.state_dir,
+            state.generation,
+        )
+    } else {
+        match discover_executable_performance_improvement(
+            &config.source_mutation,
+            &config.state_dir,
+            state.generation,
+            &executable_performance_knowledge,
+        ) {
+            Ok(learned) if learned.candidate.is_some() => Ok(learned),
+            Ok(_) => discover_known_source_improvement_detailed(
+                &config.source_mutation,
+                &config.state_dir,
+                state.generation,
+            ),
+            Err(error) => Err(error),
+        }
+    };
+    match discovery {
         Ok(discovery) if discovery.candidate.is_some() => {
             let Some(request) = discovery.candidate else {
                 return Ok(false);
@@ -9802,12 +9949,7 @@ fn step_without_lease(
     let (distinct_semantic_lessons, semantic_duplicate_lessons) = semantic_lesson_counts(&memory)?;
     state.distinct_semantic_lessons = distinct_semantic_lessons;
     state.semantic_duplicate_lessons = semantic_duplicate_lessons;
-    state.measured_performance_promotions = memory
-        .lessons
-        .iter()
-        .filter(|lesson| !lesson.performance_metrics.is_empty())
-        .count()
-        .min(u64::MAX as usize) as u64;
+    state.measured_performance_promotions = executable_performance_promotion_count(&memory);
     state.classifier_outcome_bound_refinements = memory.classifier.outcome_bound_refinements;
     state.classifier_unsupported_refinements_suppressed =
         memory.classifier.unsupported_refinements_suppressed;
@@ -10419,6 +10561,7 @@ mod tests {
             verification_evidence_count: 1,
             measured_performance_gain: false,
             typed_behavior_goals: vec![typed_behavior_goal_fixture("frontier-continuation-goal")],
+            executable_performance_operators: Vec::new(),
         };
         let result = run_generative_cycle(&GenerativeGrowthMemory::default(), &input, 17).unwrap();
         assert!(result.frontier_advance);
@@ -11301,21 +11444,72 @@ mod tests {
     }
 
     #[test]
-    fn classifier_accepts_bound_measured_performance_without_frontier_label() {
+    fn classifier_rejects_metric_only_performance_as_executable_growth() {
         let lesson = classifier_refinement_lesson(vec![PerformanceMetricEvidence {
             metric: "latency_ns".to_string(),
             before: 100,
             after: 80,
             lower_is_better: true,
             evidence_sha256: "c".repeat(64),
+            executable_knowledge: None,
         }]);
         let mut classifier = ClassifierMemory::default();
 
         refine_classifier_from_capability_outcome(&mut classifier, 9, &lesson, &[], false, None);
 
+        assert_eq!(classifier.outcome_bound_refinements, 0);
+        assert!(!classifier.refinement_events[0].measured_performance_gain);
+        assert!(!classifier.signal_weights.contains_key("VERIFIED_PASS"));
+    }
+
+    fn executable_performance_operator_fixture() -> ImprovementOperatorIR {
+        let mut operator = ImprovementOperatorIR {
+            schema: crate::autonomous_source_mutation::IMPROVEMENT_OPERATOR_MEMORY_SCHEMA
+                .to_string(),
+            operator_id: String::new(),
+            weakness_evidence_kind:
+                crate::generalized_self_application::WeaknessEvidenceKind::StructuralSourceSmell,
+            generator_kind: ImprovementOperatorGeneratorKind::KnownStructuralRewrite,
+            executable_payload: Some(
+                crate::autonomous_source_mutation::ExecutableImprovementOperatorPayloadIR::KnownStructuralRewrite {
+                    rewrite: crate::autonomous_source_mutation::KnownStructuralRewriteIR::TypedIsMultipleOf,
+                },
+            ),
+            solution_strategy_family: "TYPED_IS_MULTIPLE_OF".to_string(),
+            edit_atom_kinds: vec!["REPLACE".to_string()],
+            structural_postcondition_class: "FEW".to_string(),
+            validation_contract: vec!["STRUCTURAL_REPLAY".to_string()],
+        };
+        operator.operator_id = sha256(&serde_json::to_vec(&operator).unwrap());
+        operator
+    }
+
+    #[test]
+    fn executable_performance_operator_drives_growth_and_generative_input() {
+        let operator = executable_performance_operator_fixture();
+        validate_improvement_operator(&operator).unwrap();
+        let lesson = classifier_refinement_lesson(vec![PerformanceMetricEvidence {
+            metric: "latency_ns".to_string(),
+            before: 100,
+            after: 80,
+            lower_is_better: true,
+            evidence_sha256: "d".repeat(64),
+            executable_knowledge: Some(ExecutablePerformanceKnowledgeIR {
+                schema: EXECUTABLE_PERFORMANCE_KNOWLEDGE_SCHEMA.to_string(),
+                predecessor_content_sha256: "a".repeat(64),
+                candidate_content_sha256: "b".repeat(64),
+                improvement_operator: operator.clone(),
+            }),
+        }]);
+        assert!(lesson_has_executable_knowledge(&lesson));
+        let input = generative_input(&lesson);
+        assert!(input.measured_performance_gain);
+        assert_eq!(input.executable_performance_operators, vec![operator]);
+
+        let mut classifier = ClassifierMemory::default();
+        refine_classifier_from_capability_outcome(&mut classifier, 10, &lesson, &[], false, None);
         assert_eq!(classifier.outcome_bound_refinements, 1);
         assert!(classifier.refinement_events[0].measured_performance_gain);
-        assert_eq!(classifier.signal_weights["VERIFIED_PASS"], 1);
     }
 
     #[test]
@@ -11472,6 +11666,7 @@ mod tests {
                 typed_behavior_goals: vec![typed_behavior_goal_fixture(&format!(
                     "pending-install-goal-{ordinal}"
                 ))],
+                executable_performance_operators: Vec::new(),
             };
             let result = run_generative_cycle(&GenerativeGrowthMemory::default(), &input, ordinal)
                 .expect("behavioral composition");
@@ -14245,6 +14440,7 @@ mod tests {
             after: 80,
             lower_is_better: true,
             evidence_sha256: "a".repeat(64),
+            executable_knowledge: None,
         };
         let current = FileFingerprint {
             content_sha256: "b".repeat(64),
