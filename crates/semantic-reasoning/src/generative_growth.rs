@@ -122,6 +122,11 @@ pub struct ReusableCompositionMemory {
     pub verified_artifact_sha256s: Vec<String>,
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     pub verified_artifact_contexts: BTreeMap<String, String>,
+    /// Exact machine-consumable payload used to create each typed artifact.
+    /// Hash/context pairs without this payload are legacy canary evidence and
+    /// cannot reconstruct or install a learned program.
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub verified_typed_behavior_goals: BTreeMap<String, TypedMechanismSynthesisGoalIR>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -318,6 +323,8 @@ pub struct VerifiedBehavioralArtifact {
     pub artifact_sha256: String,
     pub cases_executed: usize,
     pub cases_passed: usize,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub typed_behavior_goal: Option<TypedMechanismSynthesisGoalIR>,
 }
 
 fn primitive(id: &str, anchor: &str, input: &str, output: &str, role: &str) -> RepairPrimitiveIR {
@@ -840,11 +847,15 @@ fn execute_composer(
                             artifact_sha256: receipt.program_ir_sha256,
                             cases_executed: receipt.cases_executed,
                             cases_passed: receipt.cases_passed,
+                            typed_behavior_goal: Some(goal.clone()),
                         });
                     }
                 }
                 if artifacts.is_empty() {
-                    return Err("TYPED_BEHAVIOR_GOAL_ARTIFACT_FAMILY_EMPTY".to_string());
+                    return Ok((
+                        Vec::new(),
+                        Some("LESSON_BOUND_EXECUTABLE_KNOWLEDGE_ALREADY_VERIFIED".to_string()),
+                    ));
                 }
                 return Ok((artifacts, None));
             }
@@ -873,6 +884,7 @@ fn execute_composer(
                         artifact_sha256: receipt.program_ir_sha256,
                         cases_executed: receipt.cases_executed,
                         cases_passed: receipt.cases_passed,
+                        typed_behavior_goal: None,
                     });
                 }
             }
@@ -916,6 +928,7 @@ fn execute_composer(
                     artifact_sha256: receipt.behavioral_artifact_sha256,
                     cases_executed: receipt.cases_executed,
                     cases_passed: receipt.cases_passed,
+                    typed_behavior_goal: None,
                 }],
                 None,
             ))
@@ -958,6 +971,7 @@ fn execute_composer(
                         artifact_sha256: receipt.behavioral_artifact_sha256,
                         cases_executed: receipt.cases_executed,
                         cases_passed: receipt.cases_passed,
+                        typed_behavior_goal: None,
                     });
                 }
             }
@@ -1013,6 +1027,7 @@ fn execute_composer(
                         artifact_sha256: receipt.operator.operator_id,
                         cases_executed: receipt.cases_executed,
                         cases_passed: receipt.cases_passed,
+                        typed_behavior_goal: None,
                     });
                 }
             }
@@ -1093,6 +1108,7 @@ fn execute_composer(
                     artifact_sha256: receipt.graph.graph_id,
                     cases_executed: receipt.cases_executed,
                     cases_passed: receipt.cases_passed,
+                    typed_behavior_goal: None,
                 });
             }
             Ok((artifacts, None))
@@ -1201,10 +1217,28 @@ fn composer_is_behaviorally_executable(composer_id: &str, memory: &GenerativeGro
     }
 }
 
+/// A canary proves that a fixed implementation still works; it does not prove
+/// that knowledge from the current lesson was recognized or used. Only the
+/// typed SEM-5 path currently consumes a lesson-bound executable payload.
+/// The other composers remain callable by their direct workflows, but cannot
+/// turn labels, prose or a static fixture replay into generative frontier.
+fn composer_consumes_executable_knowledge(composer_id: &str, input: &GenerativeInput) -> bool {
+    composer_id == "SEM5_PROGRAM_IR_COMPOSER" && !input.typed_behavior_goals.is_empty()
+}
+
+fn composer_is_executable_for_input(
+    composer_id: &str,
+    memory: &GenerativeGrowthMemory,
+    input: &GenerativeInput,
+) -> bool {
+    composer_is_behaviorally_executable(composer_id, memory)
+        && composer_consumes_executable_knowledge(composer_id, input)
+}
+
 pub fn executable_generative_substrate_available(memory: &GenerativeGrowthMemory) -> bool {
-    GENERATIVE_COMPOSERS
-        .iter()
-        .any(|composer| composer_is_behaviorally_executable(composer.0, memory))
+    // Availability here means that at least one lesson-bound compiler still
+    // has capacity. Input-specific eligibility is checked before execution.
+    composer_is_behaviorally_executable("SEM5_PROGRAM_IR_COMPOSER", memory)
 }
 
 fn behavioral_execution_receipt_sha256(
@@ -1455,7 +1489,7 @@ pub fn run_generative_cycle(
     for predictor in GENERATIVE_PREDICTORS {
         for composer in GENERATIVE_COMPOSERS {
             for verifier in GENERATIVE_VERIFIERS {
-                if !composer_is_behaviorally_executable(composer.0, memory) {
+                if !composer_is_executable_for_input(composer.0, memory, input) {
                     behaviorally_inapplicable_candidates_screened =
                         behaviorally_inapplicable_candidates_screened.saturating_add(1);
                     continue;
@@ -1743,9 +1777,10 @@ pub fn promote_generative_cycle(
             .candidates_considered
             .saturating_add(result.behaviorally_inapplicable_candidates_screened)
             != STATIC_GENERATIVE_CANDIDATE_COUNT
-        || !composer_is_behaviorally_executable(
+        || !composer_is_executable_for_input(
             selected_stage(&result.selected_composition, "COMPOSE").unwrap_or(""),
             current,
+            input,
         )
         || !result.prediction_recorded_before_composition
         || !result.selected_from_precomposition_prediction
@@ -1896,6 +1931,11 @@ pub fn promote_generative_cycle(
                     artifact.artifact_sha256.clone(),
                     artifact.artifact_context_sha256.clone(),
                 );
+                if let Some(goal) = &artifact.typed_behavior_goal {
+                    existing
+                        .verified_typed_behavior_goals
+                        .insert(artifact.artifact_sha256.clone(), goal.clone());
+                }
             }
             existing.verified_artifact_sha256s.sort();
         } else if result.accepted_for_memory {
@@ -1914,6 +1954,15 @@ pub fn promote_generative_cycle(
                     )
                 })
                 .collect::<BTreeMap<_, _>>();
+            let verified_typed_behavior_goals = result_artifacts
+                .iter()
+                .filter_map(|artifact| {
+                    artifact
+                        .typed_behavior_goal
+                        .as_ref()
+                        .map(|goal| (artifact.artifact_sha256.clone(), goal.clone()))
+                })
+                .collect::<BTreeMap<_, _>>();
             next.accepted_compositions.push(ReusableCompositionMemory {
                 composition: result.selected_composition.clone(),
                 trigger_signals: input.diagnostic_signals.clone(),
@@ -1926,6 +1975,7 @@ pub fn promote_generative_cycle(
                 observed_value_total: u64::from(result.observed_value),
                 verified_artifact_sha256s,
                 verified_artifact_contexts,
+                verified_typed_behavior_goals,
             });
         }
         if result.reused_memory_composition_id.is_some() {
@@ -1950,6 +2000,39 @@ pub fn promote_generative_cycle(
 mod tests {
     use super::*;
 
+    fn executable_goal() -> TypedMechanismSynthesisGoalIR {
+        use crate::sem5::model::Value;
+        use crate::sem5::model::{DataSplit, Effect, ProgramType};
+        use crate::sem5::typed_mechanism::{
+            SourceOperandIR, TypedMechanismObservationIR, TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA,
+        };
+
+        TypedMechanismSynthesisGoalIR {
+            schema: TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA.to_string(),
+            goal_id: "generative-test-goal".to_string(),
+            split: DataSplit::FreshBlind,
+            operands: vec![SourceOperandIR {
+                role: "ARG_0".to_string(),
+                source: "value".to_string(),
+                value_type: ProgramType::Int,
+            }],
+            output_type: ProgramType::Int,
+            definitions: Vec::new(),
+            allowed_effects: vec![Effect::Pure],
+            preconditions: Vec::new(),
+            postconditions: vec!["result preserves the public integer observation".to_string()],
+            invariants: Vec::new(),
+            public_observations: vec![TypedMechanismObservationIR {
+                operands: [("ARG_0".to_string(), Value::Int(7))].into_iter().collect(),
+                expected_postimage: Value::Int(7),
+            }],
+            require_conditional: false,
+            max_expression_depth: 2,
+            max_candidates: 32,
+            provenance: vec!["EXECUTABLE_TEST_FIXTURE".to_string()],
+        }
+    }
+
     fn verified_operator_canary_ids() -> Vec<String> {
         (0..MAX_IMPROVEMENT_OPERATOR_SELECTORS)
             .map(|selector| {
@@ -1961,16 +2044,6 @@ mod tests {
             })
             .collect::<BTreeSet<_>>()
             .into_iter()
-            .collect()
-    }
-
-    fn all_operator_graph_ids(operator_ids: &[String]) -> Vec<String> {
-        (0..improvement_operator_graph_capacity(operator_ids.len()))
-            .map(|ordinal| {
-                let graph =
-                    improvement_operator_graph_for_global_ordinal(operator_ids, ordinal).unwrap();
-                improvement_operator_graph_id_for_nodes(&graph).unwrap()
-            })
             .collect()
     }
 
@@ -1988,7 +2061,7 @@ mod tests {
             learning_score: 80,
             verification_evidence_count: 1,
             measured_performance_gain: false,
-            typed_behavior_goals: Vec::new(),
+            typed_behavior_goals: vec![executable_goal()],
         }
     }
 
@@ -2027,7 +2100,7 @@ mod tests {
             .as_ref()
             .is_some_and(|receipt| {
                 receipt.executed
-                    && receipt.cases_executed == 3
+                    && receipt.cases_executed > 0
                     && receipt.cases_passed == receipt.cases_executed
             }));
         assert!(!result.observed_value_is_heuristic_proxy);
@@ -2047,242 +2120,65 @@ mod tests {
     }
 
     #[test]
-    fn bounded_exploration_spends_budget_only_on_behaviorally_executable_candidates() {
+    fn repeated_text_context_cannot_mint_another_executable_artifact() {
         let mut memory = GenerativeGrowthMemory::default();
-        let mut selected = BTreeSet::new();
-        for ordinal in 0..2 {
-            let mut current = input();
-            current.source_lesson_id = format!("lesson-{ordinal}");
-            let result = run_generative_cycle(&memory, &current, ordinal).unwrap();
-            assert!(result.exploration_selected);
-            assert_eq!(result.prior_composition_trials, 0);
-            selected.insert(result.selected_composition.composition_id.clone());
-            memory = promote_generative_cycle(&memory, &current, &result).unwrap();
-        }
-        assert_eq!(selected.len(), 2);
-        assert_eq!(memory.composition_trials.len(), 2);
-        assert_eq!(memory.exploration_events, 2);
-        assert_eq!(memory.accepted_compositions.len(), 2);
-        assert_eq!(memory.distinct_verified_artifact_count(), 2);
-        // The second predictor is allowed to search past the already verified
-        // artifact because this is its first bounded composition context.
-        assert_eq!(memory.frontier_advance_events, 2);
-        assert_eq!(memory.frontier_capability_units, 2);
-        assert_eq!(memory.unverified_frontier_candidate_events, 0);
-        assert_eq!(memory.behavioral_verification_events, 2);
-        assert!(memory.prediction_absolute_error_total < 2 * 100);
-        assert_eq!(memory.calibrated_prediction_records, 2);
-
-        let mut repeated_context = input();
-        repeated_context.source_lesson_id = "lesson-repeated-context".to_string();
-        let repeated = run_generative_cycle(&memory, &repeated_context, 99).unwrap();
-        assert!(!repeated.exploration_selected);
-        assert!(repeated.reused_memory_composition_id.is_some());
-        assert!(repeated.prior_context_trials > 0);
-        assert!(!repeated.productive_reuse);
+        let first = input();
+        let result = run_generative_cycle(&memory, &first, 7).unwrap();
+        memory = promote_generative_cycle(&memory, &first, &result).unwrap();
+        let mut repeated = input();
+        repeated.source_lesson_id = "renamed-text-lesson".to_string();
+        repeated
+            .diagnostic_signals
+            .push("DEFECT_REPAIR".to_string());
+        let repeated = run_generative_cycle(&memory, &repeated, 99).unwrap();
+        assert!(!repeated.behavioral_composition_executed);
         assert!(!repeated.novel_verified_artifact);
         assert!(!repeated.frontier_advance);
         assert!(!repeated.applied_to_self_improvement);
-        memory = promote_generative_cycle(&memory, &repeated_context, &repeated).unwrap();
-        assert_eq!(memory.reuse_events, 1);
-        assert_eq!(memory.redundant_selection_events, 1);
-
-        let mut new_context = input();
-        new_context.source_lesson_id = "lesson-new-context".to_string();
-        new_context
-            .diagnostic_signals
-            .push("DEFECT_REPAIR".to_string());
-        let transferred = run_generative_cycle(&memory, &new_context, 101).unwrap();
-        assert!(transferred.reused_memory_composition_id.is_some());
-        assert_eq!(transferred.prior_context_trials, 0);
-        assert!(transferred.novel_context_transfer_candidate);
-        assert!(!transferred.unverified_frontier_candidate);
-        assert!(transferred.productive_reuse);
-        assert!(transferred.novel_verified_artifact);
-        assert!(transferred.frontier_advance);
-        assert!(!transferred.applied_to_self_improvement);
-        assert!(transferred.applied_policy_signals.is_empty());
-        memory = promote_generative_cycle(&memory, &new_context, &transferred).unwrap();
-        assert_eq!(memory.unverified_frontier_candidate_events, 0);
-        assert_eq!(memory.distinct_verified_artifact_count(), 4);
-        assert_eq!(memory.frontier_capability_units, 4);
+        assert_eq!(repeated.verified_artifact_count, 0);
+        assert_eq!(memory.distinct_verified_artifact_count(), 1);
     }
 
     #[test]
-    fn verified_success_expands_the_next_bounded_artifact_family() {
-        let first_input = input();
-        let first_result =
-            run_generative_cycle(&GenerativeGrowthMemory::default(), &first_input, 7).unwrap();
-        let mut memory = promote_generative_cycle(
-            &GenerativeGrowthMemory::default(),
-            &first_input,
-            &first_result,
-        )
-        .unwrap();
-        let accepted = memory.accepted_compositions.first_mut().unwrap();
-        accepted.verified_artifact_sha256s = (0..5)
-            .map(|ordinal| sha256(format!("verified-{ordinal}").as_bytes()))
-            .collect();
-        memory.frontier_capability_units = 5;
-
-        let mut next_input = input();
-        next_input.source_lesson_id = "bounded-family-after-success".to_string();
-        next_input
-            .diagnostic_signals
-            .push("CAPABILITY_SURFACE_ADDED".to_string());
-        let result = run_generative_cycle(&memory, &next_input, 19).unwrap();
-
+    fn text_only_input_has_no_generative_compiler_candidate() {
+        let mut text_only = input();
+        text_only.typed_behavior_goals.clear();
         assert_eq!(
-            verified_artifact_family_width(&memory, "SEM5_PROGRAM_IR_COMPOSER"),
-            5
+            run_generative_cycle(&GenerativeGrowthMemory::default(), &text_only, 19),
+            Err("NO_BEHAVIORALLY_EXECUTABLE_GENERATIVE_COMPOSITION_CANDIDATE".to_string())
         );
-        assert_eq!(result.verified_artifact_count, 5);
-        assert_eq!(result.novel_verified_artifact_count, 5);
-        assert_eq!(result.frontier_advance_units, 5);
-        let next = promote_generative_cycle(&memory, &next_input, &result).unwrap();
-        assert_eq!(next.frontier_capability_units, 10);
-        assert_eq!(next.distinct_verified_artifact_count(), 10);
     }
 
     #[test]
-    fn verified_family_growth_routes_across_executable_substrates() {
-        let memory_with = |count: u64| {
-            let mut memory = GenerativeGrowthMemory::default();
-            let mut result = run_generative_cycle(&memory, &input(), 7).unwrap();
-            result
-                .behavioral_execution_receipt
-                .as_mut()
-                .unwrap()
-                .verified_artifacts
-                .truncate(1);
-            memory = promote_generative_cycle(&memory, &input(), &result).unwrap();
-            let accepted = memory.accepted_compositions.first_mut().unwrap();
-            accepted.verified_artifact_sha256s = (0..count)
-                .map(|ordinal| sha256(format!("bounded-{ordinal}").as_bytes()))
-                .collect();
-            memory
-        };
-
-        assert_eq!(
-            verified_artifact_family_width(&memory_with(0), "SEM5_PROGRAM_IR_COMPOSER"),
-            1
-        );
-        assert!(executable_generative_substrate_available(&memory_with(0)));
-        assert_eq!(
-            verified_artifact_family_width(&memory_with(1), "SEM5_PROGRAM_IR_COMPOSER"),
-            1
-        );
-        assert_eq!(
-            verified_artifact_family_width(&memory_with(8), "SEM5_PROGRAM_IR_COMPOSER"),
-            8
-        );
-        assert_eq!(
-            verified_artifact_family_width(&memory_with(33), "SEM5_PROGRAM_IR_COMPOSER"),
-            31
-        );
-        let saturated = memory_with(64);
-        assert!(executable_generative_substrate_available(&saturated));
-        assert_eq!(
-            verified_artifact_family_width(&saturated, "SEM5_PROGRAM_IR_COMPOSER"),
-            0
-        );
-        let saturated_result = run_generative_cycle(&saturated, &input(), 11).unwrap();
-        assert_eq!(
-            selected_stage(&saturated_result.selected_composition, "COMPOSE").unwrap(),
-            "IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER"
-        );
-        assert_eq!(saturated_result.verified_artifact_count, 1);
-        assert!(saturated_result.behavioral_composition_executed);
-        assert!(saturated_result.novel_verified_artifact);
-        assert!(saturated_result.frontier_advance);
-        let mut expanded =
-            promote_generative_cycle(&saturated, &input(), &saturated_result).unwrap();
-        assert_eq!(
-            distinct_verified_artifact_count_for_composer(
-                &expanded,
-                "IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER"
-            ),
-            1
-        );
-        assert_eq!(expanded.distinct_verified_artifact_count(), 65);
-
-        let operator_memory = expanded
+    fn static_canary_substrates_do_not_replace_saturated_executable_knowledge() {
+        let mut saturated = GenerativeGrowthMemory::default();
+        saturated
             .accepted_compositions
-            .iter_mut()
-            .find(|composition| {
-                composition_uses_composer(composition, "IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER")
-            })
-            .unwrap();
-        let operator_ids = verified_operator_canary_ids();
+            .push(ReusableCompositionMemory {
+                composition: candidate_composition(
+                    GENERATIVE_PREDICTORS[0],
+                    GENERATIVE_COMPOSERS[0],
+                    GENERATIVE_VERIFIERS[0],
+                ),
+                trigger_signals: Vec::new(),
+                source_lesson_ids: Vec::new(),
+                predicted_value: 100,
+                observed_value: 100,
+                reuse_count: 0,
+                context_use_counts: BTreeMap::new(),
+                successful_uses: 1,
+                observed_value_total: 100,
+                verified_artifact_sha256s: (0..MAX_SEM5_VERIFIED_ARTIFACTS)
+                    .map(|ordinal| sha256(format!("sem5-{ordinal}").as_bytes()))
+                    .collect(),
+                verified_artifact_contexts: BTreeMap::new(),
+                verified_typed_behavior_goals: BTreeMap::new(),
+            });
+        assert!(!executable_generative_substrate_available(&saturated));
         assert_eq!(
-            operator_ids.len() as u64,
-            MAX_IMPROVEMENT_OPERATOR_VERIFIED_ARTIFACTS
+            run_generative_cycle(&saturated, &input(), 11),
+            Err("NO_BEHAVIORALLY_EXECUTABLE_GENERATIVE_COMPOSITION_CANDIDATE".to_string())
         );
-        operator_memory.verified_artifact_sha256s = operator_ids.clone();
-        let graph = run_generative_cycle(&expanded, &input(), 13).unwrap();
-        assert_eq!(
-            selected_stage(&graph.selected_composition, "COMPOSE").unwrap(),
-            "IMPROVEMENT_OPERATOR_GRAPH_COMPOSER"
-        );
-        assert_eq!(graph.verified_artifact_count, 1);
-        assert!(graph.behavioral_composition_executed);
-        assert!(graph.novel_verified_artifact);
-        assert!(graph.frontier_advance);
-        expanded = promote_generative_cycle(&expanded, &input(), &graph).unwrap();
-
-        let graph_capacity =
-            verified_artifact_capacity(&expanded, "IMPROVEMENT_OPERATOR_GRAPH_COMPOSER");
-        let graph_memory = expanded
-            .accepted_compositions
-            .iter_mut()
-            .find(|composition| {
-                composition_uses_composer(composition, "IMPROVEMENT_OPERATOR_GRAPH_COMPOSER")
-            })
-            .unwrap();
-        graph_memory.verified_artifact_sha256s = all_operator_graph_ids(&operator_ids);
-        assert_eq!(
-            graph_memory.verified_artifact_sha256s.len() as u64,
-            graph_capacity
-        );
-        let fullstack = run_generative_cycle(&expanded, &input(), 13).unwrap();
-        assert_eq!(
-            selected_stage(&fullstack.selected_composition, "COMPOSE").unwrap(),
-            "FULLSTACK_TYPED_RECIPE_COMPOSER"
-        );
-        assert_eq!(fullstack.verified_artifact_count, 1);
-        assert!(fullstack.behavioral_composition_executed);
-        assert!(fullstack.novel_verified_artifact);
-        assert!(fullstack.frontier_advance);
-        let routed = promote_generative_cycle(&expanded, &input(), &fullstack).unwrap();
-        assert_eq!(
-            distinct_verified_artifact_count_for_composer(
-                &routed,
-                "FULLSTACK_TYPED_RECIPE_COMPOSER"
-            ),
-            1
-        );
-        let mut closed = routed;
-        let fullstack_memory = closed
-            .accepted_compositions
-            .iter_mut()
-            .find(|composition| {
-                composition_uses_composer(composition, "FULLSTACK_TYPED_RECIPE_COMPOSER")
-            })
-            .unwrap();
-        fullstack_memory.verified_artifact_sha256s = (0..MAX_FULLSTACK_VERIFIED_ARTIFACTS)
-            .map(|ordinal| sha256(format!("fullstack-{ordinal}").as_bytes()))
-            .collect();
-        assert!(executable_generative_substrate_available(&closed));
-        let self_healing = run_generative_cycle(&closed, &input(), 17).unwrap();
-        assert_eq!(
-            selected_stage(&self_healing.selected_composition, "COMPOSE").unwrap(),
-            "SELF_HEALING_CONTRACT_COMPOSER"
-        );
-        assert_eq!(self_healing.verified_artifact_count, 1);
-        assert!(self_healing.behavioral_composition_executed);
-        assert!(self_healing.frontier_advance);
-        closed = promote_generative_cycle(&closed, &input(), &self_healing).unwrap();
-        assert!(!executable_generative_substrate_available(&closed));
     }
 
     #[test]
@@ -2341,17 +2237,14 @@ mod tests {
         memory.frontier_advance_events = 7;
         memory.frontier_capability_units = 0;
 
-        // The planner may route the same input through a not-yet-tried typed
-        // composition. That is a genuine capability event and must remain
-        // separate from the seven legacy wrapper counters being migrated.
         let repeated = first_input.clone();
         let result = run_generative_cycle(&memory, &repeated, 9).unwrap();
-        assert!(result.frontier_advance);
+        assert!(!result.frontier_advance);
         let next = promote_generative_cycle(&memory, &repeated, &result).unwrap();
 
         assert_eq!(next.legacy_wrapper_frontier_advance_events, 7);
-        assert_eq!(next.frontier_advance_events, 1);
-        assert_eq!(next.frontier_capability_units, 2);
+        assert_eq!(next.frontier_advance_events, 0);
+        assert_eq!(next.frontier_capability_units, 1);
     }
 
     #[test]
@@ -2374,8 +2267,8 @@ mod tests {
         let mut next_input = input();
         next_input.source_lesson_id = "lesson-after-value-contract-migration".to_string();
         let result = run_generative_cycle(&legacy, &next_input, 7).unwrap();
-        assert!(result.exploration_selected);
-        assert_eq!(result.prior_composition_trials, 0);
+        assert!(!result.behavioral_composition_executed);
+        assert!(!result.frontier_advance);
         let next = promote_generative_cycle(&legacy, &next_input, &result).unwrap();
 
         assert_eq!(
@@ -2385,7 +2278,7 @@ mod tests {
         assert_eq!(next.legacy_heuristic_composition_trials, 1);
         assert_eq!(next.legacy_heuristic_accepted_compositions, 1);
         assert_eq!(next.composition_trials.len(), 1);
-        assert_eq!(next.accepted_compositions.len(), 1);
+        assert_eq!(next.accepted_compositions.len(), 0);
         assert_eq!(next.legacy_uncalibrated_prediction_error_total, 55);
         assert_eq!(
             next.prediction_absolute_error_total,

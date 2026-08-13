@@ -40,8 +40,9 @@ use crate::generative_growth::{
     GenerativeInput,
 };
 use crate::integrated_development::{
-    compose_behavioral_canary_candidate, execute_behavioral_composition_canary,
-    install_composite_candidate_family, MAX_INSTALLED_TYPED_CAPABILITIES,
+    compose_behavioral_canary_candidate, compose_typed_behavior_goal_candidate,
+    execute_behavioral_composition_canary, install_composite_candidate_family,
+    MAX_INSTALLED_TYPED_CAPABILITIES,
 };
 use crate::self_repair_contract::sha256;
 #[cfg(test)]
@@ -1023,7 +1024,12 @@ pub struct SelfCheck {
     pub autonomous_source_patch_install_enabled: bool,
     pub source_patch_rollback_enabled: bool,
     pub promoted_lessons_drive_executable_repairs: bool,
-    pub operational_repair_knowledge: Vec<String>,
+    /// Free-form diagnostic labels and prose are never executable knowledge
+    /// authority. A lesson must carry a validated typed behavior goal before
+    /// it can enter growth memory.
+    pub text_only_knowledge_is_capability_authority: bool,
+    pub executable_knowledge_gate_enabled: bool,
+    pub static_canary_replay_is_knowledge_growth: bool,
     pub bounded_failure_retry_enabled: bool,
     pub successful_solution_learning_enabled: bool,
     pub admitted_failure_revisit_after_growth_enabled: bool,
@@ -1129,132 +1135,9 @@ pub fn self_check() -> SelfCheck {
         autonomous_source_patch_install_enabled: true,
         source_patch_rollback_enabled: true,
         promoted_lessons_drive_executable_repairs: true,
-        operational_repair_knowledge: vec![
-            "WINPS51_EXTENDED_PATH_NORMALIZATION_BEFORE_PATH_CMDLETS".to_string(),
-            "AUTONOMOUS_SOURCE_UPDATE_HANDOFF_IS_RESUMABLE_AFTER_BINARY_SWAP".to_string(),
-            "RUST_MATCH_FAT_ARROW_IS_NOT_ASSIGNMENT_BOUNDARY".to_string(),
-            "OPERATOR_STOP_MUST_SURVIVE_AUTONOMOUS_BINARY_SWAP".to_string(),
-            "PATCH_VALIDATION_REJECTS_CONCURRENT_NON_TARGET_SOURCE_CHANGES".to_string(),
-            "MIXED_PRODUCTION_FILES_CONTRIBUTE_IMPLEMENTATION_AND_TEST_EVIDENCE".to_string(),
-            "SOURCE_REPAIR_ROLLBACK_RATIO_IS_A_GROWTH_EFFICIENCY_SIGNAL".to_string(),
-            "CONSUMED_RUNTIME_STAGING_RETAINS_ONLY_CURRENT_AND_IMMEDIATE_PREDECESSOR"
-                .to_string(),
-            "LOW_PREDICTED_VALUE_SOURCE_REWRITES_STOP_BEFORE_COMPILATION".to_string(),
-            "COMPILE_CHECK_PRECEDES_FULL_REGRESSION_AND_RELEASE_VALIDATION".to_string(),
-            "ACTIVE_RUNTIME_STATIC_VALIDATION_EXCLUDES_IMMUTABLE_HISTORICAL_CAMPAIGN_IMPLEMENTATIONS"
-                .to_string(),
-            "COMPLETE_HISTORICAL_COMPATIBILITY_RUNS_AS_A_SEPARATE_PERIODIC_CANARY".to_string(),
-            "CARGO_INCREMENTAL_CACHE_IS_REUSED_ACROSS_SOURCE_VALIDATION_STAGES".to_string(),
-            "SOURCE_IDENTICAL_MODULE_VALIDATION_REUSES_AN_IMMUTABLE_COMMAND_RECEIPT"
-                .to_string(),
-            "SEMANTICALLY_DUPLICATE_EVIDENCE_REVALIDATES_WITHOUT_GENERATION_PROMOTION".to_string(),
-            "PERFORMANCE_GROWTH_REQUIRES_BOUND_BEFORE_AFTER_MEASUREMENT".to_string(),
-            "EARLY_SUCCESS_MUST_NOT_MONOPOLIZE_BOUNDED_COMPOSITION_SEARCH".to_string(),
-            "SAME_CONTEXT_REUSE_IS_REVALIDATION_NOT_FRONTIER_ADVANCE".to_string(),
-            "EXPLORATION_PRIORITY_IS_NOT_EXPECTED_OUTCOME_VALUE".to_string(),
-            "COMPOSITION_POLICY_EFFECTS_APPLY_ONLY_TO_SUPPORTED_SIGNALS".to_string(),
-            "DIAGNOSTIC_YIELD_AND_NOVELTY_ADAPT_NEXT_EXPERIMENT_SELECTION".to_string(),
-            "DIAGNOSTIC_REWARD_REQUIRES_A_LATER_VERIFIED_FRONTIER_OUTCOME".to_string(),
-            "SAME_GENERATION_DIAGNOSTIC_REPETITION_IS_NOT_NEW_REPAIR".to_string(),
-            "HEURISTIC_COMPOSITION_VALUE_IS_NOT_BEHAVIORAL_CAPABILITY_EVIDENCE".to_string(),
-            "UNVERIFIED_GENERATIVE_FRONTIER_HISTORY_IS_QUARANTINED".to_string(),
-            "GENERATION_FRONTIER_REQUIRES_CONTEXT_BOUND_BEHAVIORAL_EXECUTION_RECEIPT".to_string(),
-            "MANDATORY_EVALUATOR_AUDIT_IS_NOT_A_SELECTABLE_GENERATIVE_SEARCH_ARM".to_string(),
-            "CLASSIFIER_REINFORCEMENT_REQUIRES_BEHAVIORAL_FRONTIER_OR_MEASURED_PERFORMANCE"
-                .to_string(),
-            "CLASSIFIER_REFINEMENTS_RECORD_EVIDENCE_BOUND_BEFORE_AFTER_DELTAS".to_string(),
-            "SOURCE_PATCH_BOTTLENECKS_USE_CURRENT_ENGINE_RECENT_OUTCOMES_NOT_LIFETIME_TOTALS"
-                .to_string(),
-            "PLATEAU_WITHOUT_AN_ADMISSIBLE_SOURCE_CANDIDATE_IS_A_SYNTHESIS_CAPABILITY_GAP"
-                .to_string(),
-            "RUST_SOURCE_REPAIR_BINDS_AST_CALL_FLOW_POSTCONDITIONS_TO_REPLAYABLE_EDIT_ATOMS"
-                .to_string(),
-            "SOURCE_PATCH_INSTALLATION_REPLAYS_STRUCTURAL_PROGRAM_BEFORE_COMPILE_AND_PUBLIC_TESTS"
-                .to_string(),
-            "COMPILER_AND_CLIPPY_DIAGNOSTICS_ARE_AUTONOMOUS_PUBLIC_REPAIR_OBSERVATIONS".to_string(),
-            "TYPED_GRAMMAR_ATOMS_COMPOSE_NEW_EXPRESSIONS_WITHOUT_GOLD_PATCH_TEXT".to_string(),
-            "FAILED_PUBLIC_OBSERVATIONS_SELECT_THE_NEXT_BOUNDED_GRAMMAR_COMPOSITION".to_string(),
-            "PUBLIC_CONTRACT_TYPED_GOALS_BIND_EXACT_OBSERVED_EXPECTED_TARGET_HASH".to_string(),
-            "VERIFIER_FALSIFIED_CANDIDATE_HASHES_EXCLUDE_IDENTICAL_SUCCESSOR_SYNTHESIS"
-                .to_string(),
-            "REPOSITORY_REPAIR_RETRIES_REQUIRE_ENGINE_OR_OPERATOR_CAPABILITY_CHANGE"
-                .to_string(),
-            "SUCCESS_MEMORY_RETAINS_EDIT_ATOM_COMPOSITION_AND_STRUCTURAL_POSTCONDITIONS"
-                .to_string(),
-            "SOURCE_PROPOSAL_COMPOSITION_AUTHORITY_EXCLUDES_DIAGNOSTIC_FAMILY_IDENTITY"
-                .to_string(),
-            "SEM9_SELF_APPLICATION_PRINCIPLES_GENERALIZE_FROM_CURRENT_OBSERVATIONS_NOT_FROZEN_WEAKNESS_FIXTURES"
-                .to_string(),
-            "SANDBOX_SUCCESS_IS_NOT_INSTALLATION_OR_LEARNING_AUTHORITY_WHEN_MUTATION_ENABLED"
-                .to_string(),
-            "AUTHORITATIVE_REPOSITORY_PATCHES_USE_DURABLE_COMMIT_OR_PREDECESSOR_ROLLBACK"
-                .to_string(),
-            "REPOSITORY_REPAIR_INSTALL_ATTEMPTS_ARE_BOUNDED_ONE_PER_SUPERVISOR_STEP"
-                .to_string(),
-            "GENERALIZED_CHANGE_IR_BINDS_DYNAMIC_WEAKNESS_TO_REPLAYABLE_SOURCE_EDIT_PROGRAM"
-                .to_string(),
-            "VALIDATION_COUNTEREXAMPLES_CHANGE_NEXT_CANDIDATE_SEARCH_ORDER".to_string(),
-            "SELF_APPLICATION_LINEAGE_CONTINUES_ACROSS_SOURCE_GENERATIONS".to_string(),
-            "RUNTIME_REPAIR_COUNTER_REQUIRES_AN_IMMUTABLE_EXECUTED_ACTION_RECEIPT".to_string(),
-            "DIAGNOSTIC_REWARD_REQUIRES_CONSUMPTION_OF_THE_ACTION_OUTPUT_OBSERVATION".to_string(),
-            "DIAGNOSTIC_PRODUCTIVITY_REQUIRES_A_CURRENT_EXECUTABLE_INTERVENTION".to_string(),
-            "REPEATED_UNBOUND_CAPABILITY_GAP_STATE_IS_ONE_OBSERVATION".to_string(),
-            "OBSERVED_TEST_ONLY_COHORTS_RUN_BOUNDED_NATIVE_VALIDATION".to_string(),
-            "VALIDATION_RECEIPT_IDENTITY_BINDS_INPUT_AND_SCOPE_NOT_GENERATION".to_string(),
-            "VERIFICATION_RECEIPT_WITHOUT_A_GROWTH_SUBJECT_CANNOT_PROMOTE".to_string(),
-            "FALSE_VERIFICATION_ONLY_TIP_IS_QUARANTINED_AND_PREDECESSOR_RESTORED".to_string(),
-            "SOURCE_DISCOVERY_PROVES_APPLICABILITY_BEFORE_APPLYING_VALUE_GATE".to_string(),
-            "UNCHANGED_SOURCE_DISCOVERY_STATE_IS_NOT_REEVALUATED".to_string(),
-            "DIAGNOSTIC_OPPORTUNITY_KIND_DOES_NOT_CONTROL_EXECUTION_DISPATCH".to_string(),
-            "LEARNED_SELF_HEALING_CANDIDATES_ROUTE_THROUGH_ATOMIC_INSTALL_VALIDATE_ROLLBACK"
-                .to_string(),
-            "SEM5_PROGRAM_IR_LOWERS_TO_REPOSITORY_NATIVE_RUST_BEFORE_INSTALLATION".to_string(),
-            "VERIFIED_SEM5_COMPOSITIONS_INSTALL_AS_TYPED_RUNTIME_CALLABLES".to_string(),
-            "INSTALLED_COMPOSITIONS_REQUIRE_FRESH_INPUT_BEHAVIORAL_REVALIDATION".to_string(),
-            "TYPED_LOWERING_EXTENDS_A_CONTENT_ADDRESSED_CAPABILITY_REGISTRY_INSTEAD_OF_OVERWRITING_PRIOR_CALLABLES"
-                .to_string(),
-            "INSTALLED_TYPED_CAPABILITIES_DISPATCH_BY_PROGRAM_IR_HASH".to_string(),
-            "GENERATIVE_CONTEXT_SELECTS_A_BOUNDED_TYPED_TASK_BEFORE_SEM5_PROGRAM_SYNTHESIS"
-                .to_string(),
-            "VERIFIED_PROGRAM_IR_HASHES_ARE_THE_GENERATIVE_CAPABILITY_FRONTIER_UNIT".to_string(),
-            "PREDICTOR_COMPOSER_WRAPPER_COUNT_IS_NOT_REPORTED_AS_LEARNED_CAPABILITY_COUNT"
-                .to_string(),
-            "CALL_ARGUMENT_ROLES_COMPILE_FROM_NAME_INDEPENDENT_TYPED_GRAMMAR_OPERATIONS"
-                .to_string(),
-            "SAME_TYPE_CALL_ARGUMENTS_GENERATE_BOUNDED_INJECTIVE_ROLE_ASSIGNMENTS".to_string(),
-            "SYMMETRIC_STATE_TRANSFORMS_LOWER_FROM_ROLE_INDICES_NOT_VARIABLE_NAMES".to_string(),
-            "SUCCESSFUL_STRUCTURAL_REPAIRS_PROMOTE_CONTENT_ADDRESSED_IMPROVEMENT_OPERATORS"
-                .to_string(),
-            "IMPROVEMENT_OPERATOR_INVOCATIONS_CAUSALLY_BIND_SELECTION_TO_VALIDATED_OUTCOME"
-                .to_string(),
-            "CROSS_FAMILY_SUCCESS_CHANGES_FUTURE_CANDIDATE_PRIORITY".to_string(),
-            "TYPED_IMPROVEMENT_OPERATOR_EXECUTION_PRECEDES_SOURCE_INSTALLATION".to_string(),
-            "OPERATOR_REPOSITORY_AUTHORITY_REQUIRES_A_CAUSAL_EXECUTION_RECEIPT".to_string(),
-            "VERIFIED_ARTIFACT_CAPACITY_IS_BOUNDED_PER_EXECUTABLE_SUBSTRATE".to_string(),
-            "NEW_FRONTIER_CONTEXTS_EXCLUDE_ALREADY_VERIFIED_ARTIFACTS_FROM_SYNTHESIS"
-                .to_string(),
-            "FINITE_TYPED_OPERATOR_FAMILIES_ENUMERATE_SELECTORS_INSTEAD_OF_RELYING_ON_HASH_LUCK"
-                .to_string(),
-            "NORMALIZED_OPERATOR_IDENTITY_ALIASES_CLOSE_AS_SAFE_SUBSTRATE_SATURATION"
-                .to_string(),
-            "FULLSTACK_TYPED_RECIPES_EXECUTE_CROSS_LAYER_DATAFLOW_BEFORE_FRONTIER_PROMOTION"
-                .to_string(),
-            "FULLSTACK_RECIPE_CANARIES_REJECT_WRONG_INPUT_CONTRACT_AND_ATOM_ORDER"
-                .to_string(),
-            "GENERALIZED_SELF_HEALING_LESSONS_EXECUTE_ON_FRESH_NAME_AND_SHAPE_VARIANTS"
-                .to_string(),
-            "SELF_HEALING_CANARIES_REJECT_NON_APPLICABLE_AND_DEFECT_CLASS_COUNTEREXAMPLES"
-                .to_string(),
-            "FRONTIER_CONTINUATION_REQUIRES_A_REMAINING_EXECUTABLE_SUCCESSOR_SUBSTRATE"
-                .to_string(),
-            "CAMPAIGN_FREEZE_DEFERS_AT_EXECUTABLE_GENERATIVE_SUBSTRATE_CLOSURE".to_string(),
-            "CAMPAIGN_RETRY_ID_BINDS_PROPOSER_BINARY_AND_PERSISTENT_SCAN_SEQUENCE".to_string(),
-            "EXACT_CONTEXT_REUSE_REVALIDATES_A_CANONICAL_ARTIFACT_WITHOUT_FRONTIER_PROMOTION"
-                .to_string(),
-            "SATURATED_SUBSTRATE_ROUTES_TO_A_FRESH_EXECUTABLE_SUBSTRATE_WITHOUT_DIFFICULTY_ESCALATION"
-                .to_string(),
-            "EVALUATOR_CAPABILITY_EXPANDS_ONLY_WHEN_THE_CHALLENGE_SUITE_EXPANDS".to_string(),
-        ],
+        text_only_knowledge_is_capability_authority: false,
+        executable_knowledge_gate_enabled: true,
+        static_canary_replay_is_knowledge_growth: false,
         bounded_failure_retry_enabled: true,
         successful_solution_learning_enabled: true,
         admitted_failure_revisit_after_growth_enabled: true,
@@ -3844,44 +3727,27 @@ fn build_lesson(observations: &[LearningObservation]) -> Result<LearnedCompositi
     })
 }
 
-#[derive(Serialize)]
-struct LessonSemanticIdentity<'a> {
-    work_kinds: &'a [WorkKind],
-    diagnostic_signals: &'a [String],
-    composition_recipe: &'a [String],
-    applicability: &'a [String],
-    verification_obligations: &'a [String],
-    performance_metrics: Vec<PerformanceMetricSemanticIdentity<'a>>,
-    public_contract_deltas: &'a [PublicContractDeltaIR],
-}
-
-#[derive(Serialize)]
-struct PerformanceMetricSemanticIdentity<'a> {
-    metric: &'a str,
-    before: u64,
-    after: u64,
-    lower_is_better: bool,
-}
-
 fn lesson_semantic_sha256(lesson: &LearnedCompositionLesson) -> Result<String, String> {
-    json_sha256(&LessonSemanticIdentity {
-        work_kinds: &lesson.work_kinds,
-        diagnostic_signals: &lesson.diagnostic_signals,
-        composition_recipe: &lesson.composition_recipe,
-        applicability: &lesson.applicability,
-        verification_obligations: &lesson.verification_obligations,
-        performance_metrics: lesson
-            .performance_metrics
-            .iter()
-            .map(|metric| PerformanceMetricSemanticIdentity {
-                metric: &metric.metric,
-                before: metric.before,
-                after: metric.after,
-                lower_is_better: metric.lower_is_better,
-            })
-            .collect(),
-        public_contract_deltas: &lesson.public_contract_deltas,
-    })
+    let mut executable_goal_hashes = lesson
+        .public_contract_deltas
+        .iter()
+        .flat_map(|delta| &delta.typed_behavior_goals)
+        .map(|goal| {
+            let mut executable_identity = goal.clone();
+            // These fields are useful explanation/provenance, but neither is
+            // consumed by the typed grammar evaluator. Changing prose or an
+            // identifier cannot create another learned capability.
+            executable_identity.goal_id.clear();
+            executable_identity.preconditions.clear();
+            executable_identity.postconditions.clear();
+            executable_identity.invariants.clear();
+            executable_identity.provenance.clear();
+            json_sha256(&executable_identity)
+        })
+        .collect::<Result<Vec<_>, _>>()?;
+    executable_goal_hashes.sort();
+    executable_goal_hashes.dedup();
+    json_sha256(&executable_goal_hashes)
 }
 
 fn memory_contains_semantic_lesson(
@@ -3901,10 +3767,16 @@ fn semantic_lesson_counts(memory: &GrowthMemory) -> Result<(u64, u64), String> {
     let identities = memory
         .lessons
         .iter()
+        .filter(|lesson| lesson_has_executable_knowledge(lesson))
         .map(lesson_semantic_sha256)
         .collect::<Result<BTreeSet<_>, _>>()?;
     let distinct = identities.len().min(u64::MAX as usize) as u64;
-    let total = memory.lessons.len().min(u64::MAX as usize) as u64;
+    let total = memory
+        .lessons
+        .iter()
+        .filter(|lesson| lesson_has_executable_knowledge(lesson))
+        .count()
+        .min(u64::MAX as usize) as u64;
     Ok((distinct, total.saturating_sub(distinct)))
 }
 
@@ -3995,12 +3867,29 @@ fn lesson_has_growth_subject(lesson: &LearnedCompositionLesson) -> bool {
             .any(|signal| signal == "MUTUAL_REVALIDATION_GAP")
 }
 
+/// Returns true only when a lesson contains a machine-consumable payload.
+/// Structural labels, natural-language summaries, applicability prose and a
+/// PASS token remain useful forensic evidence, but cannot synthesize a patch
+/// and therefore cannot authorize a learned generation.
+fn lesson_has_executable_knowledge(lesson: &LearnedCompositionLesson) -> bool {
+    let typed_goal_bound = !lesson.public_contract_deltas.is_empty()
+        && validate_public_contract_deltas(&lesson.public_contract_deltas).is_ok()
+        && lesson
+            .public_contract_deltas
+            .iter()
+            .flat_map(|delta| &delta.typed_behavior_goals)
+            .next()
+            .is_some();
+    typed_goal_bound
+}
+
 fn cohort_has_promotable_growth_subject(
     observations: &[LearningObservation],
     lesson: &LearnedCompositionLesson,
 ) -> bool {
     lesson_has_verification_evidence(lesson)
         && lesson_has_growth_subject(lesson)
+        && lesson_has_executable_knowledge(lesson)
         && !observations.is_empty()
 }
 
@@ -4332,7 +4221,13 @@ fn generative_input(lesson: &LearnedCompositionLesson) -> GenerativeInput {
 }
 
 fn plateau_generative_input(memory: &GrowthMemory) -> Option<GenerativeInput> {
-    let mut lessons = memory.lessons.iter().rev().take(2).collect::<Vec<_>>();
+    let mut lessons = memory
+        .lessons
+        .iter()
+        .rev()
+        .filter(|lesson| lesson_has_executable_knowledge(lesson))
+        .take(2)
+        .collect::<Vec<_>>();
     if lessons.len() < 2 || lessons[0].lesson_id == lessons[1].lesson_id {
         return None;
     }
@@ -4793,6 +4688,9 @@ pub fn run_verifier_request(
     if !lesson_has_growth_subject(&candidate.lesson) {
         reasons.push("VERIFICATION_ONLY_COHORT_HAS_NO_GROWTH_SUBJECT".to_string());
     }
+    if !lesson_has_executable_knowledge(&candidate.lesson) {
+        reasons.push("TEXT_ONLY_LESSON_HAS_NO_EXECUTABLE_KNOWLEDGE".to_string());
+    }
     let evaluator_self_audit = match (
         load_verifier_observations(&request.freeze_path, &freeze),
         load_verifier_predecessor_memory(&request.freeze_path, &freeze),
@@ -5216,6 +5114,9 @@ fn promote_candidate(
     validate_receipt(freeze, candidate, receipt)?;
     if !lesson_has_growth_subject(&candidate.lesson) {
         return Err("VERIFICATION_ONLY_CANDIDATE_CANNOT_PROMOTE".to_string());
+    }
+    if !lesson_has_executable_knowledge(&candidate.lesson) {
+        return Err("TEXT_ONLY_CANDIDATE_CANNOT_PROMOTE".to_string());
     }
     let mut memory = load_memory(config, state.generation)?;
     if json_sha256(&memory)? != freeze.predecessor_memory_sha256
@@ -9332,6 +9233,24 @@ fn accepted_sem5_artifact_contexts(memory: &GrowthMemory) -> Vec<(String, String
     artifacts
 }
 
+fn accepted_sem5_typed_behavior_goal(
+    memory: &GrowthMemory,
+    artifact_sha256: &str,
+) -> Option<TypedMechanismSynthesisGoalIR> {
+    memory
+        .generative
+        .accepted_compositions
+        .iter()
+        .rev()
+        .filter(|accepted| is_sem5_composition(accepted))
+        .find_map(|accepted| {
+            accepted
+                .verified_typed_behavior_goals
+                .get(artifact_sha256)
+                .cloned()
+        })
+}
+
 fn pending_sem5_composition_candidates(
     memory: &GrowthMemory,
 ) -> Result<Vec<crate::integrated_development::CompositeProgramCandidateIR>, String> {
@@ -9349,7 +9268,15 @@ fn pending_sem5_composition_candidates(
         if installed.contains(expected_artifact.as_str()) {
             continue;
         }
-        let (candidate, _) = compose_behavioral_canary_candidate(&context)?;
+        let (candidate, _) =
+            if let Some(goal) = accepted_sem5_typed_behavior_goal(memory, &expected_artifact) {
+                compose_typed_behavior_goal_candidate(&context, &goal)?
+            } else {
+                // Backward-compatible reconstruction for already sealed legacy
+                // context-derived artifacts. New learned knowledge always retains
+                // the exact typed goal payload above.
+                compose_behavioral_canary_candidate(&context)?
+            };
         if candidate.program_ir_sha256 != expected_artifact {
             return Err("VERIFIED_ARTIFACT_CONTEXT_BINDING_FAILURE".to_string());
         }
@@ -10483,7 +10410,7 @@ mod tests {
             learning_score: 90,
             verification_evidence_count: 1,
             measured_performance_gain: false,
-            typed_behavior_goals: Vec::new(),
+            typed_behavior_goals: vec![typed_behavior_goal_fixture("frontier-continuation-goal")],
         };
         let result = run_generative_cycle(&GenerativeGrowthMemory::default(), &input, 17).unwrap();
         assert!(result.frontier_advance);
@@ -10541,7 +10468,7 @@ mod tests {
     }
 
     #[test]
-    fn plateau_cross_lesson_probe_is_bounded_verified_and_idempotent() {
+    fn plateau_cross_lesson_probe_rejects_text_only_lessons() {
         let root = temp_root("plateau-cross-lesson-probe");
         let (config_path, config) = test_config(&root);
         let state = initialize(&config_path).unwrap();
@@ -10566,27 +10493,12 @@ mod tests {
             lesson("LESSON-B", "COUNTEREXAMPLE_REVISION", "COMPOSE"),
         ];
 
-        let first = plateau_generative_probe_observation(&config, &state, &memory)
-            .unwrap()
-            .expect("novel verified plateau artifact");
-        let second = plateau_generative_probe_observation(&config, &state, &memory)
-            .unwrap()
-            .expect("sealed probe replay");
-
-        assert_eq!(first, second);
-        assert_eq!(first.work_kind, WorkKind::CapabilitySynthesis);
-        assert_eq!(first.work_outcome, WorkOutcome::Pass);
-        assert!(first
-            .signals
-            .contains(&"AUTONOMOUS_PLATEAU_CROSS_LESSON_PROBE".to_string()));
-        assert!(!first.verification_evidence_sha256.is_empty());
-        assert!(campaign_preflight_ready(&config, std::slice::from_ref(&first)).unwrap());
-        assert_eq!(
-            fs::read_dir(config.state_dir.join("generative_plateau_probes"))
+        assert!(
+            plateau_generative_probe_observation(&config, &state, &memory)
                 .unwrap()
-                .count(),
-            1
+                .is_none()
         );
+        assert!(!config.state_dir.join("generative_plateau_probes").exists());
         fs::remove_dir_all(root).unwrap();
     }
 
@@ -11089,7 +11001,7 @@ mod tests {
             reasons: vec!["test fixture".to_string()],
             verification_evidence_sha256: vec!["a".repeat(64)],
             performance_metrics: Vec::new(),
-            public_contract_deltas: Vec::new(),
+            public_contract_deltas: vec![public_contract_delta_fixture()],
             exact_source_fragments_stored: 0,
             raw_source_bytes_stored: 0,
             observed_at_ms: 1,
@@ -11200,29 +11112,9 @@ mod tests {
         assert!(check.autonomous_source_patch_install_enabled);
         assert!(check.source_patch_rollback_enabled);
         assert!(check.promoted_lessons_drive_executable_repairs);
-        assert!(check.operational_repair_knowledge.contains(
-            &"CONSUMED_RUNTIME_STAGING_RETAINS_ONLY_CURRENT_AND_IMMEDIATE_PREDECESSOR".to_string()
-        ));
-        assert!(check.operational_repair_knowledge.contains(
-            &"SOURCE_PROPOSAL_COMPOSITION_AUTHORITY_EXCLUDES_DIAGNOSTIC_FAMILY_IDENTITY"
-                .to_string()
-        ));
-        assert!(check.operational_repair_knowledge.contains(
-            &"PUBLIC_CONTRACT_TYPED_GOALS_BIND_EXACT_OBSERVED_EXPECTED_TARGET_HASH".to_string()
-        ));
-        assert!(check.operational_repair_knowledge.contains(
-            &"VERIFIER_FALSIFIED_CANDIDATE_HASHES_EXCLUDE_IDENTICAL_SUCCESSOR_SYNTHESIS"
-                .to_string()
-        ));
-        assert!(check.operational_repair_knowledge.contains(
-            &"REPOSITORY_REPAIR_RETRIES_REQUIRE_ENGINE_OR_OPERATOR_CAPABILITY_CHANGE".to_string()
-        ));
-        assert!(check
-            .operational_repair_knowledge
-            .contains(&"WINPS51_EXTENDED_PATH_NORMALIZATION_BEFORE_PATH_CMDLETS".to_string()));
-        assert!(check.operational_repair_knowledge.contains(
-            &"AUTONOMOUS_SOURCE_UPDATE_HANDOFF_IS_RESUMABLE_AFTER_BINARY_SWAP".to_string()
-        ));
+        assert!(!check.text_only_knowledge_is_capability_authority);
+        assert!(check.executable_knowledge_gate_enabled);
+        assert!(!check.static_canary_replay_is_knowledge_growth);
         assert!(check.bounded_failure_retry_enabled);
         assert!(check.successful_solution_learning_enabled);
         assert!(check.admitted_failure_revisit_after_growth_enabled);
@@ -11565,7 +11457,9 @@ mod tests {
                 learning_score: 80,
                 verification_evidence_count: 1,
                 measured_performance_gain: false,
-                typed_behavior_goals: Vec::new(),
+                typed_behavior_goals: vec![typed_behavior_goal_fixture(&format!(
+                    "pending-install-goal-{ordinal}"
+                ))],
             };
             let result = run_generative_cycle(&GenerativeGrowthMemory::default(), &input, ordinal)
                 .expect("behavioral composition");
@@ -11583,6 +11477,11 @@ mod tests {
         memory.generative =
             promote_generative_cycle(&GenerativeGrowthMemory::default(), &input, &result)
                 .expect("promote pending capability");
+        assert!(memory
+            .generative
+            .accepted_compositions
+            .iter()
+            .any(|accepted| !accepted.verified_typed_behavior_goals.is_empty()));
 
         let pending_candidate = pending_sem5_composition_candidates(&memory)
             .expect("pending lookup")
@@ -11719,6 +11618,7 @@ mod tests {
         verified.work_outcome = WorkOutcome::Pass;
         verified.signals.push("VERIFIED_PASS".to_string());
         verified.verification_evidence_sha256 = vec!["a".repeat(64)];
+        verified.public_contract_deltas = vec![public_contract_delta_fixture()];
         let selected =
             selected_campaign_observations(&config, &[high_without_evidence, verified.clone()]);
         assert_eq!(selected, vec![verified]);
@@ -11973,7 +11873,7 @@ mod tests {
         assert_eq!(selected.len(), 2);
         assert!(selected.contains(&verification));
         assert!(selected.contains(&evaluator_change));
-        assert!(campaign_preflight_ready(&config, &selected).unwrap());
+        assert!(!campaign_preflight_ready(&config, &selected).unwrap());
         fs::remove_dir_all(root).unwrap();
     }
 
@@ -13588,7 +13488,7 @@ mod tests {
     }
 
     #[test]
-    fn autonomous_bootstrap_receipt_forms_a_verified_mutual_growth_cohort() {
+    fn autonomous_bootstrap_receipt_does_not_become_text_only_growth() {
         let receipt = inspect_self(SelfInspectionInput {
             generation: 0,
             supervisor_sequence: 12,
@@ -13628,7 +13528,7 @@ mod tests {
             .unwrap()
             .expect("actionable bootstrap action");
         let observation = observation.expect("actionable bootstrap observation");
-        assert!(campaign_preflight_ready(&config, std::slice::from_ref(&observation)).unwrap());
+        assert!(!campaign_preflight_ready(&config, std::slice::from_ref(&observation)).unwrap());
         let lesson = build_lesson(&[observation]).unwrap();
         let next = derive_next_evaluator_memory(&EvaluatorMemory::default(), &[], &lesson).unwrap();
         assert_eq!(next.generation, 1);
@@ -14383,10 +14283,11 @@ mod tests {
         let mut better = observation;
         better.performance_metrics[0].after = 60;
         let better_lesson = build_lesson(&[better]).unwrap();
-        assert_ne!(
+        assert_eq!(
             lesson_semantic_sha256(&lesson).unwrap(),
             lesson_semantic_sha256(&better_lesson).unwrap()
         );
+        assert!(!lesson_has_executable_knowledge(&lesson));
     }
 
     #[test]
@@ -14441,10 +14342,11 @@ mod tests {
         different_shape.features_after.branch_tokens = 0;
         different_shape.features_after.assertion_tokens = 3;
         let distinct = build_lesson(&[different_shape]).unwrap();
-        assert_ne!(
+        assert_eq!(
             lesson_semantic_sha256(&first).unwrap(),
             lesson_semantic_sha256(&distinct).unwrap()
         );
+        assert!(!lesson_has_executable_knowledge(&first));
     }
 
     #[test]

@@ -897,10 +897,10 @@ pub fn execute_behavioral_composition_canary(
 /// synthesis/lowering path and falsifies the resulting ProgramIR against the
 /// exact public observations. The goal, rather than a context-derived task,
 /// remains the semantic authority throughout this path.
-pub fn execute_typed_behavior_goal_canary(
+pub fn compose_typed_behavior_goal_candidate(
     context_sha256: &str,
     goal: &TypedMechanismSynthesisGoalIR,
-) -> Result<BehavioralCompositionCanaryReceipt, String> {
+) -> Result<(CompositeProgramCandidateIR, ProgramTask), String> {
     if context_sha256.len() != 64 || !context_sha256.bytes().all(|byte| byte.is_ascii_hexdigit()) {
         return Err("TYPED_BEHAVIOR_CONTEXT_INVALID".to_string());
     }
@@ -926,7 +926,7 @@ pub fn execute_typed_behavior_goal_canary(
             ),
             desired_behavior: goal.postconditions.join("; "),
             trigger: "public observed-to-expected contract delta".to_string(),
-            evidence: vec![goal_sha256.clone()],
+            evidence: vec![goal_sha256],
             preserved_behavior: goal.invariants.clone(),
             resource_constraints: vec![format!(
                 "typed candidate enumeration <= {}",
@@ -951,6 +951,17 @@ pub fn execute_typed_behavior_goal_canary(
         .ok_or_else(|| "TYPED_BEHAVIOR_TEMPLATE_MISSING".to_string())?
         .program_task
         .clone();
+    Ok((candidate, task))
+}
+
+pub fn execute_typed_behavior_goal_canary(
+    context_sha256: &str,
+    goal: &TypedMechanismSynthesisGoalIR,
+) -> Result<BehavioralCompositionCanaryReceipt, String> {
+    let goal_bytes = serde_json::to_vec(goal)
+        .map_err(|error| format!("TYPED_BEHAVIOR_GOAL_SERIALIZE:{error}"))?;
+    let goal_sha256 = sha256(&goal_bytes);
+    let (candidate, task) = compose_typed_behavior_goal_candidate(context_sha256, goal)?;
     let mut outputs = Vec::with_capacity(goal.public_observations.len());
     for (index, observation) in goal.public_observations.iter().enumerate() {
         let actual = execute(
