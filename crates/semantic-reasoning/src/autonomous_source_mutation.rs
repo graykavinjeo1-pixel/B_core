@@ -45,9 +45,10 @@ pub const IMPROVEMENT_OPERATOR_MEMORY_SCHEMA: &str = "B_CORE_IMPROVEMENT_OPERATO
 pub const MAX_IMPROVEMENT_OPERATOR_GRAPH_NODES: usize = 8;
 const MAX_COMPETING_SOURCE_PROPOSALS: usize = 3;
 const MAX_TYPED_OPERATOR_RECONCILIATION_RECEIPTS: usize = 64;
-// Revision 44 additionally removes generator identity from equal-score source
-// proposal tie-breaking; origin remains diagnostic evidence only.
-pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 44;
+// Revision 45 closes the repository product path with authoritative
+// post-install validation, durable rollback, and execution-bound operator
+// learning. Generator identity remains diagnostic evidence only.
+pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 45;
 const KNOWN_REMAINDER_PREDICTED_VALUE: u16 = 35;
 const MAX_REPOSITORY_REPAIR_FAMILY_FILES: usize = 16;
 const KNOWN_REMAINDER_STRATEGIES: [&str; 4] = [

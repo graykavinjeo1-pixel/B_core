@@ -51,7 +51,8 @@ use crate::sem5::typed_mechanism::{
     validate_typed_mechanism_improvement_operator, validate_typed_mechanism_operator_authority,
     validate_typed_mechanism_synthesis_goal, TypedMechanismImprovementOperatorIR,
     TypedMechanismOperatorAuthorityReceiptIR, TypedMechanismSynthesisGoalIR,
-    MAX_ACTIVE_TYPED_MECHANISM_OPERATORS, SOURCE_BOUND_OPERATOR_AUTHORITY_SCHEMA,
+    INSTALLED_TYPED_OPERATOR_AUTHORITY_SCHEMA, MAX_ACTIVE_TYPED_MECHANISM_OPERATORS,
+    SOURCE_BOUND_OPERATOR_AUTHORITY_SCHEMA,
 };
 use crate::source_bound_causal_frontend::{
     discover_and_synthesize_python_repository_with_operators, replay_source_bound_patch,
@@ -84,6 +85,8 @@ const MAX_REPOSITORY_REPAIR_SANDBOX_FILES: usize = 4_096;
 const MAX_REPOSITORY_REPAIR_SANDBOX_BYTES: u64 = 128 * 1024 * 1024;
 const MAX_ACTIVE_SOURCE_BOUND_IMPROVEMENT_OPERATORS: usize = MAX_ACTIVE_TYPED_MECHANISM_OPERATORS;
 const MAX_COMPOSITE_INSTALL_FAMILY: usize = 32;
+const REPOSITORY_INSTALL_TRANSACTION_SCHEMA: &str = "B_REPOSITORY_INSTALL_TRANSACTION_1";
+const REPOSITORY_INSTALL_COMMIT_SCHEMA: &str = "B_REPOSITORY_INSTALL_COMMIT_1";
 
 fn u64_is_zero(value: &u64) -> bool {
     *value == 0
@@ -203,6 +206,29 @@ pub struct GrowthSupervisorConfig {
         skip_serializing_if = "AutonomousSourceMutationPolicy::is_default"
     )]
     pub source_mutation: AutonomousSourceMutationPolicy,
+    #[serde(default, skip_serializing_if = "RepositoryMutationPolicy::is_default")]
+    pub repository_mutation: RepositoryMutationPolicy,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct RepositoryMutationPolicy {
+    pub enabled: bool,
+    pub max_installations_per_step: usize,
+}
+
+impl RepositoryMutationPolicy {
+    fn is_default(&self) -> bool {
+        self == &Self::default()
+    }
+}
+
+impl Default for RepositoryMutationPolicy {
+    fn default() -> Self {
+        Self {
+            enabled: true,
+            max_installations_per_step: 1,
+        }
+    }
 }
 
 impl GrowthSupervisorConfig {
@@ -222,6 +248,7 @@ impl GrowthSupervisorConfig {
             resources: ResourceLimits::default(),
             observation: ObservationPolicy::default(),
             source_mutation: AutonomousSourceMutationPolicy::default(),
+            repository_mutation: RepositoryMutationPolicy::default(),
         }
     }
 }
@@ -1053,6 +1080,9 @@ pub struct SelfCheck {
     pub identical_source_discovery_state_deduplicated: bool,
     pub diagnostic_opportunity_kind_separated_from_executability: bool,
     pub self_healing_candidates_route_to_atomic_installer: bool,
+    pub repository_candidate_requires_authoritative_install_authority: bool,
+    pub repository_install_transaction_recovery_enabled: bool,
+    pub authoritative_repository_validation_before_learning_enabled: bool,
     pub integrated_program_ir_lowers_to_compiled_rust: bool,
     pub installed_compositions_are_runtime_callable: bool,
     pub typed_lowering_preserves_installed_capability_registry: bool,
@@ -1143,6 +1173,12 @@ pub fn self_check() -> SelfCheck {
             "SUCCESS_MEMORY_RETAINS_EDIT_ATOM_COMPOSITION_AND_STRUCTURAL_POSTCONDITIONS"
                 .to_string(),
             "SEM9_SELF_APPLICATION_PRINCIPLES_GENERALIZE_FROM_CURRENT_OBSERVATIONS_NOT_FROZEN_WEAKNESS_FIXTURES"
+                .to_string(),
+            "SANDBOX_SUCCESS_IS_NOT_INSTALLATION_OR_LEARNING_AUTHORITY_WHEN_MUTATION_ENABLED"
+                .to_string(),
+            "AUTHORITATIVE_REPOSITORY_PATCHES_USE_DURABLE_COMMIT_OR_PREDECESSOR_ROLLBACK"
+                .to_string(),
+            "REPOSITORY_REPAIR_INSTALL_ATTEMPTS_ARE_BOUNDED_ONE_PER_SUPERVISOR_STEP"
                 .to_string(),
             "GENERALIZED_CHANGE_IR_BINDS_DYNAMIC_WEAKNESS_TO_REPLAYABLE_SOURCE_EDIT_PROGRAM"
                 .to_string(),
@@ -1266,6 +1302,9 @@ pub fn self_check() -> SelfCheck {
         identical_source_discovery_state_deduplicated: true,
         diagnostic_opportunity_kind_separated_from_executability: true,
         self_healing_candidates_route_to_atomic_installer: true,
+        repository_candidate_requires_authoritative_install_authority: true,
+        repository_install_transaction_recovery_enabled: true,
+        authoritative_repository_validation_before_learning_enabled: true,
         integrated_program_ir_lowers_to_compiled_rust: true,
         installed_compositions_are_runtime_callable: true,
         typed_lowering_preserves_installed_capability_registry: true,
@@ -1416,6 +1455,9 @@ fn validate_config(config: &GrowthSupervisorConfig) -> Result<(), String> {
         ));
     }
     validate_policy(&config.source_mutation)?;
+    if config.repository_mutation.max_installations_per_step != 1 {
+        return Err("REPOSITORY_MUTATION_STEP_BOUND_INVALID".to_string());
+    }
     if config.source_mutation.enabled {
         let source_root = fs::canonicalize(&config.source_mutation.source_root)
             .map_err(|error| format!("SOURCE_MUTATION_ROOT_CANONICALIZE:{error}"))?;
@@ -5741,8 +5783,12 @@ struct RepositoryRepairSynthesisReceipt {
     scope_fingerprint_after: String,
     authoritative_scope_stable: bool,
     sandbox_command: Option<LocalCommandReceipt>,
+    #[serde(default)]
+    authoritative_command: Option<LocalCommandReceipt>,
     sandbox_verified: bool,
     sandbox_cleaned: bool,
+    #[serde(default)]
+    rolled_back: bool,
     candidate_installed: bool,
     authoritative_source_write_events: u64,
     operator_selected: bool,
@@ -5760,6 +5806,7 @@ type SourceBoundImprovementOperatorAuthorityReceipt = TypedMechanismOperatorAuth
 struct RepositoryCohortValidationOutcome {
     executed: bool,
     sandbox_repair_verified: bool,
+    repository_repair_installed: bool,
     evidence_sha256: Vec<String>,
     output_observation_ids: Vec<String>,
 }
@@ -5969,6 +6016,716 @@ fn remove_repository_repair_sandbox(
     Ok(())
 }
 
+#[derive(Debug)]
+struct RepositoryInstallOutcome {
+    installed: bool,
+    rolled_back: bool,
+    authoritative_source_write_events: u64,
+    command: Option<LocalCommandReceipt>,
+    scope_fingerprint_after: String,
+    authoritative_scope_stable: bool,
+    failure_code: Option<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+struct RepositoryInstallTransaction {
+    schema: String,
+    repair_id: String,
+    root_index: usize,
+    source_relative_path: PathBuf,
+    predecessor_sha256: String,
+    candidate_sha256: String,
+    scope_fingerprint_before: String,
+    scope_paths: Vec<PathBuf>,
+    candidate_file_name: String,
+    rollback_file_name: String,
+    predecessor_readonly: bool,
+    predecessor_unix_mode: Option<u32>,
+    operator_selected: bool,
+    codex_calls: u64,
+    external_llm_calls: u64,
+    network_reads: u64,
+    network_writes: u64,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+struct RepositoryInstallCommitReceipt {
+    schema: String,
+    repair_id: String,
+    transaction_sha256: String,
+    root_index: usize,
+    source_relative_path: PathBuf,
+    predecessor_sha256: String,
+    candidate_sha256: String,
+    scope_fingerprint_after: String,
+    authoritative_command_sha256: String,
+    authoritative_source_write_events: u64,
+    operator_selected: bool,
+    codex_calls: u64,
+    external_llm_calls: u64,
+    network_reads: u64,
+    network_writes: u64,
+}
+
+fn repository_install_transaction_directory(config: &GrowthSupervisorConfig) -> PathBuf {
+    config
+        .state_dir
+        .join("control")
+        .join("repository_install_transactions")
+}
+
+fn repository_install_transaction_path(
+    config: &GrowthSupervisorConfig,
+    repair_id: &str,
+) -> PathBuf {
+    repository_install_transaction_directory(config).join(format!("{repair_id}.json"))
+}
+
+fn repository_install_commit_path(config: &GrowthSupervisorConfig, repair_id: &str) -> PathBuf {
+    config
+        .state_dir
+        .join("diagnostics")
+        .join(format!("repository_install_commit_{repair_id}.json"))
+}
+
+fn validated_repository_target_slot(root: &Path, relative: &Path) -> Result<PathBuf, String> {
+    if relative.as_os_str().is_empty()
+        || relative.is_absolute()
+        || relative.components().any(|component| {
+            matches!(
+                component,
+                Component::ParentDir
+                    | Component::CurDir
+                    | Component::RootDir
+                    | Component::Prefix(_)
+            )
+        })
+    {
+        return Err("REPOSITORY_INSTALL_TARGET_RELATIVE_PATH".to_string());
+    }
+    let canonical_root = fs::canonicalize(root)
+        .map_err(|error| format!("REPOSITORY_INSTALL_ROOT_CANONICALIZE:{error}"))?;
+    let joined = canonical_root.join(relative);
+    let parent = joined
+        .parent()
+        .ok_or_else(|| "REPOSITORY_INSTALL_TARGET_PARENT".to_string())?;
+    let canonical_parent = fs::canonicalize(parent)
+        .map_err(|error| format!("REPOSITORY_INSTALL_TARGET_PARENT_CANONICALIZE:{error}"))?;
+    if !canonical_parent.starts_with(&canonical_root) {
+        return Err("REPOSITORY_INSTALL_TARGET_OUTSIDE_ROOT".to_string());
+    }
+    let file_name = joined
+        .file_name()
+        .ok_or_else(|| "REPOSITORY_INSTALL_TARGET_NAME".to_string())?;
+    let target = canonical_parent.join(file_name);
+    if target.exists() {
+        if fs::symlink_metadata(&target)
+            .map_err(|error| format!("REPOSITORY_INSTALL_TARGET_METADATA:{error}"))?
+            .file_type()
+            .is_symlink()
+        {
+            return Err("REPOSITORY_INSTALL_TARGET_SYMLINK_FORBIDDEN".to_string());
+        }
+        let canonical_target = fs::canonicalize(&target)
+            .map_err(|error| format!("REPOSITORY_INSTALL_TARGET_CANONICALIZE:{error}"))?;
+        if !canonical_target.starts_with(&canonical_root) || !canonical_target.is_file() {
+            return Err("REPOSITORY_INSTALL_TARGET_OUTSIDE_ROOT".to_string());
+        }
+    }
+    Ok(target)
+}
+
+fn repository_install_sibling_paths(
+    target: &Path,
+    repair_id: &str,
+) -> Result<(PathBuf, PathBuf), String> {
+    if repair_id.len() != 64 || !repair_id.bytes().all(|byte| byte.is_ascii_hexdigit()) {
+        return Err("REPOSITORY_INSTALL_REPAIR_ID".to_string());
+    }
+    let file_name = target
+        .file_name()
+        .and_then(OsStr::to_str)
+        .ok_or_else(|| "REPOSITORY_INSTALL_TARGET_NAME".to_string())?;
+    Ok((
+        target.with_file_name(format!(
+            ".{file_name}.b-core-{}.candidate",
+            &repair_id[..16]
+        )),
+        target.with_file_name(format!(".{file_name}.b-core-{}.rollback", &repair_id[..16])),
+    ))
+}
+
+#[cfg(unix)]
+fn repository_permission_snapshot(permissions: &fs::Permissions) -> (bool, Option<u32>) {
+    use std::os::unix::fs::PermissionsExt;
+    (permissions.readonly(), Some(permissions.mode()))
+}
+
+#[cfg(not(unix))]
+fn repository_permission_snapshot(permissions: &fs::Permissions) -> (bool, Option<u32>) {
+    (permissions.readonly(), None)
+}
+
+#[cfg(unix)]
+fn restore_repository_permissions(
+    path: &Path,
+    readonly: bool,
+    unix_mode: Option<u32>,
+) -> Result<(), String> {
+    use std::os::unix::fs::PermissionsExt;
+    let mode = unix_mode.ok_or_else(|| "REPOSITORY_INSTALL_UNIX_MODE_MISSING".to_string())?;
+    fs::set_permissions(path, fs::Permissions::from_mode(mode))
+        .map_err(|error| format!("REPOSITORY_INSTALL_PERMISSIONS_RESTORE:{error}"))?;
+    if fs::metadata(path)
+        .map_err(|error| format!("REPOSITORY_INSTALL_PERMISSIONS_METADATA:{error}"))?
+        .permissions()
+        .readonly()
+        != readonly
+    {
+        return Err("REPOSITORY_INSTALL_PERMISSIONS_DIVERGED".to_string());
+    }
+    Ok(())
+}
+
+#[cfg(not(unix))]
+#[allow(clippy::permissions_set_readonly_false)]
+fn restore_repository_permissions(
+    path: &Path,
+    readonly: bool,
+    _unix_mode: Option<u32>,
+) -> Result<(), String> {
+    let mut permissions = fs::metadata(path)
+        .map_err(|error| format!("REPOSITORY_INSTALL_PERMISSIONS_METADATA:{error}"))?
+        .permissions();
+    permissions.set_readonly(readonly);
+    fs::set_permissions(path, permissions)
+        .map_err(|error| format!("REPOSITORY_INSTALL_PERMISSIONS_RESTORE:{error}"))
+}
+
+fn remove_repository_install_artifact(
+    path: &Path,
+    expected_sha256: &str,
+    max_file_bytes: u64,
+    mismatch_code: &str,
+) -> Result<(), String> {
+    if !path.exists() {
+        return Ok(());
+    }
+    let metadata = fs::symlink_metadata(path)
+        .map_err(|error| format!("REPOSITORY_INSTALL_ARTIFACT_METADATA:{error}"))?;
+    if metadata.file_type().is_symlink() || !metadata.is_file() {
+        return Err("REPOSITORY_INSTALL_ARTIFACT_TYPE_FORBIDDEN".to_string());
+    }
+    if file_sha256(path, max_file_bytes)? != expected_sha256 {
+        return Err(mismatch_code.to_string());
+    }
+    fs::remove_file(path).map_err(|error| format!("REPOSITORY_INSTALL_ARTIFACT_REMOVE:{error}"))
+}
+
+fn validate_repository_install_transaction(
+    config: &GrowthSupervisorConfig,
+    transaction: &RepositoryInstallTransaction,
+) -> Result<(PathBuf, PathBuf, PathBuf), String> {
+    if transaction.schema != REPOSITORY_INSTALL_TRANSACTION_SCHEMA
+        || transaction.repair_id.len() != 64
+        || !transaction
+            .repair_id
+            .bytes()
+            .all(|byte| byte.is_ascii_hexdigit())
+        || transaction.predecessor_sha256.len() != 64
+        || !transaction
+            .predecessor_sha256
+            .bytes()
+            .all(|byte| byte.is_ascii_hexdigit())
+        || transaction.candidate_sha256.len() != 64
+        || !transaction
+            .candidate_sha256
+            .bytes()
+            .all(|byte| byte.is_ascii_hexdigit())
+        || transaction.scope_fingerprint_before.len() != 64
+        || !transaction
+            .scope_fingerprint_before
+            .bytes()
+            .all(|byte| byte.is_ascii_hexdigit())
+        || transaction.scope_paths.is_empty()
+        || !transaction
+            .scope_paths
+            .contains(&transaction.source_relative_path)
+        || transaction.operator_selected
+        || transaction.codex_calls != 0
+        || transaction.external_llm_calls != 0
+        || transaction.network_reads != 0
+        || transaction.network_writes != 0
+        || cfg!(unix) != transaction.predecessor_unix_mode.is_some()
+    {
+        return Err("REPOSITORY_INSTALL_TRANSACTION_INVALID".to_string());
+    }
+    let root = config
+        .watched_roots
+        .get(transaction.root_index)
+        .ok_or_else(|| "REPOSITORY_INSTALL_TRANSACTION_ROOT".to_string())?;
+    let target = validated_repository_target_slot(root, &transaction.source_relative_path)?;
+    let (candidate, rollback) = repository_install_sibling_paths(&target, &transaction.repair_id)?;
+    if candidate.file_name().and_then(OsStr::to_str)
+        != Some(transaction.candidate_file_name.as_str())
+        || rollback.file_name().and_then(OsStr::to_str)
+            != Some(transaction.rollback_file_name.as_str())
+    {
+        return Err("REPOSITORY_INSTALL_TRANSACTION_ARTIFACT_MISMATCH".to_string());
+    }
+    Ok((target, candidate, rollback))
+}
+
+fn recover_repository_install_transaction(
+    config: &GrowthSupervisorConfig,
+    transaction_path: &Path,
+    transaction: &RepositoryInstallTransaction,
+) -> Result<(), String> {
+    let (target, candidate, rollback) =
+        validate_repository_install_transaction(config, transaction)?;
+    let commit_path = repository_install_commit_path(config, &transaction.repair_id);
+    if commit_path.exists() {
+        let commit: RepositoryInstallCommitReceipt = read_json(&commit_path)?;
+        if commit.schema != REPOSITORY_INSTALL_COMMIT_SCHEMA
+            || commit.repair_id != transaction.repair_id
+            || commit.transaction_sha256 != json_sha256(transaction)?
+            || commit.root_index != transaction.root_index
+            || commit.source_relative_path != transaction.source_relative_path
+            || commit.predecessor_sha256 != transaction.predecessor_sha256
+            || commit.candidate_sha256 != transaction.candidate_sha256
+            || commit.scope_fingerprint_after.len() != 64
+            || commit.authoritative_command_sha256.len() != 64
+            || commit.authoritative_source_write_events != 1
+            || commit.operator_selected
+            || commit.codex_calls != 0
+            || commit.external_llm_calls != 0
+            || commit.network_reads != 0
+            || commit.network_writes != 0
+        {
+            return Err("REPOSITORY_INSTALL_COMMIT_INVALID".to_string());
+        }
+        if !target.exists()
+            || file_sha256(&target, config.resources.max_file_bytes)?
+                != transaction.candidate_sha256
+        {
+            return Err("REPOSITORY_INSTALL_COMMITTED_TARGET_DIVERGED".to_string());
+        }
+        let root = config
+            .watched_roots
+            .get(transaction.root_index)
+            .ok_or_else(|| "REPOSITORY_INSTALL_TRANSACTION_ROOT".to_string())?;
+        let committed_scope = repository_validation_scope_fingerprint(
+            root,
+            &transaction.scope_paths,
+            config.resources.max_file_bytes,
+        )?;
+        if committed_scope != commit.scope_fingerprint_after {
+            return Err("REPOSITORY_INSTALL_COMMITTED_SCOPE_DIVERGED".to_string());
+        }
+        remove_repository_install_artifact(
+            &candidate,
+            &transaction.candidate_sha256,
+            config.resources.max_file_bytes,
+            "REPOSITORY_INSTALL_COMMITTED_CANDIDATE_ARTIFACT_DIVERGED",
+        )?;
+        remove_repository_install_artifact(
+            &rollback,
+            &transaction.predecessor_sha256,
+            config.resources.max_file_bytes,
+            "REPOSITORY_INSTALL_COMMITTED_ROLLBACK_ARTIFACT_DIVERGED",
+        )?;
+        fs::remove_file(transaction_path)
+            .map_err(|error| format!("REPOSITORY_INSTALL_TRANSACTION_FINALIZE:{error}"))?;
+        return Ok(());
+    }
+
+    if rollback.exists() {
+        let rollback_metadata = fs::symlink_metadata(&rollback)
+            .map_err(|error| format!("REPOSITORY_INSTALL_ROLLBACK_METADATA:{error}"))?;
+        if rollback_metadata.file_type().is_symlink() || !rollback_metadata.is_file() {
+            return Err("REPOSITORY_INSTALL_ROLLBACK_TYPE_FORBIDDEN".to_string());
+        }
+        if file_sha256(&rollback, config.resources.max_file_bytes)?
+            != transaction.predecessor_sha256
+        {
+            return Err("REPOSITORY_INSTALL_RECOVERY_ROLLBACK_DIVERGED".to_string());
+        }
+        if target.exists() {
+            let target_sha256 = file_sha256(&target, config.resources.max_file_bytes)?;
+            if target_sha256 == transaction.candidate_sha256 {
+                fs::remove_file(&target)
+                    .map_err(|error| format!("REPOSITORY_INSTALL_RECOVERY_REMOVE:{error}"))?;
+                fs::rename(&rollback, &target)
+                    .map_err(|error| format!("REPOSITORY_INSTALL_RECOVERY_RESTORE:{error}"))?;
+            } else if target_sha256 == transaction.predecessor_sha256 {
+                fs::remove_file(&rollback).map_err(|error| {
+                    format!("REPOSITORY_INSTALL_RECOVERY_DUPLICATE_ROLLBACK:{error}")
+                })?;
+            } else {
+                return Err("REPOSITORY_INSTALL_RECOVERY_TARGET_DIVERGED".to_string());
+            }
+        } else {
+            fs::rename(&rollback, &target)
+                .map_err(|error| format!("REPOSITORY_INSTALL_RECOVERY_RESTORE:{error}"))?;
+        }
+    } else if !target.exists()
+        || file_sha256(&target, config.resources.max_file_bytes)? != transaction.predecessor_sha256
+    {
+        return Err("REPOSITORY_INSTALL_RECOVERY_PREDECESSOR_UNAVAILABLE".to_string());
+    }
+
+    remove_repository_install_artifact(
+        &candidate,
+        &transaction.candidate_sha256,
+        config.resources.max_file_bytes,
+        "REPOSITORY_INSTALL_RECOVERY_CANDIDATE_DIVERGED",
+    )?;
+    if file_sha256(&target, config.resources.max_file_bytes)? != transaction.predecessor_sha256 {
+        return Err("REPOSITORY_INSTALL_RECOVERY_PREDECESSOR_DIVERGED".to_string());
+    }
+    restore_repository_permissions(
+        &target,
+        transaction.predecessor_readonly,
+        transaction.predecessor_unix_mode,
+    )?;
+    let root = config
+        .watched_roots
+        .get(transaction.root_index)
+        .ok_or_else(|| "REPOSITORY_INSTALL_TRANSACTION_ROOT".to_string())?;
+    let restored_scope = repository_validation_scope_fingerprint(
+        root,
+        &transaction.scope_paths,
+        config.resources.max_file_bytes,
+    )?;
+    if restored_scope != transaction.scope_fingerprint_before {
+        return Err("REPOSITORY_INSTALL_RECOVERY_SCOPE_DIVERGED".to_string());
+    }
+    fs::remove_file(transaction_path)
+        .map_err(|error| format!("REPOSITORY_INSTALL_TRANSACTION_ROLLBACK_FINALIZE:{error}"))
+}
+
+fn recover_repository_install_transactions(
+    config: &GrowthSupervisorConfig,
+) -> Result<usize, String> {
+    let directory = repository_install_transaction_directory(config);
+    let Ok(entries) = fs::read_dir(&directory) else {
+        return Ok(0);
+    };
+    let mut paths = entries
+        .filter_map(Result::ok)
+        .map(|entry| entry.path())
+        .filter(|path| path.extension().and_then(OsStr::to_str) == Some("json"))
+        .collect::<Vec<_>>();
+    paths.sort();
+    let mut recovered = 0_usize;
+    for path in paths {
+        let transaction: RepositoryInstallTransaction = read_json(&path)?;
+        if path.file_stem().and_then(OsStr::to_str) != Some(transaction.repair_id.as_str()) {
+            return Err("REPOSITORY_INSTALL_TRANSACTION_FILE_ID_MISMATCH".to_string());
+        }
+        recover_repository_install_transaction(config, &path, &transaction)?;
+        recovered = recovered.saturating_add(1);
+    }
+    Ok(recovered)
+}
+
+fn write_repository_candidate_sibling(
+    path: &Path,
+    source: &str,
+    permissions: fs::Permissions,
+) -> Result<(), String> {
+    let mut file = OpenOptions::new()
+        .write(true)
+        .create_new(true)
+        .open(path)
+        .map_err(|error| format!("REPOSITORY_INSTALL_CANDIDATE_CREATE:{error}"))?;
+    let write_result = file
+        .write_all(source.as_bytes())
+        .and_then(|_| file.sync_all())
+        .map_err(|error| format!("REPOSITORY_INSTALL_CANDIDATE_WRITE:{error}"));
+    drop(file);
+    if let Err(error) = write_result {
+        let _ = fs::remove_file(path);
+        return Err(error);
+    }
+    if let Err(error) = fs::set_permissions(path, permissions) {
+        let _ = fs::remove_file(path);
+        return Err(format!("REPOSITORY_INSTALL_CANDIDATE_PERMISSIONS:{error}"));
+    }
+    Ok(())
+}
+
+fn install_verified_repository_candidate(
+    config: &GrowthSupervisorConfig,
+    plan: &RepositoryValidationPlan,
+    validation: &RepositoryCohortValidationReceipt,
+    repair_id: &str,
+    relative: &Path,
+    predecessor_sha256: &str,
+    candidate_source: &str,
+) -> Result<RepositoryInstallOutcome, String> {
+    if !config.repository_mutation.enabled {
+        return Ok(RepositoryInstallOutcome {
+            installed: false,
+            rolled_back: false,
+            authoritative_source_write_events: 0,
+            command: None,
+            scope_fingerprint_after: validation.scope_fingerprint_after.clone(),
+            authoritative_scope_stable: validation.scope_stable_during_validation,
+            failure_code: None,
+        });
+    }
+    if plan.validator_kind != RepositoryValidatorKind::PythonPytest
+        || repair_id.len() != 64
+        || sha256(candidate_source.as_bytes()) == predecessor_sha256
+    {
+        return Err("REPOSITORY_INSTALL_ENVELOPE".to_string());
+    }
+    let configured_root = config
+        .watched_roots
+        .get(plan.root_index)
+        .ok_or_else(|| "REPOSITORY_INSTALL_ROOT_INDEX".to_string())?;
+    if fs::canonicalize(configured_root)
+        .map_err(|error| format!("REPOSITORY_INSTALL_CONFIG_ROOT:{error}"))?
+        != fs::canonicalize(&plan.root)
+            .map_err(|error| format!("REPOSITORY_INSTALL_PLAN_ROOT:{error}"))?
+    {
+        return Err("REPOSITORY_INSTALL_ROOT_AUTHORITY_MISMATCH".to_string());
+    }
+    let target = validated_repository_file(&plan.root, relative)?;
+    let current = fs::read(&target)
+        .map_err(|error| format!("REPOSITORY_INSTALL_PREDECESSOR_READ:{error}"))?;
+    if sha256(&current) != predecessor_sha256 {
+        return Err("REPOSITORY_INSTALL_PREDECESSOR_DIVERGED".to_string());
+    }
+    let scope_before = repository_validation_scope_fingerprint(
+        &plan.root,
+        &plan.scope_paths,
+        config.resources.max_file_bytes,
+    )?;
+    if scope_before != validation.scope_fingerprint_before
+        || validation.scope_fingerprint_before != validation.scope_fingerprint_after
+        || !validation.scope_stable_during_validation
+    {
+        return Err("REPOSITORY_INSTALL_SCOPE_DIVERGED_BEFORE_WRITE".to_string());
+    }
+    let (candidate_sibling, rollback_sibling) =
+        repository_install_sibling_paths(&target, repair_id)?;
+    let transaction_path = repository_install_transaction_path(config, repair_id);
+    if candidate_sibling.exists() || rollback_sibling.exists() {
+        return Err("REPOSITORY_INSTALL_STALE_TRANSACTION".to_string());
+    }
+    if transaction_path.exists() {
+        return Err("REPOSITORY_INSTALL_STALE_TRANSACTION_JOURNAL".to_string());
+    }
+    let permissions = fs::metadata(&target)
+        .map_err(|error| format!("REPOSITORY_INSTALL_TARGET_METADATA:{error}"))?
+        .permissions();
+    let (predecessor_readonly, predecessor_unix_mode) =
+        repository_permission_snapshot(&permissions);
+    write_repository_candidate_sibling(&candidate_sibling, candidate_source, permissions.clone())?;
+    let candidate_sha256 = sha256(candidate_source.as_bytes());
+    if file_sha256(&candidate_sibling, config.resources.max_file_bytes)? != candidate_sha256 {
+        let _ = fs::remove_file(&candidate_sibling);
+        return Err("REPOSITORY_INSTALL_CANDIDATE_HASH_MISMATCH".to_string());
+    }
+    let transaction = RepositoryInstallTransaction {
+        schema: REPOSITORY_INSTALL_TRANSACTION_SCHEMA.to_string(),
+        repair_id: repair_id.to_string(),
+        root_index: plan.root_index,
+        source_relative_path: relative.to_path_buf(),
+        predecessor_sha256: predecessor_sha256.to_string(),
+        candidate_sha256: candidate_sha256.clone(),
+        scope_fingerprint_before: scope_before.clone(),
+        scope_paths: plan.scope_paths.clone(),
+        candidate_file_name: candidate_sibling
+            .file_name()
+            .and_then(OsStr::to_str)
+            .ok_or_else(|| "REPOSITORY_INSTALL_CANDIDATE_NAME".to_string())?
+            .to_string(),
+        rollback_file_name: rollback_sibling
+            .file_name()
+            .and_then(OsStr::to_str)
+            .ok_or_else(|| "REPOSITORY_INSTALL_ROLLBACK_NAME".to_string())?
+            .to_string(),
+        predecessor_readonly,
+        predecessor_unix_mode,
+        operator_selected: false,
+        codex_calls: 0,
+        external_llm_calls: 0,
+        network_reads: 0,
+        network_writes: 0,
+    };
+    if let Err(error) = write_immutable_json(&transaction_path, &transaction) {
+        let _ = remove_repository_install_artifact(
+            &candidate_sibling,
+            &candidate_sha256,
+            config.resources.max_file_bytes,
+            "REPOSITORY_INSTALL_CANDIDATE_CLEANUP_DIVERGED",
+        );
+        return Err(error);
+    }
+    if let Err(error) = ensure_repository_repair_file_writable(&target) {
+        let _ = remove_repository_install_artifact(
+            &candidate_sibling,
+            &candidate_sha256,
+            config.resources.max_file_bytes,
+            "REPOSITORY_INSTALL_CANDIDATE_CLEANUP_DIVERGED",
+        );
+        let _ = fs::remove_file(&transaction_path);
+        return Err(error);
+    }
+    if let Err(error) = fs::rename(&target, &rollback_sibling) {
+        let _ =
+            restore_repository_permissions(&target, predecessor_readonly, predecessor_unix_mode);
+        let _ = remove_repository_install_artifact(
+            &candidate_sibling,
+            &candidate_sha256,
+            config.resources.max_file_bytes,
+            "REPOSITORY_INSTALL_CANDIDATE_CLEANUP_DIVERGED",
+        );
+        let _ = fs::remove_file(&transaction_path);
+        return Err(format!("REPOSITORY_INSTALL_ACTIVATE_ROLLBACK:{error}"));
+    }
+    let activate = fs::rename(&candidate_sibling, &target);
+    if let Err(error) = activate {
+        if fs::rename(&rollback_sibling, &target).is_ok() {
+            let _ = restore_repository_permissions(
+                &target,
+                predecessor_readonly,
+                predecessor_unix_mode,
+            );
+            let _ = fs::remove_file(&transaction_path);
+        }
+        return Err(format!("REPOSITORY_INSTALL_ACTIVATE_CANDIDATE:{error}"));
+    }
+    let log_path = config
+        .state_dir
+        .join("diagnostics")
+        .join(format!("repository_install_{repair_id}.log"));
+    let mut attempt_error = None;
+    let installed_scope = match repository_validation_scope_fingerprint(
+        &plan.root,
+        &plan.scope_paths,
+        config.resources.max_file_bytes,
+    ) {
+        Ok(scope) => Some(scope),
+        Err(error) => {
+            attempt_error = Some(error);
+            None
+        }
+    };
+    let command = if attempt_error.is_none() {
+        let arg_refs = plan.args.iter().map(String::as_str).collect::<Vec<_>>();
+        match command_receipt_with_incremental(
+            &plan.program,
+            &arg_refs,
+            &plan.root,
+            &runtime_validation_target_dir(config),
+            MAX_CORE_COHORT_VALIDATION_MS,
+            &log_path,
+            true,
+        ) {
+            Ok(command) => Some(command),
+            Err(error) => {
+                attempt_error = Some(error);
+                None
+            }
+        }
+    } else {
+        None
+    };
+    let _ = fs::remove_file(&log_path);
+    let scope_after_attempt = match repository_validation_scope_fingerprint(
+        &plan.root,
+        &plan.scope_paths,
+        config.resources.max_file_bytes,
+    ) {
+        Ok(scope) => Some(scope),
+        Err(error) => {
+            if attempt_error.is_none() {
+                attempt_error = Some(error);
+            }
+            None
+        }
+    };
+    let target_is_candidate = match file_sha256(&target, config.resources.max_file_bytes) {
+        Ok(actual) => actual == candidate_sha256,
+        Err(error) => {
+            if attempt_error.is_none() {
+                attempt_error = Some(error);
+            }
+            false
+        }
+    };
+    let authoritative_scope_stable =
+        installed_scope.is_some() && installed_scope == scope_after_attempt;
+    let installed = command.as_ref().is_some_and(|receipt| receipt.success)
+        && target_is_candidate
+        && authoritative_scope_stable
+        && attempt_error.is_none();
+    if installed {
+        let command_ref = command
+            .as_ref()
+            .ok_or_else(|| "REPOSITORY_INSTALL_COMMAND_MISSING".to_string())?;
+        let scope_after = scope_after_attempt
+            .clone()
+            .ok_or_else(|| "REPOSITORY_INSTALL_SCOPE_MISSING".to_string())?;
+        let commit = RepositoryInstallCommitReceipt {
+            schema: REPOSITORY_INSTALL_COMMIT_SCHEMA.to_string(),
+            repair_id: repair_id.to_string(),
+            transaction_sha256: json_sha256(&transaction)?,
+            root_index: plan.root_index,
+            source_relative_path: relative.to_path_buf(),
+            predecessor_sha256: predecessor_sha256.to_string(),
+            candidate_sha256: candidate_sha256.clone(),
+            scope_fingerprint_after: scope_after.clone(),
+            authoritative_command_sha256: json_sha256(command_ref)?,
+            authoritative_source_write_events: 1,
+            operator_selected: false,
+            codex_calls: 0,
+            external_llm_calls: 0,
+            network_reads: 0,
+            network_writes: 0,
+        };
+        if let Err(error) =
+            write_immutable_json(&repository_install_commit_path(config, repair_id), &commit)
+        {
+            recover_repository_install_transaction(config, &transaction_path, &transaction)?;
+            return Err(error);
+        }
+        recover_repository_install_transaction(config, &transaction_path, &transaction)?;
+        return Ok(RepositoryInstallOutcome {
+            installed: true,
+            rolled_back: false,
+            authoritative_source_write_events: 1,
+            command,
+            scope_fingerprint_after: scope_after,
+            authoritative_scope_stable: true,
+            failure_code: None,
+        });
+    }
+    recover_repository_install_transaction(config, &transaction_path, &transaction)?;
+    Ok(RepositoryInstallOutcome {
+        installed: false,
+        rolled_back: true,
+        authoritative_source_write_events: 2,
+        command,
+        scope_fingerprint_after: scope_before,
+        authoritative_scope_stable: true,
+        failure_code: Some(if let Some(error) = attempt_error {
+            format!(
+                "PUBLIC_INFORMATION_INSUFFICIENT:AUTHORITATIVE_VALIDATION_ERROR:{}",
+                sha256(error.as_bytes())
+            )
+        } else if !target_is_candidate || !authoritative_scope_stable {
+            "CONFLICTING_SOURCE_BOUND_EDITS:AUTHORITATIVE_SCOPE_CHANGED".to_string()
+        } else {
+            "PUBLIC_INFORMATION_INSUFFICIENT:AUTHORITATIVE_VALIDATION_FAILED".to_string()
+        }),
+    })
+}
+
 fn repository_repair_observation_id(
     receipt: &RepositoryRepairSynthesisReceipt,
     receipt_sha256: &str,
@@ -6014,22 +6771,40 @@ fn persist_source_bound_improvement_operator(
     repair_receipt_sha256: &str,
 ) -> Result<(), String> {
     validate_typed_mechanism_improvement_operator(operator)?;
+    let sandbox_only_authority = !repair.candidate_installed
+        && repair.authoritative_source_write_events == 0
+        && repair.authoritative_command.is_none();
+    let installed_authority = repair.candidate_installed
+        && repair.authoritative_source_write_events == 1
+        && repair
+            .authoritative_command
+            .as_ref()
+            .is_some_and(|command| command.success);
     if !repair.sandbox_verified
         || !repair.sandbox_cleaned
         || !repair.authoritative_scope_stable
-        || repair.candidate_installed
-        || repair.authoritative_source_write_events != 0
+        || repair.rolled_back
+        || (!sandbox_only_authority && !installed_authority)
         || repair_receipt_sha256.len() != 64
     {
         return Err("SOURCE_BOUND_OPERATOR_PROMOTION_WITHOUT_AUTHORITY".to_string());
     }
-    let sandbox_output_sha256 = repair
-        .sandbox_command
-        .as_ref()
-        .filter(|command| command.success)
-        .map(|command| command.output_sha256.clone())
-        .ok_or_else(|| "SOURCE_BOUND_OPERATOR_SANDBOX_EVIDENCE_MISSING".to_string())?;
-    if operator.evidence_sha256 != sandbox_output_sha256 {
+    let execution_authority_output_sha256 = if installed_authority {
+        repair
+            .authoritative_command
+            .as_ref()
+            .filter(|command| command.success)
+            .map(|command| command.output_sha256.clone())
+            .ok_or_else(|| "SOURCE_BOUND_OPERATOR_AUTHORITATIVE_EVIDENCE_MISSING".to_string())?
+    } else {
+        repair
+            .sandbox_command
+            .as_ref()
+            .filter(|command| command.success)
+            .map(|command| command.output_sha256.clone())
+            .ok_or_else(|| "SOURCE_BOUND_OPERATOR_SANDBOX_EVIDENCE_MISSING".to_string())?
+    };
+    if operator.evidence_sha256 != execution_authority_output_sha256 {
         return Err("SOURCE_BOUND_OPERATOR_EVIDENCE_MISMATCH".to_string());
     }
     let directory = source_bound_improvement_operator_directory(config);
@@ -6050,21 +6825,36 @@ fn persist_source_bound_improvement_operator(
         write_immutable_json(&path, operator)?;
     }
     let operator_sha256 = json_sha256(operator)?;
+    let authority_prefix = if installed_authority {
+        "INSTALLED_TYPED_OPERATOR_AUTHORITY_1"
+    } else {
+        "SOURCE_BOUND_OPERATOR_AUTHORITY_1"
+    };
     let authority_id = sha256(
         format!(
-            "SOURCE_BOUND_OPERATOR_AUTHORITY_1:{}:{}:{}:{}",
-            operator.operator_id, repair.repair_id, repair_receipt_sha256, sandbox_output_sha256
+            "{authority_prefix}:{}:{}:{}:{}",
+            operator.operator_id,
+            repair.repair_id,
+            repair_receipt_sha256,
+            execution_authority_output_sha256
         )
         .as_bytes(),
     );
     let mut authority = SourceBoundImprovementOperatorAuthorityReceipt {
-        schema: SOURCE_BOUND_OPERATOR_AUTHORITY_SCHEMA.to_string(),
+        schema: if installed_authority {
+            INSTALLED_TYPED_OPERATOR_AUTHORITY_SCHEMA.to_string()
+        } else {
+            SOURCE_BOUND_OPERATOR_AUTHORITY_SCHEMA.to_string()
+        },
         authority_id: authority_id.clone(),
         operator_id: operator.operator_id.clone(),
         operator_sha256,
         repair_id: repair.repair_id.clone(),
         repair_receipt_sha256: repair_receipt_sha256.to_string(),
-        sandbox_output_sha256,
+        // The shared authority schema retains this historical field name.
+        // For installed repairs it carries the authoritative post-install
+        // verifier output, not the earlier sandbox output.
+        sandbox_output_sha256: execution_authority_output_sha256,
         candidate_sha256: repair
             .candidate_sha256
             .clone()
@@ -6154,7 +6944,7 @@ fn try_synthesize_failed_python_cohort(
     diagnostic: &AutonomousSelfInspectionReceipt,
     plan: &RepositoryValidationPlan,
     validation: &RepositoryCohortValidationReceipt,
-) -> Result<Option<(String, String)>, String> {
+) -> Result<Option<(String, String, bool)>, String> {
     if plan.validator_kind != RepositoryValidatorKind::PythonPytest || validation.success {
         return Ok(None);
     }
@@ -6192,6 +6982,7 @@ fn try_synthesize_failed_python_cohort(
         .iter()
         .map(|operator| operator.operator_id.clone())
         .collect::<BTreeSet<_>>();
+    let mut authoritative_installation_attempts = 0_usize;
     for relative in implementation_paths {
         let source_path = validated_repository_file(&plan.root, &relative)?;
         let source = fs::read_to_string(&source_path)
@@ -6199,7 +6990,7 @@ fn try_synthesize_failed_python_cohort(
         let predecessor_sha256 = sha256(source.as_bytes());
         let repair_id = sha256(
             format!(
-                "REPOSITORY_SOURCE_BOUND_REPAIR_1:{}:{}:{}",
+                "REPOSITORY_SOURCE_BOUND_REPAIR_2:{}:{}:{}",
                 validation.validation_id,
                 relative.to_string_lossy().replace('\\', "/"),
                 predecessor_sha256
@@ -6210,7 +7001,7 @@ fn try_synthesize_failed_python_cohort(
             diagnostics.join(format!("repository_repair_synthesis_{repair_id}.json"));
         if receipt_path.exists() {
             let existing: RepositoryRepairSynthesisReceipt = read_json(&receipt_path)?;
-            if existing.schema != "B_REPOSITORY_REPAIR_SYNTHESIS_1"
+            if existing.schema != "B_REPOSITORY_REPAIR_SYNTHESIS_2"
                 || existing.repair_id != repair_id
                 || existing.originating_validation_id != validation.validation_id
                 || existing.source_relative_path != relative
@@ -6221,7 +7012,8 @@ fn try_synthesize_failed_python_cohort(
             if existing.sandbox_verified
                 && existing.sandbox_cleaned
                 && existing.authoritative_scope_stable
-                && !existing.candidate_installed
+                && !existing.rolled_back
+                && (existing.candidate_installed || !config.repository_mutation.enabled)
             {
                 let receipt_sha256 = json_sha256(&existing)?;
                 for operator in &existing.improvement_operators {
@@ -6233,7 +7025,11 @@ fn try_synthesize_failed_python_cohort(
                     )?;
                 }
                 let observation_id = repository_repair_observation_id(&existing, &receipt_sha256);
-                return Ok(Some((receipt_sha256, observation_id)));
+                return Ok(Some((
+                    receipt_sha256,
+                    observation_id,
+                    existing.candidate_installed,
+                )));
             }
             continue;
         }
@@ -6248,8 +7044,13 @@ fn try_synthesize_failed_python_cohort(
         let mut materialization_is_one_to_one = false;
         let mut failure_code = None;
         let mut sandbox_command = None;
+        let mut authoritative_command = None;
         let mut sandbox_verified = false;
         let mut sandbox_cleaned = true;
+        let mut candidate_installed = false;
+        let mut rolled_back = false;
+        let mut authoritative_source_write_events = 0_u64;
+        let mut selected_candidate_source = None;
         let mut candidate_variants = Vec::new();
         let mut selected_improvement_operator_ids = Vec::new();
         let mut attempted_improvement_operator_ids = Vec::new();
@@ -6383,6 +7184,7 @@ fn try_synthesize_failed_python_cohort(
                         selected_source_bound_patch_variant_id = Some(variant_id);
                         selected_source_bound_template_symbols = template_symbols;
                         successful_syntheses = variant_syntheses;
+                        selected_candidate_source = Some(candidate_source);
                         failure_code = None;
                         break;
                     } else {
@@ -6403,17 +7205,46 @@ fn try_synthesize_failed_python_cohort(
             }
         }
 
-        let scope_fingerprint_after = repository_validation_scope_fingerprint(
+        let mut scope_fingerprint_after = repository_validation_scope_fingerprint(
             &plan.root,
             &plan.scope_paths,
             config.resources.max_file_bytes,
         )?;
-        let authoritative_scope_stable =
+        let mut authoritative_scope_stable =
             validation.scope_fingerprint_before == scope_fingerprint_after;
         sandbox_verified &= authoritative_scope_stable;
         if !authoritative_scope_stable {
             failure_code =
                 Some("CONFLICTING_SOURCE_BOUND_EDITS:AUTHORITATIVE_SCOPE_CHANGED".to_string());
+        }
+        if sandbox_verified
+            && (!config.repository_mutation.enabled
+                || authoritative_installation_attempts
+                    < config.repository_mutation.max_installations_per_step)
+        {
+            let candidate = selected_candidate_source
+                .as_deref()
+                .ok_or_else(|| "REPOSITORY_INSTALL_SELECTED_CANDIDATE_MISSING".to_string())?;
+            authoritative_installation_attempts = authoritative_installation_attempts
+                .saturating_add(usize::from(config.repository_mutation.enabled));
+            let install = install_verified_repository_candidate(
+                config,
+                plan,
+                validation,
+                &repair_id,
+                &relative,
+                &predecessor_sha256,
+                candidate,
+            )?;
+            candidate_installed = install.installed;
+            rolled_back = install.rolled_back;
+            authoritative_source_write_events = install.authoritative_source_write_events;
+            authoritative_command = install.command;
+            scope_fingerprint_after = install.scope_fingerprint_after;
+            authoritative_scope_stable = install.authoritative_scope_stable;
+            if install.failure_code.is_some() {
+                failure_code = install.failure_code;
+            }
         }
         selected_improvement_operator_ids.extend(
             successful_syntheses
@@ -6428,11 +7259,23 @@ fn try_synthesize_failed_python_cohort(
         rejected_improvement_operator_ids.dedup();
         let mut improvement_operators = Vec::new();
         let mut promoted_improvement_operator_ids = Vec::new();
-        if sandbox_verified {
-            let evidence_sha256 = sandbox_command
-                .as_ref()
-                .map(|command| command.output_sha256.clone())
-                .ok_or_else(|| "REPOSITORY_REPAIR_SANDBOX_EVIDENCE_MISSING".to_string())?;
+        let repair_has_learning_authority = sandbox_verified
+            && (!config.repository_mutation.enabled || candidate_installed)
+            && !rolled_back;
+        if repair_has_learning_authority {
+            let evidence_sha256 = if candidate_installed {
+                authoritative_command
+                    .as_ref()
+                    .filter(|command| command.success)
+                    .map(|command| command.output_sha256.clone())
+                    .ok_or_else(|| "REPOSITORY_REPAIR_AUTHORITATIVE_EVIDENCE_MISSING".to_string())?
+            } else {
+                sandbox_command
+                    .as_ref()
+                    .filter(|command| command.success)
+                    .map(|command| command.output_sha256.clone())
+                    .ok_or_else(|| "REPOSITORY_REPAIR_SANDBOX_EVIDENCE_MISSING".to_string())?
+            };
             for synthesis in &successful_syntheses {
                 let operator = typed_mechanism_improvement_operator_from_receipt(
                     synthesis,
@@ -6449,7 +7292,7 @@ fn try_synthesize_failed_python_cohort(
             promoted_improvement_operator_ids.dedup();
         }
         let receipt = RepositoryRepairSynthesisReceipt {
-            schema: "B_REPOSITORY_REPAIR_SYNTHESIS_1".to_string(),
+            schema: "B_REPOSITORY_REPAIR_SYNTHESIS_2".to_string(),
             repair_id,
             originating_validation_id: validation.validation_id.clone(),
             originating_diagnostic_id: diagnostic.diagnostic_id.clone(),
@@ -6480,10 +7323,12 @@ fn try_synthesize_failed_python_cohort(
             scope_fingerprint_after,
             authoritative_scope_stable,
             sandbox_command,
+            authoritative_command,
             sandbox_verified,
             sandbox_cleaned,
-            candidate_installed: false,
-            authoritative_source_write_events: 0,
+            rolled_back,
+            candidate_installed,
+            authoritative_source_write_events,
             operator_selected: false,
             codex_calls: 0,
             external_llm_calls: 0,
@@ -6498,9 +7343,23 @@ fn try_synthesize_failed_python_cohort(
             persist_source_bound_improvement_operator(config, operator, &receipt, &receipt_sha256)?;
         }
         cleanup_recent_files(&diagnostics, "repository_repair_synthesis_", 64)?;
-        if receipt.sandbox_verified && receipt.sandbox_cleaned {
+        if receipt.sandbox_verified
+            && receipt.sandbox_cleaned
+            && (!config.repository_mutation.enabled || receipt.candidate_installed)
+            && !receipt.rolled_back
+        {
             let observation_id = repository_repair_observation_id(&receipt, &receipt_sha256);
-            return Ok(Some((receipt_sha256, observation_id)));
+            return Ok(Some((
+                receipt_sha256,
+                observation_id,
+                receipt.candidate_installed,
+            )));
+        }
+        if config.repository_mutation.enabled
+            && authoritative_installation_attempts
+                >= config.repository_mutation.max_installations_per_step
+        {
+            return Ok(None);
         }
     }
     Ok(None)
@@ -7164,6 +8023,7 @@ fn validate_blocked_repository_cohort(
         return Ok(RepositoryCohortValidationOutcome {
             executed: false,
             sandbox_repair_verified: false,
+            repository_repair_installed: false,
             evidence_sha256: Vec::new(),
             output_observation_ids: Vec::new(),
         });
@@ -7274,16 +8134,18 @@ fn validate_blocked_repository_cohort(
         return Ok(RepositoryCohortValidationOutcome {
             executed: true,
             sandbox_repair_verified: false,
+            repository_repair_installed: false,
             evidence_sha256: vec![receipt_sha256],
             output_observation_ids,
         });
     }
-    if let Some((repair_receipt_sha256, observation_id)) =
+    if let Some((repair_receipt_sha256, observation_id, repository_repair_installed)) =
         try_synthesize_failed_python_cohort(config, diagnostic, &plan, &receipt)?
     {
         return Ok(RepositoryCohortValidationOutcome {
             executed: true,
             sandbox_repair_verified: true,
+            repository_repair_installed,
             evidence_sha256: vec![receipt_sha256, repair_receipt_sha256],
             output_observation_ids: vec![observation_id],
         });
@@ -7291,6 +8153,7 @@ fn validate_blocked_repository_cohort(
     Ok(RepositoryCohortValidationOutcome {
         executed: false,
         sandbox_repair_verified: false,
+        repository_repair_installed: false,
         evidence_sha256: vec![receipt_sha256],
         output_observation_ids: Vec::new(),
     })
@@ -7320,6 +8183,7 @@ fn runtime_repair_action(
         execution_evidence_sha256,
         output_observation_ids,
         repository_sandbox_repair_verified,
+        repository_repair_installed,
     ) = match mechanism {
         RuntimeRepairMechanism::ReplayVerifiedEventAgainstIndexedContent => {
             let outputs = scan_observations
@@ -7337,6 +8201,7 @@ fn runtime_repair_action(
                 !outputs.is_empty(),
                 evidence,
                 outputs,
+                false,
                 false,
             )
         }
@@ -7360,6 +8225,7 @@ fn runtime_repair_action(
                 evidence,
                 outputs,
                 false,
+                false,
             )
         }
         RuntimeRepairMechanism::BootstrapFrozenCoreEvaluatorCanary => {
@@ -7377,12 +8243,13 @@ fn runtime_repair_action(
                 vec![inspection_sha256],
                 vec![observation_id],
                 false,
+                false,
             )
         }
         RuntimeRepairMechanism::ValidateBlockedCoreCohort => {
             let (success, evidence, outputs) =
                 validate_blocked_core_cohort(config, receipt, evidence_aware_cohort)?;
-            (success, success, evidence, outputs, false)
+            (success, success, evidence, outputs, false, false)
         }
         RuntimeRepairMechanism::ValidateBlockedRepositoryCohort => {
             let outcome =
@@ -7393,6 +8260,7 @@ fn runtime_repair_action(
                 outcome.evidence_sha256,
                 outcome.output_observation_ids,
                 outcome.sandbox_repair_verified,
+                outcome.repository_repair_installed,
             )
         }
     };
@@ -7417,7 +8285,7 @@ fn runtime_repair_action(
         changed_runtime_decision,
         execution_evidence_sha256,
         output_observation_ids,
-        authoritative_source_write_events: 0,
+        authoritative_source_write_events: usize::from(repository_repair_installed),
         operator_selected: false,
         codex_calls: 0,
         external_llm_calls: 0,
@@ -7558,6 +8426,33 @@ fn runtime_repair_action(
             .ok_or_else(|| "REPOSITORY_COHORT_VALIDATION_PLAN_LOST".to_string())?;
         let mut verification_evidence_sha256 = action.execution_evidence_sha256.clone();
         verification_evidence_sha256.push(action_sha256.clone());
+        let mut signals = vec![
+            "AUTONOMOUS_RUNTIME_REPAIR".to_string(),
+            "SOURCE_BOUND_TYPED_SYNTHESIS".to_string(),
+            "PUBLIC_SYMBOL_OWNER_PRESERVED".to_string(),
+            "EXECUTION_DEPENDENCY_CLOSURE_PRESERVED".to_string(),
+            "SANDBOX_VERIFIED_REPAIR_CANDIDATE".to_string(),
+        ];
+        let mut reasons = vec![
+            "repository-native tests rejected the authoritative implementation".to_string(),
+            "a source-bound typed repair passed in a disposable local sandbox".to_string(),
+        ];
+        if repository_repair_installed {
+            signals.extend([
+                "AUTHORITATIVE_REPOSITORY_PATCH_INSTALLED".to_string(),
+                "POST_INSTALL_PUBLIC_REGRESSION_PASS".to_string(),
+            ]);
+            reasons.push(
+                "the exact predecessor-bound candidate was atomically installed and revalidated in the authoritative repository"
+                    .to_string(),
+            );
+        } else {
+            signals.push("CANDIDATE_NOT_INSTALLED".to_string());
+            reasons.push(
+                "repository mutation policy retained the candidate as generalized repair evidence without an authoritative write"
+                    .to_string(),
+            );
+        }
         Some(LearningObservation {
             observation_id: action.output_observation_ids[0].clone(),
             work_event_id: None,
@@ -7569,17 +8464,14 @@ fn runtime_repair_action(
             predecessor_content_sha256: None,
             actor: WorkActor::LocalTool,
             work_kind: WorkKind::DefectRepair,
-            work_outcome: WorkOutcome::Unknown,
+            work_outcome: if repository_repair_installed {
+                WorkOutcome::Pass
+            } else {
+                WorkOutcome::Unknown
+            },
             features_before: None,
             features_after: StructuralFeatures::default(),
-            signals: vec![
-                "AUTONOMOUS_RUNTIME_REPAIR".to_string(),
-                "SOURCE_BOUND_TYPED_SYNTHESIS".to_string(),
-                "PUBLIC_SYMBOL_OWNER_PRESERVED".to_string(),
-                "EXECUTION_DEPENDENCY_CLOSURE_PRESERVED".to_string(),
-                "SANDBOX_VERIFIED_REPAIR_CANDIDATE".to_string(),
-                "CANDIDATE_NOT_INSTALLED".to_string(),
-            ],
+            signals,
             composition_roles: vec![
                 "PUBLIC_OBSERVATION".to_string(),
                 "TYPED_COMPOSITION".to_string(),
@@ -7588,13 +8480,7 @@ fn runtime_repair_action(
             ],
             learning_score: 82,
             learning_value: LearningValue::High,
-            reasons: vec![
-                "repository-native tests rejected the authoritative implementation".to_string(),
-                "a source-bound typed repair passed only in a disposable local sandbox"
-                    .to_string(),
-                "the candidate is retained as generalized repair evidence but cannot verify or mutate the authoritative repository"
-                    .to_string(),
-            ],
+            reasons,
             verification_evidence_sha256,
             performance_metrics: Vec::new(),
             public_contract_deltas: Vec::new(),
@@ -9011,6 +9897,7 @@ pub fn supervisor_step(config_path: &Path) -> Result<StepReport, String> {
     let _ = initialize(config_path)?;
     let lease = SupervisorLease::acquire(&config)?;
     lease.heartbeat()?;
+    let _ = recover_repository_install_transactions(&config)?;
     step_without_lease(&config, &lease)
 }
 
@@ -9018,6 +9905,7 @@ pub fn run_daemon(config_path: &Path) -> Result<StepReport, String> {
     let config = load_config(config_path)?;
     let _ = initialize(config_path)?;
     let lease = SupervisorLease::acquire(&config)?;
+    let _ = recover_repository_install_transactions(&config)?;
     loop {
         lease.heartbeat()?;
         let report = step_without_lease(&config, &lease)?;
@@ -9065,6 +9953,7 @@ mod tests {
         config.lease_stale_ms = 3_000;
         config.resources.plateau_scans_before_wait = 2;
         config.autonomous_campaigns = false;
+        config.repository_mutation.enabled = false;
         let config_path = root.join("config.json");
         write_immutable_json(&config_path, &config).unwrap();
         (config_path, config)
@@ -9931,6 +10820,9 @@ mod tests {
         assert!(check.identical_source_discovery_state_deduplicated);
         assert!(check.diagnostic_opportunity_kind_separated_from_executability);
         assert!(check.self_healing_candidates_route_to_atomic_installer);
+        assert!(check.repository_candidate_requires_authoritative_install_authority);
+        assert!(check.repository_install_transaction_recovery_enabled);
+        assert!(check.authoritative_repository_validation_before_learning_enabled);
         assert!(check.integrated_program_ir_lowers_to_compiled_rust);
         assert!(check.installed_compositions_are_runtime_callable);
         assert!(check.typed_lowering_preserves_installed_capability_registry);
@@ -9971,6 +10863,29 @@ mod tests {
         assert!(check.behavioral_composition_execution_enabled);
         assert!(check.redundant_generative_verifier_search_disabled);
         assert!(!check.mutual_recursive_growth_observed);
+    }
+
+    #[test]
+    fn legacy_frozen_config_defaults_to_bounded_repository_install_without_hash_churn() {
+        let config = GrowthSupervisorConfig::bounded_default(
+            PathBuf::from("state"),
+            PathBuf::from("watched"),
+            PathBuf::from("verifier"),
+        );
+        assert!(config.repository_mutation.enabled);
+        assert_eq!(config.repository_mutation.max_installations_per_step, 1);
+        let serialized = serde_json::to_value(&config).unwrap();
+        assert!(serialized.get("repository_mutation").is_none());
+        let legacy: GrowthSupervisorConfig = serde_json::from_value(serialized).unwrap();
+        assert!(legacy.repository_mutation.enabled);
+        assert_eq!(legacy.repository_mutation.max_installations_per_step, 1);
+
+        let mut disabled = legacy;
+        disabled.repository_mutation.enabled = false;
+        assert!(serde_json::to_value(disabled)
+            .unwrap()
+            .get("repository_mutation")
+            .is_some());
     }
 
     fn classifier_refinement_lesson(
@@ -11503,35 +12418,7 @@ mod tests {
         fs::remove_dir_all(root).unwrap();
     }
 
-    #[test]
-    fn failed_python_class_declaration_reaches_the_product_sandbox_path() {
-        let Ok(python) = resolve_local_program("python") else {
-            return;
-        };
-        if !Command::new(&python)
-            .args(["-c", "import pytest"])
-            .status()
-            .is_ok_and(|status| status.success())
-        {
-            return;
-        }
-        let root = temp_root("failed-python-class-declaration-repair");
-        let (_, config) = test_config(&root);
-        let repository = config.watched_roots[0].clone();
-        fs::create_dir_all(repository.join("tests")).unwrap();
-        fs::create_dir_all(config.state_dir.join("diagnostics")).unwrap();
-        fs::write(
-            repository.join("pyproject.toml"),
-            "[build-system]\nrequires = []\nbuild-backend = \"\"\n\n[tool.pytest.ini_options]\ntestpaths = [\"tests\"]\n",
-        )
-        .unwrap();
-        let predecessor = "class ProductPolicy:\n    pass\n";
-        fs::write(repository.join("policy.py"), predecessor).unwrap();
-        fs::write(
-            repository.join("tests/test_policy.py"),
-            "from policy import ProductPolicy\n\ndef test_policy():\n    assert ProductPolicy.marker == 'ready'\n",
-        )
-        .unwrap();
+    fn class_declaration_repair_cohort(predecessor: &str) -> Vec<LearningObservation> {
         let mut delta = public_contract_delta_fixture();
         delta.target_symbols = vec!["ProductPolicy.marker".to_string()];
         let implementation = LearningObservation {
@@ -11553,6 +12440,108 @@ mod tests {
             verification_evidence_sha256: Vec::new(),
             performance_metrics: Vec::new(),
             public_contract_deltas: vec![delta],
+            exact_source_fragments_stored: 0,
+            raw_source_bytes_stored: 0,
+            observed_at_ms: 1,
+        };
+        let test_observation = LearningObservation {
+            observation_id: "class-declaration-test".to_string(),
+            logical_path: "ROOT_0/tests/test_policy.py".to_string(),
+            work_kind: WorkKind::RegressionTest,
+            signals: vec!["REGRESSION_EVIDENCE".to_string(), "TEST_ADDED".to_string()],
+            composition_roles: vec!["REGRESSION_TEST".to_string()],
+            learning_score: 65,
+            reasons: vec!["public declaration observation".to_string()],
+            ..implementation.clone()
+        };
+        vec![implementation, test_observation]
+    }
+
+    fn repository_repair_diagnostic() -> AutonomousSelfInspectionReceipt {
+        inspect_self(SelfInspectionInput {
+            generation: 5,
+            supervisor_sequence: 12,
+            files_scanned: 2,
+            files_reused: 0,
+            files_hashed: 2,
+            scan_duration_ms: 1,
+            pending_work_events: 0,
+            replayed_unchanged_work_events: 0,
+            naive_cohort_has_verification: false,
+            evidence_aware_cohort_has_verification: false,
+            autonomous_campaigns_enabled: true,
+            campaigns_started: 2,
+            mutual_revalidation_events: 2,
+            evaluator_challenge_cases: EvaluatorMutationKind::ALL.len() as u64,
+            evaluator_required_challenge_cases: EvaluatorMutationKind::ALL.len() as u64,
+            consecutive_failures: 0,
+            plateau_scans: 0,
+            unconsumed_high_observations: 2,
+            cohort_preflight_ready: false,
+            core_cohort_validation_applicable: false,
+            repository_cohort_validation_applicable: true,
+            source_patch_attempts: 0,
+            source_patch_installations: 0,
+            source_patch_rollbacks: 0,
+            source_patch_consecutive_failures: 0,
+            source_patch_validation_ms: 0,
+            source_discovery_no_candidate_streak: 0,
+            last_source_discovery_reason: None,
+            active_runtime_ms: 1,
+            diagnostic_policy: DiagnosticPolicyMemory::default(),
+        })
+        .unwrap()
+    }
+
+    #[test]
+    fn failed_python_requirement_without_contract_delta_reaches_product_install() {
+        let Ok(python) = resolve_local_program("python") else {
+            return;
+        };
+        if !Command::new(&python)
+            .args(["-c", "import pytest"])
+            .status()
+            .is_ok_and(|status| status.success())
+        {
+            return;
+        }
+        let root = temp_root("failed-python-class-declaration-repair");
+        let (_, mut config) = test_config(&root);
+        config.repository_mutation.enabled = true;
+        let repository = config.watched_roots[0].clone();
+        fs::create_dir_all(repository.join("tests")).unwrap();
+        fs::create_dir_all(config.state_dir.join("diagnostics")).unwrap();
+        fs::write(
+            repository.join("pyproject.toml"),
+            "[build-system]\nrequires = []\nbuild-backend = \"\"\n\n[tool.pytest.ini_options]\ntestpaths = [\"tests\"]\n",
+        )
+        .unwrap();
+        let predecessor = "class ProductPolicy:\n    pass\n";
+        fs::write(repository.join("policy.py"), predecessor).unwrap();
+        fs::write(
+            repository.join("tests/test_policy.py"),
+            "from policy import ProductPolicy\n\ndef test_policy():\n    assert ProductPolicy.marker == 'ready'\n",
+        )
+        .unwrap();
+        let implementation = LearningObservation {
+            observation_id: "class-declaration-implementation".to_string(),
+            work_event_id: None,
+            logical_path: "ROOT_0/policy.py".to_string(),
+            content_sha256: sha256(predecessor.as_bytes()),
+            predecessor_content_sha256: Some("e".repeat(64)),
+            actor: WorkActor::LocalTool,
+            work_kind: WorkKind::DefectRepair,
+            work_outcome: WorkOutcome::Unknown,
+            features_before: Some(StructuralFeatures::default()),
+            features_after: StructuralFeatures::default(),
+            signals: vec!["DEFECT_REPAIR".to_string()],
+            composition_roles: vec!["IMPLEMENTATION_REPAIR".to_string()],
+            learning_score: 75,
+            learning_value: LearningValue::High,
+            reasons: vec!["missing public class declaration".to_string()],
+            verification_evidence_sha256: Vec::new(),
+            performance_metrics: Vec::new(),
+            public_contract_deltas: Vec::new(),
             exact_source_fragments_stored: 0,
             raw_source_bytes_stored: 0,
             observed_at_ms: 1,
@@ -11605,7 +12594,197 @@ mod tests {
         let outcome = validate_blocked_repository_cohort(&config, &diagnostic, &cohort).unwrap();
         assert!(outcome.executed);
         assert!(outcome.sandbox_repair_verified);
+        assert!(outcome.repository_repair_installed);
         assert_eq!(outcome.evidence_sha256.len(), 2);
+        assert!(fs::read_to_string(repository.join("policy.py"))
+            .unwrap()
+            .contains("marker = 'ready'"));
+        let repair = fs::read_dir(config.state_dir.join("diagnostics"))
+            .unwrap()
+            .filter_map(Result::ok)
+            .map(|entry| entry.path())
+            .filter(|path| {
+                path.file_name()
+                    .and_then(OsStr::to_str)
+                    .is_some_and(|name| name.starts_with("repository_repair_synthesis_"))
+                    && path.extension().and_then(OsStr::to_str) == Some("json")
+            })
+            .map(|path| read_json::<RepositoryRepairSynthesisReceipt>(&path).unwrap())
+            .find(|receipt| receipt.source_relative_path == Path::new("policy.py"))
+            .expect("class declaration repair receipt");
+        assert!(repair.sandbox_verified);
+        assert!(repair.sandbox_cleaned);
+        assert!(repair.candidate_installed);
+        assert!(!repair.rolled_back);
+        assert_eq!(repair.authoritative_source_write_events, 1);
+        assert!(repair
+            .authoritative_command
+            .as_ref()
+            .is_some_and(|command| command.success));
+        assert_eq!(
+            repair.selected_source_bound_template_symbols,
+            ["ProductPolicy.marker"]
+        );
+        assert_eq!(repair.edit_atom_kinds, ["ATOMIC_MULTI_EDIT", "INSERT"]);
+        assert_eq!(repair.typed_candidates_enumerated, 0);
+        assert!(repair.improvement_operators.is_empty());
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn installed_repository_operator_learns_only_from_post_install_verifier() {
+        let Ok(python) = resolve_local_program("python") else {
+            return;
+        };
+        if !Command::new(&python)
+            .args(["-c", "import pytest"])
+            .status()
+            .is_ok_and(|status| status.success())
+        {
+            return;
+        }
+        let root = temp_root("installed-repository-operator-authority");
+        let (_, mut config) = test_config(&root);
+        config.repository_mutation.enabled = true;
+        let repository = config.watched_roots[0].clone();
+        fs::create_dir_all(repository.join("tests")).unwrap();
+        fs::create_dir_all(config.state_dir.join("diagnostics")).unwrap();
+        fs::write(
+            repository.join("pyproject.toml"),
+            "[build-system]\nrequires = []\nbuild-backend = \"\"\n\n[tool.pytest.ini_options]\ntestpaths = [\"tests\"]\n",
+        )
+        .unwrap();
+        let predecessor = "def add(left, right):\n    return 0\n";
+        fs::write(repository.join("calculator.py"), predecessor).unwrap();
+        fs::write(
+            repository.join("tests/test_calculator.py"),
+            "from calculator import add\n\ndef test_add():\n    assert add(2, 3) == 5\n    assert add(4, 7) == 11\n",
+        )
+        .unwrap();
+        let implementation = LearningObservation {
+            observation_id: "installed-operator-implementation".to_string(),
+            work_event_id: None,
+            logical_path: "ROOT_0/calculator.py".to_string(),
+            content_sha256: sha256(predecessor.as_bytes()),
+            predecessor_content_sha256: Some("e".repeat(64)),
+            actor: WorkActor::LocalTool,
+            work_kind: WorkKind::DefectRepair,
+            work_outcome: WorkOutcome::Unknown,
+            features_before: Some(StructuralFeatures::default()),
+            features_after: StructuralFeatures::default(),
+            signals: vec!["DEFECT_REPAIR".to_string()],
+            composition_roles: vec!["IMPLEMENTATION_REPAIR".to_string()],
+            learning_score: 75,
+            learning_value: LearningValue::High,
+            reasons: vec!["contradicted public arithmetic".to_string()],
+            verification_evidence_sha256: Vec::new(),
+            performance_metrics: Vec::new(),
+            public_contract_deltas: Vec::new(),
+            exact_source_fragments_stored: 0,
+            raw_source_bytes_stored: 0,
+            observed_at_ms: 1,
+        };
+        let test_observation = LearningObservation {
+            observation_id: "installed-operator-test".to_string(),
+            logical_path: "ROOT_0/tests/test_calculator.py".to_string(),
+            work_kind: WorkKind::RegressionTest,
+            signals: vec!["REGRESSION_EVIDENCE".to_string(), "TEST_ADDED".to_string()],
+            composition_roles: vec!["REGRESSION_TEST".to_string()],
+            ..implementation.clone()
+        };
+        let outcome = validate_blocked_repository_cohort(
+            &config,
+            &repository_repair_diagnostic(),
+            &[implementation, test_observation],
+        )
+        .unwrap();
+        assert!(outcome.executed);
+        assert!(outcome.repository_repair_installed);
+        assert!(fs::read_to_string(repository.join("calculator.py"))
+            .unwrap()
+            .contains("_b_core_left + _b_core_right"));
+        let repair = fs::read_dir(config.state_dir.join("diagnostics"))
+            .unwrap()
+            .filter_map(Result::ok)
+            .map(|entry| entry.path())
+            .filter(|path| {
+                path.file_name()
+                    .and_then(OsStr::to_str)
+                    .is_some_and(|name| name.starts_with("repository_repair_synthesis_"))
+                    && path.extension().and_then(OsStr::to_str) == Some("json")
+            })
+            .map(|path| read_json::<RepositoryRepairSynthesisReceipt>(&path).unwrap())
+            .find(|receipt| receipt.source_relative_path == Path::new("calculator.py"))
+            .expect("installed arithmetic repair receipt");
+        let authoritative_output_sha256 = repair
+            .authoritative_command
+            .as_ref()
+            .filter(|command| command.success)
+            .map(|command| command.output_sha256.clone())
+            .expect("authoritative verifier output");
+        assert_eq!(repair.improvement_operators.len(), 1);
+        assert_eq!(
+            repair.improvement_operators[0].evidence_sha256,
+            authoritative_output_sha256
+        );
+        let authority_path = fs::read_dir(source_bound_improvement_operator_authority_directory(
+            &config,
+        ))
+        .unwrap()
+        .filter_map(Result::ok)
+        .map(|entry| entry.path())
+        .next()
+        .expect("installed operator authority");
+        let authority: SourceBoundImprovementOperatorAuthorityReceipt =
+            read_json(&authority_path).unwrap();
+        validate_source_bound_operator_authority(&authority).unwrap();
+        assert_eq!(authority.schema, INSTALLED_TYPED_OPERATOR_AUTHORITY_SCHEMA);
+        assert!(authority.candidate_installed);
+        assert_eq!(authority.authoritative_source_write_events, 1);
+        assert_eq!(authority.sandbox_output_sha256, authoritative_output_sha256);
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn authoritative_repository_failure_rolls_back_verified_sandbox_candidate() {
+        let Ok(python) = resolve_local_program("python") else {
+            return;
+        };
+        if !Command::new(&python)
+            .args(["-c", "import pytest"])
+            .status()
+            .is_ok_and(|status| status.success())
+        {
+            return;
+        }
+        let root = temp_root("authoritative-repository-rollback");
+        let (_, mut config) = test_config(&root);
+        config.repository_mutation.enabled = true;
+        let repository = config.watched_roots[0].clone();
+        fs::create_dir_all(repository.join("tests")).unwrap();
+        fs::create_dir_all(config.state_dir.join("diagnostics")).unwrap();
+        fs::write(
+            repository.join("pyproject.toml"),
+            "[build-system]\nrequires = []\nbuild-backend = \"\"\n\n[tool.pytest.ini_options]\ntestpaths = [\"tests\"]\n",
+        )
+        .unwrap();
+        let predecessor = "class ProductPolicy:\n    pass\n";
+        fs::write(repository.join("policy.py"), predecessor).unwrap();
+        fs::write(
+            repository.join("tests/test_policy.py"),
+            "from pathlib import Path\nfrom policy import ProductPolicy\n\ndef test_policy():\n    assert ProductPolicy.marker == 'ready'\n    assert 'repository_repair_sandboxes' in str(Path.cwd())\n",
+        )
+        .unwrap();
+
+        let outcome = validate_blocked_repository_cohort(
+            &config,
+            &repository_repair_diagnostic(),
+            &class_declaration_repair_cohort(predecessor),
+        )
+        .unwrap();
+        assert!(!outcome.executed);
+        assert!(!outcome.sandbox_repair_verified);
+        assert!(!outcome.repository_repair_installed);
         assert_eq!(
             fs::read_to_string(repository.join("policy.py")).unwrap(),
             predecessor
@@ -11622,17 +12801,183 @@ mod tests {
             })
             .map(|path| read_json::<RepositoryRepairSynthesisReceipt>(&path).unwrap())
             .find(|receipt| receipt.source_relative_path == Path::new("policy.py"))
-            .expect("class declaration repair receipt");
+            .expect("rollback repair receipt");
         assert!(repair.sandbox_verified);
         assert!(repair.sandbox_cleaned);
         assert!(!repair.candidate_installed);
+        assert!(repair.rolled_back);
+        assert_eq!(repair.authoritative_source_write_events, 2);
+        assert!(repair
+            .authoritative_command
+            .as_ref()
+            .is_some_and(|command| !command.success));
         assert_eq!(
-            repair.selected_source_bound_template_symbols,
-            ["ProductPolicy.marker"]
+            repair.failure_code.as_deref(),
+            Some("PUBLIC_INFORMATION_INSUFFICIENT:AUTHORITATIVE_VALIDATION_FAILED")
         );
-        assert_eq!(repair.edit_atom_kinds, ["ATOMIC_MULTI_EDIT", "INSERT"]);
-        assert_eq!(repair.typed_candidates_enumerated, 0);
         assert!(repair.improvement_operators.is_empty());
+        assert_eq!(recover_repository_install_transactions(&config).unwrap(), 0);
+        assert!(!repository_install_transaction_directory(&config)
+            .read_dir()
+            .is_ok_and(|mut entries| entries.next().is_some()));
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn repository_install_journal_recovers_uncommitted_and_finalizes_committed_patch() {
+        let root = temp_root("repository-install-journal-recovery");
+        let (_, mut config) = test_config(&root);
+        config.repository_mutation.enabled = true;
+        let repository = config.watched_roots[0].clone();
+        fs::create_dir_all(&repository).unwrap();
+        let relative = PathBuf::from("policy.py");
+        let target = repository.join(&relative);
+        let predecessor = b"marker = 'old'\n";
+        let candidate_source = "marker = 'candidate'\n";
+        fs::write(&target, predecessor).unwrap();
+        let predecessor_sha256 = sha256(predecessor);
+        let candidate_sha256 = sha256(candidate_source.as_bytes());
+        let scope_paths = vec![relative.clone()];
+        let scope_before = repository_validation_scope_fingerprint(
+            &repository,
+            &scope_paths,
+            config.resources.max_file_bytes,
+        )
+        .unwrap();
+        let repair_id = sha256(b"uncommitted repository install recovery");
+        let (candidate, rollback) = repository_install_sibling_paths(&target, &repair_id).unwrap();
+        let permissions = fs::metadata(&target).unwrap().permissions();
+        let (predecessor_readonly, predecessor_unix_mode) =
+            repository_permission_snapshot(&permissions);
+        write_repository_candidate_sibling(&candidate, candidate_source, permissions).unwrap();
+        let transaction = RepositoryInstallTransaction {
+            schema: REPOSITORY_INSTALL_TRANSACTION_SCHEMA.to_string(),
+            repair_id: repair_id.clone(),
+            root_index: 0,
+            source_relative_path: relative.clone(),
+            predecessor_sha256: predecessor_sha256.clone(),
+            candidate_sha256: candidate_sha256.clone(),
+            scope_fingerprint_before: scope_before,
+            scope_paths: scope_paths.clone(),
+            candidate_file_name: candidate
+                .file_name()
+                .and_then(OsStr::to_str)
+                .unwrap()
+                .to_string(),
+            rollback_file_name: rollback
+                .file_name()
+                .and_then(OsStr::to_str)
+                .unwrap()
+                .to_string(),
+            predecessor_readonly,
+            predecessor_unix_mode,
+            operator_selected: false,
+            codex_calls: 0,
+            external_llm_calls: 0,
+            network_reads: 0,
+            network_writes: 0,
+        };
+        write_immutable_json(
+            &repository_install_transaction_path(&config, &repair_id),
+            &transaction,
+        )
+        .unwrap();
+        fs::rename(&target, &rollback).unwrap();
+        fs::rename(&candidate, &target).unwrap();
+
+        assert_eq!(recover_repository_install_transactions(&config).unwrap(), 1);
+        assert_eq!(fs::read(&target).unwrap(), predecessor);
+        assert!(!candidate.exists());
+        assert!(!rollback.exists());
+
+        let committed_candidate_source = "marker = 'committed'\n";
+        let committed_candidate_sha256 = sha256(committed_candidate_source.as_bytes());
+        let committed_repair_id = sha256(b"committed repository install recovery");
+        let (committed_candidate, committed_rollback) =
+            repository_install_sibling_paths(&target, &committed_repair_id).unwrap();
+        let permissions = fs::metadata(&target).unwrap().permissions();
+        let (predecessor_readonly, predecessor_unix_mode) =
+            repository_permission_snapshot(&permissions);
+        write_repository_candidate_sibling(
+            &committed_candidate,
+            committed_candidate_source,
+            permissions,
+        )
+        .unwrap();
+        let committed_scope_before = repository_validation_scope_fingerprint(
+            &repository,
+            &scope_paths,
+            config.resources.max_file_bytes,
+        )
+        .unwrap();
+        let committed_transaction = RepositoryInstallTransaction {
+            schema: REPOSITORY_INSTALL_TRANSACTION_SCHEMA.to_string(),
+            repair_id: committed_repair_id.clone(),
+            root_index: 0,
+            source_relative_path: relative,
+            predecessor_sha256,
+            candidate_sha256: committed_candidate_sha256.clone(),
+            scope_fingerprint_before: committed_scope_before,
+            scope_paths: scope_paths.clone(),
+            candidate_file_name: committed_candidate
+                .file_name()
+                .and_then(OsStr::to_str)
+                .unwrap()
+                .to_string(),
+            rollback_file_name: committed_rollback
+                .file_name()
+                .and_then(OsStr::to_str)
+                .unwrap()
+                .to_string(),
+            predecessor_readonly,
+            predecessor_unix_mode,
+            operator_selected: false,
+            codex_calls: 0,
+            external_llm_calls: 0,
+            network_reads: 0,
+            network_writes: 0,
+        };
+        let transaction_path = repository_install_transaction_path(&config, &committed_repair_id);
+        write_immutable_json(&transaction_path, &committed_transaction).unwrap();
+        fs::rename(&target, &committed_rollback).unwrap();
+        fs::rename(&committed_candidate, &target).unwrap();
+        let committed_scope_after = repository_validation_scope_fingerprint(
+            &repository,
+            &scope_paths,
+            config.resources.max_file_bytes,
+        )
+        .unwrap();
+        let commit = RepositoryInstallCommitReceipt {
+            schema: REPOSITORY_INSTALL_COMMIT_SCHEMA.to_string(),
+            repair_id: committed_repair_id.clone(),
+            transaction_sha256: json_sha256(&committed_transaction).unwrap(),
+            root_index: 0,
+            source_relative_path: PathBuf::from("policy.py"),
+            predecessor_sha256: sha256(predecessor),
+            candidate_sha256: committed_candidate_sha256,
+            scope_fingerprint_after: committed_scope_after,
+            authoritative_command_sha256: "a".repeat(64),
+            authoritative_source_write_events: 1,
+            operator_selected: false,
+            codex_calls: 0,
+            external_llm_calls: 0,
+            network_reads: 0,
+            network_writes: 0,
+        };
+        write_immutable_json(
+            &repository_install_commit_path(&config, &committed_repair_id),
+            &commit,
+        )
+        .unwrap();
+
+        assert_eq!(recover_repository_install_transactions(&config).unwrap(), 1);
+        assert_eq!(
+            fs::read_to_string(&target).unwrap(),
+            committed_candidate_source
+        );
+        assert!(!committed_candidate.exists());
+        assert!(!committed_rollback.exists());
+        assert!(!transaction_path.exists());
         fs::remove_dir_all(root).unwrap();
     }
 
