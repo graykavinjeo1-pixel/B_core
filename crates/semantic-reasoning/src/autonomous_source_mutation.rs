@@ -49,6 +49,9 @@ pub const SOURCE_REPAIR_LEARNING_SCHEMA: &str = "B_CORE_SOURCE_REPAIR_LEARNING_1
 pub const IMPROVEMENT_OPERATOR_MEMORY_SCHEMA: &str = "B_CORE_IMPROVEMENT_OPERATOR_MEMORY_1";
 pub const MAX_IMPROVEMENT_OPERATOR_GRAPH_NODES: usize = 8;
 const MAX_TYPED_OPERATOR_RECONCILIATION_RECEIPTS: usize = 64;
+// Revision 54 converts rustc/clippy suggestion applicability into a closed
+// typed IR at the observation boundary. Raw protocol text is audit metadata,
+// and a raw/typed mismatch has no source-synthesis authority.
 // Revision 53 gives one language-neutral Rust kernel exclusive authority over
 // source proposal ranking, postimage deduplication, required-group atomic
 // composition, and the bounded top-three surface. Python remains an AST and
@@ -68,7 +71,7 @@ const MAX_TYPED_OPERATOR_RECONCILIATION_RECEIPTS: usize = 64;
 // Revision 47 separates exact authority existence from the bounded active
 // operator window and deduplicates repeated authority receipts.
 // Generator identity remains diagnostic evidence only.
-pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 53;
+pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 54;
 pub const MAX_RETAINED_CONSUMED_RUNTIME_STAGING_GENERATIONS: usize = 2;
 const KNOWN_REMAINDER_PREDICTED_VALUE: u16 = 35;
 const MAX_REPOSITORY_REPAIR_FAMILY_FILES: usize = 16;

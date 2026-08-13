@@ -27,7 +27,7 @@ use crate::structural_source_repair::{
     StructuralRepairProgram,
 };
 
-const CACHE_SCHEMA: &str = "B_CORE_COMPILER_DIAGNOSTIC_CACHE_3";
+const CACHE_SCHEMA: &str = "B_CORE_COMPILER_DIAGNOSTIC_CACHE_4";
 const MAX_DIAGNOSTIC_BYTES: u64 = 16 * 1024 * 1024;
 const MAX_CACHED_SOURCE_STATES: usize = 2;
 const MAX_SUGGESTIONS: usize = 128;
@@ -95,6 +95,38 @@ pub struct CompilerGuidedRepairPolicy<'a> {
     pub max_candidate_bytes: u64,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum CompilerSuggestionApplicabilityIR {
+    MachineApplicable,
+    MaybeIncorrect,
+    HasPlaceholders,
+    Unspecified,
+    Unknown,
+}
+
+impl CompilerSuggestionApplicabilityIR {
+    fn from_rustc_observation(raw: &str) -> Self {
+        match raw {
+            "MachineApplicable" => Self::MachineApplicable,
+            "MaybeIncorrect" => Self::MaybeIncorrect,
+            "HasPlaceholders" => Self::HasPlaceholders,
+            "Unspecified" => Self::Unspecified,
+            _ => Self::Unknown,
+        }
+    }
+
+    fn as_rustc_code(&self) -> &'static str {
+        match self {
+            Self::MachineApplicable => "MachineApplicable",
+            Self::MaybeIncorrect => "MaybeIncorrect",
+            Self::HasPlaceholders => "HasPlaceholders",
+            Self::Unspecified => "Unspecified",
+            Self::Unknown => "Unknown",
+        }
+    }
+}
+
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 pub struct CompilerSuggestion {
     pub level: String,
@@ -104,9 +136,19 @@ pub struct CompilerSuggestion {
     pub byte_start: usize,
     pub byte_end: usize,
     pub replacement: String,
-    pub applicability: String,
+    pub applicability: CompilerSuggestionApplicabilityIR,
+    /// Exact rustc/clippy protocol value. This is audit metadata only; the
+    /// closed typed projection above owns every execution decision.
+    pub raw_applicability: String,
     pub primary: bool,
     pub observation_sha256: String,
+}
+
+impl CompilerSuggestion {
+    fn applicability_projection_is_exact(&self) -> bool {
+        self.applicability
+            == CompilerSuggestionApplicabilityIR::from_rustc_observation(&self.raw_applicability)
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -349,18 +391,20 @@ fn collect_message_suggestions(
             let Some(byte_end) = span.get("byte_end").and_then(JsonValue::as_u64) else {
                 continue;
             };
-            let applicability = span
+            let raw_applicability = span
                 .get("suggestion_applicability")
                 .and_then(JsonValue::as_str)
                 .unwrap_or("Unspecified")
                 .to_string();
+            let applicability =
+                CompilerSuggestionApplicabilityIR::from_rustc_observation(&raw_applicability);
             let primary = span
                 .get("is_primary")
                 .and_then(JsonValue::as_bool)
                 .unwrap_or(false);
             let observation_sha256 = sha256(
                 format!(
-                    "{level}:{code}:{text}:{file_name}:{byte_start}:{byte_end}:{replacement}:{applicability}"
+                    "{level}:{code}:{text}:{file_name}:{byte_start}:{byte_end}:{replacement}:{raw_applicability}"
                 )
                 .as_bytes(),
             );
@@ -373,6 +417,7 @@ fn collect_message_suggestions(
                 byte_end: byte_end.min(usize::MAX as u64) as usize,
                 replacement: replacement.to_string(),
                 applicability,
+                raw_applicability,
                 primary,
                 observation_sha256,
             });
@@ -412,7 +457,9 @@ fn parse_suggestions(output: &[u8]) -> Vec<CompilerSuggestion> {
     suggestions.sort_by_key(|suggestion| {
         (
             if suggestion.level == "error" { 0 } else { 1 },
-            if suggestion.applicability == "MachineApplicable" {
+            if suggestion.applicability == CompilerSuggestionApplicabilityIR::MachineApplicable
+                && suggestion.applicability_projection_is_exact()
+            {
                 0
             } else {
                 1
@@ -522,7 +569,9 @@ fn relative_source_path(root: &Path, diagnostic_path: &str) -> Option<PathBuf> {
 fn predicted_value(suggestion: &CompilerSuggestion) -> u16 {
     if suggestion.level == "error" {
         100
-    } else if suggestion.applicability == "MachineApplicable" {
+    } else if suggestion.applicability == CompilerSuggestionApplicabilityIR::MachineApplicable
+        && suggestion.applicability_projection_is_exact()
+    {
         75
     } else {
         60
@@ -557,7 +606,8 @@ fn is_typed_manual_clamp_lowering(
     source: &str,
 ) -> bool {
     if suggestion.diagnostic_code != "clippy::manual_clamp"
-        || suggestion.applicability != "MaybeIncorrect"
+        || suggestion.applicability != CompilerSuggestionApplicabilityIR::MaybeIncorrect
+        || !suggestion.applicability_projection_is_exact()
         || !replaced_source.starts_with("max(")
     {
         return false;
@@ -604,13 +654,18 @@ fn suggestion_is_executable(
     if has_unresolved_placeholder(&suggestion.replacement) {
         return false;
     }
-    match suggestion.applicability.as_str() {
-        "MachineApplicable" => {
+    if !suggestion.applicability_projection_is_exact() {
+        return false;
+    }
+    match suggestion.applicability {
+        CompilerSuggestionApplicabilityIR::MachineApplicable => {
             // An empty replacement is a valid deletion only when the
             // diagnostic selected an actual source range.
             !suggestion.replacement.is_empty() || suggestion.byte_start < suggestion.byte_end
         }
-        "MaybeIncorrect" => is_typed_manual_clamp_lowering(suggestion, replaced_source, source),
+        CompilerSuggestionApplicabilityIR::MaybeIncorrect => {
+            is_typed_manual_clamp_lowering(suggestion, replaced_source, source)
+        }
         _ => false,
     }
 }
@@ -893,7 +948,7 @@ fn candidate_from_suggestion(
     );
     let solution_strategy = format!(
         "COMPILER_SUGGESTION:{}:{}",
-        suggestion.applicability,
+        suggestion.applicability.as_rustc_code(),
         &sha256(suggestion.replacement.as_bytes())[..12]
     );
     Ok(Some(CompilerGuidedRepairCandidate {
@@ -1002,7 +1057,7 @@ fn family_candidate_from_suggestions(
             .as_bytes(),
     );
     let diagnostic_code = &suggestions[0].diagnostic_code;
-    let applicability = &suggestions[0].applicability;
+    let applicability = suggestions[0].applicability.as_rustc_code();
     let family_size = suggestions.len();
     Ok(Some(CompilerGuidedRepairCandidate {
         relative_path: first_relative_path,
@@ -1085,8 +1140,10 @@ pub fn discover_compiler_guided_repairs(
     let fingerprint = source_fingerprint(policy.source_root)?;
     let cache = load_or_observe(policy, &fingerprint)?;
     let mut candidates = Vec::new();
-    let mut families =
-        std::collections::BTreeMap::<(String, String, String), Vec<&CompilerSuggestion>>::new();
+    let mut families = std::collections::BTreeMap::<
+        (String, String, CompilerSuggestionApplicabilityIR),
+        Vec<&CompilerSuggestion>,
+    >::new();
     for suggestion in &cache.suggestions {
         if let Some(relative_path) = relative_source_path(policy.source_root, &suggestion.file_name)
         {
@@ -1094,7 +1151,7 @@ pub fn discover_compiler_guided_repairs(
                 .entry((
                     relative_path.to_string_lossy().replace('\\', "/"),
                     suggestion.diagnostic_code.clone(),
-                    suggestion.applicability.clone(),
+                    suggestion.applicability,
                 ))
                 .or_default()
                 .push(suggestion);
@@ -1188,7 +1245,11 @@ mod tests {
         assert_eq!(suggestions.len(), 1);
         assert_eq!(suggestions[0].diagnostic_code, "E0308");
         assert_eq!(suggestions[0].replacement, "");
-        assert_eq!(suggestions[0].applicability, "MachineApplicable");
+        assert_eq!(
+            suggestions[0].applicability,
+            CompilerSuggestionApplicabilityIR::MachineApplicable
+        );
+        assert_eq!(suggestions[0].raw_applicability, "MachineApplicable");
     }
 
     #[test]
@@ -1212,7 +1273,8 @@ mod tests {
             byte_start: semicolon,
             byte_end: semicolon + 1,
             replacement: String::new(),
-            applicability: "MachineApplicable".to_string(),
+            applicability: CompilerSuggestionApplicabilityIR::MachineApplicable,
+            raw_applicability: "MachineApplicable".to_string(),
             primary: true,
             observation_sha256: sha256(b"observation"),
         };
@@ -1234,6 +1296,30 @@ mod tests {
         assert_eq!(candidate.predicted_value, 100);
         assert_eq!(candidate.structural_repair_program.file_id, "src/lib.rs");
         fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn raw_applicability_text_cannot_forge_typed_execution_authority() {
+        let source = "pub fn value() -> i32 { 1; }\n";
+        let semicolon = source.find(';').unwrap();
+        let base = CompilerSuggestion {
+            level: "error".to_string(),
+            diagnostic_code: "E0308".to_string(),
+            message: "remove this semicolon".to_string(),
+            file_name: "src/lib.rs".to_string(),
+            byte_start: semicolon,
+            byte_end: semicolon + 1,
+            replacement: String::new(),
+            applicability: CompilerSuggestionApplicabilityIR::MachineApplicable,
+            raw_applicability: "MaybeIncorrect".to_string(),
+            primary: true,
+            observation_sha256: sha256(b"forged-applicability"),
+        };
+        assert!(candidate_fixture("typed-raw-mismatch", source, base.clone()).is_none());
+        let mut raw_only = base;
+        raw_only.applicability = CompilerSuggestionApplicabilityIR::Unknown;
+        raw_only.raw_applicability = "MachineApplicable".to_string();
+        assert!(candidate_fixture("raw-only-authority", source, raw_only).is_none());
     }
 
     fn candidate_fixture(
@@ -1279,7 +1365,8 @@ mod tests {
             byte_start: start,
             byte_end: start + old.len(),
             replacement: "clamp(7, ".to_string(),
-            applicability: "MaybeIncorrect".to_string(),
+            applicability: CompilerSuggestionApplicabilityIR::MaybeIncorrect,
+            raw_applicability: "MaybeIncorrect".to_string(),
             primary: true,
             observation_sha256: sha256(b"typed-clamp"),
         };
@@ -1318,7 +1405,8 @@ mod tests {
                 byte_start: start,
                 byte_end: start + old.len(),
                 replacement: replacement.to_string(),
-                applicability: "MaybeIncorrect".to_string(),
+                applicability: CompilerSuggestionApplicabilityIR::MaybeIncorrect,
+                raw_applicability: "MaybeIncorrect".to_string(),
                 primary: true,
                 observation_sha256: sha256(name.as_bytes()),
             };
@@ -1342,7 +1430,10 @@ mod tests {
                 byte_start: target,
                 byte_end: target + "target()".len(),
                 replacement: replacement.to_string(),
-                applicability: applicability.to_string(),
+                applicability: CompilerSuggestionApplicabilityIR::from_rustc_observation(
+                    applicability,
+                ),
+                raw_applicability: applicability.to_string(),
                 primary: true,
                 observation_sha256: sha256(name.as_bytes()),
             };
@@ -1364,7 +1455,8 @@ mod tests {
             byte_start: start,
             byte_end: start + deleted.len(),
             replacement: String::new(),
-            applicability: "MachineApplicable".to_string(),
+            applicability: CompilerSuggestionApplicabilityIR::MachineApplicable,
+            raw_applicability: "MachineApplicable".to_string(),
             primary: true,
             observation_sha256: sha256(b"deletion"),
         };
@@ -1399,7 +1491,8 @@ mod tests {
                 byte_start: clone_start,
                 byte_end: clone_start + ".clone()".len(),
                 replacement: String::new(),
-                applicability: "MachineApplicable".to_string(),
+                applicability: CompilerSuggestionApplicabilityIR::MachineApplicable,
+                raw_applicability: "MachineApplicable".to_string(),
                 primary: true,
                 observation_sha256: sha256(format!("clone-{index}").as_bytes()),
             });
@@ -1481,7 +1574,8 @@ mod tests {
                     byte_start,
                     byte_end: byte_start + needle.len(),
                     replacement: (*replacement).to_string(),
-                    applicability: "MachineApplicable".to_string(),
+                    applicability: CompilerSuggestionApplicabilityIR::MachineApplicable,
+                    raw_applicability: "MachineApplicable".to_string(),
                     primary: true,
                     observation_sha256: sha256(format!("numeric-{index}").as_bytes()),
                 }
@@ -1589,7 +1683,8 @@ pub fn pair(left: String, right: String) -> Pair {\n\
                 byte_start: clone_start,
                 byte_end: clone_start + ".clone()".len(),
                 replacement: String::new(),
-                applicability: "MachineApplicable".to_string(),
+                applicability: CompilerSuggestionApplicabilityIR::MachineApplicable,
+                raw_applicability: "MachineApplicable".to_string(),
                 primary: true,
                 observation_sha256: sha256(format!("field-clone-{index}").as_bytes()),
             });
@@ -1638,7 +1733,8 @@ pub fn pair(left: String, right: String) -> Pair {\n\
             byte_start: start,
             byte_end: end,
             replacement: format!("fused_{id}()"),
-            applicability: "MachineApplicable".to_string(),
+            applicability: CompilerSuggestionApplicabilityIR::MachineApplicable,
+            raw_applicability: "MachineApplicable".to_string(),
             primary: true,
             observation_sha256: sha256(id.as_bytes()),
         };

@@ -1150,6 +1150,8 @@ pub struct SelfCheck {
     pub all_language_source_proposals_share_one_rust_kernel: bool,
     pub required_composition_groups_owned_by_rust_kernel: bool,
     pub language_frontends_cannot_rank_or_merge_source_proposals: bool,
+    pub compiler_applicability_authority_is_typed: bool,
+    pub raw_compiler_applicability_is_metadata_only: bool,
     pub generative_execution_dispatch_uses_typed_rust_ir: bool,
     pub generative_stage_strings_are_metadata_only: bool,
     pub python_host_failure_ontology_owned_by_rust_kernel: bool,
@@ -1273,6 +1275,8 @@ pub fn self_check() -> SelfCheck {
         all_language_source_proposals_share_one_rust_kernel: true,
         required_composition_groups_owned_by_rust_kernel: true,
         language_frontends_cannot_rank_or_merge_source_proposals: true,
+        compiler_applicability_authority_is_typed: true,
+        raw_compiler_applicability_is_metadata_only: true,
         generative_execution_dispatch_uses_typed_rust_ir: true,
         generative_stage_strings_are_metadata_only: true,
         python_host_failure_ontology_owned_by_rust_kernel: true,
@@ -11326,6 +11330,8 @@ mod tests {
         assert!(check.all_language_source_proposals_share_one_rust_kernel);
         assert!(check.required_composition_groups_owned_by_rust_kernel);
         assert!(check.language_frontends_cannot_rank_or_merge_source_proposals);
+        assert!(check.compiler_applicability_authority_is_typed);
+        assert!(check.raw_compiler_applicability_is_metadata_only);
         assert!(check.generative_execution_dispatch_uses_typed_rust_ir);
         assert!(check.generative_stage_strings_are_metadata_only);
         assert!(check.python_host_failure_ontology_owned_by_rust_kernel);
