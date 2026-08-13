@@ -2112,15 +2112,23 @@ fn validate_synthesis_source_seed_binding(
     synthesis: &TypedMechanismSynthesisReceiptIR,
 ) -> Result<(), CausalFrontendFailure> {
     let seeds = source_bound_template_seeds(template)?;
-    let expected = format!("SOURCE_SEED_SET_SHA256:{}", source_seed_set_sha256(&seeds)?);
+    let expected_template = format!("SOURCE_TEMPLATE_SHA256:{}", template.source_template_sha256);
+    let expected_seed_hash = format!("SOURCE_SEED_SET_SHA256:{}", source_seed_set_sha256(&seeds)?);
+    let expected_seed_count = format!("SOURCE_SEED_COUNT:{}", seeds.len());
     let request = synthesis
         .synthesis_request
         .as_ref()
         .ok_or_else(|| CausalFrontendFailure::conflict("SOURCE_SEED_SYNTHESIS_REQUEST_MISSING"))?;
-    if !request.provenance.contains(&expected)
-        || !request
+    let exact_single_binding = |prefix: &str, expected: &str| {
+        let mut observed = request
             .provenance
-            .contains(&format!("SOURCE_SEED_COUNT:{}", seeds.len()))
+            .iter()
+            .filter(|item| item.starts_with(prefix));
+        observed.next().is_some_and(|item| item == expected) && observed.next().is_none()
+    };
+    if !exact_single_binding("SOURCE_TEMPLATE_SHA256:", &expected_template)
+        || !exact_single_binding("SOURCE_SEED_SET_SHA256:", &expected_seed_hash)
+        || !exact_single_binding("SOURCE_SEED_COUNT:", &expected_seed_count)
     {
         return Err(CausalFrontendFailure::conflict(
             "SOURCE_SEED_SYNTHESIS_BINDING",
@@ -3820,6 +3828,27 @@ def transformer_visitor(value: int, baseline: int) -> int:
             validate_source_bound_causal_receipt(&forged_seed_binding, source).unwrap_err(),
             CausalFrontendFailure::conflict("SOURCE_SEED_SYNTHESIS_BINDING")
         );
+        for conflicting_binding in [
+            "SOURCE_TEMPLATE_SHA256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+            "SOURCE_SEED_SET_SHA256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+            "SOURCE_SEED_COUNT:999",
+        ] {
+            let mut forged_duplicate_binding = receipt.clone();
+            forged_duplicate_binding.alternatives[0]
+                .synthesis
+                .synthesis_request
+                .as_mut()
+                .unwrap()
+                .provenance
+                .push(conflicting_binding.to_string());
+            forged_duplicate_binding.receipt_sha256 =
+                source_bound_receipt_hash(&forged_duplicate_binding).unwrap();
+            assert_eq!(
+                validate_source_bound_causal_receipt(&forged_duplicate_binding, source)
+                    .unwrap_err(),
+                CausalFrontendFailure::conflict("SOURCE_SEED_SYNTHESIS_BINDING")
+            );
+        }
         let mut forged_owner = receipt.clone();
         forged_owner.alternatives[0].function_template.owner = "Shadow".to_string();
         forged_owner.receipt_sha256 = source_bound_receipt_hash(&forged_owner).unwrap();

@@ -44,10 +44,10 @@ pub const SOURCE_REPAIR_LEARNING_SCHEMA: &str = "B_CORE_SOURCE_REPAIR_LEARNING_1
 pub const IMPROVEMENT_OPERATOR_MEMORY_SCHEMA: &str = "B_CORE_IMPROVEMENT_OPERATOR_MEMORY_1";
 pub const MAX_IMPROVEMENT_OPERATOR_GRAPH_NODES: usize = 8;
 const MAX_TYPED_OPERATOR_RECONCILIATION_RECEIPTS: usize = 64;
-// Revision 32 makes typed integer arithmetic semantics identical across the
-// evaluator and Rust/Python lowering, including negative division/remainder
-// and overflow, while rejecting Python-only floor/modulo source seeds.
-pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 32;
+// Revision 33 rejects ambiguous duplicate source-template and source-seed
+// provenance bindings before a causal synthesis receipt can be replayed or
+// promoted.
+pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 33;
 const KNOWN_REMAINDER_PREDICTED_VALUE: u16 = 35;
 const MAX_REPOSITORY_REPAIR_FAMILY_FILES: usize = 16;
 const KNOWN_REMAINDER_STRATEGIES: [&str; 4] = [
