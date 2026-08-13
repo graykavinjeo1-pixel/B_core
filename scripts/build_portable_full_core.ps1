@@ -319,6 +319,9 @@ if (-not $growthSelfCheck.pass -or
     -not $growthSelfCheck.core_self_approval_enabled -or
     -not $growthSelfCheck.autonomous_source_patch_install_enabled -or
     -not $growthSelfCheck.source_patch_rollback_enabled -or
+    -not $growthSelfCheck.compound_growth_runs_inside_supervisor_loop -or
+    -not $growthSelfCheck.compound_repository_authority_is_supervisor_owned -or
+    -not $growthSelfCheck.compound_growth_requires_typed_hashed_evidence -or
     -not $growthSelfCheck.semantic_duplicate_promotion_blocked -or
     -not $growthSelfCheck.measured_performance_evidence_supported) {
     throw "GROWTH_SUPERVISOR_BOUNDARY_CHECK_FAILED"

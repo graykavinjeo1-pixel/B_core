@@ -2,12 +2,15 @@ use std::env;
 use std::path::PathBuf;
 
 use semantic_reasoning::compound_growth::{
-    run_compound_growth_cycle, CompoundGrowthCycleRequestIR,
+    run_compound_growth_cycle, CompoundGrowthCycleRequestIR, CompoundGrowthInputIR,
 };
 use semantic_reasoning::growth_supervisor::{
-    cleanup_source_staging, initialize, make_config, preview_source_repair, record_work_event,
-    request_resume, request_stop, run_daemon, self_check, status, supervisor_step, WorkEvent,
+    cleanup_source_staging, compound_growth_status, initialize, make_config, preview_source_repair,
+    record_compound_growth_input, record_work_event, request_resume, request_stop, run_daemon,
+    self_check, status, supervisor_step, WorkEvent,
 };
+
+const MAX_COMPOUND_INPUT_BYTES: u64 = 16 * 1024 * 1024;
 
 fn main() {
     if let Err(error) = run() {
@@ -123,6 +126,43 @@ fn run() -> Result<(), String> {
                     .map_err(|e| e.to_string())?
             );
         }
+        "record-compound-input" => {
+            let config = next_path(&mut args, "CONFIG_PATH_MISSING")?;
+            let input_path = next_path(&mut args, "COMPOUND_INPUT_PATH_MISSING")?;
+            ensure_no_more(&mut args)?;
+            let metadata = std::fs::symlink_metadata(&input_path)
+                .map_err(|e| format!("COMPOUND_INPUT_METADATA:{}:{e}", input_path.display()))?;
+            if !metadata.file_type().is_file()
+                || metadata.file_type().is_symlink()
+                || metadata.len() > MAX_COMPOUND_INPUT_BYTES
+            {
+                return Err(format!(
+                    "COMPOUND_INPUT_NOT_BOUNDED_REGULAR_FILE:{}",
+                    input_path.display()
+                ));
+            }
+            let bytes = std::fs::read(&input_path)
+                .map_err(|e| format!("COMPOUND_INPUT_READ:{}:{e}", input_path.display()))?;
+            if bytes.len() as u64 > MAX_COMPOUND_INPUT_BYTES {
+                return Err("COMPOUND_INPUT_TOO_LARGE".to_string());
+            }
+            let input: CompoundGrowthInputIR =
+                serde_json::from_slice(&bytes).map_err(|e| format!("COMPOUND_INPUT_JSON:{e}"))?;
+            println!(
+                "{}",
+                serde_json::to_string_pretty(&record_compound_growth_input(&config, input)?)
+                    .map_err(|e| e.to_string())?
+            );
+        }
+        "compound-status" => {
+            let config = next_path(&mut args, "CONFIG_PATH_MISSING")?;
+            ensure_no_more(&mut args)?;
+            println!(
+                "{}",
+                serde_json::to_string_pretty(&compound_growth_status(&config)?)
+                    .map_err(|e| e.to_string())?
+            );
+        }
         "compound-cycle" => {
             let request_path = next_path(&mut args, "COMPOUND_REQUEST_PATH_MISSING")?;
             ensure_no_more(&mut args)?;
@@ -159,5 +199,5 @@ fn ensure_no_more(args: &mut impl Iterator<Item = std::ffi::OsString>) -> Result
 }
 
 fn usage() -> String {
-    "USAGE:<self-check|make-config|init|step|run|status|cleanup-source-staging|preview-source-repair|stop|resume|record-event|compound-cycle> ...".to_string()
+    "USAGE:<self-check|make-config|init|step|run|status|cleanup-source-staging|preview-source-repair|stop|resume|record-event|record-compound-input|compound-status|compound-cycle> ...".to_string()
 }

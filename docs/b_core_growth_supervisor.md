@@ -71,6 +71,31 @@ Only the current and immediate predecessor full memory snapshots are retained. S
 .\bin\b-core-growth-supervisor.exe stop .\config\growth.json
 ```
 
+### Compound reasoning integration
+
+The normal `step` and `run` paths also consume bounded compound-growth inputs.
+An input must contain typed mechanisms, execution traces, hypotheses,
+counterexamples, source bindings, or operator outcomes together with hashed
+evidence. The caller cannot provide the generation or replace the accumulated
+operator repository; both are supplied by the Supervisor's local sealed state.
+
+```powershell
+# Queue typed evidence. The ordinary Supervisor loop commits it once.
+.\bin\b-core-growth-supervisor.exe record-compound-input `
+  .\config\growth.json `
+  .\compound-input.json
+
+# Inspect the canonical bounded repository and latest cycle.
+.\bin\b-core-growth-supervisor.exe compound-status .\config\growth.json
+```
+
+Committed inputs and deterministic cycle results form an immutable hash chain
+under the Supervisor state directory. Text-only inputs, missing evidence,
+duplicate identities with different content, and caller-supplied repository
+authority fail closed. Compound cycles perform no network or external-model
+calls and do not install source changes without the existing atomic validation
+and rollback path.
+
 Use `tools\install-growth-autostart.ps1` to register a limited-privilege `ONLOGON` scheduled task. Registration is never performed automatically by the package.
 
 ## Work-event integration

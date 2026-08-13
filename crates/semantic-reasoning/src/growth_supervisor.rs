@@ -17,6 +17,7 @@ use std::sync::mpsc::{self, RecvTimeoutError};
 use std::thread;
 use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
 
+use serde::de::DeserializeOwned;
 use serde::{Deserialize, Serialize};
 
 use crate::autonomous_self_inspection::{
@@ -34,6 +35,10 @@ use crate::autonomous_source_mutation::{
     AutonomousSourcePatchReceipt, AutonomousSourcePatchRequest, ChangeOpportunityKind,
     ImprovementOperatorGeneratorKind, ImprovementOperatorIR, LocalCommandReceipt,
     SourceMutationStagingCleanup, SOURCE_REPAIR_ENGINE_REVISION,
+};
+use crate::compound_growth::{
+    run_compound_growth_input, CompoundGrowthCycleIR, CompoundGrowthInputIR,
+    CompoundOperatorRepositoryIR, COMPOUND_GROWTH_INPUT_SCHEMA,
 };
 use crate::generative_growth::{
     executable_generative_substrate_available, promote_generative_cycle, run_generative_cycle,
@@ -65,6 +70,11 @@ use crate::structural_source_repair::SourceEditAtom;
 pub const SUPERVISOR_SCHEMA: &str = "B_CORE_BOUNDED_GROWTH_SUPERVISOR_1";
 pub const CONFIG_SCHEMA: &str = "B_CORE_BOUNDED_GROWTH_CONFIG_1";
 pub const VERIFIER_SCHEMA: &str = "B_CORE_BOUNDED_GROWTH_VERIFIER_1";
+pub const COMPOUND_GROWTH_INTEGRATION_SCHEMA: &str = "B_CORE_COMPOUND_GROWTH_INTEGRATION_1";
+const MAX_COMPOUND_INPUTS_PER_STEP: usize = 8;
+const MAX_PENDING_COMPOUND_INPUTS: usize = 256;
+const MAX_COMPOUND_INPUT_BYTES: u64 = 16 * 1024 * 1024;
+const MAX_COMPOUND_RECEIPT_BYTES: u64 = 64 * 1024 * 1024;
 const MAX_SUMMARY_BYTES: usize = 512;
 const SOURCE_PATCH_VALIDATION_CONTRACT_REVISION: u64 = 2;
 const SCAN_WATCHDOG_TICK_MS: u64 = 1_000;
@@ -729,6 +739,36 @@ pub struct GrowthMemory {
     pub generative: GenerativeGrowthMemory,
 }
 
+/// Immutable bridge receipt proving that one typed compound-growth input was
+/// evaluated inside the ordinary Supervisor loop against the exact preceding
+/// operator repository. The complete input is retained for deterministic
+/// replay; prose never substitutes for its typed evidence.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct CompoundGrowthIntegrationReceipt {
+    pub schema: String,
+    pub sequence: u64,
+    pub generation: u64,
+    pub input: CompoundGrowthInputIR,
+    pub input_sha256: String,
+    pub predecessor_repository_sha256: String,
+    pub predecessor_receipt_sha256: Option<String>,
+    pub cycle: CompoundGrowthCycleIR,
+    pub receipt_sha256: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct CompoundGrowthIntegrationStatus {
+    pub schema: String,
+    pub cycles_committed: u64,
+    pub pending_inputs: usize,
+    pub repository_profiles: usize,
+    pub productive_composite_graphs: usize,
+    pub latest_cycle_sha256: Option<String>,
+    pub latest_receipt_sha256: Option<String>,
+    pub external_model_calls: usize,
+    pub text_only_growth_events: usize,
+}
+
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct EvaluatorMemory {
     pub schema: String,
@@ -1165,6 +1205,9 @@ pub struct SelfCheck {
     pub operator_repository_requires_executed_receipt: bool,
     pub generative_substrate_capacity_isolated: bool,
     pub saturated_substrate_routes_without_difficulty_escalation: bool,
+    pub compound_growth_runs_inside_supervisor_loop: bool,
+    pub compound_repository_authority_is_supervisor_owned: bool,
+    pub compound_growth_requires_typed_hashed_evidence: bool,
     pub evaluator_expansion_requires_new_challenge_capability: bool,
     pub mutual_recursive_growth_observed: bool,
 }
@@ -1292,6 +1335,9 @@ pub fn self_check() -> SelfCheck {
         operator_repository_requires_executed_receipt: true,
         generative_substrate_capacity_isolated: true,
         saturated_substrate_routes_without_difficulty_escalation: true,
+        compound_growth_runs_inside_supervisor_loop: true,
+        compound_repository_authority_is_supervisor_owned: true,
+        compound_growth_requires_typed_hashed_evidence: true,
         evaluator_expansion_requires_new_challenge_capability: true,
         mutual_recursive_growth_observed: false,
     }
@@ -1354,6 +1400,268 @@ fn file_sha256(path: &Path, max_bytes: u64) -> Result<String, String> {
     fs::read(path)
         .map(|bytes| sha256(&bytes))
         .map_err(|error| format!("READ:{}:{error}", path.display()))
+}
+
+fn compound_growth_root(config: &GrowthSupervisorConfig) -> PathBuf {
+    config.state_dir.join("compound_growth")
+}
+
+fn compound_growth_queue(config: &GrowthSupervisorConfig) -> PathBuf {
+    compound_growth_root(config).join("queue")
+}
+
+fn compound_growth_receipts(config: &GrowthSupervisorConfig) -> PathBuf {
+    compound_growth_root(config).join("receipts")
+}
+
+fn compound_receipt_hash(receipt: &CompoundGrowthIntegrationReceipt) -> Result<String, String> {
+    let mut unsigned = receipt.clone();
+    unsigned.receipt_sha256.clear();
+    json_sha256(&unsigned)
+}
+
+fn read_bounded_compound_json<T: DeserializeOwned>(
+    path: &Path,
+    max_bytes: u64,
+    label: &str,
+) -> Result<T, String> {
+    let metadata = fs::symlink_metadata(path)
+        .map_err(|error| format!("{label}_METADATA:{}:{error}", path.display()))?;
+    if !metadata.file_type().is_file() || metadata.file_type().is_symlink() {
+        return Err(format!("{label}_NOT_REGULAR_FILE:{}", path.display()));
+    }
+    if metadata.len() > max_bytes {
+        return Err(format!("{label}_TOO_LARGE:{}", path.display()));
+    }
+    let mut bytes = Vec::with_capacity(metadata.len().min(max_bytes) as usize);
+    File::open(path)
+        .map_err(|error| format!("{label}_OPEN:{}:{error}", path.display()))?
+        .take(max_bytes.saturating_add(1))
+        .read_to_end(&mut bytes)
+        .map_err(|error| format!("{label}_READ:{}:{error}", path.display()))?;
+    if bytes.len() as u64 > max_bytes {
+        return Err(format!("{label}_TOO_LARGE:{}", path.display()));
+    }
+    serde_json::from_slice(&bytes)
+        .map_err(|error| format!("{label}_JSON:{}:{error}", path.display()))
+}
+
+fn compound_receipt_files(config: &GrowthSupervisorConfig) -> Result<Vec<PathBuf>, String> {
+    let directory = compound_growth_receipts(config);
+    if !directory.exists() {
+        return Ok(Vec::new());
+    }
+    let mut paths = fs::read_dir(&directory)
+        .map_err(|error| format!("COMPOUND_RECEIPT_DIR_READ:{error}"))?
+        .collect::<Result<Vec<_>, _>>()
+        .map_err(|error| format!("COMPOUND_RECEIPT_ENTRY:{error}"))?
+        .into_iter()
+        .filter(|entry| {
+            entry
+                .file_type()
+                .map(|kind| kind.is_file() && !kind.is_symlink())
+                .unwrap_or(false)
+                && entry.path().extension().and_then(OsStr::to_str) == Some("json")
+        })
+        .map(|entry| entry.path())
+        .collect::<Vec<_>>();
+    paths.sort();
+    Ok(paths)
+}
+
+fn load_compound_growth_receipts(
+    config: &GrowthSupervisorConfig,
+) -> Result<Vec<CompoundGrowthIntegrationReceipt>, String> {
+    let mut receipts = Vec::new();
+    let mut repository = CompoundOperatorRepositoryIR::default();
+    let mut predecessor_receipt_sha256 = None;
+    for (index, path) in compound_receipt_files(config)?.into_iter().enumerate() {
+        let receipt: CompoundGrowthIntegrationReceipt =
+            read_bounded_compound_json(&path, MAX_COMPOUND_RECEIPT_BYTES, "COMPOUND_RECEIPT")?;
+        let expected_sequence = u64::try_from(index).unwrap_or(u64::MAX).saturating_add(1);
+        let input_sha256 = json_sha256(&receipt.input)?;
+        let expected_cycle =
+            run_compound_growth_input(receipt.generation, &repository, &receipt.input)?;
+        if receipt.schema != COMPOUND_GROWTH_INTEGRATION_SCHEMA
+            || receipt.sequence != expected_sequence
+            || receipt.input.schema != COMPOUND_GROWTH_INPUT_SCHEMA
+            || receipt.input_sha256 != input_sha256
+            || receipt.predecessor_repository_sha256 != repository.repository_sha256
+            || receipt.predecessor_receipt_sha256 != predecessor_receipt_sha256
+            || receipt.cycle != expected_cycle
+            || receipt.receipt_sha256 != compound_receipt_hash(&receipt)?
+        {
+            return Err(format!(
+                "COMPOUND_GROWTH_RECEIPT_CHAIN_INVALID:{}",
+                path.display()
+            ));
+        }
+        repository = receipt.cycle.repository.clone();
+        predecessor_receipt_sha256 = Some(receipt.receipt_sha256.clone());
+        receipts.push(receipt);
+    }
+    Ok(receipts)
+}
+
+fn pending_compound_input_files(config: &GrowthSupervisorConfig) -> Result<Vec<PathBuf>, String> {
+    let directory = compound_growth_queue(config);
+    fs::create_dir_all(&directory).map_err(|error| format!("COMPOUND_QUEUE_CREATE:{error}"))?;
+    let mut paths = fs::read_dir(&directory)
+        .map_err(|error| format!("COMPOUND_QUEUE_READ:{error}"))?
+        .collect::<Result<Vec<_>, _>>()
+        .map_err(|error| format!("COMPOUND_QUEUE_ENTRY:{error}"))?
+        .into_iter()
+        .filter(|entry| {
+            entry
+                .file_type()
+                .map(|kind| kind.is_file() && !kind.is_symlink())
+                .unwrap_or(false)
+                && entry.path().extension().and_then(OsStr::to_str) == Some("json")
+        })
+        .map(|entry| entry.path())
+        .collect::<Vec<_>>();
+    paths.sort();
+    Ok(paths)
+}
+
+fn compound_growth_status_for_config(
+    config: &GrowthSupervisorConfig,
+) -> Result<CompoundGrowthIntegrationStatus, String> {
+    let receipts = load_compound_growth_receipts(config)?;
+    let latest = receipts.last();
+    Ok(CompoundGrowthIntegrationStatus {
+        schema: COMPOUND_GROWTH_INTEGRATION_SCHEMA.to_string(),
+        cycles_committed: receipts.len().min(u64::MAX as usize) as u64,
+        pending_inputs: pending_compound_input_files(config)?.len(),
+        repository_profiles: latest
+            .map(|receipt| receipt.cycle.repository.profiles.len())
+            .unwrap_or(0),
+        productive_composite_graphs: latest
+            .map(|receipt| receipt.cycle.productive_composite_graphs.len())
+            .unwrap_or(0),
+        latest_cycle_sha256: latest.map(|receipt| receipt.cycle.cycle_sha256.clone()),
+        latest_receipt_sha256: latest.map(|receipt| receipt.receipt_sha256.clone()),
+        external_model_calls: latest
+            .map(|receipt| receipt.cycle.external_model_calls)
+            .unwrap_or(0),
+        text_only_growth_events: latest
+            .map(|receipt| receipt.cycle.text_only_growth_events)
+            .unwrap_or(0),
+    })
+}
+
+pub fn compound_growth_status(
+    config_path: &Path,
+) -> Result<CompoundGrowthIntegrationStatus, String> {
+    let config = load_config(config_path)?;
+    let _ = initialize(config_path)?;
+    compound_growth_status_for_config(&config)
+}
+
+pub fn record_compound_growth_input(
+    config_path: &Path,
+    input: CompoundGrowthInputIR,
+) -> Result<serde_json::Value, String> {
+    let config = load_config(config_path)?;
+    let state = initialize(config_path)?;
+    let receipts = load_compound_growth_receipts(&config)?;
+    let repository = receipts
+        .last()
+        .map(|receipt| receipt.cycle.repository.clone())
+        .unwrap_or_default();
+    let input_sha256 = json_sha256(&input)?;
+    if let Some(existing) = receipts
+        .iter()
+        .find(|receipt| receipt.input.input_id == input.input_id)
+    {
+        if existing.input_sha256 != input_sha256 {
+            return Err("COMPOUND_INPUT_ID_COLLISION".to_string());
+        }
+        return Ok(serde_json::json!({
+            "queued": false,
+            "already_committed": true,
+            "input_id": input.input_id,
+            "input_sha256": input_sha256,
+            "receipt_sha256": existing.receipt_sha256,
+        }));
+    }
+    // Validation is read-only. The normal Supervisor step remains the only
+    // authority that can commit the resulting repository transition.
+    let _ = run_compound_growth_input(state.generation, &repository, &input)?;
+    let queue = pending_compound_input_files(&config)?;
+    if queue.len() >= MAX_PENDING_COMPOUND_INPUTS {
+        return Err("COMPOUND_INPUT_QUEUE_BOUND_REACHED".to_string());
+    }
+    let path = compound_growth_queue(&config).join(format!("input_{input_sha256}.json"));
+    if path.exists() {
+        let existing: CompoundGrowthInputIR =
+            read_bounded_compound_json(&path, MAX_COMPOUND_INPUT_BYTES, "COMPOUND_INPUT")?;
+        if existing != input {
+            return Err("COMPOUND_INPUT_QUEUE_HASH_COLLISION".to_string());
+        }
+    } else {
+        write_immutable_json(&path, &input)?;
+    }
+    Ok(serde_json::json!({
+        "queued": true,
+        "already_committed": false,
+        "input_id": input.input_id,
+        "input_sha256": input_sha256,
+        "path": path,
+    }))
+}
+
+fn process_pending_compound_growth(
+    config: &GrowthSupervisorConfig,
+    generation: u64,
+) -> Result<usize, String> {
+    let mut receipts = load_compound_growth_receipts(config)?;
+    let mut processed = 0_usize;
+    for path in pending_compound_input_files(config)?
+        .into_iter()
+        .take(MAX_COMPOUND_INPUTS_PER_STEP)
+    {
+        let input: CompoundGrowthInputIR =
+            read_bounded_compound_json(&path, MAX_COMPOUND_INPUT_BYTES, "COMPOUND_INPUT")?;
+        let input_sha256 = json_sha256(&input)?;
+        if let Some(existing) = receipts
+            .iter()
+            .find(|receipt| receipt.input.input_id == input.input_id)
+        {
+            if existing.input_sha256 != input_sha256 {
+                return Err("COMPOUND_INPUT_ID_COLLISION".to_string());
+            }
+            fs::remove_file(&path).map_err(|error| format!("COMPOUND_QUEUE_CONSUME:{error}"))?;
+            continue;
+        }
+        let repository = receipts
+            .last()
+            .map(|receipt| receipt.cycle.repository.clone())
+            .unwrap_or_default();
+        let cycle = run_compound_growth_input(generation, &repository, &input)?;
+        let sequence = (receipts.len().min(u64::MAX as usize) as u64).saturating_add(1);
+        let mut receipt = CompoundGrowthIntegrationReceipt {
+            schema: COMPOUND_GROWTH_INTEGRATION_SCHEMA.to_string(),
+            sequence,
+            generation,
+            input,
+            input_sha256,
+            predecessor_repository_sha256: repository.repository_sha256.clone(),
+            predecessor_receipt_sha256: receipts
+                .last()
+                .map(|receipt| receipt.receipt_sha256.clone()),
+            cycle,
+            receipt_sha256: String::new(),
+        };
+        receipt.receipt_sha256 = compound_receipt_hash(&receipt)?;
+        let receipt_path =
+            compound_growth_receipts(config).join(format!("receipt_{sequence:020}.json"));
+        write_immutable_json(&receipt_path, &receipt)?;
+        receipts.push(receipt);
+        fs::remove_file(&path).map_err(|error| format!("COMPOUND_QUEUE_CONSUME:{error}"))?;
+        processed = processed.saturating_add(1);
+    }
+    Ok(processed)
 }
 
 fn validate_config(config: &GrowthSupervisorConfig) -> Result<(), String> {
@@ -2750,6 +3058,8 @@ pub fn initialize(config_path: &Path) -> Result<SupervisorState, String> {
         "invalidated_generations",
         "control",
         "source_mutations",
+        "compound_growth/queue",
+        "compound_growth/receipts",
     ] {
         fs::create_dir_all(config.state_dir.join(directory))
             .map_err(|error| format!("STATE_DIR_CREATE:{directory}:{error}"))?;
@@ -9920,6 +10230,17 @@ fn step_without_lease(
         return Ok(report_from_state(&state, false, 0, 0, 0, None, None));
     }
 
+    let compound_inputs_processed = process_pending_compound_growth(config, state.generation)?;
+    if compound_inputs_processed > 0 {
+        let phase = state.phase;
+        save_transition(
+            config,
+            &mut state,
+            phase,
+            "TYPED_COMPOUND_GROWTH_EVIDENCE_COMMITTED_IN_SUPERVISOR_LOOP",
+        )?;
+    }
+
     let mut index = load_index(config)?;
     if state.pending_campaign_id.is_some() {
         let pending_id = state.pending_campaign_id.clone();
@@ -10487,6 +10808,90 @@ mod tests {
             max_candidates: 1_024,
             provenance: vec!["PUBLIC_CONTRACT_DELTA".to_string()],
         }
+    }
+
+    fn compound_input_fixture(input_id: &str) -> CompoundGrowthInputIR {
+        use crate::compound_growth::{
+            ActiveExperimentCandidateIR, ExperimentPredictionIR, HypothesisIR,
+        };
+
+        CompoundGrowthInputIR {
+            schema: COMPOUND_GROWTH_INPUT_SCHEMA.to_string(),
+            input_id: input_id.to_string(),
+            evidence_sha256: vec![sha256(format!("evidence:{input_id}").as_bytes())],
+            mechanisms: Vec::new(),
+            execution_traces: Vec::new(),
+            promotion_evidence: Vec::new(),
+            source_bindings: Vec::new(),
+            hypotheses: vec![
+                HypothesisIR {
+                    hypothesis_id: "BOTTLENECK-IO".to_string(),
+                },
+                HypothesisIR {
+                    hypothesis_id: "BOTTLENECK-COMPUTE".to_string(),
+                },
+            ],
+            experiment_candidates: vec![ActiveExperimentCandidateIR {
+                experiment_id: "READ-ONLY-PROFILE".to_string(),
+                predictions: vec![
+                    ExperimentPredictionIR {
+                        hypothesis_id: "BOTTLENECK-IO".to_string(),
+                        observation_signature: "IO-WAIT-HIGH".to_string(),
+                    },
+                    ExperimentPredictionIR {
+                        hypothesis_id: "BOTTLENECK-COMPUTE".to_string(),
+                        observation_signature: "CPU-TIME-HIGH".to_string(),
+                    },
+                ],
+                reliability_millis: 900,
+                cost_millis: 10,
+                risk_millis: 0,
+                read_only: true,
+            }],
+            counterexamples: Vec::new(),
+            revision_candidates: Vec::new(),
+            operator_outcomes: Vec::new(),
+        }
+    }
+
+    #[test]
+    fn ordinary_supervisor_step_commits_typed_compound_growth_input_once() {
+        let root = temp_root("compound-supervisor-loop");
+        let (config_path, _) = test_config(&root);
+        let input = compound_input_fixture("INPUT-READ-ONLY-BOTTLENECK");
+        let queued = record_compound_growth_input(&config_path, input.clone()).unwrap();
+        assert_eq!(queued["queued"], true);
+        assert_eq!(
+            compound_growth_status(&config_path).unwrap().pending_inputs,
+            1
+        );
+
+        supervisor_step(&config_path).unwrap();
+        let status = compound_growth_status(&config_path).unwrap();
+        assert_eq!(status.cycles_committed, 1);
+        assert_eq!(status.pending_inputs, 0);
+        assert_eq!(status.external_model_calls, 0);
+        assert_eq!(status.text_only_growth_events, 0);
+        let receipts = load_compound_growth_receipts(&load_config(&config_path).unwrap()).unwrap();
+        assert_eq!(
+            receipts[0]
+                .cycle
+                .selected_experiment
+                .as_ref()
+                .map(|selection| selection.experiment_id.as_str()),
+            Some("READ-ONLY-PROFILE")
+        );
+
+        let duplicate = record_compound_growth_input(&config_path, input).unwrap();
+        assert_eq!(duplicate["already_committed"], true);
+        supervisor_step(&config_path).unwrap();
+        assert_eq!(
+            compound_growth_status(&config_path)
+                .unwrap()
+                .cycles_committed,
+            1
+        );
+        fs::remove_dir_all(root).unwrap();
     }
 
     fn public_contract_delta_fixture() -> PublicContractDeltaIR {

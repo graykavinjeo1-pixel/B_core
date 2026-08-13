@@ -27,6 +27,7 @@ use crate::self_repair_contract::sha256;
 use crate::structural_source_repair::StructuralRepairProgram;
 
 pub const COMPOUND_GROWTH_SCHEMA: &str = "B_CORE_COMPOUND_GROWTH_IR_1";
+pub const COMPOUND_GROWTH_INPUT_SCHEMA: &str = "B_CORE_COMPOUND_GROWTH_INPUT_IR_1";
 pub const COMPOUND_OPERATOR_REPOSITORY_SCHEMA: &str = "B_CORE_COMPOUND_OPERATOR_REPOSITORY_IR_1";
 const MAX_MECHANISMS: usize = 256;
 const MAX_TRACES: usize = 512;
@@ -35,6 +36,8 @@ const MAX_HYPOTHESES: usize = 64;
 const MAX_COUNTEREXAMPLES: usize = 128;
 const MAX_CANDIDATES: usize = 128;
 const MAX_OPERATOR_REPOSITORY: usize = 256;
+const MAX_COMPOUND_INPUT_BYTES: usize = 16 * 1024 * 1024;
+const MAX_NESTED_ITEMS: usize = 64;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
@@ -1303,6 +1306,12 @@ impl CompoundOperatorRepositoryIR {
     }
 }
 
+impl Default for CompoundOperatorRepositoryIR {
+    fn default() -> Self {
+        Self::bounded(MAX_OPERATOR_REPOSITORY)
+    }
+}
+
 pub fn execute_productive_composite(
     repository: &CompoundOperatorRepositoryIR,
     graph: &ImprovementOperatorGraphIR,
@@ -1361,6 +1370,26 @@ pub struct CompoundGrowthCycleRequestIR {
     pub counterexamples: Vec<SemanticValidationCounterexampleIR>,
     pub revision_candidates: Vec<RevisionCandidateIR>,
     pub repository: CompoundOperatorRepositoryIR,
+    pub operator_outcomes: Vec<OperatorOutcomeIR>,
+}
+
+/// Evidence-only input accepted by the always-on supervisor. Generation and
+/// operator-repository authority are deliberately absent: the supervisor
+/// supplies both from its sealed local state, so a caller cannot replace or
+/// rewind accumulated executable knowledge.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct CompoundGrowthInputIR {
+    pub schema: String,
+    pub input_id: String,
+    pub evidence_sha256: Vec<String>,
+    pub mechanisms: Vec<MechanismKnowledgeIR>,
+    pub execution_traces: Vec<MechanismExecutionTraceIR>,
+    pub promotion_evidence: Vec<TriangularPromotionEvidenceIR>,
+    pub source_bindings: Vec<SourceBoundMechanismProgramIR>,
+    pub hypotheses: Vec<HypothesisIR>,
+    pub experiment_candidates: Vec<ActiveExperimentCandidateIR>,
+    pub counterexamples: Vec<SemanticValidationCounterexampleIR>,
+    pub revision_candidates: Vec<RevisionCandidateIR>,
     pub operator_outcomes: Vec<OperatorOutcomeIR>,
 }
 
@@ -1477,6 +1506,53 @@ pub fn run_compound_growth_cycle(
     Ok(result)
 }
 
+pub fn run_compound_growth_input(
+    generation: u64,
+    repository: &CompoundOperatorRepositoryIR,
+    input: &CompoundGrowthInputIR,
+) -> Result<CompoundGrowthCycleIR, String> {
+    let has_typed_subject = !input.mechanisms.is_empty()
+        || !input.execution_traces.is_empty()
+        || !input.promotion_evidence.is_empty()
+        || !input.source_bindings.is_empty()
+        || !input.hypotheses.is_empty()
+        || !input.experiment_candidates.is_empty()
+        || !input.counterexamples.is_empty()
+        || !input.revision_candidates.is_empty()
+        || !input.operator_outcomes.is_empty();
+    let serialized_bytes = serde_json::to_vec(input)
+        .map_err(|error| format!("COMPOUND_GROWTH_INPUT_JSON:{error}"))?
+        .len();
+    if serialized_bytes > MAX_COMPOUND_INPUT_BYTES
+        || input.schema != COMPOUND_GROWTH_INPUT_SCHEMA
+        || !valid_identity(&input.input_id)
+        || input.evidence_sha256.is_empty()
+        || input.evidence_sha256.len() > MAX_TRACES
+        || input
+            .evidence_sha256
+            .iter()
+            .any(|evidence| !valid_hash(evidence))
+        || !all_unique(input.evidence_sha256.iter().map(String::as_str))
+        || !has_typed_subject
+    {
+        return Err("COMPOUND_GROWTH_INPUT_INVALID".to_string());
+    }
+    run_compound_growth_cycle(&CompoundGrowthCycleRequestIR {
+        schema: COMPOUND_GROWTH_SCHEMA.to_string(),
+        generation,
+        mechanisms: input.mechanisms.clone(),
+        execution_traces: input.execution_traces.clone(),
+        promotion_evidence: input.promotion_evidence.clone(),
+        source_bindings: input.source_bindings.clone(),
+        hypotheses: input.hypotheses.clone(),
+        experiment_candidates: input.experiment_candidates.clone(),
+        counterexamples: input.counterexamples.clone(),
+        revision_candidates: input.revision_candidates.clone(),
+        repository: repository.clone(),
+        operator_outcomes: input.operator_outcomes.clone(),
+    })
+}
+
 fn validate_cycle_bounds(request: &CompoundGrowthCycleRequestIR) -> Result<(), String> {
     if request.schema != COMPOUND_GROWTH_SCHEMA
         || request.mechanisms.len() > MAX_MECHANISMS
@@ -1487,6 +1563,7 @@ fn validate_cycle_bounds(request: &CompoundGrowthCycleRequestIR) -> Result<(), S
         || request.experiment_candidates.len() > MAX_EXPERIMENTS
         || request.counterexamples.len() > MAX_COUNTEREXAMPLES
         || request.revision_candidates.len() > MAX_CANDIDATES
+        || request.operator_outcomes.len() > MAX_TRACES
         || request.repository.max_profiles > MAX_OPERATOR_REPOSITORY
     {
         return Err("COMPOUND_GROWTH_BOUNDS_INVALID".to_string());
@@ -1520,6 +1597,95 @@ fn validate_cycle_bounds(request: &CompoundGrowthCycleRequestIR) -> Result<(), S
                 || !valid_identity(&trace.mechanism_id)
                 || !valid_identity(&trace.context_id)
                 || !valid_hash(&trace.candidate_sha256)
+                || trace.observed_effects.len() > MAX_NESTED_ITEMS
+                || trace
+                    .observed_effects
+                    .iter()
+                    .any(|literal| !valid_identity(&literal.proposition_id))
+        })
+        || !all_unique(
+            request
+                .hypotheses
+                .iter()
+                .map(|hypothesis| hypothesis.hypothesis_id.as_str()),
+        )
+        || !all_unique(
+            request
+                .experiment_candidates
+                .iter()
+                .map(|candidate| candidate.experiment_id.as_str()),
+        )
+        || request.experiment_candidates.iter().any(|candidate| {
+            candidate.predictions.len() > MAX_HYPOTHESES
+                || candidate.predictions.iter().any(|prediction| {
+                    !valid_identity(&prediction.hypothesis_id)
+                        || !valid_identity(&prediction.observation_signature)
+                })
+        })
+        || request
+            .promotion_evidence
+            .iter()
+            .any(|evidence| evidence.attestations.len() > 3)
+        || request.source_bindings.iter().any(|binding| {
+            !valid_identity(&binding.mechanism_knowledge_id)
+                || !valid_identity(&binding.transformation)
+                || !valid_identity(&binding.solution_strategy)
+                || binding.semantic_tags.len() > MAX_NESTED_ITEMS
+                || binding.semantic_tags.iter().any(|tag| !valid_identity(tag))
+        })
+        || !all_unique(
+            request
+                .counterexamples
+                .iter()
+                .map(|counterexample| counterexample.counterexample_id.as_str()),
+        )
+        || request.counterexamples.iter().any(|counterexample| {
+            !valid_hash(&counterexample.failed_candidate_sha256)
+                || counterexample.expected_effects.len() > MAX_NESTED_ITEMS
+                || counterexample.observed_effects.len() > MAX_NESTED_ITEMS
+                || counterexample.missing_expected_effects.len() > MAX_NESTED_ITEMS
+                || counterexample.unexpected_effects.len() > MAX_NESTED_ITEMS
+                || counterexample.failed_invariant_classes.len() > MAX_NESTED_ITEMS
+                || counterexample.compiler_error_codes.len() > MAX_NESTED_ITEMS
+                || counterexample
+                    .expected_effects
+                    .iter()
+                    .chain(&counterexample.observed_effects)
+                    .chain(&counterexample.missing_expected_effects)
+                    .chain(&counterexample.unexpected_effects)
+                    .any(|literal| !valid_identity(&literal.proposition_id))
+                || counterexample
+                    .failed_invariant_classes
+                    .iter()
+                    .chain(&counterexample.compiler_error_codes)
+                    .any(|value| !valid_identity(value))
+        })
+        || !all_unique(
+            request
+                .revision_candidates
+                .iter()
+                .map(|candidate| candidate.candidate_id.as_str()),
+        )
+        || request.revision_candidates.iter().any(|candidate| {
+            !valid_hash(&candidate.candidate_sha256)
+                || candidate.predicted_effects.len() > MAX_NESTED_ITEMS
+                || candidate.repaired_invariant_classes.len() > MAX_NESTED_ITEMS
+                || candidate.addressed_compiler_error_codes.len() > MAX_NESTED_ITEMS
+                || candidate
+                    .predicted_effects
+                    .iter()
+                    .any(|literal| !valid_identity(&literal.proposition_id))
+                || candidate
+                    .repaired_invariant_classes
+                    .iter()
+                    .chain(&candidate.addressed_compiler_error_codes)
+                    .any(|value| !valid_identity(value))
+        })
+        || request.operator_outcomes.iter().any(|outcome| {
+            outcome.operator_ids.is_empty()
+                || outcome.operator_ids.len() > MAX_NESTED_ITEMS
+                || !valid_identity(&outcome.context_id)
+                || !all_unique(outcome.operator_ids.iter().map(String::as_str))
         })
     {
         return Err("COMPOUND_GROWTH_IDENTITY_INVALID".to_string());
@@ -1694,6 +1860,67 @@ mod tests {
         )
         .unwrap();
         (binding, promotion, credit, compiled)
+    }
+
+    #[test]
+    fn supervisor_input_requires_hashed_typed_subject_and_uses_supplied_repository() {
+        let repository = CompoundOperatorRepositoryIR::bounded(8);
+        let input = CompoundGrowthInputIR {
+            schema: COMPOUND_GROWTH_INPUT_SCHEMA.to_string(),
+            input_id: "INPUT-EXPERIMENT".to_string(),
+            evidence_sha256: vec![sha256(b"public-evidence")],
+            mechanisms: Vec::new(),
+            execution_traces: Vec::new(),
+            promotion_evidence: Vec::new(),
+            source_bindings: Vec::new(),
+            hypotheses: vec![
+                HypothesisIR {
+                    hypothesis_id: "IO-BOUND".to_string(),
+                },
+                HypothesisIR {
+                    hypothesis_id: "CPU-BOUND".to_string(),
+                },
+            ],
+            experiment_candidates: vec![ActiveExperimentCandidateIR {
+                experiment_id: "READ-ONLY-PROFILE".to_string(),
+                predictions: vec![
+                    ExperimentPredictionIR {
+                        hypothesis_id: "IO-BOUND".to_string(),
+                        observation_signature: "WAIT-HIGH".to_string(),
+                    },
+                    ExperimentPredictionIR {
+                        hypothesis_id: "CPU-BOUND".to_string(),
+                        observation_signature: "COMPUTE-HIGH".to_string(),
+                    },
+                ],
+                reliability_millis: 950,
+                cost_millis: 5,
+                risk_millis: 0,
+                read_only: true,
+            }],
+            counterexamples: Vec::new(),
+            revision_candidates: Vec::new(),
+            operator_outcomes: Vec::new(),
+        };
+        let cycle = run_compound_growth_input(9, &repository, &input).unwrap();
+        assert_eq!(cycle.generation, 9);
+        assert_eq!(cycle.repository, repository);
+        assert_eq!(
+            cycle
+                .selected_experiment
+                .as_ref()
+                .map(|selection| selection.experiment_id.as_str()),
+            Some("READ-ONLY-PROFILE")
+        );
+        assert_eq!(cycle.external_model_calls, 0);
+        assert_eq!(cycle.text_only_growth_events, 0);
+
+        let mut ungrounded = input;
+        ungrounded.evidence_sha256.clear();
+        assert_eq!(
+            run_compound_growth_input(9, &repository, &ungrounded).unwrap_err(),
+            "COMPOUND_GROWTH_INPUT_INVALID"
+        );
     }
 
     #[test]
