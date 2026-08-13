@@ -50,42 +50,102 @@ const FRONTIER_EVIDENCE_CONTRACT_REVISION: u64 = 2;
 const BEHAVIORAL_HEURISTIC_EXCLUSION_CONTRACT_REVISION: u64 = 4;
 const BEHAVIORAL_VALUE_CONTRACT_REVISION: u64 = 5;
 const IMPROVEMENT_OPERATOR_GRAPH_CONTRACT_REVISION: u64 = 2;
-const GENERATIVE_PREDICTORS: [(&str, &str); 2] = [
-    (
-        "SEM23_REACTION_OUTCOME_PREDICTOR",
-        "sem23::engine::predict_base_properties",
-    ),
-    (
-        "SEM25_MULTI_HORIZON_ROUTER",
-        "sem25::engine::run_growth_probe",
-    ),
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum GenerativePredictorIR {
+    Sem23ReactionOutcome,
+    Sem25MultiHorizonRouter,
+}
+
+impl GenerativePredictorIR {
+    const fn metadata(self) -> (&'static str, &'static str) {
+        match self {
+            Self::Sem23ReactionOutcome => (
+                "SEM23_REACTION_OUTCOME_PREDICTOR",
+                "sem23::engine::predict_base_properties",
+            ),
+            Self::Sem25MultiHorizonRouter => (
+                "SEM25_MULTI_HORIZON_ROUTER",
+                "sem25::engine::run_growth_probe",
+            ),
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum GenerativeComposerIR {
+    Sem5Program,
+    SelfHealingContract,
+    FullstackTypedRecipe,
+    ImprovementOperatorProgram,
+    ImprovementOperatorGraph,
+}
+
+impl GenerativeComposerIR {
+    const fn metadata(self) -> (&'static str, &'static str) {
+        match self {
+            Self::Sem5Program => (
+                "SEM5_PROGRAM_IR_COMPOSER",
+                "integrated_development::compose_existing_sem5_capability",
+            ),
+            Self::SelfHealingContract => (
+                "SELF_HEALING_CONTRACT_COMPOSER",
+                "self_healing_pipeline::validate_composition_lesson",
+            ),
+            Self::FullstackTypedRecipe => (
+                "FULLSTACK_TYPED_RECIPE_COMPOSER",
+                "fullstack_ops_knowledge::recipe_as_composition_lesson",
+            ),
+            Self::ImprovementOperatorProgram => (
+                "IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER",
+                "autonomous_source_mutation::execute_improvement_operator_behavioral_canary",
+            ),
+            Self::ImprovementOperatorGraph => (
+                "IMPROVEMENT_OPERATOR_GRAPH_COMPOSER",
+                "autonomous_source_mutation::execute_improvement_operator_graph_behavioral_canary",
+            ),
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum GenerativeVerifierIR {
+    IndependentGrowthVerifier,
+}
+
+impl GenerativeVerifierIR {
+    const fn metadata(self) -> (&'static str, &'static str) {
+        match self {
+            Self::IndependentGrowthVerifier => (
+                "INDEPENDENT_GROWTH_VERIFIER",
+                "growth_supervisor::run_verifier_request",
+            ),
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+pub struct GenerativeExecutionPlanIR {
+    pub predictor: GenerativePredictorIR,
+    pub composer: GenerativeComposerIR,
+    pub verifier: GenerativeVerifierIR,
+}
+const GENERATIVE_PREDICTORS: [GenerativePredictorIR; 2] = [
+    GenerativePredictorIR::Sem23ReactionOutcome,
+    GenerativePredictorIR::Sem25MultiHorizonRouter,
 ];
-const GENERATIVE_COMPOSERS: [(&str, &str); 5] = [
-    (
-        "SEM5_PROGRAM_IR_COMPOSER",
-        "integrated_development::compose_existing_sem5_capability",
-    ),
-    (
-        "SELF_HEALING_CONTRACT_COMPOSER",
-        "self_healing_pipeline::validate_composition_lesson",
-    ),
-    (
-        "FULLSTACK_TYPED_RECIPE_COMPOSER",
-        "fullstack_ops_knowledge::recipe_as_composition_lesson",
-    ),
-    (
-        "IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER",
-        "autonomous_source_mutation::execute_improvement_operator_behavioral_canary",
-    ),
-    (
-        "IMPROVEMENT_OPERATOR_GRAPH_COMPOSER",
-        "autonomous_source_mutation::execute_improvement_operator_graph_behavioral_canary",
-    ),
+const GENERATIVE_COMPOSERS: [GenerativeComposerIR; 5] = [
+    GenerativeComposerIR::Sem5Program,
+    GenerativeComposerIR::SelfHealingContract,
+    GenerativeComposerIR::FullstackTypedRecipe,
+    GenerativeComposerIR::ImprovementOperatorProgram,
+    GenerativeComposerIR::ImprovementOperatorGraph,
 ];
-const GENERATIVE_VERIFIERS: [(&str, &str); 1] = [(
-    "INDEPENDENT_GROWTH_VERIFIER",
-    "growth_supervisor::run_verifier_request",
-)];
+const GENERATIVE_VERIFIERS: [GenerativeVerifierIR; 1] =
+    [GenerativeVerifierIR::IndependentGrowthVerifier];
 const STATIC_GENERATIVE_CANDIDATE_COUNT: usize =
     GENERATIVE_PREDICTORS.len() * GENERATIVE_COMPOSERS.len() * GENERATIVE_VERIFIERS.len();
 
@@ -110,6 +170,8 @@ pub struct GenerativeInput {
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct ReusableCompositionMemory {
     pub composition: RepairCompositionLessonIR,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub execution_plan: Option<GenerativeExecutionPlanIR>,
     pub trigger_signals: Vec<String>,
     pub source_lesson_ids: Vec<String>,
     pub predicted_value: u16,
@@ -225,6 +287,11 @@ impl GenerativeGrowthMemory {
     pub fn distinct_verified_artifact_count(&self) -> u64 {
         self.accepted_compositions
             .iter()
+            .filter(|composition| {
+                composition.execution_plan.is_some_and(|plan| {
+                    execution_plan_matches_metadata(&composition.composition, plan)
+                })
+            })
             .flat_map(|composition| composition.verified_artifact_sha256s.iter())
             .collect::<BTreeSet<_>>()
             .len()
@@ -244,6 +311,8 @@ pub struct GenerativeCycleResult {
     #[serde(default)]
     pub behaviorally_inapplicable_candidates_screened: usize,
     pub selected_composition: RepairCompositionLessonIR,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub selected_execution_plan: Option<GenerativeExecutionPlanIR>,
     pub selected_from_precomposition_prediction: bool,
     pub prediction_recorded_before_composition: bool,
     pub predicted_value: u16,
@@ -303,6 +372,8 @@ pub struct GenerativeCycleResult {
 pub struct BehavioralCompositionExecutionReceipt {
     pub schema: String,
     pub context_sha256: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub execution_plan: Option<GenerativeExecutionPlanIR>,
     pub predictor_id: String,
     pub predictor_output_sha256: String,
     pub composer_id: String,
@@ -340,11 +411,10 @@ fn primitive(id: &str, anchor: &str, input: &str, output: &str, role: &str) -> R
     }
 }
 
-fn candidate_composition(
-    predictor: (&str, &str),
-    composer: (&str, &str),
-    verifier: (&str, &str),
-) -> RepairCompositionLessonIR {
+fn candidate_composition(plan: GenerativeExecutionPlanIR) -> RepairCompositionLessonIR {
+    let predictor = plan.predictor.metadata();
+    let composer = plan.composer.metadata();
+    let verifier = plan.verifier.metadata();
     let primitives = vec![
         primitive(
             "FROZEN_LESSON_ACTIVATOR",
@@ -402,7 +472,7 @@ fn candidate_composition(
         .map(|value| value.primitive_id.as_str())
         .collect::<Vec<_>>()
         .join(":");
-    if composer.0 == "IMPROVEMENT_OPERATOR_GRAPH_COMPOSER" {
+    if plan.composer == GenerativeComposerIR::ImprovementOperatorGraph {
         signature.push_str(&format!(
             ":CONTRACT_REVISION_{IMPROVEMENT_OPERATOR_GRAPH_CONTRACT_REVISION}"
         ));
@@ -431,6 +501,27 @@ fn candidate_composition(
         ],
         exact_source_fragment_present: false,
     }
+}
+
+fn stage_metadata_matches(
+    composition: &RepairCompositionLessonIR,
+    role: &str,
+    expected: (&str, &str),
+) -> bool {
+    composition.primitives.iter().any(|primitive| {
+        primitive.semantic_role == role
+            && primitive.primitive_id == expected.0
+            && primitive.implementation_anchor == expected.1
+    })
+}
+
+fn execution_plan_matches_metadata(
+    composition: &RepairCompositionLessonIR,
+    plan: GenerativeExecutionPlanIR,
+) -> bool {
+    stage_metadata_matches(composition, "PREDICT", plan.predictor.metadata())
+        && stage_metadata_matches(composition, "COMPOSE", plan.composer.metadata())
+        && stage_metadata_matches(composition, "VERIFY", plan.verifier.metadata())
 }
 
 fn overlap_count(left: &[String], right: &[String]) -> usize {
@@ -481,12 +572,7 @@ fn context_sha256(input: &GenerativeInput) -> String {
     )
 }
 
-fn domain_bonus(composition: &RepairCompositionLessonIR, input: &GenerativeInput) -> u16 {
-    let ids = composition
-        .primitives
-        .iter()
-        .map(|value| value.primitive_id.as_str())
-        .collect::<BTreeSet<_>>();
+fn domain_bonus(plan: GenerativeExecutionPlanIR, input: &GenerativeInput) -> u16 {
     let signals = input
         .diagnostic_signals
         .iter()
@@ -498,33 +584,33 @@ fn domain_bonus(composition: &RepairCompositionLessonIR, input: &GenerativeInput
         .map(String::as_str)
         .collect::<BTreeSet<_>>();
     let mut bonus = 0_u16;
-    if ids.contains("SEM25_MULTI_HORIZON_ROUTER")
+    if plan.predictor == GenerativePredictorIR::Sem25MultiHorizonRouter
         && (signals.contains("CAPABILITY_SURFACE_ADDED")
             || signals.contains("MUTUAL_REVALIDATION_GAP"))
     {
         bonus += 8;
     }
-    if ids.contains("SEM23_REACTION_OUTCOME_PREDICTOR") && roles.len() >= 2 {
+    if plan.predictor == GenerativePredictorIR::Sem23ReactionOutcome && roles.len() >= 2 {
         bonus += 7;
     }
-    if ids.contains("SELF_HEALING_CONTRACT_COMPOSER")
+    if plan.composer == GenerativeComposerIR::SelfHealingContract
         && (signals.contains("DEFECT_REPAIR") || roles.contains("IMPLEMENTATION_REPAIR"))
     {
         bonus += 12;
     }
-    if ids.contains("FULLSTACK_TYPED_RECIPE_COMPOSER")
+    if plan.composer == GenerativeComposerIR::FullstackTypedRecipe
         && ["FRONTEND_CONTRACT", "BACKEND_CONTRACT", "OPERATIONS_CHANGE"]
             .iter()
             .any(|signal| signals.contains(signal))
     {
         bonus += 12;
     }
-    if ids.contains("SEM5_PROGRAM_IR_COMPOSER")
+    if plan.composer == GenerativeComposerIR::Sem5Program
         && (roles.len() >= 2 || !input.typed_behavior_goals.is_empty())
     {
         bonus += 6;
     }
-    if ids.contains("IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER")
+    if plan.composer == GenerativeComposerIR::ImprovementOperatorProgram
         && (signals.contains("CAPABILITY_SURFACE_ADDED")
             || signals.contains("DEFECT_REPAIR")
             || roles.contains("IMPLEMENTATION")
@@ -532,7 +618,7 @@ fn domain_bonus(composition: &RepairCompositionLessonIR, input: &GenerativeInput
     {
         bonus += 10;
     }
-    if ids.contains("IMPROVEMENT_OPERATOR_GRAPH_COMPOSER")
+    if plan.composer == GenerativeComposerIR::ImprovementOperatorGraph
         && (signals.contains("CAPABILITY_SURFACE_ADDED")
             || signals.contains("DEFECT_REPAIR")
             || roles.len() >= 2)
@@ -543,28 +629,23 @@ fn domain_bonus(composition: &RepairCompositionLessonIR, input: &GenerativeInput
 }
 
 fn applicable_policy_signals(
-    composition: &RepairCompositionLessonIR,
+    plan: GenerativeExecutionPlanIR,
     input: &GenerativeInput,
 ) -> Vec<String> {
-    let ids = composition
-        .primitives
-        .iter()
-        .map(|value| value.primitive_id.as_str())
-        .collect::<BTreeSet<_>>();
     let mut supported = BTreeSet::new();
-    if ids.contains("SEM25_MULTI_HORIZON_ROUTER") {
+    if plan.predictor == GenerativePredictorIR::Sem25MultiHorizonRouter {
         supported.extend(["MUTUAL_REVALIDATION_GAP", "CAPABILITY_SURFACE_ADDED"]);
     }
-    if ids.contains("SELF_HEALING_CONTRACT_COMPOSER") {
+    if plan.composer == GenerativeComposerIR::SelfHealingContract {
         supported.extend(["DEFECT_REPAIR", "ERROR_HANDLING_ADDED", "VALIDATION_ADDED"]);
     }
-    if ids.contains("FULLSTACK_TYPED_RECIPE_COMPOSER") {
+    if plan.composer == GenerativeComposerIR::FullstackTypedRecipe {
         supported.extend(["FRONTEND_CONTRACT", "BACKEND_CONTRACT", "OPERATIONS_CHANGE"]);
     }
-    if ids.contains("SEM5_PROGRAM_IR_COMPOSER") {
+    if plan.composer == GenerativeComposerIR::Sem5Program {
         supported.extend(["CODE_CHANGE", "REFACTOR", "CAPABILITY_SURFACE_ADDED"]);
     }
-    if ids.contains("IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER") {
+    if plan.composer == GenerativeComposerIR::ImprovementOperatorProgram {
         supported.extend([
             "CODE_CHANGE",
             "REFACTOR",
@@ -573,7 +654,7 @@ fn applicable_policy_signals(
             "VALIDATION_ADDED",
         ]);
     }
-    if ids.contains("IMPROVEMENT_OPERATOR_GRAPH_COMPOSER") {
+    if plan.composer == GenerativeComposerIR::ImprovementOperatorGraph {
         supported.extend([
             "CODE_CHANGE",
             "REFACTOR",
@@ -591,18 +672,6 @@ fn applicable_policy_signals(
         .collect::<BTreeSet<_>>()
         .into_iter()
         .collect()
-}
-
-fn selected_stage<'a>(
-    composition: &'a RepairCompositionLessonIR,
-    role: &str,
-) -> Result<&'a str, String> {
-    composition
-        .primitives
-        .iter()
-        .find(|primitive| primitive.semantic_role == role)
-        .map(|primitive| primitive.primitive_id.as_str())
-        .ok_or_else(|| format!("GENERATION_STAGE_MISSING:{role}"))
 }
 
 /// Executes independent, pure behavioral probes as a bounded worker graph and
@@ -667,12 +736,12 @@ where
 }
 
 fn execute_predictor(
-    predictor_id: &str,
+    predictor: GenerativePredictorIR,
     input: &GenerativeInput,
     seed: u64,
 ) -> Result<String, String> {
-    match predictor_id {
-        "SEM23_REACTION_OUTCOME_PREDICTOR" => {
+    match predictor {
+        GenerativePredictorIR::Sem23ReactionOutcome => {
             let request = GenerativeRequest {
                 representation_mode: 0,
                 mechanism_mask: 0b0_1111,
@@ -697,7 +766,7 @@ fn execute_predictor(
                 format!("{}:{}:{prediction}", context_sha256(input), seed.max(1)).as_bytes(),
             ))
         }
-        "SEM25_MULTI_HORIZON_ROUTER" => {
+        GenerativePredictorIR::Sem25MultiHorizonRouter => {
             let epoch = (seed % 24 + 1) as u8;
             let result = run_growth_probe(GrowthProbeRequest {
                 arm_code: 3,
@@ -737,7 +806,6 @@ fn execute_predictor(
                 .as_bytes(),
             ))
         }
-        _ => Err(format!("UNKNOWN_GENERATIVE_PREDICTOR:{predictor_id}")),
     }
 }
 
@@ -809,7 +877,7 @@ fn improvement_operator_graph_for_global_ordinal(
 }
 
 fn execute_composer(
-    composer_id: &str,
+    composer: GenerativeComposerIR,
     selected: &RepairCompositionLessonIR,
     input: &GenerativeInput,
     context: &str,
@@ -817,8 +885,8 @@ fn execute_composer(
     previously_verified: &BTreeSet<String>,
     verified_operator_ids: &BTreeSet<String>,
 ) -> Result<(Vec<VerifiedBehavioralArtifact>, Option<String>), String> {
-    match composer_id {
-        "SEM5_PROGRAM_IR_COMPOSER" => {
+    match composer {
+        GenerativeComposerIR::Sem5Program => {
             if input.observed_composition_roles.len() < 2 && input.typed_behavior_goals.is_empty() {
                 return Ok((
                     Vec::new(),
@@ -905,7 +973,7 @@ fn execute_composer(
             }
             Ok((artifacts, None))
         }
-        "SELF_HEALING_CONTRACT_COMPOSER" => {
+        GenerativeComposerIR::SelfHealingContract => {
             if artifact_family_width == 0 {
                 return Ok((
                     Vec::new(),
@@ -945,7 +1013,7 @@ fn execute_composer(
                 None,
             ))
         }
-        "FULLSTACK_TYPED_RECIPE_COMPOSER" => {
+        GenerativeComposerIR::FullstackTypedRecipe => {
             if artifact_family_width == 0 {
                 return Ok((
                     Vec::new(),
@@ -995,7 +1063,7 @@ fn execute_composer(
             }
             Ok((artifacts, None))
         }
-        "IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER" => {
+        GenerativeComposerIR::ImprovementOperatorProgram => {
             if artifact_family_width == 0 {
                 return Ok((
                     Vec::new(),
@@ -1099,7 +1167,7 @@ fn execute_composer(
             }
             Ok((artifacts, None))
         }
-        "IMPROVEMENT_OPERATOR_GRAPH_COMPOSER" => {
+        GenerativeComposerIR::ImprovementOperatorGraph => {
             if artifact_family_width == 0 {
                 return Ok((
                     Vec::new(),
@@ -1168,7 +1236,6 @@ fn execute_composer(
             }
             Ok((artifacts, None))
         }
-        _ => Err(format!("UNKNOWN_GENERATIVE_COMPOSER:{composer_id}")),
     }
 }
 
@@ -1177,20 +1244,23 @@ fn execute_composer(
 /// frontier budget until this cycle can execute and independently observe the
 /// artifact they produce. Graph validation or a typed recipe alone is not a
 /// capability outcome.
-fn composition_uses_composer(composition: &ReusableCompositionMemory, composer_id: &str) -> bool {
-    composition.composition.primitives.iter().any(|primitive| {
-        primitive.semantic_role == "COMPOSE" && primitive.primitive_id == composer_id
+fn composition_uses_composer(
+    composition: &ReusableCompositionMemory,
+    composer: GenerativeComposerIR,
+) -> bool {
+    composition.execution_plan.is_some_and(|plan| {
+        plan.composer == composer && execution_plan_matches_metadata(&composition.composition, plan)
     })
 }
 
 fn distinct_verified_artifact_count_for_composer(
     memory: &GenerativeGrowthMemory,
-    composer_id: &str,
+    composer: GenerativeComposerIR,
 ) -> u64 {
     memory
         .accepted_compositions
         .iter()
-        .filter(|composition| composition_uses_composer(composition, composer_id))
+        .filter(|composition| composition_uses_composer(composition, composer))
         .flat_map(|composition| composition.verified_artifact_sha256s.iter())
         .collect::<BTreeSet<_>>()
         .len()
@@ -1199,36 +1269,43 @@ fn distinct_verified_artifact_count_for_composer(
 
 fn verified_artifacts_for_composer(
     memory: &GenerativeGrowthMemory,
-    composer_id: &str,
+    composer: GenerativeComposerIR,
 ) -> BTreeSet<String> {
     memory
         .accepted_compositions
         .iter()
-        .filter(|composition| composition_uses_composer(composition, composer_id))
+        .filter(|composition| composition_uses_composer(composition, composer))
         .flat_map(|composition| composition.verified_artifact_sha256s.iter().cloned())
         .collect()
 }
 
-fn verified_artifact_capacity(memory: &GenerativeGrowthMemory, composer_id: &str) -> u64 {
-    match composer_id {
-        "SEM5_PROGRAM_IR_COMPOSER" => MAX_SEM5_VERIFIED_ARTIFACTS,
-        "IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER" => MAX_IMPROVEMENT_OPERATOR_VERIFIED_ARTIFACTS,
-        "IMPROVEMENT_OPERATOR_GRAPH_COMPOSER" => {
+fn verified_artifact_capacity(
+    memory: &GenerativeGrowthMemory,
+    composer: GenerativeComposerIR,
+) -> u64 {
+    match composer {
+        GenerativeComposerIR::Sem5Program => MAX_SEM5_VERIFIED_ARTIFACTS,
+        GenerativeComposerIR::ImprovementOperatorProgram => {
+            MAX_IMPROVEMENT_OPERATOR_VERIFIED_ARTIFACTS
+        }
+        GenerativeComposerIR::ImprovementOperatorGraph => {
             let operators = distinct_verified_artifact_count_for_composer(
                 memory,
-                "IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER",
+                GenerativeComposerIR::ImprovementOperatorProgram,
             );
             improvement_operator_graph_capacity(operators.min(usize::MAX as u64) as usize)
         }
-        "FULLSTACK_TYPED_RECIPE_COMPOSER" => MAX_FULLSTACK_VERIFIED_ARTIFACTS,
-        "SELF_HEALING_CONTRACT_COMPOSER" => MAX_SELF_HEALING_VERIFIED_ARTIFACTS,
-        _ => 0,
+        GenerativeComposerIR::FullstackTypedRecipe => MAX_FULLSTACK_VERIFIED_ARTIFACTS,
+        GenerativeComposerIR::SelfHealingContract => MAX_SELF_HEALING_VERIFIED_ARTIFACTS,
     }
 }
 
-fn verified_artifact_family_width(memory: &GenerativeGrowthMemory, composer_id: &str) -> usize {
-    let verified = distinct_verified_artifact_count_for_composer(memory, composer_id);
-    let remaining = verified_artifact_capacity(memory, composer_id).saturating_sub(verified);
+fn verified_artifact_family_width(
+    memory: &GenerativeGrowthMemory,
+    composer: GenerativeComposerIR,
+) -> usize {
+    let verified = distinct_verified_artifact_count_for_composer(memory, composer);
+    let remaining = verified_artifact_capacity(memory, composer).saturating_sub(verified);
     usize::try_from(
         verified
             .max(1)
@@ -1238,37 +1315,52 @@ fn verified_artifact_family_width(memory: &GenerativeGrowthMemory, composer_id: 
     .unwrap_or(MAX_VERIFIED_ARTIFACTS_PER_CYCLE)
 }
 
-fn composer_is_behaviorally_executable(composer_id: &str, memory: &GenerativeGrowthMemory) -> bool {
-    match composer_id {
-        "SEM5_PROGRAM_IR_COMPOSER" => verified_artifact_family_width(memory, composer_id) > 0,
-        "IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER" => {
-            verified_artifact_family_width(memory, "SEM5_PROGRAM_IR_COMPOSER") == 0
-                && verified_artifact_family_width(memory, composer_id) > 0
+fn composer_is_behaviorally_executable(
+    composer: GenerativeComposerIR,
+    memory: &GenerativeGrowthMemory,
+) -> bool {
+    match composer {
+        GenerativeComposerIR::Sem5Program => verified_artifact_family_width(memory, composer) > 0,
+        GenerativeComposerIR::ImprovementOperatorProgram => {
+            verified_artifact_family_width(memory, GenerativeComposerIR::Sem5Program) == 0
+                && verified_artifact_family_width(memory, composer) > 0
         }
-        "IMPROVEMENT_OPERATOR_GRAPH_COMPOSER" => {
-            verified_artifact_family_width(memory, "SEM5_PROGRAM_IR_COMPOSER") == 0
-                && verified_artifact_family_width(memory, "IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER")
-                    == 0
-                && verified_artifact_family_width(memory, composer_id) > 0
+        GenerativeComposerIR::ImprovementOperatorGraph => {
+            verified_artifact_family_width(memory, GenerativeComposerIR::Sem5Program) == 0
+                && verified_artifact_family_width(
+                    memory,
+                    GenerativeComposerIR::ImprovementOperatorProgram,
+                ) == 0
+                && verified_artifact_family_width(memory, composer) > 0
         }
-        "FULLSTACK_TYPED_RECIPE_COMPOSER" => {
-            verified_artifact_family_width(memory, "SEM5_PROGRAM_IR_COMPOSER") == 0
-                && verified_artifact_family_width(memory, "IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER")
-                    == 0
-                && verified_artifact_family_width(memory, "IMPROVEMENT_OPERATOR_GRAPH_COMPOSER")
-                    == 0
-                && verified_artifact_family_width(memory, composer_id) > 0
+        GenerativeComposerIR::FullstackTypedRecipe => {
+            verified_artifact_family_width(memory, GenerativeComposerIR::Sem5Program) == 0
+                && verified_artifact_family_width(
+                    memory,
+                    GenerativeComposerIR::ImprovementOperatorProgram,
+                ) == 0
+                && verified_artifact_family_width(
+                    memory,
+                    GenerativeComposerIR::ImprovementOperatorGraph,
+                ) == 0
+                && verified_artifact_family_width(memory, composer) > 0
         }
-        "SELF_HEALING_CONTRACT_COMPOSER" => {
-            verified_artifact_family_width(memory, "SEM5_PROGRAM_IR_COMPOSER") == 0
-                && verified_artifact_family_width(memory, "IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER")
-                    == 0
-                && verified_artifact_family_width(memory, "IMPROVEMENT_OPERATOR_GRAPH_COMPOSER")
-                    == 0
-                && verified_artifact_family_width(memory, "FULLSTACK_TYPED_RECIPE_COMPOSER") == 0
-                && verified_artifact_family_width(memory, composer_id) > 0
+        GenerativeComposerIR::SelfHealingContract => {
+            verified_artifact_family_width(memory, GenerativeComposerIR::Sem5Program) == 0
+                && verified_artifact_family_width(
+                    memory,
+                    GenerativeComposerIR::ImprovementOperatorProgram,
+                ) == 0
+                && verified_artifact_family_width(
+                    memory,
+                    GenerativeComposerIR::ImprovementOperatorGraph,
+                ) == 0
+                && verified_artifact_family_width(
+                    memory,
+                    GenerativeComposerIR::FullstackTypedRecipe,
+                ) == 0
+                && verified_artifact_family_width(memory, composer) > 0
         }
-        _ => false,
     }
 }
 
@@ -1277,23 +1369,26 @@ fn composer_is_behaviorally_executable(composer_id: &str, memory: &GenerativeGro
 /// typed SEM-5 path currently consumes a lesson-bound executable payload.
 /// The other composers remain callable by their direct workflows, but cannot
 /// turn labels, prose or a static fixture replay into generative frontier.
-fn composer_consumes_executable_knowledge(composer_id: &str, input: &GenerativeInput) -> bool {
-    composer_id == "SEM5_PROGRAM_IR_COMPOSER" && !input.typed_behavior_goals.is_empty()
+fn composer_consumes_executable_knowledge(
+    composer: GenerativeComposerIR,
+    input: &GenerativeInput,
+) -> bool {
+    composer == GenerativeComposerIR::Sem5Program && !input.typed_behavior_goals.is_empty()
 }
 
 fn composer_is_executable_for_input(
-    composer_id: &str,
+    composer: GenerativeComposerIR,
     memory: &GenerativeGrowthMemory,
     input: &GenerativeInput,
 ) -> bool {
-    composer_is_behaviorally_executable(composer_id, memory)
-        && composer_consumes_executable_knowledge(composer_id, input)
+    composer_is_behaviorally_executable(composer, memory)
+        && composer_consumes_executable_knowledge(composer, input)
 }
 
 pub fn executable_generative_substrate_available(memory: &GenerativeGrowthMemory) -> bool {
     // Availability here means that at least one lesson-bound compiler still
     // has capacity. Input-specific eligibility is checked before execution.
-    composer_is_behaviorally_executable("SEM5_PROGRAM_IR_COMPOSER", memory)
+    composer_is_behaviorally_executable(GenerativeComposerIR::Sem5Program, memory)
 }
 
 fn behavioral_execution_receipt_sha256(
@@ -1308,19 +1403,23 @@ fn behavioral_execution_receipt_sha256(
 
 fn execute_behavioral_composition(
     selected: &RepairCompositionLessonIR,
+    execution_plan: GenerativeExecutionPlanIR,
     input: &GenerativeInput,
     seed: u64,
     artifact_family_width: usize,
     previously_verified: &BTreeSet<String>,
     verified_operator_ids: &BTreeSet<String>,
 ) -> Result<BehavioralCompositionExecutionReceipt, String> {
+    if !execution_plan_matches_metadata(selected, execution_plan) {
+        return Err("GENERATIVE_EXECUTION_PLAN_METADATA_MISMATCH".to_string());
+    }
     let context = context_sha256(input);
-    let predictor_id = selected_stage(selected, "PREDICT")?.to_string();
-    let composer_id = selected_stage(selected, "COMPOSE")?.to_string();
-    let verifier_id = selected_stage(selected, "VERIFY")?.to_string();
-    let predictor_output_sha256 = execute_predictor(&predictor_id, input, seed)?;
+    let predictor_id = execution_plan.predictor.metadata().0.to_string();
+    let composer_id = execution_plan.composer.metadata().0.to_string();
+    let verifier_id = execution_plan.verifier.metadata().0.to_string();
+    let predictor_output_sha256 = execute_predictor(execution_plan.predictor, input, seed)?;
     let (verified_artifacts, abstention_reason) = execute_composer(
-        &composer_id,
+        execution_plan.composer,
         selected,
         input,
         &context,
@@ -1360,8 +1459,9 @@ fn execute_behavioral_composition(
         sha256(format!("{context}:{predictor_output_sha256}:{family}:{verifier_id}").as_bytes())
     });
     let mut receipt = BehavioralCompositionExecutionReceipt {
-        schema: "B_CORE_BEHAVIORAL_COMPOSITION_EXECUTION_2".to_string(),
+        schema: "B_CORE_BEHAVIORAL_COMPOSITION_EXECUTION_3".to_string(),
         context_sha256: context,
+        execution_plan: Some(execution_plan),
         predictor_id,
         predictor_output_sha256,
         composer_id,
@@ -1391,6 +1491,7 @@ struct CandidatePrediction {
 
 fn prediction_score(
     composition: &RepairCompositionLessonIR,
+    execution_plan: GenerativeExecutionPlanIR,
     input: &GenerativeInput,
     memory: &GenerativeGrowthMemory,
 ) -> CandidatePrediction {
@@ -1398,10 +1499,11 @@ fn prediction_score(
     let compatible_behavioral_values = memory.behavioral_value_contract_revision
         >= BEHAVIORAL_HEURISTIC_EXCLUSION_CONTRACT_REVISION;
     let reusable = compatible_behavioral_values.then(|| {
-        memory
-            .accepted_compositions
-            .iter()
-            .find(|candidate| candidate.composition.composition_id == composition.composition_id)
+        memory.accepted_compositions.iter().find(|candidate| {
+            candidate.composition.composition_id == composition.composition_id
+                && candidate.execution_plan == Some(execution_plan)
+                && execution_plan_matches_metadata(&candidate.composition, execution_plan)
+        })
     });
     let reusable = reusable.flatten();
     let trials = if compatible_behavioral_values {
@@ -1482,7 +1584,7 @@ fn prediction_score(
     let role_value = input.observed_composition_roles.len().min(4) as u16;
     let prior_free_prediction = 45_u16
         .saturating_add(input.learning_score.min(100) / 4)
-        .saturating_add(domain_bonus(composition, input))
+        .saturating_add(domain_bonus(execution_plan, input))
         .saturating_add(evidence_value)
         .saturating_add(role_value)
         .saturating_add(if input.measured_performance_gain {
@@ -1544,26 +1646,37 @@ pub fn run_generative_cycle(
     for predictor in GENERATIVE_PREDICTORS {
         for composer in GENERATIVE_COMPOSERS {
             for verifier in GENERATIVE_VERIFIERS {
-                if !composer_is_executable_for_input(composer.0, memory, input) {
+                if !composer_is_executable_for_input(composer, memory, input) {
                     behaviorally_inapplicable_candidates_screened =
                         behaviorally_inapplicable_candidates_screened.saturating_add(1);
                     continue;
                 }
-                let composition = candidate_composition(predictor, composer, verifier);
-                let prediction = prediction_score(&composition, input, memory);
+                let execution_plan = GenerativeExecutionPlanIR {
+                    predictor,
+                    composer,
+                    verifier,
+                };
+                let composition = candidate_composition(execution_plan);
+                let prediction = prediction_score(&composition, execution_plan, input, memory);
                 let tie = sha256(format!("{}:{}", seed, composition.composition_id).as_bytes());
-                candidates.push((prediction.selection_score, tie, prediction, composition));
+                candidates.push((
+                    prediction.selection_score,
+                    tie,
+                    prediction,
+                    execution_plan,
+                    composition,
+                ));
             }
         }
     }
     candidates.sort_by(|left, right| right.0.cmp(&left.0).then_with(|| left.1.cmp(&right.1)));
-    let (_, _, prediction, selected) = candidates
+    let (_, _, prediction, selected_execution_plan, selected) = candidates
         .first()
         .cloned()
         .ok_or_else(|| "NO_BEHAVIORALLY_EXECUTABLE_GENERATIVE_COMPOSITION_CANDIDATE".to_string())?;
     let predicted_value = prediction.predicted_value;
     let typecheck_pass = validate_composition_lesson(&selected).is_ok();
-    let selected_composer = selected_stage(&selected, "COMPOSE")?;
+    let selected_composer = selected_execution_plan.composer;
     let available_family_width = verified_artifact_family_width(memory, selected_composer);
     // Replaying an already-seen composition context revalidates its canonical
     // first artifact. Only a genuinely new frontier context may spend the
@@ -1580,9 +1693,10 @@ pub fn run_generative_cycle(
         verified_artifacts_for_composer(memory, selected_composer)
     };
     let verified_operator_ids =
-        verified_artifacts_for_composer(memory, "IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER");
+        verified_artifacts_for_composer(memory, GenerativeComposerIR::ImprovementOperatorProgram);
     let behavioral_execution_receipt = execute_behavioral_composition(
         &selected,
+        selected_execution_plan,
         input,
         seed,
         artifact_family_width,
@@ -1617,6 +1731,11 @@ pub fn run_generative_cycle(
     let previously_verified = memory
         .accepted_compositions
         .iter()
+        .filter(|candidate| {
+            candidate
+                .execution_plan
+                .is_some_and(|plan| execution_plan_matches_metadata(&candidate.composition, plan))
+        })
         .flat_map(|candidate| candidate.verified_artifact_sha256s.iter())
         .map(String::as_str)
         .collect::<BTreeSet<_>>();
@@ -1650,7 +1769,7 @@ pub fn run_generative_cycle(
         0
     };
     let applied_policy_signals = if frontier_advance {
-        applicable_policy_signals(&selected, input)
+        applicable_policy_signals(selected_execution_plan, input)
     } else {
         Vec::new()
     };
@@ -1660,6 +1779,7 @@ pub fn run_generative_cycle(
         candidates_considered: candidates.len(),
         behaviorally_inapplicable_candidates_screened,
         selected_composition: selected,
+        selected_execution_plan: Some(selected_execution_plan),
         selected_from_precomposition_prediction: true,
         prediction_recorded_before_composition: true,
         predicted_value,
@@ -1704,6 +1824,9 @@ pub fn validate_behavioral_execution_receipt(result: &GenerativeCycleResult) -> 
         .behavioral_execution_receipt
         .as_ref()
         .is_some_and(|receipt| {
+            let Some(execution_plan) = result.selected_execution_plan else {
+                return false;
+            };
             let expected_receipt_sha256 = behavioral_execution_receipt_sha256(receipt).ok();
             let artifact_hashes = receipt
                 .verified_artifacts
@@ -1724,15 +1847,14 @@ pub fn validate_behavioral_execution_receipt(result: &GenerativeCycleResult) -> 
                     )
                 },
             );
-            receipt.schema == "B_CORE_BEHAVIORAL_COMPOSITION_EXECUTION_2"
+            receipt.schema == "B_CORE_BEHAVIORAL_COMPOSITION_EXECUTION_3"
                 && receipt.context_sha256 == result.context_sha256
+                && receipt.execution_plan == Some(execution_plan)
+                && execution_plan_matches_metadata(&result.selected_composition, execution_plan)
                 && expected_receipt_sha256.as_deref() == Some(receipt.receipt_sha256.as_str())
-                && receipt.predictor_id
-                    == selected_stage(&result.selected_composition, "PREDICT").unwrap_or("")
-                && receipt.composer_id
-                    == selected_stage(&result.selected_composition, "COMPOSE").unwrap_or("")
-                && receipt.verifier_id
-                    == selected_stage(&result.selected_composition, "VERIFY").unwrap_or("")
+                && receipt.predictor_id == execution_plan.predictor.metadata().0
+                && receipt.composer_id == execution_plan.composer.metadata().0
+                && receipt.verifier_id == execution_plan.verifier.metadata().0
                 && receipt.executed == result.behavioral_composition_executed
                 && result.verified_artifact_count == receipt.verified_artifacts.len()
                 && if receipt.executed {
@@ -1791,6 +1913,9 @@ pub fn promote_generative_cycle(
     input: &GenerativeInput,
     result: &GenerativeCycleResult,
 ) -> Result<GenerativeGrowthMemory, String> {
+    let Some(execution_plan) = result.selected_execution_plan else {
+        return Err("GENERATIVE_PROMOTION_BOUNDARY_FAILURE".to_string());
+    };
     let result_artifacts = result
         .behavioral_execution_receipt
         .as_ref()
@@ -1799,6 +1924,11 @@ pub fn promote_generative_cycle(
     let previously_verified = current
         .accepted_compositions
         .iter()
+        .filter(|candidate| {
+            candidate
+                .execution_plan
+                .is_some_and(|plan| execution_plan_matches_metadata(&candidate.composition, plan))
+        })
         .flat_map(|candidate| candidate.verified_artifact_sha256s.iter())
         .map(String::as_str)
         .collect::<BTreeSet<_>>();
@@ -1832,11 +1962,8 @@ pub fn promote_generative_cycle(
             .candidates_considered
             .saturating_add(result.behaviorally_inapplicable_candidates_screened)
             != STATIC_GENERATIVE_CANDIDATE_COUNT
-        || !composer_is_executable_for_input(
-            selected_stage(&result.selected_composition, "COMPOSE").unwrap_or(""),
-            current,
-            input,
-        )
+        || !execution_plan_matches_metadata(&result.selected_composition, execution_plan)
+        || !composer_is_executable_for_input(execution_plan.composer, current, input)
         || !result.prediction_recorded_before_composition
         || !result.selected_from_precomposition_prediction
         || result.observed_value_is_heuristic_proxy
@@ -1943,6 +2070,7 @@ pub fn promote_generative_cycle(
         }
         if let Some(existing) = next.accepted_compositions.iter_mut().find(|candidate| {
             candidate.composition.composition_id == result.selected_composition.composition_id
+                && candidate.execution_plan == Some(execution_plan)
         }) {
             existing.reuse_count = existing.reuse_count.saturating_add(1);
             if !existing.source_lesson_ids.contains(&input.source_lesson_id) {
@@ -2020,6 +2148,7 @@ pub fn promote_generative_cycle(
                 .collect::<BTreeMap<_, _>>();
             next.accepted_compositions.push(ReusableCompositionMemory {
                 composition: result.selected_composition.clone(),
+                execution_plan: Some(execution_plan),
                 trigger_signals: input.diagnostic_signals.clone(),
                 source_lesson_ids: vec![input.source_lesson_id.clone()],
                 predicted_value: result.predicted_value,
@@ -2208,14 +2337,16 @@ mod tests {
     #[test]
     fn static_canary_substrates_do_not_replace_saturated_executable_knowledge() {
         let mut saturated = GenerativeGrowthMemory::default();
+        let execution_plan = GenerativeExecutionPlanIR {
+            predictor: GENERATIVE_PREDICTORS[0],
+            composer: GENERATIVE_COMPOSERS[0],
+            verifier: GENERATIVE_VERIFIERS[0],
+        };
         saturated
             .accepted_compositions
             .push(ReusableCompositionMemory {
-                composition: candidate_composition(
-                    GENERATIVE_PREDICTORS[0],
-                    GENERATIVE_COMPOSERS[0],
-                    GENERATIVE_VERIFIERS[0],
-                ),
+                composition: candidate_composition(execution_plan),
+                execution_plan: Some(execution_plan),
                 trigger_signals: Vec::new(),
                 source_lesson_ids: Vec::new(),
                 predicted_value: 100,
@@ -2235,6 +2366,12 @@ mod tests {
             run_generative_cycle(&saturated, &input(), 11),
             Err("NO_BEHAVIORALLY_EXECUTABLE_GENERATIVE_COMPOSITION_CANDIDATE".to_string())
         );
+
+        let mut legacy_text_only = saturated;
+        legacy_text_only.accepted_compositions[0].execution_plan = None;
+        assert_eq!(legacy_text_only.distinct_verified_artifact_count(), 0);
+        assert!(executable_generative_substrate_available(&legacy_text_only));
+        assert!(run_generative_cycle(&legacy_text_only, &input(), 11).is_ok());
     }
 
     #[test]
