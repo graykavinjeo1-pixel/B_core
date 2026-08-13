@@ -45,9 +45,9 @@ pub const IMPROVEMENT_OPERATOR_MEMORY_SCHEMA: &str = "B_CORE_IMPROVEMENT_OPERATO
 pub const MAX_IMPROVEMENT_OPERATOR_GRAPH_NODES: usize = 8;
 const MAX_COMPETING_SOURCE_PROPOSALS: usize = 3;
 const MAX_TYPED_OPERATOR_RECONCILIATION_RECEIPTS: usize = 64;
-// Revision 42 additionally binds declaration validation to its exact typed
-// postimage and preserves the predecessor's LF/CRLF convention during edits.
-pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 42;
+// Revision 43 additionally preserves exact public-contract target symbols
+// through repository planning into source-bound product repair selection.
+pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 43;
 const KNOWN_REMAINDER_PREDICTED_VALUE: u16 = 35;
 const MAX_REPOSITORY_REPAIR_FAMILY_FILES: usize = 16;
 const KNOWN_REMAINDER_STRATEGIES: [&str; 4] = [

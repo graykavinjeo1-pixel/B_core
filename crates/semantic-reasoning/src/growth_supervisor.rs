@@ -79,6 +79,7 @@ const MAX_CORE_COHORT_VALIDATION_MS: u64 = 3 * 60 * 1_000;
 const FULL_CORE_REGRESSION_CANARY_INTERVAL: u64 = 8;
 const MAX_REPOSITORY_TEST_PATHS: usize = 8;
 const MAX_REPOSITORY_REPAIR_SOURCE_PATHS: usize = 8;
+const MAX_REPOSITORY_REPAIR_TARGET_SYMBOLS: usize = 64;
 const MAX_REPOSITORY_REPAIR_SANDBOX_FILES: usize = 4_096;
 const MAX_REPOSITORY_REPAIR_SANDBOX_BYTES: u64 = 128 * 1024 * 1024;
 const MAX_ACTIVE_SOURCE_BOUND_IMPROVEMENT_OPERATORS: usize = MAX_ACTIVE_TYPED_MECHANISM_OPERATORS;
@@ -5653,6 +5654,7 @@ struct RepositoryValidationPlan {
     root_index: usize,
     root: PathBuf,
     input_observation_ids: Vec<String>,
+    public_contract_target_symbols: Vec<String>,
     scope_paths: Vec<PathBuf>,
     test_paths: Vec<PathBuf>,
     program: PathBuf,
@@ -6133,6 +6135,20 @@ fn python_pytest_target_symbols(diagnostic_tail: &str) -> Vec<String> {
     symbols.into_iter().collect()
 }
 
+fn repository_repair_target_symbols(
+    plan: &RepositoryValidationPlan,
+    diagnostic_tail: &str,
+) -> Vec<String> {
+    let mut targets = plan.public_contract_target_symbols.clone();
+    for diagnostic_symbol in python_pytest_target_symbols(diagnostic_tail) {
+        if !targets.contains(&diagnostic_symbol) {
+            targets.push(diagnostic_symbol);
+        }
+    }
+    targets.truncate(MAX_REPOSITORY_REPAIR_TARGET_SYMBOLS);
+    targets
+}
+
 fn try_synthesize_failed_python_cohort(
     config: &GrowthSupervisorConfig,
     diagnostic: &AutonomousSelfInspectionReceipt,
@@ -6247,7 +6263,10 @@ fn try_synthesize_failed_python_cohort(
             source: source.clone(),
             test_sources: test_sources.clone(),
             python_executable: plan.program.clone(),
-            target_symbols: python_pytest_target_symbols(&validation.command.diagnostic_tail),
+            target_symbols: repository_repair_target_symbols(
+                plan,
+                &validation.command.diagnostic_tail,
+            ),
             allowed_effects: Vec::new(),
             max_expression_depth: 3,
             max_candidates: 2_048,
@@ -6633,6 +6652,18 @@ fn repository_validation_plan(
                     .collect::<Vec<_>>();
                 input_observation_ids.sort();
                 input_observation_ids.dedup();
+                // Structured requirement targets have exact-owner priority.
+                // Diagnostic text is useful fallback evidence, but cannot
+                // displace a product symbol already bound by a validated
+                // observed-to-expected contract.
+                let mut public_contract_target_symbols = python_entries
+                    .iter()
+                    .flat_map(|(observation, _)| &observation.public_contract_deltas)
+                    .flat_map(|delta| delta.target_symbols.iter().cloned())
+                    .collect::<Vec<_>>();
+                public_contract_target_symbols.sort();
+                public_contract_target_symbols.dedup();
+                public_contract_target_symbols.truncate(MAX_REPOSITORY_REPAIR_TARGET_SYMBOLS);
                 let Ok(program) = resolve_local_program("python") else {
                     break 'python_plan;
                 };
@@ -6657,6 +6688,7 @@ fn repository_validation_plan(
                     root_index,
                     root,
                     input_observation_ids,
+                    public_contract_target_symbols,
                     scope_paths,
                     test_paths,
                     program,
@@ -6709,6 +6741,7 @@ fn repository_validation_plan(
                 root_index,
                 root,
                 input_observation_ids,
+                public_contract_target_symbols: Vec::new(),
                 scope_paths,
                 test_paths: vec![manifest],
                 program,
@@ -11061,6 +11094,27 @@ mod tests {
             test_only_plan.input_observation_ids,
             vec!["python-test".to_string()]
         );
+        let mut exact_owner_observation = implementation.clone();
+        let mut exact_owner_delta = public_contract_delta_fixture();
+        exact_owner_delta.target_symbols = vec!["RenamedPolicy.marker".to_string()];
+        exact_owner_observation.public_contract_deltas = vec![exact_owner_delta];
+        let exact_owner_plan = repository_validation_plan(
+            &config,
+            &[exact_owner_observation, test_observation.clone()],
+        )
+        .unwrap()
+        .expect("structured public owner reaches repository plan");
+        assert_eq!(
+            exact_owner_plan.public_contract_target_symbols,
+            ["RenamedPolicy.marker"]
+        );
+        assert_eq!(
+            repository_repair_target_symbols(
+                &exact_owner_plan,
+                "> assert Fixture.marker == 'ready'\nE where <function Fixture.marker at 0x1>"
+            ),
+            ["RenamedPolicy.marker", "Fixture.marker"]
+        );
         let cohort = vec![implementation.clone(), test_observation];
         let diagnostic = inspect_self(SelfInspectionInput {
             generation: 3,
@@ -11446,6 +11500,139 @@ mod tests {
         );
         assert!(renamed_repair.promoted_improvement_operator_ids.is_empty());
         assert_eq!(renamed_repair.typed_candidates_enumerated, 1);
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn failed_python_class_declaration_reaches_the_product_sandbox_path() {
+        let Ok(python) = resolve_local_program("python") else {
+            return;
+        };
+        if !Command::new(&python)
+            .args(["-c", "import pytest"])
+            .status()
+            .is_ok_and(|status| status.success())
+        {
+            return;
+        }
+        let root = temp_root("failed-python-class-declaration-repair");
+        let (_, config) = test_config(&root);
+        let repository = config.watched_roots[0].clone();
+        fs::create_dir_all(repository.join("tests")).unwrap();
+        fs::create_dir_all(config.state_dir.join("diagnostics")).unwrap();
+        fs::write(
+            repository.join("pyproject.toml"),
+            "[build-system]\nrequires = []\nbuild-backend = \"\"\n\n[tool.pytest.ini_options]\ntestpaths = [\"tests\"]\n",
+        )
+        .unwrap();
+        let predecessor = "class ProductPolicy:\n    pass\n";
+        fs::write(repository.join("policy.py"), predecessor).unwrap();
+        fs::write(
+            repository.join("tests/test_policy.py"),
+            "from policy import ProductPolicy\n\ndef test_policy():\n    assert ProductPolicy.marker == 'ready'\n",
+        )
+        .unwrap();
+        let mut delta = public_contract_delta_fixture();
+        delta.target_symbols = vec!["ProductPolicy.marker".to_string()];
+        let implementation = LearningObservation {
+            observation_id: "class-declaration-implementation".to_string(),
+            work_event_id: None,
+            logical_path: "ROOT_0/policy.py".to_string(),
+            content_sha256: sha256(predecessor.as_bytes()),
+            predecessor_content_sha256: Some("e".repeat(64)),
+            actor: WorkActor::LocalTool,
+            work_kind: WorkKind::DefectRepair,
+            work_outcome: WorkOutcome::Unknown,
+            features_before: Some(StructuralFeatures::default()),
+            features_after: StructuralFeatures::default(),
+            signals: vec!["DEFECT_REPAIR".to_string()],
+            composition_roles: vec!["IMPLEMENTATION_REPAIR".to_string()],
+            learning_score: 75,
+            learning_value: LearningValue::High,
+            reasons: vec!["missing public class declaration".to_string()],
+            verification_evidence_sha256: Vec::new(),
+            performance_metrics: Vec::new(),
+            public_contract_deltas: vec![delta],
+            exact_source_fragments_stored: 0,
+            raw_source_bytes_stored: 0,
+            observed_at_ms: 1,
+        };
+        let test_observation = LearningObservation {
+            observation_id: "class-declaration-test".to_string(),
+            logical_path: "ROOT_0/tests/test_policy.py".to_string(),
+            work_kind: WorkKind::RegressionTest,
+            signals: vec!["REGRESSION_EVIDENCE".to_string(), "TEST_ADDED".to_string()],
+            composition_roles: vec!["REGRESSION_TEST".to_string()],
+            learning_score: 65,
+            reasons: vec!["public declaration observation".to_string()],
+            ..implementation.clone()
+        };
+        let cohort = vec![implementation, test_observation];
+        let diagnostic = inspect_self(SelfInspectionInput {
+            generation: 5,
+            supervisor_sequence: 12,
+            files_scanned: 2,
+            files_reused: 0,
+            files_hashed: 2,
+            scan_duration_ms: 1,
+            pending_work_events: 0,
+            replayed_unchanged_work_events: 0,
+            naive_cohort_has_verification: false,
+            evidence_aware_cohort_has_verification: false,
+            autonomous_campaigns_enabled: true,
+            campaigns_started: 2,
+            mutual_revalidation_events: 2,
+            evaluator_challenge_cases: EvaluatorMutationKind::ALL.len() as u64,
+            evaluator_required_challenge_cases: EvaluatorMutationKind::ALL.len() as u64,
+            consecutive_failures: 0,
+            plateau_scans: 0,
+            unconsumed_high_observations: 2,
+            cohort_preflight_ready: false,
+            core_cohort_validation_applicable: false,
+            repository_cohort_validation_applicable: true,
+            source_patch_attempts: 0,
+            source_patch_installations: 0,
+            source_patch_rollbacks: 0,
+            source_patch_consecutive_failures: 0,
+            source_patch_validation_ms: 0,
+            source_discovery_no_candidate_streak: 0,
+            last_source_discovery_reason: None,
+            active_runtime_ms: 1,
+            diagnostic_policy: DiagnosticPolicyMemory::default(),
+        })
+        .unwrap();
+
+        let outcome = validate_blocked_repository_cohort(&config, &diagnostic, &cohort).unwrap();
+        assert!(outcome.executed);
+        assert!(outcome.sandbox_repair_verified);
+        assert_eq!(outcome.evidence_sha256.len(), 2);
+        assert_eq!(
+            fs::read_to_string(repository.join("policy.py")).unwrap(),
+            predecessor
+        );
+        let repair = fs::read_dir(config.state_dir.join("diagnostics"))
+            .unwrap()
+            .filter_map(Result::ok)
+            .map(|entry| entry.path())
+            .filter(|path| {
+                path.file_name()
+                    .and_then(OsStr::to_str)
+                    .is_some_and(|name| name.starts_with("repository_repair_synthesis_"))
+                    && path.extension().and_then(OsStr::to_str) == Some("json")
+            })
+            .map(|path| read_json::<RepositoryRepairSynthesisReceipt>(&path).unwrap())
+            .find(|receipt| receipt.source_relative_path == Path::new("policy.py"))
+            .expect("class declaration repair receipt");
+        assert!(repair.sandbox_verified);
+        assert!(repair.sandbox_cleaned);
+        assert!(!repair.candidate_installed);
+        assert_eq!(
+            repair.selected_source_bound_template_symbols,
+            ["ProductPolicy.marker"]
+        );
+        assert_eq!(repair.edit_atom_kinds, ["ATOMIC_MULTI_EDIT", "INSERT"]);
+        assert_eq!(repair.typed_candidates_enumerated, 0);
+        assert!(repair.improvement_operators.is_empty());
         fs::remove_dir_all(root).unwrap();
     }
 
