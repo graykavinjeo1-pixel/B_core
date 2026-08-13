@@ -6311,13 +6311,6 @@ fn persist_committed_repository_operators(
         .map_err(|error| format!("COMMITTED_OPERATOR_REPOSITORY_CREATE:{error}"))?;
     fs::create_dir_all(&authority_directory)
         .map_err(|error| format!("COMMITTED_OPERATOR_AUTHORITY_CREATE:{error}"))?;
-    let already_authorized = load_authorized_typed_mechanism_operators(
-        &config.state_dir,
-        MAX_ACTIVE_SOURCE_BOUND_IMPROVEMENT_OPERATORS,
-    )?
-    .into_iter()
-    .map(|operator| operator.operator_id)
-    .collect::<BTreeSet<_>>();
     for pending in &transaction.pending_improvement_operators {
         let mut operator = pending.clone();
         operator.evidence_sha256 = commit.authoritative_output_sha256.clone();
@@ -6333,7 +6326,7 @@ fn persist_committed_repository_operators(
             if stored_identity != requested_identity {
                 return Err("COMMITTED_OPERATOR_REPOSITORY_COLLISION".to_string());
             }
-            if already_authorized.contains(&operator.operator_id) {
+            if source_bound_operator_has_exact_authority(config, &stored)? {
                 continue;
             }
             if stored.evidence_sha256 != operator.evidence_sha256 {
@@ -6879,6 +6872,38 @@ fn source_bound_improvement_operator_authority_directory(
     typed_mechanism_operator_authority_directory(&config.state_dir)
 }
 
+fn source_bound_operator_has_exact_authority(
+    config: &GrowthSupervisorConfig,
+    operator: &TypedMechanismImprovementOperatorIR,
+) -> Result<bool, String> {
+    validate_typed_mechanism_improvement_operator(operator)?;
+    let operator_sha256 = json_sha256(operator)?;
+    let directory = source_bound_improvement_operator_authority_directory(config);
+    let Ok(entries) = fs::read_dir(&directory) else {
+        return Ok(false);
+    };
+    for entry in entries {
+        let path = entry
+            .map_err(|error| format!("SOURCE_BOUND_OPERATOR_AUTHORITY_ENTRY:{error}"))?
+            .path();
+        if path.extension().and_then(OsStr::to_str) != Some("json") {
+            continue;
+        }
+        let authority: SourceBoundImprovementOperatorAuthorityReceipt = read_json(&path)?;
+        validate_source_bound_operator_authority(&authority)?;
+        if path.file_stem().and_then(OsStr::to_str) != Some(authority.authority_id.as_str()) {
+            return Err("SOURCE_BOUND_OPERATOR_AUTHORITY_PATH_ID_MISMATCH".to_string());
+        }
+        if authority.operator_id == operator.operator_id
+            && authority.operator_sha256 == operator_sha256
+            && authority.sandbox_output_sha256 == operator.evidence_sha256
+        {
+            return Ok(true);
+        }
+    }
+    Ok(false)
+}
+
 fn validate_source_bound_operator_authority(
     authority: &SourceBoundImprovementOperatorAuthorityReceipt,
 ) -> Result<(), String> {
@@ -6951,13 +6976,10 @@ fn persist_source_bound_improvement_operator(
         if stored_identity != requested_identity {
             return Err("SOURCE_BOUND_OPERATOR_REPOSITORY_COLLISION".to_string());
         }
+        if source_bound_operator_has_exact_authority(config, &stored)? {
+            return Ok(());
+        }
         if stored.evidence_sha256 != execution_authority_output_sha256 {
-            let already_authorized = load_source_bound_improvement_operators(config)?
-                .into_iter()
-                .any(|existing| existing.operator_id == operator.operator_id);
-            if already_authorized {
-                return Ok(());
-            }
             return Err("SOURCE_BOUND_OPERATOR_UNAUTHORIZED_FIRST_EVIDENCE".to_string());
         }
         stored
@@ -12907,6 +12929,24 @@ mod tests {
         assert!(authority.candidate_installed);
         assert_eq!(authority.authoritative_source_write_events, 1);
         assert_eq!(authority.sandbox_output_sha256, authoritative_output_sha256);
+        assert!(source_bound_operator_has_exact_authority(
+            &config,
+            &repair.improvement_operators[0]
+        )
+        .unwrap());
+        let mut unbound_evidence = repair.improvement_operators[0].clone();
+        unbound_evidence.evidence_sha256 = "f".repeat(64);
+        assert!(!source_bound_operator_has_exact_authority(&config, &unbound_evidence).unwrap());
+        assert_eq!(
+            fs::read_dir(source_bound_improvement_operator_authority_directory(
+                &config
+            ))
+            .unwrap()
+            .filter_map(Result::ok)
+            .filter(|entry| entry.path().extension().and_then(OsStr::to_str) == Some("json"))
+            .count(),
+            1
+        );
         fs::remove_dir_all(root).unwrap();
     }
 

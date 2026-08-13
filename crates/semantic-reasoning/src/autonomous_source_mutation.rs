@@ -45,10 +45,10 @@ pub const IMPROVEMENT_OPERATOR_MEMORY_SCHEMA: &str = "B_CORE_IMPROVEMENT_OPERATO
 pub const MAX_IMPROVEMENT_OPERATOR_GRAPH_NODES: usize = 8;
 const MAX_COMPETING_SOURCE_PROPOSALS: usize = 3;
 const MAX_TYPED_OPERATOR_RECONCILIATION_RECEIPTS: usize = 64;
-// Revision 46 makes execution-bound operator learning recoverable from the
-// same durable repository-install transaction as the source patch itself.
+// Revision 47 separates exact authority existence from the bounded active
+// operator window and deduplicates repeated authority receipts.
 // Generator identity remains diagnostic evidence only.
-pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 46;
+pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 47;
 const KNOWN_REMAINDER_PREDICTED_VALUE: u16 = 35;
 const MAX_REPOSITORY_REPAIR_FAMILY_FILES: usize = 16;
 const KNOWN_REMAINDER_STRATEGIES: [&str; 4] = [
