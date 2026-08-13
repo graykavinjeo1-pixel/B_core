@@ -2635,8 +2635,19 @@ fn render_result(
             .map_err(|_| KnowledgeWorkError::Json);
     }
     if format == OutputFormatIR::Html {
+        let rendered_findings = if matches!(
+            operation,
+            KnowledgeWorkOperationIR::Interpret | KnowledgeWorkOperationIR::Analyze
+        ) {
+            findings
+        } else {
+            &[]
+        };
         return Ok(crate::document_design::render_print_ready_html(
-            document, findings, language, design,
+            document,
+            rendered_findings,
+            language,
+            design,
         ));
     }
     let korean = language == LanguageCodeIR::Korean;
@@ -4056,6 +4067,10 @@ mod tests {
             assert!(html.contains(required), "missing {required}");
         }
         assert!(html.contains("class=\"theme-guide\""));
+        assert_eq!(html.matches("class=\"sheet").count(), 4);
+        assert!(html.contains("--page-width:210mm"));
+        assert!(html.contains("counter(sheet)"));
+        assert!(!html.contains("EVIDENCE REVIEW"));
         assert!(!html.contains("DATA TABLE"));
     }
 
@@ -4097,7 +4112,9 @@ mod tests {
         let html = product.text_output.as_deref().unwrap();
         assert!(html.starts_with("<!doctype html>"));
         assert!(html.contains("@page { size: A4"));
-        assert!(html.contains("class=\"cover\""));
+        assert!(html.contains("class=\"sheet cover\""));
+        assert!(html.contains("--page-width:210mm"));
+        assert!(html.contains("--page-height:297mm"));
         assert!(html.contains("class=\"toc\""));
         assert!(html.contains("class=\"timeline\""));
         assert!(html.contains("--accent:#087F6B"));

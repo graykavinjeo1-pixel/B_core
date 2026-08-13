@@ -30,21 +30,13 @@ pub(crate) fn render_print_ready_html(
         }
         KnowledgeDocumentIR::PlanProposal(plan) => render_plan_document(plan, findings, korean),
     };
-    let brand = design
-        .brand_name
-        .as_deref()
-        .map(html_escape)
-        .unwrap_or_else(|| "B_CORE • EVIDENCE-BOUND DOCUMENT".to_string());
     format!(
-        "<!doctype html><html lang=\"{}\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>{}</title><style>{}</style></head><body class=\"{}\"><div class=\"ambient ambient-a\"></div><div class=\"ambient ambient-b\"></div><header class=\"running-head\"><span>{}</span><span class=\"running-title\">{}</span></header><main class=\"document-shell\">{}</main><footer class=\"running-foot\"><span>{}</span><span class=\"page-number\"></span></footer></body></html>",
+        "<!doctype html><html lang=\"{}\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>{}</title><style>{}</style></head><body class=\"{}\"><main class=\"document-shell\">{}</main></body></html>",
         if korean { "ko" } else { "en" },
         html_escape(title),
         stylesheet(&tokens, design),
         tokens.theme_class,
-        brand,
-        html_escape(title),
         body,
-        if korean { "검증 가능한 근거에 기반한 문서" } else { "Evidence-bound document" },
     )
 }
 
@@ -102,16 +94,15 @@ impl DesignTokens {
             },
             DocumentThemeIR::GuideIndigo => Self {
                 theme_class: "theme-guide",
-                ink: "#17203d",
-                muted: "#65708f",
-                paper: "#fbfbff",
-                surface: "#eff1fb",
-                accent: "#5b4de6".to_string(),
-                accent_soft: "#e8e5ff",
-                line: "#d8d9e8",
-                display_font:
-                    "'Bahnschrift','Aptos Display','Malgun Gothic','Noto Sans KR',sans-serif",
-                body_font: "'Noto Sans KR','Segoe UI Variable',sans-serif",
+                ink: "#18232d",
+                muted: "#596873",
+                paper: "#ffffff",
+                surface: "#f4f6f7",
+                accent: "#1f4e79".to_string(),
+                accent_soft: "#e8eef3",
+                line: "#cfd6dc",
+                display_font: "'KoPubWorld Batang','Noto Serif KR','Batang',serif",
+                body_font: "'KoPubWorld Dotum','Noto Sans KR','Malgun Gothic',sans-serif",
             },
             DocumentThemeIR::MinimalMonochrome => Self {
                 theme_class: "theme-minimal",
@@ -134,115 +125,110 @@ impl DesignTokens {
 }
 
 fn stylesheet(tokens: &DesignTokens, design: &DocumentDesignIR) -> String {
-    let page = match design.page_size {
-        PageSizeIR::A4 => "A4",
-        PageSizeIR::Letter => "Letter",
+    let (page, page_width, page_height) = match design.page_size {
+        PageSizeIR::A4 => ("A4", "210mm", "297mm"),
+        PageSizeIR::Letter => ("Letter", "215.9mm", "279.4mm"),
     };
-    let section_gap = if design.compact { "24px" } else { "42px" };
-    let furniture = if design.show_page_furniture {
-        "display:flex"
+    let section_gap = if design.compact { "5mm" } else { "8mm" };
+    let furniture_visibility = if design.show_page_furniture {
+        "visible"
     } else {
-        "display:none"
+        "hidden"
     };
     format!(
         r#"
-@page {{ size: {page}; margin: 18mm 17mm 20mm; @bottom-right {{ content: counter(page); }} }}
-:root {{ --ink:{ink}; --muted:{muted}; --paper:{paper}; --surface:{surface}; --accent:{accent}; --accent-soft:{accent_soft}; --line:{line}; --display:{display}; --body:{body}; --section-gap:{section_gap}; }}
+@page {{ size: {page}; margin:0; }}
+:root {{ --ink:{ink}; --muted:{muted}; --paper:{paper}; --surface:{surface}; --accent:{accent}; --accent-soft:{accent_soft}; --line:{line}; --display:{display}; --body:{body}; --section-gap:{section_gap}; --page-width:{page_width}; --page-height:{page_height}; --furniture:{furniture_visibility}; }}
 * {{ box-sizing:border-box; }}
-html {{ background:#dfe4e7; color:var(--ink); font-family:var(--body); font-size:15px; line-height:1.72; text-rendering:optimizeLegibility; }}
-body {{ margin:0; min-height:100vh; background:linear-gradient(140deg,#dfe4e7,#f0f2f3 48%,#d7dde1); }}
-.ambient {{ position:fixed; border-radius:50%; filter:blur(70px); opacity:.22; pointer-events:none; }}
-.ambient-a {{ width:420px;height:420px;background:var(--accent);top:-240px;right:-100px; }}
-.ambient-b {{ width:320px;height:320px;background:var(--accent);bottom:-230px;left:-120px;opacity:.12; }}
-.document-shell {{ width:min(1120px,calc(100% - 48px)); margin:58px auto 90px; background:var(--paper); box-shadow:0 24px 70px rgba(17,32,47,.16),0 2px 7px rgba(17,32,47,.08); border:1px solid rgba(255,255,255,.78); min-height:80vh; overflow:hidden; position:relative; }}
-.running-head,.running-foot {{ position:fixed; z-index:20; left:50%; transform:translateX(-50%); width:min(1060px,calc(100% - 80px)); color:var(--muted); text-transform:uppercase; letter-spacing:.13em; font:600 10px/1 var(--body); {furniture}; justify-content:space-between; pointer-events:none; }}
-.running-head {{ top:22px; }} .running-foot {{ bottom:20px; }}
-.cover {{ min-height:680px; padding:76px 78px 64px; display:flex; flex-direction:column; justify-content:space-between; position:relative; isolation:isolate; overflow:hidden; }}
-.cover::before {{ content:''; position:absolute; inset:0; background:linear-gradient(120deg,var(--paper) 0 62%,var(--accent-soft) 62%); z-index:-2; }}
-.cover::after {{ content:''; position:absolute; width:430px;height:430px;border:90px solid var(--accent);border-radius:50%;right:-210px;top:-140px;opacity:.95;z-index:-1; }}
-.eyebrow {{ display:inline-flex; align-items:center; gap:10px; color:var(--accent); text-transform:uppercase; letter-spacing:.18em; font:700 11px/1 var(--body); }}
-.eyebrow::before {{ content:'';width:34px;height:2px;background:var(--accent); }}
-.cover h1 {{ max-width:780px; margin:24px 0 18px; font:700 clamp(45px,6vw,76px)/.98 var(--display); letter-spacing:-.045em; text-wrap:balance; }}
-.cover-deck {{ max-width:660px; color:var(--muted); font-size:19px; line-height:1.55; }}
-.cover-meta {{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:22px; padding-top:28px; border-top:1px solid var(--line); }}
-.meta-label {{ color:var(--muted); text-transform:uppercase;letter-spacing:.12em;font-size:10px;font-weight:700; }}
-.meta-value {{ margin-top:5px;font:650 14px/1.35 var(--body); }}
-.content {{ padding:64px 78px 80px; }}
-.toc {{ margin:0 0 62px; padding:30px 34px; border:1px solid var(--line); background:linear-gradient(135deg,var(--surface),transparent); break-inside:avoid; }}
-.toc-title {{ margin:0 0 18px; color:var(--accent);font:700 11px/1 var(--body);letter-spacing:.16em;text-transform:uppercase; }}
-.toc-grid {{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 28px;counter-reset:toc; }}
-.toc a {{ color:var(--ink);text-decoration:none;border-bottom:1px dotted var(--line);padding:7px 0;display:flex;justify-content:space-between;gap:14px; }}
+html {{ background:#d7dade;color:var(--ink);font-family:var(--body);font-size:10.5pt;line-height:1.62;text-rendering:optimizeLegibility; }}
+body {{ margin:0;min-height:100vh;background:#d7dade; }}
+.document-shell {{ width:100%;margin:0;padding:14mm 0 22mm;display:flex;flex-direction:column;align-items:center;gap:10mm;counter-reset:sheet; }}
+.sheet {{ width:var(--page-width);min-height:var(--page-height);padding:21mm 18mm 18mm;background:var(--paper);border:1px solid #c5c9cc;box-shadow:0 4mm 12mm rgba(20,31,41,.16);position:relative;overflow:hidden;counter-increment:sheet;break-after:page;page-break-after:always; }}
+.sheet::before {{ content:attr(data-running-title);visibility:var(--furniture);position:absolute;top:10mm;left:18mm;right:18mm;padding-bottom:3mm;border-bottom:.25mm solid var(--line);color:var(--muted);font:600 8pt/1.2 var(--body);letter-spacing:.03em; }}
+.sheet::after {{ content:counter(sheet);visibility:var(--furniture);position:absolute;bottom:9mm;right:18mm;color:var(--muted);font:600 8pt/1 var(--body);font-variant-numeric:tabular-nums; }}
+.cover {{ padding:24mm 20mm 20mm;display:flex;flex-direction:column;justify-content:space-between; }}
+.cover::before {{ content:'';position:absolute;left:20mm;top:20mm;width:24mm;height:1.4mm;background:var(--accent); }}
+.cover::after {{ content:none; }}
+.cover.sheet::before {{ display:none; }}
+.eyebrow {{ display:inline-flex;color:var(--accent);text-transform:uppercase;letter-spacing:.16em;font:700 8.5pt/1 var(--body); }}
+.eyebrow::before {{ content:none; }}
+.cover h1 {{ max-width:150mm;margin:19mm 0 8mm;font:700 30pt/1.18 var(--display);letter-spacing:-.025em;text-wrap:balance; }}
+.cover-deck {{ max-width:145mm;color:var(--muted);font-size:11.5pt;line-height:1.72; }}
+.cover-meta {{ display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8mm;padding-top:8mm;border-top:.35mm solid var(--ink); }}
+.meta-label {{ color:var(--muted);letter-spacing:.04em;font-size:7.5pt;font-weight:700; }}
+.meta-value {{ margin-top:2mm;font:650 9.5pt/1.4 var(--body); }}
+.content {{ padding:21mm 18mm 18mm; }}
+.toc {{ margin:0 0 10mm;padding:7mm 8mm;border:.25mm solid var(--line);background:var(--paper);break-inside:avoid; }}
+.toc-title {{ margin:0 0 4mm;color:var(--ink);font:700 9pt/1 var(--body);letter-spacing:.04em; }}
+.toc-grid {{ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2mm 8mm;counter-reset:toc; }}
+.toc a {{ color:var(--ink);text-decoration:none;border-bottom:.2mm dotted var(--line);padding:2mm 0;display:flex;gap:4mm; }}
 .toc a::before {{ counter-increment:toc;content:counter(toc,decimal-leading-zero);color:var(--accent);font-weight:700; }}
 .section {{ margin-top:var(--section-gap); break-inside:auto; }}
-.section-kicker {{ color:var(--accent);font:700 10px/1 var(--body);letter-spacing:.16em;text-transform:uppercase;margin-bottom:9px; }}
-.section h2 {{ margin:0 0 18px;font:700 34px/1.12 var(--display);letter-spacing:-.025em; }}
-.section h3 {{ margin:26px 0 10px;font:700 22px/1.22 var(--display); }}
+.section-kicker {{ color:var(--accent);font:700 7.5pt/1 var(--body);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2.5mm; }}
+.section h2 {{ margin:0 0 5mm;font:700 18pt/1.3 var(--display);letter-spacing:-.012em; }}
+.section h3 {{ margin:7mm 0 3mm;font:700 13pt/1.35 var(--display); }}
 .section-body {{ color:var(--ink);white-space:pre-wrap;max-width:76ch; }}
-.lead {{ font-size:20px;line-height:1.55;color:var(--ink);max-width:75ch; }}
-.dropcap::first-letter {{ float:left;font:700 64px/.78 var(--display);color:var(--accent);padding:9px 10px 0 0; }}
-.metric-grid {{ display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:28px 0 36px; }}
-.metric {{ background:var(--surface);padding:22px 20px;border-top:4px solid var(--accent);break-inside:avoid; }}
+.lead {{ font-size:11.5pt;line-height:1.75;color:var(--ink);max-width:75ch; }}
+.dropcap::first-letter {{ float:none;font:inherit;color:inherit;padding:0; }}
+.metric-grid {{ display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:3mm;margin:6mm 0 8mm; }}
+.metric {{ background:var(--surface);padding:5mm 4mm;border-top:.8mm solid var(--accent);break-inside:avoid; }}
 .metric-label {{ color:var(--muted);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase; }}
-.metric-value {{ margin:12px 0 3px;font:700 31px/1 var(--display);letter-spacing:-.03em; }}
+.metric-value {{ margin:3mm 0 1mm;font:700 17pt/1 var(--display);letter-spacing:-.02em; }}
 .metric-change {{ color:var(--accent);font-size:12px;font-weight:700; }}
-.highlight-grid {{ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:22px; }}
-.highlight {{ padding:20px 22px;background:var(--surface);border-left:3px solid var(--accent);font-weight:600;break-inside:avoid; }}
-.callout {{ margin:32px 0;padding:28px 30px;background:var(--ink);color:var(--paper);position:relative;overflow:hidden;break-inside:avoid; }}
-.callout::after {{ content:'';position:absolute;width:130px;height:130px;border:30px solid var(--accent);border-radius:50%;right:-68px;top:-70px; }}
-.callout-label {{ color:var(--accent-soft);text-transform:uppercase;letter-spacing:.14em;font-size:10px;font-weight:800; }}
-.callout p {{ margin:9px 0 0;font:650 20px/1.45 var(--display);max-width:80%; }}
-.table-wrap {{ margin:28px 0 38px;overflow:hidden;border:1px solid var(--line);break-inside:avoid; }}
-.table-title {{ padding:16px 20px;background:var(--ink);color:var(--paper);font:700 14px/1.2 var(--display); }}
+.highlight-grid {{ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3mm;margin-top:5mm; }}
+.highlight {{ padding:4mm 5mm;background:var(--surface);border-left:.8mm solid var(--accent);font-weight:600;break-inside:avoid; }}
+.callout {{ margin:7mm 0;padding:5mm 6mm;background:var(--surface);color:var(--ink);border:.25mm solid var(--line);border-left:1.2mm solid var(--accent);break-inside:avoid; }}
+.callout::after {{ content:none; }}
+.callout-label {{ color:var(--accent);letter-spacing:.04em;font-size:8pt;font-weight:800; }}
+.callout p {{ margin:2mm 0 0;font:600 10.5pt/1.6 var(--body);max-width:none; }}
+.table-wrap {{ margin:6mm 0 8mm;overflow:hidden;border:.25mm solid var(--line);break-inside:avoid; }}
+.table-title {{ padding:3.5mm 4mm;background:var(--surface);color:var(--ink);border-bottom:.25mm solid var(--line);font:700 10pt/1.2 var(--body); }}
 table {{ width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums; }}
-th {{ padding:13px 16px;background:var(--accent-soft);color:var(--ink);text-align:left;font-size:11px;letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid var(--line); }}
-td {{ padding:13px 16px;border-bottom:1px solid var(--line);vertical-align:top; }}
+th {{ padding:3mm 3.5mm;background:var(--accent-soft);color:var(--ink);text-align:left;font-size:8pt;border-bottom:.25mm solid var(--line); }}
+td {{ padding:3mm 3.5mm;border-bottom:.2mm solid var(--line);vertical-align:top; }}
 tr:nth-child(even) td {{ background:color-mix(in srgb,var(--surface) 55%,transparent); }}
 td.numeric {{ text-align:right;font-weight:700; }}
-.chart-card {{ margin:28px 0 42px;padding:22px;background:var(--surface);border:1px solid var(--line);break-inside:avoid; }}
+.chart-card {{ margin:6mm 0 8mm;padding:4mm;background:var(--paper);border:.25mm solid var(--line);break-inside:avoid; }}
 .chart-card svg {{ display:block;width:100%;height:auto;max-height:520px; }}
-.timeline {{ display:grid;gap:0;margin:30px 0; }}
+.timeline {{ display:grid;gap:0;margin:6mm 0; }}
 .timeline-item {{ display:grid;grid-template-columns:94px 1fr;gap:22px;padding:0 0 28px;position:relative; }}
 .timeline-item::before {{ content:'';position:absolute;left:45px;top:26px;bottom:-2px;width:1px;background:var(--line); }}
 .timeline-item:last-child::before {{ display:none; }}
-.timeline-id {{ width:90px;height:30px;display:grid;place-items:center;background:var(--accent);color:white;font:800 10px/1 var(--body);letter-spacing:.07em;z-index:1; }}
+.timeline-id {{ width:90px;height:30px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent);border:.25mm solid var(--accent);font:800 10px/1 var(--body);letter-spacing:.07em;z-index:1; }}
 .timeline-copy h4 {{ margin:1px 0 7px;font:700 17px/1.25 var(--display); }}
 .timeline-copy p {{ margin:0;color:var(--muted);font-size:13px; }}
-.guide-steps {{ list-style:none;counter-reset:guide-step;display:grid;gap:12px;margin:24px 0;padding:0; }}
-.guide-steps li {{ counter-increment:guide-step;display:grid;grid-template-columns:42px 1fr;gap:14px;align-items:center;padding:14px 16px;background:var(--surface);border:1px solid var(--line);break-inside:avoid; }}
-.guide-steps li::before {{ content:counter(guide-step,decimal-leading-zero);width:34px;height:34px;display:grid;place-items:center;border-radius:50%;background:var(--accent);color:white;font:800 10px/1 var(--body); }}
-.example-grid {{ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:24px 0; }}
-.example-card {{ padding:22px;border:1px solid var(--line);background:var(--surface);break-inside:avoid; }}
+.guide-steps {{ counter-reset:guide-step;display:grid;gap:2mm;margin:5mm 0;padding-left:7mm; }}
+.guide-steps li {{ counter-increment:guide-step;padding:2mm 2mm 2mm 1mm;border-bottom:.2mm solid var(--line);break-inside:avoid; }}
+.guide-steps li::marker {{ color:var(--accent);font-weight:700; }}
+.example-grid {{ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3mm;margin:5mm 0; }}
+.example-card {{ padding:4mm;border:.25mm solid var(--line);background:var(--surface);break-inside:avoid; }}
 .example-card h3 {{ margin:0 0 14px;font:700 18px/1.3 var(--display); }}
 .example-label {{ margin:14px 0 5px;color:var(--accent);font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase; }}
 .example-copy {{ margin:0;color:var(--ink);font-size:13px; }}
 .trouble-grid {{ display:grid;gap:1px;background:var(--line);border:1px solid var(--line); }}
 .trouble-item {{ display:grid;grid-template-columns:minmax(150px,.75fr) 1.5fr;gap:22px;padding:18px 20px;background:var(--paper);break-inside:avoid; }}
 .trouble-symptom {{ font-weight:750;color:var(--ink); }} .trouble-resolution {{ color:var(--muted); }}
-.checklist {{ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:0;list-style:none; }}
-.checklist li {{ position:relative;padding:15px 16px 15px 46px;background:var(--surface);border:1px solid var(--line);font-weight:650;break-inside:avoid; }}
-.checklist li::before {{ content:'✓';position:absolute;left:16px;top:14px;width:20px;height:20px;display:grid;place-items:center;border:2px solid var(--accent);color:var(--accent);font-size:11px; }}
+.checklist {{ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2mm;padding:0;list-style:none; }}
+.checklist li {{ position:relative;padding:3mm 3mm 3mm 10mm;background:var(--paper);border:.25mm solid var(--line);font-weight:650;break-inside:avoid; }}
+.checklist li::before {{ content:'';position:absolute;left:3.5mm;top:3.5mm;width:4mm;height:4mm;border:.35mm solid var(--accent); }}
 .finding-list {{ display:grid;gap:10px;margin-top:18px; }}
 .finding {{ display:grid;grid-template-columns:110px 1fr;gap:18px;padding:15px 0;border-bottom:1px solid var(--line); }}
 .finding-kind {{ color:var(--accent);font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase; }}
 .finding-copy {{ font-size:13px; }}
 .reference-list {{ padding-left:20px;color:var(--muted);font-size:13px; }}
 .page-break {{ break-before:page; }}
-.cta {{ margin-top:48px;padding:38px 42px;background:linear-gradient(120deg,var(--ink),color-mix(in srgb,var(--ink) 82%,var(--accent)));color:white;display:grid;grid-template-columns:1fr auto;gap:32px;align-items:center;break-inside:avoid; }}
-.cta h3 {{ margin:0 0 8px;font:700 28px/1.12 var(--display); }} .cta p {{ margin:0;color:#dce4ec;max-width:62ch; }}
-.cta-mark {{ width:54px;height:54px;border-radius:50%;display:grid;place-items:center;background:var(--accent);font-size:25px; }}
-.theme-academic .cover::before {{ background:linear-gradient(115deg,var(--paper) 0 70%,var(--accent-soft) 70%); }}
+.cta {{ margin-top:8mm;padding:6mm;background:var(--surface);color:var(--ink);border:.25mm solid var(--line);border-top:1mm solid var(--accent);display:grid;grid-template-columns:1fr auto;gap:8mm;align-items:center;break-inside:avoid; }}
+.cta h3 {{ margin:0 0 2mm;font:700 15pt/1.3 var(--display); }} .cta p {{ margin:0;color:var(--muted);max-width:62ch; }}
+.cta-mark {{ display:none; }}
+.theme-academic .cover::before {{ background:var(--accent); }}
 .theme-academic .cover h1 {{ font-weight:600; }}
-.theme-academic .content {{ max-width:920px;margin:auto; }}
-.theme-proposal .cover::before {{ background:linear-gradient(125deg,var(--ink) 0 57%,var(--accent) 57%); }}
-.theme-proposal .cover h1,.theme-proposal .cover-deck,.theme-proposal .cover .meta-value {{ color:white; }}
-.theme-proposal .cover .eyebrow,.theme-proposal .cover .meta-label {{ color:#bcd0ff; }}
-.theme-proposal .cover::after {{ border-color:white;opacity:.1; }}
-.theme-guide .cover::before {{ background:linear-gradient(132deg,var(--paper) 0 58%,var(--accent-soft) 58%); }}
-.theme-guide .cover::after {{ border-radius:28%;transform:rotate(18deg);opacity:.9; }}
-@media (max-width:760px) {{ .document-shell {{ width:100%;margin:0;box-shadow:none; }} .cover,.content {{ padding:44px 26px; }} .cover {{ min-height:620px; }} .cover-meta,.metric-grid,.highlight-grid,.toc-grid,.example-grid,.checklist {{ grid-template-columns:1fr 1fr; }} .trouble-item {{ grid-template-columns:1fr;gap:6px; }} .running-head,.running-foot {{ display:none; }} }}
-@media print {{ html,body {{ background:white; }} .ambient,.running-head,.running-foot {{ display:none; }} .document-shell {{ width:auto;margin:0;box-shadow:none;border:0; }} .cover {{ min-height:250mm;break-after:page; }} .content {{ padding:0; }} .chart-card,.table-wrap,.metric,.callout,.cta {{ break-inside:avoid; }} a {{ color:inherit; }} }}
+.theme-proposal .cover::before,.theme-guide .cover::before {{ background:var(--accent); }}
+@media (max-width:900px) {{ .document-shell {{ padding:0;gap:8px;align-items:stretch; }} .sheet {{ width:100%;min-height:auto;padding:56px 34px 64px;box-shadow:none;border-left:0;border-right:0; }} .cover {{ min-height:100vh; }} .cover-meta,.metric-grid,.highlight-grid,.toc-grid,.example-grid,.checklist {{ grid-template-columns:1fr 1fr; }} .trouble-item {{ grid-template-columns:1fr;gap:6px; }} }}
+@media print {{ html,body {{ background:white; }} .document-shell {{ display:block;padding:0; }} .sheet {{ width:var(--page-width);min-height:var(--page-height);margin:0;box-shadow:none;border:0; }} .chart-card,.table-wrap,.metric,.callout,.cta {{ break-inside:avoid; }} a {{ color:inherit; }} }}
 "#,
         page = page,
+        page_width = page_width,
+        page_height = page_height,
         ink = tokens.ink,
         muted = tokens.muted,
         paper = tokens.paper,
@@ -253,7 +239,7 @@ td.numeric {{ text-align:right;font-weight:700; }}
         display = tokens.display_font,
         body = tokens.body_font,
         section_gap = section_gap,
-        furniture = furniture,
+        furniture_visibility = furniture_visibility,
     )
 }
 
@@ -317,7 +303,7 @@ fn render_paper(
         )
     };
     format!(
-        "{}<div class=\"content\">{}<section class=\"section\"><div class=\"section-kicker\">ABSTRACT</div><h2>{}</h2><p class=\"lead\">{}</p></section>{}{}{}{}{}{}</div>",
+        "{}<section class=\"sheet content\" data-running-title=\"{}\">{}<section class=\"section\"><div class=\"section-kicker\">ABSTRACT</div><h2>{}</h2><p class=\"lead\">{}</p></section>{}{}{}{}{}{}</section>",
         cover(
             "RESEARCH PAPER",
             &paper.title,
@@ -328,6 +314,7 @@ fn render_paper(
                 (if korean { "근거 주장" } else { "Claims" }, &claim_count),
             ],
         ),
+        html_escape(&paper.title),
         toc,
         if korean { "초록" } else { "Abstract" },
         html_escape(&paper.abstract_text),
@@ -401,7 +388,7 @@ fn render_business(
         .map(|statement| render_table(&financial_to_table(statement)))
         .collect::<String>();
     format!(
-        "{}<div class=\"content\">{}<section class=\"section\"><div class=\"section-kicker\">EXECUTIVE SUMMARY</div><h2>{}</h2><p class=\"lead\">{}</p>{}</section>{}{}{}{}<section class=\"section page-break\"><div class=\"section-kicker\">EXECUTION</div><h2>{}</h2>{}</section>{}{}<section class=\"cta\"><div><h3>{}</h3><p>{}</p></div><div class=\"cta-mark\">→</div></section></div>",
+        "{}<section class=\"sheet content\" data-running-title=\"{}\">{}<section class=\"section\"><div class=\"section-kicker\">EXECUTIVE SUMMARY</div><h2>{}</h2><p class=\"lead\">{}</p>{}</section>{}{}{}{}<section class=\"section page-break\"><div class=\"section-kicker\">EXECUTION</div><h2>{}</h2>{}</section>{}{}<section class=\"cta\"><div><h3>{}</h3><p>{}</p></div><div class=\"cta-mark\">→</div></section></section>",
         cover(
             genre,
             &business.title,
@@ -412,6 +399,7 @@ fn render_business(
                 (if korean { "핵심 지표" } else { "Key metrics" }, &business.key_metrics.len().to_string()),
             ],
         ),
+        html_escape(&business.title),
         toc,
         if korean { "핵심 요약" } else { "Executive summary" },
         html_escape(&business.executive_summary),
@@ -435,8 +423,6 @@ fn render_user_guide(
     korean: bool,
     design: &DocumentDesignIR,
 ) -> String {
-    let section_count = guide.sections.len().to_string();
-    let checklist_count = guide.checklist.len().to_string();
     let toc = if design.show_table_of_contents {
         render_toc(
             guide
@@ -467,7 +453,7 @@ fn render_user_guide(
             };
             format!("<section class=\"section\" id=\"{}\"><div class=\"section-kicker\">GUIDE {:02}</div><h2>{}</h2><div class=\"section-body\">{}</div>{}</section>", id_escape(&section.section_id), index + 1, html_escape(&section.heading), paragraphs(&section.body), steps)
         })
-        .collect::<String>();
+        .collect::<Vec<_>>();
     let examples = if guide.examples.is_empty() {
         String::new()
     } else {
@@ -490,7 +476,7 @@ fn render_user_guide(
         String::new()
     } else {
         format!(
-            "<section class=\"section page-break\" id=\"guide-troubleshooting\"><div class=\"section-kicker\">TROUBLESHOOTING</div><h2>{}</h2><div class=\"trouble-grid\">{}</div></section>",
+            "<section class=\"section\" id=\"guide-troubleshooting\"><div class=\"section-kicker\">TROUBLESHOOTING</div><h2>{}</h2><div class=\"trouble-grid\">{}</div></section>",
             if korean { "문제 해결" } else { "Troubleshooting" },
             guide.troubleshooting.iter().map(|item| format!("<article class=\"trouble-item\"><div class=\"trouble-symptom\">{}</div><div class=\"trouble-resolution\">{}</div></article>",html_escape(&item.symptom),html_escape(&item.resolution))).collect::<String>()
         )
@@ -506,35 +492,78 @@ fn render_user_guide(
     };
     let tables = guide.tables.iter().map(render_table).collect::<String>();
     let charts = guide.charts.iter().map(render_chart).collect::<String>();
+    let first_sections = sections.iter().take(2).cloned().collect::<String>();
+    let second_sections = sections.iter().skip(2).cloned().collect::<String>();
+    let page_one = document_page(
+        &guide.title,
+        &format!(
+            "{}<section class=\"section\"><div class=\"section-kicker\">DOCUMENT PURPOSE</div><h2>{}</h2><p class=\"lead\">{}</p></section>{}",
+            toc,
+            if korean { "문서 목적과 적용 범위" } else { "Purpose and scope" },
+            html_escape(&guide.introduction),
+            first_sections,
+        ),
+    );
+    let page_two = document_page(&guide.title, &format!("{}{}", second_sections, examples));
+    let page_three = document_page(
+        &guide.title,
+        &format!(
+            "{}{}{}{}{}{}",
+            cautions,
+            troubleshooting,
+            checklist,
+            tables,
+            charts,
+            render_findings(findings, korean),
+        ),
+    );
     format!(
-        "{}<div class=\"content\">{}<section class=\"section\"><div class=\"section-kicker\">WELCOME</div><h2>{}</h2><p class=\"lead\">{}</p></section>{}{}{}{}{}{}{}{}</div>",
+        "{}{}{}{}",
         cover(
             "USER GUIDE",
             &guide.title,
             &guide.introduction,
             &[
                 (if korean { "대상" } else { "Audience" }, &guide.audience),
-                (if korean { "절" } else { "Sections" }, &section_count),
-                (if korean { "확인 항목" } else { "Checks" }, &checklist_count),
+                (
+                    if korean {
+                        "문서 상태"
+                    } else {
+                        "Document status"
+                    },
+                    if korean {
+                        "자료 검증 전 초안"
+                    } else {
+                        "Draft pending source validation"
+                    },
+                ),
+                (
+                    if korean { "서식" } else { "Format" },
+                    if korean {
+                        "A4 전문 문서"
+                    } else {
+                        "Professional A4 document"
+                    },
+                ),
             ],
         ),
-        toc,
-        if korean { "이 안내서의 목적" } else { "Purpose of this guide" },
-        html_escape(&guide.introduction),
-        sections,
-        examples,
-        cautions,
-        troubleshooting,
-        checklist,
-        tables,
-        charts,
-        render_findings(findings, korean),
+        page_one,
+        page_two,
+        page_three,
+    )
+}
+
+fn document_page(running_title: &str, body: &str) -> String {
+    format!(
+        "<section class=\"sheet content\" data-running-title=\"{}\">{}</section>",
+        html_escape(running_title),
+        body
     )
 }
 
 fn render_table_document(table: &TableIR, findings: &[KnowledgeFindingIR], korean: bool) -> String {
     format!(
-        "{}<div class=\"content\">{}{}</div>",
+        "{}<section class=\"sheet content\" data-running-title=\"{}\">{}{}</section>",
         cover(
             "DATA TABLE",
             &table.title,
@@ -555,6 +584,7 @@ fn render_table_document(table: &TableIR, findings: &[KnowledgeFindingIR], korea
                 (if korean { "형식" } else { "Format" }, "TABLE IR")
             ]
         ),
+        html_escape(&table.title),
         render_table(table),
         render_findings(findings, korean)
     )
@@ -562,7 +592,7 @@ fn render_table_document(table: &TableIR, findings: &[KnowledgeFindingIR], korea
 
 fn render_chart_document(chart: &ChartIR, findings: &[KnowledgeFindingIR], korean: bool) -> String {
     format!(
-        "{}<div class=\"content\">{}{}</div>",
+        "{}<section class=\"sheet content\" data-running-title=\"{}\">{}{}</section>",
         cover(
             "DATA VISUALIZATION",
             &chart.title,
@@ -583,6 +613,7 @@ fn render_chart_document(chart: &ChartIR, findings: &[KnowledgeFindingIR], korea
                 (if korean { "근거" } else { "Evidence" }, "SOURCE BOUND")
             ]
         ),
+        html_escape(&chart.title),
         render_chart(chart),
         render_findings(findings, korean)
     )
@@ -595,7 +626,7 @@ fn render_financial_document(
 ) -> String {
     let table = financial_to_table(statement);
     format!(
-        "{}<div class=\"content\">{}{}</div>",
+        "{}<section class=\"sheet content\" data-running-title=\"{}\">{}{}</section>",
         cover(
             "FINANCIAL STATEMENT",
             &statement.entity,
@@ -619,6 +650,7 @@ fn render_financial_document(
                 )
             ]
         ),
+        html_escape(&statement.entity),
         render_table(&table),
         render_findings(findings, korean)
     )
@@ -629,11 +661,11 @@ fn render_plan_document(
     findings: &[KnowledgeFindingIR],
     korean: bool,
 ) -> String {
-    format!("{}<div class=\"content\"><section class=\"section\"><div class=\"section-kicker\">EXECUTION</div><h2>{}</h2>{}</section>{}</div>", cover("EXECUTION PLAN", &plan.title, &plan.objective, &[(if korean { "작업" } else { "Tasks" }, &plan.tasks.len().to_string()), (if korean { "위험" } else { "Risks" }, &plan.risks.len().to_string()), (if korean { "구조" } else { "Structure" }, "DEPENDENCY DAG")]), if korean { "실행 단계" } else { "Execution stages" }, render_timeline(plan, korean), render_findings(findings, korean))
+    format!("{}<section class=\"sheet content\" data-running-title=\"{}\"><section class=\"section\"><div class=\"section-kicker\">EXECUTION</div><h2>{}</h2>{}</section>{}</section>", cover("EXECUTION PLAN", &plan.title, &plan.objective, &[(if korean { "작업" } else { "Tasks" }, &plan.tasks.len().to_string()), (if korean { "위험" } else { "Risks" }, &plan.risks.len().to_string()), (if korean { "구조" } else { "Structure" }, "DEPENDENCY DAG")]), html_escape(&plan.title), if korean { "실행 단계" } else { "Execution stages" }, render_timeline(plan, korean), render_findings(findings, korean))
 }
 
 fn cover(genre: &str, title: &str, deck: &str, metadata: &[(&str, &str)]) -> String {
-    format!("<section class=\"cover\"><div><div class=\"eyebrow\">{}</div><h1>{}</h1><p class=\"cover-deck\">{}</p></div><div class=\"cover-meta\">{}</div></section>", html_escape(genre), html_escape(title), html_escape(deck), metadata.iter().map(|(label,value)| format!("<div><div class=\"meta-label\">{}</div><div class=\"meta-value\">{}</div></div>",html_escape(label),html_escape(value))).collect::<String>())
+    format!("<section class=\"sheet cover\" data-running-title=\"{}\"><div><div class=\"eyebrow\">{}</div><h1>{}</h1><p class=\"cover-deck\">{}</p></div><div class=\"cover-meta\">{}</div></section>", html_escape(title), html_escape(genre), html_escape(title), html_escape(deck), metadata.iter().map(|(label,value)| format!("<div><div class=\"meta-label\">{}</div><div class=\"meta-value\">{}</div></div>",html_escape(label),html_escape(value))).collect::<String>())
 }
 
 fn render_toc<'a>(items: impl Iterator<Item = (&'a str, &'a str)>, korean: bool) -> String {
@@ -791,10 +823,11 @@ mod tests {
     use super::*;
     use crate::knowledge_work::{
         BusinessDocumentIR, BusinessDocumentTypeIR, BusinessMetricIR, BusinessSectionIR,
-        CellValueIR, ChartIR, ChartPointIR, ChartSeriesIR, ChartTypeIR, NumericValueIR, PaperIR,
-        PaperReferenceIR, PaperSectionIR, PlanProposalIR, PlanTaskIR, TableCellIR, TableIR,
-        BUSINESS_DOCUMENT_SCHEMA, CHART_SCHEMA, DOCUMENT_DESIGN_SCHEMA, PAPER_SCHEMA,
-        PLAN_PROPOSAL_SCHEMA, TABLE_SCHEMA,
+        CellValueIR, ChartIR, ChartPointIR, ChartSeriesIR, ChartTypeIR, GuideSectionIR,
+        NumericValueIR, PaperIR, PaperReferenceIR, PaperSectionIR, PlanProposalIR, PlanTaskIR,
+        TableCellIR, TableIR, UserGuideIR, BUSINESS_DOCUMENT_SCHEMA, CHART_SCHEMA,
+        DOCUMENT_DESIGN_SCHEMA, PAPER_SCHEMA, PLAN_PROPOSAL_SCHEMA, TABLE_SCHEMA,
+        USER_GUIDE_SCHEMA,
     };
 
     #[test]
@@ -957,5 +990,52 @@ mod tests {
         assert!(html.contains("Document map"));
         assert!(html.contains("References"));
         assert!(html.contains("@media print"));
+    }
+
+    #[test]
+    fn user_guide_preserves_required_section_order_and_source_content() {
+        let guide = UserGuideIR {
+            schema: USER_GUIDE_SCHEMA.to_string(),
+            document_id: "GUIDE-FORMAT-CONTRACT".to_string(),
+            title: "운영 절차서".to_string(),
+            audience: "승인 담당자".to_string(),
+            introduction: "승인된 절차와 증빙 기준을 정의한다.".to_string(),
+            sections: vec![
+                GuideSectionIR {
+                    section_id: "required-b".to_string(),
+                    heading: "02 검토 및 승인".to_string(),
+                    body: "검토자는 필수 증빙과 승인 조건을 대조한다.".to_string(),
+                    steps: vec!["승인 조건 충족 여부를 기록한다.".to_string()],
+                },
+                GuideSectionIR {
+                    section_id: "required-a".to_string(),
+                    heading: "01 접수".to_string(),
+                    body: "접수 원문을 수정하지 않고 등록한다.".to_string(),
+                    steps: vec!["원문 식별자를 부여한다.".to_string()],
+                },
+            ],
+            examples: Vec::new(),
+            cautions: Vec::new(),
+            troubleshooting: Vec::new(),
+            checklist: Vec::new(),
+            tables: Vec::new(),
+            charts: Vec::new(),
+        };
+        let design = DocumentDesignIR::for_kind(crate::knowledge_work::DocumentKindIR::UserGuide);
+        let html = render_print_ready_html(
+            &KnowledgeDocumentIR::UserGuide(guide),
+            &[],
+            LanguageCodeIR::Korean,
+            &design,
+        );
+
+        let review_position = html.find("02 검토 및 승인").expect("required section B");
+        let intake_position = html.find("01 접수").expect("required section A");
+        assert!(review_position < intake_position);
+        assert!(html.contains("검토자는 필수 증빙과 승인 조건을 대조한다."));
+        assert!(html.contains("접수 원문을 수정하지 않고 등록한다."));
+        assert!(html.contains("승인 조건 충족 여부를 기록한다."));
+        assert!(html.contains("원문 식별자를 부여한다."));
+        assert_eq!(html.matches("class=\"sheet").count(), 4);
     }
 }

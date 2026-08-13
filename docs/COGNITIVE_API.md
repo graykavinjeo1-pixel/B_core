@@ -126,14 +126,22 @@ distinct modes. Existing files are not replaced unless `overwrite=true`.
 
 ### Write a designed, print-ready business document
 
-`HTML` output is a self-contained document with no network dependency. It
-contains A4/Letter print rules, a cover, document map, editorial typography,
-metric cards, responsive tables, themed inline SVG charts, an execution
-timeline, evidence review, risks, and a decision call-to-action. Default themes
-are `ACADEMIC_EDITORIAL` for papers, `EXECUTIVE_NAVY` for business plans, and
-`PROPOSAL_COBALT` for business proposals. User guides use `GUIDE_INDIGO`;
-`MINIMAL_MONOCHROME` is also available. The response echoes the resolved
-`design` so the visual contract is auditable.
+`HTML` output is a self-contained professional document with no network
+dependency. On screen, every `.sheet` has the selected A4/Letter dimensions,
+visible paper boundaries, a running header, and a page number; print rules keep
+the same physical page contract. The renderer uses restrained document
+typography, tables, inline SVG charts, timelines, checklists, and formal
+callouts rather than presentation decoration. Structured user-guide sections
+are rendered in their supplied order and their source content is preserved.
+
+Analytical and interpretive documents may include an evidence review. Authored
+documents (`WRITE`, `PLAN`, and `REVISE`) keep analysis findings in the typed API
+response but do not insert the machine review into the user-facing document.
+Default themes are `ACADEMIC_EDITORIAL` for papers, `EXECUTIVE_NAVY` for
+business plans, and `PROPOSAL_COBALT` for business proposals. User guides use
+the compatibility identifier `GUIDE_INDIGO`, rendered as a formal navy A4
+manual; `MINIMAL_MONOCHROME` is also available. The response echoes the
+resolved `design` so the visual contract is auditable.
 
 ```json
 {"operation":"PROCESS_KNOWLEDGE_WORK","request":{"schema":"B_CORE_KNOWLEDGE_WORK_REQUEST_IR_1","request_id":"PLAN-DESIGN-1","command":"투자위원회용 사업계획서를 디자인 좋게 작성해","output_language":"KOREAN","design":{"schema":"B_CORE_DOCUMENT_DESIGN_IR_1","theme":"EXECUTIVE_NAVY","page_size":"A4","brand_name":"B_CORE LAB","accent_color":"#087F6B","compact":false,"show_table_of_contents":true,"show_page_furniture":true},"output":{"mode":"BOTH","format":"HTML","path":"D:\\B_Core_Output\\business-plan.html","overwrite":true},"context_tags":["business","design"],"max_plan_steps":12}}
