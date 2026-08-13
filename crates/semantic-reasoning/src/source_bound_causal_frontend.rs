@@ -16,6 +16,7 @@ use std::process::{Command, Stdio};
 use std::thread;
 use std::time::{Duration, Instant};
 
+use quote::ToTokens;
 use serde::{Deserialize, Serialize};
 
 use crate::bounded_parallel::{
@@ -26,23 +27,31 @@ use crate::sem5::model::{
     BinaryOperator, DataSplit, Effect, ProgramType, StringTransformOperator, UnaryOperator,
 };
 use crate::sem5::typed_mechanism::{
-    synthesize_typed_mechanism_goal_with_source_seeds_and_priors,
+    lower_typed_mechanism_goal, synthesize_typed_mechanism_goal_with_source_seeds_and_priors,
     typed_mechanism_improvement_operator_from_receipt, validate_typed_mechanism_synthesis_receipt,
-    SourceOperandIR, TypedMechanismImprovementOperatorIR, TypedMechanismObservationIR,
+    ConcreteSyntaxTemplateIR, SourceOperandIR, TypedMechanismGoalIR,
+    TypedMechanismImprovementOperatorIR, TypedMechanismObservationIR,
     TypedMechanismSynthesisGoalIR, TypedMechanismSynthesisReceiptIR, TypedSyntaxExpressionIR,
-    TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA,
+    TYPED_MECHANISM_GOAL_SCHEMA, TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA,
 };
 use crate::source_proposal_kernel::{
     compose_source_edit_proposals, rank_source_proposals, SourceEditProposalIR,
     SourceProposalCompositionRequirementIR, SourceProposalKernelInput,
     SourceProposalRankingEvidenceIR,
 };
-use crate::structural_source_repair::{apply_edit_atom, ByteRange, SourceEditAtom};
+use crate::structural_source_repair::{
+    apply_edit_atom, synthesize_structural_repair, ByteRange, SourceEditAtom,
+    StructuralRepairProgram,
+};
 
 pub const SOURCE_BOUND_CAUSAL_REQUEST_SCHEMA: &str = "B_CORE_SOURCE_BOUND_CAUSAL_REQUEST_1";
 pub const SOURCE_BOUND_CAUSAL_RECEIPT_SCHEMA: &str = "B_CORE_SOURCE_BOUND_CAUSAL_RECEIPT_1";
 pub const SOURCE_BOUND_REPOSITORY_DISCOVERY_SCHEMA: &str =
     "B_CORE_SOURCE_BOUND_REPOSITORY_DISCOVERY_1";
+pub const CALL_IDENTITY_PREDICATE_REFINEMENT_SCHEMA: &str =
+    "B_CORE_CALL_IDENTITY_PREDICATE_REFINEMENT_1";
+pub const PREDICATE_REFINEMENT_LOWERING_RECEIPT_SCHEMA: &str =
+    "B_CORE_PREDICATE_REFINEMENT_LOWERING_RECEIPT_1";
 const MAX_SOURCE_BYTES: usize = 2 * 1024 * 1024;
 const MAX_TEST_SOURCES: usize = 64;
 const MAX_TEST_SOURCE_BYTES: usize = 16 * 1024 * 1024;
@@ -114,6 +123,48 @@ impl std::error::Error for CausalFrontendFailure {}
 pub enum SourceLanguageBackend {
     RustSyn,
     PythonAst,
+}
+
+/// One typed equality relation in a call-identity predicate. Sources are exact
+/// repository AST projections (field access or a zero-argument accessor), not
+/// names inferred by this lowering. The diagnostic/frontend owns the semantic
+/// role assignment; this compiler verifies that all three relations preserve
+/// the same two receiver roots before it emits an edit.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct PredicateRelationBindingIR {
+    pub left_source: String,
+    pub right_source: String,
+    pub value_type: ProgramType,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct CallIdentityPredicateRefinementIR {
+    pub schema: String,
+    pub source_relative_path: PathBuf,
+    pub source: String,
+    pub predicate_range: ByteRange,
+    pub identity: PredicateRelationBindingIR,
+    pub receiver: PredicateRelationBindingIR,
+    pub owner: PredicateRelationBindingIR,
+    /// Required only for the Python backend. Rust never launches a language
+    /// host and leaves this field empty.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub python_executable: Option<PathBuf>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct PredicateRefinementLoweringReceiptIR {
+    pub schema: String,
+    pub language_backend: SourceLanguageBackend,
+    pub typed_goal: TypedMechanismGoalIR,
+    pub concrete_template: ConcreteSyntaxTemplateIR,
+    pub materialized_patch: MaterializedSourceBoundPatchIR,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub rust_structural_repair_program: Option<StructuralRepairProgram>,
+    pub receiver_root_relation_preserved: bool,
+    pub owner_root_relation_preserved: bool,
+    pub original_identity_predicate_replaced: bool,
+    pub receipt_sha256: String,
 }
 
 pub fn language_backend_for_path(
@@ -330,6 +381,581 @@ pub struct ReplayableSourceBoundPatchIR {
     pub candidate_sha256: String,
     pub candidate_replay_sha256: String,
     pub candidate_materialization_is_one_to_one: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+struct PredicateProjectionShape {
+    root: String,
+    selector: String,
+}
+
+fn transparent_rust_expression(expression: &syn::Expr) -> &syn::Expr {
+    match expression {
+        syn::Expr::Group(group) => transparent_rust_expression(&group.expr),
+        syn::Expr::Paren(paren) => transparent_rust_expression(&paren.expr),
+        _ => expression,
+    }
+}
+
+fn rust_expression_key(expression: &syn::Expr) -> String {
+    transparent_rust_expression(expression)
+        .to_token_stream()
+        .to_string()
+}
+
+fn rust_projection_shape(source: &str) -> Result<PredicateProjectionShape, CausalFrontendFailure> {
+    let expression = syn::parse_str::<syn::Expr>(source).map_err(|error| {
+        CausalFrontendFailure::unsupported(format!("RUST_PREDICATE_PROJECTION_PARSE:{error}"))
+    })?;
+    match transparent_rust_expression(&expression) {
+        syn::Expr::Field(field) => {
+            let syn::Member::Named(member) = &field.member else {
+                return Err(CausalFrontendFailure::unsupported(
+                    "RUST_TUPLE_FIELD_IS_NOT_SEMANTIC_PROJECTION",
+                ));
+            };
+            Ok(PredicateProjectionShape {
+                root: rust_expression_key(&field.base),
+                selector: format!("FIELD:{member}"),
+            })
+        }
+        syn::Expr::MethodCall(call) if call.args.is_empty() && call.turbofish.is_none() => {
+            Ok(PredicateProjectionShape {
+                root: rust_expression_key(&call.receiver),
+                selector: format!("METHOD:{}", call.method),
+            })
+        }
+        _ => Err(CausalFrontendFailure::unsupported(
+            "RUST_PREDICATE_OPERAND_NOT_FIELD_OR_ZERO_ARG_ACCESSOR",
+        )),
+    }
+}
+
+fn validate_rust_identity_predicate(
+    predicate: &str,
+    identity: &PredicateRelationBindingIR,
+) -> Result<(), CausalFrontendFailure> {
+    let predicate = syn::parse_str::<syn::Expr>(predicate).map_err(|error| {
+        CausalFrontendFailure::unsupported(format!("RUST_IDENTITY_PREDICATE_PARSE:{error}"))
+    })?;
+    let left = syn::parse_str::<syn::Expr>(&identity.left_source).map_err(|error| {
+        CausalFrontendFailure::unsupported(format!("RUST_IDENTITY_LEFT_PARSE:{error}"))
+    })?;
+    let right = syn::parse_str::<syn::Expr>(&identity.right_source).map_err(|error| {
+        CausalFrontendFailure::unsupported(format!("RUST_IDENTITY_RIGHT_PARSE:{error}"))
+    })?;
+    let syn::Expr::Binary(binary) = transparent_rust_expression(&predicate) else {
+        return Err(CausalFrontendFailure::conflict(
+            "ORIGINAL_PREDICATE_NOT_IDENTITY_EQUALITY",
+        ));
+    };
+    if !matches!(binary.op, syn::BinOp::Eq(_)) {
+        return Err(CausalFrontendFailure::conflict(
+            "ORIGINAL_PREDICATE_NOT_IDENTITY_EQUALITY",
+        ));
+    }
+    let observed_left = rust_expression_key(&binary.left);
+    let observed_right = rust_expression_key(&binary.right);
+    let expected_left = rust_expression_key(&left);
+    let expected_right = rust_expression_key(&right);
+    if !((observed_left == expected_left && observed_right == expected_right)
+        || (observed_left == expected_right && observed_right == expected_left))
+    {
+        return Err(CausalFrontendFailure::conflict(
+            "ORIGINAL_IDENTITY_OPERANDS_NOT_EXACTLY_BOUND",
+        ));
+    }
+    Ok(())
+}
+
+fn validate_projection_relation_contract(
+    shapes: &[PredicateProjectionShape],
+) -> Result<(), CausalFrontendFailure> {
+    if shapes.len() != 6 {
+        return Err(CausalFrontendFailure::conflict(
+            "PREDICATE_PROJECTION_ARITY",
+        ));
+    }
+    let left_root = &shapes[0].root;
+    let right_root = &shapes[1].root;
+    if left_root == right_root
+        || shapes[2].root != *left_root
+        || shapes[4].root != *left_root
+        || shapes[3].root != *right_root
+        || shapes[5].root != *right_root
+    {
+        return Err(CausalFrontendFailure::conflict(
+            "PREDICATE_RECEIVER_OWNER_ROOT_RELATION",
+        ));
+    }
+    if shapes[0].selector != shapes[1].selector
+        || shapes[2].selector != shapes[3].selector
+        || shapes[4].selector != shapes[5].selector
+    {
+        return Err(CausalFrontendFailure::conflict(
+            "PREDICATE_RELATION_SELECTOR_MISMATCH",
+        ));
+    }
+    let selectors = [
+        &shapes[0].selector,
+        &shapes[2].selector,
+        &shapes[4].selector,
+    ]
+    .into_iter()
+    .collect::<BTreeSet<_>>();
+    if selectors.len() != 3 {
+        return Err(CausalFrontendFailure::conflict(
+            "IDENTITY_RECEIVER_OWNER_ROLES_NOT_DISTINCT",
+        ));
+    }
+    Ok(())
+}
+
+const PYTHON_PREDICATE_REFINEMENT_VALIDATOR: &str = r#"
+import ast, json, sys
+
+request = json.load(sys.stdin)
+
+def fail(detail):
+    print(json.dumps({"ok": False, "detail": detail}, ensure_ascii=False))
+    raise SystemExit(0)
+
+def parse_expression(source, label):
+    try:
+        return ast.parse(source, mode="eval").body
+    except Exception as error:
+        fail(label + ":" + str(error))
+
+def projection(node):
+    if isinstance(node, ast.Attribute):
+        return {
+            "root": ast.dump(node.value, annotate_fields=True, include_attributes=False),
+            "selector": "FIELD:" + node.attr,
+        }
+    if (isinstance(node, ast.Call) and not node.args and not node.keywords
+            and isinstance(node.func, ast.Attribute)):
+        return {
+            "root": ast.dump(node.func.value, annotate_fields=True, include_attributes=False),
+            "selector": "METHOD:" + node.func.attr,
+        }
+    fail("PYTHON_PREDICATE_OPERAND_NOT_ATTRIBUTE_OR_ZERO_ARG_ACCESSOR")
+
+projections = [parse_expression(value, "PYTHON_PROJECTION_PARSE") for value in request["projections"]]
+predicate = parse_expression(request["predicate"], "PYTHON_IDENTITY_PREDICATE_PARSE")
+if not (isinstance(predicate, ast.Compare) and len(predicate.ops) == 1
+        and isinstance(predicate.ops[0], ast.Eq) and len(predicate.comparators) == 1):
+    fail("ORIGINAL_PREDICATE_NOT_IDENTITY_EQUALITY")
+observed = [
+    ast.dump(predicate.left, annotate_fields=True, include_attributes=False),
+    ast.dump(predicate.comparators[0], annotate_fields=True, include_attributes=False),
+]
+expected = [
+    ast.dump(projections[0], annotate_fields=True, include_attributes=False),
+    ast.dump(projections[1], annotate_fields=True, include_attributes=False),
+]
+if not (observed == expected or observed == list(reversed(expected))):
+    fail("ORIGINAL_IDENTITY_OPERANDS_NOT_EXACTLY_BOUND")
+try:
+    ast.parse(request["candidate_source"], mode="exec")
+except Exception as error:
+    fail("PYTHON_REFINED_CANDIDATE_PARSE:" + str(error))
+print(json.dumps({"ok": True, "detail": "", "shapes": [projection(node) for node in projections]}, ensure_ascii=False))
+"#;
+
+#[derive(Debug, Deserialize)]
+struct PythonPredicateRefinementValidation {
+    ok: bool,
+    detail: String,
+    #[serde(default)]
+    shapes: Vec<PredicateProjectionShape>,
+}
+
+fn python_refinement_shapes(
+    executable: &Path,
+    predicate: &str,
+    projections: &[String],
+    candidate_source: &str,
+) -> Result<Vec<PredicateProjectionShape>, CausalFrontendFailure> {
+    let input = serde_json::to_vec(&serde_json::json!({
+        "predicate": predicate,
+        "projections": projections,
+        "candidate_source": candidate_source,
+    }))
+    .map_err(|error| CausalFrontendFailure::public(format!("PYTHON_REFINEMENT_INPUT:{error}")))?;
+    let stdout = run_python_json_host(executable, PYTHON_PREDICATE_REFINEMENT_VALIDATOR, &input)?;
+    let validation: PythonPredicateRefinementValidation =
+        serde_json::from_slice(&stdout).map_err(|error| {
+            CausalFrontendFailure::unsupported(format!("PYTHON_REFINEMENT_OUTPUT:{error}"))
+        })?;
+    if !validation.ok {
+        return Err(CausalFrontendFailure::conflict(format!(
+            "PYTHON_PREDICATE_REFINEMENT:{}",
+            validation.detail
+        )));
+    }
+    Ok(validation.shapes)
+}
+
+fn equality(left: &str, right: &str) -> TypedSyntaxExpressionIR {
+    TypedSyntaxExpressionIR::Binary {
+        operator: BinaryOperator::Equal,
+        left: Box::new(TypedSyntaxExpressionIR::Operand {
+            role: left.to_string(),
+        }),
+        right: Box::new(TypedSyntaxExpressionIR::Operand {
+            role: right.to_string(),
+        }),
+    }
+}
+
+fn conjunction(
+    left: TypedSyntaxExpressionIR,
+    right: TypedSyntaxExpressionIR,
+) -> TypedSyntaxExpressionIR {
+    TypedSyntaxExpressionIR::Binary {
+        operator: BinaryOperator::And,
+        left: Box::new(left),
+        right: Box::new(right),
+    }
+}
+
+fn predicate_refinement_goal(
+    request: &CallIdentityPredicateRefinementIR,
+) -> Result<TypedMechanismGoalIR, CausalFrontendFailure> {
+    let supported = |kind: &ProgramType| {
+        matches!(
+            kind,
+            ProgramType::Int | ProgramType::Bool | ProgramType::String
+        )
+    };
+    if !supported(&request.identity.value_type)
+        || !supported(&request.receiver.value_type)
+        || !supported(&request.owner.value_type)
+    {
+        return Err(CausalFrontendFailure::unsupported(
+            "PREDICATE_EQUALITY_TYPE_NOT_SUPPORTED",
+        ));
+    }
+    let roles = [
+        (
+            "LEFT_IDENTITY",
+            &request.identity.left_source,
+            &request.identity.value_type,
+        ),
+        (
+            "RIGHT_IDENTITY",
+            &request.identity.right_source,
+            &request.identity.value_type,
+        ),
+        (
+            "LEFT_RECEIVER",
+            &request.receiver.left_source,
+            &request.receiver.value_type,
+        ),
+        (
+            "RIGHT_RECEIVER",
+            &request.receiver.right_source,
+            &request.receiver.value_type,
+        ),
+        (
+            "LEFT_OWNER",
+            &request.owner.left_source,
+            &request.owner.value_type,
+        ),
+        (
+            "RIGHT_OWNER",
+            &request.owner.right_source,
+            &request.owner.value_type,
+        ),
+    ];
+    let operands = roles
+        .into_iter()
+        .map(|(role, source, value_type)| SourceOperandIR {
+            role: role.to_string(),
+            source: source.clone(),
+            value_type: value_type.clone(),
+        })
+        .collect::<Vec<_>>();
+    let postimage = conjunction(
+        conjunction(
+            equality("LEFT_IDENTITY", "RIGHT_IDENTITY"),
+            equality("LEFT_RECEIVER", "RIGHT_RECEIVER"),
+        ),
+        equality("LEFT_OWNER", "RIGHT_OWNER"),
+    );
+    let goal_id = format!(
+        "CALL_IDENTITY_PREDICATE_REFINEMENT:{}",
+        &sha256(
+            serde_json::to_vec(&(
+                &request.source_relative_path,
+                request.predicate_range,
+                &request.identity,
+                &request.receiver,
+                &request.owner,
+            ))
+            .map_err(|error| {
+                CausalFrontendFailure::public(format!("PREDICATE_REFINEMENT_GOAL_HASH:{error}"))
+            })?
+            .as_slice()
+        )[..16]
+    );
+    Ok(TypedMechanismGoalIR {
+        schema: TYPED_MECHANISM_GOAL_SCHEMA.to_string(),
+        goal_id,
+        split: DataSplit::Discovery,
+        operands,
+        output_type: ProgramType::Bool,
+        condition: None,
+        postimage,
+        otherwise: None,
+        definitions: Vec::new(),
+        allowed_effects: vec![Effect::Pure],
+        preconditions: vec![
+            "CURRENT_PREDICATE_IS_EXACT_IDENTITY_EQUALITY".to_string(),
+            "IDENTITY_RECEIVER_OWNER_SHARE_LEFT_AND_RIGHT_RECEIVER_ROOTS".to_string(),
+        ],
+        postconditions: vec![
+            "IDENTITY_RELATION_PRESERVED".to_string(),
+            "RECEIVER_RELATION_REQUIRED".to_string(),
+            "OWNER_RELATION_REQUIRED".to_string(),
+        ],
+        invariants: vec![
+            "NO_RECEIVER_OR_OWNER_CROSS_BINDING".to_string(),
+            "ONE_TYPED_GOAL_ONE_MATERIALIZED_SOURCE_EDIT".to_string(),
+        ],
+        public_observations: Vec::new(),
+        provenance: vec![
+            "SOURCE_BOUND_CALL_IDENTITY_CAUSAL_DIAGNOSIS".to_string(),
+            "COMMON_TYPED_COMPOSITION_KERNEL".to_string(),
+        ],
+    })
+}
+
+fn predicate_refinement_receipt_hash(
+    receipt: &PredicateRefinementLoweringReceiptIR,
+) -> Result<String, CausalFrontendFailure> {
+    let mut canonical = receipt.clone();
+    canonical.receipt_sha256.clear();
+    serde_json::to_vec(&canonical)
+        .map(|bytes| sha256(&bytes))
+        .map_err(|error| {
+            CausalFrontendFailure::public(format!("PREDICATE_REFINEMENT_RECEIPT:{error}"))
+        })
+}
+
+/// Replays the lowering receipt without trusting its success booleans. The
+/// canonical verifier can therefore distinguish a typed operation that was
+/// actually materialized from a diagnostic label that merely claims repair.
+pub fn validate_predicate_refinement_lowering_receipt(
+    receipt: &PredicateRefinementLoweringReceiptIR,
+    predecessor_source: &str,
+) -> Result<(), CausalFrontendFailure> {
+    if receipt.schema != PREDICATE_REFINEMENT_LOWERING_RECEIPT_SCHEMA
+        || !receipt.receiver_root_relation_preserved
+        || !receipt.owner_root_relation_preserved
+        || !receipt.original_identity_predicate_replaced
+    {
+        return Err(CausalFrontendFailure::conflict(
+            "PREDICATE_REFINEMENT_RECEIPT_CONTRACT",
+        ));
+    }
+    if receipt.receipt_sha256 != predicate_refinement_receipt_hash(receipt)? {
+        return Err(CausalFrontendFailure::conflict(
+            "PREDICATE_REFINEMENT_RECEIPT_HASH",
+        ));
+    }
+    if sha256(predecessor_source.as_bytes()) != receipt.materialized_patch.predecessor_sha256 {
+        return Err(CausalFrontendFailure::conflict(
+            "PREDICATE_REFINEMENT_PREDECESSOR_HASH",
+        ));
+    }
+    let canonical_template = lower_typed_mechanism_goal(&receipt.typed_goal).map_err(|error| {
+        CausalFrontendFailure::unsupported(format!(
+            "PREDICATE_REFINEMENT_RECEIPT_TYPED_REPLAY:{error}"
+        ))
+    })?;
+    if canonical_template != receipt.concrete_template {
+        return Err(CausalFrontendFailure::conflict(
+            "PREDICATE_REFINEMENT_TEMPLATE_REPLAY",
+        ));
+    }
+    let replay =
+        apply_edit_atom(predecessor_source, &receipt.materialized_patch.edit).map_err(|error| {
+            CausalFrontendFailure::conflict(format!(
+                "PREDICATE_REFINEMENT_RECEIPT_EDIT_REPLAY:{error}"
+            ))
+        })?;
+    if replay != receipt.materialized_patch.candidate_source
+        || sha256(replay.as_bytes()) != receipt.materialized_patch.candidate_sha256
+        || receipt.materialized_patch.candidate_replay_sha256
+            != receipt.materialized_patch.candidate_sha256
+        || !receipt
+            .materialized_patch
+            .candidate_materialization_is_one_to_one
+    {
+        return Err(CausalFrontendFailure::conflict(
+            "PREDICATE_REFINEMENT_POSTIMAGE_REPLAY",
+        ));
+    }
+    match (
+        receipt.language_backend,
+        &receipt.rust_structural_repair_program,
+    ) {
+        (SourceLanguageBackend::RustSyn, Some(program)) => {
+            if apply_edit_atom(predecessor_source, &program.edit).as_deref() != Ok(replay.as_str())
+                || program.predecessor_source_sha256
+                    != receipt.materialized_patch.predecessor_sha256
+                || program.target_source_sha256 != receipt.materialized_patch.candidate_sha256
+            {
+                return Err(CausalFrontendFailure::conflict(
+                    "PREDICATE_REFINEMENT_STRUCTURAL_PROGRAM_REPLAY",
+                ));
+            }
+        }
+        (SourceLanguageBackend::PythonAst, None) => {}
+        _ => {
+            return Err(CausalFrontendFailure::conflict(
+                "PREDICATE_REFINEMENT_BACKEND_PROGRAM_SHAPE",
+            ))
+        }
+    }
+    Ok(())
+}
+
+/// Lowers a diagnosed call-identity underconstraint through the existing
+/// typed mechanism compiler, then installs the emitted predicate into the
+/// exact predecessor range using the common source edit algebra. This is a
+/// compiler entry point only: compile/tests/verifier still own acceptance.
+pub fn lower_call_identity_predicate_refinement(
+    request: &CallIdentityPredicateRefinementIR,
+) -> Result<PredicateRefinementLoweringReceiptIR, CausalFrontendFailure> {
+    if request.schema != CALL_IDENTITY_PREDICATE_REFINEMENT_SCHEMA {
+        return Err(CausalFrontendFailure::conflict(
+            "PREDICATE_REFINEMENT_SCHEMA",
+        ));
+    }
+    if request.source.len() > MAX_SOURCE_BYTES {
+        return Err(CausalFrontendFailure::public(
+            "PREDICATE_REFINEMENT_SOURCE_BUDGET",
+        ));
+    }
+    if request
+        .source_relative_path
+        .components()
+        .any(|component| component.as_os_str() == "tests")
+    {
+        return Err(CausalFrontendFailure::conflict(
+            "PREDICATE_REFINEMENT_TEST_TARGET_BLOCKED",
+        ));
+    }
+    let original_predicate = request
+        .source
+        .get(request.predicate_range.start..request.predicate_range.end)
+        .ok_or_else(|| CausalFrontendFailure::conflict("PREDICATE_REFINEMENT_RANGE"))?;
+    let backend = language_backend_for_path(&request.source_relative_path)?;
+    let goal = predicate_refinement_goal(request)?;
+    let concrete_template = lower_typed_mechanism_goal(&goal).map_err(|error| {
+        CausalFrontendFailure::unsupported(format!("PREDICATE_REFINEMENT_TYPED_LOWERING:{error}"))
+    })?;
+    let sources = goal
+        .operands
+        .iter()
+        .map(|operand| (operand.role.clone(), operand.source.clone()))
+        .collect::<BTreeMap<_, _>>();
+    let operand_types = goal
+        .operands
+        .iter()
+        .map(|operand| (operand.role.clone(), operand.value_type.clone()))
+        .collect::<BTreeMap<_, _>>();
+    let replacement = match backend {
+        SourceLanguageBackend::RustSyn => concrete_template.complete_expression_source.clone(),
+        SourceLanguageBackend::PythonAst => {
+            python_expression(&goal.postimage, &sources, &operand_types)?
+        }
+    };
+    let edit = replacement_edit(&request.source, request.predicate_range, replacement)?;
+    let candidate_source = apply_edit_atom(&request.source, &edit).map_err(|error| {
+        CausalFrontendFailure::conflict(format!("PREDICATE_REFINEMENT_EDIT_REPLAY:{error}"))
+    })?;
+    let projection_sources = goal
+        .operands
+        .iter()
+        .map(|operand| operand.source.clone())
+        .collect::<Vec<_>>();
+    let shapes = match backend {
+        SourceLanguageBackend::RustSyn => {
+            validate_rust_identity_predicate(original_predicate, &request.identity)?;
+            syn::parse_file(&candidate_source).map_err(|error| {
+                CausalFrontendFailure::unsupported(format!("RUST_REFINED_CANDIDATE_PARSE:{error}"))
+            })?;
+            projection_sources
+                .iter()
+                .map(|source| rust_projection_shape(source))
+                .collect::<Result<Vec<_>, _>>()?
+        }
+        SourceLanguageBackend::PythonAst => {
+            let executable = request.python_executable.as_deref().ok_or_else(|| {
+                CausalFrontendFailure::public("PYTHON_EXECUTABLE_REQUIRED_FOR_REFINEMENT")
+            })?;
+            python_refinement_shapes(
+                executable,
+                original_predicate,
+                &projection_sources,
+                &candidate_source,
+            )?
+        }
+    };
+    validate_projection_relation_contract(&shapes)?;
+    let replay = apply_edit_atom(&request.source, &edit).map_err(|error| {
+        CausalFrontendFailure::conflict(format!("PREDICATE_REFINEMENT_SECOND_REPLAY:{error}"))
+    })?;
+    if replay != candidate_source {
+        return Err(CausalFrontendFailure::conflict(
+            "PREDICATE_REFINEMENT_NOT_ONE_TO_ONE",
+        ));
+    }
+    let predecessor_sha256 = sha256(request.source.as_bytes());
+    let candidate_sha256 = sha256(candidate_source.as_bytes());
+    let materialized_patch = MaterializedSourceBoundPatchIR {
+        predecessor_sha256: predecessor_sha256.clone(),
+        edit: edit.clone(),
+        candidate_source: candidate_source.clone(),
+        candidate_sha256: candidate_sha256.clone(),
+        candidate_replay_sha256: sha256(replay.as_bytes()),
+        candidate_materialization_is_one_to_one: true,
+    };
+    let rust_structural_repair_program = if backend == SourceLanguageBackend::RustSyn {
+        let mut program = synthesize_structural_repair(
+            &request
+                .source_relative_path
+                .to_string_lossy()
+                .replace('\\', "/"),
+            &request.source,
+            &candidate_source,
+        )
+        .map_err(|error| {
+            CausalFrontendFailure::conflict(format!("PREDICATE_REFINEMENT_PROGRAM:{error}"))
+        })?;
+        program.edit = edit;
+        Some(program)
+    } else {
+        None
+    };
+    let mut receipt = PredicateRefinementLoweringReceiptIR {
+        schema: PREDICATE_REFINEMENT_LOWERING_RECEIPT_SCHEMA.to_string(),
+        language_backend: backend,
+        typed_goal: goal,
+        concrete_template,
+        materialized_patch,
+        rust_structural_repair_program,
+        receiver_root_relation_preserved: true,
+        owner_root_relation_preserved: true,
+        original_identity_predicate_replaced: true,
+        receipt_sha256: String::new(),
+    };
+    receipt.receipt_sha256 = predicate_refinement_receipt_hash(&receipt)?;
+    validate_predicate_refinement_lowering_receipt(&receipt, &request.source)?;
+    Ok(receipt)
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -3832,6 +4458,158 @@ mod tests {
                 expected_postimage: Value::Int(*expected),
             })
             .collect()
+    }
+
+    fn relation(left: &str, right: &str) -> PredicateRelationBindingIR {
+        PredicateRelationBindingIR {
+            left_source: left.to_string(),
+            right_source: right.to_string(),
+            value_type: ProgramType::String,
+        }
+    }
+
+    fn refinement_request(
+        path: &str,
+        source: &str,
+        predicate: &str,
+        identity: PredicateRelationBindingIR,
+        receiver: PredicateRelationBindingIR,
+        owner: PredicateRelationBindingIR,
+        python_executable: Option<PathBuf>,
+    ) -> CallIdentityPredicateRefinementIR {
+        let start = source.find(predicate).expect("predicate exists");
+        CallIdentityPredicateRefinementIR {
+            schema: CALL_IDENTITY_PREDICATE_REFINEMENT_SCHEMA.to_string(),
+            source_relative_path: PathBuf::from(path),
+            source: source.to_string(),
+            predicate_range: ByteRange {
+                start,
+                end: start + predicate.len(),
+            },
+            identity,
+            receiver,
+            owner,
+            python_executable,
+        }
+    }
+
+    #[test]
+    fn call_identity_predicate_refinement_lowers_to_exact_rust_ast_edit() {
+        let source = r#"pub struct Invocation {
+    pub token: String,
+    pub endpoint: String,
+    pub namespace: String,
+}
+
+pub fn same_call(left: &Invocation, right: &Invocation) -> bool {
+    left.token == right.token
+}
+"#;
+        let request = refinement_request(
+            "src/lib.rs",
+            source,
+            "left.token == right.token",
+            relation("left.token", "right.token"),
+            relation("left.endpoint", "right.endpoint"),
+            relation("left.namespace", "right.namespace"),
+            None,
+        );
+
+        let receipt = lower_call_identity_predicate_refinement(&request).unwrap();
+
+        assert_eq!(receipt.language_backend, SourceLanguageBackend::RustSyn);
+        assert!(receipt.receiver_root_relation_preserved);
+        assert!(receipt.owner_root_relation_preserved);
+        assert!(receipt.original_identity_predicate_replaced);
+        assert!(receipt
+            .materialized_patch
+            .candidate_source
+            .contains("left.endpoint == right.endpoint"));
+        assert!(receipt
+            .materialized_patch
+            .candidate_source
+            .contains("left.namespace == right.namespace"));
+        validate_predicate_refinement_lowering_receipt(&receipt, source).unwrap();
+        let mut tampered = receipt.clone();
+        tampered.owner_root_relation_preserved = false;
+        let error = validate_predicate_refinement_lowering_receipt(&tampered, source).unwrap_err();
+        assert_eq!(error.detail, "PREDICATE_REFINEMENT_RECEIPT_CONTRACT");
+        let program = receipt.rust_structural_repair_program.unwrap();
+        assert_eq!(
+            apply_edit_atom(source, &program.edit).unwrap(),
+            receipt.materialized_patch.candidate_source
+        );
+        assert_eq!(receipt.concrete_template.source_operands.len(), 6);
+        assert!(receipt.concrete_template.type_effect_check_pass);
+    }
+
+    #[test]
+    fn predicate_refinement_is_name_independent_but_rejects_cross_receiver_binding() {
+        let source = "pub fn equivalent(a: &Node, b: &Node, c: &Node) -> bool { a.signature == b.signature }\n";
+        let renamed = refinement_request(
+            "src/model.rs",
+            source,
+            "a.signature == b.signature",
+            relation("a.signature", "b.signature"),
+            relation("a.host", "b.host"),
+            relation("a.scope", "b.scope"),
+            None,
+        );
+        let receipt = lower_call_identity_predicate_refinement(&renamed).unwrap();
+        assert!(receipt
+            .materialized_patch
+            .candidate_source
+            .contains("a.host == b.host"));
+
+        let forged = refinement_request(
+            "src/model.rs",
+            source,
+            "a.signature == b.signature",
+            relation("a.signature", "b.signature"),
+            relation("c.host", "b.host"),
+            relation("a.scope", "b.scope"),
+            None,
+        );
+        let error = lower_call_identity_predicate_refinement(&forged).unwrap_err();
+        assert_eq!(
+            error.kind,
+            CausalFrontendFailureKind::ConflictingSourceBoundEdits
+        );
+        assert_eq!(error.detail, "PREDICATE_RECEIVER_OWNER_ROOT_RELATION");
+    }
+
+    #[test]
+    fn python_backend_uses_the_same_typed_predicate_goal_and_atomic_edit_path() {
+        let Some(python_executable) = python() else {
+            return;
+        };
+        let source = "def same_call(left, right):\n    return left.key == right.key\n";
+        let request = refinement_request(
+            "src/model.py",
+            source,
+            "left.key == right.key",
+            relation("left.key", "right.key"),
+            relation("left.receiver", "right.receiver"),
+            relation("left.owner", "right.owner"),
+            Some(python_executable),
+        );
+
+        let receipt = lower_call_identity_predicate_refinement(&request).unwrap();
+
+        assert_eq!(receipt.language_backend, SourceLanguageBackend::PythonAst);
+        assert!(receipt.rust_structural_repair_program.is_none());
+        assert!(receipt
+            .materialized_patch
+            .candidate_source
+            .contains("(left.receiver) == (right.receiver)"));
+        assert!(receipt
+            .materialized_patch
+            .candidate_source
+            .contains(" and "));
+        assert_eq!(
+            apply_edit_atom(&request.source, &receipt.materialized_patch.edit).unwrap(),
+            receipt.materialized_patch.candidate_source
+        );
     }
 
     #[test]

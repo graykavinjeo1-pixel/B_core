@@ -2,8 +2,10 @@ use std::io::{Read, Write};
 
 use semantic_reasoning::source_bound_causal_frontend::{
     analyze_and_synthesize_source_bound, discover_and_synthesize_python_repository,
+    lower_call_identity_predicate_refinement, CallIdentityPredicateRefinementIR,
     SourceBoundCausalRequestIR, SourceBoundRepositoryDiscoveryRequestIR,
-    SOURCE_BOUND_CAUSAL_REQUEST_SCHEMA, SOURCE_BOUND_REPOSITORY_DISCOVERY_SCHEMA,
+    CALL_IDENTITY_PREDICATE_REFINEMENT_SCHEMA, SOURCE_BOUND_CAUSAL_REQUEST_SCHEMA,
+    SOURCE_BOUND_REPOSITORY_DISCOVERY_SCHEMA,
 };
 
 fn main() {
@@ -29,7 +31,7 @@ fn run() -> Result<(), semantic_reasoning::source_bound_causal_frontend::CausalF
         .get("schema")
         .and_then(serde_json::Value::as_str)
         .unwrap_or_default();
-    let receipt = match schema {
+    let output = match schema {
         SOURCE_BOUND_CAUSAL_REQUEST_SCHEMA => {
             let request: SourceBoundCausalRequestIR =
                 serde_json::from_value(envelope).map_err(|error| {
@@ -37,7 +39,7 @@ fn run() -> Result<(), semantic_reasoning::source_bound_causal_frontend::CausalF
                         format!("SOURCE_BOUND_HOST_EXPLICIT_REQUEST:{error}"),
                     )
                 })?;
-            analyze_and_synthesize_source_bound(&request)?
+            serialize_receipt(&analyze_and_synthesize_source_bound(&request)?)?
         }
         SOURCE_BOUND_REPOSITORY_DISCOVERY_SCHEMA => {
             let request: SourceBoundRepositoryDiscoveryRequestIR = serde_json::from_value(envelope)
@@ -46,7 +48,16 @@ fn run() -> Result<(), semantic_reasoning::source_bound_causal_frontend::CausalF
                         format!("SOURCE_BOUND_HOST_DISCOVERY_REQUEST:{error}"),
                     )
                 })?;
-            discover_and_synthesize_python_repository(&request)?
+            serialize_receipt(&discover_and_synthesize_python_repository(&request)?)?
+        }
+        CALL_IDENTITY_PREDICATE_REFINEMENT_SCHEMA => {
+            let request: CallIdentityPredicateRefinementIR = serde_json::from_value(envelope)
+                .map_err(|error| {
+                    semantic_reasoning::source_bound_causal_frontend::CausalFrontendFailure::public(
+                        format!("SOURCE_BOUND_HOST_PREDICATE_REFINEMENT_REQUEST:{error}"),
+                    )
+                })?;
+            serialize_receipt(&lower_call_identity_predicate_refinement(&request)?)?
         }
         _ => {
             return Err(
@@ -56,14 +67,19 @@ fn run() -> Result<(), semantic_reasoning::source_bound_causal_frontend::CausalF
             )
         }
     };
-    let output = serde_json::to_vec_pretty(&receipt).map_err(|error| {
-        semantic_reasoning::source_bound_causal_frontend::CausalFrontendFailure::public(format!(
-            "SOURCE_BOUND_HOST_RECEIPT:{error}"
-        ))
-    })?;
     std::io::stdout().write_all(&output).map_err(|error| {
         semantic_reasoning::source_bound_causal_frontend::CausalFrontendFailure::public(format!(
             "SOURCE_BOUND_HOST_STDOUT:{error}"
+        ))
+    })
+}
+
+fn serialize_receipt(
+    receipt: &impl serde::Serialize,
+) -> Result<Vec<u8>, semantic_reasoning::source_bound_causal_frontend::CausalFrontendFailure> {
+    serde_json::to_vec_pretty(receipt).map_err(|error| {
+        semantic_reasoning::source_bound_causal_frontend::CausalFrontendFailure::public(format!(
+            "SOURCE_BOUND_HOST_RECEIPT:{error}"
         ))
     })
 }
