@@ -16,6 +16,9 @@ use std::thread;
 use std::time::{Duration, Instant, SystemTime};
 
 use serde::{Deserialize, Serialize};
+use syn::parse::Parser;
+use syn::punctuated::Punctuated;
+use syn::{Attribute, Expr, Item, Lit, Meta, Token};
 
 use crate::compiler_guided_repair::{discover_compiler_guided_repairs, CompilerGuidedRepairPolicy};
 use crate::generalized_self_application::{
@@ -50,6 +53,8 @@ pub const IMPROVEMENT_OPERATOR_MEMORY_SCHEMA: &str = "B_CORE_IMPROVEMENT_OPERATO
 pub const MAX_IMPROVEMENT_OPERATOR_GRAPH_NODES: usize = 8;
 const MAX_TYPED_OPERATOR_RECONCILIATION_RECEIPTS: usize = 64;
 const MAX_SUBMITTED_SOURCE_PROPOSALS_PER_GENERATOR: usize = MAX_SELECTED_SOURCE_PROPOSALS * 8;
+// Revision 56 derives the active runtime source surface from the crate module
+// graph under runtime-core instead of a hand-maintained SEM/file allowlist.
 // Revision 55 makes every source generator submit a bounded proposal batch.
 // Candidate selection begins only after the common Rust kernel receives all
 // typed ranking evidence; generators may bound enumeration but cannot select
@@ -76,7 +81,7 @@ const MAX_SUBMITTED_SOURCE_PROPOSALS_PER_GENERATOR: usize = MAX_SELECTED_SOURCE_
 // Revision 47 separates exact authority existence from the bounded active
 // operator window and deduplicates repeated authority receipts.
 // Generator identity remains diagnostic evidence only.
-pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 55;
+pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 56;
 pub const MAX_RETAINED_CONSUMED_RUNTIME_STAGING_GENERATIONS: usize = 2;
 const KNOWN_REMAINDER_PREDICTED_VALUE: u16 = 35;
 const MAX_REPOSITORY_REPAIR_FAMILY_FILES: usize = 16;
@@ -2558,60 +2563,160 @@ pub(crate) fn runtime_core_feature_available(source_root: &Path) -> bool {
     })
 }
 
-pub(crate) fn runtime_core_relative_path(relative_path: &Path) -> bool {
-    let path = relative_path.to_string_lossy().replace('\\', "/");
-    let Some(source_path) = path.strip_prefix("crates/semantic-reasoning/src/") else {
-        return false;
-    };
-    if source_path == "lib.rs"
-        || matches!(
-            source_path,
-            "autonomous_self_inspection.rs"
-                | "autonomous_source_mutation.rs"
-                | "code_graft.rs"
-                | "compiler_guided_repair.rs"
-                | "fullstack_ops_knowledge.rs"
-                | "generalized_self_application.rs"
-                | "generated_sem5_capability.rs"
-                | "generative_growth.rs"
-                | "grammar_repair_synthesis.rs"
-                | "growth_supervisor.rs"
-                | "integrated_development.rs"
-                | "self_healing_execution.rs"
-                | "self_healing_pipeline.rs"
-                | "self_repair_contract.rs"
-                | "source_bound_causal_frontend.rs"
-                | "source_bound_causal_main.rs"
-                | "structural_source_repair.rs"
-        )
-    {
-        return true;
+fn runtime_cfg_meta_enabled(meta: &Meta) -> bool {
+    match meta {
+        Meta::Path(path) => {
+            path.is_ident("test") || path.is_ident("windows") || path.is_ident("unix")
+        }
+        Meta::NameValue(name_value) if name_value.path.is_ident("feature") => {
+            matches!(
+                &name_value.value,
+                Expr::Lit(expression)
+                    if matches!(&expression.lit, Lit::Str(value) if value.value() == "runtime-core")
+            )
+        }
+        Meta::NameValue(_) => true,
+        Meta::List(list) => {
+            let nested = Punctuated::<Meta, Token![,]>::parse_terminated
+                .parse2(list.tokens.clone())
+                .unwrap_or_default();
+            if list.path.is_ident("all") {
+                nested.iter().all(runtime_cfg_meta_enabled)
+            } else if list.path.is_ident("any") {
+                nested.iter().any(runtime_cfg_meta_enabled)
+            } else if list.path.is_ident("not") {
+                nested
+                    .first()
+                    .is_some_and(|item| !runtime_cfg_meta_enabled(item))
+            } else {
+                true
+            }
+        }
     }
-    matches!(
-        source_path,
-        "sem5/mod.rs"
-            | "sem5/emitter.rs"
-            | "sem5/ir.rs"
-            | "sem5/learner.rs"
-            | "sem5/model.rs"
-            | "sem5/tasks.rs"
-            | "sem20/engine.rs"
-            | "sem21/engine.rs"
-            | "sem22/engine.rs"
-            | "sem23/engine.rs"
-            | "sem24/engine.rs"
-            | "sem25/engine.rs"
-            | "sem26/engine.rs"
-            | "sem27/engine.rs"
-    )
 }
 
-fn request_targets_runtime_core(request: &AutonomousSourcePatchRequest) -> bool {
-    runtime_core_relative_path(&request.relative_path)
+fn runtime_attributes_enabled(attributes: &[Attribute]) -> bool {
+    attributes.iter().all(|attribute| {
+        if !attribute.path().is_ident("cfg") {
+            return true;
+        }
+        let Meta::List(list) = &attribute.meta else {
+            return false;
+        };
+        syn::parse2::<Meta>(list.tokens.clone())
+            .map(|meta| runtime_cfg_meta_enabled(&meta))
+            .unwrap_or(false)
+    })
+}
+
+fn explicit_module_path(attributes: &[Attribute]) -> Option<PathBuf> {
+    attributes.iter().find_map(|attribute| {
+        if !attribute.path().is_ident("path") {
+            return None;
+        }
+        let Meta::NameValue(name_value) = &attribute.meta else {
+            return None;
+        };
+        let Expr::Lit(expression) = &name_value.value else {
+            return None;
+        };
+        let Lit::Str(value) = &expression.lit else {
+            return None;
+        };
+        Some(PathBuf::from(value.value()))
+    })
+}
+
+fn child_module_directory(module_file: &Path) -> PathBuf {
+    let parent = module_file.parent().unwrap_or_else(|| Path::new(""));
+    match module_file.file_name().and_then(OsStr::to_str) {
+        Some("lib.rs" | "main.rs" | "mod.rs") => parent.to_path_buf(),
+        _ => parent.join(module_file.file_stem().unwrap_or_default()),
+    }
+}
+
+fn collect_runtime_module_files(file: &Path, active: &mut BTreeSet<PathBuf>) -> Result<(), String> {
+    let canonical = fs::canonicalize(file)
+        .map_err(|error| format!("RUNTIME_MODULE_CANONICALIZE:{}:{error}", file.display()))?;
+    if !active.insert(canonical.clone()) {
+        return Ok(());
+    }
+    let source = fs::read_to_string(&canonical)
+        .map_err(|error| format!("RUNTIME_MODULE_READ:{}:{error}", canonical.display()))?;
+    let syntax = syn::parse_file(&source)
+        .map_err(|error| format!("RUNTIME_MODULE_PARSE:{}:{error}", canonical.display()))?;
+    let module_directory = child_module_directory(&canonical);
+    for item in syntax.items {
+        let Item::Mod(module) = item else {
+            continue;
+        };
+        if !runtime_attributes_enabled(&module.attrs) {
+            continue;
+        }
+        if let Some((_, inline_items)) = module.content {
+            // Inline modules are already contained in the current source file.
+            // External descendants inside them are rare and cannot be resolved
+            // without carrying the inline namespace; fail closed to the full
+            // validation lane if one is observed.
+            if inline_items
+                .iter()
+                .any(|item| matches!(item, Item::Mod(nested) if nested.content.is_none()))
+            {
+                return Err(format!(
+                    "RUNTIME_INLINE_EXTERNAL_MODULE_UNRESOLVED:{}:{}",
+                    canonical.display(),
+                    module.ident
+                ));
+            }
+            continue;
+        }
+        let candidates = if let Some(explicit) = explicit_module_path(&module.attrs) {
+            vec![canonical.parent().unwrap_or(Path::new("")).join(explicit)]
+        } else {
+            vec![
+                module_directory.join(format!("{}.rs", module.ident)),
+                module_directory
+                    .join(module.ident.to_string())
+                    .join("mod.rs"),
+            ]
+        };
+        let Some(module_file) = candidates.into_iter().find(|candidate| candidate.is_file()) else {
+            return Err(format!(
+                "RUNTIME_MODULE_FILE_MISSING:{}:{}",
+                canonical.display(),
+                module.ident
+            ));
+        };
+        collect_runtime_module_files(&module_file, active)?;
+    }
+    Ok(())
+}
+
+pub(crate) fn runtime_core_source_files(source_root: &Path) -> Result<BTreeSet<PathBuf>, String> {
+    let library = source_root.join("crates/semantic-reasoning/src/lib.rs");
+    let mut active = BTreeSet::new();
+    collect_runtime_module_files(&library, &mut active)?;
+    Ok(active)
+}
+
+pub(crate) fn runtime_core_relative_path(source_root: &Path, relative_path: &Path) -> bool {
+    let Ok(target) = fs::canonicalize(source_root.join(relative_path)) else {
+        return false;
+    };
+    runtime_core_source_files(source_root)
+        .map(|active| active.contains(&target))
+        .unwrap_or(false)
+}
+
+fn request_targets_runtime_core(
+    source_root: &Path,
+    request: &AutonomousSourcePatchRequest,
+) -> bool {
+    runtime_core_relative_path(source_root, &request.relative_path)
         && request
             .additional_family_members
             .iter()
-            .all(|member| runtime_core_relative_path(&member.relative_path))
+            .all(|member| runtime_core_relative_path(source_root, &member.relative_path))
 }
 
 fn package_name_from_manifest(manifest: &Path) -> Result<String, String> {
@@ -3599,7 +3704,7 @@ fn install_primary_and_stage_source_patch(
     let test_log = mutation_root.join("test.log");
     let test_lane_target = test_target_dir.clone();
     let test_target_packages = target_packages.clone();
-    let test_targets_runtime_core = request_targets_runtime_core(request);
+    let test_targets_runtime_core = request_targets_runtime_core(&policy.source_root, request);
     let test_lane_jobs = validation_lane_jobs;
     let validation_handle = thread::spawn(move || {
         let mut validation_args = vec!["test"];
@@ -3630,7 +3735,7 @@ fn install_primary_and_stage_source_patch(
     compile_args.push("--lib");
     append_runtime_core_feature_args(
         &policy.source_root,
-        request_targets_runtime_core(request),
+        request_targets_runtime_core(&policy.source_root, request),
         &mut compile_args,
     );
     compile_args.extend(["--quiet", "--locked", "--", "-D", "warnings"]);
@@ -5604,20 +5709,66 @@ pub fn discover_known_source_improvement(
     Ok(discover_known_source_improvement_detailed(policy, state_dir, source_generation)?.candidate)
 }
 
+/// Product-facing repository-native discovery. The legacy known-transform
+/// entry point remains available to sealed historical canaries, but production
+/// discovery never executes its fixed bootstrap case, including when an old
+/// serialized configuration still enables that flag.
+pub fn discover_repository_improvement_detailed(
+    policy: &AutonomousSourceMutationPolicy,
+    state_dir: &Path,
+    source_generation: u64,
+) -> Result<SourceDiscoveryResult, String> {
+    let mut repository_policy = policy.clone();
+    repository_policy.auto_discover_known_transformations = false;
+    discover_known_source_improvement_detailed(&repository_policy, state_dir, source_generation)
+}
+
+pub fn discover_repository_improvement(
+    policy: &AutonomousSourceMutationPolicy,
+    state_dir: &Path,
+    source_generation: u64,
+) -> Result<Option<AutonomousSourcePatchRequest>, String> {
+    Ok(discover_repository_improvement_detailed(policy, state_dir, source_generation)?.candidate)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
+    fn product_repository_discovery_never_runs_the_fixed_bootstrap_lane() {
+        let (root, policy) = fixture("product-with-legacy-bootstrap-flag");
+        let state = external_state(&root);
+        assert!(discover_known_source_improvement(&policy, &state, 1)
+            .unwrap()
+            .is_some());
+        let product = discover_repository_improvement_detailed(&policy, &state, 1).unwrap();
+        assert_eq!(product.disposition, SourceDiscoveryDisposition::Disabled);
+        assert!(product.candidate.is_none());
+        fs::remove_dir_all(root).unwrap();
+        if state.exists() {
+            fs::remove_dir_all(state).unwrap();
+        }
+    }
+
+    #[test]
     fn runtime_core_path_classifier_never_fast_validates_historical_campaign_code() {
+        let source_root = Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("../..")
+            .canonicalize()
+            .unwrap();
         for path in [
             "crates/semantic-reasoning/src/growth_supervisor.rs",
             "crates/semantic-reasoning/src/grammar_repair_synthesis.rs",
             "crates/semantic-reasoning/src/source_bound_causal_frontend.rs",
+            "crates/semantic-reasoning/src/compound_growth.rs",
             "crates/semantic-reasoning/src/sem5/emitter.rs",
             "crates/semantic-reasoning/src/sem27/engine.rs",
         ] {
-            assert!(runtime_core_relative_path(Path::new(path)), "{path}");
+            assert!(
+                runtime_core_relative_path(&source_root, Path::new(path)),
+                "{path}"
+            );
         }
         for path in [
             "crates/semantic-reasoning/src/sem12/mod.rs",
@@ -5625,7 +5776,10 @@ mod tests {
             "crates/semantic-reasoning/src/sem36/engine.rs",
             "research/sem27/frozen.json",
         ] {
-            assert!(!runtime_core_relative_path(Path::new(path)), "{path}");
+            assert!(
+                !runtime_core_relative_path(&source_root, Path::new(path)),
+                "{path}"
+            );
         }
     }
 

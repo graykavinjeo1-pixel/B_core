@@ -10,8 +10,9 @@
 
 use std::collections::{BTreeMap, BTreeSet};
 use std::fmt;
+use std::fs;
 use std::io::{Read, Write};
-use std::path::{Path, PathBuf};
+use std::path::{Component, Path, PathBuf};
 use std::process::{Command, Stdio};
 use std::thread;
 use std::time::{Duration, Instant};
@@ -48,6 +49,8 @@ pub const SOURCE_BOUND_CAUSAL_REQUEST_SCHEMA: &str = "B_CORE_SOURCE_BOUND_CAUSAL
 pub const SOURCE_BOUND_CAUSAL_RECEIPT_SCHEMA: &str = "B_CORE_SOURCE_BOUND_CAUSAL_RECEIPT_1";
 pub const SOURCE_BOUND_REPOSITORY_DISCOVERY_SCHEMA: &str =
     "B_CORE_SOURCE_BOUND_REPOSITORY_DISCOVERY_1";
+pub const SOURCE_BOUND_REPOSITORY_PATH_DISCOVERY_SCHEMA: &str =
+    "B_CORE_SOURCE_BOUND_REPOSITORY_PATH_DISCOVERY_1";
 pub const CALL_IDENTITY_PREDICATE_REFINEMENT_SCHEMA: &str =
     "B_CORE_CALL_IDENTITY_PREDICATE_REFINEMENT_1";
 pub const PREDICATE_REFINEMENT_LOWERING_RECEIPT_SCHEMA: &str =
@@ -230,6 +233,28 @@ pub struct SourceBoundRepositoryDiscoveryRequestIR {
     pub source_relative_path: PathBuf,
     pub source: String,
     pub test_sources: Vec<RepositoryTestSourceIR>,
+    pub python_executable: PathBuf,
+    #[serde(default)]
+    pub target_symbols: Vec<String>,
+    #[serde(default)]
+    pub allowed_effects: Vec<Effect>,
+    #[serde(default = "default_expression_depth")]
+    pub max_expression_depth: usize,
+    #[serde(default = "default_candidate_budget")]
+    pub max_candidates: usize,
+}
+
+/// Practical repository entry point. The caller supplies paths, not copied
+/// source text or a preselected answer. The frontend reads only bounded,
+/// non-symlink files inside the canonical repository root, derives public
+/// observations from the actual tests, and then uses the same typed synthesis
+/// and atomic lowering path as the in-memory API.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct SourceBoundRepositoryPathDiscoveryRequestIR {
+    pub schema: String,
+    pub repository_root: PathBuf,
+    pub source_relative_path: PathBuf,
+    pub test_relative_paths: Vec<PathBuf>,
     pub python_executable: PathBuf,
     #[serde(default)]
     pub target_symbols: Vec<String>,
@@ -2428,6 +2453,127 @@ fn classified_host_failure(failure: Option<&str>, detail: Option<&str>) -> Causa
 /// explicit hole, a statically contradicted implementation, or a symbol bound
 /// by a failing diagnostic, then run the exact same source-bound synthesis and
 /// atomic materialization path as an explicit causal request.
+fn repository_relative_path_valid(path: &Path) -> bool {
+    !path.as_os_str().is_empty()
+        && !path.is_absolute()
+        && path
+            .components()
+            .all(|component| matches!(component, Component::Normal(_)))
+}
+
+fn read_repository_source(
+    canonical_root: &Path,
+    relative_path: &Path,
+    max_bytes: usize,
+) -> Result<String, CausalFrontendFailure> {
+    if !repository_relative_path_valid(relative_path) {
+        return Err(CausalFrontendFailure::public("REPOSITORY_PATH_INVALID"));
+    }
+    let joined = canonical_root.join(relative_path);
+    let metadata = fs::symlink_metadata(&joined).map_err(|error| {
+        CausalFrontendFailure::public(format!("REPOSITORY_PATH_METADATA:{error}"))
+    })?;
+    if metadata.file_type().is_symlink() || !metadata.is_file() {
+        return Err(CausalFrontendFailure::public(
+            "REPOSITORY_PATH_NOT_REGULAR_FILE",
+        ));
+    }
+    if metadata.len() > max_bytes as u64 {
+        return Err(CausalFrontendFailure::public(
+            "REPOSITORY_PATH_FILE_TOO_LARGE",
+        ));
+    }
+    let canonical = fs::canonicalize(&joined).map_err(|error| {
+        CausalFrontendFailure::public(format!("REPOSITORY_PATH_CANONICALIZE:{error}"))
+    })?;
+    if !canonical.starts_with(canonical_root) {
+        return Err(CausalFrontendFailure::public(
+            "REPOSITORY_PATH_OUTSIDE_ROOT",
+        ));
+    }
+    fs::read_to_string(&canonical).map_err(|error| {
+        CausalFrontendFailure::unsupported(format!("REPOSITORY_PATH_UTF8:{error}"))
+    })
+}
+
+pub fn discover_and_synthesize_python_repository_paths(
+    request: &SourceBoundRepositoryPathDiscoveryRequestIR,
+) -> Result<SourceBoundCausalReceiptIR, CausalFrontendFailure> {
+    discover_and_synthesize_python_repository_paths_with_operators(request, &[])
+}
+
+pub fn discover_and_synthesize_python_repository_paths_with_operators(
+    request: &SourceBoundRepositoryPathDiscoveryRequestIR,
+    operators: &[TypedMechanismImprovementOperatorIR],
+) -> Result<SourceBoundCausalReceiptIR, CausalFrontendFailure> {
+    if request.schema != SOURCE_BOUND_REPOSITORY_PATH_DISCOVERY_SCHEMA
+        || !request.repository_root.is_absolute()
+        || !request.repository_root.is_dir()
+        || !repository_relative_path_valid(&request.source_relative_path)
+        || request.test_relative_paths.is_empty()
+        || request.test_relative_paths.len() > MAX_TEST_SOURCES
+        || request
+            .test_relative_paths
+            .iter()
+            .any(|path| !repository_relative_path_valid(path))
+    {
+        return Err(CausalFrontendFailure::public(
+            "REPOSITORY_PATH_DISCOVERY_ENVELOPE",
+        ));
+    }
+    let canonical_root = fs::canonicalize(&request.repository_root).map_err(|error| {
+        CausalFrontendFailure::public(format!("REPOSITORY_ROOT_CANONICALIZE:{error}"))
+    })?;
+    let source = read_repository_source(
+        &canonical_root,
+        &request.source_relative_path,
+        MAX_SOURCE_BYTES,
+    )?;
+    let mut remaining_test_bytes = MAX_TEST_SOURCE_BYTES;
+    let mut test_sources = Vec::with_capacity(request.test_relative_paths.len());
+    for relative_path in &request.test_relative_paths {
+        if remaining_test_bytes == 0 {
+            return Err(CausalFrontendFailure::public(
+                "REPOSITORY_PATH_TEST_SET_INVALID",
+            ));
+        }
+        let source = read_repository_source(&canonical_root, relative_path, remaining_test_bytes)?;
+        remaining_test_bytes = remaining_test_bytes.saturating_sub(source.len());
+        test_sources.push(RepositoryTestSourceIR {
+            relative_path: relative_path.clone(),
+            source,
+        });
+    }
+    test_sources.sort_by(|left, right| left.relative_path.cmp(&right.relative_path));
+    if test_sources
+        .windows(2)
+        .any(|pair| pair[0].relative_path == pair[1].relative_path)
+        || test_sources
+            .iter()
+            .map(|test| test.source.len())
+            .sum::<usize>()
+            > MAX_TEST_SOURCE_BYTES
+    {
+        return Err(CausalFrontendFailure::public(
+            "REPOSITORY_PATH_TEST_SET_INVALID",
+        ));
+    }
+    discover_and_synthesize_python_repository_with_operators(
+        &SourceBoundRepositoryDiscoveryRequestIR {
+            schema: SOURCE_BOUND_REPOSITORY_DISCOVERY_SCHEMA.to_string(),
+            source_relative_path: request.source_relative_path.clone(),
+            source,
+            test_sources,
+            python_executable: request.python_executable.clone(),
+            target_symbols: request.target_symbols.clone(),
+            allowed_effects: request.allowed_effects.clone(),
+            max_expression_depth: request.max_expression_depth,
+            max_candidates: request.max_candidates,
+        },
+        operators,
+    )
+}
+
 pub fn discover_and_synthesize_python_repository(
     request: &SourceBoundRepositoryDiscoveryRequestIR,
 ) -> Result<SourceBoundCausalReceiptIR, CausalFrontendFailure> {
@@ -4445,6 +4591,100 @@ mod tests {
             .status
             .success()
             .then(|| PathBuf::from(String::from_utf8_lossy(&output.stdout).trim()))
+    }
+
+    fn repository_fixture(label: &str) -> PathBuf {
+        let nonce = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap()
+            .as_nanos();
+        let root = std::env::temp_dir().join(format!(
+            "b-core-path-discovery-{label}-{}-{nonce}",
+            std::process::id()
+        ));
+        fs::create_dir_all(root.join("product")).unwrap();
+        fs::create_dir_all(root.join("checks")).unwrap();
+        root
+    }
+
+    #[test]
+    fn repository_path_api_derives_a_goal_from_fresh_real_files() {
+        let Some(python_executable) = python() else {
+            return;
+        };
+        let root = repository_fixture("fresh-names");
+        let source_path = PathBuf::from("product/renamed_math.py");
+        let test_path = PathBuf::from("checks/test_renamed_math.py");
+        fs::write(
+            root.join(&source_path),
+            "def merge_quantities(alpha: int, beta: int) -> int:\n    return 0\n",
+        )
+        .unwrap();
+        fs::write(
+            root.join(&test_path),
+            concat!(
+                "from product.renamed_math import merge_quantities\n\n",
+                "def test_merge_quantities():\n",
+                "    assert merge_quantities(2, 3) == 5\n",
+                "    assert merge_quantities(-4, 1) == -3\n",
+            ),
+        )
+        .unwrap();
+        let receipt = discover_and_synthesize_python_repository_paths(
+            &SourceBoundRepositoryPathDiscoveryRequestIR {
+                schema: SOURCE_BOUND_REPOSITORY_PATH_DISCOVERY_SCHEMA.to_string(),
+                repository_root: root.clone(),
+                source_relative_path: source_path,
+                test_relative_paths: vec![test_path],
+                python_executable,
+                target_symbols: Vec::new(),
+                allowed_effects: vec![Effect::Pure],
+                max_expression_depth: 2,
+                max_candidates: 1_024,
+            },
+        )
+        .unwrap();
+        assert_eq!(receipt.alternatives.len(), 1);
+        assert_eq!(
+            receipt.alternatives[0].requested_public_symbol,
+            "merge_quantities"
+        );
+        let candidate = replay_source_bound_patch(
+            &fs::read_to_string(root.join("product/renamed_math.py")).unwrap(),
+            &receipt.patch_variants[0].replayable_patch,
+        )
+        .unwrap();
+        assert!(candidate.contains("alpha"));
+        assert!(candidate.contains("beta"));
+        assert!(!candidate.contains("return 0"));
+        fs::remove_dir_all(&root).unwrap();
+    }
+
+    #[test]
+    fn repository_path_api_rejects_targets_outside_the_runtime_root() {
+        let Some(python_executable) = python() else {
+            return;
+        };
+        let root = repository_fixture("outside-root");
+        let error = discover_and_synthesize_python_repository_paths(
+            &SourceBoundRepositoryPathDiscoveryRequestIR {
+                schema: SOURCE_BOUND_REPOSITORY_PATH_DISCOVERY_SCHEMA.to_string(),
+                repository_root: root.clone(),
+                source_relative_path: PathBuf::from("../outside.py"),
+                test_relative_paths: vec![PathBuf::from("checks/test_any.py")],
+                python_executable,
+                target_symbols: Vec::new(),
+                allowed_effects: vec![Effect::Pure],
+                max_expression_depth: 2,
+                max_candidates: 1_024,
+            },
+        )
+        .unwrap_err();
+        assert_eq!(
+            error.kind,
+            CausalFrontendFailureKind::PublicInformationInsufficient
+        );
+        fs::remove_dir_all(&root).unwrap();
     }
 
     fn observations(cases: &[(i64, i64, i64)]) -> Vec<TypedMechanismObservationIR> {

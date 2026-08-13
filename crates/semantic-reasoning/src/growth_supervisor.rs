@@ -26,9 +26,9 @@ use crate::autonomous_self_inspection::{
 use crate::autonomous_source_mutation::{
     cleanup_consumed_source_mutation_staging, command_receipt_with_incremental,
     derive_improvement_operator_memory, discover_executable_performance_improvement,
-    discover_known_source_improvement, discover_known_source_improvement_detailed,
+    discover_repository_improvement, discover_repository_improvement_detailed,
     full_workspace_semantic_fingerprint, install_and_stage_source_patch,
-    runtime_core_feature_available, runtime_core_relative_path, source_opportunity_family_id,
+    runtime_core_feature_available, runtime_core_source_files, source_opportunity_family_id,
     source_patch_failure_is_transient, source_patch_validation_critical_path_ms,
     validate_improvement_operator, validate_policy, AutonomousSourceMutationPolicy,
     AutonomousSourcePatchReceipt, AutonomousSourcePatchRequest, ChangeOpportunityKind,
@@ -57,9 +57,8 @@ use crate::sem5::typed_mechanism::{
     SOURCE_BOUND_OPERATOR_AUTHORITY_SCHEMA,
 };
 use crate::source_bound_causal_frontend::{
-    discover_and_synthesize_python_repository_with_operators, replay_source_bound_patch,
-    RepositoryTestSourceIR, SourceBoundRepositoryDiscoveryRequestIR,
-    SOURCE_BOUND_REPOSITORY_DISCOVERY_SCHEMA,
+    discover_and_synthesize_python_repository_paths_with_operators, replay_source_bound_patch,
+    SourceBoundRepositoryPathDiscoveryRequestIR, SOURCE_BOUND_REPOSITORY_PATH_DISCOVERY_SCHEMA,
 };
 use crate::structural_source_repair::SourceEditAtom;
 
@@ -2889,7 +2888,7 @@ pub fn status(config_path: &Path) -> Result<SupervisorState, String> {
 pub fn preview_source_repair(config_path: &Path) -> Result<serde_json::Value, String> {
     let config = load_config(config_path)?;
     let state = load_state(&config)?;
-    let candidate = discover_known_source_improvement(
+    let candidate = discover_repository_improvement(
         &config.source_mutation,
         &config.state_dir,
         state.generation,
@@ -7339,19 +7338,6 @@ fn try_synthesize_failed_python_cohort(
     if plan.validator_kind != RepositoryValidatorKind::PythonPytest || validation.success {
         return Ok(None);
     }
-    let test_sources = plan
-        .test_paths
-        .iter()
-        .map(|relative| {
-            let path = validated_repository_file(&plan.root, relative)?;
-            let source = fs::read_to_string(&path)
-                .map_err(|error| format!("REPOSITORY_REPAIR_TEST_READ:{error}"))?;
-            Ok(RepositoryTestSourceIR {
-                relative_path: relative.clone(),
-                source,
-            })
-        })
-        .collect::<Result<Vec<_>, String>>()?;
     let mut implementation_paths = plan
         .scope_paths
         .iter()
@@ -7455,11 +7441,11 @@ fn try_synthesize_failed_python_cohort(
         let mut typed_candidates_enumerated = 0_usize;
         let mut successful_syntheses = Vec::new();
 
-        let request = SourceBoundRepositoryDiscoveryRequestIR {
-            schema: SOURCE_BOUND_REPOSITORY_DISCOVERY_SCHEMA.to_string(),
+        let request = SourceBoundRepositoryPathDiscoveryRequestIR {
+            schema: SOURCE_BOUND_REPOSITORY_PATH_DISCOVERY_SCHEMA.to_string(),
+            repository_root: plan.root.clone(),
             source_relative_path: relative.clone(),
-            source: source.clone(),
-            test_sources: test_sources.clone(),
+            test_relative_paths: plan.test_paths.clone(),
             python_executable: plan.program.clone(),
             target_symbols: repository_repair_target_symbols(
                 plan,
@@ -7469,7 +7455,7 @@ fn try_synthesize_failed_python_cohort(
             max_expression_depth: 3,
             max_candidates: 2_048,
         };
-        match discover_and_synthesize_python_repository_with_operators(
+        match discover_and_synthesize_python_repository_paths_with_operators(
             &request,
             &available_operators,
         ) {
@@ -8168,12 +8154,19 @@ fn core_validation_plan(
     // surface when one of them actually changes.
     let full_regression_canary = generation.is_multiple_of(FULL_CORE_REGRESSION_CANARY_INTERVAL);
     let source_prefix = source_mutation_watch_prefix(config)?;
+    let runtime_files = runtime_core_source_files(&config.source_mutation.source_root).ok();
     let historical_path_observed = source_prefix.as_ref().is_some_and(|prefix| {
         observations
             .iter()
             .filter_map(|observation| observation.logical_path.strip_prefix(prefix))
-            .map(Path::new)
-            .any(|relative| !runtime_core_relative_path(relative))
+            .map(|relative| config.source_mutation.source_root.join(relative))
+            .any(|path| {
+                fs::canonicalize(path).ok().is_none_or(|canonical| {
+                    runtime_files
+                        .as_ref()
+                        .is_none_or(|runtime_files| !runtime_files.contains(&canonical))
+                })
+            })
     });
     let historical_regression_required = historical_path_observed;
     let validation_args = || {
@@ -9755,10 +9748,12 @@ fn source_discovery_state_sha256(
             (logical_path.clone(), fingerprint.content_sha256.clone())
         })
         .collect::<BTreeMap<_, _>>();
+    let mut repository_policy = config.source_mutation.clone();
+    repository_policy.auto_discover_known_transformations = false;
     json_sha256(&(
         SOURCE_REPAIR_ENGINE_REVISION,
         state.generation,
-        &config.source_mutation,
+        repository_policy,
         content_identity,
     ))
 }
@@ -9789,8 +9784,7 @@ fn attempt_discovered_source_repair(
     if state.plateau_scans < config.resources.plateau_scans_before_wait {
         return Ok(false);
     }
-    if !config.source_mutation.auto_discover_known_transformations
-        && !config.source_mutation.auto_discover_compiler_repairs
+    if !config.source_mutation.auto_discover_compiler_repairs
         && !config.source_mutation.auto_synthesize_grammar_repairs
     {
         return Ok(false);
@@ -9816,7 +9810,7 @@ fn attempt_discovered_source_repair(
         .into_values()
         .collect::<Vec<_>>();
     let discovery = if executable_performance_knowledge.is_empty() {
-        discover_known_source_improvement_detailed(
+        discover_repository_improvement_detailed(
             &config.source_mutation,
             &config.state_dir,
             state.generation,
@@ -9829,7 +9823,7 @@ fn attempt_discovered_source_repair(
             &executable_performance_knowledge,
         ) {
             Ok(learned) if learned.candidate.is_some() => Ok(learned),
-            Ok(_) => discover_known_source_improvement_detailed(
+            Ok(_) => discover_repository_improvement_detailed(
                 &config.source_mutation,
                 &config.state_dir,
                 state.generation,
@@ -10830,7 +10824,7 @@ mod tests {
         let memory = load_memory(&config, 0).unwrap();
         config.source_mutation.enabled = true;
         config.source_mutation.source_root = config.watched_roots[0].clone();
-        config.source_mutation.auto_discover_known_transformations = true;
+        config.source_mutation.auto_discover_compiler_repairs = true;
         let mut index = FileIndex::default();
         index.files.insert(
             "ROOT_0/src/lib.rs".to_string(),
@@ -10972,8 +10966,18 @@ mod tests {
             .join("crates/semantic-reasoning/src");
         fs::create_dir_all(&source_dir).unwrap();
         fs::write(
+            source_dir.join("lib.rs"),
+            "pub mod growth_supervisor;\npub mod generated_sem5_capability;\n",
+        )
+        .unwrap();
+        fs::write(
             source_dir.join("growth_supervisor.rs"),
             "#[cfg(test)]\nmod tests {\n    #[test]\n    fn exercises_module() {}\n}\n",
+        )
+        .unwrap();
+        fs::write(
+            source_dir.join("generated_sem5_capability.rs"),
+            "pub fn generated_capability() {}\n",
         )
         .unwrap();
         let observation = LearningObservation {

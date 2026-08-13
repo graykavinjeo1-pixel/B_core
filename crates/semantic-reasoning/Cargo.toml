@@ -3,15 +3,14 @@ name = "semantic-reasoning"
 version = "0.1.0"
 edition.workspace = true
 license.workspace = true
-description = "Closed-world SEM-0 executable semantic emergence experiment."
+description = "Repository-native bounded semantic reasoning and autonomous improvement runtime."
 publish = false
 
 [features]
-# Preserve the complete sealed research surface for explicit historical
-# canaries. Runtime self-improvement validation opts into the much smaller
-# `runtime-core` surface so an edit to the active core does not relint every
-# immutable SEM campaign implementation.
-default = ["historical-campaigns"]
+# Normal builds expose only the production runtime. Preserve the complete
+# sealed research surface behind an explicit feature for historical canaries,
+# so active-core edits do not relint every immutable SEM implementation.
+default = ["runtime-core"]
 historical-campaigns = []
 runtime-core = []
 
