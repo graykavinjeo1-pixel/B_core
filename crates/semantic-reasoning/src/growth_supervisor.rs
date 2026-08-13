@@ -1149,6 +1149,7 @@ pub struct SelfCheck {
     pub source_proposal_competitors_bounded_to_three: bool,
     pub generative_execution_dispatch_uses_typed_rust_ir: bool,
     pub generative_stage_strings_are_metadata_only: bool,
+    pub python_host_failure_ontology_owned_by_rust_kernel: bool,
     pub fullstack_knowledge_uses_typed_executable_transitions: bool,
     pub fullstack_text_contracts_are_metadata_only: bool,
     pub successful_operators_are_content_addressed: bool,
@@ -1267,6 +1268,7 @@ pub fn self_check() -> SelfCheck {
         source_proposal_competitors_bounded_to_three: true,
         generative_execution_dispatch_uses_typed_rust_ir: true,
         generative_stage_strings_are_metadata_only: true,
+        python_host_failure_ontology_owned_by_rust_kernel: true,
         fullstack_knowledge_uses_typed_executable_transitions: true,
         fullstack_text_contracts_are_metadata_only: true,
         successful_operators_are_content_addressed: true,
@@ -11324,6 +11326,7 @@ mod tests {
         assert!(check.program_execution_profile_is_not_synthesis_knowledge);
         assert!(check.generative_execution_dispatch_uses_typed_rust_ir);
         assert!(check.generative_stage_strings_are_metadata_only);
+        assert!(check.python_host_failure_ontology_owned_by_rust_kernel);
         assert!(check.fullstack_knowledge_uses_typed_executable_transitions);
         assert!(check.fullstack_text_contracts_are_metadata_only);
         assert!(check.successful_operators_are_content_addressed);

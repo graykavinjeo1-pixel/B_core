@@ -1731,32 +1731,67 @@ fn host_failure(response: &PythonHostResponse) -> Option<CausalFrontendFailure> 
     if response.ok {
         return None;
     }
-    let detail = response
-        .detail
-        .clone()
-        .unwrap_or_else(|| "PYTHON_HOST_UNCLASSIFIED".to_string());
-    Some(match response.failure.as_deref() {
-        Some("PUBLIC_INFORMATION_INSUFFICIENT") => CausalFrontendFailure::public(detail),
-        Some("CONFLICTING_SOURCE_BOUND_EDITS") => CausalFrontendFailure::conflict(detail),
-        _ => CausalFrontendFailure::unsupported(detail),
-    })
+    Some(classified_host_failure(
+        response.failure.as_deref(),
+        response.detail.as_deref(),
+    ))
+}
+
+/// Python reports concrete parser/AST observations only. The Rust kernel owns
+/// the public failure ontology and derives it from the bounded observation
+/// code; the host's `failure` string is retained solely for mismatch audit.
+fn failure_kind_from_host_detail(detail: &str) -> CausalFrontendFailureKind {
+    let observation = detail.split(':').next().unwrap_or(detail);
+    match observation {
+        "CONFLICTING_PUBLIC_DECLARATION_POSTIMAGES" => {
+            CausalFrontendFailureKind::ConflictingSourceBoundEdits
+        }
+        "PYTHON_PARSE"
+        | "PYTHON_AST_SPAN_MISSING"
+        | "PYTHON_AST_UTF8_SPAN"
+        | "PYTHON_ANNOTATION"
+        | "PYTHON_VARIADIC_PUBLIC_SYMBOL"
+        | "PYTHON_UNSUPPORTED_NODE"
+        | "CANDIDATE_PARSE"
+        | "MATERIALIZED_CLASS_DECLARATION_LITERAL"
+        | "IMPLEMENTATION_PARSE"
+        | "DECLARATION_AST_SPAN_MISSING"
+        | "TEST_PARSE" => CausalFrontendFailureKind::UnsupportedLanguageSyntax,
+        "PYTHON_HOST_INPUT"
+        | "DEPENDENCY_CLOSURE_BUDGET"
+        | "EXACT_PUBLIC_SYMBOL_NOT_FOUND"
+        | "PUBLIC_SYMBOL_POSTIMAGE_MISSING"
+        | "DEPENDENCY_BINDING_STATE_BUDGET"
+        | "DEPENDENCY_OPERAND_BINDING_AMBIGUOUS"
+        | "DEPENDENCY_POSTIMAGE_MISSING"
+        | "CANDIDATE_BATCH_INPUT"
+        | "CANDIDATE_INPUT"
+        | "MATERIALIZED_PUBLIC_SYMBOL_IDENTITY_LOST"
+        | "MATERIALIZED_CLASS_DECLARATION_IDENTITY_LOST"
+        | "MATERIALIZED_CLASS_DECLARATION_POSTIMAGE_MISMATCH"
+        | "REPOSITORY_DISCOVERY_INPUT"
+        | "TEST_SOURCE_MISSING"
+        | "DYNAMIC_PRODUCT_CLASS_DECLARATION"
+        | "NO_EVIDENCE_BOUND_REPAIR_ALTERNATIVE" => {
+            CausalFrontendFailureKind::PublicInformationInsufficient
+        }
+        _ => CausalFrontendFailureKind::UnsupportedLanguageSyntax,
+    }
 }
 
 fn classified_host_failure(failure: Option<&str>, detail: Option<&str>) -> CausalFrontendFailure {
     let detail = detail.unwrap_or("PYTHON_HOST_UNCLASSIFIED").to_string();
-    match failure {
-        Some("PUBLIC_INFORMATION_INSUFFICIENT") => CausalFrontendFailure::public(detail),
-        Some("CONFLICTING_SOURCE_BOUND_EDITS") => CausalFrontendFailure::conflict(detail),
-        _ => CausalFrontendFailure::unsupported(detail),
-    }
-}
-
-fn failure_kind_from_code(code: &str) -> CausalFrontendFailureKind {
-    match code {
-        "CONFLICTING_SOURCE_BOUND_EDITS" => CausalFrontendFailureKind::ConflictingSourceBoundEdits,
-        "UNSUPPORTED_LANGUAGE_SYNTAX" => CausalFrontendFailureKind::UnsupportedLanguageSyntax,
-        _ => CausalFrontendFailureKind::PublicInformationInsufficient,
-    }
+    let kind = failure_kind_from_host_detail(&detail);
+    let declared_mismatch = failure.is_some_and(|declared| declared != kind.as_code());
+    let detail = if declared_mismatch {
+        format!(
+            "PYTHON_FAILURE_CLASSIFICATION_MISMATCH:declared={}:observation={detail}",
+            failure.unwrap_or("MISSING")
+        )
+    } else {
+        detail
+    };
+    CausalFrontendFailure { kind, detail }
 }
 
 /// Discover public literal observations from Python tests, retain only an
@@ -3545,11 +3580,20 @@ pub fn analyze_and_synthesize_source_bound_with_operators(
                             "CLOSURE_REJECTION_OUTSIDE_EXECUTION_DEPENDENCY_CLOSURE",
                         )
                     })?;
+                let failure_kind = failure_kind_from_host_detail(&rejection.detail);
+                let detail = if rejection.failure == failure_kind.as_code() {
+                    rejection.detail.clone()
+                } else {
+                    format!(
+                        "PYTHON_FAILURE_CLASSIFICATION_MISMATCH:declared={}:observation={}",
+                        rejection.failure, rejection.detail
+                    )
+                };
                 closure_candidate_rejections.push(SourceBoundClosureCandidateRejectionIR {
                     closure_ordinal,
                     qualified_symbol: rejection.qualified_symbol.clone(),
-                    failure_kind: failure_kind_from_code(&rejection.failure),
-                    detail: rejection.detail.clone(),
+                    failure_kind,
+                    detail,
                 });
             }
             let function_template =
@@ -3825,6 +3869,33 @@ mod tests {
             CausalFrontendFailureKind::UnsupportedLanguageSyntax
         );
         assert!(failure.detail.starts_with("CANDIDATE_PARSE:"));
+    }
+
+    #[test]
+    fn rust_kernel_owns_python_host_failure_classification() {
+        let parse = classified_host_failure(
+            Some("PUBLIC_INFORMATION_INSUFFICIENT"),
+            Some("CANDIDATE_PARSE:invalid syntax"),
+        );
+        assert_eq!(
+            parse.kind,
+            CausalFrontendFailureKind::UnsupportedLanguageSyntax
+        );
+        assert!(parse
+            .detail
+            .starts_with("PYTHON_FAILURE_CLASSIFICATION_MISMATCH:"));
+
+        let missing = classified_host_failure(
+            Some("UNSUPPORTED_LANGUAGE_SYNTAX"),
+            Some("EXACT_PUBLIC_SYMBOL_NOT_FOUND:pkg.target"),
+        );
+        assert_eq!(
+            missing.kind,
+            CausalFrontendFailureKind::PublicInformationInsufficient
+        );
+        assert!(missing
+            .detail
+            .starts_with("PYTHON_FAILURE_CLASSIFICATION_MISMATCH:"));
     }
 
     #[test]
