@@ -25,6 +25,10 @@ use crate::long_term_repair::{
     process_long_term_repair_plan, LongTermRepairPlanError, LongTermRepairPlanRequestIR,
     LongTermRepairPlanResponseIR,
 };
+use crate::mechanism_induction::{
+    MechanismInductionDispositionIR, MechanismInductionEngine, MechanismInductionError,
+    MechanismInductionIR, MechanismInductionRequestIR,
+};
 use crate::professional_document::{
     process_professional_document, ProfessionalDocumentError, ProfessionalDocumentRequestIR,
     ProfessionalDocumentResponseIR,
@@ -74,6 +78,13 @@ pub struct KnowledgeWorkResponseIR {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct MechanismInductionResponseIR {
+    pub induction: MechanismInductionIR,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub injection_receipt: Option<MechanismKnowledgeInjectionReceiptIR>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(tag = "operation", rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum CognitiveApiCommandIR {
     DeliberateProblem {
@@ -92,6 +103,9 @@ pub enum CognitiveApiCommandIR {
     DeliberateWithKnowledge {
         request: DeliberationRequestIR,
         query: MechanismQueryIR,
+    },
+    InduceAndInjectMechanismKnowledge {
+        request: Box<MechanismInductionRequestIR>,
     },
     InjectExperience {
         experience: ExperienceIR,
@@ -138,6 +152,7 @@ pub enum CognitiveApiPayloadIR {
     MechanismKnowledgeInjectionReceipt(MechanismKnowledgeInjectionReceiptIR),
     MechanismKnowledgeInjectionReceipts(Vec<MechanismKnowledgeInjectionReceiptIR>),
     MechanismMemorySnapshot(MechanismMemorySnapshotIR),
+    MechanismInductionResponse(Box<MechanismInductionResponseIR>),
     ExperienceInjectionReceipt(ExperienceInjectionReceiptIR),
     ExperienceInjectionReceipts(Vec<ExperienceInjectionReceiptIR>),
     ExperienceSnapshot(ExperienceSnapshotIR),
@@ -175,6 +190,7 @@ pub enum CognitiveApiError {
     ProfessionalDocument,
     Deliberation,
     MechanismMemory,
+    MechanismInduction,
     Experience,
     Planning,
     JsonInput,
@@ -189,6 +205,7 @@ pub struct CognitiveApi {
     core: DockableCore,
     language_knowledge: LanguageKnowledgeBase,
     lexical_memory: LexicalMemory,
+    mechanism_induction: MechanismInductionEngine,
 }
 
 impl CognitiveApi {
@@ -197,6 +214,7 @@ impl CognitiveApi {
             core: DockableCore::load_embedded().map_err(|_| CognitiveApiError::CoreLoad)?,
             language_knowledge: LanguageKnowledgeBase::default(),
             lexical_memory: LexicalMemory::default(),
+            mechanism_induction: MechanismInductionEngine,
         })
     }
 
@@ -247,6 +265,39 @@ impl CognitiveApi {
         self.core
             .deliberate_with_knowledge(request, query)
             .map_err(map_mechanism_memory_error)
+    }
+
+    /// Compiles a language-bound causal claim only when repeated state
+    /// transitions and controls support it, then inserts the resulting typed
+    /// mechanism into executable memory. Insufficient or contradictory input
+    /// returns a non-compiled receipt and performs no memory mutation.
+    pub fn induce_and_inject_mechanism_knowledge(
+        &mut self,
+        request: &MechanismInductionRequestIR,
+    ) -> Result<MechanismInductionResponseIR, CognitiveApiError> {
+        let induction = self
+            .mechanism_induction
+            .compile(request)
+            .map_err(map_mechanism_induction_error)?;
+        let injection_receipt =
+            if induction.disposition == MechanismInductionDispositionIR::Compiled {
+                Some(
+                    self.core
+                        .inject_mechanism_knowledge(
+                            induction
+                                .knowledge
+                                .clone()
+                                .ok_or(CognitiveApiError::MechanismInduction)?,
+                        )
+                        .map_err(map_mechanism_memory_error)?,
+                )
+            } else {
+                None
+            };
+        Ok(MechanismInductionResponseIR {
+            induction,
+            injection_receipt,
+        })
     }
 
     pub fn inject_experience_json(&mut self, json: &str) -> Result<String, CognitiveApiError> {
@@ -574,6 +625,9 @@ impl CognitiveApi {
                 .map(|result| {
                     CognitiveApiPayloadIR::KnowledgeGroundedDeliberation(Box::new(result))
                 }),
+            CognitiveApiCommandIR::InduceAndInjectMechanismKnowledge { request } => self
+                .induce_and_inject_mechanism_knowledge(&request)
+                .map(|result| CognitiveApiPayloadIR::MechanismInductionResponse(Box::new(result))),
             CognitiveApiCommandIR::InjectExperience { experience } => self
                 .inject_experience(experience)
                 .map(CognitiveApiPayloadIR::ExperienceInjectionReceipt),
@@ -699,6 +753,10 @@ fn map_deliberation_error(_: DeliberationError) -> CognitiveApiError {
 
 fn map_mechanism_memory_error(_: MechanismMemoryError) -> CognitiveApiError {
     CognitiveApiError::MechanismMemory
+}
+
+fn map_mechanism_induction_error(_: MechanismInductionError) -> CognitiveApiError {
+    CognitiveApiError::MechanismInduction
 }
 
 fn merge_lexical_activations(
@@ -959,6 +1017,10 @@ mod tests {
         PLAN_PROPOSAL_SCHEMA,
     };
     use crate::lexical_memory::{PartOfSpeechIR, SenseIR, LEXEME_SCHEMA};
+    use crate::mechanism_induction::{
+        PropositionLexemeIR, StateTransitionObservationIR, TransitionArmIR,
+        MECHANISM_INDUCTION_REQUEST_SCHEMA,
+    };
 
     fn experience() -> ExperienceIR {
         ExperienceIR {
@@ -977,6 +1039,67 @@ mod tests {
             evidence: vec!["exit_code=0".to_string()],
             confidence_millis: 970,
             source_language: Some("en".to_string()),
+        }
+    }
+
+    fn induction_request(
+        request_id: &str,
+        knowledge_id: &str,
+        mechanism_id: &str,
+        cause_id: &str,
+        cause_alias: &str,
+        effect_id: &str,
+        effect_alias: &str,
+    ) -> MechanismInductionRequestIR {
+        let state = |effect: bool| {
+            vec![
+                LiteralIR {
+                    proposition_id: cause_id.to_string(),
+                    value: true,
+                },
+                LiteralIR {
+                    proposition_id: effect_id.to_string(),
+                    value: effect,
+                },
+            ]
+        };
+        let observation = |suffix: &str, arm, after_effect| StateTransitionObservationIR {
+            observation_id: format!("{request_id}-{suffix}"),
+            arm,
+            before: state(false),
+            after: state(after_effect),
+            reliability_millis: 950,
+            evidence_refs: vec![format!("public-test:{request_id}:{suffix}")],
+        };
+        MechanismInductionRequestIR {
+            schema: MECHANISM_INDUCTION_REQUEST_SCHEMA.to_string(),
+            request_id: request_id.to_string(),
+            knowledge_id: knowledge_id.to_string(),
+            mechanism_id: mechanism_id.to_string(),
+            natural_language_statement: format!("{cause_alias} causes {effect_alias}"),
+            kind: MechanismKindIR::Inference,
+            authority: ActionAuthorityIR::InternalInference,
+            authorized: true,
+            reversible: true,
+            recovery_reference: None,
+            semantic_tags: vec!["induced-chain".to_string()],
+            proposition_lexicon: vec![
+                PropositionLexemeIR {
+                    proposition_id: cause_id.to_string(),
+                    aliases: vec![cause_alias.to_string()],
+                },
+                PropositionLexemeIR {
+                    proposition_id: effect_id.to_string(),
+                    aliases: vec![effect_alias.to_string()],
+                },
+            ],
+            observations: vec![
+                observation("POS-1", TransitionArmIR::AppliedSuccess, true),
+                observation("POS-2", TransitionArmIR::AppliedSuccess, true),
+                observation("CONTROL", TransitionArmIR::NoActionControl, false),
+            ],
+            minimum_positive_support: 2,
+            minimum_confidence_millis: 700,
         }
     }
 
@@ -1201,6 +1324,90 @@ mod tests {
         assert_eq!(
             result.deliberation.disposition,
             DeliberationDispositionIR::GoalReachable
+        );
+    }
+
+    #[test]
+    fn public_api_induces_stores_and_composes_observed_mechanisms() {
+        let mut api = CognitiveApi::new_embedded().unwrap();
+        for request in [
+            induction_request(
+                "INDUCE-A-B",
+                "K-A-B",
+                "M-A-B",
+                "SEED_FACT",
+                "seed-fact",
+                "MIDDLE_FACT",
+                "middle-fact",
+            ),
+            induction_request(
+                "INDUCE-B-C",
+                "K-B-C",
+                "M-B-C",
+                "MIDDLE_FACT",
+                "middle-fact",
+                "FINAL_FACT",
+                "final-fact",
+            ),
+        ] {
+            let response =
+                api.execute_command(CognitiveApiCommandIR::InduceAndInjectMechanismKnowledge {
+                    request: Box::new(request),
+                });
+            let Some(CognitiveApiPayloadIR::MechanismInductionResponse(response)) =
+                response.payload
+            else {
+                panic!("mechanism induction response")
+            };
+            assert_eq!(
+                response.induction.disposition,
+                MechanismInductionDispositionIR::Compiled
+            );
+            assert!(response.injection_receipt.unwrap().inserted);
+            assert_eq!(response.induction.text_only_authority_events, 0);
+        }
+
+        let literal = |id: &str| LiteralIR {
+            proposition_id: id.to_string(),
+            value: true,
+        };
+        let result = api
+            .deliberate_with_knowledge(
+                &DeliberationRequestIR {
+                    schema: DELIBERATION_REQUEST_SCHEMA.to_string(),
+                    request_id: "DELIBERATE-INDUCED-CHAIN".to_string(),
+                    subject: "compose mechanisms learned from controlled observations".to_string(),
+                    evidence: vec![EvidenceIR {
+                        evidence_id: "E-SEED".to_string(),
+                        literal: literal("SEED_FACT"),
+                        reliability_millis: 990,
+                        source_ref: "public-test:seed".to_string(),
+                    }],
+                    mechanisms: Vec::new(),
+                    goals: vec![literal("FINAL_FACT")],
+                    authority_envelope: AuthorityEnvelopeIR::default(),
+                    immutable_constraints: Vec::new(),
+                    max_depth: 4,
+                    beam_width: 8,
+                    max_hypotheses: 8,
+                    max_counterfactuals: 8,
+                },
+                &MechanismQueryIR {
+                    semantic_tags: vec!["induced-chain".to_string()],
+                    known_proposition_ids: vec!["SEED_FACT".to_string(), "MIDDLE_FACT".to_string()],
+                    goal_proposition_ids: vec!["FINAL_FACT".to_string()],
+                    max_results: 8,
+                },
+            )
+            .unwrap();
+        assert_eq!(result.recalled_mechanisms.len(), 2);
+        assert_eq!(
+            result.deliberation.disposition,
+            DeliberationDispositionIR::GoalReachable
+        );
+        assert_eq!(
+            result.deliberation.selected_plan.unwrap().mechanism_ids,
+            ["M-A-B", "M-B-C"]
         );
     }
 

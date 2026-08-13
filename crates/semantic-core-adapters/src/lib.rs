@@ -10,13 +10,14 @@ pub mod language_knowledge;
 pub mod lexical_memory;
 pub mod long_term_repair;
 mod long_term_repair_catalog;
+pub mod mechanism_induction;
 pub mod professional_document;
 
 pub use cognitive::{
     CognitiveApi, CognitiveApiCommandIR, CognitiveApiError, CognitiveApiPayloadIR,
-    CognitiveApiResponseIR, KnowledgeWorkResponseIR, NaturalLanguageOutputIR,
-    NaturalLanguageRequestIR, NaturalLanguageResponseIR, NATURAL_LANGUAGE_REQUEST_SCHEMA,
-    NATURAL_LANGUAGE_RESPONSE_SCHEMA,
+    CognitiveApiResponseIR, KnowledgeWorkResponseIR, MechanismInductionResponseIR,
+    NaturalLanguageOutputIR, NaturalLanguageRequestIR, NaturalLanguageResponseIR,
+    NATURAL_LANGUAGE_REQUEST_SCHEMA, NATURAL_LANGUAGE_RESPONSE_SCHEMA,
 };
 pub use document_swarm::{DocumentDeliberationIR, DOCUMENT_DELIBERATION_SCHEMA};
 pub use generic::DeterministicOffsetCapability;
@@ -54,6 +55,12 @@ pub use long_term_repair::{
     HouseholdAreaTypeIR, LongTermRepairPlanError, LongTermRepairPlanRequestIR,
     LongTermRepairPlanResponseIR, MonthlyAreaChargeIR, RepairItemDecisionIR, ReportPageIR,
     LONG_TERM_REPAIR_PLAN_REQUEST_SCHEMA, LONG_TERM_REPAIR_PLAN_RESPONSE_SCHEMA,
+};
+pub use mechanism_induction::{
+    MechanismInductionDispositionIR, MechanismInductionEngine, MechanismInductionError,
+    MechanismInductionIR, MechanismInductionRequestIR, PropositionLexemeIR,
+    StateTransitionObservationIR, TransitionArmIR, MECHANISM_INDUCTION_REQUEST_SCHEMA,
+    MECHANISM_INDUCTION_SCHEMA,
 };
 pub use professional_document::{
     process_professional_document, ConsistencyIssueIR, ConsistencyIssueKindIR,
