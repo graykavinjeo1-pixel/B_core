@@ -26,9 +26,9 @@ use crate::sem5::model::{
     BinaryOperator, DataSplit, Effect, ProgramType, StringTransformOperator, UnaryOperator,
 };
 use crate::sem5::typed_mechanism::{
-    synthesize_typed_mechanism_goal_with_priors, typed_mechanism_improvement_operator_from_receipt,
-    validate_typed_mechanism_synthesis_receipt, SourceOperandIR,
-    TypedMechanismImprovementOperatorIR, TypedMechanismObservationIR,
+    synthesize_typed_mechanism_goal_with_source_seeds_and_priors,
+    typed_mechanism_improvement_operator_from_receipt, validate_typed_mechanism_synthesis_receipt,
+    SourceOperandIR, TypedMechanismImprovementOperatorIR, TypedMechanismObservationIR,
     TypedMechanismSynthesisGoalIR, TypedMechanismSynthesisReceiptIR, TypedSyntaxExpressionIR,
     TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA,
 };
@@ -198,8 +198,12 @@ pub struct SourceBoundCausalCutIR {
     pub branch: CausalCutBranch,
     pub condition_source: Option<String>,
     pub condition_range: Option<ByteRange>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub condition_template: Option<TypedSyntaxExpressionIR>,
     pub postimage_source: String,
     pub postimage_range: ByteRange,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub postimage_template: Option<TypedSyntaxExpressionIR>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -484,9 +488,13 @@ struct PythonCut {
     condition_source: Option<String>,
     condition_start: Option<usize>,
     condition_end: Option<usize>,
+    #[serde(default)]
+    condition_template: Option<TypedSyntaxExpressionIR>,
     postimage_source: String,
     postimage_start: usize,
     postimage_end: usize,
+    #[serde(default)]
+    postimage_template: Option<TypedSyntaxExpressionIR>,
 }
 
 const PYTHON_AST_HOST: &str = r#"
@@ -660,8 +668,79 @@ for caller, definition in definitions.items():
     for dependency in definition["direct_dependencies"]:
         reverse_callers[dependency].add(caller)
 
+def typed_template(node, operands, depth=0):
+    # This is a bounded syntax frontend, not an evaluator. Unsupported source
+    # expressions simply provide no seed and never weaken normal synthesis.
+    if node is None or depth > 32:
+        return None
+    if isinstance(node, ast.Name) and node.id in operands:
+        return {"syntax_kind": "OPERAND", "role": node.id}
+    if isinstance(node, ast.Constant):
+        if isinstance(node.value, bool):
+            return {"syntax_kind": "BOOL_LITERAL", "value": node.value}
+        if isinstance(node.value, int) and -(2**63) <= node.value < 2**63:
+            return {"syntax_kind": "INT_LITERAL", "value": node.value}
+        return None
+    if isinstance(node, ast.UnaryOp):
+        operators = {ast.USub: "NEGATE", ast.Not: "NOT"}
+        operator = operators.get(type(node.op))
+        input_ = typed_template(node.operand, operands, depth + 1)
+        if operator and input_:
+            return {"syntax_kind": "UNARY", "operator": operator, "input": input_}
+        return None
+    if isinstance(node, ast.BinOp):
+        operators = {
+            ast.Add: "ADD", ast.Sub: "SUBTRACT", ast.Mult: "MULTIPLY",
+            ast.FloorDiv: "DIVIDE", ast.Mod: "MODULO",
+        }
+        operator = operators.get(type(node.op))
+        left = typed_template(node.left, operands, depth + 1)
+        right = typed_template(node.right, operands, depth + 1)
+        if operator and left and right:
+            return {"syntax_kind": "BINARY", "operator": operator, "left": left, "right": right}
+        return None
+    if isinstance(node, ast.BoolOp) and len(node.values) >= 2:
+        operator = "AND" if isinstance(node.op, ast.And) else "OR" if isinstance(node.op, ast.Or) else None
+        values = [typed_template(value, operands, depth + 1) for value in node.values]
+        if operator and all(values):
+            expression = values[0]
+            for value in values[1:]:
+                expression = {"syntax_kind": "BINARY", "operator": operator, "left": expression, "right": value}
+            return expression
+        return None
+    if isinstance(node, ast.Compare) and len(node.ops) == 1 and len(node.comparators) == 1:
+        operators = {
+            ast.Eq: "EQUAL", ast.NotEq: "NOT_EQUAL", ast.Lt: "LESS_THAN",
+            ast.LtE: "LESS_THAN_OR_EQUAL", ast.Gt: "GREATER_THAN",
+            ast.GtE: "GREATER_THAN_OR_EQUAL",
+        }
+        operator = operators.get(type(node.ops[0]))
+        left = typed_template(node.left, operands, depth + 1)
+        right = typed_template(node.comparators[0], operands, depth + 1)
+        if operator and left and right:
+            return {"syntax_kind": "BINARY", "operator": operator, "left": left, "right": right}
+        return None
+    if isinstance(node, ast.Call) and not node.keywords:
+        if isinstance(node.func, ast.Name) and node.func.id == "len" and len(node.args) == 1:
+            input_ = typed_template(node.args[0], operands, depth + 1)
+            return {"syntax_kind": "LENGTH", "input": input_} if input_ else None
+        if isinstance(node.func, ast.Attribute) and not node.args:
+            operators = {"strip": "TRIM", "lower": "LOWERCASE", "upper": "UPPERCASE"}
+            operator = operators.get(node.func.attr)
+            input_ = typed_template(node.func.value, operands, depth + 1)
+            if operator and input_:
+                return {"syntax_kind": "STRING_TRANSFORM", "operator": operator, "input": input_}
+        return None
+    if isinstance(node, ast.Subscript):
+        collection = typed_template(node.value, operands, depth + 1)
+        index = typed_template(node.slice, operands, depth + 1)
+        if collection and index:
+            return {"syntax_kind": "INDEX", "collection": collection, "index": index}
+    return None
+
 def cuts_for(definition):
     cuts = []
+    operand_names = {operand["name"] for operand in definition["operands"]}
     def visit_statements(statements, guard=None, branch="UNCONDITIONAL"):
         for statement in statements:
             if isinstance(statement, ast.Return) and statement.value is not None:
@@ -670,9 +749,11 @@ def cuts_for(definition):
                     "condition_source": source_segment(guard) if guard is not None else None,
                     "condition_start": byte_offset(guard) if guard is not None else None,
                     "condition_end": byte_offset(guard, True) if guard is not None else None,
+                    "condition_template": typed_template(guard, operand_names),
                     "postimage_source": source_segment(statement.value),
                     "postimage_start": byte_offset(statement.value),
                     "postimage_end": byte_offset(statement.value, True),
+                    "postimage_template": typed_template(statement.value, operand_names),
                 })
             elif isinstance(statement, ast.If):
                 visit_statements(statement.body, statement.test, "THEN")
@@ -1545,11 +1626,13 @@ fn convert_python_definition(
                 branch,
                 condition_source: cut.condition_source,
                 condition_range,
+                condition_template: cut.condition_template,
                 postimage_source: cut.postimage_source,
                 postimage_range: ByteRange {
                     start: cut.postimage_start,
                     end: cut.postimage_end,
                 },
+                postimage_template: cut.postimage_template,
             })
         })
         .collect::<Result<Vec<_>, CausalFrontendFailure>>()?;
@@ -1864,6 +1947,92 @@ fn materialize_python_synthesis(
     })
 }
 
+fn push_source_seed_expression(
+    expression: &TypedSyntaxExpressionIR,
+    seen: &mut BTreeSet<String>,
+    output: &mut Vec<TypedSyntaxExpressionIR>,
+) -> Result<(), CausalFrontendFailure> {
+    if output.len() >= 64 {
+        return Ok(());
+    }
+    let key = serde_json::to_string(expression)
+        .map_err(|error| CausalFrontendFailure::public(format!("SOURCE_SEED_JSON:{error}")))?;
+    if !seen.insert(key) {
+        return Ok(());
+    }
+    output.push(expression.clone());
+    match expression {
+        TypedSyntaxExpressionIR::Unary { input, .. }
+        | TypedSyntaxExpressionIR::StringTransform { input, .. }
+        | TypedSyntaxExpressionIR::Length { input } => {
+            push_source_seed_expression(input, seen, output)?;
+        }
+        TypedSyntaxExpressionIR::Binary { left, right, .. } => {
+            push_source_seed_expression(left, seen, output)?;
+            push_source_seed_expression(right, seen, output)?;
+        }
+        TypedSyntaxExpressionIR::Index { collection, index } => {
+            push_source_seed_expression(collection, seen, output)?;
+            push_source_seed_expression(index, seen, output)?;
+        }
+        TypedSyntaxExpressionIR::Call { arguments, .. } => {
+            for argument in arguments {
+                push_source_seed_expression(argument, seen, output)?;
+            }
+        }
+        TypedSyntaxExpressionIR::Operand { .. }
+        | TypedSyntaxExpressionIR::IntLiteral { .. }
+        | TypedSyntaxExpressionIR::BoolLiteral { .. } => {}
+    }
+    Ok(())
+}
+
+fn source_bound_template_seeds(
+    template: &SourceBoundFunctionTemplateIR,
+) -> Result<Vec<TypedSyntaxExpressionIR>, CausalFrontendFailure> {
+    let mut seeds = Vec::new();
+    let mut seen = BTreeSet::new();
+    for cut in &template.cuts {
+        if let Some(condition) = &cut.condition_template {
+            push_source_seed_expression(condition, &mut seen, &mut seeds)?;
+        }
+        if let Some(postimage) = &cut.postimage_template {
+            push_source_seed_expression(postimage, &mut seen, &mut seeds)?;
+        }
+    }
+    Ok(seeds)
+}
+
+fn source_seed_set_sha256(
+    seeds: &[TypedSyntaxExpressionIR],
+) -> Result<String, CausalFrontendFailure> {
+    serde_json::to_vec(seeds)
+        .map(|bytes| sha256(&bytes))
+        .map_err(|error| CausalFrontendFailure::public(format!("SOURCE_SEED_HASH:{error}")))
+}
+
+fn validate_synthesis_source_seed_binding(
+    template: &SourceBoundFunctionTemplateIR,
+    synthesis: &TypedMechanismSynthesisReceiptIR,
+) -> Result<(), CausalFrontendFailure> {
+    let seeds = source_bound_template_seeds(template)?;
+    let expected = format!("SOURCE_SEED_SET_SHA256:{}", source_seed_set_sha256(&seeds)?);
+    let request = synthesis
+        .synthesis_request
+        .as_ref()
+        .ok_or_else(|| CausalFrontendFailure::conflict("SOURCE_SEED_SYNTHESIS_REQUEST_MISSING"))?;
+    if !request.provenance.contains(&expected)
+        || !request
+            .provenance
+            .contains(&format!("SOURCE_SEED_COUNT:{}", seeds.len()))
+    {
+        return Err(CausalFrontendFailure::conflict(
+            "SOURCE_SEED_SYNTHESIS_BINDING",
+        ));
+    }
+    Ok(())
+}
+
 fn synthesize_source_bound_template(
     source: &str,
     alternative: &SourceBoundCausalAlternativeIR,
@@ -1878,6 +2047,8 @@ fn synthesize_source_bound_template(
     ),
     CausalFrontendFailure,
 > {
+    let source_seeds = source_bound_template_seeds(template)?;
+    let source_seed_sha256 = source_seed_set_sha256(&source_seeds)?;
     let synthesis_request = TypedMechanismSynthesisGoalIR {
         schema: TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA.to_string(),
         goal_id,
@@ -1912,6 +2083,8 @@ fn synthesize_source_bound_template(
         provenance: vec![
             "PYTHON_AST_SOURCE_BOUND_CAUSAL_CUT".to_string(),
             format!("SOURCE_TEMPLATE_SHA256:{}", template.source_template_sha256),
+            format!("SOURCE_SEED_COUNT:{}", source_seeds.len()),
+            format!("SOURCE_SEED_SET_SHA256:{source_seed_sha256}"),
         ],
     };
     let type_key = serde_json::to_string(&(
@@ -1927,16 +2100,19 @@ fn synthesize_source_bound_template(
         .get(&type_key)
         .map(Vec::as_slice)
         .unwrap_or(&[]);
-    let synthesis =
-        synthesize_typed_mechanism_goal_with_priors(&synthesis_request, applicable_operators)
-            .map_err(|error| {
-                let detail = format!("BOUNDED_COMPOSITION:{error}");
-                if error.starts_with("TYPED_MECHANISM_PUBLIC_INFORMATION_INSUFFICIENT:") {
-                    CausalFrontendFailure::public(detail)
-                } else {
-                    CausalFrontendFailure::unsupported(detail)
-                }
-            })?;
+    let synthesis = synthesize_typed_mechanism_goal_with_source_seeds_and_priors(
+        &synthesis_request,
+        &source_seeds,
+        applicable_operators,
+    )
+    .map_err(|error| {
+        let detail = format!("BOUNDED_COMPOSITION:{error}");
+        if error.starts_with("TYPED_MECHANISM_PUBLIC_INFORMATION_INSUFFICIENT:") {
+            CausalFrontendFailure::public(detail)
+        } else {
+            CausalFrontendFailure::unsupported(detail)
+        }
+    })?;
     let materialized_patch = materialize_python_synthesis(source, template, &synthesis)?;
     Ok((synthesis, materialized_patch))
 }
@@ -2157,6 +2333,10 @@ pub fn validate_source_bound_causal_receipt(
     }
     for alternative in &receipt.alternatives {
         validate_source_bound_function_template(source, &alternative.function_template)?;
+        validate_synthesis_source_seed_binding(
+            &alternative.function_template,
+            &alternative.synthesis,
+        )?;
         validate_typed_mechanism_synthesis_receipt(&alternative.synthesis).map_err(|error| {
             CausalFrontendFailure::conflict(format!("SOURCE_BOUND_RECEIPT_OWNER_SYNTHESIS:{error}"))
         })?;
@@ -2172,6 +2352,10 @@ pub fn validate_source_bound_causal_receipt(
         }
         for candidate in &alternative.closure_candidates {
             validate_source_bound_function_template(source, &candidate.function_template)?;
+            validate_synthesis_source_seed_binding(
+                &candidate.function_template,
+                &candidate.synthesis,
+            )?;
             validate_typed_mechanism_synthesis_receipt(&candidate.synthesis).map_err(|error| {
                 CausalFrontendFailure::conflict(format!(
                     "SOURCE_BOUND_RECEIPT_CLOSURE_SYNTHESIS:{}:{error}",
@@ -3341,6 +3525,56 @@ def lexical_within(value: str, limit: str) -> bool:
     }
 
     #[test]
+    fn python_source_subexpression_seeds_the_common_bounded_kernel() {
+        let Some(python_executable) = python() else {
+            return;
+        };
+        let source = "def area(left: int, right: int) -> int:\n    return ((left + right) * (left - right)) + 1\n";
+        let public_observations = [(5_i64, 2_i64), (4, 1), (3, -2), (-4, 1)]
+            .into_iter()
+            .map(|(left, right)| TypedMechanismObservationIR {
+                operands: BTreeMap::from([
+                    ("left".to_string(), Value::Int(left)),
+                    ("right".to_string(), Value::Int(right)),
+                ]),
+                expected_postimage: Value::Int((left + right) * (left - right)),
+            })
+            .collect();
+        let receipt = analyze_and_synthesize_source_bound(&SourceBoundCausalRequestIR {
+            schema: SOURCE_BOUND_CAUSAL_REQUEST_SCHEMA.to_string(),
+            source_relative_path: PathBuf::from("area.py"),
+            source: source.to_string(),
+            python_executable,
+            alternatives: vec![SourceBoundCausalAlternativeIR {
+                alternative_id: "source-seeded-area".to_string(),
+                public_symbol: "area".to_string(),
+                public_observations,
+                allowed_effects: vec![Effect::Pure],
+                require_conditional: false,
+                max_expression_depth: 1,
+                max_candidates: 256,
+            }],
+        })
+        .unwrap();
+        let alternative = &receipt.alternatives[0];
+        assert!(matches!(
+            alternative.synthesis.winning_goal.postimage,
+            TypedSyntaxExpressionIR::Binary {
+                operator: BinaryOperator::Multiply,
+                ..
+            }
+        ));
+        assert!(alternative
+            .function_template
+            .cuts
+            .iter()
+            .any(|cut| cut.postimage_template.is_some()));
+        let repaired = replay_source_bound_patch(source, &alternative.replayable_patch).unwrap();
+        assert!(repaired.contains("((left) + (right)) * ((left) - (right))"));
+        validate_source_bound_causal_receipt(&receipt, source).unwrap();
+    }
+
+    #[test]
     fn exact_owner_and_dependency_closure_reach_atomic_materialization() {
         let Some(python_executable) = python() else {
             return;
@@ -3412,6 +3646,20 @@ def transformer_visitor(value: int, baseline: int) -> int:
             validate_source_bound_causal_receipt(&forged_template_hash, source).unwrap_err(),
             CausalFrontendFailure::conflict("SOURCE_TEMPLATE_HASH_BINDING")
         );
+        let mut forged_seed_binding = receipt.clone();
+        forged_seed_binding.alternatives[0]
+            .synthesis
+            .synthesis_request
+            .as_mut()
+            .unwrap()
+            .provenance
+            .retain(|item| !item.starts_with("SOURCE_SEED_SET_SHA256:"));
+        forged_seed_binding.receipt_sha256 =
+            source_bound_receipt_hash(&forged_seed_binding).unwrap();
+        assert_eq!(
+            validate_source_bound_causal_receipt(&forged_seed_binding, source).unwrap_err(),
+            CausalFrontendFailure::conflict("SOURCE_SEED_SYNTHESIS_BINDING")
+        );
         let mut forged_owner = receipt.clone();
         forged_owner.alternatives[0].function_template.owner = "Shadow".to_string();
         forged_owner.receipt_sha256 = source_bound_receipt_hash(&forged_owner).unwrap();
@@ -3460,6 +3708,19 @@ def transformer_visitor(value: int, baseline: int) -> int:
             )
         );
         let alternative = &receipt.alternatives[0];
+        assert!(alternative
+            .closure_candidates
+            .iter()
+            .flat_map(|candidate| &candidate.function_template.cuts)
+            .any(|cut| cut.postimage_template.is_some()));
+        assert!(alternative
+            .synthesis
+            .synthesis_request
+            .as_ref()
+            .unwrap()
+            .provenance
+            .iter()
+            .any(|item| item.starts_with("SOURCE_SEED_SET_SHA256:")));
         assert_eq!(alternative.function_template.owner, "Rational");
         assert_eq!(
             alternative.function_template.execution_dependency_closure,

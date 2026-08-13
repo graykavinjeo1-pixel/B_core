@@ -37,6 +37,7 @@ const MAX_SYNTHESIS_CANDIDATES: usize = 1_024;
 const MAX_SYNTHESIS_DEPTH: usize = 3;
 const MAX_IDENTIFIABILITY_PROBES: usize = 64;
 const MAX_IDENTIFIABILITY_HYPOTHESES: usize = 64;
+const MAX_SOURCE_SEED_EXPRESSIONS: usize = 64;
 const TYPED_OPERATOR_REPLAY_ITEMS_PER_WORKER: usize = 16;
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -1166,7 +1167,26 @@ pub fn synthesize_typed_mechanism_goal_with_priors(
     request: &TypedMechanismSynthesisGoalIR,
     priors: &[TypedMechanismImprovementOperatorIR],
 ) -> Result<TypedMechanismSynthesisReceiptIR, String> {
+    synthesize_typed_mechanism_goal_with_source_seeds_and_priors(request, &[], priors)
+}
+
+/// Adds bounded expressions extracted from the exact repository source to the
+/// common typed grammar. Source seeds are hypotheses only: they are type/effect
+/// checked, replayed against every public observation, and compete under the
+/// same minimality/identifiability rules as generated expressions.
+pub fn synthesize_typed_mechanism_goal_with_source_seeds_and_priors(
+    request: &TypedMechanismSynthesisGoalIR,
+    source_seeds: &[TypedSyntaxExpressionIR],
+    priors: &[TypedMechanismImprovementOperatorIR],
+) -> Result<TypedMechanismSynthesisReceiptIR, String> {
     validate_synthesis_envelope(request)?;
+    if source_seeds.len() > MAX_SOURCE_SEED_EXPRESSIONS
+        || source_seeds
+            .iter()
+            .any(|expression| expression_nodes(expression) > MAX_MECHANISM_EXPRESSION_NODES)
+    {
+        return Err("TYPED_MECHANISM_SOURCE_SEED_BUDGET".to_string());
+    }
     let max_depth = request.max_expression_depth.clamp(1, MAX_SYNTHESIS_DEPTH);
     let max_candidates = request.max_candidates.clamp(16, MAX_SYNTHESIS_CANDIDATES);
     let operand_types = request
@@ -1333,6 +1353,26 @@ pub fn synthesize_typed_mechanism_goal_with_priors(
     for value in bool_constants {
         add_enumerated_expression(
             TypedSyntaxExpressionIR::BoolLiteral { value },
+            &operand_types,
+            &operand_indices,
+            &definitions,
+            &api_map,
+            &observation_arguments,
+            &request.allowed_effects,
+            max_candidates,
+            &mut enumerated,
+            &mut evaluation_failures,
+            &mut seen,
+            &mut expressions,
+        )?;
+    }
+
+    // Preserve the universal operands/literals above even under a small
+    // candidate budget. Source-derived syntax then contributes reusable
+    // subexpressions without receiving answer authority or starving basics.
+    for expression in source_seeds {
+        add_enumerated_expression(
+            expression.clone(),
             &operand_types,
             &operand_indices,
             &definitions,
@@ -2576,6 +2616,69 @@ mod tests {
             source: source.to_string(),
             value_type,
         }
+    }
+
+    #[test]
+    fn source_bound_seed_extends_bounded_composition_without_answer_authority() {
+        let request = TypedMechanismSynthesisGoalIR {
+            schema: TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA.to_string(),
+            goal_id: "source_seed_composition".to_string(),
+            split: DataSplit::FreshBlind,
+            operands: vec![
+                operand("left", "left", ProgramType::Int),
+                operand("right", "right", ProgramType::Int),
+            ],
+            output_type: ProgramType::Int,
+            definitions: Vec::new(),
+            allowed_effects: vec![Effect::Pure],
+            preconditions: Vec::new(),
+            postconditions: Vec::new(),
+            invariants: Vec::new(),
+            public_observations: [(5, 2), (4, 1), (3, -2), (-4, 1)]
+                .into_iter()
+                .map(|(left, right)| TypedMechanismObservationIR {
+                    operands: BTreeMap::from([
+                        ("left".to_string(), Value::Int(left)),
+                        ("right".to_string(), Value::Int(right)),
+                    ]),
+                    expected_postimage: Value::Int((left + right) * (left - right)),
+                })
+                .collect(),
+            require_conditional: false,
+            max_expression_depth: 1,
+            max_candidates: 256,
+            provenance: vec!["SOURCE_SEED_CANARY".to_string()],
+        };
+        let left = TypedSyntaxExpressionIR::Operand {
+            role: "left".to_string(),
+        };
+        let right = TypedSyntaxExpressionIR::Operand {
+            role: "right".to_string(),
+        };
+        let seed = TypedSyntaxExpressionIR::Binary {
+            operator: BinaryOperator::Multiply,
+            left: Box::new(TypedSyntaxExpressionIR::Binary {
+                operator: BinaryOperator::Add,
+                left: Box::new(left.clone()),
+                right: Box::new(right.clone()),
+            }),
+            right: Box::new(TypedSyntaxExpressionIR::Binary {
+                operator: BinaryOperator::Subtract,
+                left: Box::new(left),
+                right: Box::new(right),
+            }),
+        };
+
+        assert!(synthesize_typed_mechanism_goal(&request).is_err());
+        let receipt = synthesize_typed_mechanism_goal_with_source_seeds_and_priors(
+            &request,
+            std::slice::from_ref(&seed),
+            &[],
+        )
+        .unwrap();
+        assert_eq!(receipt.winning_goal.postimage, seed);
+        assert!(receipt.selected_operator_id.is_none());
+        validate_typed_mechanism_synthesis_receipt(&receipt).unwrap();
     }
 
     fn role(name: &str) -> TypedSyntaxExpressionIR {
