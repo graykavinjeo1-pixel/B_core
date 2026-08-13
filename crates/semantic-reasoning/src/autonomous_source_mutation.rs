@@ -49,6 +49,11 @@ pub const SOURCE_REPAIR_LEARNING_SCHEMA: &str = "B_CORE_SOURCE_REPAIR_LEARNING_1
 pub const IMPROVEMENT_OPERATOR_MEMORY_SCHEMA: &str = "B_CORE_IMPROVEMENT_OPERATOR_MEMORY_1";
 pub const MAX_IMPROVEMENT_OPERATOR_GRAPH_NODES: usize = 8;
 const MAX_TYPED_OPERATOR_RECONCILIATION_RECEIPTS: usize = 64;
+const MAX_SUBMITTED_SOURCE_PROPOSALS_PER_GENERATOR: usize = MAX_SELECTED_SOURCE_PROPOSALS * 8;
+// Revision 55 makes every source generator submit a bounded proposal batch.
+// Candidate selection begins only after the common Rust kernel receives all
+// typed ranking evidence; generators may bound enumeration but cannot select
+// a winning postimage.
 // Revision 54 converts rustc/clippy suggestion applicability into a closed
 // typed IR at the observation boundary. Raw protocol text is audit metadata,
 // and a raw/typed mismatch has no source-synthesis authority.
@@ -71,7 +76,7 @@ const MAX_TYPED_OPERATOR_RECONCILIATION_RECEIPTS: usize = 64;
 // Revision 47 separates exact authority existence from the bounded active
 // operator window and deduplicates repeated authority receipts.
 // Generator identity remains diagnostic evidence only.
-pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 54;
+pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 55;
 pub const MAX_RETAINED_CONSUMED_RUNTIME_STAGING_GENERATIONS: usize = 2;
 const KNOWN_REMAINDER_PREDICTED_VALUE: u16 = 35;
 const MAX_REPOSITORY_REPAIR_FAMILY_FILES: usize = 16;
@@ -363,6 +368,34 @@ impl SourceDiscoveryDisposition {
 pub struct SourceDiscoveryResult {
     pub disposition: SourceDiscoveryDisposition,
     pub candidate: Option<AutonomousSourcePatchRequest>,
+}
+
+#[derive(Debug)]
+struct SourceProposalBatch {
+    disposition: SourceDiscoveryDisposition,
+    candidates: Vec<SourceProposalSubmission>,
+}
+
+#[derive(Debug)]
+struct SourceProposalSubmission {
+    request: AutonomousSourcePatchRequest,
+    evidence: SourceProposalRankingEvidenceIR,
+}
+
+impl SourceProposalBatch {
+    fn from_candidates(
+        candidates: Vec<SourceProposalSubmission>,
+        empty_disposition: SourceDiscoveryDisposition,
+    ) -> Self {
+        Self {
+            disposition: if candidates.is_empty() {
+                empty_disposition
+            } else {
+                SourceDiscoveryDisposition::Candidate
+            },
+            candidates,
+        }
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -4146,14 +4179,14 @@ fn grammar_opportunity_metadata(
     )
 }
 
-fn compiler_guided_request(
+fn compiler_guided_requests(
     policy: &AutonomousSourceMutationPolicy,
     state_dir: &Path,
     source_generation: u64,
     operator_memory: &ImprovementOperatorMemory,
-) -> Result<Option<AutonomousSourcePatchRequest>, String> {
+) -> Result<Vec<SourceProposalSubmission>, String> {
     if !policy.auto_discover_compiler_repairs {
-        return Ok(None);
+        return Ok(Vec::new());
     }
     let diagnostic_policy = CompilerGuidedRepairPolicy {
         source_root: &policy.source_root,
@@ -4185,6 +4218,7 @@ fn compiler_guided_request(
             candidate.solution_strategy.clone(),
         )
     });
+    let mut requests = Vec::new();
     for (_, invocation, candidate) in ranked {
         if candidate.predicted_value < policy.minimum_predicted_value
             || !repair_strategy_is_available(
@@ -4259,7 +4293,8 @@ fn compiler_guided_request(
         {
             return Err("COMPILER_REPAIR_OPERATOR_EXECUTION_DIVERGED".to_string());
         }
-        return Ok(Some(AutonomousSourcePatchRequest {
+        let priority_adjustment = invocation.priority_adjustment;
+        let request = AutonomousSourcePatchRequest {
             schema: AUTONOMOUS_SOURCE_MUTATION_SCHEMA.to_string(),
             patch_id,
             relative_path: candidate.relative_path,
@@ -4288,9 +4323,20 @@ fn compiler_guided_request(
             typed_mechanism_selected_operator_id: None,
             typed_mechanism_candidates_enumerated: 0,
             typed_mechanism_preferred_operator_attempts: 0,
-        }));
+        };
+        requests.push(SourceProposalSubmission {
+            evidence: SourceProposalRankingEvidenceIR {
+                predicted_value: request.predicted_value,
+                priority_adjustment,
+                ..Default::default()
+            },
+            request,
+        });
+        if requests.len() >= MAX_SUBMITTED_SOURCE_PROPOSALS_PER_GENERATOR {
+            break;
+        }
     }
-    Ok(None)
+    Ok(requests)
 }
 
 fn public_example_priority(observed: usize, evaluated: usize, satisfied: usize) -> i32 {
@@ -4315,25 +4361,28 @@ fn public_example_priority(observed: usize, evaluated: usize, satisfied: usize) 
     supported.saturating_sub(unevaluated_penalty)
 }
 
-fn grammar_synthesized_request(
+fn grammar_synthesized_requests(
     policy: &AutonomousSourceMutationPolicy,
     state_dir: &Path,
     source_generation: u64,
     operator_memory: &ImprovementOperatorMemory,
-) -> Result<Option<AutonomousSourcePatchRequest>, String> {
+) -> Result<Vec<SourceProposalSubmission>, String> {
     if !policy.auto_synthesize_grammar_repairs {
-        return Ok(None);
+        return Ok(Vec::new());
     }
     reconcile_installed_typed_mechanism_operators(state_dir)?;
     let typed_operator_priors =
         load_authorized_typed_mechanism_operators(state_dir, MAX_ACTIVE_TYPED_MECHANISM_OPERATORS)?;
     let mut ranked = Vec::new();
-    for candidate in discover_grammar_repairs_for_generation_with_priors(
+    for (enumeration_index, candidate) in discover_grammar_repairs_for_generation_with_priors(
         &policy.source_root,
         policy.max_candidate_bytes,
         source_generation,
         &typed_operator_priors,
-    )? {
+    )?
+    .into_iter()
+    .enumerate()
+    {
         let public_behavior_contradiction = candidate
             .transformation
             .contains("PUBLIC_EXAMPLE_CONTRADICTED_");
@@ -4357,20 +4406,42 @@ fn grammar_synthesized_request(
             &candidate.relative_path,
             &candidate.transformation,
         )?;
+        let counterexample_feedback =
+            feedback_priority(&candidate.solution_strategy, &counterexamples);
+        let required_family_members = candidate.family_member_count.saturating_sub(1);
+        let public_observation_support = public_example_priority(
+            candidate.public_examples_observed,
+            candidate.public_examples_evaluated,
+            candidate.public_examples_satisfied,
+        );
+        // The grammar frontend owns deterministic enumeration, not winner
+        // selection. Preserve that bounded canonical prior as typed evidence
+        // so a score tie cannot be decided by an opaque patch hash.
+        let bounded_strategy_prior =
+            i32::try_from(MAX_SUBMITTED_SOURCE_PROPOSALS_PER_GENERATOR.saturating_sub(
+                enumeration_index.min(MAX_SUBMITTED_SOURCE_PROPOSALS_PER_GENERATOR),
+            ))
+            .unwrap_or(0);
         let priority = i32::from(candidate.predicted_value)
-            + feedback_priority(&candidate.solution_strategy, &counterexamples)
-            + i32::try_from(candidate.family_member_count.saturating_sub(1))
+            + counterexample_feedback
+            + i32::try_from(required_family_members)
                 .unwrap_or(i32::MAX)
                 .saturating_mul(25)
-            + public_example_priority(
-                candidate.public_examples_observed,
-                candidate.public_examples_evaluated,
-                candidate.public_examples_satisfied,
-            )
+            + public_observation_support
+            + bounded_strategy_prior
             + invocation.priority_adjustment;
-        ranked.push((priority, invocation, candidate));
+        let evidence = SourceProposalRankingEvidenceIR {
+            predicted_value: candidate.predicted_value,
+            priority_adjustment: invocation.priority_adjustment,
+            required_family_members,
+            counterexample_feedback,
+            public_observation_support,
+            bounded_strategy_prior,
+            ..Default::default()
+        };
+        ranked.push((priority, evidence, invocation, candidate));
     }
-    ranked.sort_by_key(|(priority, _, candidate)| {
+    ranked.sort_by_key(|(priority, _, _, candidate)| {
         (
             std::cmp::Reverse(*priority),
             candidate.relative_path.clone(),
@@ -4378,7 +4449,8 @@ fn grammar_synthesized_request(
             candidate.solution_strategy.clone(),
         )
     });
-    for (_, invocation, candidate) in ranked {
+    let mut requests = Vec::new();
+    for (_, evidence, invocation, candidate) in ranked {
         if candidate.predicted_value < policy.minimum_predicted_value
             || !repair_strategy_is_available(
                 policy,
@@ -4491,7 +4563,7 @@ fn grammar_synthesized_request(
         {
             return Err("GRAMMAR_REPAIR_OPERATOR_EXECUTION_DIVERGED".to_string());
         }
-        return Ok(Some(AutonomousSourcePatchRequest {
+        let request = AutonomousSourcePatchRequest {
             schema: AUTONOMOUS_SOURCE_MUTATION_SCHEMA.to_string(),
             patch_id,
             relative_path: candidate.relative_path,
@@ -4521,9 +4593,13 @@ fn grammar_synthesized_request(
             typed_mechanism_candidates_enumerated: candidate.typed_mechanism_candidates_enumerated,
             typed_mechanism_preferred_operator_attempts: candidate
                 .typed_mechanism_preferred_operator_attempts,
-        }));
+        };
+        requests.push(SourceProposalSubmission { evidence, request });
+        if requests.len() >= MAX_SUBMITTED_SOURCE_PROPOSALS_PER_GENERATOR {
+            break;
+        }
     }
-    Ok(None)
+    Ok(requests)
 }
 
 fn discover_source_improvement_lane(
@@ -4531,33 +4607,23 @@ fn discover_source_improvement_lane(
     state_dir: &Path,
     source_generation: u64,
     operator_memory: &ImprovementOperatorMemory,
-) -> Result<SourceDiscoveryResult, String> {
-    // Search the bounded AST/public-example grammar before launching a Cargo
-    // observation for a new source fingerprint. Grammar candidates need no
-    // compiler process and still pass the exact same structural replay and
-    // compile/public-regression installation gate.
-    if let Some(candidate) =
-        grammar_synthesized_request(policy, state_dir, source_generation, operator_memory)?
-    {
-        return Ok(SourceDiscoveryResult {
-            disposition: SourceDiscoveryDisposition::Candidate,
-            candidate: Some(candidate),
-        });
-    }
-    if let Some(candidate) =
-        compiler_guided_request(policy, state_dir, source_generation, operator_memory)?
-    {
-        return Ok(SourceDiscoveryResult {
-            disposition: SourceDiscoveryDisposition::Candidate,
-            candidate: Some(candidate),
-        });
-    }
+) -> Result<SourceProposalBatch, String> {
+    let mut proposals =
+        grammar_synthesized_requests(policy, state_dir, source_generation, operator_memory)?;
+    proposals.extend(compiler_guided_requests(
+        policy,
+        state_dir,
+        source_generation,
+        operator_memory,
+    )?);
     if !policy.auto_discover_known_transformations {
-        return Ok(SourceDiscoveryResult {
-            disposition: SourceDiscoveryDisposition::NoApplicableTransformation,
-            candidate: None,
-        });
+        proposals.truncate(MAX_SUBMITTED_SOURCE_PROPOSALS_PER_GENERATOR);
+        return Ok(SourceProposalBatch::from_candidates(
+            proposals,
+            SourceDiscoveryDisposition::NoApplicableTransformation,
+        ));
     }
+    let mut below_value_threshold = false;
     for path in rust_source_files(&policy.source_root)? {
         let bytes = fs::read(&path)
             .map_err(|error| format!("SOURCE_DISCOVERY_READ:{}:{error}", path.display()))?;
@@ -4618,10 +4684,8 @@ fn discover_source_improvement_lane(
             // this point falsely reported a blocked improvement in every
             // repository, including those with no matching predicate.
             if KNOWN_REMAINDER_PREDICTED_VALUE < policy.minimum_predicted_value {
-                return Ok(SourceDiscoveryResult {
-                    disposition: SourceDiscoveryDisposition::BelowValueThreshold,
-                    candidate: None,
-                });
+                below_value_threshold = true;
+                continue;
             }
             let structural_repair_program = match synthesize_structural_repair(
                 &structural_file_id(&relative_path),
@@ -4678,9 +4742,9 @@ fn discover_source_improvement_lane(
         ranked_known_candidates.sort_by_key(|(priority, strategy_index, ..)| {
             (std::cmp::Reverse(*priority), *strategy_index)
         });
-        if let Some((
+        for (
             _,
-            _,
+            strategy_index,
             solution_strategy,
             candidate_source,
             structural_repair_program,
@@ -4688,7 +4752,7 @@ fn discover_source_improvement_lane(
             patch_id,
             invocation,
             operator_execution,
-        )) = ranked_known_candidates.into_iter().next()
+        ) in ranked_known_candidates
         {
             let consequence_predictions = vec![
                 "preserve parity/divisibility semantics".to_string(),
@@ -4719,45 +4783,65 @@ fn discover_source_improvement_lane(
                 &consequence_predictions,
                 &structural_repair_program,
             )?;
-            return Ok(SourceDiscoveryResult {
-                disposition: SourceDiscoveryDisposition::Candidate,
-                candidate: Some(AutonomousSourcePatchRequest {
-                    schema: AUTONOMOUS_SOURCE_MUTATION_SCHEMA.to_string(),
-                    patch_id,
-                    relative_path,
-                    predecessor_sha256,
-                    candidate_source,
-                    candidate_sha256,
-                    transformation,
-                    consequence_predictions,
-                    predicted_value: KNOWN_REMAINDER_PREDICTED_VALUE,
-                    source_generation,
-                    core_generated: true,
-                    core_self_approved: true,
-                    solution_strategy,
-                    structural_repair_program: Some(structural_repair_program),
-                    generalized_change: Some(generalized_change),
-                    additional_family_members: Vec::new(),
-                    opportunity_kind: ChangeOpportunityKind::EfficiencyOpportunity,
-                    opportunity_family_id,
-                    improvement_operator_invocation: Some(invocation),
-                    improvement_operator_execution: Some(operator_execution),
-                    typed_mechanism_operator_recipe: None,
-                    typed_mechanism_synthesis_receipt: None,
-                    typed_mechanism_materialized_syntax_sha256: None,
-                    typed_mechanism_materialized_syntax_source: None,
-                    typed_mechanism_materialized_edit: None,
-                    typed_mechanism_selected_operator_id: None,
-                    typed_mechanism_candidates_enumerated: 0,
-                    typed_mechanism_preferred_operator_attempts: 0,
-                }),
-            });
+            let evidence = SourceProposalRankingEvidenceIR {
+                predicted_value: KNOWN_REMAINDER_PREDICTED_VALUE,
+                priority_adjustment: invocation.priority_adjustment,
+                bounded_strategy_prior: i32::try_from(
+                    KNOWN_REMAINDER_STRATEGIES
+                        .len()
+                        .saturating_sub(strategy_index),
+                )
+                .unwrap_or(0),
+                ..Default::default()
+            };
+            let request = AutonomousSourcePatchRequest {
+                schema: AUTONOMOUS_SOURCE_MUTATION_SCHEMA.to_string(),
+                patch_id,
+                relative_path: relative_path.clone(),
+                predecessor_sha256: predecessor_sha256.clone(),
+                candidate_source,
+                candidate_sha256,
+                transformation: transformation.clone(),
+                consequence_predictions,
+                predicted_value: KNOWN_REMAINDER_PREDICTED_VALUE,
+                source_generation,
+                core_generated: true,
+                core_self_approved: true,
+                solution_strategy,
+                structural_repair_program: Some(structural_repair_program),
+                generalized_change: Some(generalized_change),
+                additional_family_members: Vec::new(),
+                opportunity_kind: ChangeOpportunityKind::EfficiencyOpportunity,
+                opportunity_family_id: opportunity_family_id.clone(),
+                improvement_operator_invocation: Some(invocation),
+                improvement_operator_execution: Some(operator_execution),
+                typed_mechanism_operator_recipe: None,
+                typed_mechanism_synthesis_receipt: None,
+                typed_mechanism_materialized_syntax_sha256: None,
+                typed_mechanism_materialized_syntax_source: None,
+                typed_mechanism_materialized_edit: None,
+                typed_mechanism_selected_operator_id: None,
+                typed_mechanism_candidates_enumerated: 0,
+                typed_mechanism_preferred_operator_attempts: 0,
+            };
+            proposals.push(SourceProposalSubmission { request, evidence });
+            if proposals.len() >= MAX_SUBMITTED_SOURCE_PROPOSALS_PER_GENERATOR {
+                break;
+            }
+        }
+        if proposals.len() >= MAX_SUBMITTED_SOURCE_PROPOSALS_PER_GENERATOR {
+            break;
         }
     }
-    Ok(SourceDiscoveryResult {
-        disposition: SourceDiscoveryDisposition::NoApplicableTransformation,
-        candidate: None,
-    })
+    proposals.truncate(MAX_SUBMITTED_SOURCE_PROPOSALS_PER_GENERATOR);
+    Ok(SourceProposalBatch::from_candidates(
+        proposals,
+        if below_value_threshold {
+            SourceDiscoveryDisposition::BelowValueThreshold
+        } else {
+            SourceDiscoveryDisposition::NoApplicableTransformation
+        },
+    ))
 }
 
 fn source_discovery_lane_policy(
@@ -4790,6 +4874,40 @@ impl SourceProposalOrigin {
             Self::LearnedPerformance => "LEARNED_PERFORMANCE",
         }
     }
+}
+
+fn source_proposal_batch_results(
+    origin: SourceProposalOrigin,
+    batch: SourceProposalBatch,
+) -> Vec<(
+    SourceProposalOrigin,
+    SourceDiscoveryResult,
+    Option<SourceProposalRankingEvidenceIR>,
+)> {
+    if batch.candidates.is_empty() {
+        return vec![(
+            origin,
+            SourceDiscoveryResult {
+                disposition: batch.disposition,
+                candidate: None,
+            },
+            None,
+        )];
+    }
+    batch
+        .candidates
+        .into_iter()
+        .map(|submission| {
+            (
+                origin,
+                SourceDiscoveryResult {
+                    disposition: SourceDiscoveryDisposition::Candidate,
+                    candidate: Some(submission.request),
+                },
+                Some(submission.evidence),
+            )
+        })
+        .collect()
 }
 
 fn validate_source_proposal_kernel_input(
@@ -5041,44 +5159,52 @@ fn compose_ranked_source_proposals(
     }))
 }
 
-fn select_source_discovery_proposals(
+fn select_source_proposal_submissions(
     policy: &AutonomousSourceMutationPolicy,
     state_dir: &Path,
     source_generation: u64,
     operator_memory: &ImprovementOperatorMemory,
-    results: Vec<(SourceProposalOrigin, SourceDiscoveryResult)>,
+    results: Vec<(
+        SourceProposalOrigin,
+        SourceDiscoveryResult,
+        Option<SourceProposalRankingEvidenceIR>,
+    )>,
 ) -> Result<SourceDiscoveryResult, String> {
-    let below_value_threshold = results
-        .iter()
-        .any(|(_, result)| result.disposition == SourceDiscoveryDisposition::BelowValueThreshold);
+    let below_value_threshold = results.iter().any(|(_, result, _)| {
+        result.disposition == SourceDiscoveryDisposition::BelowValueThreshold
+    });
     let mut proposals = Vec::new();
     let mut rejected = Vec::new();
-    for (origin, result) in results {
+    for (origin, result, submitted_evidence) in results {
         let Some(request) = result.candidate else {
             continue;
         };
         match validate_source_proposal_kernel_input(policy, &request) {
-            Ok(_) => proposals.push(SourceProposalKernelInput {
-                proposal_id: request.patch_id.clone(),
-                candidate_sha256: request.candidate_sha256.clone(),
-                tie_breaker: format!(
-                    "{}:{}:{}:{}",
-                    request.relative_path.display(),
-                    request.transformation,
-                    request.predecessor_sha256,
-                    request.source_generation
-                ),
-                evidence: SourceProposalRankingEvidenceIR {
-                    predicted_value: request.predicted_value,
-                    priority_adjustment: request
-                        .improvement_operator_invocation
-                        .as_ref()
-                        .map_or(0, |invocation| invocation.priority_adjustment),
-                    related_family_members: request.additional_family_members.len(),
-                    ..Default::default()
-                },
-                payload: request,
-            }),
+            Ok(_) => {
+                let evidence =
+                    submitted_evidence.unwrap_or_else(|| SourceProposalRankingEvidenceIR {
+                        predicted_value: request.predicted_value,
+                        priority_adjustment: request
+                            .improvement_operator_invocation
+                            .as_ref()
+                            .map_or(0, |invocation| invocation.priority_adjustment),
+                        related_family_members: request.additional_family_members.len(),
+                        ..Default::default()
+                    });
+                proposals.push(SourceProposalKernelInput {
+                    proposal_id: request.patch_id.clone(),
+                    candidate_sha256: request.candidate_sha256.clone(),
+                    tie_breaker: format!(
+                        "{}:{}:{}:{}",
+                        request.relative_path.display(),
+                        request.transformation,
+                        request.predecessor_sha256,
+                        request.source_generation
+                    ),
+                    evidence,
+                    payload: request,
+                })
+            }
             Err(error) => rejected.push(format!("{}:{error}", origin.label())),
         }
     }
@@ -5111,6 +5237,25 @@ fn select_source_discovery_proposals(
         disposition: SourceDiscoveryDisposition::Candidate,
         candidate,
     })
+}
+
+fn select_source_discovery_proposals(
+    policy: &AutonomousSourceMutationPolicy,
+    state_dir: &Path,
+    source_generation: u64,
+    operator_memory: &ImprovementOperatorMemory,
+    results: Vec<(SourceProposalOrigin, SourceDiscoveryResult)>,
+) -> Result<SourceDiscoveryResult, String> {
+    select_source_proposal_submissions(
+        policy,
+        state_dir,
+        source_generation,
+        operator_memory,
+        results
+            .into_iter()
+            .map(|(origin, result)| (origin, result, None))
+            .collect(),
+    )
 }
 
 /// Applies only machine-executable operators carried by verified performance
@@ -5403,19 +5548,18 @@ pub fn discover_known_source_improvement_detailed(
                 )
             })
         });
-        let join = |handle: Option<
-            thread::ScopedJoinHandle<'_, Result<SourceDiscoveryResult, String>>,
-        >,
-                    lane: &str|
-         -> Result<Option<SourceDiscoveryResult>, String> {
-            handle
-                .map(|handle| {
-                    handle
-                        .join()
-                        .map_err(|_| format!("SOURCE_DISCOVERY_{lane}_LANE_PANICKED"))?
-                })
-                .transpose()
-        };
+        let join =
+            |handle: Option<thread::ScopedJoinHandle<'_, Result<SourceProposalBatch, String>>>,
+             lane: &str|
+             -> Result<Option<SourceProposalBatch>, String> {
+                handle
+                    .map(|handle| {
+                        handle
+                            .join()
+                            .map_err(|_| format!("SOURCE_DISCOVERY_{lane}_LANE_PANICKED"))?
+                    })
+                    .transpose()
+            };
         Ok::<_, String>((
             join(grammar_handle, "GRAMMAR")?,
             join(compiler_handle, "COMPILER")?,
@@ -5428,19 +5572,22 @@ pub fn discover_known_source_improvement_detailed(
     // it ranks at most three competitors. Disjoint edits for the same observed
     // opportunity may become one AtomicMultiEdit; installation and behavioral
     // authority remain in the unchanged verifier path.
-    select_source_discovery_proposals(
+    let mut results = Vec::new();
+    for (origin, batch) in [
+        (SourceProposalOrigin::Grammar, grammar),
+        (SourceProposalOrigin::Compiler, compiler),
+        (SourceProposalOrigin::KnownTransformation, known),
+    ] {
+        if let Some(batch) = batch {
+            results.extend(source_proposal_batch_results(origin, batch));
+        }
+    }
+    select_source_proposal_submissions(
         policy,
         state_dir,
         source_generation,
         &operator_memory,
-        [
-            grammar.map(|result| (SourceProposalOrigin::Grammar, result)),
-            compiler.map(|result| (SourceProposalOrigin::Compiler, result)),
-            known.map(|result| (SourceProposalOrigin::KnownTransformation, result)),
-        ]
-        .into_iter()
-        .flatten()
-        .collect(),
+        results,
     )
 }
 
@@ -6099,6 +6246,41 @@ mod tests {
         ]);
         assert_eq!(first, "A-CANDIDATE");
         assert_eq!(second, first);
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn known_generator_submits_all_bounded_candidates_before_kernel_selection() {
+        let (root, policy) = fixture("known-proposal-batch");
+        let state = root.join("state");
+        fs::create_dir_all(&state).unwrap();
+        let operator_memory = refresh_improvement_operator_repository(&state).unwrap();
+
+        let batch = discover_source_improvement_lane(&policy, &state, 1, &operator_memory).unwrap();
+
+        assert_eq!(batch.disposition, SourceDiscoveryDisposition::Candidate);
+        assert_eq!(batch.candidates.len(), KNOWN_REMAINDER_STRATEGIES.len());
+        let submitted_strategies = batch
+            .candidates
+            .iter()
+            .map(|submission| submission.request.solution_strategy.as_str())
+            .collect::<BTreeSet<_>>();
+        assert_eq!(
+            submitted_strategies,
+            KNOWN_REMAINDER_STRATEGIES.into_iter().collect()
+        );
+        let selected = select_source_proposal_submissions(
+            &policy,
+            &state,
+            1,
+            &operator_memory,
+            source_proposal_batch_results(SourceProposalOrigin::KnownTransformation, batch),
+        )
+        .unwrap()
+        .candidate
+        .expect("kernel-selected candidate");
+        assert_eq!(selected.solution_strategy, KNOWN_REMAINDER_STRATEGIES[0]);
+
         fs::remove_dir_all(root).unwrap();
     }
 

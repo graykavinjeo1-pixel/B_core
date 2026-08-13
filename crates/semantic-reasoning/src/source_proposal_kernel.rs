@@ -18,6 +18,10 @@ pub(crate) struct SourceProposalRankingEvidenceIR {
     pub predicted_value: u16,
     pub priority_adjustment: i32,
     pub related_family_members: usize,
+    pub required_family_members: usize,
+    pub counterexample_feedback: i32,
+    pub public_observation_support: i32,
+    pub bounded_strategy_prior: i32,
     pub public_owner_members: usize,
     pub source_local_closure_members: usize,
     pub source_local_closure_depth: usize,
@@ -27,10 +31,18 @@ impl SourceProposalRankingEvidenceIR {
     fn score(self) -> i32 {
         i32::from(self.predicted_value)
             .saturating_add(self.priority_adjustment)
+            .saturating_add(self.counterexample_feedback)
+            .saturating_add(self.public_observation_support)
+            .saturating_add(self.bounded_strategy_prior)
             .saturating_add(
                 i32::try_from(self.related_family_members.min(8))
                     .unwrap_or(8)
                     .saturating_mul(2),
+            )
+            .saturating_add(
+                i32::try_from(self.required_family_members.min(16))
+                    .unwrap_or(16)
+                    .saturating_mul(25),
             )
             .saturating_add(
                 i32::try_from(self.public_owner_members.min(32))
@@ -214,6 +226,36 @@ mod tests {
             })
             .collect();
         assert_eq!(rank_source_proposals(candidates).unwrap(), [4, 3, 2]);
+    }
+
+    #[test]
+    fn typed_evidence_not_proposal_identity_drives_ranking() {
+        let candidates = vec![
+            SourceProposalKernelInput {
+                proposal_id: "A-LEXICOGRAPHICALLY-FIRST".to_string(),
+                candidate_sha256: format!("{:064x}", 1),
+                tie_breaker: "a".to_string(),
+                evidence: SourceProposalRankingEvidenceIR {
+                    predicted_value: 90,
+                    counterexample_feedback: -100,
+                    ..Default::default()
+                },
+                payload: "unsupported",
+            },
+            SourceProposalKernelInput {
+                proposal_id: "Z-EVIDENCE-SUPPORTED".to_string(),
+                candidate_sha256: format!("{:064x}", 2),
+                tie_breaker: "z".to_string(),
+                evidence: SourceProposalRankingEvidenceIR {
+                    predicted_value: 60,
+                    public_observation_support: 100,
+                    required_family_members: 2,
+                    ..Default::default()
+                },
+                payload: "supported",
+            },
+        ];
+        assert_eq!(rank_source_proposals(candidates).unwrap()[0], "supported");
     }
 
     #[test]
