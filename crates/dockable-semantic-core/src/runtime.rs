@@ -2,6 +2,10 @@ use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 
 use crate::{
+    deliberation::{
+        DeliberationEngine, DeliberationError, DeliberationIR, DeliberationRequestIR,
+        DeliberationRevisionIR, DeliberationRevisionRequestIR,
+    },
     experience::{
         ExperienceError, ExperienceIR, ExperienceInjectionReceiptIR, ExperienceMemory,
         ExperienceQueryIR, ExperienceSnapshotIR, RecalledExperienceIR,
@@ -9,6 +13,11 @@ use crate::{
     interface::{
         Capability, CapabilityRequest, CapabilityResult, GoalIR, ResultIR,
         CAPABILITY_CONTRACT_VERSION, CORE_ABI_VERSION, SEMANTIC_STATE_VERSION,
+    },
+    mechanism_memory::{
+        KnowledgeGroundedDeliberationIR, MechanismKnowledgeIR,
+        MechanismKnowledgeInjectionReceiptIR, MechanismMemory, MechanismMemoryError,
+        MechanismMemorySnapshotIR, MechanismQueryIR, RecalledMechanismIR,
     },
     planning::{PlanGoalIR, PlanIR, Planner, PlanningError},
     reasoning::{AdaptiveReasoner, ResourceBudget},
@@ -39,6 +48,8 @@ pub struct DockableCore {
     experience_memory: ExperienceMemory,
     planner: Planner,
     swarm: SwarmCore,
+    deliberation: DeliberationEngine,
+    mechanism_memory: MechanismMemory,
 }
 
 impl DockableCore {
@@ -58,6 +69,8 @@ impl DockableCore {
             experience_memory: ExperienceMemory::default(),
             planner: Planner,
             swarm: SwarmCore,
+            deliberation: DeliberationEngine,
+            mechanism_memory: MechanismMemory::default(),
         })
     }
 
@@ -172,6 +185,63 @@ impl DockableCore {
         request: &SwarmDeliberationRequestIR,
     ) -> Result<SwarmDeliberationIR, SwarmError> {
         self.swarm.deliberate(request)
+    }
+
+    /// Forms evidence-weighted beliefs, competing causal hypotheses,
+    /// counterfactuals, and a bounded action plan. This method performs no
+    /// external action; executable layers must independently enforce the
+    /// returned authority and validation constraints.
+    pub fn deliberate_problem(
+        &self,
+        request: &DeliberationRequestIR,
+    ) -> Result<DeliberationIR, DeliberationError> {
+        self.deliberation.deliberate(request)
+    }
+
+    /// Replays a predecessor deliberation and consumes only observation that
+    /// is causally bound to its selected action or recommended diagnostic.
+    pub fn revise_deliberation(
+        &self,
+        request: &DeliberationRevisionRequestIR,
+    ) -> Result<DeliberationRevisionIR, DeliberationError> {
+        self.deliberation.revise(request)
+    }
+
+    pub fn inject_mechanism_knowledge(
+        &mut self,
+        knowledge: MechanismKnowledgeIR,
+    ) -> Result<MechanismKnowledgeInjectionReceiptIR, MechanismMemoryError> {
+        self.mechanism_memory.inject(knowledge)
+    }
+
+    pub fn recall_mechanisms(
+        &self,
+        query: &MechanismQueryIR,
+    ) -> Result<Vec<RecalledMechanismIR>, MechanismMemoryError> {
+        self.mechanism_memory.recall(query)
+    }
+
+    pub fn deliberate_with_knowledge(
+        &self,
+        request: &DeliberationRequestIR,
+        query: &MechanismQueryIR,
+    ) -> Result<KnowledgeGroundedDeliberationIR, MechanismMemoryError> {
+        self.mechanism_memory.deliberate(request, query)
+    }
+
+    pub fn export_mechanism_memory_snapshot(&self) -> MechanismMemorySnapshotIR {
+        self.mechanism_memory.snapshot()
+    }
+
+    pub fn import_mechanism_memory_snapshot(
+        &mut self,
+        snapshot: &MechanismMemorySnapshotIR,
+    ) -> Result<Vec<MechanismKnowledgeInjectionReceiptIR>, MechanismMemoryError> {
+        self.mechanism_memory.import_snapshot(snapshot)
+    }
+
+    pub fn retained_mechanism_knowledge_count(&self) -> usize {
+        self.mechanism_memory.len()
     }
 
     pub fn retained_experience_count(&self) -> usize {

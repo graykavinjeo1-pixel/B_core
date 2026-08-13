@@ -80,6 +80,7 @@ pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 55;
 pub const MAX_RETAINED_CONSUMED_RUNTIME_STAGING_GENERATIONS: usize = 2;
 const KNOWN_REMAINDER_PREDICTED_VALUE: u16 = 35;
 const MAX_REPOSITORY_REPAIR_FAMILY_FILES: usize = 16;
+const DEFAULT_TWIN_RECOVERABLE_INSTALLATION_BUDGET: u64 = 256;
 const KNOWN_REMAINDER_STRATEGIES: [&str; 4] = [
     "TYPED_IS_MULTIPLE_OF",
     "PARENTHESIZED_IS_MULTIPLE_OF",
@@ -156,7 +157,11 @@ impl Default for AutonomousSourceMutationPolicy {
             auto_discover_compiler_repairs: default_compiler_repair_discovery(),
             auto_synthesize_grammar_repairs: default_compiler_repair_discovery(),
             max_candidate_bytes: 2 * 1024 * 1024,
-            max_installations: 64,
+            // Each install remains predecessor-bound, atomically validated,
+            // and rollback-protected. This larger lifetime allowance prevents
+            // the recovery-safe authority budget from becoming the dominant
+            // growth bottleneck in long-running deployments.
+            max_installations: DEFAULT_TWIN_RECOVERABLE_INSTALLATION_BUDGET,
             validation_timeout_ms: 15 * 60 * 1_000,
             max_attempts_per_problem: default_source_repair_attempts(),
             minimum_predicted_value: default_minimum_predicted_value(),

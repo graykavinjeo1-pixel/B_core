@@ -40,14 +40,21 @@ pub struct PlanGoalIR {
 pub enum PlanOperationIR {
     ObserveCurrentState,
     RecallRelevantExperience,
+    SurfaceAssumptions,
     DerivePostconditions,
     ModelKnowledgeGap,
     GenerateCandidates,
+    GenerateCompetingHypotheses,
+    ConstructCausalModel,
     PredictConsequences,
+    SimulateCounterfactuals,
+    SelectInformationGainAction,
     RunDiagnostic,
     ValidateCandidates,
     ApplySelectedAction,
     VerifyOutcome,
+    ReplanFromObservation,
+    CalibrateConfidence,
     GeneralizeLesson,
     StoreSuccessfulExperience,
     SynthesizeExplanation,
@@ -136,7 +143,11 @@ impl Planner {
                 expected_postconditions: postconditions(operation, goal),
                 supporting_experience_ids: if matches!(
                     operation,
-                    PlanOperationIR::GenerateCandidates | PlanOperationIR::PredictConsequences
+                    PlanOperationIR::GenerateCandidates
+                        | PlanOperationIR::GenerateCompetingHypotheses
+                        | PlanOperationIR::ConstructCausalModel
+                        | PlanOperationIR::PredictConsequences
+                        | PlanOperationIR::SimulateCounterfactuals
                 ) {
                     successful_experience_ids.clone()
                 } else if operation == PlanOperationIR::RecallRelevantExperience {
@@ -216,20 +227,25 @@ fn operations_for_intent(intent: PlanIntentIR) -> &'static [PlanOperationIR] {
             ObserveCurrentState,
             RecallRelevantExperience,
             DerivePostconditions,
-            GenerateCandidates,
-            PredictConsequences,
+            SurfaceAssumptions,
+            GenerateCompetingHypotheses,
+            SimulateCounterfactuals,
+            SelectInformationGainAction,
             ValidateCandidates,
             ApplySelectedAction,
             VerifyOutcome,
+            ReplanFromObservation,
             StoreSuccessfulExperience,
-            CommunicateResult,
         ],
         PlanIntentIR::Create | PlanIntentIR::Execute => &[
             ObserveCurrentState,
             RecallRelevantExperience,
             DerivePostconditions,
-            GenerateCandidates,
-            PredictConsequences,
+            SurfaceAssumptions,
+            GenerateCompetingHypotheses,
+            ConstructCausalModel,
+            SimulateCounterfactuals,
+            SelectInformationGainAction,
             ValidateCandidates,
             ApplySelectedAction,
             VerifyOutcome,
@@ -238,37 +254,58 @@ fn operations_for_intent(intent: PlanIntentIR) -> &'static [PlanOperationIR] {
         PlanIntentIR::Investigate => &[
             ObserveCurrentState,
             RecallRelevantExperience,
+            SurfaceAssumptions,
             ModelKnowledgeGap,
+            GenerateCompetingHypotheses,
+            ConstructCausalModel,
+            SimulateCounterfactuals,
+            SelectInformationGainAction,
             RunDiagnostic,
-            DerivePostconditions,
             VerifyOutcome,
+            CalibrateConfidence,
             CommunicateResult,
         ],
         PlanIntentIR::Learn => &[
             ObserveCurrentState,
             RecallRelevantExperience,
+            SurfaceAssumptions,
             ModelKnowledgeGap,
+            GenerateCompetingHypotheses,
+            ConstructCausalModel,
+            SimulateCounterfactuals,
+            SelectInformationGainAction,
+            RunDiagnostic,
             GeneralizeLesson,
             ValidateCandidates,
             StoreSuccessfulExperience,
             VerifyOutcome,
-            CommunicateResult,
+            CalibrateConfidence,
         ],
         PlanIntentIR::Explain | PlanIntentIR::Communicate => &[
             ObserveCurrentState,
             RecallRelevantExperience,
+            SurfaceAssumptions,
             ModelKnowledgeGap,
+            GenerateCompetingHypotheses,
+            ConstructCausalModel,
+            SimulateCounterfactuals,
             SynthesizeExplanation,
             VerifyOutcome,
+            CalibrateConfidence,
             CommunicateResult,
         ],
         PlanIntentIR::Plan => &[
             ObserveCurrentState,
             RecallRelevantExperience,
             DerivePostconditions,
-            GenerateCandidates,
+            SurfaceAssumptions,
+            GenerateCompetingHypotheses,
+            ConstructCausalModel,
+            SimulateCounterfactuals,
+            SelectInformationGainAction,
             ValidateCandidates,
             VerifyOutcome,
+            CalibrateConfidence,
             CommunicateResult,
         ],
     }
@@ -276,10 +313,22 @@ fn operations_for_intent(intent: PlanIntentIR) -> &'static [PlanOperationIR] {
 
 fn preconditions(operation: PlanOperationIR, goal: &PlanGoalIR) -> Vec<String> {
     match operation {
+        PlanOperationIR::GenerateCompetingHypotheses => vec![
+            "observations remain separate from assumptions".to_string(),
+            "at least one falsifier is defined for each actionable hypothesis".to_string(),
+        ],
+        PlanOperationIR::SelectInformationGainAction => vec![
+            "candidate diagnostics are read-only or reversibly bounded".to_string(),
+            "expected information gain exceeds diagnostic cost".to_string(),
+        ],
         PlanOperationIR::ApplySelectedAction => vec![
             "candidate validated".to_string(),
             "rollback or recovery path available".to_string(),
+            "action lies inside the explicit authority envelope".to_string(),
         ],
+        PlanOperationIR::ReplanFromObservation => {
+            vec!["post-action observation is available".to_string()]
+        }
         PlanOperationIR::StoreSuccessfulExperience => {
             vec!["outcome independently verified".to_string()]
         }
@@ -292,7 +341,24 @@ fn preconditions(operation: PlanOperationIR, goal: &PlanGoalIR) -> Vec<String> {
 
 fn postconditions(operation: PlanOperationIR, goal: &PlanGoalIR) -> Vec<String> {
     match operation {
+        PlanOperationIR::SurfaceAssumptions => {
+            vec!["unstated assumptions are represented as falsifiable propositions".to_string()]
+        }
         PlanOperationIR::DerivePostconditions => goal.desired_outcomes.clone(),
+        PlanOperationIR::GenerateCompetingHypotheses => vec![
+            "multiple causally distinct explanations are retained until evidence separates them"
+                .to_string(),
+        ],
+        PlanOperationIR::ConstructCausalModel => vec![
+            "prerequisite, effect, observation, cost, risk, and authority are typed".to_string(),
+        ],
+        PlanOperationIR::SimulateCounterfactuals => vec![
+            "candidate actions have predicted goal, conflict, cost, and risk deltas".to_string(),
+        ],
+        PlanOperationIR::SelectInformationGainAction => vec![
+            "uncertainty-reducing diagnostic is preferred when intervention is not justified"
+                .to_string(),
+        ],
         PlanOperationIR::VerifyOutcome => goal
             .desired_outcomes
             .iter()
@@ -300,6 +366,12 @@ fn postconditions(operation: PlanOperationIR, goal: &PlanGoalIR) -> Vec<String> 
             .collect(),
         PlanOperationIR::StoreSuccessfulExperience => {
             vec!["successful method is callable knowledge".to_string()]
+        }
+        PlanOperationIR::ReplanFromObservation => {
+            vec!["failed predictions update the next bounded plan".to_string()]
+        }
+        PlanOperationIR::CalibrateConfidence => {
+            vec!["confidence reflects supporting, opposing, and unresolved evidence".to_string()]
         }
         _ => vec![format!("{:?} completed", operation)],
     }
@@ -381,7 +453,7 @@ mod tests {
         assert!(plan.structurally_validated);
         assert_eq!(plan.recalled_experiences.len(), 1);
         assert!(plan.steps.iter().any(|step| {
-            step.operation == PlanOperationIR::GenerateCandidates
+            step.operation == PlanOperationIR::GenerateCompetingHypotheses
                 && step
                     .supporting_experience_ids
                     .contains(&"EXP-PATH-1".to_string())
@@ -430,7 +502,11 @@ mod tests {
         assert!(plan.steps.iter().all(|step| {
             !matches!(
                 step.operation,
-                PlanOperationIR::GenerateCandidates | PlanOperationIR::PredictConsequences
+                PlanOperationIR::GenerateCandidates
+                    | PlanOperationIR::GenerateCompetingHypotheses
+                    | PlanOperationIR::ConstructCausalModel
+                    | PlanOperationIR::PredictConsequences
+                    | PlanOperationIR::SimulateCounterfactuals
             ) || !step
                 .supporting_experience_ids
                 .contains(&"EXP-FAILED-1".to_string())

@@ -1,6 +1,10 @@
 use dockable_semantic_core::{
-    DockableCore, ExperienceError, ExperienceIR, ExperienceInjectionReceiptIR,
-    ExperienceSnapshotIR, PlanGoalIR, PlanIR, PlanOperationIR, PlanningError, PLAN_GOAL_SCHEMA,
+    DeliberationError, DeliberationIR, DeliberationRequestIR, DeliberationRevisionIR,
+    DeliberationRevisionRequestIR, DockableCore, ExperienceError, ExperienceIR,
+    ExperienceInjectionReceiptIR, ExperienceSnapshotIR, KnowledgeGroundedDeliberationIR,
+    MechanismKnowledgeIR, MechanismKnowledgeInjectionReceiptIR, MechanismMemoryError,
+    MechanismMemorySnapshotIR, MechanismQueryIR, PlanGoalIR, PlanIR, PlanOperationIR,
+    PlanningError, PLAN_GOAL_SCHEMA,
 };
 use serde::{Deserialize, Serialize};
 
@@ -72,6 +76,23 @@ pub struct KnowledgeWorkResponseIR {
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(tag = "operation", rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum CognitiveApiCommandIR {
+    DeliberateProblem {
+        request: DeliberationRequestIR,
+    },
+    ReviseDeliberation {
+        request: Box<DeliberationRevisionRequestIR>,
+    },
+    InjectMechanismKnowledge {
+        knowledge: MechanismKnowledgeIR,
+    },
+    ExportMechanismMemorySnapshot,
+    ImportMechanismMemorySnapshot {
+        snapshot: MechanismMemorySnapshotIR,
+    },
+    DeliberateWithKnowledge {
+        request: DeliberationRequestIR,
+        query: MechanismQueryIR,
+    },
     InjectExperience {
         experience: ExperienceIR,
     },
@@ -111,6 +132,12 @@ pub enum CognitiveApiCommandIR {
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(tag = "type", content = "value", rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum CognitiveApiPayloadIR {
+    Deliberation(Box<DeliberationIR>),
+    DeliberationRevision(Box<DeliberationRevisionIR>),
+    KnowledgeGroundedDeliberation(Box<KnowledgeGroundedDeliberationIR>),
+    MechanismKnowledgeInjectionReceipt(MechanismKnowledgeInjectionReceiptIR),
+    MechanismKnowledgeInjectionReceipts(Vec<MechanismKnowledgeInjectionReceiptIR>),
+    MechanismMemorySnapshot(MechanismMemorySnapshotIR),
     ExperienceInjectionReceipt(ExperienceInjectionReceiptIR),
     ExperienceInjectionReceipts(Vec<ExperienceInjectionReceiptIR>),
     ExperienceSnapshot(ExperienceSnapshotIR),
@@ -146,6 +173,8 @@ pub enum CognitiveApiError {
     KnowledgeWork,
     LongTermRepairPlan,
     ProfessionalDocument,
+    Deliberation,
+    MechanismMemory,
     Experience,
     Planning,
     JsonInput,
@@ -178,6 +207,46 @@ impl CognitiveApi {
         self.core
             .inject_experience(experience)
             .map_err(map_experience_error)
+    }
+
+    /// Runs the core's bounded causal/epistemic deliberation path. The result
+    /// is a typed plan and evidence receipt; this API does not execute external
+    /// actions or silently broaden the request's authority.
+    pub fn deliberate_problem(
+        &self,
+        request: &DeliberationRequestIR,
+    ) -> Result<DeliberationIR, CognitiveApiError> {
+        self.core
+            .deliberate_problem(request)
+            .map_err(map_deliberation_error)
+    }
+
+    pub fn revise_deliberation(
+        &self,
+        request: &DeliberationRevisionRequestIR,
+    ) -> Result<DeliberationRevisionIR, CognitiveApiError> {
+        self.core
+            .revise_deliberation(request)
+            .map_err(map_deliberation_error)
+    }
+
+    pub fn inject_mechanism_knowledge(
+        &mut self,
+        knowledge: MechanismKnowledgeIR,
+    ) -> Result<MechanismKnowledgeInjectionReceiptIR, CognitiveApiError> {
+        self.core
+            .inject_mechanism_knowledge(knowledge)
+            .map_err(map_mechanism_memory_error)
+    }
+
+    pub fn deliberate_with_knowledge(
+        &self,
+        request: &DeliberationRequestIR,
+        query: &MechanismQueryIR,
+    ) -> Result<KnowledgeGroundedDeliberationIR, CognitiveApiError> {
+        self.core
+            .deliberate_with_knowledge(request, query)
+            .map_err(map_mechanism_memory_error)
     }
 
     pub fn inject_experience_json(&mut self, json: &str) -> Result<String, CognitiveApiError> {
@@ -481,6 +550,30 @@ impl CognitiveApi {
 
     pub fn execute_command(&mut self, command: CognitiveApiCommandIR) -> CognitiveApiResponseIR {
         let result = match command {
+            CognitiveApiCommandIR::DeliberateProblem { request } => self
+                .deliberate_problem(&request)
+                .map(|result| CognitiveApiPayloadIR::Deliberation(Box::new(result))),
+            CognitiveApiCommandIR::ReviseDeliberation { request } => self
+                .revise_deliberation(&request)
+                .map(|result| CognitiveApiPayloadIR::DeliberationRevision(Box::new(result))),
+            CognitiveApiCommandIR::InjectMechanismKnowledge { knowledge } => self
+                .inject_mechanism_knowledge(knowledge)
+                .map(CognitiveApiPayloadIR::MechanismKnowledgeInjectionReceipt),
+            CognitiveApiCommandIR::ExportMechanismMemorySnapshot => {
+                Ok(CognitiveApiPayloadIR::MechanismMemorySnapshot(
+                    self.core.export_mechanism_memory_snapshot(),
+                ))
+            }
+            CognitiveApiCommandIR::ImportMechanismMemorySnapshot { snapshot } => self
+                .core
+                .import_mechanism_memory_snapshot(&snapshot)
+                .map(CognitiveApiPayloadIR::MechanismKnowledgeInjectionReceipts)
+                .map_err(map_mechanism_memory_error),
+            CognitiveApiCommandIR::DeliberateWithKnowledge { request, query } => self
+                .deliberate_with_knowledge(&request, &query)
+                .map(|result| {
+                    CognitiveApiPayloadIR::KnowledgeGroundedDeliberation(Box::new(result))
+                }),
             CognitiveApiCommandIR::InjectExperience { experience } => self
                 .inject_experience(experience)
                 .map(CognitiveApiPayloadIR::ExperienceInjectionReceipt),
@@ -598,6 +691,14 @@ fn map_professional_document_error(_: ProfessionalDocumentError) -> CognitiveApi
 
 fn map_planning_error(_: PlanningError) -> CognitiveApiError {
     CognitiveApiError::Planning
+}
+
+fn map_deliberation_error(_: DeliberationError) -> CognitiveApiError {
+    CognitiveApiError::Deliberation
+}
+
+fn map_mechanism_memory_error(_: MechanismMemoryError) -> CognitiveApiError {
+    CognitiveApiError::MechanismMemory
 }
 
 fn merge_lexical_activations(
@@ -794,14 +895,21 @@ fn korean_operation(operation: PlanOperationIR) -> &'static str {
     match operation {
         PlanOperationIR::ObserveCurrentState => "현재 상태 관찰",
         PlanOperationIR::RecallRelevantExperience => "관련 경험 회상",
+        PlanOperationIR::SurfaceAssumptions => "숨은 가정 표면화",
         PlanOperationIR::DerivePostconditions => "완료 조건 도출",
         PlanOperationIR::ModelKnowledgeGap => "지식 공백 모델링",
         PlanOperationIR::GenerateCandidates => "후보 생성",
+        PlanOperationIR::GenerateCompetingHypotheses => "경쟁 가설 생성",
+        PlanOperationIR::ConstructCausalModel => "인과 모델 구성",
         PlanOperationIR::PredictConsequences => "결과 예측",
+        PlanOperationIR::SimulateCounterfactuals => "반사실 시뮬레이션",
+        PlanOperationIR::SelectInformationGainAction => "정보가치 행동 선택",
         PlanOperationIR::RunDiagnostic => "진단 실행",
         PlanOperationIR::ValidateCandidates => "후보 검증",
         PlanOperationIR::ApplySelectedAction => "선택 행동 적용",
         PlanOperationIR::VerifyOutcome => "결과 검증",
+        PlanOperationIR::ReplanFromObservation => "관찰 기반 재계획",
+        PlanOperationIR::CalibrateConfidence => "확신도 보정",
         PlanOperationIR::GeneralizeLesson => "교훈 일반화",
         PlanOperationIR::StoreSuccessfulExperience => "성공 경험 저장",
         PlanOperationIR::SynthesizeExplanation => "설명 합성",
@@ -813,14 +921,21 @@ fn english_operation(operation: PlanOperationIR) -> &'static str {
     match operation {
         PlanOperationIR::ObserveCurrentState => "Observe current state",
         PlanOperationIR::RecallRelevantExperience => "Recall relevant experience",
+        PlanOperationIR::SurfaceAssumptions => "Surface hidden assumptions",
         PlanOperationIR::DerivePostconditions => "Derive completion conditions",
         PlanOperationIR::ModelKnowledgeGap => "Model the knowledge gap",
         PlanOperationIR::GenerateCandidates => "Generate candidates",
+        PlanOperationIR::GenerateCompetingHypotheses => "Generate competing hypotheses",
+        PlanOperationIR::ConstructCausalModel => "Construct a causal model",
         PlanOperationIR::PredictConsequences => "Predict consequences",
+        PlanOperationIR::SimulateCounterfactuals => "Simulate counterfactuals",
+        PlanOperationIR::SelectInformationGainAction => "Select an information-gain action",
         PlanOperationIR::RunDiagnostic => "Run a diagnostic",
         PlanOperationIR::ValidateCandidates => "Validate candidates",
         PlanOperationIR::ApplySelectedAction => "Apply the selected action",
         PlanOperationIR::VerifyOutcome => "Verify the outcome",
+        PlanOperationIR::ReplanFromObservation => "Replan from observations",
+        PlanOperationIR::CalibrateConfidence => "Calibrate confidence",
         PlanOperationIR::GeneralizeLesson => "Generalize the lesson",
         PlanOperationIR::StoreSuccessfulExperience => "Store successful experience",
         PlanOperationIR::SynthesizeExplanation => "Synthesize an explanation",
@@ -830,7 +945,12 @@ fn english_operation(operation: PlanOperationIR) -> &'static str {
 
 #[cfg(test)]
 mod tests {
-    use dockable_semantic_core::{ExperienceOutcomeIR, EXPERIENCE_SCHEMA};
+    use dockable_semantic_core::{
+        ActionAuthorityIR, AuthorityEnvelopeIR, CausalMechanismIR, DeliberationDispositionIR,
+        DeliberationRequestIR, EvidenceIR, ExperienceOutcomeIR, LiteralIR, MechanismKindIR,
+        MechanismKnowledgeIR, MechanismQueryIR, DELIBERATION_REQUEST_SCHEMA, EXPERIENCE_SCHEMA,
+        MECHANISM_KNOWLEDGE_SCHEMA,
+    };
 
     use super::*;
     use crate::knowledge_work::{
@@ -940,6 +1060,148 @@ mod tests {
             panic!("typed natural-language response")
         };
         assert_eq!(response.plan.recalled_experiences.len(), 1);
+    }
+
+    #[test]
+    fn public_command_api_runs_compositional_deliberation_and_enforces_authority() {
+        let mut api = CognitiveApi::new_embedded().unwrap();
+        let literal = |id: &str| LiteralIR {
+            proposition_id: id.to_string(),
+            value: true,
+        };
+        let request = DeliberationRequestIR {
+            schema: DELIBERATION_REQUEST_SCHEMA.to_string(),
+            request_id: "DELIBERATE-PUBLIC-1".to_string(),
+            subject: "localize and repair an observed pipeline failure".to_string(),
+            evidence: vec![EvidenceIR {
+                evidence_id: "E-FAILURE".to_string(),
+                literal: literal("FAILURE_OBSERVED"),
+                reliability_millis: 980,
+                source_ref: "public-test:failure".to_string(),
+            }],
+            mechanisms: vec![
+                CausalMechanismIR {
+                    mechanism_id: "LOCALIZE".to_string(),
+                    kind: MechanismKindIR::Inference,
+                    prerequisites: vec![literal("FAILURE_OBSERVED")],
+                    effects: vec![literal("CAUSE_LOCALIZED")],
+                    observes: Vec::new(),
+                    authority: ActionAuthorityIR::InternalInference,
+                    authorized: true,
+                    reversible: true,
+                    recovery_reference: None,
+                    cost_millis: 10,
+                    risk_millis: 0,
+                    provenance_refs: vec!["public-test:localizer".to_string()],
+                },
+                CausalMechanismIR {
+                    mechanism_id: "REPAIR".to_string(),
+                    kind: MechanismKindIR::Intervention,
+                    prerequisites: vec![literal("CAUSE_LOCALIZED")],
+                    effects: vec![literal("REPAIRED")],
+                    observes: Vec::new(),
+                    authority: ActionAuthorityIR::ReversibleMutation,
+                    authorized: true,
+                    reversible: true,
+                    recovery_reference: Some("sealed-predecessor:public-test".to_string()),
+                    cost_millis: 50,
+                    risk_millis: 10,
+                    provenance_refs: vec!["public-test:repair".to_string()],
+                },
+            ],
+            goals: vec![literal("REPAIRED")],
+            authority_envelope: AuthorityEnvelopeIR::default(),
+            immutable_constraints: Vec::new(),
+            max_depth: 4,
+            beam_width: 8,
+            max_hypotheses: 8,
+            max_counterfactuals: 8,
+        };
+        let response = api.execute_command(CognitiveApiCommandIR::DeliberateProblem { request });
+        let Some(CognitiveApiPayloadIR::Deliberation(result)) = response.payload else {
+            panic!("typed deliberation response")
+        };
+        assert_eq!(result.disposition, DeliberationDispositionIR::GoalReachable);
+        assert_eq!(
+            result.selected_plan.unwrap().mechanism_ids,
+            ["LOCALIZE", "REPAIR"]
+        );
+        assert_eq!(result.external_action_execution_events, 0);
+        assert_eq!(result.external_model_calls, 0);
+    }
+
+    #[test]
+    fn public_api_reuses_stored_executable_knowledge_instead_of_prose() {
+        let mut api = CognitiveApi::new_embedded().unwrap();
+        let literal = |id: &str| LiteralIR {
+            proposition_id: id.to_string(),
+            value: true,
+        };
+        for (knowledge_id, mechanism_id, prerequisite, effect) in [
+            ("K-LOCALIZE", "LOCALIZE", "FAILURE", "CAUSE"),
+            ("K-REPAIR", "REPAIR", "CAUSE", "RESTORED"),
+        ] {
+            let response = api.execute_command(CognitiveApiCommandIR::InjectMechanismKnowledge {
+                knowledge: MechanismKnowledgeIR {
+                    schema: MECHANISM_KNOWLEDGE_SCHEMA.to_string(),
+                    knowledge_id: knowledge_id.to_string(),
+                    mechanism: CausalMechanismIR {
+                        mechanism_id: mechanism_id.to_string(),
+                        kind: MechanismKindIR::Inference,
+                        prerequisites: vec![literal(prerequisite)],
+                        effects: vec![literal(effect)],
+                        observes: Vec::new(),
+                        authority: ActionAuthorityIR::InternalInference,
+                        authorized: true,
+                        reversible: true,
+                        recovery_reference: None,
+                        cost_millis: 10,
+                        risk_millis: 0,
+                        provenance_refs: vec![format!("public-test:{knowledge_id}")],
+                    },
+                    semantic_tags: vec!["repair".to_string()],
+                    validation_evidence_refs: vec![format!("public-test:{knowledge_id}:pass")],
+                    confidence_millis: 950,
+                },
+            });
+            assert!(response.ok);
+        }
+        let response = api.execute_command(CognitiveApiCommandIR::DeliberateWithKnowledge {
+            request: DeliberationRequestIR {
+                schema: DELIBERATION_REQUEST_SCHEMA.to_string(),
+                request_id: "KNOWLEDGE-THINK-1".to_string(),
+                subject: "reuse and compose executable repair knowledge".to_string(),
+                evidence: vec![EvidenceIR {
+                    evidence_id: "E-FAILURE".to_string(),
+                    literal: literal("FAILURE"),
+                    reliability_millis: 990,
+                    source_ref: "public-test:failure".to_string(),
+                }],
+                mechanisms: Vec::new(),
+                goals: vec![literal("RESTORED")],
+                authority_envelope: AuthorityEnvelopeIR::default(),
+                immutable_constraints: Vec::new(),
+                max_depth: 4,
+                beam_width: 8,
+                max_hypotheses: 8,
+                max_counterfactuals: 8,
+            },
+            query: MechanismQueryIR {
+                semantic_tags: vec!["repair".to_string()],
+                known_proposition_ids: vec!["FAILURE".to_string(), "CAUSE".to_string()],
+                goal_proposition_ids: vec!["RESTORED".to_string()],
+                max_results: 8,
+            },
+        });
+        let Some(CognitiveApiPayloadIR::KnowledgeGroundedDeliberation(result)) = response.payload
+        else {
+            panic!("knowledge-grounded deliberation")
+        };
+        assert_eq!(result.recalled_mechanisms.len(), 2);
+        assert_eq!(
+            result.deliberation.disposition,
+            DeliberationDispositionIR::GoalReachable
+        );
     }
 
     #[test]
