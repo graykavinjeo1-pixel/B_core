@@ -1,6 +1,9 @@
 use std::env;
 use std::path::PathBuf;
 
+use semantic_reasoning::compound_growth::{
+    run_compound_growth_cycle, CompoundGrowthCycleRequestIR,
+};
 use semantic_reasoning::growth_supervisor::{
     cleanup_source_staging, initialize, make_config, preview_source_repair, record_work_event,
     request_resume, request_stop, run_daemon, self_check, status, supervisor_step, WorkEvent,
@@ -120,6 +123,19 @@ fn run() -> Result<(), String> {
                     .map_err(|e| e.to_string())?
             );
         }
+        "compound-cycle" => {
+            let request_path = next_path(&mut args, "COMPOUND_REQUEST_PATH_MISSING")?;
+            ensure_no_more(&mut args)?;
+            let bytes = std::fs::read(&request_path)
+                .map_err(|e| format!("COMPOUND_REQUEST_READ:{}:{e}", request_path.display()))?;
+            let request: CompoundGrowthCycleRequestIR =
+                serde_json::from_slice(&bytes).map_err(|e| format!("COMPOUND_REQUEST_JSON:{e}"))?;
+            println!(
+                "{}",
+                serde_json::to_string_pretty(&run_compound_growth_cycle(&request)?)
+                    .map_err(|e| e.to_string())?
+            );
+        }
         _ => return Err(usage()),
     }
     Ok(())
@@ -143,5 +159,5 @@ fn ensure_no_more(args: &mut impl Iterator<Item = std::ffi::OsString>) -> Result
 }
 
 fn usage() -> String {
-    "USAGE:<self-check|make-config|init|step|run|status|cleanup-source-staging|preview-source-repair|stop|resume|record-event> ...".to_string()
+    "USAGE:<self-check|make-config|init|step|run|status|cleanup-source-staging|preview-source-repair|stop|resume|record-event|compound-cycle> ...".to_string()
 }

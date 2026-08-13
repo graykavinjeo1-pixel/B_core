@@ -1239,7 +1239,7 @@ fn improvement_operator_ir_from_features(
     Ok(operator)
 }
 
-fn improvement_operator_ir_for_program(
+pub(crate) fn improvement_operator_ir_for_program(
     weakness_evidence_kind: WeaknessEvidenceKind,
     transformation: &str,
     solution_strategy: &str,
