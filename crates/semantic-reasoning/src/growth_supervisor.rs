@@ -1136,6 +1136,8 @@ pub fn self_check() -> SelfCheck {
             "PATCH_VALIDATION_REJECTS_CONCURRENT_NON_TARGET_SOURCE_CHANGES".to_string(),
             "MIXED_PRODUCTION_FILES_CONTRIBUTE_IMPLEMENTATION_AND_TEST_EVIDENCE".to_string(),
             "SOURCE_REPAIR_ROLLBACK_RATIO_IS_A_GROWTH_EFFICIENCY_SIGNAL".to_string(),
+            "CONSUMED_RUNTIME_STAGING_RETAINS_ONLY_CURRENT_AND_IMMEDIATE_PREDECESSOR"
+                .to_string(),
             "LOW_PREDICTED_VALUE_SOURCE_REWRITES_STOP_BEFORE_COMPILATION".to_string(),
             "COMPILE_CHECK_PRECEDES_FULL_REGRESSION_AND_RELEASE_VALIDATION".to_string(),
             "ACTIVE_RUNTIME_STATIC_VALIDATION_EXCLUDES_IMMUTABLE_HISTORICAL_CAMPAIGN_IMPLEMENTATIONS"
@@ -1172,6 +1174,8 @@ pub fn self_check() -> SelfCheck {
             "TYPED_GRAMMAR_ATOMS_COMPOSE_NEW_EXPRESSIONS_WITHOUT_GOLD_PATCH_TEXT".to_string(),
             "FAILED_PUBLIC_OBSERVATIONS_SELECT_THE_NEXT_BOUNDED_GRAMMAR_COMPOSITION".to_string(),
             "SUCCESS_MEMORY_RETAINS_EDIT_ATOM_COMPOSITION_AND_STRUCTURAL_POSTCONDITIONS"
+                .to_string(),
+            "SOURCE_PROPOSAL_COMPOSITION_AUTHORITY_EXCLUDES_DIAGNOSTIC_FAMILY_IDENTITY"
                 .to_string(),
             "SEM9_SELF_APPLICATION_PRINCIPLES_GENERALIZE_FROM_CURRENT_OBSERVATIONS_NOT_FROZEN_WEAKNESS_FIXTURES"
                 .to_string(),
@@ -10990,6 +10994,13 @@ mod tests {
         assert!(check.autonomous_source_patch_install_enabled);
         assert!(check.source_patch_rollback_enabled);
         assert!(check.promoted_lessons_drive_executable_repairs);
+        assert!(check.operational_repair_knowledge.contains(
+            &"CONSUMED_RUNTIME_STAGING_RETAINS_ONLY_CURRENT_AND_IMMEDIATE_PREDECESSOR".to_string()
+        ));
+        assert!(check.operational_repair_knowledge.contains(
+            &"SOURCE_PROPOSAL_COMPOSITION_AUTHORITY_EXCLUDES_DIAGNOSTIC_FAMILY_IDENTITY"
+                .to_string()
+        ));
         assert!(check
             .operational_repair_knowledge
             .contains(&"WINPS51_EXTENDED_PATH_NORMALIZATION_BEFORE_PATH_CMDLETS".to_string()));
