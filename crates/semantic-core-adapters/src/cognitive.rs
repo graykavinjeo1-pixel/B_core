@@ -516,6 +516,8 @@ fn lexical_document_kind(activations: &[ActivatedSenseIR]) -> Option<DocumentKin
         .filter_map(|activation| {
             let kind = match activation.canonical_concept.as_str() {
                 "academic_paper" => DocumentKindIR::Paper,
+                "business_plan" => DocumentKindIR::BusinessPlan,
+                "business_proposal" => DocumentKindIR::BusinessProposal,
                 "data_table" => DocumentKindIR::Table,
                 "data_chart" => DocumentKindIR::Chart,
                 "financial_statement" => DocumentKindIR::FinancialStatement,
@@ -804,6 +806,7 @@ mod tests {
                 }),
                 document_kind: None,
                 output_language: Some(LanguageCodeIR::Korean),
+                design: None,
                 output: OutputDirectiveIR {
                     mode: OutputModeIR::Text,
                     format: OutputFormatIR::Markdown,
@@ -916,6 +919,7 @@ mod tests {
                 }),
                 document_kind: None,
                 output_language: Some(LanguageCodeIR::Korean),
+                design: None,
                 output: OutputDirectiveIR {
                     mode: OutputModeIR::Text,
                     format: OutputFormatIR::Markdown,
@@ -950,6 +954,7 @@ mod tests {
                 }),
                 document_kind: Some(DocumentKindIR::Chart),
                 output_language: Some(LanguageCodeIR::Korean),
+                design: None,
                 output: OutputDirectiveIR {
                     mode: OutputModeIR::File,
                     format: OutputFormatIR::Svg,
@@ -966,5 +971,71 @@ mod tests {
         assert!(svg.starts_with("<svg"));
         assert!(svg.contains("polyline"));
         std::fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn bilingual_business_genres_drive_the_cognitive_document_pipeline() {
+        let mut api = CognitiveApi::new_embedded().unwrap();
+        let korean = api
+            .process_knowledge_work(&KnowledgeWorkRequestIR {
+                schema: KNOWLEDGE_WORK_REQUEST_SCHEMA.to_string(),
+                request_id: "KW-BUSINESS-KO".to_string(),
+                command: "시장 표와 성장 차트를 포함한 사업계획서를 작성해".to_string(),
+                source: None,
+                document_kind: None,
+                output_language: Some(LanguageCodeIR::Korean),
+                design: None,
+                output: OutputDirectiveIR {
+                    mode: OutputModeIR::Text,
+                    format: OutputFormatIR::Html,
+                    path: None,
+                    overwrite: false,
+                },
+                context_tags: vec!["business".to_string()],
+                max_plan_steps: 12,
+            })
+            .unwrap();
+        assert_eq!(korean.product.document.kind(), DocumentKindIR::BusinessPlan);
+        assert_eq!(
+            korean.product.design.theme,
+            crate::knowledge_work::DocumentThemeIR::ExecutiveNavy
+        );
+        assert!(korean
+            .lexical_activations
+            .iter()
+            .any(|activation| activation.canonical_concept == "business_plan"));
+        assert!(korean
+            .product
+            .text_output
+            .as_deref()
+            .is_some_and(|html| html.contains("BUSINESS PLAN")));
+
+        let english = api
+            .process_knowledge_work(&KnowledgeWorkRequestIR {
+                schema: KNOWLEDGE_WORK_REQUEST_SCHEMA.to_string(),
+                request_id: "KW-BUSINESS-EN".to_string(),
+                command: "Create a client business proposal with an executive chart".to_string(),
+                source: None,
+                document_kind: None,
+                output_language: Some(LanguageCodeIR::English),
+                design: None,
+                output: OutputDirectiveIR {
+                    mode: OutputModeIR::Text,
+                    format: OutputFormatIR::Html,
+                    path: None,
+                    overwrite: false,
+                },
+                context_tags: vec!["proposal".to_string()],
+                max_plan_steps: 12,
+            })
+            .unwrap();
+        assert_eq!(
+            english.product.document.kind(),
+            DocumentKindIR::BusinessProposal
+        );
+        assert!(english
+            .lexical_activations
+            .iter()
+            .any(|activation| activation.canonical_concept == "business_proposal"));
     }
 }

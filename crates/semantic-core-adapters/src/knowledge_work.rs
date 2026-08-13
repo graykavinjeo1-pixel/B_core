@@ -17,11 +17,15 @@ pub const TABLE_SCHEMA: &str = "B_CORE_TABLE_IR_1";
 pub const CHART_SCHEMA: &str = "B_CORE_CHART_IR_1";
 pub const FINANCIAL_STATEMENT_SCHEMA: &str = "B_CORE_FINANCIAL_STATEMENT_IR_1";
 pub const PLAN_PROPOSAL_SCHEMA: &str = "B_CORE_PLAN_PROPOSAL_IR_1";
+pub const BUSINESS_DOCUMENT_SCHEMA: &str = "B_CORE_BUSINESS_DOCUMENT_IR_1";
+pub const DOCUMENT_DESIGN_SCHEMA: &str = "B_CORE_DOCUMENT_DESIGN_IR_1";
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum DocumentKindIR {
     Paper,
+    BusinessPlan,
+    BusinessProposal,
     Table,
     Chart,
     FinancialStatement,
@@ -78,9 +82,64 @@ pub enum OutputModeIR {
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum OutputFormatIR {
     Markdown,
+    Html,
     Json,
     Csv,
     Svg,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum DocumentThemeIR {
+    AcademicEditorial,
+    ExecutiveNavy,
+    ProposalCobalt,
+    MinimalMonochrome,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum PageSizeIR {
+    A4,
+    Letter,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct DocumentDesignIR {
+    pub schema: String,
+    pub theme: DocumentThemeIR,
+    pub page_size: PageSizeIR,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub brand_name: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub accent_color: Option<String>,
+    #[serde(default)]
+    pub compact: bool,
+    #[serde(default = "default_true")]
+    pub show_table_of_contents: bool,
+    #[serde(default = "default_true")]
+    pub show_page_furniture: bool,
+}
+
+impl DocumentDesignIR {
+    pub fn for_kind(kind: DocumentKindIR) -> Self {
+        let theme = match kind {
+            DocumentKindIR::Paper => DocumentThemeIR::AcademicEditorial,
+            DocumentKindIR::BusinessPlan => DocumentThemeIR::ExecutiveNavy,
+            DocumentKindIR::BusinessProposal => DocumentThemeIR::ProposalCobalt,
+            _ => DocumentThemeIR::MinimalMonochrome,
+        };
+        Self {
+            schema: DOCUMENT_DESIGN_SCHEMA.to_string(),
+            theme,
+            page_size: PageSizeIR::A4,
+            brand_name: None,
+            accent_color: None,
+            compact: false,
+            show_table_of_contents: true,
+            show_page_furniture: true,
+        }
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -105,6 +164,8 @@ pub struct KnowledgeWorkRequestIR {
     pub document_kind: Option<DocumentKindIR>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub output_language: Option<LanguageCodeIR>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub design: Option<DocumentDesignIR>,
     pub output: OutputDirectiveIR,
     #[serde(default)]
     pub context_tags: Vec<String>,
@@ -291,10 +352,61 @@ pub struct PlanProposalIR {
     pub assumptions: Vec<String>,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum BusinessDocumentTypeIR {
+    BusinessPlan,
+    BusinessProposal,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct BusinessMetricIR {
+    pub label: String,
+    pub value: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub change: Option<String>,
+    pub evidence_location: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct BusinessSectionIR {
+    pub section_id: String,
+    pub heading: String,
+    pub body: String,
+    #[serde(default)]
+    pub highlights: Vec<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct BusinessDocumentIR {
+    pub schema: String,
+    pub document_id: String,
+    pub document_type: BusinessDocumentTypeIR,
+    pub title: String,
+    pub organization: String,
+    pub audience: String,
+    pub executive_summary: String,
+    pub sections: Vec<BusinessSectionIR>,
+    #[serde(default)]
+    pub key_metrics: Vec<BusinessMetricIR>,
+    pub execution_plan: PlanProposalIR,
+    #[serde(default)]
+    pub tables: Vec<TableIR>,
+    #[serde(default)]
+    pub charts: Vec<ChartIR>,
+    #[serde(default)]
+    pub financial_statements: Vec<FinancialStatementIR>,
+    #[serde(default)]
+    pub risks: Vec<String>,
+    pub next_action: String,
+}
+
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(tag = "kind", content = "content", rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum KnowledgeDocumentIR {
     Paper(PaperIR),
+    BusinessPlan(BusinessDocumentIR),
+    BusinessProposal(BusinessDocumentIR),
     Table(TableIR),
     Chart(ChartIR),
     FinancialStatement(FinancialStatementIR),
@@ -305,6 +417,8 @@ impl KnowledgeDocumentIR {
     pub fn kind(&self) -> DocumentKindIR {
         match self {
             Self::Paper(_) => DocumentKindIR::Paper,
+            Self::BusinessPlan(_) => DocumentKindIR::BusinessPlan,
+            Self::BusinessProposal(_) => DocumentKindIR::BusinessProposal,
             Self::Table(_) => DocumentKindIR::Table,
             Self::Chart(_) => DocumentKindIR::Chart,
             Self::FinancialStatement(_) => DocumentKindIR::FinancialStatement,
@@ -348,6 +462,7 @@ pub struct FileOutputReceiptIR {
 pub struct KnowledgeWorkProductIR {
     pub operation: KnowledgeWorkOperationIR,
     pub output_language: LanguageCodeIR,
+    pub design: DocumentDesignIR,
     pub document: KnowledgeDocumentIR,
     pub findings: Vec<KnowledgeFindingIR>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -373,6 +488,54 @@ pub enum KnowledgeWorkError {
     RevisionNotGrounded,
     NumericOverflow,
     Json,
+}
+
+fn default_true() -> bool {
+    true
+}
+
+pub fn infer_document_design(command: &str, kind: DocumentKindIR) -> DocumentDesignIR {
+    let command = normalize(command);
+    let mut design = DocumentDesignIR::for_kind(kind);
+    if contains_any(
+        &command,
+        &["흑백", "모노크롬", "monochrome", "black and white"],
+    ) {
+        design.theme = DocumentThemeIR::MinimalMonochrome;
+    } else if contains_any(
+        &command,
+        &["학술", "저널", "academic", "journal", "editorial"],
+    ) {
+        design.theme = DocumentThemeIR::AcademicEditorial;
+    } else if contains_any(
+        &command,
+        &["투자", "이사회", "executive", "investor", "board"],
+    ) {
+        design.theme = DocumentThemeIR::ExecutiveNavy;
+    } else if contains_any(
+        &command,
+        &[
+            "고객 제안",
+            "영업 제안",
+            "client proposal",
+            "sales proposal",
+        ],
+    ) {
+        design.theme = DocumentThemeIR::ProposalCobalt;
+    }
+    design.compact = contains_any(&command, &["간결", "압축", "compact", "dense"]);
+    design.page_size = if contains_any(&command, &["letter size", "us letter"]) {
+        PageSizeIR::Letter
+    } else {
+        PageSizeIR::A4
+    };
+    design
+}
+
+fn valid_hex_color(value: &str) -> bool {
+    value.len() == 7
+        && value.starts_with('#')
+        && value[1..].bytes().all(|byte| byte.is_ascii_hexdigit())
 }
 
 pub fn infer_operation(command: &str) -> KnowledgeWorkOperationIR {
@@ -408,6 +571,24 @@ pub fn infer_operation(command: &str) -> KnowledgeWorkOperationIR {
 
 pub fn infer_document_kind(command: &str, source_text: Option<&str>) -> DocumentKindIR {
     let command = normalize(command);
+    if contains_any(
+        &command,
+        &["사업계획서", "사업 계획서", "business plan", "venture plan"],
+    ) {
+        return DocumentKindIR::BusinessPlan;
+    }
+    if contains_any(
+        &command,
+        &[
+            "사업제안서",
+            "사업 제안서",
+            "제안서",
+            "business proposal",
+            "commercial proposal",
+        ],
+    ) {
+        return DocumentKindIR::BusinessProposal;
+    }
     if contains_any(
         &command,
         &[
@@ -477,6 +658,20 @@ pub fn validate_request(request: &KnowledgeWorkRequestIR) -> Result<(), Knowledg
     {
         return Err(KnowledgeWorkError::InvalidRequest);
     }
+    if let Some(design) = &request.design {
+        if design.schema != DOCUMENT_DESIGN_SCHEMA
+            || design
+                .brand_name
+                .as_ref()
+                .is_some_and(|value| value.trim().is_empty() || value.len() > 256)
+            || design
+                .accent_color
+                .as_ref()
+                .is_some_and(|value| !valid_hex_color(value))
+        {
+            return Err(KnowledgeWorkError::InvalidRequest);
+        }
+    }
     match request.output.mode {
         OutputModeIR::Text => {
             if request.output.path.is_some() {
@@ -517,6 +712,10 @@ pub fn execute_document_work_as(
         .or_else(|| source_document.as_ref().map(KnowledgeDocumentIR::kind))
         .or(inferred_kind)
         .unwrap_or_else(|| infer_document_kind(&request.command, source_text.as_deref()));
+    let design = request
+        .design
+        .clone()
+        .unwrap_or_else(|| infer_document_design(&request.command, kind));
     let mut document = if let Some(document) = source_document {
         document
     } else if let Some(text) = source_text.as_deref() {
@@ -543,6 +742,7 @@ pub fn execute_document_work_as(
         operation,
         request.output.format,
         output_language,
+        &design,
     )?;
     let content_sha256 = sha256(rendered.as_bytes());
     let file_output = if matches!(request.output.mode, OutputModeIR::File | OutputModeIR::Both) {
@@ -567,6 +767,7 @@ pub fn execute_document_work_as(
     Ok(KnowledgeWorkProductIR {
         operation,
         output_language,
+        design,
         document,
         findings,
         text_output,
@@ -626,6 +827,14 @@ fn parse_document(
 ) -> Result<KnowledgeDocumentIR, KnowledgeWorkError> {
     match kind {
         DocumentKindIR::Paper => Ok(KnowledgeDocumentIR::Paper(parse_paper(document_id, text))),
+        DocumentKindIR::BusinessPlan => Ok(KnowledgeDocumentIR::BusinessPlan(parse_business(
+            document_id,
+            text,
+            BusinessDocumentTypeIR::BusinessPlan,
+        ))),
+        DocumentKindIR::BusinessProposal => Ok(KnowledgeDocumentIR::BusinessProposal(
+            parse_business(document_id, text, BusinessDocumentTypeIR::BusinessProposal),
+        )),
         DocumentKindIR::Table => Ok(KnowledgeDocumentIR::Table(parse_table(document_id, text)?)),
         DocumentKindIR::Chart => {
             let table = parse_table(document_id, text)?;
@@ -700,6 +909,22 @@ fn create_document(
             tables: Vec::new(),
             charts: Vec::new(),
         }),
+        DocumentKindIR::BusinessPlan => {
+            KnowledgeDocumentIR::BusinessPlan(create_business_document(
+                document_id,
+                &subject,
+                BusinessDocumentTypeIR::BusinessPlan,
+                korean,
+            ))
+        }
+        DocumentKindIR::BusinessProposal => {
+            KnowledgeDocumentIR::BusinessProposal(create_business_document(
+                document_id,
+                &subject,
+                BusinessDocumentTypeIR::BusinessProposal,
+                korean,
+            ))
+        }
         DocumentKindIR::Table => KnowledgeDocumentIR::Table(TableIR {
             schema: TABLE_SCHEMA.to_string(),
             document_id: document_id.to_string(),
@@ -777,6 +1002,203 @@ fn create_document(
             }],
             assumptions: Vec::new(),
         }),
+    }
+}
+
+fn create_business_document(
+    document_id: &str,
+    subject: &str,
+    document_type: BusinessDocumentTypeIR,
+    korean: bool,
+) -> BusinessDocumentIR {
+    let (headings, summary, next_action) = match (document_type, korean) {
+        (BusinessDocumentTypeIR::BusinessPlan, true) => (
+            vec!["사업 기회", "고객과 시장", "제품·서비스", "수익 모델", "실행 전략", "재무 계획"],
+            format!("{subject}의 시장 근거, 실행 모델, 재무 가정과 검증 조건을 하나의 사업계획으로 구조화한다."),
+            "검증 가능한 시장·재무 자료를 연결하고 실행 승인 여부를 결정한다.".to_string(),
+        ),
+        (BusinessDocumentTypeIR::BusinessProposal, true) => (
+            vec!["제안 배경", "고객 과제", "제안 솔루션", "제공 범위", "추진 일정", "투자·계약 조건"],
+            format!("{subject}에 대한 고객 가치, 제공 범위, 일정과 의사결정 조건을 명확히 제안한다."),
+            "제안 범위와 조건을 확인하고 다음 협의 일정을 확정한다.".to_string(),
+        ),
+        (BusinessDocumentTypeIR::BusinessPlan, false) => (
+            vec!["Opportunity", "Customer & Market", "Product or Service", "Business Model", "Execution Strategy", "Financial Plan"],
+            format!("This business plan structures the market evidence, operating model, financial assumptions, and verification conditions for {subject}."),
+            "Connect verified market and financial evidence, then decide whether to approve execution.".to_string(),
+        ),
+        (BusinessDocumentTypeIR::BusinessProposal, false) => (
+            vec!["Proposal Context", "Client Challenge", "Proposed Solution", "Scope", "Delivery Roadmap", "Commercial Terms"],
+            format!("This proposal presents the customer value, delivery scope, schedule, and decision conditions for {subject}."),
+            "Confirm the proposed scope and terms, then schedule the next decision meeting.".to_string(),
+        ),
+    };
+    let sections = headings
+        .into_iter()
+        .enumerate()
+        .map(|(index, heading)| BusinessSectionIR {
+            section_id: format!("BSEC-{}", index + 1),
+            heading: heading.to_string(),
+            body: if korean {
+                format!("{heading}에 관한 검증된 자료와 판단 근거를 배치한다.")
+            } else {
+                format!("Place verified evidence and decision rationale for {heading} here.")
+            },
+            highlights: Vec::new(),
+        })
+        .collect::<Vec<_>>();
+    BusinessDocumentIR {
+        schema: BUSINESS_DOCUMENT_SCHEMA.to_string(),
+        document_id: document_id.to_string(),
+        document_type,
+        title: subject.to_string(),
+        organization: if korean {
+            "조직명 미지정"
+        } else {
+            "Organization not specified"
+        }
+        .to_string(),
+        audience: if korean {
+            "의사결정자"
+        } else {
+            "Decision makers"
+        }
+        .to_string(),
+        executive_summary: summary,
+        sections,
+        key_metrics: Vec::new(),
+        execution_plan: PlanProposalIR {
+            schema: PLAN_PROPOSAL_SCHEMA.to_string(),
+            document_id: format!("{document_id}-EXECUTION"),
+            title: if korean {
+                "실행 로드맵"
+            } else {
+                "Execution roadmap"
+            }
+            .to_string(),
+            objective: subject.to_string(),
+            tasks: if korean {
+                vec![
+                    task("PHASE-1", "근거와 요구사항 검증", &[]),
+                    task("PHASE-2", "핵심 가설의 제한된 검증", &["PHASE-1"]),
+                    task("PHASE-3", "실행·측정·조정", &["PHASE-2"]),
+                ]
+            } else {
+                vec![
+                    task("PHASE-1", "Validate evidence and requirements", &[]),
+                    task(
+                        "PHASE-2",
+                        "Run a bounded validation of key assumptions",
+                        &["PHASE-1"],
+                    ),
+                    task("PHASE-3", "Execute, measure, and adjust", &["PHASE-2"]),
+                ]
+            },
+            risks: Vec::new(),
+            assumptions: Vec::new(),
+        },
+        tables: Vec::new(),
+        charts: Vec::new(),
+        financial_statements: Vec::new(),
+        risks: vec![if korean {
+            "자료로 검증되지 않은 수치와 주장은 확정하지 않는다."
+        } else {
+            "Do not treat figures or claims as final until they are evidence-backed."
+        }
+        .to_string()],
+        next_action,
+    }
+}
+
+fn parse_business(
+    document_id: &str,
+    text: &str,
+    document_type: BusinessDocumentTypeIR,
+) -> BusinessDocumentIR {
+    let paper = parse_paper(document_id, text);
+    let korean = detect_output_language(text) == LanguageCodeIR::Korean;
+    let mut metrics = Vec::new();
+    for (line_index, line) in text.lines().enumerate() {
+        let Some(raw) = strip_prefix_any(line.trim(), &["KPI:", "지표:", "Metric:"]) else {
+            continue;
+        };
+        let parts = raw.split('|').map(str::trim).collect::<Vec<_>>();
+        if parts.len() >= 2 {
+            metrics.push(BusinessMetricIR {
+                label: parts[0].to_string(),
+                value: parts[1].to_string(),
+                change: parts
+                    .get(2)
+                    .filter(|value| !value.is_empty())
+                    .map(|value| (*value).to_string()),
+                evidence_location: format!("line:{}", line_index + 1),
+            });
+        }
+    }
+    let sections = paper
+        .sections
+        .iter()
+        .filter(|section| {
+            !matches_any(
+                &normalize(&section.heading),
+                &["abstract", "초록", "요약", "executive summary", "핵심 요약"],
+            )
+        })
+        .map(|section| BusinessSectionIR {
+            section_id: section.section_id.replace("SEC", "BSEC"),
+            heading: section.heading.clone(),
+            body: section.body.clone(),
+            highlights: section
+                .body
+                .lines()
+                .filter_map(|line| line.trim().strip_prefix("- ").map(str::to_string))
+                .take(8)
+                .collect(),
+        })
+        .collect::<Vec<_>>();
+    let executive_summary = paper
+        .sections
+        .iter()
+        .find(|section| {
+            matches_any(
+                &normalize(&section.heading),
+                &["abstract", "초록", "요약", "executive summary", "핵심 요약"],
+            )
+        })
+        .map(|section| section.body.clone())
+        .filter(|body| !body.is_empty())
+        .unwrap_or_else(|| paper.abstract_text.clone());
+    BusinessDocumentIR {
+        schema: BUSINESS_DOCUMENT_SCHEMA.to_string(),
+        document_id: document_id.to_string(),
+        document_type,
+        title: paper.title,
+        organization: if korean {
+            "조직명 미지정"
+        } else {
+            "Organization not specified"
+        }
+        .to_string(),
+        audience: if korean {
+            "의사결정자"
+        } else {
+            "Decision makers"
+        }
+        .to_string(),
+        executive_summary,
+        sections,
+        key_metrics: metrics,
+        execution_plan: parse_plan(&format!("{document_id}-EXECUTION"), text),
+        tables: Vec::new(),
+        charts: Vec::new(),
+        financial_statements: Vec::new(),
+        risks: Vec::new(),
+        next_action: if korean {
+            "다음 의사결정 조건을 확인한다."
+        } else {
+            "Confirm the next decision condition."
+        }
+        .to_string(),
     }
 }
 
@@ -1093,6 +1515,8 @@ fn revise_document(
     if let Some(title) = title.filter(|value| !value.is_empty()) {
         match document {
             KnowledgeDocumentIR::Paper(value) => value.title = title,
+            KnowledgeDocumentIR::BusinessPlan(value)
+            | KnowledgeDocumentIR::BusinessProposal(value) => value.title = title,
             KnowledgeDocumentIR::Table(value) => value.title = title,
             KnowledgeDocumentIR::Chart(value) => value.title = title,
             KnowledgeDocumentIR::FinancialStatement(value) => value.entity = title,
@@ -1114,6 +1538,57 @@ fn revise_document(
                     body: body.trim().to_string(),
                     level: 2,
                 });
+                changed = true;
+            }
+        }
+        KnowledgeDocumentIR::BusinessPlan(business)
+        | KnowledgeDocumentIR::BusinessProposal(business) => {
+            if let Some(value) =
+                value_after_marker(command, &["핵심 요약:", "요약:", "executive summary:"])
+            {
+                business.executive_summary = value;
+                changed = true;
+            }
+            if let Some(value) = value_after_marker(command, &["조직:", "organization:"]) {
+                business.organization = value;
+                changed = true;
+            }
+            if let Some(value) = value_after_marker(command, &["대상:", "audience:"]) {
+                business.audience = value;
+                changed = true;
+            }
+            if let Some(value) = value_after_marker(command, &["섹션 추가:", "add section:"]) {
+                let (heading, body) = value.split_once('|').unwrap_or((value.as_str(), ""));
+                business.sections.push(BusinessSectionIR {
+                    section_id: format!("BSEC-{}", business.sections.len() + 1),
+                    heading: heading.trim().to_string(),
+                    body: body.trim().to_string(),
+                    highlights: Vec::new(),
+                });
+                changed = true;
+            }
+            if let Some(value) = value_after_marker(command, &["지표 추가:", "add metric:"]) {
+                let parts = value.split('|').map(str::trim).collect::<Vec<_>>();
+                if parts.len() < 2 {
+                    return Err(KnowledgeWorkError::RevisionNotGrounded);
+                }
+                business.key_metrics.push(BusinessMetricIR {
+                    label: parts[0].to_string(),
+                    value: parts[1].to_string(),
+                    change: parts
+                        .get(2)
+                        .filter(|value| !value.is_empty())
+                        .map(|value| (*value).to_string()),
+                    evidence_location: "revision:operator".to_string(),
+                });
+                changed = true;
+            }
+            if let Some(value) = value_after_marker(command, &["다음 단계:", "next action:"]) {
+                business.next_action = value;
+                changed = true;
+            }
+            if let Some(value) = value_after_marker(command, &["위험 추가:", "add risk:"]) {
+                business.risks.push(value);
                 changed = true;
             }
         }
@@ -1202,6 +1677,8 @@ pub fn analyze_document_in_language(
     let korean = language == LanguageCodeIR::Korean;
     let mut findings = match document {
         KnowledgeDocumentIR::Paper(paper) => analyze_paper(paper, korean),
+        KnowledgeDocumentIR::BusinessPlan(business)
+        | KnowledgeDocumentIR::BusinessProposal(business) => analyze_business(business, korean),
         KnowledgeDocumentIR::Table(table) => analyze_table(table, korean),
         KnowledgeDocumentIR::Chart(chart) => analyze_chart(chart, korean),
         KnowledgeDocumentIR::FinancialStatement(statement) => analyze_financial(statement, korean),
@@ -1260,6 +1737,58 @@ fn analyze_paper(paper: &PaperIR, korean: bool) -> Vec<KnowledgeFindingIR> {
             900,
         ));
     }
+    findings
+}
+
+fn analyze_business(business: &BusinessDocumentIR, korean: bool) -> Vec<KnowledgeFindingIR> {
+    let mut findings = vec![finding(
+        FindingKindIR::Summary,
+        if korean {
+            format!(
+                "문서는 {}개 전략 절, {}개 핵심 지표, {}개 실행 단계로 구성됩니다.",
+                business.sections.len(),
+                business.key_metrics.len(),
+                business.execution_plan.tasks.len()
+            )
+        } else {
+            format!(
+                "The document contains {} strategy section(s), {} key metric(s), and {} execution stage(s).",
+                business.sections.len(),
+                business.key_metrics.len(),
+                business.execution_plan.tasks.len()
+            )
+        },
+        vec!["business_document".to_string()],
+        1_000,
+    )];
+    if business.executive_summary.trim().is_empty() {
+        findings.push(finding(
+            FindingKindIR::StructuralGap,
+            if korean {
+                "핵심 요약이 비어 있습니다."
+            } else {
+                "The executive summary is empty."
+            }
+            .to_string(),
+            vec!["executive_summary".to_string()],
+            1_000,
+        ));
+    }
+    for metric in &business.key_metrics {
+        if metric.evidence_location.trim().is_empty() {
+            findings.push(finding(
+                FindingKindIR::MissingEvidence,
+                if korean {
+                    format!("'{}' 지표에 근거 위치가 없습니다.", metric.label)
+                } else {
+                    format!("Metric '{}' has no evidence location.", metric.label)
+                },
+                vec![format!("metric:{}", metric.label)],
+                1_000,
+            ));
+        }
+    }
+    findings.extend(analyze_plan(&business.execution_plan, korean));
     findings
 }
 
@@ -1578,6 +2107,12 @@ fn render_document(
             document,
             language == LanguageCodeIR::Korean,
         )),
+        OutputFormatIR::Html => Ok(crate::document_design::render_print_ready_html(
+            document,
+            &[],
+            language,
+            &DocumentDesignIR::for_kind(document.kind()),
+        )),
         OutputFormatIR::Csv => match document {
             KnowledgeDocumentIR::Table(table) => Ok(render_table_csv(table)),
             KnowledgeDocumentIR::FinancialStatement(statement) => {
@@ -1604,10 +2139,16 @@ fn render_result(
     operation: KnowledgeWorkOperationIR,
     format: OutputFormatIR,
     language: LanguageCodeIR,
+    design: &DocumentDesignIR,
 ) -> Result<String, KnowledgeWorkError> {
     if format == OutputFormatIR::Json {
         return serde_json::to_string_pretty(&JsonKnowledgeResult { document, findings })
             .map_err(|_| KnowledgeWorkError::Json);
+    }
+    if format == OutputFormatIR::Html {
+        return Ok(crate::document_design::render_print_ready_html(
+            document, findings, language, design,
+        ));
     }
     let korean = language == LanguageCodeIR::Korean;
     let mut rendered = render_document(document, format, language)?;
@@ -1672,6 +2213,10 @@ fn render_markdown(document: &KnowledgeDocumentIR, korean: bool) -> String {
                 }
             }
             output
+        }
+        KnowledgeDocumentIR::BusinessPlan(business)
+        | KnowledgeDocumentIR::BusinessProposal(business) => {
+            render_business_markdown(business, korean)
         }
         KnowledgeDocumentIR::Table(table) => render_table_markdown(table),
         KnowledgeDocumentIR::Chart(chart) => {
@@ -1752,6 +2297,110 @@ fn render_markdown(document: &KnowledgeDocumentIR, korean: bool) -> String {
     }
 }
 
+fn render_business_markdown(business: &BusinessDocumentIR, korean: bool) -> String {
+    let mut output = format!(
+        "# {}\n\n**{}:** {}  \n**{}:** {}\n\n## {}\n\n{}\n\n",
+        business.title,
+        if korean { "조직" } else { "Organization" },
+        business.organization,
+        if korean { "대상" } else { "Audience" },
+        business.audience,
+        if korean {
+            "핵심 요약"
+        } else {
+            "Executive summary"
+        },
+        business.executive_summary,
+    );
+    if !business.key_metrics.is_empty() {
+        output.push_str(&format!(
+            "## {}\n\n",
+            if korean {
+                "핵심 지표"
+            } else {
+                "Key metrics"
+            }
+        ));
+        for metric in &business.key_metrics {
+            output.push_str(&format!(
+                "- **{}:** {}{} ({})\n",
+                metric.label,
+                metric.value,
+                metric
+                    .change
+                    .as_ref()
+                    .map(|change| format!(" · {change}"))
+                    .unwrap_or_default(),
+                metric.evidence_location,
+            ));
+        }
+        output.push('\n');
+    }
+    for section in &business.sections {
+        output.push_str(&format!("## {}\n\n{}\n\n", section.heading, section.body));
+        for highlight in &section.highlights {
+            output.push_str(&format!("- {highlight}\n"));
+        }
+        if !section.highlights.is_empty() {
+            output.push('\n');
+        }
+    }
+    output.push_str(&format!(
+        "## {}\n\n{}\n\n",
+        if korean {
+            "실행 계획"
+        } else {
+            "Execution plan"
+        },
+        render_plan_markdown(&business.execution_plan, korean)
+    ));
+    for table in &business.tables {
+        output.push_str(&render_table_markdown(table));
+    }
+    if !business.risks.is_empty() {
+        output.push_str(&format!(
+            "\n## {}\n\n",
+            if korean { "위험" } else { "Risks" }
+        ));
+        for risk in &business.risks {
+            output.push_str(&format!("- {risk}\n"));
+        }
+    }
+    output.push_str(&format!(
+        "\n## {}\n\n{}\n",
+        if korean {
+            "다음 단계"
+        } else {
+            "Next action"
+        },
+        business.next_action
+    ));
+    output
+}
+
+fn render_plan_markdown(plan: &PlanProposalIR, korean: bool) -> String {
+    plan.tasks
+        .iter()
+        .map(|task| {
+            format!(
+                "- **{}** {}{}",
+                task.task_id,
+                task.description,
+                if task.dependencies.is_empty() {
+                    String::new()
+                } else {
+                    format!(
+                        " ({}: {})",
+                        if korean { "의존" } else { "depends on" },
+                        task.dependencies.join(", ")
+                    )
+                }
+            )
+        })
+        .collect::<Vec<_>>()
+        .join("\n")
+}
+
 fn render_table_markdown(table: &TableIR) -> String {
     let mut output = format!("## {}\n\n", table.title);
     output.push_str(&format!(
@@ -1804,7 +2453,7 @@ fn render_financial_csv(statement: &FinancialStatementIR) -> String {
     render_table_csv(&table_from_financial(statement))
 }
 
-fn render_chart_svg(chart: &ChartIR) -> Result<String, KnowledgeWorkError> {
+pub(crate) fn render_chart_svg(chart: &ChartIR) -> Result<String, KnowledgeWorkError> {
     let values = chart
         .series
         .iter()
@@ -1831,12 +2480,35 @@ fn render_chart_svg(chart: &ChartIR) -> Result<String, KnowledgeWorkError> {
     let span = (max - min).abs().max(1.0);
     let width = 960.0;
     let height = 540.0;
-    let left = 80.0;
-    let top = 60.0;
-    let plot_width = 820.0;
-    let plot_height = 400.0;
+    let left = 96.0;
+    let top = 72.0;
+    let plot_width = 804.0;
+    let plot_height = 352.0;
     let colors = ["#39e6b0", "#55c7ff", "#ffb454", "#b394ff", "#ff6f91"];
-    let mut svg = format!("<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"{width}\" height=\"{height}\" viewBox=\"0 0 {width} {height}\"><rect width=\"100%\" height=\"100%\" fill=\"#0b1114\"/><text x=\"{left}\" y=\"32\" fill=\"#e8f1f2\" font-family=\"sans-serif\" font-size=\"20\">{}</text><line x1=\"{left}\" y1=\"{top}\" x2=\"{left}\" y2=\"{}\" stroke=\"#607078\"/><line x1=\"{left}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"#607078\"/>", xml_escape(&chart.title), top + plot_height, top + plot_height, left + plot_width, top + plot_height);
+    let mut svg = format!("<svg xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"{}\" width=\"{width}\" height=\"{height}\" viewBox=\"0 0 {width} {height}\"><title>{}</title><rect width=\"100%\" height=\"100%\" fill=\"#0b1114\"/><text x=\"{left}\" y=\"34\" fill=\"#e8f1f2\" font-family=\"sans-serif\" font-size=\"21\" font-weight=\"700\">{}</text><text x=\"{left}\" y=\"55\" fill=\"#607078\" font-family=\"sans-serif\" font-size=\"12\">{} · {}</text>", xml_escape(&chart.title), xml_escape(&chart.title), xml_escape(&chart.title), xml_escape(&chart.category_axis), xml_escape(&chart.value_axis));
+    for tick in 0..=4 {
+        let ratio = tick as f64 / 4.0;
+        let y = top + ratio * plot_height;
+        let value = max - ratio * span;
+        svg.push_str(&format!("<line x1=\"{left}\" y1=\"{y:.2}\" x2=\"{}\" y2=\"{y:.2}\" stroke=\"#607078\" stroke-opacity=\"0.35\"/><text x=\"{}\" y=\"{:.2}\" text-anchor=\"end\" fill=\"#607078\" font-family=\"sans-serif\" font-size=\"11\">{}</text>", left + plot_width, left - 12.0, y + 4.0, xml_escape(&format_chart_value(value))));
+    }
+    svg.push_str(&format!("<line x1=\"{left}\" y1=\"{top}\" x2=\"{left}\" y2=\"{}\" stroke=\"#607078\"/><line x1=\"{left}\" y1=\"{}\" x2=\"{}\" y2=\"{}\" stroke=\"#607078\"/>", top + plot_height, top + plot_height, left + plot_width, top + plot_height));
+    if let Some(category_series) = chart.series.first() {
+        let category_count = category_series.points.len();
+        let denominator = category_count.saturating_sub(1).max(1) as f64;
+        let label_step = category_count.div_ceil(8).max(1);
+        for (index, point) in category_series.points.iter().enumerate() {
+            if index % label_step != 0 && index + 1 != category_count {
+                continue;
+            }
+            let x = if chart.chart_type == ChartTypeIR::Bar {
+                left + (index as f64 + 0.5) / category_count.max(1) as f64 * plot_width
+            } else {
+                left + index as f64 / denominator * plot_width
+            };
+            svg.push_str(&format!("<text x=\"{x:.2}\" y=\"{}\" text-anchor=\"middle\" fill=\"#607078\" font-family=\"sans-serif\" font-size=\"11\">{}</text>", top + plot_height + 24.0, xml_escape(&point.category)));
+        }
+    }
     for (series_index, series) in chart.series.iter().enumerate() {
         let color = colors[series_index % colors.len()];
         let observed = series
@@ -1856,22 +2528,24 @@ fn render_chart_svg(chart: &ChartIR) -> Result<String, KnowledgeWorkError> {
         let denominator = series.points.len().saturating_sub(1).max(1) as f64;
         if chart.chart_type == ChartTypeIR::Bar {
             let slot_width = plot_width / series.points.len().max(1) as f64;
-            let bar_width = (slot_width / chart.series.len().max(1) as f64).max(2.0);
+            let group_width = slot_width * 0.72;
+            let bar_width = (group_width / chart.series.len().max(1) as f64).max(2.0);
             let baseline_y = top + max / span * plot_height;
             for (index, value) in observed {
-                let x = left + index as f64 * slot_width + series_index as f64 * bar_width;
+                let x = left
+                    + index as f64 * slot_width
+                    + (slot_width - group_width) / 2.0
+                    + series_index as f64 * bar_width;
                 let value_y = top + (max - value) / span * plot_height;
                 let y = value_y.min(baseline_y);
                 let bar_height = (value_y - baseline_y).abs();
-                svg.push_str(&format!("<rect x=\"{x:.2}\" y=\"{y:.2}\" width=\"{bar_width:.2}\" height=\"{bar_height:.2}\" fill=\"{color}\"/>"));
+                svg.push_str(&format!("<rect x=\"{x:.2}\" y=\"{y:.2}\" width=\"{bar_width:.2}\" height=\"{bar_height:.2}\" rx=\"3\" fill=\"{color}\"><title>{}: {}</title></rect>", xml_escape(&series.points[index].category), xml_escape(&format_chart_value(value))));
             }
         } else if chart.chart_type == ChartTypeIR::Scatter {
             for (index, value) in observed {
                 let x = left + index as f64 / denominator * plot_width;
                 let y = top + (max - value) / span * plot_height;
-                svg.push_str(&format!(
-                    "<circle cx=\"{x:.2}\" cy=\"{y:.2}\" r=\"5\" fill=\"{color}\"/>"
-                ));
+                svg.push_str(&format!("<circle cx=\"{x:.2}\" cy=\"{y:.2}\" r=\"5\" fill=\"{color}\"><title>{}: {}</title></circle>", xml_escape(&series.points[index].category), xml_escape(&format_chart_value(value))));
             }
         } else {
             let points = observed
@@ -1886,11 +2560,32 @@ fn render_chart_svg(chart: &ChartIR) -> Result<String, KnowledgeWorkError> {
                 .collect::<Vec<_>>()
                 .join(" ");
             svg.push_str(&format!("<polyline fill=\"none\" stroke=\"{color}\" stroke-width=\"3\" points=\"{points}\"/>"));
+            for (index, value) in observed {
+                let x = left + index as f64 / denominator * plot_width;
+                let y = top + (max - value) / span * plot_height;
+                svg.push_str(&format!("<circle cx=\"{x:.2}\" cy=\"{y:.2}\" r=\"4.5\" fill=\"#0b1114\" stroke=\"{color}\" stroke-width=\"3\"><title>{}: {}</title></circle>", xml_escape(&series.points[index].category), xml_escape(&format_chart_value(value))));
+            }
         }
-        svg.push_str(&format!("<text x=\"{}\" y=\"{}\" fill=\"{color}\" font-family=\"sans-serif\" font-size=\"13\">{}</text>", left + series_index as f64 * 150.0, height - 30.0, xml_escape(&series.name)));
+        let legend_x = left + series_index as f64 * 180.0;
+        svg.push_str(&format!("<rect x=\"{legend_x}\" y=\"{}\" width=\"18\" height=\"4\" rx=\"2\" fill=\"{color}\"/><text x=\"{}\" y=\"{}\" fill=\"#e8f1f2\" font-family=\"sans-serif\" font-size=\"12\">{}</text>", height - 26.0, legend_x + 26.0, height - 20.0, xml_escape(&series.name)));
     }
     svg.push_str("</svg>");
     Ok(svg)
+}
+
+fn format_chart_value(value: f64) -> String {
+    if value.abs() >= 1_000_000.0 {
+        format!("{:.1}M", value / 1_000_000.0)
+    } else if value.abs() >= 1_000.0 {
+        format!("{:.1}K", value / 1_000.0)
+    } else if (value - value.round()).abs() < 0.000_001 {
+        format!("{value:.0}")
+    } else {
+        format!("{value:.2}")
+            .trim_end_matches('0')
+            .trim_end_matches('.')
+            .to_string()
+    }
 }
 
 fn render_pie_svg(chart: &ChartIR) -> Result<String, KnowledgeWorkError> {
@@ -2409,6 +3104,7 @@ fn extension_matches(path: &Path, format: OutputFormatIR) -> bool {
     matches!(
         (format, extension.as_str()),
         (OutputFormatIR::Markdown, "md" | "markdown" | "txt")
+            | (OutputFormatIR::Html, "html" | "htm")
             | (OutputFormatIR::Json, "json")
             | (OutputFormatIR::Csv, "csv")
             | (OutputFormatIR::Svg, "svg")
@@ -2502,6 +3198,7 @@ mod tests {
             }),
             document_kind: Some(DocumentKindIR::Table),
             output_language: Some(LanguageCodeIR::Korean),
+            design: None,
             output: OutputDirectiveIR {
                 mode: OutputModeIR::Both,
                 format: OutputFormatIR::Csv,
@@ -2527,6 +3224,7 @@ mod tests {
             source: None,
             document_kind: Some(DocumentKindIR::Paper),
             output_language: Some(LanguageCodeIR::English),
+            design: None,
             output: OutputDirectiveIR {
                 mode: OutputModeIR::Text,
                 format: OutputFormatIR::Markdown,
@@ -2554,6 +3252,7 @@ mod tests {
             source: None,
             document_kind: Some(DocumentKindIR::PlanProposal),
             output_language: Some(LanguageCodeIR::English),
+            design: None,
             output: OutputDirectiveIR {
                 mode: OutputModeIR::Text,
                 format: OutputFormatIR::Markdown,
@@ -2651,6 +3350,7 @@ mod tests {
             }),
             document_kind: Some(DocumentKindIR::Chart),
             output_language: Some(LanguageCodeIR::English),
+            design: None,
             output: OutputDirectiveIR {
                 mode: OutputModeIR::Text,
                 format: OutputFormatIR::Svg,
@@ -2666,5 +3366,116 @@ mod tests {
         };
         assert_eq!(chart.chart_type, ChartTypeIR::Bar);
         assert!(product.text_output.unwrap().contains("<rect x="));
+    }
+
+    #[test]
+    fn business_genres_outrank_embedded_chart_terms_and_select_distinct_themes() {
+        assert_eq!(
+            infer_document_kind(
+                "시장 차트와 재무 표를 포함한 투자자용 사업계획서를 작성해",
+                None
+            ),
+            DocumentKindIR::BusinessPlan
+        );
+        assert_eq!(
+            infer_document_kind("고객 그래프를 포함한 사업제안서를 디자인해", None),
+            DocumentKindIR::BusinessProposal
+        );
+        assert_eq!(
+            infer_document_design("투자위원회용 사업계획서", DocumentKindIR::BusinessPlan).theme,
+            DocumentThemeIR::ExecutiveNavy
+        );
+        assert_eq!(
+            infer_document_design("고객 제안용 사업제안서", DocumentKindIR::BusinessProposal).theme,
+            DocumentThemeIR::ProposalCobalt
+        );
+    }
+
+    #[test]
+    fn html_business_plan_is_print_ready_and_reports_the_applied_design() {
+        let root =
+            std::env::temp_dir().join(format!("b-core-business-html-{}", std::process::id()));
+        let path = root.join("plan.html");
+        let product = execute_document_work(&KnowledgeWorkRequestIR {
+            schema: KNOWLEDGE_WORK_REQUEST_SCHEMA.to_string(),
+            request_id: "BUSINESS-HTML-1".to_string(),
+            command: "투자위원회용 사업계획서를 디자인 좋게 작성해".to_string(),
+            source: None,
+            document_kind: None,
+            output_language: Some(LanguageCodeIR::Korean),
+            design: Some(DocumentDesignIR {
+                schema: DOCUMENT_DESIGN_SCHEMA.to_string(),
+                theme: DocumentThemeIR::ExecutiveNavy,
+                page_size: PageSizeIR::A4,
+                brand_name: Some("B_CORE LAB".to_string()),
+                accent_color: Some("#087F6B".to_string()),
+                compact: false,
+                show_table_of_contents: true,
+                show_page_furniture: true,
+            }),
+            output: OutputDirectiveIR {
+                mode: OutputModeIR::Both,
+                format: OutputFormatIR::Html,
+                path: Some(path.to_string_lossy().to_string()),
+                overwrite: true,
+            },
+            context_tags: vec!["business".to_string(), "design".to_string()],
+            max_plan_steps: 12,
+        })
+        .unwrap();
+        assert_eq!(product.document.kind(), DocumentKindIR::BusinessPlan);
+        assert_eq!(product.design.theme, DocumentThemeIR::ExecutiveNavy);
+        assert_eq!(product.design.accent_color.as_deref(), Some("#087F6B"));
+        let html = product.text_output.as_deref().unwrap();
+        assert!(html.starts_with("<!doctype html>"));
+        assert!(html.contains("@page { size: A4"));
+        assert!(html.contains("class=\"cover\""));
+        assert!(html.contains("class=\"toc\""));
+        assert!(html.contains("class=\"timeline\""));
+        assert!(html.contains("--accent:#087F6B"));
+        assert_eq!(std::fs::read_to_string(&path).unwrap(), html);
+        assert!(product.file_output.is_some());
+        std::fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn invalid_brand_color_and_wrong_html_extension_fail_closed() {
+        let mut request = KnowledgeWorkRequestIR {
+            schema: KNOWLEDGE_WORK_REQUEST_SCHEMA.to_string(),
+            request_id: "BUSINESS-HTML-INVALID".to_string(),
+            command: "Write a business proposal".to_string(),
+            source: None,
+            document_kind: Some(DocumentKindIR::BusinessProposal),
+            output_language: Some(LanguageCodeIR::English),
+            design: Some(DocumentDesignIR {
+                schema: DOCUMENT_DESIGN_SCHEMA.to_string(),
+                theme: DocumentThemeIR::ProposalCobalt,
+                page_size: PageSizeIR::Letter,
+                brand_name: Some("Acme".to_string()),
+                accent_color: Some("blue".to_string()),
+                compact: false,
+                show_table_of_contents: true,
+                show_page_furniture: true,
+            }),
+            output: OutputDirectiveIR {
+                mode: OutputModeIR::Text,
+                format: OutputFormatIR::Html,
+                path: None,
+                overwrite: false,
+            },
+            context_tags: Vec::new(),
+            max_plan_steps: 12,
+        };
+        assert_eq!(
+            execute_document_work(&request).unwrap_err(),
+            KnowledgeWorkError::InvalidRequest
+        );
+        request.design.as_mut().unwrap().accent_color = Some("#2457D6".to_string());
+        request.output.mode = OutputModeIR::File;
+        request.output.path = Some("proposal.md".to_string());
+        assert_eq!(
+            execute_document_work(&request).unwrap_err(),
+            KnowledgeWorkError::InvalidOutputPath
+        );
     }
 }

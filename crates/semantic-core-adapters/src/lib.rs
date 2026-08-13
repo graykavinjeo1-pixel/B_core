@@ -1,6 +1,7 @@
 //! Adapters are deliberately outside `dockable-semantic-core`.
 
 pub mod cognitive;
+mod document_design;
 pub mod generic;
 pub mod knowledge_work;
 pub mod language;
@@ -16,15 +17,18 @@ pub use cognitive::{
 pub use generic::DeterministicOffsetCapability;
 pub use knowledge_work::{
     analyze_document, analyze_document_in_language, execute_document_work,
-    execute_document_work_as, infer_document_kind, infer_operation, CellValueIR, ChartIR,
-    ChartPointIR, ChartSeriesIR, ChartTypeIR, DocumentKindIR, FileOutputReceiptIR,
-    FinancialLineClassIR, FinancialLineItemIR, FinancialStatementIR, FinancialStatementTypeIR,
-    FindingKindIR, KnowledgeDocumentIR, KnowledgeFindingIR, KnowledgeSourceIR, KnowledgeWorkError,
-    KnowledgeWorkOperationIR, KnowledgeWorkProductIR, KnowledgeWorkRequestIR, NumericValueIR,
-    OutputDirectiveIR, OutputFormatIR, OutputModeIR, PaperClaimIR, PaperIR, PaperReferenceIR,
+    execute_document_work_as, infer_document_design, infer_document_kind, infer_operation,
+    BusinessDocumentIR, BusinessDocumentTypeIR, BusinessMetricIR, BusinessSectionIR, CellValueIR,
+    ChartIR, ChartPointIR, ChartSeriesIR, ChartTypeIR, DocumentDesignIR, DocumentKindIR,
+    DocumentThemeIR, FileOutputReceiptIR, FinancialLineClassIR, FinancialLineItemIR,
+    FinancialStatementIR, FinancialStatementTypeIR, FindingKindIR, KnowledgeDocumentIR,
+    KnowledgeFindingIR, KnowledgeSourceIR, KnowledgeWorkError, KnowledgeWorkOperationIR,
+    KnowledgeWorkProductIR, KnowledgeWorkRequestIR, NumericValueIR, OutputDirectiveIR,
+    OutputFormatIR, OutputModeIR, PageSizeIR, PaperClaimIR, PaperIR, PaperReferenceIR,
     PaperSectionIR, PlanProposalIR, PlanTaskIR, SourceTextFormatIR, TableCellIR, TableIR,
-    CHART_SCHEMA, FINANCIAL_STATEMENT_SCHEMA, KNOWLEDGE_WORK_REQUEST_SCHEMA,
-    KNOWLEDGE_WORK_RESPONSE_SCHEMA, PAPER_SCHEMA, PLAN_PROPOSAL_SCHEMA, TABLE_SCHEMA,
+    BUSINESS_DOCUMENT_SCHEMA, CHART_SCHEMA, DOCUMENT_DESIGN_SCHEMA, FINANCIAL_STATEMENT_SCHEMA,
+    KNOWLEDGE_WORK_REQUEST_SCHEMA, KNOWLEDGE_WORK_RESPONSE_SCHEMA, PAPER_SCHEMA,
+    PLAN_PROPOSAL_SCHEMA, TABLE_SCHEMA,
 };
 pub use language::{LanguageAdapter, LanguageAdapterError};
 pub use language_knowledge::{
