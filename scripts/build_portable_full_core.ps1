@@ -151,6 +151,7 @@ Copy-Item -LiteralPath (Join-Path $repositoryRoot "scripts\run_growth_supervisor
 Copy-Item -LiteralPath (Join-Path $repositoryRoot "scripts\install_growth_supervisor_autostart.ps1") -Destination (Join-Path $toolsRoot "install-growth-autostart.ps1")
 Copy-Item -LiteralPath (Join-Path $repositoryRoot "scripts\uninstall_growth_supervisor_autostart.ps1") -Destination (Join-Path $toolsRoot "uninstall-growth-autostart.ps1")
 Copy-Item -LiteralPath (Join-Path $repositoryRoot "scripts\record_growth_work_event.ps1") -Destination (Join-Path $toolsRoot "record-growth-work-event.ps1")
+Copy-Item -LiteralPath (Join-Path $repositoryRoot "scripts\setup_paddle_ocr.ps1") -Destination (Join-Path $toolsRoot "setup-paddle-ocr.ps1")
 
 $readmeTemplate = @'
 # B_Core Portable Full Core
@@ -164,6 +165,8 @@ This package is the complete Windows x64 portable build of B_Core commit `{{SOUR
 - Self-healing, independent verification, typed code composition, and full-stack/operations knowledge.
 - The bounded always-on growth supervisor and its separate deterministic verifier.
 - Semantic-deduplicated promotion and bound before/after performance learning.
+- Evidence-bound Korean long-term repair planning with HWP/HWPX/PDF/image intake, a typed statutory catalog, fixed-point 40-year calculations, and exact 50-page A4 output.
+- Generic long-form professional authoring with evidence-bound section synthesis, document working memory, global consistency checks, and bounded iterative revision.
 
 No raw training dataset or original Synapse knowledge store is included. Knowledge already absorbed into the core remains present in source and sealed artifacts.
 
@@ -194,6 +197,10 @@ powershell -ExecutionPolicy Bypass -File .\tools\run-growth-supervisor.ps1 -Pack
 Autostart is opt-in. `tools\install-growth-autostart.ps1` registers a limited-privilege ONLOGON task. See `source\docs\b_core_growth_supervisor.md` for trust boundaries, learning-value rules, crash recovery, plateau waiting, and work-event integration.
 
 Git commits and sealed artifacts remain scientific authority. Portable binaries, runtime memory, and build caches do not replace that authority.
+
+## Optional high-accuracy Korean OCR
+
+HWP/HWPX/PDF extraction is native. Image OCR first uses PP-OCRv5 when its isolated local runtime is configured and otherwise falls back explicitly. Prepare the official open-source Korean PP-OCRv5 runtime with `tools\setup-paddle-ocr.ps1 -PersistUserEnvironment`.
 '@
 $readme = $readmeTemplate.Replace("{{SOURCE_COMMIT}}", $sourceCommit).Replace("{{BINARY_COUNT}}", [string]$expectedBinaries.Count)
 Write-Utf8NoBom -Path (Join-Path $packageRoot "README.md") -Text $readme
@@ -207,18 +214,28 @@ if ($fastPackaging) {
         throw "FAST_PACKAGE_REUSE_INPUT_INVALID"
     }
     Copy-Item -Path (Join-Path $baseBinRoot "*") -Destination $binRoot
-    $refreshed = @(
+    $alwaysRefreshed = @(
+        "b-core-cognitive-api",
         "b-core-growth-supervisor",
         "b-core-growth-verifier",
         "sem26-run",
         "sem26-probe"
     )
+    $missingFromBase = @($expectedBinaries | Where-Object {
+        -not (Test-Path -LiteralPath (Join-Path $binRoot ("$_.exe")) -PathType Leaf)
+    })
+    $refreshed = @($alwaysRefreshed + $missingFromBase | Sort-Object -Unique)
     foreach ($name in $refreshed) {
         $binaryPath = Join-Path $refreshBinRoot ("$name.exe")
         if (-not (Test-Path -LiteralPath $binaryPath -PathType Leaf)) {
             throw "FAST_PACKAGE_REFRESH_BINARY_MISSING:$name"
         }
         Copy-Item -LiteralPath $binaryPath -Destination (Join-Path $binRoot ("$name.exe")) -Force
+    }
+    foreach ($binary in @(Get-ChildItem -LiteralPath $binRoot -Filter "*.exe" -File)) {
+        if ($expectedBinaries -notcontains $binary.BaseName) {
+            Remove-Item -LiteralPath $binary.FullName -Force
+        }
     }
     $baseManifest = Get-Content -Raw -LiteralPath (Join-Path $basePackage "PACKAGE_MANIFEST.json") | ConvertFrom-Json
     $fastReceipt = [ordered]@{
@@ -268,7 +285,7 @@ if (-not $growthSelfCheck.pass -or
     -not $growthSelfCheck.plateau_difficulty_escalation_disabled -or
     -not $growthSelfCheck.prediction_before_composition_enabled -or
     -not $growthSelfCheck.valuable_combination_memory_enabled -or
-    $growthSelfCheck.generative_memory_self_application_enabled -or
+    -not $growthSelfCheck.generative_memory_self_application_enabled -or
     -not $growthSelfCheck.heuristic_composition_value_excluded_from_frontier -or
     -not $growthSelfCheck.behavioral_evidence_required_for_generative_self_application -or
     -not $growthSelfCheck.behavioral_composition_execution_enabled -or

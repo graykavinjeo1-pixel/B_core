@@ -17,6 +17,14 @@ use crate::lexical_memory::{
     ActivatedSenseIR, LexemeIR, LexemeSnapshotIR, LexicalMemory, LexicalMemoryError,
     LexicalMemoryStatisticsIR, LexicalOutcomeIR,
 };
+use crate::long_term_repair::{
+    process_long_term_repair_plan, LongTermRepairPlanError, LongTermRepairPlanRequestIR,
+    LongTermRepairPlanResponseIR,
+};
+use crate::professional_document::{
+    process_professional_document, ProfessionalDocumentError, ProfessionalDocumentRequestIR,
+    ProfessionalDocumentResponseIR,
+};
 
 pub const NATURAL_LANGUAGE_REQUEST_SCHEMA: &str = "B_CORE_NATURAL_LANGUAGE_REQUEST_1";
 pub const NATURAL_LANGUAGE_RESPONSE_SCHEMA: &str = "B_CORE_NATURAL_LANGUAGE_RESPONSE_1";
@@ -64,16 +72,38 @@ pub struct KnowledgeWorkResponseIR {
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(tag = "operation", rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum CognitiveApiCommandIR {
-    InjectExperience { experience: ExperienceIR },
+    InjectExperience {
+        experience: ExperienceIR,
+    },
     ExportExperienceSnapshot,
-    ImportExperienceSnapshot { snapshot: ExperienceSnapshotIR },
-    InjectLanguageKnowledge { entry: LanguageKnowledgeEntryIR },
-    InjectLexeme { lexeme: LexemeIR },
+    ImportExperienceSnapshot {
+        snapshot: ExperienceSnapshotIR,
+    },
+    InjectLanguageKnowledge {
+        entry: LanguageKnowledgeEntryIR,
+    },
+    InjectLexeme {
+        lexeme: LexemeIR,
+    },
     ExportLexemeSnapshot,
-    ImportLexemeSnapshot { snapshot: LexemeSnapshotIR },
-    RecordLexicalOutcome { outcome: LexicalOutcomeIR },
-    ProcessNaturalLanguage { request: NaturalLanguageRequestIR },
-    ProcessKnowledgeWork { request: KnowledgeWorkRequestIR },
+    ImportLexemeSnapshot {
+        snapshot: LexemeSnapshotIR,
+    },
+    RecordLexicalOutcome {
+        outcome: LexicalOutcomeIR,
+    },
+    ProcessNaturalLanguage {
+        request: NaturalLanguageRequestIR,
+    },
+    ProcessKnowledgeWork {
+        request: KnowledgeWorkRequestIR,
+    },
+    ProcessLongTermRepairPlan {
+        request: LongTermRepairPlanRequestIR,
+    },
+    ProcessProfessionalDocument {
+        request: ProfessionalDocumentRequestIR,
+    },
     LanguageKnowledgeStatistics,
     LexicalMemoryStatistics,
 }
@@ -91,6 +121,8 @@ pub enum CognitiveApiPayloadIR {
     LexicalOutcomeRecorded,
     NaturalLanguageResponse(Box<NaturalLanguageResponseIR>),
     KnowledgeWorkResponse(Box<KnowledgeWorkResponseIR>),
+    LongTermRepairPlanResponse(Box<LongTermRepairPlanResponseIR>),
+    ProfessionalDocumentResponse(Box<ProfessionalDocumentResponseIR>),
     LanguageKnowledgeStatistics(LanguageKnowledgeStatisticsIR),
     LexicalMemoryStatistics(LexicalMemoryStatisticsIR),
 }
@@ -112,6 +144,8 @@ pub enum CognitiveApiError {
     LanguageKnowledge,
     LexicalMemory,
     KnowledgeWork,
+    LongTermRepairPlan,
+    ProfessionalDocument,
     Experience,
     Planning,
     JsonInput,
@@ -338,6 +372,109 @@ impl CognitiveApi {
         })
     }
 
+    pub fn process_long_term_repair_plan(
+        &mut self,
+        request: &LongTermRepairPlanRequestIR,
+    ) -> Result<LongTermRepairPlanResponseIR, CognitiveApiError> {
+        let mut understanding = self
+            .language_knowledge
+            .understand(&request.command)
+            .map_err(map_language_error)?;
+        let lexical_activations = self
+            .lexical_memory
+            .activate(&request.command, &["long_term_repair_plan".to_string()]);
+        merge_lexical_activations(&mut understanding, &lexical_activations);
+        understanding.semantic_tags.extend([
+            "long_term_repair_plan".to_string(),
+            "evidence_bound_document".to_string(),
+        ]);
+        understanding.semantic_tags.sort();
+        understanding.semantic_tags.dedup();
+        let plan = self
+            .core
+            .generate_plan(&PlanGoalIR {
+                schema: PLAN_GOAL_SCHEMA.to_string(),
+                goal_id: request.request_id.clone(),
+                intent: dockable_semantic_core::PlanIntentIR::Plan,
+                subject: if understanding.subject.trim().is_empty() {
+                    "대한민국 공동주택 장기수선계획".to_string()
+                } else {
+                    understanding.subject
+                },
+                constraints: vec![
+                    "모든 입력파일은 추출 영수증과 해시로 근거에 결합한다".to_string(),
+                    "69개 공사종별과 7개 시설군을 빠짐없이 대사한다".to_string(),
+                    "금액과 40년 일정은 고정소수점 계산 엔진 결과만 사용한다".to_string(),
+                    "누락값은 0이 아니라 확인 필요로 유지한다".to_string(),
+                    "법령·공식안내·단지규약 충돌은 자동 은폐하지 않는다".to_string(),
+                    "내부 전문가 검토 외 외부 모델을 호출하지 않는다".to_string(),
+                ],
+                desired_outcomes: vec![
+                    "정확히 50개의 A4 페이지 IR과 인쇄 가능한 HTML을 만든다".to_string(),
+                    "시설·비용·충당금·집행 증빙을 동일 항목 ID로 연결한다".to_string(),
+                    "전문가가 확인해야 할 입력과 법적 판단을 명확히 분리한다".to_string(),
+                ],
+                context_tags: understanding.semantic_tags,
+                max_steps: request.max_plan_steps,
+            })
+            .map_err(map_planning_error)?;
+        process_long_term_repair_plan(&self.core, request, &plan.plan_sha256)
+            .map_err(map_long_term_repair_error)
+    }
+
+    pub fn process_professional_document(
+        &mut self,
+        request: &ProfessionalDocumentRequestIR,
+    ) -> Result<ProfessionalDocumentResponseIR, CognitiveApiError> {
+        let mut understanding = self
+            .language_knowledge
+            .understand(&request.command)
+            .map_err(map_language_error)?;
+        let lexical_activations = self.lexical_memory.activate(
+            &request.command,
+            &[
+                "professional_document".to_string(),
+                "long_form_writing".to_string(),
+            ],
+        );
+        merge_lexical_activations(&mut understanding, &lexical_activations);
+        understanding.semantic_tags.extend([
+            "professional_document".to_string(),
+            "evidence_bound_section_synthesis".to_string(),
+            "working_memory".to_string(),
+            "global_consistency_revision".to_string(),
+        ]);
+        understanding.semantic_tags.sort();
+        understanding.semantic_tags.dedup();
+        let plan = self
+            .core
+            .generate_plan(&PlanGoalIR {
+                schema: PLAN_GOAL_SCHEMA.to_string(),
+                goal_id: request.request_id.clone(),
+                intent: dockable_semantic_core::PlanIntentIR::Create,
+                subject: request.title.clone(),
+                constraints: vec![
+                    format!("exact A4 page budget: {}", request.target_page_count),
+                    "every factual paragraph retains an evidence and source-location binding"
+                        .to_string(),
+                    "missing evidence remains explicit and is never rendered as zero".to_string(),
+                    "working memory preserves canonical terms, numeric facts, and open issues"
+                        .to_string(),
+                    "global consistency is rechecked after every bounded revision".to_string(),
+                ],
+                desired_outcomes: vec![
+                    "produce a dependency-ordered long-form document plan".to_string(),
+                    "synthesize each section only from observable evidence".to_string(),
+                    "iterate drafting and correction without external model calls".to_string(),
+                ],
+                context_tags: understanding.semantic_tags,
+                max_steps: request.max_plan_steps,
+            })
+            .map_err(map_planning_error)?;
+        process_professional_document(&self.core, request, &plan.plan_sha256)
+            .map_err(map_professional_document_error)
+    }
+
     pub fn retained_experience_count(&self) -> usize {
         self.core.retained_experience_count()
     }
@@ -376,6 +513,16 @@ impl CognitiveApi {
             CognitiveApiCommandIR::ProcessKnowledgeWork { request } => self
                 .process_knowledge_work(&request)
                 .map(|response| CognitiveApiPayloadIR::KnowledgeWorkResponse(Box::new(response))),
+            CognitiveApiCommandIR::ProcessLongTermRepairPlan { request } => self
+                .process_long_term_repair_plan(&request)
+                .map(|response| {
+                    CognitiveApiPayloadIR::LongTermRepairPlanResponse(Box::new(response))
+                }),
+            CognitiveApiCommandIR::ProcessProfessionalDocument { request } => self
+                .process_professional_document(&request)
+                .map(|response| {
+                    CognitiveApiPayloadIR::ProfessionalDocumentResponse(Box::new(response))
+                }),
             CognitiveApiCommandIR::LanguageKnowledgeStatistics => {
                 Ok(CognitiveApiPayloadIR::LanguageKnowledgeStatistics(
                     self.language_knowledge_statistics(),
@@ -439,6 +586,14 @@ fn map_lexical_error(_: LexicalMemoryError) -> CognitiveApiError {
 
 fn map_knowledge_work_error(_: KnowledgeWorkError) -> CognitiveApiError {
     CognitiveApiError::KnowledgeWork
+}
+
+fn map_long_term_repair_error(_: LongTermRepairPlanError) -> CognitiveApiError {
+    CognitiveApiError::LongTermRepairPlan
+}
+
+fn map_professional_document_error(_: ProfessionalDocumentError) -> CognitiveApiError {
+    CognitiveApiError::ProfessionalDocument
 }
 
 fn map_planning_error(_: PlanningError) -> CognitiveApiError {

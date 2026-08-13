@@ -8,6 +8,9 @@ pub mod knowledge_work;
 pub mod language;
 pub mod language_knowledge;
 pub mod lexical_memory;
+pub mod long_term_repair;
+mod long_term_repair_catalog;
+pub mod professional_document;
 
 pub use cognitive::{
     CognitiveApi, CognitiveApiCommandIR, CognitiveApiError, CognitiveApiPayloadIR,
@@ -44,4 +47,20 @@ pub use lexical_memory::{
     LexicalMemoryError, LexicalMemoryStatisticsIR, LexicalOutcomeIR, PartOfSpeechIR,
     SemanticRelationIR, SemanticRelationKindIR, SenseIR, SenseUsageIR, LEXEME_SCHEMA,
     LEXEME_SNAPSHOT_SCHEMA,
+};
+pub use long_term_repair::{
+    process_long_term_repair_plan, ApartmentProfileIR, ApartmentRepairRuleIR, CostInputIR,
+    EvidenceExtractionReceiptIR, EvidenceInputIR, EvidenceKindIR, EvidenceStatusIR,
+    HouseholdAreaTypeIR, LongTermRepairPlanError, LongTermRepairPlanRequestIR,
+    LongTermRepairPlanResponseIR, MonthlyAreaChargeIR, RepairItemDecisionIR, ReportPageIR,
+    LONG_TERM_REPAIR_PLAN_REQUEST_SCHEMA, LONG_TERM_REPAIR_PLAN_RESPONSE_SCHEMA,
+};
+pub use professional_document::{
+    process_professional_document, ConsistencyIssueIR, ConsistencyIssueKindIR,
+    ConsistencySeverityIR, DocumentWorkingMemoryIR, EvidenceFactIR, GroundedParagraphIR,
+    GroundedSectionDraftIR, LongFormDocumentPlanIR, ParagraphGroundingIR, PriorDocumentSnapshotIR,
+    ProfessionalDocumentError, ProfessionalDocumentFileReceiptIR, ProfessionalDocumentKindIR,
+    ProfessionalDocumentPageIR, ProfessionalDocumentRequestIR, ProfessionalDocumentResponseIR,
+    RevisionDirectiveIR, RevisionRoundIR, SectionMemoryIR, SectionRequirementIR,
+    PROFESSIONAL_DOCUMENT_REQUEST_SCHEMA, PROFESSIONAL_DOCUMENT_RESPONSE_SCHEMA,
 };
