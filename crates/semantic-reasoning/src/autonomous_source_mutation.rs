@@ -44,10 +44,10 @@ pub const SOURCE_REPAIR_LEARNING_SCHEMA: &str = "B_CORE_SOURCE_REPAIR_LEARNING_1
 pub const IMPROVEMENT_OPERATOR_MEMORY_SCHEMA: &str = "B_CORE_IMPROVEMENT_OPERATOR_MEMORY_1";
 pub const MAX_IMPROVEMENT_OPERATOR_GRAPH_NODES: usize = 8;
 const MAX_TYPED_OPERATOR_RECONCILIATION_RECEIPTS: usize = 64;
-// Revision 34 independently re-parses Python predecessor ASTs at the
-// canonical/install boundary so source-derived owner, closure, cut, and seed
-// templates cannot be replaced by self-consistent receipt data.
-pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 34;
+// Revision 35 re-derives complete Python function templates, including
+// annotation/public-observation type evidence, instead of comparing only
+// source-shape fields at the canonical/install boundary.
+pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 35;
 const KNOWN_REMAINDER_PREDICTED_VALUE: u16 = 35;
 const MAX_REPOSITORY_REPAIR_FAMILY_FILES: usize = 16;
 const KNOWN_REMAINDER_STRATEGIES: [&str; 4] = [

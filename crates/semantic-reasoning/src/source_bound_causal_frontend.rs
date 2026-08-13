@@ -2522,7 +2522,16 @@ pub fn validate_source_bound_causal_receipt_with_python(
         ));
     }
     for (alternative, definition) in receipt.alternatives.iter().zip(&response.definitions) {
-        if !python_definition_matches_template(definition, &alternative.function_template) {
+        let owner_request = alternative
+            .synthesis
+            .synthesis_request
+            .as_ref()
+            .ok_or_else(|| {
+                CausalFrontendFailure::conflict("SOURCE_BOUND_RECEIPT_OWNER_REQUEST_MISSING")
+            })?;
+        let derived_owner =
+            convert_python_definition(definition.clone(), &owner_request.public_observations)?;
+        if derived_owner != alternative.function_template {
             return Err(CausalFrontendFailure::conflict(
                 "SOURCE_BOUND_RECEIPT_PYTHON_AST_DERIVATION",
             ));
@@ -2535,9 +2544,18 @@ pub fn validate_source_bound_causal_receipt_with_python(
                     "SOURCE_BOUND_RECEIPT_PYTHON_CLOSURE_DERIVATION",
                 ));
             };
-            if derived.public_operand_bindings != candidate.public_operand_bindings
-                || !python_closure_matches_template(derived, &candidate.function_template)
-            {
+            if derived.public_operand_bindings != candidate.public_operand_bindings {
+                return Err(CausalFrontendFailure::conflict(
+                    "SOURCE_BOUND_RECEIPT_PYTHON_CLOSURE_DERIVATION",
+                ));
+            }
+            let closure_observations = remap_public_observations_for_closure(
+                &owner_request.public_observations,
+                &derived.public_operand_bindings,
+            )?;
+            let derived_closure =
+                convert_python_closure_definition(derived.clone(), &closure_observations)?;
+            if derived_closure != candidate.function_template {
                 return Err(CausalFrontendFailure::conflict(
                     "SOURCE_BOUND_RECEIPT_PYTHON_CLOSURE_DERIVATION",
                 ));
@@ -2545,77 +2563,6 @@ pub fn validate_source_bound_causal_receipt_with_python(
         }
     }
     validate_source_bound_causal_receipt(receipt, source)
-}
-
-fn python_definition_matches_template(
-    definition: &PythonFunctionDefinition,
-    template: &SourceBoundFunctionTemplateIR,
-) -> bool {
-    definition.qualified_symbol == template.qualified_symbol
-        && definition.owner == template.owner
-        && definition.is_async == template.is_async
-        && definition
-            .operands
-            .iter()
-            .map(|operand| operand.name.as_str())
-            .eq(template
-                .operands
-                .iter()
-                .map(|operand| operand.source.as_str()))
-        && definition.effects == template.effects
-        && definition.direct_dependencies == template.direct_dependencies
-        && definition.execution_dependency_closure == template.execution_dependency_closure
-        && definition.external_callers == template.external_callers
-        && python_cuts_match_template(&definition.cuts, &template.cuts)
-}
-
-fn python_closure_matches_template(
-    definition: &PythonClosureTemplateDefinition,
-    template: &SourceBoundFunctionTemplateIR,
-) -> bool {
-    definition.qualified_symbol == template.qualified_symbol
-        && definition.owner == template.owner
-        && definition.is_async == template.is_async
-        && definition
-            .operands
-            .iter()
-            .map(|operand| operand.name.as_str())
-            .eq(template
-                .operands
-                .iter()
-                .map(|operand| operand.source.as_str()))
-        && definition.effects == template.effects
-        && definition.direct_dependencies == template.direct_dependencies
-        && definition.execution_dependency_closure == template.execution_dependency_closure
-        && definition.external_callers == template.external_callers
-        && python_cuts_match_template(&definition.cuts, &template.cuts)
-}
-
-fn python_cuts_match_template(derived: &[PythonCut], template: &[SourceBoundCausalCutIR]) -> bool {
-    derived.len() == template.len()
-        && derived.iter().zip(template).all(|(derived, template)| {
-            let branch = match derived.branch.as_str() {
-                "UNCONDITIONAL" => CausalCutBranch::Unconditional,
-                "THEN" => CausalCutBranch::Then,
-                "ELSE" => CausalCutBranch::Else,
-                _ => return false,
-            };
-            let condition_range = match (derived.condition_start, derived.condition_end) {
-                (Some(start), Some(end)) if start < end => Some(ByteRange { start, end }),
-                (None, None) => None,
-                _ => return false,
-            };
-            branch == template.branch
-                && derived.condition_source == template.condition_source
-                && condition_range == template.condition_range
-                && derived.condition_template == template.condition_template
-                && derived.postimage_source == template.postimage_source
-                && ByteRange {
-                    start: derived.postimage_start,
-                    end: derived.postimage_end,
-                } == template.postimage_range
-                && derived.postimage_template == template.postimage_template
-        })
 }
 
 fn build_source_bound_patch_variants(
@@ -3959,6 +3906,26 @@ def transformer_visitor(value: int, baseline: int) -> int:
         assert_eq!(
             validate_source_bound_causal_receipt_with_python(
                 &forged_ast_derivation,
+                source,
+                &python_executable,
+            )
+            .unwrap_err(),
+            CausalFrontendFailure::conflict("SOURCE_BOUND_RECEIPT_PYTHON_AST_DERIVATION")
+        );
+        let mut forged_type_derivation = receipt.clone();
+        forged_type_derivation.alternatives[0]
+            .function_template
+            .operands[0]
+            .value_type = ProgramType::Bool;
+        forged_type_derivation.alternatives[0]
+            .function_template
+            .source_template_sha256 = source_bound_function_template_hash(
+            &forged_type_derivation.alternatives[0].function_template,
+        )
+        .unwrap();
+        assert_eq!(
+            validate_source_bound_causal_receipt_with_python(
+                &forged_type_derivation,
                 source,
                 &python_executable,
             )
