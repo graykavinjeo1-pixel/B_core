@@ -287,16 +287,59 @@ impl GenerativeGrowthMemory {
     pub fn distinct_verified_artifact_count(&self) -> u64 {
         self.accepted_compositions
             .iter()
-            .filter(|composition| {
-                composition.execution_plan.is_some_and(|plan| {
-                    execution_plan_matches_metadata(&composition.composition, plan)
-                })
+            .flat_map(|composition| {
+                composition
+                    .verified_artifact_sha256s
+                    .iter()
+                    .filter(|artifact| composition.has_executable_artifact(artifact))
             })
-            .flat_map(|composition| composition.verified_artifact_sha256s.iter())
             .collect::<BTreeSet<_>>()
             .len()
             .min(u64::MAX as usize) as u64
     }
+}
+
+impl ReusableCompositionMemory {
+    /// Returns true only when the serialized explanatory composition is an
+    /// exact projection of the typed executable plan. Consumers outside this
+    /// module must never rediscover execution authority from primitive names.
+    pub fn has_executable_composer(&self, composer: GenerativeComposerIR) -> bool {
+        self.execution_plan.is_some_and(|plan| {
+            plan.composer == composer && execution_plan_matches_metadata(&self.composition, plan)
+        })
+    }
+
+    pub fn has_executable_artifact(&self, artifact_sha256: &str) -> bool {
+        let Some(plan) = self.execution_plan else {
+            return false;
+        };
+        if !execution_plan_matches_metadata(&self.composition, plan) {
+            return false;
+        }
+        if !self
+            .verified_artifact_contexts
+            .contains_key(artifact_sha256)
+        {
+            return false;
+        }
+        match plan.composer {
+            GenerativeComposerIR::Sem5Program => self
+                .verified_typed_behavior_goals
+                .get(artifact_sha256)
+                .is_some_and(validate_typed_behavior_goal_for_memory),
+            // These catalogs remain direct workflow canaries. Until their
+            // exact executable payload is retained in this memory schema they
+            // cannot contribute generative capability units.
+            GenerativeComposerIR::SelfHealingContract
+            | GenerativeComposerIR::FullstackTypedRecipe
+            | GenerativeComposerIR::ImprovementOperatorProgram
+            | GenerativeComposerIR::ImprovementOperatorGraph => false,
+        }
+    }
+}
+
+fn validate_typed_behavior_goal_for_memory(goal: &TypedMechanismSynthesisGoalIR) -> bool {
+    crate::sem5::typed_mechanism::validate_typed_mechanism_synthesis_goal(goal).is_ok()
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -1261,7 +1304,12 @@ fn distinct_verified_artifact_count_for_composer(
         .accepted_compositions
         .iter()
         .filter(|composition| composition_uses_composer(composition, composer))
-        .flat_map(|composition| composition.verified_artifact_sha256s.iter())
+        .flat_map(|composition| {
+            composition
+                .verified_artifact_sha256s
+                .iter()
+                .filter(|artifact| composition.has_executable_artifact(artifact))
+        })
         .collect::<BTreeSet<_>>()
         .len()
         .min(u64::MAX as usize) as u64
@@ -1275,7 +1323,13 @@ fn verified_artifacts_for_composer(
         .accepted_compositions
         .iter()
         .filter(|composition| composition_uses_composer(composition, composer))
-        .flat_map(|composition| composition.verified_artifact_sha256s.iter().cloned())
+        .flat_map(|composition| {
+            composition
+                .verified_artifact_sha256s
+                .iter()
+                .filter(|artifact| composition.has_executable_artifact(artifact))
+                .cloned()
+        })
         .collect()
 }
 
@@ -1731,12 +1785,12 @@ pub fn run_generative_cycle(
     let previously_verified = memory
         .accepted_compositions
         .iter()
-        .filter(|candidate| {
+        .flat_map(|candidate| {
             candidate
-                .execution_plan
-                .is_some_and(|plan| execution_plan_matches_metadata(&candidate.composition, plan))
+                .verified_artifact_sha256s
+                .iter()
+                .filter(|artifact| candidate.has_executable_artifact(artifact))
         })
-        .flat_map(|candidate| candidate.verified_artifact_sha256s.iter())
         .map(String::as_str)
         .collect::<BTreeSet<_>>();
     let verified_artifact_count = behavioral_execution_receipt.verified_artifacts.len();
@@ -1875,6 +1929,10 @@ pub fn validate_behavioral_execution_receipt(result: &GenerativeCycleResult) -> 
                                     .all(|byte| byte.is_ascii_hexdigit())
                                 && artifact.cases_executed > 0
                                 && artifact.cases_passed == artifact.cases_executed
+                                && artifact
+                                    .typed_behavior_goal
+                                    .as_ref()
+                                    .is_some_and(validate_typed_behavior_goal_for_memory)
                         })
                         && receipt.composite_artifact_sha256.as_deref()
                             == receipt
@@ -1924,12 +1982,12 @@ pub fn promote_generative_cycle(
     let previously_verified = current
         .accepted_compositions
         .iter()
-        .filter(|candidate| {
+        .flat_map(|candidate| {
             candidate
-                .execution_plan
-                .is_some_and(|plan| execution_plan_matches_metadata(&candidate.composition, plan))
+                .verified_artifact_sha256s
+                .iter()
+                .filter(|artifact| candidate.has_executable_artifact(artifact))
         })
-        .flat_map(|candidate| candidate.verified_artifact_sha256s.iter())
         .map(String::as_str)
         .collect::<BTreeSet<_>>();
     let expected_novel_verified_artifact_count = if result.valuable {
@@ -2335,14 +2393,14 @@ mod tests {
     }
 
     #[test]
-    fn static_canary_substrates_do_not_replace_saturated_executable_knowledge() {
-        let mut saturated = GenerativeGrowthMemory::default();
+    fn artifact_hashes_without_executable_payload_cannot_saturate_growth() {
+        let mut hash_only = GenerativeGrowthMemory::default();
         let execution_plan = GenerativeExecutionPlanIR {
             predictor: GENERATIVE_PREDICTORS[0],
             composer: GENERATIVE_COMPOSERS[0],
             verifier: GENERATIVE_VERIFIERS[0],
         };
-        saturated
+        hash_only
             .accepted_compositions
             .push(ReusableCompositionMemory {
                 composition: candidate_composition(execution_plan),
@@ -2358,16 +2416,21 @@ mod tests {
                 verified_artifact_sha256s: (0..MAX_SEM5_VERIFIED_ARTIFACTS)
                     .map(|ordinal| sha256(format!("sem5-{ordinal}").as_bytes()))
                     .collect(),
-                verified_artifact_contexts: BTreeMap::new(),
+                verified_artifact_contexts: (0..MAX_SEM5_VERIFIED_ARTIFACTS)
+                    .map(|ordinal| {
+                        (
+                            sha256(format!("sem5-{ordinal}").as_bytes()),
+                            sha256(format!("context-{ordinal}").as_bytes()),
+                        )
+                    })
+                    .collect(),
                 verified_typed_behavior_goals: BTreeMap::new(),
             });
-        assert!(!executable_generative_substrate_available(&saturated));
-        assert_eq!(
-            run_generative_cycle(&saturated, &input(), 11),
-            Err("NO_BEHAVIORALLY_EXECUTABLE_GENERATIVE_COMPOSITION_CANDIDATE".to_string())
-        );
+        assert_eq!(hash_only.distinct_verified_artifact_count(), 0);
+        assert!(executable_generative_substrate_available(&hash_only));
+        assert!(run_generative_cycle(&hash_only, &input(), 11).is_ok());
 
-        let mut legacy_text_only = saturated;
+        let mut legacy_text_only = hash_only;
         legacy_text_only.accepted_compositions[0].execution_plan = None;
         assert_eq!(legacy_text_only.distinct_verified_artifact_count(), 0);
         assert!(executable_generative_substrate_available(&legacy_text_only));
@@ -2490,6 +2553,25 @@ mod tests {
             .as_mut()
             .expect("behavioral receipt")
             .context_sha256 = "0".repeat(64);
+        assert_eq!(
+            promote_generative_cycle(&memory, &current, &result),
+            Err("GENERATIVE_PROMOTION_BOUNDARY_FAILURE".to_string())
+        );
+    }
+
+    #[test]
+    fn receipt_without_exact_executable_goal_cannot_become_growth() {
+        let memory = GenerativeGrowthMemory::default();
+        let current = input();
+        let mut result = run_generative_cycle(&memory, &current, 7).unwrap();
+        let receipt = result
+            .behavioral_execution_receipt
+            .as_mut()
+            .expect("behavioral receipt");
+        receipt.verified_artifacts[0].typed_behavior_goal = None;
+        receipt.receipt_sha256 = behavioral_execution_receipt_sha256(receipt).unwrap();
+        result.behavioral_verification_sha256 = Some(receipt.receipt_sha256.clone());
+        assert!(!validate_behavioral_execution_receipt(&result));
         assert_eq!(
             promote_generative_cycle(&memory, &current, &result),
             Err("GENERATIVE_PROMOTION_BOUNDARY_FAILURE".to_string())

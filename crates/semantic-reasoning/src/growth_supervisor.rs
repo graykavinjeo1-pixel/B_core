@@ -37,13 +37,12 @@ use crate::autonomous_source_mutation::{
 };
 use crate::generative_growth::{
     executable_generative_substrate_available, promote_generative_cycle, run_generative_cycle,
-    validate_behavioral_execution_receipt, GenerativeCycleResult, GenerativeGrowthMemory,
-    GenerativeInput,
+    validate_behavioral_execution_receipt, GenerativeComposerIR, GenerativeCycleResult,
+    GenerativeGrowthMemory, GenerativeInput,
 };
 use crate::integrated_development::{
-    compose_behavioral_canary_candidate, compose_typed_behavior_goal_candidate,
-    execute_behavioral_composition_canary, install_composite_candidate_family,
-    MAX_INSTALLED_TYPED_CAPABILITIES,
+    compose_typed_behavior_goal_candidate, execute_behavioral_composition_canary,
+    install_composite_candidate_family, MAX_INSTALLED_TYPED_CAPABILITIES,
 };
 use crate::self_repair_contract::sha256;
 #[cfg(test)]
@@ -1141,6 +1140,7 @@ pub struct SelfCheck {
     pub same_type_call_role_permutations_bounded: bool,
     pub symmetric_state_transform_compilation_enabled: bool,
     pub accepted_sem5_compositions_route_to_installer: bool,
+    pub sem5_installer_requires_typed_plan_and_exact_goal: bool,
     pub active_binaries_forbid_proposal_only_exit: bool,
     pub executable_improvement_operator_repository_enabled: bool,
     pub improvement_operator_repository_requires_source_synthesis_payload: bool,
@@ -1260,6 +1260,7 @@ pub fn self_check() -> SelfCheck {
         same_type_call_role_permutations_bounded: true,
         symmetric_state_transform_compilation_enabled: true,
         accepted_sem5_compositions_route_to_installer: true,
+        sem5_installer_requires_typed_plan_and_exact_goal: true,
         active_binaries_forbid_proposal_only_exit: true,
         executable_improvement_operator_repository_enabled: true,
         improvement_operator_repository_requires_source_synthesis_payload: true,
@@ -9351,44 +9352,41 @@ fn account_source_patch_error(
 
 fn is_sem5_composition(accepted: &crate::generative_growth::ReusableCompositionMemory) -> bool {
     accepted.successful_uses > 0
-        && accepted.composition.primitives.iter().any(|primitive| {
-            primitive
-                .primitive_id
-                .starts_with("SEM5_PROGRAM_IR_COMPOSER")
-        })
+        && accepted.has_executable_composer(GenerativeComposerIR::Sem5Program)
 }
 
-fn accepted_sem5_artifact_contexts(memory: &GrowthMemory) -> Vec<(String, String)> {
-    let mut artifacts = memory
-        .generative
-        .accepted_compositions
-        .iter()
-        .rev()
-        .filter(|accepted| is_sem5_composition(accepted))
-        .flat_map(|accepted| accepted.verified_artifact_contexts.iter().rev())
-        .map(|(artifact, context)| (artifact.clone(), context.clone()))
-        .collect::<Vec<_>>();
+fn accepted_sem5_executable_artifacts(
+    memory: &GrowthMemory,
+) -> Vec<(String, String, TypedMechanismSynthesisGoalIR)> {
+    let mut artifacts =
+        memory
+            .generative
+            .accepted_compositions
+            .iter()
+            .rev()
+            .filter(|accepted| is_sem5_composition(accepted))
+            .flat_map(|accepted| {
+                accepted.verified_artifact_contexts.iter().rev().filter_map(
+                    |(artifact, context)| {
+                        if !accepted.has_executable_artifact(artifact) {
+                            return None;
+                        }
+                        let goal = accepted.verified_typed_behavior_goals.get(artifact)?;
+                        Some((artifact.clone(), context.clone(), goal.clone()))
+                    },
+                )
+            })
+            .collect::<Vec<_>>();
     let mut seen = BTreeSet::new();
-    artifacts.retain(|(artifact, _)| seen.insert(artifact.clone()));
+    artifacts.retain(|(artifact, _, _)| seen.insert(artifact.clone()));
     artifacts
 }
 
-fn accepted_sem5_typed_behavior_goal(
-    memory: &GrowthMemory,
-    artifact_sha256: &str,
-) -> Option<TypedMechanismSynthesisGoalIR> {
-    memory
-        .generative
-        .accepted_compositions
-        .iter()
-        .rev()
-        .filter(|accepted| is_sem5_composition(accepted))
-        .find_map(|accepted| {
-            accepted
-                .verified_typed_behavior_goals
-                .get(artifact_sha256)
-                .cloned()
-        })
+fn accepted_sem5_artifact_contexts(memory: &GrowthMemory) -> Vec<(String, String)> {
+    accepted_sem5_executable_artifacts(memory)
+        .into_iter()
+        .map(|(artifact, context, _)| (artifact, context))
+        .collect()
 }
 
 fn pending_sem5_composition_candidates(
@@ -9404,19 +9402,11 @@ fn pending_sem5_composition_candidates(
         return Ok(Vec::new());
     }
     let mut candidates = Vec::new();
-    for (expected_artifact, context) in accepted_sem5_artifact_contexts(memory) {
+    for (expected_artifact, context, goal) in accepted_sem5_executable_artifacts(memory) {
         if installed.contains(expected_artifact.as_str()) {
             continue;
         }
-        let (candidate, _) =
-            if let Some(goal) = accepted_sem5_typed_behavior_goal(memory, &expected_artifact) {
-                compose_typed_behavior_goal_candidate(&context, &goal)?
-            } else {
-                // Backward-compatible reconstruction for already sealed legacy
-                // context-derived artifacts. New learned knowledge always retains
-                // the exact typed goal payload above.
-                compose_behavioral_canary_candidate(&context)?
-            };
+        let (candidate, _) = compose_typed_behavior_goal_candidate(&context, &goal)?;
         if candidate.program_ir_sha256 != expected_artifact {
             return Err("VERIFIED_ARTIFACT_CONTEXT_BINDING_FAILURE".to_string());
         }
@@ -11320,6 +11310,7 @@ mod tests {
         assert!(check.same_type_call_role_permutations_bounded);
         assert!(check.symmetric_state_transform_compilation_enabled);
         assert!(check.accepted_sem5_compositions_route_to_installer);
+        assert!(check.sem5_installer_requires_typed_plan_and_exact_goal);
         assert!(check.active_binaries_forbid_proposal_only_exit);
         assert!(check.executable_improvement_operator_repository_enabled);
         assert!(check.improvement_operator_repository_requires_source_synthesis_payload);
@@ -11708,6 +11699,16 @@ mod tests {
             .accepted_compositions
             .iter()
             .any(|accepted| !accepted.verified_typed_behavior_goals.is_empty()));
+
+        let mut legacy_text_only = memory.clone();
+        for accepted in &mut legacy_text_only.generative.accepted_compositions {
+            accepted.execution_plan = None;
+            accepted.verified_typed_behavior_goals.clear();
+        }
+        assert!(accepted_sem5_artifact_contexts(&legacy_text_only).is_empty());
+        assert!(pending_sem5_composition_candidates(&legacy_text_only)
+            .expect("legacy text-only lookup")
+            .is_empty());
 
         let pending_candidate = pending_sem5_composition_candidates(&memory)
             .expect("pending lookup")
