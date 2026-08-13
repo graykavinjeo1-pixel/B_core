@@ -548,9 +548,45 @@ fn surface_matches(text: &str, surface_form: &str, language: LanguageCodeIR) -> 
     {
         text.split(|character: char| !character.is_ascii_alphanumeric() && character != '_')
             .any(|token| token == form)
+    } else if language == LanguageCodeIR::Korean && form.chars().count() == 1 {
+        korean_short_surface_matches(text, &form)
     } else {
         text.contains(&form)
     }
+}
+
+fn korean_short_surface_matches(text: &str, form: &str) -> bool {
+    text.match_indices(form).any(|(index, matched)| {
+        let before = text[..index].chars().next_back();
+        if before.is_some_and(is_word_character) {
+            return false;
+        }
+        let after = &text[index + matched.len()..];
+        if after.is_empty()
+            || after
+                .chars()
+                .next()
+                .is_some_and(|value| !is_word_character(value))
+        {
+            return true;
+        }
+        const PARTICLES: [&str; 14] = [
+            "은", "는", "이", "가", "을", "를", "와", "과", "에", "에서", "로", "도", "만", "의",
+        ];
+        PARTICLES.iter().any(|particle| {
+            after.strip_prefix(particle).is_some_and(|remainder| {
+                remainder.is_empty()
+                    || remainder
+                        .chars()
+                        .next()
+                        .is_some_and(|value| !is_word_character(value))
+            })
+        })
+    })
+}
+
+fn is_word_character(value: char) -> bool {
+    value.is_alphanumeric() || value == '_'
 }
 
 fn log2_floor(value: u64) -> u32 {
@@ -688,6 +724,32 @@ fn builtin_lexemes() -> Vec<LexemeIR> {
             &["business", "proposal", "value", "decision"],
             &["client", "proposal", "scope", "timeline", "cost"],
             &["business", "sales"],
+            Some(Create),
+        ),
+        lexeme(
+            "KO.USER_GUIDE",
+            Korean,
+            "사용 설명서",
+            &["사용설명서", "사용자 가이드", "설명서", "매뉴얼", "안내서"],
+            Noun,
+            "user_guide",
+            "사용자가 기능과 절차를 안전하게 수행하도록 단계, 예시, 주의사항과 문제 해결을 구조화한 문서",
+            &["guide", "manual", "procedure", "documentation"],
+            &["사용", "시작", "예시", "주의사항", "문제 해결"],
+            &["documentation", "product"],
+            Some(Create),
+        ),
+        lexeme(
+            "EN.USER_GUIDE",
+            English,
+            "user guide",
+            &["manual", "user manual", "how-to guide", "instruction guide"],
+            Noun,
+            "user_guide",
+            "a document that structures safe user procedures, examples, cautions, and troubleshooting",
+            &["guide", "manual", "procedure", "documentation"],
+            &["use", "start", "example", "caution", "troubleshooting"],
+            &["documentation", "product"],
             Some(Create),
         ),
         lexeme(
@@ -907,6 +969,27 @@ mod tests {
             .activation_reasons
             .iter()
             .any(|reason| reason.starts_with("verified_success")));
+    }
+
+    #[test]
+    fn one_syllable_korean_lexeme_requires_a_real_morpheme_boundary() {
+        let mut memory = LexicalMemory::default();
+        let false_positive = memory.activate("확인 필요라고 표시해", &[]);
+        assert!(!false_positive
+            .iter()
+            .any(|activation| activation.lexeme_id == "KO.TABLE"));
+
+        for command in ["표를 작성해", "표와 차트를 만들어", "표로 정리해", "표"]
+        {
+            let activation = memory.activate(command, &[]);
+            assert!(activation
+                .iter()
+                .any(|activation| activation.lexeme_id == "KO.TABLE"));
+        }
+        assert!(!memory
+            .activate("표현을 다듬어", &[])
+            .iter()
+            .any(|activation| activation.lexeme_id == "KO.TABLE"));
     }
 
     #[test]

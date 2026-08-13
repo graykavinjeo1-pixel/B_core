@@ -21,14 +21,15 @@ pub use knowledge_work::{
     BusinessDocumentIR, BusinessDocumentTypeIR, BusinessMetricIR, BusinessSectionIR, CellValueIR,
     ChartIR, ChartPointIR, ChartSeriesIR, ChartTypeIR, DocumentDesignIR, DocumentKindIR,
     DocumentThemeIR, FileOutputReceiptIR, FinancialLineClassIR, FinancialLineItemIR,
-    FinancialStatementIR, FinancialStatementTypeIR, FindingKindIR, KnowledgeDocumentIR,
-    KnowledgeFindingIR, KnowledgeSourceIR, KnowledgeWorkError, KnowledgeWorkOperationIR,
-    KnowledgeWorkProductIR, KnowledgeWorkRequestIR, NumericValueIR, OutputDirectiveIR,
-    OutputFormatIR, OutputModeIR, PageSizeIR, PaperClaimIR, PaperIR, PaperReferenceIR,
-    PaperSectionIR, PlanProposalIR, PlanTaskIR, SourceTextFormatIR, TableCellIR, TableIR,
-    BUSINESS_DOCUMENT_SCHEMA, CHART_SCHEMA, DOCUMENT_DESIGN_SCHEMA, FINANCIAL_STATEMENT_SCHEMA,
-    KNOWLEDGE_WORK_REQUEST_SCHEMA, KNOWLEDGE_WORK_RESPONSE_SCHEMA, PAPER_SCHEMA,
-    PLAN_PROPOSAL_SCHEMA, TABLE_SCHEMA,
+    FinancialStatementIR, FinancialStatementTypeIR, FindingKindIR, GuideExampleIR, GuideSectionIR,
+    KnowledgeDocumentIR, KnowledgeFindingIR, KnowledgeSourceIR, KnowledgeWorkError,
+    KnowledgeWorkOperationIR, KnowledgeWorkProductIR, KnowledgeWorkRequestIR, NumericValueIR,
+    OutputDirectiveIR, OutputFormatIR, OutputModeIR, PageSizeIR, PaperClaimIR, PaperIR,
+    PaperReferenceIR, PaperSectionIR, PlanProposalIR, PlanTaskIR, SourceTextFormatIR, TableCellIR,
+    TableIR, TroubleshootingItemIR, UserGuideIR, BUSINESS_DOCUMENT_SCHEMA, CHART_SCHEMA,
+    DOCUMENT_DESIGN_SCHEMA, FINANCIAL_STATEMENT_SCHEMA, KNOWLEDGE_WORK_REQUEST_SCHEMA,
+    KNOWLEDGE_WORK_RESPONSE_SCHEMA, PAPER_SCHEMA, PLAN_PROPOSAL_SCHEMA, TABLE_SCHEMA,
+    USER_GUIDE_SCHEMA,
 };
 pub use language::{LanguageAdapter, LanguageAdapterError};
 pub use language_knowledge::{

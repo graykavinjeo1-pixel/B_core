@@ -19,7 +19,7 @@ Korean or English command
 → LexemeIR surface matching
 → context-weighted SenseIR activation
 → core-owned dependency-ordered PlanIR
-→ PaperIR | BusinessDocumentIR | TableIR | ChartIR | FinancialStatementIR | PlanProposalIR
+→ PaperIR | BusinessDocumentIR | UserGuideIR | TableIR | ChartIR | FinancialStatementIR | PlanProposalIR
 → evidence-bound findings
 → genre-aware DocumentDesignIR
 → Markdown | print-ready HTML | JSON | CSV | SVG
@@ -87,6 +87,9 @@ Supported document IR:
   executive summary, organization, audience, evidence-bound metrics, strategic
   sections, tables, charts, financial statements, execution roadmap, risks, and
   next action;
+- `UserGuideIR`: audience, introduction, typed procedure sections, ordered
+  steps, examples, cautions, troubleshooting pairs, quick checklist, tables,
+  and charts;
 - `TableIR`: typed cells, exact decimal values, missing values, row/column
   structure, and provenance locations;
 - `ChartIR`: chart type, axes, series, exact numeric points, and source
@@ -128,9 +131,9 @@ contains A4/Letter print rules, a cover, document map, editorial typography,
 metric cards, responsive tables, themed inline SVG charts, an execution
 timeline, evidence review, risks, and a decision call-to-action. Default themes
 are `ACADEMIC_EDITORIAL` for papers, `EXECUTIVE_NAVY` for business plans, and
-`PROPOSAL_COBALT` for business proposals. `MINIMAL_MONOCHROME` is also
-available. The response echoes the resolved `design` so the visual contract is
-auditable.
+`PROPOSAL_COBALT` for business proposals. User guides use `GUIDE_INDIGO`;
+`MINIMAL_MONOCHROME` is also available. The response echoes the resolved
+`design` so the visual contract is auditable.
 
 ```json
 {"operation":"PROCESS_KNOWLEDGE_WORK","request":{"schema":"B_CORE_KNOWLEDGE_WORK_REQUEST_IR_1","request_id":"PLAN-DESIGN-1","command":"투자위원회용 사업계획서를 디자인 좋게 작성해","output_language":"KOREAN","design":{"schema":"B_CORE_DOCUMENT_DESIGN_IR_1","theme":"EXECUTIVE_NAVY","page_size":"A4","brand_name":"B_CORE LAB","accent_color":"#087F6B","compact":false,"show_table_of_contents":true,"show_page_furniture":true},"output":{"mode":"BOTH","format":"HTML","path":"D:\\B_Core_Output\\business-plan.html","overwrite":true},"context_tags":["business","design"],"max_plan_steps":12}}

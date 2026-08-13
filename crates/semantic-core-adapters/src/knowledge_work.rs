@@ -18,6 +18,7 @@ pub const CHART_SCHEMA: &str = "B_CORE_CHART_IR_1";
 pub const FINANCIAL_STATEMENT_SCHEMA: &str = "B_CORE_FINANCIAL_STATEMENT_IR_1";
 pub const PLAN_PROPOSAL_SCHEMA: &str = "B_CORE_PLAN_PROPOSAL_IR_1";
 pub const BUSINESS_DOCUMENT_SCHEMA: &str = "B_CORE_BUSINESS_DOCUMENT_IR_1";
+pub const USER_GUIDE_SCHEMA: &str = "B_CORE_USER_GUIDE_IR_1";
 pub const DOCUMENT_DESIGN_SCHEMA: &str = "B_CORE_DOCUMENT_DESIGN_IR_1";
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -26,6 +27,7 @@ pub enum DocumentKindIR {
     Paper,
     BusinessPlan,
     BusinessProposal,
+    UserGuide,
     Table,
     Chart,
     FinancialStatement,
@@ -94,6 +96,7 @@ pub enum DocumentThemeIR {
     AcademicEditorial,
     ExecutiveNavy,
     ProposalCobalt,
+    GuideIndigo,
     MinimalMonochrome,
 }
 
@@ -127,6 +130,7 @@ impl DocumentDesignIR {
             DocumentKindIR::Paper => DocumentThemeIR::AcademicEditorial,
             DocumentKindIR::BusinessPlan => DocumentThemeIR::ExecutiveNavy,
             DocumentKindIR::BusinessProposal => DocumentThemeIR::ProposalCobalt,
+            DocumentKindIR::UserGuide => DocumentThemeIR::GuideIndigo,
             _ => DocumentThemeIR::MinimalMonochrome,
         };
         Self {
@@ -402,11 +406,56 @@ pub struct BusinessDocumentIR {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct GuideSectionIR {
+    pub section_id: String,
+    pub heading: String,
+    pub body: String,
+    #[serde(default)]
+    pub steps: Vec<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct GuideExampleIR {
+    pub title: String,
+    pub input: String,
+    pub expected_result: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct TroubleshootingItemIR {
+    pub symptom: String,
+    pub resolution: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct UserGuideIR {
+    pub schema: String,
+    pub document_id: String,
+    pub title: String,
+    pub audience: String,
+    pub introduction: String,
+    pub sections: Vec<GuideSectionIR>,
+    #[serde(default)]
+    pub examples: Vec<GuideExampleIR>,
+    #[serde(default)]
+    pub cautions: Vec<String>,
+    #[serde(default)]
+    pub troubleshooting: Vec<TroubleshootingItemIR>,
+    #[serde(default)]
+    pub checklist: Vec<String>,
+    #[serde(default)]
+    pub tables: Vec<TableIR>,
+    #[serde(default)]
+    pub charts: Vec<ChartIR>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(tag = "kind", content = "content", rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum KnowledgeDocumentIR {
     Paper(PaperIR),
     BusinessPlan(BusinessDocumentIR),
     BusinessProposal(BusinessDocumentIR),
+    UserGuide(UserGuideIR),
     Table(TableIR),
     Chart(ChartIR),
     FinancialStatement(FinancialStatementIR),
@@ -419,6 +468,7 @@ impl KnowledgeDocumentIR {
             Self::Paper(_) => DocumentKindIR::Paper,
             Self::BusinessPlan(_) => DocumentKindIR::BusinessPlan,
             Self::BusinessProposal(_) => DocumentKindIR::BusinessProposal,
+            Self::UserGuide(_) => DocumentKindIR::UserGuide,
             Self::Table(_) => DocumentKindIR::Table,
             Self::Chart(_) => DocumentKindIR::Chart,
             Self::FinancialStatement(_) => DocumentKindIR::FinancialStatement,
@@ -592,6 +642,23 @@ pub fn infer_document_kind(command: &str, source_text: Option<&str>) -> Document
     if contains_any(
         &command,
         &[
+            "사용 설명서",
+            "사용설명서",
+            "사용자 가이드",
+            "설명서",
+            "매뉴얼",
+            "안내서",
+            "user guide",
+            "user manual",
+            "manual",
+            "how-to guide",
+        ],
+    ) {
+        return DocumentKindIR::UserGuide;
+    }
+    if contains_any(
+        &command,
+        &[
             "재무제표",
             "재무재표",
             "손익계산서",
@@ -623,7 +690,7 @@ pub fn infer_document_kind(command: &str, source_text: Option<&str>) -> Document
     ) {
         return DocumentKindIR::PlanProposal;
     }
-    if contains_any(&command, &["표", "테이블", "table", "csv", "tsv"]) {
+    if contains_surface_any(&command, &["표", "테이블", "table", "csv", "tsv"]) {
         return DocumentKindIR::Table;
     }
     let source = source_text.unwrap_or_default();
@@ -835,6 +902,10 @@ fn parse_document(
         DocumentKindIR::BusinessProposal => Ok(KnowledgeDocumentIR::BusinessProposal(
             parse_business(document_id, text, BusinessDocumentTypeIR::BusinessProposal),
         )),
+        DocumentKindIR::UserGuide => Ok(KnowledgeDocumentIR::UserGuide(parse_user_guide(
+            document_id,
+            text,
+        ))),
         DocumentKindIR::Table => Ok(KnowledgeDocumentIR::Table(parse_table(document_id, text)?)),
         DocumentKindIR::Chart => {
             let table = parse_table(document_id, text)?;
@@ -925,6 +996,9 @@ fn create_document(
                 korean,
             ))
         }
+        DocumentKindIR::UserGuide => {
+            KnowledgeDocumentIR::UserGuide(create_user_guide(document_id, command, korean))
+        }
         DocumentKindIR::Table => KnowledgeDocumentIR::Table(TableIR {
             schema: TABLE_SCHEMA.to_string(),
             document_id: document_id.to_string(),
@@ -1002,6 +1076,240 @@ fn create_document(
             }],
             assumptions: Vec::new(),
         }),
+    }
+}
+
+fn create_user_guide(document_id: &str, command: &str, korean: bool) -> UserGuideIR {
+    let title = guide_title(command, korean);
+    let sections = if korean {
+        vec![
+            GuideSectionIR {
+                section_id: "GUIDE-START".to_string(),
+                heading: "빠른 시작".to_string(),
+                body: "목표와 필요한 결과를 먼저 정한 뒤, 관련 자료와 제약을 함께 제공한다. 제품별 화면이나 기능의 존재 여부는 연결된 공식 자료로 확인해야 한다.".to_string(),
+                steps: vec![
+                    "하려는 일을 한 문장으로 정한다.".to_string(),
+                    "판단에 필요한 배경과 자료를 제공한다.".to_string(),
+                    "분량, 형식, 독자와 금지 조건을 지정한다.".to_string(),
+                    "결과의 사실·수치·출처를 검토하고 필요한 부분을 다시 요청한다.".to_string(),
+                ],
+            },
+            GuideSectionIR {
+                section_id: "GUIDE-WORK".to_string(),
+                heading: "주요 사용 방식".to_string(),
+                body: "제공된 자료의 요약·분류·비교, 초안 작성, 설명, 아이디어 구조화, 표와 체크리스트 변환 같은 대화형 작업을 요청할 수 있다. 실제 계정에서 사용할 수 있는 제품 기능과 제한은 확인 필요이다.".to_string(),
+                steps: Vec::new(),
+            },
+            GuideSectionIR {
+                section_id: "GUIDE-PROMPT".to_string(),
+                heading: "좋은 질문 작성법".to_string(),
+                body: "역할이나 관점, 목표, 배경, 제약, 출력 형식, 검증 조건을 한 요청 안에 명시한다. 모르는 사실을 추측하지 말고 불확실성을 구분하라는 조건을 덧붙인다.".to_string(),
+                steps: vec![
+                    "목표: 무엇을 완료해야 하는가?".to_string(),
+                    "맥락: 어떤 자료와 상황을 알아야 하는가?".to_string(),
+                    "제약: 분량, 독자, 금지사항은 무엇인가?".to_string(),
+                    "형식: 표, 목록, 문서 등 어떤 형태가 필요한가?".to_string(),
+                    "검증: 어떤 근거로 완료를 확인할 것인가?".to_string(),
+                ],
+            },
+            GuideSectionIR {
+                section_id: "GUIDE-ITERATE".to_string(),
+                heading: "단계별 사용 예시".to_string(),
+                body: "첫 응답을 최종본으로 간주하지 않는다. 초안 생성, 누락 검토, 근거 확인, 형식 정리의 순서로 반복하면 결과의 통제 가능성이 높아진다.".to_string(),
+                steps: vec![
+                    "초안을 요청한다.".to_string(),
+                    "주장과 근거를 분리해 달라고 요청한다.".to_string(),
+                    "누락·모순·불확실성을 점검한다.".to_string(),
+                    "검증된 내용만 원하는 형식으로 다시 작성한다.".to_string(),
+                ],
+            },
+        ]
+    } else {
+        vec![
+            GuideSectionIR {
+                section_id: "GUIDE-START".to_string(),
+                heading: "Quick start".to_string(),
+                body: "Define the outcome first, then provide relevant material and constraints. Product-specific interface features must be confirmed against connected official documentation.".to_string(),
+                steps: vec![
+                    "State the task in one sentence.".to_string(),
+                    "Provide the background and source material.".to_string(),
+                    "Specify audience, length, format, and prohibitions.".to_string(),
+                    "Review facts, figures, and sources before reuse.".to_string(),
+                ],
+            },
+            GuideSectionIR {
+                section_id: "GUIDE-WORK".to_string(),
+                heading: "Common workflows".to_string(),
+                body: "You can request source-grounded summarization, classification, comparison, explanation, drafting, and conversion into tables or checklists. Product availability and account limits require confirmation.".to_string(),
+                steps: Vec::new(),
+            },
+            GuideSectionIR {
+                section_id: "GUIDE-PROMPT".to_string(),
+                heading: "Write an effective request".to_string(),
+                body: "Specify the perspective, goal, context, constraints, output form, and verification condition. Ask for uncertainty to be separated from observed facts.".to_string(),
+                steps: vec![
+                    "Goal: what must be completed?".to_string(),
+                    "Context: what material and situation matter?".to_string(),
+                    "Constraints: audience, length, and prohibitions?".to_string(),
+                    "Format: table, list, or document?".to_string(),
+                    "Verification: what evidence proves completion?".to_string(),
+                ],
+            },
+            GuideSectionIR {
+                section_id: "GUIDE-ITERATE".to_string(),
+                heading: "Iterate in stages".to_string(),
+                body: "Treat the first response as a draft. Generate, inspect omissions, verify evidence, and only then format the final result.".to_string(),
+                steps: vec![
+                    "Request a draft.".to_string(),
+                    "Separate claims from evidence.".to_string(),
+                    "Inspect omissions, conflicts, and uncertainty.".to_string(),
+                    "Rewrite only verified content in the target format.".to_string(),
+                ],
+            },
+        ]
+    };
+    UserGuideIR {
+        schema: USER_GUIDE_SCHEMA.to_string(),
+        document_id: document_id.to_string(),
+        title,
+        audience: if korean {
+            "처음 사용하는 사용자"
+        } else {
+            "First-time users"
+        }
+        .to_string(),
+        introduction: if korean {
+            "이 안내서는 대화형 도구에 작업을 명확히 요청하고 결과를 검증하는 기본 절차를 설명한다. 현재 제품의 구체적인 화면, 요금, 모델, 한도와 기능은 공식 자료가 제공되지 않았으므로 확인 필요이다."
+        } else {
+            "This guide explains how to request work clearly and verify the result. Specific current product screens, pricing, models, limits, and features require official source material."
+        }
+        .to_string(),
+        sections,
+        examples: vec![GuideExampleIR {
+            title: if korean { "자료 요약 요청" } else { "Source summary request" }.to_string(),
+            input: if korean {
+                "다음 자료를 핵심 주장, 근거, 불확실성으로 나눠 요약해. 자료 밖의 사실은 추가하지 마."
+            } else {
+                "Summarize this material as claims, evidence, and uncertainty. Do not add facts outside the source."
+            }
+            .to_string(),
+            expected_result: if korean {
+                "주장과 근거가 분리되고 확인되지 않은 내용이 표시된 요약"
+            } else {
+                "A summary separating claims, evidence, and unverified content"
+            }
+            .to_string(),
+        }],
+        cautions: if korean {
+            vec![
+                "중요한 사실·수치·인용은 원문 또는 신뢰할 수 있는 출처로 다시 확인한다.".to_string(),
+                "민감하거나 비공개인 자료는 적용되는 정책과 권한을 확인한 뒤 사용한다.".to_string(),
+                "관찰된 사실, 추론, 제안을 서로 구분한다.".to_string(),
+            ]
+        } else {
+            vec![
+                "Recheck important facts, figures, and quotations against a reliable source.".to_string(),
+                "Confirm applicable policy and authority before providing sensitive material.".to_string(),
+                "Keep observations, inferences, and proposals separate.".to_string(),
+            ]
+        },
+        troubleshooting: if korean {
+            vec![
+                TroubleshootingItemIR { symptom: "답변이 너무 일반적임".to_string(), resolution: "독자, 목적, 사용 자료, 제외할 내용과 출력 예시를 추가한다.".to_string() },
+                TroubleshootingItemIR { symptom: "원하는 형식과 다름".to_string(), resolution: "열 이름, 목차, 길이 또는 JSON 같은 목표 형식을 명시한다.".to_string() },
+                TroubleshootingItemIR { symptom: "근거 없는 내용이 섞임".to_string(), resolution: "각 주장에 출처 위치를 붙이고 근거 없는 항목은 확인 필요로 분리하도록 요청한다.".to_string() },
+            ]
+        } else {
+            vec![
+                TroubleshootingItemIR { symptom: "The response is too generic".to_string(), resolution: "Add the audience, objective, source material, exclusions, and an output example.".to_string() },
+                TroubleshootingItemIR { symptom: "The format is wrong".to_string(), resolution: "Specify column names, outline, length, or a target schema such as JSON.".to_string() },
+                TroubleshootingItemIR { symptom: "Unsupported claims appear".to_string(), resolution: "Require source locations for each claim and move unsupported items to needs confirmation.".to_string() },
+            ]
+        },
+        checklist: if korean {
+            vec![
+                "목표와 대상 독자를 적었는가?".to_string(),
+                "필요한 자료와 맥락을 제공했는가?".to_string(),
+                "제약과 출력 형식을 지정했는가?".to_string(),
+                "사실·수치·출처를 검토했는가?".to_string(),
+                "확인 필요 항목을 분리했는가?".to_string(),
+            ]
+        } else {
+            vec![
+                "Did I state the goal and audience?".to_string(),
+                "Did I provide the required source material and context?".to_string(),
+                "Did I specify constraints and output format?".to_string(),
+                "Did I verify facts, figures, and sources?".to_string(),
+                "Did I separate items that need confirmation?".to_string(),
+            ]
+        },
+        tables: Vec::new(),
+        charts: Vec::new(),
+    }
+}
+
+fn guide_title(command: &str, korean: bool) -> String {
+    let markers: &[&str] = if korean {
+        &[
+            "사용 설명서",
+            "사용설명서",
+            "사용자 가이드",
+            "설명서",
+            "매뉴얼",
+            "안내서",
+        ]
+    } else {
+        &["user guide", "user manual", "manual", "how-to guide"]
+    };
+    let lowered = command.to_lowercase();
+    if let Some((index, marker)) = markers
+        .iter()
+        .filter_map(|marker| lowered.find(marker).map(|index| (index, *marker)))
+        .min_by_key(|(index, _)| *index)
+    {
+        let end = index + marker.len();
+        let mut title = command[..end].trim().to_string();
+        if !korean {
+            for prefix in [
+                "create a ",
+                "create an ",
+                "write a ",
+                "write an ",
+                "draft a ",
+            ] {
+                if title.to_lowercase().starts_with(prefix) {
+                    title = title[prefix.len()..].trim().to_string();
+                    break;
+                }
+            }
+        }
+        if !title.is_empty() {
+            return title;
+        }
+    }
+    let first_sentence = command
+        .split(['.', '!', '?', '\n'])
+        .next()
+        .unwrap_or(command)
+        .trim();
+    let endings = if korean {
+        ["작성해", "작성", "만들어", "써줘"]
+    } else {
+        ["write", "create", "author", "draft"]
+    };
+    let cleaned = endings
+        .iter()
+        .fold(first_sentence.to_string(), |value, ending| {
+            value.trim_end_matches(ending).trim().to_string()
+        });
+    if cleaned.is_empty() {
+        if korean {
+            "사용 설명서".to_string()
+        } else {
+            "User guide".to_string()
+        }
+    } else {
+        cleaned
     }
 }
 
@@ -1199,6 +1507,95 @@ fn parse_business(
             "Confirm the next decision condition."
         }
         .to_string(),
+    }
+}
+
+fn parse_user_guide(document_id: &str, text: &str) -> UserGuideIR {
+    let paper = parse_paper(document_id, text);
+    let korean = detect_output_language(text) == LanguageCodeIR::Korean;
+    let mut sections = Vec::new();
+    let mut cautions = Vec::new();
+    let mut troubleshooting = Vec::new();
+    let mut checklist = Vec::new();
+    for section in &paper.sections {
+        let heading = normalize(&section.heading);
+        let list_items = section
+            .body
+            .lines()
+            .filter_map(|line| {
+                line.trim()
+                    .strip_prefix("- ")
+                    .or_else(|| line.trim().strip_prefix("* "))
+                    .map(str::trim)
+                    .filter(|line| !line.is_empty())
+                    .map(str::to_string)
+            })
+            .collect::<Vec<_>>();
+        if matches_any(&heading, &["주의사항", "주의", "cautions", "warnings"]) {
+            cautions.extend(list_items);
+        } else if matches_any(
+            &heading,
+            &[
+                "빠른 확인 목록",
+                "체크리스트",
+                "checklist",
+                "quick checklist",
+            ],
+        ) {
+            checklist.extend(list_items);
+        } else if matches_any(
+            &heading,
+            &["문제 해결", "문제해결", "troubleshooting", "troubleshoot"],
+        ) {
+            troubleshooting.extend(list_items.into_iter().map(|item| {
+                let (symptom, resolution) = item
+                    .split_once('|')
+                    .or_else(|| item.split_once(':'))
+                    .unwrap_or((
+                        item.as_str(),
+                        if korean {
+                            "확인 필요"
+                        } else {
+                            "Needs confirmation"
+                        },
+                    ));
+                TroubleshootingItemIR {
+                    symptom: symptom.trim().to_string(),
+                    resolution: resolution.trim().to_string(),
+                }
+            }));
+        } else {
+            sections.push(GuideSectionIR {
+                section_id: section.section_id.replace("SEC", "GUIDE"),
+                heading: section.heading.clone(),
+                body: section
+                    .body
+                    .lines()
+                    .filter(|line| {
+                        let trimmed = line.trim();
+                        !trimmed.starts_with("- ") && !trimmed.starts_with("* ")
+                    })
+                    .collect::<Vec<_>>()
+                    .join("\n")
+                    .trim()
+                    .to_string(),
+                steps: list_items,
+            });
+        }
+    }
+    UserGuideIR {
+        schema: USER_GUIDE_SCHEMA.to_string(),
+        document_id: document_id.to_string(),
+        title: paper.title,
+        audience: if korean { "사용자" } else { "Users" }.to_string(),
+        introduction: paper.abstract_text,
+        sections,
+        examples: Vec::new(),
+        cautions,
+        troubleshooting,
+        checklist,
+        tables: paper.tables,
+        charts: paper.charts,
     }
 }
 
@@ -1517,6 +1914,7 @@ fn revise_document(
             KnowledgeDocumentIR::Paper(value) => value.title = title,
             KnowledgeDocumentIR::BusinessPlan(value)
             | KnowledgeDocumentIR::BusinessProposal(value) => value.title = title,
+            KnowledgeDocumentIR::UserGuide(value) => value.title = title,
             KnowledgeDocumentIR::Table(value) => value.title = title,
             KnowledgeDocumentIR::Chart(value) => value.title = title,
             KnowledgeDocumentIR::FinancialStatement(value) => value.entity = title,
@@ -1589,6 +1987,35 @@ fn revise_document(
             }
             if let Some(value) = value_after_marker(command, &["위험 추가:", "add risk:"]) {
                 business.risks.push(value);
+                changed = true;
+            }
+        }
+        KnowledgeDocumentIR::UserGuide(guide) => {
+            if let Some(value) = value_after_marker(command, &["소개:", "introduction:"]) {
+                guide.introduction = value;
+                changed = true;
+            }
+            if let Some(value) = value_after_marker(command, &["대상:", "audience:"]) {
+                guide.audience = value;
+                changed = true;
+            }
+            if let Some(value) = value_after_marker(command, &["섹션 추가:", "add section:"]) {
+                let (heading, body) = value.split_once('|').unwrap_or((value.as_str(), ""));
+                guide.sections.push(GuideSectionIR {
+                    section_id: format!("GUIDE-{}", guide.sections.len() + 1),
+                    heading: heading.trim().to_string(),
+                    body: body.trim().to_string(),
+                    steps: Vec::new(),
+                });
+                changed = true;
+            }
+            if let Some(value) = value_after_marker(command, &["주의 추가:", "add caution:"]) {
+                guide.cautions.push(value);
+                changed = true;
+            }
+            if let Some(value) = value_after_marker(command, &["확인 추가:", "add checklist:"])
+            {
+                guide.checklist.push(value);
                 changed = true;
             }
         }
@@ -1679,6 +2106,7 @@ pub fn analyze_document_in_language(
         KnowledgeDocumentIR::Paper(paper) => analyze_paper(paper, korean),
         KnowledgeDocumentIR::BusinessPlan(business)
         | KnowledgeDocumentIR::BusinessProposal(business) => analyze_business(business, korean),
+        KnowledgeDocumentIR::UserGuide(guide) => analyze_user_guide(guide, korean),
         KnowledgeDocumentIR::Table(table) => analyze_table(table, korean),
         KnowledgeDocumentIR::Chart(chart) => analyze_chart(chart, korean),
         KnowledgeDocumentIR::FinancialStatement(statement) => analyze_financial(statement, korean),
@@ -1686,6 +2114,67 @@ pub fn analyze_document_in_language(
     };
     for (index, finding) in findings.iter_mut().enumerate() {
         finding.finding_id = format!("FINDING-{}", index + 1);
+    }
+    findings
+}
+
+fn analyze_user_guide(guide: &UserGuideIR, korean: bool) -> Vec<KnowledgeFindingIR> {
+    let mut findings = vec![finding(
+        FindingKindIR::Summary,
+        if korean {
+            format!(
+                "설명서는 {}개 본문 절, {}개 예시, {}개 문제 해결 항목, {}개 확인 항목으로 구성됩니다.",
+                guide.sections.len(),
+                guide.examples.len(),
+                guide.troubleshooting.len(),
+                guide.checklist.len()
+            )
+        } else {
+            format!(
+                "The guide contains {} section(s), {} example(s), {} troubleshooting item(s), and {} checklist item(s).",
+                guide.sections.len(),
+                guide.examples.len(),
+                guide.troubleshooting.len(),
+                guide.checklist.len()
+            )
+        },
+        vec!["user_guide".to_string()],
+        1_000,
+    )];
+    for (location, empty, statement_ko, statement_en) in [
+        (
+            "introduction",
+            guide.introduction.trim().is_empty(),
+            "소개가 비어 있습니다.",
+            "The introduction is empty.",
+        ),
+        (
+            "sections",
+            guide.sections.is_empty(),
+            "사용 절차가 비어 있습니다.",
+            "The usage procedure is empty.",
+        ),
+        (
+            "troubleshooting",
+            guide.troubleshooting.is_empty(),
+            "문제 해결 항목이 비어 있습니다.",
+            "Troubleshooting is empty.",
+        ),
+        (
+            "checklist",
+            guide.checklist.is_empty(),
+            "빠른 확인 목록이 비어 있습니다.",
+            "The quick checklist is empty.",
+        ),
+    ] {
+        if empty {
+            findings.push(finding(
+                FindingKindIR::StructuralGap,
+                if korean { statement_ko } else { statement_en }.to_string(),
+                vec![location.to_string()],
+                1_000,
+            ));
+        }
     }
     findings
 }
@@ -2218,6 +2707,7 @@ fn render_markdown(document: &KnowledgeDocumentIR, korean: bool) -> String {
         | KnowledgeDocumentIR::BusinessProposal(business) => {
             render_business_markdown(business, korean)
         }
+        KnowledgeDocumentIR::UserGuide(guide) => render_user_guide_markdown(guide, korean),
         KnowledgeDocumentIR::Table(table) => render_table_markdown(table),
         KnowledgeDocumentIR::Chart(chart) => {
             let mut output = format!(
@@ -2295,6 +2785,82 @@ fn render_markdown(document: &KnowledgeDocumentIR, korean: bool) -> String {
             output
         }
     }
+}
+
+fn render_user_guide_markdown(guide: &UserGuideIR, korean: bool) -> String {
+    let mut output = format!(
+        "# {}\n\n**{}:** {}\n\n{}\n\n",
+        guide.title,
+        if korean { "대상" } else { "Audience" },
+        guide.audience,
+        guide.introduction
+    );
+    for section in &guide.sections {
+        output.push_str(&format!("## {}\n\n{}\n\n", section.heading, section.body));
+        for (index, step) in section.steps.iter().enumerate() {
+            output.push_str(&format!("{}. {}\n", index + 1, step));
+        }
+        if !section.steps.is_empty() {
+            output.push('\n');
+        }
+    }
+    if !guide.examples.is_empty() {
+        output.push_str(if korean {
+            "## 사용 예시\n\n"
+        } else {
+            "## Examples\n\n"
+        });
+        for example in &guide.examples {
+            output.push_str(&format!(
+                "### {}\n\n- **{}:** {}\n- **{}:** {}\n\n",
+                example.title,
+                if korean { "입력" } else { "Input" },
+                example.input,
+                if korean {
+                    "기대 결과"
+                } else {
+                    "Expected result"
+                },
+                example.expected_result
+            ));
+        }
+    }
+    if !guide.cautions.is_empty() {
+        output.push_str(if korean {
+            "## 주의사항\n\n"
+        } else {
+            "## Cautions\n\n"
+        });
+        for caution in &guide.cautions {
+            output.push_str(&format!("- {caution}\n"));
+        }
+        output.push('\n');
+    }
+    if !guide.troubleshooting.is_empty() {
+        output.push_str(if korean {
+            "## 문제 해결\n\n"
+        } else {
+            "## Troubleshooting\n\n"
+        });
+        for item in &guide.troubleshooting {
+            output.push_str(&format!("- **{}** — {}\n", item.symptom, item.resolution));
+        }
+        output.push('\n');
+    }
+    if !guide.checklist.is_empty() {
+        output.push_str(if korean {
+            "## 빠른 확인 목록\n\n"
+        } else {
+            "## Quick checklist\n\n"
+        });
+        for item in &guide.checklist {
+            output.push_str(&format!("- [ ] {item}\n"));
+        }
+    }
+    for table in &guide.tables {
+        output.push_str(&format!("\n{}", render_table_markdown(table)));
+    }
+    output
 }
 
 fn render_business_markdown(business: &BusinessDocumentIR, korean: bool) -> String {
@@ -3067,6 +3633,47 @@ fn contains_any(value: &str, needles: &[&str]) -> bool {
         .iter()
         .any(|needle| value.contains(&needle.to_lowercase()))
 }
+
+fn contains_surface_any(value: &str, needles: &[&str]) -> bool {
+    needles.iter().any(|needle| {
+        let needle = needle.to_lowercase();
+        if needle.chars().count() == 1 && !needle.is_ascii() {
+            korean_short_term_matches(value, &needle)
+        } else {
+            value.contains(&needle)
+        }
+    })
+}
+
+fn korean_short_term_matches(value: &str, term: &str) -> bool {
+    value.match_indices(term).any(|(index, matched)| {
+        let before = value[..index].chars().next_back();
+        if before.is_some_and(|character| character.is_alphanumeric() || character == '_') {
+            return false;
+        }
+        let after = &value[index + matched.len()..];
+        if after.is_empty()
+            || after
+                .chars()
+                .next()
+                .is_some_and(|character| !character.is_alphanumeric() && character != '_')
+        {
+            return true;
+        }
+        const PARTICLES: [&str; 14] = [
+            "은", "는", "이", "가", "을", "를", "와", "과", "에", "에서", "로", "도", "만", "의",
+        ];
+        PARTICLES.iter().any(|particle| {
+            after.strip_prefix(particle).is_some_and(|remainder| {
+                remainder.is_empty()
+                    || remainder
+                        .chars()
+                        .next()
+                        .is_some_and(|character| !character.is_alphanumeric() && character != '_')
+            })
+        })
+    })
+}
 fn matches_any(value: &str, candidates: &[&str]) -> bool {
     candidates.contains(&value)
 }
@@ -3389,6 +3996,67 @@ mod tests {
             infer_document_design("고객 제안용 사업제안서", DocumentKindIR::BusinessProposal).theme,
             DocumentThemeIR::ProposalCobalt
         );
+    }
+
+    #[test]
+    fn guide_genre_outranks_incidental_table_syllables_and_materializes_a_real_manual() {
+        let command =
+            "GPT 사용 설명서를 디자인 좋게 작성해. 확인되지 않은 기능은 확인 필요라고 표시해.";
+        assert_eq!(
+            infer_document_kind(command, None),
+            DocumentKindIR::UserGuide
+        );
+        assert_ne!(infer_document_kind(command, None), DocumentKindIR::Table);
+        let product = execute_document_work(&KnowledgeWorkRequestIR {
+            schema: KNOWLEDGE_WORK_REQUEST_SCHEMA.to_string(),
+            request_id: "GUIDE-KO-1".to_string(),
+            command: command.to_string(),
+            source: None,
+            document_kind: None,
+            output_language: Some(LanguageCodeIR::Korean),
+            design: None,
+            output: OutputDirectiveIR {
+                mode: OutputModeIR::Text,
+                format: OutputFormatIR::Html,
+                path: None,
+                overwrite: false,
+            },
+            context_tags: vec!["manual".to_string(), "gpt".to_string()],
+            max_plan_steps: 16,
+        })
+        .unwrap();
+        assert_eq!(product.document.kind(), DocumentKindIR::UserGuide);
+        assert_eq!(product.design.theme, DocumentThemeIR::GuideIndigo);
+        let KnowledgeDocumentIR::UserGuide(guide) = &product.document else {
+            panic!("user guide")
+        };
+        assert_eq!(guide.title, "GPT 사용 설명서");
+        assert!(guide
+            .sections
+            .iter()
+            .any(|section| section.heading == "빠른 시작"));
+        assert!(guide
+            .sections
+            .iter()
+            .any(|section| section.heading == "좋은 질문 작성법"));
+        assert!(!guide.examples.is_empty());
+        assert!(!guide.cautions.is_empty());
+        assert!(!guide.troubleshooting.is_empty());
+        assert!(!guide.checklist.is_empty());
+        let html = product.text_output.unwrap();
+        for required in [
+            "GPT 사용 설명서",
+            "빠른 시작",
+            "좋은 질문 작성법",
+            "바로 쓰는 예시",
+            "주의사항",
+            "문제 해결",
+            "빠른 확인 목록",
+        ] {
+            assert!(html.contains(required), "missing {required}");
+        }
+        assert!(html.contains("class=\"theme-guide\""));
+        assert!(!html.contains("DATA TABLE"));
     }
 
     #[test]

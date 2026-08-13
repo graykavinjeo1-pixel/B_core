@@ -518,6 +518,7 @@ fn lexical_document_kind(activations: &[ActivatedSenseIR]) -> Option<DocumentKin
                 "academic_paper" => DocumentKindIR::Paper,
                 "business_plan" => DocumentKindIR::BusinessPlan,
                 "business_proposal" => DocumentKindIR::BusinessProposal,
+                "user_guide" => DocumentKindIR::UserGuide,
                 "data_table" => DocumentKindIR::Table,
                 "data_chart" => DocumentKindIR::Chart,
                 "financial_statement" => DocumentKindIR::FinancialStatement,
@@ -1037,5 +1038,39 @@ mod tests {
             .lexical_activations
             .iter()
             .any(|activation| activation.canonical_concept == "business_proposal"));
+    }
+
+    #[test]
+    fn natural_language_manual_activates_guide_without_false_table_activation() {
+        let mut api = CognitiveApi::new_embedded().unwrap();
+        let response = api
+            .process_knowledge_work(&KnowledgeWorkRequestIR {
+                schema: KNOWLEDGE_WORK_REQUEST_SCHEMA.to_string(),
+                request_id: "KW-GUIDE-KO".to_string(),
+                command: "GPT 사용 설명서를 작성해. 모르는 기능은 확인 필요라고 표시해."
+                    .to_string(),
+                source: None,
+                document_kind: None,
+                output_language: Some(LanguageCodeIR::Korean),
+                design: None,
+                output: OutputDirectiveIR {
+                    mode: OutputModeIR::Text,
+                    format: OutputFormatIR::Html,
+                    path: None,
+                    overwrite: false,
+                },
+                context_tags: vec!["manual".to_string()],
+                max_plan_steps: 16,
+            })
+            .unwrap();
+        assert_eq!(response.product.document.kind(), DocumentKindIR::UserGuide);
+        assert!(response
+            .lexical_activations
+            .iter()
+            .any(|activation| activation.canonical_concept == "user_guide"));
+        assert!(!response
+            .lexical_activations
+            .iter()
+            .any(|activation| activation.lexeme_id == "KO.TABLE"));
     }
 }

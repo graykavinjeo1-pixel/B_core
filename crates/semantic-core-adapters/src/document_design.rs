@@ -2,7 +2,7 @@ use crate::{
     knowledge_work::{
         BusinessDocumentIR, BusinessDocumentTypeIR, ChartIR, DocumentDesignIR, DocumentThemeIR,
         FinancialStatementIR, KnowledgeDocumentIR, KnowledgeFindingIR, PageSizeIR, PaperIR,
-        PlanProposalIR, TableIR,
+        PlanProposalIR, TableIR, UserGuideIR,
     },
     language_knowledge::LanguageCodeIR,
 };
@@ -22,6 +22,7 @@ pub(crate) fn render_print_ready_html(
         | KnowledgeDocumentIR::BusinessProposal(business) => {
             render_business(business, findings, korean, design)
         }
+        KnowledgeDocumentIR::UserGuide(guide) => render_user_guide(guide, findings, korean, design),
         KnowledgeDocumentIR::Table(table) => render_table_document(table, findings, korean),
         KnowledgeDocumentIR::Chart(chart) => render_chart_document(chart, findings, korean),
         KnowledgeDocumentIR::FinancialStatement(statement) => {
@@ -97,6 +98,19 @@ impl DesignTokens {
                 accent_soft: "#dfe8ff",
                 line: "#cbd5ef",
                 display_font: "'Aptos Display','Malgun Gothic','Noto Sans KR',sans-serif",
+                body_font: "'Noto Sans KR','Segoe UI Variable',sans-serif",
+            },
+            DocumentThemeIR::GuideIndigo => Self {
+                theme_class: "theme-guide",
+                ink: "#17203d",
+                muted: "#65708f",
+                paper: "#fbfbff",
+                surface: "#eff1fb",
+                accent: "#5b4de6".to_string(),
+                accent_soft: "#e8e5ff",
+                line: "#d8d9e8",
+                display_font:
+                    "'Bahnschrift','Aptos Display','Malgun Gothic','Noto Sans KR',sans-serif",
                 body_font: "'Noto Sans KR','Segoe UI Variable',sans-serif",
             },
             DocumentThemeIR::MinimalMonochrome => Self {
@@ -193,6 +207,20 @@ td.numeric {{ text-align:right;font-weight:700; }}
 .timeline-id {{ width:90px;height:30px;display:grid;place-items:center;background:var(--accent);color:white;font:800 10px/1 var(--body);letter-spacing:.07em;z-index:1; }}
 .timeline-copy h4 {{ margin:1px 0 7px;font:700 17px/1.25 var(--display); }}
 .timeline-copy p {{ margin:0;color:var(--muted);font-size:13px; }}
+.guide-steps {{ list-style:none;counter-reset:guide-step;display:grid;gap:12px;margin:24px 0;padding:0; }}
+.guide-steps li {{ counter-increment:guide-step;display:grid;grid-template-columns:42px 1fr;gap:14px;align-items:center;padding:14px 16px;background:var(--surface);border:1px solid var(--line);break-inside:avoid; }}
+.guide-steps li::before {{ content:counter(guide-step,decimal-leading-zero);width:34px;height:34px;display:grid;place-items:center;border-radius:50%;background:var(--accent);color:white;font:800 10px/1 var(--body); }}
+.example-grid {{ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:24px 0; }}
+.example-card {{ padding:22px;border:1px solid var(--line);background:var(--surface);break-inside:avoid; }}
+.example-card h3 {{ margin:0 0 14px;font:700 18px/1.3 var(--display); }}
+.example-label {{ margin:14px 0 5px;color:var(--accent);font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase; }}
+.example-copy {{ margin:0;color:var(--ink);font-size:13px; }}
+.trouble-grid {{ display:grid;gap:1px;background:var(--line);border:1px solid var(--line); }}
+.trouble-item {{ display:grid;grid-template-columns:minmax(150px,.75fr) 1.5fr;gap:22px;padding:18px 20px;background:var(--paper);break-inside:avoid; }}
+.trouble-symptom {{ font-weight:750;color:var(--ink); }} .trouble-resolution {{ color:var(--muted); }}
+.checklist {{ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:0;list-style:none; }}
+.checklist li {{ position:relative;padding:15px 16px 15px 46px;background:var(--surface);border:1px solid var(--line);font-weight:650;break-inside:avoid; }}
+.checklist li::before {{ content:'✓';position:absolute;left:16px;top:14px;width:20px;height:20px;display:grid;place-items:center;border:2px solid var(--accent);color:var(--accent);font-size:11px; }}
 .finding-list {{ display:grid;gap:10px;margin-top:18px; }}
 .finding {{ display:grid;grid-template-columns:110px 1fr;gap:18px;padding:15px 0;border-bottom:1px solid var(--line); }}
 .finding-kind {{ color:var(--accent);font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase; }}
@@ -209,7 +237,9 @@ td.numeric {{ text-align:right;font-weight:700; }}
 .theme-proposal .cover h1,.theme-proposal .cover-deck,.theme-proposal .cover .meta-value {{ color:white; }}
 .theme-proposal .cover .eyebrow,.theme-proposal .cover .meta-label {{ color:#bcd0ff; }}
 .theme-proposal .cover::after {{ border-color:white;opacity:.1; }}
-@media (max-width:760px) {{ .document-shell {{ width:100%;margin:0;box-shadow:none; }} .cover,.content {{ padding:44px 26px; }} .cover {{ min-height:620px; }} .cover-meta,.metric-grid,.highlight-grid,.toc-grid {{ grid-template-columns:1fr 1fr; }} .running-head,.running-foot {{ display:none; }} }}
+.theme-guide .cover::before {{ background:linear-gradient(132deg,var(--paper) 0 58%,var(--accent-soft) 58%); }}
+.theme-guide .cover::after {{ border-radius:28%;transform:rotate(18deg);opacity:.9; }}
+@media (max-width:760px) {{ .document-shell {{ width:100%;margin:0;box-shadow:none; }} .cover,.content {{ padding:44px 26px; }} .cover {{ min-height:620px; }} .cover-meta,.metric-grid,.highlight-grid,.toc-grid,.example-grid,.checklist {{ grid-template-columns:1fr 1fr; }} .trouble-item {{ grid-template-columns:1fr;gap:6px; }} .running-head,.running-foot {{ display:none; }} }}
 @media print {{ html,body {{ background:white; }} .ambient,.running-head,.running-foot {{ display:none; }} .document-shell {{ width:auto;margin:0;box-shadow:none;border:0; }} .cover {{ min-height:250mm;break-after:page; }} .content {{ padding:0; }} .chart-card,.table-wrap,.metric,.callout,.cta {{ break-inside:avoid; }} a {{ color:inherit; }} }}
 "#,
         page = page,
@@ -396,6 +426,109 @@ fn render_business(
         render_risks(&business.risks, korean),
         if korean { "다음 단계" } else { "Next action" },
         html_escape(&business.next_action),
+    )
+}
+
+fn render_user_guide(
+    guide: &UserGuideIR,
+    findings: &[KnowledgeFindingIR],
+    korean: bool,
+    design: &DocumentDesignIR,
+) -> String {
+    let section_count = guide.sections.len().to_string();
+    let checklist_count = guide.checklist.len().to_string();
+    let toc = if design.show_table_of_contents {
+        render_toc(
+            guide
+                .sections
+                .iter()
+                .map(|section| (section.section_id.as_str(), section.heading.as_str())),
+            korean,
+        )
+    } else {
+        String::new()
+    };
+    let sections = guide
+        .sections
+        .iter()
+        .enumerate()
+        .map(|(index, section)| {
+            let steps = if section.steps.is_empty() {
+                String::new()
+            } else {
+                format!(
+                    "<ol class=\"guide-steps\">{}</ol>",
+                    section
+                        .steps
+                        .iter()
+                        .map(|step| format!("<li>{}</li>", html_escape(step)))
+                        .collect::<String>()
+                )
+            };
+            format!("<section class=\"section\" id=\"{}\"><div class=\"section-kicker\">GUIDE {:02}</div><h2>{}</h2><div class=\"section-body\">{}</div>{}</section>", id_escape(&section.section_id), index + 1, html_escape(&section.heading), paragraphs(&section.body), steps)
+        })
+        .collect::<String>();
+    let examples = if guide.examples.is_empty() {
+        String::new()
+    } else {
+        format!(
+            "<section class=\"section\" id=\"guide-examples\"><div class=\"section-kicker\">EXAMPLES</div><h2>{}</h2><div class=\"example-grid\">{}</div></section>",
+            if korean { "바로 쓰는 예시" } else { "Ready-to-use examples" },
+            guide.examples.iter().map(|example| format!("<article class=\"example-card\"><h3>{}</h3><div class=\"example-label\">{}</div><p class=\"example-copy\">{}</p><div class=\"example-label\">{}</div><p class=\"example-copy\">{}</p></article>",html_escape(&example.title),if korean{"입력"}else{"Input"},html_escape(&example.input),if korean{"기대 결과"}else{"Expected result"},html_escape(&example.expected_result))).collect::<String>()
+        )
+    };
+    let cautions = if guide.cautions.is_empty() {
+        String::new()
+    } else {
+        format!(
+            "<aside class=\"callout\"><div class=\"callout-label\">{}</div><p>{}</p></aside>",
+            if korean { "주의사항" } else { "Cautions" },
+            html_escape(&guide.cautions.join(" · "))
+        )
+    };
+    let troubleshooting = if guide.troubleshooting.is_empty() {
+        String::new()
+    } else {
+        format!(
+            "<section class=\"section page-break\" id=\"guide-troubleshooting\"><div class=\"section-kicker\">TROUBLESHOOTING</div><h2>{}</h2><div class=\"trouble-grid\">{}</div></section>",
+            if korean { "문제 해결" } else { "Troubleshooting" },
+            guide.troubleshooting.iter().map(|item| format!("<article class=\"trouble-item\"><div class=\"trouble-symptom\">{}</div><div class=\"trouble-resolution\">{}</div></article>",html_escape(&item.symptom),html_escape(&item.resolution))).collect::<String>()
+        )
+    };
+    let checklist = if guide.checklist.is_empty() {
+        String::new()
+    } else {
+        format!(
+            "<section class=\"section\" id=\"guide-checklist\"><div class=\"section-kicker\">QUICK CHECK</div><h2>{}</h2><ul class=\"checklist\">{}</ul></section>",
+            if korean { "빠른 확인 목록" } else { "Quick checklist" },
+            guide.checklist.iter().map(|item|format!("<li>{}</li>",html_escape(item))).collect::<String>()
+        )
+    };
+    let tables = guide.tables.iter().map(render_table).collect::<String>();
+    let charts = guide.charts.iter().map(render_chart).collect::<String>();
+    format!(
+        "{}<div class=\"content\">{}<section class=\"section\"><div class=\"section-kicker\">WELCOME</div><h2>{}</h2><p class=\"lead\">{}</p></section>{}{}{}{}{}{}{}{}</div>",
+        cover(
+            "USER GUIDE",
+            &guide.title,
+            &guide.introduction,
+            &[
+                (if korean { "대상" } else { "Audience" }, &guide.audience),
+                (if korean { "절" } else { "Sections" }, &section_count),
+                (if korean { "확인 항목" } else { "Checks" }, &checklist_count),
+            ],
+        ),
+        toc,
+        if korean { "이 안내서의 목적" } else { "Purpose of this guide" },
+        html_escape(&guide.introduction),
+        sections,
+        examples,
+        cautions,
+        troubleshooting,
+        checklist,
+        tables,
+        charts,
+        render_findings(findings, korean),
     )
 }
 
@@ -623,6 +756,7 @@ fn document_title(document: &KnowledgeDocumentIR) -> &str {
         KnowledgeDocumentIR::BusinessPlan(value) | KnowledgeDocumentIR::BusinessProposal(value) => {
             &value.title
         }
+        KnowledgeDocumentIR::UserGuide(value) => &value.title,
         KnowledgeDocumentIR::Table(value) => &value.title,
         KnowledgeDocumentIR::Chart(value) => &value.title,
         KnowledgeDocumentIR::FinancialStatement(value) => &value.entity,
