@@ -1250,8 +1250,10 @@ mod tests {
             .expect("synthesis receipt");
         assert!(receipt.candidates_enumerated > 1);
         assert!(receipt.candidates_falsified > 0);
-        assert!(receipt.template.postimage_source.contains('+'));
-        assert!(candidate.generated_rust_source.contains("base + gain"));
+        assert!(receipt.template.postimage_source.contains("saturating_add"));
+        assert!(candidate
+            .generated_rust_source
+            .contains("saturating_add(gain)"));
         assert!(candidate.type_effect_audit_pass);
         assert!(!candidate.installed);
     }

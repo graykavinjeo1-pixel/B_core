@@ -2364,14 +2364,13 @@ fn emit_expression(
             .ok_or_else(|| format!("TYPED_MECHANISM_UNKNOWN_ROLE:{role}")),
         TypedSyntaxExpressionIR::IntLiteral { value } => Ok(format!("{value}i64")),
         TypedSyntaxExpressionIR::BoolLiteral { value } => Ok(value.to_string()),
-        TypedSyntaxExpressionIR::Unary { operator, input } => Ok(format!(
-            "({}{})",
-            match operator {
-                UnaryOperator::Negate => "-",
-                UnaryOperator::Not => "!",
-            },
-            emit_expression(input, sources, operands, definitions)?
-        )),
+        TypedSyntaxExpressionIR::Unary { operator, input } => {
+            let input = emit_expression(input, sources, operands, definitions)?;
+            Ok(match operator {
+                UnaryOperator::Negate => format!("({input}).saturating_neg()"),
+                UnaryOperator::Not => format!("(!{input})"),
+            })
+        }
         TypedSyntaxExpressionIR::StringTransform { operator, input } => {
             let receiver = emit_postfix_receiver(input, sources, operands, definitions)?;
             Ok(match operator {
@@ -2397,6 +2396,28 @@ fn emit_expression(
                 Ok(format!(
                     "format!(\"{{}}{{}}\", {left_expression}, {right_expression})"
                 ))
+            } else if left_type == ProgramType::Int && right_type == ProgramType::Int {
+                Ok(match operator {
+                    BinaryOperator::Add => {
+                        format!("({left_expression}).saturating_add({right_expression})")
+                    }
+                    BinaryOperator::Subtract => {
+                        format!("({left_expression}).saturating_sub({right_expression})")
+                    }
+                    BinaryOperator::Multiply => {
+                        format!("({left_expression}).saturating_mul({right_expression})")
+                    }
+                    BinaryOperator::Divide => {
+                        format!("({left_expression}).saturating_div({right_expression})")
+                    }
+                    BinaryOperator::Modulo => {
+                        format!("({left_expression}).wrapping_rem({right_expression})")
+                    }
+                    _ => format!(
+                        "({left_expression} {} {right_expression})",
+                        binary_token(*operator)
+                    ),
+                })
             } else {
                 Ok(format!(
                     "({left_expression} {} {right_expression})",
@@ -3648,7 +3669,7 @@ mod tests {
         assert!(receipt.counterexample_guided_selection);
         assert!(!receipt.conditional_synthesized);
         assert!(receipt.candidates_falsified > 0);
-        assert!(receipt.template.postimage_source.contains('+'));
+        assert!(receipt.template.postimage_source.contains("saturating_add"));
         assert!(receipt
             .template
             .postimage_source
@@ -3810,7 +3831,7 @@ mod tests {
         .unwrap();
         assert!(!revised.preferred_operator_selected);
         assert_eq!(revised.preferred_operator_attempts, 1);
-        assert!(revised.template.postimage_source.contains('*'));
+        assert!(revised.template.postimage_source.contains("saturating_mul"));
 
         let mut tampered = operator;
         tampered.postimage = TypedSyntaxExpressionIR::IntLiteral { value: 0 };

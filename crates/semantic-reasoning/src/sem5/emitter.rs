@@ -7,7 +7,7 @@ use super::model::{
     ProgramType, ScalarExpression, StringTransformOperator, UnaryOperator, Value,
 };
 
-pub const CALLABLE_SOURCE_SCHEMA_REVISION: u64 = 17;
+pub const CALLABLE_SOURCE_SCHEMA_REVISION: u64 = 18;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct RustArtifact {
@@ -452,14 +452,16 @@ fn compound_assignment(
     if left_binding != binding {
         return Ok(None);
     }
-    let token = match operator {
-        BinaryOperator::Add => "+=",
-        BinaryOperator::Subtract => "-=",
-        BinaryOperator::Multiply => "*=",
-        BinaryOperator::Divide => "/=",
-        BinaryOperator::Modulo => "%=",
-        BinaryOperator::And => "&=",
-        BinaryOperator::Or => "|=",
+    let right = emit_expression_mode(right, true)?;
+    let right = strip_one_outer_pair(&right);
+    let assignment = match operator {
+        BinaryOperator::Add => format!("{binding} = {binding}.saturating_add({right})"),
+        BinaryOperator::Subtract => format!("{binding} = {binding}.saturating_sub({right})"),
+        BinaryOperator::Multiply => format!("{binding} = {binding}.saturating_mul({right})"),
+        BinaryOperator::Divide => format!("{binding} = {binding}.saturating_div({right})"),
+        BinaryOperator::Modulo => format!("{binding} = {binding}.wrapping_rem({right})"),
+        BinaryOperator::And => format!("{binding} &= {right}"),
+        BinaryOperator::Or => format!("{binding} |= {right}"),
         BinaryOperator::Equal
         | BinaryOperator::NotEqual
         | BinaryOperator::LessThan
@@ -469,11 +471,7 @@ fn compound_assignment(
             return Ok(None);
         }
     };
-    let right = emit_expression_mode(right, true)?;
-    Ok(Some(format!(
-        "{binding} {token} {}",
-        strip_one_outer_pair(&right)
-    )))
+    Ok(Some(assignment))
 }
 
 fn emit_expression_mode(node: &ProgramNode, lint_clean: bool) -> Result<String, String> {
@@ -481,14 +479,11 @@ fn emit_expression_mode(node: &ProgramNode, lint_clean: bool) -> Result<String, 
         NodeKind::Literal { value } => rust_literal(value),
         NodeKind::Variable { name } | NodeKind::Load { name } => Ok(name.clone()),
         NodeKind::UnaryOp { operator, input } => {
-            let operator = match operator {
-                UnaryOperator::Negate => "-",
-                UnaryOperator::Not => "!",
-            };
-            Ok(format!(
-                "({operator}{})",
-                emit_expression_mode(input, lint_clean)?
-            ))
+            let input = emit_expression_mode(input, lint_clean)?;
+            Ok(match operator {
+                UnaryOperator::Negate => format!("({input}).saturating_neg()"),
+                UnaryOperator::Not => format!("(!{input})"),
+            })
         }
         NodeKind::StringTransform { operator, input } => {
             let receiver = emit_postfix_receiver(input, lint_clean)?;
@@ -529,6 +524,10 @@ fn emit_expression_mode(node: &ProgramNode, lint_clean: bool) -> Result<String, 
                 Ok(format!(
                     "format!(\"{{}}{{}}\", {left_source}, {right_source})"
                 ))
+            } else if left.meta.output_type == ProgramType::Int
+                && right.meta.output_type == ProgramType::Int
+            {
+                Ok(emit_integer_binary(*operator, &left_source, &right_source))
             } else {
                 Ok(format!(
                     "({left_source} {} {right_source})",
@@ -630,14 +629,13 @@ fn emit_scalar_expression(expression: &ScalarExpression) -> Result<String, Strin
         ScalarExpression::Argument { index } => Ok(format!("a{index}")),
         ScalarExpression::Constant { value } => Ok(format!("{value}i64")),
         ScalarExpression::BoolConstant { value } => Ok(value.to_string()),
-        ScalarExpression::Unary { operator, input } => Ok(format!(
-            "({}{})",
-            match operator {
-                UnaryOperator::Negate => "-",
-                UnaryOperator::Not => "!",
-            },
-            emit_scalar_expression(input)?
-        )),
+        ScalarExpression::Unary { operator, input } => {
+            let input = emit_scalar_expression(input)?;
+            Ok(match operator {
+                UnaryOperator::Negate => format!("({input}).saturating_neg()"),
+                UnaryOperator::Not => format!("(!{input})"),
+            })
+        }
         ScalarExpression::StringTransform { operator, input } => {
             let receiver = emit_scalar_expression(input)?;
             Ok(match operator {
@@ -650,12 +648,18 @@ fn emit_scalar_expression(expression: &ScalarExpression) -> Result<String, Strin
             operator,
             left,
             right,
-        } => Ok(format!(
-            "({} {} {})",
-            emit_scalar_expression(left)?,
-            binary_token(*operator),
-            emit_scalar_expression(right)?
-        )),
+        } => {
+            let left = emit_scalar_expression(left)?;
+            let right = emit_scalar_expression(right)?;
+            Ok(match operator {
+                BinaryOperator::Add
+                | BinaryOperator::Subtract
+                | BinaryOperator::Multiply
+                | BinaryOperator::Divide
+                | BinaryOperator::Modulo => emit_integer_binary(*operator, &left, &right),
+                _ => format!("({left} {} {right})", binary_token(*operator)),
+            })
+        }
         ScalarExpression::Length { .. } | ScalarExpression::Index { .. } => {
             Err("SCALAR_COLLECTION_EXPRESSION_REQUIRES_TYPED_PROGRAM_LOWERING".to_string())
         }
@@ -685,6 +689,17 @@ fn binary_token(operator: BinaryOperator) -> &'static str {
         BinaryOperator::GreaterThanOrEqual => ">=",
         BinaryOperator::And => "&&",
         BinaryOperator::Or => "||",
+    }
+}
+
+fn emit_integer_binary(operator: BinaryOperator, left: &str, right: &str) -> String {
+    match operator {
+        BinaryOperator::Add => format!("({left}).saturating_add({right})"),
+        BinaryOperator::Subtract => format!("({left}).saturating_sub({right})"),
+        BinaryOperator::Multiply => format!("({left}).saturating_mul({right})"),
+        BinaryOperator::Divide => format!("({left}).saturating_div({right})"),
+        BinaryOperator::Modulo => format!("({left}).wrapping_rem({right})"),
+        _ => format!("({left} {} {right})", binary_token(operator)),
     }
 }
 
@@ -927,6 +942,22 @@ mod tests {
         assert_eq!(
             emit_expression_mode(&branch, true).unwrap(),
             "(if flag { vec![1i64] } else { vec![2i64] }).len() as i64"
+        );
+    }
+
+    #[test]
+    fn integer_lowering_uses_the_same_total_semantics_as_the_ir() {
+        assert_eq!(
+            emit_integer_binary(BinaryOperator::Add, "left", "right"),
+            "(left).saturating_add(right)"
+        );
+        assert_eq!(
+            emit_integer_binary(BinaryOperator::Divide, "left", "right"),
+            "(left).saturating_div(right)"
+        );
+        assert_eq!(
+            emit_integer_binary(BinaryOperator::Modulo, "left", "right"),
+            "(left).wrapping_rem(right)"
         );
     }
 

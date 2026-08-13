@@ -783,7 +783,7 @@ pub fn eval_scalar(
 
 fn eval_unary(operator: UnaryOperator, value: Value) -> Result<Value, String> {
     match (operator, value) {
-        (UnaryOperator::Negate, Value::Int(value)) => Ok(Value::Int(-value)),
+        (UnaryOperator::Negate, Value::Int(value)) => Ok(Value::Int(value.saturating_neg())),
         (UnaryOperator::Not, Value::Bool(value)) => Ok(Value::Bool(!value)),
         _ => Err("UNARY_VALUE_TYPE".to_string()),
     }
@@ -811,9 +811,9 @@ fn eval_binary(operator: BinaryOperator, left: Value, right: Value) -> Result<Va
         (Op::Subtract, Value::Int(a), Value::Int(b)) => Ok(Value::Int(a.saturating_sub(b))),
         (Op::Multiply, Value::Int(a), Value::Int(b)) => Ok(Value::Int(a.saturating_mul(b))),
         (Op::Divide, Value::Int(_), Value::Int(0)) => Err("DIVISION_BY_ZERO".to_string()),
-        (Op::Divide, Value::Int(a), Value::Int(b)) => Ok(Value::Int(a / b)),
+        (Op::Divide, Value::Int(a), Value::Int(b)) => Ok(Value::Int(a.saturating_div(b))),
         (Op::Modulo, Value::Int(_), Value::Int(0)) => Err("MODULO_BY_ZERO".to_string()),
-        (Op::Modulo, Value::Int(a), Value::Int(b)) => Ok(Value::Int(a % b)),
+        (Op::Modulo, Value::Int(a), Value::Int(b)) => Ok(Value::Int(a.wrapping_rem(b))),
         (Op::Equal, Value::Int(a), Value::Int(b)) => Ok(Value::Bool(a == b)),
         (Op::Equal, Value::Bool(a), Value::Bool(b)) => Ok(Value::Bool(a == b)),
         (Op::Equal, Value::String(a), Value::String(b)) => Ok(Value::Bool(a == b)),
@@ -1019,6 +1019,30 @@ mod tests {
         let inputs = BTreeMap::from([("x".to_string(), Value::Int(4))]);
         let outcome = execute(&ir, &inputs, &[], BTreeMap::new()).expect("execute");
         assert_eq!(outcome.value, Value::Int(5));
+    }
+
+    #[test]
+    fn integer_boundary_semantics_are_total_and_backend_replayable() {
+        assert_eq!(
+            eval_unary(UnaryOperator::Negate, Value::Int(i64::MIN)),
+            Ok(Value::Int(i64::MAX))
+        );
+        assert_eq!(
+            eval_binary(BinaryOperator::Add, Value::Int(i64::MAX), Value::Int(1)),
+            Ok(Value::Int(i64::MAX))
+        );
+        assert_eq!(
+            eval_binary(BinaryOperator::Divide, Value::Int(i64::MIN), Value::Int(-1),),
+            Ok(Value::Int(i64::MAX))
+        );
+        assert_eq!(
+            eval_binary(BinaryOperator::Modulo, Value::Int(i64::MIN), Value::Int(-1),),
+            Ok(Value::Int(0))
+        );
+        assert_eq!(
+            eval_binary(BinaryOperator::Divide, Value::Int(1), Value::Int(0)),
+            Err("DIVISION_BY_ZERO".to_string())
+        );
     }
 
     #[test]

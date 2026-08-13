@@ -691,7 +691,6 @@ def typed_template(node, operands, depth=0):
     if isinstance(node, ast.BinOp):
         operators = {
             ast.Add: "ADD", ast.Sub: "SUBTRACT", ast.Mult: "MULTIPLY",
-            ast.FloorDiv: "DIVIDE", ast.Mod: "MODULO",
         }
         operator = operators.get(type(node.op))
         left = typed_template(node.left, operands, depth + 1)
@@ -1716,6 +1715,7 @@ fn convert_python_closure_definition(
 fn python_expression(
     expression: &TypedSyntaxExpressionIR,
     sources: &BTreeMap<String, String>,
+    operand_types: &BTreeMap<String, ProgramType>,
 ) -> Result<String, CausalFrontendFailure> {
     match expression {
         TypedSyntaxExpressionIR::Operand { role } => sources
@@ -1726,17 +1726,18 @@ fn python_expression(
         TypedSyntaxExpressionIR::BoolLiteral { value } => {
             Ok(if *value { "True" } else { "False" }.to_string())
         }
-        TypedSyntaxExpressionIR::Unary { operator, input } => Ok(format!(
-            "({}{})",
-            match operator {
-                UnaryOperator::Negate => "-",
-                UnaryOperator::Not => "not ",
-            },
-            python_expression(input, sources)?
-        )),
+        TypedSyntaxExpressionIR::Unary { operator, input } => {
+            let input = python_expression(input, sources, operand_types)?;
+            Ok(match operator {
+                UnaryOperator::Negate => format!(
+                    "(lambda _b_core_value: min(max(-_b_core_value, -9223372036854775808), 9223372036854775807))({input})"
+                ),
+                UnaryOperator::Not => format!("(not {input})"),
+            })
+        }
         TypedSyntaxExpressionIR::StringTransform { operator, input } => Ok(format!(
             "({}).{}()",
-            python_expression(input, sources)?,
+            python_expression(input, sources, operand_types)?,
             match operator {
                 StringTransformOperator::Trim => "strip",
                 StringTransformOperator::Lowercase => "lower",
@@ -1747,33 +1748,61 @@ fn python_expression(
             operator,
             left,
             right,
-        } => Ok(format!(
-            "({} {} {})",
-            python_expression(left, sources)?,
-            match operator {
-                BinaryOperator::Add => "+",
-                BinaryOperator::Subtract => "-",
-                BinaryOperator::Multiply => "*",
-                BinaryOperator::Divide => "//",
-                BinaryOperator::Modulo => "%",
-                BinaryOperator::Equal => "==",
-                BinaryOperator::NotEqual => "!=",
-                BinaryOperator::LessThan => "<",
-                BinaryOperator::LessThanOrEqual => "<=",
-                BinaryOperator::GreaterThan => ">",
-                BinaryOperator::GreaterThanOrEqual => ">=",
-                BinaryOperator::And => "and",
-                BinaryOperator::Or => "or",
-            },
-            python_expression(right, sources)?
-        )),
-        TypedSyntaxExpressionIR::Length { input } => {
-            Ok(format!("len({})", python_expression(input, sources)?))
+        } => {
+            let left_source = python_expression(left, sources, operand_types)?;
+            let right_source = python_expression(right, sources, operand_types)?;
+            let integer_operands = python_expression_type(left, operand_types)
+                == Some(ProgramType::Int)
+                && python_expression_type(right, operand_types) == Some(ProgramType::Int);
+            Ok(match operator {
+                BinaryOperator::Add if integer_operands => python_saturating_arithmetic(
+                    "+",
+                    &left_source,
+                    &right_source,
+                ),
+                BinaryOperator::Subtract if integer_operands => python_saturating_arithmetic(
+                    "-",
+                    &left_source,
+                    &right_source,
+                ),
+                BinaryOperator::Multiply if integer_operands => python_saturating_arithmetic(
+                    "*",
+                    &left_source,
+                    &right_source,
+                ),
+                BinaryOperator::Divide => format!(
+                    "(lambda _b_core_left, _b_core_right: min(max(((abs(_b_core_left) // abs(_b_core_right)) if ((_b_core_left >= 0) == (_b_core_right >= 0)) else -(abs(_b_core_left) // abs(_b_core_right))), -9223372036854775808), 9223372036854775807))({left_source}, {right_source})"
+                ),
+                BinaryOperator::Modulo => format!(
+                    "(lambda _b_core_left, _b_core_right: (-(abs(_b_core_left) % abs(_b_core_right)) if _b_core_left < 0 else (abs(_b_core_left) % abs(_b_core_right))))({left_source}, {right_source})"
+                ),
+                _ => format!(
+                    "({left_source} {} {right_source})",
+                    match operator {
+                        BinaryOperator::Add => "+",
+                        BinaryOperator::Subtract => "-",
+                        BinaryOperator::Multiply => "*",
+                        BinaryOperator::Divide | BinaryOperator::Modulo => unreachable!(),
+                        BinaryOperator::Equal => "==",
+                        BinaryOperator::NotEqual => "!=",
+                        BinaryOperator::LessThan => "<",
+                        BinaryOperator::LessThanOrEqual => "<=",
+                        BinaryOperator::GreaterThan => ">",
+                        BinaryOperator::GreaterThanOrEqual => ">=",
+                        BinaryOperator::And => "and",
+                        BinaryOperator::Or => "or",
+                    }
+                ),
+            })
         }
+        TypedSyntaxExpressionIR::Length { input } => Ok(format!(
+            "len({})",
+            python_expression(input, sources, operand_types)?
+        )),
         TypedSyntaxExpressionIR::Index { collection, index } => Ok(format!(
             "({})[{}]",
-            python_expression(collection, sources)?,
-            python_expression(index, sources)?
+            python_expression(collection, sources, operand_types)?,
+            python_expression(index, sources, operand_types)?
         )),
         TypedSyntaxExpressionIR::Call {
             api_token,
@@ -1782,10 +1811,72 @@ fn python_expression(
             "{api_token}({})",
             arguments
                 .iter()
-                .map(|argument| python_expression(argument, sources))
+                .map(|argument| python_expression(argument, sources, operand_types))
                 .collect::<Result<Vec<_>, _>>()?
                 .join(", ")
         )),
+    }
+}
+
+fn python_saturating_arithmetic(operator: &str, left: &str, right: &str) -> String {
+    format!(
+        "(lambda _b_core_left, _b_core_right: min(max((_b_core_left {operator} _b_core_right), -9223372036854775808), 9223372036854775807))({left}, {right})"
+    )
+}
+
+fn python_expression_type(
+    expression: &TypedSyntaxExpressionIR,
+    operand_types: &BTreeMap<String, ProgramType>,
+) -> Option<ProgramType> {
+    match expression {
+        TypedSyntaxExpressionIR::Operand { role } => operand_types.get(role).cloned(),
+        TypedSyntaxExpressionIR::IntLiteral { .. }
+        | TypedSyntaxExpressionIR::Unary {
+            operator: UnaryOperator::Negate,
+            ..
+        }
+        | TypedSyntaxExpressionIR::Length { .. } => Some(ProgramType::Int),
+        TypedSyntaxExpressionIR::BoolLiteral { .. }
+        | TypedSyntaxExpressionIR::Unary {
+            operator: UnaryOperator::Not,
+            ..
+        } => Some(ProgramType::Bool),
+        TypedSyntaxExpressionIR::StringTransform { .. } => Some(ProgramType::String),
+        TypedSyntaxExpressionIR::Binary {
+            operator,
+            left,
+            right,
+        } => match operator {
+            BinaryOperator::Add
+                if python_expression_type(left, operand_types) == Some(ProgramType::String)
+                    && python_expression_type(right, operand_types)
+                        == Some(ProgramType::String) =>
+            {
+                Some(ProgramType::String)
+            }
+            BinaryOperator::Add
+            | BinaryOperator::Subtract
+            | BinaryOperator::Multiply
+            | BinaryOperator::Divide
+            | BinaryOperator::Modulo => Some(ProgramType::Int),
+            BinaryOperator::Equal
+            | BinaryOperator::NotEqual
+            | BinaryOperator::LessThan
+            | BinaryOperator::LessThanOrEqual
+            | BinaryOperator::GreaterThan
+            | BinaryOperator::GreaterThanOrEqual
+            | BinaryOperator::And
+            | BinaryOperator::Or => Some(ProgramType::Bool),
+        },
+        TypedSyntaxExpressionIR::Index { collection, .. } => {
+            match python_expression_type(collection, operand_types)? {
+                ProgramType::SequenceInt | ProgramType::Bytes => Some(ProgramType::Int),
+                ProgramType::NestedSequenceInt => Some(ProgramType::SequenceInt),
+                ProgramType::String => Some(ProgramType::String),
+                _ => None,
+            }
+        }
+        TypedSyntaxExpressionIR::Call { .. } => None,
     }
 }
 
@@ -1817,17 +1908,22 @@ fn materialize_python_synthesis(
         .iter()
         .map(|operand| (operand.role.clone(), operand.source.clone()))
         .collect::<BTreeMap<_, _>>();
+    let operand_types = template
+        .operands
+        .iter()
+        .map(|operand| (operand.role.clone(), operand.value_type.clone()))
+        .collect::<BTreeMap<_, _>>();
     let goal = &synthesis.winning_goal;
     let condition = goal
         .condition
         .as_ref()
-        .map(|expression| python_expression(expression, &sources))
+        .map(|expression| python_expression(expression, &sources, &operand_types))
         .transpose()?;
-    let postimage = python_expression(&goal.postimage, &sources)?;
+    let postimage = python_expression(&goal.postimage, &sources, &operand_types)?;
     let otherwise = goal
         .otherwise
         .as_ref()
-        .map(|expression| python_expression(expression, &sources))
+        .map(|expression| python_expression(expression, &sources, &operand_types))
         .transpose()?;
     let mut edits = Vec::new();
     let unconditional = template
@@ -3570,8 +3666,72 @@ def lexical_within(value: str, limit: str) -> bool:
             .iter()
             .any(|cut| cut.postimage_template.is_some()));
         let repaired = replay_source_bound_patch(source, &alternative.replayable_patch).unwrap();
-        assert!(repaired.contains("((left) + (right)) * ((left) - (right))"));
+        assert!(repaired.contains("_b_core_left * _b_core_right"));
+        assert!(repaired.contains("_b_core_left + _b_core_right"));
+        assert!(repaired.contains("_b_core_left - _b_core_right"));
         validate_source_bound_causal_receipt(&receipt, source).unwrap();
+    }
+
+    #[test]
+    fn typed_integer_semantics_are_identical_in_python_lowering() {
+        let Some(python_executable) = python() else {
+            return;
+        };
+        let sources = BTreeMap::new();
+        let operand_types = BTreeMap::new();
+        let cases = [
+            (BinaryOperator::Add, i64::MAX, 1, i64::MAX),
+            (BinaryOperator::Subtract, i64::MIN, 1, i64::MIN),
+            (BinaryOperator::Multiply, i64::MAX, 2, i64::MAX),
+            (BinaryOperator::Divide, -7, 3, -2),
+            (BinaryOperator::Divide, 7, -3, -2),
+            (BinaryOperator::Divide, i64::MIN, -1, i64::MAX),
+            (BinaryOperator::Modulo, -7, 3, -1),
+            (BinaryOperator::Modulo, 7, -3, 1),
+            (BinaryOperator::Modulo, i64::MIN, -1, 0),
+        ];
+        for (operator, left, right, expected) in cases {
+            let expression = TypedSyntaxExpressionIR::Binary {
+                operator,
+                left: Box::new(TypedSyntaxExpressionIR::IntLiteral { value: left }),
+                right: Box::new(TypedSyntaxExpressionIR::IntLiteral { value: right }),
+            };
+            let emitted = python_expression(&expression, &sources, &operand_types).unwrap();
+            let output = Command::new(&python_executable)
+                .args(["-I", "-S", "-c", &format!("print({emitted})")])
+                .output()
+                .unwrap();
+            assert!(
+                output.status.success(),
+                "operator={operator:?} stderr={}",
+                String::from_utf8_lossy(&output.stderr)
+            );
+            assert_eq!(
+                String::from_utf8_lossy(&output.stdout).trim(),
+                expected.to_string(),
+                "operator={operator:?} emitted={emitted}"
+            );
+        }
+    }
+
+    #[test]
+    fn python_floor_and_modulo_are_not_mislabeled_as_typed_ir_seeds() {
+        let Some(python_executable) = python() else {
+            return;
+        };
+        let source = "def floor(left: int, right: int) -> int:\n    return left // right\n\ndef modulo(left: int, right: int) -> int:\n    return left % right\n";
+        let response = run_python_host(
+            &python_executable,
+            source,
+            &["floor".to_string(), "modulo".to_string()],
+        )
+        .unwrap();
+        assert!(response.ok, "{:?}", response.detail);
+        assert_eq!(response.definitions.len(), 2);
+        assert!(response.definitions.iter().all(|definition| definition
+            .cuts
+            .iter()
+            .all(|cut| cut.postimage_template.is_none())));
     }
 
     #[test]
@@ -4030,7 +4190,8 @@ def helper(first: int, second: int) -> int:
         };
         assert_eq!(edits.len(), 2);
         let candidate = replay_source_bound_patch(source, &alternative.replayable_patch).unwrap();
-        assert!(candidate.contains("return ((left) + (right))"));
+        assert!(candidate.contains("return (lambda _b_core_left, _b_core_right:"));
+        assert!(candidate.contains("_b_core_left + _b_core_right"));
         assert!(candidate.contains("if left > right:"));
     }
 
@@ -4163,11 +4324,9 @@ def add(left, right):
             .operand_type_evidence
             .values()
             .all(|evidence| evidence == "PUBLIC_OBSERVATION"));
-        assert!(
-            replay_source_bound_patch(source, &alternative.replayable_patch)
-                .unwrap()
-                .contains("return ((left) + (right))")
-        );
+        let candidate = replay_source_bound_patch(source, &alternative.replayable_patch).unwrap();
+        assert!(candidate.contains("return (lambda _b_core_left, _b_core_right:"));
+        assert!(candidate.contains("_b_core_left + _b_core_right"));
     }
 
     #[test]
@@ -4249,11 +4408,10 @@ def add(left, right):
         assert!(receipt.alternatives[0]
             .alternative_id
             .starts_with("AUTO:STATIC_PUBLIC_CONTRADICTION:add:"));
-        assert!(
-            replay_source_bound_patch(source, &receipt.alternatives[0].replayable_patch)
-                .unwrap()
-                .contains("return ((left) + (right))")
-        );
+        let candidate =
+            replay_source_bound_patch(source, &receipt.alternatives[0].replayable_patch).unwrap();
+        assert!(candidate.contains("return (lambda _b_core_left, _b_core_right:"));
+        assert!(candidate.contains("_b_core_left + _b_core_right"));
     }
 
     #[test]
