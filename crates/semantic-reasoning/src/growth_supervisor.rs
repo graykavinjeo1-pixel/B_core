@@ -2852,7 +2852,17 @@ pub fn initialize(config_path: &Path) -> Result<SupervisorState, String> {
 
 pub fn status(config_path: &Path) -> Result<SupervisorState, String> {
     let config = load_config(config_path)?;
-    load_state(&config)
+    let mut state = load_state(&config)?;
+    let memory = load_memory(&config, state.generation)?;
+    if json_sha256(&memory)? != state.current_memory_sha256 {
+        return Err("CURRENT_MEMORY_HASH_MISMATCH".to_string());
+    }
+    // Status is read-only, but all memory-derived projections must reflect
+    // the current executable-knowledge contract immediately. Otherwise a
+    // stopped supervisor can display legacy metric-only lessons as promoted
+    // performance knowledge until another campaign mutates state.
+    restore_memory_projection(&mut state, &memory)?;
+    Ok(state)
 }
 
 pub fn preview_source_repair(config_path: &Path) -> Result<serde_json::Value, String> {
