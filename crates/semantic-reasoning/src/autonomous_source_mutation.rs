@@ -44,10 +44,10 @@ pub const SOURCE_REPAIR_LEARNING_SCHEMA: &str = "B_CORE_SOURCE_REPAIR_LEARNING_1
 pub const IMPROVEMENT_OPERATOR_MEMORY_SCHEMA: &str = "B_CORE_IMPROVEMENT_OPERATOR_MEMORY_1";
 pub const MAX_IMPROVEMENT_OPERATOR_GRAPH_NODES: usize = 8;
 const MAX_TYPED_OPERATOR_RECONCILIATION_RECEIPTS: usize = 64;
-// Revision 29 carries the complete Rust typed-synthesis receipt and the exact
-// source-bound edit into installation, then replays that edit against the
-// predecessor before the generic structural and repository validation gates.
-pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 29;
+// Revision 30 recomputes every Python source-template hash and binds each
+// condition/postimage byte range to the exact predecessor text before typed
+// synthesis evidence may be consumed.
+pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 30;
 const KNOWN_REMAINDER_PREDICTED_VALUE: u16 = 35;
 const MAX_REPOSITORY_REPAIR_FAMILY_FILES: usize = 16;
 const KNOWN_REMAINDER_STRATEGIES: [&str; 4] = [

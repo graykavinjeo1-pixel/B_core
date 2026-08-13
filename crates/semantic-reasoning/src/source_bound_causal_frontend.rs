@@ -220,6 +220,85 @@ pub struct SourceBoundFunctionTemplateIR {
     pub source_template_sha256: String,
 }
 
+fn source_bound_function_template_hash(
+    template: &SourceBoundFunctionTemplateIR,
+) -> Result<String, CausalFrontendFailure> {
+    serde_json::to_vec(&(
+        &template.qualified_symbol,
+        &template.operands,
+        &template.output_type,
+        &template.execution_dependency_closure,
+        &template.external_callers,
+        &template.cuts,
+    ))
+    .map(|bytes| sha256(&bytes))
+    .map_err(|error| CausalFrontendFailure::public(format!("TEMPLATE_HASH:{error}")))
+}
+
+fn validate_source_bound_function_template(
+    source: &str,
+    template: &SourceBoundFunctionTemplateIR,
+) -> Result<(), CausalFrontendFailure> {
+    if template.qualified_symbol.is_empty()
+        || template.owner != qualified_symbol_owner(&template.qualified_symbol)
+        || template.operands.is_empty()
+        || template.cuts.is_empty()
+        || !template_closure_is_preserved(template)
+    {
+        return Err(CausalFrontendFailure::conflict(
+            "SOURCE_TEMPLATE_STRUCTURAL_BINDING",
+        ));
+    }
+    let mut roles = BTreeSet::new();
+    for operand in &template.operands {
+        if operand.role.is_empty()
+            || operand.source.is_empty()
+            || !roles.insert(operand.role.as_str())
+            || !template.operand_type_evidence.contains_key(&operand.role)
+        {
+            return Err(CausalFrontendFailure::conflict(
+                "SOURCE_TEMPLATE_OPERAND_BINDING",
+            ));
+        }
+    }
+    for cut in &template.cuts {
+        let postimage = source
+            .get(cut.postimage_range.start..cut.postimage_range.end)
+            .ok_or_else(|| CausalFrontendFailure::conflict("SOURCE_TEMPLATE_POSTIMAGE_RANGE"))?;
+        if postimage != cut.postimage_source {
+            return Err(CausalFrontendFailure::conflict(
+                "SOURCE_TEMPLATE_POSTIMAGE_ORIGIN",
+            ));
+        }
+        match (&cut.condition_source, cut.condition_range) {
+            (None, None) if cut.branch == CausalCutBranch::Unconditional => {}
+            (Some(condition_source), Some(range))
+                if cut.branch != CausalCutBranch::Unconditional =>
+            {
+                let condition = source.get(range.start..range.end).ok_or_else(|| {
+                    CausalFrontendFailure::conflict("SOURCE_TEMPLATE_CONDITION_RANGE")
+                })?;
+                if condition != condition_source {
+                    return Err(CausalFrontendFailure::conflict(
+                        "SOURCE_TEMPLATE_CONDITION_ORIGIN",
+                    ));
+                }
+            }
+            _ => {
+                return Err(CausalFrontendFailure::conflict(
+                    "SOURCE_TEMPLATE_CONDITION_BINDING",
+                ))
+            }
+        }
+    }
+    if template.source_template_sha256 != source_bound_function_template_hash(template)? {
+        return Err(CausalFrontendFailure::conflict(
+            "SOURCE_TEMPLATE_HASH_BINDING",
+        ));
+    }
+    Ok(())
+}
+
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct MaterializedSourceBoundPatchIR {
     pub predecessor_sha256: String,
@@ -1474,19 +1553,7 @@ fn convert_python_definition(
             })
         })
         .collect::<Result<Vec<_>, CausalFrontendFailure>>()?;
-    let source_template_sha256 = sha256(
-        serde_json::to_vec(&(
-            &definition.qualified_symbol,
-            &operands,
-            &output_type,
-            &definition.execution_dependency_closure,
-            &definition.external_callers,
-            &cuts,
-        ))
-        .map_err(|error| CausalFrontendFailure::public(format!("TEMPLATE_HASH:{error}")))?
-        .as_slice(),
-    );
-    Ok(SourceBoundFunctionTemplateIR {
+    let mut template = SourceBoundFunctionTemplateIR {
         qualified_symbol: definition.qualified_symbol,
         owner: definition.owner,
         is_async: definition.is_async,
@@ -1499,8 +1566,10 @@ fn convert_python_definition(
         execution_dependency_closure: definition.execution_dependency_closure,
         external_callers: definition.external_callers,
         cuts,
-        source_template_sha256,
-    })
+        source_template_sha256: String::new(),
+    };
+    template.source_template_sha256 = source_bound_function_template_hash(&template)?;
+    Ok(template)
 }
 
 fn remap_public_observations_for_closure(
@@ -2087,6 +2156,7 @@ pub fn validate_source_bound_causal_receipt(
         ));
     }
     for alternative in &receipt.alternatives {
+        validate_source_bound_function_template(source, &alternative.function_template)?;
         validate_typed_mechanism_synthesis_receipt(&alternative.synthesis).map_err(|error| {
             CausalFrontendFailure::conflict(format!("SOURCE_BOUND_RECEIPT_OWNER_SYNTHESIS:{error}"))
         })?;
@@ -2101,6 +2171,7 @@ pub fn validate_source_bound_causal_receipt(
             ));
         }
         for candidate in &alternative.closure_candidates {
+            validate_source_bound_function_template(source, &candidate.function_template)?;
             validate_typed_mechanism_synthesis_receipt(&candidate.synthesis).map_err(|error| {
                 CausalFrontendFailure::conflict(format!(
                     "SOURCE_BOUND_RECEIPT_CLOSURE_SYNTHESIS:{}:{error}",
@@ -3319,6 +3390,28 @@ def transformer_visitor(value: int, baseline: int) -> int:
         assert!(receipt.public_symbol_owner_preserved);
         assert!(receipt.execution_dependency_closure_preserved);
         assert!(receipt.single_and_multi_edit_share_atomic_path);
+        let mut forged_origin = receipt.clone();
+        forged_origin.alternatives[0].function_template.cuts[0].postimage_source = "0".to_string();
+        forged_origin.alternatives[0]
+            .function_template
+            .source_template_sha256 =
+            source_bound_function_template_hash(&forged_origin.alternatives[0].function_template)
+                .unwrap();
+        forged_origin.receipt_sha256 = source_bound_receipt_hash(&forged_origin).unwrap();
+        assert_eq!(
+            validate_source_bound_causal_receipt(&forged_origin, source).unwrap_err(),
+            CausalFrontendFailure::conflict("SOURCE_TEMPLATE_POSTIMAGE_ORIGIN")
+        );
+        let mut forged_template_hash = receipt.clone();
+        forged_template_hash.alternatives[0]
+            .function_template
+            .source_template_sha256 = "0".repeat(64);
+        forged_template_hash.receipt_sha256 =
+            source_bound_receipt_hash(&forged_template_hash).unwrap();
+        assert_eq!(
+            validate_source_bound_causal_receipt(&forged_template_hash, source).unwrap_err(),
+            CausalFrontendFailure::conflict("SOURCE_TEMPLATE_HASH_BINDING")
+        );
         let mut forged_owner = receipt.clone();
         forged_owner.alternatives[0].function_template.owner = "Shadow".to_string();
         forged_owner.receipt_sha256 = source_bound_receipt_hash(&forged_owner).unwrap();
