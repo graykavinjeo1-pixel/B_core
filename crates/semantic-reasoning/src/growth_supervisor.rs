@@ -54,7 +54,7 @@ use crate::sem5::typed_mechanism::{
 };
 use crate::source_bound_causal_frontend::{
     discover_and_synthesize_python_repository_with_operators, replay_source_bound_patch,
-    validate_source_bound_causal_receipt, RepositoryTestSourceIR,
+    validate_source_bound_causal_receipt_with_python, RepositoryTestSourceIR,
     SourceBoundRepositoryDiscoveryRequestIR, SOURCE_BOUND_REPOSITORY_DISCOVERY_SCHEMA,
 };
 use crate::structural_source_repair::SourceEditAtom;
@@ -6140,8 +6140,12 @@ fn try_synthesize_failed_python_cohort(
             &available_operators,
         ) {
             Ok(source_bound) => {
-                validate_source_bound_causal_receipt(&source_bound, &source)
-                    .map_err(|error| format!("{}:{}", error.kind.as_code(), error.detail))?;
+                validate_source_bound_causal_receipt_with_python(
+                    &source_bound,
+                    &source,
+                    &plan.program,
+                )
+                .map_err(|error| format!("{}:{}", error.kind.as_code(), error.detail))?;
                 source_bound_receipt_sha256 = Some(json_sha256(&source_bound)?);
                 for alternative in &source_bound.alternatives {
                     source_bound_alternative_sha256.push(json_sha256(alternative)?);
