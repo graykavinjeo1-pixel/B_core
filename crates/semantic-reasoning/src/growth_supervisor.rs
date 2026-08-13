@@ -88,6 +88,7 @@ const MAX_ACTIVE_SOURCE_BOUND_IMPROVEMENT_OPERATORS: usize = MAX_ACTIVE_TYPED_ME
 const MAX_COMPOSITE_INSTALL_FAMILY: usize = 32;
 const REPOSITORY_INSTALL_TRANSACTION_SCHEMA: &str = "B_REPOSITORY_INSTALL_TRANSACTION_1";
 const REPOSITORY_INSTALL_COMMIT_SCHEMA: &str = "B_REPOSITORY_INSTALL_COMMIT_1";
+const REPOSITORY_REPAIR_SYNTHESIS_SCHEMA: &str = "B_REPOSITORY_REPAIR_SYNTHESIS_3";
 
 fn u64_is_zero(value: &u64) -> bool {
     *value == 0
@@ -1173,6 +1174,11 @@ pub fn self_check() -> SelfCheck {
             "COMPILER_AND_CLIPPY_DIAGNOSTICS_ARE_AUTONOMOUS_PUBLIC_REPAIR_OBSERVATIONS".to_string(),
             "TYPED_GRAMMAR_ATOMS_COMPOSE_NEW_EXPRESSIONS_WITHOUT_GOLD_PATCH_TEXT".to_string(),
             "FAILED_PUBLIC_OBSERVATIONS_SELECT_THE_NEXT_BOUNDED_GRAMMAR_COMPOSITION".to_string(),
+            "PUBLIC_CONTRACT_TYPED_GOALS_BIND_EXACT_OBSERVED_EXPECTED_TARGET_HASH".to_string(),
+            "VERIFIER_FALSIFIED_CANDIDATE_HASHES_EXCLUDE_IDENTICAL_SUCCESSOR_SYNTHESIS"
+                .to_string(),
+            "REPOSITORY_REPAIR_RETRIES_REQUIRE_ENGINE_OR_OPERATOR_CAPABILITY_CHANGE"
+                .to_string(),
             "SUCCESS_MEMORY_RETAINS_EDIT_ATOM_COMPOSITION_AND_STRUCTURAL_POSTCONDITIONS"
                 .to_string(),
             "SOURCE_PROPOSAL_COMPOSITION_AUTHORITY_EXCLUDES_DIAGNOSTIC_FAMILY_IDENTITY"
@@ -3007,15 +3013,42 @@ fn validate_public_contract_deltas(deltas: &[PublicContractDeltaIR]) -> Result<(
         {
             return Err("EVENT_PUBLIC_CONTRACT_DELTA_INVALID".to_string());
         }
+        let contract_binding = format!(
+            "PUBLIC_CONTRACT_DELTA_SHA256:{}",
+            public_contract_delta_binding_sha256(delta)?
+        );
+        let delta_id_binding = format!("PUBLIC_CONTRACT_DELTA_ID:{}", delta.delta_id);
         for goal in &delta.typed_behavior_goals {
             validate_typed_mechanism_synthesis_goal(goal)
                 .map_err(|error| format!("EVENT_TYPED_BEHAVIOR_GOAL_INVALID:{error}"))?;
+            if !goal.provenance.contains(&contract_binding)
+                || !goal.provenance.contains(&delta_id_binding)
+            {
+                return Err("EVENT_TYPED_BEHAVIOR_GOAL_CONTRACT_BINDING_MISSING".to_string());
+            }
             if !goal_ids.insert(goal.goal_id.clone()) {
                 return Err("EVENT_TYPED_BEHAVIOR_GOAL_DUPLICATE".to_string());
             }
         }
     }
     Ok(())
+}
+
+fn public_contract_delta_binding_sha256(delta: &PublicContractDeltaIR) -> Result<String, String> {
+    let mut target_symbols = delta
+        .target_symbols
+        .iter()
+        .map(|symbol| symbol.trim().to_string())
+        .collect::<Vec<_>>();
+    target_symbols.sort();
+    target_symbols.dedup();
+    json_sha256(&(
+        PUBLIC_CONTRACT_DELTA_SCHEMA,
+        delta.delta_id.as_str(),
+        delta.observed_behavior.trim(),
+        delta.expected_behavior.trim(),
+        target_symbols,
+    ))
 }
 
 fn validate_event(config: &GrowthSupervisorConfig, event: &mut WorkEvent) -> Result<(), String> {
@@ -5750,6 +5783,12 @@ struct RepositoryCohortValidationReceipt {
 struct RepositoryRepairSynthesisReceipt {
     schema: String,
     repair_id: String,
+    #[serde(default)]
+    repair_problem_id: String,
+    #[serde(default)]
+    synthesis_capability_sha256: String,
+    #[serde(default)]
+    source_repair_engine_revision: u64,
     originating_validation_id: String,
     originating_diagnostic_id: String,
     generation: u64,
@@ -5762,6 +5801,10 @@ struct RepositoryRepairSynthesisReceipt {
     source_bound_alternative_sha256: Vec<String>,
     #[serde(default)]
     source_bound_patch_variant_ids_attempted: Vec<String>,
+    #[serde(default)]
+    source_bound_patch_variant_sha256s_attempted: Vec<String>,
+    #[serde(default)]
+    prior_counterexample_candidate_sha256s: Vec<String>,
     #[serde(default)]
     selected_source_bound_patch_variant_id: Option<String>,
     #[serde(default)]
@@ -5803,6 +5846,124 @@ struct RepositoryRepairSynthesisReceipt {
     network_writes: u64,
     exact_source_fragments_stored: u64,
     raw_source_bytes_stored: u64,
+}
+
+fn repository_repair_problem_id(
+    validation_id: &str,
+    relative: &Path,
+    predecessor_sha256: &str,
+) -> String {
+    sha256(
+        format!(
+            "REPOSITORY_SOURCE_BOUND_REPAIR_PROBLEM_1:{validation_id}:{}:{predecessor_sha256}",
+            relative.to_string_lossy().replace('\\', "/")
+        )
+        .as_bytes(),
+    )
+}
+
+fn repository_repair_synthesis_capability_sha256(
+    operators: &[TypedMechanismImprovementOperatorIR],
+) -> Result<String, String> {
+    let mut operator_bindings = operators
+        .iter()
+        .map(|operator| Ok((operator.operator_id.clone(), json_sha256(operator)?)))
+        .collect::<Result<Vec<_>, String>>()?;
+    operator_bindings.sort();
+    json_sha256(&(SOURCE_REPAIR_ENGINE_REVISION, operator_bindings))
+}
+
+fn repository_repair_attempt_id(problem_id: &str, capability_sha256: &str) -> String {
+    sha256(
+        format!(
+            "REPOSITORY_SOURCE_BOUND_REPAIR_ATTEMPT_3:{problem_id}:{}:{capability_sha256}",
+            SOURCE_REPAIR_ENGINE_REVISION
+        )
+        .as_bytes(),
+    )
+}
+
+fn repository_repair_succeeded(
+    receipt: &RepositoryRepairSynthesisReceipt,
+    mutation_enabled: bool,
+) -> bool {
+    receipt.sandbox_verified
+        && receipt.sandbox_cleaned
+        && receipt.authoritative_scope_stable
+        && !receipt.rolled_back
+        && (receipt.candidate_installed || !mutation_enabled)
+}
+
+fn repository_repair_verifier_falsified(receipt: &RepositoryRepairSynthesisReceipt) -> bool {
+    receipt.sandbox_cleaned
+        && receipt.authoritative_scope_stable
+        && (receipt
+            .sandbox_command
+            .as_ref()
+            .is_some_and(|command| !command.success)
+            || receipt
+                .authoritative_command
+                .as_ref()
+                .is_some_and(|command| !command.success))
+}
+
+fn repository_repair_counterexample_candidate_sha256s(
+    history: &[RepositoryRepairSynthesisReceipt],
+) -> BTreeSet<String> {
+    history
+        .iter()
+        .filter(|receipt| repository_repair_verifier_falsified(receipt))
+        .flat_map(|receipt| {
+            receipt
+                .source_bound_patch_variant_sha256s_attempted
+                .iter()
+                .cloned()
+                .chain(receipt.candidate_sha256.iter().cloned())
+        })
+        .collect()
+}
+
+fn repository_repair_history(
+    diagnostics: &Path,
+    validation_id: &str,
+    relative: &Path,
+    predecessor_sha256: &str,
+) -> Result<Vec<RepositoryRepairSynthesisReceipt>, String> {
+    let Ok(entries) = fs::read_dir(diagnostics) else {
+        return Ok(Vec::new());
+    };
+    let mut paths = entries
+        .filter_map(Result::ok)
+        .map(|entry| entry.path())
+        .filter(|path| {
+            path.file_name()
+                .and_then(OsStr::to_str)
+                .is_some_and(|name| name.starts_with("repository_repair_synthesis_"))
+                && path.extension().and_then(OsStr::to_str) == Some("json")
+        })
+        .collect::<Vec<_>>();
+    paths.sort();
+    let mut history = Vec::new();
+    for path in paths {
+        let Ok(receipt) = read_json::<RepositoryRepairSynthesisReceipt>(&path) else {
+            continue;
+        };
+        if matches!(
+            receipt.schema.as_str(),
+            "B_REPOSITORY_REPAIR_SYNTHESIS_2" | REPOSITORY_REPAIR_SYNTHESIS_SCHEMA
+        ) && receipt.originating_validation_id == validation_id
+            && receipt.source_relative_path == relative
+            && receipt.predecessor_sha256 == predecessor_sha256
+        {
+            history.push(receipt);
+        }
+    }
+    history.sort_by(|left, right| {
+        left.generation
+            .cmp(&right.generation)
+            .then_with(|| left.repair_id.cmp(&right.repair_id))
+    });
+    Ok(history)
 }
 
 type SourceBoundImprovementOperatorAuthorityReceipt = TypedMechanismOperatorAuthorityReceiptIR;
@@ -7156,54 +7317,59 @@ fn try_synthesize_failed_python_cohort(
         .iter()
         .map(|operator| operator.operator_id.clone())
         .collect::<BTreeSet<_>>();
+    let synthesis_capability_sha256 =
+        repository_repair_synthesis_capability_sha256(&available_operators)?;
     let mut authoritative_installation_attempts = 0_usize;
     for relative in implementation_paths {
         let source_path = validated_repository_file(&plan.root, &relative)?;
         let source = fs::read_to_string(&source_path)
             .map_err(|error| format!("REPOSITORY_REPAIR_SOURCE_READ:{error}"))?;
         let predecessor_sha256 = sha256(source.as_bytes());
-        let repair_id = sha256(
-            format!(
-                "REPOSITORY_SOURCE_BOUND_REPAIR_2:{}:{}:{}",
-                validation.validation_id,
-                relative.to_string_lossy().replace('\\', "/"),
-                predecessor_sha256
-            )
-            .as_bytes(),
-        );
+        let repair_problem_id =
+            repository_repair_problem_id(&validation.validation_id, &relative, &predecessor_sha256);
+        let history = repository_repair_history(
+            &diagnostics,
+            &validation.validation_id,
+            &relative,
+            &predecessor_sha256,
+        )?;
+        if let Some(existing) = history.iter().rev().find(|receipt| {
+            repository_repair_succeeded(receipt, config.repository_mutation.enabled)
+        }) {
+            let receipt_sha256 = json_sha256(existing)?;
+            for operator in &existing.improvement_operators {
+                persist_source_bound_improvement_operator(
+                    config,
+                    operator,
+                    existing,
+                    &receipt_sha256,
+                )?;
+            }
+            let observation_id = repository_repair_observation_id(existing, &receipt_sha256);
+            return Ok(Some((
+                receipt_sha256,
+                observation_id,
+                existing.candidate_installed,
+            )));
+        }
+        let prior_counterexample_candidate_sha256s =
+            repository_repair_counterexample_candidate_sha256s(&history);
+        let repair_id =
+            repository_repair_attempt_id(&repair_problem_id, &synthesis_capability_sha256);
         let receipt_path =
             diagnostics.join(format!("repository_repair_synthesis_{repair_id}.json"));
         if receipt_path.exists() {
             let existing: RepositoryRepairSynthesisReceipt = read_json(&receipt_path)?;
-            if existing.schema != "B_REPOSITORY_REPAIR_SYNTHESIS_2"
+            if existing.schema != REPOSITORY_REPAIR_SYNTHESIS_SCHEMA
                 || existing.repair_id != repair_id
+                || existing.repair_problem_id != repair_problem_id
+                || existing.synthesis_capability_sha256 != synthesis_capability_sha256
+                || existing.source_repair_engine_revision != SOURCE_REPAIR_ENGINE_REVISION
                 || existing.originating_validation_id != validation.validation_id
                 || existing.source_relative_path != relative
                 || existing.predecessor_sha256 != predecessor_sha256
             {
                 return Err("REPOSITORY_REPAIR_SYNTHESIS_RECEIPT_MISMATCH".to_string());
-            }
-            if existing.sandbox_verified
-                && existing.sandbox_cleaned
-                && existing.authoritative_scope_stable
-                && !existing.rolled_back
-                && (existing.candidate_installed || !config.repository_mutation.enabled)
-            {
-                let receipt_sha256 = json_sha256(&existing)?;
-                for operator in &existing.improvement_operators {
-                    persist_source_bound_improvement_operator(
-                        config,
-                        operator,
-                        &existing,
-                        &receipt_sha256,
-                    )?;
-                }
-                let observation_id = repository_repair_observation_id(&existing, &receipt_sha256);
-                return Ok(Some((
-                    receipt_sha256,
-                    observation_id,
-                    existing.candidate_installed,
-                )));
             }
             continue;
         }
@@ -7212,6 +7378,7 @@ fn try_synthesize_failed_python_cohort(
         let mut source_bound_receipt_sha256 = None;
         let mut source_bound_alternative_sha256 = Vec::new();
         let mut source_bound_patch_variant_ids_attempted = Vec::new();
+        let mut source_bound_patch_variant_sha256s_attempted = Vec::new();
         let mut selected_source_bound_patch_variant_id = None;
         let mut selected_source_bound_template_symbols = Vec::new();
         let mut edit_atom_kinds = BTreeSet::new();
@@ -7295,12 +7462,25 @@ fn try_synthesize_failed_python_cohort(
                             }
                         })
                         .collect::<Result<Vec<_>, String>>()?;
+                    if prior_counterexample_candidate_sha256s
+                        .contains(&variant.replayable_patch.candidate_sha256)
+                    {
+                        continue;
+                    }
                     candidate_variants.push((
                         variant.variant_id.clone(),
                         variant.selected_template_symbols.clone(),
                         variant.replayable_patch.clone(),
                         syntheses,
                     ));
+                }
+                if candidate_variants.is_empty()
+                    && !prior_counterexample_candidate_sha256s.is_empty()
+                {
+                    failure_code = Some(
+                        "PUBLIC_INFORMATION_INSUFFICIENT:ALL_CANDIDATES_PREVIOUSLY_FALSIFIED"
+                            .to_string(),
+                    );
                 }
             }
             Err(error) => {
@@ -7314,6 +7494,7 @@ fn try_synthesize_failed_python_cohort(
 
         for (variant_id, template_symbols, patch, variant_syntheses) in candidate_variants {
             source_bound_patch_variant_ids_attempted.push(variant_id.clone());
+            source_bound_patch_variant_sha256s_attempted.push(patch.candidate_sha256.clone());
             candidate_sha256 = Some(patch.candidate_sha256.clone());
             materialization_is_one_to_one = patch.candidate_materialization_is_one_to_one;
             edit_atom_kinds.clear();
@@ -7484,8 +7665,11 @@ fn try_synthesize_failed_python_cohort(
             promoted_improvement_operator_ids.dedup();
         }
         let receipt = RepositoryRepairSynthesisReceipt {
-            schema: "B_REPOSITORY_REPAIR_SYNTHESIS_2".to_string(),
+            schema: REPOSITORY_REPAIR_SYNTHESIS_SCHEMA.to_string(),
             repair_id,
+            repair_problem_id,
+            synthesis_capability_sha256: synthesis_capability_sha256.clone(),
+            source_repair_engine_revision: SOURCE_REPAIR_ENGINE_REVISION,
             originating_validation_id: validation.validation_id.clone(),
             originating_diagnostic_id: diagnostic.diagnostic_id.clone(),
             generation: diagnostic.generation,
@@ -7497,6 +7681,10 @@ fn try_synthesize_failed_python_cohort(
             source_bound_receipt_sha256,
             source_bound_alternative_sha256,
             source_bound_patch_variant_ids_attempted,
+            source_bound_patch_variant_sha256s_attempted,
+            prior_counterexample_candidate_sha256s: prior_counterexample_candidate_sha256s
+                .into_iter()
+                .collect(),
             selected_source_bound_patch_variant_id,
             selected_source_bound_template_symbols,
             operator_family: "PUBLIC_SYMBOL_EXECUTION_CLOSURE_TO_TYPED_ATOMIC_SOURCE_PATCH"
@@ -10211,7 +10399,7 @@ mod tests {
     }
 
     fn public_contract_delta_fixture() -> PublicContractDeltaIR {
-        PublicContractDeltaIR {
+        let mut delta = PublicContractDeltaIR {
             schema: PUBLIC_CONTRACT_DELTA_SCHEMA.to_string(),
             delta_id: "observed-return-to-expected-sum".to_string(),
             observed_behavior: "call returns the base operand".to_string(),
@@ -10219,6 +10407,24 @@ mod tests {
             target_symbols: vec!["crate::engine::apply_gain".to_string()],
             typed_behavior_goals: vec![typed_behavior_goal_fixture("apply_gain_contract")],
             provenance: vec!["PUBLIC_OBSERVATION".to_string()],
+        };
+        bind_public_contract_delta_fixture(&mut delta);
+        delta
+    }
+
+    fn bind_public_contract_delta_fixture(delta: &mut PublicContractDeltaIR) {
+        let binding = format!(
+            "PUBLIC_CONTRACT_DELTA_SHA256:{}",
+            public_contract_delta_binding_sha256(delta).unwrap()
+        );
+        let id_binding = format!("PUBLIC_CONTRACT_DELTA_ID:{}", delta.delta_id);
+        for goal in &mut delta.typed_behavior_goals {
+            goal.provenance.retain(|item| {
+                !item.starts_with("PUBLIC_CONTRACT_DELTA_SHA256:")
+                    && !item.starts_with("PUBLIC_CONTRACT_DELTA_ID:")
+            });
+            goal.provenance.push(id_binding.clone());
+            goal.provenance.push(binding.clone());
         }
     }
 
@@ -11000,6 +11206,16 @@ mod tests {
         assert!(check.operational_repair_knowledge.contains(
             &"SOURCE_PROPOSAL_COMPOSITION_AUTHORITY_EXCLUDES_DIAGNOSTIC_FAMILY_IDENTITY"
                 .to_string()
+        ));
+        assert!(check.operational_repair_knowledge.contains(
+            &"PUBLIC_CONTRACT_TYPED_GOALS_BIND_EXACT_OBSERVED_EXPECTED_TARGET_HASH".to_string()
+        ));
+        assert!(check.operational_repair_knowledge.contains(
+            &"VERIFIER_FALSIFIED_CANDIDATE_HASHES_EXCLUDE_IDENTICAL_SUCCESSOR_SYNTHESIS"
+                .to_string()
+        ));
+        assert!(check.operational_repair_knowledge.contains(
+            &"REPOSITORY_REPAIR_RETRIES_REQUIRE_ENGINE_OR_OPERATOR_CAPABILITY_CHANGE".to_string()
         ));
         assert!(check
             .operational_repair_knowledge
@@ -12487,6 +12703,17 @@ mod tests {
             })
             .expect("repair synthesis receipt");
         let repair: RepositoryRepairSynthesisReceipt = read_json(&repair_path).unwrap();
+        assert_eq!(repair.schema, REPOSITORY_REPAIR_SYNTHESIS_SCHEMA);
+        assert_eq!(
+            repair.source_repair_engine_revision,
+            SOURCE_REPAIR_ENGINE_REVISION
+        );
+        assert_eq!(repair.repair_problem_id.len(), 64);
+        assert_eq!(repair.synthesis_capability_sha256.len(), 64);
+        assert_eq!(
+            repair.source_bound_patch_variant_sha256s_attempted.len(),
+            repair.source_bound_patch_variant_ids_attempted.len()
+        );
         assert!(repair.sandbox_verified);
         assert!(repair.sandbox_cleaned);
         assert!(repair.authoritative_scope_stable);
@@ -12632,6 +12859,7 @@ mod tests {
     fn class_declaration_repair_cohort(predecessor: &str) -> Vec<LearningObservation> {
         let mut delta = public_contract_delta_fixture();
         delta.target_symbols = vec!["ProductPolicy.marker".to_string()];
+        bind_public_contract_delta_fixture(&mut delta);
         let implementation = LearningObservation {
             observation_id: "class-declaration-implementation".to_string(),
             work_event_id: None,
@@ -13045,6 +13273,44 @@ mod tests {
             Some("PUBLIC_INFORMATION_INSUFFICIENT:AUTHORITATIVE_VALIDATION_FAILED")
         );
         assert!(repair.improvement_operators.is_empty());
+        assert!(repository_repair_verifier_falsified(&repair));
+        let history = repository_repair_history(
+            &config.state_dir.join("diagnostics"),
+            &repair.originating_validation_id,
+            &repair.source_relative_path,
+            &repair.predecessor_sha256,
+        )
+        .unwrap();
+        assert_eq!(history.len(), 1);
+        assert_eq!(history[0].candidate_sha256, repair.candidate_sha256);
+        let counterexamples = repository_repair_counterexample_candidate_sha256s(&history);
+        assert!(repair
+            .candidate_sha256
+            .as_ref()
+            .is_some_and(|candidate| counterexamples.contains(candidate)));
+        assert_ne!(
+            repository_repair_attempt_id(&repair.repair_problem_id, &"a".repeat(64)),
+            repository_repair_attempt_id(&repair.repair_problem_id, &"b".repeat(64))
+        );
+        let _ = validate_blocked_repository_cohort(
+            &config,
+            &repository_repair_diagnostic(),
+            &class_declaration_repair_cohort(predecessor),
+        )
+        .unwrap();
+        assert_eq!(
+            fs::read_dir(config.state_dir.join("diagnostics"))
+                .unwrap()
+                .filter_map(Result::ok)
+                .filter(|entry| {
+                    entry
+                        .file_name()
+                        .to_string_lossy()
+                        .starts_with("repository_repair_synthesis_")
+                })
+                .count(),
+            1
+        );
         assert_eq!(recover_repository_install_transactions(&config).unwrap(), 0);
         assert!(!repository_install_transaction_directory(&config)
             .read_dir()
@@ -13999,6 +14265,17 @@ mod tests {
         assert_eq!(
             validate_public_contract_deltas(&[delta]),
             Err("EVENT_PUBLIC_CONTRACT_DELTA_INVALID".to_string())
+        );
+    }
+
+    #[test]
+    fn unrelated_typed_goal_cannot_satisfy_an_observed_to_expected_contract() {
+        let mut delta = public_contract_delta_fixture();
+        delta.expected_behavior = "call returns base multiplied by gain".to_string();
+
+        assert_eq!(
+            validate_public_contract_deltas(&[delta]),
+            Err("EVENT_TYPED_BEHAVIOR_GOAL_CONTRACT_BINDING_MISSING".to_string())
         );
     }
 
