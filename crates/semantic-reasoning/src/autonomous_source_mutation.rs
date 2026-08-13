@@ -45,9 +45,9 @@ pub const IMPROVEMENT_OPERATOR_MEMORY_SCHEMA: &str = "B_CORE_IMPROVEMENT_OPERATO
 pub const MAX_IMPROVEMENT_OPERATOR_GRAPH_NODES: usize = 8;
 const MAX_COMPETING_SOURCE_PROPOSALS: usize = 3;
 const MAX_TYPED_OPERATOR_RECONCILIATION_RECEIPTS: usize = 64;
-// Revision 43 additionally preserves exact public-contract target symbols
-// through repository planning into source-bound product repair selection.
-pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 43;
+// Revision 44 additionally removes generator identity from equal-score source
+// proposal tie-breaking; origin remains diagnostic evidence only.
+pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 44;
 const KNOWN_REMAINDER_PREDICTED_VALUE: u16 = 35;
 const MAX_REPOSITORY_REPAIR_FAMILY_FILES: usize = 16;
 const KNOWN_REMAINDER_STRATEGIES: [&str; 4] = [
@@ -4435,7 +4435,6 @@ impl SourceProposalOrigin {
 
 #[derive(Debug)]
 struct RankedSourceProposal {
-    origin: SourceProposalOrigin,
     request: AutonomousSourcePatchRequest,
 }
 
@@ -4717,7 +4716,7 @@ fn select_source_discovery_proposals(
             continue;
         };
         match validate_source_proposal_kernel_input(policy, &request) {
-            Ok(_) => ranked.push(RankedSourceProposal { origin, request }),
+            Ok(_) => ranked.push(RankedSourceProposal { request }),
             Err(error) => rejected.push(format!("{}:{error}", origin.label())),
         }
     }
@@ -4727,8 +4726,8 @@ fn select_source_discovery_proposals(
             std::cmp::Reverse(proposal.request.predicted_value),
             proposal.request.relative_path.clone(),
             proposal.request.transformation.clone(),
-            proposal.origin,
             proposal.request.patch_id.clone(),
+            proposal.request.candidate_sha256.clone(),
         )
     });
     ranked.truncate(MAX_COMPETING_SOURCE_PROPOSALS);
@@ -5311,6 +5310,88 @@ mod tests {
             selected.candidate_source,
             "pub fn first() -> i32 { 4 }\npub fn second() -> i32 { 2 }\n"
         );
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn source_proposal_kernel_ties_are_generator_origin_neutral() {
+        let (root, policy) = fixture("proposal-kernel-origin-neutral");
+        let predecessor = "pub fn value() -> i32 { 1 }\n";
+        fs::write(root.join("src/lib.rs"), predecessor).unwrap();
+        let state = root.join("state");
+        fs::create_dir_all(&state).unwrap();
+        let operator_memory = refresh_improvement_operator_repository(&state).unwrap();
+        let family = source_opportunity_family_id(ChangeOpportunityKind::Defect, "TIED_CONTRACT");
+        let candidate_a = proposal_request_fixture(
+            &policy,
+            &state,
+            &operator_memory,
+            "A-CANDIDATE",
+            "pub fn value() -> i32 { 2 }\n",
+            90,
+            &family,
+        );
+        let candidate_z = proposal_request_fixture(
+            &policy,
+            &state,
+            &operator_memory,
+            "Z-CANDIDATE",
+            "pub fn value() -> i32 { 3 }\n",
+            90,
+            &family,
+        );
+        let ranked_a = RankedSourceProposal {
+            request: candidate_a.clone(),
+        };
+        let ranked_z = RankedSourceProposal {
+            request: candidate_z.clone(),
+        };
+        assert_eq!(
+            source_proposal_score(&ranked_a),
+            source_proposal_score(&ranked_z)
+        );
+
+        let select = |results| {
+            select_source_discovery_proposals(&policy, &state, 7, &operator_memory, results)
+                .unwrap()
+                .candidate
+                .expect("tied candidate")
+                .patch_id
+        };
+        let first = select(vec![
+            (
+                SourceProposalOrigin::KnownTransformation,
+                SourceDiscoveryResult {
+                    disposition: SourceDiscoveryDisposition::Candidate,
+                    candidate: Some(candidate_a.clone()),
+                },
+            ),
+            (
+                SourceProposalOrigin::Grammar,
+                SourceDiscoveryResult {
+                    disposition: SourceDiscoveryDisposition::Candidate,
+                    candidate: Some(candidate_z.clone()),
+                },
+            ),
+        ]);
+        let second = select(vec![
+            (
+                SourceProposalOrigin::Compiler,
+                SourceDiscoveryResult {
+                    disposition: SourceDiscoveryDisposition::Candidate,
+                    candidate: Some(candidate_z),
+                },
+            ),
+            (
+                SourceProposalOrigin::Grammar,
+                SourceDiscoveryResult {
+                    disposition: SourceDiscoveryDisposition::Candidate,
+                    candidate: Some(candidate_a),
+                },
+            ),
+        ]);
+        assert_eq!(first, "A-CANDIDATE");
+        assert_eq!(second, first);
         fs::remove_dir_all(root).unwrap();
     }
 
