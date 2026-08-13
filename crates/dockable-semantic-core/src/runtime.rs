@@ -2,10 +2,15 @@ use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 
 use crate::{
+    experience::{
+        ExperienceError, ExperienceIR, ExperienceInjectionReceiptIR, ExperienceMemory,
+        ExperienceQueryIR, ExperienceSnapshotIR, RecalledExperienceIR,
+    },
     interface::{
         Capability, CapabilityRequest, CapabilityResult, GoalIR, ResultIR,
         CAPABILITY_CONTRACT_VERSION, CORE_ABI_VERSION, SEMANTIC_STATE_VERSION,
     },
+    planning::{PlanGoalIR, PlanIR, Planner, PlanningError},
     reasoning::{AdaptiveReasoner, ResourceBudget},
     state::{SemanticState, SparseIndex},
     task::{Split, VisibleTask},
@@ -30,6 +35,8 @@ pub struct DockableCore {
     state: SemanticState,
     index: SparseIndex,
     reasoner: AdaptiveReasoner,
+    experience_memory: ExperienceMemory,
+    planner: Planner,
 }
 
 impl DockableCore {
@@ -46,6 +53,8 @@ impl DockableCore {
             state,
             index,
             reasoner: AdaptiveReasoner::default(),
+            experience_memory: ExperienceMemory::default(),
+            planner: Planner,
         })
     }
 
@@ -130,6 +139,42 @@ impl DockableCore {
 
     pub fn sparse_index_len(&self) -> usize {
         self.index.len()
+    }
+
+    /// Adds one bounded, typed experience to the non-authoritative episodic
+    /// memory used by planning. Semantic state and executable concepts remain
+    /// unchanged until a separately verified promotion path accepts them.
+    pub fn inject_experience(
+        &mut self,
+        experience: ExperienceIR,
+    ) -> Result<ExperienceInjectionReceiptIR, ExperienceError> {
+        self.experience_memory.inject(experience)
+    }
+
+    pub fn recall_experiences(
+        &self,
+        query: &ExperienceQueryIR,
+    ) -> Result<Vec<RecalledExperienceIR>, ExperienceError> {
+        self.experience_memory.recall(query)
+    }
+
+    pub fn generate_plan(&self, goal: &PlanGoalIR) -> Result<PlanIR, PlanningError> {
+        self.planner.generate(goal, &self.experience_memory)
+    }
+
+    pub fn retained_experience_count(&self) -> usize {
+        self.experience_memory.len()
+    }
+
+    pub fn export_experience_snapshot(&self) -> ExperienceSnapshotIR {
+        self.experience_memory.export_snapshot()
+    }
+
+    pub fn import_experience_snapshot(
+        &mut self,
+        snapshot: &ExperienceSnapshotIR,
+    ) -> Result<Vec<ExperienceInjectionReceiptIR>, ExperienceError> {
+        self.experience_memory.import_snapshot(snapshot)
     }
 }
 

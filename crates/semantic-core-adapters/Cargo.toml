@@ -18,6 +18,14 @@ path = "src/language_canary.rs"
 name = "generic-capability-canary"
 path = "src/generic_capability_canary.rs"
 
+[[bin]]
+name = "cognitive-api-canary"
+path = "src/cognitive_api_canary.rs"
+
+[[bin]]
+name = "b-core-cognitive-api"
+path = "src/cognitive_api_main.rs"
+
 [dependencies]
 dockable-semantic-core = { path = "../dockable-semantic-core", version = "0.1.0" }
 serde = { version = "1.0", features = ["derive"] }
