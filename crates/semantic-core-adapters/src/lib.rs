@@ -12,12 +12,14 @@ pub mod long_term_repair;
 mod long_term_repair_catalog;
 pub mod mechanism_induction;
 pub mod professional_document;
+pub mod raw_mechanism_induction;
 
 pub use cognitive::{
     CognitiveApi, CognitiveApiCommandIR, CognitiveApiError, CognitiveApiPayloadIR,
     CognitiveApiResponseIR, KnowledgeWorkResponseIR, MechanismInductionResponseIR,
     NaturalLanguageOutputIR, NaturalLanguageRequestIR, NaturalLanguageResponseIR,
-    NATURAL_LANGUAGE_REQUEST_SCHEMA, NATURAL_LANGUAGE_RESPONSE_SCHEMA,
+    RawMechanismInductionResponseIR, NATURAL_LANGUAGE_REQUEST_SCHEMA,
+    NATURAL_LANGUAGE_RESPONSE_SCHEMA,
 };
 pub use document_swarm::{DocumentDeliberationIR, DOCUMENT_DELIBERATION_SCHEMA};
 pub use generic::DeterministicOffsetCapability;
@@ -70,4 +72,10 @@ pub use professional_document::{
     ProfessionalDocumentPageIR, ProfessionalDocumentRequestIR, ProfessionalDocumentResponseIR,
     RevisionDirectiveIR, RevisionRoundIR, SectionMemoryIR, SectionRequirementIR,
     PROFESSIONAL_DOCUMENT_REQUEST_SCHEMA, PROFESSIONAL_DOCUMENT_RESPONSE_SCHEMA,
+};
+pub use raw_mechanism_induction::{
+    AutoPropositionBindingIR, AutoPropositionKindIR, CausalClauseRoleIR, ObservedValueIR,
+    RawMechanismInductionEngine, RawMechanismInductionError, RawMechanismInductionIR,
+    RawMechanismInductionRequestIR, RawStateTransitionObservationIR,
+    RAW_MECHANISM_INDUCTION_REQUEST_SCHEMA, RAW_MECHANISM_INDUCTION_SCHEMA,
 };

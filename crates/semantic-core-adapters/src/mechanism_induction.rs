@@ -389,8 +389,10 @@ fn language_bindings(
     })
 }
 
-fn causal_clause_ranges(text: &str) -> Option<(std::ops::Range<usize>, std::ops::Range<usize>)> {
-    for connector in [" because of ", " because ", " due to ", "때문에", "덕분에"] {
+pub(crate) fn causal_clause_ranges(
+    text: &str,
+) -> Option<(std::ops::Range<usize>, std::ops::Range<usize>)> {
+    for connector in [" caused by ", " because of ", " because ", " due to "] {
         if let Some(position) = text.find(connector) {
             return Some((position + connector.len()..text.len(), 0..position));
         }
@@ -401,6 +403,11 @@ fn causal_clause_ranges(text: &str) -> Option<(std::ops::Range<usize>, std::ops:
             return Some((0..comma, comma + 1..text.len()));
         }
     }
+    for connector in [" if ", " when "] {
+        if let Some(position) = text.find(connector) {
+            return Some((position + connector.len()..text.len(), 0..position));
+        }
+    }
     for connector in [
         " causes ",
         " cause ",
@@ -409,10 +416,21 @@ fn causal_clause_ranges(text: &str) -> Option<(std::ops::Range<usize>, std::ops:
         " produces ",
         " results in ",
         " makes ",
+        " therefore ",
+        ", so ",
+        " so ",
+        "때문에",
+        "덕분에",
+        "로 인해",
         "하면",
         "이면",
         "할 때",
         "일 때",
+        "하여",
+        "해서",
+        "하므로",
+        "이므로",
+        "라서",
     ] {
         if let Some(position) = text.find(connector) {
             return Some((0..position, position + connector.len()..text.len()));
