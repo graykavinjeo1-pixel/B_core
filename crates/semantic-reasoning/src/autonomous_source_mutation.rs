@@ -44,10 +44,10 @@ pub const SOURCE_REPAIR_LEARNING_SCHEMA: &str = "B_CORE_SOURCE_REPAIR_LEARNING_1
 pub const IMPROVEMENT_OPERATOR_MEMORY_SCHEMA: &str = "B_CORE_IMPROVEMENT_OPERATOR_MEMORY_1";
 pub const MAX_IMPROVEMENT_OPERATOR_GRAPH_NODES: usize = 8;
 const MAX_TYPED_OPERATOR_RECONCILIATION_RECEIPTS: usize = 64;
-// Revision 39 isolates every parallel rustfmt invocation in a unique cleanup
-// scope so one repair worker cannot delete another worker's in-flight parent
-// directory or leave failed-job files behind.
-pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 39;
+// Revision 40 preserves explicit observed-to-expected public contract deltas
+// as typed behavior goals from work ingestion through SEM-5 synthesis and
+// behavioral falsification instead of reducing them to structural counts.
+pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 40;
 const KNOWN_REMAINDER_PREDICTED_VALUE: u16 = 35;
 const MAX_REPOSITORY_REPAIR_FAMILY_FILES: usize = 16;
 const KNOWN_REMAINDER_STRATEGIES: [&str; 4] = [

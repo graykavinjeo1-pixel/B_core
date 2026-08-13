@@ -7,7 +7,7 @@ use super::model::{
     ProgramType, ScalarExpression, StringTransformOperator, UnaryOperator, Value,
 };
 
-pub const CALLABLE_SOURCE_SCHEMA_REVISION: u64 = 25;
+pub const CALLABLE_SOURCE_SCHEMA_REVISION: u64 = 26;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct RustArtifact {

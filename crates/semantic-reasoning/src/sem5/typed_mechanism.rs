@@ -1078,7 +1078,7 @@ pub fn validate_typed_mechanism_synthesis_receipt(
         .synthesis_request
         .as_ref()
         .ok_or_else(|| "TYPED_MECHANISM_RECEIPT_REQUEST_MISSING".to_string())?;
-    validate_synthesis_envelope(request)?;
+    validate_typed_mechanism_synthesis_goal(request)?;
     let goal = &receipt.winning_goal;
     let selected = receipt.selected_operator_id.is_some();
     let expected_provenance = request
@@ -1179,7 +1179,7 @@ pub fn synthesize_typed_mechanism_goal_with_source_seeds_and_priors(
     source_seeds: &[TypedSyntaxExpressionIR],
     priors: &[TypedMechanismImprovementOperatorIR],
 ) -> Result<TypedMechanismSynthesisReceiptIR, String> {
-    validate_synthesis_envelope(request)?;
+    validate_typed_mechanism_synthesis_goal(request)?;
     if source_seeds.len() > MAX_SOURCE_SEED_EXPRESSIONS
         || source_seeds
             .iter()
@@ -2145,7 +2145,9 @@ fn masked_values_match(
             .all(|((value, expected), _)| value == expected)
 }
 
-fn validate_synthesis_envelope(request: &TypedMechanismSynthesisGoalIR) -> Result<(), String> {
+pub fn validate_typed_mechanism_synthesis_goal(
+    request: &TypedMechanismSynthesisGoalIR,
+) -> Result<(), String> {
     if request.schema != TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA {
         return Err("TYPED_MECHANISM_SYNTHESIS_SCHEMA".to_string());
     }

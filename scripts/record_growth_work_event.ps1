@@ -29,7 +29,9 @@ param(
 
     [string[]]$EvidencePaths = @(),
 
-    [string]$PerformanceMetricsPath = ""
+    [string]$PerformanceMetricsPath = "",
+
+    [string]$PublicContractDeltasPath = ""
 )
 
 $ErrorActionPreference = "Stop"
@@ -61,6 +63,17 @@ if (-not [string]::IsNullOrWhiteSpace($PerformanceMetricsPath)) {
         $performanceMetrics += $metric
     }
 }
+$publicContractDeltas = @()
+if (-not [string]::IsNullOrWhiteSpace($PublicContractDeltasPath)) {
+    $deltaPath = [IO.Path]::GetFullPath($PublicContractDeltasPath)
+    if (-not [IO.File]::Exists($deltaPath)) {
+        throw "PUBLIC_CONTRACT_DELTAS_FILE_MISSING:$deltaPath"
+    }
+    $decodedDeltas = Get-Content -Raw -LiteralPath $deltaPath -Encoding UTF8 | ConvertFrom-Json
+    foreach ($delta in $decodedDeltas) {
+        $publicContractDeltas += $delta
+    }
+}
 $event = [ordered]@{
     event_id = $eventId
     actor = $Actor
@@ -71,6 +84,7 @@ $event = [ordered]@{
     evidence_sha256 = @($EvidenceSha256)
     evidence_artifacts = @($EvidencePaths | ForEach-Object { [IO.Path]::GetFullPath($_) })
     performance_metrics = $performanceMetrics
+    public_contract_deltas = $publicContractDeltas
     occurred_at_ms = 0
 }
 [IO.File]::WriteAllText(

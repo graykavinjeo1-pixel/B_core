@@ -893,6 +893,137 @@ pub fn execute_behavioral_composition_canary(
     })
 }
 
+/// Carries an upstream observed→expected typed goal through the same SEM-5
+/// synthesis/lowering path and falsifies the resulting ProgramIR against the
+/// exact public observations. The goal, rather than a context-derived task,
+/// remains the semantic authority throughout this path.
+pub fn execute_typed_behavior_goal_canary(
+    context_sha256: &str,
+    goal: &TypedMechanismSynthesisGoalIR,
+) -> Result<BehavioralCompositionCanaryReceipt, String> {
+    if context_sha256.len() != 64 || !context_sha256.bytes().all(|byte| byte.is_ascii_hexdigit()) {
+        return Err("TYPED_BEHAVIOR_CONTEXT_INVALID".to_string());
+    }
+    let goal_bytes = serde_json::to_vec(goal)
+        .map_err(|error| format!("TYPED_BEHAVIOR_GOAL_SERIALIZE:{error}"))?;
+    let goal_sha256 = sha256(&goal_bytes);
+    let seed = u64::from_str_radix(&context_sha256[..16], 16)
+        .map_err(|error| format!("TYPED_BEHAVIOR_SEED:{error}"))?;
+    let sets = generate_task_sets(seed.max(1));
+    let candidates = discover_candidates(&sets.discovery);
+    let promotions = initial_promotions(&candidates, &sets.calibration);
+    let fallback_task = sets
+        .adversarial
+        .first()
+        .ok_or_else(|| "TYPED_BEHAVIOR_FALLBACK_TASK_MISSING".to_string())?
+        .visible
+        .clone();
+    let candidate = compose_existing_sem5_capability(CompositionWork {
+        opportunity: CapabilityOpportunityIR {
+            observed_gap: format!(
+                "typed public behavior goal {} is not executable",
+                goal.goal_id
+            ),
+            desired_behavior: goal.postconditions.join("; "),
+            trigger: "public observed-to-expected contract delta".to_string(),
+            evidence: vec![goal_sha256.clone()],
+            preserved_behavior: goal.invariants.clone(),
+            resource_constraints: vec![format!(
+                "typed candidate enumeration <= {}",
+                goal.max_candidates
+            )],
+            verification_requirements: vec![
+                "all typed public observations must pass".to_string(),
+                "type/effect audit must pass".to_string(),
+            ],
+            provenance: goal.provenance.clone(),
+            operator_selected_implementation: false,
+        },
+        task: fallback_task,
+        typed_mechanism_goal: None,
+        typed_mechanism_synthesis_goal: Some(goal.clone()),
+        promotions,
+        predecessor_tree_hash: AUTHORITATIVE_PREDECESSOR.to_string(),
+    })?;
+    let task = candidate
+        .typed_syntax_template
+        .as_ref()
+        .ok_or_else(|| "TYPED_BEHAVIOR_TEMPLATE_MISSING".to_string())?
+        .program_task
+        .clone();
+    let mut outputs = Vec::with_capacity(goal.public_observations.len());
+    for (index, observation) in goal.public_observations.iter().enumerate() {
+        let actual = execute(
+            &candidate.program_ir,
+            &observation.operands,
+            &task.definitions,
+            BTreeMap::new(),
+        )?;
+        if actual.value != observation.expected_postimage {
+            return Err(format!("TYPED_BEHAVIOR_COUNTEREXAMPLE:{index}"));
+        }
+        outputs.push(actual.value);
+    }
+    let installed_capability_present =
+        crate::generated_sem5_capability::GENERATED_CAPABILITY_ACTIVE;
+    let installed_registry_capability_count =
+        crate::generated_sem5_capability::GENERATED_CAPABILITY_COUNT;
+    let installed_program_match = installed_capability_present
+        && crate::generated_sem5_capability::generated_capability_hashes()
+            .contains(&candidate.program_ir_sha256.as_str());
+    let installed_source_schema_revision =
+        crate::generated_sem5_capability::GENERATED_SOURCE_SCHEMA_REVISION;
+    let mut installed_outputs = Vec::new();
+    if installed_program_match {
+        for (index, observation) in goal.public_observations.iter().enumerate() {
+            let installed = crate::generated_sem5_capability::run_generated_capability_by_sha256(
+                &candidate.program_ir_sha256,
+                &observation.operands,
+            )
+            .map_err(|error| format!("TYPED_BEHAVIOR_INSTALLED_EXECUTION:{error}"))?;
+            if installed != observation.expected_postimage {
+                return Err(format!("TYPED_BEHAVIOR_INSTALLED_COUNTEREXAMPLE:{index}"));
+            }
+            installed_outputs.push(installed);
+        }
+    }
+    let installed_output_sha256 = installed_program_match
+        .then(|| serde_json::to_vec(&installed_outputs))
+        .transpose()
+        .map_err(|error| format!("TYPED_BEHAVIOR_INSTALLED_OUTPUT_SERIALIZE:{error}"))?
+        .map(|bytes| sha256(&bytes));
+    let receipt_sha256 = sha256(
+        format!(
+            "{}:{}:{}:{}:{}:{}",
+            context_sha256,
+            goal_sha256,
+            candidate.program_ir_sha256,
+            goal.public_observations.len(),
+            installed_program_match,
+            installed_output_sha256.as_deref().unwrap_or("NONE")
+        )
+        .as_bytes(),
+    );
+    Ok(BehavioralCompositionCanaryReceipt {
+        schema: "B_CORE_TYPED_BEHAVIOR_GOAL_CANARY_1".to_string(),
+        context_sha256: context_sha256.to_string(),
+        program_ir_sha256: candidate.program_ir_sha256,
+        used_primitive_ids: candidate.used_primitive_ids,
+        cases_executed: goal.public_observations.len(),
+        cases_passed: goal.public_observations.len(),
+        installed_capability_present,
+        installed_program_match,
+        installed_source_schema_revision,
+        installed_registry_capability_count,
+        installed_cases_executed: usize::from(installed_program_match)
+            .saturating_mul(goal.public_observations.len()),
+        installed_cases_passed: usize::from(installed_program_match)
+            .saturating_mul(goal.public_observations.len()),
+        installed_output_sha256,
+        receipt_sha256,
+    })
+}
+
 pub fn validate_composite_installation_authority(
     candidate: &CompositeProgramCandidateIR,
     receipt: &VerificationReceipt,
@@ -1397,6 +1528,54 @@ mod tests {
         assert_ne!(first.receipt_sha256, second.receipt_sha256);
         assert_ne!(first.program_ir_sha256, second.program_ir_sha256);
         assert!(!first.used_primitive_ids.is_empty());
+    }
+
+    #[test]
+    fn typed_behavior_goal_canary_executes_exact_observed_to_expected_contract() {
+        let goal = TypedMechanismSynthesisGoalIR {
+            schema: TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA.to_string(),
+            goal_id: "exact_public_addition_contract".to_string(),
+            split: DataSplit::FreshBlind,
+            operands: vec![
+                SourceOperandIR {
+                    role: "base".to_string(),
+                    source: "node.baseline".to_string(),
+                    value_type: ProgramType::Int,
+                },
+                SourceOperandIR {
+                    role: "gain".to_string(),
+                    source: "observation.gain".to_string(),
+                    value_type: ProgramType::Int,
+                },
+            ],
+            output_type: ProgramType::Int,
+            definitions: Vec::new(),
+            allowed_effects: vec![Effect::Pure],
+            preconditions: Vec::new(),
+            postconditions: vec!["postimage matches every public observation".to_string()],
+            invariants: Vec::new(),
+            public_observations: [(4, 3, 7), (-2, 8, 6), (10, -3, 7)]
+                .into_iter()
+                .map(|(base, gain, expected)| TypedMechanismObservationIR {
+                    operands: BTreeMap::from([
+                        ("base".to_string(), Value::Int(base)),
+                        ("gain".to_string(), Value::Int(gain)),
+                    ]),
+                    expected_postimage: Value::Int(expected),
+                })
+                .collect(),
+            require_conditional: false,
+            max_expression_depth: 2,
+            max_candidates: 1_024,
+            provenance: vec!["PUBLIC_CONTRACT_DELTA".to_string()],
+        };
+
+        let receipt = execute_typed_behavior_goal_canary(&"d".repeat(64), &goal)
+            .expect("exact typed behavior goal is executable");
+        assert_eq!(receipt.schema, "B_CORE_TYPED_BEHAVIOR_GOAL_CANARY_1");
+        assert_eq!(receipt.cases_executed, goal.public_observations.len());
+        assert_eq!(receipt.cases_passed, goal.public_observations.len());
+        assert!(!receipt.used_primitive_ids.is_empty());
     }
 
     #[test]

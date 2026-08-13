@@ -16,7 +16,9 @@ use crate::autonomous_source_mutation::{
     improvement_operator_graph_id_for_nodes, MAX_IMPROVEMENT_OPERATOR_GRAPH_NODES,
 };
 use crate::fullstack_ops_knowledge::{execute_fullstack_recipe_behavioral_canary, promoted_bundle};
-use crate::integrated_development::execute_behavioral_composition_canary;
+use crate::integrated_development::{
+    execute_behavioral_composition_canary, execute_typed_behavior_goal_canary,
+};
 use crate::self_healing_pipeline::{
     execute_self_healing_behavioral_canary, validate_composition_lesson, CompositionEdgeIR,
     RepairCompositionLessonIR, RepairPrimitiveIR,
@@ -27,6 +29,7 @@ use crate::sem23_engine::{
     PROPERTY_RECURSIVE_CLOSURE, PROPERTY_STRUCTURED_EMERGENCE,
 };
 use crate::sem25_engine::{run_growth_probe, GrowthProbeRequest};
+use crate::sem5::typed_mechanism::TypedMechanismSynthesisGoalIR;
 
 pub const GENERATIVE_GROWTH_SCHEMA: &str = "B_CORE_GENERATIVE_GROWTH_1";
 const MAX_REUSABLE_COMPOSITIONS: usize = 64;
@@ -97,6 +100,8 @@ pub struct GenerativeInput {
     pub learning_score: u16,
     pub verification_evidence_count: usize,
     pub measured_performance_gain: bool,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub typed_behavior_goals: Vec<TypedMechanismSynthesisGoalIR>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -442,10 +447,17 @@ fn context_sha256(input: &GenerativeInput) -> String {
         .into_iter()
         .collect::<Vec<_>>()
         .join(":");
+    let goal_hashes = input
+        .typed_behavior_goals
+        .iter()
+        .filter_map(|goal| serde_json::to_vec(goal).ok())
+        .map(|bytes| sha256(&bytes))
+        .collect::<Vec<_>>()
+        .join(":");
     sha256(
         format!(
-            "signals={signals}|roles={roles}|measured_gain={}",
-            input.measured_performance_gain
+            "signals={signals}|roles={roles}|goals={goal_hashes}|measured_gain={}",
+            input.measured_performance_gain,
         )
         .as_bytes(),
     )
@@ -489,7 +501,9 @@ fn domain_bonus(composition: &RepairCompositionLessonIR, input: &GenerativeInput
     {
         bonus += 12;
     }
-    if ids.contains("SEM5_PROGRAM_IR_COMPOSER") && roles.len() >= 2 {
+    if ids.contains("SEM5_PROGRAM_IR_COMPOSER")
+        && (roles.len() >= 2 || !input.typed_behavior_goals.is_empty())
+    {
         bonus += 6;
     }
     if ids.contains("IMPROVEMENT_OPERATOR_PROGRAM_COMPOSER")
@@ -786,10 +800,10 @@ fn execute_composer(
 ) -> Result<(Vec<VerifiedBehavioralArtifact>, Option<String>), String> {
     match composer_id {
         "SEM5_PROGRAM_IR_COMPOSER" => {
-            if input.observed_composition_roles.len() < 2 {
+            if input.observed_composition_roles.len() < 2 && input.typed_behavior_goals.is_empty() {
                 return Ok((
                     Vec::new(),
-                    Some("SEM5_REQUIRES_AT_LEAST_TWO_OBSERVED_ROLES".to_string()),
+                    Some("SEM5_REQUIRES_OBSERVED_ROLES_OR_A_TYPED_BEHAVIOR_GOAL".to_string()),
                 ));
             }
             if artifact_family_width == 0 {
@@ -801,6 +815,39 @@ fn execute_composer(
             let target_width = artifact_family_width.clamp(1, MAX_VERIFIED_ARTIFACTS_PER_CYCLE);
             let mut artifacts = Vec::new();
             let mut artifact_hashes = previously_verified.clone();
+            if !input.typed_behavior_goals.is_empty() {
+                for (ordinal, goal) in input
+                    .typed_behavior_goals
+                    .iter()
+                    .take(target_width)
+                    .enumerate()
+                {
+                    let artifact_context = sha256(
+                        format!(
+                            "{context}:{}:{ordinal}:PUBLIC_TYPED_BEHAVIOR_GOAL",
+                            selected.composition_id
+                        )
+                        .as_bytes(),
+                    );
+                    let receipt = execute_typed_behavior_goal_canary(&artifact_context, goal)?;
+                    if receipt.cases_executed == 0 || receipt.cases_passed != receipt.cases_executed
+                    {
+                        return Err("TYPED_BEHAVIOR_GOAL_CANARY_INCOMPLETE".to_string());
+                    }
+                    if artifact_hashes.insert(receipt.program_ir_sha256.clone()) {
+                        artifacts.push(VerifiedBehavioralArtifact {
+                            artifact_context_sha256: artifact_context,
+                            artifact_sha256: receipt.program_ir_sha256,
+                            cases_executed: receipt.cases_executed,
+                            cases_passed: receipt.cases_passed,
+                        });
+                    }
+                }
+                if artifacts.is_empty() {
+                    return Err("TYPED_BEHAVIOR_GOAL_ARTIFACT_FAMILY_EMPTY".to_string());
+                }
+                return Ok((artifacts, None));
+            }
             for ordinal in 0..MAX_ARTIFACT_CONTEXT_ATTEMPTS {
                 if artifacts.len() >= target_width {
                     break;
@@ -1941,6 +1988,7 @@ mod tests {
             learning_score: 80,
             verification_evidence_count: 1,
             measured_performance_gain: false,
+            typed_behavior_goals: Vec::new(),
         }
     }
 

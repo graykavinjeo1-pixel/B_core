@@ -49,7 +49,8 @@ use crate::sem5::typed_mechanism::{
     load_authorized_typed_mechanism_operators, typed_mechanism_improvement_operator_from_receipt,
     typed_mechanism_operator_authority_directory, typed_mechanism_operator_directory,
     validate_typed_mechanism_improvement_operator, validate_typed_mechanism_operator_authority,
-    TypedMechanismImprovementOperatorIR, TypedMechanismOperatorAuthorityReceiptIR,
+    validate_typed_mechanism_synthesis_goal, TypedMechanismImprovementOperatorIR,
+    TypedMechanismOperatorAuthorityReceiptIR, TypedMechanismSynthesisGoalIR,
     MAX_ACTIVE_TYPED_MECHANISM_OPERATORS, SOURCE_BOUND_OPERATOR_AUTHORITY_SCHEMA,
 };
 use crate::source_bound_causal_frontend::{
@@ -458,7 +459,30 @@ pub struct WorkEvent {
     pub evidence_artifacts: Vec<PathBuf>,
     #[serde(default)]
     pub performance_metrics: Vec<PerformanceMetricEvidence>,
+    /// Explicit semantic transport for requirement-bearing work. Free-form
+    /// summary text is forensic context only and never substitutes for this
+    /// observed→expected plus typed-goal contract.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub public_contract_deltas: Vec<PublicContractDeltaIR>,
     pub occurred_at_ms: u64,
+}
+
+pub const PUBLIC_CONTRACT_DELTA_SCHEMA: &str = "B_CORE_PUBLIC_CONTRACT_DELTA_1";
+const MAX_PUBLIC_CONTRACT_DELTAS_PER_EVENT: usize = 8;
+const MAX_TYPED_BEHAVIOR_GOALS_PER_DELTA: usize = 8;
+const MAX_TYPED_BEHAVIOR_GOALS_PER_GENERATIVE_INPUT: usize = 32;
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct PublicContractDeltaIR {
+    pub schema: String,
+    pub delta_id: String,
+    pub observed_behavior: String,
+    pub expected_behavior: String,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub target_symbols: Vec<String>,
+    pub typed_behavior_goals: Vec<TypedMechanismSynthesisGoalIR>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub provenance: Vec<String>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
@@ -542,6 +566,8 @@ pub struct LearningObservation {
     pub verification_evidence_sha256: Vec<String>,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub performance_metrics: Vec<PerformanceMetricEvidence>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub public_contract_deltas: Vec<PublicContractDeltaIR>,
     pub exact_source_fragments_stored: usize,
     pub raw_source_bytes_stored: usize,
     pub observed_at_ms: u64,
@@ -616,6 +642,8 @@ pub struct LearnedCompositionLesson {
     pub verification_obligations: Vec<String>,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub performance_metrics: Vec<PerformanceMetricEvidence>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub public_contract_deltas: Vec<PublicContractDeltaIR>,
     pub learning_score: u16,
     pub exact_patch_data_present: bool,
     pub exact_source_fragment_present: bool,
@@ -2159,6 +2187,9 @@ fn classify_observation(
         performance_metrics: event
             .map(|value| value.performance_metrics.clone())
             .unwrap_or_default(),
+        public_contract_deltas: event
+            .map(|value| value.public_contract_deltas.clone())
+            .unwrap_or_default(),
         exact_source_fragments_stored: 0,
         raw_source_bytes_stored: 0,
         observed_at_ms: now_ms(),
@@ -2892,6 +2923,53 @@ pub fn preview_source_repair(config_path: &Path) -> Result<serde_json::Value, St
     })
 }
 
+fn validate_public_contract_deltas(deltas: &[PublicContractDeltaIR]) -> Result<(), String> {
+    if deltas.len() > MAX_PUBLIC_CONTRACT_DELTAS_PER_EVENT {
+        return Err("EVENT_PUBLIC_CONTRACT_DELTA_BOUND".to_string());
+    }
+    let mut delta_ids = BTreeSet::new();
+    let mut goal_ids = BTreeSet::new();
+    for delta in deltas {
+        let observed = delta.observed_behavior.trim();
+        let expected = delta.expected_behavior.trim();
+        if delta.schema != PUBLIC_CONTRACT_DELTA_SCHEMA
+            || delta.delta_id.is_empty()
+            || delta.delta_id.len() > 80
+            || !delta.delta_id.chars().all(|character| {
+                character.is_ascii_alphanumeric() || matches!(character, '-' | '_' | '.')
+            })
+            || observed.is_empty()
+            || expected.is_empty()
+            || observed == expected
+            || delta.observed_behavior.len() > MAX_SUMMARY_BYTES
+            || delta.expected_behavior.len() > MAX_SUMMARY_BYTES
+            || delta.target_symbols.len() > 32
+            || delta
+                .target_symbols
+                .iter()
+                .any(|symbol| symbol.trim().is_empty() || symbol.len() > 256)
+            || delta.provenance.len() > 32
+            || delta
+                .provenance
+                .iter()
+                .any(|item| item.trim().is_empty() || item.len() > 512)
+            || delta.typed_behavior_goals.is_empty()
+            || delta.typed_behavior_goals.len() > MAX_TYPED_BEHAVIOR_GOALS_PER_DELTA
+            || !delta_ids.insert(delta.delta_id.clone())
+        {
+            return Err("EVENT_PUBLIC_CONTRACT_DELTA_INVALID".to_string());
+        }
+        for goal in &delta.typed_behavior_goals {
+            validate_typed_mechanism_synthesis_goal(goal)
+                .map_err(|error| format!("EVENT_TYPED_BEHAVIOR_GOAL_INVALID:{error}"))?;
+            if !goal_ids.insert(goal.goal_id.clone()) {
+                return Err("EVENT_TYPED_BEHAVIOR_GOAL_DUPLICATE".to_string());
+            }
+        }
+    }
+    Ok(())
+}
+
 fn validate_event(config: &GrowthSupervisorConfig, event: &mut WorkEvent) -> Result<(), String> {
     if event.event_id.is_empty() {
         event.event_id = json_sha256(event)?[..32].to_string();
@@ -2921,6 +2999,7 @@ fn validate_event(config: &GrowthSupervisorConfig, event: &mut WorkEvent) -> Res
     {
         return Err("EVENT_EVIDENCE_HASH_INVALID".to_string());
     }
+    validate_public_contract_deltas(&event.public_contract_deltas)?;
     let mut bound_evidence = Vec::with_capacity(event.evidence_artifacts.len());
     for path in &mut event.evidence_artifacts {
         let canonical = fs::canonicalize(&*path)
@@ -3607,6 +3686,10 @@ fn build_lesson(observations: &[LearningObservation]) -> Result<LearnedCompositi
         .collect::<BTreeSet<_>>();
     for observation in observations {
         append_structural_delta_signals(&mut signals, observation);
+        if !observation.public_contract_deltas.is_empty() {
+            signals.insert("PUBLIC_CONTRACT_DELTA_BOUND".to_string());
+            signals.insert("TYPED_BEHAVIOR_GOAL_AVAILABLE".to_string());
+        }
     }
     let kinds = observations
         .iter()
@@ -3622,6 +3705,18 @@ fn build_lesson(observations: &[LearningObservation]) -> Result<LearnedCompositi
         .collect::<BTreeSet<_>>()
         .into_iter()
         .collect::<Vec<_>>();
+    let mut public_contract_delta_index = BTreeMap::new();
+    for delta in observations
+        .iter()
+        .flat_map(|observation| &observation.public_contract_deltas)
+    {
+        public_contract_delta_index
+            .entry(json_sha256(delta)?)
+            .or_insert_with(|| delta.clone());
+    }
+    let public_contract_deltas = public_contract_delta_index
+        .into_values()
+        .collect::<Vec<_>>();
     let learning_score = observations
         .iter()
         .map(|observation| u32::from(observation.learning_score))
@@ -3632,10 +3727,15 @@ fn build_lesson(observations: &[LearningObservation]) -> Result<LearnedCompositi
     let recipe = derive_composition_recipe(observations);
     let lesson_id = sha256(
         format!(
-            "{}:{}:{}",
+            "{}:{}:{}:{}",
             evidence.join(":"),
             signals.iter().cloned().collect::<Vec<_>>().join(":"),
-            recipe.join(":")
+            recipe.join(":"),
+            public_contract_deltas
+                .iter()
+                .map(json_sha256)
+                .collect::<Result<Vec<_>, _>>()?
+                .join(":")
         )
         .as_bytes(),
     );
@@ -3655,6 +3755,7 @@ fn build_lesson(observations: &[LearningObservation]) -> Result<LearnedCompositi
             "raw source and secret material must remain absent".to_string(),
         ],
         performance_metrics,
+        public_contract_deltas,
         learning_score,
         exact_patch_data_present: false,
         exact_source_fragment_present: false,
@@ -3670,6 +3771,7 @@ struct LessonSemanticIdentity<'a> {
     applicability: &'a [String],
     verification_obligations: &'a [String],
     performance_metrics: Vec<PerformanceMetricSemanticIdentity<'a>>,
+    public_contract_deltas: &'a [PublicContractDeltaIR],
 }
 
 #[derive(Serialize)]
@@ -3697,6 +3799,7 @@ fn lesson_semantic_sha256(lesson: &LearnedCompositionLesson) -> Result<String, S
                 lower_is_better: metric.lower_is_better,
             })
             .collect(),
+        public_contract_deltas: &lesson.public_contract_deltas,
     })
 }
 
@@ -4138,6 +4241,12 @@ fn generative_input(lesson: &LearnedCompositionLesson) -> GenerativeInput {
             .performance_metrics
             .iter()
             .any(PerformanceMetricEvidence::improved),
+        typed_behavior_goals: lesson
+            .public_contract_deltas
+            .iter()
+            .flat_map(|delta| delta.typed_behavior_goals.iter().cloned())
+            .take(MAX_TYPED_BEHAVIOR_GOALS_PER_GENERATIVE_INPUT)
+            .collect(),
     }
 }
 
@@ -4190,6 +4299,12 @@ fn plateau_generative_input(memory: &GrowthMemory) -> Option<GenerativeInput> {
                 .iter()
                 .any(PerformanceMetricEvidence::improved)
         }),
+        typed_behavior_goals: lessons
+            .iter()
+            .flat_map(|lesson| &lesson.public_contract_deltas)
+            .flat_map(|delta| delta.typed_behavior_goals.iter().cloned())
+            .take(MAX_TYPED_BEHAVIOR_GOALS_PER_GENERATIVE_INPUT)
+            .collect(),
     })
 }
 
@@ -4872,6 +4987,7 @@ fn plateau_generative_probe_observation(
                 lower_is_better: false,
                 evidence_sha256: content_sha256,
             }],
+            public_contract_deltas: Vec::new(),
             exact_source_fragments_stored: 0,
             raw_source_bytes_stored: 0,
             observed_at_ms: state.generation,
@@ -4996,6 +5112,7 @@ fn generative_frontier_continuation_observation(
             lower_is_better: false,
             evidence_sha256: content_sha256,
         }],
+        public_contract_deltas: Vec::new(),
         exact_source_fragments_stored: 0,
         raw_source_bytes_stored: 0,
         // Generation is part of the immutable campaign freeze and therefore
@@ -7306,6 +7423,7 @@ fn runtime_repair_action(
             ],
             verification_evidence_sha256: vec![action_sha256],
             performance_metrics: Vec::new(),
+            public_contract_deltas: Vec::new(),
             exact_source_fragments_stored: 0,
             raw_source_bytes_stored: 0,
             observed_at_ms: now_ms(),
@@ -7346,6 +7464,7 @@ fn runtime_repair_action(
             ],
             verification_evidence_sha256,
             performance_metrics: Vec::new(),
+            public_contract_deltas: Vec::new(),
             exact_source_fragments_stored: 0,
             raw_source_bytes_stored: 0,
             observed_at_ms: now_ms(),
@@ -7393,6 +7512,7 @@ fn runtime_repair_action(
             ],
             verification_evidence_sha256,
             performance_metrics: Vec::new(),
+            public_contract_deltas: Vec::new(),
             exact_source_fragments_stored: 0,
             raw_source_bytes_stored: 0,
             observed_at_ms: now_ms(),
@@ -7444,6 +7564,7 @@ fn runtime_repair_action(
             ],
             verification_evidence_sha256,
             performance_metrics: Vec::new(),
+            public_contract_deltas: Vec::new(),
             exact_source_fragments_stored: 0,
             raw_source_bytes_stored: 0,
             observed_at_ms: now_ms(),
@@ -8117,6 +8238,7 @@ fn revalidate_installed_composite_capability(
             lower_is_better: false,
             evidence_sha256: receipt_sha256,
         }],
+        public_contract_deltas: Vec::new(),
         exact_source_fragments_stored: 0,
         raw_source_bytes_stored: 0,
         observed_at_ms: state.last_transition_ms.saturating_add(1),
@@ -8915,6 +9037,65 @@ mod tests {
         (config_path, config)
     }
 
+    fn typed_behavior_goal_fixture(goal_id: &str) -> TypedMechanismSynthesisGoalIR {
+        use crate::sem5::{
+            model::{DataSplit, Effect, ProgramType, Value},
+            typed_mechanism::{
+                SourceOperandIR, TypedMechanismObservationIR, TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA,
+            },
+        };
+
+        TypedMechanismSynthesisGoalIR {
+            schema: TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA.to_string(),
+            goal_id: goal_id.to_string(),
+            split: DataSplit::FreshBlind,
+            operands: vec![
+                SourceOperandIR {
+                    role: "base".to_string(),
+                    source: "node.baseline".to_string(),
+                    value_type: ProgramType::Int,
+                },
+                SourceOperandIR {
+                    role: "gain".to_string(),
+                    source: "observation.gain".to_string(),
+                    value_type: ProgramType::Int,
+                },
+            ],
+            output_type: ProgramType::Int,
+            definitions: Vec::new(),
+            allowed_effects: vec![Effect::Pure],
+            preconditions: Vec::new(),
+            postconditions: vec!["postimage matches every public observation".to_string()],
+            invariants: Vec::new(),
+            public_observations: [(4, 3, 7), (-2, 8, 6), (10, -3, 7)]
+                .into_iter()
+                .map(|(base, gain, expected)| TypedMechanismObservationIR {
+                    operands: BTreeMap::from([
+                        ("base".to_string(), Value::Int(base)),
+                        ("gain".to_string(), Value::Int(gain)),
+                    ]),
+                    expected_postimage: Value::Int(expected),
+                })
+                .collect(),
+            require_conditional: false,
+            max_expression_depth: 2,
+            max_candidates: 1_024,
+            provenance: vec!["PUBLIC_CONTRACT_DELTA".to_string()],
+        }
+    }
+
+    fn public_contract_delta_fixture() -> PublicContractDeltaIR {
+        PublicContractDeltaIR {
+            schema: PUBLIC_CONTRACT_DELTA_SCHEMA.to_string(),
+            delta_id: "observed-return-to-expected-sum".to_string(),
+            observed_behavior: "call returns the base operand".to_string(),
+            expected_behavior: "call returns base plus gain".to_string(),
+            target_symbols: vec!["crate::engine::apply_gain".to_string()],
+            typed_behavior_goals: vec![typed_behavior_goal_fixture("apply_gain_contract")],
+            provenance: vec!["PUBLIC_OBSERVATION".to_string()],
+        }
+    }
+
     #[test]
     fn opportunity_metrics_count_unique_families_not_repeated_attempts() {
         let root = temp_root("opportunity-family-metrics");
@@ -8970,6 +9151,7 @@ mod tests {
             learning_score: 90,
             verification_evidence_count: 1,
             measured_performance_gain: false,
+            typed_behavior_goals: Vec::new(),
         };
         let result = run_generative_cycle(&GenerativeGrowthMemory::default(), &input, 17).unwrap();
         assert!(result.frontier_advance);
@@ -9041,6 +9223,7 @@ mod tests {
             applicability: vec!["BOUND_CONTEXT".to_string()],
             verification_obligations: vec!["BEHAVIORAL_CANARY".to_string()],
             performance_metrics: Vec::new(),
+            public_contract_deltas: Vec::new(),
             learning_score: 90,
             exact_patch_data_present: false,
             exact_source_fragment_present: false,
@@ -9396,6 +9579,7 @@ mod tests {
             reasons: vec!["fixture".to_string()],
             verification_evidence_sha256: Vec::new(),
             performance_metrics: Vec::new(),
+            public_contract_deltas: Vec::new(),
             exact_source_fragments_stored: 0,
             raw_source_bytes_stored: 0,
             observed_at_ms: 1,
@@ -9503,6 +9687,7 @@ mod tests {
             reasons: vec!["current fixture".to_string()],
             verification_evidence_sha256: Vec::new(),
             performance_metrics: Vec::new(),
+            public_contract_deltas: Vec::new(),
             exact_source_fragments_stored: 0,
             raw_source_bytes_stored: 0,
             observed_at_ms: 2,
@@ -9572,6 +9757,7 @@ mod tests {
             reasons: vec!["test fixture".to_string()],
             verification_evidence_sha256: vec!["a".repeat(64)],
             performance_metrics: Vec::new(),
+            public_contract_deltas: Vec::new(),
             exact_source_fragments_stored: 0,
             raw_source_bytes_stored: 0,
             observed_at_ms: 1,
@@ -9766,6 +9952,7 @@ mod tests {
             applicability: vec!["test".to_string()],
             verification_obligations: vec!["regression".to_string()],
             performance_metrics,
+            public_contract_deltas: Vec::new(),
             learning_score: 80,
             exact_patch_data_present: false,
             exact_source_fragment_present: false,
@@ -10003,6 +10190,7 @@ mod tests {
                 learning_score: 80,
                 verification_evidence_count: 1,
                 measured_performance_gain: false,
+                typed_behavior_goals: Vec::new(),
             };
             let result = run_generative_cycle(&GenerativeGrowthMemory::default(), &input, ordinal)
                 .expect("behavioral composition");
@@ -10076,6 +10264,7 @@ mod tests {
                 evidence_sha256: vec![],
                 evidence_artifacts: vec![evidence],
                 performance_metrics: Vec::new(),
+                public_contract_deltas: Vec::new(),
                 occurred_at_ms: 1,
             },
         )
@@ -10110,6 +10299,7 @@ mod tests {
                 evidence_sha256: vec![],
                 evidence_artifacts: vec![],
                 performance_metrics: Vec::new(),
+                public_contract_deltas: Vec::new(),
                 occurred_at_ms: 1,
             },
         )
@@ -10143,6 +10333,7 @@ mod tests {
             reasons: Vec::new(),
             verification_evidence_sha256: Vec::new(),
             performance_metrics: Vec::new(),
+            public_contract_deltas: Vec::new(),
             exact_source_fragments_stored: 0,
             raw_source_bytes_stored: 0,
             observed_at_ms: 1,
@@ -10222,6 +10413,7 @@ mod tests {
                 evidence_sha256: vec![],
                 evidence_artifacts: vec![evidence],
                 performance_metrics: Vec::new(),
+                public_contract_deltas: Vec::new(),
                 occurred_at_ms: 1,
             },
         )
@@ -10276,6 +10468,7 @@ mod tests {
             evidence_sha256: vec!["a".repeat(64)],
             evidence_artifacts: vec![],
             performance_metrics: Vec::new(),
+            public_contract_deltas: Vec::new(),
             occurred_at_ms: 1,
         };
         let observation = classify_observation(
@@ -10310,6 +10503,7 @@ mod tests {
             evidence_sha256: vec![],
             evidence_artifacts: vec![],
             performance_metrics: Vec::new(),
+            public_contract_deltas: Vec::new(),
             occurred_at_ms: 1,
         };
         let observation = classify_observation(
@@ -10345,6 +10539,7 @@ mod tests {
             reasons: vec!["repair observed".to_string()],
             verification_evidence_sha256: Vec::new(),
             performance_metrics: Vec::new(),
+            public_contract_deltas: Vec::new(),
             exact_source_fragments_stored: 0,
             raw_source_bytes_stored: 0,
             observed_at_ms: 1,
@@ -10380,6 +10575,7 @@ mod tests {
             reasons: vec!["same test cohort passed again".to_string()],
             verification_evidence_sha256: vec!["b".repeat(64)],
             performance_metrics: Vec::new(),
+            public_contract_deltas: Vec::new(),
             exact_source_fragments_stored: 0,
             raw_source_bytes_stored: 0,
             observed_at_ms: 40 * 60 * 1_000,
@@ -10425,6 +10621,7 @@ mod tests {
             applicability: vec!["ROOT_0".to_string()],
             verification_obligations: vec!["REPOSITORY_VALIDATION_PASS".to_string()],
             performance_metrics: Vec::new(),
+            public_contract_deltas: Vec::new(),
             learning_score: 90,
             exact_patch_data_present: false,
             exact_source_fragment_present: false,
@@ -10474,6 +10671,7 @@ mod tests {
             applicability: vec!["ROOT_0".to_string()],
             verification_obligations: vec!["REGRESSION_PASS".to_string()],
             performance_metrics: Vec::new(),
+            public_contract_deltas: Vec::new(),
             learning_score: 90,
             exact_patch_data_present: false,
             exact_source_fragment_present: false,
@@ -10517,6 +10715,7 @@ mod tests {
             reasons: vec!["mixed production change".to_string()],
             verification_evidence_sha256: Vec::new(),
             performance_metrics: Vec::new(),
+            public_contract_deltas: Vec::new(),
             exact_source_fragments_stored: 0,
             raw_source_bytes_stored: 0,
             observed_at_ms: 1,
@@ -10632,6 +10831,7 @@ mod tests {
             reasons: vec!["unverified core repair".to_string()],
             verification_evidence_sha256: Vec::new(),
             performance_metrics: Vec::new(),
+            public_contract_deltas: Vec::new(),
             exact_source_fragments_stored: 0,
             raw_source_bytes_stored: 0,
             observed_at_ms: 1,
@@ -10830,6 +11030,7 @@ mod tests {
             reasons: vec!["python repair".to_string()],
             verification_evidence_sha256: Vec::new(),
             performance_metrics: Vec::new(),
+            public_contract_deltas: Vec::new(),
             exact_source_fragments_stored: 0,
             raw_source_bytes_stored: 0,
             observed_at_ms: 1,
@@ -11019,6 +11220,7 @@ mod tests {
             reasons: vec!["failing public behavior".to_string()],
             verification_evidence_sha256: Vec::new(),
             performance_metrics: Vec::new(),
+            public_contract_deltas: Vec::new(),
             exact_source_fragments_stored: 0,
             raw_source_bytes_stored: 0,
             observed_at_ms: 1,
@@ -11327,6 +11529,7 @@ mod tests {
             reasons: vec!["rust repair".to_string()],
             verification_evidence_sha256: Vec::new(),
             performance_metrics: Vec::new(),
+            public_contract_deltas: Vec::new(),
             exact_source_fragments_stored: 0,
             raw_source_bytes_stored: 0,
             observed_at_ms: 1,
@@ -11663,6 +11866,7 @@ mod tests {
             reasons: vec!["test".to_string()],
             verification_evidence_sha256: vec!["a".repeat(64)],
             performance_metrics: Vec::new(),
+            public_contract_deltas: Vec::new(),
             exact_source_fragments_stored: 0,
             raw_source_bytes_stored: 0,
             observed_at_ms: 1,
@@ -12022,6 +12226,63 @@ mod tests {
     }
 
     #[test]
+    fn observed_to_expected_contract_cannot_enter_without_a_typed_behavior_goal() {
+        let mut delta = public_contract_delta_fixture();
+        delta.typed_behavior_goals.clear();
+
+        assert_eq!(
+            validate_public_contract_deltas(&[delta]),
+            Err("EVENT_PUBLIC_CONTRACT_DELTA_INVALID".to_string())
+        );
+    }
+
+    #[test]
+    fn typed_behavior_goal_survives_event_observation_lesson_and_generative_input() {
+        let delta = public_contract_delta_fixture();
+        validate_public_contract_deltas(std::slice::from_ref(&delta)).unwrap();
+        let current = FileFingerprint {
+            content_sha256: "b".repeat(64),
+            bytes: 100,
+            modified_ms: 1,
+            extension: "rs".to_string(),
+            features: StructuralFeatures {
+                public_symbols: 1,
+                ..StructuralFeatures::default()
+            },
+        };
+        let event = WorkEvent {
+            event_id: "typed-public-contract".to_string(),
+            actor: WorkActor::LocalTool,
+            kind: WorkKind::DefectRepair,
+            paths: Vec::new(),
+            outcome: WorkOutcome::Unknown,
+            summary: "forensic context must not replace the typed contract".to_string(),
+            evidence_sha256: Vec::new(),
+            evidence_artifacts: Vec::new(),
+            performance_metrics: Vec::new(),
+            public_contract_deltas: vec![delta.clone()],
+            occurred_at_ms: 1,
+        };
+
+        let observation = classify_observation(
+            "ROOT_0/src/engine.rs".to_string(),
+            &current,
+            None,
+            Some(&event),
+            &ClassifierMemory::default(),
+            10,
+        );
+        assert_eq!(observation.public_contract_deltas, vec![delta.clone()]);
+        let lesson = build_lesson(std::slice::from_ref(&observation)).unwrap();
+        assert_eq!(lesson.public_contract_deltas, vec![delta.clone()]);
+        assert!(lesson
+            .diagnostic_signals
+            .contains(&"TYPED_BEHAVIOR_GOAL_AVAILABLE".to_string()));
+        let input = generative_input(&lesson);
+        assert_eq!(input.typed_behavior_goals, delta.typed_behavior_goals);
+    }
+
+    #[test]
     fn measured_performance_gain_is_bound_and_value_sensitive() {
         let metric = PerformanceMetricEvidence {
             metric: "scan_latency_ns".to_string(),
@@ -12051,6 +12312,7 @@ mod tests {
             evidence_sha256: vec!["a".repeat(64)],
             evidence_artifacts: Vec::new(),
             performance_metrics: vec![metric],
+            public_contract_deltas: Vec::new(),
             occurred_at_ms: 1,
         };
         let observation = classify_observation(
@@ -12108,6 +12370,7 @@ mod tests {
             reasons: vec!["bounded verified change".to_string()],
             verification_evidence_sha256: vec!["c".repeat(64)],
             performance_metrics: Vec::new(),
+            public_contract_deltas: Vec::new(),
             exact_source_fragments_stored: 0,
             raw_source_bytes_stored: 0,
             observed_at_ms: 1,
