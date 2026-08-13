@@ -13,7 +13,7 @@ use std::io::Write;
 use std::path::{Component, Path, PathBuf};
 use std::process::{Command, Stdio};
 use std::thread;
-use std::time::{Duration, Instant};
+use std::time::{Duration, Instant, SystemTime};
 
 use serde::{Deserialize, Serialize};
 
@@ -45,10 +45,15 @@ pub const IMPROVEMENT_OPERATOR_MEMORY_SCHEMA: &str = "B_CORE_IMPROVEMENT_OPERATO
 pub const MAX_IMPROVEMENT_OPERATOR_GRAPH_NODES: usize = 8;
 const MAX_COMPETING_SOURCE_PROPOSALS: usize = 3;
 const MAX_TYPED_OPERATOR_RECONCILIATION_RECEIPTS: usize = 64;
+// Revision 49 removes diagnostic opportunity-family identity from atomic
+// composition authority; exact source/edit compatibility remains authoritative.
+// Revision 48 bounds consumed runtime staging generations while preserving a
+// pending handoff and its immediate verified predecessor.
 // Revision 47 separates exact authority existence from the bounded active
 // operator window and deduplicates repeated authority receipts.
 // Generator identity remains diagnostic evidence only.
-pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 47;
+pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 49;
+pub const MAX_RETAINED_CONSUMED_RUNTIME_STAGING_GENERATIONS: usize = 2;
 const KNOWN_REMAINDER_PREDICTED_VALUE: u16 = 35;
 const MAX_REPOSITORY_REPAIR_FAMILY_FILES: usize = 16;
 const KNOWN_REMAINDER_STRATEGIES: [&str; 4] = [
@@ -628,6 +633,16 @@ pub struct AutonomousSourcePatchReceipt {
     #[serde(default)]
     pub workspace_stable_during_validation: bool,
     pub receipt_sha256: String,
+}
+
+#[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub struct SourceMutationStagingCleanup {
+    pub consumed_generations_scanned: usize,
+    pub generations_retained: usize,
+    pub generations_removed: usize,
+    pub bytes_removed: u64,
+    pub unverified_generations_skipped: usize,
+    pub pending_handoff_preserved: bool,
 }
 
 pub fn validate_policy(policy: &AutonomousSourceMutationPolicy) -> Result<(), String> {
@@ -3002,6 +3017,257 @@ fn receipt_hash(receipt: &AutonomousSourcePatchReceipt) -> Result<String, String
         .map_err(|error| format!("SOURCE_MUTATION_RECEIPT_JSON:{error}"))
 }
 
+#[derive(Debug)]
+struct ConsumedRuntimeStagingGeneration {
+    modified: SystemTime,
+    mutation_id: String,
+    staging: PathBuf,
+    bytes: u64,
+}
+
+fn verified_consumed_runtime_staging(
+    canonical_mutation_root: &Path,
+    mutation: &Path,
+) -> Result<Option<ConsumedRuntimeStagingGeneration>, String> {
+    let mutation_type = fs::symlink_metadata(mutation)
+        .map_err(|error| format!("SOURCE_STAGING_MUTATION_METADATA:{error}"))?
+        .file_type();
+    if mutation_type.is_symlink() || !mutation_type.is_dir() {
+        return Err("SOURCE_STAGING_MUTATION_TYPE_INVALID".to_string());
+    }
+    let canonical_mutation = fs::canonicalize(mutation)
+        .map_err(|error| format!("SOURCE_STAGING_MUTATION_CANONICALIZE:{error}"))?;
+    if canonical_mutation.parent() != Some(canonical_mutation_root) {
+        return Err("SOURCE_STAGING_MUTATION_OUTSIDE_ROOT".to_string());
+    }
+    let staging = canonical_mutation.join("staging");
+    if !staging.exists() {
+        return Ok(None);
+    }
+    let staging_type = fs::symlink_metadata(&staging)
+        .map_err(|error| format!("SOURCE_STAGING_METADATA:{error}"))?
+        .file_type();
+    if staging_type.is_symlink() || !staging_type.is_dir() {
+        return Err("SOURCE_STAGING_TYPE_INVALID".to_string());
+    }
+    let canonical_staging = fs::canonicalize(&staging)
+        .map_err(|error| format!("SOURCE_STAGING_CANONICALIZE:{error}"))?;
+    if canonical_staging.parent() != Some(canonical_mutation.as_path()) {
+        return Err("SOURCE_STAGING_OUTSIDE_MUTATION".to_string());
+    }
+    let mutation_id = canonical_mutation
+        .file_name()
+        .and_then(OsStr::to_str)
+        .ok_or_else(|| "SOURCE_STAGING_MUTATION_ID_INVALID".to_string())?
+        .to_string();
+
+    let receipt_path = canonical_mutation.join("receipt.json");
+    let receipt_bytes =
+        fs::read(&receipt_path).map_err(|error| format!("SOURCE_STAGING_RECEIPT_READ:{error}"))?;
+    let receipt: AutonomousSourcePatchReceipt = serde_json::from_slice(&receipt_bytes)
+        .map_err(|error| format!("SOURCE_STAGING_RECEIPT_PARSE:{error}"))?;
+    if receipt.schema != AUTONOMOUS_SOURCE_MUTATION_SCHEMA
+        || receipt.patch_id != mutation_id
+        || !receipt.core_generated
+        || !receipt.core_self_approved
+        || !receipt.installed
+        || receipt.rolled_back
+        || receipt.failure_reason.is_some()
+        || !receipt.validation.success
+        || !receipt
+            .release_build
+            .as_ref()
+            .is_some_and(|command| command.success)
+        || !receipt.runtime_update_staged
+        || !receipt.workspace_stable_during_validation
+        || receipt.receipt_sha256 != receipt_hash(&receipt)?
+    {
+        return Err("SOURCE_STAGING_RECEIPT_NOT_CONSUMED_AUTHORITY".to_string());
+    }
+
+    let expected_names = BTreeSet::from([
+        "b-core-growth-supervisor.exe".to_string(),
+        "b-core-growth-verifier.exe".to_string(),
+    ]);
+    let mut observed_names = BTreeSet::new();
+    let mut bytes = 0_u64;
+    let entries = fs::read_dir(&canonical_staging)
+        .map_err(|error| format!("SOURCE_STAGING_READ_DIR:{error}"))?
+        .collect::<Result<Vec<_>, _>>()
+        .map_err(|error| format!("SOURCE_STAGING_ENTRY:{error}"))?;
+    for entry in entries {
+        let file_type = entry
+            .file_type()
+            .map_err(|error| format!("SOURCE_STAGING_FILE_TYPE:{error}"))?;
+        if file_type.is_symlink() || !file_type.is_file() {
+            return Err("SOURCE_STAGING_NON_REGULAR_ARTIFACT".to_string());
+        }
+        let name = entry
+            .file_name()
+            .to_str()
+            .ok_or_else(|| "SOURCE_STAGING_NON_UTF8_ARTIFACT".to_string())?
+            .to_string();
+        observed_names.insert(name);
+        bytes = bytes.saturating_add(
+            entry
+                .metadata()
+                .map_err(|error| format!("SOURCE_STAGING_FILE_METADATA:{error}"))?
+                .len(),
+        );
+    }
+    if observed_names != expected_names {
+        return Err("SOURCE_STAGING_ARTIFACT_SET_INVALID".to_string());
+    }
+    let modified = fs::metadata(&canonical_staging)
+        .and_then(|metadata| metadata.modified())
+        .unwrap_or(SystemTime::UNIX_EPOCH);
+    Ok(Some(ConsumedRuntimeStagingGeneration {
+        modified,
+        mutation_id,
+        staging: canonical_staging,
+        bytes,
+    }))
+}
+
+fn pending_runtime_staging(
+    state_dir: &Path,
+    canonical_mutation_root: &Path,
+) -> Result<Option<PathBuf>, String> {
+    let handoff_path = state_dir.join("control").join(SELF_UPDATE_HANDOFF_FILE);
+    if !handoff_path.exists() {
+        return Ok(None);
+    }
+    if fs::symlink_metadata(&handoff_path)
+        .map_err(|error| format!("SOURCE_STAGING_HANDOFF_METADATA:{error}"))?
+        .file_type()
+        .is_symlink()
+    {
+        return Err("SOURCE_STAGING_HANDOFF_SYMLINK_FORBIDDEN".to_string());
+    }
+    let bytes =
+        fs::read(&handoff_path).map_err(|error| format!("SOURCE_STAGING_HANDOFF_READ:{error}"))?;
+    let handoff: RuntimeUpdateHandoff = serde_json::from_slice(&bytes)
+        .map_err(|error| format!("SOURCE_STAGING_HANDOFF_PARSE:{error}"))?;
+    if handoff.schema != AUTONOMOUS_SOURCE_MUTATION_SCHEMA {
+        return Err("SOURCE_STAGING_HANDOFF_SCHEMA_INVALID".to_string());
+    }
+    let supervisor = fs::canonicalize(&handoff.staged_supervisor)
+        .map_err(|error| format!("SOURCE_STAGING_HANDOFF_SUPERVISOR:{error}"))?;
+    let verifier = fs::canonicalize(&handoff.staged_verifier)
+        .map_err(|error| format!("SOURCE_STAGING_HANDOFF_VERIFIER:{error}"))?;
+    if supervisor.file_name().and_then(OsStr::to_str) != Some("b-core-growth-supervisor.exe")
+        || verifier.file_name().and_then(OsStr::to_str) != Some("b-core-growth-verifier.exe")
+        || supervisor.parent() != verifier.parent()
+    {
+        return Err("SOURCE_STAGING_HANDOFF_ARTIFACTS_INVALID".to_string());
+    }
+    let staging = supervisor
+        .parent()
+        .ok_or_else(|| "SOURCE_STAGING_HANDOFF_PARENT_MISSING".to_string())?
+        .to_path_buf();
+    if staging.file_name().and_then(OsStr::to_str) != Some("staging")
+        || !staging.starts_with(canonical_mutation_root)
+        || staging.parent().and_then(Path::parent) != Some(canonical_mutation_root)
+    {
+        return Err("SOURCE_STAGING_HANDOFF_OUTSIDE_ROOT".to_string());
+    }
+    let source_receipt = fs::canonicalize(&handoff.source_receipt)
+        .map_err(|error| format!("SOURCE_STAGING_HANDOFF_RECEIPT:{error}"))?;
+    if source_receipt != staging.parent().unwrap().join("receipt.json") {
+        return Err("SOURCE_STAGING_HANDOFF_RECEIPT_BINDING_INVALID".to_string());
+    }
+    if handoff.patch_id
+        != staging
+            .parent()
+            .and_then(Path::file_name)
+            .and_then(OsStr::to_str)
+            .unwrap_or("")
+    {
+        return Err("SOURCE_STAGING_HANDOFF_PATCH_BINDING_INVALID".to_string());
+    }
+    verified_consumed_runtime_staging(canonical_mutation_root, staging.parent().unwrap())?
+        .ok_or_else(|| "SOURCE_STAGING_HANDOFF_GENERATION_MISSING".to_string())?;
+    Ok(Some(staging))
+}
+
+/// Removes only verified, already-consumed runtime staging copies. Immutable
+/// requests, receipts, predecessor sources, operator knowledge and any pending
+/// update handoff remain untouched. At rest this retains the current and
+/// immediate predecessor staging generations; while a handoff is pending it
+/// retains that generation plus one verified predecessor.
+pub fn cleanup_consumed_source_mutation_staging(
+    state_dir: &Path,
+) -> Result<SourceMutationStagingCleanup, String> {
+    let mutation_root = state_dir.join("source_mutations");
+    if !mutation_root.exists() {
+        return Ok(SourceMutationStagingCleanup::default());
+    }
+    let root_type = fs::symlink_metadata(&mutation_root)
+        .map_err(|error| format!("SOURCE_STAGING_ROOT_METADATA:{error}"))?
+        .file_type();
+    if root_type.is_symlink() || !root_type.is_dir() {
+        return Err("SOURCE_STAGING_ROOT_INVALID".to_string());
+    }
+    let canonical_mutation_root = fs::canonicalize(&mutation_root)
+        .map_err(|error| format!("SOURCE_STAGING_ROOT_CANONICALIZE:{error}"))?;
+    let pending = pending_runtime_staging(state_dir, &canonical_mutation_root)?;
+    let mut cleanup = SourceMutationStagingCleanup {
+        pending_handoff_preserved: pending.is_some(),
+        ..SourceMutationStagingCleanup::default()
+    };
+    let entries = fs::read_dir(&canonical_mutation_root)
+        .map_err(|error| format!("SOURCE_STAGING_ROOT_READ_DIR:{error}"))?
+        .collect::<Result<Vec<_>, _>>()
+        .map_err(|error| format!("SOURCE_STAGING_ROOT_ENTRY:{error}"))?;
+    let mut generations = Vec::new();
+    for entry in entries {
+        if !entry.path().join("staging").exists() {
+            continue;
+        }
+        match verified_consumed_runtime_staging(&canonical_mutation_root, &entry.path()) {
+            Ok(Some(generation)) => generations.push(generation),
+            Ok(None) => {}
+            Err(_) => {
+                cleanup.unverified_generations_skipped =
+                    cleanup.unverified_generations_skipped.saturating_add(1);
+            }
+        }
+    }
+    generations.sort_by(|left, right| {
+        right
+            .modified
+            .cmp(&left.modified)
+            .then_with(|| left.mutation_id.cmp(&right.mutation_id))
+    });
+    cleanup.consumed_generations_scanned = generations.len();
+    let retained_consumed_limit = if pending.is_some() {
+        1
+    } else {
+        MAX_RETAINED_CONSUMED_RUNTIME_STAGING_GENERATIONS
+    };
+    let mut consumed_retained = 0_usize;
+    for generation in generations {
+        if pending.as_ref() == Some(&generation.staging) {
+            cleanup.generations_retained = cleanup.generations_retained.saturating_add(1);
+            continue;
+        }
+        if consumed_retained < retained_consumed_limit {
+            consumed_retained = consumed_retained.saturating_add(1);
+            cleanup.generations_retained = cleanup.generations_retained.saturating_add(1);
+            continue;
+        }
+        fs::remove_dir_all(&generation.staging).map_err(|error| {
+            format!(
+                "SOURCE_STAGING_REMOVE:{}:{error}",
+                generation.staging.display()
+            )
+        })?;
+        cleanup.generations_removed = cleanup.generations_removed.saturating_add(1);
+        cleanup.bytes_removed = cleanup.bytes_removed.saturating_add(generation.bytes);
+    }
+    Ok(cleanup)
+}
+
 fn install_primary_and_stage_source_patch(
     policy: &AutonomousSourceMutationPolicy,
     state_dir: &Path,
@@ -4529,16 +4795,8 @@ fn proposal_is_atomic_composition_compatible(
     primary.relative_path == candidate.relative_path
         && primary.predecessor_sha256 == candidate.predecessor_sha256
         && primary.source_generation == candidate.source_generation
-        && primary.opportunity_kind == candidate.opportunity_kind
-        && primary.opportunity_family_id == candidate.opportunity_family_id
         && primary.additional_family_members.is_empty()
         && candidate.additional_family_members.is_empty()
-        && primary.typed_mechanism_operator_recipe.is_none()
-        && candidate.typed_mechanism_operator_recipe.is_none()
-        && primary.typed_mechanism_synthesis_receipt.is_none()
-        && candidate.typed_mechanism_synthesis_receipt.is_none()
-        && primary.typed_mechanism_materialized_edit.is_none()
-        && candidate.typed_mechanism_materialized_edit.is_none()
 }
 
 fn compose_ranked_source_proposals(
@@ -4595,6 +4853,12 @@ fn compose_ranked_source_proposals(
     let identity_sha256 = sha256(selected_identity.as_bytes());
     let transformation = format!("COMPOSED_SOURCE_PROPOSAL_KERNEL:{}", &identity_sha256[..24]);
     let solution_strategy = format!("BOUND_ATOMIC_MULTI_EDIT:{}", &identity_sha256[..24]);
+    let opportunity_kind = selected
+        .iter()
+        .map(|request| request.opportunity_kind)
+        .min()
+        .unwrap_or(primary.request.opportunity_kind);
+    let opportunity_family_id = source_opportunity_family_id(opportunity_kind, &transformation);
     let candidate_sha256 = sha256(combined_source.as_bytes());
     let mut structural_repair_program = synthesize_structural_repair(
         &structural_file_id(&primary.request.relative_path),
@@ -4619,7 +4883,7 @@ fn compose_ranked_source_proposals(
         &transformation,
         &solution_strategy,
         &structural_repair_program,
-        &primary.request.opportunity_family_id,
+        &opportunity_family_id,
         &predecessor,
     )?;
     if !operator_execution.applicable
@@ -4685,8 +4949,8 @@ fn compose_ranked_source_proposals(
         structural_repair_program: Some(structural_repair_program),
         generalized_change: Some(generalized_change),
         additional_family_members: Vec::new(),
-        opportunity_kind: primary.request.opportunity_kind,
-        opportunity_family_id: primary.request.opportunity_family_id.clone(),
+        opportunity_kind,
+        opportunity_family_id,
         improvement_operator_invocation: Some(invocation),
         improvement_operator_execution: Some(operator_execution),
         typed_mechanism_operator_recipe: None,
@@ -4978,6 +5242,135 @@ mod tests {
         receipt
     }
 
+    fn staged_synthetic_generation(
+        state: &Path,
+        request: &AutonomousSourcePatchRequest,
+        mutation_id: &str,
+    ) -> (PathBuf, PathBuf) {
+        let mutation = state.join("source_mutations").join(mutation_id);
+        let staging = mutation.join("staging");
+        fs::create_dir_all(&staging).unwrap();
+        fs::write(staging.join("b-core-growth-supervisor.exe"), mutation_id).unwrap();
+        fs::write(staging.join("b-core-growth-verifier.exe"), mutation_id).unwrap();
+        let mut receipt = synthetic_receipt(request, true);
+        receipt.patch_id = mutation_id.to_string();
+        receipt.receipt_sha256 = receipt_hash(&receipt).unwrap();
+        let receipt_path = mutation.join("receipt.json");
+        write_immutable_json(&receipt_path, &receipt).unwrap();
+        (staging, receipt_path)
+    }
+
+    #[test]
+    fn consumed_runtime_staging_retains_only_current_and_predecessor() {
+        let (root, policy) = fixture("bounded-runtime-staging");
+        let state = external_state(&root);
+        let request = discover_known_source_improvement(&policy, &state, 1)
+            .unwrap()
+            .expect("repair request");
+        for index in 0..4 {
+            staged_synthetic_generation(&state, &request, &format!("generation-{index}"));
+        }
+
+        let cleanup = cleanup_consumed_source_mutation_staging(&state).unwrap();
+        assert_eq!(cleanup.consumed_generations_scanned, 4);
+        assert_eq!(cleanup.generations_retained, 2);
+        assert_eq!(cleanup.generations_removed, 2);
+        assert!(cleanup.bytes_removed > 0);
+        assert_eq!(cleanup.unverified_generations_skipped, 0);
+        assert!(!cleanup.pending_handoff_preserved);
+        let mutations = fs::read_dir(state.join("source_mutations"))
+            .unwrap()
+            .collect::<Result<Vec<_>, _>>()
+            .unwrap();
+        assert_eq!(
+            mutations
+                .iter()
+                .filter(|entry| entry.path().join("staging").is_dir())
+                .count(),
+            2
+        );
+        assert!(mutations
+            .iter()
+            .all(|entry| entry.path().join("receipt.json").is_file()));
+
+        fs::remove_dir_all(root).unwrap();
+        fs::remove_dir_all(state).unwrap();
+    }
+
+    #[test]
+    fn pending_runtime_handoff_and_one_verified_predecessor_are_preserved() {
+        let (root, policy) = fixture("pending-runtime-staging");
+        let state = external_state(&root);
+        let request = discover_known_source_improvement(&policy, &state, 1)
+            .unwrap()
+            .expect("repair request");
+        let mut staged = Vec::new();
+        for index in 0..4 {
+            staged.push(staged_synthetic_generation(
+                &state,
+                &request,
+                &format!("pending-generation-{index}"),
+            ));
+        }
+        let (pending_staging, pending_receipt) = &staged[0];
+        fs::create_dir_all(state.join("control")).unwrap();
+        let handoff = RuntimeUpdateHandoff {
+            schema: AUTONOMOUS_SOURCE_MUTATION_SCHEMA.to_string(),
+            patch_id: "pending-generation-0".to_string(),
+            staged_supervisor: pending_staging.join("b-core-growth-supervisor.exe"),
+            staged_verifier: pending_staging.join("b-core-growth-verifier.exe"),
+            runtime_supervisor: policy.runtime_bin_dir.join("b-core-growth-supervisor.exe"),
+            runtime_verifier: policy.runtime_bin_dir.join("b-core-growth-verifier.exe"),
+            source_receipt: pending_receipt.clone(),
+        };
+        write_immutable_json(
+            &state.join("control").join(SELF_UPDATE_HANDOFF_FILE),
+            &handoff,
+        )
+        .unwrap();
+
+        let cleanup = cleanup_consumed_source_mutation_staging(&state).unwrap();
+        assert!(cleanup.pending_handoff_preserved);
+        assert_eq!(cleanup.generations_retained, 2);
+        assert_eq!(cleanup.generations_removed, 2);
+        assert!(pending_staging.is_dir());
+        assert!(pending_receipt.is_file());
+
+        fs::remove_dir_all(root).unwrap();
+        fs::remove_dir_all(state).unwrap();
+    }
+
+    #[test]
+    fn unverified_runtime_staging_is_never_deleted() {
+        let (root, policy) = fixture("unverified-runtime-staging");
+        let state = external_state(&root);
+        let request = discover_known_source_improvement(&policy, &state, 1)
+            .unwrap()
+            .expect("repair request");
+        for index in 0..3 {
+            staged_synthetic_generation(&state, &request, &format!("verified-generation-{index}"));
+        }
+        let (unverified_staging, receipt_path) =
+            staged_synthetic_generation(&state, &request, "unverified-generation");
+        let mut receipt: AutonomousSourcePatchReceipt =
+            serde_json::from_slice(&fs::read(&receipt_path).unwrap()).unwrap();
+        receipt.patch_id = "different-generation".to_string();
+        receipt.receipt_sha256 = receipt_hash(&receipt).unwrap();
+        fs::write(&receipt_path, serde_json::to_vec_pretty(&receipt).unwrap()).unwrap();
+        fs::write(unverified_staging.join("operator-note.txt"), "preserve").unwrap();
+
+        let cleanup = cleanup_consumed_source_mutation_staging(&state).unwrap();
+        assert_eq!(cleanup.consumed_generations_scanned, 3);
+        assert_eq!(cleanup.generations_removed, 1);
+        assert_eq!(cleanup.unverified_generations_skipped, 1);
+        assert!(unverified_staging.is_dir());
+        assert!(unverified_staging.join("operator-note.txt").is_file());
+        assert!(receipt_path.is_file());
+
+        fs::remove_dir_all(root).unwrap();
+        fs::remove_dir_all(state).unwrap();
+    }
+
     fn cargo_path() -> PathBuf {
         let candidate = std::env::var_os("CARGO")
             .map(PathBuf::from)
@@ -5165,7 +5558,12 @@ mod tests {
         let state = root.join("state");
         fs::create_dir_all(&state).unwrap();
         let operator_memory = refresh_improvement_operator_repository(&state).unwrap();
-        let family = source_opportunity_family_id(ChangeOpportunityKind::Defect, "PAIR_CONTRACT");
+        let grammar_family =
+            source_opportunity_family_id(ChangeOpportunityKind::Defect, "LEFT_CONTRACT");
+        let compiler_family =
+            source_opportunity_family_id(ChangeOpportunityKind::Defect, "RIGHT_CONTRACT");
+        let conflicting_family =
+            source_opportunity_family_id(ChangeOpportunityKind::Defect, "THIRD_CONTRACT");
         let grammar = proposal_request_fixture(
             &policy,
             &state,
@@ -5173,7 +5571,7 @@ mod tests {
             "GRAMMAR-LEFT",
             "pub fn left() -> i32 { 2 }\npub fn right() -> i32 { 10 }\n",
             90,
-            &family,
+            &grammar_family,
         );
         let compiler = proposal_request_fixture(
             &policy,
@@ -5182,7 +5580,7 @@ mod tests {
             "COMPILER-RIGHT",
             "pub fn left() -> i32 { 1 }\npub fn right() -> i32 { 20 }\n",
             85,
-            &family,
+            &compiler_family,
         );
         let conflicting = proposal_request_fixture(
             &policy,
@@ -5191,7 +5589,7 @@ mod tests {
             "KNOWN-CONFLICT",
             "pub fn left() -> i32 { 3 }\npub fn right() -> i32 { 10 }\n",
             80,
-            &family,
+            &conflicting_family,
         );
 
         let selected = select_source_discovery_proposals(
@@ -5230,6 +5628,12 @@ mod tests {
         assert!(selected
             .transformation
             .starts_with("COMPOSED_SOURCE_PROPOSAL_KERNEL:"));
+        assert_ne!(selected.opportunity_family_id, grammar_family);
+        assert_ne!(selected.opportunity_family_id, compiler_family);
+        assert_eq!(
+            selected.opportunity_family_id,
+            source_opportunity_family_id(selected.opportunity_kind, &selected.transformation)
+        );
         assert_eq!(
             selected.candidate_source,
             "pub fn left() -> i32 { 2 }\npub fn right() -> i32 { 20 }\n"

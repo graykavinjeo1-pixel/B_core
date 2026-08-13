@@ -24,13 +24,14 @@ use crate::autonomous_self_inspection::{
     RepairDisposition, RuntimeRepairActionReceipt, RuntimeRepairMechanism, SelfInspectionInput,
 };
 use crate::autonomous_source_mutation::{
-    command_receipt_with_incremental, derive_improvement_operator_memory,
-    discover_known_source_improvement, discover_known_source_improvement_detailed,
-    full_workspace_semantic_fingerprint, install_and_stage_source_patch,
-    runtime_core_feature_available, runtime_core_relative_path, source_opportunity_family_id,
-    source_patch_failure_is_transient, source_patch_validation_critical_path_ms, validate_policy,
-    AutonomousSourceMutationPolicy, AutonomousSourcePatchReceipt, AutonomousSourcePatchRequest,
-    ChangeOpportunityKind, ImprovementOperatorGeneratorKind, LocalCommandReceipt,
+    cleanup_consumed_source_mutation_staging, command_receipt_with_incremental,
+    derive_improvement_operator_memory, discover_known_source_improvement,
+    discover_known_source_improvement_detailed, full_workspace_semantic_fingerprint,
+    install_and_stage_source_patch, runtime_core_feature_available, runtime_core_relative_path,
+    source_opportunity_family_id, source_patch_failure_is_transient,
+    source_patch_validation_critical_path_ms, validate_policy, AutonomousSourceMutationPolicy,
+    AutonomousSourcePatchReceipt, AutonomousSourcePatchRequest, ChangeOpportunityKind,
+    ImprovementOperatorGeneratorKind, LocalCommandReceipt, SourceMutationStagingCleanup,
     SOURCE_REPAIR_ENGINE_REVISION,
 };
 use crate::generative_growth::{
@@ -10085,7 +10086,18 @@ pub fn supervisor_step(config_path: &Path) -> Result<StepReport, String> {
     let lease = SupervisorLease::acquire(&config)?;
     lease.heartbeat()?;
     let _ = recover_repository_install_transactions(&config)?;
+    // Runtime staging is a disposable transfer cache, not research authority.
+    // Cleanup is deliberately outside the semantic step transaction and may
+    // never turn a valid sealed state into a failed campaign.
+    let _ = cleanup_consumed_source_mutation_staging(&config.state_dir);
     step_without_lease(&config, &lease)
+}
+
+pub fn cleanup_source_staging(config_path: &Path) -> Result<SourceMutationStagingCleanup, String> {
+    let config = load_config(config_path)?;
+    let lease = SupervisorLease::acquire(&config)?;
+    lease.heartbeat()?;
+    cleanup_consumed_source_mutation_staging(&config.state_dir)
 }
 
 pub fn run_daemon(config_path: &Path) -> Result<StepReport, String> {
@@ -10093,6 +10105,7 @@ pub fn run_daemon(config_path: &Path) -> Result<StepReport, String> {
     let _ = initialize(config_path)?;
     let lease = SupervisorLease::acquire(&config)?;
     let _ = recover_repository_install_transactions(&config)?;
+    let _ = cleanup_consumed_source_mutation_staging(&config.state_dir);
     loop {
         lease.heartbeat()?;
         let report = step_without_lease(&config, &lease)?;
