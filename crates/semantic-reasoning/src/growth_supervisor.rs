@@ -6027,10 +6027,22 @@ struct RepositoryInstallOutcome {
     failure_code: Option<String>,
 }
 
+struct RepositoryInstallRequest<'a> {
+    plan: &'a RepositoryValidationPlan,
+    validation: &'a RepositoryCohortValidationReceipt,
+    repair_id: &'a str,
+    relative: &'a Path,
+    predecessor_sha256: &'a str,
+    candidate_source: &'a str,
+    generation: u64,
+    pending_improvement_operators: &'a [TypedMechanismImprovementOperatorIR],
+}
+
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 struct RepositoryInstallTransaction {
     schema: String,
     repair_id: String,
+    generation: u64,
     root_index: usize,
     source_relative_path: PathBuf,
     predecessor_sha256: String,
@@ -6041,6 +6053,7 @@ struct RepositoryInstallTransaction {
     rollback_file_name: String,
     predecessor_readonly: bool,
     predecessor_unix_mode: Option<u32>,
+    pending_improvement_operators: Vec<TypedMechanismImprovementOperatorIR>,
     operator_selected: bool,
     codex_calls: u64,
     external_llm_calls: u64,
@@ -6059,6 +6072,7 @@ struct RepositoryInstallCommitReceipt {
     candidate_sha256: String,
     scope_fingerprint_after: String,
     authoritative_command_sha256: String,
+    authoritative_output_sha256: String,
     authoritative_source_write_events: u64,
     operator_selected: bool,
     codex_calls: u64,
@@ -6257,8 +6271,17 @@ fn validate_repository_install_transaction(
         || transaction.network_reads != 0
         || transaction.network_writes != 0
         || cfg!(unix) != transaction.predecessor_unix_mode.is_some()
+        || transaction.pending_improvement_operators.len()
+            > MAX_ACTIVE_SOURCE_BOUND_IMPROVEMENT_OPERATORS
     {
         return Err("REPOSITORY_INSTALL_TRANSACTION_INVALID".to_string());
+    }
+    let mut operator_ids = BTreeSet::new();
+    for operator in &transaction.pending_improvement_operators {
+        validate_typed_mechanism_improvement_operator(operator)?;
+        if !operator_ids.insert(operator.operator_id.clone()) {
+            return Err("REPOSITORY_INSTALL_TRANSACTION_DUPLICATE_OPERATOR".to_string());
+        }
     }
     let root = config
         .watched_roots
@@ -6274,6 +6297,97 @@ fn validate_repository_install_transaction(
         return Err("REPOSITORY_INSTALL_TRANSACTION_ARTIFACT_MISMATCH".to_string());
     }
     Ok((target, candidate, rollback))
+}
+
+fn persist_committed_repository_operators(
+    config: &GrowthSupervisorConfig,
+    transaction: &RepositoryInstallTransaction,
+    commit: &RepositoryInstallCommitReceipt,
+) -> Result<(), String> {
+    let commit_sha256 = json_sha256(commit)?;
+    let operator_directory = typed_mechanism_operator_directory(&config.state_dir);
+    let authority_directory = typed_mechanism_operator_authority_directory(&config.state_dir);
+    fs::create_dir_all(&operator_directory)
+        .map_err(|error| format!("COMMITTED_OPERATOR_REPOSITORY_CREATE:{error}"))?;
+    fs::create_dir_all(&authority_directory)
+        .map_err(|error| format!("COMMITTED_OPERATOR_AUTHORITY_CREATE:{error}"))?;
+    let already_authorized = load_authorized_typed_mechanism_operators(
+        &config.state_dir,
+        MAX_ACTIVE_SOURCE_BOUND_IMPROVEMENT_OPERATORS,
+    )?
+    .into_iter()
+    .map(|operator| operator.operator_id)
+    .collect::<BTreeSet<_>>();
+    for pending in &transaction.pending_improvement_operators {
+        let mut operator = pending.clone();
+        operator.evidence_sha256 = commit.authoritative_output_sha256.clone();
+        validate_typed_mechanism_improvement_operator(&operator)?;
+        let operator_path = operator_directory.join(format!("{}.json", operator.operator_id));
+        if operator_path.exists() {
+            let stored: TypedMechanismImprovementOperatorIR = read_json(&operator_path)?;
+            validate_typed_mechanism_improvement_operator(&stored)?;
+            let mut stored_identity = stored.clone();
+            stored_identity.evidence_sha256.clear();
+            let mut requested_identity = operator.clone();
+            requested_identity.evidence_sha256.clear();
+            if stored_identity != requested_identity {
+                return Err("COMMITTED_OPERATOR_REPOSITORY_COLLISION".to_string());
+            }
+            if already_authorized.contains(&operator.operator_id) {
+                continue;
+            }
+            if stored.evidence_sha256 != operator.evidence_sha256 {
+                return Err("COMMITTED_OPERATOR_UNAUTHORIZED_FIRST_EVIDENCE".to_string());
+            }
+            operator = stored;
+        } else {
+            write_immutable_json(&operator_path, &operator)?;
+        }
+        let operator_sha256 = json_sha256(&operator)?;
+        let authority_id = sha256(
+            format!(
+                "INSTALLED_TYPED_OPERATOR_AUTHORITY_1:{}:{}:{}:{}",
+                operator.operator_id,
+                transaction.repair_id,
+                commit_sha256,
+                operator.evidence_sha256
+            )
+            .as_bytes(),
+        );
+        let mut authority = TypedMechanismOperatorAuthorityReceiptIR {
+            schema: INSTALLED_TYPED_OPERATOR_AUTHORITY_SCHEMA.to_string(),
+            authority_id: authority_id.clone(),
+            operator_id: operator.operator_id.clone(),
+            operator_sha256,
+            repair_id: transaction.repair_id.clone(),
+            repair_receipt_sha256: commit_sha256.clone(),
+            sandbox_output_sha256: operator.evidence_sha256.clone(),
+            candidate_sha256: transaction.candidate_sha256.clone(),
+            sandbox_verified: true,
+            sandbox_cleaned: true,
+            authoritative_scope_stable: true,
+            candidate_installed: true,
+            authoritative_source_write_events: 1,
+            codex_calls: 0,
+            external_llm_calls: 0,
+            network_reads: 0,
+            network_writes: 0,
+            promotion_generation: transaction.generation,
+            receipt_sha256: String::new(),
+        };
+        authority.receipt_sha256 = json_sha256(&authority)?;
+        validate_typed_mechanism_operator_authority(&authority)?;
+        let authority_path = authority_directory.join(format!("{authority_id}.json"));
+        if authority_path.exists() {
+            let stored: TypedMechanismOperatorAuthorityReceiptIR = read_json(&authority_path)?;
+            if stored != authority {
+                return Err("COMMITTED_OPERATOR_AUTHORITY_COLLISION".to_string());
+            }
+        } else {
+            write_immutable_json(&authority_path, &authority)?;
+        }
+    }
+    Ok(())
 }
 
 fn recover_repository_install_transaction(
@@ -6295,6 +6409,11 @@ fn recover_repository_install_transaction(
             || commit.candidate_sha256 != transaction.candidate_sha256
             || commit.scope_fingerprint_after.len() != 64
             || commit.authoritative_command_sha256.len() != 64
+            || commit.authoritative_output_sha256.len() != 64
+            || !commit
+                .authoritative_output_sha256
+                .bytes()
+                .all(|byte| byte.is_ascii_hexdigit())
             || commit.authoritative_source_write_events != 1
             || commit.operator_selected
             || commit.codex_calls != 0
@@ -6322,6 +6441,7 @@ fn recover_repository_install_transaction(
         if committed_scope != commit.scope_fingerprint_after {
             return Err("REPOSITORY_INSTALL_COMMITTED_SCOPE_DIVERGED".to_string());
         }
+        persist_committed_repository_operators(config, transaction, &commit)?;
         remove_repository_install_artifact(
             &candidate,
             &transaction.candidate_sha256,
@@ -6336,6 +6456,8 @@ fn recover_repository_install_transaction(
         )?;
         fs::remove_file(transaction_path)
             .map_err(|error| format!("REPOSITORY_INSTALL_TRANSACTION_FINALIZE:{error}"))?;
+        fs::remove_file(&commit_path)
+            .map_err(|error| format!("REPOSITORY_INSTALL_COMMIT_FINALIZE:{error}"))?;
         return Ok(());
     }
 
@@ -6457,13 +6579,18 @@ fn write_repository_candidate_sibling(
 
 fn install_verified_repository_candidate(
     config: &GrowthSupervisorConfig,
-    plan: &RepositoryValidationPlan,
-    validation: &RepositoryCohortValidationReceipt,
-    repair_id: &str,
-    relative: &Path,
-    predecessor_sha256: &str,
-    candidate_source: &str,
+    request: RepositoryInstallRequest<'_>,
 ) -> Result<RepositoryInstallOutcome, String> {
+    let RepositoryInstallRequest {
+        plan,
+        validation,
+        repair_id,
+        relative,
+        predecessor_sha256,
+        candidate_source,
+        generation,
+        pending_improvement_operators,
+    } = request;
     if !config.repository_mutation.enabled {
         return Ok(RepositoryInstallOutcome {
             installed: false,
@@ -6532,6 +6659,7 @@ fn install_verified_repository_candidate(
     let transaction = RepositoryInstallTransaction {
         schema: REPOSITORY_INSTALL_TRANSACTION_SCHEMA.to_string(),
         repair_id: repair_id.to_string(),
+        generation,
         root_index: plan.root_index,
         source_relative_path: relative.to_path_buf(),
         predecessor_sha256: predecessor_sha256.to_string(),
@@ -6550,6 +6678,7 @@ fn install_verified_repository_candidate(
             .to_string(),
         predecessor_readonly,
         predecessor_unix_mode,
+        pending_improvement_operators: pending_improvement_operators.to_vec(),
         operator_selected: false,
         codex_calls: 0,
         external_llm_calls: 0,
@@ -6681,6 +6810,7 @@ fn install_verified_repository_candidate(
             candidate_sha256: candidate_sha256.clone(),
             scope_fingerprint_after: scope_after.clone(),
             authoritative_command_sha256: json_sha256(command_ref)?,
+            authoritative_output_sha256: command_ref.output_sha256.clone(),
             authoritative_source_write_events: 1,
             operator_selected: false,
             codex_calls: 0,
@@ -6811,20 +6941,31 @@ fn persist_source_bound_improvement_operator(
     fs::create_dir_all(&directory)
         .map_err(|error| format!("SOURCE_BOUND_OPERATOR_REPOSITORY_CREATE:{error}"))?;
     let path = directory.join(format!("{}.json", operator.operator_id));
-    if path.exists() {
+    let operator_for_authority = if path.exists() {
         let stored: TypedMechanismImprovementOperatorIR = read_json(&path)?;
         validate_typed_mechanism_improvement_operator(&stored)?;
-        let mut stored_identity = stored;
+        let mut stored_identity = stored.clone();
         stored_identity.evidence_sha256.clear();
         let mut requested_identity = operator.clone();
         requested_identity.evidence_sha256.clear();
         if stored_identity != requested_identity {
             return Err("SOURCE_BOUND_OPERATOR_REPOSITORY_COLLISION".to_string());
         }
+        if stored.evidence_sha256 != execution_authority_output_sha256 {
+            let already_authorized = load_source_bound_improvement_operators(config)?
+                .into_iter()
+                .any(|existing| existing.operator_id == operator.operator_id);
+            if already_authorized {
+                return Ok(());
+            }
+            return Err("SOURCE_BOUND_OPERATOR_UNAUTHORIZED_FIRST_EVIDENCE".to_string());
+        }
+        stored
     } else {
         write_immutable_json(&path, operator)?;
-    }
-    let operator_sha256 = json_sha256(operator)?;
+        operator.clone()
+    };
+    let operator_sha256 = json_sha256(&operator_for_authority)?;
     let authority_prefix = if installed_authority {
         "INSTALLED_TYPED_OPERATOR_AUTHORITY_1"
     } else {
@@ -6833,10 +6974,10 @@ fn persist_source_bound_improvement_operator(
     let authority_id = sha256(
         format!(
             "{authority_prefix}:{}:{}:{}:{}",
-            operator.operator_id,
+            operator_for_authority.operator_id,
             repair.repair_id,
             repair_receipt_sha256,
-            execution_authority_output_sha256
+            operator_for_authority.evidence_sha256
         )
         .as_bytes(),
     );
@@ -6847,14 +6988,14 @@ fn persist_source_bound_improvement_operator(
             SOURCE_BOUND_OPERATOR_AUTHORITY_SCHEMA.to_string()
         },
         authority_id: authority_id.clone(),
-        operator_id: operator.operator_id.clone(),
+        operator_id: operator_for_authority.operator_id.clone(),
         operator_sha256,
         repair_id: repair.repair_id.clone(),
         repair_receipt_sha256: repair_receipt_sha256.to_string(),
         // The shared authority schema retains this historical field name.
         // For installed repairs it carries the authoritative post-install
         // verifier output, not the earlier sandbox output.
-        sandbox_output_sha256: execution_authority_output_sha256,
+        sandbox_output_sha256: operator_for_authority.evidence_sha256,
         candidate_sha256: repair
             .candidate_sha256
             .clone()
@@ -6876,10 +7017,16 @@ fn persist_source_bound_improvement_operator(
     let authority_directory = source_bound_improvement_operator_authority_directory(config);
     fs::create_dir_all(&authority_directory)
         .map_err(|error| format!("SOURCE_BOUND_OPERATOR_AUTHORITY_CREATE:{error}"))?;
-    write_immutable_json(
-        &authority_directory.join(format!("{authority_id}.json")),
-        &authority,
-    )
+    let authority_path = authority_directory.join(format!("{authority_id}.json"));
+    if authority_path.exists() {
+        let stored: SourceBoundImprovementOperatorAuthorityReceipt = read_json(&authority_path)?;
+        if stored != authority {
+            return Err("SOURCE_BOUND_OPERATOR_AUTHORITY_COLLISION".to_string());
+        }
+        Ok(())
+    } else {
+        write_immutable_json(&authority_path, &authority)
+    }
 }
 
 fn python_pytest_target_symbols(diagnostic_tail: &str) -> Vec<String> {
@@ -7225,16 +7372,34 @@ fn try_synthesize_failed_python_cohort(
             let candidate = selected_candidate_source
                 .as_deref()
                 .ok_or_else(|| "REPOSITORY_INSTALL_SELECTED_CANDIDATE_MISSING".to_string())?;
+            let sandbox_evidence_sha256 = sandbox_command
+                .as_ref()
+                .filter(|command| command.success)
+                .map(|command| command.output_sha256.clone())
+                .ok_or_else(|| "REPOSITORY_INSTALL_SANDBOX_EVIDENCE_MISSING".to_string())?;
+            let pending_improvement_operators = successful_syntheses
+                .iter()
+                .map(|synthesis| {
+                    typed_mechanism_improvement_operator_from_receipt(
+                        synthesis,
+                        sandbox_evidence_sha256.clone(),
+                    )
+                })
+                .collect::<Result<Vec<_>, _>>()?;
             authoritative_installation_attempts = authoritative_installation_attempts
                 .saturating_add(usize::from(config.repository_mutation.enabled));
             let install = install_verified_repository_candidate(
                 config,
-                plan,
-                validation,
-                &repair_id,
-                &relative,
-                &predecessor_sha256,
-                candidate,
+                RepositoryInstallRequest {
+                    plan,
+                    validation,
+                    repair_id: &repair_id,
+                    relative: &relative,
+                    predecessor_sha256: &predecessor_sha256,
+                    candidate_source: candidate,
+                    generation: diagnostic.generation,
+                    pending_improvement_operators: &pending_improvement_operators,
+                },
             )?;
             candidate_installed = install.installed;
             rolled_back = install.rolled_back;
@@ -12853,6 +13018,7 @@ mod tests {
         let transaction = RepositoryInstallTransaction {
             schema: REPOSITORY_INSTALL_TRANSACTION_SCHEMA.to_string(),
             repair_id: repair_id.clone(),
+            generation: 1,
             root_index: 0,
             source_relative_path: relative.clone(),
             predecessor_sha256: predecessor_sha256.clone(),
@@ -12871,6 +13037,7 @@ mod tests {
                 .to_string(),
             predecessor_readonly,
             predecessor_unix_mode,
+            pending_improvement_operators: Vec::new(),
             operator_selected: false,
             codex_calls: 0,
             external_llm_calls: 0,
@@ -12913,6 +13080,7 @@ mod tests {
         let committed_transaction = RepositoryInstallTransaction {
             schema: REPOSITORY_INSTALL_TRANSACTION_SCHEMA.to_string(),
             repair_id: committed_repair_id.clone(),
+            generation: 2,
             root_index: 0,
             source_relative_path: relative,
             predecessor_sha256,
@@ -12931,6 +13099,7 @@ mod tests {
                 .to_string(),
             predecessor_readonly,
             predecessor_unix_mode,
+            pending_improvement_operators: Vec::new(),
             operator_selected: false,
             codex_calls: 0,
             external_llm_calls: 0,
@@ -12957,6 +13126,7 @@ mod tests {
             candidate_sha256: committed_candidate_sha256,
             scope_fingerprint_after: committed_scope_after,
             authoritative_command_sha256: "a".repeat(64),
+            authoritative_output_sha256: "b".repeat(64),
             authoritative_source_write_events: 1,
             operator_selected: false,
             codex_calls: 0,
