@@ -45,6 +45,9 @@ pub const IMPROVEMENT_OPERATOR_MEMORY_SCHEMA: &str = "B_CORE_IMPROVEMENT_OPERATO
 pub const MAX_IMPROVEMENT_OPERATOR_GRAPH_NODES: usize = 8;
 const MAX_COMPETING_SOURCE_PROPOSALS: usize = 3;
 const MAX_TYPED_OPERATOR_RECONCILIATION_RECEIPTS: usize = 64;
+// Revision 51 publishes only operators that own a machine-executable source
+// synthesis payload; typed-program execution profiles remain useful ranking
+// evidence but cannot masquerade as callable repair knowledge.
 // Revision 50 makes repository repair attempts capability-addressed and
 // carries verifier-falsified candidate hashes into successor synthesis.
 // Revision 49 removes diagnostic opportunity-family identity from atomic
@@ -54,7 +57,7 @@ const MAX_TYPED_OPERATOR_RECONCILIATION_RECEIPTS: usize = 64;
 // Revision 47 separates exact authority existence from the bounded active
 // operator window and deduplicates repeated authority receipts.
 // Generator identity remains diagnostic evidence only.
-pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 50;
+pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 51;
 pub const MAX_RETAINED_CONSUMED_RUNTIME_STAGING_GENERATIONS: usize = 2;
 const KNOWN_REMAINDER_PREDICTED_VALUE: u16 = 35;
 const MAX_REPOSITORY_REPAIR_FAMILY_FILES: usize = 16;
@@ -467,6 +470,12 @@ pub struct ImprovementOperatorIR {
     pub operator_id: String,
     pub weakness_evidence_kind: WeaknessEvidenceKind,
     pub generator_kind: ImprovementOperatorGeneratorKind,
+    /// Machine-consumable synthesis payload owned by this operator.  A
+    /// profile without this field may rank or validate a freshly synthesized
+    /// StructuralRepairProgram, but it cannot create a patch from source and
+    /// therefore must not be published as executable knowledge.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub executable_payload: Option<ExecutableImprovementOperatorPayloadIR>,
     pub solution_strategy_family: String,
     pub edit_atom_kinds: Vec<String>,
     pub structural_postcondition_class: String,
@@ -481,6 +490,48 @@ pub enum ImprovementOperatorGeneratorKind {
     TypedGrammarComposition,
     ProgramIrLowering,
     LearnedSelfHealingLowering,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum KnownStructuralRewriteIR {
+    TypedIsMultipleOf,
+    ParenthesizedIsMultipleOf,
+    CheckedRemainderMatch,
+    EuclideanRemainderComparison,
+}
+
+impl KnownStructuralRewriteIR {
+    fn from_strategy(strategy: &str) -> Option<Self> {
+        match strategy {
+            "TYPED_IS_MULTIPLE_OF" => Some(Self::TypedIsMultipleOf),
+            "PARENTHESIZED_IS_MULTIPLE_OF" => Some(Self::ParenthesizedIsMultipleOf),
+            "CHECKED_REMAINDER_MATCH" => Some(Self::CheckedRemainderMatch),
+            "EUCLIDEAN_REMAINDER_COMPARISON" => Some(Self::EuclideanRemainderComparison),
+            _ => None,
+        }
+    }
+
+    fn strategy_index(self) -> usize {
+        match self {
+            Self::TypedIsMultipleOf => 0,
+            Self::ParenthesizedIsMultipleOf => 1,
+            Self::CheckedRemainderMatch => 2,
+            Self::EuclideanRemainderComparison => 3,
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(tag = "payload_kind", rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum ExecutableImprovementOperatorPayloadIR {
+    KnownStructuralRewrite { rewrite: KnownStructuralRewriteIR },
+}
+
+impl ImprovementOperatorIR {
+    pub fn can_synthesize_from_source(&self) -> bool {
+        self.executable_payload.is_some()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -1099,12 +1150,23 @@ fn improvement_operator_ir_from_features(
     let mut normalized_edit_atom_kinds = edit_atom_kinds.to_vec();
     normalized_edit_atom_kinds.sort();
     normalized_edit_atom_kinds.dedup();
+    let generator_kind = improvement_operator_generator_kind(transformation, solution_strategy);
+    let solution_strategy_family = normalized_solution_strategy_family(solution_strategy);
+    let executable_payload =
+        if generator_kind == ImprovementOperatorGeneratorKind::KnownStructuralRewrite {
+            KnownStructuralRewriteIR::from_strategy(&solution_strategy_family).map(|rewrite| {
+                ExecutableImprovementOperatorPayloadIR::KnownStructuralRewrite { rewrite }
+            })
+        } else {
+            None
+        };
     let mut operator = ImprovementOperatorIR {
         schema: IMPROVEMENT_OPERATOR_MEMORY_SCHEMA.to_string(),
         operator_id: String::new(),
         weakness_evidence_kind,
-        generator_kind: improvement_operator_generator_kind(transformation, solution_strategy),
-        solution_strategy_family: normalized_solution_strategy_family(solution_strategy),
+        generator_kind,
+        executable_payload,
+        solution_strategy_family,
         edit_atom_kinds: normalized_edit_atom_kinds,
         structural_postcondition_class: structural_postcondition_class(
             structural_postcondition_count,
@@ -1324,6 +1386,18 @@ fn improvement_operator_repository_path(state_dir: &Path, operator_id: &str) -> 
 }
 
 fn validate_improvement_operator_id(operator: &ImprovementOperatorIR) -> Result<(), String> {
+    match &operator.executable_payload {
+        Some(ExecutableImprovementOperatorPayloadIR::KnownStructuralRewrite { rewrite })
+            if operator.generator_kind
+                != ImprovementOperatorGeneratorKind::KnownStructuralRewrite
+                || KnownStructuralRewriteIR::from_strategy(&operator.solution_strategy_family)
+                    != Some(*rewrite) =>
+        {
+            return Err("IMPROVEMENT_OPERATOR_EXECUTABLE_PAYLOAD_MISMATCH".to_string());
+        }
+        Some(ExecutableImprovementOperatorPayloadIR::KnownStructuralRewrite { .. }) => {}
+        None => {}
+    }
     let mut identity = operator.clone();
     identity.operator_id.clear();
     let encoded = serde_json::to_vec(&identity)
@@ -1340,7 +1414,7 @@ pub fn refresh_improvement_operator_repository(
     let memory = derive_improvement_operator_memory(state_dir)?;
     let mut active_operator_ids = BTreeSet::new();
     for profile in &memory.profiles {
-        if profile.successful_uses == 0 {
+        if profile.successful_uses == 0 || !profile.operator.can_synthesize_from_source() {
             continue;
         }
         active_operator_ids.insert(profile.operator.operator_id.clone());
@@ -1389,39 +1463,27 @@ pub fn execute_improvement_operator_on_source(
     source: &str,
 ) -> Result<ImprovementOperatorExecution, String> {
     validate_improvement_operator_id(operator)?;
-    match operator.generator_kind {
-        ImprovementOperatorGeneratorKind::KnownStructuralRewrite => {
-            let strategy_index = KNOWN_REMAINDER_STRATEGIES
-                .iter()
-                .position(|strategy| *strategy == operator.solution_strategy_family);
-            let candidate_source = strategy_index
-                .and_then(|strategy_index| rewrite_first_known_improvement(source, strategy_index));
+    match &operator.executable_payload {
+        Some(ExecutableImprovementOperatorPayloadIR::KnownStructuralRewrite { rewrite }) => {
+            let candidate_source =
+                rewrite_first_known_improvement(source, rewrite.strategy_index());
             Ok(ImprovementOperatorExecution {
                 schema: IMPROVEMENT_OPERATOR_MEMORY_SCHEMA.to_string(),
                 operator_id: operator.operator_id.clone(),
                 generator_kind: operator.generator_kind,
                 applicable: candidate_source.is_some(),
                 candidate_source,
-                execution_reason: if strategy_index.is_some() {
-                    "EXECUTED_BOUND_STRUCTURAL_REWRITE".to_string()
-                } else {
-                    "STRUCTURAL_REWRITE_STRATEGY_NOT_EXECUTABLE".to_string()
-                },
+                execution_reason: "EXECUTED_BOUND_STRUCTURAL_REWRITE_PAYLOAD".to_string(),
             })
         }
-        ImprovementOperatorGeneratorKind::CompilerSuggestedEdit
-        | ImprovementOperatorGeneratorKind::TypedGrammarComposition
-        | ImprovementOperatorGeneratorKind::ProgramIrLowering
-        | ImprovementOperatorGeneratorKind::LearnedSelfHealingLowering => {
-            Ok(ImprovementOperatorExecution {
-                schema: IMPROVEMENT_OPERATOR_MEMORY_SCHEMA.to_string(),
-                operator_id: operator.operator_id.clone(),
-                generator_kind: operator.generator_kind,
-                applicable: false,
-                candidate_source: None,
-                execution_reason: "SPECIALIZED_TYPED_INPUT_REQUIRED".to_string(),
-            })
-        }
+        None => Ok(ImprovementOperatorExecution {
+            schema: IMPROVEMENT_OPERATOR_MEMORY_SCHEMA.to_string(),
+            operator_id: operator.operator_id.clone(),
+            generator_kind: operator.generator_kind,
+            applicable: false,
+            candidate_source: None,
+            execution_reason: "NO_EXECUTABLE_SOURCE_SYNTHESIS_PAYLOAD".to_string(),
+        }),
     }
 }
 
@@ -6974,6 +7036,59 @@ mod tests {
         assert_eq!(causally_updated.repository_guided_attempts, 1);
         assert_eq!(causally_updated.repository_guided_successful_uses, 1);
         assert_eq!(causally_updated.productive_cross_family_transfers, 2);
+
+        fs::remove_dir_all(root).unwrap();
+        fs::remove_dir_all(state).unwrap();
+    }
+
+    #[test]
+    fn program_execution_profile_is_not_published_as_source_synthesis_knowledge() {
+        let (root, policy) = fixture("non-synthesizing-operator-profile");
+        let state = external_state(&root);
+        let mut request = discover_known_source_improvement(&policy, &state, 12)
+            .unwrap()
+            .expect("typed structural candidate");
+        request.transformation =
+            "COMPILER_OBSERVATION_FAMILY:clippy::manual_is_multiple_of:fresh".to_string();
+        request.solution_strategy =
+            "COMPILER_SUGGESTION_FAMILY:MachineApplicable:1:fresh".to_string();
+        request.opportunity_family_id = source_opportunity_family_id(
+            ChangeOpportunityKind::RobustnessOpportunity,
+            &request.transformation,
+        );
+        let predecessor = fs::read_to_string(root.join(&request.relative_path)).unwrap();
+        rebind_request_operator_execution(&mut request, &state, &predecessor);
+        let receipt = synthetic_receipt(&request, true);
+        record_source_repair_outcome(&policy, &state, &request, &receipt).unwrap();
+
+        let memory = refresh_improvement_operator_repository(&state).unwrap();
+        let profile = memory.profiles.first().expect("execution profile");
+        assert_eq!(
+            profile.operator.generator_kind,
+            ImprovementOperatorGeneratorKind::CompilerSuggestedEdit
+        );
+        assert!(!profile.operator.can_synthesize_from_source());
+        assert!(
+            !improvement_operator_repository_path(&state, &profile.operator.operator_id).exists()
+        );
+
+        let source_only =
+            execute_improvement_operator_on_source(&profile.operator, &predecessor).unwrap();
+        assert!(!source_only.applicable);
+        assert_eq!(
+            source_only.execution_reason,
+            "NO_EXECUTABLE_SOURCE_SYNTHESIS_PAYLOAD"
+        );
+        let program_execution = execute_improvement_operator_program_on_source(
+            &profile.operator,
+            &predecessor,
+            request
+                .structural_repair_program
+                .as_ref()
+                .expect("typed structural program"),
+        )
+        .unwrap();
+        assert!(program_execution.applicable);
 
         fs::remove_dir_all(root).unwrap();
         fs::remove_dir_all(state).unwrap();

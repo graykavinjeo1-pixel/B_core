@@ -1104,6 +1104,8 @@ pub struct SelfCheck {
     pub accepted_sem5_compositions_route_to_installer: bool,
     pub active_binaries_forbid_proposal_only_exit: bool,
     pub executable_improvement_operator_repository_enabled: bool,
+    pub improvement_operator_repository_requires_source_synthesis_payload: bool,
+    pub program_execution_profile_is_not_synthesis_knowledge: bool,
     pub successful_operators_are_content_addressed: bool,
     pub cross_family_operator_transfer_changes_candidate_priority: bool,
     pub repository_guided_outcomes_are_causally_tracked: bool,
@@ -1212,6 +1214,8 @@ pub fn self_check() -> SelfCheck {
         accepted_sem5_compositions_route_to_installer: true,
         active_binaries_forbid_proposal_only_exit: true,
         executable_improvement_operator_repository_enabled: true,
+        improvement_operator_repository_requires_source_synthesis_payload: true,
+        program_execution_profile_is_not_synthesis_knowledge: true,
         successful_operators_are_content_addressed: true,
         cross_family_operator_transfer_changes_candidate_priority: true,
         repository_guided_outcomes_are_causally_tracked: true,
@@ -11155,6 +11159,8 @@ mod tests {
         assert!(check.accepted_sem5_compositions_route_to_installer);
         assert!(check.active_binaries_forbid_proposal_only_exit);
         assert!(check.executable_improvement_operator_repository_enabled);
+        assert!(check.improvement_operator_repository_requires_source_synthesis_payload);
+        assert!(check.program_execution_profile_is_not_synthesis_knowledge);
         assert!(check.successful_operators_are_content_addressed);
         assert!(check.typed_improvement_operator_execution_required);
         assert!(check.operator_repository_requires_executed_receipt);

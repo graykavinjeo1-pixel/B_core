@@ -219,6 +219,15 @@ pub enum RepairAttemptStatus {
     BoundedAttemptExhausted,
 }
 
+/// Executable, repository-independent transformation retained by a learned
+/// repair lesson.  Human-readable schemas remain diagnostic metadata; this
+/// payload is the only lesson field allowed to dispatch source synthesis.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum ExecutableRepairTransformationIR {
+    ManualRemainderPredicateToTypedDivisibility,
+}
+
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct RepairLessonIR {
     pub lesson_id: String,
@@ -226,6 +235,8 @@ pub struct RepairLessonIR {
     pub diagnostic_cues: Vec<String>,
     pub restored_invariants: Vec<String>,
     pub transformation_schema: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub executable_transformation: Option<ExecutableRepairTransformationIR>,
     pub applicability: Vec<String>,
     pub non_applicability: Vec<String>,
     pub regression_obligations: Vec<String>,
@@ -444,6 +455,7 @@ pub struct RepairLearningMemory {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum LessonPromotionError {
     LessonContainsExactSolutionAuthority,
+    LessonHasNoExecutableTransformation,
     InvalidCompositionLesson,
     TeachingScenarioMismatch,
     TeachingRepairNotVerified,
@@ -465,6 +477,9 @@ pub fn begin_operator_teaching(
         || lesson.exact_task_identity_present
     {
         return Err(LessonPromotionError::LessonContainsExactSolutionAuthority);
+    }
+    if lesson.executable_transformation.is_none() {
+        return Err(LessonPromotionError::LessonHasNoExecutableTransformation);
     }
     validate_composition_lesson(&lesson.composition_lesson)
         .map_err(|_| LessonPromotionError::InvalidCompositionLesson)?;
@@ -895,11 +910,11 @@ fn attempt_with_lesson(
         );
     }
 
-    let transformed = match request.defect_class {
-        DefectClass::ManualRemainderPredicate => {
+    let transformed = match lesson.value.executable_transformation {
+        Some(ExecutableRepairTransformationIR::ManualRemainderPredicateToTypedDivisibility) => {
             rewrite_manual_remainder_predicates(&request.source_text)
         }
-        _ => None,
+        None => None,
     };
     let Some((candidate_source, changed_lines)) = transformed else {
         return empty_attempt(
@@ -1025,6 +1040,9 @@ fn remainder_repair_canary_lesson() -> RepairLessonIR {
         diagnostic_cues: vec!["clippy::manual_is_multiple_of".to_string()],
         restored_invariants: vec!["canonical divisibility predicate".to_string()],
         transformation_schema: "ZERO_REMAINDER_TO_TYPED_DIVISIBILITY_PREDICATE".to_string(),
+        executable_transformation: Some(
+            ExecutableRepairTransformationIR::ManualRemainderPredicateToTypedDivisibility,
+        ),
         applicability: vec!["typed integer zero-remainder comparison".to_string()],
         non_applicability: vec!["non-zero remainder comparison".to_string()],
         regression_obligations: vec!["truth-table preservation".to_string()],
@@ -1425,6 +1443,9 @@ mod tests {
             diagnostic_cues: vec!["clippy::manual_is_multiple_of".into()],
             restored_invariants: vec!["canonical divisibility predicate".into()],
             transformation_schema: "x % n == 0 => x.is_multiple_of(n)".into(),
+            executable_transformation: Some(
+                ExecutableRepairTransformationIR::ManualRemainderPredicateToTypedDivisibility,
+            ),
             applicability: vec!["integer remainder compared with zero".into()],
             non_applicability: vec!["non-zero remainder comparison".into()],
             regression_obligations: vec!["cargo test".into(), "clippy -D warnings".into()],
@@ -1716,6 +1737,27 @@ mod tests {
         assert_eq!(
             promote_operator_lesson(contaminated, &teaching, &[]),
             Err(LessonPromotionError::LessonContainsExactSolutionAuthority)
+        );
+    }
+
+    #[test]
+    fn text_only_repair_schema_cannot_be_promoted_as_executable_knowledge() {
+        let mut text_only = lesson();
+        text_only.executable_transformation = None;
+        let request = frozen_request("fn teaching(x: usize) -> bool { x % 2 == 0 }\n");
+        let patch = candidate("operator-patch", &request.repair_spec.sha256);
+        let teaching = OperatorTeachingReceipt {
+            operator_identity: "operator".into(),
+            scenario_sha256: "teaching".into(),
+            defect_contract_sha256: request.defect_contract.sha256.clone(),
+            verification: verification(&patch, &request.defect_contract.sha256, "teaching"),
+            patch_candidate: patch,
+            operator_patch_installed_in_isolation: true,
+            post_install_regression_passed: true,
+        };
+        assert_eq!(
+            begin_operator_teaching(text_only, &teaching),
+            Err(LessonPromotionError::LessonHasNoExecutableTransformation)
         );
     }
 
