@@ -105,6 +105,7 @@ pub mod sem9;
 #[cfg(feature = "historical-campaigns")]
 pub mod sem9r1;
 pub mod source_bound_causal_frontend;
+mod source_proposal_kernel;
 pub mod structural_source_repair;
 #[cfg(feature = "historical-campaigns")]
 pub mod tasks;

@@ -33,6 +33,11 @@ use crate::sem5::typed_mechanism::{
     TypedMechanismOperatorAuthorityReceiptIR, TypedMechanismSynthesisReceiptIR,
     INSTALLED_TYPED_OPERATOR_AUTHORITY_SCHEMA, MAX_ACTIVE_TYPED_MECHANISM_OPERATORS,
 };
+use crate::source_proposal_kernel::{
+    compose_source_edit_proposals, rank_source_proposals, SourceEditProposalIR,
+    SourceProposalCompositionRequirementIR, SourceProposalKernelInput,
+    SourceProposalRankingEvidenceIR, MAX_SELECTED_SOURCE_PROPOSALS,
+};
 use crate::structural_source_repair::{
     execute_structural_repair, synthesize_structural_repair, SourceEditAtom,
     StructuralRepairProgram, VerificationObligation,
@@ -43,8 +48,11 @@ pub const SELF_UPDATE_HANDOFF_FILE: &str = "SELF_UPDATE_READY.json";
 pub const SOURCE_REPAIR_LEARNING_SCHEMA: &str = "B_CORE_SOURCE_REPAIR_LEARNING_1";
 pub const IMPROVEMENT_OPERATOR_MEMORY_SCHEMA: &str = "B_CORE_IMPROVEMENT_OPERATOR_MEMORY_1";
 pub const MAX_IMPROVEMENT_OPERATOR_GRAPH_NODES: usize = 8;
-const MAX_COMPETING_SOURCE_PROPOSALS: usize = 3;
 const MAX_TYPED_OPERATOR_RECONCILIATION_RECEIPTS: usize = 64;
+// Revision 53 gives one language-neutral Rust kernel exclusive authority over
+// source proposal ranking, postimage deduplication, required-group atomic
+// composition, and the bounded top-three surface. Python remains an AST and
+// compile observation host only.
 // Revision 52 allows an evidence-bound performance lesson to submit its
 // executable operator to the same Rust proposal/composition kernel used by
 // native discovery. Metric text alone still has no source-mutation authority.
@@ -60,7 +68,7 @@ const MAX_TYPED_OPERATOR_RECONCILIATION_RECEIPTS: usize = 64;
 // Revision 47 separates exact authority existence from the bounded active
 // operator window and deduplicates repeated authority receipts.
 // Generator identity remains diagnostic evidence only.
-pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 52;
+pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 53;
 pub const MAX_RETAINED_CONSUMED_RUNTIME_STAGING_GENERATIONS: usize = 2;
 const KNOWN_REMAINDER_PREDICTED_VALUE: u16 = 35;
 const MAX_REPOSITORY_REPAIR_FAMILY_FILES: usize = 16;
@@ -4781,27 +4789,6 @@ impl SourceProposalOrigin {
     }
 }
 
-#[derive(Debug)]
-struct RankedSourceProposal {
-    request: AutonomousSourcePatchRequest,
-}
-
-fn source_proposal_score(proposal: &RankedSourceProposal) -> i32 {
-    i32::from(proposal.request.predicted_value)
-        .saturating_add(
-            proposal
-                .request
-                .improvement_operator_invocation
-                .as_ref()
-                .map_or(0, |invocation| invocation.priority_adjustment),
-        )
-        .saturating_add(
-            i32::try_from(proposal.request.additional_family_members.len().min(8))
-                .unwrap_or(0)
-                .saturating_mul(2),
-        )
-}
-
 fn validate_source_proposal_kernel_input(
     policy: &AutonomousSourceMutationPolicy,
     request: &AutonomousSourcePatchRequest,
@@ -4885,43 +4872,49 @@ fn compose_ranked_source_proposals(
     state_dir: &Path,
     source_generation: u64,
     operator_memory: &ImprovementOperatorMemory,
-    ranked: &[RankedSourceProposal],
+    ranked: &[AutonomousSourcePatchRequest],
 ) -> Result<Option<AutonomousSourcePatchRequest>, String> {
     let Some(primary) = ranked.first() else {
         return Ok(None);
     };
-    let predecessor = validate_source_proposal_kernel_input(policy, &primary.request)?;
+    let predecessor = validate_source_proposal_kernel_input(policy, primary)?;
     let primary_program = primary
-        .request
         .structural_repair_program
         .as_ref()
         .ok_or_else(|| "SOURCE_PROPOSAL_STRUCTURAL_PROGRAM_MISSING".to_string())?;
-    let mut selected = vec![&primary.request];
-    let mut edits = vec![primary_program.edit.clone()];
-    let mut combined_source = primary.request.candidate_source.clone();
+    let mut selected = vec![primary];
+    let mut edit_proposals = vec![SourceEditProposalIR {
+        proposal_id: primary.patch_id.clone(),
+        edit: primary_program.edit.clone(),
+    }];
+    let mut combined_edit = primary_program.edit.clone();
+    let mut combined_source = primary.candidate_source.clone();
     for proposal in ranked.iter().skip(1) {
-        if !proposal_is_atomic_composition_compatible(&primary.request, &proposal.request) {
+        if !proposal_is_atomic_composition_compatible(primary, proposal) {
             continue;
         }
-        let Some(program) = &proposal.request.structural_repair_program else {
+        let Some(program) = &proposal.structural_repair_program else {
             continue;
         };
-        let mut trial_edits = edits.clone();
-        trial_edits.push(program.edit.clone());
-        let trial = SourceEditAtom::AtomicMultiEdit {
-            edits: trial_edits.clone(),
-        };
-        let Ok(materialized) =
-            crate::structural_source_repair::apply_edit_atom(&predecessor, &trial)
-        else {
+        let mut trial_proposals = edit_proposals.clone();
+        trial_proposals.push(SourceEditProposalIR {
+            proposal_id: proposal.patch_id.clone(),
+            edit: program.edit.clone(),
+        });
+        let Ok(materialized) = compose_source_edit_proposals(
+            &predecessor,
+            &trial_proposals,
+            &SourceProposalCompositionRequirementIR::Independent,
+        ) else {
             continue;
         };
-        if syn::parse_file(&materialized).is_err() {
+        if syn::parse_file(&materialized.candidate_source).is_err() {
             continue;
         }
-        edits = trial_edits;
-        combined_source = materialized;
-        selected.push(&proposal.request);
+        edit_proposals = trial_proposals;
+        combined_edit = materialized.edit;
+        combined_source = materialized.candidate_source;
+        selected.push(proposal);
     }
     if selected.len() < 2 {
         return Ok(None);
@@ -4938,11 +4931,11 @@ fn compose_ranked_source_proposals(
         .iter()
         .map(|request| request.opportunity_kind)
         .min()
-        .unwrap_or(primary.request.opportunity_kind);
+        .unwrap_or(primary.opportunity_kind);
     let opportunity_family_id = source_opportunity_family_id(opportunity_kind, &transformation);
     let candidate_sha256 = sha256(combined_source.as_bytes());
     let mut structural_repair_program = synthesize_structural_repair(
-        &structural_file_id(&primary.request.relative_path),
+        &structural_file_id(&primary.relative_path),
         &predecessor,
         &combined_source,
     )?;
@@ -4950,7 +4943,7 @@ fn compose_ranked_source_proposals(
     // differ would represent the same postimage as one broad Replace. The
     // target-derived postconditions remain authoritative and the combined edit
     // is replayed immediately against the exact predecessor.
-    structural_repair_program.edit = SourceEditAtom::AtomicMultiEdit { edits };
+    structural_repair_program.edit = combined_edit;
     let composite_replay = execute_structural_repair(&structural_repair_program, &predecessor)?;
     if !composite_replay.structurally_verified
         || !composite_replay.exact_target_observed
@@ -4960,7 +4953,7 @@ fn compose_ranked_source_proposals(
     }
     let (invocation, operator_execution) = invoke_and_execute_improvement_operator(
         operator_memory,
-        request_weakness_evidence_kind(&primary.request),
+        request_weakness_evidence_kind(primary),
         &transformation,
         &solution_strategy,
         &structural_repair_program,
@@ -4975,8 +4968,8 @@ fn compose_ranked_source_proposals(
     let evidence_sha256 = sha256(
         format!(
             "{}:{}:{}",
-            primary.request.relative_path.display(),
-            primary.request.predecessor_sha256,
+            primary.relative_path.display(),
+            primary.predecessor_sha256,
             identity_sha256
         )
         .as_bytes(),
@@ -4991,12 +4984,12 @@ fn compose_ranked_source_proposals(
     let generalized_change = generalized_change_for_candidate(
         state_dir,
         source_generation,
-        &primary.request.relative_path,
+        &primary.relative_path,
         &transformation,
         &solution_strategy,
-        &primary.request.predecessor_sha256,
+        &primary.predecessor_sha256,
         &candidate_sha256,
-        request_weakness_evidence_kind(&primary.request),
+        request_weakness_evidence_kind(primary),
         &evidence_sha256,
         "multiple independently generated proposals bind to disjoint source operations",
         &consequence_predictions,
@@ -5010,8 +5003,8 @@ fn compose_ranked_source_proposals(
     Ok(Some(AutonomousSourcePatchRequest {
         schema: AUTONOMOUS_SOURCE_MUTATION_SCHEMA.to_string(),
         patch_id,
-        relative_path: primary.request.relative_path.clone(),
-        predecessor_sha256: primary.request.predecessor_sha256.clone(),
+        relative_path: primary.relative_path.clone(),
+        predecessor_sha256: primary.predecessor_sha256.clone(),
         candidate_source: combined_source,
         candidate_sha256,
         transformation,
@@ -5055,28 +5048,38 @@ fn select_source_discovery_proposals(
     let below_value_threshold = results
         .iter()
         .any(|(_, result)| result.disposition == SourceDiscoveryDisposition::BelowValueThreshold);
-    let mut ranked = Vec::new();
+    let mut proposals = Vec::new();
     let mut rejected = Vec::new();
     for (origin, result) in results {
         let Some(request) = result.candidate else {
             continue;
         };
         match validate_source_proposal_kernel_input(policy, &request) {
-            Ok(_) => ranked.push(RankedSourceProposal { request }),
+            Ok(_) => proposals.push(SourceProposalKernelInput {
+                proposal_id: request.patch_id.clone(),
+                candidate_sha256: request.candidate_sha256.clone(),
+                tie_breaker: format!(
+                    "{}:{}:{}:{}",
+                    request.relative_path.display(),
+                    request.transformation,
+                    request.predecessor_sha256,
+                    request.source_generation
+                ),
+                evidence: SourceProposalRankingEvidenceIR {
+                    predicted_value: request.predicted_value,
+                    priority_adjustment: request
+                        .improvement_operator_invocation
+                        .as_ref()
+                        .map_or(0, |invocation| invocation.priority_adjustment),
+                    related_family_members: request.additional_family_members.len(),
+                    ..Default::default()
+                },
+                payload: request,
+            }),
             Err(error) => rejected.push(format!("{}:{error}", origin.label())),
         }
     }
-    ranked.sort_by_key(|proposal| {
-        (
-            std::cmp::Reverse(source_proposal_score(proposal)),
-            std::cmp::Reverse(proposal.request.predicted_value),
-            proposal.request.relative_path.clone(),
-            proposal.request.transformation.clone(),
-            proposal.request.patch_id.clone(),
-            proposal.request.candidate_sha256.clone(),
-        )
-    });
-    ranked.truncate(MAX_COMPETING_SOURCE_PROPOSALS);
+    let ranked = rank_source_proposals(proposals)?;
     if ranked.is_empty() {
         if !rejected.is_empty() {
             return Err(format!(
@@ -5100,7 +5103,7 @@ fn select_source_discovery_proposals(
         operator_memory,
         &ranked,
     )?
-    .or_else(|| ranked.into_iter().next().map(|proposal| proposal.request));
+    .or_else(|| ranked.into_iter().next());
     Ok(SourceDiscoveryResult {
         disposition: SourceDiscoveryDisposition::Candidate,
         candidate,
@@ -5319,7 +5322,7 @@ pub fn discover_executable_performance_improvement(
                     }),
                 },
             ));
-            if proposals.len() >= MAX_COMPETING_SOURCE_PROPOSALS.saturating_mul(8) {
+            if proposals.len() >= MAX_SELECTED_SOURCE_PROPOSALS.saturating_mul(8) {
                 break 'files;
             }
         }
@@ -6052,17 +6055,6 @@ mod tests {
             90,
             &family,
         );
-        let ranked_a = RankedSourceProposal {
-            request: candidate_a.clone(),
-        };
-        let ranked_z = RankedSourceProposal {
-            request: candidate_z.clone(),
-        };
-        assert_eq!(
-            source_proposal_score(&ranked_a),
-            source_proposal_score(&ranked_z)
-        );
-
         let select = |results| {
             select_source_discovery_proposals(&policy, &state, 7, &operator_memory, results)
                 .unwrap()

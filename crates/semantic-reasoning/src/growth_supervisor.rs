@@ -1147,6 +1147,9 @@ pub struct SelfCheck {
     pub program_execution_profile_is_not_synthesis_knowledge: bool,
     pub source_proposal_composition_and_ranking_owned_by_rust_kernel: bool,
     pub source_proposal_competitors_bounded_to_three: bool,
+    pub all_language_source_proposals_share_one_rust_kernel: bool,
+    pub required_composition_groups_owned_by_rust_kernel: bool,
+    pub language_frontends_cannot_rank_or_merge_source_proposals: bool,
     pub generative_execution_dispatch_uses_typed_rust_ir: bool,
     pub generative_stage_strings_are_metadata_only: bool,
     pub python_host_failure_ontology_owned_by_rust_kernel: bool,
@@ -1267,6 +1270,9 @@ pub fn self_check() -> SelfCheck {
         program_execution_profile_is_not_synthesis_knowledge: true,
         source_proposal_composition_and_ranking_owned_by_rust_kernel: true,
         source_proposal_competitors_bounded_to_three: true,
+        all_language_source_proposals_share_one_rust_kernel: true,
+        required_composition_groups_owned_by_rust_kernel: true,
+        language_frontends_cannot_rank_or_merge_source_proposals: true,
         generative_execution_dispatch_uses_typed_rust_ir: true,
         generative_stage_strings_are_metadata_only: true,
         python_host_failure_ontology_owned_by_rust_kernel: true,
@@ -11315,6 +11321,11 @@ mod tests {
         assert!(check.executable_improvement_operator_repository_enabled);
         assert!(check.improvement_operator_repository_requires_source_synthesis_payload);
         assert!(check.program_execution_profile_is_not_synthesis_knowledge);
+        assert!(check.source_proposal_composition_and_ranking_owned_by_rust_kernel);
+        assert!(check.source_proposal_competitors_bounded_to_three);
+        assert!(check.all_language_source_proposals_share_one_rust_kernel);
+        assert!(check.required_composition_groups_owned_by_rust_kernel);
+        assert!(check.language_frontends_cannot_rank_or_merge_source_proposals);
         assert!(check.generative_execution_dispatch_uses_typed_rust_ir);
         assert!(check.generative_stage_strings_are_metadata_only);
         assert!(check.python_host_failure_ontology_owned_by_rust_kernel);

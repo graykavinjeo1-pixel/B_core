@@ -32,6 +32,11 @@ use crate::sem5::typed_mechanism::{
     TypedMechanismSynthesisGoalIR, TypedMechanismSynthesisReceiptIR, TypedSyntaxExpressionIR,
     TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA,
 };
+use crate::source_proposal_kernel::{
+    compose_source_edit_proposals, rank_source_proposals, SourceEditProposalIR,
+    SourceProposalCompositionRequirementIR, SourceProposalKernelInput,
+    SourceProposalRankingEvidenceIR,
+};
 use crate::structural_source_repair::{apply_edit_atom, ByteRange, SourceEditAtom};
 
 pub const SOURCE_BOUND_CAUSAL_REQUEST_SCHEMA: &str = "B_CORE_SOURCE_BOUND_CAUSAL_REQUEST_1";
@@ -44,7 +49,6 @@ const MAX_TEST_SOURCE_BYTES: usize = 16 * 1024 * 1024;
 const MAX_CAUSAL_ALTERNATIVES: usize = 32;
 const MAX_DEPENDENCY_CLOSURE: usize = 64;
 const MAX_SOURCE_BOUND_PATCH_VARIANTS: usize = 64;
-const MAX_COMPETING_SOURCE_BOUND_PROPOSALS: usize = 3;
 const MAX_CANDIDATE_VALIDATION_BATCH_ITEMS: usize = 16;
 const MAX_CANDIDATE_VALIDATION_BATCH_BYTES: usize = 16 * 1024 * 1024;
 const CAUSAL_ALTERNATIVE_ITEMS_PER_WORKER: usize = 4;
@@ -2042,7 +2046,7 @@ pub fn discover_and_synthesize_python_repository_with_operators(
             &receipt.alternatives,
             &receipt.declaration_alternatives,
         )?,
-    );
+    )?;
     let (owner, closure, atomic) = source_bound_receipt_claims(&receipt);
     receipt.public_symbol_owner_preserved = owner;
     receipt.execution_dependency_closure_preserved = closure;
@@ -2784,69 +2788,56 @@ fn synthesize_source_bound_template(
 fn combine_source_bound_patches(
     source: &str,
     patches: &[&ReplayableSourceBoundPatchIR],
+    expected_members: usize,
 ) -> Result<MaterializedSourceBoundPatchIR, CausalFrontendFailure> {
-    let mut edits = Vec::new();
-    let mut insertion_by_offset = BTreeMap::<usize, usize>::new();
-    {
-        let mut push_edit = |edit: SourceEditAtom| {
-            if let SourceEditAtom::Insert { offset, content } = edit {
-                if let Some(index) = insertion_by_offset.get(&offset).copied() {
-                    let SourceEditAtom::Insert {
-                        content: existing, ..
-                    } = &mut edits[index]
-                    else {
-                        unreachable!("insertion index only records inserts")
-                    };
-                    existing.push_str(&content);
-                } else {
-                    insertion_by_offset.insert(offset, edits.len());
-                    edits.push(SourceEditAtom::Insert { offset, content });
-                }
-            } else {
-                edits.push(edit);
-            }
-        };
-        for patch in patches {
-            match &patch.edit {
-                SourceEditAtom::AtomicMultiEdit { edits: nested } => {
-                    for edit in nested.iter().cloned() {
-                        push_edit(edit);
-                    }
-                }
-                edit => push_edit(edit.clone()),
-            }
-        }
-    }
-    let edit = SourceEditAtom::AtomicMultiEdit { edits };
-    let candidate_source = apply_edit_atom(source, &edit).map_err(|error| {
-        if error.contains("OVERLAPPING")
-            || error.contains("INSIDE_CONSUMED")
-            || error.contains("DUPLICATE")
-        {
-            CausalFrontendFailure::conflict(error)
-        } else {
-            CausalFrontendFailure::unsupported(error)
-        }
-    })?;
-    if candidate_source == source {
-        return Err(CausalFrontendFailure::unsupported(
-            "COMBINED_SOURCE_BOUND_PATCH_NO_OP",
-        ));
-    }
-    let replay = apply_edit_atom(source, &edit).map_err(CausalFrontendFailure::conflict)?;
-    let candidate_sha256 = sha256(candidate_source.as_bytes());
-    let candidate_replay_sha256 = sha256(replay.as_bytes());
-    if replay != candidate_source || candidate_replay_sha256 != candidate_sha256 {
+    let predecessor_sha256 = sha256(source.as_bytes());
+    if patches.iter().any(|patch| {
+        patch.predecessor_sha256 != predecessor_sha256
+            || !patch.candidate_materialization_is_one_to_one
+            || patch.candidate_sha256 != patch.candidate_replay_sha256
+    }) {
         return Err(CausalFrontendFailure::conflict(
-            "COMBINED_CANDIDATE_MATERIALIZATION_DIVERGED",
+            "SOURCE_PROPOSAL_PATCH_AUTHORITY_INVALID",
         ));
     }
+    let proposals = patches
+        .iter()
+        .enumerate()
+        .map(|(index, patch)| SourceEditProposalIR {
+            proposal_id: format!("{}:{index}", patch.candidate_sha256),
+            edit: patch.edit.clone(),
+        })
+        .collect::<Vec<_>>();
+    let requirement = if expected_members > 1 {
+        SourceProposalCompositionRequirementIR::RequiredGroup {
+            group_id: sha256(
+                format!("SOURCE_BOUND_REQUIRED_GROUP:{predecessor_sha256}:{expected_members}")
+                    .as_bytes(),
+            ),
+            expected_members,
+        }
+    } else {
+        SourceProposalCompositionRequirementIR::Independent
+    };
+    let composed =
+        compose_source_edit_proposals(source, &proposals, &requirement).map_err(|error| {
+            if error.contains("OVERLAPPING")
+                || error.contains("INSIDE_CONSUMED")
+                || error.contains("DUPLICATE")
+                || error.contains("REPLAY")
+                || error.contains("REQUIRED_GROUP")
+            {
+                CausalFrontendFailure::conflict(error)
+            } else {
+                CausalFrontendFailure::unsupported(error)
+            }
+        })?;
     Ok(MaterializedSourceBoundPatchIR {
-        predecessor_sha256: sha256(source.as_bytes()),
-        edit,
-        candidate_source,
-        candidate_sha256,
-        candidate_replay_sha256,
+        predecessor_sha256,
+        edit: composed.edit,
+        candidate_source: composed.candidate_source,
+        candidate_sha256: composed.candidate_sha256.clone(),
+        candidate_replay_sha256: composed.candidate_sha256,
         candidate_materialization_is_one_to_one: true,
     })
 }
@@ -3117,7 +3108,7 @@ pub fn validate_source_bound_causal_receipt(
             &receipt.alternatives,
             &receipt.declaration_alternatives,
         )?,
-    ) != receipt.patch_variants
+    )? != receipt.patch_variants
     {
         return Err(CausalFrontendFailure::conflict(
             "SOURCE_BOUND_RECEIPT_VARIANT_MATERIALIZATION",
@@ -3301,14 +3292,17 @@ fn build_source_bound_function_patch_variants(
                 symbols.push(candidate.function_template.qualified_symbol.clone());
             }
         }
-        let materialized_patch = match combine_source_bound_patches(source, &patches) {
-            Ok(patch) => patch,
-            Err(error) if error.kind == CausalFrontendFailureKind::ConflictingSourceBoundEdits => {
-                saw_conflict = true;
-                continue;
-            }
-            Err(error) => return Err(error),
-        };
+        let materialized_patch =
+            match combine_source_bound_patches(source, &patches, alternatives.len()) {
+                Ok(patch) => patch,
+                Err(error)
+                    if error.kind == CausalFrontendFailureKind::ConflictingSourceBoundEdits =>
+                {
+                    saw_conflict = true;
+                    continue;
+                }
+                Err(error) => return Err(error),
+            };
         if !candidate_hashes.insert(materialized_patch.candidate_sha256.clone()) {
             continue;
         }
@@ -3367,7 +3361,8 @@ fn build_source_bound_patch_variants_with_declarations(
     let mut variants = Vec::new();
     let mut candidate_hashes = BTreeSet::new();
     if function_variants.is_empty() {
-        let materialized = combine_source_bound_patches(source, &declaration_patches)?;
+        let materialized =
+            combine_source_bound_patches(source, &declaration_patches, declarations.len())?;
         let variant_id = sha256(
             serde_json::to_vec(&(
                 Vec::<usize>::new(),
@@ -3391,7 +3386,11 @@ fn build_source_bound_patch_variants_with_declarations(
         let mut patches = Vec::with_capacity(1 + declaration_patches.len());
         patches.push(&function_variant.replayable_patch);
         patches.extend(declaration_patches.iter().copied());
-        let materialized = combine_source_bound_patches(source, &patches)?;
+        let materialized = combine_source_bound_patches(
+            source,
+            &patches,
+            1_usize.saturating_add(declarations.len()),
+        )?;
         if !candidate_hashes.insert(materialized.candidate_sha256.clone()) {
             continue;
         }
@@ -3423,59 +3422,44 @@ fn build_source_bound_patch_variants_with_declarations(
     Ok(variants)
 }
 
-fn source_bound_variant_score(
+fn source_bound_variant_ranking_evidence(
     alternatives: &[SourceBoundAlternativeReceiptIR],
     variant: &SourceBoundPatchVariantIR,
-) -> i32 {
-    alternatives
-        .iter()
-        .zip(&variant.selected_candidate_indices)
-        .map(|(alternative, selected)| {
-            if *selected == 0 {
-                // The public owner is always a valid fail-safe proposal.
-                10
-            } else {
-                alternative
-                    .closure_candidates
-                    .get(selected - 1)
-                    .map(|candidate| {
-                        // Prefer a source-local causal cut that has no callers
-                        // outside the observed execution closure. This is a
-                        // typed graph fact extracted by the frontend, not a
-                        // Python-side candidate decision.
-                        if candidate.function_template.external_callers.is_empty() {
-                            30_i32.saturating_add(
-                                i32::try_from(candidate.closure_ordinal.min(16)).unwrap_or(16),
-                            )
-                        } else {
-                            0
-                        }
-                    })
-                    .unwrap_or(i32::MIN / 4)
+) -> SourceProposalRankingEvidenceIR {
+    let mut evidence = SourceProposalRankingEvidenceIR::default();
+    for (alternative, selected) in alternatives.iter().zip(&variant.selected_candidate_indices) {
+        if *selected == 0 {
+            evidence.public_owner_members = evidence.public_owner_members.saturating_add(1);
+        } else if let Some(candidate) = alternative.closure_candidates.get(selected - 1) {
+            if candidate.function_template.external_callers.is_empty() {
+                evidence.source_local_closure_members =
+                    evidence.source_local_closure_members.saturating_add(1);
+                evidence.source_local_closure_depth = evidence
+                    .source_local_closure_depth
+                    .saturating_add(candidate.closure_ordinal.min(16));
             }
-        })
-        .sum()
+        }
+    }
+    evidence
 }
 
 fn select_source_bound_patch_proposals(
     alternatives: &[SourceBoundAlternativeReceiptIR],
     variants: Vec<SourceBoundPatchVariantIR>,
-) -> Vec<SourceBoundPatchVariantIR> {
-    let mut by_postimage = BTreeMap::new();
-    for variant in variants {
-        by_postimage
-            .entry(variant.replayable_patch.candidate_sha256.clone())
-            .or_insert(variant);
-    }
-    let mut ranked = by_postimage.into_values().collect::<Vec<_>>();
-    ranked.sort_by_key(|variant| {
-        (
-            std::cmp::Reverse(source_bound_variant_score(alternatives, variant)),
-            variant.variant_id.clone(),
-        )
-    });
-    ranked.truncate(MAX_COMPETING_SOURCE_BOUND_PROPOSALS);
-    ranked
+) -> Result<Vec<SourceBoundPatchVariantIR>, CausalFrontendFailure> {
+    rank_source_proposals(
+        variants
+            .into_iter()
+            .map(|variant| SourceProposalKernelInput {
+                proposal_id: variant.variant_id.clone(),
+                candidate_sha256: variant.replayable_patch.candidate_sha256.clone(),
+                tie_breaker: variant.selected_template_symbols.join(":"),
+                evidence: source_bound_variant_ranking_evidence(alternatives, &variant),
+                payload: variant,
+            })
+            .collect(),
+    )
+    .map_err(CausalFrontendFailure::conflict)
 }
 
 fn validate_request(
@@ -3791,7 +3775,7 @@ pub fn analyze_and_synthesize_source_bound_with_operators(
     let patch_variants = select_source_bound_patch_proposals(
         &receipts,
         build_source_bound_patch_variants(&request.source, &receipts)?,
-    );
+    )?;
     let mut receipt = SourceBoundCausalReceiptIR {
         schema: SOURCE_BOUND_CAUSAL_RECEIPT_SCHEMA.to_string(),
         source_relative_path: request.source_relative_path.clone(),
@@ -3823,6 +3807,7 @@ pub fn analyze_and_synthesize_source_bound_with_operators(
 mod tests {
     use super::*;
     use crate::sem5::model::Value;
+    use crate::source_proposal_kernel::MAX_SELECTED_SOURCE_PROPOSALS;
 
     fn python() -> Option<PathBuf> {
         let output = Command::new("python")
@@ -5023,14 +5008,15 @@ def transformer_visitor(value: int, baseline: int) -> int:
             .iter()
             .any(|variant| variant.selected_candidate_indices == [0]));
         let selected =
-            select_source_bound_patch_proposals(std::slice::from_ref(&saturated), bounded);
-        assert!(selected.len() <= MAX_COMPETING_SOURCE_BOUND_PROPOSALS);
+            select_source_bound_patch_proposals(std::slice::from_ref(&saturated), bounded).unwrap();
+        assert!(selected.len() <= MAX_SELECTED_SOURCE_PROPOSALS);
         assert_eq!(
             selected,
             select_source_bound_patch_proposals(
                 std::slice::from_ref(&saturated),
                 build_source_bound_patch_variants(source, &[saturated.clone()]).unwrap(),
             )
+            .unwrap()
         );
     }
 
