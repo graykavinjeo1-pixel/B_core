@@ -9,13 +9,14 @@
 use std::collections::{BTreeMap, BTreeSet};
 use std::ffi::OsStr;
 use std::fs::{self, OpenOptions};
-use std::io::Write;
+use std::io::{Read, Write};
 use std::path::{Component, Path, PathBuf};
-use std::process::{Command, Stdio};
+use std::process::{Child, Command, Stdio};
 use std::thread;
 use std::time::{Duration, Instant, SystemTime};
 
 use serde::{Deserialize, Serialize};
+use sha2::{Digest, Sha256};
 use syn::parse::Parser;
 use syn::punctuated::Punctuated;
 use syn::{Attribute, Expr, Item, Lit, Meta, Token};
@@ -53,6 +54,9 @@ pub const IMPROVEMENT_OPERATOR_MEMORY_SCHEMA: &str = "B_CORE_IMPROVEMENT_OPERATO
 pub const MAX_IMPROVEMENT_OPERATOR_GRAPH_NODES: usize = 8;
 const MAX_TYPED_OPERATOR_RECONCILIATION_RECEIPTS: usize = 64;
 const MAX_SUBMITTED_SOURCE_PROPOSALS_PER_GENERATOR: usize = MAX_SELECTED_SOURCE_PROPOSALS * 8;
+// Revision 57 runs counterexample-derived successors in the same bounded
+// Supervisor turn and hardens validation commands with bounded output plus
+// process-tree termination on timeout.
 // Revision 56 derives the active runtime source surface from the crate module
 // graph under runtime-core instead of a hand-maintained SEM/file allowlist.
 // Revision 55 makes every source generator submit a bounded proposal batch.
@@ -81,11 +85,13 @@ const MAX_SUBMITTED_SOURCE_PROPOSALS_PER_GENERATOR: usize = MAX_SELECTED_SOURCE_
 // Revision 47 separates exact authority existence from the bounded active
 // operator window and deduplicates repeated authority receipts.
 // Generator identity remains diagnostic evidence only.
-pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 56;
+pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 57;
 pub const MAX_RETAINED_CONSUMED_RUNTIME_STAGING_GENERATIONS: usize = 2;
 const KNOWN_REMAINDER_PREDICTED_VALUE: u16 = 35;
 const MAX_REPOSITORY_REPAIR_FAMILY_FILES: usize = 16;
 const DEFAULT_TWIN_RECOVERABLE_INSTALLATION_BUDGET: u64 = 256;
+const MAX_CAPTURED_PROCESS_OUTPUT_BYTES: usize = 4 * 1024 * 1024;
+const MAX_DIAGNOSTIC_TAIL_BYTES: usize = 4 * 1024;
 const KNOWN_REMAINDER_STRATEGIES: [&str; 4] = [
     "TYPED_IS_MULTIPLE_OF",
     "PARENTHESIZED_IS_MULTIPLE_OF",
@@ -684,7 +690,7 @@ pub struct ImprovementOperatorGraphCanaryReceipt {
     pub receipt_sha256: String,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub struct LocalCommandReceipt {
     pub program: String,
     pub args: Vec<String>,
@@ -698,6 +704,18 @@ pub struct LocalCommandReceipt {
     pub output_sha256: String,
     #[serde(default)]
     pub diagnostic_tail: String,
+    #[serde(default)]
+    pub stdout_sha256: String,
+    #[serde(default)]
+    pub stderr_sha256: String,
+    #[serde(default)]
+    pub stdout_bytes: u64,
+    #[serde(default)]
+    pub stderr_bytes: u64,
+    #[serde(default)]
+    pub output_truncated: bool,
+    #[serde(default)]
+    pub process_tree_termination_attempted: bool,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -2116,7 +2134,7 @@ pub fn invoke_improvement_operator_repository(
     })
 }
 
-fn counterexample_from_receipt(
+pub(crate) fn counterexample_from_receipt(
     request: &AutonomousSourcePatchRequest,
     receipt: &AutonomousSourcePatchReceipt,
 ) -> Option<ValidationCounterexampleIR> {
@@ -2891,15 +2909,14 @@ fn command_receipt_with_incremental_and_jobs(
     cargo_build_jobs: Option<usize>,
 ) -> Result<LocalCommandReceipt, String> {
     let started = Instant::now();
-    let diagnostic = OpenOptions::new()
+    // Establish the log path before process execution, but keep child output
+    // on pipes so an unbounded compiler/test stream cannot consume disk.
+    OpenOptions::new()
         .write(true)
         .create(true)
         .truncate(true)
         .open(diagnostic_path)
         .map_err(|error| format!("SOURCE_MUTATION_DIAGNOSTIC_CREATE:{error}"))?;
-    let diagnostic_error = diagnostic
-        .try_clone()
-        .map_err(|error| format!("SOURCE_MUTATION_DIAGNOSTIC_CLONE:{error}"))?;
     let mut command = Command::new(program);
     command
         .args(args)
@@ -2914,55 +2931,157 @@ fn command_receipt_with_incremental_and_jobs(
         .env("PIP_NO_INDEX", "1")
         .env("UV_OFFLINE", "1")
         .stdin(Stdio::null())
-        .stdout(Stdio::from(diagnostic))
-        .stderr(Stdio::from(diagnostic_error));
+        .stdout(Stdio::piped())
+        .stderr(Stdio::piped());
     if let Some(cargo_build_jobs) = cargo_build_jobs {
         command.env("CARGO_BUILD_JOBS", cargo_build_jobs.to_string());
     }
     let mut child = command
         .spawn()
         .map_err(|error| format!("SOURCE_MUTATION_COMMAND_SPAWN:{error}"))?;
+    let Some(stdout) = child.stdout.take() else {
+        terminate_process_tree(&mut child);
+        let _ = child.wait();
+        return Err("SOURCE_MUTATION_STDOUT_PIPE_MISSING".to_string());
+    };
+    let Some(stderr) = child.stderr.take() else {
+        terminate_process_tree(&mut child);
+        let _ = child.wait();
+        return Err("SOURCE_MUTATION_STDERR_PIPE_MISSING".to_string());
+    };
+    let stdout_reader = thread::spawn(move || drain_bounded_process_output(stdout));
+    let stderr_reader = thread::spawn(move || drain_bounded_process_output(stderr));
     let timeout = Duration::from_millis(timeout_ms);
-    loop {
+    let (status, timed_out, process_tree_termination_attempted) = loop {
         if let Some(status) = child
             .try_wait()
             .map_err(|error| format!("SOURCE_MUTATION_COMMAND_WAIT:{error}"))?
         {
-            let output = fs::read(diagnostic_path)
-                .map_err(|error| format!("SOURCE_MUTATION_DIAGNOSTIC_READ:{error}"))?;
-            let tail_start = output.len().saturating_sub(4_096);
-            return Ok(LocalCommandReceipt {
-                program: program.display().to_string(),
-                args: args.iter().map(|value| (*value).to_string()).collect(),
-                cargo_incremental,
-                exit_code: status.code(),
-                success: status.success(),
-                timed_out: false,
-                duration_ms: started.elapsed().as_millis().min(u128::from(u64::MAX)) as u64,
-                output_sha256: sha256(&output),
-                diagnostic_tail: String::from_utf8_lossy(&output[tail_start..]).to_string(),
-            });
+            break (status, false, false);
         }
         if started.elapsed() >= timeout {
-            let _ = child.kill();
-            let status = child.wait().ok();
-            let output = fs::read(diagnostic_path)
-                .map_err(|error| format!("SOURCE_MUTATION_DIAGNOSTIC_READ:{error}"))?;
-            let tail_start = output.len().saturating_sub(4_096);
-            return Ok(LocalCommandReceipt {
-                program: program.display().to_string(),
-                args: args.iter().map(|value| (*value).to_string()).collect(),
-                cargo_incremental,
-                exit_code: status.and_then(|value| value.code()),
-                success: false,
-                timed_out: true,
-                duration_ms: started.elapsed().as_millis().min(u128::from(u64::MAX)) as u64,
-                output_sha256: sha256(&output),
-                diagnostic_tail: String::from_utf8_lossy(&output[tail_start..]).to_string(),
-            });
+            terminate_process_tree(&mut child);
+            let status = child
+                .wait()
+                .map_err(|error| format!("SOURCE_MUTATION_COMMAND_REAP:{error}"))?;
+            break (status, true, true);
         }
         thread::sleep(Duration::from_millis(100));
+    };
+    let stdout = stdout_reader
+        .join()
+        .map_err(|_| "SOURCE_MUTATION_STDOUT_READER_PANICKED".to_string())??;
+    let stderr = stderr_reader
+        .join()
+        .map_err(|_| "SOURCE_MUTATION_STDERR_READER_PANICKED".to_string())??;
+    let mut diagnostic = Vec::with_capacity(
+        stdout
+            .captured
+            .len()
+            .saturating_add(stderr.captured.len())
+            .saturating_add(32),
+    );
+    diagnostic.extend_from_slice(b"--- STDOUT ---\n");
+    diagnostic.extend_from_slice(&stdout.captured);
+    diagnostic.extend_from_slice(b"\n--- STDERR ---\n");
+    diagnostic.extend_from_slice(&stderr.captured);
+    fs::write(diagnostic_path, &diagnostic)
+        .map_err(|error| format!("SOURCE_MUTATION_DIAGNOSTIC_WRITE:{error}"))?;
+    let mut diagnostic_tail = Vec::with_capacity(
+        stdout
+            .tail
+            .len()
+            .saturating_add(stderr.tail.len())
+            .saturating_add(32),
+    );
+    diagnostic_tail.extend_from_slice(b"--- STDOUT ---\n");
+    diagnostic_tail.extend_from_slice(&stdout.tail);
+    diagnostic_tail.extend_from_slice(b"\n--- STDERR ---\n");
+    diagnostic_tail.extend_from_slice(&stderr.tail);
+    let tail_start = diagnostic_tail
+        .len()
+        .saturating_sub(MAX_DIAGNOSTIC_TAIL_BYTES);
+    let combined_output_identity = sha256(
+        format!(
+            "stdout:{}:{}:stderr:{}:{}",
+            stdout.sha256, stdout.bytes_seen, stderr.sha256, stderr.bytes_seen
+        )
+        .as_bytes(),
+    );
+    Ok(LocalCommandReceipt {
+        program: program.display().to_string(),
+        args: args.iter().map(|value| (*value).to_string()).collect(),
+        cargo_incremental,
+        exit_code: status.code(),
+        success: !timed_out && status.success(),
+        timed_out,
+        duration_ms: started.elapsed().as_millis().min(u128::from(u64::MAX)) as u64,
+        output_sha256: combined_output_identity,
+        diagnostic_tail: String::from_utf8_lossy(&diagnostic_tail[tail_start..]).to_string(),
+        stdout_sha256: stdout.sha256,
+        stderr_sha256: stderr.sha256,
+        stdout_bytes: stdout.bytes_seen,
+        stderr_bytes: stderr.bytes_seen,
+        output_truncated: stdout.truncated || stderr.truncated,
+        process_tree_termination_attempted,
+    })
+}
+
+struct BoundedProcessOutput {
+    sha256: String,
+    bytes_seen: u64,
+    captured: Vec<u8>,
+    tail: Vec<u8>,
+    truncated: bool,
+}
+
+fn drain_bounded_process_output(mut reader: impl Read) -> Result<BoundedProcessOutput, String> {
+    let mut hasher = Sha256::new();
+    let mut bytes_seen = 0_u64;
+    let mut captured = Vec::new();
+    let mut tail = Vec::new();
+    let mut buffer = [0_u8; 8 * 1024];
+    loop {
+        let count = reader
+            .read(&mut buffer)
+            .map_err(|error| format!("SOURCE_MUTATION_OUTPUT_READ:{error}"))?;
+        if count == 0 {
+            break;
+        }
+        let chunk = &buffer[..count];
+        hasher.update(chunk);
+        bytes_seen = bytes_seen.saturating_add(count as u64);
+        let remaining = MAX_CAPTURED_PROCESS_OUTPUT_BYTES.saturating_sub(captured.len());
+        captured.extend_from_slice(&chunk[..chunk.len().min(remaining)]);
+        tail.extend_from_slice(chunk);
+        if tail.len() > MAX_DIAGNOSTIC_TAIL_BYTES {
+            let keep_from = tail.len() - MAX_DIAGNOSTIC_TAIL_BYTES;
+            tail.drain(..keep_from);
+        }
     }
+    Ok(BoundedProcessOutput {
+        sha256: format!("{:x}", hasher.finalize()),
+        bytes_seen,
+        captured,
+        tail,
+        truncated: bytes_seen > MAX_CAPTURED_PROCESS_OUTPUT_BYTES as u64,
+    })
+}
+
+fn terminate_process_tree(child: &mut Child) {
+    #[cfg(windows)]
+    if let Some(system_root) = std::env::var_os("SystemRoot") {
+        let taskkill = Path::new(&system_root)
+            .join("System32")
+            .join("taskkill.exe");
+        let _ = Command::new(taskkill)
+            .args(["/PID", &child.id().to_string(), "/T", "/F"])
+            .stdin(Stdio::null())
+            .stdout(Stdio::null())
+            .stderr(Stdio::null())
+            .status();
+    }
+    let _ = child.kill();
 }
 
 fn join_command_lane(
@@ -5736,6 +5855,20 @@ mod tests {
     use super::*;
 
     #[test]
+    fn validation_output_capture_is_bounded_but_hashes_the_complete_stream() {
+        let bytes = vec![b'x'; MAX_CAPTURED_PROCESS_OUTPUT_BYTES + 8 * 1024];
+        let output = drain_bounded_process_output(std::io::Cursor::new(&bytes)).unwrap();
+        assert!(output.truncated);
+        assert_eq!(output.captured.len(), MAX_CAPTURED_PROCESS_OUTPUT_BYTES);
+        assert_eq!(output.bytes_seen, bytes.len() as u64);
+        assert_eq!(output.sha256, sha256(&bytes));
+        assert_eq!(
+            output.tail,
+            bytes[bytes.len() - MAX_DIAGNOSTIC_TAIL_BYTES..]
+        );
+    }
+
+    #[test]
     fn product_repository_discovery_never_runs_the_fixed_bootstrap_lane() {
         let (root, policy) = fixture("product-with-legacy-bootstrap-flag");
         let state = external_state(&root);
@@ -5832,6 +5965,7 @@ mod tests {
             duration_ms: 1,
             output_sha256: sha256(output),
             diagnostic_tail: String::from_utf8_lossy(output).to_string(),
+            ..Default::default()
         };
         let mut receipt = AutonomousSourcePatchReceipt {
             schema: AUTONOMOUS_SOURCE_MUTATION_SCHEMA.to_string(),
@@ -6455,6 +6589,7 @@ mod tests {
             duration_ms,
             output_sha256: program.to_string(),
             diagnostic_tail: String::new(),
+            ..Default::default()
         };
         let receipt = AutonomousSourcePatchReceipt {
             schema: AUTONOMOUS_SOURCE_MUTATION_SCHEMA.to_string(),

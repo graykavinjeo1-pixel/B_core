@@ -44,6 +44,23 @@ The frozen configuration limits lifetime campaigns, accepted generations, active
 
 Only operator stop can be resumed in place. A hard resource stop requires a new explicitly frozen configuration and state line.
 
+### Same-attempt source revision
+
+An authoritative source repair that fails after exact rollback may trigger a
+bounded counterexample-guided revision in the same Supervisor turn. The next
+candidate must be different and its generalized change must consume the fresh
+validation counterexample. Revision stops on a duplicate candidate, missing
+counterexample consumption, transient workspace contention, uncertain
+rollback, or after three executions. This shortens the repair feedback path
+without turning retries into independent generations or an unbounded loop.
+
+Validation commands stream stdout and stderr through bounded readers. Their
+complete byte counts and SHA-256 identities remain in the receipt, while only
+the first 4 MiB per stream and a bounded diagnostic tail are retained. A
+timeout terminates the child process tree before the command is reaped so a
+compiler or test runner cannot leave descendant processes running after the
+source transaction rolls back.
+
 ## Crash and reboot recovery
 
 State, index, journal, campaign freeze, candidate, verifier receipt, history, and memory generation records are written as immutable files. Startup loads the highest valid snapshot. A partially completed campaign is resumed deterministically; an already promoted generation is recognized from immutable history; a divergent generation is rejected. Promotion is idempotent.

@@ -302,6 +302,10 @@ if (-not $growthSelfCheck.pass -or
     -not $growthSelfCheck.autonomous_compiler_diagnostic_discovery_enabled -or
     -not $growthSelfCheck.typed_grammar_composition_enabled -or
     -not $growthSelfCheck.public_counterexample_guided_revision_enabled -or
+    -not $growthSelfCheck.same_attempt_counterexample_revision_enabled -or
+    -not $growthSelfCheck.same_attempt_revision_requires_exact_rollback -or
+    -not $growthSelfCheck.validation_process_tree_termination_enabled -or
+    -not $growthSelfCheck.validation_output_is_bounded -or
     -not $growthSelfCheck.successful_edit_composition_learning_enabled -or
     -not $growthSelfCheck.bounded_compiler_diagnostic_cache_enabled -or
     -not $growthSelfCheck.dynamic_self_weakness_discovery_enabled -or

@@ -26,15 +26,16 @@ use crate::autonomous_self_inspection::{
 };
 use crate::autonomous_source_mutation::{
     cleanup_consumed_source_mutation_staging, command_receipt_with_incremental,
-    derive_improvement_operator_memory, discover_executable_performance_improvement,
-    discover_repository_improvement, discover_repository_improvement_detailed,
-    full_workspace_semantic_fingerprint, install_and_stage_source_patch,
-    runtime_core_feature_available, runtime_core_source_files, source_opportunity_family_id,
-    source_patch_failure_is_transient, source_patch_validation_critical_path_ms,
-    validate_improvement_operator, validate_policy, AutonomousSourceMutationPolicy,
-    AutonomousSourcePatchReceipt, AutonomousSourcePatchRequest, ChangeOpportunityKind,
-    ImprovementOperatorGeneratorKind, ImprovementOperatorIR, LocalCommandReceipt,
-    SourceMutationStagingCleanup, SOURCE_REPAIR_ENGINE_REVISION,
+    counterexample_from_receipt, derive_improvement_operator_memory,
+    discover_executable_performance_improvement, discover_repository_improvement,
+    discover_repository_improvement_detailed, full_workspace_semantic_fingerprint,
+    install_and_stage_source_patch, runtime_core_feature_available, runtime_core_source_files,
+    source_opportunity_family_id, source_patch_failure_is_transient,
+    source_patch_validation_critical_path_ms, validate_improvement_operator, validate_policy,
+    AutonomousSourceMutationPolicy, AutonomousSourcePatchReceipt, AutonomousSourcePatchRequest,
+    ChangeOpportunityKind, ImprovementOperatorGeneratorKind, ImprovementOperatorIR,
+    LocalCommandReceipt, SourceDiscoveryResult, SourceMutationStagingCleanup,
+    SOURCE_REPAIR_ENGINE_REVISION,
 };
 use crate::compound_growth::{
     run_compound_growth_input, CompoundGrowthCycleIR, CompoundGrowthInputIR,
@@ -48,6 +49,10 @@ use crate::generative_growth::{
 use crate::integrated_development::{
     compose_typed_behavior_goal_candidate, execute_behavioral_composition_canary,
     install_composite_candidate_family, MAX_INSTALLED_TYPED_CAPABILITIES,
+};
+use crate::same_attempt_revision::{
+    CandidateAdmission, SameAttemptCounterexample, SameAttemptRevisionTracker,
+    MAX_SAME_ATTEMPT_EXECUTIONS,
 };
 use crate::self_repair_contract::sha256;
 #[cfg(test)]
@@ -1146,6 +1151,10 @@ pub struct SelfCheck {
     pub autonomous_compiler_diagnostic_discovery_enabled: bool,
     pub typed_grammar_composition_enabled: bool,
     pub public_counterexample_guided_revision_enabled: bool,
+    pub same_attempt_counterexample_revision_enabled: bool,
+    pub same_attempt_revision_requires_exact_rollback: bool,
+    pub validation_process_tree_termination_enabled: bool,
+    pub validation_output_is_bounded: bool,
     pub successful_edit_composition_learning_enabled: bool,
     pub bounded_compiler_diagnostic_cache_enabled: bool,
     pub dynamic_self_weakness_discovery_enabled: bool,
@@ -1276,6 +1285,10 @@ pub fn self_check() -> SelfCheck {
         autonomous_compiler_diagnostic_discovery_enabled: true,
         typed_grammar_composition_enabled: true,
         public_counterexample_guided_revision_enabled: true,
+        same_attempt_counterexample_revision_enabled: true,
+        same_attempt_revision_requires_exact_rollback: true,
+        validation_process_tree_termination_enabled: true,
+        validation_output_is_bounded: true,
         successful_edit_composition_learning_enabled: true,
         bounded_compiler_diagnostic_cache_enabled: true,
         dynamic_self_weakness_discovery_enabled: true,
@@ -8639,6 +8652,7 @@ fn validate_blocked_core_cohort(
             diagnostic_tail: format!(
                 "REUSED_SOURCE_IDENTICAL_CORE_VALIDATION_RECEIPT:{reused_receipt_sha256}"
             ),
+            ..Default::default()
         };
         let receipt = CoreCohortValidationReceipt {
             schema: "B_CORE_COHORT_VALIDATION_1".to_string(),
@@ -10068,6 +10082,76 @@ fn source_discovery_state_sha256(
     ))
 }
 
+fn discover_next_source_repair(
+    config: &GrowthSupervisorConfig,
+    state: &SupervisorState,
+    memory: &GrowthMemory,
+) -> Result<SourceDiscoveryResult, String> {
+    let executable_performance_knowledge = memory
+        .lessons
+        .iter()
+        .flat_map(executable_performance_operators)
+        .fold(BTreeMap::new(), |mut operators, operator| {
+            operators
+                .entry(operator.operator_id.clone())
+                .or_insert(operator);
+            operators
+        })
+        .into_values()
+        .collect::<Vec<_>>();
+    if executable_performance_knowledge.is_empty() {
+        discover_repository_improvement_detailed(
+            &config.source_mutation,
+            &config.state_dir,
+            state.generation,
+        )
+    } else {
+        match discover_executable_performance_improvement(
+            &config.source_mutation,
+            &config.state_dir,
+            state.generation,
+            &executable_performance_knowledge,
+        ) {
+            Ok(learned) if learned.candidate.is_some() => Ok(learned),
+            Ok(_) => discover_repository_improvement_detailed(
+                &config.source_mutation,
+                &config.state_dir,
+                state.generation,
+            ),
+            Err(error) => Err(error),
+        }
+    }
+}
+
+fn source_patch_revision_dimensions(request: &AutonomousSourcePatchRequest) -> BTreeSet<String> {
+    let mut dimensions = BTreeSet::from([
+        format!("strategy:{}", request.solution_strategy),
+        format!("candidate:{}", request.candidate_sha256),
+    ]);
+    if let Some(change) = &request.generalized_change {
+        dimensions.extend(
+            change
+                .derived_from_counterexample_ids
+                .iter()
+                .map(|id| format!("counterexample:{id}")),
+        );
+        dimensions.extend(
+            change
+                .operations
+                .iter()
+                .map(|operation| format!("operation:{operation:?}")),
+        );
+    }
+    dimensions
+}
+
+fn same_attempt_failure_requirement(counterexample_id: &str) -> SameAttemptCounterexample {
+    SameAttemptCounterexample::new(
+        counterexample_id,
+        [format!("counterexample:{counterexample_id}")],
+    )
+}
+
 fn attempt_discovered_source_repair(
     config: &GrowthSupervisorConfig,
     state: &mut SupervisorState,
@@ -10107,79 +10191,94 @@ fn attempt_discovered_source_repair(
             .saturating_add(1);
         return Ok(false);
     }
-    let executable_performance_knowledge = memory
-        .lessons
-        .iter()
-        .flat_map(executable_performance_operators)
-        .fold(BTreeMap::new(), |mut operators, operator| {
-            operators
-                .entry(operator.operator_id.clone())
-                .or_insert(operator);
-            operators
-        })
-        .into_values()
-        .collect::<Vec<_>>();
-    let discovery = if executable_performance_knowledge.is_empty() {
-        discover_repository_improvement_detailed(
-            &config.source_mutation,
-            &config.state_dir,
-            state.generation,
-        )
-    } else {
-        match discover_executable_performance_improvement(
-            &config.source_mutation,
-            &config.state_dir,
-            state.generation,
-            &executable_performance_knowledge,
-        ) {
-            Ok(learned) if learned.candidate.is_some() => Ok(learned),
-            Ok(_) => discover_repository_improvement_detailed(
-                &config.source_mutation,
-                &config.state_dir,
-                state.generation,
-            ),
-            Err(error) => Err(error),
-        }
-    };
-    match discovery {
-        Ok(discovery) if discovery.candidate.is_some() => {
-            let Some(request) = discovery.candidate else {
-                return Ok(false);
-            };
-            let opportunity_kind = request.opportunity_kind;
-            let opportunity_family_id = request.opportunity_family_id.clone();
-            state.last_source_discovery_state_sha256 = None;
-            state.source_discovery_no_candidate_streak = 0;
-            state.last_source_discovery_reason = Some(discovery.disposition.label().to_string());
-            state.autonomous_source_patch_attempts =
-                state.autonomous_source_patch_attempts.saturating_add(1);
-            match install_and_stage_source_patch(
-                &config.source_mutation,
-                &config.state_dir,
-                &request,
-            ) {
-                Ok(receipt) => {
-                    account_source_patch_receipt(state, &receipt);
-                    if receipt.installed && receipt.runtime_update_staged {
-                        state.stop_reason = Some("AUTONOMOUS_SOURCE_UPDATE_STAGED".to_string());
-                        return Ok(true);
+    let configured_limit = usize::from(config.source_mutation.max_attempts_per_problem);
+    let mut revision =
+        SameAttemptRevisionTracker::new(configured_limit.min(MAX_SAME_ATTEMPT_EXECUTIONS));
+    loop {
+        let discovery = discover_next_source_repair(config, state, memory);
+        match discovery {
+            Ok(discovery) if discovery.candidate.is_some() => {
+                let Some(request) = discovery.candidate else {
+                    break;
+                };
+                let opportunity_kind = request.opportunity_kind;
+                let opportunity_family_id = request.opportunity_family_id.clone();
+                let revision_dimensions = source_patch_revision_dimensions(&request);
+                match revision.admit_candidate(&request.candidate_sha256, &revision_dimensions) {
+                    CandidateAdmission::Execute => {}
+                    disposition => {
+                        state.last_source_discovery_state_sha256 =
+                            Some(discovery_state_sha256.clone());
+                        state.last_source_discovery_reason = Some(format!(
+                            "SAME_ATTEMPT_REVISION_STOP:{disposition:?}:EXECUTED={}",
+                            revision.metrics().candidates_admitted
+                        ));
+                        break;
                     }
                 }
-                Err(_) => {
-                    account_source_patch_error(state, opportunity_kind, opportunity_family_id);
+                state.last_source_discovery_state_sha256 = None;
+                state.source_discovery_no_candidate_streak = 0;
+                state.last_source_discovery_reason = Some(format!(
+                    "{}:SAME_ATTEMPT_EXECUTION={}",
+                    discovery.disposition.label(),
+                    revision.metrics().candidates_admitted
+                ));
+                state.autonomous_source_patch_attempts =
+                    state.autonomous_source_patch_attempts.saturating_add(1);
+                match install_and_stage_source_patch(
+                    &config.source_mutation,
+                    &config.state_dir,
+                    &request,
+                ) {
+                    Ok(receipt) => {
+                        account_source_patch_receipt(state, &receipt);
+                        if receipt.installed && receipt.runtime_update_staged {
+                            state.stop_reason = Some("AUTONOMOUS_SOURCE_UPDATE_STAGED".to_string());
+                            return Ok(true);
+                        }
+                        if receipt.installed
+                            || source_patch_failure_is_transient(receipt.failure_reason.as_deref())
+                        {
+                            break;
+                        }
+                        let exact_rollback =
+                            receipt.rolled_back && receipt.workspace_stable_during_validation;
+                        let Some(counterexample) = counterexample_from_receipt(&request, &receipt)
+                        else {
+                            break;
+                        };
+                        let requirement =
+                            same_attempt_failure_requirement(&counterexample.counterexample_id);
+                        if !revision.observe_failure(requirement, exact_rollback) {
+                            break;
+                        }
+                        state.last_source_discovery_reason = Some(format!(
+                            "SAME_ATTEMPT_COUNTEREXAMPLE_REVISION:{}:{}",
+                            revision.metrics().candidates_admitted,
+                            counterexample.counterexample_id
+                        ));
+                    }
+                    Err(_) => {
+                        account_source_patch_error(state, opportunity_kind, opportunity_family_id);
+                        break;
+                    }
                 }
             }
-        }
-        Ok(discovery) => {
-            state.last_source_discovery_state_sha256 = Some(discovery_state_sha256);
-            state.source_discovery_no_candidate_streak =
-                state.source_discovery_no_candidate_streak.saturating_add(1);
-            state.last_source_discovery_reason = Some(discovery.disposition.label().to_string());
-        }
-        Err(_) => {
-            state.last_source_discovery_state_sha256 = None;
-            state.last_source_discovery_reason = Some("DISCOVERY_ERROR".to_string());
-            state.self_repair_capability_gaps = state.self_repair_capability_gaps.saturating_add(1);
+            Ok(discovery) => {
+                state.last_source_discovery_state_sha256 = Some(discovery_state_sha256.clone());
+                state.source_discovery_no_candidate_streak =
+                    state.source_discovery_no_candidate_streak.saturating_add(1);
+                state.last_source_discovery_reason =
+                    Some(discovery.disposition.label().to_string());
+                break;
+            }
+            Err(_) => {
+                state.last_source_discovery_state_sha256 = None;
+                state.last_source_discovery_reason = Some("DISCOVERY_ERROR".to_string());
+                state.self_repair_capability_gaps =
+                    state.self_repair_capability_gaps.saturating_add(1);
+                break;
+            }
         }
     }
     Ok(false)
@@ -11087,6 +11186,7 @@ mod tests {
             duration_ms: 17,
             output_sha256: "a".repeat(64),
             diagnostic_tail: String::new(),
+            ..Default::default()
         };
         let receipt = AutonomousSourcePatchReceipt {
             schema: "B_CORE_AUTONOMOUS_SOURCE_MUTATION_1".to_string(),
@@ -11141,6 +11241,7 @@ mod tests {
             duration_ms,
             output_sha256: program.to_string(),
             diagnostic_tail: String::new(),
+            ..Default::default()
         };
         let receipt = AutonomousSourcePatchReceipt {
             schema: "B_CORE_AUTONOMOUS_SOURCE_MUTATION_1".to_string(),
@@ -11682,6 +11783,10 @@ mod tests {
         assert!(check.autonomous_compiler_diagnostic_discovery_enabled);
         assert!(check.typed_grammar_composition_enabled);
         assert!(check.public_counterexample_guided_revision_enabled);
+        assert!(check.same_attempt_counterexample_revision_enabled);
+        assert!(check.same_attempt_revision_requires_exact_rollback);
+        assert!(check.validation_process_tree_termination_enabled);
+        assert!(check.validation_output_is_bounded);
         assert!(check.successful_edit_composition_learning_enabled);
         assert!(check.bounded_compiler_diagnostic_cache_enabled);
         assert!(check.evaluator_generation_evolution_enabled);

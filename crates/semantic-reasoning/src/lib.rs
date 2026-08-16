@@ -23,6 +23,7 @@ pub mod integrated_development;
 pub mod mining;
 #[cfg(feature = "historical-campaigns")]
 pub mod reporting;
+pub mod same_attempt_revision;
 pub mod self_healing_execution;
 pub mod self_healing_pipeline;
 pub mod self_repair_contract;
