@@ -2520,22 +2520,14 @@ fn classify_observation(
         LearningValue::Rejected
     };
     reasons.push(format!("bounded structural score={learning_score}"));
-    let observation_id = sha256(
-        format!(
-            "{}:{}:{}:{}",
-            logical_path,
-            current.content_sha256,
-            previous
-                .map(|value| value.content_sha256.as_str())
-                .unwrap_or("NEW"),
-            event
-                .map(|value| value.event_id.as_str())
-                .unwrap_or("PASSIVE")
-        )
-        .as_bytes(),
-    );
-    LearningObservation {
-        observation_id,
+    // Observation identity must bind the classified semantics, not merely the
+    // file transition and optional event name. Otherwise a retry after a
+    // classifier/evidence change reuses the old id for different content and
+    // an immutable observation store correctly reports a collision. Bind a
+    // deterministic timestamp (event time or file mtime), then hash the full
+    // semantic postimage with its id field empty.
+    let mut observation = LearningObservation {
+        observation_id: String::new(),
         work_event_id: event.map(|value| value.event_id.clone()),
         logical_path,
         content_sha256: current.content_sha256.clone(),
@@ -2559,8 +2551,33 @@ fn classify_observation(
             .unwrap_or_default(),
         exact_source_fragments_stored: 0,
         raw_source_bytes_stored: 0,
-        observed_at_ms: now_ms(),
-    }
+        observed_at_ms: event
+            .map(|value| value.occurred_at_ms)
+            .filter(|value| *value != 0)
+            .unwrap_or(current.modified_ms),
+    };
+    let identity_bytes = serde_json::to_vec(&observation).unwrap_or_else(|_| {
+        format!(
+            "{}:{}:{}:{}",
+            observation.logical_path,
+            observation.content_sha256,
+            observation
+                .predecessor_content_sha256
+                .as_deref()
+                .unwrap_or("NEW"),
+            observation.work_event_id.as_deref().unwrap_or("PASSIVE")
+        )
+        .into_bytes()
+    });
+    observation.observation_id = sha256(
+        [
+            b"B_CORE_LEARNING_OBSERVATION_2:".as_slice(),
+            identity_bytes.as_slice(),
+        ]
+        .concat()
+        .as_slice(),
+    );
+    observation
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -4267,7 +4284,12 @@ fn persist_scan_observations(
         } else {
             let existing: LearningObservation = read_json(&path)?;
             if existing != *observation {
-                return Err("OBSERVATION_ID_COLLISION".to_string());
+                return Err(format!(
+                    "OBSERVATION_ID_COLLISION:{}:{}:{}",
+                    observation.observation_id,
+                    json_sha256(&existing)?,
+                    json_sha256(observation)?
+                ));
             }
         }
     }
@@ -13134,6 +13156,60 @@ mod tests {
             45,
         );
         assert_eq!(observation.learning_value, LearningValue::Rejected);
+    }
+
+    #[test]
+    fn observation_identity_is_retry_stable_and_binds_classified_semantics() {
+        let current = FileFingerprint {
+            content_sha256: "a".repeat(64),
+            bytes: 100,
+            modified_ms: 17,
+            extension: "rs".to_string(),
+            features: StructuralFeatures::default(),
+        };
+        let event = WorkEvent {
+            event_id: "stable-event".to_string(),
+            actor: WorkActor::Codex,
+            kind: WorkKind::DefectRepair,
+            paths: Vec::new(),
+            outcome: WorkOutcome::Pass,
+            summary: String::new(),
+            evidence_sha256: vec!["b".repeat(64)],
+            evidence_artifacts: Vec::new(),
+            performance_metrics: Vec::new(),
+            public_contract_deltas: Vec::new(),
+            occurred_at_ms: 23,
+        };
+        let first = classify_observation(
+            "ROOT_0/src/lib.rs".to_string(),
+            &current,
+            None,
+            Some(&event),
+            &ClassifierMemory::default(),
+            45,
+        );
+        let replay = classify_observation(
+            "ROOT_0/src/lib.rs".to_string(),
+            &current,
+            None,
+            Some(&event),
+            &ClassifierMemory::default(),
+            45,
+        );
+        assert_eq!(first, replay);
+        assert_eq!(first.observed_at_ms, event.occurred_at_ms);
+
+        let mut semantically_distinct = event;
+        semantically_distinct.kind = WorkKind::CapabilitySynthesis;
+        let reclassified = classify_observation(
+            "ROOT_0/src/lib.rs".to_string(),
+            &current,
+            None,
+            Some(&semantically_distinct),
+            &ClassifierMemory::default(),
+            45,
+        );
+        assert_ne!(first.observation_id, reclassified.observation_id);
     }
 
     #[test]
