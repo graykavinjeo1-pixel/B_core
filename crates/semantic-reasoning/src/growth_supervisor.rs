@@ -9503,7 +9503,18 @@ fn runtime_repair_action(
         codex_calls: 0,
         external_llm_calls: 0,
     };
-    let action_sha256 = json_sha256(&action)?;
+    // The same validated output may be selected by more than one diagnostic
+    // action. Its immutable observation must therefore be a projection of the
+    // executed validation evidence, not of the selecting action receipt or
+    // wall clock. The action separately binds diagnostic -> output id.
+    let observation_content_sha256 = sha256(
+        format!(
+            "B_CORE_RUNTIME_REPAIR_OBSERVATION_1:{:?}:{}",
+            action.mechanism,
+            action.execution_evidence_sha256.join(":")
+        )
+        .as_bytes(),
+    );
     let observation = if mechanism == RuntimeRepairMechanism::BootstrapFrozenCoreEvaluatorCanary
         && action.executed
     {
@@ -9511,7 +9522,7 @@ fn runtime_repair_action(
             observation_id: action.output_observation_ids[0].clone(),
             work_event_id: None,
             logical_path: "INTERNAL/MUTUAL_CORE_EVALUATOR_BOOTSTRAP".to_string(),
-            content_sha256: action_sha256.clone(),
+            content_sha256: observation_content_sha256.clone(),
             predecessor_content_sha256: None,
             actor: WorkActor::LocalTool,
             work_kind: WorkKind::Verification,
@@ -9535,18 +9546,16 @@ fn runtime_repair_action(
                 "the frozen independent verifier must reconstruct the candidate and reject the complete evaluator mutation suite"
                     .to_string(),
             ],
-            verification_evidence_sha256: vec![action_sha256],
+            verification_evidence_sha256: action.execution_evidence_sha256.clone(),
             performance_metrics: Vec::new(),
             public_contract_deltas: Vec::new(),
             exact_source_fragments_stored: 0,
             raw_source_bytes_stored: 0,
-            observed_at_ms: now_ms(),
+            observed_at_ms: action.generation,
         })
     } else if mechanism == RuntimeRepairMechanism::ValidateBlockedCoreCohort && action.executed {
         let source_prefix = source_mutation_watch_prefix(config)?
             .ok_or_else(|| "CORE_COHORT_SOURCE_ROOT_NOT_WATCHED".to_string())?;
-        let mut verification_evidence_sha256 = action.execution_evidence_sha256.clone();
-        verification_evidence_sha256.push(action_sha256.clone());
         Some(LearningObservation {
             observation_id: action.output_observation_ids[0].clone(),
             work_event_id: None,
@@ -9554,7 +9563,7 @@ fn runtime_repair_action(
                 "{source_prefix}.b_core_validation/{}",
                 action.output_observation_ids[0]
             ),
-            content_sha256: action_sha256,
+            content_sha256: observation_content_sha256.clone(),
             predecessor_content_sha256: None,
             actor: WorkActor::LocalTool,
             work_kind: WorkKind::Verification,
@@ -9576,12 +9585,12 @@ fn runtime_repair_action(
                 "bounded local core regression passed without source mutation or network access"
                     .to_string(),
             ],
-            verification_evidence_sha256,
+            verification_evidence_sha256: action.execution_evidence_sha256.clone(),
             performance_metrics: Vec::new(),
             public_contract_deltas: Vec::new(),
             exact_source_fragments_stored: 0,
             raw_source_bytes_stored: 0,
-            observed_at_ms: now_ms(),
+            observed_at_ms: action.generation,
         })
     } else if mechanism == RuntimeRepairMechanism::ValidateBlockedRepositoryCohort
         && action.executed
@@ -9593,8 +9602,6 @@ fn runtime_repair_action(
             RepositoryValidatorKind::PythonPytest => "PYTHON_PYTEST_VALIDATION",
             RepositoryValidatorKind::RustCargo => "RUST_CARGO_VALIDATION",
         };
-        let mut verification_evidence_sha256 = action.execution_evidence_sha256.clone();
-        verification_evidence_sha256.push(action_sha256.clone());
         Some(LearningObservation {
             observation_id: action.output_observation_ids[0].clone(),
             work_event_id: None,
@@ -9602,7 +9609,7 @@ fn runtime_repair_action(
                 "ROOT_{}/.b_repository_validation/{}",
                 plan.root_index, action.output_observation_ids[0]
             ),
-            content_sha256: action_sha256,
+            content_sha256: observation_content_sha256.clone(),
             predecessor_content_sha256: None,
             actor: WorkActor::LocalTool,
             work_kind: WorkKind::Verification,
@@ -9624,12 +9631,12 @@ fn runtime_repair_action(
                 "bounded repository-native tests passed with a stable validation scope".to_string(),
                 format!("test selection source={}", plan.test_selection_source),
             ],
-            verification_evidence_sha256,
+            verification_evidence_sha256: action.execution_evidence_sha256.clone(),
             performance_metrics: Vec::new(),
             public_contract_deltas: Vec::new(),
             exact_source_fragments_stored: 0,
             raw_source_bytes_stored: 0,
-            observed_at_ms: now_ms(),
+            observed_at_ms: action.generation,
         })
     } else if mechanism == RuntimeRepairMechanism::ValidateBlockedRepositoryCohort
         && action.executed
@@ -9637,8 +9644,6 @@ fn runtime_repair_action(
     {
         let plan = repository_validation_plan(config, evidence_aware_cohort)?
             .ok_or_else(|| "REPOSITORY_COHORT_VALIDATION_PLAN_LOST".to_string())?;
-        let mut verification_evidence_sha256 = action.execution_evidence_sha256.clone();
-        verification_evidence_sha256.push(action_sha256.clone());
         let mut signals = vec![
             "AUTONOMOUS_RUNTIME_REPAIR".to_string(),
             "SOURCE_BOUND_TYPED_SYNTHESIS".to_string(),
@@ -9673,7 +9678,7 @@ fn runtime_repair_action(
                 "ROOT_{}/.b_repository_repair_candidate/{}",
                 plan.root_index, action.output_observation_ids[0]
             ),
-            content_sha256: action_sha256,
+            content_sha256: observation_content_sha256,
             predecessor_content_sha256: None,
             actor: WorkActor::LocalTool,
             work_kind: WorkKind::DefectRepair,
@@ -9694,12 +9699,12 @@ fn runtime_repair_action(
             learning_score: 82,
             learning_value: LearningValue::High,
             reasons,
-            verification_evidence_sha256,
+            verification_evidence_sha256: action.execution_evidence_sha256.clone(),
             performance_metrics: Vec::new(),
             public_contract_deltas: Vec::new(),
             exact_source_fragments_stored: 0,
             raw_source_bytes_stored: 0,
-            observed_at_ms: now_ms(),
+            observed_at_ms: action.generation,
         })
     } else {
         None
@@ -13602,14 +13607,7 @@ mod tests {
             first_action.output_observation_ids
         );
         let reused_observation = reused_observation.expect("reused pass observation");
-        assert_eq!(
-            reused_observation.observation_id,
-            first_observation.observation_id
-        );
-        assert_eq!(
-            reused_observation.verification_evidence_sha256,
-            first_observation.verification_evidence_sha256
-        );
+        assert_eq!(reused_observation, first_observation);
         let receipt_count = fs::read_dir(config.state_dir.join("diagnostics"))
             .unwrap()
             .filter_map(Result::ok)
