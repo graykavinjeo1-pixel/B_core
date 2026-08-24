@@ -62,6 +62,10 @@ pub struct ApiMigrationReceiptIR {
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct ApiMigrationNativeValidationRequestIR {
     pub tool_path: PathBuf,
+    /// Required for TypeScript. The runtime remains Node; this path must be a
+    /// real `tsc` installation used before any emitted JavaScript executes.
+    #[serde(default)]
+    pub typescript_compiler_path: Option<PathBuf>,
     pub harness_files: Vec<RepositorySourceFileIR>,
     pub expected_output_token: String,
 }
@@ -71,6 +75,16 @@ pub struct ApiMigrationNativeValidationReceiptIR {
     pub language: CrossLanguage,
     pub tool_path: PathBuf,
     pub command_status: Option<i32>,
+    #[serde(default)]
+    pub typecheck_tool_path: Option<PathBuf>,
+    #[serde(default)]
+    pub typecheck_status: Option<i32>,
+    #[serde(default)]
+    pub typecheck_pass: bool,
+    #[serde(default)]
+    pub typecheck_stdout_sha256: String,
+    #[serde(default)]
+    pub typecheck_stderr_sha256: String,
     pub expected_output_observed: bool,
     pub stdout_sha256: String,
     pub stderr_sha256: String,
@@ -283,6 +297,17 @@ pub fn validate_api_migration_candidate(
     receipt: &ApiMigrationReceiptIR,
     request: &ApiMigrationNativeValidationRequestIR,
 ) -> Result<ApiMigrationNativeValidationReceiptIR, String> {
+    let typescript_compiler = if receipt.language == CrossLanguage::TypeScript {
+        Some(
+            request
+                .typescript_compiler_path
+                .as_deref()
+                .filter(|path| path.is_file())
+                .ok_or_else(|| "API_MIGRATION_TYPESCRIPT_COMPILER_REQUIRED".to_string())?,
+        )
+    } else {
+        None
+    };
     if !request.tool_path.is_file()
         || request.harness_files.is_empty()
         || request.harness_files.len() > 8
@@ -325,15 +350,81 @@ pub fn validate_api_migration_candidate(
         fs::write(path, &file.source)
             .map_err(|error| format!("API_MIGRATION_NATIVE_WRITE:{error}"))?;
     }
+    let mut typecheck_status = None;
+    let mut typecheck_pass = true;
+    let mut typecheck_stdout = Vec::new();
+    let mut typecheck_stderr = Vec::new();
+    let mut runtime_harness = workspace.join(&request.harness_files[0].relative_path);
+    if let Some(compiler) = typescript_compiler {
+        fs::write(workspace.join("package.json"), "{\"type\":\"module\"}\n")
+            .map_err(|error| format!("API_MIGRATION_NATIVE_WRITE:{error}"))?;
+        let emitted = workspace.join("emitted");
+        let mut typecheck = Command::new(compiler);
+        typecheck.args([
+            "--strict",
+            "--noEmitOnError",
+            "--target",
+            "ES2022",
+            "--module",
+            "ES2022",
+            "--moduleResolution",
+            "bundler",
+            "--rootDir",
+            ".",
+            "--outDir",
+            "emitted",
+        ]);
+        for file in &receipt.migrated_files {
+            typecheck.arg(&file.relative_path);
+        }
+        for file in &request.harness_files {
+            typecheck.arg(&file.relative_path);
+        }
+        let output = typecheck
+            .current_dir(&workspace)
+            .output()
+            .map_err(|error| format!("API_MIGRATION_TYPESCRIPT_EXECUTE:{error}"))?;
+        typecheck_status = output.status.code();
+        typecheck_pass = output.status.success();
+        typecheck_stdout = output.stdout;
+        typecheck_stderr = output.stderr;
+        if !typecheck_pass {
+            let combined = format!(
+                "{}{}",
+                String::from_utf8_lossy(&typecheck_stdout),
+                String::from_utf8_lossy(&typecheck_stderr)
+            );
+            let result = ApiMigrationNativeValidationReceiptIR {
+                language: receipt.language,
+                tool_path: request.tool_path.clone(),
+                command_status: None,
+                typecheck_tool_path: Some(compiler.to_path_buf()),
+                typecheck_status,
+                typecheck_pass: false,
+                typecheck_stdout_sha256: sha256(&typecheck_stdout),
+                typecheck_stderr_sha256: sha256(&typecheck_stderr),
+                expected_output_observed: false,
+                stdout_sha256: sha256(&[]),
+                stderr_sha256: sha256(&[]),
+                diagnostic_excerpt: combined.chars().take(2_048).collect(),
+                sandbox_cleaned: true,
+                pass: false,
+                network_reads: 0,
+            };
+            fs::remove_dir_all(&workspace)
+                .map_err(|error| format!("API_MIGRATION_NATIVE_CLEAN:{error}"))?;
+            return Ok(result);
+        }
+        runtime_harness = emitted.join(&request.harness_files[0].relative_path);
+        runtime_harness.set_extension("js");
+    }
     let mut command = Command::new(&request.tool_path);
     match receipt.language {
         CrossLanguage::JavaScript => {
-            command.arg(workspace.join(&request.harness_files[0].relative_path));
+            command.arg(&runtime_harness);
         }
         CrossLanguage::TypeScript => {
-            command
-                .arg("--experimental-strip-types")
-                .arg(workspace.join(&request.harness_files[0].relative_path));
+            command.arg(&runtime_harness);
         }
         CrossLanguage::Go => {
             command.arg("run");
@@ -360,6 +451,11 @@ pub fn validate_api_migration_candidate(
         language: receipt.language,
         tool_path: request.tool_path.clone(),
         command_status: output.status.code(),
+        typecheck_tool_path: typescript_compiler.map(PathBuf::from),
+        typecheck_status,
+        typecheck_pass,
+        typecheck_stdout_sha256: sha256(&typecheck_stdout),
+        typecheck_stderr_sha256: sha256(&typecheck_stderr),
         expected_output_observed,
         stdout_sha256: sha256(&output.stdout),
         stderr_sha256: sha256(&output.stderr),

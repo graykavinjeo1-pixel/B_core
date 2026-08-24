@@ -14,8 +14,9 @@ fn main() {
 fn run() -> Result<(), String> {
     let root = std::env::current_dir().map_err(|error| format!("CANARY_ROOT:{error}"))?;
     let node = PathBuf::from(r"C:\Program Files\nodejs\node.exe");
+    let tsc = PathBuf::from(r"C:\Users\Administrator\AppData\Roaming\npm\tsc.cmd");
     let go = PathBuf::from(r"C:\Program Files\Go\bin\go.exe");
-    let report = run_benchmark_capability_canary(&node, &go);
+    let report = run_benchmark_capability_canary(&node, &tsc, &go);
     let markdown = write_benchmark_capability_report(&root, &report)?;
     println!("REPORT={}", markdown.display());
     println!("DISPOSITION={}", report.disposition);

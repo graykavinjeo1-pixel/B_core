@@ -76,8 +76,19 @@ pub struct CrossLanguageSynthesisReceiptIR {
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct NativeValidationReceiptIR {
     pub language: CrossLanguage,
+    /// Runtime/compiler used for JavaScript execution or Go compile+run.
     pub tool_path: PathBuf,
     pub command_status: Option<i32>,
+    #[serde(default)]
+    pub typecheck_tool_path: Option<PathBuf>,
+    #[serde(default)]
+    pub typecheck_status: Option<i32>,
+    #[serde(default)]
+    pub typecheck_pass: bool,
+    #[serde(default)]
+    pub typecheck_stdout_sha256: String,
+    #[serde(default)]
+    pub typecheck_stderr_sha256: String,
     pub cases_executed: usize,
     pub stdout_sha256: String,
     pub stderr_sha256: String,
@@ -373,6 +384,71 @@ fn infer_signature(
     Ok((input_types, output_type))
 }
 
+fn declared_scalar_type(type_name: &str, language: CrossLanguage) -> Option<ProgramType> {
+    let normalized = type_name.trim().trim_end_matches(';');
+    match language {
+        CrossLanguage::TypeScript => match normalized {
+            "number" => Some(ProgramType::Int),
+            "boolean" => Some(ProgramType::Bool),
+            "string" => Some(ProgramType::String),
+            _ => None,
+        },
+        CrossLanguage::Go => match normalized {
+            "int" | "int64" => Some(ProgramType::Int),
+            "bool" => Some(ProgramType::Bool),
+            "string" => Some(ProgramType::String),
+            _ => None,
+        },
+        CrossLanguage::JavaScript => None,
+    }
+}
+
+fn validate_declared_signature(
+    source: &str,
+    language: CrossLanguage,
+    boundary: &FunctionBoundary,
+    input_types: &[ProgramType],
+    output_type: &ProgramType,
+) -> Result<(), String> {
+    if language == CrossLanguage::JavaScript {
+        return Ok(());
+    }
+    let parameter_types = source[boundary.parameter_start + 1..boundary.parameter_end]
+        .split(',')
+        .filter(|parameter| !parameter.trim().is_empty())
+        .map(|parameter| {
+            let parameter = parameter.trim();
+            let type_name = match language {
+                CrossLanguage::TypeScript => parameter
+                    .split_once(':')
+                    .map(|(_, type_name)| type_name.split('=').next().unwrap_or_default().trim()),
+                CrossLanguage::Go => parameter.split_whitespace().nth(1),
+                CrossLanguage::JavaScript => None,
+            }
+            .ok_or_else(|| format!("CROSS_LANGUAGE_MISSING_DECLARED_TYPE:{parameter}"))?;
+            declared_scalar_type(type_name, language)
+                .ok_or_else(|| format!("CROSS_LANGUAGE_UNSUPPORTED_DECLARED_TYPE:{type_name}"))
+        })
+        .collect::<Result<Vec<_>, _>>()?;
+    if parameter_types != input_types {
+        return Err("CROSS_LANGUAGE_DECLARED_INPUT_TYPE_MISMATCH".to_string());
+    }
+    let return_declaration = source[boundary.parameter_end + 1..boundary.body_start].trim();
+    let return_type_name = match language {
+        CrossLanguage::TypeScript => return_declaration.strip_prefix(':').map(str::trim),
+        CrossLanguage::Go => (!return_declaration.is_empty()).then_some(return_declaration),
+        CrossLanguage::JavaScript => None,
+    }
+    .ok_or_else(|| "CROSS_LANGUAGE_MISSING_DECLARED_RETURN_TYPE".to_string())?;
+    let declared_output = declared_scalar_type(return_type_name, language).ok_or_else(|| {
+        format!("CROSS_LANGUAGE_UNSUPPORTED_DECLARED_RETURN_TYPE:{return_type_name}")
+    })?;
+    if &declared_output != output_type {
+        return Err("CROSS_LANGUAGE_DECLARED_OUTPUT_TYPE_MISMATCH".to_string());
+    }
+    Ok(())
+}
+
 fn binary_token(operator: BinaryOperator, language: CrossLanguage) -> &'static str {
     match operator {
         BinaryOperator::Add => "+",
@@ -519,6 +595,13 @@ pub fn synthesize_cross_language_function(
     if input_types.len() != boundary.parameter_names.len() {
         return Err("CROSS_LANGUAGE_SIGNATURE_EXAMPLE_ARITY".to_string());
     }
+    validate_declared_signature(
+        &request.predecessor_source,
+        request.language,
+        &boundary,
+        &input_types,
+        &output_type,
+    )?;
     let operands = boundary
         .parameter_names
         .iter()
@@ -623,12 +706,21 @@ fn render_go_value(value: &Value) -> Result<String, String> {
     }
 }
 
+fn typescript_type(value: &Value) -> Result<&'static str, String> {
+    match value {
+        Value::Int(_) => Ok("number"),
+        Value::Bool(_) => Ok("boolean"),
+        Value::String(_) => Ok("string"),
+        _ => Err("CROSS_LANGUAGE_NATIVE_UNSUPPORTED_VALUE".to_string()),
+    }
+}
+
 fn native_harness(
     receipt: &CrossLanguageSynthesisReceiptIR,
     examples: &[CrossLanguageExampleIR],
 ) -> Result<String, String> {
     match receipt.language {
-        CrossLanguage::JavaScript | CrossLanguage::TypeScript => {
+        CrossLanguage::JavaScript => {
             let mut output = String::from("\nconst __bCases = [\n");
             for example in examples {
                 let inputs = example
@@ -646,6 +738,25 @@ fn native_harness(
                 "];\nfor (const [args, expected] of __bCases) {{\n  const actual = {}(...args);\n  if (JSON.stringify(actual) !== JSON.stringify(expected)) throw new Error(`mismatch:${{actual}}:${{expected}}`);\n}}\nconsole.log(`PASS:${{__bCases.length}}`);\n",
                 receipt.function_name
             ));
+            Ok(output)
+        }
+        CrossLanguage::TypeScript => {
+            let mut output = String::new();
+            for (index, example) in examples.iter().enumerate() {
+                let inputs = example
+                    .inputs
+                    .iter()
+                    .map(render_js_value)
+                    .collect::<Result<Vec<_>, _>>()?
+                    .join(", ");
+                let expected = render_js_value(&example.expected)?;
+                let output_type = typescript_type(&example.expected)?;
+                output.push_str(&format!(
+                    "\nconst __bActual{index}: {output_type} = {}({inputs});\nconst __bExpected{index}: {output_type} = {expected};\nif (__bActual{index} !== __bExpected{index}) throw new Error('mismatch:{index}');\n",
+                    receipt.function_name
+                ));
+            }
+            output.push_str(&format!("\nconsole.log('PASS:{}');\n", examples.len()));
             Ok(output)
         }
         CrossLanguage::Go => {
@@ -677,18 +788,28 @@ fn remove_validation_workspace(path: &Path) -> Result<(), String> {
     Ok(())
 }
 
-/// Compile/execute the candidate with a caller-supplied local Node or Go tool.
-pub fn validate_cross_language_candidate(
+/// Type-check TypeScript with `tsc`, emit JavaScript, and execute it with Node.
+/// JavaScript and Go use their runtime/compiler directly.
+pub fn validate_cross_language_candidate_with_toolchain(
     receipt: &CrossLanguageSynthesisReceiptIR,
     examples: &[CrossLanguageExampleIR],
-    tool_path: &Path,
+    runtime_tool_path: &Path,
+    typescript_compiler_path: Option<&Path>,
 ) -> Result<NativeValidationReceiptIR, String> {
-    if !tool_path.is_file() {
+    if !runtime_tool_path.is_file() {
         return Err(format!(
             "CROSS_LANGUAGE_TOOL_NOT_FOUND:{}",
-            tool_path.display()
+            runtime_tool_path.display()
         ));
     }
+    let typescript_compiler = if receipt.language == CrossLanguage::TypeScript {
+        let compiler = typescript_compiler_path
+            .filter(|path| path.is_file())
+            .ok_or_else(|| "CROSS_LANGUAGE_TYPESCRIPT_COMPILER_REQUIRED".to_string())?;
+        Some(compiler)
+    } else {
+        None
+    };
     let workspace = std::env::temp_dir().join(format!(
         "b-core-cross-language-{}-{}-{}",
         std::process::id(),
@@ -711,16 +832,75 @@ pub fn validate_cross_language_candidate(
     );
     fs::write(&source_path, full_source)
         .map_err(|error| format!("CROSS_LANGUAGE_SANDBOX_WRITE:{error}"))?;
-    let mut command = Command::new(tool_path);
+    let mut typecheck_status = None;
+    let mut typecheck_pass = true;
+    let mut typecheck_stdout = Vec::new();
+    let mut typecheck_stderr = Vec::new();
+    let runtime_source = if let Some(compiler) = typescript_compiler {
+        fs::write(workspace.join("package.json"), "{\"type\":\"module\"}\n")
+            .map_err(|error| format!("CROSS_LANGUAGE_SANDBOX_WRITE:{error}"))?;
+        let emitted = workspace.join("emitted");
+        let output = Command::new(compiler)
+            .args([
+                "--strict",
+                "--noEmitOnError",
+                "--target",
+                "ES2022",
+                "--module",
+                "ES2022",
+                "--moduleResolution",
+                "bundler",
+                "--outDir",
+            ])
+            .arg(&emitted)
+            .arg(&source_path)
+            .current_dir(&workspace)
+            .output()
+            .map_err(|error| format!("CROSS_LANGUAGE_TYPESCRIPT_EXECUTE:{error}"))?;
+        typecheck_status = output.status.code();
+        typecheck_pass = output.status.success();
+        typecheck_stdout = output.stdout;
+        typecheck_stderr = output.stderr;
+        if !typecheck_pass {
+            let combined = format!(
+                "{}{}",
+                String::from_utf8_lossy(&typecheck_stdout),
+                String::from_utf8_lossy(&typecheck_stderr)
+            );
+            let validation = NativeValidationReceiptIR {
+                language: receipt.language,
+                tool_path: runtime_tool_path.to_path_buf(),
+                command_status: None,
+                typecheck_tool_path: Some(compiler.to_path_buf()),
+                typecheck_status,
+                typecheck_pass: false,
+                typecheck_stdout_sha256: sha256(&typecheck_stdout),
+                typecheck_stderr_sha256: sha256(&typecheck_stderr),
+                cases_executed: 0,
+                stdout_sha256: sha256(&[]),
+                stderr_sha256: sha256(&[]),
+                diagnostic_excerpt: combined.chars().take(2_048).collect(),
+                pass: false,
+                sandbox_cleaned: true,
+                network_reads: 0,
+            };
+            remove_validation_workspace(&workspace)?;
+            return Ok(validation);
+        }
+        emitted.join("candidate.js")
+    } else {
+        source_path.clone()
+    };
+    let mut command = Command::new(runtime_tool_path);
     match receipt.language {
         CrossLanguage::JavaScript => {
-            command.arg(&source_path);
+            command.arg(&runtime_source);
         }
         CrossLanguage::TypeScript => {
-            command.arg("--experimental-strip-types").arg(&source_path);
+            command.arg(&runtime_source);
         }
         CrossLanguage::Go => {
-            command.arg("run").arg(&source_path);
+            command.arg("run").arg(&runtime_source);
         }
     }
     command.current_dir(&workspace);
@@ -733,8 +913,13 @@ pub fn validate_cross_language_candidate(
             || String::from_utf8_lossy(&output.stderr).contains(&success_token));
     let validation = NativeValidationReceiptIR {
         language: receipt.language,
-        tool_path: tool_path.to_path_buf(),
+        tool_path: runtime_tool_path.to_path_buf(),
         command_status: output.status.code(),
+        typecheck_tool_path: typescript_compiler.map(Path::to_path_buf),
+        typecheck_status,
+        typecheck_pass,
+        typecheck_stdout_sha256: sha256(&typecheck_stdout),
+        typecheck_stderr_sha256: sha256(&typecheck_stderr),
         cases_executed: if pass { examples.len() } else { 0 },
         stdout_sha256: sha256(&output.stdout),
         stderr_sha256: sha256(&output.stderr),
@@ -752,6 +937,16 @@ pub fn validate_cross_language_candidate(
     };
     remove_validation_workspace(&workspace)?;
     Ok(validation)
+}
+
+/// Validate JavaScript or Go with its local runtime/compiler. TypeScript must
+/// use [`validate_cross_language_candidate_with_toolchain`] with a real `tsc`.
+pub fn validate_cross_language_candidate(
+    receipt: &CrossLanguageSynthesisReceiptIR,
+    examples: &[CrossLanguageExampleIR],
+    tool_path: &Path,
+) -> Result<NativeValidationReceiptIR, String> {
+    validate_cross_language_candidate_with_toolchain(receipt, examples, tool_path, None)
 }
 
 #[cfg(test)]
@@ -774,6 +969,11 @@ mod tests {
 
     fn go_path() -> Option<PathBuf> {
         let path = PathBuf::from(r"C:\Program Files\Go\bin\go.exe");
+        path.is_file().then_some(path)
+    }
+
+    fn tsc_path() -> Option<PathBuf> {
+        let path = PathBuf::from(r"C:\Users\Administrator\AppData\Roaming\npm\tsc.cmd");
         path.is_file().then_some(path)
     }
 
@@ -806,6 +1006,56 @@ mod tests {
     }
 
     #[test]
+    fn typescript_declared_signature_must_match_observed_types() {
+        let error = synthesize_cross_language_function(&CrossLanguageSynthesisRequestIR {
+            language: CrossLanguage::TypeScript,
+            function_name: "scale".to_string(),
+            predecessor_source:
+                "export function scale(left: number, right: number): string { return 'stub'; }\n"
+                    .to_string(),
+            public_examples: cases(&[(1, 2, 2), (3, 4, 12), (-2, 5, -10)]),
+            require_conditional: false,
+            max_expression_depth: 2,
+            max_candidates: 1_024,
+        })
+        .unwrap_err();
+        assert_eq!(error, "CROSS_LANGUAGE_DECLARED_OUTPUT_TYPE_MISMATCH");
+    }
+
+    #[test]
+    fn tsc_rejects_unrelated_type_errors_before_node_execution() {
+        let Some(node) = node_path() else {
+            return;
+        };
+        let Some(tsc) = tsc_path() else {
+            return;
+        };
+        let examples = cases(&[(4, 3, 7), (-2, 8, 6), (10, -3, 7)]);
+        let receipt = synthesize_cross_language_function(&CrossLanguageSynthesisRequestIR {
+            language: CrossLanguage::TypeScript,
+            function_name: "combine".to_string(),
+            predecessor_source: "const invalid: number = 'wrong';\nexport function combine(left: number, right: number): number { return 0; }\n".to_string(),
+            public_examples: examples.clone(),
+            require_conditional: false,
+            max_expression_depth: 2,
+            max_candidates: 1_024,
+        })
+        .unwrap();
+        let validation = validate_cross_language_candidate_with_toolchain(
+            &receipt,
+            &examples,
+            &node,
+            Some(&tsc),
+        )
+        .unwrap();
+        assert!(!validation.pass);
+        assert!(!validation.typecheck_pass);
+        assert_eq!(validation.cases_executed, 0);
+        assert!(validation.command_status.is_none());
+        assert!(validation.diagnostic_excerpt.contains("not assignable"));
+    }
+
+    #[test]
     fn typescript_types_are_preserved_while_body_is_synthesized() {
         let examples = cases(&[(4, 3, 12), (-2, 8, -16), (10, -3, -30), (0, 5, 0)]);
         let receipt = synthesize_cross_language_function(&CrossLanguageSynthesisRequestIR {
@@ -824,12 +1074,17 @@ mod tests {
         assert!(receipt
             .candidate_source
             .contains("return ((left) * (right));"));
-        if let Some(node) = node_path() {
-            assert!(
-                validate_cross_language_candidate(&receipt, &examples, &node)
-                    .unwrap()
-                    .pass
-            );
+        if let (Some(node), Some(tsc)) = (node_path(), tsc_path()) {
+            let validation = validate_cross_language_candidate_with_toolchain(
+                &receipt,
+                &examples,
+                &node,
+                Some(&tsc),
+            )
+            .unwrap();
+            assert!(validation.pass, "{validation:?}");
+            assert!(validation.typecheck_pass);
+            assert_eq!(validation.typecheck_tool_path, Some(tsc));
         }
     }
 

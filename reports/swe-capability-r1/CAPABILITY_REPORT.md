@@ -4,7 +4,9 @@
 - Long-horizon trace: 1200 files indexed, depth 160, 161 files selected, 0 rescans
 - Long requirements: 91 clauses; 2 implicit constraints; 1 conflicts; 1 ambiguous references rejected
 - Source synthesis: 3/3 languages passed natively; 12 examples executed
-- API migration: 2/2 language migrations passed natively; 2 compatibility shims
+- TypeScript compiler: `Version 7.0.2`
+- TypeScript compiler boundary: 1 source strict typecheck pass; 1 type-error execution rejection; 1 API-migration strict typecheck pass
+- API migration: 3/3 language migrations passed natively; 3 compatibility shims
 - Environment diagnosis: 8/8 failure families
 - Nondeterminism diagnosis: 5/5 cause families
 - External LLM calls: 0
