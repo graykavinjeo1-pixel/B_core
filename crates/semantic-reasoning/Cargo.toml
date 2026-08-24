@@ -27,6 +27,10 @@ name = "swe-issue-canary"
 path = "src/swe_issue_canary_main.rs"
 
 [[bin]]
+name = "swe-capability-canary"
+path = "src/swe_capability_canary_main.rs"
+
+[[bin]]
 name = "sem0-run"
 path = "src/main.rs"
 required-features = ["historical-campaigns"]

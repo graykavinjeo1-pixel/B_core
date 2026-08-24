@@ -19,7 +19,7 @@ use crate::repository_coding_knowledge::{
 
 pub const REPOSITORY_ISSUE_UNDERSTANDING_SCHEMA: &str = "B_REPOSITORY_ISSUE_UNDERSTANDING_1";
 pub const MAX_ISSUE_BYTES: usize = 64 * 1024;
-pub const MAX_ISSUE_CLAIMS: usize = 64;
+pub const MAX_ISSUE_CLAIMS: usize = 256;
 pub const MAX_ISSUE_TARGET_SYMBOLS: usize = 32;
 pub const MAX_ISSUE_AMBIGUITIES: usize = 16;
 
@@ -285,7 +285,7 @@ fn split_sentences(line: &str) -> Vec<String> {
     output
 }
 
-fn issue_segments(text: &str) -> Vec<(Option<IssueClaimKind>, String)> {
+pub(crate) fn issue_segments(text: &str) -> Vec<(Option<IssueClaimKind>, String)> {
     let mut output = Vec::new();
     let mut section = None;
     let mut in_code_fence = false;
@@ -689,7 +689,7 @@ fn clean_target(token: &str) -> Option<String> {
     }
 }
 
-fn extract_targets(clause: &str) -> Vec<String> {
+pub(crate) fn extract_targets(clause: &str) -> Vec<String> {
     let mut targets = BTreeSet::new();
     let mut remainder = clause;
     while let Some(start) = remainder.find('`') {

@@ -2,6 +2,7 @@
 
 pub mod autonomous_self_inspection;
 pub mod autonomous_source_mutation;
+pub mod benchmark_capability_canary;
 mod bounded_parallel;
 pub mod code_graft;
 #[cfg(feature = "historical-campaigns")]
@@ -11,6 +12,7 @@ pub mod compound_growth;
 pub mod compound_typed_goal;
 #[cfg(feature = "historical-campaigns")]
 pub mod core_x0;
+pub mod cross_language_synthesis;
 #[cfg(feature = "historical-campaigns")]
 pub mod experiment;
 pub mod fullstack_ops_knowledge;
@@ -28,8 +30,11 @@ pub mod north_star;
 #[cfg(feature = "historical-campaigns")]
 pub mod reporting;
 pub mod repository_experience;
+pub mod repository_change_experience;
 pub mod repository_coding_knowledge;
+pub mod repository_horizon;
 pub mod repository_issue_understanding;
+pub mod repository_requirement_graph;
 pub mod same_attempt_revision;
 pub mod self_healing_execution;
 pub mod self_healing_pipeline;
