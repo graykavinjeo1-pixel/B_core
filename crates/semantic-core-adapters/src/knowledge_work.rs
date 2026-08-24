@@ -3113,9 +3113,9 @@ pub(crate) fn render_chart_svg(chart: &ChartIR) -> Result<String, KnowledgeWorkE
                 continue;
             }
             let x = if chart.chart_type == ChartTypeIR::Bar {
-                left + (index as f64 + 0.5) / category_count.max(1) as f64 * plot_width
+                ((index as f64 + 0.5) / category_count.max(1) as f64).mul_add(plot_width, left)
             } else {
-                left + index as f64 / denominator * plot_width
+                (index as f64 / denominator).mul_add(plot_width, left)
             };
             svg.push_str(&format!("<text x=\"{x:.2}\" y=\"{}\" text-anchor=\"middle\" fill=\"#607078\" font-family=\"sans-serif\" font-size=\"11\">{}</text>", top + plot_height + 24.0, xml_escape(&point.category)));
         }
@@ -3141,21 +3141,21 @@ pub(crate) fn render_chart_svg(chart: &ChartIR) -> Result<String, KnowledgeWorkE
             let slot_width = plot_width / series.points.len().max(1) as f64;
             let group_width = slot_width * 0.72;
             let bar_width = (group_width / chart.series.len().max(1) as f64).max(2.0);
-            let baseline_y = top + max / span * plot_height;
+            let baseline_y = (max / span).mul_add(plot_height, top);
             for (index, value) in observed {
-                let x = left
-                    + index as f64 * slot_width
-                    + (slot_width - group_width) / 2.0
-                    + series_index as f64 * bar_width;
-                let value_y = top + (max - value) / span * plot_height;
+                let x = (series_index as f64).mul_add(
+                    bar_width,
+                    left + index as f64 * slot_width + (slot_width - group_width) / 2.0,
+                );
+                let value_y = ((max - value) / span).mul_add(plot_height, top);
                 let y = value_y.min(baseline_y);
                 let bar_height = (value_y - baseline_y).abs();
                 svg.push_str(&format!("<rect x=\"{x:.2}\" y=\"{y:.2}\" width=\"{bar_width:.2}\" height=\"{bar_height:.2}\" rx=\"3\" fill=\"{color}\"><title>{}: {}</title></rect>", xml_escape(&series.points[index].category), xml_escape(&format_chart_value(value))));
             }
         } else if chart.chart_type == ChartTypeIR::Scatter {
             for (index, value) in observed {
-                let x = left + index as f64 / denominator * plot_width;
-                let y = top + (max - value) / span * plot_height;
+                let x = (index as f64 / denominator).mul_add(plot_width, left);
+                let y = ((max - value) / span).mul_add(plot_height, top);
                 svg.push_str(&format!("<circle cx=\"{x:.2}\" cy=\"{y:.2}\" r=\"5\" fill=\"{color}\"><title>{}: {}</title></circle>", xml_escape(&series.points[index].category), xml_escape(&format_chart_value(value))));
             }
         } else {
@@ -3164,20 +3164,20 @@ pub(crate) fn render_chart_svg(chart: &ChartIR) -> Result<String, KnowledgeWorkE
                 .map(|(index, value)| {
                     format!(
                         "{:.2},{:.2}",
-                        left + *index as f64 / denominator * plot_width,
-                        top + (max - *value) / span * plot_height
+                        (*index as f64 / denominator).mul_add(plot_width, left),
+                        ((max - *value) / span).mul_add(plot_height, top)
                     )
                 })
                 .collect::<Vec<_>>()
                 .join(" ");
             svg.push_str(&format!("<polyline fill=\"none\" stroke=\"{color}\" stroke-width=\"3\" points=\"{points}\"/>"));
             for (index, value) in observed {
-                let x = left + index as f64 / denominator * plot_width;
-                let y = top + (max - value) / span * plot_height;
+                let x = (index as f64 / denominator).mul_add(plot_width, left);
+                let y = ((max - value) / span).mul_add(plot_height, top);
                 svg.push_str(&format!("<circle cx=\"{x:.2}\" cy=\"{y:.2}\" r=\"4.5\" fill=\"#0b1114\" stroke=\"{color}\" stroke-width=\"3\"><title>{}: {}</title></circle>", xml_escape(&series.points[index].category), xml_escape(&format_chart_value(value))));
             }
         }
-        let legend_x = left + series_index as f64 * 180.0;
+        let legend_x = (series_index as f64).mul_add(180.0, left);
         svg.push_str(&format!("<rect x=\"{legend_x}\" y=\"{}\" width=\"18\" height=\"4\" rx=\"2\" fill=\"{color}\"/><text x=\"{}\" y=\"{}\" fill=\"#e8f1f2\" font-family=\"sans-serif\" font-size=\"12\">{}</text>", height - 26.0, legend_x + 26.0, height - 20.0, xml_escape(&series.name)));
     }
     svg.push_str("</svg>");
@@ -3234,10 +3234,13 @@ fn render_pie_svg(chart: &ChartIR) -> Result<String, KnowledgeWorkError> {
         let sweep = value / total * std::f64::consts::TAU;
         let end = angle + sweep;
         let (start_x, start_y) = (
-            center_x + radius * angle.cos(),
-            center_y + radius * angle.sin(),
+            radius.mul_add(angle.cos(), center_x),
+            radius.mul_add(angle.sin(), center_y),
         );
-        let (end_x, end_y) = (center_x + radius * end.cos(), center_y + radius * end.sin());
+        let (end_x, end_y) = (
+            radius.mul_add(end.cos(), center_x),
+            radius.mul_add(end.sin(), center_y),
+        );
         let large_arc = i32::from(sweep > std::f64::consts::PI);
         let color = colors[index % colors.len()];
         svg.push_str(&format!("<path d=\"M {center_x:.2} {center_y:.2} L {start_x:.2} {start_y:.2} A {radius:.2} {radius:.2} 0 {large_arc} 1 {end_x:.2} {end_y:.2} Z\" fill=\"{color}\"/>"));
