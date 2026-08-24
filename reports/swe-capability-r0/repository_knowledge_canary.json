@@ -1,0 +1,31 @@
+{
+  "schema": "B_REPOSITORY_REPAIR_KNOWLEDGE_1",
+  "pass": true,
+  "fresh_synthetic_tasks": 40,
+  "ready_plans": 40,
+  "required_atom_checks": 40,
+  "required_atom_passes": 40,
+  "supported_languages": [
+    "RUST",
+    "PYTHON",
+    "TYPESCRIPT",
+    "JAVASCRIPT",
+    "GO"
+  ],
+  "exercised_diagnostic_families": [
+    "COMPILATION_OR_TYPE",
+    "IMPORT_OR_MODULE",
+    "TIMEOUT_OR_LIVENESS",
+    "RESOURCE_LIFECYCLE",
+    "PROTOCOL_OR_SCHEMA",
+    "ORDERING_OR_DETERMINISM",
+    "API_COMPATIBILITY",
+    "PERFORMANCE_REGRESSION"
+  ],
+  "task_identity_routing_events": 0,
+  "repository_identity_routing_events": 0,
+  "reference_solution_imports": 0,
+  "external_llm_calls": 0,
+  "network_reads": 0,
+  "official_benchmark_score_claimed": false
+}

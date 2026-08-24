@@ -1,0 +1,82 @@
+{
+  "schema": "B_CORE_SWE_CAPABILITY_R0_1",
+  "status": "PASS_WITH_UNMEASURED_OFFICIAL_BENCHMARK",
+  "scope": "repository-scale issue understanding, evidence-bound repair knowledge, and bounded recursive growth",
+  "official_benchmark_score_claimed": false,
+  "official_benchmark_execution": {
+    "swe_bench_verified": false,
+    "deepswe": false,
+    "reason": "Docker-compatible official harness unavailable in the local environment"
+  },
+  "active_knowledge": {
+    "supported_planning_languages": 5,
+    "languages": ["RUST", "PYTHON", "TYPESCRIPT", "JAVASCRIPT", "GO"],
+    "diagnostic_families": 11,
+    "repair_atoms": 19,
+    "maximum_active_atoms_per_plan": 18,
+    "maximum_competing_hypotheses": 3,
+    "maximum_counterexample_revision_rounds": 3,
+    "native_validation_backends": ["PYTHON_PYTEST", "RUST_CARGO", "NODE_NPM", "GO_TEST"]
+  },
+  "fresh_synthetic_planning_canary": {
+    "tasks": 40,
+    "ready_plans": 40,
+    "required_atom_checks": 40,
+    "required_atom_passes": 40
+  },
+  "fresh_synthetic_issue_understanding_canary": {
+    "issues": 20,
+    "structured_unambiguous_issues": 16,
+    "bilingual_equivalence_checks": 4,
+    "bilingual_equivalence_passes": 4,
+    "negation_scope_checks": 8,
+    "negation_scope_passes": 8,
+    "ambiguity_checks": 4,
+    "ambiguity_passes": 4,
+    "planner_fail_closed_checks": 16,
+    "planner_fail_closed_passes": 16
+  },
+  "recursive_growth": {
+    "final_generation": 2,
+    "campaigns_started": 3,
+    "campaigns_accepted": 2,
+    "campaigns_failed": 1,
+    "counterexample_code": "TYPED_MECHANISM_SYNTHESIS_EXHAUSTED",
+    "counterexample_sha256": "236ed5a6435bc96c9db8ca9f323abc7277ed92c5b5112295a91bec9c8c86de59",
+    "counterexample_repaired": true,
+    "valuable_combinations_learned": 2,
+    "generative_self_application_events": 2,
+    "generative_frontier_advance_events": 2,
+    "generative_behavioral_verification_events": 2,
+    "distinct_semantic_lessons": 2,
+    "final_memory_sha256": "8710d5a314ffe2cb2dede0c40dbae01216c3bd72c8176a32bcc021be6971b5b7",
+    "plateau_recheck_generation_unchanged": true
+  },
+  "safety_and_contamination": {
+    "task_identity_routing_events": 0,
+    "repository_identity_routing_events": 0,
+    "reference_solution_imports": 0,
+    "external_llm_calls": 0,
+    "network_reads": 0,
+    "network_writes": 0,
+    "authoritative_source_mutations_in_growth_sandbox": 0,
+    "auto_pushes": 0
+  },
+  "validation": {
+    "workspace_tests_passed": 490,
+    "workspace_tests_failed": 0,
+    "semantic_reasoning_tests_passed": 379,
+    "semantic_reasoning_tests_failed": 0,
+    "historical_campaign_tests_passed": 606,
+    "historical_campaign_tests_failed": 0,
+    "format_check": "PASS",
+    "clippy_warnings_as_errors": "PASS"
+  },
+  "remaining_limits": [
+    "No official SWE-bench Verified or DeepSWE score was measured",
+    "Autonomous source synthesis remains strongest for Rust and Python",
+    "TypeScript, JavaScript, and Go now have shared repair planning and native validation, but not full autonomous source synthesis",
+    "Issue understanding is deterministic and diagnostic rather than unrestricted general-language comprehension",
+    "General long-horizon repository navigation still requires external benchmark validation"
+  ]
+}

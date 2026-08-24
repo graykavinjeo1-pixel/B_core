@@ -38,6 +38,7 @@ const MAX_MECHANISM_OPERANDS: usize = 32;
 const MAX_MECHANISM_EXPRESSION_NODES: usize = 256;
 const MAX_MECHANISM_OBSERVATIONS: usize = 64;
 const MAX_SYNTHESIS_CANDIDATES: usize = 1_024;
+const MAX_ARITHMETIC_FALLBACK_CANDIDATES: usize = 512;
 const MAX_SYNTHESIS_DEPTH: usize = 3;
 const MAX_IDENTIFIABILITY_PROBES: usize = 64;
 const MAX_IDENTIFIABILITY_HYPOTHESES: usize = 64;
@@ -2892,6 +2893,31 @@ pub fn synthesize_typed_mechanism_goal_with_source_seeds_and_priors(
         .filter(|candidate| candidate.value_type == request.output_type)
         .cloned()
         .collect::<Vec<_>>();
+    if !request.require_conditional
+        && request.output_type == ProgramType::Int
+        && request.operands.len() >= 3
+        && max_depth >= 2
+        && !output_candidates
+            .iter()
+            .any(|candidate| candidate.outputs == expected)
+    {
+        if let Some((candidate, fallback_enumerated, fallback_failures)) =
+            synthesize_bounded_arithmetic_fallback(
+                request,
+                &expected,
+                &operand_types,
+                &operand_indices,
+                &definitions,
+                &api_map,
+                &observation_arguments,
+            )?
+        {
+            enumerated = enumerated.saturating_add(fallback_enumerated);
+            evaluation_failures = evaluation_failures.saturating_add(fallback_failures);
+            expressions.push(candidate.clone());
+            output_candidates.push(candidate);
+        }
+    }
     output_candidates.sort_by(|left, right| {
         (left.nodes, &left.canonical_key).cmp(&(right.nodes, &right.canonical_key))
     });
@@ -3176,6 +3202,115 @@ fn add_enumerated_expression(
         canonical_key,
     });
     Ok(())
+}
+
+/// Last-chance, name-independent search for a common three-operand arithmetic
+/// tree. It runs only after the universal grammar failed to find an exact
+/// unconditional integer expression, so successful and conditional synthesis
+/// retain their established ordering and receipt accounting.
+#[allow(clippy::too_many_arguments)]
+fn synthesize_bounded_arithmetic_fallback(
+    request: &TypedMechanismSynthesisGoalIR,
+    expected: &[Value],
+    operand_types: &BTreeMap<String, ProgramType>,
+    operand_indices: &BTreeMap<String, usize>,
+    definitions: &BTreeMap<String, &ApiDefinition>,
+    api_map: &BTreeMap<String, &ApiDefinition>,
+    observation_arguments: &[Vec<Value>],
+) -> Result<Option<(EnumeratedExpression, usize, usize)>, String> {
+    let basis = request
+        .operands
+        .iter()
+        .filter(|operand| operand.value_type == ProgramType::Int)
+        .map(|operand| TypedSyntaxExpressionIR::Operand {
+            role: operand.role.clone(),
+        })
+        .chain(
+            [-1_i64, 0, 1]
+                .into_iter()
+                .map(|value| TypedSyntaxExpressionIR::IntLiteral { value }),
+        )
+        .take(16)
+        .collect::<Vec<_>>();
+    let operators = [
+        BinaryOperator::Add,
+        BinaryOperator::Subtract,
+        BinaryOperator::Multiply,
+        BinaryOperator::Divide,
+        BinaryOperator::Modulo,
+    ];
+    let mut total_enumerated = 0_usize;
+    let mut total_failures = 0_usize;
+    for right_nested in [false, true] {
+        let mut candidates = Vec::new();
+        let mut seen = BTreeSet::new();
+        let mut enumerated = 0_usize;
+        let mut failures = 0_usize;
+        'shape: for left in &basis {
+            for middle in &basis {
+                for right in &basis {
+                    for inner_operator in operators {
+                        for outer_operator in operators {
+                            if candidates.len() >= MAX_ARITHMETIC_FALLBACK_CANDIDATES {
+                                break 'shape;
+                            }
+                            let inner = TypedSyntaxExpressionIR::Binary {
+                                operator: inner_operator,
+                                left: Box::new(if right_nested {
+                                    middle.clone()
+                                } else {
+                                    left.clone()
+                                }),
+                                right: Box::new(if right_nested {
+                                    right.clone()
+                                } else {
+                                    middle.clone()
+                                }),
+                            };
+                            let expression = TypedSyntaxExpressionIR::Binary {
+                                operator: outer_operator,
+                                left: Box::new(if right_nested {
+                                    left.clone()
+                                } else {
+                                    inner.clone()
+                                }),
+                                right: Box::new(if right_nested { inner } else { right.clone() }),
+                            };
+                            let prior_len = candidates.len();
+                            add_enumerated_expression(
+                                expression,
+                                operand_types,
+                                operand_indices,
+                                definitions,
+                                api_map,
+                                observation_arguments,
+                                &request.allowed_effects,
+                                MAX_ARITHMETIC_FALLBACK_CANDIDATES,
+                                &mut enumerated,
+                                &mut failures,
+                                &mut seen,
+                                &mut candidates,
+                            )?;
+                            if candidates.len() > prior_len
+                                && candidates
+                                    .last()
+                                    .is_some_and(|candidate| candidate.outputs == expected)
+                            {
+                                total_enumerated = total_enumerated.saturating_add(enumerated);
+                                total_failures = total_failures.saturating_add(failures);
+                                return Ok(candidates.pop().map(|candidate| {
+                                    (candidate, total_enumerated, total_failures)
+                                }));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        total_enumerated = total_enumerated.saturating_add(enumerated);
+        total_failures = total_failures.saturating_add(failures);
+    }
+    Ok(None)
 }
 
 fn enumerate_api_arguments(
@@ -4018,6 +4153,47 @@ mod tests {
         .unwrap();
         assert_eq!(receipt.winning_goal.postimage, seed);
         assert!(receipt.selected_operator_id.is_none());
+        validate_typed_mechanism_synthesis_receipt(&receipt).unwrap();
+    }
+
+    #[test]
+    fn exhausted_universal_order_falls_back_to_bounded_three_operand_arithmetic() {
+        let request = TypedMechanismSynthesisGoalIR {
+            schema: TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA.to_string(),
+            goal_id: "three_operand_arithmetic_composition".to_string(),
+            split: DataSplit::FreshBlind,
+            operands: vec![
+                operand("discrimination", "probe.discrimination", ProgramType::Int),
+                operand("reliability", "probe.reliability", ProgramType::Int),
+                operand("cost", "probe.cost", ProgramType::Int),
+            ],
+            output_type: ProgramType::Int,
+            definitions: Vec::new(),
+            allowed_effects: vec![Effect::Pure],
+            preconditions: Vec::new(),
+            postconditions: vec!["utility matches every public observation".to_string()],
+            invariants: Vec::new(),
+            public_observations: [(4, 3, 2, 10), (3, 2, 1, 5), (2, 5, 4, 6), (7, 2, 3, 11)]
+                .into_iter()
+                .map(
+                    |(discrimination, reliability, cost, expected)| TypedMechanismObservationIR {
+                        operands: BTreeMap::from([
+                            ("discrimination".to_string(), Value::Int(discrimination)),
+                            ("reliability".to_string(), Value::Int(reliability)),
+                            ("cost".to_string(), Value::Int(cost)),
+                        ]),
+                        expected_postimage: Value::Int(expected),
+                    },
+                )
+                .collect(),
+            require_conditional: false,
+            max_expression_depth: 3,
+            max_candidates: 1_024,
+            provenance: vec!["ARITHMETIC_SEARCH_STARVATION_COUNTEREXAMPLE".to_string()],
+        };
+
+        let receipt = synthesize_typed_mechanism_goal(&request).unwrap();
+        assert_eq!(receipt.winning_expression_nodes, 5);
         validate_typed_mechanism_synthesis_receipt(&receipt).unwrap();
     }
 

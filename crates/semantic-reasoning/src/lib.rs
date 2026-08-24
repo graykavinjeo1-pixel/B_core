@@ -28,6 +28,8 @@ pub mod north_star;
 #[cfg(feature = "historical-campaigns")]
 pub mod reporting;
 pub mod repository_experience;
+pub mod repository_coding_knowledge;
+pub mod repository_issue_understanding;
 pub mod same_attempt_revision;
 pub mod self_healing_execution;
 pub mod self_healing_pipeline;

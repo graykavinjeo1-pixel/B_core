@@ -1,0 +1,8 @@
+{
+  "schema": "B_CORE_BOUNDED_GROWTH_SUPERVISOR_1",
+  "campaign_id": "G00000000000000000002-b97b553506b15537",
+  "error_sha256": "236ed5a6435bc96c9db8ca9f323abc7277ed92c5b5112295a91bec9c8c86de59",
+  "predecessor_preserved": true,
+  "failed_candidate_deleted": false,
+  "occurred_at_ms": 1787535132930
+}

@@ -1,0 +1,1040 @@
+{
+  "schema": "B_CORE_BOUNDED_GROWTH_SUPERVISOR_1",
+  "generation": 2,
+  "predecessor_sha256": "bbe2cbde0e383ade7af93a07baea967acb4caeec89c9de59fa1f7c5db06e5540",
+  "lessons": [
+    {
+      "lesson_id": "5933bd3e204b6a990d1d4fe4cfe9d8802722d775654250c849aac1650a1615e9",
+      "evidence_observation_sha256": [
+        "8756c9071fd7204688c501f76a445762caf201ea0329df2123599ac34537b64e",
+        "335f0efa373cf7d9bcb311f7772913c1541e38789454fb2d0ddae7de78606a9c"
+      ],
+      "work_kinds": [
+        "CAPABILITY_SYNTHESIS"
+      ],
+      "diagnostic_signals": [
+        "ASSERTION_STRENGTHENED",
+        "ATTRIBUTED_WORK_EVENT",
+        "BEHAVIORAL_FRONTIER_ADVANCE",
+        "CAPABILITY_SURFACE_ADDED",
+        "PUBLIC_CONTRACT_DELTA_BOUND",
+        "STRUCTURAL_DELTA:ASSERTION:INCREASE:ONE",
+        "STRUCTURAL_DELTA:ASSERTION:INCREASE:SMALL",
+        "STRUCTURAL_DELTA:PUBLIC_SYMBOL:INCREASE:ONE",
+        "STRUCTURAL_DELTA:TEST:INCREASE:ONE",
+        "TEST_ADDED",
+        "TYPED_BEHAVIOR_GOAL_AVAILABLE",
+        "VERIFIED_PASS"
+      ],
+      "composition_recipe": [
+        "IMPLEMENTATION",
+        "PROGRAM_COMPOSITION",
+        "INVARIANT_CHECK",
+        "REGRESSION_TEST"
+      ],
+      "applicability": [
+        "apply only when the same structural signals recur",
+        "do not route by repository, task, or exact patch identity"
+      ],
+      "verification_obligations": [
+        "local deterministic verifier must accept the frozen candidate",
+        "regression evidence must accompany implementation learning",
+        "raw source and secret material must remain absent"
+      ],
+      "public_contract_deltas": [
+        {
+          "schema": "B_CORE_PUBLIC_CONTRACT_DELTA_1",
+          "delta_id": "evidence-quorum-composition",
+          "observed_behavior": "repair planning considers a single evidence signal",
+          "expected_behavior": "repair planning combines reproduced failure and public contract evidence",
+          "target_symbols": [
+            "evidence_bound_repair_plan"
+          ],
+          "typed_behavior_goals": [
+            {
+              "schema": "B_CORE_TYPED_MECHANISM_SYNTHESIS_GOAL_1",
+              "goal_id": "evidence_quorum_sum",
+              "split": "FRESH_BLIND",
+              "operands": [
+                {
+                  "role": "reproduction",
+                  "source": "evidence.reproduction_score",
+                  "value_type": "INT"
+                },
+                {
+                  "role": "contract",
+                  "source": "evidence.contract_score",
+                  "value_type": "INT"
+                }
+              ],
+              "output_type": "INT",
+              "definitions": [],
+              "allowed_effects": [
+                "PURE"
+              ],
+              "preconditions": [],
+              "postconditions": [
+                "postimage equals the independent public evidence quorum"
+              ],
+              "invariants": [
+                "task and repository identity do not affect the result"
+              ],
+              "public_observations": [
+                {
+                  "operands": {
+                    "contract": {
+                      "value_kind": "INT",
+                      "value": 1
+                    },
+                    "reproduction": {
+                      "value_kind": "INT",
+                      "value": 1
+                    }
+                  },
+                  "expected_postimage": {
+                    "value_kind": "INT",
+                    "value": 2
+                  }
+                },
+                {
+                  "operands": {
+                    "contract": {
+                      "value_kind": "INT",
+                      "value": 0
+                    },
+                    "reproduction": {
+                      "value_kind": "INT",
+                      "value": 1
+                    }
+                  },
+                  "expected_postimage": {
+                    "value_kind": "INT",
+                    "value": 1
+                  }
+                },
+                {
+                  "operands": {
+                    "contract": {
+                      "value_kind": "INT",
+                      "value": 1
+                    },
+                    "reproduction": {
+                      "value_kind": "INT",
+                      "value": 0
+                    }
+                  },
+                  "expected_postimage": {
+                    "value_kind": "INT",
+                    "value": 1
+                  }
+                }
+              ],
+              "require_conditional": false,
+              "max_expression_depth": 2,
+              "max_candidates": 1024,
+              "provenance": [
+                "PUBLIC_CONTRACT_DELTA",
+                "PUBLIC_CONTRACT_DELTA_ID:evidence-quorum-composition",
+                "PUBLIC_CONTRACT_DELTA_SHA256:99b7032cdb1e97fafc56aab3527b14bddb60657c2c30a4c50239e416609e4223"
+              ]
+            }
+          ],
+          "provenance": [
+            "SYNTHETIC_PUBLIC_OBSERVATION"
+          ]
+        }
+      ],
+      "learning_score": 69,
+      "exact_patch_data_present": false,
+      "exact_source_fragment_present": false,
+      "raw_source_bytes_present": false
+    },
+    {
+      "lesson_id": "fde4383da663e7c395a32243c18411750c7bfd1b3c7123ede5ba30375507731e",
+      "evidence_observation_sha256": [
+        "321e3d1cd32364e19c99f0321e02ac48fa83a1655d2bcb35a411d22c614bdfb0",
+        "af9dc00a81dd8c556263610a9f48104fe1d76db564869daef519f08d7a71f81c"
+      ],
+      "work_kinds": [
+        "CAPABILITY_SYNTHESIS"
+      ],
+      "diagnostic_signals": [
+        "ASSERTION_STRENGTHENED",
+        "ATTRIBUTED_WORK_EVENT",
+        "BEHAVIORAL_FRONTIER_ADVANCE",
+        "CAPABILITY_SURFACE_ADDED",
+        "PUBLIC_CONTRACT_DELTA_BOUND",
+        "STRUCTURAL_DELTA:ASSERTION:INCREASE:ONE",
+        "STRUCTURAL_DELTA:ASSERTION:INCREASE:SMALL",
+        "STRUCTURAL_DELTA:PUBLIC_SYMBOL:INCREASE:ONE",
+        "STRUCTURAL_DELTA:TEST:INCREASE:ONE",
+        "TEST_ADDED",
+        "TYPED_BEHAVIOR_GOAL_AVAILABLE",
+        "VERIFIED_PASS"
+      ],
+      "composition_recipe": [
+        "IMPLEMENTATION",
+        "PROGRAM_COMPOSITION",
+        "INVARIANT_CHECK",
+        "REGRESSION_TEST"
+      ],
+      "applicability": [
+        "apply only when the same structural signals recur",
+        "do not route by repository, task, or exact patch identity"
+      ],
+      "verification_obligations": [
+        "local deterministic verifier must accept the frozen candidate",
+        "regression evidence must accompany implementation learning",
+        "raw source and secret material must remain absent"
+      ],
+      "public_contract_deltas": [
+        {
+          "schema": "B_CORE_PUBLIC_CONTRACT_DELTA_1",
+          "delta_id": "information-gain-probe-utility",
+          "observed_behavior": "diagnostic selection uses the first available probe",
+          "expected_behavior": "diagnostic selection values discrimination times reliability minus execution cost",
+          "target_symbols": [
+            "information_gain_utility"
+          ],
+          "typed_behavior_goals": [
+            {
+              "schema": "B_CORE_TYPED_MECHANISM_SYNTHESIS_GOAL_1",
+              "goal_id": "information_gain_probe_utility",
+              "split": "FRESH_BLIND",
+              "operands": [
+                {
+                  "role": "discrimination",
+                  "source": "probe.expected_discrimination",
+                  "value_type": "INT"
+                },
+                {
+                  "role": "reliability",
+                  "source": "probe.reliability",
+                  "value_type": "INT"
+                },
+                {
+                  "role": "cost",
+                  "source": "probe.execution_cost",
+                  "value_type": "INT"
+                }
+              ],
+              "output_type": "INT",
+              "definitions": [],
+              "allowed_effects": [
+                "PURE"
+              ],
+              "preconditions": [],
+              "postconditions": [
+                "postimage ranks probes by expected diagnostic value"
+              ],
+              "invariants": [
+                "task and repository identity do not affect utility"
+              ],
+              "public_observations": [
+                {
+                  "operands": {
+                    "cost": {
+                      "value_kind": "INT",
+                      "value": 2
+                    },
+                    "discrimination": {
+                      "value_kind": "INT",
+                      "value": 4
+                    },
+                    "reliability": {
+                      "value_kind": "INT",
+                      "value": 3
+                    }
+                  },
+                  "expected_postimage": {
+                    "value_kind": "INT",
+                    "value": 10
+                  }
+                },
+                {
+                  "operands": {
+                    "cost": {
+                      "value_kind": "INT",
+                      "value": 1
+                    },
+                    "discrimination": {
+                      "value_kind": "INT",
+                      "value": 3
+                    },
+                    "reliability": {
+                      "value_kind": "INT",
+                      "value": 2
+                    }
+                  },
+                  "expected_postimage": {
+                    "value_kind": "INT",
+                    "value": 5
+                  }
+                },
+                {
+                  "operands": {
+                    "cost": {
+                      "value_kind": "INT",
+                      "value": 4
+                    },
+                    "discrimination": {
+                      "value_kind": "INT",
+                      "value": 2
+                    },
+                    "reliability": {
+                      "value_kind": "INT",
+                      "value": 5
+                    }
+                  },
+                  "expected_postimage": {
+                    "value_kind": "INT",
+                    "value": 6
+                  }
+                }
+              ],
+              "require_conditional": false,
+              "max_expression_depth": 3,
+              "max_candidates": 1024,
+              "provenance": [
+                "PUBLIC_CONTRACT_DELTA",
+                "PUBLIC_CONTRACT_DELTA_ID:information-gain-probe-utility",
+                "PUBLIC_CONTRACT_DELTA_SHA256:661de9ae431ba899efb9692e4e81038f1a20a1da6433ce4add80fbf6005cd261"
+              ]
+            }
+          ],
+          "provenance": [
+            "SYNTHETIC_PUBLIC_OBSERVATION"
+          ]
+        }
+      ],
+      "learning_score": 74,
+      "exact_patch_data_present": false,
+      "exact_source_fragment_present": false,
+      "raw_source_bytes_present": false
+    }
+  ],
+  "classifier": {
+    "signal_weights": {
+      "ASSERTION_STRENGTHENED": 2,
+      "ATTRIBUTED_WORK_EVENT": 2,
+      "BEHAVIORAL_FRONTIER_ADVANCE": 2,
+      "CAPABILITY_SURFACE_ADDED": 2,
+      "PUBLIC_CONTRACT_DELTA_BOUND": 2,
+      "STRUCTURAL_DELTA:ASSERTION:INCREASE:ONE": 2,
+      "STRUCTURAL_DELTA:ASSERTION:INCREASE:SMALL": 2,
+      "STRUCTURAL_DELTA:PUBLIC_SYMBOL:INCREASE:ONE": 2,
+      "STRUCTURAL_DELTA:TEST:INCREASE:ONE": 2,
+      "TEST_ADDED": 2,
+      "TYPED_BEHAVIOR_GOAL_AVAILABLE": 2,
+      "VERIFIED_PASS": 2
+    },
+    "accepted_campaigns": 2,
+    "rejected_campaigns": 0,
+    "refinement_events": [
+      {
+        "refinement_id": "b14c88a4750dd91a73cdf24b846d6fb777494adceade7da545d1a0965eb0c11b",
+        "generation": 1,
+        "source_lesson_id": "5933bd3e204b6a990d1d4fe4cfe9d8802722d775654250c849aac1650a1615e9",
+        "evidence_observation_sha256": [
+          "8756c9071fd7204688c501f76a445762caf201ea0329df2123599ac34537b64e",
+          "335f0efa373cf7d9bcb311f7772913c1541e38789454fb2d0ddae7de78606a9c"
+        ],
+        "considered_signals": [
+          "ASSERTION_STRENGTHENED",
+          "ATTRIBUTED_WORK_EVENT",
+          "BEHAVIORAL_FRONTIER_ADVANCE",
+          "CAPABILITY_SURFACE_ADDED",
+          "PUBLIC_CONTRACT_DELTA_BOUND",
+          "STRUCTURAL_DELTA:ASSERTION:INCREASE:ONE",
+          "STRUCTURAL_DELTA:ASSERTION:INCREASE:SMALL",
+          "STRUCTURAL_DELTA:PUBLIC_SYMBOL:INCREASE:ONE",
+          "STRUCTURAL_DELTA:TEST:INCREASE:ONE",
+          "TEST_ADDED",
+          "TYPED_BEHAVIOR_GOAL_AVAILABLE",
+          "VERIFIED_PASS"
+        ],
+        "weight_deltas": [
+          {
+            "signal": "ASSERTION_STRENGTHENED",
+            "before": 0,
+            "after": 1
+          },
+          {
+            "signal": "ATTRIBUTED_WORK_EVENT",
+            "before": 0,
+            "after": 1
+          },
+          {
+            "signal": "BEHAVIORAL_FRONTIER_ADVANCE",
+            "before": 0,
+            "after": 1
+          },
+          {
+            "signal": "CAPABILITY_SURFACE_ADDED",
+            "before": 0,
+            "after": 1
+          },
+          {
+            "signal": "PUBLIC_CONTRACT_DELTA_BOUND",
+            "before": 0,
+            "after": 1
+          },
+          {
+            "signal": "STRUCTURAL_DELTA:ASSERTION:INCREASE:ONE",
+            "before": 0,
+            "after": 1
+          },
+          {
+            "signal": "STRUCTURAL_DELTA:ASSERTION:INCREASE:SMALL",
+            "before": 0,
+            "after": 1
+          },
+          {
+            "signal": "STRUCTURAL_DELTA:PUBLIC_SYMBOL:INCREASE:ONE",
+            "before": 0,
+            "after": 1
+          },
+          {
+            "signal": "STRUCTURAL_DELTA:TEST:INCREASE:ONE",
+            "before": 0,
+            "after": 1
+          },
+          {
+            "signal": "TEST_ADDED",
+            "before": 0,
+            "after": 1
+          },
+          {
+            "signal": "TYPED_BEHAVIOR_GOAL_AVAILABLE",
+            "before": 0,
+            "after": 1
+          },
+          {
+            "signal": "VERIFIED_PASS",
+            "before": 0,
+            "after": 1
+          }
+        ],
+        "behavioral_frontier_advance": true,
+        "measured_performance_gain": false,
+        "behavioral_verification_sha256": "defcf2464cd6e0bff79217db1bbf01bca509f47085990242ea383a7ebd9923c4",
+        "applied": true
+      },
+      {
+        "refinement_id": "9f5e893bc298b5a932cf7f32836220336a517a907aa22ef16d22d67188b379db",
+        "generation": 2,
+        "source_lesson_id": "fde4383da663e7c395a32243c18411750c7bfd1b3c7123ede5ba30375507731e",
+        "evidence_observation_sha256": [
+          "321e3d1cd32364e19c99f0321e02ac48fa83a1655d2bcb35a411d22c614bdfb0",
+          "af9dc00a81dd8c556263610a9f48104fe1d76db564869daef519f08d7a71f81c"
+        ],
+        "considered_signals": [
+          "ASSERTION_STRENGTHENED",
+          "ATTRIBUTED_WORK_EVENT",
+          "BEHAVIORAL_FRONTIER_ADVANCE",
+          "CAPABILITY_SURFACE_ADDED",
+          "PUBLIC_CONTRACT_DELTA_BOUND",
+          "STRUCTURAL_DELTA:ASSERTION:INCREASE:ONE",
+          "STRUCTURAL_DELTA:ASSERTION:INCREASE:SMALL",
+          "STRUCTURAL_DELTA:PUBLIC_SYMBOL:INCREASE:ONE",
+          "STRUCTURAL_DELTA:TEST:INCREASE:ONE",
+          "TEST_ADDED",
+          "TYPED_BEHAVIOR_GOAL_AVAILABLE",
+          "VERIFIED_PASS"
+        ],
+        "weight_deltas": [
+          {
+            "signal": "ASSERTION_STRENGTHENED",
+            "before": 1,
+            "after": 2
+          },
+          {
+            "signal": "ATTRIBUTED_WORK_EVENT",
+            "before": 1,
+            "after": 2
+          },
+          {
+            "signal": "BEHAVIORAL_FRONTIER_ADVANCE",
+            "before": 1,
+            "after": 2
+          },
+          {
+            "signal": "CAPABILITY_SURFACE_ADDED",
+            "before": 1,
+            "after": 2
+          },
+          {
+            "signal": "PUBLIC_CONTRACT_DELTA_BOUND",
+            "before": 1,
+            "after": 2
+          },
+          {
+            "signal": "STRUCTURAL_DELTA:ASSERTION:INCREASE:ONE",
+            "before": 1,
+            "after": 2
+          },
+          {
+            "signal": "STRUCTURAL_DELTA:ASSERTION:INCREASE:SMALL",
+            "before": 1,
+            "after": 2
+          },
+          {
+            "signal": "STRUCTURAL_DELTA:PUBLIC_SYMBOL:INCREASE:ONE",
+            "before": 1,
+            "after": 2
+          },
+          {
+            "signal": "STRUCTURAL_DELTA:TEST:INCREASE:ONE",
+            "before": 1,
+            "after": 2
+          },
+          {
+            "signal": "TEST_ADDED",
+            "before": 1,
+            "after": 2
+          },
+          {
+            "signal": "TYPED_BEHAVIOR_GOAL_AVAILABLE",
+            "before": 1,
+            "after": 2
+          },
+          {
+            "signal": "VERIFIED_PASS",
+            "before": 1,
+            "after": 2
+          }
+        ],
+        "behavioral_frontier_advance": true,
+        "measured_performance_gain": false,
+        "behavioral_verification_sha256": "826a9be1d1797b423084c8ac6a2e408fbc1b040031b92de2a0097cea9175f969",
+        "applied": true
+      }
+    ],
+    "outcome_bound_refinements": 2
+  },
+  "evaluator": {
+    "schema": "B_CORE_GROWTH_EVALUATOR_MEMORY_1",
+    "generation": 2,
+    "predecessor_sha256": "cd1585b67092b7f9467c3b642d2fc48ad2d9064a2755a3a0cb83b2d824b73208",
+    "challenge_suite": [
+      "EVIDENCE_DIGEST_SUBSTITUTION",
+      "AGGREGATE_SCORE_INFLATION",
+      "LESSON_SCORE_INFLATION",
+      "DIAGNOSTIC_SIGNAL_INJECTION",
+      "COMPOSITION_RECIPE_MUTATION",
+      "WORK_KIND_MUTATION",
+      "APPLICABILITY_MUTATION",
+      "VERIFICATION_OBLIGATION_MUTATION",
+      "RAW_SOURCE_FLAG_INJECTION",
+      "EVIDENCE_REMOVAL"
+    ],
+    "source_lesson_ids": [
+      "5933bd3e204b6a990d1d4fe4cfe9d8802722d775654250c849aac1650a1615e9",
+      "fde4383da663e7c395a32243c18411750c7bfd1b3c7123ede5ba30375507731e"
+    ],
+    "accepted_expansions": 1,
+    "capability_expansion_contract_revision": 2
+  },
+  "generative": {
+    "schema": "B_CORE_GENERATIVE_GROWTH_1",
+    "generation": 2,
+    "accepted_compositions": [
+      {
+        "composition": {
+          "composition_id": "GENERATIVE-ad1b649bbb8de2d02465",
+          "primitives": [
+            {
+              "primitive_id": "FROZEN_LESSON_ACTIVATOR",
+              "implementation_anchor": "growth_supervisor::LearningCandidate",
+              "input_type": "FrozenObservations",
+              "output_type": "ActivatedKnowledgeSet",
+              "semantic_role": "OBSERVE"
+            },
+            {
+              "primitive_id": "SEM25_MULTI_HORIZON_ROUTER",
+              "implementation_anchor": "sem25::engine::run_growth_probe",
+              "input_type": "ActivatedKnowledgeSet",
+              "output_type": "PredictedComposition",
+              "semantic_role": "PREDICT"
+            },
+            {
+              "primitive_id": "SEM5_PROGRAM_IR_COMPOSER",
+              "implementation_anchor": "integrated_development::compose_existing_sem5_capability",
+              "input_type": "PredictedComposition",
+              "output_type": "CompositeCandidate",
+              "semantic_role": "COMPOSE"
+            },
+            {
+              "primitive_id": "INDEPENDENT_GROWTH_VERIFIER",
+              "implementation_anchor": "growth_supervisor::run_verifier_request",
+              "input_type": "CompositeCandidate",
+              "output_type": "VerifiedCombination",
+              "semantic_role": "VERIFY"
+            },
+            {
+              "primitive_id": "VALUABLE_COMBINATION_MEMORY",
+              "implementation_anchor": "generative_growth::promote_generative_cycle",
+              "input_type": "VerifiedCombination",
+              "output_type": "ReusableGrowthMemory",
+              "semantic_role": "REMEMBER"
+            },
+            {
+              "primitive_id": "SELF_IMPROVEMENT_APPLICATION_ROUTER",
+              "implementation_anchor": "growth_supervisor::classify_observation",
+              "input_type": "ReusableGrowthMemory",
+              "output_type": "GrowthPolicyInput",
+              "semantic_role": "APPLY"
+            }
+          ],
+          "edges": [
+            {
+              "from_primitive_id": "FROZEN_LESSON_ACTIVATOR",
+              "to_primitive_id": "SEM25_MULTI_HORIZON_ROUTER",
+              "transported_type": "ActivatedKnowledgeSet"
+            },
+            {
+              "from_primitive_id": "SEM25_MULTI_HORIZON_ROUTER",
+              "to_primitive_id": "SEM5_PROGRAM_IR_COMPOSER",
+              "transported_type": "PredictedComposition"
+            },
+            {
+              "from_primitive_id": "SEM5_PROGRAM_IR_COMPOSER",
+              "to_primitive_id": "INDEPENDENT_GROWTH_VERIFIER",
+              "transported_type": "CompositeCandidate"
+            },
+            {
+              "from_primitive_id": "INDEPENDENT_GROWTH_VERIFIER",
+              "to_primitive_id": "VALUABLE_COMBINATION_MEMORY",
+              "transported_type": "VerifiedCombination"
+            },
+            {
+              "from_primitive_id": "VALUABLE_COMBINATION_MEMORY",
+              "to_primitive_id": "SELF_IMPROVEMENT_APPLICATION_ROUTER",
+              "transported_type": "ReusableGrowthMemory"
+            }
+          ],
+          "execution_order": [
+            "FROZEN_LESSON_ACTIVATOR",
+            "SEM25_MULTI_HORIZON_ROUTER",
+            "SEM5_PROGRAM_IR_COMPOSER",
+            "INDEPENDENT_GROWTH_VERIFIER",
+            "VALUABLE_COMBINATION_MEMORY",
+            "SELF_IMPROVEMENT_APPLICATION_ROUTER"
+          ],
+          "required_semantic_roles": [
+            "OBSERVE",
+            "PREDICT",
+            "COMPOSE",
+            "VERIFY",
+            "REMEMBER",
+            "APPLY"
+          ],
+          "applicability": [
+            "frozen high-value structural lesson",
+            "bounded local capability composition"
+          ],
+          "non_applicability": [
+            "unverified source mutation",
+            "composition requiring network or external model output"
+          ],
+          "exact_source_fragment_present": false
+        },
+        "execution_plan": {
+          "predictor": "SEM25_MULTI_HORIZON_ROUTER",
+          "composer": "SEM5_PROGRAM",
+          "verifier": "INDEPENDENT_GROWTH_VERIFIER"
+        },
+        "trigger_signals": [
+          "ASSERTION_STRENGTHENED",
+          "ATTRIBUTED_WORK_EVENT",
+          "BEHAVIORAL_FRONTIER_ADVANCE",
+          "CAPABILITY_SURFACE_ADDED",
+          "PUBLIC_CONTRACT_DELTA_BOUND",
+          "STRUCTURAL_DELTA:ASSERTION:INCREASE:ONE",
+          "STRUCTURAL_DELTA:ASSERTION:INCREASE:SMALL",
+          "STRUCTURAL_DELTA:PUBLIC_SYMBOL:INCREASE:ONE",
+          "STRUCTURAL_DELTA:TEST:INCREASE:ONE",
+          "TEST_ADDED",
+          "TYPED_BEHAVIOR_GOAL_AVAILABLE",
+          "VERIFIED_PASS"
+        ],
+        "source_lesson_ids": [
+          "5933bd3e204b6a990d1d4fe4cfe9d8802722d775654250c849aac1650a1615e9"
+        ],
+        "predicted_value": 84,
+        "observed_value": 100,
+        "reuse_count": 0,
+        "context_use_counts": {
+          "11b55b0b011f49716512759efe5876e11be137ebadaceabf41652f833a4b38eb": 1
+        },
+        "successful_uses": 1,
+        "observed_value_total": 100,
+        "verified_artifact_sha256s": [
+          "d9f8ebd678d269843b75bd8262de601f3379dc86ca0c215cb45d6fd2a2939636"
+        ],
+        "verified_artifact_contexts": {
+          "d9f8ebd678d269843b75bd8262de601f3379dc86ca0c215cb45d6fd2a2939636": "0ef37453f8ff3e05d23be3811e1690c9809cad761ec2cdc32cd08bd32db33e1c"
+        },
+        "verified_typed_behavior_goals": {
+          "d9f8ebd678d269843b75bd8262de601f3379dc86ca0c215cb45d6fd2a2939636": {
+            "schema": "B_CORE_TYPED_MECHANISM_SYNTHESIS_GOAL_1",
+            "goal_id": "evidence_quorum_sum",
+            "split": "FRESH_BLIND",
+            "operands": [
+              {
+                "role": "reproduction",
+                "source": "evidence.reproduction_score",
+                "value_type": "INT"
+              },
+              {
+                "role": "contract",
+                "source": "evidence.contract_score",
+                "value_type": "INT"
+              }
+            ],
+            "output_type": "INT",
+            "definitions": [],
+            "allowed_effects": [
+              "PURE"
+            ],
+            "preconditions": [],
+            "postconditions": [
+              "postimage equals the independent public evidence quorum"
+            ],
+            "invariants": [
+              "task and repository identity do not affect the result"
+            ],
+            "public_observations": [
+              {
+                "operands": {
+                  "contract": {
+                    "value_kind": "INT",
+                    "value": 1
+                  },
+                  "reproduction": {
+                    "value_kind": "INT",
+                    "value": 1
+                  }
+                },
+                "expected_postimage": {
+                  "value_kind": "INT",
+                  "value": 2
+                }
+              },
+              {
+                "operands": {
+                  "contract": {
+                    "value_kind": "INT",
+                    "value": 0
+                  },
+                  "reproduction": {
+                    "value_kind": "INT",
+                    "value": 1
+                  }
+                },
+                "expected_postimage": {
+                  "value_kind": "INT",
+                  "value": 1
+                }
+              },
+              {
+                "operands": {
+                  "contract": {
+                    "value_kind": "INT",
+                    "value": 1
+                  },
+                  "reproduction": {
+                    "value_kind": "INT",
+                    "value": 0
+                  }
+                },
+                "expected_postimage": {
+                  "value_kind": "INT",
+                  "value": 1
+                }
+              }
+            ],
+            "require_conditional": false,
+            "max_expression_depth": 2,
+            "max_candidates": 1024,
+            "provenance": [
+              "PUBLIC_CONTRACT_DELTA",
+              "PUBLIC_CONTRACT_DELTA_ID:evidence-quorum-composition",
+              "PUBLIC_CONTRACT_DELTA_SHA256:99b7032cdb1e97fafc56aab3527b14bddb60657c2c30a4c50239e416609e4223"
+            ]
+          }
+        }
+      },
+      {
+        "composition": {
+          "composition_id": "GENERATIVE-dc98c24cf53a0d54ccc3",
+          "primitives": [
+            {
+              "primitive_id": "FROZEN_LESSON_ACTIVATOR",
+              "implementation_anchor": "growth_supervisor::LearningCandidate",
+              "input_type": "FrozenObservations",
+              "output_type": "ActivatedKnowledgeSet",
+              "semantic_role": "OBSERVE"
+            },
+            {
+              "primitive_id": "SEM23_REACTION_OUTCOME_PREDICTOR",
+              "implementation_anchor": "sem23::engine::predict_base_properties",
+              "input_type": "ActivatedKnowledgeSet",
+              "output_type": "PredictedComposition",
+              "semantic_role": "PREDICT"
+            },
+            {
+              "primitive_id": "SEM5_PROGRAM_IR_COMPOSER",
+              "implementation_anchor": "integrated_development::compose_existing_sem5_capability",
+              "input_type": "PredictedComposition",
+              "output_type": "CompositeCandidate",
+              "semantic_role": "COMPOSE"
+            },
+            {
+              "primitive_id": "INDEPENDENT_GROWTH_VERIFIER",
+              "implementation_anchor": "growth_supervisor::run_verifier_request",
+              "input_type": "CompositeCandidate",
+              "output_type": "VerifiedCombination",
+              "semantic_role": "VERIFY"
+            },
+            {
+              "primitive_id": "VALUABLE_COMBINATION_MEMORY",
+              "implementation_anchor": "generative_growth::promote_generative_cycle",
+              "input_type": "VerifiedCombination",
+              "output_type": "ReusableGrowthMemory",
+              "semantic_role": "REMEMBER"
+            },
+            {
+              "primitive_id": "SELF_IMPROVEMENT_APPLICATION_ROUTER",
+              "implementation_anchor": "growth_supervisor::classify_observation",
+              "input_type": "ReusableGrowthMemory",
+              "output_type": "GrowthPolicyInput",
+              "semantic_role": "APPLY"
+            }
+          ],
+          "edges": [
+            {
+              "from_primitive_id": "FROZEN_LESSON_ACTIVATOR",
+              "to_primitive_id": "SEM23_REACTION_OUTCOME_PREDICTOR",
+              "transported_type": "ActivatedKnowledgeSet"
+            },
+            {
+              "from_primitive_id": "SEM23_REACTION_OUTCOME_PREDICTOR",
+              "to_primitive_id": "SEM5_PROGRAM_IR_COMPOSER",
+              "transported_type": "PredictedComposition"
+            },
+            {
+              "from_primitive_id": "SEM5_PROGRAM_IR_COMPOSER",
+              "to_primitive_id": "INDEPENDENT_GROWTH_VERIFIER",
+              "transported_type": "CompositeCandidate"
+            },
+            {
+              "from_primitive_id": "INDEPENDENT_GROWTH_VERIFIER",
+              "to_primitive_id": "VALUABLE_COMBINATION_MEMORY",
+              "transported_type": "VerifiedCombination"
+            },
+            {
+              "from_primitive_id": "VALUABLE_COMBINATION_MEMORY",
+              "to_primitive_id": "SELF_IMPROVEMENT_APPLICATION_ROUTER",
+              "transported_type": "ReusableGrowthMemory"
+            }
+          ],
+          "execution_order": [
+            "FROZEN_LESSON_ACTIVATOR",
+            "SEM23_REACTION_OUTCOME_PREDICTOR",
+            "SEM5_PROGRAM_IR_COMPOSER",
+            "INDEPENDENT_GROWTH_VERIFIER",
+            "VALUABLE_COMBINATION_MEMORY",
+            "SELF_IMPROVEMENT_APPLICATION_ROUTER"
+          ],
+          "required_semantic_roles": [
+            "OBSERVE",
+            "PREDICT",
+            "COMPOSE",
+            "VERIFY",
+            "REMEMBER",
+            "APPLY"
+          ],
+          "applicability": [
+            "frozen high-value structural lesson",
+            "bounded local capability composition"
+          ],
+          "non_applicability": [
+            "unverified source mutation",
+            "composition requiring network or external model output"
+          ],
+          "exact_source_fragment_present": false
+        },
+        "execution_plan": {
+          "predictor": "SEM23_REACTION_OUTCOME",
+          "composer": "SEM5_PROGRAM",
+          "verifier": "INDEPENDENT_GROWTH_VERIFIER"
+        },
+        "trigger_signals": [
+          "ASSERTION_STRENGTHENED",
+          "ATTRIBUTED_WORK_EVENT",
+          "BEHAVIORAL_FRONTIER_ADVANCE",
+          "CAPABILITY_SURFACE_ADDED",
+          "PUBLIC_CONTRACT_DELTA_BOUND",
+          "STRUCTURAL_DELTA:ASSERTION:INCREASE:ONE",
+          "STRUCTURAL_DELTA:ASSERTION:INCREASE:SMALL",
+          "STRUCTURAL_DELTA:PUBLIC_SYMBOL:INCREASE:ONE",
+          "STRUCTURAL_DELTA:TEST:INCREASE:ONE",
+          "TEST_ADDED",
+          "TYPED_BEHAVIOR_GOAL_AVAILABLE",
+          "VERIFIED_PASS"
+        ],
+        "source_lesson_ids": [
+          "fde4383da663e7c395a32243c18411750c7bfd1b3c7123ede5ba30375507731e"
+        ],
+        "predicted_value": 84,
+        "observed_value": 100,
+        "reuse_count": 0,
+        "context_use_counts": {
+          "f9ec424820c18282ef5dbadd0c47e7d800ccd70d52894d52e89f40551fa6cb90": 1
+        },
+        "successful_uses": 1,
+        "observed_value_total": 100,
+        "verified_artifact_sha256s": [
+          "48a72750a3527707634b5a16dea54abd951a6316d1030df05a01e47c56cfae44"
+        ],
+        "verified_artifact_contexts": {
+          "48a72750a3527707634b5a16dea54abd951a6316d1030df05a01e47c56cfae44": "d3ecb937c3c2d9aaeda46e507c7124a16c940e451f284304beeacc1eccadb06c"
+        },
+        "verified_typed_behavior_goals": {
+          "48a72750a3527707634b5a16dea54abd951a6316d1030df05a01e47c56cfae44": {
+            "schema": "B_CORE_TYPED_MECHANISM_SYNTHESIS_GOAL_1",
+            "goal_id": "information_gain_probe_utility",
+            "split": "FRESH_BLIND",
+            "operands": [
+              {
+                "role": "discrimination",
+                "source": "probe.expected_discrimination",
+                "value_type": "INT"
+              },
+              {
+                "role": "reliability",
+                "source": "probe.reliability",
+                "value_type": "INT"
+              },
+              {
+                "role": "cost",
+                "source": "probe.execution_cost",
+                "value_type": "INT"
+              }
+            ],
+            "output_type": "INT",
+            "definitions": [],
+            "allowed_effects": [
+              "PURE"
+            ],
+            "preconditions": [],
+            "postconditions": [
+              "postimage ranks probes by expected diagnostic value"
+            ],
+            "invariants": [
+              "task and repository identity do not affect utility"
+            ],
+            "public_observations": [
+              {
+                "operands": {
+                  "cost": {
+                    "value_kind": "INT",
+                    "value": 2
+                  },
+                  "discrimination": {
+                    "value_kind": "INT",
+                    "value": 4
+                  },
+                  "reliability": {
+                    "value_kind": "INT",
+                    "value": 3
+                  }
+                },
+                "expected_postimage": {
+                  "value_kind": "INT",
+                  "value": 10
+                }
+              },
+              {
+                "operands": {
+                  "cost": {
+                    "value_kind": "INT",
+                    "value": 1
+                  },
+                  "discrimination": {
+                    "value_kind": "INT",
+                    "value": 3
+                  },
+                  "reliability": {
+                    "value_kind": "INT",
+                    "value": 2
+                  }
+                },
+                "expected_postimage": {
+                  "value_kind": "INT",
+                  "value": 5
+                }
+              },
+              {
+                "operands": {
+                  "cost": {
+                    "value_kind": "INT",
+                    "value": 4
+                  },
+                  "discrimination": {
+                    "value_kind": "INT",
+                    "value": 2
+                  },
+                  "reliability": {
+                    "value_kind": "INT",
+                    "value": 5
+                  }
+                },
+                "expected_postimage": {
+                  "value_kind": "INT",
+                  "value": 6
+                }
+              }
+            ],
+            "require_conditional": false,
+            "max_expression_depth": 3,
+            "max_candidates": 1024,
+            "provenance": [
+              "PUBLIC_CONTRACT_DELTA",
+              "PUBLIC_CONTRACT_DELTA_ID:information-gain-probe-utility",
+              "PUBLIC_CONTRACT_DELTA_SHA256:661de9ae431ba899efb9692e4e81038f1a20a1da6433ce4add80fbf6005cd261"
+            ]
+          }
+        }
+      }
+    ],
+    "rejected_compositions": 0,
+    "prediction_records": 2,
+    "reuse_events": 0,
+    "self_application_events": 2,
+    "composition_trials": [
+      {
+        "composition_id": "GENERATIVE-ad1b649bbb8de2d02465",
+        "context_sha256": "11b55b0b011f49716512759efe5876e11be137ebadaceabf41652f833a4b38eb",
+        "predicted_value": 84,
+        "observed_value": 100,
+        "valuable": true
+      },
+      {
+        "composition_id": "GENERATIVE-dc98c24cf53a0d54ccc3",
+        "context_sha256": "f9ec424820c18282ef5dbadd0c47e7d800ccd70d52894d52e89f40551fa6cb90",
+        "predicted_value": 84,
+        "observed_value": 100,
+        "valuable": true
+      }
+    ],
+    "exploration_events": 2,
+    "frontier_advance_events": 2,
+    "frontier_capability_units": 2,
+    "behavioral_verification_events": 2,
+    "prediction_absolute_error_total": 32,
+    "calibrated_prediction_records": 2,
+    "behavioral_value_contract_revision": 5
+  }
+}

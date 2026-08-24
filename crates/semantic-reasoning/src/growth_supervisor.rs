@@ -67,6 +67,11 @@ use crate::repository_experience::{
     RepositoryPipelineProvenanceGraphIR, RepositoryRepairContractIR,
     RepositoryRepairProvenanceInput, REPOSITORY_ISSUE_INTAKE_RECEIPT_SCHEMA,
 };
+use crate::repository_coding_knowledge::{
+    classify_public_diagnostic, plan_repository_repair, DiagnosticFamily, EvidenceKind,
+    RepairPlanDisposition, RepositoryLanguage, RepositoryObservationIR, RepositoryTaskIR,
+    REPOSITORY_REPAIR_KNOWLEDGE_SCHEMA,
+};
 use crate::same_attempt_revision::{
     CandidateAdmission, SameAttemptCounterexample, SameAttemptRevisionTracker,
     MAX_SAME_ATTEMPT_EXECUTIONS,
@@ -2284,10 +2289,15 @@ fn path_is_dedicated_test(path: &Path) -> bool {
         || file_name.starts_with("test_")
         || file_name.ends_with("_test.rs")
         || file_name.ends_with("_test.py")
+        || file_name.ends_with("_test.go")
         || file_name.ends_with(".test.js")
+        || file_name.ends_with(".test.jsx")
         || file_name.ends_with(".test.ts")
+        || file_name.ends_with(".test.tsx")
         || file_name.ends_with(".spec.js")
+        || file_name.ends_with(".spec.jsx")
         || file_name.ends_with(".spec.ts")
+        || file_name.ends_with(".spec.tsx")
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -2445,26 +2455,28 @@ fn classify_work_kind(
     }
 }
 
-fn event_path_key(path: &Path) -> String {
-    let text = path.to_string_lossy().replace('/', "\\");
-    let ordinary = text.strip_prefix("\\\\?\\").unwrap_or(&text);
-    if cfg!(windows) {
-        ordinary.to_ascii_lowercase()
-    } else {
-        ordinary.to_string()
-    }
-}
-
-fn work_event_path_index(events: &[WorkEvent]) -> BTreeMap<String, usize> {
-    // Canonicalize only the small pending-event side once. Watched paths are
-    // already absolute, non-symlink directory entries and use their normalized
-    // in-memory keys during every scan.
+fn work_event_path_index(
+    events: &[WorkEvent],
+    watched_roots: &[PathBuf],
+) -> BTreeMap<String, usize> {
+    // Event validation canonicalizes paths, while a watched root can retain a
+    // Windows 8.3 spelling from the frozen configuration. Index both sides by
+    // the root-relative logical identity so equal files still match without a
+    // canonicalization syscall for every file in the scan.
+    let canonical_roots = watched_roots
+        .iter()
+        .map(|root| fs::canonicalize(root).unwrap_or_else(|_| root.clone()))
+        .collect::<Vec<_>>();
     let mut index = BTreeMap::new();
     for (event_index, event) in events.iter().enumerate() {
         for path in &event.paths {
-            index.insert(event_path_key(path), event_index);
+            if let Ok(logical) = normalized_logical_path(path, watched_roots) {
+                index.insert(logical, event_index);
+            }
             if let Ok(canonical) = fs::canonicalize(path) {
-                index.insert(event_path_key(&canonical), event_index);
+                if let Ok(logical) = normalized_logical_path(&canonical, &canonical_roots) {
+                    index.insert(logical, event_index);
+                }
             }
         }
     }
@@ -4629,7 +4641,7 @@ fn scan_watched_roots(
     let old_index = load_index(config)?;
     let baseline_created = !old_index.baseline_complete;
     let events = load_pending_events(config, &old_index)?;
-    let event_paths = work_event_path_index(&events);
+    let event_paths = work_event_path_index(&events, &config.watched_roots);
     let paths = collect_files(
         &config.watched_roots,
         &config.observation,
@@ -4669,7 +4681,7 @@ fn scan_watched_roots(
         }
         eligible_logical_paths.insert(logical.clone());
         let previous = old_index.files.get(&logical);
-        let matching_event_index = event_paths.get(&event_path_key(path)).copied();
+        let matching_event_index = event_paths.get(&logical).copied();
         let matching_event = matching_event_index.and_then(|index| events.get(index));
         let canary_rehash = !baseline_created
             && previous.is_some()
@@ -9119,6 +9131,8 @@ enum RepositoryValidatorKind {
     #[default]
     PythonPytest,
     RustCargo,
+    NodeNpm,
+    GoTest,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -10708,6 +10722,39 @@ fn try_synthesize_failed_python_cohort(
     if plan.validator_kind != RepositoryValidatorKind::PythonPytest || validation.success {
         return Ok(None);
     }
+    let diagnostic_family = match classify_public_diagnostic(&validation.command.diagnostic_tail) {
+        DiagnosticFamily::Unknown => DiagnosticFamily::AssertionContract,
+        family => family,
+    };
+    let planning_task = RepositoryTaskIR {
+        schema: REPOSITORY_REPAIR_KNOWLEDGE_SCHEMA.to_string(),
+        language: RepositoryLanguage::Python,
+        observations: vec![
+            RepositoryObservationIR {
+                kind: EvidenceKind::FailingPublicTest,
+                diagnostic_family,
+                evidence_sha256: validation.validation_id.clone(),
+                target_symbols: repository_repair_target_symbols(
+                    plan,
+                    &validation.command.diagnostic_tail,
+                ),
+                reproducible: true,
+            },
+            RepositoryObservationIR {
+                kind: EvidenceKind::SourceObservation,
+                diagnostic_family,
+                evidence_sha256: validation.scope_fingerprint_before.clone(),
+                target_symbols: plan.public_contract_target_symbols.clone(),
+                reproducible: false,
+            },
+        ],
+        preserve_public_api: true,
+        preserve_data_compatibility: true,
+        allow_dependency_changes: false,
+    };
+    if plan_repository_repair(&planning_task).disposition != RepairPlanDisposition::Ready {
+        return Ok(None);
+    }
     let mut implementation_paths = plan
         .scope_paths
         .iter()
@@ -11395,9 +11442,17 @@ fn reusable_python_test_paths(
 }
 
 fn nearest_cargo_manifest(root: &Path, relative: &Path) -> Option<PathBuf> {
+    nearest_repository_manifest(root, relative, "Cargo.toml")
+}
+
+fn nearest_repository_manifest(
+    root: &Path,
+    relative: &Path,
+    manifest_name: &str,
+) -> Option<PathBuf> {
     let mut directory = relative.parent()?.to_path_buf();
     loop {
-        let candidate = directory.join("Cargo.toml");
+        let candidate = directory.join(manifest_name);
         if root.join(&candidate).is_file() && validated_repository_file(root, &candidate).is_ok() {
             return Some(candidate);
         }
@@ -11690,6 +11745,178 @@ fn repository_validation_plan(
                     "--quiet".to_string(),
                     "--locked".to_string(),
                 ],
+            }));
+        }
+
+        let mut node_by_manifest: BTreeMap<PathBuf, Vec<(&LearningObservation, PathBuf)>> =
+            BTreeMap::new();
+        for (observation, relative) in &entries {
+            if matches!(
+                relative.extension().and_then(OsStr::to_str),
+                Some("js" | "jsx" | "ts" | "tsx")
+            ) {
+                if let Some(manifest) = nearest_repository_manifest(&root, relative, "package.json")
+                {
+                    node_by_manifest
+                        .entry(manifest)
+                        .or_default()
+                        .push((observation, relative.clone()));
+                }
+            }
+        }
+        for (manifest, node_entries) in node_by_manifest {
+            let manifest_path = validated_repository_file(&root, &manifest)?;
+            let manifest_bytes = fs::read(&manifest_path)
+                .map_err(|error| format!("REPOSITORY_NODE_MANIFEST_READ:{error}"))?;
+            let manifest_json: serde_json::Value = serde_json::from_slice(&manifest_bytes)
+                .map_err(|error| format!("REPOSITORY_NODE_MANIFEST_PARSE:{error}"))?;
+            let has_test_script = manifest_json
+                .get("scripts")
+                .and_then(serde_json::Value::as_object)
+                .and_then(|scripts| scripts.get("test"))
+                .and_then(serde_json::Value::as_str)
+                .is_some_and(|script| {
+                    let normalized = script.trim().to_ascii_lowercase();
+                    !normalized.is_empty()
+                        && normalized != "echo \"error: no test specified\" && exit 1"
+                });
+            if !has_test_script {
+                continue;
+            }
+            let Ok(program) = resolve_local_program("npm") else {
+                continue;
+            };
+            let mut input_observation_ids = node_entries
+                .iter()
+                .map(|(observation, _)| observation.observation_id.clone())
+                .collect::<Vec<_>>();
+            input_observation_ids.sort();
+            input_observation_ids.dedup();
+            let mut scope_paths = node_entries
+                .iter()
+                .map(|(_, relative)| relative.clone())
+                .collect::<Vec<_>>();
+            scope_paths.push(manifest.clone());
+            let manifest_directory = manifest.parent().unwrap_or(Path::new(""));
+            for lock_name in ["package-lock.json", "npm-shrinkwrap.json"] {
+                let lock = manifest_directory.join(lock_name);
+                if root.join(&lock).is_file() {
+                    scope_paths.push(lock);
+                }
+            }
+            scope_paths.sort();
+            scope_paths.dedup();
+            let mut test_paths = node_entries
+                .iter()
+                .filter(|(_, relative)| path_is_dedicated_test(relative))
+                .map(|(_, relative)| relative.clone())
+                .collect::<Vec<_>>();
+            test_paths.sort();
+            test_paths.dedup();
+            test_paths.truncate(MAX_REPOSITORY_TEST_PATHS);
+            if test_paths.is_empty() {
+                test_paths.push(manifest.clone());
+            }
+            let mut public_contract_target_symbols = node_entries
+                .iter()
+                .flat_map(|(observation, _)| &observation.public_contract_deltas)
+                .flat_map(|delta| delta.target_symbols.iter().cloned())
+                .collect::<Vec<_>>();
+            public_contract_target_symbols.sort();
+            public_contract_target_symbols.dedup();
+            public_contract_target_symbols.truncate(MAX_REPOSITORY_REPAIR_TARGET_SYMBOLS);
+            let package_directory = manifest_directory.to_string_lossy().replace('\\', "/");
+            let mut args = Vec::new();
+            if !package_directory.is_empty() {
+                args.extend(["--prefix".to_string(), package_directory]);
+            }
+            args.extend(["test".to_string(), "--silent".to_string()]);
+            return Ok(Some(RepositoryValidationPlan {
+                validator_kind: RepositoryValidatorKind::NodeNpm,
+                test_selection_source: "PACKAGE_TEST_SCRIPT".to_string(),
+                reused_validation_receipt_sha256: None,
+                root_index,
+                root,
+                input_observation_ids,
+                public_contract_target_symbols,
+                scope_paths,
+                test_paths,
+                program,
+                args,
+            }));
+        }
+
+        let mut go_by_manifest: BTreeMap<PathBuf, Vec<(&LearningObservation, PathBuf)>> =
+            BTreeMap::new();
+        for (observation, relative) in &entries {
+            if relative.extension().and_then(OsStr::to_str) == Some("go") {
+                if let Some(manifest) = nearest_repository_manifest(&root, relative, "go.mod") {
+                    go_by_manifest
+                        .entry(manifest)
+                        .or_default()
+                        .push((observation, relative.clone()));
+                }
+            }
+        }
+        if let Some((manifest, go_entries)) = go_by_manifest.into_iter().next() {
+            let Ok(program) = resolve_local_program("go") else {
+                continue;
+            };
+            let mut input_observation_ids = go_entries
+                .iter()
+                .map(|(observation, _)| observation.observation_id.clone())
+                .collect::<Vec<_>>();
+            input_observation_ids.sort();
+            input_observation_ids.dedup();
+            let mut scope_paths = go_entries
+                .iter()
+                .map(|(_, relative)| relative.clone())
+                .collect::<Vec<_>>();
+            scope_paths.push(manifest.clone());
+            let manifest_directory = manifest.parent().unwrap_or(Path::new(""));
+            let go_sum = manifest_directory.join("go.sum");
+            if root.join(&go_sum).is_file() {
+                scope_paths.push(go_sum);
+            }
+            scope_paths.sort();
+            scope_paths.dedup();
+            let mut test_paths = go_entries
+                .iter()
+                .filter(|(_, relative)| path_is_dedicated_test(relative))
+                .map(|(_, relative)| relative.clone())
+                .collect::<Vec<_>>();
+            test_paths.sort();
+            test_paths.dedup();
+            test_paths.truncate(MAX_REPOSITORY_TEST_PATHS);
+            if test_paths.is_empty() {
+                test_paths.push(manifest.clone());
+            }
+            let mut public_contract_target_symbols = go_entries
+                .iter()
+                .flat_map(|(observation, _)| &observation.public_contract_deltas)
+                .flat_map(|delta| delta.target_symbols.iter().cloned())
+                .collect::<Vec<_>>();
+            public_contract_target_symbols.sort();
+            public_contract_target_symbols.dedup();
+            public_contract_target_symbols.truncate(MAX_REPOSITORY_REPAIR_TARGET_SYMBOLS);
+            let module_directory = manifest_directory.to_string_lossy().replace('\\', "/");
+            let mut args = Vec::new();
+            if !module_directory.is_empty() {
+                args.extend(["-C".to_string(), module_directory]);
+            }
+            args.extend(["test".to_string(), "./...".to_string()]);
+            return Ok(Some(RepositoryValidationPlan {
+                validator_kind: RepositoryValidatorKind::GoTest,
+                test_selection_source: "GO_MODULE_TESTS".to_string(),
+                reused_validation_receipt_sha256: None,
+                root_index,
+                root,
+                input_observation_ids,
+                public_contract_target_symbols,
+                scope_paths,
+                test_paths,
+                program,
+                args,
             }));
         }
     }
@@ -12479,6 +12706,8 @@ fn runtime_repair_action(
         let validator_signal = match plan.validator_kind {
             RepositoryValidatorKind::PythonPytest => "PYTHON_PYTEST_VALIDATION",
             RepositoryValidatorKind::RustCargo => "RUST_CARGO_VALIDATION",
+            RepositoryValidatorKind::NodeNpm => "NODE_NPM_VALIDATION",
+            RepositoryValidatorKind::GoTest => "GO_TEST_VALIDATION",
         };
         Some(LearningObservation {
             observation_id: action.output_observation_ids[0].clone(),
@@ -19466,6 +19695,109 @@ mod tests {
                 "crates/example/Cargo.toml".to_string(),
             ]
         }));
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn repository_cohort_plans_node_package_and_go_module_tests() {
+        let root = temp_root("blocked-node-go-repository-validation");
+        let (_, mut config) = test_config(&root);
+        let repository = config.watched_roots[0].clone();
+
+        if resolve_local_program("npm").is_ok() {
+            fs::create_dir_all(repository.join("node/src")).unwrap();
+            fs::write(
+                repository.join("node/package.json"),
+                r#"{"name":"sample","scripts":{"test":"node --test"}}"#,
+            )
+            .unwrap();
+            fs::write(
+                repository.join("node/src/index.ts"),
+                "export const value = 1;\n",
+            )
+            .unwrap();
+            let node_observation = LearningObservation {
+                observation_id: "node-implementation".to_string(),
+                work_event_id: None,
+                logical_path: "ROOT_0/node/src/index.ts".to_string(),
+                content_sha256: "a".repeat(64),
+                predecessor_content_sha256: Some("b".repeat(64)),
+                actor: WorkActor::Codex,
+                work_kind: WorkKind::DefectRepair,
+                work_outcome: WorkOutcome::Unknown,
+                features_before: Some(StructuralFeatures::default()),
+                features_after: StructuralFeatures::default(),
+                signals: vec!["DEFECT_REPAIR".to_string()],
+                composition_roles: vec!["IMPLEMENTATION_REPAIR".to_string()],
+                learning_score: 75,
+                learning_value: LearningValue::High,
+                reasons: vec!["node repair".to_string()],
+                verification_evidence_sha256: Vec::new(),
+                performance_metrics: Vec::new(),
+                public_contract_deltas: Vec::new(),
+                exact_source_fragments_stored: 0,
+                raw_source_bytes_stored: 0,
+                observed_at_ms: 1,
+            };
+            let plan = repository_validation_plan(&config, &[node_observation])
+                .unwrap()
+                .expect("node npm validation plan");
+            assert_eq!(plan.validator_kind, RepositoryValidatorKind::NodeNpm);
+            assert_eq!(plan.test_selection_source, "PACKAGE_TEST_SCRIPT");
+            assert!(plan
+                .args
+                .windows(2)
+                .any(|pair| { pair == ["--prefix".to_string(), "node".to_string()] }));
+        }
+
+        if resolve_local_program("go").is_ok() {
+            let go_repository = root.join("go-watched");
+            fs::create_dir_all(go_repository.join("module")).unwrap();
+            fs::write(
+                go_repository.join("module/go.mod"),
+                "module example.invalid/sample\n\ngo 1.22\n",
+            )
+            .unwrap();
+            fs::write(
+                go_repository.join("module/value.go"),
+                "package sample\n\nfunc Value() int { return 1 }\n",
+            )
+            .unwrap();
+            config.watched_roots[0] = go_repository;
+            let go_observation = LearningObservation {
+                observation_id: "go-implementation".to_string(),
+                work_event_id: None,
+                logical_path: "ROOT_0/module/value.go".to_string(),
+                content_sha256: "c".repeat(64),
+                predecessor_content_sha256: Some("d".repeat(64)),
+                actor: WorkActor::Codex,
+                work_kind: WorkKind::DefectRepair,
+                work_outcome: WorkOutcome::Unknown,
+                features_before: Some(StructuralFeatures::default()),
+                features_after: StructuralFeatures::default(),
+                signals: vec!["DEFECT_REPAIR".to_string()],
+                composition_roles: vec!["IMPLEMENTATION_REPAIR".to_string()],
+                learning_score: 75,
+                learning_value: LearningValue::High,
+                reasons: vec!["go repair".to_string()],
+                verification_evidence_sha256: Vec::new(),
+                performance_metrics: Vec::new(),
+                public_contract_deltas: Vec::new(),
+                exact_source_fragments_stored: 0,
+                raw_source_bytes_stored: 0,
+                observed_at_ms: 1,
+            };
+            let plan = repository_validation_plan(&config, &[go_observation])
+                .unwrap()
+                .expect("go test validation plan");
+            assert_eq!(plan.validator_kind, RepositoryValidatorKind::GoTest);
+            assert_eq!(plan.test_selection_source, "GO_MODULE_TESTS");
+            assert!(plan
+                .args
+                .windows(2)
+                .any(|pair| { pair == ["-C".to_string(), "module".to_string()] }));
+        }
+
         fs::remove_dir_all(root).unwrap();
     }
 

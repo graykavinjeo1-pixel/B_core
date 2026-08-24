@@ -1,0 +1,10 @@
+{
+  "schema": "SYNTHETIC_REPOSITORY_REPAIR_GROWTH_3",
+  "pass": true,
+  "families_exercised": 8,
+  "families_passed": 8,
+  "evidence_quorum_composition": true,
+  "information_gain_probe_utility": true,
+  "task_identity_routing_events": 0,
+  "reference_solution_imports": 0
+}

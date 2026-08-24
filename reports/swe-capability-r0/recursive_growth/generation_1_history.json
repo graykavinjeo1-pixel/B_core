@@ -1,0 +1,12 @@
+{
+  "campaign_id": "G00000000000000000001-b5bd1df532003bd9",
+  "generation_attempted": 1,
+  "accepted": true,
+  "predecessor_memory_sha256": "e6df8a5da57c8c224704b3f586b1e1eb2bad9ee3f731548573015a0d0fe049bf",
+  "resulting_memory_sha256": "bbe2cbde0e383ade7af93a07baea967acb4caeec89c9de59fa1f7c5db06e5540",
+  "freeze_sha256": "46542d8676e9dabd0f534e4c2f9fe4eea0a1fbf9f85ea05fbf90c8b16bbc6cb5",
+  "candidate_sha256": "dd7122e470a6c793aebec3878535e74af8ee4625622aff9b5d57416318b77f4a",
+  "verification_receipt_sha256": "59ca08a517e9af41108db0a0b5140c4b1ce36802e55f4008b135cd631a658eaf",
+  "rollback_reference": "e6df8a5da57c8c224704b3f586b1e1eb2bad9ee3f731548573015a0d0fe049bf",
+  "failed_candidate_deleted": false
+}

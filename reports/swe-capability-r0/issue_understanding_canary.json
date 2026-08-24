@@ -1,0 +1,21 @@
+{
+  "schema": "B_REPOSITORY_ISSUE_UNDERSTANDING_1",
+  "pass": true,
+  "fresh_synthetic_issues": 20,
+  "structured_issues": 16,
+  "bilingual_equivalence_checks": 4,
+  "bilingual_equivalence_passes": 4,
+  "negation_scope_checks": 8,
+  "negation_scope_passes": 8,
+  "ambiguity_checks": 4,
+  "ambiguity_passes": 4,
+  "planner_fail_closed_checks": 16,
+  "planner_fail_closed_passes": 16,
+  "failed_case_ids": [],
+  "issue_text_to_patch_shortcut_events": 0,
+  "task_identity_routing_events": 0,
+  "repository_identity_routing_events": 0,
+  "external_llm_calls": 0,
+  "network_reads": 0,
+  "official_benchmark_score_claimed": false
+}
