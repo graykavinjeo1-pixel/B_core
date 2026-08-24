@@ -76,6 +76,7 @@ pub const SUPERVISOR_SCHEMA: &str = "B_CORE_BOUNDED_GROWTH_SUPERVISOR_1";
 pub const CONFIG_SCHEMA: &str = "B_CORE_BOUNDED_GROWTH_CONFIG_1";
 pub const VERIFIER_SCHEMA: &str = "B_CORE_BOUNDED_GROWTH_VERIFIER_1";
 pub const COMPOUND_GROWTH_INTEGRATION_SCHEMA: &str = "B_CORE_COMPOUND_GROWTH_INTEGRATION_1";
+pub const LINEAGE_CONTINUATION_SCHEMA: &str = "B_CORE_LINEAGE_CONTINUATION_1";
 const MAX_COMPOUND_INPUTS_PER_STEP: usize = 8;
 const MAX_PENDING_COMPOUND_INPUTS: usize = 256;
 const MAX_COMPOUND_INPUT_BYTES: u64 = 16 * 1024 * 1024;
@@ -225,6 +226,36 @@ pub struct GrowthSupervisorConfig {
     pub source_mutation: AutonomousSourceMutationPolicy,
     #[serde(default, skip_serializing_if = "RepositoryMutationPolicy::is_default")]
     pub repository_mutation: RepositoryMutationPolicy,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct LineageStoreReceipt {
+    pub relative_store: String,
+    pub files: u64,
+    pub bytes: u64,
+    pub tree_sha256: String,
+}
+
+/// Machine-readable proof that a new bounded state line inherited executable
+/// production memory from an exact sealed predecessor without carrying its
+/// build products, control files, or mutable campaign worktrees.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct LineageContinuationReceipt {
+    pub schema: String,
+    pub predecessor_config_sha256: String,
+    pub predecessor_state_sha256: String,
+    pub predecessor_state_dir: PathBuf,
+    pub predecessor_generation: u64,
+    pub predecessor_memory_sha256: String,
+    pub successor_config_sha256: String,
+    pub successor_state_dir: PathBuf,
+    pub successor_initial_state_sha256: String,
+    pub carried_memory_sha256: Vec<String>,
+    pub carried_stores: Vec<LineageStoreReceipt>,
+    pub prestart_autonomous_research_events: u64,
+    pub prestart_future_instance_exposure_events: u64,
+    pub created_at_ms: u64,
+    pub receipt_sha256: String,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -3037,6 +3068,413 @@ fn directory_bytes(root: &Path) -> Result<u64, String> {
         }
     }
     Ok(total)
+}
+
+fn lineage_receipt_hash(receipt: &LineageContinuationReceipt) -> Result<String, String> {
+    let mut unsigned = receipt.clone();
+    unsigned.receipt_sha256.clear();
+    json_sha256(&unsigned)
+}
+
+fn directory_has_entries(path: &Path) -> Result<bool, String> {
+    if !path.exists() {
+        return Ok(false);
+    }
+    fs::read_dir(path)
+        .map_err(|error| format!("LINEAGE_DIRECTORY_READ:{}:{error}", path.display()))?
+        .next()
+        .transpose()
+        .map(|entry| entry.is_some())
+        .map_err(|error| format!("LINEAGE_DIRECTORY_ENTRY:{}:{error}", path.display()))
+}
+
+fn copy_lineage_store(
+    predecessor_root: &Path,
+    successor_root: &Path,
+    relative_store: &str,
+    json_only: bool,
+    max_bytes: u64,
+) -> Result<LineageStoreReceipt, String> {
+    let source = predecessor_root.join(relative_store);
+    let destination = successor_root.join(relative_store);
+    if !source.exists() {
+        return Ok(LineageStoreReceipt {
+            relative_store: relative_store.to_string(),
+            files: 0,
+            bytes: 0,
+            tree_sha256: sha256(&[]),
+        });
+    }
+    let root_metadata = fs::symlink_metadata(&source)
+        .map_err(|error| format!("LINEAGE_STORE_METADATA:{}:{error}", source.display()))?;
+    if root_metadata.file_type().is_symlink() || !root_metadata.is_dir() {
+        return Err(format!(
+            "LINEAGE_STORE_NOT_PLAIN_DIRECTORY:{}",
+            source.display()
+        ));
+    }
+
+    let mut pending = vec![source.clone()];
+    let mut files = Vec::new();
+    while let Some(directory) = pending.pop() {
+        for entry in fs::read_dir(&directory)
+            .map_err(|error| format!("LINEAGE_STORE_READ_DIR:{}:{error}", directory.display()))?
+        {
+            let entry = entry.map_err(|error| format!("LINEAGE_STORE_ENTRY:{error}"))?;
+            let metadata = fs::symlink_metadata(entry.path()).map_err(|error| {
+                format!(
+                    "LINEAGE_STORE_ENTRY_METADATA:{}:{error}",
+                    entry.path().display()
+                )
+            })?;
+            if metadata.file_type().is_symlink() {
+                return Err(format!(
+                    "LINEAGE_STORE_SYMLINK_FORBIDDEN:{}",
+                    entry.path().display()
+                ));
+            }
+            if metadata.is_dir() {
+                pending.push(entry.path());
+            } else if metadata.is_file() {
+                if !json_only || entry.path().extension().and_then(OsStr::to_str) == Some("json") {
+                    files.push(entry.path());
+                }
+            } else {
+                return Err(format!(
+                    "LINEAGE_STORE_SPECIAL_FILE_FORBIDDEN:{}",
+                    entry.path().display()
+                ));
+            }
+        }
+    }
+    files.sort();
+
+    let mut total_bytes = 0_u64;
+    let mut manifest = Vec::with_capacity(files.len());
+    for source_path in files {
+        let relative = source_path
+            .strip_prefix(&source)
+            .map_err(|error| format!("LINEAGE_STORE_RELATIVE_PATH:{error}"))?;
+        let bytes = fs::read(&source_path)
+            .map_err(|error| format!("LINEAGE_STORE_READ:{}:{error}", source_path.display()))?;
+        total_bytes = total_bytes.saturating_add(bytes.len().min(u64::MAX as usize) as u64);
+        if total_bytes > max_bytes {
+            return Err(format!("LINEAGE_STORE_BOUND_REACHED:{relative_store}"));
+        }
+        let destination_path = destination.join(relative);
+        let parent = destination_path.parent().ok_or_else(|| {
+            format!(
+                "LINEAGE_STORE_PARENT_MISSING:{}",
+                destination_path.display()
+            )
+        })?;
+        fs::create_dir_all(parent)
+            .map_err(|error| format!("LINEAGE_STORE_MKDIR:{}:{error}", parent.display()))?;
+        let mut file = OpenOptions::new()
+            .write(true)
+            .create_new(true)
+            .open(&destination_path)
+            .map_err(|error| {
+                format!(
+                    "LINEAGE_STORE_CREATE:{}:{error}",
+                    destination_path.display()
+                )
+            })?;
+        file.write_all(&bytes)
+            .and_then(|_| file.sync_all())
+            .map_err(|error| {
+                format!("LINEAGE_STORE_WRITE:{}:{error}", destination_path.display())
+            })?;
+        let normalized = relative.to_string_lossy().replace('\\', "/");
+        manifest.push(format!("{normalized}:{}:{}", bytes.len(), sha256(&bytes)));
+    }
+    Ok(LineageStoreReceipt {
+        relative_store: relative_store.to_string(),
+        files: manifest.len().min(u64::MAX as usize) as u64,
+        bytes: total_bytes,
+        tree_sha256: sha256(manifest.join("\n").as_bytes()),
+    })
+}
+
+fn validate_lineage_successor_config(
+    predecessor: &GrowthSupervisorConfig,
+    successor: &GrowthSupervisorConfig,
+    state: &SupervisorState,
+) -> Result<(), String> {
+    if predecessor.state_dir == successor.state_dir {
+        return Err("LINEAGE_SUCCESSOR_STATE_DIR_NOT_NEW".to_string());
+    }
+    if predecessor.schema != successor.schema
+        || predecessor.watched_roots != successor.watched_roots
+        || predecessor.verifier_executable != successor.verifier_executable
+        || predecessor.poll_interval_ms != successor.poll_interval_ms
+        || predecessor.lease_stale_ms != successor.lease_stale_ms
+        || predecessor.autonomous_campaigns != successor.autonomous_campaigns
+        || predecessor.observation != successor.observation
+        || predecessor.repository_mutation != successor.repository_mutation
+    {
+        return Err("LINEAGE_SUCCESSOR_POLICY_DRIFT".to_string());
+    }
+    let mut predecessor_source = predecessor.source_mutation.clone();
+    let mut successor_source = successor.source_mutation.clone();
+    predecessor_source.max_installations = 0;
+    successor_source.max_installations = 0;
+    if predecessor_source != successor_source
+        || successor.source_mutation.max_installations
+            < predecessor.source_mutation.max_installations
+        || successor.source_mutation.max_installations < state.autonomous_source_patches_installed
+    {
+        return Err("LINEAGE_SUCCESSOR_SOURCE_POLICY_DRIFT".to_string());
+    }
+
+    let before = &predecessor.resources;
+    let after = &successor.resources;
+    if before.max_bytes_per_scan != after.max_bytes_per_scan
+        || before.max_files_per_scan != after.max_files_per_scan
+        || before.max_file_bytes != after.max_file_bytes
+        || before.max_observations_per_campaign != after.max_observations_per_campaign
+        || before.max_pending_observations != after.max_pending_observations
+        || before.max_lessons != after.max_lessons
+        || before.max_consecutive_failures != after.max_consecutive_failures
+        || before.plateau_scans_before_wait != after.plateau_scans_before_wait
+        || after.max_lifetime_campaigns < before.max_lifetime_campaigns
+        || after.max_generations < before.max_generations
+        || after.max_active_runtime_ms < before.max_active_runtime_ms
+        || after.max_state_bytes < before.max_state_bytes
+        || after.max_observed_bytes < before.max_observed_bytes
+        || after.max_lifetime_campaigns <= state.campaigns_started
+        || after.max_generations <= state.generation
+        || after.max_active_runtime_ms <= state.active_runtime_ms
+        || after.max_observed_bytes <= state.observed_bytes
+    {
+        return Err("LINEAGE_SUCCESSOR_RESOURCE_BOUND_INVALID".to_string());
+    }
+    let triggering_bound_expanded = match state.stop_reason.as_deref() {
+        Some("MAX_LIFETIME_CAMPAIGNS_REACHED") => {
+            after.max_lifetime_campaigns > before.max_lifetime_campaigns
+        }
+        Some("MAX_GENERATIONS_REACHED") => after.max_generations > before.max_generations,
+        Some("MAX_ACTIVE_RUNTIME_REACHED") => {
+            after.max_active_runtime_ms > before.max_active_runtime_ms
+        }
+        Some("MAX_OBSERVED_BYTES_REACHED") => after.max_observed_bytes > before.max_observed_bytes,
+        Some("MAX_STATE_BYTES_REACHED") => after.max_state_bytes > before.max_state_bytes,
+        _ => false,
+    };
+    if !triggering_bound_expanded {
+        return Err("LINEAGE_PREDECESSOR_NOT_EXPANDABLE_RESOURCE_STOP".to_string());
+    }
+    Ok(())
+}
+
+/// Creates a fresh bounded supervisor state line from a sealed hard-stopped
+/// predecessor. The operation is infrastructure-only: it preserves learned
+/// state and pending typed inputs, but executes no scan, campaign, repair,
+/// verifier, or difficulty-selection action.
+pub fn continue_lineage(
+    predecessor_config_path: &Path,
+    successor_config_path: &Path,
+) -> Result<LineageContinuationReceipt, String> {
+    let predecessor = load_config(predecessor_config_path)?;
+    let successor = load_config(successor_config_path)?;
+    let frozen: GrowthSupervisorConfig =
+        read_json(&predecessor.state_dir.join("config.freeze.json"))?;
+    if config_hash(&frozen)? != config_hash(&predecessor)? {
+        return Err("LINEAGE_PREDECESSOR_CONFIG_NOT_SEALED".to_string());
+    }
+    let predecessor_state = load_state(&predecessor)?;
+    if predecessor_state.phase != SupervisorPhase::SafeStopped
+        || predecessor_state.pending_campaign_id.is_some()
+        || predecessor_state.prestart_autonomous_research_events != 0
+        || predecessor_state.prestart_future_instance_exposure_events != 0
+    {
+        return Err("LINEAGE_PREDECESSOR_NOT_CLEANLY_SEALED".to_string());
+    }
+    if predecessor
+        .state_dir
+        .join("control")
+        .join("supervisor.lease")
+        .exists()
+        || predecessor
+            .state_dir
+            .join("control")
+            .join(crate::autonomous_source_mutation::SELF_UPDATE_HANDOFF_FILE)
+            .exists()
+        || directory_has_entries(
+            &predecessor
+                .state_dir
+                .join("repository_install_transactions"),
+        )?
+    {
+        return Err("LINEAGE_PREDECESSOR_HAS_ACTIVE_TRANSACTION".to_string());
+    }
+    validate_lineage_successor_config(&predecessor, &successor, &predecessor_state)?;
+    if successor.state_dir.exists() {
+        return Err("LINEAGE_SUCCESSOR_STATE_DIR_EXISTS".to_string());
+    }
+
+    let current_memory = load_memory(&predecessor, predecessor_state.generation)?;
+    if json_sha256(&current_memory)? != predecessor_state.current_memory_sha256 {
+        return Err("LINEAGE_CURRENT_MEMORY_HASH_MISMATCH".to_string());
+    }
+    let mut carried_memories = vec![current_memory.clone()];
+    if let Some(expected_predecessor_hash) = &predecessor_state.predecessor_memory_sha256 {
+        let generation = predecessor_state
+            .generation
+            .checked_sub(1)
+            .ok_or_else(|| "LINEAGE_PREDECESSOR_MEMORY_GENERATION_INVALID".to_string())?;
+        let memory = load_memory(&predecessor, generation)?;
+        if json_sha256(&memory)? != *expected_predecessor_hash {
+            return Err("LINEAGE_PREDECESSOR_MEMORY_HASH_MISMATCH".to_string());
+        }
+        carried_memories.push(memory);
+    }
+    carried_memories.sort_by_key(|memory| memory.generation);
+
+    let parent = successor
+        .state_dir
+        .parent()
+        .ok_or_else(|| "LINEAGE_SUCCESSOR_PARENT_MISSING".to_string())?;
+    fs::create_dir_all(parent)
+        .map_err(|error| format!("LINEAGE_SUCCESSOR_PARENT_CREATE:{error}"))?;
+    let state_name = successor
+        .state_dir
+        .file_name()
+        .and_then(OsStr::to_str)
+        .ok_or_else(|| "LINEAGE_SUCCESSOR_NAME_INVALID".to_string())?;
+    let staging = parent.join(format!(
+        ".{state_name}.lineage-{}-{}.tmp",
+        std::process::id(),
+        now_ms()
+    ));
+    fs::create_dir(&staging).map_err(|error| format!("LINEAGE_STAGING_CREATE:{error}"))?;
+
+    let result = (|| {
+        let canonical_staging = fs::canonicalize(&staging)
+            .map_err(|error| format!("LINEAGE_STAGING_CANONICALIZE:{error}"))?;
+        if successor.watched_roots.iter().any(|root| {
+            fs::canonicalize(root)
+                .map(|canonical_root| is_path_within(&canonical_staging, &canonical_root))
+                .unwrap_or(true)
+        }) {
+            return Err("LINEAGE_SUCCESSOR_STATE_INSIDE_WATCH_ROOT_FORBIDDEN".to_string());
+        }
+        for directory in [
+            "state",
+            "journal",
+            "index",
+            "observations",
+            "events",
+            "campaigns",
+            "history",
+            "memory",
+            "invalidated_generations",
+            "control",
+            "source_mutations",
+            "compound_growth/queue",
+            "compound_growth/receipts",
+        ] {
+            fs::create_dir_all(staging.join(directory))
+                .map_err(|error| format!("LINEAGE_STATE_DIR_CREATE:{directory}:{error}"))?;
+        }
+        write_immutable_json(&staging.join("config.freeze.json"), &successor)?;
+        let mut carried_memory_sha256 = Vec::new();
+        for memory in &carried_memories {
+            let hash = json_sha256(memory)?;
+            write_immutable_json(
+                &staging
+                    .join("memory")
+                    .join(format!("generation_{:020}.json", memory.generation)),
+                memory,
+            )?;
+            carried_memory_sha256.push(hash);
+        }
+
+        let stores = [
+            ("index", false),
+            ("observations", true),
+            ("events", true),
+            ("source_repair_knowledge", true),
+            ("improvement_operator_repository", true),
+            ("compiler_diagnostic_cache", true),
+            ("source_mutations", true),
+            ("compound_growth", true),
+            ("control/source_patch_queue", true),
+        ];
+        let mut carried_stores = Vec::with_capacity(stores.len());
+        for (relative, json_only) in stores {
+            carried_stores.push(copy_lineage_store(
+                &predecessor.state_dir,
+                &staging,
+                relative,
+                json_only,
+                successor.resources.max_state_bytes,
+            )?);
+        }
+
+        let mut successor_state = predecessor_state.clone();
+        successor_state.sequence = 1;
+        successor_state.phase = SupervisorPhase::InfraReady;
+        successor_state.config_sha256 = config_hash(&successor)?;
+        successor_state.pending_campaign_id = None;
+        successor_state.stop_reason = None;
+        successor_state.last_transition_ms = now_ms();
+        // Discovery suppression is an engine-local cache, not learned
+        // semantic authority. Clearing it lets a newly deployed engine inspect
+        // the exact inherited source once without replaying old observations.
+        successor_state.last_source_discovery_state_sha256 = None;
+        let successor_state_sha256 = json_sha256(&successor_state)?;
+        write_immutable_json(
+            &staging
+                .join("state")
+                .join("state_00000000000000000001.json"),
+            &successor_state,
+        )?;
+        write_immutable_json(
+            &staging
+                .join("journal")
+                .join("transition_00000000000000000001.json"),
+            &TransitionRecord {
+                schema: SUPERVISOR_SCHEMA.to_string(),
+                sequence: 1,
+                from: SupervisorPhase::SafeStopped,
+                to: SupervisorPhase::InfraReady,
+                reason: "CONTINUED_FROM_SEALED_HARD_RESOURCE_STOP".to_string(),
+                state_sha256: successor_state_sha256.clone(),
+                occurred_at_ms: successor_state.last_transition_ms,
+            },
+        )?;
+
+        let mut receipt = LineageContinuationReceipt {
+            schema: LINEAGE_CONTINUATION_SCHEMA.to_string(),
+            predecessor_config_sha256: config_hash(&predecessor)?,
+            predecessor_state_sha256: json_sha256(&predecessor_state)?,
+            predecessor_state_dir: predecessor.state_dir.clone(),
+            predecessor_generation: predecessor_state.generation,
+            predecessor_memory_sha256: predecessor_state.current_memory_sha256.clone(),
+            successor_config_sha256: config_hash(&successor)?,
+            successor_state_dir: successor.state_dir.clone(),
+            successor_initial_state_sha256: successor_state_sha256,
+            carried_memory_sha256,
+            carried_stores,
+            prestart_autonomous_research_events: 0,
+            prestart_future_instance_exposure_events: 0,
+            created_at_ms: now_ms(),
+            receipt_sha256: String::new(),
+        };
+        receipt.receipt_sha256 = lineage_receipt_hash(&receipt)?;
+        write_immutable_json(&staging.join("lineage_predecessor.json"), &receipt)?;
+        if directory_bytes(&staging)? > successor.resources.max_state_bytes {
+            return Err("LINEAGE_SUCCESSOR_STATE_BOUND_REACHED".to_string());
+        }
+        fs::rename(&staging, &successor.state_dir)
+            .map_err(|error| format!("LINEAGE_SUCCESSOR_COMMIT:{error}"))?;
+        Ok(receipt)
+    })();
+    if result.is_err() && staging.exists() {
+        let _ = fs::remove_dir_all(&staging);
+    }
+    result
 }
 
 pub fn initialize(config_path: &Path) -> Result<SupervisorState, String> {
@@ -10860,6 +11298,148 @@ mod tests {
         let config_path = root.join("config.json");
         write_immutable_json(&config_path, &config).unwrap();
         (config_path, config)
+    }
+
+    #[test]
+    fn sealed_resource_stop_continues_with_memory_and_executable_knowledge_only() {
+        let root = temp_root("lineage-continuation");
+        let watched = root.join("watched");
+        fs::create_dir_all(&watched).unwrap();
+        let verifier = root.join(if cfg!(windows) {
+            "verifier.exe"
+        } else {
+            "verifier"
+        });
+        fs::write(&verifier, b"independent verifier placeholder").unwrap();
+
+        let predecessor_config_path = root.join("predecessor.json");
+        let mut predecessor =
+            GrowthSupervisorConfig::bounded_default(root.join("state-r4"), watched, verifier);
+        predecessor.poll_interval_ms = 1_000;
+        predecessor.lease_stale_ms = 3_000;
+        predecessor.resources.max_generations = 1;
+        predecessor.autonomous_campaigns = false;
+        predecessor.repository_mutation.enabled = false;
+        write_immutable_json(&predecessor_config_path, &predecessor).unwrap();
+        let mut predecessor_state = initialize(&predecessor_config_path).unwrap();
+        let memory_zero = load_memory(&predecessor, 0).unwrap();
+        let memory_zero_sha256 = json_sha256(&memory_zero).unwrap();
+        let mut memory_one = memory_zero.clone();
+        memory_one.generation = 1;
+        memory_one.predecessor_sha256 = Some(memory_zero_sha256.clone());
+        memory_one.lessons.push(LearnedCompositionLesson {
+            lesson_id: "EXECUTABLE-LINEAGE-LESSON".to_string(),
+            evidence_observation_sha256: vec!["a".repeat(64)],
+            work_kinds: vec![WorkKind::DefectRepair],
+            diagnostic_signals: vec!["VALIDATED_REPAIR".to_string()],
+            composition_recipe: vec!["REPLACE".to_string()],
+            applicability: vec!["SAME_STRUCTURAL_FAMILY".to_string()],
+            verification_obligations: vec!["PUBLIC_REGRESSION".to_string()],
+            performance_metrics: Vec::new(),
+            public_contract_deltas: Vec::new(),
+            learning_score: 90,
+            exact_patch_data_present: false,
+            exact_source_fragment_present: false,
+            raw_source_bytes_present: false,
+        });
+        let memory_one_sha256 = json_sha256(&memory_one).unwrap();
+        write_immutable_json(&memory_path(&predecessor, 1), &memory_one).unwrap();
+        predecessor_state.generation = 1;
+        predecessor_state.current_memory_sha256 = memory_one_sha256.clone();
+        predecessor_state.predecessor_memory_sha256 = Some(memory_zero_sha256.clone());
+        predecessor_state.stop_reason = Some("MAX_GENERATIONS_REACHED".to_string());
+        save_transition(
+            &predecessor,
+            &mut predecessor_state,
+            SupervisorPhase::SafeStopped,
+            "TEST_RESOURCE_STOP",
+        )
+        .unwrap();
+
+        let mut index = FileIndex {
+            baseline_complete: true,
+            ..FileIndex::default()
+        };
+        index
+            .consumed_work_event_ids
+            .insert("already-consumed".to_string());
+        save_index(&predecessor, &mut index).unwrap();
+        write_immutable_json(
+            &predecessor
+                .state_dir
+                .join("source_repair_knowledge")
+                .join("operator.json"),
+            &serde_json::json!({"executable": true}),
+        )
+        .unwrap();
+        write_immutable_json(
+            &predecessor
+                .state_dir
+                .join("source_mutations")
+                .join("PATCH-1")
+                .join("receipt.json"),
+            &serde_json::json!({"installed": true}),
+        )
+        .unwrap();
+        let staged_binary = predecessor
+            .state_dir
+            .join("source_mutations")
+            .join("PATCH-1")
+            .join("staging")
+            .join("growth-supervisor.exe");
+        fs::create_dir_all(staged_binary.parent().unwrap()).unwrap();
+        fs::write(&staged_binary, b"disposable build product").unwrap();
+
+        let drifted_config_path = root.join("drifted-successor.json");
+        let mut drifted = predecessor.clone();
+        drifted.state_dir = root.join("state-policy-drift");
+        drifted.resources.max_generations = 2;
+        drifted.observation.minimum_learning_score += 1;
+        write_immutable_json(&drifted_config_path, &drifted).unwrap();
+        assert_eq!(
+            continue_lineage(&predecessor_config_path, &drifted_config_path).unwrap_err(),
+            "LINEAGE_SUCCESSOR_POLICY_DRIFT"
+        );
+        assert!(!drifted.state_dir.exists());
+
+        let successor_config_path = root.join("successor.json");
+        let mut successor = predecessor.clone();
+        successor.state_dir = root.join("state-r5");
+        successor.resources.max_generations = 2;
+        write_immutable_json(&successor_config_path, &successor).unwrap();
+
+        let receipt = continue_lineage(&predecessor_config_path, &successor_config_path).unwrap();
+        assert_eq!(receipt.schema, LINEAGE_CONTINUATION_SCHEMA);
+        assert_eq!(receipt.predecessor_generation, 1);
+        assert_eq!(receipt.predecessor_memory_sha256, memory_one_sha256);
+        assert_eq!(receipt.carried_memory_sha256.len(), 2);
+        assert_eq!(
+            receipt.receipt_sha256,
+            lineage_receipt_hash(&receipt).unwrap()
+        );
+        let continued = status(&successor_config_path).unwrap();
+        assert_eq!(continued.generation, 1);
+        assert_eq!(continued.phase, SupervisorPhase::InfraReady);
+        assert_eq!(continued.stop_reason, None);
+        assert_eq!(continued.current_memory_sha256, memory_one_sha256);
+        assert_eq!(
+            continued.predecessor_memory_sha256,
+            Some(memory_zero_sha256)
+        );
+        assert!(successor
+            .state_dir
+            .join("source_repair_knowledge/operator.json")
+            .is_file());
+        assert!(successor
+            .state_dir
+            .join("source_mutations/PATCH-1/receipt.json")
+            .is_file());
+        assert!(!successor
+            .state_dir
+            .join("source_mutations/PATCH-1/staging/growth-supervisor.exe")
+            .exists());
+        assert_eq!(load_index(&successor).unwrap(), index);
+        fs::remove_dir_all(root).unwrap();
     }
 
     fn typed_behavior_goal_fixture(goal_id: &str) -> TypedMechanismSynthesisGoalIR {

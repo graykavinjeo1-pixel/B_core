@@ -42,7 +42,7 @@ After the configured number of scans without high-value evidence, the state beco
 
 The frozen configuration limits lifetime campaigns, accepted generations, active processing time, state bytes, total observed bytes, bytes per scan, files per scan, bytes per file, pending observations, observations per campaign, retained lessons, and consecutive failures. Reaching a hard bound produces `SAFE_STOPPED`; it does not silently reset a budget.
 
-Only operator stop can be resumed in place. A hard resource stop requires a new explicitly frozen configuration and state line.
+Only operator stop can be resumed in place. A hard resource stop requires a new explicitly frozen configuration and state line. `continue-lineage` creates that line without resetting accepted memory: it requires a clean `SAFE_STOPPED` predecessor, rejects policy drift, carries only the current and immediate predecessor memory plus bounded executable-knowledge/index stores, and excludes build products, old campaigns, mutable control files, and staging binaries. It performs no scan, repair, verifier run, or difficulty selection.
 
 ### Same-attempt source revision
 
@@ -80,6 +80,12 @@ Only the current and immediate predecessor full memory snapshots are retained. S
 .\bin\b-core-growth-supervisor.exe init .\config\growth.json
 .\bin\b-core-growth-supervisor.exe step .\config\growth.json
 .\bin\b-core-growth-supervisor.exe status .\config\growth.json
+
+# Continue an exact hard-stopped lineage under a separately frozen, larger
+# resource envelope. The successor state directory must not already exist.
+.\bin\b-core-growth-supervisor.exe continue-lineage `
+  .\config\growth-r4.json `
+  .\config\growth-r5.json
 
 # Always-on foreground mode.
 .\bin\b-core-growth-supervisor.exe run .\config\growth.json

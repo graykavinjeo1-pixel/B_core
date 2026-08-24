@@ -5,9 +5,9 @@ use semantic_reasoning::compound_growth::{
     run_compound_growth_cycle, CompoundGrowthCycleRequestIR, CompoundGrowthInputIR,
 };
 use semantic_reasoning::growth_supervisor::{
-    cleanup_source_staging, compound_growth_status, initialize, make_config, preview_source_repair,
-    record_compound_growth_input, record_work_event, request_resume, request_stop, run_daemon,
-    self_check, status, supervisor_step, WorkEvent,
+    cleanup_source_staging, compound_growth_status, continue_lineage, initialize, make_config,
+    preview_source_repair, record_compound_growth_input, record_work_event, request_resume,
+    request_stop, run_daemon, self_check, status, supervisor_step, WorkEvent,
 };
 
 const MAX_COMPOUND_INPUT_BYTES: u64 = 16 * 1024 * 1024;
@@ -50,6 +50,16 @@ fn run() -> Result<(), String> {
             println!(
                 "{}",
                 serde_json::to_string_pretty(&initialize(&config)?).map_err(|e| e.to_string())?
+            );
+        }
+        "continue-lineage" => {
+            let predecessor = next_path(&mut args, "PREDECESSOR_CONFIG_PATH_MISSING")?;
+            let successor = next_path(&mut args, "SUCCESSOR_CONFIG_PATH_MISSING")?;
+            ensure_no_more(&mut args)?;
+            println!(
+                "{}",
+                serde_json::to_string_pretty(&continue_lineage(&predecessor, &successor)?)
+                    .map_err(|e| e.to_string())?
             );
         }
         "step" => {
@@ -199,5 +209,5 @@ fn ensure_no_more(args: &mut impl Iterator<Item = std::ffi::OsString>) -> Result
 }
 
 fn usage() -> String {
-    "USAGE:<self-check|make-config|init|step|run|status|cleanup-source-staging|preview-source-repair|stop|resume|record-event|record-compound-input|compound-status|compound-cycle> ...".to_string()
+    "USAGE:<self-check|make-config|init|continue-lineage|step|run|status|cleanup-source-staging|preview-source-repair|stop|resume|record-event|record-compound-input|compound-status|compound-cycle> ...".to_string()
 }
