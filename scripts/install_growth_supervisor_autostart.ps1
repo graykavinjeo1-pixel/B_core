@@ -40,6 +40,11 @@ $settings = New-ScheduledTaskSettingsSet `
     -ExecutionTimeLimit ([TimeSpan]::Zero) `
     -RestartCount 3 `
     -RestartInterval (New-TimeSpan -Minutes 1)
+# Task Scheduler defaults to priority 7 (below normal), which also lowers the
+# memory/I/O scheduling priority inherited by Cargo and rustc.  The supervisor
+# is already bounded by explicit CPU, time, and state budgets; priority 4 keeps
+# validation responsive without elevating it above ordinary foreground work.
+$settings.Priority = 4
 $null = Register-ScheduledTask `
     -TaskName $TaskName `
     -Action $action `
@@ -59,6 +64,7 @@ if ($StartNow) {
     task_name = $TaskName
     trigger = "ONLOGON"
     run_level = "LIMITED"
+    task_priority = 4
     executable = $powershell
     arguments = $taskArguments
     state_recovery = "IMMUTABLE_SNAPSHOT_AND_JOURNAL"
