@@ -745,6 +745,7 @@ pub fn eval_scalar(
             .ok_or_else(|| format!("SCALAR_ARGUMENT:{index}")),
         ScalarExpression::Constant { value } => Ok(Value::Int(*value)),
         ScalarExpression::BoolConstant { value } => Ok(Value::Bool(*value)),
+        ScalarExpression::StringConstant { value } => Ok(Value::String(value.clone())),
         ScalarExpression::Unary { operator, input } => {
             eval_unary(*operator, eval_scalar(input, arguments, apis)?)
         }

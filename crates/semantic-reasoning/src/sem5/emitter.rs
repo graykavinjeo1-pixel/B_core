@@ -629,6 +629,9 @@ fn emit_scalar_expression(expression: &ScalarExpression) -> Result<String, Strin
         ScalarExpression::Argument { index } => Ok(format!("a{index}")),
         ScalarExpression::Constant { value } => Ok(format!("{value}i64")),
         ScalarExpression::BoolConstant { value } => Ok(value.to_string()),
+        ScalarExpression::StringConstant { value } => serde_json::to_string(value)
+            .map(|literal| format!("{literal}.to_string()"))
+            .map_err(|error| format!("SCALAR_STRING_LITERAL_SERIALIZE:{error}")),
         ScalarExpression::Unary { operator, input } => {
             let input = emit_scalar_expression(input)?;
             Ok(match operator {

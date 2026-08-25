@@ -61,6 +61,9 @@ pub enum TypedSyntaxExpressionIR {
     BoolLiteral {
         value: bool,
     },
+    StringLiteral {
+        value: String,
+    },
     Unary {
         operator: UnaryOperator,
         input: Box<TypedSyntaxExpressionIR>,
@@ -701,6 +704,11 @@ fn remap_expression_roles(
         }
         TypedSyntaxExpressionIR::BoolLiteral { value } => {
             TypedSyntaxExpressionIR::BoolLiteral { value: *value }
+        }
+        TypedSyntaxExpressionIR::StringLiteral { value } => {
+            TypedSyntaxExpressionIR::StringLiteral {
+                value: value.clone(),
+            }
         }
         TypedSyntaxExpressionIR::Unary { operator, input } => TypedSyntaxExpressionIR::Unary {
             operator: *operator,
@@ -1366,6 +1374,22 @@ pub fn synthesize_typed_mechanism_goal_with_source_seeds_and_priors(
             &mut expressions,
         )?;
     }
+    add_enumerated_expression(
+        TypedSyntaxExpressionIR::StringLiteral {
+            value: String::new(),
+        },
+        &operand_types,
+        &operand_indices,
+        &definitions,
+        &api_map,
+        &observation_arguments,
+        &request.allowed_effects,
+        max_candidates,
+        &mut enumerated,
+        &mut evaluation_failures,
+        &mut seen,
+        &mut expressions,
+    )?;
 
     // Preserve the universal operands/literals above even under a small
     // candidate budget. Source-derived syntax then contributes reusable
@@ -2252,6 +2276,7 @@ fn infer_expression_type(
             .ok_or_else(|| format!("TYPED_MECHANISM_UNKNOWN_ROLE:{role}")),
         TypedSyntaxExpressionIR::IntLiteral { .. } => Ok(ProgramType::Int),
         TypedSyntaxExpressionIR::BoolLiteral { .. } => Ok(ProgramType::Bool),
+        TypedSyntaxExpressionIR::StringLiteral { .. } => Ok(ProgramType::String),
         TypedSyntaxExpressionIR::Unary { operator, input } => {
             let input_type = infer_expression_type(input, operands, definitions, effects)?;
             match (operator, input_type) {
@@ -2366,6 +2391,9 @@ fn emit_expression(
             .ok_or_else(|| format!("TYPED_MECHANISM_UNKNOWN_ROLE:{role}")),
         TypedSyntaxExpressionIR::IntLiteral { value } => Ok(format!("{value}i64")),
         TypedSyntaxExpressionIR::BoolLiteral { value } => Ok(value.to_string()),
+        TypedSyntaxExpressionIR::StringLiteral { value } => serde_json::to_string(value)
+            .map(|literal| format!("{literal}.to_string()"))
+            .map_err(|error| format!("TYPED_MECHANISM_STRING_LITERAL_SERIALIZE:{error}")),
         TypedSyntaxExpressionIR::Unary { operator, input } => {
             let input = emit_expression(input, sources, operands, definitions)?;
             Ok(match operator {
@@ -2503,6 +2531,9 @@ fn lower_expression(
         TypedSyntaxExpressionIR::BoolLiteral { value } => {
             Ok(ScalarExpression::BoolConstant { value: *value })
         }
+        TypedSyntaxExpressionIR::StringLiteral { value } => Ok(ScalarExpression::StringConstant {
+            value: value.clone(),
+        }),
         TypedSyntaxExpressionIR::Unary { operator, input } => Ok(ScalarExpression::Unary {
             operator: *operator,
             input: Box::new(lower_expression(input, indices)?),
@@ -2582,7 +2613,8 @@ fn expression_nodes(expression: &TypedSyntaxExpressionIR) -> usize {
     match expression {
         TypedSyntaxExpressionIR::Operand { .. }
         | TypedSyntaxExpressionIR::IntLiteral { .. }
-        | TypedSyntaxExpressionIR::BoolLiteral { .. } => 1,
+        | TypedSyntaxExpressionIR::BoolLiteral { .. }
+        | TypedSyntaxExpressionIR::StringLiteral { .. } => 1,
         TypedSyntaxExpressionIR::Unary { input, .. } => 1 + expression_nodes(input),
         TypedSyntaxExpressionIR::StringTransform { input, .. } => 1 + expression_nodes(input),
         TypedSyntaxExpressionIR::Binary { left, right, .. } => {

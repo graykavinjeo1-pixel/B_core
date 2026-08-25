@@ -849,6 +849,9 @@ fn scalar_to_rust(expression: &ScalarExpression, args: &[Value]) -> Result<Strin
         }
         ScalarExpression::Constant { value } => format!("{value}i64"),
         ScalarExpression::BoolConstant { value } => value.to_string(),
+        ScalarExpression::StringConstant { .. } => {
+            return Err("STRING_EXPRESSION_NOT_ALLOWED_IN_SEM6_SCALAR_BATCH".to_string())
+        }
         ScalarExpression::Unary { operator, input } => format!(
             "({}{})",
             match operator {

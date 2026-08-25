@@ -890,6 +890,13 @@ impl NodeBuilder {
                     value: Value::Bool(*value),
                 },
             )),
+            ScalarExpression::StringConstant { value } => Ok(self.node(
+                ProgramType::String,
+                vec![Effect::Pure],
+                NodeKind::Literal {
+                    value: Value::String(value.clone()),
+                },
+            )),
             ScalarExpression::Unary { operator, input } => {
                 let input = self.scalar(input, bindings, definitions)?;
                 let output_type = match operator {

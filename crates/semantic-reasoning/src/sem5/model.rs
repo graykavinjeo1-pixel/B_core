@@ -228,6 +228,9 @@ pub enum ScalarExpression {
     BoolConstant {
         value: bool,
     },
+    StringConstant {
+        value: String,
+    },
     Unary {
         operator: UnaryOperator,
         input: Box<ScalarExpression>,

@@ -1590,6 +1590,128 @@ mod tests {
     }
 
     #[test]
+    fn typed_behavior_goal_canary_executes_boolean_queue_policy() {
+        let goal = TypedMechanismSynthesisGoalIR {
+            schema: TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA.to_string(),
+            goal_id: "bounded_meta_diagnostic_active_queue".to_string(),
+            split: DataSplit::FreshBlind,
+            operands: vec![
+                SourceOperandIR {
+                    role: "verified".to_string(),
+                    source: "cohort.validation".to_string(),
+                    value_type: ProgramType::Bool,
+                },
+                SourceOperandIR {
+                    role: "executable_knowledge".to_string(),
+                    source: "cohort.typed_authority".to_string(),
+                    value_type: ProgramType::Bool,
+                },
+            ],
+            output_type: ProgramType::Bool,
+            definitions: Vec::new(),
+            allowed_effects: vec![Effect::Pure],
+            preconditions: Vec::new(),
+            postconditions: vec![
+                "keep a cohort active until it is verified, then retain it only when executable typed knowledge exists".to_string(),
+            ],
+            invariants: vec![
+                "validation cannot manufacture executable knowledge".to_string(),
+                "deferred observations remain immutable".to_string(),
+            ],
+            public_observations: [
+                (false, false, true),
+                (true, false, false),
+                (true, true, true),
+            ]
+            .into_iter()
+            .map(|(verified, executable_knowledge, expected)| {
+                TypedMechanismObservationIR {
+                    operands: BTreeMap::from([
+                        ("verified".to_string(), Value::Bool(verified)),
+                        (
+                            "executable_knowledge".to_string(),
+                            Value::Bool(executable_knowledge),
+                        ),
+                    ]),
+                    expected_postimage: Value::Bool(expected),
+                }
+            })
+            .collect(),
+            require_conditional: false,
+            max_expression_depth: 3,
+            max_candidates: 128,
+            provenance: vec!["BOUND_RUNTIME_STAGNATION_EVIDENCE".to_string()],
+        };
+
+        let receipt = execute_typed_behavior_goal_canary(&"e".repeat(64), &goal)
+            .expect("boolean queue policy is executable");
+        assert_eq!(receipt.cases_executed, 3);
+        assert_eq!(receipt.cases_passed, 3);
+    }
+
+    #[test]
+    fn typed_behavior_goal_canary_executes_conditional_contract_transport() {
+        let goal = TypedMechanismSynthesisGoalIR {
+            schema: TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA.to_string(),
+            goal_id: "plateau_typed_contract_transport".to_string(),
+            split: DataSplit::FreshBlind,
+            operands: vec![
+                SourceOperandIR {
+                    role: "frontier_advance".to_string(),
+                    source: "probe.behavioral_receipt".to_string(),
+                    value_type: ProgramType::Bool,
+                },
+                SourceOperandIR {
+                    role: "typed_contract".to_string(),
+                    source: "probe.input".to_string(),
+                    value_type: ProgramType::String,
+                },
+            ],
+            output_type: ProgramType::String,
+            definitions: Vec::new(),
+            allowed_effects: vec![Effect::Pure],
+            preconditions: Vec::new(),
+            postconditions: vec![
+                "a verified frontier advance outputs the exact typed contract; a rejected probe outputs no contract".to_string(),
+            ],
+            invariants: vec![
+                "text metadata never substitutes for the typed contract".to_string(),
+            ],
+            public_observations: [
+                (true, "goal-a", "goal-a"),
+                (true, "goal-b", "goal-b"),
+                (false, "goal-a", ""),
+            ]
+            .into_iter()
+            .map(|(frontier_advance, typed_contract, expected)| {
+                TypedMechanismObservationIR {
+                    operands: BTreeMap::from([
+                        (
+                            "frontier_advance".to_string(),
+                            Value::Bool(frontier_advance),
+                        ),
+                        (
+                            "typed_contract".to_string(),
+                            Value::String(typed_contract.to_string()),
+                        ),
+                    ]),
+                    expected_postimage: Value::String(expected.to_string()),
+                }
+            })
+            .collect(),
+            require_conditional: true,
+            max_expression_depth: 3,
+            max_candidates: 128,
+            provenance: vec!["BOUND_TYPED_TRANSPORT_CANARY".to_string()],
+        };
+
+        let receipt = execute_typed_behavior_goal_canary(&"f".repeat(64), &goal)
+            .expect("conditional contract transport is executable");
+        assert_eq!(receipt.cases_executed, 3);
+        assert_eq!(receipt.cases_passed, 3);
+    }
+
+    #[test]
     fn contextual_typed_task_generation_expands_program_ir_frontier() {
         let mut program_hashes = BTreeSet::new();
         for index in 1_u64..=8 {

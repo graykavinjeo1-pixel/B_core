@@ -3005,6 +3005,8 @@ fn python_expression(
         TypedSyntaxExpressionIR::BoolLiteral { value } => {
             Ok(if *value { "True" } else { "False" }.to_string())
         }
+        TypedSyntaxExpressionIR::StringLiteral { value } => serde_json::to_string(value)
+            .map_err(|error| CausalFrontendFailure::public(format!("STRING_LITERAL_JSON:{error}"))),
         TypedSyntaxExpressionIR::Unary { operator, input } => {
             let input = python_expression(input, sources, operand_types)?;
             Ok(match operator {
@@ -3120,7 +3122,8 @@ fn python_expression_type(
             operator: UnaryOperator::Not,
             ..
         } => Some(ProgramType::Bool),
-        TypedSyntaxExpressionIR::StringTransform { .. } => Some(ProgramType::String),
+        TypedSyntaxExpressionIR::StringLiteral { .. }
+        | TypedSyntaxExpressionIR::StringTransform { .. } => Some(ProgramType::String),
         TypedSyntaxExpressionIR::Binary {
             operator,
             left,
@@ -3414,7 +3417,8 @@ fn push_source_seed_expression(
         }
         TypedSyntaxExpressionIR::Operand { .. }
         | TypedSyntaxExpressionIR::IntLiteral { .. }
-        | TypedSyntaxExpressionIR::BoolLiteral { .. } => {}
+        | TypedSyntaxExpressionIR::BoolLiteral { .. }
+        | TypedSyntaxExpressionIR::StringLiteral { .. } => {}
     }
     Ok(())
 }

@@ -3923,6 +3923,40 @@ pub fn request_stop(config_path: &Path) -> Result<serde_json::Value, String> {
     Ok(serde_json::json!({"stop_requested": true, "path": path}))
 }
 
+fn latest_failed_campaign_freeze(
+    config: &GrowthSupervisorConfig,
+) -> Result<Option<CampaignFreeze>, String> {
+    let mut latest: Option<(u64, String)> = None;
+    for entry in fs::read_dir(config.state_dir.join("history"))
+        .map_err(|error| format!("FAILURE_HISTORY_DIR:{error}"))?
+    {
+        let entry = entry.map_err(|error| format!("FAILURE_HISTORY_ENTRY:{error}"))?;
+        if !entry
+            .file_name()
+            .to_string_lossy()
+            .ends_with(".failure.json")
+        {
+            continue;
+        }
+        let failure: CampaignFailure = read_json(&entry.path())?;
+        let candidate = (failure.occurred_at_ms, failure.campaign_id);
+        if latest.as_ref().is_none_or(|current| candidate > *current) {
+            latest = Some(candidate);
+        }
+    }
+    latest
+        .map(|(_, campaign_id)| read_json(&campaign_dir(config, &campaign_id).join("freeze.json")))
+        .transpose()
+}
+
+fn failed_campaign_engine_changed(
+    config: &GrowthSupervisorConfig,
+    current_proposer_sha256: &str,
+) -> Result<bool, String> {
+    Ok(latest_failed_campaign_freeze(config)?
+        .is_some_and(|freeze| freeze.proposer_executable_sha256 != current_proposer_sha256))
+}
+
 pub fn request_resume(config_path: &Path) -> Result<serde_json::Value, String> {
     let config = load_config(config_path)?;
     let mut state = load_state(&config)?;
@@ -3949,6 +3983,12 @@ pub fn request_resume(config_path: &Path) -> Result<serde_json::Value, String> {
     if path.exists() {
         fs::remove_file(&path).map_err(|error| format!("STOP_REMOVE:{error}"))?;
     }
+    let proposer_executable_sha256 = std::env::current_exe()
+        .map_err(|error| format!("CURRENT_EXE:{error}"))
+        .and_then(|path| file_sha256(&path, 512 * 1024 * 1024))?;
+    let repaired_failure_stop = state.stop_reason.as_deref()
+        == Some("MAX_CONSECUTIVE_FAILURES_REACHED")
+        && failed_campaign_engine_changed(&config, &proposer_executable_sha256)?;
     let resumable_reason = matches!(
         state.stop_reason.as_deref(),
         Some(
@@ -3957,9 +3997,12 @@ pub fn request_resume(config_path: &Path) -> Result<serde_json::Value, String> {
                 | "AUTONOMOUS_SOURCE_UPDATE_STAGED"
                 | "AUTONOMOUS_COMPOSITE_CAPABILITY_STAGED"
         )
-    );
+    ) || repaired_failure_stop;
     if state.phase == SupervisorPhase::SafeStopped && resumable_reason {
         let previous_reason = state.stop_reason.clone();
+        if repaired_failure_stop {
+            state.consecutive_failures = 0;
+        }
         state.stop_reason = None;
         save_transition(
             &config,
@@ -3975,6 +4018,9 @@ pub fn request_resume(config_path: &Path) -> Result<serde_json::Value, String> {
                 Some("AUTONOMOUS_COMPOSITE_CAPABILITY_STAGED") => {
                     "AUTONOMOUS_COMPOSITE_CAPABILITY_APPLIED_AND_RESUMED"
                 }
+                Some("MAX_CONSECUTIVE_FAILURES_REACHED") => {
+                    "OPERATOR_RESUME_AFTER_CAMPAIGN_ENGINE_REPAIR"
+                }
                 _ => "OPERATOR_RESUME_REQUESTED",
             },
         )?;
@@ -3984,6 +4030,7 @@ pub fn request_resume(config_path: &Path) -> Result<serde_json::Value, String> {
         "phase": state.phase,
         "invalid_verification_only_tip_recovered": invalid_tip_recovered,
         "hard_resource_stop_preserved": state.stop_reason.is_some(),
+        "campaign_engine_repair_detected": repaired_failure_stop,
         "pending_self_update": false
     }))
 }
@@ -6533,16 +6580,62 @@ fn recover_pending_campaign(
 struct CampaignFailure {
     schema: String,
     campaign_id: String,
+    #[serde(default)]
+    error_class: String,
     error_sha256: String,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    observation_ids: Vec<String>,
+    #[serde(default)]
+    observations_quarantined: bool,
     predecessor_preserved: bool,
     failed_candidate_deleted: bool,
     occurred_at_ms: u64,
 }
 
+fn campaign_error_class(error: &str) -> String {
+    let class = error.split(':').next().unwrap_or_default().trim();
+    if !class.is_empty()
+        && class.len() <= 96
+        && class
+            .bytes()
+            .all(|byte| byte.is_ascii_uppercase() || byte.is_ascii_digit() || byte == b'_')
+    {
+        class.to_string()
+    } else {
+        "UNCLASSIFIED_CAMPAIGN_ERROR".to_string()
+    }
+}
+
+fn quarantine_aborted_campaign_observations(
+    config: &GrowthSupervisorConfig,
+    index: &mut FileIndex,
+    campaign_id: &str,
+) -> Result<Vec<String>, String> {
+    let freeze: CampaignFreeze = read_json(&campaign_dir(config, campaign_id).join("freeze.json"))?;
+    let mut changed = false;
+    for observation_id in &freeze.observation_ids {
+        changed |= index
+            .consumed_observation_ids
+            .insert(observation_id.clone());
+        let observation: LearningObservation = read_json(
+            &campaign_dir(config, campaign_id).join(format!("observation_{observation_id}.json")),
+        )?;
+        if let Some(event_id) = observation.work_event_id {
+            changed |= index.consumed_work_event_ids.insert(event_id);
+        }
+    }
+    if changed {
+        save_index(config, index)?;
+    }
+    Ok(freeze.observation_ids)
+}
+
 fn abort_pending_campaign(
     config: &GrowthSupervisorConfig,
     state: &mut SupervisorState,
+    index: Option<&mut FileIndex>,
     error: &str,
+    quarantine_observations: bool,
 ) -> Result<Option<String>, String> {
     let Some(campaign_id) = state.pending_campaign_id.clone() else {
         return Ok(None);
@@ -6553,10 +6646,24 @@ fn abort_pending_campaign(
         fs::remove_file(&candidate_path)
             .map_err(|remove_error| format!("FAILED_CANDIDATE_DELETE:{remove_error}"))?;
     }
+    let observation_ids = if quarantine_observations {
+        quarantine_aborted_campaign_observations(
+            config,
+            index.ok_or_else(|| "FAILED_CAMPAIGN_INDEX_REQUIRED".to_string())?,
+            &campaign_id,
+        )?
+    } else {
+        read_json::<CampaignFreeze>(&campaign_dir(config, &campaign_id).join("freeze.json"))
+            .map(|freeze| freeze.observation_ids)
+            .unwrap_or_default()
+    };
     let failure = CampaignFailure {
         schema: SUPERVISOR_SCHEMA.to_string(),
         campaign_id: campaign_id.clone(),
+        error_class: campaign_error_class(error),
         error_sha256: sha256(error.as_bytes()),
+        observation_ids,
+        observations_quarantined: quarantine_observations,
         predecessor_preserved: true,
         failed_candidate_deleted,
         occurred_at_ms: now_ms(),
@@ -10953,7 +11060,8 @@ fn step_without_lease(
         let recovered = match recover_pending_campaign(config, &mut state, &mut index) {
             Ok(value) => value,
             Err(error) => {
-                let campaign_id = abort_pending_campaign(config, &mut state, &error)?;
+                let campaign_id =
+                    abort_pending_campaign(config, &mut state, Some(&mut index), &error, false)?;
                 campaign_id.map(|id| (id, false))
             }
         };
@@ -11375,7 +11483,13 @@ fn step_without_lease(
         match execute_campaign(config, &mut state, &mut scan.index, freeze) {
             Ok(accepted) => campaign_accepted = Some(accepted),
             Err(error) => {
-                let _ = abort_pending_campaign(config, &mut state, &error)?;
+                let _ = abort_pending_campaign(
+                    config,
+                    &mut state,
+                    Some(&mut scan.index),
+                    &error,
+                    true,
+                )?;
                 campaign_accepted = Some(false);
             }
         }
@@ -13545,6 +13659,79 @@ mod tests {
         assert!(selected.contains(&verification));
         assert!(selected.contains(&evaluator_change));
         assert!(!campaign_preflight_ready(&config, &selected).unwrap());
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn deterministic_campaign_error_is_classified_and_exact_cohort_is_quarantined() {
+        let root = temp_root("deterministic-campaign-error-quarantine");
+        let (config_path, config) = test_config(&root);
+        let mut state = initialize(&config_path).unwrap();
+        let observation = LearningObservation {
+            observation_id: "typed-cohort-that-failed-synthesis".to_string(),
+            work_event_id: Some("typed-event-that-failed-synthesis".to_string()),
+            logical_path: "ROOT_0/src/lib.rs".to_string(),
+            content_sha256: "a".repeat(64),
+            predecessor_content_sha256: Some("b".repeat(64)),
+            actor: WorkActor::Codex,
+            work_kind: WorkKind::DefectRepair,
+            work_outcome: WorkOutcome::Pass,
+            features_before: Some(StructuralFeatures::default()),
+            features_after: StructuralFeatures::default(),
+            signals: vec!["VERIFIED_PASS".to_string()],
+            composition_roles: vec!["IMPLEMENTATION_REPAIR".to_string()],
+            learning_score: 90,
+            learning_value: LearningValue::High,
+            reasons: vec!["typed synthesis failed deterministically".to_string()],
+            verification_evidence_sha256: vec!["c".repeat(64)],
+            performance_metrics: Vec::new(),
+            public_contract_deltas: vec![public_contract_delta_fixture()],
+            exact_source_fragments_stored: 0,
+            raw_source_bytes_stored: 0,
+            observed_at_ms: 1,
+        };
+        let freeze =
+            freeze_new_campaign(&config, &mut state, std::slice::from_ref(&observation)).unwrap();
+        let mut index = load_index(&config).unwrap();
+
+        let campaign_id = abort_pending_campaign(
+            &config,
+            &mut state,
+            Some(&mut index),
+            "TYPED_MECHANISM_SYNTHESIS_EXHAUSTED:bounded-detail",
+            true,
+        )
+        .unwrap()
+        .unwrap();
+
+        assert_eq!(campaign_id, freeze.campaign_id);
+        let failure: CampaignFailure = read_json(
+            &config
+                .state_dir
+                .join("history")
+                .join(format!("{campaign_id}.failure.json")),
+        )
+        .unwrap();
+        assert_eq!(failure.error_class, "TYPED_MECHANISM_SYNTHESIS_EXHAUSTED");
+        assert_eq!(
+            failure.observation_ids,
+            vec![observation.observation_id.clone()]
+        );
+        assert!(failure.observations_quarantined);
+        let reloaded_index = load_index(&config).unwrap();
+        assert!(reloaded_index
+            .consumed_observation_ids
+            .contains(&observation.observation_id));
+        assert!(reloaded_index
+            .consumed_work_event_ids
+            .contains(observation.work_event_id.as_deref().unwrap()));
+        assert_eq!(state.pending_campaign_id, None);
+        assert_eq!(state.campaigns_failed, 1);
+        assert_eq!(state.generation, 0);
+        assert!(
+            !failed_campaign_engine_changed(&config, &freeze.proposer_executable_sha256).unwrap()
+        );
+        assert!(failed_campaign_engine_changed(&config, &"d".repeat(64)).unwrap());
         fs::remove_dir_all(root).unwrap();
     }
 
