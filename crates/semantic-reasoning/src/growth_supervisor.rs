@@ -50,9 +50,7 @@ use crate::integrated_development::{
     compose_typed_behavior_goal_candidate, execute_behavioral_composition_canary,
     install_composite_candidate_family, MAX_INSTALLED_TYPED_CAPABILITIES,
 };
-use crate::intrinsic_drive::{
-    IntrinsicCuriosityHypothesis, IntrinsicDriveMemory, IntrinsicRewardOutcome,
-};
+use crate::intrinsic_drive::{IntrinsicCuriosityHypothesis, IntrinsicDriveMemory};
 use crate::same_attempt_revision::{
     CandidateAdmission, SameAttemptCounterexample, SameAttemptRevisionTracker,
     MAX_SAME_ATTEMPT_EXECUTIONS,
@@ -86,7 +84,7 @@ const MAX_COMPOUND_INPUT_BYTES: u64 = 16 * 1024 * 1024;
 const MAX_COMPOUND_RECEIPT_BYTES: u64 = 64 * 1024 * 1024;
 const MAX_SUMMARY_BYTES: usize = 512;
 const SOURCE_PATCH_VALIDATION_CONTRACT_REVISION: u64 = 2;
-const PLATEAU_GENERATIVE_PROBE_CONTRACT_REVISION: u64 = 3;
+const PLATEAU_GENERATIVE_PROBE_CONTRACT_REVISION: u64 = 4;
 const MAX_INTRINSIC_CURIOSITY_HYPOTHESES: usize = 48;
 const MAX_RETAINED_INTRINSIC_CURIOSITY_RECEIPTS: usize = 96;
 const SCAN_WATCHDOG_TICK_MS: u64 = 1_000;
@@ -1124,8 +1122,12 @@ pub struct StepReport {
     pub intrinsic_curiosity_hypotheses_attempted: u64,
     pub intrinsic_curiosity_hypotheses_succeeded: u64,
     pub intrinsic_curiosity_hypotheses_failed: u64,
+    pub intrinsic_curiosity_hypotheses_pending: usize,
     pub intrinsic_reward_events: u64,
     pub intrinsic_reward_total: u64,
+    pub intrinsic_reward_contract_revision: u64,
+    pub legacy_precommit_intrinsic_reward_events: u64,
+    pub legacy_precommit_intrinsic_reward_total: u64,
     pub current_curiosity: u16,
     pub verified_satisfaction: u16,
     pub last_intrinsic_hypothesis_id: Option<String>,
@@ -1268,6 +1270,7 @@ pub struct SelfCheck {
     pub evaluator_expansion_requires_new_challenge_capability: bool,
     pub intrinsic_curiosity_requires_executable_hypotheses: bool,
     pub intrinsic_reward_requires_verified_frontier: bool,
+    pub intrinsic_reward_requires_independent_promotion: bool,
     pub intrinsic_exploration_is_bounded: bool,
     pub mutual_recursive_growth_observed: bool,
 }
@@ -1405,6 +1408,7 @@ pub fn self_check() -> SelfCheck {
         evaluator_expansion_requires_new_challenge_capability: true,
         intrinsic_curiosity_requires_executable_hypotheses: true,
         intrinsic_reward_requires_verified_frontier: true,
+        intrinsic_reward_requires_independent_promotion: true,
         intrinsic_exploration_is_bounded: true,
         mutual_recursive_growth_observed: false,
     }
@@ -2799,7 +2803,10 @@ fn cleanup_recent_files(directory: &Path, prefix: &str, keep: usize) -> Result<(
 fn load_state(config: &GrowthSupervisorConfig) -> Result<SupervisorState, String> {
     let path = latest_numbered_file(&config.state_dir.join("state"), "state_")?
         .ok_or_else(|| "SUPERVISOR_NOT_INITIALIZED".to_string())?;
-    let state: SupervisorState = read_json(&path)?;
+    let mut state: SupervisorState = read_json(&path)?;
+    state
+        .intrinsic_drive
+        .ensure_post_promotion_reward_contract();
     if state.schema != SUPERVISOR_SCHEMA
         || state.config_sha256 != config_hash(config)?
         || !state.intrinsic_drive.is_valid()
@@ -5145,6 +5152,7 @@ fn consume_semantic_revalidation(
         .iter()
         .map(|observation| observation.observation_id.clone())
         .collect::<Vec<_>>();
+    resolve_intrinsic_observation_outcomes(config, state, &consumed_observation_ids, false)?;
     for observation in &chosen {
         index
             .consumed_observation_ids
@@ -6148,7 +6156,7 @@ struct PlateauGenerativeProbeReceipt {
     public_contract_deltas: Vec<PublicContractDeltaIR>,
     seed: u64,
     cycle: GenerativeCycleResult,
-    reward_outcome: IntrinsicRewardOutcome,
+    intrinsic_attempt_pending: bool,
     observation: Option<LearningObservation>,
     receipt_sha256: String,
 }
@@ -6162,8 +6170,8 @@ fn plateau_probe_receipt_hash(receipt: &PlateauGenerativeProbeReceipt) -> Result
 fn validate_plateau_probe_receipt(receipt: &PlateauGenerativeProbeReceipt) -> Result<(), String> {
     let behaviorally_verified = receipt.cycle.behavioral_composition_executed
         && validate_behavioral_execution_receipt(&receipt.cycle);
-    let mut reward_contract = IntrinsicDriveMemory::default();
-    let expected_reward = reward_contract.record_outcome(
+    let mut attempt_contract = IntrinsicDriveMemory::default();
+    let expected_pending = attempt_contract.begin_attempt(
         &receipt.hypothesis,
         behaviorally_verified,
         receipt.cycle.frontier_advance_units,
@@ -6177,10 +6185,9 @@ fn validate_plateau_probe_receipt(receipt: &PlateauGenerativeProbeReceipt) -> Re
         || receipt.hypothesis.hypothesis_id.len() != 64
         || receipt.input.source_lesson_id != receipt.cycle.source_lesson_id
         || receipt.hypothesis.lesson_ids.len() < 2
-        || receipt.reward_outcome != expected_reward
+        || receipt.intrinsic_attempt_pending != expected_pending
         || receipt.receipt_sha256 != plateau_probe_receipt_hash(receipt)?
-        || (receipt.observation.is_some()
-            != (receipt.cycle.frontier_advance && expected_reward.reward > 0))
+        || (receipt.observation.is_some() != expected_pending)
     {
         return Err("PLATEAU_GENERATIVE_PROBE_RECEIPT_DIVERGED".to_string());
     }
@@ -6227,18 +6234,85 @@ fn reconcile_intrinsic_drive_receipts(
             .then_with(|| left.probe_id.cmp(&right.probe_id))
     });
     for receipt in receipts {
-        let outcome = state.intrinsic_drive.record_outcome(
+        let pending = state.intrinsic_drive.begin_attempt(
             &receipt.hypothesis,
             receipt.cycle.behavioral_composition_executed
                 && validate_behavioral_execution_receipt(&receipt.cycle),
             receipt.cycle.frontier_advance_units,
             receipt.cycle.novel_verified_artifact_count,
         );
-        if outcome != receipt.reward_outcome {
-            return Err("INTRINSIC_REWARD_RECEIPT_DIVERGED".to_string());
+        let already_resolved = state
+            .intrinsic_drive
+            .recent_outcomes
+            .iter()
+            .any(|outcome| outcome.hypothesis_id == receipt.hypothesis.hypothesis_id);
+        if receipt.intrinsic_attempt_pending != pending && !already_resolved {
+            return Err("INTRINSIC_ATTEMPT_RECEIPT_DIVERGED".to_string());
         }
     }
     Ok(())
+}
+
+fn resolve_intrinsic_observation_outcomes(
+    config: &GrowthSupervisorConfig,
+    state: &mut SupervisorState,
+    observation_ids: &[String],
+    campaign_accepted: bool,
+) -> Result<usize, String> {
+    if observation_ids.is_empty() {
+        return Ok(0);
+    }
+    let requested = observation_ids.iter().collect::<BTreeSet<_>>();
+    let probe_root = config.state_dir.join("generative_plateau_probes");
+    if !probe_root.is_dir() {
+        return Ok(0);
+    }
+    let expected_schema =
+        format!("B_CORE_PLATEAU_GENERATIVE_PROBE_{PLATEAU_GENERATIVE_PROBE_CONTRACT_REVISION}");
+    let mut matches = Vec::new();
+    for entry in fs::read_dir(&probe_root)
+        .map_err(|error| format!("PLATEAU_GENERATIVE_PROBE_DIR:{error}"))?
+    {
+        let entry = entry.map_err(|error| format!("PLATEAU_GENERATIVE_PROBE_ENTRY:{error}"))?;
+        if !entry
+            .file_type()
+            .map_err(|error| format!("PLATEAU_GENERATIVE_PROBE_TYPE:{error}"))?
+            .is_file()
+        {
+            continue;
+        }
+        let value: serde_json::Value = read_json(&entry.path())?;
+        if value.get("schema").and_then(serde_json::Value::as_str) != Some(expected_schema.as_str())
+        {
+            continue;
+        }
+        let receipt: PlateauGenerativeProbeReceipt = serde_json::from_value(value)
+            .map_err(|error| format!("PLATEAU_GENERATIVE_PROBE_PARSE:{error}"))?;
+        if receipt
+            .observation
+            .as_ref()
+            .is_some_and(|observation| requested.contains(&observation.observation_id))
+        {
+            validate_plateau_probe_receipt(&receipt)?;
+            matches.push(receipt);
+        }
+    }
+    matches.sort_by(|left, right| {
+        left.intrinsic_attempt_sequence
+            .cmp(&right.intrinsic_attempt_sequence)
+            .then_with(|| left.probe_id.cmp(&right.probe_id))
+    });
+    let mut resolved = 0;
+    for receipt in matches {
+        if state
+            .intrinsic_drive
+            .resolve_attempt(&receipt.hypothesis.hypothesis_id, campaign_accepted)
+            .is_some()
+        {
+            resolved += 1;
+        }
+    }
+    Ok(resolved)
 }
 
 fn plateau_generative_probe_observation(
@@ -6272,15 +6346,20 @@ fn plateau_generative_probe_observation(
             {
                 return Err("PLATEAU_GENERATIVE_PROBE_RECEIPT_DIVERGED".to_string());
             }
-            let outcome = state.intrinsic_drive.record_outcome(
+            let pending = state.intrinsic_drive.begin_attempt(
                 &existing.hypothesis,
                 existing.cycle.behavioral_composition_executed
                     && validate_behavioral_execution_receipt(&existing.cycle),
                 existing.cycle.frontier_advance_units,
                 existing.cycle.novel_verified_artifact_count,
             );
-            if outcome != existing.reward_outcome {
-                return Err("INTRINSIC_REWARD_RECEIPT_DIVERGED".to_string());
+            let already_resolved = state
+                .intrinsic_drive
+                .recent_outcomes
+                .iter()
+                .any(|outcome| outcome.hypothesis_id == existing.hypothesis.hypothesis_id);
+            if existing.intrinsic_attempt_pending != pending && !already_resolved {
+                return Err("INTRINSIC_ATTEMPT_RECEIPT_DIVERGED".to_string());
             }
             if let Some(observation) = existing.observation {
                 let observation_path = config
@@ -6298,13 +6377,13 @@ fn plateau_generative_probe_observation(
         let cycle = run_generative_cycle(&memory.generative, &candidate.input, seed)?;
         let behaviorally_verified =
             cycle.behavioral_composition_executed && validate_behavioral_execution_receipt(&cycle);
-        let reward_outcome = state.intrinsic_drive.record_outcome(
+        let intrinsic_attempt_pending = state.intrinsic_drive.begin_attempt(
             &candidate.hypothesis,
             behaviorally_verified,
             cycle.frontier_advance_units,
             cycle.novel_verified_artifact_count,
         );
-        let observation = if cycle.frontier_advance && reward_outcome.reward > 0 {
+        let observation = if intrinsic_attempt_pending {
             let behavioral_receipt = cycle
                 .behavioral_execution_receipt
                 .as_ref()
@@ -6333,7 +6412,7 @@ fn plateau_generative_probe_observation(
                 seed,
                 behavioral_sha256,
                 &artifact_sha256s,
-                &reward_outcome,
+                intrinsic_attempt_pending,
             ))?;
             let observation_id =
                 sha256(format!("INTRINSIC_CURIOSITY_OBSERVATION:{content_sha256}").as_bytes());
@@ -6355,7 +6434,7 @@ fn plateau_generative_probe_observation(
                 signals: vec![
                     "AUTONOMOUS_INTRINSIC_CURIOSITY".to_string(),
                     "BEHAVIORALLY_VERIFIED_NOVEL_ARTIFACT".to_string(),
-                    "INTRINSIC_REWARD_GRANTED".to_string(),
+                    "INTRINSIC_REWARD_PENDING_PROMOTION".to_string(),
                     "VERIFIED_PASS".to_string(),
                 ],
                 composition_roles: vec![
@@ -6363,14 +6442,14 @@ fn plateau_generative_probe_observation(
                     "CROSS_LESSON_PREDICTION".to_string(),
                     "PROGRAM_COMPOSITION".to_string(),
                     "BEHAVIORAL_FALSIFICATION".to_string(),
-                    "REWARD_UPDATE".to_string(),
+                    "REWARD_ELIGIBILITY_GATE".to_string(),
                 ],
                 learning_score: 95,
                 learning_value: LearningValue::High,
                 reasons: vec![
                     "bounded intrinsic curiosity selected an executable cross-lesson hypothesis without external work input"
                         .to_string(),
-                    "reward was granted only after a novel behaviorally verified artifact advanced the frontier"
+                    "reward remains pending until the independent campaign verifier accepts a non-duplicate generation"
                         .to_string(),
                 ],
                 verification_evidence_sha256: evidence,
@@ -6402,7 +6481,7 @@ fn plateau_generative_probe_observation(
             public_contract_deltas: candidate.public_contract_deltas,
             seed,
             cycle,
-            reward_outcome,
+            intrinsic_attempt_pending,
             observation: observation.clone(),
             receipt_sha256: String::new(),
         };
@@ -6686,6 +6765,7 @@ fn promote_candidate(
     state.classifier_outcome_bound_refinements = memory.classifier.outcome_bound_refinements;
     state.classifier_unsupported_refinements_suppressed =
         memory.classifier.unsupported_refinements_suppressed;
+    resolve_intrinsic_observation_outcomes(config, state, &candidate.observation_ids, true)?;
     state.diagnostic_policy.resolve_consumed_action_outcome(
         freeze.generation.saturating_sub(1),
         true,
@@ -6741,6 +6821,7 @@ fn complete_campaign(
         )?)
     } else {
         consume_failed_observations(config, index, freeze, candidate)?;
+        resolve_intrinsic_observation_outcomes(config, state, &candidate.observation_ids, false)?;
         state.diagnostic_policy.resolve_consumed_action_outcome(
             freeze.generation.saturating_sub(1),
             false,
@@ -6840,6 +6921,14 @@ fn recover_pending_campaign(
         .join(format!("{campaign_id}.json"));
     if history_path.exists() {
         let history: CampaignHistory = read_json(&history_path)?;
+        let recovered_freeze: CampaignFreeze =
+            read_json(&campaign_dir(config, &campaign_id).join("freeze.json"))?;
+        resolve_intrinsic_observation_outcomes(
+            config,
+            state,
+            &recovered_freeze.observation_ids,
+            history.accepted,
+        )?;
         state.pending_campaign_id = None;
         if history.accepted {
             let expected_hash = history
@@ -6950,6 +7039,7 @@ fn abort_pending_campaign(
             .map(|freeze| freeze.observation_ids)
             .unwrap_or_default()
     };
+    resolve_intrinsic_observation_outcomes(config, state, &observation_ids, false)?;
     let failure = CampaignFailure {
         schema: SUPERVISOR_SCHEMA.to_string(),
         campaign_id: campaign_id.clone(),
@@ -10513,8 +10603,16 @@ fn report_from_state(
         intrinsic_curiosity_hypotheses_attempted: state.intrinsic_drive.hypotheses_attempted,
         intrinsic_curiosity_hypotheses_succeeded: state.intrinsic_drive.hypotheses_succeeded,
         intrinsic_curiosity_hypotheses_failed: state.intrinsic_drive.hypotheses_failed,
+        intrinsic_curiosity_hypotheses_pending: state.intrinsic_drive.pending_attempts.len(),
         intrinsic_reward_events: state.intrinsic_drive.intrinsic_reward_events,
         intrinsic_reward_total: state.intrinsic_drive.intrinsic_reward_total,
+        intrinsic_reward_contract_revision: state.intrinsic_drive.reward_contract_revision,
+        legacy_precommit_intrinsic_reward_events: state
+            .intrinsic_drive
+            .legacy_precommit_reward_events,
+        legacy_precommit_intrinsic_reward_total: state
+            .intrinsic_drive
+            .legacy_precommit_reward_total,
         current_curiosity: state.intrinsic_drive.current_curiosity,
         verified_satisfaction: state.intrinsic_drive.verified_satisfaction,
         last_intrinsic_hypothesis_id: state.intrinsic_drive.last_hypothesis_id.clone(),
@@ -13065,6 +13163,7 @@ mod tests {
         assert!(check.redundant_generative_verifier_search_disabled);
         assert!(check.intrinsic_curiosity_requires_executable_hypotheses);
         assert!(check.intrinsic_reward_requires_verified_frontier);
+        assert!(check.intrinsic_reward_requires_independent_promotion);
         assert!(check.intrinsic_exploration_is_bounded);
         assert!(!check.mutual_recursive_growth_observed);
     }
@@ -13753,11 +13852,13 @@ mod tests {
             generative: GenerativeGrowthMemory::default(),
         };
 
+        let mut observation_ids = Vec::new();
         for _ in 0..2 {
             if let Some(observation) =
                 plateau_generative_probe_observation(&config, &mut state, &memory).unwrap()
             {
                 persist_scan_observations(&config, std::slice::from_ref(&observation)).unwrap();
+                observation_ids.push(observation.observation_id.clone());
                 assert!(observation
                     .signals
                     .contains(&"AUTONOMOUS_INTRINSIC_CURIOSITY".to_string()));
@@ -13765,6 +13866,34 @@ mod tests {
         }
 
         assert_eq!(state.intrinsic_drive.hypotheses_attempted, 2);
+        assert_eq!(state.intrinsic_drive.pending_attempts.len(), 2);
+        assert_eq!(state.intrinsic_drive.hypotheses_succeeded, 0);
+        assert_eq!(state.intrinsic_drive.intrinsic_reward_events, 0);
+        assert_eq!(observation_ids.len(), 2);
+        assert_eq!(
+            resolve_intrinsic_observation_outcomes(
+                &config,
+                &mut state,
+                std::slice::from_ref(&observation_ids[0]),
+                true,
+            )
+            .unwrap(),
+            1
+        );
+        assert_eq!(state.intrinsic_drive.hypotheses_succeeded, 1);
+        assert_eq!(state.intrinsic_drive.intrinsic_reward_events, 1);
+        assert_eq!(
+            resolve_intrinsic_observation_outcomes(
+                &config,
+                &mut state,
+                std::slice::from_ref(&observation_ids[1]),
+                false,
+            )
+            .unwrap(),
+            1
+        );
+        assert_eq!(state.intrinsic_drive.hypotheses_failed, 1);
+        assert_eq!(state.intrinsic_drive.pending_attempts.len(), 0);
         assert_eq!(
             fs::read_dir(config.state_dir.join("generative_plateau_probes"))
                 .unwrap()
