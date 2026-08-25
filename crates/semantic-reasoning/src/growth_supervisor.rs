@@ -4848,11 +4848,57 @@ fn selected_campaign_observations(
         }
     }
 
-    let mut selected = observations
-        .iter()
-        .take(config.resources.max_observations_per_campaign)
-        .cloned()
-        .collect::<Vec<_>>();
+    // A score-only prefix can be saturated by implementation-shaped files and
+    // hide the lower-scored verification or typed contract that gives those
+    // files meaning. Seed the bounded fallback with one observation for each
+    // authoritative role, then fill the remaining capacity by score order.
+    // This is selection only: it does not invent evidence or relax promotion.
+    let maximum = config.resources.max_observations_per_campaign;
+    let mut selected = Vec::new();
+    let role_candidates = [
+        observations.iter().find(|observation| {
+            (!observation.public_contract_deltas.is_empty()
+                && validate_public_contract_deltas(&observation.public_contract_deltas).is_ok())
+                || observation
+                    .performance_metrics
+                    .iter()
+                    .any(PerformanceMetricEvidence::has_executable_knowledge)
+        }),
+        observations.iter().find(|observation| {
+            observation
+                .signals
+                .iter()
+                .any(|signal| signal == "VERIFIED_PASS")
+        }),
+        observations.iter().find(|observation| {
+            observation.work_kind != WorkKind::Verification
+                || observation
+                    .signals
+                    .iter()
+                    .any(|signal| signal == "MUTUAL_REVALIDATION_GAP")
+        }),
+    ];
+    for observation in role_candidates.into_iter().flatten() {
+        if selected.len() >= maximum {
+            break;
+        }
+        if !selected.iter().any(|existing: &LearningObservation| {
+            existing.observation_id == observation.observation_id
+        }) {
+            selected.push(observation.clone());
+        }
+    }
+    for observation in observations {
+        if selected.len() >= maximum {
+            break;
+        }
+        if !selected
+            .iter()
+            .any(|existing| existing.observation_id == observation.observation_id)
+        {
+            selected.push(observation.clone());
+        }
+    }
     if selected.is_empty()
         || build_lesson(&selected)
             .map(|lesson| cohort_has_promotable_growth_subject(&selected, &lesson))
@@ -4861,9 +4907,8 @@ fn selected_campaign_observations(
         return selected;
     }
 
-    // A score-only prefix can indefinitely hide a slightly lower-scored PASS
-    // or regression observation. Try one bounded substitution and retain the
-    // first evidence-complete cohort. This changes no score or acceptance rule.
+    // Try one bounded substitution and retain the first evidence-complete
+    // cohort. This changes no score or acceptance rule.
     for evidence in observations.iter().skip(selected.len()) {
         for replace_index in (0..selected.len()).rev() {
             let mut trial = selected.clone();
@@ -4908,11 +4953,20 @@ fn campaign_preflight_ready(
         .map(|observation| observation.observation_id.clone())
         .collect::<Vec<_>>();
     let cohort_sha256 = json_sha256(&observation_ids)?;
+    let reason = if !lesson_has_verification_evidence(&lesson) {
+        "NO_VERIFICATION_EVIDENCE"
+    } else if !lesson_has_growth_subject(&lesson) {
+        "NO_GROWTH_SUBJECT"
+    } else if !lesson_has_executable_knowledge(&lesson) {
+        "NO_EXECUTABLE_TYPED_KNOWLEDGE"
+    } else {
+        "COHORT_NOT_PROMOTABLE"
+    };
     let diagnostic = CampaignPreflightDiagnostic {
         schema: SUPERVISOR_SCHEMA.to_string(),
         cohort_sha256: cohort_sha256.clone(),
         observation_ids,
-        reason: "NO_PASS_OR_CODE_TEST_COHORT_EVIDENCE".to_string(),
+        reason: reason.to_string(),
         campaign_started: false,
         failure_budget_consumed: false,
         created_at_ms: now_ms(),
@@ -4925,6 +4979,75 @@ fn campaign_preflight_ready(
         write_immutable_json(&path, &diagnostic)?;
     }
     Ok(false)
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+struct DeferredNonExecutableCohortReceipt {
+    schema: String,
+    generation: u64,
+    cohort_sha256: String,
+    observation_ids: Vec<String>,
+    verification_evidence_sha256: Vec<String>,
+    reason: String,
+    receipt_sha256: String,
+}
+
+/// Removes a validated but non-executable cohort from the active campaign
+/// queue while preserving every immutable observation and a causal receipt.
+/// A later typed work event creates a distinct observation identity and remains
+/// eligible; prose or structural scores never acquire synthesis authority.
+fn defer_verified_non_executable_cohort(
+    config: &GrowthSupervisorConfig,
+    generation: u64,
+    index: &mut FileIndex,
+    observations: &mut Vec<LearningObservation>,
+) -> Result<usize, String> {
+    let chosen = selected_campaign_observations(config, observations);
+    if chosen.is_empty() {
+        return Ok(0);
+    }
+    let lesson = build_lesson(&chosen)?;
+    if !lesson_has_verification_evidence(&lesson)
+        || !lesson_has_growth_subject(&lesson)
+        || lesson_has_executable_knowledge(&lesson)
+    {
+        return Ok(0);
+    }
+    let observation_ids = chosen
+        .iter()
+        .map(|observation| observation.observation_id.clone())
+        .collect::<Vec<_>>();
+    let mut verification_evidence_sha256 = chosen
+        .iter()
+        .flat_map(|observation| observation.verification_evidence_sha256.iter().cloned())
+        .collect::<Vec<_>>();
+    verification_evidence_sha256.sort();
+    verification_evidence_sha256.dedup();
+    let cohort_sha256 = json_sha256(&observation_ids)?;
+    let mut receipt = DeferredNonExecutableCohortReceipt {
+        schema: "B_CORE_DEFERRED_NON_EXECUTABLE_COHORT_1".to_string(),
+        generation,
+        cohort_sha256: cohort_sha256.clone(),
+        observation_ids: observation_ids.clone(),
+        verification_evidence_sha256,
+        reason: "VERIFIED_BUT_NO_EXECUTABLE_TYPED_KNOWLEDGE".to_string(),
+        receipt_sha256: String::new(),
+    };
+    receipt.receipt_sha256 = json_sha256(&receipt)?;
+    let diagnostics = config.state_dir.join("diagnostics");
+    fs::create_dir_all(&diagnostics)
+        .map_err(|error| format!("DEFERRED_COHORT_DIAGNOSTICS_CREATE:{error}"))?;
+    let receipt_path = diagnostics.join(format!("deferred_cohort_{cohort_sha256}.json"));
+    if !receipt_path.exists() {
+        write_immutable_json(&receipt_path, &receipt)?;
+    }
+    let chosen_ids = observation_ids.iter().cloned().collect::<BTreeSet<_>>();
+    index
+        .consumed_observation_ids
+        .extend(chosen_ids.iter().cloned());
+    observations.retain(|observation| !chosen_ids.contains(&observation.observation_id));
+    save_index(config, index)?;
+    Ok(chosen_ids.len())
 }
 
 fn consume_semantic_revalidation(
@@ -5148,7 +5271,9 @@ fn generative_input(lesson: &LearnedCompositionLesson) -> GenerativeInput {
     }
 }
 
-fn plateau_generative_input(memory: &GrowthMemory) -> Option<GenerativeInput> {
+fn plateau_generative_input(
+    memory: &GrowthMemory,
+) -> Option<(GenerativeInput, Vec<PublicContractDeltaIR>)> {
     let mut lessons = memory
         .lessons
         .iter()
@@ -5180,48 +5305,64 @@ fn plateau_generative_input(memory: &GrowthMemory) -> Option<GenerativeInput> {
         .map(|lesson| lesson.lesson_id.as_str())
         .collect::<Vec<_>>()
         .join(":");
-    Some(GenerativeInput {
-        source_lesson_id: format!(
-            "PLATEAU-CROSS-LESSON-{}",
-            &sha256(lesson_identity.as_bytes())[..24]
-        ),
-        diagnostic_signals,
-        observed_composition_roles,
-        learning_score: lessons
-            .iter()
-            .map(|lesson| lesson.learning_score)
-            .max()
-            .unwrap_or(0),
-        verification_evidence_count: lessons
-            .iter()
-            .map(|lesson| lesson.evidence_observation_sha256.len())
-            .sum::<usize>()
-            .min(16),
-        measured_performance_gain: lessons.iter().any(|lesson| {
-            lesson
-                .performance_metrics
+    let mut delta_index = BTreeMap::new();
+    for delta in lessons
+        .iter()
+        .flat_map(|lesson| lesson.public_contract_deltas.iter())
+    {
+        delta_index
+            .entry(delta.delta_id.clone())
+            .or_insert_with(|| delta.clone());
+    }
+    let public_contract_deltas = delta_index
+        .into_values()
+        .take(MAX_PUBLIC_CONTRACT_DELTAS_PER_EVENT)
+        .collect::<Vec<_>>();
+    let typed_behavior_goals = public_contract_deltas
+        .iter()
+        .flat_map(|delta| delta.typed_behavior_goals.iter().cloned())
+        .take(MAX_TYPED_BEHAVIOR_GOALS_PER_GENERATIVE_INPUT)
+        .collect();
+    Some((
+        GenerativeInput {
+            source_lesson_id: format!(
+                "PLATEAU-CROSS-LESSON-{}",
+                &sha256(lesson_identity.as_bytes())[..24]
+            ),
+            diagnostic_signals,
+            observed_composition_roles,
+            learning_score: lessons
                 .iter()
-                .any(PerformanceMetricEvidence::has_executable_knowledge)
-        }),
-        typed_behavior_goals: lessons
-            .iter()
-            .flat_map(|lesson| &lesson.public_contract_deltas)
-            .flat_map(|delta| delta.typed_behavior_goals.iter().cloned())
-            .take(MAX_TYPED_BEHAVIOR_GOALS_PER_GENERATIVE_INPUT)
-            .collect(),
-        executable_performance_operators: {
-            let mut operators = BTreeMap::new();
-            for operator in lessons
+                .map(|lesson| lesson.learning_score)
+                .max()
+                .unwrap_or(0),
+            verification_evidence_count: lessons
                 .iter()
-                .flat_map(|lesson| executable_performance_operators(lesson))
-            {
-                operators
-                    .entry(operator.operator_id.clone())
-                    .or_insert(operator);
-            }
-            operators.into_values().collect()
+                .map(|lesson| lesson.evidence_observation_sha256.len())
+                .sum::<usize>()
+                .min(16),
+            measured_performance_gain: lessons.iter().any(|lesson| {
+                lesson
+                    .performance_metrics
+                    .iter()
+                    .any(PerformanceMetricEvidence::has_executable_knowledge)
+            }),
+            typed_behavior_goals,
+            executable_performance_operators: {
+                let mut operators = BTreeMap::new();
+                for operator in lessons
+                    .iter()
+                    .flat_map(|lesson| executable_performance_operators(lesson))
+                {
+                    operators
+                        .entry(operator.operator_id.clone())
+                        .or_insert(operator);
+                }
+                operators.into_values().collect()
+            },
         },
-    })
+        public_contract_deltas,
+    ))
 }
 
 fn refine_classifier_from_capability_outcome(
@@ -5798,6 +5939,8 @@ struct PlateauGenerativeProbeReceipt {
     probe_id: String,
     predecessor_memory_sha256: String,
     input: GenerativeInput,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    public_contract_deltas: Vec<PublicContractDeltaIR>,
     seed: u64,
     cycle: GenerativeCycleResult,
     observation: Option<LearningObservation>,
@@ -5809,7 +5952,7 @@ fn plateau_generative_probe_observation(
     state: &SupervisorState,
     memory: &GrowthMemory,
 ) -> Result<Option<LearningObservation>, String> {
-    let Some(input) = plateau_generative_input(memory) else {
+    let Some((input, public_contract_deltas)) = plateau_generative_input(memory) else {
         return Ok(None);
     };
     if !executable_generative_substrate_available(&memory.generative) {
@@ -5907,7 +6050,7 @@ fn plateau_generative_probe_observation(
                 evidence_sha256: content_sha256,
                 executable_knowledge: None,
             }],
-            public_contract_deltas: Vec::new(),
+            public_contract_deltas: public_contract_deltas.clone(),
             exact_source_fragments_stored: 0,
             raw_source_bytes_stored: 0,
             observed_at_ms: state.generation,
@@ -5920,6 +6063,7 @@ fn plateau_generative_probe_observation(
         probe_id,
         predecessor_memory_sha256: state.current_memory_sha256.clone(),
         input,
+        public_contract_deltas,
         seed,
         cycle,
         observation: observation.clone(),
@@ -11060,6 +11204,18 @@ fn step_without_lease(
             }
         }
     }
+    // A successful validator can prove that a structural change is safe, but
+    // it cannot manufacture the typed postcondition needed to reuse that
+    // change. Keep the evidence immutable and remove only that exact cohort
+    // from the active queue so the same diagnostic is not executed forever.
+    if config.autonomous_campaigns {
+        let _ = defer_verified_non_executable_cohort(
+            config,
+            state.generation,
+            &mut scan.index,
+            &mut high,
+        )?;
+    }
     if high.is_empty()
         && config.autonomous_campaigns
         && state.plateau_scans >= config.resources.plateau_scans_before_wait
@@ -12992,6 +13148,98 @@ mod tests {
             selected_campaign_observations(&config, &[high_without_evidence, verified.clone()]);
         assert_eq!(selected, vec![verified]);
         fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn validated_text_only_cohort_is_preserved_but_removed_from_active_queue() {
+        let root = temp_root("defer-validated-text-only-cohort");
+        let (_, config) = test_config(&root);
+        let mut index = FileIndex::default();
+        let implementation = LearningObservation {
+            observation_id: "implementation".to_string(),
+            work_event_id: None,
+            logical_path: "ROOT_0/src/lib.rs".to_string(),
+            content_sha256: "1".repeat(64),
+            predecessor_content_sha256: None,
+            actor: WorkActor::UnknownLocalWriter,
+            work_kind: WorkKind::DefectRepair,
+            work_outcome: WorkOutcome::Unknown,
+            features_before: None,
+            features_after: StructuralFeatures::default(),
+            signals: vec!["DEFECT_REPAIR".to_string()],
+            composition_roles: vec!["IMPLEMENTATION_REPAIR".to_string()],
+            learning_score: 100,
+            learning_value: LearningValue::High,
+            reasons: Vec::new(),
+            verification_evidence_sha256: Vec::new(),
+            performance_metrics: Vec::new(),
+            public_contract_deltas: Vec::new(),
+            exact_source_fragments_stored: 0,
+            raw_source_bytes_stored: 0,
+            observed_at_ms: 1,
+        };
+        let mut verification = implementation.clone();
+        verification.observation_id = "verification".to_string();
+        verification.logical_path = "ROOT_0/.b_validation/pass".to_string();
+        verification.work_kind = WorkKind::Verification;
+        verification.work_outcome = WorkOutcome::Pass;
+        verification.signals = vec!["VERIFIED_PASS".to_string()];
+        verification.verification_evidence_sha256 = vec!["a".repeat(64)];
+        verification.learning_score = 80;
+        let mut observations = vec![implementation, verification];
+
+        let deferred =
+            defer_verified_non_executable_cohort(&config, 7, &mut index, &mut observations)
+                .unwrap();
+
+        assert_eq!(deferred, 2);
+        assert!(observations.is_empty());
+        assert_eq!(index.consumed_observation_ids.len(), 2);
+        assert_eq!(
+            fs::read_dir(config.state_dir.join("diagnostics"))
+                .unwrap()
+                .filter_map(Result::ok)
+                .filter(|entry| entry
+                    .file_name()
+                    .to_string_lossy()
+                    .starts_with("deferred_cohort_"))
+                .count(),
+            1
+        );
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn plateau_input_preserves_executable_contract_transport() {
+        let delta = public_contract_delta_fixture();
+        let lesson = |id: &str| LearnedCompositionLesson {
+            lesson_id: id.to_string(),
+            evidence_observation_sha256: vec![sha256(id.as_bytes())],
+            work_kinds: vec![WorkKind::CapabilitySynthesis],
+            diagnostic_signals: vec!["VERIFIED_PASS".to_string()],
+            composition_recipe: vec!["PROGRAM_COMPOSITION".to_string()],
+            applicability: vec!["BOUND_CONTEXT".to_string()],
+            verification_obligations: vec!["BEHAVIORAL_CANARY".to_string()],
+            performance_metrics: Vec::new(),
+            public_contract_deltas: vec![delta.clone()],
+            learning_score: 90,
+            exact_patch_data_present: false,
+            exact_source_fragment_present: false,
+            raw_source_bytes_present: false,
+        };
+        let memory = GrowthMemory {
+            schema: SUPERVISOR_SCHEMA.to_string(),
+            generation: 2,
+            predecessor_sha256: None,
+            lessons: vec![lesson("LESSON-A"), lesson("LESSON-B")],
+            classifier: ClassifierMemory::default(),
+            evaluator: EvaluatorMemory::default(),
+            generative: GenerativeGrowthMemory::default(),
+        };
+
+        let (input, deltas) = plateau_generative_input(&memory).expect("executable plateau input");
+        assert_eq!(deltas, vec![delta.clone()]);
+        assert_eq!(input.typed_behavior_goals, delta.typed_behavior_goals);
     }
 
     #[test]
