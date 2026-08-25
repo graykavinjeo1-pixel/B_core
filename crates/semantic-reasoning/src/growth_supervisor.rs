@@ -65,8 +65,8 @@ use crate::sem5::typed_mechanism::{
     validate_typed_mechanism_improvement_operator, validate_typed_mechanism_operator_authority,
     validate_typed_mechanism_synthesis_goal, TypedMechanismImprovementOperatorIR,
     TypedMechanismOperatorAuthorityReceiptIR, TypedMechanismSynthesisGoalIR,
-    INSTALLED_TYPED_OPERATOR_AUTHORITY_SCHEMA, MAX_ACTIVE_TYPED_MECHANISM_OPERATORS,
-    SOURCE_BOUND_OPERATOR_AUTHORITY_SCHEMA,
+    TypedMechanismSynthesisReceiptIR, INSTALLED_TYPED_OPERATOR_AUTHORITY_SCHEMA,
+    MAX_ACTIVE_TYPED_MECHANISM_OPERATORS, SOURCE_BOUND_OPERATOR_AUTHORITY_SCHEMA,
 };
 use crate::source_bound_causal_frontend::{
     discover_and_synthesize_python_repository_paths_with_operators, replay_source_bound_patch,
@@ -10937,7 +10937,12 @@ fn is_sem5_composition(accepted: &crate::generative_growth::ReusableCompositionM
 
 fn accepted_sem5_executable_artifacts(
     memory: &GrowthMemory,
-) -> Vec<(String, String, TypedMechanismSynthesisGoalIR)> {
+) -> Vec<(
+    String,
+    String,
+    TypedMechanismSynthesisGoalIR,
+    Option<TypedMechanismSynthesisReceiptIR>,
+)> {
     let mut artifacts =
         memory
             .generative
@@ -10952,20 +10957,29 @@ fn accepted_sem5_executable_artifacts(
                             return None;
                         }
                         let goal = accepted.verified_typed_behavior_goals.get(artifact)?;
-                        Some((artifact.clone(), context.clone(), goal.clone()))
+                        let synthesis_receipt = accepted
+                            .verified_typed_mechanism_receipts
+                            .get(artifact)
+                            .cloned();
+                        Some((
+                            artifact.clone(),
+                            context.clone(),
+                            goal.clone(),
+                            synthesis_receipt,
+                        ))
                     },
                 )
             })
             .collect::<Vec<_>>();
     let mut seen = BTreeSet::new();
-    artifacts.retain(|(artifact, _, _)| seen.insert(artifact.clone()));
+    artifacts.retain(|(artifact, _, _, _)| seen.insert(artifact.clone()));
     artifacts
 }
 
 fn accepted_sem5_artifact_contexts(memory: &GrowthMemory) -> Vec<(String, String)> {
     accepted_sem5_executable_artifacts(memory)
         .into_iter()
-        .map(|(artifact, context, _)| (artifact, context))
+        .map(|(artifact, context, _, _)| (artifact, context))
         .collect()
 }
 
@@ -10982,13 +10996,20 @@ fn pending_sem5_composition_candidates(
         return Ok(Vec::new());
     }
     let mut candidates = Vec::new();
-    for (expected_artifact, context, goal) in accepted_sem5_executable_artifacts(memory) {
+    for (expected_artifact, context, goal, expected_synthesis) in
+        accepted_sem5_executable_artifacts(memory)
+    {
         if installed.contains(expected_artifact.as_str()) {
             continue;
         }
         let (candidate, _) = compose_typed_behavior_goal_candidate(&context, &goal)?;
         if candidate.program_ir_sha256 != expected_artifact {
             return Err("VERIFIED_ARTIFACT_CONTEXT_BINDING_FAILURE".to_string());
+        }
+        if expected_synthesis.as_ref().is_some_and(|expected| {
+            candidate.typed_mechanism_synthesis_receipt.as_ref() != Some(expected)
+        }) {
+            return Err("VERIFIED_ARTIFACT_SYNTHESIS_RECEIPT_BINDING_FAILURE".to_string());
         }
         candidates.push(candidate);
         if candidates.len() >= family_limit {

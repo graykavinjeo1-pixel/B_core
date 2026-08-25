@@ -30,7 +30,10 @@ use crate::sem23_engine::{
     PROPERTY_RECURSIVE_CLOSURE, PROPERTY_STRUCTURED_EMERGENCE,
 };
 use crate::sem25_engine::{run_growth_probe, GrowthProbeRequest};
-use crate::sem5::typed_mechanism::TypedMechanismSynthesisGoalIR;
+use crate::sem5::typed_mechanism::{
+    validate_typed_mechanism_synthesis_receipt, TypedMechanismSynthesisGoalIR,
+    TypedMechanismSynthesisReceiptIR,
+};
 
 pub const GENERATIVE_GROWTH_SCHEMA: &str = "B_CORE_GENERATIVE_GROWTH_1";
 const MAX_REUSABLE_COMPOSITIONS: usize = 64;
@@ -193,6 +196,11 @@ pub struct ReusableCompositionMemory {
     /// cannot reconstruct or install a learned program.
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     pub verified_typed_behavior_goals: BTreeMap<String, TypedMechanismSynthesisGoalIR>,
+    /// Exact synthesis receipts retained at behavioral verification time.
+    /// Goals explain the desired behavior; these receipts preserve the
+    /// executable recipe that can be promoted after source installation.
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub verified_typed_mechanism_receipts: BTreeMap<String, TypedMechanismSynthesisReceiptIR>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -324,10 +332,25 @@ impl ReusableCompositionMemory {
             return false;
         }
         match plan.composer {
-            GenerativeComposerIR::Sem5Program => self
-                .verified_typed_behavior_goals
-                .get(artifact_sha256)
-                .is_some_and(validate_typed_behavior_goal_for_memory),
+            GenerativeComposerIR::Sem5Program => {
+                let Some(goal) = self.verified_typed_behavior_goals.get(artifact_sha256) else {
+                    return false;
+                };
+                if !validate_typed_behavior_goal_for_memory(goal) {
+                    return false;
+                }
+                match self.verified_typed_mechanism_receipts.get(artifact_sha256) {
+                    Some(receipt) => {
+                        validate_typed_mechanism_synthesis_receipt(receipt).is_ok()
+                            && receipt.synthesis_request.as_ref() == Some(goal)
+                    }
+                    // Revision-6 sealed memories predate exact receipt
+                    // retention. They remain reconstructable from their
+                    // context-bound typed goal; all new promotions carry the
+                    // stronger exact receipt.
+                    None => true,
+                }
+            }
             // These catalogs remain direct workflow canaries. Until their
             // exact executable payload is retained in this memory schema they
             // cannot contribute generative capability units.
@@ -443,6 +466,8 @@ pub struct VerifiedBehavioralArtifact {
     pub cases_passed: usize,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub typed_behavior_goal: Option<TypedMechanismSynthesisGoalIR>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub typed_mechanism_synthesis_receipt: Option<TypedMechanismSynthesisReceiptIR>,
 }
 
 fn primitive(id: &str, anchor: &str, input: &str, output: &str, role: &str) -> RepairPrimitiveIR {
@@ -972,6 +997,8 @@ fn execute_composer(
                             cases_executed: receipt.cases_executed,
                             cases_passed: receipt.cases_passed,
                             typed_behavior_goal: Some(goal.clone()),
+                            typed_mechanism_synthesis_receipt: receipt
+                                .typed_mechanism_synthesis_receipt,
                         });
                     }
                 }
@@ -1009,6 +1036,7 @@ fn execute_composer(
                         cases_executed: receipt.cases_executed,
                         cases_passed: receipt.cases_passed,
                         typed_behavior_goal: None,
+                        typed_mechanism_synthesis_receipt: None,
                     });
                 }
             }
@@ -1053,6 +1081,7 @@ fn execute_composer(
                     cases_executed: receipt.cases_executed,
                     cases_passed: receipt.cases_passed,
                     typed_behavior_goal: None,
+                    typed_mechanism_synthesis_receipt: None,
                 }],
                 None,
             ))
@@ -1096,6 +1125,7 @@ fn execute_composer(
                         cases_executed: receipt.cases_executed,
                         cases_passed: receipt.cases_passed,
                         typed_behavior_goal: None,
+                        typed_mechanism_synthesis_receipt: None,
                     });
                 }
             }
@@ -1149,6 +1179,7 @@ fn execute_composer(
                             cases_executed: 2,
                             cases_passed: 2,
                             typed_behavior_goal: None,
+                            typed_mechanism_synthesis_receipt: None,
                         });
                     }
                 }
@@ -1195,6 +1226,7 @@ fn execute_composer(
                         cases_executed: receipt.cases_executed,
                         cases_passed: receipt.cases_passed,
                         typed_behavior_goal: None,
+                        typed_mechanism_synthesis_receipt: None,
                     });
                 }
             }
@@ -1276,6 +1308,7 @@ fn execute_composer(
                     cases_executed: receipt.cases_executed,
                     cases_passed: receipt.cases_passed,
                     typed_behavior_goal: None,
+                    typed_mechanism_synthesis_receipt: None,
                 });
             }
             Ok((artifacts, None))
@@ -1934,10 +1967,25 @@ pub fn validate_behavioral_execution_receipt(result: &GenerativeCycleResult) -> 
                                     .all(|byte| byte.is_ascii_hexdigit())
                                 && artifact.cases_executed > 0
                                 && artifact.cases_passed == artifact.cases_executed
-                                && artifact
-                                    .typed_behavior_goal
-                                    .as_ref()
-                                    .is_some_and(validate_typed_behavior_goal_for_memory)
+                                && match execution_plan.composer {
+                                    GenerativeComposerIR::Sem5Program => artifact
+                                        .typed_behavior_goal
+                                        .as_ref()
+                                        .zip(artifact.typed_mechanism_synthesis_receipt.as_ref())
+                                        .is_some_and(|(goal, synthesis)| {
+                                            validate_typed_behavior_goal_for_memory(goal)
+                                                && validate_typed_mechanism_synthesis_receipt(
+                                                    synthesis,
+                                                )
+                                                .is_ok()
+                                                && synthesis.synthesis_request.as_ref()
+                                                    == Some(goal)
+                                        }),
+                                    _ => {
+                                        artifact.typed_behavior_goal.is_none()
+                                            && artifact.typed_mechanism_synthesis_receipt.is_none()
+                                    }
+                                }
                         })
                         && receipt.composite_artifact_sha256.as_deref()
                             == receipt
@@ -2193,6 +2241,11 @@ pub fn promote_generative_cycle(
                         .verified_typed_behavior_goals
                         .insert(artifact.artifact_sha256.clone(), goal.clone());
                 }
+                if let Some(receipt) = &artifact.typed_mechanism_synthesis_receipt {
+                    existing
+                        .verified_typed_mechanism_receipts
+                        .insert(artifact.artifact_sha256.clone(), receipt.clone());
+                }
             }
             existing.verified_artifact_sha256s.sort();
         } else if result.accepted_for_memory {
@@ -2220,6 +2273,15 @@ pub fn promote_generative_cycle(
                         .map(|goal| (artifact.artifact_sha256.clone(), goal.clone()))
                 })
                 .collect::<BTreeMap<_, _>>();
+            let verified_typed_mechanism_receipts = result_artifacts
+                .iter()
+                .filter_map(|artifact| {
+                    artifact
+                        .typed_mechanism_synthesis_receipt
+                        .as_ref()
+                        .map(|receipt| (artifact.artifact_sha256.clone(), receipt.clone()))
+                })
+                .collect::<BTreeMap<_, _>>();
             next.accepted_compositions.push(ReusableCompositionMemory {
                 composition: result.selected_composition.clone(),
                 execution_plan: Some(execution_plan),
@@ -2234,6 +2296,7 @@ pub fn promote_generative_cycle(
                 verified_artifact_sha256s,
                 verified_artifact_contexts,
                 verified_typed_behavior_goals,
+                verified_typed_mechanism_receipts,
             });
         }
         if result.reused_memory_composition_id.is_some() {
@@ -2376,6 +2439,14 @@ mod tests {
         assert!(result.applied_to_self_improvement);
         assert!(!result.applied_policy_signals.is_empty());
         assert_eq!(result.external_llm_calls, 0);
+        let promoted =
+            promote_generative_cycle(&GenerativeGrowthMemory::default(), &input(), &result)
+                .unwrap();
+        let accepted = promoted.accepted_compositions.first().unwrap();
+        assert_eq!(accepted.verified_typed_behavior_goals.len(), 1);
+        assert_eq!(accepted.verified_typed_mechanism_receipts.len(), 1);
+        let artifact = accepted.verified_artifact_sha256s.first().unwrap();
+        assert!(accepted.has_executable_artifact(artifact));
     }
 
     #[test]
@@ -2498,6 +2569,7 @@ mod tests {
                     })
                     .collect(),
                 verified_typed_behavior_goals: BTreeMap::new(),
+                verified_typed_mechanism_receipts: BTreeMap::new(),
             });
         assert_eq!(hash_only.distinct_verified_artifact_count(), 0);
         assert!(executable_generative_substrate_available(&hash_only));

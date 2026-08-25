@@ -624,10 +624,19 @@ fn candidate_hypotheses(input: &SelfInspectionInput) -> Vec<InternalHypothesis> 
             policy_exploration_selected: false,
         });
     }
+    let synthesis_coverage_reason =
+        input
+            .last_source_discovery_reason
+            .as_deref()
+            .is_some_and(|reason| {
+                matches!(
+                    reason,
+                    "BELOW_VALUE_THRESHOLD" | "NO_APPLICABLE_TRANSFORMATION"
+                )
+            });
     if input.plateau_scans > 0
-        && input.source_patch_attempts == 0
         && input.source_discovery_no_candidate_streak >= 2
-        && input.last_source_discovery_reason.as_deref() == Some("BELOW_VALUE_THRESHOLD")
+        && synthesis_coverage_reason
     {
         hypotheses.push(InternalHypothesis {
             bottleneck: InternalBottleneckClass::SourceSynthesisCoverageGap,
@@ -1274,9 +1283,12 @@ mod tests {
     }
 
     #[test]
-    fn absence_of_an_applicable_transformation_is_not_invented_as_a_synthesis_defect() {
+    fn repeated_absence_of_an_applicable_transformation_is_a_capability_gap() {
         let mut value = input();
         value.plateau_scans = 12;
+        value.source_patch_attempts = 12;
+        value.source_patch_installations = 7;
+        value.source_patch_rollbacks = 5;
         value.source_discovery_no_candidate_streak = 30;
         value.last_source_discovery_reason = Some("NO_APPLICABLE_TRANSFORMATION".to_string());
 
@@ -1284,10 +1296,13 @@ mod tests {
 
         assert_eq!(
             receipt.selected_bottleneck,
-            InternalBottleneckClass::QuietIdle
+            InternalBottleneckClass::SourceSynthesisCoverageGap
         );
-        assert_eq!(receipt.repair_disposition, RepairDisposition::SafeWait);
-        assert_eq!(receipt.opportunity_kind, None);
+        assert_eq!(receipt.repair_disposition, RepairDisposition::CapabilityGap);
+        assert_eq!(
+            receipt.opportunity_kind,
+            Some(ChangeOpportunityKind::CapabilityGap)
+        );
         assert!(!receipt.actionable_defect);
     }
 

@@ -85,7 +85,7 @@ const MAX_SUBMITTED_SOURCE_PROPOSALS_PER_GENERATOR: usize = MAX_SELECTED_SOURCE_
 // Revision 47 separates exact authority existence from the bounded active
 // operator window and deduplicates repeated authority receipts.
 // Generator identity remains diagnostic evidence only.
-pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 57;
+pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 58;
 pub const MAX_RETAINED_CONSUMED_RUNTIME_STAGING_GENERATIONS: usize = 2;
 const KNOWN_REMAINDER_PREDICTED_VALUE: u16 = 35;
 const MAX_REPOSITORY_REPAIR_FAMILY_FILES: usize = 16;
@@ -233,7 +233,7 @@ fn opportunity_binding_valid(request: &AutonomousSourcePatchRequest) -> bool {
 fn validate_typed_mechanism_recipe_binding(
     request: &AutonomousSourcePatchRequest,
 ) -> Result<(), String> {
-    match (
+    let single_binding = match (
         &request.typed_mechanism_operator_recipe,
         &request.typed_mechanism_synthesis_receipt,
         &request.typed_mechanism_materialized_syntax_sha256,
@@ -289,7 +289,41 @@ fn validate_typed_mechanism_recipe_binding(
             Ok(())
         }
         _ => Err("TYPED_MECHANISM_RECIPE_PARTIAL_BINDING".to_string()),
+    };
+    single_binding?;
+
+    if !request.typed_mechanism_operator_family.is_empty()
+        && request.typed_mechanism_operator_recipe.is_some()
+    {
+        return Err("TYPED_MECHANISM_SINGLE_AND_FAMILY_BINDING_CONFLICT".to_string());
     }
+    if request.typed_mechanism_operator_family.len() > MAX_ACTIVE_TYPED_MECHANISM_OPERATORS {
+        return Err("TYPED_MECHANISM_OPERATOR_FAMILY_BOUND".to_string());
+    }
+    let mut program_hashes = BTreeSet::new();
+    let mut operator_ids = BTreeSet::new();
+    for member in &request.typed_mechanism_operator_family {
+        validate_typed_mechanism_synthesis_receipt(&member.synthesis_receipt)?;
+        validate_typed_mechanism_improvement_operator(&member.operator_recipe)?;
+        let expected_recipe = typed_mechanism_improvement_operator_from_receipt(
+            &member.synthesis_receipt,
+            member.synthesis_receipt.receipt_sha256.clone(),
+        )?;
+        let registry_marker = format!("// B_CORE_CAPABILITY_BEGIN:{}", member.program_ir_sha256);
+        if member.program_ir_sha256.len() != 64
+            || !member
+                .program_ir_sha256
+                .bytes()
+                .all(|byte| byte.is_ascii_hexdigit())
+            || expected_recipe != member.operator_recipe
+            || !request.candidate_source.contains(&registry_marker)
+            || !program_hashes.insert(member.program_ir_sha256.clone())
+            || !operator_ids.insert(member.operator_recipe.operator_id.clone())
+        {
+            return Err("TYPED_MECHANISM_OPERATOR_FAMILY_BINDING_MISMATCH".to_string());
+        }
+    }
+    Ok(())
 }
 
 fn validate_typed_mechanism_source_materialization(
@@ -307,6 +341,13 @@ fn validate_typed_mechanism_source_materialization(
         return Err("TYPED_MECHANISM_SOURCE_MATERIALIZATION_MISMATCH".to_string());
     }
     Ok(())
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct TypedMechanismOperatorFamilyMemberIR {
+    pub program_ir_sha256: String,
+    pub operator_recipe: TypedMechanismImprovementOperatorIR,
+    pub synthesis_receipt: TypedMechanismSynthesisReceiptIR,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -358,6 +399,12 @@ pub struct AutonomousSourcePatchRequest {
     pub typed_mechanism_candidates_enumerated: usize,
     #[serde(default)]
     pub typed_mechanism_preferred_operator_attempts: usize,
+    /// A verified ProgramIR registry update may install several independent
+    /// typed callables in one atomic source patch. Retain every exact recipe
+    /// so successful validation promotes them into the next repair search,
+    /// instead of ending as callable-only dead-end artifacts.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub typed_mechanism_operator_family: Vec<TypedMechanismOperatorFamilyMemberIR>,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -843,38 +890,12 @@ fn typed_operator_json_sha256<T: Serialize>(value: &T) -> Result<String, String>
         .map_err(|error| format!("INSTALLED_TYPED_OPERATOR_JSON:{error}"))
 }
 
-fn persist_installed_typed_mechanism_operator(
+fn persist_one_installed_typed_mechanism_operator(
     state_dir: &Path,
     request: &AutonomousSourcePatchRequest,
     receipt: &AutonomousSourcePatchReceipt,
+    recipe: &TypedMechanismImprovementOperatorIR,
 ) -> Result<(), String> {
-    let Some(recipe) = &request.typed_mechanism_operator_recipe else {
-        return Ok(());
-    };
-    validate_typed_mechanism_recipe_binding(request)?;
-    if !receipt.installed
-        || receipt.rolled_back
-        || receipt.failure_reason.is_some()
-        || !receipt
-            .format_check
-            .as_ref()
-            .is_some_and(|check| check.success)
-        || !receipt
-            .compile_check
-            .as_ref()
-            .is_some_and(|check| check.success)
-        || !receipt.validation.success
-        || !receipt
-            .release_build
-            .as_ref()
-            .is_some_and(|build| build.success)
-        || !receipt.workspace_stable_during_validation
-        || receipt.receipt_sha256.len() != 64
-        || receipt.candidate_sha256 != request.candidate_sha256
-    {
-        return Err("INSTALLED_TYPED_OPERATOR_WITHOUT_COMPLETE_VALIDATION".to_string());
-    }
-
     let mut operator = recipe.clone();
     operator.evidence_sha256 = receipt.validation.output_sha256.clone();
     validate_typed_mechanism_improvement_operator(&operator)?;
@@ -953,6 +974,54 @@ fn persist_installed_typed_mechanism_operator(
         }
     } else {
         write_immutable_json(&authority_path, &authority)?;
+    }
+    Ok(())
+}
+
+fn persist_installed_typed_mechanism_operator(
+    state_dir: &Path,
+    request: &AutonomousSourcePatchRequest,
+    receipt: &AutonomousSourcePatchReceipt,
+) -> Result<(), String> {
+    validate_typed_mechanism_recipe_binding(request)?;
+    if request.typed_mechanism_operator_recipe.is_none()
+        && request.typed_mechanism_operator_family.is_empty()
+    {
+        return Ok(());
+    }
+    if !receipt.installed
+        || receipt.rolled_back
+        || receipt.failure_reason.is_some()
+        || !receipt
+            .format_check
+            .as_ref()
+            .is_some_and(|check| check.success)
+        || !receipt
+            .compile_check
+            .as_ref()
+            .is_some_and(|check| check.success)
+        || !receipt.validation.success
+        || !receipt
+            .release_build
+            .as_ref()
+            .is_some_and(|build| build.success)
+        || !receipt.workspace_stable_during_validation
+        || receipt.receipt_sha256.len() != 64
+        || receipt.candidate_sha256 != request.candidate_sha256
+    {
+        return Err("INSTALLED_TYPED_OPERATOR_WITHOUT_COMPLETE_VALIDATION".to_string());
+    }
+
+    if let Some(recipe) = &request.typed_mechanism_operator_recipe {
+        persist_one_installed_typed_mechanism_operator(state_dir, request, receipt, recipe)?;
+    }
+    for member in &request.typed_mechanism_operator_family {
+        persist_one_installed_typed_mechanism_operator(
+            state_dir,
+            request,
+            receipt,
+            &member.operator_recipe,
+        )?;
     }
     Ok(())
 }
@@ -4552,6 +4621,7 @@ fn compiler_guided_requests(
             typed_mechanism_selected_operator_id: None,
             typed_mechanism_candidates_enumerated: 0,
             typed_mechanism_preferred_operator_attempts: 0,
+            typed_mechanism_operator_family: Vec::new(),
         };
         requests.push(SourceProposalSubmission {
             evidence: SourceProposalRankingEvidenceIR {
@@ -4822,6 +4892,7 @@ fn grammar_synthesized_requests(
             typed_mechanism_candidates_enumerated: candidate.typed_mechanism_candidates_enumerated,
             typed_mechanism_preferred_operator_attempts: candidate
                 .typed_mechanism_preferred_operator_attempts,
+            typed_mechanism_operator_family: Vec::new(),
         };
         requests.push(SourceProposalSubmission { evidence, request });
         if requests.len() >= MAX_SUBMITTED_SOURCE_PROPOSALS_PER_GENERATOR {
@@ -5052,6 +5123,7 @@ fn discover_source_improvement_lane(
                 typed_mechanism_selected_operator_id: None,
                 typed_mechanism_candidates_enumerated: 0,
                 typed_mechanism_preferred_operator_attempts: 0,
+                typed_mechanism_operator_family: Vec::new(),
             };
             proposals.push(SourceProposalSubmission { request, evidence });
             if proposals.len() >= MAX_SUBMITTED_SOURCE_PROPOSALS_PER_GENERATOR {
@@ -5385,6 +5457,7 @@ fn compose_ranked_source_proposals(
         typed_mechanism_selected_operator_id: None,
         typed_mechanism_candidates_enumerated: 0,
         typed_mechanism_preferred_operator_attempts: 0,
+        typed_mechanism_operator_family: Vec::new(),
     }))
 }
 
@@ -5696,6 +5769,7 @@ pub fn discover_executable_performance_improvement(
                         typed_mechanism_selected_operator_id: None,
                         typed_mechanism_candidates_enumerated: 0,
                         typed_mechanism_preferred_operator_attempts: 0,
+                        typed_mechanism_operator_family: Vec::new(),
                     }),
                 },
             ));
@@ -6276,6 +6350,7 @@ mod tests {
             typed_mechanism_selected_operator_id: None,
             typed_mechanism_candidates_enumerated: 0,
             typed_mechanism_preferred_operator_attempts: 0,
+            typed_mechanism_operator_family: Vec::new(),
         }
     }
 

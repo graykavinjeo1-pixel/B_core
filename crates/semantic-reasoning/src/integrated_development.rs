@@ -18,7 +18,7 @@ use crate::autonomous_source_mutation::{
     install_and_stage_source_patch, invoke_and_execute_improvement_operator,
     refresh_improvement_operator_repository, source_opportunity_family_id,
     AutonomousSourceMutationPolicy, AutonomousSourcePatchReceipt, AutonomousSourcePatchRequest,
-    ChangeOpportunityKind, AUTONOMOUS_SOURCE_MUTATION_SCHEMA,
+    ChangeOpportunityKind, TypedMechanismOperatorFamilyMemberIR, AUTONOMOUS_SOURCE_MUTATION_SCHEMA,
 };
 use crate::generalized_self_application::{
     derive_dynamic_weakness, synthesize_generalized_change, WeaknessEvidenceKind,
@@ -40,7 +40,8 @@ use crate::sem5::{
         programming_primitive_catalog,
     },
     typed_mechanism::{
-        lower_typed_mechanism_goal, synthesize_typed_mechanism_goal, ConcreteSyntaxTemplateIR,
+        lower_typed_mechanism_goal, synthesize_typed_mechanism_goal,
+        typed_mechanism_improvement_operator_from_receipt, ConcreteSyntaxTemplateIR,
         TypedMechanismGoalIR, TypedMechanismSynthesisGoalIR, TypedMechanismSynthesisReceiptIR,
     },
 };
@@ -149,6 +150,11 @@ pub struct BehavioralCompositionCanaryReceipt {
     pub used_primitive_ids: Vec<String>,
     pub cases_executed: usize,
     pub cases_passed: usize,
+    /// Exact typed synthesis proof that produced `program_ir_sha256`.
+    /// Retaining this payload lets a verified callable become a reusable
+    /// source-repair operator after installation instead of a terminal demo.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub typed_mechanism_synthesis_receipt: Option<TypedMechanismSynthesisReceiptIR>,
     #[serde(default)]
     pub installed_capability_present: bool,
     #[serde(default)]
@@ -580,6 +586,29 @@ pub fn install_composite_candidate(
     )
 }
 
+fn typed_mechanism_operator_family(
+    candidates: &[CompositeProgramCandidateIR],
+) -> Result<Vec<TypedMechanismOperatorFamilyMemberIR>, String> {
+    let mut unique = BTreeMap::new();
+    for candidate in candidates {
+        let synthesis_receipt = candidate
+            .typed_mechanism_synthesis_receipt
+            .clone()
+            .ok_or_else(|| "COMPOSITE_TYPED_OPERATOR_RECEIPT_MISSING".to_string())?;
+        let operator_recipe = typed_mechanism_improvement_operator_from_receipt(
+            &synthesis_receipt,
+            synthesis_receipt.receipt_sha256.clone(),
+        )?;
+        let member = TypedMechanismOperatorFamilyMemberIR {
+            program_ir_sha256: candidate.program_ir_sha256.clone(),
+            operator_recipe: operator_recipe.clone(),
+            synthesis_receipt,
+        };
+        unique.entry(operator_recipe.operator_id).or_insert(member);
+    }
+    Ok(unique.into_values().collect())
+}
+
 /// Installs a bounded family of independently verified ProgramIR lowerings as
 /// one atomic registry rewrite. The expensive compile/test/release boundary is
 /// paid once for the family instead of once per callable.
@@ -722,6 +751,7 @@ pub fn install_composite_candidate_family(
         typed_mechanism_selected_operator_id: None,
         typed_mechanism_candidates_enumerated: 0,
         typed_mechanism_preferred_operator_attempts: 0,
+        typed_mechanism_operator_family: typed_mechanism_operator_family(candidates)?,
     };
     install_and_stage_source_patch(policy, state_dir, &request)
 }
@@ -882,6 +912,7 @@ pub fn execute_behavioral_composition_canary(
         used_primitive_ids: candidate.used_primitive_ids,
         cases_executed: cases.len(),
         cases_passed: passed,
+        typed_mechanism_synthesis_receipt: None,
         installed_capability_present,
         installed_program_match,
         installed_source_schema_revision,
@@ -1003,15 +1034,20 @@ pub fn execute_typed_behavior_goal_canary(
         .transpose()
         .map_err(|error| format!("TYPED_BEHAVIOR_INSTALLED_OUTPUT_SERIALIZE:{error}"))?
         .map(|bytes| sha256(&bytes));
+    let synthesis_receipt = candidate
+        .typed_mechanism_synthesis_receipt
+        .clone()
+        .ok_or_else(|| "TYPED_BEHAVIOR_SYNTHESIS_RECEIPT_MISSING".to_string())?;
     let receipt_sha256 = sha256(
         format!(
-            "{}:{}:{}:{}:{}:{}",
+            "{}:{}:{}:{}:{}:{}:{}",
             context_sha256,
             goal_sha256,
             candidate.program_ir_sha256,
             goal.public_observations.len(),
             installed_program_match,
-            installed_output_sha256.as_deref().unwrap_or("NONE")
+            installed_output_sha256.as_deref().unwrap_or("NONE"),
+            synthesis_receipt.receipt_sha256,
         )
         .as_bytes(),
     );
@@ -1022,6 +1058,7 @@ pub fn execute_typed_behavior_goal_canary(
         used_primitive_ids: candidate.used_primitive_ids,
         cases_executed: goal.public_observations.len(),
         cases_passed: goal.public_observations.len(),
+        typed_mechanism_synthesis_receipt: Some(synthesis_receipt),
         installed_capability_present,
         installed_program_match,
         installed_source_schema_revision,
@@ -1581,12 +1618,31 @@ mod tests {
             provenance: vec!["PUBLIC_CONTRACT_DELTA".to_string()],
         };
 
-        let receipt = execute_typed_behavior_goal_canary(&"d".repeat(64), &goal)
+        let context = "d".repeat(64);
+        let (candidate, _) = compose_typed_behavior_goal_candidate(&context, &goal)
+            .expect("typed candidate for reusable operator family");
+        let operator_family = typed_mechanism_operator_family(std::slice::from_ref(&candidate))
+            .expect("verified ProgramIR becomes one reusable operator");
+        assert_eq!(operator_family.len(), 1);
+        assert_eq!(
+            operator_family[0].program_ir_sha256,
+            candidate.program_ir_sha256
+        );
+
+        let receipt = execute_typed_behavior_goal_canary(&context, &goal)
             .expect("exact typed behavior goal is executable");
         assert_eq!(receipt.schema, "B_CORE_TYPED_BEHAVIOR_GOAL_CANARY_1");
         assert_eq!(receipt.cases_executed, goal.public_observations.len());
         assert_eq!(receipt.cases_passed, goal.public_observations.len());
         assert!(!receipt.used_primitive_ids.is_empty());
+        let synthesis = receipt
+            .typed_mechanism_synthesis_receipt
+            .expect("exact synthesis receipt retained");
+        assert_eq!(synthesis.synthesis_request.as_ref(), Some(&goal));
+        assert!(
+            crate::sem5::typed_mechanism::validate_typed_mechanism_synthesis_receipt(&synthesis)
+                .is_ok()
+        );
     }
 
     #[test]

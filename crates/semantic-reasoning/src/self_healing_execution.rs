@@ -169,6 +169,7 @@ pub fn lower_self_healing_attempt_to_source_patch(
         typed_mechanism_selected_operator_id: None,
         typed_mechanism_candidates_enumerated: 0,
         typed_mechanism_preferred_operator_attempts: 0,
+        typed_mechanism_operator_family: Vec::new(),
     })
 }
 
