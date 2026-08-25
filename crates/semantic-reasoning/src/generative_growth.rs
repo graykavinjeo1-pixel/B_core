@@ -48,7 +48,8 @@ const MAX_SELF_HEALING_VERIFIED_ARTIFACTS: u64 = 1;
 const MAX_ARTIFACT_CONTEXT_ATTEMPTS: usize = MAX_VERIFIED_ARTIFACTS_PER_CYCLE * 4;
 const FRONTIER_EVIDENCE_CONTRACT_REVISION: u64 = 2;
 const BEHAVIORAL_HEURISTIC_EXCLUSION_CONTRACT_REVISION: u64 = 4;
-const BEHAVIORAL_VALUE_CONTRACT_REVISION: u64 = 5;
+const WRAPPER_CAPABILITY_CONTRACT_REVISION: u64 = 5;
+const BEHAVIORAL_VALUE_CONTRACT_REVISION: u64 = 6;
 const IMPROVEMENT_OPERATOR_GRAPH_CONTRACT_REVISION: u64 = 2;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
@@ -1775,12 +1776,12 @@ pub fn run_generative_cycle(
             0
         };
     let prediction_error = predicted_value.abs_diff(observed_value);
-    let structural_candidate =
-        typecheck_pass && input.verification_evidence_count > 0 && predicted_value >= 72;
-    let valuable = structural_candidate
-        && behavioral_composition_executed
-        && observed_value >= 72
-        && prediction_error <= 30;
+    // Prediction ranks which bounded experiment to run. Once the selected
+    // program has passed the typed public contract, a stale predictor must be
+    // calibrated from that result rather than vetoing the verified behavior.
+    // Otherwise every underprediction becomes a permanent capability ceiling.
+    let structural_candidate = typecheck_pass && input.verification_evidence_count > 0;
+    let valuable = structural_candidate && behavioral_composition_executed && observed_value >= 72;
     let previously_verified = memory
         .accepted_compositions
         .iter()
@@ -1994,7 +1995,11 @@ pub fn promote_generative_cycle(
         })
         .map(String::as_str)
         .collect::<BTreeSet<_>>();
-    let expected_novel_verified_artifact_count = if result.valuable {
+    let expected_valuable = result.composition_typecheck_pass
+        && input.verification_evidence_count > 0
+        && result.behavioral_composition_executed
+        && result.observed_value >= 72;
+    let expected_novel_verified_artifact_count = if expected_valuable {
         result_artifacts
             .iter()
             .filter(|artifact| !previously_verified.contains(artifact.artifact_sha256.as_str()))
@@ -2003,8 +2008,8 @@ pub fn promote_generative_cycle(
         0
     };
     let expected_novel_verified_artifact = expected_novel_verified_artifact_count > 0;
-    let expected_accepted_for_memory = result.valuable && expected_novel_verified_artifact;
-    let expected_novel_context_transfer = result.valuable
+    let expected_accepted_for_memory = expected_valuable && expected_novel_verified_artifact;
+    let expected_novel_context_transfer = expected_valuable
         && result.reused_memory_composition_id.is_some()
         && result.prior_context_trials == 0;
     let expected_productive_reuse =
@@ -2029,6 +2034,7 @@ pub fn promote_generative_cycle(
         || !result.prediction_recorded_before_composition
         || !result.selected_from_precomposition_prediction
         || result.observed_value_is_heuristic_proxy
+        || result.valuable != expected_valuable
         || !validate_behavioral_execution_receipt(result)
         || (!result.behavioral_composition_executed
             && (result.behavioral_verification_sha256.is_some()
@@ -2077,12 +2083,18 @@ pub fn promote_generative_cycle(
         next.calibrated_prediction_records = 0;
         next.behavioral_value_contract_revision = BEHAVIORAL_HEURISTIC_EXCLUSION_CONTRACT_REVISION;
     }
-    if next.behavioral_value_contract_revision < BEHAVIORAL_VALUE_CONTRACT_REVISION {
+    if next.behavioral_value_contract_revision < WRAPPER_CAPABILITY_CONTRACT_REVISION {
         next.legacy_wrapper_frontier_advance_events = next
             .legacy_wrapper_frontier_advance_events
             .saturating_add(next.frontier_advance_events);
         next.frontier_advance_events = 0;
         next.frontier_capability_units = next.distinct_verified_artifact_count();
+        next.behavioral_value_contract_revision = WRAPPER_CAPABILITY_CONTRACT_REVISION;
+    }
+    if next.behavioral_value_contract_revision < BEHAVIORAL_VALUE_CONTRACT_REVISION {
+        // Revision 6 changes only the authority boundary: a prediction ranks
+        // experiments, while executed public-contract evidence decides value.
+        // Existing typed executable memories and frontier units remain valid.
         next.behavioral_value_contract_revision = BEHAVIORAL_VALUE_CONTRACT_REVISION;
     }
     next.generation = next.generation.saturating_add(1);
@@ -2367,6 +2379,30 @@ mod tests {
     }
 
     #[test]
+    fn stale_underprediction_cannot_veto_an_executed_public_contract() {
+        let mut low_confidence_input = input();
+        low_confidence_input.learning_score = 0;
+        low_confidence_input.diagnostic_signals.clear();
+        low_confidence_input.observed_composition_roles.clear();
+        let memory = GenerativeGrowthMemory::default();
+
+        let result = run_generative_cycle(&memory, &low_confidence_input, 7).unwrap();
+
+        assert!(result.prediction_error > 30);
+        assert_eq!(result.observed_value, 100);
+        assert!(result.behavioral_composition_executed);
+        assert!(result.valuable);
+        assert!(result.accepted_for_memory);
+        assert!(result.frontier_advance);
+        let promoted = promote_generative_cycle(&memory, &low_confidence_input, &result).unwrap();
+        assert_eq!(promoted.frontier_capability_units, 1);
+        assert_eq!(
+            promoted.behavioral_value_contract_revision,
+            BEHAVIORAL_VALUE_CONTRACT_REVISION
+        );
+    }
+
+    #[test]
     fn verified_novel_artifact_is_retained_after_exploration_is_exhausted() {
         let current_input = input();
         let mut memory = GenerativeGrowthMemory::default();
@@ -2538,6 +2574,35 @@ mod tests {
         assert_eq!(next.legacy_wrapper_frontier_advance_events, 7);
         assert_eq!(next.frontier_advance_events, 0);
         assert_eq!(next.frontier_capability_units, 1);
+    }
+
+    #[test]
+    fn revision_five_executable_memory_migrates_without_frontier_loss() {
+        let first_input = input();
+        let first_result =
+            run_generative_cycle(&GenerativeGrowthMemory::default(), &first_input, 7).unwrap();
+        let mut revision_five = promote_generative_cycle(
+            &GenerativeGrowthMemory::default(),
+            &first_input,
+            &first_result,
+        )
+        .unwrap();
+        revision_five.behavioral_value_contract_revision = WRAPPER_CAPABILITY_CONTRACT_REVISION;
+        assert_eq!(revision_five.frontier_capability_units, 1);
+
+        let mut next_input = first_input;
+        next_input.source_lesson_id = "revision-six-authority-migration".to_string();
+        let result = run_generative_cycle(&revision_five, &next_input, 17).unwrap();
+        let migrated = promote_generative_cycle(&revision_five, &next_input, &result).unwrap();
+
+        assert_eq!(
+            migrated.behavioral_value_contract_revision,
+            BEHAVIORAL_VALUE_CONTRACT_REVISION
+        );
+        assert_eq!(migrated.frontier_capability_units, 1);
+        assert_eq!(migrated.frontier_advance_events, 1);
+        assert_eq!(migrated.legacy_wrapper_frontier_advance_events, 0);
+        assert_eq!(migrated.accepted_compositions.len(), 1);
     }
 
     #[test]

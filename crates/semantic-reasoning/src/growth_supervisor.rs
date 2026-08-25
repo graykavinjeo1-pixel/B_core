@@ -41,6 +41,7 @@ use crate::compound_growth::{
     run_compound_growth_input, CompoundGrowthCycleIR, CompoundGrowthInputIR,
     CompoundOperatorRepositoryIR, COMPOUND_GROWTH_INPUT_SCHEMA,
 };
+use crate::compound_typed_goal::derive_compound_typed_behavior_goals;
 use crate::generative_growth::{
     executable_generative_substrate_available, promote_generative_cycle, run_generative_cycle,
     validate_behavioral_execution_receipt, GenerativeComposerIR, GenerativeCycleResult,
@@ -84,7 +85,7 @@ const MAX_COMPOUND_INPUT_BYTES: u64 = 16 * 1024 * 1024;
 const MAX_COMPOUND_RECEIPT_BYTES: u64 = 64 * 1024 * 1024;
 const MAX_SUMMARY_BYTES: usize = 512;
 const SOURCE_PATCH_VALIDATION_CONTRACT_REVISION: u64 = 2;
-const PLATEAU_GENERATIVE_PROBE_CONTRACT_REVISION: u64 = 4;
+const PLATEAU_GENERATIVE_PROBE_CONTRACT_REVISION: u64 = 5;
 const MAX_INTRINSIC_CURIOSITY_HYPOTHESES: usize = 48;
 const MAX_RETAINED_INTRINSIC_CURIOSITY_RECEIPTS: usize = 96;
 const SCAN_WATCHDOG_TICK_MS: u64 = 1_000;
@@ -1267,6 +1268,10 @@ pub struct SelfCheck {
     pub compound_growth_runs_inside_supervisor_loop: bool,
     pub compound_repository_authority_is_supervisor_owned: bool,
     pub compound_growth_requires_typed_hashed_evidence: bool,
+    pub compound_typed_goal_functional_composition_enabled: bool,
+    pub compound_typed_goal_requires_public_causal_join: bool,
+    pub compound_typed_goal_effects_fail_closed: bool,
+    pub generative_prediction_is_selection_only: bool,
     pub evaluator_expansion_requires_new_challenge_capability: bool,
     pub intrinsic_curiosity_requires_executable_hypotheses: bool,
     pub intrinsic_reward_requires_verified_frontier: bool,
@@ -1405,6 +1410,10 @@ pub fn self_check() -> SelfCheck {
         compound_growth_runs_inside_supervisor_loop: true,
         compound_repository_authority_is_supervisor_owned: true,
         compound_growth_requires_typed_hashed_evidence: true,
+        compound_typed_goal_functional_composition_enabled: true,
+        compound_typed_goal_requires_public_causal_join: true,
+        compound_typed_goal_effects_fail_closed: true,
+        generative_prediction_is_selection_only: true,
         evaluator_expansion_requires_new_challenge_capability: true,
         intrinsic_curiosity_requires_executable_hypotheses: true,
         intrinsic_reward_requires_verified_frontier: true,
@@ -5355,7 +5364,7 @@ fn generative_input(lesson: &LearnedCompositionLesson) -> GenerativeInput {
 
 fn plateau_generative_input_from_lessons(
     lessons: &[&LearnedCompositionLesson],
-) -> Option<(GenerativeInput, Vec<PublicContractDeltaIR>)> {
+) -> Result<Option<(GenerativeInput, Vec<PublicContractDeltaIR>)>, String> {
     if lessons.len() < 2
         || lessons
             .iter()
@@ -5367,7 +5376,7 @@ fn plateau_generative_input_from_lessons(
             .iter()
             .any(|lesson| !lesson_has_executable_knowledge(lesson))
     {
-        return None;
+        return Ok(None);
     }
     let mut diagnostic_signals = lessons
         .iter()
@@ -5377,7 +5386,7 @@ fn plateau_generative_input_from_lessons(
         .take(12)
         .collect::<Vec<_>>();
     diagnostic_signals.push("AUTONOMOUS_INTRINSIC_CURIOSITY_PROBE".to_string());
-    let observed_composition_roles = lessons
+    let mut observed_composition_roles = lessons
         .iter()
         .flat_map(|lesson| lesson.composition_recipe.iter().cloned())
         .collect::<BTreeSet<_>>()
@@ -5402,12 +5411,31 @@ fn plateau_generative_input_from_lessons(
         .into_values()
         .take(MAX_PUBLIC_CONTRACT_DELTAS_PER_EVENT)
         .collect::<Vec<_>>();
-    let typed_behavior_goals = public_contract_deltas
+    let base_typed_behavior_goals = public_contract_deltas
         .iter()
         .flat_map(|delta| delta.typed_behavior_goals.iter().cloned())
         .take(MAX_TYPED_BEHAVIOR_GOALS_PER_GENERATIVE_INPUT)
-        .collect();
-    Some((
+        .collect::<Vec<_>>();
+    let compound_typed_behavior_goals =
+        derive_compound_typed_behavior_goals(&base_typed_behavior_goals)?;
+    if !compound_typed_behavior_goals.is_empty() {
+        diagnostic_signals.push("COMPOUND_TYPED_GOAL_DERIVED".to_string());
+        observed_composition_roles.push("TYPED_GOAL_FUNCTIONAL_COMPOSITION".to_string());
+    }
+    let mut seen_goal_ids = BTreeSet::new();
+    let mut typed_behavior_goals = Vec::new();
+    for goal in compound_typed_behavior_goals
+        .into_iter()
+        .chain(base_typed_behavior_goals)
+    {
+        if seen_goal_ids.insert(goal.goal_id.clone()) {
+            typed_behavior_goals.push(goal);
+        }
+        if typed_behavior_goals.len() >= MAX_TYPED_BEHAVIOR_GOALS_PER_GENERATIVE_INPUT {
+            break;
+        }
+    }
+    Ok(Some((
         GenerativeInput {
             source_lesson_id: format!(
                 "INTRINSIC-CROSS-LESSON-{}",
@@ -5446,13 +5474,13 @@ fn plateau_generative_input_from_lessons(
             },
         },
         public_contract_deltas,
-    ))
+    )))
 }
 
 #[cfg(test)]
 fn plateau_generative_input(
     memory: &GrowthMemory,
-) -> Option<(GenerativeInput, Vec<PublicContractDeltaIR>)> {
+) -> Result<Option<(GenerativeInput, Vec<PublicContractDeltaIR>)>, String> {
     let mut lessons = memory
         .lessons
         .iter()
@@ -5474,7 +5502,7 @@ struct PlateauCuriosityCandidate {
 fn plateau_curiosity_candidates(
     state: &SupervisorState,
     memory: &GrowthMemory,
-) -> Vec<PlateauCuriosityCandidate> {
+) -> Result<Vec<PlateauCuriosityCandidate>, String> {
     let mut recent_lessons = memory
         .lessons
         .iter()
@@ -5484,7 +5512,7 @@ fn plateau_curiosity_candidates(
         .collect::<Vec<_>>();
     recent_lessons.reverse();
     if recent_lessons.len() < 2 {
-        return Vec::new();
+        return Ok(Vec::new());
     }
 
     let prediction_uncertainty = state
@@ -5507,7 +5535,8 @@ fn plateau_curiosity_candidates(
     }
     let mut candidates = Vec::new();
     for lessons in lesson_groups {
-        let Some((input, public_contract_deltas)) = plateau_generative_input_from_lessons(&lessons)
+        let Some((input, public_contract_deltas)) =
+            plateau_generative_input_from_lessons(&lessons)?
         else {
             continue;
         };
@@ -5573,7 +5602,7 @@ fn plateau_curiosity_candidates(
             })
     });
     candidates.truncate(MAX_INTRINSIC_CURIOSITY_HYPOTHESES);
-    candidates
+    Ok(candidates)
 }
 
 fn refine_classifier_from_capability_outcome(
@@ -6323,7 +6352,7 @@ fn plateau_generative_probe_observation(
     if !executable_generative_substrate_available(&memory.generative) {
         return Ok(None);
     }
-    let candidates = plateau_curiosity_candidates(state, memory);
+    let candidates = plateau_curiosity_candidates(state, memory)?;
     if candidates.is_empty() {
         return Ok(None);
     }
@@ -12187,6 +12216,110 @@ mod tests {
         }
     }
 
+    fn boolean_gate_goal_fixture(goal_id: &str) -> TypedMechanismSynthesisGoalIR {
+        use crate::sem5::{
+            model::{DataSplit, Effect, ProgramType, Value},
+            typed_mechanism::{
+                SourceOperandIR, TypedMechanismObservationIR, TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA,
+            },
+        };
+
+        TypedMechanismSynthesisGoalIR {
+            schema: TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA.to_string(),
+            goal_id: goal_id.to_string(),
+            split: DataSplit::FreshBlind,
+            operands: vec![
+                SourceOperandIR {
+                    role: "verified".to_string(),
+                    source: "state.verified".to_string(),
+                    value_type: ProgramType::Bool,
+                },
+                SourceOperandIR {
+                    role: "executable".to_string(),
+                    source: "state.executable".to_string(),
+                    value_type: ProgramType::Bool,
+                },
+            ],
+            output_type: ProgramType::Bool,
+            definitions: Vec::new(),
+            allowed_effects: vec![Effect::Pure],
+            preconditions: Vec::new(),
+            postconditions: vec!["retain unverified or executable cohorts".to_string()],
+            invariants: vec!["verification cannot create knowledge".to_string()],
+            public_observations: [
+                (false, false, true),
+                (true, false, false),
+                (true, true, true),
+            ]
+            .into_iter()
+            .map(
+                |(verified, executable, expected)| TypedMechanismObservationIR {
+                    operands: BTreeMap::from([
+                        ("verified".to_string(), Value::Bool(verified)),
+                        ("executable".to_string(), Value::Bool(executable)),
+                    ]),
+                    expected_postimage: Value::Bool(expected),
+                },
+            )
+            .collect(),
+            require_conditional: false,
+            max_expression_depth: 3,
+            max_candidates: 128,
+            provenance: vec!["PUBLIC_CONTRACT_DELTA".to_string()],
+        }
+    }
+
+    fn conditional_string_transport_goal_fixture(goal_id: &str) -> TypedMechanismSynthesisGoalIR {
+        use crate::sem5::{
+            model::{DataSplit, Effect, ProgramType, Value},
+            typed_mechanism::{
+                SourceOperandIR, TypedMechanismObservationIR, TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA,
+            },
+        };
+
+        TypedMechanismSynthesisGoalIR {
+            schema: TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA.to_string(),
+            goal_id: goal_id.to_string(),
+            split: DataSplit::FreshBlind,
+            operands: vec![
+                SourceOperandIR {
+                    role: "condition".to_string(),
+                    source: "state.condition".to_string(),
+                    value_type: ProgramType::Bool,
+                },
+                SourceOperandIR {
+                    role: "typed_value".to_string(),
+                    source: "observation.typed_value".to_string(),
+                    value_type: ProgramType::String,
+                },
+            ],
+            output_type: ProgramType::String,
+            definitions: Vec::new(),
+            allowed_effects: vec![Effect::Pure],
+            preconditions: Vec::new(),
+            postconditions: vec!["transport the value only when allowed".to_string()],
+            invariants: vec!["false uses the universal empty value".to_string()],
+            public_observations: [
+                (true, "alpha", "alpha"),
+                (true, "beta", "beta"),
+                (false, "alpha", ""),
+            ]
+            .into_iter()
+            .map(|(condition, value, expected)| TypedMechanismObservationIR {
+                operands: BTreeMap::from([
+                    ("condition".to_string(), Value::Bool(condition)),
+                    ("typed_value".to_string(), Value::String(value.to_string())),
+                ]),
+                expected_postimage: Value::String(expected.to_string()),
+            })
+            .collect(),
+            require_conditional: true,
+            max_expression_depth: 3,
+            max_candidates: 128,
+            provenance: vec!["PUBLIC_CONTRACT_DELTA".to_string()],
+        }
+    }
+
     fn compound_input_fixture(input_id: &str) -> CompoundGrowthInputIR {
         use crate::compound_growth::{
             ActiveExperimentCandidateIR, ExperimentPredictionIR, HypothesisIR,
@@ -13140,6 +13273,13 @@ mod tests {
         assert!(check.operator_repository_requires_executed_receipt);
         assert!(check.generative_substrate_capacity_isolated);
         assert!(check.saturated_substrate_routes_without_difficulty_escalation);
+        assert!(check.compound_growth_runs_inside_supervisor_loop);
+        assert!(check.compound_repository_authority_is_supervisor_owned);
+        assert!(check.compound_growth_requires_typed_hashed_evidence);
+        assert!(check.compound_typed_goal_functional_composition_enabled);
+        assert!(check.compound_typed_goal_requires_public_causal_join);
+        assert!(check.compound_typed_goal_effects_fail_closed);
+        assert!(check.generative_prediction_is_selection_only);
         assert!(check.cross_family_operator_transfer_changes_candidate_priority);
         assert!(check.repository_guided_outcomes_are_causally_tracked);
         assert!(check.evaluator_expansion_requires_new_challenge_capability);
@@ -13758,9 +13898,104 @@ mod tests {
             generative: GenerativeGrowthMemory::default(),
         };
 
-        let (input, deltas) = plateau_generative_input(&memory).expect("executable plateau input");
+        let (input, deltas) = plateau_generative_input(&memory)
+            .unwrap()
+            .expect("executable plateau input");
         assert_eq!(deltas, vec![delta.clone()]);
         assert_eq!(input.typed_behavior_goals, delta.typed_behavior_goals);
+    }
+
+    #[test]
+    fn plateau_input_places_a_new_executable_compound_program_before_components() {
+        let mut producer_delta = PublicContractDeltaIR {
+            schema: PUBLIC_CONTRACT_DELTA_SCHEMA.to_string(),
+            delta_id: "verified-executable-to-gate".to_string(),
+            observed_behavior: "verification is treated as execution".to_string(),
+            expected_behavior: "unverified or executable cohorts remain eligible".to_string(),
+            target_symbols: vec!["crate::engine::verified_queue_gate".to_string()],
+            typed_behavior_goals: vec![boolean_gate_goal_fixture("verified_queue_gate")],
+            provenance: vec!["PUBLIC_OBSERVATION".to_string()],
+        };
+        let mut consumer_delta = PublicContractDeltaIR {
+            schema: PUBLIC_CONTRACT_DELTA_SCHEMA.to_string(),
+            delta_id: "gate-to-typed-transport".to_string(),
+            observed_behavior: "the typed value ignores its condition".to_string(),
+            expected_behavior: "the typed value is transported only when allowed".to_string(),
+            target_symbols: vec!["crate::engine::conditional_transport".to_string()],
+            typed_behavior_goals: vec![conditional_string_transport_goal_fixture(
+                "conditional_string_transport",
+            )],
+            provenance: vec!["PUBLIC_OBSERVATION".to_string()],
+        };
+        bind_public_contract_delta_fixture(&mut producer_delta);
+        bind_public_contract_delta_fixture(&mut consumer_delta);
+        let lesson = |id: &str, delta: PublicContractDeltaIR| LearnedCompositionLesson {
+            lesson_id: id.to_string(),
+            evidence_observation_sha256: vec![sha256(id.as_bytes())],
+            work_kinds: vec![WorkKind::CapabilitySynthesis],
+            diagnostic_signals: vec!["VERIFIED_PASS".to_string()],
+            composition_recipe: vec!["PROGRAM_COMPOSITION".to_string()],
+            applicability: vec!["BOUND_CONTEXT".to_string()],
+            verification_obligations: vec!["BEHAVIORAL_CANARY".to_string()],
+            performance_metrics: Vec::new(),
+            public_contract_deltas: vec![delta],
+            learning_score: 90,
+            exact_patch_data_present: false,
+            exact_source_fragment_present: false,
+            raw_source_bytes_present: false,
+        };
+        let memory = GrowthMemory {
+            schema: SUPERVISOR_SCHEMA.to_string(),
+            generation: 2,
+            predecessor_sha256: None,
+            lessons: vec![
+                lesson("PRODUCER", producer_delta.clone()),
+                lesson("CONSUMER", consumer_delta.clone()),
+            ],
+            classifier: ClassifierMemory::default(),
+            evaluator: EvaluatorMemory::default(),
+            generative: GenerativeGrowthMemory::default(),
+        };
+
+        let (input, _) = plateau_generative_input(&memory)
+            .unwrap()
+            .expect("compound plateau input");
+        let compound = input
+            .typed_behavior_goals
+            .first()
+            .expect("compound goal is prioritized");
+        assert!(compound.goal_id.starts_with("compound_"));
+        assert!(input
+            .diagnostic_signals
+            .contains(&"COMPOUND_TYPED_GOAL_DERIVED".to_string()));
+        assert!(input
+            .observed_composition_roles
+            .contains(&"TYPED_GOAL_FUNCTIONAL_COMPOSITION".to_string()));
+
+        let compound_receipt = crate::integrated_development::execute_typed_behavior_goal_canary(
+            &"a".repeat(64),
+            compound,
+        )
+        .unwrap();
+        assert_eq!(
+            compound_receipt.cases_passed,
+            compound_receipt.cases_executed
+        );
+        for component in [
+            &producer_delta.typed_behavior_goals[0],
+            &consumer_delta.typed_behavior_goals[0],
+        ] {
+            let component_receipt =
+                crate::integrated_development::execute_typed_behavior_goal_canary(
+                    &"b".repeat(64),
+                    component,
+                )
+                .unwrap();
+            assert_ne!(
+                compound_receipt.program_ir_sha256,
+                component_receipt.program_ir_sha256
+            );
+        }
     }
 
     #[test]
@@ -13799,7 +14034,7 @@ mod tests {
             generative: GenerativeGrowthMemory::default(),
         };
 
-        let candidates = plateau_curiosity_candidates(&state, &memory);
+        let candidates = plateau_curiosity_candidates(&state, &memory).unwrap();
         assert_eq!(candidates.len(), 10);
         assert_eq!(
             candidates

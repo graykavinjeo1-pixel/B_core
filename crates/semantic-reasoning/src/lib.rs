@@ -8,6 +8,7 @@ pub mod code_graft;
 pub mod code_graft_acceptance;
 pub mod compiler_guided_repair;
 pub mod compound_growth;
+pub mod compound_typed_goal;
 #[cfg(feature = "historical-campaigns")]
 pub mod core_x0;
 #[cfg(feature = "historical-campaigns")]
