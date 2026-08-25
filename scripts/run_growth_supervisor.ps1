@@ -13,6 +13,19 @@ param(
 
 $ErrorActionPreference = "Stop"
 
+# Task Scheduler launches ordinary tasks at BELOW_NORMAL priority unless an
+# XML priority is supplied.  The Rust compiler then has its multi-GiB working
+# set repeatedly trimmed even when the machine has ample free memory, turning
+# a sub-minute validation into a long apparent stall.  Normalize the wrapper
+# before it creates the supervisor so every bounded child validation inherits
+# the ordinary interactive priority class.
+try {
+    [Diagnostics.Process]::GetCurrentProcess().PriorityClass =
+        [Diagnostics.ProcessPriorityClass]::Normal
+} catch {
+    throw "GROWTH_SUPERVISOR_PRIORITY_NORMALIZATION_FAILED:$($_.Exception.Message)"
+}
+
 function Resolve-BLocalPath {
     param([Parameter(Mandatory = $true)][string]$Path)
 
