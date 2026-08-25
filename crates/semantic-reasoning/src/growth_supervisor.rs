@@ -85,7 +85,7 @@ const MAX_COMPOUND_INPUT_BYTES: u64 = 16 * 1024 * 1024;
 const MAX_COMPOUND_RECEIPT_BYTES: u64 = 64 * 1024 * 1024;
 const MAX_SUMMARY_BYTES: usize = 512;
 const SOURCE_PATCH_VALIDATION_CONTRACT_REVISION: u64 = 2;
-const PLATEAU_GENERATIVE_PROBE_CONTRACT_REVISION: u64 = 5;
+const PLATEAU_GENERATIVE_PROBE_CONTRACT_REVISION: u64 = 6;
 const MAX_INTRINSIC_CURIOSITY_HYPOTHESES: usize = 48;
 const MAX_RETAINED_INTRINSIC_CURIOSITY_RECEIPTS: usize = 96;
 const SCAN_WATCHDOG_TICK_MS: u64 = 1_000;
@@ -1271,6 +1271,7 @@ pub struct SelfCheck {
     pub compound_typed_goal_functional_composition_enabled: bool,
     pub compound_typed_goal_requires_public_causal_join: bool,
     pub compound_typed_goal_effects_fail_closed: bool,
+    pub verified_compound_programs_are_promoted_to_memory: bool,
     pub generative_prediction_is_selection_only: bool,
     pub evaluator_expansion_requires_new_challenge_capability: bool,
     pub intrinsic_curiosity_requires_executable_hypotheses: bool,
@@ -1413,6 +1414,7 @@ pub fn self_check() -> SelfCheck {
         compound_typed_goal_functional_composition_enabled: true,
         compound_typed_goal_requires_public_causal_join: true,
         compound_typed_goal_effects_fail_closed: true,
+        verified_compound_programs_are_promoted_to_memory: true,
         generative_prediction_is_selection_only: true,
         evaluator_expansion_requires_new_challenge_capability: true,
         intrinsic_curiosity_requires_executable_hypotheses: true,
@@ -5492,6 +5494,107 @@ fn plateau_generative_input(
     plateau_generative_input_from_lessons(&lessons)
 }
 
+fn plateau_promotion_contract_deltas(
+    base_deltas: &[PublicContractDeltaIR],
+    cycle: &GenerativeCycleResult,
+) -> Result<Vec<PublicContractDeltaIR>, String> {
+    let mut compound_goals = BTreeMap::new();
+    let mut artifact_sha256s = Vec::new();
+    if cycle.frontier_advance {
+        if let Some(receipt) = cycle
+            .behavioral_execution_receipt
+            .as_ref()
+            .filter(|receipt| receipt.executed && validate_behavioral_execution_receipt(cycle))
+        {
+            for artifact in &receipt.verified_artifacts {
+                let Some(goal) = artifact
+                    .typed_behavior_goal
+                    .as_ref()
+                    .filter(|goal| goal.goal_id.starts_with("compound_"))
+                else {
+                    continue;
+                };
+                if artifact.cases_executed == 0
+                    || artifact.cases_passed != artifact.cases_executed
+                    || compound_goals
+                        .insert(goal.goal_id.clone(), goal.clone())
+                        .is_some()
+                {
+                    return Err("PLATEAU_COMPOUND_PROGRAM_EVIDENCE_INVALID".to_string());
+                }
+                artifact_sha256s.push(artifact.artifact_sha256.clone());
+            }
+        }
+    }
+    if compound_goals.is_empty() {
+        return Ok(base_deltas.to_vec());
+    }
+    if compound_goals.len() > MAX_TYPED_BEHAVIOR_GOALS_PER_DELTA {
+        return Err("PLATEAU_COMPOUND_PROGRAM_GOAL_BOUND".to_string());
+    }
+    artifact_sha256s.sort();
+    artifact_sha256s.dedup();
+    let behavioral_sha256 = cycle
+        .behavioral_verification_sha256
+        .as_deref()
+        .ok_or_else(|| "PLATEAU_COMPOUND_PROGRAM_RECEIPT_MISSING".to_string())?;
+    let identity = json_sha256(&(
+        "B_CORE_PLATEAU_COMPOUND_PROGRAM_DELTA_1",
+        behavioral_sha256,
+        &artifact_sha256s,
+        compound_goals.keys().collect::<Vec<_>>(),
+    ))?;
+    let mut compound_delta = PublicContractDeltaIR {
+        schema: PUBLIC_CONTRACT_DELTA_SCHEMA.to_string(),
+        delta_id: format!("compound-program-{}", &identity[..32]),
+        observed_behavior: "verified component goals existed only as separate executable programs"
+            .to_string(),
+        expected_behavior:
+            "the evidence-bound functional join is retained as one reusable compound ProgramIR"
+                .to_string(),
+        target_symbols: vec![
+            "compound_typed_goal::derive_compound_typed_behavior_goals".to_string(),
+            "generative_growth::execute_composer".to_string(),
+        ],
+        typed_behavior_goals: compound_goals.into_values().collect(),
+        provenance: std::iter::once(format!(
+            "BEHAVIORAL_COMPOSITION_RECEIPT:{behavioral_sha256}"
+        ))
+        .chain(
+            artifact_sha256s
+                .iter()
+                .map(|artifact| format!("COMPOUND_PROGRAM_ARTIFACT:{artifact}")),
+        )
+        .collect(),
+    };
+    let contract_binding = format!(
+        "PUBLIC_CONTRACT_DELTA_SHA256:{}",
+        public_contract_delta_binding_sha256(&compound_delta)?
+    );
+    let delta_id_binding = format!("PUBLIC_CONTRACT_DELTA_ID:{}", compound_delta.delta_id);
+    for goal in &mut compound_delta.typed_behavior_goals {
+        goal.provenance.retain(|item| {
+            !item.starts_with("PUBLIC_CONTRACT_DELTA_SHA256:")
+                && !item.starts_with("PUBLIC_CONTRACT_DELTA_ID:")
+        });
+        goal.provenance.push(delta_id_binding.clone());
+        goal.provenance.push(contract_binding.clone());
+        goal.provenance.sort();
+        goal.provenance.dedup();
+    }
+
+    let mut deltas = Vec::with_capacity(MAX_PUBLIC_CONTRACT_DELTAS_PER_EVENT);
+    deltas.push(compound_delta);
+    deltas.extend(
+        base_deltas
+            .iter()
+            .take(MAX_PUBLIC_CONTRACT_DELTAS_PER_EVENT.saturating_sub(1))
+            .cloned(),
+    );
+    validate_public_contract_deltas(&deltas)?;
+    Ok(deltas)
+}
+
 #[derive(Debug, Clone, PartialEq, Eq)]
 struct PlateauCuriosityCandidate {
     hypothesis: IntrinsicCuriosityHypothesis,
@@ -6449,6 +6552,8 @@ fn plateau_generative_probe_observation(
             evidence.extend(artifact_sha256s);
             evidence.sort();
             evidence.dedup();
+            let promotion_deltas =
+                plateau_promotion_contract_deltas(&candidate.public_contract_deltas, &cycle)?;
             Some(LearningObservation {
                 observation_id: observation_id.clone(),
                 work_event_id: None,
@@ -6490,7 +6595,7 @@ fn plateau_generative_probe_observation(
                     evidence_sha256: content_sha256,
                     executable_knowledge: None,
                 }],
-                public_contract_deltas: candidate.public_contract_deltas.clone(),
+                public_contract_deltas: promotion_deltas,
                 exact_source_fragments_stored: 0,
                 raw_source_bytes_stored: 0,
                 observed_at_ms: state.generation,
@@ -13279,6 +13384,7 @@ mod tests {
         assert!(check.compound_typed_goal_functional_composition_enabled);
         assert!(check.compound_typed_goal_requires_public_causal_join);
         assert!(check.compound_typed_goal_effects_fail_closed);
+        assert!(check.verified_compound_programs_are_promoted_to_memory);
         assert!(check.generative_prediction_is_selection_only);
         assert!(check.cross_family_operator_transfer_changes_candidate_priority);
         assert!(check.repository_guided_outcomes_are_causally_tracked);
@@ -13957,7 +14063,7 @@ mod tests {
             generative: GenerativeGrowthMemory::default(),
         };
 
-        let (input, _) = plateau_generative_input(&memory)
+        let (input, base_deltas) = plateau_generative_input(&memory)
             .unwrap()
             .expect("compound plateau input");
         let compound = input
@@ -13996,6 +14102,65 @@ mod tests {
                 component_receipt.program_ir_sha256
             );
         }
+
+        let probe_cycle =
+            run_generative_cycle(&GenerativeGrowthMemory::default(), &input, 7).unwrap();
+        assert!(probe_cycle.frontier_advance);
+        assert!(probe_cycle
+            .behavioral_execution_receipt
+            .as_ref()
+            .is_some_and(|receipt| receipt.verified_artifacts.iter().any(|artifact| {
+                artifact
+                    .typed_behavior_goal
+                    .as_ref()
+                    .is_some_and(|goal| goal.goal_id.starts_with("compound_"))
+            })));
+        let promotion_deltas =
+            plateau_promotion_contract_deltas(&base_deltas, &probe_cycle).unwrap();
+        assert!(promotion_deltas[0]
+            .delta_id
+            .starts_with("compound-program-"));
+        assert!(promotion_deltas[0]
+            .typed_behavior_goals
+            .iter()
+            .all(|goal| goal.goal_id.starts_with("compound_")));
+
+        let promoted_lesson = LearnedCompositionLesson {
+            lesson_id: "PROMOTED-COMPOUND-PROGRAM".to_string(),
+            evidence_observation_sha256: vec![probe_cycle
+                .behavioral_verification_sha256
+                .clone()
+                .unwrap()],
+            work_kinds: vec![WorkKind::CapabilitySynthesis],
+            diagnostic_signals: vec!["BEHAVIORALLY_VERIFIED_NOVEL_ARTIFACT".to_string()],
+            composition_recipe: vec!["PROGRAM_COMPOSITION".to_string()],
+            applicability: vec!["BOUND_CONTEXT".to_string()],
+            verification_obligations: vec!["BEHAVIORAL_CANARY".to_string()],
+            performance_metrics: Vec::new(),
+            public_contract_deltas: promotion_deltas,
+            learning_score: 95,
+            exact_patch_data_present: false,
+            exact_source_fragment_present: false,
+            raw_source_bytes_present: false,
+        };
+        let campaign_input = generative_input(&promoted_lesson);
+        assert!(campaign_input.typed_behavior_goals[0]
+            .goal_id
+            .starts_with("compound_"));
+        let campaign_cycle =
+            run_generative_cycle(&GenerativeGrowthMemory::default(), &campaign_input, 7).unwrap();
+        let promoted = promote_generative_cycle(
+            &GenerativeGrowthMemory::default(),
+            &campaign_input,
+            &campaign_cycle,
+        )
+        .unwrap();
+        assert!(promoted.accepted_compositions.iter().any(|composition| {
+            composition
+                .verified_typed_behavior_goals
+                .values()
+                .any(|goal| goal.goal_id.starts_with("compound_"))
+        }));
     }
 
     #[test]
