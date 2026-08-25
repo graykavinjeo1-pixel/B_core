@@ -67,6 +67,14 @@ pub fn derive_compound_typed_behavior_goals(
                 if !state.component_ids.is_disjoint(&base.component_ids) {
                     continue;
                 }
+                // A previously promoted compound may re-enter a later
+                // plateau as one of the base goals. Reconstructing that same
+                // semantic goal can give a frontier state the same goal id as
+                // the retained base while their historical component-id sets
+                // differ. Never self-wire identical semantic programs.
+                if state.goal.goal_id == base.goal.goal_id {
+                    continue;
+                }
                 for (producer, consumer) in [(&state.goal, &base.goal), (&base.goal, &state.goal)] {
                     for wire in &consumer.operands {
                         if wire.value_type != producer.output_type {
@@ -114,7 +122,8 @@ fn compose_over_operand(
     consumer: &TypedMechanismSynthesisGoalIR,
     wire: &SourceOperandIR,
 ) -> Result<Option<TypedMechanismSynthesisGoalIR>, String> {
-    if producer.split != consumer.split
+    if producer.goal_id == consumer.goal_id
+        || producer.split != consumer.split
         || producer.output_type != wire.value_type
         || !pure_contract(producer)
         || !pure_contract(consumer)
@@ -623,5 +632,22 @@ mod tests {
             derive_compound_typed_behavior_goals(&[original, conflicting]),
             Err("COMPOUND_COMPONENT_CONFLICT:verified_queue_gate".to_string())
         );
+    }
+
+    #[test]
+    fn promoted_compound_can_reenter_the_base_set_without_self_wiring() {
+        let components = vec![producer(), consumer()];
+        let promoted = derive_compound_typed_behavior_goals(&components)
+            .unwrap()
+            .into_iter()
+            .next()
+            .expect("one promoted compound");
+        let mut later_plateau = components;
+        later_plateau.push(promoted);
+
+        let result = derive_compound_typed_behavior_goals(&later_plateau)
+            .expect("retained compound is candidate-local, not a supervisor failure");
+
+        assert!(result.len() <= MAX_COMPOUND_TYPED_GOAL_CANDIDATES);
     }
 }
