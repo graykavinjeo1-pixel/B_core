@@ -3145,7 +3145,7 @@ pub(crate) fn render_chart_svg(chart: &ChartIR) -> Result<String, KnowledgeWorkE
             for (index, value) in observed {
                 let x = (series_index as f64).mul_add(
                     bar_width,
-                    left + index as f64 * slot_width + (slot_width - group_width) / 2.0,
+                    (index as f64).mul_add(slot_width, left) + (slot_width - group_width) / 2.0,
                 );
                 let value_y = ((max - value) / span).mul_add(plot_height, top);
                 let y = value_y.min(baseline_y);

@@ -3334,7 +3334,7 @@ pub fn continue_lineage(
     if json_sha256(&current_memory)? != predecessor_state.current_memory_sha256 {
         return Err("LINEAGE_CURRENT_MEMORY_HASH_MISMATCH".to_string());
     }
-    let mut carried_memories = vec![current_memory.clone()];
+    let mut carried_memories = vec![current_memory];
     if let Some(expected_predecessor_hash) = &predecessor_state.predecessor_memory_sha256 {
         let generation = predecessor_state
             .generation
@@ -7647,7 +7647,7 @@ fn install_verified_repository_candidate(
         .permissions();
     let (predecessor_readonly, predecessor_unix_mode) =
         repository_permission_snapshot(&permissions);
-    write_repository_candidate_sibling(&candidate_sibling, candidate_source, permissions.clone())?;
+    write_repository_candidate_sibling(&candidate_sibling, candidate_source, permissions)?;
     let candidate_sha256 = sha256(candidate_source.as_bytes());
     if file_sha256(&candidate_sibling, config.resources.max_file_bytes)? != candidate_sha256 {
         let _ = fs::remove_file(&candidate_sibling);
@@ -7794,9 +7794,8 @@ fn install_verified_repository_candidate(
         let command_ref = command
             .as_ref()
             .ok_or_else(|| "REPOSITORY_INSTALL_COMMAND_MISSING".to_string())?;
-        let scope_after = scope_after_attempt
-            .clone()
-            .ok_or_else(|| "REPOSITORY_INSTALL_SCOPE_MISSING".to_string())?;
+        let scope_after =
+            scope_after_attempt.ok_or_else(|| "REPOSITORY_INSTALL_SCOPE_MISSING".to_string())?;
         let commit = RepositoryInstallCommitReceipt {
             schema: REPOSITORY_INSTALL_COMMIT_SCHEMA.to_string(),
             repair_id: repair_id.to_string(),
@@ -7804,7 +7803,7 @@ fn install_verified_repository_candidate(
             root_index: plan.root_index,
             source_relative_path: relative.to_path_buf(),
             predecessor_sha256: predecessor_sha256.to_string(),
-            candidate_sha256: candidate_sha256.clone(),
+            candidate_sha256,
             scope_fingerprint_after: scope_after.clone(),
             authoritative_command_sha256: json_sha256(command_ref)?,
             authoritative_output_sha256: command_ref.output_sha256.clone(),
@@ -9522,7 +9521,7 @@ fn runtime_repair_action(
             observation_id: action.output_observation_ids[0].clone(),
             work_event_id: None,
             logical_path: "INTERNAL/MUTUAL_CORE_EVALUATOR_BOOTSTRAP".to_string(),
-            content_sha256: observation_content_sha256.clone(),
+            content_sha256: observation_content_sha256,
             predecessor_content_sha256: None,
             actor: WorkActor::LocalTool,
             work_kind: WorkKind::Verification,
@@ -9563,7 +9562,7 @@ fn runtime_repair_action(
                 "{source_prefix}.b_core_validation/{}",
                 action.output_observation_ids[0]
             ),
-            content_sha256: observation_content_sha256.clone(),
+            content_sha256: observation_content_sha256,
             predecessor_content_sha256: None,
             actor: WorkActor::LocalTool,
             work_kind: WorkKind::Verification,
@@ -9609,7 +9608,7 @@ fn runtime_repair_action(
                 "ROOT_{}/.b_repository_validation/{}",
                 plan.root_index, action.output_observation_ids[0]
             ),
-            content_sha256: observation_content_sha256.clone(),
+            content_sha256: observation_content_sha256,
             predecessor_content_sha256: None,
             actor: WorkActor::LocalTool,
             work_kind: WorkKind::Verification,
@@ -10672,8 +10671,7 @@ fn attempt_discovered_source_repair(
                 match revision.admit_candidate(&request.candidate_sha256, &revision_dimensions) {
                     CandidateAdmission::Execute => {}
                     disposition => {
-                        state.last_source_discovery_state_sha256 =
-                            Some(discovery_state_sha256.clone());
+                        state.last_source_discovery_state_sha256 = Some(discovery_state_sha256);
                         state.last_source_discovery_reason = Some(format!(
                             "SAME_ATTEMPT_REVISION_STOP:{disposition:?}:EXECUTED={}",
                             revision.metrics().candidates_admitted
@@ -10730,7 +10728,7 @@ fn attempt_discovered_source_repair(
                 }
             }
             Ok(discovery) => {
-                state.last_source_discovery_state_sha256 = Some(discovery_state_sha256.clone());
+                state.last_source_discovery_state_sha256 = Some(discovery_state_sha256);
                 state.source_discovery_no_candidate_streak =
                     state.source_discovery_no_candidate_streak.saturating_add(1);
                 state.last_source_discovery_reason =

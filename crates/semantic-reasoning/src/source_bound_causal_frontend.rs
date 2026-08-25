@@ -942,10 +942,10 @@ pub fn lower_call_identity_predicate_refinement(
     let predecessor_sha256 = sha256(request.source.as_bytes());
     let candidate_sha256 = sha256(candidate_source.as_bytes());
     let materialized_patch = MaterializedSourceBoundPatchIR {
-        predecessor_sha256: predecessor_sha256.clone(),
+        predecessor_sha256,
         edit: edit.clone(),
         candidate_source: candidate_source.clone(),
-        candidate_sha256: candidate_sha256.clone(),
+        candidate_sha256,
         candidate_replay_sha256: sha256(replay.as_bytes()),
         candidate_materialization_is_one_to_one: true,
     };
@@ -4513,10 +4513,7 @@ pub fn analyze_and_synthesize_source_bound_with_operators(
                             closure_candidate_rejections.push(
                                 SourceBoundClosureCandidateRejectionIR {
                                     closure_ordinal: candidate.closure_ordinal,
-                                    qualified_symbol: candidate
-                                        .function_template
-                                        .qualified_symbol
-                                        .clone(),
+                                    qualified_symbol: candidate.function_template.qualified_symbol,
                                     failure_kind: error.kind,
                                     detail: error.detail,
                                 },

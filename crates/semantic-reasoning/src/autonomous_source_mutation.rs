@@ -3821,7 +3821,7 @@ fn install_primary_and_stage_source_patch(
     let test_source_root = policy.source_root.clone();
     let test_timeout_ms = policy.validation_timeout_ms;
     let test_log = mutation_root.join("test.log");
-    let test_lane_target = test_target_dir.clone();
+    let test_lane_target = test_target_dir;
     let test_target_packages = target_packages.clone();
     let test_targets_runtime_core = request_targets_runtime_core(&policy.source_root, request);
     let test_lane_jobs = validation_lane_jobs;
@@ -3898,7 +3898,7 @@ fn install_primary_and_stage_source_patch(
             rolled_back: true,
             failure_reason: Some("CLIPPY_CHECK_FAILED".to_string()),
             format_check: Some(format_check),
-            compile_check: Some(compile_check.clone()),
+            compile_check: Some(compile_check),
             validation,
             release_build,
             runtime_update_staged: false,

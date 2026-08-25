@@ -723,7 +723,7 @@ fn rustfmt_candidate_source(
     let candidate_path = job_root.join("candidate.rs");
     let _job = RustfmtJob {
         candidate_path: candidate_path.clone(),
-        job_root: job_root.clone(),
+        job_root,
     };
     let mut candidate_file = OpenOptions::new()
         .create_new(true)
