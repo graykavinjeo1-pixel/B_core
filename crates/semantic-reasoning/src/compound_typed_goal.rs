@@ -36,12 +36,21 @@ pub fn derive_compound_typed_behavior_goals(
     goals: &[TypedMechanismSynthesisGoalIR],
 ) -> Result<Vec<TypedMechanismSynthesisGoalIR>, String> {
     let mut bases = BTreeMap::new();
+    let mut conflicting_ids = BTreeSet::new();
     for goal in goals {
         validate_typed_mechanism_synthesis_goal(goal)
             .map_err(|error| format!("COMPOUND_COMPONENT_INVALID:{error}"))?;
+        if conflicting_ids.contains(&goal.goal_id) {
+            continue;
+        }
         if let Some(existing) = bases.get(&goal.goal_id) {
             if existing != goal {
-                return Err(format!("COMPOUND_COMPONENT_CONFLICT:{}", goal.goal_id));
+                // A historical identity collision is not evidence that either
+                // variant is the authoritative component. Quarantine only the
+                // ambiguous identity; do not let one stale memory item stop
+                // every unrelated valid composition in the supervisor.
+                bases.remove(&goal.goal_id);
+                conflicting_ids.insert(goal.goal_id.clone());
             }
             continue;
         }
@@ -618,7 +627,7 @@ mod tests {
     }
 
     #[test]
-    fn repeated_identical_goal_is_deduplicated_but_conflicting_identity_fails_closed() {
+    fn repeated_identical_goal_is_deduplicated_and_conflicting_identity_is_quarantined() {
         let original = producer();
         assert!(
             derive_compound_typed_behavior_goals(&[original.clone(), original.clone()])
@@ -628,10 +637,34 @@ mod tests {
 
         let mut conflicting = original.clone();
         conflicting.postconditions = vec!["a different contract".to_string()];
-        assert_eq!(
-            derive_compound_typed_behavior_goals(&[original, conflicting]),
-            Err("COMPOUND_COMPONENT_CONFLICT:verified_queue_gate".to_string())
+        assert!(
+            derive_compound_typed_behavior_goals(&[original, conflicting])
+                .unwrap()
+                .is_empty()
         );
+    }
+
+    #[test]
+    fn conflicting_identity_does_not_stop_unrelated_valid_composition() {
+        let ambiguous = producer();
+        let mut conflicting = ambiguous.clone();
+        conflicting.postconditions = vec!["a different contract".to_string()];
+        let valid_producer = TypedMechanismSynthesisGoalIR {
+            goal_id: "independent_producer".to_string(),
+            ..producer()
+        };
+        let compounds = derive_compound_typed_behavior_goals(&[
+            ambiguous,
+            conflicting,
+            valid_producer,
+            consumer(),
+        ])
+        .unwrap();
+        assert!(!compounds.is_empty());
+        assert!(compounds.iter().all(|goal| !goal
+            .provenance
+            .iter()
+            .any(|item| { item == "COMPOUND_COMPONENT_GOAL:verified_queue_gate" })));
     }
 
     #[test]
