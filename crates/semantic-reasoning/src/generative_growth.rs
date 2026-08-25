@@ -1781,7 +1781,6 @@ pub fn run_generative_cycle(
         && behavioral_composition_executed
         && observed_value >= 72
         && prediction_error <= 30;
-    let accepted_for_memory = valuable && prediction.exploration;
     let previously_verified = memory
         .accepted_compositions
         .iter()
@@ -1804,6 +1803,11 @@ pub fn run_generative_cycle(
         0
     };
     let novel_verified_artifact = novel_verified_artifact_count > 0;
+    // Exploration controls which candidate is tried; it must not control
+    // whether independently verified new behavior is retained. A candidate
+    // selected from prior trials can still materialize a distinct artifact,
+    // and dropping it here traps the supervisor on a productive plateau.
+    let accepted_for_memory = valuable && novel_verified_artifact;
     let novel_context_transfer_candidate = valuable
         && prediction.reused_memory_composition_id.is_some()
         && prediction.prior_context_trials == 0;
@@ -1999,7 +2003,7 @@ pub fn promote_generative_cycle(
         0
     };
     let expected_novel_verified_artifact = expected_novel_verified_artifact_count > 0;
-    let expected_accepted_for_memory = result.valuable && result.exploration_selected;
+    let expected_accepted_for_memory = result.valuable && expected_novel_verified_artifact;
     let expected_novel_context_transfer = result.valuable
         && result.reused_memory_composition_id.is_some()
         && result.prior_context_trials == 0;
@@ -2360,6 +2364,39 @@ mod tests {
         assert!(result.applied_to_self_improvement);
         assert!(!result.applied_policy_signals.is_empty());
         assert_eq!(result.external_llm_calls, 0);
+    }
+
+    #[test]
+    fn verified_novel_artifact_is_retained_after_exploration_is_exhausted() {
+        let current_input = input();
+        let mut memory = GenerativeGrowthMemory::default();
+
+        // Record one verified trial for each bounded candidate without adding
+        // reusable memory. The next selection is therefore exploitation, but
+        // its independently verified artifact is still new to memory.
+        for seed in [7, 19] {
+            let result = run_generative_cycle(&memory, &current_input, seed).unwrap();
+            assert!(result.exploration_selected);
+            memory.composition_trials.push(GenerativeCompositionTrial {
+                composition_id: result.selected_composition.composition_id,
+                context_sha256: result.context_sha256,
+                predicted_value: result.predicted_value,
+                observed_value: result.observed_value,
+                valuable: result.valuable,
+            });
+        }
+
+        let result = run_generative_cycle(&memory, &current_input, 31).unwrap();
+        assert!(!result.exploration_selected);
+        assert!(result.reused_memory_composition_id.is_none());
+        assert!(result.valuable);
+        assert!(result.novel_verified_artifact);
+        assert!(result.accepted_for_memory);
+        assert!(result.frontier_advance);
+
+        let promoted = promote_generative_cycle(&memory, &current_input, &result).unwrap();
+        assert_eq!(promoted.accepted_compositions.len(), 1);
+        assert_eq!(promoted.frontier_advance_events, 1);
     }
 
     #[test]
