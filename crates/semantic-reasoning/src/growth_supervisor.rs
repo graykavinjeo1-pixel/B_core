@@ -60,13 +60,14 @@ use crate::self_repair_contract::sha256;
 #[cfg(test)]
 use crate::sem5::typed_mechanism::select_bounded_typed_mechanism_operator_ids;
 use crate::sem5::typed_mechanism::{
-    load_authorized_typed_mechanism_operators, typed_mechanism_improvement_operator_from_receipt,
+    load_authorized_typed_mechanism_operators, persist_authorized_typed_mechanism_operator,
+    typed_mechanism_improvement_operator_from_receipt,
     typed_mechanism_operator_authority_directory, typed_mechanism_operator_directory,
     validate_typed_mechanism_improvement_operator, validate_typed_mechanism_operator_authority,
     validate_typed_mechanism_synthesis_goal, TypedMechanismImprovementOperatorIR,
-    TypedMechanismOperatorAuthorityReceiptIR, TypedMechanismSynthesisGoalIR,
-    TypedMechanismSynthesisReceiptIR, INSTALLED_TYPED_OPERATOR_AUTHORITY_SCHEMA,
-    MAX_ACTIVE_TYPED_MECHANISM_OPERATORS, SOURCE_BOUND_OPERATOR_AUTHORITY_SCHEMA,
+    TypedMechanismOperatorAuthorityReceiptIR, TypedMechanismOperatorPromotionEvidenceIR,
+    TypedMechanismSynthesisGoalIR, TypedMechanismSynthesisReceiptIR,
+    INSTALLED_TYPED_OPERATOR_AUTHORITY_SCHEMA, MAX_ACTIVE_TYPED_MECHANISM_OPERATORS,
 };
 use crate::source_bound_causal_frontend::{
     discover_and_synthesize_python_repository_paths_with_operators, replay_source_bound_patch,
@@ -6842,6 +6843,11 @@ fn promote_candidate(
     } else {
         write_immutable_json(&next_memory_path, &memory)?;
     }
+    // A behaviorally verified typed ProgramIR is executable knowledge now,
+    // not merely a candidate for another static Rust registry rebuild. Make
+    // its name-independent recipe available to the next repair cycle before
+    // committing the campaign transition. Replay is idempotent after a crash.
+    reconcile_verified_generative_typed_operators(config, &memory)?;
     cleanup_memory_generations(config)?;
     if let Some(observation) = generative_continuation {
         persist_scan_observations(config, std::slice::from_ref(&observation))?;
@@ -8633,6 +8639,7 @@ fn repository_repair_observation_id(
     )
 }
 
+#[cfg(test)]
 fn source_bound_improvement_operator_directory(config: &GrowthSupervisorConfig) -> PathBuf {
     typed_mechanism_operator_directory(&config.state_dir)
 }
@@ -8733,93 +8740,30 @@ fn persist_source_bound_improvement_operator(
     if operator.evidence_sha256 != execution_authority_output_sha256 {
         return Err("SOURCE_BOUND_OPERATOR_EVIDENCE_MISMATCH".to_string());
     }
-    let directory = source_bound_improvement_operator_directory(config);
-    fs::create_dir_all(&directory)
-        .map_err(|error| format!("SOURCE_BOUND_OPERATOR_REPOSITORY_CREATE:{error}"))?;
-    let path = directory.join(format!("{}.json", operator.operator_id));
-    let operator_for_authority = if path.exists() {
-        let stored: TypedMechanismImprovementOperatorIR = read_json(&path)?;
-        validate_typed_mechanism_improvement_operator(&stored)?;
-        let mut stored_identity = stored.clone();
-        stored_identity.evidence_sha256.clear();
-        let mut requested_identity = operator.clone();
-        requested_identity.evidence_sha256.clear();
-        if stored_identity != requested_identity {
-            return Err("SOURCE_BOUND_OPERATOR_REPOSITORY_COLLISION".to_string());
-        }
-        if source_bound_operator_has_exact_authority(config, &stored)? {
-            return Ok(());
-        }
-        if stored.evidence_sha256 != execution_authority_output_sha256 {
-            return Err("SOURCE_BOUND_OPERATOR_UNAUTHORIZED_FIRST_EVIDENCE".to_string());
-        }
-        stored
-    } else {
-        write_immutable_json(&path, operator)?;
-        operator.clone()
-    };
-    let operator_sha256 = json_sha256(&operator_for_authority)?;
-    let authority_prefix = if installed_authority {
-        "INSTALLED_TYPED_OPERATOR_AUTHORITY_1"
-    } else {
-        "SOURCE_BOUND_OPERATOR_AUTHORITY_1"
-    };
-    let authority_id = sha256(
-        format!(
-            "{authority_prefix}:{}:{}:{}:{}",
-            operator_for_authority.operator_id,
-            repair.repair_id,
-            repair_receipt_sha256,
-            operator_for_authority.evidence_sha256
-        )
-        .as_bytes(),
-    );
-    let mut authority = SourceBoundImprovementOperatorAuthorityReceipt {
-        schema: if installed_authority {
-            INSTALLED_TYPED_OPERATOR_AUTHORITY_SCHEMA.to_string()
-        } else {
-            SOURCE_BOUND_OPERATOR_AUTHORITY_SCHEMA.to_string()
+    persist_authorized_typed_mechanism_operator(
+        &config.state_dir,
+        operator,
+        &TypedMechanismOperatorPromotionEvidenceIR {
+            repair_id: repair.repair_id.clone(),
+            repair_receipt_sha256: repair_receipt_sha256.to_string(),
+            execution_output_sha256: execution_authority_output_sha256,
+            candidate_sha256: repair
+                .candidate_sha256
+                .clone()
+                .ok_or_else(|| "SOURCE_BOUND_OPERATOR_CANDIDATE_EVIDENCE_MISSING".to_string())?,
+            sandbox_verified: repair.sandbox_verified,
+            sandbox_cleaned: repair.sandbox_cleaned,
+            authoritative_scope_stable: repair.authoritative_scope_stable,
+            candidate_installed: repair.candidate_installed,
+            authoritative_source_write_events: repair.authoritative_source_write_events,
+            codex_calls: repair.codex_calls,
+            external_llm_calls: repair.external_llm_calls,
+            network_reads: repair.network_reads,
+            network_writes: repair.network_writes,
+            promotion_generation: repair.generation,
         },
-        authority_id: authority_id.clone(),
-        operator_id: operator_for_authority.operator_id.clone(),
-        operator_sha256,
-        repair_id: repair.repair_id.clone(),
-        repair_receipt_sha256: repair_receipt_sha256.to_string(),
-        // The shared authority schema retains this historical field name.
-        // For installed repairs it carries the authoritative post-install
-        // verifier output, not the earlier sandbox output.
-        sandbox_output_sha256: operator_for_authority.evidence_sha256,
-        candidate_sha256: repair
-            .candidate_sha256
-            .clone()
-            .ok_or_else(|| "SOURCE_BOUND_OPERATOR_CANDIDATE_EVIDENCE_MISSING".to_string())?,
-        sandbox_verified: repair.sandbox_verified,
-        sandbox_cleaned: repair.sandbox_cleaned,
-        authoritative_scope_stable: repair.authoritative_scope_stable,
-        candidate_installed: repair.candidate_installed,
-        authoritative_source_write_events: repair.authoritative_source_write_events,
-        codex_calls: repair.codex_calls,
-        external_llm_calls: repair.external_llm_calls,
-        network_reads: repair.network_reads,
-        network_writes: repair.network_writes,
-        promotion_generation: repair.generation,
-        receipt_sha256: String::new(),
-    };
-    authority.receipt_sha256 = json_sha256(&authority)?;
-    validate_source_bound_operator_authority(&authority)?;
-    let authority_directory = source_bound_improvement_operator_authority_directory(config);
-    fs::create_dir_all(&authority_directory)
-        .map_err(|error| format!("SOURCE_BOUND_OPERATOR_AUTHORITY_CREATE:{error}"))?;
-    let authority_path = authority_directory.join(format!("{authority_id}.json"));
-    if authority_path.exists() {
-        let stored: SourceBoundImprovementOperatorAuthorityReceipt = read_json(&authority_path)?;
-        if stored != authority {
-            return Err("SOURCE_BOUND_OPERATOR_AUTHORITY_COLLISION".to_string());
-        }
-        Ok(())
-    } else {
-        write_immutable_json(&authority_path, &authority)
-    }
+    )?;
+    Ok(())
 }
 
 fn python_pytest_target_symbols(diagnostic_tail: &str) -> Vec<String> {
@@ -10983,23 +10927,114 @@ fn accepted_sem5_artifact_contexts(memory: &GrowthMemory) -> Vec<(String, String
         .collect()
 }
 
+fn reconcile_verified_generative_typed_operators(
+    config: &GrowthSupervisorConfig,
+    memory: &GrowthMemory,
+) -> Result<usize, String> {
+    let memory_sha256 = json_sha256(memory)?;
+    let mut authorized_ids = load_source_bound_improvement_operators(config)?
+        .into_iter()
+        .map(|operator| operator.operator_id)
+        .collect::<BTreeSet<_>>();
+    let mut promoted = 0_usize;
+    let mut seen = BTreeSet::new();
+    for (artifact_sha256, _, goal, synthesis_receipt) in accepted_sem5_executable_artifacts(memory)
+        .into_iter()
+        .take(MAX_ACTIVE_SOURCE_BOUND_IMPROVEMENT_OPERATORS)
+    {
+        let Some(synthesis_receipt) = synthesis_receipt else {
+            // Revision-6 goal-only memories remain reconstructable through
+            // the legacy callable cache, but cannot mint new authority.
+            continue;
+        };
+        if synthesis_receipt.synthesis_request.as_ref() != Some(&goal)
+            || synthesis_receipt.receipt_sha256.len() != 64
+            || artifact_sha256.len() != 64
+        {
+            return Err("GENERATIVE_TYPED_OPERATOR_PROMOTION_BINDING_FAILURE".to_string());
+        }
+        let execution_output_sha256 = sha256(
+            format!(
+                "VERIFIED_GENERATIVE_TYPED_OPERATOR_OUTPUT_1:{memory_sha256}:{artifact_sha256}:{}",
+                synthesis_receipt.receipt_sha256
+            )
+            .as_bytes(),
+        );
+        let operator = typed_mechanism_improvement_operator_from_receipt(
+            &synthesis_receipt,
+            execution_output_sha256.clone(),
+        )?;
+        if !seen.insert(operator.operator_id.clone())
+            || authorized_ids.contains(&operator.operator_id)
+        {
+            continue;
+        }
+        let repair_id = sha256(
+            format!(
+                "VERIFIED_GENERATIVE_TYPED_OPERATOR_1:{}:{artifact_sha256}:{memory_sha256}",
+                memory.generation
+            )
+            .as_bytes(),
+        );
+        persist_authorized_typed_mechanism_operator(
+            &config.state_dir,
+            &operator,
+            &TypedMechanismOperatorPromotionEvidenceIR {
+                repair_id,
+                repair_receipt_sha256: memory_sha256.clone(),
+                execution_output_sha256,
+                candidate_sha256: artifact_sha256,
+                sandbox_verified: true,
+                sandbox_cleaned: true,
+                authoritative_scope_stable: true,
+                candidate_installed: false,
+                authoritative_source_write_events: 0,
+                codex_calls: 0,
+                external_llm_calls: 0,
+                network_reads: 0,
+                network_writes: 0,
+                promotion_generation: memory.generation,
+            },
+        )?;
+        authorized_ids.insert(operator.operator_id);
+        promoted = promoted.saturating_add(1);
+    }
+    Ok(promoted)
+}
+
 fn pending_sem5_composition_candidates(
+    config: &GrowthSupervisorConfig,
     memory: &GrowthMemory,
 ) -> Result<Vec<crate::integrated_development::CompositeProgramCandidateIR>, String> {
     let installed = crate::generated_sem5_capability::generated_capability_hashes()
         .iter()
         .copied()
         .collect::<BTreeSet<_>>();
-    let remaining_capacity = MAX_INSTALLED_TYPED_CAPABILITIES.saturating_sub(installed.len());
-    let family_limit = remaining_capacity.min(MAX_COMPOSITE_INSTALL_FAMILY);
-    if family_limit == 0 {
-        return Ok(Vec::new());
-    }
+    let authorized_operator_ids = load_source_bound_improvement_operators(config)?
+        .into_iter()
+        .map(|operator| operator.operator_id)
+        .collect::<BTreeSet<_>>();
+    let family_limit = MAX_COMPOSITE_INSTALL_FAMILY;
     let mut candidates = Vec::new();
     for (expected_artifact, context, goal, expected_synthesis) in
         accepted_sem5_executable_artifacts(memory)
     {
         if installed.contains(expected_artifact.as_str()) {
+            continue;
+        }
+        if let Some(synthesis) = expected_synthesis.as_ref() {
+            let operator = typed_mechanism_improvement_operator_from_receipt(
+                synthesis,
+                synthesis.receipt_sha256.clone(),
+            )?;
+            if authorized_operator_ids.contains(&operator.operator_id) {
+                continue;
+            }
+        } else if installed.len().saturating_add(candidates.len())
+            >= MAX_INSTALLED_TYPED_CAPABILITIES
+        {
+            // Only legacy goal-only memories still require the bounded static
+            // callable cache. Exact typed recipes use the dynamic repository.
             continue;
         }
         let (candidate, _) = compose_typed_behavior_goal_candidate(&context, &goal)?;
@@ -11214,7 +11249,7 @@ fn attempt_pending_composite_capability_install(
     state: &mut SupervisorState,
     memory: &GrowthMemory,
 ) -> Result<CompositeInstallAttemptOutcome, String> {
-    let candidates = pending_sem5_composition_candidates(memory)?;
+    let candidates = pending_sem5_composition_candidates(config, memory)?;
     if candidates.is_empty() {
         return Ok(CompositeInstallAttemptOutcome {
             attempted: false,
@@ -11438,6 +11473,7 @@ fn attempt_discovered_source_repair(
     // made every successful self-application idle for N scans before it could
     // become executable source.  Install the already verified work at the next
     // safe cycle; retain the plateau gate only for fresh source discovery.
+    reconcile_verified_generative_typed_operators(config, memory)?;
     let composite = attempt_pending_composite_capability_install(config, state, memory)?;
     if composite.attempted {
         if composite.staged {
@@ -13792,11 +13828,13 @@ mod tests {
             accepted.verified_typed_behavior_goals.clear();
         }
         assert!(accepted_sem5_artifact_contexts(&legacy_text_only).is_empty());
-        assert!(pending_sem5_composition_candidates(&legacy_text_only)
-            .expect("legacy text-only lookup")
-            .is_empty());
+        assert!(
+            pending_sem5_composition_candidates(&config, &legacy_text_only)
+                .expect("legacy text-only lookup")
+                .is_empty()
+        );
 
-        let pending_candidate = pending_sem5_composition_candidates(&memory)
+        let pending_candidate = pending_sem5_composition_candidates(&config, &memory)
             .expect("pending lookup")
             .into_iter()
             .next()
@@ -13818,6 +13856,36 @@ mod tests {
                     .get(&pending_candidate.program_ir_sha256)
                     == Some(&pending_context)
             }));
+
+        let predecessor_source = fs::read_to_string(
+            config
+                .source_mutation
+                .source_root
+                .join("crates/semantic-reasoning/src/generated_sem5_capability.rs"),
+        )
+        .ok();
+        assert_eq!(
+            reconcile_verified_generative_typed_operators(&config, &memory)
+                .expect("promote verified operator"),
+            1
+        );
+        assert_eq!(
+            load_source_bound_improvement_operators(&config)
+                .expect("authorized dynamic operator")
+                .len(),
+            1
+        );
+        assert!(pending_sem5_composition_candidates(&config, &memory)
+            .expect("dynamic operator suppresses static rebuild")
+            .is_empty());
+        let successor_source = fs::read_to_string(
+            config
+                .source_mutation
+                .source_root
+                .join("crates/semantic-reasoning/src/generated_sem5_capability.rs"),
+        )
+        .ok();
+        assert_eq!(predecessor_source, successor_source);
 
         let observation =
             revalidate_installed_composite_capability(&config, &mut state, &memory).unwrap();
@@ -15917,6 +15985,12 @@ mod tests {
             .unwrap()
             .filter_map(Result::ok)
             .filter(|entry| entry.path().extension().and_then(OsStr::to_str) == Some("json"))
+            .filter_map(|entry| {
+                read_json::<SourceBoundImprovementOperatorAuthorityReceipt>(&entry.path()).ok()
+            })
+            .filter(|authority| {
+                authority.operator_id == repair.improvement_operators[0].operator_id
+            })
             .count(),
             1
         );

@@ -30,12 +30,11 @@ use crate::generalized_self_application::{
 use crate::grammar_repair_synthesis::discover_grammar_repairs_for_generation_with_priors;
 use crate::self_repair_contract::sha256;
 use crate::sem5::typed_mechanism::{
-    load_authorized_typed_mechanism_operators, typed_mechanism_improvement_operator_from_receipt,
-    typed_mechanism_operator_authority_directory, typed_mechanism_operator_directory,
-    validate_typed_mechanism_improvement_operator, validate_typed_mechanism_operator_authority,
-    validate_typed_mechanism_synthesis_receipt, TypedMechanismImprovementOperatorIR,
-    TypedMechanismOperatorAuthorityReceiptIR, TypedMechanismSynthesisReceiptIR,
-    INSTALLED_TYPED_OPERATOR_AUTHORITY_SCHEMA, MAX_ACTIVE_TYPED_MECHANISM_OPERATORS,
+    load_authorized_typed_mechanism_operators, persist_authorized_typed_mechanism_operator,
+    typed_mechanism_improvement_operator_from_receipt,
+    validate_typed_mechanism_improvement_operator, validate_typed_mechanism_synthesis_receipt,
+    TypedMechanismImprovementOperatorIR, TypedMechanismOperatorPromotionEvidenceIR,
+    TypedMechanismSynthesisReceiptIR, MAX_ACTIVE_TYPED_MECHANISM_OPERATORS,
 };
 use crate::source_proposal_kernel::{
     compose_source_edit_proposals, rank_source_proposals, SourceEditProposalIR,
@@ -85,7 +84,7 @@ const MAX_SUBMITTED_SOURCE_PROPOSALS_PER_GENERATOR: usize = MAX_SELECTED_SOURCE_
 // Revision 47 separates exact authority existence from the bounded active
 // operator window and deduplicates repeated authority receipts.
 // Generator identity remains diagnostic evidence only.
-pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 58;
+pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 59;
 pub const MAX_RETAINED_CONSUMED_RUNTIME_STAGING_GENERATIONS: usize = 2;
 const KNOWN_REMAINDER_PREDICTED_VALUE: u16 = 35;
 const MAX_REPOSITORY_REPAIR_FAMILY_FILES: usize = 16;
@@ -884,12 +883,6 @@ fn write_mutable_json<T: Serialize>(path: &Path, value: &T) -> Result<(), String
         .map_err(|error| format!("SOURCE_REPAIR_LEARNING_WRITE:{error}"))
 }
 
-fn typed_operator_json_sha256<T: Serialize>(value: &T) -> Result<String, String> {
-    serde_json::to_vec(value)
-        .map(|bytes| sha256(&bytes))
-        .map_err(|error| format!("INSTALLED_TYPED_OPERATOR_JSON:{error}"))
-}
-
 fn persist_one_installed_typed_mechanism_operator(
     state_dir: &Path,
     request: &AutonomousSourcePatchRequest,
@@ -899,33 +892,6 @@ fn persist_one_installed_typed_mechanism_operator(
     let mut operator = recipe.clone();
     operator.evidence_sha256 = receipt.validation.output_sha256.clone();
     validate_typed_mechanism_improvement_operator(&operator)?;
-    let operator_directory = typed_mechanism_operator_directory(state_dir);
-    let authority_directory = typed_mechanism_operator_authority_directory(state_dir);
-    fs::create_dir_all(&operator_directory)
-        .map_err(|error| format!("INSTALLED_TYPED_OPERATOR_DIRECTORY:{error}"))?;
-    fs::create_dir_all(&authority_directory)
-        .map_err(|error| format!("INSTALLED_TYPED_OPERATOR_AUTHORITY_DIRECTORY:{error}"))?;
-    let operator_path = operator_directory.join(format!("{}.json", operator.operator_id));
-    if operator_path.exists() {
-        let bytes = fs::read(&operator_path)
-            .map_err(|error| format!("INSTALLED_TYPED_OPERATOR_READ:{error}"))?;
-        let stored: TypedMechanismImprovementOperatorIR = serde_json::from_slice(&bytes)
-            .map_err(|error| format!("INSTALLED_TYPED_OPERATOR_PARSE:{error}"))?;
-        validate_typed_mechanism_improvement_operator(&stored)?;
-        let mut stored_identity = stored.clone();
-        stored_identity.evidence_sha256.clear();
-        let mut requested_identity = operator.clone();
-        requested_identity.evidence_sha256.clear();
-        if stored_identity != requested_identity {
-            return Err("INSTALLED_TYPED_OPERATOR_REPOSITORY_COLLISION".to_string());
-        }
-        // Preserve immutable first evidence. A new authority receipt below
-        // records the latest verified generation without rewriting history.
-        operator = stored;
-    } else {
-        write_immutable_json(&operator_path, &operator)?;
-    }
-
     let repair_id = sha256(
         format!(
             "INSTALLED_TYPED_SOURCE_REPAIR_1:{}:{}:{}",
@@ -933,48 +899,26 @@ fn persist_one_installed_typed_mechanism_operator(
         )
         .as_bytes(),
     );
-    let authority_id = sha256(
-        format!(
-            "INSTALLED_TYPED_OPERATOR_AUTHORITY_1:{}:{}:{}:{}",
-            operator.operator_id, repair_id, receipt.receipt_sha256, operator.evidence_sha256
-        )
-        .as_bytes(),
-    );
-    let mut authority = TypedMechanismOperatorAuthorityReceiptIR {
-        schema: INSTALLED_TYPED_OPERATOR_AUTHORITY_SCHEMA.to_string(),
-        authority_id: authority_id.clone(),
-        operator_id: operator.operator_id.clone(),
-        operator_sha256: typed_operator_json_sha256(&operator)?,
-        repair_id,
-        repair_receipt_sha256: receipt.receipt_sha256.clone(),
-        sandbox_output_sha256: operator.evidence_sha256.clone(),
-        candidate_sha256: request.candidate_sha256.clone(),
-        sandbox_verified: true,
-        sandbox_cleaned: true,
-        authoritative_scope_stable: true,
-        candidate_installed: true,
-        authoritative_source_write_events: 1,
-        codex_calls: 0,
-        external_llm_calls: 0,
-        network_reads: 0,
-        network_writes: 0,
-        promotion_generation: request.source_generation,
-        receipt_sha256: String::new(),
-    };
-    authority.receipt_sha256 = typed_operator_json_sha256(&authority)?;
-    validate_typed_mechanism_operator_authority(&authority)?;
-    let authority_path = authority_directory.join(format!("{authority_id}.json"));
-    if authority_path.exists() {
-        let bytes = fs::read(&authority_path)
-            .map_err(|error| format!("INSTALLED_TYPED_OPERATOR_AUTHORITY_READ:{error}"))?;
-        let stored: TypedMechanismOperatorAuthorityReceiptIR = serde_json::from_slice(&bytes)
-            .map_err(|error| format!("INSTALLED_TYPED_OPERATOR_AUTHORITY_PARSE:{error}"))?;
-        if stored != authority {
-            return Err("INSTALLED_TYPED_OPERATOR_AUTHORITY_COLLISION".to_string());
-        }
-    } else {
-        write_immutable_json(&authority_path, &authority)?;
-    }
+    persist_authorized_typed_mechanism_operator(
+        state_dir,
+        &operator,
+        &TypedMechanismOperatorPromotionEvidenceIR {
+            repair_id,
+            repair_receipt_sha256: receipt.receipt_sha256.clone(),
+            execution_output_sha256: receipt.validation.output_sha256.clone(),
+            candidate_sha256: request.candidate_sha256.clone(),
+            sandbox_verified: true,
+            sandbox_cleaned: true,
+            authoritative_scope_stable: true,
+            candidate_installed: true,
+            authoritative_source_write_events: 1,
+            codex_calls: 0,
+            external_llm_calls: 0,
+            network_reads: 0,
+            network_writes: 0,
+            promotion_generation: request.source_generation,
+        },
+    )?;
     Ok(())
 }
 
