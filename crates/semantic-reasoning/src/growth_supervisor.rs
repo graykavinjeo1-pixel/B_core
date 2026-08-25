@@ -83,6 +83,7 @@ const MAX_COMPOUND_INPUT_BYTES: u64 = 16 * 1024 * 1024;
 const MAX_COMPOUND_RECEIPT_BYTES: u64 = 64 * 1024 * 1024;
 const MAX_SUMMARY_BYTES: usize = 512;
 const SOURCE_PATCH_VALIDATION_CONTRACT_REVISION: u64 = 2;
+const PLATEAU_GENERATIVE_PROBE_CONTRACT_REVISION: u64 = 2;
 const SCAN_WATCHDOG_TICK_MS: u64 = 1_000;
 const MAX_SCAN_RUNTIME_MS: u64 = 60_000;
 const FULL_HASH_CANARY_INTERVAL: u64 = 64;
@@ -6007,8 +6008,8 @@ fn plateau_generative_probe_observation(
     }
     let probe_id = sha256(
         format!(
-            "PLATEAU_GENERATIVE_PROBE_1:{}:{}:{}",
-            state.current_memory_sha256, state.generation, input.source_lesson_id
+            "PLATEAU_GENERATIVE_PROBE_{PLATEAU_GENERATIVE_PROBE_CONTRACT_REVISION}:{}:{}:{}",
+            state.current_memory_sha256, state.generation, input.source_lesson_id,
         )
         .as_bytes(),
     );
@@ -6016,7 +6017,11 @@ fn plateau_generative_probe_observation(
     let receipt_path = probe_root.join(format!("{probe_id}.json"));
     if receipt_path.is_file() {
         let existing: PlateauGenerativeProbeReceipt = read_json(&receipt_path)?;
-        if existing.probe_id != probe_id
+        if existing.schema
+            != format!(
+                "B_CORE_PLATEAU_GENERATIVE_PROBE_{PLATEAU_GENERATIVE_PROBE_CONTRACT_REVISION}"
+            )
+            || existing.probe_id != probe_id
             || existing.predecessor_memory_sha256 != state.current_memory_sha256
         {
             return Err("PLATEAU_GENERATIVE_PROBE_RECEIPT_DIVERGED".to_string());
@@ -6045,7 +6050,7 @@ fn plateau_generative_probe_observation(
             .map(|artifact| artifact.artifact_sha256.clone())
             .collect::<Vec<_>>();
         let content_sha256 = json_sha256(&(
-            "B_CORE_PLATEAU_GENERATIVE_PROBE_1",
+            format!("B_CORE_PLATEAU_GENERATIVE_PROBE_{PLATEAU_GENERATIVE_PROBE_CONTRACT_REVISION}"),
             &probe_id,
             &state.current_memory_sha256,
             &input,
@@ -6106,7 +6111,9 @@ fn plateau_generative_probe_observation(
         None
     };
     let mut receipt = PlateauGenerativeProbeReceipt {
-        schema: "B_CORE_PLATEAU_GENERATIVE_PROBE_1".to_string(),
+        schema: format!(
+            "B_CORE_PLATEAU_GENERATIVE_PROBE_{PLATEAU_GENERATIVE_PROBE_CONTRACT_REVISION}"
+        ),
         probe_id,
         predecessor_memory_sha256: state.current_memory_sha256.clone(),
         input,
