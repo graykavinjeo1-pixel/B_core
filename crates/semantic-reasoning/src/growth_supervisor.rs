@@ -2241,11 +2241,103 @@ fn path_is_dedicated_test(path: &Path) -> bool {
         || file_name.ends_with(".spec.ts")
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum ObservationArtifactRole {
+    ProductSource,
+    TestSource,
+    VerificationEvidence,
+    Configuration,
+    Documentation,
+}
+
+/// Classify the authority of an observed file before looking at token counts.
+/// Reports and transport receipts routinely contain words such as `assert`,
+/// `error`, and `test`; those words describe work but are not an implementation
+/// that the source synthesizer can edit.  File role therefore dominates
+/// structural feature scoring.
+fn observation_artifact_role(path: &Path) -> ObservationArtifactRole {
+    if path_is_dedicated_test(path) {
+        return ObservationArtifactRole::TestSource;
+    }
+    let normalized = path
+        .to_string_lossy()
+        .replace('\\', "/")
+        .to_ascii_lowercase();
+    let file_name = normalized.rsplit('/').next().unwrap_or("");
+    let extension = Path::new(file_name)
+        .extension()
+        .and_then(OsStr::to_str)
+        .unwrap_or("");
+    if normalized.split('/').any(|component| {
+        matches!(
+            component,
+            "log" | "logs" | "report" | "reports" | "receipt" | "receipts"
+        )
+    }) {
+        return ObservationArtifactRole::VerificationEvidence;
+    }
+    if matches!(
+        extension,
+        "rs" | "py"
+            | "js"
+            | "jsx"
+            | "ts"
+            | "tsx"
+            | "go"
+            | "java"
+            | "kt"
+            | "cs"
+            | "cpp"
+            | "cc"
+            | "c"
+            | "h"
+            | "hpp"
+            | "swift"
+            | "ps1"
+            | "sh"
+            | "sql"
+            | "html"
+            | "css"
+            | "scss"
+    ) {
+        return ObservationArtifactRole::ProductSource;
+    }
+    if extension == "md" {
+        return ObservationArtifactRole::Documentation;
+    }
+    if matches!(extension, "toml" | "yaml" | "yml") {
+        return ObservationArtifactRole::Configuration;
+    }
+    if matches!(extension, "json" | "jsonl" | "log" | "out" | "txt")
+        || file_name.contains("report")
+        || file_name.contains("receipt")
+        || file_name.contains("summary")
+        || file_name.contains("transport")
+    {
+        return ObservationArtifactRole::VerificationEvidence;
+    }
+    ObservationArtifactRole::Configuration
+}
+
+fn artifact_role_can_carry_source_semantics(role: ObservationArtifactRole) -> bool {
+    matches!(
+        role,
+        ObservationArtifactRole::ProductSource | ObservationArtifactRole::TestSource
+    )
+}
+
 fn classify_work_kind(
     path: &Path,
     features: &StructuralFeatures,
     previous: Option<&StructuralFeatures>,
 ) -> WorkKind {
+    match observation_artifact_role(path) {
+        ObservationArtifactRole::TestSource => return WorkKind::RegressionTest,
+        ObservationArtifactRole::VerificationEvidence => return WorkKind::Verification,
+        ObservationArtifactRole::Configuration => return WorkKind::OperationsChange,
+        ObservationArtifactRole::Documentation => return WorkKind::Documentation,
+        ObservationArtifactRole::ProductSource => {}
+    }
     let lower = path.to_string_lossy().to_ascii_lowercase();
     let prior = previous.cloned().unwrap_or_default();
     let test_delta = features.test_tokens.saturating_sub(prior.test_tokens);
@@ -2342,13 +2434,21 @@ fn classify_observation(
     let mut signals = BTreeSet::new();
     let mut roles = BTreeSet::new();
     let mut reasons = Vec::new();
-    let kind = event.map(|value| value.kind).unwrap_or_else(|| {
-        classify_work_kind(
-            Path::new(&logical_path),
-            &current.features,
-            previous.map(|value| &value.features),
-        )
-    });
+    let artifact_role = observation_artifact_role(Path::new(&logical_path));
+    let inferred_kind = classify_work_kind(
+        Path::new(&logical_path),
+        &current.features,
+        previous.map(|value| &value.features),
+    );
+    let kind = match artifact_role {
+        ObservationArtifactRole::TestSource => WorkKind::RegressionTest,
+        ObservationArtifactRole::VerificationEvidence => WorkKind::Verification,
+        ObservationArtifactRole::Configuration => WorkKind::OperationsChange,
+        ObservationArtifactRole::Documentation => WorkKind::Documentation,
+        ObservationArtifactRole::ProductSource => {
+            event.map(|value| value.kind).unwrap_or(inferred_kind)
+        }
+    };
     let actor = event
         .map(|value| value.actor)
         .unwrap_or(WorkActor::UnknownLocalWriter);
@@ -2443,61 +2543,66 @@ fn classify_observation(
     let before = previous.map(|value| &value.features);
     let delta = |after: u32, before_value: u32| after.saturating_sub(before_value);
     let prior = before.cloned().unwrap_or_default();
-    if delta(current.features.test_tokens, prior.test_tokens) > 0 {
+    let source_semantics = artifact_role_can_carry_source_semantics(artifact_role);
+    if source_semantics && delta(current.features.test_tokens, prior.test_tokens) > 0 {
         score += 16;
         signals.insert("TEST_ADDED".to_string());
         roles.insert("REGRESSION_TEST".to_string());
     }
-    if delta(current.features.assertion_tokens, prior.assertion_tokens) > 0 {
+    if source_semantics && delta(current.features.assertion_tokens, prior.assertion_tokens) > 0 {
         score += 10;
         signals.insert("ASSERTION_STRENGTHENED".to_string());
         roles.insert("INVARIANT_CHECK".to_string());
     }
-    if delta(current.features.validation_tokens, prior.validation_tokens) > 0 {
+    if source_semantics && delta(current.features.validation_tokens, prior.validation_tokens) > 0 {
         score += 8;
         signals.insert("VALIDATION_ADDED".to_string());
         roles.insert("INPUT_VALIDATION".to_string());
     }
-    if delta(
-        current.features.error_handling_tokens,
-        prior.error_handling_tokens,
-    ) > 0
+    if source_semantics
+        && delta(
+            current.features.error_handling_tokens,
+            prior.error_handling_tokens,
+        ) > 0
     {
         score += 8;
         signals.insert("ERROR_HANDLING_ADDED".to_string());
         roles.insert("ERROR_PROPAGATION".to_string());
     }
-    if delta(current.features.public_symbols, prior.public_symbols) > 0 {
+    if source_semantics && delta(current.features.public_symbols, prior.public_symbols) > 0 {
         score += 5;
         signals.insert("CAPABILITY_SURFACE_ADDED".to_string());
     }
-    if delta(current.features.benchmark_tokens, prior.benchmark_tokens) > 0 {
+    if source_semantics && delta(current.features.benchmark_tokens, prior.benchmark_tokens) > 0 {
         score += 12;
         signals.insert("BENCHMARK_EVIDENCE".to_string());
         roles.insert("PERFORMANCE_BENCHMARK".to_string());
     }
-    if delta(
-        current.features.performance_tokens,
-        prior.performance_tokens,
-    ) > 0
+    if source_semantics
+        && delta(
+            current.features.performance_tokens,
+            prior.performance_tokens,
+        ) > 0
     {
         score += 8;
         signals.insert("EFFICIENCY_MECHANISM".to_string());
         roles.insert("PERFORMANCE_IMPLEMENTATION".to_string());
     }
-    if delta(
-        current.features.algebraic_constructor_tokens,
-        prior.algebraic_constructor_tokens,
-    ) > 0
+    if source_semantics
+        && delta(
+            current.features.algebraic_constructor_tokens,
+            prior.algebraic_constructor_tokens,
+        ) > 0
     {
         score += 6;
         signals.insert("ALGEBRAIC_CONSTRUCTOR_MECHANISM".to_string());
         roles.insert("IMPLEMENTATION".to_string());
     }
-    if delta(
-        current.features.data_composition_tokens,
-        prior.data_composition_tokens,
-    ) > 0
+    if source_semantics
+        && delta(
+            current.features.data_composition_tokens,
+            prior.data_composition_tokens,
+        ) > 0
     {
         score += 6;
         signals.insert("DATA_COMPOSITION_MECHANISM".to_string());
@@ -2585,9 +2690,13 @@ fn classify_observation(
             .map(|value| value.evidence_sha256.clone())
             .unwrap_or_default(),
         performance_metrics,
-        public_contract_deltas: event
-            .map(|value| value.public_contract_deltas.clone())
-            .unwrap_or_default(),
+        public_contract_deltas: if artifact_role == ObservationArtifactRole::ProductSource {
+            event
+                .map(|value| value.public_contract_deltas.clone())
+                .unwrap_or_default()
+        } else {
+            Vec::new()
+        },
         exact_source_fragments_stored: 0,
         raw_source_bytes_stored: 0,
         observed_at_ms: event
@@ -3934,6 +4043,14 @@ fn validate_event(config: &GrowthSupervisorConfig, event: &mut WorkEvent) -> Res
         }
         *path = canonical;
     }
+    if !event.public_contract_deltas.is_empty()
+        && !event
+            .paths
+            .iter()
+            .any(|path| observation_artifact_role(path) == ObservationArtifactRole::ProductSource)
+    {
+        return Err("EVENT_PUBLIC_CONTRACT_REQUIRES_PRODUCT_SOURCE_PATH".to_string());
+    }
     if event.occurred_at_ms == 0 {
         event.occurred_at_ms = now_ms();
     }
@@ -4467,6 +4584,98 @@ fn load_unconsumed_high_observations(
     Ok(observations)
 }
 
+fn observation_is_bound_verification_evidence(observation: &LearningObservation) -> bool {
+    observation.work_kind == WorkKind::Verification
+        && observation.work_outcome == WorkOutcome::Pass
+        && !observation.verification_evidence_sha256.is_empty()
+        && observation
+            .signals
+            .iter()
+            .any(|signal| signal == "VERIFIED_PASS")
+}
+
+fn observation_is_campaign_relevant(observation: &LearningObservation) -> bool {
+    artifact_role_can_carry_source_semantics(observation_artifact_role(Path::new(
+        &observation.logical_path,
+    ))) || observation_is_bound_verification_evidence(observation)
+        || (observation.actor == WorkActor::LocalTool
+            && observation.work_outcome == WorkOutcome::Pass
+            && !observation.verification_evidence_sha256.is_empty()
+            && observation.signals.iter().any(|signal| {
+                matches!(
+                    signal.as_str(),
+                    "BEHAVIORAL_FRONTIER_ADVANCE" | "MUTUAL_REVALIDATION_GAP"
+                )
+            }))
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+struct EvidenceOnlyObservationQuarantineReceipt {
+    schema: String,
+    generation: u64,
+    observation_ids: Vec<String>,
+    logical_paths: Vec<String>,
+    reason: String,
+    receipt_sha256: String,
+}
+
+/// Historical classifiers gave report and transport artifacts implementation
+/// credit from token counts. Preserve those immutable observations as evidence,
+/// but consume them from the campaign queue exactly once. A later real source
+/// transition has a distinct identity and remains eligible.
+fn quarantine_evidence_only_high_observations(
+    config: &GrowthSupervisorConfig,
+    state: &mut SupervisorState,
+    index: &mut FileIndex,
+    observations: &mut Vec<LearningObservation>,
+) -> Result<usize, String> {
+    let quarantined = observations
+        .iter()
+        .filter(|observation| !observation_is_campaign_relevant(observation))
+        .cloned()
+        .collect::<Vec<_>>();
+    if quarantined.is_empty() {
+        return Ok(0);
+    }
+    let observation_ids = quarantined
+        .iter()
+        .map(|observation| observation.observation_id.clone())
+        .collect::<Vec<_>>();
+    let logical_paths = quarantined
+        .iter()
+        .map(|observation| observation.logical_path.clone())
+        .collect::<Vec<_>>();
+    let mut receipt = EvidenceOnlyObservationQuarantineReceipt {
+        schema: "B_CORE_EVIDENCE_ONLY_OBSERVATION_QUARANTINE_1".to_string(),
+        generation: state.generation,
+        observation_ids: observation_ids.clone(),
+        logical_paths,
+        reason: "NON_SOURCE_ARTIFACT_HAS_NO_EXECUTABLE_SOURCE_BINDING".to_string(),
+        receipt_sha256: String::new(),
+    };
+    receipt.receipt_sha256 = json_sha256(&receipt)?;
+    let diagnostics = config.state_dir.join("diagnostics");
+    fs::create_dir_all(&diagnostics)
+        .map_err(|error| format!("EVIDENCE_QUARANTINE_DIAGNOSTICS_CREATE:{error}"))?;
+    let receipt_path = diagnostics.join(format!(
+        "evidence_only_quarantine_{}.json",
+        receipt.receipt_sha256
+    ));
+    if !receipt_path.exists() {
+        write_immutable_json(&receipt_path, &receipt)?;
+    }
+    cleanup_recent_files(&diagnostics, "evidence_only_quarantine_", 16)?;
+    let ids = observation_ids.into_iter().collect::<BTreeSet<_>>();
+    index.consumed_observation_ids.extend(ids.iter().cloned());
+    observations.retain(|observation| !ids.contains(&observation.observation_id));
+    save_index(config, index)?;
+    let count = ids.len();
+    state.redundant_observations_consumed = state
+        .redundant_observations_consumed
+        .saturating_add(count.min(u64::MAX as usize) as u64);
+    Ok(count)
+}
+
 fn consume_superseded_high_observations(
     config: &GrowthSupervisorConfig,
     state: &mut SupervisorState,
@@ -4910,6 +5119,19 @@ fn cohort_has_promotable_growth_subject(
     lesson_has_verification_evidence(lesson)
         && lesson_has_growth_subject(lesson)
         && lesson_has_executable_knowledge(lesson)
+        && observations.iter().any(|observation| {
+            (observation_artifact_role(Path::new(&observation.logical_path))
+                == ObservationArtifactRole::ProductSource
+                && (observation.work_kind != WorkKind::Verification
+                    || !observation.public_contract_deltas.is_empty()))
+                || (observation.actor == WorkActor::LocalTool
+                    && observation.work_outcome == WorkOutcome::Pass
+                    && !observation.verification_evidence_sha256.is_empty()
+                    && observation
+                        .signals
+                        .iter()
+                        .any(|signal| signal == "BEHAVIORAL_FRONTIER_ADVANCE"))
+        })
         && !observations.is_empty()
 }
 
@@ -4918,6 +5140,12 @@ fn selected_campaign_observations(
     observations: &[LearningObservation],
 ) -> Vec<LearningObservation> {
     const COHERENT_COHORT_WINDOW_MS: u64 = 30 * 60 * 1_000;
+    let eligible = observations
+        .iter()
+        .filter(|observation| observation_is_campaign_relevant(observation))
+        .cloned()
+        .collect::<Vec<_>>();
+    let observations = eligible.as_slice();
     for anchor in observations {
         let anchor_root = anchor.logical_path.split('/').next().unwrap_or("");
         let mut seen_paths = BTreeSet::new();
@@ -5071,6 +5299,7 @@ fn campaign_preflight_ready(
     if !path.exists() {
         write_immutable_json(&path, &diagnostic)?;
     }
+    cleanup_recent_files(&config.state_dir.join("diagnostics"), "preflight_", 32)?;
     Ok(false)
 }
 
@@ -11823,6 +12052,7 @@ fn step_without_lease(
     save_index(config, &mut scan.index)?;
     let mut high = load_unconsumed_high_observations(config, &scan.index)?;
     consume_superseded_high_observations(config, &mut state, &mut scan.index, &mut high)?;
+    quarantine_evidence_only_high_observations(config, &mut state, &mut scan.index, &mut high)?;
     let naive = high
         .iter()
         .take(config.resources.max_observations_per_campaign)
@@ -14949,6 +15179,160 @@ mod tests {
         assert!(observation
             .signals
             .contains(&"VALIDATION_ADDED".to_string()));
+    }
+
+    #[test]
+    fn report_tokens_are_verification_evidence_not_implementation() {
+        let current = FileFingerprint {
+            content_sha256: "b".repeat(64),
+            bytes: 1_024,
+            modified_ms: 2,
+            extension: "json".to_string(),
+            features: StructuralFeatures {
+                public_symbols: 8,
+                branch_tokens: 12,
+                assertion_tokens: 20,
+                test_tokens: 20,
+                validation_tokens: 20,
+                error_handling_tokens: 20,
+                ..StructuralFeatures::default()
+            },
+        };
+        let observation = classify_observation(
+            "ROOT_1/logs/run_evaluation/transport/report.json".to_string(),
+            &current,
+            None,
+            None,
+            &ClassifierMemory::default(),
+            45,
+        );
+
+        assert_eq!(observation.work_kind, WorkKind::Verification);
+        assert_eq!(observation.learning_value, LearningValue::Low);
+        assert!(!observation
+            .composition_roles
+            .iter()
+            .any(|role| role.contains("IMPLEMENTATION")));
+        assert!(!observation.signals.iter().any(|signal| matches!(
+            signal.as_str(),
+            "DEFECT_REPAIR" | "TEST_ADDED" | "ASSERTION_STRENGTHENED"
+        )));
+        assert!(observation.public_contract_deltas.is_empty());
+
+        let source_snapshot = classify_observation(
+            "ROOT_1/reports/source_snapshot.py".to_string(),
+            &FileFingerprint {
+                extension: "py".to_string(),
+                ..current
+            },
+            None,
+            None,
+            &ClassifierMemory::default(),
+            45,
+        );
+        assert_eq!(source_snapshot.work_kind, WorkKind::Verification);
+        assert_eq!(source_snapshot.learning_value, LearningValue::Low);
+    }
+
+    #[test]
+    fn public_contract_event_requires_a_product_source_binding() {
+        let root = temp_root("contract-source-binding");
+        let (config_path, config) = test_config(&root);
+        let report = config.watched_roots[0].join("report.json");
+        fs::write(&report, "{\"assertions\": [\"expected\"]}\n").unwrap();
+        initialize(&config_path).unwrap();
+
+        let error = record_work_event(
+            &config_path,
+            WorkEvent {
+                event_id: "report-contract".to_string(),
+                actor: WorkActor::LocalTool,
+                kind: WorkKind::DefectRepair,
+                paths: vec![report],
+                outcome: WorkOutcome::Unknown,
+                summary: "transported contract".to_string(),
+                evidence_sha256: Vec::new(),
+                evidence_artifacts: Vec::new(),
+                performance_metrics: Vec::new(),
+                public_contract_deltas: vec![public_contract_delta_fixture()],
+                occurred_at_ms: 1,
+            },
+        )
+        .unwrap_err();
+
+        assert_eq!(error, "EVENT_PUBLIC_CONTRACT_REQUIRES_PRODUCT_SOURCE_PATH");
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn historical_evidence_only_high_observation_is_quarantined_once() {
+        let root = temp_root("evidence-only-quarantine");
+        let (config_path, config) = test_config(&root);
+        let mut state = initialize(&config_path).unwrap();
+        let mut index = load_index(&config).unwrap();
+        let observation = LearningObservation {
+            observation_id: "legacy-report-high".to_string(),
+            work_event_id: None,
+            logical_path: "ROOT_1/reports/transport/report.json".to_string(),
+            content_sha256: "a".repeat(64),
+            predecessor_content_sha256: None,
+            actor: WorkActor::UnknownLocalWriter,
+            work_kind: WorkKind::DefectRepair,
+            work_outcome: WorkOutcome::Unknown,
+            features_before: None,
+            features_after: StructuralFeatures::default(),
+            signals: vec!["DEFECT_REPAIR".to_string(), "TEST_ADDED".to_string()],
+            composition_roles: vec!["IMPLEMENTATION_REPAIR".to_string()],
+            learning_score: 98,
+            learning_value: LearningValue::High,
+            reasons: vec!["legacy token-only score".to_string()],
+            verification_evidence_sha256: Vec::new(),
+            performance_metrics: Vec::new(),
+            public_contract_deltas: Vec::new(),
+            exact_source_fragments_stored: 0,
+            raw_source_bytes_stored: 0,
+            observed_at_ms: 1,
+        };
+        assert!(
+            selected_campaign_observations(&config, std::slice::from_ref(&observation)).is_empty()
+        );
+        let mut observations = vec![observation];
+
+        let consumed = quarantine_evidence_only_high_observations(
+            &config,
+            &mut state,
+            &mut index,
+            &mut observations,
+        )
+        .unwrap();
+
+        assert_eq!(consumed, 1);
+        assert!(observations.is_empty());
+        assert!(index
+            .consumed_observation_ids
+            .contains("legacy-report-high"));
+        assert_eq!(
+            quarantine_evidence_only_high_observations(
+                &config,
+                &mut state,
+                &mut index,
+                &mut observations,
+            )
+            .unwrap(),
+            0
+        );
+        assert_eq!(
+            fs::read_dir(config.state_dir.join("diagnostics"))
+                .unwrap()
+                .filter_map(Result::ok)
+                .filter(|entry| entry
+                    .file_name()
+                    .to_string_lossy()
+                    .starts_with("evidence_only_quarantine_"))
+                .count(),
+            1
+        );
+        fs::remove_dir_all(root).unwrap();
     }
 
     #[test]
