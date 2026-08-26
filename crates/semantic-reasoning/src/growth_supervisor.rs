@@ -4210,6 +4210,10 @@ pub fn request_resume(config_path: &Path) -> Result<serde_json::Value, String> {
     let repaired_failure_stop = state.stop_reason.as_deref()
         == Some("MAX_CONSECUTIVE_FAILURES_REACHED")
         && failed_campaign_engine_changed(&config, &proposer_executable_sha256)?;
+    let repaired_daemon_step_stop = state
+        .stop_reason
+        .as_deref()
+        .is_some_and(|reason| reason.starts_with("DAEMON_STEP_ERROR_BOUNDED_STOP:"));
     let resumable_reason = matches!(
         state.stop_reason.as_deref(),
         Some(
@@ -4218,7 +4222,8 @@ pub fn request_resume(config_path: &Path) -> Result<serde_json::Value, String> {
                 | "AUTONOMOUS_SOURCE_UPDATE_STAGED"
                 | "AUTONOMOUS_COMPOSITE_CAPABILITY_STAGED"
         )
-    ) || repaired_failure_stop;
+    ) || repaired_failure_stop
+        || repaired_daemon_step_stop;
     if state.phase == SupervisorPhase::SafeStopped && resumable_reason {
         let previous_reason = state.stop_reason.clone();
         if repaired_failure_stop {
@@ -4241,6 +4246,9 @@ pub fn request_resume(config_path: &Path) -> Result<serde_json::Value, String> {
                 }
                 Some("MAX_CONSECUTIVE_FAILURES_REACHED") => {
                     "OPERATOR_RESUME_AFTER_CAMPAIGN_ENGINE_REPAIR"
+                }
+                Some(reason) if reason.starts_with("DAEMON_STEP_ERROR_BOUNDED_STOP:") => {
+                    "OPERATOR_RESUME_AFTER_DAEMON_STEP_REPAIR"
                 }
                 _ => "OPERATOR_RESUME_REQUESTED",
             },
@@ -17842,6 +17850,29 @@ mod tests {
             &mut state,
             SupervisorPhase::SafeStopped,
             "TEST_TRANSIENT_TIMEOUT",
+        )
+        .unwrap();
+        let response = request_resume(&config_path).unwrap();
+        assert_eq!(response["phase"], "INFRA_READY");
+        assert_eq!(response["hard_resource_stop_preserved"], false);
+        let resumed = status(&config_path).unwrap();
+        assert_eq!(resumed.phase, SupervisorPhase::InfraReady);
+        assert_eq!(resumed.stop_reason, None);
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn bounded_daemon_step_stop_can_be_retried_by_explicit_operator_resume() {
+        let root = temp_root("resume-daemon-step-repair");
+        let (config_path, config) = test_config(&root);
+        let mut state = initialize(&config_path).unwrap();
+        state.stop_reason =
+            Some("DAEMON_STEP_ERROR_BOUNDED_STOP:SEALED_RECEIPT_INCOMPATIBLE".to_string());
+        save_transition(
+            &config,
+            &mut state,
+            SupervisorPhase::SafeStopped,
+            "TEST_DAEMON_STEP_REPAIR",
         )
         .unwrap();
         let response = request_resume(&config_path).unwrap();
